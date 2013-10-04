@@ -20,6 +20,7 @@ import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.RatingListItem;
 import com.chess.ui.adapters.RatingsAdapter;
 import com.chess.ui.fragments.stats.StatsGameFragment;
+import com.chess.ui.fragments.stats.StatsGameLessonsFragment;
 import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.IconDrawable;
@@ -111,10 +112,10 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 				getActivityFace().openFragment(StatsGameFragment.createInstance(position, username));
 				break;
 			case TACTICS:
-				getActivityFace().openFragment(new StatsGameTacticsFragment());
+				getActivityFace().openFragment(StatsGameTacticsFragment.createInstance(username));
 				break;
 			case LESSONS: // not used yet
-				getActivityFace().openFragment(new StatsGameTacticsFragment()); // TODO adjust Lessons
+				getActivityFace().openFragment(StatsGameLessonsFragment.createInstance(username)); // TODO adjust Lessons
 				break;
 		}
 	}

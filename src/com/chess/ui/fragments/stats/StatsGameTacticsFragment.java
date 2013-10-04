@@ -109,11 +109,11 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS_STATS);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
 
 			new RequestJsonTask<TacticsHistoryItem>(statsItemUpdateListener).executeTask(loadItem);
 		} else {
 			updateUiData();
-
 		}
 	}
 

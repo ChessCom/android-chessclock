@@ -26,6 +26,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	public static final int RATING_ID = 0x00004401;
 	public static final int TIME_LEFT_ID = 0x00004405;
 	public static final int RATING_CHANGE_ID = 0x00004406;
+	public static final String NO_TIME = "-:--";
 
 	private ImageView avatarImg;
 	private float density;
@@ -40,6 +41,8 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	private RoboTextView practiceTxt;
 	private LinearLayout clockLayout;
 	private RoboTextView clockIconTxt;
+	private int whiteColor;
+	private int redColor;
 
 	public PanelInfoTacticsView(Context context) {
 		super(context);
@@ -65,7 +68,8 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		int avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_big_size);
 		int timeLeftSize = (int) resources.getDimension(R.dimen.panel_info_time_left_size);
 		int avatarMarginRight = (int) resources.getDimension(R.dimen.panel_info_avatar_margin_right);
-		int whiteColor = resources.getColor(R.color.white);
+		whiteColor = resources.getColor(R.color.white);
+		redColor = resources.getColor(R.color.red_button);
 		int lightGrey = resources.getColor(R.color.new_light_grey);
 
 		{// add avatar view
@@ -147,7 +151,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			clockTxt.setTextSize(infoTextSize);
 			clockTxt.setTextColor(whiteColor);
 			clockTxt.setFont(FontsHelper.BOLD_FONT);
-			clockTxt.setText("--:--");
+			clockTxt.setText(NO_TIME);
 			clockTxt.setId(TIME_LEFT_ID);
 			clockLayout.addView(clockTxt, timePassedParams);
 
@@ -184,6 +188,10 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		return side;
 	}
 
+	public void makeTimerRed(boolean makeRed) {
+		clockIconTxt.setTextColor(makeRed ? redColor : whiteColor);
+		clockTxt.setTextColor(makeRed ? redColor : whiteColor);
+	}
 
 	public void setPlayerTimeLeft(String timeLeft) {
 		clockTxt.setText(timeLeft);

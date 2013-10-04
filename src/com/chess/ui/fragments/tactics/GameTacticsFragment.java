@@ -107,7 +107,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private int currentTacticAnswerCnt;
 	private int maxTacticAnswerCnt;
 	private TacticTrainerItem.Data trainerData;
-	private PanelInfoTacticsView topPanelView;
+	private PanelInfoTacticsView bottomPanelView;
 	private ControlsTacticsView controlsTacticsView;
 	private boolean isAnalysis;
 	private boolean serverError;
@@ -163,7 +163,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 				trainerData = DbDataManager.getLastTacticTrainerFromDb(getActivity(), getUsername());
 
-				if (trainerData.isCompleted()) {
+				if (trainerData.isCompleted() || trainerData.isRetry()) {
 					adjustBoardForGame();
 
 					if (getBoardFace().isLatestMoveMadeUser()) {
@@ -251,7 +251,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			playLastMoveAnimationAndCheck();
 		} else if (trainerData.isStop() && !getBoardFace().isFinished()) {
 			startTacticsTimer(trainerData);
-			topPanelView.setPlayerTimeLeft(trainerData.getSecondsSpentStr());
+			bottomPanelView.setPlayerTimeLeft(trainerData.getSecondsSpentStr());
 			adjustBoardForGame();
 		} else {
 			verifyMove();
@@ -272,7 +272,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	/**
 	 * Check if tactic was canceled or limit reached
 	 *
-	 * @return true if need to Save
+	 * @return {@code true} if need to Save
 	 */
 	private boolean needToSaveTactic() {
 		return !getBoardFace().isTacticCanceled()
@@ -383,9 +383,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_TACTICS_ID, trainerData.getId());
 		loadItem.addRequestParams(RestHelper.P_PASSED, RestHelper.V_TRUE);
-//		loadItem.addRequestParams(RestHelper.P_CORRECT_MOVES, getBoardFace().getCorrectMovesCnt());
 		loadItem.addRequestParams(RestHelper.P_SECONDS, trainerData.getSecondsSpent());
-//		loadItem.addRequestParams(RestHelper.P_ENCODED_MOVES, RestHelper.V_FALSE);
 
 		new RequestJsonTask<TacticTrainerItem>(tacticCorrectUpdateListener).executeTask(loadItem);
 		lockBoard(true);
@@ -573,14 +571,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void onValueSelected(int code) {
-		/*if (code == ID_NEXT_TACTIC) {
-			getNextTactic();
-		} else*/
 		if (code == ID_SHOW_ANSWER) {
 			showAnswer();
-		} else /*if (code == ID_HINT) {
-			showHint();
-		} else*/ if (code == ID_PERFORMANCE) {
+		} else if (code == ID_PERFORMANCE) {
 			getActivityFace().openFragment(new StatsGameTacticsFragment());
 		} else if (code == ID_PRACTICE) {
 			switch2Analysis();
@@ -716,9 +709,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void showCorrectViews(String newRatingStr) {
 		if (!TextUtils.isEmpty(newRatingStr)) {
 			getAppData().setUserTacticsRating(trainerData.getUserRating());
-			topPanelView.setPlayerScore(trainerData.getUserRating());
+			bottomPanelView.setPlayerScore(trainerData.getUserRating());
 		}
-		topPanelView.showCorrect(true, newRatingStr);
+		bottomPanelView.showCorrect(true, newRatingStr);
 		controlsTacticsView.showCorrect();
 		trainerData.setCompleted(true);
 		getBoardFace().setFinished(true);
@@ -732,9 +725,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void showHintedViews(String newRatingStr) {
 		if (!TextUtils.isEmpty(newRatingStr)) {
 			getAppData().setUserTacticsRating(trainerData.getUserRating());
-			topPanelView.setPlayerScore(trainerData.getUserRating());
+			bottomPanelView.setPlayerScore(trainerData.getUserRating());
 		}
-		topPanelView.showWrong(true, newRatingStr);
+		bottomPanelView.showWrong(true, newRatingStr);
 		controlsTacticsView.showAfterRetry();
 		trainerData.setCompleted(true);
 		getBoardFace().setFinished(true);
@@ -748,9 +741,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void showWrongViews(String newRatingStr) {
 		if (!TextUtils.isEmpty(newRatingStr)) {
 			getAppData().setUserTacticsRating(trainerData.getUserRating());
-			topPanelView.setPlayerScore(trainerData.getUserRating());
+			bottomPanelView.setPlayerScore(trainerData.getUserRating());
 		}
-		topPanelView.showWrong(true, newRatingStr);
+		bottomPanelView.showWrong(true, newRatingStr);
 		controlsTacticsView.showWrong();
 		getBoardFace().setFinished(true);
 
@@ -791,9 +784,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else {
 			controlsTacticsView.showAnalysis();
 		}
-		topPanelView.showPractice(isAnalysis);
+		bottomPanelView.showPractice(isAnalysis);
 		getBoardFace().setAnalysis(isAnalysis);
-		topPanelView.showClock(!isAnalysis);
+		bottomPanelView.showClock(!isAnalysis);
 	}
 
 	@Override
@@ -826,14 +819,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			optionsArray.remove(ID_PRACTICE);
 		}
 
-//		if (controlsTacticsView.getState() == ControlsTacticsView.State.AFTER_RETRY) {
-//			optionsArray.remove(ID_PRACTICE);
-//			optionsArray.put(ID_HINT, getString(R.string.hint));
-//		} else {
-//			optionsArray.put(ID_PRACTICE, getString(R.string.practice));
-//			optionsArray.remove(ID_HINT);
-//		}
-
 		if (trainerData.isAnswerWasShowed()) {
 			optionsArray.remove(ID_SHOW_ANSWER);
 		} else {
@@ -861,6 +846,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		lockBoard(false);
 	}
 
+	/**
+	 * The tactics timer should count down from 2x the average time to solve.
+	 * Then, when 80% of that time is used up, we change the colour of the timer to red (CC0000 in the current app).
+	 * At this point, the user risks earning zero rating points (or negative points) if they think any longer.
+	 * When the timer hits zero, we just show --:-- (in the normal colour, not red)
+	 */
 	private Runnable timerUpdateTask = new Runnable() {
 		@Override
 		public void run() {
@@ -871,8 +862,24 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				return;
 			}
 
+			int timeToSolve = trainerData.getTacticsProblem().getAvgSeconds() * 2;
+
 			trainerData.increaseSecondsPassed();
-			topPanelView.setPlayerTimeLeft(trainerData.getSecondsSpentStr());
+
+			// convert to timeLeft
+			long timeLeft = timeToSolve - trainerData.getSecondsSpent();
+
+			// check if time left is less than 80%
+			int criticalTime = (int) (timeToSolve * 0.2f);
+			bottomPanelView.makeTimerRed(timeLeft < criticalTime);
+
+			String timeLeftStr = AppUtils.getSecondsTimeFromSecondsStr(timeLeft);
+			if (timeLeft <= 0) {
+				bottomPanelView.setPlayerTimeLeft(PanelInfoTacticsView.NO_TIME);
+				bottomPanelView.makeTimerRed(false);
+			} else {
+				bottomPanelView.setPlayerTimeLeft(timeLeftStr);
+			}
 		}
 	};
 
@@ -903,7 +910,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		int currentRating = getAppData().getUserTacticsRating();
 
-		topPanelView.setPlayerScore(currentRating);
+		bottomPanelView.setPlayerScore(currentRating);
 
 		boardFace.setupBoard(trainerData.getInitialFen());
 
@@ -918,7 +925,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		boardFace.setMovesCount(1);
 
 		if (trainerData.isAnswerWasShowed() || trainerData.isCompleted()) {
-			topPanelView.setPlayerTimeLeft(trainerData.getSecondsSpentStr());
+			bottomPanelView.setPlayerTimeLeft(trainerData.getSecondsSpentStr());
 
 			String[] moves = boardFace.getTacticMoves();
 			boardFace.setMovesCount(moves.length);
@@ -954,19 +961,19 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			controlsTacticsView.showDefault();
 		}
 
-		topPanelView.showDefault(); // TODO remove if unused
+		bottomPanelView.showDefault(); // TODO remove if unused
 
 		if (boardFace.getSide() == ChessBoard.WHITE_SIDE) {
-			topPanelView.setSide(ChessBoard.WHITE_SIDE);
+			bottomPanelView.setSide(ChessBoard.WHITE_SIDE);
 		} else {
-			topPanelView.setSide(ChessBoard.BLACK_SIDE);
+			bottomPanelView.setSide(ChessBoard.BLACK_SIDE);
 		}
 
 		if (isAnalysis) {
 			controlsTacticsView.showAnalysis();
-			topPanelView.showPractice(isAnalysis);
+			bottomPanelView.showPractice(isAnalysis);
 			getBoardFace().setAnalysis(isAnalysis);
-			topPanelView.showClock(!isAnalysis);
+			bottomPanelView.showClock(!isAnalysis);
 		}
 	}
 
@@ -1156,8 +1163,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void widgetsInit(View view) {
 		moveResultTxt = (TextView) view.findViewById(R.id.moveResultTxt);
 
-		topPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
-		topPanelView.setPlayerScore(getAppData().getUserTacticsRating());
+		bottomPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
+		bottomPanelView.setPlayerScore(getAppData().getUserTacticsRating());
 		controlsTacticsView = (ControlsTacticsView) view.findViewById(R.id.controlsTacticsView);
 
 		boardView = (ChessBoardTacticsView) view.findViewById(R.id.boardview);
@@ -1175,7 +1182,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		lockBoard(true);
 
 		{// set avatars
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			topAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 			String userAvatarUrl = getAppData().getUserAvatar();
 			imageDownloader.download(userAvatarUrl, imageUpdateListener, AVATAR_SIZE);
@@ -1210,7 +1217,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				case BOTTOM_AVATAR:
 					BoardAvatarDrawable boardAvatarDrawable = new BoardAvatarDrawable(getContext(), bitmap);
 					topAvatarImg.setImageDrawable(boardAvatarDrawable);
-					topPanelView.invalidate();
+					bottomPanelView.invalidate();
 					break;
 			}
 		}
