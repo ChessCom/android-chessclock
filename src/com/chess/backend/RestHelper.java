@@ -77,6 +77,7 @@ public class RestHelper {
 	public String CMD_GCM = CMD_USERS + "/gcm";
 	public String CMD_USER_STATS = CMD_USERS + "/stats";
 	public String CMD_USER_PROFILE = CMD_USERS + "/profile";
+	public String CMD_CHANGE_PASSWORD = CMD_USERS + "/change_password";
 
 	/*Games*/
 	public String CMD_GAMES = BASE_URL + V1 + "/games/";
@@ -267,6 +268,8 @@ public class RestHelper {
 	public static final String P_CURRENT_POINTS = "currentPoints";
 	public static final String P_CURRENT_PERCENT = "currentPercent";
 	public static final String P_LAST_POS_NUMBER = "lastPositionNumber";
+	public static final String P_OLD_PASS = "oldPassword";
+	public static final String P_NEW_PASS = "newPassword";
 
 	public static final String P_BACKGROUND_ID = "backgroundId";
 	public static final String P_SCREEN = "screen";
