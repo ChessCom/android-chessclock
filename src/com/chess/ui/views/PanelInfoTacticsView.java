@@ -26,7 +26,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	public static final int RATING_ID = 0x00004401;
 	public static final int TIME_LEFT_ID = 0x00004405;
 	public static final int RATING_CHANGE_ID = 0x00004406;
-	public static final String NO_TIME = "-:--";
+	public static final String NO_TIME = "--:--";
 
 	private ImageView avatarImg;
 	private float density;

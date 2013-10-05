@@ -205,6 +205,13 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		DbDataManager.saveUserLessonToDb(getContentResolver(), userLesson, lessonId, getUsername());
+	}
+
 	private void updateUiData() {
 		// check if we have that lesson in DB
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
@@ -257,6 +264,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	@Override
 	public void nextPosition() {
 		if (++currentLearningPosition < totalLearningPositionsCnt) {
+			userLesson.setCurrentPosition(currentLearningPosition);
 
 			showDefaultControls();
 			adjustBoardForGame();
@@ -363,7 +371,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	@Override
 	public void startLesson() {
 		controlsLessonsView.showDefault();
-		slidingDrawer.animateOpen();
+		if (!slidingDrawer.isOpened()) {
+			slidingDrawer.animateOpen();
+		}
 	}
 
 
@@ -402,28 +412,24 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			if (boardFace.isLastLessonMoveIsCorrect(possibleMove.getMove())) {
 
 				if (possibleMove.getMoveType().equals(LessonItem.MOVE_DEFAULT)) { // Correct move
-					controlsLessonsView.showCorrect();
-					solvedPositionsList.add(currentLearningPosition);
+					showCorrectState();
+					correctMove = true;
 					if (!TextUtils.isEmpty(possibleMove.getShortResponseMove())) {
 						final Move move = boardFace.convertMoveCoordinate(possibleMove.getShortResponseMove());
 						boardView.setMoveAnimator(move, true);
 						boardView.resetValidMoves();
 						boardFace.makeMove(move, true);
 					}
-					correctMove = true;
-					wrongState = false;
 				} else if (possibleMove.getMoveType().equals(LessonItem.MOVE_ALTERNATE)) { // Alternate Correct Move
 					// Correct move, try again!
 					showToast(R.string.alternate_correct_move_ex);
-					controlsLessonsView.showCorrect();
-					solvedPositionsList.add(currentLearningPosition);
-
+					showCorrectState();
 					correctMove = true;
-
 				} else if (possibleMove.getMoveType().equals(LessonItem.MOVE_WRONG)) {
 					showWrongState();
 				}
 				setDescriptionText(possibleMove.getMoveCommentary());
+				commentTxt.setVisibility(View.GONE);
 				descriptionView.post(scrollDescriptionUp);
 
 				moveRecognized = true;
@@ -433,6 +439,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		if (!moveRecognized) {
 			setDescriptionText(getMentorPosition().getStandardWrongMoveCommentary());
+			commentTxt.setVisibility(View.GONE);
 
 			descriptionView.post(scrollDescriptionUp);
 			showWrongState();
@@ -493,6 +500,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			// Update server with whole lesson scores
 			submitCorrectSolution();
 		}
+	}
+
+	private void showCorrectState() {
+		controlsLessonsView.showCorrect();
+		solvedPositionsList.add(currentLearningPosition);
+		wrongState = false;
 	}
 
 	private void showWrongState() {
@@ -793,6 +806,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		setDescriptionText(mentorLesson.getAbout());
 		positionDescriptionTxt.setText(Html.fromHtml(positionToSolve.getAbout()));
 		descriptionView.post(scrollDescriptionDown);
+
+		// add currentLearningPosition in case we load from DB
+		solvedPositionsList.add(currentLearningPosition);
 	}
 
 	private void setDescriptionText(String descriptionStr){
@@ -821,7 +837,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		@Override
 		public void updateData(LessonItem.Data returnedObj) {
 			super.updateData(returnedObj);
-			logTest("LoadLessonItemTask -> updateData");
 
 			if (listenerCode == LOAD) {
 				lessonItem = returnedObj;

@@ -54,16 +54,10 @@ public class HomeLearnFragment extends CommonLogicFragment {
 	private TextView avgScoreValueTxt;
 	private TextView todaysAttemptsValueTxt;
 	private long loadedVideoId;
-	private int currentTacticsRating;
-	private int tacitcsTodaysAttempts;
-	private int todaysAverageScore;
 	private StatsUpdateListener statsUpdateListener;
-	private View todaysAttemptsLabelTxt;
-	private View avgScoreLabelTxt;
 	private VideosItemUpdateListener videosItemUpdateListener;
 	private View headerView;
 	private ViewHolder holder;
-	private VideoItem.Data headerData;
 	private ForegroundColorSpan foregroundSpan;
 	private TextView lessonTitleTxt;
 	private LessonsRatingUpdateListener lessonsRatingUpdateListener;
@@ -76,6 +70,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 		int lightGrey = getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 		statsUpdateListener = new StatsUpdateListener();
+		lessonsRatingUpdateListener = new LessonsRatingUpdateListener();
 		videosItemUpdateListener = new VideosItemUpdateListener();
 	}
 
@@ -98,8 +93,6 @@ public class HomeLearnFragment extends CommonLogicFragment {
 		tacticsRatingTxt = (TextView) view.findViewById(R.id.tacticsRatingTxt);
 
 		// Tactics
-		todaysAttemptsLabelTxt = view.findViewById(R.id.todaysAttemptsLabelTxt);
-		avgScoreLabelTxt = view.findViewById(R.id.avgScoreLabelTxt);
 		avgScoreValueTxt = (TextView) view.findViewById(R.id.avgScoreValueTxt);
 		todaysAttemptsValueTxt = (TextView) view.findViewById(R.id.todaysAttemptsValueTxt);
 
@@ -120,6 +113,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 	public void onResume() {
 		super.onResume();
 
+		// Get Tactics basic stats
 		LoadItem loadItem = LoadHelper.getTacticsBasicStats(getUserToken());
 		new RequestJsonTask<TacticsBasicStatsItem>(statsUpdateListener).executeTask(loadItem);
 
@@ -130,7 +124,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 			incompleteLesson = incompleteLessons.get(0);
 			lessonTitleTxt.setText(incompleteLesson.getName());
 		} else {
-			lessonTitleTxt.setText("This is the lesson's Title");
+			lessonTitleTxt.setText(R.string.improve_your_chess);
 		}
 	}
 
@@ -199,12 +193,12 @@ public class HomeLearnFragment extends CommonLogicFragment {
 		public void updateData(TacticsBasicStatsItem returnedObj) {
 			super.updateData(returnedObj);
 
-			currentTacticsRating = returnedObj.getData().getCurrent();
-			tacitcsTodaysAttempts = returnedObj.getData().getTodaysAttempts();
-			todaysAverageScore = returnedObj.getData().getTodaysAverageScore();
+			int currentTacticsRating = returnedObj.getData().getCurrent();
+			int tacticsTodaysAttempts = returnedObj.getData().getTodaysAttempts();
+			int todaysAverageScore = returnedObj.getData().getTodaysAverageScore();
 
 			tacticsRatingTxt.setText(String.valueOf(currentTacticsRating));
-			todaysAttemptsValueTxt.setText(String.valueOf(tacitcsTodaysAttempts));
+			todaysAttemptsValueTxt.setText(String.valueOf(tacticsTodaysAttempts));
 			avgScoreValueTxt.setText(String.valueOf(todaysAverageScore) + Symbol.PERCENT);
 
 			// Load lessons ratings
@@ -241,7 +235,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 
 		@Override
 		public void updateData(VideoItem returnedObj) {
-			headerData = returnedObj.getData().get(0);
+			VideoItem.Data headerData = returnedObj.getData().get(0);
 
 			// save in Db to open in Details View
 			ContentResolver contentResolver = getContentResolver();
