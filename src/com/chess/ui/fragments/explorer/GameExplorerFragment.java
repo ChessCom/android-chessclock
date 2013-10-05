@@ -159,6 +159,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		}
 
 		if (tag.equals(INFO_POPUP_TAG)) {
+			dismissFragmentDialog();
 			getActivityFace().showPreviousFragment();
 			return;
 		}

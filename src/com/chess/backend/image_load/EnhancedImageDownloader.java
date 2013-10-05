@@ -78,7 +78,6 @@ public class EnhancedImageDownloader {
 
     public void download(String url, ProgressImageView holder, int imgSize, int imgHeight) {
 		imgSizeMap.put(url, imgSize);
-//		this.imgSize = imgSize;
 
 		useScale = false;
 		if (TextUtils.isEmpty(url)) {
@@ -105,11 +104,11 @@ public class EnhancedImageDownloader {
         // I identify images by hashcode. Not a perfect solution, good for the
         // demo.
         String filename = String.valueOf(url.hashCode());
-        File f = new File(cacheDir, filename);
+        File file = new File(cacheDir, filename);
 
         // from SD cache
         // if file is stored so simply read it, do not resize
-		Bitmap bmp = readFile(f);
+		Bitmap bmp = readFile(file, url);
 		if(bmp != null){
 			pHolder.setBitmap(bmp);
 			addBitmapToCache(url, pHolder);
@@ -213,15 +212,44 @@ public class EnhancedImageDownloader {
 	/**
 	 * Read file from stored hashlink on SD
 	 *
-	 * @param f file from which we read
+	 *
+	 * @param file file from which we read
+	 * @param url original of image
 	 * @return read Bitmap or null, if file wasn't cached on storage
 	 */
-	private Bitmap readFile(File f) {
+	private Bitmap readFile(File file, String url) {
 		try {
-			return BitmapFactory.decodeStream(new FileInputStream(f));
+			if (useScale) {
+				// Get the dimensions of the View
+				int targetW = imgSizeMap.get(url);
+				int targetH = imgSizeMap.get(url);
+
+				// Get the dimensions of the bitmap
+				BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+				bmOptions.inJustDecodeBounds = true;
+				BitmapFactory.decodeFile(file.getAbsolutePath(), bmOptions);
+				int photoW = bmOptions.outWidth;
+				int photoH = bmOptions.outHeight;
+
+				// Determine how much to scale down the image
+				int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+				// Decode the image imgFile into a Bitmap sized to fill the View
+				bmOptions.inJustDecodeBounds = false;
+				bmOptions.inSampleSize = scaleFactor;
+				bmOptions.inPurgeable = true;
+
+				Bitmap bmp =  BitmapFactory.decodeFile(file.getAbsolutePath(), bmOptions);
+				Log.d(LOG_TAG, "bmp = " + bmp);
+				return bmp;
+			}
+
+			return BitmapFactory.decodeStream(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception ex) {
+			ex.printStackTrace();
+		} catch (OutOfMemoryError ex) {
 			ex.printStackTrace();
 		}
 		return null;

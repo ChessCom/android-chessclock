@@ -224,8 +224,9 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	protected void dismissFragmentDialog() {
-		if (getLastPopupFragment() == null)
+		if (getLastPopupFragment() == null) {
 			return;
+		}
 
 		getLastPopupFragment().dismiss();
 		popupManager.remove(popupManager.size()-1);

@@ -120,15 +120,8 @@ public class HomeLearnFragment extends CommonLogicFragment {
 	public void onResume() {
 		super.onResume();
 
-		if (!isNeedToUpgradePremium()) {
-			LoadItem loadItem = LoadHelper.getTacticsBasicStats(getUserToken());
-			new RequestJsonTask<TacticsBasicStatsItem>(statsUpdateListener).executeTask(loadItem);
-		} else {
-			todaysAttemptsLabelTxt.setVisibility(View.GONE);
-			avgScoreLabelTxt.setVisibility(View.GONE);
-			avgScoreValueTxt.setVisibility(View.GONE);
-			todaysAttemptsValueTxt.setVisibility(View.GONE);
-		}
+		LoadItem loadItem = LoadHelper.getTacticsBasicStats(getUserToken());
+		new RequestJsonTask<TacticsBasicStatsItem>(statsUpdateListener).executeTask(loadItem);
 
 		loadVideoToHeader();
 

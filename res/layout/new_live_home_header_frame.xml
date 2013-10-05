@@ -13,7 +13,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="@dimen/notations_view_height"
 		style="@style/NotationsStyle"
-		android:visibility="invisible" />
+		android:visibility="gone" />
 
 	<!--New Game-->
 	<com.chess.LinLayout
