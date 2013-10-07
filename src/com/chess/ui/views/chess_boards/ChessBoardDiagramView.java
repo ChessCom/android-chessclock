@@ -9,7 +9,6 @@ import com.chess.statics.AppConstants;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
-import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.boards.BoardViewDiagramFace;
 import com.chess.ui.interfaces.game_ui.GameDiagramFace;
 import com.chess.ui.views.game_controls.ControlsDiagramView;
@@ -27,7 +26,7 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 	private static final String DIVIDER_1 = "|";
 	private static final String DIVIDER_2 = ":";
 
-	private GameDiagramFace gameAnalysisActivityFace;
+	private GameDiagramFace gameDiagramFace;
 
 	public ChessBoardDiagramView(Context context) {
 		super(context);
@@ -41,7 +40,7 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 	public void setGameActivityFace(GameDiagramFace gameActivityFace) {
 		super.setGameFace(gameActivityFace);
 
-		gameAnalysisActivityFace = gameActivityFace;
+		gameDiagramFace = gameActivityFace;
 	}
 
 	public void setControlsView(ControlsDiagramView controlsView) {
@@ -50,18 +49,12 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 	}
 
 	@Override
-	protected void onBoardFaceSet(BoardFace boardFace) {
-//		pieces_tmp = boardFace.getPieces().clone();
-//		colors_tmp = boardFace.getColor().clone();
-	}
-
-	@Override
 	public void afterUserMove() {
 
 		super.afterUserMove();
 
 		getBoardFace().setMovesCount(getBoardFace().getPly());
-		gameAnalysisActivityFace.invalidateGameScreen();
+		gameDiagramFace.invalidateGameScreen();
 
 		isGameOver();
 	}
@@ -158,15 +151,8 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 		invalidate();
 	}
 
-//	@Override
-//	public void switchAnalysis() {
-//		super.switchAnalysis();
-//	//		controlsAnalysisView.en(ControlsCompView.B_HINT_ID, !getBoardFace().isAnalysis());
-//	}
-
 	@Override
 	public void onMoveBack() {
-
 		if (noMovesToAnimate() && getBoardFace().getPly() > 0) {
 			getBoardFace().setFinished(false);
 			pieceSelected = false;
@@ -174,7 +160,8 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 			resetValidMoves();
 			getBoardFace().takeBack();
 			invalidate();
-			gameAnalysisActivityFace.invalidateGameScreen();
+			gameDiagramFace.onMoveBack();
+			gameDiagramFace.invalidateGameScreen();
 		}
 	}
 
@@ -192,23 +179,24 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 			getBoardFace().takeNext();
 
 			invalidate();
-			gameAnalysisActivityFace.invalidateGameScreen();
+			gameDiagramFace.onMoveForward();
+			gameDiagramFace.invalidateGameScreen();
 		}
 	}
 
 	@Override
 	public void onPlay() {
-
+		gameDiagramFace.onPlay();
 	}
 
 	@Override
 	public void onRewindBack() {
-
+		gameDiagramFace.onRewindBack();
 	}
 
 	@Override
 	public void onRewindForward() {
-
+		gameDiagramFace.onRewindForward();
 	}
 
 }

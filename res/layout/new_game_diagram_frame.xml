@@ -7,24 +7,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
+	android:animateLayoutChanges="true"
 	>
-
-	<com.chess.ui.views.NotationView
-		android:id="@+id/notationsView"
-		android:layout_width="match_parent"
-		android:layout_height="@dimen/notations_view_height"
-		style="@style/NotationsStyle"
-		android:visibility="gone"
-		/>
-
-	<com.chess.ui.views.PanelInfoGameView
-		android:id="@+id/topPanelView"
-		android:layout_width="match_parent"
-		android:layout_height="0dip"
-		android:layout_weight="1"
-		custom:oneLine="@bool/one_line_for_board"
-		android:visibility="gone"
-		/>
 
 	<RelativeLayout
 		android:layout_width="match_parent"
@@ -56,19 +40,28 @@
 
 	</RelativeLayout>
 
-	<com.chess.ui.views.PanelInfoGameView
-		android:id="@+id/bottomPanelView"
-		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="1"
-		custom:oneLine="@bool/one_line_for_board"
-		android:visibility="gone"
-		/>
-
 	<com.chess.ui.views.game_controls.ControlsDiagramView
 		android:id="@+id/controlsDiagramView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		/>
+
+	<com.chess.RoboTextView
+		android:id="@+id/notationCommentTxt"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/notations_view_height"
+		android:gravity="center"
+		android:textColor="@color/controls_icon_diagram"
+		style="@style/ListItem.Header_2"
+		android:visibility="gone"
+		/>
+
+	<com.chess.ui.views.NotationView
+		android:id="@+id/notationsView"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/notations_view_height"
+		style="@style/NotationsDiagramStyle"
+		android:visibility="gone"
 		/>
 
 </LinearLayout>

@@ -42,6 +42,7 @@ public class ControlsDiagramView extends ControlsBaseView {
 		controlIconSize = (int) (resources.getDimension(R.dimen.game_controls_icon_diagram_size) / density);
 
 		addControlButton(MAKE_MOVE, R.style.Rect_Bottom_Left_LightGrey);
+		addControlButton(PAUSE, R.style.Rect_Bottom_Left_LightGrey);
 		addControlButton(BACK_END, R.style.Rect_Bottom_Middle_LightGrey);
 		addControlButton(BACK, R.style.Rect_Bottom_Middle_LightGrey);
 		addControlButton(FORWARD, R.style.Rect_Bottom_Middle_LightGrey);
@@ -49,6 +50,8 @@ public class ControlsDiagramView extends ControlsBaseView {
 		addControlButton(DOTS_OPTIONS, R.style.Rect_Bottom_Right_LightGrey);
 
 		addView(controlsLayout);
+
+		showGameButton(PAUSE, false);
 	}
 
 	@Override
@@ -64,12 +67,10 @@ public class ControlsDiagramView extends ControlsBaseView {
 
 	@Override
 	public void enableForwardBtn(boolean enable) {
-//		enableGameButton(FORWARD, enable);
 	}
 
 	@Override
 	public void enableBackBtn(boolean enable) {
-//		enableGameButton(BACK, enable);
 	}
 
 	@Override
@@ -77,11 +78,10 @@ public class ControlsDiagramView extends ControlsBaseView {
 		if (blocked)
 			return;
 
-		if (view.getId() == getButtonId(MAKE_MOVE)) {
+		if (view.getId() == getButtonId(MAKE_MOVE) || view.getId() == getButtonId(PAUSE)) {
 			boardViewFace.onPlay();
 		} else if (view.getId() == getButtonId(BACK_END)) {
 			boardViewFace.onRewindBack();
-			// TODO add search ability
 		} else if (view.getId() == getButtonId(BACK)) {
 			boardViewFace.onMoveBack();
 		} else if (view.getId() == getButtonId(FORWARD)) {
@@ -99,10 +99,20 @@ public class ControlsDiagramView extends ControlsBaseView {
 
 	public void enableGameControls(boolean enable) {
 		enableGameButton(MAKE_MOVE, enable);
+		enableGameButton(PAUSE, enable);
 		enableGameButton(BACK_END, enable);
 		enableGameButton(BACK, enable);
 		enableGameButton(FORWARD, enable);
 		enableGameButton(FWD_END, enable);
 		enableGameButton(DOTS_OPTIONS, enable);
+	}
+
+	public void enablePlayButton(boolean enable) {
+		enableGameButton(MAKE_MOVE, enable);
+	}
+
+	public void showPlayButton(boolean show) {
+		showGameButton(MAKE_MOVE, show);
+		showGameButton(PAUSE, !show);
 	}
 }

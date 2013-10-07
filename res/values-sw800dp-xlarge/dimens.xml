@@ -77,7 +77,7 @@
 	<dimen name="article_detail_image_height">213dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="options_list_item_height">56dip</dimen>
-	<dimen name="content_text_size">14sp</dimen>
+	<dimen name="content_text_size">20sp</dimen>
 
 	<!--Switch Default-->
 	<dimen name="button_switch_default_width">85dip</dimen>
@@ -94,5 +94,8 @@
 	<dimen name="start_new_game_overlay_padding_top">25dip</dimen>
 	<dimen name="start_new_game_overlay_padding_side">26dip</dimen>
 	<dimen name="overlay_shadow_offset">6dip</dimen>
+	<dimen name="popup_title_text_size_big">33sp</dimen>
+	<dimen name="popup_title_text_size_medium">17sp</dimen>
+	<dimen name="diagram_icon_overlay_size">110dip</dimen>
 
 </resources>

@@ -165,6 +165,9 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected void showGameEndPopup(final View layout, final String message) {
 	}
 
+	@Override
+	public void onNotationClicked(int pos) {}
+
 	protected void setBoardToFinishedState() { // TODO implement state conditions logic for board
 //		boardView.enableAnalysis(); // TODO recheck logic
 

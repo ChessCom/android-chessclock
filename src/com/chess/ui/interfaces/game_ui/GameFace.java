@@ -49,4 +49,6 @@ public interface GameFace {
 	BoardFace getBoardFace();
 
 	void toggleSides();
+
+	void onNotationClicked(int pos);
 }

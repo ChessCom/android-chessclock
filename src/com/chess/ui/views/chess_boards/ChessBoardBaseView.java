@@ -99,8 +99,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected int viewHeight;
 	private int previousWidth;
 
-	protected float width;
-	protected float height;
+//	protected float width;
+//	protected float height;
 	protected Rect rect;
 
 	protected boolean isHighlightEnabled;
@@ -200,8 +200,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		possibleMovePaint.setStyle(Style.FILL);
 		possibleMovePaint.setColor(possibleMoveHighlightColor);
 
-		width = resources.getDisplayMetrics().widthPixels;
-		height = resources.getDisplayMetrics().heightPixels;
+//		width = resources.getDisplayMetrics().widthPixels;
+//		height = resources.getDisplayMetrics().heightPixels;
 
 		handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
 		userActive = false;
@@ -233,13 +233,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
+		int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
+		int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-			setMeasuredDimension(resolveSize((int) width, widthMeasureSpec),
-					resolveSize((int) width, heightMeasureSpec));
+			setMeasuredDimension(resolveSize(parentWidth, widthMeasureSpec),
+					resolveSize(parentWidth, heightMeasureSpec));
 		} else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			setMeasuredDimension(resolveSize((int) height, widthMeasureSpec),
-					resolveSize((int) height, heightMeasureSpec));
+			setMeasuredDimension(resolveSize(parentHeight, widthMeasureSpec),
+					resolveSize(parentHeight, heightMeasureSpec));
 		}
 
 		pieceXDelta = -1;
@@ -271,12 +272,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 		}
 
-		if (isUserWhite()) {
-			topPanelView.updateCapturedPieces(blackAlivePiecesCount);
-			bottomPanelView.updateCapturedPieces(whiteAlivePiecesCount);
-		} else {
-			topPanelView.updateCapturedPieces(whiteAlivePiecesCount);
-			bottomPanelView.updateCapturedPieces(blackAlivePiecesCount);
+		if (topPanelView != null) {// for diagram
+			if (isUserWhite()) {
+				topPanelView.updateCapturedPieces(blackAlivePiecesCount);
+				bottomPanelView.updateCapturedPieces(whiteAlivePiecesCount);
+			} else {
+				topPanelView.updateCapturedPieces(whiteAlivePiecesCount);
+				bottomPanelView.updateCapturedPieces(blackAlivePiecesCount);
+			}
 		}
 	}
 
@@ -328,7 +331,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			invalidate();
 			gameFace.invalidateGameScreen();
 
-			if (notationsView != null) { // in puzzles we don't have notations  so probably should be moved to activity level
+			if (notationsView != null) { // we might don't have notations  so probably should be moved to fragment level
 				notationsView.moveBack(boardFace.getPly());
 			}
 		}
@@ -508,10 +511,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			float yPosition = SQUARES_NUMBER * squareSize - textYOffset;
 			for (int i = 0; i < SQUARES_NUMBER; i++) {
 				if (boardFace.isReside()) {
+					// draw ranks coordinates (1, 2, 3, 4, 5, 6, 7, 8)
 					canvas.drawText(nums[i], 2, i * squareSize + numYOffset, coordinatesPaint);
+					// draw file coordinates (a, b, c, d, e, f, g, h)
 					canvas.drawText(signs[7 - i], i * squareSize + xOffset, yPosition, coordinatesPaint);
 				} else {
+					// draw ranks coordinates (1, 2, 3, 4, 5, 6, 7, 8)
 					canvas.drawText(nums[7 - i], 2, i * squareSize + numYOffset, coordinatesPaint);
+					// draw file coordinates (a, b, c, d, e, f, g, h)
 					canvas.drawText(signs[i], i * squareSize + xOffset, yPosition, coordinatesPaint);
 				}
 			}
@@ -877,6 +884,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					boardFace.takeBack();
 				}
 			}
+
+			gameFace.onNotationClicked(pos);
+
 			// TODO @comp: check, show animation for notation scroll
 			checkControlsButtons();
 			invalidate();

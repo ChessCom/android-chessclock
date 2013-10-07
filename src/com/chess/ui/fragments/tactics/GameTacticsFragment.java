@@ -68,7 +68,7 @@ import java.util.List;
 public class GameTacticsFragment extends GameBaseFragment implements GameTacticsFace, PopupListSelectionFace {
 
 	private static final long MOVE_RESULT_HIDE_DELAY = 2000;
-	private static final long TACTIC_ANSWER_DELAY = 1500;
+	private static final long DELAY_BETWEEN_MOVES = 1500;
 	private static final long TIMER_UPDATE = 1000;
 	private static final long START_DELAY = 500;
 	private static final long RESUME_TACTIC_DELAY = 1000;
@@ -533,7 +533,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		currentTacticAnswerCnt = 0;
 		maxTacticAnswerCnt = boardFace.getTacticMoves().length;
-		handler.postDelayed(showTacticMoveTask, TACTIC_ANSWER_DELAY);
+		handler.postDelayed(showTacticMoveTask, DELAY_BETWEEN_MOVES);
 	}
 
 	@Override
@@ -565,7 +565,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			invalidateGameScreen();
 
 			currentTacticAnswerCnt++;
-			handler.postDelayed(this, TACTIC_ANSWER_DELAY);
+			handler.postDelayed(this, DELAY_BETWEEN_MOVES);
 		}
 	};
 

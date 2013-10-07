@@ -34,8 +34,6 @@
         <attr name="switchTextUseShadow" format="boolean" />
     </declare-styleable>
 
-
-
     <declare-styleable name="ButtonStyles">
         <attr name="greyButton" format="reference" />
         <attr name="orangeButton" format="reference" />
@@ -47,7 +45,6 @@
         <attr name="sideGraphBtn" format="reference" />
     </declare-styleable>
 
-
     <declare-styleable name="EnhancedField">
         <attr name="round_mode" format="reference|integer" />
         <attr name="color" format="reference|color" />
@@ -58,6 +55,11 @@
 
 	<declare-styleable name="OrangeButtonTheme">
 		<attr name="timerLabelStyle" format="reference"/>
+	</declare-styleable>
+
+	<declare-styleable name="NotationView">
+		<attr name="textColorBack" format="color|reference" />
+		<attr name="textColorSelected" format="color|reference" />
 	</declare-styleable>
 
     <declare-styleable name="com.inneractive.api.ads.InneractiveAd">

@@ -3,6 +3,7 @@ package com.chess.ui.views;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -24,7 +25,7 @@ import com.chess.utilities.AppUtils;
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public class NotationView extends LinearLayout {
+public class NotationView extends LinearLayout implements View.OnClickListener {
 
 	public static final int NOTATION_ID = 0x00003321;
 
@@ -56,9 +57,23 @@ public class NotationView extends LinearLayout {
 		float density = resources.getDisplayMetrics().density;
 		viewPerPage = resources.getInteger(R.integer.notations_per_page);
 		textSize = (int) (resources.getDimension(R.dimen.notations_text_size) / density);
+
 		textColor = resources.getColor(R.color.notations_text_color);
 		textColorSelected = resources.getColor(R.color.notations_text_color_selected);
-
+		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.NotationView);
+		if (array == null) {
+			return;
+		}
+		try {
+			if (array.hasValue(R.styleable.NotationView_textColorBack)) {
+				textColor = array.getColor(R.styleable.NotationView_textColorBack, 0xFF00FF00);
+			}
+			if (array.hasValue(R.styleable.NotationView_textColorSelected)) {
+				textColorSelected = array.getColor(R.styleable.NotationView_textColorSelected, 0xFF00FF00);
+			}
+		} finally {
+			array.recycle();
+		}
 
 		LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -130,6 +145,14 @@ public class NotationView extends LinearLayout {
 		highlightPosition(hply - 1);
 	}
 
+	@Override
+	public void onClick(View v) {
+		Integer pos = (Integer) v.getTag(R.id.list_item_id);
+		highlightPosition(pos);
+
+		selectionFace.onClick(v);
+	}
+
 	private class NotationsPagerAdapter extends PagerAdapter {
 		private int selectedPosition;
 		private LinearLayout currentView;
@@ -164,7 +187,7 @@ public class NotationView extends LinearLayout {
 				textView.setTextSize(textSize);
 				textView.setTextColor(textColor);
 				textView.setFont(FontsHelper.HELV_NEUE_FONT);
-				textView.setOnClickListener(mOnButtonClicked);
+				textView.setOnClickListener(NotationView.this);
 				textView.setGravity(Gravity.CENTER);
 
 				int currentPosition = i + absoluteNumber;
@@ -246,7 +269,7 @@ public class NotationView extends LinearLayout {
 
 						textView.setText(notation);
 						textView.setTag(R.id.list_item_id, currentPosition);
-						textView.setOnClickListener(mOnButtonClicked);
+						textView.setOnClickListener(NotationView.this);
 					} else if (newNotations) {
 						textView.setText(Symbol.SPACE);
 					}
@@ -292,23 +315,13 @@ public class NotationView extends LinearLayout {
 		setVisibility(show ? VISIBLE : GONE);
 	}
 
-	public void moveBack(int hply) {
-		highlightPosition(hply - 1);
+	public void moveBack(int ply) {
+		highlightPosition(ply - 1);
 	}
 
-	public void moveForward(int hply) {
-		highlightPosition(hply - 1);
+	public void moveForward(int ply) {
+		highlightPosition(ply - 1);
 	}
-
-	private OnClickListener mOnButtonClicked = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			Integer pos = (Integer) v.getTag(R.id.list_item_id);
-			highlightPosition(pos);
-
-			selectionFace.onClick(v);
-		}
-	};
 
 	private void highlightPosition(int pos) {
 		if (pos < 0) {

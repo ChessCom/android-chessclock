@@ -1,9 +1,11 @@
 package com.chess.ui.engine;
 
 import android.text.TextUtils;
+import android.util.Log;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -150,6 +152,7 @@ public class MovesParser {
 	 */
 	int[] parse(ChessBoard board, String move) {
 		// possible values ,e4, e4xd5, Rfg1, Rdxd5
+		Log.d("MovesParser", " move to parse = " + move);
 		move = removeNumbers(move);
 		List<Move> validMoves = board.generateLegalMoves();
 
@@ -190,7 +193,7 @@ public class MovesParser {
 		int squareTo = j * 8 - i;
 
 		int pieceType = PAWN;
-		String movePieceStr = currentMove.substring(0, 1);
+		String movePieceStr = currentMove.substring(0, 1);  // failed to parse xb5
 		if (movePieceStr.contains(WHITE_KNIGHT)) {
 			pieceType = KNIGHT;
 		} else if (movePieceStr.contains(WHITE_BISHOP)) {
@@ -259,7 +262,8 @@ public class MovesParser {
 							if (board.getBoardColor()[squareFrom] == board.getBoardColor()[squareTo]) {
 								return new int[]{squareFrom, squareTo, promotion};
 							}
-						} else if (pieceType == PAWN) {
+						} else if (pieceType == PAWN) { // failed on xb5
+							// what do we check here???
 							if (currentMove.contains(CAPTURE_MARK)
 									&& 9 - letterToBN(movePieceStr) != ChessBoard.getColumn(squareFrom) + 1) { // TODO investigate why do we break here?
 								break;
@@ -383,6 +387,24 @@ public class MovesParser {
 
 	String positionToString(int pos) {
 		return ChessBoard.Board.values()[pos].toString().toLowerCase();
+	}
+
+	public static HashMap<String, String> getCommentsFromMovesList(String movesList) {
+		HashMap<String, String> commentsMap = new HashMap<String, String>();
+
+		while (movesList.contains(COMMENT_SYMBOL)) {
+			int firstIndex = movesList.indexOf("{");
+			int lastIndex =  movesList.indexOf("}") + 1;
+
+			String movesBeforeComment = movesList.substring(0, firstIndex - 1);
+			int indexOfMoveBeforeComment = movesBeforeComment.lastIndexOf(Symbol.SPACE);
+			String moveBeforeComment = movesBeforeComment.substring(indexOfMoveBeforeComment);
+
+			String comment = movesList.substring(firstIndex, lastIndex);
+			commentsMap.put(moveBeforeComment, comment);
+			movesList = movesList.replace(comment, "");
+		}
+		return commentsMap;
 	}
 
 	public static String removeCommentsFromMovesList(String movesList) {

@@ -55,6 +55,27 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	private LessonsCoursesUpdateListener lessonsCoursesUpdateListener;
 	private SaveLessonsCoursesUpdateListener saveLessonsCoursesUpdateListener;
 
+/*
+these are the categories for CURRICULUM:
+
+Beginner
+Intermediate
+Advanced
+Expert
+Master
+
+then these are the LIbrary categories
+
+Rules and Basics
+Strategy
+Tactics
+Attacks
+Openings
+Endgames
+Games
+Misc
+*/
+
 
 	private CurriculumLessonsItems curriculumItems;
 	private boolean curriculumMode;

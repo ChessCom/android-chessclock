@@ -18,8 +18,6 @@ public interface BoardFace {
 
 	void setMode(int mode);
 
-	void takeBack();
-
 	List<Move> generateLegalMoves();
 
 	/**
@@ -43,6 +41,8 @@ public interface BoardFace {
 	boolean makeMove(Move m);
 
 	boolean makeMove(Move m, boolean playSound);
+
+	boolean takeBack();
 
 	boolean inCheck(int s);
 
@@ -78,6 +78,8 @@ public interface BoardFace {
 
 	String getMoveListSAN();
 
+	String[] getFullNotationsArray();
+
 	String[] getNotationArray();
 
 	String convertMoveLive();
@@ -97,6 +99,8 @@ public interface BoardFace {
 	boolean isJustInitialized();
 
 	void setJustInitialized(boolean justInitialized);
+
+	String getLastMoveSAN();
 
 	Move getLastMove();
 

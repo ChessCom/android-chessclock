@@ -95,7 +95,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:gravity="center"
-				android:textSize="22sp"
+				android:textSize="@dimen/popup_title_text_size_big"
 				android:textColor="@color/new_subtitle_dark_grey"
 				android:text="@string/new_game"
 				custom:ttf="Bold" />
@@ -107,7 +107,7 @@
 				android:layout_height="0dip"
 				android:layout_weight="1"
 				android:gravity="center"
-				android:textSize="16sp"
+				android:textSize="@dimen/popup_title_text_size_medium"
 				android:textColor="@color/new_author_dark_grey" />
 
 			<LinearLayout

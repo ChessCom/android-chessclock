@@ -33,11 +33,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.db.DbDataManager;
+import com.chess.model.GameListCurrentItem;
 import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
-import com.chess.db.DbDataManager;
-import com.chess.model.GameListCurrentItem;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import org.apache.http.HttpEntity;
 
@@ -750,4 +750,35 @@ public class AppUtils {
 		}
 		return DEFAULT_COUNTRY;
 	}
+
+	 public static Bitmap getBitmapFromView(View view, int width, int height) {
+		 view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+				 View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
+		 view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+
+		 // Build the Drawing Cache
+		 view.buildDrawingCache();
+
+		 // Create Bitmap
+		 Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+		 view.setDrawingCacheEnabled(false);
+		 return bitmap;
+	}
+
+/*	public static Bitmap getBitmapFromView(View view, int width, int height) {
+		// Create bitmap
+		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		//Pre-measure the view so that height and width don't remain null.
+		view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
+		//Assign a size and position to the view and all of its descendants
+		view.layout(0, 0, width, height);
+
+		//Create a canvas with the specified bitmap to draw into
+		Canvas canvas = new Canvas(bitmap);
+		canvas.drawColor(Color.WHITE);
+
+		//Render this view (and all of its children) to the given Canvas
+		view.draw(canvas);
+		return bitmap;
+	}*/
 }

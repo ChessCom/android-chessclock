@@ -56,12 +56,17 @@
     <string name="ic_flip">N</string>
     <string name="ic_check">G</string>
     <string name="ic_play">J</string>
+    <string name="ic_pause">K</string>
     <string name="ic_chat">c</string>
     <string name="ic_chat_nm">v</string>
     <string name="ic_stats">;</string>
     <string name="ic_search">–</string>
     <string name="ic_hint">g</string>
     <string name="ic_binoculars">—</string>
+
+    <string name="ic_expand_above">M</string>
+    <string name="ic_expand">¿</string>
+    <string name="ic_collapse">¡</string>
 
     <string name="ic_right">.</string> 			<!-- > -->
     <string name="ic_left">,</string>         	<!-- < -->

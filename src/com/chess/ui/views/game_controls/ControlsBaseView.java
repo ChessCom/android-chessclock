@@ -40,6 +40,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 		/* Default Game Controls*/
 		OPTIONS,
+		PAUSE,
 		HOME,
 		SEARCH,
 		EXIT,
@@ -69,6 +70,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.string.ic_dots,
 			/* Default Game Controls*/
 			R.string.ic_options,
+			R.string.ic_pause,
 			R.string.ic_home,
 			R.string.ic_search,
 			R.string.ic_exit,

@@ -131,12 +131,10 @@ public class ControlsDailyView extends ControlsBaseView {
 
 	@Override
 	public void enableForwardBtn(boolean enable) {
-//		enableGameButton(FORWARD, enable);
 	}
 
 	@Override
 	public void enableBackBtn(boolean enable) {
-//		enableGameButton(BACK, enable);
 	}
 
 	private void blinkSubmitBtn() {

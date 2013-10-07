@@ -338,6 +338,7 @@
 	<string name="recent_lessons">Recent Lessons</string>
 	<string name="players_online_arg">%s Players Online</string>
 	<string name="improve_your_chess">Improve Your Chess!</string>
+	<string name="top_game">Top Game</string>
 
 
 </resources>

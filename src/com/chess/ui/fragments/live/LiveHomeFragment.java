@@ -50,7 +50,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		super.onCreate(savedInstanceState);
 
 		featuresList = new ArrayList<LiveItem>();
-		featuresList.add(new LiveItem(R.string.ic_binoculars, R.string.observe));
+		featuresList.add(new LiveItem(R.string.ic_binoculars, R.string.top_game));
 		featuresList.add(new LiveItem(R.string.ic_stats, R.string.stats));
 		featuresList.add(new LiveItem(R.string.ic_challenge_friend, R.string.friends));
 		featuresList.add(new LiveItem(R.string.ic_board, R.string.archive));
@@ -208,15 +208,16 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	private class LiveAdapter extends ItemsAdapter<LiveItem> {
 
 		private final int sidePadding;
+		private final int whiteColor;
 
 		public LiveAdapter(Context context, List<LiveItem> itemList) {
 			super(context, itemList);
 			sidePadding = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
+			whiteColor = resources.getColor(R.color.white);
 		}
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			float density = getResources().getDisplayMetrics().density;
 			View view = inflater.inflate(R.layout.new_dark_spinner_item, parent, false);
 
 			ButtonDrawableBuilder.setBackgroundToView(view, R.style.ListItem_Header_Dark);
@@ -225,7 +226,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			holder.iconTxt = (TextView) view.findViewById(R.id.iconTxt);
 			holder.spinnerIcon = (TextView) view.findViewById(R.id.spinnerIcon);
 			holder.spinnerIcon.setVisibility(View.GONE);
-			holder.nameTxt.setPadding((int) (8 * density), 0, 0, 0);
+
+			holder.nameTxt.setTextColor(whiteColor);
 			holder.iconTxt.setVisibility(View.VISIBLE);
 
 			view.setTag(holder);

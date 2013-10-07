@@ -16,6 +16,7 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 	protected final EnhancedImageDownloader imageLoader;
 	protected List<T> itemsList;
 	protected Context context;
+	protected final float density;
 	protected final Resources resources;
 	protected final LayoutInflater inflater;
 	protected final int itemListId;
@@ -24,6 +25,7 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 		itemsList = itemList;
 		this.context = context;
 		resources = context.getResources();
+		density = resources.getDisplayMetrics().density;
 		inflater = LayoutInflater.from(context);
 		itemListId = R.id.list_item_id;
 		imageLoader = new EnhancedImageDownloader(context);

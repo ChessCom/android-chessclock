@@ -761,6 +761,12 @@ public class ChessBoard implements BoardFace {
 		return makeMove(move, true);
 	}
 
+	/**
+	 * Perform move on the board
+	 * @param move to be parsed
+	 * @param playSound tells to play sound or not during the move
+	 * @return {@code true} if move was made
+	 */
 	@Override
 	public boolean makeMove(Move move, boolean playSound) {
 
@@ -1263,11 +1269,12 @@ public class ChessBoard implements BoardFace {
 
 	/**
 	 * takeBack() is very similar to makeMove(), only backwards :)
+	 * @return {@code true} if move was made
 	 */
 	@Override
-	public void takeBack() {
+	public boolean takeBack() {
 		if (ply - 1 < 0) {
-			return;
+			return false;
 		}
 
 		switchSides();
@@ -1280,7 +1287,7 @@ public class ChessBoard implements BoardFace {
 		whiteCanCastle = histDat[ply].whiteCanCastle;
 		blackCanCastle = histDat[ply].blackCanCastle;
 
-		if ((move.isCastling())) {
+		if (move.isCastling()) {
 
 			int[] piece_tmp = pieces.clone();
 
@@ -1349,9 +1356,8 @@ public class ChessBoard implements BoardFace {
 				pieces[moveTo] = EMPTY;
 			}
 
-			return;
+			return true;
 		}
-
 
 		colors[move.from] = side;
 		if ((move.bits & 32) != 0) {
@@ -1375,38 +1381,42 @@ public class ChessBoard implements BoardFace {
 				pieces[move.to - 8] = PAWN;
 			}
 		}
+
+		return true;
 	}
 
 	@Override
 	public void takeNext() {
 		if (ply + 1 <= movesCount) {
-			if (histDat[ply] == null) // TODO find real problem
+			if (histDat[ply] == null) {// TODO find real problem
 				return;
-
+			}
 			makeMove(histDat[ply].move);
 		}
 	}
 
-	/*public String getMoveList() {
-		String output = StaticData.EMPTY;
+/*
+	public String getMoveList() {
+		String output = Symbol.EMPTY;
 		int i;
 		for (i = 0; i < ply; i++) {
 			Move m = histDat[i].move;
-			if (i % 2 == 0)
-				output += "\n" + (i / 2 + 1) + ". ";
+			if (i % 2 == 0) {
+				output += Symbol.NEW_STR + (i / 2 + 1) + MOVE_NUMBER_DOT_SEPARATOR;
+			}
 			output += movesParser.positionToString(m.from);
 			output += movesParser.positionToString(m.to);
-			output += " ";
+			output += Symbol.SPACE;
 		}
 		return output;
-	}*/
+	}
+*/
 
 	@Override
 	public String getMoveListSAN() {
 		StringBuilder output = new StringBuilder();
 		for (int i = 0; i < ply; i++) {
-			if (i % 2 == 0) { //
-//				output.append(SYMBOL_NEW_STRING);
+			if (i % 2 == 0) {
 				// add move number
 				output.append(i / 2 + 1).append(MOVE_NUMBER_DOT_SEPARATOR);
 			}
@@ -1414,6 +1424,16 @@ public class ChessBoard implements BoardFace {
 			output.append(Symbol.SPACE);
 		}
 		return output.toString();
+	}
+
+	@Override
+	public String[] getFullNotationsArray(){
+		String[] movesArray = new String[movesCount];
+		for (int i = 0; i < movesCount; i++) {
+			movesArray[i] = histDat[i].notation;
+		}
+
+		return movesArray;
 	}
 
 	@Override
@@ -1911,6 +1931,11 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public void setJustInitialized(boolean justInitialized) {
 		this.justInitialized = justInitialized;
+	}
+
+	@Override
+	public String getLastMoveSAN() {
+		return ply == 0 ? null : histDat[ply - 1].notation;
 	}
 
 	@Override

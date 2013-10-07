@@ -337,5 +337,8 @@
 	<dimen name="start_new_game_overlay_padding_top">25dip</dimen>
 	<dimen name="start_new_game_overlay_padding_side">15dip</dimen>
 	<dimen name="overlay_shadow_offset">3dip</dimen>
+	<dimen name="diagram_icon_overlay_size">70dip</dimen>
+	<dimen name="popup_title_text_size_big">23sp</dimen>
+	<dimen name="popup_title_text_size_medium">16sp</dimen>
 
 </resources>

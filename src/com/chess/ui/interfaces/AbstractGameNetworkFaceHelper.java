@@ -104,6 +104,9 @@ public abstract class AbstractGameNetworkFaceHelper implements GameNetworkFace {
 	}
 
 	@Override
+	public void onNotationClicked(int pos) {}
+
+	@Override
 	public boolean currentGameExist() {
 		return false;
 	}

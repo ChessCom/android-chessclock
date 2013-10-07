@@ -113,7 +113,8 @@
     <color name="controls_icon_d">#66FFFFFF</color>
 
 	<!--Diagram Controls-->
-    <color name="controls_icon_diagram">#7Fe6e4e3</color>
+    <!--<color name="controls_icon_diagram">#7Fe6e4e3</color>-->
+    <color name="controls_icon_diagram">#FF8c8a88</color>
     <color name="controls_icon_diagram_p">#FFFFFFFF</color>
     <color name="controls_icon_diagram_s">#FFFFFFFF</color>
     <color name="controls_icon_diagram_d">#66FFFFFF</color>
