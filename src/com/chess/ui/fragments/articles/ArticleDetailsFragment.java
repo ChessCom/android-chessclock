@@ -614,6 +614,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	private void enableListViewScrolling(boolean enable) {
 		listView.setScrollingEnabled(enable);
+		enableSlideMenus(enable);
+		updateSlidingMenuState();
 	}
 
 	@Override

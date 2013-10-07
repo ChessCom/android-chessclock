@@ -50,8 +50,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.chess.statics.AppConstants.*;
 import static com.chess.db.DbScheme.PROVIDER_NAME;
+import static com.chess.statics.AppConstants.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -154,8 +154,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		getActivityFace().setTouchModeToSlidingMenu(slideMenusEnabled ? SlidingMenu.TOUCHMODE_FULLSCREEN
-				: SlidingMenu.TOUCHMODE_NONE);
+		updateSlidingMenuState();
 
 		loginUpdateListener = new LoginUpdateListener();
 
@@ -166,6 +165,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			facebookActive = true;
 			facebookInit(loginButton);
 		}
+	}
+
+	protected void updateSlidingMenuState() {
+		getActivityFace().setTouchModeToSlidingMenu(slideMenusEnabled ? SlidingMenu.TOUCHMODE_FULLSCREEN
+				: SlidingMenu.TOUCHMODE_NONE);
 	}
 
 	@Override
@@ -411,7 +415,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		if (tag.equals(RE_LOGIN_TAG)) {
 			performLogout();
-		} else if (tag.equals(CHESS_NO_ACCOUNT_TAG)){
+		} else if (tag.equals(CHESS_NO_ACCOUNT_TAG)) {
 			getActivityFace().openFragment(new SignUpFragment());
 		}
 		super.onPositiveBtnClick(fragment);
@@ -434,9 +438,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 	}
 
-	public void onSearchQuery(String query) { }
+	public void onSearchQuery(String query) {
+	}
 
-	public void onSearchAutoCompleteQuery(String query) { }
+	public void onSearchAutoCompleteQuery(String query) {
+	}
 
 	protected class ChessUpdateListener<ItemType> extends ActionBarUpdateListener<ItemType> {
 
@@ -686,7 +692,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		getAppData().setUserName(AppConstants.GUEST_NAME);
 	}
 
-	protected void clearTempData(){
+	protected void clearTempData() {
 		// un-register from GCM
 		unRegisterGcmService();
 
@@ -734,12 +740,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
 	}
 
-	protected List<String> getItemsFromEntries(int entries){
+	protected List<String> getItemsFromEntries(int entries) {
 		String[] array = getResources().getStringArray(entries);
 		return getItemsFromArray(array);
 	}
 
-	protected List<String> getItemsFromArray(String[] array){
+	protected List<String> getItemsFromArray(String[] array) {
 		List<String> items = new ArrayList<String>();
 		items.addAll(Arrays.asList(array));
 		return items;
