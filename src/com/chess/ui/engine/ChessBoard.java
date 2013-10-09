@@ -9,15 +9,13 @@
 //  reserved by the owners of the respective copyrights.
 package com.chess.ui.engine;
 
+import android.text.TextUtils;
 import android.util.Log;
-import com.chess.model.BaseGameItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
-import org.apache.http.protocol.HTTP;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -38,6 +36,7 @@ public class ChessBoard implements BoardFace {
 	public static final int KING = 5;
 	public static final int EMPTY = 6;
 
+	public static final String EXCLAIM_SYMBOL = " $1";
 	public static final String DOUBLE_SPACE = "  ";
 	public static final String SYMBOL_SPACE = " ";
 	public static final String SYMBOL_SLASH = "[/]";
@@ -61,10 +60,16 @@ public class ChessBoard implements BoardFace {
 	static final char H8 = 7;
 	public static final String NUMBER_REGEXP_MATCHER = ".*\\d.*";
 
-	public static final String EQUALS_N_SMALL = "=n";
-	public static final String EQUALS_B_SMALL = "=b";
-	public static final String EQUALS_R_SMALL = "=r";
-	public static final String EQUALS_Q_SMALL = "=q";
+	/* White Promotion algebraic notations */
+	public static final String PROMOTION_W_KNIGHT = "=N";
+	public static final String PROMOTION_W_BISHOP = "=B";
+	public static final String PROMOTION_W_ROOK = "=R";
+	public static final String PROMOTION_W_QUEEN = "=Q";
+	/* Black Promotion algebraic notations */
+	public static final String PROMOTION_B_KNIGHT = "=n";
+	public static final String PROMOTION_B_BISHOP = "=b";
+	public static final String PROMOTION_B_ROOK = "=r";
+	public static final String PROMOTION_B_QUEEN = "=q";
 
 	public static final char BLACK_PAWN_CHAR = 'p';
 	public static final char BLACK_KNIGHT_CHAR = 'n';
@@ -75,6 +80,7 @@ public class ChessBoard implements BoardFace {
 
 	public static final char WHITE_ROOK_CHAR = 'R';
 	public static final char WHITE_KING_CHAR = 'K';
+	public static final String TAG = "ChessBoard";
 	protected final MovesParser movesParser;
 
 	public static enum Board {
@@ -91,10 +97,7 @@ public class ChessBoard implements BoardFace {
 	static final int CAPTURE_PIECE_SCORE = 1000000;
 
 	public final static int HIST_STACK = 1000;
-	public static final String EQUALS_N = "=N";
-	public static final String EQUALS_B = "=B";
-	public static final String EQUALS_R = "=R";
-	public static final String EQUALS_Q = "=Q";
+
 	public static final String MOVE_NUMBER_DOT_SEPARATOR = ". ";
 	public static final String G8_STR = "g8";
 	public static final String C8_STR = "c8";
@@ -254,9 +257,8 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-//	public int[] setupCastlingPositions(String fen) {
 	public void setupCastlingPositions(String fen) {
-		//rnbqk2r/pppp1ppp/5n2/4P3/1bB2p2/2N5/PPPP2PP/R1BQK1NR w KQkq - 0 2
+		// Example rnbqk2r/pppp1ppp/5n2/4P3/1bB2p2/2N5/PPPP2PP/R1BQK1NR w KQkq - 0 2
 		Log.d("TEST", "setupCastlingPositions = " + fen);
 		String[] tmp = fen.split(SYMBOL_SPACE);
 
@@ -476,14 +478,14 @@ public class ChessBoard implements BoardFace {
 				int piece = pieces[i];
 				if (piece == PAWN) {
 					if (attackerSide == WHITE_SIDE) {
-						if (getColumn(i) != 0 && i - 9 == attackedSquare)
+						if (getFile(i) != 0 && i - 9 == attackedSquare)
 							return true;
-						if (getColumn(i) != 7 && i - 7 == attackedSquare)
+						if (getFile(i) != 7 && i - 7 == attackedSquare)
 							return true;
 					} else {
-						if (getColumn(i) != 0 && i + 7 == attackedSquare)
+						if (getFile(i) != 0 && i + 7 == attackedSquare)
 							return true;
-						if (getColumn(i) != 7 && i + 9 == attackedSquare)
+						if (getFile(i) != 7 && i + 9 == attackedSquare)
 							return true;
 					}
 				} else if (piece < offsets.length) {
@@ -522,10 +524,10 @@ public class ChessBoard implements BoardFace {
 			if (colors[i] == side) {
 				if (pieces[i] == PAWN) {
 					if (side == WHITE_SIDE) {
-						if (getColumn(i) != 0 && colors[i - 9] == BLACK_SIDE) {
+						if (getFile(i) != 0 && colors[i - 9] == BLACK_SIDE) {
 							addMoveToStack(movesSet, i, i - 9, 17);
 						}
-						if (getColumn(i) != 7 && colors[i - 7] == BLACK_SIDE) {
+						if (getFile(i) != 7 && colors[i - 7] == BLACK_SIDE) {
 							addMoveToStack(movesSet, i, i - 7, 17);
 						}
 						if (colors[i - 8] == EMPTY) {
@@ -535,10 +537,10 @@ public class ChessBoard implements BoardFace {
 							}
 						}
 					} else {
-						if (getColumn(i) != 0 && colors[i + 7] == WHITE_SIDE) {
+						if (getFile(i) != 0 && colors[i + 7] == WHITE_SIDE) {
 							addMoveToStack(movesSet, i, i + 7, 17);
 						}
-						if (getColumn(i) != 7 && colors[i + 9] == WHITE_SIDE) {
+						if (getFile(i) != 7 && colors[i + 9] == WHITE_SIDE) {
 							addMoveToStack(movesSet, i, i + 9, 17);
 						}
 						if (colors[i + 8] == EMPTY) {
@@ -611,17 +613,17 @@ public class ChessBoard implements BoardFace {
 //			if (colors[i] == side) {
 //				if (pieces[i] == PAWN) {
 //					if (side == WHITE_SIDE) {
-//						if (getColumn(i) != 0 && colors[i - 9] == BLACK_SIDE)
+//						if (getFile(i) != 0 && colors[i - 9] == BLACK_SIDE)
 //							addMoveToStack(moves, i, i - 9, 17);
-//						if (getColumn(i) != 7 && colors[i - 7] == BLACK_SIDE)
+//						if (getFile(i) != 7 && colors[i - 7] == BLACK_SIDE)
 //							addMoveToStack(moves, i, i - 7, 17);
 //						if (i <= 15 && colors[i - 8] == EMPTY)
 //							addMoveToStack(moves, i, i - 8, 16);
 //					}
 //					if (side == BLACK_SIDE) {
-//						if (getColumn(i) != 0 && colors[i + 7] == WHITE_SIDE)
+//						if (getFile(i) != 0 && colors[i + 7] == WHITE_SIDE)
 //							addMoveToStack(moves, i, i + 7, 17);
-//						if (getColumn(i) != 7 && colors[i + 9] == WHITE_SIDE)
+//						if (getFile(i) != 7 && colors[i + 9] == WHITE_SIDE)
 //							addMoveToStack(moves, i, i + 9, 17);
 //						if (i >= 48 && colors[i + 8] == EMPTY)
 //							addMoveToStack(moves, i, i + 8, 16);
@@ -648,17 +650,17 @@ public class ChessBoard implements BoardFace {
 	private void addEnPassantMoveToStack(List<Move> movesSet) {
 		if (enPassant != NOT_SET) {
 			if (side == WHITE_SIDE) {
-				if (getColumn(enPassant) != 0 && colors[enPassant + 7] == WHITE_SIDE && pieces[enPassant + 7] == PAWN) {
+				if (getFile(enPassant) != 0 && colors[enPassant + 7] == WHITE_SIDE && pieces[enPassant + 7] == PAWN) {
 					addMoveToStack(movesSet, enPassant + 7, enPassant, 21);
 				}
-				if (getColumn(enPassant) != 7 && colors[enPassant + 9] == WHITE_SIDE && pieces[enPassant + 9] == PAWN) {
+				if (getFile(enPassant) != 7 && colors[enPassant + 9] == WHITE_SIDE && pieces[enPassant + 9] == PAWN) {
 					addMoveToStack(movesSet, enPassant + 9, enPassant, 21);
 				}
 			} else {
-				if (getColumn(enPassant) != 0 && colors[enPassant - 9] == BLACK_SIDE && pieces[enPassant - 9] == PAWN) {
+				if (getFile(enPassant) != 0 && colors[enPassant - 9] == BLACK_SIDE && pieces[enPassant - 9] == PAWN) {
 					addMoveToStack(movesSet, enPassant - 9, enPassant, 21);
 				}
-				if (getColumn(enPassant) != 7 && colors[enPassant - 7] == BLACK_SIDE && pieces[enPassant - 7] == PAWN) {
+				if (getFile(enPassant) != 7 && colors[enPassant - 7] == BLACK_SIDE && pieces[enPassant - 7] == PAWN) {
 					addMoveToStack(movesSet, enPassant - 7, enPassant, 21);
 				}
 			}
@@ -763,7 +765,8 @@ public class ChessBoard implements BoardFace {
 
 	/**
 	 * Perform move on the board
-	 * @param move to be parsed
+	 *
+	 * @param move      to be parsed
 	 * @param playSound tells to play sound or not during the move
 	 * @return {@code true} if move was made
 	 */
@@ -1269,6 +1272,7 @@ public class ChessBoard implements BoardFace {
 
 	/**
 	 * takeBack() is very similar to makeMove(), only backwards :)
+	 *
 	 * @return {@code true} if move was made
 	 */
 	@Override
@@ -1386,13 +1390,16 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public void takeNext() {
+	public boolean takeNext() {
 		if (ply + 1 <= movesCount) {
-			if (histDat[ply] == null) {// TODO find real problem
-				return;
+			if (histDat[ply] == null) {
+				Log.e(TAG, " histDat[ply] == null, ply = " + ply + " histDat.length = " + histDat.length);
+				// TODO find real problem
+				return false;
 			}
-			makeMove(histDat[ply].move);
+			return makeMove(histDat[ply].move);
 		}
+		return false;
 	}
 
 /*
@@ -1427,7 +1434,7 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public String[] getFullNotationsArray(){
+	public String[] getFullNotationsArray() {
 		String[] movesArray = new String[movesCount];
 		for (int i = 0; i < movesCount; i++) {
 			movesArray[i] = histDat[i].notation;
@@ -1447,87 +1454,116 @@ public class ChessBoard implements BoardFace {
 
 	public String getMoveSAN() {
 		Move move = histDat[ply].move;
-		int pieceCode = pieces[move.from];
+		int fromPosition = move.from;
+		int targetPos = move.to;
+		int pieceCode = pieces[fromPosition];
 		String piece = Symbol.EMPTY;
 		String capture = Symbol.EMPTY;
 		String promotion = Symbol.EMPTY;
-		if (pieceCode == 1) {
+
+		if (pieceCode == KNIGHT) {
 			piece = MovesParser.WHITE_KNIGHT;
-			//ambiguous
+			// check ambiguous moves. When few pieces can target the same "to" square"
 			int[] positions = new int[]{
-					move.to - 17, move.to - 15, move.to - 10, move.to - 6,
-					move.to + 17, move.to + 15, move.to + 10, move.to + 6
+					targetPos - 17, targetPos - 15, targetPos - 10, targetPos - 6,
+					targetPos + 17, targetPos + 15, targetPos + 10, targetPos + 6
 			};
-			int i;
-			for (i = 0; i < 8; i++) {
-				int pos = positions[i];
-				if (pos < 0 || pos > 63 || pos == move.from)
-					continue;
-				if (pieces[pos] == 1 && colors[pos] == side) {
-					if (getColumn(pos) == getColumn(move.from))
-						piece += movesParser.BNToNum(getRow(move.from));
-					else
-						piece += movesParser.BNToLetter(getColumn(move.from));
-					break;
-				}
-			}
-		}
-		if (pieceCode == BISHOP)
-			piece = MovesParser.WHITE_BISHOP;
-		if (pieceCode == ROOK) {
-			piece = MovesParser.WHITE_ROOK;
-			//ambiguous
-			int[] positions = new int[]{
-					move.to - 8, move.to - 16, move.to - 24, move.to - 32, move.to - 40, move.to - 48, move.to - 56,
-					move.to + 8, move.to + 16, move.to + 24, move.to + 32, move.to + 40, move.to + 48, move.to + 56,
-					move.to - 1, move.to - 2, move.to - 3, move.to - 4, move.to - 5, move.to - 6, move.to - 7,
-					move.to + 1, move.to + 2, move.to + 3, move.to + 4, move.to + 5, move.to + 6, move.to + 7
-			};
-			int i;
-			for (i = 0; i < 28; i++) {
-				int pos = positions[i];
-				if (pos < 0 || pos > 63 || pos == move.from) {
+			for (int pos : positions) {
+				if (pos < 0 || pos > 63 || pos == fromPosition) { // if outside of board or move to itself
 					continue;
 				}
-				if (pieces[pos] == 3 && colors[pos] == side) {
-					if (getColumn(pos) == getColumn(move.from)) {
-						piece += movesParser.BNToNum(getRow(move.from));
+				if (pieces[pos] == KNIGHT && colors[pos] == side) {
+					// add disambiguating notation mark
+					if (getFile(pos) == getFile(fromPosition)) {
+						piece += movesParser.IntPositionToRank(getRank(fromPosition));
 					} else {
-						piece += movesParser.BNToLetter(getColumn(move.from));
+						piece += movesParser.IntPositionToFile(getFile(fromPosition));
 					}
 					break;
 				}
 			}
 		}
-		if (pieceCode == QUEEN)
+		if (pieceCode == BISHOP) {
+			piece = MovesParser.WHITE_BISHOP;
+		}
+		if (pieceCode == ROOK) {
+			piece = MovesParser.WHITE_ROOK;
+
+			// check ambiguous moves. When few pieces can target the same "to" square"
+			int[] positions = new int[]{
+					targetPos - 8, targetPos - 16, targetPos - 24, targetPos - 32, targetPos - 40, targetPos - 48, targetPos - 56,
+					targetPos + 8, targetPos + 16, targetPos + 24, targetPos + 32, targetPos + 40, targetPos + 48, targetPos + 56,
+					targetPos - 1, targetPos - 2, targetPos - 3, targetPos - 4, targetPos - 5, targetPos - 6, targetPos - 7,
+					targetPos + 1, targetPos + 2, targetPos + 3, targetPos + 4, targetPos + 5, targetPos + 6, targetPos + 7
+			};
+			piece = addDisambiguationNotation(fromPosition, piece, positions, ROOK, true);
+		}
+
+		if (pieceCode == QUEEN) {
 			piece = MovesParser.WHITE_QUEEN;
-		if (pieceCode == KING)
+		}
+
+		if (pieceCode == KING) {
 			piece = MovesParser.WHITE_KING;
+		}
 
+		// add capture notation mark
 		if (histDat[ply].capture != EMPTY) {
-			if (pieceCode == EMPTY) {
-				piece = movesParser.BNToLetter(getColumn(move.from));
-			}
-			capture = MovesParser.CAPTURE_MARK;
-		}
-
-		if (move.promote > 0) {
-			int pr = move.promote;
-			if (pr == KNIGHT) {
-				promotion = EQUALS_N;
-			}
-			if (pr == BISHOP) {
-				promotion = EQUALS_B;
-			}
-			if (pr == ROOK) {
-				promotion = EQUALS_R;
-			}
-			if (pr == QUEEN) {
-				promotion = EQUALS_Q;
+			// Pawns are always referred to by the file they are on when capturing, and nothing when they are just moving.
+			// There is never an instance where two pawns can equally capture the same pawn which requires disambiguation.
+			if (pieceCode == PAWN) {
+				piece = movesParser.IntPositionToFile(getFile(fromPosition)) + MovesParser.CAPTURE_MARK;
+			} else {
+				capture = MovesParser.CAPTURE_MARK;
 			}
 		}
 
-		return piece + capture + movesParser.positionToString(move.to) + promotion;
+		if (move.promote > PAWN) {
+			// add promotion notation mark
+			int promote = move.promote;
+			if (promote == KNIGHT) {
+				promotion = PROMOTION_W_KNIGHT;
+			}
+			if (promote == BISHOP) {
+				promotion = PROMOTION_W_BISHOP;
+			}
+			if (promote == ROOK) {
+				promotion = PROMOTION_W_ROOK;
+			}
+			if (promote == QUEEN) {
+				promotion = PROMOTION_W_QUEEN;
+			}
+		}
+
+		return piece + capture + movesParser.positionToString(targetPos) + promotion;
+	}
+
+	/**
+	 * @return edited SAN notation for move
+	 * @see <a href="http://en.wikipedia.org/wiki/Algebraic_notation_(chess)#Disambiguating_moves>Disambiuating moves</a>
+	 */
+	private String addDisambiguationNotation(int fromPosition, String piece, int[] positions, int pieceToCompare, boolean checkAttack) {
+		for (int pos : positions) {
+			// if outside of board or move to itself, then skip
+			if (pos < 0 || pos > 63 || pos == fromPosition) {
+				continue;
+			}
+
+			boolean isPossibleToAttack = attack(pos, side);
+
+			// if piece match pieceToCompare and side is the same as moving piece side
+			if (pieces[pos] == pieceToCompare/* && colors[pos] == side */&& (checkAttack && isPossibleToAttack)) { //
+
+				// add disambiguating notation mark - from which file (or rank, or file and rank) it was originally moved
+				if (getFile(pos) == getFile(fromPosition)) {
+					piece += movesParser.IntPositionToRank(getRank(fromPosition));
+				} else {
+					piece += movesParser.IntPositionToFile(getFile(fromPosition));
+				}
+				break;
+			}
+		}
+		return piece;
 	}
 
 	private String convertMove() {
@@ -1549,41 +1585,42 @@ public class ChessBoard implements BoardFace {
 
 
 		String output = Symbol.EMPTY;
-		try {
-			String to = movesParser.positionToString(move.to);
-			if (move.isCastling()) {
+//		try {
+		String to = movesParser.positionToString(move.to);
+		if (move.isCastling()) {
 
-				int castleMaskPosition = histDat[ply - 1].castleMaskPosition;
+			int castleMaskPosition = histDat[ply - 1].castleMaskPosition;
 
-				if (castleMaskPosition == BLACK_KINGSIDE_CASTLE) {
-					if (chess960) {
-						to = movesParser.positionToString(blackRook2);
-					} else {
-						to = G8_STR;
-					}
-				} else if (castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
-					if (chess960) {
-						to = movesParser.positionToString(blackRook1);
-					} else {
-						to = C8_STR;
-					}
-				} else if (castleMaskPosition == WHITE_KINGSIDE_CASTLE) {
-					if (chess960) {
-						to = movesParser.positionToString(whiteRook2);
-					} else {
-						to = G1_STR;
-					}
-				} else if (castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
-					if (chess960) {
-						to = movesParser.positionToString(whiteRook1);
-					} else {
-						to = C1_STR;
-					}
+			if (castleMaskPosition == BLACK_KINGSIDE_CASTLE) {
+				if (chess960) {
+					to = movesParser.positionToString(blackRook2);
+				} else {
+					to = Board.G8.name();
+				}
+			} else if (castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
+				if (chess960) {
+					to = movesParser.positionToString(blackRook1);
+				} else {
+					to = Board.C8.name();
+				}
+			} else if (castleMaskPosition == WHITE_KINGSIDE_CASTLE) {
+				if (chess960) {
+					to = movesParser.positionToString(whiteRook2);
+				} else {
+					to = Board.G1.name();
+				}
+			} else if (castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
+				if (chess960) {
+					to = movesParser.positionToString(whiteRook1);
+				} else {
+					to = Board.C1.name();
 				}
 			}
-			output = URLEncoder.encode(movesParser.positionToString(move.from) + to, HTTP.UTF_8);
-		} catch (Exception ignored) {
 		}
+		output = movesParser.positionToString(move.from) + to;
+//			output = URLEncoder.encode(movesParser.positionToString(move.from) + to, HTTP.UTF_8); // Why do we might need to encode??
+//		} catch (Exception ignored) {
+//		}
 		Log.d(MOVE_TAG, output);
 		return output;
 	}
@@ -1594,16 +1631,16 @@ public class ChessBoard implements BoardFace {
 		final Move move = histDat[ply - 1].move;
 		switch (move.promote) {
 			case ChessBoard.KNIGHT:
-				output += (colors[move.from] == 0 ? EQUALS_N : EQUALS_N_SMALL);
+				output += (colors[move.from] == WHITE_SIDE ? PROMOTION_W_KNIGHT : PROMOTION_B_KNIGHT);
 				break;
 			case ChessBoard.BISHOP:
-				output += (colors[move.from] == 0 ? EQUALS_B : EQUALS_B_SMALL);
+				output += (colors[move.from] == WHITE_SIDE ? PROMOTION_W_BISHOP : PROMOTION_B_BISHOP);
 				break;
 			case ChessBoard.ROOK:
-				output += (colors[move.from] == 0 ? EQUALS_R : EQUALS_R_SMALL);
+				output += (colors[move.from] == WHITE_SIDE ? PROMOTION_W_ROOK : PROMOTION_B_ROOK);
 				break;
 			case ChessBoard.QUEEN:
-				output += (colors[move.from] == 0 ? EQUALS_Q : EQUALS_Q_SMALL);
+				output += (colors[move.from] == WHITE_SIDE ? PROMOTION_W_QUEEN : PROMOTION_B_QUEEN);
 				break;
 			default:
 				break;
@@ -1656,7 +1693,7 @@ public class ChessBoard implements BoardFace {
 			}
 			if ((i + 1) % 8 == 0 && i != 63) {
 				sb.append("\n");
-				sb.append(Integer.toString(7 - getRow(i)));
+				sb.append(Integer.toString(7 - getRank(i)));
 				sb.append(" ");
 			}
 		}
@@ -1703,11 +1740,11 @@ public class ChessBoard implements BoardFace {
 		return repetitionsNumber;
 	}
 
-	public static int getColumn(int x) {
+	public static int getFile(int x) {
 		return (x & 7);
 	}
 
-	public static int getRow(int x) {
+	public static int getRank(int x) {
 		return (x >> 3);
 	}
 
@@ -1787,14 +1824,16 @@ public class ChessBoard implements BoardFace {
 	}
 
 	/**
-	 *
 	 * @param moveList to parse
 	 * @return true if {@code moveList} wasn't empty & moves was applied
 	 */
 	@Override
 	public boolean checkAndParseMovesList(String moveList) {
-		if (moveList != null && moveList.contains(BaseGameItem.FIRST_MOVE_INDEX)) {
-			String[] moves = moveList.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
+		if (moveList != null && moveList.length() > 0) {
+			moveList = movesParser.replaceSpecialSymbols(moveList);
+//		if (moveList != null && moveList.matches(BaseGameItem.FIRST_MOVE_INDEX)) {
+			String[] moves = moveList.replaceAll(MovesParser.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
+					.replaceAll(DOUBLE_SPACE, Symbol.SPACE)
 					.replaceAll(DOUBLE_SPACE, Symbol.SPACE)
 					.trim().split(Symbol.SPACE);
 
@@ -1810,7 +1849,6 @@ public class ChessBoard implements BoardFace {
 	}
 
 	/**
-	 *
 	 * @return {@code true} if piece is pawn and moved to first or last rank
 	 */
 	@Override
@@ -1905,7 +1943,8 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void setupBoard(String fen) {
-		if (!fen.equals(Symbol.EMPTY)) {
+		if (!TextUtils.isEmpty(fen)) {
+			Log.d(TAG," using fen = " + fen);
 			setupCastlingPositions(fen);
 
 			fenHelper.parseFen(fen, this);

@@ -44,6 +44,8 @@ public interface BoardFace {
 
 	boolean takeBack();
 
+	boolean takeNext();
+
 	boolean inCheck(int s);
 
 	int getPiece(int pieceId);
@@ -73,8 +75,6 @@ public interface BoardFace {
 	void setChess960(boolean chess960);
 
 	void setupCastlingPositions(String fen);
-
-	void takeNext();
 
 	String getMoveListSAN();
 

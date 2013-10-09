@@ -1,6 +1,5 @@
 package com.chess.ui.fragments.articles;
 
-import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -126,6 +125,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private List<Integer> diagramIdsList;
 	private List<ArticleDetailsItem.Diagram> diagramsList;
 	private HashMap<Integer, Boolean> activeIdsMap;
+	private HashMap<Integer, Boolean> simpleIdsMap;
 	private ControlledListView listView;
 	private boolean diagramsLoaded;
 	private int controlButtonHeight;
@@ -279,7 +279,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	}
 
 	/**
-	 *
 	 * @return {@code true} if diagrams exist
 	 */
 	private boolean loadDiagramsFromContent(String bodyStr, List<ArticleDetailsItem.Diagram> diagramList) {
@@ -369,12 +368,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			// detect active diagram
 
 			// deactivate previous diagram
-			for (final Integer previousClickedId : activeIdsMap.keySet()) {
-				// remove fragment if active
-				if (activeIdsMap.get(previousClickedId)) {
-					hideDiagramByIdAnimated(previousClickedId);
-				}
-			}
+			hideActiveDiagramAnimated();
 
 			// restore listView scrolling
 			enableListViewScrolling(true);
@@ -404,13 +398,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			if (diagramId.equals(clickedId)) {
 
 				// deactivate previous diagram
-				for (Integer previousClickedId : activeIdsMap.keySet()) {
-					// hide view
-					if (activeIdsMap.get(previousClickedId)) {
-						// remove fragment
-						hideDiagramByIdAnimated(previousClickedId);
-					}
-				}
+				hideActiveDiagramAnimated();
 
 				// restore listView scrolling
 				enableListViewScrolling(true);
@@ -418,6 +406,20 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				return;
 			}
 		}
+	}
+
+	/**
+	 * @return {@code true} if diagramFragment have been hidden
+	 */
+	public boolean hideActiveDiagramAnimated() {
+		for (final Integer previousClickedId : activeIdsMap.keySet()) {
+			// remove fragment if active
+			if (activeIdsMap.get(previousClickedId)) {
+				hideDiagramByIdAnimated(previousClickedId);
+				return true;
+			}
+		}
+		return false;
 	}
 
 
@@ -463,7 +465,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			final AnimatorSet.Builder finalAnimationBuilder = animationBuilder;
 			animatorSet.addListener(new Animator.AnimatorListener() {
 				@Override
-				public void onAnimationStart(Animator animator) { }
+				public void onAnimationStart(Animator animator) {
+				}
 
 				@Override
 				public void onAnimationEnd(Animator animator) {
@@ -476,10 +479,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				}
 
 				@Override
-				public void onAnimationCancel(Animator animator) { }
+				public void onAnimationCancel(Animator animator) {
+				}
 
 				@Override
-				public void onAnimationRepeat(Animator animator) { }
+				public void onAnimationRepeat(Animator animator) {
+				}
 			});
 			animatorSet.setDuration(ANIMATION_SET_DURATION);
 			animatorSet.start();
@@ -502,6 +507,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	private boolean showDiagramAnimated(Integer diagramId, final int clickedId) {
 		if (diagramId.equals(clickedId)) {
+			// don't handle clicks on simple diagrams
+			if (simpleIdsMap.get(diagramId)) {
+				return false;
+			}
+
 			// get imageView that we are replacing
 			View imageView = getView().findViewById(IMAGE_PREFIX + clickedId);
 			// get icon overlay above imageView
@@ -531,12 +541,14 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
 			if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
 				diagramItem.setMovesList(diagramToShow.getMoveList());
+				diagramItem.setFen(diagramToShow.getFen());
 			} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
 				diagramItem.setMovesList(diagramToShow.getMoveList());
+				diagramItem.setFen(diagramToShow.getFen());
 			} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
 				diagramItem.setFen(diagramToShow.getFen());
 			} else { // non valid format
-				return true;
+				return false;
 			}
 
 			// hide icon
@@ -555,7 +567,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			animatorSet.setDuration(ANIMATION_SET_DURATION);
 			animatorSet.addListener(new Animator.AnimatorListener() {
 				@Override
-				public void onAnimationStart(Animator animator) {}
+				public void onAnimationStart(Animator animator) {
+				}
 
 				@Override
 				public void onAnimationEnd(Animator animator) {
@@ -576,10 +589,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				}
 
 				@Override
-				public void onAnimationCancel(Animator animator) { }
+				public void onAnimationCancel(Animator animator) {
+				}
 
 				@Override
-				public void onAnimationRepeat(Animator animator) {}
+				public void onAnimationRepeat(Animator animator) {
+				}
 			});
 			animatorSet.start();
 
@@ -822,7 +837,22 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					frameLayout.addView(imageView);
 				}
 
-				{// add icon overlay above image
+				for (ArticleDetailsItem.Diagram diagramToShow : diagramList) {
+					if (diagramToShow.getDiagramId() == diagramId) {
+						final GameDiagramItem diagramItem = new GameDiagramItem();
+						diagramItem.setShowAnimation(false);
+						diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
+
+						if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
+							simpleIdsMap.put(diagramId, true);
+						} else {
+							simpleIdsMap.put(diagramId, false);
+						}
+						break;
+					}
+				}
+
+				if (!simpleIdsMap.get(diagramId)) {// add icon overlay above image
 					FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 							ViewGroup.LayoutParams.WRAP_CONTENT);
 					iconParams.gravity = Gravity.CENTER;
@@ -839,6 +869,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 					frameLayout.addView(iconView, iconParams);
 				}
+
 				// make bitmap of fragment and put it in imageView. Use delay bcz of transactions
 				long delay = FRAGMENT_CREATE_DELAY * fragmentsParsedCnt++;
 				handler.postDelayed(new DiagramFragmentCreator(diagramId, diagramList), delay);
@@ -899,7 +930,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			if (getActivity() == null) {
 				return;
 			}
-
 			for (ArticleDetailsItem.Diagram diagramToShow : diagramList) {
 				if (diagramToShow.getDiagramId() == diagramId) {
 					// create a real fragment
@@ -909,8 +939,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
 					if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
 						diagramItem.setMovesList(diagramToShow.getMoveList());
+						diagramItem.setFen(diagramToShow.getFen());
 					} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
 						diagramItem.setMovesList(diagramToShow.getMoveList());
+						diagramItem.setFen(diagramToShow.getFen());
 					} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
 						diagramItem.setFen(diagramToShow.getFen());
 					} else { // non valid format
@@ -946,8 +978,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 								// add offset for shadow background
 
-								bitmapWidth =  (int) (widthPixels * IMAGE_WIDTH_PERCENT) + 27;
-								bitmapHeight =  (int) (widthPixels * IMAGE_WIDTH_PERCENT);
+								bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) + 27;
+								bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT);
 								// use inset to correct shadow shift
 								bitmapFromView = getBitmapFromView(fragmentView, bitmapWidth, bitmapHeight);
 
@@ -955,8 +987,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 								// get bitmap from fragmentView
 								int inset = (int) (3.3f * density);
 //								int inset = (int) (8.3f * density);
-								bitmapWidth =  (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
-								bitmapHeight =  (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
+								bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
+								bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
 								bitmapFromView = AppUtils.getBitmapFromView(fragmentView, bitmapWidth, bitmapHeight);
 //								bitmapFromView = getBitmapFromView(fragmentView, bitmapWidth, bitmapHeight);
 							}
@@ -1109,6 +1141,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		diagramIdsList = new ArrayList<Integer>();
 		activeIdsMap = new HashMap<Integer, Boolean>();
+		simpleIdsMap = new HashMap<Integer, Boolean>();
 
 		// for tablets make diagram wider
 		if (AppUtils.is7InchTablet(getActivity())) {

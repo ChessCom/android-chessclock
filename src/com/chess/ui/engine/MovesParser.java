@@ -2,7 +2,6 @@ package com.chess.ui.engine;
 
 import android.text.TextUtils;
 import android.util.Log;
-import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 
 import java.util.HashMap;
@@ -52,6 +51,7 @@ public class MovesParser {
 	public static final String KINGSIDE_CASTLING_AND_CHECK = "O-O+";
 	public static final String QUEENSIDE_CASTLING = "O-O-O";
 	public static final String QUEENSIDE_CASTLING_AND_CHECK = "O-O-O+";
+	public static final String MOVE_NUMBERS_PATTERN = "[0-9]{1,4}[.]";
 
 	private static final int PAWN = 0;
 	private static final int KNIGHT = 1;
@@ -59,12 +59,19 @@ public class MovesParser {
 	private static final int ROOK = 3;
 	private static final int QUEEN = 4;
 	private static final int KING = 5;
-	private static final CharSequence COMMENT_SYMBOL = "{";
+	private static final CharSequence COMMENTS_SYMBOL_START = "{";
+	private static final CharSequence ALTERNATE_MOVES_SYMBOL_START = "(";
+	public static final String SPECIAL_SYMBOLS_PATTERN = "[+,!,?,#,x,=,‼,⁇,⁉,⁈,□,∞,⩲,⩱,±,∓,−]";
 
-	public MovesParser() {	}
+	private final HashMap<String, String> annotationsMapping;
+
+	public MovesParser() {
+		annotationsMapping = new HashMap<String, String>();
+		fillMapping();
+	}
 
 	String removeNumbers(String moves) {
-		return moves.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
+		return moves.replaceAll(MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
 				.replaceAll("[.]", Symbol.EMPTY);
 	}
 
@@ -101,10 +108,10 @@ public class MovesParser {
 			end--;
 		}
 
-		int i = letterToBN(moveTo[0]);
-		int j = numToBN(moveTo[1]);
+		int i = fileToIntPosition(moveTo[0]);
+		int j = rankToIntPosition(moveTo[1]);
 		int to = j * 8 - i;
-		int from = numToBN(Symbol.EMPTY + currentMove.charAt(1)) * 8 - letterToBN(Symbol.EMPTY + currentMove.charAt(0));
+		int from = rankToIntPosition(Symbol.EMPTY + currentMove.charAt(1)) * 8 - fileToIntPosition(Symbol.EMPTY + currentMove.charAt(0));
 
 		for (Move validMove : validMoves) {
 			if (validMove.from == from && validMove.to == to) {
@@ -145,10 +152,11 @@ public class MovesParser {
 	 * may move to d5. If the rook on d3 moves to d5, it is possible to disambiguate with either Rdd5 or R3d5,
 	 * but the file takes precedence over the rank, so Rdd5 is correct.
 	 * (And likewise if the move is a capture, Rdxd5 is correct.)
+	 *
 	 * @param board to be used as resource to identify move from positions
-	 * @param move String move representation like <Piece symbol>[<from file>|<from rank>|<from square>]['x']<to square>
+	 * @param move  String move representation like <Piece symbol>[<from file>|<from rank>|<from square>]['x']<to square>
 	 * @return the {@code int} array of move(s)
-	 * @see <a href="http://en.wikipedia.org/wiki/Algebraic_notation_(chess)>http://en.wikipedia.org/wiki/Algebraic_notation_(chess)</a>
+	 * @see <a href="http://en.wikipedia.org/wiki/Algebraic_notation_(chess)>en.wikipedia.org/wiki/Algebraic_notation_(chess)</a>
 	 */
 	int[] parse(ChessBoard board, String move) {
 		// possible values ,e4, e4xd5, Rfg1, Rdxd5
@@ -187,13 +195,15 @@ public class MovesParser {
 			end--;
 		}
 
-		int i = letterToBN(moveTo[0]);
-		int j = numToBN(moveTo[1]);
+		int i = fileToIntPosition(moveTo[0]);
+		int j = rankToIntPosition(moveTo[1]);
 		int from = 0;
 		int squareTo = j * 8 - i;
 
 		int pieceType = PAWN;
-		String movePieceStr = currentMove.substring(0, 1);  // failed to parse xb5
+		// we should cut non capital letters
+//		String movePieceStr = currentMove.substring(0, 1);  // failed to parse cxb5 or axb5
+		String movePieceStr = currentMove.replaceAll("[^R,N,B,Q,K]", "");  // leave only piece letter
 		if (movePieceStr.contains(WHITE_KNIGHT)) {
 			pieceType = KNIGHT;
 		} else if (movePieceStr.contains(WHITE_BISHOP)) {
@@ -212,7 +222,8 @@ public class MovesParser {
 		String fromFile = Symbol.EMPTY;
 		String fromRank = Symbol.EMPTY;
 		if (currentMove.length() > 3) { // i.e. 4  // if we have Piece, or capture mark, or from file/rank/square
-			fromSquare = currentMove.replaceAll("[+,!,?,#,x]", Symbol.EMPTY); // remove special symbols
+
+			fromSquare = currentMove.replaceAll(SPECIAL_SYMBOLS_PATTERN, Symbol.EMPTY); // remove special symbols
 			fromSquare = fromSquare.replaceAll("[N,R,K,Q,B]", Symbol.EMPTY); // remove Piece
 			String destinationSquare = moveTo[0] + moveTo[1];
 			fromSquare = fromSquare.replace(destinationSquare, Symbol.EMPTY); // remove destination square
@@ -234,21 +245,17 @@ public class MovesParser {
 				) {
 			for (int k = 0; k < 64; k++) {
 				if (!TextUtils.isEmpty(fromFile)) {
-					int fromFileInt = (ChessBoard.getRow(k) + 1) * 8 - letterToBN(fromFile);
+					int fromFileInt = (ChessBoard.getRank(k) + 1) * 8 - fileToIntPosition(fromFile);
 
-//					if (fromSquare.matches(REGEXP_CHARS)) {
-						if (board.pieces[fromFileInt] == pieceType && board.colors[fromFileInt] == board.getSide()) { // if we have found that piece and color on board
-							return new int[]{fromFileInt, squareTo, promotion};
-						}
-//					}
+					if (board.pieces[fromFileInt] == pieceType && board.colors[fromFileInt] == board.getSide()) { // if we have found that piece and color on board
+						return new int[]{fromFileInt, squareTo, promotion};
+					}
 				}
 				if (!TextUtils.isEmpty(fromRank)) {
-					int fromRankInt = numToBN(fromRank) * 8 - (ChessBoard.getColumn(k) + 1);
-//					if (fromSquare.matches(REGEXP_NUMBERS)) {
-						if (board.pieces[fromRankInt] == pieceType && board.colors[fromRankInt] == board.getSide()) { // if we have found that piece and color on board
-							return new int[]{fromRankInt, squareTo, promotion};
-						}
-//					}
+					int fromRankInt = rankToIntPosition(fromRank) * 8 - (ChessBoard.getFile(k) + 1);  // TODO add logic for promotion parsing
+					if (board.pieces[fromRankInt] == pieceType && board.colors[fromRankInt] == board.getSide()) { // if we have found that piece and color on board
+						return new int[]{fromRankInt, squareTo, promotion};
+					}
 				}
 			}
 		}
@@ -264,10 +271,13 @@ public class MovesParser {
 							}
 						} else if (pieceType == PAWN) { // failed on xb5
 							// what do we check here???
-							if (currentMove.contains(CAPTURE_MARK)
-									&& 9 - letterToBN(movePieceStr) != ChessBoard.getColumn(squareFrom) + 1) { // TODO investigate why do we break here?
-								break;
+							if (!fromFile.equals(Symbol.EMPTY)) {
+								if (currentMove.contains(CAPTURE_MARK)
+										&& 8 - fileToIntPosition(fromFile) != ChessBoard.getFile(squareFrom)) {
+									break;
+								}
 							}
+
 
 							if (currentMove.contains(WHITE_QUEEN)) {
 								promotion = QUEEN;
@@ -291,14 +301,14 @@ public class MovesParser {
 		return new int[]{from, squareTo, promotion};
 	}
 
-	int letterToBN(String letter) {
+	int fileToIntPosition(String letter) {
 		for (int i = 0; i < fileLetters.length; i++) {
 			char symbol = fileLetters[i];
 			if (letter.equalsIgnoreCase(String.valueOf(symbol))) {
 				return 8 - i;
 			}
 		}
-		throw new IllegalStateException(" letterToBN haven't found a needed int for symbol " + letter);
+		throw new IllegalStateException(" fileToIntPosition haven't found a needed int for symbol " + letter);
 
 //		int number = 0;
 //		String symbol = letter.toLowerCase();
@@ -323,7 +333,7 @@ public class MovesParser {
 //		return number;
 	}
 
-	int numToBN(String symbol) {
+	int rankToIntPosition(String symbol) {
 		return 9 - Integer.parseInt(symbol);
 //		int j = 0;
 //		if (symbol.contains(NUMB_1)) j = 8;
@@ -337,31 +347,37 @@ public class MovesParser {
 //		return j;
 	}
 
-	String BNToLetter(int symbol) {
-		return String.valueOf(fileLetters[symbol]);
+	/**
+	 * Use {@link com.chess.ui.engine.ChessBoard#getFile(int x)} to pass correct argument
+	 *
+	 * @param fileIntNumber to be parsed
+	 * @return String value of file number
+	 */
+	String IntPositionToFile(int fileIntNumber) {
+		return String.valueOf(fileLetters[fileIntNumber]);
 //		String number = Symbol.EMPTY;
-//		if (symbol == 7) {
+//		if (fileIntNumber == 7) {
 //			number = H_SMALL;
-//		} else if (symbol == 6) {
+//		} else if (fileIntNumber == 6) {
 //			number = G_SMALL;
-//		} else if (symbol == 5) {
+//		} else if (fileIntNumber == 5) {
 //			number = F_SMALL;
-//		} else if (symbol == 4) {
+//		} else if (fileIntNumber == 4) {
 //			number = E_SMALL;
-//		} else if (symbol == 3) {
+//		} else if (fileIntNumber == 3) {
 //			number = D_SMALL;
-//		} else if (symbol == 2) {
+//		} else if (fileIntNumber == 2) {
 //			number = C_SMALL;
-//		} else if (symbol == 1) {
+//		} else if (fileIntNumber == 1) {
 //			number = B_SMALL;
-//		} else if (symbol == 0) {
+//		} else if (fileIntNumber == 0) {
 //			number = A_SMALL;
 //		}
 //
 //		return number;
 	}
 
-	String BNToNum(int number) {
+	String IntPositionToRank(int number) {
 		return String.valueOf(8 - number);
 //		String symbol = Symbol.EMPTY;
 //		if (number == 7) {
@@ -392,9 +408,9 @@ public class MovesParser {
 	public static HashMap<String, String> getCommentsFromMovesList(String movesList) {
 		HashMap<String, String> commentsMap = new HashMap<String, String>();
 
-		while (movesList.contains(COMMENT_SYMBOL)) {
+		while (movesList.contains(COMMENTS_SYMBOL_START)) {
 			int firstIndex = movesList.indexOf("{");
-			int lastIndex =  movesList.indexOf("}") + 1;
+			int lastIndex = movesList.indexOf("}") + 1;
 
 			String movesBeforeComment = movesList.substring(0, firstIndex - 1);
 			int indexOfMoveBeforeComment = movesBeforeComment.lastIndexOf(Symbol.SPACE);
@@ -407,15 +423,82 @@ public class MovesParser {
 		return commentsMap;
 	}
 
-	public static String removeCommentsFromMovesList(String movesList) {
-		while (movesList.contains(COMMENT_SYMBOL)) {
+	public static String removeCommentsAndAlternatesFromMovesList(String movesList) {
+		while (movesList.contains(COMMENTS_SYMBOL_START)) {
 			int firstIndex = movesList.indexOf("{");
-			int lastIndex =  movesList.indexOf("}") + 1;
+			int lastIndex = movesList.indexOf("}") + 1;
 
 			String result = movesList.substring(firstIndex, lastIndex);
-			movesList = movesList.replace(result, "");
+			movesList = movesList.replace(result, Symbol.EMPTY);
+		}
+
+		String newMovesList = Symbol.EMPTY;
+		while (movesList.contains(ALTERNATE_MOVES_SYMBOL_START)) {
+			int firstIndex = movesList.lastIndexOf("(");
+			int lastIndex = movesList.lastIndexOf(")") + 1; // one is length of ")"
+			String[] parts = movesList.split("\\(");
+			Log.d("MovesParser"," ________________________________________________");
+
+			for (String part : parts) {
+//				Log.d("MovesParser","before parts = " + part );
+				if (part.contains(")")) {
+					String[] parts1 = part.split("\\)");
+					for (int i = 0; i < parts1.length; i++) {
+						String part1 = parts1[i];
+						Log.d("MovesParser", " part1 = " + part1);
+						if (i+1 < parts1.length) {
+							part = part.replaceAll(part1, Symbol.EMPTY);
+						}
+					}
+				}
+//				Log.d("MovesParser","after parts = " + part );
+				newMovesList += part;
+			}
+			movesList = movesList.replaceAll("\\(",Symbol.EMPTY);
+			movesList = movesList.replaceAll("\\)",Symbol.EMPTY);
+			movesList = movesList.replaceAll("\\.\\.",Symbol.EMPTY);
+			newMovesList = newMovesList.replaceAll("\\(",Symbol.EMPTY);
+			newMovesList = newMovesList.replaceAll("\\)",Symbol.EMPTY);
+			newMovesList = newMovesList.replaceAll("\\.\\.",Symbol.EMPTY);
+			Log.d("MovesParser"," ------------------------------------------------");
+			Log.d("MovesParser"," RESULT movesList = " + movesList);
+			Log.d("MovesParser"," RESULT newMovesList = " + newMovesList);
+
+//			Log.d("MovesParser"," firstIndex = " + firstIndex + " lastIndex = " + lastIndex + " movesList = " + movesList);
+//			String result = movesList.substring(firstIndex, lastIndex);
+//			movesList = movesList.replace(result, Symbol.EMPTY);
+			movesList = movesList.replaceAll("(?=\\()(.*)(?<=\\))", Symbol.EMPTY);
+		}
+		// remove double parenthesis like ( 19.Kf1 19...Nf5  ( 19...Ng4  ) )
+//		movesList = movesList.replaceAll(" \\)", Symbol.EMPTY);
+
+		return newMovesList;
+	}
+
+	public String replaceSpecialSymbols(String movesList) {
+		for (String key : annotationsMapping.keySet()) {
+			movesList = movesList.replaceAll(key, annotationsMapping.get(key));
 		}
 		return movesList;
 	}
+
+	private void fillMapping() {
+		annotationsMapping.put(" \\$1", "!");
+		annotationsMapping.put(" \\$2", "?");
+		annotationsMapping.put(" \\$3", "‼");
+		annotationsMapping.put(" \\$4", "⁇");
+		annotationsMapping.put(" \\$5", "⁉");
+		annotationsMapping.put(" \\$6", "⁈");
+		annotationsMapping.put(" \\$7", "□");
+		annotationsMapping.put(" \\$10", "=");
+		annotationsMapping.put(" \\$13", "∞");
+		annotationsMapping.put(" \\$14", "⩲");
+		annotationsMapping.put(" \\$15", "⩱");
+		annotationsMapping.put(" \\$16", "±");
+		annotationsMapping.put(" \\$17", "∓");
+		annotationsMapping.put(" \\$18", "+−");
+		annotationsMapping.put(" \\$19", "−+");
+	}
+
 
 }

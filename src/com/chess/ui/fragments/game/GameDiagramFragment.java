@@ -12,12 +12,12 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameDiagramItem;
-import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardDiagram;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.MovesParser;
+import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameDiagramFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.chess_boards.ChessBoardDiagramView;
@@ -119,7 +119,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	@Override
 	public void onPlay() {
 		// if position is final, restart from beginning
-		ChessBoardDiagram boardFace = getBoardFace();
+		BoardFace boardFace = getBoardFace();
 		if (boardFace.getPly() + 1 > boardFace.getMovesCount()) {
 			while(boardFace.takeBack()) {
 				notationsView.moveBack(boardFace.getPly());
@@ -138,33 +138,35 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 	@Override
 	public void onRewindBack() {
-		ChessBoardDiagram boardFace = getBoardFace();
+		BoardFace boardFace = getBoardFace();
 		while(boardFace.takeBack()) {
 			notationsView.moveBack(boardFace.getPly());
 		}
+		notationsView.rewindBack();
+		showCommentForMove(boardFace);
 		boardView.invalidate();
 	}
 
 	@Override
 	public void onMoveBack() {
-		ChessBoardDiagram boardFace = getBoardFace();
+		BoardFace boardFace = getBoardFace();
 		showCommentForMove(boardFace);
 	}
 
 	@Override
 	public void onMoveForward() {
-		ChessBoardDiagram boardFace = getBoardFace();
+		BoardFace boardFace = getBoardFace();
 		showCommentForMove(boardFace);
 	}
 
 	@Override
 	public void onRewindForward() {
-		ChessBoardDiagram boardFace = getBoardFace();
-		String[] notationArray = boardFace.getNotationArray();
-		for (String move : notationArray) {
-			boardFace.makeMove(move, false);
-			notationsView.moveBack(boardFace.getPly());
+		BoardFace boardFace = getBoardFace();
+		while(boardFace.takeNext()) {
+			notationsView.moveForward(boardFace.getPly());
 		}
+		notationsView.rewindForward();
+		showCommentForMove(boardFace);
 		boardView.invalidate();
 	}
 
@@ -172,14 +174,14 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	 * get current move and compare to move with comment
 	 * @param boardFace
 	 */
-	private void showCommentForMove(ChessBoardDiagram boardFace) {
+	private void showCommentForMove(BoardFace boardFace) {
 		if (commentsMap == null) {
 			return;
 		}
 
 		String lastMove = boardFace.getLastMoveSAN();
 		for (String move : commentsMap.keySet()) {
-			String move2Compare = move.replaceAll(AppConstants.MOVE_NUMBERS_PATTERN, Symbol.EMPTY).trim();
+			String move2Compare = move.replaceAll(MovesParser.MOVE_NUMBERS_PATTERN, Symbol.EMPTY).trim();
 			if (move2Compare.equals(lastMove)) {
 				notationCommentTxt.setVisibility(View.VISIBLE);
 				notationCommentTxt.setText(commentsMap.get(move));
@@ -200,7 +202,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 				return;
 			}
 
-			ChessBoardDiagram boardFace = getBoardFace();
+			BoardFace boardFace = getBoardFace();
 			String[] notations = boardFace.getFullNotationsArray();
 
 			int currentPosition = boardFace.getPly();
@@ -224,7 +226,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 	private void adjustBoardForGame() {
 		ChessBoardDiagram.resetInstance();
-		ChessBoardDiagram boardFace = getBoardFace();
+		BoardFace boardFace = getBoardFace();
 		userPlayWhite = diagramItem.getUserColor() == ChessBoard.WHITE_SIDE;
 
 		if (userPlayWhite) {
@@ -253,10 +255,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			boardFace.setChess960(true);
 		}
 
-		if (diagramItem.getFen() != null) {
-			logTest(" using fen = " + diagramItem.getFen());
-			boardFace.setupBoard(diagramItem.getFen());
-		}
+		boardFace.setupBoard(diagramItem.getFen());
 
 		if (!userPlayWhite) {
 			boardFace.setReside(true);
@@ -268,7 +267,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		if (movesList != null) {
 			commentsMap = MovesParser.getCommentsFromMovesList(movesList);
 
-			movesList = MovesParser.removeCommentsFromMovesList(movesList);
+			movesList = MovesParser.removeCommentsAndAlternatesFromMovesList(movesList);
 
 			boardFace.checkAndParseMovesList(movesList);
 		}
@@ -350,7 +349,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	}
 
 	@Override
-	public ChessBoardDiagram getBoardFace() {
+	public BoardFace getBoardFace() {
 		return ChessBoardDiagram.getInstance(this);
 	}
 

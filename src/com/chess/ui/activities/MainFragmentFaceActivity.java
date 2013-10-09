@@ -25,6 +25,7 @@ import com.chess.statics.IntentConstants;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.articles.ArticleDetailsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
@@ -494,6 +495,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			SettingsProfileFragment fragmentByTag = (SettingsProfileFragment) getSupportFragmentManager().findFragmentByTag(SettingsProfileFragment.class.getSimpleName());
 			if (fragmentByTag != null && fragmentByTag.isVisible()) {
 				fragmentByTag.discardChanges();
+				return super.onKeyUp(keyCode, event);
+			}
+			ArticleDetailsFragment articleDetailsFragment = (ArticleDetailsFragment) getSupportFragmentManager().findFragmentByTag(ArticleDetailsFragment.class.getSimpleName());
+			if (articleDetailsFragment != null && articleDetailsFragment.isVisible()) {
+				return articleDetailsFragment.hideActiveDiagramAnimated() || super.onKeyUp(keyCode, event);
 			}
 		}
 		return super.onKeyUp(keyCode, event);

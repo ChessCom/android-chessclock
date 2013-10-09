@@ -165,7 +165,10 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 		}
 
 		public String getMoveList() {
-			String moves = diagram_code.substring(diagram_code.indexOf("\n1.") + "\n".length());
+			// we know that movesList Starts after last ] tag
+			int indexOfDescriptionEnd = diagram_code.lastIndexOf("]") + + "]\n\n".length();
+			// remove Event tag information
+			String moves = diagram_code.substring(indexOfDescriptionEnd);
 			moves = moves.substring(0, moves.indexOf(Symbol.NEW_STR));
 			return moves;
 		}
@@ -175,9 +178,39 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 		}
 
 		public String getFen() {
-			String fenStr = diagram_code.substring(diagram_code.indexOf(FEN_CODE) + FEN_CODE.length(), diagram_code.length());
-			fenStr = fenStr.substring(0, fenStr.indexOf("\"]"));
-			return fenStr;
+			if (diagram_code.contains(FEN_CODE)) {
+				String fenStr = diagram_code.substring(diagram_code.indexOf(FEN_CODE) + FEN_CODE.length(), diagram_code.length());
+				fenStr = fenStr.substring(0, fenStr.indexOf("\"]"));
+				return fenStr;
+			} else {
+				return null;
+			}
 		}
 	}
+
+/*
+&-diagramtype: chessGame &-colorscheme: blue &-piecestyle: classic &-float: center &-flip: false &-prompt: false &-coords: true &-size: 45 &-lastmove: &-focusnode: &-beginnode: &-endnode: &-pgnbody: [Event "Topalov-Laznicka m 2013"] [Site "Novy Bor CZE"] [Date "2013.09.19"] [Round "1"] [White "Topalov, V."] [Black "Laznicka, V."] [Result "1-0"] [ECO "D24"] [WhiteElo "2769"] [BlackElo "2677"] [Setup "1"] [FEN "6k1/pb4pp/4q3/2pn1p2/2B1r3/2PQR3/P2B1P1P/6K1 w - - 0 26"] [Plycount "9"] [Eventdate "2013.09.19"] [Eventtype "match"] [Eventrounds "6"] [Eventcountry "CZE"] [Source "Mark Crowther"] [Sourcedate "2013.09.23"] 26.f3 Rxe3 { The white king is more open, hence White wants to trade queens. } ( 26...Re5 27.Rxe5 Qxe5 28.Qe3 ) ( 26...Nxe3 $4 27.Bxe6+ ) 27.Qxe3 Qxe3+ 28.Bxe3 Kh8 { Normally, we don't want our king at the edge of the board, especially in endgames. The computer likes this move very much, however, it seems that the king transfer to e6 was a more human decision. Here it is justified as Black has time to take on c3. } ( 28...Kf7 29.Bxc5 a6 30.Kg2 Ke6 31.Bd4 g5 32.h4 h6 { White is still better here but Black is very close to equalizing. } ) 29.Bxc5 Nxc3 30.Bd4 1-0
+
+"diagrams": [
+            {
+                "diagram_id": 1649150,
+                "diagram_code": "&-diagramtype:\nchessGame\n&-colorscheme:\nblue\n&-piecestyle:\nclassic\n&-float:\ncenter\n&-flip:\nfalse\n&-prompt:\nfalse\n&-coords:\ntrue\n&-size:\n45\n&-lastmove:\n\n&-focusnode:\n\n&-beginnode:\n\n&-endnode:\n\n&-pgnbody:\n[Event \"Topalov-Laznicka m 2013\"]\n[Site \"Novy Bor CZE\"]\n[Date \"2013.09.19\"]\n[Round \"1\"]\n[White \"Topalov, V.\"]\n[Black \"Laznicka, V.\"]\n[Result \"1-0\"]\n[ECO \"D24\"]\n[WhiteElo \"2769\"]\n[BlackElo \"2677\"]\n[Setup \"1\"]\n[FEN \"6k1/pb4pp/4q3/2pn1p2/2B1r3/2PQR3/P2B1P1P/6K1 w - - 0 26\"]\n[Plycount \"9\"]\n[Eventdate \"2013.09.19\"]\n[Eventtype \"match\"]\n[Eventrounds \"6\"]\n[Eventcountry \"CZE\"]\n[Source \"Mark Crowther\"]\n[Sourcedate \"2013.09.23\"]\n\n26.f3 Rxe3 { The white king is more open, hence White wants to trade queens. } ( 26...Re5 27.Rxe5 Qxe5 28.Qe3 ) ( 26...Nxe3 $4 27.Bxe6+ ) 27.Qxe3 Qxe3+ 28.Bxe3 Kh8 { Normally, we don't want our king at the edge of the board,\nespecially in endgames. The computer likes this move very much, however, it seems\nthat the king transfer to e6 was a more human decision. Here it is justified\nas Black has time to take on c3. } ( 28...Kf7 29.Bxc5 a6 30.Kg2 Ke6 31.Bd4 g5 32.h4 h6 { White is still better here but Black is very close to\nequalizing. } ) 29.Bxc5 Nxc3 30.Bd4 \n1-0"
+            },
+            {
+                "diagram_id": 1649154,
+                "diagram_code": "&-diagramtype:\nchessGame\n&-colorscheme:\nblue\n&-piecestyle:\nclassic\n&-float:\ncenter\n&-flip:\nfalse\n&-prompt:\nfalse\n&-coords:\ntrue\n&-size:\n45\n&-lastmove:\n\n&-focusnode:\n\n&-beginnode:\n\n&-endnode:\n\n&-pgnbody:\n[Event \"Topalov-Laznicka m 2013\"]\n[Site \"Novy Bor CZE\"]\n[Date \"2013.09.19\"]\n[Round \"1\"]\n[White \"Topalov, V.\"]\n[Black \"Laznicka, V.\"]\n[Result \"1-0\"]\n[ECO \"D24\"]\n[WhiteElo \"2769\"]\n[BlackElo \"2677\"]\n[Setup \"1\"]\n[FEN \"7k/pb4pp/8/5p2/2BB4/2n2P2/P6P/6K1 b - - 0 30\"]\n[Plycount \"19\"]\n[Eventdate \"2013.09.19\"]\n[Eventtype \"match\"]\n[Eventrounds \"6\"]\n[Eventcountry \"CZE\"]\n[Source \"Mark Crowther\"]\n[Sourcedate \"2013.09.23\"]\n\n30...Nxa2 $4 { It seems that black should be able to draw the endgame down a\npiece but for three pawns but white two bishops are too strong. And if white\nexchange a pair of light-squared bishops the h-pawn will win the game. } ( 30...Bd5 $1 31.Bd3 ( 31.Bxd5 Ne2+ $1 ( 31...Nxd5 ) 32.Kf2 Nxd4 ) 31...Nxa2 32.Bxf5 Bxf3 33.Bxa7 ) ( 30...Nd5 31.Bxa7 Nf4 ) ( 30...Nb1 31.Kf2 ( 31.Bxa7 Nd2 32.Be2 Nxf3+ 33.Kf2 Nxh2 ) 31...Nd2 32.Be2 Bd5 33.Ke3 Nc4+ 34.Kf4 Nb6 35.a3 Bc4 ) ( 30...Na4 31.Bxa7 Bxf3 ) 31.Bxa2 Bxf3 32.Bb1 Bg4 ( 32...f4 33.Be5 a5 34.Ba2 h6 35.Bxf4 g5 36.Be5+ Kh7 37.Kf2 ) 33.Kg2 ( 33.Bxa7 { was possible too } ) 33...a5 34.Kg3 Bd1 35.Bxf5 Bb3 36.Kf4 Kg8 37.Ke5 Kf7 38.Bxh7 $1 { Almost getting the bishop trapped but not quite! } 38...g6 39.Kf4 Bc2 \n1-0"
+            },
+            {
+                "diagram_id": 1649160,
+                "diagram_code": "&-diagramtype:\nchessGame\n&-colorscheme:\nblue\n&-piecestyle:\nclassic\n&-float:\ncenter\n&-flip:\nfalse\n&-prompt:\nfalse\n&-coords:\ntrue\n&-size:\n45\n&-lastmove:\n\n&-focusnode:\n\n&-beginnode:\n\n&-endnode:\n\n&-pgnbody:\n[Event \"Topalov-Laznicka m 2013\"]\n[Site \"Novy Bor CZE\"]\n[Date \"2013.09.21\"]\n[Round \"3\"]\n[White \"Topalov, V.\"]\n[Black \"Laznicka, V.\"]\n[Result \"1/2-1/2\"]\n[ECO \"D24\"]\n[WhiteElo \"2769\"]\n[BlackElo \"2677\"]\n[Setup \"1\"]\n[FEN \"r1b3rk/p1p5/4p1qp/1p3p2/3P1B1p/2P1R3/P4PPQ/5BK1 b - - 0 23\"]\n[Plycount \"25\"]\n[Eventdate \"2013.09.19\"]\n[Eventtype \"match\"]\n[Eventrounds \"6\"]\n[Eventcountry \"CZE\"]\n[Source \"Mark Crowther\"]\n[Sourcedate \"2013.09.23\"]\n\n23...Kh7 24.Qxh4 e5 $1 { Freeing the space for the queen to go to e6, so the\nrook will have the g6-square to defend the h6-pawn. } 25.dxe5 $4 { It is\nunderstandable that GM Topalov wants to stick to the plan and keep an eye on\nthe h-pawn but being flexible here could have benefited White. } ( 25.Rg3 $1 Qe6 26.Rxg8 { Taking advantage of the fact that the rook is not protected with the\nother rook. } 26...Kxg8 27.Bxe5 Kf7 28.Be2 ) ( 25.Bxe5 Be6 26.Rg3 Qf7 ) 25...Qe6 26.Bd3 Rg6 { The worst is behind for Black as he managed to solidify\non the kingside. } 27.Rg3 Rxg3 28.fxg3 Bb7 29.Bc2 $6 ( 29.g4 $1 { This break\nshould have been done when the f-pawn is not defended. } 29...Be4 30.gxf5 Bxf5 31.Bxb5 Qb6+ 32.Kh2 Qg6 ) 29...Rf8 30.g4 $2 { Bad timing. } ( 30.Bb3 Qb6+ 31.Kh2 ) 30...Qg6 31.e6 $1 { Setting-up a bait. } 31...Qxe6 ( 31...Be4 $1 32.e7 Re8 33.Bd1 c5 34.a3 Qg7 35.Kf2 fxg4 36.Bxg4 c4 ) 32.Bxf5+ Rxf5 33.gxf5 Qxf5 34.Qxh6+ Kg8 35.Qg5+ Qxg5 \n1/2-1/2"
+            },
+            {
+                "diagram_id": 1649162,
+                "diagram_code": "&-diagramtype:\nchessGame\n&-colorscheme:\nblue\n&-piecestyle:\nclassic\n&-float:\ncenter\n&-flip:\nfalse\n&-prompt:\nfalse\n&-coords:\ntrue\n&-size:\n45\n&-lastmove:\n\n&-focusnode:\n\n&-beginnode:\n\n&-endnode:\n\n&-pgnbody:\n[Event \"Topalov-Laznicka m 2013\"]\n[Site \"Novy Bor CZE\"]\n[Date \"2013.09.23\"]\n[Round \"4\"]\n[White \"Laznicka, V.\"]\n[Black \"Topalov, V.\"]\n[Result \"0-1\"]\n[ECO \"E21\"]\n[WhiteElo \"2677\"]\n[BlackElo \"2769\"]\n[Setup \"1\"]\n[FEN \"r1r3k1/1b3pp1/1B2p2p/6q1/2P5/1Q3P2/P5PP/R4RK1 w - - 0 23\"]\n[Plycount \"18\"]\n[Eventdate \"2013.09.19\"]\n[Eventtype \"match\"]\n[Eventrounds \"6\"]\n[Eventcountry \"CZE\"]\n[Source \"Mark Crowther\"]\n[Sourcedate \"2013.09.23\"]\n\n23.a4 { Pushing the a- and c-pawns is White's plan, to tie the black rooks. } 23...e5 { Black's only counterplay is on the queenside. } 24.c5 Re8 ( 24...Rc6 { Transfering the rook to f6 or g6 right away is a good plan. } 25.a5 Rg6 26.Rf2 e4 { with counterplay } ) 25.a5 Qg6 { Black is keeping the tension. } ( 25...e4 26.fxe4 Re6 27.Qg3 Qxg3 28.hxg3 Rxe4 { White is capturing the d-file and\nthe seventh rank. } 29.Rad1 ) 26.Rad1 $1 { White can not make progress on the\nqueenside because Black has blocked the light squares. Hence White is taking\nthe d-file and try to get to the sixth or seventh ranks. } 26...e4 27.Rd6 Re6 $1 { There\nis no other alternative and Black opens up the f-file to put more pressure on\nthe f-pawn. } 28.Rxe6 fxe6 29.Qc2 Bc6 { Blocking the c-pawn. } ( 29...Rf8 30.c6 ) 30.Rd1 $2 ( 30.f4 $1 Qg4 31.h3 Qg3 32.Qf2 ( 32.Qa2 Bd5 ) 32...Qd3 33.Re1 Rf8 34.Re3 Qc4 { Although it is not easy White will eventually make\nprogress. } ) 30...Rf8 $1 31.Rd6 ( 31.fxe4 Bxe4 32.Qb2 Bd5 33.h3 ) 31...Qg5 $1 \n0-1"
+            },
+            {
+                "diagram_id": 1649164,
+                "diagram_code": "&-diagramtype:\nchessGame\n&-colorscheme:\nblue\n&-piecestyle:\nclassic\n&-float:\ncenter\n&-flip:\nfalse\n&-prompt:\nfalse\n&-coords:\ntrue\n&-size:\n45\n&-lastmove:\n\n&-focusnode:\n\n&-beginnode:\n\n&-endnode:\n\n&-pgnbody:\n[Event \"Topalov-Laznicka m 2013\"]\n[Site \"Novy Bor CZE\"]\n[Date \"2013.09.23\"]\n[Round \"4\"]\n[White \"Laznicka, V.\"]\n[Black \"Topalov, V.\"]\n[Result \"0-1\"]\n[ECO \"E21\"]\n[WhiteElo \"2677\"]\n[BlackElo \"2769\"]\n[Setup \"1\"]\n[FEN \"5rk1/6p1/1BbRp2p/P1P3q1/4p3/5P2/2Q3PP/6K1 w - - 0 32\"]\n[Plycount \"12\"]\n[Eventdate \"2013.09.19\"]\n[Eventtype \"match\"]\n[Eventrounds \"6\"]\n[Eventcountry \"CZE\"]\n[Source \"Mark Crowther\"]\n[Sourcedate \"2013.09.23\"]\n\n32.Rxc6 $4 ( 32.h4 $1 { The only move that leads to an equal position. } 32...Qf6 ( 32...Qxh4 33.Qf2 ) 33.fxe4 Qf1+ 34.Kh2 Rf2 35.Qxf2 Qxf2 36.Rxc6 Qxh4+ 37.Kg1 Qe1+ { Black does not have more than equality here. } ) 32...exf3 { The\nposition is lost for White already. } 33.g3 ( 33.Rxe6 f2+ 34.Kf1 Qxg2+ 35.Kxg2 f1=Q+ 36.Kg3 Qf3+ 37.Kh4 Rf4# ) 33...Qe5 34.Qf2 Qa1+ 35.Qf1 Qd4+ 36.Qf2 Qd1+ 37.Qf1 f2+ \n0-1"
+            }
+	 */
 }

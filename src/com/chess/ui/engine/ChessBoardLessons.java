@@ -51,21 +51,21 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 		String piece = Symbol.EMPTY;
 		int pieceCode = pieces[move.to];
 		String moveStr;
-		if (pieceCode == 1) { // set piece name
+		if (pieceCode == KNIGHT) { // set piece name
 			piece = MovesParser.BLACK_KNIGHT;
-		} else if (pieceCode == 2) {
+		} else if (pieceCode == BISHOP) {
 			piece = MovesParser.BLACK_BISHOP;
-		} else if (pieceCode == 3) {
+		} else if (pieceCode == ROOK) {
 			piece = MovesParser.BLACK_ROOK;
-		} else if (pieceCode == 4) {
+		} else if (pieceCode == QUEEN) {
 			piece = MovesParser.BLACK_QUEEN;
-		} else if (pieceCode == 5) {
+		} else if (pieceCode == KING) {
 			piece = MovesParser.BLACK_KING;
 		}
 
 		String capture = Symbol.EMPTY;
-		if (histDat[lastIndex].capture != 6) {
-			capture = "x";
+		if (histDat[lastIndex].capture != EMPTY) {
+			capture = MovesParser.CAPTURE_MARK;
 		}
 
 		// rc7  instead of rcc7 :(

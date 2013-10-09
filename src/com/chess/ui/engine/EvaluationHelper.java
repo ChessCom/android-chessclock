@@ -123,13 +123,13 @@ public class EvaluationHelper {
 //				continue;
 //			if (pieces[i] == PAWN) {
 //				pawnMat[colors[i]] += pieceValue[PAWN];
-//				int f = getColumn(i) + 1;  /* add 1 because of the extra file in the array */
+//				int f = getFile(i) + 1;  /* add 1 because of the extra file in the array */
 //				if (colors[i] == WHITE_SIDE) {
-//					if (pawnRank[WHITE_SIDE][f] < getRow(i))
-//						pawnRank[WHITE_SIDE][f] = getRow(i);
+//					if (pawnRank[WHITE_SIDE][f] < getRank(i))
+//						pawnRank[WHITE_SIDE][f] = getRank(i);
 //				} else {
-//					if (pawnRank[BLACK_SIDE][f] > getRow(i))
-//						pawnRank[BLACK_SIDE][f] = getRow(i);
+//					if (pawnRank[BLACK_SIDE][f] > getRank(i))
+//						pawnRank[BLACK_SIDE][f] = getRank(i);
 //				}
 //			} else {
 //				try {
@@ -158,13 +158,13 @@ public class EvaluationHelper {
 //						score[WHITE_SIDE] += bishopPcsq[i];
 //						break;
 //					case ROOK:
-//						if (pawnRank[WHITE_SIDE][getColumn(i) + 1] == 0) {
-//							if (pawnRank[BLACK_SIDE][getColumn(i) + 1] == 7)
+//						if (pawnRank[WHITE_SIDE][getFile(i) + 1] == 0) {
+//							if (pawnRank[BLACK_SIDE][getFile(i) + 1] == 7)
 //								score[WHITE_SIDE] += ROOK_OPEN_FILE_BONUS;
 //							else
 //								score[WHITE_SIDE] += ROOK_SEMI_OPEN_FILE_BONUS;
 //						}
-//						if (getRow(i) == 1)
+//						if (getRank(i) == 1)
 //							score[WHITE_SIDE] += ROOK_ON_SEVENTH_BONUS;
 //						break;
 //					case KING:
@@ -186,13 +186,13 @@ public class EvaluationHelper {
 //						score[BLACK_SIDE] += bishopPcsq[flip[i]];
 //						break;
 //					case ROOK:
-//						if (pawnRank[BLACK_SIDE][getColumn(i) + 1] == 7) {
-//							if (pawnRank[WHITE_SIDE][getColumn(i) + 1] == 0)
+//						if (pawnRank[BLACK_SIDE][getFile(i) + 1] == 7) {
+//							if (pawnRank[WHITE_SIDE][getFile(i) + 1] == 0)
 //								score[BLACK_SIDE] += ROOK_OPEN_FILE_BONUS;
 //							else
 //								score[BLACK_SIDE] += ROOK_SEMI_OPEN_FILE_BONUS;
 //						}
-//						if (getRow(i) == 6)
+//						if (getRank(i) == 6)
 //							score[BLACK_SIDE] += ROOK_ON_SEVENTH_BONUS;
 //						break;
 //					case KING:
@@ -215,12 +215,12 @@ public class EvaluationHelper {
 
 //	int evalLightPawn(int sq) {
 //		int r = 0; /* return value */
-//		int f = getColumn(sq) + 1; /* pawn's file */
+//		int f = getFile(sq) + 1; /* pawn's file */
 //
 //		r += pawnPcsq[sq];
 //
 //		/* if there's a pawn behind this one, it's doubled */
-//		if (pawnRank[WHITE_SIDE][f] > getRow(sq))
+//		if (pawnRank[WHITE_SIDE][f] > getRank(sq))
 //			r -= DOUBLED_PAWN_PENALTY;
 //
 //		/* if there aren't any friendly pawns on either side of
@@ -230,27 +230,27 @@ public class EvaluationHelper {
 //			r -= ISOLATED_PAWN_PENALTY;
 //
 //			/* if it's not isolated, it might be backwards */
-//		else if ((pawnRank[WHITE_SIDE][f - 1] < getRow(sq)) &&
-//				(pawnRank[WHITE_SIDE][f + 1] < getRow(sq)))
+//		else if ((pawnRank[WHITE_SIDE][f - 1] < getRank(sq)) &&
+//				(pawnRank[WHITE_SIDE][f + 1] < getRank(sq)))
 //			r -= BACKWARDS_PAWN_PENALTY;
 //
 //		/* add a bonus if the pawn is passed */
-//		if ((pawnRank[BLACK_SIDE][f - 1] >= getRow(sq)) &&
-//				(pawnRank[BLACK_SIDE][f] >= getRow(sq)) &&
-//				(pawnRank[BLACK_SIDE][f + 1] >= getRow(sq)))
-//			r += (7 - getRow(sq)) * PASSED_PAWN_BONUS;
+//		if ((pawnRank[BLACK_SIDE][f - 1] >= getRank(sq)) &&
+//				(pawnRank[BLACK_SIDE][f] >= getRank(sq)) &&
+//				(pawnRank[BLACK_SIDE][f + 1] >= getRank(sq)))
+//			r += (7 - getRank(sq)) * PASSED_PAWN_BONUS;
 //
 //		return r;
 //	}
 
 //	int evalDarkPawn(int sq) {
 //		int r = 0;  /* the value to return */
-//		int f = getColumn(sq) + 1;  /* the pawn's file */
+//		int f = getFile(sq) + 1;  /* the pawn's file */
 //
 //		r += pawnPcsq[flip[sq]];
 //
 //		/* if there's a pawn behind this one, it's doubled */
-//		if (pawnRank[BLACK_SIDE][f] < getRow(sq))
+//		if (pawnRank[BLACK_SIDE][f] < getRank(sq))
 //			r -= DOUBLED_PAWN_PENALTY;
 //
 //		/* if there aren't any friendly pawns on either side of
@@ -260,15 +260,15 @@ public class EvaluationHelper {
 //			r -= ISOLATED_PAWN_PENALTY;
 //
 //			/* if it's not isolated, it might be backwards */
-//		else if ((pawnRank[BLACK_SIDE][f - 1] > getRow(sq)) &&
-//				(pawnRank[BLACK_SIDE][f + 1] > getRow(sq)))
+//		else if ((pawnRank[BLACK_SIDE][f - 1] > getRank(sq)) &&
+//				(pawnRank[BLACK_SIDE][f + 1] > getRank(sq)))
 //			r -= BACKWARDS_PAWN_PENALTY;
 //
 //		/* add a bonus if the pawn is passed */
-//		if ((pawnRank[WHITE_SIDE][f - 1] <= getRow(sq)) &&
-//				(pawnRank[WHITE_SIDE][f] <= getRow(sq)) &&
-//				(pawnRank[WHITE_SIDE][f + 1] <= getRow(sq)))
-//			r += getRow(sq) * PASSED_PAWN_BONUS;
+//		if ((pawnRank[WHITE_SIDE][f - 1] <= getRank(sq)) &&
+//				(pawnRank[WHITE_SIDE][f] <= getRank(sq)) &&
+//				(pawnRank[WHITE_SIDE][f + 1] <= getRank(sq)))
+//			r += getRank(sq) * PASSED_PAWN_BONUS;
 //
 //		return r;
 //	}
@@ -278,17 +278,17 @@ public class EvaluationHelper {
 //
 //		/* if the king is castled, use a special function to evaluate the
 //			   pawns on the appropriate side */
-//		if (getColumn(sq) < 3) {
+//		if (getFile(sq) < 3) {
 //			r += evalLkp(1);
 //			r += evalLkp(2);
 //			r += evalLkp(3) / 2;  /* problems with pawns on the c & f files
 //																are not as severe */
-//		} else if (getColumn(sq) > 4) {
+//		} else if (getFile(sq) > 4) {
 //			r += evalLkp(8);
 //			r += evalLkp(7);
 //			r += evalLkp(6) / 2;
 //		} else { // otherwise, just assess a penalty if there are open files near the king
-//			for (int i = getColumn(sq); i <= getColumn(sq) + 2; ++i) {
+//			for (int i = getFile(sq); i <= getFile(sq) + 2; ++i) {
 //				if ((pawnRank[WHITE_SIDE][i] == 0) && (pawnRank[BLACK_SIDE][i] == 7)) {
 //					r -= 10;
 //				}
@@ -336,16 +336,16 @@ public class EvaluationHelper {
 //		int i;
 //
 //		r = kingPcsq[flip[sq]];
-//		if (getColumn(sq) < 3) {
+//		if (getFile(sq) < 3) {
 //			r += evalDkp(1);
 //			r += evalDkp(2);
 //			r += evalDkp(3) / 2;
-//		} else if (getColumn(sq) > 4) {
+//		} else if (getFile(sq) > 4) {
 //			r += evalDkp(8);
 //			r += evalDkp(7);
 //			r += evalDkp(6) / 2;
 //		} else {
-//			for (i = getColumn(sq); i <= getColumn(sq) + 2; ++i) {
+//			for (i = getFile(sq); i <= getFile(sq) + 2; ++i) {
 //				if ((pawnRank[WHITE_SIDE][i] == 0) && (pawnRank[BLACK_SIDE][i] == 7)) {
 //					r -= 10;
 //				}

@@ -1350,8 +1350,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 
 		private void initTimer() {
-			int dx = ChessBoard.getColumn(move.to) - ChessBoard.getColumn(move.from);
-			int dy = ChessBoard.getRow(move.to) - ChessBoard.getRow(move.from);
+			int dx = ChessBoard.getFile(move.to) - ChessBoard.getFile(move.from);
+			int dy = ChessBoard.getRank(move.to) - ChessBoard.getRank(move.from);
 			double dist = Math.sqrt(dx * dx + dy * dy);
 			double t = Math.sqrt(dist) * PIECE_ANIM_SPEED;
 			animationTime = (int) Math.round(t);
@@ -1385,10 +1385,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		private void drawAnimPiece(Canvas canvas, Bitmap pieceBitmap, int from, int to, double animationTimeFactor) {
 			if (pieceBitmap == null)
 				return;
-			final int xCrd1 = getXCoordinate(ChessBoard.getColumn(from));
-			final int yCrd1 = getYCoordinate(ChessBoard.getRow(from));
-			final int xCrd2 = getXCoordinate(ChessBoard.getColumn(to));
-			final int yCrd2 = getYCoordinate(ChessBoard.getRow(to));
+			final int xCrd1 = getXCoordinate(ChessBoard.getFile(from));
+			final int yCrd1 = getYCoordinate(ChessBoard.getRank(from));
+			final int xCrd2 = getXCoordinate(ChessBoard.getFile(to));
+			final int yCrd2 = getYCoordinate(ChessBoard.getRank(to));
 			final int xCrd = xCrd1 + (int) Math.round((xCrd2 - xCrd1) * animationTimeFactor);
 			final int yCrd = yCrd1 + (int) Math.round((yCrd2 - yCrd1) * animationTimeFactor);
 

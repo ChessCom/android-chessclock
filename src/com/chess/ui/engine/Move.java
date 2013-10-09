@@ -73,16 +73,16 @@ public final class Move implements Comparable<Object> {
 					piece = 'q';
 					break;
 			}
-			sb.append((char) (ChessBoard.getColumn(from) + 'a'));
-			sb.append(8 - ChessBoard.getRow(from));
-			sb.append((char) (ChessBoard.getColumn(to) + 'a'));
-			sb.append(8 - ChessBoard.getRow(to));
+			sb.append((char) (ChessBoard.getFile(from) + 'a'));
+			sb.append(8 - ChessBoard.getRank(from));
+			sb.append((char) (ChessBoard.getFile(to) + 'a'));
+			sb.append(8 - ChessBoard.getRank(to));
 			sb.append(piece);
 		} else {
-			sb.append((char) (ChessBoard.getColumn(from) + 'a'));
-			sb.append(8 - ChessBoard.getRow(from));
-			sb.append((char) (ChessBoard.getColumn(to) + 'a'));
-			sb.append(8 - ChessBoard.getRow(to));
+			sb.append((char) (ChessBoard.getFile(from) + 'a'));
+			sb.append(8 - ChessBoard.getRank(from));
+			sb.append((char) (ChessBoard.getFile(to) + 'a'));
+			sb.append(8 - ChessBoard.getRank(to));
 		}
 		return sb.toString();
 	}

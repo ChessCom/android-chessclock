@@ -323,6 +323,17 @@ public class NotationView extends LinearLayout implements View.OnClickListener {
 		highlightPosition(ply - 1);
 	}
 
+	public void rewindBack() {
+		viewPager.setCurrentItem(0);
+		notationsAdapter.selectItem(0);
+	}
+
+	public void rewindForward() {
+		int length = originalNotations.length - 1;
+		viewPager.setCurrentItem(length / viewPerPage);
+		notationsAdapter.selectItem(length);
+	}
+
 	private void highlightPosition(int pos) {
 		if (pos < 0) {
 			return;
