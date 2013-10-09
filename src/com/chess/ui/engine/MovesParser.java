@@ -433,6 +433,10 @@ public class MovesParser {
 		}
 
 		String newMovesList = Symbol.EMPTY;
+		if (!movesList.contains(ALTERNATE_MOVES_SYMBOL_START)) {
+			return movesList;
+		}
+
 		while (movesList.contains(ALTERNATE_MOVES_SYMBOL_START)) {
 			int firstIndex = movesList.lastIndexOf("(");
 			int lastIndex = movesList.lastIndexOf(")") + 1; // one is length of ")"

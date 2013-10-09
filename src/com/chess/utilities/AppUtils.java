@@ -760,7 +760,11 @@ public class AppUtils {
 		 view.buildDrawingCache();
 
 		 // Create Bitmap
-		 Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+		 Bitmap drawingCache = view.getDrawingCache();
+		 if (drawingCache == null) {
+			 return null;
+		 }
+		 Bitmap bitmap = Bitmap.createBitmap(drawingCache);
 		 view.setDrawingCacheEnabled(false);
 		 return bitmap;
 	}

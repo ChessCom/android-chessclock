@@ -36,15 +36,22 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.model.BaseGameItem;
 import com.chess.model.GameDiagramItem;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommentsCursorAdapter;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.ChessBoardDiagram;
+import com.chess.ui.engine.MovesParser;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.game.GameDiagramFragment;
+import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.views.ControlledListView;
+import com.chess.ui.views.chess_boards.ChessBoardDiagramView;
 import com.chess.utilities.AppUtils;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorSet;
@@ -86,15 +93,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private static final int ZERO = 0;
 	private static final long ANIMATION_SET_DURATION = 350;
 	public static final String CHESS_COM_DIAGRAM = "chess_com_diagram";
-	private static final long FRAGMENT_CREATE_DELAY = 1000;
-	private static final long FRAGMENT_REMOVE_DELAY = 2000;
-	private static final long TASK_SLEEP_DELAY = 1000;
+	private static final long TASK_SLEEP_DELAY = 1;
 	public static float IMAGE_WIDTH_PERCENT = 0.80f;
-	private int fragmentsParsedCnt;
-	private int fragmentsCapturedCnt;
+
+	private GameFaceHelper gameFaceHelper;
 
 	private TextView authorTxt;
-
 	private TextView titleTxt;
 	private ProgressImageView articleImg;
 	private ProgressImageView authorImg;
@@ -135,6 +139,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private int iconOverlaySize;
 	private int iconOverlayColor;
 	private int notationsHeight;
+	private int textColor;
+	private int textSize;
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
 		ArticleDetailsFragment frag = new ArticleDetailsFragment();
@@ -774,17 +780,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	}
 
 	private class DiagramUpdateListener extends ChessUpdateListener<String> {
-		private final int textColor;
-		private final int textSize;
 		private List<ArticleDetailsItem.Diagram> diagramList;
 
 		private DiagramUpdateListener(List<ArticleDetailsItem.Diagram> diagramList) {
 			super();
 			this.diagramList = diagramList;
-			Resources resources = getResources();
-			textColor = resources.getColor(R.color.new_subtitle_dark_grey);
-			textSize = (int) (resources.getDimensionPixelSize(R.dimen.content_text_size) / density);
-			paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
 		}
 
 		@Override
@@ -868,11 +868,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					iconView.setOnClickListener(ArticleDetailsFragment.this);
 
 					frameLayout.addView(iconView, iconParams);
+
 				}
 
-				// make bitmap of fragment and put it in imageView. Use delay bcz of transactions
-				long delay = FRAGMENT_CREATE_DELAY * fragmentsParsedCnt++;
-				handler.postDelayed(new DiagramFragmentCreator(diagramId, diagramList), delay);
+				createSimpleDiagramImage(diagramId, diagramList);
 
 				RoboTextView textView = new RoboTextView(getActivity());
 				textView.setTextSize(textSize);
@@ -891,8 +890,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			if (parsedPartCnt >= contentParts.length) {
 				diagramsLoaded = true;
 				need2update = false;
-				fragmentsParsedCnt = 0;
-				fragmentsCapturedCnt = 0;
 
 				updateComments();
 				return;
@@ -915,107 +912,101 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
-	private class DiagramFragmentCreator implements Runnable {
+	private void createSimpleDiagramImage(int diagramId, List<ArticleDetailsItem.Diagram> diagramList) {
+		for (ArticleDetailsItem.Diagram diagramToShow : diagramList) {
+			if (diagramToShow.getDiagramId() == diagramId) {
+				// create a real fragment
 
-		private int diagramId;
-		private List<ArticleDetailsItem.Diagram> diagramList;
+				final GameDiagramItem diagramItem = new GameDiagramItem();
+				diagramItem.setShowAnimation(false);
+				diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
+				if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
+					diagramItem.setMovesList(diagramToShow.getMoveList());
+					diagramItem.setFen(diagramToShow.getFen());
+				} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
+					diagramItem.setMovesList(diagramToShow.getMoveList());
+					diagramItem.setFen(diagramToShow.getFen());
+				} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
+					diagramItem.setFen(diagramToShow.getFen());
+				} else { // non valid format
+					return;
+				}
 
-		public DiagramFragmentCreator(int diagramId, List<ArticleDetailsItem.Diagram> diagramList) {
-			this.diagramId = diagramId;
-			this.diagramList = diagramList;
+				ChessBoardDiagramView boardView = new ChessBoardDiagramView(getActivity());
+				boardView.setGameFace(gameFaceHelper);
+
+				ChessBoardDiagram.resetInstance();
+				BoardFace boardFace = gameFaceHelper.getBoardFace();
+
+				boolean userPlayWhite = diagramItem.getUserColor() == ChessBoard.WHITE_SIDE;
+
+				if (diagramItem.getGameType() == BaseGameItem.CHESS_960) {
+					boardFace.setChess960(true);
+				}
+
+				boardFace.setupBoard(diagramItem.getFen());
+
+				if (!userPlayWhite) {
+					boardFace.setReside(true);
+				}
+
+				// remove comments from movesList
+				String movesList = diagramItem.getMovesList();
+				if (movesList != null) {
+					movesList = MovesParser.removeCommentsAndAlternatesFromMovesList(movesList);
+					boardFace.checkAndParseMovesList(movesList);
+				}
+
+				boardFace.setJustInitialized(false);
+
+				int bitmapWidth;
+				int bitmapHeight;
+				Bitmap bitmapFromView;
+				if (AppUtils.is7InchTablet(getActivity())) {
+					// get bitmap from fragmentView
+
+					// add offset for shadow background
+
+					bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) + 27;
+					bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT);
+					// use inset to correct shadow shift
+					bitmapFromView = getBitmapFromView(boardView, bitmapWidth, bitmapHeight);
+
+				} else {
+					// get bitmap from fragmentView
+					int inset = (int) (3.3f * density);
+					bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
+					bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
+					bitmapFromView = AppUtils.getBitmapFromView(boardView, bitmapWidth, bitmapHeight);
+				}
+
+				BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmapFromView);
+				drawable.setBounds(0, 0, bitmapWidth, bitmapHeight);
+				ImageView imageView = (ImageView) getView().findViewById(IMAGE_PREFIX + diagramId);
+				imageView.setImageDrawable(drawable);
+
+				if (AppUtils.is7InchTablet(getActivity())) {
+					// add shadow background to frame layout
+					View fragmentContainer = getView().findViewById(DIAGRAM_PREFIX + diagramId);
+					fragmentContainer.setBackgroundResource(R.drawable.shadow_back_square);
+				} else {
+					// add background to imageView
+					imageView.setBackgroundResource(R.drawable.shadow_back_square);
+				}
+			}
+		}
+	}
+
+	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {
+
+		@Override
+		public SoundPlayer getSoundPlayer() {
+			return SoundPlayer.getInstance(getActivity());
 		}
 
 		@Override
-		public void run() {
-			if (getActivity() == null) {
-				return;
-			}
-			for (ArticleDetailsItem.Diagram diagramToShow : diagramList) {
-				if (diagramToShow.getDiagramId() == diagramId) {
-					// create a real fragment
-
-					final GameDiagramItem diagramItem = new GameDiagramItem();
-					diagramItem.setShowAnimation(false);
-					diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
-					if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
-						diagramItem.setMovesList(diagramToShow.getMoveList());
-						diagramItem.setFen(diagramToShow.getFen());
-					} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
-						diagramItem.setMovesList(diagramToShow.getMoveList());
-						diagramItem.setFen(diagramToShow.getFen());
-					} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
-						diagramItem.setFen(diagramToShow.getFen());
-					} else { // non valid format
-						return;
-					}
-
-					// load it
-					final GameDiagramFragment fragment = GameDiagramFragment.createInstance(diagramItem);
-					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-					transaction.replace(DIAGRAM_PREFIX + diagramId, fragment, fragment.getClass().getSimpleName());
-					transaction.commitAllowingStateLoss();
-
-					// then hide to receive an exact view and set to imageView
-					handler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							if (getActivity() == null) {
-								return;
-							}
-
-							final Fragment fragment = getChildFragmentManager().findFragmentById(DIAGRAM_PREFIX + diagramId);
-
-							if (fragment == null) {
-								return;
-							}
-							final View fragmentView = fragment.getView();
-
-							int bitmapWidth;
-							int bitmapHeight;
-							Bitmap bitmapFromView;
-							if (AppUtils.is7InchTablet(getActivity())) {
-								// get bitmap from fragmentView
-
-								// add offset for shadow background
-
-								bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) + 27;
-								bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT);
-								// use inset to correct shadow shift
-								bitmapFromView = getBitmapFromView(fragmentView, bitmapWidth, bitmapHeight);
-
-							} else {
-								// get bitmap from fragmentView
-								int inset = (int) (3.3f * density);
-//								int inset = (int) (8.3f * density);
-								bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
-								bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
-								bitmapFromView = AppUtils.getBitmapFromView(fragmentView, bitmapWidth, bitmapHeight);
-//								bitmapFromView = getBitmapFromView(fragmentView, bitmapWidth, bitmapHeight);
-							}
-
-							BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmapFromView);
-							drawable.setBounds(0, 0, bitmapWidth, bitmapHeight);
-							ImageView imageView = (ImageView) getView().findViewById(IMAGE_PREFIX + diagramId);
-							imageView.setImageDrawable(drawable);
-
-							// remove fragment
-							FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-							transaction.remove(fragment).commitAllowingStateLoss();
-
-							if (AppUtils.is7InchTablet(getActivity())) {
-								// add shadow background to frame layout
-								View fragmentContainer = getView().findViewById(DIAGRAM_PREFIX + diagramId);
-								fragmentContainer.setBackgroundResource(R.drawable.shadow_back_square);
-							} else {
-								// add background to imageView
-								imageView.setBackgroundResource(R.drawable.shadow_back_square);
-							}
-						}
-					}, FRAGMENT_REMOVE_DELAY * fragmentsCapturedCnt++);
-
-					break;
-				}
-			}
+		public BoardFace getBoardFace() {
+			return ChessBoardDiagram.getInstance(this);
 		}
 	}
 
@@ -1143,6 +1134,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		activeIdsMap = new HashMap<Integer, Boolean>();
 		simpleIdsMap = new HashMap<Integer, Boolean>();
 
+		textColor = resources.getColor(R.color.new_subtitle_dark_grey);
+		textSize = (int) (resources.getDimensionPixelSize(R.dimen.content_text_size) / density);
+		paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
+
 		// for tablets make diagram wider
 		if (AppUtils.is7InchTablet(getActivity())) {
 			IMAGE_WIDTH_PERCENT = 0.90f;
@@ -1164,6 +1159,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		iconOverlaySize = (int) (resources.getDimension(R.dimen.diagram_icon_overlay_size) / density);
 		iconOverlayColor = resources.getColor(R.color.semitransparent_white_65);
 		commentPostListener = new CommentPostListener();
+
+		gameFaceHelper = new GameFaceHelper();
 	}
 
 	private void widgetsInit(View view) {
