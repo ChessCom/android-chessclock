@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.articles;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -93,7 +94,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private static final int ZERO = 0;
 	private static final long ANIMATION_SET_DURATION = 350;
 	public static final String CHESS_COM_DIAGRAM = "chess_com_diagram";
-	private static final long TASK_SLEEP_DELAY = 1;
+	private static final long TASK_SLEEP_DELAY = 100;
 	public static float IMAGE_WIDTH_PERCENT = 0.80f;
 
 	private GameFaceHelper gameFaceHelper;
