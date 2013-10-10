@@ -129,18 +129,21 @@ public class CompEngineHelper implements GUIInterface {
 		if (compEngineItem.isRestoreGame()) {
 			byte[] data = null;
 			int version = 1;
-			if (savedInstanceState != null) {
+			// todo: check rotate screen when it will be actual
+			/*if (savedInstanceState != null) {
 				data = savedInstanceState.getByteArray(CompEngineHelper.GAME_STATE);
 				version = savedInstanceState.getInt(GAME_STATE_VERSION_NAME, version);
-			} else {
+			} else {*/
 				String dataStr = sharedPreferences.getString(CompEngineHelper.GAME_STATE, null);
 				version = sharedPreferences.getInt(GAME_STATE_VERSION_NAME, version);
 				if (dataStr != null)
 					data = strToByteArr(dataStr);
-			}
+			//}
 			if (data != null) {
 				engineCtrl.fromByteArray(data, version);
 			}
+		} else {
+			storeEngineState();
 		}
 
 		/*engineCtrl.setGuiPaused(true);
@@ -548,15 +551,19 @@ public class CompEngineHelper implements GUIInterface {
 	public void stop() {
 		if (isInitialized()) {
 			//CompEngineHelper.getInstance().setPaused(true); // try to avoid this
-			if (isGameValid()) {
-				byte[] data = toByteArray();
-				SharedPreferences.Editor editor = sharedPreferences.edit();
-				String dataStr = byteArrToString(data);
-				editor.putString(CompEngineHelper.GAME_STATE, dataStr);
-				editor.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
-				editor.commit();
-			}
+			storeEngineState();
 			shutdownEngine();
+		}
+	}
+
+	public void storeEngineState() {
+		if (isGameValid()) {
+			byte[] data = toByteArray();
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			String dataStr = byteArrToString(data);
+			editor.putString(CompEngineHelper.GAME_STATE, dataStr);
+			editor.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
+			editor.commit();
 		}
 	}
 

@@ -231,10 +231,11 @@ public class AppData {
 	}
 
 	public void clearSavedCompGame() {
-		String username = preferences.getString(USERNAME, Symbol.EMPTY);
-		preferences.edit()
-				.putString(username + SAVED_COMPUTER_GAME, Symbol.EMPTY)
-				.commit();
+		setStringValue(AppConstants.SAVED_COMPUTER_GAME, Symbol.EMPTY);
+	}
+
+	public void setSavedCompGame(String compGame) {
+		setStringValue(AppConstants.SAVED_COMPUTER_GAME, compGame);
 	}
 
 	public int getCompThinkTime() {

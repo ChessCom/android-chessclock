@@ -1,7 +1,5 @@
 package com.chess.ui.fragments.welcome;
 
-import com.chess.statics.AppConstants;
-import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.fragments.comp.CompGameOptionsFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
@@ -30,8 +28,7 @@ public class WelcomeCompGameOptionsFragment extends CompGameOptionsFragment {
 
 		ChessBoardComp.resetInstance();
 
-		preferencesEditor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, Symbol.EMPTY);
-		preferencesEditor.commit();
+		getAppData().clearSavedCompGame();
 
 		// call config create to save default settings for vs comp game
 		getNewCompGameConfig();

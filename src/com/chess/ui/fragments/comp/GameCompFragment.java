@@ -208,7 +208,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		super.onDestroy();
 	}*/
 
-	@Override
+
+	// todo: check rotate screen when it will be actual
+	/*@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		if (CompEngineHelper.getInstance().isInitialized()) {
@@ -217,7 +219,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			outState.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);
 		}
 		outState.putParcelable(CONFIG, compGameConfig);
-	}
+	}*/
 
 	private void startGame(Bundle savedInstanceState) {
 		int gameMode;

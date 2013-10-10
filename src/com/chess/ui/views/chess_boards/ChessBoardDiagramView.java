@@ -1,11 +1,9 @@
 package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import com.chess.statics.AppConstants;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
@@ -81,9 +79,7 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 						.append(move.bits);
 			}
 
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
-			editor.commit();
+			appData.setSavedCompGame(builder.toString());
 		}
 		return super.isGameOver();
 	}

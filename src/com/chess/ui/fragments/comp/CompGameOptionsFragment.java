@@ -12,7 +12,6 @@ import com.chess.R;
 import com.chess.RoboRadioButton;
 import com.chess.SwitchButton;
 import com.chess.statics.AppConstants;
-import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -117,8 +116,7 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 
 	protected void startGame() {
 		ChessBoardComp.resetInstance();
-		preferencesEditor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, Symbol.EMPTY);
-		preferencesEditor.commit();
+		getAppData().clearSavedCompGame();
 
 		CompGameConfig config = getNewCompGameConfig();
 

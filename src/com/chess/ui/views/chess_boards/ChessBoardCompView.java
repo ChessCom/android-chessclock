@@ -1,7 +1,6 @@
 package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -92,10 +91,12 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 			Log.d(CompEngineHelper.TAG, "STORE game " + builder.toString());
 
-			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString(getAppData().getUsername() + AppConstants.SAVED_COMPUTER_GAME, builder.toString());
-			editor.commit();
+			appData.setSavedCompGame(builder.toString());
+
+			// todo: check analysis
+			CompEngineHelper.getInstance().storeEngineState();
         }
+
 		return super.isGameOver();
     }
 
