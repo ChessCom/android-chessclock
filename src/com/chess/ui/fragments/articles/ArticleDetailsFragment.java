@@ -42,10 +42,7 @@ import com.chess.model.GameDiagramItem;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommentsCursorAdapter;
-import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardDiagram;
-import com.chess.ui.engine.MovesParser;
-import com.chess.ui.engine.SoundPlayer;
+import com.chess.ui.engine.*;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.game.GameDiagramFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
@@ -376,10 +373,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			// deactivate previous diagram
 			hideActiveDiagramAnimated();
-
-			// restore listView scrolling
-			enableListViewScrolling(true);
-
 			return;
 		}
 
@@ -406,10 +399,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 				// deactivate previous diagram
 				hideActiveDiagramAnimated();
-
-				// restore listView scrolling
-				enableListViewScrolling(true);
-
 				return;
 			}
 		}
@@ -423,6 +412,9 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			// remove fragment if active
 			if (activeIdsMap.get(previousClickedId)) {
 				hideDiagramByIdAnimated(previousClickedId);
+
+				// restore listView scrolling
+				enableListViewScrolling(true);
 				return true;
 			}
 		}
@@ -945,10 +937,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					boardFace.setChess960(true);
 				}
 
-				boardFace.setupBoard(diagramItem.getFen());
+				String fen = diagramItem.getFen();
+				boardFace.setupBoard(fen);
 
-				if (!userPlayWhite) {
-					boardFace.setReside(true);
+				// revert reside back, because for diagrams white is always at bottom
+				if (!TextUtils.isEmpty(fen) && !fen.contains(FenHelper.WHITE_TO_MOVE)) {
+					boardFace.setReside(!boardFace.isReside());
 				}
 
 				// remove comments from movesList
@@ -1141,7 +1135,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		// for tablets make diagram wider
 		if (AppUtils.is7InchTablet(getActivity())) {
-			IMAGE_WIDTH_PERCENT = 0.90f;
+			IMAGE_WIDTH_PERCENT = 0.85f;
 		}
 
 		String[] countryNames = resources.getStringArray(R.array.new_countries);

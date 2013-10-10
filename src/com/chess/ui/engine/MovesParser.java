@@ -437,44 +437,32 @@ public class MovesParser {
 			return movesList;
 		}
 
-		while (movesList.contains(ALTERNATE_MOVES_SYMBOL_START)) {
-			int firstIndex = movesList.lastIndexOf("(");
-			int lastIndex = movesList.lastIndexOf(")") + 1; // one is length of ")"
-			String[] parts = movesList.split("\\(");
-			Log.d("MovesParser"," ________________________________________________");
+		String[] parts = movesList.split("\\(");
+		Log.d("MovesParser", " ________________________________________________");
 
-			for (String part : parts) {
-//				Log.d("MovesParser","before parts = " + part );
-				if (part.contains(")")) {
-					String[] parts1 = part.split("\\)");
-					for (int i = 0; i < parts1.length; i++) {
-						String part1 = parts1[i];
-						Log.d("MovesParser", " part1 = " + part1);
-						if (i+1 < parts1.length) {
-							part = part.replaceAll(part1, Symbol.EMPTY);
-						}
+		for (String part : parts) {
+//			Log.d("MovesParser","before parts = " + part );
+			if (part.contains(")")) {
+				// remove number duplication like  27.Bxb7 cxb2 ) 27...cxb2 28.Bc2 Be4 // here we remove 27...
+				part = part.replaceAll("[0-9]{1,2}\\.\\.\\.", Symbol.EMPTY);
+				String[] parts1 = part.split("\\)");
+				for (int i = 0; i < parts1.length; i++) {
+					String part1 = parts1[i];
+					Log.d("MovesParser", " part1 = " + part1);
+					if (i + 1 < parts1.length && !part.equals(Symbol.SPACE)) {
+						part = part.replace(part1 + ")", Symbol.EMPTY);
 					}
 				}
-//				Log.d("MovesParser","after parts = " + part );
-				newMovesList += part;
 			}
-			movesList = movesList.replaceAll("\\(",Symbol.EMPTY);
-			movesList = movesList.replaceAll("\\)",Symbol.EMPTY);
-			movesList = movesList.replaceAll("\\.\\.",Symbol.EMPTY);
-			newMovesList = newMovesList.replaceAll("\\(",Symbol.EMPTY);
-			newMovesList = newMovesList.replaceAll("\\)",Symbol.EMPTY);
-			newMovesList = newMovesList.replaceAll("\\.\\.",Symbol.EMPTY);
-			Log.d("MovesParser"," ------------------------------------------------");
-			Log.d("MovesParser"," RESULT movesList = " + movesList);
-			Log.d("MovesParser"," RESULT newMovesList = " + newMovesList);
-
-//			Log.d("MovesParser"," firstIndex = " + firstIndex + " lastIndex = " + lastIndex + " movesList = " + movesList);
-//			String result = movesList.substring(firstIndex, lastIndex);
-//			movesList = movesList.replace(result, Symbol.EMPTY);
-			movesList = movesList.replaceAll("(?=\\()(.*)(?<=\\))", Symbol.EMPTY);
+			Log.d("MovesParser", "after parts = " + part);
+			newMovesList += part;
 		}
-		// remove double parenthesis like ( 19.Kf1 19...Nf5  ( 19...Ng4  ) )
-//		movesList = movesList.replaceAll(" \\)", Symbol.EMPTY);
+		newMovesList = newMovesList.replaceAll("\\(", Symbol.EMPTY);
+		newMovesList = newMovesList.replaceAll("\\)", Symbol.EMPTY);
+		newMovesList = newMovesList.replaceAll("\\.\\.", Symbol.EMPTY); // ".."
+		Log.d("MovesParser", " ------------------------------------------------");
+		Log.d("MovesParser", " RESULT movesList = " + movesList);
+		Log.d("MovesParser", " RESULT newMovesList = " + newMovesList);
 
 		return newMovesList;
 	}

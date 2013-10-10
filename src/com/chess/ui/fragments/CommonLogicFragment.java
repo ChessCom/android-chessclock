@@ -470,11 +470,23 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
-
-					safeShowPopupDialog(R.string.session_expired, Symbol.EMPTY, RE_LOGIN_TAG);
+					performReLogin();
 				}
 			}
 		}
+	}
+
+	private void performReLogin() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
+		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getUsername());
+		loadItem.addRequestParams(RestHelper.P_PASSWORD, getAppData().getPassword());
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
+
+		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 	}
 
 	protected class ChessLoadUpdateListener<ItemType> extends ChessUpdateListener<ItemType> {
@@ -542,22 +554,17 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				}
 			}
 		}
-
-//		@Override
-//		public void errorHandle(String resultMessage) {
-//			if (resultMessage.contains(RestHelper.R_FB_USER_HAS_NO_ACCOUNT)) {
-//				popupItem.setPositiveBtnId(R.string.sign_up);
-//				showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
-//			}
-//		}
 	}
 
 	protected void processLogin(RegisterItem.Data returnedObj) {
-		if (passwordEdt == null || getActivity() == null) { // if accidentally return in wrong callback, when widgets are not initialized
+		if (getActivity() == null) { // if accidentally return in wrong callback, when widgets are not initialized
+			Log.e("Login", "activity is dead");
 			return;
 		}
 
-		preferencesEditor.putString(PASSWORD, getTextFromField(passwordEdt));
+		if (passwordEdt != null) {
+			preferencesEditor.putString(PASSWORD, getTextFromField(passwordEdt));
+		}
 		preferencesEditor.putString(USER_TOKEN, returnedObj.getLoginToken());
 		preferencesEditor.commit();
 

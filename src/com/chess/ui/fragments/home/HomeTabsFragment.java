@@ -16,10 +16,9 @@ import com.chess.backend.*;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
-import com.chess.statics.AppConstants;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
+import com.chess.statics.AppConstants;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
@@ -264,13 +263,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			if (RestHelper.containsServerCode(resultCode)) {
-				int serverCode = RestHelper.decodeServerCode(resultCode);
-				showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
-			} else if (resultCode == StaticData.INTERNAL_ERROR) {
-				showToast("Internal error occurred"); // TODO adjust properly
-//				showEmptyView(true);
-			}
+			super.errorHandle(resultCode);
+
 			updateTabs();
 		}
 	}

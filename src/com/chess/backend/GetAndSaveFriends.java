@@ -8,10 +8,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.api.FriendsItem;
 import com.chess.backend.exceptions.InternalErrorException;
-import com.chess.statics.AppData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
-import com.chess.utilities.AppUtils;
+import com.chess.statics.AppData;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +34,7 @@ public class GetAndSaveFriends extends IntentService {
 
 		FriendsItem item = null;
 		try {
-			item  = RestHelper.getInstance().requestData(loadItem, FriendsItem.class, AppUtils.getAppId(getApplicationContext()));
+			item  = RestHelper.getInstance().requestData(loadItem, FriendsItem.class, getApplicationContext());
 		} catch (InternalErrorException e) {
 			e.logMe();
 		}

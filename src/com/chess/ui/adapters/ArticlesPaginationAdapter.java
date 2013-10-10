@@ -7,7 +7,6 @@ import com.chess.backend.entity.api.ArticleItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.statics.StaticData;
-import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -34,7 +33,7 @@ public class ArticlesPaginationAdapter extends PaginationCursorAdapter<ArticleIt
 			loadItem.replaceRequestParams(RestHelper.P_PAGE_, String.valueOf(page));
 			ArticleItem item = null;
 			try {
-				item = RestHelper.getInstance().requestData(loadItem, ArticleItem.class, AppUtils.getAppId(context));
+				item = RestHelper.getInstance().requestData(loadItem, ArticleItem.class, context);
 			} catch (InternalErrorException e) {
 				e.logMe();
 			}

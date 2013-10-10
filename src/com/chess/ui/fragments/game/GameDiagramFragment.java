@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,7 @@ import com.chess.R;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameDiagramItem;
 import com.chess.statics.Symbol;
-import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardDiagram;
-import com.chess.ui.engine.Move;
-import com.chess.ui.engine.MovesParser;
+import com.chess.ui.engine.*;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameDiagramFace;
 import com.chess.ui.views.NotationView;
@@ -255,10 +253,12 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			boardFace.setChess960(true);
 		}
 
-		boardFace.setupBoard(diagramItem.getFen());
+		String fen = diagramItem.getFen();
+		boardFace.setupBoard(fen);
 
-		if (!userPlayWhite) {
-			boardFace.setReside(true);
+		// revert reside back, because for diagrams white is always at bottom
+		if (!TextUtils.isEmpty(fen) && !fen.contains(FenHelper.WHITE_TO_MOVE)) {
+			boardFace.setReside(!boardFace.isReside());
 		}
 
 		// remove comments from movesList

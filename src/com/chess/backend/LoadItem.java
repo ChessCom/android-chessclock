@@ -64,6 +64,7 @@ public class LoadItem { // TODO refactor with builder
 	public void setLoadPath(String loadPath) {
 		this.loadPath = loadPath;
 	}
+
 	public String getLoadPath() {
 		return loadPath;
 	}

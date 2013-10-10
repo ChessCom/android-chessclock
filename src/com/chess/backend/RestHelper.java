@@ -1,10 +1,12 @@
 package com.chess.backend;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import com.chess.R;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.statics.StaticData;
@@ -16,8 +18,11 @@ import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.protocol.HTTP;
 
+import javax.net.ssl.*;
 import java.io.*;
 import java.net.*;
+import java.security.GeneralSecurityException;
+import java.security.KeyStore;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -63,6 +68,7 @@ public class RestHelper {
 	public static String HOST = HOST_TEST; // switch production/test server
 
 	public String BASE_URL = "http://" + (HOST == null? HOST_TEST : HOST);
+	public String BASES_S_URL = "https://" + (HOST == null? HOST_TEST : HOST);
 	private static final String V1 = "/v1";
 
 	/* Methods calls*/
@@ -77,7 +83,7 @@ public class RestHelper {
 	public String CMD_GCM = CMD_USERS + "/gcm";
 	public String CMD_USER_STATS = CMD_USERS + "/stats";
 	public String CMD_USER_PROFILE = CMD_USERS + "/profile";
-	public String CMD_CHANGE_PASSWORD = CMD_USERS + "/change_password";
+	public String CMD_PASSWORD = CMD_USERS + "/password";
 
 	/*Games*/
 	public String CMD_GAMES = BASE_URL + V1 + "/games/";
@@ -428,14 +434,6 @@ public class RestHelper {
 	private static final String EQUALS = "=";
 
 
-	public static String formGetRequest(LoadItem loadItem) {
-		return loadItem.getLoadPath() + formUrl(loadItem.getRequestParams());
-	}
-
-	public static String formPostRequest(LoadItem loadItem) {
-		return loadItem.getLoadPath();
-	}
-
 	private static String formUrl(List<NameValuePair> nameValuePairs) {
 		List<NameValuePair> safeList = new ArrayList<NameValuePair>();
 		safeList.addAll(nameValuePairs);
@@ -493,26 +491,32 @@ public class RestHelper {
 
 	private static final String TAG = "RequestJsonTask";
 
-	public <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass, String appId) throws InternalErrorException {
+	public <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass, Context context) throws InternalErrorException {
 		CustomType item = null;
+		String appId = AppUtils.getAppId(context);
 		String requestMethod = loadItem.getRequestMethod();
 		String url = createSignature(loadItem, appId);
 
 		Log.d(TAG, "requesting by url = " + url);
 
 		HttpURLConnection connection = null;
-		try {
-//			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-//			String algorithm = TrustManagerFactory.getDefaultAlgorithm();
-//			TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
-//			tmf.init(keyStore);
-//
-//			SSLContext context = SSLContext.getInstance("TLS");
-//			context.init(null, tmf.getTrustManagers(), null);
 
+		try {
 			URL urlObj = new URL(url);
-			connection = (HttpURLConnection) urlObj.openConnection();
-			connection.setRequestMethod(requestMethod);
+			if (needSecureConnection(loadItem)) {
+				KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+				String algorithm = TrustManagerFactory.getDefaultAlgorithm();
+				TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
+				tmf.init(keyStore);
+
+				SSLContext sslContext = createSslContext(context, true);
+				connection = (HttpURLConnection) urlObj.openConnection();
+				((HttpsURLConnection)connection).setSSLSocketFactory(sslContext.getSocketFactory());
+
+			} else {
+				connection = (HttpURLConnection) urlObj.openConnection();
+				connection.setRequestMethod(requestMethod);
+			}
 
 			if (IS_TEST_SERVER_MODE) {
 				connection.setRequestProperty("Authorization", getBasicAuth());
@@ -602,6 +606,10 @@ public class RestHelper {
 			}
 		}
 		return item;
+	}
+
+	private boolean needSecureConnection(LoadItem loadItem) {
+		return loadItem.getLoadPath().equals(CMD_LOGIN) || loadItem.getLoadPath().equals(CMD_PASSWORD);
 	}
 
 	@TargetApi(Build.VERSION_CODES.FROYO)
@@ -715,7 +723,11 @@ public class RestHelper {
 			addStr = Q_;
 		}
 
-		return BASE_URL + requestPath + data + addStr + SIGNED + appId + "-" + signedPart;
+		if (needSecureConnection(loadItem)) {
+			return BASES_S_URL + requestPath + data + addStr + SIGNED + appId + "-" + signedPart;
+		} else {
+			return BASE_URL + requestPath + data + addStr + SIGNED + appId + "-" + signedPart;
+		}
 	}
 
 	private String getAppPartData(LoadItem loadItem) {
@@ -747,6 +759,69 @@ public class RestHelper {
 		md.update(text.getBytes("iso-8859-1"), 0, text.length());
 		byte[] sha1hash = md.digest();
 		return convertToHex(sha1hash);
+	}
+
+	private SSLContext createSslContext(Context context, boolean clientAuth) throws GeneralSecurityException {
+		KeyStore trustStore = loadTrustStore(context);
+		KeyStore keyStore = loadKeyStore(context);
+
+		MyTrustManager myTrustManager = new MyTrustManager(trustStore);
+		TrustManager[] tms = new TrustManager[] { myTrustManager };
+
+		KeyManager[] kms = null;
+		if (clientAuth) {
+			KeyManagerFactory kmf = KeyManagerFactory
+					.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+			kmf.init(keyStore, KEYSTORE_PASSWORD.toCharArray());
+			kms = kmf.getKeyManagers();
+		}
+
+		SSLContext sslContext = SSLContext.getInstance("TLS");
+		sslContext.init(kms, tms, null);
+
+		return sslContext;
+	}
+
+	private KeyStore loadTrustStore(Context context) {
+		try {
+			KeyStore localTrustStore = KeyStore.getInstance("BKS");
+			InputStream in = context.getResources().openRawResource(R.raw.mykeystore);
+			try {
+				localTrustStore.load(in, TRUSTSTORE_PASSWORD.toCharArray());
+			} finally {
+				in.close();
+			}
+
+			return localTrustStore;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	private KeyStore keyStore;
+
+	private static final String TRUSTSTORE_PASSWORD = "asd234p";
+	private static final String KEYSTORE_PASSWORD = "asd234p";
+
+	// use http://transoceanic.blogspot.ru/2011/11/android-import-ssl-certificate-and-use.html
+
+	private KeyStore loadKeyStore(Context context) {
+		if (keyStore != null) {
+			return keyStore;
+		}
+
+		try {
+			keyStore = KeyStore.getInstance("BKS");
+			InputStream in = context.getResources().openRawResource(R.raw.mykeystore);
+			try {
+				keyStore.load(in, KEYSTORE_PASSWORD.toCharArray());
+			} finally {
+				in.close();
+			}
+
+			return keyStore;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static <ItemType> String parseJsonToString(ItemType jRequest) {

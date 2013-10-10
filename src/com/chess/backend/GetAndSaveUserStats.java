@@ -4,9 +4,8 @@ import android.app.IntentService;
 import android.content.Intent;
 import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.exceptions.InternalErrorException;
-import com.chess.statics.AppData;
 import com.chess.db.tasks.SaveUserStatsTask;
-import com.chess.utilities.AppUtils;
+import com.chess.statics.AppData;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,7 +28,7 @@ public class GetAndSaveUserStats extends IntentService {
 
 		UserStatsItem item = null;
 		try {
-			item  = RestHelper.getInstance().requestData(loadItem, UserStatsItem.class, AppUtils.getAppId(getApplicationContext()));
+			item  = RestHelper.getInstance().requestData(loadItem, UserStatsItem.class, getApplicationContext());
 		} catch (InternalErrorException e) {
 			e.logMe();
 		}

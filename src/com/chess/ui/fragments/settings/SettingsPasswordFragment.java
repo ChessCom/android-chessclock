@@ -103,7 +103,7 @@ public class SettingsPasswordFragment extends CommonLogicFragment {
 	private void updateData() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.setLoadPath(RestHelper.getInstance().CMD_CHANGE_PASSWORD);
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_PASSWORD);
 		loadItem.addRequestParams(RestHelper.P_OLD_PASS, oldPassword);
 		loadItem.addRequestParams(RestHelper.P_NEW_PASS, newPassword);
 

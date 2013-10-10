@@ -71,7 +71,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		GcmItem item = null;
 		try {
-			item = RestHelper.getInstance().requestData(loadItem, GcmItem.class, AppUtils.getAppId(context));
+			item = RestHelper.getInstance().requestData(loadItem, GcmItem.class, context);
 		} catch (InternalErrorException e) {
 			e.logMe();
 		}
@@ -107,7 +107,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 				GcmItem item = null;
 				try {
-					item = RestHelper.getInstance().requestData(loadItem, GcmItem.class, AppUtils.getAppId(context));
+					item = RestHelper.getInstance().requestData(loadItem, GcmItem.class, context);
 				} catch (InternalErrorException e) {
 					e.logMe();
 				}
