@@ -541,7 +541,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				switch (serverCode) {
 					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
 						showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
-						passwordEdt.requestFocus();
+						if (passwordEdt != null) {
+							passwordEdt.requestFocus();
+						}
 						break;
 					case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
 						showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);

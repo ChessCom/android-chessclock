@@ -60,7 +60,6 @@ public class RestHelper {
 
 	/* Results */
 	public static final String R_STATUS_SUCCESS = "success";
-	public static final String R_STATUS_ERROR = "error";
 
 	//	http://api.chess-7.com
 	public static final String HOST_PRODUCTION = "api.chess.com";
@@ -609,7 +608,7 @@ public class RestHelper {
 	}
 
 	private boolean needSecureConnection(LoadItem loadItem) {
-		return loadItem.getLoadPath().equals(CMD_LOGIN) || loadItem.getLoadPath().equals(CMD_PASSWORD);
+		return (loadItem.getLoadPath().equals(CMD_LOGIN) || loadItem.getLoadPath().equals(CMD_PASSWORD)) && !IS_TEST_SERVER_MODE;
 	}
 
 	@TargetApi(Build.VERSION_CODES.FROYO)
