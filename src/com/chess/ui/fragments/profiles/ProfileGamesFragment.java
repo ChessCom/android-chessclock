@@ -243,7 +243,7 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 				case CURRENT_MY:
 					currentGamesMyCursorAdapter.changeCursor(returnedObj);
 					if (finishedGameDataList != null) {
-						boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, username);
+						boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, username);
 
 						if (gamesLeft) {
 							new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
@@ -303,7 +303,7 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 			boolean currentGamesLeft;
 			{ // current games
 				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-				currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, username);
+				currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContentResolver(), currentGamesList, username);
 
 				if (currentGamesLeft) {
 					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList,
@@ -317,7 +317,7 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 			finishedGameDataList = returnedObj.getData().getFinished();
 			if (!currentGamesLeft) { // if SaveTask will not return to LoadFinishedGamesPoint
 				if (finishedGameDataList != null) {
-					boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, username);
+					boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, username);
 
 					if (gamesLeft) {
 						new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,

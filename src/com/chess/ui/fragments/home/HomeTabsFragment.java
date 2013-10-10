@@ -246,11 +246,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 			// current games
 			List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-			boolean currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUsername());
+			boolean currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContentResolver(), currentGamesList, getUsername());
 
 			// finished
 			List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getFinished();
-			boolean finishedGamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
+			boolean finishedGamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, getUsername());
 
 			showDailyGamesFragment = currentGamesLeft || finishedGamesLeft;
 

@@ -431,15 +431,15 @@ public class DbDataManager {
 	/**
 	 * @return true if still have current games
 	 */
-	public static boolean checkAndDeleteNonExistCurrentGames(Context context, List<DailyCurrentGameData> gamesList, String username) {
+	public static boolean checkAndDeleteNonExistCurrentGames(ContentResolver contentResolver, List<DailyCurrentGameData> gamesList, String username) {
 		// compare to current list games
 
-		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = username;
 
 		Uri uri = uriArray[Tables.DAILY_CURRENT_GAMES.ordinal()];
 		long[] gamesIds;
+		// get Current games ids
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
 		if (cursor != null && cursor.moveToFirst()) {
 			gamesIds = new long[cursor.getCount()];
@@ -462,15 +462,18 @@ public class DbDataManager {
 			return true;
 		}
 
+		// collect ids that need to remove from DB
 		List<Long> idsToRemove = new ArrayList<Long>();
 		for (long gamesId : gamesIds) {
 			boolean found = false;
+			// if that gameId exist in list that we received from server, then skip
 			for (DailyCurrentGameData listCurrentItem : gamesList) {
 				if (listCurrentItem.getGameId() == gamesId) {
 					found = true;
 					break;
 				}
 			}
+			// if that game doesn't exist on server anymore, then remove it from DB
 			if (!found) {
 				idsToRemove.add(gamesId);
 			}
@@ -539,10 +542,9 @@ public class DbDataManager {
 		return gamesIds.length > idsToRemove.size();
 	}
 
-	public static boolean checkAndDeleteNonExistFinishedGames(Context context, List<DailyFinishedGameData> gamesList, String username) {
+	public static boolean checkAndDeleteNonExistFinishedGames(ContentResolver contentResolver, List<DailyFinishedGameData> gamesList, String username) {
 		// compare to current list games
 
-		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = username;
 
@@ -653,6 +655,74 @@ public class DbDataManager {
 
 		return exist;
 	}
+
+	public static void saveFriendToDB(String username, ContentResolver contentResolver, FriendsItem.Data currentItem) {
+		final String[] arguments2 = sArguments2;
+		arguments2[0] = String.valueOf(username);
+		arguments2[1] = String.valueOf(currentItem.getUserId());
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()];
+		Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID, DbDataManager.SELECTION_USER_ID, arguments2, null);
+
+		ContentValues values = DbDataManager.putFriendItemToValues(currentItem, username);
+
+		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	public static boolean checkAndDeleteNonExistFriends(ContentResolver contentResolver, List<FriendsItem.Data> friendsList, String username) {
+		// compare to current list games
+
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = username;
+
+		Uri uri = uriArray[Tables.FRIENDS.ordinal()];
+		long[] userIds;
+		// get all user's friends. Drink beer, have fun. Collect all ids
+		Cursor cursor = contentResolver.query(uri, PROJECTION_USER_ID, SELECTION_USER, arguments1, null);
+		if (cursor != null && cursor.moveToFirst()) {
+			userIds = new long[cursor.getCount()];
+			int i = 0;
+			do {
+				userIds[i++] = getLong(cursor, V_USER_ID);
+			} while (cursor.moveToNext());
+		} else if (friendsList.size() == 0) { // means no friends exist for that user
+			arguments1[0] = username;
+			contentResolver.delete(uri, SELECTION_USER, arguments1);
+
+			return false;
+		} else { // friends exist, but not saved yet
+			return true;
+		}
+
+		List<Long> idsToRemove = new ArrayList<Long>();
+		for (long userId : userIds) {
+			boolean found = false;
+			// if friend is still with us, then add him to alive
+			for (FriendsItem.Data listCurrentItem : friendsList) {
+				if (listCurrentItem.getUserId() == userId) {
+					found = true;
+					break;
+				}
+			}
+			// else he probably already not with us :)
+			if (!found) {
+				idsToRemove.add(userId);
+			}
+		}
+
+		if (idsToRemove.size() > 0) {
+			for (Long id : idsToRemove) {
+				final String[] arguments2 = sArguments2;
+				arguments2[0] = username;
+				arguments2[1] = String.valueOf(id);
+				contentResolver.delete(uri, SELECTION_USER_ID, arguments2);
+			}
+		}
+
+		return userIds.length > idsToRemove.size();
+	}
+
 
 	/**
 	 * Check if we have saved explorer moves for game

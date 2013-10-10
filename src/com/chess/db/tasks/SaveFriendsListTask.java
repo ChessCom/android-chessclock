@@ -1,16 +1,12 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
 import com.chess.backend.entity.api.FriendsItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.AppData;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
+import com.chess.statics.AppData;
+import com.chess.statics.StaticData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +17,6 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 	private final String username;
 
 	private ContentResolver contentResolver;
-	protected static String[] sArguments = new String[2];
 
 	public SaveFriendsListTask(TaskUpdateInterface<FriendsItem.Data> taskFace, List<FriendsItem.Data> currentItems,
 							   ContentResolver resolver) {
@@ -35,20 +30,10 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
+		DbDataManager.checkAndDeleteNonExistFriends(contentResolver, itemList, username);
+
 		for (FriendsItem.Data currentItem : itemList) {
-			final String[] arguments = sArguments;
-			arguments[0] = String.valueOf(username);
-			arguments[1] = String.valueOf(currentItem.getUserId());
-
-			// TODO implement beginTransaction logic for performance increase
-			Uri uri = DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()];
-			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID,
-					DbDataManager.SELECTION_USER_ID, arguments, null);
-
-			ContentValues values = DbDataManager.putFriendItemToValues(currentItem, username);
-
-			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
-
+			DbDataManager.saveFriendToDB(username, contentResolver, currentItem);
 		}
 
 		return StaticData.RESULT_OK;

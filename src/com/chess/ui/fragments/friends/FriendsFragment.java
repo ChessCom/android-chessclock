@@ -171,7 +171,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 			new SaveFriendsListTask(saveFriendsListUpdateListener, returnedObj.getData(),
 					getContentResolver()).executeTask();
-
 		}
 
 		@Override

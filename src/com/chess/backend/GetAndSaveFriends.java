@@ -2,14 +2,10 @@ package com.chess.backend;
 
 import android.app.IntentService;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import com.chess.backend.entity.api.FriendsItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.statics.AppData;
 
 /**
@@ -43,19 +39,12 @@ public class GetAndSaveFriends extends IntentService {
 			String username = appData.getUsername();
 			ContentResolver contentResolver = getContentResolver();
 
+			DbDataManager.checkAndDeleteNonExistFriends(contentResolver, item.getData(), username);
 			for (FriendsItem.Data currentItem : item.getData()) {
-				final String[] arguments2 = arguments;
-				arguments2[0] = String.valueOf(username);
-				arguments2[1] = String.valueOf(currentItem.getUserId());
-
-				// TODO implement beginTransaction logic for performance increase
-				Uri uri = DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()];
-				Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_USER_ID, DbDataManager.SELECTION_USER_ID, arguments2, null);
-
-				ContentValues values = DbDataManager.putFriendItemToValues(currentItem, username);
-
-				DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
+				DbDataManager.saveFriendToDB(username, contentResolver, currentItem);
 			}
 		}
 	}
+
+
 }

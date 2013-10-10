@@ -61,8 +61,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final long FRAGMENT_VISIBILITY_DELAY = 200;
 
-	private OnlineUpdateListener challengeInviteUpdateListener;
-	private OnlineUpdateListener acceptDrawUpdateListener;
+	private DailyUpdateListener challengeInviteUpdateListener;
+	private DailyUpdateListener acceptDrawUpdateListener;
 
 	private IntentFilter listUpdateFilter;
 	private BroadcastReceiver gamesUpdateReceiver;
@@ -197,8 +197,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	};
 
 	private void init() {
-		challengeInviteUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.INVITE);
-		acceptDrawUpdateListener = new OnlineUpdateListener(OnlineUpdateListener.DRAW);
+		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.INVITE);
+		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
 		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
 		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
 		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
@@ -310,13 +310,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
-	private class OnlineUpdateListener extends ChessUpdateListener<BaseResponseItem> {
+	private class DailyUpdateListener extends ChessUpdateListener<BaseResponseItem> {
 		public static final int INVITE = 3;
 		public static final int DRAW = 4;
 
 		private int itemCode;
 
-		public OnlineUpdateListener(int itemCode) {
+		public DailyUpdateListener(int itemCode) {
 			super(BaseResponseItem.class);
 			this.itemCode = itemCode;
 		}
@@ -498,7 +498,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 //					}
 
 					if (finishedGameDataList != null) {
-						boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
+						boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(),
+								finishedGameDataList, getUsername());
 
 						if (gamesLeft) {
 							new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
@@ -556,7 +557,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			boolean currentGamesLeft;
 			{ // current games
 				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-				currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContext(), currentGamesList, getUsername());
+				currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContentResolver(), currentGamesList, getUsername());
 
 				if (currentGamesLeft) {
 					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList,
@@ -570,7 +571,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			finishedGameDataList = returnedObj.getData().getFinished();
 			if (!currentGamesLeft) { // if SaveTask will not return to LoadFinishedGamesPoint
 				if (finishedGameDataList != null) {
-					boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList, getUsername());
+					boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, getUsername());
 
 					if (gamesLeft) {
 						new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
