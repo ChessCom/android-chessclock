@@ -205,7 +205,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_LIMIT, 1);
+		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, 1);
 
 		new RequestJsonTask<VideoItem>(latestItemUpdateListener).executeTask(loadItem);
 	}

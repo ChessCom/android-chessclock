@@ -366,6 +366,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	private void loadDbGames() {
+		logTest("load from DB");
 		new LoadDataFromDbTask(currentGamesCursorUpdateListener,
 				DbHelper.getDailyCurrentListGames(getUsername()),
 				getContentResolver()).executeTask();

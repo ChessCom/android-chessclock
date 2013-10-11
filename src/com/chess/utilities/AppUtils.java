@@ -764,7 +764,9 @@ public class AppUtils {
 		 if (drawingCache == null) {
 			 return null;
 		 }
+
 		 Bitmap bitmap = Bitmap.createBitmap(drawingCache);
+		 drawingCache.recycle();
 		 view.setDrawingCacheEnabled(false);
 		 return bitmap;
 	}

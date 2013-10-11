@@ -1037,6 +1037,7 @@ public class DbDataManager {
 		values.put(V_FINISHED, 0);
 		values.put(V_USER, username);
 		values.put(V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOffered());
+		Log.d("TEST", "putDailyGameCurrentItemToValues my turn = " + dataObj.isMyTurn());
 		values.put(V_IS_MY_TURN, dataObj.isMyTurn() ? 1 : 0);
 		return values;
 	}

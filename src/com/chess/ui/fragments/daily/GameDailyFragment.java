@@ -498,11 +498,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		}
 	}
 
-//	private void loadGamesList() {
-//		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(getUsername()),
-//				getContentResolver()).executeTask();
-//	}
-
 	private void loadGamesList() {
 		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(getUsername()),
 				getContentResolver()).executeTask();

@@ -1,6 +1,5 @@
 package com.chess.ui.fragments.articles;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -39,12 +38,14 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameDiagramItem;
+import com.chess.model.PopupItem;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommentsCursorAdapter;
 import com.chess.ui.engine.*;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.game.GameDiagramFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.interfaces.boards.BoardFace;
@@ -92,6 +93,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private static final long ANIMATION_SET_DURATION = 350;
 	public static final String CHESS_COM_DIAGRAM = "chess_com_diagram";
 	private static final long TASK_SLEEP_DELAY = 100;
+	private static final String DIAGRAM_LOAD_TAG = "diagram load progress popup";
 	public static float IMAGE_WIDTH_PERCENT = 0.80f;
 
 	private GameFaceHelper gameFaceHelper;
@@ -139,6 +141,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private int notationsHeight;
 	private int textColor;
 	private int textSize;
+	private boolean diagramProgressInflated;
+	private PopupCustomViewFragment loadProgressPopupFragment;
+	private TextView loadProgressTxt;
+	private List<Bitmap> bitmapsToRecycle;
+	private AnimatorSet animatorSet;
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
 		ArticleDetailsFragment frag = new ArticleDetailsFragment();
@@ -200,6 +207,50 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			if (visible != null && visible) {
 				hideDiagramById(diagramId);
 			}
+
+			// revert animation
+			for (Animator animator : animatorSet.getChildAnimations()) {
+				((ObjectAnimator) animator).reverse();
+			}
+		}
+
+		if (complexContentLinLay != null) {
+			// release bitmaps from imageViews
+			int childCount = complexContentLinLay.getChildCount();
+			for (int i = 0; i < childCount; i++) {
+				View childAt = complexContentLinLay.getChildAt(i);
+
+				if (childAt instanceof FrameLayout) {
+					int childCount1 = ((FrameLayout) childAt).getChildCount();
+					for (int j = 0; j < childCount1; j++) {
+						View childAt1 = ((FrameLayout) childAt).getChildAt(j);
+						if (childAt1 instanceof ImageView) {
+							Drawable drawable = ((ImageView) childAt1).getDrawable();
+							if (drawable instanceof BitmapDrawable) {
+								BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+								Bitmap bitmap = bitmapDrawable.getBitmap();
+								bitmap.recycle();
+							}
+						}
+					}
+				}
+			}
+			complexContentLinLay = null;
+		}
+
+
+		logTest("bitmaps released");
+
+		// manually recycle bitmaps that we created
+		if (bitmapsToRecycle != null) {
+			for (Bitmap bitmap : bitmapsToRecycle) {
+				bitmap.recycle();
+			}
+			bitmapsToRecycle.clear();
+			bitmapsToRecycle = null;
+
+			// try to call Garbage collection // TODO investigate better solution
+			System.gc();
 		}
 	}
 
@@ -473,8 +524,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 						FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 						transaction.remove(fragmentById).commitAllowingStateLoss();
 					}
-					// restore shadow background for preview image
-					fragmentView.setBackgroundResource(R.drawable.shadow_back_square);
 				}
 
 				@Override
@@ -499,9 +548,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			transaction.remove(fragmentById).commitAllowingStateLoss();
 			activeIdsMap.put(previousClickedId, false);
 		}
-		// restore shadow background for preview image
-		View fragmentContainer = getView().findViewById(DIAGRAM_PREFIX + previousClickedId);
-		fragmentContainer.setBackgroundResource(R.drawable.shadow_back_square);
+		// restore image visibility
+
+		getView().findViewById(IMAGE_PREFIX + previousClickedId).setVisibility(View.VISIBLE);
+//		// restore shadow background for preview image
+//		View fragmentContainer = getView().findViewById(DIAGRAM_PREFIX + previousClickedId);
+//		fragmentContainer.setBackgroundResource(R.drawable.shadow_back_square);
 	}
 
 	private boolean showDiagramAnimated(Integer diagramId, final int clickedId) {
@@ -556,7 +608,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			Animator iconScaleY = ObjectAnimator.ofFloat(iconView, "scaleY", 1f, 1.3f);
 
 			// hide image
-			AnimatorSet animatorSet = new AnimatorSet();
 			Animator imageAnimator = ObjectAnimator.ofFloat(imageView, "alpha", 1, 0f);
 
 			Animator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 1.3f);
@@ -772,6 +823,41 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
+	private void showDiagramLoadingProgress(boolean show, int progress) {
+		if (show) { // show popup with percentage of loading theme
+			if (!diagramProgressInflated) {
+				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
+
+				TextView loadTitleTxt = (TextView) layout.findViewById(R.id.loadTitleTxt);
+				View loadProgressBar = layout.findViewById(R.id.loadProgressBar);
+				loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
+				TextView taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
+
+				loadTitleTxt.setText(R.string.processing_diagrams);
+				taskTitleTxt.setVisibility(View.GONE);
+				loadProgressTxt.setVisibility(View.VISIBLE);
+				loadProgressBar.setVisibility(View.GONE);
+
+				PopupItem popupItem = new PopupItem();
+				popupItem.setCustomView(layout);
+
+				loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+				loadProgressPopupFragment.show(getFragmentManager(), DIAGRAM_LOAD_TAG);
+				diagramProgressInflated = true;
+			} else {
+				loadProgressTxt.setText(String.valueOf(progress) + Symbol.PERCENT);
+			}
+
+		} else {
+			// dismiss only if all diagrams are parsed
+			if (parsedPartCnt == contentParts.length - 1) {
+				if (loadProgressPopupFragment != null) {
+					loadProgressPopupFragment.dismiss();
+				}
+			}
+		}
+	}
+
 	private class DiagramUpdateListener extends ChessUpdateListener<String> {
 		private List<ArticleDetailsItem.Diagram> diagramList;
 
@@ -782,11 +868,13 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		@Override
 		public void showProgress(boolean show) {
-			showCommentsLoadingView(show);
+			int progress = parsedPartCnt * 100 / contentParts.length;
+			showDiagramLoadingProgress(show, progress);
 		}
 
 		@Override
 		public void updateData(String part) {
+			logTest("updateData");
 			{
 				String diagramPart = part.substring(part.indexOf("<div "));
 				String partAfterDiagram = diagramPart.substring(diagramPart.indexOf("</div>") + "</div>".length());
@@ -819,7 +907,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					imageParams.gravity = Gravity.CENTER;
 
 					final ImageView imageView = new ImageView(getActivity());
-					imageView.setImageResource(R.drawable.board_white_grey_full_size);
 					imageView.setLayoutParams(imageParams);
 					imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 					imageView.setId(IMAGE_PREFIX + diagramId);
@@ -856,6 +943,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					iconView.setTextSize(iconOverlaySize);
 					iconView.setTextColor(iconOverlayColor);
 					iconView.setId(ICON_PREFIX + diagramId);
+
+					float shadowRadius = 1 * density + 0.5f;
+					float shadowDx = 1 * density;
+					float shadowDy = 1 * density;
+					iconView.setShadowLayer(shadowRadius, shadowDx, shadowDy, 0x88000000);
 
 					// set click handler and then get this tag from view to show diagram
 					iconView.setOnClickListener(ArticleDetailsFragment.this);
@@ -931,8 +1023,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				ChessBoardDiagram.resetInstance();
 				BoardFace boardFace = gameFaceHelper.getBoardFace();
 
-				boolean userPlayWhite = diagramItem.getUserColor() == ChessBoard.WHITE_SIDE;
-
 				if (diagramItem.getGameType() == BaseGameItem.CHESS_960) {
 					boardFace.setChess960(true);
 				}
@@ -975,19 +1065,27 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					bitmapFromView = AppUtils.getBitmapFromView(boardView, bitmapWidth, bitmapHeight);
 				}
 
-				BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmapFromView);
-				drawable.setBounds(0, 0, bitmapWidth, bitmapHeight);
-				ImageView imageView = (ImageView) getView().findViewById(IMAGE_PREFIX + diagramId);
-				imageView.setImageDrawable(drawable);
+				// recycle bitmaps in boardView
+				boardView.releaseBitmaps();
 
-				if (AppUtils.is7InchTablet(getActivity())) {
-					// add shadow background to frame layout
-					View fragmentContainer = getView().findViewById(DIAGRAM_PREFIX + diagramId);
-					fragmentContainer.setBackgroundResource(R.drawable.shadow_back_square);
-				} else {
-					// add background to imageView
-					imageView.setBackgroundResource(R.drawable.shadow_back_square);
-				}
+				if (bitmapFromView != null) {
+					bitmapsToRecycle.add(bitmapFromView);
+
+					BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmapFromView);
+					drawable.setBounds(0, 0, bitmapWidth, bitmapHeight);
+					ImageView imageView = (ImageView) getView().findViewById(IMAGE_PREFIX + diagramId);
+					imageView.setImageDrawable(drawable);
+
+					if (AppUtils.is7InchTablet(getActivity())) {
+						// add shadow background to frame layout
+						View fragmentContainer = getView().findViewById(DIAGRAM_PREFIX + diagramId);
+						fragmentContainer.setBackgroundResource(R.drawable.shadow_back_square);
+					} else {
+						// add background to imageView
+						imageView.setBackgroundResource(R.drawable.shadow_back_square);
+					}
+				} // else load FEN from akamai
+
 			}
 		}
 	}
@@ -1007,20 +1105,24 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	private Bitmap getBitmapFromView(View view, int width, int height) {
 		// we add inset because of shadow background which have 15px margin
-		int inset = 15;
-		Bitmap returnedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-		Canvas canvas = new Canvas(returnedBitmap);
-		canvas.drawColor(Color.WHITE);
-		view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-				View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
-		view.layout(0, 0, width, height);
+		try {
+			int inset = 15;
+			Bitmap returnedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+			Canvas canvas = new Canvas(returnedBitmap);
+			canvas.drawColor(Color.WHITE);
+			view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+					View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
+			view.layout(0, 0, width, height);
 
-		canvas.save();
-		canvas.translate(inset, 0);
-		view.draw(canvas);
-		canvas.restore();
+			canvas.save();
+			canvas.translate(inset, 0);
+			view.draw(canvas);
+			canvas.restore();
 
-		return returnedBitmap;
+			return returnedBitmap;
+		} catch (OutOfMemoryError ex) {
+			return null;
+		}
 	}
 
 	private void updateComments() {
@@ -1125,9 +1227,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		actionBarHeight = resources.getDimensionPixelSize(R.dimen.actionbar_compat_height);
 		notationsHeight = resources.getDimensionPixelSize(R.dimen.notations_view_height);
 
+		bitmapsToRecycle = new ArrayList<Bitmap>();
 		diagramIdsList = new ArrayList<Integer>();
 		activeIdsMap = new HashMap<Integer, Boolean>();
 		simpleIdsMap = new HashMap<Integer, Boolean>();
+		animatorSet = new AnimatorSet();
 
 		textColor = resources.getColor(R.color.new_subtitle_dark_grey);
 		textSize = (int) (resources.getDimensionPixelSize(R.dimen.content_text_size) / density);

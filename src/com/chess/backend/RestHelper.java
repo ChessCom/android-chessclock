@@ -249,11 +249,9 @@ public class RestHelper {
 	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";
 	public static final String P_FIELDS = "fields[]";
 	public static final String P_LOGIN_TOKEN = "loginToken";
-	public static final String P_PAGE = "pageNo";
 	public static final String P_PAGE_ = "page";
 	public static final String P_ITEMS_PER_PAGE = "itemsPerPage";
 	public static final String P_LIMIT = "limit";
-	public static final String P_ITEMS_PER_CATEGORY = "itemsPerCategory";
 	public static final String GCM_P_REGISTER_ID = "registrationId";
 
 	public static final String P_USERNAME = "username";
@@ -262,14 +260,12 @@ public class RestHelper {
 	public static final String P_PASSWORD = "password";
 	public static final String P_EMAIL = "email";
 	public static final String P_DEVICE_ID = "deviceId";
-	public static final String P_AUTH_TOKEN = "auth_token";
 	public static final String P_FIRST_NAME = "firstName";
 	public static final String P_LAST_NAME = "lastName";
 	public static final String P_SKILL_LEVEL = "skillLevel";
 	public static final String P_AVATAR = "avatar";
 	public static final String P_COUNTRY_ID = "countryId";
 	public static final String P_COUNTRY_CODE = "countryCode";
-	public static final String P_VIDEO_ID = "videoId";
 	public static final String P_CURRENT_POINTS = "currentPoints";
 	public static final String P_CURRENT_PERCENT = "currentPercent";
 	public static final String P_LAST_POS_NUMBER = "lastPositionNumber";
@@ -349,7 +345,6 @@ public class RestHelper {
 	public static final String P_AUTHOR = "author";
 	public static final String P_THEME = "theme";
 	public static final String SIGNED = "signed=";
-	public static final String P_PAGE_SIZE = "page-size";
 	public static final String P_FORUM_CATEGORY_ID = "forumCategoryId";
 	public static final String P_ARTICLE_ID = "articleId";
 	public static final String P_FORUM_TOPIC_ID = "forumTopicId";

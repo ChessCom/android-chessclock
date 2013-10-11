@@ -93,7 +93,6 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		super.onResume();
 
 		adjustBoardForGame();
-
 	}
 
 	@Override
@@ -105,6 +104,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		}
 
 		handler.removeCallbacks(showNextMoveRunnable);
+		boardView.releaseBitmaps();
 	}
 
 	@Override

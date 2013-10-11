@@ -169,7 +169,7 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 			int indexOfDescriptionEnd = diagram_code.lastIndexOf("]") + + "]\n\n".length();
 			// remove Event tag information
 			String moves = diagram_code.substring(indexOfDescriptionEnd);
-			moves = moves.substring(0, moves.indexOf(Symbol.NEW_STR));
+			moves = moves.substring(0, moves.lastIndexOf(Symbol.NEW_STR));
 			return moves;
 		}
 

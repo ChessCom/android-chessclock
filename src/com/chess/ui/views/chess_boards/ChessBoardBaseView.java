@@ -29,6 +29,7 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 
 import java.util.List;
+import java.util.WeakHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -61,7 +62,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected AppData appData;
 	private int boardId;
 
-	protected Bitmap[][] piecesBitmaps;
+	protected WeakHashMap<Integer, Bitmap> whitePiecesMap;
+	protected WeakHashMap<Integer, Bitmap> blackPiecesMap;
 	protected SharedPreferences preferences;
 
 	protected boolean firstClick = true;
@@ -99,7 +101,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected int viewHeight;
 	private int previousWidth;
 
-//	protected float width;
+	//	protected float width;
 //	protected float height;
 	protected Rect rect;
 
@@ -131,6 +133,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected boolean navigating;
 	private int draggingFrom = -1;
 	private CopyOnWriteArrayList<Move> validMoves = new CopyOnWriteArrayList<Move>(); // lets try this type
+	private BitmapFactory.Options bitmapOptions;
+	private int pieceInset;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -145,16 +149,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private void init(Context context) {
 		resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
-//		if (isInEditMode()) {
-//			return;
-//		}
 
 		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG);
 		boardBackPaint = new Paint();
 
 		appData = new AppData(context);
 		boardId = appData.getChessBoardId();
-		loadPieces(appData.getPiecesId());
 
 		handler = new Handler();
 		greenPaint = new Paint();
@@ -164,6 +164,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		madeMovePaint = new Paint();
 		possibleMovePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		rect = new Rect();
+
+		pieceInset = (int) (1 * density);
 
 		int highlightColor = resources.getColor(R.color.highlight_color);
 
@@ -423,21 +425,18 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected void drawBoard(Canvas canvas) {
-		if (viewHeight < viewWidth && viewWidth != QVGA_WIDTH) {
-			squareSize = viewHeight / 8;
-		} else {
-			squareSize = viewWidth / 8;
-		}
 		canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), boardBackPaint);
 	}
 
 	protected void drawPiecesAndAnimation(Canvas canvas) {
 		boolean animationActive;
 
+		// draw just piece without animation
 		if (moveAnimator == null && secondMoveAnimator == null) {
 			drawPieces(canvas, false, null);
 		}
 
+		// draw animations // TODO rework with Animator facility
 		if (moveAnimator != null) {
 			animationActive = moveAnimator.updateState();
 			drawPieces(canvas, animationActive, moveAnimator);
@@ -479,6 +478,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected void drawPieces(Canvas canvas, boolean animationActive, MoveAnimator moveAnimator) {
 		BoardFace boardFace = getBoardFace();
 		for (int i = 0; i < 64; i++) {
+			// do not draw if in drag or animated
 			if ((drag && i == from) || (animationActive && moveAnimator.isSquareHidden(i))) {
 				continue;
 			}
@@ -487,11 +487,21 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int piece = boardFace.getPiece(i);
 			int x = ChessBoard.getColumn(i, boardFace.isReside());
 			int y = ChessBoard.getRow(i, boardFace.isReside());
-			int inSet = (int) (1 * density);
 			// TODO rework logic to store changed pieces and redraw only them
 			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {    // here is the simple replace/redraw of piece // draw it bit inside of square
-				rect.set(x * squareSize + inSet, y * squareSize + inSet, x * squareSize + squareSize - inSet, y * squareSize + squareSize - inSet);
-				canvas.drawBitmap(piecesBitmaps[color][piece], null, rect, null);
+				// calculate piece size bounds
+				int left = x * squareSize + pieceInset;
+				int top = y * squareSize + pieceInset;
+				int right = x * squareSize + squareSize - pieceInset;
+				int bottom = y * squareSize + squareSize - pieceInset;
+				rect.set(left, top, right, bottom);
+
+				Bitmap pieceBitmap = getPieceBitmap(color, piece);
+
+				if (pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
+					return;
+				}
+				canvas.drawBitmap(pieceBitmap, null, rect, null);
 			}
 		}
 
@@ -590,12 +600,23 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int file = (dragX - dragX % squareSize) / squareSize;
 			int rank = ((dragY + squareSize) - (dragY + squareSize) % squareSize) / squareSize;
 			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {
-				rect.set(x - halfSquare, y - halfSquare, x + squareSize + halfSquare, y + squareSize + halfSquare);
+				// set piece bounds
+				int pieceLeft = x - halfSquare;
+				int pieceTop = y - halfSquare;
+				int pieceRight = x + squareSize + halfSquare;
+				int pieceBottom = y + squareSize + halfSquare;
+				rect.set(pieceLeft, pieceTop, pieceRight, pieceBottom);
+
 				// draw yellow rect above the square
-				canvas.drawRect(file * squareSize - halfSquare, rank * squareSize - halfSquare,
-						file * squareSize + squareSize + halfSquare, rank * squareSize + squareSize + halfSquare, whitePaint);
+				int rectLeft = file * squareSize - halfSquare;
+				int rectTop = rank * squareSize - halfSquare;
+				int rectRight = file * squareSize + squareSize + halfSquare;
+				int rectBottom = rank * squareSize + squareSize + halfSquare;
+				canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, whitePaint);
 				// draw piece
-				canvas.drawBitmap(piecesBitmaps[color][piece], null, rect, null);
+				Bitmap pieceBitmap = getPieceBitmap(color, piece);
+
+				canvas.drawBitmap(pieceBitmap, null, rect, null);
 			}
 		}
 	}
@@ -686,7 +707,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (!firstClick) {
 			draggingFrom = from;
 			// do not drag captured piece // ??
-			drag = isUserColor(boardFace.getColor(draggingFrom)) || (boardFace.isAnalysis() );
+			drag = isUserColor(boardFace.getColor(draggingFrom)) || (boardFace.isAnalysis());
 			to = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 			invalidate();
 		}
@@ -771,7 +792,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
 		viewWidth = (xNew == 0 ? viewWidth : xNew);
 		viewHeight = (yNew == 0 ? viewHeight : yNew);
+		squareSize = viewHeight / 8;
+
 		loadBoard();
+		loadPieces(appData.getPiecesId());
 	}
 
 	public void promote(int promote, int file, int rank) {
@@ -953,14 +977,80 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	private void setPieceBitmapFromArray(int[] drawableArray) {
-		piecesBitmaps = new Bitmap[2][6];
-		Resources resources = getResources();
-		for (int j = 0; j < 6; j++) {
-			piecesBitmaps[0][j] = ((BitmapDrawable) resources.getDrawable(drawableArray[j])).getBitmap();
+		/* Note on android.developers.com
+		In the past, a popular memory cache implementation was a SoftReference or WeakReference bitmap cache,
+		however this is not recommended. Starting from Android 2.3 (API Level 9) the garbage collector is more
+		aggressive with collecting soft/weak references which makes them fairly ineffective. In addition, prior
+		to Android 3.0 (API Level 11), the backing data of a bitmap was stored in native memory which is not
+		released in a predictable manner, potentially causing an application to briefly exceed its memory limits
+		and crash.
+
+		 */
+
+		if (whitePiecesMap == null) {
+			whitePiecesMap = new WeakHashMap<Integer, Bitmap>();
 		}
-		for (int j = 0; j < 6; j++) {
-			piecesBitmaps[1][j] = ((BitmapDrawable) resources.getDrawable(drawableArray[6 + j])).getBitmap();
+
+		if (blackPiecesMap == null) {
+			blackPiecesMap = new WeakHashMap<Integer, Bitmap>(); // TODO probably we don't need weak or soft referemces
 		}
+
+		bitmapOptions = new BitmapFactory.Options();
+		// get bitmapOptions size. It's always the same for same sized drawables
+		int drawableId = drawableArray[0];
+		bitmapOptions.inJustDecodeBounds = true;
+		BitmapFactory.decodeResource(getResources(), drawableId, bitmapOptions);
+
+		for (int j = 0; j < 6; j++) {
+			// create white piece
+			drawableId = drawableArray[j];
+			Bitmap pieceBitmap = createBitmapForPiece(drawableId);
+			whitePiecesMap.put(j, pieceBitmap);
+
+			// create black piece
+			drawableId = drawableArray[6 + j];
+			pieceBitmap = createBitmapForPiece(drawableId);
+			blackPiecesMap.put(j, pieceBitmap);
+		}
+	}
+
+	/**
+	 * Create bitmap to be re-used, based on the size of one of the bitmaps
+	 * pass bitmapOptions to get info
+	 */
+	private Bitmap createBitmapForPiece(int drawableId) {
+		Bitmap pieceBitmap;
+
+		// Calculate inSampleSize
+		int pieceSize = squareSize - pieceInset;
+		bitmapOptions.inSampleSize = calculateInSampleSize(bitmapOptions, pieceSize, pieceSize);
+
+		// Decode bitmap with inSampleSize set
+		bitmapOptions.inJustDecodeBounds = false;
+		pieceBitmap = BitmapFactory.decodeResource(getResources(), drawableId, bitmapOptions);
+
+		return pieceBitmap;
+	}
+
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+
+			// Calculate ratios of height and width to requested height and width
+			final int heightRatio = Math.round((float) height / (float) reqHeight);
+			final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+			// Choose the smallest ratio as inSampleSize value, this will guarantee
+			// a final image with both dimensions larger than or equal to the
+			// requested height and width.
+			inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+		}
+
+		return inSampleSize;
 	}
 
 	protected AppData getAppData() {
@@ -1223,6 +1313,23 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		return squareSize * (getBoardFace().isReside() ? 7 - y : y);
 	}
 
+	public void releaseBitmaps() {
+		if (whitePiecesMap != null) {
+			for (Bitmap bitmap : whitePiecesMap.values()) {
+				bitmap.recycle();
+			}
+		}
+
+		if (blackPiecesMap != null) {
+			for (Bitmap bitmap : blackPiecesMap.values()) {
+				bitmap.recycle();
+			}
+		}
+
+		whitePiecesMap = null;
+		blackPiecesMap = null;
+	}
+
 	// todo: should be only one getYCoordinate method after refactoring
 //	private int getYCoordinateForArrow(int y) {
 //		return square * (getBoardFace().isReside() ? y : 7 - y);
@@ -1262,7 +1369,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (fromColor == ChessBoard.EMPTY) {
 				fromColor = 0;
 			}
-			pieceBitmap = piecesBitmaps[fromColor][fromPiece];
+
+			pieceBitmap = getPieceBitmap(fromColor, fromPiece);
 
 			// todo: check game load
 
@@ -1270,7 +1378,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (boardFace.getPiece(moveToPosition) != ChessBoard.EMPTY) {
 				int capturedColor = boardFace.getColor(moveToPosition);
 				int capturedPiece = boardFace.getPiece(moveToPosition);
-				capturedPieceBitmap = piecesBitmaps[capturedColor][capturedPiece];
+
+				capturedPieceBitmap = getPieceBitmap(capturedColor, capturedPiece);
 				capturedPiecePosition = moveToPosition;
 				hide2 = moveToPosition;
 			}
@@ -1289,7 +1398,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 						to2 = move.to + 1;
 					}
 					hide2 = to2;
-					rookCastlingBitmap = piecesBitmaps[fromColor][ChessBoard.ROOK];
+					rookCastlingBitmap = getPieceBitmap(fromColor, ChessBoard.ROOK);
 				}
 			} else {
 				from1 = move.to;
@@ -1305,10 +1414,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 						to2 = move.to - 2;
 					}
 					hide2 = to2;
-					rookCastlingBitmap = piecesBitmaps[fromColor][ChessBoard.ROOK];
+					rookCastlingBitmap = getPieceBitmap(fromColor, ChessBoard.ROOK);
 				}
 			}
 		}
+
 
 		public boolean isForward() {
 			return forward;
@@ -1383,8 +1493,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 
 		private void drawAnimPiece(Canvas canvas, Bitmap pieceBitmap, int from, int to, double animationTimeFactor) {
-			if (pieceBitmap == null)
+			if (pieceBitmap == null) {
 				return;
+			}
+
 			final int xCrd1 = getXCoordinate(ChessBoard.getFile(from));
 			final int yCrd1 = getYCoordinate(ChessBoard.getRank(from));
 			final int xCrd2 = getXCoordinate(ChessBoard.getFile(to));
@@ -1403,6 +1515,16 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		public void setForceCompEngine(boolean forceCompEngine) {
 			this.forceCompEngine = forceCompEngine;
 		}
+	}
+
+	private Bitmap getPieceBitmap(int fromColor, int fromPiece) {
+		Bitmap pieceBitmap;
+		if (fromColor == ChessBoard.WHITE_SIDE) {
+			pieceBitmap = whitePiecesMap.get(fromPiece);
+		} else {
+			pieceBitmap = blackPiecesMap.get(fromPiece);
+		}
+		return pieceBitmap;
 	}
 
 	protected boolean noMovesToAnimate() {

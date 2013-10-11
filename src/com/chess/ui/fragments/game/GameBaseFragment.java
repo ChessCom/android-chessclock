@@ -109,6 +109,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		super.onPause();
 
 		boardView.releaseRunnable();
+		boardView.releaseBitmaps();
 
 		if (AppUtils.isNeedToUpgrade(getActivity())) {
 			MopubHelper.destroyRectangleAd();

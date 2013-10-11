@@ -154,12 +154,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		setTitle(R.string.customize);
 
 		widgetsInit(view);
-
-//		// adjust action bar icons
-//		getActivityFace().showActionMenu(R.id.menu_cancel, true);
-//		getActivityFace().showActionMenu(R.id.menu_accept, true);
-//		getActivityFace().showActionMenu(R.id.menu_notifications, false);
-//		getActivityFace().showActionMenu(R.id.menu_games, false);
 	}
 
 	@Override
