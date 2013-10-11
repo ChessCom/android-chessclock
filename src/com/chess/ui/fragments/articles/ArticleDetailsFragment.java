@@ -1256,7 +1256,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
 		iconOverlaySize = (int) (resources.getDimension(R.dimen.diagram_icon_overlay_size) / density);
-		iconOverlayColor = resources.getColor(R.color.semitransparent_white_65);
+		iconOverlayColor = resources.getColor(R.color.semitransparent_white_75);
 		commentPostListener = new CommentPostListener();
 
 		gameFaceHelper = new GameFaceHelper();
