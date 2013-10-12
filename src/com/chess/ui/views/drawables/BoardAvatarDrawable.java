@@ -47,10 +47,12 @@ public class BoardAvatarDrawable extends Drawable {
 		CORNER_RADIUS *= density;
 		BORDER_THICK *= density;
 
+		int whiteColor = 0xEFFFFFFF;
+		int blackColor = 0xA5000000;
 		solidBackWhiteDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-				new int[]{0xBFFFFFFF, 0xBFFFFFFF});
+				new int[]{whiteColor, whiteColor});
 		solidBackBlackDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-				new int[]{0xA5000000, 0xA5000000});
+				new int[]{blackColor, blackColor});
 
 		fillBackDrawable = new ColorDrawable(resources.getColor(R.color.new_soft_grey));
 

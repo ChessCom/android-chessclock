@@ -413,6 +413,8 @@
 	<string name="new_password">New Password</string>
 	<string name="change_password">Change Password</string>
 	<string name="processing_diagrams">Processing Diagrams</string>
+	<string name="cotent">Content</string>
+	<string name="comments">Comments</string>
 
 	<!--Navigation Menu-->
 

@@ -962,12 +962,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 
 		bottomPanelView.showDefault(); // TODO remove if unused
-
-		if (boardFace.getSide() == ChessBoard.WHITE_SIDE) {
-			bottomPanelView.setSide(ChessBoard.WHITE_SIDE);
-		} else {
-			bottomPanelView.setSide(ChessBoard.BLACK_SIDE);
-		}
+		bottomPanelView.setSide(labelsConfig.userSide);
 
 		if (isAnalysis) {
 			controlsTacticsView.showAnalysis();

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
+import com.chess.ui.views.drawables.BoardAvatarDrawable;
 
 /**
  * GamePanelTestActivity class
@@ -180,7 +181,9 @@ public class PanelInfoTacticsView extends RelativeLayout {
 
 	public void setSide(int side) {
 		this.side = side;
-
+		if (avatarImg.getDrawable() != null) { // change avatar border
+			((BoardAvatarDrawable) avatarImg.getDrawable()).setSide(side);
+		}
 		invalidate();
 	}
 

@@ -72,7 +72,7 @@ public class EnhancedImageDownloader {
         } else {
             cancelPotentialDownload(url, holder.getImageView());
             holder.setImageBitmap(bitmap);
-            holder.progress.setVisibility(View.INVISIBLE);
+//            holder.progress.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -93,7 +93,7 @@ public class EnhancedImageDownloader {
         } else {
             cancelPotentialDownload(url, holder.getImageView());
             holder.setImageBitmap(bitmap);
-            holder.progress.setVisibility(View.INVISIBLE);
+//            holder.progress.setVisibility(View.INVISIBLE);
         }
     }
     /**
@@ -268,7 +268,7 @@ public class EnhancedImageDownloader {
 
         @Override
         protected void onPreExecute() {
-            holderReference.get().progress.setVisibility(View.VISIBLE);
+//            holderReference.get().progress.setVisibility(View.VISIBLE);
             super.onPreExecute();
         }
 
