@@ -84,18 +84,6 @@
 		android:paddingBottom="2dip"
 		android:textSize="@dimen/content_text_size" />
 
-	<!--Complex article body layout-->
-	<LinearLayout
-		android:id="@+id/complexContentLinLay"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:layout_below="@id/thumbnailAuthorImg"
-		android:paddingBottom="2dip"
-		android:animateLayoutChanges="true"
-		android:visibility="gone"
-		/>
-
 	<ProgressBar
 		android:id="@+id/loadingCommentsView"
 		android:layout_width="@dimen/pending_progress_bar_size"

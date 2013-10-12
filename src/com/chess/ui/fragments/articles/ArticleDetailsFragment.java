@@ -4,10 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,16 +26,15 @@ import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.PostCommentItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.tasks.AbstractUpdateTask;
+import com.chess.backend.image_load.bitmapfun.DiagramImageProcessor;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
+import com.chess.model.GameAnalysisItem;
 import com.chess.model.GameDiagramItem;
-import com.chess.model.PopupItem;
-import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommentsCursorAdapter;
 import com.chess.ui.adapters.CustomSectionedAdapter;
@@ -47,7 +42,6 @@ import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.*;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.game.GameDiagramFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.interfaces.boards.BoardFace;
@@ -75,6 +69,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	private static final int CONTENT_SECTION = 0;
 	private static final int COMMENTS_SECTION = 1;
+	private static final String IMAGE_CACHE_DIR = "diagrams";
 
 	public static final String ITEM_ID = "item_id";
 	public static final String GREY_COLOR_DIVIDER = "##";
@@ -97,8 +92,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private static final int ZERO = 0;
 	private static final long ANIMATION_SET_DURATION = 350;
 	public static final String CHESS_COM_DIAGRAM = "chess_com_diagram";
-	private static final long TASK_SLEEP_DELAY = 100;
-	private static final String DIAGRAM_LOAD_TAG = "diagram load progress popup";
 	public static float IMAGE_WIDTH_PERCENT = 0.80f;
 
 	private GameFaceHelper gameFaceHelper;
@@ -131,28 +124,23 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private boolean inEditMode;
 	private String commentForEditStr;
 	private View loadingCommentsView;
-	private LinearLayout complexContentLinLay;
 	private float density;
 	private List<Integer> diagramIdsList;
 	private List<ArticleDetailsItem.Diagram> diagramsList;
 	private HashMap<Integer, Boolean> activeIdsMap;
 	private HashMap<Integer, Boolean> simpleIdsMap;
 	private ControlledListView listView;
-	private boolean diagramsLoaded;
 	private int controlButtonHeight;
 	private int actionBarHeight;
-	private String[] contentParts;
-	private int parsedPartCnt;
 	private int iconOverlaySize;
 	private int iconOverlayColor;
 	private int notationsHeight;
 	private int textColor;
 	private int textSize;
-	private boolean diagramProgressInflated;
-	private PopupCustomViewFragment loadProgressPopupFragment;
-	private TextView loadProgressTxt;
-	private List<Bitmap> bitmapsToRecycle;
 	private AnimatorSet animatorSet;
+	private DiagramImageProcessor diagramImageProcessor;
+	private int deviceSizeCode;
+	private boolean diagramsLoaded;
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
 		ArticleDetailsFragment frag = new ArticleDetailsFragment();
@@ -221,44 +209,15 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			}
 		}
 
-		if (complexContentLinLay != null) {
-			// release bitmaps from imageViews
-			int childCount = complexContentLinLay.getChildCount();
-			for (int i = 0; i < childCount; i++) {
-				View childAt = complexContentLinLay.getChildAt(i);
+		diagramImageProcessor.setPauseWork(false);
+		diagramImageProcessor.setExitTasksEarly(true);
+		diagramImageProcessor.flushCache();
+	}
 
-				if (childAt instanceof FrameLayout) {
-					int childCount1 = ((FrameLayout) childAt).getChildCount();
-					for (int j = 0; j < childCount1; j++) {
-						View childAt1 = ((FrameLayout) childAt).getChildAt(j);
-						if (childAt1 instanceof ImageView) {
-							Drawable drawable = ((ImageView) childAt1).getDrawable();
-							if (drawable instanceof BitmapDrawable) {
-								BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-								Bitmap bitmap = bitmapDrawable.getBitmap();
-								bitmap.recycle();
-							}
-						}
-					}
-				}
-			}
-			complexContentLinLay = null;
-		}
-
-
-		logTest("bitmaps released");
-
-		// manually recycle bitmaps that we created
-		if (bitmapsToRecycle != null) {
-			for (Bitmap bitmap : bitmapsToRecycle) {
-				bitmap.recycle();
-			}
-			bitmapsToRecycle.clear();
-			bitmapsToRecycle = null;
-
-			// try to call Garbage collection // TODO investigate better solution
-			System.gc();
-		}
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		diagramImageProcessor.closeCache();
 	}
 
 	@Override
@@ -347,7 +306,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		if (bodyStr.contains(DIAGRAM_START_TAG)) {
 
 			// we go through the article body and divide it to parts
-			contentParts = bodyStr.split(DIAGRAM_START_TAG);
+			String[] contentParts = bodyStr.split(DIAGRAM_START_TAG);
 			// hide simple container
 			contentTxt.setVisibility(View.GONE);
 
@@ -381,22 +340,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			}
 
 			diagramsAdapter.setItemsList(contentPartsList);
+			diagramsLoaded = true;
 			updateComments();
 
-			// divide text and add corresponding views: TextView for text part and image for diagram part
-//			for (parsedPartCnt = 0; parsedPartCnt < contentParts.length; parsedPartCnt++) {
-//				if (contentParts[parsedPartCnt].contains(CHESS_COM_DIAGRAM)) {
-//					new DiagramLoaderTask(new DiagramUpdateListener(diagramList)).executeTask(contentParts[parsedPartCnt]);
-//					diagramsLoaded = true;
-//
-//					break;
-//				} else {
-//					addContentText();
-//				}
-//			}
 			return true;
 		} else {
-			complexContentLinLay.setVisibility(View.GONE);
 			contentTxt.setVisibility(View.VISIBLE);
 
 			return false;
@@ -828,257 +776,18 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
-	private class DiagramLoaderTask extends AbstractUpdateTask<String, String> {
-
-		public DiagramLoaderTask(TaskUpdateInterface<String> taskFace) {
-			super(taskFace);
-		}
-
-		@Override
-		protected Integer doTheTask(String... params) {
-			// we need delay to make transaction to diagram fragments serial, to be able to capture correct bitmaps for them
-			try {
-				Thread.sleep(TASK_SLEEP_DELAY);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
-			item = params[0];
-			return StaticData.RESULT_OK;
-		}
-	}
-
-	private void showDiagramLoadingProgress(boolean show, int progress) {
-		if (show) { // show popup with percentage of loading theme
-			if (!diagramProgressInflated) {
-				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
-
-				TextView loadTitleTxt = (TextView) layout.findViewById(R.id.loadTitleTxt);
-				View loadProgressBar = layout.findViewById(R.id.loadProgressBar);
-				loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
-				TextView taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
-
-				loadTitleTxt.setText(R.string.processing_diagrams);
-				taskTitleTxt.setVisibility(View.GONE);
-				loadProgressTxt.setVisibility(View.VISIBLE);
-				loadProgressBar.setVisibility(View.GONE);
-
-				PopupItem popupItem = new PopupItem();
-				popupItem.setCustomView(layout);
-
-				loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-				loadProgressPopupFragment.show(getFragmentManager(), DIAGRAM_LOAD_TAG);
-				diagramProgressInflated = true;
-			} else {
-				loadProgressTxt.setText(String.valueOf(progress) + Symbol.PERCENT);
-			}
-
-		} else {
-			// dismiss only if all diagrams are parsed
-			if (parsedPartCnt == contentParts.length - 1) {
-				if (loadProgressPopupFragment != null) {
-					loadProgressPopupFragment.dismiss();
-				}
-			}
-		}
-	}
-
-	private class DiagramUpdateListener extends ChessUpdateListener<String> {
-		private List<ArticleDetailsItem.Diagram> diagramList;
-
-		private DiagramUpdateListener(List<ArticleDetailsItem.Diagram> diagramList) {
-			super();
-			this.diagramList = diagramList;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			int progress = parsedPartCnt * 100 / contentParts.length;
-			showDiagramLoadingProgress(show, progress);
-		}
-
-		@Override
-		public void updateData(String part) {
-			logTest("updateData");
-			{
-				// get diagramId
-				String diagramPart = part.substring(part.indexOf("<div "));
-
-				String diagramIdStr = diagramPart.substring(diagramPart.indexOf("id=\"chess_com_diagram_")
-						+ "id=\"chess_com_diagram_".length());
-				diagramIdStr = diagramIdStr.substring(0, diagramIdStr.indexOf("\" class"));
-				String[] diagramIdParts = diagramIdStr.split("_");
-
-				final int diagramId = Integer.parseInt(diagramIdParts[ID_POSITION]);
-				diagramIdsList.add(diagramId);
-
-				// add RelativeLayout for imageView and fragment container
-				FrameLayout frameLayout = new FrameLayout(getActivity());
-				int frameWidth;
-				if (AppUtils.is7InchTablet(getActivity())) {
-					frameWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT);
-				} else {
-					frameWidth = widthPixels;
-				}
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(frameWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-				params.gravity = Gravity.CENTER;
-				frameLayout.setId(DIAGRAM_PREFIX + diagramId);
-				frameLayout.setLayoutParams(params);
-				complexContentLinLay.addView(frameLayout);
-
-				{// add imageView with diagram bitmap
-					// take 80% of screen width
-					int imageSize = (int) (widthPixels * IMAGE_WIDTH_PERCENT);
-					FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(imageSize, imageSize);
-					imageParams.gravity = Gravity.CENTER;
-
-					final ImageView imageView = new ImageView(getActivity());
-					imageView.setLayoutParams(imageParams);
-					imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-					imageView.setId(IMAGE_PREFIX + diagramId);
-
-					// set click handler and then get this tag from view to show diagram
-					imageView.setOnClickListener(ArticleDetailsFragment.this);
-
-					frameLayout.addView(imageView);
-				}
-
-				for (ArticleDetailsItem.Diagram diagramToShow : diagramList) {
-					if (diagramToShow.getDiagramId() == diagramId) {
-						final GameDiagramItem diagramItem = new GameDiagramItem();
-						diagramItem.setShowAnimation(false);
-						diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
-
-						if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
-							simpleIdsMap.put(diagramId, true);
-						} else {
-							simpleIdsMap.put(diagramId, false);
-						}
-						break;
-					}
-				}
-
-				if (!simpleIdsMap.get(diagramId)) {// add icon overlay above image
-					FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-							ViewGroup.LayoutParams.WRAP_CONTENT);
-					iconParams.gravity = Gravity.CENTER;
-
-					final RoboTextView iconView = new RoboTextView(getActivity());
-					iconView.setFont(FontsHelper.ICON_FONT);
-					iconView.setText(R.string.ic_expand);
-					iconView.setTextSize(iconOverlaySize);
-					iconView.setTextColor(iconOverlayColor);
-					iconView.setId(ICON_PREFIX + diagramId);
-
-					float shadowRadius = 1 * density + 0.5f;
-					float shadowDx = 1 * density;
-					float shadowDy = 1 * density;
-					iconView.setShadowLayer(shadowRadius, shadowDx, shadowDy, 0x88000000);
-
-					// set click handler and then get this tag from view to show diagram
-					iconView.setOnClickListener(ArticleDetailsFragment.this);
-
-					frameLayout.addView(iconView, iconParams);
-
-				}
-
-				Bitmap bitmapFromView = createSimpleDiagramImage(diagramId, diagramList);
-
-				if (bitmapFromView != null) {
-					bitmapsToRecycle.add(bitmapFromView);
-
-					BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmapFromView);
-					drawable.setBounds(0, 0, 400, 400);
-//					drawable.setBounds(0, 0, bitmapWidth, bitmapHeight);
-					ImageView imageView = (ImageView) getView().findViewById(IMAGE_PREFIX + diagramId);
-					imageView.setImageDrawable(drawable);
-
-					if (AppUtils.is7InchTablet(getActivity())) {
-						// add shadow background to frame layout
-						View fragmentContainer = getView().findViewById(DIAGRAM_PREFIX + diagramId);
-						fragmentContainer.setBackgroundResource(R.drawable.shadow_back_square);
-					} else {
-						// add background to imageView
-						imageView.setBackgroundResource(R.drawable.shadow_back_square);
-					}
-				}
-
-				// add text content
-				addContentText();
-			}
-			// starting next task
-			parsedPartCnt++;
-
-			if (parsedPartCnt >= contentParts.length) {
-				diagramsLoaded = true;
-				need2update = false;
-
-				updateComments();
-				return;
-			}
-
-			if (contentParts[parsedPartCnt].contains(CHESS_COM_DIAGRAM)) {
-				new DiagramLoaderTask(new DiagramUpdateListener(diagramList)).executeTask(contentParts[parsedPartCnt]);
-
-			} else {
-				addContentText();
-			}
-		}
-	}
-
-	private void addContentText() {
-
-		String contentPart = contentParts[parsedPartCnt];
-		if (contentPart.contains("chess_com_diagram")) {
-			String diagramPart = contentPart.substring(contentPart.indexOf("<div "));
-			contentPart = diagramPart.substring(diagramPart.indexOf("</div>") + "</div>".length());
-//			String info = "<center><b>White to move</b></center>\n";
-//			String data = "<center><b>Frank Marshall vs. Siegbert Tarrasch\n</b></center>" +
-//					"<center><p>Match | Nuremberg | Round 7| 1905 | ECO: C27 | 0-1</p></center>";
-//			contentPart = info + contentPart + data;
-		}
-
-
-		RoboTextView textView = new RoboTextView(getActivity());
-		textView.setTextSize(textSize);
-		textView.setTextColor(textColor);
-		textView.setText(Html.fromHtml(contentPart));
-		textView.setPadding(paddingSide, paddingSide, paddingSide, 0);
-		textView.setId(TEXT_PREFIX + ZERO);
-		textView.setOnClickListener(this);
-
-		complexContentLinLay.addView(textView);
-	}
-
-	private Bitmap createSimpleDiagramImage(ArticleDetailsItem.Diagram diagramToShow) {
-		// create a real fragment
-
-		final GameDiagramItem diagramItem = new GameDiagramItem();
-		diagramItem.setShowAnimation(false);
-		diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
-		if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
-			diagramItem.setMovesList(diagramToShow.getMoveList());
-			diagramItem.setFen(diagramToShow.getFen());
-		} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
-			diagramItem.setMovesList(diagramToShow.getMoveList());
-			diagramItem.setFen(diagramToShow.getFen());
-		} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
-			diagramItem.setFen(diagramToShow.getFen());
-		} else { // non valid format
-			return null;
-		}
-
+	private View createBoardView(GameAnalysisItem gameItem) {
 		ChessBoardDiagramView boardView = new ChessBoardDiagramView(getActivity());
 		boardView.setGameFace(gameFaceHelper);
 
 		ChessBoardDiagram.resetInstance();
 		BoardFace boardFace = gameFaceHelper.getBoardFace();
 
-		if (diagramItem.getGameType() == BaseGameItem.CHESS_960) {
+		if (gameItem.getGameType() == BaseGameItem.CHESS_960) {
 			boardFace.setChess960(true);
 		}
 
-		String fen = diagramItem.getFen();
+		String fen = gameItem.getFen();
 		boardFace.setupBoard(fen);
 
 		// revert reside back, because for diagrams white is always at bottom
@@ -1087,118 +796,13 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 
 		// remove comments from movesList
-		String movesList = diagramItem.getMovesList();
+		String movesList = gameItem.getMovesList();
 		if (movesList != null) {
 			movesList = MovesParser.removeCommentsAndAlternatesFromMovesList(movesList);
 			boardFace.checkAndParseMovesList(movesList);
 		}
 
-		boardFace.setJustInitialized(false);
-
-		int bitmapWidth;
-		int bitmapHeight;
-		Bitmap bitmapFromView;
-		if (AppUtils.is7InchTablet(getActivity())) {
-			// get bitmap from fragmentView
-
-			// add offset for shadow background
-
-			bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) + 27;
-			bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT);
-			// use inset to correct shadow shift
-			bitmapFromView = getBitmapFromView(boardView, bitmapWidth, bitmapHeight);
-
-		} else {
-			// get bitmap from fragmentView
-			int inset = (int) (3.3f * density);
-			bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
-			bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
-			bitmapFromView = AppUtils.getBitmapFromView(boardView, bitmapWidth, bitmapHeight);
-		}
-
-		// recycle bitmaps in boardView
-		boardView.releaseBitmaps();
-
-
-		return bitmapFromView;
-	}
-
-	private Bitmap createSimpleDiagramImage(int diagramId, List<ArticleDetailsItem.Diagram> diagramList) {
-		for (ArticleDetailsItem.Diagram diagramToShow : diagramList) {
-			if (diagramToShow.getDiagramId() == diagramId) {
-				// create a real fragment
-
-				final GameDiagramItem diagramItem = new GameDiagramItem();
-				diagramItem.setShowAnimation(false);
-				diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
-				if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
-					diagramItem.setMovesList(diagramToShow.getMoveList());
-					diagramItem.setFen(diagramToShow.getFen());
-				} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
-					diagramItem.setMovesList(diagramToShow.getMoveList());
-					diagramItem.setFen(diagramToShow.getFen());
-				} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
-					diagramItem.setFen(diagramToShow.getFen());
-				} else { // non valid format
-					return null;
-				}
-
-				ChessBoardDiagramView boardView = new ChessBoardDiagramView(getActivity());
-				boardView.setGameFace(gameFaceHelper);
-
-				ChessBoardDiagram.resetInstance();
-				BoardFace boardFace = gameFaceHelper.getBoardFace();
-
-				if (diagramItem.getGameType() == BaseGameItem.CHESS_960) {
-					boardFace.setChess960(true);
-				}
-
-				String fen = diagramItem.getFen();
-				boardFace.setupBoard(fen);
-
-				// revert reside back, because for diagrams white is always at bottom
-				if (!TextUtils.isEmpty(fen) && !fen.contains(FenHelper.WHITE_TO_MOVE)) {
-					boardFace.setReside(!boardFace.isReside());
-				}
-
-				// remove comments from movesList
-				String movesList = diagramItem.getMovesList();
-				if (movesList != null) {
-					movesList = MovesParser.removeCommentsAndAlternatesFromMovesList(movesList);
-					boardFace.checkAndParseMovesList(movesList);
-				}
-
-				boardFace.setJustInitialized(false);
-
-				int bitmapWidth;
-				int bitmapHeight;
-				Bitmap bitmapFromView;
-				if (AppUtils.is7InchTablet(getActivity())) {
-					// get bitmap from fragmentView
-
-					// add offset for shadow background
-
-					bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) + 27;
-					bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT);
-					// use inset to correct shadow shift
-					bitmapFromView = getBitmapFromView(boardView, bitmapWidth, bitmapHeight);
-
-				} else {
-					// get bitmap from fragmentView
-					int inset = (int) (3.3f * density);
-					bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
-					bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
-					bitmapFromView = AppUtils.getBitmapFromView(boardView, bitmapWidth, bitmapHeight);
-				}
-
-				// recycle bitmaps in boardView
-				boardView.releaseBitmaps();
-
-
-				return bitmapFromView;
-			}
-		}
-		return null;
+		return boardView;
 	}
 
 	private class DiagramListItem {
@@ -1275,7 +879,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 				final ImageView imageView = new ImageView(getActivity());
 				imageView.setLayoutParams(imageParams);
-				imageView.setImageResource(R.drawable.board_white_grey_full_size);
+//				imageView.setImageResource(R.drawable.board_white_grey_full_size);
 				imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 //				imageView.setId(IMAGE_PREFIX + diagramId);
 
@@ -1290,43 +894,38 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			container.addView(frameLayout);
 
-//			for (ArticleDetailsItem.Diagram diagramToShow : diagramList) {
-//				if (diagramToShow.getDiagramId() == diagramId) {
-//					final GameDiagramItem diagramItem = new GameDiagramItem();
-//					diagramItem.setShowAnimation(false);
-//					diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
-//
-//					if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
-//						simpleIdsMap.put(diagramId, true);
-//					} else {
-//						simpleIdsMap.put(diagramId, false);
-//					}
-//					break;
-//				}
+			final GameDiagramItem diagramItem = new GameDiagramItem();
+			diagramItem.setShowAnimation(false);
+			diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
+
+//			if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
+//				simpleIdsMap.put(diagramId, true);
+//			} else {
+//				simpleIdsMap.put(diagramId, false);
 //			}
-//
+
 //			if (!simpleIdsMap.get(diagramId)) {// add icon overlay above image
-//				FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-//						ViewGroup.LayoutParams.WRAP_CONTENT);
-//				iconParams.gravity = Gravity.CENTER;
-//
-//				final RoboTextView iconView = new RoboTextView(getActivity());
-//				iconView.setFont(FontsHelper.ICON_FONT);
-//				iconView.setText(R.string.ic_expand);
-//				iconView.setTextSize(iconOverlaySize);
-//				iconView.setTextColor(iconOverlayColor);
+			FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+					ViewGroup.LayoutParams.WRAP_CONTENT);
+			iconParams.gravity = Gravity.CENTER;
+
+			final RoboTextView iconView = new RoboTextView(getActivity());
+			iconView.setFont(FontsHelper.ICON_FONT);
+			iconView.setText(R.string.ic_expand);
+			iconView.setTextSize(iconOverlaySize);
+			iconView.setTextColor(iconOverlayColor);
 //				iconView.setId(ICON_PREFIX + diagramId);
-//
-//				float shadowRadius = 1 * density + 0.5f;
-//				float shadowDx = 1 * density;
-//				float shadowDy = 1 * density;
-//				iconView.setShadowLayer(shadowRadius, shadowDx, shadowDy, 0x88000000);
-//
-//				// set click handler and then get this tag from view to show diagram
-//				iconView.setOnClickListener(ArticleDetailsFragment.this);
-//
-//				frameLayout.addView(iconView, iconParams);
-//
+
+			float shadowRadius = 1 * density + 0.5f;
+			float shadowDx = 1 * density;
+			float shadowDy = 1 * density;
+			iconView.setShadowLayer(shadowRadius, shadowDx, shadowDy, 0x88000000);
+
+			// set click handler and then get this tag from view to show diagram
+			iconView.setOnClickListener(ArticleDetailsFragment.this);
+
+			frameLayout.addView(iconView, iconParams);
+
 //			}
 
 
@@ -1348,16 +947,10 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		private View createContentView(ViewGroup parent) {
 			ContentViewHolder holder = new ContentViewHolder();
-			String contentPart = contentParts[parsedPartCnt];
-			if (contentPart.contains("chess_com_diagram")) {
-				String diagramPart = contentPart.substring(contentPart.indexOf("<div "));
-				contentPart = diagramPart.substring(diagramPart.indexOf("</div>") + "</div>".length());
-			}
 
 			RoboTextView textView = new RoboTextView(getActivity());
 			textView.setTextSize(textSize);
 			textView.setTextColor(textColor);
-			textView.setText(Html.fromHtml(contentPart));
 			textView.setPadding(paddingSide, paddingSide, paddingSide, 0);
 			textView.setId(TEXT_PREFIX + ZERO);
 			textView.setOnClickListener(ArticleDetailsFragment.this);
@@ -1381,8 +974,45 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			int itemViewType = getItemViewType(pos);
 			if (itemViewType == DIAGRAM) {
+
 				DiagramViewHolder holder = (DiagramViewHolder) convertView.getTag();
-				createSimpleDiagramImage(item.diagram);
+
+				// use diagram data to create board image
+				ArticleDetailsItem.Diagram diagramToShow = item.diagram;
+				final GameDiagramItem diagramItem = new GameDiagramItem();
+				diagramItem.setShowAnimation(false);
+				diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
+				if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
+					diagramItem.setMovesList(diagramToShow.getMoveList());
+					diagramItem.setFen(diagramToShow.getFen());
+				} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
+					diagramItem.setMovesList(diagramToShow.getMoveList());
+					diagramItem.setFen(diagramToShow.getFen());
+				} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
+					diagramItem.setFen(diagramToShow.getFen());
+				}
+
+				View boardView = createBoardView(diagramItem);
+
+				int bitmapWidth;
+				int bitmapHeight;
+				if (deviceSizeCode == DiagramImageProcessor.NEXUS_7) {
+					// get bitmap from fragmentView
+
+					// add offset for shadow background
+
+					bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) + 27;
+					bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT);
+
+				} else {
+					// get bitmap from fragmentView
+					int inset = (int) (3.3f * density);
+					bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
+					bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
+				}
+				diagramImageProcessor.setImageSize(bitmapWidth, bitmapHeight);
+				diagramImageProcessor.setSourceView(boardView);
+				diagramImageProcessor.loadImage(item.diagramId, holder.imageView);
 
 				holder.contentTxt.setText(Html.fromHtml(item.textStr));
 
@@ -1429,28 +1059,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
-	private Bitmap getBitmapFromView(View view, int width, int height) {
-		// we add inset because of shadow background which have 15px margin
-		try {
-			int inset = 15;
-			Bitmap returnedBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-			Canvas canvas = new Canvas(returnedBitmap);
-			canvas.drawColor(Color.WHITE);
-			view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-					View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
-			view.layout(0, 0, width, height);
-
-			canvas.save();
-			canvas.translate(inset, 0);
-			view.draw(canvas);
-			canvas.restore();
-
-			return returnedBitmap;
-		} catch (OutOfMemoryError ex) {
-			return null;
-		}
-	}
-
 	private void updateComments() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLE_COMMENTS(articleId));
@@ -1478,11 +1086,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getArticlesCommentsById(articleId));
 			if (cursor != null && cursor.moveToFirst()) {
 				commentsCursorAdapter.changeCursor(cursor);
-			}
-
-			if (diagramsLoaded) {
-				// show complex container
-				complexContentLinLay.setVisibility(View.VISIBLE);
 			}
 		}
 	}
@@ -1547,13 +1150,28 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		density = resources.getDisplayMetrics().density;
 		imgSize = (int) (40 * density);
 
+		boolean sevenInchTablet = AppUtils.is7InchTablet(getActivity());
+		if (sevenInchTablet) {
+			deviceSizeCode = DiagramImageProcessor.NEXUS_7;
+		} else {
+			deviceSizeCode = DiagramImageProcessor.DEFAULT;
+		}
+
+		// set imageCache params for diagramProcessor
+		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
+
+		cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+
+		diagramImageProcessor = new DiagramImageProcessor(getActivity(), null, deviceSizeCode);
+		diagramImageProcessor.setLoadingImage(R.drawable.board_white_grey_full_size);
+		diagramImageProcessor.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
+
 		widthPixels = resources.getDisplayMetrics().widthPixels;
 		heightPixels = resources.getDisplayMetrics().heightPixels;
 		controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_diagram_height);
 		actionBarHeight = resources.getDimensionPixelSize(R.dimen.actionbar_compat_height);
 		notationsHeight = resources.getDimensionPixelSize(R.dimen.notations_view_height);
 
-		bitmapsToRecycle = new ArrayList<Bitmap>();
 		diagramIdsList = new ArrayList<Integer>();
 		activeIdsMap = new HashMap<Integer, Boolean>();
 		simpleIdsMap = new HashMap<Integer, Boolean>();
@@ -1564,7 +1182,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
 
 		// for tablets make diagram wider
-		if (AppUtils.is7InchTablet(getActivity())) {
+		if (sevenInchTablet) {
 			IMAGE_WIDTH_PERCENT = 0.85f;
 		}
 
@@ -1610,13 +1228,26 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		contentTxt.setMovementMethod(LinkMovementMethod.getInstance());
 		authorTxt = (TextView) headerView.findViewById(R.id.authorTxt);
 
-		complexContentLinLay = (LinearLayout) headerView.findViewById(R.id.complexContentLinLay);
-
 		listView = (ControlledListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(sectionedAdapter);
 		listView.setOnItemClickListener(this);
+		listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+				// Pause fetcher to ensure smoother scrolling when flinging
+				if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+					diagramImageProcessor.setPauseWork(true);
+				} else {
+					diagramImageProcessor.setPauseWork(false);
+				}
+			}
 
+			@Override
+			public void onScroll(AbsListView absListView, int firstVisibleItem,
+								 int visibleItemCount, int totalItemCount) {
+			}
+		});
 		replyView = view.findViewById(R.id.replyView);
 		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
 	}

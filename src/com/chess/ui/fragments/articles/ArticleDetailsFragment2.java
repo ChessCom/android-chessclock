@@ -124,7 +124,6 @@ public class ArticleDetailsFragment2 extends CommonLogicFragment implements Item
 	private boolean inEditMode;
 	private String commentForEditStr;
 	private View loadingCommentsView;
-	private LinearLayout complexContentLinLay;
 	private float density;
 	private List<Integer> diagramIdsList;
 	private List<ArticleDetailsItem.Diagram> diagramsList;
@@ -214,29 +213,29 @@ public class ArticleDetailsFragment2 extends CommonLogicFragment implements Item
 			}
 		}
 
-		if (complexContentLinLay != null) {
-			// release bitmaps from imageViews
-			int childCount = complexContentLinLay.getChildCount();
-			for (int i = 0; i < childCount; i++) {
-				View childAt = complexContentLinLay.getChildAt(i);
-
-				if (childAt instanceof FrameLayout) {
-					int childCount1 = ((FrameLayout) childAt).getChildCount();
-					for (int j = 0; j < childCount1; j++) {
-						View childAt1 = ((FrameLayout) childAt).getChildAt(j);
-						if (childAt1 instanceof ImageView) {
-							Drawable drawable = ((ImageView) childAt1).getDrawable();
-							if (drawable instanceof BitmapDrawable) {
-								BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-								Bitmap bitmap = bitmapDrawable.getBitmap();
-								bitmap.recycle();
-							}
-						}
-					}
-				}
-			}
-			complexContentLinLay = null;
-		}
+//		if (complexContentLinLay != null) {
+//			// release bitmaps from imageViews
+//			int childCount = complexContentLinLay.getChildCount();
+//			for (int i = 0; i < childCount; i++) {
+//				View childAt = complexContentLinLay.getChildAt(i);
+//
+//				if (childAt instanceof FrameLayout) {
+//					int childCount1 = ((FrameLayout) childAt).getChildCount();
+//					for (int j = 0; j < childCount1; j++) {
+//						View childAt1 = ((FrameLayout) childAt).getChildAt(j);
+//						if (childAt1 instanceof ImageView) {
+//							Drawable drawable = ((ImageView) childAt1).getDrawable();
+//							if (drawable instanceof BitmapDrawable) {
+//								BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+//								Bitmap bitmap = bitmapDrawable.getBitmap();
+//								bitmap.recycle();
+//							}
+//						}
+//					}
+//				}
+//			}
+////			complexContentLinLay = null;
+//		}
 
 
 		logTest("bitmaps released");
@@ -366,12 +365,12 @@ public class ArticleDetailsFragment2 extends CommonLogicFragment implements Item
 					textView.setMovementMethod(LinkMovementMethod.getInstance());
 
 
-					complexContentLinLay.addView(textView);
+//					complexContentLinLay.addView(textView);
 				}
 			}
 			return true;
 		} else {
-			complexContentLinLay.setVisibility(View.GONE);
+//			complexContentLinLay.setVisibility(View.GONE);
 			contentTxt.setVisibility(View.VISIBLE);
 
 			return false;
@@ -898,7 +897,7 @@ public class ArticleDetailsFragment2 extends CommonLogicFragment implements Item
 				params.gravity = Gravity.CENTER;
 				frameLayout.setId(DIAGRAM_PREFIX + diagramId);
 				frameLayout.setLayoutParams(params);
-				complexContentLinLay.addView(frameLayout);
+//				complexContentLinLay.addView(frameLayout);
 
 				{// add imageView with diagram bitmap
 					// take 80% of screen width
@@ -967,7 +966,7 @@ public class ArticleDetailsFragment2 extends CommonLogicFragment implements Item
 				textView.setOnClickListener(ArticleDetailsFragment2.this);
 				textView.setMovementMethod(LinkMovementMethod.getInstance());
 
-				complexContentLinLay.addView(textView);
+//				complexContentLinLay.addView(textView);
 			}
 			// starting next task
 			parsedPartCnt++;
@@ -992,7 +991,7 @@ public class ArticleDetailsFragment2 extends CommonLogicFragment implements Item
 				textView.setId(TEXT_PREFIX + ZERO);
 				textView.setOnClickListener(ArticleDetailsFragment2.this);
 
-				complexContentLinLay.addView(textView);
+//				complexContentLinLay.addView(textView);
 			}
 		}
 	}
@@ -1156,7 +1155,7 @@ public class ArticleDetailsFragment2 extends CommonLogicFragment implements Item
 
 			if (diagramsLoaded) {
 				// show complex container
-				complexContentLinLay.setVisibility(View.VISIBLE);
+//				complexContentLinLay.setVisibility(View.VISIBLE);
 			}
 		}
 	}
@@ -1276,8 +1275,6 @@ public class ArticleDetailsFragment2 extends CommonLogicFragment implements Item
 		contentTxt = (TextView) headerView.findViewById(R.id.contentTxt);
 		contentTxt.setMovementMethod(LinkMovementMethod.getInstance());
 		authorTxt = (TextView) headerView.findViewById(R.id.authorTxt);
-
-		complexContentLinLay = (LinearLayout) headerView.findViewById(R.id.complexContentLinLay);
 
 		listView = (ControlledListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
