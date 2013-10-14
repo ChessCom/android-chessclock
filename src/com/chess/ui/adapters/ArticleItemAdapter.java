@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.ArticleItem;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 
@@ -36,8 +37,8 @@ public class ArticleItemAdapter extends ItemsAdapter<ArticleItem.Data> {
 	private SparseBooleanArray viewedMap;
 
 
-	public ArticleItemAdapter(Context context, List<ArticleItem.Data> itemList) {
-		super(context, itemList);
+	public ArticleItemAdapter(Context context, List<ArticleItem.Data> itemList, SmartImageFetcher imageFetcher) {
+		super(context, itemList, imageFetcher);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
@@ -85,7 +86,7 @@ public class ArticleItemAdapter extends ItemsAdapter<ArticleItem.Data> {
 		date.setTime(item.getCreateDate() * 1000L);
 		holder.dateTxt.setText(dateFormatter.format(date));
 
-		imageLoader.download(item.getImageUrl(), holder.thumbnailImg, PHOTO_SIZE );
+		imageFetcher.loadImage(new SmartImageFetcher.Data(item.getImageUrl(), PHOTO_SIZE), holder.thumbnailImg.getImageView());
 
 		if (viewedMap.get((int) item.getId(), false)) {
 			holder.titleTxt.setTextColor(watchedTextColor);

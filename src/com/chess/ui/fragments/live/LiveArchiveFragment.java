@@ -93,7 +93,7 @@ public class LiveArchiveFragment extends CommonLogicFragment implements AdapterV
 	}
 
 	private void init() {
-		archiveGamesAdapter = new LiveArchiveGamesAdapter(getActivity(), null);
+		archiveGamesAdapter = new LiveArchiveGamesAdapter(getActivity(), null, getImageFetcher());
 		archiveGamesUpdateListener = new ArchiveGamesUpdateListener();
 		archiveGamesCursorUpdateListener = new GamesCursorUpdateListener();
 		saveArchiveGamesListUpdateListener = new SaveArchiveGamesListUpdateListener();

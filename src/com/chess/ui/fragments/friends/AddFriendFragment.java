@@ -47,6 +47,15 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	private View emailTxt;
 	private EditButton emailEditBtn;
 	private Button addEmailBtn;
+	private RecentOpponentsCursorAdapter adapter;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
+		adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor, getImageFetcher());
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,10 +70,6 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		setTitle(R.string.add_friend);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
-
-		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
-
-		RecentOpponentsCursorAdapter adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor);
 
 		listView.addHeaderView(headerView);
 		listView.setAdapter(adapter);

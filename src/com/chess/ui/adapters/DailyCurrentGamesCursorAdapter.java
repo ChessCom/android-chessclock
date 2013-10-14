@@ -9,9 +9,10 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.statics.Symbol;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
+import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 
 public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
@@ -24,8 +25,8 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	private final int greyColor;
 	private final int boardPreviewSize;
 
-	public DailyCurrentGamesCursorAdapter(Context context, Cursor cursor) {
-		super(context, cursor);// TODO change later with CursorLoader
+	public DailyCurrentGamesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(context, cursor, imageFetcher);
 
 		fullPadding = (int) context.getResources().getDimension(R.dimen.default_scr_side_padding);
 		halfPadding = fullPadding / 2;
@@ -77,7 +78,11 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		}
 
 		holder.playerTxt.setText(opponentName);
-		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
+		{
+			SmartImageFetcher.Data data = new SmartImageFetcher.Data(avatarUrl, imageSize);
+			imageFetcher.loadImage(data, holder.playerImg.getImageView());
+		}
+//		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
 
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);
@@ -121,7 +126,12 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		// take only first part
 		fen = fen.split(Symbol.SPACE)[0];
 
-		imageLoader.download(RestHelper.GET_FEN_IMAGE(fen), holder.boardPreviewFrame, boardPreviewSize);
+//		imageLoader.download(RestHelper.GET_FEN_IMAGE(fen), holder.boardPreviewFrame, boardPreviewSize);
+		{
+			SmartImageFetcher.Data data = new SmartImageFetcher.Data(RestHelper.GET_FEN_IMAGE(fen), boardPreviewSize);
+			imageFetcher.loadImage(data, holder.boardPreviewFrame.getImageView());
+		}
+
 	}
 
 	private boolean lessThanDay(long amount) {

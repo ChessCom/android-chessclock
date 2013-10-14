@@ -148,7 +148,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 //			execute(input);
 //		}
 
-		executeOnExecutor(SERIAL_EXECUTOR, input);
+		executeOnExecutor(DUAL_THREAD_EXECUTOR, input);
 		return this;
 	}
 

@@ -20,6 +20,7 @@ import com.chess.backend.entity.api.themes.BackgroundItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.backend.tasks.SaveImageToSdTask;
@@ -342,12 +343,12 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private class ThemesAdapter extends ItemsAdapter<ThemeItem.Data> {
 
 		private final int customColor;
-		private final int boardPreviewImgSize;
+		private final int boardPreviewimageSize;
 
 		public ThemesAdapter(Context context, List<com.chess.backend.entity.api.ThemeItem.Data> menuItems) {
 			super(context, menuItems);
 			customColor = resources.getColor(R.color.theme_customize_back);
-			boardPreviewImgSize = (int) (resources.getDimensionPixelSize(R.dimen.theme_board_preview_size) / resources.getDisplayMetrics().density);
+			boardPreviewimageSize = (int) (resources.getDimensionPixelSize(R.dimen.theme_board_preview_size) / resources.getDisplayMetrics().density);
 		}
 
 		@Override
@@ -405,11 +406,11 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			} else {
 				holder.title.setText(item.getThemeName());
 
-				imageLoader.download(item.getBackgroundPreviewUrl(), holder.backImg, screenWidth, screenWidth);
-				imageLoader.download(item.getBoardPreviewUrl(), holder.boardPreviewImg, boardPreviewImgSize);
+				imageFetcher.loadImage(new SmartImageFetcher.Data(item.getBackgroundPreviewUrl(), screenWidth),
+						holder.backImg.getImageView());
+				imageFetcher.loadImage(new SmartImageFetcher.Data(item.getBoardPreviewUrl(), boardPreviewimageSize),
+						holder.boardPreviewImg.getImageView());
 			}
-
-
 		}
 
 		public Context getContext() {

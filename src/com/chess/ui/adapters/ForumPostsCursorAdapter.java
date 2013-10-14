@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -35,8 +36,8 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 	private final MyHtmlTagHandler myHtmlTagHandler;
 	private final ItemClickListenerFace clickFace;
 
-	public ForumPostsCursorAdapter(ItemClickListenerFace clickFace, Cursor cursor) {
-		super(clickFace.getMeContext(), cursor);
+	public ForumPostsCursorAdapter(ItemClickListenerFace clickFace, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(clickFace.getMeContext(), cursor, imageFetcher);
 		this.clickFace = clickFace;
 		imageSize = (int) (resources.getDimension(R.dimen.chat_icon_size) / resources.getDisplayMetrics().density);
 
@@ -104,8 +105,8 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 
 		holder.countryImg.setImageDrawable(drawable);
 
-		String url = getString(cursor, DbScheme.V_PHOTO_URL);
-		imageLoader.download(url, holder.photoImg, imageSize);
+		String avatarUrl = getString(cursor, DbScheme.V_PHOTO_URL);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.photoImg.getImageView());
 	}
 
 	protected class ViewHolder {

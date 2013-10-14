@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.DailyChallengeItem;
 import com.chess.backend.image_load.AvatarView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeItem
 	private final ItemClickListenerFace clickListenerFace;
 	private final int imageSize;
 
-	public DailyChallengesGamesAdapter(ItemClickListenerFace clickListenerFace, List<DailyChallengeItem.Data> itemList) {
-		super(clickListenerFace.getMeContext(), itemList);
+	public DailyChallengesGamesAdapter(ItemClickListenerFace clickListenerFace, List<DailyChallengeItem.Data> itemList, SmartImageFetcher imageFetcher) {
+		super(clickListenerFace.getMeContext(), itemList, imageFetcher);
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 		this.clickListenerFace = clickListenerFace;
 	}
@@ -46,7 +47,7 @@ public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeItem
 
 		holder.playerTxt.setText(item.getOpponentUsername());
 
-		imageLoader.download(item.getOpponentAvatar(), holder.playerImg, imageSize);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(item.getOpponentAvatar(), imageSize), holder.playerImg.getImageView());
 	}
 
 	protected class ViewHolder {

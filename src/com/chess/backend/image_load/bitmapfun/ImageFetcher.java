@@ -286,7 +286,7 @@ public class ImageFetcher extends ImageResizer {
                 if (in != null) {
                     in.close();
                 }
-            } catch (final IOException e) {}
+            } catch (final IOException ignored) {}
         }
         return false;
     }

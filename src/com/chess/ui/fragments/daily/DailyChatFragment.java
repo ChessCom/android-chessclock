@@ -204,7 +204,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 					}
 
 					if (messagesAdapter == null) {
-						messagesAdapter = new ChatMessagesAdapter(getContext(), chatItems);
+						messagesAdapter = new ChatMessagesAdapter(getContext(), chatItems, getImageFetcher());
 						listView.setAdapter(messagesAdapter);
 					} else {
 						messagesAdapter.setItemsList(chatItems);
@@ -226,7 +226,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 							}
 						}
 						if (messagesAdapter == null) {
-							messagesAdapter = new ChatMessagesAdapter(getContext(), chatItems);
+							messagesAdapter = new ChatMessagesAdapter(getContext(), chatItems, getImageFetcher());
 							listView.setAdapter(messagesAdapter);
 						} else {
 							messagesAdapter.notifyDataSetChanged();

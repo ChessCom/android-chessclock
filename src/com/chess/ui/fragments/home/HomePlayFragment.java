@@ -191,6 +191,8 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 				}
 				friendUserName1Txt.setText(firstFriendUserName);
 			}
+
+			cursor.close();
 		}
 	}
 

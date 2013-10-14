@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.AvatarView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
@@ -16,17 +17,11 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 
 	protected static final String CHESS_960 = " (960)";
 	private final int imageSize;
-	private final String drawStr;
-	private final String lossStr;
-	private final String winStr;
 
 
-	public DailyFinishedGamesCursorRightAdapter(Context context, Cursor cursor) {
-		super(context, cursor);
+	public DailyFinishedGamesCursorRightAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(context, cursor, imageFetcher);
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
-		lossStr = context.getString(R.string.loss);
-		winStr = context.getString(R.string.won);
-		drawStr = context.getString(R.string.draw);
 	}
 
 	@Override
@@ -62,7 +57,7 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 		}
 
 		holder.playerTxt.setText(opponentName + gameType);
-		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.playerImg.getImageView());
 
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);

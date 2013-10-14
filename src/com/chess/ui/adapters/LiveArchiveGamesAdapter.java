@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.AvatarView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 import com.chess.statics.Symbol;
@@ -34,8 +35,8 @@ public class LiveArchiveGamesAdapter extends ItemsCursorAdapter {
 	private final int colorGreen;
 	private final int colorGrey;
 
-	public LiveArchiveGamesAdapter(Context context, Cursor cursor) {
-		super(context, cursor);
+	public LiveArchiveGamesAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(context, cursor, imageFetcher);
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 
 		lossStr = context.getString(R.string.loss);
@@ -86,7 +87,7 @@ public class LiveArchiveGamesAdapter extends ItemsCursorAdapter {
 		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(premiumStatus));
 		holder.playerTxt.setText(opponentName);
 		holder.ratingTxt.setText(Symbol.wrapInPars(opponentRating));
-		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.playerImg.getImageView());
 
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);

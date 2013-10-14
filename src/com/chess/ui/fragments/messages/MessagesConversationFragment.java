@@ -138,7 +138,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 
 		messagesUpdateListener = new MessagesUpdateListener();
 		saveMessagesListener = new SaveMessagesListener();
-		messagesCursorAdapter = new MessagesCursorAdapter(getActivity(), null);
+		messagesCursorAdapter = new MessagesCursorAdapter(getActivity(), null, getImageFetcher());
 		messageCursorUpdateListener = new MessagesCursorUpdateListener();
 	}
 

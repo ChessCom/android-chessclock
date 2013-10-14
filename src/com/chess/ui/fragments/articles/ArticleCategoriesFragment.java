@@ -76,7 +76,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		categoriesMap = new HashMap<String, Integer>();
 
 		viewedArticlesMap = new SparseBooleanArray();
-		articlesAdapter = new ArticlesCursorAdapter(getActivity(), null);
+		articlesAdapter = new ArticlesCursorAdapter(getActivity(), null, getImageFetcher());
 		articlesAdapter.addViewedMap(viewedArticlesMap);
 		paginationAdapter = new ArticlesPaginationAdapter(getActivity(), articlesAdapter, new ArticleUpdateListener(), null);
 	}

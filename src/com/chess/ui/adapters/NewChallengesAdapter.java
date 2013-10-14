@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.gcm.NewChallengeNotificationItem;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class NewChallengesAdapter extends ItemsAdapter<NewChallengeNotificationI
 
 	private final int imageSize;
 
-	public NewChallengesAdapter(Context context, List<NewChallengeNotificationItem> itemList) {
-		super(context, itemList);
+	public NewChallengesAdapter(Context context, List<NewChallengeNotificationItem> itemList, SmartImageFetcher imageFetcher) {
+		super(context, itemList, imageFetcher);
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 	}
 
@@ -42,7 +43,7 @@ public class NewChallengesAdapter extends ItemsAdapter<NewChallengeNotificationI
 
 		holder.messageTxt.setText(item.getUsername());
 
-		imageLoader.download(item.getAvatar(), holder.playerImg, imageSize);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(item.getAvatar(), imageSize), holder.playerImg.getImageView());
 	}
 
 	protected class ViewHolder {

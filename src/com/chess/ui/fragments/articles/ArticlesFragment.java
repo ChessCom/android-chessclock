@@ -70,7 +70,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light,
 				new int[]{LATEST_SECTION, CATEGORIES_SECTION});
 
-		articlesCursorAdapter = new ArticlesCursorAdapter(getActivity(), null);
+		articlesCursorAdapter = new ArticlesCursorAdapter(getActivity(), null, getImageFetcher());
 		articlesCursorAdapter.addViewedMap(articlesViewedMap);
 		categoriesAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
 

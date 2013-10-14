@@ -55,7 +55,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		friendsAdapter = new FriendsCursorAdapter(this, null);
+		friendsAdapter = new FriendsCursorAdapter(this, null, getImageFetcher());
 		QueryFilterProvider queryFilterProvider = new QueryFilterProvider();
 		friendsAdapter.setFilterQueryProvider(queryFilterProvider);
 	}

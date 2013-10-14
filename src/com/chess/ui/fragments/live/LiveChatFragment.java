@@ -59,7 +59,7 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 			try {
 				liveService = getLiveService();
 				liveService.setLccChatMessageListener(this);
-				messagesAdapter = new ChatMessagesAdapter(getActivity(), liveService.getMessagesList());
+				messagesAdapter = new ChatMessagesAdapter(getActivity(), liveService.getMessagesList(), getImageFetcher());
 				listView.setAdapter(messagesAdapter);
 
 				showKeyBoard(sendEdt);

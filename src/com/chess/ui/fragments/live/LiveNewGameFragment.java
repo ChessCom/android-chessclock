@@ -153,6 +153,8 @@ public class LiveNewGameFragment extends CommonLogicFragment {
 				}
 				friendUserName1Txt.setText(firstFriendUserName);
 			}
+
+			cursor.close();
 		}
 	}
 

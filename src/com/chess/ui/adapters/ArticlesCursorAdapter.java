@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
@@ -37,8 +38,8 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 	private Date date;
 	private SparseBooleanArray viewedMap;
 
-	public ArticlesCursorAdapter(Context context, Cursor cursor) {
-		super(context, cursor);
+	public ArticlesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(context, cursor, imageFetcher);
 
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
@@ -86,7 +87,8 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 		date.setTime(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE) * 1000L);
 		holder.dateTxt.setText(dateFormatter.format(date));
 
-		imageLoader.download(DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL), holder.thumbnailImg, PHOTO_SIZE );
+		String photoUrl = DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(photoUrl, PHOTO_SIZE), holder.thumbnailImg.getImageView());
 
 		if (viewedMap.get(getInt(cursor, DbScheme.V_ID), false)) {
 			holder.titleTxt.setTextColor(watchedTextColor);

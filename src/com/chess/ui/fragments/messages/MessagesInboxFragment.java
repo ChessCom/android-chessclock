@@ -87,7 +87,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	private void init() {
 		conversationsUpdateListener = new ConversationsUpdateListener();
 		saveConversationsListener = new SaveConversationsListener();
-		conversationsAdapter = new ConversationsCursorAdapter(getActivity(), null);
+		conversationsAdapter = new ConversationsCursorAdapter(getActivity(), null, getImageFetcher());
 		QueryFilterProvider queryFilterProvider = new QueryFilterProvider();
 		conversationsAdapter.setFilterQueryProvider(queryFilterProvider);
 		conversationCursorUpdateListener = new ConversationCursorUpdateListener();

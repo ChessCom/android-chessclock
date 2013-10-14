@@ -30,7 +30,7 @@ public class EnhancedImageDownloader {
 	public static final String HTTP_PREFIX = "http:";
 	private final Context context;
 	private final Resources resources;
-	private HashMap<String, Integer> imgSizeMap;
+	private HashMap<String, Integer> imageSizeMap;
 	private boolean useScale;
 
 	public enum Mode {
@@ -41,7 +41,7 @@ public class EnhancedImageDownloader {
 
     public EnhancedImageDownloader(Context context) {
 		this.context = context;
-		imgSizeMap = new HashMap<String, Integer>();
+		imageSizeMap = new HashMap<String, Integer>();
         resources = context.getResources();
 		cacheDir = AppUtils.getCacheDir(context);
     }
@@ -54,10 +54,10 @@ public class EnhancedImageDownloader {
      *
 	 * @param url    The URL of the image to download.
 	 * @param holder The ImageView to bind the downloaded image to.
-	 * @param imgSize size of image to be scaled
+	 * @param imageSize size of image to be scaled
 	 */
-    public void download(String url, ProgressImageView holder, int imgSize) {
-		imgSizeMap.put(url, imgSize);
+    public void download(String url, ProgressImageView holder, int imageSize) {
+		imageSizeMap.put(url, imageSize);
 		useScale = true;
 		if (TextUtils.isEmpty(url)) {
 			Log.e(LOG_TAG, " passed url is null. Don't start loading");
@@ -76,8 +76,8 @@ public class EnhancedImageDownloader {
         }
     }
 
-    public void download(String url, ProgressImageView holder, int imgSize, int imgHeight) {
-		imgSizeMap.put(url, imgSize);
+    public void download(String url, ProgressImageView holder, int imageSize, int imgHeight) {
+		imageSizeMap.put(url, imageSize);
 
 		useScale = false;
 		if (TextUtils.isEmpty(url)) {
@@ -221,8 +221,8 @@ public class EnhancedImageDownloader {
 		try {
 			if (useScale) {
 				// Get the dimensions of the View
-				int targetW = imgSizeMap.get(url);
-				int targetH = imgSizeMap.get(url);
+				int targetW = imageSizeMap.get(url);
+				int targetH = imageSizeMap.get(url);
 
 				// Get the dimensions of the bitmap
 				BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -344,7 +344,7 @@ public class EnhancedImageDownloader {
 
         url = url.replace(" ", "%20");
 		if (!url.startsWith(HTTP)) {
-			url = EnhancedImageDownloader.HTTP_PREFIX + url;
+			url = HTTP_PREFIX + url;
 		}
 
 		try {
@@ -360,8 +360,8 @@ public class EnhancedImageDownloader {
 
 			if (useScale) {
 				// Get the dimensions of the View
-				int targetW = imgSizeMap.get(originalUrl);
-				int targetH = imgSizeMap.get(originalUrl);
+				int targetW = imageSizeMap.get(originalUrl);
+				int targetH = imageSizeMap.get(originalUrl);
 
 				// Get the dimensions of the bitmap
 				BitmapFactory.Options bmOptions = new BitmapFactory.Options();

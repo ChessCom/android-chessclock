@@ -67,10 +67,10 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 		// init adapters
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
-		friendRequestsAdapter = new CommonAcceptDeclineCursorAdapter(new FriendAcceptDeclineFace(), null);
-		challengesGamesAdapter = new DailyChallengesGamesAdapter(new ChallengeAcceptDeclineFace(), null);
-		chatMessagesAdapter = new NewChatMessagesCursorAdapter(getActivity(), null);
-		gamesOverAdapter = new DailyGamesOverCursorAdapter(getActivity(), null);
+		friendRequestsAdapter = new CommonAcceptDeclineCursorAdapter(new FriendAcceptDeclineFace(), null, getImageFetcher());
+		challengesGamesAdapter = new DailyChallengesGamesAdapter(new ChallengeAcceptDeclineFace(), null, getImageFetcher());
+		chatMessagesAdapter = new NewChatMessagesCursorAdapter(getActivity(), null, getImageFetcher());
+		gamesOverAdapter = new DailyGamesOverCursorAdapter(getActivity(), null, getImageFetcher());
 
 		sectionedAdapter.addSection(getString(R.string.friend_requests), friendRequestsAdapter);
 		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);

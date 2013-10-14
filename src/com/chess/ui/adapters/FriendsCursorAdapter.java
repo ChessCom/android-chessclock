@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.AvatarView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -32,8 +33,8 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 	private final Calendar lastLoginDate;
 	private final ItemClickListenerFace clickListenerFace;
 
-	public FriendsCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor) {
-		super(clickListenerFace.getMeContext(), cursor);
+	public FriendsCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(clickListenerFace.getMeContext(), cursor, imageFetcher);
 		this.clickListenerFace = clickListenerFace;
 		imageSize = (int) (resources.getDimension(R.dimen.friend_list_photo_size) / resources.getDisplayMetrics().density);
 
@@ -108,7 +109,8 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 		holder.countryImg.setImageDrawable(drawable);
 
 		// load avatar
-		imageLoader.download(getString(cursor, DbScheme.V_PHOTO_URL), holder.photoImg, imageSize);
+		String avatarUrl = getString(cursor, DbScheme.V_PHOTO_URL);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.photoImg.getImageView());
 	}
 
 	private String getLastLoginLabel(Cursor cursor) {

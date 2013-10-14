@@ -85,7 +85,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			topicId = savedInstanceState.getInt(TOPIC_ID);
 		}
 
-		postsCursorAdapter = new ForumPostsCursorAdapter(this, null);
+		postsCursorAdapter = new ForumPostsCursorAdapter(this, null, getImageFetcher());
 		savePostsListener = new SavePostsListener();
 		postsUpdateListener = new PostsUpdateListener();
 		topicCreateListener = new TopicCreateListener();

@@ -18,6 +18,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppData;
@@ -50,6 +52,7 @@ import java.util.Map;
 public class MainFragmentFaceActivity extends LiveBaseActivity implements ActiveFragmentInterface {
 
 	private static final String SHOW_ACTION_BAR = "show_actionbar_in_activity";
+	private static final String IMAGE_CACHE_DIR = "thumbs";
 
 	private Fragment currentActiveFragment;
 	private Hashtable<Integer, Integer> badgeItems;
@@ -60,6 +63,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private int customActionBarViewId;
 	private IntentFilter notificationsUpdateFilter;
 	private NotificationsUpdateReceiver notificationsUpdateReceiver;
+	private SmartImageFetcher imageFetcher;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -114,6 +118,16 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			SoundPlayer.setUseThemePack(true);
 			SoundPlayer.setThemePath(soundThemePath);
 		}
+
+		// adjust common image loading params
+		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(this, IMAGE_CACHE_DIR);
+
+		cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+
+		// The ImageFetcher takes care of loading images into our ImageView children asynchronously
+		imageFetcher = new SmartImageFetcher(this);
+		imageFetcher.setLoadingImage(R.drawable.img_profile_picture_stub);
+		imageFetcher.addImageCache(this, IMAGE_CACHE_DIR);
 	}
 
 	@Override
@@ -563,4 +577,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 	}
 
+	@Override
+	public SmartImageFetcher getImageFetcher() {
+		return imageFetcher;
+	}
 }

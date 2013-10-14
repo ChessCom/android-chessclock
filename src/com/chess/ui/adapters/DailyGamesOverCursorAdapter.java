@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 
 /**
@@ -21,8 +22,8 @@ public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 	private final Resources resources;
 	private final int imageSize;
 
-	public DailyGamesOverCursorAdapter(Context context, Cursor cursor) {
-		super(context, cursor);
+	public DailyGamesOverCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(context, cursor, imageFetcher);
 		resources = context.getResources();
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 	}
@@ -44,7 +45,7 @@ public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 
 		holder.messageTxt.setText(getString(cursor, DbScheme.V_MESSAGE));
 		String avatarUrl = getString(cursor, DbScheme.V_USER_AVATAR);
-		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.playerImg.getImageView());
 	}
 
 	protected class ViewHolder {

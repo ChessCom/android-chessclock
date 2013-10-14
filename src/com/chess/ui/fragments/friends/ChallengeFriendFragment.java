@@ -47,6 +47,7 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	private View emailTxt;
 	private EditButton emailEditBtn;
 	private Button addEmailBtn;
+	private RecentOpponentsCursorAdapter adapter;
 
 	public ChallengeFriendFragment() {
 		Bundle bundle = new Bundle();
@@ -63,6 +64,14 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
+		adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor, getImageFetcher());
+	}
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		headerView = inflater.inflate(R.layout.new_challenge_friend_header_view, null, false);
 		return inflater.inflate(R.layout.new_challenge_friend_frame, container, false);
@@ -71,10 +80,6 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
-
-		RecentOpponentsCursorAdapter adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);

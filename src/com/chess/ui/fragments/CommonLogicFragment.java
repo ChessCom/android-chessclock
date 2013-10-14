@@ -15,13 +15,17 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.entity.api.RegisterItem;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataProvider;
@@ -66,6 +70,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final long FACEBOOK_DELAY = 200;
 	private static final int MIN_USERNAME_LENGTH = 3;
 	private static final int MAX_USERNAME_LENGTH = 20;
+	private static final String IMAGE_CACHE_DIR = "thumbs";
 
 	protected static final String RE_LOGIN_TAG = "re-login popup";
 	protected static final String NETWORK_CHECK_TAG = "network check popup";
@@ -105,6 +110,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected boolean need2update = true;
 	protected boolean inSearch;
 	private boolean needToChangeActionButtons = true;
+	private boolean loadingImages;
+	private SmartImageFetcher imageFetcher;
+	protected float density;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -121,8 +129,16 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		handler = new Handler();
 		setHasOptionsMenu(true);
+		density = getResources().getDisplayMetrics().density;
+		padding = (int) (48 * density);
 
-		padding = (int) (48 * getResources().getDisplayMetrics().density);
+		imageFetcher = getActivityFace().getImageFetcher();
+		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
+
+		cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+
+		// The ImageFetcher takes care of loading images into our ImageView children asynchronously
+		imageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
 	}
 
 	@Override
@@ -145,6 +161,28 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			getActivityFace().showActionMenu(R.id.menu_search_btn, false);
 			getActivityFace().showActionMenu(R.id.menu_notifications, true);
 			getActivityFace().showActionMenu(R.id.menu_games, true);
+		}
+
+		if (loadingImages) {
+			ListView listView = (ListView) view.findViewById(R.id.listView);
+			if (listView != null) {
+				listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+					@Override
+					public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+						// Pause fetcher to ensure smoother scrolling when flinging
+						if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+							imageFetcher.setPauseWork(true);
+						} else {
+							imageFetcher.setPauseWork(false);
+						}
+					}
+
+					@Override
+					public void onScroll(AbsListView absListView, int firstVisibleItem,
+										 int visibleItemCount, int totalItemCount) {
+					}
+				});
+			}
 		}
 
 		setTitlePadding(DEFAULT_ICON);
@@ -184,6 +222,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (facebookActive) {
 			facebookUiHelper.onResume();
 		}
+
+		// if we use image loading, then process imageFetcher states
+		if (loadingImages)
+		imageFetcher.setExitTasksEarly(false);
 	}
 
 	@Override
@@ -192,6 +234,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (facebookActive) {
 			facebookUiHelper.onPause();
 		}
+
+		imageFetcher.setPauseWork(false);
+		imageFetcher.setExitTasksEarly(true);
+		imageFetcher.flushCache();
 	}
 
 	@Override
@@ -216,6 +262,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (facebookActive) {
 			facebookUiHelper.onDestroy();
 		}
+
+		imageFetcher.closeCache();
 	}
 
 	protected void setNeedToChangeActionButtons(boolean change) {
@@ -758,6 +806,18 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		List<String> items = new ArrayList<String>();
 		items.addAll(Arrays.asList(array));
 		return items;
+	}
+
+	protected SmartImageFetcher getImageFetcher() {
+		// most adapters are initiated in onCreate().
+		// So when we reach onViewCreated callback we will add logic to listView scroll listener
+		loadingImages = true;
+
+		return imageFetcher;
+	}
+
+	protected void setLoadingImages(boolean haveImagesToLoad) {
+		loadingImages = haveImagesToLoad;
 	}
 
 //	public void printHashKey() { Don't remove, use to find needed facebook hashkey

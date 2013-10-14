@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.AvatarView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
@@ -21,8 +22,8 @@ public class CommonAcceptDeclineCursorAdapter extends ItemsCursorAdapter {
 	private final ItemClickListenerFace clickListenerFace;
 	private final int imageSize;
 
-	public CommonAcceptDeclineCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor) {
-		super(clickListenerFace.getMeContext(), cursor);
+	public CommonAcceptDeclineCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(clickListenerFace.getMeContext(), cursor, imageFetcher);
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 		this.clickListenerFace = clickListenerFace;
 	}
@@ -52,7 +53,7 @@ public class CommonAcceptDeclineCursorAdapter extends ItemsCursorAdapter {
 
 		holder.playerTxt.setText(getString(cursor, DbScheme.V_USERNAME));
 		String avatarUrl = getString(cursor, DbScheme.V_USER_AVATAR);
-		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.playerImg.getImageView());
 	}
 
 	protected class ViewHolder {

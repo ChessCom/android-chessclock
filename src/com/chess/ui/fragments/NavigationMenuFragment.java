@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.CompGameConfig;
@@ -77,7 +78,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		menuItems.add(new NavigationMenuItem(getString(R.string.vs_computer), R.drawable.ic_nav_vs_comp));
 
 		menuItems.get(0).selected = true;
-		adapter = new NewNavigationMenuAdapter(getActivity(), menuItems);
+		adapter = new NewNavigationMenuAdapter(getActivity(), menuItems, getImageFetcher());
 	}
 
 	@Override
@@ -241,8 +242,8 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		private final String userAvatarUrl;
 		private final String themeName;
 
-		public NewNavigationMenuAdapter(Context context, List<NavigationMenuItem> menuItems) {
-			super(context, menuItems);
+		public NewNavigationMenuAdapter(Context context, List<NavigationMenuItem> menuItems, SmartImageFetcher imageFetcher) {
+			super(context, menuItems, imageFetcher);
 			userAvatarUrl = getAppData().getUserAvatar();
 			themeName = getAppData().getThemeName();
 		}
@@ -266,7 +267,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		protected void bindView(NavigationMenuItem item, int pos, View view) {
 			ViewHolder holder = (ViewHolder) view.getTag();
 			if (pos == HOME_POS) {
-				imageLoader.download(userAvatarUrl, holder.icon, imageSize);
+				imageFetcher.loadImage(new SmartImageFetcher.Data(userAvatarUrl, imageSize), holder.icon.getImageView());
 			} else {
 				holder.icon.setImageDrawable(resources.getDrawable(item.iconRes));
 			}

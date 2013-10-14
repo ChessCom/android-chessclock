@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ImageDownloaderToListener {
     private static final String LOG_TAG = "EnhancedImageDownloader";
 	private final Context context;
-	private int imgSize;
+	private int imageSize;
 	private int imgWidth;
 	private int imgHeight;
 	private boolean useScale;
@@ -45,10 +45,10 @@ public class ImageDownloaderToListener {
      *
 	 * @param url    The URL of the image to download.
 	 * @param holder The ImageView to bind the downloaded image to.
-	 * @param imgSize size of image to be scaled
+	 * @param imageSize size of image to be scaled
 	 */
-    public void download(String url, ImageReadyListener holder, int imgSize) {
-		this.imgSize = imgSize;
+    public void download(String url, ImageReadyListener holder, int imageSize) {
+		this.imageSize = imageSize;
 		useScale = true;
 		if (TextUtils.isEmpty(url)) {
 			Log.e(LOG_TAG, " passed url is null. Don't start loading");
@@ -276,8 +276,8 @@ public class ImageDownloaderToListener {
 
 			if (useScale) {
 				// Get the dimensions of the View
-				int targetW = imgSize;
-				int targetH = imgSize;
+				int targetW = imageSize;
+				int targetH = imageSize;
 
 				// Get the dimensions of the bitmap
 				BitmapFactory.Options bmOptions = new BitmapFactory.Options();

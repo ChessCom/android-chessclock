@@ -37,7 +37,7 @@ public class ArticlesSearchFragment extends BaseSearchFragment  {
 		articlesViewedMap = new SparseBooleanArray();
 
 		articleItemUpdateListener = new ArticleItemUpdateListener();
-		articleItemAdapter = new ArticleItemAdapter(getActivity(), null);
+		articleItemAdapter = new ArticleItemAdapter(getActivity(), null, getImageFetcher());
 	}
 
 	@Override
@@ -57,7 +57,6 @@ public class ArticlesSearchFragment extends BaseSearchFragment  {
 			cursor.close();
 		}
 		articleItemAdapter.addViewedMap(articlesViewedMap);
-
 	}
 
 	@Override

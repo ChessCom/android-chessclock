@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.image_load.AvatarView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.utilities.AppUtils;
 
@@ -21,10 +22,10 @@ import com.chess.utilities.AppUtils;
  */
 public class MessagesCursorAdapter extends ItemsCursorAdapter {
 
-	private int imgSize;
-	public MessagesCursorAdapter(Context context, Cursor cursor) {
-		super(context, cursor);
-		imgSize = (int) (40 * resources.getDisplayMetrics().density);
+	private int imageSize;
+	public MessagesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(context, cursor, imageFetcher);
+		imageSize = (int) (40 * resources.getDisplayMetrics().density);
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class MessagesCursorAdapter extends ItemsCursorAdapter {
 		holder.photoImg.setOnline(isOpponentOnline);
 
 		String otherUserAvatarUrl = getString(cursor, DbScheme.V_OTHER_USER_AVATAR_URL);
-		imageLoader.download(otherUserAvatarUrl, holder.photoImg, imgSize);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(otherUserAvatarUrl, imageSize), holder.photoImg.getImageView());
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_OTHER_USER_USERNAME));
 		Spanned message = Html.fromHtml(getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT));

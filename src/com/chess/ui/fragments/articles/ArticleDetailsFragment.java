@@ -105,7 +105,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private CustomSectionedAdapter sectionedAdapter;
 	private DiagramsAdapter diagramsAdapter;
 	private EnhancedImageDownloader imageDownloader;
-	private int imgSize;
+	private int imageSize;
 	private SparseArray<String> countryMap;
 	private int widthPixels;
 	private int heightPixels;
@@ -249,7 +249,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			}
 			titleTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_TITLE)));
 			String authorImgUrl = DbDataManager.getString(cursor, DbScheme.V_USER_AVATAR);
-			imageDownloader.download(authorImgUrl, authorImg, imgSize);
+			imageDownloader.download(authorImgUrl, authorImg, imageSize);
 
 			String photoUrl = DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL);
 			// Change main article Image params
@@ -1007,7 +1007,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private void init() {
 		Resources resources = getResources();
 		density = resources.getDisplayMetrics().density;
-		imgSize = (int) (40 * density);
+		imageSize = (int) (40 * density);
 		contentPartsList = new ArrayList<DiagramListItem>();
 
 
@@ -1058,7 +1058,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		articleUpdateListener = new ArticleUpdateListener();
 		commentsUpdateListener = new CommentsUpdateListener();
-		commentsCursorAdapter = new CommentsCursorAdapter(getActivity(), null);
+		commentsCursorAdapter = new CommentsCursorAdapter(getActivity(), null, getImageFetcher());
 
 		paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
 		iconOverlaySize = (int) (resources.getDimension(R.dimen.diagram_icon_overlay_size) / density);

@@ -80,7 +80,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	private CommentsCursorAdapter commentsCursorAdapter;
 	private int paddingSide;
 	private CommentPostListener commentPostListener;
-	protected int imgSize;
+	protected int imageSize;
 	protected SparseArray<String> countryMap;
 	protected EnhancedImageDownloader imageDownloader;
 	private long commentId;
@@ -110,7 +110,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 		Resources resources = getResources();
 		widthPixels = resources.getDisplayMetrics().widthPixels;
-		imgSize = (int) (40 * resources.getDisplayMetrics().density);
+		imageSize = (int) (40 * resources.getDisplayMetrics().density);
 
 		String[] countryNames = resources.getStringArray(R.array.new_countries);
 		int[] countryCodes = resources.getIntArray(R.array.new_country_ids);
@@ -121,7 +121,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		imageDownloader = new EnhancedImageDownloader(getActivity());
 
 		commentsUpdateListener = new CommentsUpdateListener();
-		commentsCursorAdapter = new CommentsCursorAdapter(getActivity(), null);
+		commentsCursorAdapter = new CommentsCursorAdapter(getActivity(), null, getImageFetcher());
 
 		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
 		commentPostListener = new CommentPostListener();
@@ -266,7 +266,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		imageDownloader.download(BACK_IMG_LINK, videoBackImg, widthPixels);
 
 		titleTxt.setText(videoData.getTitle());
-		imageDownloader.download(videoData.getUserAvatar(), authorImg, imgSize);
+		imageDownloader.download(videoData.getUserAvatar(), authorImg, imageSize);
 
 		Drawable drawable = AppUtils.getCountryFlagScaled(getActivity(), countryMap.get(videoData.getCountryId()));
 		countryImg.setImageDrawable(drawable);

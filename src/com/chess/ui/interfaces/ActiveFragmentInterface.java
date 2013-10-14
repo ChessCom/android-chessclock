@@ -1,6 +1,7 @@
 package com.chess.ui.interfaces;
 
 
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.fragments.BasePopupsFragment;
@@ -72,4 +73,6 @@ public interface ActiveFragmentInterface {
 	String getMeUsername();
 
 	String getMeUserToken();
+
+	SmartImageFetcher getImageFetcher();
 }

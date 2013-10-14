@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.AvatarView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.utilities.AppUtils;
 
@@ -23,12 +24,12 @@ import com.chess.utilities.AppUtils;
  */
 public class CommentsCursorAdapter extends ItemsCursorAdapter {
 
-	private final int imgSize;
+	private final int imageSize;
 	private final SparseArray<String> countryMap;
 
-	public CommentsCursorAdapter(Context context, Cursor cursor) {
-		super(context, cursor);
-		imgSize = (int) (40 * resources.getDisplayMetrics().density);
+	public CommentsCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(context, cursor, imageFetcher);
+		imageSize = (int) (40 * resources.getDisplayMetrics().density);
 
 		String[] countryNames = resources.getStringArray(R.array.new_countries);
 		int[] countryCodes = resources.getIntArray(R.array.new_country_ids);
@@ -61,7 +62,7 @@ public class CommentsCursorAdapter extends ItemsCursorAdapter {
 		holder.photoImg.setOnline(false);
 
 		String userAvatarUrl = getString(cursor, DbScheme.V_USER_AVATAR);
-		imageLoader.download(userAvatarUrl, holder.photoImg, imgSize);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(userAvatarUrl, imageSize), holder.photoImg.getImageView());
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_USERNAME));
 //		// set premium icon

@@ -112,8 +112,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
 
-		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(getContext(), null);
-		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null);
+		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(getContext(), null, getImageFetcher());
+		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
 
 		sectionedAdapter.addSection(getString(R.string.new_my_move), currentGamesMyCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.completed), finishedGamesCursorAdapter);

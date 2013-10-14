@@ -11,6 +11,7 @@ import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.image_load.AvatarView;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
@@ -26,11 +27,11 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 	private final int paddingTop;
 	private final int paddingSide;
 
-	private int imgSize;
-	public ConversationsCursorAdapter(Context context, Cursor cursor) {
-		super(context, cursor);
+	private int imageSize;
+	public ConversationsCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(context, cursor, imageFetcher);
 		float density = resources.getDisplayMetrics().density;
-		imgSize = (int) (40 * density);
+		imageSize = (int) (40 * density);
 		paddingTop = (int) (12 * density);
 		paddingSide = (int) (12 * density);
 	}
@@ -68,7 +69,7 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 		view.setPadding(paddingSide, paddingTop, paddingSide, paddingTop);
 
 		String otherUserAvatarUrl = getString(cursor, DbScheme.V_OTHER_USER_AVATAR_URL);
-		imageLoader.download(otherUserAvatarUrl, holder.photoImg, imgSize);
+		imageFetcher.loadImage(new SmartImageFetcher.Data(otherUserAvatarUrl, imageSize), holder.photoImg.getImageView());
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_OTHER_USER_USERNAME));
 		Spanned message = Html.fromHtml(getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT));
@@ -83,6 +84,5 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 		private TextView authorTxt;
 		private RoboTextView lastMessageTxt;
 		private TextView lastMessageDateTxt;
-
 	}
 }

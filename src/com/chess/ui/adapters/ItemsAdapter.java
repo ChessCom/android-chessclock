@@ -7,28 +7,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import com.chess.R;
-import com.chess.backend.image_load.EnhancedImageDownloader;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 
 import java.util.List;
 
 public abstract class ItemsAdapter<T> extends BaseAdapter {
 
-	protected final EnhancedImageDownloader imageLoader;
 	protected List<T> itemsList;
 	protected Context context;
-	protected final float density;
-	protected final Resources resources;
-	protected final LayoutInflater inflater;
-	protected final int itemListId;
+	protected float density;
+	protected Resources resources;
+	protected LayoutInflater inflater;
+	protected int itemListId;
+	protected SmartImageFetcher imageFetcher;
+
+	public ItemsAdapter(Context context, List<T> itemList, SmartImageFetcher imageFetcher) {
+		this.imageFetcher = imageFetcher;
+		init(context, itemList);
+	}
 
 	public ItemsAdapter(Context context, List<T> itemList) {
+		init(context, itemList);
+	}
+
+	private void init(Context context, List<T> itemList) {
 		itemsList = itemList;
 		this.context = context;
 		resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 		inflater = LayoutInflater.from(context);
 		itemListId = R.id.list_item_id;
-		imageLoader = new EnhancedImageDownloader(context);
 	}
 
 	public void setItemsList(List<T> list) {

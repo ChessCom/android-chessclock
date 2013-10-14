@@ -15,10 +15,12 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ThemeItem;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.statics.AppData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.SelectionItem;
+import com.chess.statics.AppData;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -37,6 +39,7 @@ import java.util.List;
 public class PopupBackgroundsFragment extends DialogFragment implements AdapterView.OnItemClickListener {
 
 	private static final String THEME_ITEM = "theme_item";
+	private static final String IMAGE_CACHE_DIR = "popup_backgrounds_previews";
 
 	private PopupListSelectionFace listener;
 	private BackgroundsUpdateListener backgroundsUpdateListener;
@@ -48,6 +51,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 	private boolean need2update = true;
 	private View loadingView;
 	private List<ThemeItem.Data> backgroundsThemeList;
+	private SmartImageFetcher imageFetcher;
 
 	public PopupBackgroundsFragment() {
 	}
@@ -77,6 +81,15 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 		backgroundsList = new ArrayList<SelectionItem>();
 		backgroundsUpdateListener = new BackgroundsUpdateListener();
+
+		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
+
+		cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+
+		// The ImageFetcher takes care of loading images into our ImageView children asynchronously
+		imageFetcher = new SmartImageFetcher(getActivity());
+		imageFetcher.setLoadingImage(R.drawable.img_profile_picture_stub);
+		imageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
 	}
 
 	@Override
@@ -102,6 +115,21 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
+		listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+				// Pause fetcher to ensure smoother scrolling when flinging
+				if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+					imageFetcher.setPauseWork(true);
+				} else {
+					imageFetcher.setPauseWork(false);
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+			}
+		});
 	}
 
 	@Override
@@ -157,7 +185,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 					break;
 				}
 			}
-			backgroundsAdapter = new BackgroundsAdapter(getActivity(), backgroundsList);
+			backgroundsAdapter = new BackgroundsAdapter(getActivity(), backgroundsList, imageFetcher);
 			listView.setAdapter(backgroundsAdapter);
 
 			need2update = false;
@@ -192,8 +220,8 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		private final RelativeLayout.LayoutParams linearLayoutParams;
 		private final RelativeLayout.LayoutParams progressParams;
 
-		public BackgroundsAdapter(Context context, List<SelectionItem> menuItems) {
-			super(context, menuItems);
+		public BackgroundsAdapter(Context context, List<SelectionItem> menuItems, SmartImageFetcher imageFetcher) {
+			super(context, menuItems, imageFetcher);
 
 			previewWidth = PopupBackgroundsFragment.this.getView().getWidth();
 			aspectRatio = 1f / 2.9f;
@@ -236,7 +264,8 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		protected void bindView(SelectionItem item, int pos, View view) {
 			ViewHolder holder = (ViewHolder) view.getTag();
 
-			imageLoader.download(item.getText(), holder.image, previewWidth, previewWidth);
+			imageFetcher.loadImage(new SmartImageFetcher.Data(item.getText(), previewWidth), holder.image.getImageView());
+
 			holder.text.setText(item.getCode());
 			holder.text.setChecked(item.isChecked());
 		}
