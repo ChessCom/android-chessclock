@@ -260,7 +260,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		videoBackImg.getProgressBar().setLayoutParams(progressParams);
 		videoBackImg.getImageView().setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-		BitmapDrawable image = (BitmapDrawable) getResources().getDrawable(R.drawable.board_white_grey_full_size);
+		BitmapDrawable image = (BitmapDrawable) getResources().getDrawable(R.drawable.board_green_default);
 		videoBackImg.placeholder = image.getBitmap();
 
 		imageDownloader.download(BACK_IMG_LINK, videoBackImg, widthPixels);

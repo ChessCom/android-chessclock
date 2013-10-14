@@ -166,15 +166,10 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 
 		public String getMoveList() {
 			// get [Event ] end
-			int startIndex = diagram_code.indexOf("[Event ");
-			String movesPart = diagram_code.substring(startIndex);
-			int endIndex = movesPart.indexOf("]");
+			int startIndex = diagram_code.indexOf("]\n\n");
+			String movesPart = diagram_code.substring(startIndex + "]\n\n".length());
 
-			int indexOfDescriptionEnd = endIndex + + "]\n\n".length();
-			// remove Event tag information
-			String moves = movesPart.substring(indexOfDescriptionEnd);
-			moves = moves.substring(0, moves.lastIndexOf(Symbol.NEW_STR));
-			return moves;
+			return movesPart.substring(0, movesPart.lastIndexOf(Symbol.NEW_STR));
 		}
 
 		public void setType(int type) {

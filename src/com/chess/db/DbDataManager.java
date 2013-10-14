@@ -1242,17 +1242,19 @@ public class DbDataManager {
 		values.put(V_URL, currentItem.getUrl());
 		values.put(V_THUMB_CONTENT, currentItem.isIsThumbInContent());
 
-		if (cursor != null && cursor.moveToFirst() && forceUpdate) {
-			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
-		} else {
+		boolean articleExist = cursor != null && cursor.moveToFirst();
+		// we don't update while filling the list
+		if (!articleExist && !forceUpdate){
 			contentResolver.insert(uri, values);
+		}
+		// update only when full body requested
+		if (articleExist && forceUpdate){
+			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
 		}
 
 		if (cursor != null) {
 			cursor.close();
 		}
-
-//		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
 	public static List<ArticleDetailsItem.Diagram> getArticleDiagramItemFromDb(ContentResolver contentResolver, String username) {

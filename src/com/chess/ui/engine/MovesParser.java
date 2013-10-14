@@ -160,7 +160,7 @@ public class MovesParser {
 	 */
 	int[] parse(ChessBoard board, String move) {
 		// possible values ,e4, e4xd5, Rfg1, Rdxd5
-		Log.d("MovesParser", " move to parse = " + move);
+		Log.e("MovesParser", " move to parse = " + move);
 		move = removeNumbers(move);
 		List<Move> validMoves = board.generateLegalMoves();
 
@@ -202,7 +202,6 @@ public class MovesParser {
 
 		int pieceType = PAWN;
 		// we should cut non capital letters
-//		String movePieceStr = currentMove.substring(0, 1);  // failed to parse cxb5 or axb5
 		String movePieceStr = currentMove.replaceAll("[^R,N,B,Q,K]", "");  // leave only piece letter
 		if (movePieceStr.contains(WHITE_KNIGHT)) {
 			pieceType = KNIGHT;
@@ -309,42 +308,10 @@ public class MovesParser {
 			}
 		}
 		throw new IllegalStateException(" fileToIntPosition haven't found a needed int for symbol " + letter);
-
-//		int number = 0;
-//		String symbol = letter.toLowerCase();
-//		if (symbol.contains(A_SMALL)) {
-//			number = 8;
-//		} else if (symbol.contains(B_SMALL)) {
-//			number = 7;
-//		} else if (symbol.contains(C_SMALL)) {
-//			number = 6;
-//		} else if (symbol.contains(D_SMALL)) {
-//			number = 5;
-//		} else if (symbol.contains(E_SMALL)) {
-//			number = 4;
-//		} else if (symbol.contains(F_SMALL)) {
-//			number = 3;
-//		} else if (symbol.contains(G_SMALL)) {
-//			number = 2;
-//		} else if (symbol.contains(H_SMALL)) {
-//			number = 1;
-//		}
-//
-//		return number;
 	}
 
 	int rankToIntPosition(String symbol) {
 		return 9 - Integer.parseInt(symbol);
-//		int j = 0;
-//		if (symbol.contains(NUMB_1)) j = 8;
-//		if (symbol.contains(NUMB_2)) j = 7;
-//		if (symbol.contains(NUMB_3)) j = 6;
-//		if (symbol.contains(NUMB_4)) j = 5;
-//		if (symbol.contains(NUMB_5)) j = 4;
-//		if (symbol.contains(NUMB_6)) j = 3;
-//		if (symbol.contains(NUMB_7)) j = 2;
-//		if (symbol.contains(NUMB_8)) j = 1;
-//		return j;
 	}
 
 	/**
@@ -355,50 +322,10 @@ public class MovesParser {
 	 */
 	String IntPositionToFile(int fileIntNumber) {
 		return String.valueOf(fileLetters[fileIntNumber]);
-//		String number = Symbol.EMPTY;
-//		if (fileIntNumber == 7) {
-//			number = H_SMALL;
-//		} else if (fileIntNumber == 6) {
-//			number = G_SMALL;
-//		} else if (fileIntNumber == 5) {
-//			number = F_SMALL;
-//		} else if (fileIntNumber == 4) {
-//			number = E_SMALL;
-//		} else if (fileIntNumber == 3) {
-//			number = D_SMALL;
-//		} else if (fileIntNumber == 2) {
-//			number = C_SMALL;
-//		} else if (fileIntNumber == 1) {
-//			number = B_SMALL;
-//		} else if (fileIntNumber == 0) {
-//			number = A_SMALL;
-//		}
-//
-//		return number;
 	}
 
 	String IntPositionToRank(int number) {
 		return String.valueOf(8 - number);
-//		String symbol = Symbol.EMPTY;
-//		if (number == 7) {
-//			symbol = NUMB_1;
-//		} else if (number == 6) {
-//			symbol = NUMB_2;
-//		} else if (number == 5) {
-//			symbol = NUMB_3;
-//		} else if (number == 4) {
-//			symbol = NUMB_4;
-//		} else if (number == 3) {
-//			symbol = NUMB_5;
-//		} else if (number == 2) {
-//			symbol = NUMB_6;
-//		} else if (number == 1) {
-//			symbol = NUMB_7;
-//		} else if (number == 0) {
-//			symbol = NUMB_8;
-//		}
-//
-//		return symbol;
 	}
 
 	String positionToString(int pos) {
@@ -418,7 +345,7 @@ public class MovesParser {
 
 			String comment = movesList.substring(firstIndex, lastIndex);
 			commentsMap.put(moveBeforeComment, comment);
-			movesList = movesList.replace(comment, "");
+			movesList = movesList.replace(comment, Symbol.EMPTY);
 		}
 		return commentsMap;
 	}

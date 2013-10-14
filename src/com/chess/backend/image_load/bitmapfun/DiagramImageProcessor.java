@@ -27,10 +27,7 @@ import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import com.chess.BuildConfig;
-import com.chess.backend.image_load.bitmapfun.ImageCache;
-import com.chess.backend.image_load.bitmapfun.ImageResizer;
-import com.chess.backend.image_load.bitmapfun.ImageWorker;
-import com.chess.backend.image_load.bitmapfun.Utils;
+import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.utilities.AppUtils;
 
 import java.io.FileDescriptor;
@@ -46,29 +43,14 @@ public class DiagramImageProcessor extends ImageResizer {
 	public static final int NEXUS_7 = 1;
 	protected int mImageWidth;
 	protected int mImageHeight;
-	private View sourceView;
 	private int deviceCode;
-
-//	/**
-//	 * Initialize providing a single target image size (used for both width and height);
-//	 *
-//	 * @param context
-//	 * @param imageWidth
-//	 * @param imageHeight
-//	 */
-//	public DiagramImageProcessor(Context context, int imageWidth, int imageHeight) {
-//		super(context);
-//		setImageSize(imageWidth, imageHeight);
-//	}
 
 	/**
 	 * Initialize providing a single target image size (used for both width and height);
 	 *
-	 * @param context
 	 */
-	public DiagramImageProcessor(Context context, View sourceView, int deviceCode) {
+	public DiagramImageProcessor(Context context, int deviceCode) {
 		super(context, 0);
-		this.sourceView = sourceView;
 		this.deviceCode = deviceCode;
 		setImageSize(0);
 	}
@@ -79,6 +61,7 @@ public class DiagramImageProcessor extends ImageResizer {
 	 * @param width
 	 * @param height
 	 */
+	@Override
 	public void setImageSize(int width, int height) {
 		mImageWidth = width;
 		mImageHeight = height;
@@ -89,6 +72,7 @@ public class DiagramImageProcessor extends ImageResizer {
 	 *
 	 * @param size
 	 */
+	@Override
 	public void setImageSize(int size) {
 		setImageSize(size, size);
 	}
@@ -97,20 +81,24 @@ public class DiagramImageProcessor extends ImageResizer {
 	 * The main processing method. This happens in a background task. In this case we are just
 	 * sampling down the bitmap and returning it from a resource.
 	 *
-	 * @param resId
+	 * @param data that contain identifier and View to be processed
 	 * @return
 	 */
-	private Bitmap processBitmap(int resId) {
+	protected Bitmap processBitmap(Data data) {
 		if (BuildConfig.DEBUG) {
-			Log.d(TAG, "processBitmap - " + resId);
+			Log.d(TAG, "processBitmap - " + data.getId());
 		}
 		Bitmap bitmapFromView;
 		if (deviceCode == NEXUS_7) {
 			// use inset to correct shadow shift
-			bitmapFromView = getBitmapFromView(sourceView, mImageWidth, mImageHeight);
+			bitmapFromView = getBitmapFromView(data.sourceView, mImageWidth, mImageHeight);
 		} else {
 			// get bitmap from fragmentView
-			bitmapFromView = AppUtils.getBitmapFromView(sourceView, mImageWidth, mImageHeight);
+			bitmapFromView = AppUtils.getBitmapFromView(data.sourceView, mImageWidth, mImageHeight);
+		}
+
+		if (data.sourceView instanceof ChessBoardBaseView) {
+			((ChessBoardBaseView)data.sourceView).releaseBitmaps();
 		}
 
 		return bitmapFromView;
@@ -118,7 +106,7 @@ public class DiagramImageProcessor extends ImageResizer {
 
 	@Override
 	protected Bitmap processBitmap(Object data) {
-		return processBitmap(Integer.parseInt(String.valueOf(data)));
+		return processBitmap((Data)data);
 	}
 
 	private Bitmap getBitmapFromView(View view, int width, int height) {
@@ -306,7 +294,29 @@ public class DiagramImageProcessor extends ImageResizer {
 		return inSampleSize;
 	}
 
-	public void setSourceView(View sourceView) {
-		this.sourceView = sourceView;
+	public static class Data {
+		private int id;
+		private View sourceView;
+
+		public Data(int id, View sourceView) {
+			this.id = id;
+			this.sourceView = sourceView;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public View getSourceView() {
+			return sourceView;
+		}
+
+		public void setSourceView(View sourceView) {
+			this.sourceView = sourceView;
+		}
 	}
 }

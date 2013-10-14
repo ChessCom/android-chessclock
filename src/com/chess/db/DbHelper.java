@@ -101,7 +101,7 @@ public class DbHelper {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()]);
 		if (limitCnt > 0) {
-			queryParams.setOrder(DbScheme.V_CATEGORY + DbDataManager.LIMIT_ + limitCnt);
+			queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.DESCEND	+ DbDataManager.LIMIT_ + limitCnt);
 		} else {
 			queryParams.setOrder(DbScheme.V_CATEGORY);
 		}

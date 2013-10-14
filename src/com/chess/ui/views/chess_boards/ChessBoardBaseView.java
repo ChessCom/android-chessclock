@@ -51,13 +51,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public static final int P_VINTAGE_ID = 8;
 
 	public static final int PIECE_ANIM_SPEED = 150; // 250 looks too long. is not?
-	public static final String VALIDMOVES = "validmoves";
+	public static final String VALID_MOVES = "valid_moves";
 
 	int pieceXDelta, pieceYDelta; // top/left pixel draw position relative to square
 
 	private static final int SQUARES_NUMBER = 8;
 	public static final int EMPTY_ID = 6;
-	private static final int QVGA_WIDTH = 240;
 	private float density;
 	protected AppData appData;
 	private int boardId;
@@ -135,6 +134,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private CopyOnWriteArrayList<Move> validMoves = new CopyOnWriteArrayList<Move>(); // lets try this type
 	private BitmapFactory.Options bitmapOptions;
 	private int pieceInset;
+	private int customBoardId = NO_ID;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -498,7 +498,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 				Bitmap pieceBitmap = getPieceBitmap(color, piece);
 
-				if (pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
+				if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
 					return;
 				}
 				canvas.drawBitmap(pieceBitmap, null, rect, null);
@@ -566,10 +566,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			boolean isUsersTurn = ((isUserWhite && isWhiteToMove) || (!isUserWhite && !isWhiteToMove))
 					|| appData.isHumanVsHumanGameMode(getBoardFace());
 
-			Log.d(VALIDMOVES, "draw validMoves.isEmpty() " + validMoves.isEmpty());
-			Log.d(VALIDMOVES, "draw validMoves.size() " + validMoves.size());
-			Log.d(VALIDMOVES, "draw isUsersTurn " + isUsersTurn);
-			Log.d(VALIDMOVES, "draw isNewMove() " + isNewMove());
+			Log.d(VALID_MOVES, "draw validMoves.isEmpty() " + validMoves.isEmpty());
+			Log.d(VALID_MOVES, "draw validMoves.size() " + validMoves.size());
+			Log.d(VALID_MOVES, "draw isUsersTurn " + isUsersTurn);
+			Log.d(VALID_MOVES, "draw isNewMove() " + isNewMove());
 			if (isNewMove()) {
 				if (isUserColor(boardFace.getColor(from)) && isUsersTurn) {
 					validMoves = boardFace.generateValidMoves(!isUsersTurn);
@@ -877,7 +877,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected void afterUserMove() {
-		Log.d(VALIDMOVES, "afterUserMove generate");
+		Log.d(VALID_MOVES, "afterUserMove generate");
 		if (showLegalMoves && isNewMove()) {
 			validMoves = getBoardFace().generateValidMoves(true);
 			previousFrom = from;
@@ -941,39 +941,41 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 			Bitmap boardBitmap;
 			BitmapShader shader;
-			if (!TextUtils.isEmpty(appData.getThemeBoardPath())) {
+
+			if (customBoardId != NO_ID) {
+				shader = setBoardFromResource(customBoardId);
+			} else if (!TextUtils.isEmpty(appData.getThemeBoardPath())) {
 				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
 				if (boardBitmap == null) {
 					getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme
-					boardBackPaint.setShader(setBoardFromResource());
+					boardBackPaint.setShader(setBoardFromResource(boardsDrawables[boardId]));
 					return;
 				}
 				boardBitmap = Bitmap.createScaledBitmap(boardBitmap, viewWidth, viewWidth, true);
 
 				shader = new BitmapShader(boardBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 			} else {
-				shader = setBoardFromResource();
+				shader = setBoardFromResource(boardsDrawables[boardId]);
 			}
 
 			boardBackPaint.setShader(shader);
 		}
 	}
 
-	private BitmapShader setBoardFromResource() {
+	private BitmapShader setBoardFromResource(int resourceId) {
 		Bitmap boardBitmap;
 		BitmapShader shader;
-		BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(boardsDrawables[boardId]);
+		BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(resourceId);
 		boardBitmap = drawable.getBitmap();
 
-		int bitmapSize;
-		if (viewHeight < viewWidth && viewWidth != QVGA_WIDTH) { // if landscape mode
-			bitmapSize = viewHeight / 4;
-		} else {
-			bitmapSize = viewWidth / 4;
-		}
+		int bitmapSize = viewHeight / 4;
 		boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
 		shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 		return shader;
+	}
+
+	public void setCustomBoard(int resourceId) {
+		customBoardId = resourceId;
 	}
 
 	private void setPieceBitmapFromArray(int[] drawableArray) {
@@ -1330,12 +1332,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		blackPiecesMap = null;
 	}
 
-	// todo: should be only one getYCoordinate method after refactoring
+// todo: should be only one getYCoordinate method after refactoring
 //	private int getYCoordinateForArrow(int y) {
 //		return square * (getBoardFace().isReside() ? y : 7 - y);
 //	}
 
-	// TODO: refactor!
+// TODO: refactor!
 
 	protected class MoveAnimator {
 		long startTime;
@@ -1515,6 +1517,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		public void setForceCompEngine(boolean forceCompEngine) {
 			this.forceCompEngine = forceCompEngine;
 		}
+
 	}
 
 	private Bitmap getPieceBitmap(int fromColor, int fromPiece) {
@@ -1547,7 +1550,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		// todo: possible refactoring - get rid of resetValidMoves,
 		// but Compare board Changing when drawing move coordinate highlights instead,
 		// for example by moves list and currentMoveNumber
-		Log.d(VALIDMOVES, "validlog 2 clear");
+		Log.d(VALID_MOVES, "validlog 2 clear");
 		validMoves.clear();
 	}
 }

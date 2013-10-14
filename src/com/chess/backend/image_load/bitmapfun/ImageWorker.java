@@ -40,10 +40,11 @@ import java.lang.ref.WeakReference;
 public abstract class ImageWorker {
 	private static final String TAG = "ImageWorker";
 	private static final int FADE_IN_TIME = 200;
+	private Drawable changingDrawable;
 
-	private ImageCache mImageCache;
+	protected ImageCache mImageCache;
 	private ImageCache.ImageCacheParams mImageCacheParams;
-	private Bitmap mLoadingBitmap;
+	protected Bitmap mLoadingBitmap;
 	private boolean mFadeInBitmap = true;
 	private boolean mExitTasksEarly = false;
 	protected boolean mPauseWork = false;
@@ -55,9 +56,11 @@ public abstract class ImageWorker {
 	private static final int MESSAGE_INIT_DISK_CACHE = 1;
 	private static final int MESSAGE_FLUSH = 2;
 	private static final int MESSAGE_CLOSE = 3;
+	private boolean needLoadingImage = true;
 
 	protected ImageWorker(Context context) {
 		mResources = context.getResources();
+		changingDrawable = new ColorDrawable(android.R.color.transparent);
 	}
 
 	/**
@@ -98,7 +101,7 @@ public abstract class ImageWorker {
 	}
 
 	/**
-	 * Set placeholder bitmap that shows when the the background thread is running.
+	 * Set placeholder bitmap that shows when the background thread is running.
 	 *
 	 * @param bitmap
 	 */
@@ -107,12 +110,20 @@ public abstract class ImageWorker {
 	}
 
 	/**
-	 * Set placeholder bitmap that shows when the the background thread is running.
+	 * Set placeholder bitmap that shows when the background thread is running.
 	 *
 	 * @param resId
 	 */
 	public void setLoadingImage(int resId) {
 		mLoadingBitmap = BitmapFactory.decodeResource(mResources, resId);
+	}
+
+	public void setNeedLoadingImage(boolean needLoadingImage) {
+		this.needLoadingImage = needLoadingImage;
+	}
+
+	public void setChangingDrawable(Drawable changingDrawable) {
+		this.changingDrawable = changingDrawable;
 	}
 
 	/**
@@ -232,7 +243,7 @@ public abstract class ImageWorker {
 	/**
 	 * The actual AsyncTask that will asynchronously process the image.
 	 */
-	private class BitmapWorkerTask extends AsyncTask<Object, Void, BitmapDrawable> {
+	protected class BitmapWorkerTask extends AsyncTask<Object, Void, BitmapDrawable> {
 		private Object data;
 		private final WeakReference<ImageView> imageViewReference;
 
@@ -382,12 +393,14 @@ public abstract class ImageWorker {
 			// Transition drawable with a transparent drawable and the final drawable
 			final TransitionDrawable td =
 					new TransitionDrawable(new Drawable[]{
-							new ColorDrawable(android.R.color.transparent),
+							changingDrawable,
 							drawable
 					});
-			// Set background to loading bitmap
-			imageView.setBackgroundDrawable(
-					new BitmapDrawable(mResources, mLoadingBitmap));
+			if (needLoadingImage) {
+				// Set background to loading bitmap
+				imageView.setBackgroundDrawable(
+						new BitmapDrawable(mResources, mLoadingBitmap));
+			}
 
 			imageView.setImageDrawable(td);
 			td.startTransition(FADE_IN_TIME);

@@ -109,18 +109,17 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	public void onResume() {
 		super.onResume();
 
+		// init articles viewed state here
 		init();
 
 		if (need2update) {
-			boolean haveSavedData = DbDataManager.haveSavedArticles(getActivity());
 
 			if (!loadCategoriesFromDB()) {
 				getCategories();
 			}
 
-			if (haveSavedData) {
-				loadFromDb();
-			}
+			// loading articles
+			updateUiData();
 		} else {
 			loadCategoriesFromDB();
 			loadFromDb();

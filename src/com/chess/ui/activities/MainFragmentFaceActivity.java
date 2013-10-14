@@ -497,10 +497,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				fragmentByTag.discardChanges();
 				return super.onKeyUp(keyCode, event);
 			}
-			ArticleDetailsFragment articleDetailsFragment = (ArticleDetailsFragment) getSupportFragmentManager().findFragmentByTag(ArticleDetailsFragment.class.getSimpleName());
-			if (articleDetailsFragment != null && articleDetailsFragment.isVisible()) {
-				return articleDetailsFragment.hideActiveDiagramAnimated() || super.onKeyUp(keyCode, event);
-			}
 		}
 		return super.onKeyUp(keyCode, event);
 	}
