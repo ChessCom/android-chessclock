@@ -339,6 +339,7 @@
 	<string name="players_online_arg">%s Players Online</string>
 	<string name="improve_your_chess">Improve Your Chess!</string>
 	<string name="top_game">Top Game</string>
+	<string name="password_changed">Password Changed</string>
 
 
 </resources>

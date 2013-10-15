@@ -102,8 +102,9 @@ public class SettingsPasswordFragment extends CommonLogicFragment {
 
 	private void updateData() {
 		LoadItem loadItem = new LoadItem();
-		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.setRequestMethod(RestHelper.PUT);
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_PASSWORD);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_OLD_PASS, oldPassword);
 		loadItem.addRequestParams(RestHelper.P_NEW_PASS, newPassword);
 
@@ -121,8 +122,9 @@ public class SettingsPasswordFragment extends CommonLogicFragment {
 			if (show) {
 				showPopupHardProgressDialog(R.string.processing_);
 			} else {
-				if (isPaused)
+				if (isPaused) {
 					return;
+				}
 
 				dismissProgressDialog();
 			}
@@ -130,8 +132,8 @@ public class SettingsPasswordFragment extends CommonLogicFragment {
 
 		@Override
 		public void updateData(RegisterItem returnedObj) {
-
-			preferencesEditor.putString(PASSWORD, newPassword);
+			showToast(R.string.password_changed);
+			preferencesEditor.putString(PASSWORD, newPassword).commit();
 		}
 	}
 }
