@@ -65,31 +65,11 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 	@Override
 	public boolean isLastTacticMoveCorrect() {
 		int lastIndex = ply - 1;
-		if (lastIndex >= tacticMoves.length || lastIndex >= histDat.length) {
-			return false;
-		}
 
-		Move move = histDat[lastIndex].move; // get last move
-		String piece = Symbol.EMPTY;
-		int pieceCode = pieces[move.to];
-		if (pieceCode == 1) { // set piece name
-			piece = MovesParser.WHITE_KNIGHT;
-		} else if (pieceCode == 2) {
-			piece = MovesParser.WHITE_BISHOP;
-		} else if (pieceCode == 3) {
-			piece = MovesParser.WHITE_ROOK;
-		} else if (pieceCode == 4) {
-			piece = MovesParser.WHITE_QUEEN;
-		} else if (pieceCode == 5) {
-			piece = MovesParser.WHITE_KING;
-		}
-		String moveTo = movesParser.positionToString(move.to);
-//		Log.d("TEST_MOVE", "piece " + piece + " | move to " + moveTo + " : tactic last move = " + tacticMoves[lastIndex]);
-		if (move.isCastling()){
-			moveTo = "O-O";
-		}
-
-		return tacticMoves[lastIndex].contains(piece) && tacticMoves[lastIndex].contains(moveTo);
+		String tacticCorrectMove = tacticMoves[lastIndex];
+		tacticCorrectMove = tacticCorrectMove.replaceAll(MovesParser.SPECIAL_SYMBOLS_PATTERN, Symbol.EMPTY); // remove special symbols
+		String lastMoveSAN = getLastMoveSAN().replaceAll(MovesParser.SPECIAL_SYMBOLS_PATTERN, Symbol.EMPTY); // remove special symbols
+		return tacticCorrectMove.equals(lastMoveSAN);
 	}
 
 	@Override

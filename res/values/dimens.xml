@@ -325,6 +325,7 @@
 	<dimen name="article_detail_image_height">213dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="content_text_size">14sp</dimen>
+	<dimen name="content_info_text_size">12sp</dimen>
 	<dimen name="highlight_stroke_width">2dip</dimen>
 	<dimen name="play_button_left_offset">25dip</dimen>
 	<dimen name="popup_end_game_width">300dip</dimen>

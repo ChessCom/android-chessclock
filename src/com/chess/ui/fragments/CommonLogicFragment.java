@@ -132,12 +132,14 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		density = getResources().getDisplayMetrics().density;
 		padding = (int) (48 * density);
 
-		imageFetcher = getActivityFace().getImageFetcher();
+		// initialize imageFetcher
 		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
 
 		cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
 
 		// The ImageFetcher takes care of loading images into our ImageView children asynchronously
+		imageFetcher = new SmartImageFetcher(getActivity());
+		imageFetcher.setLoadingImage(R.drawable.img_profile_picture_stub);
 		imageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
 	}
 
@@ -224,8 +226,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 
 		// if we use image loading, then process imageFetcher states
-		if (loadingImages)
-		imageFetcher.setExitTasksEarly(false);
+		if (loadingImages) {
+			imageFetcher.setExitTasksEarly(false);
+		}
 	}
 
 	@Override
@@ -235,9 +238,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			facebookUiHelper.onPause();
 		}
 
-		imageFetcher.setPauseWork(false);
-		imageFetcher.setExitTasksEarly(true);
-		imageFetcher.flushCache();
+		if (loadingImages) {
+			imageFetcher.setPauseWork(false);
+			imageFetcher.setExitTasksEarly(true);
+			imageFetcher.flushCache();
+		}
 	}
 
 	@Override
@@ -263,7 +268,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			facebookUiHelper.onDestroy();
 		}
 
-		imageFetcher.closeCache();
+		if (loadingImages) {
+			imageFetcher.closeCache();
+		}
 	}
 
 	protected void setNeedToChangeActionButtons(boolean change) {

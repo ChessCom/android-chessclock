@@ -846,7 +846,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int messageId = 0;
 
 			if (!boardFace.isPossibleToMakeMoves()) {
-				if (boardFace.inCheck(side)) {
+				if (boardFace.isPerformCheck(side)) {
 					messageId = side == ChessBoard.WHITE_SIDE ? R.string.black_wins : R.string.white_wins;
 				} else {
 					messageId = R.string.draw_by_stalemate;
@@ -860,7 +860,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				gameFace.onGameOver(getResources().getString(messageId), false);
 				return true;
 			}
-		} else if (boardFace.inCheck(side)) {
+		} else if (boardFace.isPerformCheck(side)) {
 			if (!boardFace.isPossibleToMakeMoves()) {
 				boardFace.getHistDat()[boardFace.getPly() - 1].notation += "#";
 				gameFace.invalidateGameScreen();

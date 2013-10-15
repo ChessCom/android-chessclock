@@ -46,7 +46,7 @@ public interface BoardFace {
 
 	boolean takeNext();
 
-	boolean inCheck(int s);
+	boolean isPerformCheck(int s);
 
 	int getPiece(int pieceId);
 

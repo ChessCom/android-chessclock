@@ -77,6 +77,7 @@
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="options_list_item_height">56dip</dimen>
 	<dimen name="content_text_size">17sp</dimen>
+	<dimen name="content_info_text_size">14sp</dimen>
 
 	<!--Switch Default-->
 	<dimen name="button_switch_default_width">85dip</dimen>

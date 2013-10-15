@@ -17,7 +17,7 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 	public static final String END_PART = "\"]";
 
 /*
-    "id": 224,
+	"id": 224,
     "title": "Testing thing",
     "create_date": 1369863079,
     "body": "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. yeah!</p>",
@@ -37,7 +37,7 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
     "is_thumb_in_content": true
 */
 
-	public class Data extends ArticleItem.Data{
+	public class Data extends ArticleItem.Data {
 		private int view_count;
 		private int comment_count;
 		private List<Diagram> diagrams;
@@ -104,6 +104,8 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 	[Result "1-0"]
 	[Plycount "47"]
 	[Opening "Evans G"]
+
+
 	1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4 7.O-O d3 8.Qb3 Qf6 9.e5
 	Qg6 10.Re1 Nge7 11.Ba3 b5 12.Qxb5 Rb8 13.Qa4 Bb6 14.Nbd2 Bb7 15.Ne4 Qf5 16.Bxd3
 	Qh5 17.Nf6+ gxf6 18.exf6 Rg8 19.Rad1 Qxf3 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8 23.Bd7+ Kf8 24.Bxe7# 1-0
@@ -127,6 +129,15 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 		public static final int SIMPLE = 0;
 		public static final int CHESS_GAME = 1;
 		public static final int PUZZLE = 2;
+		private static final String WHITE_PLAYER = "White";
+		private static final String BLACK_PLAYER = "Black";
+		private static final String EVENT = "Event";
+		private static final String SITE = "Site";
+		private static final String DATE = "Date";
+		private static final String RESULT = "Result";
+		private static final String ECO = "ECO";
+		private static final String PLYCOUNT = "Plycount";
+		private static final String DELIMITER = " | ";
 
 		private long diagram_id;
 		private String diagram_code;
@@ -185,6 +196,55 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 				return null;
 			}
 		}
+
+		public String getPlayers() {
+			String whitePlayer = getTagData(WHITE_PLAYER);
+			if (whitePlayer.equals(Symbol.EMPTY)) {
+				return Symbol.EMPTY;
+			}
+			return whitePlayer + " vs " + getTagData(BLACK_PLAYER);
+		}
+
+		public String getGameInfo() {
+			String event = getTagData(EVENT);
+			if (event.equals(Symbol.EMPTY)) {
+				return Symbol.EMPTY;
+			}
+			return event + DELIMITER
+					+ getTagData(SITE) + DELIMITER
+					+ getTagData(DATE).substring(0, 4) + DELIMITER
+					+ "ECO :" + getTagData(ECO) + DELIMITER
+					+ getTagData(RESULT);
+		}
+
+		public String getUserToMove() {
+			String plyStr = getTagData(PLYCOUNT);
+			int ply = Integer.parseInt(plyStr);
+			String userToMove;
+			if (ply %2 == 0) {
+				userToMove = "White to move";
+			} else {
+				userToMove = "Black to move";
+			}
+
+			return userToMove;
+		}
+
+		private String getTagData(String tag) {
+			if (!diagram_code.contains("[" + tag)) {
+				return Symbol.EMPTY;
+			}
+			int tagContentStartIndex = diagram_code.indexOf("[" + tag + " \"") + ("[" + tag + " \"").length();
+			String tagContentStr = diagram_code.substring(tagContentStartIndex);
+			tagContentStr = tagContentStr.substring(0, tagContentStr.indexOf("\"]\n"));
+			return tagContentStr;
+		}
+//		private String getResultTag(String tag) {
+//			int tagContentStartIndex = diagram_code.indexOf("[" + tag + " \"") + ("[" + tag + " \"").length();
+//			String tagContentStr = diagram_code.substring(tagContentStartIndex);
+//			tagContentStr = tagContentStr.substring(0, tagContentStr.indexOf("\"]\n"));
+//			return s;
+//		}
 	}
 
 /*

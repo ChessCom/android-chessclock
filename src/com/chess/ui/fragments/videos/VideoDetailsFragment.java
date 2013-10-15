@@ -24,13 +24,14 @@ import com.chess.backend.entity.api.CommonCommentItem;
 import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.PostCommentItem;
 import com.chess.backend.entity.api.VideoSingleItem;
-import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.statics.Symbol;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
@@ -48,6 +49,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 	private static final String BACK_IMG_LINK = "https://dl.dropboxusercontent.com/u/24444064/video_back.png";
 	public static final String ITEM_ID = "item_id";
+	private static final String THUMBS_CACHE_DIR = "thumbs";
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 	private static final int WATCH_VIDEO_REQUEST = 9897;
@@ -82,13 +84,13 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	private CommentPostListener commentPostListener;
 	protected int imageSize;
 	protected SparseArray<String> countryMap;
-	protected EnhancedImageDownloader imageDownloader;
 	private long commentId;
 	private boolean inEditMode;
 	private String bodyStr;
 	private String commentForEditStr;
 	protected int widthPixels;
 	private View loadingCommentsView;
+	private SmartImageFetcher backImageFetcher;
 
 	public static VideoDetailsFragment createInstance(long videoId) {
 		VideoDetailsFragment frag = new VideoDetailsFragment();
@@ -118,7 +120,15 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		for (int i = 0; i < countryNames.length; i++) {
 			countryMap.put(countryCodes[i], countryNames[i]);
 		}
-		imageDownloader = new EnhancedImageDownloader(getActivity());
+		{// set imageCache params for articleImageFetcher
+			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), THUMBS_CACHE_DIR);
+
+			cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+
+			backImageFetcher = new SmartImageFetcher(getActivity());
+			backImageFetcher.setLoadingImage(R.drawable.board_green_default);
+			backImageFetcher.addImageCache(getFragmentManager(), cacheParams);
+		}
 
 		commentsUpdateListener = new CommentsUpdateListener();
 		commentsCursorAdapter = new CommentsCursorAdapter(getActivity(), null, getImageFetcher());
@@ -263,10 +273,10 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		BitmapDrawable image = (BitmapDrawable) getResources().getDrawable(R.drawable.board_green_default);
 		videoBackImg.placeholder = image.getBitmap();
 
-		imageDownloader.download(BACK_IMG_LINK, videoBackImg, widthPixels);
+		backImageFetcher.loadImage(new SmartImageFetcher.Data(BACK_IMG_LINK, widthPixels), videoBackImg.getImageView());
 
 		titleTxt.setText(videoData.getTitle());
-		imageDownloader.download(videoData.getUserAvatar(), authorImg, imageSize);
+		getImageFetcher().loadImage(new SmartImageFetcher.Data(videoData.getUserAvatar(), imageSize), authorImg.getImageView());
 
 		Drawable drawable = AppUtils.getCountryFlagScaled(getActivity(), countryMap.get(videoData.getCountryId()));
 		countryImg.setImageDrawable(drawable);

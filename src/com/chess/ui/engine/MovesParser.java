@@ -62,6 +62,7 @@ public class MovesParser {
 	private static final CharSequence COMMENTS_SYMBOL_START = "{";
 	private static final CharSequence ALTERNATE_MOVES_SYMBOL_START = "(";
 	public static final String SPECIAL_SYMBOLS_PATTERN = "[+,!,?,#,x,=,‼,⁇,⁉,⁈,□,∞,⩲,⩱,±,∓,−]";
+	public static final String TAG = "MovesParser";
 
 	private final HashMap<String, String> annotationsMapping;
 
@@ -160,7 +161,7 @@ public class MovesParser {
 	 */
 	int[] parse(ChessBoard board, String move) {
 		// possible values ,e4, e4xd5, Rfg1, Rdxd5
-		Log.e("MovesParser", " move to parse = " + move);
+		Log.e(TAG, " move to parse = " + move);
 		move = removeNumbers(move);
 		List<Move> validMoves = board.generateLegalMoves();
 
@@ -227,7 +228,7 @@ public class MovesParser {
 			String destinationSquare = moveTo[0] + moveTo[1];
 			fromSquare = fromSquare.replace(destinationSquare, Symbol.EMPTY); // remove destination square
 
-			if (fromSquare.length() < 2) {
+			if (fromSquare.length() < 2 && fromSquare.length() > 0) {
 				if (fromSquare.matches(REGEXP_CHARS)) {
 					fromFile = fromSquare;
 				} else {
@@ -338,13 +339,19 @@ public class MovesParser {
 		while (movesList.contains(COMMENTS_SYMBOL_START)) {
 			int firstIndex = movesList.indexOf("{");
 			int lastIndex = movesList.indexOf("}") + 1;
+			String comment;
+			if (firstIndex == 0) {
+				comment = movesList.substring(firstIndex, lastIndex);
+				commentsMap.put("", comment); // TODO add logic to show comment before first move
+			} else {
+				String movesBeforeComment = movesList.substring(0, firstIndex - 1);
+				int indexOfMoveBeforeComment = movesBeforeComment.lastIndexOf(Symbol.SPACE);
+				String moveBeforeComment = movesBeforeComment.substring(indexOfMoveBeforeComment);
 
-			String movesBeforeComment = movesList.substring(0, firstIndex - 1);
-			int indexOfMoveBeforeComment = movesBeforeComment.lastIndexOf(Symbol.SPACE);
-			String moveBeforeComment = movesBeforeComment.substring(indexOfMoveBeforeComment);
+				comment = movesList.substring(firstIndex, lastIndex);
+				commentsMap.put(moveBeforeComment, comment);
+			}
 
-			String comment = movesList.substring(firstIndex, lastIndex);
-			commentsMap.put(moveBeforeComment, comment);
 			movesList = movesList.replace(comment, Symbol.EMPTY);
 		}
 		return commentsMap;
@@ -361,11 +368,11 @@ public class MovesParser {
 
 		String newMovesList = Symbol.EMPTY;
 		if (!movesList.contains(ALTERNATE_MOVES_SYMBOL_START)) {
-			return movesList;
+			return movesList.trim();
 		}
 
 		String[] parts = movesList.split("\\(");
-		Log.d("MovesParser", " ________________________________________________");
+		Log.d(TAG, " ________________________________________________");
 
 		for (String part : parts) {
 //			Log.d("MovesParser","before parts = " + part );
@@ -375,23 +382,23 @@ public class MovesParser {
 				String[] parts1 = part.split("\\)");
 				for (int i = 0; i < parts1.length; i++) {
 					String part1 = parts1[i];
-					Log.d("MovesParser", " part1 = " + part1);
+					Log.d(TAG, " part1 = " + part1);
 					if (i + 1 < parts1.length && !part.equals(Symbol.SPACE)) {
 						part = part.replace(part1 + ")", Symbol.EMPTY);
 					}
 				}
 			}
-			Log.d("MovesParser", "after parts = " + part);
+			Log.d(TAG, "after parts = " + part);
 			newMovesList += part;
 		}
 		newMovesList = newMovesList.replaceAll("\\(", Symbol.EMPTY);
 		newMovesList = newMovesList.replaceAll("\\)", Symbol.EMPTY);
 		newMovesList = newMovesList.replaceAll("\\.\\.", Symbol.EMPTY); // ".."
-		Log.d("MovesParser", " ------------------------------------------------");
-		Log.d("MovesParser", " RESULT movesList = " + movesList);
-		Log.d("MovesParser", " RESULT newMovesList = " + newMovesList);
+		Log.d(TAG, " ------------------------------------------------");
+		Log.d(TAG, " RESULT movesList = " + movesList);
+		Log.d(TAG, " RESULT newMovesList = " + newMovesList);
 
-		return newMovesList;
+		return newMovesList.trim();
 	}
 
 	public String replaceSpecialSymbols(String movesList) {

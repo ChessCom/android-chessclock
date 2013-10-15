@@ -78,6 +78,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		menuItems.add(new NavigationMenuItem(getString(R.string.vs_computer), R.drawable.ic_nav_vs_comp));
 
 		menuItems.get(0).selected = true;
+		getImageFetcher().setLoadingImage(R.drawable.empty);
 		adapter = new NewNavigationMenuAdapter(getActivity(), menuItems, getImageFetcher());
 	}
 
@@ -137,10 +138,6 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				if (fragmentByTag == null) {
 					fragmentByTag = new LiveHomeFragment();
 				}
-//				fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveHomeTabsFragment.class.getSimpleName());
-//				if (fragmentByTag == null) {
-//					fragmentByTag = new LiveHomeTabsFragment();
-//				}
 				break;
 			case R.drawable.ic_nav_tactics:
 				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
