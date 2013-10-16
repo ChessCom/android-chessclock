@@ -519,13 +519,7 @@ public class ImageCache {
         String cacheKey;
         try {
             final MessageDigest mDigest = MessageDigest.getInstance("MD5");
-			if (key == null) {
-				throw new IllegalArgumentException(" key == null");
-			}
 
-			if (mDigest == null) {
-				return String.valueOf(key.hashCode());
-			}
 			byte[] bytes = key.getBytes();
 			mDigest.update(bytes);
             cacheKey = bytesToHexString(mDigest.digest());

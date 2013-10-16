@@ -303,7 +303,7 @@ public class SmartImageFetcher extends ImageFetcher {
 		}
 
 		public String getUrl() {
-			return url;
+			return url != null ? url : "http://d1lalstwiwz2br.cloudfront.net/images/noavatar_l.gif";
 		}
 
 		public int getImageWidth() {
@@ -316,7 +316,7 @@ public class SmartImageFetcher extends ImageFetcher {
 
 		@Override
 		public String toString() {
-			return url;
+			return getUrl();
 		}
 	}
 }

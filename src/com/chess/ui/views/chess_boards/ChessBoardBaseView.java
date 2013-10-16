@@ -518,35 +518,27 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected void drawPieces(Canvas canvas, boolean animationActive, MoveAnimator moveAnimator) {
 		BoardFace boardFace = getBoardFace();
 
-		for (int pos = 0; pos < ChessBoard.SQUARES_CNT; pos++) {
-			// do not draw if in drag or animated
-			if ((drag && pos == from) || (animationActive && moveAnimator.isSquareHidden(pos))) {
-				continue;
-			}
-
-			int color = boardFace.getColor(pos);
-			int piece = boardFace.getPiece(pos);
-			int x = ChessBoard.getColumn(pos, boardFace.isReside());
-			int y = ChessBoard.getRow(pos, boardFace.isReside());
-			// TODO rework logic to store changed pieces and redraw only them
-			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {    // here is the simple replace/redraw of piece // draw it bit inside of square
-				// calculate piece size bounds
-				int left = x * squareSize + pieceInset;
-				int right = x * squareSize + squareSize - pieceInset;
-				int bottom = y * squareSize + squareSize - pieceInset;
-				if (using3dPieces) {
-					int top = y * squareSize + pieceInset - _3dPiecesOffset;
-					rect.set(left, top, right, bottom);
-				} else {
-					int top = y * squareSize + pieceInset;
-					rect.set(left, top, right, bottom);
+		if (boardFace.isReside()) {
+			for (int pos = ChessBoard.SQUARES_CNT - 1; pos > 0; pos--) {
+				// do not draw if in drag or animated
+				if ((drag && pos == from) || (animationActive && moveAnimator.isSquareHidden(pos))) {
+					continue;
 				}
-				Bitmap pieceBitmap = getPieceBitmap(color, piece);
 
-				if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
+				if (drawPieceOnCanvas(canvas, boardFace, pos)) {
 					return;
 				}
-				canvas.drawBitmap(pieceBitmap, null, rect, null);
+			}
+		} else {
+			for (int pos = 0; pos < ChessBoard.SQUARES_CNT; pos++) {
+				// do not draw if in drag or animated
+				if ((drag && pos == from) || (animationActive && moveAnimator.isSquareHidden(pos))) {
+					continue;
+				}
+
+				if (drawPieceOnCanvas(canvas, boardFace, pos)) {
+					return;
+				}
 			}
 		}
 
@@ -568,6 +560,34 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 			canvas.drawBitmap(moveAnimator.getCapturedPieceBitmap(), null, rect, null);
 		}
+	}
+
+	private boolean drawPieceOnCanvas(Canvas canvas, BoardFace boardFace, int pos) {
+		int color = boardFace.getColor(pos);
+		int piece = boardFace.getPiece(pos);
+		int x = ChessBoard.getColumn(pos, boardFace.isReside());
+		int y = ChessBoard.getRow(pos, boardFace.isReside());
+		// TODO rework logic to store changed pieces and redraw only them
+		if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {    // here is the simple replace/redraw of piece // draw it bit inside of square
+			// calculate piece size bounds
+			int left = x * squareSize + pieceInset;
+			int right = x * squareSize + squareSize - pieceInset;
+			int bottom = y * squareSize + squareSize - pieceInset;
+			if (using3dPieces) {
+				int top = y * squareSize + pieceInset - _3dPiecesOffset;
+				rect.set(left, top, right, bottom);
+			} else {
+				int top = y * squareSize + pieceInset;
+				rect.set(left, top, right, bottom);
+			}
+			Bitmap pieceBitmap = getPieceBitmap(color, piece);
+
+			if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
+				return true;
+			}
+			canvas.drawBitmap(pieceBitmap, null, rect, null);
+		}
+		return false;
 	}
 
 	protected void drawCoordinates(Canvas canvas) {
