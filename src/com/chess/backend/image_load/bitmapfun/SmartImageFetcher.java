@@ -313,5 +313,10 @@ public class SmartImageFetcher extends ImageFetcher {
 		public int getImageHeight() {
 			return imageHeight;
 		}
+
+		@Override
+		public String toString() {
+			return url;
+		}
 	}
 }

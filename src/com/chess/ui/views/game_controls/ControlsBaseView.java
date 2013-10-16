@@ -9,7 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import com.chess.FontsHelper;
+import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
@@ -207,7 +207,4 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 //		setEnabled(!lock); // don't lock controls to prevent drawable glitches(temp)
 	}
 
-	public abstract void enableForwardBtn(boolean enable);
-
-	public abstract void enableBackBtn(boolean enable);
 }

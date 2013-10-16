@@ -1,7 +1,6 @@
 package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.chess.statics.StaticData;
@@ -82,21 +81,6 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 			appData.setSavedCompGame(builder.toString());
 		}
 		return super.isGameOver();
-	}
-
-	@Override
-	protected void onDraw(Canvas canvas) {
-		canvas.setDrawFilter(drawFilter);
-		super.onDraw(canvas);
-		drawBoard(canvas);
-
-		drawHighlights(canvas);
-		drawTrackballDrag(canvas);
-
-		drawPiecesAndAnimation(canvas);
-		drawDragPosition(canvas);
-
-		drawCoordinates(canvas);
 	}
 
 	@Override

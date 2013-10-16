@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.chess.FontsHelper;
+import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.statics.Symbol;

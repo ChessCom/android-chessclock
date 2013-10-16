@@ -25,7 +25,7 @@ import android.text.TextWatcher;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
-import com.chess.FontsHelper;
+import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.statics.AppConstants;

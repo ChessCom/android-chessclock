@@ -41,16 +41,6 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	}
 
 	@Override
-	public void enableForwardBtn(boolean enable) {
-//		enableGameButton(FORWARD, enable);
-	}
-
-	@Override
-	public void enableBackBtn(boolean enable) {
-//		enableGameButton(BACK, enable);
-	}
-
-	@Override
 	public void onClick(View view) {  // TODO rework click handles
 		if (blocked)
 			return;

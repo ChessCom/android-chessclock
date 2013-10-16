@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
-import com.chess.FontsHelper;
+import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.RoboImageButton;
@@ -109,16 +109,6 @@ public class ControlsLessonsView extends ControlsBaseView {
 		params.weight = 1;
 
 		controlsLayout.addView(button, params);
-	}
-
-	@Override
-	public void enableForwardBtn(boolean enable) {
-
-	}
-
-	@Override
-	public void enableBackBtn(boolean enable) {
-
 	}
 
 	public void setBoardViewFace(BoardViewLessonsFace boardViewFace) {

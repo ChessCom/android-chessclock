@@ -427,7 +427,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		boardView.setGameActivityFace(this);
 		boardView.lockBoard(true);
 
-		addLayoutChangeAnimation(view.findViewById(R.id.baseView));
+		addLayoutChangeAnimation(view.findViewById(R.id.boardFrame));
 
 		// show notationsView with animation
 		handler.postDelayed(new Runnable() {

@@ -46,6 +46,7 @@ import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
+import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.boards.TacticBoardFace;
 import com.chess.ui.interfaces.game_ui.GameTacticsFace;
 import com.chess.ui.views.PanelInfoGameView;
@@ -417,41 +418,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		lockBoard(true);
 	}
 
-	@Override
-	public void showHint() {
-		// remember the move before the hint
-		final TacticBoardFace boardFace = getBoardFace();
-		correctMovesBeforeHint = boardFace.getCorrectMovesCnt();
 
-		int hintMoveNumber = boardFace.getPly();
-		if (hintMoveNumber == getBoardFace().getTacticMoves().length) {
-			return;
-		}
-
-		trainerData.setHintWasUsed(true);
-
-		// get next valid move
-		final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[hintMoveNumber]);
-		boardFace.setMovesCount(boardFace.getMovesCount() + hintMoveNumber);
-
-		// play move animation
-		boardView.setMoveAnimator(move, true);
-		boardView.resetValidMoves();
-		// make actual move
-		boardFace.makeMove(move, true);
-		invalidateGameScreen();
-
-		// restore move back
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
-				boardView.resetValidMoves();
-				getBoardFace().takeBack();
-				invalidateGameScreen();
-			}
-		}, START_DELAY);
-	}
 
 	private void showLimitReachedPopup() {
 		FlurryAgent.logEvent(FlurryData.TACTICS_DAILY_LIMIT_EXCEEDED);
@@ -513,25 +480,62 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	@Override
+	public void showHint() {
+		// remember the move before the hint
+		final TacticBoardFace boardFace = getBoardFace();
+		correctMovesBeforeHint = boardFace.getCorrectMovesCnt();
+
+		int hintMoveNumber = boardFace.getPly();
+		if (hintMoveNumber == getBoardFace().getTacticMoves().length) {
+			return;
+		}
+
+		trainerData.setHintWasUsed(true);
+
+		// get next valid move
+		final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[hintMoveNumber]);
+		boardFace.setMovesCount(boardFace.getMovesCount() + hintMoveNumber);
+
+		// play move animation
+		boardView.setMoveAnimator(move, true);
+		boardView.resetValidMoves();
+		// make actual move
+		boardFace.makeMove(move, true);
+		invalidateGameScreen();
+
+		// restore move back
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
+				boardView.resetValidMoves();
+				getBoardFace().takeBack();
+				invalidateGameScreen();
+			}
+		}, START_DELAY);
+	}
+
+	@Override
 	public void showAnswer() {
 		stopTacticsTimer();
 
 		trainerData.setAnswerWasShowed(true);
 
-		ChessBoardTactics.resetInstance();
-		boardView.setGameFace(this);
+//		ChessBoardTactics.resetInstance();
+//		boardView.setGameFace(this);
+
 
 		trainerData.setRetry(true);
 		TacticBoardFace boardFace = getBoardFace();
-		boardFace.setupBoard(trainerData.getInitialFen());
-		boardFace.setReside(!boardFace.isReside()); // we should always reside board in Tactics, because user should make next move
+//		boardFace.setupBoard(trainerData.getInitialFen());
+//		boardFace.setReside(!boardFace.isReside()); // we should always reside board in Tactics, because user should make next move
+//
+//		boardFace.setTacticMoves(trainerData.getCleanMoveString());
+//		boardFace.setMovesCount(1);
+//
+//		boardView.invalidate();
 
-		boardFace.setTacticMoves(trainerData.getCleanMoveString());
-		boardFace.setMovesCount(1);
-
-		boardView.invalidate();
-
-		currentTacticAnswerCnt = 0;
+		currentTacticAnswerCnt = boardFace.getPly();
 		maxTacticAnswerCnt = boardFace.getTacticMoves().length;
 		handler.postDelayed(showTacticMoveTask, DELAY_BETWEEN_MOVES);
 	}
@@ -554,15 +558,27 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			boolean sizeExceed = currentTacticAnswerCnt >= boardFace.getTacticMoves().length;
 
 			if (answerWasShowed() || sizeExceed) {
-				controlsTacticsView.showAfterRetry();
+				trainerData.setCompleted(true);
+				controlsTacticsView.showCorrect();
 				return;
 			}
 
+			// get next valid move
 			final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[currentTacticAnswerCnt]);
+			boardFace.setMovesCount(boardFace.getMovesCount() + currentTacticAnswerCnt);
+
+			// play move animation
 			boardView.setMoveAnimator(move, true);
 			boardView.resetValidMoves();
+			// make actual move
 			boardFace.makeMove(move, true);
 			invalidateGameScreen();
+
+//			final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[currentTacticAnswerCnt]);
+//			boardView.setMoveAnimator(move, true);
+//			boardView.resetValidMoves();
+//			boardFace.makeMove(move, true);
+//			invalidateGameScreen();
 
 			currentTacticAnswerCnt++;
 			handler.postDelayed(this, DELAY_BETWEEN_MOVES);
@@ -894,9 +910,17 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void restart() {
-		trainerData.setRetry(true);
-		adjustBoardForGame();
-		controlsTacticsView.showAfterRetry();
+		if (isAnalysis) {
+			BoardFace boardFace = getBoardFace();
+			while(boardFace.takeBack()) {
+
+			}
+			boardView.invalidate();
+		} else {
+			trainerData.setRetry(true);
+			adjustBoardForGame();
+			controlsTacticsView.showAfterRetry();
+		}
 	}
 
 	private void adjustBoardForGame() {
@@ -924,7 +948,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		boardFace.setTacticMoves(trainerData.getCleanMoveString());
 		boardFace.setMovesCount(1);
 
-		if (trainerData.isAnswerWasShowed() || trainerData.isCompleted()) {
+		if ((trainerData.isAnswerWasShowed() || trainerData.isCompleted()) && !isAnalysis) {
 			bottomPanelView.setPlayerTimeLeft(trainerData.getSecondsSpentStr());
 
 			String[] moves = boardFace.getTacticMoves();
@@ -953,11 +977,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		firstRun = false;
 		lockBoard(false);
 
-		if (trainerData.isRetry()) {
-			controlsTacticsView.showAfterRetry();
-		} else if (trainerData.isCompleted()) {
+		if (trainerData.isCompleted() || trainerData.isAnswerWasShowed() ) {
 			controlsTacticsView.showCorrect();
-		} else {
+		} else if (trainerData.isRetry()) {
+			controlsTacticsView.showAfterRetry();
+		} else  {
 			controlsTacticsView.showDefault();
 		}
 

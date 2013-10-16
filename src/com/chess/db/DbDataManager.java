@@ -9,6 +9,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.*;
 import com.chess.backend.entity.api.stats.*;
 import com.chess.backend.entity.api.themes.SoundItem;
+import com.chess.backend.entity.api.themes.ThemeItem;
 import com.chess.backend.gcm.FriendRequestItem;
 import com.chess.backend.gcm.GameOverNotificationItem;
 import com.chess.backend.gcm.NewChallengeNotificationItem;
@@ -2367,6 +2368,10 @@ public class DbDataManager {
 		ContentValues values = new ContentValues();
 
 		values.put(V_ID, currentItem.getId());
+		values.put(V_BACKGROUND_ID, currentItem.getBackgroundId());
+		values.put(V_BOARD_ID, currentItem.getBoardId());
+		values.put(V_PIECES_ID, currentItem.getPiecesId());
+		values.put(V_SOUNDS_ID, currentItem.getSoundsId());
 		values.put(V_BACKGROUND_URL, currentItem.getBackgroundUrl());
 		values.put(V_BOARD_BACKGROUND_URL, currentItem.getBoardBackgroundUrl());
 		values.put(V_BACKGROUND_PREVIEW_URL, currentItem.getBackgroundPreviewUrl());
@@ -2381,6 +2386,10 @@ public class DbDataManager {
 		ThemeItem.Data data = new ThemeItem.Data();
 
 		data.setThemeId(getInt(cursor, V_ID));
+		data.setBackgroundId(getInt(cursor, V_BACKGROUND_ID));
+		data.setBoardId(getInt(cursor, V_BOARD_ID));
+		data.setPiecesId(getInt(cursor, V_PIECES_ID));
+		data.setSoundsId(getInt(cursor, V_SOUNDS_ID));
 		data.setBackgroundUrl(getString(cursor, V_BACKGROUND_URL));
 		data.setBoardBackgroundUrl(getString(cursor, V_BOARD_BACKGROUND_URL));
 		data.setBackgroundPreviewUrl(getString(cursor, V_BACKGROUND_PREVIEW_URL));

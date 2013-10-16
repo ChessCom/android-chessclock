@@ -1,7 +1,6 @@
 package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.chess.statics.StaticData;
@@ -29,22 +28,6 @@ public class ChessBoardExplorerView extends ChessBoardBaseView {
 		super.setGameFace(gameFace);
 
 		this.gameFace = gameFace;
-	}
-
-	@Override
-	protected void onDraw(Canvas canvas) {
-		canvas.setDrawFilter(drawFilter);
-		super.onDraw(canvas);
-		drawBoard(canvas);
-
-		if (gameFace != null && getBoardFace() != null) {
-			drawCoordinates(canvas);
-			drawHighlights(canvas);
-			drawTrackballDrag(canvas);
-
-			drawPiecesAndAnimation(canvas);
-			drawDragPosition(canvas);
-		}
 	}
 
 	@Override

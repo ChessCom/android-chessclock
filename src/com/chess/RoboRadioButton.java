@@ -8,6 +8,7 @@ import android.widget.RadioButton;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.FontsHelper;
 
 public class RoboRadioButton extends RadioButton {
 

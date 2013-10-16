@@ -120,4 +120,9 @@ public abstract class AbstractGameNetworkFaceHelper implements GameNetworkFace {
 	public void toggleSides() {
 
 	}
+
+	@Override
+	public void updateParentView() {
+
+	}
 }

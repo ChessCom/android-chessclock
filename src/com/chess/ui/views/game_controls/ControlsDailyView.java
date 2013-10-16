@@ -129,14 +129,6 @@ public class ControlsDailyView extends ControlsBaseView {
 		}
 	}
 
-	@Override
-	public void enableForwardBtn(boolean enable) {
-	}
-
-	@Override
-	public void enableBackBtn(boolean enable) {
-	}
-
 	private void blinkSubmitBtn() {
 		handler.removeCallbacks(blinkSubmitButton);
 		handler.postDelayed(blinkSubmitButton, BLINK_DELAY);

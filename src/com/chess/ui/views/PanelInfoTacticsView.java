@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import com.chess.FontsHelper;
+import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -60,13 +60,13 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 
-		int padding = (int) (7 * density);
+		int padding = (int) resources.getDimension(R.dimen.panel_info_tactic_padding_top);
 		int paddingLeft = (int) (21 * density);
 		int paddingRight = (int) (12 * density);
 		setPadding(paddingLeft, padding, paddingRight, padding);
 
 		float infoTextSize = resources.getDimension(R.dimen.new_tactics_info_text_size) / density;
-		int avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_big_size);
+		int avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_tactic_size);
 		int timeLeftSize = (int) resources.getDimension(R.dimen.panel_info_time_left_size);
 		int avatarMarginRight = (int) resources.getDimension(R.dimen.panel_info_avatar_margin_right);
 		whiteColor = resources.getColor(R.color.white);

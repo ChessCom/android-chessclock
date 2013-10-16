@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.AutoCompleteTextView;
+import com.chess.utilities.FontsHelper;
 
 public class RoboAutoCompleteTextView extends AutoCompleteTextView {
 	private String ttfName = "Regular";

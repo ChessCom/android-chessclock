@@ -17,6 +17,7 @@ import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.FontsHelper;
 
 /**
  * Created with IntelliJ IDEA.

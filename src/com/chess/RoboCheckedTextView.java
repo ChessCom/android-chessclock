@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.CheckedTextView;
+import com.chess.utilities.FontsHelper;
 
 /**
  * Created with IntelliJ IDEA.

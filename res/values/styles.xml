@@ -433,7 +433,7 @@
         <item name="switchTextSize">16sp</item>
         <item name="switchTextColorOn">@color/white</item>
         <item name="switchTextColorOff">@color/switch_white_back_border_top_1</item>
-        <item name="switchTextFont">NeueBold</item>
+        <item name="switchTextFont">Bold</item>
         <item name="switchTextOn">@string/on</item>
         <item name="switchTextOff">@string/off</item>
         <item name="switchTextLeftPadding">13</item>
@@ -454,7 +454,7 @@
         <item name="switchTextSize">16sp</item>
         <item name="switchTextColorOn">@color/white</item>
         <item name="switchTextColorOff">@color/switch_default_back_border_top_1</item>
-        <item name="switchTextFont">NeueBold</item>
+        <item name="switchTextFont">Bold</item>
         <item name="switchTextOn">@string/on</item>
         <item name="switchTextOff">@string/off</item>
         <item name="switchTextLeftPadding">13</item>

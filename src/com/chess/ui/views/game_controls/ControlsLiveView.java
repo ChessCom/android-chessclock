@@ -139,16 +139,6 @@ public class ControlsLiveView extends ControlsBaseView {
 		showGameButton(MAKE_MOVE, false);
 	}
 
-	@Override
-	public void enableForwardBtn(boolean enable) {
-//		enableGameButton(FORWARD, enable);
-	}
-
-	@Override
-	public void enableBackBtn(boolean enable) {
-//		enableGameButton(BACK, enable);
-	}
-
 	private void blinkSubmitBtn() {
 		handler.removeCallbacks(blinkSubmitButton);
 		handler.postDelayed(blinkSubmitButton, BLINK_DELAY);

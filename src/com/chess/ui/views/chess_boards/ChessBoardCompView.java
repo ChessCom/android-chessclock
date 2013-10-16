@@ -1,7 +1,6 @@
 package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -150,22 +149,13 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		}
 	}
 
-	@Override
-    protected void onDraw(Canvas canvas) {
-        canvas.setDrawFilter(drawFilter);
-        super.onDraw(canvas);
-		drawBoard(canvas);
-
-		drawHighlights(canvas);
-		drawTrackballDrag(canvas);
-
-		drawPiecesAndAnimation(canvas);
-		drawDragPosition(canvas);
-
-		// TODO restore when needed
-//		drawMoveHints(canvas); // todo @compengine: move to base class for all game modes
-		drawCoordinates(canvas);
-    }
+//	@Override
+//    protected void onDraw(Canvas canvas) {
+//        super.onDraw(canvas);
+//
+//		// TODO restore when needed
+////		drawMoveHints(canvas); // todo @compengine: move to base class for all game modes
+//    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.statics.Symbol;
@@ -25,13 +24,13 @@ import com.chess.utilities.AppUtils;
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public class NotationView extends LinearLayout implements View.OnClickListener {
+public class NotationView extends LinearLayout implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
 	public static final int NOTATION_ID = 0x00003321;
 
 	private NotationsPagerAdapter notationsAdapter;
 	private String[] originalNotations;
-	private OnClickListener selectionFace;
+	private BoardForNotationFace selectionFace;
 	private int textPadding;
 	private ViewPager viewPager;
 	private boolean newNotations;
@@ -83,6 +82,7 @@ public class NotationView extends LinearLayout implements View.OnClickListener {
 
 		notationsAdapter = new NotationsPagerAdapter();
 		viewPager.setAdapter(notationsAdapter);
+		viewPager.setOnPageChangeListener(this);
 		boolean smallScreen = AppUtils.noNeedTitleBar(context);
 
 		int padding = (int) (2 * density);
@@ -117,7 +117,7 @@ public class NotationView extends LinearLayout implements View.OnClickListener {
 
 	}
 
-	public void updateNotations(String[] notations, OnClickListener selectionFace, int hply) {
+	public void updateNotations(String[] notations, BoardForNotationFace selectionFace, int hply) {
 		this.selectionFace = selectionFace;
 
 		newNotations = false;
@@ -153,6 +153,17 @@ public class NotationView extends LinearLayout implements View.OnClickListener {
 		selectionFace.onClick(v);
 	}
 
+	@Override
+	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+	@Override
+	public void onPageSelected(int position) {
+		selectionFace.updateParent();
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int state) {}
+
 	private class NotationsPagerAdapter extends PagerAdapter {
 		private int selectedPosition;
 		private LinearLayout currentView;
@@ -186,7 +197,6 @@ public class NotationView extends LinearLayout implements View.OnClickListener {
 				textView.setId(NOTATION_ID);
 				textView.setTextSize(textSize);
 				textView.setTextColor(textColor);
-				textView.setFont(FontsHelper.HELV_NEUE_FONT);
 				textView.setOnClickListener(NotationView.this);
 				textView.setGravity(Gravity.CENTER);
 
@@ -223,7 +233,6 @@ public class NotationView extends LinearLayout implements View.OnClickListener {
 				textView.setId(NOTATION_ID);
 				textView.setText(Symbol.SPACE);
 				textView.setTextSize(textSize);
-				textView.setFont(FontsHelper.HELV_NEUE_FONT);
 				textView.setPadding(textPadding, textPadding, textPadding, textPadding);
 				textView.setGravity(Gravity.CENTER);
 
@@ -350,4 +359,8 @@ public class NotationView extends LinearLayout implements View.OnClickListener {
 		viewPager.invalidate();
 	}
 
+	public static interface BoardForNotationFace extends OnClickListener {
+
+		void updateParent();
+	}
 }

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.View;
-import com.chess.FontsHelper;
+import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
 import com.chess.ui.interfaces.boards.BoardViewDiagramFace;
@@ -63,14 +63,6 @@ public class ControlsDiagramView extends ControlsBaseView {
 		button.setOnClickListener(this);
 
 		return button;
-	}
-
-	@Override
-	public void enableForwardBtn(boolean enable) {
-	}
-
-	@Override
-	public void enableBackBtn(boolean enable) {
 	}
 
 	@Override

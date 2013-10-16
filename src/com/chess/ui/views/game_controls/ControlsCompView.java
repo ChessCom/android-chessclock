@@ -74,14 +74,4 @@ public class ControlsCompView extends ControlsBaseView {
 		enableGameButton(HINT, enable);
 	}
 
-	@Override
-	public void enableForwardBtn(boolean enable) {
-//		enableGameButton(FORWARD, enable);
-	}
-
-	@Override
-	public void enableBackBtn(boolean enable) {
-//		enableGameButton(BACK, enable);
-	}
-
 }

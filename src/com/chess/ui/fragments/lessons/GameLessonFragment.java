@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.chess.FontsHelper;
+import com.chess.utilities.FontsHelper;
 import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.backend.LoadItem;

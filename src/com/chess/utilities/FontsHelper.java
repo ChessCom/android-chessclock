@@ -1,4 +1,4 @@
-package com.chess;
+package com.chess.utilities;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -19,8 +19,6 @@ public class FontsHelper {
 	public static final String BOLD_FONT = "Bold";
 	public static final String ICON_FONT = "Icon"; // Chess.com Glyph
 	public static final String ITALIC_FONT = "Italic";
-	public static final String HELV_NEUE_FONT = "Neue"; // HelveticaNeue
-	public static final String HELV_NEUE_BOLD_FONT = "NeueBold"; // HelveticaNeue
 	public static final String TTF = ".ttf";
 
 	private static FontsHelper ourInstance = new FontsHelper();

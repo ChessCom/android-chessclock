@@ -318,5 +318,11 @@ public class DiagramImageProcessor extends ImageResizer {
 		public void setSourceView(View sourceView) {
 			this.sourceView = sourceView;
 		}
+
+		@Override
+		public String toString() {
+			return "diagram_" + String.valueOf(id);
+
+		}
 	}
 }

@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.TextView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.utilities.FontsHelper;
 
 import java.io.Serializable;
 

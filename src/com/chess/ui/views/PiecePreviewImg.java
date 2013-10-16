@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-import com.chess.FontsHelper;
+import com.chess.utilities.FontsHelper;
 import com.chess.R;
 
 /**

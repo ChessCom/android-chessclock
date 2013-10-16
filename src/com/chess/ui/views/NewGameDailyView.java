@@ -3,7 +3,6 @@ package com.chess.ui.views;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,6 +15,7 @@ import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.utilities.FontsHelper;
 
 import java.util.ArrayList;
 import java.util.List;

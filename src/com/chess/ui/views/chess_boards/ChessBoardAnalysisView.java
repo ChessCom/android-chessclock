@@ -1,8 +1,8 @@
 package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
@@ -88,21 +88,6 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 			appData.setSavedCompGame(builder.toString());
 		}
 		return super.isGameOver();
-	}
-
-	@Override
-	protected void onDraw(Canvas canvas) {
-		canvas.setDrawFilter(drawFilter);
-		super.onDraw(canvas);
-		drawBoard(canvas);
-
-		drawHighlights(canvas);
-		drawTrackballDrag(canvas);
-
-		drawPiecesAndAnimation(canvas);
-		drawDragPosition(canvas);
-
-		drawCoordinates(canvas);
 	}
 
 //	@Override  // no need to support further as it was only on 2.1, and we don't support 2.1
@@ -263,6 +248,9 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 			setMoveAnimator(getBoardFace().getLastMove(), false);
 			resetValidMoves();
 			getBoardFace().takeBack();
+			Log.d("TEST", "moveBack");
+			Log.d("TEST", "invalidate");
+
 			invalidate();
 			gameAnalysisActivityFace.invalidateGameScreen();
 		}

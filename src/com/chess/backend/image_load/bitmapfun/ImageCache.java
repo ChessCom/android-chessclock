@@ -294,7 +294,7 @@ public class ImageCache {
             while (mDiskCacheStarting) {
                 try {
                     mDiskCacheLock.wait();
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException ignored) {}
             }
             if (mDiskLruCache != null) {
                 InputStream inputStream = null;
@@ -519,7 +519,15 @@ public class ImageCache {
         String cacheKey;
         try {
             final MessageDigest mDigest = MessageDigest.getInstance("MD5");
-            mDigest.update(key.getBytes());
+			if (key == null) {
+				throw new IllegalArgumentException(" key == null");
+			}
+
+			if (mDigest == null) {
+				return String.valueOf(key.hashCode());
+			}
+			byte[] bytes = key.getBytes();
+			mDigest.update(bytes);
             cacheKey = bytesToHexString(mDigest.digest());
         } catch (NoSuchAlgorithmException e) {
             cacheKey = String.valueOf(key.hashCode());

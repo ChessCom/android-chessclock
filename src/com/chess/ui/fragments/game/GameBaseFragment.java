@@ -53,6 +53,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected View endGamePopupView;
 	protected String endGameMessage;
 	protected long gameId;
+	private View boardFrame;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+		boardFrame = view.findViewById(R.id.boardFrame);
 		enableSlideMenus(false);
 	}
 
@@ -152,11 +154,11 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 		if (!getBoardFace().isSubmit()) {
 
-//			if (!AppUtils.isNeedToUpgrade(getActivity())) {
-			endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
-//			}else {
-//				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
-//			}
+			if (!AppUtils.isNeedToUpgrade(getActivity())) {
+				endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
+			}else {
+				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
+			}
 
 			showGameEndPopup(endGamePopupView, endGameMessage);
 			setBoardToFinishedState();
@@ -168,6 +170,11 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	@Override
 	public void onNotationClicked(int pos) {}
+
+	@Override
+	public void updateParentView() {
+		boardFrame.invalidate();
+	}
 
 	protected void setBoardToFinishedState() { // TODO implement state conditions logic for board
 //		boardView.enableAnalysis(); // TODO recheck logic

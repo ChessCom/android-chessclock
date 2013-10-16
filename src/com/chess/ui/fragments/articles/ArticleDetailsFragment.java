@@ -13,7 +13,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
 import android.view.*;
 import android.widget.*;
-import com.chess.FontsHelper;
+import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.LoadItem;

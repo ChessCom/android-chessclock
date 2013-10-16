@@ -11,4 +11,6 @@ public interface BoardViewTacticsFace extends BoardViewCompFace {
 	void restart();
 
 	void showExplorer();
+
+	void showSolution();
 }

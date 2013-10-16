@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.widget.ArrayAdapter;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.FontsHelper;
 
 
 /**

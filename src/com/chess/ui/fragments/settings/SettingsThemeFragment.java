@@ -15,7 +15,7 @@ import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.ThemeItem;
+import com.chess.backend.entity.api.themes.ThemeItem;
 import com.chess.backend.entity.api.themes.BackgroundItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
@@ -206,8 +206,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 			getAppData().setThemeName(getString(R.string.theme_game_room));
 		} else { // start loading main background image
-			// get device params
-			LoadItem loadItem = LoadHelper.getBackgroundForSize(getUserToken(), selectedThemeItem.getId(),
+			// request full exactly sized background image via backgrounds api
+			LoadItem loadItem = LoadHelper.getBackgroundForSize(getUserToken(), selectedThemeItem.getBackgroundId(),
 					screenWidth, screenHeight, RestHelper.V_HANDSET);
 
 			new RequestJsonTask<BackgroundItem>(backgroundItemUpdateListener).executeTask(loadItem);
@@ -343,12 +343,12 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private class ThemesAdapter extends ItemsAdapter<ThemeItem.Data> {
 
 		private final int customColor;
-		private final int boardPreviewimageSize;
+		private final int boardPreviewImageSize;
 
-		public ThemesAdapter(Context context, List<com.chess.backend.entity.api.ThemeItem.Data> menuItems) {
+		public ThemesAdapter(Context context, List<ThemeItem.Data> menuItems) {
 			super(context, menuItems);
 			customColor = resources.getColor(R.color.theme_customize_back);
-			boardPreviewimageSize = (int) (resources.getDimensionPixelSize(R.dimen.theme_board_preview_size) / resources.getDisplayMetrics().density);
+			boardPreviewImageSize = (int) (resources.getDimensionPixelSize(R.dimen.theme_board_preview_size) / resources.getDisplayMetrics().density);
 		}
 
 		@Override
@@ -408,7 +408,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 				imageFetcher.loadImage(new SmartImageFetcher.Data(item.getBackgroundPreviewUrl(), screenWidth),
 						holder.backImg.getImageView());
-				imageFetcher.loadImage(new SmartImageFetcher.Data(item.getBoardPreviewUrl(), boardPreviewimageSize),
+				imageFetcher.loadImage(new SmartImageFetcher.Data(item.getBoardPreviewUrl(), boardPreviewImageSize),
 						holder.boardPreviewImg.getImageView());
 			}
 		}

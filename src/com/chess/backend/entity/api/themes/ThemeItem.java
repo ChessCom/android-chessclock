@@ -1,7 +1,8 @@
-package com.chess.backend.entity.api;
+package com.chess.backend.entity.api.themes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.chess.backend.entity.api.BaseResponseItem;
 
 import java.util.List;
 
@@ -27,6 +28,10 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 
 	public static class Data implements Parcelable{
 		private int theme_id;
+		private int background_id;
+		private int board_id;
+		private int pieces_id;
+		private int sound_id;
 		private String background_url;
 		private String board_background_url;
 		private String background_preview_url;
@@ -99,12 +104,48 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 			this.font_color = font_color;
 		}
 
+		public void setBackgroundId(int background_id) {
+			this.background_id = background_id;
+		}
+
+		public void setBoardId(int board_id) {
+			this.board_id = board_id;
+		}
+
+		public void setPiecesId(int pieces_id) {
+			this.pieces_id = pieces_id;
+		}
+
+		public void setSoundsId(int sounds_id) {
+			this.sound_id = sounds_id;
+		}
+
+		public int getBackgroundId() {
+			return background_id;
+		}
+
+		public int getBoardId() {
+			return board_id;
+		}
+
+		public int getPiecesId() {
+			return pieces_id;
+		}
+
+		public int getSoundsId() {
+			return sound_id;
+		}
+
 		public String getFontColor() {
 			return getSafeValue(font_color, "FFFFFF");
 		}
 
 		protected Data(Parcel in) {
 			theme_id = in.readInt();
+			background_id = in.readInt();
+			board_id = in.readInt();
+			pieces_id = in.readInt();
+			sound_id = in.readInt();
 			background_url = in.readString();
 			board_background_url = in.readString();
 			background_preview_url = in.readString();
@@ -122,6 +163,10 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 		@Override
 		public void writeToParcel(Parcel dest, int flags) {
 			dest.writeInt(theme_id);
+			dest.writeInt(background_id);
+			dest.writeInt(board_id);
+			dest.writeInt(pieces_id);
+			dest.writeInt(sound_id);
 			dest.writeString(background_url);
 			dest.writeString(board_background_url);
 			dest.writeString(background_preview_url);

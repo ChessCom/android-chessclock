@@ -17,7 +17,7 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.ThemeItem;
+import com.chess.backend.entity.api.themes.ThemeItem;
 import com.chess.backend.entity.api.themes.SoundItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ImageDownloaderToListener;

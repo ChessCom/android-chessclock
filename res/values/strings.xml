@@ -123,6 +123,7 @@
 	<string name="piece_maya">Maya</string>
 	<string name="piece_modern">Modern</string>
 	<string name="piece_vintage">Vintage</string>
+	<string name="piece_the3d">3d</string>
 
     <!--Settings Screen-->
 	<string name="after_i_move">After I Move</string> <!--Selector title, action follows-->

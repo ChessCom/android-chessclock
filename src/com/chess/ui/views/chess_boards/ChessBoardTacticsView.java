@@ -1,7 +1,6 @@
 package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.chess.statics.StaticData;
@@ -39,22 +38,6 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 		if (!getBoardFace().isAnalysis()) {
 			gameTacticsFace.verifyMove();
         }
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        canvas.setDrawFilter(drawFilter);
-        super.onDraw(canvas);
-		drawBoard(canvas);
-
-		if (gameTacticsFace != null && getBoardFace() != null) {
-			drawCoordinates(canvas);
-			drawHighlights(canvas);
-			drawTrackballDrag(canvas);
-
-			drawPiecesAndAnimation(canvas);
-			drawDragPosition(canvas);
-		}
     }
 
     @Override
@@ -138,4 +121,8 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 		gameTacticsFace.showExplorer();
 	}
 
+	@Override
+	public void showSolution() {
+		gameTacticsFace.showAnswer();
+	}
 }

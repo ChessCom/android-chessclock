@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import com.chess.FontsHelper;
 import com.chess.R;
 import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
@@ -27,6 +26,7 @@ import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.game_controls.ControlsBaseView;
+import com.chess.utilities.FontsHelper;
 
 import java.util.List;
 import java.util.WeakHashMap;
@@ -38,7 +38,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author alien_roger
  * @created at: 25.04.12 10:54
  */
-public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace, View.OnClickListener {
+public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace, NotationView.BoardForNotationFace {
 
 	public static final int P_ALPHA_ID = 0;
 	public static final int P_BOOK_ID = 1;
@@ -49,6 +49,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public static final int P_MAYA_ID = 6;
 	public static final int P_MODERN_ID = 7;
 	public static final int P_VINTAGE_ID = 8;
+	public static final int P_THE3D_ID = 9;
 
 	public static final int PIECE_ANIM_SPEED = 150; // 250 looks too long. is not?
 	public static final String VALID_MOVES = "valid_moves";
@@ -57,7 +58,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	private static final int SQUARES_NUMBER = 8;
 	public static final int EMPTY_ID = 6;
-	private float density;
+	protected float density;
 	protected AppData appData;
 	private int boardId;
 
@@ -100,8 +101,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected int viewHeight;
 	private int previousWidth;
 
-	//	protected float width;
-//	protected float height;
 	protected Rect rect;
 
 	protected boolean isHighlightEnabled;
@@ -135,6 +134,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private BitmapFactory.Options bitmapOptions;
 	private int pieceInset;
 	private int customBoardId = NO_ID;
+	private boolean using3dPieces;
+	private Rect clipBoundsRect;
+	private int _3dPiecesOffset;
+	private int _3dPiecesOffsetDrag;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -150,21 +153,24 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 
-		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG);
+		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
 		boardBackPaint = new Paint();
 
 		appData = new AppData(context);
 		boardId = appData.getChessBoardId();
+		clipBoundsRect = new Rect();
 
 		handler = new Handler();
 		greenPaint = new Paint();
 		yellowPaint = new Paint();
 		whitePaint = new Paint();
-		coordinatesPaint = new Paint();
+		coordinatesPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		madeMovePaint = new Paint();
 		possibleMovePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		rect = new Rect();
 
+		_3dPiecesOffset = (int) (14 * density);
+		_3dPiecesOffsetDrag = (int) (28 * density);
 		pieceInset = (int) (1 * density);
 
 		int highlightColor = resources.getColor(R.color.highlight_color);
@@ -256,18 +262,48 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected void onBoardFaceSet(BoardFace boardFace) {
 	}
 
+	@Override
+	protected void onDraw(Canvas canvas) {
+		canvas.setDrawFilter(drawFilter);
+		super.onDraw(canvas);
+
+		drawBoard(canvas);
+
+		if (gameFace != null && getBoardFace() != null) {
+			drawCoordinates(canvas);
+			drawHighlights(canvas);
+
+			if (using3dPieces) {
+				getDrawingRect(clipBoundsRect);
+				int saveCount = canvas.save(Canvas.CLIP_SAVE_FLAG);
+				clipBoundsRect.set(clipBoundsRect.left, clipBoundsRect.top - (int) (28 * density), clipBoundsRect.right, clipBoundsRect.bottom);
+				canvas.clipRect(clipBoundsRect, Region.Op.REPLACE);
+
+				drawPiecesAndAnimation(canvas);
+				drawDragPosition(canvas);
+
+				canvas.restoreToCount(saveCount);
+
+				gameFace.updateParentView();
+			} else {
+				drawPiecesAndAnimation(canvas);
+				drawDragPosition(canvas);
+			}
+		}
+	}
+
 	private void drawCapturedPieces() {
 		int[] whiteAlivePiecesCount = new int[EMPTY_ID];
 		int[] blackAlivePiecesCount = new int[EMPTY_ID];
 
 		BoardFace boardFace = getBoardFace();
-		for (int i = 0; i < 64; i++) {
-			int pieceId = boardFace.getPiece(i);
+		for (int pos = 0; pos < ChessBoard.SQUARES_CNT; pos++) {
+			int pieceId = boardFace.getPiece(pos);
 			if (pieceId == EMPTY_ID) {
 				continue;
 			}
 
-			if (boardFace.getColor(i) == ChessBoard.WHITE_SIDE) {
+			if (boardFace.getColor(pos) == ChessBoard.WHITE_SIDE) {
 				whiteAlivePiecesCount[pieceId]++;
 			} else {
 				blackAlivePiecesCount[pieceId]++;
@@ -330,7 +366,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			setMoveAnimator(boardFace.getLastMove(), false);
 			resetValidMoves();
 			boardFace.takeBack();
+
 			invalidate();
+			// update full screen view to update 3d pieces cut
+			requestLayout();
+//			getParent().requestLayout();
 			gameFace.invalidateGameScreen();
 
 			if (notationsView != null) { // we might don't have notations  so probably should be moved to fragment level
@@ -380,26 +420,26 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			notationsView.updateNotations(notations, this, getBoardFace().getPly());
 		}
 
-		checkControlsButtons();
+//		checkControlsButtons();
 		drawCapturedPieces();
 		invalidate();
 		requestFocus();
 	}
 
-	private void checkControlsButtons() {
-		BoardFace boardFace = getBoardFace();
-		if (boardFace.getPly() < boardFace.getMovesCount()) {
-			controlsBaseView.enableForwardBtn(true);
-		} else {
-			controlsBaseView.enableForwardBtn(false);
-		}
-
-		if (boardFace.getPly() < 1) {
-			controlsBaseView.enableBackBtn(false);
-		} else {
-			controlsBaseView.enableBackBtn(true);
-		}
-	}
+//	private void checkControlsButtons() {
+//		BoardFace boardFace = getBoardFace();
+//		if (boardFace.getPly() < boardFace.getMovesCount()) {
+//			controlsBaseView.enableForwardBtn(true);
+//		} else {
+//			controlsBaseView.enableForwardBtn(false);
+//		}
+//
+//		if (boardFace.getPly() < 1) {
+//			controlsBaseView.enableBackBtn(false);
+//		} else {
+//			controlsBaseView.enableBackBtn(true);
+//		}
+//	}
 
 	public void enableTouchTimer() {
 		useTouchTimer = true;
@@ -477,25 +517,30 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	protected void drawPieces(Canvas canvas, boolean animationActive, MoveAnimator moveAnimator) {
 		BoardFace boardFace = getBoardFace();
-		for (int i = 0; i < 64; i++) {
+
+		for (int pos = 0; pos < ChessBoard.SQUARES_CNT; pos++) {
 			// do not draw if in drag or animated
-			if ((drag && i == from) || (animationActive && moveAnimator.isSquareHidden(i))) {
+			if ((drag && pos == from) || (animationActive && moveAnimator.isSquareHidden(pos))) {
 				continue;
 			}
 
-			int color = boardFace.getColor(i);
-			int piece = boardFace.getPiece(i);
-			int x = ChessBoard.getColumn(i, boardFace.isReside());
-			int y = ChessBoard.getRow(i, boardFace.isReside());
+			int color = boardFace.getColor(pos);
+			int piece = boardFace.getPiece(pos);
+			int x = ChessBoard.getColumn(pos, boardFace.isReside());
+			int y = ChessBoard.getRow(pos, boardFace.isReside());
 			// TODO rework logic to store changed pieces and redraw only them
 			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {    // here is the simple replace/redraw of piece // draw it bit inside of square
 				// calculate piece size bounds
 				int left = x * squareSize + pieceInset;
-				int top = y * squareSize + pieceInset;
 				int right = x * squareSize + squareSize - pieceInset;
 				int bottom = y * squareSize + squareSize - pieceInset;
-				rect.set(left, top, right, bottom);
-
+				if (using3dPieces) {
+					int top = y * squareSize + pieceInset - _3dPiecesOffset;
+					rect.set(left, top, right, bottom);
+				} else {
+					int top = y * squareSize + pieceInset;
+					rect.set(left, top, right, bottom);
+				}
 				Bitmap pieceBitmap = getPieceBitmap(color, piece);
 
 				if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
@@ -505,11 +550,22 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 		}
 
+		// draw piece that will be captured
 		if (animationActive && moveAnimator.getCapturedPieceBitmap() != null) {
 			int capturedPiecePosition = moveAnimator.getCapturedPiecePosition();
 			int x = ChessBoard.getColumn(capturedPiecePosition, boardFace.isReside());
 			int y = ChessBoard.getRow(capturedPiecePosition, boardFace.isReside());
-			rect.set(x * squareSize, y * squareSize, x * squareSize + squareSize, y * squareSize + squareSize);
+
+			int left = x * squareSize;
+			int right = x * squareSize + squareSize;
+			int bottom = y * squareSize + squareSize;
+			if (using3dPieces) {
+				int top = y * squareSize - _3dPiecesOffset;
+				rect.set(left, top, right, bottom);
+			} else {
+				int top = y * squareSize;
+				rect.set(left, top, right, bottom);
+			}
 			canvas.drawBitmap(moveAnimator.getCapturedPieceBitmap(), null, rect, null);
 		}
 	}
@@ -602,10 +658,15 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {
 				// set piece bounds
 				int pieceLeft = x - halfSquare;
-				int pieceTop = y - halfSquare;
 				int pieceRight = x + squareSize + halfSquare;
 				int pieceBottom = y + squareSize + halfSquare;
-				rect.set(pieceLeft, pieceTop, pieceRight, pieceBottom);
+				if (using3dPieces) {
+					int pieceTop = y - halfSquare - _3dPiecesOffsetDrag;
+					rect.set(pieceLeft, pieceTop, pieceRight, pieceBottom);
+				} else {
+					int pieceTop = y - halfSquare;
+					rect.set(pieceLeft, pieceTop, pieceRight, pieceBottom);
+				}
 
 				// draw yellow rect above the square
 				int rectLeft = file * squareSize - halfSquare;
@@ -618,14 +679,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 				canvas.drawBitmap(pieceBitmap, null, rect, null);
 			}
-		}
-	}
-
-	protected void drawTrackballDrag(Canvas canvas) {
-		if (track) {
-			int x = (trackX - trackX % squareSize) / squareSize;
-			int y = (trackY - trackY % squareSize) / squareSize;
-			canvas.drawRect(x * squareSize, y * squareSize, x * squareSize + squareSize, y * squareSize + squareSize, greenPaint);
 		}
 	}
 
@@ -892,6 +945,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	@Override
+	public void updateParent() {
+		gameFace.updateParentView();
+	}
+
+	@Override
 	public void onClick(View v) {
 		if (v.getId() == NotationView.NOTATION_ID) {// scroll to the specified position
 			Integer pos = (Integer) v.getTag(R.id.list_item_id);
@@ -912,7 +970,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			gameFace.onNotationClicked(pos);
 
 			// TODO @comp: check, show animation for notation scroll
-			checkControlsButtons();
+//			checkControlsButtons();
 			invalidate();
 		}
 	}
@@ -1088,6 +1146,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			case P_VINTAGE_ID:
 				setPieceBitmapFromArray(vintagePiecesDrawableIds);
 				break;
+			case P_THE3D_ID:
+				using3dPieces = true;
+				setPieceBitmapFromArray(the3dPiecesDrawableIds);
+				break;
 		}
 	}
 
@@ -1225,6 +1287,21 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.vintage_br,
 			R.drawable.vintage_bq,
 			R.drawable.vintage_bk,
+	};
+
+	private int[] the3dPiecesDrawableIds = new int[]{
+			R.drawable.the3d_wp,
+			R.drawable.the3d_wn,
+			R.drawable.the3d_wb,
+			R.drawable.the3d_wr,
+			R.drawable.the3d_wq,
+			R.drawable.the3d_wk,
+			R.drawable.the3d_bp,
+			R.drawable.the3d_bn,
+			R.drawable.the3d_bb,
+			R.drawable.the3d_br,
+			R.drawable.the3d_bq,
+			R.drawable.the3d_bk,
 	};
 
 	public void updateBoardAndPiecesImgs() {
@@ -1506,7 +1583,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			final int xCrd = xCrd1 + (int) Math.round((xCrd2 - xCrd1) * animationTimeFactor);
 			final int yCrd = yCrd1 + (int) Math.round((yCrd2 - yCrd1) * animationTimeFactor);
 
-			rect.set(xCrd, yCrd, xCrd + squareSize, yCrd + squareSize);
+			if (using3dPieces) {
+				rect.set(xCrd, yCrd - _3dPiecesOffset, xCrd + squareSize, yCrd + squareSize);
+			} else {
+				rect.set(xCrd, yCrd, xCrd + squareSize, yCrd + squareSize);
+			}
 			canvas.drawBitmap(pieceBitmap, null, rect, null);
 		}
 

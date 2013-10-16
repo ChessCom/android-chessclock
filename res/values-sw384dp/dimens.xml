@@ -27,5 +27,8 @@
 	<dimen name="popup_border_width">1dip</dimen>
 	<dimen name="start_new_game_overlay_padding_top">25dip</dimen>
 	<dimen name="start_new_game_overlay_padding_side">15dip</dimen>
+	<dimen name="panel_info_avatar_tactic_size">32dip</dimen>
+	<dimen name="new_tactics_panel_info_height">50dip</dimen>
+	<dimen name="panel_info_tactic_padding_top">4dip</dimen>
 
 </resources>

@@ -1161,6 +1161,10 @@ public class DbScheme {
 
 	/* Themes */
 	public static final String V_PATH = "path";
+	public static final String V_BACKGROUND_ID = "background_id";
+	public static final String V_BOARD_ID = "board_id";
+	public static final String V_PIECES_ID = "pieces_id";
+	public static final String V_SOUNDS_ID = "sounds_id";
 
 	public static final String V_BACKGROUND_URL = "background_url";
 	public static final String V_BOARD_BACKGROUND_URL = "board_background_url";
@@ -1172,6 +1176,10 @@ public class DbScheme {
 
 		createTablesArray[Tables.THEMES.ordinal()] = createTableForName(Tables.THEMES)
 				+ addField_Int(V_ID)
+				+ addField_Int(V_BACKGROUND_ID)
+				+ addField_Int(V_BOARD_ID)
+				+ addField_Int(V_PIECES_ID)
+				+ addField_Int(V_SOUNDS_ID)
 				+ addField_Text(V_BACKGROUND_URL)
 				+ addField_Text(V_BOARD_BACKGROUND_URL)
 				+ addField_Text(V_BACKGROUND_PREVIEW_URL)

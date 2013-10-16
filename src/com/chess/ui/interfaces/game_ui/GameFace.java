@@ -51,4 +51,6 @@ public interface GameFace {
 	void toggleSides();
 
 	void onNotationClicked(int pos);
+
+	void updateParentView();
 }

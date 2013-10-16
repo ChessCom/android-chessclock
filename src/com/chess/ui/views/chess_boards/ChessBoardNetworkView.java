@@ -1,7 +1,6 @@
 package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -51,25 +50,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 	}
 
 	@Override
-	protected void onDraw(Canvas canvas) {
-		canvas.setDrawFilter(drawFilter);
-		super.onDraw(canvas);
-
-		drawBoard(canvas);
-
-		if (gameNetworkFace != null && getBoardFace() != null) {
-
-			drawHighlights(canvas);
-			drawTrackballDrag(canvas);
-
-			drawPiecesAndAnimation(canvas);
-			drawDragPosition(canvas);
-		}
-
-		drawCoordinates(canvas);
-	}
-
-	@Override
 	public void flipBoard() {
 		getBoardFace().setReside(!getBoardFace().isReside());
 
@@ -90,7 +70,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 			return super.onTouchEvent(event);
 		}
 
-        if (isLocked()) {
+		if (isLocked()) {
 			return processTouchEvent(event);
 		}
 
@@ -101,13 +81,13 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 				return true;
 			}
 
-			if(TextUtils.isEmpty(whiteUserName) || TextUtils .isEmpty(blackUserName))
+			if (TextUtils.isEmpty(whiteUserName) || TextUtils.isEmpty(blackUserName))
 				return true;
 		}
 		return super.onTouchEvent(event);
 	}
 
-    @Override
+	@Override
 	public void showChat() {
 		gameNetworkFace.switch2Chat();
 	}

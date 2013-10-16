@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
-import com.chess.FontsHelper;
+import com.chess.utilities.FontsHelper;
 import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.RoboTextView;

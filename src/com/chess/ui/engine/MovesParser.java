@@ -203,7 +203,8 @@ public class MovesParser {
 
 		int pieceType = PAWN;
 		// we should cut non capital letters
-		String movePieceStr = currentMove.replaceAll("[^R,N,B,Q,K]", "");  // leave only piece letter
+		String movePieceStr = currentMove.replaceAll("[^R,N,B,Q,K,=Q,=R,=B,=N]", Symbol.EMPTY);  // leave only piece letter, except promotions
+		movePieceStr = movePieceStr.replaceAll("=Q|=R|=B|=N", Symbol.EMPTY); // remove promotion marks
 		if (movePieceStr.contains(WHITE_KNIGHT)) {
 			pieceType = KNIGHT;
 		} else if (movePieceStr.contains(WHITE_BISHOP)) {

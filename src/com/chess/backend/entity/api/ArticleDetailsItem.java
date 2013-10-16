@@ -1,5 +1,6 @@
 package com.chess.backend.entity.api;
 
+import android.text.TextUtils;
 import com.chess.statics.Symbol;
 
 import java.util.List;
@@ -219,9 +220,13 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 
 		public String getUserToMove() {
 			String plyStr = getTagData(PLYCOUNT);
+			if (TextUtils.isEmpty(plyStr)) {
+				return Symbol.EMPTY;
+			}
+
 			int ply = Integer.parseInt(plyStr);
 			String userToMove;
-			if (ply %2 == 0) {
+			if (ply % 2 == 0) {
 				userToMove = "White to move";
 			} else {
 				userToMove = "Black to move";
