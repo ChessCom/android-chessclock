@@ -89,6 +89,11 @@ public class LccGameListener implements GameListener {
 
 		// check isMyTurn
 
+		if (!lccHelper.isConnected()) {
+			Log.d(TAG, "ignore onGameUpdated before onConnectionRestored"); // remove after cometd/lcc fix
+			return;
+		}
+
 		if (!isActualGame(game)) {
 			return;
 		}
