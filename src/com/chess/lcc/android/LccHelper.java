@@ -161,6 +161,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void setLccEventListener(LccEventListener lccEventListener) {
+		Log.d(TAG, "setLccEventListener: " + lccEventListener);
 		this.lccEventListener = lccEventListener;
 		// todo
 		/*if (isGameActivityPausedMode()) {
@@ -540,10 +541,15 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		return ownSeeksCount;
 	}
 
+	public HashMap<Long, Challenge> getOwnChallenges() {
+		return ownChallenges;
+	}
+
 	public void clearOwnChallenges() {
 		ownChallenges.clear();
 		//ownSeeksCount = 0;
 	}
+
 	// todo: handle creating own seek
 	/*public void issue(UserSeek seek)
 	  {
@@ -856,13 +862,14 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		return pausedActivityLiveEvents;
 	}
 
-	public void checkAndProcessFullGame() {
+	public boolean checkAndProcessFullGame() {
 		boolean isGameAlreadyPresent = currentGameId != null && getGame(currentGameId) != null;
 		if (isGameAlreadyPresent) {
 			synchronized(LccHelper.LOCK) {
 				processFullGame();
 			}
 		}
+		return isGameAlreadyPresent;
 	}
 
 	public void processFullGame() {
@@ -1094,6 +1101,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	//	public void createChallenge(String friend) {
 	public void createChallenge(LiveGameConfig config) {
+		Log.d(TAG, "createChallenge");
+
 		if (getOwnSeeksCount() >= LccHelper.OWN_SEEKS_LIMIT || getUser() == null) {
 			return; // TODO throw exception
 		}

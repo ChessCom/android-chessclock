@@ -2,10 +2,10 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.util.Log;
-import com.chess.statics.AppConstants;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
+import com.chess.statics.AppConstants;
 
 import java.util.Collection;
 
@@ -41,16 +41,19 @@ public class LccGameListener implements GameListener {
 
 		Log.d(TAG, "latestGameId=" + latestGameId);
 
-		if (latestGameId == 0) {
+		/*if (latestGameId == 0) {
 			// todo: fix NPE
 			if (lccHelper == null) {
 				Log.d(TAG, "onGameListReceived lccHelper is NULL");
-			} else if (lccHelper.getLccEventListener() == null) {
-				Log.d(TAG, "onGameListReceived lccEventListener is NULL");
 			}
+//			else if (lccHelper.getLccEventListener() == null) {
+//				Log.d(TAG, "onGameListReceived lccEventListener is NULL");
+//			}
 
-			lccHelper.getLccEventListener().createSeek();
-		}
+			if (lccHelper.getLccEventListener() != null) {
+				lccHelper.getLccEventListener().createSeek();
+			}
+		}*/
 	}
 
 	@Override

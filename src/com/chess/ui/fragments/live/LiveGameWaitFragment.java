@@ -107,7 +107,11 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 		}
 		liveService.setLccEventListener(this);
 		liveService.setGameTaskListener(gameTaskListener);
-		liveService.checkAndProcessFullGame();
+
+		boolean isGameAlreadyPresent = liveService.checkAndProcessFullGame();
+		if (!isGameAlreadyPresent) {
+			createSeek();
+		}
 	}
 
 	@Override
@@ -115,7 +119,17 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 		super.onClick(view);
 
 		if (view.getId() == R.id.cancelLiveBtn) {
-			logoutFromLive();
+
+			LiveChessService liveService;
+			try {
+				liveService = getLiveService();
+			} catch (DataNotValidException e) {
+				logTest(e.getMessage());
+				getActivityFace().showPreviousFragment();
+				return;
+			}
+			// todo: check - probably cancel only latest issued challenge
+			liveService.cancelAllOwnChallenges();
 
 			getActivityFace().showPreviousFragment();
 		}

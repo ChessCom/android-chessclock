@@ -238,6 +238,10 @@ public class LiveChessService extends Service {
 		challengeTaskRunner.declineCurrentChallenge(currentChallenge, lccHelper.getChallenges());
 	}
 
+	public void cancelAllOwnChallenges() {
+		challengeTaskRunner.cancelAllOwnChallenges(lccHelper.getOwnChallenges());
+	}
+
 	public void runSendChallengeTask(Challenge challenge) {
 		challengeTaskRunner.runSendChallengeTask(challenge);
 	}
@@ -343,8 +347,8 @@ public class LiveChessService extends Service {
 		return lccHelper.getCurrentGameId();
 	}
 
-	public void checkAndProcessFullGame() {
-		lccHelper.checkAndProcessFullGame();
+	public boolean checkAndProcessFullGame() {
+		return lccHelper.checkAndProcessFullGame();
 	}
 
 	public int getOwnSeeksCount() {

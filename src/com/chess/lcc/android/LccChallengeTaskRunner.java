@@ -2,12 +2,13 @@ package com.chess.lcc.android;
 
 import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClient;
+import com.chess.statics.StaticData;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,6 +63,32 @@ public class LccChallengeTaskRunner {
 		protected Integer doTheTask(Challenge... challenge) {
 			getClient().cancelChallenge(challenge[0]);
 			return StaticData.RESULT_OK;
+		}
+	}
+
+	public void runCancelBatchChallengeTask(Challenge[] challenge) {
+		new LiveCancelBatchChallengeTask().executeTask(challenge);
+	}
+
+	private class LiveCancelBatchChallengeTask extends AbstractUpdateTask<Challenge, Challenge> {
+		public LiveCancelBatchChallengeTask() {
+			super(challengeTaskFace);
+		}
+
+		@Override
+		protected Integer doTheTask(Challenge... challenges) {
+			for (Challenge challenge : challenges) {
+				getClient().cancelChallenge(challenge);
+			}
+			return StaticData.RESULT_OK;
+		}
+	}
+
+	public void cancelAllOwnChallenges(HashMap<Long, Challenge> challengesMap) {
+		if (!challengesMap.isEmpty()) {
+			Collection<Challenge> challenges = challengesMap.values();
+			int size = challenges.size();
+			runCancelBatchChallengeTask(challenges.toArray(new Challenge[size]));
 		}
 	}
 

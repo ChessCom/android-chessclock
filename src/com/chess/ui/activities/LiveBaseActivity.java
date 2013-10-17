@@ -91,6 +91,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onStart() {
 		super.onStart();
 
+		Log.d(TAG, "onStart: getAppData().isLiveChess()=" + getAppData().isLiveChess());
+		Log.d(TAG, "onStart: isLCSBound=" + isLCSBound);
+
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
@@ -111,6 +114,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	public void unBindLiveService() {
+		Log.d(TAG, "unBindLiveService: isLCSBound=" + isLCSBound);
 		if (isLCSBound) {
 			unbindService(liveServiceConnectionListener);
 			isLCSBound = false;
@@ -273,13 +277,15 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
+		Log.d(TAG, "onActivityResult");
 		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
 			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
 		}
 	}
 
 	public void connectLcc() {
+		Log.d(TAG, "connectLcc: getAppData().isLiveChess()=" + getAppData().isLiveChess());
+		Log.d(TAG, "connectLcc: isLCSBound=" + isLCSBound);
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
@@ -642,6 +648,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 //		Log.d(TAG, " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected());
 //		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
 
+		Log.d(TAG, "onLiveServiceConnected: liveService.getLccHelper()=" + liveService.getLccHelper());
 		if (liveService.getLccHelper() == null) {
 			return;
 		}
@@ -650,18 +657,21 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		liveService.setChallengeTaskListener(challengeTaskListener);
 
 		GameLiveFragment gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+		Log.d(TAG, "onLiveServiceConnected: gameLiveFragment=" + gameLiveFragment);
 		if (gameLiveFragment != null) {
 			gameLiveFragment.onLiveServiceConnected();
 			return;
 		}
 
 		LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
+		Log.d(TAG, "onLiveServiceConnected: waitFragment=" + waitFragment);
 		if (waitFragment != null) {
 			waitFragment.onLiveServiceConnected();
 			return;
 		}
 
 		LiveHomeFragment liveHomeFragment = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
+		Log.d(TAG, "onLiveServiceConnected: liveHomeFragment=" + liveHomeFragment);
 		if (liveHomeFragment != null) {
 			liveHomeFragment.onLiveServiceConnected();
 		}
