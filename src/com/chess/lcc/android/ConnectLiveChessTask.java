@@ -38,7 +38,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	public static final String LIVE_HOST_TEST = "chess-2.com";
 	public static final String LIVE_HOST = RestHelper.getInstance().HOST == RestHelper.HOST_PRODUCTION ? LIVE_HOST_PRODUCTION : LIVE_HOST_TEST;
 
-//	public static final String AUTH_URL = RestHelper.CMD_LOGIN + "?username=%s&password=%s";
+	//	public static final String AUTH_URL = RestHelper.CMD_LOGIN + "?username=%s&password=%s";
 	public static final String AUTH_URL = "http://www." + LIVE_HOST + "/api/v2/login" + "?username=%s&password=%s";
 	public static final String CONFIG_BAYEUX_HOST = "live." + LIVE_HOST;
 	final static Config CONFIG = new Config(Symbol.EMPTY, "assets/my.properties", true);
@@ -72,10 +72,17 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	@Override
 	protected Integer doTheTask(Void... params) {
-        Context context;
+		Context context = getTaskFace().getMeContext();
+
 		try {
-			context = getTaskFace().getMeContext();
-			String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+
+			String versionName = null;
+			try {
+				versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+			} catch (PackageManager.NameNotFoundException e) {
+				result = StaticData.UNKNOWN_ERROR;
+			}
+			versionName += ", OS: " + android.os.Build.VERSION.RELEASE + ", " + android.os.Build.MODEL;
 
 //			InputStream keyStoreInputStream = context.getAssets().open(LccHelper.KEY_FILE_NAME);
 			Log.d(TAG, "Start Chess.Com LCC ");
@@ -127,6 +134,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			httpClient.setTrustStoreInputStream(keyStoreInputStream);
 			httpClient.setTrustStorePassword(TESTTEST);*/
 
+			//item.setClientTransport(LiveChessClient.ClientTransport.WS);
+
 			item.setHttpClient(httpClient);
 
 			httpClient.start();
@@ -143,7 +152,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			throw new LiveChessClientException("Unable to initialize HttpClient", e);
 		}
 
-		lccHelper.setNetworkTypeName(null); // todo: probably reset networkTypeName somewhere else
+		//lccHelper.setNetworkTypeName(null); // todo: probably reset networkTypeName somewhere else
 		lccHelper.setLiveChessClient(item);
 		lccHelper.performConnect(useCurrentCredentials);
 		return StaticData.RESULT_OK;

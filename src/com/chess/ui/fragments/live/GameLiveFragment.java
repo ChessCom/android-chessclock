@@ -66,6 +66,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	private static final String TAG = "LccLog-GameLiveFragment";
 	private static final String WARNING_TAG = "warning message popup";
+	private static final String GAME_EXPIRED_TAG = "game expired popup";
 
 	// Options ids
 	private static final int ID_NEW_GAME = 0;
@@ -339,6 +340,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void createSeek() {
 		// shouldn't be used here. Use in WaitFragment instead
+	}
+
+	@Override
+	public void expireGame() {
+		showPopupDialog(R.string.error, getString(R.string.game_expired), GAME_EXPIRED_TAG);
+		getLastPopupFragment().setCancelable(false);
 	}
 
 	@Override
@@ -918,6 +925,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					liveService.runMakeResignTask();
 				}
 			}
+		} else if (tag.equals(GAME_EXPIRED_TAG)) {
+			goHome();
 		}
 		super.onPositiveBtnClick(fragment);
 	}

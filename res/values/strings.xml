@@ -7,6 +7,8 @@
 	<string name="app_name">ChessCom</string>
 	<string name="sign_out">Sign Out</string>
 
+	<string name="game_expired">Game expired</string>
+
 	<!--Dashboard labels-->
 	<string name="play_live">Play Live</string>
 	<string name="play_online">Play Online</string>

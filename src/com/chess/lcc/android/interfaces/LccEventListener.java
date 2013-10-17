@@ -26,4 +26,6 @@ public interface LccEventListener {
 	void startGameFromService();
 
 	void createSeek();
+
+	void expireGame();
 }

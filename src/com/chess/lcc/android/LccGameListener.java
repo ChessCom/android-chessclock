@@ -25,6 +25,8 @@ public class LccGameListener implements GameListener {
 	@Override
 	public void onGameListReceived(Collection<? extends Game> games) {
 		Log.d(TAG, "Game list received, total size = " + games.size());
+
+		Long previousGameId = latestGameId;
 		latestGameId = 0L;
 
 		Long gameId;
@@ -40,6 +42,11 @@ public class LccGameListener implements GameListener {
 		}
 
 		Log.d(TAG, "latestGameId=" + latestGameId);
+
+		if (!latestGameId.equals(previousGameId) && lccHelper.getLccEventListener() != null) {
+			Log.d(TAG, "onGameListReceived: game is expired");
+			lccHelper.getLccEventListener().expireGame();
+		}
 
 		/*if (latestGameId == 0) {
 			// todo: fix NPE
@@ -144,19 +151,24 @@ public class LccGameListener implements GameListener {
 	private void doResetGame(Game game) {
 		synchronized (LccHelper.LOCK) {
 			lccHelper.setCurrentGameId(game.getId());
+			if (game.isGameOver()) {
+				lccHelper.putGame(game);
+				return;
+			}
 			//lccHelper.setGameActivityPausedMode(true);
 			lccHelper.processFullGame();
 		}
 	}
 
 	private void doUpdateGame(boolean checkMoves, Game game) {
-		if (checkMoves && game.getMoveCount() > lccHelper.getLatestMoveNumber()) { // do not check moves if it was
+
+		if (checkMoves && (game.getMoveCount() == 1 || game.getMoveCount() - 1 > lccHelper.getLatestMoveNumber())) { // do not check moves if it was
 			User moveMaker = game.getLastMoveMaker();
 			String move = game.getLastMove();
 			Log.d(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHelper.getUser().getUsername() +
 					", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
 			synchronized (LccHelper.LOCK) {
-				lccHelper.doMoveMade(game, moveMaker, game.getMoveCount() - 1);
+				lccHelper.doMoveMade(game, game.getMoveCount() - 1);
 			}
 		}
 

@@ -21,6 +21,7 @@ public class AppConstants {
 	public static final String SAVED_COMPUTER_GAME = "saving";
 	public static final int CHALLENGE_ISSUE_DELAY = 2000;
 	public static final int COMPUTER_THINK_TIME = 500;
+	static final String LIVE_CONNECT_ATTEMPTS = "live_connect_attempts";
 
 	/* Online games*/
 	public static final String USER_OFFERED_DRAW_FOR_GAME = "user offered draw for game";

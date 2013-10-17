@@ -106,6 +106,6 @@ public class LccConnectionListener implements ConnectionListener {
 				", message=" + message + ", period=" + period);
 
 		lccHelper.setConnected(false);
-		lccHelper.processConnectionFailure(reason, message);
+		lccHelper.processKicked();
 	}
 }

@@ -43,6 +43,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
 	public static final int CONNECTION_FAILURE_DELAY = 2000;
+	public static final int LIVE_CONNECTION_ATTEMPTS_LIMIT = 1;
 	public static final Object LOCK = new Object();
 
 	private final LccChatListener chatListener;
@@ -307,11 +308,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		liveChessClientEventListener.onConnectionFailure(message);
 	}
 
-	public void processConnectionFailure(String reason, String message) {
+	public void processKicked() {
 		String kickMessage = context.getString(R.string.live_chess_server_upgrading);
 		liveChessClientEventListener.onConnectionFailure(kickMessage
-				+ Symbol.NEW_STR + context.getString(R.string.reason_) + reason
-				+ Symbol.NEW_STR + context.getString(R.string.message_) + message);
+				/*+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.reason_) + reason
+				+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.message_) + message*/);
 	}
 
 	public void processConnectionFailure(FailureDetails details) {
@@ -322,7 +323,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			return;
 		}
 
-		setConnected(false);
+		//setConnected(false);
 		cancelServiceNotification();
 		logout();
 
@@ -351,32 +352,41 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 							+ context.getString(R.string.live_chess_server_unavailable);
 					break;
 				}
-				case AUTH_URL_FAILED: {
+				/*case AUTH_URL_FAILED: {
 					return;
-				}
+				}*/
 				default:
 					// todo: show login/password popup instead
 					detailsMessage = context.getString(R.string.pleaseLoginAgain);
 					break;
 			}
 		} else {
-			detailsMessage = context.getString(R.string.pleaseLoginAgain);
-		}
 
-		liveChessClientEventListener.onConnectionFailure(detailsMessage);
+			/*setConnected(false);
+			((LiveChessClientImpl) lccClient).leave();*/
 
-		// do not do any manual reconnects here
-		/*else {
-			Log.d(TAG, "processConnectionFailure: details=null");
+			// handle detail=null one time and try to reconnect
+			AppData appData = new AppData(context);
+			if (appData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
+				appData.incrementLiveConnectAttempts(context);
 
 			try {
 				Thread.sleep(CONNECTION_FAILURE_DELAY);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+				runConnectTask(true);
+				return;
+			} else {
+				//logout();
+				detailsMessage = context.getString(R.string.pleaseLoginAgain);
+			}
 
-			runConnectTask(true); // recreate and connect*/
+		}
 
+		liveChessClientEventListener.onConnectionFailure(detailsMessage);
+
+		/*else {
 			/*setConnected(false);
 			cancelServiceNotification();
 			liveChessClientEventListener.onSessionExpired(context.getString(R.string.login_failed));*/
@@ -455,8 +465,13 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	public void setConnected(boolean connected) {
 		liveConnected = connected;
 		if (connected) {
+
+			new AppData(context).resetLiveConnectAttempts(context);
+
 			liveChessClientEventListener.onConnectionEstablished();
-			liveService.onLiveConnected(); // vm: why it is here?  // r: because it's used to notify activity about connected state
+			liveService.onLiveConnected();
+
+			//lccClient.subscribeToDebugGameEvents(new StandardDebugGameListener(getUser()));
 
 			lccClient.subscribeToChallengeEvents(challengeListener);
 			lccClient.subscribeToGameEvents(gameListener);
@@ -468,7 +483,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			ConnectivityManager connectivityManager = (ConnectivityManager)
 					context.getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-			networkTypeName = activeNetworkInfo.getTypeName();
+			//updateNetworkType(activeNetworkInfo.getTypeName());
 		}
 		liveChessClientEventListener.onConnectionBlocked(!connected);
 	}
@@ -729,16 +744,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move);
 		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
-
-		if (game.getMoveCount() >= 1) // we should start opponent's clock after at least 2-nd ply (moveCount == 1, or moveCount > 1)
-		{
-			final boolean isWhiteRunning = user.getUsername().equals(game.getWhitePlayer().getUsername());
-			final ChessClock clockToBePaused = isWhiteRunning ? whiteClock : blackClock;
-			if (game.getMoveCount() >= 2) // we should stop our clock if it was at least 3-rd ply (seq == 2, or seq > 2)
-			{
-				clockToBePaused.setRunning(false);
-			}
-		}
 	}
 
 	public void rematch() {
@@ -789,20 +794,16 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		liveService.runSendChallengeTask(challenge);
 	}
 
-	public ChessClock getBlackClock() {
-		return blackClock;
-	}
+	public void initClock() {
+		if (whiteClock != null) {
+			whiteClock.setRunning(false);
+		}
+		if (blackClock != null) {
+			blackClock.setRunning(false);
+		}
 
-	public ChessClock getWhiteClock() {
-		return whiteClock;
-	}
-
-	public void setWhiteClock(ChessClock whiteClock) {
-		this.whiteClock = whiteClock;
-	}
-
-	public void setBlackClock(ChessClock blackClock) {
-		this.blackClock = blackClock;
+		whiteClock = new ChessClock(this, true, getCurrentGame().isGameOver());
+		blackClock = new ChessClock(this, false, getCurrentGame().isGameOver());
 	}
 
 	/*private void stopService() {
@@ -879,18 +880,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		latestMoveNumber = 0; // it was null before
 		ChessBoardLive.resetInstance();
-
-		//int time = game.getGameTimeConfig().getBaseTime() * 100;
-		if (whiteClock != null) {
-			whiteClock.setRunning(false);
-		}
-		if (blackClock != null) {
-			blackClock.setRunning(false);
-		}
-
-		// todo: show actual game over time for ended games
-		setWhiteClock(new ChessClock(this, true));
-		setBlackClock(new ChessClock(this, false));
+		initClock();
 
 		lccEventListener.startGameFromService();
 	}
@@ -907,12 +897,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		Log.d(TAG, "GAME LISTENER: replay moves, gameId " + game.getId());
 
 		latestMoveNumber = game.getMoveCount() - 1;
-		User moveMaker = (latestMoveNumber % 2 == 0) ? game.getWhitePlayer() : game.getBlackPlayer();
 		lccEventListener.onGameRefresh(new GameLiveItem(game, latestMoveNumber));
-		doUpdateClocks(game, moveMaker, latestMoveNumber);
 	}
 
-	public void doMoveMade(final Game game, final User moveMaker, int moveIndex) {
+	public void doMoveMade(final Game game, int moveIndex) {
 		/*if (((latestMoveNumber != null) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0)) {
 			Log.d(TAG, "GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex
 					+ ", latestMoveNumber=" + latestMoveNumber + StaticData.RIGHT_PAR);
@@ -924,7 +912,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		if (!isGameActivityPausedMode()) {
 			// todo: possible optimization - keep gameLiveItem between moves and just add new move when it comes
 			lccEventListener.onGameRefresh(new GameLiveItem(game, moveIndex));
-			doUpdateClocks(game, moveMaker, moveIndex); // update clock only for resumed activity?
 		} else {
 			Log.d(TAG, "paused mode: postpone MOVE processing");
 			/*LiveGameEvent moveEvent = new LiveGameEvent();
@@ -933,10 +920,9 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			//moveEvent.setMoveIndex(moveIndex);
 			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);*/
 		}
-		// doUpdateClocks(game, moveMaker, moveIndex);
 	}
 
-	private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {
+	/*private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {
 		// TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
 
 		// UPDATELCC todo: probably could be simplified - update clock only for latest move/player in order to get rid of moveIndex/moveMaker params
@@ -952,7 +938,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				getBlackClock().setRunning(isWhiteDone);
 			}
 		}
-	}
+	}*/
 
 	public void setLastGameId(Long lastGameId) {
 		this.lastGameId = lastGameId;
@@ -1218,12 +1204,12 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		//message = whiteUsername + " vs. " + blackUsername + " - " + message;
 		Log.d(TAG, "GAME LISTENER: " + message);
 
-		if (getWhiteClock() != null) {
+		/*if (getWhiteClock() != null) {
 			getWhiteClock().setRunning(false);
 		}
 		if (getBlackClock() != null) {
 			getBlackClock().setRunning(false);
-		}
+		}*/
 
 		String abortedCodeMessage = game.getCodeMessage(); // used only for aborted games
 		if (abortedCodeMessage != null) {

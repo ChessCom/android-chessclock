@@ -14,6 +14,7 @@ public class ChessClock {
 	public static final int SECOND_TENTHS_DISPLAY_MODE = 2;
 	public static final int TIME_DEPENDENT_DISPLAY_MODE = 3;
 	public static final int DISPLAY_MODE = TIME_DEPENDENT_DISPLAY_MODE;
+	private static final String TAG = "LccLog-Clock";
 	private int time;
 	private static final int SECOND_TENTHS_THRESHOLD = 20 * SECOND_MS;
 	private static final int MINUTES_SECONDS_THRESHOLD = 121 * 60 * SECOND_MS;
@@ -25,30 +26,19 @@ public class ChessClock {
 	private String playerName;
 	private boolean isRunning;
 
-	public ChessClock(LccHelper lccHelper, boolean isWhite) {
+	public ChessClock(LccHelper lccHelper, boolean isWhite, boolean isGameOver) {
 		this.lccHelper = lccHelper;
 		this.isWhite = isWhite;
 		game = lccHelper.getCurrentGame();
 		playerName = isWhite ? game.getWhitePlayer().getUsername() : game.getBlackPlayer().getUsername();
 
-		//todo: paint();
+		setRunning(!isGameOver);
 	}
 
-	public void setTime(int time) {
-		this.time = time;
-		/*if (isRunning()) {
-			runStart = System.currentTimeMillis();
-		}*/
-		paint();
-	}
-
-	public int getTime() {
-		/*if (isRunning()) {
-			return time - (int) (System.currentTimeMillis() - runStart);
-		} else {
-			return time;
-		}*/
-		return game.getActualClockForPlayerMs(playerName).intValue();
+	public void updateTime() {
+		time = game.getActualClockForPlayerMs(playerName).intValue();
+		/*String timeString = createTimeString();
+		Log.d(TAG, this + " getActualClockForPlayerMs " + (isWhite ? "WHITE " : "BLACK ") + "ms: " + time + " clock: " + timeString + " user: " + playerName);*/
 	}
 
 	public void setRunning(boolean isRunning) {
@@ -57,21 +47,16 @@ public class ChessClock {
 		}
 		this.isRunning = isRunning;
 		if (isRunning) {
-			//runStart = System.currentTimeMillis();
 			startTimer();
 		} else {
-			//time = time - (int) (System.currentTimeMillis() - runStart);
-			time = time < 0 ? 0 : time;
-			//runStart = -1;
 			stopTimer();
 		}
 	}
 
-	protected int getActualDisplayMode() {
+	public int getActualDisplayMode() {
 		if (DISPLAY_MODE != TIME_DEPENDENT_DISPLAY_MODE) {
 			return DISPLAY_MODE;
 		}
-		int time = Math.abs(getTime());
 		if (time < SECOND_TENTHS_THRESHOLD) {
 			return SECOND_TENTHS_DISPLAY_MODE;
 		} else if (time < MINUTES_SECONDS_THRESHOLD) {
@@ -84,28 +69,36 @@ public class ChessClock {
 	public void paint() {
 		LccEventListener eventListener = lccHelper.getLccEventListener();
 
-		String timer = createTimeString(getTime());
+		if (eventListener == null) {
+			return;
+		}
+
+		if (!isRunning) { // show time for finished game
+			updateTime();
+		}
+
+		String timeString = createTimeString();
 		if (isWhite) { // if white player move
-			eventListener.setWhitePlayerTimer(timer);
+			eventListener.setWhitePlayerTimer(timeString);
 		} else {
-			eventListener.setBlackPlayerTimer(timer);
+			eventListener.setBlackPlayerTimer(timeString);
 		}
 //		eventListener.runOnUiThread(new Runnable() {
 //			@Override
 //			public void run() {
-//				String timer = createTimeString(getTime());
+//				String timeString = createTimeString(getTime());
 //				if (isWhite) { // if white player move
-//					eventListener.setWhitePlayerTimer(timer);
+//					eventListener.setWhitePlayerTimer(timeString);
 //				} else {
-//					eventListener.setBlackPlayerTimer(timer);
+//					eventListener.setBlackPlayerTimer(timeString);
 //				}
 //			}
 //		});
 	}
 
-	protected String createTimeString(int time) { // TODO simplify . Use Calendar & SimpleDateTime formatter methods
+	public String createTimeString() { // TODO simplify . Use Calendar & SimpleDateTime formatter methods
 		//boolean isNegative = time < 0;
-		time = Math.abs(time < 0 ? 0 : time);
+		int time = this.time;
 		int hours = time / (SECOND_MS * 60 * 60);
 		time -= hours * SECOND_MS * 60 * 60;
 		int minutes = time / (SECOND_MS * 60);
@@ -114,7 +107,7 @@ public class ChessClock {
 		time -= seconds * SECOND_MS;
 		int tenths = time / TENTH_MS;
 		time -= tenths * TENTH_MS;
-		//String signString = isNegative ? "-" : StaticData.EMPTY;
+		//String signString = isNegative ? "-" : StaticData.SYMBOL_EMPTY;
 		switch (getActualDisplayMode()) {
 			case HOUR_MINUTE_DISPLAY_MODE:
 				String sepString = (Math.abs(tenths) > 4) || !isRunning ? ":" : " ";
@@ -148,16 +141,19 @@ public class ChessClock {
 		myTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
+
+				updateTime();
+
 				paint();
 
-				if (getTime() <= SECOND_TENTHS_THRESHOLD && !tenSecondsPlayed) {
+				if (time <= SECOND_TENTHS_THRESHOLD && !tenSecondsPlayed) {
 					tenSecondsPlayed = true;
 					SoundPlayer.getInstance(lccHelper.getContext()).playTenSeconds();
 				}
 
-				if (getTime() < TENTH_MS) {
+				/*if (time < TENTH_MS) {
 					stopTimer();
-				}
+				}*/
 			}
 		}, 0, TENTH_MS);
 	}

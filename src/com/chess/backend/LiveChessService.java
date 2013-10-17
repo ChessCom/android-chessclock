@@ -112,10 +112,14 @@ public class LiveChessService extends Service {
 
 		Log.d(TAG, "lccHelper.getClient() " + lccHelper.getClient());
 
-		if (appData.isLiveChess() && !lccHelper.isConnected()
-				&& lccHelper.getClient() == null) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
-			lccHelper.runConnectTask();
-			Log.d(TAG, "no lccClient running connection task");
+		if (appData.isLiveChess() && !lccHelper.isConnected()) {
+			if (lccHelper.getClient() == null) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
+				lccHelper.runConnectTask();
+				Log.d(TAG, "no lccClient running connection task");
+			} else {
+				Log.d(TAG, "client is CONNECTING");
+				//onConnecting();
+			}
 		} else if (lccHelper.isConnected()) {
 			Log.d(TAG, "connected case");
 			onLiveConnected();
@@ -135,7 +139,6 @@ public class LiveChessService extends Service {
 			connectionUpdateFace.onConnected();
 		}
 	}
-
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
 		public LccConnectUpdateListener() {

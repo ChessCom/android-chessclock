@@ -209,6 +209,10 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 		}
 	}
 
+	@Override
+	public void expireGame() {
+	}
+
 	private class GameTaskListener extends ActionBarUpdateListener<Game> {
 		public GameTaskListener() {
 			super(getInstance());
