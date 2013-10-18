@@ -114,6 +114,7 @@
 	<string name="board_wooddark">Wood Dark</string>
 
     <!--Pieces styles-->
+	<string name="piece_game">Game</string>
 	<string name="piece_alpha">Alpha</string>
 	<string name="piece_book">Book</string>
 	<string name="piece_cases">Cases</string>

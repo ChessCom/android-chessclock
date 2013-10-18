@@ -9,6 +9,7 @@ import com.chess.backend.gcm.NewChallengeNotificationItem;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,10 +21,14 @@ import java.util.List;
 public class NewChallengesAdapter extends ItemsAdapter<NewChallengeNotificationItem> {
 
 	private final int imageSize;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public NewChallengesAdapter(Context context, List<NewChallengeNotificationItem> itemList, SmartImageFetcher imageFetcher) {
 		super(context, itemList, imageFetcher);
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
+
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
+
 	}
 
 	@Override
@@ -43,7 +48,12 @@ public class NewChallengesAdapter extends ItemsAdapter<NewChallengeNotificationI
 
 		holder.messageTxt.setText(item.getUsername());
 
-		imageFetcher.loadImage(new SmartImageFetcher.Data(item.getAvatar(), imageSize), holder.playerImg.getImageView());
+		String imageUrl = item.getAvatar();
+		if (!imageDataMap.containsKey(imageUrl)) {
+			imageDataMap.put(imageUrl,  new SmartImageFetcher.Data(item.getAvatar(), imageSize));
+		}
+
+		imageFetcher.loadImage(imageUrl, holder.playerImg.getImageView());
 	}
 
 	protected class ViewHolder {

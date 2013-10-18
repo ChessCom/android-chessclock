@@ -340,6 +340,7 @@
 	<string name="improve_your_chess">Improve Your Chess!</string>
 	<string name="top_game">Top Game</string>
 	<string name="password_changed">Password Changed</string>
+	<string name="loading_pieces">Loading Pieces</string>
 
 
 </resources>

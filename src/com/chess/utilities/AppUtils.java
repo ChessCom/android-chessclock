@@ -111,12 +111,20 @@ public class AppUtils {
 
 	public static File getSoundsThemeDir(Context context) {
 		AppData appData = new AppData(context);
-		String soundThemePath = appData.getSoundThemePath();
+		String soundThemePath = appData.getThemeSoundPath();
 		return getLocalDirForPath(context, "sounds" + UNZIPPED + soundThemePath);
 	}
 
 	public static File getLocalDirForSounds(Context context) {
 		return getLocalDirForPath(context, "sounds");
+	}
+
+	public static File getLocalDirForPieces(Context context, String themePath) {
+		return getLocalDirForPath(context, "pieces/" + themePath);
+	}
+
+	public static File getLocalDirForBoards(Context context, String themePath) {
+		return getLocalDirForPath(context, "boards/" + themePath);
 	}
 
 	public static File getLocalDirForPath(Context context, String path) {

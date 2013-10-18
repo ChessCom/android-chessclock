@@ -10,6 +10,8 @@ import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -19,10 +21,12 @@ import com.chess.db.DbScheme;
 public class NewChatMessagesCursorAdapter extends ItemsCursorAdapter {
 
 	private final int imageSize;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public NewChatMessagesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -42,7 +46,12 @@ public class NewChatMessagesCursorAdapter extends ItemsCursorAdapter {
 
 		holder.messageTxt.setText(getString(cursor, DbScheme.V_MESSAGE));
 		String avatarUrl = getString(cursor, DbScheme.V_USER_AVATAR);
-		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.playerImg.getImageView());
+
+		if (!imageDataMap.containsKey(avatarUrl)) {
+			imageDataMap.put(avatarUrl, new SmartImageFetcher.Data(avatarUrl, imageSize));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(avatarUrl), holder.playerImg.getImageView());
 	}
 
 	protected class ViewHolder {

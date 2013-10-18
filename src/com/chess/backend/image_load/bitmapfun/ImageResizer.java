@@ -210,8 +210,12 @@ public class ImageResizer extends ImageWorker {
                     Log.d(TAG, "Found bitmap to use for inBitmap");
                 }
                 options.inBitmap = inBitmap;
-            }
-        }
+            } else {
+				options.inMutable = false;
+			}
+        } else {
+			options.inMutable = false;
+		}
     }
 
     /**

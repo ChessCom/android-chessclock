@@ -2,25 +2,27 @@ package com.chess.backend.entity.api.themes;
 
 import com.chess.backend.entity.api.BaseResponseItem;
 
-import java.util.List;
-
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 17.09.13
- * Time: 17:02
+ * Date: 17.10.13
+ * Time: 9:11
  */
-public class SoundItem extends BaseResponseItem<List<SoundItem.Data>> {
+public class SoundSingleItem extends  BaseResponseItem<SoundSingleItem.Data> {
 /*
-	"user_theme_sound_id": 4,
-	"name": "Wave",
-	"sound_pack_zip": "www.some_zip_url.com/image.zip",
+	 "data": {
+		"user_theme_sound_id": 3,
+		"name": "Marble",
+		"sound_pack_zip": "https://chess-redesign.s3.amazonaws.com/sounds/marble.zip",
+		"theme_id": 0
+	  },
 */
 
 	public static class Data {
 		private int user_theme_sound_id;
 		private String name;
 		private String sound_pack_zip;
+		private int theme_id;
 
 		public int getUserThemeSoundId() {
 			return user_theme_sound_id;
@@ -45,6 +47,13 @@ public class SoundItem extends BaseResponseItem<List<SoundItem.Data>> {
 		public void setSoundPackZip(String sound_pack_zip) {
 			this.sound_pack_zip = sound_pack_zip;
 		}
-	}
 
+		public int getThemeId() {
+			return theme_id;
+		}
+
+		public void setThemeId(int theme_id) {
+			this.theme_id = theme_id;
+		}
+	}
 }

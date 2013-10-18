@@ -16,6 +16,8 @@ import com.chess.db.DbScheme;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -26,6 +28,7 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 
 	private final int paddingTop;
 	private final int paddingSide;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	private int imageSize;
 	public ConversationsCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
@@ -34,6 +37,8 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 		imageSize = (int) (40 * density);
 		paddingTop = (int) (12 * density);
 		paddingSide = (int) (12 * density);
+
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -69,7 +74,11 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 		view.setPadding(paddingSide, paddingTop, paddingSide, paddingTop);
 
 		String otherUserAvatarUrl = getString(cursor, DbScheme.V_OTHER_USER_AVATAR_URL);
-		imageFetcher.loadImage(new SmartImageFetcher.Data(otherUserAvatarUrl, imageSize), holder.photoImg.getImageView());
+		if (!imageDataMap.containsKey(otherUserAvatarUrl)) {
+			imageDataMap.put(otherUserAvatarUrl, new SmartImageFetcher.Data(otherUserAvatarUrl, imageSize));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(otherUserAvatarUrl), holder.photoImg.getImageView());
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_OTHER_USER_USERNAME));
 		Spanned message = Html.fromHtml(getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT));

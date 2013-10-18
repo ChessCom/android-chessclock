@@ -15,6 +15,8 @@ import com.chess.model.BaseGameItem;
 import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 
+import java.util.HashMap;
+
 public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 
 	protected static final String CHESS_960 = " (960)";
@@ -25,6 +27,7 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 	private final int colorOrange;
 	private final int colorGreen;
 	private final int colorGrey;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public DailyFinishedGamesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
@@ -37,6 +40,9 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		colorOrange = resources.getColor(R.color.orange_button_flat);
 		colorGreen = resources.getColor(R.color.new_dark_green);
 		colorGrey = resources.getColor(R.color.stats_label_grey);
+
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
+
 	}
 
 	@Override
@@ -79,9 +85,12 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		holder.playerTxt.setText(opponentName);
 		holder.ratingTxt.setText(Symbol.wrapInPars(opponentRating));
 
-		SmartImageFetcher.Data data = new SmartImageFetcher.Data(avatarUrl, imageSize);
+		if (!imageDataMap.containsKey(avatarUrl)) {
+			imageDataMap.put(avatarUrl, new SmartImageFetcher.Data(avatarUrl, imageSize));
+		}
+
 		ImageView imageView = holder.playerImg.getImageView();
-		imageFetcher.loadImage(data, imageView);
+		imageFetcher.loadImage(imageDataMap.get(avatarUrl), imageView);
 
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);

@@ -32,6 +32,7 @@ public class EnhancedImageDownloader {
 	private final Resources resources;
 	private HashMap<String, Integer> imageSizeMap;
 	private boolean useScale;
+	private BitmapFactory.Options bitmapOptions;
 
 	public enum Mode {
         NO_ASYNC_TASK, NO_DOWNLOADED_DRAWABLE, CORRECT
@@ -44,6 +45,7 @@ public class EnhancedImageDownloader {
 		imageSizeMap = new HashMap<String, Integer>();
         resources = context.getResources();
 		cacheDir = AppUtils.getCacheDir(context);
+		bitmapOptions = new BitmapFactory.Options();
     }
 
     /**
@@ -72,7 +74,7 @@ public class EnhancedImageDownloader {
         } else {
             cancelPotentialDownload(url, holder.getImageView());
             holder.setImageBitmap(bitmap);
-//            holder.progress.setVisibility(View.INVISIBLE);
+            holder.progress.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -93,7 +95,7 @@ public class EnhancedImageDownloader {
         } else {
             cancelPotentialDownload(url, holder.getImageView());
             holder.setImageBitmap(bitmap);
-//            holder.progress.setVisibility(View.INVISIBLE);
+            holder.progress.setVisibility(View.INVISIBLE);
         }
     }
     /**
@@ -268,7 +270,7 @@ public class EnhancedImageDownloader {
 
         @Override
         protected void onPreExecute() {
-//            holderReference.get().progress.setVisibility(View.VISIBLE);
+            holderReference.get().progress.setVisibility(View.VISIBLE);
             super.onPreExecute();
         }
 
@@ -364,21 +366,21 @@ public class EnhancedImageDownloader {
 				int targetH = imageSizeMap.get(originalUrl);
 
 				// Get the dimensions of the bitmap
-				BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-				bmOptions.inJustDecodeBounds = true;
-				BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
-				int photoW = bmOptions.outWidth;
-				int photoH = bmOptions.outHeight;
+				bitmapOptions.inJustDecodeBounds = true;
+				BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
+
+				int photoW = bitmapOptions.outWidth;
+				int photoH = bitmapOptions.outHeight;
 
 				// Determine how much to scale down the image
 				int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
 				// Decode the image imgFile into a Bitmap sized to fill the View
-				bmOptions.inJustDecodeBounds = false;
-				bmOptions.inSampleSize = scaleFactor;
-				bmOptions.inPurgeable = true;
+				bitmapOptions.inJustDecodeBounds = false;
+				bitmapOptions.inSampleSize = scaleFactor;
+				bitmapOptions.inPurgeable = true;
 
-				return BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
+				return BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
 			}
 			// TODO adjust usage for width and height
 

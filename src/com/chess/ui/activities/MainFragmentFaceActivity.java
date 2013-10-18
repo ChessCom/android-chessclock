@@ -18,8 +18,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.image_load.bitmapfun.ImageCache;
-import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppData;
@@ -27,7 +25,6 @@ import com.chess.statics.IntentConstants;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.articles.ArticleDetailsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
@@ -111,7 +108,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		RestHelper.HOST = getAppData().getApiRoute();
 
 		// apply sound theme
-		String soundThemePath = getAppData().getSoundThemePath();
+		String soundThemePath = getAppData().getThemeSoundPath();
 		if (!TextUtils.isEmpty(soundThemePath)) {
 			SoundPlayer.setUseThemePack(true);
 			SoundPlayer.setThemePath(soundThemePath);

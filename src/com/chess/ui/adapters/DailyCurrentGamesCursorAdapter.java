@@ -15,6 +15,8 @@ import com.chess.model.BaseGameItem;
 import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 
+import java.util.HashMap;
+
 public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 
 	protected static final String CHESS_960 = " (960)";
@@ -24,6 +26,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	private final int redColor;
 	private final int greyColor;
 	private final int boardPreviewSize;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public DailyCurrentGamesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
@@ -31,11 +34,12 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		fullPadding = (int) context.getResources().getDimension(R.dimen.default_scr_side_padding);
 		halfPadding = fullPadding / 2;
 		float density = resources.getDisplayMetrics().density;
-		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / density);
+		imageSize = (int) (resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size));
 		boardPreviewSize = (int) (resources.getDimension(R.dimen.video_thumb_size) / density);
 
 		redColor = resources.getColor(R.color.red);
 		greyColor = resources.getColor(R.color.grey_button_flat);
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -78,11 +82,11 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		}
 
 		holder.playerTxt.setText(opponentName);
-		{
-			SmartImageFetcher.Data data = new SmartImageFetcher.Data(avatarUrl, imageSize);
-			imageFetcher.loadImage(data, holder.playerImg.getImageView());
+		if (!imageDataMap.containsKey(avatarUrl)) {
+			imageDataMap.put(avatarUrl, new SmartImageFetcher.Data(avatarUrl, imageSize));
 		}
-//		imageLoader.download(avatarUrl, holder.playerImg, imageSize);
+
+		imageFetcher.loadImage(imageDataMap.get(avatarUrl), holder.playerImg.getImageView());
 
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);
@@ -126,12 +130,12 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		// take only first part
 		fen = fen.split(Symbol.SPACE)[0];
 
-//		imageLoader.download(RestHelper.GET_FEN_IMAGE(fen), holder.boardPreviewFrame, boardPreviewSize);
-		{
-			SmartImageFetcher.Data data = new SmartImageFetcher.Data(RestHelper.GET_FEN_IMAGE(fen), boardPreviewSize);
-			imageFetcher.loadImage(data, holder.boardPreviewFrame.getImageView());
+		String imageUrl = RestHelper.GET_FEN_IMAGE(fen);
+		if (!imageDataMap.containsKey(imageUrl)) {
+			imageDataMap.put(imageUrl, new SmartImageFetcher.Data(imageUrl, boardPreviewSize));
 		}
 
+		imageFetcher.loadImage(imageDataMap.get(imageUrl), holder.boardPreviewFrame.getImageView());
 	}
 
 	private boolean lessThanDay(long amount) {

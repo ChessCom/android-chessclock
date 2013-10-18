@@ -1,11 +1,9 @@
 package com.chess.ui.fragments.settings;
 
 import android.app.Activity;
-import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -17,8 +15,9 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.themes.SoundSingleItem;
+import com.chess.backend.entity.api.themes.SoundsItem;
 import com.chess.backend.entity.api.themes.ThemeItem;
-import com.chess.backend.entity.api.themes.SoundItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
@@ -46,7 +45,6 @@ import com.chess.ui.views.PiecePreviewImg;
 import com.chess.utilities.AppUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,7 +158,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	public void onResume() {
 		super.onResume();
 
-		if (TextUtils.isEmpty(getAppData().getSoundThemePath())) {
+		if (TextUtils.isEmpty(getAppData().getThemeSoundPath())) {
 			getSounds();
 		} else {
 			loadSoundsFromDb();
@@ -220,7 +218,8 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 			String savedPath = DbDataManager.haveSavedSoundPackForUrl(getContentResolver(), selectedSoundPackUrl);
 			if (TextUtils.isEmpty(savedPath)) {
-				new GetAndSaveFileToSdTask(soundPackSaveListener).executeTask(selectedSoundPackUrl);
+				new GetAndSaveFileToSdTask(soundPackSaveListener, true, AppUtils.getLocalDirForSounds(getActivity()))
+						.executeTask(selectedSoundPackUrl);
 			} else {
 				updateSelectedSoundScheme(savedPath);
 			}
@@ -327,7 +326,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	}
 
 	private void updateSelectedSoundScheme(String path) {
-		getAppData().setSoundThemePath(path);
+		getAppData().setThemeSoundPath(path);
 
 		// update sounds flag
 		SoundPlayer.setUseThemePack(true);
@@ -340,7 +339,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	}
 
 	private void installSelectedTheme() {
-		backgroundUrl = selectedThemeItem.getBackgroundUrl();
+		backgroundUrl = selectedThemeItem.getPiecesPreviewUrl();
 
 		if (TextUtils.isEmpty(backgroundUrl)) {
 			return;
@@ -518,21 +517,21 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_SOUND);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
-		new RequestJsonTask<SoundItem>(soundsGetUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<SoundsItem>(soundsGetUpdateListener).executeTask(loadItem);
 	}
 
-	private class SoundsGetUpdateListener extends ChessLoadUpdateListener<SoundItem> {
+	private class SoundsGetUpdateListener extends ChessLoadUpdateListener<SoundsItem> {
 
 		private SoundsGetUpdateListener() {
-			super(SoundItem.class);
+			super(SoundsItem.class);
 		}
 
 		@Override
-		public void updateData(SoundItem returnedObj) {
+		public void updateData(SoundsItem returnedObj) {
 			super.updateData(returnedObj);
 
-			List<SoundItem.Data> itemsList = returnedObj.getData();
-			for (SoundItem.Data currentItem : itemsList) {
+			List<SoundSingleItem.Data> itemsList = returnedObj.getData();
+			for (SoundSingleItem.Data currentItem : itemsList) {
 				DbDataManager.saveSoundToDb(getContentResolver(), currentItem);
 			}
 
@@ -557,7 +556,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		soundsSpinner.setEnabled(true);
 		soundsSpinner.setSelection(getAppData().getSoundSetPosition());
 	}
-
 
 	@Override
 	public void onValueSelected(int code) {
@@ -585,6 +583,10 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		boardPreviewImg = (ProgressImageView) view.findViewById(R.id.boardPreviewImg);
 		piecePreviewImg = (PiecePreviewImg) view.findViewById(R.id.piecePreviewImg);
 
+		///////////////// TODO restore when custom pieces will be ready to set here ///
+		piecePreviewImg.setVisibility(View.INVISIBLE);
+		///////////////////////////////////////////////
+
 		{ // background params
 			backgroundPreviewImg = (ProgressImageView) view.findViewById(R.id.backImg);
 			int imageHeight = (int) (screenWidth / 2.9f);
@@ -607,25 +609,25 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		}
 
-		AssetManager assetManager = getActivity().getAssets();
-		Bitmap blackPawn = null;
-		Bitmap blackKnight = null;
-		Bitmap whitePawn = null;
-		Bitmap whiteKnight = null;
-		try {
-			blackPawn = BitmapFactory.decodeStream(assetManager.open("pieces/nature/bp.png"));
-			blackKnight = BitmapFactory.decodeStream(assetManager.open("pieces/nature/bn.png"));
-			whitePawn = BitmapFactory.decodeStream(assetManager.open("pieces/nature/wp.png"));
-			whiteKnight = BitmapFactory.decodeStream(assetManager.open("pieces/nature/wn.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Bitmap[] whiteBitmaps = new Bitmap[]{whitePawn, whiteKnight};
-		Bitmap[] blackBitmaps = new Bitmap[]{blackPawn, blackKnight};
-		Bitmap[][] bitmaps = new Bitmap[][]{blackBitmaps, whiteBitmaps};
-		piecePreviewImg.setPiecesBitmaps(bitmaps);
+//		AssetManager assetManager = getActivity().getAssets();
+//		Bitmap blackPawn = null;
+//		Bitmap blackKnight = null;
+//		Bitmap whitePawn = null;
+//		Bitmap whiteKnight = null;
+//		try {
+//			blackPawn = BitmapFactory.decodeStream(assetManager.open("pieces/nature/bp.png"));
+//			blackKnight = BitmapFactory.decodeStream(assetManager.open("pieces/nature/bn.png"));
+//			whitePawn = BitmapFactory.decodeStream(assetManager.open("pieces/nature/wp.png"));
+//			whiteKnight = BitmapFactory.decodeStream(assetManager.open("pieces/nature/wn.png"));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		Bitmap[] whiteBitmaps = new Bitmap[]{whitePawn, whiteKnight};
+//		Bitmap[] blackBitmaps = new Bitmap[]{blackPawn, blackKnight};
+//		Bitmap[][] bitmaps = new Bitmap[][]{blackBitmaps, whiteBitmaps};
+//		piecePreviewImg.setPiecesBitmaps(bitmaps);
 
-		// Menu sample
+		// Preview Sample
 		rowSampleTitleTxt = (TextView) view.findViewById(R.id.rowSampleTitleTxt);
 		int fontColor = Color.parseColor("#" + themeItem.getFontColor());
 		rowSampleTitleTxt.setTextColor(fontColor);

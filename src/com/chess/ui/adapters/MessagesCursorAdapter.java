@@ -14,6 +14,8 @@ import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.utilities.AppUtils;
 
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -22,10 +24,12 @@ import com.chess.utilities.AppUtils;
  */
 public class MessagesCursorAdapter extends ItemsCursorAdapter {
 
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 	private int imageSize;
 	public MessagesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 		imageSize = (int) (40 * resources.getDisplayMetrics().density);
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -50,7 +54,12 @@ public class MessagesCursorAdapter extends ItemsCursorAdapter {
 		holder.photoImg.setOnline(isOpponentOnline);
 
 		String otherUserAvatarUrl = getString(cursor, DbScheme.V_OTHER_USER_AVATAR_URL);
-		imageFetcher.loadImage(new SmartImageFetcher.Data(otherUserAvatarUrl, imageSize), holder.photoImg.getImageView());
+
+		if (!imageDataMap.containsKey(otherUserAvatarUrl)) {
+			imageDataMap.put(otherUserAvatarUrl, new SmartImageFetcher.Data(otherUserAvatarUrl, imageSize));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(otherUserAvatarUrl), holder.photoImg.getImageView());
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_OTHER_USER_USERNAME));
 		Spanned message = Html.fromHtml(getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT));

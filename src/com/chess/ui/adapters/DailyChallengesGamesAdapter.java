@@ -9,17 +9,21 @@ import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeItem.Data> {
 
 	private final ItemClickListenerFace clickListenerFace;
 	private final int imageSize;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public DailyChallengesGamesAdapter(ItemClickListenerFace clickListenerFace, List<DailyChallengeItem.Data> itemList, SmartImageFetcher imageFetcher) {
 		super(clickListenerFace.getMeContext(), itemList, imageFetcher);
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 		this.clickListenerFace = clickListenerFace;
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
+
 	}
 
 	@Override
@@ -47,7 +51,12 @@ public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeItem
 
 		holder.playerTxt.setText(item.getOpponentUsername());
 
-		imageFetcher.loadImage(new SmartImageFetcher.Data(item.getOpponentAvatar(), imageSize), holder.playerImg.getImageView());
+		String imageUrl = item.getOpponentAvatar();
+		if (!imageDataMap.containsKey(imageUrl)) {
+			imageDataMap.put(imageUrl, new SmartImageFetcher.Data(imageUrl, imageSize));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(imageUrl), holder.playerImg.getImageView());
 	}
 
 	protected class ViewHolder {

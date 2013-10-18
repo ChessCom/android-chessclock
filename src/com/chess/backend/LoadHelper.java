@@ -263,13 +263,34 @@ public class LoadHelper {
 	}
 
 	/* Themes */
-	public static LoadItem getBackgroundForSize(String userToken, int id, int width, int height, String screen) {
+	public static LoadItem getBackgroundById(String userToken, int id, int width, int height, String screen) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(getInstance().CMD_BACKGROUND_BY_ID(id));
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_WIDTH, width);
 		loadItem.addRequestParams(P_HEIGHT, height);
 		loadItem.addRequestParams(P_SCREEN, screen);
+		return loadItem;
+	}
+
+	public static LoadItem getBoardById(String userToken, int id) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(getInstance().CMD_BOARD_BY_ID(id));
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		return loadItem;
+	}
+
+	public static LoadItem getPiecesById(String userToken, int id) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(getInstance().CMD_PIECES_BY_ID(id));
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		return loadItem;
+	}
+
+	public static LoadItem getSoundsById(String userToken, int id) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(getInstance().CMD_SOUND_BY_ID(id));
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
 	}
 }

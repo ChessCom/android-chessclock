@@ -131,6 +131,9 @@ public class ChessBoard implements BoardFace {
 	private int[][] history = new int[SQUARES_CNT][SQUARES_CNT];
 	protected HistoryData[] histDat = new HistoryData[HIST_STACK];
 
+	public static final String[] whitePieceImageCodes = new String[]{"wp","wn","wb","wr","wq","wk"};
+	public static final String[] blackPieceImageCodes = new String[]{"bp","bn","bb","br","bq","bk"};
+
 	final static int boardColor[] = {
 			0, 1, 0, 1, 0, 1, 0, 1,
 			1, 0, 1, 0, 1, 0, 1, 0,

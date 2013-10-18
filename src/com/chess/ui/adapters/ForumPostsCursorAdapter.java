@@ -15,11 +15,13 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
-import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
+import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 import org.xml.sax.XMLReader;
+
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,6 +37,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 	private final ImageGetter imageGetter;
 	private final MyHtmlTagHandler myHtmlTagHandler;
 	private final ItemClickListenerFace clickFace;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public ForumPostsCursorAdapter(ItemClickListenerFace clickFace, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(clickFace.getMeContext(), cursor, imageFetcher);
@@ -51,6 +54,8 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 
 		imageGetter = new ImageGetter();
 		myHtmlTagHandler = new MyHtmlTagHandler();
+
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -106,7 +111,11 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		holder.countryImg.setImageDrawable(drawable);
 
 		String avatarUrl = getString(cursor, DbScheme.V_PHOTO_URL);
-		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.photoImg.getImageView());
+		if (!imageDataMap.containsKey(avatarUrl)) {
+			imageDataMap.put(avatarUrl, new SmartImageFetcher.Data(avatarUrl, imageSize));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(avatarUrl), holder.photoImg.getImageView());
 	}
 
 	protected class ViewHolder {

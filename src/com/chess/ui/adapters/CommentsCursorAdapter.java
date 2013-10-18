@@ -16,6 +16,8 @@ import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.utilities.AppUtils;
 
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -26,6 +28,7 @@ public class CommentsCursorAdapter extends ItemsCursorAdapter {
 
 	private final int imageSize;
 	private final SparseArray<String> countryMap;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public CommentsCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
@@ -37,6 +40,8 @@ public class CommentsCursorAdapter extends ItemsCursorAdapter {
 		for (int i = 0; i < countryNames.length; i++) {
 			countryMap.put(countryCodes[i], countryNames[i]);
 		}
+
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -62,7 +67,12 @@ public class CommentsCursorAdapter extends ItemsCursorAdapter {
 		holder.photoImg.setOnline(false);
 
 		String userAvatarUrl = getString(cursor, DbScheme.V_USER_AVATAR);
-		imageFetcher.loadImage(new SmartImageFetcher.Data(userAvatarUrl, imageSize), holder.photoImg.getImageView());
+
+		if (!imageDataMap.containsKey(userAvatarUrl)) {
+			imageDataMap.put(userAvatarUrl, new SmartImageFetcher.Data(userAvatarUrl, imageSize));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(userAvatarUrl), holder.photoImg.getImageView());
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_USERNAME));
 //		// set premium icon

@@ -174,6 +174,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		Resources resources = getResources();
 		// Piece and board bitmaps list init
 		piecesList = new ArrayList<SelectionItem>();
+		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_game), getString(R.string.piece_game)));
 		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_alpha), getString(R.string.piece_alpha)));
 		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_book), getString(R.string.piece_book)));
 		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_cases), getString(R.string.piece_cases)));
@@ -183,7 +184,6 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_maya), getString(R.string.piece_maya)));
 		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_modern), getString(R.string.piece_modern)));
 		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_vintage), getString(R.string.piece_vintage)));
-		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_the3d), getString(R.string.piece_the3d)));
 
 		boardsList = new ArrayList<SelectionItem>();
 		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_wood_dark), getString(R.string.board_wooddark)));

@@ -26,8 +26,10 @@ import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.game_controls.ControlsBaseView;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
 
+import java.io.File;
 import java.util.List;
 import java.util.WeakHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -40,16 +42,16 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace, NotationView.BoardForNotationFace {
 
-	public static final int P_ALPHA_ID = 0;
-	public static final int P_BOOK_ID = 1;
-	public static final int P_CASES_ID = 2;
-	public static final int P_CLASSIC_ID = 3;
-	public static final int P_CLUB_ID = 4;
-	public static final int P_CONDAL_ID = 5;
-	public static final int P_MAYA_ID = 6;
-	public static final int P_MODERN_ID = 7;
-	public static final int P_VINTAGE_ID = 8;
-	public static final int P_THE3D_ID = 9;
+	public static final int P_GAME_ID = 0;
+	public static final int P_ALPHA_ID = 1;
+	public static final int P_BOOK_ID = 2;
+	public static final int P_CASES_ID = 3;
+	public static final int P_CLASSIC_ID = 4;
+	public static final int P_CLUB_ID = 5;
+	public static final int P_CONDAL_ID = 6;
+	public static final int P_MAYA_ID = 7;
+	public static final int P_MODERN_ID = 8;
+	public static final int P_VINTAGE_ID = 9;
 
 	public static final int PIECE_ANIM_SPEED = 150; // 250 looks too long. is not?
 	public static final String VALID_MOVES = "valid_moves";
@@ -208,9 +210,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		possibleMovePaint.setStyle(Style.FILL);
 		possibleMovePaint.setColor(possibleMoveHighlightColor);
 
-//		width = resources.getDisplayMetrics().widthPixels;
-//		height = resources.getDisplayMetrics().heightPixels;
-
 		handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
 		userActive = false;
 
@@ -253,6 +252,17 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		pieceXDelta = -1;
 		pieceYDelta = -1;
+	}
+
+	@Override
+	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
+		super.onSizeChanged(xNew, yNew, xOld, yOld);
+		viewWidth = (xNew == 0 ? viewWidth : xNew);
+		viewHeight = (yNew == 0 ? viewHeight : yNew);
+		squareSize = viewHeight / 8;
+
+		loadBoard();
+		loadPieces();
 	}
 
 	protected BoardFace getBoardFace() {
@@ -860,17 +870,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		return true;
 	}
 
-	@Override
-	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
-		super.onSizeChanged(xNew, yNew, xOld, yOld);
-		viewWidth = (xNew == 0 ? viewWidth : xNew);
-		viewHeight = (yNew == 0 ? viewHeight : yNew);
-		squareSize = viewHeight / 8;
-
-		loadBoard();
-		loadPieces(appData.getPiecesId());
-	}
-
 	public void promote(int promote, int file, int rank) {
 		boolean found = false;
 
@@ -1112,6 +1111,20 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		return pieceBitmap;
 	}
 
+	private Bitmap createBitmapForPiece(String filePath) {
+		Bitmap pieceBitmap;
+
+		// Calculate inSampleSize
+		int pieceSize = squareSize - pieceInset;
+		bitmapOptions.inSampleSize = calculateInSampleSize(bitmapOptions, pieceSize, pieceSize);
+
+		// Decode bitmap with inSampleSize set
+		bitmapOptions.inJustDecodeBounds = false;
+		pieceBitmap = BitmapFactory.decodeFile(filePath, bitmapOptions);
+
+		return pieceBitmap;
+	}
+
 	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
 		// Raw height and width of image
 		final int height = options.outHeight;
@@ -1137,41 +1150,96 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		return appData;
 	}
 
-	protected void loadPieces(int piecesSetId) {
-		switch (piecesSetId) {
-			case P_ALPHA_ID:
-				setPieceBitmapFromArray(alphaPiecesDrawableIds);
-				break;
-			case P_BOOK_ID:
-				setPieceBitmapFromArray(bookPiecesDrawableIds);
-				break;
-			case P_CASES_ID:
-				setPieceBitmapFromArray(casesPiecesDrawableIds);
-				break;
-			case P_CLASSIC_ID:
-				setPieceBitmapFromArray(classicPiecesDrawableIds);
-				break;
-			case P_CLUB_ID:
-				setPieceBitmapFromArray(clubPiecesDrawableIds);
-				break;
-			case P_CONDAL_ID:
-				setPieceBitmapFromArray(condalPiecesDrawableIds);
-				break;
-			case P_MAYA_ID:
-				setPieceBitmapFromArray(mayaPiecesDrawableIds);
-				break;
-			case P_MODERN_ID:
-				setPieceBitmapFromArray(modernPiecesDrawableIds);
-				break;
-			case P_VINTAGE_ID:
-				setPieceBitmapFromArray(vintagePiecesDrawableIds);
-				break;
-			case P_THE3D_ID:
-				using3dPieces = true;
-				setPieceBitmapFromArray(the3dPiecesDrawableIds);
-				break;
+	protected void loadPieces() {
+		String piecesThemePath = appData.getThemePiecesPath();
+		if (!TextUtils.isEmpty(piecesThemePath)) {
+
+			using3dPieces = appData.isThemePieces3d();
+
+			if (whitePiecesMap == null) {
+				whitePiecesMap = new WeakHashMap<Integer, Bitmap>();
+			}
+
+			if (blackPiecesMap == null) {
+				blackPiecesMap = new WeakHashMap<Integer, Bitmap>(); // TODO probably we don't need weak or soft referemces
+			}
+
+			File dirForPieces = AppUtils.getLocalDirForPieces(getContext(), piecesThemePath);
+//			File file = new File(dirForPieces.getAbsolutePath() + "/wp.png");
+
+			bitmapOptions = new BitmapFactory.Options();
+			// get bitmapOptions size. It's always the same for same sized drawables
+			String testPath = dirForPieces.getAbsolutePath() + "/wp.png";
+			bitmapOptions.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(testPath, bitmapOptions);
+
+			String[] whitePieceImageCodes = ChessBoard.whitePieceImageCodes;
+			for (int i = 0; i < whitePieceImageCodes.length; i++) {
+				String pieceImageCode = whitePieceImageCodes[i];
+				String filePath = dirForPieces.getAbsolutePath() + "/" + pieceImageCode + ".png";
+				Bitmap pieceBitmap = createBitmapForPiece(filePath);
+				whitePiecesMap.put(i, pieceBitmap);
+			}
+
+			String[] blackPieceImageCodes = ChessBoard.blackPieceImageCodes;
+			for (int i = 0; i < blackPieceImageCodes.length; i++) {
+				String pieceImageCode = blackPieceImageCodes[i];
+				String filePath = dirForPieces.getAbsolutePath() + "/" + pieceImageCode + ".png";
+				Bitmap pieceBitmap = createBitmapForPiece(filePath);
+				blackPiecesMap.put(i, pieceBitmap);
+			}
+
+		} else {
+			int piecesSetId = appData.getPiecesId();
+			switch (piecesSetId) {
+				case P_GAME_ID:
+					setPieceBitmapFromArray(gamePiecesDrawableIds);
+					break;
+				case P_ALPHA_ID:
+					setPieceBitmapFromArray(alphaPiecesDrawableIds);
+					break;
+				case P_BOOK_ID:
+					setPieceBitmapFromArray(bookPiecesDrawableIds);
+					break;
+				case P_CASES_ID:
+					setPieceBitmapFromArray(casesPiecesDrawableIds);
+					break;
+				case P_CLASSIC_ID:
+					setPieceBitmapFromArray(classicPiecesDrawableIds);
+					break;
+				case P_CLUB_ID:
+					setPieceBitmapFromArray(clubPiecesDrawableIds);
+					break;
+				case P_CONDAL_ID:
+					setPieceBitmapFromArray(condalPiecesDrawableIds);
+					break;
+				case P_MAYA_ID:
+					setPieceBitmapFromArray(mayaPiecesDrawableIds);
+					break;
+				case P_MODERN_ID:
+					setPieceBitmapFromArray(modernPiecesDrawableIds);
+					break;
+				case P_VINTAGE_ID:
+					setPieceBitmapFromArray(vintagePiecesDrawableIds);
+					break;
+			}
 		}
 	}
+
+	private int[] gamePiecesDrawableIds = new int[]{
+			R.drawable.game_wp,
+			R.drawable.game_wn,
+			R.drawable.game_wb,
+			R.drawable.game_wr,
+			R.drawable.game_wq,
+			R.drawable.game_wk,
+			R.drawable.game_bp,
+			R.drawable.game_bn,
+			R.drawable.game_bb,
+			R.drawable.game_br,
+			R.drawable.game_bq,
+			R.drawable.game_bk,
+	};
 
 	private int[] alphaPiecesDrawableIds = new int[]{
 			R.drawable.alpha_wp,
@@ -1309,24 +1377,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.vintage_bk,
 	};
 
-	private int[] the3dPiecesDrawableIds = new int[]{
-			R.drawable.the3d_wp,
-			R.drawable.the3d_wn,
-			R.drawable.the3d_wb,
-			R.drawable.the3d_wr,
-			R.drawable.the3d_wq,
-			R.drawable.the3d_wk,
-			R.drawable.the3d_bp,
-			R.drawable.the3d_bn,
-			R.drawable.the3d_bb,
-			R.drawable.the3d_br,
-			R.drawable.the3d_bq,
-			R.drawable.the3d_bk,
-	};
-
 	public void updateBoardAndPiecesImgs() {
-		boardId = getAppData().getChessBoardId();
-		loadPieces(getAppData().getPiecesId());
+		boardId = appData.getChessBoardId();
+		loadPieces();
 
 		invalidate();
 	}

@@ -7,8 +7,11 @@ import android.net.Uri;
 import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.*;
-import com.chess.backend.entity.api.stats.*;
-import com.chess.backend.entity.api.themes.SoundItem;
+import com.chess.backend.entity.api.stats.GameStatsItem;
+import com.chess.backend.entity.api.stats.GamesInfoByResult;
+import com.chess.backend.entity.api.stats.Tournaments;
+import com.chess.backend.entity.api.stats.UserStatsData;
+import com.chess.backend.entity.api.themes.SoundSingleItem;
 import com.chess.backend.entity.api.themes.ThemeItem;
 import com.chess.backend.gcm.FriendRequestItem;
 import com.chess.backend.gcm.GameOverNotificationItem;
@@ -2372,7 +2375,7 @@ public class DbDataManager {
 		values.put(V_BOARD_ID, currentItem.getBoardId());
 		values.put(V_PIECES_ID, currentItem.getPiecesId());
 		values.put(V_SOUNDS_ID, currentItem.getSoundsId());
-		values.put(V_BACKGROUND_URL, currentItem.getBackgroundUrl());
+		values.put(V_BACKGROUND_URL, currentItem.getPiecesPreviewUrl());
 		values.put(V_BOARD_BACKGROUND_URL, currentItem.getBoardBackgroundUrl());
 		values.put(V_BACKGROUND_PREVIEW_URL, currentItem.getBackgroundPreviewUrl());
 		values.put(V_BOARD_PREVIEW_URL, currentItem.getBoardPreviewUrl());
@@ -2390,7 +2393,7 @@ public class DbDataManager {
 		data.setBoardId(getInt(cursor, V_BOARD_ID));
 		data.setPiecesId(getInt(cursor, V_PIECES_ID));
 		data.setSoundsId(getInt(cursor, V_SOUNDS_ID));
-		data.setBackgroundUrl(getString(cursor, V_BACKGROUND_URL));
+		data.setPiecesPreviewUrl(getString(cursor, V_BACKGROUND_URL));
 		data.setBoardBackgroundUrl(getString(cursor, V_BOARD_BACKGROUND_URL));
 		data.setBackgroundPreviewUrl(getString(cursor, V_BACKGROUND_PREVIEW_URL));
 		data.setBoardPreviewUrl(getString(cursor, V_BOARD_PREVIEW_URL));
@@ -2400,7 +2403,7 @@ public class DbDataManager {
 	}
 
 	/* Sounds */
-	public static void saveSoundToDb(ContentResolver contentResolver, SoundItem.Data item) {
+	public static void saveSoundToDb(ContentResolver contentResolver, SoundSingleItem.Data item) {
 		final String[] arguments = sArguments1;
 		arguments[0] = String.valueOf(item.getUserThemeSoundId());
 

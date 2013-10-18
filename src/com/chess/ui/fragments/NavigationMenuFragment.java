@@ -33,6 +33,7 @@ import com.chess.ui.fragments.videos.VideosFragment;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -238,11 +239,13 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 
 		private final String userAvatarUrl;
 		private final String themeName;
+		private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 		public NewNavigationMenuAdapter(Context context, List<NavigationMenuItem> menuItems, SmartImageFetcher imageFetcher) {
 			super(context, menuItems, imageFetcher);
 			userAvatarUrl = getAppData().getUserAvatar();
 			themeName = getAppData().getThemeName();
+			imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 		}
 
 		@Override
@@ -264,7 +267,12 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		protected void bindView(NavigationMenuItem item, int pos, View view) {
 			ViewHolder holder = (ViewHolder) view.getTag();
 			if (pos == HOME_POS) {
-				imageFetcher.loadImage(new SmartImageFetcher.Data(userAvatarUrl, imageSize), holder.icon.getImageView());
+
+				if (!imageDataMap.containsKey(userAvatarUrl)) {
+					imageDataMap.put(userAvatarUrl, new SmartImageFetcher.Data(userAvatarUrl, imageSize));
+				}
+
+				imageFetcher.loadImage(imageDataMap.get(userAvatarUrl), holder.icon.getImageView());
 			} else {
 				holder.icon.setImageDrawable(resources.getDrawable(item.iconRes));
 			}

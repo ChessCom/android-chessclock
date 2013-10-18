@@ -28,6 +28,7 @@ import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -219,6 +220,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		private final RelativeLayout.LayoutParams imageParams;
 		private final RelativeLayout.LayoutParams linearLayoutParams;
 		private final RelativeLayout.LayoutParams progressParams;
+		private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 		public BackgroundsAdapter(Context context, List<SelectionItem> menuItems, SmartImageFetcher imageFetcher) {
 			super(context, menuItems, imageFetcher);
@@ -231,8 +233,11 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 			int imageHeight = (int) (previewWidth * aspectRatio);
 			imageParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
 			linearLayoutParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
+
 			progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+
+			imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 		}
 
 		@Override
@@ -264,7 +269,12 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		protected void bindView(SelectionItem item, int pos, View view) {
 			ViewHolder holder = (ViewHolder) view.getTag();
 
-			imageFetcher.loadImage(new SmartImageFetcher.Data(item.getText(), previewWidth), holder.image.getImageView());
+			String imageUrl = item.getText();
+			if (!imageDataMap.containsKey(imageUrl)) {
+				imageDataMap.put(imageUrl, new SmartImageFetcher.Data(item.getText(), previewWidth));
+			}
+
+			imageFetcher.loadImage(imageDataMap.get(imageUrl), holder.image.getImageView());
 
 			holder.text.setText(item.getCode());
 			holder.text.setChecked(item.isChecked());

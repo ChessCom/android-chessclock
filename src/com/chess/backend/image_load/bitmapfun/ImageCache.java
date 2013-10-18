@@ -71,8 +71,9 @@ public class ImageCache {
     private boolean mDiskCacheStarting = true;
 
     private HashSet<SoftReference<Bitmap>> mReusableBitmaps;
+	private final Object bitmapsLock = new Object();
 
-    /**
+	/**
      * Create a new ImageCache object using the specified parameters. This should not be
      * called directly by other classes, instead use
      * {@link ImageCache#getInstance(android.support.v4.app.FragmentManager, ImageCacheParams)} to fetch an ImageCache
@@ -126,7 +127,7 @@ public class ImageCache {
 
             // If we're running on Honeycomb or newer, then
             if (Utils.hasHoneycomb()) {
-                mReusableBitmaps = new HashSet<SoftReference<Bitmap>>();
+            	mReusableBitmaps = new HashSet<SoftReference<Bitmap>>();
             }
 
             mMemoryCache = new LruCache<String, BitmapDrawable>(mCacheParams.memCacheSize) {
@@ -339,23 +340,25 @@ public class ImageCache {
             final Iterator<SoftReference<Bitmap>> iterator = mReusableBitmaps.iterator();
             Bitmap item;
 
-            while (iterator.hasNext()) {
-                item = iterator.next().get();
+			synchronized (bitmapsLock) {
+				while (iterator.hasNext()) {
+					item = iterator.next().get();
 
-                if (null != item && item.isMutable()) {
-                    // Check to see it the item can be used for inBitmap
-                    if (canUseForInBitmap(item, options)) {
-                        bitmap = item;
+					if (item != null && item.isMutable()) {
+						// Check to see it the item can be used for inBitmap
+						if (canUseForInBitmap(item, options)) {
+							bitmap = item;
 
-                        // Remove from reusable set so it can't be used again
-                        iterator.remove();
-                        break;
-                    }
-                } else {
-                    // Remove from the set if the reference has been cleared.
-                    iterator.remove();
-                }
-            }
+							// Remove from reusable set so it can't be used again
+							iterator.remove();
+							break;
+						}
+					} else {
+						// Remove from the set if the reference has been cleared.
+						iterator.remove();
+					}
+				}
+			}
         }
 
         return bitmap;

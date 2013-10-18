@@ -214,7 +214,7 @@ public class RestHelper {
 	public String CMD_PIECES = BASE_URL + V1 + "/pieces";
 
 	public String CMD_PIECES_BY_ID(long id) {
-		return CMD_BOARD + "/" + id;
+		return CMD_PIECES + "/" + id;
 	}
 
 	/**

@@ -17,6 +17,7 @@ import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -35,6 +36,7 @@ public class ArticleItemAdapter extends ItemsAdapter<ArticleItem.Data> {
 	private CharacterStyle foregroundSpan;
 	private Date date;
 	private SparseBooleanArray viewedMap;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 
 	public ArticleItemAdapter(Context context, List<ArticleItem.Data> itemList, SmartImageFetcher imageFetcher) {
@@ -45,6 +47,7 @@ public class ArticleItemAdapter extends ItemsAdapter<ArticleItem.Data> {
 
 		watchedTextColor = resources.getColor(R.color.new_light_grey_3);
 		unWatchedTextColor = resources.getColor(R.color.new_text_blue);
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 
 		date = new Date();
 
@@ -86,7 +89,12 @@ public class ArticleItemAdapter extends ItemsAdapter<ArticleItem.Data> {
 		date.setTime(item.getCreateDate() * 1000L);
 		holder.dateTxt.setText(dateFormatter.format(date));
 
-		imageFetcher.loadImage(new SmartImageFetcher.Data(item.getImageUrl(), PHOTO_SIZE), holder.thumbnailImg.getImageView());
+		String imageUrl = item.getImageUrl();
+		if (!imageDataMap.containsKey(imageUrl)) {
+			imageDataMap.put(imageUrl, new SmartImageFetcher.Data(imageUrl, PHOTO_SIZE));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(imageUrl), holder.thumbnailImg.getImageView());
 
 		if (viewedMap.get((int) item.getId(), false)) {
 			holder.titleTxt.setTextColor(watchedTextColor);

@@ -11,6 +11,8 @@ import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -21,10 +23,13 @@ public class RecentOpponentsCursorAdapter extends ItemsCursorAdapter {
 
 	protected static final String CHESS_960 = " (960)";
 	private final int imageSize;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public RecentOpponentsCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
+
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -54,7 +59,13 @@ public class RecentOpponentsCursorAdapter extends ItemsCursorAdapter {
 		}
 
 		holder.playerTxt.setText(opponentName);
-		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.playerImg.getImageView());
+
+		String imageUrl = avatarUrl;
+		if (!imageDataMap.containsKey(imageUrl)) {
+			imageDataMap.put(imageUrl, new SmartImageFetcher.Data(avatarUrl, imageSize));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(imageUrl), holder.playerImg.getImageView());
 
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);

@@ -444,12 +444,28 @@ public class AppData {
 	}
 
 
-	public void setSoundThemePath(String themeName) {
-		setStringValue(PREF_SOUND_THEME_NAME, themeName);
+	public void setThemeSoundPath(String themeName) {
+		setStringValue(PREF_THEME_SOUNDS_PATH, themeName);
 	}
 
-	public String getSoundThemePath() {
-		return getStringValue(PREF_SOUND_THEME_NAME, "");
+	public String getThemeSoundPath() {
+		return getStringValue(PREF_THEME_SOUNDS_PATH, Symbol.EMPTY);
+	}
+
+	public void setThemePiecesPath(String themeName) {
+		setStringValue(PREF_THEME_PIECES_PATH, themeName);
+	}
+
+	public String getThemePiecesPath() {
+		return getStringValue(PREF_THEME_PIECES_PATH, Symbol.EMPTY);
+	}
+
+	public void setThemePieces3d(boolean value) {
+		setBooleanValue(PREF_THEME_IS_PIECES_3D_PATH, value);
+	}
+
+	public boolean isThemePieces3d() {
+		return getBooleanValue(PREF_THEME_IS_PIECES_3D_PATH, false);
 	}
 
 	public void setUserChooseVideoLibrary(boolean value) {

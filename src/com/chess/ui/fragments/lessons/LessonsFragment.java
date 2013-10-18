@@ -28,6 +28,7 @@ import com.chess.db.tasks.SaveLessonsCoursesListTask;
 import com.chess.model.CurriculumLessonsItems;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
@@ -244,6 +245,8 @@ Misc
 			getAppData().setUserChooseLessonsLibrary(true);
 			curriculumMode = false;
 			showLibrary();
+		} else if (v.getId() == R.id.upgradeBtn) {
+			getActivityFace().openFragment(new UpgradeFragment());
 		}
 	}
 

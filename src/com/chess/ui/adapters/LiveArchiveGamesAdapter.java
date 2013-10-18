@@ -15,6 +15,8 @@ import com.chess.model.BaseGameItem;
 import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -34,6 +36,7 @@ public class LiveArchiveGamesAdapter extends ItemsCursorAdapter {
 	private final int colorOrange;
 	private final int colorGreen;
 	private final int colorGrey;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public LiveArchiveGamesAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
@@ -46,6 +49,7 @@ public class LiveArchiveGamesAdapter extends ItemsCursorAdapter {
 		colorOrange = resources.getColor(R.color.orange_button_flat);
 		colorGreen = resources.getColor(R.color.new_dark_green);
 		colorGrey = resources.getColor(R.color.stats_label_grey);
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -87,7 +91,12 @@ public class LiveArchiveGamesAdapter extends ItemsCursorAdapter {
 		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(premiumStatus));
 		holder.playerTxt.setText(opponentName);
 		holder.ratingTxt.setText(Symbol.wrapInPars(opponentRating));
-		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.playerImg.getImageView());
+
+		if (!imageDataMap.containsKey(avatarUrl)) {
+			imageDataMap.put(avatarUrl, new SmartImageFetcher.Data(avatarUrl, imageSize));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(avatarUrl), holder.playerImg.getImageView());
 
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);

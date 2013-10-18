@@ -136,6 +136,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, "User = " + appData.getUsername() + " Received message");
 
 		String type = intent.getStringExtra("type");
+		Log.d(TAG, "type = " + type + " intent = " + intent);
+		if (intent.hasExtra("message")) {
+			Log.d(TAG, "type = " + type + " message = " + intent.getStringExtra("message"));
+		}
 
 		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)) {
 			Log.d(TAG, "received move notification, notifications enabled = " + appData.isNotificationsEnabled());

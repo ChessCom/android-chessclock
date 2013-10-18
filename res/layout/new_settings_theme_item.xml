@@ -62,4 +62,18 @@
         android:layout_margin="14dip"
         />
 
+	<com.chess.backend.image_load.ProgressImageView
+		android:id="@+id/piecesPreviewImg"
+        android:layout_width="@dimen/theme_board_preview_size"
+        android:layout_height="@dimen/theme_board_preview_size"
+        android:src="@drawable/img_board_theme_sample"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@string/image"
+        android:layout_margin="14dip"
+        />
+
+
+
 </com.chess.RelLayout>

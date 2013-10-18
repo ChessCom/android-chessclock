@@ -20,6 +20,7 @@ import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,6 +34,7 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
 	private final int watchedTextColor;
 	private final int unWatchedTextColor;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 	private int PHOTO_SIZE;
 	private CharacterStyle foregroundSpan;
 	private Date date;
@@ -50,6 +52,7 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 		date = new Date();
 
 		PHOTO_SIZE = (int) context.getResources().getDimension(R.dimen.article_thumb_width);
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -88,7 +91,11 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 		holder.dateTxt.setText(dateFormatter.format(date));
 
 		String photoUrl = DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL);
-		imageFetcher.loadImage(new SmartImageFetcher.Data(photoUrl, PHOTO_SIZE), holder.thumbnailImg.getImageView());
+		if (!imageDataMap.containsKey(photoUrl)) {
+			imageDataMap.put(photoUrl, new SmartImageFetcher.Data(photoUrl, PHOTO_SIZE));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(photoUrl), holder.thumbnailImg.getImageView());
 
 		if (viewedMap.get(getInt(cursor, DbScheme.V_ID), false)) {
 			holder.titleTxt.setTextColor(watchedTextColor);

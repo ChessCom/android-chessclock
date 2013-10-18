@@ -11,6 +11,8 @@ import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
+import java.util.HashMap;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -21,11 +23,14 @@ public class CommonAcceptDeclineCursorAdapter extends ItemsCursorAdapter {
 
 	private final ItemClickListenerFace clickListenerFace;
 	private final int imageSize;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public CommonAcceptDeclineCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(clickListenerFace.getMeContext(), cursor, imageFetcher);
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
 		this.clickListenerFace = clickListenerFace;
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
+
 	}
 
 	@Override
@@ -53,7 +58,12 @@ public class CommonAcceptDeclineCursorAdapter extends ItemsCursorAdapter {
 
 		holder.playerTxt.setText(getString(cursor, DbScheme.V_USERNAME));
 		String avatarUrl = getString(cursor, DbScheme.V_USER_AVATAR);
-		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.playerImg.getImageView());
+
+		if (!imageDataMap.containsKey(avatarUrl)) {
+			imageDataMap.put(avatarUrl, new SmartImageFetcher.Data(avatarUrl, imageSize));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(avatarUrl), holder.playerImg.getImageView());
 	}
 
 	protected class ViewHolder {

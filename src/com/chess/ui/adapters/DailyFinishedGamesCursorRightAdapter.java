@@ -13,15 +13,21 @@ import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 
+import java.util.HashMap;
+
 public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 
 	protected static final String CHESS_960 = " (960)";
 	private final int imageSize;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 
 	public DailyFinishedGamesCursorRightAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
+
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
+
 	}
 
 	@Override
@@ -57,7 +63,11 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 		}
 
 		holder.playerTxt.setText(opponentName + gameType);
-		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.playerImg.getImageView());
+		if (!imageDataMap.containsKey(avatarUrl)) {
+			imageDataMap.put(avatarUrl, new SmartImageFetcher.Data(avatarUrl, imageSize));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(avatarUrl), holder.playerImg.getImageView());
 
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);

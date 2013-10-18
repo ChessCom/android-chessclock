@@ -18,6 +18,7 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,6 +33,7 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 	private final Calendar today;
 	private final Calendar lastLoginDate;
 	private final ItemClickListenerFace clickListenerFace;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public FriendsCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(clickListenerFace.getMeContext(), cursor, imageFetcher);
@@ -47,6 +49,8 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 
 		today = Calendar.getInstance();
 		lastLoginDate = Calendar.getInstance();
+
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -110,7 +114,12 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 
 		// load avatar
 		String avatarUrl = getString(cursor, DbScheme.V_PHOTO_URL);
-		imageFetcher.loadImage(new SmartImageFetcher.Data(avatarUrl, imageSize), holder.photoImg.getImageView());
+
+		if (!imageDataMap.containsKey(avatarUrl)) {
+			imageDataMap.put(avatarUrl, new SmartImageFetcher.Data(avatarUrl, imageSize));
+		}
+
+		imageFetcher.loadImage(imageDataMap.get(avatarUrl), holder.photoImg.getImageView());
 	}
 
 	private String getLastLoginLabel(Cursor cursor) {

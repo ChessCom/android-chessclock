@@ -13,16 +13,19 @@ import org.apache.http.protocol.HTTP;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.List;
 
 public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
 	private final int imageSize;
+	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public ChatMessagesAdapter(Context context, List<ChatItem> items, SmartImageFetcher imageFetcher) {
 		super(context, items, imageFetcher);
 		Resources resources = context.getResources();
 		imageSize = (int) (resources.getDimension(R.dimen.chat_icon_size) / resources.getDisplayMetrics().density);
+		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -51,14 +54,24 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 		if (item.isMine()) {
 			holder.text.setBackgroundResource(R.drawable.img_chat_buble_grey);
 
-			imageFetcher.loadImage(new SmartImageFetcher.Data(item.getAvatar(), imageSize), holder.myImg.getImageView());
+			String imageUrl = item.getAvatar();
+			if (!imageDataMap.containsKey(imageUrl)) {
+				imageDataMap.put(imageUrl, new SmartImageFetcher.Data(item.getAvatar(), imageSize));
+			}
+
+			imageFetcher.loadImage(imageDataMap.get(imageUrl), holder.myImg.getImageView());
 
 			holder.myImg.setVisibility(View.VISIBLE);
 			holder.opponentImg.setVisibility(View.GONE);
 		} else {
 			holder.text.setBackgroundResource(R.drawable.img_chat_buble_white);
 
-			imageFetcher.loadImage(new SmartImageFetcher.Data(item.getAvatar(), imageSize), holder.opponentImg.getImageView());
+			String imageUrl = item.getAvatar();
+			if (!imageDataMap.containsKey(imageUrl)) {
+				imageDataMap.put(imageUrl, new SmartImageFetcher.Data(item.getAvatar(), imageSize));
+			}
+
+			imageFetcher.loadImage(imageDataMap.get(imageUrl), holder.opponentImg.getImageView());
 			holder.myImg.setVisibility(View.GONE);
 			holder.opponentImg.setVisibility(View.VISIBLE);
 		}

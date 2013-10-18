@@ -48,7 +48,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 			return theme_id;
 		}
 
-		public String getBackgroundUrl() {
+		public String getPiecesPreviewUrl() {
 			return background_url;
 		}
 
@@ -80,7 +80,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 			this.theme_id = theme_id;
 		}
 
-		public void setBackgroundUrl(String background_url) {
+		public void setPiecesPreviewUrl(String background_url) {
 			this.background_url = background_url;
 		}
 
