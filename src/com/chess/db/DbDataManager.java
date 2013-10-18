@@ -2276,6 +2276,61 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
+	public static void savePlayMoveNotification(ContentResolver contentResolver, String username, long gameId) {
+		final String[] arguments1 = sArguments2;
+		arguments1[0] = String.valueOf(gameId);
+		arguments1[1] = username; // current auth username
+
+		Uri uri = uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()];
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID_AND_USER,
+				SELECTION_ITEM_ID_AND_USER, arguments1, null);
+
+		ContentValues values = new ContentValues();
+
+		values.put(V_ID, gameId);
+		values.put(V_USER, username);
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	public static int getPlayMoveNotificationsCnt(ContentResolver contentResolver, String username) {
+		int notificationsCnt = 0;
+		{
+			final String[] arguments = sArguments2;
+			arguments[0] = username;
+			arguments[1] = String.valueOf(0);
+
+			Cursor cursor = contentResolver.query(uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()],
+					PROJECTION_ITEM_ID_AND_USER, SELECTION_ITEM_ID_AND_USER, arguments, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				notificationsCnt += cursor.getCount();
+			}
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+		return notificationsCnt;
+	}
+
+	public static void deletePlayMoveNotification(ContentResolver contentResolver, String username, Long gameId) {
+		final String[] arguments = sArguments2;
+		arguments[0] = String.valueOf(gameId);
+		arguments[1] = username;
+
+		Uri uri = uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()];
+		int deleteCnt = contentResolver.delete(uri, SELECTION_ITEM_ID_AND_USER, arguments);
+
+		Log.d("TEST", "deleteCnt = " + deleteCnt);
+	}
+
+	public static void deleteAllPlayMoveNotifications(ContentResolver contentResolver) {
+
+		Uri uri = uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()];
+		int deleteCnt = contentResolver.delete(uri, null, null);
+
+		Log.d("TEST", "deleteCnt = " + deleteCnt);
+	}
+
 	public static int getUnreadNotificationsCnt(ContentResolver contentResolver, String username) {
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = username;
@@ -2472,6 +2527,7 @@ public class DbDataManager {
 	// ================================= global help methods =======================================
 	public static void updateOrInsertValues(ContentResolver contentResolver, Cursor cursor, Uri uri, ContentValues values) {
 		if (cursor != null && cursor.moveToFirst()) {
+			Log.d("TEST", " updating, values = " + values);
 			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
 		} else {
 			contentResolver.insert(uri, values);

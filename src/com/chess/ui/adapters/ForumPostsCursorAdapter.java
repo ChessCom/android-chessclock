@@ -42,7 +42,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 	public ForumPostsCursorAdapter(ItemClickListenerFace clickFace, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(clickFace.getMeContext(), cursor, imageFetcher);
 		this.clickFace = clickFace;
-		imageSize = (int) (resources.getDimension(R.dimen.chat_icon_size) / resources.getDisplayMetrics().density);
+		imageSize = resources.getDimensionPixelSize(R.dimen.chat_icon_size);
 
 		String[] countryNames = resources.getStringArray(R.array.new_countries);
 		int[] countryCodes = resources.getIntArray(R.array.new_country_ids);

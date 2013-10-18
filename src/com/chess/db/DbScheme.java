@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 74;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 75;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -79,6 +79,7 @@ public class DbScheme {
 		CONVERSATIONS_ARCHIVE,
 		CONVERSATIONS_MESSAGES,
 
+		NOTIFICATION_YOUR_MOVE,
 		NOTIFICATION_FRIEND_REQUEST,
 		NOTIFICATION_NEW_CHAT_MESSAGES,
 		NOTIFICATION_NEW_CHALLENGES,
@@ -1127,6 +1128,10 @@ public class DbScheme {
 	/* ==================== Notifications ============================== */
 
 	void createNotificationsTables() {
+		createTablesArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()] = createTableForName(Tables.NOTIFICATION_YOUR_MOVE)
+				+ addField_Long(V_ID) // game Id
+				+ addField_Text(V_USER, true); // current auth user
+
 		createTablesArray[Tables.NOTIFICATION_FRIEND_REQUEST.ordinal()] = createTableForName(Tables.NOTIFICATION_FRIEND_REQUEST)
 				+ addField_Long(V_ID) // requestId
 				+ addField_Long(V_CREATE_DATE)

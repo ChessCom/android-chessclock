@@ -42,7 +42,7 @@ public class ArticleItemAdapter extends ItemsAdapter<ArticleItem.Data> {
 	public ArticleItemAdapter(Context context, List<ArticleItem.Data> itemList, SmartImageFetcher imageFetcher) {
 		super(context, itemList, imageFetcher);
 
-		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
+		int lightGrey = resources.getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 
 		watchedTextColor = resources.getColor(R.color.new_light_grey_3);

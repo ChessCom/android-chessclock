@@ -292,6 +292,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 			DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
 		}
 
+		// Saving play move notification to DB
+		ContentResolver contentResolver = context.getContentResolver();
+		String username = new AppData(context).getUsername();
+		DbDataManager.savePlayMoveNotification(contentResolver, username, Long.parseLong(gameId));
+
 		if (DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
 			Log.d(TAG, " updating board");
 			Intent gameUpdateIntent = new Intent(IntentConstants.BOARD_UPDATE);

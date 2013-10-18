@@ -210,7 +210,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		public void onReceive(Context context, Intent intent) {
 			long gameId = intent.getLongExtra(BaseGameItem.GAME_ID, 0);
 
-			updateGameState(gameId);
+			LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
+			new RequestJsonTask<DailyCurrentGameItem>(gameStateUpdateListener).executeTask(loadItem);
+//			updateGameState(gameId);
 		}
 	}
 
@@ -233,9 +235,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			cursor.close();
 
 			adjustBoardForGame();
-		} else {
+
+			// clear badge
+			DbDataManager.deletePlayMoveNotification(getContentResolver(), getUsername(), gameId);
+			updateNotificationBadges();
+		} /*else { // TODO should not get here, because we always have saved game in DB
 			updateGameState(gameId);
-		}
+		}*/
 	}
 
 	private class LoadFromDbUpdateListener extends ChessUpdateListener<Cursor> {
@@ -265,10 +271,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		}
 	}
 
-	protected void updateGameState(long gameId) {
-		LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
-		new RequestJsonTask<DailyCurrentGameItem>(gameStateUpdateListener).executeTask(loadItem);
-	}
+//	protected void updateGameState(long gameId) {
+//		LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
+//		new RequestJsonTask<DailyCurrentGameItem>(gameStateUpdateListener).executeTask(loadItem);
+//	}
 
 	private void adjustBoardForGame() {
 		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
@@ -475,7 +481,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	private void sendMove() {
 		LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
-		loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().convertMoveEchess());
+		loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());
 		new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
 	}
 
@@ -484,6 +490,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		// update DB
 		currentGame.setMyTurn(false);
+		currentGame.setFen(getBoardFace().generateFullFen());
+		currentGame.setMoveList(getBoardFace().getMoveListSAN());
 		DbDataManager.saveDailyGame(getContentResolver(), currentGame, getUsername());
 
 		if (getBoardFace().isFinished()) {

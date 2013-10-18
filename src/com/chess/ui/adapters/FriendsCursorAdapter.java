@@ -38,7 +38,7 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 	public FriendsCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(clickListenerFace.getMeContext(), cursor, imageFetcher);
 		this.clickListenerFace = clickListenerFace;
-		imageSize = (int) (resources.getDimension(R.dimen.friend_list_photo_size) / resources.getDisplayMetrics().density);
+		imageSize = resources.getDimensionPixelSize(R.dimen.friend_list_photo_size);
 
 		String[] countryNames = resources.getStringArray(R.array.new_countries);
 		int[] countryCodes = resources.getIntArray(R.array.new_country_ids);

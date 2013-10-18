@@ -25,9 +25,7 @@ public interface ActiveFragmentInterface {
 
     void showPreviousFragment();
 
-    void setBadgeValueForId(int menuId, int value);
-
-	int getValueByBadgeId(int badgeId);
+    void updateNotificationsBadges();
 
 	CoreActivityActionBar getActionBarActivity();
 

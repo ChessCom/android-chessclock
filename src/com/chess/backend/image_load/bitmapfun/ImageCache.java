@@ -340,7 +340,8 @@ public class ImageCache {
             final Iterator<SoftReference<Bitmap>> iterator = mReusableBitmaps.iterator();
             Bitmap item;
 
-			synchronized (bitmapsLock) {
+			synchronized (mReusableBitmaps) {
+
 				while (iterator.hasNext()) {
 					item = iterator.next().get();
 

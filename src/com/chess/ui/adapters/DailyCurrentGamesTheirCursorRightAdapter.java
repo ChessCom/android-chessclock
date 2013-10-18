@@ -24,7 +24,7 @@ public class DailyCurrentGamesTheirCursorRightAdapter extends ItemsCursorAdapter
 
 	public DailyCurrentGamesTheirCursorRightAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);// TODO change later with CursorLoader
-		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
+		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 

@@ -476,8 +476,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		super.onPositiveBtnClick(fragment);
 	}
 
-	protected void setBadgeValueForId(int menuId, int value) {
-		getActivityFace().setBadgeValueForId(menuId, value);
+	protected void updateNotificationBadges() {
+		getActivityFace().updateNotificationsBadges();
 	}
 
 	protected String getDeviceId() {

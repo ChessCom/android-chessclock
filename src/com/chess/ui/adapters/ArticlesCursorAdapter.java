@@ -43,7 +43,7 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 	public ArticlesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 
-		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
+		int lightGrey = resources.getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
 
 		watchedTextColor = resources.getColor(R.color.new_light_grey_3);
@@ -51,7 +51,7 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 
 		date = new Date();
 
-		PHOTO_SIZE = (int) context.getResources().getDimension(R.dimen.article_thumb_width);
+		PHOTO_SIZE = resources.getDimensionPixelSize(R.dimen.article_thumb_width);
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 

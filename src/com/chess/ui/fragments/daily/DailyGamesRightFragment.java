@@ -262,9 +262,9 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 	@Override
 	public void onOpenedRight() {
-		setBadgeValueForId(R.id.menu_games, 0);
-		if (getActivity() == null)
+		if (getActivity() == null) {
 			return;
+		}
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_CHALLENGES);
@@ -513,6 +513,10 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 			sectionedAdapter.notifyDataSetChanged();
 
 			topButtonsView.setVisibility(View.VISIBLE);
+
+			DbDataManager.deleteAllPlayMoveNotifications(getContentResolver());
+
+			updateNotificationBadges();
 		}
 
 		@Override

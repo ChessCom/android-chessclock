@@ -39,7 +39,6 @@
 	<dimen name="game_controls_icon_size">40dip</dimen>
     <dimen name="new_tab_button_height">56dip</dimen>
     <dimen name="welcome_features_padding_bottom">26dip</dimen>
-    <!--<dimen name="new_top_button_height">56dip</dimen>-->
     <dimen name="new_top_button_height">52dip</dimen>
     <dimen name="new_bottom_button_height">48dip</dimen>
     <dimen name="article_thumb_height">65dip</dimen>
@@ -53,7 +52,7 @@
     <dimen name="new_daily_grid_button_width">60dip</dimen>
     <dimen name="notations_view_height">36dip</dimen>
     <dimen name="welcome_features_padding_top">26dip</dimen>
-    <dimen name="chat_icon_size">30dip</dimen>
+    <dimen name="chat_icon_size">60dip</dimen>
     <dimen name="edit_button_text_size">14sp</dimen>
     <dimen name="invite_overlay_padding_top">35dip</dimen>
     <dimen name="invite_overlay_padding_bottom">19dip</dimen>
@@ -101,5 +100,6 @@
 	<dimen name="popup_title_text_size_big">33sp</dimen>
 	<dimen name="popup_title_text_size_medium">17sp</dimen>
 	<dimen name="diagram_icon_overlay_size">110dip</dimen>
+	<dimen name="daily_board_preview_size">160dip</dimen>
 
 </resources>

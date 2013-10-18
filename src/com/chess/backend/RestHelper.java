@@ -240,9 +240,13 @@ public class RestHelper {
 	public String CMD_MEMBERSHIP_PAYLOAD = CMD_MEMBERSHIP + "/payload";
 	public String CMD_MEMBERSHIP_KEY = CMD_MEMBERSHIP + "/public-key";
 
-	public static String GET_FEN_IMAGE(String fen) {
+	public static String GET_FEN_IMAGE(String fen, int size) {
 		// fen should be like "rnbqkbnr%2Fpppppppp%2F8%2F8%2F3P4%2F8%2FPPP1PPPP%2FRNBQKBNR"
-		return "http://www.chess.com/diagram?fen=" + fen+ "&amp;size=0";
+		return "http://www.chess.com/diagram?fen=" + fen+ "&size=" + size;
+	}
+
+	public static String GET_FEN_IMAGE(String fen) {
+		return GET_FEN_IMAGE(fen, 0);
 	}
 
 	/* Parameters */

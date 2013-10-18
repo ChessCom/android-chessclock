@@ -1,7 +1,6 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -23,8 +22,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
 	public ChatMessagesAdapter(Context context, List<ChatItem> items, SmartImageFetcher imageFetcher) {
 		super(context, items, imageFetcher);
-		Resources resources = context.getResources();
-		imageSize = (int) (resources.getDimension(R.dimen.chat_icon_size) / resources.getDisplayMetrics().density);
+		imageSize = resources.getDimensionPixelSize(R.dimen.chat_icon_size);
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
@@ -56,7 +54,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
 			String imageUrl = item.getAvatar();
 			if (!imageDataMap.containsKey(imageUrl)) {
-				imageDataMap.put(imageUrl, new SmartImageFetcher.Data(item.getAvatar(), imageSize));
+				imageDataMap.put(imageUrl, new SmartImageFetcher.Data(imageUrl, imageSize));
 			}
 
 			imageFetcher.loadImage(imageDataMap.get(imageUrl), holder.myImg.getImageView());
@@ -68,7 +66,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 
 			String imageUrl = item.getAvatar();
 			if (!imageDataMap.containsKey(imageUrl)) {
-				imageDataMap.put(imageUrl, new SmartImageFetcher.Data(item.getAvatar(), imageSize));
+				imageDataMap.put(imageUrl, new SmartImageFetcher.Data(imageUrl, imageSize));
 			}
 
 			imageFetcher.loadImage(imageDataMap.get(imageUrl), holder.opponentImg.getImageView());

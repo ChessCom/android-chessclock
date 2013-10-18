@@ -64,7 +64,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private DailyUpdateListener challengeInviteUpdateListener;
 	private DailyUpdateListener acceptDrawUpdateListener;
 
-	private IntentFilter listUpdateFilter;
+	private IntentFilter moveUpdateFilter;
 	private BroadcastReceiver gamesUpdateReceiver;
 	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
 	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
@@ -118,7 +118,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		sectionedAdapter.addSection(getString(R.string.new_my_move), currentGamesMyCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.completed), finishedGamesCursorAdapter);
 
-		listUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
+		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 	}
 
 	@Override
@@ -149,7 +149,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		init();
 
 		gamesUpdateReceiver = new GamesUpdateReceiver();
-		registerReceiver(gamesUpdateReceiver, listUpdateFilter);
+		registerReceiver(gamesUpdateReceiver, moveUpdateFilter);
 
 		if (need2update) {
 			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), getUsername());

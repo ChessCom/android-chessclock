@@ -109,11 +109,12 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 
 		if (section == FRIEND_REQUEST_SECTION) {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			decreaseNotificationCnt();
 
 			String likelyFriend = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 
 			DbDataManager.updateNewFriendRequestNotification(getContentResolver(), getUsername(), likelyFriend, true);
+
+			updateNotificationBadges();
 
 			getActivityFace().openFragment(ProfileTabsFragment.createInstance(likelyFriend));
 			getActivityFace().toggleRightMenu();
@@ -124,10 +125,11 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 			// decrease number of new notifications on badge
 			for (Long challengeId : newChallengeIds) {
 				if (challengeId == challengeItem.getGameId()) {
-					decreaseNotificationCnt();
 
 					// remove value from DB
 					DbDataManager.deleteNewChallengeNotification(getContentResolver(), getUsername(), challengeId);
+
+					updateNotificationBadges();
 					break;
 				}
 			}
@@ -143,12 +145,6 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
 			getActivityFace().toggleRightMenu();
 		}
-	}
-
-	private void decreaseNotificationCnt(){
-		int notificationsCnt = getActivityFace().getValueByBadgeId(R.id.menu_notifications);
-		notificationsCnt--;
-		setBadgeValueForId(R.id.menu_notifications, notificationsCnt);
 	}
 
 	@Override
@@ -205,12 +201,6 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 
 		public DailyGamesUpdateListener() {
 			super(DailyChallengeItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-//			showLoadingView(show);
 		}
 
 		@Override

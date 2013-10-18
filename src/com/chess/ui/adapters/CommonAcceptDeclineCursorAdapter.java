@@ -27,7 +27,7 @@ public class CommonAcceptDeclineCursorAdapter extends ItemsCursorAdapter {
 
 	public CommonAcceptDeclineCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(clickListenerFace.getMeContext(), cursor, imageFetcher);
-		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
+		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
 		this.clickListenerFace = clickListenerFace;
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 

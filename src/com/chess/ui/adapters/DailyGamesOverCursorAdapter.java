@@ -1,7 +1,6 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +20,12 @@ import java.util.HashMap;
  */
 public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 
-	private final Resources resources;
 	private final int imageSize;
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public DailyGamesOverCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
-		resources = context.getResources();
-		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
+		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
 
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}

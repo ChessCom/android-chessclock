@@ -20,6 +20,7 @@ import java.util.HashMap;
 public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 
 	protected static final String CHESS_960 = " (960)";
+	private static final int FEN_IMAGE_BIG_SIZE = 2;
 	private final int fullPadding;
 	private final int halfPadding;
 	private final int imageSize;
@@ -27,19 +28,22 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	private final int greyColor;
 	private final int boardPreviewSize;
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
+	private final boolean sevenInchTablet;
 
 	public DailyCurrentGamesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 
 		fullPadding = (int) context.getResources().getDimension(R.dimen.default_scr_side_padding);
 		halfPadding = fullPadding / 2;
-		float density = resources.getDisplayMetrics().density;
-		imageSize = (int) (resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size));
-		boardPreviewSize = (int) (resources.getDimension(R.dimen.video_thumb_size) / density);
+		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
+		boardPreviewSize = resources.getDimensionPixelSize(R.dimen.daily_board_preview_size);
+//		boardPreviewSize = resources.getDimensionPixelSize(R.dimen.video_thumb_size);
 
 		redColor = resources.getColor(R.color.red);
 		greyColor = resources.getColor(R.color.grey_button_flat);
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
+
+		sevenInchTablet = AppUtils.is7InchTablet(context);
 	}
 
 	@Override
@@ -130,7 +134,13 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		// take only first part
 		fen = fen.split(Symbol.SPACE)[0];
 
-		String imageUrl = RestHelper.GET_FEN_IMAGE(fen);
+		String imageUrl;
+		if (sevenInchTablet) {
+			imageUrl = RestHelper.GET_FEN_IMAGE(fen, FEN_IMAGE_BIG_SIZE);
+		} else {
+			imageUrl = RestHelper.GET_FEN_IMAGE(fen);
+		}
+
 		if (!imageDataMap.containsKey(imageUrl)) {
 			imageDataMap.put(imageUrl, new SmartImageFetcher.Data(imageUrl, boardPreviewSize));
 		}

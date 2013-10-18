@@ -25,10 +25,9 @@ public class NewChallengesAdapter extends ItemsAdapter<NewChallengeNotificationI
 
 	public NewChallengesAdapter(Context context, List<NewChallengeNotificationItem> itemList, SmartImageFetcher imageFetcher) {
 		super(context, itemList, imageFetcher);
-		imageSize = (int) (resources.getDimension(R.dimen.daily_list_item_image_size) / resources.getDisplayMetrics().density);
+		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
 
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
-
 	}
 
 	@Override

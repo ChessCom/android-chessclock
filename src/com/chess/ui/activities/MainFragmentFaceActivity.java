@@ -58,7 +58,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private boolean showActionBar;
 	private int customActionBarViewId;
 	private IntentFilter notificationsUpdateFilter;
+	private IntentFilter movesUpdateFilter;
 	private NotificationsUpdateReceiver notificationsUpdateReceiver;
+	private MovesUpdateReceiver movesUpdateReceiver;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 
 		notificationsUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
+		movesUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 
 		// TODO remove after test!!!
 		// restoring correct host
@@ -122,7 +125,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		getActionBarHelper().showActionBar(showActionBar);
 
-		updateNotificationsBadge();
+		updateNotificationsBadges();
 	}
 
 	@Override
@@ -162,7 +165,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		DataHolder.getInstance().setMainActivityVisible(true);
 
 		notificationsUpdateReceiver = new NotificationsUpdateReceiver();
+		movesUpdateReceiver = new MovesUpdateReceiver();
 		registerReceiver(notificationsUpdateReceiver, notificationsUpdateFilter);
+		registerReceiver(movesUpdateReceiver, movesUpdateFilter);
 	}
 
 	@Override
@@ -172,6 +177,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		DataHolder.getInstance().setMainActivityVisible(false);
 
 		unRegisterMyReceiver(notificationsUpdateReceiver);
+		unRegisterMyReceiver(movesUpdateReceiver);
 	}
 
 	@Override
@@ -411,19 +417,30 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 	}
 
+	private class MovesUpdateReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.d("TEST", " onReceive = " + intent);
+			updateNotificationsBadges();
+		}
+	}
+
 	private class NotificationsUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d("TEST", " onReceive = " + intent);
 
-			updateNotificationsBadge();
+			updateNotificationsBadges();
 		}
 	}
 
-	private void updateNotificationsBadge() {
+	@Override
+	public void updateNotificationsBadges() {
+		int playMovesCnt = DbDataManager.getPlayMoveNotificationsCnt(getContentResolver(), getMeUsername());
 		int notificationsCnt = DbDataManager.getUnreadNotificationsCnt(getContentResolver(), getMeUsername());
 		Log.d("TEST", " total unread notifications = " + notificationsCnt);
 		setBadgeValueForId(R.id.menu_notifications, notificationsCnt);
+		setBadgeValueForId(R.id.menu_games, playMovesCnt);
 	}
 
 
@@ -500,11 +517,16 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		return super.onKeyUp(keyCode, event);
 	}
 
-	@Override
-	public void setBadgeValueForId(int menuId, int value) {
+//	@Override
+	private void setBadgeValueForId(int menuId, int value) {
 		badgeItems.put(menuId, value);
 		getActionBarHelper().setBadgeValueForId(menuId, value);
 	}
+
+//	@Override
+//	public int getValueByBadgeId(int badgeId) {
+//		return badgeItems.get(badgeId);
+//	}
 
 	@Override
 	public CoreActivityActionBar getActionBarActivity() {
@@ -522,10 +544,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		return displayMenu;
 	}
 
-	@Override
-	public int getValueByBadgeId(int badgeId) {
-		return badgeItems.get(badgeId);
-	}
+
 
 	public void startActivityFromFragmentForResult(Intent intent, int requestCode) {
 		if (currentActiveFragment != null) {

@@ -262,6 +262,8 @@ public class ImageFetcher extends ImageResizer {
         BufferedOutputStream out = null;
         BufferedInputStream in = null;
 
+		Log.d(TAG, " loading image = " + urlString);
+
         try {
             final URL url = new URL(urlString);
             urlConnection = (HttpURLConnection) url.openConnection();

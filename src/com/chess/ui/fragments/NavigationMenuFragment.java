@@ -58,7 +58,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		imageSize = (int) (getResources().getDimension(R.dimen.nav_item_image_size) / getResources().getDisplayMetrics().density);
+		imageSize = getResources().getDimensionPixelSize(R.dimen.nav_item_image_size);
 
 		menuItems = new ArrayList<NavigationMenuItem>();
 		menuItems.add(new NavigationMenuItem(getString(R.string.home), R.drawable.ic_nav_home));

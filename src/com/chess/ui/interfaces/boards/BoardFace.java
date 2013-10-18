@@ -88,7 +88,7 @@ public interface BoardFace {
 
 	void decreaseMovesCount();
 
-	String convertMoveEchess();
+	String getLastMoveForDaily();
 
 	boolean toggleAnalysis();
 

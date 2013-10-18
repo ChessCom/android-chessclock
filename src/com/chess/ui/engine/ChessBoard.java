@@ -1644,7 +1644,7 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public String convertMoveEchess() {
+	public String getLastMoveForDaily() {
 		String output = convertMove();
 		final Move move = histDat[ply - 1].move;
 		switch (move.promote) {

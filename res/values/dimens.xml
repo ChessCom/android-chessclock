@@ -343,5 +343,6 @@
 	<dimen name="diagram_icon_overlay_size">70dip</dimen>
 	<dimen name="popup_title_text_size_big">23sp</dimen>
 	<dimen name="popup_title_text_size_medium">16sp</dimen>
+	<dimen name="daily_board_preview_size">111dip</dimen>
 
 </resources>
