@@ -307,6 +307,8 @@ public class ImageDownloaderToListener {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (OutOfMemoryError e) {
+			e.printStackTrace();
 		}
         return null;
     }

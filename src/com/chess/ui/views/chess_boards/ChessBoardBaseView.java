@@ -378,9 +378,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			boardFace.takeBack();
 
 			invalidate();
-			// update full screen view to update 3d pieces cut
-			requestLayout();
-//			getParent().requestLayout();
 			gameFace.invalidateGameScreen();
 
 			if (notationsView != null) { // we might don't have notations  so probably should be moved to fragment level

@@ -2296,12 +2296,11 @@ public class DbDataManager {
 	public static int getPlayMoveNotificationsCnt(ContentResolver contentResolver, String username) {
 		int notificationsCnt = 0;
 		{
-			final String[] arguments = sArguments2;
+			final String[] arguments = sArguments1;
 			arguments[0] = username;
-			arguments[1] = String.valueOf(0);
 
 			Cursor cursor = contentResolver.query(uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()],
-					PROJECTION_ITEM_ID_AND_USER, SELECTION_ITEM_ID_AND_USER, arguments, null);
+					PROJECTION_USER, SELECTION_USER, arguments, null);
 			if (cursor != null && cursor.moveToFirst()) {
 				notificationsCnt += cursor.getCount();
 			}

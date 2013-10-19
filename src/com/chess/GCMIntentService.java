@@ -139,6 +139,12 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, "type = " + type + " intent = " + intent);
 		if (intent.hasExtra("message")) {
 			Log.d(TAG, "type = " + type + " message = " + intent.getStringExtra("message"));
+
+			String message = intent.getStringExtra("message");          // TODO remove after debug
+			if (message.length() >= 20) {
+				message = message.substring(0, 20);
+			}
+			AppUtils.showStatusBarNotification(context, type, message);
 		}
 
 		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)) {

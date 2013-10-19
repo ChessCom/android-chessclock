@@ -16,6 +16,7 @@ public interface GameTacticsFace extends GameFace {
 
 	void showAnswer();
 
-	void showExplorer();
+	void vsComputer();
 
+	void onStartTactic();
 }

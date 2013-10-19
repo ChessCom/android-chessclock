@@ -236,7 +236,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	}
 
 	public void showPractice(boolean show) {
-		practiceTxt.setVisibility(show ? VISIBLE : GONE);
+		practiceTxt.setVisibility(/*show ? VISIBLE : */GONE);
 
 		if (show) {
 			clockTxt.setVisibility(GONE);

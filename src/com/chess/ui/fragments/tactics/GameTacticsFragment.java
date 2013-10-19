@@ -37,7 +37,6 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.Move;
-import com.chess.ui.fragments.explorer.GameExplorerFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -53,6 +52,7 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.PanelInfoTacticsView;
 import com.chess.ui.views.chess_boards.ChessBoardTacticsView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsTacticsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -79,11 +79,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private static final int CORRECT_RESULT = 0;
 	private static final int WRONG_RESULT = 1;
 	private static final int HINTED_RESULT = 4;
-	// Quick action ids
+	// Menu Options ids
 //	private static final int ID_NEXT_TACTIC = 0;
 	private static final int ID_SHOW_ANSWER = 1;
 	private static final int ID_PRACTICE = 2;
-//	private static final int ID_HINT = 3;
+	//	private static final int ID_HINT = 3;
 	private static final int ID_PERFORMANCE = 3;
 	private static final int ID_SETTINGS = 4;
 
@@ -98,7 +98,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private TacticsTrainerUpdateListener tacticHintedUpdateListener;
 	private DbTacticBatchSaveListener dbTacticBatchSaveListener;
 
-	private static final String FIRST_TACTICS_TAG = "first tactics";
 	private static final String DEMO_TACTICS_TAG = "demo tactics reached";
 	private static final String OFFLINE_RATING_TAG = "tactics offline rating";
 	private static final String TACTIC_SOLVED_TAG = "tactic solved popup";
@@ -122,6 +121,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private TextView moveResultTxt;
 	private int correctMovesBeforeHint;
 	private int startCount;
+	private int resultIconPadding;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -177,7 +177,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				}
 
 			} else {
-				showPopupDialog(R.string.ready_, FIRST_TACTICS_TAG);
+				controlsTacticsView.showStart();
+				lockBoard(false);
 			}
 		} else {
 			if (trainerData.isCompleted()) {
@@ -243,6 +244,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	};
 
 	private void resumeTacticSolving() {
+		lockBoard(false);
 		if (!trainerData.isStop() && getBoardFace().getMovesCount() > 0) {
 			trainerData.setRetry(true);
 
@@ -257,6 +259,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else {
 			verifyMove();
 		}
+	}
+
+	private void saveTrainerDataBeforeSubmit() {
+		trainerData.setRetry(true);
+		DbDataManager.saveTacticTrainerToDb(getContentResolver(), trainerData, getUsername());
 	}
 
 	@Override
@@ -336,13 +343,19 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					}
 					showHintedViews(newRatingStr);
 				} else {
+					trainerData.setCompleted(true);
+					saveTrainerDataBeforeSubmit();
+
 					submitHintedResult();
 				}
 				stopTacticsTimer();
 			}
 		} else if (trainerData.isAnswerWasShowed()) { // used "show answer" feature
+			trainerData.setCompleted(true);
+			saveTrainerDataBeforeSubmit();
+
 			stopTacticsTimer();
-		} else if (boardFace.isLastTacticMoveCorrect()) { // correct
+		} else if (boardFace.isLastTacticMoveCorrect()) { // Correct
 			boardFace.increaseTacticsCorrectMoves();
 
 			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
@@ -359,6 +372,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					}
 					showCorrectViews(newRatingStr);
 				} else {
+					trainerData.setCompleted(true);
+					saveTrainerDataBeforeSubmit();
+
 					submitCorrectResult();
 				}
 				stopTacticsTimer();
@@ -371,6 +387,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				}
 				showWrongViews(newRatingStr);
 			} else {
+				saveTrainerDataBeforeSubmit();
+
 				submitWrongResult();
 			}
 			stopTacticsTimer();
@@ -419,7 +437,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 
-
 	private void showLimitReachedPopup() {
 		FlurryAgent.logEvent(FlurryData.TACTICS_DAILY_LIMIT_EXCEEDED);
 
@@ -460,6 +477,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void getNextTactic() {
+		isAnalysis = false;
+
 		handler.removeCallbacks(showTacticMoveTask);
 
 		if (currentGameExist()) {
@@ -521,28 +540,46 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		trainerData.setAnswerWasShowed(true);
 
-//		ChessBoardTactics.resetInstance();
-//		boardView.setGameFace(this);
-
-
 		trainerData.setRetry(true);
 		TacticBoardFace boardFace = getBoardFace();
-//		boardFace.setupBoard(trainerData.getInitialFen());
-//		boardFace.setReside(!boardFace.isReside()); // we should always reside board in Tactics, because user should make next move
-//
-//		boardFace.setTacticMoves(trainerData.getCleanMoveString());
-//		boardFace.setMovesCount(1);
-//
-//		boardView.invalidate();
 
 		currentTacticAnswerCnt = boardFace.getPly();
 		maxTacticAnswerCnt = boardFace.getTacticMoves().length;
+
+		// show first move immediately
+
+		boolean sizeExceed = currentTacticAnswerCnt >= boardFace.getTacticMoves().length;
+
+		if (sizeExceed) { // rewind back
+			while (boardFace.takeBack()) {
+				currentTacticAnswerCnt--;
+			}
+			boardView.invalidate();
+		}
+		// get next valid move
+		final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[currentTacticAnswerCnt]);
+		boardFace.setMovesCount(boardFace.getMovesCount() + currentTacticAnswerCnt);
+
+		// play move animation
+		boardView.setMoveAnimator(move, true);
+		boardView.resetValidMoves();
+		// make actual move
+		boardFace.makeMove(move, true);
+		invalidateGameScreen();
+
+		currentTacticAnswerCnt++;
+
 		handler.postDelayed(showTacticMoveTask, DELAY_BETWEEN_MOVES);
 	}
 
 	@Override
-	public void showExplorer() {
-		getActivityFace().openFragment(GameExplorerFragment.createInstance(getBoardFace().generateBaseFen()));
+	public void vsComputer() {
+//		getActivityFace().openFragment(GameCompFragment.createInstance(getBoardFace().generateBaseFen()));
+	}
+
+	@Override
+	public void onStartTactic() {
+		loadNewTactic();
 	}
 
 	private boolean answerWasShowed() {
@@ -559,7 +596,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			if (answerWasShowed() || sizeExceed) {
 				trainerData.setCompleted(true);
+
 				controlsTacticsView.showCorrect();
+				showHintedViews(Symbol.EMPTY);
 				return;
 			}
 
@@ -573,12 +612,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			// make actual move
 			boardFace.makeMove(move, true);
 			invalidateGameScreen();
-
-//			final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[currentTacticAnswerCnt]);
-//			boardView.setMoveAnimator(move, true);
-//			boardView.resetValidMoves();
-//			boardFace.makeMove(move, true);
-//			invalidateGameScreen();
 
 			currentTacticAnswerCnt++;
 			handler.postDelayed(this, DELAY_BETWEEN_MOVES);
@@ -733,7 +766,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		getBoardFace().setFinished(true);
 
 		moveResultTxt.setVisibility(View.VISIBLE);
-		moveResultTxt.setText(getString(R.string.correct) + Symbol.EX);
+		moveResultTxt.setText(R.string.correct);
+		setIconToResultView(R.string.ic_check);
 
 		handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
 	}
@@ -750,6 +784,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		moveResultTxt.setVisibility(View.VISIBLE);
 		moveResultTxt.setText(R.string.solved_with_hint);
+		setIconToResultView(R.string.ic_hint);
 
 		handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
 	}
@@ -765,8 +800,16 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		moveResultTxt.setVisibility(View.VISIBLE);
 		moveResultTxt.setText(R.string.incorrect);
+		setIconToResultView(R.string.ic_blocking);
 
 		handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
+	}
+
+	private void setIconToResultView(int iconId) {
+		IconDrawable iconDrawable = new IconDrawable(getActivity(), iconId,
+				R.color.semitransparent_white_75, R.dimen.glyph_icon_big2);
+		moveResultTxt.setCompoundDrawablesWithIntrinsicBounds(iconDrawable, null, null, null);
+		moveResultTxt.setCompoundDrawablePadding(resultIconPadding);
 	}
 
 	private Runnable hideMoveResultTask = new Runnable() {
@@ -803,6 +846,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		bottomPanelView.showPractice(isAnalysis);
 		getBoardFace().setAnalysis(isAnalysis);
 		bottomPanelView.showClock(!isAnalysis);
+
+
+		moveResultTxt.setVisibility(isAnalysis ? View.VISIBLE : View.GONE);
+		moveResultTxt.setText(R.string.practice);
+		setIconToResultView(R.string.ic_board);
 	}
 
 	@Override
@@ -912,7 +960,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	public void restart() {
 		if (isAnalysis) {
 			BoardFace boardFace = getBoardFace();
-			while(boardFace.takeBack()) {
+			while (boardFace.takeBack()) {
 
 			}
 			boardView.invalidate();
@@ -977,11 +1025,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		firstRun = false;
 		lockBoard(false);
 
-		if (trainerData.isCompleted() || trainerData.isAnswerWasShowed() ) {
+		if (trainerData.isCompleted() || trainerData.isAnswerWasShowed()) {
 			controlsTacticsView.showCorrect();
 		} else if (trainerData.isRetry()) {
 			controlsTacticsView.showAfterRetry();
-		} else  {
+		} else {
 			controlsTacticsView.showDefault();
 		}
 
@@ -990,10 +1038,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		if (isAnalysis) {
 			controlsTacticsView.showAnalysis();
-			bottomPanelView.showPractice(isAnalysis);
-			getBoardFace().setAnalysis(isAnalysis);
-			bottomPanelView.showClock(!isAnalysis);
+		} else {
+			moveResultTxt.setVisibility(View.GONE);
 		}
+		bottomPanelView.showPractice(isAnalysis);
+		getBoardFace().setAnalysis(isAnalysis);
+		bottomPanelView.showClock(!isAnalysis);
 	}
 
 	@Override
@@ -1088,19 +1138,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
-		// comment to test if dismissAllPopups works fine
-//		if (getActivity() == null) { // this happens when app was restored and popup re-appears again
-//			return;
-//		}
 		String tag = fragment.getTag();
 		if (tag == null) {
 			super.onPositiveBtnClick(fragment);
 			return;
 		}
 
-		if (tag.equals(FIRST_TACTICS_TAG)) {
-			loadNewTactic();
-		} else if (tag.equals(DEMO_TACTICS_TAG)) {
+		if (tag.equals(DEMO_TACTICS_TAG)) {
 			getActivityFace().showPreviousFragment();
 		} else if (tag.equals(OFFLINE_RATING_TAG)) {
 			// user saw popup, don't show it again
@@ -1114,18 +1158,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void onNegativeBtnClick(DialogFragment fragment) {
-//		if (getActivity() == null) { // this happens when app was restored and popup re-appears again
-//			return;
-//		}
 		String tag = fragment.getTag();
 		if (tag == null) {
 			super.onNegativeBtnClick(fragment);
 			return;
 		}
 
-		if (tag.equals(FIRST_TACTICS_TAG)) { // Cancel
-			cancelTacticAndLeave();
-		} else if (tag.equals(OFFLINE_RATING_TAG)) {
+		if (tag.equals(OFFLINE_RATING_TAG)) {
 			cancelTacticAndLeave();
 		}
 		super.onNegativeBtnClick(fragment);
@@ -1177,6 +1216,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		dbTacticBatchSaveListener = new DbTacticBatchSaveListener();
 
 		correctMovesBeforeHint = NON_INIT;
+
+		resultIconPadding = getResources().getDimensionPixelSize(R.dimen.glyph_icon_padding);
 	}
 
 	private void widgetsInit(View view) {

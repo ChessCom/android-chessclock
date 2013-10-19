@@ -107,8 +107,10 @@
     <color name="grey_button_control_border_right_p">#ff3a3632</color>
 
     <color name="controls_border">#40000000</color>
-    <color name="controls_icon">#FFFFFFFF</color>
-    <color name="controls_icon_p">#A5FFFFFF</color>
+    <!--<color name="controls_icon">#FFFFFFFF</color>-->
+    <color name="controls_icon">#c0FFFFFF</color>
+    <!--<color name="controls_icon_p">#A5FFFFFF</color>-->
+    <color name="controls_icon_p">#FFFFFFFF</color>
     <color name="controls_icon_s">#FFFFFFFF</color>
     <color name="controls_icon_d">#66FFFFFF</color>
 

@@ -59,6 +59,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 		button.setDrawableStyle(styleId);
 		button.setId(getButtonId(id));
 		button.setVisibility(GONE);
+		button.setTextColor(Color.WHITE);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
 
 		params.weight = 1;
@@ -87,7 +88,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 		button.setText(R.string.start_lesson);
 		button.setTextSize(controlTextSize);
 		button.setTextColor(Color.WHITE);
-		button.setShadowLayer(0, 0, 0, 0x00000000);
+		button.setShadowLayer(0, 0, 0, 0);
 		button.setDrawableStyle(R.style.Rect_Bottom_Right_Orange);
 		button.setId(getButtonId(START));
 		button.setVisibility(GONE);
@@ -104,6 +105,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 		button.setDrawableStyle(R.style.Rect_Bottom_Right_Red);
 		button.setId(getButtonId(RESTART));
 		button.setVisibility(GONE);
+		button.setTextColor(Color.WHITE);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
 
 		params.weight = 1;

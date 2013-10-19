@@ -1,6 +1,8 @@
 package com.chess.ui.fragments.videos;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
@@ -38,6 +40,7 @@ import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -300,9 +303,16 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		super.onClick(view);
 
 		if (view.getId() == R.id.playBtn) {
+
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setDataAndType(Uri.parse(videoUrl), "video/*");
-			startActivityForResult(Intent.createChooser(intent, getString(R.string.select_player)), WATCH_VIDEO_REQUEST);
+
+			PackageManager packageManager = getActivity().getPackageManager();
+			List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
+			boolean isIntentSafe = activities.size() > 0;
+			if (isIntentSafe) {
+				startActivityForResult(Intent.createChooser(intent, getString(R.string.select_player)), WATCH_VIDEO_REQUEST);
+			}
 		}
 	}
 

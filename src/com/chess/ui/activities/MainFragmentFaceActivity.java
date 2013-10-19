@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,9 +27,11 @@ import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.settings.SettingsProfileFragment;
+import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.fragments.welcome.WelcomeFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
@@ -75,8 +78,29 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		closeMenuListeners = new ArrayList<SlidingMenu.OnClosedListener>();
 
 		if (savedInstanceState == null) {
-			// set the Above View
-			if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
+			final String action = getIntent().getAction();
+
+			if (Intent.ACTION_VIEW.equals(action)) {
+				Uri data = getIntent().getData();
+				BasePopupsFragment fragment =  new HomeTabsFragment();
+				if (data != null) {
+					List<String> segments = data.getPathSegments();
+					if (segments != null && segments.size() > 0) {
+						String segment = segments.get(0);
+						if (segment.contains("tactics")) {
+							fragment = new GameTacticsFragment();
+						} else if (segment.contains("lessons") || segment.contains("chessmentor")) {
+							fragment = new LessonsFragment();
+						}
+						showToast(segment);
+					}
+				}
+
+				switchFragment(fragment);
+				showActionBar = true;
+
+			} else if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
+				// set the Above View
 				switchFragment(new HomeTabsFragment());
 //				switchFragment(new ArticlesFragment());
 				showActionBar = true;
@@ -131,6 +155,15 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
+
+		final String action = intent.getAction();
+
+		if (Intent.ACTION_VIEW.equals(action)) {
+			final List<String> segments = intent.getData().getPathSegments();
+			if (segments.size() > 1) {
+				showToast(segments.get(0));
+			}
+		}
 
 		if (intent.hasExtra(IntentConstants.LIVE_CHESS)) {
 

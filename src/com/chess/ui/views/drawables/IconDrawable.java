@@ -51,7 +51,7 @@ public class IconDrawable extends Drawable {
 	 */
 	public IconDrawable(Context context, int iconId) {
 		iconStr = context.getString(iconId);
-		init(context, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size);
+		init(context, R.color.semitransparent_white_75, R.dimen.edit_field_icon_size);
 	}
 
 	private void init(Context context, int colorId, int sizeId) {

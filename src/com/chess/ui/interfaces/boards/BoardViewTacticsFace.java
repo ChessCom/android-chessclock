@@ -10,7 +10,9 @@ public interface BoardViewTacticsFace extends BoardViewCompFace {
 
 	void restart();
 
-	void showExplorer();
+	void vsComputer();
 
 	void showSolution();
+
+	void onStart();
 }

@@ -117,12 +117,17 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 	}
 
 	@Override
-	public void showExplorer() {
-		gameTacticsFace.showExplorer();
+	public void vsComputer() {
+		gameTacticsFace.vsComputer();
 	}
 
 	@Override
 	public void showSolution() {
 		gameTacticsFace.showAnswer();
+	}
+
+	@Override
+	public void onStart() {
+		gameTacticsFace.onStartTactic();
 	}
 }
