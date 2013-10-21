@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -112,8 +113,20 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private String[] countryNames;
 	private int[] countryCodes;
+	private String username;
+	private NotationView notationsView;
 
 	public GameDailyFragment() {
+	}
+
+	public static GameDailyFragment createInstance(long gameId, String username) {
+		GameDailyFragment fragment = new GameDailyFragment();
+		Bundle arguments = new Bundle();
+		arguments.putLong(GAME_ID, gameId);
+		arguments.putString(USERNAME, username);
+		fragment.setArguments(arguments);
+
+		return fragment;
 	}
 
 	public static GameDailyFragment createInstance(long gameId) {
@@ -131,8 +144,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		if (getArguments() != null) {
 			gameId = getArguments().getLong(GAME_ID);
+			username = getArguments().getString(USERNAME);
 		} else {
 			gameId = savedInstanceState.getLong(GAME_ID);
+			username = savedInstanceState.getString(USERNAME);
+		}
+		if (TextUtils.isEmpty(username)) {
+			username = getUsername();
 		}
 		init();
 	}
@@ -177,6 +195,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putString(USERNAME, username);
+	}
+
+	@Override
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
 			getActivityFace().openFragment(new DailyNewGameFragment());
@@ -210,9 +235,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		public void onReceive(Context context, Intent intent) {
 			long gameId = intent.getLongExtra(BaseGameItem.GAME_ID, 0);
 
-			LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
-			new RequestJsonTask<DailyCurrentGameItem>(gameStateUpdateListener).executeTask(loadItem);
-//			updateGameState(gameId);
+			updateGameState(gameId);
 		}
 	}
 
@@ -226,7 +249,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private void loadGameAndUpdate() {
 		// load game from DB. After load update
 		Cursor cursor = DbDataManager.query(getContentResolver(),
-				DbHelper.getDailyGame(gameId, getUsername()));
+				DbHelper.getDailyGame(gameId, username));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
@@ -237,11 +260,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			adjustBoardForGame();
 
 			// clear badge
-			DbDataManager.deletePlayMoveNotification(getContentResolver(), getUsername(), gameId);
+			DbDataManager.deletePlayMoveNotification(getContentResolver(), username, gameId);
 			updateNotificationBadges();
-		} /*else { // TODO should not get here, because we always have saved game in DB
+		} else { // if we
 			updateGameState(gameId);
-		}*/
+		}
 	}
 
 	private class LoadFromDbUpdateListener extends ChessUpdateListener<Cursor> {
@@ -271,13 +294,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		}
 	}
 
-//	protected void updateGameState(long gameId) {
-//		LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
-//		new RequestJsonTask<DailyCurrentGameItem>(gameStateUpdateListener).executeTask(loadItem);
-//	}
+	protected void updateGameState(long gameId) {
+		LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
+		new RequestJsonTask<DailyCurrentGameItem>(gameStateUpdateListener).executeTask(loadItem);
+	}
 
 	private void adjustBoardForGame() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
+		userPlayWhite = currentGame.getWhiteUsername().equals(username);
 
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
@@ -345,7 +368,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			boardFace.setChess960(true);
 		}
 
-		boardFace.setupBoard(currentGame.getStartingFenPosition());
+		// boardFace.setupBoard(currentGame.getStartingFenPosition());
+		// if we pass FEN like this rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR, and them moveslist that lead to this position, it fails to load properly
 		if (!userPlayWhite) {
 			boardFace.setReside(true);
 		}
@@ -360,6 +384,16 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		playLastMoveAnimation();
 
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				notationsView.rewindForward();
+
+			}
+		}, 100);
 		boardFace.setJustInitialized(false);
 
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
@@ -480,9 +514,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	}
 
 	private void sendMove() {
-		LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
-		loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());
-		new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
+		if (username.equals(getUsername())) { // allow only authenticated user to send move in his own games
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
+			loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());
+			new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
+		}
 	}
 
 	private void moveWasSent() {
@@ -492,7 +528,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		currentGame.setMyTurn(false);
 		currentGame.setFen(getBoardFace().generateFullFen());
 		currentGame.setMoveList(getBoardFace().getMoveListSAN());
-		DbDataManager.saveDailyGame(getContentResolver(), currentGame, getUsername());
+		DbDataManager.saveDailyGame(getContentResolver(), currentGame, username);
 
 		if (getBoardFace().isFinished()) {
 			showGameEndPopup(endGamePopupView, endGameMessage);
@@ -507,7 +543,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	}
 
 	private void loadGamesList() {
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(getUsername()),
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(username),
 				getContentResolver()).executeTask();
 	}
 
@@ -515,7 +551,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
-		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId));
+		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId, username));
 	}
 
 	@Override
@@ -559,7 +595,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null && getActivity() != null)
-			return currentGame.getWhiteUsername().equals(getAppData().getUsername());
+			return currentGame.getWhiteUsername().equals(username);
 		else
 			return null;
 	}
@@ -571,7 +607,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	private boolean isUserMove() {
 		userPlayWhite = currentGame.getWhiteUsername()
-				.equals(getAppData().getUsername());
+				.equals(username);
 
 		return /*(*/currentGame.isMyTurn()/* && userPlayWhite)
 				|| (!currentGame.isWhiteMove() && !userPlayWhite)*/;
@@ -662,7 +698,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			String draw;
 
-			String username = getAppData().getUsername();
 			boolean drawWasOffered = DbDataManager.checkIfDrawOffered(getContentResolver(), username, gameId);
 
 			if (drawWasOffered) { // If Draw was already offered by the opponent, we send accept to it.
@@ -785,7 +820,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 			currentGame = returnedObj.getData();
 
-			DbDataManager.updateDailyGame(getContentResolver(), currentGame, getAppData().getUsername());
+			DbDataManager.updateDailyGame(getContentResolver(), currentGame, username);
 
 			adjustBoardForGame();
 		}
@@ -875,7 +910,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	private void widgetsInit(View view) {
 		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
-		NotationView notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 

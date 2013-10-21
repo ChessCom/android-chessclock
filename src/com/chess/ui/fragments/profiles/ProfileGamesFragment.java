@@ -155,14 +155,14 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
 
-			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
+			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId(), username));
 		} else {
 
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			DailyCurrentGameData gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
 
 			ChessBoardOnline.resetInstance();
-			getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
+			getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId(), username));
 		}
 	}
 

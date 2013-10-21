@@ -129,8 +129,12 @@ public class ServerErrorCodes {
 	public static final int THE_PARENT_FORUM_TOPIC_DOES_NOT_EXIST = 116;//	"The parent forum topic does not exist
 	public static final int USER_HAS_NO_ACCESS_FOR_THE_SELECTED_FORUM_CATEGORY = 117;//	"User has no access for the selected forum category
 	public static final int NON_EXISTING_COURSE = 118;//	"Non existing course
-	public static final int MISSING_PARAMETERS = 119;//	"Missing parameters
-	public static final int ERROR_CREATING_BACKGROUND_THEME = 120;//	"Error creating background theme
+	public static final int MISSING_PARAMETERS = 119;						//	"Missing parameters
+	public static final int ERROR_CREATING_BACKGROUND_THEME = 120;			//	"Error creating background theme
+	public static final int MUST_PASS_PARENT_TOPIC_ID = 121;				//	"You must pass the parent topic id when adding a new comment
+	public static final int INVALID_VALUE_FOR_ITEMS_PERPAGE = 122;			//	"Invalid value for items per page
+	public static final int NO_MOVES_FOUND = 123;							//	"No moves found
+	public static final int YOU_PROVIDED_INVALID_PASSWORD = 124;			//	"You provided invalid password.
 
 
 

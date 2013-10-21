@@ -26,10 +26,11 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 	private LoadFromDbUpdateListener loadFromDbUpdateListener;
 	private DailyFinishedGameData currentGame;
 
-	public static GameDailyFinishedAnalysisFragment createInstance(long gameId) {
+	public static GameDailyFinishedAnalysisFragment createInstance(long gameId, String username) {
 		GameDailyFinishedAnalysisFragment fragment = new GameDailyFinishedAnalysisFragment();
 		Bundle arguments = new Bundle();
 		arguments.putLong(GAME_ID, gameId);
+		arguments.putString(USERNAME, username);
 		fragment.setArguments(arguments);
 
 		return fragment;
@@ -38,7 +39,7 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 	@Override
 	protected void loadGame() {
 		// load game from DB. After load update
-		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyFinishedGame(gameId, getUsername()),
+		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyFinishedGame(gameId, username),
 				getContentResolver()).executeTask();
 	}
 
@@ -69,7 +70,7 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 
 	@Override
 	protected void adjustBoardForGame() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
+		userPlayWhite = currentGame.getWhiteUsername().equals(username);
 
 		labelsConfig.topAvatar = opponentAvatarDrawable;
 		labelsConfig.bottomAvatar = userAvatarDrawable;
@@ -116,7 +117,6 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 		}
 
 		String defaultTime = getString(R.string.days_arg, currentGame.getDaysPerMove());
-//		boolean userMove = isUserMove();
 		boolean userMove = true;
 		if (userMove) {
 			labelsConfig.topPlayerTime = defaultTime;
@@ -135,7 +135,8 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 			boardFace.setChess960(true);
 		}
 
-		boardFace.setupBoard(currentGame.getStartingFenPosition());
+		// boardFace.setupBoard(currentGame.getStartingFenPosition());
+		// if we pass FEN like this rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR, and them moveslist that lead to this position, it fails to load properly
 		if (!userPlayWhite) {
 			boardFace.setReside(true);
 		}

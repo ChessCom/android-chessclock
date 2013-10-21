@@ -191,8 +191,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND) {
-
+				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND || serverCode == ServerErrorCodes.NO_MOVES_FOUND) {
 					showSinglePopupDialog(R.string.no_games_found);
 				} else {
 					super.errorHandle(resultCode);

@@ -46,6 +46,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected static final String OPTION_SELECTION_TAG = "option select popup";
 
 	protected static final String GAME_ID = "game_id";
+	protected static final String USERNAME = "username";
 
 	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
@@ -173,7 +174,9 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	@Override
 	public void updateParentView() {
-		boardFrame.invalidate();
+		if (boardFrame != null) { // shouldn't be null...
+			boardFrame.invalidate();
+		}
 	}
 
 	protected void setBoardToFinishedState() { // TODO implement state conditions logic for board

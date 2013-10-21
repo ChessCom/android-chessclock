@@ -1041,7 +1041,6 @@ public class DbDataManager {
 		values.put(V_FINISHED, 0);
 		values.put(V_USER, username);
 		values.put(V_OPPONENT_OFFERED_DRAW, dataObj.isDrawOffered());
-		Log.d("TEST", "putDailyGameCurrentItemToValues my turn = " + dataObj.isMyTurn());
 		values.put(V_IS_MY_TURN, dataObj.isMyTurn() ? 1 : 0);
 		return values;
 	}
@@ -2526,7 +2525,6 @@ public class DbDataManager {
 	// ================================= global help methods =======================================
 	public static void updateOrInsertValues(ContentResolver contentResolver, Cursor cursor, Uri uri, ContentValues values) {
 		if (cursor != null && cursor.moveToFirst()) {
-			Log.d("TEST", " updating, values = " + values);
 			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
 		} else {
 			contentResolver.insert(uri, values);

@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,11 +62,13 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	protected LabelsConfig labelsConfig;
 	protected String[] countryNames;
 	protected int[] countryCodes;
+	protected String username;
 
-	public static GameDailyAnalysisFragment createInstance(long gameId) {
+	public static GameDailyAnalysisFragment createInstance(long gameId, String username) {
 		GameDailyAnalysisFragment fragment = new GameDailyAnalysisFragment();
 		Bundle arguments = new Bundle();
 		arguments.putLong(GAME_ID, gameId);
+		arguments.putString(USERNAME, username);
 		fragment.setArguments(arguments);
 
 		return fragment;
@@ -77,8 +80,13 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 		if (getArguments() != null) {
 			gameId = getArguments().getLong(GAME_ID);
+			username = getArguments().getString(USERNAME);
 		} else {
 			gameId = savedInstanceState.getLong(GAME_ID);
+			username = savedInstanceState.getString(USERNAME);
+		}
+		if (TextUtils.isEmpty(username)) {
+			username = getUsername();
 		}
 		init();
 	}
@@ -115,9 +123,16 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		}
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putString(USERNAME, username);
+	}
+
 	protected void loadGame() {
 		// load game from DB. After load update
-		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGame(gameId, getUsername()),
+		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGame(gameId, username),
 				getContentResolver()).executeTask();
 	}
 
@@ -154,7 +169,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	protected void adjustBoardForGame() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
+		userPlayWhite = currentGame.getWhiteUsername().equals(username);
 
 		labelsConfig.topAvatar = opponentAvatarDrawable;
 		labelsConfig.bottomAvatar = userAvatarDrawable;
@@ -219,7 +234,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			boardFace.setChess960(true);
 		}
 
-		boardFace.setupBoard(currentGame.getStartingFenPosition());
+		// boardFace.setupBoard(currentGame.getStartingFenPosition());
+		// if we pass FEN like this rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR, and them moveslist that lead to this position, it fails to load properly
 		if (!userPlayWhite) {
 			boardFace.setReside(true);
 		}
@@ -241,7 +257,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 
 	@Override
-	public void toggleSides() { // TODO
+	public void toggleSides() {
 		if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 		} else {
@@ -352,7 +368,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null)
-			return currentGame.getWhiteUsername().equals(getAppData().getUsername());
+			return currentGame.getWhiteUsername().equals(username);
 		else
 			return null;
 	}
@@ -367,7 +383,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	private boolean isUserMove() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
+		userPlayWhite = currentGame.getWhiteUsername().equals(username);
 
 		return currentGame.isMyTurn();
 	}

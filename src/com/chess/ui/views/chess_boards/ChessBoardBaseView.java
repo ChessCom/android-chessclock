@@ -420,7 +420,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	public void updateNotations(String[] notations) {
-		if (originalNotations == null || originalNotations.length < notations.length) { // TODO check
+		if (originalNotations == null || originalNotations.length < notations.length) {
 			originalNotations = notations;
 		}
 		if (notationsView != null) {
@@ -430,7 +430,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 //		checkControlsButtons();
 		drawCapturedPieces();
 		invalidate();
-		requestFocus();
 	}
 
 //	private void checkControlsButtons() {
@@ -526,7 +525,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		BoardFace boardFace = getBoardFace();
 
 		if (boardFace.isReside()) {
-			for (int pos = ChessBoard.SQUARES_CNT - 1; pos > 0; pos--) {
+			for (int pos = ChessBoard.SQUARES_CNT - 1; pos >= 0; pos--) {
 				// do not draw if in drag or animated
 				if ((drag && pos == from) || (animationActive && moveAnimator.isSquareHidden(pos))) {
 					continue;

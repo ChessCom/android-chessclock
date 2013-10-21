@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -74,6 +75,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private ChessBoardNetworkView boardView;
 
 	private DailyFinishedGameData currentGame;
+	private String username;
 
 	protected boolean userPlayWhite = true;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
@@ -91,10 +93,21 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	public GameDailyFinishedFragment() { }
 
+	public static GameDailyFinishedFragment createInstance(long gameId, String username) {
+		GameDailyFinishedFragment fragment = new GameDailyFinishedFragment();
+		Bundle arguments = new Bundle();
+		arguments.putLong(GAME_ID, gameId);
+		arguments.putString(USERNAME, username);
+		fragment.setArguments(arguments);
+
+		return fragment;
+	}
+
 	public static GameDailyFinishedFragment createInstance(long gameId) {
 		GameDailyFinishedFragment fragment = new GameDailyFinishedFragment();
 		Bundle arguments = new Bundle();
 		arguments.putLong(GAME_ID, gameId);
+//		arguments.putString(USERNAME, Symbol.EMPTY);
 		fragment.setArguments(arguments);
 
 		return fragment;
@@ -106,8 +119,14 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		if (getArguments() != null) {
 			gameId = getArguments().getLong(GAME_ID);
+			username = getArguments().getString(USERNAME);
 		} else {
 			gameId = savedInstanceState.getLong(GAME_ID);
+			username = savedInstanceState.getString(USERNAME);
+		}
+
+		if (TextUtils.isEmpty(username)) {
+			username = getUsername();
 		}
 		init();
 	}
@@ -145,6 +164,13 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putString(USERNAME, username);
+	}
+
+	@Override
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
 			getActivityFace().openFragment(new DailyNewGameFragment());
@@ -167,7 +193,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	private void loadGameAndUpdate() {
 		Cursor cursor = DbDataManager.query(getContentResolver(),
-				DbHelper.getDailyFinishedGame(gameId, getUsername()));
+				DbHelper.getDailyFinishedGame(gameId, username));
 
 		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
@@ -226,7 +252,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	}
 
 	private void adjustBoardForGame() {
-		userPlayWhite = currentGame.getWhiteUsername().equals(getAppData().getUsername());
+		userPlayWhite = currentGame.getWhiteUsername().equals(username);
 
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
@@ -273,7 +299,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			boardFace.setChess960(true);
 		}
 
-		boardFace.setupBoard(currentGame.getStartingFenPosition());
+		// boardFace.setupBoard(currentGame.getStartingFenPosition());
+		// if we pass FEN like this rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR, and them moveslist that lead to this position, it fails to load properly
 		if (!userPlayWhite) {
 			boardFace.setReside(true);
 		}
@@ -386,7 +413,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 
 	private void loadGamesList() {
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(getUsername()),
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(username),
 				getContentResolver()).executeTask();
 	}
 
@@ -394,7 +421,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
-		getActivityFace().openFragment(GameDailyFinishedAnalysisFragment.createInstance(gameId));
+		getActivityFace().openFragment(GameDailyFinishedAnalysisFragment.createInstance(gameId, username));
 	}
 
 	@Override
@@ -438,7 +465,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	@Override
 	public Boolean isUserColorWhite() {
 		if (currentGame != null && getActivity() != null)
-			return currentGame.getWhiteUsername().equals(getAppData().getUsername());
+			return currentGame.getWhiteUsername().equals(username);
 		else
 			return null;
 	}
