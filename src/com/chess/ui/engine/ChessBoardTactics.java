@@ -66,10 +66,9 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 	public boolean isLastTacticMoveCorrect() {
 		int lastIndex = ply - 1;
 
-		String tacticCorrectMove = tacticMoves[lastIndex];
-		tacticCorrectMove = tacticCorrectMove.replaceAll(MovesParser.SPECIAL_SYMBOLS_PATTERN, Symbol.EMPTY); // remove special symbols
-		String lastMoveSAN = getLastMoveSAN().replaceAll(MovesParser.SPECIAL_SYMBOLS_PATTERN, Symbol.EMPTY); // remove special symbols
-		return tacticCorrectMove.equals(lastMoveSAN);
+		Move lastUsersMove = convertMoveAlgebraic(getLastMoveSAN());
+		Move tacticMove = convertMoveAlgebraic(tacticMoves[lastIndex]);
+		return lastUsersMove.equals(tacticMove);
 	}
 
 	@Override

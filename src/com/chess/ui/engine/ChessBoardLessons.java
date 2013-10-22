@@ -1,6 +1,5 @@
 package com.chess.ui.engine;
 
-import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.boards.LessonsBoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
 
@@ -42,54 +41,10 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 
 	@Override
 	public boolean isLastLessonMoveIsCorrect(String validMove) {
-//		int lastIndex = ply - 1;
-//		if (/*lastIndex >= tacticMoves.length || */lastIndex >= histDat.length) {
-//			return "Pe4"; // TODO invent logic here , we use hardcode to pass possibly invalid move
-//		}
 
-//		Move move = histDat[lastIndex].move; // get last move
-//		String piece = Symbol.EMPTY;
-//		int pieceCode = pieces[move.to];
-//		String moveStr;
-//		if (pieceCode == KNIGHT) { // set piece name
-//			piece = MovesParser.BLACK_KNIGHT;
-//		} else if (pieceCode == BISHOP) {
-//			piece = MovesParser.BLACK_BISHOP;
-//		} else if (pieceCode == ROOK) {
-//			piece = MovesParser.BLACK_ROOK;
-//		} else if (pieceCode == QUEEN) {
-//			piece = MovesParser.BLACK_QUEEN;
-//		} else if (pieceCode == KING) {
-//			piece = MovesParser.BLACK_KING;
-//		}
-//
-//		String capture = Symbol.EMPTY;
-//		if (histDat[lastIndex].capture != EMPTY) {
-//			capture = MovesParser.CAPTURE_MARK;
-//		}
-//
-//		// rc7  instead of rcc7 :(
-//		String fromSquare = movesParser.positionToString(move.to);
-//		moveStr = piece + capture + fromSquare;   // Rxa7 is failed!!!
-//		boolean wasCastled = false;
-//		if (moveStr.equalsIgnoreCase(MovesParser.B_KINGSIDE_MOVE_CASTLING)) {
-//			moveStr = MovesParser.KINGSIDE_CASTLING;
-//			wasCastled = true;
-//		} else if (moveStr.equalsIgnoreCase(MovesParser.B_QUEENSIDE_MOVE_CASTLING)) {
-//			moveStr = MovesParser.QUEENSIDE_CASTLING;
-//			wasCastled = true;
-//		}
-//
-//		if (wasCastled) {
-//			return validMove.contains(moveStr);
-//		} else {
-//			validMove = validMove.toLowerCase();
-//			return validMove.contains(piece) && validMove.contains(fromSquare);
-//		}
-		String lessonCorrectMove = validMove;
-		lessonCorrectMove = lessonCorrectMove.replaceAll(MovesParser.SPECIAL_SYMBOLS_PATTERN, Symbol.EMPTY); // remove special symbols
-		String lastMoveSAN = getLastMoveSAN().replaceAll(MovesParser.SPECIAL_SYMBOLS_PATTERN, Symbol.EMPTY); // remove special symbols
-		return lessonCorrectMove.equals(lastMoveSAN);
+		Move validLessonMove = convertMoveAlgebraic(validMove);
+		Move userLastMove = convertMoveAlgebraic(getLastMoveSAN());
+		return validLessonMove.equals(userLastMove);
 	}
 
 }

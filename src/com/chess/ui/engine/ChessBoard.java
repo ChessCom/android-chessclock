@@ -1577,19 +1577,6 @@ public class ChessBoard implements BoardFace {
 					return piece;
 				}
 			}
-
-
-			// if piece match pieceToCompare and side is the same as moving piece side
-//			if (pieces[pos] == pieceToCompare/* && colors[pos] == side *//*&& (checkAttack && isPossibleToAttack)*/) { //
-//
-//				// add disambiguating notation mark - from which file (or rank, or file and rank) it was originally moved
-//				if (getFile(pos) == getFile(fromPosition)) {
-//					piece += movesParser.IntPositionToRank(getRank(fromPosition));
-//				} else {
-//					piece += movesParser.IntPositionToFile(getFile(fromPosition));
-//				}
-//				break;
-//			}
 		}
 		return piece;
 	}
