@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -280,6 +281,14 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 		@Override
 		public void updateData(BoardItem returnedObj) {
+
+			String coordinateColorLight = returnedObj.getData().getCoordinateColorLight();
+			String coordinateColorDark = returnedObj.getData().getCoordinateColorDark();
+			String highlightColor = returnedObj.getData().getHighlightColor();
+
+			getAppData().setThemeBoardCoordinateLight(Color.parseColor(coordinateColorLight));
+			getAppData().setThemeBoardCoordinateDark(Color.parseColor(coordinateColorDark));
+			getAppData().setThemeBoardHighlight(Color.parseColor(highlightColor));
 
 			// get boards dir in s3
 			String boardDir = returnedObj.getData().getThemeDir();

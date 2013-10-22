@@ -497,8 +497,11 @@
     <color name="possible_move_highlight">#30000000</color>
 
     <!--Board-->
-    <color name="coordinate_color">#FF2f3c22</color>
-    <color name="highlight_color">#FFffff65</color>
+	<color name="coordinate_color_light">#FF765331</color>
+	<color name="coordinate_color_dark">#FFccb07a</color>
+    <color name="highlight_color">#80ffff65</color>
+    <color name="made_move_color">#80FF0000</color>
+    <!--<color name="made_move_color">#80CC3300</color>-->
 
 	<!--Graph-->
 	<color name="graph_border">#FFbfbfbf</color>

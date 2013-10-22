@@ -58,7 +58,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	int pieceXDelta, pieceYDelta; // top/left pixel draw position relative to square
 
-	private static final int SQUARES_NUMBER = 8;
+	private static final int SQUARES_IN_LINE = 8;
 	public static final int EMPTY_ID = 6;
 	protected float density;
 	protected AppData appData;
@@ -83,20 +83,20 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	protected int dragX = 0;
 	protected int dragY = 0;
-	protected int trackX = 0;
-	protected int trackY = 0;
+//	protected int trackX = 0;
+//	protected int trackY = 0;
 
 	private float numYOffset = 10;
 	private float textYOffset = 3;
 
-	protected Paint yellowPaint;
+	protected Paint selectedPiecePaint;
 	protected Paint whitePaint;
 	protected Paint coordinatesPaint;
 	protected Paint madeMovePaint;
-	protected Paint greenPaint;
+//	protected Paint greenPaint;
 	protected Paint possibleMovePaint;
 
-	protected String[] signs = {"a", "b", "c", "d", "e", "f", "g", "h"};
+	protected String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h"};
 	protected String[] nums = {"1", "2", "3", "4", "5", "6", "7", "8"};
 
 	protected int viewWidth;
@@ -140,6 +140,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private Rect clipBoundsRect;
 	private int _3dPiecesOffset;
 	private int _3dPiecesOffsetDrag;
+	private int coordinateColorLight;
+	private int coordinateColorDark;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -163,49 +165,58 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		clipBoundsRect = new Rect();
 
 		handler = new Handler();
-		greenPaint = new Paint();
-		yellowPaint = new Paint();
-		whitePaint = new Paint();
-		coordinatesPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		madeMovePaint = new Paint();
-		possibleMovePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		rect = new Rect();
 
 		_3dPiecesOffset = (int) (14 * density);
 		_3dPiecesOffsetDrag = (int) (28 * density);
 		pieceInset = (int) (1 * density);
 
-		int highlightColor = resources.getColor(R.color.highlight_color);
+		int highlightColor = appData.getThemeBoardHighlight();
+		if (highlightColor == AppData.UNDEFINED) {
+			highlightColor = resources.getColor(R.color.highlight_color);
+		}
 
-		yellowPaint.setStrokeWidth(resources.getDimension(R.dimen.highlight_stroke_width));
-		yellowPaint.setStyle(Style.STROKE);
-		yellowPaint.setColor(highlightColor);
+		selectedPiecePaint = new Paint();
+		selectedPiecePaint.setStrokeWidth(resources.getDimension(R.dimen.highlight_stroke_width));
+		selectedPiecePaint.setStyle(Style.FILL);
+		selectedPiecePaint.setColor(highlightColor);
 
+		whitePaint = new Paint();
 		whitePaint.setStrokeWidth(1.5f * density);
 		whitePaint.setStyle(Style.STROKE);
 		whitePaint.setColor(Color.WHITE);
 
 		int coordinateFont = resources.getInteger(R.integer.board_highlight_font);
-		int coordinateColor = resources.getColor(R.color.coordinate_color);
+		coordinateColorLight = appData.getThemeBoardCoordinateLight();
+		if (coordinateColorLight == AppData.UNDEFINED) {
+			coordinateColorLight = resources.getColor(R.color.coordinate_color_light);
+		}
+		coordinateColorDark = appData.getThemeBoardCoordinateDark();
+		if (coordinateColorDark == AppData.UNDEFINED) {
+			coordinateColorDark = resources.getColor(R.color.coordinate_color_dark);
+		}
 
 		numYOffset = coordinateFont * density;
 		textYOffset *= density;
 
+		coordinatesPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		coordinatesPaint.setStyle(Style.FILL);
-		coordinatesPaint.setColor(coordinateColor);
-		coordinatesPaint.setShadowLayer(1.0f, 1.0f, 1.0f, 0x7FFFFFFF);
 		coordinatesPaint.setTextSize(coordinateFont * density);
 		coordinatesPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.BOLD_FONT));
 
+		madeMovePaint = new Paint();
 		madeMovePaint.setStrokeWidth(resources.getDimension(R.dimen.highlight_stroke_width));
-		madeMovePaint.setStyle(Style.STROKE);
+		madeMovePaint.setStyle(Style.FILL);
 		madeMovePaint.setColor(highlightColor);
 
-		greenPaint.setStrokeWidth(1.5f * density);
-		greenPaint.setStyle(Style.STROKE);
-		greenPaint.setColor(Color.GREEN);
+//		greenPaint = new Paint();
+//		greenPaint.setStrokeWidth(1.5f * density);
+//		greenPaint.setStyle(Style.STROKE);
+//		greenPaint.setColor(Color.GREEN);
 
 		int possibleMoveHighlightColor = resources.getColor(R.color.possible_move_highlight);
+
+		possibleMovePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		possibleMovePaint.setStrokeWidth(4.0f);
 		possibleMovePaint.setStyle(Style.FILL);
 		possibleMovePaint.setColor(possibleMoveHighlightColor);
@@ -600,33 +611,39 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (showCoordinates) {
 			BoardFace boardFace = getBoardFace();
 			int xOffset = (squareSize / 8) * 7;
-			float yPosition = SQUARES_NUMBER * squareSize - textYOffset;
-			for (int i = 0; i < SQUARES_NUMBER; i++) {
+			float yPosition = SQUARES_IN_LINE * squareSize - textYOffset;
+			for (int i = 0; i < SQUARES_IN_LINE; i++) {
+
+				if (i %2 == 0) {
+					coordinatesPaint.setColor(coordinateColorLight);
+				} else {
+					coordinatesPaint.setColor(coordinateColorDark);
+				}
 				if (boardFace.isReside()) {
 					// draw ranks coordinates (1, 2, 3, 4, 5, 6, 7, 8)
 					canvas.drawText(nums[i], 2, i * squareSize + numYOffset, coordinatesPaint);
 					// draw file coordinates (a, b, c, d, e, f, g, h)
-					canvas.drawText(signs[7 - i], i * squareSize + xOffset, yPosition, coordinatesPaint);
+					canvas.drawText(letters[i], (7 - i) * squareSize + xOffset, yPosition, coordinatesPaint);
 				} else {
 					// draw ranks coordinates (1, 2, 3, 4, 5, 6, 7, 8)
 					canvas.drawText(nums[7 - i], 2, i * squareSize + numYOffset, coordinatesPaint);
 					// draw file coordinates (a, b, c, d, e, f, g, h)
-					canvas.drawText(signs[i], i * squareSize + xOffset, yPosition, coordinatesPaint);
+					canvas.drawText(letters[7 - i], (7 - i) * squareSize + xOffset, yPosition, coordinatesPaint);
 				}
 			}
 		}
 	}
 
 	protected void drawHighlights(Canvas canvas) {
-		int offset = (int) (1 * density);
+		int offset = (int) (0 * density);
 
 		BoardFace boardFace = getBoardFace();
-		if (pieceSelected) { // draw rectangle around the start move piece position
+		if (pieceSelected) { // fill square for the start move piece position
 			int x = ChessBoard.getColumn(from, boardFace.isReside());
 			int y = ChessBoard.getRow(from, boardFace.isReside());
 			canvas.drawRect(x * squareSize + offset, y * squareSize + offset,
-					x * squareSize + squareSize - offset, y * squareSize + squareSize - offset, yellowPaint);
-		} else if (isHighlightEnabled && boardFace.getPly() > 0) { // draw moved piece highlight from -> to
+					x * squareSize + squareSize - offset, y * squareSize + squareSize - offset, selectedPiecePaint);
+		} else 	if (isHighlightEnabled && boardFace.getPly() > 0) { // draw moved piece highlight from -> to
 			// from
 			Move move = boardFace.getHistDat()[boardFace.getPly() - 1].move;
 			int x1 = ChessBoard.getColumn(move.from, boardFace.isReside());
@@ -640,7 +657,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					x2 * squareSize + squareSize - offset, y2 * squareSize + squareSize - offset, madeMovePaint);
 		}
 
-		// highlight with semi-transparent dots all possible moves for selected piece
+		// draw semi-transparent dots all possible moves for selected piece
 		if (pieceSelected && showLegalMoves) {
 
 			boolean isWhiteToMove = boardFace.isWhiteToMove();

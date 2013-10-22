@@ -156,8 +156,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		super.onResume();
 		startCount = COUNT_BACK;
 
-		dismissDialogs();
-
 		if (firstRun) {
 
 			if (DbDataManager.haveSavedTacticGame(getActivity(), getUsername())) {
@@ -961,7 +959,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (isAnalysis) {
 			BoardFace boardFace = getBoardFace();
 			while (boardFace.takeBack()) {
-
+				// loop while we can move back
 			}
 			boardView.invalidate();
 		} else {
@@ -984,6 +982,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		bottomPanelView.setPlayerScore(currentRating);
 
+//		boardFace.setupBoard("r1q2r1k/3bb2p/p1p1N3/3pp2Q/6R1/2P1R3/1P3PPP/2B3K1 b - - 1 1");
 		boardFace.setupBoard(trainerData.getInitialFen());
 
 		// based on FEN we detect which player is next to move
@@ -993,6 +992,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		// reside board for user to move
 		boardFace.setReside(!boardFace.isReside());
 
+//		boardFace.setTacticMoves("1... Bxe6 2. Qxh7+ Kxh7 3. Rh3+ Bh4 4. R3xh4#");
 		boardFace.setTacticMoves(trainerData.getCleanMoveString());
 		boardFace.setMovesCount(1);
 

@@ -1,5 +1,6 @@
 package com.chess.backend.entity.api.themes;
 
+import android.text.TextUtils;
 import com.chess.backend.entity.api.BaseResponseItem;
 
 /**
@@ -11,6 +12,7 @@ import com.chess.backend.entity.api.BaseResponseItem;
 public class BoardItem extends BaseResponseItem<BoardItem.Data> {
 
 	public static final String PATH = "https://chess-redesign.s3.amazonaws.com/Boards/";
+	public static final String COLOR_DIVIDER = "#";
 
 /*
 	"user_theme_board_id": 18,
@@ -24,11 +26,18 @@ public class BoardItem extends BaseResponseItem<BoardItem.Data> {
 */
 
 	public class Data {
+		private static final int LIGHT_COLOR = 1;
+		private static final int DARK_COLOR = 2;
+		private static final int HIGHLIGHT_COLOR = 3;
+		private static final String ALPHA = "#80";
 		private int user_theme_board_id;
 		private String name;
 		private String board_preview_url;
 		private String line_board_preview;
 		private String coordinate_color;
+		private String coordinate_color_light;
+		private String coordinate_color_dark;
+		private String highlight_color;
 		private int theme_id;
 		private String theme_dir;
 
@@ -70,6 +79,51 @@ public class BoardItem extends BaseResponseItem<BoardItem.Data> {
 
 		public void setCoordinateColor(String coordinate_color) {
 			this.coordinate_color = coordinate_color;
+		}
+
+		public String getCoordinateColorLight() {
+			if (!TextUtils.isEmpty(coordinate_color_light)) {
+				return coordinate_color_light;
+			} else if (coordinate_color != null && coordinate_color.length() > 9) {
+				String[] colors = coordinate_color.split(COLOR_DIVIDER);
+				return COLOR_DIVIDER + colors[LIGHT_COLOR];
+			} else {
+				return COLOR_DIVIDER + "2f3c22";
+			}
+		}
+
+		public void setCoordinateColorLight(String coordinate_color_light) {
+			this.coordinate_color_light = coordinate_color_light;
+		}
+
+		public String getCoordinateColorDark() {
+			if (!TextUtils.isEmpty(coordinate_color_dark)) {
+				return coordinate_color_dark;
+			} else if (coordinate_color != null && coordinate_color.length() > 9) {
+				String[] colors = coordinate_color.split(COLOR_DIVIDER);
+				return COLOR_DIVIDER + colors[DARK_COLOR];
+			} else {
+				return COLOR_DIVIDER + "2f3c22";
+			}
+		}
+
+		public void setCoordinateColorDark(String coordinate_color_dark) {
+			this.coordinate_color_dark = coordinate_color_dark;
+		}
+
+		public String getHighlightColor() {
+			if (!TextUtils.isEmpty(highlight_color)) {
+				return highlight_color;
+			} else if (coordinate_color != null && coordinate_color.length() > 9) { // TODO remove after server changes
+				String[] colors = coordinate_color.split(COLOR_DIVIDER);
+				return ALPHA + colors[HIGHLIGHT_COLOR];
+			} else {
+				return COLOR_DIVIDER + "FFFF65";
+			}
+		}
+
+		public void setHighlightColor(String highlight_color) {
+			this.highlight_color = highlight_color;
 		}
 
 		public int getThemeId() {

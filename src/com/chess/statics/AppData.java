@@ -440,6 +440,30 @@ public class AppData {
 		return getStringValue(PREF_THEME_BOARD_PATH, "");
 	}
 
+	public void setThemeBoardCoordinateLight(int value) {
+		setIntValue(PREF_THEME_BOARD_COORDINATE_LIGHT, value);
+	}
+
+	public int getThemeBoardCoordinateLight() {
+		return getIntValue(PREF_THEME_BOARD_COORDINATE_LIGHT, UNDEFINED);
+	}
+
+	public void setThemeBoardCoordinateDark(int value) {
+		setIntValue(PREF_THEME_BOARD_COORDINATE_DARK, value);
+	}
+
+	public int getThemeBoardCoordinateDark() {
+		return getIntValue(PREF_THEME_BOARD_COORDINATE_DARK, UNDEFINED);
+	}
+
+	public void setThemeBoardHighlight(int value) {
+		setIntValue(PREF_THEME_BOARD_HIGHLIGHT, value);
+	}
+
+	public int getThemeBoardHighlight() {
+		return getIntValue(PREF_THEME_BOARD_HIGHLIGHT, UNDEFINED);
+	}
+
 	public int getThemeBackId() {
 		return R.drawable.img_theme_green_felt; // won't be changed
 	}

@@ -60,18 +60,15 @@ public class PiecePreviewImg extends ImageView {
 		madeMovePaint.setColor(Color.YELLOW);
 
 		int coordinateFont = getResources().getInteger(R.integer.board_highlight_font);
-		int coordinateColor = getResources().getColor(R.color.coordinate_color);
+		int coordinateColor = getResources().getColor(R.color.coordinate_color_dark);
 
 		coordinatesPaint = new Paint();
 		coordinatesPaint.setStyle(Paint.Style.FILL);
 		coordinatesPaint.setColor(coordinateColor);
-		coordinatesPaint.setShadowLayer(1.0f, 1.0f, 1.0f, 0x7FFFFFFF);
 		coordinatesPaint.setTextSize(coordinateFont * density);
 		coordinatesPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.BOLD_FONT));
 
-
 		piecesBitmaps = new Bitmap[2][2];
-
 	}
 
 	public void setPiecesBitmaps(Bitmap[][] bitmaps){

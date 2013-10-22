@@ -397,7 +397,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	}
 
 	@Override
-	public void onClick(View view) {  // TODO handle avatar click
+	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == DRAW_DECLINE_ID) {
 			clickListener.onClick(view);

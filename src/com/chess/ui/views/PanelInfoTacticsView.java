@@ -61,7 +61,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		density = resources.getDisplayMetrics().density;
 
 		int padding = (int) resources.getDimension(R.dimen.panel_info_tactic_padding_top);
-		int paddingLeft = (int) (21 * density);
+		int paddingLeft = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
 		int paddingRight = (int) (12 * density);
 		setPadding(paddingLeft, padding, paddingRight, padding);
 
