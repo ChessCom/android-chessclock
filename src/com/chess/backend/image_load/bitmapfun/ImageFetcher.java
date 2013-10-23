@@ -22,9 +22,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 import com.chess.BuildConfig;
-import com.chess.R;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -166,7 +164,6 @@ public class ImageFetcher extends ImageResizer {
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         if (networkInfo == null || !networkInfo.isConnectedOrConnecting()) {
-            Toast.makeText(context, R.string.no_network, Toast.LENGTH_LONG).show();
             Log.e(TAG, "checkConnection - no connection found");
         }
     }

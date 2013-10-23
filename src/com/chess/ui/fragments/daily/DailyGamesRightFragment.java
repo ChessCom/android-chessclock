@@ -3,6 +3,7 @@ package com.chess.ui.fragments.daily;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -21,12 +22,13 @@ import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyChallengeItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyFinishedGameData;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.GameOnlineItem;
+import com.chess.statics.IntentConstants;
+import com.chess.statics.StaticData;
 import com.chess.ui.adapters.*;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -110,7 +112,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		topButtonsView = headerView.findViewById(R.id.topButtonsView);
 		topButtonsView.setVisibility(View.GONE);
 
-
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
 		listView.setOnItemClickListener(this);
@@ -143,7 +144,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	}
 
 	private void init() {
-		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.INVITE);
+		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.CHALLENGE);
 		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
 		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
 		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
@@ -285,7 +286,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	}
 
 	private class DailyUpdateListener extends ChessUpdateListener<BaseResponseItem> {
-		public static final int INVITE = 3;
+		public static final int CHALLENGE = 3;
 		public static final int DRAW = 4;
 		public static final int VACATION = 5;
 
@@ -306,10 +307,18 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		@Override
 		public void updateData(BaseResponseItem returnedObj) {
 			switch (itemCode) {
-				case INVITE:
+				case CHALLENGE:
 					showToast(successToastMsgId);
 					// remove that item from challenges list adapter
 					challengesGamesAdapter.remove(selectedChallengeItem);
+
+					// clear notification badge
+					DbDataManager.deleteNewChallengeNotification(getContentResolver(), getUsername(),
+							selectedChallengeItem.getGameId());
+					updateNotificationBadges();
+
+					getActivity().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
+
 				case VACATION:
 
 					break;

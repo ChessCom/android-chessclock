@@ -341,6 +341,7 @@
 	<string name="top_game">Top Game</string>
 	<string name="password_changed">Password Changed</string>
 	<string name="loading_pieces">Loading Pieces</string>
+	<string name="all_clear">All Clear</string>
 
 
 </resources>

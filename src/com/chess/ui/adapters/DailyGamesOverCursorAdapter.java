@@ -9,6 +9,7 @@ import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 
 import java.util.HashMap;
 
@@ -22,11 +23,12 @@ public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 
 	private final int imageSize;
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
+	private final ItemClickListenerFace clickListenerFace;
 
-	public DailyGamesOverCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
-		super(context, cursor, imageFetcher);
+	public DailyGamesOverCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(clickListenerFace.getMeContext(), cursor, imageFetcher);
 		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
-
+		this.clickListenerFace = clickListenerFace;
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
@@ -36,6 +38,8 @@ public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 		ViewHolder holder = new ViewHolder();
 		holder.playerImg = (ProgressImageView) view.findViewById(R.id.playerImg);
 		holder.messageTxt = (TextView) view.findViewById(R.id.messageTxt);
+		holder.clearBtn = (TextView) view.findViewById(R.id.clearBtn);
+		holder.clearBtn.setOnClickListener(clickListenerFace);
 
 		view.setTag(holder);
 		return view;
@@ -44,6 +48,8 @@ public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
+
+		holder.clearBtn.setTag(itemListId, cursor);
 
 		holder.messageTxt.setText(getString(cursor, DbScheme.V_MESSAGE));
 		String avatarUrl = getString(cursor, DbScheme.V_USER_AVATAR);
@@ -57,6 +63,7 @@ public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 	protected class ViewHolder {
 		public ProgressImageView playerImg;
 		public TextView messageTxt;
+		public TextView clearBtn;
 
 	}
 }

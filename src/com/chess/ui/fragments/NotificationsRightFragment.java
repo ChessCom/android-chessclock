@@ -1,6 +1,7 @@
 package com.chess.ui.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
@@ -15,16 +17,16 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyChallengeItem;
-import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.FriendRequestResultItem;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.statics.IntentConstants;
+import com.chess.statics.StaticData;
 import com.chess.ui.adapters.*;
 import com.chess.ui.fragments.daily.DailyInviteFragment;
-import com.chess.ui.fragments.daily.GameDailyFinishedFragment;
+import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.fragments.profiles.ProfileTabsFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.slidingmenu.lib.SlidingMenu;
@@ -45,32 +47,36 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 	private static final int NEW_CHATS_SECTION = 2;
 	private static final int GAME_OVER_SECTION = 3;
 
-
 	private CustomSectionedAdapter sectionedAdapter;
 	private CommonAcceptDeclineCursorAdapter friendRequestsAdapter;
 	private DailyChallengesGamesAdapter challengesGamesAdapter;
 	private NewChatMessagesCursorAdapter chatMessagesAdapter;
 	private DailyGamesOverCursorAdapter gamesOverAdapter;
-	private DailyGamesUpdateListener dailyGamesUpdateListener;
+	private NewChallengesUpdateListener newChallengesUpdateListener;
 	private List<Long> newChallengeIds;
 	private int successToastMsgId;
 	private DailyChallengeItem.Data selectedChallengeItem;
 	private ChallengeUpdateListener challengeInviteUpdateListener;
 	private FriendRequestUpdateListener friendRequestUpdateListener;
+	private TextView emptyView;
+	private ListView listView;
+	private boolean emptyData;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		emptyData = true;
+
 		friendRequestUpdateListener = new FriendRequestUpdateListener();
 		challengeInviteUpdateListener = new ChallengeUpdateListener(ChallengeUpdateListener.INVITE);
-		dailyGamesUpdateListener = new DailyGamesUpdateListener();
+		newChallengesUpdateListener = new NewChallengesUpdateListener();
 		// init adapters
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
 		friendRequestsAdapter = new CommonAcceptDeclineCursorAdapter(new FriendAcceptDeclineFace(), null, getImageFetcher());
 		challengesGamesAdapter = new DailyChallengesGamesAdapter(new ChallengeAcceptDeclineFace(), null, getImageFetcher());
-		chatMessagesAdapter = new NewChatMessagesCursorAdapter(getActivity(), null, getImageFetcher());
-		gamesOverAdapter = new DailyGamesOverCursorAdapter(getActivity(), null, getImageFetcher());
+		chatMessagesAdapter = new NewChatMessagesCursorAdapter(new NewChatClearFace(), null, getImageFetcher());
+		gamesOverAdapter = new DailyGamesOverCursorAdapter(new GameOverClearFace(), null, getImageFetcher());
 
 		sectionedAdapter.addSection(getString(R.string.friend_requests), friendRequestsAdapter);
 		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
@@ -87,7 +93,8 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		ListView listView = (ListView) view.findViewById(R.id.listView);
+		emptyView = (TextView) view.findViewById(R.id.emptyView);
+		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 		listView.setAdapter(sectionedAdapter);
 	}
@@ -137,13 +144,28 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 			getActivityFace().openFragment(DailyInviteFragment.createInstance(challengeItem));
 			getActivityFace().toggleRightMenu();
 		} else if (section == NEW_CHATS_SECTION) {
+			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+			long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+
+			DbDataManager.deleteNewChatMessageNotification(getContentResolver(), getUsername(), username);
+
+			updateNotificationBadges();
+
+			getActivityFace().openFragment(GameDailyFragment.createInstance(gameId));
+			getActivityFace().toggleRightMenu();
 
 		} else if (section == GAME_OVER_SECTION) {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
+			long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+			DbDataManager.deleteGameOverNotification(getContentResolver(), getUsername(), gameId);
 
-			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
-			getActivityFace().toggleRightMenu();
+			updateNotificationBadges();
+//			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
+
+//			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
+//			getActivityFace().toggleRightMenu();
+
 		}
 	}
 
@@ -158,48 +180,69 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 			return;
 		}
 
+		loadNotifications();
+
+		// request data from server
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_CHALLENGES);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		new RequestJsonTask<DailyChallengeItem>(newChallengesUpdateListener).executeTask(loadItem);
+	}
+
+	private void loadNotifications() {
 		{ // get friend requests
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_FRIEND_REQUEST));
-			cursor.moveToFirst();
-			friendRequestsAdapter.changeCursor(cursor);
+			if (cursor.moveToFirst()) {
+				friendRequestsAdapter.changeCursor(cursor);
+				emptyData = false;
+			}
 		}
 		{ // get new challenge notifications
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_NEW_CHALLENGES));
 
 			newChallengeIds = new ArrayList<Long>();
-			if(cursor != null && cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst()) {
+				emptyData = false;
+
 				do {
 					long challengeId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 					newChallengeIds.add(challengeId);
 
-				}while (cursor.moveToNext());
+				} while (cursor.moveToNext());
 			}
 		}
 		{ // get new chat notifications
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_NEW_CHAT_MESSAGES));
-			cursor.moveToFirst();
-			chatMessagesAdapter.changeCursor(cursor);
+			if (cursor.moveToFirst()) {
+				emptyData = false;
+				chatMessagesAdapter.changeCursor(cursor);
+			}
 		}
 		{ // get game over notifications
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_GAMES_OVER));
-			cursor.moveToFirst();
-			gamesOverAdapter.changeCursor(cursor);
+			if (cursor.moveToFirst()) {
+				emptyData = false;
+				gamesOverAdapter.changeCursor(cursor);
+			}
 		}
 
-		// request data from server
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_CHALLENGES);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		new RequestJsonTask<DailyChallengeItem>(dailyGamesUpdateListener).executeTask(loadItem);
+		if (emptyData) {
+			emptyView.setText(R.string.all_clear);
+			emptyView.setVisibility(View.VISIBLE);
+			listView.setVisibility(View.GONE);
+		} else {
+			emptyView.setVisibility(View.GONE);
+			listView.setVisibility(View.VISIBLE);
+		}
 	}
 
-	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyChallengeItem> {
+	private class NewChallengesUpdateListener extends ChessUpdateListener<DailyChallengeItem> {
 
-		public DailyGamesUpdateListener() {
+		public NewChallengesUpdateListener() {
 			super(DailyChallengeItem.class);
 		}
 
@@ -207,8 +250,14 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 		public void updateData(DailyChallengeItem returnedObj) {
 			super.updateData(returnedObj);
 
-			challengesGamesAdapter.setItemsList(returnedObj.getData());
-			sectionedAdapter.notifyDataSetChanged();
+			if (returnedObj.getData().size() == 0 && emptyData) {
+				emptyView.setText(R.string.all_clear);
+				emptyView.setVisibility(View.VISIBLE);
+				listView.setVisibility(View.GONE);
+			} else {
+				challengesGamesAdapter.setItemsList(returnedObj.getData());
+				sectionedAdapter.notifyDataSetChanged();
+			}
 		}
 
 		@Override
@@ -264,6 +313,50 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 		}
 	}
 
+	private class GameOverClearFace implements ItemClickListenerFace {
+
+		@Override
+		public Context getMeContext() {
+			return getActivity();
+		}
+
+		@Override
+		public void onClick(View view) {
+			if (view.getId() == R.id.clearBtn) {
+				Cursor cursor = (Cursor) view.getTag(R.id.list_item_id);
+				long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+
+				DbDataManager.deleteGameOverNotification(getContentResolver(), getUsername(), gameId);
+
+				updateNotificationBadges();
+
+				loadNotifications();
+			}
+		}
+	}
+
+	private class NewChatClearFace implements ItemClickListenerFace {
+
+		@Override
+		public Context getMeContext() {
+			return getActivity();
+		}
+
+		@Override
+		public void onClick(View view) {
+			if (view.getId() == R.id.clearBtn) {
+				Cursor cursor = (Cursor) view.getTag(R.id.list_item_id);
+				String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+
+				DbDataManager.deleteNewChatMessageNotification(getContentResolver(), getUsername(), username);
+
+				updateNotificationBadges();
+
+				loadNotifications();
+			}
+		}
+	}
+
 	private void acceptFriendRequest(long requestId) {
 		LoadItem loadItem = LoadHelper.acceptFriendRequest(getUserToken(), requestId);
 		successToastMsgId = R.string.request_accepted;
@@ -278,7 +371,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 	}
 
 	private void acceptChallenge() {
-		LoadItem loadItem = LoadHelper.acceptChallenge(getUserToken(),selectedChallengeItem.getGameId());
+		LoadItem loadItem = LoadHelper.acceptChallenge(getUserToken(), selectedChallengeItem.getGameId());
 		successToastMsgId = R.string.challenge_accepted;
 
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
@@ -307,6 +400,15 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 
 			// remove that item from challenges list adapter
 			challengesGamesAdapter.remove(selectedChallengeItem);
+
+			// clear notification badge
+			DbDataManager.deleteNewChallengeNotification(getContentResolver(), getUsername(),
+					selectedChallengeItem.getGameId());
+			updateNotificationBadges();
+
+			loadNotifications();
+
+			getActivity().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 		}
 	}
 
@@ -322,6 +424,13 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 
 			// remove that item from challenges list adapter
 			challengesGamesAdapter.remove(selectedChallengeItem);
+
+			DbDataManager.deleteNewFriendRequestNotification(getContentResolver(), getUsername(),
+					selectedChallengeItem.getOpponentUsername());
+
+			updateNotificationBadges();
+
+			loadNotifications();
 		}
 	}
 }

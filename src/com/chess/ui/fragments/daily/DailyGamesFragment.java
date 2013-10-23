@@ -65,7 +65,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private DailyUpdateListener acceptDrawUpdateListener;
 
 	private IntentFilter moveUpdateFilter;
-	private BroadcastReceiver gamesUpdateReceiver;
+	private GamesUpdateReceiver gamesUpdateReceiver;
 	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
 	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener currentGamesCursorUpdateListener;

@@ -262,7 +262,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			// clear badge
 			DbDataManager.deletePlayMoveNotification(getContentResolver(), username, gameId);
 			updateNotificationBadges();
-		} else { // if we
+		} else {
 			updateGameState(gameId);
 		}
 	}
@@ -333,9 +333,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		controlsDailyView.enableGameControls(true);
 		boardView.lockBoard(false);
 
-		if (currentGame.hasNewMessage()) {
-			controlsDailyView.haveNewMessage(true);
-		}
+		controlsDailyView.haveNewMessage(currentGame.hasNewMessage());
 
 		getBoardFace().setFinished(false);
 
@@ -559,6 +557,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		if (currentGame == null) {
 			return;
 		}
+
+		// update game state in DB
+		currentGame.setHasNewMessage(false);
+		DbDataManager.saveDailyGame(getContentResolver(), currentGame, username);
 
 		currentGame.setHasNewMessage(false);
 		controlsDailyView.haveNewMessage(false);
@@ -851,7 +853,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 					showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
 					break;
 				case DRAW_OFFER_UPDATE:
-					showSinglePopupDialog(R.string.draw_offered, DRAW_OFFER_TAG);
+					showToast(R.string.draw_offered);
 					break;
 				case ABORT_GAME_UPDATE:
 					onGameOver(getString(R.string.game_over), true);

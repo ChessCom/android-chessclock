@@ -126,9 +126,13 @@ public class DbDataManager {
 			V_CONVERSATION_ID
 	);
 
-	public static String SELECTION_USER_AND_LESSON_STATED = concatArguments(V_USER, V_LESSON_STARTED);
+	public static String SELECTION_USER_AND_LESSON_STATED = concatArguments(
+			V_USER,
+			V_LESSON_STARTED);
 
-	public static String SELECTION_USER_AND_USERNAME = concatArguments(V_USER, V_USERNAME);
+	public static String SELECTION_USER_AND_USERNAME = concatArguments(
+			V_USER,
+			V_USERNAME);
 
 	public static String SELECTION_GRAPH_RECORD = concatArguments(
 			V_TIMESTAMP,
@@ -318,16 +322,6 @@ public class DbDataManager {
 			V_USERNAME,
 			V_SEEN
 	};
-
-	/*public static final String[] PROJECTION_EXPLORER_MOVES = new String[]{
-			_ID,
-			V_FEN,
-			V_MOVE,
-			V_NUM_GAMES,
-			V_WHITE_WON_PERCENT,
-			V_BLACK_WON_PERCENT,
-			V_DRAW_PERCENT
-	};*/
 
 	public static final String[] PROJECTION_FEN_AND_MOVE = new String[]{
 			_ID,
@@ -2275,6 +2269,8 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
+	// ============================ Play Move GCM notifications ===========================================================
+
 	public static void savePlayMoveNotification(ContentResolver contentResolver, String username, long gameId) {
 		final String[] arguments1 = sArguments2;
 		arguments1[0] = String.valueOf(gameId);
@@ -2316,17 +2312,12 @@ public class DbDataManager {
 		arguments[1] = username;
 
 		Uri uri = uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()];
-		int deleteCnt = contentResolver.delete(uri, SELECTION_ITEM_ID_AND_USER, arguments);
-
-		Log.d("TEST", "deleteCnt = " + deleteCnt);
+		contentResolver.delete(uri, SELECTION_ITEM_ID_AND_USER, arguments);
 	}
 
 	public static void deleteAllPlayMoveNotifications(ContentResolver contentResolver) {
-
 		Uri uri = uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()];
-		int deleteCnt = contentResolver.delete(uri, null, null);
-
-		Log.d("TEST", "deleteCnt = " + deleteCnt);
+		contentResolver.delete(uri, null, null);
 	}
 
 	public static int getUnreadNotificationsCnt(ContentResolver contentResolver, String username) {
@@ -2381,15 +2372,40 @@ public class DbDataManager {
 		return notificationsCnt;
 	}
 
-	public static void deleteNewChallengeNotification(ContentResolver contentResolver, String username, Long challengeId) {
+	public static void deleteNewChatMessageNotification(ContentResolver contentResolver, String authUser, String username) {
 		final String[] arguments = sArguments2;
-		arguments[0] = String.valueOf(challengeId);
+		arguments[0] = authUser;
 		arguments[1] = username;
 
-		Uri uri = uriArray[Tables.NOTIFICATION_NEW_CHALLENGES.ordinal()];
-		int deleteCnt = contentResolver.delete(uri, SELECTION_ITEM_ID_AND_USER, arguments);
+		Uri uri = uriArray[Tables.NOTIFICATION_NEW_CHAT_MESSAGES.ordinal()];
+		contentResolver.delete(uri, SELECTION_USER_AND_USERNAME, arguments);
+	}
 
-		Log.d("TEST", "deleteCnt = " + deleteCnt);
+	public static void deleteNewFriendRequestNotification(ContentResolver contentResolver, String authUser, String username) {
+		final String[] arguments = sArguments2;
+		arguments[0] = authUser;
+		arguments[1] = username;
+
+		Uri uri = uriArray[Tables.NOTIFICATION_FRIEND_REQUEST.ordinal()];
+		contentResolver.delete(uri, SELECTION_USER_AND_USERNAME, arguments);
+	}
+
+	public static void deleteNewChallengeNotification(ContentResolver contentResolver, String authUser, Long challengeId) {
+		final String[] arguments = sArguments2;
+		arguments[0] = String.valueOf(challengeId);
+		arguments[1] = authUser;
+
+		Uri uri = uriArray[Tables.NOTIFICATION_NEW_CHALLENGES.ordinal()];
+		contentResolver.delete(uri, SELECTION_ITEM_ID_AND_USER, arguments);
+	}
+
+	public static void deleteGameOverNotification(ContentResolver contentResolver, String authUser, Long gameId) {
+		final String[] arguments = sArguments2;
+		arguments[0] = String.valueOf(gameId);
+		arguments[1] = authUser;
+
+		Uri uri = uriArray[Tables.NOTIFICATION_GAMES_OVER.ordinal()];
+		contentResolver.delete(uri, SELECTION_ITEM_ID_AND_USER, arguments);
 	}
 
 	public static void updateNewFriendRequestNotification(ContentResolver contentResolver, String username,

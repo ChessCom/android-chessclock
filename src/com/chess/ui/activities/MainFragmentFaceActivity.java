@@ -26,6 +26,7 @@ import com.chess.statics.IntentConstants;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.NotificationsRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
@@ -464,6 +465,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			Log.d("TEST", " onReceive = " + intent);
 
 			updateNotificationsBadges();
+
+			for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+				if (fragment != null && fragment.isVisible() && fragment instanceof NotificationsRightFragment) {
+					((NotificationsRightFragment) fragment).onOpenedRight();
+					break;
+				}
+			}
 		}
 	}
 

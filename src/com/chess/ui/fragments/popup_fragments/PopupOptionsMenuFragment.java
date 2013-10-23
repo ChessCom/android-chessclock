@@ -72,6 +72,14 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+
+		getDialog().setCanceledOnTouchOutside(true);
+
+	}
+
+	@Override
 	public void onCancel(DialogInterface dialog) {
 		super.onCancel(dialog);
 

@@ -31,4 +31,15 @@
 		android:layout_centerVertical="true"
 		/>
 
+	<com.chess.RoboTextView
+		android:id="@+id/clearBtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/ic_close"
+		android:layout_centerVertical="true"
+		android:layout_alignParentRight="true"
+		style="@style/GlyphIcon.Big"
+		android:textColor="@color/text_controls_icons"
+		/>
+
 </com.chess.RelLayout>

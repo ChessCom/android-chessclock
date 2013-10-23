@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="331"
-	android:versionName="3.0.051a"
+	android:versionCode="332"
+	android:versionName="3.0.052a"
 	package="com.chess"
 	android:installLocation="auto">
 
@@ -67,7 +67,8 @@
 				<!-- No category needed, because the Intent will specify this class component-->
 			</intent-filter>
 
-			<intent-filter>
+			<!--TODO uncomment when logic will be ready-->
+			<!--<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 
 				<category android:name="android.intent.category.DEFAULT" />
@@ -81,7 +82,7 @@
 					android:pathPattern="/"
 					/>
 
-			</intent-filter>
+			</intent-filter>-->
 
 			<!-- Receives the search request. -->
 			<intent-filter>
