@@ -14,6 +14,7 @@ import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
 import com.chess.live.client.*;
 import com.chess.live.rules.GameResult;
+import com.chess.live.util.GameRatingClass;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.GameType;
 import com.chess.model.GameLiveItem;
@@ -339,12 +340,17 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 					break;
 				}
 				case ACCOUNT_FAILED: { // wrong authKey
-					try {
-						Thread.sleep(CONNECTION_FAILURE_DELAY); // probably should be removed
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					AppData appData = new AppData(context);
+					if (appData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
+						appData.incrementLiveConnectAttempts(context);
+
+						try {
+							Thread.sleep(CONNECTION_FAILURE_DELAY);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						runConnectTask(true);
 					}
-					runConnectTask(true);
 					return;
 				}
 				case SERVER_STOPPED: {
@@ -365,16 +371,15 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			/*setConnected(false);
 			((LiveChessClientImpl) lccClient).leave();*/
 
-			// handle detail=null one time and try to reconnect
 			AppData appData = new AppData(context);
 			if (appData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
 				appData.incrementLiveConnectAttempts(context);
 
-			try {
-				Thread.sleep(CONNECTION_FAILURE_DELAY);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+				try {
+					Thread.sleep(CONNECTION_FAILURE_DELAY);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				runConnectTask(true);
 				return;
 			} else {
@@ -579,9 +584,17 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		lccUser.getClient().sendChallenge(challenge, lccUser.getChallengeListener());
 	  }*/
 
+	public boolean isObserveGame(Game game) {
+		return !isMyGame(game);
+	}
+
+	public boolean isMyGame(Game game) {
+		return game.isPlayer(getUsername());
+	}
+
 	public boolean isUserPlaying() {
 		for (Game game : lccGames.values()) {
-			if (!game.isGameOver()) {
+			if (!game.isGameOver() && isMyGame(game)) {
 				return true;
 			}
 		}
@@ -590,7 +603,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public boolean isUserPlayingAnotherGame(Long currentGameId) {
 		for (Game game : lccGames.values()) {
-			if (!game.getId().equals(currentGameId) && !game.isGameOver()) {
+			if (!game.getId().equals(currentGameId) && !game.isGameOver() && isMyGame(game)) {
 				return true;
 			}
 		}
@@ -882,7 +895,9 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		ChessBoardLive.resetInstance();
 		initClock();
 
-		lccEventListener.startGameFromService();
+		if (lccEventListener != null) {
+			lccEventListener.startGameFromService();
+		}
 	}
 
 	public Integer getLatestMoveNumber() {
@@ -1022,6 +1037,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			}
 			return null;
 		}
+	}
+
+	public void observeTopGame() {
+		Log.d(TAG, "observe top game: listener=" + gameListener);
+		lccClient.observeTopGame(GameRatingClass.Blitz, gameListener); // todo: check game types
 	}
 
 	public void resetClient() {

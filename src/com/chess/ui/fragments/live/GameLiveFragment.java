@@ -76,27 +76,27 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private static final int ID_SETTINGS = 4;
 
 
-	private ChessBoardLiveView boardView;
+	protected ChessBoardLiveView boardView;
 
 	private View fadeLay;
-	private boolean lccInitiated;
+	protected boolean lccInitiated;
 	private String warningMessage;
-	private ChessUpdateListener<Game> gameTaskListener;
+	protected ChessUpdateListener<Game> gameTaskListener;
 
 
 	private NotationView notationsView;
-	private PanelInfoLiveView topPanelView;
-	private PanelInfoLiveView bottomPanelView;
-	private ControlsLiveView controlsLiveView;
+	protected PanelInfoLiveView topPanelView;
+	protected PanelInfoLiveView bottomPanelView;
+	protected ControlsLiveView controlsLiveView;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 
-	private LabelsConfig labelsConfig;
+	protected LabelsConfig labelsConfig;
 	//	private UserInfoUpdateListener userInfoUpdateListener;
-	private ImageView topAvatarImg;
-	private ImageView bottomAvatarImg;
+	protected ImageView topAvatarImg;
+	protected ImageView bottomAvatarImg;
 	private ImageDownloaderToListener imageDownloader;
 	private int gameEndTitleId;
-	private SparseArray<String> optionsMap;
+	protected SparseArray<String> optionsMap;
 
 	public GameLiveFragment() {
 	}
@@ -115,7 +115,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		if (getArguments() != null) {
 			gameId = getArguments().getLong(GAME_ID);
-		} else {
+		} else if (savedInstanceState != null) {
 			gameId = savedInstanceState.getLong(GAME_ID);
 		}
 		logLiveTest("onCreate");
@@ -150,7 +150,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		logLiveTest("onResume");
 
-		if (isLCSBound) {
+		if (isLCSBound && gameId != 0) {
 			try {
 				synchronized (LccHelper.LOCK) {
 					onGameStarted();
@@ -207,7 +207,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		ChessBoardLive.resetInstance();
 		boardView.setGameFace(this);
 
-		if (!liveService.isUserColorWhite()) {
+		Boolean isUserColorWhite = liveService.isUserColorWhite();
+
+		if (isUserColorWhite != null && !isUserColorWhite) {
 			getBoardFace().setReside(true);
 		}
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
@@ -344,7 +346,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void expireGame() {
-		showPopupDialog(R.string.error, getString(R.string.game_expired), GAME_EXPIRED_TAG);
+		showSinglePopupDialog(R.string.error, getString(R.string.game_expired), GAME_EXPIRED_TAG);
 		getLastPopupFragment().setCancelable(false);
 	}
 
@@ -523,6 +525,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(message);
 
+		// todo: adjust for top game
 		int currentPlayerNewRating = liveService.getLastGame().getRatingForPlayer(liveService.getUsername());
 		int ratingChange = liveService.getLastGame().getRatingChangeForPlayer(liveService.getUsername());
 
@@ -745,7 +748,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			bottomPanelView.setPlayerName(labelsConfig.bottomPlayerName);
 			bottomPanelView.setPlayerRating(labelsConfig.bottomPlayerRating);
 
-			boardView.updateNotations(getBoardFace().getNotationArray());
+			if (getBoardFace().getNotationArray().length > 0) {
+				boardView.updateNotations(getBoardFace().getNotationArray());
+			}
+
 			try {
 				getLiveService().paintClocks();
 			} catch (DataNotValidException e) {
@@ -914,16 +920,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				Game game = liveService.getCurrentGame();
 
 				if (liveService.isFairPlayRestriction()) {
-					Log.i("LCCLOG", ": resign game by fair play restriction: " + game);
-					Log.i(TAG, "Resign game: " + game);
-					liveService.runMakeResignTask();
-				} else if (liveService.isAbortableBySeq()) {
-					Log.i(TAG, "abort game: " + game);
-					liveService.runAbortGameTask();
+					Log.i(TAG, "resign game by fair play restriction: " + game);
 				} else {
 					Log.i(TAG, "resign game: " + game);
-					liveService.runMakeResignTask();
 				}
+				liveService.runMakeResignTask();
 			}
 		} else if (tag.equals(GAME_EXPIRED_TAG)) {
 			goHome();
@@ -1133,7 +1134,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 	}
 
-	private void init() throws DataNotValidException {
+	protected void init() throws DataNotValidException {
 		LiveChessService liveService = getLiveService();
 
 		GameLiveItem currentGame = liveService.getGameItem();
@@ -1222,14 +1223,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		topPanelView.setClickHandler(this);
 	}
 
-	private class LabelsConfig {
+	protected class LabelsConfig {
 		BoardAvatarDrawable topAvatar;
 		BoardAvatarDrawable bottomAvatar;
 		String topPlayerName;
 		String bottomPlayerName;
 		String topPlayerRating;
 		String bottomPlayerRating;
-		int userSide;
+		public int userSide;
 
 		int getOpponentSide() {
 			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;

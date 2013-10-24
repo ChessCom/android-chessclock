@@ -62,6 +62,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected static final String LOGOUT_TAG = "logout_tag";
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
 	private static final String OBSOLETE_VERSION_TAG = "obsolete version";
+	private static final String EXIT_GAME_TAG = "exit_game";
 
 	protected LiveOuterChallengeListener outerChallengeListener;
 	protected Challenge currentChallenge;
@@ -161,9 +162,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			if (getAppData().isLiveChess() && isLCSBound) {
 				Fragment fragmentByTag = getSupportFragmentManager().findFragmentByTag(GameLiveFragment.class.getSimpleName());
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					liveService.logout();
-					unBindLiveService();
-					return super.onKeyUp(keyCode, event);
+					showPopupDialog(R.string.warning, R.string.exit_game, EXIT_GAME_TAG);
+					return true;
 				}
 
 				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveHomeFragment.class.getSimpleName());
@@ -243,6 +243,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			popupChallengesList.remove(fragment);
 		} else if (tag.equals(NETWORK_CHECK_TAG)) {
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
+
+		} else if(tag.equals(EXIT_GAME_TAG)) {
+			liveService.runMakeResignTask();
 		}
 		super.onPositiveBtnClick(fragment);
 	}

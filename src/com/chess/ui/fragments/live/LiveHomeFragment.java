@@ -86,7 +86,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		LiveItem liveItem = (LiveItem) parent.getItemAtPosition(position);
 
 		if (liveItem.iconId == R.string.ic_binoculars) {
-			createLiveChallenge(); // TODO should connect and do observe of top game
+			getActivityFace().openFragment(LiveTopGameFragment.createInstance());
 		} else if (liveItem.iconId == R.string.ic_stats) {
 			getActivityFace().openFragment(StatsGameDetailsFragment.createInstance(
 					StatsGameFragment.LIVE_STANDARD, true, getUsername()));

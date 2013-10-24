@@ -2,13 +2,13 @@ package com.chess.ui.fragments.live;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import com.chess.backend.LiveChessService;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.views.PanelInfoGameView;
-import com.chess.utilities.LogMe;
 
 
 public class LiveTopGameFragment extends GameLiveFragment {
@@ -133,6 +133,6 @@ public class LiveTopGameFragment extends GameLiveFragment {
 	}
 
 	protected void logLiveTest(String messageToLog) {
-		LogMe.dl(TAG, "LIVE OBSERVE TOP GAME FRAGMENT: " + messageToLog);
+		Log.d(TAG, "LIVE OBSERVE TOP GAME FRAGMENT: " + messageToLog);
 	}
 }

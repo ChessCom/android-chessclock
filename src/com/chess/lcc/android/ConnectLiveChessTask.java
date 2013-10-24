@@ -2,19 +2,19 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.StaticData;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.ClientFeature;
 import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.LiveChessClientException;
 import com.chess.live.client.LiveChessClientFacade;
 import com.chess.live.client.impl.HttpClientProvider;
+import com.chess.live.client.impl.LiveChessClientImpl;
 import com.chess.live.util.config.Config;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import org.eclipse.jetty.client.HttpClient;
 
 import java.io.IOException;
@@ -36,11 +36,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	public static final String LIVE_HOST_PRODUCTION = "chess.com";
 	public static final String LIVE_HOST_TEST = "chess-2.com";
-	public static final String LIVE_HOST = RestHelper.getInstance().HOST == RestHelper.HOST_PRODUCTION ? LIVE_HOST_PRODUCTION : LIVE_HOST_TEST;
 
 	//	public static final String AUTH_URL = RestHelper.CMD_LOGIN + "?username=%s&password=%s";
-	public static final String AUTH_URL = "http://www." + LIVE_HOST + "/api/v2/login" + "?username=%s&password=%s";
-	public static final String CONFIG_BAYEUX_HOST = "live." + LIVE_HOST;
 	final static Config CONFIG = new Config(Symbol.EMPTY, "assets/my.properties", true);
 	public static final String CONFIG_URI =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.uri"), "/cometd");
@@ -54,6 +51,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	/*public static final String CONFIG_AUTH_KEY =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.user1.authKey"),
 					"FIXED_PHPSESSID_WEBTIDE_903210957432054387723");*/
+
+	public static final int MAX_BACKOFF_INTERVAL = 10000;
 
 	private boolean useCurrentCredentials;
 
@@ -86,9 +85,9 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 //			InputStream keyStoreInputStream = context.getAssets().open(LccHelper.KEY_FILE_NAME);
 			Log.d(TAG, "Start Chess.Com LCC ");
-			Log.d(TAG, "Connecting to: " + CONFIG_BAYEUX_HOST + ":" + CONFIG_PORT);
+			Log.d(TAG, "Connecting to: " + getConfigBayeuxHost() + ":" + CONFIG_PORT);
 
-			item = LiveChessClientFacade.createClient(AUTH_URL, CONFIG_BAYEUX_HOST,
+			item = LiveChessClientFacade.createClient(getAuthUrl(), getConfigBayeuxHost(),
 					CONFIG_PORT, CONFIG_URI); // todo: check incorrect port connection failure
 			item.setClientInfo("Android", versionName, "No-Key");
 
@@ -97,12 +96,14 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 			item.setSupportedClientFeature(ClientFeature.GenericGameSupport, true);
 			item.setSupportedClientFeature(ClientFeature.GenericChatSupport, true);
+			item.setSupportedClientFeature(ClientFeature.GameObserve, true);
+
+			((LiveChessClientImpl)item).setMaxBackoffInterval(MAX_BACKOFF_INTERVAL);
 
 			//PublicChatsBasic
 			//PublicChatsFull
 			//PrivateChats
 			//MultiGames
-			//GameObserve
 			//MultiGameObserve
 			//Tournaments
 			//ExamineBoards
@@ -110,11 +111,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 			HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
 
-			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
-				httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
-			} else {
-				httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET);
-			}
+			httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
 
 			/*Log.d(TAG, "INITIAL httpClient.getTimeout() = " + httpClient.getTimeout());
 			Log.d(TAG, "INITIAL httpClient.getSoTimeout() = " + httpClient.getSoTimeout());
@@ -157,4 +154,18 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 		lccHelper.performConnect(useCurrentCredentials);
 		return StaticData.RESULT_OK;
 	}
+
+	private String getLiveHost() {
+		String liveHost = RestHelper.getInstance().HOST.equals(RestHelper.HOST_PRODUCTION) ? LIVE_HOST_PRODUCTION : LIVE_HOST_TEST;
+		return liveHost;
+	}
+
+	private String getAuthUrl() {
+		return "http://www." + getLiveHost() + "/api/v2/login" + "?username=%s&password=%s";
+	}
+
+	private String getConfigBayeuxHost() {
+		return "live." + getLiveHost();
+	}
+
 }

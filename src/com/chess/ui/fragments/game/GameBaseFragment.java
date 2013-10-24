@@ -89,8 +89,9 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 //		if (AppUtils.isNeedToUpgrade(getActivity())) {
 //			MopubHelper.createRectangleAd(getActivity());
 //		}
-
-		invalidateGameScreen();
+		if (gameId != 0) {
+			invalidateGameScreen();
+		}
 	}
 
 

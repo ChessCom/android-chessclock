@@ -144,6 +144,10 @@ public class NotationView extends LinearLayout implements View.OnClickListener, 
 
 			Log.d("TEST", "onSizeChanged");
 
+			if (originalNotations == null) {
+				return;
+			}
+
 			calculateViewsPerPage();
 			if (notationsAdapter != null) {
 				notationsAdapter.updateSelection();

@@ -33,8 +33,9 @@ public class LccGameListener implements GameListener {
 		for (Game game : games) {
 			gameId = game.getId();
 			if (!isMyGame(game)) {
-				lccHelper.getClient().unobserveGame(gameId);
-				Log.d(TAG, "unobserve game " + gameId);
+				// todo: check for observed
+				/*lccHelper.getClient().unobserveGame(gameId);
+				Log.d(TAG, "unobserve game " + gameId);*/
 			}
 			else if (gameId > latestGameId) {
 				latestGameId = gameId;
@@ -71,10 +72,16 @@ public class LccGameListener implements GameListener {
 	public void onGameReset(Game game) {
 		Log.d(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
-		// check isMyTurn
 
-		if (!isActualGame(game)) {
-			return;
+		if (lccHelper.isObserveGame(game)) {
+
+			// todo: check usage of currentGame, latestGame for observe game
+
+		} else {
+
+			if (!isActualGame(game)) {
+				return;
+			}
 		}
 
 		lccHelper.putGame(game);
@@ -86,8 +93,6 @@ public class LccGameListener implements GameListener {
 	@Override
 	public void onGameUpdated(Game game) {
 		Log.d(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
-
-		// check isMyTurn
 
 		if (!lccHelper.isConnected()) {
 			Log.d(TAG, "ignore onGameUpdated before onConnectionRestored"); // remove after cometd/lcc fix
@@ -125,11 +130,11 @@ public class LccGameListener implements GameListener {
 	private boolean isActualGame(Game game) {
 		Long gameId = game.getId();
 
-		if (!isMyGame(game)) { // TODO: check case
+		/*if (!isMyGame(game)) {
 			lccHelper.getClient().unobserveGame(gameId);
 			Log.d(TAG, "GAME LISTENER: unobserve game " + gameId);
 			return false;
-		} else
+		} else*/
 		if (lccHelper.isUserPlayingAnotherGame(gameId)) {
 			Log.d(TAG, "GAME LISTENER: abort and exit second game");
 			lccHelper.getClient().abortGame(game, "abort second game");

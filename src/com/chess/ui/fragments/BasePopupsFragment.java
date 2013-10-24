@@ -157,6 +157,11 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		showPopupDialog(messageId, INFO_POPUP_TAG);
 	}
 
+	protected void showSinglePopupDialog(int titleId, String message, String tag) {
+		popupItem.setButtons(1);
+		showPopupDialog(titleId, message, tag);
+	}
+
 	// Default Dialogs
 	protected void showPopupDialog(int titleId, int messageId, String tag) {
 		popupItem.setTitle(titleId);

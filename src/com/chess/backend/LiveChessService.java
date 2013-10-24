@@ -263,10 +263,6 @@ public class LiveChessService extends Service {
 		gameTaskRunner.runMakeResignTask();
 	}
 
-	public void runAbortGameTask() {
-		gameTaskRunner.runAbortGameTask();
-	}
-
 	public void runRejectDrawTask() {
 		gameTaskRunner.runRejectDrawTask();
 	}
@@ -434,10 +430,6 @@ public class LiveChessService extends Service {
 		lccHelper.paintClocks();
 	}
 
-	public boolean isAbortableBySeq() {
-		return lccHelper.isAbortableBySeq();
-	}
-
 	public void rematch() {
 		lccHelper.rematch();
 	}
@@ -448,6 +440,10 @@ public class LiveChessService extends Service {
 
 	public void createChallenge(LiveGameConfig config) {
 		lccHelper.createChallenge(config);
+	}
+
+	public void observeTopGame() {
+		lccHelper.observeTopGame();
 	}
 
 	public void sendMessage(String message, TaskUpdateInterface<String> taskFace) {
