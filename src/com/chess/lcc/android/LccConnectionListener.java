@@ -2,6 +2,7 @@ package com.chess.lcc.android;
 
 import com.chess.R;
 import com.chess.live.client.*;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 
 /**
@@ -62,6 +63,7 @@ public class LccConnectionListener implements ConnectionListener {
 		}
 		LogMe.dl(TAG, "Connection Lost, with message = " + message
 				+ " \nDetails: id = " + failureId + " comments = " + comments);
+		LogMe.dl(TAG, "Connection Lost: isNetworkAvailable=" + AppUtils.isNetworkAvailable(lccHelper.getContext()));
 		lccHelper.setConnected(false);
 	}
 
