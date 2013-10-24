@@ -2,7 +2,6 @@ package com.chess.ui.fragments.live;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.LiveBaseFragment;
+import com.chess.utilities.LogMe;
 
 /**
  * Created with IntelliJ IDEA.
@@ -166,7 +166,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 	@Override
 	public void startGameFromService() {
 
-		Log.d("lcc", "startGameFromService");
+		LogMe.dl("lcc", "startGameFromService");
 
 		final FragmentActivity activity = getActivity();
 		if (activity != null) {

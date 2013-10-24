@@ -4,9 +4,9 @@
 
 package com.chess.lcc.android;
 
-import android.util.Log;
 import com.chess.live.client.FriendStatusListener;
 import com.chess.live.client.User;
+import com.chess.utilities.LogMe;
 
 public class LccFriendStatusListener implements FriendStatusListener {
 	private static final String TAG = "LCCLOG-FRIEND";
@@ -18,7 +18,7 @@ public class LccFriendStatusListener implements FriendStatusListener {
 
 	@Override
 	public void onFriendStatusReceived(User friend) {
-		Log.d(TAG, "FRIENDS STATUS LISTENER: onFriendStatusReceived " + friend);
+		LogMe.dl(TAG, "FRIENDS STATUS LISTENER: onFriendStatusReceived " + friend);
 		lccHelper.putFriend(friend);
 	}
 
@@ -49,7 +49,7 @@ public class LccFriendStatusListener implements FriendStatusListener {
 
 	@Override
 	public void onFriendDeleted(User from, User to) {
-		Log.d(TAG, "FRIENDS STATUS LISTENER: onFriendDeleted from " + from + " to " + to);
+		LogMe.dl(TAG, "FRIENDS STATUS LISTENER: onFriendDeleted from " + from + " to " + to);
 		User deletedFriend = null;
 		if (lccHelper.getUser().getUsername().equals(from.getUsername())) {
 			deletedFriend = to;

@@ -15,6 +15,7 @@ import com.chess.live.client.impl.LiveChessClientImpl;
 import com.chess.live.util.config.Config;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
+import com.chess.utilities.LogMe;
 import org.eclipse.jetty.client.HttpClient;
 
 import java.io.IOException;
@@ -84,8 +85,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			versionName += ", OS: " + android.os.Build.VERSION.RELEASE + ", " + android.os.Build.MODEL;
 
 //			InputStream keyStoreInputStream = context.getAssets().open(LccHelper.KEY_FILE_NAME);
-			Log.d(TAG, "Start Chess.Com LCC ");
-			Log.d(TAG, "Connecting to: " + getConfigBayeuxHost() + ":" + CONFIG_PORT);
+			LogMe.dl(TAG, "Start Chess.Com LCC ");
+			LogMe.dl(TAG, "Connecting to: " + getConfigBayeuxHost() + ":" + CONFIG_PORT);
 
 			item = LiveChessClientFacade.createClient(getAuthUrl(), getConfigBayeuxHost(),
 					CONFIG_PORT, CONFIG_URI); // todo: check incorrect port connection failure
@@ -113,10 +114,10 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 			httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
 
-			/*Log.d(TAG, "INITIAL httpClient.getTimeout() = " + httpClient.getTimeout());
-			Log.d(TAG, "INITIAL httpClient.getSoTimeout() = " + httpClient.getSoTimeout());
-			Log.d(TAG, "INITIAL getIdleTimeout = " + httpClient.getIdleTimeout());
-			Log.d(TAG, "INITIAL httpClient.getConnectTimeout() = " + httpClient.getConnectTimeout());*/
+			/*LogMe.dl(TAG, "INITIAL httpClient.getTimeout() = " + httpClient.getTimeout());
+			LogMe.dl(TAG, "INITIAL httpClient.getSoTimeout() = " + httpClient.getSoTimeout());
+			LogMe.dl(TAG, "INITIAL getIdleTimeout = " + httpClient.getIdleTimeout());
+			LogMe.dl(TAG, "INITIAL httpClient.getConnectTimeout() = " + httpClient.getConnectTimeout());*/
 
 			httpClient.setMaxConnectionsPerAddress(4);
 			//httpClient.setSoTimeout(11000);

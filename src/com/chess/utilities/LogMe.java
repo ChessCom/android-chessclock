@@ -1,42 +1,26 @@
 package com.chess.utilities;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created with IntelliJ IDEA.
- * User: roger sent2roger@gmail.com
- * Date: 23.10.13
- * Time: 17:48
+ * User: vm
+ * Date: 24.10.13
+ * Time: 17:25
  */
 public class LogMe {
-	                                                                            // 10-23 18:36:16.963
-	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd' 'HH:mm:ss.SSS");
 
-	public static void d(String tag, String text) {
-		File logFile = new File("sdcard/log.txt");
-		if (!logFile.exists()) {
-			try {
-				logFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		try {
-			//BufferedWriter for performance, true to set append to file flag
-			BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
-			String timestamp = dateFormatter.format(new Date(System.currentTimeMillis()));
+	private static final Logger LOG = LoggerFactory.getLogger(LogMe.class); // todo: check class
 
-			buf.append(timestamp).append(" ").append(tag).append(" ").append(text);
-			buf.newLine();
-			buf.flush();
-			buf.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private static final String DEBUG_LIVE_TAG = "LCCLOG";
+	private static final String TAG_MESSAGE_SEPARATOR = ": ";
+
+	public static void dl(String tag, String message) {
+		LOG.debug(tag + TAG_MESSAGE_SEPARATOR + message);
+	}
+
+	public static void dl(String message) {
+		LOG.debug(DEBUG_LIVE_TAG + TAG_MESSAGE_SEPARATOR + message);
 	}
 }

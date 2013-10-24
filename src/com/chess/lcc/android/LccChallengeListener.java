@@ -1,10 +1,10 @@
 package com.chess.lcc.android;
 
-import android.util.Log;
-import com.chess.ui.engine.SoundPlayer;
-import com.chess.statics.AppConstants;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.ChallengeListener;
+import com.chess.statics.AppConstants;
+import com.chess.ui.engine.SoundPlayer;
+import com.chess.utilities.LogMe;
 
 import java.util.Collection;
 
@@ -26,7 +26,7 @@ public class LccChallengeListener implements ChallengeListener {
 			text += "\n  Private Seek/Challenge: user: " + lccHelper.getUser().getUsername()
 					+ ", challengeId=" + ch.getId() + ", from=" + ch.getFrom().getUsername() + ", to=" + ch.getTo();
 		}
-		Log.d(TAG, text);
+		LogMe.dl(TAG, text);
 		lccHelper.clearOwnChallenges();
 		for (Challenge challenge : challenges) {
 			if (challenge.getFrom().getUsername().equals(lccHelper.getUser().getUsername())) {
@@ -37,39 +37,39 @@ public class LccChallengeListener implements ChallengeListener {
 
 	@Override
 	public void onChallengeReceived(Challenge challenge) {
-		Log.d(TAG, "CHALLENGE LISTENER. Challenge received: " + challenge);
+		LogMe.dl(TAG, "CHALLENGE LISTENER. Challenge received: " + challenge);
 		if (challenge.getFrom().isComputer()) {
-			Log.d(TAG, "Challenge received: ignore computer player");
+			LogMe.dl(TAG, "Challenge received: ignore computer player");
 			return;
 		}
 		if (lccHelper.isUserBlocked(challenge.getFrom().getUsername())) {
-			Log.d(TAG, "Challenge received: blocked user");
+			LogMe.dl(TAG, "Challenge received: blocked user");
 			return;
 		}
 		if (challenge.getFrom().getUsername().equals(lccHelper.getUser().getUsername())) {
 			lccHelper.addOwnChallenge(challenge);
 			if (lccHelper.getOwnSeeksCount() > LccHelper.OWN_SEEKS_LIMIT) {
 				lccHelper.getClient().cancelChallenge(challenge);
-				Log.d(TAG, "Challenge received: cancel own challenge because of challenges count limit");
+				LogMe.dl(TAG, "Challenge received: cancel own challenge because of challenges count limit");
 				//todo: lccHelper.showOwnSeeksLimitMessage();
 				return;
 			}
 		}
 		if (challenge.isSeek()) {
 			if (challenge.getFrom().getUsername().equals(lccHelper.getUser().getUsername())) {
-				Log.d(TAG, "My seek added: user: " + lccHelper.getUser().getUsername() + ", seek: " + challenge);
+				LogMe.dl(TAG, "My seek added: user: " + lccHelper.getUser().getUsername() + ", seek: " + challenge);
 				lccHelper.putSeek(challenge);
 			}
 			return;
 		}
 		if (lccHelper.isUserBlocked(challenge.getBy())) {
-			Log.d(TAG, "CHALLENGE LISTENER. Challenge received: blocked user");
+			LogMe.dl(TAG, "CHALLENGE LISTENER. Challenge received: blocked user");
 			return;
 		}
 		// todo: fix!
 		if (lccHelper.isUserPlaying()) {
 			lccHelper.getClient().rejectChallenge(challenge, this);
-			Log.d(TAG, "CHALLENGE LISTENER. Challenge received (automatically rejected because of active game): " + challenge);
+			LogMe.dl(TAG, "CHALLENGE LISTENER. Challenge received (automatically rejected because of active game): " + challenge);
 			return;
 		}
 
@@ -84,8 +84,8 @@ public class LccChallengeListener implements ChallengeListener {
 
 	@Override
 	public void onChallengeAccepted(Long challengeId, String by, String warning) {
-		Log.d(TAG, "CHALLENGE LISTENER. Seek/Challenge accepted: user: " + lccHelper.getUser().getUsername() + AppConstants.CHALLENGE +
-						challengeId + ", by: " + by + AppConstants.WARNING + warning);
+		LogMe.dl(TAG, "CHALLENGE LISTENER. Seek/Challenge accepted: user: " + lccHelper.getUser().getUsername() + AppConstants.CHALLENGE +
+				challengeId + ", by: " + by + AppConstants.WARNING + warning);
 		lccHelper.removeChallenge(challengeId);
 
 		lccHelper.addPendingWarning(warning, by);
@@ -94,8 +94,8 @@ public class LccChallengeListener implements ChallengeListener {
 	@Override
 	public void onChallengeRejected(Long challengeId, String by, String warning) {
 		// TODO: Show the warning to user if it is not null
-		Log.d(TAG, "CHALLENGE LISTENER. Seek/Challenge rejected: user: " + lccHelper.getUser().getUsername() + AppConstants.CHALLENGE +
-						challengeId + ", by: " + by + AppConstants.WARNING + warning);
+		LogMe.dl(TAG, "CHALLENGE LISTENER. Seek/Challenge rejected: user: " + lccHelper.getUser().getUsername() + AppConstants.CHALLENGE +
+				challengeId + ", by: " + by + AppConstants.WARNING + warning);
 		lccHelper.removeChallenge(challengeId);
 		lccHelper.addPendingWarning(warning, by);
 	}
@@ -103,8 +103,8 @@ public class LccChallengeListener implements ChallengeListener {
 	@Override
 	public void onChallengeCancelled(Long challengeId, String by, String warning) {
 		// TODO: Show the warning to user if it is not null
-		Log.d(TAG, "CHALLENGE LISTENER. Seek/Challenge cancelled: user: " + lccHelper.getUser().getUsername() + AppConstants.CHALLENGE +
-						challengeId + ", by: " + by + AppConstants.WARNING + warning);
+		LogMe.dl(TAG, "CHALLENGE LISTENER. Seek/Challenge cancelled: user: " + lccHelper.getUser().getUsername() + AppConstants.CHALLENGE +
+				challengeId + ", by: " + by + AppConstants.WARNING + warning);
 
 
 		lccHelper.removeChallenge(challengeId);

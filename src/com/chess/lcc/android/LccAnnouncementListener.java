@@ -1,9 +1,9 @@
 package com.chess.lcc.android;
 
-import android.util.Log;
 import com.chess.live.client.AnnounceListener;
 import com.chess.live.client.User;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.LogMe;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,14 +24,14 @@ public class LccAnnouncementListener implements AnnounceListener {
 	@Override
 	public void onAnnounceMessageReceived(User from, AnnounceType type, String codeMessage, String txt, Object object) {
 		// todo: UPDATELCC. use new method params
-		Log.d(TAG, "onAnnounceMessageReceived: author=" + (from != null ? from.getUsername() : null) + ", type=" + type
+		LogMe.dl(TAG, "onAnnounceMessageReceived: author=" + (from != null ? from.getUsername() : null) + ", type=" + type
 				+ ", codeMessage=" + codeMessage + ", txt=" + txt + ", object=" + object);
 
 
 		if (type == AnnounceType.Shutdown && codeMessage == null && txt != null) {
 			Integer minutes = Integer.parseInt(txt) / 60;
 			String messageI18n = AppUtils.getI18nString(lccHelper.getContext(), "announcement.server_restarting", minutes.toString());
-			Log.d(TAG, messageI18n);
+			LogMe.dl(TAG, messageI18n);
 			// UPDATELCC todo: handle with new UI. Show onAdminAnnounce check for background mode in onAdminAnnounce
 			// the same way as we do for ConnectionFailure
 			//lccHelper.getLiveChessClientEventListener().onAdminAnnounce(messageI18n);

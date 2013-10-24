@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.util.Log;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
@@ -25,6 +24,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.LogMe;
 import com.flurry.android.FlurryAgent;
 
 import java.util.*;
@@ -124,7 +124,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	/*public void executePausedActivityGameEvents() {
 		*//*if (gameActivityPausedMode) {*//*
 
-		Log.d(TAG, "executePausedActivityGameEvents size=" + pausedActivityGameEvents.size() + ", events=" + pausedActivityGameEvents);
+		LogMe.dl(TAG, "executePausedActivityGameEvents size=" + pausedActivityGameEvents.size() + ", events=" + pausedActivityGameEvents);
 
 		setGameActivityPausedMode(false);
 
@@ -163,7 +163,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void setLccEventListener(LccEventListener lccEventListener) {
-		Log.d(TAG, "setLccEventListener: " + lccEventListener);
+		LogMe.dl(TAG, "setLccEventListener: " + lccEventListener);
 		this.lccEventListener = lccEventListener;
 		// todo
 		/*if (isGameActivityPausedMode()) {
@@ -239,7 +239,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void addPendingWarning(String warning, String... parameters) {
-		Log.d(TAG, "warning = " + warning);
+		LogMe.dl(TAG, "warning = " + warning);
 		if (warning != null) {
 			String messageI18n = AppUtils.getI18nString(context, warning, parameters);
 			pendingWarnings.add(messageI18n == null ? warning : messageI18n);
@@ -289,14 +289,14 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void connectByCreds(String username, String pass) {
-//		Log.d(TAG, "connectByCreds : user = " + username + " pass = " + pass); // do not post in prod
-		Log.d(TAG, "connectByCreds : hidden"); // do not post in pod
+//		LogMe.dl(TAG, "connectByCreds : user = " + username + " pass = " + pass); // do not post in prod
+		LogMe.dl(TAG, "connectByCreds : hidden"); // do not post in pod
 		lccClient.connect(username, pass, connectionListener);
 		liveChessClientEventListener.onConnecting();
 	}
 
 	public void connectBySessionId(String sessionId) {
-		Log.d(TAG, "connectBySessionId : sessionId = " + sessionId);
+		LogMe.dl(TAG, "connectBySessionId : sessionId = " + sessionId);
 		lccClient.connect(sessionId, connectionListener);
 		liveChessClientEventListener.onConnecting();
 	}
@@ -320,7 +320,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		if (details == null && !AppUtils.isNetworkAvailable(context)) {
 			// handle null-case when user tries to connect when device connection is off, just ignore
-			Log.d(TAG, "processConnectionFailure: no active connection, wait for LCC reconnect");
+			LogMe.dl(TAG, "processConnectionFailure: no active connection, wait for LCC reconnect");
 			return;
 		}
 
@@ -328,7 +328,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		cancelServiceNotification();
 		logout();
 
-		Log.d(TAG, "processConnectionFailure: details=" + details);
+		LogMe.dl(TAG, "processConnectionFailure: details=" + details);
 
 		String detailsMessage;
 
@@ -434,7 +434,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		@Override
 		public void updateData(LiveChessClient returnedObj) {
-			Log.d(TAG, "LiveChessClient initialized");
+			LogMe.dl(TAG, "LiveChessClient initialized");
 			lccClient = returnedObj;    // duplicate of setter
 		}
 	}*/
@@ -508,7 +508,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 					&& challenge.isRated() == oldChallenge.isRated()
 					&& ((challenge.getTo() == null && oldChallenge.getTo() == null) ||
 					(challenge.getTo() != null && challenge.getTo().equals(oldChallenge.getTo())))) {
-				Log.d(TAG, "Check for doubled challenges: cancel challenge: " + oldChallenge);
+				LogMe.dl(TAG, "Check for doubled challenges: cancel challenge: " + oldChallenge);
 				lccClient.cancelChallenge(oldChallenge);
 			}
 		}
@@ -578,7 +578,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		  showOwnSeeksLimitMessage();
 		  return;
 		}
-		LccUser.Log.d(TAG, "SeekConnection issue seek: " + seek);
+		LccUser.LogMe.dl(TAG, "SeekConnection issue seek: " + seek);
 		Challenge challenge = mapJinSeekToLccChallenge(seek);
 		//outgoingLccSeeks.add(challenge);
 		lccUser.getClient().sendChallenge(challenge, lccUser.getChallengeListener());
@@ -624,7 +624,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void setFriends(Collection<? extends User> friends) {
-		Log.d(TAG, "CONNECTION: get friends list: " + friends);
+		LogMe.dl(TAG, "CONNECTION: get friends list: " + friends);
 		if (friends == null) {
 			return;
 		}
@@ -755,14 +755,14 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			  lccMove = chessMove.isPromotion() ? lccMove.replaceFirst("=", StaticData.EMPTY) : lccMove;
 			}*/
 
-		Log.d(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move);
+		LogMe.dl(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move);
 		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
 	}
 
 	public void rematch() {
 		final Game lastGame = getLastGame();
 
-		Log.d("REMATCHTEST", "rematch getLastGame " + lastGame);
+		LogMe.dl("REMATCHTEST", "rematch getLastGame " + lastGame);
 
 		final List<GameResult> gameResults = lastGame.getResults();
 		final String whiteUsername = lastGame.getWhitePlayer().getUsername();
@@ -823,12 +823,12 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		// from doc: Note that if a stopped service still has ServiceConnection objects bound to it with
 		// the BIND_AUTO_CREATE set, it will not be destroyed until all of these bindings are removed.
 		boolean result = context.stopService(new Intent(context, LiveChessService.class));
-		Log.d(TAG, "Live stopService: " + result);
+		LogMe.dl(TAG, "Live stopService: " + result);
 		liveService.stopSelf(); // don't work too
 	}*/
 
 	public void logout() {
-		Log.d(TAG, "USER LOGOUT");
+		LogMe.dl(TAG, "USER LOGOUT");
 		new AppData(context).setLiveChessMode(false);
 		setCurrentGameId(null);
 		setUser(null);
@@ -909,7 +909,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void doReplayMoves(Game game) {
-		Log.d(TAG, "GAME LISTENER: replay moves, gameId " + game.getId());
+		LogMe.dl(TAG, "GAME LISTENER: replay moves, gameId " + game.getId());
 
 		latestMoveNumber = game.getMoveCount() - 1;
 		lccEventListener.onGameRefresh(new GameLiveItem(game, latestMoveNumber));
@@ -917,7 +917,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public void doMoveMade(final Game game, int moveIndex) {
 		/*if (((latestMoveNumber != null) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0)) {
-			Log.d(TAG, "GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex
+			LogMe.dl(TAG, "GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex
 					+ ", latestMoveNumber=" + latestMoveNumber + StaticData.RIGHT_PAR);
 			return;
 		} else {*/
@@ -928,7 +928,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			// todo: possible optimization - keep gameLiveItem between moves and just add new move when it comes
 			lccEventListener.onGameRefresh(new GameLiveItem(game, moveIndex));
 		} else {
-			Log.d(TAG, "paused mode: postpone MOVE processing");
+			LogMe.dl(TAG, "paused mode: postpone MOVE processing");
 			/*LiveGameEvent moveEvent = new LiveGameEvent();
 			moveEvent.setEvent(LiveGameEvent.Event.MOVE);
 			moveEvent.setGameId(game.getId());
@@ -957,7 +957,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public void setLastGameId(Long lastGameId) {
 		this.lastGameId = lastGameId;
-		Log.d("REMATCHTEST", "setLastGameId " + lastGameId);
+		LogMe.dl("REMATCHTEST", "setLastGameId " + lastGameId);
 	}
 
 	public void setCurrentGameId(Long gameId) {
@@ -1040,7 +1040,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void observeTopGame() {
-		Log.d(TAG, "observe top game: listener=" + gameListener);
+		LogMe.dl(TAG, "observe top game: listener=" + gameListener);
 		lccClient.observeTopGame(GameRatingClass.Blitz, gameListener); // todo: check game types
 	}
 
@@ -1107,7 +1107,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	//	public void createChallenge(String friend) {
 	public void createChallenge(LiveGameConfig config) {
-		Log.d(TAG, "createChallenge");
+		LogMe.dl(TAG, "createChallenge");
 
 		if (getOwnSeeksCount() >= LccHelper.OWN_SEEKS_LIMIT || getUser() == null) {
 			return; // TODO throw exception
@@ -1151,14 +1151,14 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		final String opponentName = getOpponentName();
 
 		if (opponentName != null && game.isDrawOfferedByPlayer(opponentName)) { // check if game is not ended?
-			Log.d(TAG, "GAME LISTENER: Draw offered at the move #" + game.getMoveCount() + ", game.id=" + game.getId()
+			LogMe.dl(TAG, "GAME LISTENER: Draw offered at the move #" + game.getMoveCount() + ", game.id=" + game.getId()
 					+ ", offerer=" + opponentName + ", game=" + game);
 
 			if (!isGameActivityPausedMode()) {
-				Log.d(TAG, "DRAW SHOW");
+				LogMe.dl(TAG, "DRAW SHOW");
 				getLccEventListener().onDrawOffered(opponentName);
 			} else {
-				Log.d(TAG, "paused mode: postpone DRAW processing");
+				LogMe.dl(TAG, "paused mode: postpone DRAW processing");
 				/*final LiveGameEvent drawOfferedEvent = new LiveGameEvent();
 				drawOfferedEvent.setEvent(LiveGameEvent.Event.DRAW_OFFER);
 				drawOfferedEvent.setGameId(game.getId());
@@ -1222,7 +1222,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				break;
 		}
 		//message = whiteUsername + " vs. " + blackUsername + " - " + message;
-		Log.d(TAG, "GAME LISTENER: " + message);
+		LogMe.dl(TAG, "GAME LISTENER: " + message);
 
 		/*if (getWhiteClock() != null) {
 			getWhiteClock().setRunning(false);
@@ -1246,8 +1246,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		if (!isGameActivityPausedMode()) {
 			getLccEventListener().onGameEnd(message);
 		} else {
-			Log.d(TAG, "paused mode: postpone GAME END processing");
-			/*Log.d(TAG, "ActivityPausedMode = true");
+			LogMe.dl(TAG, "paused mode: postpone GAME END processing");
+			/*LogMe.dl(TAG, "ActivityPausedMode = true");
 			final LiveGameEvent gameEndedEvent = new LiveGameEvent();
 			gameEndedEvent.setGameId(gameId);
 			gameEndedEvent.setEvent(LiveGameEvent.Event.END_OF_GAME);
@@ -1255,7 +1255,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			lccHelper.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
 			if (lccHelper.getLccEventListener() == null) { // if activity is not started yet
 				lccHelper.processFullGame(game);
-				Log.d(TAG, "processFullGame");
+				LogMe.dl(TAG, "processFullGame");
 			}*/
 		}
 	}

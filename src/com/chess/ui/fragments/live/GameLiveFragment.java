@@ -50,6 +50,7 @@ import com.chess.ui.views.chess_boards.ChessBoardLiveView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.game_controls.ControlsLiveView;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.LogMe;
 
 import java.util.List;
 
@@ -220,7 +221,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		invalidateGameScreen();
 		if (liveService.getPendingWarnings().size() > 0) {
 			warningMessage = liveService.getLastWarningMessage();
-			Log.d("LCCLOG-WARNING", warningMessage);
+			LogMe.dl("LCCLOG-WARNING", warningMessage);
 			popupItem.setNegativeBtnId(R.string.fair_play_policy);
 			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG);
 		}
@@ -629,7 +630,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 						", moves=" + getBoardFace().getMoveListSAN() +
 						", trace=" + stackTrace;
 		temporaryDebugInfo = temporaryDebugInfo.replaceAll("\n", " ");
-		//Log.d("TESTTEST", temporaryDebugInfo);
+		//LogMe.dl("TESTTEST", temporaryDebugInfo);
 
 		liveService.makeMove(move, temporaryDebugInfo);
 	}
@@ -637,7 +638,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void switch2Analysis() {
 //		super.switch2Analysis(isAnalysis);
-//		Log.d("live", "switch2Analysis analysis = " + isAnalysis); // TODO restore
+//		LogMe.dl("live", "switch2Analysis analysis = " + isAnalysis); // TODO restore
 //		if (isAnalysis) {
 //			liveService.setLatestMoveNumber(0);
 //			ChessBoardLive.resetInstance();
@@ -897,7 +898,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			if (isLCSBound) {
 				liveService.getPendingWarnings().remove(warningMessage);
 			}
-			Log.d("live", "positive clicked");
+			LogMe.dl("live", "positive clicked");
 			// TODO find a real cause of analysis block
 			// restore game to normal state
 //			switch2Analysis(false);
@@ -1277,6 +1278,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	protected void logLiveTest(String messageToLog) {
-		Log.d(TAG, "LIVE GAME FRAGMENT: " + messageToLog);
+		LogMe.dl(TAG, "LIVE GAME FRAGMENT: " + messageToLog);
 	}
 }

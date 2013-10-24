@@ -25,7 +25,7 @@ public class LccSeekListListener implements SeekListListener {
 	public void onSeekListReceived(SubscriptionId id, Collection<Challenge> challenges, Integer total) {
 		if (challenges != null) {
 			Log.i(TAG, "SEEK LIST LISTENER: Public Seek list received: size = " + challenges.size() + ", total = " + total);
-			/*LccUser.LOG.debug(
+			/*LccUser.LogMe.dlebug(
 					"SEEK LIST LISTENER: Public Seek received: subscriptionId = " + ((SubscriptionIdImpl) id).toDebugString() +
 					", size = " + challenges.size() + ", total = " + total);*/
 			lccHelper.clearSeeks();

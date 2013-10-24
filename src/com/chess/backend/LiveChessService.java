@@ -10,15 +10,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 import com.chess.R;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.AppData;
-import com.chess.statics.IntentConstants;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.lcc.android.*;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -30,8 +26,12 @@ import com.chess.live.client.Game;
 import com.chess.live.client.LiveChessClient;
 import com.chess.live.client.User;
 import com.chess.model.GameLiveItem;
+import com.chess.statics.AppData;
+import com.chess.statics.IntentConstants;
+import com.chess.statics.StaticData;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.configs.LiveGameConfig;
+import com.chess.utilities.LogMe;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +53,7 @@ public class LiveChessService extends Service {
 
 	public class ServiceBinder extends Binder {
 		public LiveChessService getService(){
-			Log.d(TAG, "SERVICE: getService called");
+			LogMe.dl(TAG, "SERVICE: getService called");
 			return LiveChessService.this;
 		}
 	}
@@ -67,35 +67,35 @@ public class LiveChessService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		Log.d(TAG, "SERVICE: onBind");
-		Log.d(TAG, "lccHelper instance before check = " + lccHelper);
+		LogMe.dl(TAG, "SERVICE: onBind");
+		LogMe.dl(TAG, "lccHelper instance before check = " + lccHelper);
 		if (lccHelper == null) {
 			lccHelper = new LccHelper(getContext(), this, new LccConnectUpdateListener());
-			Log.d(TAG, "SERVICE: helper created");
+			LogMe.dl(TAG, "SERVICE: helper created");
 		} else {
-			Log.d(TAG, "SERVICE: helper exist!");
+			LogMe.dl(TAG, "SERVICE: helper exist!");
 		}
-		Log.d(TAG, "lccHelper instance after check = " + lccHelper);
+		LogMe.dl(TAG, "lccHelper instance after check = " + lccHelper);
 		return serviceBinder;
 	}
 
 	@Override
 	public boolean onUnbind(Intent intent) {
-		Log.d(TAG, "SERVICE: onUnbind , this service have no binders anymore");
+		LogMe.dl(TAG, "SERVICE: onUnbind , this service have no binders anymore");
 
 		return super.onUnbind(intent);
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d(TAG, "SERVICE: onStartCommand");
+		LogMe.dl(TAG, "SERVICE: onStartCommand");
 
 		return START_STICKY_COMPATIBILITY;
 	}
 
 	@Override
 	public void onDestroy() {
-		Log.d(TAG, "SERVICE: onDestroy");
+		LogMe.dl(TAG, "SERVICE: onDestroy");
 		if (lccHelper != null) {
 			lccHelper.logout();
 			lccHelper = null;
@@ -106,22 +106,22 @@ public class LiveChessService extends Service {
 
 	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
 		this.connectionUpdateFace = connectionUpdateFace;
-		Log.d(TAG, "appData.isLiveChess(getContext()) " + appData.isLiveChess());
-		Log.d(TAG, "lccHelper instance in checkAndConnect = " + lccHelper);
-		Log.d(TAG, "lccClient instance in checkAndConnect = " +  lccHelper.getClient());
+		LogMe.dl(TAG, "appData.isLiveChess(getContext()) " + appData.isLiveChess());
+		LogMe.dl(TAG, "lccHelper instance in checkAndConnect = " + lccHelper);
+		LogMe.dl(TAG, "lccClient instance in checkAndConnect = " + lccHelper.getClient());
 
-		Log.d(TAG, "lccHelper.getClient() " + lccHelper.getClient());
+		LogMe.dl(TAG, "lccHelper.getClient() " + lccHelper.getClient());
 
 		if (appData.isLiveChess() && !lccHelper.isConnected()) {
 			if (lccHelper.getClient() == null) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
 				lccHelper.runConnectTask();
-				Log.d(TAG, "no lccClient running connection task");
+				LogMe.dl(TAG, "no lccClient running connection task");
 			} else {
-				Log.d(TAG, "client is CONNECTING");
+				LogMe.dl(TAG, "client is CONNECTING");
 				//onConnecting();
 			}
 		} else if (lccHelper.isConnected()) {
-			Log.d(TAG, "connected case");
+			LogMe.dl(TAG, "connected case");
 			onLiveConnected();
 		} else {
 			// we get here when network connection changes and we get different ip address
@@ -129,12 +129,12 @@ public class LiveChessService extends Service {
 
 			// vm: lets avoid any manual connects here, LCC is in charge on that.
 
-			Log.d(TAG, "else case");
+			LogMe.dl(TAG, "else case");
 		}
 	}
 
 	public void onLiveConnected() {
-		Log.d(TAG, "onLiveConnected, connectionUpdateFace = " + connectionUpdateFace);
+		LogMe.dl(TAG, "onLiveConnected, connectionUpdateFace = " + connectionUpdateFace);
 		if (connectionUpdateFace != null) {
 			connectionUpdateFace.onConnected();
 		}
@@ -147,7 +147,7 @@ public class LiveChessService extends Service {
 
 		@Override
 		public void updateData(LiveChessClient returnedObj) {
-			Log.d(TAG, "LiveChessClient initialized " + returnedObj);
+			LogMe.dl(TAG, "LiveChessClient initialized " + returnedObj);
 
 			// todo: tune notification
 			Notification notification = new Notification(R.drawable.ic_stat_live, getString(R.string.chess_com_live),
@@ -187,7 +187,7 @@ public class LiveChessService extends Service {
 			//LccHelper lccHolder = LccHelper.getInstance(context);
 
 			boolean failover = intent.getBooleanExtra("FAILOVER_CONNECTION", false);
-			Log.d(TAG, "NetworkChangeReceiver failover=" + failover);
+			LogMe.dl(TAG, "NetworkChangeReceiver failover=" + failover);
 
 			final ConnectivityManager connectivityManager = (ConnectivityManager)
 					context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -198,14 +198,14 @@ public class LiveChessService extends Service {
 			final NetworkInfo mobile =
 					connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
-			Log.d(TAG, "NetworkChangeReceiver failover wifi=" + wifi.isFailover() + ", mobile=" + mobile.isFailover());
+			LogMe.dl(TAG, "NetworkChangeReceiver failover wifi=" + wifi.isFailover() + ", mobile=" + mobile.isFailover());
 
 			NetworkInfo[] networkInfo
 					= connectivityManager.getAllNetworkInfo();
 
 			for (int i = 0; i < networkInfo.length; i++) {
 				if (networkInfo[i].isConnected()) {
-					Log.d(TAG,  "NetworkChangeReceiver isConnected " + networkInfo[i].getTypeName());
+					LogMe.dl(TAG, "NetworkChangeReceiver isConnected " + networkInfo[i].getTypeName());
 
 					// todo: check NPE
 					if (lccHelper.getNetworkTypeName() != null && !networkInfo[i].getTypeName().equals(lccHelper.getNetworkTypeName())) {

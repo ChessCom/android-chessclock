@@ -40,6 +40,7 @@ import com.chess.ui.fragments.live.LiveHomeFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.LogMe;
 import com.facebook.widget.LoginButton;
 
 import java.util.ArrayList;
@@ -92,8 +93,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onStart() {
 		super.onStart();
 
-		Log.d(TAG, "onStart: getAppData().isLiveChess()=" + getAppData().isLiveChess());
-		Log.d(TAG, "onStart: isLCSBound=" + isLCSBound);
+		LogMe.dl(TAG, "onStart: getAppData().isLiveChess()=" + getAppData().isLiveChess());
+		LogMe.dl(TAG, "onStart: isLCSBound=" + isLCSBound);
 
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
@@ -115,7 +116,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	public void unBindLiveService() {
-		Log.d(TAG, "unBindLiveService: isLCSBound=" + isLCSBound);
+		LogMe.dl(TAG, "unBindLiveService: isLCSBound=" + isLCSBound);
 		if (isLCSBound) {
 			unbindService(liveServiceConnectionListener);
 			isLCSBound = false;
@@ -180,7 +181,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	public void executePausedActivityLiveEvents() {
 
 		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = liveService.getPausedActivityLiveEvents();
-		Log.d(TAG, "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
+		LogMe.dl(TAG, "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
 
 		if (pausedActivityLiveEvents.size() > 0) {
 
@@ -280,15 +281,15 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Log.d(TAG, "onActivityResult");
+		LogMe.dl(TAG, "onActivityResult");
 		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
 			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
 		}
 	}
 
 	public void connectLcc() {
-		Log.d(TAG, "connectLcc: getAppData().isLiveChess()=" + getAppData().isLiveChess());
-		Log.d(TAG, "connectLcc: isLCSBound=" + isLCSBound);
+		LogMe.dl(TAG, "connectLcc: getAppData().isLiveChess()=" + getAppData().isLiveChess());
+		LogMe.dl(TAG, "connectLcc: isLCSBound=" + isLCSBound);
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
@@ -310,7 +311,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-			Log.d(TAG, "onServiceConnected");
+			LogMe.dl(TAG, "onServiceConnected");
 
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
 			liveService = serviceBinder.getService();
@@ -332,7 +333,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
-			Log.d(TAG, "SERVICE: onServiceDisconnected");
+			LogMe.dl(TAG, "SERVICE: onServiceDisconnected");
 			isLCSBound = false;
 			LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
 			if (waitFragment != null) {
@@ -373,7 +374,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void showDelayedDialogImmediately(Challenge challenge) {
-			Log.d(TAG, "CHALLENGE showDelayedDialogImmediately -> popupDialogFragment.show ");
+			LogMe.dl(TAG, "CHALLENGE showDelayedDialogImmediately -> popupDialogFragment.show ");
 			currentChallenge = challenge;
 
 			popupItem.setPositiveBtnId(R.string.accept);
@@ -384,7 +385,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		@Override
 		public void showDialogImmediately(Challenge challenge) {
 			if (popupChallengesList.size() > 0) {
-				Log.d("LCCLOG", "show challenge dialog: popupManager.size() " + popupManager.size());
+				LogMe.dl("LCCLOG", "show challenge dialog: popupManager.size() " + popupManager.size());
 				return;
 			}
 
@@ -396,13 +397,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 			PopupDialogFragment popupDialogFragment = PopupDialogFragment.createInstance(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
-			Log.d(TAG, "CHALLENGE showDialogImmediately -> popupDialogFragment.show ");
+			LogMe.dl(TAG, "CHALLENGE showDialogImmediately -> popupDialogFragment.show ");
 			popupChallengesList.add(popupDialogFragment);
 		}
 
 		@Override
 		public void showDialog(Challenge challenge) {
-			Log.d(TAG, "CHALLENGE showDialog -> isPaused = " + isPaused);
+			LogMe.dl(TAG, "CHALLENGE showDialog -> isPaused = " + isPaused);
 			if (isPaused) {
 				LiveEvent liveEvent = new LiveEvent();
 				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);
@@ -572,7 +573,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void onConnectionBlocked(final boolean blocked) {
-		Log.d(TAG, "onConnectionBlocked = " + blocked);
+		LogMe.dl(TAG, "onConnectionBlocked = " + blocked);
 		GameLiveFragment gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
 		if (gameLiveFragment != null) {
 			gameLiveFragment.onConnectionBlocked(blocked);
@@ -646,12 +647,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	protected void onLiveServiceConnected() {
-//		Log.d("TEST", "onLiveConnected callback, liveService.isConnected() = " + liveService.isConnected()
+//		LogMe.dl("TEST", "onLiveConnected callback, liveService.isConnected() = " + liveService.isConnected()
 //				+ " in " + LiveBaseActivity.this);
-//		Log.d(TAG, " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected());
+//		LogMe.dl(TAG, " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected());
 //		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
 
-		Log.d(TAG, "onLiveServiceConnected: liveService.getLccHelper()=" + liveService.getLccHelper());
+		LogMe.dl(TAG, "onLiveServiceConnected: liveService.getLccHelper()=" + liveService.getLccHelper());
 		if (liveService.getLccHelper() == null) {
 			return;
 		}
@@ -660,21 +661,21 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		liveService.setChallengeTaskListener(challengeTaskListener);
 
 		GameLiveFragment gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
-		Log.d(TAG, "onLiveServiceConnected: gameLiveFragment=" + gameLiveFragment);
+		LogMe.dl(TAG, "onLiveServiceConnected: gameLiveFragment=" + gameLiveFragment);
 		if (gameLiveFragment != null) {
 			gameLiveFragment.onLiveServiceConnected();
 			return;
 		}
 
 		LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
-		Log.d(TAG, "onLiveServiceConnected: waitFragment=" + waitFragment);
+		LogMe.dl(TAG, "onLiveServiceConnected: waitFragment=" + waitFragment);
 		if (waitFragment != null) {
 			waitFragment.onLiveServiceConnected();
 			return;
 		}
 
 		LiveHomeFragment liveHomeFragment = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
-		Log.d(TAG, "onLiveServiceConnected: liveHomeFragment=" + liveHomeFragment);
+		LogMe.dl(TAG, "onLiveServiceConnected: liveHomeFragment=" + liveHomeFragment);
 		if (liveHomeFragment != null) {
 			liveHomeFragment.onLiveServiceConnected();
 		}

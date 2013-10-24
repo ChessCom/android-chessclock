@@ -1,11 +1,11 @@
 package com.chess.lcc.android;
 
-import android.util.Log;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.LiveChessClient;
 import com.chess.statics.StaticData;
+import com.chess.utilities.LogMe;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -133,9 +133,9 @@ public class LccChallengeTaskRunner {
 
 		@Override
 		protected Integer doTheTask(Challenge... challenge) {
-			Log.d("lcclog", "LiveAcceptChallengeTask liveChessClient=" + getClient());
-			Log.d("lcclog", "LiveAcceptChallengeTask challenge=" + challenge);
-			Log.d("lcclog", "LiveAcceptChallengeTask challenge[0]=" + challenge[0]);
+			LogMe.dl("LiveAcceptChallengeTask liveChessClient=" + getClient());
+			LogMe.dl("LiveAcceptChallengeTask challenge=" + challenge);
+			LogMe.dl("LiveAcceptChallengeTask challenge[0]=" + challenge[0]);
 			getClient().acceptChallenge(challenge[0], challengeListener);
 			return StaticData.RESULT_OK;
 		}
