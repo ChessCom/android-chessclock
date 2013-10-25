@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.View;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
-import com.chess.RoboButton;
 import com.chess.ui.interfaces.boards.BoardViewDiagramFace;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
@@ -37,32 +35,17 @@ public class ControlsDiagramView extends ControlsBaseView {
 			return;
 		}
 
-		controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_diagram_height);
-		controlIconColor = resources.getColorStateList(R.color.text_controls_icons_diagram);
-		controlIconSize = (int) (resources.getDimension(R.dimen.game_controls_icon_diagram_size) / density);
-
-		addControlButton(MAKE_MOVE, R.style.Rect_Bottom_Left_LightGrey);
-		addControlButton(PAUSE, R.style.Rect_Bottom_Left_LightGrey);
-		addControlButton(BACK_END, R.style.Rect_Bottom_Middle_LightGrey);
-		addControlButton(BACK, R.style.Rect_Bottom_Middle_LightGrey);
-		addControlButton(FORWARD, R.style.Rect_Bottom_Middle_LightGrey);
-		addControlButton(FWD_END, R.style.Rect_Bottom_Middle_LightGrey);
-		addControlButton(DOTS_OPTIONS, R.style.Rect_Bottom_Right_LightGrey);
+		addControlButton(MAKE_MOVE, R.style.Rect_Bottom_Left);
+		addControlButton(PAUSE, R.style.Rect_Bottom_Left);
+		addControlButton(BACK_END, R.style.Rect_Bottom_Middle);
+		addControlButton(BACK, R.style.Rect_Bottom_Middle);
+		addControlButton(FORWARD, R.style.Rect_Bottom_Middle);
+		addControlButton(FWD_END, R.style.Rect_Bottom_Middle);
+		addControlButton(DOTS_OPTIONS, R.style.Rect_Bottom_Right);
 
 		addView(controlsLayout);
 
 		showGameButton(PAUSE, false);
-	}
-
-	@Override
-	RoboButton getDefaultButton() {
-		RoboButton button = new RoboButton(getContext());
-		button.setFont(FontsHelper.ICON_FONT);
-		button.setTextSize(controlIconSize);
-		button.setTextColor(controlIconColor);
-		button.setOnClickListener(this);
-
-		return button;
 	}
 
 	@Override

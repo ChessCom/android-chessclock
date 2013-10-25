@@ -568,7 +568,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				}
 			}
 
-//			{ // finished
+			// finished
 			finishedGameDataList = returnedObj.getData().getFinished();
 			if (!currentGamesLeft) { // if SaveTask will not return to LoadFinishedGamesPoint
 				if (finishedGameDataList != null) {

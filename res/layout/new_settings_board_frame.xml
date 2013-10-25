@@ -30,12 +30,12 @@
                 style="@style/SettingsListText"
                 />
 
-            <Spinner
-                android:id="@+id/piecesSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="37dip"
-                android:background="@drawable/transparent_list_item_selector"
-                />
+			<com.chess.backend.image_load.ProgressImageView
+				android:id="@+id/piecesLineImage"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:contentDescription="@string/image"
+				/>
 
         </com.chess.LinLayout>
 

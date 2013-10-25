@@ -111,11 +111,15 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		} else if (id == R.id.yourEmailView) {
 			showEmailEdit(true);
 		} else if (id == R.id.addEmailBtn) {
-			LoadItem loadItem = LoadHelper.postFriendByEmail(getUserToken(), getTextFromField(emailEditBtn), getString(R.string.add_friend_request_message));
-
-			new RequestJsonTask<RequestItem>(new RequestFriendListener()).executeTask(loadItem);
-			showEmailEdit(false);
+			createFriendRequestByEmail(getTextFromField(emailEditBtn));
 		}
+	}
+
+	private void createFriendRequestByEmail(String email) {
+		LoadItem loadItem = LoadHelper.postFriendByEmail(getUserToken(), email, getString(R.string.add_friend_request_message));
+
+		new RequestJsonTask<RequestItem>(new RequestFriendListener()).executeTask(loadItem);
+		showEmailEdit(false);
 	}
 
 	private void showEmailEdit(boolean show) {
@@ -242,8 +246,8 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 			if (cursor != null && cursor.moveToFirst()) {
 				int emailIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
 				String email = cursor.getString(emailIdx);
-				createFriendRequest(email,  getString(R.string.add_friend_request_message));
-//				showToast("email = " + email); // TODO maybe add email confirmation logic
+
+				createFriendRequestByEmail(email);
 			}
 		}
 	}

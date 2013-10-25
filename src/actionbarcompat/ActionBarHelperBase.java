@@ -25,7 +25,6 @@ import android.text.TextWatcher;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.statics.AppConstants;
@@ -33,6 +32,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
 import com.chess.ui.views.drawables.BadgeDrawable;
+import com.chess.utilities.FontsHelper;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -144,6 +144,11 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		}
 
 		actionBarCompat.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
+	}
+
+	public void updateActionBarBackground(){
+		View actionBar = getActionBarCompat(); // could be null for small screens
+		actionBar.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
 	}
 
 	/**

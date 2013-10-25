@@ -22,6 +22,7 @@ import com.chess.backend.RestHelper;
 import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppData;
+import com.chess.statics.FlurryData;
 import com.chess.statics.IntentConstants;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
@@ -37,6 +38,7 @@ import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.fragments.welcome.WelcomeFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
+import com.flurry.android.FlurryAgent;
 import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
@@ -103,7 +105,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			} else if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
 				// set the Above View
 				switchFragment(new HomeTabsFragment());
-//				switchFragment(new ArticlesFragment());
+//				switchFragment(new SettingsThemeCustomizeFragment());
 				showActionBar = true;
 			} else {
 				switchFragment(new WelcomeTabsFragment());
@@ -160,9 +162,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		final String action = intent.getAction();
 
 		if (Intent.ACTION_VIEW.equals(action)) {
-			final List<String> segments = intent.getData().getPathSegments();
-			if (segments.size() > 1) {
-				showToast(segments.get(0));
+			Uri data = intent.getData();
+			if (data != null) {
+				final List<String> segments = data.getPathSegments();
+				if (segments != null && segments.size() > 1) {
+					showToast(segments.get(0));
+				}
 			}
 		}
 
@@ -227,6 +232,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		} else {
 			invalidateOptionsMenu();
 		}
+	}
+
+	@Override
+	public void updateActionBarBackImage() {
+		getActionBarHelper().updateActionBarBackground();
 	}
 
 	@Override
@@ -391,6 +401,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		ft.replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName());
 		ft.addToBackStack(fragment.getClass().getSimpleName());
 		ft.commit();
+
+		FlurryAgent.logEvent(FlurryData.OPEN_FRAME + fragment.getClass().getSimpleName());
 	}
 
 	@Override

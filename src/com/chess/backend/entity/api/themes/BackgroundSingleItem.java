@@ -8,7 +8,7 @@ import com.chess.backend.entity.api.BaseResponseItem;
  * Date: 03.10.13
  * Time: 6:22
  */
-public class BackgroundItem extends BaseResponseItem<BackgroundItem.Data> {
+public class BackgroundSingleItem extends BaseResponseItem<BackgroundSingleItem.Data> {
 /*
 	"data": {
 		"name": "Glass",
@@ -24,12 +24,17 @@ public class BackgroundItem extends BaseResponseItem<BackgroundItem.Data> {
 */
 
 	public class Data {
+		private int user_theme_background_id;
 		private String name;
 		private String background_preview_url;
 		private String font_color;
 		private String original_handset;
 		private String original_tablet;
 		private String resized_image;
+
+		public int getBackgroundId() {
+			return user_theme_background_id;
+		}
 
 		public String getName() {
 			return name;

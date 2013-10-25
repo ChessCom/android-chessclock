@@ -11,6 +11,7 @@ import com.chess.backend.entity.api.stats.GameStatsItem;
 import com.chess.backend.entity.api.stats.GamesInfoByResult;
 import com.chess.backend.entity.api.stats.Tournaments;
 import com.chess.backend.entity.api.stats.UserStatsData;
+import com.chess.backend.entity.api.themes.PieceSingleItem;
 import com.chess.backend.entity.api.themes.SoundSingleItem;
 import com.chess.backend.entity.api.themes.ThemeItem;
 import com.chess.backend.gcm.FriendRequestItem;
@@ -445,6 +446,7 @@ public class DbDataManager {
 			do {
 				gamesIds[i++] = getLong(cursor, V_ID);
 			} while (cursor.moveToNext());
+			cursor.close();
 		} else if (gamesList.size() == 0) { // means no current games for that user
 			arguments1[0] = username;
 			contentResolver.delete(uri, SELECTION_USER, arguments1);
@@ -2472,17 +2474,35 @@ public class DbDataManager {
 	}
 
 	/* Sounds */
-	public static void saveSoundToDb(ContentResolver contentResolver, SoundSingleItem.Data item) {
+	public static void saveSoundsPathToDb(ContentResolver contentResolver, SoundSingleItem.Data item) {
 		final String[] arguments = sArguments1;
-		arguments[0] = String.valueOf(item.getUserThemeSoundId());
+		arguments[0] = String.valueOf(item.getThemeSoundId());
 
 		Uri uri = uriArray[Tables.THEME_SOUNDS.ordinal()];
 		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments, null);
 
 		ContentValues values = new ContentValues();
-		values.put(V_ID, item.getUserThemeSoundId());
+		values.put(V_ID, item.getThemeSoundId());
 		values.put(V_NAME, item.getName());
 		values.put(V_URL, item.getSoundPackZipUrl());
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	/* Pieces */
+	public static void savePiecesPathsToDb(ContentResolver contentResolver, PieceSingleItem.Data item) {
+		final String[] arguments = sArguments1;
+		arguments[0] = String.valueOf(item.getThemePieceId());
+
+		Uri uri = uriArray[Tables.THEME_PIECES.ordinal()];
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments, null);
+
+		ContentValues values = new ContentValues();
+		values.put(V_ID, item.getThemePieceId());
+		values.put(V_NAME, item.getName());
+		values.put(V_THEME_ID, item.getThemeId());
+		values.put(V_THEME_DIR, item.getThemeDir());
+		values.put(V_PREVIEW_URL, item.getPreviewUrl());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}

@@ -1,16 +1,21 @@
 package com.chess.ui.fragments.settings;
 
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.SwitchButton;
+import com.chess.backend.image_load.EnhancedImageDownloader;
+import com.chess.backend.image_load.ProgressImageView;
+import com.chess.model.SelectionItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
-import com.chess.model.SelectionItem;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
@@ -28,18 +33,28 @@ import java.util.List;
 public class SettingsBoardFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener,
 		AdapterView.OnItemSelectedListener {
 
-	private List<SelectionItem> piecesList;
+	private List<SelectionItem> defaultPiecesSelectionList;
 	private List<SelectionItem> boardsList;
 	private Spinner boardsSpinner;
-	private Spinner piecesSpinner;
 	private SwitchButton coordinatesSwitch;
 	private SwitchButton highlightLastMoveSwitch;
-//	private SwitchButton alwaysShowWhiteBottomSwitch;
+	//	private SwitchButton alwaysShowWhiteBottomSwitch;
 	private SwitchButton soundsSwitch;
 	private SwitchButton showLegalMovesSwitch;
 	private TextView strengthValueBtn;
 	private int selectedCompLevel;
 	private SwitchButton autoFlipSwitch;
+	private ProgressImageView piecesLineImage;
+	private SparseArray<String> defaultPiecesNamesMap;
+	private int previewLineWidth;
+	private EnhancedImageDownloader imageLoader;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		imageLoader = new EnhancedImageDownloader(getActivity());
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,12 +71,38 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+
+		// show selected pieces line preview
+		if (getAppData().isUseThemePieces()) {
+
+			// Load line preview image
+			String piecesPreviewUrl = getAppData().getThemePiecesPreviewUrl();
+			imageLoader.download(piecesPreviewUrl, piecesLineImage, previewLineWidth);
+		} else {
+			String themePiecesName = getAppData().getThemePiecesName();
+			if (themePiecesName.equals(Symbol.EMPTY)) {
+				piecesLineImage.setImageDrawable(getResources().getDrawable(R.drawable.pieces_game));
+			} else {
+				for (int i = 0; i < defaultPiecesNamesMap.size(); i++) {
+					int key = defaultPiecesNamesMap.keyAt(i);
+					String value = defaultPiecesNamesMap.valueAt(i);
+					if (value.equals(themePiecesName)) {
+						piecesLineImage.setImageDrawable(getResources().getDrawable(key));
+					}
+				}
+			}
+		}
+	}
+
+	@Override
 	public void onClick(View view) {
 		super.onClick(view);
 
 		int id = view.getId();
 		if (id == R.id.piecesView) {
-			piecesSpinner.performClick();
+			getActivityFace().openFragment(new SettingsThemePiecesFragment());
 		} else if (id == R.id.boardView) {
 			boardsSpinner.performClick();
 		} else if (id == R.id.coordinatesView) {
@@ -98,27 +139,16 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 	}
 
 	@Override
-	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-		if (adapterView.getId() == R.id.piecesSpinner) {
-			for (SelectionItem item : piecesList) {
-				item.setChecked(false);
-			}
-
-			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
-			selectionItem.setChecked(true);
-
-			getAppData().setPiecesId(pos);
-
-			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
-		} else if (adapterView.getId() == R.id.boardsSpinner) {
+	public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+		if (adapterView.getId() == R.id.boardsSpinner) {
 			for (SelectionItem item : boardsList) {
 				item.setChecked(false);
 			}
 
-			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
+			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(position);
 			selectionItem.setChecked(true);
 
-			getAppData().setChessBoardId(pos);
+			getAppData().setChessBoardId(position);
 
 			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 		}
@@ -172,18 +202,19 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		view.findViewById(R.id.boardView).setOnClickListener(this);
 
 		Resources resources = getResources();
-		// Piece and board bitmaps list init
-		piecesList = new ArrayList<SelectionItem>();
-		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_game), getString(R.string.piece_game)));
-		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_alpha), getString(R.string.piece_alpha)));
-		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_book), getString(R.string.piece_book)));
-		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_cases), getString(R.string.piece_cases)));
-		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_classic), getString(R.string.piece_classic)));
-		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_club), getString(R.string.piece_club)));
-		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_condal), getString(R.string.piece_condal)));
-		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_maya), getString(R.string.piece_maya)));
-		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_modern), getString(R.string.piece_modern)));
-		piecesList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_vintage), getString(R.string.piece_vintage)));
+		{// Piece and board bitmaps list init
+			defaultPiecesNamesMap = new SparseArray<String>();
+			defaultPiecesNamesMap.put(R.drawable.pieces_game, getString(R.string.pieces_game));
+			defaultPiecesNamesMap.put(R.drawable.pieces_alpha, getString(R.string.pieces_alpha));
+			defaultPiecesNamesMap.put(R.drawable.pieces_book, getString(R.string.pieces_book));
+			defaultPiecesNamesMap.put(R.drawable.pieces_cases, getString(R.string.pieces_cases));
+			defaultPiecesNamesMap.put(R.drawable.pieces_classic, getString(R.string.pieces_classic));
+			defaultPiecesNamesMap.put(R.drawable.pieces_club, getString(R.string.pieces_club));
+			defaultPiecesNamesMap.put(R.drawable.pieces_condal, getString(R.string.pieces_condal));
+			defaultPiecesNamesMap.put(R.drawable.pieces_maya, getString(R.string.pieces_maya));
+			defaultPiecesNamesMap.put(R.drawable.pieces_modern, getString(R.string.pieces_modern));
+			defaultPiecesNamesMap.put(R.drawable.pieces_vintage, getString(R.string.pieces_vintage));
+		}
 
 		boardsList = new ArrayList<SelectionItem>();
 		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_wood_dark), getString(R.string.board_wooddark)));
@@ -203,12 +234,16 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		boardsSpinner.setOnItemSelectedListener(this);
 		boardsList.get(boardsPosition).setChecked(true);
 
-		piecesSpinner = (Spinner) view.findViewById(R.id.piecesSpinner);
-		piecesSpinner.setAdapter(new SelectionAdapter(getActivity(), piecesList));
-		int piecesPosition = preferences.getInt(username + AppConstants.PREF_PIECES_SET, 0);
-		piecesSpinner.setSelection(piecesPosition);
-		piecesList.get(piecesPosition).setChecked(true);
-		piecesSpinner.setOnItemSelectedListener(this);
+		piecesLineImage = (ProgressImageView) view.findViewById(R.id.piecesLineImage);
+		Drawable piecesDrawableExample = resources.getDrawable(R.drawable.pieces_alpha);
+		previewLineWidth = piecesDrawableExample.getIntrinsicWidth();
+		int imageHeight = piecesDrawableExample.getIntrinsicHeight();
+
+		// Change Image params
+		RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(previewLineWidth, imageHeight);
+		piecesLineImage.getImageView().setLayoutParams(imageParams);
+		piecesLineImage.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
+
 
 		{ // Comp level
 			strengthValueBtn = (TextView) view.findViewById(R.id.compLevelValueBtn);

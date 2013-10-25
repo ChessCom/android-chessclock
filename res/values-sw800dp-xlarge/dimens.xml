@@ -101,5 +101,7 @@
 	<dimen name="daily_board_preview_size">120dip</dimen>
 	<dimen name="notations_text_padding">2dip</dimen>
 	<dimen name="notations_text_side_padding">10dip</dimen>
+	<dimen name="_3dPiece_offset_for_board">21dip</dimen>
+	<dimen name="_3dPiece_offset_for_board_drag">35dip</dimen>
 
 </resources>

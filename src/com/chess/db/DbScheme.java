@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 75;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 76;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -90,6 +90,7 @@ public class DbScheme {
 
 		THEMES,
 		THEME_SOUNDS,
+		THEME_PIECES,
 		SOUND_PACKS,
 	}
 
@@ -1170,11 +1171,14 @@ public class DbScheme {
 	public static final String V_BOARD_ID = "board_id";
 	public static final String V_PIECES_ID = "pieces_id";
 	public static final String V_SOUNDS_ID = "sounds_id";
+	public static final String V_THEME_ID = "theme_id";
+	public static final String V_THEME_DIR = "theme_dir";
 
 	public static final String V_BACKGROUND_URL = "background_url";
 	public static final String V_BOARD_BACKGROUND_URL = "board_background_url";
 	public static final String V_BACKGROUND_PREVIEW_URL = "background_preview_url";
 	public static final String V_BOARD_PREVIEW_URL = "board_preview_url";
+	public static final String V_PREVIEW_URL = "preview_url";
 	public static final String V_FONT_COLOR = "font_color";
 
 	void createThemesTables() {
@@ -1196,6 +1200,13 @@ public class DbScheme {
 				+ addField_Int(V_ID) // user_theme_sound_id
 				+ addField_Text(V_NAME) // current auth user
 				+ addField_Text(V_URL, true);
+
+		createTablesArray[Tables.THEME_PIECES.ordinal()] = createTableForName(Tables.THEME_PIECES)
+				+ addField_Int(V_ID) // user_theme_pieces_id
+				+ addField_Int(V_THEME_ID)
+				+ addField_Text(V_NAME)
+				+ addField_Text(V_THEME_DIR)
+				+ addField_Text(V_PREVIEW_URL, true);
 
 		createTablesArray[Tables.SOUND_PACKS.ordinal()] = createTableForName(Tables.SOUND_PACKS)
 				+ addField_Text(V_URL)

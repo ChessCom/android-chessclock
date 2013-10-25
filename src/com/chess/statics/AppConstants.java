@@ -79,6 +79,11 @@ public class AppConstants {
     public static final String PREF_THEME_BOARD_COORDINATE_DARK = "theme_board_coordinate_dark";
     public static final String PREF_THEME_BOARD_HIGHLIGHT = "theme_board_highlight";
 	public static final String PREF_THEME_PIECES_PATH = "theme_pieces_path";
+	public static final String PREF_THEME_PIECES_NAME = "theme_pieces_name";
+	public static final String PREF_THEME_PIECES_PREVIEW = "theme_pieces_preview_url";
+	public static final String PREF_THEME_PIECES_ID = "theme_pieces_id";
+	public static final String PREF_DEFAULT_PIECES_ID = "default_pieces_id";
+	public static final String PREF_THEME_PIECES_USE_THEME = "is_use_theme_pieces";
 	public static final String PREF_THEME_SOUNDS_PATH = "theme_sounds_path";
 	public static final String PREF_THEME_IS_PIECES_3D_PATH = "theme_is_pieces_3d";
     public static final String PREF_THEME_NAME = "theme_name";

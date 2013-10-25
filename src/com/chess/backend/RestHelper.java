@@ -193,10 +193,10 @@ public class RestHelper {
 	/**
 	 * Theme Backgrounds
 	 */
-	public String CMD_BACKGROUND = BASE_URL + V1 + "/background";
+	public String CMD_BACKGROUNDS = BASE_URL + V1 + "/background";
 
 	public String CMD_BACKGROUND_BY_ID(long id) {
-		return CMD_BACKGROUND + "/" + id;
+		return CMD_BACKGROUNDS + "/" + id;
 	}
 
 	/**

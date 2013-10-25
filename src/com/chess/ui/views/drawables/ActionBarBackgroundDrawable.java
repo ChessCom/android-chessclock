@@ -7,7 +7,9 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import com.chess.R;
+import com.chess.statics.AppData;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,32 +19,39 @@ import com.chess.R;
  */
 public class ActionBarBackgroundDrawable extends Drawable {
 
-	private final Drawable mDrawable;
-	private final Rect mRect;
+	public static final String STAUNTON = "Staunton";
+	private final Drawable backDawable;
+	private final Rect rect;
 
 	public ActionBarBackgroundDrawable(Context context) {
 
 		int topBarColor1 = context.getResources().getColor(R.color.action_bar_overlay);
-		mRect = new Rect();
+		rect = new Rect();
+		AppData appData = new AppData(context);
 
-		mDrawable = new ColorDrawable(topBarColor1);
+		// if we have staunton theme, then set custom image
+		if (!TextUtils.isEmpty(appData.getThemeName()) && appData.getThemeName().contains(STAUNTON)) {
+			backDawable = context.getResources().getDrawable(R.drawable.img_staunton_top_bar);
+		} else {
+			backDawable = new ColorDrawable(topBarColor1);
+		}
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		mRect.set(0, 0, canvas.getWidth(), canvas.getHeight());
-		mDrawable.setBounds(mRect);
-		mDrawable.draw(canvas);
+		canvas.getClipBounds(rect);
+		backDawable.setBounds(rect);
+		backDawable.draw(canvas);
 	}
 
 	@Override
 	public void setAlpha(int alpha) {
-		mDrawable.setAlpha(alpha);
+		backDawable.setAlpha(alpha);
 	}
 
 	@Override
 	public void setColorFilter(ColorFilter cf) {
-		mDrawable.setColorFilter(cf);
+		backDawable.setColorFilter(cf);
 	}
 
 	@Override

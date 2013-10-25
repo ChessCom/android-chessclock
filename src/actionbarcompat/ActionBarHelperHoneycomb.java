@@ -53,7 +53,13 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 		if (actionBar != null) {
 			actionBar.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
 		}
+	}
 
+	public void updateActionBarBackground(){
+		ActionBar actionBar = mActivity.getActionBar(); // could be null for small screens
+		if (actionBar != null) {
+			actionBar.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
+		}
 	}
 
 	@Override

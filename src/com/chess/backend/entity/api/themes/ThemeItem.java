@@ -32,7 +32,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 		private int board_id;
 		private int pieces_id;
 		private int sound_id;
-		private String background_url;
+		private String pieces_preview_url;
 		private String board_background_url;
 		private String background_preview_url;
 		private String board_preview_url;
@@ -49,7 +49,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 		}
 
 		public String getPiecesPreviewUrl() {
-			return background_url;
+			return pieces_preview_url;
 		}
 
 		public String getBoardBackgroundUrl() {
@@ -80,8 +80,8 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 			this.theme_id = theme_id;
 		}
 
-		public void setPiecesPreviewUrl(String background_url) {
-			this.background_url = background_url;
+		public void setPiecesPreviewUrl(String pieces_preview_url) {
+			this.pieces_preview_url = pieces_preview_url;
 		}
 
 		public void setBoardBackgroundUrl(String board_background_url) {
@@ -137,7 +137,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 		}
 
 		public String getFontColor() {
-			return getSafeValue(font_color, "FFFFFF");
+			return getSafeValue(font_color, "FFFFFFFF");
 		}
 
 		protected Data(Parcel in) {
@@ -146,7 +146,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 			board_id = in.readInt();
 			pieces_id = in.readInt();
 			sound_id = in.readInt();
-			background_url = in.readString();
+			pieces_preview_url = in.readString();
 			board_background_url = in.readString();
 			background_preview_url = in.readString();
 			board_preview_url = in.readString();
@@ -167,7 +167,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 			dest.writeInt(board_id);
 			dest.writeInt(pieces_id);
 			dest.writeInt(sound_id);
-			dest.writeString(background_url);
+			dest.writeString(pieces_preview_url);
 			dest.writeString(board_background_url);
 			dest.writeString(background_preview_url);
 			dest.writeString(board_preview_url);

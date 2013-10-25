@@ -152,9 +152,10 @@
     <style name="NotationsDiagramStyle" parent="ListItem.Header_2">
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_marginTop">@dimen/notations_margin_top</item>
-		<!--<item name="textColorBack">@color/profile_grey_text</item>-->
+<!--
 		<item name="textColorBack">@color/controls_icon_diagram</item>
 		<item name="textColorSelected">@color/black</item>
+-->
     </style>
 
     <style name="DefaultEdt" >

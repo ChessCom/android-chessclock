@@ -107,13 +107,6 @@ public class AppData {
 		setIntValue(PREF_BOARD_STYLE, value);
 	}
 
-	public int getPiecesId() {
-		return getIntValue(PREF_PIECES_SET, 0);
-	}
-
-	public void setPiecesId(int value) {
-		setIntValue(PREF_PIECES_SET, value);
-	}
 
 	public void setBackgroundSetId(int value) {
 		setIntValue(PREF_BACKGROUND_SET, value);
@@ -499,6 +492,38 @@ public class AppData {
 
 	public String getThemePiecesPath() {
 		return getStringValue(PREF_THEME_PIECES_PATH, Symbol.EMPTY);
+	}
+
+	public void setThemePiecesPreviewUrl(String value) {
+		setStringValue(PREF_THEME_PIECES_PREVIEW, value);
+	}
+
+	public String getThemePiecesPreviewUrl() {
+		return getStringValue(PREF_THEME_PIECES_PREVIEW, Symbol.EMPTY);
+	}
+
+	public void setThemePiecesName(String piecesName) {
+		setStringValue(PREF_THEME_PIECES_NAME, piecesName);
+	}
+
+	public String getThemePiecesName() {
+		return getStringValue(PREF_THEME_PIECES_NAME, Symbol.EMPTY);
+	}
+
+	public void setThemePiecesId(int value) {
+		setIntValue(PREF_THEME_PIECES_ID, value);
+	}
+
+	public int getThemePiecesId() {
+		return getIntValue(PREF_THEME_PIECES_ID, UNDEFINED);
+	}
+
+	public void setUseThemePieces(boolean value) {
+		setBooleanValue(PREF_THEME_PIECES_USE_THEME, value);
+	}
+
+	public boolean isUseThemePieces() {
+		return getBooleanValue(PREF_THEME_PIECES_USE_THEME, false);
 	}
 
 	public void setThemePieces3d(boolean value) {

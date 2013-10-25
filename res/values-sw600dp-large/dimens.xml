@@ -50,7 +50,7 @@
     <dimen name="welcome_result_list_item_height">65dip</dimen>
     <dimen name="friend_list_photo_size">80dip</dimen>
     <dimen name="new_daily_grid_button_width">60dip</dimen>
-    <dimen name="notations_view_height">48dip</dimen>
+    <dimen name="notations_view_height">40dip</dimen>
     <dimen name="welcome_features_padding_top">26dip</dimen>
     <dimen name="chat_icon_size">60dip</dimen>
     <dimen name="edit_button_text_size">14sp</dimen>
@@ -63,7 +63,7 @@
 	<dimen name="chip_close_icon_size">17dip</dimen>
 	<dimen name="seek_bar_side_padding">8dip</dimen>
 	<dimen name="profile_frame_photo_size">80dip</dimen>
-	<dimen name="panel_info_avatar_big_size">44dip</dimen>
+	<dimen name="panel_info_avatar_big_size">40dip</dimen>
 	<dimen name="daily_list_item_image_size">55dip</dimen>
 	<dimen name="panel_info_player_text_size">18sp</dimen>
 	<dimen name="panel_info_player_rating_text_size">14sp</dimen>
@@ -103,5 +103,7 @@
 	<dimen name="daily_board_preview_size">160dip</dimen>
 	<dimen name="notations_text_padding">2dip</dimen>
 	<dimen name="notations_text_side_padding">10dip</dimen>
+	<dimen name="_3dPiece_offset_for_board">21dip</dimen>
+	<dimen name="_3dPiece_offset_for_board_drag">35dip</dimen>
 
 </resources>

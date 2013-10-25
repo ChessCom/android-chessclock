@@ -13,10 +13,11 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.themes.BackgroundSingleItem;
+import com.chess.backend.entity.api.themes.BackgroundsItem;
 import com.chess.backend.entity.api.themes.ThemeItem;
+import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.image_load.bitmapfun.ImageCache;
-import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.SelectionItem;
@@ -28,7 +29,6 @@ import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -40,7 +40,6 @@ import java.util.List;
 public class PopupBackgroundsFragment extends DialogFragment implements AdapterView.OnItemClickListener {
 
 	private static final String THEME_ITEM = "theme_item";
-	private static final String IMAGE_CACHE_DIR = "popup_backgrounds_previews";
 
 	private PopupListSelectionFace listener;
 	private BackgroundsUpdateListener backgroundsUpdateListener;
@@ -51,8 +50,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 	private BackgroundsAdapter backgroundsAdapter;
 	private boolean need2update = true;
 	private View loadingView;
-	private List<ThemeItem.Data> backgroundsThemeList;
-	private SmartImageFetcher imageFetcher;
+	private List<BackgroundSingleItem.Data> backgroundsThemeList;
 
 	public PopupBackgroundsFragment() {
 	}
@@ -82,15 +80,6 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 		backgroundsList = new ArrayList<SelectionItem>();
 		backgroundsUpdateListener = new BackgroundsUpdateListener();
-
-		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
-
-		cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
-
-		// The ImageFetcher takes care of loading images into our ImageView children asynchronously
-		imageFetcher = new SmartImageFetcher(getActivity());
-		imageFetcher.setLoadingImage(R.drawable.img_profile_picture_stub);
-		imageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
 	}
 
 	@Override
@@ -116,21 +105,6 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
-		listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-			@Override
-			public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-				// Pause fetcher to ensure smoother scrolling when flinging
-				if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-					imageFetcher.setPauseWork(true);
-				} else {
-					imageFetcher.setPauseWork(false);
-				}
-			}
-
-			@Override
-			public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			}
-		});
 	}
 
 	@Override
@@ -139,10 +113,10 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 		if (need2update) {
 			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_THEMES);
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_BACKGROUNDS);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 
-			new RequestJsonTask<ThemeItem>(backgroundsUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<BackgroundsItem>(backgroundsUpdateListener).executeTask(loadItem);
 		} else {
 			listView.setAdapter(backgroundsAdapter);
 		}
@@ -155,14 +129,14 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		outState.putParcelable(THEME_ITEM, themeItem);
 	}
 
-	public ThemeItem.Data getItemByCode(int code) {
+	public BackgroundSingleItem.Data getItemByCode(int code) {
 		return backgroundsThemeList.get(code);
 	}
 
-	private class BackgroundsUpdateListener extends ActionBarUpdateListener<ThemeItem> {
+	private class BackgroundsUpdateListener extends ActionBarUpdateListener<BackgroundsItem> {
 
 		private BackgroundsUpdateListener() {
-			super((CoreActivityActionBar) getActivity(), PopupBackgroundsFragment.this, ThemeItem.class);
+			super((CoreActivityActionBar) getActivity(), PopupBackgroundsFragment.this, BackgroundsItem.class);
 		}
 
 		@Override
@@ -171,12 +145,12 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		}
 
 		@Override
-		public void updateData(ThemeItem returnedObj) {
+		public void updateData(BackgroundsItem returnedObj) {
 			backgroundsThemeList = returnedObj.getData();
 
-			for (ThemeItem.Data theme : backgroundsThemeList) {
+			for (BackgroundSingleItem.Data theme : backgroundsThemeList) {
 				SelectionItem selectionItem = new SelectionItem(null, theme.getBackgroundPreviewUrl());
-				selectionItem.setCode(theme.getThemeName());
+				selectionItem.setCode(theme.getName());
 				backgroundsList.add(selectionItem);
 			}
 
@@ -186,7 +160,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 					break;
 				}
 			}
-			backgroundsAdapter = new BackgroundsAdapter(getActivity(), backgroundsList, imageFetcher);
+			backgroundsAdapter = new BackgroundsAdapter(getActivity(), backgroundsList);
 			listView.setAdapter(backgroundsAdapter);
 
 			need2update = false;
@@ -220,10 +194,12 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		private final RelativeLayout.LayoutParams imageParams;
 		private final RelativeLayout.LayoutParams linearLayoutParams;
 		private final RelativeLayout.LayoutParams progressParams;
-		private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
+		private final EnhancedImageDownloader imageLoader;
 
-		public BackgroundsAdapter(Context context, List<SelectionItem> menuItems, SmartImageFetcher imageFetcher) {
-			super(context, menuItems, imageFetcher);
+		public BackgroundsAdapter(Context context, List<SelectionItem> menuItems) {
+			super(context, menuItems);
+
+			imageLoader = new EnhancedImageDownloader(context);
 
 			previewWidth = PopupBackgroundsFragment.this.getView().getWidth();
 			aspectRatio = 1f / 2.9f;
@@ -233,11 +209,8 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 			int imageHeight = (int) (previewWidth * aspectRatio);
 			imageParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
 			linearLayoutParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
-
 			progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-
-			imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 		}
 
 		@Override
@@ -269,13 +242,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		protected void bindView(SelectionItem item, int pos, View view) {
 			ViewHolder holder = (ViewHolder) view.getTag();
 
-			String imageUrl = item.getText();
-			if (!imageDataMap.containsKey(imageUrl)) {
-				imageDataMap.put(imageUrl, new SmartImageFetcher.Data(item.getText(), previewWidth));
-			}
-
-			imageFetcher.loadImage(imageDataMap.get(imageUrl), holder.image.getImageView());
-
+			imageLoader.download(item.getText(), holder.image, previewWidth, previewWidth);
 			holder.text.setText(item.getCode());
 			holder.text.setChecked(item.isChecked());
 		}

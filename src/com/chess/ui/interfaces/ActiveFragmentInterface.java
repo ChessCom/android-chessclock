@@ -65,6 +65,8 @@ public interface ActiveFragmentInterface {
 
 	void updateActionBarIcons();
 
+	void updateActionBarBackImage();
+
 	AppData getMeAppData();
 
 	String getMeUsername();

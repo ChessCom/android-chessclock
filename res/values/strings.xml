@@ -116,17 +116,17 @@
 	<string name="board_wooddark">Wood Dark</string>
 
     <!--Pieces styles-->
-	<string name="piece_game">Game</string>
-	<string name="piece_alpha">Alpha</string>
-	<string name="piece_book">Book</string>
-	<string name="piece_cases">Cases</string>
-	<string name="piece_classic">Classic</string>
-	<string name="piece_club">Club</string>
-	<string name="piece_condal">Condal</string>
-	<string name="piece_maya">Maya</string>
-	<string name="piece_modern">Modern</string>
-	<string name="piece_vintage">Vintage</string>
-	<string name="piece_the3d">3d</string>
+	<string name="pieces_game">Game</string>
+	<string name="pieces_alpha">Alpha</string>
+	<string name="pieces_book">Book</string>
+	<string name="pieces_cases">Cases</string>
+	<string name="pieces_classic">Classic</string>
+	<string name="pieces_club">Club</string>
+	<string name="pieces_condal">Condal</string>
+	<string name="pieces_maya">Maya</string>
+	<string name="pieces_modern">Modern</string>
+	<string name="pieces_vintage">Vintage</string>
+	<string name="pieces_the3d">3d</string>
 
     <!--Settings Screen-->
 	<string name="after_i_move">After I Move</string> <!--Selector title, action follows-->

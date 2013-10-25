@@ -235,21 +235,21 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			LoadItem loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedThemeItem.getBackgroundId(),
 					screenWidth, screenHeight, RestHelper.V_HANDSET);
 
-			new RequestJsonTask<BackgroundItem>(backgroundItemUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<BackgroundSingleItem>(backgroundItemUpdateListener).executeTask(loadItem);
 
 			selectedThemeName = selectedThemeItem.getThemeName();
 			getAppData().setThemeName(selectedThemeName);
 		}
 	}
 
-	private class BackgroundItemUpdateListener extends ChessLoadUpdateListener<BackgroundItem> {
+	private class BackgroundItemUpdateListener extends ChessLoadUpdateListener<BackgroundSingleItem> {
 
 		private BackgroundItemUpdateListener() {
-			super(BackgroundItem.class);
+			super(BackgroundSingleItem.class);
 		}
 
 		@Override
-		public void updateData(BackgroundItem returnedObj) {
+		public void updateData(BackgroundSingleItem returnedObj) {
 
 			backgroundUrl = returnedObj.getData().getResizedImage();
 
@@ -309,7 +309,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				boardSize += BOARD_SIZE_STEP;
 			}
 
-			boardUrl = BoardItem.PATH + boardDir + "/" + name+ ".png";
+			boardUrl = BoardItem.PATH + boardDir + "/" + name + ".png";
 			logTest(" board url = " + boardUrl);
 
 			taskTitleTxt.setText(R.string.loading_board);
@@ -319,14 +319,17 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		}
 	}
 
-	private class PiecesItemUpdateListener extends ChessLoadUpdateListener<PiecesItem> {
+	private class PiecesItemUpdateListener extends ChessLoadUpdateListener<PieceSingleItem> {
 
 		private PiecesItemUpdateListener() {
-			super(PiecesItem.class);
+			super(PieceSingleItem.class);
 		}
 
 		@Override
-		public void updateData(PiecesItem returnedObj) {
+		public void updateData(PieceSingleItem returnedObj) {
+
+			getAppData().setThemePiecesName(returnedObj.getData().getName());
+			getAppData().setThemePiecesPreviewUrl(returnedObj.getData().getPreviewUrl());
 
 			// get pieces dir in s3
 			selectedPieceDir = returnedObj.getData().getThemeDir();
@@ -337,20 +340,20 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			String[] whitePieceImageCodes = ChessBoard.whitePieceImageCodes;
 			for (int i = 0; i < whitePieceImageCodes.length; i++) {
 				String imageCode = whitePieceImageCodes[i];
-				imagesToLoad[i] = PiecesItem.PATH + selectedPieceDir + "/" + pieceWidth + "/" + imageCode + ".png";
+				imagesToLoad[i] = PieceSingleItem.PATH + selectedPieceDir + "/" + pieceWidth + "/" + imageCode + ".png";
 			}
 
 			String[] blackPieceImageCodes = ChessBoard.blackPieceImageCodes;
 
 			for (int i = 0; i < blackPieceImageCodes.length; i++) {
 				String imageCode = blackPieceImageCodes[i];
-				imagesToLoad[6 + i] = PiecesItem.PATH + selectedPieceDir + "/" + pieceWidth + "/" + imageCode + ".png";
+				imagesToLoad[6 + i] = PieceSingleItem.PATH + selectedPieceDir + "/" + pieceWidth + "/" + imageCode + ".png";
 			}
 
 			taskTitleTxt.setText(R.string.loading_pieces);
 
 			// Start loading pieces image
-			new GetAndSaveFileToSdTask(piecesPackSaveListener, 	AppUtils.getLocalDirForPieces(getActivity(), selectedPieceDir))
+			new GetAndSaveFileToSdTask(piecesPackSaveListener, AppUtils.getLocalDirForPieces(getActivity(), selectedPieceDir))
 					.executeTask(imagesToLoad);
 		}
 	}
@@ -365,6 +368,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		public void updateListData(List<String> itemsList) {
 			super.updateListData(itemsList);
 
+			getAppData().setUseThemePieces(true);
 			getAppData().setThemePiecesPath(selectedPieceDir);
 
 			if (selectedPieceDir.contains(_3D_PART)) {
@@ -562,6 +566,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				File imgFile = AppUtils.openFileByName(getActivity(), filename);
 				getActivityFace().setMainBackground(imgFile.getAbsolutePath());
 
+				getActivityFace().updateActionBarBackImage();
+
 				// Get board main path
 				LoadItem loadItem = LoadHelper.getBoardById(getUserToken(), selectedThemeItem.getBoardId());
 
@@ -570,7 +576,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				int size = screenWidth;
 				taskTitleTxt.setText(R.string.loading_board);
 				loadProgressTxt.setVisibility(View.VISIBLE);
-
 
 
 			} else if (listenerCode == BOARD) {
@@ -583,8 +588,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 				// Get pieces main path on s3
 				LoadItem loadItem = LoadHelper.getPiecesById(getUserToken(), selectedThemeItem.getPiecesId());
-				logTest(" start loading pieces");
-				new RequestJsonTask<PiecesItem>(piecesItemUpdateListener).executeTask(loadItem);
+				new RequestJsonTask<PieceSingleItem>(piecesItemUpdateListener).executeTask(loadItem);
 			}
 		}
 	}

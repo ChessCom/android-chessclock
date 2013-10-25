@@ -24,7 +24,7 @@ public class SoundSingleItem extends  BaseResponseItem<SoundSingleItem.Data> {
 		private String sound_pack_zip;
 		private int theme_id;
 
-		public int getUserThemeSoundId() {
+		public int getThemeSoundId() {
 			return user_theme_sound_id;
 		}
 

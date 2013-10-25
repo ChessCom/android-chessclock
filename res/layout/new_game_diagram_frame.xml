@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
@@ -11,6 +11,7 @@
 	>
 
 	<RelativeLayout
+		android:id="@+id/boardContainerView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		>
@@ -40,28 +41,31 @@
 
 	</RelativeLayout>
 
-	<com.chess.ui.views.game_controls.ControlsDiagramView
-		android:id="@+id/controlsDiagramView"
+	<com.chess.ui.views.NotationView
+		android:id="@+id/notationsView"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="@dimen/notations_view_height"
+		android:layout_below="@id/boardContainerView"
+		style="@style/NotationsDiagramStyle"
+		android:visibility="gone"
 		/>
 
 	<com.chess.RoboTextView
 		android:id="@+id/notationCommentTxt"
 		android:layout_width="match_parent"
 		android:layout_height="@dimen/notations_view_height"
+		android:layout_below="@id/notationsView"
 		android:gravity="center"
-		android:textColor="@color/controls_icon_diagram"
 		style="@style/ListItem.Header_2"
 		android:visibility="gone"
 		/>
+	<!--android:textColor="@color/controls_icon_diagram"-->
 
-	<com.chess.ui.views.NotationView
-		android:id="@+id/notationsView"
+	<com.chess.ui.views.game_controls.ControlsDiagramView
+		android:id="@+id/controlsDiagramView"
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/notations_view_height"
-		style="@style/NotationsDiagramStyle"
-		android:visibility="gone"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
 		/>
 
-</LinearLayout>
+</RelativeLayout>

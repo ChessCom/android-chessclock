@@ -155,4 +155,6 @@ public abstract class ActionBarHelper {
 	public void setDoneClickListener(ActionModeHelper.EditFace doneClickListener) {
 		this.doneClickListener = doneClickListener;
 	}
+
+	public abstract void updateActionBarBackground();
 }

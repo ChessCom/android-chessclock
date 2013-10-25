@@ -1,7 +1,7 @@
 package com.chess.backend.tasks;
 
-import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class GetAndSaveFileToSdTask extends AbstractUpdateTask<String, String> {
 
-	private Context context;
+	private static final String TAG = "GetAndSaveFileToSdTask";
 	private FileReadyListener progressFace;
 	private boolean doUnzip;
 	private File filePath;
@@ -55,7 +55,6 @@ public class GetAndSaveFileToSdTask extends AbstractUpdateTask<String, String> {
 	}
 
 	private void init(TaskUpdateInterface<String> taskFace) {
-		context = taskFace.getMeContext();
 		progressFace = (FileReadyListener) taskFace;
 	}
 
@@ -64,6 +63,8 @@ public class GetAndSaveFileToSdTask extends AbstractUpdateTask<String, String> {
 		for (String param : params) {
 			String url = param;
 			result = StaticData.EMPTY_DATA;
+
+			Log.d(TAG, "Loading image by url = " + url);
 
 			String filename = Uri.parse(url).getLastPathSegment();
 
@@ -132,10 +133,13 @@ public class GetAndSaveFileToSdTask extends AbstractUpdateTask<String, String> {
 
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
+				return StaticData.INTERNAL_ERROR;
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
+				return StaticData.VALUE_NOT_EXIST;
 			} catch (IOException e) {
 				e.printStackTrace();
+				return StaticData.NO_NETWORK;
 			}
 		}
 
