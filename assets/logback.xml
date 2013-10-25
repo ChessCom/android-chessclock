@@ -1,0 +1,24 @@
+<configuration>
+
+	<contextName>com.chess</contextName>
+
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>/sdcard/chess.log</file>
+		<append>true</append>
+		<encoder>
+			<!--<pattern>%d %contextName %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>-->
+			<pattern>%d %contextName %-4relative [%thread] %-5level - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
+		<encoder>
+			<pattern>%msg</pattern>
+		</encoder>
+	</appender>
+
+	<root level="VERBOSE">
+		<appender-ref ref="FILE" />
+		<appender-ref ref="logcat" />
+	</root>
+</configuration>
