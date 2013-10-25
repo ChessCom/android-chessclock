@@ -2,11 +2,16 @@ package com.chess.ui.fragments.live;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.model.GameLiveItem;
+import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.utilities.LogMe;
 
@@ -20,11 +25,8 @@ public class LiveTopGameFragment extends GameLiveFragment {
 	public LiveTopGameFragment() {
 	}
 
-	public static LiveTopGameFragment createInstance(/*long id*/) {
+	public static LiveTopGameFragment createInstance() {
 		LiveTopGameFragment fragment = new LiveTopGameFragment();
-		/*Bundle bundle = new Bundle();
-		bundle.putLong(GAME_ID, id);
-		fragment.setArguments(bundle);*/
 		return fragment;
 	}
 
@@ -37,12 +39,27 @@ public class LiveTopGameFragment extends GameLiveFragment {
 			liveService.setGameTaskListener(gameTaskListener);
 			liveService.setLccEventListener(this);
 
-			liveService.observeTopGame();
+			liveService.runObserveTopGameTask();
 
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
 		}
+	}
 
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		setTitle(R.string.live);
+
+		widgetsInit(view);
+		blockGame(true);
+		/*try {
+			init();
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+		}*/
+		enableSlideMenus(false);
 	}
 
 	@Override
@@ -134,5 +151,45 @@ public class LiveTopGameFragment extends GameLiveFragment {
 
 	protected void logLiveTest(String messageToLog) {
 		LogMe.dl(TAG, "LIVE OBSERVE TOP GAME FRAGMENT: " + messageToLog);
+	}
+
+	protected void blockGame(final boolean block) {
+		FragmentActivity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				boardView.lockBoard(true); // todo: do not lock controls
+			}
+		});
+	}
+
+	@Override
+	public void showOptions() {
+	}
+
+	protected void showGameEndPopup(View layout, String title, String message) {
+		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
+		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
+
+		endGameTitleTxt.setText(title);
+		endGameReasonTxt.setText(message);
+
+		PopupItem popupItem = new PopupItem();
+		popupItem.setCustomView(layout);
+
+		PopupGameEndFragment endPopupFragment = PopupGameEndFragment.createInstance(popupItem);
+		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
+
+		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
+		//layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);
+		//layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
+
+		/*if (AppUtils.isNeedToUpgrade(getActivity())) {
+			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+		}*/
 	}
 }

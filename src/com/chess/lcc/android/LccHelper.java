@@ -895,6 +895,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		ChessBoardLive.resetInstance();
 		initClock();
 
+		// todo: probably determine my/observed game listeners
 		if (lccEventListener != null) {
 			lccEventListener.startGameFromService();
 		}
@@ -1042,6 +1043,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	public void observeTopGame() {
 		LogMe.dl(TAG, "observe top game: listener=" + gameListener);
 		lccClient.observeTopGame(GameRatingClass.Blitz, gameListener); // todo: check game types
+	}
+
+	public void unobserveGame(Long gameId) {
+		LogMe.dl(TAG, "unobserve game=" + gameId);
+		lccClient.unobserveGame(gameId);
 	}
 
 	public void resetClient() {

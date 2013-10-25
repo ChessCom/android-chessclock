@@ -37,6 +37,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.live.LiveHomeFragment;
+import com.chess.ui.fragments.live.LiveTopGameFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
@@ -165,6 +166,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					showPopupDialog(R.string.warning, R.string.exit_game, EXIT_GAME_TAG);
 					return true;
+				}
+
+				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveTopGameFragment.class.getSimpleName());
+				if (fragmentByTag != null && fragmentByTag.isVisible()) {
+					//liveService.runUnobserveGameTask();
+					return super.onKeyUp(keyCode, event);
 				}
 
 				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveHomeFragment.class.getSimpleName());

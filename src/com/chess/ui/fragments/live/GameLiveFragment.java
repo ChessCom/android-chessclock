@@ -482,6 +482,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			@Override
 			public void run() {
 				final View layout;
+				// todo: change game end layout for Observed game
 				if (!AppUtils.isNeedToUpgrade(activity)) {
 					layout = inflater.inflate(R.layout.popup_end_game, null, false);
 				} else {
@@ -510,7 +511,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	}
 
-	private void showGameEndPopup(View layout, String title, String message) {
+	protected void showGameEndPopup(View layout, String title, String message) {
 		LiveChessService liveService;
 		try {
 			liveService = getLiveService();
@@ -526,7 +527,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(message);
 
-		// todo: adjust for top game
 		int currentPlayerNewRating = liveService.getLastGame().getRatingForPlayer(liveService.getUsername());
 		int ratingChange = liveService.getLastGame().getRatingChangeForPlayer(liveService.getUsername());
 
@@ -575,7 +575,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	// -----------------------------------------------------------------------------------
 
-	private void blockGame(final boolean block) {
+	protected void blockGame(final boolean block) {
 		FragmentActivity activity = getActivity();
 		if (activity == null) {
 			return;
@@ -1204,7 +1204,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		lccInitiated = true;
 	}
 
-	private void widgetsInit(View view) {
+	protected void widgetsInit(View view) {
 		fadeLay = view.findViewById(R.id.fadeLay);
 
 		controlsLiveView = (ControlsLiveView) view.findViewById(R.id.controlsLiveView);

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import com.chess.R;
@@ -463,6 +464,31 @@ public class LiveChessService extends Service {
 		protected Integer doTheTask(Long... params) {
 			lccHelper.sendChatMessage(params[0], message);
 			return StaticData.RESULT_OK;
+		}
+	}
+
+	public void runObserveTopGameTask() {
+		new ObserveTopGameTask().execute();
+	}
+
+	private class ObserveTopGameTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... voids) {
+			lccHelper.observeTopGame();
+			return null;
+		}
+	}
+
+	public void runUnobserveGameTask(Long gameId) {
+		new UnobserveGameTask().execute(gameId);
+	}
+
+	private class UnobserveGameTask extends AsyncTask<Long, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Long... params) {
+			lccHelper.unobserveGame(params[0]);
+			return null;
 		}
 	}
 }

@@ -34,8 +34,9 @@ public class LccGameListener implements GameListener {
 			gameId = game.getId();
 			if (!isMyGame(game)) {
 				// todo: check for observed
-				/*lccHelper.getClient().unobserveGame(gameId);
-				LogMe.dl(TAG, "unobserve game " + gameId);*/
+				/*LogMe.dl(TAG, "unobserve game " + gameId);
+				games.remove(game);*/
+				//lccHelper.getClient().unobserveGame(gameId);
 			}
 			else if (gameId > latestGameId) {
 				latestGameId = gameId;
@@ -75,7 +76,7 @@ public class LccGameListener implements GameListener {
 
 		if (lccHelper.isObserveGame(game)) {
 
-			// todo: check usage of currentGame, latestGame for observe game
+			// todo: check usage of currentGame, latestGame for observed game
 
 		} else {
 
@@ -99,8 +100,15 @@ public class LccGameListener implements GameListener {
 			return;
 		}
 
-		if (!isActualGame(game)) {
-			return;
+		if (lccHelper.isObserveGame(game)) {
+
+			// todo: check usage of currentGame, latestGame for observed game
+
+		} else {
+
+			if (!isActualGame(game)) {
+				return;
+			}
 		}
 
 		lccHelper.putGame(game);
