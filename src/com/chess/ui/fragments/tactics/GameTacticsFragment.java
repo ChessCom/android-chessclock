@@ -763,6 +763,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		trainerData.setCompleted(true);
 		getBoardFace().setFinished(true);
 
+		// show title at the top
 		moveResultTxt.setVisibility(View.VISIBLE);
 		moveResultTxt.setText(R.string.correct);
 		setIconToResultView(R.string.ic_check);
@@ -776,10 +777,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			bottomPanelView.setPlayerScore(trainerData.getUserRating());
 		}
 		bottomPanelView.showWrong(true, newRatingStr);
-		controlsTacticsView.showAfterRetry();
+		controlsTacticsView.showPractice();
 		trainerData.setCompleted(true);
 		getBoardFace().setFinished(true);
 
+		// show title at the top
 		moveResultTxt.setVisibility(View.VISIBLE);
 		moveResultTxt.setText(R.string.solved_with_hint);
 		setIconToResultView(R.string.ic_hint);
@@ -796,6 +798,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		controlsTacticsView.showWrong();
 		getBoardFace().setFinished(true);
 
+		// show title at the top
 		moveResultTxt.setVisibility(View.VISIBLE);
 		moveResultTxt.setText(R.string.incorrect);
 		setIconToResultView(R.string.ic_blocking);
@@ -834,7 +837,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			restoreGame();
 
 			if (trainerData.isRetry()) {
-				controlsTacticsView.showAfterRetry();
+				controlsTacticsView.showPractice();
 			} else {
 				controlsTacticsView.showDefault();
 			}
@@ -845,9 +848,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		getBoardFace().setAnalysis(isAnalysis);
 		bottomPanelView.showClock(!isAnalysis);
 
-
 		moveResultTxt.setVisibility(isAnalysis ? View.VISIBLE : View.GONE);
-		moveResultTxt.setText(R.string.practice);
+		moveResultTxt.setText(R.string.analysis);
 		setIconToResultView(R.string.ic_board);
 	}
 
@@ -965,7 +967,14 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else {
 			trainerData.setRetry(true);
 			adjustBoardForGame();
-			controlsTacticsView.showAfterRetry();
+			controlsTacticsView.showPractice();
+
+			// show title at the top
+			moveResultTxt.setVisibility(View.VISIBLE);
+			moveResultTxt.setText(R.string.practice);
+			setIconToResultView(R.string.ic_board);
+
+			handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
 		}
 	}
 
@@ -1028,7 +1037,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (trainerData.isCompleted() || trainerData.isAnswerWasShowed()) {
 			controlsTacticsView.showCorrect();
 		} else if (trainerData.isRetry()) {
-			controlsTacticsView.showAfterRetry();
+			controlsTacticsView.showPractice();
 		} else {
 			controlsTacticsView.showDefault();
 		}

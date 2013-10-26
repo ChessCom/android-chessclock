@@ -144,11 +144,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		} else if (view.getId() == getButtonId(EXIT)) {
 			boardViewFace.switchAnalysis();
 		} else if (view.getId() == getButtonId(SOLUTION)) {
-//			if (state == State.WRONG || state == State.AFTER_RETRY) {
-				boardViewFace.showSolution();
-//			} else {
-//				boardViewFace.showHint();
-//			}
+			boardViewFace.showSolution();
 		} else if (view.getId() == getButtonId(BACK)) {
 			boardViewFace.moveBack();
 		} else if (view.getId() == getButtonId(FORWARD)) {
@@ -235,17 +231,17 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(FORWARD, false);
 	}
 
-	public void showAfterRetry() {
-		state = State.AFTER_RETRY;
+	public void showPractice() {
+		state = State.PRACTICE;
 
 		showGameButton(START, false);
 		showGameButton(OPTIONS, true);
 		showGameButton(RESTART, false);
+		showGameButton(HINT, true);
 		showGameButton(ANALYSIS, true);
-		showGameButton(SOLUTION, true);
-		showGameButton(HINT, false);
-		showGameButton(NEXT, false);
-		showGameButton(SKIP, true);
+		showGameButton(SOLUTION, false);
+		showGameButton(NEXT, true);
+		showGameButton(SKIP, false);
 		showGameButton(RESTORE, false);
 		showGameButton(EXIT, false);
 		showGameButton(COMP, false);
@@ -287,7 +283,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		DEFAULT,
 		WRONG,
 		CORRECT,
-		AFTER_RETRY,
+		PRACTICE,
 		ANALYSIS
 	}
 }
