@@ -8,7 +8,6 @@ import android.graphics.*;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -42,17 +41,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace, NotationView.BoardForNotationFace {
 
-	public static final int P_GAME_ID = 0;
-	public static final int P_ALPHA_ID = 1;
-	public static final int P_BOOK_ID = 2;
-	public static final int P_CASES_ID = 3;
-	public static final int P_CLASSIC_ID = 4;
-	public static final int P_CLUB_ID = 5;
-	public static final int P_CONDAL_ID = 6;
-	public static final int P_MAYA_ID = 7;
-	public static final int P_MODERN_ID = 8;
-	public static final int P_VINTAGE_ID = 9;
-
 	public static final int PIECE_ANIM_SPEED = 150; // 250 looks too long. is not?
 	public static final String VALID_MOVES = "valid_moves";
 
@@ -62,7 +50,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public static final int EMPTY_ID = 6;
 	protected float density;
 	protected AppData appData;
-	private int boardId;
 
 	protected WeakHashMap<Integer, Bitmap> whitePiecesMap;
 	protected WeakHashMap<Integer, Bitmap> blackPiecesMap;
@@ -161,7 +148,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		boardBackPaint = new Paint();
 
 		appData = new AppData(context);
-		boardId = appData.getChessBoardId();
 		clipBoundsRect = new Rect();
 
 		handler = new Handler();
@@ -1007,18 +993,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 	}
 
-	private int[] boardsDrawables = {
-			R.drawable.wood_dark,
-			R.drawable.wood_light,
-			R.drawable.blue,
-			R.drawable.brown,
-			R.drawable.green,
-			R.drawable.grey,
-			R.drawable.marble,
-			R.drawable.red,
-			R.drawable.tan
-	};
-
 	public void lockBoard(boolean lock) {
 		locked = lock;
 		// todo: probably also lock Notation navigator
@@ -1034,26 +1008,59 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			BitmapShader shader;
 
 			if (customBoardId != NO_ID) {
-				shader = setBoardFromResource(customBoardId);
-			} else if (!TextUtils.isEmpty(appData.getThemeBoardPath())) {
+				shader = setBoardFromResource();
+			} else if (appData.isUseThemeBoard()) {
 				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
 				if (boardBitmap == null) {
 					getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme
-					boardBackPaint.setShader(setBoardFromResource(boardsDrawables[boardId]));
+					boardBackPaint.setShader(setBoardFromResource());
 					return;
 				}
 				boardBitmap = Bitmap.createScaledBitmap(boardBitmap, viewWidth, viewWidth, true);
 
 				shader = new BitmapShader(boardBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 			} else {
-				shader = setBoardFromResource(boardsDrawables[boardId]);
+				shader = setBoardFromResource();
 			}
 
 			boardBackPaint.setShader(shader);
 		}
 	}
 
-	private BitmapShader setBoardFromResource(int resourceId) {
+	private BitmapShader setBoardFromResource() {
+
+		Context context = getContext();
+		int resourceId;
+		if (customBoardId != NO_ID) {
+			resourceId = customBoardId;
+		}else {
+			String themeBoardName = appData.getThemeBoardName();
+			if(themeBoardName.equals(context.getString(R.string.board_wood_dark))) {
+				resourceId  = R.drawable.board_wood_dark;
+			} else if (themeBoardName.equals(context.getString(R.string.board_wood_light))) {
+				resourceId  = R.drawable.board_wood_light;
+			} else if (themeBoardName.equals(context.getString(R.string.board_blue))) {
+				resourceId  = R.drawable.board_blue;
+			} else if (themeBoardName.equals(context.getString(R.string.board_brown))) {
+				resourceId  = R.drawable.board_brown;
+			} else if (themeBoardName.equals(context.getString(R.string.board_green))) {
+				resourceId  = R.drawable.board_green;
+			} else if (themeBoardName.equals(context.getString(R.string.board_grey))) {
+				resourceId  = R.drawable.board_grey;
+			} else if (themeBoardName.equals(context.getString(R.string.board_marble))) {
+				resourceId  = R.drawable.board_marble;
+			} else if (themeBoardName.equals(context.getString(R.string.board_red))) {
+				resourceId  = R.drawable.board_red;
+			} else if (themeBoardName.equals(context.getString(R.string.board_tan))) {
+				resourceId  = R.drawable.board_tan;
+			} else { // if board wasn't selected yet, use default
+				resourceId = R.drawable.board_wood_dark;
+			}
+		}
+
+
+
+
 		Bitmap boardBitmap;
 		BitmapShader shader;
 		BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(resourceId);
@@ -1387,7 +1394,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	};
 
 	public void updateBoardAndPiecesImgs() {
-		boardId = appData.getChessBoardId();
 		loadPieces();
 
 		invalidate();

@@ -92,7 +92,7 @@ public class AppUtils {
 	 * @param context te get packageName & {@code cacheDir} from internal storage
 	 * @return file for {@code cacheDir} either SD card or internal storage. Or {@code null} if cacheDir doesn't exist
 	 */
-	public static File getCacheDir(Context context){
+	public static File getCacheDir(Context context) throws IOException {
 		File cacheDir;
 		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 			String cacheDirPath = getApplicationCacheDirPath(context.getPackageName());
@@ -103,7 +103,8 @@ public class AppUtils {
 
 		if (cacheDir != null && !cacheDir.exists()) {
 			if (!cacheDir.mkdirs()) {
-				throw new IllegalStateException("can't use cacheDir");
+				throw new IOException("Can't use cacheDir");
+//				throw new IllegalStateException("can't use cacheDir");
 			}
 		}
 		return cacheDir;
@@ -145,7 +146,7 @@ public class AppUtils {
 	}
 
 
-	public static File openFileByName(Context context, String filename) {
+	public static File openFileByName(Context context, String filename) throws IOException {
 		File cacheDir = getCacheDir(context);
 		return new File(cacheDir, filename);
 	}

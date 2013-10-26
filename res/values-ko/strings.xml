@@ -80,8 +80,8 @@
 	<string name="board_marble">대리석</string>
 	<string name="board_red">빨강</string>
 	<string name="board_tan">~을 무두질하다</string>
-	<string name="board_woodlight">나무 빛</string>
-	<string name="board_wooddark">우드 다크</string>
+	<string name="board_wood_light">나무 빛</string>
+	<string name="board_wood_dark">우드 다크</string>
 	<string name="pieces_alpha">알파</string>
 	<string name="pieces_book">~을 기입하다, ~을 예약하다</string>
 	<string name="pieces_cases">실으면됩니다</string>

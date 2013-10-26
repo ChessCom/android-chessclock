@@ -80,8 +80,8 @@
 	<string name="board_marble">Marmor</string>
 	<string name="board_red">Rød</string>
 	<string name="board_tan">Tan</string>
-	<string name="board_woodlight">Tre lys</string>
-	<string name="board_wooddark">Tre Mørk</string>
+	<string name="board_wood_light">Tre lys</string>
+	<string name="board_wood_dark">Tre Mørk</string>
 	<string name="pieces_alpha">Alpha</string>
 	<string name="pieces_book">Book</string>
 	<string name="pieces_cases">Etui</string>

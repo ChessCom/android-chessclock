@@ -81,8 +81,8 @@
 	<string name="board_marble">Marmor</string>
 	<string name="board_red">Rot</string>
 	<string name="board_tan">Bräune</string>
-	<string name="board_woodlight">Holz Licht</string>
-	<string name="board_wooddark">Holz Dunkel</string>
+	<string name="board_wood_light">Holz Licht</string>
+	<string name="board_wood_dark">Holz Dunkel</string>
 	<string name="pieces_alpha">Alpha</string>
 	<string name="pieces_book">Buch</string>
 	<string name="pieces_cases">Fälle</string>

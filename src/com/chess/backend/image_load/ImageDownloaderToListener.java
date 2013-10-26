@@ -34,7 +34,11 @@ public class ImageDownloaderToListener {
 
     public ImageDownloaderToListener(Context context) {
 		this.context = context;
-		cacheDir = AppUtils.getCacheDir(context);
+		try {
+			cacheDir = AppUtils.getCacheDir(context);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
     /**
@@ -245,62 +249,66 @@ public class ImageDownloaderToListener {
 			URLConnection urlConnection = new URL(url).openConnection();
 			int totalSize = urlConnection.getContentLength();
 
-
 			InputStream is = urlConnection.getInputStream();
 
-			// create descriptor
-			File imgFile = new File(cacheDir, filename);
-			// copy stream to imgFile
-			OutputStream os = new FileOutputStream(imgFile); // save stream to
+			if (cacheDir != null) {
+				// create descriptor
+				File imgFile = new File(cacheDir, filename);
+				// copy stream to imgFile
+				OutputStream os = new FileOutputStream(imgFile); // save stream to
 
-			// save img to SD and update progress
-			final int buffer_size = 1024;
-			int totalRead = 0;
-			try {
-				byte[] bytes = new byte[buffer_size];
-				for (;;) {
-					int count = is.read(bytes, 0, buffer_size);
-					totalRead += count;
-					int progress = (int) ((totalRead / (float) totalSize) * 100);
+				// save img to SD and update progress
+				final int buffer_size = 1024;
+				int totalRead = 0;
+				try {
+					byte[] bytes = new byte[buffer_size];
+					for (;;) {
+						int count = is.read(bytes, 0, buffer_size);
+						totalRead += count;
+						int progress = (int) ((totalRead / (float) totalSize) * 100);
 
-					holderReference.setProgress(progress);
-					if (count == -1) {
-						break;
+						holderReference.setProgress(progress);
+						if (count == -1) {
+							break;
+						}
+						os.write(bytes, 0, count);
 					}
-					os.write(bytes, 0, count);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					return null;
 				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				return null;
+
+				os.close();
+
+				if (useScale) {
+					// Get the dimensions of the View
+					int targetW = imageSize;
+					int targetH = imageSize;
+
+					// Get the dimensions of the bitmap
+					BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+					bmOptions.inJustDecodeBounds = true;
+					BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
+					int photoW = bmOptions.outWidth;
+					int photoH = bmOptions.outHeight;
+
+					// Determine how much to scale down the image
+					int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+					// Decode the image imgFile into a Bitmap sized to fill the View
+					bmOptions.inJustDecodeBounds = false;
+					bmOptions.inSampleSize = scaleFactor;
+					bmOptions.inPurgeable = true;
+
+					return BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
+				}
+				// TODO adjust usage for width and height
+
+				return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+			} else {
+				return BitmapFactory.decodeStream(is);
 			}
 
-			os.close();
-
-			if (useScale) {
-				// Get the dimensions of the View
-				int targetW = imageSize;
-				int targetH = imageSize;
-
-				// Get the dimensions of the bitmap
-				BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-				bmOptions.inJustDecodeBounds = true;
-				BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
-				int photoW = bmOptions.outWidth;
-				int photoH = bmOptions.outHeight;
-
-				// Determine how much to scale down the image
-				int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-
-				// Decode the image imgFile into a Bitmap sized to fill the View
-				bmOptions.inJustDecodeBounds = false;
-				bmOptions.inSampleSize = scaleFactor;
-				bmOptions.inPurgeable = true;
-
-				return BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
-			}
-			// TODO adjust usage for width and height
-
-			return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {

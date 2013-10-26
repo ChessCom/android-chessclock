@@ -30,6 +30,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import com.chess.BuildConfig;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 /**
@@ -133,8 +134,7 @@ public abstract class ImageWorker {
 	 * @param fragmentManager
 	 * @param cacheParams     The cache parameters to use for the image cache.
 	 */
-	public void addImageCache(FragmentManager fragmentManager,
-							  ImageCache.ImageCacheParams cacheParams) {
+	public void addImageCache(FragmentManager fragmentManager, ImageCache.ImageCacheParams cacheParams) {
 		mImageCacheParams = cacheParams;
 		mImageCache = ImageCache.getInstance(fragmentManager, mImageCacheParams);
 		new CacheAsyncTask().execute(MESSAGE_INIT_DISK_CACHE);
@@ -148,7 +148,7 @@ public abstract class ImageWorker {
 	 * @param diskCacheDirectoryName See
 	 *                               {@link ImageCache.ImageCacheParams#ImageCacheParams(android.content.Context, String)}.
 	 */
-	public void addImageCache(FragmentActivity activity, String diskCacheDirectoryName) {
+	public void addImageCache(FragmentActivity activity, String diskCacheDirectoryName) throws IOException {
 		mImageCacheParams = new ImageCache.ImageCacheParams(activity, diskCacheDirectoryName);
 		mImageCacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
 		mImageCache = ImageCache.getInstance(activity.getSupportFragmentManager(), mImageCacheParams);

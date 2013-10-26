@@ -99,15 +99,6 @@ public class AppData {
 		return preferences.getString(PASSWORD, Symbol.EMPTY);
 	}
 
-	public int getChessBoardId() {
-		return getIntValue(PREF_BOARD_STYLE, StaticData.B_WOOD_DARK_ID);
-	}
-
-	public void setChessBoardId(int value) {
-		setIntValue(PREF_BOARD_STYLE, value);
-	}
-
-
 	public void setBackgroundSetId(int value) {
 		setIntValue(PREF_BACKGROUND_SET, value);
 	}
@@ -417,6 +408,18 @@ public class AppData {
 		setBooleanValue(PREF_BOARD_SHOW_ANSWER_BOTTOM, checked);
 	}
 
+	public void resetThemeToDefault() {
+		setThemeBoardPath(Symbol.EMPTY);
+		setThemeBackPath(Symbol.EMPTY);
+		setThemePiecesPath(Symbol.EMPTY);
+		setThemeSoundPath(Symbol.EMPTY);
+		setThemeBoardCoordinateDark(UNDEFINED);
+		setThemeBoardCoordinateLight(UNDEFINED);
+		setThemeBoardHighlight(UNDEFINED);
+		setUseThemeBoard(false);
+		setUseThemePieces(false);
+	}
+
 	public void setThemeBackPath(String path) {
 		setStringValue(PREF_THEME_BACK_PATH, path);
 	}
@@ -469,6 +472,22 @@ public class AppData {
 		return getStringValue(PREF_THEME_NAME, DEFAULT_THEME_NAME);
 	}
 
+	public void setThemeBackgroundName(String themeName) {
+		setStringValue(PREF_THEME_BACKGROUND_NAME, themeName);
+	}
+
+	public String getThemeBackgroundName() {
+		return getStringValue(PREF_THEME_BACKGROUND_NAME, DEFAULT_THEME_NAME);
+	}
+
+	public void setThemeBackgroundPreviewUrl(String value) {
+		setStringValue(PREF_THEME_BACKGROUND_PREVIEW, value);
+	}
+
+	public String getThemeBackgroundPreviewUrl() {
+		return getStringValue(PREF_THEME_BACKGROUND_PREVIEW, Symbol.EMPTY);
+	}
+
 	public void setSoundSetPosition(int value) {
 		setIntValue(PREF_SOUNDS_SET, value);
 	}
@@ -502,6 +521,14 @@ public class AppData {
 		return getStringValue(PREF_THEME_PIECES_PREVIEW, Symbol.EMPTY);
 	}
 
+	public void setThemeBoardPreviewUrl(String value) {
+		setStringValue(PREF_THEME_BOARD_PREVIEW, value);
+	}
+
+	public String getThemeBoardPreviewUrl() {
+		return getStringValue(PREF_THEME_BOARD_PREVIEW, Symbol.EMPTY);
+	}
+
 	public void setThemePiecesName(String piecesName) {
 		setStringValue(PREF_THEME_PIECES_NAME, piecesName);
 	}
@@ -510,12 +537,28 @@ public class AppData {
 		return getStringValue(PREF_THEME_PIECES_NAME, Symbol.EMPTY);
 	}
 
+	public void setThemeBoardName(String piecesName) {
+		setStringValue(PREF_THEME_BOARD_NAME, piecesName);
+	}
+
+	public String getThemeBoardName() {
+		return getStringValue(PREF_THEME_BOARD_NAME, Symbol.EMPTY);
+	}
+
 	public void setThemePiecesId(int value) {
 		setIntValue(PREF_THEME_PIECES_ID, value);
 	}
 
 	public int getThemePiecesId() {
 		return getIntValue(PREF_THEME_PIECES_ID, UNDEFINED);
+	}
+
+	public void setUseThemeBoard(boolean value) {
+		setBooleanValue(PREF_THEME_BOARD_USE_THEME, value);
+	}
+
+	public boolean isUseThemeBoard() {
+		return getBooleanValue(PREF_THEME_BOARD_USE_THEME, false);
 	}
 
 	public void setUseThemePieces(boolean value) {

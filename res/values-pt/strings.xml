@@ -80,8 +80,8 @@
 	<string name="board_marble">Mármore  </string>
 	<string name="board_red">Vermelho</string>
 	<string name="board_tan">Torrado</string>
-	<string name="board_woodlight">Luz Madeira</string>
-	<string name="board_wooddark">Dark Wood</string>
+	<string name="board_wood_light">Luz Madeira</string>
+	<string name="board_wood_dark">Dark Wood</string>
 	<string name="pieces_alpha">Alfa</string>
 	<string name="pieces_book">Livro</string>
 	<string name="pieces_cases">Casos</string>

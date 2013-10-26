@@ -81,8 +81,8 @@
 	<string name="board_marble">Мрамор</string>
 	<string name="board_red">Красный</string>
 	<string name="board_tan">Бронзовый</string>
-	<string name="board_woodlight">Светлое Дерево</string>
-	<string name="board_wooddark">Тёмное Дерево</string>
+	<string name="board_wood_light">Светлое Дерево</string>
+	<string name="board_wood_dark">Тёмное Дерево</string>
 	<string name="pieces_alpha">Альфа</string>
 	<string name="pieces_book">Бук</string>
 	<string name="pieces_cases">Кейзы</string>

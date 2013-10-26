@@ -50,7 +50,6 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 	private PiecesItemUpdateListener piecesItemUpdateListener;
 	private PiecesSingleItemUpdateListener piecesSingleItemUpdateListener;
-	private List<String> piecesUrlsList;
 	private CustomSectionedAdapter sectionedAdapter;
 	private ThemePiecesAdapter themePiecesAdapter;
 	private List<SelectionItem> defaultPiecesSelectionList;
@@ -58,22 +57,19 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 	private List<SelectionItem> themePiecesSelectionList;
 	private String selectedPieceDir;
 	private int screenWidth;
-	private int screenHeight;
 	private TextView loadProgressTxt;
 	private TextView taskTitleTxt;
 	private PopupCustomViewFragment loadProgressPopupFragment;
 	private PiecesPackSaveListener piecesPackSaveListener;
 	private List<PieceSingleItem.Data> themePiecesItemsList;
 	private SelectionItem selectedThemePieceItem;
-	private boolean piecesLoading;
+	private boolean piecesAreLoading;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
-		screenHeight = getResources().getDisplayMetrics().heightPixels;
-
 
 		themePiecesName = getAppData().getThemePiecesName();
 
@@ -83,7 +79,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 		Resources resources = getResources();
 
-		// Piece and board bitmaps list init
+		// Pieces bitmaps list init
 		defaultPiecesSelectionList = new ArrayList<SelectionItem>();
 		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_game), getString(R.string.pieces_game)));
 		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_alpha), getString(R.string.pieces_alpha)));
@@ -154,12 +150,12 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		int section = sectionedAdapter.getCurrentSection(position);
 
 		if (section == THEME_SECTION) {
-			if (piecesLoading) {
+			if (piecesAreLoading) {
 				return;
 			}
 
 			// don't allow to select while it's loading
-			piecesLoading = true;
+			piecesAreLoading = true;
 
 			selectedThemePieceItem = (SelectionItem) parent.getItemAtPosition(position);
 			for (SelectionItem selectionItem : themePiecesSelectionList) {
@@ -184,7 +180,6 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 			}
 
 			// start loading pieces
-			// Get pieces main path on s3
 			LoadItem loadItem = LoadHelper.getPiecesById(getUserToken(), selectedPieceId);
 			new RequestJsonTask<PieceSingleItem>(piecesSingleItemUpdateListener).executeTask(loadItem);
 
@@ -475,7 +470,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 
-			piecesLoading = false;
+			piecesAreLoading = false;
 		}
 	}
 
@@ -489,7 +484,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		public void updateListData(List<String> itemsList) {
 			super.updateListData(itemsList);
 
-			piecesLoading = false;
+			piecesAreLoading = false;
 			// save pieces theme name to appData
 			getAppData().setUseThemePieces(true);
 			getAppData().setThemePiecesName(selectedThemePieceItem.getCode());
@@ -545,7 +540,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 
-			piecesLoading = false;
+			piecesAreLoading = false;
 		}
 	}
 }

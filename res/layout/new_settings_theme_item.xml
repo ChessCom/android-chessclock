@@ -9,7 +9,7 @@
     >
 
     <com.chess.backend.image_load.ProgressImageView
-        android:id="@+id/backImg"
+        android:id="@+id/backgroundPreviewImg"
 		android:layout_width="360dip"
 		android:layout_height="@dimen/theme_back_preview_height"
         android:adjustViewBounds="true"

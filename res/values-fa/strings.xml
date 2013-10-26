@@ -80,8 +80,8 @@
 	<string name="board_marble">سنگ مرمر</string>
 	<string name="board_red">قرمز</string>
 	<string name="board_tan">قهوهای مایل به زرد</string>
-	<string name="board_woodlight">نور چوب</string>
-	<string name="board_wooddark">چوب</string>
+	<string name="board_wood_light">نور چوب</string>
+	<string name="board_wood_dark">چوب</string>
 	<string name="pieces_alpha">آلفا</string>
 	<string name="pieces_book">کتاب</string>
 	<string name="pieces_cases">موارد</string>

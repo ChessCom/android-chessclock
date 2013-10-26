@@ -100,13 +100,12 @@
                 style="@style/SettingsListText"
                 />
 
-            <Spinner
-                android:id="@+id/boardsSpinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/transparent_list_item_selector"
-                />
-
+			<com.chess.backend.image_load.ProgressImageView
+				android:id="@+id/boardLineImage"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:contentDescription="@string/image"
+				/>
 
         </com.chess.LinLayout>
 
@@ -203,8 +202,8 @@
 			>
 
 			<com.chess.backend.image_load.ProgressImageView
-				android:id="@+id/backImg"
-				android:layout_width="360dip"
+				android:id="@+id/backgroundPreviewImg"
+				android:layout_width="match_parent"
 				android:layout_height="@dimen/theme_back_preview_height"
 				android:adjustViewBounds="true"
 				android:scaleType="fitXY"

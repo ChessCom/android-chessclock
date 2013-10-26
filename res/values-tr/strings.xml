@@ -80,8 +80,8 @@
 	<string name="board_marble">Mermer</string>
 	<string name="board_red">Kırmızı</string>
 	<string name="board_tan">taba</string>
-	<string name="board_woodlight">Ahşap Işık</string>
-	<string name="board_wooddark">Ahşap Koyu</string>
+	<string name="board_wood_light">Ahşap Işık</string>
+	<string name="board_wood_dark">Ahşap Koyu</string>
 	<string name="pieces_alpha">Alfa</string>
 	<string name="pieces_book">Kitap!</string>
 	<string name="pieces_cases">Vakalar</string>

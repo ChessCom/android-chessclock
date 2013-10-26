@@ -202,10 +202,10 @@ public class RestHelper {
 	/**
 	 * Theme Boards
  	 */
-	public String CMD_BOARD = BASE_URL + V1 + "/board";
+	public String CMD_BOARDS = BASE_URL + V1 + "/board";
 
 	public String CMD_BOARD_BY_ID(long id) {
-		return CMD_BOARD + "/" + id;
+		return CMD_BOARDS + "/" + id;
 	}
 
 	/**

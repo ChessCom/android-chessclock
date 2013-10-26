@@ -80,8 +80,8 @@
 	<string name="board_marble">Marmor</string>
 	<string name="board_red">Röd</string>
 	<string name="board_tan">solbrännan.</string>
-	<string name="board_woodlight">Trä Ljus</string>
-	<string name="board_wooddark">Trä Mörk</string>
+	<string name="board_wood_light">Trä Ljus</string>
+	<string name="board_wood_dark">Trä Mörk</string>
 	<string name="pieces_alpha">Alfa</string>
 	<string name="pieces_book">bok</string>
 	<string name="pieces_cases">Fall</string>

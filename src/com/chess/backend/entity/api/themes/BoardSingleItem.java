@@ -6,23 +6,23 @@ import com.chess.backend.entity.api.BaseResponseItem;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 16.10.13
- * Time: 19:20
+ * Date: 26.10.13
+ * Time: 16:34
  */
-public class BoardItem extends BaseResponseItem<BoardItem.Data> {
-
+public class BoardSingleItem extends BaseResponseItem<BoardSingleItem.Data>{
 	public static final String PATH = "https://chess-redesign.s3.amazonaws.com/Boards/";
 	public static final String COLOR_DIVIDER = "#";
 
 /*
-	"user_theme_board_id": 18,
-	"name": "Graffiti",
-	"board_preview_url": "https://chess-redesign.s3.amazonaws.com/Boards/_previews_/line/graffiti.png",
-	"line_board_preview": "https://chess-redesign.s3.amazonaws.com/Boards/_previews_/line/graffiti.png",
-	"coordinate_color": "#FF2f3c22",
-	"theme_id": 19,
-	"theme_dir": "graffiti"
-
+	"user_theme_board_id": 5,
+	"name": "Cloud",
+	"board_preview_url": "www.some_board_url.com/slika.jpg",
+	"line_board_preview": "www.some_board_url.com/linijadruga.jpg"
+	"coordinate_color_light": "FFFFFF",
+	"coordinate_color_dark": "000000",
+	"highlight_color": "fffccc",
+	"theme_id": 42,
+	"theme_dir": "metal"
 */
 
 	public class Data {
@@ -56,11 +56,11 @@ public class BoardItem extends BaseResponseItem<BoardItem.Data> {
 			this.name = name;
 		}
 
-		public String getBoardPreviewUrl() {
+		public String getPreviewUrl() {
 			return board_preview_url;
 		}
 
-		public void setBoardPreviewUrl(String board_preview_url) {
+		public void setPreviewUrl(String board_preview_url) {
 			this.board_preview_url = board_preview_url;
 		}
 

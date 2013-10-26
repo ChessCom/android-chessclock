@@ -81,8 +81,8 @@
 	<string name="board_marble">Mármol-Marble</string>
 	<string name="board_red">Rojo</string>
 	<string name="board_tan">Canela</string>
-	<string name="board_woodlight">Madera Luz</string>
-	<string name="board_wooddark">Madera oscura</string>
+	<string name="board_wood_light">Madera Luz</string>
+	<string name="board_wood_dark">Madera oscura</string>
 	<string name="pieces_alpha">Alfa</string>
 	<string name="pieces_book">LIBRO*</string>
 	<string name="pieces_cases">Casos</string>

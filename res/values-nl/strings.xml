@@ -80,8 +80,8 @@
 	<string name="board_marble">Marmer</string>
 	<string name="board_red">Rood</string>
 	<string name="board_tan">Geelbruin</string>
-	<string name="board_woodlight">Wood licht</string>
-	<string name="board_wooddark">Hout Dark</string>
+	<string name="board_wood_light">Wood licht</string>
+	<string name="board_wood_dark">Hout Dark</string>
 	<string name="pieces_alpha">Alpha</string>
 	<string name="pieces_book">Boeken</string>
 	<string name="pieces_cases">Kwesties</string>

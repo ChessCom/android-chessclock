@@ -81,8 +81,8 @@
 	<string name="board_marble">Marmor</string>
 	<string name="board_red">Rød</string>
 	<string name="board_tan">Tan</string>
-	<string name="board_woodlight">Træ Lys</string>
-	<string name="board_wooddark">Træ Mørk</string>
+	<string name="board_wood_light">Træ Lys</string>
+	<string name="board_wood_dark">Træ Mørk</string>
 	<string name="pieces_alpha">Alpha</string>
 	<string name="pieces_book">Igen</string>
 	<string name="pieces_cases">Sager</string>

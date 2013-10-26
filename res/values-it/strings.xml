@@ -80,8 +80,8 @@
 	<string name="board_marble">Marmo</string>
 	<string name="board_red">Rosso</string>
 	<string name="board_tan">Abbronzatura</string>
-	<string name="board_woodlight">Legno Chiaro</string>
-	<string name="board_wooddark">Legno scuro</string>
+	<string name="board_wood_light">Legno Chiaro</string>
+	<string name="board_wood_dark">Legno scuro</string>
 	<string name="pieces_alpha">Alfa</string>
 	<string name="pieces_book">Libro</string>
 	<string name="pieces_cases">Custodie</string>

@@ -39,6 +39,7 @@ import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.utilities.AppUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,8 +74,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private ThemesUpdateListener themesUpdateListener;
 	private ImageUpdateListener backgroundUpdateListener;
 	private ImageUpdateListener boardUpdateListener;
-	private BackgroundImageSaveListener mainBackgroundImgSaveListener;
-	private BackgroundImageSaveListener boardImgSaveListener;
+	private ImageSaveListener mainBackgroundImgSaveListener;
+	private ImageSaveListener boardImgSaveListener;
 	private PopupCustomViewFragment loadProgressPopupFragment;
 
 	private ImageDownloaderToListener imageDownloader;
@@ -89,7 +90,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private TextView loadProgressTxt;
 	private TextView taskTitleTxt;
 	private BackgroundItemUpdateListener backgroundItemUpdateListener;
-	private BoardItemUpdateListener boardItemUpdateListener;
+	private BoardSingleItemUpdateListener boardSingleItemUpdateListener;
 	private PiecesItemUpdateListener piecesItemUpdateListener;
 	private SoundsItemUpdateListener soundsItemUpdateListener;
 	private SoundPackSaveListener soundPackSaveListener;
@@ -108,10 +109,10 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		themesUpdateListener = new ThemesUpdateListener();
 		backgroundUpdateListener = new ImageUpdateListener(BACKGROUND);
 		boardUpdateListener = new ImageUpdateListener(BOARD);
-		mainBackgroundImgSaveListener = new BackgroundImageSaveListener(BACKGROUND);
-		boardImgSaveListener = new BackgroundImageSaveListener(BOARD);
+		mainBackgroundImgSaveListener = new ImageSaveListener(BACKGROUND);
+		boardImgSaveListener = new ImageSaveListener(BOARD);
 		backgroundItemUpdateListener = new BackgroundItemUpdateListener();
-		boardItemUpdateListener = new BoardItemUpdateListener();
+		boardSingleItemUpdateListener = new BoardSingleItemUpdateListener();
 		piecesItemUpdateListener = new PiecesItemUpdateListener();
 		soundsItemUpdateListener = new SoundsItemUpdateListener();
 		soundPackSaveListener = new SoundPackSaveListener();
@@ -223,18 +224,16 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 	private void installSelectedTheme() {
 		if (selectedThemeItem.getThemeName().equals(GAME_THEME_NAME)) {
-			getAppData().setThemeBoardPath(Symbol.EMPTY); // clear downloaded theme value
-			getAppData().setThemeBackPath(Symbol.EMPTY); // clear downloaded theme value
-			getAppData().setThemePiecesPath(Symbol.EMPTY); // clear downloaded theme value
-			getAppData().setThemeSoundPath(Symbol.EMPTY); // clear downloaded theme value
+			// clear themed settings
+			getAppData().resetThemeToDefault();
 			getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
 
 			getAppData().setThemeName(getString(R.string.theme_game_room));
+			getAppData().setThemeBackgroundName(getString(R.string.theme_game_room));
 		} else { // start loading main background image
 			// Get exactly sized url for theme background
 			LoadItem loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedThemeItem.getBackgroundId(),
 					screenWidth, screenHeight, RestHelper.V_HANDSET);
-
 			new RequestJsonTask<BackgroundSingleItem>(backgroundItemUpdateListener).executeTask(loadItem);
 
 			selectedThemeName = selectedThemeItem.getThemeName();
@@ -252,6 +251,9 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		public void updateData(BackgroundSingleItem returnedObj) {
 
 			backgroundUrl = returnedObj.getData().getResizedImage();
+
+			getAppData().setThemeBackgroundName(returnedObj.getData().getName());
+			getAppData().setThemeBackgroundPreviewUrl(returnedObj.getData().getBackgroundPreviewUrl());
 
 			{  // show popup with percentage of loading theme
 				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
@@ -273,25 +275,30 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		}
 	}
 
-	private class BoardItemUpdateListener extends ChessLoadUpdateListener<BoardItem> {
+	private class BoardSingleItemUpdateListener extends ChessLoadUpdateListener<BoardSingleItem> {
 
-		private BoardItemUpdateListener() {
-			super(BoardItem.class);
+		private BoardSingleItemUpdateListener() {
+			super(BoardSingleItem.class);
 		}
 
 		@Override
-		public void updateData(BoardItem returnedObj) {
+		public void updateData(BoardSingleItem returnedObj) {
 
-			String coordinateColorLight = returnedObj.getData().getCoordinateColorLight();
-			String coordinateColorDark = returnedObj.getData().getCoordinateColorDark();
-			String highlightColor = returnedObj.getData().getHighlightColor();
+			BoardSingleItem.Data boardData = returnedObj.getData();
+			String coordinateColorLight = boardData.getCoordinateColorLight();
+			String coordinateColorDark = boardData.getCoordinateColorDark();
+			String highlightColor = boardData.getHighlightColor();
+
+			getAppData().setUseThemeBoard(true);
+			getAppData().setThemeBoardName(boardData.getName());
+			getAppData().setThemeBoardPreviewUrl(boardData.getLineBoardPreview());
 
 			getAppData().setThemeBoardCoordinateLight(Color.parseColor(coordinateColorLight));
 			getAppData().setThemeBoardCoordinateDark(Color.parseColor(coordinateColorDark));
 			getAppData().setThemeBoardHighlight(Color.parseColor(highlightColor));
 
 			// get boards dir in s3
-			String boardDir = returnedObj.getData().getThemeDir();
+			String boardDir = boardData.getThemeDir();
 
 			// we start to count pixels until we reach needed size for board
 			int boardSize = BOARD_START_SIZE;
@@ -309,7 +316,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				boardSize += BOARD_SIZE_STEP;
 			}
 
-			boardUrl = BoardItem.PATH + boardDir + "/" + name + ".png";
+			boardUrl = BoardsItem.PATH + boardDir + "/" + name + ".png";
 			logTest(" board url = " + boardUrl);
 
 			taskTitleTxt.setText(R.string.loading_board);
@@ -547,11 +554,11 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		}
 	}
 
-	private class BackgroundImageSaveListener extends AbstractUpdateListener<Bitmap> {
+	private class ImageSaveListener extends AbstractUpdateListener<Bitmap> {
 
 		private int listenerCode;
 
-		public BackgroundImageSaveListener(int listenerCode) {
+		public ImageSaveListener(int listenerCode) {
 			super(getActivity(), SettingsThemeFragment.this);
 			this.listenerCode = listenerCode;
 		}
@@ -563,28 +570,34 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 				// set main background image as theme
 				String filename = String.valueOf(backgroundUrl.hashCode());
-				File imgFile = AppUtils.openFileByName(getActivity(), filename);
-				getActivityFace().setMainBackground(imgFile.getAbsolutePath());
+				try {
+					File imgFile = AppUtils.openFileByName(getActivity(), filename);
+					getActivityFace().setMainBackground(imgFile.getAbsolutePath());
 
-				getActivityFace().updateActionBarBackImage();
+					getActivityFace().updateActionBarBackImage();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
 				// Get board main path
 				LoadItem loadItem = LoadHelper.getBoardById(getUserToken(), selectedThemeItem.getBoardId());
 
-				new RequestJsonTask<BoardItem>(boardItemUpdateListener).executeTask(loadItem);
+				new RequestJsonTask<BoardSingleItem>(boardSingleItemUpdateListener).executeTask(loadItem);
 
-				int size = screenWidth;
 				taskTitleTxt.setText(R.string.loading_board);
 				loadProgressTxt.setVisibility(View.VISIBLE);
-
 
 			} else if (listenerCode == BOARD) {
 				// set board image as theme
 				String filename = String.valueOf(boardUrl.hashCode());
-				File imgFile = AppUtils.openFileByName(getActivity(), filename);
-				String drawablePath = imgFile.getAbsolutePath();
+				try {
+					File imgFile = AppUtils.openFileByName(getActivity(), filename);
+					String drawablePath = imgFile.getAbsolutePath();
 
-				getAppData().setThemeBoardPath(drawablePath);
+					getAppData().setThemeBoardPath(drawablePath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
 				// Get pieces main path on s3
 				LoadItem loadItem = LoadHelper.getPiecesById(getUserToken(), selectedThemeItem.getPiecesId());
@@ -608,7 +621,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		public ThemesAdapter(Context context, List<ThemeItem.Data> menuItems) {
 			super(context, menuItems);
 			customColor = resources.getColor(R.color.theme_customize_back);
-			boardPreviewImageSize = (int) (resources.getDimensionPixelSize(R.dimen.theme_board_preview_size));
+			boardPreviewImageSize = resources.getDimensionPixelSize(R.dimen.theme_board_preview_size);
 
 			imageHeight = (int) (screenWidth / 2.9f);
 			backImageParams = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
@@ -631,7 +644,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 			holder.check = (TextView) view.findViewById(R.id.iconTxt);
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
-			holder.backImg = (ProgressImageView) view.findViewById(R.id.backImg);
+			holder.backImg = (ProgressImageView) view.findViewById(R.id.backgroundPreviewImg);
 			holder.boardPreviewImg = (ProgressImageView) view.findViewById(R.id.boardPreviewImg);
 			holder.piecesPreviewImg = (ProgressImageView) view.findViewById(R.id.piecesPreviewImg);
 			view.setTag(holder);

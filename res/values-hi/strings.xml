@@ -81,8 +81,8 @@
 	<string name="board_marble">संगमरमर </string>
 	<string name="board_red">लाल </string>
 	<string name="board_tan">टैन</string>
-	<string name="board_woodlight">लकड़ी लाइट</string>
-	<string name="board_wooddark">लकड़ी डार्क</string>
+	<string name="board_wood_light">लकड़ी लाइट</string>
+	<string name="board_wood_dark">लकड़ी डार्क</string>
 	<string name="pieces_alpha">अल्फा</string>
 	<string name="pieces_book">पुस्तक </string>
 	<string name="pieces_cases">मामले</string>

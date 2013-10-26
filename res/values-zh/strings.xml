@@ -80,8 +80,8 @@
 	<string name="board_marble">大理石</string>
 	<string name="board_red">红色</string>
 	<string name="board_tan">黄褐色的</string>
-	<string name="board_woodlight">木光</string>
-	<string name="board_wooddark">木材黑暗</string>
+	<string name="board_wood_light">木光</string>
+	<string name="board_wood_dark">木材黑暗</string>
 	<string name="pieces_alpha">Alpha</string>
 	<string name="pieces_book">n.预订,订票</string>
 	<string name="pieces_cases">例</string>

@@ -81,8 +81,8 @@
 	<string name="board_marble">白大理石</string>
 	<string name="board_red">赤</string>
 	<string name="board_tan">タン</string>
-	<string name="board_woodlight">木のライト</string>
-	<string name="board_wooddark">ウッドダーク</string>
+	<string name="board_wood_light">木のライト</string>
+	<string name="board_wood_dark">ウッドダーク</string>
 	<string name="pieces_alpha">アルファ</string>
 	<string name="pieces_book">ブック</string>
 	<string name="pieces_cases">ケース</string>

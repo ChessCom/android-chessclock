@@ -82,8 +82,8 @@
 	<string name="board_marble">ماربل</string>
 	<string name="board_red">أحمر</string>
 	<string name="board_tan">تاني</string>
-	<string name="board_woodlight">ضَوْءُ وُود</string>
-	<string name="board_wooddark">الخشب الداكن</string>
+	<string name="board_wood_light">ضَوْءُ وُود</string>
+	<string name="board_wood_dark">الخشب الداكن</string>
 	<string name="pieces_alpha">ألفا</string>
 	<string name="pieces_book">الدفتر</string>
 	<string name="pieces_cases">الحالات</string>

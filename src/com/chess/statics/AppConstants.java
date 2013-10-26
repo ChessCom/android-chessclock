@@ -53,8 +53,6 @@ public class AppConstants {
 	public static final String PREF_BOARD_SHOW_ANSWER_BOTTOM = "show answer bottom";
 
 	public static final String PREF_COMPUTER_LEVEL = "computer strength lvl";
-	public static final String PREF_BOARD_STYLE = "board style";
-	public static final String PREF_PIECES_SET = "pieces set";
 	public static final String PREF_BACKGROUND_SET = "background set";
 	public static final String PREF_SOUNDS_SET = "sounds set";
 	public static final String PREF_COLORS_SET = "colors set";
@@ -80,13 +78,18 @@ public class AppConstants {
     public static final String PREF_THEME_BOARD_HIGHLIGHT = "theme_board_highlight";
 	public static final String PREF_THEME_PIECES_PATH = "theme_pieces_path";
 	public static final String PREF_THEME_PIECES_NAME = "theme_pieces_name";
+	public static final String PREF_THEME_BOARD_NAME = "theme_board_name";
 	public static final String PREF_THEME_PIECES_PREVIEW = "theme_pieces_preview_url";
+	public static final String PREF_THEME_BOARD_PREVIEW = "theme_board_preview_url";
+	public static final String PREF_THEME_BACKGROUND_PREVIEW = "theme_background_preview_url";
 	public static final String PREF_THEME_PIECES_ID = "theme_pieces_id";
 	public static final String PREF_DEFAULT_PIECES_ID = "default_pieces_id";
+	public static final String PREF_THEME_BOARD_USE_THEME = "is_use_theme_board";
 	public static final String PREF_THEME_PIECES_USE_THEME = "is_use_theme_pieces";
 	public static final String PREF_THEME_SOUNDS_PATH = "theme_sounds_path";
 	public static final String PREF_THEME_IS_PIECES_3D_PATH = "theme_is_pieces_3d";
     public static final String PREF_THEME_NAME = "theme_name";
+    public static final String PREF_THEME_BACKGROUND_NAME = "theme_background_name";
 	public static final String DEFAULT_THEME_NAME = "Game";
 
 	public static final String PREF_DEMO_TACTICS_LOADED = "demo tactics loaded";

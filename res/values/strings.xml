@@ -113,8 +113,8 @@
 	<string name="board_marble">Marble</string>
 	<string name="board_red">Red</string>
 	<string name="board_tan">Tan</string>
-	<string name="board_woodlight">Wood Light</string>
-	<string name="board_wooddark">Wood Dark</string>
+	<string name="board_wood_light">Wood Light</string>
+	<string name="board_wood_dark">Wood Dark</string>
 
     <!--Pieces styles-->
 	<string name="pieces_game">Game</string>

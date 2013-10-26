@@ -541,7 +541,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private View createBoardView(GameAnalysisItem gameItem) {
 		ChessBoardDiagramView boardView = new ChessBoardDiagramView(getActivity());
 		boardView.setGameFace(gameFaceHelper);
-		boardView.setCustomBoard(R.drawable.green);
+		boardView.setCustomBoard(R.drawable.board_green);
 
 		ChessBoardDiagram.resetInstance();
 		BoardFace boardFace = gameFaceHelper.getBoardFace();

@@ -72,6 +72,7 @@ public class ImageCache {
 
     private HashSet<SoftReference<Bitmap>> mReusableBitmaps;
 	private final Object bitmapsLock = new Object();
+	private boolean bitmapsProcessing = false;
 
 	/**
      * Create a new ImageCache object using the specified parameters. This should not be
@@ -93,8 +94,7 @@ public class ImageCache {
      * @param cacheParams The cache parameters to use if the ImageCache needs instantiation.
      * @return An existing retained ImageCache object or a new one if one did not exist
      */
-    public static ImageCache getInstance(
-            FragmentManager fragmentManager, ImageCacheParams cacheParams) {
+    public static ImageCache getInstance(FragmentManager fragmentManager, ImageCacheParams cacheParams) {
 
         // Search for, or create an instance of the non-UI RetainFragment
         final RetainFragment mRetainFragment = findOrCreateRetainFragment(fragmentManager);
@@ -337,10 +337,15 @@ public class ImageCache {
         Bitmap bitmap = null;
 
         if (mReusableBitmaps != null && !mReusableBitmaps.isEmpty()) {
-            final Iterator<SoftReference<Bitmap>> iterator = mReusableBitmaps.iterator();
-            Bitmap item;
-
-			synchronized (mReusableBitmaps) {
+			synchronized (bitmapsLock) {
+				while (bitmapsProcessing) {
+					try {
+						bitmapsLock.wait();
+						break;
+					} catch (InterruptedException ignored) {}
+				}
+				final Iterator<SoftReference<Bitmap>> iterator = mReusableBitmaps.iterator();
+				Bitmap item;
 
 				while (iterator.hasNext()) {
 					item = iterator.next().get();
@@ -359,6 +364,9 @@ public class ImageCache {
 						iterator.remove();
 					}
 				}
+
+				bitmapsProcessing = false;
+				bitmapsLock.notifyAll();
 			}
         }
 
@@ -509,7 +517,10 @@ public class ImageCache {
         // otherwise use internal cache dir
         String cachePath = "";
 		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !isExternalStorageRemovable()) {
-			cachePath = getExternalCacheDir(context).getPath();
+			File cacheDir = getExternalCacheDir(context);
+			if (cacheDir != null) {
+				cachePath = cacheDir.getPath();
+			}
 		} else {
 			File cacheDir = context.getCacheDir();
 			if (cacheDir != null) {

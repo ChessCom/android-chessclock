@@ -80,8 +80,8 @@
 	<string name="board_marble">Marmur</string>
 	<string name="board_red">Czerwony</string>
 	<string name="board_tan">Pastelowobrązowy</string>
-	<string name="board_woodlight">Jasnego drewna</string>
-	<string name="board_wooddark">Drewno Ciemny</string>
+	<string name="board_wood_light">Jasnego drewna</string>
+	<string name="board_wood_dark">Drewno Ciemny</string>
 	<string name="pieces_alpha">Alfa</string>
 	<string name="pieces_book">Książka</string>
 	<string name="pieces_cases">spraw,</string>

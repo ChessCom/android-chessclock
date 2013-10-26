@@ -80,8 +80,8 @@
 	<string name="board_marble">שיש</string>
 	<string name="board_red">אדום</string>
 	<string name="board_tan">שזוף</string>
-	<string name="board_woodlight">עץ אור</string>
-	<string name="board_wooddark">עץ כהה</string>
+	<string name="board_wood_light">עץ אור</string>
+	<string name="board_wood_dark">עץ כהה</string>
 	<string name="pieces_alpha">שקיפות</string>
 	<string name="pieces_book">ספר זה.</string>
 	<string name="pieces_cases">מקרים</string>

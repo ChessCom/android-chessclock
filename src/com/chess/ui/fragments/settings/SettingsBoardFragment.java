@@ -12,17 +12,12 @@ import com.chess.R;
 import com.chess.SwitchButton;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.model.SelectionItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
 import com.chess.statics.Symbol;
-import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
 import com.chess.utilities.AppUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,12 +25,8 @@ import java.util.List;
  * Date: 28.04.13
  * Time: 5:23
  */
-public class SettingsBoardFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener,
-		AdapterView.OnItemSelectedListener {
+public class SettingsBoardFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener {
 
-	private List<SelectionItem> defaultPiecesSelectionList;
-	private List<SelectionItem> boardsList;
-	private Spinner boardsSpinner;
 	private SwitchButton coordinatesSwitch;
 	private SwitchButton highlightLastMoveSwitch;
 	//	private SwitchButton alwaysShowWhiteBottomSwitch;
@@ -45,7 +36,9 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 	private int selectedCompLevel;
 	private SwitchButton autoFlipSwitch;
 	private ProgressImageView piecesLineImage;
+	private ProgressImageView boardLineImage;
 	private SparseArray<String> defaultPiecesNamesMap;
+	private SparseArray<String> defaultBoardNamesMap;
 	private int previewLineWidth;
 	private EnhancedImageDownloader imageLoader;
 
@@ -94,6 +87,27 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 				}
 			}
 		}
+
+		// show selected board line preview
+		if (getAppData().isUseThemeBoard()) {
+
+			// Load line preview image
+			String boardPreviewUrl = getAppData().getThemeBoardPreviewUrl();
+			imageLoader.download(boardPreviewUrl, boardLineImage, previewLineWidth);
+		} else {
+			String themeBoardsName = getAppData().getThemeBoardName();
+			if (themeBoardsName.equals(Symbol.EMPTY)) {
+				boardLineImage.setImageDrawable(getResources().getDrawable(R.drawable.board_sample_wood_dark));
+			} else {
+				for (int i = 0; i < defaultBoardNamesMap.size(); i++) {
+					int key = defaultBoardNamesMap.keyAt(i);
+					String value = defaultBoardNamesMap.valueAt(i);
+					if (value.equals(themeBoardsName)) {
+						boardLineImage.setImageDrawable(getResources().getDrawable(key));
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -104,7 +118,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		if (id == R.id.piecesView) {
 			getActivityFace().openFragment(new SettingsThemePiecesFragment());
 		} else if (id == R.id.boardView) {
-			boardsSpinner.performClick();
+			getActivityFace().openFragment(new SettingsThemeBoardsFragment());
 		} else if (id == R.id.coordinatesView) {
 			coordinatesSwitch.toggle();
 		} else if (id == R.id.highlightLastMoveView) {
@@ -136,26 +150,6 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		} else if (switchButton.getId() == R.id.autoFlipSwitch) {
 			getAppData().setAutoFlipFor2Players(autoFlipSwitch.isChecked());
 		}
-	}
-
-	@Override
-	public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-		if (adapterView.getId() == R.id.boardsSpinner) {
-			for (SelectionItem item : boardsList) {
-				item.setChecked(false);
-			}
-
-			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(position);
-			selectionItem.setChecked(true);
-
-			getAppData().setChessBoardId(position);
-
-			((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
-		}
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> adapterView) {
 	}
 
 	private void widgetsInit(View view) {
@@ -202,7 +196,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		view.findViewById(R.id.boardView).setOnClickListener(this);
 
 		Resources resources = getResources();
-		{// Piece and board bitmaps list init
+		{// Piece bitmaps list init
 			defaultPiecesNamesMap = new SparseArray<String>();
 			defaultPiecesNamesMap.put(R.drawable.pieces_game, getString(R.string.pieces_game));
 			defaultPiecesNamesMap.put(R.drawable.pieces_alpha, getString(R.string.pieces_alpha));
@@ -216,34 +210,33 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 			defaultPiecesNamesMap.put(R.drawable.pieces_vintage, getString(R.string.pieces_vintage));
 		}
 
-		boardsList = new ArrayList<SelectionItem>();
-		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_wood_dark), getString(R.string.board_wooddark)));
-		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_wood_light), getString(R.string.board_woodlight)));
-		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_blue), getString(R.string.board_blue)));
-		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_brown), getString(R.string.board_brown)));
-		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_green), getString(R.string.board_green)));
-		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_grey), getString(R.string.board_grey)));
-		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_marble), getString(R.string.board_marble)));
-		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_red), getString(R.string.board_red)));
-		boardsList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_tan), getString(R.string.board_tan)));
+		{// Board bitmaps list init
+			defaultBoardNamesMap = new SparseArray<String>();
+			defaultBoardNamesMap.put(R.drawable.board_sample_wood_dark, getString(R.string.board_wood_dark));
+			defaultBoardNamesMap.put(R.drawable.board_sample_wood_light, getString(R.string.board_wood_light));
+			defaultBoardNamesMap.put(R.drawable.board_sample_blue, getString(R.string.board_blue));
+			defaultBoardNamesMap.put(R.drawable.board_sample_brown, getString(R.string.board_brown));
+			defaultBoardNamesMap.put(R.drawable.board_sample_green, getString(R.string.board_green));
+			defaultBoardNamesMap.put(R.drawable.board_sample_grey, getString(R.string.board_grey));
+			defaultBoardNamesMap.put(R.drawable.board_sample_marble, getString(R.string.board_marble));
+			defaultBoardNamesMap.put(R.drawable.board_sample_red, getString(R.string.board_red));
+			defaultBoardNamesMap.put(R.drawable.board_sample_tan, getString(R.string.board_tan));
+		}
 
-		boardsSpinner = (Spinner) view.findViewById(R.id.boardsSpinner);
-		boardsSpinner.setAdapter(new SelectionAdapter(getActivity(), boardsList));
-		int boardsPosition = preferences.getInt(username + AppConstants.PREF_BOARD_STYLE, 0);
-		boardsSpinner.setSelection(boardsPosition);
-		boardsSpinner.setOnItemSelectedListener(this);
-		boardsList.get(boardsPosition).setChecked(true);
-
-		piecesLineImage = (ProgressImageView) view.findViewById(R.id.piecesLineImage);
+		boardLineImage = (ProgressImageView) view.findViewById(R.id.boardLineImage);
 		Drawable piecesDrawableExample = resources.getDrawable(R.drawable.pieces_alpha);
 		previewLineWidth = piecesDrawableExample.getIntrinsicWidth();
 		int imageHeight = piecesDrawableExample.getIntrinsicHeight();
+
+		piecesLineImage = (ProgressImageView) view.findViewById(R.id.piecesLineImage);
 
 		// Change Image params
 		RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(previewLineWidth, imageHeight);
 		piecesLineImage.getImageView().setLayoutParams(imageParams);
 		piecesLineImage.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
 
+		boardLineImage.getImageView().setLayoutParams(imageParams);
+		boardLineImage.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
 
 		{ // Comp level
 			strengthValueBtn = (TextView) view.findViewById(R.id.compLevelValueBtn);

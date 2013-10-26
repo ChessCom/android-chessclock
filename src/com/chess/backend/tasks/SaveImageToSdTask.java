@@ -29,7 +29,14 @@ public class SaveImageToSdTask extends AbstractUpdateTask<Bitmap, String> {
 		String filename = params[0];
 		result = StaticData.EMPTY_DATA;
 
-		File imgFile = AppUtils.openFileByName(context, filename);
+		File imgFile;
+		try {
+			imgFile = AppUtils.openFileByName(context, filename);
+		} catch (IOException e) {
+			e.printStackTrace();
+			result = StaticData.INTERNAL_ERROR;
+			return result;
+		}
 
 		result  = StaticData.RESULT_OK;
 		// save stream to SD
@@ -43,6 +50,7 @@ public class SaveImageToSdTask extends AbstractUpdateTask<Bitmap, String> {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+			result = StaticData.INTERNAL_ERROR;
 		}
 		return result;
 	}
