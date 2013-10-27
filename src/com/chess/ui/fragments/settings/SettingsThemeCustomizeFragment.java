@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -43,12 +44,15 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupBackgroundsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
+import com.chess.ui.views.PiecePreviewImg;
 import com.chess.utilities.AppUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -114,7 +118,10 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private ProgressImageView piecesLineImage;
 	private ProgressImageView boardLineImage;
 	private SparseArray<String> defaultPiecesNamesMap;
+	private HashMap<String, String> defaultPiecesResourceNamesMap;
 	private SparseArray<String> defaultBoardNamesMap;
+	private SparseArray<String> defaultSquareBoardNamesMap;
+	private PiecePreviewImg piecesSquarePreviewImg;
 
 	public SettingsThemeCustomizeFragment() {
 		ThemeItem.Data customizeItem = new ThemeItem.Data();
@@ -193,6 +200,29 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 						piecesLineImage.setImageDrawable(getResources().getDrawable(key));
 					}
 				}
+
+				String pieceDefaultName = Symbol.EMPTY;
+				for (Map.Entry<String, String> entry : defaultPiecesResourceNamesMap.entrySet()) {
+					if (themePiecesName.equals(entry.getValue())) {
+						pieceDefaultName = entry.getKey();
+						break;
+					}
+				}
+
+				String packageName = getActivity().getPackageName();
+				int bnResourceId = getResources().getIdentifier(pieceDefaultName + "_bn", "drawable", packageName);
+				int bpResourceId = getResources().getIdentifier(pieceDefaultName + "_bp", "drawable", packageName);
+				int wnResourceId = getResources().getIdentifier(pieceDefaultName + "_wn", "drawable", packageName);
+				int wpResourceId = getResources().getIdentifier(pieceDefaultName + "_wp", "drawable", packageName);
+				// show default pieces preview
+				Bitmap[][] previewBitmaps = new Bitmap[2][2];
+				previewBitmaps[0][0] = ((BitmapDrawable)getResources().getDrawable(bnResourceId)).getBitmap();
+				previewBitmaps[0][1] = ((BitmapDrawable)getResources().getDrawable(wnResourceId)).getBitmap();
+				previewBitmaps[1][0] = ((BitmapDrawable)getResources().getDrawable(bpResourceId)).getBitmap();
+				previewBitmaps[1][1] = ((BitmapDrawable)getResources().getDrawable(wpResourceId)).getBitmap();
+
+				piecesSquarePreviewImg.setPiecesBitmaps(previewBitmaps);
+				piecesSquarePreviewImg.setVisibility(View.VISIBLE);
 			}
 		}
 
@@ -216,6 +246,15 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 					String value = defaultBoardNamesMap.valueAt(i);
 					if (value.equals(themeBoardsName)) {
 						boardLineImage.setImageDrawable(getResources().getDrawable(key));
+					}
+				}
+
+				// load square preview image
+				for (int i = 0; i < defaultSquareBoardNamesMap.size(); i++) {
+					int key = defaultSquareBoardNamesMap.keyAt(i);
+					String value = defaultSquareBoardNamesMap.valueAt(i);
+					if (value.equals(themeBoardsName)) {
+						boardPreviewImg.setImageDrawable(getResources().getDrawable(key));
 					}
 				}
 			}
@@ -288,22 +327,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			} else {
 				rowSampleTitleTxt.setTextColor(darkColor);
 			}
-		} /*else if (adapterView.getId() == R.id.boardsSpinner) {
-			for (SelectionItem item : boardsList) {
-				item.setChecked(false);
-			}
-
-			getAppData().setChessBoardId(pos);
-			getAppData().setThemeBoardPath(Symbol.EMPTY);
-
-			SelectionItem selectionItem = (SelectionItem) adapterView.getItemAtPosition(pos);
-			selectionItem.setChecked(true);
-//			String boardPreviewUrl;
-//
-//
-//			selectedThemeItem.setBoardBackgroundUrl("https://dl.dropboxusercontent.com/s/ktoi0ixf2qemlij/graffiti.png?token_hash=AAGxS0fXGPCrbBZw5P1OFV25mFj-RTSJxn2nYZTmuTzDbQ&dl=1");
-//			imageLoader.download(boardPreviewUrl, boardPreviewImg, PREVIEW_IMG_SIZE);
-		}*/
+		}
 
 		((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
 	}
@@ -474,14 +498,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 					loadProgressPopupFragment.dismiss();
 				}
 
-//				// Start loading board background
-//				int size = screenWidth;
-//				taskTitleTxt.setText(R.string.loading_board);
-//				loadProgressTxt.setVisibility(View.VISIBLE);
-//
-//				boardBackgroundUrl = selectedThemeItem.getBoardBackgroundUrl();
-//				imageDownloader.download(boardBackgroundUrl, boardUpdateListener, size);
-
 			} else {
 				// set board background image as theme
 				String filename = String.valueOf(boardBackgroundUrl.hashCode());
@@ -632,7 +648,21 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			defaultPiecesNamesMap.put(R.drawable.pieces_vintage, getString(R.string.pieces_vintage));
 		}
 
-		{// Board bitmaps list init
+		{// Piece default resource name list init
+			defaultPiecesResourceNamesMap = new HashMap<String, String>();
+			defaultPiecesResourceNamesMap.put("game", getString(R.string.pieces_game));
+			defaultPiecesResourceNamesMap.put("alpha", getString(R.string.pieces_alpha));
+			defaultPiecesResourceNamesMap.put("book", getString(R.string.pieces_book));
+			defaultPiecesResourceNamesMap.put("cases", getString(R.string.pieces_cases));
+			defaultPiecesResourceNamesMap.put("classic", getString(R.string.pieces_classic));
+			defaultPiecesResourceNamesMap.put("club", getString(R.string.pieces_club));
+			defaultPiecesResourceNamesMap.put("condal", getString(R.string.pieces_condal));
+			defaultPiecesResourceNamesMap.put("maya", getString(R.string.pieces_maya));
+			defaultPiecesResourceNamesMap.put("modern", getString(R.string.pieces_modern));
+			defaultPiecesResourceNamesMap.put("vintage", getString(R.string.pieces_vintage));
+		}
+
+		{// Board line bitmaps list init
 			defaultBoardNamesMap = new SparseArray<String>();
 			defaultBoardNamesMap.put(R.drawable.board_sample_wood_dark, getString(R.string.board_wood_dark));
 			defaultBoardNamesMap.put(R.drawable.board_sample_wood_light, getString(R.string.board_wood_light));
@@ -643,6 +673,19 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			defaultBoardNamesMap.put(R.drawable.board_sample_marble, getString(R.string.board_marble));
 			defaultBoardNamesMap.put(R.drawable.board_sample_red, getString(R.string.board_red));
 			defaultBoardNamesMap.put(R.drawable.board_sample_tan, getString(R.string.board_tan));
+		}
+
+		{// Board square bitmaps list init
+			defaultSquareBoardNamesMap = new SparseArray<String>();
+			defaultSquareBoardNamesMap.put(R.drawable.board_wood_dark, getString(R.string.board_wood_dark));
+			defaultSquareBoardNamesMap.put(R.drawable.board_wood_light, getString(R.string.board_wood_light));
+			defaultSquareBoardNamesMap.put(R.drawable.board_blue, getString(R.string.board_blue));
+			defaultSquareBoardNamesMap.put(R.drawable.board_brown, getString(R.string.board_brown));
+			defaultSquareBoardNamesMap.put(R.drawable.board_green, getString(R.string.board_green));
+			defaultSquareBoardNamesMap.put(R.drawable.board_grey, getString(R.string.board_grey));
+			defaultSquareBoardNamesMap.put(R.drawable.board_marble, getString(R.string.board_marble));
+			defaultSquareBoardNamesMap.put(R.drawable.board_red, getString(R.string.board_red));
+			defaultSquareBoardNamesMap.put(R.drawable.board_tan, getString(R.string.board_tan));
 		}
 
 		colorsList = new ArrayList<String>();
@@ -693,9 +736,11 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		boardPreviewImg = (ProgressImageView) view.findViewById(R.id.boardPreviewImg);
 		piecePreviewImg = (ProgressImageView) view.findViewById(R.id.piecesPreviewImg);
+		piecesSquarePreviewImg = (PiecePreviewImg) view.findViewById(R.id.piecesSquarePreviewImg);
 		piecesLineImage = (ProgressImageView) view.findViewById(R.id.piecesLineImage);
 		boardLineImage = (ProgressImageView) view.findViewById(R.id.boardLineImage);
 
+		piecesSquarePreviewImg.setVisibility(View.INVISIBLE);
 
 		Drawable piecesDrawableExample = resources.getDrawable(R.drawable.pieces_alpha);
 		previewLineWidth = piecesDrawableExample.getIntrinsicWidth();
@@ -711,8 +756,8 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		// Preview Sample
 		rowSampleTitleTxt = (TextView) view.findViewById(R.id.rowSampleTitleTxt);
-//		int fontColor = Color.parseColor("#" + themeItem.getFontColor());
-		rowSampleTitleTxt.setTextColor(Color.WHITE); // TODO restore properly. on server some themes have incorrect font color
+		int fontColor = Color.parseColor(themeItem.getFontColor());
+		rowSampleTitleTxt.setTextColor(fontColor);
 
 		//spinners
 		view.findViewById(R.id.backgroundView).setOnClickListener(this);
@@ -725,15 +770,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		applyBackgroundBtn.setOnClickListener(this);
 
 		String username = getUsername();
-
-//		// Board
-//		boardsSpinner = (Spinner) view.findViewById(R.id.boardsSpinner);
-//		boardsSpinner.setAdapter(new SelectionAdapter(getActivity(), boardsList));
-//		int boardsPosition = preferences.getInt(username + AppConstants.PREF_BOARD_STYLE, 0);
-//		boardsSpinner.setSelection(boardsPosition);
-//		boardsSpinner.setOnItemSelectedListener(this);
-//		boardsList.get(boardsPosition).setChecked(true);
-
 
 		// Backgrounds
 		backgroundNameTxt = (TextView) view.findViewById(R.id.backgroundNameTxt);

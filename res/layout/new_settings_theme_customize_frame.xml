@@ -263,7 +263,6 @@
 				android:id="@+id/boardPreviewImg"
 				android:layout_width="@dimen/theme_board_preview_size"
 				android:layout_height="@dimen/theme_board_preview_size"
-				android:src="@drawable/img_board_theme_sample"
 				android:adjustViewBounds="true"
 				android:scaleType="fitXY"
 				android:layout_alignParentRight="true"
@@ -275,7 +274,17 @@
 				android:id="@+id/piecesPreviewImg"
 				android:layout_width="@dimen/theme_board_preview_size"
 				android:layout_height="@dimen/theme_board_preview_size"
-				android:src="@drawable/img_board_theme_sample"
+				android:adjustViewBounds="true"
+				android:scaleType="fitXY"
+				android:layout_alignParentRight="true"
+				android:contentDescription="@string/image"
+				android:layout_margin="14dip"
+				/>
+
+			<com.chess.ui.views.PiecePreviewImg
+				android:id="@+id/piecesSquarePreviewImg"
+				android:layout_width="@dimen/theme_board_preview_size"
+				android:layout_height="@dimen/theme_board_preview_size"
 				android:adjustViewBounds="true"
 				android:scaleType="fitXY"
 				android:layout_alignParentRight="true"

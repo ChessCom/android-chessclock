@@ -137,7 +137,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 		}
 
 		public String getFontColor() {
-			return getSafeValue(font_color, "FFFFFFFF");
+			return "#" +  getSafeValue(font_color, "FFFFFF");
 		}
 
 		protected Data(Parcel in) {
