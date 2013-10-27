@@ -508,6 +508,7 @@ public class DbDataManager {
 			do {
 				gamesIds[i++] = getLong(cursor, V_ID);
 			} while (cursor.moveToNext());
+			cursor.close();
 		} else if (gamesList.size() == 0) { // means no finished games for that user
 			arguments1[0] = username;
 			contentResolver.delete(uri, SELECTION_USER, arguments1);
@@ -558,6 +559,7 @@ public class DbDataManager {
 			do {
 				gamesIds[i++] = getLong(cursor, V_ID);
 			} while (cursor.moveToNext());
+			cursor.close();
 		} else if (gamesList.size() == 0) { // means no finished games for that user
 			arguments1[0] = username;
 			contentResolver.delete(uri, SELECTION_USER, arguments1);

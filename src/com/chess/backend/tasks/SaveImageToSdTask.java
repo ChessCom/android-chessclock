@@ -28,6 +28,9 @@ public class SaveImageToSdTask extends AbstractUpdateTask<Bitmap, String> {
 	protected Integer doTheTask(String... params) {
 		String filename = params[0];
 		result = StaticData.EMPTY_DATA;
+		if (item == null) {
+			return StaticData.INTERNAL_ERROR;
+		}
 
 		File imgFile;
 		try {

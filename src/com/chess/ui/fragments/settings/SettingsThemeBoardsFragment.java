@@ -1,12 +1,16 @@
 package com.chess.ui.fragments.settings;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +18,14 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.GetAndSaveBoard;
+import com.chess.backend.GetAndSaveTheme;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.themes.BoardSingleItem;
 import com.chess.backend.entity.api.themes.BoardsItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -62,8 +68,17 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 	private PopupCustomViewFragment loadProgressPopupFragment;
 	private List<BoardSingleItem.Data> themeBoardItemsList;
 	private SelectionItem selectedThemeBoardItem;
-	private boolean boardIsLoading;
+	private boolean isBoardLoading;
 	private String boardUrl;
+	private LoadServiceConnectionListener loadServiceConnectionListener;
+	private boolean serviceBounded;
+	private ProgressUpdateListener progressUpdateListener;
+	private GetAndSaveBoard.ServiceBinder serviceBinder;
+	private int selectedBoardId;
+	private TextView progressTitleTxt;
+	private ProgressBar themeLoadProgressBar;
+	private View headerView;
+	private boolean needToLoadThemeAfterConnected;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +88,8 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 		themeBoardName = getAppData().getThemeBoardName();
 
+		progressUpdateListener = new ProgressUpdateListener();
+		loadServiceConnectionListener = new LoadServiceConnectionListener();
 		boardsItemUpdateListener = new BoardsItemUpdateListener();
 
 		Resources resources = getResources();
@@ -104,7 +121,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_list_view_frame, container, false);
+		return inflater.inflate(R.layout.new_boards_list_frame, container, false);
 	}
 
 	@Override
@@ -113,6 +130,11 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 		setTitle(R.string.select_style);
 
+		headerView = view.findViewById(R.id.headerView);
+		progressTitleTxt = (TextView) headerView.findViewById(R.id.progressTitleTxt);
+		themeLoadProgressBar = (ProgressBar) headerView.findViewById(R.id.themeLoadProgressBar);
+		headerView.setVisibility(View.GONE);
+
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 
 		themeBoardsAdapter = new ThemeBoardsAdapter(getContext(), null);
@@ -120,6 +142,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 		sectionedAdapter.addSection("Theme Boards", themeBoardsAdapter);
 		sectionedAdapter.addSection("Default Boards", defaultBoardsAdapter);
+
 		listView.setAdapter(sectionedAdapter);
 		listView.setOnItemClickListener(this);
 	}
@@ -163,12 +186,12 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		int section = sectionedAdapter.getCurrentSection(position);
 
 		if (section == THEME_SECTION) {
-			if (boardIsLoading) {
+			if (isBoardLoading) {
 				return;
 			}
 
 			// don't allow to select while it's loading
-			boardIsLoading = true;
+			isBoardLoading = true;
 
 			selectedThemeBoardItem = (SelectionItem) parent.getItemAtPosition(position);
 			for (SelectionItem selectionItem : themeBoardSelectionList) {
@@ -184,7 +207,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 			sectionedAdapter.notifyDataSetChanged();
 
-			int selectedBoardId = 1;
+			selectedBoardId = 1;
 			for (BoardSingleItem.Data data : themeBoardItemsList) {
 				if (data.getName().equals(selectedThemeBoardItem.getCode())) {
 					selectedBoardId = data.getThemeBoardId();
@@ -192,16 +215,20 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 				}
 			}
 
-			showToast(R.string.installing_theme);
+			showToast(R.string.loading_board);
 
 			getAppData().setThemeBoardName(selectedThemeBoardItem.getCode());
 			getAppData().setThemeBoardPreviewUrl(selectedThemeBoardItem.getText());
 
-			Intent intent = new Intent(getActivity(), GetAndSaveBoard.class);
-			intent.putExtra(BOARD_ITEM, selectedBoardId);
-			intent.putExtra(SCREEN_WIDTH, screenWidth);
-			getActivity().startService(intent);
+			if (serviceBounded) {
+				showToast(R.string.loading_board);
 
+				serviceBinder.getService().loadBoard(selectedBoardId, screenWidth);
+			} else {
+				needToLoadThemeAfterConnected = true;
+				getActivity().bindService(new Intent(getActivity(), GetAndSaveBoard.class), loadServiceConnectionListener,
+						Activity.BIND_AUTO_CREATE);
+			}
 
 		} else {
 			SelectionItem defaultBoardItem = (SelectionItem) parent.getItemAtPosition(position);
@@ -264,6 +291,88 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		sectionedAdapter.notifyDataSetChanged();
 	}
 
+	private class LoadServiceConnectionListener implements ServiceConnection {
+
+		@Override
+		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+			serviceBounded = true;
+
+			serviceBinder = (GetAndSaveBoard.ServiceBinder) iBinder;
+			serviceBinder.getService().setProgressUpdateListener(progressUpdateListener);
+
+			if (serviceBinder.getService().isInstallingBoard()) {
+				isBoardLoading = true;
+			}
+			if (needToLoadThemeAfterConnected) {
+				serviceBinder.getService().loadBoard(selectedBoardId, screenWidth);
+			}
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+			serviceBounded = false;
+			isBoardLoading = false;
+		}
+	}
+
+	private class ProgressUpdateListener implements FileReadyListener {
+
+		@Override
+		public void changeTitle(final String title) {
+			if (getActivity() == null) {
+				return;
+			}
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if (isBoardLoading) {
+						headerView.setVisibility(View.VISIBLE);
+						progressTitleTxt.setText(title);
+						progressTitleTxt.setVisibility(View.VISIBLE);
+					} else {
+						headerView.setVisibility(View.GONE);
+						progressTitleTxt.setVisibility(View.VISIBLE);
+					}
+				}
+			});
+
+		}
+
+		@Override
+		public void setProgress(final int progress) {
+			if (getActivity() == null) {
+				return;
+			}
+
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if (progress == GetAndSaveTheme.DONE) {
+						isBoardLoading = false;
+						headerView.setVisibility(View.GONE);
+
+						getActivity().unbindService(loadServiceConnectionListener);
+						serviceBounded = false;
+					} else {
+						if (isBoardLoading) {
+							headerView.setVisibility(View.VISIBLE);
+							if (progress != GetAndSaveTheme.INDETERMINATE) {
+								themeLoadProgressBar.setProgress(progress);
+								themeLoadProgressBar.setIndeterminate(false);
+							} else {
+								themeLoadProgressBar.setIndeterminate(true);
+							}
+
+							themeLoadProgressBar.setVisibility(View.VISIBLE);
+						} else {
+							headerView.setVisibility(View.GONE);
+						}
+					}
+				}
+			});
+
+		}
+	}
 
 	private class ThemeBoardsAdapter extends ItemsAdapter<SelectionItem> {
 

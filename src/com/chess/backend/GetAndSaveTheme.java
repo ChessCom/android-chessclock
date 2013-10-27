@@ -80,9 +80,14 @@ public class GetAndSaveTheme extends Service {
 	private ServiceBinder serviceBinder = new ServiceBinder();
 	private FileReadyListener progressUpdateListener;
 	private Handler handler;
+	private boolean installingTheme;
 
 	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {
 		this.progressUpdateListener = progressUpdateListener;
+	}
+
+	public boolean isInstallingTheme() {
+		return installingTheme;
 	}
 
 	public class ServiceBinder extends Binder {
@@ -131,6 +136,8 @@ public class GetAndSaveTheme extends Service {
 	}
 
 	public void loadTheme(ThemeItem.Data selectedThemeItem, int screenWidth, int screenHeight) {
+
+		installingTheme = true;
 
 		this.selectedThemeItem = selectedThemeItem;
 		this.screenWidth = screenWidth;
@@ -251,7 +258,8 @@ public class GetAndSaveTheme extends Service {
 
 			if (bitmap == null) {
 				logTest("error loading image. Internal error");
-//				return;
+				installingTheme = false;
+				return;
 			}
 
 			if (listenerCode == BACKGROUND) {
@@ -506,6 +514,8 @@ public class GetAndSaveTheme extends Service {
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(DONE);
 		}
+
+		installingTheme = false;
 
 		handler.postDelayed(new Runnable() {
 			@Override

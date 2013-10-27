@@ -1,12 +1,15 @@
 package com.chess.backend;
 
-import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Binder;
+import android.os.Handler;
+import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.chess.R;
@@ -15,11 +18,11 @@ import com.chess.backend.entity.api.themes.BoardsItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.backend.tasks.SaveImageToSdTask;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.MainFragmentFaceActivity;
-import com.chess.ui.fragments.settings.SettingsThemeBoardsFragment;
 import com.chess.utilities.AppUtils;
 
 import java.io.File;
@@ -31,13 +34,17 @@ import java.io.IOException;
  * Date: 27.10.13
  * Time: 16:39
  */
-public class GetAndSaveBoard extends IntentService {
+public class GetAndSaveBoard extends Service {
+
+	public static final int INDETERMINATE = -1;
+	public static final int DONE = -2;
 
 	public static final int BOARD_SIZE_STEP = 8;
 	public static final int BOARD_START_NAME = 20;
 	public static final int BOARD_START_SIZE = 160;
 	public static final int BOARD_END_NAME = 180;
 	public static final int BOARD_END_SIZE = 1440;
+	private static final long SHUTDOWN_DELAY = 4 * 1000;
 
 	private NotificationManager mNotifyManager;
 	private NotificationCompat.Builder mBuilder;
@@ -48,21 +55,16 @@ public class GetAndSaveBoard extends IntentService {
 	private ImageDownloaderToListener imageDownloader;
 	private ImageUpdateListener boardUpdateListener;
 	private int screenWidth;
-
-
-	/**
-	 * Creates an IntentService.  Invoked by your subclass's constructor.
-	 * Use name the worker thread, important only for debugging.
-	 */
-	public GetAndSaveBoard() {
-		super("GetAndSaveBoard");
-	}
-
+	private ServiceBinder serviceBinder = new ServiceBinder();
+	private FileReadyListener progressUpdateListener;
+	private Handler handler;
+	private boolean installingBoard;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
+		handler = new Handler();
 		mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// Creates an Intent for the Activity
@@ -87,10 +89,29 @@ public class GetAndSaveBoard extends IntentService {
 		mBuilder.setContentIntent(pendingIntent);
 	}
 
+	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {
+		this.progressUpdateListener = progressUpdateListener;
+	}
+
+	public boolean isInstallingBoard() {
+		return installingBoard;
+	}
+
+	public class ServiceBinder extends Binder {
+		public GetAndSaveBoard getService(){
+			return GetAndSaveBoard.this;
+		}
+	}
+
 	@Override
-	protected void onHandleIntent(Intent intent) {
-		int selectedBoardId = intent.getIntExtra(SettingsThemeBoardsFragment.BOARD_ITEM, 1);
-		screenWidth = intent.getIntExtra(SettingsThemeBoardsFragment.SCREEN_WIDTH, 640);
+	public IBinder onBind(Intent intent) {
+		return serviceBinder;
+	}
+
+	public void loadBoard(int selectedBoardId, int screenWidth) {
+		installingBoard = true;
+
+		this.screenWidth = screenWidth ;
 
 		boardImgSaveListener = new ImageSaveListener();
 		boardSingleItemUpdateListener = new BoardSingleItemUpdateListener();
@@ -123,8 +144,7 @@ public class GetAndSaveBoard extends IntentService {
 			// get boards dir in s3
 			String boardDir = returnedObj.getData().getThemeDir();
 
-			mBuilder.setContentText(getString(R.string.loading_board));
-			showIndeterminateNotification();
+			showIndeterminateNotification(getString(R.string.loading_board));
 
 			// we start to count pixels until we reach needed size for board
 			int boardSize = BOARD_START_SIZE;
@@ -157,6 +177,7 @@ public class GetAndSaveBoard extends IntentService {
 		public void onImageReady(Bitmap bitmap) {
 			if (bitmap == null) {
 				logTest("error loading image. Internal error");
+				installingBoard = false;
 				return;
 			}
 
@@ -213,16 +234,25 @@ public class GetAndSaveBoard extends IntentService {
 		}
 	}
 
-	private void showIndeterminateNotification() {
+	private void showIndeterminateNotification(String title) {
+		mBuilder.setContentText(title);
 		mBuilder.setProgress(0, 0, true);
 		// Displays the progress bar for the first time.
 		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+
+		if (progressUpdateListener != null) {
+			progressUpdateListener.changeTitle(title);
+			progressUpdateListener.setProgress(INDETERMINATE);
+		}
 	}
 
 	private void updateProgressToNotification(int progress) {
 		mBuilder.setProgress(100, progress, false);
 		// Displays the progress bar for the first time.
 		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+		if (progressUpdateListener != null) {
+			progressUpdateListener.setProgress(progress);
+		}
 	}
 
 	private void showCompleteToNotification() {
@@ -230,6 +260,20 @@ public class GetAndSaveBoard extends IntentService {
 				// Removes the progress bar
 				.setProgress(0, 0, false);
 		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+		if (progressUpdateListener != null) {
+			progressUpdateListener.setProgress(DONE);
+		}
+
+		installingBoard = false;
+
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mNotifyManager.cancel(R.id.notification_message);
+
+				stopSelf();
+			}
+		}, SHUTDOWN_DELAY);
 	}
 
 	private AppData getAppData() {

@@ -203,7 +203,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			if (serviceBounded) {
 				showToast(R.string.installing_theme);
 
-				serviceBinder.getService().setProgressUpdateListener(progressUpdateListener);
 				serviceBinder.getService().loadTheme(selectedThemeItem, screenWidth, screenHeight);
 			} else {
 				needToLoadThemeAfterConnected = true;
@@ -220,8 +219,12 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			serviceBounded = true;
 
 			serviceBinder = (GetAndSaveTheme.ServiceBinder) iBinder;
+			if (serviceBinder.getService().isInstallingTheme()) {
+				isInstallingTheme = true;
+			}
+
+			serviceBinder.getService().setProgressUpdateListener(progressUpdateListener);
 			if (needToLoadThemeAfterConnected) {
-				serviceBinder.getService().setProgressUpdateListener(progressUpdateListener);
 				serviceBinder.getService().loadTheme(selectedThemeItem, screenWidth, screenHeight);
 			}
 		}
@@ -229,6 +232,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
 			serviceBounded = false;
+			isInstallingTheme = false;
 		}
 	}
 

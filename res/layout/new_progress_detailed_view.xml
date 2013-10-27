@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.chess.RelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:minHeight="@dimen/default_list_item_height"
+	style="@style/ListItem"
+	>
+
+	<ProgressBar
+		android:id="@+id/themeLoadProgressBar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:indeterminate="true"
+		style="@style/ChessProgressBar.Horizontal"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginTop="5dip"
+		android:layout_marginLeft="@dimen/default_scr_side_padding"
+		android:layout_marginRight="@dimen/default_scr_side_padding"
+		android:visibility="gone" />
+
+	<com.chess.RoboTextView
+		android:id="@+id/progressTitleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		custom:ttf="Bold"
+		android:textColor="@color/white"
+		android:layout_below="@id/themeLoadProgressBar"
+		android:paddingTop="2dip"
+		android:paddingLeft="@dimen/default_scr_side_padding" />
+
+</com.chess.RelLayout>

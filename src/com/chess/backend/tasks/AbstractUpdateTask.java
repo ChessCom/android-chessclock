@@ -1,5 +1,6 @@
 package com.chess.backend.tasks;
 
+import android.os.Build;
 import android.util.Log;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.backend.interfaces.TaskUpdateInterface;
@@ -142,13 +143,12 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	}
 
 	public AbstractUpdateTask<ItemType, Input> executeTask(Input... input) {
-//		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
 //			executeOnExecutor(THREAD_POOL_EXECUTOR, input);
-//		} else {
-//			execute(input);
-//		}
-
-		executeOnExecutor(DUAL_THREAD_EXECUTOR, input);
+			executeOnExecutor(DUAL_THREAD_EXECUTOR, input);
+		} else {
+			execute(input);
+		}
 		return this;
 	}
 

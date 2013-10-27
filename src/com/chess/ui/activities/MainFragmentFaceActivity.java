@@ -487,6 +487,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			} else {
 				getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
 			}
+
+			updateActionBarBackImage();
 		}
 	}
 
