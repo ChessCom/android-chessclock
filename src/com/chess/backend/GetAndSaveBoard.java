@@ -38,16 +38,16 @@ public class GetAndSaveBoard extends Service {
 
 	public static final int INDETERMINATE = -1;
 	public static final int DONE = -2;
+	private static final long SHUTDOWN_DELAY = 4 * 1000;
 
 	public static final int BOARD_SIZE_STEP = 8;
 	public static final int BOARD_START_NAME = 20;
 	public static final int BOARD_START_SIZE = 160;
 	public static final int BOARD_END_NAME = 180;
 	public static final int BOARD_END_SIZE = 1440;
-	private static final long SHUTDOWN_DELAY = 4 * 1000;
 
-	private NotificationManager mNotifyManager;
-	private NotificationCompat.Builder mBuilder;
+	private NotificationManager notifymanager;
+	private NotificationCompat.Builder notificationBuilder;
 	private AppData appData;
 	private BoardSingleItemUpdateListener boardSingleItemUpdateListener;
 	private ImageSaveListener boardImgSaveListener;
@@ -65,7 +65,7 @@ public class GetAndSaveBoard extends Service {
 		super.onCreate();
 
 		handler = new Handler();
-		mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		notifymanager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// Creates an Intent for the Activity
 		Intent notifyIntent = new Intent(this, MainFragmentFaceActivity.class);
@@ -80,13 +80,13 @@ public class GetAndSaveBoard extends Service {
 		);
 
 
-		mBuilder = new NotificationCompat.Builder(this);
-		mBuilder.setContentTitle(getString(R.string.installing_theme))
-				.setContentText(getString(R.string.loading_background))
+		notificationBuilder = new NotificationCompat.Builder(this);
+		notificationBuilder.setContentTitle(getString(R.string.loading_board))
+				.setContentText(getString(R.string.loading_board))
 				.setSmallIcon(R.drawable.ic_stat_download)
 				.setAutoCancel(true);
 		// Puts the PendingIntent into the notification builder
-		mBuilder.setContentIntent(pendingIntent);
+		notificationBuilder.setContentIntent(pendingIntent);
 	}
 
 	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {
@@ -181,7 +181,7 @@ public class GetAndSaveBoard extends Service {
 				return;
 			}
 
-			mBuilder.setContentText(getString(R.string.saving_board));
+			notificationBuilder.setContentText(getString(R.string.saving_board));
 			updateProgressToNotification(0);
 
 			String filename = String.valueOf(boardUrl.hashCode()); // TODO rename to MD5
@@ -221,24 +221,15 @@ public class GetAndSaveBoard extends Service {
 				e.printStackTrace();
 			}
 
-//			boardIsLoading = false;
-
 			showCompleteToNotification();
-
-//			if (loadProgressPopupFragment != null) {
-//				loadProgressPopupFragment.dismiss();
-//			}
-//
-//			// go back
-//			getActivityFace().showPreviousFragment();
 		}
 	}
 
 	private void showIndeterminateNotification(String title) {
-		mBuilder.setContentText(title);
-		mBuilder.setProgress(0, 0, true);
+		notificationBuilder.setContentText(title);
+		notificationBuilder.setProgress(0, 0, true);
 		// Displays the progress bar for the first time.
-		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
 
 		if (progressUpdateListener != null) {
 			progressUpdateListener.changeTitle(title);
@@ -247,19 +238,19 @@ public class GetAndSaveBoard extends Service {
 	}
 
 	private void updateProgressToNotification(int progress) {
-		mBuilder.setProgress(100, progress, false);
+		notificationBuilder.setProgress(100, progress, false);
 		// Displays the progress bar for the first time.
-		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(progress);
 		}
 	}
 
 	private void showCompleteToNotification() {
-		mBuilder.setContentText(getString(R.string.download_comlete))
+		notificationBuilder.setContentText(getString(R.string.download_comlete))
 				// Removes the progress bar
 				.setProgress(0, 0, false);
-		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(DONE);
 		}
@@ -269,7 +260,7 @@ public class GetAndSaveBoard extends Service {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				mNotifyManager.cancel(R.id.notification_message);
+				notifymanager.cancel(R.id.notification_message);
 
 				stopSelf();
 			}

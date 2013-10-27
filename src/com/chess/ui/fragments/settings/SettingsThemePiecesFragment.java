@@ -1,41 +1,37 @@
 package com.chess.ui.fragments.settings;
 
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.LoadHelper;
-import com.chess.backend.LoadItem;
-import com.chess.backend.RestHelper;
+import com.chess.backend.*;
 import com.chess.backend.entity.api.themes.PieceSingleItem;
 import com.chess.backend.entity.api.themes.PiecesItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.interfaces.FileReadyListener;
-import com.chess.backend.tasks.GetAndSaveFileToSdTask;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
-import com.chess.model.PopupItem;
 import com.chess.model.SelectionItem;
-import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,24 +46,25 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 	private static final int THEME_SECTION = 0;
 	private static final int DEFAULT_SECTION = 1;
-	private static final String THEME_LOAD_TAG = "theme load popup";
 
 	private PiecesItemUpdateListener piecesItemUpdateListener;
-	private PiecesSingleItemUpdateListener piecesSingleItemUpdateListener;
 	private CustomSectionedAdapter sectionedAdapter;
 	private ThemePiecesAdapter themePiecesAdapter;
 	private List<SelectionItem> defaultPiecesSelectionList;
 	private String themePiecesName;
 	private List<SelectionItem> themePiecesSelectionList;
-	private String selectedPieceDir;
 	private int screenWidth;
-	private TextView loadProgressTxt;
-	private TextView taskTitleTxt;
-	private PopupCustomViewFragment loadProgressPopupFragment;
-	private PiecesPackSaveListener piecesPackSaveListener;
 	private List<PieceSingleItem.Data> themePiecesItemsList;
-	private SelectionItem selectedThemePieceItem;
-	private boolean piecesAreLoading;
+	private boolean isPiecesLoading;
+	private View headerView;
+	private TextView progressTitleTxt;
+	private ProgressBar themeLoadProgressBar;
+	private boolean serviceBounded;
+	private GetAndSavePieces.ServiceBinder serviceBinder;
+	private boolean needToLoadThemeAfterConnected;
+	private LoadServiceConnectionListener loadServiceConnectionListener;
+	private ProgressUpdateListener progressUpdateListener;
+	private int selectedPiecesId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,8 +75,8 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		themePiecesName = getAppData().getThemePiecesName();
 
 		piecesItemUpdateListener = new PiecesItemUpdateListener();
-		piecesSingleItemUpdateListener = new PiecesSingleItemUpdateListener();
-		piecesPackSaveListener = new PiecesPackSaveListener();
+		loadServiceConnectionListener = new LoadServiceConnectionListener();
+		progressUpdateListener = new ProgressUpdateListener();
 
 		Resources resources = getResources();
 
@@ -112,7 +109,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_list_view_frame, container, false);
+		return inflater.inflate(R.layout.new_common_header_list_frame, container, false);
 	}
 
 	@Override
@@ -120,6 +117,11 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.select_style);
+
+		headerView = view.findViewById(R.id.headerView);
+		progressTitleTxt = (TextView) headerView.findViewById(R.id.progressTitleTxt);
+		themeLoadProgressBar = (ProgressBar) headerView.findViewById(R.id.themeLoadProgressBar);
+		headerView.setVisibility(View.GONE);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 
@@ -172,14 +174,14 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		int section = sectionedAdapter.getCurrentSection(position);
 
 		if (section == THEME_SECTION) {
-			if (piecesAreLoading) {
+			if (isPiecesLoading) {
 				return;
 			}
 
 			// don't allow to select while it's loading
-			piecesAreLoading = true;
+			isPiecesLoading = true;
 
-			selectedThemePieceItem = (SelectionItem) parent.getItemAtPosition(position);
+			SelectionItem selectedThemePieceItem = (SelectionItem) parent.getItemAtPosition(position);
 			for (SelectionItem selectionItem : themePiecesSelectionList) {
 				if (selectedThemePieceItem.getCode().equals(selectionItem.getCode())) {
 					selectionItem.setChecked(true);
@@ -193,17 +195,27 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 			sectionedAdapter.notifyDataSetChanged();
 
-			int selectedPieceId = 1;
+			selectedPiecesId = 1;
 			for (PieceSingleItem.Data data : themePiecesItemsList) {
 				if (data.getName().equals(selectedThemePieceItem.getCode())) {
-					selectedPieceId = data.getThemePieceId();
+					selectedPiecesId = data.getThemePieceId();
 					break;
 				}
 			}
 
-			// start loading pieces
-			LoadItem loadItem = LoadHelper.getPiecesById(getUserToken(), selectedPieceId);
-			new RequestJsonTask<PieceSingleItem>(piecesSingleItemUpdateListener).executeTask(loadItem);
+			// save pieces theme name to appData
+			getAppData().setThemePiecesName(selectedThemePieceItem.getCode());
+			getAppData().setThemePiecesPreviewUrl(selectedThemePieceItem.getText());
+
+			if (serviceBounded) {
+				showToast(R.string.loading_pieces);
+
+				serviceBinder.getService().loadPieces(selectedPiecesId, screenWidth);
+			} else {
+				needToLoadThemeAfterConnected = true;
+				getActivity().bindService(new Intent(getActivity(), GetAndSavePieces.class), loadServiceConnectionListener,
+						Activity.BIND_AUTO_CREATE);
+			}
 
 		} else {
 			SelectionItem defaultPieceItem = (SelectionItem) parent.getItemAtPosition(position);
@@ -263,6 +275,89 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		}
 		themePiecesAdapter.setItemsList(themePiecesSelectionList);
 		sectionedAdapter.notifyDataSetChanged();
+	}
+
+	private class LoadServiceConnectionListener implements ServiceConnection {
+
+		@Override
+		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+			serviceBounded = true;
+
+			serviceBinder = (GetAndSavePieces.ServiceBinder) iBinder;
+			serviceBinder.getService().setProgressUpdateListener(progressUpdateListener);
+
+			if (serviceBinder.getService().isInstallingPieces()) {
+				isPiecesLoading = true;
+			}
+			if (needToLoadThemeAfterConnected) {
+				serviceBinder.getService().loadPieces(selectedPiecesId, screenWidth);
+			}
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+			serviceBounded = false;
+			isPiecesLoading = false;
+		}
+	}
+
+	private class ProgressUpdateListener implements FileReadyListener {
+
+		@Override
+		public void changeTitle(final String title) {
+			if (getActivity() == null) {
+				return;
+			}
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if (isPiecesLoading) {
+						headerView.setVisibility(View.VISIBLE);
+						progressTitleTxt.setText(title);
+						progressTitleTxt.setVisibility(View.VISIBLE);
+					} else {
+						headerView.setVisibility(View.GONE);
+						progressTitleTxt.setVisibility(View.VISIBLE);
+					}
+				}
+			});
+
+		}
+
+		@Override
+		public void setProgress(final int progress) {
+			if (getActivity() == null) {
+				return;
+			}
+
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if (progress == GetAndSaveTheme.DONE) {
+						isPiecesLoading = false;
+						headerView.setVisibility(View.GONE);
+
+						getActivity().unbindService(loadServiceConnectionListener);
+						serviceBounded = false;
+					} else {
+						if (isPiecesLoading) {
+							headerView.setVisibility(View.VISIBLE);
+							if (progress != GetAndSaveTheme.INDETERMINATE) {
+								themeLoadProgressBar.setProgress(progress);
+								themeLoadProgressBar.setIndeterminate(false);
+							} else {
+								themeLoadProgressBar.setIndeterminate(true);
+							}
+
+							themeLoadProgressBar.setVisibility(View.VISIBLE);
+						} else {
+							headerView.setVisibility(View.GONE);
+						}
+					}
+				}
+			});
+
+		}
 	}
 
 	private class ThemePiecesAdapter extends ItemsAdapter<SelectionItem> {
@@ -411,131 +506,5 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		}
 	}
 
-	private class PiecesSingleItemUpdateListener extends ChessLoadUpdateListener<PieceSingleItem> {
 
-		private PiecesSingleItemUpdateListener() {
-			super(PieceSingleItem.class);
-		}
-
-		@Override
-		public void updateData(PieceSingleItem returnedObj) {
-
-			getAppData().setThemePiecesPath(returnedObj.getData().getName());
-
-			// get pieces dir in s3
-			selectedPieceDir = returnedObj.getData().getThemeDir();
-			int pieceWidth = screenWidth / 8;
-			int pieceHeight = screenWidth / 8;
-
-			String[] imagesToLoad = new String[12]; // 6 pieces for each side
-			String[] whitePieceImageCodes = ChessBoard.whitePieceImageCodes;
-			for (int i = 0; i < whitePieceImageCodes.length; i++) {
-				String imageCode = whitePieceImageCodes[i];
-				imagesToLoad[i] = PieceSingleItem.PATH + selectedPieceDir + "/" + pieceWidth + "/" + imageCode + ".png";
-			}
-
-			String[] blackPieceImageCodes = ChessBoard.blackPieceImageCodes;
-
-			for (int i = 0; i < blackPieceImageCodes.length; i++) {
-				String imageCode = blackPieceImageCodes[i];
-				imagesToLoad[6 + i] = PieceSingleItem.PATH + selectedPieceDir + "/" + pieceWidth + "/" + imageCode + ".png";
-			}
-
-			{  // show popup with percentage of loading theme
-				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
-
-				loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
-				taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
-
-				taskTitleTxt.setText(R.string.loading_pieces);
-
-				PopupItem popupItem = new PopupItem();
-				popupItem.setCustomView(layout);
-
-				loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-				loadProgressPopupFragment.show(getFragmentManager(), THEME_LOAD_TAG);
-			}
-
-			// Start loading pieces image
-			new GetAndSaveFileToSdTask(piecesPackSaveListener, AppUtils.getLocalDirForPieces(getActivity(), selectedPieceDir))
-					.executeTask(imagesToLoad);
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-
-			piecesAreLoading = false;
-		}
-	}
-
-	private class PiecesPackSaveListener extends ChessUpdateListener<String> implements FileReadyListener {
-
-		private PiecesPackSaveListener() {
-			useList = true;
-		}
-
-		@Override
-		public void updateListData(List<String> itemsList) {
-			super.updateListData(itemsList);
-
-			piecesAreLoading = false;
-			// save pieces theme name to appData
-			getAppData().setUseThemePieces(true);
-			getAppData().setThemePiecesName(selectedThemePieceItem.getCode());
-			getAppData().setThemePiecesPreviewUrl(selectedThemePieceItem.getText());
-
-			getAppData().setThemePiecesPath(selectedPieceDir);
-
-			if (selectedPieceDir.contains(SettingsThemeFragment._3D_PART)) {
-				getAppData().setThemePieces3d(true);
-			} else {
-				getAppData().setThemePieces3d(false);
-			}
-
-			if (loadProgressPopupFragment != null) {
-				loadProgressPopupFragment.dismiss();
-			}
-
-			// go back
-			getActivityFace().showPreviousFragment();
-		}
-
-		@Override
-		public void changeTitle(final String title) {
-			FragmentActivity activity = getActivity();
-			if (activity == null) {
-				return;
-			}
-			activity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					taskTitleTxt.setText(title);
-				}
-			});
-		}
-
-		@Override
-		public void setProgress(final int progress) {
-			FragmentActivity activity = getActivity();
-			if (activity == null) {
-				return;
-			}
-			activity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-//					loadProgressBar.setVisibility(View.GONE);
-					loadProgressTxt.setVisibility(View.VISIBLE);
-					loadProgressTxt.setText(String.valueOf(progress) + Symbol.PERCENT);
-				}
-			});
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-
-			piecesAreLoading = false;
-		}
-	}
 }

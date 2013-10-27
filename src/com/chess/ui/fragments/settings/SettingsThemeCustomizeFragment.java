@@ -729,10 +729,16 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		Resources resources = getResources();
 
 		{ // background params
-			backgroundPreviewImg = (ProgressImageView) view.findViewById(R.id.backgroundPreviewImg);
 			int imageHeight = (int) (screenWidth / 2.9f);
+
+			backgroundPreviewImg = (ProgressImageView) view.findViewById(R.id.backgroundPreviewImg);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
 			backgroundPreviewImg.setLayoutParams(params);
+
+			// Change main preview container params
+			RelativeLayout previewRelLay = (RelativeLayout) view.findViewById(R.id.previewRelLay);
+			LinearLayout.LayoutParams previewRelLayParams = new LinearLayout.LayoutParams(screenWidth, imageHeight);
+			previewRelLay.setLayoutParams(previewRelLayParams);
 
 			// Change Placeholder
 			int backIMgColor = resources.getColor(R.color.upgrade_toggle_button_p);

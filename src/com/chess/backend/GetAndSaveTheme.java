@@ -45,8 +45,10 @@ public class GetAndSaveTheme extends Service {
 
 	static final int BACKGROUND = 0;
 	static final int BOARD = 1;
+
 	public static final int INDETERMINATE = -1;
 	public static final int DONE = -2;
+	private static final long SHUTDOWN_DELAY = 4 * 1000;
 
 	public static final String _3D_PART = "3d";
 	public static final int BOARD_SIZE_STEP = 8;
@@ -54,7 +56,6 @@ public class GetAndSaveTheme extends Service {
 	public static final int BOARD_START_SIZE = 160;
 	public static final int BOARD_END_NAME = 180;
 	public static final int BOARD_END_SIZE = 1440;
-	private static final long SHUTDOWN_DELAY = 4 * 1000;
 
 	private ThemeItem.Data selectedThemeItem;
 	private int screenWidth;
@@ -74,8 +75,8 @@ public class GetAndSaveTheme extends Service {
 	private BoardSingleItemUpdateListener boardSingleItemUpdateListener;
 	private PiecesItemUpdateListener piecesItemUpdateListener;
 	private SoundsItemUpdateListener soundsItemUpdateListener;
-	private NotificationManager mNotifyManager;
-	private NotificationCompat.Builder mBuilder;
+	private NotificationManager notifymanager;
+	private NotificationCompat.Builder notificationBuilder;
 
 	private ServiceBinder serviceBinder = new ServiceBinder();
 	private FileReadyListener progressUpdateListener;
@@ -101,7 +102,7 @@ public class GetAndSaveTheme extends Service {
 		super.onCreate();
 
 		handler = new Handler();
-		mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		notifymanager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// Creates an Intent for the Activity
 		Intent notifyIntent = new Intent(this, MainFragmentFaceActivity.class);
@@ -116,13 +117,13 @@ public class GetAndSaveTheme extends Service {
 				);
 
 
-		mBuilder = new NotificationCompat.Builder(this);
-		mBuilder.setContentTitle(getString(R.string.installing_theme))
+		notificationBuilder = new NotificationCompat.Builder(this);
+		notificationBuilder.setContentTitle(getString(R.string.installing_theme))
 				.setContentText(getString(R.string.loading_background))
 				.setSmallIcon(R.drawable.ic_stat_download)
 				.setAutoCancel(true);
 		// Puts the PendingIntent into the notification builder
-		mBuilder.setContentIntent(pendingIntent);
+		notificationBuilder.setContentIntent(pendingIntent);
 	}
 
 	@Override
@@ -314,7 +315,7 @@ public class GetAndSaveTheme extends Service {
 				LoadItem loadItem = LoadHelper.getBoardById(getUserToken(), selectedThemeItem.getBoardId());
 				new RequestJsonTask<BoardSingleItem>(boardSingleItemUpdateListener).executeTask(loadItem);
 
-				mBuilder.setContentText(getString(R.string.loading_board));
+				notificationBuilder.setContentText(getString(R.string.loading_board));
 				updateProgressToNotification(0);
 
 			} else if (listenerCode == BOARD) {
@@ -486,10 +487,10 @@ public class GetAndSaveTheme extends Service {
 	}
 
 	private void showIndeterminateNotification(String title) {
-		mBuilder.setContentText(title);
-		mBuilder.setProgress(0, 0, true);
+		notificationBuilder.setContentText(title);
+		notificationBuilder.setProgress(0, 0, true);
 		// Displays the progress bar for the first time.
-		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
 
 		if (progressUpdateListener != null) {
 			progressUpdateListener.changeTitle(title);
@@ -498,19 +499,19 @@ public class GetAndSaveTheme extends Service {
 	}
 
 	private void updateProgressToNotification(int progress) {
-		mBuilder.setProgress(100, progress, false);
+		notificationBuilder.setProgress(100, progress, false);
 		// Displays the progress bar for the first time.
-		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(progress);
 		}
 	}
 
 	private void showCompleteToNotification() {
-		mBuilder.setContentText(getString(R.string.download_comlete))
+		notificationBuilder.setContentText(getString(R.string.download_comlete))
 				// Removes the progress bar
 				.setProgress(0, 0, false);
-		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(DONE);
 		}
@@ -520,7 +521,7 @@ public class GetAndSaveTheme extends Service {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				mNotifyManager.cancel(R.id.notification_message);
+				notifymanager.cancel(R.id.notification_message);
 
 				stopSelf();
 			}

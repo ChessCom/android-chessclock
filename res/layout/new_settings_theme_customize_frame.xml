@@ -195,6 +195,7 @@
 
 		<!--Preview view-->
 		<com.chess.RelLayout
+			android:id="@+id/previewRelLay"
 			android:layout_width="match_parent"
 			android:layout_height="@dimen/theme_back_preview_height"
 			android:orientation="horizontal"
