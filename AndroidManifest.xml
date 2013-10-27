@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="335"
-	android:versionName="3.0.055a"
+	android:versionCode="336"
+	android:versionName="3.0.056a"
 	package="com.chess"
 	android:installLocation="auto">
 
@@ -126,6 +126,7 @@
 		<service android:name=".backend.GetAndSaveUserStats" />
 		<service android:name=".backend.GetAndSaveFriends" />
 		<service android:name=".backend.GetAndSaveTheme" />
+		<service android:name=".backend.GetAndSaveBoard" />
 
 		<provider
 			android:name=".db.DbDataProvider"

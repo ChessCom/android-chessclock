@@ -49,4 +49,9 @@
 		<item name="android:shadowDy">2</item>
     </style>
 
+	<style name="ChessProgressBar.Horizontal" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+
+	</style>
+
+
 </resources>

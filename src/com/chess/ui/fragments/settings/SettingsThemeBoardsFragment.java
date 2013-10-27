@@ -1,47 +1,36 @@
 package com.chess.ui.fragments.settings;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.LoadHelper;
+import com.chess.backend.GetAndSaveBoard;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.themes.BoardSingleItem;
 import com.chess.backend.entity.api.themes.BoardsItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
-import com.chess.backend.image_load.ImageDownloaderToListener;
-import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.backend.tasks.SaveImageToSdTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
-import com.chess.model.PopupItem;
 import com.chess.model.SelectionItem;
-import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,16 +44,13 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 	private static final int THEME_SECTION = 0;
 	private static final int DEFAULT_SECTION = 1;
+
 	private static final String THEME_LOAD_TAG = "theme load popup";
 
-	public static final int BOARD_SIZE_STEP = 8;
-	public static final int BOARD_START_NAME = 20;
-	public static final int BOARD_START_SIZE = 160;
-	public static final int BOARD_END_NAME = 180;
-	public static final int BOARD_END_SIZE = 1440;
+	public static final String BOARD_ITEM = "board_item";
+	public static final String SCREEN_WIDTH = "screen_width";
 
 	private BoardsItemUpdateListener boardsItemUpdateListener;
-	private BoardSingleItemUpdateListener boardSingleItemUpdateListener;
 	private CustomSectionedAdapter sectionedAdapter;
 	private ThemeBoardsAdapter themeBoardsAdapter;
 	private List<SelectionItem> defaultBoardSelectionList;
@@ -77,10 +63,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 	private List<BoardSingleItem.Data> themeBoardItemsList;
 	private SelectionItem selectedThemeBoardItem;
 	private boolean boardIsLoading;
-	private ImageSaveListener boardImgSaveListener;
 	private String boardUrl;
-	private ImageDownloaderToListener imageDownloader;
-	private ImageUpdateListener boardUpdateListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -90,12 +73,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 		themeBoardName = getAppData().getThemeBoardName();
 
-		boardImgSaveListener = new ImageSaveListener();
 		boardsItemUpdateListener = new BoardsItemUpdateListener();
-		boardSingleItemUpdateListener = new BoardSingleItemUpdateListener();
-//		boardsPackSaveListener = new BoardsPackSaveListener();
-		imageDownloader = new ImageDownloaderToListener(getActivity());
-		boardUpdateListener = new ImageUpdateListener();
 
 		Resources resources = getResources();
 		themeBoardSelectionList = new ArrayList<SelectionItem>();
@@ -214,9 +192,17 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 				}
 			}
 
-			// start loading board
-			LoadItem loadItem = LoadHelper.getBoardById(getUserToken(), selectedBoardId);
-			new RequestJsonTask<BoardSingleItem>(boardSingleItemUpdateListener).executeTask(loadItem);
+			showToast(R.string.installing_theme);
+
+			getAppData().setThemeBoardName(selectedThemeBoardItem.getCode());
+			getAppData().setThemeBoardPreviewUrl(selectedThemeBoardItem.getText());
+
+			Intent intent = new Intent(getActivity(), GetAndSaveBoard.class);
+			intent.putExtra(BOARD_ITEM, selectedBoardId);
+			intent.putExtra(SCREEN_WIDTH, screenWidth);
+			getActivity().startService(intent);
+
+
 		} else {
 			SelectionItem defaultBoardItem = (SelectionItem) parent.getItemAtPosition(position);
 			for (SelectionItem selectionItem : defaultBoardSelectionList) {
@@ -424,141 +410,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		}
 	}
 
-	private class BoardSingleItemUpdateListener extends ChessLoadUpdateListener<BoardSingleItem> {
 
-		private BoardSingleItemUpdateListener() {
-			super(BoardSingleItem.class);
-		}
-
-		@Override
-		public void updateData(BoardSingleItem returnedObj) {
-
-			String coordinateColorLight = returnedObj.getData().getCoordinateColorLight();
-			String coordinateColorDark = returnedObj.getData().getCoordinateColorDark();
-			String highlightColor = returnedObj.getData().getHighlightColor();
-
-			getAppData().setThemeBoardCoordinateLight(Color.parseColor(coordinateColorLight));
-			getAppData().setThemeBoardCoordinateDark(Color.parseColor(coordinateColorDark));
-			getAppData().setThemeBoardHighlight(Color.parseColor(highlightColor));
-
-			// get boards dir in s3
-			String boardDir = returnedObj.getData().getThemeDir();
-
-			{  // show popup with percentage of loading theme
-				View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
-
-				loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
-				taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
-
-				taskTitleTxt.setText(R.string.loading_board);
-
-				PopupItem popupItem = new PopupItem();
-				popupItem.setCustomView(layout);
-
-				loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-				loadProgressPopupFragment.show(getFragmentManager(), THEME_LOAD_TAG);
-			}
-
-			// we start to count pixels until we reach needed size for board
-			int boardSize = BOARD_START_SIZE;
-			int name;
-			for (name = BOARD_START_NAME; name < BOARD_END_NAME; name++) {
-				if (boardSize == screenWidth) { // 480 == 480
-
-					break;
-				}
-
-//				// if we step over the range and missed needed size, than take the closest one
-//				if (screenWidth > boardSize) {
-//
-//				}
-				boardSize += BOARD_SIZE_STEP;
-			}
-
-			boardUrl = BoardsItem.PATH + boardDir + "/" + name + ".png";
-			logTest(" board url = " + boardUrl);
-
-			taskTitleTxt.setText(R.string.loading_board);
-
-			// Start loading board image
-			imageDownloader.download(boardUrl, boardUpdateListener, screenWidth);
-		}
-	}
-
-	private class ImageUpdateListener implements ImageReadyListener {
-
-		@Override
-		public void onImageReady(Bitmap bitmap) {
-			Activity activity = getActivity();
-			if (activity == null) {
-				return;
-			}
-
-			if (bitmap == null) {
-				showToast("error loading image. Internal error");
-				return;
-			}
-
-			taskTitleTxt.setText(R.string.saving_board);
-			loadProgressTxt.setText(String.valueOf(0));
-			loadProgressTxt.setVisibility(View.GONE);
-
-			String filename = String.valueOf(boardUrl.hashCode()); // TODO rename to MD5
-			new SaveImageToSdTask(boardImgSaveListener, bitmap).executeTask(filename);
-		}
-
-		@Override
-		public void setProgress(final int progress) {
-			FragmentActivity activity = getActivity();
-			if (activity == null) {
-				return;
-			}
-			activity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					loadProgressTxt.setText(String.valueOf(progress) + Symbol.PERCENT);
-				}
-			});
-		}
-	}
-
-	private class ImageSaveListener extends AbstractUpdateListener<Bitmap> {
-
-
-		public ImageSaveListener() {
-			super(getActivity(), SettingsThemeBoardsFragment.this);
-		}
-
-		@Override
-		public void updateData(Bitmap returnedObj) {
-
-			// set board image as theme
-			String filename = String.valueOf(boardUrl.hashCode());
-
-			try {
-				File imgFile = AppUtils.openFileByName(getActivity(), filename);
-				String drawablePath = imgFile.getAbsolutePath();
-
-				// save board theme name to appData
-				getAppData().setUseThemeBoard(true);
-				getAppData().setThemeBoardPath(drawablePath);
-				getAppData().setThemeBoardName(selectedThemeBoardItem.getCode());
-				getAppData().setThemeBoardPreviewUrl(selectedThemeBoardItem.getText());
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			boardIsLoading = false;
-
-
-			if (loadProgressPopupFragment != null) {
-				loadProgressPopupFragment.dismiss();
-			}
-
-			// go back
-			getActivityFace().showPreviousFragment();
-		}
-	}
 
 }

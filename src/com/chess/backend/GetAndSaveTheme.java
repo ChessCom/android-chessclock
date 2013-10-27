@@ -1,12 +1,15 @@
 package com.chess.backend;
 
-import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Binder;
+import android.os.Handler;
+import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.chess.R;
@@ -25,7 +28,6 @@ import com.chess.statics.Symbol;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.SoundPlayer;
-import com.chess.ui.fragments.settings.SettingsThemeFragment;
 import com.chess.utilities.AppUtils;
 
 import java.io.File;
@@ -38,10 +40,13 @@ import java.util.List;
  * Date: 27.10.13
  * Time: 8:24
  */
-public class GetAndSaveTheme extends IntentService {
+//public class GetAndSaveTheme extends IntentService {
+public class GetAndSaveTheme extends Service {
 
 	static final int BACKGROUND = 0;
 	static final int BOARD = 1;
+	public static final int INDETERMINATE = -1;
+	public static final int DONE = -2;
 
 	public static final String _3D_PART = "3d";
 	public static final int BOARD_SIZE_STEP = 8;
@@ -49,6 +54,7 @@ public class GetAndSaveTheme extends IntentService {
 	public static final int BOARD_START_SIZE = 160;
 	public static final int BOARD_END_NAME = 180;
 	public static final int BOARD_END_SIZE = 1440;
+	private static final long SHUTDOWN_DELAY = 4 * 1000;
 
 	private ThemeItem.Data selectedThemeItem;
 	private int screenWidth;
@@ -71,10 +77,25 @@ public class GetAndSaveTheme extends IntentService {
 	private NotificationManager mNotifyManager;
 	private NotificationCompat.Builder mBuilder;
 
+	private ServiceBinder serviceBinder = new ServiceBinder();
+	private FileReadyListener progressUpdateListener;
+	private Handler handler;
+
+	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {
+		this.progressUpdateListener = progressUpdateListener;
+	}
+
+	public class ServiceBinder extends Binder {
+		public GetAndSaveTheme getService(){
+			return GetAndSaveTheme.this;
+		}
+	}
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
+		handler = new Handler();
 		mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// Creates an Intent for the Activity
@@ -99,20 +120,21 @@ public class GetAndSaveTheme extends IntentService {
 		mBuilder.setContentIntent(pendingIntent);
 	}
 
-	/**
-	 * Creates an IntentService.  Invoked by your subclass's constructor.
-	 * Use name the worker thread, important only for debugging.
-	 */
-	public GetAndSaveTheme() {
-		super("GetAndSaveTheme");
+	@Override
+	public IBinder onBind(Intent intent) {
+		return serviceBinder;
 	}
 
 	@Override
-	protected void onHandleIntent(Intent intent) {
-		selectedThemeItem = intent.getParcelableExtra(SettingsThemeFragment.THEME_ITEM);
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		return START_STICKY_COMPATIBILITY; // TODO add logic to stop service once it's not needed
+	}
 
-		screenWidth = intent.getIntExtra(SettingsThemeFragment.SCREEN_WIDTH, 0);
-		screenHeight = intent.getIntExtra(SettingsThemeFragment.SCREEN_HEIGHT, 0);
+	public void loadTheme(ThemeItem.Data selectedThemeItem, int screenWidth, int screenHeight) {
+
+		this.selectedThemeItem = selectedThemeItem;
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
 
 		if (selectedThemeItem == null) {
 			return;
@@ -136,7 +158,7 @@ public class GetAndSaveTheme extends IntentService {
 		String selectedThemeName = selectedThemeItem.getThemeName();
 		appData.setThemeName(selectedThemeName);
 
-		showIndeterminateNotification();
+		showIndeterminateNotification(getString(R.string.loading_background));
 
 		LoadItem loadItem = LoadHelper.getBackgroundById(userToken, selectedThemeItem.getBackgroundId(),
 				screenWidth, screenHeight, RestHelper.V_HANDSET);
@@ -157,8 +179,7 @@ public class GetAndSaveTheme extends IntentService {
 			getAppData().setThemeBackgroundName(returnedObj.getData().getName());
 			getAppData().setThemeBackgroundPreviewUrl(returnedObj.getData().getBackgroundPreviewUrl());
 
-			mBuilder.setContentText(getString(R.string.loading_background));
-			showIndeterminateNotification();
+			showIndeterminateNotification(getString(R.string.loading_background));
 
 			// Start loading background image
 			imageDownloader.download(backgroundUrl, backgroundUpdateListener, screenWidth, screenHeight);
@@ -208,8 +229,7 @@ public class GetAndSaveTheme extends IntentService {
 
 			boardUrl = BoardsItem.PATH + boardDir + "/" + name + ".png";
 
-			mBuilder.setContentText(getString(R.string.loading_board));
-			showIndeterminateNotification();
+			showIndeterminateNotification(getString(R.string.loading_board));
 
 			// Start loading board image
 			imageDownloader.download(boardUrl, boardUpdateListener, screenWidth);
@@ -231,20 +251,17 @@ public class GetAndSaveTheme extends IntentService {
 
 			if (bitmap == null) {
 				logTest("error loading image. Internal error");
-				return;
+//				return;
 			}
 
 			if (listenerCode == BACKGROUND) {
-				mBuilder.setContentText(getString(R.string.saving_background));
-				showIndeterminateNotification();
+				showIndeterminateNotification(getString(R.string.saving_background));
 
 				String filename = String.valueOf(backgroundUrl.hashCode()); // TODO rename to MD5
 				new SaveImageToSdTask(mainBackgroundImgSaveListener, bitmap).executeTask(filename);
 			} else if (listenerCode == BOARD) {
 				logTest("taskTitleTxt - " + getString(R.string.saving_board));
-				mBuilder.setContentTitle(getString(R.string.installing_theme))
-						.setContentText(getString(R.string.saving_board));
-				showIndeterminateNotification();
+				showIndeterminateNotification(getString(R.string.saving_board));
 
 				String filename = String.valueOf(boardUrl.hashCode()); // TODO rename to MD5
 				new SaveImageToSdTask(boardImgSaveListener, bitmap).executeTask(filename);
@@ -342,8 +359,7 @@ public class GetAndSaveTheme extends IntentService {
 				imagesToLoad[6 + i] = PieceSingleItem.PATH + selectedPieceDir + "/" + pieceWidth + "/" + imageCode + ".png";
 			}
 
-			mBuilder.setContentText(getString(R.string.loading_pieces));
-			showIndeterminateNotification();
+			showIndeterminateNotification(getString(R.string.loading_pieces));
 
 			// Start loading pieces image
 			new GetAndSaveFileToSdTask(piecesPackSaveListener, AppUtils.getLocalDirForPieces(getContext(), selectedPieceDir))
@@ -380,8 +396,7 @@ public class GetAndSaveTheme extends IntentService {
 		public void changeTitle(final String title) {
 			logTest("changeTitle - " + title);
 
-			mBuilder.setContentText(title);
-			showIndeterminateNotification();
+			showIndeterminateNotification(title);
 		}
 
 		@Override
@@ -391,10 +406,6 @@ public class GetAndSaveTheme extends IntentService {
 				updateProgressToNotification(progress);
 			}
 		}
-	}
-
-	private void logTest(String message) {
-		Log.d("TEST", message);
 	}
 
 	private class PiecesPackSaveListener extends AbstractUpdateListener<String> implements FileReadyListener {
@@ -436,8 +447,8 @@ public class GetAndSaveTheme extends IntentService {
 
 		@Override
 		public void changeTitle(final String title) {
-			mBuilder.setContentText(title);
-			showIndeterminateNotification();
+
+			showIndeterminateNotification(title);
 		}
 
 		@Override
@@ -466,16 +477,25 @@ public class GetAndSaveTheme extends IntentService {
 		}
 	}
 
-	private void showIndeterminateNotification() {
+	private void showIndeterminateNotification(String title) {
+		mBuilder.setContentText(title);
 		mBuilder.setProgress(0, 0, true);
 		// Displays the progress bar for the first time.
 		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+
+		if (progressUpdateListener != null) {
+			progressUpdateListener.changeTitle(title);
+			progressUpdateListener.setProgress(INDETERMINATE);
+		}
 	}
 
 	private void updateProgressToNotification(int progress) {
 		mBuilder.setProgress(100, progress, false);
 		// Displays the progress bar for the first time.
 		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+		if (progressUpdateListener != null) {
+			progressUpdateListener.setProgress(progress);
+		}
 	}
 
 	private void showCompleteToNotification() {
@@ -483,6 +503,18 @@ public class GetAndSaveTheme extends IntentService {
 				// Removes the progress bar
 				.setProgress(0, 0, false);
 		mNotifyManager.notify(R.id.notification_message, mBuilder.build());
+		if (progressUpdateListener != null) {
+			progressUpdateListener.setProgress(DONE);
+		}
+
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				mNotifyManager.cancel(R.id.notification_message);
+
+				stopSelf();
+			}
+		}, SHUTDOWN_DELAY);
 	}
 
 	private AppData getAppData() {
@@ -498,5 +530,9 @@ public class GetAndSaveTheme extends IntentService {
 
 	private Context getContext() {
 		return this;
+	}
+
+	private void logTest(String message) {
+		Log.d("TEST", message);
 	}
 }

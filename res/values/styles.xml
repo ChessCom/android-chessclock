@@ -220,8 +220,11 @@
         <item name="android:indeterminateDrawable">@drawable/ic_chess_progress</item>
     </style>
 
+	<style name="ChessProgressBar.Horizontal" parent="@android:style/Widget.ProgressBar.Horizontal">
 
-    <style name="Spinner" parent="@android:style/Widget.Spinner">
+	</style>
+
+	<style name="Spinner" parent="@android:style/Widget.Spinner">
         <item name="android:drawSelectorOnTop">true</item>
         <item name="android:background">@drawable/edit_grey_one_default</item>
         <item name="android:textSize">14sp</item>

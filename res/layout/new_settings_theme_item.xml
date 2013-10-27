@@ -35,6 +35,32 @@
         android:paddingLeft="@dimen/default_scr_side_padding"
         />
 
+	<ProgressBar
+		android:id="@+id/themeLoadProgressBar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:indeterminate="true"
+		style="@style/ChessProgressBar.Horizontal"
+		android:layout_below="@id/rowTitleTxt"
+		android:layout_toLeftOf="@id/piecesPreviewImg"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginTop="5dip"
+		android:layout_marginLeft="@dimen/default_scr_side_padding"
+		android:layout_marginRight="@dimen/default_scr_side_padding"
+		android:visibility="gone"
+		/>
+
+	<com.chess.RoboTextView
+		android:id="@+id/progressTitleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		custom:ttf="Bold"
+		android:textColor="@color/white"
+		android:layout_below="@id/themeLoadProgressBar"
+		android:paddingTop="2dip"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		/>
+
     <!--Icon-->
     <com.chess.RoboTextView
         android:id="@+id/iconTxt"
@@ -71,7 +97,5 @@
         android:contentDescription="@string/image"
         android:layout_margin="14dip"
         />
-
-
 
 </com.chess.RelLayout>
