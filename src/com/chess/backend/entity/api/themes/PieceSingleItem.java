@@ -23,7 +23,7 @@ public class PieceSingleItem extends BaseResponseItem<PieceSingleItem.Data> {
 		},
 */
 
-	public class Data {
+	public static class Data {
 		private int user_theme_pieces_id;
 		private String name;
 		private String piece_preview_url;

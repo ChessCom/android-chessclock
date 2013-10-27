@@ -25,7 +25,7 @@ public class BoardSingleItem extends BaseResponseItem<BoardSingleItem.Data>{
 	"theme_dir": "metal"
 */
 
-	public class Data {
+	public static class Data {
 		private static final int LIGHT_COLOR = 1;
 		private static final int DARK_COLOR = 2;
 		private static final int HIGHLIGHT_COLOR = 3;
@@ -64,11 +64,11 @@ public class BoardSingleItem extends BaseResponseItem<BoardSingleItem.Data>{
 			this.board_preview_url = board_preview_url;
 		}
 
-		public String getLineBoardPreview() {
+		public String getLineBoardPreviewUrl() {
 			return line_board_preview;
 		}
 
-		public void setLineBoardPreview(String line_board_preview) {
+		public void setLineBoardPreviewUrl(String line_board_preview) {
 			this.line_board_preview = line_board_preview;
 		}
 

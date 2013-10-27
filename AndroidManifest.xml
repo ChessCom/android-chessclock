@@ -125,6 +125,7 @@
 		<service android:name=".backend.LiveChessService" />
 		<service android:name=".backend.GetAndSaveUserStats" />
 		<service android:name=".backend.GetAndSaveFriends" />
+		<service android:name=".backend.GetAndSaveTheme" />
 
 		<provider
 			android:name=".db.DbDataProvider"

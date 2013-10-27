@@ -3,6 +3,7 @@ package com.chess.ui.fragments.settings;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -26,6 +27,9 @@ import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.backend.tasks.SaveImageToSdTask;
+import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.model.PopupItem;
 import com.chess.model.SelectionItem;
 import com.chess.statics.Symbol;
@@ -94,6 +98,8 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		boardUpdateListener = new ImageUpdateListener();
 
 		Resources resources = getResources();
+		themeBoardSelectionList = new ArrayList<SelectionItem>();
+		themeBoardItemsList = new ArrayList<BoardSingleItem.Data>();
 
 		// Boards bitmaps list init
 		defaultBoardSelectionList = new ArrayList<SelectionItem>();
@@ -146,13 +152,27 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 		// Don't load custom board if we are not logged in
 		if (!TextUtils.isEmpty(getUserToken())) {
-			// load board line previews
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_BOARDS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BOARDS));
 
-			new RequestJsonTask<BoardsItem>(boardsItemUpdateListener).executeTask(loadItem);
+			if (cursor != null && cursor.moveToFirst()) {
+				do {
+					themeBoardItemsList.add(DbDataManager.getThemeBoardItemFromCursor(cursor));
+				} while (cursor.moveToNext());
+
+				updateUiData();
+			} else {
+				getBoards();
+			}
 		}
+	}
+
+	private void getBoards() {
+		// load board line previews
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_BOARDS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+		new RequestJsonTask<BoardsItem>(boardsItemUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -230,25 +250,32 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		public void updateData(BoardsItem returnedObj) {
 			super.updateData(returnedObj);
 
-			themeBoardSelectionList = new ArrayList<SelectionItem>();
 			themeBoardItemsList = returnedObj.getData();
 
-			for (BoardSingleItem.Data boardItem : themeBoardItemsList) {
-				SelectionItem selectionItem = new SelectionItem(null, boardItem.getLineBoardPreview());
-				selectionItem.setCode(boardItem.getName());
-				themeBoardSelectionList.add(selectionItem);
-			}
+			updateUiData();
 
-			for (SelectionItem selectionItem : themeBoardSelectionList) {
-				if (selectionItem.getCode().equals(themeBoardName)) {
-					selectionItem.setChecked(true);
-					break;
-				}
+			for (BoardSingleItem.Data currentItem : themeBoardItemsList) {
+				DbDataManager.saveThemeBoardItemToDb(getContentResolver(), currentItem);
 			}
-			themeBoardsAdapter.setItemsList(themeBoardSelectionList);
-			sectionedAdapter.notifyDataSetChanged();
-
 		}
+	}
+
+	private void updateUiData() {
+		for (BoardSingleItem.Data boardItem : themeBoardItemsList) {
+			SelectionItem selectionItem = new SelectionItem(null, boardItem.getLineBoardPreviewUrl());
+			selectionItem.setCode(boardItem.getName());
+			themeBoardSelectionList.add(selectionItem);
+		}
+
+		for (SelectionItem selectionItem : themeBoardSelectionList) {
+			if (selectionItem.getCode().equals(themeBoardName)) {
+				selectionItem.setChecked(true);
+				break;
+			}
+		}
+
+		themeBoardsAdapter.setItemsList(themeBoardSelectionList);
+		sectionedAdapter.notifyDataSetChanged();
 	}
 
 

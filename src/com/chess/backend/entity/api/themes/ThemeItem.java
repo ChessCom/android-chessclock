@@ -17,7 +17,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 "data": [
     {
       "theme_id": 1,
-      "background_url": "http://static3.depositphotos.com/1004423/181/i/950/depositphotos_1812868-Abstract-Rock-Background.jpg",
+      "pieces_preview_url": "http://static3.depositphotos.com/1004423/181/i/950/depositphotos_1812868-Abstract-Rock-Background.jpg",
       "board_background_url": "http://t1.gstatic.com/images?q=tbn:ANd9GcQ31TI8XI4GM5QiXYLnP5kVWM18QzdqRG2d2f34UEwYahJgpl0b",
       "background_preview_url": "http://static3.depositphotos.com/1004423/181/i/950/depositphotos_1812868-Abstract-Rock-Background.jpg",
       "board_preview_url": "http://t1.gstatic.com/images?q=tbn:ANd9GcQ31TI8XI4GM5QiXYLnP5kVWM18QzdqRG2d2f34UEwYahJgpl0b",
@@ -137,7 +137,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 		}
 
 		public String getFontColor() {
-			return "#" +  getSafeValue(font_color, "FFFFFF");
+			return getSafeValue(font_color, "FFFFFF").replaceAll("[#]","");
 		}
 
 		protected Data(Parcel in) {

@@ -291,7 +291,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 			getAppData().setUseThemeBoard(true);
 			getAppData().setThemeBoardName(boardData.getName());
-			getAppData().setThemeBoardPreviewUrl(boardData.getLineBoardPreview());
+			getAppData().setThemeBoardPreviewUrl(boardData.getLineBoardPreviewUrl());
 
 			getAppData().setThemeBoardCoordinateLight(Color.parseColor(coordinateColorLight));
 			getAppData().setThemeBoardCoordinateDark(Color.parseColor(coordinateColorDark));

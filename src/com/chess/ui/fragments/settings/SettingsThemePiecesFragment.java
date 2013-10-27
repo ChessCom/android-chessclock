@@ -2,6 +2,7 @@ package com.chess.ui.fragments.settings;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -22,6 +23,9 @@ import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.GetAndSaveFileToSdTask;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.model.PopupItem;
 import com.chess.model.SelectionItem;
 import com.chess.statics.Symbol;
@@ -79,6 +83,9 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 		Resources resources = getResources();
 
+		themePiecesSelectionList = new ArrayList<SelectionItem>();
+		themePiecesItemsList = new ArrayList<PieceSingleItem.Data>();
+
 		// Pieces bitmaps list init
 		defaultPiecesSelectionList = new ArrayList<SelectionItem>();
 		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_game), getString(R.string.pieces_game)));
@@ -131,13 +138,28 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 		// Don't load custom pieces if we are not logged in
 		if (!TextUtils.isEmpty(getUserToken())) {
-			// load pieces line previews
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_PIECES);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_PIECES));
 
-			new RequestJsonTask<PiecesItem>(piecesItemUpdateListener).executeTask(loadItem);
+
+			if (cursor != null && cursor.moveToFirst()) {
+				do {
+					themePiecesItemsList.add(DbDataManager.getThemePieceItemFromCursor(cursor));
+				} while (cursor.moveToNext());
+
+				updateUiData();
+			} else {
+				getPieces();
+			}
 		}
+	}
+
+	private void getPieces() {
+		// load pieces line previews
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_PIECES);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+		new RequestJsonTask<PiecesItem>(piecesItemUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -216,59 +238,32 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		public void updateData(PiecesItem returnedObj) {
 			super.updateData(returnedObj);
 
-			themePiecesSelectionList = new ArrayList<SelectionItem>();
 			themePiecesItemsList = returnedObj.getData();
 
-			for (PieceSingleItem.Data pieceItem : themePiecesItemsList) {
-				SelectionItem selectionItem = new SelectionItem(null, pieceItem.getPreviewUrl());
-				selectionItem.setCode(pieceItem.getName());
-				themePiecesSelectionList.add(selectionItem);
-			}
+			updateUiData();
 
-			for (SelectionItem selectionItem : themePiecesSelectionList) {
-				if (selectionItem.getCode().equals(themePiecesName)) {
-					selectionItem.setChecked(true);
-					break;
-				}
+			for (PieceSingleItem.Data currentItem : themePiecesItemsList) {
+				DbDataManager.saveThemePieceItemToDb(getContentResolver(), currentItem);
 			}
-			themePiecesAdapter.setItemsList(themePiecesSelectionList);
-			sectionedAdapter.notifyDataSetChanged();
-
-//			List<PieceSingleItem.Data> itemsList = returnedObj.getData();
-//			for (PieceSingleItem.Data currentItem : itemsList) {
-//				DbDataManager.savePiecesPathsToDb(getContentResolver(), currentItem);
-//			}
-//
-//			loadPiecesFromDb();
 		}
 	}
 
+	private void updateUiData() {
+		for (PieceSingleItem.Data pieceItem : themePiecesItemsList) {
+			SelectionItem selectionItem = new SelectionItem(null, pieceItem.getPreviewUrl());
+			selectionItem.setCode(pieceItem.getName());
+			themePiecesSelectionList.add(selectionItem);
+		}
 
-//	private void loadPiecesFromDb() {
-//		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_PIECES));
-//
-//		List<String> soundsList = new ArrayList<String>();
-//		if (cursor != null && cursor.moveToFirst()) {
-//			do {
-///*
-//+ addField_Int(V_ID) // user_theme_pieces_id
-//+ addField_Int(V_THEME_ID)
-//+ addField_Text(V_NAME)
-//+ addField_Text(V_THEME_DIR)
-//+ addField_Text(V_PREVIEW_URL, true);
-//*/
-//				piecesUrlsList.add(DbDataManager.getString(cursor, DbScheme.V_URL));
-//				new SelectionItem(, ));
-//				defaultPiecesSelectionList.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
-//			} while (cursor.moveToNext());
-//		} else { // DB was cleared
-//			getSounds();
-//		}
-//
-//		soundsSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), soundsList));
-//		soundsSpinner.setEnabled(true);
-//		soundsSpinner.setSelection(getAppData().getSoundSetPosition());
-//	}
+		for (SelectionItem selectionItem : themePiecesSelectionList) {
+			if (selectionItem.getCode().equals(themePiecesName)) {
+				selectionItem.setChecked(true);
+				break;
+			}
+		}
+		themePiecesAdapter.setItemsList(themePiecesSelectionList);
+		sectionedAdapter.notifyDataSetChanged();
+	}
 
 	private class ThemePiecesAdapter extends ItemsAdapter<SelectionItem> {
 

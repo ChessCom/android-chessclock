@@ -190,8 +190,24 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			imageLoader.download(squarePreviewUrl, piecePreviewImg, PREVIEW_IMG_SIZE);
 		} else {
 			String themePiecesName = getAppData().getThemePiecesName();
+			String pieceDefaultName = AppConstants.DEFAULT_THEME_PIECES_NAME;
 			if (themePiecesName.equals(Symbol.EMPTY)) {
 				piecesLineImage.setImageDrawable(getResources().getDrawable(R.drawable.pieces_game));
+
+				String packageName = getActivity().getPackageName();
+				int bnResourceId = getResources().getIdentifier(pieceDefaultName + "_bn", "drawable", packageName);
+				int bpResourceId = getResources().getIdentifier(pieceDefaultName + "_bp", "drawable", packageName);
+				int wnResourceId = getResources().getIdentifier(pieceDefaultName + "_wn", "drawable", packageName);
+				int wpResourceId = getResources().getIdentifier(pieceDefaultName + "_wp", "drawable", packageName);
+				// show default pieces preview
+				Bitmap[][] previewBitmaps = new Bitmap[2][2];
+				previewBitmaps[0][0] = ((BitmapDrawable)getResources().getDrawable(bnResourceId)).getBitmap();
+				previewBitmaps[0][1] = ((BitmapDrawable)getResources().getDrawable(wnResourceId)).getBitmap();
+				previewBitmaps[1][0] = ((BitmapDrawable)getResources().getDrawable(bpResourceId)).getBitmap();
+				previewBitmaps[1][1] = ((BitmapDrawable)getResources().getDrawable(wpResourceId)).getBitmap();
+
+				piecesSquarePreviewImg.setPiecesBitmaps(previewBitmaps);
+				piecesSquarePreviewImg.setVisibility(View.VISIBLE);
 			} else {
 				for (int i = 0; i < defaultPiecesNamesMap.size(); i++) {
 					int key = defaultPiecesNamesMap.keyAt(i);
@@ -201,7 +217,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 					}
 				}
 
-				String pieceDefaultName = Symbol.EMPTY;
 				for (Map.Entry<String, String> entry : defaultPiecesResourceNamesMap.entrySet()) {
 					if (themePiecesName.equals(entry.getValue())) {
 						pieceDefaultName = entry.getKey();
@@ -756,7 +771,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		// Preview Sample
 		rowSampleTitleTxt = (TextView) view.findViewById(R.id.rowSampleTitleTxt);
-		int fontColor = Color.parseColor(themeItem.getFontColor());
+		int fontColor = Color.parseColor("#" +  themeItem.getFontColor());
 		rowSampleTitleTxt.setTextColor(fontColor);
 
 		//spinners

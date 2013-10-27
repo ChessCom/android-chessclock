@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 76;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 77;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -91,6 +91,7 @@ public class DbScheme {
 		THEMES,
 		THEME_SOUNDS,
 		THEME_PIECES,
+		THEME_BOARDS,
 		SOUND_PACKS,
 	}
 
@@ -1174,12 +1175,16 @@ public class DbScheme {
 	public static final String V_THEME_ID = "theme_id";
 	public static final String V_THEME_DIR = "theme_dir";
 
-	public static final String V_BACKGROUND_URL = "background_url";
 	public static final String V_BOARD_BACKGROUND_URL = "board_background_url";
+	public static final String V_PIECES_PREVIEW_URL = "pieces_preview_url";
 	public static final String V_BACKGROUND_PREVIEW_URL = "background_preview_url";
 	public static final String V_BOARD_PREVIEW_URL = "board_preview_url";
+	public static final String V_LINE_PREVIEW_URL = "line_preview_url";
 	public static final String V_PREVIEW_URL = "preview_url";
 	public static final String V_FONT_COLOR = "font_color";
+	public static final String V_COORDINATE_COLOR_LIGHT = "coordinate_color_light";
+	public static final String V_COORDINATE_COLOR_DARK = "coordinate_color_dark";
+	public static final String V_HIGHLIGHT_COLOR = "highlight_color";
 
 	void createThemesTables() {
 
@@ -1189,7 +1194,7 @@ public class DbScheme {
 				+ addField_Int(V_BOARD_ID)
 				+ addField_Int(V_PIECES_ID)
 				+ addField_Int(V_SOUNDS_ID)
-				+ addField_Text(V_BACKGROUND_URL)
+				+ addField_Text(V_PIECES_PREVIEW_URL)
 				+ addField_Text(V_BOARD_BACKGROUND_URL)
 				+ addField_Text(V_BACKGROUND_PREVIEW_URL)
 				+ addField_Text(V_BOARD_PREVIEW_URL)
@@ -1207,6 +1212,17 @@ public class DbScheme {
 				+ addField_Text(V_NAME)
 				+ addField_Text(V_THEME_DIR)
 				+ addField_Text(V_PREVIEW_URL, true);
+
+		createTablesArray[Tables.THEME_BOARDS.ordinal()] = createTableForName(Tables.THEME_BOARDS)
+				+ addField_Int(V_ID) // user_theme_board_id
+				+ addField_Int(V_THEME_ID)
+				+ addField_Text(V_NAME)
+				+ addField_Text(V_THEME_DIR)
+				+ addField_Text(V_PREVIEW_URL)
+				+ addField_Text(V_LINE_PREVIEW_URL)
+				+ addField_Text(V_COORDINATE_COLOR_LIGHT)
+				+ addField_Text(V_COORDINATE_COLOR_DARK)
+				+ addField_Text(V_HIGHLIGHT_COLOR, true);
 
 		createTablesArray[Tables.SOUND_PACKS.ordinal()] = createTableForName(Tables.SOUND_PACKS)
 				+ addField_Text(V_URL)
