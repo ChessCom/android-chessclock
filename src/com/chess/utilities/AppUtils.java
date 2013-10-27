@@ -322,7 +322,7 @@ public class AppUtils {
 //		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
 //		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 //
-//		Intent intent = new Intent(context, GameOnlineScreenActivity.class);
+//		Intent intent = new Intent(context, MainFragmentFaceActivity.class);
 //		intent.putExtra(BaseGameItem.GAME_ID, currentGameItem.getGameId());
 //		intent.putExtra(AppConstants.NOTIFICATION, true);
 ////		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // as we are using singleTask mode for GameOnlineActivity we call enter there via onNewIntent callback

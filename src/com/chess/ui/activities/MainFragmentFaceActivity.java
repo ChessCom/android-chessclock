@@ -67,6 +67,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private IntentFilter movesUpdateFilter;
 	private NotificationsUpdateReceiver notificationsUpdateReceiver;
 	private MovesUpdateReceiver movesUpdateReceiver;
+	private IntentFilter backgroundUpdateFilter;
+	private BackgroundUpdateReceiver backgroundUpdateReceiver;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -131,6 +133,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		notificationsUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
 		movesUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
+		backgroundUpdateFilter = new IntentFilter(IntentConstants.BACKGROUND_LOADED);
 
 		// TODO remove after test!!!
 		// restoring correct host
@@ -205,8 +208,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		notificationsUpdateReceiver = new NotificationsUpdateReceiver();
 		movesUpdateReceiver = new MovesUpdateReceiver();
+		backgroundUpdateReceiver = new BackgroundUpdateReceiver();
 		registerReceiver(notificationsUpdateReceiver, notificationsUpdateFilter);
 		registerReceiver(movesUpdateReceiver, movesUpdateFilter);
+		registerReceiver(backgroundUpdateReceiver, backgroundUpdateFilter);
 	}
 
 	@Override
@@ -217,6 +222,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		unRegisterMyReceiver(notificationsUpdateReceiver);
 		unRegisterMyReceiver(movesUpdateReceiver);
+		unRegisterMyReceiver(backgroundUpdateReceiver);
 	}
 
 	@Override
@@ -277,7 +283,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void setMainBackground(String drawablePath) {
-		getAppData().setThemeBackPath(drawablePath);
 		Bitmap bitmap = BitmapFactory.decodeFile(drawablePath);
 		if (bitmap != null) {
 			BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
@@ -398,11 +403,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
-		ft.replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName());
-		ft.addToBackStack(fragment.getClass().getSimpleName());
+		String simpleName = fragment.getClass().getSimpleName();
+		ft.replace(R.id.content_frame, fragment, simpleName);
+		ft.addToBackStack(simpleName);
 		ft.commit();
 
-		FlurryAgent.logEvent(FlurryData.OPEN_FRAME + fragment.getClass().getSimpleName());
+		FlurryAgent.logEvent(FlurryData.OPEN_FRAME + simpleName);
 	}
 
 	@Override
@@ -410,8 +416,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
-		ft.replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName());
-		ft.addToBackStack(fragment.getClass().getSimpleName());
+		String simpleName = fragment.getClass().getSimpleName();
+		ft.replace(R.id.content_frame, fragment, simpleName);
+		ft.addToBackStack(simpleName);
 		ft.commit();
 	}
 
@@ -468,6 +475,18 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		public void onReceive(Context context, Intent intent) {
 			Log.d("TEST", " onReceive = " + intent);
 			updateNotificationsBadges();
+		}
+	}
+
+	private class BackgroundUpdateReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String themeBackPath = getAppData().getThemeBackPath();
+			if (!TextUtils.isEmpty(themeBackPath)) {
+				setMainBackground(themeBackPath);
+			} else {
+				getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
+			}
 		}
 	}
 

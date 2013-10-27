@@ -50,9 +50,13 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 
-		getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class)); // always update friends list. until we implement syncadapter
-		// update stats in async intent service and save in Db there
-		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
+		if (!DbDataManager.haveSavedFriends(getActivity(), getUsername())) {
+			getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class));
+		}
+		if (DbDataManager.haveSavedDailyStats(getActivity(), getUsername())) {
+			// update stats in async intent service and save in Db there
+			getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
+		}
 
 		themeName = getAppData().getThemeName();
 	}

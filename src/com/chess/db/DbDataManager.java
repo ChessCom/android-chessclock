@@ -724,6 +724,22 @@ public class DbDataManager {
 		return userIds.length > idsToRemove.size();
 	}
 
+	public static boolean haveSavedDailyStats(Context context, String username) {
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = username;
+
+		Cursor cursor = contentResolver.query(uriArray[Tables.USER_STATS_DAILY_CHESS.ordinal()],
+				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
+		boolean exist = false;
+		if (cursor != null) {
+			exist = cursor.moveToFirst();
+			cursor.close();
+		}
+
+		return exist;
+	}
 
 	/**
 	 * Check if we have saved explorer moves for game

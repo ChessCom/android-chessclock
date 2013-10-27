@@ -2,6 +2,7 @@ package com.chess.ui.fragments.settings;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -13,9 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.LoadHelper;
-import com.chess.backend.LoadItem;
-import com.chess.backend.RestHelper;
+import com.chess.backend.*;
 import com.chess.backend.entity.api.themes.*;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ImageDownloaderToListener;
@@ -51,12 +50,12 @@ import java.util.List;
  */
 public class SettingsThemeFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
-	public static final String _3D_PART = "3d";
 	private static final String THEME_LOAD_TAG = "theme load popup";
 
 	static final int BACKGROUND = 0;
 	static final int BOARD = 1;
 
+	public static final String _3D_PART = "3d";
 	public static final int BOARD_SIZE_STEP = 8;
 	public static final int BOARD_START_NAME = 20;
 	public static final int BOARD_START_SIZE = 160;
@@ -68,6 +67,9 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 	//	public static final int PREVIEW_IMG_SIZE = 180;
 	private static final String GAME_THEME_NAME = "Game";
+	public static final String THEME_ITEM = "theme_item";
+	public static final String SCREEN_WIDTH = "screen_width";
+	public static final String SCREEN_HEIGHT = "screen_height";
 
 	private ListView listView;
 	private ThemesAdapter themesAdapter;
@@ -231,13 +233,19 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			getAppData().setThemeName(getString(R.string.theme_game_room));
 			getAppData().setThemeBackgroundName(getString(R.string.theme_game_room));
 		} else { // start loading main background image
-			// Get exactly sized url for theme background
-			LoadItem loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedThemeItem.getBackgroundId(),
-					screenWidth, screenHeight, RestHelper.V_HANDSET);
-			new RequestJsonTask<BackgroundSingleItem>(backgroundItemUpdateListener).executeTask(loadItem);
+			Intent intent = new Intent(getActivity(), GetAndSaveTheme.class);
+			intent.putExtra(SCREEN_WIDTH, screenWidth);
+			intent.putExtra(SCREEN_HEIGHT, screenHeight);
+			intent.putExtra(THEME_ITEM, selectedThemeItem);
+			getActivity().startService(intent);
 
-			selectedThemeName = selectedThemeItem.getThemeName();
-			getAppData().setThemeName(selectedThemeName);
+			// Get exactly sized url for theme background
+//			LoadItem loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedThemeItem.getBackgroundId(),
+//					screenWidth, screenHeight, RestHelper.V_HANDSET);
+//			new RequestJsonTask<BackgroundSingleItem>(backgroundItemUpdateListener).executeTask(loadItem);
+//
+//			selectedThemeName = selectedThemeItem.getThemeName();
+//			getAppData().setThemeName(selectedThemeName);
 		}
 	}
 
@@ -572,6 +580,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				String filename = String.valueOf(backgroundUrl.hashCode());
 				try {
 					File imgFile = AppUtils.openFileByName(getActivity(), filename);
+
+					getAppData().setThemeBackPath(imgFile.getAbsolutePath());
 					getActivityFace().setMainBackground(imgFile.getAbsolutePath());
 
 					getActivityFace().updateActionBarBackImage();
