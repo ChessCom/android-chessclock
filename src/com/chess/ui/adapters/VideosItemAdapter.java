@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.api.VideoItem;
+import com.chess.backend.entity.api.VideoSingleItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -20,7 +20,7 @@ import java.util.List;
  * Date: 08.09.13
  * Time: 20:41
  */
-public class VideosItemAdapter extends ItemsAdapter<VideoItem.Data> {
+public class VideosItemAdapter extends ItemsAdapter<VideoSingleItem.Data> {
 
 	public static final String GREY_COLOR_DIVIDER = "##";
 	public static final String SLASH_DIVIDER = " | ";
@@ -34,7 +34,7 @@ public class VideosItemAdapter extends ItemsAdapter<VideoItem.Data> {
 	private CharacterStyle foregroundSpan;
 	private SparseBooleanArray viewedMap;
 
-	public VideosItemAdapter(ItemClickListenerFace clickFace, List<VideoItem.Data> itemList) {
+	public VideosItemAdapter(ItemClickListenerFace clickFace, List<VideoSingleItem.Data> itemList) {
 		super(clickFace.getMeContext(), itemList);
 		int lightGrey = context.getResources().getColor(R.color.new_subtitle_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
@@ -63,7 +63,7 @@ public class VideosItemAdapter extends ItemsAdapter<VideoItem.Data> {
 	}
 
 	@Override
-	protected void bindView(VideoItem.Data item, int pos, View convertView) {
+	protected void bindView(VideoSingleItem.Data item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		holder.completedIconTxt.setTag(R.id.list_item_id, pos);

@@ -14,7 +14,9 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.CommonViewedItem;
-import com.chess.backend.entity.api.VideoItem;
+import com.chess.backend.entity.api.VideoSingleItem;
+import com.chess.backend.entity.api.VideosItem;
+import com.chess.db.QueryParams;
 import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -94,8 +96,8 @@ public class VideosSearchFragment extends BaseSearchFragment implements ItemClic
 	}
 
 	@Override
-	protected DbScheme.Tables getTable() {
-		return DbScheme.Tables.VIDEO_CATEGORIES;
+	protected QueryParams getQueryParams() {
+		return DbHelper.getAll(DbScheme.Tables.VIDEO_CATEGORIES);
 	}
 
 	@Override
@@ -127,7 +129,7 @@ public class VideosSearchFragment extends BaseSearchFragment implements ItemClic
 
 		if (view.getId() == R.id.completedIconTxt) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
-			VideoItem.Data videoItem = (VideoItem.Data) listView.getItemAtPosition(position);
+			VideoSingleItem.Data videoItem = (VideoSingleItem.Data) listView.getItemAtPosition(position);
 
 			currentPlayingId = (int) videoItem.getVideoId();
 			Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -146,15 +148,15 @@ public class VideosSearchFragment extends BaseSearchFragment implements ItemClic
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_KEYWORD, keyword);
 		if (!lastCategory.equals(allStr)) {
-			loadItem.addRequestParams(RestHelper.P_CATEGORY_CODE, lastCategory);
+			loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
 		}
 
-		new RequestJsonTask<VideoItem>(videoItemUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<VideosItem>(videoItemUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		VideoItem.Data videoItem = (VideoItem.Data) parent.getItemAtPosition(position);
+		VideoSingleItem.Data videoItem = (VideoSingleItem.Data) parent.getItemAtPosition(position);
 		long videoId = videoItem.getVideoId();
 		getActivityFace().openFragment(VideoDetailsFragment.createInstance(videoId));
 	}
@@ -164,14 +166,14 @@ public class VideosSearchFragment extends BaseSearchFragment implements ItemClic
 		return getActivity();
 	}
 
-	private class VideoItemUpdateListener extends ChessLoadUpdateListener<VideoItem> {
+	private class VideoItemUpdateListener extends ChessLoadUpdateListener<VideosItem> {
 
 		private VideoItemUpdateListener() {
-			super(VideoItem.class);
+			super(VideosItem.class);
 		}
 
 		@Override
-		public void updateData(VideoItem returnedObj) {
+		public void updateData(VideosItem returnedObj) {
 			super.updateData(returnedObj);
 
 			if (returnedObj.getData().size() == 0) {

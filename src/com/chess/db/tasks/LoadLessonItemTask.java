@@ -2,7 +2,7 @@ package com.chess.db.tasks;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
-import com.chess.backend.entity.api.LessonItem;
+import com.chess.backend.entity.api.LessonProblemItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
@@ -19,12 +19,12 @@ import java.util.List;
  * Date: 25.07.13
  * Time: 17:09
  */
-public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long> {
+public class LoadLessonItemTask extends AbstractUpdateTask<LessonProblemItem.Data, Long> {
 
 	private ContentResolver contentResolver;
 	private String username;
 
-	public LoadLessonItemTask(TaskUpdateInterface<LessonItem.Data> taskFace, ContentResolver resolver, String username) {
+	public LoadLessonItemTask(TaskUpdateInterface<LessonProblemItem.Data> taskFace, ContentResolver resolver, String username) {
 		super(taskFace);
 		this.username = username;
 		this.contentResolver = resolver;
@@ -34,7 +34,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 	protected Integer doTheTask(Long... ids) {
 
 		Long lessonId = ids[0];
-		item = new LessonItem.Data();
+		item = new LessonProblemItem.Data();
 
 		{ // Load Mentor Lesson
 			QueryParams params = DbHelper.getMentorLessonById(lessonId);
@@ -63,7 +63,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 					params.getArguments(), params.getOrder());
 
 			if (cursor.moveToFirst()) {
-				List<LessonItem.MentorPosition> positions = new ArrayList<LessonItem.MentorPosition>();
+				List<LessonProblemItem.MentorPosition> positions = new ArrayList<LessonProblemItem.MentorPosition>();
 				do {
 					positions.add(DbDataManager.getLessonsPositionFromCursor(cursor));
 
@@ -74,14 +74,14 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonItem.Data, Long
 		}
 
 		{ // Load Position Moves
-			for (LessonItem.MentorPosition position : item.getPositions()) {
+			for (LessonProblemItem.MentorPosition position : item.getPositions()) {
 
 				QueryParams params = DbHelper.getLessonPositionMovesById(lessonId, position.getPositionNumber());
 				Cursor cursor = contentResolver.query(params.getUri(), params.getProjection(), params.getSelection(),
 						params.getArguments(), params.getOrder());
 
 				if (cursor.moveToFirst()) {
-					List<LessonItem.MentorPosition.PossibleMove> possibleMoves = new ArrayList<LessonItem.MentorPosition.PossibleMove>();
+					List<LessonProblemItem.MentorPosition.PossibleMove> possibleMoves = new ArrayList<LessonProblemItem.MentorPosition.PossibleMove>();
 					do {
 						possibleMoves.add(DbDataManager.getLessonsPositionMoveFromCursor(cursor));
 					} while(cursor.moveToNext());

@@ -20,7 +20,8 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.CommonViewedItem;
-import com.chess.backend.entity.api.VideoItem;
+import com.chess.backend.entity.api.VideoSingleItem;
+import com.chess.backend.entity.api.VideosItem;
 import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -76,7 +77,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	private boolean headerDataLoaded;
 	private long headerVideoId;
-	private VideoItem.Data headerData;
+	private VideoSingleItem.Data headerData;
 
 	private CurriculumItems curriculumItems;
 	private boolean curriculumMode;
@@ -207,7 +208,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, 1);
 
-		new RequestJsonTask<VideoItem>(latestItemUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<VideosItem>(latestItemUpdateListener).executeTask(loadItem);
 	}
 
 	private void getCategories() {
@@ -351,10 +352,10 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 	}
 
-	private class VideosItemUpdateListener extends ChessUpdateListener<VideoItem> {
+	private class VideosItemUpdateListener extends ChessUpdateListener<VideosItem> {
 
 		public VideosItemUpdateListener() {
-			super(VideoItem.class);
+			super(VideosItem.class);
 		}
 
 		@Override
@@ -363,7 +364,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 
 		@Override
-		public void updateData(VideoItem returnedObj) {
+		public void updateData(VideosItem returnedObj) {
 			headerData = returnedObj.getData().get(0);
 
 			headerVideoId = headerData.getVideoId();

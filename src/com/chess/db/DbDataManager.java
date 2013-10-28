@@ -165,6 +165,8 @@ public class DbDataManager {
 	public static String SELECTION_FEN_AND_MOVE = concatArguments(V_FEN, V_MOVE);
 	public static String SELECTION_FEN_AND_NUMBER = concatArguments(V_FEN, V_NUMBER);
 	public static String SELECTION_URL = concatArguments(V_URL);
+	public static String SELECTION_IS_CURRICULUM = concatArguments(V_IS_CURRICULUM);
+
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
 
@@ -375,7 +377,7 @@ public class DbDataManager {
 		arguments1[0] = username;
 
 		Cursor cursor = contentResolver.query(uriArray[Tables.LIVE_ARCHIVE_GAMES.ordinal()],
-					PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
+				PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 		boolean exist = cursor != null && cursor.moveToFirst();
 		if (cursor != null) {
 			cursor.close();
@@ -1262,11 +1264,11 @@ public class DbDataManager {
 
 		boolean articleExist = cursor != null && cursor.moveToFirst();
 		// we don't update while filling the list
-		if (!articleExist && !forceUpdate){
+		if (!articleExist && !forceUpdate) {
 			contentResolver.insert(uri, values);
 		}
 		// update only when full body requested
-		if (articleExist && forceUpdate){
+		if (articleExist && forceUpdate) {
 			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
 		}
 
@@ -1676,7 +1678,7 @@ public class DbDataManager {
 		}
 	}
 
-	public static void saveMentorLessonToDb(ContentResolver contentResolver, LessonItem.MentorLesson mentorLesson,
+	public static void saveMentorLessonToDb(ContentResolver contentResolver, LessonProblemItem.MentorLesson mentorLesson,
 											long lessonId) {
 		mentorLesson.setLessonId(lessonId);
 		final String[] arguments1 = sArguments1;
@@ -1688,12 +1690,22 @@ public class DbDataManager {
 		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID,
 				SELECTION_ITEM_ID, arguments1, null);
 
-		ContentValues values = putLessonsMentorLessonToValues(mentorLesson);
+		ContentValues values = new ContentValues();
+
+		values.put(V_ID, mentorLesson.getLessonId());
+		values.put(V_NUMBER, mentorLesson.getLessonNumber());
+		values.put(V_GOAL, mentorLesson.getGoal());
+		values.put(V_DIFFICULTY, mentorLesson.getDifficulty());
+		values.put(V_AUTHOR, mentorLesson.getAuthor());
+		values.put(V_NAME, mentorLesson.getName());
+		values.put(V_DESCRIPTION, mentorLesson.getAbout());
+		values.put(V_GOAL_COMMENT, mentorLesson.getGoalCommentary());
+		values.put(V_GOAL_CODE, mentorLesson.getGoalCode());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static void saveUserLessonToDb(ContentResolver contentResolver, LessonItem.UserLesson userLesson,
+	public static void saveUserLessonToDb(ContentResolver contentResolver, LessonProblemItem.UserLesson userLesson,
 										  long lessonId, String username) {
 		userLesson.setLessonId(lessonId);
 		userLesson.setUsername(username);
@@ -1724,31 +1736,15 @@ public class DbDataManager {
 				SELECTION_ITEM_ID_AND_USER, arguments, null);
 
 
-		ContentValues values = putLessonsCourseListItemToValues(currentItem);
+		ContentValues values = new ContentValues();
+
+		values.put(V_ID, currentItem.getId());
+		values.put(V_USER, currentItem.getUser());
+		values.put(V_NAME, currentItem.getName());
+		values.put(V_CATEGORY_ID, currentItem.getCategoryId());
+		values.put(V_COURSE_COMPLETED, currentItem.isCourseCompleted() ? 1 : 0);
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
-	}
-
-	public static ContentValues putLessonsCourseListItemToValues(LessonCourseListItem.Data dataObj) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_ID, dataObj.getId());
-		values.put(V_USER, dataObj.getUser());
-		values.put(V_NAME, dataObj.getName());
-		values.put(V_CATEGORY_ID, dataObj.getCategoryId());
-		values.put(V_COURSE_COMPLETED, dataObj.isCourseCompleted() ? 1 : 0);
-
-		return values;
-	}
-
-	public static ContentValues putLessonsCourseItemToValues(LessonCourseItem.Data dataObj) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_ID, dataObj.getId());
-		values.put(V_DESCRIPTION, dataObj.getDescription());
-		values.put(V_NAME, dataObj.getCourseName());
-
-		return values;
 	}
 
 	public static LessonCourseItem.Data getLessonsCourseItemFromCursor(Cursor cursor) {
@@ -1772,11 +1768,11 @@ public class DbDataManager {
 				DbDataManager.SELECTION_CATEGORY_ID, arguments2, null);
 
 		ContentValues values = DbDataManager.putCommonFeedCategoryItemToValues(currentItem);
-
+		values.put(V_IS_CURRICULUM, currentItem.isCurriculum() ? 1 : 0);
 		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static void saveLessonListItemToDb(ContentResolver contentResolver, LessonListItem lesson) {
+	public static void saveLessonListItemToDb(ContentResolver contentResolver, LessonSingleItem lesson) {
 		final String[] arguments = sArguments3;
 		arguments[0] = String.valueOf(lesson.getId());
 		arguments[1] = String.valueOf(lesson.getCourseId());
@@ -1787,12 +1783,20 @@ public class DbDataManager {
 		Cursor cursor = contentResolver.query(uri, PROJECTION_ID_CATEGORY_ID_USER,
 				SELECTION_ID_CATEGORY_ID_USER, arguments, null);
 
-		ContentValues values = putLessonsListItemToValues(lesson);
+		ContentValues values = new ContentValues();
+
+		values.put(V_ID, lesson.getId());
+		values.put(V_CATEGORY_ID, lesson.getCategoryId());
+		values.put(V_COURSE_ID, lesson.getCourseId());
+		values.put(V_LESSON_COMPLETED, lesson.isCompleted() ? 1 : 0);
+		values.put(V_LESSON_STARTED, lesson.isStarted() ? 1 : 0);
+		values.put(V_USER, lesson.getUser());
+		values.put(V_NAME, lesson.getName());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static List<LessonListItem> getIncompleteLessons(ContentResolver contentResolver, String username) {
+	public static List<LessonSingleItem> getIncompleteLessons(ContentResolver contentResolver, String username) {
 		final String[] arguments = sArguments2;
 		arguments[0] = username;
 		arguments[1] = String.valueOf(1);
@@ -1801,7 +1805,7 @@ public class DbDataManager {
 		Cursor cursor = contentResolver.query(uri, null, SELECTION_USER_AND_LESSON_STATED, arguments, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
-			List<LessonListItem> incompleteLessons = new ArrayList<LessonListItem>();
+			List<LessonSingleItem> incompleteLessons = new ArrayList<LessonSingleItem>();
 			do {
 				incompleteLessons.add(getLessonsListItemFromCursor(cursor));
 			} while (cursor.moveToNext());
@@ -1810,21 +1814,8 @@ public class DbDataManager {
 		return null;
 	}
 
-	public static ContentValues putLessonsListItemToValues(LessonListItem dataObj) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_ID, dataObj.getId());
-		values.put(V_CATEGORY_ID, dataObj.getCourseId());
-		values.put(V_LESSON_COMPLETED, dataObj.isCompleted() ? 1 : 0);
-		values.put(V_LESSON_STARTED, dataObj.isStarted() ? 1 : 0);
-		values.put(V_USER, dataObj.getUser());
-		values.put(V_NAME, dataObj.getName());
-
-		return values;
-	}
-
-	public static LessonListItem getLessonsListItemFromCursor(Cursor cursor) {
-		LessonListItem dataObj = new LessonListItem();
+	public static LessonSingleItem getLessonsListItemFromCursor(Cursor cursor) {
+		LessonSingleItem dataObj = new LessonSingleItem();
 
 		dataObj.setId(getInt(cursor, V_ID));
 		dataObj.setUser(getString(cursor, V_USER));
@@ -1836,24 +1827,8 @@ public class DbDataManager {
 		return dataObj;
 	}
 
-	public static ContentValues putLessonsMentorLessonToValues(LessonItem.MentorLesson dataObj) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_ID, dataObj.getLessonId());
-		values.put(V_NUMBER, dataObj.getLessonNumber());
-		values.put(V_GOAL, dataObj.getGoal());
-		values.put(V_DIFFICULTY, dataObj.getDifficulty());
-		values.put(V_AUTHOR, dataObj.getAuthor());
-		values.put(V_NAME, dataObj.getName());
-		values.put(V_DESCRIPTION, dataObj.getAbout());
-		values.put(V_GOAL_COMMENT, dataObj.getGoalCommentary());
-		values.put(V_GOAL_CODE, dataObj.getGoalCode());
-
-		return values;
-	}
-
-	public static LessonItem.MentorLesson getLessonsMentorLessonFromCursor(Cursor cursor) {
-		LessonItem.MentorLesson dataObj = new LessonItem.MentorLesson();
+	public static LessonProblemItem.MentorLesson getLessonsMentorLessonFromCursor(Cursor cursor) {
+		LessonProblemItem.MentorLesson dataObj = new LessonProblemItem.MentorLesson();
 
 		dataObj.setLessonId(getLong(cursor, V_ID));
 		dataObj.setLessonNumber(getInt(cursor, V_NUMBER));
@@ -1868,7 +1843,7 @@ public class DbDataManager {
 		return dataObj;
 	}
 
-	public static ContentValues putLessonsPositionToValues(LessonItem.MentorPosition dataObj) {
+	public static ContentValues putLessonsPositionToValues(LessonProblemItem.MentorPosition dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(V_ID, dataObj.getLessonId());
@@ -1887,8 +1862,8 @@ public class DbDataManager {
 		return values;
 	}
 
-	public static LessonItem.MentorPosition getLessonsPositionFromCursor(Cursor cursor) {
-		LessonItem.MentorPosition dataObj = new LessonItem.MentorPosition();
+	public static LessonProblemItem.MentorPosition getLessonsPositionFromCursor(Cursor cursor) {
+		LessonProblemItem.MentorPosition dataObj = new LessonProblemItem.MentorPosition();
 
 		dataObj.setLessonId(getLong(cursor, V_ID));
 		dataObj.setPositionNumber(getInt(cursor, V_NUMBER));
@@ -1906,7 +1881,7 @@ public class DbDataManager {
 		return dataObj;
 	}
 
-	public static ContentValues putLessonsPositionMoveToValues(LessonItem.MentorPosition.PossibleMove dataObj) {
+	public static ContentValues putLessonsPositionMoveToValues(LessonProblemItem.MentorPosition.PossibleMove dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(V_ID, dataObj.getLessonId());
@@ -1921,8 +1896,8 @@ public class DbDataManager {
 		return values;
 	}
 
-	public static LessonItem.MentorPosition.PossibleMove getLessonsPositionMoveFromCursor(Cursor cursor) {
-		LessonItem.MentorPosition.PossibleMove dataObj = new LessonItem.MentorPosition.PossibleMove();
+	public static LessonProblemItem.MentorPosition.PossibleMove getLessonsPositionMoveFromCursor(Cursor cursor) {
+		LessonProblemItem.MentorPosition.PossibleMove dataObj = new LessonProblemItem.MentorPosition.PossibleMove();
 
 		dataObj.setLessonId(getLong(cursor, V_ID));
 		dataObj.setPositionNumber(getInt(cursor, V_CURRENT_POSITION));
@@ -1936,7 +1911,7 @@ public class DbDataManager {
 		return dataObj;
 	}
 
-	public static ContentValues putLessonsUserLessonToValues(LessonItem.UserLesson dataObj) {
+	public static ContentValues putLessonsUserLessonToValues(LessonProblemItem.UserLesson dataObj) {
 		ContentValues values = new ContentValues();
 
 		values.put(V_ID, dataObj.getLessonId());
@@ -1953,8 +1928,8 @@ public class DbDataManager {
 		return values;
 	}
 
-	public static LessonItem.UserLesson getLessonsUserLessonFromCursor(Cursor cursor) {
-		LessonItem.UserLesson dataObj = new LessonItem.UserLesson();
+	public static LessonProblemItem.UserLesson getLessonsUserLessonFromCursor(Cursor cursor) {
+		LessonProblemItem.UserLesson dataObj = new LessonProblemItem.UserLesson();
 
 		dataObj.setLessonId(getLong(cursor, V_ID));
 		dataObj.setCurrentPosition(getInt(cursor, V_CURRENT_POSITION));
@@ -2008,23 +1983,6 @@ public class DbDataManager {
 
 		return values;
 	}
-
-	public static ContentValues putMessagesItemToValues(MessagesItem.Data dataObj) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_ID, dataObj.getId());
-		values.put(V_CONVERSATION_ID, dataObj.getConversationId());
-		values.put(V_OTHER_USER_ID, dataObj.getSenderId());
-		values.put(V_CREATE_DATE, dataObj.getCreatedAt());
-		values.put(V_OTHER_USER_IS_ONLINE, dataObj.isSenderIsOnline() ? 1 : 0);
-		values.put(V_USER, dataObj.getUser());
-		values.put(V_OTHER_USER_USERNAME, dataObj.getSenderUsername());
-		values.put(V_OTHER_USER_AVATAR_URL, dataObj.getSenderAvatarUrl());
-		values.put(V_LAST_MESSAGE_CONTENT, dataObj.getContent());
-
-		return values;
-	}
-
 
 	/* ========================================== Stats ========================================== */
 

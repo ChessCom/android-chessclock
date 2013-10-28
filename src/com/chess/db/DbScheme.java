@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 77;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 79;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -222,6 +222,9 @@ public class DbScheme {
 	public static final String V_GOAL_CODE = "goal_code";
 	public static final String V_DIFFICULTY = "difficulty";
 	public static final String V_AUTHOR = "author";
+	public static final String V_IS_CURRICULUM = "is_curriculum";
+	public static final String V_COURSE_ID = "course_id";
+
 	/* User Lessons */
 	public static final String V_CURRENT_POSITION = "current_position";
 	public static final String V_CURRENT_POINTS = "current_points";
@@ -539,6 +542,7 @@ public class DbScheme {
 		createTablesArray[Tables.LESSONS_CATEGORIES.ordinal()] = createTableForName(Tables.LESSONS_CATEGORIES)
 				+ addField_Text(V_NAME)
 				+ addField_Int(V_CATEGORY_ID)
+				+ addField_Int(V_IS_CURRICULUM)
 				+ addField_Int(V_DISPLAY_ORDER, true);
 
 		createTablesArray[Tables.LESSONS_COURSE_LIST.ordinal()] = createTableForName(Tables.LESSONS_COURSE_LIST)
@@ -556,6 +560,7 @@ public class DbScheme {
 		createTablesArray[Tables.LESSONS_LESSONS_LIST.ordinal()] = createTableForName(Tables.LESSONS_LESSONS_LIST)
 				+ addField_Int(V_ID)
 				+ addField_Long(V_CATEGORY_ID)
+				+ addField_Int(V_COURSE_ID)
 				+ addField_Int(V_LESSON_COMPLETED)
 				+ addField_Int(V_LESSON_STARTED)
 				+ addField_Text(V_USER)

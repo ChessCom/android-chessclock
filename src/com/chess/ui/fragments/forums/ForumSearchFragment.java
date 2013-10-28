@@ -14,6 +14,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
 import com.chess.ui.adapters.ForumTopicsItemAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.fragments.BaseSearchFragment;
@@ -51,8 +52,8 @@ public class ForumSearchFragment extends BaseSearchFragment {
 	}
 
 	@Override
-	protected DbScheme.Tables getTable() {
-		return DbScheme.Tables.FORUM_CATEGORIES;
+	protected QueryParams getQueryParams() {
+		return DbHelper.getAll(DbScheme.Tables.FORUM_CATEGORIES);
 	}
 
 	@Override

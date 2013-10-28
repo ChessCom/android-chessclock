@@ -22,6 +22,8 @@ public class CommonFeedCategoryItem extends BaseResponseItem<List<CommonFeedCate
 		private int id;
 		private String name;
 		private int display_order;
+		/* Local addition */
+		private boolean isCurriculum;
 
 		public int getId() {
 			return id;
@@ -41,6 +43,14 @@ public class CommonFeedCategoryItem extends BaseResponseItem<List<CommonFeedCate
 
 		public void setDisplay_order(int display_order) {
 			this.display_order = display_order;
+		}
+
+		public boolean isCurriculum() {
+			return isCurriculum;
+		}
+
+		public void setCurriculum(boolean isCurriculum) {
+			this.isCurriculum = isCurriculum;
 		}
 	}
 

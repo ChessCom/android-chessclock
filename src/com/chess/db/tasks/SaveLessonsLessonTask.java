@@ -4,7 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import com.chess.backend.entity.api.LessonItem;
+import com.chess.backend.entity.api.LessonProblemItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
@@ -19,7 +19,7 @@ import java.util.List;
  * Date: 25.07.13
  * Time: 15:42
  */
-public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, Long> {
+public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonProblemItem.Data, Long> {
 
 	private final long lessonId;
 	private ContentResolver contentResolver;
@@ -27,7 +27,7 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 	protected static String[] sArguments3 = new String[3];
 	private String username;
 
-	public SaveLessonsLessonTask(TaskUpdateInterface<LessonItem.Data> taskFace, LessonItem.Data currentItem,
+	public SaveLessonsLessonTask(TaskUpdateInterface<LessonProblemItem.Data> taskFace, LessonProblemItem.Data currentItem,
 								  ContentResolver resolver, String username) {
 		super(taskFace);
 		this.username = username;
@@ -47,8 +47,8 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 		return StaticData.RESULT_OK;
 	}
 
-	private void saveLessonPositions(List<LessonItem.MentorPosition> positions) {
-		for (LessonItem.MentorPosition position : positions) {
+	private void saveLessonPositions(List<LessonProblemItem.MentorPosition> positions) {
+		for (LessonProblemItem.MentorPosition position : positions) {
 			position.setLessonId(lessonId);
 
 			final String[] arguments = sArguments2;
@@ -69,11 +69,11 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonItem.Data, L
 		}
 	}
 
-	private void saveLessonPositionsMoves(List<LessonItem.MentorPosition.PossibleMove> moves, int positionNumber) {
+	private void saveLessonPositionsMoves(List<LessonProblemItem.MentorPosition.PossibleMove> moves, int positionNumber) {
 		// TODO remove temp solution after server will fix it
 
 		int i = 0;
-		for (LessonItem.MentorPosition.PossibleMove possibleMove : moves) {
+		for (LessonProblemItem.MentorPosition.PossibleMove possibleMove : moves) {
 			possibleMove.setLessonId(lessonId);
 			possibleMove.setPositionNumber(positionNumber);
 

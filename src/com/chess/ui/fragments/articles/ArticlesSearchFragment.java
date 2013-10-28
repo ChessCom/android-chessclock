@@ -15,6 +15,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
 import com.chess.ui.adapters.ArticleItemAdapter;
 import com.chess.ui.fragments.BaseSearchFragment;
 
@@ -65,8 +66,8 @@ public class ArticlesSearchFragment extends BaseSearchFragment  {
 	}
 
 	@Override
-	protected DbScheme.Tables getTable() {
-		return DbScheme.Tables.ARTICLE_CATEGORIES;
+	protected QueryParams getQueryParams() {
+		return DbHelper.getAll(DbScheme.Tables.ARTICLE_CATEGORIES);
 	}
 
 	@Override

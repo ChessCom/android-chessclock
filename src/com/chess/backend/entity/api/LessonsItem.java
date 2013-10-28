@@ -8,7 +8,7 @@ import java.util.List;
  * Date: 06.08.13
  * Time: 22:43
  */
-public class LessonSearchItem extends BaseResponseItem<LessonSearchItem.Data> {
+public class LessonsItem extends BaseResponseItem<LessonsItem.Data> {
 /*
         "lessons_total_count": 2,
         "lessons": [
@@ -27,7 +27,7 @@ public class LessonSearchItem extends BaseResponseItem<LessonSearchItem.Data> {
 
 	public static class Data {
 		private int lessons_total_count;
-		private List<LessonListItem> lessons;
+		private List<LessonSingleItem> lessons;
 		/* Local additions */
 		private long id;
 
@@ -43,7 +43,7 @@ public class LessonSearchItem extends BaseResponseItem<LessonSearchItem.Data> {
 			return lessons_total_count;
 		}
 
-		public List<LessonListItem> getLessons() {
+		public List<LessonSingleItem> getLessons() {
 			return lessons;
 		}
 
@@ -51,7 +51,7 @@ public class LessonSearchItem extends BaseResponseItem<LessonSearchItem.Data> {
 			this.lessons_total_count = lessons_total_count;
 		}
 
-		public void setLessons(List<LessonListItem> lessons) {
+		public void setLessons(List<LessonSingleItem> lessons) {
 			this.lessons = lessons;
 		}
 	}

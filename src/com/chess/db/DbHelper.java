@@ -201,6 +201,22 @@ public class DbHelper {
 	}
 
 	/* Lessons */
+	public static QueryParams getLessonsCurriculumCategories() {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_IS_CURRICULUM);
+		queryParams.setArguments(new String[]{String.valueOf(1)}); // 1 - true
+		return queryParams;
+	}
+
+	public static QueryParams getLessonsLibraryCategories() {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_IS_CURRICULUM);
+		queryParams.setArguments(new String[]{String.valueOf(0)}); // 0 - false
+		return queryParams;
+	}
+
 	public static QueryParams getLessonCourseById(int courseId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_COURSES.ordinal()]);

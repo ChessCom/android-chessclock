@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.api.LessonListItem;
+import com.chess.backend.entity.api.LessonSingleItem;
 import com.chess.statics.Symbol;
 
 import java.util.List;
@@ -16,13 +16,13 @@ import java.util.List;
  * Date: 08.08.13
  * Time: 10:04
  */
-public class LessonsItemAdapter extends ItemsAdapter<LessonListItem> {
+public class LessonsItemAdapter extends ItemsAdapter<LessonSingleItem> {
 
 	private final int watchedTextColor;
 	private final int unWatchedTextColor;
 	private final int watchedIconColor;
 
-	public LessonsItemAdapter(Context context, List<LessonListItem> cursor) {
+	public LessonsItemAdapter(Context context, List<LessonSingleItem> cursor) {
 		super(context, cursor);
 		watchedTextColor = resources.getColor(R.color.new_light_grey_3);
 		unWatchedTextColor = resources.getColor(R.color.new_text_blue);
@@ -41,7 +41,7 @@ public class LessonsItemAdapter extends ItemsAdapter<LessonListItem> {
 	}
 
 	@Override
-	protected void bindView(LessonListItem item, int pos, View convertView) {
+	protected void bindView(LessonSingleItem item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		holder.text.setText(item.getName());
@@ -60,7 +60,7 @@ public class LessonsItemAdapter extends ItemsAdapter<LessonListItem> {
 	}
 
 	public boolean isAllLessonsCompleted() {
-		for (LessonListItem item : itemsList) {
+		for (LessonSingleItem item : itemsList) {
 			if(!item.isCompleted()) {
 				return false;
 			}

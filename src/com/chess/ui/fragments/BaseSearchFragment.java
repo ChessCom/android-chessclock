@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
-import com.chess.statics.Symbol;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -26,7 +26,7 @@ import java.util.List;
  * Date: 11.09.13
  * Time: 20:20
  */
-public abstract class BaseSearchFragment extends CommonLogicFragment implements MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener, AdapterView.OnItemClickListener{
+public abstract class BaseSearchFragment extends CommonLogicFragment implements MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener, AdapterView.OnItemClickListener {
 
 	private static final int FADE_ANIM_DURATION = 100;
 
@@ -102,8 +102,8 @@ public abstract class BaseSearchFragment extends CommonLogicFragment implements 
 
 		if (need2update) {
 			// get saved categories
-			DbScheme.Tables table = getTable();
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(table));
+
+			Cursor cursor = DbDataManager.query(getContentResolver(), getQueryParams());
 			if (cursor != null && cursor.moveToFirst()) {
 				fillCategoriesList(cursor);
 			} else {
@@ -118,7 +118,7 @@ public abstract class BaseSearchFragment extends CommonLogicFragment implements 
 		}
 	}
 
-	protected abstract DbScheme.Tables getTable();
+	protected abstract QueryParams getQueryParams();
 
 	protected abstract void getCategories();
 
@@ -143,9 +143,9 @@ public abstract class BaseSearchFragment extends CommonLogicFragment implements 
 			String keyword = getTextFromField(keywordsEdt);
 			String category = (String) categorySpinner.getSelectedItem();
 			int categoryId = -1;
-			for(int i = 0; i < categoriesArray.size(); i++) {
+			for (int i = 0; i < categoriesArray.size(); i++) {
 				String categoryByIndex = categoriesArray.valueAt(i);
-				if (categoryByIndex.equals(category)){
+				if (categoryByIndex.equals(category)) {
 					categoryId = categoriesArray.keyAt(i);
 				}
 			}
@@ -168,7 +168,8 @@ public abstract class BaseSearchFragment extends CommonLogicFragment implements 
 	protected abstract void startSearch(String keyword, int categoryId);
 
 	@Override
-	public void onDrawerOpened() {	}
+	public void onDrawerOpened() {
+	}
 
 	@Override
 	public void onDrawerClosed() {

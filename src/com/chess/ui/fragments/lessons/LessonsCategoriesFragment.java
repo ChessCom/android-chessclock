@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -11,20 +12,21 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
-import com.chess.backend.entity.api.VideoItem;
-import com.chess.statics.StaticData;
-import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.LessonSingleItem;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.db.tasks.SaveVideosListTask;
+import com.chess.db.tasks.SaveLessonsListTask;
+import com.chess.statics.StaticData;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.adapters.LessonsCursorAdapter;
+import com.chess.ui.adapters.LessonsPaginationAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +41,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 
 	public static final String SECTION_NAME = "section_name";
 
-	private LessonsCursorAdapter categoriesAdapter;
+	private LessonsCursorAdapter lessonsAdapter;
 	private Spinner categorySpinner;
 	private View loadingView;
 	private TextView emptyView;
@@ -52,6 +54,8 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 
 	private int previousCategoryId;
 	private String sectionName;
+	private LessonsPaginationAdapter paginationAdapter;
+	private Integer selectedCategoryId;
 
 	public static LessonsCategoriesFragment createInstance(String sectionName) {
 		LessonsCategoriesFragment fragment = new LessonsCategoriesFragment();
@@ -71,7 +75,10 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 			sectionName = savedInstanceState.getString(SECTION_NAME);
 		}
 
-		categoriesAdapter = new LessonsCursorAdapter(getActivity(), null);
+		lessonsAdapter = new LessonsCursorAdapter(getActivity(), null);
+
+		paginationAdapter = new LessonsPaginationAdapter(getActivity(), lessonsAdapter, new LessonsUpdateListener(), null);
+
 		lessonsUpdateListener = new LessonsUpdateListener();
 		saveLessonsUpdateListener = new SaveLessonsUpdateListener();
 		lessonsCursorUpdateListener = new LessonsCursorUpdateListener();
@@ -96,10 +103,10 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
 
 		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(categoriesAdapter);
+		listView.setAdapter(paginationAdapter);
 		listView.setOnItemClickListener(this);
 
-		getActivityFace().showActionMenu(R.id.menu_search, true);
+		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
 
@@ -116,18 +123,19 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 			// get passed argument
 			String selectedCategory = sectionName;
 
-			int sectionId;
-			for (sectionId = 0; sectionId < categoriesNames.size(); sectionId++) {
-				String category = categoriesNames.get(sectionId);
+			int position;
+
+			for (position = 0; position < categoriesNames.size(); position++) {
+				String category = categoriesNames.get(position);
 				if (category.equals(selectedCategory)) {
-					categoriesIds.get(sectionId);
+					selectedCategoryId = categoriesIds.get(position);
 					break;
 				}
 			}
 
 			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), categoriesNames));
 			categorySpinner.setOnItemSelectedListener(this);
-			categorySpinner.setSelection(sectionId);  // TODO remember last selection.
+			categorySpinner.setSelection(position);
 		}
 	}
 
@@ -139,24 +147,21 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	private boolean fillCategories() {
-		Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
 
-		if (!cursor.moveToFirst()) {
-			showToast("Categories are not loaded");
+		if (cursor != null && cursor.moveToFirst()){
+			do {
+				categoriesNames.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
+				categoriesIds.add(Integer.valueOf(DbDataManager.getString(cursor, DbScheme.V_CATEGORY_ID)));
+			} while(cursor.moveToNext());
+			cursor.close();
+			return true;
+		} else {
 			return false;
 		}
-
-		do {
-			categoriesNames.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
-			categoriesIds.add(Integer.valueOf(DbDataManager.getString(cursor, DbScheme.V_CATEGORY_ID)));
-		} while(cursor.moveToNext());
-
-		return true;
 	}
 
 	private void loadFromDb() {
-//		String category = (String) categorySpinner.getSelectedItem();
-
 		new LoadDataFromDbTask(lessonsCursorUpdateListener,
 				DbHelper.getLessonsByCategory(previousCategoryId, getUsername()),
 				getContentResolver()).executeTask();
@@ -173,7 +178,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
-			categoriesAdapter.changeCursor(returnedObj);
+			lessonsAdapter.changeCursor(returnedObj);
 		}
 
 		@Override
@@ -187,40 +192,47 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_search_btn:
+				getActivityFace().openFragment(new LessonsSearchFragment());
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		long lessonId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+
+		getActivityFace().openFragment(GameLessonFragment.createInstance((int) lessonId, 0)); // we don't know courseId here
 	}
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		Integer categoryId = categoriesIds.get(position);
+		selectedCategoryId = categoriesIds.get(position);
 
-		if (need2update || categoryId != previousCategoryId) {
-			previousCategoryId = categoryId;
+		if (need2update || selectedCategoryId != previousCategoryId) {
+			previousCategoryId = selectedCategoryId;
 			need2update = true;
 
-			// check if we have saved videos more than 2(from previous page)
-			Cursor cursor = DbDataManager.query(getContentResolver(),
-					DbHelper.getLessonsByCategory(previousCategoryId, getUsername()));
+			// clear current list
+			lessonsAdapter.changeCursor(null);
 
-			if (cursor != null && cursor.moveToFirst()) {
-				categoriesAdapter.changeCursor(cursor);
-				categoriesAdapter.notifyDataSetChanged();
-				showEmptyView(false);
-			} else {
-				// TODO adjust endless adapter here
-				// Loading full lessons list from category here!
-
+			if (AppUtils.isNetworkAvailable(getActivity())) {
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
-				loadItem.addRequestParams(RestHelper.P_LIMIT, RestHelper.DEFAULT_ITEMS_PER_PAGE);
+				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, selectedCategoryId);
+				loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.DEFAULT_ITEMS_PER_PAGE);
 
-				new RequestJsonTask<VideoItem>(lessonsUpdateListener).executeTask(loadItem);
+				paginationAdapter.updateLoadItem(loadItem);
+			} else {
+				loadFromDb();
 			}
 		} else {
-			loadFromDb();
+			paginationAdapter.notifyDataSetChanged();
 		}
 	}
 
@@ -229,18 +241,21 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 
 	}
 
-	private class LessonsUpdateListener extends ChessLoadUpdateListener<VideoItem> {
-		private LessonsUpdateListener() {
-			super(VideoItem.class);
-		}
+	private class LessonsUpdateListener extends ChessUpdateListener<LessonSingleItem> {
 
 		@Override
-		public void updateData(VideoItem returnedObj) {
-			new SaveVideosListTask(saveLessonsUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+		public void updateListData(List<LessonSingleItem> returnedObj) {
+			for (LessonSingleItem lessonSingleItem : returnedObj) {
+				lessonSingleItem.setUser(getUsername());
+				lessonSingleItem.setCategoryId(selectedCategoryId);
+				lessonSingleItem.setCourseId(0);
+				lessonSingleItem.setStarted(false);
+			}
+			new SaveLessonsListTask(saveLessonsUpdateListener, returnedObj, getContentResolver()).executeTask();
 		}
 	}
 
-	private class SaveLessonsUpdateListener extends ChessUpdateListener<VideoItem.Data> {
+	private class SaveLessonsUpdateListener extends ChessUpdateListener<LessonSingleItem> {
 
 		@Override
 		public void showProgress(boolean show) {
@@ -248,7 +263,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		}
 
 		@Override
-		public void updateData(VideoItem.Data returnedObj) {
+		public void updateData(LessonSingleItem returnedObj) {
 			super.updateData(returnedObj);
 
 			need2update = false;
@@ -275,7 +290,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	private void showLoadingView(boolean show) {
 		if (show) {
 			emptyView.setVisibility(View.GONE);
-			if (categoriesAdapter.getCount() == 0) {
+			if (lessonsAdapter.getCount() == 0) {
 				listView.setVisibility(View.GONE);
 
 			}

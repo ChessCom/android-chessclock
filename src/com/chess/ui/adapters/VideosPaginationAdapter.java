@@ -3,31 +3,32 @@ package com.chess.ui.adapters;
 import android.content.Context;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.VideoItem;
+import com.chess.backend.entity.api.VideoSingleItem;
+import com.chess.backend.entity.api.VideosItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.statics.StaticData;
 
 import java.util.List;
 
-public class VideosPaginationAdapter extends PaginationCursorAdapter<VideoItem.Data> {
+public class VideosPaginationAdapter extends PaginationCursorAdapter<VideoSingleItem.Data> {
 
 	protected LoadItem loadItem;
 
 	public VideosPaginationAdapter(Context context, ItemsCursorAdapter adapter,
-								   TaskUpdateInterface<VideoItem.Data> taskFace, LoadItem loadItem) {
+								   TaskUpdateInterface<VideoSingleItem.Data> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
 		this.loadItem = loadItem;
 		setFirstPage(0);
 	}
 
 	@Override
-	protected List<VideoItem.Data> fetchMoreItems(int page) {
+	protected List<VideoSingleItem.Data> fetchMoreItems(int page) {
 		if (loadItem != null) {
 			loadItem.replaceRequestParams(RestHelper.P_PAGE_, String.valueOf(page));
-			VideoItem item = null;
+			VideosItem item = null;
 			try {
-				item = RestHelper.getInstance().requestData(loadItem, VideoItem.class, context);
+				item = RestHelper.getInstance().requestData(loadItem, VideosItem.class, context);
 			} catch (InternalErrorException e) {
 				e.logMe();
 			}

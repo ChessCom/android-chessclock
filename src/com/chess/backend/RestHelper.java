@@ -343,7 +343,6 @@ public class RestHelper {
 	public static final String P_KEYWORD = "keyword";
 	public static final String P_DIFFICULTY = "difficulty";
 	public static final String P_CATEGORY_ID = "categoryId";
-	public static final String P_CATEGORY_CODE = "categoryCode";
 	public static final String P_PREVIEW = "preview";
 	public static final String P_OPENING = "opening";
 	public static final String P_AUTHOR = "author";

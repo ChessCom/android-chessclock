@@ -8,9 +8,6 @@ import java.util.List;
  * Date: 22.12.12
  * Time: 15:18
  */
-public class VideoItem extends BaseResponseItem<List<VideoItem.Data>> {
+public class VideosItem extends BaseResponseItem<List<VideoSingleItem.Data>> {
 
-	public static class Data extends VideoSingleItem.Data {
-
-	}
 }

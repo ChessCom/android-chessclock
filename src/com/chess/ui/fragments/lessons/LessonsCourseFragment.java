@@ -15,7 +15,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.LessonCourseItem;
 import com.chess.backend.entity.api.LessonCourseListItem;
-import com.chess.backend.entity.api.LessonListItem;
+import com.chess.backend.entity.api.LessonSingleItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -143,7 +143,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			courseTitleTxt.setText(courseItem.getCourseName());
 			courseDescriptionTxt.setText(courseItem.getDescription());
 
-			List<LessonListItem> lessons = courseItem.getLessons();
+			List<LessonSingleItem> lessons = courseItem.getLessons();
 			lessonsItemAdapter.setItemsList(lessons);
 
 			updateLessonsListFromDb();
@@ -168,11 +168,13 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	private void updateLessonsListFromDb() {
 		Cursor lessonsListCursor = DbDataManager.query(getContentResolver(),
 				DbHelper.getLessonsListByCourseId(courseId, getUsername()));
+
 		if (lessonsListCursor != null && lessonsListCursor.moveToFirst()) { // if we have saved lessons
-			List<LessonListItem> lessons = new ArrayList<LessonListItem>();
+			List<LessonSingleItem> lessons = new ArrayList<LessonSingleItem>();
 			do {
 				lessons.add(DbDataManager.getLessonsListItemFromCursor(lessonsListCursor));
 			} while (lessonsListCursor.moveToNext());
+			lessonsListCursor.close();
 			courseItem.setLessons(lessons);
 
 			haveSavedCourseData = true;
@@ -188,7 +190,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		if (position == 0) { // if listView header
 			// see onClick(View) handle
 		} else {
-			int lessonId = ((LessonListItem) parent.getItemAtPosition(position)).getId();
+			int lessonId = ((LessonSingleItem) parent.getItemAtPosition(position)).getId();
 			getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
 		}
 	}
@@ -242,7 +244,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		courseTitleTxt.setText(courseItem.getCourseName());
 		courseDescriptionTxt.setText(courseItem.getDescription());
 
-		List<LessonListItem> lessons = courseItem.getLessons();
+		List<LessonSingleItem> lessons = courseItem.getLessons();
 		lessonsItemAdapter.setItemsList(lessons);
 
 		verifyAllLessonsCompleted();

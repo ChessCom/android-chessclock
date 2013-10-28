@@ -13,14 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import com.chess.backend.entity.api.LessonProblemItem;
 import com.chess.utilities.FontsHelper;
 import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.LessonItem;
-import com.chess.backend.entity.api.LessonListItem;
+import com.chess.backend.entity.api.LessonSingleItem;
 import com.chess.backend.entity.api.LessonRatingChangeItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -100,9 +100,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private ChessBoardLessonsView boardView;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private SparseArray<String> optionsArray;
-	private LessonItem.Data lessonItem;
-	private LessonItem.MentorLesson mentorLesson;
-	private List<LessonItem.MentorPosition> positionsToLearn;
+	private LessonProblemItem.Data lessonItem;
+	private LessonProblemItem.MentorLesson mentorLesson;
+	private List<LessonProblemItem.MentorPosition> positionsToLearn;
 
 	private TextView lessonTitleTxt;
 	private TextView commentTxt;
@@ -117,7 +117,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 //	private TextView lessonsRatingChangeTxt;
 
 	private MultiDirectionSlidingDrawer slidingDrawer;
-	private List<LessonItem.MentorPosition.PossibleMove> possibleMoves;
+	private List<LessonProblemItem.MentorPosition.PossibleMove> possibleMoves;
 	private int startLearningPosition;
 	private int currentLearningPosition;
 	private int totalLearningPositionsCnt;
@@ -131,7 +131,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private int openDescriptionPadding;
 
 	private SparseArray<Float> hintsCostMap;
-	private LessonItem.UserLesson userLesson;
+	private LessonProblemItem.UserLesson userLesson;
 	private List<Integer> solvedPositionsList;
 	private SparseArray<MoveCompleteItem> movesCompleteMap;
 	private int scorePercent;
@@ -225,7 +225,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSON_BY_ID(lessonId));
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken()); // looks like restart parameter is useless here, because we load from DB
 
-			new RequestJsonTask<LessonItem>(lessonUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<LessonProblemItem>(lessonUpdateListener).executeTask(loadItem);
 		}
 	}
 
@@ -286,7 +286,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			Cursor lessonsListCursor = DbDataManager.query(getContentResolver(),
 					DbHelper.getLessonsListByCourseId((int) courseId, getUsername()));
 			if (lessonsListCursor.moveToFirst()) { // if we have saved lessons
-				List<LessonListItem> lessons = new ArrayList<LessonListItem>();
+				List<LessonSingleItem> lessons = new ArrayList<LessonSingleItem>();
 				do {
 					lessons.add(DbDataManager.getLessonsListItemFromCursor(lessonsListCursor));
 				} while (lessonsListCursor.moveToNext());
@@ -294,9 +294,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				int lessonsInCourse = lessons.size();
 				boolean nextLessonFound = false;
 				for (int i = 0; i < lessonsInCourse; i++) {
-					LessonListItem lesson = lessons.get(i);
+					LessonSingleItem lesson = lessons.get(i);
 					if (lesson.getId() == lessonId && (i + 1 < lessonsInCourse)) { // get next lesson
-						LessonListItem nextLesson = lessons.get(i + 1);
+						LessonSingleItem nextLesson = lessons.get(i + 1);
 						lessonId = nextLesson.getId();
 						nextLessonFound = true;
 						break;
@@ -408,10 +408,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		// iterate through possible moves and perform deduction
 		boolean moveRecognized = false;
 		boolean correctMove = false;
-		for (LessonItem.MentorPosition.PossibleMove possibleMove : possibleMoves) {
+		for (LessonProblemItem.MentorPosition.PossibleMove possibleMove : possibleMoves) {
 			if (boardFace.isLastLessonMoveIsCorrect(possibleMove.getMove())) {
 
-				if (possibleMove.getMoveType().equals(LessonItem.MOVE_DEFAULT)) { // Correct move
+				if (possibleMove.getMoveType().equals(LessonProblemItem.MOVE_DEFAULT)) { // Correct move
 					showCorrectState();
 					correctMove = true;
 					if (!TextUtils.isEmpty(possibleMove.getShortResponseMove())) {
@@ -420,12 +420,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 						boardView.resetValidMoves();
 						boardFace.makeMove(move, true);
 					}
-				} else if (possibleMove.getMoveType().equals(LessonItem.MOVE_ALTERNATE)) { // Alternate Correct Move
+				} else if (possibleMove.getMoveType().equals(LessonProblemItem.MOVE_ALTERNATE)) { // Alternate Correct Move
 					// Correct move, try again!
 					showToast(R.string.alternate_correct_move_ex);
 					showCorrectState();
 					correctMove = true;
-				} else if (possibleMove.getMoveType().equals(LessonItem.MOVE_WRONG)) {
+				} else if (possibleMove.getMoveType().equals(LessonProblemItem.MOVE_WRONG)) {
 					showWrongState();
 				}
 				setDescriptionText(possibleMove.getMoveCommentary());
@@ -530,7 +530,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		return movesCompleteMap.get(currentLearningPosition);
 	}
 
-	private LessonItem.MentorPosition getMentorPosition() {
+	private LessonProblemItem.MentorPosition getMentorPosition() {
 		return positionsToLearn.get(currentLearningPosition);
 	}
 
@@ -611,8 +611,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			newGame();
 		} else if (code == ID_SHOW_ANSWER) {
 
-			LessonItem.MentorPosition mentorPosition = getMentorPosition();
-			LessonItem.MentorPosition.PossibleMove correctMove = mentorPosition.getCorrectMove();
+			LessonProblemItem.MentorPosition mentorPosition = getMentorPosition();
+			LessonProblemItem.MentorPosition.PossibleMove correctMove = mentorPosition.getCorrectMove();
 
 			moveToShow = correctMove.getMove();
 
@@ -688,15 +688,15 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		descriptionView.postDelayed(scrollDescriptionDown, 50);
 
 		// mark this lesson as incomplete. There can be few incomplete lessons
-		LessonListItem lessonListItem = new LessonListItem();
-		lessonListItem.setUser(getUsername());
-		lessonListItem.setCourseId(courseId);
-		lessonListItem.setId(lessonId);
-		lessonListItem.setName(lessonItem.getLesson().getName());
-		lessonListItem.setCompleted(userLesson.isLessonCompleted());
-		lessonListItem.setStarted(true);
+		LessonSingleItem lessonSingleItem = new LessonSingleItem();
+		lessonSingleItem.setUser(getUsername());
+		lessonSingleItem.setCourseId(courseId);
+		lessonSingleItem.setId(lessonId);
+		lessonSingleItem.setName(lessonItem.getLesson().getName());
+		lessonSingleItem.setCompleted(userLesson.isLessonCompleted());
+		lessonSingleItem.setStarted(true);
 
-		DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonListItem);
+		DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonSingleItem);
 	}
 
 	@Override
@@ -736,14 +736,14 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 	};
 
-	private class LessonUpdateListener extends ChessLoadUpdateListener<LessonItem> {
+	private class LessonUpdateListener extends ChessLoadUpdateListener<LessonProblemItem> {
 
 		private LessonUpdateListener() {
-			super(LessonItem.class);
+			super(LessonProblemItem.class);
 		}
 
 		@Override
-		public void updateData(LessonItem returnedObj) {
+		public void updateData(LessonProblemItem returnedObj) {
 			super.updateData(returnedObj);
 
 			lessonItem = returnedObj.getData();
@@ -776,7 +776,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		LessonsBoardFace boardFace = getBoardFace();
 		boardView.setGameUiFace(this);
 
-		LessonItem.MentorPosition positionToSolve = getMentorPosition();
+		LessonProblemItem.MentorPosition positionToSolve = getMentorPosition();
 		if (getCurrentCompleteItem() == null) {
 			MoveCompleteItem moveCompleteItem = new MoveCompleteItem();
 			moveCompleteItem.moveDifficulty = positionToSolve.getMoveDifficulty();
@@ -823,7 +823,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 	}
 
-	private class LessonDataUpdateListener extends ChessLoadUpdateListener<LessonItem.Data> {
+	private class LessonDataUpdateListener extends ChessLoadUpdateListener<LessonProblemItem.Data> {
 
 		static final int SAVE = 0;
 		static final int LOAD = 1;
@@ -835,7 +835,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 
 		@Override
-		public void updateData(LessonItem.Data returnedObj) {
+		public void updateData(LessonProblemItem.Data returnedObj) {
 			super.updateData(returnedObj);
 
 			if (listenerCode == LOAD) {
@@ -880,15 +880,15 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		public void updateData(LessonRatingChangeItem returnedObj) {
 			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 
-				LessonListItem lessonListItem = new LessonListItem();
-				lessonListItem.setUser(getUsername());
-				lessonListItem.setCourseId(courseId);
-				lessonListItem.setId(lessonId);
-				lessonListItem.setName(lessonItem.getLesson().getName());
-				lessonListItem.setCompleted(true);
-				lessonListItem.setStarted(false);
+				LessonSingleItem lessonSingleItem = new LessonSingleItem();
+				lessonSingleItem.setUser(getUsername());
+				lessonSingleItem.setCourseId(courseId);
+				lessonSingleItem.setId(lessonId);
+				lessonSingleItem.setName(lessonItem.getLesson().getName());
+				lessonSingleItem.setCompleted(true);
+				lessonSingleItem.setStarted(false);
 
-				DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonListItem);
+				DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonSingleItem);
 
 				userLesson.setLessonCompleted(true);
 				DbDataManager.saveUserLessonToDb(getContentResolver(), userLesson, lessonId, getUsername());

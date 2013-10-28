@@ -18,13 +18,13 @@ import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonViewedItem;
-import com.chess.backend.entity.api.VideoItem;
-import com.chess.statics.StaticData;
+import com.chess.backend.entity.api.VideoSingleItem;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveVideosListTask;
+import com.chess.statics.StaticData;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.adapters.VideosCursorAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
@@ -294,18 +294,18 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	}
 
-	private class VideosUpdateListener extends ChessUpdateListener<VideoItem.Data> {
+	private class VideosUpdateListener extends ChessUpdateListener<VideoSingleItem.Data> {
 
 		@Override
-		public void updateListData(List<VideoItem.Data> itemsList) {
+		public void updateListData(List<VideoSingleItem.Data> itemsList) {
 			new SaveVideosListTask(saveVideosUpdateListener, itemsList, getContentResolver()).executeTask();
 		}
 	}
 
-	private class SaveVideosUpdateListener extends ChessUpdateListener<VideoItem.Data> {
+	private class SaveVideosUpdateListener extends ChessUpdateListener<VideoSingleItem.Data> {
 
 		@Override
-		public void updateData(VideoItem.Data returnedObj) {
+		public void updateData(VideoSingleItem.Data returnedObj) {
 			super.updateData(returnedObj);
 
 			need2update = false;

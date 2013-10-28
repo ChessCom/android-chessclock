@@ -16,7 +16,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.LessonCourseListItem;
-import com.chess.backend.entity.api.LessonListItem;
+import com.chess.backend.entity.api.LessonSingleItem;
 import com.chess.backend.entity.api.LessonsRatingItem;
 import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -56,40 +56,22 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	private LessonsCoursesUpdateListener lessonsCoursesUpdateListener;
 	private SaveLessonsCoursesUpdateListener saveLessonsCoursesUpdateListener;
 
-/*
-these are the categories for CURRICULUM:
-
-Beginner
-Intermediate
-Advanced
-Expert
-Master
-
-then these are the LIbrary categories
-
-Rules and Basics
-Strategy
-Tactics
-Attacks
-Openings
-Endgames
-Games
-Misc
-*/
-
-
 	private CurriculumLessonsItems curriculumItems;
-	private boolean curriculumMode;
 	private LessonsGroupsListAdapter curriculumAdapter;
-	private SparseArray<String> categoriesArray;
-	private SparseIntArray categoriesOrder;
+	private SparseArray<String> curriculumCategoriesArray;
+	private SparseIntArray curriculumCategoriesOrder;
 
 	private LessonsRatingUpdateListener lessonsRatingUpdateListener;
 	private TextView ratingTxt;
 	private TextView lessonsCntTxt;
 	private TextView coursesCntTxt;
-	private LessonListItem incompleteLesson;
+	private LessonSingleItem incompleteLesson;
 	private Button resumeLessonBtn;
+	private ArrayList<String> curriculumCategoriesList;
+	private SparseArray<String> curriculumCategoriesMap;
+	private SparseArray<String> libraryCategoriesArray;
+	private SparseIntArray libraryCategoriesOrder;
+	private boolean libraryMode;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -140,8 +122,7 @@ Misc
 		{ // Curriculum mode
 			expListView = (ExpandableListView) view.findViewById(R.id.expListView);
 			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
-			footerView.findViewById(R.id.headerTitleTxt).setId(R.id.lessonsVideoLibFooterTxt);
-			((TextView) footerView.findViewById(R.id.lessonsVideoLibFooterTxt)).setText(R.string.full_lesson_library);
+			((TextView) footerView.findViewById(R.id.headerTitleTxt)).setText(R.string.full_lesson_library);
 			footerView.setOnClickListener(this);
 			expListView.addFooterView(footerView);
 			expListView.setOnChildClickListener(this);
@@ -172,15 +153,16 @@ Misc
 	}
 
 	private void showLibrary() {
-		boolean show = !curriculumMode;
-		listView.setVisibility(show ? View.GONE : View.VISIBLE);
-		expListView.setVisibility(show ? View.VISIBLE : View.GONE);
+		libraryMode = getAppData().isUserChooseLessonsLibrary();
 
-		if (show) {
+		listView.setVisibility(libraryMode ? View.VISIBLE : View.GONE);
+		expListView.setVisibility(libraryMode ? View.GONE : View.VISIBLE);
+
+		if (!libraryMode) {
 			if (need2update) {
 
 				// get saved categories
-				Cursor categoriesCursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
+				Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsCurriculumCategories());
 
 				if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
 					fillCategoriesList(categoriesCursor);
@@ -205,10 +187,9 @@ Misc
 
 				expListView.setAdapter(curriculumAdapter);
 				curriculumAdapter.notifyDataSetChanged();
-//				categoriesCursorAdapter.notifyDataSetChanged();
 			}
 		} else {
-//			expListView.setAdapter(curriculumAdapter);
+			listView.setAdapter(categoriesCursorAdapter);
 		}
 	}
 
@@ -232,18 +213,13 @@ Misc
 	@Override
 	public void onClick(View v) {
 		super.onClick(v);
-		if (v.getId() == R.id.lessonsVideoLibFooterTxt) {
-			getAppData().setUserChooseLessonsLibrary(false);
-			curriculumMode = true;
-			showLibrary();
-		} else if (v.getId() == R.id.resumeLessonBtn) {
+		if (v.getId() == R.id.resumeLessonBtn) {
 			int lessonId = incompleteLesson.getId();
 			long courseId = incompleteLesson.getCourseId();
 
 			getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
 		} else if (v.getId() == R.id.curriculumHeader) {
-			getAppData().setUserChooseLessonsLibrary(true);
-			curriculumMode = false;
+			getAppData().setUserChooseLessonsLibrary(!libraryMode);
 			showLibrary();
 		} else if (v.getId() == R.id.upgradeBtn) {
 			getActivityFace().openFragment(new UpgradeFragment());
@@ -291,7 +267,7 @@ Misc
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			// get saved categories
-			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.LESSONS_CATEGORIES.ordinal()], null, null, null, null);
+			Cursor cursor =	DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.LESSONS_CATEGORIES));
 
 			if (cursor != null && cursor.moveToFirst()) {
 
@@ -299,6 +275,9 @@ Misc
 
 				getFullCourses();
 			}
+
+			Cursor libraryCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
+			categoriesCursorAdapter.changeCursor(libraryCursor);
 		}
 	}
 
@@ -311,20 +290,29 @@ Misc
 	}
 
 	private void fillCategoriesList(Cursor cursor) {
-		categoriesArray = new SparseArray<String>();
-		categoriesOrder = new SparseIntArray();
+		curriculumCategoriesArray = new SparseArray<String>();
+		libraryCategoriesArray = new SparseArray<String>();
+		curriculumCategoriesOrder = new SparseIntArray();
+		libraryCategoriesOrder = new SparseIntArray();
 
 		do {
+			boolean isCurriculum = DbDataManager.getInt(cursor, DbScheme.V_IS_CURRICULUM) > 0;
 			int id = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID);
 			int displayOrder = DbDataManager.getInt(cursor, DbScheme.V_DISPLAY_ORDER);
 			String name = DbDataManager.getString(cursor, DbScheme.V_NAME);
-			categoriesArray.put(id, name);
-			categoriesOrder.put(displayOrder, id);
+			if (isCurriculum) {
+				curriculumCategoriesArray.put(id, name);
+				curriculumCategoriesOrder.put(displayOrder, id);
+			} else {
+				libraryCategoriesArray.put(id, name);
+				libraryCategoriesOrder.put(displayOrder, id);
+			}
+
 		} while (cursor.moveToNext());
 		cursor.close();
 
-		curriculumItems.setCategories(categoriesArray);
-		curriculumItems.setDisplayOrder(categoriesOrder);
+		curriculumItems.setCategories(curriculumCategoriesArray);
+		curriculumItems.setDisplayOrder(curriculumCategoriesOrder);
 	}
 
 	private class LessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseListItem> {
@@ -350,7 +338,7 @@ Misc
 
 		@Override
 		public void updateData(LessonCourseListItem.Data returnedObj) {
-			// get saved courses           // TODO check strict mode
+			// get saved courses
 
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
 			if (cursor != null && cursor.moveToFirst()) {
@@ -362,35 +350,46 @@ Misc
 	}
 
 	private void fillCoursesList(Cursor cursor) {
-		LinkedHashMap<Integer, List<LessonCourseListItem.Data>> courseTable = new LinkedHashMap<Integer, List<LessonCourseListItem.Data>>();
-		int categoriesCnt = categoriesArray.size();
+		LinkedHashMap<Integer, List<LessonCourseListItem.Data>> curriculumCoursesTable = new LinkedHashMap<Integer, List<LessonCourseListItem.Data>>();
+		int categoriesCnt = curriculumCategoriesArray.size();
 
 		for (int z = 0; z < categoriesCnt; z++) {
-			int categoryId = categoriesArray.keyAt(z);
-			courseTable.put(categoryId, new ArrayList<LessonCourseListItem.Data>());
+			int categoryId = curriculumCategoriesArray.keyAt(z);
+			curriculumCoursesTable.put(categoryId, new ArrayList<LessonCourseListItem.Data>());
 		}
 		do {
-			int id = DbDataManager.getInt(cursor, DbScheme.V_ID);
 			int categoryId = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID);
-			String courseName = DbDataManager.getString(cursor, DbScheme.V_NAME);
-			boolean isCompleted = DbDataManager.getInt(cursor, DbScheme.V_COURSE_COMPLETED) > 0;
+			boolean isCurriculum = false;
+			for (int k = 0; k < curriculumCategoriesMap.size(); k++) {
+				// if categoryId belongs to curriculum categories
+				if (curriculumCategoriesMap.keyAt(k) == categoryId) {
+					isCurriculum = true;
+					break;
+				}
+			}
 
-			LessonCourseListItem.Data data = new LessonCourseListItem.Data();
-			data.setId(id);
-			data.setCategoryId(categoryId);
-			data.setName(courseName);
-			data.setCourseCompleted(isCompleted);
+			if (isCurriculum) {
+				int id = DbDataManager.getInt(cursor, DbScheme.V_ID);
+				String courseName = DbDataManager.getString(cursor, DbScheme.V_NAME);
+				boolean isCompleted = DbDataManager.getInt(cursor, DbScheme.V_COURSE_COMPLETED) > 0;
 
-			courseTable.get(categoryId).add(data);
+				LessonCourseListItem.Data data = new LessonCourseListItem.Data();
+				data.setId(id);
+				data.setCategoryId(categoryId);
+				data.setName(courseName);
+				data.setCourseCompleted(isCompleted);
 
-		} while (cursor.moveToNext());      // here is everything is correct
+				curriculumCoursesTable.get(categoryId).add(data);
+			}
+
+		} while (cursor.moveToNext());
 
 		{ // Titles
 			// organize by category
 			SparseArray<SparseArray<String>> categories = new SparseArray<SparseArray<String>>();
 			for (int k = 0; k < categoriesCnt; k++) {
-				int categoryId = categoriesArray.keyAt(k);
-				List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
+				int categoryId = curriculumCategoriesArray.keyAt(k);
+				List<LessonCourseListItem.Data> list = curriculumCoursesTable.get(categoryId);
 				int coursesCnt = list.size();
 				categories.put(categoryId, new SparseArray<String>());
 				for (int i = 0; i < coursesCnt; i++) {
@@ -404,8 +403,8 @@ Misc
 		{ // Ids
 			SparseArray<SparseIntArray> ids = new SparseArray<SparseIntArray>();
 			for (int k = 0; k < categoriesCnt; k++) {
-				int categoryId = categoriesArray.keyAt(k);
-				List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
+				int categoryId = curriculumCategoriesArray.keyAt(k);
+				List<LessonCourseListItem.Data> list = curriculumCoursesTable.get(categoryId);
 				int coursesCnt = list.size();
 				ids.put(categoryId, new SparseIntArray());
 				for (int i = 0; i < coursesCnt; i++) {
@@ -420,8 +419,8 @@ Misc
 		{ // Completed Marks
 			SparseArray<SparseBooleanArray> completedMarks = new SparseArray<SparseBooleanArray>();
 			for (int k = 0; k < categoriesCnt; k++) {
-				int categoryId = categoriesOrder.get(k);
-				List<LessonCourseListItem.Data> list = courseTable.get(categoryId);
+				int categoryId = curriculumCategoriesOrder.get(k);
+				List<LessonCourseListItem.Data> list = curriculumCoursesTable.get(categoryId);
 				int coursesCnt = list.size();
 				completedMarks.put(categoryId, new SparseBooleanArray());
 				for (int i = 0; i < coursesCnt; i++) {
@@ -439,7 +438,7 @@ Misc
 		cursor.close();
 
 		// check if we have incomplete lessons
-		List<LessonListItem> incompleteLessons = DbDataManager.getIncompleteLessons(getContentResolver(), getUsername());
+		List<LessonSingleItem> incompleteLessons = DbDataManager.getIncompleteLessons(getContentResolver(), getUsername());
 		if (incompleteLessons != null) {
 			incompleteLesson = incompleteLessons.get(0);
 			resumeLessonBtn.setVisibility(View.VISIBLE);
@@ -453,17 +452,11 @@ Misc
 			emptyView.setVisibility(View.GONE);
 			loadingView.setVisibility(View.VISIBLE);
 		} else {
-//			if (curriculumMode) {
-//				expListView.setVisibility(View.VISIBLE);
-//			} else {
-//				listView.setVisibility(View.VISIBLE);
-//			}
 			loadingView.setVisibility(View.GONE);
 		}
 	}
 
 	private void init() {
-		curriculumMode = !getAppData().isUserChooseLessonsLibrary();
 
 		curriculumItems = new CurriculumLessonsItems();
 		categoriesCursorAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
@@ -473,6 +466,40 @@ Misc
 		lessonsCoursesUpdateListener = new LessonsCoursesUpdateListener();
 		saveLessonsCoursesUpdateListener = new SaveLessonsCoursesUpdateListener();
 		lessonsRatingUpdateListener = new LessonsRatingUpdateListener();
+
+		// put Categories names to appropriate sections.
+
+		curriculumCategoriesMap = new SparseArray<String>();
+		curriculumCategoriesMap.put(9, "Beginner");
+		curriculumCategoriesMap.put(10, "Intermediate");
+		curriculumCategoriesMap.put(11, "Advanced");
+		curriculumCategoriesMap.put(12, "Expert");
+		curriculumCategoriesMap.put(13, "Master");
+
+/*
+these are the categories for CURRICULUM:
+id: 9,name: "Beginner"
+id: 10,name: "Intermediate"
+id: 11,name: "Advanced"
+id: 12,name: "Expert"
+id: 13,name: "Master"
+
+then these are the Library categories
+
+id: 6,name: "Rules and Basics"
+id: 4,name: "Strategy"
+id: 5,name: "Tactics"
+id: 3,name: "Attacks"
+id: 7,name: "Openings"
+id: 2,name: "Endgames"
+id: 8,name: "Games"
+id: 1,name: "Misc"
+*/
+
+		// get from DB categories for Full Lessons Library(not Curriculum)
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
+		categoriesCursorAdapter.changeCursor(cursor);
+
 	}
 
 	public class LessonsGroupsListAdapter extends BaseExpandableListAdapter {
@@ -544,16 +571,11 @@ Misc
 
 			holder.text.setText(getGroup(groupPosition).toString());
 
-
-//			if (groupPosition == LIBRARY) {
-//				holder.icon.setText(R.string.ic_right);
-//			} else {
 			if (isExpanded) {
 				holder.icon.setText(R.string.ic_up);
 			} else {
 				holder.icon.setText(R.string.ic_down);
 			}
-//			}
 
 			return convertView;
 		}

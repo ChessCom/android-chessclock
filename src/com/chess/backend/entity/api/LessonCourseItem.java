@@ -22,7 +22,7 @@ public class LessonCourseItem extends BaseResponseItem<LessonCourseItem.Data> {
   }
 */
 
-	public static class Data extends LessonSearchItem.Data{
+	public static class Data extends LessonsItem.Data{
 		private String course_name;
 		private String description;
 

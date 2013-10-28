@@ -15,9 +15,10 @@ import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.LessonListItem;
+import com.chess.backend.entity.api.LessonSingleItem;
 import com.chess.backend.entity.api.LessonsRatingItem;
-import com.chess.backend.entity.api.VideoItem;
+import com.chess.backend.entity.api.VideoSingleItem;
+import com.chess.backend.entity.api.VideosItem;
 import com.chess.backend.entity.api.stats.TacticsBasicStatsItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -61,7 +62,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 	private ForegroundColorSpan foregroundSpan;
 	private TextView lessonTitleTxt;
 	private LessonsRatingUpdateListener lessonsRatingUpdateListener;
-	private LessonListItem incompleteLesson;
+	private LessonSingleItem incompleteLesson;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -119,7 +120,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 
 		loadVideoToHeader();
 
-		List<LessonListItem> incompleteLessons = DbDataManager.getIncompleteLessons(getContentResolver(), getUsername());
+		List<LessonSingleItem> incompleteLessons = DbDataManager.getIncompleteLessons(getContentResolver(), getUsername());
 		if (incompleteLessons != null) {
 			incompleteLesson = incompleteLessons.get(0);
 			lessonTitleTxt.setText(incompleteLesson.getName());
@@ -151,7 +152,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_LIMIT, 1);
 
-			new RequestJsonTask<VideoItem>(videosItemUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<VideosItem>(videosItemUpdateListener).executeTask(loadItem);
 		}
 	}
 
@@ -227,15 +228,15 @@ public class HomeLearnFragment extends CommonLogicFragment {
 	}
 
 
-	private class VideosItemUpdateListener extends ChessUpdateListener<VideoItem> {
+	private class VideosItemUpdateListener extends ChessUpdateListener<VideosItem> {
 
 		public VideosItemUpdateListener() {
-			super(VideoItem.class);
+			super(VideosItem.class);
 		}
 
 		@Override
-		public void updateData(VideoItem returnedObj) {
-			VideoItem.Data headerData = returnedObj.getData().get(0);
+		public void updateData(VideosItem returnedObj) {
+			VideoSingleItem.Data headerData = returnedObj.getData().get(0);
 
 			// save in Db to open in Details View
 			ContentResolver contentResolver = getContentResolver();

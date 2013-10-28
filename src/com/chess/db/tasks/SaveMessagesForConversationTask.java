@@ -15,6 +15,10 @@ import com.chess.db.DbScheme;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.chess.db.DbScheme.*;
+import static com.chess.db.DbScheme.V_LAST_MESSAGE_CONTENT;
+import static com.chess.db.DbScheme.V_OTHER_USER_AVATAR_URL;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -56,7 +60,17 @@ public class SaveMessagesForConversationTask extends AbstractUpdateTask<Messages
 			Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_ID_USER_CONVERSATION_ID,
 					DbDataManager.SELECTION_ID_USER_CONVERSATION_ID, arguments, null);
 
-			ContentValues values = DbDataManager.putMessagesItemToValues(currentItem);
+			ContentValues values = new ContentValues();
+
+			values.put(V_ID, currentItem.getId());
+			values.put(V_CONVERSATION_ID, currentItem.getConversationId());
+			values.put(V_OTHER_USER_ID, currentItem.getSenderId());
+			values.put(V_CREATE_DATE, currentItem.getCreatedAt());
+			values.put(V_OTHER_USER_IS_ONLINE, currentItem.isSenderIsOnline() ? 1 : 0);
+			values.put(V_USER, currentItem.getUser());
+			values.put(V_OTHER_USER_USERNAME, currentItem.getSenderUsername());
+			values.put(V_OTHER_USER_AVATAR_URL, currentItem.getSenderAvatarUrl());
+			values.put(V_LAST_MESSAGE_CONTENT, currentItem.getContent());
 
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}

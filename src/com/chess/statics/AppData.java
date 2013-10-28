@@ -590,7 +590,7 @@ public class AppData {
 	}
 
 	public boolean isUserChooseLessonsLibrary() {
-		return getBooleanValue(PREF_USER_CHOOSE_LESSONS_LIBRARY, true);
+		return getBooleanValue(PREF_USER_CHOOSE_LESSONS_LIBRARY, false);
 	}
 
 	public void setCompLevel(int value) {

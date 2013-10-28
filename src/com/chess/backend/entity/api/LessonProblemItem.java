@@ -8,7 +8,7 @@ import java.util.List;
  * Date: 19.07.13
  * Time: 8:35
  */
-public class LessonItem extends BaseResponseItem<LessonItem.Data> {
+public class LessonProblemItem extends BaseResponseItem<LessonProblemItem.Data> {
 
 	public static final String MOVE_DEFAULT = "default";
 	public static final String MOVE_ALTERNATE = "alternate";

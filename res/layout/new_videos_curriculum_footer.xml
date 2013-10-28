@@ -26,6 +26,5 @@
         android:layout_height="wrap_content"
         android:textColor="@color/new_light_grey_2"
         style="@style/GlyphIcon.Small" />
-	<!--android:text="@string/ic_right"-->
 
 </com.chess.LinLayout>
