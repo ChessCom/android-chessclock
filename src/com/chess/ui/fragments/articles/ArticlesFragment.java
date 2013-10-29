@@ -29,6 +29,7 @@ import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -119,7 +120,11 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			}
 
 			// loading articles
-			updateUiData();
+			if (AppUtils.isNetworkAvailable(getActivity())) {
+				updateUiData();
+			} else {
+				loadFromDb();
+			}
 		} else {
 			loadCategoriesFromDB();
 			loadFromDb();

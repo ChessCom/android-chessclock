@@ -161,7 +161,7 @@ public class MovesParser {
 	 */
 	int[] parse(ChessBoard board, String move) {
 		// possible values ,e4, e4xd5, Rfg1, Rdxd5
-		Log.e(TAG, " move to parse = " + move);
+//		Log.e(TAG, " move to parse = " + move);
 		move = removeNumbers(move);
 		List<Move> validMoves = board.generateLegalMoves();
 
@@ -334,7 +334,7 @@ public class MovesParser {
 		return ChessBoard.Board.values()[pos].toString().toLowerCase();
 	}
 
-	public static HashMap<String, String> getCommentsFromMovesList(String movesList) {
+	public HashMap<String, String> getCommentsFromMovesList(String movesList) {
 		HashMap<String, String> commentsMap = new HashMap<String, String>();
 
 		while (movesList.contains(COMMENTS_SYMBOL_START)) {
@@ -347,10 +347,29 @@ public class MovesParser {
 			} else {
 				String movesBeforeComment = movesList.substring(0, firstIndex - 1);
 				int indexOfMoveBeforeComment = movesBeforeComment.lastIndexOf(Symbol.SPACE);
-				String moveBeforeComment = movesBeforeComment.substring(indexOfMoveBeforeComment);
+				String moveBeforeComment;
+				if (indexOfMoveBeforeComment > 0) {
+					moveBeforeComment = movesBeforeComment.substring(indexOfMoveBeforeComment);
+				} else {
+					moveBeforeComment = movesBeforeComment;
+				}
 
 				comment = movesList.substring(firstIndex, lastIndex);
-				commentsMap.put(moveBeforeComment, comment);
+
+				String keyForSpecialSymbol = " \\" + moveBeforeComment.trim();
+				if (annotationsMapping.containsKey(keyForSpecialSymbol)) {
+					// if it's a special symbol we need to copy actual move before that symbol and not just last special symbol which separated with space
+					movesBeforeComment = movesList.substring(0, firstIndex - 1);
+					indexOfMoveBeforeComment = movesBeforeComment.lastIndexOf(Symbol.SPACE);
+					String actualMoveBeforeComment = movesBeforeComment.substring(0, indexOfMoveBeforeComment);
+					int moveIndex = actualMoveBeforeComment.lastIndexOf(Symbol.SPACE);
+
+					actualMoveBeforeComment = actualMoveBeforeComment.substring(moveIndex );
+					moveBeforeComment = actualMoveBeforeComment
+							.replace(moveBeforeComment, annotationsMapping.get(keyForSpecialSymbol))
+							.trim();
+				}
+				commentsMap.put(moveBeforeComment, comment.replace("{",Symbol.EMPTY).replace("}", Symbol.EMPTY));
 			}
 
 			movesList = movesList.replace(comment, Symbol.EMPTY);
@@ -358,7 +377,7 @@ public class MovesParser {
 		return commentsMap;
 	}
 
-	public static String removeCommentsAndAlternatesFromMovesList(String movesList) {
+	public String removeCommentsAndAlternatesFromMovesList(String movesList) {
 		while (movesList.contains(COMMENTS_SYMBOL_START)) {
 			int firstIndex = movesList.indexOf("{");
 			int lastIndex = movesList.indexOf("}") + 1;

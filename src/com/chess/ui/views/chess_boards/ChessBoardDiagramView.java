@@ -53,7 +53,9 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 		getBoardFace().setMovesCount(getBoardFace().getPly());
 		gameDiagramFace.invalidateGameScreen();
 
-		isGameOver();
+		gameDiagramFace.verifyMove();
+
+//		isGameOver();
 	}
 
 
@@ -177,6 +179,21 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 	@Override
 	public void onRewindForward() {
 		gameDiagramFace.onRewindForward();
+	}
+
+	@Override
+	public void showHint() {
+		gameDiagramFace.showHint();
+	}
+
+	@Override
+	public void showSolution() {
+		gameDiagramFace.showAnswer();
+	}
+
+	@Override
+	public void restart() {
+		gameDiagramFace.restart();
 	}
 
 }

@@ -19,4 +19,10 @@ public interface BoardViewDiagramFace {
 	void onRewindForward();
 
 	void showOptions();
+
+	void showHint();
+
+	void showSolution();
+
+	void restart();
 }

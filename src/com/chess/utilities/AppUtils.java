@@ -184,7 +184,7 @@ public class AppUtils {
 	 * @param context
 	 * @return
 	 */
-	public static boolean needFullScreen(Context context) {
+	public static boolean isNeedFullScreen(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 		Configuration config = context.getResources().getConfiguration();
 		return (displayMetrics.density < MDPI || displayMetrics.densityDpi == DisplayMetrics.DENSITY_LOW)

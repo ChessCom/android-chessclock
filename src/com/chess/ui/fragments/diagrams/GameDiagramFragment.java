@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.game;
+package com.chess.ui.fragments.diagrams;
 
 import android.animation.LayoutTransition;
 import android.annotation.TargetApi;
@@ -15,12 +15,16 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.GameDiagramItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.*;
+import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.boards.PuzzlesBoardFace;
 import com.chess.ui.interfaces.game_ui.GameDiagramFace;
 import com.chess.ui.views.NotationView;
 import com.chess.ui.views.chess_boards.ChessBoardDiagramView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsDiagramView;
+import com.chess.utilities.AppUtils;
 
 import java.util.HashMap;
 
@@ -34,9 +38,12 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 	private static final String ERROR_TAG = "send request failed popup";
 
-	private static final String GAME_ITEM = "game_item";
-	public static final int NOTATIONS_SHOW_DELAY = 650;
-	private static final long DELAY_BETWEEN_MOVES = 1500;
+	protected static final String GAME_ITEM = "game_item";
+	public static final int NOTATIONS_SHOW_DELAY = 550;
+	private static final long MOVE_RESULT_HIDE_DELAY = 2000;
+
+	private static final long DELAY_BETWEEN_MOVES = 900;
+	private static final long START_DELAY = 500;
 
 	private ChessBoardDiagramView boardView;
 	private GameDiagramItem diagramItem;
@@ -47,6 +54,12 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	private HashMap<String, String> commentsMap;
 	private TextView notationCommentTxt;
 	private boolean isPlaying;
+	private int currentPuzzleAnswerCnt;
+	private TextView moveResultTxt;
+	private int resultIconPadding;
+	private boolean isPuzzle;
+	private boolean isSmallScreen;
+	private boolean nexus4Kind;
 
 	public static GameDiagramFragment createInstance(GameDiagramItem analysisItem) {
 		GameDiagramFragment fragment = new GameDiagramFragment();
@@ -77,9 +90,13 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		// we are inside of fragment already, don't change action buttons of parent fragment
-		setNeedToChangeActionButtons(false);
 		super.onViewCreated(view, savedInstanceState);
+
+		if (isPuzzle) {
+			setTitle(R.string.puzzle);
+		} else {
+			setTitle(R.string.chess_game);
+		}
 
 		if (!diagramItem.isShowAnimation()) {
 			enableSlideMenus(true);
@@ -104,6 +121,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		}
 
 		handler.removeCallbacks(showNextMoveRunnable);
+		handler.removeCallbacks(showNextPuzzleMoveTask);
 		boardView.releaseBitmaps();
 	}
 
@@ -119,7 +137,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		// if position is final, restart from beginning
 		BoardFace boardFace = getBoardFace();
 		if (boardFace.getPly() + 1 > boardFace.getMovesCount()) {
-			while(boardFace.takeBack()) {
+			while (boardFace.takeBack()) {
 				notationsView.moveBack(boardFace.getPly());
 			}
 		}
@@ -137,7 +155,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	@Override
 	public void onRewindBack() {
 		BoardFace boardFace = getBoardFace();
-		while(boardFace.takeBack()) {
+		while (boardFace.takeBack()) {
 			notationsView.moveBack(boardFace.getPly());
 		}
 		notationsView.rewindBack();
@@ -160,7 +178,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	@Override
 	public void onRewindForward() {
 		BoardFace boardFace = getBoardFace();
-		while(boardFace.takeNext()) {
+		while (boardFace.takeNext()) {
 			notationsView.moveForward(boardFace.getPly());
 		}
 		notationsView.rewindForward();
@@ -170,10 +188,9 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 	/**
 	 * get current move and compare to move with comment
-	 * @param boardFace
 	 */
 	private void showCommentForMove(BoardFace boardFace) {
-		if (commentsMap == null) {
+		if (commentsMap == null || isSmallScreen) {
 			return;
 		}
 
@@ -222,14 +239,199 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		}
 	};
 
+	@Override
+	public void verifyMove() {
+
+		// skip verification is not in Puzzle mode
+		if (controlsView.getState() == ControlsDiagramView.State.DEFAULT) {
+			return;
+		}
+
+		PuzzlesBoardFace boardFace = getBoardFace();
+
+		if (boardFace.isLastPuzzleMoveCorrect()) { // Correct
+			if (boardFace.getMovesCount() < boardFace.getPuzzleMoves().length - 1) { // if it's not last move, make comp move
+				final Move move = boardFace.convertMoveAlgebraic(boardFace.getPuzzleMoves()[boardFace.getPly()]);
+				boardView.setMoveAnimator(move, true);
+				boardView.resetValidMoves();
+				boardFace.makeMove(move, true);
+				invalidateGameScreen();
+			} else {
+				showCorrectViews();
+			}
+		} else { // wrong
+			showWrongViews();
+
+			boardFace.takeBack();
+			invalidateGameScreen();
+			boardView.invalidate();
+		}
+	}
+
+	private void showCorrectViews() {
+		if (isSmallScreen || nexus4Kind) {
+			showToast(R.string.correct);
+		} else {
+			moveResultTxt.setText(R.string.correct);
+			setIconToResultView(R.string.ic_check);
+		}
+		controlsView.showDefault();
+		if (!isSmallScreen) {
+			notationsView.setVisibility(View.VISIBLE);
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					notationsView.rewindForward();
+					showCommentForMove(getBoardFace());
+					boardView.invalidate();
+				}
+			}, NOTATION_REWIND_DELAY);
+		}
+	}
+
+	private void showWrongViews() {
+		if (isSmallScreen || nexus4Kind) {
+			showToast(R.string.incorrect);
+		} else {
+			moveResultTxt.setText(R.string.incorrect);
+			setIconToResultView(R.string.ic_blocking);
+
+			handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
+		}
+	}
+
+	private void setIconToResultView(int iconId) {
+		IconDrawable iconDrawable = new IconDrawable(getActivity(), iconId,
+				R.color.semitransparent_white_75, R.dimen.glyph_icon_big);
+		moveResultTxt.setVisibility(View.VISIBLE);
+		moveResultTxt.setCompoundDrawablesWithIntrinsicBounds(iconDrawable, null, null, null);
+		moveResultTxt.setCompoundDrawablePadding(resultIconPadding);
+	}
+
+	private Runnable hideMoveResultTask = new Runnable() {
+		@Override
+		public void run() {
+			if (userPlayWhite) {
+				moveResultTxt.setText(R.string.white_to_move);
+			} else {
+				moveResultTxt.setText(R.string.black_to_move);
+			}
+			moveResultTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+
+			handler.removeCallbacks(hideMoveResultTask);
+		}
+	};
+
+	@Override
+	public void showHint() {
+		// remember the move before the hint
+		final PuzzlesBoardFace boardFace = getBoardFace();
+
+		int hintMoveNumber = boardFace.getPly();
+		if (hintMoveNumber == getBoardFace().getPuzzleMoves().length) {
+			return;
+		}
+
+		// get next valid move
+		final Move move = boardFace.convertMoveAlgebraic(boardFace.getPuzzleMoves()[hintMoveNumber]);
+		boardFace.setMovesCount(boardFace.getMovesCount() + hintMoveNumber);
+
+		// play move animation
+		boardView.setMoveAnimator(move, true);
+		boardView.resetValidMoves();
+		// make actual move
+		boardFace.makeMove(move, true);
+		invalidateGameScreen();
+
+		// restore move back
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
+				boardView.resetValidMoves();
+				getBoardFace().takeBack();
+				invalidateGameScreen();
+			}
+		}, START_DELAY);
+	}
+
+	@Override
+	public void showAnswer() {
+
+		PuzzlesBoardFace boardFace = getBoardFace();
+
+		currentPuzzleAnswerCnt = boardFace.getPly();
+
+		// show first move immediately
+		boolean sizeExceed = currentPuzzleAnswerCnt >= boardFace.getPuzzleMoves().length;
+
+		if (sizeExceed) { // rewind back
+			while (boardFace.takeBack()) {
+				currentPuzzleAnswerCnt--;
+			}
+			boardView.invalidate();
+		}
+		// get next valid move
+		final Move move = boardFace.convertMoveAlgebraic(boardFace.getPuzzleMoves()[currentPuzzleAnswerCnt]);
+		boardFace.setMovesCount(boardFace.getMovesCount() + currentPuzzleAnswerCnt);
+
+		// play move animation
+		boardView.setMoveAnimator(move, true);
+		boardView.resetValidMoves();
+		// make actual move
+		boardFace.makeMove(move, true);
+		invalidateGameScreen();
+
+		currentPuzzleAnswerCnt++;
+
+		handler.postDelayed(showNextPuzzleMoveTask, DELAY_BETWEEN_MOVES);
+	}
+
+	@Override
+	public void restart() {
+		adjustBoardForGame();
+	}
+
+	private Runnable showNextPuzzleMoveTask = new Runnable() {
+		@Override
+		public void run() {
+			handler.removeCallbacks(this);
+
+			PuzzlesBoardFace boardFace = getBoardFace();
+			boolean sizeExceed = currentPuzzleAnswerCnt >= boardFace.getPuzzleMoves().length;
+
+			if (sizeExceed) {
+				showCorrectViews();
+				return;
+			}
+
+			// get next valid move
+			final Move move = boardFace.convertMoveAlgebraic(boardFace.getPuzzleMoves()[currentPuzzleAnswerCnt]);
+			boardFace.setMovesCount(boardFace.getMovesCount() + currentPuzzleAnswerCnt);
+
+			// play move animation
+			boardView.setMoveAnimator(move, true);
+			boardView.resetValidMoves();
+			// make actual move
+			boardFace.makeMove(move, true);
+			invalidateGameScreen();
+
+			currentPuzzleAnswerCnt++;
+			handler.postDelayed(this, DELAY_BETWEEN_MOVES);
+		}
+	};
+
 	private void adjustBoardForGame() {
 		ChessBoardDiagram.resetInstance();
-		BoardFace boardFace = getBoardFace();
-		userPlayWhite = diagramItem.getUserColor() == ChessBoard.WHITE_SIDE;
+		PuzzlesBoardFace boardFace = getBoardFace();
+
+		userPlayWhite = !diagramItem.isFlip();
 
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+			moveResultTxt.setText(R.string.white_to_move);
 		} else {
+			moveResultTxt.setText(R.string.black_to_move);
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 		}
 
@@ -261,34 +463,62 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			boardFace.setReside(!boardFace.isReside());
 		}
 
-		// remove comments from movesList
+		if (diagramItem.isFlip()) {
+			boardFace.setReside(true);
+		}
 
+		// remove comments from movesList
 		String movesList = diagramItem.getMovesList();
 		if (movesList != null) {
-			commentsMap = MovesParser.getCommentsFromMovesList(movesList);
+			commentsMap = boardFace.getCommentsFromMovesList(movesList);
 
-			movesList = MovesParser.removeCommentsAndAlternatesFromMovesList(movesList);
+			movesList = boardFace.removeCommentsAndAlternatesFromMovesList(movesList);
 
+			if (isPuzzle) {
+				controlsView.showPuzzle();
+				notationsView.setVisibility(View.GONE);
+				boardFace.setPuzzleMoves(movesList);
+			} else {
+				moveResultTxt.setVisibility(View.INVISIBLE);
+				notationsView.setVisibility(View.VISIBLE);
+				controlsView.showDefault();
+			}
 			boardFace.checkAndParseMovesList(movesList);
 		}
 
 		if (diagramItem.isShowAnimation()) {
 			boardView.resetValidMoves();
 
-			invalidateGameScreen();
-			boardFace.takeBack();
+			// rewind all back
+			while (boardFace.takeBack()) {
+				notationsView.moveBack(boardFace.getPly());
+
+			}
+			// now play moves until we reach needed position
+			for (int i = 0; i < diagramItem.getFocusMove(); i++) {
+				Move move = boardFace.getNextMove();
+				if (move != null) {
+					boardFace.makeMove(move, false);
+				}
+			}
+
 			boardView.invalidate();
-
-			playLastMoveAnimation();
-
-			showCommentForMove(boardFace);
 		}
 
-		boardFace.setJustInitialized(false);
+		if (isSmallScreen || TextUtils.isEmpty(movesList)) {
+			notationsView.setVisibility(View.GONE);
+			notationCommentTxt.setVisibility(View.GONE);
+		}
+
+		if (nexus4Kind) {
+			moveResultTxt.setVisibility(View.GONE);
+		}
+
+		invalidateGameScreen();
 	}
 
 	@Override
-	public void toggleSides() { // TODO
+	public void toggleSides() {
 		if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 		} else {
@@ -322,7 +552,9 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 	@Override
 	public void invalidateGameScreen() {
-		boardView.updateNotations(getBoardFace().getNotationArray());
+		if (!isSmallScreen) {
+			boardView.updateNotations(getBoardFace().getNotationArray());
+		}
 	}
 
 	@Override
@@ -349,7 +581,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	}
 
 	@Override
-	public BoardFace getBoardFace() {
+	public PuzzlesBoardFace getBoardFace() {
 		return ChessBoardDiagram.getInstance(this);
 	}
 
@@ -381,6 +613,19 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	}
 
 	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+
+		if (view.getId() == R.id.notationCommentTxt) {
+			CharSequence notationCommentTxtText = notationCommentTxt.getText();
+			if (notationCommentTxtText != null) {
+				String move = getBoardFace().getLastMoveSAN();
+				showSinglePopupDialog(move, notationCommentTxtText.toString());
+			}
+		}
+	}
+
+	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		String tag = fragment.getTag();
 		if (tag == null) {
@@ -409,12 +654,18 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 	private void init() {
 		labelsConfig = new LabelsConfig();
+
+		isSmallScreen = AppUtils.noNeedTitleBar(getActivity());
+		nexus4Kind = AppUtils.isNexus4Kind(getActivity());
+		isPuzzle = diagramItem.getDiagramType().equals(GameDiagramItem.CHESS_PROBLEM);
 	}
 
 	private void widgetsInit(View view) {
 		controlsView = (ControlsDiagramView) view.findViewById(R.id.controlsDiagramView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		notationCommentTxt = (TextView) view.findViewById(R.id.notationCommentTxt);
+		notationCommentTxt.setOnClickListener(this);
+		moveResultTxt = (TextView) view.findViewById(R.id.moveResultTxt);
 		controlsView.enableGameControls(false);
 
 		boardView = (ChessBoardDiagramView) view.findViewById(R.id.boardview);
@@ -429,16 +680,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 		addLayoutChangeAnimation(view.findViewById(R.id.boardFrame));
 
-		// show notationsView with animation
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if (getActivity() == null) {
-					return;
-				}
-				notationsView.setVisibility(View.VISIBLE);
-			}
-		}, NOTATIONS_SHOW_DELAY);
+		resultIconPadding = getResources().getDimensionPixelSize(R.dimen.glyph_icon_padding);
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)

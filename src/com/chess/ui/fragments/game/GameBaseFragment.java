@@ -39,6 +39,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected static final String WHITE_WINS = "1-0";
 	protected static final String BLACK_WINS = "0-1";
 	protected int AVATAR_SIZE = 48;
+	public static final int NOTATION_REWIND_DELAY = 400;
 
 	protected static final String END_GAME_TAG = "end game popup";
 	protected static final String DRAW_OFFER_RECEIVED_TAG = "draw offer message received";
@@ -58,7 +59,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		if (AppUtils.needFullScreen(getActivity())) {
+		if (AppUtils.isNeedFullScreen(getActivity())) {
 			getActivityFace().setFullScreen();
 			if (savedInstanceState == null) {
 				savedInstanceState = new Bundle();

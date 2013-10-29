@@ -103,5 +103,6 @@
 	<dimen name="notations_text_side_padding">10dip</dimen>
 	<dimen name="_3dPiece_offset_for_board">21dip</dimen>
 	<dimen name="_3dPiece_offset_for_board_drag">35dip</dimen>
+	<dimen name="correct_move_puzzle_height">48dip</dimen>
 
 </resources>

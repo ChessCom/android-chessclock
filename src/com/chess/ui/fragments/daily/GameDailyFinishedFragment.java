@@ -90,6 +90,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private ImageDownloaderToListener imageDownloader;
 	private String[] countryNames;
 	private int[] countryCodes;
+	private NotationView notationsView;
 
 	public GameDailyFinishedFragment() { }
 
@@ -289,7 +290,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			controlsDailyView.haveNewMessage(true);
 		}
 
-		getBoardFace().setFinished(false);
+		getBoardFace().setFinished(true);
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
@@ -310,11 +311,20 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		boardView.resetValidMoves();
 
 		invalidateGameScreen();
-
 		boardFace.takeBack();
 		boardView.invalidate();
 
 		playLastMoveAnimation();
+
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				notationsView.rewindForward();
+			}
+		}, NOTATION_REWIND_DELAY);
 
 		boardFace.setJustInitialized(false);
 
@@ -668,7 +678,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private void widgetsInit(View view) {
 
 		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
-		NotationView notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
@@ -697,24 +707,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 	}
-
-//	private class LabelsConfig {
-//		BoardAvatarDrawable topAvatar;
-//		BoardAvatarDrawable bottomAvatar;
-//		String topPlayerName;
-//		String bottomPlayerName;
-//		String topPlayerRating;
-//		String bottomPlayerRating;
-//		String topPlayerAvatar;
-//		String bottomPlayerAvatar;
-//		String topPlayerCountry;
-//		String bottomPlayerCountry;
-//		int userSide;
-//
-//		int getOpponentSide() {
-//			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
-//		}
-//	}
 
 	private class ImageUpdateListener extends ImageReadyListenerLight {
 

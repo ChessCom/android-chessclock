@@ -764,11 +764,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		getBoardFace().setFinished(true);
 
 		// show title at the top
-		moveResultTxt.setVisibility(View.VISIBLE);
 		moveResultTxt.setText(R.string.correct);
 		setIconToResultView(R.string.ic_check);
-
-		handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
 	}
 
 	private void showHintedViews(String newRatingStr) {
@@ -782,11 +779,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		getBoardFace().setFinished(true);
 
 		// show title at the top
-		moveResultTxt.setVisibility(View.VISIBLE);
 		moveResultTxt.setText(R.string.solved_with_hint);
 		setIconToResultView(R.string.ic_hint);
-
-		handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
 	}
 
 	private void showWrongViews(String newRatingStr) {
@@ -799,18 +793,18 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		getBoardFace().setFinished(true);
 
 		// show title at the top
-		moveResultTxt.setVisibility(View.VISIBLE);
 		moveResultTxt.setText(R.string.incorrect);
 		setIconToResultView(R.string.ic_blocking);
-
-		handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
 	}
 
 	private void setIconToResultView(int iconId) {
 		IconDrawable iconDrawable = new IconDrawable(getActivity(), iconId,
 				R.color.semitransparent_white_75, R.dimen.glyph_icon_big2);
+		moveResultTxt.setVisibility(View.VISIBLE);
 		moveResultTxt.setCompoundDrawablesWithIntrinsicBounds(iconDrawable, null, null, null);
 		moveResultTxt.setCompoundDrawablePadding(resultIconPadding);
+
+		handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
 	}
 
 	private Runnable hideMoveResultTask = new Runnable() {
@@ -1001,7 +995,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		// reside board for user to move
 		boardFace.setReside(!boardFace.isReside());
 
-//		boardFace.setTacticMoves("1... Bxe6 2. Qxh7+ Kxh7 3. Rh3+ Bh4 4. R3xh4#");
+//		boardFace.setPuzzleMoves("1... Bxe6 2. Qxh7+ Kxh7 3. Rh3+ Bh4 4. R3xh4#");
 		boardFace.setTacticMoves(trainerData.getCleanMoveString());
 		boardFace.setMovesCount(1);
 

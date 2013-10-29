@@ -17,6 +17,7 @@ import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -2049,4 +2050,15 @@ public class ChessBoard implements BoardFace {
 		this.enPassantPrev = this.enPassant;
 		this.enPassant = enPassant;
 	}
+
+	@Override
+	public HashMap<String, String> getCommentsFromMovesList(String movesList){
+		return movesParser.getCommentsFromMovesList(movesList);
+	}
+
+	@Override
+	public String removeCommentsAndAlternatesFromMovesList(String movesList) {
+		return movesParser.removeCommentsAndAlternatesFromMovesList(movesList);
+	}
+
 }

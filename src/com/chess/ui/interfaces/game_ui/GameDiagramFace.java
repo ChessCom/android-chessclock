@@ -8,6 +8,14 @@ package com.chess.ui.interfaces.game_ui;
  */
 public interface GameDiagramFace extends GameFace {
 
+	void verifyMove();
+
+	void showHint();
+
+	void restart();
+
+	void showAnswer();
+
 	void onPlay();
 
 	void onRewindBack();

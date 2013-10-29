@@ -3,6 +3,7 @@ package com.chess.ui.interfaces.boards;
 import com.chess.ui.engine.HistoryData;
 import com.chess.ui.engine.Move;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -131,4 +132,8 @@ public interface BoardFace {
 	boolean checkAndParseMovesList(String moveList);
 
 	boolean isPromote(int from, int to);
+
+	HashMap<String, String> getCommentsFromMovesList(String movesList);
+
+	String removeCommentsAndAlternatesFromMovesList(String movesList);
 }

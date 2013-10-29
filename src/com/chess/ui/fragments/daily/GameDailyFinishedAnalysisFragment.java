@@ -106,7 +106,7 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 		controlsView.enableGameControls(true);
 		boardView.lockBoard(false);
 
-		getBoardFace().setFinished(false);
+		getBoardFace().setFinished(true);
 
 		long secondsRemain = currentGame.getTimeRemaining();
 		String timeRemains;

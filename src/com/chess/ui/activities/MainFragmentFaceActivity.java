@@ -28,6 +28,7 @@ import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NotificationsRightFragment;
+import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
@@ -107,7 +108,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			} else if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
 				// set the Above View
 				switchFragment(new HomeTabsFragment());
-//				switchFragment(new LessonsFragment());
+//				switchFragment(new ArticlesFragment());
 				showActionBar = true;
 			} else {
 				switchFragment(new WelcomeTabsFragment());

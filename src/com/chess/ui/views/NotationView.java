@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Gravity;
 import android.view.View;
@@ -142,8 +141,6 @@ public class NotationView extends LinearLayout implements View.OnClickListener, 
 		if (xNew != 0) {
 			viewWidth = xNew;
 
-			Log.d("TEST", "onSizeChanged");
-
 			if (originalNotations == null) {
 				return;
 			}
@@ -188,7 +185,6 @@ public class NotationView extends LinearLayout implements View.OnClickListener, 
 			originalNotations = notations;
 		}
 
-		// calculate viewsPerPage
 		calculateViewsPerPage();
 
 		if (notationsAdapter == null || newNotations) { // TODO invent logic to just invalidate adapter

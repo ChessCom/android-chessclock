@@ -391,7 +391,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 				notationsView.rewindForward();
 
 			}
-		}, 100);
+		}, NOTATION_REWIND_DELAY);
 		boardFace.setJustInitialized(false);
 
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);

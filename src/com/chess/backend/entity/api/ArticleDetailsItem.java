@@ -17,6 +17,10 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 	public static final String FEN_CODE = "[FEN \"";
 	public static final String END_PART = "\"]";
 
+	public static final String SIMPLE_DIAGRAM = "simpleDiagram";
+	public static final String CHESS_GAME = "chessGame";
+	public static final String CHESS_PROBLEM = "chessProblem";
+
 /*
 	"id": 224,
     "title": "Testing thing",
@@ -58,74 +62,9 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 
 
 
-/*
-	///////////////////////////
-	// simpleDiagram Example //
-	///////////////////////////
-
-	&-diagramtype: simpleDiagram
-	&-colorscheme: wooddark
-	&-piecestyle: book
-	&-float: left
-	&-flip: false
-	&-prompt: false
-	&-coords: false
-	&-size: 45
-	&-lastmove:
-	&-focusnode:
-	&-beginnode:
-	&-endnode:
-	&-pgnbody:
-	[Date "????.??.??"]
-	[Result "*"]
-	[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"] *
-
-	//////////////////////////
-	// chessProblem Example //
-	//////////////////////////
-	&-diagramtype: chessProblem
-	&-colorscheme: blue
-	&-piecestyle: classic
-	&-float: left
-	&-flip: false
-	&-prompt: false
-	&-coords: false
-	&-size: 45
-	&-lastmove:
-	&-focusnode:
-	&-beginnode: 47
-	&-endnode:
-	&-pgnbody:
-	[Event "Berlin 'Evergreen'"]
-	[Site "?"]
-	[Date "1852.??.??"]
-	[Round "?"]
-	[White "Anderssen, A"]
-	[Black "Dufresne, J"]
-	[Result "1-0"]
-	[Plycount "47"]
-	[Opening "Evans G"]
-
-
-	1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4 7.O-O d3 8.Qb3 Qf6 9.e5
-	Qg6 10.Re1 Nge7 11.Ba3 b5 12.Qxb5 Rb8 13.Qa4 Bb6 14.Nbd2 Bb7 15.Ne4 Qf5 16.Bxd3
-	Qh5 17.Nf6+ gxf6 18.exf6 Rg8 19.Rad1 Qxf3 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8 23.Bd7+ Kf8 24.Bxe7# 1-0
-	 */
-
-/*
- 	"diagrams": [
-		{
-			"diagram_id": 2421,
-			"diagram_code": "&-diagramtype:\nchessProblem\n&-colorscheme:\nblue\n&-piecestyle:\nclassic\n&-float:\nleft\n&-flip:\nfalse\n&-prompt:\nfalse\n&-coords:\nfalse\n&-size:\n45\n&-lastmove:\n\n&-focusnode:\n\n&-beginnode:\n47\n&-endnode:\n\n&-pgnbody:\n[Event \"Berlin 'Evergreen'\"]\n[Site \"?\"]\n[Date \"1852.??.??\"]\n[Round \"?\"]\n[White \"Anderssen, A\"]\n[Black \"Dufresne, J\"]\n[Result \"1-0\"]\n[Plycount \"47\"]\n[Opening \"Evans G\"]\n\n1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4 7.O-O d3 8.Qb3 Qf6 9.e5 Qg6 10.Re1 Nge7 11.Ba3 b5 12.Qxb5 Rb8 13.Qa4 Bb6 14.Nbd2 Bb7 15.Ne4 Qf5 16.Bxd3 Qh5 17.Nf6+ gxf6 18.exf6 Rg8 19.Rad1 Qxf3 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8 23.Bd7+ Kf8 24.Bxe7# \n1-0"
-		},
-		{
-			"diagram_id": 2422,
-			"diagram_code": "&-diagramtype:\nsimpleDiagram\n&-colorscheme:\nwooddark\n&-piecestyle:\nbook\n&-float:\nleft\n&-flip:\nfalse\n&-prompt:\nfalse\n&-coords:\nfalse\n&-size:\n45\n&-lastmove:\n\n&-focusnode:\n\n&-beginnode:\n\n&-endnode:\n\n&-pgnbody:\n[Date \"????.??.??\"]\n[Result \"*\"]\n[FEN \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\"]\n\n\n*"
-		}
-	]
-*/
-
 	public static class Diagram {
+		public static final String FOCUS_NODE = "&-focusnode:\n";
+		public static final String FLIP = "&-flip:";
 
 		public static final int SIMPLE = 0;
 		public static final int CHESS_GAME = 1;
@@ -162,11 +101,11 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 
 		public int getType() {
 			if (type == -1) { // if undefined
-				if (diagram_code.contains("simpleDiagram")) {
+				if (diagram_code.contains(SIMPLE_DIAGRAM)) {
 					type = SIMPLE;
-				} else if (diagram_code.contains("chessGame")) {
+				} else if (diagram_code.contains(ArticleDetailsItem.CHESS_GAME)) {
 					type = CHESS_GAME;
-				} else if (diagram_code.contains("chessProblem")) {
+				} else if (diagram_code.contains(CHESS_PROBLEM)) {
 					type = PUZZLE;
 				}
 
@@ -244,6 +183,24 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 			tagContentStr = tagContentStr.substring(0, tagContentStr.indexOf("\"]\n"));
 			return tagContentStr;
 		}
+
+		public boolean getFlip() {
+			int index = diagram_code.indexOf(FLIP);
+			String flipCode = diagram_code.substring(index + FLIP.length());
+			flipCode = flipCode.substring(0, 6);
+			return flipCode.contains("true");
+		}
+
+		public int getFocusNode() {
+			int index = diagram_code.indexOf(FOCUS_NODE);
+			String focusNode = diagram_code.substring(index + FOCUS_NODE.length());
+			String nodeInt = focusNode.substring(0, focusNode.indexOf(Symbol.NEW_STR));
+			if (!TextUtils.isEmpty(nodeInt)) {
+				return Integer.valueOf(nodeInt);
+			} else {
+				return 0;
+			}
+		}
 //		private String getResultTag(String tag) {
 //			int tagContentStartIndex = diagram_code.indexOf("[" + tag + " \"") + ("[" + tag + " \"").length();
 //			String tagContentStr = diagram_code.substring(tagContentStartIndex);
@@ -277,4 +234,71 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
                 "diagram_code": "&-diagramtype:\nchessGame\n&-colorscheme:\nblue\n&-piecestyle:\nclassic\n&-float:\ncenter\n&-flip:\nfalse\n&-prompt:\nfalse\n&-coords:\ntrue\n&-size:\n45\n&-lastmove:\n\n&-focusnode:\n\n&-beginnode:\n\n&-endnode:\n\n&-pgnbody:\n[Event \"Topalov-Laznicka m 2013\"]\n[Site \"Novy Bor CZE\"]\n[Date \"2013.09.23\"]\n[Round \"4\"]\n[White \"Laznicka, V.\"]\n[Black \"Topalov, V.\"]\n[Result \"0-1\"]\n[ECO \"E21\"]\n[WhiteElo \"2677\"]\n[BlackElo \"2769\"]\n[Setup \"1\"]\n[FEN \"5rk1/6p1/1BbRp2p/P1P3q1/4p3/5P2/2Q3PP/6K1 w - - 0 32\"]\n[Plycount \"12\"]\n[Eventdate \"2013.09.19\"]\n[Eventtype \"match\"]\n[Eventrounds \"6\"]\n[Eventcountry \"CZE\"]\n[Source \"Mark Crowther\"]\n[Sourcedate \"2013.09.23\"]\n\n32.Rxc6 $4 ( 32.h4 $1 { The only move that leads to an equal position. } 32...Qf6 ( 32...Qxh4 33.Qf2 ) 33.fxe4 Qf1+ 34.Kh2 Rf2 35.Qxf2 Qxf2 36.Rxc6 Qxh4+ 37.Kg1 Qe1+ { Black does not have more than equality here. } ) 32...exf3 { The\nposition is lost for White already. } 33.g3 ( 33.Rxe6 f2+ 34.Kf1 Qxg2+ 35.Kxg2 f1=Q+ 36.Kg3 Qf3+ 37.Kh4 Rf4# ) 33...Qe5 34.Qf2 Qa1+ 35.Qf1 Qd4+ 36.Qf2 Qd1+ 37.Qf1 f2+ \n0-1"
             }
 	 */
+
+/*
+	///////////////////////////
+	// simpleDiagram Example //
+	///////////////////////////
+
+	&-diagramtype: simpleDiagram
+	&-colorscheme: wooddark
+	&-piecestyle: book
+	&-float: left
+	&-flip: false
+	&-prompt: false
+	&-coords: false
+	&-size: 45
+	&-lastmove:
+	&-focusnode:
+	&-beginnode:
+	&-endnode:
+	&-pgnbody:
+	[Date "????.??.??"]
+	[Result "*"]
+	[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"] *
+
+	//////////////////////////
+	// chessProblem Example //
+	//////////////////////////
+	&-diagramtype: chessProblem
+	&-colorscheme: blue
+	&-piecestyle: classic
+	&-float: left
+	&-flip: false
+	&-prompt: false
+	&-coords: false
+	&-size: 45
+	&-lastmove:
+	&-focusnode:
+	&-beginnode: 47
+	&-endnode:
+	&-pgnbody:
+	[Event "Berlin 'Evergreen'"]
+	[Site "?"]
+	[Date "1852.??.??"]
+	[Round "?"]
+	[White "Anderssen, A"]
+	[Black "Dufresne, J"]
+	[Result "1-0"]
+	[Plycount "47"]
+	[Opening "Evans G"]
+
+
+	1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4 7.O-O d3 8.Qb3 Qf6 9.e5
+	Qg6 10.Re1 Nge7 11.Ba3 b5 12.Qxb5 Rb8 13.Qa4 Bb6 14.Nbd2 Bb7 15.Ne4 Qf5 16.Bxd3
+	Qh5 17.Nf6+ gxf6 18.exf6 Rg8 19.Rad1 Qxf3 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8 23.Bd7+ Kf8 24.Bxe7# 1-0
+	 */
+
+/*
+ 	"diagrams": [
+		{
+			"diagram_id": 2421,
+			"diagram_code": "&-diagramtype:\nchessProblem\n&-colorscheme:\nblue\n&-piecestyle:\nclassic\n&-float:\nleft\n&-flip:\nfalse\n&-prompt:\nfalse\n&-coords:\nfalse\n&-size:\n45\n&-lastmove:\n\n&-focusnode:\n\n&-beginnode:\n47\n&-endnode:\n\n&-pgnbody:\n[Event \"Berlin 'Evergreen'\"]\n[Site \"?\"]\n[Date \"1852.??.??\"]\n[Round \"?\"]\n[White \"Anderssen, A\"]\n[Black \"Dufresne, J\"]\n[Result \"1-0\"]\n[Plycount \"47\"]\n[Opening \"Evans G\"]\n\n1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4 7.O-O d3 8.Qb3 Qf6 9.e5 Qg6 10.Re1 Nge7 11.Ba3 b5 12.Qxb5 Rb8 13.Qa4 Bb6 14.Nbd2 Bb7 15.Ne4 Qf5 16.Bxd3 Qh5 17.Nf6+ gxf6 18.exf6 Rg8 19.Rad1 Qxf3 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8 23.Bd7+ Kf8 24.Bxe7# \n1-0"
+		},
+		{
+			"diagram_id": 2422,
+			"diagram_code": "&-diagramtype:\nsimpleDiagram\n&-colorscheme:\nwooddark\n&-piecestyle:\nbook\n&-float:\nleft\n&-flip:\nfalse\n&-prompt:\nfalse\n&-coords:\nfalse\n&-size:\n45\n&-lastmove:\n\n&-focusnode:\n\n&-beginnode:\n\n&-endnode:\n\n&-pgnbody:\n[Date \"????.??.??\"]\n[Result \"*\"]\n[FEN \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\"]\n\n\n*"
+		}
+	]
+*/
 }

@@ -14,58 +14,7 @@ public class GameDiagramItem extends GameAnalysisItem {
 	public static final String TYPE = "&-diagramtype:";
 	public static final String FEN_CODE = "[FEN \"";
 	public static final String END_PART = "\"]";
-
-/*
-	///////////////////////////
-	// simpleDiagram Example //
-	///////////////////////////
-
-	&-diagramtype: simpleDiagram
-	&-colorscheme: wooddark
-	&-piecestyle: book
-	&-float: left
-	&-flip: false
-	&-prompt: false
-	&-coords: false
-	&-size: 45
-	&-lastmove:
-	&-focusnode:
-	&-beginnode:
-	&-endnode:
-	&-pgnbody:
-	[Date "????.??.??"]
-	[Result "*"]
-	[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"] *
-
-	//////////////////////////
-	// chessProblem Example //
-	//////////////////////////
-	&-diagramtype: chessProblem
-	&-colorscheme: blue
-	&-piecestyle: classic
-	&-float: left
-	&-flip: false
-	&-prompt: false
-	&-coords: false
-	&-size: 45
-	&-lastmove:
-	&-focusnode:
-	&-beginnode: 47
-	&-endnode:
-	&-pgnbody:
-	[Event "Berlin 'Evergreen'"]
-	[Site "?"]
-	[Date "1852.??.??"]
-	[Round "?"]
-	[White "Anderssen, A"]
-	[Black "Dufresne, J"]
-	[Result "1-0"]
-	[Plycount "47"]
-	[Opening "Evans G"]
-	1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4 7.O-O d3 8.Qb3 Qf6 9.e5
-	Qg6 10.Re1 Nge7 11.Ba3 b5 12.Qxb5 Rb8 13.Qa4 Bb6 14.Nbd2 Bb7 15.Ne4 Qf5 16.Bxd3
-	Qh5 17.Nf6+ gxf6 18.exf6 Rg8 19.Rad1 Qxf3 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8 23.Bd7+ Kf8 24.Bxe7# 1-0
-	 */
+	public static final String CHESS_PROBLEM = "chessProblem";
 
 	private String diagramType;
 	private String moves;
@@ -76,6 +25,8 @@ public class GameDiagramItem extends GameAnalysisItem {
 	private String date;
 	private String eventName;
 	private boolean showAnimation = true;
+	private boolean flip;
+	private int focusMove;
 
 	public GameDiagramItem() {
 	}
@@ -196,4 +147,73 @@ public class GameDiagramItem extends GameAnalysisItem {
 			return new GameDiagramItem[size];
 		}
 	};
+
+	public void setFlip(boolean flip) {
+		this.flip = flip;
+	}
+
+	public boolean isFlip() {
+		return flip;
+	}
+
+	public void setFocusMove(int focusMove) {
+		this.focusMove = focusMove;
+	}
+
+	public int getFocusMove() {
+		return focusMove;
+	}
+
+
+/*
+	///////////////////////////
+	// simpleDiagram Example //
+	///////////////////////////
+
+	&-diagramtype: simpleDiagram
+	&-colorscheme: wooddark
+	&-piecestyle: book
+	&-float: left
+	&-flip: false
+	&-prompt: false
+	&-coords: false
+	&-size: 45
+	&-lastmove:
+	&-focusnode:
+	&-beginnode:
+	&-endnode:
+	&-pgnbody:
+	[Date "????.??.??"]
+	[Result "*"]
+	[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"] *
+
+	//////////////////////////
+	// chessProblem Example //
+	//////////////////////////
+	&-diagramtype: chessProblem
+	&-colorscheme: blue
+	&-piecestyle: classic
+	&-float: left
+	&-flip: false
+	&-prompt: false
+	&-coords: false
+	&-size: 45
+	&-lastmove:
+	&-focusnode:
+	&-beginnode: 47
+	&-endnode:
+	&-pgnbody:
+	[Event "Berlin 'Evergreen'"]
+	[Site "?"]
+	[Date "1852.??.??"]
+	[Round "?"]
+	[White "Anderssen, A"]
+	[Black "Dufresne, J"]
+	[Result "1-0"]
+	[Plycount "47"]
+	[Opening "Evans G"]
+	1.e4 e5 2.Nf3 Nc6 3.Bc4 Bc5 4.b4 Bxb4 5.c3 Ba5 6.d4 exd4 7.O-O d3 8.Qb3 Qf6 9.e5
+	Qg6 10.Re1 Nge7 11.Ba3 b5 12.Qxb5 Rb8 13.Qa4 Bb6 14.Nbd2 Bb7 15.Ne4 Qf5 16.Bxd3
+	Qh5 17.Nf6+ gxf6 18.exf6 Rg8 19.Rad1 Qxf3 20.Rxe7+ Nxe7 21.Qxd7+ Kxd7 22.Bf5+ Ke8 23.Bd7+ Kf8 24.Bxe7# 1-0
+	 */
 }

@@ -514,41 +514,44 @@
 	<!--Theme-->
 	<color name="theme_customize_back">#FF669900</color>
 
-	<color name="parlor">#80895132</color>
-	<color name="newspaper">#805a5956</color>
-	<color name="marble">#80706b66</color>
-	<color name="grafitti">#80b96f18</color>
-	<color name="lantern">#80b59d64</color>
-	<color name="wood">#80765331</color>
-	<color name="stone">#80666463</color>
-	<color name="sand">#80b8a590</color>
-	<color name="vinyl">#80316549</color>
-	<color name="metal">#806e6e6e</color>
-	<color name="lolcatz">#80909898</color>
-	<color name="glass">#80282f3f</color>
-	<color name="neon">#80636363</color>
-	<color name="light">#80aaaaaa</color>
-	<color name="green_default">#80779952</color>
-	<color name="girlie">#80f9cdd3</color>
-	<color name="sky">#80c2d7e2</color>
+	<color name="coordinate_parlor_dark">#FF895132</color>
+	<color name="coordinate_newspaper_dark">#FF5a5956</color>
+	<color name="coordinate_marble_dark">#FF706b66</color>
+	<color name="coordinate_grafitti_dark">#FFb96f18</color>
+	<color name="coordinate_lantern_dark">#FFb59d64</color>
+	<color name="coordinate_wood_dark">#FF765331</color>
+	<color name="coordinate_stone_dark">#FF666463</color>
+	<color name="coordinate_sand_dark">#FFb8a590</color>
+	<color name="coordinate_vinyl_dark">#FF316549</color>
+	<color name="coordinate_metal_dark">#FF6e6e6e</color>
+	<color name="coordinate_lolcatz_dark">#FF909898</color>
+	<color name="coordinate_glass_dark">#FF282f3f</color>
+	<color name="coordinate_neon_dark">#FF636363</color>
+	<color name="coordinate_light_dark">#FFaaaaaa</color>
+	<color name="coordinate_green_default_dark">#FF779952</color>
+	<color name="coordinate_girlie_dark">#FFf9cdd3</color>
+	<color name="coordinate_sky_dark">#FFc2d7e2</color>
 
-	<color name="parlor">#80d9b088</color>
-	<color name="newspaper">#80d1d0c7</color>
-	<color name="marble">#80c7bdaa</color>
-	<color name="grafitti">#80aeaeae</color>
-	<color name="lantern">#80e5e1cb</color>
-	<color name="wood">#80ccb07a</color>
-	<color name="stone">#80c8c3bd</color>
-	<color name="sand">#80e5d3c4</color>
-	<color name="vinyl">#80ebece8</color>
-	<color name="metal">#80c9c9c9</color>
-	<color name="lolcatz">#80e0e9e9</color>
-	<color name="glass">#80667188</color>
-	<color name="neon">#80b9b9b9</color>
-	<color name="light">#80dcdcdc</color>
-	<color name="green_default">#80edeed1</color>
-	<color name="girlie">#80fff3f3</color>
-	<color name="sky">#80efefef</color>
+	<color name="coordinate_parlor_light">#FFd9b088</color>
+	<color name="coordinate_newspaper_light">#FFd1d0c7</color>
+	<color name="coordinate_marble_light">#FFc7bdaa</color>
+	<color name="coordinate_grafitti_light">#FFaeaeae</color>
+	<color name="coordinate_lantern_light">#FFe5e1cb</color>
+	<color name="coordinate_wood_light">#FFccb07a</color>
+	<color name="coordinate_stone_light">#FFc8c3bd</color>
+	<color name="coordinate_sand_light">#FFe5d3c4</color>
+	<color name="coordinate_vinyl">#FFebece8</color>
+	<color name="coordinate_metal_light">#FFc9c9c9</color>
+	<color name="coordinate_lolcatz_light">#FFe0e9e9</color>
+	<color name="coordinate_glass_light">#FF667188</color>
+	<color name="coordinate_neon_light">#FFb9b9b9</color>
+	<color name="coordinate_light_light">#FFdcdcdc</color>
+	<color name="coordinate_green_default_light">#FFedeed1</color>
+	<color name="coordinate_girlie_light">#FFfff3f3</color>
+	<color name="coordinate_sky_light">#FFefefef</color>
+
+	<!--Highlights colors-->
+	<color name="highlight_green_default">#80ffff33</color>
 
 
 </resources>

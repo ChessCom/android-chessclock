@@ -47,9 +47,16 @@ public class SettingsApiFragment extends LiveBaseFragment implements SwitchButto
 
 		testUsernameEdt.setText(getAppData().getTestUsername());
 		testPasswordEdt.setText(getAppData().getTestPassword());
-		prodUsernameEdt.setText(getAppData().getProdUsername());
-		prodPasswordEdt.setText(getAppData().getProdPassword());
-
+		if (!TextUtils.isEmpty(getAppData().getProdUsername())) {
+			prodUsernameEdt.setText(getAppData().getProdUsername());
+		} else {
+			prodUsernameEdt.setText(getUsername());
+		}
+		if (!TextUtils.isEmpty(getAppData().getProdPassword())) {
+			prodPasswordEdt.setText(getAppData().getProdPassword());
+		} else {
+			prodPasswordEdt.setText(getAppData().getPassword());
+		}
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import android.graphics.*;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -129,6 +130,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private int _3dPiecesOffsetDrag;
 	private int coordinateColorLight;
 	private int coordinateColorDark;
+	private int customHighlight;
+	private int[] customCoordinatesColors;
+	private String customPiecesName;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -260,6 +264,18 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		loadBoard();
 		loadPieces();
+		updateCustomColors();
+	}
+
+	private void updateCustomColors() {
+		if (customHighlight != 0) {
+			madeMovePaint.setColor(customHighlight);
+		}
+
+		if (customCoordinatesColors != null) {
+			coordinateColorLight = customCoordinatesColors[0];
+			coordinateColorDark = customCoordinatesColors[1];
+		}
 	}
 
 	protected BoardFace getBoardFace() {
@@ -283,7 +299,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (using3dPieces) {
 				getDrawingRect(clipBoundsRect);
 				int saveCount = canvas.save(Canvas.CLIP_SAVE_FLAG);
-				clipBoundsRect.set(clipBoundsRect.left, clipBoundsRect.top - (int) (28 * density), clipBoundsRect.right, clipBoundsRect.bottom);
+				clipBoundsRect.set(clipBoundsRect.left, clipBoundsRect.top - _3dPiecesOffsetDrag, clipBoundsRect.right, clipBoundsRect.bottom);
 				canvas.clipRect(clipBoundsRect, Region.Op.REPLACE);
 
 				drawPiecesAndAnimation(canvas);
@@ -1176,6 +1192,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (context == null) {
 			return;
 		}
+
+		if (!TextUtils.isEmpty(customPiecesName)) {
+			setDefaultPiecesByName(context, customPiecesName);
+			return;
+		}
+
 		if (getAppData().isUseThemePieces()) {
 			String piecesThemePath = appData.getThemePiecesPath();
 
@@ -1212,33 +1234,35 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				Bitmap pieceBitmap = createBitmapForPiece(filePath);
 				blackPiecesMap.put(i, pieceBitmap);
 			}
-
 		} else {
-
 			String themePiecesName = appData.getThemePiecesName();
-			if(themePiecesName.equals(context.getString(R.string.pieces_game))) {
-				setPieceBitmapFromArray(gamePiecesDrawableIds);
-			} else if (themePiecesName.equals(context.getString(R.string.pieces_alpha))) {
-				setPieceBitmapFromArray(alphaPiecesDrawableIds);
-			} else if (themePiecesName.equals(context.getString(R.string.pieces_book))) {
-				setPieceBitmapFromArray(bookPiecesDrawableIds);
-			} else if (themePiecesName.equals(context.getString(R.string.pieces_cases))) {
-				setPieceBitmapFromArray(casesPiecesDrawableIds);
-			} else if (themePiecesName.equals(context.getString(R.string.pieces_classic))) {
-				setPieceBitmapFromArray(classicPiecesDrawableIds);
-			} else if (themePiecesName.equals(context.getString(R.string.pieces_club))) {
-				setPieceBitmapFromArray(clubPiecesDrawableIds);
-			} else if (themePiecesName.equals(context.getString(R.string.pieces_condal))) {
-				setPieceBitmapFromArray(condalPiecesDrawableIds);
-			} else if (themePiecesName.equals(context.getString(R.string.pieces_maya))) {
-				setPieceBitmapFromArray(mayaPiecesDrawableIds);
-			} else if (themePiecesName.equals(context.getString(R.string.pieces_modern))) {
-				setPieceBitmapFromArray(modernPiecesDrawableIds);
-			} else if (themePiecesName.equals(context.getString(R.string.pieces_vintage))) {
-				setPieceBitmapFromArray(vintagePiecesDrawableIds);
-			} else { // if pieces wasn't selected yet, use default
-				setPieceBitmapFromArray(gamePiecesDrawableIds);
-			}
+			setDefaultPiecesByName(context, themePiecesName);
+		}
+	}
+
+	private void setDefaultPiecesByName(Context context, String themePiecesName) {
+		if(themePiecesName.equals(context.getString(R.string.pieces_game))) {
+			setPieceBitmapFromArray(gamePiecesDrawableIds);
+		} else if (themePiecesName.equals(context.getString(R.string.pieces_alpha))) {
+			setPieceBitmapFromArray(alphaPiecesDrawableIds);
+		} else if (themePiecesName.equals(context.getString(R.string.pieces_book))) {
+			setPieceBitmapFromArray(bookPiecesDrawableIds);
+		} else if (themePiecesName.equals(context.getString(R.string.pieces_cases))) {
+			setPieceBitmapFromArray(casesPiecesDrawableIds);
+		} else if (themePiecesName.equals(context.getString(R.string.pieces_classic))) {
+			setPieceBitmapFromArray(classicPiecesDrawableIds);
+		} else if (themePiecesName.equals(context.getString(R.string.pieces_club))) {
+			setPieceBitmapFromArray(clubPiecesDrawableIds);
+		} else if (themePiecesName.equals(context.getString(R.string.pieces_condal))) {
+			setPieceBitmapFromArray(condalPiecesDrawableIds);
+		} else if (themePiecesName.equals(context.getString(R.string.pieces_maya))) {
+			setPieceBitmapFromArray(mayaPiecesDrawableIds);
+		} else if (themePiecesName.equals(context.getString(R.string.pieces_modern))) {
+			setPieceBitmapFromArray(modernPiecesDrawableIds);
+		} else if (themePiecesName.equals(context.getString(R.string.pieces_vintage))) {
+			setPieceBitmapFromArray(vintagePiecesDrawableIds);
+		} else { // if pieces wasn't selected yet, use default
+			setPieceBitmapFromArray(gamePiecesDrawableIds);
 		}
 	}
 
@@ -1495,6 +1519,18 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		whitePiecesMap = null;
 		blackPiecesMap = null;
+	}
+
+	public void setCustomHighlight(int customHighlight) {
+		this.customHighlight = customHighlight;
+	}
+
+	public void setCustomCoordinatesColors(int[] customCoordinatesColors) {
+		this.customCoordinatesColors = customCoordinatesColors;
+	}
+
+	public void setCustomPiecesName(String customPiecesName) {
+		this.customPiecesName = customPiecesName;
 	}
 
 // todo: should be only one getYCoordinate method after refactoring

@@ -343,6 +343,11 @@
 	<string name="loading_pieces">Loading Pieces</string>
 	<string name="all_clear">All Clear</string>
 	<string name="select_style">Select Style</string>
+	<string name="diagram">Diagram</string>
+	<string name="white_to_move">White To Move</string>
+	<string name="black_to_move">Black To Move</string>
+	<string name="puzzle">Puzzle</string>
+	<string name="chess_game">Chess Game</string>
 
 
 </resources>

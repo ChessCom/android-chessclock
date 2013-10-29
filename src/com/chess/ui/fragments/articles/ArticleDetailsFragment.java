@@ -13,7 +13,6 @@ import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
 import android.view.*;
 import android.widget.*;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.RoboTextView;
 import com.chess.backend.LoadItem;
@@ -31,7 +30,6 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
-import com.chess.model.GameAnalysisItem;
 import com.chess.model.GameDiagramItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommentsCursorAdapter;
@@ -39,13 +37,14 @@ import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.*;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.game.GameDiagramFragment;
+import com.chess.ui.fragments.diagrams.GameDiagramFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.views.ControlledListView;
 import com.chess.ui.views.chess_boards.ChessBoardDiagramView;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.FontsHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -174,12 +173,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	public void onResume() {
 		super.onResume();
 
-		if (need2update) {
+//		if (need2update) {
 			loadFromDb();
-		} else {
-			articleImageFetcher.loadImage(new SmartImageFetcher.Data(articleImageUrl, widthPixels), articleImg.getImageView());
-			articleImageFetcher.loadImage(new SmartImageFetcher.Data(authorImgUrl, imageSize), authorImg.getImageView());
-		}
+//		} else {
+//			articleImageFetcher.loadImage(new SmartImageFetcher.Data(articleImageUrl, widthPixels), articleImg.getImageView());
+//			articleImageFetcher.loadImage(new SmartImageFetcher.Data(authorImgUrl, imageSize), authorImg.getImageView());
+//		}
 
 		diagramImageProcessor.setExitTasksEarly(false);
 	}
@@ -333,7 +332,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			return true;
 		} else {
 			contentTxt.setVisibility(View.VISIBLE);
-
+			updateComments();
 			return false;
 		}
 	}
@@ -402,18 +401,18 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 
 		final GameDiagramItem diagramItem = new GameDiagramItem();
-		diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
 		if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
 			diagramItem.setMovesList(diagramToShow.getMoveList());
-			diagramItem.setFen(diagramToShow.getFen());
+			diagramItem.setDiagramType(ArticleDetailsItem.CHESS_PROBLEM);
 		} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
 			diagramItem.setMovesList(diagramToShow.getMoveList());
-			diagramItem.setFen(diagramToShow.getFen());
+			diagramItem.setDiagramType(ArticleDetailsItem.CHESS_GAME);
 		} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
-			diagramItem.setFen(diagramToShow.getFen());
-		} else { // non valid format
-			return false;
+			diagramItem.setDiagramType(ArticleDetailsItem.SIMPLE_DIAGRAM);
 		}
+		diagramItem.setFen(diagramToShow.getFen());
+		diagramItem.setFlip(diagramToShow.getFlip());
+		diagramItem.setFocusMove(diagramToShow.getFocusNode());
 
 		getActivityFace().openFragment(GameDiagramFragment.createInstance(diagramItem));
 
@@ -534,23 +533,30 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					DbDataManager.saveArticlesDiagramItem(getContentResolver(), diagram);
 				}
 			}
-			updateComments();
 		}
 	}
 
-	private View createBoardView(GameAnalysisItem gameItem) {
+	private View createBoardView(GameDiagramItem diagramItem) {
 		ChessBoardDiagramView boardView = new ChessBoardDiagramView(getActivity());
 		boardView.setGameFace(gameFaceHelper);
+		boardView.setCustomPiecesName(getString(R.string.pieces_alpha));
 		boardView.setCustomBoard(R.drawable.board_green);
+		int highlightColor = getResources().getColor(R.color.highlight_green_default);
+
+		boardView.setCustomHighlight(highlightColor);
+
+		int coordinateColorLight = getResources().getColor(R.color.coordinate_green_default_light);
+		int coordinateColorDark = getResources().getColor(R.color.coordinate_green_default_dark);
+		boardView.setCustomCoordinatesColors(new int[]{coordinateColorLight, coordinateColorDark});
 
 		ChessBoardDiagram.resetInstance();
 		BoardFace boardFace = gameFaceHelper.getBoardFace();
 
-		if (gameItem.getGameType() == BaseGameItem.CHESS_960) {
+		if (diagramItem.getGameType() == BaseGameItem.CHESS_960) {
 			boardFace.setChess960(true);
 		}
 
-		String fen = gameItem.getFen();
+		String fen = diagramItem.getFen();
 		boardFace.setupBoard(fen);
 
 		// revert reside back, because for diagrams white is always at bottom
@@ -558,11 +564,26 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			boardFace.setReside(!boardFace.isReside());
 		}
 
+		if (diagramItem.isFlip()) {
+			boardFace.setReside(true);
+		}
+
 		// remove comments from movesList
-		String movesList = gameItem.getMovesList();
+		String movesList = diagramItem.getMovesList();
 		if (movesList != null) {
-			movesList = MovesParser.removeCommentsAndAlternatesFromMovesList(movesList);
+			movesList = boardFace.removeCommentsAndAlternatesFromMovesList(movesList);
 			boardFace.checkAndParseMovesList(movesList);
+			while(boardFace.takeBack()) {
+
+			}
+			if (diagramItem.getFocusMove() != 0) {
+				for (int i = 0; i < diagramItem.getFocusMove(); i++) {
+					Move move = boardFace.getNextMove();
+					if (move != null) {
+						boardFace.makeMove(move, false);
+					}
+				}
+			}
 		}
 
 		return boardView;
@@ -782,16 +803,14 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				ArticleDetailsItem.Diagram diagramToShow = item.diagram;
 				final GameDiagramItem diagramItem = new GameDiagramItem();
 				diagramItem.setShowAnimation(false);
-				diagramItem.setUserColor(ChessBoard.WHITE_SIDE);
 				if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
 					diagramItem.setMovesList(diagramToShow.getMoveList());
-					diagramItem.setFen(diagramToShow.getFen());
 				} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.CHESS_GAME) {
 					diagramItem.setMovesList(diagramToShow.getMoveList());
-					diagramItem.setFen(diagramToShow.getFen());
-				} else if (diagramToShow.getType() == ArticleDetailsItem.Diagram.SIMPLE) {
-					diagramItem.setFen(diagramToShow.getFen());
 				}
+				diagramItem.setFen(diagramToShow.getFen());
+				diagramItem.setFlip(diagramToShow.getFlip());
+				diagramItem.setFocusMove(diagramToShow.getFocusNode());
 
 				// create board with pieces based on diagram
 				View boardView = createBoardView(diagramItem);
