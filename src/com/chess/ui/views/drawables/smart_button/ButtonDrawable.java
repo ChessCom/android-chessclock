@@ -42,6 +42,9 @@ public class ButtonDrawable extends StateListDrawable {
 	public static final int[] STATE_PRESSED = new int[]{android.R.attr.state_pressed};
 	public static final int[] STATE_ENABLED = new int[]{android.R.attr.state_enabled};
 	public static final int[] STATE_DISABLED = new int[]{-android.R.attr.state_enabled};
+//	public static final int[] STATE_DEFAULT = new int[0];
+//	public static final int[] STATE_ACTIVE = new int[android.R.attr.state_active];
+//	public static final int[] STATE_ACTIVATED = new int[android.R.attr.state_activated];
 
 	ColorFilter enabledFilter;
 	ColorFilter pressedFilter;
@@ -113,6 +116,7 @@ public class ButtonDrawable extends StateListDrawable {
 
 	static InsetInfo insetOne = new InsetInfo();
 	static InsetInfo insetTwo = new InsetInfo();
+
 	static {
 		insetOne.top = new int[]{0, 0, 0, 1};
 		insetOne.left = new int[]{1, 0, 0, 1};
@@ -142,7 +146,7 @@ public class ButtonDrawable extends StateListDrawable {
 
 		parseAttributes(context, attrs);
 
-	    init(resources);
+		init(resources);
 	}
 
 	private void setDefaults() {
@@ -192,7 +196,7 @@ public class ButtonDrawable extends StateListDrawable {
 //		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.OVERLAY); // bad edges
 //		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.XOR);  // bad edges
 
-		List <LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
+		List<LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
 		List<LayerInfo> pressedLayers = new ArrayList<LayerInfo>();
 
 		if (useBorder) { // outer border
@@ -200,7 +204,7 @@ public class ButtonDrawable extends StateListDrawable {
 
 			RectF stroke = new RectF(strokeSize, strokeSize, strokeSize, strokeSize);
 			float[] outerRectBorder = new float[]{borderRadius, borderRadius, borderRadius, borderRadius,
-												  borderRadius, borderRadius, borderRadius, borderRadius};
+					borderRadius, borderRadius, borderRadius, borderRadius};
 
 			RectShape rectShape = new RoundRectShapeFixed(outerRectBorder, stroke, outerRectBorder);
 			ShapeDrawable shapeDrawable = new ShapeDrawable(rectShape);
@@ -223,9 +227,9 @@ public class ButtonDrawable extends StateListDrawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (!initialized) {
+//		if (!initialized) {
 			iniLayers(canvas);
-		}
+//		}
 		super.draw(canvas);
 	}
 
@@ -269,7 +273,7 @@ public class ButtonDrawable extends StateListDrawable {
 		}
 
 		int[] button = bevelLvl == 1 ? insetOne.button : insetTwo.button;
-		int	color = isSolid ? colorSolid : TRANSPARENT;
+		int color = isSolid ? colorSolid : TRANSPARENT;
 		createLayer(color, button, enabledLayers, true);
 
 		int levelCnt = enabledLayers.size();
@@ -288,6 +292,8 @@ public class ButtonDrawable extends StateListDrawable {
 
 		addState(STATE_ENABLED, enabledDrawable);
 		addState(STATE_DISABLED, enabledDrawable);
+
+		setState(STATE_ENABLED);
 	}
 
 	void createPressedState(List<LayerInfo> pressedLayers) {
@@ -304,7 +310,7 @@ public class ButtonDrawable extends StateListDrawable {
 		}
 
 		int[] button = bevelLvl == 1 ? insetOne.button : insetTwo.button;
-		int	color = isSolid ? colorSolidP : TRANSPARENT;
+		int color = isSolid ? colorSolidP : TRANSPARENT;
 		createLayer(color, button, pressedLayers, true);
 
 		int levelCnt = pressedLayers.size();
@@ -344,6 +350,7 @@ public class ButtonDrawable extends StateListDrawable {
 
 	/**
 	 * Set padding to internal cover only shape of LayerDrawables
+	 *
 	 * @param drawable to which we set padding must be ShapeDrawable
 	 */
 	void setPaddingToShape(ShapeDrawable drawable) {
@@ -432,6 +439,11 @@ public class ButtonDrawable extends StateListDrawable {
 	}
 
 	@Override
+	public boolean isStateful() {
+		return true;
+	}
+
+	@Override
 	protected boolean onStateChange(int[] states) {
 		boolean enabled = false;
 		boolean pressed = false;
@@ -472,7 +484,7 @@ public class ButtonDrawable extends StateListDrawable {
 		return super.onStateChange(states);
 	}
 
-	boolean callSuperOnStateChange(int[] states){
+	boolean callSuperOnStateChange(int[] states) {
 		return super.onStateChange(states);
 	}
 

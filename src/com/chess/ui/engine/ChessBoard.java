@@ -2015,11 +2015,8 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void switchSides() {
-		Log.d("TEST", " switchSides side before = " + side);
 		side ^= 1;
 		oppositeSide ^= 1;
-		Log.d("TEST", " switchSides side after = " + side);
-
 	}
 
 	@Override

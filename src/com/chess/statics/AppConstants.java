@@ -31,6 +31,7 @@ public class AppConstants {
 	public static final String LOCATION = "location";
 	public static final String USERNAME = "username";
 	public static final String PASSWORD = "password";
+	public static final String FACEBOOK_TOKEN = "facebook_token";
 	public static final String GUEST_NAME = "guest user";
 	public static final String LIVE_SESSION_ID = "live_session_id";
 //	public static final String API_VERSION = "api_version";

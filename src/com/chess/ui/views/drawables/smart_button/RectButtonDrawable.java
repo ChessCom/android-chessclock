@@ -52,7 +52,7 @@ public class RectButtonDrawable extends ButtonDrawable {
 	InsetInfo insetTwo = new InsetInfo();
 
 	/* state & other values */
-//	private boolean boundsInit;
+	private boolean boundsInit;
 	private Rect clipBounds;
 
 	/**
@@ -206,33 +206,33 @@ public class RectButtonDrawable extends ButtonDrawable {
 		int height = clipBounds.height();
 		switch (rectPosition) {
 			case TOP_LEFT:
-				enabledDrawable.setBounds(-edgeOffset, -edgeOffset, width + edgeOffset/2, height);
+				enabledDrawable.setBounds(-edgeOffset, -edgeOffset, width + edgeOffset / 2, height);
 				break;
 			case TOP_MIDDLE:
-				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, width + edgeOffset/2, height);
+				enabledDrawable.setBounds(-edgeOffset / 2, -edgeOffset, width + edgeOffset / 2, height);
 				break;
 			case TOP_RIGHT:
-				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, width + edgeOffset, height);
+				enabledDrawable.setBounds(-edgeOffset / 2, -edgeOffset, width + edgeOffset, height);
 				break;
 
 			case TAB_LEFT:
-				enabledDrawable.setBounds(-edgeOffset, 0, width + edgeOffset/2, height);
+				enabledDrawable.setBounds(-edgeOffset, 0, width + edgeOffset / 2, height);
 				break;
 			case TAB_MIDDLE:
-				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset/2, height);
+				enabledDrawable.setBounds(-edgeOffset / 2, 0, width + edgeOffset / 2, height);
 				break;
 			case TAB_RIGHT:
-				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset, height);
+				enabledDrawable.setBounds(-edgeOffset / 2, 0, width + edgeOffset, height);
 				break;
 
 			case BOTTOM_LEFT:
-				enabledDrawable.setBounds(-edgeOffset, 0, width + edgeOffset/2, height + edgeOffset);
+				enabledDrawable.setBounds(-edgeOffset, 0, width + edgeOffset / 2, height + edgeOffset);
 				break;
 			case BOTTOM_MIDDLE:
-				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset/2, height + edgeOffset);
+				enabledDrawable.setBounds(-edgeOffset / 2, 0, width + edgeOffset / 2, height + edgeOffset);
 				break;
 			case BOTTOM_RIGHT:
-				enabledDrawable.setBounds(-edgeOffset/2, 0, width + edgeOffset, height + edgeOffset);
+				enabledDrawable.setBounds(-edgeOffset / 2, 0, width + edgeOffset, height + edgeOffset);
 				break;
 			case LIST_ITEM: // TODO adjust with bitMask
 			case LIST_ITEM_HEADER:
@@ -241,17 +241,17 @@ public class RectButtonDrawable extends ButtonDrawable {
 			case LIST_ITEM_HEADER_DARK:
 			case LIST_ITEM_HEADER_2_DARK:
 				int width1 = canvas.getWidth();  // use full screen width to make backward compatibility
-				enabledDrawable.setBounds(-edgeOffset, -edgeOffset/2, width1 + edgeOffset, height);
+				enabledDrawable.setBounds(-edgeOffset, -edgeOffset / 2, width1 + edgeOffset, height);
 				break;
 
 			case SIDE_LEFT:
-				enabledDrawable.setBounds(0, -edgeOffset, width + edgeOffset/2, height + edgeOffset);
+				enabledDrawable.setBounds(0, -edgeOffset, width + edgeOffset / 2, height + edgeOffset);
 				break;
 			case SIDE_MIDDLE:
-				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, width + edgeOffset/2, height + edgeOffset);
+				enabledDrawable.setBounds(-edgeOffset / 2, -edgeOffset, width + edgeOffset / 2, height + edgeOffset);
 				break;
 			case SIDE_RIGHT:
-				enabledDrawable.setBounds(-edgeOffset/2, -edgeOffset, width, height + edgeOffset);
+				enabledDrawable.setBounds(-edgeOffset / 2, -edgeOffset, width, height + edgeOffset);
 				break;
 		}
 	}
@@ -300,17 +300,27 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 		addState(STATE_ENABLED, enabledDrawable);
 		addState(STATE_DISABLED, enabledDrawable);
+
+		setState(STATE_ENABLED);
+
+	}
+
+	@Override
+	public boolean isStateful() {
+		return true;
 	}
 
 	@Override
 	protected boolean onStateChange(int[] states) {
-//		boundsInit = false;
+		boundsInit = false;
+
 		return super.onStateChange(states);
 	}
 
 	@Override
 	protected void onBoundsChange(Rect bounds) {
-//		boundsInit = false;
+		boundsInit = false;
+		invalidateSelf();
 		super.onBoundsChange(bounds);
 	}
 

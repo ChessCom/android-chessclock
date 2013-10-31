@@ -41,6 +41,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 		loginUsernameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 		loginPasswordEdt = (EditText) view.findViewById(R.id.passwordEdt);
 		loginPasswordEdt.setOnEditorActionListener(this);
+		loginUsernameEdt.setOnTouchListener(this);
 		loginPasswordEdt.setOnTouchListener(this);
 
 		setLoginFields(loginUsernameEdt, loginPasswordEdt);
@@ -57,7 +58,6 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 			loginPasswordEdt.setText(getAppData().getPassword());
 		}
 	}
-
 
 	@Override
 	public void onPause() {
@@ -91,6 +91,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 	@Override
 	public boolean onTouch(View view, MotionEvent motionEvent) {
 		if (view.getId() == R.id.usernameEdt) {
+			loginUsernameEdt.setError(null);
 			loginUsernameEdt.setSelection(loginUsernameEdt.getText().length());
 		} else if (view.getId() == R.id.passwordEdt) {
 			loginPasswordEdt.setError(null);

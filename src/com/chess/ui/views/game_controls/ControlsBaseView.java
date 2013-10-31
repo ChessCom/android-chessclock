@@ -4,15 +4,18 @@ package com.chess.ui.views.game_controls;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.RoboButton;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.ui.views.drawables.smart_button.RectButtonDrawable;
+import com.chess.utilities.FontsHelper;
 
 import java.util.HashMap;
 
@@ -204,6 +207,16 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	public void enableGameButton(ButtonIds buttonId, boolean enable) {
 		findViewById(BUTTON_PREFIX + buttonId.ordinal()).setEnabled(enable);
+		Drawable drawable = findViewById(BUTTON_PREFIX + buttonId.ordinal()).getBackground();
+		if (drawable != null) {
+			if (drawable instanceof RectButtonDrawable) {
+				if (enable) {
+					drawable.mutate().setState(ButtonDrawable.STATE_ENABLED);
+				} else {
+					drawable.mutate().setState(ButtonDrawable.STATE_DISABLED);
+				}
+			}
+		}
 	}
 
 	public void lock(boolean lock) {

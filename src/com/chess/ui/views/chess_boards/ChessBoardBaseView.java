@@ -721,7 +721,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, whitePaint);
 				// draw piece
 				Bitmap pieceBitmap = getPieceBitmap(color, piece);
-
+				if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
+					return;
+				}
 				canvas.drawBitmap(pieceBitmap, null, rect, null);
 			}
 		}
@@ -1726,6 +1728,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	private Bitmap getPieceBitmap(int fromColor, int fromPiece) {
+		if (whitePiecesMap == null || blackPiecesMap == null) {
+			return null;
+		}
+
 		Bitmap pieceBitmap;
 		if (fromColor == ChessBoard.WHITE_SIDE) {
 			pieceBitmap = whitePiecesMap.get(fromPiece);

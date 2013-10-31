@@ -125,9 +125,9 @@ public class ButtonGlassyDrawable extends ButtonDrawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (!initialized) {
+//		if (!initialized) {
 			iniLayers(canvas);
-		}
+//		}
 		super.draw(canvas);
 	}
 
@@ -250,20 +250,20 @@ public class ButtonGlassyDrawable extends ButtonDrawable {
 
 		Drawable drawable = mutate();
 		if (enabled && pressed) {
-			drawable.setAlpha(enabledAlpha);
-			drawable.setState(STATE_PRESSED);
+			drawable.mutate().setAlpha(enabledAlpha);
+			drawable.mutate().setState(STATE_PRESSED);
 		} else if (enabled && selected) {
-			drawable.setAlpha(enabledAlpha);
-			drawable.setState(STATE_SELECTED);
+			drawable.mutate().setAlpha(enabledAlpha);
+			drawable.mutate().setState(STATE_SELECTED);
 		} else if (enabled && checked) {
-			drawable.setAlpha(enabledAlpha);
-			drawable.setState(STATE_SELECTED);
+			drawable.mutate().setAlpha(enabledAlpha);
+			drawable.mutate().setState(STATE_SELECTED);
 		} else if (!enabled) {
-			drawable.setAlpha(disabledAlpha);
+			drawable.mutate().setAlpha(disabledAlpha);
 		} else {
-			drawable.setColorFilter(enabledFilter);
-			drawable.setAlpha(enabledAlpha);
-			drawable.setState(STATE_ENABLED);
+			drawable.mutate().setColorFilter(enabledFilter);
+			drawable.mutate().setAlpha(enabledAlpha);
+			drawable.mutate().setState(STATE_ENABLED);
 		}
 
 		invalidateSelf();// need to update for pre-HC

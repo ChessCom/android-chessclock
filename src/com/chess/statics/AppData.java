@@ -91,13 +91,26 @@ public class AppData {
 		return preferences.getString(USERNAME, Symbol.EMPTY);
 	}
 
-	public void setUserName(String username) {
+	public void setUsername(String username) {
 		editor.putString(USERNAME, username).commit();
+	}
+
+	public void setPassword(String value) {
+		editor.putString(PASSWORD, value).commit();
 	}
 
 	public String getPassword() {
 		return preferences.getString(PASSWORD, Symbol.EMPTY);
 	}
+
+	public void setFacebookToken(String value) {
+		editor.putString(FACEBOOK_TOKEN, value).commit();
+	}
+
+	public String getFacebookToken() {
+		return preferences.getString(FACEBOOK_TOKEN, Symbol.EMPTY);
+	}
+
 
 	public void setBackgroundSetId(int value) {
 		setIntValue(PREF_BACKGROUND_SET, value);

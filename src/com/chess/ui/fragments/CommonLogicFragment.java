@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.*;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -208,12 +207,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		loginUpdateListener = new LoginUpdateListener();
 
-		LoginButton loginButton = (LoginButton) getView().findViewById(R.id.fb_connect);
-		if (loginButton != null) {
+		LoginButton facebookButton = (LoginButton) getView().findViewById(R.id.fb_connect);
+		if (facebookButton != null) {
 			facebookUiHelper = new UiLifecycleHelper(getActivity(), callback);
 			facebookUiHelper.onCreate(savedInstanceState);
 			facebookActive = true;
-			facebookInit(loginButton);
+			facebookInit(facebookButton);
 		}
 	}
 
@@ -340,7 +339,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			public void onUserInfoFetched(GraphUser user) {
 			}
 		});
-
 	}
 
 	protected Session.StatusCallback callback = new Session.StatusCallback() {
@@ -357,6 +355,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	private void loginWithFacebook(Session session) {
+		// save facebook access token to appData for future re-login
+		getAppData().setFacebookToken(session.getAccessToken());
+
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
@@ -546,10 +547,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getUsername());
-		loadItem.addRequestParams(RestHelper.P_PASSWORD, getAppData().getPassword());
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
+
+		if (TextUtils.isEmpty(getAppData().getPassword())) { // Login with facebook
+			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, getAppData().getFacebookToken());
+		} else { // login with credentials
+			loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getUsername());
+			loadItem.addRequestParams(RestHelper.P_PASSWORD, getAppData().getPassword());
+		}
 
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 	}
@@ -763,7 +769,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		getAppData().clearSavedCompGame();
 
 		// clear username
-		getAppData().setUserName(AppConstants.GUEST_NAME);
+		getAppData().setUsername(AppConstants.GUEST_NAME);
 	}
 
 	protected void clearTempData() {

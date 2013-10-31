@@ -88,6 +88,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private static final int FADE_ANIM_DURATION = 300;
 	private static final long DRAWER_APPEAR_DELAY = 100;
 	private static final long END_GAME_DELAY = 1000L;
+	public static final int BUTTONS_RE_ENABLE_DELAY = 400;
 	private FragmentTabsFace parentFace;
 
 	private ChessBoardCompView boardView;
@@ -399,6 +400,17 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		bottomPanelView.setPlayerName(labelsConfig.bottomPlayerLabel);
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
+
+		controlsCompView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsCompView.enableGameControls(true);
+			}
+		}, BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override
