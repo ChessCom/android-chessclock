@@ -1,20 +1,27 @@
-package com.chess.ui.fragments.live;
+package com.chess.ui.fragments.daily;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.statics.Symbol;
+import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCodes;
+import com.chess.backend.entity.api.DailySeekItem;
+import com.chess.backend.entity.api.VacationItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.SoundPlayer;
-import com.chess.ui.engine.configs.LiveGameConfig;
-import com.chess.ui.fragments.LiveBaseFragment;
+import com.chess.ui.engine.configs.DailyGameConfig;
+import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
-import com.chess.ui.fragments.popup_fragments.PopupLiveTimeOptionsFragment;
+import com.chess.ui.fragments.popup_fragments.PopupDailyTimeOptionsFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
@@ -22,42 +29,43 @@ import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.chess_boards.ChessBoardLiveView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 04.10.13
- * Time: 6:20
+ * Date: 31.10.13
+ * Time: 16:26
  */
-public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelectionFace, AdapterView.OnItemClickListener {
+public class DailyHomeFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
 	private static final String OPTION_SELECTION_TAG = "time options popup";
+	private static final String END_VACATION_TAG = "end vacation popup";
 
+	private List<DailyItem> featuresList;
 	private GameFaceHelper gameFaceHelper;
+	private DailyGameConfig.Builder gameConfigBuilder;
+	private int[] newGameButtonsArray;
 	private Button timeSelectBtn;
-	private PopupLiveTimeOptionsFragment timeOptionsFragment;
+	private PopupDailyTimeOptionsFragment timeOptionsFragment;
 	private TimeOptionSelectedListener timeOptionSelectedListener;
-	private String[] newGameButtonsArray;
-	private TextView onlinePlayersCntTxt;
-	private List<LiveItem> featuresList;
-	private LiveGameConfig.Builder liveGameConfigBuilder;
+	private CreateChallengeUpdateListener createChallengeUpdateListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		featuresList = new ArrayList<LiveItem>();
-		featuresList.add(new LiveItem(R.string.ic_binoculars, R.string.top_game));
-		featuresList.add(new LiveItem(R.string.ic_stats, R.string.stats));
-		featuresList.add(new LiveItem(R.string.ic_challenge_friend, R.string.friends));
-		featuresList.add(new LiveItem(R.string.ic_board, R.string.archive));
+		featuresList = new ArrayList<DailyItem>();
+		featuresList.add(new DailyItem(R.string.ic_stats, R.string.stats));
+		featuresList.add(new DailyItem(R.string.ic_challenge_friend, R.string.friends));
+		featuresList.add(new DailyItem(R.string.ic_board, R.string.archive));
 
-		liveGameConfigBuilder = new LiveGameConfig.Builder();
+		gameConfigBuilder = new DailyGameConfig.Builder();
 
 		gameFaceHelper = new GameFaceHelper();
+
+		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 		timeOptionSelectedListener = new TimeOptionSelectedListener();
 	}
 
@@ -70,33 +78,9 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.live);
+		setTitle(R.string.daily);
 
 		widgetsInit(view);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		getAppData().setLiveChessMode(true);
-		liveBaseActivity.connectLcc();
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		LiveItem liveItem = (LiveItem) parent.getItemAtPosition(position);
-
-		if (liveItem.iconId == R.string.ic_binoculars) {
-			getActivityFace().openFragment(LiveTopGameFragment.createInstance());
-		} else if (liveItem.iconId == R.string.ic_stats) {
-			getActivityFace().openFragment(StatsGameDetailsFragment.createInstance(
-					StatsGameFragment.LIVE_STANDARD, true, getUsername()));
-		} else if (liveItem.iconId == R.string.ic_challenge_friend) {
-			getActivityFace().openFragment(new FriendsFragment());
-		} else if (liveItem.iconId == R.string.ic_board) {
-			getActivityFace().openFragment(new LiveArchiveFragment());
-		}
 	}
 
 	@Override
@@ -109,36 +93,90 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 				return;
 			}
 
-			timeOptionsFragment = PopupLiveTimeOptionsFragment.createInstance(timeOptionSelectedListener);
+			timeOptionsFragment = PopupDailyTimeOptionsFragment.createInstance(timeOptionSelectedListener);
 			timeOptionsFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 		} else if (view.getId() == R.id.gamePlayBtn) {
-			createLiveChallenge();
+			createDailyChallenge();
 		} else if (view.getId() == R.id.newGameHeaderView) {
-			getActivityFace().changeRightFragment(LiveGameOptionsFragment.createInstance(CENTER_MODE));
+			getActivityFace().changeRightFragment(DailyGamesOptionsFragment.createInstance(CENTER_MODE));
 			getActivityFace().toggleRightMenu();
 		}
 	}
 
-	@Override
-	public void onValueSelected(int code) {
-		setDefaultTimeMode(code);
+	private void createDailyChallenge() {
+		// create challenge using formed configuration
+		DailyGameConfig dailyGameConfig = gameConfigBuilder.build();
 
-		timeOptionsFragment.dismiss();
-		timeOptionsFragment = null;
+		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), dailyGameConfig);
+		new RequestJsonTask<DailySeekItem>(createChallengeUpdateListener).executeTask(loadItem);
+	}
+
+	private class CreateChallengeUpdateListener extends ChessLoadUpdateListener<DailySeekItem> {
+
+		public CreateChallengeUpdateListener() {
+			super(DailySeekItem.class);
+		}
+
+		@Override
+		public void updateData(DailySeekItem returnedObj) {
+			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCodes.YOUR_ARE_ON_VACATAION) {
+					showPopupDialog(R.string.leave_vacation_to_play_q, END_VACATION_TAG);
+				} else {
+					super.errorHandle(resultCode);
+				}
+			}
+		}
 	}
 
 	@Override
-	public void onDialogCanceled() {
-		timeOptionsFragment = null;
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(END_VACATION_TAG)) {
+			LoadItem loadItem = LoadHelper.deleteOnVacation(getUserToken());
+			new RequestJsonTask<VacationItem>(new VacationUpdateListener()).executeTask(loadItem);
+
+		}
+		super.onPositiveBtnClick(fragment);
 	}
 
-	private void createLiveChallenge() {
-//		fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
-//		if (fragmentByTag == null) {
-//			fragmentByTag = new LiveGameWaitFragment();
-//		}
+	private class VacationUpdateListener extends ChessLoadUpdateListener<VacationItem> {
 
-		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
+		public VacationUpdateListener() {
+			super(VacationItem.class);
+		}
+
+		@Override
+		public void updateData(VacationItem returnedObj) {
+			showToast(R.string.vacation_off);
+		}
+	}
+
+	private class TimeOptionSelectedListener implements PopupListSelectionFace {
+
+		@Override
+		public void onValueSelected(int code) {
+			timeOptionsFragment.dismiss();
+			timeOptionsFragment = null;
+
+			setDefaultTimeMode(timeSelectBtn, code);
+		}
+
+		@Override
+		public void onDialogCanceled() {
+			timeOptionsFragment = null;
+		}
 	}
 
 	private void widgetsInit(View view) {
@@ -165,26 +203,20 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
 			startOverlayView.setLayoutParams(params);
 
-			// set online players cnt
-			onlinePlayersCntTxt = (TextView) headerView.findViewById(R.id.onlinePlayersCntTxt);
-			// TODO call api here
-			String playersOnlineStr = NumberFormat.getInstance().format(9745);
-
-			onlinePlayersCntTxt.setText(getString(R.string.players_online_arg, playersOnlineStr));
 		}
 
 		headerView.findViewById(R.id.newGameHeaderView).setOnClickListener(this);
 		headerView.findViewById(R.id.gamePlayBtn).setOnClickListener(this);
 
 		{ // Time mode adjustments
-			int mode = getAppData().getDefaultLiveMode();
+			int mode = getAppData().getDefaultDailyMode();
 			// set texts to buttons
-			newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
+			newGameButtonsArray = getResources().getIntArray(R.array.days_per_move_array);
 			// TODO add sliding from outside animation for time modes in popup
 			timeSelectBtn = (Button) headerView.findViewById(R.id.timeSelectBtn);
 			timeSelectBtn.setOnClickListener(this);
 
-			timeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
+			timeSelectBtn.setText(getDaysString(newGameButtonsArray[mode]));
 		}
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
@@ -197,22 +229,43 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		boardView.setGameFace(gameFaceHelper);
 	}
 
-	private static class LiveItem {
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		DailyItem dailyItem = (DailyItem) parent.getItemAtPosition(position);
+
+		if (dailyItem.iconId == R.string.ic_stats) {
+			getActivityFace().openFragment(StatsGameDetailsFragment.createInstance(
+					StatsGameFragment.DAILY_CHESS, true, getUsername()));
+		} else if (dailyItem.iconId == R.string.ic_challenge_friend) {
+			getActivityFace().openFragment(new FriendsFragment());
+		} else if (dailyItem.iconId == R.string.ic_board) {
+			getActivityFace().openFragment(new DailyGamesFragment());
+		}
+	}
+
+	private void setDefaultTimeMode(View view, int mode) {
+		view.setSelected(true);
+		timeSelectBtn.setText(getDaysString(newGameButtonsArray[mode]));
+		gameConfigBuilder.setDaysPerMove(newGameButtonsArray[mode]);
+		getAppData().setDefaultDailyMode(mode);
+	}
+
+	private static class DailyItem {
 		int iconId;
 		int labelId;
 
-		private LiveItem(int iconId, int labelId) {
+		private DailyItem(int iconId, int labelId) {
 			this.iconId = iconId;
 			this.labelId = labelId;
 		}
 	}
 
-	private class OptionsAdapter extends ItemsAdapter<LiveItem> {
+	private class OptionsAdapter extends ItemsAdapter<DailyItem> {
 
 		private final int sidePadding;
 		private final int whiteColor;
 
-		public OptionsAdapter(Context context, List<LiveItem> itemList) {
+		public OptionsAdapter(Context context, List<DailyItem> itemList) {
 			super(context, itemList);
 			sidePadding = (int) (8 * density);
 			whiteColor = resources.getColor(R.color.white);
@@ -240,9 +293,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		}
 
 		@Override
-		protected void bindView(LiveItem item, int pos, View convertView) {
+		protected void bindView(DailyItem item, int pos, View convertView) {
 			ViewHolder holder = (ViewHolder) convertView.getTag();
-
 
 			holder.nameTxt.setText(item.labelId);
 			holder.iconTxt.setText(item.iconId);
@@ -262,35 +314,4 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			return SoundPlayer.getInstance(getActivity());
 		}
 	}
-
-	private class TimeOptionSelectedListener implements PopupListSelectionFace {
-
-		@Override
-		public void onValueSelected(int code) {
-			timeOptionsFragment.dismiss();
-			timeOptionsFragment = null;
-
-			setDefaultTimeMode(code);
-		}
-
-		@Override
-		public void onDialogCanceled() {
-			timeOptionsFragment = null;
-		}
-	}
-
-	private String getLiveModeButtonLabel(String label) {
-		if (label.contains(Symbol.SLASH)) { // "5 | 2"
-			return label;
-		} else { // "10 min"
-			return getString(R.string.min_arg, label);
-		}
-	}
-
-	private void setDefaultTimeMode(int mode) {
-		timeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
-		liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[mode]);
-		getAppData().setDefaultLiveMode(mode);
-	}
-
 }

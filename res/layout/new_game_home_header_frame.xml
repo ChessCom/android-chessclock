@@ -23,7 +23,8 @@
 		android:gravity="center_vertical"
 		style="@style/ListItem.Header_2.Dark"
 		android:paddingLeft="8dip"
-		android:paddingRight="8dip">
+		android:paddingRight="8dip"
+		android:layout_marginTop="2dip">
 
 		<!--Icon-->
 		<com.chess.RoboTextView
@@ -37,6 +38,7 @@
 			android:id="@+id/liveChessHeaderTxt"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
+			android:paddingLeft="8dip"
 			android:layout_weight="1"
 			android:text="@string/new_game"
 			style="@style/HeaderTitle.Light" />
@@ -115,7 +117,7 @@
 				android:layout_height="wrap_content">
 				<!--Play! -->
 				<com.chess.RoboButton
-					android:id="@+id/livePlayBtn"
+					android:id="@+id/gamePlayBtn"
 					android:layout_width="0dip"
 					android:layout_height="wrap_content"
 					android:text="@string/new_play_ex"

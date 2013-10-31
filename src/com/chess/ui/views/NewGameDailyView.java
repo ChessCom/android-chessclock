@@ -277,6 +277,12 @@ public class NewGameDailyView extends NewGameDefaultView implements ItemClickLis
 			NewDailyGameButtonItem buttonItem = new NewDailyGameButtonItem();
 
 			buttonItem.days = label;
+			if (label> 1) {
+				buttonItem.label = context.getString(R.string.days_arg, label);
+			} else {
+				buttonItem.label = context.getString(R.string.day_arg, label);
+			}
+
 			buttonItem.label = context.getString(R.string.days_arg, label);
 			return buttonItem;
 		}

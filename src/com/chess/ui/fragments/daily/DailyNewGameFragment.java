@@ -135,7 +135,7 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 			getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
 			getActivityFace().toggleRightMenu();
 		} else {
-			handleLiveModeClicks(view);
+			handleTimeModeClicks(view);
 		}
 	}
 
@@ -244,13 +244,13 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 			timeButtonsModeMap.put(5, (Button) view.findViewById(R.id.time6SelectBtn));
 
 
-			int mode = getAppData().getDefaultLiveMode();
+			int mode = getAppData().getDefaultDailyMode();
 			darkBtnColor = getResources().getColor(R.color.text_controls_icons_white);
 			// set texts to buttons
 			newGameButtonsArray = getResources().getIntArray(R.array.days_per_move_array);
 			for (Map.Entry<Integer, Button> buttonEntry : timeButtonsModeMap.entrySet()) {
 				int key = buttonEntry.getKey();
-				buttonEntry.getValue().setText(getString(R.string.days_arg, newGameButtonsArray[key]));
+				buttonEntry.getValue().setText(getDaysString(newGameButtonsArray[key]));
 				buttonEntry.getValue().setOnClickListener(this);
 
 				if (positionMode == CENTER_MODE) {
@@ -264,17 +264,17 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 		}
 	}
 
-	private void handleLiveModeClicks(View view) {
+	private void handleTimeModeClicks(View view) {
 		int id = view.getId();
-		boolean liveModeButton = false;
+		boolean timeModeButton = false;
 		for (Button button : timeButtonsModeMap.values()) {
 			if (id == button.getId()) {
-				liveModeButton = true;
+				timeModeButton = true;
 				break;
 			}
 		}
 
-		if (liveModeButton) {
+		if (timeModeButton) {
 			for (Map.Entry<Integer, Button> buttonEntry : timeButtonsModeMap.entrySet()) {
 				Button button = buttonEntry.getValue();
 				button.setSelected(false);
@@ -287,7 +287,7 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 
 	private void setDefaultTimeMode(View view, int mode) {
 		view.setSelected(true);
-		dailyTimeSelectBtn.setText(getString(R.string.days_arg, newGameButtonsArray[mode]));
+		dailyTimeSelectBtn.setText(getDaysString(newGameButtonsArray[mode]));
 		gameConfigBuilder.setDaysPerMove(newGameButtonsArray[mode]);
 		getAppData().setDefaultDailyMode(mode);
 	}

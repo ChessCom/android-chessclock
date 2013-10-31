@@ -23,9 +23,7 @@ import java.util.Map;
  */
 public class PopupLiveTimeOptionsFragment extends SimplePopupDialogFragment implements View.OnClickListener {
 
-	private ArrayList<View> timeOptionsGroup;
 	private HashMap<Integer, Button> timeButtonsModeMap;
-	private String[] newGameButtonsArray;
 	private AppData appData;
 	private PopupListSelectionFace listener;
 
@@ -60,7 +58,7 @@ public class PopupLiveTimeOptionsFragment extends SimplePopupDialogFragment impl
 		int padding = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
 		view.setPadding(padding, padding, padding, padding);
 
-		timeOptionsGroup = new ArrayList<View>();
+		ArrayList<View> timeOptionsGroup = new ArrayList<View>();
 		timeOptionsGroup.add(view.findViewById(R.id.liveLabelStandardTxt));
 		timeOptionsGroup.add(view.findViewById(R.id.liveLabelBlitzTxt));
 		timeOptionsGroup.add(view.findViewById(R.id.liveLabelBulletTxt));
@@ -81,7 +79,7 @@ public class PopupLiveTimeOptionsFragment extends SimplePopupDialogFragment impl
 		for (View timeView : timeOptionsGroup) {
 			timeView.setVisibility(View.VISIBLE);
 		}
-		newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
+		String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
 		for (Map.Entry<Integer, Button> buttonEntry : timeButtonsModeMap.entrySet()) {
 			int key = buttonEntry.getKey();
 			Button button = buttonEntry.getValue();
@@ -107,14 +105,12 @@ public class PopupLiveTimeOptionsFragment extends SimplePopupDialogFragment impl
 	private void setDefaultTimeMode(View view, int mode) {
 		view.setSelected(true);
 		appData.setDefaultLiveMode(mode);
-
 	}
 
 	@Override
 	public void onClick(View view) {
 		handleLiveModeClicks(view);
 	}
-
 
 	private void handleLiveModeClicks(View view) {
 		int id = view.getId();

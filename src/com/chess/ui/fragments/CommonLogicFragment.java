@@ -870,4 +870,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		return new ImageGetter(getActivity(), textViewsImageCache, textView, sourceText, imageSize);
 	}
 
+	protected String getDaysString(int cnt) {
+		if (cnt > 1) {
+			return getString(R.string.days_arg, cnt);
+		} else {
+			return getString(R.string.day_arg, cnt);
+		}
+	}
+
 }

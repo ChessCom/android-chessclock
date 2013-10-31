@@ -9,6 +9,7 @@
     <string name="to">to</string>
 
 	<string name="leave_vacation_to_submit_move_q">Leave Vacation to submit move?</string>
+	<string name="leave_vacation_to_play_q">Leave Vacation to Play?</string>
     <string name="sign_up_with_facebook"><b>Sign Up</b> with <b>Facebook</b></string>
 	<string name="current_games">Current Games</string>
 	<string name="finished_games">Finished Games</string>
@@ -32,6 +33,7 @@
 
     <string name="new_play_ex">Play!</string>
     <string name="days_arg">%d days</string>
+    <string name="day_arg">%d day</string>
     <string name="photo">Photo</string>
     <string name="spinner">Spinner</string>
     <string name="vs_computer">vs Computer</string>

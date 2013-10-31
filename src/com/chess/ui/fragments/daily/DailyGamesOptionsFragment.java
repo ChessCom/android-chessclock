@@ -136,6 +136,8 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 			dailyHeaderView.setOnClickListener(this);
 		}
 
+		view.findViewById(R.id.ratedGameView).setOnClickListener(this);
+
 		{// options setup
 			gameTypeBtn = (Button) view.findViewById(R.id.gameTypeBtn);
 			gameTypeBtn.setOnClickListener(this);
@@ -369,6 +371,8 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 			}
 			optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);
 			optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
+		} else if (view.getId() == R.id.ratedGameView){
+			ratedGameSwitch.performClick();
 		} else if (view.getId() == R.id.playBtn){
 			createDailyChallenge();
 		}

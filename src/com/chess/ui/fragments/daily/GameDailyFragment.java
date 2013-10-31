@@ -347,7 +347,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			timeRemains = AppUtils.getTimeLeftFromSeconds(secondsRemain, getActivity());
 		}
 
-		String defaultTime = getString(R.string.days_arg, currentGame.getDaysPerMove());
+		String defaultTime = getDaysString(currentGame.getDaysPerMove());
 		boolean userMove = isUserMove();
 		if (userMove) {
 			labelsConfig.topPlayerTime = defaultTime;

@@ -18,7 +18,7 @@ import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.comp.GameCompFragment;
-import com.chess.ui.fragments.daily.DailyHomeTabsFragment;
+import com.chess.ui.fragments.daily.DailyHomeFragment;
 import com.chess.ui.fragments.forums.ForumCategoriesFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
@@ -128,9 +128,9 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_play_daily:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(DailyHomeTabsFragment.class.getSimpleName());
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(DailyHomeFragment.class.getSimpleName());
 				if (fragmentByTag == null) {
-					fragmentByTag = new DailyHomeTabsFragment();
+					fragmentByTag = new DailyHomeFragment();
 				}
 				break;
 			case R.drawable.ic_nav_play_live:
