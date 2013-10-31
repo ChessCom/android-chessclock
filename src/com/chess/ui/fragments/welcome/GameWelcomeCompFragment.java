@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
-import com.chess.utilities.FontsHelper;
 import com.chess.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.RoboTextView;
@@ -47,6 +46,7 @@ import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.ui.views.game_controls.ControlsCompView;
+import com.chess.utilities.FontsHelper;
 import com.nineoldandroids.animation.ObjectAnimator;
 import org.petero.droidfish.GameMode;
 
@@ -603,7 +603,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		handler.postDelayed(new Runnable() {  // TODO add logic to set another delay for Nexus 7, bcz sometimes it show nothing after game over
 			@Override
 			public void run() {
-				boolean userWon = !message.equals(getString(R.string.black_wins));
+				boolean userWon = !message.equals(getString(R.string.black_wins)); // how it works for Black user? and how it works for human vs. human mode?
 
 				topPanelView.resetPieces();
 				bottomPanelView.resetPieces();
@@ -706,6 +706,13 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.challenge_friend)), CHALLENGE_TAG);
 				break;
 			case REMATCH_ITEM:
+				int mode = compGameConfig.getMode();
+				if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE) {
+					compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK);
+				} else if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK) {
+					compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
+				}
+				getAppData().setCompGameMode(compGameConfig.getMode());
 				parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_FRAGMENT);
 				break;
 			case TACTICS_ITEM:
@@ -769,6 +776,16 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		slidingDrawer.setVisibility(View.GONE);
 		fadeBoardAnimator.reverse();
 		fadeDrawerAnimator.start();
+
+		startNewGame();
+	}
+
+	private void startNewGame() {
+		//ChessBoardComp.resetInstance();
+		getBoardFace().setMode(compGameConfig.getMode());
+		resideBoardIfCompWhite();
+		invalidateGameScreen();
+		startGame(null);
 	}
 
 	private class LabelsConfig {

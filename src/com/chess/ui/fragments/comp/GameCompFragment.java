@@ -156,6 +156,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	private void updateData() {
+		notationsView.resetNotations();
 		ChessBoardComp.resetInstance();
 
 		isAutoFlip = getAppData().isAutoFlipFor2Players();
@@ -487,6 +488,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	protected void restoreGame() {
+		//notationsView.resetNotations();
 		ChessBoardComp.resetInstance();
 		ChessBoardComp.getInstance(this).setJustInitialized(false);
 		boardView.setGameUiFace(this);
@@ -672,22 +674,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	private void startNewGame() {
+		notationsView.resetNotations();
 		ChessBoardComp.resetInstance();
 		getBoardFace().setMode(compGameConfig.getMode());
 		resideBoardIfCompWhite();
 		invalidateGameScreen();
-
-		if (!getBoardFace().isAnalysis()) {
-
-			boolean isComputerMove = (getAppData().isComputerVsComputerGameMode(getBoardFace()))
-					|| (getAppData().isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
-					|| (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
-
-			if (isComputerMove) {
-				computerMove();
-			}
-		}
-
 		startGame(null);
 	}
 
@@ -858,6 +849,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsCompView);
 		boardView.setNotationsView(notationsView);
+		notationsView.resetNotations();
 
 		boardView.setGameUiFace(this);
 		setBoardView(boardView);
