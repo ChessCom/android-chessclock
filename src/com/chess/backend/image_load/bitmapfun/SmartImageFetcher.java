@@ -179,8 +179,7 @@ public class SmartImageFetcher extends ImageFetcher {
 						}
 						DiskLruCache.Editor editor = mHttpDiskCache.edit(key);
 						if (editor != null) {
-							if (downloadUrlToStream(data.getUrl(),
-									editor.newOutputStream(DISK_CACHE_INDEX))) {
+							if (downloadUrlToStream(data.getUrl(), editor.newOutputStream(DISK_CACHE_INDEX))) {
 								editor.commit();
 							} else {
 								editor.abort();
@@ -189,8 +188,7 @@ public class SmartImageFetcher extends ImageFetcher {
 						snapshot = mHttpDiskCache.get(key);
 					}
 					if (snapshot != null) {
-						fileInputStream =
-								(FileInputStream) snapshot.getInputStream(DISK_CACHE_INDEX);
+						fileInputStream = (FileInputStream) snapshot.getInputStream(DISK_CACHE_INDEX);
 						fileDescriptor = fileInputStream.getFD();
 					}
 				} catch (IOException e) {

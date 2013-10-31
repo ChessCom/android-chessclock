@@ -53,7 +53,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		if (!DbDataManager.haveSavedFriends(getActivity(), getUsername())) {
 			getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class));
 		}
-		if (DbDataManager.haveSavedDailyStats(getActivity(), getUsername())) {
+		if (!DbDataManager.haveSavedDailyStats(getActivity(), getUsername())) {
 			// update stats in async intent service and save in Db there
 			getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 		}

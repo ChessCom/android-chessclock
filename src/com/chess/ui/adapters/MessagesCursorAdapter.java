@@ -2,8 +2,6 @@ package com.chess.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -62,8 +60,8 @@ public class MessagesCursorAdapter extends ItemsCursorAdapter {
 		imageFetcher.loadImage(imageDataMap.get(otherUserAvatarUrl), holder.photoImg.getImageView());
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_OTHER_USER_USERNAME));
-		Spanned message = Html.fromHtml(getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT));
-		holder.messageTxt.setText(message);
+		loadTextWithImage(holder.messageTxt, getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT));
+
 		long timeAgo = getLong(cursor, DbScheme.V_CREATE_DATE);
 		String lastDate = AppUtils.getMomentsAgoFromSeconds(timeAgo, context);
 		holder.messageDateTxt.setText(lastDate);

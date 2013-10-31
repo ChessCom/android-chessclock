@@ -416,6 +416,13 @@ public class ButtonDrawableBuilder {
 
 				return rectButtonDrawable;
 			}
+			case R.style.Rect_Bottom_Middle_Green: {
+				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+				rectButtonDrawable.rectPosition = BOTTOM_MIDDLE;
+				createRect(rectButtonDrawable, resources, R.color.light_green_button);
+
+				return rectButtonDrawable;
+			}
 			case R.style.Rect_Bottom_Right_LightGrey: {
 				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 				rectButtonDrawable.rectPosition = BOTTOM_RIGHT;

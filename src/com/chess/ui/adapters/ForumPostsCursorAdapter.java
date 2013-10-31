@@ -34,8 +34,6 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 	private final int imageSize;
 	private final SparseArray<String> countryMap;
 	private final SparseArray<Drawable> countryDrawables;
-	private final ImageGetter imageGetter;
-	private final MyHtmlTagHandler myHtmlTagHandler;
 	private final ItemClickListenerFace clickFace;
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
@@ -51,9 +49,6 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 			countryMap.put(countryCodes[i], countryNames[i]);
 		}
 		countryDrawables = new SparseArray<Drawable>();
-
-		imageGetter = new ImageGetter();
-		myHtmlTagHandler = new MyHtmlTagHandler();
 
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
@@ -87,8 +82,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_USERNAME));
 		holder.commentNumberTxt.setText("# " + getInt(cursor, DbScheme.V_NUMBER));
-		holder.bodyTxt.setText(Html.fromHtml(getString(cursor, DbScheme.V_DESCRIPTION), imageGetter, myHtmlTagHandler));
-//		holder.bodyTxt.setText(getString(cursor, DbScheme.V_DESCRIPTION));
+		loadTextWithImage(holder.bodyTxt, getString(cursor, DbScheme.V_DESCRIPTION));
 
 		long timestamp = getLong(cursor, DbScheme.V_CREATE_DATE);
 		String lastCommentAgoStr = AppUtils.getMomentsAgoFromSeconds(timestamp, context);
@@ -167,16 +161,6 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 				}
 				return null;
 			}
-		}
-	}
-
-	private class ImageGetter implements Html.ImageGetter {
-
-		@Override
-		public Drawable getDrawable(String source) {
-			Drawable drawable = resources.getDrawable(R.drawable.img_profile_picture_stub);
-			drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-			return drawable;
 		}
 	}
 }

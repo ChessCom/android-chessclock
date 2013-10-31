@@ -262,39 +262,46 @@ public class MovesParser {
 		}
 
 		// detect piece that was moved
-		for (int squareFrom = 0; squareFrom < 64; squareFrom++) {
-			if (board.pieces[squareFrom] == pieceType && board.colors[squareFrom] == board.getSide()) {
-				for (Move validMove : validMoves) {
-					if (validMove.from == squareFrom && validMove.to == squareTo) {
-						if (pieceType == BISHOP) { // TODO investigate why we have only BISHOP check here???
-							if (board.getBoardColor()[squareFrom] == board.getBoardColor()[squareTo]) {
-								return new int[]{squareFrom, squareTo, promotion};
-							}
-						} else if (pieceType == PAWN) { // failed on xb5
-							// what do we check here???
-							if (!fromFile.equals(Symbol.EMPTY)) {
-								if (currentMove.contains(CAPTURE_MARK)
-										&& 8 - fileToIntPosition(fromFile) != ChessBoard.getFile(squareFrom)) {
-									break;
-								}
-							}
+		for (int squareFrom = 0; squareFrom < ChessBoard.SQUARES_CNT; squareFrom++) {
+			// if it's not our piece then skip
+			if (board.pieces[squareFrom] != pieceType || board.colors[squareFrom] != board.getSide()) {
+				continue;
+			}
 
+			for (Move validMove : validMoves) {
+//				Log.d("TEST", " pieceType = " + pieceType + " valid move from " + validMove.from
+// 															+ " validMove.to = " + validMove.to);
+				// if valid move doesn't include our move then skip
+				if (validMove.from != squareFrom || validMove.to != squareTo) {
+					continue;
+				}
 
-							if (currentMove.contains(WHITE_QUEEN)) {
-								promotion = QUEEN;
-							} else if (currentMove.contains(WHITE_ROOK)) {
-								promotion = ROOK;
-							} else if (currentMove.contains(WHITE_BISHOP)) {
-								promotion = BISHOP;
-							} else if (currentMove.contains(WHITE_KNIGHT)) {
-								promotion = KNIGHT;
-							}
-
-							return new int[]{squareFrom, squareTo, promotion, validMove.bits};
-						} else {
-							return new int[]{squareFrom, squareTo, promotion};
+				if (pieceType == BISHOP) { // TODO investigate why we have only BISHOP check here???
+					if (board.getBoardColor()[squareFrom] == board.getBoardColor()[squareTo]) {
+						return new int[]{squareFrom, squareTo, promotion};
+					}
+				} else if (pieceType == PAWN) {
+					// what do we check here???
+					if (!fromFile.equals(Symbol.EMPTY)) {
+						if (currentMove.contains(CAPTURE_MARK)
+								&& 8 - fileToIntPosition(fromFile) != ChessBoard.getFile(squareFrom)) {
+							break;
 						}
 					}
+
+					if (currentMove.contains(WHITE_QUEEN)) {
+						promotion = QUEEN;
+					} else if (currentMove.contains(WHITE_ROOK)) {
+						promotion = ROOK;
+					} else if (currentMove.contains(WHITE_BISHOP)) {
+						promotion = BISHOP;
+					} else if (currentMove.contains(WHITE_KNIGHT)) {
+						promotion = KNIGHT;
+					}
+
+					return new int[]{squareFrom, squareTo, promotion, validMove.bits};
+				} else {
+					return new int[]{squareFrom, squareTo, promotion};
 				}
 			}
 		}
@@ -364,7 +371,9 @@ public class MovesParser {
 					String actualMoveBeforeComment = movesBeforeComment.substring(0, indexOfMoveBeforeComment);
 					int moveIndex = actualMoveBeforeComment.lastIndexOf(Symbol.SPACE);
 
-					actualMoveBeforeComment = actualMoveBeforeComment.substring(moveIndex );
+					if (moveIndex > 0) {
+						actualMoveBeforeComment = actualMoveBeforeComment.substring(moveIndex);
+					}
 					moveBeforeComment = actualMoveBeforeComment
 							.replace(moveBeforeComment, annotationsMapping.get(keyForSpecialSymbol))
 							.trim();

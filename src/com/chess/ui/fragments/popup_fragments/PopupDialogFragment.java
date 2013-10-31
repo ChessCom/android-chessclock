@@ -108,6 +108,30 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 				break;
 		}
 
+		switch (popupItem.getButtonToShow()) {
+			case PopupItem.NEGATIVE:
+				negativeBtn.setVisibility(View.VISIBLE);
+				neutralBtn.setVisibility(View.GONE);
+				positiveBtn.setVisibility(View.GONE);
+				break;
+			case PopupItem.NEUTRAL:
+				negativeBtn.setVisibility(View.GONE);
+				neutralBtn.setVisibility(View.VISIBLE);
+				positiveBtn.setVisibility(View.GONE);
+				break;
+			case PopupItem.POSITIVE:
+				negativeBtn.setVisibility(View.GONE);
+				neutralBtn.setVisibility(View.GONE);
+				positiveBtn.setVisibility(View.VISIBLE);
+				break;
+			case PopupItem.NEGATIVE_GREEN:
+				negativeBtn.setDrawableStyle(R.style.Rect_Bottom_Middle_Green);
+				negativeBtn.setVisibility(View.VISIBLE);
+				neutralBtn.setVisibility(View.GONE);
+				positiveBtn.setVisibility(View.GONE);
+				break;
+		}
+
 		if (popupItem.getPositiveBtnId() != R.string.ic_check) {
 			positiveBtn.setFont(FontsHelper.BOLD_FONT);
 			positiveBtn.setTextSize(getResources().getDimensionPixelSize(R.dimen.default_button_text_size) / density);

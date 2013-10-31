@@ -35,7 +35,10 @@ import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommentsCursorAdapter;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.engine.*;
+import com.chess.ui.engine.ChessBoardDiagram;
+import com.chess.ui.engine.FenHelper;
+import com.chess.ui.engine.Move;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.diagrams.GameDiagramFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
@@ -128,6 +131,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private String authorImgUrl;
 	private String articleImageUrl;
 	private int infoTextSize;
+	private CharSequence authorStr;
+	private String titleStr;
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
 		ArticleDetailsFragment frag = new ArticleDetailsFragment();
@@ -173,12 +178,17 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	public void onResume() {
 		super.onResume();
 
-//		if (need2update) {
+		if (need2update) {
 			loadFromDb();
-//		} else {
-//			articleImageFetcher.loadImage(new SmartImageFetcher.Data(articleImageUrl, widthPixels), articleImg.getImageView());
-//			articleImageFetcher.loadImage(new SmartImageFetcher.Data(authorImgUrl, imageSize), authorImg.getImageView());
-//		}
+		} else {
+			loadTextWithImage(titleTxt, titleStr);
+			authorTxt.setText(authorStr);
+			if (bodyStr.contains(DIAGRAM_START_TAG)) {
+				loadTextWithImage(contentTxt, bodyStr);
+			}
+			articleImageFetcher.loadImage(new SmartImageFetcher.Data(articleImageUrl, widthPixels), articleImg.getImageView());
+			articleImageFetcher.loadImage(new SmartImageFetcher.Data(authorImgUrl, imageSize), authorImg.getImageView());
+		}
 
 		diagramImageProcessor.setExitTasksEarly(false);
 	}
@@ -224,7 +234,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
 			CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
 			String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
-			CharSequence authorStr;
 			if (TextUtils.isEmpty(chessTitle)) {
 				authorStr = firstName + Symbol.SPACE + lastName;
 			} else {
@@ -239,7 +248,9 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			} catch (IllegalArgumentException ex) {
 				url = Symbol.EMPTY;
 			}
-			titleTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_TITLE)));
+			titleStr = DbDataManager.getString(cursor, DbScheme.V_TITLE);
+			loadTextWithImage(titleTxt, titleStr);
+
 			authorImgUrl = DbDataManager.getString(cursor, DbScheme.V_USER_AVATAR);
 			articleImageFetcher.loadImage(new SmartImageFetcher.Data(authorImgUrl, imageSize), authorImg.getImageView());
 
@@ -268,7 +279,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			long createDate = DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE) * 1000L;
 			dateTxt.setText(dateFormatter.format(new Date(createDate)));
 			bodyStr = DbDataManager.getString(cursor, DbScheme.V_BODY);
-			contentTxt.setText(Html.fromHtml(bodyStr));
+			loadTextWithImage(contentTxt, bodyStr);
 
 			diagramsList = DbDataManager.getArticleDiagramItemFromDb(getContentResolver(), getUsername());
 
@@ -524,7 +535,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				loadDiagramsFromContent(bodyStr, diagramsList);
 			}
 
-			contentTxt.setText(Html.fromHtml(bodyStr)); // Shouldn't be used if complex view is used
+			loadTextWithImage(contentTxt, bodyStr); // Shouldn't be used if complex view is used
 
 			DbDataManager.saveArticleItem(getContentResolver(), articleData, true);
 
@@ -839,7 +850,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				diagramImageProcessor.loadImage(data, holder.imageView);
 
 				// set text content
-				holder.contentTxt.setText(Html.fromHtml(item.textStr));
+				loadTextWithImage(holder.contentTxt, item.textStr);
 
 				// add tags to handle clicks
 				holder.contentTxt.setTag(itemListId, pos);
@@ -879,7 +890,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					contentPart = diagramPart.substring(diagramPart.indexOf("</div>") + "</div>".length());
 				}
 
-				holder.contentTxt.setText(Html.fromHtml(contentPart));
+				loadTextWithImage(holder.contentTxt, contentPart);
 			}
 		}
 

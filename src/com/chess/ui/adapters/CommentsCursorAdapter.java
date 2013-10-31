@@ -3,7 +3,6 @@ package com.chess.ui.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.SparseArray;
 import android.view.View;
@@ -88,7 +87,8 @@ public class CommentsCursorAdapter extends ItemsCursorAdapter {
 		String lastDate = AppUtils.getMomentsAgoFromSeconds(timeAgo, context);
 		holder.dateTxt.setText(lastDate);
 
-		holder.bodyTxt.setText(Html.fromHtml(getString(cursor, DbScheme.V_BODY)));
+		loadTextWithImage(holder.bodyTxt, getString(cursor, DbScheme.V_BODY));
+
 	}
 
 	private static class ViewHolder {

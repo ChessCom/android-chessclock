@@ -9,7 +9,6 @@ import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.widget.EditText;
-import android.widget.Toast;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
@@ -215,7 +214,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
-				new RequestJsonTask<GcmItem>(new PostUpdateListener(REQUEST_REGISTER)).execute(loadItem);
+				new RequestJsonTask<GcmItem>(new GcmRegisterUpdateListener(REQUEST_REGISTER)).execute(loadItem);
 			}
 		}
 	}
@@ -227,10 +226,10 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		GCMRegistrar.unregister(this);
 	}
 
-	protected class PostUpdateListener extends AbstractUpdateListener<GcmItem> {
+	protected class GcmRegisterUpdateListener extends AbstractUpdateListener<GcmItem> {
 		private int requestCode;
 
-		public PostUpdateListener(int requestCode) {
+		public GcmRegisterUpdateListener(int requestCode) {
 			super(CommonLogicActivity.this, GcmItem.class);
 			this.requestCode = requestCode;
 		}
@@ -254,10 +253,25 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
                         break;
                 }
             } else {
-                if (requestCode == GcmHelper.REQUEST_REGISTER && getContext() != null) {
-                    Toast.makeText(getContext(), R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
-                }
+				if (returnedObj.getCode() == ServerErrorCodes.YOUR_GCM_ID_ALREADY_REGISTERED) {
+					GCMRegistrar.setRegisteredOnServer(getContext(), true);
+					appData.registerOnChessGCM(appData.getUserToken());
+				}
+
+//              if (requestCode == GcmHelper.REQUEST_REGISTER && getContext() != null) {
+//                  Toast.makeText(getContext(), R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
+//              }
             }
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (resultCode == ServerErrorCodes.YOUR_GCM_ID_ALREADY_REGISTERED) {
+				GCMRegistrar.setRegisteredOnServer(getContext(), true);
+				appData.registerOnChessGCM(appData.getUserToken());
+			} else {
+				super.errorHandle(resultCode);
+			}
 		}
 	}
 

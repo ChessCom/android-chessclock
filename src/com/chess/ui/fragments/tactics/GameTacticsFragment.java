@@ -985,6 +985,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		bottomPanelView.setPlayerScore(currentRating);
 
+//		r6k/1ppqNQp1/p6p/3Pp3/6P1/2P4P/P1P3K1/8 b - - 0 1
 //		boardFace.setupBoard("r1q2r1k/3bb2p/p1p1N3/3pp2Q/6R1/2P1R3/1P3PPP/2B3K1 b - - 1 1"); // use as an example of disambiguation move
 		boardFace.setupBoard(trainerData.getInitialFen());
 
@@ -995,6 +996,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		// reside board for user to move
 		boardFace.setReside(!boardFace.isReside());
 
+//		boardFace.setPuzzleMoves("1... Re8 2. Ng6+ Kh7 3. Qxd7");
 //		boardFace.setPuzzleMoves("1... Bxe6 2. Qxh7+ Kxh7 3. Rh3+ Bh4 4. R3xh4#");
 		boardFace.setTacticMoves(trainerData.getCleanMoveString());
 		boardFace.setMovesCount(1);

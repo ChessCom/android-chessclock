@@ -2,13 +2,18 @@ package com.chess.ui.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.image_load.ImageGetter;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class ItemsAdapter<T> extends BaseAdapter {
@@ -20,6 +25,8 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 	protected LayoutInflater inflater;
 	protected int itemListId;
 	protected SmartImageFetcher imageFetcher;
+	private int screenWidth;
+	private HashMap<String, ImageGetter.TextImage> textViewsImageCache;
 
 	public ItemsAdapter(Context context, List<T> itemList, SmartImageFetcher imageFetcher) {
 		this.imageFetcher = imageFetcher;
@@ -37,6 +44,9 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 		density = resources.getDisplayMetrics().density;
 		inflater = LayoutInflater.from(context);
 		itemListId = R.id.list_item_id;
+
+		screenWidth = resources.getDisplayMetrics().widthPixels;
+		textViewsImageCache = new HashMap<String, ImageGetter.TextImage>();
 	}
 
 	public void setItemsList(List<T> list) {
@@ -77,4 +87,15 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 
 	protected abstract void bindView(T item, int pos, View convertView);
 
+	protected void loadTextWithImage(TextView textView, String sourceStr) {
+		textView.setText(Html.fromHtml(sourceStr, getImageGetter(textView, sourceStr), null));
+	}
+
+	protected ImageGetter getImageGetter(TextView textView, String sourceStr) {
+		return new ImageGetter(context, textViewsImageCache, textView, sourceStr, screenWidth);
+	}
+
+	protected ImageGetter getImageGetter(TextView textView, String sourceText, int imageSize) {
+		return new ImageGetter(context, textViewsImageCache, textView, sourceText, imageSize);
+	}
 }

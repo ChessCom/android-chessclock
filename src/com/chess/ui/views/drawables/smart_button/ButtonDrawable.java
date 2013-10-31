@@ -453,18 +453,18 @@ public class ButtonDrawable extends StateListDrawable {
 		Drawable drawable = mutate();
 		if (enabled && pressed) {
 			drawable.mutate().setColorFilter(pressedFilter);
-			drawable.setAlpha(enabledAlpha);
+			drawable.mutate().setAlpha(enabledAlpha);
 		} else if (enabled && selected) {
 			drawable.mutate().setColorFilter(selectedFilter);
-			drawable.setAlpha(enabledAlpha);
+			drawable.mutate().setAlpha(enabledAlpha);
 		} else if (enabled && checked) {
 			drawable.mutate().setColorFilter(checkedFilter);
-			drawable.setAlpha(enabledAlpha);
+			drawable.mutate().setAlpha(enabledAlpha);
 		} else if (!enabled) {
-			drawable.setAlpha(disabledAlpha);
+			drawable.mutate().setAlpha(disabledAlpha);
 		} else {
 			drawable.mutate().setColorFilter(enabledFilter);
-			drawable.setAlpha(enabledAlpha);
+			drawable.mutate().setAlpha(enabledAlpha);
 		}
 
 		invalidateSelf();// need to update for pre-HC

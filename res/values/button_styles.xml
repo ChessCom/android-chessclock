@@ -475,6 +475,18 @@
         <item name="btn_solid">@color/light_green_button</item>
     </style>
 
+    <style name="Rect.Bottom.Left.Green">
+        <item name="btn_rect_pos">bottomLeft</item>
+
+        <item name="btn_solid">@color/light_green_button</item>
+    </style>
+
+    <style name="Rect.Bottom.Middle.Green">
+        <item name="btn_rect_pos">bottomMiddle</item>
+
+        <item name="btn_solid">@color/light_green_button</item>
+    </style>
+
     <style name="Rect.Bottom.Right.Blue">
         <item name="btn_rect_pos">bottomRight</item>
 

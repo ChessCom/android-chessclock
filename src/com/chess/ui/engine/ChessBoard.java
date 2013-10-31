@@ -83,18 +83,10 @@ public class ChessBoard implements BoardFace {
 	public static final char WHITE_KING_CHAR = 'K';
 	public static final String TAG = "ChessBoard";
 	public static final int SQUARES_CNT = 64;
+	private static final int INVALID_POSITION = -1;
 	protected final MovesParser movesParser;
 
-	public static enum Board {
-		A8, B8, C8, D8, E8, F8, G8, H8,
-		A7, B7, C7, D7, E7, F7, G7, H7,
-		A6, B6, C6, D6, E6, F6, G6, H6,
-		A5, B5, C5, D5, E5, F5, G5, H5,
-		A4, B4, C4, D4, E4, F4, G4, H4,
-		A3, B3, C3, D3, E3, F3, G3, H3,
-		A2, B2, C2, D2, E2, F2, G2, H2,
-		A1, B1, C1, D1, E1, F1, G1, H1
-	}
+
 
 	static final int CAPTURE_PIECE_SCORE = 1000000;
 
@@ -135,6 +127,17 @@ public class ChessBoard implements BoardFace {
 	public static final String[] whitePieceImageCodes = new String[]{"wp","wn","wb","wr","wq","wk"};
 	public static final String[] blackPieceImageCodes = new String[]{"bp","bn","bb","br","bq","bk"};
 
+	public static enum Board {
+		A8, B8, C8, D8, E8, F8, G8, H8,
+		A7, B7, C7, D7, E7, F7, G7, H7,
+		A6, B6, C6, D6, E6, F6, G6, H6,
+		A5, B5, C5, D5, E5, F5, G5, H5,
+		A4, B4, C4, D4, E4, F4, G4, H4,
+		A3, B3, C3, D3, E3, F3, G3, H3,
+		A2, B2, C2, D2, E2, F2, G2, H2,
+		A1, B1, C1, D1, E1, F1, G1, H1
+	}
+
 	final static int boardColor[] = {
 			0, 1, 0, 1, 0, 1, 0, 1,
 			1, 0, 1, 0, 1, 0, 1, 0,
@@ -170,36 +173,36 @@ public class ChessBoard implements BoardFace {
 	};
 
 	final char pieceChar[] = {'P', 'N', 'B', 'R', 'Q', 'K'};
+									 // PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING
+	private boolean possibleToSlide[] = {false, false, true, true, true, false};
+	                      // PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING
+	private int piecesMovesWays[] = {0, 8, 4, 4, 8, 8}; // 8 means all around(8 ways to move), 4 is only four ways to move
 
-	private boolean slide[] = {false, false, true, true, true, false};
-
-	private int offsets[] = {0, 8, 4, 4, 8, 8};
-
-	private int offset[][] = {
-			{ 0,   0,   0,   0,  0,  0,  0,  0},
-			{-21, -19, -12, -8,  8, 12, 19, 21},
-			{-11, -9,   9,  11,  0,  0,  0,  0},
-			{-10, -1,   1,  10,  0,  0,  0,  0},
-			{-11, -10, -9,  -1,  1,  9, 10, 11},
-			{-11, -10, -9,  -1,  1,  9, 10, 11}
+	private int piecesOffsets[][] = {
+			{ 0,   0,   0,   0,  0,  0,  0,  0}, // PAWN
+			{-21, -19, -12, -8,  8, 12, 19, 21}, // KNIGHT
+			{-11, -9,   9,  11,  0,  0,  0,  0}, // BISHOP
+			{-10, -1,   1,  10,  0,  0,  0,  0}, // ROOK
+			{-11, -10, -9,  -1,  1,  9, 10, 11}, // QUEEN
+			{-11, -10, -9,  -1,  1,  9, 10, 11}  // KING
 	};
 
-	int mailbox[] = {
-			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-			-1, 0, 1, 2, 3, 4, 5, 6, 7, -1,
-			-1, 8, 9, 10, 11, 12, 13, 14, 15, -1,
-			-1, 16, 17, 18, 19, 20, 21, 22, 23, -1,
-			-1, 24, 25, 26, 27, 28, 29, 30, 31, -1,
-			-1, 32, 33, 34, 35, 36, 37, 38, 39, -1,
-			-1, 40, 41, 42, 43, 44, 45, 46, 47, -1,
-			-1, 48, 49, 50, 51, 52, 53, 54, 55, -1,
-			-1, 56, 57, 58, 59, 60, 61, 62, 63, -1,
-			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1
+	int extendedBoard[] = {
+			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 0  // 10
+			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 1  // 20
+			-1, 0, 1, 2, 3, 4, 5, 6, 7, -1,         // 2  // 30
+			-1, 8, 9, 10, 11, 12, 13, 14, 15, -1,   // 3  // 40
+			-1, 16, 17, 18, 19, 20, 21, 22, 23, -1, // 4  // 50
+			-1, 24, 25, 26, 27, 28, 29, 30, 31, -1, // 5  // 60
+			-1, 32, 33, 34, 35, 36, 37, 38, 39, -1, // 6  // 70
+			-1, 40, 41, 42, 43, 44, 45, 46, 47, -1, // 7  // 80
+			-1, 48, 49, 50, 51, 52, 53, 54, 55, -1, // 8  // 90
+			-1, 56, 57, 58, 59, 60, 61, 62, 63, -1, // 9  // 100
+			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10 // 110
+			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1  // 11 // 120
 	};
 
-	int mailbox64[] = {
+	int positionsForExtendedBoard[] = {
 			21, 22, 23, 24, 25, 26, 27, 28,
 			31, 32, 33, 34, 35, 36, 37, 38,
 			41, 42, 43, 44, 45, 46, 47, 48,
@@ -264,7 +267,6 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public void setupCastlingPositions(String fen) {
 		// Example rnbqk2r/pppp1ppp/5n2/4P3/1bB2p2/2N5/PPPP2PP/R1BQK1NR w KQkq - 0 2
-		Log.d("TEST", "setupCastlingPositions = " + fen);
 		String[] tmp = fen.split(SYMBOL_SPACE);
 
 		// set castle masks
@@ -494,17 +496,17 @@ public class ChessBoard implements BoardFace {
 						if (getFile(pos) != 7 && pos + 9 == pieceSquare)
 							return true;
 					}
-				} else if (piece < offsets.length) {
-					for (j = 0; j < offsets[piece]; ++j) {
+				} else if (piece < piecesMovesWays.length) {
+					for (j = 0; j < piecesMovesWays[piece]; ++j) {
 						for (n = pos; ; ) {
-							n = mailbox[mailbox64[n] + offset[piece][j]];  // wtf is this???
+							n = extendedBoard[positionsForExtendedBoard[n] + piecesOffsets[piece][j]];  // wtf is this???
 							if (n == -1)
 								break;
 							if (n == pieceSquare)
 								return true;
 							if (colors[n] != EMPTY)
 								break;
-							if (!slide[piece])
+							if (!possibleToSlide[piece])
 								break;
 						}
 					}
@@ -526,6 +528,7 @@ public class ChessBoard implements BoardFace {
 	public List<Move> generateLegalMoves() {
 		List<Move> movesSet = new ArrayList<Move>();
 
+//		Log.d("TEST"," generateLegalMoves for side " + side);
 		for (int pos = 0; pos < SQUARES_CNT; ++pos) {
 			addSimpleValidMoves(movesSet, pos, side);
 		}
@@ -557,52 +560,68 @@ public class ChessBoard implements BoardFace {
 		return movesSet;
 	}
 
-	private void addSimpleValidMoves(List<Move> movesSet, int pos, int pieceSide) {
-		if (colors[pos] == pieceSide) {
-			if (pieces[pos] == PAWN) {
-				if (pieceSide == WHITE_SIDE) {
-					if (getFile(pos) != 0 && colors[pos - 9] == BLACK_SIDE) {
-						addMoveToStack(movesSet, pos, pos - 9, 17);
-					}
-					if (getFile(pos) != 7 && colors[pos - 7] == BLACK_SIDE) {
-						addMoveToStack(movesSet, pos, pos - 7, 17);
-					}
-					if (colors[pos - 8] == EMPTY) {
-						addMoveToStack(movesSet, pos, pos - 8, 16);
-						if (pos >= 48 && colors[pos - 16] == EMPTY) {
-							addMoveToStack(movesSet, pos, pos - 16, 24);
-						}
-					}
-				} else {
-					if (getFile(pos) != 0 && colors[pos + 7] == WHITE_SIDE) {
-						addMoveToStack(movesSet, pos, pos + 7, 17);
-					}
-					if (getFile(pos) != 7 && colors[pos + 9] == WHITE_SIDE) {
-						addMoveToStack(movesSet, pos, pos + 9, 17);
-					}
-					if (colors[pos + 8] == EMPTY) {
-						addMoveToStack(movesSet, pos, pos + 8, 16);
-						if (pos <= 15 && colors[pos + 16] == EMPTY) {
-							addMoveToStack(movesSet, pos, pos + 16, 24);
-						}
+	private void addSimpleValidMoves(List<Move> movesSet, int posFrom, int pieceSide) {
+		if (colors[posFrom] != pieceSide) {
+			return;
+		}
+		int piece = pieces[posFrom];
+		if (piece == PAWN) {
+			if (pieceSide == WHITE_SIDE) {
+				if (getFile(posFrom) != 0 && colors[posFrom - 9] == BLACK_SIDE) {
+					addMoveToStack(movesSet, posFrom, posFrom - 9, 17);
+				}
+				if (getFile(posFrom) != 7 && colors[posFrom - 7] == BLACK_SIDE) {
+					addMoveToStack(movesSet, posFrom, posFrom - 7, 17);
+				}
+				if (colors[posFrom - 8] == EMPTY) {
+					addMoveToStack(movesSet, posFrom, posFrom - 8, 16);
+					if (posFrom >= 48 && colors[posFrom - 16] == EMPTY) {
+						addMoveToStack(movesSet, posFrom, posFrom - 16, 24);
 					}
 				}
-			} else if (pieces[pos] < offsets.length) {
-				for (int j = 0; j < offsets[pieces[pos]]; ++j) {
-					for (int n = pos; ; ) {
-						n = mailbox[mailbox64[n] + offset[pieces[pos]][j]];
-						if (n == -1)
-							break;
-						if (colors[n] != EMPTY) {
-							if (colors[n] == oppositeSide) {
-								addMoveToStack(movesSet, pos, n, 1);
-							}
-							break;
+			} else {
+				if (getFile(posFrom) != 0 && colors[posFrom + 7] == WHITE_SIDE) {
+					addMoveToStack(movesSet, posFrom, posFrom + 7, 17);
+				}
+				if (getFile(posFrom) != 7 && colors[posFrom + 9] == WHITE_SIDE) {
+					addMoveToStack(movesSet, posFrom, posFrom + 9, 17);
+				}
+				if (colors[posFrom + 8] == EMPTY) {
+					addMoveToStack(movesSet, posFrom, posFrom + 8, 16);
+					if (posFrom <= 15 && colors[posFrom + 16] == EMPTY) {
+						addMoveToStack(movesSet, posFrom, posFrom + 16, 24);
+					}
+				}
+			}
+		} else if (piece < piecesMovesWays.length) {
+			// for all other pieces except pawns we calculate possible moves based on directions
+			int pieceWaysCnt = piecesMovesWays[piece];
+			for (int j = 0; j < pieceWaysCnt; j++) {
+
+				// start infinite loop
+				for (int posTo = posFrom; ; ) { // iterate through all possible positions
+
+					int positionInExtendedBoard = positionsForExtendedBoard[posTo];
+					int pieceOffset = piecesOffsets[piece][j];
+					int index = positionInExtendedBoard + pieceOffset;
+//					Log.d("TEST","piece = " + piece + " posFrom = " + posFrom + " posTo = " + posTo
+//							+ " positionInExtendedBoard = " + positionInExtendedBoard + " pieceOffset = " + pieceOffset
+//							+ " index = " + index);
+					posTo = extendedBoard[index];
+					if (posTo == INVALID_POSITION) {
+						break;
+					}
+
+					int pieceColor = colors[posTo];
+					if (pieceColor != EMPTY) { // if not empty and can capture, then add
+						if (pieceColor == oppositeSide) {
+							addMoveToStack(movesSet, posFrom, posTo, 1);
 						}
-						addMoveToStack(movesSet, pos, n, 0);
-						if (!slide[pieces[pos]]) {
-							break;
-						}
+						break;
+					}
+					addMoveToStack(movesSet, posFrom, posTo, 0);
+					if (!possibleToSlide[piece]) {
+						break;
 					}
 				}
 			}
@@ -638,10 +657,10 @@ public class ChessBoard implements BoardFace {
 //						if (i >= 48 && colors[i + 8] == EMPTY)
 //							addMoveToStack(moves, i, i + 8, 16);
 //					}
-//				} else if (pieces[i] < offsets.length)
-//					for (int j = 0; j < offsets[pieces[i]]; ++j)
+//				} else if (pieces[i] < piecesMovesWays.length)
+//					for (int j = 0; j < piecesMovesWays[pieces[i]]; ++j)
 //						for (int n = i; ; ) {
-//							n = mailbox[mailbox64[n] + offset[pieces[i]][j]];
+//							n = extendedBoard[positionsForExtendedBoard[n] + piecesOffsets[pieces[i]][j]];
 //							if (n == -1)
 //								break;
 //							if (colors[n] != EMPTY) {
@@ -649,7 +668,7 @@ public class ChessBoard implements BoardFace {
 //									addMoveToStack(moves, i, n, 1);
 //								break;
 //							}
-//							if (!slide[pieces[i]])
+//							if (!possibleToSlide[pieces[i]])
 //								break;
 //						}
 //			}
@@ -693,6 +712,8 @@ public class ChessBoard implements BoardFace {
 	 * @param bits  move bits
 	 */
 	void addMoveToStack(List<Move> moves, int from, int to, int bits) {
+
+		// add promotion if it wasn't promoted yet
 		if ((bits & 16) != 0) {
 			if (side == WHITE_SIDE) {
 				if (to <= Board.H8.ordinal()) {
@@ -1794,7 +1815,9 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void setSide(int side) {
+		Log.d("TEST", " setSide side before = " + this.side);
 		this.side = side;
+		Log.d("TEST", " setSide side after = " + this.side);
 	}
 
 	@Override
@@ -1947,7 +1970,6 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public void setupBoard(String fen) {
 		if (!TextUtils.isEmpty(fen)) {
-			Log.d(TAG, " using fen = " + fen);
 			setupCastlingPositions(fen);
 
 			fenHelper.parseFen(fen, this);
@@ -1993,8 +2015,11 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void switchSides() {
+		Log.d("TEST", " switchSides side before = " + side);
 		side ^= 1;
 		oppositeSide ^= 1;
+		Log.d("TEST", " switchSides side after = " + side);
+
 	}
 
 	@Override

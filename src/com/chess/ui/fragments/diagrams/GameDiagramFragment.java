@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameDiagramItem;
+import com.chess.model.PopupItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.*;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -199,7 +201,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			String move2Compare = move.replaceAll(MovesParser.MOVE_NUMBERS_PATTERN, Symbol.EMPTY).trim();
 			if (move2Compare.equals(lastMove)) {
 				notationCommentTxt.setVisibility(View.VISIBLE);
-				notationCommentTxt.setText(commentsMap.get(move));
+				notationCommentTxt.setText(Html.fromHtml(commentsMap.get(move)));
 
 				notationsView.invalidate();
 				return;
@@ -486,13 +488,14 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			boardFace.checkAndParseMovesList(movesList);
 		}
 
+		invalidateGameScreen();
+
 		if (diagramItem.isShowAnimation()) {
 			boardView.resetValidMoves();
 
 			// rewind all back
 			while (boardFace.takeBack()) {
 				notationsView.moveBack(boardFace.getPly());
-
 			}
 			// now play moves until we reach needed position
 			for (int i = 0; i < diagramItem.getFocusMove(); i++) {
@@ -514,7 +517,6 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			moveResultTxt.setVisibility(View.GONE);
 		}
 
-		invalidateGameScreen();
 	}
 
 	@Override
@@ -620,6 +622,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			CharSequence notationCommentTxtText = notationCommentTxt.getText();
 			if (notationCommentTxtText != null) {
 				String move = getBoardFace().getLastMoveSAN();
+				popupItem.setButtonToShow(PopupItem.NEGATIVE_GREEN);
 				showSinglePopupDialog(move, notationCommentTxtText.toString());
 			}
 		}

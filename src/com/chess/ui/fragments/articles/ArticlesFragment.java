@@ -122,9 +122,9 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			// loading articles
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateUiData();
-			} else {
+			} //else {
 				loadFromDb();
-			}
+//			}
 		} else {
 			loadCategoriesFromDB();
 			loadFromDb();
@@ -344,13 +344,13 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 	private void showLoadingView(boolean show) {
 		if (show) {
-			emptyView.setVisibility(View.GONE);
-			if (sectionedAdapter.getCount() == 0) {
-				listView.setVisibility(View.GONE);
-			}
+//			emptyView.setVisibility(View.GONE);
+//			if (sectionedAdapter.getCount() == 0) {
+//				listView.setVisibility(View.GONE);
+//			}
 			loadingView.setVisibility(View.VISIBLE);
 		} else {
-			listView.setVisibility(View.VISIBLE);
+//			listView.setVisibility(View.VISIBLE);
 			loadingView.setVisibility(View.GONE);
 		}
 	}

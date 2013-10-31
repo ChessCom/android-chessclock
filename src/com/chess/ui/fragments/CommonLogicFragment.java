@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.*;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,12 +20,14 @@ import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.entity.api.RegisterItem;
+import com.chess.backend.image_load.ImageGetter;
 import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
@@ -52,6 +56,7 @@ import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.chess.db.DbScheme.PROVIDER_NAME;
@@ -113,6 +118,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private boolean loadingImages;
 	private SmartImageFetcher imageFetcher;
 	protected float density;
+	protected int screenWidth;
+	private HashMap<String, ImageGetter.TextImage> textViewsImageCache;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -130,7 +137,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		handler = new Handler();
 		setHasOptionsMenu(true);
 		density = getResources().getDisplayMetrics().density;
+		screenWidth = getResources().getDisplayMetrics().widthPixels;
 		padding = (int) (48 * density);
+
+		textViewsImageCache = new HashMap<String, ImageGetter.TextImage>();
 
 		// initialize imageFetcher
 		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
@@ -841,4 +851,17 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 //		} catch (NoSuchAlgorithmException e) {
 //		}
 //	}
+
+	protected void loadTextWithImage(TextView textView, String sourceStr) {
+		textView.setText(Html.fromHtml(sourceStr, getImageGetter(textView, sourceStr), null));
+	}
+
+	protected ImageGetter getImageGetter(TextView textView, String sourceStr) {
+		return new ImageGetter(getActivity(), textViewsImageCache, textView, sourceStr, screenWidth);
+	}
+
+	protected ImageGetter getImageGetter(TextView textView, String sourceText, int imageSize) {
+		return new ImageGetter(getActivity(), textViewsImageCache, textView, sourceText, imageSize);
+	}
+
 }

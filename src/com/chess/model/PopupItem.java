@@ -16,6 +16,11 @@ import com.chess.statics.Symbol;
  */
 public class PopupItem implements Parcelable {
 
+	public static final int NEGATIVE = 1;
+	public static final int NEUTRAL = 2;
+	public static final int POSITIVE = 3;
+	public static final int NEGATIVE_GREEN = 4;
+
 	private int titleId;
     private int messageId;
     private String title;
@@ -25,6 +30,10 @@ public class PopupItem implements Parcelable {
     private int negativeBtnId;
     private View customView;
 	private int buttons;
+	/**
+	 * It can be 0 - NEGATIVE, 1 - NEUTRAL, 2 - POSITIVE, by default 0
+	 */
+	private int buttonToShow;
 
     public PopupItem() {
         this.positiveBtnId = R.string.ic_check;
@@ -109,6 +118,14 @@ public class PopupItem implements Parcelable {
 		this.buttons = buttons;
 	}
 
+	public int getButtonToShow() {
+		return buttonToShow;
+	}
+
+	public void setButtonToShow(int buttonToShow) {
+		this.buttonToShow = buttonToShow;
+	}
+
 	@Override
 	public int describeContents() {
 		return hashCode();
@@ -124,6 +141,7 @@ public class PopupItem implements Parcelable {
 		parcel.writeInt(neutralBtnId);
 		parcel.writeInt(negativeBtnId);
 		parcel.writeInt(buttons);
+		parcel.writeInt(buttonToShow);
 	}
 
 	public static final Creator<PopupItem> CREATOR = new Creator<PopupItem>() {
@@ -147,5 +165,6 @@ public class PopupItem implements Parcelable {
 		neutralBtnId = in.readInt();
 		negativeBtnId = in.readInt();
 		buttons = in.readInt();
+		buttonToShow = in.readInt();
 	}
 }

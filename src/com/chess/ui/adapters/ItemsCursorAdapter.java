@@ -4,9 +4,14 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.text.Html;
 import android.view.LayoutInflater;
+import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.image_load.ImageGetter;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
+
+import java.util.HashMap;
 
 public abstract class ItemsCursorAdapter extends CursorAdapter {
 
@@ -15,6 +20,8 @@ public abstract class ItemsCursorAdapter extends CursorAdapter {
 	protected Context context;
 	protected SmartImageFetcher imageFetcher;
 	protected LayoutInflater inflater;
+	private HashMap<String, ImageGetter.TextImage> textViewsImageCache;
+	private int screenWidth;
 
 	public ItemsCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, 0);
@@ -32,6 +39,9 @@ public abstract class ItemsCursorAdapter extends CursorAdapter {
 		resources = context.getResources();
 		inflater = LayoutInflater.from(context);
 		itemListId = R.id.list_item_id;
+
+		screenWidth = resources.getDisplayMetrics().widthPixels;
+		textViewsImageCache = new HashMap<String, ImageGetter.TextImage>();
 	}
 
 	protected static String getString(Cursor cursor, String column) {
@@ -46,4 +56,16 @@ public abstract class ItemsCursorAdapter extends CursorAdapter {
 		return cursor.getLong(cursor.getColumnIndex(column));
 	}
 
+
+	protected void loadTextWithImage(TextView textView, String sourceStr) {
+		textView.setText(Html.fromHtml(sourceStr, getImageGetter(textView, sourceStr), null));
+	}
+
+	protected ImageGetter getImageGetter(TextView textView, String sourceStr) {
+		return new ImageGetter(context, textViewsImageCache, textView, sourceStr, screenWidth);
+	}
+
+	protected ImageGetter getImageGetter(TextView textView, String sourceText, int imageSize) {
+		return new ImageGetter(context, textViewsImageCache, textView, sourceText, imageSize);
+	}
 }

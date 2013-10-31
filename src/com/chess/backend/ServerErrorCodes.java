@@ -135,7 +135,7 @@ public class ServerErrorCodes {
 	public static final int INVALID_VALUE_FOR_ITEMS_PERPAGE = 122;			//	"Invalid value for items per page
 	public static final int NO_MOVES_FOUND = 123;							//	"No moves found
 	public static final int YOU_PROVIDED_INVALID_PASSWORD = 124;			//	"You provided invalid password.
-
+	public static final int YOUR_GCM_ID_ALREADY_REGISTERED = 125;			//	"Your registration ID is already registered!
 
 
 	public static String getUserFriendlyMessage(Context context, int code) {    // TODO convert to strings for i18n
