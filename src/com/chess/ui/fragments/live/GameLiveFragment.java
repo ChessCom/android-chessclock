@@ -84,7 +84,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private String warningMessage;
 	protected ChessUpdateListener<Game> gameTaskListener;
 
-
 	private NotationView notationsView;
 	protected PanelInfoLiveView topPanelView;
 	protected PanelInfoLiveView bottomPanelView;
@@ -684,7 +683,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void goHome() {
-		getActivityFace().showPreviousFragment();
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				getActivityFace().showPreviousFragment();
+			}
+		});
 	}
 
 	@Override

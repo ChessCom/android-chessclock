@@ -64,6 +64,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private Collection<? extends User> blockedUsers = new HashSet<User>();
 	private Collection<? extends User> blockingUsers = new HashSet<User>();
 	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
+	private final HashSet<Game> gamesToUnobserve = new HashSet<Game>();
 	private final Map<String, User> friends = new HashMap<String, User>();
 	private final Map<String, User> onlineFriends = new HashMap<String, User>();
 	/*private Map<LiveGameEvent.Event, LiveGameEvent> pausedActivityGameEvents = new HashMap<LiveGameEvent.Event, LiveGameEvent>();*/
@@ -80,11 +81,13 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private Integer latestMoveNumber;
 	private Long currentGameId;
 	private Long lastGameId;
+	private Long currentObservedGameId;
 	private Context context;
 	private List<String> pendingWarnings;
 
 	private LiveChessClientEventListener liveChessClientEventListener;
 	private LccEventListener lccEventListener;
+	private LccEventListener lccObserveEventListener;
 	private LccChatMessageListener lccChatMessageListener;
 
 	boolean liveConnected; // it is better to keep this state inside lccholder/service instead of preferences appdata
@@ -170,6 +173,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			executePausedActivityGameEvents(lccEventListener);
 			setGameActivityPausedMode(false);
 		}*/
+	}
+
+	public void setLccObserveEventListener(LccEventListener lccObserveEventListener) {
+		this.lccObserveEventListener = lccObserveEventListener;
 	}
 
 	public GameLiveItem getGameItem() {
@@ -407,6 +414,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		return lccEventListener;
 	}
 
+	public LccEventListener getLccObserveEventListener() {
+		return lccObserveEventListener;
+	}
+
 	public void setLccChatMessageListener(LccChatMessageListener lccChatMessageListener) {
 		this.lccChatMessageListener = lccChatMessageListener;
 	}
@@ -584,12 +595,14 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		lccUser.getClient().sendChallenge(challenge, lccUser.getChallengeListener());
 	  }*/
 
-	public boolean isObserveGame(Game game) {
+	public boolean isObservedGame(Game game) {
 		return !isMyGame(game);
 	}
 
 	public boolean isMyGame(Game game) {
-		return game.isPlayer(getUsername());
+		boolean isMyGame = game.isPlayer(getUsername());
+		LogMe.dl(TAG, "isMyGame=" + isMyGame);
+		return isMyGame;
 	}
 
 	public boolean isUserPlaying() {
@@ -831,6 +844,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		LogMe.dl(TAG, "USER LOGOUT");
 		new AppData(context).setLiveChessMode(false);
 		setCurrentGameId(null);
+		setCurrentObservedGameId(null);
 		setUser(null);
 		setConnected(false);
 
@@ -969,6 +983,26 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		return currentGameId;
 	}
 
+	public void setCurrentObservedGameId(Long gameId) {
+		currentObservedGameId = gameId;
+	}
+
+	public Long getCurrentObservedGameId() {
+		return currentObservedGameId;
+	}
+
+	public boolean isGameToUnobserve(Game game) {
+		return gamesToUnobserve.contains(game);
+	}
+
+	public boolean addGameToUnobserve(Game game) {
+		return gamesToUnobserve.add(game);
+	}
+
+	/*public boolean removeGameToUnobserve(Game game) {
+		return gamesToUnobserve.remove(game);
+	}*/
+
 	public void putGameChat(Long gameId, Chat chat) {
 		gameChats.put(gameId, chat);
 	}
@@ -1042,7 +1076,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public void observeTopGame() {
 		LogMe.dl(TAG, "observe top game: listener=" + gameListener);
-		lccClient.observeTopGame(GameRatingClass.Blitz, gameListener); // todo: check game types
+		lccClient.observeTopGame(GameRatingClass.Standard, gameListener); // todo: check game types
 	}
 
 	public void unobserveGame(Long gameId) {

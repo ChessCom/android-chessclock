@@ -339,6 +339,10 @@ public class LiveChessService extends Service {
 		lccHelper.setLccEventListener(eventListener);
 	}
 
+	public void setLccObserveEventListener(LccEventListener eventListener) {
+		lccHelper.setLccObserveEventListener(eventListener);
+	}
+
 	public List<ChatItem> getMessagesList() {
 		return lccHelper.getMessagesList();
 	}
@@ -476,6 +480,12 @@ public class LiveChessService extends Service {
 		protected Void doInBackground(Void... voids) {
 			lccHelper.observeTopGame();
 			return null;
+		}
+	}
+
+	public void unobserveCurrentGame() {
+		if (lccHelper.getCurrentObservedGameId() != null) {
+			runUnobserveGameTask(lccHelper.getCurrentObservedGameId());
 		}
 	}
 

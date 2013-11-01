@@ -32,8 +32,8 @@ public class LccGameListener implements GameListener {
 		Long gameId;
 		for (Game game : games) {
 			gameId = game.getId();
-			if (!isMyGame(game)) {
-				// todo: check for observed
+			if (lccHelper.isObservedGame(game)) {
+				lccHelper.addGameToUnobserve(game); // ignore previously subscribed observed games
 				/*LogMe.dl(TAG, "unobserve game " + gameId);
 				games.remove(game);*/
 				//lccHelper.getClient().unobserveGame(gameId);
@@ -74,9 +74,19 @@ public class LccGameListener implements GameListener {
 		LogMe.dl(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
 
-		if (lccHelper.isObserveGame(game)) {
+		if (lccHelper.isObservedGame(game)) {
 
 			// todo: check usage of currentGame, latestGame for observed game
+
+			if (lccHelper.isGameToUnobserve(game)) {
+				lccHelper.unobserveGame(game.getId());
+				if (lccHelper.getLccObserveEventListener() != null) {
+					lccHelper.getLccObserveEventListener().expireGame();
+				}
+				return;
+			} else {
+				lccHelper.setCurrentObservedGameId(game.getId());
+			}
 
 		} else {
 
@@ -100,9 +110,13 @@ public class LccGameListener implements GameListener {
 			return;
 		}
 
-		if (lccHelper.isObserveGame(game)) {
+		if (lccHelper.isObservedGame(game)) {
 
 			// todo: check usage of currentGame, latestGame for observed game
+
+			if (lccHelper.isGameToUnobserve(game)) {
+				return;
+			}
 
 		} else {
 
@@ -221,18 +235,4 @@ public class LccGameListener implements GameListener {
 					rejectorUsername + StaticData.SPACE + context.getString(R.string.has_declined_draw));
         }
     }*/
-
-	private boolean isMyGame(Game game) {
-		String whiteUsername = game.getWhitePlayer().getUsername();
-		String blackUsername = game.getBlackPlayer().getUsername();
-		String username = lccHelper.getUsername();
-
-		boolean isMyGame = username.equals(whiteUsername) || username.equals(blackUsername);
-
-		if (!isMyGame) {
-			LogMe.dl(TAG, "not own game " + game.getId());
-		}
-
-		return isMyGame;
-	}
 }

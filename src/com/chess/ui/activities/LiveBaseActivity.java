@@ -170,7 +170,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveTopGameFragment.class.getSimpleName());
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					//liveService.runUnobserveGameTask();
+					liveService.unobserveCurrentGame();
 					return super.onKeyUp(keyCode, event);
 				}
 

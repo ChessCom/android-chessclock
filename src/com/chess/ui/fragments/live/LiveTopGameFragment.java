@@ -38,6 +38,7 @@ public class LiveTopGameFragment extends GameLiveFragment {
 			LiveChessService liveService = getLiveService();
 			liveService.setGameTaskListener(gameTaskListener);
 			liveService.setLccEventListener(this);
+			liveService.setLccObserveEventListener(this);
 
 			liveService.runObserveTopGameTask();
 
@@ -191,5 +192,10 @@ public class LiveTopGameFragment extends GameLiveFragment {
 		/*if (AppUtils.isNeedToUpgrade(getActivity())) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}*/
+	}
+
+	@Override
+	public void expireGame() {
+		goHome();
 	}
 }
