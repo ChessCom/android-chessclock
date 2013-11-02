@@ -92,7 +92,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		facebookUiHelper = new UiLifecycleHelper(getActivity(), callback);
+		facebookUiHelper = new UiLifecycleHelper(getActivity(), this);
 		facebookUiHelper.onCreate(savedInstanceState);
 		setFacebookActive(true);
 	}

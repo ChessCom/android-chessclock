@@ -68,7 +68,8 @@ import static com.chess.statics.AppConstants.*;
  * Date: 02.01.13
  * Time: 10:18
  */
-public abstract class CommonLogicFragment extends BasePopupsFragment implements View.OnClickListener, PullToRefreshAttacher.OnRefreshListener {
+public abstract class CommonLogicFragment extends BasePopupsFragment implements View.OnClickListener,
+		PullToRefreshAttacher.OnRefreshListener, Session.StatusCallback {
 
 	private static final int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private static final int SIGNIN_CALLBACK_CODE = 16;
@@ -213,7 +214,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		LoginButton facebookButton = (LoginButton) getView().findViewById(R.id.fb_connect);
 		if (facebookButton != null) {
-			facebookUiHelper = new UiLifecycleHelper(getActivity(), callback);
+			facebookUiHelper = new UiLifecycleHelper(getActivity(), this);
 			facebookUiHelper.onCreate(savedInstanceState);
 			facebookActive = true;
 			facebookInit(facebookButton);
@@ -349,16 +350,17 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		});
 	}
 
-	protected Session.StatusCallback callback = new Session.StatusCallback() {
-		@Override
-		public void call(Session session, SessionState state, Exception exception) {
-			onSessionStateChange(session, state, exception); // TODO create protected method to inform who need
-		}
-	};
+	@Override
+	public void call(Session session, SessionState state, Exception exception) {
+		onSessionStateChange(session, state, exception); // TODO create protected method to inform who need
+	}
 
 	protected void onSessionStateChange(Session session, SessionState state, Exception exception) {
 		if (state != null && state.isOpened()) {
 			loginWithFacebook(session);
+		} else if (exception != null) {
+			logTest(exception.getMessage());
+			showToast(exception.getMessage());
 		}
 	}
 
@@ -861,7 +863,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadingImages = haveImagesToLoad;
 	}
 
-//	public void printHashKey() { Don't remove, use to find needed facebook hashkey
+//	public void printHashKey() { //Don't remove, use to find needed facebook hashkey
 //		try {
 //			PackageInfo info = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),
 //					PackageManager.GET_SIGNATURES);
