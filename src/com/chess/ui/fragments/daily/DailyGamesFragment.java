@@ -250,7 +250,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				if (mode == HOME_MODE) {
 					parentFace.changeInternalFragment(HomeTabsFragment.NEW_GAME);
 				} else {
-					parentFace.changeInternalFragment(DailyHomeTabsFragment.NEW_GAME);
+					parentFace.changeInternalFragment(HomeTabsFragment.NEW_GAME);
 				}
 			}
 		}

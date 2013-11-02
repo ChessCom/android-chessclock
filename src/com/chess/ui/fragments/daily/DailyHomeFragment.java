@@ -14,6 +14,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.DailySeekItem;
+import com.chess.backend.entity.api.ServersStatsItem;
 import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ItemsAdapter;
@@ -29,6 +30,7 @@ import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.chess_boards.ChessBoardLiveView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,8 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 	private PopupDailyTimeOptionsFragment timeOptionsFragment;
 	private TimeOptionSelectedListener timeOptionSelectedListener;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
+	private ServerStatsUpdateListener serverStatsUpdateListener;
+	private TextView onlinePlayersCntTxt;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 		timeOptionSelectedListener = new TimeOptionSelectedListener();
+		serverStatsUpdateListener = new ServerStatsUpdateListener();
 	}
 
 	@Override
@@ -81,6 +86,31 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		setTitle(R.string.daily);
 
 		widgetsInit(view);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		LoadItem loadItem = LoadHelper.getServerStats();
+		new RequestJsonTask<ServersStatsItem>(serverStatsUpdateListener).executeTask(loadItem);
+	}
+
+	private class ServerStatsUpdateListener extends ChessUpdateListener<ServersStatsItem> {
+		private ServerStatsUpdateListener() {
+			super(ServersStatsItem.class);
+		}
+
+		@Override
+		public void updateData(ServersStatsItem returnedObj) {
+			super.updateData(returnedObj);
+
+
+			long cnt = returnedObj.getData().getTotals().getOnline();
+			String playersOnlineStr = NumberFormat.getInstance().format(cnt);
+
+			onlinePlayersCntTxt.setText(getString(R.string.players_online_arg, playersOnlineStr));
+		}
 	}
 
 	@Override
@@ -203,6 +233,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
 			startOverlayView.setLayoutParams(params);
 
+			onlinePlayersCntTxt = (TextView) headerView.findViewById(R.id.onlinePlayersCntTxt);
 		}
 
 		headerView.findViewById(R.id.newGameHeaderView).setOnClickListener(this);
@@ -223,7 +254,6 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		listView.addHeaderView(headerView);
 		listView.setAdapter(new OptionsAdapter(getActivity(), featuresList));
 		listView.setOnItemClickListener(this);
-
 
 		ChessBoardLiveView boardView = (ChessBoardLiveView) headerView.findViewById(R.id.boardview);
 		boardView.setGameFace(gameFaceHelper);

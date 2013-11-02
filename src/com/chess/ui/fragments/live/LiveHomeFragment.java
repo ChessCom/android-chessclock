@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.ServersStatsItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.SoundPlayer;
@@ -44,6 +48,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	private TextView onlinePlayersCntTxt;
 	private List<LiveItem> featuresList;
 	private LiveGameConfig.Builder liveGameConfigBuilder;
+	private ServerStatsUpdateListener serverStatsUpdateListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 		gameFaceHelper = new GameFaceHelper();
 		timeOptionSelectedListener = new TimeOptionSelectedListener();
+		serverStatsUpdateListener = new ServerStatsUpdateListener();
 	}
 
 	@Override
@@ -81,6 +87,25 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 		getAppData().setLiveChessMode(true);
 		liveBaseActivity.connectLcc();
+
+		LoadItem loadItem = LoadHelper.getServerStats();
+		new RequestJsonTask<ServersStatsItem>(serverStatsUpdateListener).executeTask(loadItem);
+	}
+
+	private class ServerStatsUpdateListener extends ChessUpdateListener<ServersStatsItem> {
+		private ServerStatsUpdateListener() {
+			super(ServersStatsItem.class);
+		}
+
+		@Override
+		public void updateData(ServersStatsItem returnedObj) {
+			super.updateData(returnedObj);
+
+			long cnt = returnedObj.getData().getTotals().getLive();
+			String playersOnlineStr = NumberFormat.getInstance().format(cnt);
+
+			onlinePlayersCntTxt.setText(getString(R.string.players_online_arg, playersOnlineStr));
+		}
 	}
 
 	@Override
@@ -165,12 +190,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
 			startOverlayView.setLayoutParams(params);
 
-			// set online players cnt
 			onlinePlayersCntTxt = (TextView) headerView.findViewById(R.id.onlinePlayersCntTxt);
-			// TODO call api here
-			String playersOnlineStr = NumberFormat.getInstance().format(9745);
-
-			onlinePlayersCntTxt.setText(getString(R.string.players_online_arg, playersOnlineStr));
 		}
 
 		headerView.findViewById(R.id.newGameHeaderView).setOnClickListener(this);

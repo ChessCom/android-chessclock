@@ -293,4 +293,10 @@ public class LoadHelper {
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		return loadItem;
 	}
+
+	public static LoadItem getServerStats() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(getInstance().CMD_STATS);
+		return loadItem;
+	}
 }

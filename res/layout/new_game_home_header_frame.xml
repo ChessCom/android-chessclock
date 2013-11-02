@@ -110,7 +110,8 @@
 				android:layout_weight="1"
 				android:gravity="center"
 				android:textSize="@dimen/popup_title_text_size_medium"
-				android:textColor="@color/new_author_dark_grey" />
+				android:textColor="@color/new_author_dark_grey"
+				/>
 
 			<LinearLayout
 				android:layout_width="match_parent"

@@ -249,6 +249,8 @@ public class RestHelper {
 		return GET_FEN_IMAGE(fen, 0);
 	}
 
+	public String CMD_STATS = BASE_URL + V1 + "/stats";
+
 	/* Parameters */
 	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";
 	public static final String P_FIELDS = "fields[]";
