@@ -14,9 +14,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.View;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.db.DbDataManager;
@@ -28,7 +31,6 @@ import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NotificationsRightFragment;
-import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
@@ -39,8 +41,11 @@ import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.fragments.welcome.WelcomeFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
+import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 import com.slidingmenu.lib.SlidingMenu;
+import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
+import uk.co.senab.actionbarpulltorefresh.extras.AbcPullToRefreshAttacher;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -70,6 +75,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private MovesUpdateReceiver movesUpdateReceiver;
 	private IntentFilter backgroundUpdateFilter;
 	private BackgroundUpdateReceiver backgroundUpdateReceiver;
+	private PullToRefreshAttacher mPullToRefreshAttacher;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -125,12 +131,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		badgeItems = new Hashtable<Integer, Integer>();
 
-		String themeBackPath = getAppData().getThemeBackPath();
-		if (!TextUtils.isEmpty(themeBackPath)) {
-			setMainBackground(themeBackPath);
-		} else {
-			getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
-		}
+		updateMainBackground();
 
 		notificationsUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
 		movesUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
@@ -227,7 +228,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putBoolean(SHOW_ACTION_BAR, showActionBar);
 	}
@@ -275,6 +276,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void showActionBar(boolean show) {
 		showActionBar = show;
 		getActionBarHelper().showActionBar(show);
+
+		if (mPullToRefreshAttacher != null && !show) {
+			mPullToRefreshAttacher.removePaddingForHeader();
+		}
 	}
 
 	@Override
@@ -284,7 +289,25 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void setMainBackground(String drawablePath) {
-		Bitmap bitmap = BitmapFactory.decodeFile(drawablePath);
+		BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+		bitmapOptions.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(drawablePath, bitmapOptions);
+
+		Display display = getWindowManager().getDefaultDisplay();
+
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		display.getMetrics(displayMetrics);
+
+		int displayHeight = displayMetrics.heightPixels;
+		int displayWidth = displayMetrics.widthPixels;
+
+		displayWidth -= AppUtils.getStatusBarHeight(this);
+		bitmapOptions.inSampleSize = AppUtils.calculateInSampleSize(bitmapOptions, displayWidth, displayHeight);
+
+		// Decode bitmap with inSampleSize set
+		bitmapOptions.inJustDecodeBounds = false;
+		Bitmap bitmap = BitmapFactory.decodeFile(drawablePath, bitmapOptions);
+
 		if (bitmap != null) {
 			BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
 			getWindow().setBackgroundDrawable(drawable);
@@ -381,7 +404,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				.commit();
 		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
-//		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
 	@Override
@@ -474,7 +496,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private class MovesUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.d("TEST", " onReceive = " + intent);
 			updateNotificationsBadges();
 		}
 	}
@@ -482,22 +503,25 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private class BackgroundUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			String themeBackPath = getAppData().getThemeBackPath();
-			if (!TextUtils.isEmpty(themeBackPath)) {
-				setMainBackground(themeBackPath);
-			} else {
-				getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
-			}
-
-			updateActionBarBackImage();
+			updateMainBackground();
 		}
 	}
+
+	private void updateMainBackground() {
+		String themeBackPath = getAppData().getThemeBackPath();
+		if (!TextUtils.isEmpty(themeBackPath)) {
+			setMainBackground(themeBackPath);
+		} else {
+			getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
+		}
+
+		updateActionBarBackImage();
+	}
+
 
 	private class NotificationsUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.d("TEST", " onReceive = " + intent);
-
 			updateNotificationsBadges();
 
 			for (Fragment fragment : getSupportFragmentManager().getFragments()) {
@@ -513,7 +537,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void updateNotificationsBadges() {
 		int playMovesCnt = DbDataManager.getPlayMoveNotificationsCnt(getContentResolver(), getMeUsername());
 		int notificationsCnt = DbDataManager.getUnreadNotificationsCnt(getContentResolver(), getMeUsername());
-		Log.d("TEST", " total unread notifications = " + notificationsCnt);
 		setBadgeValueForId(R.id.menu_notifications, notificationsCnt);
 		setBadgeValueForId(R.id.menu_games, playMovesCnt);
 	}
@@ -592,16 +615,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		return super.onKeyUp(keyCode, event);
 	}
 
-//	@Override
 	private void setBadgeValueForId(int menuId, int value) {
 		badgeItems.put(menuId, value);
 		getActionBarHelper().setBadgeValueForId(menuId, value);
 	}
-
-//	@Override
-//	public int getValueByBadgeId(int badgeId) {
-//		return badgeItems.get(badgeId);
-//	}
 
 	@Override
 	public CoreActivityActionBar getActionBarActivity() {
@@ -656,4 +673,29 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 	}
 
+	@Override
+	public void setPullToRefreshView(View view, PullToRefreshAttacher.OnRefreshListener refreshListener) {
+		if (mPullToRefreshAttacher != null) {
+			mPullToRefreshAttacher.clearRefreshableViews();
+		} else {
+
+			/**
+			 * Here we create a PullToRefreshAttacher manually without an Options instance.
+			 * PullToRefreshAttacher will manually create one using default values.
+			 */
+			if (HONEYCOMB_PLUS_API){
+				mPullToRefreshAttacher = PullToRefreshAttacher.get(this);
+			} else{
+				mPullToRefreshAttacher = AbcPullToRefreshAttacher.get(this);
+			}
+		}
+
+		// Set the Refreshable View to be the ListView and the refresh listener to be this.
+		mPullToRefreshAttacher.addRefreshableView(view, refreshListener);
+	}
+
+	@Override
+	public PullToRefreshAttacher getPullToRefreshAttacher() {
+		return mPullToRefreshAttacher;
+	}
 }

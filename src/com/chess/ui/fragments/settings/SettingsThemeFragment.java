@@ -29,6 +29,7 @@ import com.chess.db.DbScheme;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +79,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		loadServiceConnectionListener = new LoadServiceConnectionListener();
 		progressUpdateListener = new ProgressUpdateListener();
 		selectedThemeName = getAppData().getThemeName();
+
+		pullToRefresh(true);
 	}
 
 	@Override
@@ -109,11 +112,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 				updateUiData();
 			} else {
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.getInstance().CMD_THEMES);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
-				new RequestJsonTask<ThemeItem>(themesUpdateListener).executeTask(loadItem);
+				updateData();
 			}
 
 		} else {
@@ -123,6 +123,22 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		getActivity().bindService(new Intent(getActivity(), GetAndSaveTheme.class), loadServiceConnectionListener,
 				Activity.BIND_AUTO_CREATE);
 
+	}
+
+	private void updateData() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_THEMES);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+		new RequestJsonTask<ThemeItem>(themesUpdateListener).executeTask(loadItem);
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		super.onRefreshStarted(view);
+		if (AppUtils.isNetworkAvailable(getActivity())) {
+			updateData();
+		}
 	}
 
 	private class ThemesUpdateListener extends ChessLoadUpdateListener<ThemeItem> {
@@ -141,7 +157,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				DbDataManager.saveThemeItemToDb(getContentResolver(), data);
 			}
 
-			updateUiData();
+			SettingsThemeFragment.this.updateUiData();
 		}
 	}
 
@@ -178,11 +194,13 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 			isInstallingTheme = true;
 
+			// deselect all themes
 			for (ThemeItem.Data data : themesList) {
 				data.setSelected(false);
 			}
-
+			// mark selected
 			selectedThemeItem.setSelected(true);
+
 			currentThemeItem = selectedThemeItem;
 			((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
 
@@ -198,11 +216,12 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 			getAppData().setThemeName(getString(R.string.theme_game_room));
 			getAppData().setThemeBackgroundName(getString(R.string.theme_game_room));
+			getActivityFace().updateActionBarBackImage();
+
+			isInstallingTheme = false;
 		} else { // start loading main background image
 
 			if (serviceBounded) {
-				showToast(R.string.installing_theme);
-
 				serviceBinder.getService().loadTheme(selectedThemeItem, screenWidth, screenHeight);
 			} else {
 				needToLoadThemeAfterConnected = true;
@@ -249,7 +268,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 					themesAdapter.setTitleForLoadingItem(title);
 				}
 			});
-
 		}
 
 		@Override
@@ -264,7 +282,10 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 					if (progress == GetAndSaveTheme.DONE) {
 						isInstallingTheme = false;
 						needToLoadThemeAfterConnected = false;
-						getActivity().unbindService(loadServiceConnectionListener);
+						if (serviceBounded) {
+							getActivity().unbindService(loadServiceConnectionListener);
+						}
+						serviceBounded = false;
 					}
 					themesAdapter.setProgressForItem(progress);
 				}

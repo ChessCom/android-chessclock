@@ -252,7 +252,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		} else if (tag.equals(NETWORK_CHECK_TAG)) {
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 
-		} else if(tag.equals(EXIT_GAME_TAG)) {
+		} else if (tag.equals(EXIT_GAME_TAG)) {
 			liveService.runMakeResignTask();
 		}
 		super.onPositiveBtnClick(fragment);
@@ -550,11 +550,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 					LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
 					facebookInit(facebookLoginButton);
-	//				facebookLoginButton.logout();
 
 					usernameEdt.setText(getAppData().getUsername());
 				}
-
 
 				needReLoginToLive = true;
 			}
@@ -613,11 +611,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void showProgress(boolean show) {
-			if (show){
+			if (show) {
 				showPopupHardProgressDialog(R.string.signing_in_);
 			} else {
-				if(isPaused)
+				if (isPaused) {
 					return;
+				}
 
 				dismissProgressDialog();
 			}

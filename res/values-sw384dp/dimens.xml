@@ -31,5 +31,6 @@
 	<dimen name="panel_info_avatar_tactic_size">32dip</dimen>
 	<dimen name="new_tactics_panel_info_height">50dip</dimen>
 	<dimen name="panel_info_tactic_padding_top">4dip</dimen>
+	<dimen name="pull_to_refresh_header_height">72dip</dimen>
 
 </resources>

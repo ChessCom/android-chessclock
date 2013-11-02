@@ -2,7 +2,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:robo="http://schemas.android.com/apk/res/com.chess"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="@dimen/actionbar_compat_height"
     android:orientation="horizontal"
@@ -18,7 +18,7 @@
         android:textSize="@dimen/actionbar_title_height"
         android:textColor="@color/semitransparent_white_75"
         style="@style/DarkShadowBottom"
-        robo:ttf="Bold"
+        custom:ttf="Bold"
         />
 
 </LinearLayout>

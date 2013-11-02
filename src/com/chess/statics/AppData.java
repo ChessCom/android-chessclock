@@ -719,6 +719,14 @@ public class AppData {
 		return getBooleanValue(PREF_DEMO_TACTICS_LOADED, false);
 	}
 
+	public void setPullHeaderTopInset(int value) {
+		setIntValue(PULL_TO_REFRESH_HEADER_TOP_INSET, value);
+	}
+
+	public int getPullHeaderTopInset() {
+		return getIntValue(PULL_TO_REFRESH_HEADER_TOP_INSET, UNDEFINED);
+	}
+
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {

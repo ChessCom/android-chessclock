@@ -661,7 +661,7 @@ public class LoginButton extends FacebookButton {
                 properties.sessionStatusCallback.call(session, state, exception);
             }
         }
-    };
+    }
 
     void handleError(Exception exception) {
         if (properties.onErrorListener != null) {

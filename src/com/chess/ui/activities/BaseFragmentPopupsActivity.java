@@ -12,7 +12,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -45,6 +44,7 @@ import java.util.Map;
 public abstract class BaseFragmentPopupsActivity extends BaseActivity implements PopupDialogFace {
 
 	protected static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+	public static final boolean JELLYBEAN_1_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
 
 	private static final String INFO_POPUP_TAG = "information popup";
 	private static final String PROGRESS_TAG = "progress dialog popup";
@@ -57,9 +57,6 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 
 
 	private Context context;
-//	protected SharedPreferences preferences;
-//	protected SharedPreferences.Editor preferencesEditor;
-
 	protected PopupItem popupItem;
 	protected PopupItem popupProgressItem;
 	protected List<PopupDialogFragment> popupManager;
@@ -71,7 +68,6 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	@Override
 	public void onAttachedToWindow() {
 		super.onAttachedToWindow();
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
 		getWindow().setFormat(PixelFormat.RGBA_8888);
 	}
 
@@ -115,9 +111,6 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 
 		popupManager = new ArrayList<PopupDialogFragment>();
 		popupProgressManager = new ArrayList<PopupProgressFragment>();
-
-//		preferences = getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
-//		preferencesEditor = preferences.edit();
 	}
 
 	@Override
@@ -366,8 +359,9 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	}
 
 	protected void dismissProgressDialog() {
-		if(popupProgressManager.size() == 0)
+		if(popupProgressManager.size() == 0) {
 			return;
+		}
 
 		popupProgressManager.get(popupProgressManager.size()-1).dismiss();
 	}
@@ -379,7 +373,11 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	}
 
 	protected String getTextFromField(EditText editText) {
-		return editText.getText().toString().trim();
+		if (editText!= null && editText.getText() != null) {
+			return editText.getText().toString().trim();
+		} else {
+			return Symbol.EMPTY;
+		}
 	}
 
 	protected Context getContext() {

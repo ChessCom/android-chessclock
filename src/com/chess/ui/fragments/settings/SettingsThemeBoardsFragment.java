@@ -219,8 +219,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			getAppData().setThemeBoardPreviewUrl(selectedThemeBoardItem.getText());
 
 			if (serviceBounded) {
-				showToast(R.string.loading_board);
-
 				serviceBinder.getService().loadBoard(selectedBoardId, screenWidth);
 			} else {
 				needToLoadThemeAfterConnected = true;
@@ -349,8 +347,12 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 						isBoardLoading = false;
 						headerView.setVisibility(View.GONE);
 
-						getActivity().unbindService(loadServiceConnectionListener);
+						if (serviceBounded) {
+							getActivity().unbindService(loadServiceConnectionListener);
+						}
 						serviceBounded = false;
+						// go back
+						getActivityFace().showPreviousFragment();
 					} else {
 						if (isBoardLoading) {
 							headerView.setVisibility(View.VISIBLE);

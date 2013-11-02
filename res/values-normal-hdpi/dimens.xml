@@ -87,6 +87,7 @@
 	<dimen name="start_new_game_overlay_padding_top">25dip</dimen>
 	<dimen name="start_new_game_overlay_padding_side">15dip</dimen>
 	<dimen name="overlay_shadow_offset">3dip</dimen>
+	<dimen name="pull_to_refresh_header_height">72dip</dimen>
 
 
 </resources>

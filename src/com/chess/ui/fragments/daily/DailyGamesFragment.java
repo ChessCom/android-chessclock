@@ -119,6 +119,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		sectionedAdapter.addSection(getString(R.string.completed), finishedGamesCursorAdapter);
 
 		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
+
+		pullToRefresh(true);
 	}
 
 	@Override
@@ -195,6 +197,14 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			loadDbGames();
 		}
 	};
+
+	@Override
+	public void onRefreshStarted(View view) {
+		super.onRefreshStarted(view);
+		if (AppUtils.isNetworkAvailable(getActivity())) {
+			updateData();
+		}
+	}
 
 	private void init() {
 		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.INVITE);
@@ -595,6 +605,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 //					finishedGamesCursorAdapter.changeCursor(null);
 //				}
 //			}
+
+//			releasePullToRefreshHeader();
 		}
 
 		@Override

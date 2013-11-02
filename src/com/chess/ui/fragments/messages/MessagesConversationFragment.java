@@ -24,6 +24,7 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveMessagesForConversationTask;
 import com.chess.ui.adapters.MessagesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -75,6 +76,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 		}
 
 		init();
+		pullToRefresh(true);
 	}
 
 	@Override
@@ -109,10 +111,20 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 		super.onResume();
 
 		if (need2update) {
-			updateUiData();
+			if (!AppUtils.isNetworkAvailable(getActivity())) {
+				updateData();
+			}
+
+			loadFromDb();
 		} else {
 			listView.setAdapter(messagesCursorAdapter);
 		}
+	}
+
+	private void loadFromDb() {
+		new LoadDataFromDbTask(messageCursorUpdateListener,
+				DbHelper.getConversationMessagesById(conversationId, getUsername()),
+				getContentResolver()).executeTask();
 	}
 
 	@Override
@@ -123,7 +135,16 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 		outState.putString(OTHER_USERNAME, otherUsername);
 	}
 
-	private void updateUiData() {
+	@Override
+	public void onRefreshStarted(View view) {
+		super.onRefreshStarted(view);
+
+		if (AppUtils.isNetworkAvailable(getActivity())) {
+			updateData();
+		}
+	}
+
+	private void updateData() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGE_CONVERSATION_BY_ID(conversationId));
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
@@ -204,7 +225,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 
 		@Override
 		public void updateData(ConversationSingleItem returnedObj) {
-			updateUiData(); // TODO improve performance
+			MessagesConversationFragment.this.updateData(); // TODO improve performance
 
 			showEditView(false);
 		}
@@ -273,9 +294,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 		public void updateData(MessagesItem.Data returnedObj) {
 			super.updateData(returnedObj);
 
-			new LoadDataFromDbTask(messageCursorUpdateListener,
-					DbHelper.getConversationMessagesById(conversationId, getUsername()),
-					getContentResolver()).executeTask();
+			loadFromDb();
 		}
 	}
 

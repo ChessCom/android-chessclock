@@ -77,6 +77,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		sectionedAdapter.addSection(getString(R.string.articles), articlesCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.category), categoriesAdapter);
+
+		pullToRefresh(true);
 	}
 
 	@Override
@@ -121,10 +123,10 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 			// loading articles
 			if (AppUtils.isNetworkAvailable(getActivity())) {
-				updateUiData();
-			} //else {
-				loadFromDb();
-//			}
+				updateData();
+			}
+
+			loadFromDb();
 		} else {
 			loadCategoriesFromDB();
 			loadFromDb();
@@ -142,6 +144,16 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		}
 		return false;
 	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		super.onRefreshStarted(view);
+		// loading articles
+		if (AppUtils.isNetworkAvailable(getActivity())) {
+			updateData();
+		}
+	}
+
 
 	private void init() {
 		// get viewed marks
@@ -163,7 +175,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		saveCategoriesUpdateListener = new SaveCategoriesUpdateListener();
 	}
 
-	private void updateUiData() {
+	private void updateData() {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES_LIST);
 		loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, LATEST_ARTICLES_CNT);
@@ -218,6 +230,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		@Override
 		public void updateData(ArticleItem returnedObj) {
 			new SaveArticlesListTask(saveArticlesUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+
+//			releasePullToRefreshHeader();
 		}
 
 		@Override
@@ -227,6 +241,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 				emptyView.setText(R.string.no_network);
 			}
 			showEmptyView(true);
+
+//			releasePullToRefreshHeader();
 		}
 	}
 
@@ -266,7 +282,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			loadCategoriesFromDB();
 
 			// loading articles
-			updateUiData();
+			ArticlesFragment.this.updateData();
 		}
 	}
 

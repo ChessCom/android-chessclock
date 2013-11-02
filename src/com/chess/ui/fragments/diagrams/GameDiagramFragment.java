@@ -25,6 +25,7 @@ import com.chess.ui.views.NotationView;
 import com.chess.ui.views.chess_boards.ChessBoardDiagramView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
+import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsDiagramView;
 import com.chess.utilities.AppUtils;
 
@@ -557,6 +558,17 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		if (!isSmallScreen) {
 			boardView.updateNotations(getBoardFace().getNotationArray());
 		}
+
+		controlsView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override

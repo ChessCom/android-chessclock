@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
-import android.util.Log;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -37,8 +36,6 @@ public class ImageGetter implements Html.ImageGetter {
 
 	@Override
 	public Drawable getDrawable(final String source) {
-		Log.d("TEST","^_______________________________________________^");
-
 		if (source.contains("gif")) {
 			return null;
 		}
@@ -46,7 +43,6 @@ public class ImageGetter implements Html.ImageGetter {
 		TextImage textImage = mImageCache.get(source);
 
 		if (textImage != null && textImage.drawable != null) {
-			Log.d("TEST","drawable = " + textImage.drawable + " source = " + source );
 			return textImage.drawable;
 		} else {
 

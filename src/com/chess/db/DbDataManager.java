@@ -565,9 +565,14 @@ public class DbDataManager {
 		} else if (gamesList.size() == 0) { // means no finished games for that user
 			arguments1[0] = username;
 			contentResolver.delete(uri, SELECTION_USER, arguments1);
-
+			if (cursor != null) {
+				cursor.close();
+			}
 			return false;
 		} else { // finished games exist, but not saved yet
+			if (cursor != null) {
+				cursor.close();
+			}
 			return true;
 		}
 

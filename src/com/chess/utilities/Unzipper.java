@@ -36,7 +36,6 @@ public class UnZipper {
 				} else {
 					FileOutputStream outputStream = new FileOutputStream(filePath + zipEntry.getName());
 					long totalSize = zipEntry.getSize();
-					Log.d("TEST", " totalSize = " + totalSize);
 					int totalRead = 0;
 					progressFace.changeTitle("Unzipping - " + zipEntry.getName());
 					progressFace.setProgress(0);
@@ -47,8 +46,6 @@ public class UnZipper {
 						int count = zipInputStream. read(buffer, 0, buffer_size);
 						totalRead += count;
 						int progress = (int) ((totalRead / (float) totalSize) * 100);
-
-						Log.d("TEST", " progress = " + progress + " totalRead = " + totalRead);
 
 						progressFace.setProgress(progress);
 						if (count == -1) {

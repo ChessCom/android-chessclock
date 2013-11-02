@@ -27,6 +27,8 @@ import java.util.HashMap;
  */
 public abstract class ControlsBaseView extends LinearLayout implements View.OnClickListener {
 
+	public static final int BUTTONS_RE_ENABLE_DELAY = 400;
+
 	public static final int BUTTON_PREFIX = 0x00002000;
 	int controlIconSize;
 	protected ColorStateList controlIconColor;

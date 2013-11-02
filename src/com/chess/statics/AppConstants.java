@@ -98,6 +98,9 @@ public class AppConstants {
 	public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
     public static final String PREF_USER_CHOOSE_VIDEO_LIBRARY = "user choose video library mode";
     public static final String PREF_USER_CHOOSE_LESSONS_LIBRARY = "user choose lesson library mode";
+
+	public static final String PULL_TO_REFRESH_HEADER_TOP_INSET = "pull_to_refresh_header_top_inset";
+
 	/* New Daily and Live games*/
 	public static final String PREF_DEFAULT_DAILY_MODE = "defaultDailyMode";
 	public static final String PREF_DEFAULT_LIVE_MODE = "defaultLiveMode";

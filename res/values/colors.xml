@@ -250,6 +250,7 @@
     <color name="action_bar_overlay">#33000000</color>
     <color name="sliding_menu_overlay">#1F000000</color>
     <color name="loading_overlay">#55000000</color>
+    <color name="pull_refresh_header_overlay">#D00d5988</color>
 
 
 

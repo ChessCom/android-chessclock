@@ -138,6 +138,8 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 
 		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
 		commentPostListener = new CommentPostListener();
+
+		pullToRefresh(true);
 	}
 
 	@Override
@@ -209,6 +211,14 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		super.onSaveInstanceState(outState);
 
 		outState.putLong(ITEM_ID, videoId);
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		super.onRefreshStarted(view);
+		if (AppUtils.isNetworkAvailable(getActivity())) {
+			 updateComments();
+		}
 	}
 
 	protected void updateData() {

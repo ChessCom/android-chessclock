@@ -78,6 +78,8 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 				categoriesMap.put(DbDataManager.getInt(cursor, DbScheme.V_ID), DbDataManager.getString(cursor, DbScheme.V_NAME));
 			} while (cursor.moveToNext());
 		}
+
+		pullToRefresh(true);
 	}
 
 	@Override
@@ -124,6 +126,12 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		super.onSaveInstanceState(outState);
 
 		outState.putInt(CATEGORY_ID, categoryId);
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		super.onRefreshStarted(view);
+		requestPage(currentPage);
 	}
 
 	@Override

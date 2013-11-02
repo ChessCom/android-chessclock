@@ -50,6 +50,8 @@ public class LiveArchiveFragment extends CommonLogicFragment implements AdapterV
 		super.onCreate(savedInstanceState);
 
 		init();
+
+		pullToRefresh(true);
 	}
 
 
@@ -89,6 +91,14 @@ public class LiveArchiveFragment extends CommonLogicFragment implements AdapterV
 			}
 		} else {
 			loadDbGames();
+		}
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		super.onRefreshStarted(view);
+		if (AppUtils.isNetworkAvailable(getActivity())) {
+			updateData();
 		}
 	}
 

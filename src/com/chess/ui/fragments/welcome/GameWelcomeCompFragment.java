@@ -45,6 +45,7 @@ import com.chess.ui.views.chess_boards.ChessBoardCompView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsCompView;
 import com.chess.utilities.FontsHelper;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -88,7 +89,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private static final int FADE_ANIM_DURATION = 300;
 	private static final long DRAWER_APPEAR_DELAY = 100;
 	private static final long END_GAME_DELAY = 1000L;
-	public static final int BUTTONS_RE_ENABLE_DELAY = 400;
 	private FragmentTabsFace parentFace;
 
 	private ChessBoardCompView boardView;
@@ -410,7 +410,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				}
 				controlsCompView.enableGameControls(true);
 			}
-		}, BUTTONS_RE_ENABLE_DELAY);
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override

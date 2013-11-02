@@ -46,6 +46,7 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
 
@@ -82,7 +83,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
-	private ControlsDailyView controlsDailyView;
+	private ControlsDailyView controlsView;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
 	private LabelsConfig labelsConfig;
@@ -257,11 +258,11 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
-		controlsDailyView.enableGameControls(true);
+		controlsView.enableGameControls(true);
 		boardView.lockBoard(false);
 
 		if (currentGame.hasNewMessage()) {
-			controlsDailyView.haveNewMessage(true);
+			controlsView.haveNewMessage(true);
 		}
 
 		getBoardFace().setFinished(false);
@@ -345,6 +346,17 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
+
+		controlsView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override
@@ -404,7 +416,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		}
 
 		currentGame.setHasNewMessage(false);
-		controlsDailyView.haveNewMessage(false);
+		controlsView.haveNewMessage(false);
 
 		getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, labelsConfig.topPlayerAvatar)); // TODO check when flip
 	}
@@ -459,7 +471,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
-		controlsDailyView.showSubmitButtons(show);
+		controlsView.showSubmitButtons(show);
 		if (!show) {
 			getBoardFace().setSubmit(false);
 		}
@@ -640,7 +652,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 	private void widgetsInit(View view) {
 
-		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
+		controlsView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
 		NotationView notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
@@ -648,13 +660,13 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-		controlsDailyView.enableGameControls(false);
+		controlsView.enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsDailyView);
+		boardView.setControlsView(controlsView);
 		boardView.setNotationsView(notationsView);
 
 		setBoardView(boardView);

@@ -410,7 +410,9 @@ public class GetAndSaveTheme extends Service {
 
 		@Override
 		public void setProgress(final int progress) {
-			if (previousProgress + 5 < progress) {
+			if (progress == -1) {
+				showIndeterminateProgress();
+			} else if (previousProgress + 5 < progress) {
 				previousProgress = progress;
 				updateProgressToNotification(progress);
 			}
@@ -456,15 +458,19 @@ public class GetAndSaveTheme extends Service {
 
 		@Override
 		public void changeTitle(final String title) {
-
 			showIndeterminateNotification(title);
 		}
 
 		@Override
 		public void setProgress(final int progress) {
-			if (previousProgress + 5 < progress || progress == 100) {
+			if (progress == -1) {
+				showIndeterminateProgress();
+			} else if (previousProgress + 5 < progress || progress == 100) {
 				previousProgress = progress;
 				updateProgressToNotification(progress);
+				if (progress == 100 || progress == 99) {
+					previousProgress = 0;
+				}
 			}
 		}
 	}
@@ -498,6 +504,17 @@ public class GetAndSaveTheme extends Service {
 		}
 	}
 
+
+	private void showIndeterminateProgress() {
+		notificationBuilder.setProgress(0, 0, true);
+		// Displays the progress bar for the first time.
+		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
+
+		if (progressUpdateListener != null) {
+			progressUpdateListener.setProgress(INDETERMINATE);
+		}
+	}
+
 	private void updateProgressToNotification(int progress) {
 		notificationBuilder.setProgress(100, progress, false);
 		// Displays the progress bar for the first time.
@@ -523,7 +540,6 @@ public class GetAndSaveTheme extends Service {
 			public void run() {
 				notifymanager.cancel(R.id.notification_message);
 
-				stopSelf();
 			}
 		}, SHUTDOWN_DELAY);
 	}

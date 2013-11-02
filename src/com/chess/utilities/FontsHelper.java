@@ -19,6 +19,7 @@ public class FontsHelper {
 	public static final String BOLD_FONT = "Bold";
 	public static final String ICON_FONT = "Icon"; // Chess.com Glyph
 	public static final String ITALIC_FONT = "Italic";
+	public static final String THIN_FONT = "Thin";
 	public static final String TTF = ".ttf";
 
 	private static FontsHelper ourInstance = new FontsHelper();

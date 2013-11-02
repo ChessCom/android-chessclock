@@ -152,6 +152,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			articleId = savedInstanceState.getLong(ITEM_ID);
 		}
 		init();
+
+		pullToRefresh(true);
 	}
 
 	@Override
@@ -346,6 +348,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			updateComments();
 			return false;
 		}
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		super.onRefreshStarted(view);
+		updateComments();
 	}
 
 	@Override
@@ -953,6 +961,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			// mark article as read
 			handler.postDelayed(markAsReadRunnable, READ_DELAY);
+
+//			releasePullToRefreshHeader();
 		}
 	}
 

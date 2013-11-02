@@ -170,11 +170,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		if (show) {
 			if (need2update) {
 
-//				boolean haveSavedData = DbDataManager.haveSavedVideos(getActivity());
-//				if (haveSavedData) {
-//					loadFromDb();
-//				}
-
 				// get saved categories
 				Cursor categoriesCursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
 
@@ -185,21 +180,16 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 				if (AppUtils.isNetworkAvailable(getActivity())) {
 					updateData();
 					getCategories();
-				} /*else if (!haveSavedData) {
-					emptyView.setText(R.string.no_network);
-					showEmptyView(true);
-				}*/
+				}
 
 			} else { // load data to listHeader view
 				fillListViewHeaderData();
-//				videosCursorAdapter.notifyDataSetChanged();
 				categoriesCursorAdapter.notifyDataSetChanged();
 			}
 		} else {
 			expListView.setAdapter(curriculumAdapter);
 		}
 	}
-
 
 	private void updateData() {
 		// request latest data for the header

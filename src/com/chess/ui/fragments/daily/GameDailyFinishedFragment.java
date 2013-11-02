@@ -45,6 +45,7 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
 
@@ -382,6 +383,17 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
+
+		controlsDailyView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsDailyView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override

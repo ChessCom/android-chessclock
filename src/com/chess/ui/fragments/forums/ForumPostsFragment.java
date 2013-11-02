@@ -97,6 +97,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		topicTitle = DbDataManager.getString(cursor, DbScheme.V_TITLE);
 		topicUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
 
+		pullToRefresh(true);
 	}
 
 	@Override
@@ -146,6 +147,12 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		super.onSaveInstanceState(outState);
 
 		outState.putInt(TOPIC_ID, topicId);
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		super.onRefreshStarted(view);
+		requestPage(currentPage);
 	}
 
 	private void requestPage(int page){
@@ -329,6 +336,8 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			}
 
 			new SaveForumPostsTask(savePostsListener, returnedObj.getData().getPosts(), getContentResolver(), topicId, currentPage).executeTask();
+
+//			releasePullToRefreshHeader();
 		}
 	}
 

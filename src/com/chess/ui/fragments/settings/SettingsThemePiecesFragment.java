@@ -208,8 +208,6 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 			getAppData().setThemePiecesPreviewUrl(selectedThemePieceItem.getText());
 
 			if (serviceBounded) {
-				showToast(R.string.loading_pieces);
-
 				serviceBinder.getService().loadPieces(selectedPiecesId, screenWidth);
 			} else {
 				needToLoadThemeAfterConnected = true;
@@ -337,8 +335,12 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 						isPiecesLoading = false;
 						headerView.setVisibility(View.GONE);
 
-						getActivity().unbindService(loadServiceConnectionListener);
+						if (serviceBounded) {
+							getActivity().unbindService(loadServiceConnectionListener);
+						}
 						serviceBounded = false;
+						// go back
+						getActivityFace().showPreviousFragment();
 					} else {
 						if (isPiecesLoading) {
 							headerView.setVisibility(View.VISIBLE);

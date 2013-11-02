@@ -45,6 +45,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		super.onCreate(savedInstanceState);
 
 		init();
+		pullToRefresh(true);
 	}
 
 	@Override

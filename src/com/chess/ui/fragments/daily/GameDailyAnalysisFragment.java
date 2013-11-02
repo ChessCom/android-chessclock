@@ -34,6 +34,7 @@ import com.chess.ui.views.chess_boards.ChessBoardAnalysisView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsAnalysisView;
+import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.utilities.AppUtils;
 
 /**
@@ -320,6 +321,17 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			bottomPanelView.showTimeLeftIcon(userMove);
 		}
 		boardView.updateNotations(getBoardFace().getNotationArray());
+
+		controlsView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override

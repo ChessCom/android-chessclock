@@ -1,11 +1,13 @@
 package com.chess.ui.interfaces;
 
 
+import android.view.View;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.slidingmenu.lib.SlidingMenu;
+import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
 
 public interface ActiveFragmentInterface {
 
@@ -72,4 +74,8 @@ public interface ActiveFragmentInterface {
 	String getMeUsername();
 
 	String getMeUserToken();
+
+	void setPullToRefreshView(View view, PullToRefreshAttacher.OnRefreshListener refreshListener);
+
+	PullToRefreshAttacher getPullToRefreshAttacher();
 }

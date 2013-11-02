@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.EditText;
 import com.chess.R;
 import com.chess.backend.LoadItem;
@@ -15,7 +16,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.GcmItem;
 import com.chess.backend.entity.api.LoginItem;
-import com.chess.backend.entity.api.MovesStatusItem;
 import com.chess.backend.entity.api.RegisterItem;
 import com.chess.backend.gcm.GcmHelper;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -23,6 +23,10 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
 import com.chess.model.TacticsDataHolder;
 import com.chess.statics.*;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
@@ -53,8 +57,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected static final int REQUEST_REGISTER = 11;
 	private static final int REQUEST_UNREGISTER = 22;
 
-//	private LoginUpdateListener loginUpdateListener;
-	private LoginUpdateListenerNew loginUpdateListener;
+	private LoginUpdateListener loginUpdateListener;
 	private int loginReturnCode;
 
 	private String currentLocale;
@@ -66,12 +69,14 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	private AppData appData;
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
+	private UiLifecycleHelper facebookUiHelper;
+	private boolean facebookActive;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		loginUpdateListener = new LoginUpdateListenerNew();
+		loginUpdateListener = new LoginUpdateListener();
 
 		appData = new AppData(this);
 		preferences = appData.getPreferences();
@@ -81,6 +86,9 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		handler = new Handler();
 		setLocale();
+
+		facebookUiHelper = new UiLifecycleHelper(this, callback);
+		facebookUiHelper.onCreate(savedInstanceState);
 	}
 
 	protected AppData getAppData() {
@@ -95,29 +103,29 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		return getAppData().getUserToken();
 	}
 
-//	@Override
-//	protected void onPostCreate(Bundle savedInstanceState) {
-//		super.onPostCreate(savedInstanceState);
-////		if (mainView != null) {
-////			facebookInit((LoginButton) mainView.findViewById(R.id.fb_connect));
-////		}
-//	}
-
 	protected void facebookInit(LoginButton fbLoginBtn) {
-//		if (fbLoginBtn != null) {
-//			facebook = new Facebook(AppConstants.FACEBOOK_APP_ID);
-//			SessionStore.restore(facebook, this);
-//
-//			SessionEvents.dropAuthListeners();
-//			SessionEvents.addAuthListener(new SampleAuthListener());
-//			SessionEvents.dropLogoutListeners();
-//			SessionEvents.addLogoutListener(new SampleLogoutListener());
-//			fbLoginBtn.init(this, facebook);
-//
-//
-////			loginUpdateListener = new LoginUpdateListener();
+		if (fbLoginBtn != null) {
+//			facebookUiHelper = new UiLifecycleHelper(this, callback);
+//			facebookUiHelper.onCreate(savedInstanceState);
+			facebookActive = true;
+
+			// logout from facebook
+			Session facebookSession = Session.getActiveSession();
+			if (facebookSession != null) {
+				facebookSession.closeAndClearTokenInformation();
+				Session.setActiveSession(null);
+			}
+
+//			fbLoginBtn.setFragment(this);
+			fbLoginBtn.setReadPermissions(Arrays.asList("user_status", "email"));
+			fbLoginBtn.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
+				@Override
+				public void onUserInfoFetched(GraphUser user) {
+				}
+			});
+
 //			loginUpdateListener = new LoginUpdateListenerNew();
-//		}
+		}
 	}
 
 	@Override
@@ -140,11 +148,43 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		if (facebookActive) {
+			facebookUiHelper.onResume();
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (facebookActive) {
+			facebookUiHelper.onPause();
+		}
+	}
+
+	@Override
 	protected void onStop() {
 		super.onStop();
 		FlurryAgent.onEndSession(this);
 
 		isRestarted = false;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (facebookActive) {
+			facebookUiHelper.onSaveInstanceState(outState);
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (facebookActive) {
+			facebookUiHelper.onActivityResult(requestCode, resultCode, data);
+		}
 	}
 
 	protected void setLocale() {
@@ -317,8 +357,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		return string.substring(0, 32);
 	}
 
-	private class LoginUpdateListenerNew extends AbstractUpdateListener<LoginItem> {
-		public LoginUpdateListenerNew() {
+	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
+		public LoginUpdateListener() {
 			super(getContext(), LoginItem.class);
 		}
 
@@ -369,45 +409,41 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 	}
 
+	protected Session.StatusCallback callback = new Session.StatusCallback() {
+		@Override
+		public void call(Session session, SessionState state, Exception exception) {
+			Log.d("TEST"," session callback session = " + session + " state = " + state);
+			onSessionStateChange(session, state, exception);
+		}
+	};
 
-//	public class SampleAuthListener implements SessionEvents.AuthListener {
-//		@Override
-//		public void onAuthSucceed() {
-//			LoadItem loadItem = new LoadItem();
-////			loadItem.setLoadPath(RestHelper.LOGIN);
-//			loadItem.setLoadPath(RestHelper.CMD_LOGIN);
-//			loadItem.setRequestMethod(RestHelper.POST);
-//			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, facebook.getAccessToken());
-////			loadItem.addRequestParams(RestHelper.P_RETURN, RestHelper.V_USERNAME);
-//			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
-//
-//			new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
-//			loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
-//		}
-//
-//		@Override
-//		public void onAuthFail(String error) {
-//			showToast(getString(R.string.login_failed)+ StaticData.SPACE + error);
-//		}
-//	}
-//	public class SampleLogoutListener implements SessionEvents.LogoutListener {
-//		@Override
-//		public void onLogoutBegin() {
-//			showToast(R.string.login_out);
-//		}
-//
-//		@Override
-//		public void onLogoutFinish() {
-//			showToast(R.string.you_logged_out);
-//		}
-//	}
+	protected void onSessionStateChange(Session session, SessionState state, Exception exception) {
+		if (state != null && state.isOpened()) {
+			loginWithFacebook(session);
+		}
+	}
+
+	private void loginWithFacebook(Session session) {
+		// save facebook access token to appData for future re-login
+		getAppData().setFacebookToken(session.getAccessToken());
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
+		loadItem.setRequestMethod(RestHelper.POST);
+		loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, session.getAccessToken());
+		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_TACTICS_RATING);
+
+		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
+		loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
+	}
 
 	protected void processLogin(RegisterItem.Data returnedObj) {
-		if (passwordEdt == null) { // if accidently return in wrong callback, when widgets are not initialized
-			return;
+		if (TextUtils.isEmpty(getTextFromField(passwordEdt))) {
+			preferencesEditor.putString(AppConstants.PASSWORD, getTextFromField(passwordEdt));
 		}
 
-		preferencesEditor.putString(AppConstants.PASSWORD, passwordEdt.getText().toString().trim());
 		preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLoginToken());
 		preferencesEditor.commit();
 
@@ -419,20 +455,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	}
 
 	protected void afterLogin(){ }
-
-//	protected void backToHomeActivity() {
-//		Intent intent = new Intent(this, HomeScreenActivity.class);
-//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//		startActivity(intent);
-//		finish();
-//	}
-
-//	protected void backToLoginActivity() {
-//		Intent intent = new Intent(this, LoginScreenActivity.class);
-//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//		startActivity(intent);
-//		finish();
-//	}
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
@@ -450,66 +472,4 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		super.onPositiveBtnClick(fragment);
 	}
 
-//	protected void checkMove(){
-//		LoadItem loadItem = new LoadItem();
-//		loadItem.setLoadPath(RestHelper.CMD_MOVES);
-//		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
-//
-//		new RequestJsonTask<MovesStatusItem>(new CheckMoveUpdateListener()).executeTask(loadItem);
-//	}
-
-	private class CheckMoveUpdateListener extends AbstractUpdateListener<MovesStatusItem> {
-		public CheckMoveUpdateListener() {
-			super(getContext(), MovesStatusItem.class);
-		}
-
-		@Override
-		public void updateData(MovesStatusItem returnedObj) {
-			int haveMoves = 0;
-/*			List<GameListCurrentItem> itemList = ChessComApiParser.getCurrentOnlineGames(returnedObj);
-
-			if(itemList.size() == 1) { // only one icon
-				GameListCurrentItem gameListItem = itemList.get(0);
-
-				AppUtils.showNewMoveStatusNotification(getMeContext(),
-						getMeContext().getString(R.string.your_move),
-						getMeContext().getString(R.string.your_turn_in_game_with,
-								gameListItem.getOpponentUsername(),
-								gameListItem.getLastMoveFromSquare() + gameListItem.getLastMoveToSquare()),
-						StaticData.MOVE_REQUEST_CODE,
-						gameListItem);
-				haveMoves++;
-			} else if(itemList.size() > 0) {
-				for (GameListCurrentItem currentItem : itemList) {
-					AppUtils.cancelNotification(getMeContext(), (int) currentItem.getGameId());
-				}
-
-				AppUtils.showMoveStatusNotification(getMeContext(),
-						getMeContext().getString(R.string.your_turn),
-						getMeContext().getString(R.string.your_move) + StaticData.SPACE
-								+ StaticData.LEFT_PAR + itemList.size() + StaticData.RIGHT_PAR,
-						0, OnlineScreenActivity.class);
-				getMeContext().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
-			}
-
-			if(haveMoves == 1){ // play for one
-				SharedPreferences preferences = appData.getPreferences(getMeContext());
-				boolean playSounds = preferences.getBoolean(appData.getUsername(getMeContext()) + AppConstants.PREF_SOUNDS, false);
-				if(playSounds){
-					final MediaPlayer player = MediaPlayer.create(getMeContext(), R.raw.move_opponent);
-					if(player != null){
-						player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-							@Override
-							public void onCompletion(MediaPlayer mediaPlayer) {
-								player.release();
-							}
-						});
-						player.start();
-					}
-				}
-
-				getMeContext().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
-			}*/
-		}
-	}
 }

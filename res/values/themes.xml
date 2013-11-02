@@ -4,7 +4,7 @@
     <style name="MyAppTheme" parent="AppTheme">
         <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatBackground</item>
         <item name="android:windowBackground">@drawable/img_theme_green_felt</item>
-
+		<!--<item name="ptrHeaderStyle">@style/Widget.Custom.PtrHeader</item>-->
     </style>
 
 

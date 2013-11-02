@@ -52,6 +52,7 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.slidingmenu.lib.SlidingMenu;
+import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,7 +68,7 @@ import static com.chess.statics.AppConstants.*;
  * Date: 02.01.13
  * Time: 10:18
  */
-public abstract class CommonLogicFragment extends BasePopupsFragment implements View.OnClickListener {
+public abstract class CommonLogicFragment extends BasePopupsFragment implements View.OnClickListener, PullToRefreshAttacher.OnRefreshListener {
 
 	private static final int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private static final int SIGNIN_CALLBACK_CODE = 16;
@@ -93,6 +94,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final int TWO_ICON = 2;
 	protected static final long SIDE_MENU_DELAY = 150;
 	private static final long SWITCH_DELAY = 50;
+	private static final long PULL_TO_UPDATE_RELEASE_DELAY = 1000;
 
 	private LoginUpdateListener loginUpdateListener;
 
@@ -119,6 +121,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected float density;
 	protected int screenWidth;
 	private HashMap<String, ImageGetter.TextImage> textViewsImageCache;
+	private ListView listView;
+	private boolean usePullToRefresh;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -159,6 +163,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		enableSlideMenus(true);
 
 		loadingView = view.findViewById(R.id.loadingView);
+		listView = (ListView) view.findViewById(R.id.listView);
 
 		if (needToChangeActionButtons) {
 			getActivityFace().showActionMenu(R.id.menu_add, false);
@@ -175,7 +180,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 
 		if (loadingImages) {
-			ListView listView = (ListView) view.findViewById(R.id.listView);
 			if (listView != null) {
 				listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 					@Override
@@ -213,6 +217,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			facebookUiHelper.onCreate(savedInstanceState);
 			facebookActive = true;
 			facebookInit(facebookButton);
+		}
+
+		if (usePullToRefresh && listView != null) {
+			getActivityFace().setPullToRefreshView(listView, CommonLogicFragment.this);
 		}
 	}
 
@@ -508,6 +516,16 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	public void onSearchAutoCompleteQuery(String query) {
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getActivityFace().getPullToRefreshAttacher().setRefreshComplete();
+			}
+		}, PULL_TO_UPDATE_RELEASE_DELAY);
 	}
 
 	protected class ChessUpdateListener<ItemType> extends ActionBarUpdateListener<ItemType> {
@@ -878,4 +896,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 	}
 
+	public void pullToRefresh(boolean usePullToRefresh) {
+		this.usePullToRefresh = usePullToRefresh;
+	}
+
+//	protected void releasePullToRefreshHeader() {
+//		getActivityFace().getPullToRefreshAttacher().setRefreshComplete();
+//	}
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<!-- The attribute to set in your Application/Activity theme to reference your custom theme -->
+	<attr name="ptrHeaderStyle" format="reference" />
+
+	<declare-styleable name="PullToRefreshHeader">
+
+		<!-- A drawable to use as the background of the Header View -->
+		<attr name="ptrHeaderBackground" format="reference|color" />
+
+		<!-- The height of the Header View -->
+		<attr name="ptrHeaderHeight" format="reference|dimension" />
+
+		<!-- The Text Appearance of the Header View's Title text -->
+		<attr name="ptrHeaderTitleTextAppearance" format="reference" />
+
+		<!-- The color that the Progress Bar should be tinted with -->
+		<attr name="ptrProgressBarColor" format="reference|color" />
+
+		<!-- Text to show to prompt the user is pull (or keep pulling) -->
+		<attr name="ptrPullText" format="reference|string" />
+
+		<!-- Text to show to tell the user that a refresh is currently in progress -->
+		<attr name="ptrRefreshingText" format="reference|string" />
+
+		<!-- Text to show to tell the user has scrolled enough to refresh -->
+		<attr name="ptrReleaseText" format="reference|string" />
+
+	</declare-styleable>
+
+</resources>

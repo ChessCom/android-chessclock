@@ -58,6 +58,8 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		friendsAdapter = new FriendsCursorAdapter(this, null, getImageFetcher());
 		QueryFilterProvider queryFilterProvider = new QueryFilterProvider();
 		friendsAdapter.setFilterQueryProvider(queryFilterProvider);
+
+		pullToRefresh(true);
 	}
 
 	@Override
@@ -110,6 +112,14 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		super.onStop();
 
 		releaseResources();
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		super.onRefreshStarted(view);
+		if (AppUtils.isNetworkAvailable(getActivity())) {
+			updateData();
+		}
 	}
 
 	private void init() {
