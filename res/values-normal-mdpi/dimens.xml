@@ -172,7 +172,7 @@
 	<dimen name="chip_close_icon_size">17dip</dimen>
 	<dimen name="seek_bar_side_padding">8dip</dimen>
 	<dimen name="profile_frame_photo_size">80dip</dimen>
-	<dimen name="actionbar_title_height">20sp</dimen>
+	<dimen name="actionbar_title_text_size">20sp</dimen>
 	<dimen name="article_detail_image_height">213dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="popup_end_game_width">300dip</dimen>
@@ -186,5 +186,7 @@
 	<dimen name="overlay_shadow_offset">3dip</dimen>
 	<dimen name="correct_move_puzzle_height">36dip</dimen>
 	<dimen name="pull_to_refresh_header_height">72dip</dimen>
+	<dimen name="tab_button_text_size">16sp</dimen>
+	<dimen name="default_text_size_small">13sp</dimen>
 
 </resources>

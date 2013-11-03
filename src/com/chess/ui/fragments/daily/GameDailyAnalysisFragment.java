@@ -321,17 +321,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			bottomPanelView.showTimeLeftIcon(userMove);
 		}
 		boardView.updateNotations(getBoardFace().getNotationArray());
-
-		controlsView.enableGameControls(false);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if (getActivity() == null) {
-					return;
-				}
-				controlsView.enableGameControls(true);
-			}
-		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override
@@ -513,5 +502,16 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 		boardView.setGameActivityFace(this);
 		boardView.lockBoard(true);
+
+		controlsView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 }

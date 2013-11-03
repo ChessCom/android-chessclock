@@ -79,7 +79,7 @@
 		android:layout_toRightOf="@id/photoImg"
 		android:layout_below="@id/authorTxt"
 		android:textColor="@color/stats_label_light_grey"
-		android:textSize="13sp"
+		android:textSize="@dimen/default_text_size_small"
 		android:paddingTop="6dip"
 		/>
 
@@ -92,7 +92,7 @@
 		android:paddingTop="6dip"
 		android:paddingLeft="5dip"
 		android:textColor="@color/new_text_blue"
-		android:textSize="13sp"
+		android:textSize="@dimen/default_text_size_small"
 		android:text="@string/quote"
 		/>
 

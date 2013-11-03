@@ -114,11 +114,13 @@ public class ControlsLessonsView extends ControlsBaseView {
 	}
 
 	public void setBoardViewFace(BoardViewLessonsFace boardViewFace) {
+		super.setBoardViewFace(boardViewFace);
 		this.boardViewFace = boardViewFace;
 	}
 
 	@Override
 	public void onClick(View view) {
+		super.onClick(view);
 		if (blocked)
 			return;
 

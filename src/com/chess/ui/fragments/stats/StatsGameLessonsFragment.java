@@ -42,6 +42,7 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private StatsItemUpdateListener statsItemUpdateListener;
 	private RecentStatsAdapter recentStatsAdapter;
+	private TextView recentProblemsTitleTxt;
 
 	public StatsGameLessonsFragment() {
 		Bundle bundle = new Bundle();
@@ -90,7 +91,9 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 		setTitle(R.string.stats);
 
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_tactics_stats_header_view, null, false);
-		((TextView)headerView.findViewById(R.id.recentProblemsTitleTxt)).setText(R.string.recent_lessons);
+		recentProblemsTitleTxt = (TextView) headerView.findViewById(R.id.recentProblemsTitleTxt);
+		recentProblemsTitleTxt.setText(R.string.recent_lessons);
+
 		ratingGraphView = (RatingGraphView) headerView.findViewById(R.id.ratingGraphView);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
@@ -127,7 +130,7 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 		// TODO load selected lesson from DB or load it from server
 	}
 
-	private class StatsItemUpdateListener extends CommonLogicFragment.ChessLoadUpdateListener<LessonsStatsItem> {
+	private class StatsItemUpdateListener extends ChessUpdateListener<LessonsStatsItem> {
 
 		public StatsItemUpdateListener() {
 			super(LessonsStatsItem.class);
@@ -142,7 +145,7 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 		}
 	}
 
-	private class SaveStatsUpdateListener extends CommonLogicFragment.ChessLoadUpdateListener<LessonsStatsItem.Data> {
+	private class SaveStatsUpdateListener extends ChessUpdateListener<LessonsStatsItem.Data> {
 
 		@Override
 		public void updateData(LessonsStatsItem.Data returnedObj) {
@@ -161,6 +164,7 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 
 		cursor.moveToFirst();
 		recentStatsAdapter.changeCursor(cursor);
+		recentProblemsTitleTxt.setVisibility(View.VISIBLE);
 	}
 
 	protected void fillGraph() {

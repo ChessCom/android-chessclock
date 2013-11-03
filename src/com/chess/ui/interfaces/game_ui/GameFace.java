@@ -25,7 +25,7 @@ public interface GameFace {
 
 	void switch2Analysis();
 
-    void turnScreenOff();
+    void releaseScreenLockFlag();
 	
     void updateAfterMove();
 

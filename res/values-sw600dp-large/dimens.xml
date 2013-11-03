@@ -71,7 +71,7 @@
 	<dimen name="new_tactics_clock_icon_size">24dip</dimen>
 	<dimen name="new_tactics_clock_icon_padding">6dip</dimen>
 	<dimen name="new_tactics_clock_icon_padding_top">4dip</dimen>
-	<dimen name="actionbar_title_height">24sp</dimen>
+	<dimen name="actionbar_title_text_size">24sp</dimen>
 	<dimen name="article_detail_image_height">213dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="options_list_item_height">56dip</dimen>
@@ -107,5 +107,7 @@
 	<dimen name="_3dPiece_offset_for_board_drag">35dip</dimen>
 	<dimen name="correct_move_puzzle_height">48dip</dimen>
 	<dimen name="pull_to_refresh_header_height">82dip</dimen>
+	<dimen name="tab_button_text_size">18sp</dimen>
+	<dimen name="default_text_size_small">15sp</dimen>
 
 </resources>

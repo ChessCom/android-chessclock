@@ -605,8 +605,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 //					finishedGamesCursorAdapter.changeCursor(null);
 //				}
 //			}
-
-//			releasePullToRefreshHeader();
 		}
 
 		@Override

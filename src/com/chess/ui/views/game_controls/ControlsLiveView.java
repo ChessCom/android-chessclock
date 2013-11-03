@@ -53,6 +53,7 @@ public class ControlsLiveView extends ControlsBaseView {
 
 	@Override
 	public void onClick(View view) {  // TODO rework click handles
+		super.onClick(view);
 		if (blocked)
 			return;
 

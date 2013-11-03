@@ -54,6 +54,7 @@ public class ControlsDailyView extends ControlsBaseView {
 
 	@Override
 	public void onClick(View view) {  // TODO rework click handles
+		super.onClick(view);
 		if (blocked)
 			return;
 
@@ -64,10 +65,6 @@ public class ControlsDailyView extends ControlsBaseView {
 			boardViewFace.switchAnalysis();
 		} else if (view.getId() == getButtonId(CHAT)) {
 			boardViewFace.showChat();
-		} else if (view.getId() == getButtonId(BACK)) {
-			boardViewFace.moveBack();
-		} else if (view.getId() == getButtonId(FORWARD)) {
-			boardViewFace.moveForward();
 		} else if (view.getId() == getButtonId(CLOSE)) {
 			boardViewFace.cancelMove();
 		} else if (view.getId() == getButtonId(MAKE_MOVE)) {
@@ -76,6 +73,7 @@ public class ControlsDailyView extends ControlsBaseView {
 	}
 
 	public void setBoardViewFace(BoardViewNetworkFace boardViewFace) {
+		super.setBoardViewFace(boardViewFace);
 		this.boardViewFace = boardViewFace;
 	}
 

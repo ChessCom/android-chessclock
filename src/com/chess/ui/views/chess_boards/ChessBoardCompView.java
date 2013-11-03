@@ -241,13 +241,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		gameCompActivityFace.invalidateGameScreen();
 	}
 
-//	@Override
-//	public void enableAnalysis() {   // TODO recheck logic
-//		gameCompActivityFace.switch2Analysis(true);  // will open new screen
-//	}
-
 	@Override
-    public void moveBack() {
+    public boolean moveBack() {
 		boolean blackCompFirstMove =
 				getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getPly() == 1;
 
@@ -269,18 +264,21 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			}
             invalidate();
 			gameCompActivityFace.invalidateGameScreen();
-        }
+			return true;
+		} else {
+			return false;
+		}
     }
 
     @Override
-    public void moveForward() {
+    public boolean moveForward() {
         if (!isComputerMoving() && noMovesToAnimate() && !navigating) {
 
 			pieceSelected = false;
 
 			Move move = getBoardFace().getNextMove();
 			if (move == null) {
-				return;
+				return false;
 			}
 			navigating = true;
 			CompEngineHelper.getInstance().moveForward();
@@ -296,7 +294,11 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			}
             invalidate();
 			gameCompActivityFace.invalidateGameScreen();
-        }
+
+			return true;
+        } else {
+			return false;
+		}
     }
 
     @Override

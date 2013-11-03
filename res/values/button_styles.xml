@@ -391,7 +391,8 @@
     <!-- ============= Tab ===================== -->
 
     <style name="Rect.Tab">
-        <item name="btn_top">@color/transparent_button_border_left</item>  <!--dark-->
+		<item name="android:textSize">@dimen/tab_button_text_size</item>
+		<item name="btn_top">@color/transparent_button_border_left</item>  <!--dark-->
         <item name="btn_bottom">@color/transparent_button_border_bottom</item> <!--dark-->
         <item name="btn_solid">#01000000</item>
 		<item name="android:textColor">@color/text_tabs_color_selector</item>

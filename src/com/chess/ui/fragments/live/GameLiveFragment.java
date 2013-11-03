@@ -87,7 +87,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private NotationView notationsView;
 	protected PanelInfoLiveView topPanelView;
 	protected PanelInfoLiveView bottomPanelView;
-	protected ControlsLiveView controlsLiveView;
+	protected ControlsLiveView controlsView;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 
 	protected LabelsConfig labelsConfig;
@@ -226,13 +226,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 
 		showSubmitButtonsLay(false);
-		controlsLiveView.enableAnalysisMode(false);
-		controlsLiveView.showDefault();
+		controlsView.enableAnalysisMode(false);
+		controlsView.showDefault();
 
 		getBoardFace().setFinished(false);
 		getSoundPlayer().playGameStart();
 
-		controlsLiveView.haveNewMessage(currentGame.hasNewMessage());
+		controlsView.haveNewMessage(currentGame.hasNewMessage());
 
 		// avoid races on update moves logic for active game, doUpdateGame updates moves, avoid peaces disappearing and invalidmovie exception
 		// vm: actually we have to invoke checkAndReplayMoves() here, because we reset a board on pause/resume everytime.
@@ -413,7 +413,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		liveService.checkTestMove();
 
 		if (gameItem.hasNewMessage()) {
-			controlsLiveView.haveNewMessage(true);
+			controlsView.haveNewMessage(true);
 		}
 	}
 
@@ -426,7 +426,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				controlsLiveView.haveNewMessage(true);
+				controlsView.haveNewMessage(true);
 				boardView.invalidate();
 			}
 		});
@@ -504,7 +504,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 				setBoardToFinishedState();
 
-				controlsLiveView.showAfterMatch();
+				controlsView.showAfterMatch();
 			}
 		});
 
@@ -642,7 +642,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //			liveService.setLatestMoveNumber(0);
 //			ChessBoardLive.resetInstance();
 //		}
-//		controlsLiveView.enableControlButtons(isAnalysis);
+//		controlsView.enableControlButtons(isAnalysis);
 	}
 
 	@Override
@@ -657,7 +657,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //		if(!liveService.isCurrentGameExist()) return;
 //			liveService.getCurrentGame();
 //		currentGame.setHasNewMessage(false);
-		controlsLiveView.haveNewMessage(false);
+		controlsView.haveNewMessage(false);
 
 		getActivityFace().openFragment(new LiveChatFragment());
 	}
@@ -846,7 +846,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {  // TODO remove arg and get state from boardFace
-		controlsLiveView.showSubmitButtons(show);
+		controlsView.showSubmitButtons(show);
 
 		if (!show) {
 			getBoardFace().setSubmit(false);
@@ -1153,7 +1153,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		enableScreenLockTimer();
 
 		if (!liveService.isCurrentGameExist()) {
-			controlsLiveView.enableAnalysisMode(true);
+			controlsView.enableAnalysisMode(true);
 			getBoardFace().setFinished(true);
 		}
 
@@ -1211,7 +1211,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	protected void widgetsInit(View view) {
 		fadeLay = view.findViewById(R.id.fadeLay);
 
-		controlsLiveView = (ControlsLiveView) view.findViewById(R.id.controlsLiveView);
+		controlsView = (ControlsLiveView) view.findViewById(R.id.controlsLiveView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoLiveView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoLiveView) view.findViewById(R.id.bottomPanelView);
@@ -1220,11 +1220,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsLiveView);
+		boardView.setControlsView(controlsView);
 		boardView.setNotationsView(notationsView);
 		setBoardView(boardView);
 		boardView.setGameFace(this);
-		controlsLiveView.setBoardViewFace(boardView);
+		controlsView.setBoardViewFace(boardView);
 		topPanelView.setClickHandler(this);
 	}
 

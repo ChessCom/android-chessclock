@@ -70,7 +70,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
-	private ControlsCompView controlsCompView;
+	private ControlsCompView controlsView;
 
 	private LabelsConfig labelsConfig;
 	private boolean labelsSet;
@@ -387,18 +387,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		}
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
-
-
-		controlsCompView.enableGameControls(false);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if (getActivity() == null) {
-					return;
-				}
-				controlsCompView.enableGameControls(true);
-			}
-		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override
@@ -474,7 +462,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			boardView.invalidate();
 
 			boardView.setHint(false);
-			controlsCompView.enableGameControls(true);
+			controlsView.enableGameControls(true);
 		}
 	};
 
@@ -639,7 +627,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		getAppData().clearSavedCompGame();
 
-		controlsCompView.enableHintButton(false);
+		controlsView.enableHintButton(false);
 //		if (AppUtils.isNeedToUpgrade(getActivity())) {
 //			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 //		}
@@ -822,7 +810,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	private void widgetsInit(View view) {
 
-		controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
+		controlsView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
@@ -860,7 +848,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsCompView);
+		boardView.setControlsView(controlsView);
 		boardView.setNotationsView(notationsView);
 		notationsView.resetNotations();
 
@@ -869,8 +857,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		boardView.lockBoard(true);
 
-		controlsCompView.enableHintButton(true);
-
 		{// options list setup
 			optionsArray = new SparseArray<String>();
 			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
@@ -878,6 +864,17 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			optionsArray.put(ID_FLIP_BOARD, getString(R.string.switch_colors));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
+
+		controlsView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override

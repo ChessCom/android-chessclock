@@ -69,7 +69,7 @@ public abstract class AbstractGameNetworkFaceHelper implements GameNetworkFace {
 	}
 
 	@Override
-	public void turnScreenOff() {
+	public void releaseScreenLockFlag() {
 
 	}
 

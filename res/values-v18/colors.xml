@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!--Graph-->
+	<color name="graph_border">#FFbfbfbf</color>
+	<color name="graph_back">#FFf7f7f7</color>
+	<color name="graph_gradient_top">#AFe6f7ff</color>
+	<color name="graph_gradient_bottom">#AFbbdaea</color>
+	<color name="graph_min_value_line">#80a7b5bc</color>
+	<color name="graph_min_value_text">#804b5459</color>
+
+</resources>

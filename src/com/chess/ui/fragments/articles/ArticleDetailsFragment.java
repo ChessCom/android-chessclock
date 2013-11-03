@@ -961,8 +961,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			// mark article as read
 			handler.postDelayed(markAsReadRunnable, READ_DELAY);
-
-//			releasePullToRefreshHeader();
 		}
 	}
 

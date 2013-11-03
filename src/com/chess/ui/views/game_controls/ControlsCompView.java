@@ -42,6 +42,7 @@ public class ControlsCompView extends ControlsBaseView {
 
 	@Override
 	public void onClick(View view) {  // TODO rework click handles
+		super.onClick(view);
 		if (blocked) {
 			return;
 		}
@@ -52,14 +53,11 @@ public class ControlsCompView extends ControlsBaseView {
 			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(HELP)) {
 			boardViewFace.switchAnalysis();
-		} else if (view.getId() == getButtonId(BACK)) {
-			boardViewFace.moveBack();
-		} else if (view.getId() == getButtonId(FORWARD)) {
-			boardViewFace.moveForward();
 		}
 	}
 
 	public void setBoardViewFace(BoardViewCompFace boardViewFace) {
+		super.setBoardViewFace(boardViewFace);
 		this.boardViewFace = boardViewFace;
 	}
 

@@ -323,7 +323,7 @@
 	<dimen name="profile_frame_photo_size">80dip</dimen>
 
 	<dimen name="new_side_graph_button_height">15dip</dimen>
-	<dimen name="actionbar_title_height">20sp</dimen>
+	<dimen name="actionbar_title_text_size">20sp</dimen>
 	<dimen name="article_detail_image_height">213dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="content_text_size">14sp</dimen>
@@ -350,5 +350,7 @@
 	<dimen name="_3dPiece_offset_for_board_drag">28dip</dimen>
 	<dimen name="correct_move_puzzle_height">48dip</dimen>
 	<dimen name="pull_to_refresh_header_height">48dip</dimen>
+	<dimen name="tab_button_text_size">16sp</dimen>
+	<dimen name="default_text_size_small">13sp</dimen>
 
 </resources>

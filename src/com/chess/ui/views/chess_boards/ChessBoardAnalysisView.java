@@ -2,7 +2,6 @@ package com.chess.ui.views.chess_boards;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
@@ -237,42 +236,6 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	@Override
 	public void restart() {
 		gameAnalysisActivityFace.restart();
-	}
-
-	@Override
-	public void moveBack() {
-
-		if (noMovesToAnimate() && getBoardFace().getPly() > 0) {
-			getBoardFace().setFinished(false);
-			pieceSelected = false;
-			setMoveAnimator(getBoardFace().getLastMove(), false);
-			resetValidMoves();
-			getBoardFace().takeBack();
-			Log.d("TEST", "moveBack");
-			Log.d("TEST", "invalidate");
-
-			invalidate();
-			gameAnalysisActivityFace.invalidateGameScreen();
-		}
-	}
-
-	@Override
-	public void moveForward() {
-
-		if (noMovesToAnimate()) {
-			pieceSelected = false;
-
-			Move move = getBoardFace().getNextMove();
-			if (move == null) {
-				return;
-			}
-			setMoveAnimator(move, true);
-			resetValidMoves();
-			getBoardFace().takeNext();
-
-			invalidate();
-			gameAnalysisActivityFace.invalidateGameScreen();
-		}
 	}
 
 	@Override

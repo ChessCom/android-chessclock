@@ -696,6 +696,17 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		addLayoutChangeAnimation(view.findViewById(R.id.boardFrame));
 
 		resultIconPadding = getResources().getDimensionPixelSize(R.dimen.glyph_icon_padding);
+
+		controlsView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)

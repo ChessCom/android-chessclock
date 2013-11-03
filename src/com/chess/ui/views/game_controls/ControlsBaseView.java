@@ -7,11 +7,13 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.RoboButton;
+import com.chess.ui.interfaces.boards.BoardViewFace;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.ui.views.drawables.smart_button.RectButtonDrawable;
@@ -19,13 +21,17 @@ import com.chess.utilities.FontsHelper;
 
 import java.util.HashMap;
 
+import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.BACK;
+import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.FORWARD;
+
 /**
  * GamePanelTestActivity class
  *
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public abstract class ControlsBaseView extends LinearLayout implements View.OnClickListener {
+public abstract class ControlsBaseView extends LinearLayout implements View.OnClickListener,
+		View.OnLongClickListener, View.OnTouchListener {
 
 	public static final int BUTTONS_RE_ENABLE_DELAY = 400;
 
@@ -34,6 +40,12 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	protected ColorStateList controlIconColor;
 	protected float density;
 	protected int controlTextSize;
+	private BoardViewFace boardViewFace;
+	private boolean fastMode;
+
+	public void setBoardViewFace(BoardViewFace boardViewFace) {
+		this.boardViewFace = boardViewFace;
+	}
 
 	enum ButtonIds {
 		/* Diagram Controls */
@@ -161,6 +173,11 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		ButtonDrawableBuilder.setBackgroundToView(button, styleId);
 		button.setId(getButtonId(buttonId));
 
+		if (buttonId == ButtonIds.FORWARD || buttonId == ButtonIds.BACK ) {
+			button.setOnLongClickListener(this);
+			button.setOnTouchListener(this);
+		}
+
 		if (buttonParams == null) {
 			buttonParams = new LayoutParams(0, controlButtonHeight);
 			buttonParams.weight = 1;
@@ -206,6 +223,55 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		findViewById(BUTTON_PREFIX + buttonId.ordinal()).setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 
+	@Override
+	public void onClick(View view) {
+		if (view.getId() == getButtonId(BACK)) {
+			boardViewFace.setFastMovesMode(false);
+			boardViewFace.moveBack();
+		} else if (view.getId() == getButtonId(FORWARD)) {
+			boardViewFace.setFastMovesMode(false);
+			boardViewFace.moveForward();
+		}
+		boardViewFace.setFastMovesMode(false);
+	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		if (v.getId() == getButtonId(FORWARD)) {
+			boardViewFace.setFastMovesMode(true);
+			boardViewFace.moveForwardFast();
+			fastMode = true;
+		} else if (v.getId() == getButtonId(BACK)) {
+			boardViewFace.setFastMovesMode(true);
+			boardViewFace.moveBackFast();
+			fastMode = true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onTouch(View view, MotionEvent event) {
+		if (view.getId() == getButtonId(FORWARD)) {
+			if (fastMode) {
+				switch (event.getAction() & MotionEvent.ACTION_MASK) {
+					case MotionEvent.ACTION_UP: {
+						boardViewFace.setFastMovesMode(false);
+						fastMode = false;
+					}
+				}
+			}
+		} else if (view.getId() == getButtonId(FORWARD)) {
+			if (fastMode) {
+				switch (event.getAction() & MotionEvent.ACTION_MASK) {
+					case MotionEvent.ACTION_UP: {
+						boardViewFace.setFastMovesMode(false);
+						fastMode = false;
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 	public void enableGameButton(ButtonIds buttonId, boolean enable) {
 		findViewById(BUTTON_PREFIX + buttonId.ordinal()).setEnabled(enable);

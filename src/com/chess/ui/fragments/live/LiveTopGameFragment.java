@@ -98,7 +98,7 @@ public class LiveTopGameFragment extends GameLiveFragment {
 		//notationsView.resetNotations();
 		enableScreenLockTimer();
 		if (!liveService.isCurrentGameExist()) {
-			controlsLiveView.enableAnalysisMode(true);
+			controlsView.enableAnalysisMode(true);
 			getBoardFace().setFinished(true);
 		}
 		//liveService.setLccEventListener(this);

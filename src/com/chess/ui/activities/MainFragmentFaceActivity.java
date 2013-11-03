@@ -30,6 +30,7 @@ import com.chess.statics.IntentConstants;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.NotificationsRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
@@ -339,6 +340,14 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				for (SlidingMenu.OnOpenedListener openedListener : openMenuListeners) { // Inform listeners inside fragments
 					openedListener.onOpenedRight();
 				}
+			} else {
+				for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+					if (fragment != null && fragment.isVisible() && fragment instanceof NavigationMenuFragment) {
+						((NavigationMenuFragment) fragment).onOpened();
+						break;
+					}
+				}
+
 			}
 		}
 

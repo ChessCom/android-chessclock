@@ -6,19 +6,13 @@ package com.chess.ui.interfaces.boards;
  * Date: 27.09.13
  * Time: 19:07
  */
-public interface BoardViewDiagramFace {
+public interface BoardViewDiagramFace extends BoardViewFace {
 
 	void onPlay();
 
 	void onRewindBack();
 
-	void onMoveBack();
-
-	void onMoveForward();
-
 	void onRewindForward();
-
-	void showOptions();
 
 	void showHint();
 

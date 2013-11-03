@@ -6,15 +6,11 @@ package com.chess.ui.interfaces.boards;
  * Date: 22.02.13
  * Time: 17:53
  */
-public interface BoardViewAnalysisFace {
+public interface BoardViewAnalysisFace extends BoardViewFace {
 
 	void restart();
 
-	void moveBack();
-
 	void flipBoard();
-
-	void moveForward();
 
 	void closeBoard();
 

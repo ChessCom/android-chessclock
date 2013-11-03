@@ -48,7 +48,7 @@
                 android:layout_below="@id/absoluteRankTxt"
                 android:layout_toLeftOf="@+id/valuesDividerView"
                 android:layout_marginTop="-3dip"
-                android:textSize="13sp" />
+                android:textSize="@dimen/default_text_size_small" />
 
             <!--Divider-->
             <View
@@ -83,7 +83,7 @@
                 android:layout_below="@id/percentileValueTxt"
                 android:textColor="@color/stats_label_grey"
                 android:layout_marginTop="-3dip"
-                android:textSize="13sp" />
+                android:textSize="@dimen/default_text_size_small" />
 
         </RelativeLayout>
 

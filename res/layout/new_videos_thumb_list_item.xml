@@ -28,23 +28,6 @@
         android:textSize="16sp"
         custom:ttf="Bold"
         />
-    <!--android:text="A Guide for White: Avoiding the Sicilian - Alapin Part 1!"-->
-
-<!--
-    <com.chess.RoboTextView
-        android:id="@+id/byTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/by"
-        android:layout_below="@id/titleTxt"
-        android:paddingLeft="20dip"
-        android:paddingTop="0dip"
-        android:paddingBottom="2dip"
-        android:layout_marginTop="-1dip"
-        android:textColor="@color/new_subtitle_dark_grey"
-        android:textSize="12sp"
-        />
--->
 
     <com.chess.RoboTextView
         android:id="@+id/authorTxt"
@@ -58,8 +41,6 @@
         android:textSize="12sp"
         custom:ttf="Bold"
         />
-	<!--android:layout_toRightOf="@id/byTxt"-->
-    <!--android:text="GM Gregory Kaidanov"-->
 
     <com.chess.RoboTextView
         android:id="@+id/dateTxt"
@@ -69,9 +50,8 @@
         android:layout_below="@id/authorTxt"
         android:paddingLeft="20dip"
         android:textColor="@color/new_friends_grey_text"
-        android:textSize="13sp"
+        android:textSize="@dimen/default_text_size_small"
         />
-    <!--android:text="11/15/12 | 27 min"-->
 
 </RelativeLayout>
 

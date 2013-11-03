@@ -103,7 +103,7 @@
 		android:layout_below="@id/authorTxt"
 		android:paddingLeft="11dip"
 		android:textColor="@color/new_subtitle_light_grey"
-		android:textSize="13sp" />
+		android:textSize="@dimen/default_text_size_small" />
 
 	<com.chess.RoboTextView
 		android:id="@+id/contentTxt"

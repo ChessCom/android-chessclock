@@ -36,7 +36,7 @@
 			android:layout_height="wrap_content"
 			android:layout_below="@id/idTxt"
 			android:textColor="@color/stats_label_light_grey"
-			android:textSize="13sp"
+			android:textSize="@dimen/default_text_size_small"
 			android:paddingLeft="2dip"
 			android:text="17/01 18:56" />
 
@@ -70,7 +70,7 @@
 			android:layout_below="@id/userRatingTxt"
 			android:layout_centerHorizontal="true"
 			android:textColor="@color/stats_label_light_grey"
-			android:textSize="13sp"
+			android:textSize="@dimen/default_text_size_small"
 			android:text="833" />
 
 	</RelativeLayout>
@@ -99,7 +99,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerHorizontal="true"
-			android:textSize="13sp"
+			android:textSize="@dimen/default_text_size_small"
 			android:layout_below="@id/userTimeTxt"
 			android:paddingLeft="5dip"
 			android:paddingRight="5dip"
@@ -133,7 +133,7 @@
 			android:layout_centerHorizontal="true"
 
 			android:layout_below="@id/scoreTxt"
-			android:textSize="13sp"
+			android:textSize="@dimen/default_text_size_small"
 			android:text="-14"
 			/>
 

@@ -12,9 +12,15 @@ public interface BoardViewFace {
 
 	void switchAnalysis();
 
-	void moveBack();
+	boolean moveBack();
 
-	void moveForward();
+	boolean moveForward();
+
+	void moveBackFast();
+
+	void moveForwardFast();
 
 	void newGame();
+
+	void setFastMovesMode(boolean fastMode);
 }

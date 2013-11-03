@@ -1424,13 +1424,18 @@ public class ChessBoard implements BoardFace {
 	public boolean takeNext() {
 		if (ply + 1 <= movesCount) {
 			if (histDat[ply] == null) {
-				Log.e(TAG, " histDat[ply] == null, ply = " + ply + " histDat.length = " + histDat.length);
+//				Log.e(TAG, " histDat[ply] == null, ply = " + ply + " histDat.length = " + histDat.length);
 				// TODO find real problem
 				return false;
 			}
 			return makeMove(histDat[ply].move);
 		}
 		return false;
+	}
+
+	@Override
+	public boolean takeNext(boolean playSound) {
+		return ply + 1 <= movesCount && histDat[ply] != null && makeMove(histDat[ply].move, playSound);
 	}
 
 /*
@@ -1815,9 +1820,7 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void setSide(int side) {
-		Log.d("TEST", " setSide side before = " + this.side);
 		this.side = side;
-		Log.d("TEST", " setSide side after = " + this.side);
 	}
 
 	@Override
@@ -1859,8 +1862,7 @@ public class ChessBoard implements BoardFace {
 		if (!TextUtils.isEmpty(moveList.trim())) {
 			moveList = movesParser.replaceSpecialSymbols(moveList);
 			String[] moves = moveList.replaceAll(MovesParser.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
-					.replaceAll(DOUBLE_SPACE, Symbol.SPACE)
-					.replaceAll(DOUBLE_SPACE, Symbol.SPACE)
+					.replaceAll("[ ]{2,}", Symbol.SPACE)
 					.trim().split(Symbol.SPACE);
 
 			setMovesCount(moves.length);

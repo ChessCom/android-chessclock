@@ -59,6 +59,7 @@ public class ControlsDiagramView extends ControlsBaseView {
 
 	@Override
 	public void onClick(View view) {  // TODO rework click handles
+		super.onClick(view);
 		if (blocked)
 			return;
 
@@ -66,10 +67,6 @@ public class ControlsDiagramView extends ControlsBaseView {
 			boardViewFace.onPlay();
 		} else if (view.getId() == getButtonId(BACK_END)) {
 			boardViewFace.onRewindBack();
-		} else if (view.getId() == getButtonId(BACK)) {
-			boardViewFace.onMoveBack();
-		} else if (view.getId() == getButtonId(FORWARD)) {
-			boardViewFace.onMoveForward();
 		} else if (view.getId() == getButtonId(FWD_END)) {
 			boardViewFace.onRewindForward();
 		} else if (view.getId() == getButtonId(OPTIONS)) {
@@ -84,6 +81,7 @@ public class ControlsDiagramView extends ControlsBaseView {
 	}
 
 	public void setBoardViewFace(BoardViewDiagramFace boardViewFace) {
+		super.setBoardViewFace(boardViewFace);
 		this.boardViewFace = boardViewFace;
 	}
 

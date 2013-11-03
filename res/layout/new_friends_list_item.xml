@@ -105,7 +105,7 @@
 		android:paddingTop="3dip"
         android:textColor="@color/new_friends_grey_text"
         custom:ttf="Italic"
-        android:textSize="13sp"
+        android:textSize="@dimen/default_text_size_small"
         />
 	<!--android:layout_alignBottom="@id/photoImg"-->
 

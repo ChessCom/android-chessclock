@@ -45,6 +45,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private StatsItemUpdateListener statsItemUpdateListener;
 	private RecentStatsAdapter recentStatsAdapter;
+	private TextView recentProblemsTitleTxt;
 
 	public StatsGameTacticsFragment() {
 		Bundle bundle = new Bundle();
@@ -94,6 +95,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_tactics_stats_header_view, null, false);
 		ratingGraphView = (RatingGraphView) headerView.findViewById(R.id.ratingGraphView);
+		recentProblemsTitleTxt = (TextView) headerView.findViewById(R.id.recentProblemsTitleTxt);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
@@ -129,7 +131,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 		// TODO load selected tactic from DB
 	}
 
-	private class StatsItemUpdateListener extends ChessLoadUpdateListener<TacticsHistoryItem> {
+	private class StatsItemUpdateListener extends ChessUpdateListener<TacticsHistoryItem> {
 
 		public StatsItemUpdateListener() {
 			super(TacticsHistoryItem.class);
@@ -144,7 +146,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 		}
 	}
 
-	private class SaveStatsUpdateListener extends ChessLoadUpdateListener<TacticsHistoryItem.Data> {
+	private class SaveStatsUpdateListener extends ChessUpdateListener<TacticsHistoryItem.Data> {
 
 		@Override
 		public void updateData(TacticsHistoryItem.Data returnedObj) {
@@ -163,7 +165,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 		cursor.moveToFirst();
 		recentStatsAdapter.changeCursor(cursor);
-
+		recentProblemsTitleTxt.setVisibility(View.VISIBLE);
 		need2update = false;
 	}
 

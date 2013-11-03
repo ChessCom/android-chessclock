@@ -42,6 +42,7 @@ public class ControlsAnalysisView extends ControlsBaseView {
 
 	@Override
 	public void onClick(View view) {  // TODO rework click handles
+		super.onClick(view);
 		if (blocked)
 			return;
 
@@ -52,14 +53,11 @@ public class ControlsAnalysisView extends ControlsBaseView {
 			// TODO add search ability
 		} else if (view.getId() == getButtonId(RESTART)) {
 			boardViewFace.restart();
-		} else if (view.getId() == getButtonId(BACK)) {
-			boardViewFace.moveBack();
-		} else if (view.getId() == getButtonId(FORWARD)) {
-			boardViewFace.moveForward();
 		}
 	}
 
 	public void setBoardViewFace(BoardViewAnalysisFace boardViewFace) {
+		super.setBoardViewFace(boardViewFace);
 		this.boardViewFace = boardViewFace;
 	}
 

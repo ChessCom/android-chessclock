@@ -383,17 +383,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
-
-		controlsDailyView.enableGameControls(false);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if (getActivity() == null) {
-					return;
-				}
-				controlsDailyView.enableGameControls(true);
-			}
-		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override
@@ -718,6 +707,17 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			optionsArray.put(ID_EMAIL_GAME, getString(R.string.email_game));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
+
+		controlsDailyView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsDailyView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	private class ImageUpdateListener extends ImageReadyListenerLight {

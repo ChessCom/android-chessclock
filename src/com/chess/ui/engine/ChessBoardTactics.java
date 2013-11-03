@@ -73,7 +73,7 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 		Move tacticMove = convertMoveAlgebraic(tacticMoves[lastIndex]);
 
 		// step forward to the normal, current state
-		takeNext();
+		takeNext(false);
 
 		return lastUsersMove.equals(tacticMove);
 	}

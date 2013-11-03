@@ -465,17 +465,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		}
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
-
-		controlsDailyView.enableGameControls(false);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if (getActivity() == null) {
-					return;
-				}
-				controlsDailyView.enableGameControls(true);
-			}
-		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override
@@ -895,7 +884,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		@Override
 		public void updateData(VacationItem returnedObj) {
-			showToast(R.string.vacation_off);
 		}
 	}
 
@@ -952,6 +940,17 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			optionsMap.put(ID_EMAIL_GAME, getString(R.string.email_game));
 			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
 		}
+
+		controlsDailyView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsDailyView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	private class ImageUpdateListener extends ImageReadyListenerLight {

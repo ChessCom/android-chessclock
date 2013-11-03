@@ -42,8 +42,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace, NotationView.BoardForNotationFace {
 
-	public static final int PIECE_ANIM_SPEED = 150; // 250 looks too long. is not?
+	public static final int PIECE_ANIM_SPEED = 100; // Erik said make 100ms
+	public static final int PIECE_ANIM_FAST_SPEED = 5; // should be very fast
 	public static final String VALID_MOVES = "valid_moves";
+	private static final long FAST_MOVE_TASK_DELAY = 5;
 
 	int pieceXDelta, pieceYDelta; // top/left pixel draw position relative to square
 
@@ -133,6 +135,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private int customHighlight;
 	private int[] customCoordinatesColors;
 	private String customPiecesName;
+	private boolean fastMode;
+	private boolean animationActive;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -380,7 +384,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	@Override
-	public void moveBack() {
+	public boolean moveBack() {
 		BoardFace boardFace = getBoardFace();
 		if (noMovesToAnimate() && boardFace.getPly() > 0) {
 
@@ -396,35 +400,80 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (notationsView != null) { // we might don't have notations  so probably should be moved to fragment level
 				notationsView.moveBack(boardFace.getPly());
 			}
+			return true;
+		} else {
+			return false;
 		}
 	}
 
 	@Override
-	public void switchAnalysis() {
-		gameFace.switch2Analysis();
-	}
-
-	@Override
-	public void moveForward() {
-
+	public boolean moveForward() {
 		if (noMovesToAnimate()) {
 			pieceSelected = false;
-			BoardFace boardFace = getBoardFace();
-			Move move = boardFace.getNextMove();
+
+			Move move = getBoardFace().getNextMove();
 			if (move == null) {
-				return;
+				return false;
 			}
 			setMoveAnimator(move, true);
 			resetValidMoves();
-			boardFace.takeNext();
+			getBoardFace().takeNext();
 
 			invalidate();
 			gameFace.invalidateGameScreen();
 
 			if (notationsView != null) {
-				notationsView.moveForward(boardFace.getPly());
+				notationsView.moveForward(getBoardFace().getPly());
 			}
+			return true;
+		} else {
+			return false;
 		}
+	}
+
+	/**
+	 * We made move, but bcz it's animated we can't make next move, so postpone next move animation
+	 */
+	@Override
+	public void moveBackFast() {
+		if (fastMode) {
+			moveBack();
+			handler.postDelayed(moveBackRunnable, FAST_MOVE_TASK_DELAY);
+		} else {
+			handler.removeCallbacks(moveBackRunnable);
+		}
+	}
+
+	/**
+	 * We made move, but bcz it's animated we can't make next move, so postpone next move animation
+	 */
+	@Override
+	public void moveForwardFast() {
+		if (fastMode) {
+			moveForward();
+			handler.postDelayed(moveForwardRunnable, FAST_MOVE_TASK_DELAY);
+		} else {
+			handler.removeCallbacks(moveForwardRunnable);
+		}
+	}
+
+	private Runnable moveBackRunnable = new Runnable() {
+		@Override
+		public void run() {
+			moveBackFast();
+		}
+	};
+
+	private Runnable moveForwardRunnable = new Runnable() {
+		@Override
+		public void run() {
+			moveForwardFast();
+		}
+	};
+
+	@Override
+	public void switchAnalysis() {
+		gameFace.switch2Analysis();
 	}
 
 	@Override
@@ -469,11 +518,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		public void run() {
 			if (userActive) {
 				userActive = false;
+				Log.d("TEST","userActive = false;");
+
 				handler.removeCallbacks(this);
 				handler.postDelayed(this, StaticData.WAKE_SCREEN_TIMEOUT);
 			} else {
 				if (gameFace != null) {
-					gameFace.turnScreenOff();
+					gameFace.releaseScreenLockFlag();
 				}
 			}
 		}
@@ -488,7 +539,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected void drawPiecesAndAnimation(Canvas canvas) {
-		boolean animationActive;
+//		boolean animationActive;
+		animationActive = false;
 
 		// draw just piece without animation
 		if (moveAnimator == null && secondMoveAnimator == null) {
@@ -995,7 +1047,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int totalHply = boardFace.getPly() - 1;
 			if (totalHply < pos) {
 				for (int i = totalHply; i < pos; i++) {
-					boardFace.takeNext();
+					boardFace.takeNext(false);
 				}
 			} else {
 				for (int i = totalHply; i > pos; i--) {
@@ -1244,6 +1296,16 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			setPieceBitmapFromArray(vintagePiecesDrawableIds);
 		} else { // if pieces wasn't selected yet, use default
 			setPieceBitmapFromArray(gamePiecesDrawableIds);
+		}
+	}
+
+	@Override
+	public void setFastMovesMode(boolean fastMode) {
+		this.fastMode = fastMode;
+
+		if (!fastMode) { // stop any repeats
+			removeCallbacks(moveBackRunnable);
+			removeCallbacks(moveForwardRunnable);
 		}
 	}
 
@@ -1628,8 +1690,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				firstRun = false;
 			}
 
-			if (/*(startTime < 0) ||*/ (now >= stopTime))
+			if (/*(startTime < 0) ||*/ (now >= stopTime)) {
 				return false;
+			}
 			return true;
 		}
 
@@ -1647,8 +1710,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int dx = ChessBoard.getFile(move.to) - ChessBoard.getFile(move.from);
 			int dy = ChessBoard.getRank(move.to) - ChessBoard.getRank(move.from);
 			double dist = Math.sqrt(dx * dx + dy * dy);
-			double t = Math.sqrt(dist) * PIECE_ANIM_SPEED;
-			animationTime = (int) Math.round(t);
+			double time;
+			if (fastMode) {
+				time = Math.sqrt(dist) * PIECE_ANIM_FAST_SPEED;
+			} else {
+				time = Math.sqrt(dist) * PIECE_ANIM_SPEED;
+			}
+			animationTime = (int) Math.round(time);
 
 			startTime = System.currentTimeMillis();
 			stopTime = startTime + animationTime;

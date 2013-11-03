@@ -307,6 +307,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		@Override
 		public void errorHandle(Integer resultCode) {
 			if (resultCode == ServerErrorCodes.YOUR_GCM_ID_ALREADY_REGISTERED) {
+				Log.d("GCMIntentService", "YOUR_GCM_ID_ALREADY_REGISTERED registering to GCM anyway");
 				GCMRegistrar.setRegisteredOnServer(getContext(), true);
 				appData.registerOnChessGCM(appData.getUserToken());
 			} else {

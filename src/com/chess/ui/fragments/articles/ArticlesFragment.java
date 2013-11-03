@@ -45,7 +45,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	private static final int CATEGORIES_SECTION = 1;
 
 	private ListView listView;
-	private View loadingView;
 	private TextView emptyView;
 
 	private ArticlesCursorAdapter articlesCursorAdapter;
@@ -96,8 +95,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setDivider(null);
-		listView.setDividerHeight(0);
 		listView.setOnItemClickListener(this);
 
 		// adjust actionBar icons
@@ -222,16 +219,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(ArticleItem returnedObj) {
 			new SaveArticlesListTask(saveArticlesUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
-
-//			releasePullToRefreshHeader();
 		}
 
 		@Override
@@ -240,20 +229,12 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 			}
-			showEmptyView(true);
-
-//			releasePullToRefreshHeader();
 		}
 	}
 
 	private class CategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem> {
 		public CategoriesUpdateListener() {
 			super(CommonFeedCategoryItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
 		}
 
 		@Override
@@ -269,7 +250,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 			}
-			showEmptyView(true);
 		}
 	}
 
@@ -280,19 +260,10 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 			// show list of categories
 			loadCategoriesFromDB();
-
-			// loading articles
-			ArticlesFragment.this.updateData();
 		}
 	}
 
 	private class SaveArticlesUpdateListener extends ChessUpdateListener<ArticleItem.Data> {
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
 
 		@Override
 		public void updateData(ArticleItem.Data returnedObj) {
@@ -307,7 +278,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 			}
-			showEmptyView(true);
 		}
 	}
 
@@ -317,12 +287,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	}
 
 	private class ArticlesCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
 
 		@Override
 		public void updateData(Cursor returnedObj) {
@@ -339,35 +303,6 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 			}
-			showEmptyView(true);
-		}
-	}
-
-	private void showEmptyView(boolean show) {
-		if (show) {
-			// don't hide loadingView if it's loading
-			if (loadingView.getVisibility() != View.VISIBLE) {
-				loadingView.setVisibility(View.GONE);
-			}
-
-			emptyView.setVisibility(View.VISIBLE);
-			listView.setVisibility(View.GONE);
-		} else {
-			emptyView.setVisibility(View.GONE);
-			listView.setVisibility(View.VISIBLE);
-		}
-	}
-
-	private void showLoadingView(boolean show) {
-		if (show) {
-//			emptyView.setVisibility(View.GONE);
-//			if (sectionedAdapter.getCount() == 0) {
-//				listView.setVisibility(View.GONE);
-//			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-//			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
 		}
 	}
 

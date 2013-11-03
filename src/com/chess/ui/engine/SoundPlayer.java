@@ -2,6 +2,7 @@ package com.chess.ui.engine;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.util.Log;
 import com.chess.R;
 import com.chess.utilities.AppUtils;
 
@@ -138,6 +139,8 @@ public class SoundPlayer {
 	}
 
 	private void playSound(int soundResource) {
+		Log.d("TEST"," play sound = " + soundResource);
+
 		if (playSounds) {
 			MediaPlayer mediaPlayer = MediaPlayer.create(context, soundResource);
 

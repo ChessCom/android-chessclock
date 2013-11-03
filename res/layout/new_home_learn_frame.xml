@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             style="@style/ListItem.Header_2.Light"
-            android:paddingLeft="13dip"
+            android:paddingLeft="8dip"
             android:paddingRight="8dip"
             >
 
@@ -31,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/ic_help"
                 android:textColor="@color/new_light_grey_2"
-                android:textSize="26dip"
                 style="@style/GlyphIcon"
                 />
 
@@ -97,7 +96,7 @@
                 android:text="@string/todays_attempts"
                 android:layout_toRightOf="@id/tacticsBoardView"
                 android:textColor="@color/stats_label_grey"
-                android:textSize="13sp"
+                android:textSize="@dimen/default_text_size_small"
                 android:layout_marginRight="7dip"
                 android:layout_marginBottom="3dip"
                 android:layout_marginTop="-3dip"
@@ -111,7 +110,7 @@
                 android:layout_toRightOf="@id/todaysAttemptsLabelTxt"
 				android:layout_alignBottom="@id/todaysAttemptsLabelTxt"
                 android:textColor="@color/new_subtitle_dark_grey"
-                android:textSize="13sp"
+                android:textSize="@dimen/default_text_size_small"
                 custom:ttf="Bold"
                 />
 
@@ -124,7 +123,7 @@
                 android:layout_toRightOf="@id/tacticsBoardView"
                 android:layout_below="@id/todaysAttemptsLabelTxt"
                 android:textColor="@color/stats_label_grey"
-                android:textSize="13sp"
+                android:textSize="@dimen/default_text_size_small"
                 />
 
             <!-- Score value-->
@@ -135,7 +134,7 @@
                 android:layout_toRightOf="@id/todaysAttemptsLabelTxt"
                 android:layout_below="@id/todaysAttemptsLabelTxt"
                 android:textColor="@color/new_subtitle_dark_grey"
-                android:textSize="13sp"
+                android:textSize="@dimen/default_text_size_small"
                 custom:ttf="Bold"
                 />
 
@@ -160,7 +159,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             style="@style/ListItem.Header_2.Light"
-            android:paddingLeft="13dip"
+            android:paddingLeft="8dip"
             android:paddingRight="8dip"
             >
 
@@ -171,7 +170,6 @@
                 android:text="@string/ic_lessons"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon"
-                android:textSize="26dip"
                 />
 
             <com.chess.RoboTextView
@@ -263,7 +261,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             style="@style/ListItem.Header_2.Light"
-            android:paddingLeft="13dip"
+            android:paddingLeft="8dip"
             android:paddingRight="8dip"
             >
 
@@ -274,7 +272,6 @@
                 android:text="@string/ic_play"
                 android:textColor="@color/new_light_grey_2"
                 style="@style/GlyphIcon"
-                android:textSize="26dip"
                 />
 
             <com.chess.RoboTextView

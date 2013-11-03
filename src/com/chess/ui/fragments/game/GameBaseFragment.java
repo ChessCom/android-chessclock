@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -121,6 +122,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		}
 
 		getActivityFace().removeOnCloseMenuListener(this);
+		releaseScreenLockFlag();
 	}
 
 	@Override
@@ -131,9 +133,12 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	@Override
-	public void turnScreenOff() {
+	public void releaseScreenLockFlag() {
+
 		Activity activity = getActivity();
+		Log.d("TEST", "releaseScreenLockFlag, activity = " + activity);
 		if (activity != null) {
+			Log.d("TEST", "releaseScreenLockFlag -> clearFlags");
 			activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}
 	}
@@ -146,6 +151,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	protected void enableScreenLockTimer() {
 		// set touches listener to chessboard. If user don't do any moves, screen will automatically turn off after WAKE_SCREEN_TIMEOUT time
+		logTest("timer enabled");
 		boardView.enableTouchTimer();
 		getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}

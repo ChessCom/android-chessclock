@@ -37,7 +37,7 @@
         android:layout_below="@id/titleTxt"
         android:text="Test author"
         android:textColor="@color/new_author_dark_grey"
-        android:textSize="13sp"
+        android:textSize="@dimen/default_text_size_small"
         custom:ttf="Bold"
         />
 

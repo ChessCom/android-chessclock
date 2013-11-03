@@ -404,7 +404,7 @@ public class MovesParser {
 		Log.d(TAG, " ________________________________________________");
 
 		for (String part : parts) {
-//			Log.d("MovesParser","before parts = " + part );
+			Log.d(TAG,"before parts = " + part );
 			if (part.contains(")")) {
 				// remove number duplication like  27.Bxb7 cxb2 ) 27...cxb2 28.Bc2 Be4 // here we remove 27...
 				part = part.replaceAll("[0-9]{1,2}\\.\\.\\.", Symbol.EMPTY);

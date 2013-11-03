@@ -80,12 +80,4 @@
 
 	</com.chess.LinLayout>
 
-	<!--Fragment container-->
-	<RelativeLayout
-		android:id="@+id/fragmentContainer"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="@dimen/actionbar_compat_height"
-		/>
-
 </RelativeLayout>

@@ -32,5 +32,7 @@
 	<dimen name="new_tactics_panel_info_height">50dip</dimen>
 	<dimen name="panel_info_tactic_padding_top">4dip</dimen>
 	<dimen name="pull_to_refresh_header_height">72dip</dimen>
+	<dimen name="tab_button_text_size">18sp</dimen>
+	<dimen name="default_text_size_small">14sp</dimen>
 
 </resources>

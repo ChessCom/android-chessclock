@@ -95,7 +95,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	private PanelInfoWelcomeView topPanelView;
 	private PanelInfoWelcomeView bottomPanelView;
-	private ControlsCompView controlsCompView;
+	private ControlsCompView controlsView;
 
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
@@ -400,17 +400,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		bottomPanelView.setPlayerName(labelsConfig.bottomPlayerLabel);
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
-
-		controlsCompView.enableGameControls(false);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if (getActivity() == null) {
-					return;
-				}
-				controlsCompView.enableGameControls(true);
-			}
-		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override
@@ -488,7 +477,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			boardView.invalidate();
 
 			boardView.setHint(false);
-			controlsCompView.enableGameControls(true);
+			controlsView.enableGameControls(true);
 		}
 	};
 
@@ -820,7 +809,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private void widgetsInit(View view) {
 		Activity activity = getActivity();
 
-		controlsCompView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
+		controlsView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoWelcomeView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoWelcomeView) view.findViewById(R.id.bottomPanelView);
@@ -848,7 +837,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsCompView);
+		boardView.setControlsView(controlsView);
 		boardView.setNotationsView(notationsView);
 
 		boardView.setGameUiFace(this);
@@ -856,7 +845,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 		boardView.lockBoard(true);
 
-		controlsCompView.enableHintButton(true);
+		controlsView.enableHintButton(true);
 		notationsView.resetNotations();
 
 		{// options list setup
@@ -896,6 +885,17 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		View boardLinLay = view.findViewById(R.id.boardLinLay);
 		fadeBoardAnimator = ObjectAnimator.ofFloat(boardLinLay, "alpha", 1, 0);
 		fadeBoardAnimator.setDuration(FADE_ANIM_DURATION);
+
+		controlsView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override

@@ -92,7 +92,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.select_theme);
+		setTitle(R.string.theme);
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);

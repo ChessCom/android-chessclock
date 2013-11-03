@@ -119,11 +119,13 @@ public class ControlsTacticsView extends ControlsBaseView {
 	}
 
 	public void setBoardViewFace(BoardViewTacticsFace boardViewFace) {
+		super.setBoardViewFace(boardViewFace);
 		this.boardViewFace = boardViewFace;
 	}
 
 	@Override
 	public void onClick(View view) {
+		super.onClick(view);
 		if (blocked)
 			return;
 
@@ -139,16 +141,10 @@ public class ControlsTacticsView extends ControlsBaseView {
 			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(COMP)) {
 			boardViewFace.vsComputer();
-//		} else if (view.getId() == getButtonId(FLIP)) {
-//			boardViewFace.flipBoard();
 		} else if (view.getId() == getButtonId(EXIT)) {
 			boardViewFace.switchAnalysis();
 		} else if (view.getId() == getButtonId(SOLUTION)) {
 			boardViewFace.showSolution();
-		} else if (view.getId() == getButtonId(BACK)) {
-			boardViewFace.moveBack();
-		} else if (view.getId() == getButtonId(FORWARD)) {
-			boardViewFace.moveForward();
 		} else if (view.getId() == getButtonId(NEXT) || view.getId() == getButtonId(SKIP)) {
 			boardViewFace.newGame();
 		}

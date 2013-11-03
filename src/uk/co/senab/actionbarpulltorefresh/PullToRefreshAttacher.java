@@ -134,7 +134,7 @@ public class PullToRefreshAttacher implements View.OnTouchListener {
 		final ViewGroup decorView = (ViewGroup) activity.getWindow()
 				.getDecorView();
 
-		Log.d("TEST", " decorView.getHeight() = " + decorView.getHeight());
+//		Log.d("TEST", " decorView.getHeight() = " + decorView.getHeight());
 
 		// Check to see if there is already a Attacher view installed
 		if (decorView.getChildCount() == 1 && decorView.getChildAt(0) instanceof DecorChildLayout) {
@@ -650,7 +650,7 @@ public class PullToRefreshAttacher implements View.OnTouchListener {
 
 	public void addPaddingForHeader() {
 		int pullHeaderTopInset = appData.getPullHeaderTopInset();
-		Log.d("TEST", " pullHeaderTopInset = " + pullHeaderTopInset);
+//		Log.d("TEST", " pullHeaderTopInset = " + pullHeaderTopInset);
 		if (pullHeaderTopInset != AppData.UNDEFINED) {
 			decorContents.getHeaderViewWrapper().setPadding(0, pullHeaderTopInset, 0, 0);
 		} else {
@@ -919,7 +919,6 @@ public class PullToRefreshAttacher implements View.OnTouchListener {
 			if (DEBUG) {
 				Log.d(LOG_TAG, "fitSystemWindows: " + insets.toString());
 			}
-			Log.d("TEST", "fitSystemWindows: " + insets.toString());
 
 			new AppData(getContext()).setPullHeaderTopInset(insets.top);
 

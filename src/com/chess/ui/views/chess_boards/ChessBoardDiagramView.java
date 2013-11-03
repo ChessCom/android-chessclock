@@ -134,36 +134,21 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 	}
 
 	@Override
-	public void onMoveBack() {
-		if (noMovesToAnimate() && getBoardFace().getPly() > 0) {
-			getBoardFace().setFinished(false);
-			pieceSelected = false;
-			setMoveAnimator(getBoardFace().getLastMove(), false);
-			resetValidMoves();
-			getBoardFace().takeBack();
-			invalidate();
+	public boolean moveBack() {
+		boolean madeMoveBack = super.moveBack();
+		if (madeMoveBack) {
 			gameDiagramFace.onMoveBack();
-			gameDiagramFace.invalidateGameScreen();
 		}
+		return madeMoveBack;
 	}
 
 	@Override
-	public void onMoveForward() {
-		if (noMovesToAnimate()) {
-			pieceSelected = false;
-
-			Move move = getBoardFace().getNextMove();
-			if (move == null) {
-				return;
-			}
-			setMoveAnimator(move, true);
-			resetValidMoves();
-			getBoardFace().takeNext();
-
-			invalidate();
+	public boolean moveForward() {
+		boolean madeMoveForward = super.moveForward();
+		if (madeMoveForward) {
 			gameDiagramFace.onMoveForward();
-			gameDiagramFace.invalidateGameScreen();
 		}
+		return madeMoveForward;
 	}
 
 	@Override

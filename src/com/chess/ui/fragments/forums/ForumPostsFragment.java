@@ -336,8 +336,6 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			}
 
 			new SaveForumPostsTask(savePostsListener, returnedObj.getData().getPosts(), getContentResolver(), topicId, currentPage).executeTask();
-
-//			releasePullToRefreshHeader();
 		}
 	}
 

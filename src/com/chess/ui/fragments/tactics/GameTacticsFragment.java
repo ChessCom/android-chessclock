@@ -53,6 +53,7 @@ import com.chess.ui.views.PanelInfoTacticsView;
 import com.chess.ui.views.chess_boards.ChessBoardTacticsView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
+import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsTacticsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
@@ -69,7 +70,7 @@ import java.util.List;
 public class GameTacticsFragment extends GameBaseFragment implements GameTacticsFace, PopupListSelectionFace {
 
 	private static final long MOVE_RESULT_HIDE_DELAY = 2000;
-	private static final long DELAY_BETWEEN_MOVES = 1500;
+	private static final long DELAY_BETWEEN_MOVES = 1000;
 	private static final long TIMER_UPDATE = 1000;
 	private static final long START_DELAY = 500;
 	private static final long RESUME_TACTIC_DELAY = 1000;
@@ -108,7 +109,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private int maxTacticAnswerCnt;
 	private TacticTrainerItem.Data trainerData;
 	private PanelInfoTacticsView bottomPanelView;
-	private ControlsTacticsView controlsTacticsView;
+	private ControlsTacticsView controlsView;
 	private boolean isAnalysis;
 	private boolean serverError;
 	private boolean userSawOfflinePopup;
@@ -175,7 +176,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				}
 
 			} else {
-				controlsTacticsView.showStart();
+				controlsView.showStart();
 				lockBoard(false);
 			}
 		} else {
@@ -295,8 +296,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		getBoardFace().takeNext();
 		invalidateGameScreen();
 
-		if (getBoardFace().isLatestMoveMadeUser())
+		if (getBoardFace().isLatestMoveMadeUser()) {
 			verifyMove();
+		}
 	}
 
 	@Override
@@ -595,7 +597,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			if (answerWasShowed() || sizeExceed) {
 				trainerData.setCompleted(true);
 
-				controlsTacticsView.showCorrect();
+				controlsView.showCorrect();
 				showHintedViews(Symbol.EMPTY);
 				return;
 			}
@@ -759,7 +761,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			bottomPanelView.setPlayerScore(trainerData.getUserRating());
 		}
 		bottomPanelView.showCorrect(true, newRatingStr);
-		controlsTacticsView.showCorrect();
+		controlsView.showCorrect();
 		trainerData.setCompleted(true);
 		getBoardFace().setFinished(true);
 
@@ -774,7 +776,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			bottomPanelView.setPlayerScore(trainerData.getUserRating());
 		}
 		bottomPanelView.showWrong(true, newRatingStr);
-		controlsTacticsView.showPractice();
+		controlsView.showPractice();
 		trainerData.setCompleted(true);
 		getBoardFace().setFinished(true);
 
@@ -789,7 +791,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			bottomPanelView.setPlayerScore(trainerData.getUserRating());
 		}
 		bottomPanelView.showWrong(true, newRatingStr);
-		controlsTacticsView.showWrong();
+		controlsView.showWrong();
 		getBoardFace().setFinished(true);
 
 		// show title at the top
@@ -831,12 +833,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			restoreGame();
 
 			if (trainerData.isRetry()) {
-				controlsTacticsView.showPractice();
+				controlsView.showPractice();
 			} else {
-				controlsTacticsView.showDefault();
+				controlsView.showDefault();
 			}
 		} else {
-			controlsTacticsView.showAnalysis();
+			controlsView.showAnalysis();
 		}
 		bottomPanelView.showPractice(isAnalysis);
 		getBoardFace().setAnalysis(isAnalysis);
@@ -961,7 +963,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else {
 			trainerData.setRetry(true);
 			adjustBoardForGame();
-			controlsTacticsView.showPractice();
+			controlsView.showPractice();
 
 			// show title at the top
 			moveResultTxt.setVisibility(View.VISIBLE);
@@ -985,8 +987,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		bottomPanelView.setPlayerScore(currentRating);
 
-//		r6k/1ppqNQp1/p6p/3Pp3/6P1/2P4P/P1P3K1/8 b - - 0 1
-//		boardFace.setupBoard("r1q2r1k/3bb2p/p1p1N3/3pp2Q/6R1/2P1R3/1P3PPP/2B3K1 b - - 1 1"); // use as an example of disambiguation move
 		boardFace.setupBoard(trainerData.getInitialFen());
 
 		// based on FEN we detect which player is next to move
@@ -996,8 +996,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		// reside board for user to move
 		boardFace.setReside(!boardFace.isReside());
 
-//		boardFace.setPuzzleMoves("1... Re8 2. Ng6+ Kh7 3. Qxd7");
-//		boardFace.setPuzzleMoves("1... Bxe6 2. Qxh7+ Kxh7 3. Rh3+ Bh4 4. R3xh4#");
 		boardFace.setTacticMoves(trainerData.getCleanMoveString());
 		boardFace.setMovesCount(1);
 
@@ -1012,7 +1010,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else { // setup first move
 			startTacticsTimer(trainerData);
 
-			boardFace.makeMove(boardFace.getTacticMoves()[0], true);
+			boardFace.makeMove(boardFace.getTacticMoves()[0], false);
 
 			// animate last move
 			boardView.resetValidMoves();
@@ -1031,18 +1029,18 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		lockBoard(false);
 
 		if (trainerData.isCompleted() || trainerData.isAnswerWasShowed()) {
-			controlsTacticsView.showCorrect();
+			controlsView.showCorrect();
 		} else if (trainerData.isRetry()) {
-			controlsTacticsView.showPractice();
+			controlsView.showPractice();
 		} else {
-			controlsTacticsView.showDefault();
+			controlsView.showDefault();
 		}
 
 		bottomPanelView.showDefault(); // TODO remove if unused
 		bottomPanelView.setSide(labelsConfig.userSide);
 
 		if (isAnalysis) {
-			controlsTacticsView.showAnalysis();
+			controlsView.showAnalysis();
 		} else {
 			moveResultTxt.setVisibility(View.GONE);
 		}
@@ -1230,13 +1228,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		bottomPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
 		bottomPanelView.setPlayerScore(getAppData().getUserTacticsRating());
-		controlsTacticsView = (ControlsTacticsView) view.findViewById(R.id.controlsTacticsView);
+		controlsView = (ControlsTacticsView) view.findViewById(R.id.controlsTacticsView);
 
 		boardView = (ChessBoardTacticsView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setControlsView(controlsTacticsView);
+		boardView.setControlsView(controlsView);
 
-		controlsTacticsView.setBoardViewFace(boardView);
+		controlsView.setBoardViewFace(boardView);
 
 		setBoardView(boardView);
 		boardView.setGameFace(this);
@@ -1262,6 +1260,17 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			optionsArray.put(ID_PERFORMANCE, getString(R.string.performance));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
+
+		controlsView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	private class ImageUpdateListener extends ImageReadyListenerLight {
@@ -1289,8 +1298,15 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void lockBoard(boolean lock) {
-		controlsTacticsView.enableGameControls(!lock);
+		controlsView.enableGameControls(!lock);
 		boardView.lockBoard(lock);
 	}
+
+	// Problem logic tacitcs
+//		r6k/1ppqNQp1/p6p/3Pp3/6P1/2P4P/P1P3K1/8 b - - 0 1
+//		boardFace.setupBoard("r1q2r1k/3bb2p/p1p1N3/3pp2Q/6R1/2P1R3/1P3PPP/2B3K1 b - - 1 1"); // use as an example of disambiguation move
+//		boardFace.setPuzzleMoves("1... Re8 2. Ng6+ Kh7 3. Qxd7");
+//		boardFace.setPuzzleMoves("1... Bxe6 2. Qxh7+ Kxh7 3. Rh3+ Bh4 4. R3xh4#");
+
 
 }

@@ -212,6 +212,10 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		}
 	}
 
+	public void onOpened() {
+		listView.smoothScrollToPosition(0);
+	}
+
 	private GameCompFragment prepareGameCompFragmentInstance() {
 		int compGameMode = getAppData().getCompGameMode();
 		if (compGameMode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) { // replace this fast speed fun
