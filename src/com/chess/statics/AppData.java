@@ -55,6 +55,10 @@ public class AppData {
 		return preferences.getString(USER_TOKEN, Symbol.EMPTY);
 	}
 
+	public long getUserId() {
+		return getLongValue(PREF_USER_ID, UNDEFINED);
+	}
+
 	public void setAfterMoveAction(int action) {
 		setIntValue(PREF_ACTION_AFTER_MY_MOVE, action);
 	}
@@ -720,11 +724,11 @@ public class AppData {
 	}
 
 	public void setPullHeaderTopInset(int value) {
-		setIntValue(PULL_TO_REFRESH_HEADER_TOP_INSET, value);
+		editor.putInt(PULL_TO_REFRESH_HEADER_TOP_INSET, value);
 	}
 
 	public int getPullHeaderTopInset() {
-		return getIntValue(PULL_TO_REFRESH_HEADER_TOP_INSET, UNDEFINED);
+		return preferences.getInt(PULL_TO_REFRESH_HEADER_TOP_INSET, UNDEFINED);
 	}
 
 	/*--------------------------- Common Shared logic ------------------------*/
@@ -756,6 +760,11 @@ public class AppData {
 	private int getIntValue(String field, int defValue) {
 		String username = getUsername();
 		return preferences.getInt(username + field, defValue);
+	}
+
+	private long getLongValue(String field, int defValue) {
+		String username = getUsername();
+		return preferences.getLong(username + field, defValue);
 	}
 
 	private void setIntValue(String field, int value) {

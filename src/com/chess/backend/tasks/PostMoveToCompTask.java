@@ -1,6 +1,7 @@
 package com.chess.ui.engine.stockfish;
 
-import android.os.AsyncTask;
+
+import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.model.ComputeMoveItem;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
 

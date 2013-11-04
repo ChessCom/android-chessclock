@@ -6,10 +6,10 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:minHeight="62dip"
-	android:paddingTop="12dip"
+	android:paddingTop="10dip"
 	android:paddingLeft="10dip"
 	android:paddingRight="10dip"
-	android:paddingBottom="12dip"
+	android:paddingBottom="10dip"
 	android:background="@drawable/transparent_list_item_selector"
 	>
 

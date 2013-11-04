@@ -86,6 +86,7 @@ public abstract class ImageWorker {
 			value = mImageCache.getBitmapFromMemCache(String.valueOf(data));
 		}
 
+		Log.d("TEST", "value = " + value);
 		if (value != null) {
 			// Bitmap found in memory cache
 			imageView.setImageDrawable(value);

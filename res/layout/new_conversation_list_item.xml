@@ -4,11 +4,12 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
-	android:layout_height="62dip"
-	android:paddingTop="12dip"
+	android:layout_height="wrap_content"
+	android:minHeight="@dimen/new_daily_games_item_height"
+	android:paddingTop="10dip"
 	android:paddingLeft="10dip"
 	android:paddingRight="10dip"
-	android:paddingBottom="12dip"
+	android:paddingBottom="10dip"
 	android:background="@drawable/transparent_list_item_selector"
 	>
 
@@ -27,6 +28,7 @@
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/photoImg"
 		android:textColor="@color/new_text_blue"
+		android:layout_marginTop="-6dip"
 		custom:ttf="Bold"
 		/>
 

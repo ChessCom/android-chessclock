@@ -104,6 +104,12 @@ public class RestHelper {
 		return CMD_GAMES + gameId + "/actions";
 	}
 
+	public String CMD_GAME_CHAT(long gameId) {
+		return CMD_GAMES + gameId + "/chat";
+	}
+
+//	http://api.chess.com/v1/games/35000574/chat
+
 	/* Live Games Archive */
 	public String CMD_GAMES_LIVE_ARCHIVE = CMD_GAMES + "live/archive";
 

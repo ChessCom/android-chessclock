@@ -15,10 +15,7 @@ import com.chess.RoboButton;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.ChatItem;
-import com.chess.backend.entity.api.DailyChatItem;
-import com.chess.backend.entity.api.DailyCurrentGameData;
-import com.chess.backend.entity.api.DailyCurrentGameItem;
+import com.chess.backend.entity.api.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
@@ -27,6 +24,8 @@ import com.chess.ui.fragments.CommonLogicFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,19 +44,18 @@ public class DailyChatFragment extends CommonLogicFragment{
 	private ListView listView;
 	private ChatMessagesAdapter messagesAdapter;
 	private List<ChatItem> chatItems;
-	private ChatItemsUpdateListener receiveUpdateListener;
-	private ChatItemsUpdateListener sendUpdateListener;
+	private ReceiveChatItemsUpdateListener receiveUpdateListener;
+	private SendChatItemsUpdateListener sendUpdateListener;
 	private View progressBar;
 	private RoboButton sendBtn;
-//	private String opponentName;
 	private long gameId;
 	private long timeStamp;
-	private TimeStampForListUpdateListener timeStampForListUpdateListener;
 	private TimeStampForSendMessageListener timeStampForSendMessageListener;
 	private String myAvatar;
 	private String opponentAvatar;
 	private NewChatUpdateReceiver newChatUpdateReceiver;
 	private IntentFilter newChatUpdateFilter;
+	private long myUserId;
 
 	public static DailyChatFragment createInstance(long gameId, String opponentAvatar) {
 		DailyChatFragment fragment = new DailyChatFragment();
@@ -75,16 +73,16 @@ public class DailyChatFragment extends CommonLogicFragment{
 
 		if (getArguments() != null) {
 			gameId = getArguments().getLong(GAME_ID);
-//			opponentName = getArguments().getString(OPPONENT_NAME);
 			opponentAvatar = getArguments().getString(OPPONENT_AVATAR);
 		} else {
 			gameId = savedInstanceState.getLong(GAME_ID);
-//			opponentName = savedInstanceState.getString(OPPONENT_NAME);
 			opponentAvatar = savedInstanceState.getString(OPPONENT_AVATAR);
 		}
 
 		myAvatar = getAppData().getUserAvatar();
 		newChatUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
+
+		myUserId = getAppData().getUserId();
 
 	}
 
@@ -102,9 +100,8 @@ public class DailyChatFragment extends CommonLogicFragment{
 		widgetsInit(view);
 
 		chatItems = new ArrayList<ChatItem>();
-		receiveUpdateListener = new ChatItemsUpdateListener(ChatItemsUpdateListener.RECEIVE);
-		sendUpdateListener = new ChatItemsUpdateListener(ChatItemsUpdateListener.SEND);
-		timeStampForListUpdateListener = new TimeStampForListUpdateListener();
+		receiveUpdateListener = new ReceiveChatItemsUpdateListener();
+		sendUpdateListener = new SendChatItemsUpdateListener();
 		timeStampForSendMessageListener = new TimeStampForSendMessageListener();
 	}
 
@@ -112,13 +109,12 @@ public class DailyChatFragment extends CommonLogicFragment{
 	public void onResume() {
 		super.onResume();
 
-		newChatUpdateReceiver = new NewChatUpdateReceiver();
-		registerReceiver(newChatUpdateReceiver, newChatUpdateFilter);
-
 		showKeyBoard(sendEdt);
 
 		updateList();
-		handler.postDelayed(updateListOrder, UPDATE_DELAY);
+
+		newChatUpdateReceiver = new NewChatUpdateReceiver();
+		registerReceiver(newChatUpdateReceiver, newChatUpdateFilter);
 	}
 
 	@Override
@@ -126,15 +122,12 @@ public class DailyChatFragment extends CommonLogicFragment{
 		super.onPause();
 
 		unRegisterMyReceiver(newChatUpdateReceiver);
-
-		handler.removeCallbacks(updateListOrder);
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putLong(GAME_ID, gameId);
-//		outState.putString(OPPONENT_NAME, opponentName);
 		outState.putString(OPPONENT_AVATAR, opponentAvatar);
 	}
 
@@ -146,7 +139,6 @@ public class DailyChatFragment extends CommonLogicFragment{
 	}
 
 	protected void widgetsInit(View view){
-
 		sendEdt = (EditText) view.findViewById(R.id.sendEdt);
 		listView = (ListView) view.findViewById(R.id.listView);
 
@@ -156,28 +148,18 @@ public class DailyChatFragment extends CommonLogicFragment{
 		sendBtn.setOnClickListener(this);
 	}
 
-	private Runnable updateListOrder = new Runnable() {
-		@Override
-		public void run() {
-			updateList();
-			handler.removeCallbacks(this);
-			handler.postDelayed(this, UPDATE_DELAY);
-		}
-	};
-
 	public void updateList() {
-		LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
-		new RequestJsonTask<DailyCurrentGameItem>(timeStampForListUpdateListener).executeTask(loadItem);
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAME_CHAT(gameId));
+		loadItem.addRequestParams(P_LOGIN_TOKEN, getUserToken());
+
+		new RequestJsonTask<GamesChatItem>(receiveUpdateListener).executeTask(loadItem);
 	}
 
-	private class ChatItemsUpdateListener extends ChessUpdateListener<DailyChatItem> {
-		public static final int SEND = 0;
-		public static final int RECEIVE = 1;
-		private int listenerCode;
+	private class SendChatItemsUpdateListener extends ChessUpdateListener<DailyChatItem> {
 
-		public ChatItemsUpdateListener(int listenerCode) {
+		public SendChatItemsUpdateListener() {
 			super(DailyChatItem.class);
-			this.listenerCode = listenerCode;
 		}
 
 		@Override
@@ -189,65 +171,79 @@ public class DailyChatFragment extends CommonLogicFragment{
 
 		@Override
 		public void updateData(DailyChatItem returnedObj) {
-			int before = chatItems.size();
 			chatItems.clear();
 			chatItems.addAll(returnedObj.getData());
-			switch (listenerCode) {
-				case SEND:
-					// manually add avatar urls
-					for (ChatItem chatItem : chatItems) {
-						if (chatItem.isMine()) {
-							chatItem.setAvatar(myAvatar);
-						} else {
-							chatItem.setAvatar(opponentAvatar);
-						}
-					}
 
-					if (messagesAdapter == null) {
-						messagesAdapter = new ChatMessagesAdapter(getContext(), chatItems, getImageFetcher());
-						listView.setAdapter(messagesAdapter);
-					} else {
-						messagesAdapter.setItemsList(chatItems);
-					}
-					sendEdt.setText(Symbol.EMPTY);
-
-					listView.setSelection(chatItems.size() - 1);
-					updateList();
-					break;
-				case RECEIVE:
-					if (before != chatItems.size()) {
-
-						// manually add avatar urls
-						for (ChatItem chatItem : chatItems) {
-							if (chatItem.isMine()) {
-								chatItem.setAvatar(myAvatar);
-							} else {
-								chatItem.setAvatar(opponentAvatar);
-							}
-						}
-						if (messagesAdapter == null) {
-							messagesAdapter = new ChatMessagesAdapter(getContext(), chatItems, getImageFetcher());
-							listView.setAdapter(messagesAdapter);
-						} else {
-							messagesAdapter.notifyDataSetChanged();
-						}
-						listView.setSelection(chatItems.size() - 1);
-					}
-					break;
+			// manually add avatar urls
+			for (ChatItem chatItem : chatItems) {
+				if (chatItem.isMine()) {
+					chatItem.setAvatar(myAvatar);
+				} else {
+					chatItem.setAvatar(opponentAvatar);
+				}
 			}
+
+			if (messagesAdapter == null) {
+				messagesAdapter = new ChatMessagesAdapter(getContext(), chatItems, getImageFetcher());
+				listView.setAdapter(messagesAdapter);
+			} else {
+				messagesAdapter.setItemsList(chatItems);
+			}
+			sendEdt.setText(Symbol.EMPTY);
+
+			listView.setSelection(chatItems.size() - 1);
+		}
+	}
+
+	private class ReceiveChatItemsUpdateListener extends ChessUpdateListener<GamesChatItem> {
+
+		public ReceiveChatItemsUpdateListener() {
+			super(GamesChatItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+			progressBar.setVisibility(show? View.VISIBLE: View.INVISIBLE);
+			sendBtn.setEnabled(!show);
+		}
+
+		@Override
+		public void updateData(GamesChatItem returnedObj) {
+			chatItems.clear();
+			for (GamesChatItem.Data data : returnedObj.getData()) {
+
+				ChatItem chatItem = new ChatItem();
+
+				if (myUserId == data.getUserId()) {
+					chatItem.setAvatar(myAvatar);
+					chatItem.setIsMine(true);
+				} else {
+					chatItem.setAvatar(opponentAvatar);
+				}
+				chatItem.setContent(data.getMessage());
+
+				chatItems.add(chatItem);
+			}
+
+			if (messagesAdapter == null) {
+				messagesAdapter = new ChatMessagesAdapter(getContext(), chatItems, getImageFetcher());
+				listView.setAdapter(messagesAdapter);
+			} else {
+				messagesAdapter.setItemsList(chatItems);
+			}
+			sendEdt.setText(Symbol.EMPTY);
+
+			listView.setSelection(chatItems.size() - 1);
 		}
 	}
 
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.sendBtn) {
-			sendMessage();
+			LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
+			new RequestJsonTask<DailyCurrentGameItem>(timeStampForSendMessageListener).executeTask(loadItem);
 		}
-	}
-
-	private void sendMessage() {
-		LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameId);
-		new RequestJsonTask<DailyCurrentGameItem>(timeStampForSendMessageListener).executeTask(loadItem);
 	}
 
 	private class GetTimeStampListener extends ChessUpdateListener<DailyCurrentGameItem> { // TODO use batch API
@@ -263,25 +259,13 @@ public class DailyChatFragment extends CommonLogicFragment{
 		}
 	}
 
-	private class TimeStampForListUpdateListener extends GetTimeStampListener {
-		@Override
-		public void updateData(DailyCurrentGameItem returnedObj) {
-			super.updateData(returnedObj);
-
-			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_CHAT, timeStamp);
-			new RequestJsonTask<DailyChatItem>(receiveUpdateListener).executeTask(loadItem);
-		}
-	}
-
 	private class TimeStampForSendMessageListener extends GetTimeStampListener {
 		@Override
 		public void updateData(DailyCurrentGameItem returnedObj) {
 			super.updateData(returnedObj);
 
-			String message = sendEdt.getText().toString();
-
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_CHAT, timeStamp);
-			loadItem.addRequestParams(RestHelper.P_MESSAGE, message);
+			loadItem.addRequestParams(RestHelper.P_MESSAGE, getTextFromField(sendEdt));
 			new RequestJsonTask<DailyChatItem>(sendUpdateListener).executeTask(loadItem);
 		}
 	}

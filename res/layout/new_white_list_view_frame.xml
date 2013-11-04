@@ -34,24 +34,17 @@
         android:dividerHeight="1dip"
         />
 
-
-<!--
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:minHeight="60dip"
-		android:visibility="gone"
-		>
--->
-
 	<ProgressBar
 		android:id="@+id/loadingView"
-		android:layout_width="@dimen/pending_progress_bar_size"
-		android:layout_height="@dimen/pending_progress_bar_size"
 		android:layout_margin="5dip"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 		android:layout_centerInParent="true"
 		style="?android:attr/progressBarStyle"
+		android:visibility="gone"
 		/>
-
-	<!--</RelativeLayout>-->
+<!--
+	android:layout_width="@dimen/pending_progress_bar_size"
+	android:layout_height="@dimen/pending_progress_bar_size"
+-->
 </RelativeLayout>

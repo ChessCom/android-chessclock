@@ -17,9 +17,9 @@
 package com.facebook;
 
 import android.annotation.TargetApi;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
+import com.chess.backend.image_load.bitmapfun.AsyncTask;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -7,12 +7,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.utilities.AppUtils;
 
 import java.io.*;
@@ -338,9 +338,10 @@ public class EnhancedImageDownloader {
 
 		public AsyncTask<String, Void, Bitmap> executeTask(String... input) {
 			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-				executeOnExecutor(THREAD_POOL_EXECUTOR, input);
+//				executeOnExecutor(THREAD_POOL_EXECUTOR, input);
+				executeOnExecutor(DUAL_THREAD_EXECUTOR, input);
 			} else {
-				execute(input);
+				executeOnExecutor(SERIAL_EXECUTOR, input);
 			}
 			return this;
 		}

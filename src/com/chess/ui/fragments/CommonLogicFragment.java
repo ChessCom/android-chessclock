@@ -612,6 +612,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 
 			preferencesEditor.putString(username + PREF_USER_AVATAR_URL, returnedObj.getData().getAvatarUrl());
+			preferencesEditor.putLong(username + PREF_USER_ID, returnedObj.getData().getUserId());
 			preferencesEditor.putInt(username + PREF_USER_COUNTRY_ID, returnedObj.getData().getCountryId());
 
 			if (returnedObj.getData().getTacticsRating() != 0) {

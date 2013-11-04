@@ -20,7 +20,7 @@ public class RegisterItem extends BaseResponseItem<RegisterItem.Data>{
 */
 
 	public static class Data {
-		private long user_id;
+		private long id;
 		private String login_token;
 		private int country_id;
 		private String avatar_url;
@@ -30,7 +30,7 @@ public class RegisterItem extends BaseResponseItem<RegisterItem.Data>{
 		}
 
 		public long getUserId() {
-			return user_id;
+			return id;
 		}
 
 		public int getCountryId() {

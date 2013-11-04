@@ -132,8 +132,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		badgeItems = new Hashtable<Integer, Integer>();
 
-		updateMainBackground();
-
 		notificationsUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
 		movesUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 		backgroundUpdateFilter = new IntentFilter(IntentConstants.BACKGROUND_LOADED);
@@ -159,6 +157,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		getActionBarHelper().showActionBar(showActionBar);
 
 		updateNotificationsBadges();
+		updateMainBackground();
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -53,7 +54,9 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 			holder.text.setBackgroundResource(R.drawable.img_chat_buble_grey);
 
 			String imageUrl = item.getAvatar();
+			Log.d("TEST", " imageUrl = " + imageUrl);
 			if (!imageDataMap.containsKey(imageUrl)) {
+				Log.d("TEST", " imageUrl = " + imageUrl + " !contains");
 				imageDataMap.put(imageUrl, new SmartImageFetcher.Data(imageUrl, imageSize));
 			}
 
@@ -65,7 +68,9 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 			holder.text.setBackgroundResource(R.drawable.img_chat_buble_white);
 
 			String imageUrl = item.getAvatar();
+			Log.d("TEST", " imageUrl = " + imageUrl);
 			if (!imageDataMap.containsKey(imageUrl)) {
+				Log.d("TEST", " imageUrl = " + imageUrl + " !contains");
 				imageDataMap.put(imageUrl, new SmartImageFetcher.Data(imageUrl, imageSize));
 			}
 

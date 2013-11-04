@@ -16,12 +16,11 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ConversationSingleItem;
 import com.chess.backend.entity.api.MessagesItem;
-import com.chess.statics.StaticData;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveMessagesForConversationTask;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.MessagesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
@@ -111,7 +110,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 		super.onResume();
 
 		if (need2update) {
-			if (!AppUtils.isNetworkAvailable(getActivity())) {
+			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData();
 			}
 
@@ -175,11 +174,6 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 				return true;
 			case R.id.menu_accept:
 				createMessage();
-//				if (inEditMode) {
-//					createPost(commentId);
-//				} else {
-//					createPost();
-//				}
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -312,29 +306,6 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 
 			need2update = false;
 		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			if (resultCode == StaticData.UNKNOWN_ERROR) {
-				emptyView.setText(R.string.no_data);
-			}
-			showEmptyView(true);
-		}
 	}
 
-	private void showEmptyView(boolean show) {
-		if (show) {
-			// don't hide loadingView if it's loading
-			if (loadingView.getVisibility() != View.VISIBLE) {
-				loadingView.setVisibility(View.GONE);
-			}
-
-			emptyView.setVisibility(View.VISIBLE);
-			listView.setVisibility(View.GONE);
-		} else {
-			emptyView.setVisibility(View.GONE);
-			listView.setVisibility(View.VISIBLE);
-		}
-	}
 }

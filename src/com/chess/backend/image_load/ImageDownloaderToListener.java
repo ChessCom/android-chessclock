@@ -3,10 +3,10 @@ package com.chess.backend.image_load;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.utilities.AppUtils;
 
 import java.io.*;

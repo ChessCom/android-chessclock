@@ -83,6 +83,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		Context context = getContext();
 		resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
+		int widthPixels = resources.getDisplayMetrics().widthPixels;
 
 		handler = new Handler();
 
@@ -163,6 +164,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			playerTxt = new RoboTextView(context);
 			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
+			playerParams.setMargins(0, (int) (-4 * density), 0, 0);
 			if (useSingleLine) {
 				playerParams.addRule(CENTER_VERTICAL);
 				playerParams.addRule(ALIGN_PARENT_LEFT);
@@ -178,6 +180,10 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			playerTxt.setMarqueeRepeatLimit(2);
 			playerTxt.setEllipsize(TextUtils.TruncateAt.MARQUEE);
 			playerTxt.setFont(FontsHelper.BOLD_FONT);
+
+			if (useSingleLine && smallScreen) {
+				playerTxt.setMaxWidth(widthPixels / 3);
+			}
 
 			addView(playerTxt, playerParams);
 		}
@@ -195,6 +201,10 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			playerRatingTxt.setId(RATING_ID);
 			playerRatingTxt.setPadding((int) (4 * density), (int) (3 * density), 0, 0);
 			playerRatingTxt.setFont(FontsHelper.BOLD_FONT);
+
+			if (useSingleLine && smallScreen) {
+				playerRatingTxt.setVisibility(GONE);
+			}
 
 			addView(playerRatingTxt, playerParams);
 		}
@@ -288,18 +298,22 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 		{// add captured drawable view
 			capturedPiecesView = new View(context);
+			CapturedPiecesDrawable capturedPiecesDrawable = new CapturedPiecesDrawable(context);
+//			int intrinsicHeight = (int) (resources.getDrawable(R.drawable.captured_wn).getIntrinsicHeight() * density);
+//			capturedPiecesDrawable.setBounds(0, 0, capturedPiecesViewWidth, intrinsicHeight);
+
 			LayoutParams capturedParams = new LayoutParams(capturedPiecesViewWidth, capturedPiecesViewHeight);
+			capturedParams.setMargins(0, 0, 0, (int) (-4 * density));
 			if (useSingleLine) {
 				capturedParams.addRule(LEFT_OF, TIME_LEFT_ID);
 				capturedParams.addRule(CENTER_VERTICAL);
-				capturedParams.addRule(RIGHT_OF, PLAYER_ID);
+				capturedParams.addRule(RIGHT_OF, PREMIUM_ID);
 			} else {
 				capturedParams.addRule(RIGHT_OF, AVATAR_ID);
 				capturedParams.addRule(BELOW, PLAYER_ID);
 				capturedParams.addRule(ALIGN_BOTTOM, AVATAR_ID);
 			}
 
-			CapturedPiecesDrawable capturedPiecesDrawable = new CapturedPiecesDrawable(context);
 			if (AppUtils.JELLYBEAN_PLUS_API) {
 				capturedPiecesView.setBackground(capturedPiecesDrawable);
 			} else {

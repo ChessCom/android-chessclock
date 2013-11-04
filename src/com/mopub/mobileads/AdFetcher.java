@@ -35,9 +35,9 @@
 package com.mopub.mobileads;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
+import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.model.DataHolder;
 import com.chess.utilities.AppUtils;
 import org.apache.http.Header;

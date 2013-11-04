@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -136,9 +135,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	public void releaseScreenLockFlag() {
 
 		Activity activity = getActivity();
-		Log.d("TEST", "releaseScreenLockFlag, activity = " + activity);
 		if (activity != null) {
-			Log.d("TEST", "releaseScreenLockFlag -> clearFlags");
 			activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}
 	}

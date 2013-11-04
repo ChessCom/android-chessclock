@@ -64,6 +64,7 @@ public class AppConstants {
 	public static final String PREF_USER_SKILL_LEVEL_SET = "user_skill_level_was_set";
 	public static final String PREF_USER_COUNTRY = "user_country";
 	public static final String PREF_USER_COUNTRY_ID = "user_country_id";
+	public static final String PREF_USER_ID = "user_id";
 	public static final String PREF_USER_AVATAR_URL = "user_avatar_url";
 	public static final String PREF_USER_TACTICS_RATING = "user_tactics_rating";
 	public static final String PREF_USER_LESSONS_RATING = "user_lessons_rating";

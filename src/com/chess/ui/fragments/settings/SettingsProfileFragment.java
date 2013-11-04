@@ -325,8 +325,14 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		if (membershipData.getIs_premium() > 0) {
 			getAppData().setUserPremiumStatus(membershipData.getLevel());
 
-			Date time = new Date(membershipData.getDate().getExpires()* 1000L);
-			String membershipExpireDate = dateFormatter.format(time);
+			String membershipExpireDate;
+			if (membershipData.getDate().getExpires() != 0) {
+				Date time = new Date(membershipData.getDate().getExpires()* 1000L);
+				membershipExpireDate = dateFormatter.format(time);
+			} else {
+				membershipExpireDate = "--/--/--";
+			}
+
 			String text = getString(R.string.profile_membership_renew_cancel, membershipData.getType(), membershipExpireDate)
 					+ Symbol.NEW_STR + getString(R.string.profile_membership_renew_cancel_1);
 
@@ -336,7 +342,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			cancelMembershipTxt.setMovementMethod(LinkMovementMethod.getInstance());
 			cancelMembershipTxt.setLinkTextColor(Color.WHITE);
 		} else {
-			cancelMembershipTxt.setText("Basic user text");
+			cancelMembershipTxt.setText(R.string.upgrade_to_unlimited_access);
 		}
 		cancelMembershipTxt.setVisibility(View.VISIBLE);
 	}

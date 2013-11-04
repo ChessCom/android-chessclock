@@ -489,25 +489,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			notationsView.updateNotations(notations, this, getBoardFace().getPly());
 		}
 
-//		checkControlsButtons();
 		drawCapturedPieces();
 		invalidate();
 	}
-
-//	private void checkControlsButtons() {
-//		BoardFace boardFace = getBoardFace();
-//		if (boardFace.getPly() < boardFace.getMovesCount()) {
-//			controlsBaseView.enableForwardBtn(true);
-//		} else {
-//			controlsBaseView.enableForwardBtn(false);
-//		}
-//
-//		if (boardFace.getPly() < 1) {
-//			controlsBaseView.enableBackBtn(false);
-//		} else {
-//			controlsBaseView.enableBackBtn(true);
-//		}
-//	}
 
 	public void enableTouchTimer() {
 		useTouchTimer = true;
@@ -518,7 +502,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		public void run() {
 			if (userActive) {
 				userActive = false;
-				Log.d("TEST","userActive = false;");
 
 				handler.removeCallbacks(this);
 				handler.postDelayed(this, StaticData.WAKE_SCREEN_TIMEOUT);
@@ -1128,9 +1111,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 		}
 
-
-
-
 		Bitmap boardBitmap;
 		BitmapShader shader;
 		BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(resourceId);
@@ -1154,8 +1134,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		to Android 3.0 (API Level 11), the backing data of a bitmap was stored in native memory which is not
 		released in a predictable manner, potentially causing an application to briefly exceed its memory limits
 		and crash.
-
-		 */
+		*/
 
 		if (whitePiecesMap == null) {
 			whitePiecesMap = new WeakHashMap<Integer, Bitmap>();
@@ -1309,7 +1288,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 	}
 
-	private int[] gamePiecesDrawableIds = new int[]{
+	public static final int[] gamePiecesDrawableIds = new int[]{
 			R.drawable.game_wp,
 			R.drawable.game_wn,
 			R.drawable.game_wb,
@@ -1324,7 +1303,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.game_bk,
 	};
 
-	private int[] alphaPiecesDrawableIds = new int[]{
+	public static final int[] alphaPiecesDrawableIds = new int[]{
 			R.drawable.alpha_wp,
 			R.drawable.alpha_wn,
 			R.drawable.alpha_wb,
@@ -1339,7 +1318,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.alpha_bk,
 	};
 
-	private int[] bookPiecesDrawableIds = new int[]{
+	public static final int[] bookPiecesDrawableIds = new int[]{
 			R.drawable.book_wp,
 			R.drawable.book_wn,
 			R.drawable.book_wb,
@@ -1354,7 +1333,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.book_bk,
 	};
 
-	private int[] casesPiecesDrawableIds = new int[]{
+	public static final int[] casesPiecesDrawableIds = new int[]{
 			R.drawable.cases_wp,
 			R.drawable.cases_wn,
 			R.drawable.cases_wb,
@@ -1369,7 +1348,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.cases_bk,
 	};
 
-	private int[] classicPiecesDrawableIds = new int[]{
+	public static final int[] classicPiecesDrawableIds = new int[]{
 			R.drawable.classic_wp,
 			R.drawable.classic_wn,
 			R.drawable.classic_wb,
@@ -1384,7 +1363,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.classic_bk,
 	};
 
-	private int[] clubPiecesDrawableIds = new int[]{
+	public static final int[] clubPiecesDrawableIds = new int[]{
 			R.drawable.club_wp,
 			R.drawable.club_wn,
 			R.drawable.club_wb,
@@ -1400,7 +1379,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	};
 
 
-	private int[] condalPiecesDrawableIds = new int[]{
+	public static final int[] condalPiecesDrawableIds = new int[]{
 			R.drawable.condal_wp,
 			R.drawable.condal_wn,
 			R.drawable.condal_wb,
@@ -1415,7 +1394,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.condal_bk,
 	};
 
-	private int[] mayaPiecesDrawableIds = new int[]{
+	public static final int[] mayaPiecesDrawableIds = new int[]{
 			R.drawable.maya_wp,
 			R.drawable.maya_wn,
 			R.drawable.maya_wb,
@@ -1430,7 +1409,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.maya_bk,
 	};
 
-	private int[] modernPiecesDrawableIds = new int[]{
+	public static final int[] modernPiecesDrawableIds = new int[]{
 			R.drawable.modern_wp,
 			R.drawable.modern_wn,
 			R.drawable.modern_wb,
@@ -1445,7 +1424,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			R.drawable.modern_bk,
 	};
 
-	private int[] vintagePiecesDrawableIds = new int[]{
+	public static final int[] vintagePiecesDrawableIds = new int[]{
 			R.drawable.vintage_wp,
 			R.drawable.vintage_wn,
 			R.drawable.vintage_wb,

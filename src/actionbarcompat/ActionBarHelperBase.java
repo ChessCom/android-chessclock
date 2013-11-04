@@ -146,9 +146,12 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		actionBarCompat.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
 	}
 
+	@Override
 	public void updateActionBarBackground(){
 		View actionBar = getActionBarCompat(); // could be null for small screens
-		actionBar.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
+		if (actionBar != null) {
+			actionBar.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
+		}
 	}
 
 	/**

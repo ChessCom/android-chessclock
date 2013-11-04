@@ -372,7 +372,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 			optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);
 			optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 		} else if (view.getId() == R.id.ratedGameView){
-			ratedGameSwitch.performClick();
+			ratedGameSwitch.toggle();
 		} else if (view.getId() == R.id.playBtn){
 			createDailyChallenge();
 		}
