@@ -38,8 +38,6 @@ public class ControlsLessonsView extends ControlsBaseView {
 	void init(Context context, AttributeSet attrs) {
 		super.init(context, attrs);
 
-//		removeAllViews();
-
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
 
 		addNextButton(R.style.Rect_Bottom_Right_Green, NEXT);
@@ -62,7 +60,6 @@ public class ControlsLessonsView extends ControlsBaseView {
 
 		params.weight = 1;
 
-//		controlsLayout.addView(button, params);
 		addView(button, params);
 	}
 
@@ -77,7 +74,6 @@ public class ControlsLessonsView extends ControlsBaseView {
 
 		params.weight = 1;
 
-//		controlsLayout.addView(button, params);
 		addView(button, params);
 	}
 
@@ -96,7 +92,6 @@ public class ControlsLessonsView extends ControlsBaseView {
 
 		params.weight = 1;
 
-//		controlsLayout.addView(button, params);
 		addView(button, params);
 	}
 
@@ -111,7 +106,6 @@ public class ControlsLessonsView extends ControlsBaseView {
 
 		params.weight = 1;
 
-//		controlsLayout.addView(button, params);
 		addView(button, params);
 	}
 

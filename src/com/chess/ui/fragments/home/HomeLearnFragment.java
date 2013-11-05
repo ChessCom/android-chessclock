@@ -122,7 +122,8 @@ public class HomeLearnFragment extends CommonLogicFragment {
 
 		List<LessonSingleItem> incompleteLessons = DbDataManager.getIncompleteLessons(getContentResolver(), getUsername());
 		if (incompleteLessons != null) {
-			incompleteLesson = incompleteLessons.get(0);
+			int last = incompleteLessons.size() - 1;
+			incompleteLesson = incompleteLessons.get(last);
 			lessonTitleTxt.setText(incompleteLesson.getName());
 		} else {
 			lessonTitleTxt.setText(R.string.improve_your_chess);

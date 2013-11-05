@@ -209,7 +209,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	public void onPause() {
 		super.onPause();
 
-		DbDataManager.saveUserLessonToDb(getContentResolver(), userLesson, lessonId, getUsername());
+		if (userLesson != null) { // we might leave this screen w/o loading data(no network case)
+			DbDataManager.saveUserLessonToDb(getContentResolver(), userLesson, lessonId, getUsername());
+		}
 	}
 
 	private void updateUiData() {
@@ -261,6 +263,13 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 	}
 
+	private void showDefaultControls() {
+		controlsLessonsView.showDefault();
+		controlsLessonsView.dropUsedHints();
+		usedHints = 0;
+		showHintViews(false);
+	}
+
 	@Override
 	public void nextPosition() {
 		if (++currentLearningPosition < totalLearningPositionsCnt) {
@@ -269,13 +278,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			showDefaultControls();
 			adjustBoardForGame();
 		}
-	}
-
-	private void showDefaultControls() {
-		controlsLessonsView.showDefault();
-		controlsLessonsView.dropUsedHints();
-		usedHints = 0;
-		showHintViews(false);
 	}
 
 	@Override
@@ -290,6 +292,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				do {
 					lessons.add(DbDataManager.getLessonsListItemFromCursor(lessonsListCursor));
 				} while (lessonsListCursor.moveToNext());
+				lessonsListCursor.close();
 
 				int lessonsInCourse = lessons.size();
 				boolean nextLessonFound = false;
@@ -311,6 +314,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				} else {
 					getActivityFace().showPreviousFragment();
 				}
+			} else {
+				getActivityFace().showPreviousFragment();
 			}
 		}
 	}
@@ -422,7 +427,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					}
 				} else if (possibleMove.getMoveType().equals(LessonProblemItem.MOVE_ALTERNATE)) { // Alternate Correct Move
 					// Correct move, try again!
-					showToast(R.string.alternate_correct_move_ex);
+//					showToast(R.string.alternate_correct_move_ex);
 					showCorrectState();
 					correctMove = true;
 				} else if (possibleMove.getMoveType().equals(LessonProblemItem.MOVE_WRONG)) {
@@ -497,8 +502,15 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 			updatedUserRating = getAppData().getUserLessonsRating();
 
+			saveLessonInfo();
+
 			// Update server with whole lesson scores
-			submitCorrectSolution();
+			if (AppUtils.isNetworkAvailable(getActivity())) {
+				submitCorrectSolution();
+			}
+
+			// show next lesson button
+			controlsLessonsView.showNewGame();
 		}
 	}
 
@@ -512,6 +524,21 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		controlsLessonsView.showWrong();
 		getCurrentCompleteItem().wrongMovesCnt++;
 		wrongState = true;
+	}
+
+	private void saveLessonInfo() {
+		LessonSingleItem lessonSingleItem = new LessonSingleItem();
+		lessonSingleItem.setUser(getUsername());
+		lessonSingleItem.setCourseId(courseId);
+		lessonSingleItem.setId(lessonId);
+		lessonSingleItem.setName(lessonItem.getLesson().getName());
+		lessonSingleItem.setCompleted(true);
+		lessonSingleItem.setStarted(false);
+
+		DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonSingleItem);
+
+		userLesson.setLessonCompleted(true);
+		DbDataManager.saveUserLessonToDb(getContentResolver(), userLesson, lessonId, getUsername());
 	}
 
 	private void submitCorrectSolution() {
@@ -878,34 +905,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		@Override
 		public void updateData(LessonRatingChangeItem returnedObj) {
-			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
-
-				LessonSingleItem lessonSingleItem = new LessonSingleItem();
-				lessonSingleItem.setUser(getUsername());
-				lessonSingleItem.setCourseId(courseId);
-				lessonSingleItem.setId(lessonId);
-				lessonSingleItem.setName(lessonItem.getLesson().getName());
-				lessonSingleItem.setCompleted(true);
-				lessonSingleItem.setStarted(false);
-
-				DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonSingleItem);
-
-				userLesson.setLessonCompleted(true);
-				DbDataManager.saveUserLessonToDb(getContentResolver(), userLesson, lessonId, getUsername());
-
-				LessonRatingChangeItem.Data ratingChange = returnedObj.getData();
-				showCompletedPopup(ratingChange);
-
-			} else {
-				showToast(R.string.error);
-			}
+			LessonRatingChangeItem.Data ratingChange = returnedObj.getData();
+			showCompletedPopup(ratingChange);
 		}
 	}
 
 	private void showCompletedPopup(LessonRatingChangeItem.Data ratingChange) {
-		// show next lesson button
-		controlsLessonsView.showNewGame();
-
 		{ // show Lesson Complete! Popup
 			View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lesson_complete_popup, null, false);
 			popupView.findViewById(R.id.shareBtn).setOnClickListener(this);
@@ -918,7 +923,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			float pointsForLesson = 0;
 			if (!lessonItem.isLessonCompleted()) {
 				pointsForLesson = ratingChange.getChange();
-//				updatedUserRating = ratingChange.getNewRating(); // TODO check logic if we need that
 				updatedUserRating += pointsForLesson;
 			}
 
@@ -974,6 +978,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
+					if (getActivity() == null) {
+						return;
+					}
 					// TODO adjust properly for tablets later
 					int statusBarHeight = getStatusBarHeight();
 					int width = getResources().getDisplayMetrics().widthPixels;

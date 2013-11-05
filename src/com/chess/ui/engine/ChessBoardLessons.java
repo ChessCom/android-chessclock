@@ -42,8 +42,13 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 	@Override
 	public boolean isLastLessonMoveIsCorrect(String validMove) {
 
+		// take back so the board parsing logic will understand that we converting previous move
+		String lastUserMove = getLastMoveSAN();
+		takeBack();
+		Move userLastMove = convertMoveAlgebraic(lastUserMove);
 		Move validLessonMove = convertMoveAlgebraic(validMove);
-		Move userLastMove = convertMoveAlgebraic(getLastMoveSAN());
+		// step forward to the normal, current state
+		takeNext(false);
 		return validLessonMove.equals(userLastMove);
 	}
 

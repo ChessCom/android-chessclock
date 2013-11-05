@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="361"
-	android:versionName="3.0.070a"
+	android:versionCode="362"
+	android:versionName="3.0.071a"
 	package="com.chess"
 	android:installLocation="auto">
 
@@ -54,8 +54,7 @@
 		android:logo="@drawable/ic_action_menu"
 		android:theme="@style/OrangeButtonTheme"
 		android:allowBackup="false"
-		android:hardwareAccelerated="true"
-		android:debuggable="true">
+		android:hardwareAccelerated="true">
 
 		<activity
 			android:name=".ui.activities.MainFragmentFaceActivity"

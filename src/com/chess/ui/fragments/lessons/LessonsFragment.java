@@ -67,10 +67,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	private TextView coursesCntTxt;
 	private LessonSingleItem incompleteLesson;
 	private Button resumeLessonBtn;
-	private ArrayList<String> curriculumCategoriesList;
 	private SparseArray<String> curriculumCategoriesMap;
-	private SparseArray<String> libraryCategoriesArray;
-	private SparseIntArray libraryCategoriesOrder;
 	private boolean libraryMode;
 
 	@Override
@@ -169,7 +166,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 					Cursor coursesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
 
 					if (coursesCursor != null && coursesCursor.moveToFirst()) {
-						fillCoursesList(coursesCursor);
+						updateUiData(coursesCursor);
 					} else {
 						getFullCourses();
 					}
@@ -182,7 +179,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 				Cursor coursesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
 
 				if (coursesCursor != null && coursesCursor.moveToFirst()) { // TODO adjust logic if nothing was really changed
-					fillCoursesList(coursesCursor);
+					updateUiData(coursesCursor);
 				}
 
 				expListView.setAdapter(curriculumAdapter);
@@ -291,9 +288,9 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 	private void fillCategoriesList(Cursor cursor) {
 		curriculumCategoriesArray = new SparseArray<String>();
-		libraryCategoriesArray = new SparseArray<String>();
+		SparseArray<String> libraryCategoriesArray = new SparseArray<String>();
 		curriculumCategoriesOrder = new SparseIntArray();
-		libraryCategoriesOrder = new SparseIntArray();
+		SparseIntArray libraryCategoriesOrder = new SparseIntArray();
 
 		do {
 			boolean isCurriculum = DbDataManager.getInt(cursor, DbScheme.V_IS_CURRICULUM) > 0;
@@ -342,14 +339,14 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
 			if (cursor != null && cursor.moveToFirst()) {
-				fillCoursesList(cursor);
+				updateUiData(cursor);
 
 				need2update = false;
 			}
 		}
 	}
 
-	private void fillCoursesList(Cursor cursor) {
+	private void updateUiData(Cursor cursor) {
 		LinkedHashMap<Integer, List<LessonCourseListItem.Data>> curriculumCoursesTable = new LinkedHashMap<Integer, List<LessonCourseListItem.Data>>();
 		int categoriesCnt = curriculumCategoriesArray.size();
 
@@ -440,7 +437,8 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		// check if we have incomplete lessons
 		List<LessonSingleItem> incompleteLessons = DbDataManager.getIncompleteLessons(getContentResolver(), getUsername());
 		if (incompleteLessons != null) {
-			incompleteLesson = incompleteLessons.get(0);
+			int last = incompleteLessons.size() - 1;
+			incompleteLesson = incompleteLessons.get(last);
 			resumeLessonBtn.setVisibility(View.VISIBLE);
 		} else {
 			resumeLessonBtn.setVisibility(View.GONE);

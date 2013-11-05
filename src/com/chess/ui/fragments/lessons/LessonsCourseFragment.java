@@ -23,6 +23,7 @@ import com.chess.db.tasks.SaveLessonsCourseTask;
 import com.chess.ui.adapters.LessonsItemAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,9 +130,10 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 		if (need2update) {
 
+			// if we have saved courses
 			Cursor courseCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCourseById(courseId));
 
-			if (courseCursor != null && courseCursor.moveToFirst()) {  // if we have saved course
+			if (courseCursor != null && courseCursor.moveToFirst()) {
 				courseItem = DbDataManager.getLessonsCourseItemFromCursor(courseCursor);
 
 				updateLessonsListFromDb();
@@ -191,7 +193,17 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			// see onClick(View) handle
 		} else {
 			int lessonId = ((LessonSingleItem) parent.getItemAtPosition(position)).getId();
-			getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
+
+			if (AppUtils.isNetworkAvailable(getActivity())) {
+				getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
+			} else { // else check if we have saved lesson with that id
+				Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
+				if (cursor != null && cursor.moveToFirst()) {
+					getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
+				} else {
+					showToast(R.string.no_network);
+				}
+			}
 		}
 	}
 
@@ -266,7 +278,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		}
 	}
 
-	private class SaveCourseListener extends ChessUpdateListener {
+	private class SaveCourseListener extends ChessUpdateListener<LessonCourseItem.Data> {
 
 		@Override
 		public void showProgress(boolean show) {

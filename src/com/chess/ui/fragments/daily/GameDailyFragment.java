@@ -393,6 +393,18 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 			}
 		}, NOTATION_REWIND_DELAY);
+
+		controlsDailyView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsDailyView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
+
 		boardFace.setJustInitialized(false);
 
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
@@ -940,17 +952,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			optionsMap.put(ID_EMAIL_GAME, getString(R.string.email_game));
 			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
 		}
-
-		controlsDailyView.enableGameControls(false);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if (getActivity() == null) {
-					return;
-				}
-				controlsDailyView.enableGameControls(true);
-			}
-		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	private class ImageUpdateListener extends ImageReadyListenerLight {

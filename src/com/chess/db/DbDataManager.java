@@ -92,6 +92,8 @@ public class DbDataManager {
 
 	public static String SELECTION_CATEGORY_ID_AND_USER = concatArguments(V_CATEGORY_ID, V_USER);
 
+	public static String SELECTION_COURSE_ID_AND_USER = concatArguments(V_COURSE_ID, V_USER);
+
 	public static String SELECTION_CATEGORY = concatArguments(V_CATEGORY);
 
 	public static String SELECTION_ITEM_ID = concatArguments(V_ID);

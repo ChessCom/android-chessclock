@@ -66,10 +66,10 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 	public boolean isLastTacticMoveCorrect() {
 		int lastIndex = ply - 1;
 
-		String lastMoveSAN = getLastMoveSAN();
+		String lastUserMove = getLastMoveSAN();
 		// take back so the board parsing logic will understand that we converting previous move
 		takeBack();
-		Move lastUsersMove = convertMoveAlgebraic(lastMoveSAN);
+		Move lastUsersMove = convertMoveAlgebraic(lastUserMove);
 		Move tacticMove = convertMoveAlgebraic(tacticMoves[lastIndex]);
 
 		// step forward to the normal, current state

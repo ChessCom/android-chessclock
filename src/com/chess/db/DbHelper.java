@@ -236,7 +236,7 @@ public class DbHelper {
 	public static QueryParams getLessonsListByCourseId(int courseId, String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_LESSONS_LIST.ordinal()]);
-		queryParams.setSelection(DbDataManager.SELECTION_CATEGORY_ID_AND_USER);
+		queryParams.setSelection(DbDataManager.SELECTION_COURSE_ID_AND_USER);
 		queryParams.setArguments(new String[]{String.valueOf(courseId), username});
 		return queryParams;
 	}

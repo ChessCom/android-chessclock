@@ -518,6 +518,17 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			moveResultTxt.setVisibility(View.GONE);
 		}
 
+		controlsView.enableGameControls(false);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				controlsView.enableGameControls(true);
+			}
+		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
+
 	}
 
 	@Override
@@ -558,17 +569,6 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		if (!isSmallScreen) {
 			boardView.updateNotations(getBoardFace().getNotationArray());
 		}
-
-		controlsView.enableGameControls(false);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if (getActivity() == null) {
-					return;
-				}
-				controlsView.enableGameControls(true);
-			}
-		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override

@@ -108,6 +108,9 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	public void onSearchAutoCompleteQuery(String query) {
 		if (!inSearch) {
 			inSearch = true;
+			if (conversationsAdapter == null) {
+				return;
+			}
 			Cursor cursor = conversationsAdapter.runQueryOnBackgroundThread(query);
 			if (cursor != null) {
 				conversationsAdapter.changeCursor(cursor);
