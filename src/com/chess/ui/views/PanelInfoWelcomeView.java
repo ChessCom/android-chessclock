@@ -112,10 +112,9 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			playerTxt = new RoboTextView(context);
 			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-
 			playerParams.addRule(RIGHT_OF, AVATAR_ID);
 			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
-			playerParams.setMargins(0, (int) (-3 * density), 0, 0);
+			playerParams.setMargins(0, (int) (-8 * density), 0, 0);
 
 			playerTxt.setTextSize(playerTextSize);
 			playerTxt.setTextColor(playerTextColor);

@@ -28,8 +28,8 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	}
 
 	@Override
-	void init() {
-		super.init();
+	void init(Context context, AttributeSet attrs) {
+		super.init(context, attrs);
 
 		addControlButton(EXIT, R.style.Rect_Bottom_Left);
 		addControlButton(SEARCH, R.style.Rect_Bottom_Middle);
@@ -37,7 +37,6 @@ public class ControlsAnalysisView extends ControlsBaseView {
 		addControlButton(BACK, R.style.Rect_Bottom_Middle);
 		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
 
-		addView(controlsLayout);
 	}
 
 	@Override

@@ -62,6 +62,10 @@
 		<attr name="textColorSelected" format="color|reference" />
 	</declare-styleable>
 
+	<declare-styleable name="ControlsCompView">
+		<attr name="controlsRound" format="boolean|reference" />
+	</declare-styleable>
+
     <declare-styleable name="com.inneractive.api.ads.InneractiveAd">
         <attr name="appID" format="string"/>
 

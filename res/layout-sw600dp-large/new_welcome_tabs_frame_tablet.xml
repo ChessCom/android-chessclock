@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	>
+
+	<LinearLayout
+		android:id="@+id/topBarLay"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:animateLayoutChanges="true"
+		>
+
+		<com.chess.RoboImageButton
+			android:id="@+id/centerTabBtn"
+			android:layout_width="0dip"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			style="@style/Rect.Top.Middle"
+			android:minHeight="48dip"
+			android:src="@drawable/img_new_logo_bar"
+			/>
+
+	</LinearLayout>
+
+	<com.chess.RelLayout
+		android:id="@+id/tourLeftView"
+		android:layout_width="312dip"
+		android:layout_height="match_parent"
+		android:layout_below="@id/topBarLay"
+		android:animateLayoutChanges="true"
+		android:visibility="gone"
+		>
+
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@color/sliding_menu_overlay"
+			/>
+
+		<ImageView
+			android:layout_width="10dp"
+			android:layout_height="match_parent"
+			android:src="@drawable/defaultshadow"
+			android:layout_alignParentRight="true"
+			android:contentDescription="@string/image"
+			/>
+
+		<!--Logo-->
+		<ImageView
+			android:id="@+id/tourLogoImg"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/img_new_logo"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="25dp"
+			android:layout_marginBottom="25dp"
+			android:contentDescription="@string/image" />
+
+		<!--Login-->
+		<com.chess.RoboButton
+			android:id="@+id/loginBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/log_in"
+			style="@style/Button.OrangeNoBorder.Big"
+			android:minHeight="@dimen/big_orange_button_height"
+			android:layout_below="@id/tourLogoImg"
+			android:layout_marginLeft="@dimen/default_scr_side_padding"
+			android:layout_marginRight="@dimen/default_scr_side_padding"
+			/>
+
+		<!--SignUp-->
+		<com.chess.RoboButton
+			android:id="@+id/signUpBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/sign_up_free"
+			android:layout_marginTop="12dip"
+			style="@style/Button.OrangeNoBorder.Big"
+			android:layout_below="@id/loginBtn"
+			android:minHeight="@dimen/big_orange_button_height"
+			android:layout_marginLeft="@dimen/default_scr_side_padding"
+			android:layout_marginRight="@dimen/default_scr_side_padding"
+			/>
+
+	</com.chess.RelLayout>
+
+	<RelativeLayout
+		android:id="@+id/tab_content_frame"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_toRightOf="@id/tourLeftView"
+		android:layout_below="@id/topBarLay"
+		/>
+
+</RelativeLayout>

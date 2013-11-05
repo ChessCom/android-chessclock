@@ -2,5 +2,6 @@
 <resources>
 
 	<integer name="board_highlight_font">15</integer>
+	<integer name="screen_orientation">1</integer>
 
 </resources>

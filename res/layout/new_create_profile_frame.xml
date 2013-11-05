@@ -115,7 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/new_create_profile"
-                style="@style/Button.Orange2"
+                style="@style/Button.OrangeNoBorder.Big"
                 android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
                 />
 

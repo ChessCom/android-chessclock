@@ -64,10 +64,10 @@ public class RestHelper {
 	//	http://api.chess-7.com
 	public static final String HOST_PRODUCTION = "api.chess.com";
 	public static final String HOST_TEST = "api.chess-7.com";
-	public static String HOST = HOST_TEST; // switch production/test server
+	public static String HOST = HOST_PRODUCTION; // switch production/test server
 
-	public String BASE_URL = "http://" + (HOST == null? HOST_TEST : HOST);
-	public String BASES_S_URL = "https://" + (HOST == null? HOST_TEST : HOST);
+	public String BASE_URL = "http://" + (HOST == null? HOST_PRODUCTION : HOST);
+	public String BASES_S_URL = "https://" + (HOST == null? HOST_PRODUCTION : HOST);
 	private static final String V1 = "/v1";
 
 	/* Methods calls*/

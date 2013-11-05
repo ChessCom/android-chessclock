@@ -352,5 +352,9 @@
 	<dimen name="pull_to_refresh_header_height">48dip</dimen>
 	<dimen name="tab_button_text_size">16sp</dimen>
 	<dimen name="default_text_size_small">13sp</dimen>
+	<dimen name="tablet_board_margin">15dip</dimen>
+	<dimen name="tablet_board_margin_bottom">8dip</dimen>
+	<dimen name="tablet_panel_info_top_margin">15dip</dimen>
+	<dimen name="welcome_pager_indicator_padding">5dip</dimen>
 
 </resources>

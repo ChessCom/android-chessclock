@@ -25,7 +25,7 @@
         <item name="greyButtonSmallSolid">@style/Button.Glassy.Small</item>
 		<item name="greyButton">@style/Button.Glassy</item>
 		<item name="orangeButton">@style/Text.Button</item>
-		<item name="orangeButtonSmall">@style/Button.Orange2.Small</item>
+		<item name="orangeButtonSmall">@style/Button.OrangeNoBorder.Small</item>
 		<item name="pageButton">@style/Button.Page</item>
 		<item name="roundedRadioBtn">@style/RoundRadioButton</item>
 		<item name="sideGraphBtn">@style/Rect.Side</item>

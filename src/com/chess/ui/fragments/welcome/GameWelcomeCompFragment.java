@@ -89,9 +89,9 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private static final int FADE_ANIM_DURATION = 300;
 	private static final long DRAWER_APPEAR_DELAY = 100;
 	private static final long END_GAME_DELAY = 1000L;
-	private FragmentTabsFace parentFace;
+	protected FragmentTabsFace parentFace;
 
-	private ChessBoardCompView boardView;
+	protected ChessBoardCompView boardView;
 
 	private PanelInfoWelcomeView topPanelView;
 	private PanelInfoWelcomeView bottomPanelView;
@@ -101,7 +101,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private ImageView bottomAvatarImg;
 
 	private LabelsConfig labelsConfig;
-	private boolean labelsSet;
+	protected boolean labelsSet;
 
 	private NotationView notationsView;
 	private boolean humanBlack;
@@ -806,7 +806,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		resultsAdapter = new PromotesAdapter(getActivity(), menuItems);
 	}
 
-	private void widgetsInit(View view) {
+	protected void widgetsInit(View view) {
 		Activity activity = getActivity();
 
 		controlsView = (ControlsCompView) view.findViewById(R.id.controlsCompView);

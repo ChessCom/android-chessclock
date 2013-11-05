@@ -80,7 +80,7 @@ public class LeftImageEditText extends RoboEditText {
 		float[] outerR;
 		switch (roundMode) {
 			case ONE:
-				outerR = new float[]{radius, radius, radius, radius, 0, 0, 0, 0};
+				outerR = new float[]{radius, radius, 0, 0, 0, 0, radius, radius};
 				break;
 			case TOP:
 				outerR = new float[]{radius, radius, 0, 0, 0, 0, 0, 0};
@@ -153,7 +153,7 @@ public class LeftImageEditText extends RoboEditText {
 		switch (roundMode) {
 			case ONE:
 				y0 = (int) BORDER_OFFSET;
-				y1 = (int) (height - BORDER_OFFSET + 1);
+				y1 = (int) (height - BORDER_OFFSET );
 
 				break;
 			case TOP:

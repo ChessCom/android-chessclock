@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,18 +16,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
 import com.chess.statics.IntentConstants;
+import com.chess.statics.StaticData;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -39,8 +39,9 @@ import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.settings.SettingsProfileFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
-import com.chess.ui.fragments.welcome.WelcomeFragment;
+import com.chess.ui.fragments.welcome.WelcomeTourFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
+import com.chess.ui.fragments.welcome.WelcomeTabsFragmentTablet;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
@@ -77,10 +78,15 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private IntentFilter backgroundUpdateFilter;
 	private BackgroundUpdateReceiver backgroundUpdateReceiver;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
+	private boolean isTablet;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (StaticData.USE_TABLETS) {
+			isTablet = AppUtils.is7InchTablet(this) || AppUtils.is10InchTablet(this);
+		}
 
 		setSlidingActionBarEnabled(true);
 
@@ -118,7 +124,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 //				switchFragment(new ArticlesFragment());
 				showActionBar = true;
 			} else {
-				switchFragment(new WelcomeTabsFragment());
+				if (isTablet) {
+					switchFragment(new WelcomeTabsFragmentTablet());
+				} else {
+					switchFragment(new WelcomeTabsFragment());
+				}
 				showActionBar = false;
 			}
 		} else { // fragments state will be automatically restored
@@ -136,16 +146,17 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		movesUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 		backgroundUpdateFilter = new IntentFilter(IntentConstants.BACKGROUND_LOADED);
 
-		// TODO remove after test!!!
 		// restoring correct host
-		RestHelper.resetInstance();
-		RestHelper.HOST = getAppData().getApiRoute();
+		///////////////////////////////////////////////////
+		// RestHelper.resetInstance();					 //
+		// RestHelper.HOST = getAppData().getApiRoute(); //
+		///////////////////////////////////////////////////
 
-		// apply sound theme
-		String soundThemePath = getAppData().getThemeSoundPath();
-		if (!TextUtils.isEmpty(soundThemePath)) {
-			SoundPlayer.setUseThemePack(true);
-			SoundPlayer.setThemePath(soundThemePath);
+		// lock portrait mode for handsets and unlock for tablets
+		if (isTablet) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+		} else {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 	}
 
@@ -214,6 +225,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		registerReceiver(notificationsUpdateReceiver, notificationsUpdateFilter);
 		registerReceiver(movesUpdateReceiver, movesUpdateFilter);
 		registerReceiver(backgroundUpdateReceiver, backgroundUpdateFilter);
+
+		// apply sound theme
+		String soundThemePath = getAppData().getThemeSoundPath();
+		if (!TextUtils.isEmpty(soundThemePath)) {
+			SoundPlayer.setUseThemePack(true);
+			SoundPlayer.setThemePath(soundThemePath);
+		}
 	}
 
 	@Override
@@ -437,7 +455,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		String simpleName = fragment.getClass().getSimpleName();
 		ft.replace(R.id.content_frame, fragment, simpleName);
 		ft.addToBackStack(simpleName);
-		ft.commit();
+		ft.commitAllowingStateLoss();   // TODO check logic
 
 		FlurryAgent.logEvent(FlurryData.OPEN_FRAME + simpleName);
 	}
@@ -566,20 +584,30 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@Override
 	public void onBackPressed() {
 		// there is no way to handle backPressed from fragment, so do this non OOP solution. Google, why are you so evil
-		WelcomeFragment welcomeFragment = (WelcomeFragment) getSupportFragmentManager().findFragmentByTag(WelcomeFragment.class.getSimpleName());
+		WelcomeTourFragment welcomeTourFragment = (WelcomeTourFragment) getSupportFragmentManager().findFragmentByTag(WelcomeTourFragment.class.getSimpleName());
 		int orientation = getResources().getConfiguration().orientation;
-		if (welcomeFragment != null && orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			if (welcomeFragment.hideYoutubeFullScreen()) {
+		if (welcomeTourFragment != null && orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			if (welcomeTourFragment.hideYoutubeFullScreen()) {
 				return;
 			}
-		} else if (welcomeFragment != null) { // if swipe to registration screen, handle back button to swipe back
-			if (welcomeFragment.swipeBackFromSignUp()) {
+		} else if (welcomeTourFragment != null) { // if swipe to registration screen, handle back button to swipe back
+			if (welcomeTourFragment.swipeBackFromSignUp()) {
 				return;
 			}
 		}
-		WelcomeTabsFragment welcomeTabsFragment = (WelcomeTabsFragment) getSupportFragmentManager().findFragmentByTag(WelcomeTabsFragment.class.getSimpleName());
-		if (welcomeTabsFragment != null && welcomeTabsFragment.showPreviousFragment()) {
-			return;
+
+		if (!isTablet) {
+			WelcomeTabsFragment welcomeTabsFragment = (WelcomeTabsFragment) getSupportFragmentManager()
+					.findFragmentByTag(WelcomeTabsFragment.class.getSimpleName());
+			if (welcomeTabsFragment != null && welcomeTabsFragment.showPreviousFragment()) {
+				return;
+			}
+		} else {
+			WelcomeTabsFragmentTablet welcomeTabsFragment = (WelcomeTabsFragmentTablet) getSupportFragmentManager()
+					.findFragmentByTag(WelcomeTabsFragmentTablet.class.getSimpleName());
+			if (welcomeTabsFragment != null && welcomeTabsFragment.showPreviousFragment()) {
+				return;
+			}
 		}
 		showPreviousFragment();
 	}
@@ -614,7 +642,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			SettingsProfileFragment fragmentByTag = (SettingsProfileFragment) getSupportFragmentManager().findFragmentByTag(SettingsProfileFragment.class.getSimpleName());
+			SettingsProfileFragment fragmentByTag = (SettingsProfileFragment) getSupportFragmentManager()
+					.findFragmentByTag(SettingsProfileFragment.class.getSimpleName());
 			if (fragmentByTag != null && fragmentByTag.isVisible()) {
 				fragmentByTag.discardChanges();
 				return super.onKeyUp(keyCode, event);

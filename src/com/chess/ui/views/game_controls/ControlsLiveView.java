@@ -34,8 +34,8 @@ public class ControlsLiveView extends ControlsBaseView {
 	}
 
 	@Override
-	void init() {
-		super.init();
+	void init(Context context, AttributeSet attrs) {
+		super.init(context, attrs);
 
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
 		addControlButton(HOME, R.style.Rect_Bottom_Left);
@@ -45,8 +45,6 @@ public class ControlsLiveView extends ControlsBaseView {
 
 		addActionButton(CLOSE, R.string.ic_close, R.style.Rect_Bottom_Left);
 		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
-
-		addView(controlsLayout);
 
 		showDefault();
 	}
@@ -158,7 +156,7 @@ public class ControlsLiveView extends ControlsBaseView {
 	private Runnable unBlinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			((RoboButton) findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Button_Orange2);
+			((RoboButton) findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Button_OrangeNoBorder);
 
 			blinkSubmitBtn();
 		}

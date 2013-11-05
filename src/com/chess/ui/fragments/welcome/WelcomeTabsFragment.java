@@ -102,7 +102,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 	@Override
 	public void changeInternalFragment(int code) {
 		if (code == WELCOME_FRAGMENT) {
-			openInternalFragment(WelcomeFragment.createInstance(this));
+			openInternalFragment(WelcomeTourFragment.createInstance(this));
 			openWelcomeFragment = true;
 		} else if (code == SIGN_IN_FRAGMENT) {
 
@@ -138,7 +138,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 
 	@Override
 	public void onPageSelected(int page) {
-		if (page == WelcomeFragment.SIGN_UP_PAGE) {
+		if (page == WelcomeTourFragment.SIGN_UP_PAGE) {
 			leftTabBtn.setVisibility(View.GONE);
 			rightTabBtn.setVisibility(View.GONE);
 		} else {
@@ -161,7 +161,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 	public boolean showPreviousFragment() {
 		if (getChildFragmentManager().getBackStackEntryCount() > 0) {
 			FragmentManager.BackStackEntry entry = getChildFragmentManager().getBackStackEntryAt(0);  // findFragmentByTag gives null :(
-			if (entry!= null && entry.getName().equals(WelcomeFragment.class.getSimpleName()) && openWelcomeFragment){
+			if (entry!= null && entry.getName().equals(WelcomeTourFragment.class.getSimpleName()) && openWelcomeFragment){
 				getChildFragmentManager().popBackStackImmediate();
 				openWelcomeFragment = false;
 				return true;

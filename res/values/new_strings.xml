@@ -181,6 +181,7 @@
     <string name="membership_expire_date_format">dd/MM/yyyy</string>
     <string name="basic">Basic</string>
     <string name="sign_up_now_free">Sign Up Now, It\'s FREE!</string>
+    <string name="sign_up_free">Sign Up - It\'s FREE!</string>
     <string name="invite_friend">Invite Friend</string>
     <string name="chess_com_friends">Chess.com Friends</string>
     <string name="chess_com_username">Chess.com Username</string>

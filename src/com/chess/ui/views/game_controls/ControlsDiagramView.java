@@ -29,8 +29,8 @@ public class ControlsDiagramView extends ControlsBaseView {
 	}
 
 	@Override
-	void init() {
-		super.init();
+	void init(Context context, AttributeSet attrs) {
+		super.init(context, attrs);
 		Resources resources = getResources();
 		if (resources == null) {
 			return;
@@ -49,8 +49,6 @@ public class ControlsDiagramView extends ControlsBaseView {
 		addControlButton(HINT, R.style.Rect_Bottom_Middle);
 		addControlButton(RESTART, R.style.Rect_Bottom_Middle);
 		addControlButton(SOLUTION, R.style.Rect_Bottom_Middle);
-
-		addView(controlsLayout);
 
 		showGameButton(PAUSE, false);
 

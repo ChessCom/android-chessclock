@@ -15,5 +15,6 @@
     <integer name="notations_per_page">6</integer>
 
 	<integer name="button_switch_default_handle_shift">-49</integer>
+	<integer name="screen_orientation">1</integer>
 
 </resources>

@@ -43,6 +43,7 @@ import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.welcome.SignInFragment;
 import com.chess.ui.fragments.welcome.SignUpFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
+import com.chess.ui.fragments.welcome.WelcomeTabsFragmentTablet;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
 import com.facebook.Session;
@@ -124,6 +125,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private HashMap<String, ImageGetter.TextImage> textViewsImageCache;
 	private ListView listView;
 	private boolean usePullToRefresh;
+	protected boolean isTablet;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -140,6 +142,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		handler = new Handler();
 		setHasOptionsMenu(true);
+		if (StaticData.USE_TABLETS) {
+			isTablet = AppUtils.is7InchTablet(getActivity()) || AppUtils.is10InchTablet(getActivity());
+		}
+
 		density = getResources().getDisplayMetrics().density;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
 		padding = (int) (48 * density);
@@ -778,7 +784,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				getActivityFace().switchFragment(new WelcomeTabsFragment());
+				if (!isTablet) {
+					getActivityFace().switchFragment(new WelcomeTabsFragment());
+				} else {
+					getActivityFace().switchFragment(new WelcomeTabsFragmentTablet());
+				}
 			}
 		}, SWITCH_DELAY);
 

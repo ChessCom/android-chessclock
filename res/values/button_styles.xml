@@ -15,7 +15,7 @@
     </style>
 
     <!-- ================================= Orange Buttons ============================================= -->
-    <style name="Button.Orange2">
+<!--    <style name="Button.Orange2">
         <item name="btn_bevel_lvl">2</item>
 
         <item name="btn_top">@color/orange_emboss_top_1</item>
@@ -29,7 +29,13 @@
         <item name="btn_bottom_2">@color/orange_emboss_bottom_2</item>
 
         <item name="btn_solid">@color/orange_button</item>
-    </style>
+
+		&lt;!&ndash;No shadow&ndash;&gt;
+		<item name="android:shadowColor">@null</item>
+		<item name="android:shadowRadius">0</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">0</item>
+    </style>-->
 
     <style name="Button.OrangeNoBorder">
         <item name="btn_use_border">false</item>
@@ -58,9 +64,9 @@
         <item name="android:textSize">@dimen/big_button_text_size</item>
     </style>
 
-    <style name="Button.Orange2.Small">
+<!--    <style name="Button.Orange2.Small">
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
-    </style>
+    </style>-->
 
     <!--====================================== Glassy Buttons =========================================== -->
     <style name="Button.Glassy">
@@ -127,7 +133,7 @@
 
     <!-- Facebook -->
     <style name="Button.Facebook">
-        <item name="btn_bevel_lvl">2</item>
+        <item name="btn_bevel_lvl">1</item>
         <item name="btn_is_solid">false</item>
         <item name="btn_use_border">false</item>
 

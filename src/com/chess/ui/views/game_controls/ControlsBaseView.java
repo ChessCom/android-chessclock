@@ -111,7 +111,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.string.ic_check
 	};
 
-	protected LinearLayout controlsLayout;
+//	protected LinearLayout controlsLayout;
 	protected LayoutParams buttonParams;
 
 	protected boolean blocked;
@@ -122,16 +122,15 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	public ControlsBaseView(Context context) {
 		super(context);
-		init();
 	}
 
 	public ControlsBaseView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init();
+		init(context, attrs);
 	}
 
-	void init() {
-		setOrientation(VERTICAL);
+	void init(Context context, AttributeSet attrs) {
+		setOrientation(HORIZONTAL);
 		Resources resources = getResources();
 		if (resources == null) {
 			return;
@@ -145,16 +144,10 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		controlIconColor = resources.getColorStateList(R.color.text_controls_icons);
 		controlTextSize = (int) (resources.getDimension(R.dimen.game_controls_text_size) / density);
 
-//		if (AppUtils.hasSoftKeys(((Activity) getContext()).getWindowManager()) &&
-//				!(AppUtils.is7InchTablet(getContext()) || AppUtils.is10InchTablet(getContext()))) {
-//			controlButtonHeight = (int) resources.getDimension(R.dimen.game_controls_button_height_smaller);
-//		}
-		controlsLayout = new LinearLayout(getContext());
-
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
-		controlsLayout.setLayoutParams(defaultLinLayParams);
+		setLayoutParams(defaultLinLayParams);
 
 		buttonGlyphsMap = new HashMap<ButtonIds, Integer>();
 		ButtonIds[] values = ButtonIds.values();
@@ -164,7 +157,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	}
 
 	void addControlButton(ButtonIds buttonId, int backId) {
-		controlsLayout.addView(createControlButton(buttonId, backId));
+		addView(createControlButton(buttonId, backId));
 	}
 
 	View createControlButton(ButtonIds buttonId, int styleId) {
@@ -197,7 +190,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		LayoutParams buttonParams = new LayoutParams(0, controlButtonHeight);
 		buttonParams.weight = 1;
 
-		controlsLayout.addView(button, buttonParams);
+		addView(button, buttonParams);
 	}
 
 	RoboButton getDefaultButton() {

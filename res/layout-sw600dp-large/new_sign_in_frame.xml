@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    android:id="@+id/mainFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/signin_scr_top_padding"
+        android:paddingLeft="@dimen/signin_scr_side_padding"
+        android:paddingRight="@dimen/signin_scr_side_padding"
+        android:layout_centerInParent="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+
+           <com.facebook.widget.LoginButton
+                android:id="@+id/fb_connect"
+                style="@style/Button.Facebook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_button_margin_top"
+                android:layout_marginBottom="@dimen/common_button_margin_top"
+                />
+
+            <com.chess.RoboTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/or_login_using_chesscom"
+                style="@style/SetupSmallFont"
+                android:textSize="@dimen/default_text_size_small"
+                />
+
+            <com.chess.LeftImageEditText
+                android:id="@+id/usernameEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username"
+                android:inputType="textPersonName"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
+                style="@style/WhiteGrayEditText.One"
+                custom:leftImage="@string/ic_profile"
+                android:layout_marginTop="@dimen/common_button_margin_top"
+                />
+
+            <com.chess.LeftImageEditText
+                android:id="@+id/passwordEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:password="true"
+                style="@style/WhiteGrayEditText.One"
+                custom:leftImage="@string/ic_password"
+                android:imeOptions="actionDone"
+				android:layout_marginTop="@dimen/signin_button_margin_between"
+                />
+
+            <com.chess.RoboButton
+                android:id="@+id/signinBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/log_in"
+                style="@style/Button.OrangeNoBorder"
+                android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+

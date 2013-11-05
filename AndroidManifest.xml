@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="347"
-	android:versionName="3.0.067a"
+	android:versionCode="361"
+	android:versionName="3.0.070a"
 	package="com.chess"
 	android:installLocation="auto">
 
@@ -59,7 +59,7 @@
 
 		<activity
 			android:name=".ui.activities.MainFragmentFaceActivity"
-			android:screenOrientation="portrait"
+			android:screenOrientation="sensor"
 			android:windowSoftInputMode="adjustResize"
 			android:launchMode="singleTop">
 

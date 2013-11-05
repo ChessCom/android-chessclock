@@ -82,7 +82,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		preferences = appData.getPreferences();
 		preferencesEditor = appData.getEditor();
 
-		currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
+//		currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
+		currentLocale = StaticData.LOCALE_EN;
 
 		handler = new Handler();
 		setLocale();
@@ -105,8 +106,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected void facebookInit(LoginButton fbLoginBtn) {
 		if (fbLoginBtn != null) {
-//			facebookUiHelper = new UiLifecycleHelper(this, callback);
-//			facebookUiHelper.onCreate(savedInstanceState);
 			facebookActive = true;
 
 			// logout from facebook
@@ -116,15 +115,12 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				Session.setActiveSession(null);
 			}
 
-//			fbLoginBtn.setFragment(this);
 			fbLoginBtn.setReadPermissions(Arrays.asList("user_status", "email"));
 			fbLoginBtn.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
 				@Override
 				public void onUserInfoFetched(GraphUser user) {
 				}
 			});
-
-//			loginUpdateListener = new LoginUpdateListenerNew();
 		}
 	}
 
@@ -192,7 +188,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
 
 		String setLocale = languageCodes[appData.getLanguageCode()];
-		if(!prevLang.equals(setLocale)) {
+//		if(!prevLang.equals(setLocale)) {
 			Locale locale = new Locale(setLocale);
 			Locale.setDefault(locale);
 			Configuration config = new Configuration();
@@ -203,7 +199,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			preferencesEditor.commit();
 
 			currentLocale = setLocale;
-		}
+//		}
 	}
 
 	protected void restartActivity(){

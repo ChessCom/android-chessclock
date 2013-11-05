@@ -264,7 +264,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
 		viewWidth = (xNew == 0 ? viewWidth : xNew);
 		viewHeight = (yNew == 0 ? viewHeight : yNew);
-		squareSize = viewHeight / 8;
+		squareSize = viewWidth / 8;
 
 		loadBoard();
 		loadPieces();
@@ -647,7 +647,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected void drawCoordinates(Canvas canvas) {
 		if (showCoordinates) {
 			BoardFace boardFace = getBoardFace();
-			int xOffset = (squareSize / 8) * 7;
+			float xOffset = (squareSize / 8) * 7;
 			float yPosition = SQUARES_IN_LINE * squareSize - textYOffset;
 			for (int i = 0; i < SQUARES_IN_LINE; i++) {
 
@@ -1116,7 +1116,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(resourceId);
 		boardBitmap = drawable.getBitmap();
 
-		int bitmapSize = viewHeight / 4;
+		int bitmapSize = viewWidth / 4;
 		boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
 		shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 		return shader;

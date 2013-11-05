@@ -148,7 +148,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	protected void enableScreenLockTimer() {
 		// set touches listener to chessboard. If user don't do any moves, screen will automatically turn off after WAKE_SCREEN_TIMEOUT time
-		logTest("timer enabled");
 		boardView.enableTouchTimer();
 		getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}

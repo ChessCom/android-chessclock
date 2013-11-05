@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:orientation="vertical"
+	android:id="@+id/boardFrame"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<com.chess.LinLayout
+		android:id="@+id/boardLinLay"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:layout_marginTop="@dimen/tablet_board_margin_bottom"
+		android:layout_marginLeft="@dimen/tablet_board_margin_bottom"
+		android:layout_marginRight="@dimen/tablet_board_margin"
+		android:layout_marginBottom="@dimen/tablet_board_margin_bottom"
+		android:background="@drawable/shadow_back_inset_shifted">
+
+		<com.chess.RoboTextView
+			android:id="@+id/engineThinkingPath"
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/notations_view_height"
+			android:visibility="gone" />
+
+		<com.chess.ui.views.NotationView
+			android:id="@+id/notationsView"
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/notations_view_height"
+			style="@style/NotationsStyle"
+			android:visibility="gone" />
+
+
+		<RelativeLayout
+			android:id="@+id/welcomeBoardView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+			<!--Top Border-->
+			<FrameLayout
+				android:id="@+id/topBorder"
+				android:layout_width="wrap_content"
+				android:layout_height="3px"
+				android:background="@drawable/game_board_divider" />
+
+			<!--TODO move to resources-->
+			<com.chess.ui.views.chess_boards.ChessBoardCompView
+				android:id="@+id/boardview"
+				android:layout_width="445dip"
+				android:layout_height="445dip"
+				android:layout_below="@id/topBorder"
+				android:layout_marginTop="1px"
+				android:background="@color/grey_button_1" />
+
+			<!--Bottom Border-->
+			<FrameLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/boardview"
+				android:background="@drawable/game_board_divider"
+				android:layout_marginTop="1px" />
+
+		</RelativeLayout>
+
+	</com.chess.LinLayout>
+
+	<com.chess.RelLayout
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_toRightOf="@id/boardLinLay"
+		android:paddingTop="13dip"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:paddingBottom="@dimen/default_scr_bottom_padding"
+		>
+
+		<!--TopPanelInfo-->
+		<com.chess.ui.views.PanelInfoWelcomeView
+			android:id="@+id/topPanelView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			custom:oneLine="@bool/one_line_for_board"
+			android:layout_marginBottom="@dimen/tablet_panel_info_top_margin"
+			android:layout_marginLeft="-2dp"
+			/>
+
+		<!--Login-->
+		<com.chess.RoboButton
+			android:id="@+id/loginBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/log_in"
+			style="@style/Button.OrangeNoBorder.Big"
+			android:minHeight="@dimen/big_orange_button_height"
+			android:layout_below="@id/topPanelView"
+			android:layout_marginLeft="9dp"
+			/>
+
+		<!--SignUp-->
+		<com.chess.RoboButton
+			android:id="@+id/signUpBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/sign_up_free"
+			android:layout_marginTop="12dip"
+			style="@style/Button.OrangeNoBorder.Big"
+			android:layout_below="@id/loginBtn"
+			android:minHeight="@dimen/big_orange_button_height"
+			android:layout_marginLeft="9dp"
+			/>
+
+		<!--What is Chess.com-->
+		<com.chess.RoboTextView
+			android:id="@+id/whatIsChessComTxt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/signUpBtn"
+			android:text="@string/what_is_chess_com"
+			android:textSize="18sp"
+			android:textColor="@color/text_controls_icons"
+			android:gravity="center"
+			android:paddingTop="25dip"
+			android:layout_marginTop="-2dp"
+			android:layout_centerHorizontal="true"
+			/>
+
+		<!--Controls-->
+		<com.chess.ui.views.game_controls.ControlsCompViewTablet
+			android:id="@+id/controlsCompView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			custom:controlsRound="true"
+			android:layout_above="@+id/bottomPanelView"
+			android:layout_marginLeft="7dp"
+			/>
+
+		<!--BottomPanelInfo-->
+		<com.chess.ui.views.PanelInfoWelcomeView
+			android:id="@id/bottomPanelView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			custom:oneLine="@bool/one_line_for_board"
+			android:layout_alignParentBottom="true"
+			android:layout_marginTop="@dimen/tablet_panel_info_top_margin"
+			android:layout_marginLeft="1dp"
+			/>
+
+		<com.chess.MultiDirectionSlidingDrawer
+			android:id="@+id/slidingDrawer"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			custom:direction="topToBottom"
+			custom:handle="@+id/handle"
+			custom:content="@+id/content"
+			android:visibility="gone">
+
+			<LinearLayout
+				android:id="@id/content"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+
+				<ListView
+					android:id="@+id/listView"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" />
+
+			</LinearLayout>
+
+			<com.chess.RoboTextView
+				android:id="@id/handle"
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/drawer_handler_height"
+				android:textColor="@color/white"
+				android:text="@string/ic_handler"
+				android:padding="0dip"
+				android:gravity="center"
+				android:textSize="35dip"
+				custom:ttf="Icon"
+				style="@style/ListItem.Header.Dark"
+				android:visibility="gone" />
+
+		</com.chess.MultiDirectionSlidingDrawer>
+
+	</com.chess.RelLayout>
+
+
+</RelativeLayout>

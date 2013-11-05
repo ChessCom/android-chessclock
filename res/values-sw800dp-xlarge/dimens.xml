@@ -109,5 +109,6 @@
 	<dimen name="default_text_size_small">13sp</dimen>
 	<dimen name="panel_info_captured_pieces_height">36dip</dimen>
 	<dimen name="panel_info_captured_pieces_width">225dip</dimen>
+	<dimen name="welcome_pager_indicator_padding">5dip</dimen>
 
 </resources>

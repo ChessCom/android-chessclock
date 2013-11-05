@@ -32,10 +32,10 @@ public class ControlsTacticsView extends ControlsBaseView {
 	}
 
 	@Override
-	void init() {
-		super.init();
+	void init(Context context, AttributeSet attrs) {
+		super.init(context, attrs);
 
-		removeAllViews();
+//		removeAllViews();
 
 		addStartButton();
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
@@ -53,7 +53,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		addNextButton(R.style.Rect_Bottom_Right_Orange, SKIP);
 		addWrongButton();
 
-		addView(controlsLayout);
+//		addView(controlsLayout);
 
 		showStart();
 	}
@@ -73,7 +73,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 		params.weight = 1;
 
-		controlsLayout.addView(button, params);
+		addView(button, params);
 	}
 
 	protected void addNextButton(int styleId, ButtonIds id) {
@@ -87,7 +87,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 		params.weight = 2;
 
-		controlsLayout.addView(button, params);
+		addView(button, params);
 	}
 
 	protected void addNextWhiteButton(int styleId, ButtonIds id) {
@@ -100,7 +100,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 		params.weight = 1;
 
-		controlsLayout.addView(button, params);
+		addView(button, params);
 	}
 
 	protected void addWrongButton() {
@@ -115,7 +115,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 
 		params.weight = 1;
 
-		controlsLayout.addView(button, params);
+		addView(button, params);
 	}
 
 	public void setBoardViewFace(BoardViewTacticsFace boardViewFace) {

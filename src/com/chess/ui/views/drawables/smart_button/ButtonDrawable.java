@@ -480,6 +480,10 @@ public class ButtonDrawable extends StateListDrawable {
 		}
 
 		invalidateSelf();// need to update for pre-HC
+		invalidateDrawable(enabledDrawable);
+		if (usePressedLayer) {
+			invalidateDrawable(pressedDrawable);
+		}
 
 		return super.onStateChange(states);
 	}

@@ -28,9 +28,11 @@
     <color name="new_light_grey_4">#FFb9c2b6</color>
     <color name="new_dark_grey_2">#FF1b1a18</color>
     <color name="new_dark_grey_3">#FF201d1c</color>
+	<color name="welcome_white">#FFedf1ec</color>
 
-    <!--Back shadow-->
+	<!--Back shadow-->
     <color name="back_shadows_chess">#99000000</color>
+    <color name="welcome_title_background">#FFeef2ed</color>
 
     <!--Buttons-->
 
@@ -553,6 +555,7 @@
 
 	<!--Highlights colors-->
 	<color name="highlight_green_default">#80ffff33</color>
+	<color name="welcome_list_feature_text_color">#FFFFFFFF</color>
 
 
 </resources>
