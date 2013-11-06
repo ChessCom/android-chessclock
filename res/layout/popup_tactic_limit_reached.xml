@@ -8,7 +8,7 @@
 	>
 
 	<!--Complete title-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/titleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
 		>
 
 		<!--Upgrade To Continue-->
-		<com.chess.RoboButton
+		<com.chess.widgets.RoboButton
 			android:id="@+id/upgradeBtn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

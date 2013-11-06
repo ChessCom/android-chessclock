@@ -30,6 +30,10 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonGlassyDrawable;
+import com.chess.widgets.RoboButton;
+import com.chess.widgets.RoboRadioButton;
+import com.chess.widgets.RoboSpinner;
+import com.chess.widgets.SwitchButton;
 
 import java.util.ArrayList;
 import java.util.List;

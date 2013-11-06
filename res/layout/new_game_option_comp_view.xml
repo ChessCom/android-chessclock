@@ -16,7 +16,7 @@
         style="@style/LinearDescription"
         >
 
-        <com.chess.RoboTextView
+        <com.chess.widgets.RoboTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/white"
@@ -31,7 +31,7 @@
             android:layout_weight="2"
             android:weightSum="100">
 
-            <com.chess.RoboRadioButton
+            <com.chess.widgets.RoboRadioButton
                 android:id="@+id/whiteHumanRadioBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 android:textSize="14sp"
                 />
 
-            <com.chess.RoboRadioButton
+            <com.chess.widgets.RoboRadioButton
                 android:id="@+id/whiteCompRadioBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
         style="@style/LinearDescription"
         >
 
-        <com.chess.RoboTextView
+        <com.chess.widgets.RoboTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/black"
@@ -73,7 +73,7 @@
             android:layout_weight="2"
             android:weightSum="100">
 
-            <com.chess.RoboRadioButton
+            <com.chess.widgets.RoboRadioButton
                 android:id="@+id/blackHumanRadioBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                 android:textSize="14sp"
                 />
 
-            <com.chess.RoboRadioButton
+            <com.chess.widgets.RoboRadioButton
                 android:id="@+id/blackCompRadioBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
         android:weightSum="1"
         >
 
-        <com.chess.RoboTextView
+        <com.chess.widgets.RoboTextView
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:gravity="center_vertical|left"
@@ -118,7 +118,7 @@
             android:layout_weight="1"
             />-->
 
-        <com.chess.RoboButton
+        <com.chess.widgets.RoboButton
             android:id="@+id/strengthBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -128,14 +128,14 @@
 
     </LinearLayout>
 
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/startPlayBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top_between_buttons"
         android:text="@string/play"/>
 
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/loadCompPlayBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

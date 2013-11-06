@@ -5,7 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
-import com.chess.RoboButton;
+import com.chess.widgets.RoboButton;
 import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.ui.views.drawables.smart_button.RectButtonBadgeDrawable;
@@ -26,6 +26,7 @@ public class ControlsDailyView extends ControlsBaseView {
 	public static final String NEW_MESSAGE_MARK = "!";
 
 	private BoardViewNetworkFace boardViewFace;
+	private boolean hideChatButton;
 
 	public ControlsDailyView(Context context) {
 		super(context);
@@ -39,6 +40,10 @@ public class ControlsDailyView extends ControlsBaseView {
 	void init(Context context, AttributeSet attrs) {
 		super.init(context, attrs);
 
+		addButtons();
+	}
+
+	protected void addButtons() {
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
 		addControlButton(ANALYSIS, R.style.Rect_Bottom_Middle);
 		addControlButton(CHAT, R.style.Rect_Bottom_Middle);
@@ -47,7 +52,6 @@ public class ControlsDailyView extends ControlsBaseView {
 
 		addActionButton(CLOSE, R.string.ic_close, R.style.Rect_Bottom_Left);
 		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
-
 	}
 
 	@Override
@@ -150,4 +154,7 @@ public class ControlsDailyView extends ControlsBaseView {
 	};
 
 
+	public void hideChatButton() {
+		hideChatButton = true;
+	}
 }

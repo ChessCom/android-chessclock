@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.chess.MultiDirectionSlidingDrawer;
+import com.chess.widgets.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;

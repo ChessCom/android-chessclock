@@ -1,11 +1,11 @@
-package com.chess;
+package com.chess.widgets;
 
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.ToggleButton;
+import android.widget.Button;
+import com.chess.R;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
@@ -13,20 +13,20 @@ import com.chess.utilities.FontsHelper;
 
 import java.io.Serializable;
 
-public class RoboToggleButton extends ToggleButton implements Serializable {
+public class RoboButton extends Button implements Serializable {
 
 	private String ttfName = FontsHelper.BOLD_FONT;
 
-	public RoboToggleButton(Context context, AttributeSet attrs, int defStyle) {
+	public RoboButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		setupFont(context, attrs);
 	}
 
-	public RoboToggleButton(Context context) {
+	public RoboButton(Context context) {
 		super(context);
 	}
 
-	public RoboToggleButton(Context context, AttributeSet attrs) {
+	public RoboButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setupFont(context, attrs);
 	}
@@ -47,11 +47,8 @@ public class RoboToggleButton extends ToggleButton implements Serializable {
 		init(context, attrs);
 	}
 
-	private void init(Context context, AttributeSet attrs) {
-		if (!isInEditMode()) {
-			Typeface font = FontsHelper.getInstance().getTypeFace(context, ttfName);
-			setTypeface(font);
-		}
+    private void init(Context context, AttributeSet attrs) {
+		setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		ButtonDrawableBuilder.setBackgroundToView(this, attrs);
 	}
 

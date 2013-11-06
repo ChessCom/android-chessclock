@@ -29,7 +29,7 @@
         style="@style/ListItem"
         >
 
-        <com.chess.RoboEditText
+        <com.chess.widgets.RoboEditText
             android:id="@+id/sendEdt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:layout_marginRight="5dip"
             >
 
-            <com.chess.RoboButton
+            <com.chess.widgets.RoboButton
                 android:id="@+id/sendBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

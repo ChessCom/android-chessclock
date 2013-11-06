@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.utilities.FontsHelper;
 import com.chess.R;
-import com.chess.RoboButton;
-import com.chess.RoboTextView;
+import com.chess.widgets.RoboButton;
+import com.chess.widgets.RoboTextView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 

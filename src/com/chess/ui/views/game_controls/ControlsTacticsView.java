@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
-import com.chess.RoboButton;
+import com.chess.widgets.RoboButton;
 import com.chess.ui.interfaces.boards.BoardViewTacticsFace;
 import com.chess.utilities.FontsHelper;
 

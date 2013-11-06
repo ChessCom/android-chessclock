@@ -3,7 +3,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
     <!--Mode labels-->
     <!--Standard-->
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/liveLabelStandardTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         />
 
     <!--Blitz-->
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/liveLabelBlitzTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         />
 
     <!--Bullet-->
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/liveLabelBulletTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,24 +48,24 @@
         >
 
         <!--30 min-->
-        <com.chess.RoboButton
+        <com.chess.widgets.RoboButton
             android:id="@+id/standard1SelectBtn"
             style="@style/HomeLiveOptionsButton"
             />
 
         <!--10 min-->
-        <com.chess.RoboButton
+        <com.chess.widgets.RoboButton
             android:id="@+id/blitz1SelectBtn"
             style="@style/HomeLiveOptionsButton"
             />
         <!--5|2 min-->
-        <com.chess.RoboButton
+        <com.chess.widgets.RoboButton
             android:id="@+id/blitz2SelectBtn"
             style="@style/HomeLiveOptionsButton"
             />
 
         <!--2|1 min-->
-        <com.chess.RoboButton
+        <com.chess.widgets.RoboButton
             android:id="@+id/bullet1SelectBtn"
             style="@style/HomeLiveOptionsButton"
             />
@@ -79,25 +79,25 @@
         >
 
         <!--15|5 min-->
-        <com.chess.RoboButton
+        <com.chess.widgets.RoboButton
             android:id="@+id/standard2SelectBtn"
             style="@style/HomeLiveOptionsButton"
             />
 
         <!--5 min-->
-        <com.chess.RoboButton
+        <com.chess.widgets.RoboButton
             android:id="@+id/blitz3SelectBtn"
             style="@style/HomeLiveOptionsButton"
             />
 
         <!--3 min-->
-        <com.chess.RoboButton
+        <com.chess.widgets.RoboButton
             android:id="@+id/blitz4SelectBtn"
             style="@style/HomeLiveOptionsButton"
             />
 
         <!--1 min-->
-        <com.chess.RoboButton
+        <com.chess.widgets.RoboButton
             android:id="@+id/bullet2SelectBtn"
             style="@style/HomeLiveOptionsButton"
             />

@@ -7,7 +7,7 @@
 
     <!--Mode labels-->
     <!--Standard-->
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/liveLabelStandardTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         />
 
     <!--Blitz-->
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/liveLabelBlitzTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         />
 
     <!--Bullet-->
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/liveLabelBulletTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,14 +46,14 @@
 
     <!--Time selections-->
     <!--30 min-->
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/standard1SelectBtn"
         style="@style/RightLiveOptionsButton"
         android:layout_below="@id/liveLabelStandardTxt"
         />
 
     <!--10 min-->
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/blitz1SelectBtn"
         style="@style/RightLiveOptionsButton"
         android:layout_below="@id/liveLabelStandardTxt"
@@ -61,7 +61,7 @@
         />
 
     <!--2|1 min-->
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/bullet1SelectBtn"
         style="@style/RightLiveOptionsButton"
         android:layout_below="@id/liveLabelStandardTxt"
@@ -69,7 +69,7 @@
         />
 
     <!--15|5 min-->
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/standard2SelectBtn"
         style="@style/RightLiveOptionsButton"
         android:layout_below="@id/standard1SelectBtn"
@@ -77,7 +77,7 @@
         />
 
     <!--5|2 min-->
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/blitz2SelectBtn"
         style="@style/RightLiveOptionsButton"
         android:layout_below="@id/standard1SelectBtn"
@@ -85,7 +85,7 @@
         />
 
     <!--1 min-->
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/bullet2SelectBtn"
         style="@style/RightLiveOptionsButton"
         android:layout_below="@id/standard1SelectBtn"
@@ -93,7 +93,7 @@
         />
 
     <!--5 min-->
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/blitz3SelectBtn"
         style="@style/RightLiveOptionsButton"
         android:layout_below="@id/blitz2SelectBtn"
@@ -101,7 +101,7 @@
         />
 
     <!--3 min-->
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/blitz4SelectBtn"
         style="@style/RightLiveOptionsButton"
         android:layout_below="@id/blitz3SelectBtn"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.chess.RelLayout
+<com.chess.widgets.RelLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         android:layout_centerVertical="true"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/playerNameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_centerVertical="true"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/cancelBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         android:textColor="@color/text_controls_icons"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@id/acceptBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,4 +53,4 @@
         android:textColor="@color/text_controls_icons"
         />
 
-</com.chess.RelLayout>
+</com.chess.widgets.RelLayout>

@@ -1,4 +1,4 @@
-package com.chess;
+package com.chess.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;

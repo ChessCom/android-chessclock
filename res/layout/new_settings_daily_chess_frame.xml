@@ -6,14 +6,14 @@
 	android:layout_height="match_parent"
 	>
 
-	<com.chess.LinLayout
+	<com.chess.widgets.LinLayout
 		android:orientation="vertical"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		>
 
 		<!-- After i Move -->
-		<com.chess.LinLayout
+		<com.chess.widgets.LinLayout
 			android:id="@+id/afterMoveView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
 			android:background="@drawable/transparent_list_item_selector"
 			>
 			<!--Label-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:layout_width="0dip"
 				android:layout_height="wrap_content"
 				android:text="@string/after_i_move"
@@ -37,10 +37,10 @@
 				android:background="@drawable/transparent_list_item_selector"
 				/>
 
-		</com.chess.LinLayout>
+		</com.chess.widgets.LinLayout>
 
 		<!--Show Submit button-->
-		<com.chess.LinLayout
+		<com.chess.widgets.LinLayout
 			android:id="@+id/showSubmitView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
 			>
 
 			<!--Label-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:layout_width="0dip"
 				android:layout_height="wrap_content"
 				android:text="@string/show_submit_button"
@@ -58,14 +58,14 @@
 				style="@style/SettingsListText"
 				/>
 
-			<com.chess.SwitchButton
+			<com.chess.widgets.SwitchButton
 				android:id="@+id/showSubmitSwitch"
 				style="@style/Switch.Default.Yes"
 				/>
-		</com.chess.LinLayout>
+		</com.chess.widgets.LinLayout>
 
 		<!--On Vacation-->
-		<com.chess.LinLayout
+		<com.chess.widgets.LinLayout
 			android:id="@+id/onVacationView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
 			>
 
 			<!--Label-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:layout_width="0dip"
 				android:layout_height="wrap_content"
 				android:text="@string/on_vacation"
@@ -83,13 +83,13 @@
 				style="@style/SettingsListText"
 				/>
 
-			<com.chess.SwitchButton
+			<com.chess.widgets.SwitchButton
 				android:id="@+id/onVacationSwitch"
 				style="@style/Switch.Default.Yes"
 				/>
 
-		</com.chess.LinLayout>
+		</com.chess.widgets.LinLayout>
 
 
-	</com.chess.LinLayout>
+	</com.chess.widgets.LinLayout>
 </ScrollView>

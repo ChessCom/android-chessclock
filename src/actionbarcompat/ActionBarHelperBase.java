@@ -26,7 +26,7 @@ import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import com.chess.R;
-import com.chess.RoboTextView;
+import com.chess.widgets.RoboTextView;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.CoreActivityActionBar;

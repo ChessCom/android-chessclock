@@ -12,7 +12,7 @@
     >
 
 	<!--Icon-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/iconTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
 		android:visibility="gone"
 		/>
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/categoryNameTxt"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         />
 
     <!--Right Icon-->
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
 		android:id="@+id/spinnerIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

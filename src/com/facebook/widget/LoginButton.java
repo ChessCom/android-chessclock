@@ -28,7 +28,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import com.chess.FacebookButton;
+import com.chess.widgets.FacebookButton;
 import com.chess.R;
 import com.facebook.*;
 import com.facebook.internal.SessionAuthorizationType;

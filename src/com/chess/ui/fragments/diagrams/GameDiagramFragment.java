@@ -686,7 +686,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		boardView = (ChessBoardDiagramView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setControlsView(controlsView);
-		boardView.setNotationsView(notationsView);
+		boardView.setNotationsFace(notationsView);
 
 		setBoardView(boardView);
 

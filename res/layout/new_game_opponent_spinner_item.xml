@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.chess.LinLayout
+    <com.chess.widgets.LinLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_list_item_height"
         android:gravity="center_vertical"
@@ -14,14 +14,14 @@
 		>
 
 		<!--Opponent Title-->
-        <com.chess.RoboTextView
+        <com.chess.widgets.RoboTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/opponent_"
             android:textColor="@color/semitransparent_white_65" />
 
         <!--Opponent Name-->
-        <com.chess.RoboTextView
+        <com.chess.widgets.RoboTextView
             android:id="@+id/opponentNameTxt"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
@@ -31,5 +31,5 @@
             android:textColor="@color/semitransparent_white_65"
             android:paddingRight="6dip" />
 
-    </com.chess.LinLayout>
+    </com.chess.widgets.LinLayout>
 </LinearLayout>

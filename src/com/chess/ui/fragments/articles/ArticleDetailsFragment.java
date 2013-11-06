@@ -14,7 +14,7 @@ import android.util.SparseArray;
 import android.view.*;
 import android.widget.*;
 import com.chess.R;
-import com.chess.RoboTextView;
+import com.chess.widgets.RoboTextView;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ArticleDetailsItem;

@@ -112,7 +112,7 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 		} else if (code == GAME_FRAGMENT) {
 			config.setMode(getAppData().getCompGameMode());
 			config.setStrength(getAppData().getCompLevel());
-			changeInternalFragment(GameWelcomeCompFragment.createInstance(this, config));
+			changeInternalFragment(GameWelcomeCompFragmentTablet.createInstance(this, config));
 		}
 	}
 

@@ -354,7 +354,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsView);
-		boardView.setNotationsView(notationsView);
+		boardView.setNotationsFace(notationsView);
 
 		setBoardView(boardView);
 

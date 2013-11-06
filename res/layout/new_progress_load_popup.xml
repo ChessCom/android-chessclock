@@ -10,7 +10,7 @@
 	>
 
 	<!--Title -->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/loadTitleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
 		/>
 
 	<!--Current task title-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/taskTitleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
 		/>
 
 	<!--Progress  value-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/loadProgressTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

@@ -1,10 +1,11 @@
-package com.chess;
+package com.chess.widgets;
 
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.TextView;
+import com.chess.R;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.FontsHelper;
 
@@ -46,9 +47,7 @@ public class RoboTextView extends TextView implements Serializable {
     }
 
     private void init(Context context, String ttfName) {
-		if (!isInEditMode()) {
-			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
-		}
+		setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
     }
 
 	public void setFont(String font) {

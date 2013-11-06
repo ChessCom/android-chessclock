@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
-        <com.chess.RoboRadioButton
+        <com.chess.widgets.RoboRadioButton
             android:id="@+id/leftTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:checked="true"
             />
 
-        <com.chess.RoboRadioButton
+        <com.chess.widgets.RoboRadioButton
             android:id="@+id/rightTabBtn"
             android:layout_width="0dip"
             android:layout_height="wrap_content"

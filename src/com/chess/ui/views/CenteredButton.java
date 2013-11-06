@@ -16,11 +16,10 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import com.chess.R;
-import com.chess.RoboButton;
+import com.chess.widgets.RoboButton;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.animation.PropertyValuesHolder;
 
 public class CenteredButton extends FrameLayout implements View.OnTouchListener {
 

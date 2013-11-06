@@ -28,7 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.RoboTextView;
+import com.chess.widgets.RoboTextView;
 import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
 import com.chess.ui.views.drawables.BadgeDrawable;
 

@@ -15,28 +15,6 @@
     </style>
 
     <!-- ================================= Orange Buttons ============================================= -->
-<!--    <style name="Button.Orange2">
-        <item name="btn_bevel_lvl">2</item>
-
-        <item name="btn_top">@color/orange_emboss_top_1</item>
-        <item name="btn_left">@color/orange_emboss_left_1</item>
-        <item name="btn_right">@color/orange_emboss_right_1</item>
-        <item name="btn_bottom">@color/orange_emboss_bottom_1</item>
-
-        <item name="btn_top_2">@color/orange_emboss_top_2</item>
-        <item name="btn_left_2">@color/orange_emboss_left_2</item>
-        <item name="btn_right_2">@color/orange_emboss_right_2</item>
-        <item name="btn_bottom_2">@color/orange_emboss_bottom_2</item>
-
-        <item name="btn_solid">@color/orange_button</item>
-
-		&lt;!&ndash;No shadow&ndash;&gt;
-		<item name="android:shadowColor">@null</item>
-		<item name="android:shadowRadius">0</item>
-		<item name="android:shadowDx">0</item>
-		<item name="android:shadowDy">0</item>
-    </style>-->
-
     <style name="Button.OrangeNoBorder">
         <item name="btn_use_border">false</item>
 
@@ -63,10 +41,6 @@
         <item name="android:minHeight">@dimen/big_orange_button_height</item>
         <item name="android:textSize">@dimen/big_button_text_size</item>
     </style>
-
-<!--    <style name="Button.Orange2.Small">
-        <item name="android:minHeight">@dimen/small_orange_button_height</item>
-    </style>-->
 
     <!--====================================== Glassy Buttons =========================================== -->
     <style name="Button.Glassy">
@@ -417,7 +391,36 @@
         <item name="btn_rect_pos">tabRight</item>
     </style>
 
-    <!-- ============= Side ===================== -->
+	<!-- ============= Notations for Tablets ===================== -->
+
+	<style name="Rect.Tablet">
+		<item name="android:textSize">@dimen/tab_button_text_size</item>
+		<item name="btn_top">@color/transparent_button_border_left</item>  <!--dark-->
+		<item name="btn_bottom">@color/transparent_button_border_bottom</item> <!--dark-->
+		<item name="btn_solid">#2B000000</item>
+		<item name="android:textColor">@color/text_tabs_color_selector</item>
+	</style>
+
+	<style name="Rect.Tablet.Left">
+		<item name="btn_rect_pos">tabletLeft</item>
+	</style>
+
+	<style name="Rect.Tablet.Middle">
+		<item name="btn_rect_pos">tabletMiddle</item>
+	</style>
+
+	<style name="Rect.Tablet.Right">
+		<item name="btn_rect_pos">tabletRight</item>
+	</style>
+
+	<!-- ============= Notations ===================== -->
+	<style name="Rect.Notations">
+		<item name="btn_solid">#01000000</item>
+		<item name="btn_rect_pos">tabMiddle</item>
+		<item name="btn_is_clickable">false</item>
+	</style>
+
+	<!-- ============= Side ===================== -->
     <style name="Rect.Side">
         <item name="btn_top">@color/transparent_button_border_left</item>
         <item name="btn_bottom">@color/transparent_button_border_bottom</item>

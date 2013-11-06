@@ -16,7 +16,7 @@
  * Modifications by: Alessandro Crugnola
  */
 
-package com.chess;
+package com.chess.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -30,6 +30,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.*;
 import android.view.accessibility.AccessibilityEvent;
+import com.chess.R;
 
 
 public class MultiDirectionSlidingDrawer extends ViewGroup {

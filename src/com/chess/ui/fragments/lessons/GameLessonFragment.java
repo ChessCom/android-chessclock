@@ -15,7 +15,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import com.chess.backend.entity.api.LessonProblemItem;
 import com.chess.utilities.FontsHelper;
-import com.chess.MultiDirectionSlidingDrawer;
+import com.chess.widgets.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;

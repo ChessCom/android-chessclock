@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.chess.utilities.FontsHelper;
 import com.chess.R;
-import com.chess.RoboTextView;
+import com.chess.widgets.RoboTextView;
 import com.chess.statics.Symbol;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
@@ -114,7 +114,8 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			playerParams.addRule(RIGHT_OF, AVATAR_ID);
 			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
-			playerParams.setMargins(0, (int) (-8 * density), 0, 0);
+			int playerTopMargin = resources.getDimensionPixelSize(R.dimen.panel_info_welcome_player_top_margin);
+			playerParams.setMargins(0, -playerTopMargin, 0, 0);
 
 			playerTxt.setTextSize(playerTextSize);
 			playerTxt.setTextColor(playerTextColor);

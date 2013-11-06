@@ -11,7 +11,7 @@
 
 	<!--Game Modes-->
 	<dimen name="player_name_max_width">400dip</dimen>
-    <dimen name="video_thumb_size">120dip</dimen>
+    <dimen name="video_thumb_size">250dp</dimen>
     <dimen name="panel_info_padding_top">11dip</dimen>
     <dimen name="new_signup_title_padding_bottom">16dip</dimen>
     <dimen name="new_tactics_panel_info_height">58dip</dimen>
@@ -64,7 +64,6 @@
 	<dimen name="seek_bar_side_padding">8dip</dimen>
 	<dimen name="profile_frame_photo_size">80dip</dimen>
 	<dimen name="panel_info_avatar_big_size">40dip</dimen>
-	<dimen name="daily_list_item_image_size">55dip</dimen>
 	<dimen name="panel_info_player_text_size">18sp</dimen>
 	<dimen name="panel_info_player_rating_text_size">14sp</dimen>
 	<dimen name="panel_info_flag_size">28dip</dimen>
@@ -77,6 +76,9 @@
 	<dimen name="options_list_item_height">56dip</dimen>
 	<dimen name="content_text_size">17sp</dimen>
 	<dimen name="content_info_text_size">14sp</dimen>
+
+	<dimen name="daily_list_item_image_size">25dip</dimen>
+
 
 	<!--Switch Default-->
 	<dimen name="button_switch_default_width">85dip</dimen>
@@ -97,9 +99,9 @@
 	<dimen name="popup_title_text_size_big">33sp</dimen>
 	<dimen name="popup_title_text_size_medium">17sp</dimen>
 	<dimen name="diagram_icon_overlay_size">110dip</dimen>
-	<dimen name="daily_board_preview_size">160dip</dimen>
+	<dimen name="daily_board_preview_size">250dip</dimen>
 	<dimen name="notations_text_padding">2dip</dimen>
-	<dimen name="notations_text_side_padding">10dip</dimen>
+	<dimen name="notations_text_side_padding">15dip</dimen>
 	<dimen name="_3dPiece_offset_for_board">21dip</dimen>
 	<dimen name="_3dPiece_offset_for_board_drag">35dip</dimen>
 	<dimen name="correct_move_puzzle_height">48dip</dimen>
@@ -109,5 +111,11 @@
 	<dimen name="panel_info_captured_pieces_height">36dip</dimen>
 	<dimen name="panel_info_captured_pieces_width">225dip</dimen>
 	<dimen name="big_button_text_size">20sp</dimen>
+	<dimen name="tablet_board_size">445dp</dimen>
+	<dimen name="player_name_margin_top">8dp</dimen>
+	<dimen name="panel_info_flag_margin_top">6dp</dimen>
+	<dimen name="notations_text_size">17sp</dimen>
+	<dimen name="tablet_panel_info_top_margin">0dip</dimen>
+	<dimen name="panel_info_welcome_player_top_margin">8dp</dimen>
 
 </resources>

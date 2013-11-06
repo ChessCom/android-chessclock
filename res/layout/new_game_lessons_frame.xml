@@ -26,7 +26,7 @@
 			>
 
 			<!--Title-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/lessonTitleTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
 				custom:ttf="Bold" />
 
 			<!--Goal Commentary-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/commentTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
 				/>
 
 			<!--Lesson Description-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/descriptionTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
 				/>
 
 			<!--Position Description-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/positionDescriptionTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
 				/>
 
 			<!--Hint-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/hintTxt"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
@@ -110,7 +110,7 @@
 		</LinearLayout>
 	</ScrollView>
 
-	<com.chess.MultiDirectionSlidingDrawer
+	<com.chess.widgets.MultiDirectionSlidingDrawer
 		android:id="@id/slidingDrawer"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
 			>
 
 			<!--Handle-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:layout_width="match_parent"
 				android:layout_height="@dimen/drawer_handler_height"
 				android:textColor="@color/white"
@@ -187,7 +187,7 @@
 
 		</RelativeLayout>
 
-	</com.chess.MultiDirectionSlidingDrawer>
+	</com.chess.widgets.MultiDirectionSlidingDrawer>
 
 	<!--Controls View-->
 	<com.chess.ui.views.game_controls.ControlsLessonsView

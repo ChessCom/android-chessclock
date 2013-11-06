@@ -106,7 +106,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private GameFace gameFace;
 	protected boolean locked;
 	protected PaintFlagsDrawFilter drawFilter;
-	private NotationView notationsView;
+	private NotationFace notationsFace;
 	private ControlsBaseView controlsBaseView;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
@@ -360,8 +360,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		this.controlsBaseView = controlsBaseView;
 	}
 
-	public void setNotationsView(NotationView notationsView) {
-		this.notationsView = notationsView;
+	public void setNotationsFace(NotationFace notationsFace) {
+		this.notationsFace = notationsFace;
 	}
 
 	@Override
@@ -397,8 +397,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			invalidate();
 			gameFace.invalidateGameScreen();
 
-			if (notationsView != null) { // we might don't have notations  so probably should be moved to fragment level
-				notationsView.moveBack(boardFace.getPly());
+			if (notationsFace != null) { // we might don't have notations  so probably should be moved to fragment level
+				notationsFace.moveBack(boardFace.getPly());
 			}
 			return true;
 		} else {
@@ -422,8 +422,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			invalidate();
 			gameFace.invalidateGameScreen();
 
-			if (notationsView != null) {
-				notationsView.moveForward(getBoardFace().getPly());
+			if (notationsFace != null) {
+				notationsFace.moveForward(getBoardFace().getPly());
 			}
 			return true;
 		} else {
@@ -485,8 +485,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (originalNotations == null || originalNotations.length < notations.length) {
 			originalNotations = notations;
 		}
-		if (notationsView != null) {
-			notationsView.updateNotations(notations, this, getBoardFace().getPly());
+		if (notationsFace != null) {
+			notationsFace.updateNotations(notations, this, getBoardFace().getPly());
 		}
 
 		drawCapturedPieces();

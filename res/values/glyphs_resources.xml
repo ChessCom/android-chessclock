@@ -5,6 +5,7 @@
     <!--Names as strings-->
     <string name="ic_pawn">1</string>
     <string name="ic_daily_game">2</string>
+    <string name="ic_live">0</string>
     <string name="ic_live_standard">3</string>
     <string name="ic_live_blitz">4</string>
     <string name="ic_live_bullet">5</string>
@@ -14,6 +15,7 @@
     <string name="ic_lessons">8</string>
     <string name="ic_comp_game">9</string>
     <string name="ic_add">V</string>
+    <string name="ic_edit">Z</string>
 
     <string name="ic_skills">s</string>
     <string name="ic_profile">b</string>

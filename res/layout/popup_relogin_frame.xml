@@ -7,7 +7,7 @@
 	android:padding="15dip"
 	>
 
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/titleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
 		android:gravity="center"
 		/>
 
-	<com.chess.RoboEditText
+	<com.chess.widgets.RoboEditText
 		android:id="@+id/usernameEdt"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
 		android:imeOptions="actionNext"
 		/>
 
-	<com.chess.RoboEditText
+	<com.chess.widgets.RoboEditText
 		android:id="@+id/passwordEdt"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
 		android:imeOptions="actionDone"
 		/>
 
-	<com.chess.RoboButton
+	<com.chess.widgets.RoboButton
 		android:id="@+id/re_signin"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

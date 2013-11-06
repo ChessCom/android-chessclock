@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.chess.R;
-import com.chess.RoboButton;
+import com.chess.widgets.RoboButton;
 import com.chess.ui.interfaces.boards.BoardViewFace;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
@@ -36,6 +36,12 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	public static final int BUTTONS_RE_ENABLE_DELAY = 400;
 
 	public static final int BUTTON_PREFIX = 0x00002000;
+
+	static final int LEFT = 0;
+	static final int MIDDLE = 1;
+	static final int RIGHT = 2;
+
+
 	int controlIconSize;
 	protected ColorStateList controlIconColor;
 	protected float density;
@@ -111,7 +117,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.string.ic_check
 	};
 
-//	protected LinearLayout controlsLayout;
 	protected LayoutParams buttonParams;
 
 	protected boolean blocked;
@@ -136,6 +141,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			return;
 		}
 
+
 		handler = new Handler();
 
 		density = resources.getDisplayMetrics().density;
@@ -143,6 +149,10 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		controlIconSize = (int) (resources.getDimension(R.dimen.game_controls_icon_size) / density);
 		controlIconColor = resources.getColorStateList(R.color.text_controls_icons);
 		controlTextSize = (int) (resources.getDimension(R.dimen.game_controls_text_size) / density);
+
+		buttonParams = new LayoutParams(0, controlButtonHeight);
+		buttonParams.weight = 1;
+
 
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -169,11 +179,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		if (buttonId == ButtonIds.FORWARD || buttonId == ButtonIds.BACK ) {
 			button.setOnLongClickListener(this);
 			button.setOnTouchListener(this);
-		}
-
-		if (buttonParams == null) {
-			buttonParams = new LayoutParams(0, controlButtonHeight);
-			buttonParams.weight = 1;
 		}
 
 		button.setLayoutParams(buttonParams);
@@ -213,7 +218,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	}
 
 	void showGameButton(ButtonIds buttonId, boolean show) {
-		findViewById(BUTTON_PREFIX + buttonId.ordinal()).setVisibility(show ? View.VISIBLE : View.GONE);
+		getViewById(buttonId).setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 
 	@Override
@@ -267,8 +272,9 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	}
 
 	public void enableGameButton(ButtonIds buttonId, boolean enable) {
-		findViewById(BUTTON_PREFIX + buttonId.ordinal()).setEnabled(enable);
-		Drawable drawable = findViewById(BUTTON_PREFIX + buttonId.ordinal()).getBackground();
+		View viewById = getViewById(buttonId);
+		viewById.setEnabled(enable);
+		Drawable drawable = viewById.getBackground();
 		if (drawable != null) {
 			if (drawable instanceof RectButtonDrawable) {
 				if (enable) {
@@ -278,6 +284,10 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 				}
 			}
 		}
+	}
+
+	protected View getViewById(ButtonIds buttonId) {
+		return findViewById(BUTTON_PREFIX + buttonId.ordinal());
 	}
 
 	public void lock(boolean lock) {

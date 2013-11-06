@@ -1,4 +1,4 @@
-package com.chess;
+package com.chess.widgets;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
+import com.chess.R;
 import com.chess.ui.views.drawables.IconDrawable;
 
 /**
@@ -18,79 +19,59 @@ import com.chess.ui.views.drawables.IconDrawable;
  * Date: 03.01.13
  * Time: 13:45
  */
-public class LeftRightImageEditText extends RoboEditText {
+public class LeftImageEditText extends RoboEditText {
 
 	public static final int ONE = 0;
 	public static final int TOP = 1;
 	public static final int MID = 2;
 	public static final int BOT = 3;
 
-	public static final float BORDER_OFFSET = 2.0f;
-
-	private Drawable rightIcon;
-	private int rightImageWidth;
-	private int rightImageHeight;
+	public static float BORDER_OFFSET = 2.0f;
 
 	private Drawable icon;
 	private int imageWidth;
 	private boolean initialized;
 	private ShapeDrawable backForImage;
 	private int roundMode;
+	private float density;
 	private Paint linePaint;
 	private int lineYStop;
 	private int lineYStart;
 	private int lineXStop;
 	private int lineXStart;
-	private float backImageWidth;
-	private int rightImageOffset;
-	private boolean enlargeHeight;
-	private boolean rightPaddingSet;
 	private int bottomPadding;
-	private int currentViewHeight;
 
 
-	public LeftRightImageEditText(Context context, AttributeSet attrs, int defStyle) {
+	public LeftImageEditText(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init(context, attrs);
 	}
 
-	public LeftRightImageEditText(Context context) {
+	public LeftImageEditText(Context context) {
 		super(context);
 	}
 
-	public LeftRightImageEditText(Context context, AttributeSet attrs) {
+	public LeftImageEditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init(context, attrs);
 	}
 
 	private void init(Context context, AttributeSet attrs) {
 		Resources resources = context.getResources();
+		density = resources.getDisplayMetrics().density;
+
 		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.EnhancedField);
 		int color;
 		try {
+			roundMode = array.getInteger(R.styleable.EnhancedField_round_mode, ONE);
+			// back for image
+
 			color = array.getInteger(R.styleable.EnhancedField_color, Color.WHITE);
-			// Left image
 			String iconStr = array.getString(R.styleable.EnhancedField_leftImage);
 			icon = new IconDrawable(context, iconStr, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size) ;
-
-			// right image
-			String rightIconStr = array.getString(R.styleable.EnhancedField_rightImage);
-			if (array.hasValue(R.styleable.EnhancedField_rightImageDrawable)) {
-				rightIcon = array.getDrawable(R.styleable.EnhancedField_rightImageDrawable);
-			} else {
-				rightIcon = new IconDrawable(context, rightIconStr, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size) ;
-			}
-
-			roundMode = array.getInteger(R.styleable.EnhancedField_round_mode, ONE);
 		} finally {
 			array.recycle();
 		}
-
-		if (rightIcon != null) {
-			setRightIcon(rightIcon);
-		}
-
-		float density = resources.getDisplayMetrics().density;
 
 		imageWidth = icon.getIntrinsicWidth();
 		int imageHeight = icon.getIntrinsicHeight();
@@ -100,7 +81,7 @@ public class LeftRightImageEditText extends RoboEditText {
 		float[] outerR;
 		switch (roundMode) {
 			case ONE:
-				outerR = new float[]{radius, radius, radius, radius, 0, 0, 0, 0};
+				outerR = new float[]{radius, radius, 0, 0, 0, 0, radius, radius};
 				break;
 			case TOP:
 				outerR = new float[]{radius, radius, 0, 0, 0, 0, 0, 0};
@@ -123,14 +104,6 @@ public class LeftRightImageEditText extends RoboEditText {
 		linePaint.setStrokeWidth(1);
 		linePaint.setStyle(Paint.Style.STROKE);
 
-		backImageWidth = resources.getDimension(R.dimen.new_edit_field_height);
-
-		if (rightImageHeight > backImageWidth) {
-			enlargeHeight = true;
-		}
-
-		rightImageOffset = (int) (26 * density);
-
 		bottomPadding = (int) (10 * density);
 	}
 
@@ -139,52 +112,28 @@ public class LeftRightImageEditText extends RoboEditText {
 		if (!initialized) {
 			initImage();
 		}
+
 		int height = getHeight();
-		int width = getWidth();
 
 		backForImage.draw(canvas);
 
 		// place image
 		canvas.save();
-		float imgCenterX = (backImageWidth - imageWidth)/2;
+		float imgCenterX = (height - imageWidth)/2;
 		float imgCenterY = (height - imageWidth)/2;
 		canvas.translate(imgCenterX, imgCenterY);
 		icon.draw(canvas);
 		canvas.restore();
 
-		if (rightIcon != null) {
-			// place second image
-			canvas.save();
-			imgCenterX = width - rightImageOffset/2 - rightImageWidth;
-			imgCenterY = (height - rightImageWidth)/2;
-			canvas.translate(imgCenterX, imgCenterY);
-			rightIcon.draw(canvas);
-			canvas.restore();
-		}
-
-		if (roundMode != ONE) { // don't draw bottom/top lines for standalone field
+		if (roundMode != ONE) {
 			canvas.drawLine(lineXStart, lineYStart, lineXStop, lineYStop, linePaint);
 		}
-		if (roundMode == MID) { // draw second line for middle position
+		if (roundMode == MID) {
 			canvas.drawLine(lineXStart, 0, lineXStop, 0, linePaint);
 		}
 
 		// set padding to make text selection work correct
-		if (enlargeHeight) {
-			setPadding((int) (backImageWidth + bottomPadding), 0, 0, (int) (currentViewHeight/2 - getTextSize()/2));
-		} else {
-			setPadding((int) (backImageWidth + bottomPadding), 0, 0, bottomPadding);
-		}
-
-		if (!rightPaddingSet) {
-			int paddingBottom = getPaddingBottom();
-			int paddingTop = getPaddingTop();
-			int paddingRight = getPaddingRight();
-			int paddingLeft = getPaddingLeft();
-			setPadding(paddingLeft, paddingTop, paddingRight + rightImageWidth, paddingBottom);
-			rightPaddingSet = true;
-		}
-
+		setPadding(height + bottomPadding, 0, 0, bottomPadding);
 		super.onDraw(canvas);
 	}
 
@@ -199,13 +148,13 @@ public class LeftRightImageEditText extends RoboEditText {
 
 		int x0 = (int)BORDER_OFFSET;
 		int y0 = 0;
-		int x1 = (int) backImageWidth;
+		int x1 = height;
 		int y1 = 0;
 
 		switch (roundMode) {
 			case ONE:
 				y0 = (int) BORDER_OFFSET;
-				y1 = (int) (height - BORDER_OFFSET + 1);
+				y1 = (int) (height - BORDER_OFFSET );
 
 				break;
 			case TOP:
@@ -228,37 +177,5 @@ public class LeftRightImageEditText extends RoboEditText {
 		backForImage.setBounds(x0, y0, x1, y1);
 
 		initialized = true;
-	}
-
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		if (enlargeHeight) {
-			int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
-
-			currentViewHeight = rightImageHeight + rightImageOffset;
-			setMeasuredDimension(parentWidth, currentViewHeight);
-		}else {
-			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		}
-	}
-
-	public void setRightIcon(int iconId) {
-		setRightIcon(getResources().getDrawable(iconId));
-	}
-
-	public void setRightIcon(Drawable icon) {
-		rightIcon = icon;
-		rightImageWidth = rightIcon.getIntrinsicWidth();
-		rightImageHeight = rightIcon.getIntrinsicHeight();
-		rightIcon.setBounds(0, 0, rightImageWidth, rightImageHeight);
-		invalidate();
-	}
-
-	public int getRightImageWidth() {
-		return rightImageWidth;
-	}
-
-	public int getRightImageHeight() {
-		return rightImageHeight;
 	}
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.chess.RelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chess.widgets.RelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/topButtonsView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,7 +11,7 @@
     style="@style/ListItem"
     >
 
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/startNewGameBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,4 +20,4 @@
         style="@style/Button.OrangeNoBorder.Big"
         />
 
-</com.chess.RelLayout>
+</com.chess.widgets.RelLayout>

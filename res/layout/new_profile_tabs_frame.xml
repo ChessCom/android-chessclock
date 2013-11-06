@@ -8,7 +8,7 @@
 	android:orientation="vertical"
 	>
 
-	<com.chess.RelLayout
+	<com.chess.widgets.RelLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		style="@style/Rect.Bottom"
@@ -25,7 +25,7 @@
 			/>
 
 		<!--Username -->
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:id="@+id/usernameTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
 			/>
 
 		<!--Location-->
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:id="@+id/locationTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
 			android:contentDescription="@string/image"
 			/>
 
-	</com.chess.RelLayout>
+	</com.chess.widgets.RelLayout>
 
 	<!--Tabs-->
 	<RadioGroup
@@ -84,21 +84,21 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
 		>
-<!--		<com.chess.RoboRadioButton
+<!--		<RoboRadioButton
 			android:id="@+id/leftTabBtn"
 			android:layout_width="0dip"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			style="@style/Rect.Tab.Left"
 			/>-->
-		<com.chess.RoboRadioButton
+		<com.chess.widgets.RoboRadioButton
 			android:id="@+id/centerTabBtn"
 			android:layout_width="0dip"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			style="@style/Rect.Tab.Middle"
 			/>
-		<com.chess.RoboRadioButton
+		<com.chess.widgets.RoboRadioButton
 			android:id="@+id/rightTabBtn"
 			android:layout_width="0dip"
 			android:layout_height="wrap_content"

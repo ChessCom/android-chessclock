@@ -35,7 +35,7 @@
 		android:layout_above="@+id/pageIndicatorLay"
 		/>
 
-	<com.chess.LinLayout
+	<com.chess.widgets.LinLayout
 		android:id="@id/pageIndicatorLay"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -55,9 +55,9 @@
 			android:layout_gravity="center"
 			/>
 
-	</com.chess.LinLayout>
+	</com.chess.widgets.LinLayout>
 
-	<com.chess.LinLayout
+	<com.chess.widgets.LinLayout
 		android:id="@+id/replyView"
 		android:orientation="vertical"
 		android:layout_width="match_parent"
@@ -72,7 +72,7 @@
 		android:visibility="gone"
 		>
 
-		<com.chess.RoboEditText
+		<com.chess.widgets.RoboEditText
 			android:id="@+id/newPostEdt"
 			android:inputType="textMultiLine"
 			android:layout_width="match_parent"
@@ -89,6 +89,6 @@
 			android:textSize="14sp"
 			/>
 
-	</com.chess.LinLayout>
+	</com.chess.widgets.LinLayout>
 
 </RelativeLayout>

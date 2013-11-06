@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.chess.LinLayout
+<com.chess.widgets.LinLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
@@ -11,7 +11,7 @@
     >
 
     <!--Icon-->
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/iconTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:shadowDy="0"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/rowTitleTxt"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -36,4 +36,4 @@
         android:paddingLeft="10dip"
         />
 
-</com.chess.LinLayout>
+</com.chess.widgets.LinLayout>

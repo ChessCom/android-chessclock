@@ -2,7 +2,7 @@
 
 
 <!--Top Video frame-->
-<com.chess.RelLayout
+<com.chess.widgets.RelLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:contentDescription="@string/image"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/titleTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         custom:ttf="Bold"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/authorTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         android:layout_marginLeft="7dip"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/dateTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,6 +68,6 @@
         android:textSize="@dimen/default_text_size_small"
         />
 
-</com.chess.RelLayout>
+</com.chess.widgets.RelLayout>
 
 

@@ -21,7 +21,7 @@
 		android:layout_marginRight="11dip"
 		/>
 
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/authorTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
 		android:scaleType="fitXY"
 		/>
 
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/commentNumberTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
 		/>
 
 	<!--12 minutes ago-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/dateTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
 		android:paddingTop="6dip"
 		/>
 
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/quoteTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
 		android:text="@string/quote"
 		/>
 
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/bodyTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

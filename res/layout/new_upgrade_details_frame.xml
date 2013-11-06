@@ -16,7 +16,7 @@
         android:padding="15dip"
         >
 
-        <com.chess.RoboTextView
+        <com.chess.widgets.RoboTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/upgrade_details_title"
@@ -36,7 +36,7 @@
             android:layout_marginBottom="15dip"
             >
 
-            <com.chess.RoboRadioButton
+            <com.chess.widgets.RoboRadioButton
                 android:id="@+id/diamondBtn"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                 style="@style/RoundRadioButton.Left"
                 />
 
-            <com.chess.RoboRadioButton
+            <com.chess.widgets.RoboRadioButton
                 android:id="@+id/platinumBtn"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                 style="@style/RoundRadioButton.Middle"
                 />
 
-            <com.chess.RoboRadioButton
+            <com.chess.widgets.RoboRadioButton
                 android:id="@+id/goldBtn"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                     android:layout_centerVertical="true"
                     />
 
-                <com.chess.RoboTextView
+                <com.chess.widgets.RoboTextView
                     android:id="@+id/planTitleTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                     custom:ttf="Bold"
                     />
 
-                <com.chess.RoboTextView
+                <com.chess.widgets.RoboTextView
                     android:id="@+id/planSubTitleTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                     android:layout_marginRight="1dip"
                     >
 
-                    <com.chess.RoboTextView
+                    <com.chess.widgets.RoboTextView
                         android:id="@+id/monthValueTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
                         android:layout_centerHorizontal="true"
                         />
 
-                    <com.chess.RoboTextView
+                    <com.chess.widgets.RoboTextView
                         android:id="@+id/monthLabelTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -201,7 +201,7 @@
                     android:paddingBottom="16dip"
                     >
 
-                    <com.chess.RoboTextView
+                    <com.chess.widgets.RoboTextView
                         android:id="@+id/yearValueTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
                         android:layout_centerHorizontal="true"
                         />
 
-                    <com.chess.RoboTextView
+                    <com.chess.widgets.RoboTextView
                         android:id="@+id/yearLabelTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -244,7 +244,7 @@
 						android:minHeight="35dip"
 						/>
 
-                    <com.chess.RoboTextView
+                    <com.chess.widgets.RoboTextView
                         android:id="@+id/yearDiscountTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -258,7 +258,7 @@
 
             </LinearLayout>
 
-            <com.chess.RoboButton
+            <com.chess.widgets.RoboButton
                 android:id="@+id/setPlanBtn"
                 android:layout_width="match_parent"
                 android:layout_height="50dip"

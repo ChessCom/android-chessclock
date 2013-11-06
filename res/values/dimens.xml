@@ -353,8 +353,16 @@
 	<dimen name="tab_button_text_size">16sp</dimen>
 	<dimen name="default_text_size_small">13sp</dimen>
 	<dimen name="tablet_board_margin">15dip</dimen>
-	<dimen name="tablet_board_margin_bottom">8dip</dimen>
+	<dimen name="tablet_board_margin_bottom_welcome">8dip</dimen>
+	<dimen name="tablet_board_margin_bottom">5dip</dimen>
 	<dimen name="tablet_panel_info_top_margin">15dip</dimen>
 	<dimen name="welcome_pager_indicator_padding">5dip</dimen>
+	<dimen name="daily_game_list_item_width">204dp</dimen>
+	<dimen name="tablet_board_size">445dp</dimen>
+	<dimen name="player_name_margin_top">4dp</dimen>
+	<dimen name="panel_info_flag_margin_top">0dp</dimen>
+	<dimen name="panel_info_avatar_left_margin">11dp</dimen>
+	<dimen name="notations_text_view_height">30dp</dimen>
+	<dimen name="panel_info_welcome_player_top_margin">3dp</dimen>
 
 </resources>

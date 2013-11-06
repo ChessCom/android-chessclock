@@ -18,11 +18,6 @@ import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
  */
 public class ControlsCompView extends ControlsBaseView {
 
-
-	private static final int LEFT = 0;
-	private static final int MIDDLE = 1;
-	private static final int RIGHT = 2;
-
 	private BoardViewCompFace boardViewFace;
 	private boolean controlsRound;
 
@@ -54,29 +49,19 @@ public class ControlsCompView extends ControlsBaseView {
 			R.style.Rect_Bottom_Right
 	};
 
-	private static final int[] roundStyles = new int[] {
-			R.style.Button_Glassy,
-			R.style.Button_Glassy,
-			R.style.Button_Glassy
-	};
-
 	@Override
 	void init(Context context, AttributeSet attrs) {
 		super.init(context, attrs);
 		iniStyle(context, attrs);
 
-		int[] styles;
-		if (controlsRound) {
-			styles = roundStyles;
-		} else {
-			styles = rectStyles;
-		}
+		addButtons();
+	}
 
-		addControlButton(OPTIONS, styles[LEFT]);
-		addControlButton(HINT, styles[MIDDLE]);
-		addControlButton(BACK, styles[MIDDLE]);
-		addControlButton(FORWARD, styles[RIGHT]);
-
+	protected void addButtons() {
+		addControlButton(OPTIONS, rectStyles[LEFT]);
+		addControlButton(HINT, rectStyles[MIDDLE]);
+		addControlButton(BACK, rectStyles[MIDDLE]);
+		addControlButton(FORWARD, rectStyles[RIGHT]);
 	}
 
 	@Override

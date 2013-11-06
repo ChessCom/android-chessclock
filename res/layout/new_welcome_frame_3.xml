@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     >
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/learn_from_masters"
@@ -24,7 +24,7 @@
 		android:gravity="fill"
 		>
 
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:id="@+id/playBtn3"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         android:layout_alignTop="@id/thirdWelcomeImg"
         />
 
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/closeBtn3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,21 +64,21 @@
         android:paddingBottom="@dimen/welcome_features_padding_bottom"
         >
 
-        <com.chess.RoboTextView
+        <com.chess.widgets.RoboTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome_four_line_1"
             style="@style/WelcomeListFeature"
             />
 
-        <com.chess.RoboTextView
+        <com.chess.widgets.RoboTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome_four_line_2"
             style="@style/WelcomeListFeature"
             />
 
-        <com.chess.RoboTextView
+        <com.chess.widgets.RoboTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome_four_line_3"

@@ -17,14 +17,14 @@
         <requestFocus />
 
         <!--First Name-->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
             >
 
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -33,7 +33,7 @@
                 />
 
             <!--First Name Edit-->
-            <com.chess.RoboEditText
+            <com.chess.widgets.RoboEditText
                 android:id="@+id/firstNameValueEdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             <!---->
 
             <!--Clear Btn-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/firstNameClearBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,17 +59,17 @@
                 android:paddingLeft="11dip"
                 />
 
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!--Last Name-->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
             >
 
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -78,7 +78,7 @@
                 />
 
             <!--Last Name Edit-->
-            <com.chess.RoboEditText
+            <com.chess.widgets.RoboEditText
                 android:id="@+id/lastNameValueEdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                 />
 
             <!--Clear Btn-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/lastNameClearBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,17 +103,17 @@
                 android:paddingLeft="11dip"
                 />
 
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!--Location-->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
             >
 
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -122,7 +122,7 @@
                 />
 
             <!--Location Edit-->
-            <com.chess.RoboEditText
+            <com.chess.widgets.RoboEditText
                 android:id="@+id/locationValueEdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                 />
 
             <!--Clear Btn-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/locationClearBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -148,10 +148,10 @@
                 android:paddingLeft="11dip"
                 />
 
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!--Country-->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:id="@+id/countryLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
             >
 
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -169,7 +169,7 @@
                 />
 
             <!--Country-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/countryValueTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -190,10 +190,10 @@
                 android:contentDescription="@string/image"
                 />
 
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!--Profile Picture-->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:id="@+id/userPhotoLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
             >
 
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -221,10 +221,10 @@
                 android:layout_marginBottom="8dip"
                 />
 
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!--Membership renew-->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
@@ -232,7 +232,7 @@
             >
 
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/cancelMembershipTxt"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
@@ -246,7 +246,7 @@
                 />
 
             <!--Upgrade Button-->
-            <com.chess.RoboButton
+            <com.chess.widgets.RoboButton
                 android:id="@+id/upgradeBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -256,10 +256,10 @@
                 android:text="@string/upgrade"
                 />
 
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!--Invite Friends-->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
@@ -267,7 +267,7 @@
             >
 
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -277,7 +277,7 @@
                 />
 
             <!--Share Button-->
-            <com.chess.RoboButton
+            <com.chess.widgets.RoboButton
                 android:id="@+id/shareBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -285,7 +285,7 @@
                 android:text="@string/share"
                 />
 
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!--Top Border-->
         <View
@@ -295,14 +295,14 @@
             />
 
         <!--Terms-->
-        <com.chess.RelLayout
+        <com.chess.widgets.RelLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dip"
 
             >
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/termsLinkTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -313,7 +313,7 @@
                 custom:ttf="Regular"
                 />
 
-        </com.chess.RelLayout>
+        </com.chess.widgets.RelLayout>
 
     </LinearLayout>
 

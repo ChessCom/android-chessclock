@@ -15,8 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.chess.R;
-import com.chess.RoboTextView;
+import com.chess.widgets.RoboTextView;
 import com.chess.statics.Symbol;
+import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 
@@ -30,7 +31,8 @@ import java.util.List;
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public class NotationView extends LinearLayout implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class NotationView extends LinearLayout implements NotationFace,
+		View.OnClickListener, ViewPager.OnPageChangeListener {
 
 	public static final int NOTATION_ID = 0x00003321;
 
@@ -163,6 +165,7 @@ public class NotationView extends LinearLayout implements View.OnClickListener, 
 		}
 	}
 
+	@Override
 	public void updateNotations(String[] notations, BoardForNotationFace selectionFace, int ply) {
 		this.selectionFace = selectionFace;
 
@@ -445,19 +448,23 @@ public class NotationView extends LinearLayout implements View.OnClickListener, 
 		setVisibility(show ? VISIBLE : GONE);
 	}
 
+	@Override
 	public void moveBack(int ply) {
 		highlightPosition(ply - 1);
 	}
 
+	@Override
 	public void moveForward(int ply) {
 		highlightPosition(ply - 1);
 	}
 
+	@Override
 	public void rewindBack() {
 		viewPager.setCurrentItem(0);
 		notationsAdapter.selectItem(0);
 	}
 
+	@Override
 	public void rewindForward() {
 		int totalCnt = originalNotations.length - 1;
 
@@ -486,6 +493,7 @@ public class NotationView extends LinearLayout implements View.OnClickListener, 
 		notationsAdapter.selectItem(pos);
 	}
 
+	@Override
 	public void resetNotations() {
 		originalNotations = new String[]{};
 		notationsAdapter.notifyDataSetChanged();

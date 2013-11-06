@@ -22,7 +22,7 @@
 	<!--Game Modes-->
 	<dimen name="player_name_max_width">400dip</dimen>
 
-    <dimen name="video_thumb_size">120dip</dimen>
+    <dimen name="video_thumb_size">310dip</dimen>
     <dimen name="panel_info_padding_top">11dip</dimen>
     <dimen name="new_signup_title_padding_bottom">16dip</dimen>
     <dimen name="new_tactics_panel_info_height">58dip</dimen>
@@ -110,5 +110,13 @@
 	<dimen name="panel_info_captured_pieces_height">36dip</dimen>
 	<dimen name="panel_info_captured_pieces_width">225dip</dimen>
 	<dimen name="welcome_pager_indicator_padding">5dip</dimen>
+	<dimen name="daily_game_list_item_width">310dp</dimen>
+	<dimen name="tablet_board_size">664dp</dimen>
+	<dimen name="player_name_margin_top">4dp</dimen>
+	<dimen name="panel_info_flag_margin_top">0dp</dimen>
+	<dimen name="notations_text_size">19sp</dimen>
+	<dimen name="panel_info_avatar_left_margin">11dp</dimen>
+	<dimen name="notations_text_view_height">30dp</dimen>
+	<dimen name="panel_info_welcome_player_top_margin">8dp</dimen>
 
 </resources>

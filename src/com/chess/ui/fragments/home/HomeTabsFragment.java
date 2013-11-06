@@ -21,6 +21,7 @@ import com.chess.statics.AppConstants;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
+import com.chess.ui.fragments.daily.DailyGamesFragmentTablet;
 import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.utilities.AppUtils;
 
@@ -163,7 +164,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 				case R.id.leftTabBtn: {
 					Fragment fragment;
 					if (showDailyGamesFragment) {
-						fragment = DailyGamesFragment.createInstance(HomeTabsFragment.this, DailyGamesFragment.HOME_MODE);
+						if (!isTablet) {
+							fragment = DailyGamesFragment.createInstance(HomeTabsFragment.this, DailyGamesFragment.HOME_MODE);
+						} else {
+							fragment = DailyGamesFragmentTablet.createInstance(HomeTabsFragment.this, DailyGamesFragment.HOME_MODE);
+						}
 					} else {
 						fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
 						if (fragment == null) {

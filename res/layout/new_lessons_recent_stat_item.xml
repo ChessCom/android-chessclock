@@ -13,7 +13,7 @@
 	android:baselineAligned="false"
 	android:gravity="center_vertical">
 
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/nameTxt"
 		android:layout_width="0dip"
 		android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
 		android:textSize="16sp"
 		/>
 
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/categoryTxt"
 		android:layout_width="0dip"
 		android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
 		android:paddingTop="5dip"
 		android:paddingBottom="5dip"
 		>
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:id="@+id/scoreTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
 			custom:ttf="Bold"
 			/>
 
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:id="@+id/ratingTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

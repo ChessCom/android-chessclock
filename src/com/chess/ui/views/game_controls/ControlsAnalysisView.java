@@ -31,12 +31,15 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	void init(Context context, AttributeSet attrs) {
 		super.init(context, attrs);
 
+		addButtons();
+	}
+
+	protected void addButtons() {
 		addControlButton(EXIT, R.style.Rect_Bottom_Left);
 		addControlButton(SEARCH, R.style.Rect_Bottom_Middle);
 		addControlButton(RESTART, R.style.Rect_Bottom_Middle);
 		addControlButton(BACK, R.style.Rect_Bottom_Middle);
 		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
-
 	}
 
 	@Override

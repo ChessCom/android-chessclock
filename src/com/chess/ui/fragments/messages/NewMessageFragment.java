@@ -8,7 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.chess.ChipsAutoCompleteTextView;
+import com.chess.widgets.ChipsAutoCompleteTextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;

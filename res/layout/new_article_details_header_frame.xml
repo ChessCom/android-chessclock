@@ -16,7 +16,7 @@
 		android:layout_marginBottom="13dip" />
 
 	<!--Title-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/titleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
 		android:contentDescription="@string/image"
 		android:layout_marginBottom="13dip" />
 
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/authorTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
 		android:layout_marginLeft="7dip" />
 
 	<!--Date-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/dateTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
 		android:textColor="@color/new_friends_grey_text"
 		android:textSize="@dimen/default_text_size_small" />
 
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/contentTxt"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

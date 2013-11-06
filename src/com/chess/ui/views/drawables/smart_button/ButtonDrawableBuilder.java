@@ -164,6 +164,12 @@ public class ButtonDrawableBuilder {
 
 				return buttonDrawable;
 			}
+			case R.style.Button_OrangeNoBorder_Big: {
+				ButtonDrawable buttonDrawable = setDefaults(context);
+				createOrangeNoBorder(buttonDrawable, resources);
+
+				return buttonDrawable;
+			}
 			case R.style.Button_Brown: {
 				ButtonDrawable buttonDrawable = setDefaults(context);
 				createBrown(buttonDrawable, resources);
@@ -267,6 +273,27 @@ public class ButtonDrawableBuilder {
 			case R.style.Rect_Top_Right: {
 				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 				rectButtonDrawable.rectPosition = TOP_RIGHT;
+				createRect(rectButtonDrawable, resources);
+
+				return rectButtonDrawable;
+			}
+			case R.style.Rect_Tablet_Left: {
+				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+				rectButtonDrawable.rectPosition = TABLET_LEFT;
+				createRect(rectButtonDrawable, resources);
+
+				return rectButtonDrawable;
+			}
+			case R.style.Rect_Tablet_Middle: {
+				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+				rectButtonDrawable.rectPosition = TABLET_MIDDLE;
+				createRect(rectButtonDrawable, resources);
+
+				return rectButtonDrawable;
+			}
+			case R.style.Rect_Tablet_Right: {
+				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+				rectButtonDrawable.rectPosition = TABLET_RIGHT;
 				createRect(rectButtonDrawable, resources);
 
 				return rectButtonDrawable;

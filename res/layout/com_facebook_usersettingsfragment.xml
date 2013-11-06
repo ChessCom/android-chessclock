@@ -58,7 +58,7 @@
             style="@style/com_facebook_loginview_default_style"
             />
 
-        <com.chess.RoboButton
+        <com.chess.widgets.RoboButton
             android:id="@+id/closeFacebookSettingsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

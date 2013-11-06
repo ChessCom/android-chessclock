@@ -34,7 +34,7 @@
 		android:layout_above="@+id/pageIndicatorLay"
 		/>
 
-	<com.chess.LinLayout
+	<com.chess.widgets.LinLayout
 		android:id="@id/pageIndicatorLay"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -54,6 +54,6 @@
 			android:layout_gravity="center"
 			/>
 
-	</com.chess.LinLayout>
+	</com.chess.widgets.LinLayout>
 
 </RelativeLayout>

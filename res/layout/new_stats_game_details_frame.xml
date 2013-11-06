@@ -22,7 +22,7 @@
             android:paddingRight="20dip">
 
             <!--Current Rating-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/currentRatingTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
                 custom:ttf="Bold" />
 
             <!--Absolute -->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/absoluteRankTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:layout_toLeftOf="@+id/valuesDividerView"
                 custom:ttf="Bold" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/totalRankedTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                 android:layout_marginBottom="2dip" />
 
             <!--Percentile-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/percentileValueTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:textColor="@color/new_subtitle_dark_grey"
                 custom:ttf="Bold" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@id/percentileLabelTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:gravity="center">
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/totalGamesValueTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                 android:textSize="23sp"
                 custom:ttf="Bold" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/games"
@@ -153,7 +153,7 @@
             android:paddingRight="@dimen/stats_padding_side"
             android:paddingTop="13dip">
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/avgOpponentRatingTitleTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
                 android:paddingBottom="4dip" />
 
             <!--Win-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/winCntLabelTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
                 android:layout_below="@id/avgOpponentRatingTitleTxt"
                 android:textColor="@color/stats_label_light_grey" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/winCntValueTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -182,7 +182,7 @@
                 custom:ttf="Bold" />
 
             <!--Loses-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/loseCntLabelTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -198,7 +198,7 @@
                 android:layout_height="0dip"
                 android:layout_centerInParent="true" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/loseCntValueTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -209,7 +209,7 @@
                 custom:ttf="Bold" />
 
             <!--Draw-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/drawCntLabelTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -218,7 +218,7 @@
                 android:layout_toLeftOf="@+id/drawCntValueTxt"
                 android:textColor="@color/stats_label_light_grey" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@id/drawCntValueTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -244,7 +244,7 @@
             android:paddingRight="@dimen/stats_padding_side"
             android:gravity="center_vertical">
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -252,7 +252,7 @@
                 android:textColor="@color/new_subtitle_dark_grey"
                 android:textSize="@dimen/stats_rating_list_item_font" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/winningStreakValueTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -275,7 +275,7 @@
             android:paddingRight="@dimen/stats_padding_side"
             android:gravity="center_vertical">
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -283,7 +283,7 @@
                 android:textColor="@color/new_subtitle_dark_grey"
                 android:textSize="@dimen/stats_rating_list_item_font" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/losingStreakValueTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -306,7 +306,7 @@
             android:paddingRight="@dimen/stats_padding_side"
             android:gravity="center_vertical">
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/timeoutsLabelTxt"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
@@ -315,7 +315,7 @@
                 android:textColor="@color/new_subtitle_dark_grey"
                 android:textSize="@dimen/stats_rating_list_item_font" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/timeoutsValueTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -339,7 +339,7 @@
             android:paddingRight="@dimen/stats_padding_side"
             android:gravity="center_vertical">
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -347,7 +347,7 @@
                 android:textColor="@color/new_subtitle_dark_grey"
                 android:textSize="@dimen/stats_rating_list_item_font" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/glickoValueTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -371,7 +371,7 @@
             android:paddingTop="10dip"
             android:paddingBottom="10dip">
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/frequentTitleTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -380,7 +380,7 @@
                 android:textSize="@dimen/stats_rating_list_item_font"
                 android:paddingBottom="7dip" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/mostFrequentOpponentTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -389,7 +389,7 @@
                 android:textSize="@dimen/stats_rating_list_item_font"
                 android:layout_marginTop="-3dip" />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/mostFrequentOpponentGamesTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.chess;
+package com.chess.widgets;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -13,6 +13,7 @@ import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
+import com.chess.R;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 

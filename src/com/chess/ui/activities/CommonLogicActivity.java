@@ -18,6 +18,7 @@ import com.chess.backend.entity.api.GcmItem;
 import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.entity.api.RegisterItem;
 import com.chess.backend.gcm.GcmHelper;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
@@ -347,11 +348,13 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	}
 
 	protected String getDeviceId() {
-		String string = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-		while ((string != null ? string.length() : 0) < 32) { // 32 length is requirement for deviceId parameter
-			string += string;
-		}
-		return string.substring(0, 32);
+		String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+		deviceId = ImageCache.hashKeyForDisk(deviceId);
+//			while ((deviceId != null ? deviceId.length() : 0) < 32) { // 32 length is requirement for deviceId parameter
+//				deviceId += deviceId;
+//			}
+		return deviceId.substring(0, 32);
 	}
 
 	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {

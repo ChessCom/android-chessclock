@@ -13,8 +13,9 @@
         <attr name="btn_bevel_inset" format="reference|dimension" />
         <attr name="btn_is_rect" format="reference|boolean" />
         <attr name="btn_is_glassy" format="reference|boolean" />
+		<attr name="btn_is_clickable" format="reference|boolean" />
 
-        <!--Default colors-->
+		<!--Default colors-->
         <attr name="btn_outer_border" format="reference|color" />    <!--Outer border color-->
         <attr name="btn_top" format="reference|color" /> <!--Top line bevel-->
         <attr name="btn_left" format="reference|color" /> <!--Left line bevel-->
@@ -98,6 +99,10 @@
 			<enum name="sideLeft" value="15"/>
 			<enum name="sideMiddle" value="16"/>
 			<enum name="sideRight" value="17"/>
+
+			<enum name="tabletLeft" value="18"/>
+			<enum name="tabletMiddle" value="19"/>
+			<enum name="tabletRight" value="20"/>
         </attr>
 
     </declare-styleable>

@@ -45,6 +45,10 @@ public class RectButtonDrawable extends ButtonDrawable {
 	static final int SIDE_MIDDLE = 16;
 	static final int SIDE_RIGHT = 17;
 
+	static final int TABLET_LEFT = 18;
+	static final int TABLET_MIDDLE = 19;
+	static final int TABLET_RIGHT = 20;
+
 	int rectPosition = DEF_VALUE;
 
 	private int edgeOffset;
@@ -129,30 +133,33 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 		edgeOffset = bevelSize * 2;
 
-		List <LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
+		List<LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
 		List<LayerInfo> pressedLayers = new ArrayList<LayerInfo>();
 
 		insetOne = new InsetInfo();
-		int in1 = bevelSize;
+		int in1 = bevelSize; // inset level 1
 
 		bevelInset = 0;
-		insetOne.top = new int[]{in1, in1, in1, 0 };
+		insetOne.top = new int[]{in1, in1, in1, 0};
 		insetOne.bottom = new int[]{0, 0, in1, 0};
 		if (rectPosition == LIST_ITEM) {
-			insetOne.button = new int[]{in1 * 2, in1 * 2, in1 * 2, in1 *2};
+			insetOne.button = new int[]{in1 * 2, in1 * 2, in1 * 2, in1 * 2};
 		} else if (rectPosition == LIST_ITEM_HEADER) { // TODO change to bitMask
 			insetOne.button = new int[]{in1 * 2, in1 * 2, in1 * 2, in1};
 		} else if (rectPosition == LIST_ITEM_HEADER_2 || rectPosition == LIST_ITEM_HEADER_2_DARK) { // TODO change to bitMask
-			insetOne.left = new int[]{in1, in1 * 2, in1, - in1};
+			insetOne.left = new int[]{in1, in1 * 2, in1, -in1};
 			insetOne.button = new int[]{in1 * 2, in1 * 3, in1 * 2, in1};
 			insetOne.bottom = new int[]{0, 0, in1, 0};
+		} else if (rectPosition == TABLET_LEFT || rectPosition == TABLET_MIDDLE || rectPosition == TABLET_RIGHT) {
+			insetOne.button = new int[]{in1, in1, in1, in1};
+			insetOne.bottom = new int[]{0, 0, 0, 0};
 		} else {
 			insetOne.button = new int[]{in1, in1, in1, in1};
 		}
 
 		if (bevelLvl == 2) {
 			insetTwo = new InsetInfo();
-			int in2 = (int) (2 * density);
+			int in2 = (int) (2 * density);  // inset level 2
 			insetTwo.top = new int[]{insetOne.top[0], insetOne.top[1], insetOne.top[2], insetOne.top[3] + in2};
 			insetTwo.left = new int[]{insetOne.left[0], insetOne.left[1] + in2, insetOne.left[2], insetOne.left[3] + in2};
 			insetTwo.right = new int[]{insetOne.right[0] + in2, insetOne.right[1] + in2, insetOne.right[2], insetOne.right[3] + in2};
@@ -184,23 +191,25 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	/**
 	 * For tabs and top buttons we need to draw default state darker then checked
+	 *
 	 * @return true if drawable used for tabs or top buttons
 	 */
 	private boolean isCheckable() {
-		return rectPosition == TAB_LEFT ||rectPosition == TAB_MIDDLE ||rectPosition == TAB_RIGHT
-				|| rectPosition == TOP_LEFT ||rectPosition == TOP_MIDDLE ||rectPosition == TOP_RIGHT;
+		return rectPosition == TAB_LEFT || rectPosition == TAB_MIDDLE || rectPosition == TAB_RIGHT
+				|| rectPosition == TOP_LEFT || rectPosition == TOP_MIDDLE || rectPosition == TOP_RIGHT
+				|| rectPosition == TABLET_LEFT || rectPosition == TABLET_MIDDLE || rectPosition == TABLET_RIGHT;
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-//		if (!boundsInit) {
+		if (!boundsInit) {
 			initBounds(canvas);
-//		}
+		}
 
 		super.draw(canvas);
 	}
 
-	private void initBounds(Canvas canvas){
+	private void initBounds(Canvas canvas) {
 		canvas.getClipBounds(clipBounds);
 		int width = clipBounds.width();
 		int height = clipBounds.height();
@@ -253,11 +262,22 @@ public class RectButtonDrawable extends ButtonDrawable {
 			case SIDE_RIGHT:
 				enabledDrawable.setBounds(-edgeOffset / 2, -edgeOffset, width, height + edgeOffset);
 				break;
+			case TABLET_LEFT:
+				enabledDrawable.setBounds(-edgeOffset, 0, width + edgeOffset / 2, height - edgeOffset / 2);
+				break;
+			case TABLET_MIDDLE:
+				enabledDrawable.setBounds(-edgeOffset / 2, 0, width + edgeOffset / 2, height - edgeOffset / 2);
+				break;
+			case TABLET_RIGHT:
+				enabledDrawable.setBounds(-edgeOffset / 2, 0, width + edgeOffset, height - edgeOffset / 2);
 		}
+
+		boundsInit = true;
 	}
 
 	/**
 	 * Use override because we are using own insetOne* object
+	 *
 	 * @param enabledLayers layers to fill with
 	 */
 	@Override

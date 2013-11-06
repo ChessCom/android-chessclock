@@ -6,7 +6,7 @@
 	android:layout_height="match_parent"
 	android:background="@color/white">
 
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/emptyView"
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
@@ -49,7 +49,7 @@
 		android:dividerHeight="1dip"
 		/>
 
-	<com.chess.LinLayout
+	<com.chess.widgets.LinLayout
 		android:id="@+id/replyView"
 		android:orientation="vertical"
 		android:layout_width="match_parent"
@@ -63,7 +63,7 @@
 		android:layout_alignParentBottom="true"
 		android:visibility="gone">
 
-		<com.chess.RoboEditText
+		<com.chess.widgets.RoboEditText
 			android:id="@+id/newPostEdt"
 			android:inputType="textMultiLine"
 			android:layout_width="match_parent"
@@ -79,5 +79,5 @@
 			android:hint="@string/write_comment_"
 			android:textSize="14sp" />
 
-	</com.chess.LinLayout>
+	</com.chess.widgets.LinLayout>
 </RelativeLayout>

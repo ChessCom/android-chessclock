@@ -510,11 +510,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected String getDeviceId() {
 		FragmentActivity activity = getActivity();
 		if (activity != null) {
-			String string = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-			while ((string != null ? string.length() : 0) < 32) { // 32 length is requirement for deviceId parameter
-				string += string;
-			}
-			return string.substring(0, 32);
+			String deviceId = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+			deviceId = ImageCache.hashKeyForDisk(deviceId);
+//			while ((deviceId != null ? deviceId.length() : 0) < 32) { // 32 length is requirement for deviceId parameter
+//				deviceId += deviceId;
+//			}
+			return deviceId.substring(0, 32);
 		} else {
 			return Symbol.EMPTY;
 		}
@@ -870,10 +872,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		return imageFetcher;
 	}
 
-	protected void setLoadingImages(boolean haveImagesToLoad) {
-		loadingImages = haveImagesToLoad;
-	}
-
 //	public void printHashKey() { //Don't remove, use to find needed facebook hashkey
 //		try {
 //			PackageInfo info = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(),
@@ -913,7 +911,4 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		this.usePullToRefresh = usePullToRefresh;
 	}
 
-//	protected void releasePullToRefreshHeader() {
-//		getActivityFace().getPullToRefreshAttacher().setRefreshComplete();
-//	}
 }

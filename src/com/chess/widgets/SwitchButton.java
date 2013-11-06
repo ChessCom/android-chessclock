@@ -1,4 +1,4 @@
-package com.chess;
+package com.chess.widgets;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,6 +11,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.RelativeLayout;
+import com.chess.R;
 import com.chess.utilities.AppUtils;
 import com.nineoldandroids.animation.ObjectAnimator;
 

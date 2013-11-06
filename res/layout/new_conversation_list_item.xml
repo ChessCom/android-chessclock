@@ -22,7 +22,7 @@
 		/>
 
 	<!--Author-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/authorTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
 		/>
 
 	<!--Long time ago-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/lastMessageDateTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
 		/>
 
 	<!--Last message-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/lastMessageTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

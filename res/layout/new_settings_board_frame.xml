@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     >
 
-    <com.chess.LinLayout
+    <com.chess.widgets.LinLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
 
         <!-- Pieces -->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:id="@+id/piecesView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             android:background="@drawable/transparent_list_item_selector"
             >
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:text="@string/pieces_style"
@@ -37,10 +37,10 @@
 				android:contentDescription="@string/image"
 				/>
 
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!-- Board -->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:id="@+id/boardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             android:paddingRight="0dip"
             android:background="@drawable/transparent_list_item_selector"
             >
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/board"
@@ -63,10 +63,10 @@
 				android:contentDescription="@string/image"
 				/>
 
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!--Coordinates-->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:id="@+id/coordinatesView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
             >
 
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:text="@string/coordinates"
@@ -84,14 +84,14 @@
                 style="@style/SettingsListText"
                 />
 
-            <com.chess.SwitchButton
+            <com.chess.widgets.SwitchButton
                 android:id="@+id/coordinatesSwitch"
                 style="@style/Switch.Default"
                 />
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!--Highlight Last Move-->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:id="@+id/highlightLastMoveView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
             >
 
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:text="@string/highlight_last_move"
@@ -109,14 +109,14 @@
                 style="@style/SettingsListText"
                 />
 
-            <com.chess.SwitchButton
+            <com.chess.widgets.SwitchButton
                 android:id="@+id/highlightLastMoveSwitch"
                 style="@style/Switch.Default.Yes"
                 />
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!--Show legal moves-->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:id="@+id/showLegalMovesView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
             >
 
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:text="@string/show_legal_moves"
@@ -134,15 +134,15 @@
                 style="@style/SettingsListText"
                 />
 
-            <com.chess.SwitchButton
+            <com.chess.widgets.SwitchButton
                 android:id="@+id/showLegalMovesSwitch"
                 style="@style/Switch.Default"
                 />
 
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
         <!--Always Show White on Bottom-->
-      <!--  <com.chess.LinLayout
+      <!--  <LinLayout
             android:id="@+id/alwaysShowWhiteBottomView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
             >
 
             &lt;!&ndash;Label&ndash;&gt;
-            <com.chess.RoboTextView
+            <RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:text="@string/always_show_white_on_bottom"
@@ -160,14 +160,14 @@
                 style="@style/SettingsListText"
                 />
 
-            <com.chess.SwitchButton
+            <SwitchButton
                 android:id="@+id/answerShowBottomSwitch"
                 style="@style/Switch.Default"
                 />
-        </com.chess.LinLayout>-->
+        </LinLayout>-->
 
         <!--Sounds-->
-        <com.chess.LinLayout
+        <com.chess.widgets.LinLayout
             android:id="@+id/soundsView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -177,7 +177,7 @@
             >
 
             <!--Label-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:text="@string/sounds"
@@ -185,15 +185,15 @@
                 style="@style/SettingsListText"
                 />
 
-            <com.chess.SwitchButton
+            <com.chess.widgets.SwitchButton
                 android:id="@+id/soundsSwitch"
                 style="@style/Switch.Default"
                 />
-        </com.chess.LinLayout>
+        </com.chess.widgets.LinLayout>
 
 
 		<!--Comp Level View-->
-		<com.chess.LinLayout
+		<com.chess.widgets.LinLayout
 			android:id="@+id/compLevelView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -212,7 +212,7 @@
 				android:gravity="center_vertical"
 				>
 
-				<com.chess.RoboTextView
+				<com.chess.widgets.RoboTextView
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_centerVertical="true"
@@ -221,7 +221,7 @@
 					/>
 
 
-				<com.chess.RoboButton
+				<com.chess.widgets.RoboButton
 					android:id="@+id/compLevelValueBtn"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -241,10 +241,10 @@
 				android:layout_marginTop="5dip"
 				style="@style/RatingSeekBar" />
 
-		</com.chess.LinLayout>
+		</com.chess.widgets.LinLayout>
 
 		<!--Auto-flip-->
-		<com.chess.LinLayout
+		<com.chess.widgets.LinLayout
 			android:id="@+id/autoFlipView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -255,7 +255,7 @@
 			>
 
 			<!--Label-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:layout_width="0dip"
 				android:layout_height="wrap_content"
 				android:text="@string/auto_flip"
@@ -263,10 +263,10 @@
 				style="@style/SettingsListText"
 				/>
 
-			<com.chess.SwitchButton
+			<com.chess.widgets.SwitchButton
 				android:id="@+id/autoFlipSwitch"
 				style="@style/Switch.Default"
 				/>
-		</com.chess.LinLayout>
-    </com.chess.LinLayout>
+		</com.chess.widgets.LinLayout>
+    </com.chess.widgets.LinLayout>
 </ScrollView>

@@ -9,13 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.chess.*;
+import com.chess.R;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.FontsHelper;
+import com.chess.widgets.*;
 
 import java.util.ArrayList;
 import java.util.List;

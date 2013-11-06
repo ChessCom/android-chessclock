@@ -27,7 +27,7 @@
 
     </RelativeLayout>
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/emptyView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

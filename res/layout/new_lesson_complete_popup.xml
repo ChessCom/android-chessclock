@@ -8,7 +8,7 @@
 	>
 
 	<!--Complete title-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/completeTitleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
 		/>
 
 	<!--lesson title-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/lessonTitleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
 		>
 
 		<!--Score -->
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
@@ -51,7 +51,7 @@
 			/>
 
 		<!--Score value-->
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:id="@+id/lessonPercentTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
 		</LinearLayout>
 
 	<!--Lesson Rating-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/yourRatingTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
 		android:paddingBottom="43dip"
 		>
 		<!--Lessons rating value-->
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:id="@+id/lessonRatingTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
 			/>
 
 		<!--Lesson Rating-->
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:id="@+id/lessonRatingChangeTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
 		>
 
 		<!--Share-->
-		<com.chess.RoboButton
+		<com.chess.widgets.RoboButton
 			android:id="@+id/shareBtn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

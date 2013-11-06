@@ -37,7 +37,6 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		halfPadding = fullPadding / 2;
 		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
 		boardPreviewSize = resources.getDimensionPixelSize(R.dimen.daily_board_preview_size);
-//		boardPreviewSize = resources.getDimensionPixelSize(R.dimen.video_thumb_size);
 
 		redColor = resources.getColor(R.color.red);
 		greyColor = resources.getColor(R.color.grey_button_flat);
@@ -122,12 +121,14 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 			holder.timeLeftIcon.setVisibility(View.GONE);
 		}
 
-		if (cursor.getPosition() == 0) {
-			convertView.setPadding(fullPadding, fullPadding, fullPadding, halfPadding);
-		} else if (cursor.getPosition() == getCount()) {
-			convertView.setPadding(fullPadding, halfPadding, fullPadding, fullPadding);
-		} else {
-			convertView.setPadding(fullPadding, halfPadding, fullPadding, halfPadding);
+		if (!isTablet) {
+			if (cursor.getPosition() == 0) {
+				convertView.setPadding(fullPadding, fullPadding, fullPadding, halfPadding);
+			} else if (cursor.getPosition() == getCount()) {
+				convertView.setPadding(fullPadding, halfPadding, fullPadding, fullPadding);
+			} else {
+				convertView.setPadding(fullPadding, halfPadding, fullPadding, halfPadding);
+			}
 		}
 
 		String fen = getString(cursor, DbScheme.V_FEN);

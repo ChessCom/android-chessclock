@@ -16,7 +16,7 @@
 		android:visibility="gone" />
 
 	<!--New Game-->
-	<com.chess.LinLayout
+	<com.chess.widgets.LinLayout
 		android:id="@+id/newGameHeaderView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -27,14 +27,14 @@
 		android:layout_marginTop="2dip">
 
 		<!--Icon-->
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/ic_add"
 			android:textColor="@color/new_light_grey_2"
 			style="@style/GlyphIcon.Big" />
 
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:id="@+id/liveChessHeaderTxt"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
 			android:text="@string/new_game"
 			style="@style/HeaderTitle.Light" />
 
-		<com.chess.RoboTextView
+		<com.chess.widgets.RoboTextView
 			android:id="@+id/liveRatingTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
 			android:textColor="@color/new_light_grey_2"
 			custom:ttf="Bold" />
 
-	</com.chess.LinLayout>
+	</com.chess.widgets.LinLayout>
 
 	<RelativeLayout
 		android:layout_width="match_parent"
@@ -92,7 +92,7 @@
 			android:orientation="vertical">
 
 			<!--New Game-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/startTitleTxt"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
 				custom:ttf="Bold" />
 
 			<!--Players online count-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/onlinePlayersCntTxt"
 				android:layout_width="match_parent"
 				android:layout_height="0dip"
@@ -117,7 +117,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
 				<!--Play! -->
-				<com.chess.RoboButton
+				<com.chess.widgets.RoboButton
 					android:id="@+id/gamePlayBtn"
 					android:layout_width="0dip"
 					android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
 					android:layout_weight="1.2" />
 
 				<!--10|5-->
-				<com.chess.RoboButton
+				<com.chess.widgets.RoboButton
 					android:id="@+id/timeSelectBtn"
 					android:layout_width="0dip"
 					android:layout_height="wrap_content"

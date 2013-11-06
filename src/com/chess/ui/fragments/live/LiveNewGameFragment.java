@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.RelLayout;
+import com.chess.widgets.RelLayout;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.statics.Symbol;

@@ -35,7 +35,7 @@
                 android:visibility="gone"
                 />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sign_up_now_free"
@@ -54,7 +54,7 @@
                 custom:ttf="Regular"
                 />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/or_use_your_email"
@@ -63,7 +63,7 @@
 				style="@style/SetupSmallFont"
                 />
 
-            <com.chess.LeftImageEditText
+            <com.chess.widgets.LeftImageEditText
                 android:id="@+id/usernameEdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                 android:layout_marginTop="@dimen/new_signup_field_margin_top"
                 />
 
-            <com.chess.LeftImageEditText
+            <com.chess.widgets.LeftImageEditText
                 android:id="@+id/emailEdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
                 android:imeOptions="actionNext"
                 />
 
-            <com.chess.LeftImageEditText
+            <com.chess.widgets.LeftImageEditText
                 android:id="@+id/passwordEdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                 android:imeOptions="actionNext"
                 />
 
-            <com.chess.LeftImageEditText
+            <com.chess.widgets.LeftImageEditText
                 android:id="@+id/passwordRetypeEdt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                 android:imeOptions="actionDone"
                 />
 
-            <com.chess.RoboButton
+            <com.chess.widgets.RoboButton
                 android:id="@+id/completeSignUpBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
                 style="@style/Button.OrangeNoBorder.Big"
                 />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/termsLinkTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                 android:paddingTop="10dip"
                 />
 
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/loginLinkTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

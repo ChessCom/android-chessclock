@@ -18,9 +18,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
-import com.chess.MultiDirectionSlidingDrawer;
+import com.chess.widgets.MultiDirectionSlidingDrawer;
 import com.chess.R;
-import com.chess.RoboTextView;
+import com.chess.widgets.RoboTextView;
 import com.chess.backend.RestHelper;
 import com.chess.model.CompEngineItem;
 import com.chess.statics.AppConstants;
@@ -838,7 +838,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsView);
-		boardView.setNotationsView(notationsView);
+		boardView.setNotationsFace(notationsView);
 
 		boardView.setGameUiFace(this);
 		setBoardView(boardView);

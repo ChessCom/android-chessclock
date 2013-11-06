@@ -10,7 +10,7 @@
 	android:background="@drawable/transparent_list_item_selector"
     >
 
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/challengeImgBtn"
         android:layout_width="@dimen/new_button_square_size"
         android:layout_height="@dimen/new_button_square_size"
@@ -38,7 +38,7 @@
         android:scaleType="fitXY"
         />
 
-    <com.chess.RoboButton
+    <com.chess.widgets.RoboButton
         android:id="@+id/messageImgBtn"
         android:layout_width="@dimen/new_button_square_size"
         android:layout_height="@dimen/new_button_square_size"
@@ -51,7 +51,7 @@
         style="@style/GlyphIcon.Square"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/usernameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         android:scaleType="fitXY"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/locationTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
         android:paddingTop="2dip"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/onlineTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

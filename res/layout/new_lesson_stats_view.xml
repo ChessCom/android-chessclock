@@ -9,7 +9,7 @@
 	>
 
 	<!--Lessons Rating-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/lessonsRatingTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
 		/>
 
 	<!--Lessons Completed value-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/lessonsCompletedValueTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
 		/>
 
 	<!--Lessons Completed label-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@id/lessonsCompletedLabelTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
 		/>
 
 	<!--Courses Completed value-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/coursesCompletedValueTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
 		/>
 
 	<!--Courses Completed label-->
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@id/coursesCompletedLabelTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"

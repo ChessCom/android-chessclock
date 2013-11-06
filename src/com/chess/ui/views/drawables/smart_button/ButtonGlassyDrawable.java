@@ -71,22 +71,29 @@ public class ButtonGlassyDrawable extends ButtonDrawable {
 		bevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_size);
 		bevelRect = new RectF(bevelSize, bevelSize, bevelSize, bevelSize);
 
+		int pressedOverlay;
+		int selectedOverlay;
 		if (isGlassy) {
 			glassyBevelSize = resources.getDimensionPixelSize(R.dimen.default_bevel_glassy_size);
 			glassyRect = new RectF(glassyBevelSize, glassyBevelSize, glassyBevelSize, glassyBevelSize);
 
-			int pressedOverlay = resources.getColor(R.color.glassy_button_overlay_p);
-			int selectedOverlay = resources.getColor(R.color.glassy_button_overlay_s);
-			pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.DARKEN);
-			selectedFilter = new PorterDuffColorFilter(selectedOverlay, PorterDuff.Mode.DARKEN);
+			pressedOverlay = resources.getColor(R.color.glassy_button_overlay_p);
+			selectedOverlay = resources.getColor(R.color.glassy_button_overlay_s);
 		} else {
-			int pressedOverlay = resources.getColor(R.color.default_button_overlay_p);
-			int selectedOverlay = resources.getColor(R.color.default_button_overlay_s);
-			pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.DARKEN); // lighter color will overlay main
-			selectedFilter = new PorterDuffColorFilter(selectedOverlay, PorterDuff.Mode.DARKEN);
+			pressedOverlay = resources.getColor(R.color.default_button_overlay_p);
+			selectedOverlay = resources.getColor(R.color.default_button_overlay_s);
 		}
 		int checkedOverlay = resources.getColor(R.color.default_button_overlay_c);
 		checkedFilter = new PorterDuffColorFilter(checkedOverlay, PorterDuff.Mode.MULTIPLY);
+
+		if (isClickable) {
+			pressedFilter = new PorterDuffColorFilter(pressedOverlay, PorterDuff.Mode.DARKEN); // lighter color will overlay main
+			selectedFilter = new PorterDuffColorFilter(selectedOverlay, PorterDuff.Mode.DARKEN);
+		} else {
+			pressedFilter = enabledFilter;
+			selectedFilter = enabledFilter;
+		}
+
 
 //		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.SCREEN); // bad edges
 //		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.SRC_IN); //  make transparent  - dark - bad

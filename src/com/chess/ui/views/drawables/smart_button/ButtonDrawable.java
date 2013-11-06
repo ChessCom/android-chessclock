@@ -42,9 +42,6 @@ public class ButtonDrawable extends StateListDrawable {
 	public static final int[] STATE_PRESSED = new int[]{android.R.attr.state_pressed};
 	public static final int[] STATE_ENABLED = new int[]{android.R.attr.state_enabled};
 	public static final int[] STATE_DISABLED = new int[]{-android.R.attr.state_enabled};
-//	public static final int[] STATE_DEFAULT = new int[0];
-//	public static final int[] STATE_ACTIVE = new int[android.R.attr.state_active];
-//	public static final int[] STATE_ACTIVATED = new int[android.R.attr.state_activated];
 
 	ColorFilter enabledFilter;
 	ColorFilter pressedFilter;
@@ -93,6 +90,7 @@ public class ButtonDrawable extends StateListDrawable {
 	int gradientAngle;
 	boolean isSolid;
 	boolean isGlassy;
+	boolean isClickable = true;
 	boolean useBorder;
 	boolean usePressedLayer;
 	int bevelLvl;
@@ -114,21 +112,21 @@ public class ButtonDrawable extends StateListDrawable {
 	private static final int glassyBorderIndex = 0;
 	int glassyBevelSize;
 
-	static InsetInfo insetOne = new InsetInfo();
-	static InsetInfo insetTwo = new InsetInfo();
+	InsetInfo insetOne = new InsetInfo();
+	InsetInfo insetTwo = new InsetInfo();
 
 	static {
-		insetOne.top = new int[]{0, 0, 0, 1};
-		insetOne.left = new int[]{1, 0, 0, 1};
-		insetOne.right = new int[]{1, 1, 0, 1};
-		insetOne.bottom = new int[]{1, 1, 1, 0};
-		insetOne.button = new int[]{1, 1, 1, 1};
-
-		insetTwo.top = new int[]{0, 0, 0, 2};
-		insetTwo.left = new int[]{2, 0, 0, 2};
-		insetTwo.right = new int[]{2, 2, 0, 2};
-		insetTwo.bottom = new int[]{2, 2, 2, 0};
-		insetTwo.button = new int[]{2, 2, 2, 2};
+//		insetOne.top = new int[]{0, 0, 0, 1};
+//		insetOne.left = new int[]{1, 0, 0, 1};
+//		insetOne.right = new int[]{1, 1, 0, 1};
+//		insetOne.bottom = new int[]{1, 1, 1, 0};
+//		insetOne.button = new int[]{1, 1, 1, 1};
+//
+//		insetTwo.top = new int[]{0, 0, 0, 2};
+//		insetTwo.left = new int[]{2, 0, 0, 2};
+//		insetTwo.right = new int[]{2, 2, 0, 2};
+//		insetTwo.bottom = new int[]{2, 2, 2, 0};
+//		insetTwo.button = new int[]{2, 2, 2, 2};
 	}
 
 
@@ -158,6 +156,18 @@ public class ButtonDrawable extends StateListDrawable {
 
 		disabledAlpha = 100;
 		enabledAlpha = 0xFF;
+
+		insetOne.top = new int[]{0, 0, 0, 1};
+		insetOne.left = new int[]{1, 0, 0, 1};
+		insetOne.right = new int[]{1, 1, 0, 1};
+		insetOne.bottom = new int[]{1, 1, 1, 0};
+		insetOne.button = new int[]{1, 1, 1, 1};
+
+		insetTwo.top = new int[]{0, 0, 0, 2};
+		insetTwo.left = new int[]{2, 0, 0, 2};
+		insetTwo.right = new int[]{2, 2, 0, 2};
+		insetTwo.bottom = new int[]{2, 2, 2, 0};
+		insetTwo.button = new int[]{2, 2, 2, 2};
 	}
 
 	void init(Resources resources) {
@@ -227,9 +237,9 @@ public class ButtonDrawable extends StateListDrawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-//		if (!initialized) {
+		if (!initialized) {
 			iniLayers(canvas);
-//		}
+		}
 		super.draw(canvas);
 	}
 
@@ -479,6 +489,11 @@ public class ButtonDrawable extends StateListDrawable {
 			drawable.mutate().setAlpha(enabledAlpha);
 		}
 
+		if (!isClickable) { // override all states to default
+			drawable.mutate().setColorFilter(enabledFilter);
+			drawable.mutate().setAlpha(enabledAlpha);
+		}
+
 		invalidateSelf();// need to update for pre-HC
 		invalidateDrawable(enabledDrawable);
 		if (usePressedLayer) {
@@ -503,6 +518,7 @@ public class ButtonDrawable extends StateListDrawable {
 			radius = array.getDimensionPixelSize(R.styleable.RoboButton_btn_radius, DEFAULT_RADIUS);
 			isSolid = array.getBoolean(R.styleable.RoboButton_btn_is_solid, true);
 			isGlassy = array.getBoolean(R.styleable.RoboButton_btn_is_glassy, false);
+			isClickable = array.getBoolean(R.styleable.RoboButton_btn_is_clickable, true);
 			useBorder = array.getBoolean(R.styleable.RoboButton_btn_use_border, true);
 			usePressedLayer = array.getBoolean(R.styleable.RoboButton_btn_use_pressed_layer, false);
 			gradientAngle = array.getInt(R.styleable.RoboButton_btn_gradient_angle, TL_BR);
@@ -572,6 +588,7 @@ public class ButtonDrawable extends StateListDrawable {
 		topPadding = array.getDimensionPixelSize(PADDING_TOP_INDEX, DEF_VALUE);
 		rightPadding = array.getDimensionPixelSize(PADDING_RIGHT_INDEX, DEF_VALUE);
 		bottomPadding = array.getDimensionPixelSize(PADDING_BOTTOM_INDEX, DEF_VALUE);
+		array.recycle();
 	}
 
 	class LayerInfo {
@@ -593,7 +610,7 @@ public class ButtonDrawable extends StateListDrawable {
 	/**
 	 * Help class to set insets for every item in layer list drawable
 	 */
-	static class InsetInfo {
+	class InsetInfo {
 		int[] top;
 		int[] left;
 		int[] right;

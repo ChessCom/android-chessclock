@@ -29,7 +29,7 @@
 		android:layout_toRightOf="@id/playerImg"
 		/>
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/playerNameTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
         />
 
     <!--Icon-->
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/timeLeftIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
         android:text="@string/ic_clock"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/timeLeftTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

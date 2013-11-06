@@ -269,7 +269,11 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		} else if (dailyItem.iconId == R.string.ic_challenge_friend) {
 			getActivityFace().openFragment(new FriendsFragment());
 		} else if (dailyItem.iconId == R.string.ic_board) {
-			getActivityFace().openFragment(new DailyGamesFragment());
+			if (!isTablet) {
+				getActivityFace().openFragment(new DailyGamesFragment());
+			} else {
+				getActivityFace().openFragment(new DailyGamesFragmentTablet());
+			}
 		}
 	}
 

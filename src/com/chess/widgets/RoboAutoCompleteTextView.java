@@ -1,29 +1,29 @@
-package com.chess;
+package com.chess.widgets;
 
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.CheckBox;
+import android.widget.AutoCompleteTextView;
+import com.chess.R;
 import com.chess.utilities.FontsHelper;
 
-public class RoboCheckBox extends CheckBox {
+public class RoboAutoCompleteTextView extends AutoCompleteTextView {
+	private String ttfName = "Regular";
 
-	private String ttfName = FontsHelper.DEFAULT_FONT;
-
-	public RoboCheckBox(Context context, AttributeSet attrs, int defStyle) {
+	public RoboAutoCompleteTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
         setupFont(context, attrs);
 	}
 
-	public RoboCheckBox(Context context) {
+	public RoboAutoCompleteTextView(Context context) {
 		super(context);
 	}
 
-	public RoboCheckBox(Context context, AttributeSet attrs) {
+	public RoboAutoCompleteTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
         setupFont(context, attrs);
-	}
+    }
 
 	private void setupFont(Context context, AttributeSet attrs) {
 		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RoboTextView);
@@ -42,7 +42,7 @@ public class RoboCheckBox extends CheckBox {
 	}
 
 	private void init(Context context) {
-		if (!isInEditMode()) {
+		if (!isInEditMode() && ttfName != null) {
 			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		}
 	}
@@ -51,5 +51,4 @@ public class RoboCheckBox extends CheckBox {
 		ttfName = font;
 		init(getContext());
 	}
-
 }

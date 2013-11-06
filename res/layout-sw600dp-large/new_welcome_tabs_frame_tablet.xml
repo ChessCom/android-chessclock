@@ -14,7 +14,7 @@
 		android:animateLayoutChanges="true"
 		>
 
-		<com.chess.RoboImageButton
+		<com.chess.widgets.RoboImageButton
 			android:id="@+id/centerTabBtn"
 			android:layout_width="0dip"
 			android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
 
 	</LinearLayout>
 
-	<com.chess.RelLayout
+	<com.chess.widgets.RelLayout
 		android:id="@+id/tourLeftView"
 		android:layout_width="312dip"
 		android:layout_height="match_parent"
@@ -61,7 +61,7 @@
 			android:contentDescription="@string/image" />
 
 		<!--Login-->
-		<com.chess.RoboButton
+		<com.chess.widgets.RoboButton
 			android:id="@+id/loginBtn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
 			/>
 
 		<!--SignUp-->
-		<com.chess.RoboButton
+		<com.chess.widgets.RoboButton
 			android:id="@+id/signUpBtn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
 			android:layout_marginRight="@dimen/default_scr_side_padding"
 			/>
 
-	</com.chess.RelLayout>
+	</com.chess.widgets.RelLayout>
 
 	<RelativeLayout
 		android:id="@+id/tab_content_frame"

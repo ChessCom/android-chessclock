@@ -9,7 +9,7 @@
     android:background="@drawable/transparent_list_item_selector"
     android:padding="10dip"
     >
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/ratingLabelTxt"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:drawablePadding="9dip"
         />
 
-    <com.chess.RoboTextView
+    <com.chess.widgets.RoboTextView
         android:id="@+id/ratingValueTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

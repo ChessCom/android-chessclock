@@ -56,7 +56,7 @@
             >
 
             <!--Invite Title-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/inviteTitleTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                 />
 
             <!--Invite Details-->
-            <com.chess.RoboTextView
+            <com.chess.widgets.RoboTextView
                 android:id="@+id/inviteDetails1Txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

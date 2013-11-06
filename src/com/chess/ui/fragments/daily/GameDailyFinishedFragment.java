@@ -190,6 +190,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	@Override
 	public void onDialogCanceled() {
+		optionsSelectFragment.dismiss();
 		optionsSelectFragment = null;
 	}
 
@@ -693,7 +694,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsDailyView);
-		boardView.setNotationsView(notationsView);
+		boardView.setNotationsFace(notationsView);
 
 		setBoardView(boardView);
 

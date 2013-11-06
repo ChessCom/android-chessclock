@@ -16,8 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.chess.utilities.FontsHelper;
 import com.chess.R;
-import com.chess.RelLayout;
-import com.chess.RoboTextView;
+import com.chess.widgets.RelLayout;
+import com.chess.widgets.RoboTextView;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -136,7 +136,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		{ // set padding
 			paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
 			paddingRight = (int) (4 * density);
-			paddingLeft = (int) (11 * density);
+
+			paddingLeft = resources.getDimensionPixelSize(R.dimen.panel_info_avatar_left_margin);
 
 			if (nexus4Kind) {
 				paddingTop = (int) (3 * density);
@@ -164,7 +165,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			playerTxt = new RoboTextView(context);
 			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-			playerParams.setMargins(0, (int) (-4 * density), 0, 0);
+			int playerNameMargin = resources.getDimensionPixelSize(R.dimen.player_name_margin_top);
+			playerParams.setMargins(0, -playerNameMargin, 0, 0);
 			if (useSingleLine) {
 				playerParams.addRule(CENTER_VERTICAL);
 				playerParams.addRule(ALIGN_PARENT_LEFT);
@@ -192,14 +194,16 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			playerRatingTxt = new RoboTextView(context);
 			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-
+			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_flag_margin_top);
+			playerParams.setMargins(0, -marginTop, 0, 0);
 			playerParams.addRule(RIGHT_OF, PLAYER_ID);
 			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
+
 
 			playerRatingTxt.setTextSize(playerRatingTextSize);
 			playerRatingTxt.setTextColor(playerTextColor);
 			playerRatingTxt.setId(RATING_ID);
-			playerRatingTxt.setPadding((int) (4 * density), (int) (3 * density), 0, 0);
+			playerRatingTxt.setPadding((int) (4 * density), 0, 0, 0);
 			playerRatingTxt.setFont(FontsHelper.BOLD_FONT);
 
 			if (useSingleLine && smallScreen) {
@@ -213,7 +217,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			flagImg = new ImageView(context);
 
 			LayoutParams flagParams = new LayoutParams(flagSize, flagSize);
-			flagParams.setMargins(flagMargin, 0, flagMargin, flagMargin);
+			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_flag_margin_top);
+			flagParams.setMargins(flagMargin, -marginTop, flagMargin, flagMargin);
 			flagParams.addRule(RIGHT_OF, RATING_ID);
 			if (useSingleLine) {
 				flagParams.addRule(CENTER_VERTICAL);
@@ -230,9 +235,10 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 		{// add player premium icon
 			premiumImg = new ImageView(context);
+			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_flag_margin_top);
 
 			LayoutParams premiumParams = new LayoutParams(flagSize, flagSize);
-			premiumParams.setMargins(flagMargin, 0, flagMargin, flagMargin);
+			premiumParams.setMargins(flagMargin, -marginTop, flagMargin, flagMargin);
 			premiumParams.addRule(RIGHT_OF, FLAG_ID);
 			if (useSingleLine) {
 				premiumParams.addRule(CENTER_VERTICAL);
@@ -299,9 +305,6 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		{// add captured drawable view
 			capturedPiecesView = new View(context);
 			CapturedPiecesDrawable capturedPiecesDrawable = new CapturedPiecesDrawable(context);
-//			int intrinsicHeight = (int) (resources.getDrawable(R.drawable.captured_wn).getIntrinsicHeight() * density);
-//			capturedPiecesDrawable.setBounds(0, 0, capturedPiecesViewWidth, intrinsicHeight);
-
 			LayoutParams capturedParams = new LayoutParams(capturedPiecesViewWidth, capturedPiecesViewHeight);
 			capturedParams.setMargins(0, 0, 0, (int) (-4 * density));
 			if (useSingleLine) {

@@ -13,7 +13,7 @@
 		android:animateLayoutChanges="true">
 
 		<!--New Game-->
-		<com.chess.LinLayout
+		<com.chess.widgets.LinLayout
 			android:id="@+id/liveHeaderView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -22,14 +22,14 @@
 			android:paddingLeft="8dip"
 			android:paddingRight="8dip">
 			<!--Icon-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/ic_add"
 				android:textColor="@color/new_light_grey_2"
 				style="@style/GlyphIcon.Big" />
 
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/liveChessHeaderTxt"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
 				android:text="@string/new_game"
 				style="@style/HeaderTitle.Light" />
 
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/liveRatingTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
 				custom:ttf="Bold" />
 
 			<!--Expand Icon-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/liveExpandIconTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
 				android:textColor="@color/new_light_grey_2"
 				style="@style/GlyphIcon.Small" />
 
-		</com.chess.LinLayout>
+		</com.chess.widgets.LinLayout>
 
 		<!--Live Game Full Options View-->
 <!--		<FrameLayout
@@ -64,7 +64,7 @@
 			android:orientation="vertical" />-->
 
 		<!--Live Game Quick Options View-->
-		<com.chess.RelLayout
+		<com.chess.widgets.RelLayout
 			android:id="@+id/liveOptionsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
 				android:layout_height="wrap_content"
 				>
 				<!--Play! -->
-				<com.chess.RoboButton
+				<com.chess.widgets.RoboButton
 					android:id="@+id/livePlayBtn"
 					android:layout_width="0dip"
 					android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
 					android:layout_weight="1" />
 
 				<!--10|5-->
-				<com.chess.RoboButton
+				<com.chess.widgets.RoboButton
 					android:id="@+id/liveTimeSelectBtn"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -109,10 +109,10 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content" />
 
-		</com.chess.RelLayout>
+		</com.chess.widgets.RelLayout>
 
 		<!--Friends-->
-		<com.chess.LinLayout
+		<com.chess.widgets.LinLayout
 			android:id="@+id/friendsHeaderView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -122,14 +122,14 @@
 			android:paddingRight="8dip">
 
 			<!--Icon-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="@string/ic_board"
 				android:textColor="@color/new_light_grey_2"
 				style="@style/GlyphIcon.Big" />
 
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/friendsHeaderTxt"
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
@@ -139,7 +139,7 @@
 
 
 			<!--Expand Icon-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/friendExpandIconTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -147,7 +147,7 @@
 				android:textColor="@color/new_light_grey_2"
 				style="@style/GlyphIcon.Small" />
 
-		</com.chess.LinLayout>
+		</com.chess.widgets.LinLayout>
 
 		<FrameLayout
 			android:id="@+id/recentOpponentsView"
@@ -156,7 +156,7 @@
 			android:orientation="vertical" />
 
 		<!-- Friend view 1-->
-		<com.chess.LinLayout
+		<com.chess.widgets.LinLayout
 			android:id="@+id/inviteFriendView1"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -173,13 +173,13 @@
 				android:layout_marginRight="12dip"
 				android:contentDescription="@string/image" />
 
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/friendUserName1Txt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textColor="@color/semitransparent_white_65" />
 
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/friendRealName1Txt"
 				android:layout_width="0dip"
 				android:layout_height="wrap_content"
@@ -187,10 +187,10 @@
 				android:paddingLeft="4dip"
 				android:textColor="@color/semitransparent_white_65" />
 
-		</com.chess.LinLayout>
+		</com.chess.widgets.LinLayout>
 
 		<!-- Friend view 2-->
-		<com.chess.LinLayout
+		<com.chess.widgets.LinLayout
 			android:id="@+id/inviteFriendView2"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -207,13 +207,13 @@
 				android:layout_marginRight="12dip"
 				android:contentDescription="@string/image" />
 
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/friendUserName2Txt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textColor="@color/semitransparent_white_65" />
 
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/friendRealName2Txt"
 				android:layout_width="0dip"
 				android:layout_height="wrap_content"
@@ -221,10 +221,10 @@
 				android:paddingLeft="4dip"
 				android:textColor="@color/semitransparent_white_65" />
 
-		</com.chess.LinLayout>
+		</com.chess.widgets.LinLayout>
 
 		<!--Play Friend!-->
-		<com.chess.LinLayout
+		<com.chess.widgets.LinLayout
 			android:id="@+id/playFriendView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -234,7 +234,7 @@
 			android:gravity="center_vertical">
 
 			<!--Icon-->
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:layout_width="@dimen/list_item_image_size"
 				android:layout_height="@dimen/list_item_image_size"
 				android:text="@string/ic_play_friend"
@@ -243,7 +243,7 @@
 				android:background="@color/new_soft_grey2"
 				android:padding="0dip" />
 
-			<com.chess.RoboTextView
+			<com.chess.widgets.RoboTextView
 				android:id="@+id/challengeFriendTxt"
 				android:layout_width="0dip"
 				android:layout_height="wrap_content"
@@ -252,7 +252,7 @@
 				android:textColor="@color/semitransparent_white_65"
 				android:paddingLeft="12dip" />
 
-		</com.chess.LinLayout>
+		</com.chess.widgets.LinLayout>
 
 	</LinearLayout>
 </ScrollView>

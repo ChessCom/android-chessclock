@@ -132,7 +132,11 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 					changeInternalFragment(ProfileRatingsFragment.createInstance(username));
 					break;
 				case R.id.rightTabBtn:
-					changeInternalFragment(ProfileGamesFragment.createInstance(username));
+					if (!isTablet) {
+						changeInternalFragment(ProfileGamesFragment.createInstance(username));
+					} else {
+						changeInternalFragment(ProfileGamesFragmentTablet.createInstance(username));
+					}
 					break;
 			}
 		}

@@ -667,7 +667,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsView);
-		boardView.setNotationsView(notationsView);
+		boardView.setNotationsFace(notationsView);
 
 		setBoardView(boardView);
 

@@ -1221,7 +1221,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsView);
-		boardView.setNotationsView(notationsView);
+		boardView.setNotationsFace(notationsView);
 		setBoardView(boardView);
 		boardView.setGameFace(this);
 		controlsView.setBoardViewFace(boardView);

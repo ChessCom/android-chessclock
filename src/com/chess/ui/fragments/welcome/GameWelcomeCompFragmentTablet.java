@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.TextView;
-import com.chess.MultiDirectionSlidingDrawer;
+import com.chess.widgets.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.interfaces.FragmentTabsFace;
@@ -24,10 +23,6 @@ import com.chess.ui.views.drawables.IconDrawable;
  */
 public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment implements GameCompFace,
 		PopupListSelectionFace, AdapterView.OnItemClickListener, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener {
-
-	private TextView whatIsChessComTxt;
-	private Button signUpBtn;
-	private Button loginBtn;
 
 	public GameWelcomeCompFragmentTablet() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -67,7 +62,7 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 	protected void widgetsInit(View view) {
 		super.widgetsInit(view);
 
-		whatIsChessComTxt = (TextView) view.findViewById(R.id.whatIsChessComTxt);
+		TextView whatIsChessComTxt = (TextView) view.findViewById(R.id.whatIsChessComTxt);
 		Drawable icon = new IconDrawable(getActivity(), R.string.ic_round_right,  R.color.semitransparent_white_75,
 				R.dimen.glyph_icon_big);
 
@@ -75,10 +70,19 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 		whatIsChessComTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
 		whatIsChessComTxt.setOnClickListener(this);
 
-		loginBtn = (Button) view.findViewById(R.id.loginBtn);
-		loginBtn.setOnClickListener(this);
-		signUpBtn = (Button) view.findViewById(R.id.signUpBtn);
-		signUpBtn.setOnClickListener(this);
+		view.findViewById(R.id.loginBtn).setOnClickListener(this);
+		view.findViewById(R.id.signUpBtn).setOnClickListener(this);
+	}
+
+	@Override
+	public void newGame() {
+		getActivityFace().changeRightFragment(WelcomeCompGameOptionsFragment.createInstance(parentFace));
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getActivityFace().toggleRightMenu();
+			}
+		}, 100);
 	}
 
 }

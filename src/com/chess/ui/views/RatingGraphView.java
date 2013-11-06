@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import com.chess.*;
+import com.chess.widgets.RoboButton;
+import com.chess.widgets.RoboRadioButton;
 import com.chess.utilities.FontsHelper;
 
 import java.util.List;

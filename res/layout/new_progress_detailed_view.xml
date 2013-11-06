@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.chess.RelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chess.widgets.RelLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
 		android:layout_marginRight="@dimen/default_scr_side_padding"
 		android:visibility="gone" />
 
-	<com.chess.RoboTextView
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/progressTitleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -30,4 +30,4 @@
 		android:paddingTop="2dip"
 		android:paddingLeft="@dimen/default_scr_side_padding" />
 
-</com.chess.RelLayout>
+</com.chess.widgets.RelLayout>

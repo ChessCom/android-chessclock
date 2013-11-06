@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ImageGetter;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
+import com.chess.statics.StaticData;
+import com.chess.utilities.AppUtils;
 
 import java.util.HashMap;
 
@@ -22,6 +24,7 @@ public abstract class ItemsCursorAdapter extends CursorAdapter {
 	protected LayoutInflater inflater;
 	private HashMap<String, ImageGetter.TextImage> textViewsImageCache;
 	private int screenWidth;
+	protected boolean isTablet;
 
 	public ItemsCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, 0);
@@ -42,6 +45,10 @@ public abstract class ItemsCursorAdapter extends CursorAdapter {
 
 		screenWidth = resources.getDisplayMetrics().widthPixels;
 		textViewsImageCache = new HashMap<String, ImageGetter.TextImage>();
+
+		if (StaticData.USE_TABLETS) {
+			isTablet = AppUtils.is7InchTablet(context) || AppUtils.is10InchTablet(context);
+		}
 	}
 
 	protected static String getString(Cursor cursor, String column) {

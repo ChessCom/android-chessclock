@@ -1,33 +1,35 @@
-package com.chess;
-
+package com.chess.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.EditText;
+import android.widget.CheckedTextView;
+import com.chess.R;
 import com.chess.utilities.FontsHelper;
 
-import java.io.Serializable;
+/**
+ * Created with IntelliJ IDEA.
+ * User: roger sent2roger@gmail.com
+ * Date: 30.07.13
+ * Time: 16:55
+ */
+public class RoboCheckedTextView extends CheckedTextView {
 
-public class RoboEditText extends EditText implements Serializable {
+	private String ttfName = FontsHelper.DEFAULT_FONT;
 
-	private static final long serialVersionUID = 8485060880629295457L;
-
-	private String ttfName = "Regular";
-
-	public RoboEditText(Context context, AttributeSet attrs, int defStyle) {
+	public RoboCheckedTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-        setupFont(context, attrs);
+		setupFont(context, attrs);
 	}
 
-	public RoboEditText(Context context) {
+	public RoboCheckedTextView(Context context) {
 		super(context);
 	}
 
-	public RoboEditText(Context context, AttributeSet attrs) {
+	public RoboCheckedTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-        setupFont(context, attrs);
-    }
+		setupFont(context, attrs);
+	}
 
 	private void setupFont(Context context, AttributeSet attrs) {
 		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RoboTextView);
@@ -46,7 +48,7 @@ public class RoboEditText extends EditText implements Serializable {
 	}
 
 	private void init(Context context) {
-		if (!isInEditMode() && ttfName != null) {
+		if (!isInEditMode()) {
 			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		}
 	}
@@ -55,4 +57,5 @@ public class RoboEditText extends EditText implements Serializable {
 		ttfName = font;
 		init(getContext());
 	}
+
 }
