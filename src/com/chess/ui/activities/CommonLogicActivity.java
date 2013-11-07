@@ -190,11 +190,18 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 	}
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setLocale();
+	}
+
 	protected void setLocale() {
 		String prevLang = getResources().getConfiguration().locale.getLanguage();
 		String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
 
 		String setLocale = languageCodes[appData.getLanguageCode()];
+
 //		if(!prevLang.equals(setLocale)) {
 			Locale locale = new Locale(setLocale);
 			Locale.setDefault(locale);
@@ -202,8 +209,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			config.locale = locale;
 			getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 
-			preferencesEditor.putString(AppConstants.CURRENT_LOCALE, setLocale);
-			preferencesEditor.commit();
+//			preferencesEditor.putString(AppConstants.CURRENT_LOCALE, setLocale);
+//			preferencesEditor.commit();
 
 			currentLocale = setLocale;
 //		}

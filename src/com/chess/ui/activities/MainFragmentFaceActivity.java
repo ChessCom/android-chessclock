@@ -340,11 +340,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		getActionBarHelper().setCustomView(customActionBarViewId);
 	}
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-	}
-
 	private SlidingMenu.OnOpenedListener onOpenMenuListener = new SlidingMenu.OnOpenedListener() {
 		@Override
 		public void onOpened() { // Don't remove reuse later

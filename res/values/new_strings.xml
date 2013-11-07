@@ -357,5 +357,6 @@
 	<string name="pull_to_refresh_release_label">Release to refresh…</string>
 	<string name="pull_to_refresh_refreshing_label">Loading…</string>
 	<string name="upgrade_to_unlimited_access">Upgrade to Unlimited Access on Chess.com!</string>
+	<string name="completed_daily">Completed Daily</string>
 
 </resources>

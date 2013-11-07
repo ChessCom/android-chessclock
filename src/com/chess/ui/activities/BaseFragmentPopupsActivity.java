@@ -154,6 +154,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
+
 		changingConfiguration = true;
 	}
 
