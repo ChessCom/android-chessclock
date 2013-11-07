@@ -2,7 +2,6 @@ package com.chess.ui.views.game_controls;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import com.chess.R;
 import com.chess.ui.interfaces.boards.BoardViewCompFace;
 
@@ -40,21 +39,21 @@ public class ControlsCompViewTablet extends ControlsCompView {
 		addControlButton(FORWARD, styles[RIGHT]);
 	}
 
-	@Override
-	public void onClick(View view) {  // TODO rework click handles
-		super.onClick(view);
-		if (blocked) {
-			return;
-		}
-
-		if (view.getId() == getButtonId(OPTIONS)) {
-			boardViewFace.showOptions();
-		} else if (view.getId() == getButtonId(HINT)) {
-			boardViewFace.showHint();
-		} else if (view.getId() == getButtonId(HELP)) {
-			boardViewFace.switchAnalysis();
-		}
-	}
+//	@Override
+//	public void onClick(View view) {  // TODO rework click handles
+//		super.onClick(view);
+//		if (blocked) {
+//			return;
+//		}
+//
+//		if (view.getId() == getButtonId(OPTIONS)) {
+//			boardViewFace.showOptions();
+//		} else if (view.getId() == getButtonId(HINT)) {
+//			boardViewFace.showHint();
+//		} else if (view.getId() == getButtonId(HELP)) {
+//			boardViewFace.switchAnalysis();
+//		}
+//	}
 
 	@Override
 	public void setBoardViewFace(BoardViewCompFace boardViewFace) {

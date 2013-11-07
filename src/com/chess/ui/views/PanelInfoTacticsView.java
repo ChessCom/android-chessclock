@@ -61,13 +61,12 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		density = resources.getDisplayMetrics().density;
 
 		int padding = (int) resources.getDimension(R.dimen.panel_info_tactic_padding_top);
-		int paddingLeft = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
+		int paddingLeft = resources.getDimensionPixelSize(R.dimen.panel_info_tactic_padding_side);
 		int paddingRight = (int) (12 * density);
 		setPadding(paddingLeft, padding, paddingRight, padding);
 
 		float infoTextSize = resources.getDimension(R.dimen.new_tactics_info_text_size) / density;
 		int avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_tactic_size);
-		int timeLeftSize = (int) resources.getDimension(R.dimen.panel_info_time_left_size);
 		int avatarMarginRight = (int) resources.getDimension(R.dimen.panel_info_avatar_margin_right);
 		whiteColor = resources.getColor(R.color.white);
 		redColor = resources.getColor(R.color.red_button);

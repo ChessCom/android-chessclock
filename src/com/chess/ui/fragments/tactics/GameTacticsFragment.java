@@ -176,7 +176,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				}
 
 			} else {
-				controlsView.showStart();
+				getControlsView().showStart();
 				lockBoard(false);
 			}
 		} else {
@@ -597,7 +597,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			if (answerWasShowed() || sizeExceed) {
 				trainerData.setCompleted(true);
 
-				controlsView.showCorrect();
+				getControlsView().showCorrect();
 				showHintedViews(Symbol.EMPTY);
 				return;
 			}
@@ -761,7 +761,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			bottomPanelView.setPlayerScore(trainerData.getUserRating());
 		}
 		bottomPanelView.showCorrect(true, newRatingStr);
-		controlsView.showCorrect();
+		getControlsView().showCorrect();
 		trainerData.setCompleted(true);
 		getBoardFace().setFinished(true);
 
@@ -776,7 +776,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			bottomPanelView.setPlayerScore(trainerData.getUserRating());
 		}
 		bottomPanelView.showWrong(true, newRatingStr);
-		controlsView.showPractice();
+		getControlsView().showPractice();
 		trainerData.setCompleted(true);
 		getBoardFace().setFinished(true);
 
@@ -791,7 +791,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			bottomPanelView.setPlayerScore(trainerData.getUserRating());
 		}
 		bottomPanelView.showWrong(true, newRatingStr);
-		controlsView.showWrong();
+		getControlsView().showWrong();
 		getBoardFace().setFinished(true);
 
 		// show title at the top
@@ -833,12 +833,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			restoreGame();
 
 			if (trainerData.isRetry()) {
-				controlsView.showPractice();
+				getControlsView().showPractice();
 			} else {
-				controlsView.showDefault();
+				getControlsView().showDefault();
 			}
 		} else {
-			controlsView.showAnalysis();
+			getControlsView().showAnalysis();
 		}
 		bottomPanelView.showPractice(isAnalysis);
 		getBoardFace().setAnalysis(isAnalysis);
@@ -963,7 +963,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else {
 			trainerData.setRetry(true);
 			adjustBoardForGame();
-			controlsView.showPractice();
+			getControlsView().showPractice();
 
 			// show title at the top
 			moveResultTxt.setVisibility(View.VISIBLE);
@@ -1029,18 +1029,18 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		lockBoard(false);
 
 		if (trainerData.isCompleted() || trainerData.isAnswerWasShowed()) {
-			controlsView.showCorrect();
+			getControlsView().showCorrect();
 		} else if (trainerData.isRetry()) {
-			controlsView.showPractice();
+			getControlsView().showPractice();
 		} else {
-			controlsView.showDefault();
+			getControlsView().showDefault();
 		}
 
 		bottomPanelView.showDefault(); // TODO remove if unused
 		bottomPanelView.setSide(labelsConfig.userSide);
 
 		if (isAnalysis) {
-			controlsView.showAnalysis();
+			getControlsView().showAnalysis();
 		} else {
 			moveResultTxt.setVisibility(View.GONE);
 		}
@@ -1203,6 +1203,14 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		dbTacticBatchSaveListener = null;
 	}
 
+	protected ControlsTacticsView getControlsView() {
+		return controlsView;
+	}
+
+	protected void setControlsView(View controlsView) {
+		this.controlsView = (ControlsTacticsView) controlsView;
+	}
+	
 	private void init() {
 		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
 
@@ -1228,13 +1236,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		bottomPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
 		bottomPanelView.setPlayerScore(getAppData().getUserTacticsRating());
-		controlsView = (ControlsTacticsView) view.findViewById(R.id.controlsView);
+		setControlsView(view.findViewById(R.id.controlsView));
 
 		boardView = (ChessBoardTacticsView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setControlsView(controlsView);
+		boardView.setControlsView(getControlsView());
 
-		controlsView.setBoardViewFace(boardView);
+		getControlsView().setBoardViewFace(boardView);
 
 		setBoardView(boardView);
 		boardView.setGameFace(this);
@@ -1261,14 +1269,14 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 
-		controlsView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				if (getActivity() == null) {
 					return;
 				}
-				controlsView.enableGameControls(true);
+				getControlsView().enableGameControls(true);
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
@@ -1298,7 +1306,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void lockBoard(boolean lock) {
-		controlsView.enableGameControls(!lock);
+		getControlsView().enableGameControls(!lock);
 		boardView.lockBoard(lock);
 	}
 

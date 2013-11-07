@@ -1,75 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-	android:animateLayoutChanges="true"
-	>
-	<!--Show animation here for Correct/Incorrect views-->
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
-	<com.chess.widgets.RoboTextView
-		android:id="@+id/moveResultTxt"
+	<com.chess.widgets.LinLayout
+		android:id="@+id/boardLinLay"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_above="@+id/boardLayout"
-		android:layout_centerHorizontal="true"
-		android:gravity="center"
-		android:textSize="23sp"
-		android:textColor="@color/white"
-		custom:ttf="Bold"
-		android:visibility="gone"
-		/>
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:layout_marginTop="@dimen/tablet_board_margin_bottom"
+		android:layout_marginLeft="@dimen/tablet_board_margin_bottom"
+		android:layout_marginRight="@dimen/tablet_board_margin"
+		android:layout_marginBottom="@dimen/tablet_board_margin_bottom"
+		android:background="@drawable/shadow_back_inset_shifted">
 
-    <RelativeLayout
-        android:id="@id/boardLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/topPanelView"
-        >
+		<!--BoardView-->
+		<com.chess.ui.views.chess_boards.ChessBoardTacticsView
+			android:id="@+id/boardview"
+			android:layout_width="@dimen/tablet_board_size"
+			android:layout_height="@dimen/tablet_board_size" />
 
-        <!--Top Border-->
-        <FrameLayout
-            android:id="@+id/topBorder"
-            android:layout_width="match_parent"
-            android:layout_height="3px"
-            android:background="@drawable/game_board_divider"
-            />
+	</com.chess.widgets.LinLayout>
 
-        <com.chess.ui.views.chess_boards.ChessBoardTacticsView
-            android:id="@+id/boardview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/topBorder"
-            android:layout_marginTop="-1px"
-            />
+	<com.chess.widgets.RelLayout
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_toRightOf="@id/boardLinLay"
+		android:paddingTop="13dip"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:paddingBottom="@dimen/default_scr_bottom_padding"
+		android:animateLayoutChanges="true">
 
-        <!--Bottom Border-->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/boardview"
-            android:background="@drawable/game_board_divider"
-            android:layout_marginTop="-1px"
-            />
+		<!--TopPanelInfo-->
+		<com.chess.ui.views.PanelInfoTacticsView
+			android:id="@id/topPanelView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+		<!--Move Results-->
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/moveResultTxt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/topPanelView"
+			android:layout_centerHorizontal="true"
+			android:gravity="center"
+			android:textSize="23sp"
+			android:textColor="@color/white"
+			custom:ttf="Bold"
+			android:visibility="gone" />
 
-    <com.chess.ui.views.PanelInfoTacticsView
-        android:id="@id/topPanelView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/new_tactics_panel_info_height"
-        android:layout_above="@+id/controlsView"
-        />
+		<!--Controls-->
+		<com.chess.ui.views.game_controls.ControlsTacticsViewTablet
+			android:id="@id/controlsView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_marginLeft="2dp"
+			android:layout_marginRight="2dp"
+			/>
 
-    <com.chess.ui.views.game_controls.ControlsTacticsView
-        android:id="@+id/controlsView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-		/>
+	</com.chess.widgets.RelLayout>
 
 </RelativeLayout>

@@ -2,7 +2,6 @@ package com.chess.ui.views.game_controls;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import com.chess.R;
 import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
 import com.chess.widgets.RoboButton;
@@ -49,23 +48,23 @@ public class ControlsDailyViewTablet extends ControlsDailyView {
 		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
 	}
 
-	@Override
-	public void onClick(View view) {  // TODO rework click handles
-		super.onClick(view);
-		if (blocked)
-			return;
-
-		if (view.getId() == getButtonId(OPTIONS)) {
-			boardViewFace.showOptions();
-		}
-		if (view.getId() == getButtonId(ANALYSIS)) {
-			boardViewFace.switchAnalysis();
-		} else if (view.getId() == getButtonId(CLOSE)) {
-			boardViewFace.cancelMove();
-		} else if (view.getId() == getButtonId(MAKE_MOVE)) {
-			boardViewFace.playMove();
-		}
-	}
+//	@Override
+//	public void onClick(View view) {  // TODO rework click handles
+//		super.onClick(view);
+//		if (blocked)
+//			return;
+//
+//		if (view.getId() == getButtonId(OPTIONS)) {
+//			boardViewFace.showOptions();
+//		}
+//		if (view.getId() == getButtonId(ANALYSIS)) {
+//			boardViewFace.switchAnalysis();
+//		} else if (view.getId() == getButtonId(CLOSE)) {
+//			boardViewFace.cancelMove();
+//		} else if (view.getId() == getButtonId(MAKE_MOVE)) {
+//			boardViewFace.playMove();
+//		}
+//	}
 
 	@Override
 	public void setBoardViewFace(BoardViewNetworkFace boardViewFace) {

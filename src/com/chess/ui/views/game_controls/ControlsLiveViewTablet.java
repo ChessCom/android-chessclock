@@ -2,7 +2,6 @@ package com.chess.ui.views.game_controls;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import com.chess.R;
 import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
@@ -10,7 +9,6 @@ import com.chess.ui.views.drawables.smart_button.RectButtonBadgeDrawable;
 import com.chess.widgets.RoboButton;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
-import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.MAKE_MOVE;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,28 +49,28 @@ public class ControlsLiveViewTablet extends ControlsLiveView {
 		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
 	}
 
-	@Override
-	public void onClick(View view) {  // TODO rework click handles
-		super.onClick(view);
-		if (blocked)
-			return;
-
-		if (view.getId() == getButtonId(OPTIONS)) {
-			boardViewFace.showOptions();
-		} else if (view.getId() == getButtonId(HOME)) {
-			boardViewFace.goHome();
-		} else if (view.getId() == getButtonId(CHAT)) {
-			boardViewFace.showChat();
-		} else if (view.getId() == getButtonId(BACK)) {
-			boardViewFace.moveBack();
-		} else if (view.getId() == getButtonId(FORWARD)) {
-			boardViewFace.moveForward();
-		} else if (view.getId() == getButtonId(CLOSE)) {
-			boardViewFace.cancelMove();
-		} else if (view.getId() == getButtonId(MAKE_MOVE)) {
-			boardViewFace.playMove();
-		}
-	}
+//	@Override
+//	public void onClick(View view) {  // TODO rework click handles
+//		super.onClick(view);
+//		if (blocked)
+//			return;
+//
+//		if (view.getId() == getButtonId(OPTIONS)) {
+//			boardViewFace.showOptions();
+//		} else if (view.getId() == getButtonId(HOME)) {
+//			boardViewFace.goHome();
+//		} else if (view.getId() == getButtonId(CHAT)) {
+//			boardViewFace.showChat();
+//		} else if (view.getId() == getButtonId(BACK)) {
+//			boardViewFace.moveBack();
+//		} else if (view.getId() == getButtonId(FORWARD)) {
+//			boardViewFace.moveForward();
+//		} else if (view.getId() == getButtonId(CLOSE)) {
+//			boardViewFace.cancelMove();
+//		} else if (view.getId() == getButtonId(MAKE_MOVE)) {
+//			boardViewFace.playMove();
+//		}
+//	}
 
 	@Override
 	public void setBoardViewFace(BoardViewNetworkFace boardViewFace) {

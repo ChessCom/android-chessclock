@@ -31,6 +31,7 @@ import com.chess.ui.fragments.messages.MessagesInboxFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
+import com.chess.ui.fragments.tactics.GameTacticsFragmentTablet;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
 import com.chess.utilities.AppUtils;
@@ -159,9 +160,17 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_tactics:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
+				if (!isTablet) {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragmentTablet.class.getSimpleName());
+				}
 				if (fragmentByTag == null) {
-					fragmentByTag = new GameTacticsFragment();
+					if (!isTablet) {
+						fragmentByTag = new GameTacticsFragment();
+					} else {
+						fragmentByTag = new GameTacticsFragmentTablet();
+					}
 				}
 				break;
 			case R.drawable.ic_nav_lessons:

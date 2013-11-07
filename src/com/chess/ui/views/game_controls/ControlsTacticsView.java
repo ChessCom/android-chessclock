@@ -21,7 +21,13 @@ import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 public class ControlsTacticsView extends ControlsBaseView {
 
 	private BoardViewTacticsFace boardViewFace;
-	private State state;
+	protected State state;
+
+	private static final int[] styles = new int[]{
+			R.style.Rect_Top_Middle,
+			R.style.Rect_Top_Middle,
+			R.style.Rect_Top_Middle
+	};
 
 	public ControlsTacticsView(Context context) {
 		super(context);
@@ -35,27 +41,26 @@ public class ControlsTacticsView extends ControlsBaseView {
 	void init(Context context, AttributeSet attrs) {
 		super.init(context, attrs);
 
-//		removeAllViews();
+		addButtons();
 
+		showStart();
+	}
+
+	protected void addButtons() {
 		addStartButton();
-		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
-		addControlButton(EXIT, R.style.Rect_Bottom_Left);
-		addControlButton(HINT, R.style.Rect_Bottom_Middle);
-		addControlButton(SOLUTION, R.style.Rect_Bottom_Middle);
-		addControlButton(ANALYSIS, R.style.Rect_Bottom_Middle);
-		addNextWhiteButton(R.style.Rect_Bottom_Middle, NEXT);
-		addControlButton(RESTORE, R.style.Rect_Bottom_Middle);
-		addControlButton(COMP, R.style.Rect_Bottom_Middle);
-//		addControlButton(FLIP, R.style.Rect_Bottom_Middle);
-		addControlButton(BACK, R.style.Rect_Bottom_Middle);
-		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
+		addControlButton(OPTIONS, styles[LEFT]);
+		addControlButton(EXIT, styles[LEFT]);
+		addControlButton(HINT, styles[MIDDLE]);
+		addControlButton(SOLUTION, styles[MIDDLE]);
+		addControlButton(ANALYSIS, styles[MIDDLE]);
+		addNextWhiteButton(styles[MIDDLE], NEXT);
+		addControlButton(RESTORE, styles[MIDDLE]);
+		addControlButton(COMP, styles[MIDDLE]);
+		addControlButton(BACK, styles[MIDDLE]);
+		addControlButton(FORWARD, styles[RIGHT]);
 
 		addNextButton(R.style.Rect_Bottom_Right_Orange, SKIP);
 		addWrongButton();
-
-//		addView(controlsLayout);
-
-		showStart();
 	}
 
 	protected void addStartButton() {

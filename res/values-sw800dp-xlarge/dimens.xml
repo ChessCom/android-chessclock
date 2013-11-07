@@ -120,5 +120,6 @@
 	<dimen name="panel_info_welcome_player_top_margin">8dp</dimen>
 	<dimen name="daily_games_time_left_icon">28dp</dimen>
 	<dimen name="play_button_small_text_size">16sp</dimen>
+	<dimen name="panel_info_tactic_padding_side">15dp</dimen>
 
 </resources>
