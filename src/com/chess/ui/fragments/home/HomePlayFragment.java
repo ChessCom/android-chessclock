@@ -26,7 +26,7 @@ import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.comp.GameCompFragmentTablet;
-import com.chess.ui.fragments.daily.DailyGamesOptionsFragment;
+import com.chess.ui.fragments.daily.DailyGameOptionsFragment;
 import com.chess.ui.fragments.friends.ChallengeFriendFragment;
 import com.chess.ui.fragments.live.LiveGameOptionsFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
@@ -46,7 +46,6 @@ import java.util.Map;
  * Time: 18:29
  */
 public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu.OnOpenedListener{
-	private static final String ERROR_TAG = "error popup";
 
 	private TextView liveRatingTxt;
 	private TextView dailyRatingTxt;
@@ -59,6 +58,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	private boolean liveOptionsVisible;
 	private Button liveTimeSelectBtn;
 	private String[] newGameButtonsArray;
+	/* Recent Opponents */
 	private View inviteFriendView1;
 	private View inviteFriendView2;
 	private TextView friendUserName1Txt;
@@ -67,12 +67,13 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	private TextView friendRealName2Txt;
 	private String firstFriendUserName;
 	private String secondFriendUserName;
+
 	private LinearLayout dailyGameQuickOptions;
 	private RelLayout liveOptionsView;
 	private boolean liveFullOptionsVisible;
 	private boolean dailyFullOptionsVisible;
 	private LiveGameOptionsFragment liveGameOptionsFragment;
-	private DailyGamesOptionsFragment dailyGamesOptionsFragment;
+	private DailyGameOptionsFragment dailyGameOptionsFragment;
 	private TextView liveExpandIconTxt;
 	private TextView dailyExpandIconTxt;
 
@@ -103,8 +104,8 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		dailyGameConfigBuilder = new DailyGameConfig.Builder();
 		liveGameConfigBuilder = new LiveGameConfig.Builder();
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
-		getActivityFace().addOnOpenMenuListener(this);
 
+		getActivityFace().addOnOpenMenuListener(this);
 	}
 
 	@Override
@@ -118,10 +119,12 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		RelativeLayout liveHomeOptionsFrame = (RelativeLayout) view.findViewById(R.id.liveHomeOptionsFrame);
+
 		liveExpandIconTxt = (TextView) view.findViewById(R.id.liveExpandIconTxt);
 		dailyExpandIconTxt = (TextView) view.findViewById(R.id.dailyExpandIconTxt);
 		liveOptionsView = (RelLayout) view.findViewById(R.id.liveOptionsView);
 		dailyGameQuickOptions = (LinearLayout) view.findViewById(R.id.dailyGameQuickOptions);
+
 		if (positionMode == CENTER_MODE) {
 			inflater.inflate(R.layout.new_home_live_options_view, liveHomeOptionsFrame, true);
 			liveExpandIconTxt.setText(R.string.ic_right);
@@ -236,19 +239,19 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 				dailyGameQuickOptions.setVisibility(dailyFullOptionsVisible ? View.GONE : View.VISIBLE);
 				if (dailyFullOptionsVisible) {
 					dailyExpandIconTxt.setText(R.string.ic_up);
-					if (dailyGamesOptionsFragment == null) {
-						dailyGamesOptionsFragment = new DailyGamesOptionsFragment();
+					if (dailyGameOptionsFragment == null) {
+						dailyGameOptionsFragment = new DailyGameOptionsFragment();
 					}
 
 					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-					transaction.replace(R.id.dailyOptionsFrame, dailyGamesOptionsFragment).commit();
+					transaction.replace(R.id.dailyOptionsFrame, dailyGameOptionsFragment).commit();
 				} else {
 					dailyExpandIconTxt.setText(R.string.ic_down);
 					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-					transaction.remove(dailyGamesOptionsFragment).commit();
+					transaction.remove(dailyGameOptionsFragment).commit();
 				}
 			} else {
-				getActivityFace().changeRightFragment(DailyGamesOptionsFragment.createInstance(CENTER_MODE));
+				getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(CENTER_MODE));
 				getActivityFace().toggleRightMenu();
 			}
 
@@ -360,6 +363,9 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 
 	@Override
 	public void onOpenedRight() {
+		if (getActivity() == null) {
+			return;
+		}
 		if (positionMode == RIGHT_MENU_MODE && !isPaused) {
 			setRatings();
 			loadRecentOpponents();
@@ -377,11 +383,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	}
 
 	private void createLiveChallenge() {
-//		fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
-//		if (fragmentByTag == null) {
-//			fragmentByTag = new LiveGameWaitFragment();
-//		}
-
 		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
 	}
 

@@ -85,6 +85,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
 	protected static final String CHECK_UPDATE_TAG = "check update";
 
+	protected static final String OPPONENT_NAME = "opponent_name";
 	protected static final String MODE = "mode";
 	protected static final String CONFIG = "config";
 

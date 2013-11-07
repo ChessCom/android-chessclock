@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 //	private Button liveTimeSelectBtn;
 	private int positionMode;
 	private int liveRating;
+	private String opponentName;
 
 	public LiveGameOptionsFragment() {
 		Bundle bundle = new Bundle();
@@ -74,14 +76,25 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		return fragment;
 	}
 
+	public static LiveGameOptionsFragment createInstance(int mode, String opponentName) {
+		LiveGameOptionsFragment fragment = new LiveGameOptionsFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, mode);
+		bundle.putString(OPPONENT_NAME, opponentName);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		if (getArguments() != null) {
 			positionMode = getArguments().getInt(MODE);
+			opponentName = getArguments().getString(OPPONENT_NAME);
 		} else {
 			positionMode = savedInstanceState.getInt(MODE);
+			opponentName = savedInstanceState.getString(OPPONENT_NAME);
 		}
 
 		gameConfigBuilder = new LiveGameConfig.Builder();
@@ -112,90 +125,9 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		view.findViewById(R.id.liveOptionsView).setOnClickListener(this);
-
-		LayoutInflater inflater = getActivity().getLayoutInflater();
-		RelativeLayout liveHomeOptionsFrame = (RelativeLayout) view.findViewById(R.id.liveHomeOptionsFrame);
-		inflater.inflate(R.layout.new_right_live_options_view, liveHomeOptionsFrame, true);
-
-		if (getArguments().getInt(MODE) == CENTER_MODE) { // we use white background and dark titles for centered mode
-			View liveHeaderView = view.findViewById(R.id.liveHeaderView);
-			liveHeaderView.setVisibility(View.VISIBLE);
-			liveHeaderView.setOnClickListener(this);
-		}
-
-		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
-
-		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), friendsList);
-		opponentSpinner.setAdapter(selectionAdapter);
-		opponentSpinner.setOnItemSelectedListener(this);
-		opponentSpinner.setSelection(0);
-
-		{ // live options
-			if (JELLY_BEAN_PLUS_API) {
-				ViewGroup liveOptionsView = (ViewGroup) view.findViewById(R.id.gameOptionsLiveLinLay);
-				LayoutTransition layoutTransition = liveOptionsView.getLayoutTransition();
-				layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
-			}
-
-			liveOptionsGroup = new ArrayList<View>();
-			liveOptionsGroup.add(view.findViewById(R.id.liveLabelStandardTxt));
-			liveOptionsGroup.add(view.findViewById(R.id.liveLabelBlitzTxt));
-			liveOptionsGroup.add(view.findViewById(R.id.liveLabelBulletTxt));
-
-			liveButtonsModeMap = new HashMap<Integer, Button>();
-			liveButtonsModeMap.put(0, (Button) view.findViewById(R.id.standard1SelectBtn));
-			liveButtonsModeMap.put(1, (Button) view.findViewById(R.id.blitz1SelectBtn));
-			liveButtonsModeMap.put(2, (Button) view.findViewById(R.id.blitz2SelectBtn));
-			liveButtonsModeMap.put(3, (Button) view.findViewById(R.id.bullet1SelectBtn));
-			liveButtonsModeMap.put(4, (Button) view.findViewById(R.id.standard2SelectBtn));
-			liveButtonsModeMap.put(5, (Button) view.findViewById(R.id.blitz3SelectBtn));
-			liveButtonsModeMap.put(6, (Button) view.findViewById(R.id.blitz4SelectBtn));
-			liveButtonsModeMap.put(7, (Button) view.findViewById(R.id.bullet2SelectBtn));
-
-			int mode = getAppData().getDefaultLiveMode();
-			darkBtnColor = getResources().getColor(R.color.text_controls_icons_white);
-			// set texts to buttons
-			newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
-			for (Map.Entry<Integer, Button> buttonEntry : liveButtonsModeMap.entrySet()) {
-				int key = buttonEntry.getKey();
-				buttonEntry.getValue().setText(getLiveModeButtonLabel(newGameButtonsArray[key]));
-				buttonEntry.getValue().setOnClickListener(this);
-
-				if (key == mode) {
-					setDefaultQuickLiveMode(buttonEntry.getValue(), buttonEntry.getKey());
-				}
-			}
-		}
-
-		{// options setup
-			// rated games switch
-			ratedGameSwitch = (SwitchButton) view.findViewById(R.id.ratedGameSwitch);
-
-			{// Rating part
-				int minRatingDefault = liveRating - MIN_RATING_DIFF;
-				int maxRatingDefault = liveRating + MAX_RATING_DIFF;
-
-				minRatingBtn = (RoboRadioButton) view.findViewById(R.id.minRatingBtn);
-				minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
-				minRatingBtn.setText(String.valueOf(minRatingDefault));
-
-				maxRatingBtn = (RoboRadioButton) view.findViewById(R.id.maxRatingBtn);
-				maxRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
-				maxRatingBtn.setText(String.valueOf(maxRatingDefault));
-
-				// set checked minRating Button
-				minRatingBtn.setChecked(true);
-
-				SeekBar ratingBar = (SeekBar) view.findViewById(R.id.ratingBar);
-				ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
-				ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
-			}
-			view.findViewById(R.id.playBtn).setOnClickListener(this);
-		}
-
-		toggleLiveOptionsView();
+		widgetsInit(view);
 	}
+
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -362,6 +294,103 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 		return liveGameConfig;
 	}
+
+	private void widgetsInit(View view) {
+		view.findViewById(R.id.liveOptionsView).setOnClickListener(this);
+
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		RelativeLayout liveHomeOptionsFrame = (RelativeLayout) view.findViewById(R.id.liveHomeOptionsFrame);
+		inflater.inflate(R.layout.new_right_live_options_view, liveHomeOptionsFrame, true);
+
+		if (getArguments().getInt(MODE) == CENTER_MODE) { // we use white background and dark titles for centered mode
+			View liveHeaderView = view.findViewById(R.id.liveHeaderView);
+			liveHeaderView.setVisibility(View.VISIBLE);
+			liveHeaderView.setOnClickListener(this);
+		}
+
+		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
+
+		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), friendsList);
+		opponentSpinner.setAdapter(selectionAdapter);
+		opponentSpinner.setOnItemSelectedListener(this);
+		opponentSpinner.setSelection(0);
+
+		if (!TextUtils.isEmpty(opponentName)) {
+			for (int i = 0; i < friendsList.size(); i++) {
+				SelectionItem selectionItem = friendsList.get(i);
+				if (selectionItem.getText().equals(opponentName)) {
+					opponentSpinner.setSelection(i);
+					break;
+				}
+			}
+		}
+
+		{ // live options
+			if (JELLY_BEAN_PLUS_API) {
+				ViewGroup liveOptionsView = (ViewGroup) view.findViewById(R.id.gameOptionsLiveLinLay);
+				LayoutTransition layoutTransition = liveOptionsView.getLayoutTransition();
+				layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+			}
+
+			liveOptionsGroup = new ArrayList<View>();
+			liveOptionsGroup.add(view.findViewById(R.id.liveLabelStandardTxt));
+			liveOptionsGroup.add(view.findViewById(R.id.liveLabelBlitzTxt));
+			liveOptionsGroup.add(view.findViewById(R.id.liveLabelBulletTxt));
+
+			liveButtonsModeMap = new HashMap<Integer, Button>();
+			liveButtonsModeMap.put(0, (Button) view.findViewById(R.id.standard1SelectBtn));
+			liveButtonsModeMap.put(1, (Button) view.findViewById(R.id.blitz1SelectBtn));
+			liveButtonsModeMap.put(2, (Button) view.findViewById(R.id.blitz2SelectBtn));
+			liveButtonsModeMap.put(3, (Button) view.findViewById(R.id.bullet1SelectBtn));
+			liveButtonsModeMap.put(4, (Button) view.findViewById(R.id.standard2SelectBtn));
+			liveButtonsModeMap.put(5, (Button) view.findViewById(R.id.blitz3SelectBtn));
+			liveButtonsModeMap.put(6, (Button) view.findViewById(R.id.blitz4SelectBtn));
+			liveButtonsModeMap.put(7, (Button) view.findViewById(R.id.bullet2SelectBtn));
+
+			int mode = getAppData().getDefaultLiveMode();
+			darkBtnColor = getResources().getColor(R.color.text_controls_icons_white);
+			// set texts to buttons
+			newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
+			for (Map.Entry<Integer, Button> buttonEntry : liveButtonsModeMap.entrySet()) {
+				int key = buttonEntry.getKey();
+				buttonEntry.getValue().setText(getLiveModeButtonLabel(newGameButtonsArray[key]));
+				buttonEntry.getValue().setOnClickListener(this);
+
+				if (key == mode) {
+					setDefaultQuickLiveMode(buttonEntry.getValue(), buttonEntry.getKey());
+				}
+			}
+		}
+
+		{// options setup
+			// rated games switch
+			ratedGameSwitch = (SwitchButton) view.findViewById(R.id.ratedGameSwitch);
+
+			{// Rating part
+				int minRatingDefault = liveRating - MIN_RATING_DIFF;
+				int maxRatingDefault = liveRating + MAX_RATING_DIFF;
+
+				minRatingBtn = (RoboRadioButton) view.findViewById(R.id.minRatingBtn);
+				minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+				minRatingBtn.setText(String.valueOf(minRatingDefault));
+
+				maxRatingBtn = (RoboRadioButton) view.findViewById(R.id.maxRatingBtn);
+				maxRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+				maxRatingBtn.setText(String.valueOf(maxRatingDefault));
+
+				// set checked minRating Button
+				minRatingBtn.setChecked(true);
+
+				SeekBar ratingBar = (SeekBar) view.findViewById(R.id.ratingBar);
+				ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
+				ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
+			}
+			view.findViewById(R.id.playBtn).setOnClickListener(this);
+		}
+
+		toggleLiveOptionsView();
+	}
+
 
 	public class OpponentsAdapter extends ItemsAdapter<SelectionItem> {
 

@@ -65,7 +65,7 @@
         android:id="@+id/gameResultTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/new_light_grey"
+        android:textColor="@color/semitransparent_white_75"
         android:gravity="center"
 		android:minWidth="35dip"
         />

@@ -32,7 +32,6 @@ import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.daily.DailyChatFragment;
-import com.chess.ui.fragments.daily.DailyNewGameFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -150,7 +149,8 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 	@Override
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
-			getActivityFace().openFragment(new DailyNewGameFragment());
+			getActivityFace().changeRightFragment(new LiveGameOptionsFragment());
+			getActivityFace().toggleRightMenu();
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
 		} else if (code == ID_EMAIL_GAME) {

@@ -71,6 +71,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	private static final String DRAW_OFFER_TAG = "offer draw";
 	private static final String ERROR_TAG = "send request failed popup";
+	private static final String END_VACATION_TAG = "end vacation popup";
 
 	private static final int SEND_MOVE_UPDATE = 1;
 	private static final int CREATE_CHALLENGE_UPDATE = 2;
@@ -84,7 +85,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private static final int ID_FLIP_BOARD = 3;
 	private static final int ID_EMAIL_GAME = 4;
 	private static final int ID_SETTINGS = 5;
-	private static final String END_VACATION_TAG = "end vacation popup";
 
 	private GameDailyUpdatesListener abortGameUpdateListener;
 	private GameDailyUpdatesListener drawOfferedUpdateListener;
@@ -205,7 +205,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	@Override
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
-			getActivityFace().openFragment(new DailyNewGameFragment());
+			getActivityFace().changeRightFragment(new DailyGameOptionsFragment());
+			getActivityFace().toggleRightMenu();
 		} else if (code == ID_ABORT_RESIGN) {
 			if (getBoardFace().getPly() < 1 && isUserMove()) {
 				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
@@ -897,6 +898,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		@Override
 		public void updateData(VacationItem returnedObj) {
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
+			loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());
+			new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
 		}
 	}
 

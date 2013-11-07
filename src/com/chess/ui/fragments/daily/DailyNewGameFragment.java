@@ -132,7 +132,7 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 			getActivityFace().changeRightFragment(new ChallengeFriendFragment());
 			getActivityFace().toggleRightMenu();
 		} else if (id == R.id.dailyHeaderView) {
-			getActivityFace().changeRightFragment(new DailyGamesOptionsFragment());
+			getActivityFace().changeRightFragment(new DailyGameOptionsFragment());
 			getActivityFace().toggleRightMenu();
 		} else {
 			handleTimeModeClicks(view);

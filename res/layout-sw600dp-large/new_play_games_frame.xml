@@ -1,57 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:orientation="vertical">
-
-	<!--Game Board and Game Panel-->
-	<com.chess.ui.views.NotationView
-		android:id="@+id/notationsView"
-		android:layout_width="match_parent"
-		android:layout_height="@dimen/notations_view_height"
-		style="@style/NotationsStyle"
-		android:visibility="gone" />
-
-	<!--New Game-->
-	<com.chess.widgets.LinLayout
-		android:id="@+id/newGameHeaderView"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:gravity="center_vertical"
-		style="@style/ListItem.Header_2.Dark"
-		android:paddingLeft="8dip"
-		android:paddingRight="8dip"
-		android:layout_marginTop="2dip">
-
-		<!--Icon-->
-		<com.chess.widgets.RoboTextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/ic_add"
-			android:textColor="@color/new_light_grey_2"
-			style="@style/GlyphIcon.Big" />
-
-		<com.chess.widgets.RoboTextView
-			android:id="@+id/liveChessHeaderTxt"
-			android:layout_width="0dp"
-			android:layout_height="wrap_content"
-			android:paddingLeft="8dip"
-			android:layout_weight="1"
-			android:text="@string/new_game"
-			style="@style/HeaderTitle.Light" />
-
-		<com.chess.widgets.RoboTextView
-			android:id="@+id/liveRatingTxt"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:gravity="center_vertical"
-			android:textColor="@color/new_light_grey_2"
-			custom:ttf="Bold" />
-
-	</com.chess.widgets.LinLayout>
+	android:layout_height="match_parent">
 
 	<com.chess.widgets.RelLayout
 		android:id="@+id/boardLinLay"
@@ -69,7 +21,6 @@
 			android:id="@+id/boardview"
 			android:layout_width="@dimen/tablet_board_size"
 			android:layout_height="@dimen/tablet_board_size" />
-
 
 		<!--Start New Game overlay-->
 		<LinearLayout
@@ -103,8 +54,7 @@
 				android:layout_weight="1"
 				android:gravity="center"
 				android:textSize="@dimen/popup_title_text_size_medium"
-				android:textColor="@color/new_author_dark_grey"
-				/>
+				android:textColor="@color/new_author_dark_grey" />
 
 			<LinearLayout
 				android:layout_width="match_parent"
@@ -129,7 +79,7 @@
 					android:layout_marginLeft="5dip"
 					style="@style/Button.Glassy.Small"
 					android:textSize="@dimen/big_button_text_size"
-					android:textColor="@color/text_controls_icons_white"/>
+					android:textColor="@color/text_controls_icons_white" />
 
 			</LinearLayout>
 
@@ -137,6 +87,19 @@
 
 	</com.chess.widgets.RelLayout>
 
+	<!--Shadow-->
+	<ImageView
+		android:layout_width="10dp"
+		android:layout_height="match_parent"
+		android:src="@drawable/defaultshadow"
+		android:contentDescription="@string/image"
+		android:layout_toLeftOf="@+id/listView" />
 
-</LinearLayout>
+	<!--ListView-->
+	<ListView
+		android:id="@id/listView"
+		android:layout_width="380dp"
+		android:layout_height="match_parent"
+		android:layout_alignParentRight="true" />
 
+</RelativeLayout>

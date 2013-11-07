@@ -354,7 +354,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 						break;
 					}
 				}
-
 			}
 		}
 
@@ -528,7 +527,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		if (!TextUtils.isEmpty(themeBackPath)) {
 			setMainBackground(themeBackPath);
 		} else {
-			getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
+			try {
+				getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
+			} catch (OutOfMemoryError ignore) {
+				return;
+			}
 		}
 
 		updateActionBarBackImage();

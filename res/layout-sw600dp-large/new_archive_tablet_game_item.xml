@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.chess.widgets.LinLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	style="@style/ListItem"
+	android:gravity="center_vertical"
+	android:paddingLeft="@dimen/default_scr_side_padding"
+	android:paddingRight="@dimen/default_scr_side_padding"
+	>
+
+	<com.chess.backend.image_load.AvatarView
+		android:id="@+id/playerImg"
+		android:layout_width="@dimen/daily_list_item_image_size"
+		android:layout_height="@dimen/daily_list_item_image_size"
+		android:layout_marginTop="10dip"
+		android:layout_marginBottom="10dip"
+		android:layout_marginRight="10dip"
+		android:src="@drawable/img_profile_picture_stub"
+		android:contentDescription="@string/image"
+		/>
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/playerNameTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/semitransparent_white_75"
+		android:gravity="center_vertical"
+		/>
+
+	<ImageView
+		android:id="@+id/premiumImg"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:contentDescription="@string/image"
+		android:layout_marginLeft="8dip"
+		android:layout_marginRight="4dip"
+		/>
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/ratingTxt"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:textColor="@color/semitransparent_white_75"
+		android:gravity="center_vertical"
+		/>
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/gameTypeTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:textColor="@color/new_light_grey_2"
+		android:text="@string/ic_daily960_game"
+		style="@style/GlyphIcon.Big"
+		/>
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/gameResultTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/semitransparent_white_75"
+		android:gravity="center"
+		android:minWidth="35dip"
+		/>
+
+</com.chess.widgets.LinLayout>

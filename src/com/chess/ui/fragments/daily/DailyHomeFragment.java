@@ -27,7 +27,7 @@ import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.PopupListSelectionFace;
-import com.chess.ui.views.chess_boards.ChessBoardLiveView;
+import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.text.NumberFormat;
@@ -45,25 +45,22 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 	private static final String OPTION_SELECTION_TAG = "time options popup";
 	private static final String END_VACATION_TAG = "end vacation popup";
 
-	private List<DailyItem> featuresList;
-	private GameFaceHelper gameFaceHelper;
+	protected List<DailyItem> featuresList;
+	protected GameFaceHelper gameFaceHelper;
 	private DailyGameConfig.Builder gameConfigBuilder;
-	private int[] newGameButtonsArray;
-	private Button timeSelectBtn;
+	protected int[] newGameButtonsArray;
+	protected Button timeSelectBtn;
 	private PopupDailyTimeOptionsFragment timeOptionsFragment;
 	private TimeOptionSelectedListener timeOptionSelectedListener;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 	private ServerStatsUpdateListener serverStatsUpdateListener;
-	private TextView onlinePlayersCntTxt;
+	protected TextView onlinePlayersCntTxt;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		featuresList = new ArrayList<DailyItem>();
-		featuresList.add(new DailyItem(R.string.ic_stats, R.string.stats));
-		featuresList.add(new DailyItem(R.string.ic_challenge_friend, R.string.friends));
-		featuresList.add(new DailyItem(R.string.ic_board, R.string.archive));
+		createFeaturesList();
 
 		gameConfigBuilder = new DailyGameConfig.Builder();
 
@@ -72,6 +69,13 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 		timeOptionSelectedListener = new TimeOptionSelectedListener();
 		serverStatsUpdateListener = new ServerStatsUpdateListener();
+	}
+
+	protected void createFeaturesList() {
+		featuresList = new ArrayList<DailyItem>();
+		featuresList.add(new DailyItem(R.string.ic_stats, R.string.stats));
+		featuresList.add(new DailyItem(R.string.ic_challenge_friend, R.string.friends));
+		featuresList.add(new DailyItem(R.string.ic_board, R.string.archive));
 	}
 
 	@Override
@@ -128,7 +132,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		} else if (view.getId() == R.id.gamePlayBtn) {
 			createDailyChallenge();
 		} else if (view.getId() == R.id.newGameHeaderView) {
-			getActivityFace().changeRightFragment(DailyGamesOptionsFragment.createInstance(CENTER_MODE));
+			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(CENTER_MODE));
 			getActivityFace().toggleRightMenu();
 		}
 	}
@@ -189,7 +193,6 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 
 		@Override
 		public void updateData(VacationItem returnedObj) {
-			showToast(R.string.vacation_off);
 		}
 	}
 
@@ -209,10 +212,10 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		}
 	}
 
-	private void widgetsInit(View view) {
+	protected void widgetsInit(View view) {
 		Resources resources = getResources();
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		ViewGroup headerView = (ViewGroup) inflater.inflate(R.layout.new_game_home_header_frame, null, false);
+		ViewGroup headerView = (ViewGroup) inflater.inflate(R.layout.new_play_home_header_frame, null, false);
 
 		{ // invite overlay setup
 			View startOverlayView = headerView.findViewById(R.id.startOverlayView);
@@ -255,7 +258,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		listView.setAdapter(new OptionsAdapter(getActivity(), featuresList));
 		listView.setOnItemClickListener(this);
 
-		ChessBoardLiveView boardView = (ChessBoardLiveView) headerView.findViewById(R.id.boardview);
+		ChessBoardBaseView boardView = (ChessBoardBaseView) headerView.findViewById(R.id.boardview);
 		boardView.setGameFace(gameFaceHelper);
 	}
 
@@ -284,11 +287,11 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		getAppData().setDefaultDailyMode(mode);
 	}
 
-	private static class DailyItem {
+	protected static class DailyItem {
 		int iconId;
 		int labelId;
 
-		private DailyItem(int iconId, int labelId) {
+		protected DailyItem(int iconId, int labelId) {
 			this.iconId = iconId;
 			this.labelId = labelId;
 		}

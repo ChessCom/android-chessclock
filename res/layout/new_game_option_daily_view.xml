@@ -110,34 +110,6 @@
 
         </com.chess.widgets.LinLayout>
 
-        <!--I Play As-->
-      <!--  <LinLayout
-            android:id="@+id/iPlayLay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            style="@style/ListItem"
-            android:paddingLeft="@dimen/new_game_frame_padding_side"
-            android:paddingRight="@dimen/new_game_frame_padding_side"
-            >
-
-            <RoboTextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/i_play_as_"
-                android:textColor="@color/semitransparent_white_65"
-                />
-
-            <RoboButton
-                android:id="@+id/myColorBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/random"
-                style="@style/Button.Glassy.Small"
-                />
-        </LinLayout>-->
-
         <!--Rated Game-->
         <com.chess.widgets.LinLayout
 			android:id="@+id/ratedGameView"

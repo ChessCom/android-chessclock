@@ -58,7 +58,6 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		setArguments(bundle);
 	}
 
-
 	public static StatsGameFragment createInstance(int code, String username) {
 		StatsGameFragment fragment = new StatsGameFragment();
 		Bundle bundle = new Bundle();

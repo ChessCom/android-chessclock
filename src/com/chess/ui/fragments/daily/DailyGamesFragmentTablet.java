@@ -72,7 +72,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
 
-	private FrameLayout optionsFragmentContainer;
 	private TextView emptyView;
 	private GridView gridView;
 	private View loadingView;
@@ -129,7 +128,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
-		optionsFragmentContainer = (FrameLayout) view.findViewById(R.id.optionsFragmentContainer);
 		gridView = (GridView) view.findViewById(R.id.gridView);
 		gridView.setOnItemClickListener(this);
 		gridView.setOnItemLongClickListener(this);

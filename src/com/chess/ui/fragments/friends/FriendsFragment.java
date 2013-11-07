@@ -14,10 +14,11 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.entity.api.FriendsItem;
-import com.chess.statics.StaticData;
-import com.chess.statics.Symbol;
+import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -25,9 +26,12 @@ import com.chess.db.DbScheme;
 import com.chess.db.QueryParams;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveFriendsListTask;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.FriendsCursorAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.live.LiveGameOptionsFragment;
 import com.chess.ui.fragments.messages.NewMessageFragment;
 import com.chess.ui.fragments.profiles.ProfileTabsFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -42,6 +46,8 @@ import com.chess.utilities.AppUtils;
 public class FriendsFragment extends CommonLogicFragment implements ItemClickListenerFace {
 
 	private static final String CREATE_CHALLENGE_TAG = "create challenge confirm popup";
+	private static final String END_VACATION_TAG = "end vacation popup";
+
 	private ListView listView;
 	private View loadingView;
 	private TextView emptyView;
@@ -143,6 +149,8 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			opponentName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 
 			String title = getString(R.string.challenge) + Symbol.SPACE + opponentName + Symbol.QUESTION;
+			popupItem.setNegativeBtnId(R.string.daily);
+			popupItem.setPositiveBtnId(R.string.live);
 			showPopupDialog(title, CREATE_CHALLENGE_TAG);
 
 		} else if (view.getId() == R.id.messageImgBtn) {
@@ -347,12 +355,32 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 
 		if (tag.equals(CREATE_CHALLENGE_TAG)) {
-			createDailyChallenge(opponentName);
+			getActivityFace().changeRightFragment(LiveGameOptionsFragment.createInstance(RIGHT_MENU_MODE, opponentName));
+			getActivityFace().toggleRightMenu();
+		} else if (tag.equals(END_VACATION_TAG)) {
+			LoadItem loadItem = LoadHelper.deleteOnVacation(getUserToken());
+			new RequestJsonTask<VacationItem>(new VacationUpdateListener()).executeTask(loadItem);
 		}
 		super.onPositiveBtnClick(fragment);
 	}
 
+
+	@Override
+	public void onNegativeBtnClick(DialogFragment fragment) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(CREATE_CHALLENGE_TAG)) {
+			createDailyChallenge(opponentName);
+		}
+		super.onNegativeBtnClick(fragment);
+	}
+
 	private void createDailyChallenge(String opponentName) {
+		this.opponentName = opponentName;
 		// create challenge using formed configuration
 		DailyGameConfig dailyGameConfig = new DailyGameConfig.Builder().build();
 		dailyGameConfig.setOpponentName(opponentName);
@@ -371,6 +399,31 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		@Override
 		public void updateData(DailySeekItem returnedObj) {
 			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCodes.YOUR_ARE_ON_VACATAION) {
+
+					showPopupDialog(R.string.leave_vacation_to_challenge_q, END_VACATION_TAG);
+				} else {
+					super.errorHandle(resultCode);
+				}
+			}
+		}
+	}
+
+	private class VacationUpdateListener extends ChessLoadUpdateListener<VacationItem> {
+
+		public VacationUpdateListener() {
+			super(VacationItem.class);
+		}
+
+		@Override
+		public void updateData(VacationItem returnedObj) {
+			createDailyChallenge(opponentName);
 		}
 	}
 }

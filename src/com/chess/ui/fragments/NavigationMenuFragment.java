@@ -20,11 +20,13 @@ import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.comp.GameCompFragmentTablet;
 import com.chess.ui.fragments.daily.DailyHomeFragment;
+import com.chess.ui.fragments.daily.DailyHomeFragmentTablet;
 import com.chess.ui.fragments.forums.ForumCategoriesFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.LiveHomeFragment;
+import com.chess.ui.fragments.live.LiveHomeFragmentTablet;
 import com.chess.ui.fragments.messages.MessagesInboxFragment;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
@@ -129,16 +131,31 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_play_daily:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(DailyHomeFragment.class.getSimpleName());
+				if (!isTablet) {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(DailyHomeFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(DailyHomeFragmentTablet.class.getSimpleName());
+				}
 				if (fragmentByTag == null) {
-					fragmentByTag = new DailyHomeFragment();
+					if (!isTablet) {
+						fragmentByTag = new DailyHomeFragment();
+					} else {
+						fragmentByTag = new DailyHomeFragmentTablet();
+					}
 				}
 				break;
 			case R.drawable.ic_nav_play_live:
-
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
+				if (!isTablet) {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveHomeFragmentTablet.class.getSimpleName());
+				}
 				if (fragmentByTag == null) {
-					fragmentByTag = new LiveHomeFragment();
+					if (!isTablet) {
+						fragmentByTag = new LiveHomeFragment();
+					} else {
+						fragmentByTag = new LiveHomeFragmentTablet();
+					}
 				}
 				break;
 			case R.drawable.ic_nav_tactics:

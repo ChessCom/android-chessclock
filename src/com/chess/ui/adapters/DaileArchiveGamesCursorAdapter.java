@@ -13,41 +13,22 @@ import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 import com.chess.statics.Symbol;
-import com.chess.utilities.AppUtils;
 
-import java.util.HashMap;
+/**
+ * Created with IntelliJ IDEA.
+ * User: roger sent2roger@gmail.com
+ * Date: 07.11.13
+ * Time: 14:49
+ */
+public class DaileArchiveGamesCursorAdapter extends DailyFinishedGamesCursorAdapter {
 
-public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
-
-	protected static final String CHESS_960 = " (960)";
-	protected final int imageSize;
-	protected final String drawStr;
-	protected final String lossStr;
-	protected final String winStr;
-	private final int colorOrange;
-	private final int colorGreen;
-	private final int colorGrey;
-	protected final HashMap<String, SmartImageFetcher.Data> imageDataMap;
-
-	public DailyFinishedGamesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
+	public DaileArchiveGamesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
-		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
-
-		lossStr = context.getString(R.string.loss);
-		winStr = AppUtils.upCaseFirst(context.getString(R.string.won));
-		drawStr = context.getString(R.string.draw);
-
-		colorOrange = resources.getColor(R.color.orange_button_flat);
-		colorGreen = resources.getColor(R.color.new_dark_green);
-		colorGrey = resources.getColor(R.color.stats_label_grey);
-
-		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
-
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_daily_finished_games_item, parent, false);
+		View view = inflater.inflate(R.layout.new_archive_tablet_game_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.playerImg = (AvatarView) view.findViewById(R.id.playerImg);
 		holder.playerTxt = (TextView) view.findViewById(R.id.playerNameTxt);
@@ -81,7 +62,7 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 			premiumStatus = getInt(cursor, DbScheme.V_BLACK_PREMIUM_STATUS);
 		}
 
-		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(premiumStatus));
+//		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(premiumStatus));
 		holder.playerTxt.setText(opponentName);
 		holder.ratingTxt.setText(Symbol.wrapInPars(opponentRating));
 
@@ -103,27 +84,15 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 
 		// Loss orange
 		String result = lossStr;
-		int resultColor = colorOrange;
 		if (getInt(cursor, DbScheme.V_GAME_SCORE) == BaseGameItem.GAME_WON) {
 			// Win Green
 			result = winStr;
-			resultColor = colorGreen;
 		} else if (getInt(cursor, DbScheme.V_GAME_SCORE) == BaseGameItem.GAME_DRAW) {
 			// Draw Grey
 			result = drawStr;
-			resultColor = colorGrey;
 		}
 
 		holder.gameResultTxt.setText(result);
-		holder.gameResultTxt.setTextColor(resultColor);
 	}
 
-	protected class ViewHolder {
-		public AvatarView playerImg;
-		public TextView playerTxt;
-		public ImageView premiumImg;
-		public TextView ratingTxt;
-		public TextView gameResultTxt;
-		public TextView gameTypeTxt;
-	}
 }

@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,7 @@ import java.util.List;
  * Date: 24.04.13
  * Time: 14:26
  */
-public class DailyGamesOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemSelectedListener, PopupListSelectionFace {
+public class DailyGameOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemSelectedListener, PopupListSelectionFace {
 
 	private static final int RATING_VARIABLE_DIFF = 100;
 	private static final int MIN_RATING_DIFF = 200;
@@ -57,7 +58,6 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	private static final int ID_CHESS = 0;
 	private static final int ID_CHESS_960 = 1;
 	private static final String OPTION_SELECTION_TAG = "options selection popup";
-
 
 	private DailyGamesButtonsAdapter dailyGamesButtonsAdapter;
 	private DailyGameConfig.Builder gameConfigBuilder;
@@ -73,17 +73,27 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	private SparseArray<String> optionsMap;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private Button gameTypeBtn;
+	private String opponentName;
 
-	public DailyGamesOptionsFragment() {
+	public DailyGameOptionsFragment() {
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, RIGHT_MENU_MODE);
 		setArguments(bundle);
 	}
 
-	public static DailyGamesOptionsFragment createInstance(int mode) {
-		DailyGamesOptionsFragment fragment = new DailyGamesOptionsFragment();
+	public static DailyGameOptionsFragment createInstance(int mode) {
+		DailyGameOptionsFragment fragment = new DailyGameOptionsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, mode);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
+
+	public static DailyGameOptionsFragment createInstance(int mode, String opponentName) {
+		DailyGameOptionsFragment fragment = new DailyGameOptionsFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, mode);
+		bundle.putString(OPPONENT_NAME, opponentName);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -94,8 +104,10 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 
 		if (getArguments() != null) {
 			positionMode = getArguments().getInt(MODE);
+			opponentName = getArguments().getString(OPPONENT_NAME);
 		} else {
 			positionMode = savedInstanceState.getInt(MODE);
+			opponentName = savedInstanceState.getString(OPPONENT_NAME);
 		}
 
 		gameConfigBuilder = new DailyGameConfig.Builder();
@@ -115,6 +127,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		}
 
 		dailyRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
+		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 	}
 
 	@Override
@@ -126,69 +139,7 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
-		Resources resources = getResources();
-
-		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), friendsList);
-		opponentSpinner.setAdapter(selectionAdapter);
-		opponentSpinner.setOnItemSelectedListener(this);
-		opponentSpinner.setSelection(0);
-
-		if (positionMode == CENTER_MODE) {
-			View dailyHeaderView = view.findViewById(R.id.dailyHeaderView);
-			dailyHeaderView.setVisibility(View.VISIBLE);
-			dailyHeaderView.setOnClickListener(this);
-		}
-
-		view.findViewById(R.id.ratedGameView).setOnClickListener(this);
-
-		{// options setup
-			gameTypeBtn = (Button) view.findViewById(R.id.gameTypeBtn);
-			gameTypeBtn.setOnClickListener(this);
-			{// Mode adapter init
-				int[] newGameButtonsArray = resources.getIntArray(R.array.days_per_move_array);
-				List<DailyGameButtonItem> newGameButtonItems = new ArrayList<DailyGameButtonItem>();
-				for (int label : newGameButtonsArray) {
-					newGameButtonItems.add(new DailyGameButtonItem(label));
-				}
-				int dailyMode = getAppData().getDefaultDailyMode();
-				newGameButtonItems.get(dailyMode).checked = true;
-
-				GridView gridView = (GridView) view.findViewById(R.id.dailyGamesModeGrid);
-				dailyGamesButtonsAdapter = new DailyGamesButtonsAdapter(this, newGameButtonItems);
-				gridView.setAdapter(dailyGamesButtonsAdapter);
-			}
-
-			// rated games switch
-			ratedGameSwitch = (SwitchButton) view.findViewById(R.id.ratedGameSwitch);
-			{// options list setup
-				optionsMap = new SparseArray<String>();
-				optionsMap.put(ID_CHESS, getString(R.string.chess));
-				optionsMap.put(ID_CHESS_960, getString(R.string.chess_960));
-			}
-			{// Rating part
-				ratingView = view.findViewById(R.id.ratingView);
-				int minRatingDefault = dailyRating - MIN_RATING_DIFF;
-				int maxRatingDefault = dailyRating + MAX_RATING_DIFF;
-
-				minRatingBtn = (RoboRadioButton) view.findViewById(R.id.minRatingBtn);
-				minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
-				minRatingBtn.setText(String.valueOf(minRatingDefault));
-
-				maxRatingBtn = (RoboRadioButton) view.findViewById(R.id.maxRatingBtn);
-				maxRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
-				maxRatingBtn.setText(String.valueOf(maxRatingDefault));
-
-				// set checked minRating Button
-				minRatingBtn.setChecked(true);
-
-				SeekBar ratingBar = (SeekBar) view.findViewById(R.id.ratingBar);
-				ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
-				ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
-			}
-			view.findViewById(R.id.playBtn).setOnClickListener(this);
-		}
-		createChallengeUpdateListener = new CreateChallengeUpdateListener();
+		widgetsInit(view);
 	}
 
 	@Override
@@ -439,6 +390,81 @@ public class DailyGamesOptionsFragment extends CommonLogicFragment implements It
 		gameConfigBuilder.setRated(ratedGameSwitch.isChecked());
 
 		return gameConfigBuilder.build();
+	}
+
+	private void widgetsInit(View view) {
+		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
+		Resources resources = getResources();
+
+		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), friendsList);
+		opponentSpinner.setAdapter(selectionAdapter);
+		opponentSpinner.setOnItemSelectedListener(this);
+		opponentSpinner.setSelection(0);
+
+		if (!TextUtils.isEmpty(opponentName)) {
+			for (int i = 0; i < friendsList.size(); i++) {
+				SelectionItem selectionItem = friendsList.get(i);
+				if (selectionItem.getText().equals(opponentName)) {
+					opponentSpinner.setSelection(i);
+					break;
+				}
+			}
+		}
+
+		if (positionMode == CENTER_MODE) {
+			View dailyHeaderView = view.findViewById(R.id.dailyHeaderView);
+			dailyHeaderView.setVisibility(View.VISIBLE);
+			dailyHeaderView.setOnClickListener(this);
+		}
+
+		view.findViewById(R.id.ratedGameView).setOnClickListener(this);
+
+		{// options setup
+			gameTypeBtn = (Button) view.findViewById(R.id.gameTypeBtn);
+			gameTypeBtn.setOnClickListener(this);
+			{// Mode adapter init
+				int[] newGameButtonsArray = resources.getIntArray(R.array.days_per_move_array);
+				List<DailyGameButtonItem> newGameButtonItems = new ArrayList<DailyGameButtonItem>();
+				for (int label : newGameButtonsArray) {
+					newGameButtonItems.add(new DailyGameButtonItem(label));
+				}
+				int dailyMode = getAppData().getDefaultDailyMode();
+				newGameButtonItems.get(dailyMode).checked = true;
+
+				GridView gridView = (GridView) view.findViewById(R.id.dailyGamesModeGrid);
+				dailyGamesButtonsAdapter = new DailyGamesButtonsAdapter(this, newGameButtonItems);
+				gridView.setAdapter(dailyGamesButtonsAdapter);
+			}
+
+			// rated games switch
+			ratedGameSwitch = (SwitchButton) view.findViewById(R.id.ratedGameSwitch);
+			{// options list setup
+				optionsMap = new SparseArray<String>();
+				optionsMap.put(ID_CHESS, getString(R.string.chess));
+				optionsMap.put(ID_CHESS_960, getString(R.string.chess_960));
+			}
+			{// Rating part
+				ratingView = view.findViewById(R.id.ratingView);
+				int minRatingDefault = dailyRating - MIN_RATING_DIFF;
+				int maxRatingDefault = dailyRating + MAX_RATING_DIFF;
+
+				minRatingBtn = (RoboRadioButton) view.findViewById(R.id.minRatingBtn);
+				minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+				minRatingBtn.setText(String.valueOf(minRatingDefault));
+
+				maxRatingBtn = (RoboRadioButton) view.findViewById(R.id.maxRatingBtn);
+				maxRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+				maxRatingBtn.setText(String.valueOf(maxRatingDefault));
+
+				// set checked minRating Button
+				minRatingBtn.setChecked(true);
+
+				SeekBar ratingBar = (SeekBar) view.findViewById(R.id.ratingBar);
+				ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
+				ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
+			}
+			view.findViewById(R.id.playBtn).setOnClickListener(this);
+		}
 	}
 
 	public class OpponentsAdapter extends ItemsAdapter<SelectionItem> {

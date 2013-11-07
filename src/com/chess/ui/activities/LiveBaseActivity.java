@@ -171,7 +171,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					return super.onKeyUp(keyCode, event);
 				}
 
-				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveHomeFragment.class.getSimpleName());
+				if (!isTablet) {
+					fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveHomeFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveHomeFragmentTablet.class.getSimpleName());
+				}
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					liveService.logout();
 					unBindLiveService();

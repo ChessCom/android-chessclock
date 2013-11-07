@@ -200,7 +200,6 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
 

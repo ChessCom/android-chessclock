@@ -29,21 +29,21 @@ public class LiveArchiveGamesAdapter extends ItemsCursorAdapter {
 	protected static final String STANDARD = "standard";
 	protected static final String LIGHTNING = "lightning";
 	protected static final String BLITZ = "blitz";
-	private final int imageSize;
-	private final String drawStr;
-	private final String lossStr;
-	private final String winStr;
+	protected final int imageSize;
+	protected final String drawStr;
+	protected final String lossStr;
+	protected final String winStr;
 	private final int colorOrange;
 	private final int colorGreen;
 	private final int colorGrey;
-	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
+	protected final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public LiveArchiveGamesAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
 
 		lossStr = context.getString(R.string.loss);
-		winStr = context.getString(R.string.won);
+		winStr = AppUtils.upCaseFirst(context.getString(R.string.won));
 		drawStr = context.getString(R.string.draw);
 
 		colorOrange = resources.getColor(R.color.orange_button_flat);

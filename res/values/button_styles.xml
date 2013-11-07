@@ -34,6 +34,7 @@
     <style name="Button.OrangeNoBorder.Small">
         <item name="btn_use_border">false</item>
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
+		<item name="android:textSize">@dimen/play_button_small_text_size</item>
     </style>
 
 	<style name="Button.OrangeNoBorder.Big">

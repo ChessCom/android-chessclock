@@ -23,7 +23,7 @@ import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.PopupListSelectionFace;
-import com.chess.ui.views.chess_boards.ChessBoardLiveView;
+import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
 import java.text.NumberFormat;
@@ -40,13 +40,13 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 	private static final String OPTION_SELECTION_TAG = "time options popup";
 
-	private GameFaceHelper gameFaceHelper;
-	private Button timeSelectBtn;
+	protected GameFaceHelper gameFaceHelper;
+	protected Button timeSelectBtn;
 	private PopupLiveTimeOptionsFragment timeOptionsFragment;
 	private TimeOptionSelectedListener timeOptionSelectedListener;
-	private String[] newGameButtonsArray;
-	private TextView onlinePlayersCntTxt;
-	private List<LiveItem> featuresList;
+	protected String[] newGameButtonsArray;
+	protected TextView onlinePlayersCntTxt;
+	protected List<LiveItem> featuresList;
 	private LiveGameConfig.Builder liveGameConfigBuilder;
 	private ServerStatsUpdateListener serverStatsUpdateListener;
 
@@ -158,18 +158,13 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	}
 
 	private void createLiveChallenge() {
-//		fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
-//		if (fragmentByTag == null) {
-//			fragmentByTag = new LiveGameWaitFragment();
-//		}
-
 		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
 	}
 
-	private void widgetsInit(View view) {
+	protected void widgetsInit(View view) {
 		Resources resources = getResources();
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		ViewGroup headerView = (ViewGroup) inflater.inflate(R.layout.new_game_home_header_frame, null, false);
+		ViewGroup headerView = (ViewGroup) inflater.inflate(R.layout.new_play_home_header_frame, null, false);
 
 		{ // invite overlay setup
 			View startOverlayView = headerView.findViewById(R.id.startOverlayView);
@@ -212,12 +207,11 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		listView.setAdapter(new OptionsAdapter(getActivity(), featuresList));
 		listView.setOnItemClickListener(this);
 
-
-		ChessBoardLiveView boardView = (ChessBoardLiveView) headerView.findViewById(R.id.boardview);
+		ChessBoardBaseView boardView = (ChessBoardBaseView) headerView.findViewById(R.id.boardview);
 		boardView.setGameFace(gameFaceHelper);
 	}
 
-	private static class LiveItem {
+	protected static class LiveItem {
 		int iconId;
 		int labelId;
 
@@ -299,7 +293,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		}
 	}
 
-	private String getLiveModeButtonLabel(String label) {
+	protected String getLiveModeButtonLabel(String label) {
 		if (label.contains(Symbol.SLASH)) { // "5 | 2"
 			return label;
 		} else { // "10 min"

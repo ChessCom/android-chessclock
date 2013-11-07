@@ -85,6 +85,7 @@ public class LiveTopGameFragment extends GameLiveFragment {
 		super.startGameFromService();
 	}
 
+	@Override
 	protected void init() throws DataNotValidException {
 
 		LiveChessService liveService = getLiveService();
@@ -150,10 +151,12 @@ public class LiveTopGameFragment extends GameLiveFragment {
 		lccInitiated = true;
 	}
 
+	@Override
 	protected void logLiveTest(String messageToLog) {
 		LogMe.dl(TAG, "LIVE OBSERVE TOP GAME FRAGMENT: " + messageToLog);
 	}
 
+	@Override
 	protected void blockGame(final boolean block) {
 		FragmentActivity activity = getActivity();
 		if (activity == null) {
@@ -171,6 +174,7 @@ public class LiveTopGameFragment extends GameLiveFragment {
 	public void showOptions() {
 	}
 
+	@Override
 	protected void showGameEndPopup(View layout, String title, String message) {
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
