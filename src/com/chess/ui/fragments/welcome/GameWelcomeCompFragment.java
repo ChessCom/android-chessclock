@@ -809,7 +809,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	protected void widgetsInit(View view) {
 		Activity activity = getActivity();
 
-		controlsView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
+		controlsView = (ControlsCompView) view.findViewById(R.id.controlsView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoWelcomeView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoWelcomeView) view.findViewById(R.id.bottomPanelView);

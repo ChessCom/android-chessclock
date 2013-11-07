@@ -41,10 +41,10 @@ import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
-import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
+import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsDailyView;
@@ -92,6 +92,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 	private ImageDownloaderToListener imageDownloader;
 	private String[] countryNames;
 	private int[] countryCodes;
+	private NotationFace notationsFace;
 
 	public GameLiveArchiveFragment() { }
 
@@ -258,11 +259,11 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
-		controlsView.enableGameControls(true);
+		getControlsView().enableGameControls(true);
 		boardView.lockBoard(false);
 
 		if (currentGame.hasNewMessage()) {
-			controlsView.haveNewMessage(true);
+			getControlsView().haveNewMessage(true);
 		}
 
 		getBoardFace().setFinished(false);
@@ -347,14 +348,14 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
 
-		controlsView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				if (getActivity() == null) {
 					return;
 				}
-				controlsView.enableGameControls(true);
+				getControlsView().enableGameControls(true);
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
@@ -416,7 +417,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		}
 
 		currentGame.setHasNewMessage(false);
-		controlsView.haveNewMessage(false);
+		getControlsView().haveNewMessage(false);
 
 		getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, labelsConfig.topPlayerAvatar)); // TODO check when flip
 	}
@@ -471,7 +472,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
-		controlsView.showSubmitButtons(show);
+		getControlsView().showSubmitButtons(show);
 		if (!show) {
 			getBoardFace().setSubmit(false);
 		}
@@ -637,6 +638,22 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		}
 	}
 
+	protected ControlsDailyView getControlsView() {
+		return controlsView;
+	}
+
+	protected void setControlsView(View controlsView) {
+		this.controlsView = (ControlsDailyView) controlsView;
+	}
+
+	public void setNotationsFace(View notationsView) {
+		this.notationsFace = (NotationFace) notationsView;
+	}
+
+	public NotationFace getNotationsFace() {
+		return notationsFace;
+	}
+
 	public void init() {
 		labelsConfig = new LabelsConfig();
 
@@ -652,22 +669,22 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 	private void widgetsInit(View view) {
 
-		controlsView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
-		NotationView notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		setControlsView(view.findViewById(R.id.controlsView));
+		setNotationsFace(view.findViewById(R.id.notationsView));
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
 		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-		controlsView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsView);
-		boardView.setNotationsFace(notationsView);
+		boardView.setControlsView(getControlsView());
+		boardView.setNotationsFace(getNotationsFace());
 
 		setBoardView(boardView);
 

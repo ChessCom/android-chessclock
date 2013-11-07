@@ -80,6 +80,8 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 			array.recycle();
 		}
 
+		notationsAdapter = new NotationsPagerAdapter(getContext(), null);
+		setAdapter(notationsAdapter);
 		setOnItemClickListener(this);
 
 		textPadding = resources.getDimensionPixelSize(R.dimen.notations_text_padding);

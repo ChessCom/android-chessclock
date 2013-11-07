@@ -36,6 +36,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	public static final int BUTTONS_RE_ENABLE_DELAY = 400;
 
 	public static final int BUTTON_PREFIX = 0x00002000;
+	public static final String NEW_MESSAGE_MARK = "!";
 
 	static final int LEFT = 0;
 	static final int MIDDLE = 1;

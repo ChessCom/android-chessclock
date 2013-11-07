@@ -3,11 +3,9 @@ package com.chess.ui.views.game_controls;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import com.chess.R;
-import com.chess.widgets.RoboButton;
 import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
+import com.chess.widgets.RoboButton;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 
@@ -24,8 +22,6 @@ public class ControlsDailyViewTablet extends ControlsDailyView {
 	public static final String NEW_MESSAGE_MARK = "!";
 
 	private BoardViewNetworkFace boardViewFace;
-	private LinearLayout topLayout;
-	private LinearLayout bottomLayout;
 
 	private static final int[] styles = new int[]{
 			R.style.Rect_Top_Middle,
@@ -44,42 +40,13 @@ public class ControlsDailyViewTablet extends ControlsDailyView {
 	@Override
 	protected void addButtons() {
 
-		// add 2 linear layouts for 2 rows
-		LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		topLayout = new LinearLayout(getContext());
-		topLayout.setLayoutParams(params);
-		topLayout.setOrientation(HORIZONTAL);
+		addControlButton(OPTIONS, styles[LEFT]);
+		addControlButton(ANALYSIS, styles[MIDDLE]);
+		addControlButton(BACK, styles[MIDDLE]);
+		addControlButton(FORWARD, styles[RIGHT]);
 
-		bottomLayout = new LinearLayout(getContext());
-		bottomLayout.setLayoutParams(params);
-		bottomLayout.setOrientation(HORIZONTAL);
-
-		addView(topLayout);
-		addView(bottomLayout);
-		setOrientation(VERTICAL);
-
-		addControlButton(OPTIONS, styles[LEFT], bottomLayout);
-		addControlButton(ANALYSIS, styles[MIDDLE], bottomLayout);
-		addControlButton(BACK, styles[MIDDLE], bottomLayout);
-		addControlButton(FORWARD, styles[RIGHT], bottomLayout);
-
-		addActionButton(CLOSE, R.string.ic_close, styles[LEFT], bottomLayout);
-		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange, bottomLayout);
-	}
-
-	void addControlButton(ButtonIds buttonId, int backId, LinearLayout linearLayout) {
-		linearLayout.addView(createControlButton(buttonId, backId));
-	}
-
-	void addActionButton(ButtonIds buttonId, int labelId, int styleId, LinearLayout layout) {
-		RoboButton button = getDefaultButton();
-		button.setDrawableStyle(styleId);
-		button.setText(labelId);
-		button.setOnClickListener(this);
-		button.setId(getButtonId(buttonId));
-		button.setVisibility(GONE);
-
-		layout.addView(button, buttonParams);
+		addActionButton(CLOSE, R.string.ic_close, styles[LEFT]);
+		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
 	}
 
 	@Override
@@ -109,16 +76,6 @@ public class ControlsDailyViewTablet extends ControlsDailyView {
 	@Override
 	public void haveNewMessage(boolean newMessage) {
 
-	}
-
-	@Override
-	protected View getViewById(ButtonIds buttonId) {
-		View viewById = topLayout.findViewById(BUTTON_PREFIX + buttonId.ordinal());
-		if (viewById == null) {
-			return bottomLayout.findViewById(BUTTON_PREFIX + buttonId.ordinal());
-		} else {
-			return viewById;
-		}
 	}
 
 	@Override
@@ -165,7 +122,7 @@ public class ControlsDailyViewTablet extends ControlsDailyView {
 	private Runnable blinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			((RoboButton) findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Button_Grey2Solid_NoBorder_Light);
+			((RoboButton) getViewById(MAKE_MOVE)).setDrawableStyle(styles[LEFT]);
 
 			handler.removeCallbacks(unBlinkSubmitButton);
 			handler.postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
@@ -175,7 +132,7 @@ public class ControlsDailyViewTablet extends ControlsDailyView {
 	private Runnable unBlinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			((RoboButton) findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Button_OrangeNoBorder);
+			((RoboButton) getViewById(MAKE_MOVE)).setDrawableStyle(R.style.Rect_Bottom_Right_Orange);
 
 			blinkSubmitBtn();
 		}

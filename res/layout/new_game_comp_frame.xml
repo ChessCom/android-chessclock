@@ -64,7 +64,7 @@
 		/>
 
 	<com.chess.ui.views.game_controls.ControlsCompView
-		android:id="@+id/controlsCompView"
+		android:id="@+id/controlsView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content" />
 

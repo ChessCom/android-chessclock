@@ -957,7 +957,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	}
 
 	private void widgetsInit(View view) {
-		controlsLessonsView = (ControlsLessonsView) view.findViewById(R.id.controlsLessonsView);
+		controlsLessonsView = (ControlsLessonsView) view.findViewById(R.id.controlsView);
 
 		boardView = (ChessBoardLessonsView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);

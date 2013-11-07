@@ -1228,7 +1228,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		bottomPanelView = (PanelInfoTacticsView) view.findViewById(R.id.topPanelView);
 		bottomPanelView.setPlayerScore(getAppData().getUserTacticsRating());
-		controlsView = (ControlsTacticsView) view.findViewById(R.id.controlsTacticsView);
+		controlsView = (ControlsTacticsView) view.findViewById(R.id.controlsView);
 
 		boardView = (ChessBoardTacticsView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);

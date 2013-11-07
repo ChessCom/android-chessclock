@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
@@ -18,7 +19,7 @@
 		android:background="@drawable/shadow_back_inset_shifted">
 
 		<!--BoardView-->
-		<com.chess.ui.views.chess_boards.ChessBoardDailyView
+		<com.chess.ui.views.chess_boards.ChessBoardAnalysisView
 			android:id="@+id/boardview"
 			android:layout_width="@dimen/tablet_board_size"
 			android:layout_height="@dimen/tablet_board_size" />
@@ -110,7 +111,7 @@
 			/>
 
 		<!--Controls-->
-		<com.chess.ui.views.game_controls.ControlsDailyViewTablet
+		<com.chess.ui.views.game_controls.ControlsAnalysisViewTablet
 			android:id="@id/controlsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

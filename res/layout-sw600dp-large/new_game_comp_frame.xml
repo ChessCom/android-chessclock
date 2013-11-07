@@ -17,8 +17,14 @@
 		android:layout_marginBottom="@dimen/tablet_board_margin_bottom"
 		android:background="@drawable/shadow_back_inset_shifted">
 
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/engineThinkingPath"
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/notations_view_height"
+			android:visibility="gone" />
+
 		<!--BoardView-->
-		<com.chess.ui.views.chess_boards.ChessBoardDailyView
+		<com.chess.ui.views.chess_boards.ChessBoardCompView
 			android:id="@+id/boardview"
 			android:layout_width="@dimen/tablet_board_size"
 			android:layout_height="@dimen/tablet_board_size" />
@@ -41,63 +47,12 @@
 			custom:oneLine="@bool/one_line_for_board"
 			android:layout_marginBottom="@dimen/tablet_panel_info_top_margin" />
 
-
-		<!--Top Buttons -->
-		<RadioGroup
-			android:id="@+id/topButtonsGroup"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal"
-			android:layout_below="@id/topPanelView"
-			android:layout_marginLeft="2dp"
-			android:layout_marginRight="2dp"
-			>
-
-			<!--Notations Button-->
-			<com.chess.widgets.RoboRadioButton
-				android:id="@+id/notationsBtn"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				custom:ttf="Icon"
-				android:text="@string/ic_live"
-				android:textSize="@dimen/glyph_icon_big2"
-				style="@style/Rect.Tablet.Left"
-				android:checked="true"
-				/>
-
-			<!--Chat Button-->
-			<com.chess.widgets.RoboRadioButton
-				android:id="@+id/chatBtn"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				custom:ttf="Icon"
-				android:text="@string/ic_chat"
-				android:textSize="@dimen/glyph_icon_big2"
-				style="@style/Rect.Tablet.Left"
-				/>
-
-			<!--Notes Button-->
-			<com.chess.widgets.RoboRadioButton
-				android:id="@+id/notesBtn"
-				android:layout_width="0dp"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				custom:ttf="Icon"
-				android:text="@string/ic_edit"
-				android:textSize="@dimen/glyph_icon_big2"
-				style="@style/Rect.Tablet.Left"
-				/>
-
-		</RadioGroup>
-
 		<!--NotationsView-->
 		<com.chess.ui.views.NotationsViewTablet
 			android:id="@+id/notationsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/topButtonsGroup"
+			android:layout_below="@id/topPanelView"
 			android:layout_above="@+id/controlsView"
 			android:numColumns="2"
 			android:horizontalSpacing="5dip"
@@ -110,7 +65,7 @@
 			/>
 
 		<!--Controls-->
-		<com.chess.ui.views.game_controls.ControlsDailyViewTablet
+		<com.chess.ui.views.game_controls.ControlsCompViewTablet
 			android:id="@id/controlsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

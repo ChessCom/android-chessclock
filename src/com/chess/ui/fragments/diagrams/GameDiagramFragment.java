@@ -676,7 +676,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	}
 
 	private void widgetsInit(View view) {
-		controlsView = (ControlsDiagramView) view.findViewById(R.id.controlsDiagramView);
+		controlsView = (ControlsDiagramView) view.findViewById(R.id.controlsView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		notationCommentTxt = (TextView) view.findViewById(R.id.notationCommentTxt);
 		notationCommentTxt.setOnClickListener(this);

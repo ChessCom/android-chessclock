@@ -118,5 +118,6 @@
 	<dimen name="panel_info_avatar_left_margin">11dp</dimen>
 	<dimen name="notations_text_view_height">30dp</dimen>
 	<dimen name="panel_info_welcome_player_top_margin">8dp</dimen>
+	<dimen name="daily_games_time_left_icon">28dp</dimen>
 
 </resources>

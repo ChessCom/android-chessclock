@@ -300,7 +300,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 			inviteDetails1Txt = (TextView) view.findViewById(R.id.inviteDetails1Txt);
 			inviteTitleTxt = (TextView) view.findViewById(R.id.inviteTitleTxt);
 		}
-		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
+		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsView);
 
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);

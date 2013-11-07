@@ -40,10 +40,10 @@ import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
-import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
+import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsDailyView;
@@ -76,13 +76,13 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private ChessBoardNetworkView boardView;
 
 	private DailyFinishedGameData currentGame;
-	private String username;
+	protected String username;
 
 	protected boolean userPlayWhite = true;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
-	private ControlsDailyView controlsDailyView;
+	private ControlsDailyView controlsView;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
 	private LabelsConfig labelsConfig;
@@ -91,7 +91,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private ImageDownloaderToListener imageDownloader;
 	private String[] countryNames;
 	private int[] countryCodes;
-	private NotationView notationsView;
+	private NotationFace notationsFace;
 
 	public GameDailyFinishedFragment() { }
 
@@ -285,11 +285,11 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
-		controlsDailyView.enableGameControls(true);
+		getControlsView().enableGameControls(true);
 		boardView.lockBoard(false);
 
 		if (currentGame.hasNewMessage()) {
-			controlsDailyView.haveNewMessage(true);
+			getControlsView().haveNewMessage(true);
 		}
 
 		getBoardFace().setFinished(true);
@@ -324,7 +324,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 				if (getActivity() == null) {
 					return;
 				}
-				notationsView.rewindForward();
+				getNotationsFace().rewindForward();
 			}
 		}, NOTATION_REWIND_DELAY);
 
@@ -443,7 +443,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		}
 
 		currentGame.setHasNewMessage(false);
-		controlsDailyView.haveNewMessage(false);
+		getControlsView().haveNewMessage(false);
 
 		getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, labelsConfig.topPlayerAvatar)); // TODO check when flip
 	}
@@ -498,7 +498,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
-		controlsDailyView.showSubmitButtons(show);
+		getControlsView().showSubmitButtons(show);
 		if (!show) {
 			getBoardFace().setSubmit(false);
 		}
@@ -664,6 +664,22 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		}
 	}
 
+	protected ControlsDailyView getControlsView() {
+		return controlsView;
+	}
+
+	protected void setControlsView(View controlsView) {
+		this.controlsView = (ControlsDailyView) controlsView;
+	}
+
+	public void setNotationsFace(View notationsView) {
+		this.notationsFace = (NotationFace) notationsView;
+	}
+
+	public NotationFace getNotationsFace() {
+		return notationsFace;
+	}
+
 	public void init() {
 		labelsConfig = new LabelsConfig();
 
@@ -679,22 +695,22 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	private void widgetsInit(View view) {
 
-		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsNetworkView);
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		setControlsView(view.findViewById(R.id.controlsView));
+		setNotationsFace(view.findViewById(R.id.notationsView));
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
 		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-		controlsDailyView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsDailyView);
-		boardView.setNotationsFace(notationsView);
+		boardView.setControlsView(getControlsView());
+		boardView.setNotationsFace(getNotationsFace());
 
 		setBoardView(boardView);
 
@@ -709,14 +725,14 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 
-		controlsDailyView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				if (getActivity() == null) {
 					return;
 				}
-				controlsDailyView.enableGameControls(true);
+				getControlsView().enableGameControls(true);
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}

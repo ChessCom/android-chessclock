@@ -36,9 +36,9 @@ import com.chess.ui.fragments.settings.SettingsBoardFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
-import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardCompView;
+import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsBaseView;
@@ -75,7 +75,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private LabelsConfig labelsConfig;
 	private boolean labelsSet;
 
-	private NotationView notationsView;
+	private NotationFace notationsFace;
 	private boolean humanBlack;
 	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
@@ -99,11 +99,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	public static GameCompFragment createInstance(CompGameConfig config) {
-		GameCompFragment frag = new GameCompFragment();
+		GameCompFragment fragment = new GameCompFragment();
 		Bundle bundle = new Bundle();
 		bundle.putParcelable(CONFIG, config);
-		frag.setArguments(bundle);
-		return frag;
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 
 	@Override
@@ -130,13 +130,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		setTitle(R.string.vs_computer);
 
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
-		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
-		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
-
-		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
 		widgetsInit(view);
 
 		{ // Engine init
@@ -157,7 +150,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	private void updateData() {
-		notationsView.resetNotations();
+		getNotationsFace().resetNotations();
 		ChessBoardComp.resetInstance();
 
 		isAutoFlip = getAppData().isAutoFlipFor2Players();
@@ -462,7 +455,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			boardView.invalidate();
 
 			boardView.setHint(false);
-			controlsView.enableGameControls(true);
+			getControlsView().enableGameControls(true);
 		}
 	};
 
@@ -489,7 +482,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	protected void restoreGame() {
-		//notationsView.resetNotations();
+		//notationsFace.resetNotations();
 		ChessBoardComp.resetInstance();
 		ChessBoardComp.getInstance(this).setJustInitialized(false);
 		boardView.setGameUiFace(this);
@@ -627,7 +620,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		getAppData().clearSavedCompGame();
 
-		controlsView.enableHintButton(false);
+		getControlsView().enableHintButton(false);
 //		if (AppUtils.isNeedToUpgrade(getActivity())) {
 //			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 //		}
@@ -675,7 +668,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	private void startNewGame() {
-		notationsView.resetNotations();
+		getNotationsFace().resetNotations();
 		ChessBoardComp.resetInstance();
 		getBoardFace().setMode(compGameConfig.getMode());
 		resideBoardIfCompWhite();
@@ -803,17 +796,35 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		}
 	}
 
+	protected ControlsCompView getControlsView() {
+		return controlsView;
+	}
+
+	protected void setControlsView(View controlsView) {
+		this.controlsView = (ControlsCompView) controlsView;
+	}
+
+	public void setNotationsFace(View notationsView) {
+		this.notationsFace = (NotationFace) notationsView;
+	}
+
+	public NotationFace getNotationsFace() {
+		return notationsFace;
+	}
+
 	private void init() {
 		labelsConfig = new LabelsConfig();
 		getBoardFace().setMode(compGameConfig.getMode());
 	}
 
 	private void widgetsInit(View view) {
-
-		controlsView = (ControlsCompView) view.findViewById(R.id.controlsCompView);
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		setControlsView(view.findViewById(R.id.controlsView));
+		setNotationsFace(view.findViewById(R.id.notationsView));
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
+
+		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 		int mode = getBoardFace().getMode();
 		{// set avatars
@@ -848,9 +859,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsView);
-		boardView.setNotationsFace(notationsView);
-		notationsView.resetNotations();
+		boardView.setControlsView(getControlsView());
+		boardView.setNotationsFace(getNotationsFace());
+		getNotationsFace().resetNotations();
 
 		boardView.setGameUiFace(this);
 		setBoardView(boardView);
@@ -865,14 +876,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 
-		controlsView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				if (getActivity() == null) {
 					return;
 				}
-				controlsView.enableGameControls(true);
+				getControlsView().enableGameControls(true);
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}

@@ -78,15 +78,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private IntentFilter backgroundUpdateFilter;
 	private BackgroundUpdateReceiver backgroundUpdateReceiver;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
-	private boolean isTablet;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if (StaticData.USE_TABLETS) {
-			isTablet = AppUtils.is7InchTablet(this) || AppUtils.is10InchTablet(this);
-		}
 
 		setSlidingActionBarEnabled(true);
 
@@ -189,7 +184,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		if (intent.hasExtra(IntentConstants.LIVE_CHESS)) {
 
-			GameLiveFragment gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+			GameLiveFragment gameLiveFragment = getLiveFragment();
 			if (gameLiveFragment != null) {
 				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 				currentActiveFragment = gameLiveFragment;
@@ -428,7 +423,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				.beginTransaction()
 				.replace(R.id.menu_frame_right, fragment)
 				.commit();
-		sm.setSecondaryShadowDrawable(R.drawable.defaultshadowright);
+		sm.setSecondaryShadowDrawable(R.drawable.defaultshadow_right);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
 	}
 

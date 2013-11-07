@@ -1,8 +1,10 @@
 package com.chess.ui.fragments.daily;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -58,12 +61,17 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
 
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+			transaction.add(R.id.optionsFragmentContainer, HomePlayFragment.createInstance(RIGHT_MENU_MODE))
+					.commitAllowingStateLoss();
+		}
 		pullToRefresh(true);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
+		return inflater.inflate(R.layout.new_home_daily_finished_games_frame, container, false);
 	}
 
 	@Override
@@ -136,6 +144,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		handler.removeCallbacks(delayedLoadFromDb);
 		releaseResources();
 	}
+
 	private Runnable delayedLoadFromDb = new Runnable() {
 		@Override
 		public void run() {
@@ -174,7 +183,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
 		DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
 
-		getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
+		getActivityFace().openFragment(GameDailyFinishedFragmentTablet.createInstance(finishedItem.getGameId()));
 		return true;
 	}
 

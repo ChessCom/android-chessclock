@@ -56,13 +56,6 @@
 
 		</com.chess.widgets.LinLayout>
 
-		<!--Live Game Full Options View-->
-<!--		<FrameLayout
-			android:id="@+id/liveOptionsFrame"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical" />-->
-
 		<!--Live Game Quick Options View-->
 		<com.chess.widgets.RelLayout
 			android:id="@+id/liveOptionsView"

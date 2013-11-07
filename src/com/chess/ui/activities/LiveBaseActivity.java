@@ -34,10 +34,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
-import com.chess.ui.fragments.live.GameLiveFragment;
-import com.chess.ui.fragments.live.LiveGameWaitFragment;
-import com.chess.ui.fragments.live.LiveHomeFragment;
-import com.chess.ui.fragments.live.LiveTopGameFragment;
+import com.chess.ui.fragments.live.*;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
@@ -162,7 +159,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (getAppData().isLiveChess() && isLCSBound) {
-				Fragment fragmentByTag = getSupportFragmentManager().findFragmentByTag(GameLiveFragment.class.getSimpleName());
+				Fragment fragmentByTag = getLiveFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					showPopupDialog(R.string.warning, R.string.exit_game, EXIT_GAME_TAG);
 					return true;
@@ -579,7 +576,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public void onConnectionBlocked(final boolean blocked) {
 		LogMe.dl(TAG, "onConnectionBlocked = " + blocked);
-		GameLiveFragment gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+		GameLiveFragment gameLiveFragment = getLiveFragment();
 		if (gameLiveFragment != null) {
 			gameLiveFragment.onConnectionBlocked(blocked);
 		}
@@ -666,7 +663,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		liveService.setOuterChallengeListener(outerChallengeListener);
 		liveService.setChallengeTaskListener(challengeTaskListener);
 
-		GameLiveFragment gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+		GameLiveFragment gameLiveFragment = getLiveFragment();
 		LogMe.dl(TAG, "onLiveServiceConnected: gameLiveFragment=" + gameLiveFragment);
 		if (gameLiveFragment != null) {
 			gameLiveFragment.onLiveServiceConnected();
@@ -685,7 +682,16 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		if (liveHomeFragment != null) {
 			liveHomeFragment.onLiveServiceConnected();
 		}
+	}
 
+	protected GameLiveFragment getLiveFragment() {
+		GameLiveFragment gameLiveFragment;
+		if (!isTablet) {
+			gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+		} else {
+			gameLiveFragment = (GameLiveFragmentTablet) findFragmentByTag(GameLiveFragmentTablet.class.getSimpleName());
+		}
+		return gameLiveFragment;
 	}
 
 	public LiveChessService getLiveService() {

@@ -114,8 +114,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private String[] countryNames;
 	private int[] countryCodes;
-	private String username;
-	private NotationFace notationsView;
+	protected String username;
+	private NotationFace notationsFace;
 
 	public GameDailyFragment() {
 	}
@@ -232,14 +232,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		optionsSelectFragment = null;
 	}
 
-	public void setNotationsView(View notationsView) {
-		this.notationsView = (NotationFace) notationsView;
-	}
-
-	public NotationFace getNotationsFace() {
-		return notationsView;
-	}
-
 	private class MoveUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -254,14 +246,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		public void onReceive(Context context, Intent intent) {
 			getControlsView().haveNewMessage(true);
 		}
-	}
-
-	protected ControlsDailyView getControlsView() {
-		return controlsView;
-	}
-
-	protected void setControlsView(View controlsView) {
-		this.controlsView = (ControlsDailyView) controlsView;
 	}
 
 	private void loadGameAndUpdate() {
@@ -916,6 +900,23 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		}
 	}
 
+	protected ControlsDailyView getControlsView() {
+		return controlsView;
+	}
+
+	protected void setControlsView(View controlsView) {
+		this.controlsView = (ControlsDailyView) controlsView;
+	}
+
+	public void setNotationsFace(View notationsView) {
+		this.notationsFace = (NotationFace) notationsView;
+	}
+
+	public NotationFace getNotationsFace() {
+		return notationsFace;
+	}
+
+
 	public void init() {
 		gameId = getArguments().getLong(BaseGameItem.GAME_ID, 0);
 
@@ -940,8 +941,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	}
 
 	private void widgetsInit(View view) {
-		setControlsView(view.findViewById(R.id.controlsNetworkView));
-		setNotationsView(view.findViewById(R.id.notationsView));
+		setControlsView(view.findViewById(R.id.controlsView));
+		setNotationsFace(view.findViewById(R.id.notationsView));
 
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);

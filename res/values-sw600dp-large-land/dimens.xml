@@ -10,7 +10,7 @@
 	<dimen name="slidingmenu_offset_left">650dp</dimen>
 	<dimen name="list_padding">10dp</dimen>
 	<dimen name="shadow_width">15dp</dimen>
-	<dimen name="daily_game_list_item_width">260dp</dimen>
+	<dimen name="daily_game_list_item_width">204dp</dimen>
 	<dimen name="panel_info_avatar_left_margin">2dp</dimen>
 	<dimen name="notations_text_view_height">30dp</dimen>
 

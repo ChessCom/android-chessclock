@@ -24,6 +24,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
 import com.chess.model.TacticsDataHolder;
 import com.chess.statics.*;
+import com.chess.utilities.AppUtils;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
@@ -72,10 +73,15 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected SharedPreferences.Editor preferencesEditor;
 	private UiLifecycleHelper facebookUiHelper;
 	private boolean facebookActive;
+	protected boolean isTablet;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (StaticData.USE_TABLETS) {
+			isTablet = AppUtils.is7InchTablet(this) || AppUtils.is10InchTablet(this);
+		}
 
 		loginUpdateListener = new LoginUpdateListener();
 

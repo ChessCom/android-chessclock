@@ -6,7 +6,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-	<com.chess.widgets.LinLayout
+	<com.chess.widgets.RelLayout
 		android:id="@+id/boardLinLay"
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
@@ -18,12 +18,30 @@
 		android:background="@drawable/shadow_back_inset_shifted">
 
 		<!--BoardView-->
-		<com.chess.ui.views.chess_boards.ChessBoardDailyView
+		<com.chess.ui.views.chess_boards.ChessBoardLiveView
 			android:id="@+id/boardview"
 			android:layout_width="@dimen/tablet_board_size"
 			android:layout_height="@dimen/tablet_board_size" />
 
-	</com.chess.widgets.LinLayout>
+		<!--Loading view-->
+		<RelativeLayout
+			android:id="@+id/fadeLay"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@color/loading_overlay"
+			android:visibility="invisible"
+			>
+
+			<ProgressBar
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				style="@style/ChessProgressBar"
+				android:layout_centerInParent="true"
+				/>
+
+		</RelativeLayout>
+
+	</com.chess.widgets.RelLayout>
 
 	<com.chess.widgets.RelLayout
 		android:layout_width="wrap_content"
@@ -110,7 +128,7 @@
 			/>
 
 		<!--Controls-->
-		<com.chess.ui.views.game_controls.ControlsDailyViewTablet
+		<com.chess.ui.views.game_controls.ControlsLiveViewTablet
 			android:id="@id/controlsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

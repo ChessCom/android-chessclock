@@ -120,7 +120,14 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 
 		CompGameConfig config = getNewCompGameConfig();
 
-		GameCompFragment gameCompFragment = (GameCompFragment) getFragmentManager().findFragmentByTag(GameCompFragment.class.getSimpleName());
+		GameCompFragment gameCompFragment;
+		if (!isTablet) {
+			gameCompFragment = (GameCompFragment) getFragmentManager().findFragmentByTag(GameCompFragment.class.getSimpleName());
+		} else {
+			gameCompFragment = (GameCompFragmentTablet) getFragmentManager().findFragmentByTag(GameCompFragmentTablet.class.getSimpleName());
+		}
+
+
 //		if (gameCompFragment != null) { // shouldn't be null
 			gameCompFragment.updateConfig(config);
 //		}

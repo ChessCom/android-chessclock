@@ -94,7 +94,7 @@
         />
 
     <com.chess.ui.views.game_controls.ControlsDailyView
-        android:id="@+id/controlsNetworkView"
+        android:id="@+id/controlsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

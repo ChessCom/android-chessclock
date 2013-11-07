@@ -59,7 +59,11 @@ public class ImageGetter implements Html.ImageGetter {
 
 						int newHeight = (int) (imageWidth / scale);
 
-						bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, newHeight, true);
+						try {
+							bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, newHeight, true);
+						} catch (OutOfMemoryError ignore) {
+							return;
+						}
 
 						BitmapDrawable loadedDrawable = new BitmapDrawable(context.getResources(), bitmap);
 						loadedDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());

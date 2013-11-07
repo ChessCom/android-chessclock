@@ -100,8 +100,8 @@
 			/>
 
 		<!--Controls-->
-		<com.chess.ui.views.game_controls.ControlsCompViewTablet
-			android:id="@+id/controlsCompView"
+		<com.chess.ui.views.game_controls.ControlsCompWelcomeViewTablet
+			android:id="@+id/controlsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			custom:controlsRound="true"

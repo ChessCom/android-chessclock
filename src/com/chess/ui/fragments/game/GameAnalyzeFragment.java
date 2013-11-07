@@ -329,7 +329,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	}
 
 	private void widgetsInit(View view) {
-		controlsView = (ControlsAnalysisView) view.findViewById(R.id.controlsAnalysisView);
+		controlsView = (ControlsAnalysisView) view.findViewById(R.id.controlsView);
 		NotationView notationsView = (NotationView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);

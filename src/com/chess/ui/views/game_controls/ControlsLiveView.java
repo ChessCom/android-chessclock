@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.ui.views.drawables.smart_button.RectButtonBadgeDrawable;
 import com.chess.widgets.RoboButton;
 import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
 
@@ -18,10 +20,8 @@ import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
  */
 public class ControlsLiveView extends ControlsBaseView {
 
-
 	private static final long BLINK_DELAY = 5 * 1000;
 	private static final long UNBLINK_DELAY = 400;
-
 
 	private BoardViewNetworkFace boardViewFace;
 
@@ -37,6 +37,12 @@ public class ControlsLiveView extends ControlsBaseView {
 	void init(Context context, AttributeSet attrs) {
 		super.init(context, attrs);
 
+		addButtons();
+
+		showDefault();
+	}
+
+	protected void addButtons() {
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
 		addControlButton(HOME, R.style.Rect_Bottom_Left);
 		addControlButton(CHAT, R.style.Rect_Bottom_Middle);
@@ -45,8 +51,6 @@ public class ControlsLiveView extends ControlsBaseView {
 
 		addActionButton(CLOSE, R.string.ic_close, R.style.Rect_Bottom_Left);
 		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
-
-		showDefault();
 	}
 
 	@Override
@@ -77,9 +81,17 @@ public class ControlsLiveView extends ControlsBaseView {
 	}
 
 	public void haveNewMessage(boolean newMessage) {
-//		int imgId = newMessage ? R.drawable.ic_chat_nm : R.drawable.ic_chat;
-//
-//		((ImageButton) findViewById(getButtonId(ButtonIds.CHAT)).setImageResource(imgId);
+		RoboButton chatButton = (RoboButton) findViewById(getButtonId(ButtonIds.CHAT));
+
+		if (newMessage) {
+			ButtonDrawableBuilder.setBackgroundToView(chatButton, R.style.Rect_Bottom_Middle_Badge);
+			RectButtonBadgeDrawable background = (RectButtonBadgeDrawable) chatButton.getBackground();
+			if (background != null) {
+				background.setBadgeValue(NEW_MESSAGE_MARK);
+			}
+		} else {
+			ButtonDrawableBuilder.setBackgroundToView(chatButton, R.style.Rect_Bottom_Middle);
+		}
 		invalidate();
 	}
 

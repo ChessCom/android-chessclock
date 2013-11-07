@@ -41,6 +41,7 @@
 			android:background="@color/sliding_menu_overlay"
 			/>
 
+		<!--Shadow-->
 		<ImageView
 			android:layout_width="10dp"
 			android:layout_height="match_parent"

@@ -18,6 +18,7 @@ import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.comp.GameCompFragment;
+import com.chess.ui.fragments.comp.GameCompFragmentTablet;
 import com.chess.ui.fragments.daily.DailyHomeFragment;
 import com.chess.ui.fragments.forums.ForumCategoriesFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
@@ -225,7 +226,12 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		CompGameConfig.Builder builder = new CompGameConfig.Builder()
 				.setMode(compGameMode)
 				.setStrength(getAppData().getCompLevel());
-		return GameCompFragment.createInstance(builder.build());
+
+		if (!isTablet) {
+			return GameCompFragment.createInstance(builder.build());
+		} else {
+			return GameCompFragmentTablet.createInstance(builder.build());
+		}
 	}
 
 	private class NavigationMenuItem {

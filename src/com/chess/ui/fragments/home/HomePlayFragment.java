@@ -12,25 +12,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.widgets.RelLayout;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.DailySeekItem;
-import com.chess.statics.AppConstants;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.comp.GameCompFragment;
+import com.chess.ui.fragments.comp.GameCompFragmentTablet;
 import com.chess.ui.fragments.daily.DailyGamesOptionsFragment;
 import com.chess.ui.fragments.friends.ChallengeFriendFragment;
 import com.chess.ui.fragments.live.LiveGameOptionsFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.widgets.RelLayout;
 import com.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
@@ -271,7 +272,13 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		} else if (view.getId() == R.id.vsCompHeaderView) {
 			CompGameConfig.Builder gameConfigBuilder = new CompGameConfig.Builder();
 			CompGameConfig compGameConfig = gameConfigBuilder.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE).build();
-			getActivityFace().openFragment(GameCompFragment.createInstance(compGameConfig));
+
+			if (!isTablet) {
+				getActivityFace().openFragment(GameCompFragment.createInstance(compGameConfig));
+			} else {
+				getActivityFace().openFragment(GameCompFragmentTablet.createInstance(compGameConfig));
+			}
+
 			if (positionMode == RIGHT_MENU_MODE) {
 				getActivityFace().toggleRightMenu();
 			}

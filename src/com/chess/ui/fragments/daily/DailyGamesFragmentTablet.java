@@ -2,9 +2,11 @@ package com.chess.ui.fragments.daily;
 
 import android.app.AlertDialog;
 import android.content.*;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,7 @@ import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -69,6 +72,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
 
+	private FrameLayout optionsFragmentContainer;
 	private TextView emptyView;
 	private GridView gridView;
 	private View loadingView;
@@ -105,6 +109,11 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+			transaction.add(R.id.optionsFragmentContainer, HomePlayFragment.createInstance(RIGHT_MENU_MODE))
+					.commitAllowingStateLoss();
+		}
 		pullToRefresh(true);
 	}
 
@@ -120,6 +129,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
+		optionsFragmentContainer = (FrameLayout) view.findViewById(R.id.optionsFragmentContainer);
 		gridView = (GridView) view.findViewById(R.id.gridView);
 		gridView.setOnItemClickListener(this);
 		gridView.setOnItemLongClickListener(this);

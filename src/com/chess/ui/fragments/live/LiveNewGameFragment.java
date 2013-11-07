@@ -60,13 +60,13 @@ public class LiveNewGameFragment extends CommonLogicFragment {
 		setArguments(bundle);
 	}
 
-	public static LiveNewGameFragment createInstance(int mode) {
-		LiveNewGameFragment fragment = new LiveNewGameFragment();
-		Bundle bundle = new Bundle();
-		bundle.putInt(MODE, mode);
-		fragment.setArguments(bundle);
-		return fragment;
-	}
+//	public static LiveNewGameFragment createInstance(int mode) {
+//		LiveNewGameFragment fragment = new LiveNewGameFragment();
+//		Bundle bundle = new Bundle();
+//		bundle.putInt(MODE, mode);
+//		fragment.setArguments(bundle);
+//		return fragment;
+//	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -4,8 +4,10 @@
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+	android:minHeight="@dimen/daily_game_list_item_width"
     android:background="@drawable/transparent_list_item_selector"
     >
+
 	<com.chess.backend.image_load.ProgressImageView
 		android:id="@+id/boardPreviewFrame"
 		android:layout_width="@dimen/daily_board_preview_size"
@@ -33,6 +35,8 @@
         android:gravity="center_vertical"
         android:layout_below="@id/boardPreviewFrame"
         android:layout_toRightOf="@id/playerImg"
+        android:layout_toLeftOf="@+id/timeLeftIcon"
+		android:paddingRight="3dp"
         android:text="test"
         custom:ttf="Bold"
         android:layout_marginTop="-4dip"
@@ -41,13 +45,13 @@
 
     <!--Icon-->
     <com.chess.widgets.RoboTextView
-        android:id="@+id/timeLeftIcon"
+        android:id="@id/timeLeftIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/red"
         android:layout_below="@id/boardPreviewFrame"
 		android:layout_toLeftOf="@+id/timeLeftTxt"
-        android:textSize="@dimen/glyph_icon_default"
+        android:textSize="@dimen/daily_games_time_left_icon"
         custom:ttf="Icon"
 		android:layout_marginTop="-4dip"
         android:paddingTop="3dip"

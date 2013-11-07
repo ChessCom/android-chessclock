@@ -63,7 +63,7 @@
         />
 
     <com.chess.ui.views.game_controls.ControlsAnalysisView
-        android:id="@+id/controlsAnalysisView"
+        android:id="@+id/controlsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

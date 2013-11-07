@@ -28,9 +28,9 @@ import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
-import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardAnalysisView;
+import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsAnalysisView;
@@ -56,6 +56,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	protected PanelInfoGameView topPanelView;
 	protected PanelInfoGameView bottomPanelView;
 	protected ControlsAnalysisView controlsView;
+	protected NotationFace notationsFace;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
 	protected BoardAvatarDrawable opponentAvatarDrawable;
@@ -64,6 +65,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	protected String[] countryNames;
 	protected int[] countryCodes;
 	protected String username;
+
+	public GameDailyAnalysisFragment(){}
 
 	public static GameDailyAnalysisFragment createInstance(long gameId, String username) {
 		GameDailyAnalysisFragment fragment = new GameDailyAnalysisFragment();
@@ -203,7 +206,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
 
-		controlsView.enableGameControls(true);
+		getControlsView().enableGameControls(true);
 		boardView.lockBoard(false);
 
 		getBoardFace().setFinished(false);
@@ -461,6 +464,22 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		}
 	}
 
+	protected ControlsAnalysisView getControlsView() {
+		return controlsView;
+	}
+
+	protected void setControlsView(View controlsView) {
+		this.controlsView = (ControlsAnalysisView) controlsView;
+	}
+
+	public void setNotationsFace(View notationsView) {
+		this.notationsFace = (NotationFace) notationsView;
+	}
+
+	public NotationFace getNotationsFace() {
+		return notationsFace;
+	}
+
 	protected void init() {
 		labelsConfig = new LabelsConfig();
 
@@ -471,8 +490,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	private void widgetsInit(View view) {
-		controlsView = (ControlsAnalysisView) view.findViewById(R.id.controlsAnalysisView);
-		NotationView notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		setControlsView(view.findViewById(R.id.controlsView));
+		setNotationsFace(view.findViewById(R.id.notationsView));
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
@@ -489,28 +508,28 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			labelsConfig.bottomAvatar = userAvatarDrawable;
 		}
 
-		controlsView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 
 		boardView = (ChessBoardAnalysisView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsView);
-		boardView.setNotationsFace(notationsView);
+		boardView.setControlsView(getControlsView());
+		boardView.setNotationsFace(getNotationsFace());
 
 		setBoardView(boardView);
 
 		boardView.setGameActivityFace(this);
 		boardView.lockBoard(true);
 
-		controlsView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				if (getActivity() == null) {
 					return;
 				}
-				controlsView.enableGameControls(true);
+				getControlsView().enableGameControls(true);
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}

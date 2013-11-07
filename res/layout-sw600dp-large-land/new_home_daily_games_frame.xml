@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_toLeftOf="@+id/optionsFragmentContainerView"
+		android:background="@color/white">
+
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/emptyView"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:text="@string/no_network"
+			android:gravity="center"
+			android:layout_gravity="center"
+			android:textSize="20sp"
+			android:textColor="@color/grey_button_1"
+			android:paddingLeft="10dip"
+			custom:ttf="Bold"
+			style="@style/DarkShadowBottom"
+			android:visibility="gone"
+			android:layout_centerInParent="true" />
+
+		<GridView
+			android:id="@+id/gridView"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_above="@+id/completedGamesHeaderView"
+			android:background="@color/white"
+			android:cacheColorHint="@color/white"
+			android:dividerHeight="0px"
+			android:divider="@null"
+			android:columnWidth="@dimen/daily_game_list_item_width"
+			android:numColumns="@integer/home_daily_columns"
+			android:stretchMode="columnWidth"
+			android:paddingTop="24dp"
+			android:verticalSpacing="22dip"
+			android:fadingEdge="none"
+			android:requiresFadingEdge="none"
+			/>
+
+		<ProgressBar
+			android:id="@+id/loadingView"
+			android:layout_width="@dimen/pending_progress_bar_size"
+			android:layout_height="@dimen/pending_progress_bar_size"
+			android:layout_margin="5dip"
+			android:layout_centerInParent="true"
+			style="?android:attr/progressBarStyle"
+			android:visibility="gone" />
+
+		<!--Complete Button(Header)-->
+		<com.chess.widgets.LinLayout
+			android:id="@id/completedGamesHeaderView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/ListItem.Header_2.Light"
+			android:gravity="center_vertical"
+			android:paddingLeft="7dip"
+			android:paddingRight="15dip"
+			android:layout_alignParentBottom="true">
+
+			<!--Icon-->
+			<com.chess.widgets.RoboTextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/ic_board"
+				android:textColor="@color/new_light_grey_2"
+				style="@style/GlyphIcon.Big" />
+
+			<!--Title-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/headerTitle"
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/completed"
+				android:paddingLeft="8dip"
+				style="@style/HeaderTitle.Dark"
+				custom:ttf="Regular" />
+
+		</com.chess.widgets.LinLayout>
+	</RelativeLayout>
+
+	<!--Right quick access side panel-->
+	<FrameLayout
+		android:id="@id/optionsFragmentContainerView"
+		android:layout_width="250dp"
+		android:layout_height="match_parent"
+		android:layout_alignParentRight="true">
+		<!--Shadow-->
+		<ImageView
+			android:layout_width="10dp"
+			android:layout_height="match_parent"
+			android:src="@drawable/defaultshadow_right"
+			android:contentDescription="@string/image" />
+
+		<FrameLayout
+			android:id="@+id/optionsFragmentContainer"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" />
+
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@color/sliding_menu_overlay" />
+
+	</FrameLayout>
+
+</RelativeLayout>
