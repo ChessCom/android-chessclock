@@ -25,6 +25,7 @@ import com.chess.ui.fragments.forums.ForumCategoriesFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
+import com.chess.ui.fragments.lessons.LessonsFragmentTablet;
 import com.chess.ui.fragments.live.LiveHomeFragment;
 import com.chess.ui.fragments.live.LiveHomeFragmentTablet;
 import com.chess.ui.fragments.messages.MessagesInboxFragment;
@@ -174,9 +175,18 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_lessons:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(LessonsFragment.class.getSimpleName());
+				if (!isTablet) {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(LessonsFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(LessonsFragmentTablet.class.getSimpleName());
+				}
+
 				if (fragmentByTag == null) {
-					fragmentByTag = new LessonsFragment();
+					if (!isTablet) {
+						fragmentByTag = new LessonsFragment();
+					} else {
+						fragmentByTag = new LessonsFragmentTablet();
+					}
 				}
 				break;
 			case R.drawable.ic_nav_videos:

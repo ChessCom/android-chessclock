@@ -151,6 +151,7 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 				.addToBackStack(fragment.getClass().getSimpleName()).commitAllowingStateLoss();
 	}
 
+	@Override
 	public boolean showPreviousFragment() {
 		int entryCount = getChildFragmentManager().getBackStackEntryCount();
 		if (entryCount > 0) {

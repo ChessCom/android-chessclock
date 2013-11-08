@@ -360,5 +360,6 @@
 	<string name="upgrade_to_unlimited_access">Upgrade to Unlimited Access on Chess.com!</string>
 	<string name="completed_daily">Completed Daily</string>
 	<string name="bullet">Bullet</string>
+	<string name="attempts">Attempts</string>
 
 </resources>

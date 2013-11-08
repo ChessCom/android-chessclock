@@ -9,7 +9,13 @@
     android:animateLayoutChanges="true"
     >
 
-    <include layout="@layout/new_categories_selection_view"/>
+	<com.chess.widgets.RoboSpinner
+		android:id="@+id/categoriesSpinner"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:minHeight="@dimen/list_item_height"
+		style="@style/ListItem"
+		/>
 
     <ListView
         android:id="@+id/listView"

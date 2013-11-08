@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:id="@+id/upgradeView"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@color/upgrade_diamond_button"
+	android:padding="14dp"
+	>
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/lessonsUpgradeMessageTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:text="@string/improve_game_with_lessons"
+		android:textSize="@dimen/default_text_size_small"
+		android:textColor="@color/new_text_blue_dark"
+		android:paddingBottom="20dp"
+		custom:ttf="Bold" />
+
+<!--	<com.chess.widgets.RoboTextView
+		android:id="@+id/lessonsUpgradeTitleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/upgradeIconImg"
+		android:layout_toLeftOf="@+id/upgradeBtn"
+		android:layout_centerVertical="true"
+		android:text="@string/improve_game_with_lessons"
+		android:paddingRight="10dip"
+		android:textSize="@dimen/default_text_size_small"
+		android:textColor="@color/new_text_blue_dark"
+		/>-->
+
+	<com.chess.widgets.RoboButton
+		android:id="@+id/upgradeBtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/lessonsUpgradeMessageTxt"
+		style="@style/Button.Upgrade"
+		android:text="@string/upgrade"
+		android:layout_centerHorizontal="true"
+
+		/>
+
+	<!--Divider-->
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dip"
+		android:layout_alignParentBottom="true"
+		android:background="@color/light_blue_1"
+		/>
+
+</RelativeLayout>

@@ -13,5 +13,6 @@
 	<dimen name="daily_game_list_item_width">204dp</dimen>
 	<dimen name="panel_info_avatar_left_margin">2dp</dimen>
 	<dimen name="notations_text_view_height">30dp</dimen>
+	<dimen name="tablet_side_menu_width">250dp</dimen>
 
 </resources>

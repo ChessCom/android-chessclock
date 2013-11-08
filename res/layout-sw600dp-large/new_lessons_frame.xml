@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	>
+
+	<RelativeLayout
+		android:id="@+id/leftListView"
+		android:layout_width="@dimen/tablet_side_menu_width"
+		android:layout_height="match_parent">
+
+		<!--Top View-->
+		<!--<FrameLayout
+			android:id="@+id/topView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<include layout="@layout/new_lessons_upgrade_view" />
+			<include layout="@layout/new_lesson_stats_view" />
+
+		</FrameLayout>-->
+
+		<!--android:layout_below="@id/topView"-->
+		<ListView
+			android:id="@+id/listView"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_above="@+id/resumeLessonBtn"
+			android:divider="@null"
+			android:dividerHeight="0dip"
+			android:background="@android:color/transparent"
+			/>
+
+		<com.chess.widgets.RoboButton
+			android:id="@id/resumeLessonBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:minHeight="@dimen/big_button_height"
+			android:text="@string/resume_lesson"
+			android:textSize="@dimen/game_controls_text_size"
+			android:textColor="@color/white"
+			style="@style/Rect.Bottom.Right.Orange"
+			android:visibility="gone"
+			android:shadowColor="@color/transparent" />
+
+
+		<RelativeLayout
+			android:id="@+id/loadingView"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:minHeight="60dip"
+			android:visibility="gone">
+
+			<ProgressBar
+				android:layout_width="@dimen/pending_progress_bar_size"
+				android:layout_height="@dimen/pending_progress_bar_size"
+				android:layout_margin="5dip"
+				android:layout_centerInParent="true"
+				style="?android:attr/progressBarStyle" />
+
+		</RelativeLayout>
+
+		<!--Shadow-->
+		<ImageView
+			android:layout_width="10dp"
+			android:layout_height="match_parent"
+			android:src="@drawable/defaultshadow"
+			android:contentDescription="@string/image"
+			android:layout_alignParentRight="true" />
+
+	</RelativeLayout>
+
+	<!--Fragment Container-->
+	<FrameLayout
+		android:id="@+id/lessonsFragmentContainer"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_toRightOf="@id/leftListView" />
+
+</RelativeLayout>

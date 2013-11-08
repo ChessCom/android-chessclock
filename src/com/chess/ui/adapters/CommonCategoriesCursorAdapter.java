@@ -18,13 +18,16 @@ import com.chess.db.DbScheme;
  */
 public class CommonCategoriesCursorAdapter extends ItemsCursorAdapter {
 
+	private int layoutId;
+
 	public CommonCategoriesCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
+		layoutId = R.layout.new_common_titled_list_item;
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View convertView = inflater.inflate(R.layout.new_video_header, parent, false);
+		View convertView = inflater.inflate(layoutId, parent, false);
 		ViewHolder holder = new ViewHolder();
 
 		holder.text = (TextView) convertView.findViewById(R.id.headerTitleTxt);
@@ -40,6 +43,10 @@ public class CommonCategoriesCursorAdapter extends ItemsCursorAdapter {
 
 		holder.text.setText(Html.fromHtml(getString(cursor, DbScheme.V_NAME)));
 		holder.icon.setText(Symbol.EMPTY);
+	}
+
+	public void setLayoutId(int layoutId) {
+		this.layoutId = layoutId;
 	}
 
 	private class ViewHolder {

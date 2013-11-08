@@ -1,24 +1,20 @@
 package com.chess.ui.fragments.lessons;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.LessonCourseListItem;
-import com.chess.backend.entity.api.LessonSingleItem;
-import com.chess.backend.entity.api.LessonsRatingItem;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -28,7 +24,7 @@ import com.chess.db.tasks.SaveLessonsCoursesListTask;
 import com.chess.model.CurriculumLessonsItems;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
@@ -38,15 +34,12 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 18.07.13
- * Time: 14:59
+ * Date: 08.11.13
+ * Time: 5:42
  */
-public class LessonsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
-		ExpandableListView.OnChildClickListener {
+public class LessonsCurriculumFragmentTablet extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
-	private ListView listView;
 	private ExpandableListView expListView;
-	private View loadingView;
 	private TextView emptyView;
 
 	private CommonCategoriesCursorAdapter categoriesCursorAdapter;
@@ -57,18 +50,18 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	private SaveLessonsCoursesUpdateListener saveLessonsCoursesUpdateListener;
 
 	private CurriculumLessonsItems curriculumItems;
-	private LessonsGroupsListAdapter curriculumAdapter;
+	private CurriculumListAdapter curriculumAdapter;
 	private SparseArray<String> curriculumCategoriesArray;
 	private SparseIntArray curriculumCategoriesOrder;
 
-	private LessonsRatingUpdateListener lessonsRatingUpdateListener;
-	private TextView ratingTxt;
-	private TextView lessonsCntTxt;
-	private TextView coursesCntTxt;
-	private LessonSingleItem incompleteLesson;
-	private Button resumeLessonBtn;
 	private SparseArray<String> curriculumCategoriesMap;
-	private boolean libraryMode;
+	private FragmentParentFace parentFace;
+
+	public static LessonsCurriculumFragmentTablet createInstance(FragmentParentFace parentFace) {
+		LessonsCurriculumFragmentTablet fragment = new LessonsCurriculumFragmentTablet();
+		fragment.parentFace = parentFace;
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -79,11 +72,13 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_lessons_frame, container, false);
+		return inflater.inflate(R.layout.new_lessons_curriculum_frame, container, false);
 	}
+
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+		setNeedToChangeActionButtons(false);
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.lessons);
@@ -91,102 +86,44 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
-		{ // Library mode init
-			listView = (ListView) view.findViewById(R.id.listView);
-			if (isNeedToUpgradePremium()) {
-				view.findViewById(R.id.lessonsStatsView).setVisibility(View.GONE);
-				view.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-			} else {
-				View headerView = view.findViewById(R.id.lessonsStatsView);
-				ratingTxt = (TextView) headerView.findViewById(R.id.lessonsRatingTxt);
-				lessonsCntTxt = (TextView) headerView.findViewById(R.id.lessonsCompletedValueTxt);
-				coursesCntTxt = (TextView) headerView.findViewById(R.id.coursesCompletedValueTxt);
-				view.findViewById(R.id.upgradeView).setVisibility(View.GONE);
-
-				ratingTxt.setText(String.valueOf(getAppData().getUserLessonsRating()));
-				lessonsCntTxt.setText(String.valueOf(getAppData().getUserLessonsCompleteCnt()));
-				coursesCntTxt.setText(String.valueOf(getAppData().getUserCourseCompleteCnt()));
-			}
-
-			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
-			((TextView) footerView.findViewById(R.id.headerTitleTxt)).setText(R.string.curriculum_lessons);
-			footerView.setOnClickListener(this);
-			listView.addFooterView(footerView);
-			listView.setAdapter(categoriesCursorAdapter);
-			listView.setOnItemClickListener(this);
-		}
-
 		{ // Curriculum mode
 			expListView = (ExpandableListView) view.findViewById(R.id.expListView);
-			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
-			((TextView) footerView.findViewById(R.id.headerTitleTxt)).setText(R.string.full_lesson_library);
-			footerView.setOnClickListener(this);
-			expListView.addFooterView(footerView);
-			expListView.setOnChildClickListener(this);
 			expListView.setGroupIndicator(null);
 		}
 
-		resumeLessonBtn = (Button) view.findViewById(R.id.resumeLessonBtn);
-		resumeLessonBtn.setOnClickListener(this);
-
 		showLibrary();
-
-		// adjust action bar icons
-		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
-		getActivityFace().showActionMenu(R.id.menu_notifications, false);
-		getActivityFace().showActionMenu(R.id.menu_games, false);
-
-		setTitlePadding(ONE_ICON);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		if (!isNeedToUpgradePremium()) {
-			LoadItem loadItem = LoadHelper.getLessonsRating(getUserToken());
-			new RequestJsonTask<LessonsRatingItem>(lessonsRatingUpdateListener).executeTask(loadItem);
-		}
 	}
 
 	private void showLibrary() {
-		libraryMode = getAppData().isUserChooseLessonsLibrary();
 
-		listView.setVisibility(libraryMode ? View.VISIBLE : View.GONE);
-		expListView.setVisibility(libraryMode ? View.GONE : View.VISIBLE);
+		if (need2update) {
 
-		if (!libraryMode) {
-			if (need2update) {
+			// get saved categories
+			Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsCurriculumCategories());
 
-				// get saved categories
-				Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsCurriculumCategories());
-
-				if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
-					fillCategoriesList(categoriesCursor);
-					Cursor coursesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
-
-					if (coursesCursor != null && coursesCursor.moveToFirst()) {
-						updateUiData(coursesCursor);
-					} else {
-						getFullCourses();
-					}
-				} else if (AppUtils.isNetworkAvailable(getActivity())) {
-					getCategories();
-				}
-
-			} else { // load data to listHeader view
-				// update to display completed mark
+			if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
+				fillCategoriesList(categoriesCursor);
 				Cursor coursesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
 
-				if (coursesCursor != null && coursesCursor.moveToFirst()) { // TODO adjust logic if nothing was really changed
+				if (coursesCursor != null && coursesCursor.moveToFirst()) {
 					updateUiData(coursesCursor);
+				} else {
+					getFullCourses();
 				}
-
-				expListView.setAdapter(curriculumAdapter);
-				curriculumAdapter.notifyDataSetChanged();
+			} else if (AppUtils.isNetworkAvailable(getActivity())) {
+				getCategories();
 			}
-		} else {
-			listView.setAdapter(categoriesCursorAdapter);
+
+		} else { // load data to listHeader view
+			// update to display completed mark
+			Cursor coursesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));
+
+			if (coursesCursor != null && coursesCursor.moveToFirst()) { // TODO adjust logic if nothing was really changed
+				updateUiData(coursesCursor);
+			}
+
+			expListView.setAdapter(curriculumAdapter);
+			curriculumAdapter.notifyDataSetChanged();
 		}
 	}
 
@@ -198,47 +135,25 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		new RequestJsonTask<CommonFeedCategoryItem>(lessonsCategoriesUpdateListener).executeTask(loadItem);
 	}
 
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//			case R.id.menu_search_btn:
+//				getActivityFace().openFragment(new LessonsSearchFragment());
+//				break;
+//		}
+//		return super.onOptionsItemSelected(item);
+//	}
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
-
-		getActivityFace().openFragment(LessonsCategoriesFragment.createInstance(sectionName));
-	}
-
-	@Override
-	public void onClick(View v) {
-		super.onClick(v);
-		if (v.getId() == R.id.resumeLessonBtn) {
-			int lessonId = incompleteLesson.getId();
-			long courseId = incompleteLesson.getCourseId();
-
-			getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
-		} else if (v.getId() == R.id.curriculumHeader) {
-			getAppData().setUserChooseLessonsLibrary(!libraryMode);
-			showLibrary();
-		} else if (v.getId() == R.id.upgradeBtn) {
-			getActivityFace().openFragment(new UpgradeFragment());
-		}
-	}
-
-	@Override
-	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+		Integer groupPosition = (Integer) view.getTag(R.id.list_item_id_group);
 		int categoryId = curriculumItems.getDisplayOrder().get(groupPosition);
-		int courseId = curriculumItems.getIds().get(categoryId).get(childPosition);
-		getActivityFace().openFragment(LessonsCourseFragment.createInstance(courseId, categoryId));
-		return false;
+		int courseId = curriculumItems.getIds().get(categoryId).get(position);
+
+		parentFace.changeFragment(LessonsCourseFragment.createInstance(courseId, categoryId));
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_search_btn:
-				getActivityFace().openFragment(new LessonsSearchFragment());
-				break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 
 	private class LessonsCategoriesUpdateListener extends CommonLogicFragment.ChessUpdateListener<CommonFeedCategoryItem> {
 		public LessonsCategoriesUpdateListener() {
@@ -263,7 +178,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			// get saved categories
-			Cursor cursor =	DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.LESSONS_CATEGORIES));
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.LESSONS_CATEGORIES));
 
 			if (cursor != null && cursor.moveToFirst()) {
 
@@ -379,6 +294,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 			}
 
 		} while (cursor.moveToNext());
+		cursor.close();
 
 		{ // Titles
 			// organize by category
@@ -428,20 +344,10 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 			curriculumItems.setViewedMarks(completedMarks);
 		}
 
-		curriculumAdapter = new LessonsGroupsListAdapter(curriculumItems);
+		curriculumAdapter = new CurriculumListAdapter(curriculumItems);
 		expListView.setAdapter(curriculumAdapter);
 
-		cursor.close();
 
-		// check if we have incomplete lessons
-		List<LessonSingleItem> incompleteLessons = DbDataManager.getIncompleteLessons(getContentResolver(), getUsername());
-		if (incompleteLessons != null) {
-			int last = incompleteLessons.size() - 1;
-			incompleteLesson = incompleteLessons.get(last);
-			resumeLessonBtn.setVisibility(View.VISIBLE);
-		} else {
-			resumeLessonBtn.setVisibility(View.GONE);
-		}
 	}
 
 	private void showLoadingView(boolean show) {
@@ -462,7 +368,6 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		saveLessonsCategoriesUpdateListener = new SaveLessonsCategoriesUpdateListener();
 		lessonsCoursesUpdateListener = new LessonsCoursesUpdateListener();
 		saveLessonsCoursesUpdateListener = new SaveLessonsCoursesUpdateListener();
-		lessonsRatingUpdateListener = new LessonsRatingUpdateListener();
 
 		// put Categories names to appropriate sections.
 
@@ -473,45 +378,20 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		curriculumCategoriesMap.put(12, "Expert");
 		curriculumCategoriesMap.put(13, "Master");
 
-/*
-these are the categories for CURRICULUM:
-id: 9,name: "Beginner"
-id: 10,name: "Intermediate"
-id: 11,name: "Advanced"
-id: 12,name: "Expert"
-id: 13,name: "Master"
-
-then these are the Library categories
-
-id: 6,name: "Rules and Basics"
-id: 4,name: "Strategy"
-id: 5,name: "Tactics"
-id: 3,name: "Attacks"
-id: 7,name: "Openings"
-id: 2,name: "Endgames"
-id: 8,name: "Games"
-id: 1,name: "Misc"
-*/
-
 		// get from DB categories for Full Lessons Library(not Curriculum)
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
 		categoriesCursorAdapter.changeCursor(cursor);
 
 	}
 
-	public class LessonsGroupsListAdapter extends BaseExpandableListAdapter {
+	public class CurriculumListAdapter extends BaseExpandableListAdapter {
 		private final LayoutInflater inflater;
-		private final int watchedTextColor;
-		private final int unWatchedTextColor;
-		private final int watchedIconColor;
+
 		private final CurriculumLessonsItems items;
 
-		public LessonsGroupsListAdapter(CurriculumLessonsItems items) {
+		public CurriculumListAdapter(CurriculumLessonsItems items) {
 			this.items = items;
 			inflater = LayoutInflater.from(getActivity());
-			watchedTextColor = getResources().getColor(R.color.new_light_grey_3);
-			unWatchedTextColor = getResources().getColor(R.color.new_text_blue);
-			watchedIconColor = getResources().getColor(R.color.new_light_grey_2);
 		}
 
 		@Override
@@ -521,8 +401,7 @@ id: 1,name: "Misc"
 
 		@Override
 		public int getChildrenCount(int groupPosition) {
-			int categoryId = items.getDisplayOrder().get(groupPosition);
-			return items.getTitles().get(categoryId).size();
+			return 1;
 		}
 
 		@Override
@@ -534,7 +413,7 @@ id: 1,name: "Misc"
 		@Override
 		public Object getChild(int groupPosition, int childPosition) {
 			int categoryId = items.getDisplayOrder().get(groupPosition);
-			return items.getTitles().get(categoryId).get(childPosition);
+			return items.getTitles().get(categoryId);
 		}
 
 		@Override
@@ -554,16 +433,16 @@ id: 1,name: "Misc"
 
 		@Override
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-			ViewHolder holder;
+			HeaderViewHolder holder;
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.new_common_titled_list_item, parent, false);
-				holder = new ViewHolder();
+				holder = new HeaderViewHolder();
 
 				holder.text = (TextView) convertView.findViewById(R.id.headerTitleTxt);
 				holder.icon = (TextView) convertView.findViewById(R.id.headerIconTxt);
 				convertView.setTag(holder);
 			} else {
-				holder = (ViewHolder) convertView.getTag();
+				holder = (HeaderViewHolder) convertView.getTag();
 			}
 
 			holder.text.setText(getGroup(groupPosition).toString());
@@ -579,36 +458,26 @@ id: 1,name: "Misc"
 
 		@Override
 		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-			ViewHolder holder;
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.new_completed_list_item, parent, false);
-				holder = new ViewHolder();
+			convertView = inflater.inflate(R.layout.new_lesson_curriculum_item, parent, false);
 
-				holder.text = (TextView) convertView.findViewById(R.id.titleTxt);
-				holder.icon = (TextView) convertView.findViewById(R.id.completedIconTxt);
-				convertView.setTag(holder);
+			GridView gridView = (GridView) convertView.findViewById(R.id.gridView);
+			int columnHeight = (int) (112 * density);
 
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
+			int spacing = (int) (10 * density);
 
-			holder.text.setText(getChild(groupPosition, childPosition).toString());
+			SparseArray<String> child = (SparseArray<String>) getChild(groupPosition, childPosition);
 
-			if (isCourseCompleted(groupPosition, childPosition)) {
-				holder.text.setTextColor(watchedTextColor);
-				holder.icon.setTextColor(watchedIconColor);
-				holder.icon.setText(R.string.ic_check);
-			} else {
-				holder.text.setTextColor(unWatchedTextColor);
-				holder.icon.setText(Symbol.EMPTY);
-			}
+			gridView.setAdapter(new CurriculumTitlesAdapter(getActivity(),  groupPosition)); // TODO improve
+			gridView.setOnItemClickListener(LessonsCurriculumFragmentTablet.this);
+
+			// calculate the column and row counts based on your display
+			final int colCount = 2;
+			final int rowCount = (int) Math.ceil(child.size() / (float) colCount);
+
+			// calculate and set the height for the current gridView
+			gridView.getLayoutParams().height = Math.round(rowCount * (columnHeight + spacing));
 
 			return convertView;
-		}
-
-		private boolean isCourseCompleted(int groupPosition, int childPosition) {
-			int categoryId = items.getDisplayOrder().get(groupPosition);
-			return items.getViewedMarks().get(categoryId).get(childPosition);
 		}
 
 		@Override
@@ -616,36 +485,94 @@ id: 1,name: "Misc"
 			return true;
 		}
 
-		private class ViewHolder {
+		private class HeaderViewHolder {
 			TextView text;
 			TextView icon;
 		}
 	}
 
-	private class LessonsRatingUpdateListener extends ChessUpdateListener<LessonsRatingItem> {
+	private class CurriculumTitlesAdapter extends BaseAdapter {
 
-		private LessonsRatingUpdateListener() {
-			super(LessonsRatingItem.class);
+		private int groupPosition;
+		private final LayoutInflater inflater;
+		private final int incompleteIconColor;
+		private final int completedTextColor;
+		private final int uncompletedTextColor;
+		private final int completedIconColor;
+
+		public CurriculumTitlesAdapter(Context context, int groupPosition) {
+			this.groupPosition = groupPosition;
+			inflater = LayoutInflater.from(context);
+
+			completedTextColor = getResources().getColor(R.color.new_light_grey_3);
+			uncompletedTextColor = getResources().getColor(R.color.new_text_blue);
+			completedIconColor = getResources().getColor(R.color.new_light_grey_2);
+			incompleteIconColor = getResources().getColor(R.color.orange_button);
+		}
+
+		private boolean isCourseCompleted(int groupPosition, int childPosition) {
+			int categoryId = curriculumItems.getDisplayOrder().get(groupPosition);
+			return curriculumItems.getViewedMarks().get(categoryId).get(childPosition);
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			// don't show any progress
+		public int getCount() {
+			int categoryId = curriculumItems.getDisplayOrder().get(groupPosition);
+			return curriculumItems.getTitles().get(categoryId).size();
 		}
 
 		@Override
-		public void updateData(LessonsRatingItem returnedObj) {
-			super.updateData(returnedObj);
+		public Object getItem(int position) {
+			int categoryId = curriculumItems.getDisplayOrder().get(groupPosition);
+			return curriculumItems.getTitles().get(categoryId).get(position);
+		}
 
-			LessonsRatingItem.Data lessonsRating = returnedObj.getData();
-			ratingTxt.setText(String.valueOf(lessonsRating.getRating()));
-			lessonsCntTxt.setText(String.valueOf(lessonsRating.getCompletedLessons()));
-			coursesCntTxt.setText(String.valueOf(lessonsRating.getCompletedCourses()));
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
 
-			getAppData().setUserLessonsRating(lessonsRating.getRating());
-			getAppData().setUserLessonsCompleteCnt(lessonsRating.getCompletedLessons());
-			getAppData().setUserCourseCompleteCnt(lessonsRating.getCompletedCourses());
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder;
+			if (convertView == null) {
+				convertView = inflater.inflate(R.layout.new_lessons_thumb_titles_list_item, parent, false);
+				holder = new ViewHolder();
+
+				holder.text = (TextView) convertView.findViewById(R.id.titleTxt);
+				holder.statusTxt = (TextView) convertView.findViewById(R.id.statusTxt);
+
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+
+			holder.text.setText(getItem(position).toString());
+			convertView.setTag(R.id.list_item_id_group, groupPosition);
+
+
+			if (isCourseCompleted(groupPosition, position)) {
+				holder.text.setTextColor(completedTextColor);
+				holder.statusTxt.setTextColor(completedIconColor);
+				holder.statusTxt.setText(R.string.ic_check);
+			} else {
+				holder.text.setTextColor(uncompletedTextColor);
+				holder.statusTxt.setText(R.string.ic_lessons);
+				holder.statusTxt.setTextColor(incompleteIconColor);
+
+			}
+			return convertView;
+		}
+
+		public void setGroupPosition(int groupPosition) {
+			this.groupPosition = groupPosition;
+		}
+
+		private class ViewHolder {
+			TextView text;
+			TextView statusTxt;
 		}
 	}
+
 
 }

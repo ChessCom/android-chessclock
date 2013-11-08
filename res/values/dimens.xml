@@ -367,5 +367,6 @@
 	<dimen name="daily_games_time_left_icon">28dp</dimen>
 	<dimen name="play_button_small_text_size">16sp</dimen>
 	<dimen name="panel_info_tactic_padding_side">15dp</dimen>
+	<dimen name="tablet_side_menu_width">250dp</dimen>
 
 </resources>

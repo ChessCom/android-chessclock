@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="wrap_content"
+	android:layout_height="match_parent"
+	android:background="@drawable/transparent_list_item_selector">
+
+	<!--Board-->
+	<RelativeLayout
+		android:id="@+id/boardBackView"
+		android:layout_width="@dimen/video_thumb_size"
+		android:layout_height="@dimen/video_thumb_size"
+		android:background="@drawable/img_tactics_board"
+		android:layout_marginRight="15dip"
+		>
+
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/statusTxt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:text="@string/ic_lessons"
+			style="@style/GlyphIcon.RoundBack"
+			/>
+
+	</RelativeLayout>
+
+	<!--Title-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/titleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/boardBackView"
+		android:textColor="@color/new_text_blue"
+		android:textSize="16sp"
+		android:layout_marginTop="-4dp"
+		android:text="test"
+		custom:ttf="Bold"
+		/>
+
+
+</RelativeLayout>

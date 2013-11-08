@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/white"
+	>
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/emptyView"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:text="@string/no_network"
+		android:gravity="center"
+		android:layout_gravity="center"
+		android:textSize="20sp"
+		android:textColor="@color/grey_button_1"
+		android:paddingLeft="10dip"
+		custom:ttf="Bold"
+		style="@style/DarkShadowBottom"
+		android:visibility="gone"
+		/>
+
+	<RelativeLayout
+		android:id="@+id/loadingView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:minHeight="60dip"
+		android:visibility="gone"
+		>
+
+		<ProgressBar
+			android:layout_width="@dimen/pending_progress_bar_size"
+			android:layout_height="@dimen/pending_progress_bar_size"
+			android:layout_margin="5dip"
+			android:layout_centerInParent="true"
+			style="?android:attr/progressBarStyle"
+			/>
+
+	</RelativeLayout>
+
+	<ExpandableListView
+		android:id="@+id/expListView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:divider="@null"
+		android:dividerHeight="0dip"
+		android:background="@android:color/transparent"
+		android:listSelector="@android:color/transparent"
+		android:cacheColorHint="@android:color/transparent"
+		android:numColumns="2"
+		/>
+
+</RelativeLayout>

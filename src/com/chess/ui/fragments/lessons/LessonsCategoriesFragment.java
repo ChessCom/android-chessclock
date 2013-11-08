@@ -42,7 +42,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	public static final String SECTION_NAME = "section_name";
 
 	private LessonsCursorAdapter lessonsAdapter;
-	private Spinner categorySpinner;
+	protected Spinner categorySpinner;
 	private View loadingView;
 	private TextView emptyView;
 	private ListView listView;
@@ -53,9 +53,11 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	private LessonsUpdateListener lessonsUpdateListener;
 
 	private int previousCategoryId;
-	private String sectionName;
+	protected String sectionName;
 	private LessonsPaginationAdapter paginationAdapter;
 	private Integer selectedCategoryId;
+
+	public LessonsCategoriesFragment() {}
 
 	public static LessonsCategoriesFragment createInstance(String sectionName) {
 		LessonsCategoriesFragment fragment = new LessonsCategoriesFragment();
@@ -76,7 +78,6 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		}
 
 		lessonsAdapter = new LessonsCursorAdapter(getActivity(), null);
-
 		paginationAdapter = new LessonsPaginationAdapter(getActivity(), lessonsAdapter, new LessonsUpdateListener(), null);
 
 		lessonsUpdateListener = new LessonsUpdateListener();
@@ -213,6 +214,10 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		selectedCategoryId = categoriesIds.get(position);
 
+		updateByCategory();
+	}
+
+	protected void updateByCategory() {
 		if (need2update || selectedCategoryId != previousCategoryId) {
 			previousCategoryId = selectedCategoryId;
 			need2update = true;

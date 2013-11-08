@@ -90,7 +90,7 @@
 	<!--Right quick access side panel-->
 	<FrameLayout
 		android:id="@id/optionsFragmentContainerView"
-		android:layout_width="250dp"
+		android:layout_width="@dimen/tablet_side_menu_width"
 		android:layout_height="match_parent"
 		android:layout_alignParentRight="true">
 		<!--Shadow-->

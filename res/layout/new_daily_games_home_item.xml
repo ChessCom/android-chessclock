@@ -23,8 +23,8 @@
 
 	<com.chess.backend.image_load.ProgressImageView
 		android:id="@+id/boardPreviewFrame"
-		android:layout_width="@dimen/video_thumb_size"
-		android:layout_height="@dimen/video_thumb_size"
+		android:layout_width="@dimen/daily_board_preview_size"
+		android:layout_height="@dimen/daily_board_preview_size"
 		android:layout_marginRight="@dimen/default_scr_side_padding"
 		android:layout_toRightOf="@id/playerImg"
 		/>

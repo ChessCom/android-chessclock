@@ -602,6 +602,19 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				return;
 			}
 		}
+
+		// check if child fragment manager want to consume event an pop something up
+		List<Fragment> fragments = getSupportFragmentManager().getFragments();
+		if (fragments != null && fragments.size() > 0) {
+			int last = fragments.size() - 1;
+			Fragment lastFragment = fragments.get(last);
+			if (lastFragment instanceof CommonLogicFragment) { // check if fragment want to consume back button event
+				if (((CommonLogicFragment)lastFragment).showPreviousFragment()) {
+					return;
+				}
+			}
+		}
+
 		showPreviousFragment();
 	}
 

@@ -912,4 +912,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		this.usePullToRefresh = usePullToRefresh;
 	}
 
+	/**
+	 * Use it inherited fragment where you want to consume onBackPressed event
+	 * @return {@code true} if event was successfully consumed
+	 */
+	public boolean showPreviousFragment() {
+		return false;
+	}
+
 }
