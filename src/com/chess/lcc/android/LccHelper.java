@@ -3,6 +3,7 @@ package com.chess.lcc.android;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
@@ -821,15 +822,19 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void initClock() {
+		stopClock();
+
+		whiteClock = new ChessClock(this, true, getCurrentGame().isGameOver());
+		blackClock = new ChessClock(this, false, getCurrentGame().isGameOver());
+	}
+
+	public void stopClock() {
 		if (whiteClock != null) {
 			whiteClock.setRunning(false);
 		}
 		if (blackClock != null) {
 			blackClock.setRunning(false);
 		}
-
-		whiteClock = new ChessClock(this, true, getCurrentGame().isGameOver());
-		blackClock = new ChessClock(this, false, getCurrentGame().isGameOver());
 	}
 
 	/*private void stopService() {
@@ -908,6 +913,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		latestMoveNumber = 0; // it was null before
 		ChessBoardLive.resetInstance();
 		initClock();
+
+		Log.d(TAG, "processFullGame: lccEventListener=" + lccEventListener);
 
 		// todo: probably determine my/observed game listeners
 		if (lccEventListener != null) {
@@ -1076,7 +1083,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public void observeTopGame() {
 		LogMe.dl(TAG, "observe top game: listener=" + gameListener);
-		lccClient.observeTopGame(GameRatingClass.Standard, gameListener); // todo: check game types
+		lccClient.observeTopGame(GameRatingClass.Blitz, gameListener); // todo: check game types
 	}
 
 	public void unobserveGame(Long gameId) {
@@ -1159,8 +1166,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTime * 60 * 10, bonusTime * 10);
 
-		Integer minRating = config.getMinRating();
-		Integer maxRating = config.getMaxRating();
+		Integer minRating = config.getMinRating() == 0 ? null : config.getMinRating();
+		Integer maxRating = config.getMaxRating() == 0 ? null : config.getMaxRating();
 		Integer minMembershipLevel = null;
 		PieceColor pieceColor = PieceColor.UNDEFINED;  // always random!
 

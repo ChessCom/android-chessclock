@@ -73,7 +73,6 @@ public class LccGameListener implements GameListener {
 	public void onGameReset(Game game) {
 		LogMe.dl(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
-
 		if (lccHelper.isObservedGame(game)) {
 
 			// todo: check usage of currentGame, latestGame for observed game

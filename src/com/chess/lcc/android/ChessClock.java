@@ -68,7 +68,6 @@ public class ChessClock {
 
 	public void paint() {
 		LccEventListener eventListener = lccHelper.getLccEventListener();
-
 		if (eventListener == null) {
 			return;
 		}
@@ -143,6 +142,11 @@ public class ChessClock {
 			public void run() {
 
 				updateTime();
+
+				if (!isRunning) {
+					stopTimer();
+					return;
+				}
 
 				paint();
 

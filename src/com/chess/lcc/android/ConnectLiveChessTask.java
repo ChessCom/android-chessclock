@@ -2,14 +2,12 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.live.client.ClientFeature;
-import com.chess.live.client.LiveChessClient;
-import com.chess.live.client.LiveChessClientException;
-import com.chess.live.client.LiveChessClientFacade;
+import com.chess.live.client.*;
 import com.chess.live.client.impl.HttpClientProvider;
 import com.chess.live.client.impl.LiveChessClientImpl;
 import com.chess.live.util.config.Config;
@@ -19,6 +17,7 @@ import com.chess.utilities.LogMe;
 import org.eclipse.jetty.client.HttpClient;
 
 import java.io.IOException;
+import java.util.LinkedHashSet;
 
 /**
  * ConnectLiveChessTask class
@@ -48,7 +47,10 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	  public static final String CONFIG_BAYEUX_HOST = HOST;*/
 
 	//Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.bayeux.host"), "live.chess-4.com");
-	public static final Integer CONFIG_PORT = /*RestHelper.IS_TEST_SERVER_MODE? 8080:*/ 80;
+
+	public static Integer PORT = 80;
+	public static Integer PORT_SECURED = 443;
+
 	/*public static final String CONFIG_AUTH_KEY =
 			Config.get(CONFIG.getString("live.chess.client.demo.chat_generator.connection.user1.authKey"),
 					"FIXED_PHPSESSID_WEBTIDE_903210957432054387723");*/
@@ -85,11 +87,25 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			versionName += ", OS: " + android.os.Build.VERSION.RELEASE + ", " + android.os.Build.MODEL;
 
 //			InputStream keyStoreInputStream = context.getAssets().open(LccHelper.KEY_FILE_NAME);
+
+			LinkedHashSet<ClientTransport> transports = new LinkedHashSet<ClientTransport>();
+			int port = PORT;
+
+			if (Build.VERSION.SDK_INT == Build.VERSION_CODES.FROYO) { // Android 2.2
+				LogMe.dl(TAG, "Support HTTP Live transport");
+				transports.add(ClientTransport.HTTP);
+
+			} else {
+				LogMe.dl(TAG, "Support WS and HTTP Live transports");
+				transports.add(ClientTransport.WS);
+				transports.add(ClientTransport.HTTP);
+			}
+
 			LogMe.dl(TAG, "Start Chess.Com LCC ");
-			LogMe.dl(TAG, "Connecting to: " + getConfigBayeuxHost() + ":" + CONFIG_PORT);
+			LogMe.dl(TAG, "Connecting to: " + getConfigBayeuxHost() + ":" + port);
 
 			item = LiveChessClientFacade.createClient(getAuthUrl(), getConfigBayeuxHost(),
-					CONFIG_PORT, CONFIG_URI); // todo: check incorrect port connection failure
+					port, CONFIG_URI); // todo: check incorrect port connection failure
 			item.setClientInfo("Android", versionName, "No-Key");
 
 			item.setSupportedClientFeature(ClientFeature.AnnounceService, true);
@@ -112,14 +128,18 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 			HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
 
-			httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
+				httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+			} else {
+				httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET); // Android 2.2
+			}
 
 			/*LogMe.dl(TAG, "INITIAL httpClient.getTimeout() = " + httpClient.getTimeout());
 			LogMe.dl(TAG, "INITIAL httpClient.getSoTimeout() = " + httpClient.getSoTimeout());
 			LogMe.dl(TAG, "INITIAL getIdleTimeout = " + httpClient.getIdleTimeout());
 			LogMe.dl(TAG, "INITIAL httpClient.getConnectTimeout() = " + httpClient.getConnectTimeout());*/
 
-			httpClient.setMaxConnectionsPerAddress(4);
+			httpClient.setMaxConnectionsPerAddress(2);
 			//httpClient.setSoTimeout(11000);
 			httpClient.setConnectTimeout(10000); // 75000 is default
 			httpClient.setTimeout(10000); // 320000 is default
@@ -132,7 +152,10 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			httpClient.setTrustStoreInputStream(keyStoreInputStream);
 			httpClient.setTrustStorePassword(TESTTEST);*/
 
-			//item.setClientTransport(LiveChessClient.ClientTransport.WS);
+			//transports.add(ClientTransport.HTTP); // test
+			//transports.add(ClientTransport.WS); // test
+
+			item.setClientTransports(transports);
 
 			item.setHttpClient(httpClient);
 

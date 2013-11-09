@@ -257,6 +257,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			@Override
 			public void run() {
 
+				if (getContext() == null) {
+					return;
+				}
+
 				boolean whiteToMove = getBoardFace().isWhiteToMove();
 
 				if (getBoardFace().isReside()) { // if white at top
@@ -283,6 +287,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		activity.runOnUiThread(new Runnable() { // TODO add check
 			@Override
 			public void run() {
+
+				if (getContext() == null) {
+					return;
+				}
 
 				boolean blackToMove = !getBoardFace().isWhiteToMove();
 

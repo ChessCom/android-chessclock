@@ -77,6 +77,7 @@ public class ControlsLiveView extends ControlsBaseView {
 	}
 
 	public void setBoardViewFace(BoardViewNetworkFace boardViewFace) {
+		super.setBoardViewFace(boardViewFace);
 		this.boardViewFace = boardViewFace;
 	}
 
