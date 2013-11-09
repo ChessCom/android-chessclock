@@ -4,7 +4,12 @@
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@color/white">
+	android:background="@drawable/transparent_list_item_selector"
+	android:paddingTop="@dimen/grid_view_spacing"
+	android:paddingLeft="22dp"
+	android:paddingRight="22dp"
+	android:paddingBottom="@dimen/grid_view_spacing"
+	>
 
 	<!--Board-->
 	<RelativeLayout
@@ -15,8 +20,8 @@
 		android:layout_marginRight="15dip"
 		>
 
-		<com.chess.widgets.RoboButton
-			android:id="@+id/statusTxt"
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/completedIconTxt"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
@@ -26,7 +31,6 @@
 
 	</RelativeLayout>
 
-
 	<!--Title-->
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/titleTxt"
@@ -34,7 +38,7 @@
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/boardBackView"
 		android:textColor="@color/new_text_blue"
-		android:paddingBottom="25dp"
+		android:paddingBottom="12dp"
 		android:layout_marginTop="-3dp"
 		android:text="test"
 		custom:ttf="Bold"
@@ -85,7 +89,7 @@
 
 	<!-- Attempts value-->
 	<com.chess.widgets.RoboTextView
-		android:id="@+id/todaysAttemptsValueTxt"
+		android:id="@+id/attemptsValueTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/attemptsLabelTxt"

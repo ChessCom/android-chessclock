@@ -6,33 +6,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 19.07.13
- * Time: 7:16
+ * Date: 09.11.13
+ * Time: 17:18
  */
-public class LessonsCursorAdapter extends ItemsCursorAdapter {
+public class LessonsCursorAdapterTablet extends LessonsCursorAdapter {
 
-	protected final int completedTextColor;
-	protected final int incompleteTextColor;
-	protected final int completedIconColor;
-	protected final int incompleteIconColor;
-
-	public LessonsCursorAdapter(Context context, Cursor cursor) {
+	public LessonsCursorAdapterTablet(Context context, Cursor cursor) {
 		super(context, cursor);
-		completedTextColor = resources.getColor(R.color.new_light_grey_3);
-		incompleteTextColor = resources.getColor(R.color.new_text_blue);
-		completedIconColor = resources.getColor(R.color.new_light_grey_2);
-		incompleteIconColor = resources.getColor(R.color.orange_button);
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_completed_list_item, parent, false);
+		View view = inflater.inflate(R.layout.new_lessons_thumb_titles_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
 		holder.completedIconTxt = (TextView) view.findViewById(R.id.completedIconTxt);
@@ -52,12 +42,9 @@ public class LessonsCursorAdapter extends ItemsCursorAdapter {
 			holder.completedIconTxt.setText(R.string.ic_check);
 		} else {
 			holder.titleTxt.setTextColor(incompleteTextColor);
-			holder.completedIconTxt.setText(Symbol.EMPTY);
-		}
-	}
+			holder.completedIconTxt.setText(R.string.ic_lessons);
+			holder.completedIconTxt.setTextColor(incompleteIconColor);
 
-	protected static class ViewHolder {
-		TextView titleTxt;
-		TextView completedIconTxt;
+		}
 	}
 }

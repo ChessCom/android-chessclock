@@ -176,8 +176,11 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		if (v.getId() == R.id.resumeLessonBtn) {
 			int lessonId = incompleteLesson.getId();
 			long courseId = incompleteLesson.getCourseId();
-
-			getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
+			if (!isTablet) {
+				getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
+			} else {
+				getActivityFace().openFragment(GameLessonsFragmentTablet.createInstance(lessonId, courseId));
+			}
 		} else if (v.getId() == R.id.upgradeBtn) {
 			getActivityFace().openFragment(new UpgradeFragment());
 		}

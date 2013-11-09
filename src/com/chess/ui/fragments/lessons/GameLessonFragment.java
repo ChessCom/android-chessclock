@@ -13,15 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.chess.backend.entity.api.LessonProblemItem;
-import com.chess.utilities.FontsHelper;
-import com.chess.widgets.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.LessonSingleItem;
+import com.chess.backend.entity.api.LessonProblemItem;
 import com.chess.backend.entity.api.LessonRatingChangeItem;
+import com.chess.backend.entity.api.LessonSingleItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -45,6 +43,8 @@ import com.chess.ui.views.drawables.YourMoveDrawable;
 import com.chess.ui.views.game_controls.ControlsLessonsView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.CustomTypefaceSpan;
+import com.chess.utilities.FontsHelper;
+import com.chess.widgets.MultiDirectionSlidingDrawer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,11 +55,13 @@ import java.util.List;
  * Date: 18.07.13
  * Time: 20:06
  */
-public class GameLessonFragment extends GameBaseFragment implements GameLessonFace, PopupListSelectionFace, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener, MultiDirectionSlidingDrawer.OnDrawerScrollListener {
+public class GameLessonFragment extends GameBaseFragment implements GameLessonFace, PopupListSelectionFace,
+		MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener,
+		MultiDirectionSlidingDrawer.OnDrawerScrollListener {
 
 	private static final String LESSON_COMPLETE_TAG = "lesson complete popup";
-	private static final String COURSE_ID = "course_id";
-	private static final String LESSON_ID = "lesson_id";
+	protected static final String COURSE_ID = "course_id";
+	protected static final String LESSON_ID = "lesson_id";
 	public static final String BOLD_DIVIDER = "##";
 
 	private static final long DRAWER_UPDATE_DELAY = 100;
@@ -71,15 +73,15 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 //	private static final int ID_CORRECT_SQUARE = 1;
 //	private static final int ID_KEY_PIECES = 2;
 //	private static final int ID_CORRECT_PIECE = 3;
-	private static final int ID_ANALYSIS_BOARD = 0;
+	protected static final int ID_ANALYSIS_BOARD = 0;
 	//	private static final int ID_VS_COMPUTER = 1;
-	private static final int ID_SKIP_LESSON = 1;
-	private static final int ID_SHOW_ANSWER = 2;
-	private static final int ID_SETTINGS = 3;
+	protected static final int ID_SKIP_LESSON = 1;
+	protected static final int ID_SHOW_ANSWER = 2;
+	protected static final int ID_SETTINGS = 3;
 	/* When user use hints he decrease total points by values below. Values are given in percents*/
-	private static final float HINT_1_COST = 2f;
-	private static final float HINT_2_COST = 6f;
-	private static final float HINT_3_COST = 10f;
+	protected static final float HINT_1_COST = 2f;
+	protected static final float HINT_2_COST = 6f;
+	protected static final float HINT_3_COST = 10f;
 	private static final float WRONG_MOVE_COST = 40f;
 	private static final float ANALYSIS_COST = 4f;
 	private static final float ANSWER_COST = 100f;
@@ -91,25 +93,25 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private LessonDataUpdateListener lessonLoadListener;
 	private SubmitLessonListener submitLessonListener;
 
-	private int lessonId;
-	private long courseId;
+	protected int lessonId;
+	protected long courseId;
 	private boolean isAnalysis;
 	private LabelsConfig labelsConfig;
 
-	private ControlsLessonsView controlsLessonsView;
-	private ChessBoardLessonsView boardView;
+	private ControlsLessonsView controlsView;
+	protected ChessBoardLessonsView boardView;
 	private PopupOptionsMenuFragment optionsSelectFragment;
-	private SparseArray<String> optionsArray;
+	protected SparseArray<String> optionsArray;
 	private LessonProblemItem.Data lessonItem;
 	private LessonProblemItem.MentorLesson mentorLesson;
 	private List<LessonProblemItem.MentorPosition> positionsToLearn;
 
-	private TextView lessonTitleTxt;
-	private TextView commentTxt;
-	private TextView descriptionTxt;
-	private TextView positionDescriptionTxt;
-	private View lessonDescriptionDivider;
-	private TextView hintTxt;
+	protected TextView lessonTitleTxt;
+	protected TextView commentTxt;
+	protected TextView descriptionTxt;
+	protected TextView positionDescriptionTxt;
+	protected View lessonDescriptionDivider;
+	protected TextView hintTxt;
 //	private View scoreLabel;
 //	private View ratingLabel;
 //	private TextView lessonPercentTxt;
@@ -123,14 +125,14 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private int totalLearningPositionsCnt;
 	private int usedHints;
 	private int hintToShow;
-	private View hintDivider;
+	protected View hintDivider;
 	private CustomTypefaceSpan boldSpan;
-	private ScrollView descriptionView;
+	protected ScrollView descriptionView;
 	private int topBoardOffset;
-	private int defaultDescriptionPadding;
+	protected int defaultDescriptionPadding;
 	private int openDescriptionPadding;
 
-	private SparseArray<Float> hintsCostMap;
+	protected SparseArray<Float> hintsCostMap;
 	private LessonProblemItem.UserLesson userLesson;
 	private List<Integer> solvedPositionsList;
 	private SparseArray<MoveCompleteItem> movesCompleteMap;
@@ -141,8 +143,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private int updatedUserRating;
 	private boolean wrongState;
 
-	public GameLessonFragment() {
-	}
+	public GameLessonFragment() {}
 
 	public static GameLessonFragment createInstance(int lessonId, long courseId) {
 		GameLessonFragment fragment = new GameLessonFragment();
@@ -167,7 +168,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			courseId = savedInstanceState.getLong(COURSE_ID);
 			need2update = true; // we were killed, need to reload lesson data
 		}
-		logTest("need2update = " + need2update + " savedInstanceState = " + savedInstanceState);
 
 		init();
 	}
@@ -214,7 +214,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 	}
 
-	private void updateUiData() {
+	protected void updateUiData() {
 		// check if we have that lesson in DB
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getMentorLessonById(lessonId));
 		if (cursor != null && cursor.moveToFirst()) { // we have saved lesson data
@@ -263,9 +263,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 	}
 
-	private void showDefaultControls() {
-		controlsLessonsView.showDefault();
-		controlsLessonsView.dropUsedHints();
+	protected void showDefaultControls() {
+		getControlsView().showDefault();
+		getControlsView().dropUsedHints();
 		usedHints = 0;
 		showHintViews(false);
 	}
@@ -310,7 +310,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					slidingDrawer.animateClose();
 					showDefaultControls();
 					updateUiData();
-					controlsLessonsView.showStart();
+					getControlsView().showStart();
 				} else {
 					getActivityFace().showPreviousFragment();
 				}
@@ -327,7 +327,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			restoreGame();
 		}
 		getBoardFace().setAnalysis(isAnalysis);
-		controlsLessonsView.showDefault();
+		getControlsView().showDefault();
 	}
 
 	@Override
@@ -375,7 +375,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public void startLesson() {
-		controlsLessonsView.showDefault();
+		getControlsView().showDefault();
 		if (!slidingDrawer.isOpened()) {
 			slidingDrawer.animateOpen();
 		}
@@ -510,18 +510,18 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			}
 
 			// show next lesson button
-			controlsLessonsView.showNewGame();
+			getControlsView().showNewGame();
 		}
 	}
 
 	private void showCorrectState() {
-		controlsLessonsView.showCorrect();
+		getControlsView().showCorrect();
 		solvedPositionsList.add(currentLearningPosition);
 		wrongState = false;
 	}
 
 	private void showWrongState() {
-		controlsLessonsView.showWrong();
+		getControlsView().showWrong();
 		getCurrentCompleteItem().wrongMovesCnt++;
 		wrongState = true;
 	}
@@ -564,7 +564,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	@Override
 	public void restart() {
 		adjustBoardForGame();
-		controlsLessonsView.showDefault();
+		getControlsView().showDefault();
 	}
 
 	@Override
@@ -708,7 +708,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 
 		if (!solvedPositionsList.contains(currentLearningPosition) && !wrongState) {
-			controlsLessonsView.showDefault();
+			getControlsView().showDefault();
 		}
 
 		descriptionView.setPadding(0, 0, 0, openDescriptionPadding);
@@ -820,7 +820,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		labelsConfig.userSide = whiteToMove ? ChessBoard.WHITE_SIDE : ChessBoard.BLACK_SIDE;
 
 		invalidateGameScreen();
-		controlsLessonsView.enableGameControls(true);
+		getControlsView().enableGameControls(true);
 
 		lessonTitleTxt.setText(mentorLesson.getName());
 		if (!TextUtils.isEmpty(mentorLesson.getGoalCommentary())) {
@@ -945,6 +945,14 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 	}
 
+	protected ControlsLessonsView getControlsView() {
+		return controlsView;
+	}
+
+	protected void setControlsView(View controlsView) {
+		this.controlsView = (ControlsLessonsView) controlsView;
+	}
+
 	private void init() {
 		labelsConfig = new LabelsConfig();
 
@@ -956,20 +964,20 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		submitLessonListener = new SubmitLessonListener();
 	}
 
-	private void widgetsInit(View view) {
-		controlsLessonsView = (ControlsLessonsView) view.findViewById(R.id.controlsView);
+	protected void widgetsInit(View view) {
+		setControlsView(view.findViewById(R.id.controlsView));
 
 		boardView = (ChessBoardLessonsView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setControlsView(controlsLessonsView);
+		boardView.setControlsView(getControlsView());
 
-		controlsLessonsView.setBoardViewFace(boardView);
+		getControlsView().setBoardViewFace(boardView);
 
 		setBoardView(boardView);
 
 		ChessBoardLessons.resetInstance();
 		boardView.setGameUiFace(this);
-		controlsLessonsView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 
 
 		{ // SlidingDrawer
@@ -1001,7 +1009,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			slidingDrawer.setOnDrawerScrollListener(this);
 		}
 
-		defaultDescriptionPadding = (int) (20 * getResources().getDisplayMetrics().density);
+		defaultDescriptionPadding = (int) (20 * density);
 		descriptionView = (ScrollView) view.findViewById(R.id.descriptionView);
 		lessonTitleTxt = (TextView) view.findViewById(R.id.lessonTitleTxt);
 		commentTxt = (TextView) view.findViewById(R.id.commentTxt);

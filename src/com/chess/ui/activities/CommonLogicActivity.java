@@ -302,24 +302,20 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
                         editor.commit();
                         break;
                 }
-            } else {
-				if (returnedObj.getCode() == ServerErrorCodes.YOUR_GCM_ID_ALREADY_REGISTERED) {
-					GCMRegistrar.setRegisteredOnServer(getContext(), true);
-					appData.registerOnChessGCM(appData.getUserToken());
-				}
-
-//              if (requestCode == GcmHelper.REQUEST_REGISTER && getContext() != null) {
-//                  Toast.makeText(getContext(), R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
-//              }
             }
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			if (resultCode == ServerErrorCodes.YOUR_GCM_ID_ALREADY_REGISTERED) {
-				Log.d("GCMIntentService", "YOUR_GCM_ID_ALREADY_REGISTERED registering to GCM anyway");
-				GCMRegistrar.setRegisteredOnServer(getContext(), true);
-				appData.registerOnChessGCM(appData.getUserToken());
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCodes.YOUR_GCM_ID_ALREADY_REGISTERED) {
+					GCMRegistrar.setRegisteredOnServer(getContext(), true);
+					appData.registerOnChessGCM(appData.getUserToken());
+					Log.d("GCMIntentService", "Already registered on server -> Re-registering GCM");
+				} else {
+					super.errorHandle(resultCode);
+				}
 			} else {
 				super.errorHandle(resultCode);
 			}

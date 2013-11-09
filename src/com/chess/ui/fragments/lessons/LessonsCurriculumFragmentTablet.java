@@ -75,7 +75,6 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 		return inflater.inflate(R.layout.new_lessons_curriculum_frame, container, false);
 	}
 
-
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		setNeedToChangeActionButtons(false);
@@ -135,25 +134,18 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 		new RequestJsonTask<CommonFeedCategoryItem>(lessonsCategoriesUpdateListener).executeTask(loadItem);
 	}
 
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//			case R.id.menu_search_btn:
-//				getActivityFace().openFragment(new LessonsSearchFragment());
-//				break;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Integer groupPosition = (Integer) view.getTag(R.id.list_item_id_group);
 		int categoryId = curriculumItems.getDisplayOrder().get(groupPosition);
 		int courseId = curriculumItems.getIds().get(categoryId).get(position);
 
-		parentFace.changeFragment(LessonsCourseFragment.createInstance(courseId, categoryId));
+		if (!isTablet) {
+			parentFace.changeFragment(LessonsCourseFragment.createInstance(courseId, categoryId));
+		} else {
+			parentFace.changeFragment(LessonsCourseFragmentTablet.createInstance(courseId, categoryId));
+		}
 	}
-
 
 	private class LessonsCategoriesUpdateListener extends CommonLogicFragment.ChessUpdateListener<CommonFeedCategoryItem> {
 		public LessonsCategoriesUpdateListener() {
@@ -346,8 +338,6 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 
 		curriculumAdapter = new CurriculumListAdapter(curriculumItems);
 		expListView.setAdapter(curriculumAdapter);
-
-
 	}
 
 	private void showLoadingView(boolean show) {
@@ -381,17 +371,20 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 		// get from DB categories for Full Lessons Library(not Curriculum)
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
 		categoriesCursorAdapter.changeCursor(cursor);
-
 	}
 
 	public class CurriculumListAdapter extends BaseExpandableListAdapter {
 		private final LayoutInflater inflater;
 
 		private final CurriculumLessonsItems items;
+		private final int columnHeight;
+		private final int spacing;
 
 		public CurriculumListAdapter(CurriculumLessonsItems items) {
 			this.items = items;
 			inflater = LayoutInflater.from(getActivity());
+			columnHeight = getResources().getDimensionPixelSize(R.dimen.video_thumb_size);
+			spacing = getResources().getDimensionPixelSize(R.dimen.grid_view_spacing);
 		}
 
 		@Override
@@ -461,9 +454,6 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 			convertView = inflater.inflate(R.layout.new_lesson_curriculum_item, parent, false);
 
 			GridView gridView = (GridView) convertView.findViewById(R.id.gridView);
-			int columnHeight = (int) (112 * density);
-
-			int spacing = (int) (10 * density);
 
 			SparseArray<String> child = (SparseArray<String>) getChild(groupPosition, childPosition);
 
@@ -471,11 +461,10 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 			gridView.setOnItemClickListener(LessonsCurriculumFragmentTablet.this);
 
 			// calculate the column and row counts based on your display
-			final int colCount = 2;
-			final int rowCount = (int) Math.ceil(child.size() / (float) colCount);
+			final int rowCount = (int) Math.ceil(child.size() / (float) 2);
 
 			// calculate and set the height for the current gridView
-			gridView.getLayoutParams().height = Math.round(rowCount * (columnHeight + spacing));
+			gridView.getLayoutParams().height = Math.round(rowCount * (columnHeight + spacing * 2));
 
 			return convertView;
 		}
@@ -497,7 +486,7 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 		private final LayoutInflater inflater;
 		private final int incompleteIconColor;
 		private final int completedTextColor;
-		private final int uncompletedTextColor;
+		private final int incompleteTextColor;
 		private final int completedIconColor;
 
 		public CurriculumTitlesAdapter(Context context, int groupPosition) {
@@ -505,7 +494,7 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 			inflater = LayoutInflater.from(context);
 
 			completedTextColor = getResources().getColor(R.color.new_light_grey_3);
-			uncompletedTextColor = getResources().getColor(R.color.new_text_blue);
+			incompleteTextColor = getResources().getColor(R.color.new_text_blue);
 			completedIconColor = getResources().getColor(R.color.new_light_grey_2);
 			incompleteIconColor = getResources().getColor(R.color.orange_button);
 		}
@@ -540,7 +529,7 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 				holder = new ViewHolder();
 
 				holder.text = (TextView) convertView.findViewById(R.id.titleTxt);
-				holder.statusTxt = (TextView) convertView.findViewById(R.id.statusTxt);
+				holder.statusTxt = (TextView) convertView.findViewById(R.id.completedIconTxt);
 
 				convertView.setTag(holder);
 			} else {
@@ -550,16 +539,14 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 			holder.text.setText(getItem(position).toString());
 			convertView.setTag(R.id.list_item_id_group, groupPosition);
 
-
 			if (isCourseCompleted(groupPosition, position)) {
 				holder.text.setTextColor(completedTextColor);
 				holder.statusTxt.setTextColor(completedIconColor);
 				holder.statusTxt.setText(R.string.ic_check);
 			} else {
-				holder.text.setTextColor(uncompletedTextColor);
+				holder.text.setTextColor(incompleteTextColor);
 				holder.statusTxt.setText(R.string.ic_lessons);
 				holder.statusTxt.setTextColor(incompleteIconColor);
-
 			}
 			return convertView;
 		}

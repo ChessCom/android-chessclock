@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
@@ -124,7 +123,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected float density;
 	protected int screenWidth;
 	private HashMap<String, ImageGetter.TextImage> textViewsImageCache;
-	private ListView listView;
+	private AbsListView listView;
 	private boolean usePullToRefresh;
 	protected boolean isTablet;
 
@@ -171,7 +170,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		enableSlideMenus(true);
 
 		loadingView = view.findViewById(R.id.loadingView);
-		listView = (ListView) view.findViewById(R.id.listView);
+		listView = (AbsListView) view.findViewById(R.id.listView);
 
 		if (needToChangeActionButtons) {
 			getActivityFace().showActionMenu(R.id.menu_add, false);

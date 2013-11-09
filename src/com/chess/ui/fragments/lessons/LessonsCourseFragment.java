@@ -20,7 +20,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveLessonsCourseTask;
-import com.chess.ui.adapters.LessonsItemAdapter;
+import com.chess.ui.adapters.LessonsItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.utilities.AppUtils;
@@ -36,23 +36,23 @@ import java.util.List;
  */
 public class LessonsCourseFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
-	private static final String COURSE_ID = "course_id";
-	private static final String CATEGORY_ID = "category_id";
+	protected static final String COURSE_ID = "course_id";
+	protected static final String CATEGORY_ID = "category_id";
 
-	private CourseUpdateListener courseUpdateListener;
-	private SaveCourseListener courseSaveListener;
+	protected CourseUpdateListener courseUpdateListener;
+	protected SaveCourseListener courseSaveListener;
 
-	private LessonsItemAdapter lessonsItemAdapter;
+	private LessonsItemsAdapter lessonsItemsAdapter;
 	private LessonCourseItem.Data courseItem;
-	private int courseId;
+	protected int courseId;
 	private int categoryId;
 
-	private TextView courseTitleTxt;
-	private TextView courseDescriptionTxt;
+	protected TextView courseTitleTxt;
+	protected TextView courseDescriptionTxt;
 	private boolean haveSavedCourseData;
-	private Button upgradeLessonsBtn;
-	private TextView lessonsUpgradeMessageTxt;
-	private View upgradeBtn;
+	protected Button upgradeLessonsBtn;
+	protected TextView lessonsUpgradeMessageTxt;
+	protected View upgradeBtn;
 
 	public LessonsCourseFragment() {
 	}
@@ -78,9 +78,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			categoryId = savedInstanceState.getInt(CATEGORY_ID);
 		}
 
-		lessonsItemAdapter = new LessonsItemAdapter(getActivity(), null);
-		courseUpdateListener = new CourseUpdateListener();
-		courseSaveListener = new SaveCourseListener();
+		init();
 	}
 
 	@Override
@@ -94,27 +92,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 		setTitle(R.string.lessons);
 
-		ListView listView = (ListView) view.findViewById(R.id.listView);
-		// Set header
-		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lessons_course_header_view, null, false);
-		upgradeBtn = headerView.findViewById(R.id.upgradeBtn);
-		if (isNeedToUpgradePremium()) {
-			upgradeBtn.setOnClickListener(this);
-		} else {
-			headerView.findViewById(R.id.upgradeView).setVisibility(View.GONE);
-		}
-		lessonsUpgradeMessageTxt = (TextView) headerView.findViewById(R.id.lessonsUpgradeMessageTxt);
-
-		if (isNeedToUpgrade()) {
-			upgradeLessonsBtn = (Button) view.findViewById(R.id.upgradeLessonsBtn);
-			upgradeLessonsBtn.setOnClickListener(this);
-		}
-
-		courseTitleTxt = (TextView) headerView.findViewById(R.id.courseTitleTxt);
-		courseDescriptionTxt = (TextView) headerView.findViewById(R.id.courseDescriptionTxt);
-		listView.addHeaderView(headerView);
-		listView.setAdapter(lessonsItemAdapter);
-		listView.setOnItemClickListener(this);
+		widgetsInit(view);
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
@@ -145,8 +123,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			courseTitleTxt.setText(courseItem.getCourseName());
 			courseDescriptionTxt.setText(courseItem.getDescription());
 
-			List<LessonSingleItem> lessons = courseItem.getLessons();
-			lessonsItemAdapter.setItemsList(lessons);
+			getAdapter().setItemsList(courseItem.getLessons());
 
 			updateLessonsListFromDb();
 
@@ -226,9 +203,9 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class CourseUpdateListener extends ChessLoadUpdateListener<LessonCourseItem> {
+	protected class CourseUpdateListener extends ChessLoadUpdateListener<LessonCourseItem> {
 
-		private CourseUpdateListener() {
+		protected CourseUpdateListener() {
 			super(LessonCourseItem.class);
 		}
 
@@ -257,7 +234,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		courseDescriptionTxt.setText(courseItem.getDescription());
 
 		List<LessonSingleItem> lessons = courseItem.getLessons();
-		lessonsItemAdapter.setItemsList(lessons);
+		getAdapter().setItemsList(lessons);
 
 		verifyAllLessonsCompleted();
 
@@ -265,7 +242,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	}
 
 	private void verifyAllLessonsCompleted() {
-		if (lessonsItemAdapter.isAllLessonsCompleted()) { // show when the whole course completed
+		if (getAdapter().isAllLessonsCompleted()) { // show when the whole course completed
 			// mark course as completed in DB
 			LessonCourseListItem.Data course = new LessonCourseListItem.Data();
 			course.setId(courseId);
@@ -278,11 +255,51 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		}
 	}
 
-	private class SaveCourseListener extends ChessUpdateListener<LessonCourseItem.Data> {
+	protected class SaveCourseListener extends ChessUpdateListener<LessonCourseItem.Data> {
 
 		@Override
 		public void showProgress(boolean show) {
 		}
 	}
+
+	protected void setAdapter(LessonsItemsAdapter lessonsItemsAdapter) {
+		this.lessonsItemsAdapter = lessonsItemsAdapter;
+
+	}
+
+	protected LessonsItemsAdapter getAdapter() {
+		return lessonsItemsAdapter;
+	}
+
+	protected void init() {
+		setAdapter(new LessonsItemsAdapter(getActivity(), null));
+		courseUpdateListener = new CourseUpdateListener();
+		courseSaveListener = new SaveCourseListener();
+	}
+
+	protected void widgetsInit(View view) {
+		ListView listView = (ListView) view.findViewById(R.id.listView);
+		// Set header
+		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lessons_course_header_view, null, false);
+		upgradeBtn = headerView.findViewById(R.id.upgradeBtn);
+		if (isNeedToUpgradePremium()) {
+			upgradeBtn.setOnClickListener(this);
+		} else {
+			headerView.findViewById(R.id.upgradeView).setVisibility(View.GONE);
+		}
+		lessonsUpgradeMessageTxt = (TextView) headerView.findViewById(R.id.lessonsUpgradeMessageTxt);
+
+		if (isNeedToUpgrade()) {
+			upgradeLessonsBtn = (Button) view.findViewById(R.id.upgradeLessonsBtn);
+			upgradeLessonsBtn.setOnClickListener(this);
+		}
+
+		courseTitleTxt = (TextView) headerView.findViewById(R.id.courseTitleTxt);
+		courseDescriptionTxt = (TextView) headerView.findViewById(R.id.courseDescriptionTxt);
+		listView.addHeaderView(headerView);
+		listView.setAdapter(getAdapter());
+		listView.setOnItemClickListener(this);
+	}
+
 
 }

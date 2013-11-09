@@ -16,17 +16,19 @@ import java.util.List;
  * Date: 08.08.13
  * Time: 10:04
  */
-public class LessonsItemAdapter extends ItemsAdapter<LessonSingleItem> {
+public class LessonsItemsAdapter extends ItemsAdapter<LessonSingleItem> {
 
-	private final int watchedTextColor;
-	private final int unWatchedTextColor;
-	private final int watchedIconColor;
+	protected final int completedTextColor;
+	protected final int incompleteTextColor;
+	protected final int completedIconColor;
+	protected final int incompleteIconColor;
 
-	public LessonsItemAdapter(Context context, List<LessonSingleItem> cursor) {
+	public LessonsItemsAdapter(Context context, List<LessonSingleItem> cursor) {
 		super(context, cursor);
-		watchedTextColor = resources.getColor(R.color.new_light_grey_3);
-		unWatchedTextColor = resources.getColor(R.color.new_text_blue);
-		watchedIconColor = resources.getColor(R.color.new_light_grey_2);
+		completedTextColor = resources.getColor(R.color.new_light_grey_3);
+		incompleteTextColor = resources.getColor(R.color.new_text_blue);
+		completedIconColor = resources.getColor(R.color.new_light_grey_2);
+		incompleteIconColor = resources.getColor(R.color.orange_button);
 	}
 
 	@Override
@@ -46,11 +48,11 @@ public class LessonsItemAdapter extends ItemsAdapter<LessonSingleItem> {
 
 		holder.text.setText(item.getName());
 		if (item.isCompleted()) {
-			holder.text.setTextColor(watchedTextColor);
-			holder.icon.setTextColor(watchedIconColor);
+			holder.text.setTextColor(completedTextColor);
+			holder.icon.setTextColor(completedIconColor);
 			holder.icon.setText(R.string.ic_check);
 		} else {
-			holder.text.setTextColor(unWatchedTextColor);
+			holder.text.setTextColor(incompleteTextColor);
 			holder.icon.setText(Symbol.EMPTY);
 		}
 	}

@@ -212,8 +212,11 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		if (v.getId() == R.id.resumeLessonBtn) {
 			int lessonId = incompleteLesson.getId();
 			long courseId = incompleteLesson.getCourseId();
-
-			getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
+			if (!isTablet) {
+				getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
+			} else {
+				getActivityFace().openFragment(GameLessonsFragmentTablet.createInstance(lessonId, courseId));
+			}
 		} else if (v.getId() == R.id.curriculumHeader) {
 			getAppData().setUserChooseLessonsLibrary(!libraryMode);
 			showLibrary();
@@ -226,7 +229,11 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
 		int categoryId = curriculumItems.getDisplayOrder().get(groupPosition);
 		int courseId = curriculumItems.getIds().get(categoryId).get(childPosition);
-		getActivityFace().openFragment(LessonsCourseFragment.createInstance(courseId, categoryId));
+		if (!isTablet) {
+			getActivityFace().openFragment(LessonsCourseFragment.createInstance(courseId, categoryId));
+		}else {
+			getActivityFace().openFragment(LessonsCourseFragmentTablet.createInstance(courseId, categoryId));
+		}
 		return false;
 	}
 

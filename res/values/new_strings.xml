@@ -361,5 +361,6 @@
 	<string name="completed_daily">Completed Daily</string>
 	<string name="bullet">Bullet</string>
 	<string name="attempts">Attempts</string>
+	<string name="upgrade_now">Upgrade Now</string>
 
 </resources>

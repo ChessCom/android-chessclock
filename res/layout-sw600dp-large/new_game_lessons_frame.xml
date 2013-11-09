@@ -1,200 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	>
+	android:layout_height="match_parent">
 
-	<ScrollView
-		android:id="@+id/descriptionView"
+	<com.chess.widgets.LinLayout
+		android:id="@+id/boardLinLay"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
 		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_alignBottom="@+id/slidingDrawer"
-		android:background="@color/white"
-		android:scrollbars="none"
-		android:paddingBottom="20dip"
-		>
+		android:layout_marginTop="@dimen/tablet_board_margin_bottom"
+		android:layout_marginLeft="@dimen/tablet_board_margin_bottom"
+		android:layout_marginRight="@dimen/tablet_board_margin"
+		android:layout_marginBottom="@dimen/tablet_board_margin_bottom"
+		android:background="@drawable/shadow_back_inset_shifted">
 
-		<LinearLayout
+		<!--BoardView-->
+		<com.chess.ui.views.chess_boards.ChessBoardLessonsView
+			android:id="@+id/boardview"
+			android:layout_width="@dimen/tablet_board_size"
+			android:layout_height="@dimen/tablet_board_size" />
+
+	</com.chess.widgets.LinLayout>
+
+	<com.chess.widgets.RelLayout
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_toRightOf="@id/boardLinLay"
+		android:paddingTop="11dip"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:paddingBottom="@dimen/default_scr_bottom_padding"
+		android:animateLayoutChanges="true">
+
+		<!--Description-->
+		<ScrollView
+			android:id="@+id/descriptionView"
 			android:orientation="vertical"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_above="@+id/controlsView"
+			android:background="@drawable/rounded_white_back"
+			android:scrollbars="none"
+			android:paddingBottom="20dip"
+
 			>
 
-			<!--Title-->
-			<com.chess.widgets.RoboTextView
-				android:id="@+id/lessonTitleTxt"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textSize="21sp"
-				android:textColor="@color/new_subtitle_dark_grey"
-				android:paddingTop="9dip"
-				android:paddingLeft="15dip"
-				android:paddingRight="15dip"
-				android:paddingBottom="8dip"
-				custom:ttf="Bold" />
-
-			<!--Goal Commentary-->
-			<com.chess.widgets.RoboTextView
-				android:id="@+id/commentTxt"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textColor="@color/new_subtitle_dark_grey"
-				android:padding="15dip"
-				android:textSize="15sp"
-				custom:ttf="Italic"
-				/>
-
-			<!--Divider-->
-			<View
+			<LinearLayout
+				android:orientation="vertical"
 				android:layout_width="match_parent"
-				android:layout_height="1dip"
-				android:background="@color/new_friends_list_divider"
-				/>
+				android:layout_height="wrap_content">
 
-			<!--Lesson Description-->
-			<com.chess.widgets.RoboTextView
-				android:id="@+id/descriptionTxt"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textColor="@color/new_subtitle_dark_grey"
-				android:textSize="15sp"
-				android:padding="15dip"
-				android:visibility="gone"
-				/>
+				<!--Title-->
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/lessonTitleTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="21sp"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:paddingTop="9dip"
+					android:paddingLeft="15dip"
+					android:paddingRight="15dip"
+					android:paddingBottom="8dip"
+					custom:ttf="Bold" />
 
-			<!--Divider-->
-			<View
-				android:id="@+id/lessonDescriptionDivider"
-				android:layout_width="match_parent"
-				android:layout_height="1dip"
-				android:background="@color/new_friends_list_divider"
-				android:visibility="gone"
-				/>
+				<!--Goal Commentary-->
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/commentTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:padding="15dip"
+					android:textSize="15sp"
+					custom:ttf="Italic" />
 
-			<!--Position Description-->
-			<com.chess.widgets.RoboTextView
-				android:id="@+id/positionDescriptionTxt"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textColor="@color/new_subtitle_dark_grey"
-				android:textSize="15sp"
-				android:padding="15dip"
-				/>
+				<!--Divider-->
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="1dip"
+					android:background="@color/new_friends_list_divider" />
 
-			<!--Divider-->
-			<View
-				android:id="@+id/hintDivider"
-				android:layout_width="match_parent"
-				android:layout_height="1dip"
-				android:background="@color/new_friends_list_divider"
-				android:visibility="gone"
-				/>
+				<!--Lesson Description-->
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/descriptionTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="15sp"
+					android:padding="15dip"
+					android:visibility="gone" />
 
-			<!--Hint-->
-			<com.chess.widgets.RoboTextView
-				android:id="@+id/hintTxt"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:textColor="@color/new_subtitle_dark_grey"
-				android:textSize="15sp"
-				android:padding="15dip"
-				android:background="@color/header_light"
-				android:visibility="gone"
-				/>
+				<!--Divider-->
+				<View
+					android:id="@+id/lessonDescriptionDivider"
+					android:layout_width="match_parent"
+					android:layout_height="1dip"
+					android:background="@color/new_friends_list_divider"
+					android:visibility="gone" />
 
-		</LinearLayout>
-	</ScrollView>
+				<!--Position Description-->
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/positionDescriptionTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="15sp"
+					android:padding="15dip" />
 
-	<com.chess.widgets.MultiDirectionSlidingDrawer
-		android:id="@id/slidingDrawer"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		custom:direction="bottomToTop"
-		custom:handle="@+id/handle"
-		custom:content="@+id/content"
-		android:layout_above="@+id/controlsView"
-		>
+				<!--Divider-->
+				<View
+					android:id="@+id/hintDivider"
+					android:layout_width="match_parent"
+					android:layout_height="1dip"
+					android:background="@color/new_friends_list_divider"
+					android:visibility="gone" />
 
-		<LinearLayout
-			android:id="@id/content"
+				<!--Hint-->
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/hintTxt"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="15sp"
+					android:padding="15dip"
+					android:background="@color/header_light"
+					android:visibility="gone" />
+
+			</LinearLayout>
+
+		</ScrollView>
+
+		<!--Controls-->
+		<com.chess.ui.views.game_controls.ControlsLessonsViewTablet
+			android:id="@id/controlsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			>
-			<RelativeLayout
-				android:id="@+id/boardLayout"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				>
+			android:layout_alignParentBottom="true"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"/>
 
-				<!--Top Border-->
-				<FrameLayout
-					android:id="@+id/topBorder"
-					android:layout_width="match_parent"
-					android:layout_height="0px"
-					android:background="@drawable/game_board_divider"
-					/>
-
-				<com.chess.ui.views.chess_boards.ChessBoardLessonsView
-					android:id="@+id/boardview"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_below="@id/topBorder"
-					android:layout_marginTop="0px"
-					/>
-				<!--Bottom Border-->
-				<FrameLayout
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_below="@id/boardview"
-					android:background="@drawable/game_board_divider"
-					android:layout_marginTop="-1px"
-					/>
-
-			</RelativeLayout>
-
-		</LinearLayout>
-
-		<RelativeLayout
-			android:id="@id/handle"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:background="@color/white"
-			>
-
-			<!--Handle-->
-			<com.chess.widgets.RoboTextView
-				android:layout_width="match_parent"
-				android:layout_height="@dimen/drawer_handler_height"
-				android:textColor="@color/white"
-				android:text="@string/ic_handler"
-				android:padding="0dip"
-				android:gravity="center"
-				android:layout_centerInParent="true"
-				android:textSize="35dip"
-				custom:ttf="Icon"
-				style="@style/ListItem.Header_2.Light"
-				android:shadowColor="@color/switch_white_back_border_bot_1"
-				android:shadowRadius="4"
-				android:shadowDx="0"
-				android:shadowDy="0"
-				/>
-
-		</RelativeLayout>
-
-	</com.chess.widgets.MultiDirectionSlidingDrawer>
-
-	<!--Controls View-->
-	<com.chess.ui.views.game_controls.ControlsLessonsView
-		android:id="@+id/controlsView"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		/>
+	</com.chess.widgets.RelLayout>
 
 </RelativeLayout>

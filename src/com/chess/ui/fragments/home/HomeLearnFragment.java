@@ -27,6 +27,7 @@ import com.chess.db.DbScheme;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.lessons.GameLessonFragment;
+import com.chess.ui.fragments.lessons.GameLessonsFragmentTablet;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
@@ -175,7 +176,12 @@ public class HomeLearnFragment extends CommonLogicFragment {
 				int lessonId = incompleteLesson.getId();
 				long courseId = incompleteLesson.getCourseId();
 
-				getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
+				if (!isTablet) {
+					getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
+				} else {
+					getActivityFace().openFragment(GameLessonsFragmentTablet.createInstance(lessonId, courseId));
+				}
+
 			} else {
 				getActivityFace().openFragment(new LessonsFragment());
 			}

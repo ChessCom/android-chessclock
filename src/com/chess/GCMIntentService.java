@@ -24,15 +24,15 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
-import com.chess.backend.gcm.*;
-import com.chess.backend.RestHelper;
-import com.chess.db.DbDataManager;
-import com.chess.model.DataHolder;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.GcmItem;
 import com.chess.backend.exceptions.InternalErrorException;
+import com.chess.backend.gcm.*;
+import com.chess.db.DbDataManager;
 import com.chess.model.BaseGameItem;
+import com.chess.model.DataHolder;
 import com.chess.model.GameListCurrentItem;
 import com.chess.statics.*;
 import com.chess.utilities.AppUtils;
@@ -73,16 +73,22 @@ public class GCMIntentService extends GCMBaseIntentService {
 		try {
 			item = RestHelper.getInstance().requestData(loadItem, GcmItem.class, context);
 		} catch (InternalErrorException e) {
+			int resultCode = e.getCode();
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCodes.YOUR_GCM_ID_ALREADY_REGISTERED) {
+					GCMRegistrar.setRegisteredOnServer(context, true);
+					appData.registerOnChessGCM(appData.getUserToken());
+					Log.d(TAG, "Already registered on server -> Re-registering GCM");
+				}
+			}
+
 			e.logMe();
 		}
 
 		if (item != null && item.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 			GCMRegistrar.setRegisteredOnServer(context, true);
 			appData.registerOnChessGCM(appData.getUserToken());
-		} else {
-			if (context != null) {
-				Toast.makeText(context, R.string.gcm_not_registered, Toast.LENGTH_SHORT).show();
-			}
 		}
 	}
 

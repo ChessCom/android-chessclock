@@ -4,7 +4,8 @@
 	android:id="@+id/linearLayout1"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:padding="21dp"
+	android:paddingTop="@dimen/grid_view_spacing"
+	android:paddingBottom="@dimen/grid_view_spacing"
 	>
 
 	<GridView
@@ -12,8 +13,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:numColumns="2"
-		android:verticalSpacing="10dp"
-		android:horizontalSpacing="10dp"
 		android:stretchMode="columnWidth"
 		android:cacheColorHint="@color/white"
 		android:background="@color/white"

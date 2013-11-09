@@ -122,5 +122,6 @@
 	<dimen name="panel_info_avatar_tactic_size">55dip</dimen>
 	<dimen name="panel_info_tactic_padding_side">0dp</dimen>
 	<dimen name="panel_info_tactic_padding_top">3dip</dimen>
+	<dimen name="grid_view_spacing">11dp</dimen>
 
 </resources>

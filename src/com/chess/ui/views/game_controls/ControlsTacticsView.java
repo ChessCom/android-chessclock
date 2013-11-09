@@ -24,9 +24,9 @@ public class ControlsTacticsView extends ControlsBaseView {
 	protected State state;
 
 	private static final int[] styles = new int[]{
-			R.style.Rect_Top_Middle,
-			R.style.Rect_Top_Middle,
-			R.style.Rect_Top_Middle
+			R.style.Rect_Bottom_Left,
+			R.style.Rect_Bottom_Middle,
+			R.style.Rect_Bottom_Right
 	};
 
 	public ControlsTacticsView(Context context) {

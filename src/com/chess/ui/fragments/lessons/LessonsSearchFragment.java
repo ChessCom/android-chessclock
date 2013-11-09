@@ -21,7 +21,7 @@ import com.chess.db.DbScheme;
 import com.chess.db.QueryParams;
 import com.chess.db.tasks.SaveLessonsListTask;
 import com.chess.statics.Symbol;
-import com.chess.ui.adapters.LessonsItemAdapter;
+import com.chess.ui.adapters.LessonsItemsAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.fragments.BaseSearchFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -39,7 +39,7 @@ public class LessonsSearchFragment extends BaseSearchFragment implements Adapter
 
 	private Spinner difficultySpinner;
 	private LessonItemUpdateListener lessonItemUpdateListener;
-	private LessonsItemAdapter lessonsItemsAdapter;
+	private LessonsItemsAdapter lessonsItemsAdapter;
 	private String lastDifficulty;
 	private StringSpinnerAdapter difficultySpinnerAdapter;
 	private SaveLessonsUpdateListener saveLessonsUpdateListener;
@@ -50,7 +50,7 @@ public class LessonsSearchFragment extends BaseSearchFragment implements Adapter
 		super.onCreate(savedInstanceState);
 
 		lessonItemUpdateListener = new LessonItemUpdateListener();
-		lessonsItemsAdapter = new LessonsItemAdapter(getActivity(), null);
+		lessonsItemsAdapter = new LessonsItemsAdapter(getActivity(), null);
 		saveLessonsUpdateListener = new SaveLessonsUpdateListener();
 
 		String[] difficultyArray = getResources().getStringArray(R.array.lesson_difficulty);
@@ -169,7 +169,11 @@ public class LessonsSearchFragment extends BaseSearchFragment implements Adapter
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		LessonSingleItem lessonItem = (LessonSingleItem) parent.getItemAtPosition(position);
 		long lessonId = lessonItem.getId();
-		getActivityFace().openFragment(GameLessonFragment.createInstance((int) lessonId, 0)); // we don't know courseId here
+		if (!isTablet) {
+			getActivityFace().openFragment(GameLessonFragment.createInstance((int) lessonId, 0));
+		} else {
+			getActivityFace().openFragment(GameLessonsFragmentTablet.createInstance((int) lessonId, 0));// we don't know courseId here
+		}
 	}
 
 	private class LessonItemUpdateListener extends ChessLoadUpdateListener<LessonsItem> {

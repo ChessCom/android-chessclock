@@ -24,7 +24,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 
 	private BoardViewLessonsFace boardViewFace;
 	private int usedHints;
-	private YourMoveDrawable yourMoveDrawable;
+	protected YourMoveDrawable yourMoveDrawable;
 
 	public ControlsLessonsView(Context context) {
 		super(context);
@@ -38,6 +38,12 @@ public class ControlsLessonsView extends ControlsBaseView {
 	void init(Context context, AttributeSet attrs) {
 		super.init(context, attrs);
 
+		addButtons();
+
+		showStart();
+	}
+
+	protected void addButtons() {
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
 
 		addNextButton(R.style.Rect_Bottom_Right_Green, NEXT);
@@ -45,8 +51,6 @@ public class ControlsLessonsView extends ControlsBaseView {
 		addStartButton();
 		addWrongButton();
 		addYourMoveButton();
-
-		showStart();
 	}
 
 	protected void addNextButton(int styleId, ButtonIds id) {

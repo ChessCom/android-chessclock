@@ -7,10 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
@@ -43,8 +40,8 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 
 	private LessonsCursorAdapter lessonsAdapter;
 	protected Spinner categorySpinner;
-	private View loadingView;
-	private TextView emptyView;
+	protected View loadingView;
+	protected TextView emptyView;
 	private ListView listView;
 	private LessonsCursorUpdateListener lessonsCursorUpdateListener;
 	private List<String> categoriesNames;
@@ -54,7 +51,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 
 	private int previousCategoryId;
 	protected String sectionName;
-	private LessonsPaginationAdapter paginationAdapter;
+	protected LessonsPaginationAdapter paginationAdapter;
 	private Integer selectedCategoryId;
 
 	public LessonsCategoriesFragment() {}
@@ -77,8 +74,8 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 			sectionName = savedInstanceState.getString(SECTION_NAME);
 		}
 
-		lessonsAdapter = new LessonsCursorAdapter(getActivity(), null);
-		paginationAdapter = new LessonsPaginationAdapter(getActivity(), lessonsAdapter, new LessonsUpdateListener(), null);
+		setAdapter(new LessonsCursorAdapter(getActivity(), null));
+		paginationAdapter = new LessonsPaginationAdapter(getActivity(), getAdapter(), new LessonsUpdateListener(), null);
 
 		lessonsUpdateListener = new LessonsUpdateListener();
 		saveLessonsUpdateListener = new SaveLessonsUpdateListener();
@@ -98,6 +95,16 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 
 		setTitle(R.string.lessons);
 
+		widgetsInit(view);
+
+		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
+		getActivityFace().showActionMenu(R.id.menu_notifications, false);
+		getActivityFace().showActionMenu(R.id.menu_games, false);
+
+		setTitlePadding(ONE_ICON);
+	}
+
+	protected void widgetsInit(View view) {
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
@@ -106,12 +113,6 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(paginationAdapter);
 		listView.setOnItemClickListener(this);
-
-		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
-		getActivityFace().showActionMenu(R.id.menu_notifications, false);
-		getActivityFace().showActionMenu(R.id.menu_games, false);
-
-		setTitlePadding(ONE_ICON);
 	}
 
 	@Override
@@ -168,6 +169,14 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 				getContentResolver()).executeTask();
 	}
 
+	protected void setAdapter(LessonsCursorAdapter adapter) {
+		this.lessonsAdapter = adapter;
+	}
+
+	protected LessonsCursorAdapter getAdapter() {
+		return lessonsAdapter;
+	}
+
 	private class LessonsCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		@Override
@@ -179,7 +188,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
-			lessonsAdapter.changeCursor(returnedObj);
+			getAdapter().changeCursor(returnedObj);
 		}
 
 		@Override
@@ -207,7 +216,11 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		long lessonId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
-		getActivityFace().openFragment(GameLessonFragment.createInstance((int) lessonId, 0)); // we don't know courseId here
+		if (!isTablet) {
+			getActivityFace().openFragment(GameLessonFragment.createInstance((int) lessonId, 0));
+		} else {
+			getActivityFace().openFragment(GameLessonsFragmentTablet.createInstance((int) lessonId, 0)); // we don't know courseId here
+		}
 	}
 
 	@Override
@@ -223,7 +236,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 			need2update = true;
 
 			// clear current list
-			lessonsAdapter.changeCursor(null);
+			getAdapter().changeCursor(null);
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				LoadItem loadItem = new LoadItem();
@@ -277,7 +290,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		}
 	}
 
-	private void showEmptyView(boolean show) {
+	protected void showEmptyView(boolean show) {
 		if (show) {
 			// don't hide loadingView if it's loading
 			if (loadingView.getVisibility() != View.VISIBLE) {
@@ -292,10 +305,10 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		}
 	}
 
-	private void showLoadingView(boolean show) {
+	protected void showLoadingView(boolean show) {
 		if (show) {
 			emptyView.setVisibility(View.GONE);
-			if (lessonsAdapter.getCount() == 0) {
+			if (getAdapter().getCount() == 0) {
 				listView.setVisibility(View.GONE);
 
 			}
