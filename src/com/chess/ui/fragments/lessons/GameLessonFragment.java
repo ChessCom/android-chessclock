@@ -879,16 +879,16 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		lessonItem.setId(lessonId);
 		mentorLesson = lessonItem.getLesson();
 		positionsToLearn = lessonItem.getPositions();
+		totalLearningPositionsCnt = positionsToLearn.size();
 
 		userLesson = lessonItem.getUserLesson();
 		userLesson.setLegalMoveCheck(lessonItem.getLegalMoveCheck());
 		userLesson.setLegalPositionCheck(lessonItem.getLegalPositionCheck());
 		userLesson.setLessonCompleted(lessonItem.isLessonCompleted());
 
-		totalLearningPositionsCnt = positionsToLearn.size();
-
 		startLearningPosition = userLesson.getCurrentPosition();
 		currentLearningPosition = userLesson.getCurrentPosition();
+
 		if (totalLearningPositionsCnt == currentLearningPosition) {
 			currentLearningPosition--;
 		}

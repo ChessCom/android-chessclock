@@ -103,6 +103,9 @@ public class LessonProblemItem extends BaseResponseItem<LessonProblemItem.Data> 
 		}
 
 		public UserLesson getUserLesson() {
+			if (user_cm_lesson == null) { // TODO investigate why it can be null
+				user_cm_lesson = new UserLesson();
+			}
 
 			return user_cm_lesson;
 		}
@@ -429,8 +432,8 @@ public class LessonProblemItem extends BaseResponseItem<LessonProblemItem.Data> 
 	}
 
 	public static class UserLesson {
-		private String initial_score;
-		private String last_score;
+		private String initial_score = "0";
+		private String last_score = "0";
 		private int current_position;
 		private int current_points;
 		private float current_position_points;
