@@ -272,13 +272,16 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		}
 		authorTxt.setText(authorStr);
 
-		// Change main article Image params
-		int imageHeight = (int) (widthPixels * 0.6671f);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(widthPixels, imageHeight);
-		videoBackImg.setLayoutParams(params);
+		if (!isTablet) {
+			// Change main article Image params
+			int imageHeight = (int) (widthPixels * 0.6671f);
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(widthPixels, imageHeight);
+			videoBackImg.setLayoutParams(params);
+		}
 
 		// change layout params for image and progress bar
-		RelativeLayout.LayoutParams progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
 		progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		videoBackImg.getProgressBar().setLayoutParams(progressParams);
 		videoBackImg.getImageView().setScaleType(ImageView.ScaleType.CENTER_CROP);

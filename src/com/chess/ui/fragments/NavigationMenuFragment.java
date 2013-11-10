@@ -35,6 +35,7 @@ import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragmentTablet;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
+import com.chess.ui.fragments.videos.VideosFragmentTablet;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
@@ -190,9 +191,18 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_videos:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(VideosFragment.class.getSimpleName());
+				if (!isTablet) {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(VideosFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(VideosFragmentTablet.class.getSimpleName());
+				}
+
 				if (fragmentByTag == null) {
-					fragmentByTag = new VideosFragment();
+					if (!isTablet) {
+						fragmentByTag = new VideosFragment();
+					} else {
+						fragmentByTag = new VideosFragmentTablet();
+					}
 				}
 				break;
 			case R.drawable.ic_nav_articles:

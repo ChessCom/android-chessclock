@@ -69,7 +69,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_lessons_frame, container, false);
+		return inflater.inflate(R.layout.new_common_tablet_content_frame, container, false);
 	}
 
 	@Override
@@ -176,11 +176,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		if (v.getId() == R.id.resumeLessonBtn) {
 			int lessonId = incompleteLesson.getId();
 			long courseId = incompleteLesson.getCourseId();
-			if (!isTablet) {
-				getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
-			} else {
-				getActivityFace().openFragment(GameLessonsFragmentTablet.createInstance(lessonId, courseId));
-			}
+			getActivityFace().openFragment(GameLessonsFragmentTablet.createInstance(lessonId, courseId));
 		} else if (v.getId() == R.id.upgradeBtn) {
 			getActivityFace().openFragment(new UpgradeFragment());
 		}
@@ -299,12 +295,12 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.lessonsFragmentContainer, fragment).commitAllowingStateLoss();
+		transaction.replace(R.id.innerFragmentContainer, fragment).commitAllowingStateLoss();
 	}
 
 	private void openInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.lessonsFragmentContainer, fragment, fragment.getClass().getSimpleName());
+		transaction.replace(R.id.innerFragmentContainer, fragment, fragment.getClass().getSimpleName());
 		transaction.addToBackStack(fragment.getClass().getSimpleName());
 		transaction.commit();
 	}

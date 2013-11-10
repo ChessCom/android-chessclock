@@ -140,11 +140,7 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 		int categoryId = curriculumItems.getDisplayOrder().get(groupPosition);
 		int courseId = curriculumItems.getIds().get(categoryId).get(position);
 
-		if (!isTablet) {
-			parentFace.changeFragment(LessonsCourseFragment.createInstance(courseId, categoryId));
-		} else {
-			parentFace.changeFragment(LessonsCourseFragmentTablet.createInstance(courseId, categoryId));
-		}
+		parentFace.changeFragment(LessonsCourseFragmentTablet.createInstance(courseId, categoryId));
 	}
 
 	private class LessonsCategoriesUpdateListener extends CommonLogicFragment.ChessUpdateListener<CommonFeedCategoryItem> {
@@ -525,7 +521,7 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ViewHolder holder;
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.new_lessons_thumb_titles_list_item, parent, false);
+				convertView = inflater.inflate(R.layout.new_common_thumb_titles_list_item, parent, false);
 				holder = new ViewHolder();
 
 				holder.text = (TextView) convertView.findViewById(R.id.titleTxt);
@@ -551,15 +547,10 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 			return convertView;
 		}
 
-		public void setGroupPosition(int groupPosition) {
-			this.groupPosition = groupPosition;
-		}
-
 		private class ViewHolder {
 			TextView text;
 			TextView statusTxt;
 		}
 	}
-
 
 }

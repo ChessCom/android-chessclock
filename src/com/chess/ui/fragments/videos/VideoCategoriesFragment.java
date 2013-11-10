@@ -46,28 +46,30 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public static final String SECTION_NAME = "section_name";
 	private static final int WATCH_VIDEO_REQUEST = 9896;
 
-	private VideosCursorAdapter videosAdapter;
-
-	private View loadingView;
-	private TextView emptyView;
-	private ListView listView;
 	private VideosCursorUpdateListener videosCursorUpdateListener;
-	private List<String> categoriesNames;
-	private List<Integer> categoriesIds;
 	private SaveVideosUpdateListener saveVideosUpdateListener;
-	private SparseBooleanArray viewedVideosMap;
+	private VideosCursorAdapter videosAdapter;
+	protected SparseBooleanArray viewedVideosMap;
+	protected List<String> categoriesNames;
+	protected List<Integer> categoriesIds;
 	private long playButtonClickTime;
 	private int currentPlayingId;
 	private int previousCategoryId;
-	private String sectionName;
-	private VideosPaginationAdapter paginationAdapter;
+	protected String sectionName;
+
+	protected TextView emptyView;
+	private ListView listView;
+
+	protected VideosPaginationAdapter paginationAdapter;
+	protected Spinner categorySpinner;
+	protected int selectedCategoryId;
 
 	public static VideoCategoriesFragment createInstance(String sectionName) {
-		VideoCategoriesFragment frag = new VideoCategoriesFragment();
+		VideoCategoriesFragment fragment = new VideoCategoriesFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString(SECTION_NAME, sectionName);
-		frag.setArguments(bundle);
-		return frag;
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 
 	@Override
@@ -86,10 +88,10 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		viewedVideosMap = new SparseBooleanArray();
 		saveVideosUpdateListener = new SaveVideosUpdateListener();
-		videosAdapter = new VideosCursorAdapter(this, null);
-		videosAdapter.addViewedMap(viewedVideosMap);
+		setAdapter(new VideosCursorAdapter(this, null));
+		getAdapter().addViewedMap(viewedVideosMap);
 
-		paginationAdapter = new VideosPaginationAdapter(getActivity(), videosAdapter, new VideosUpdateListener(), null);
+		paginationAdapter = new VideosPaginationAdapter(getActivity(), getAdapter(), new VideosUpdateListener(), null);
 
 		// restore state
 		if (savedInstanceState != null) {
@@ -111,40 +113,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		setTitle(R.string.videos);
 
-		loadingView = view.findViewById(R.id.loadingView);
-		emptyView = (TextView) view.findViewById(R.id.emptyView);
-
-		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(paginationAdapter);
-		listView.setOnItemClickListener(this);
-
-		// get viewed marks
-		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());
-		if (cursor != null) {
-			do {
-				int videoId = DbDataManager.getInt(cursor, DbScheme.V_ID);
-				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_DATA_VIEWED) > 0;
-				viewedVideosMap.put(videoId, isViewed);
-			} while (cursor.moveToNext());
-			cursor.close();
-		}
-
-		boolean loaded = categoriesNames.size() != 0 || fillCategories();
-
-		if (loaded) {
-			int sectionId;
-			for (sectionId = 0; sectionId < categoriesNames.size(); sectionId++) {
-				String category = categoriesNames.get(sectionId);
-				if (category.equals(sectionName)) {
-					break;
-				}
-			}
-
-			Spinner categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
-			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), categoriesNames));
-			categorySpinner.setOnItemSelectedListener(this);
-			categorySpinner.setSelection(sectionId);  // TODO remember last selection.
-		}
+		widgetsInit(view);
 
 		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
@@ -171,7 +140,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		}
 	}
 
-	private boolean fillCategories() {
+	protected boolean fillCategories() {
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.VIDEO_CATEGORIES));
 		if (!(cursor != null && cursor.moveToFirst())) {
 			showToast("Categories are not loaded");
@@ -198,7 +167,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
-			videosAdapter.changeCursor(returnedObj);
+			getAdapter().changeCursor(returnedObj);
 			if (paginationAdapter != null) {
 				paginationAdapter.notifyDataSetChanged();
 			}
@@ -240,8 +209,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 			// update current list
 			viewedVideosMap.put(currentPlayingId, true);
-			videosAdapter.addViewedMap(viewedVideosMap);
-			videosAdapter.notifyDataSetChanged();
+			getAdapter().addViewedMap(viewedVideosMap);
+			getAdapter().notifyDataSetChanged();
 		}
 	}
 
@@ -257,6 +226,9 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		if (position == parent.getCount()) {
+			return;
+		}
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		long videoId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 		getActivityFace().openFragment(VideoDetailsFragment.createInstance(videoId));
@@ -264,20 +236,24 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		Integer categoryId = categoriesIds.get(position);
+		selectedCategoryId = categoriesIds.get(position);
 
-		if (need2update || categoryId != previousCategoryId) {
-			previousCategoryId = categoryId;
+		updateByCategory();
+	}
+
+	protected void updateByCategory() {
+		if (need2update || selectedCategoryId != previousCategoryId) {
+			previousCategoryId = selectedCategoryId;
 			need2update = true;
 
 			// clear current list
-			videosAdapter.changeCursor(null);
+			getAdapter().changeCursor(null);
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
+				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, selectedCategoryId);
 				loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.DEFAULT_ITEMS_PER_PAGE);
 
 				paginationAdapter.updateLoadItem(loadItem);
@@ -314,7 +290,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		}
 	}
 
-	private void showEmptyView(boolean show) {
+	protected void showEmptyView(boolean show) {
 		if (show) {
 			// don't hide loadingView if it's loading
 			if (loadingView.getVisibility() != View.VISIBLE) {
@@ -333,5 +309,52 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	public Context getMeContext() {
 		return getActivity();
 	}
+
+	protected void setAdapter(VideosCursorAdapter adapter) {
+		this.videosAdapter = adapter;
+	}
+
+	protected VideosCursorAdapter getAdapter() {
+		return videosAdapter;
+	}
+
+	protected void widgetsInit(View view) {
+		loadingView = view.findViewById(R.id.loadingView);
+		emptyView = (TextView) view.findViewById(R.id.emptyView);
+
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setAdapter(paginationAdapter);
+		listView.setOnItemClickListener(this);
+
+		// get viewed marks
+		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());
+		if (cursor != null) {
+			do {
+				int videoId = DbDataManager.getInt(cursor, DbScheme.V_ID);
+				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_DATA_VIEWED) > 0;
+				viewedVideosMap.put(videoId, isViewed);
+			} while (cursor.moveToNext());
+			cursor.close();
+		}
+
+		boolean loaded = categoriesNames.size() != 0 || fillCategories();
+
+		if (loaded) {
+			int position;
+			for (position = 0; position < categoriesNames.size(); position++) {
+				String category = categoriesNames.get(position);
+				if (category.equals(sectionName)) {
+					selectedCategoryId = categoriesIds.get(position);
+					break;
+				}
+			}
+
+			categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
+			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), categoriesNames));
+			categorySpinner.setOnItemSelectedListener(this);
+			categorySpinner.setSelection(position);  // TODO remember last selection.
+		}
+	}
+
 
 }

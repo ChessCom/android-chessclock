@@ -122,14 +122,10 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		boolean loaded = categoriesNames.size() != 0 || fillCategories();
 
 		if (loaded) {
-			// get passed argument
-			String selectedCategory = sectionName;
-
 			int position;
-
 			for (position = 0; position < categoriesNames.size(); position++) {
 				String category = categoriesNames.get(position);
-				if (category.equals(selectedCategory)) {
+				if (category.equals(sectionName)) {
 					selectedCategoryId = categoriesIds.get(position);
 					break;
 				}
@@ -213,6 +209,9 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		if (position == parent.getCount()) {
+			return;
+		}
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		long lessonId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 

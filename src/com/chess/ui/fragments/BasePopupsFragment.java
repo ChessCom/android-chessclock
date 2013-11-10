@@ -281,22 +281,34 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	public void showKeyBoard(EditText editText){
+		if (getActivity() == null) {
+			return;
+		}
 		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
 	}
 
 	public void showKeyBoardImplicit(EditText editText){
+		if (getActivity() == null) {
+			return;
+		}
 		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
 		imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);   // Call twice to ensure it appear
 	}
 
 	public void hideKeyBoard(View editText){
+		if (getActivity() == null) {
+			return;
+		}
 		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
 
 	public void hideKeyBoard(){
+		if (getActivity() == null) {
+			return;
+		}
 		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 	}

@@ -29,10 +29,13 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.lessons.GameLessonFragment;
 import com.chess.ui.fragments.lessons.GameLessonsFragmentTablet;
 import com.chess.ui.fragments.lessons.LessonsFragment;
+import com.chess.ui.fragments.lessons.LessonsFragmentTablet;
 import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
+import com.chess.ui.fragments.tactics.GameTacticsFragmentTablet;
 import com.chess.ui.fragments.videos.VideoDetailsFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
+import com.chess.ui.fragments.videos.VideosFragmentTablet;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
@@ -166,11 +169,23 @@ public class HomeLearnFragment extends CommonLogicFragment {
 		if (id == R.id.tacticsHeaderView) {
 			getActivityFace().openFragment(new StatsGameTacticsFragment());
 		} else if (id == R.id.lessonsHeaderView) {
-			getActivityFace().openFragment(new LessonsFragment());
+			if (!isTablet) {
+				getActivityFace().openFragment(new LessonsFragment());
+			} else {
+				getActivityFace().openFragment(new LessonsFragmentTablet());
+			}
 		} else if (id == R.id.videosHeaderView) {
-			getActivityFace().openFragment(new VideosFragment());
+			if (!isTablet) {
+				getActivityFace().openFragment(new VideosFragment());
+			} else {
+				getActivityFace().openFragment(new VideosFragmentTablet());
+			}
 		} else if (id == R.id.startTacticsBtn) {
-			getActivityFace().openFragment(new GameTacticsFragment());
+			if (!isTablet) {
+				getActivityFace().openFragment(new GameTacticsFragment());
+			} else {
+				getActivityFace().openFragment(new GameTacticsFragmentTablet());
+			}
 		} else if (id == R.id.startLessonsBtn) {
 			if (incompleteLesson != null) {
 				int lessonId = incompleteLesson.getId();
@@ -181,9 +196,12 @@ public class HomeLearnFragment extends CommonLogicFragment {
 				} else {
 					getActivityFace().openFragment(GameLessonsFragmentTablet.createInstance(lessonId, courseId));
 				}
-
 			} else {
-				getActivityFace().openFragment(new LessonsFragment());
+				if (!isTablet) {
+					getActivityFace().openFragment(new LessonsFragment());
+				} else {
+					getActivityFace().openFragment(new LessonsFragmentTablet());
+				}
 			}
 		} else if (id == R.id.videoThumbItemView) {
 			getActivityFace().openFragment(VideoDetailsFragment.createInstance(loadedVideoId));

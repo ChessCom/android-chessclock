@@ -25,6 +25,7 @@ public abstract class ItemsCursorAdapter extends CursorAdapter {
 	private HashMap<String, ImageGetter.TextImage> textViewsImageCache;
 	private int screenWidth;
 	protected boolean isTablet;
+	protected float density;
 
 	public ItemsCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, 0);
@@ -40,6 +41,7 @@ public abstract class ItemsCursorAdapter extends CursorAdapter {
 	private void init(Context context) {
 		this.context = context;
 		resources = context.getResources();
+		density = resources.getDisplayMetrics().density;
 		inflater = LayoutInflater.from(context);
 		itemListId = R.id.list_item_id;
 

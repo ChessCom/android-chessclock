@@ -123,5 +123,6 @@
 	<dimen name="panel_info_tactic_padding_side">0dp</dimen>
 	<dimen name="panel_info_tactic_padding_top">3dip</dimen>
 	<dimen name="grid_view_spacing">11dp</dimen>
+	<dimen name="comments_side_padding">23dp</dimen>
 
 </resources>

@@ -695,8 +695,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (show) {
 			showPopupProgressDialog(R.string.loading_);
 		} else {
-			if (isPaused)
-				return;
+//			if (isPaused) // TODO check. We catch exception in Fragment itself, so should be safe
+//				return;
 
 			dismissProgressDialog();
 		}

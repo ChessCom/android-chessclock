@@ -10,12 +10,13 @@
 	<RelativeLayout
 		android:id="@+id/leftListView"
 		android:layout_width="@dimen/tablet_side_menu_width"
-		android:layout_height="match_parent">
+		android:layout_height="match_parent"
+		>
 
 		<ListView
 			android:id="@+id/listView"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_height="wrap_content"
 			android:layout_above="@+id/resumeLessonBtn"
 			android:divider="@null"
 			android:dividerHeight="0dip"
@@ -32,8 +33,9 @@
 			android:textSize="@dimen/game_controls_text_size"
 			android:textColor="@color/white"
 			style="@style/Rect.Bottom.Right.Orange"
+			android:shadowColor="@color/transparent"
 			android:visibility="gone"
-			android:shadowColor="@color/transparent" />
+			/>
 
 		<RelativeLayout
 			android:id="@+id/loadingView"
@@ -74,11 +76,21 @@
 			android:contentDescription="@string/image"
 			android:layout_alignParentRight="true" />
 
+		<!--Background filler-->
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@color/action_bar_overlay"
+			android:layout_alignParentBottom="true"
+			android:layout_below="@id/listView">
+
+		</FrameLayout>
+
 	</RelativeLayout>
 
 	<!--Fragment Container-->
 	<FrameLayout
-		android:id="@+id/lessonsFragmentContainer"
+		android:id="@+id/innerFragmentContainer"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_toRightOf="@id/leftListView" />

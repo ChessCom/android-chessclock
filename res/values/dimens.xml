@@ -369,5 +369,6 @@
 	<dimen name="panel_info_tactic_padding_side">15dp</dimen>
 	<dimen name="tablet_side_menu_width">250dp</dimen>
 	<dimen name="grid_view_spacing">11dp</dimen>
+	<dimen name="comments_side_padding">15dp</dimen>
 
 </resources>
