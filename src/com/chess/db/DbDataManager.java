@@ -1241,21 +1241,31 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static void saveArticleItem(ContentResolver contentResolver, ArticleItem.Data currentItem, boolean forceUpdate) {
-		final String[] arguments2 = sArguments1;
-		arguments2[0] = String.valueOf(currentItem.getId());
+	/**
+	 *
+	 * @param fullBody flag that is used for articles details body
+	 */
+	public static void saveArticleItem(ContentResolver contentResolver, ArticleItem.Data currentItem, boolean fullBody) {
+		final String[] arguments = sArguments1;
+		arguments[0] = String.valueOf(currentItem.getId());
 
 		// TODO implement beginTransaction logic for performance increase
 		Uri uri = uriArray[Tables.ARTICLES.ordinal()];
 
-		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments2, null);
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments, null);
 
 		ContentValues values = new ContentValues();
 
 		values.put(V_ID, currentItem.getId());
 		values.put(V_TITLE, currentItem.getTitle());
 		values.put(V_CREATE_DATE, currentItem.getCreateDate());
-		values.put(V_BODY, currentItem.getBody());
+		if (fullBody) {
+			values.put(V_BODY, currentItem.getBody());
+			values.put(V_PREVIEW_BODY, currentItem.getBody().substring(0, 250));
+		} else {
+			values.put(V_BODY, currentItem.getBody());
+			values.put(V_PREVIEW_BODY, currentItem.getBody());
+		}
 		values.put(V_CATEGORY, currentItem.getCategoryName());
 		values.put(V_CATEGORY_ID, currentItem.getCategoryId());
 		values.put(V_COUNTRY_ID, currentItem.getCountryId());
@@ -1269,19 +1279,27 @@ public class DbDataManager {
 		values.put(V_URL, currentItem.getUrl());
 		values.put(V_THUMB_CONTENT, currentItem.isIsThumbInContent());
 
-		boolean articleExist = cursor != null && cursor.moveToFirst();
-		// we don't update while filling the list
-		if (!articleExist && !forceUpdate) {
-			contentResolver.insert(uri, values);
-		}
-		// update only when full body requested
-		if (articleExist && forceUpdate) {
-			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
-		}
+		updateOrInsertValues(contentResolver, cursor, uri, values);
 
-		if (cursor != null) {
-			cursor.close();
-		}
+//		boolean articleExist = cursor != null && cursor.moveToFirst();
+//		// we don't update while filling the list
+//		if (!articleExist && !fullBody) {
+////			Log.d("TEST", " insert getCategoryId = " + currentItem.getCategoryId());
+//			contentResolver.insert(uri, values);
+//		} else {
+////			Log.d("TEST", "NOT insert getCategoryId = " + currentItem.getCategoryId());
+//		}
+//		// update only when full body requested
+//		if (articleExist && fullBody) {
+////			Log.d("TEST", " update getCategoryId = " + currentItem.getCategoryId());
+//			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
+//		} else {
+////			Log.d("TEST", "NOT update getCategoryId = " + currentItem.getCategoryId());
+//		}
+//
+//		if (cursor != null) {
+//			cursor.close();
+//		}
 	}
 
 	public static List<ArticleDetailsItem.Diagram> getArticleDiagramItemFromDb(ContentResolver contentResolver, String username) {

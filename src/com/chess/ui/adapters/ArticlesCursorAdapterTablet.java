@@ -4,57 +4,27 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.Html;
 import android.text.TextUtils;
-import android.text.style.CharacterStyle;
-import android.text.style.ForegroundColorSpan;
-import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
-import com.chess.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 29.01.13
- * Time: 17:28
+ * Date: 10.11.13
+ * Time: 17:54
  */
-public class ArticlesCursorAdapter extends ItemsCursorAdapter {
+public class ArticlesCursorAdapterTablet extends ArticlesCursorAdapter {
 
-	public static final String GREY_COLOR_DIVIDER = "##";
-	public static final String NO_ITEM_IMAGE = "no_item_image";
-
-	protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
-	protected final int completedTextColor;
-	protected final int incompleteTextColor;
-	protected final HashMap<String, SmartImageFetcher.Data> imageDataMap;
-	protected int PHOTO_SIZE;
-	protected CharacterStyle foregroundSpan;
-	protected Date date;
-	protected SparseBooleanArray viewedMap;
-
-	public ArticlesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
+	public ArticlesCursorAdapterTablet(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
-
-		int lightGrey = resources.getColor(R.color.new_subtitle_light_grey);
-		foregroundSpan = new ForegroundColorSpan(lightGrey);
-
-		completedTextColor = resources.getColor(R.color.new_light_grey_3);
-		incompleteTextColor = resources.getColor(R.color.new_text_blue);
-
-		date = new Date();
-
-		PHOTO_SIZE = resources.getDimensionPixelSize(R.dimen.article_thumb_width);
-		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
 
 	@Override
@@ -65,6 +35,7 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
 		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
 		holder.dateTxt = (TextView) view.findViewById(R.id.dateTxt);
+		holder.contentTxt = (TextView) view.findViewById(R.id.contentTxt);
 
 		view.setTag(holder);
 
@@ -88,6 +59,9 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 		}
 		holder.authorTxt.setText(authorStr);
 
+		String contentPreviewStr = getString(cursor, DbScheme.V_PREVIEW_BODY);
+		holder.contentTxt.setText(Html.fromHtml(contentPreviewStr).toString().trim());
+
 		holder.titleTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_TITLE)));
 		date.setTime(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE) * 1000L);
 		holder.dateTxt.setText(dateFormatter.format(date));
@@ -107,17 +81,5 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 		} else {
 			holder.titleTxt.setTextColor(incompleteTextColor);
 		}
-	}
-
-	public void addViewedMap(SparseBooleanArray viewedArticlesMap) {
-		this.viewedMap = viewedArticlesMap;
-	}
-
-	protected class ViewHolder {
-		public ProgressImageView thumbnailImg;
-		public TextView titleTxt;
-		public TextView authorTxt;
-		public TextView dateTxt;
-		public TextView contentTxt;
 	}
 }

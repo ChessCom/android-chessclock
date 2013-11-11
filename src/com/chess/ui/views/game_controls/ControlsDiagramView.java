@@ -35,7 +35,12 @@ public class ControlsDiagramView extends ControlsBaseView {
 		if (resources == null) {
 			return;
 		}
+		addButtons();
 
+		showDefault();
+	}
+
+	protected void addButtons() {
 		// game diagram controls
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
 		addControlButton(MAKE_MOVE, R.style.Rect_Bottom_Middle);
@@ -51,8 +56,6 @@ public class ControlsDiagramView extends ControlsBaseView {
 		addControlButton(SOLUTION, R.style.Rect_Bottom_Middle);
 
 		showGameButton(PAUSE, false);
-
-		showDefault();
 	}
 
 	@Override

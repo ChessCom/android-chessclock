@@ -21,8 +21,8 @@ import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.boards.PuzzlesBoardFace;
 import com.chess.ui.interfaces.game_ui.GameDiagramFace;
-import com.chess.ui.views.NotationView;
 import com.chess.ui.views.chess_boards.ChessBoardDiagramView;
+import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsBaseView;
@@ -53,7 +53,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	protected boolean userPlayWhite = true;
 	private ControlsDiagramView controlsView;
 	private LabelsConfig labelsConfig;
-	private NotationView notationsView;
+	private NotationFace notationsFace;
 	private HashMap<String, String> commentsMap;
 	private TextView notationCommentTxt;
 	private boolean isPlaying;
@@ -63,6 +63,8 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	private boolean isPuzzle;
 	private boolean isSmallScreen;
 	private boolean nexus4Kind;
+
+	public GameDiagramFragment() {}
 
 	public static GameDiagramFragment createInstance(GameDiagramItem analysisItem) {
 		GameDiagramFragment fragment = new GameDiagramFragment();
@@ -141,13 +143,13 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		BoardFace boardFace = getBoardFace();
 		if (boardFace.getPly() + 1 > boardFace.getMovesCount()) {
 			while (boardFace.takeBack()) {
-				notationsView.moveBack(boardFace.getPly());
+				getNotationsFace().moveBack(boardFace.getPly());
 			}
 		}
 
 		// play animation from current position
 		isPlaying = !isPlaying;
-		controlsView.showPlayButton(!isPlaying);
+		getControlsView().showPlayButton(!isPlaying);
 		if (isPlaying) {
 			handler.post(showNextMoveRunnable);
 		} else {
@@ -159,9 +161,9 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	public void onRewindBack() {
 		BoardFace boardFace = getBoardFace();
 		while (boardFace.takeBack()) {
-			notationsView.moveBack(boardFace.getPly());
+			getNotationsFace().moveBack(boardFace.getPly());
 		}
-		notationsView.rewindBack();
+		getNotationsFace().rewindBack();
 		showCommentForMove(boardFace);
 		boardView.invalidate();
 	}
@@ -182,9 +184,9 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	public void onRewindForward() {
 		BoardFace boardFace = getBoardFace();
 		while (boardFace.takeNext()) {
-			notationsView.moveForward(boardFace.getPly());
+			getNotationsFace().moveForward(boardFace.getPly());
 		}
-		notationsView.rewindForward();
+		getNotationsFace().rewindForward();
 		showCommentForMove(boardFace);
 		boardView.invalidate();
 	}
@@ -204,12 +206,12 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 				notationCommentTxt.setVisibility(View.VISIBLE);
 				notationCommentTxt.setText(Html.fromHtml(commentsMap.get(move)));
 
-				notationsView.invalidate();
+				getNotationsView().invalidate();
 				return;
 			}
 		}
 		notationCommentTxt.setVisibility(View.GONE);
-		notationsView.invalidate();
+		getNotationsView().invalidate();
 	}
 
 	private Runnable showNextMoveRunnable = new Runnable() {
@@ -227,7 +229,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			boolean sizeExceed = currentPosition >= notations.length;
 
 			if (sizeExceed) {
-				controlsView.enablePlayButton(false);
+				getControlsView().enablePlayButton(false);
 				return;
 			}
 
@@ -246,7 +248,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	public void verifyMove() {
 
 		// skip verification is not in Puzzle mode
-		if (controlsView.getState() == ControlsDiagramView.State.DEFAULT) {
+		if (getControlsView().getState() == ControlsDiagramView.State.DEFAULT) {
 			return;
 		}
 
@@ -278,13 +280,12 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			moveResultTxt.setText(R.string.correct);
 			setIconToResultView(R.string.ic_check);
 		}
-		controlsView.showDefault();
+		getControlsView().showDefault();
 		if (!isSmallScreen) {
-			notationsView.setVisibility(View.VISIBLE);
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					notationsView.rewindForward();
+					getNotationsFace().rewindForward();
 					showCommentForMove(getBoardFace());
 					boardView.invalidate();
 				}
@@ -449,7 +450,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		labelsConfig.topPlayerPremiumStatus = 0;
 		labelsConfig.bottomPlayerPremiumStatus = getAppData().getUserPremiumStatus();
 
-		controlsView.enableGameControls(true);
+		getControlsView().enableGameControls(true);
 		boardView.lockBoard(false);
 
 		boardFace.setFinished(false);
@@ -478,13 +479,13 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			movesList = boardFace.removeCommentsAndAlternatesFromMovesList(movesList);
 
 			if (isPuzzle) {
-				controlsView.showPuzzle();
-				notationsView.setVisibility(View.GONE);
+				getControlsView().showPuzzle();
+				getNotationsView().setVisibility(View.GONE);
 				boardFace.setPuzzleMoves(movesList);
 			} else {
 				moveResultTxt.setVisibility(View.INVISIBLE);
-				notationsView.setVisibility(View.VISIBLE);
-				controlsView.showDefault();
+				getNotationsView().setVisibility(View.VISIBLE);
+				getControlsView().showDefault();
 			}
 			boardFace.checkAndParseMovesList(movesList);
 		}
@@ -496,7 +497,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 			// rewind all back
 			while (boardFace.takeBack()) {
-				notationsView.moveBack(boardFace.getPly());
+				getNotationsFace().moveBack(boardFace.getPly());
 			}
 			// now play moves until we reach needed position
 			for (int i = 0; i < diagramItem.getFocusMove(); i++) {
@@ -510,7 +511,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		}
 
 		if (isSmallScreen || TextUtils.isEmpty(movesList)) {
-			notationsView.setVisibility(View.GONE);
+			getNotationsView().setVisibility(View.GONE);
 			notationCommentTxt.setVisibility(View.GONE);
 		}
 
@@ -518,14 +519,14 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			moveResultTxt.setVisibility(View.GONE);
 		}
 
-		controlsView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				if (getActivity() == null) {
 					return;
 				}
-				controlsView.enableGameControls(true);
+				getControlsView().enableGameControls(true);
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 
@@ -667,6 +668,31 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		getBoardFace().setJustInitialized(false);
 	}
 
+	protected ControlsDiagramView getControlsView() {
+		return controlsView;
+	}
+
+	protected void setControlsView(View controlsView) {
+		this.controlsView = (ControlsDiagramView) controlsView;
+	}
+
+	protected void setNotationsFace(View notationsView) {
+		this.notationsFace = (NotationFace) notationsView;
+		setNotationsView(notationsView);
+	}
+
+	protected NotationFace getNotationsFace() {
+		return notationsFace;
+	}
+
+	protected void setNotationsView(View notationsView) {
+		this.notationsFace = (NotationFace) notationsView;
+	}
+
+	protected View getNotationsView() {
+		return (View) notationsFace;
+	}
+
 	private void init() {
 		labelsConfig = new LabelsConfig();
 
@@ -676,17 +702,17 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	}
 
 	private void widgetsInit(View view) {
-		controlsView = (ControlsDiagramView) view.findViewById(R.id.controlsView);
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		setControlsView(view.findViewById(R.id.controlsView));
+		setNotationsFace(view.findViewById(R.id.notationsView));
 		notationCommentTxt = (TextView) view.findViewById(R.id.notationCommentTxt);
 		notationCommentTxt.setOnClickListener(this);
 		moveResultTxt = (TextView) view.findViewById(R.id.moveResultTxt);
-		controlsView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 
 		boardView = (ChessBoardDiagramView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
-		boardView.setControlsView(controlsView);
-		boardView.setNotationsFace(notationsView);
+		boardView.setControlsView(getControlsView());
+		boardView.setNotationsFace(getNotationsFace());
 
 		setBoardView(boardView);
 
@@ -697,14 +723,14 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 		resultIconPadding = getResources().getDimensionPixelSize(R.dimen.glyph_icon_padding);
 
-		controlsView.enableGameControls(false);
+		getControlsView().enableGameControls(false);
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				if (getActivity() == null) {
 					return;
 				}
-				controlsView.enableGameControls(true);
+				getControlsView().enableGameControls(true);
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}

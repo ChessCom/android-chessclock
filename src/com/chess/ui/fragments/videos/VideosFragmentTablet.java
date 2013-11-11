@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.videos;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,7 +25,6 @@ import com.chess.db.tasks.SaveVideoCategoriesTask;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.lessons.*;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.utilities.AppUtils;
@@ -43,7 +43,7 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 	private View loadingView;
 	private TextView emptyView;
 
-	private CommonCategoriesCursorAdapter categoriesCursorAdapter;
+	private CommonCategoriesCursorAdapter categoriesAdapter;
 
 	private VideoCategoriesUpdateListener videoCategoriesUpdateListener;
 	private SaveVideoCategoriesUpdateListener saveVideoCategoriesUpdateListener;
@@ -81,7 +81,7 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 				listView.addHeaderView(headerView);
 			}
 
-			listView.setAdapter(categoriesCursorAdapter);
+			listView.setAdapter(categoriesAdapter);
 			listView.setOnItemClickListener(this);
 		}
 
@@ -102,7 +102,7 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 			Cursor categoriesCursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
 
 			if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
-				categoriesCursorAdapter.changeCursor(categoriesCursor);
+				categoriesAdapter.changeCursor(categoriesCursor);
 			}
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
@@ -110,7 +110,20 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 			}
 
 		} else { // load data to listHeader view
-			categoriesCursorAdapter.notifyDataSetChanged();
+			categoriesAdapter.notifyDataSetChanged();
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == VideoDetailsFragment.WATCH_VIDEO_REQUEST) {
+			FragmentManager fragmentManager = getChildFragmentManager();
+			Fragment fragment = fragmentManager.findFragmentByTag(VideoDetailsFragment.class.getSimpleName());
+			if (fragment != null) {
+				fragment.onActivityResult(requestCode, resultCode, data);
+			}
 		}
 	}
 
@@ -151,17 +164,12 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 			String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
 
 			if (noCategoriesFragmentsAdded) {
-				openInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName));
+				openInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
 				noCategoriesFragmentsAdded = false;
 			} else {
-				changeInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName));
+				changeInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
 			}
 		}
-	}
-
-	@Override
-	public void changeFragment(Fragment fragment) {
-
 	}
 
 	private class VideoCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem> {
@@ -194,8 +202,8 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 			// get saved categories
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.VIDEO_CATEGORIES));
 			if (cursor.moveToFirst()) {
-				categoriesCursorAdapter.changeCursor(cursor);
-				listView.setAdapter(categoriesCursorAdapter);
+				categoriesAdapter.changeCursor(cursor);
+				listView.setAdapter(categoriesAdapter);
 
 				need2update = false;
 			}
@@ -213,8 +221,8 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 	}
 
 	private void init() {
-		categoriesCursorAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
-		categoriesCursorAdapter.setLayoutId(R.layout.new_common_titled_list_item_thin_white);
+		categoriesAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
+		categoriesAdapter.setLayoutId(R.layout.new_common_titled_list_item_thin_white);
 
 		videoCategoriesUpdateListener = new VideoCategoriesUpdateListener();
 		saveVideoCategoriesUpdateListener = new SaveVideoCategoriesUpdateListener();
@@ -222,6 +230,11 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 		changeInternalFragment(VideosCurriculumFragmentTablet.createInstance(this));
 
 		noCategoriesFragmentsAdded = true;
+	}
+
+	@Override
+	public void changeFragment(Fragment fragment) {
+		openInternalFragment(fragment);
 	}
 
 	private void changeInternalFragment(Fragment fragment) {

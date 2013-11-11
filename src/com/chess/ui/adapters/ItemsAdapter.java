@@ -2,7 +2,6 @@ package com.chess.ui.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,6 +88,10 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 
 	protected void loadTextWithImage(TextView textView, String sourceStr) {
 		textView.setText(Html.fromHtml(sourceStr, getImageGetter(textView, sourceStr), null));
+	}
+
+	protected void loadTextWithImage(TextView textView, String sourceStr, int imageSize) {
+		textView.setText(Html.fromHtml(sourceStr, getImageGetter(textView, sourceStr, imageSize), null));
 	}
 
 	protected ImageGetter getImageGetter(TextView textView, String sourceStr) {

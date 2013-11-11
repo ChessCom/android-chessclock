@@ -28,8 +28,8 @@
     <dimen name="new_tab_button_height">56dip</dimen>
     <dimen name="new_top_button_height">52dip</dimen>
     <dimen name="new_bottom_button_height">48dip</dimen>
-    <dimen name="article_thumb_height">65dip</dimen>
-    <dimen name="article_thumb_width">105dip</dimen>
+    <dimen name="article_thumb_height">125dip</dimen>
+    <dimen name="article_thumb_width">199dip</dimen>
     <dimen name="nav_item_image_size">32dip</dimen>
     <dimen name="new_tactics_board_top_offset">72dip</dimen>
     <dimen name="popup_options_select_padding">100dip</dimen>
@@ -71,7 +71,8 @@
 	<dimen name="new_tactics_clock_icon_padding">6dip</dimen>
 	<dimen name="new_tactics_clock_icon_padding_top">4dip</dimen>
 	<dimen name="actionbar_title_text_size">24sp</dimen>
-	<dimen name="article_detail_image_height">213dip</dimen>
+	<dimen name="article_detail_image_width">413dip</dimen>
+	<dimen name="article_detail_image_height">286dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="options_list_item_height">56dip</dimen>
 	<dimen name="content_text_size">17sp</dimen>
@@ -98,7 +99,7 @@
 	<dimen name="overlay_shadow_offset">7.5dip</dimen>
 	<dimen name="popup_title_text_size_big">33sp</dimen>
 	<dimen name="popup_title_text_size_medium">17sp</dimen>
-	<dimen name="diagram_icon_overlay_size">110dip</dimen>
+	<dimen name="diagram_icon_overlay_size">80dip</dimen>
 	<dimen name="daily_board_preview_size">200dip</dimen>
 	<dimen name="notations_text_padding">2dip</dimen>
 	<dimen name="notations_text_side_padding">15dip</dimen>

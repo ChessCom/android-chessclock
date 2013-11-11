@@ -39,6 +39,8 @@ import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.settings.SettingsProfileFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
+import com.chess.ui.fragments.videos.VideoDetailsFragment;
+import com.chess.ui.fragments.videos.VideosFragmentTablet;
 import com.chess.ui.fragments.welcome.WelcomeTourFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragmentTablet;
@@ -565,9 +567,15 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == UpgradeDetailsFragment.RC_REQUEST) {
+		if ((requestCode & 0xFFFF) == UpgradeDetailsFragment.RC_REQUEST) {
 			FragmentManager fragmentManager = getSupportFragmentManager(); // the only one way to call it after startIntentSenderForResult
 			Fragment fragment = fragmentManager.findFragmentByTag(UpgradeDetailsFragment.class.getSimpleName());
+			if (fragment != null) {
+				fragment.onActivityResult(requestCode, resultCode, data);
+			}
+		} else if (isTablet && (requestCode & 0xFFFF) == VideoDetailsFragment.WATCH_VIDEO_REQUEST) {
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			Fragment fragment = fragmentManager.findFragmentByTag(VideosFragmentTablet.class.getSimpleName());
 			if (fragment != null) {
 				fragment.onActivityResult(requestCode, resultCode, data);
 			}
@@ -608,6 +616,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		if (fragments != null && fragments.size() > 0) {
 			int last = fragments.size() - 1;
 			Fragment lastFragment = fragments.get(last);
+			if (lastFragment == null) { // there is a bug, that size tell for one more
+			    last--;
+				lastFragment = fragments.get(last);
+			}
 			if (lastFragment instanceof CommonLogicFragment) { // check if fragment want to consume back button event
 				if (((CommonLogicFragment)lastFragment).showPreviousFragment()) {
 					return;

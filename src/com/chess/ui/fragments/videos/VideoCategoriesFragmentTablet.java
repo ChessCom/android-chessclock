@@ -1,9 +1,12 @@
 package com.chess.ui.fragments.videos;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.adapters.VideosCursorAdapter;
 import com.chess.ui.adapters.VideosCursorAdapterTablet;
+import com.chess.ui.interfaces.FragmentParentFace;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,14 +27,15 @@ import com.chess.ui.adapters.VideosCursorAdapterTablet;
  */
 public class VideoCategoriesFragmentTablet extends VideoCategoriesFragment{
 
-
 	private VideosCursorAdapterTablet videosAdapter;
 	private GridView listView;
+	private FragmentParentFace parentFace;
 
 	public VideoCategoriesFragmentTablet() {}
 
-	public static VideoCategoriesFragmentTablet createInstance(String sectionName) {
+	public static VideoCategoriesFragmentTablet createInstance(String sectionName, FragmentParentFace parentFace) {
 		VideoCategoriesFragmentTablet fragment = new VideoCategoriesFragmentTablet();
+		fragment.parentFace = parentFace;
 		Bundle bundle = new Bundle();
 		bundle.putString(SECTION_NAME, sectionName);
 		fragment.setArguments(bundle);
@@ -61,6 +66,37 @@ public class VideoCategoriesFragmentTablet extends VideoCategoriesFragment{
 		super.onResume();
 
 		updateByCategory();
+	}
+
+	@Override
+	public void onClick(View view) {
+		if (view.getId() == R.id.completedIconTxt) {
+			Integer position = (Integer) view.getTag(R.id.list_item_id);
+			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
+
+			currentPlayingId = DbDataManager.getInt(cursor, DbScheme.V_ID);
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(Uri.parse(DbDataManager.getString(cursor, DbScheme.V_URL)), "video/*");
+			startActivityForResult(Intent.createChooser(intent, getString(R.string.select_player)), WATCH_VIDEO_REQUEST);
+
+			// start record time to watch
+			playButtonClickTime = System.currentTimeMillis();
+		} else {
+			super.onClick(view);
+		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		if (position == parent.getCount()) {
+			return;
+		}
+		if (parentFace == null) {
+			getActivityFace().showPreviousFragment();
+		}
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		long videoId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+		parentFace.changeFragment(VideoDetailsFragment.createInstance(videoId));
 	}
 
 	@Override

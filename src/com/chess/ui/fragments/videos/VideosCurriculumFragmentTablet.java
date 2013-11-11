@@ -174,13 +174,15 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 		}
 	}
 
-	//	@Override
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//		Integer groupPosition = (Integer) view.getTag(R.id.list_item_id_group);
-//		int categoryId = curriculumItems.getDisplayOrder().get(groupPosition);
-//		int courseId = curriculumItems.getIds().get(categoryId).get(position);
-//
-//		parentFace.changeFragment(LessonsCourseFragmentTablet.createInstance(courseId, categoryId));
+		Integer childPosition = (Integer) view.getTag(R.id.list_item_id);
+		Integer groupPosition = (Integer) view.getTag(R.id.list_item_id_group);
+		if (childPosition == null || groupPosition == null) {
+			return;
+		}
+		int videoId = curriculumItems.getIds()[groupPosition][childPosition];
+		parentFace.changeFragment(VideoDetailsFragment.createInstance(videoId));
 	}
 
 	@Override
@@ -424,6 +426,9 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 			holder.text.setText(getItem(position).toString());
 			holder.text.setTag(R.id.list_item_id, position);
 			holder.text.setTag(R.id.list_item_id_group, groupPosition);
+			// set another pair of tags for view click handle
+			convertView.setTag(R.id.list_item_id, position);
+			convertView.setTag(R.id.list_item_id_group, groupPosition);
 
 			holder.statusTxt.setTag(R.id.list_item_id, position);
 			holder.statusTxt.setTag(R.id.list_item_id_group, groupPosition);

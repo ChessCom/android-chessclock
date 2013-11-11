@@ -14,7 +14,6 @@ import android.util.SparseArray;
 import android.view.*;
 import android.widget.*;
 import com.chess.R;
-import com.chess.widgets.RoboTextView;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ArticleDetailsItem;
@@ -41,6 +40,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.diagrams.GameDiagramFragment;
+import com.chess.ui.fragments.diagrams.GameDiagramFragmentTablet;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.interfaces.boards.BoardFace;
@@ -48,6 +48,7 @@ import com.chess.ui.views.ControlledListView;
 import com.chess.ui.views.chess_boards.ChessBoardDiagramView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
+import com.chess.widgets.RoboTextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -104,9 +105,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private ArticleUpdateListener articleUpdateListener;
 	private CustomSectionedAdapter sectionedAdapter;
 	private DiagramsAdapter diagramsAdapter;
-	private int imageSize;
+	private int authorImageSize;
 	private SparseArray<String> countryMap;
-	private int widthPixels;
 	private View replyView;
 	private EditText newPostEdt;
 	private int paddingSide;
@@ -133,6 +133,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private int infoTextSize;
 	private CharSequence authorStr;
 	private String titleStr;
+	private int mainArticleImageWidth;
 
 	public static ArticleDetailsFragment createInstance(long articleId) {
 		ArticleDetailsFragment frag = new ArticleDetailsFragment();
@@ -183,13 +184,17 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		if (need2update) {
 			loadFromDb();
 		} else {
-			loadTextWithImage(titleTxt, titleStr);
+			loadTextWithImage(titleTxt, titleStr, mainArticleImageWidth);
 			authorTxt.setText(authorStr);
 			if (bodyStr.contains(DIAGRAM_START_TAG)) {
-				loadTextWithImage(contentTxt, bodyStr);
+				loadTextWithImage(contentTxt, bodyStr, mainArticleImageWidth);
 			}
-			articleImageFetcher.loadImage(new SmartImageFetcher.Data(articleImageUrl, widthPixels), articleImg.getImageView());
-			articleImageFetcher.loadImage(new SmartImageFetcher.Data(authorImgUrl, imageSize), authorImg.getImageView());
+
+			// load main article image
+			articleImageFetcher.loadImage(new SmartImageFetcher.Data(articleImageUrl, mainArticleImageWidth),
+					articleImg.getImageView());
+			// load avatar of author
+			articleImageFetcher.loadImage(new SmartImageFetcher.Data(authorImgUrl, authorImageSize), authorImg.getImageView());
 		}
 
 		diagramImageProcessor.setExitTasksEarly(false);
@@ -251,16 +256,22 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				url = Symbol.EMPTY;
 			}
 			titleStr = DbDataManager.getString(cursor, DbScheme.V_TITLE);
-			loadTextWithImage(titleTxt, titleStr);
+			loadTextWithImage(titleTxt, titleStr, mainArticleImageWidth);
 
 			authorImgUrl = DbDataManager.getString(cursor, DbScheme.V_USER_AVATAR);
-			articleImageFetcher.loadImage(new SmartImageFetcher.Data(authorImgUrl, imageSize), authorImg.getImageView());
+			articleImageFetcher.loadImage(new SmartImageFetcher.Data(authorImgUrl, authorImageSize), authorImg.getImageView());
 
-			String photoUrl = DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL);
-			// Change main article Image params
-			int imageHeight = (int) (widthPixels * 0.6671f);
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(widthPixels, imageHeight);
-			articleImg.setLayoutParams(params);
+			articleImageUrl = DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL);
+
+			if (!isTablet) {
+				// Change main article Image params
+				mainArticleImageWidth = screenWidth;
+				int imageHeight = (int) (screenWidth * 0.6671f);
+				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
+				articleImg.setLayoutParams(params);
+			} else {
+				mainArticleImageWidth = getResources().getDimensionPixelSize(R.dimen.article_detail_image_width);
+			}
 
 			// Change ProgressBar params
 			RelativeLayout.LayoutParams progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -268,12 +279,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 			articleImg.getProgressBar().setLayoutParams(progressParams);
 
-			if (photoUrl.contains(NO_ITEM_IMAGE)) {
+			if (articleImageUrl.contains(NO_ITEM_IMAGE)) {
 				articleImageUrl = authorImgUrl;
-			} else {
-				articleImageUrl = photoUrl;
 			}
-			articleImageFetcher.loadImage(new SmartImageFetcher.Data(articleImageUrl, widthPixels), articleImg.getImageView());
+
+			articleImageFetcher.loadImage(new SmartImageFetcher.Data(articleImageUrl, mainArticleImageWidth), articleImg.getImageView());
 
 			Drawable drawable = AppUtils.getCountryFlagScaled(getActivity(), countryMap.get(DbDataManager.getInt(cursor, DbScheme.V_COUNTRY_ID)));
 			countryImg.setImageDrawable(drawable);
@@ -281,7 +291,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			long createDate = DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE) * 1000L;
 			dateTxt.setText(dateFormatter.format(new Date(createDate)));
 			bodyStr = DbDataManager.getString(cursor, DbScheme.V_BODY);
-			loadTextWithImage(contentTxt, bodyStr);
+			loadTextWithImage(contentTxt, bodyStr, mainArticleImageWidth);
 
 			diagramsList = DbDataManager.getArticleDiagramItemFromDb(getContentResolver(), getUsername());
 
@@ -433,7 +443,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		diagramItem.setFlip(diagramToShow.getFlip());
 		diagramItem.setFocusMove(diagramToShow.getFocusNode());
 
-		getActivityFace().openFragment(GameDiagramFragment.createInstance(diagramItem));
+		if (!isTablet) {
+			getActivityFace().openFragment(GameDiagramFragment.createInstance(diagramItem));
+		} else {
+			getActivityFace().openFragment(GameDiagramFragmentTablet.createInstance(diagramItem));
+		}
 
 		return true;
 	}
@@ -543,7 +557,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				loadDiagramsFromContent(bodyStr, diagramsList);
 			}
 
-			loadTextWithImage(contentTxt, bodyStr); // Shouldn't be used if complex view is used
+			loadTextWithImage(contentTxt, bodyStr, mainArticleImageWidth); // Shouldn't be used if complex view is used
 
 			DbDataManager.saveArticleItem(getContentResolver(), articleData, true);
 
@@ -692,11 +706,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			// add FrameLayout for imageView and fragment container
 			FrameLayout frameLayout = new FrameLayout(getActivity());
 			int frameWidth;
-			if (AppUtils.is7InchTablet(getActivity())) {
-				frameWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT);
-			} else {
-				frameWidth = widthPixels;
-			}
+//			if (isTablet) {
+//				frameWidth = (int) (mainArticleImageWidth /** IMAGE_WIDTH_PERCENT*/);
+//			} else {
+				frameWidth = screenWidth;
+//			}
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(frameWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
 			params.gravity = Gravity.CENTER;
 
@@ -704,7 +718,13 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			{// add imageView with diagram bitmap
 				// take 80% of screen width
-				int imageSize = (int) (widthPixels * IMAGE_WIDTH_PERCENT);
+				int imageSize;
+//				if (!isTablet) {
+					imageSize = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
+//				} else {
+//					imageSize = (int) (mainArticleImageWidth/* * IMAGE_WIDTH_PERCENT*/);
+//				}
+
 				FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(imageSize, imageSize);
 				imageParams.gravity = Gravity.CENTER;
 
@@ -720,13 +740,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 				frameLayout.addView(imageView);
 
-				if (deviceSizeCode == DiagramImageProcessor.NEXUS_7) {
-					// add shadow background to frame layout
-					frameLayout.setBackgroundResource(R.drawable.shadow_back_square);
-				} else {
-					// add background to imageView
-					imageView.setBackgroundResource(R.drawable.shadow_back_square);
-				}
+				imageView.setBackgroundResource(R.drawable.shadow_back_square);
 			}
 
 			container.addView(frameLayout);
@@ -836,20 +850,19 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 				int bitmapWidth;
 				int bitmapHeight;
-				if (deviceSizeCode == DiagramImageProcessor.NEXUS_7) {
+//				if (isTablet) {
+//					// get bitmap from fragmentView
+//
+//					// add offset for shadow background
+//
+//					bitmapWidth = (int) ((mainArticleImageWidth / density) * IMAGE_WIDTH_PERCENT) + 27;
+//					bitmapHeight = (int) ((mainArticleImageWidth / density) * IMAGE_WIDTH_PERCENT);
+//
+//				} else {
 					// get bitmap from fragmentView
-
-					// add offset for shadow background
-
-					bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) + 27;
-					bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT);
-
-				} else {
-					// get bitmap from fragmentView
-					int inset = (int) (0.0f * density);
-					bitmapWidth = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
-					bitmapHeight = (int) (widthPixels * IMAGE_WIDTH_PERCENT) - inset;
-				}
+					bitmapWidth = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
+					bitmapHeight = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
+//				}
 				// fill data for load image
 				DiagramImageProcessor.Data data = new DiagramImageProcessor.Data(item.diagramId, boardView);
 
@@ -858,7 +871,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				diagramImageProcessor.loadImage(data, holder.imageView);
 
 				// set text content
-				loadTextWithImage(holder.contentTxt, item.textStr);
+				loadTextWithImage(holder.contentTxt, item.textStr, mainArticleImageWidth);
 
 				// add tags to handle clicks
 				holder.contentTxt.setTag(itemListId, pos);
@@ -898,7 +911,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 					contentPart = diagramPart.substring(diagramPart.indexOf("</div>") + "</div>".length());
 				}
 
-				loadTextWithImage(holder.contentTxt, contentPart);
+				loadTextWithImage(holder.contentTxt, contentPart, mainArticleImageWidth);
 			}
 		}
 
@@ -1021,17 +1034,22 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	private void init() {
 		Resources resources = getResources();
-		float density = resources.getDisplayMetrics().density;
-		imageSize = (int) (40 * density);
+		authorImageSize = (int) (40 * density);
 		contentPartsList = new ArrayList<DiagramListItem>();
 
-
-		boolean sevenInchTablet = AppUtils.is7InchTablet(getActivity());
-		if (sevenInchTablet) {
-			deviceSizeCode = DiagramImageProcessor.NEXUS_7;
-		} else {
-			deviceSizeCode = DiagramImageProcessor.DEFAULT;
+		// little hack here
+		// we know the with of left visible menu for portrait!
+		if (isTablet) {
+			screenWidth -= getResources().getDimensionPixelSize(R.dimen.tablet_side_menu_width) * 2;
 		}
+
+
+//		boolean sevenInchTablet = AppUtils.is7InchTablet(getActivity());
+//		if (sevenInchTablet) {
+//			deviceSizeCode = DiagramImageProcessor.NEXUS_7;
+//		} else {
+			deviceSizeCode = DiagramImageProcessor.DEFAULT;
+//		}
 
 		{// set imageCache params for diagramProcessor
 			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
@@ -1054,8 +1072,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			articleImageFetcher.addImageCache(getFragmentManager(), cacheParams);
 		}
 
-		widthPixels = resources.getDisplayMetrics().widthPixels;
-
 		simpleIdsMap = new SparseArray<Boolean>();
 
 		textColor = resources.getColor(R.color.new_subtitle_dark_grey);
@@ -1064,7 +1080,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
 
 		// for tablets make diagram wider
-		if (sevenInchTablet) {
+		if (isTablet) {
 			IMAGE_WIDTH_PERCENT = 0.85f;
 		}
 
@@ -1125,8 +1141,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			}
 
 			@Override
-			public void onScroll(AbsListView absListView, int firstVisibleItem,
-								 int visibleItemCount, int totalItemCount) {
+			public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 			}
 		});
 		replyView = view.findViewById(R.id.replyView);

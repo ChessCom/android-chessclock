@@ -26,6 +26,7 @@
         android:divider="@null"
         android:dividerHeight="0dip"
 		android:numColumns="2"
+		android:paddingTop="@dimen/grid_view_spacing"
         />
 
     <com.chess.widgets.RoboTextView

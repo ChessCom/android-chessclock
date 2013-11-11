@@ -41,7 +41,6 @@
 			custom:oneLine="@bool/one_line_for_board"
 			android:layout_marginBottom="@dimen/tablet_panel_info_top_margin" />
 
-
 		<!--Top Buttons -->
 		<RadioGroup
 			android:id="@+id/topButtonsGroup"

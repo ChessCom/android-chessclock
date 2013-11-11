@@ -193,11 +193,6 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void changeFragment(Fragment fragment) {
-		openInternalFragment(fragment);
-	}
-
 	private class LessonsCategoriesUpdateListener extends CommonLogicFragment.ChessUpdateListener<CommonFeedCategoryItem> {
 		public LessonsCategoriesUpdateListener() {
 			super(CommonFeedCategoryItem.class);
@@ -291,6 +286,11 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		changeInternalFragment(LessonsCurriculumFragmentTablet.createInstance(this));
 
 		noCategoriesFragmentsAdded = true;
+	}
+
+	@Override
+	public void changeFragment(Fragment fragment) {
+		openInternalFragment(fragment);
 	}
 
 	private void changeInternalFragment(Fragment fragment) {

@@ -3,6 +3,7 @@ package com.chess.ui.fragments.articles;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,10 +17,11 @@ import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ArticleItem;
-import com.chess.statics.StaticData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ArticlesCursorAdapter;
 import com.chess.ui.adapters.ArticlesPaginationAdapter;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
@@ -43,23 +45,29 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 	private ArticlesCursorAdapter articlesAdapter;
 
-	private View loadingView;
-	private TextView emptyView;
+	protected View loadingView;
+	protected TextView emptyView;
 	private ListView listView;
-	private HashMap<String, Integer> categoriesMap;
-	private String categoryName;
-	private SparseBooleanArray viewedArticlesMap;
-	private ArticlesPaginationAdapter paginationAdapter;
+	protected HashMap<String, Integer> categoriesMap;
+	protected SparseBooleanArray viewedArticlesMap;
+	protected ArticlesPaginationAdapter paginationAdapter;
 	private int previousCategoryId;
-	private String sectionName;
-	private List<String> categoriesNames;
+	protected String sectionName;
+	protected List<String> categoriesNames;
+	protected int selectedCategoryId;
+
+	public ArticleCategoriesFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putString(SECTION_NAME, Symbol.EMPTY);
+		setArguments(bundle);
+	}
 
 	public static ArticleCategoriesFragment createInstance(String sectionName) {
-		ArticleCategoriesFragment frag = new ArticleCategoriesFragment();
+		ArticleCategoriesFragment fragment = new ArticleCategoriesFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString(SECTION_NAME, sectionName);
-		frag.setArguments(bundle);
-		return frag;
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 
 	@Override
@@ -72,13 +80,18 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 			sectionName = savedInstanceState.getString(SECTION_NAME);
 		}
 
+		init();
+	}
+
+	protected void init() {
 		categoriesNames = new ArrayList<String>();
 		categoriesMap = new HashMap<String, Integer>();
 
 		viewedArticlesMap = new SparseBooleanArray();
-		articlesAdapter = new ArticlesCursorAdapter(getActivity(), null, getImageFetcher());
-		articlesAdapter.addViewedMap(viewedArticlesMap);
-		paginationAdapter = new ArticlesPaginationAdapter(getActivity(), articlesAdapter, new ArticleUpdateListener(), null);
+
+		setAdapter(new ArticlesCursorAdapter(getActivity(), null, getImageFetcher()));
+		getAdapter().addViewedMap(viewedArticlesMap);
+		paginationAdapter = new ArticlesPaginationAdapter(getActivity(), getAdapter(), new ArticleUpdateListener(), null);
 	}
 
 	@Override
@@ -95,37 +108,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
-		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(paginationAdapter);
-		listView.setOnItemClickListener(this);
-
-		// get viewed marks
-		Cursor cursor = DbDataManager.getArticleViewedCursor(getActivity(), getUsername());
-		if (cursor != null) {
-			do {
-				int videoId = DbDataManager.getInt(cursor, DbScheme.V_ID);
-				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_DATA_VIEWED) > 0;
-				viewedArticlesMap.put(videoId, isViewed);
-			} while (cursor.moveToNext());
-			cursor.close();
-		}
-
-		boolean loaded = categoriesMap.size() != 0 || fillCategories();
-
-		if (loaded) {
-			int sectionId;
-			for (sectionId = 0; sectionId < categoriesNames.size(); sectionId++) {
-				String category = categoriesNames.get(sectionId);
-				if (category.equals(sectionName)) {
-					break;
-				}
-			}
-
-			Spinner categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
-			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), categoriesNames));
-			categorySpinner.setOnItemSelectedListener(this);
-			categorySpinner.setSelection(sectionId);  // TODO remember last selection.
-		}
+		widgetsInit(view);
 
 		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
@@ -141,10 +124,9 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		outState.putString(SECTION_NAME, sectionName);
 	}
 
-	private boolean fillCategories() {
+	protected boolean fillCategories() {
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.ARTICLE_CATEGORIES));
 		if (!(cursor != null && cursor.moveToFirst())) {
-			showToast("Categories are not loaded");
 			return false;
 		}
 
@@ -179,22 +161,26 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		categoryName = (String) parent.getItemAtPosition(position);
-		int categoryId = categoriesMap.get(categoryName);
+		sectionName = (String) parent.getItemAtPosition(position);
+		selectedCategoryId = categoriesMap.get(sectionName);
 
-		if (need2update || categoryId != previousCategoryId) {
-			previousCategoryId = categoryId;
+		updateByCategory();
+	}
+
+	protected void updateByCategory() {
+		if (need2update || selectedCategoryId != previousCategoryId) {
+			previousCategoryId = selectedCategoryId;
 			need2update = true;
 
 			// clear current list
-			articlesAdapter.changeCursor(null);
+			getAdapter().changeCursor(null);
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES_LIST);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
-				loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE,  RestHelper.DEFAULT_ITEMS_PER_PAGE);
+				loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, selectedCategoryId);
+				loadItem.addRequestParams(RestHelper.P_ITEMS_PER_PAGE, RestHelper.DEFAULT_ITEMS_PER_PAGE);
 
 				paginationAdapter.updateLoadItem(loadItem);
 			} else {
@@ -210,15 +196,19 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 	}
 
-	private class ArticleUpdateListener extends ChessUpdateListener<ArticleItem.Data> {
+	protected class ArticleUpdateListener extends ChessUpdateListener<ArticleItem.Data> {
 
 		public ArticleUpdateListener() {
 			super(ArticleItem.Data.class);
 		}
 
 		@Override
-		public void updateListData(List<ArticleItem.Data> itemsList) {
+		public void showProgress(boolean show) {
 
+		}
+
+		@Override
+		public void updateListData(List<ArticleItem.Data> itemsList) {
 			for (ArticleItem.Data currentItem : itemsList) {
 				DbDataManager.saveArticleItem(getContentResolver(), currentItem, false);
 			}
@@ -238,9 +228,9 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	private void loadFromDb() {
-		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getArticlesListByCategory(categoryName));
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getArticlesListByCategory(selectedCategoryId));
 		if (cursor != null && cursor.moveToFirst()) {
-			articlesAdapter.changeCursor(cursor);
+			getAdapter().changeCursor(cursor);
 			if (paginationAdapter != null) {
 				paginationAdapter.notifyDataSetChanged();
 			}
@@ -261,6 +251,55 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 			listView.setVisibility(View.VISIBLE);
 		}
 	}
+
+	protected ArticlesCursorAdapter getAdapter() {
+		return articlesAdapter;
+	}
+
+	protected void setAdapter(ArticlesCursorAdapter adapter) {
+		articlesAdapter = adapter;
+	}
+
+	protected void widgetsInit(View view) {
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setAdapter(paginationAdapter);
+		listView.setOnItemClickListener(this);
+
+		// get viewed marks
+		Cursor cursor = DbDataManager.getArticleViewedCursor(getActivity(), getUsername());
+		if (cursor != null) {
+			do {
+				int videoId = DbDataManager.getInt(cursor, DbScheme.V_ID);
+				boolean isViewed = DbDataManager.getInt(cursor, DbScheme.V_DATA_VIEWED) > 0;
+				viewedArticlesMap.put(videoId, isViewed);
+			} while (cursor.moveToNext());
+			cursor.close();
+		}
+
+		boolean loaded = categoriesMap.size() != 0 || fillCategories();
+
+		if (loaded) {
+			int position = 0;
+			if (TextUtils.isEmpty(sectionName)) {
+				sectionName = categoriesNames.get(0);
+				selectedCategoryId = categoriesMap.get(categoriesNames.get(0));
+			} else {
+				for (position = 0; position < categoriesNames.size(); position++) {
+					String category = categoriesNames.get(position);
+					if (category.equals(sectionName)) {
+						selectedCategoryId = categoriesMap.get(category);
+						break;
+					}
+				}
+			}
+
+			Spinner categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
+			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), categoriesNames));
+			categorySpinner.setOnItemSelectedListener(this);
+			categorySpinner.setSelection(position);  // TODO remember last selection.
+		}
+	}
+
 
 	@Override
 	public Context getMeContext() {

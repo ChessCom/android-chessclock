@@ -891,6 +891,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		textView.setText(Html.fromHtml(sourceStr, getImageGetter(textView, sourceStr), null));
 	}
 
+	protected void loadTextWithImage(TextView textView, String sourceStr, int imageSize) {
+		textView.setText(Html.fromHtml(sourceStr, getImageGetter(textView, sourceStr, imageSize), null));
+	}
+
 	protected ImageGetter getImageGetter(TextView textView, String sourceStr) {
 		return new ImageGetter(getActivity(), textViewsImageCache, textView, sourceStr, screenWidth);
 	}

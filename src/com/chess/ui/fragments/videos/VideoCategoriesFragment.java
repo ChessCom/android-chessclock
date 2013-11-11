@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveVideosListTask;
 import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.adapters.VideosCursorAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
@@ -44,7 +46,7 @@ import java.util.List;
 public class VideoCategoriesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
 	public static final String SECTION_NAME = "section_name";
-	private static final int WATCH_VIDEO_REQUEST = 9896;
+	public static final int WATCH_VIDEO_REQUEST = 9896;
 
 	private VideosCursorUpdateListener videosCursorUpdateListener;
 	private SaveVideosUpdateListener saveVideosUpdateListener;
@@ -52,8 +54,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	protected SparseBooleanArray viewedVideosMap;
 	protected List<String> categoriesNames;
 	protected List<Integer> categoriesIds;
-	private long playButtonClickTime;
-	private int currentPlayingId;
+	protected long playButtonClickTime;
+	protected int currentPlayingId;
 	private int previousCategoryId;
 	protected String sectionName;
 
@@ -63,6 +65,12 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	protected VideosPaginationAdapter paginationAdapter;
 	protected Spinner categorySpinner;
 	protected int selectedCategoryId;
+
+	public VideoCategoriesFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putString(SECTION_NAME, Symbol.EMPTY);
+		setArguments(bundle);
+	}
 
 	public static VideoCategoriesFragment createInstance(String sectionName) {
 		VideoCategoriesFragment fragment = new VideoCategoriesFragment();
@@ -340,12 +348,16 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		boolean loaded = categoriesNames.size() != 0 || fillCategories();
 
 		if (loaded) {
-			int position;
-			for (position = 0; position < categoriesNames.size(); position++) {
-				String category = categoriesNames.get(position);
-				if (category.equals(sectionName)) {
-					selectedCategoryId = categoriesIds.get(position);
-					break;
+			int position = 0;
+			if (TextUtils.isEmpty(sectionName)) {
+				selectedCategoryId = categoriesIds.get(0);
+			} else {
+				for (position = 0; position < categoriesNames.size(); position++) {
+					String category = categoriesNames.get(position);
+					if (category.equals(sectionName)) {
+						selectedCategoryId = categoriesIds.get(position);
+						break;
+					}
 				}
 			}
 

@@ -1117,6 +1117,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		boardBitmap = drawable.getBitmap();
 
 		int bitmapSize = viewWidth / 4;
+		Log.e("TEST", " boardBitmap size = " + bitmapSize);
 		boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
 		shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 		return shader;

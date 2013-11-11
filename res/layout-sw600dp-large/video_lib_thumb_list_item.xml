@@ -7,10 +7,10 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:minHeight="61dip"
-	android:paddingTop="10dip"
-	android:paddingBottom="10dip"
-	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/default_scr_side_padding"
+	android:paddingTop="@dimen/grid_view_spacing"
+	android:paddingBottom="@dimen/grid_view_spacing"
+	android:paddingLeft="22dp"
+	android:paddingRight="22dp"
 	android:background="@drawable/transparent_list_item_selector">
 	<!--Board-->
 	<RelativeLayout
@@ -62,10 +62,9 @@
 		android:id="@+id/durationTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignBottom="@id/authorTxt"
-		android:layout_below="@id/titleTxt"
+		android:layout_toRightOf="@id/boardBackView"
+		android:layout_below="@id/authorTxt"
 		android:text="| 27 min"
-		android:layout_toRightOf="@id/authorTxt"
 		android:paddingTop="2dip"
 		android:textColor="@color/stats_label_light_grey"
 		android:textSize="12sp" />

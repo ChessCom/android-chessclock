@@ -912,11 +912,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		this.controlsView = (ControlsDailyView) controlsView;
 	}
 
-	public void setNotationsFace(View notationsView) {
+	protected void setNotationsFace(View notationsView) {
 		this.notationsFace = (NotationFace) notationsView;
 	}
 
-	public NotationFace getNotationsFace() {
+	protected NotationFace getNotationsFace() {
 		return notationsFace;
 	}
 

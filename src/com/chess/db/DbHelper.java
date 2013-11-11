@@ -160,12 +160,12 @@ public class DbHelper {
 		return queryParams;
 	}
 
-	public static QueryParams getArticlesListByCategory(String category) {
+	public static QueryParams getArticlesListByCategory(int categoryId) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()]);
-		queryParams.setSelection(DbDataManager.SELECTION_CATEGORY);
-		queryParams.setArguments(new String[]{category});
-		queryParams.setOrder(DbScheme.V_CATEGORY);
+		queryParams.setSelection(DbDataManager.SELECTION_CATEGORY_ID);
+		queryParams.setArguments(new String[]{String.valueOf(categoryId)});
+		queryParams.setOrder(DbScheme.V_TITLE);
 		return queryParams;
 	}
 

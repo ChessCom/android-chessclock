@@ -662,7 +662,8 @@ public class ImageCache {
             super.onCreate(savedInstanceState);
 
             // Make sure this Fragment is retained over a configuration change
-            setRetainInstance(true);
+			// TODO fix IllegalStateException: Can't retain fragements that are nested in other fragments
+//            setRetainInstance(true);
         }
 
         /**

@@ -55,7 +55,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	private static final String THUMBS_CACHE_DIR = "thumbs";
 
 	public static final String GREY_COLOR_DIVIDER = "##";
-	private static final int WATCH_VIDEO_REQUEST = 9897;
+	public static final int WATCH_VIDEO_REQUEST = 9897;
 	public static final String P_TAG_OPEN = "<p>";
 	public static final String P_TAG_CLOSE = "</p>";
 	private static final long KEYBOARD_DELAY = 100;
