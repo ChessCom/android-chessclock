@@ -202,4 +202,14 @@ public class LiveTopGameFragment extends GameLiveFragment {
 	public void expireGame() {
 		goHome();
 	}
+
+	@Override
+	public void goHome() {
+		try {
+			getLiveService().exitGameObserving();
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+		}
+		super.goHome();
+	}
 }
