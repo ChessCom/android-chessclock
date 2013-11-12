@@ -94,7 +94,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final int DEFAULT_ICON = 0;
 	protected static final int ONE_ICON = 1;
 	protected static final int TWO_ICON = 2;
-	protected static final long SIDE_MENU_DELAY = 150;
+//	protected static final long SIDE_MENU_DELAY = 150;
+	protected static final long SIDE_MENU_DELAY = 50;
 	private static final long SWITCH_DELAY = 50;
 	private static final long PULL_TO_UPDATE_RELEASE_DELAY = 1000;
 
@@ -267,6 +268,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			imageFetcher.setExitTasksEarly(true);
 			imageFetcher.flushCache();
 		}
+
+		dismissProgressDialog();
 	}
 
 	@Override

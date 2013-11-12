@@ -27,6 +27,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveLessonsCategoriesTask;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
@@ -289,7 +290,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 	}
 
 	@Override
-	public void changeFragment(Fragment fragment) {
+	public void changeFragment(BasePopupsFragment fragment) {
 		openInternalFragment(fragment);
 	}
 

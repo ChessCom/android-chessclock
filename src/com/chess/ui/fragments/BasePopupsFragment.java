@@ -246,8 +246,9 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	protected void dismissProgressDialog() {
-		if(popupProgressManager.size() == 0)
+		if(popupProgressManager.size() == 0) {
 			return;
+		}
 
 		popupProgressManager.get(popupProgressManager.size()-1).dismiss();
 	}

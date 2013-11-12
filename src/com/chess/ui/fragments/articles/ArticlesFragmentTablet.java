@@ -23,20 +23,14 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
-import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveArticleCategoriesTask;
-import com.chess.db.tasks.SaveArticlesListTask;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
-import com.chess.ui.adapters.ArticlesCursorAdapter;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
-import com.chess.ui.adapters.CustomSectionedAdapter;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.videos.VideoCategoriesFragmentTablet;
-import com.chess.ui.fragments.videos.VideosCurriculumFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -187,7 +181,7 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 	}
 
 	@Override
-	public void changeFragment(Fragment fragment) {
+	public void changeFragment(BasePopupsFragment fragment) {
 		openInternalFragment(fragment);
 	}
 

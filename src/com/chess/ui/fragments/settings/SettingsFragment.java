@@ -24,8 +24,8 @@ import java.util.List;
  */
 public class SettingsFragment extends LiveBaseFragment implements AdapterView.OnItemClickListener {
 
-	private ListView listView;
-	private List<SettingsMenuItem> menuItems;
+	protected ListView listView;
+	protected List<SettingsMenuItem> menuItems;
 	private SettingsMenuAdapter adapter;
 
 	@Override
@@ -52,7 +52,6 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		menuItems.add(new SettingsMenuItem(R.string.logout, R.string.ic_close));
 
 		adapter = new SettingsMenuAdapter(getActivity(), menuItems);
-
 	}
 
 	@Override
@@ -119,7 +118,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		}
 	}
 
-	private class SettingsMenuItem {
+	protected class SettingsMenuItem {
 		public int nameId;
 		public int iconRes;
 		public boolean selected;

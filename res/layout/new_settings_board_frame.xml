@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
-            android:paddingRight="0dip"
+            android:paddingRight="10dip"
             android:background="@drawable/transparent_list_item_selector"
             >
             <!--Label-->
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/LinearListItem"
-            android:paddingRight="0dip"
+            android:paddingRight="10dip"
             android:background="@drawable/transparent_list_item_selector"
             >
             <com.chess.widgets.RoboTextView

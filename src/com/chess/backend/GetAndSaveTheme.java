@@ -24,6 +24,7 @@ import com.chess.backend.tasks.SaveImageToSdTask;
 import com.chess.db.DbDataManager;
 import com.chess.statics.AppData;
 import com.chess.statics.IntentConstants;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.ChessBoard;
@@ -82,6 +83,7 @@ public class GetAndSaveTheme extends Service {
 	private FileReadyListener progressUpdateListener;
 	private Handler handler;
 	private boolean installingTheme;
+	private boolean isTablet;
 
 	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {
 		this.progressUpdateListener = progressUpdateListener;
@@ -100,6 +102,10 @@ public class GetAndSaveTheme extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
+		if (StaticData.USE_TABLETS) {
+			isTablet = AppUtils.is7InchTablet(this) || AppUtils.is10InchTablet(this);
+		}
 
 		handler = new Handler();
 		notifymanager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -138,6 +144,8 @@ public class GetAndSaveTheme extends Service {
 
 	public void loadTheme(ThemeItem.Data selectedThemeItem, int screenWidth, int screenHeight) {
 
+
+
 		installingTheme = true;
 
 		this.selectedThemeItem = selectedThemeItem;
@@ -168,8 +176,15 @@ public class GetAndSaveTheme extends Service {
 
 		showIndeterminateNotification(getString(R.string.loading_background));
 
-		LoadItem loadItem = LoadHelper.getBackgroundById(userToken, selectedThemeItem.getBackgroundId(),
-				screenWidth, screenHeight, RestHelper.V_HANDSET);
+		LoadItem loadItem;
+		if (!isTablet) {
+			loadItem = LoadHelper.getBackgroundById(userToken, selectedThemeItem.getBackgroundId(),
+					screenWidth, screenHeight, RestHelper.V_HANDSET);
+		} else {
+			loadItem = LoadHelper.getBackgroundById(userToken, selectedThemeItem.getBackgroundId(),
+					screenWidth, screenHeight, RestHelper.V_TABLET);
+		}
+
 		new RequestJsonTask<BackgroundSingleItem>(new BackgroundItemUpdateListener()).executeTask(loadItem);
 	}
 

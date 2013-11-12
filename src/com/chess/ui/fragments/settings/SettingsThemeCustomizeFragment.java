@@ -40,6 +40,7 @@ import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.engine.SoundPlayer;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupBackgroundsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -62,19 +63,14 @@ import java.util.Map;
  */
 public class SettingsThemeCustomizeFragment extends CommonLogicFragment implements AdapterView.OnItemSelectedListener {
 
-	static final int BACKGROUND = 0;
-	static final int BOARD = 1;
-
 	public static final int PREVIEW_IMG_SIZE = 180;
 
 	private static final String THEME_LOAD_TAG = "theme load popup";
 	private static final String BACKGROUND_SELECTION = "background selection popup";
-	private static final String THEME_ITEM = "theme_item";
+	protected static final String THEME_ITEM = "theme_item";
 
 	private ImageUpdateListener backgroundUpdateListener;
-	private ImageUpdateListener boardUpdateListener;
 	private BackgroundImageSaveListener mainBackgroundImgSaveListener;
-	private BackgroundImageSaveListener boardImgSaveListener;
 
 	private ImageDownloaderToListener imageDownloader;
 	private EnhancedImageDownloader imageLoader;
@@ -90,9 +86,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private int screenWidth;
 	private int screenHeight;
 
-	private ThemeItem.Data selectedThemeItem;
 	private String backgroundUrl;
-	private String boardBackgroundUrl;
 
 	private ProgressImageView boardPreviewImg;
 	private ProgressImageView piecePreviewImg;
@@ -201,10 +195,10 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 				int wpResourceId = getResources().getIdentifier(pieceDefaultName + "_wp", "drawable", packageName);
 				// show default pieces preview
 				Bitmap[][] previewBitmaps = new Bitmap[2][2];
-				previewBitmaps[0][0] = ((BitmapDrawable)getResources().getDrawable(bnResourceId)).getBitmap();
-				previewBitmaps[0][1] = ((BitmapDrawable)getResources().getDrawable(wnResourceId)).getBitmap();
-				previewBitmaps[1][0] = ((BitmapDrawable)getResources().getDrawable(bpResourceId)).getBitmap();
-				previewBitmaps[1][1] = ((BitmapDrawable)getResources().getDrawable(wpResourceId)).getBitmap();
+				previewBitmaps[0][0] = ((BitmapDrawable) getResources().getDrawable(bnResourceId)).getBitmap();
+				previewBitmaps[0][1] = ((BitmapDrawable) getResources().getDrawable(wnResourceId)).getBitmap();
+				previewBitmaps[1][0] = ((BitmapDrawable) getResources().getDrawable(bpResourceId)).getBitmap();
+				previewBitmaps[1][1] = ((BitmapDrawable) getResources().getDrawable(wpResourceId)).getBitmap();
 
 				piecesSquarePreviewImg.setPiecesBitmaps(previewBitmaps);
 				piecesSquarePreviewImg.setVisibility(View.VISIBLE);
@@ -231,10 +225,10 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 				int wpResourceId = getResources().getIdentifier(pieceDefaultName + "_wp", "drawable", packageName);
 				// show default pieces preview
 				Bitmap[][] previewBitmaps = new Bitmap[2][2];
-				previewBitmaps[0][0] = ((BitmapDrawable)getResources().getDrawable(bnResourceId)).getBitmap();
-				previewBitmaps[0][1] = ((BitmapDrawable)getResources().getDrawable(wnResourceId)).getBitmap();
-				previewBitmaps[1][0] = ((BitmapDrawable)getResources().getDrawable(bpResourceId)).getBitmap();
-				previewBitmaps[1][1] = ((BitmapDrawable)getResources().getDrawable(wpResourceId)).getBitmap();
+				previewBitmaps[0][0] = ((BitmapDrawable) getResources().getDrawable(bnResourceId)).getBitmap();
+				previewBitmaps[0][1] = ((BitmapDrawable) getResources().getDrawable(wnResourceId)).getBitmap();
+				previewBitmaps[1][0] = ((BitmapDrawable) getResources().getDrawable(bpResourceId)).getBitmap();
+				previewBitmaps[1][1] = ((BitmapDrawable) getResources().getDrawable(wpResourceId)).getBitmap();
 
 				piecesSquarePreviewImg.setPiecesBitmaps(previewBitmaps);
 				piecesSquarePreviewImg.setVisibility(View.VISIBLE);
@@ -298,9 +292,9 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		int id = view.getId();
 		if (id == R.id.piecesView) {
-			getActivityFace().openFragment(new SettingsThemePiecesFragment());
+			openFragment(new SettingsThemePiecesFragment());
 		} else if (id == R.id.boardView) {
-			getActivityFace().openFragment(new SettingsThemeBoardsFragment());
+			openFragment(new SettingsThemeBoardsFragment());
 		} else if (id == R.id.backgroundView) {
 			if (backgroundsFragment != null) {
 				return;
@@ -314,12 +308,23 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		} else if (id == R.id.coordinatesView) {
 			coordinatesSpinner.performClick();
 		} else if (id == R.id.applyBackgroundBtn) {
-			// Get exactly sized url for theme background
-			LoadItem loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedBackgroundItem.getBackgroundId(),
-					screenWidth, screenHeight, RestHelper.V_HANDSET);
+			LoadItem loadItem;
+			if (!isTablet) {
+				// Get exactly sized url for theme background
+				loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedBackgroundItem.getBackgroundId(),
+						screenWidth, screenHeight, RestHelper.V_HANDSET);
+			} else {
+				// Get exactly sized url for theme background
+				loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedBackgroundItem.getBackgroundId(),
+						screenWidth, screenHeight, RestHelper.V_TABLET);
+			}
 
 			new RequestJsonTask<BackgroundSingleItem>(backgroundItemUpdateListener).executeTask(loadItem);
 		}
+	}
+
+	protected void openFragment(BasePopupsFragment fragment) {
+		getActivityFace().openFragment(fragment);
 	}
 
 	@Override
@@ -433,10 +438,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 	private class ImageUpdateListener implements ImageReadyListener {
 
-		private int listenerCode;
-
-		private ImageUpdateListener(int listenerCode) {
-			this.listenerCode = listenerCode;
+		private ImageUpdateListener() {
 		}
 
 		@Override
@@ -451,21 +453,12 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 				return;
 			}
 
-			if (listenerCode == BACKGROUND) {
-				taskTitleTxt.setText(R.string.saving_background);
-				loadProgressTxt.setText(String.valueOf(0));
-				loadProgressTxt.setVisibility(View.GONE);
+			taskTitleTxt.setText(R.string.saving_background);
+			loadProgressTxt.setText(String.valueOf(0));
+			loadProgressTxt.setVisibility(View.GONE);
 
-				String filename = String.valueOf(backgroundUrl.hashCode());
-				new SaveImageToSdTask(mainBackgroundImgSaveListener, bitmap).executeTask(filename);
-			} else if (listenerCode == BOARD) {
-				taskTitleTxt.setText(R.string.saving_board);
-				loadProgressTxt.setText(String.valueOf(0));
-				loadProgressTxt.setVisibility(View.GONE);
-
-				String filename = String.valueOf(boardBackgroundUrl.hashCode());
-				new SaveImageToSdTask(boardImgSaveListener, bitmap).executeTask(filename);
-			}
+			String filename = String.valueOf(backgroundUrl.hashCode());
+			new SaveImageToSdTask(mainBackgroundImgSaveListener, bitmap).executeTask(filename);
 		}
 
 		@Override
@@ -485,52 +478,28 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 	private class BackgroundImageSaveListener extends AbstractUpdateListener<Bitmap> {
 
-		private int listenerCode;
-
-		public BackgroundImageSaveListener(int listenerCode) {
+		public BackgroundImageSaveListener() {
 			super(getActivity(), SettingsThemeCustomizeFragment.this);
-			this.listenerCode = listenerCode;
 		}
 
 		@Override
 		public void updateData(Bitmap returnedObj) {
-
-			if (listenerCode == BACKGROUND) {
-
-				// set main background image as theme
-				String filename = String.valueOf(backgroundUrl.hashCode());
-				try {
-					File imgFile = AppUtils.openFileByName(getActivity(), filename);
-					getActivityFace().setMainBackground(imgFile.getAbsolutePath());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				// hide checkMark button
-				applyBackgroundBtn.setVisibility(View.GONE);
-
-				if (loadProgressPopupFragment != null) {
-					loadProgressPopupFragment.dismiss();
-				}
-
-			} else {
-				// set board background image as theme
-				String filename = String.valueOf(boardBackgroundUrl.hashCode());
-				try {
-					File imgFile = AppUtils.openFileByName(getActivity(), filename);
-					String drawablePath = imgFile.getAbsolutePath();
-
-					getAppData().setThemeBoardPath(drawablePath);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				if (loadProgressPopupFragment != null) {
-					loadProgressPopupFragment.dismiss();
-				}
-
-
+			// set main background image as theme
+			String filename = String.valueOf(backgroundUrl.hashCode());
+			try {
+				File imgFile = AppUtils.openFileByName(getActivity(), filename);
+				getActivityFace().setMainBackground(imgFile.getAbsolutePath());
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+
+			// hide checkMark button
+			applyBackgroundBtn.setVisibility(View.GONE);
+
+			if (loadProgressPopupFragment != null) {
+				loadProgressPopupFragment.dismiss();
+			}
+
 		}
 	}
 
@@ -635,8 +604,10 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			}
 
 			imageDownloader.download(backgroundUrl, backgroundUpdateListener, screenWidth, screenHeight);
-			String selectedThemeName = selectedThemeItem.getThemeName();
+			String selectedThemeName = selectedBackgroundItem.getName();
 			getAppData().setThemeName(selectedThemeName);
+
+			getActivityFace().updateActionBarBackImage();
 		}
 	}
 
@@ -646,7 +617,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		screenHeight = getResources().getDisplayMetrics().heightPixels;
 
 		soundsUrlsList = new ArrayList<String>();
-		selectedThemeItem = themeItem;
 
 		imageLoader = new EnhancedImageDownloader(getActivity());
 		{// Piece bitmaps list init
@@ -712,11 +682,9 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		backgroundPopupListener = new BackgroundPopupListener();
 		backgroundItemUpdateListener = new BackgroundItemUpdateListener();
-		backgroundUpdateListener = new ImageUpdateListener(BACKGROUND);
+		backgroundUpdateListener = new ImageUpdateListener();
 
-		boardUpdateListener = new ImageUpdateListener(BOARD);
-		mainBackgroundImgSaveListener = new BackgroundImageSaveListener(BACKGROUND);
-		boardImgSaveListener = new BackgroundImageSaveListener(BOARD);
+		mainBackgroundImgSaveListener = new BackgroundImageSaveListener();
 
 		soundsItemUpdateListener = new SoundsItemUpdateListener();
 		soundPackSaveListener = new SoundPackSaveListener();
@@ -729,7 +697,16 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		Resources resources = getResources();
 
 		{ // background params
-			int imageHeight = (int) (screenWidth / 2.9f);
+			int screenWidth;
+			int imageHeight;
+			if (!isTablet) {
+				screenWidth = SettingsThemeCustomizeFragment.this.screenWidth;
+				imageHeight = (int) (screenWidth / 2.9f);
+			} else {
+				screenWidth = SettingsThemeCustomizeFragment.this.screenWidth
+						- resources.getDimensionPixelSize(R.dimen.tablet_side_menu_width);
+				imageHeight = (int) (screenWidth / 4.0f);
+			}
 
 			backgroundPreviewImg = (ProgressImageView) view.findViewById(R.id.backgroundPreviewImg);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
@@ -777,7 +754,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		// Preview Sample
 		rowSampleTitleTxt = (TextView) view.findViewById(R.id.rowSampleTitleTxt);
-		int fontColor = Color.parseColor("#" +  themeItem.getFontColor());
+		int fontColor = Color.parseColor("#" + themeItem.getFontColor());
 		rowSampleTitleTxt.setTextColor(fontColor);
 
 		//spinners

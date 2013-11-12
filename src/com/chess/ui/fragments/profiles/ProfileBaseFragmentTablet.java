@@ -29,6 +29,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.RatingsAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.friends.FriendsFragmentTablet;
 import com.chess.ui.fragments.messages.NewMessageFragment;
@@ -362,7 +363,7 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 	}
 
 	@Override
-	public void changeFragment(Fragment fragment) {
+	public void changeFragment(BasePopupsFragment fragment) {
 		openInternalFragment(fragment);
 	}
 

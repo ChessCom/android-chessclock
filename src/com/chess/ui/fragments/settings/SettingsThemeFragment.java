@@ -56,7 +56,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private int screenWidth;
 	private int screenHeight;
 	private ThemeItem.Data selectedThemeItem;
-	private ThemeItem.Data currentThemeItem;
+	protected ThemeItem.Data currentThemeItem;
 	private List<ThemeItem.Data> themesList;
 	private String selectedThemeName;
 	private LoadServiceConnectionListener loadServiceConnectionListener;
@@ -185,7 +185,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		selectedThemeItem = (ThemeItem.Data) listView.getItemAtPosition(position);
 
 		if (selectedThemeItem.isLocal()) {
-			getActivityFace().openFragment(SettingsThemeCustomizeFragment.createInstance(currentThemeItem));
+			openCustomizeFragment();
 		} else {
 
 			if (isInstallingTheme) {
@@ -206,6 +206,10 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 			installSelectedTheme();
 		}
+	}
+
+	protected void openCustomizeFragment() {
+		getActivityFace().openFragment(SettingsThemeCustomizeFragment.createInstance(currentThemeItem));
 	}
 
 	private void installSelectedTheme() {
@@ -313,7 +317,16 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			customColor = resources.getColor(R.color.theme_customize_back);
 			boardPreviewImageSize = resources.getDimensionPixelSize(R.dimen.theme_board_preview_size);
 
-			imageHeight = (int) (screenWidth / 2.9f);
+			int screenWidth;
+			if (!isTablet) {
+				screenWidth = SettingsThemeFragment.this.screenWidth;
+				imageHeight = (int) (screenWidth / 2.9f);
+			} else {
+				screenWidth = SettingsThemeFragment.this.screenWidth
+						- resources.getDimensionPixelSize(R.dimen.tablet_side_menu_width);
+				imageHeight = (int) (screenWidth / 4.0f);
+			}
+
 			backImageParams = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
 			listItemParams = new ListView.LayoutParams(screenWidth, imageHeight);
 

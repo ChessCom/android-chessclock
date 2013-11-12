@@ -131,8 +131,6 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		if (savedInstanceState != null) {
 			boolean inEditMode = savedInstanceState.getBoolean(EDIT_MODE);
 			if (inEditMode) {
-				logTest("start AM from onCreate");
-
 				startActionMode();
 			}
 		}

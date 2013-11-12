@@ -61,15 +61,6 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 		loadRecentOpponents();
 	}
 
-//	@Override
-//	protected void createFeaturesList() {
-//		featuresList = new ArrayList<DailyItem>();
-//		featuresList.add(new DailyItem(R.string.ic_add, R.string.new_game));
-//		featuresList.add(new DailyItem(R.string.ic_stats, R.string.stats));
-//		featuresList.add(new DailyItem(R.string.ic_challenge_friend, R.string.friends));
-//		featuresList.add(new DailyItem(R.string.ic_board, R.string.archive));
-//	}
-
 	private void loadDbGames() {
 		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
 				DbHelper.getDailyFinishedListGames(getUsername()),

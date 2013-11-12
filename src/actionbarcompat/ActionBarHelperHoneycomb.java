@@ -55,6 +55,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 		}
 	}
 
+	@Override
 	public void updateActionBarBackground(){
 		ActionBar actionBar = mActivity.getActionBar(); // could be null for small screens
 		if (actionBar != null) {

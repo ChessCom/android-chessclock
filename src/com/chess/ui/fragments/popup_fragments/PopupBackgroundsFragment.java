@@ -22,6 +22,7 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.SelectionItem;
 import com.chess.statics.AppData;
+import com.chess.statics.StaticData;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -51,6 +52,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 	private boolean need2update = true;
 	private View loadingView;
 	private List<BackgroundSingleItem.Data> backgroundsThemeList;
+	private boolean isTablet;
 
 	public PopupBackgroundsFragment() {
 	}
@@ -69,6 +71,10 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setStyle(STYLE_NO_TITLE, 0);
+
+		if (StaticData.USE_TABLETS) {
+			isTablet = AppUtils.is7InchTablet(getActivity()) || AppUtils.is10InchTablet(getActivity());
+		}
 
 		if (getArguments() != null) {
 			themeItem = getArguments().getParcelable(THEME_ITEM);
@@ -190,7 +196,6 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 		private final int previewWidth;
 		private final Bitmap placeHolderBitmap;
-		private final float aspectRatio;
 		private final RelativeLayout.LayoutParams imageParams;
 		private final RelativeLayout.LayoutParams linearLayoutParams;
 		private final RelativeLayout.LayoutParams progressParams;
@@ -202,11 +207,16 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 			imageLoader = new EnhancedImageDownloader(context);
 
 			previewWidth = PopupBackgroundsFragment.this.getView().getWidth();
-			aspectRatio = 1f / 2.9f;
+			int imageHeight;
+			if (!isTablet) {
+				imageHeight = (int) (previewWidth / 2.9f);
+			} else {
+				imageHeight = (int) (previewWidth / 4.0f); // TODO move to resources
+			}
 
 			int backIMgColor = getResources().getColor(R.color.upgrade_toggle_button_p);
 			placeHolderBitmap = Bitmap.createBitmap(new int[]{backIMgColor}, 1, 1, Bitmap.Config.ARGB_8888);
-			int imageHeight = (int) (previewWidth * aspectRatio);
+
 			imageParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
 			linearLayoutParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
 			progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

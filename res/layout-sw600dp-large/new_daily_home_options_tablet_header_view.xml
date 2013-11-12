@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
@@ -15,7 +14,7 @@
 		style="@style/ListItem.Header.Dark"
 		android:paddingLeft="8dip"
 		android:paddingRight="8dip"
-		android:layout_marginTop="2dip">
+		>
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView

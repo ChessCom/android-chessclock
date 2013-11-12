@@ -1,6 +1,6 @@
 package com.chess.ui.interfaces;
 
-import android.support.v4.app.Fragment;
+import com.chess.ui.fragments.BasePopupsFragment;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,5 +10,5 @@ import android.support.v4.app.Fragment;
  */
 public interface FragmentParentFace {
 
-	void changeFragment(Fragment fragment);
+	void changeFragment(BasePopupsFragment fragment);
 }

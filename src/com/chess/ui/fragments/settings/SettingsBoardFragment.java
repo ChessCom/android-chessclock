@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.widgets.SwitchButton;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
@@ -116,9 +117,9 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 
 		int id = view.getId();
 		if (id == R.id.piecesView) {
-			getActivityFace().openFragment(new SettingsThemePiecesFragment());
+			openFragment(new SettingsThemePiecesFragment());
 		} else if (id == R.id.boardView) {
-			getActivityFace().openFragment(new SettingsThemeBoardsFragment());
+			openFragment(new SettingsThemeBoardsFragment());
 		} else if (id == R.id.coordinatesView) {
 			coordinatesSwitch.toggle();
 		} else if (id == R.id.highlightLastMoveView) {
@@ -132,6 +133,10 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 		} else if (view.getId() == R.id.autoFlipView) {
 			autoFlipSwitch.toggle();
 		}
+	}
+
+	protected void openFragment(BasePopupsFragment fragment) {
+		getActivityFace().openFragment(fragment);
 	}
 
 	@Override

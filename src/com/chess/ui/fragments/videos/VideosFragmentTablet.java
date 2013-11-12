@@ -24,6 +24,7 @@ import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveVideoCategoriesTask;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
@@ -234,7 +235,7 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 	}
 
 	@Override
-	public void changeFragment(Fragment fragment) {
+	public void changeFragment(BasePopupsFragment fragment) {
 		openInternalFragment(fragment);
 	}
 

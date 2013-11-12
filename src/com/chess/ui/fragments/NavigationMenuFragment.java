@@ -32,6 +32,7 @@ import com.chess.ui.fragments.live.LiveHomeFragmentTablet;
 import com.chess.ui.fragments.messages.MessagesInboxFragment;
 import com.chess.ui.fragments.profiles.ProfileBaseFragmentTablet;
 import com.chess.ui.fragments.settings.SettingsFragment;
+import com.chess.ui.fragments.settings.SettingsFragmentTablet;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragmentTablet;
@@ -163,6 +164,12 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 					}
 				}
 				break;
+			case R.drawable.ic_nav_vs_comp:
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameCompFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
+					fragmentByTag = prepareGameCompFragmentInstance();
+				}
+				break;
 			case R.drawable.ic_nav_tactics:
 				if (!isTablet) {
 					fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
@@ -257,22 +264,24 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 					}
 				}
 				break;
-			case R.drawable.ic_nav_settings:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(SettingsFragment.class.getSimpleName());
-				if (fragmentByTag == null) {
-					fragmentByTag = new SettingsFragment();
-				}
-				break;
 			case R.drawable.ic_nav_forums:
 				fragmentByTag = (BasePopupsFragment) findFragmentByTag(ForumCategoriesFragment.class.getSimpleName());
 				if (fragmentByTag == null) {
 					fragmentByTag = new ForumCategoriesFragment();
 				}
 				break;
-			case R.drawable.ic_nav_vs_comp:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameCompFragment.class.getSimpleName());
+			case R.drawable.ic_nav_settings:
+				if (!isTablet) {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(SettingsFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(SettingsFragmentTablet.class.getSimpleName());
+				}
 				if (fragmentByTag == null) {
-					fragmentByTag = prepareGameCompFragmentInstance();
+					if (!isTablet) {
+						fragmentByTag = new SettingsFragment();
+					} else {
+						fragmentByTag = new SettingsFragmentTablet();
+					}
 				}
 				break;
 		}
