@@ -1,6 +1,7 @@
 package com.chess.ui.views;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.ArcShape;
@@ -21,11 +22,10 @@ import com.chess.backend.entity.api.stats.GamesInfoByResult;
  */
 public class PieChartView extends View {
 
-
-	private static int TOP_OFFSET;
-	private static float LINE_LEFT_OFFSET;
-	public static int DONUT_HALF_SIZE;
-	private int TEXT_WIDTH;
+	private int topOffset;
+	private float lineLeftOffset;
+	public int donutHalfSize;
+	private int textWidth;
 
 	public static final String MAIN_PATH = "fonts/custom-";
 
@@ -44,15 +44,16 @@ public class PieChartView extends View {
 	private int textGreyColor = 0xFF65605b;
 	private int backgroundColor;
 	private Paint textLegendPaint;
-	private static int DONUT_SIZE;
-	private int DONUT_OVERLAY_SIZE;
+	private int donutSize;
+	private int donutWidthSize;
 	private int centerPointX;
 	private Paint centerLinePaint;
 	private String winTotal;
 	private String lossTotal;
 	private String drawnTotal;
 	private Paint centerTextPaint;
-	private int INSIDE_TOP_TEXT_OFFSET;
+	private int insideTopTextOffset;
+	private int rightTextWidth;
 
 	public PieChartView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -62,21 +63,23 @@ public class PieChartView extends View {
 	private void init(Context context) {
 		setFocusable(true);
 
-		float density = context.getResources().getDisplayMetrics().density;
+		Resources resources = context.getResources();
+		float density = resources.getDisplayMetrics().density;
 
-		DONUT_SIZE = (int) (174 * density);
-		DONUT_HALF_SIZE = DONUT_SIZE / 2;
-		DONUT_OVERLAY_SIZE = (int) (112 * density);
-		INSIDE_TOP_TEXT_OFFSET = (int) (8 * density);
-		TEXT_WIDTH = (int) (20 * density);
-		TOP_OFFSET = (int) (30 * density);
-		LINE_LEFT_OFFSET = (int) (10 * density);
+		donutSize = resources.getDimensionPixelSize(R.dimen.pie_chart_donut_size);
+		donutHalfSize = donutSize / 2;
+		donutWidthSize = resources.getDimensionPixelSize(R.dimen.pie_chart_donut_width_size);
+		insideTopTextOffset = (int) (8 * density);
+		textWidth = (int) (20 * density);
+		rightTextWidth =  resources.getDimensionPixelSize(R.dimen.pie_chart_right_text_width);
+		topOffset = (int) (20 * density);
+		lineLeftOffset = (int) (10 * density);
 
-		int height = DONUT_SIZE + TEXT_WIDTH * 2 + TOP_OFFSET;
+		int height = donutSize + topOffset * 2;
 
 		setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height));
 
-		backgroundColor = context.getResources().getColor(R.color.white);
+		backgroundColor = resources.getColor(R.color.white);
 
 		mDrawables = new ShapeDrawable[4];
 
@@ -112,16 +115,16 @@ public class PieChartView extends View {
 
 		mDrawables[3].getPaint().setColor(backgroundColor);
 
-		int greenColor1 = context.getResources().getColor(R.color.chart_green_1);
-		int greenColor2 = context.getResources().getColor(R.color.chart_green_2);
+		int greenColor1 = resources.getColor(R.color.chart_green_1);
+		int greenColor2 = resources.getColor(R.color.chart_green_2);
 		mDrawables[0].getPaint().setShader(makeRadial(greenColor1, greenColor2));
 
-		int greyColor1 = context.getResources().getColor(R.color.chart_grey_1);
-		int greyColor2 = context.getResources().getColor(R.color.chart_grey_2);
+		int greyColor1 = resources.getColor(R.color.chart_grey_1);
+		int greyColor2 = resources.getColor(R.color.chart_grey_2);
 		mDrawables[1].getPaint().setShader(makeRadial(greyColor1, greyColor2));
 
-		int orangeColor1 = context.getResources().getColor(R.color.chart_orange_1);
-		int orangeColor2 = context.getResources().getColor(R.color.chart_orange_2);
+		int orangeColor1 = resources.getColor(R.color.chart_orange_1);
+		int orangeColor2 = resources.getColor(R.color.chart_orange_2);
 		mDrawables[2].getPaint().setShader(makeRadial(orangeColor1, orangeColor2));
 
 
@@ -142,12 +145,12 @@ public class PieChartView extends View {
 
 		Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), MAIN_PATH + "Bold" + ".ttf");
 		{// legend paint setup
-			textLegendPaint = new Paint();
+			textLegendPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			textLegendPaint.setTypeface(typeface);
 			textLegendPaint.setTextSize(13 * density);
 
 			// center lines
-			centerLinePaint = new Paint();
+			centerLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			centerLinePaint.setColor(0xFFdfdfdf);
 			centerLinePaint.setStyle(Paint.Style.STROKE);
 			centerLinePaint.setStrokeWidth(2);
@@ -159,15 +162,15 @@ public class PieChartView extends View {
 				lossTotal = games.getLosses() + " L";
 				drawnTotal = games.getDraws() + " D";
 
-				centerTextPaint = new Paint();
+				centerTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 				centerTextPaint.setTypeface(typeface);
 				centerTextPaint.setTextSize(14 * density + 0.5f);
 			}
 		}
 	}
 
-	private static Shader makeRadial(int color1, int color2) {
-		return new RadialGradient(DONUT_HALF_SIZE, DONUT_HALF_SIZE, DONUT_HALF_SIZE, color1, color2, Shader.TileMode.CLAMP);
+	private Shader makeRadial(int color1, int color2) {
+		return new RadialGradient(donutHalfSize, donutHalfSize, donutHalfSize, color1, color2, Shader.TileMode.CLAMP);
 	}
 
 	@Override
@@ -181,22 +184,22 @@ public class PieChartView extends View {
 
 		// draw legend labels
 		{// wins
-			int winsX = centerPointX - DONUT_HALF_SIZE - TEXT_WIDTH;
-			int winsY = TOP_OFFSET;
+			int winsX = centerPointX - donutHalfSize - textWidth;
+			int winsY = topOffset;
 			textLegendPaint.setColor(textGreenColor);
 			canvas.drawText(winsText, winsX, winsY, textLegendPaint);
 		}
 
 		{// losses
-			int lossX = centerPointX + DONUT_HALF_SIZE - TEXT_WIDTH;
-			int lossY = TOP_OFFSET;
+			int lossX = centerPointX + donutHalfSize - rightTextWidth;
+			int lossY = topOffset;
 			textLegendPaint.setColor(textOrangeColor);
 			canvas.drawText(lossText, lossX, lossY, textLegendPaint);
 		}
 
 		{// draws
-			int drawsX = centerPointX + DONUT_HALF_SIZE - TEXT_WIDTH;
-			int drawsY = (int) (TOP_OFFSET + DONUT_SIZE + textLegendPaint.getTextSize());
+			int drawsX = centerPointX + donutHalfSize - rightTextWidth;
+			int drawsY = (int) (topOffset + donutSize + textLegendPaint.getTextSize());
 			textLegendPaint.setColor(textGreyColor);
 			canvas.drawText(drawsText, drawsX, drawsY, textLegendPaint);
 		}
@@ -207,36 +210,36 @@ public class PieChartView extends View {
 		int y = 0;
 
 		canvas.save();
-		canvas.translate(centerPointX - DONUT_HALF_SIZE, TOP_OFFSET);
+		canvas.translate(centerPointX - donutHalfSize, topOffset);
 		// pie 1
-		mDrawables[0].setBounds(x, y, x + DONUT_SIZE, y + DONUT_SIZE);
+		mDrawables[0].setBounds(x, y, x + donutSize, y + donutSize);
 		mDrawables[0].draw(canvas);
 
 		// pie 2
-		mDrawables[1].setBounds(x, y, x + DONUT_SIZE, y + DONUT_SIZE);
+		mDrawables[1].setBounds(x, y, x + donutSize, y + donutSize);
 		mDrawables[1].draw(canvas);
 
 		// pie 3
-		mDrawables[2].setBounds(x, y, x + DONUT_SIZE, y + DONUT_SIZE);
+		mDrawables[2].setBounds(x, y, x + donutSize, y + donutSize);
 		mDrawables[2].draw(canvas);
 
 		// white overlay
 		canvas.save();
-		int overlayCenter = DONUT_OVERLAY_SIZE / 2;
-		int xOffset = DONUT_HALF_SIZE - overlayCenter;
+		int overlayCenter = donutWidthSize / 2;
+		int xOffset = donutHalfSize - overlayCenter;
 		canvas.translate(xOffset, xOffset);
 
-		mDrawables[3].setBounds(x, y, x + DONUT_OVERLAY_SIZE, y + DONUT_OVERLAY_SIZE);
+		mDrawables[3].setBounds(x, y, x + donutWidthSize, y + donutWidthSize);
 		mDrawables[3].draw(canvas);
 
-		int widthBetweenLines = DONUT_OVERLAY_SIZE / 3;
+		int widthBetweenLines = donutWidthSize / 3;
 
 		// center lines
 		int topLineY = overlayCenter - widthBetweenLines / 2;
-		canvas.drawLine(LINE_LEFT_OFFSET, topLineY, DONUT_OVERLAY_SIZE - LINE_LEFT_OFFSET, topLineY, centerLinePaint);
+		canvas.drawLine(lineLeftOffset, topLineY, donutWidthSize - lineLeftOffset, topLineY, centerLinePaint);
 
 		int bottomLineY = overlayCenter + widthBetweenLines / 2;
-		canvas.drawLine(LINE_LEFT_OFFSET, bottomLineY, DONUT_OVERLAY_SIZE - LINE_LEFT_OFFSET, bottomLineY, centerLinePaint);
+		canvas.drawLine(lineLeftOffset, bottomLineY, donutWidthSize - lineLeftOffset, bottomLineY, centerLinePaint);
 
 
 		if (games != null) {
@@ -250,7 +253,7 @@ public class PieChartView extends View {
 				}
 
 				float textStartPositionX = overlayCenter - labelLength / 2;
-				float textStartPositionY = topLineY - INSIDE_TOP_TEXT_OFFSET /*- centerTextPaint.getTextSize()*/;
+				float textStartPositionY = topLineY - insideTopTextOffset /*- centerTextPaint.getTextSize()*/;
 
 				centerTextPaint.setColor(textGreenColor);
 				canvas.drawText(winTotal, textStartPositionX, textStartPositionY, centerTextPaint);
@@ -280,7 +283,7 @@ public class PieChartView extends View {
 				}
 
 				float textStartPositionX = overlayCenter - labelLength / 2;
-				float textStartPositionY = bottomLineY + INSIDE_TOP_TEXT_OFFSET + centerTextPaint.getTextSize();
+				float textStartPositionY = bottomLineY + insideTopTextOffset + centerTextPaint.getTextSize();
 
 				centerTextPaint.setColor(textGreyColor);
 				canvas.drawText(drawnTotal, textStartPositionX, textStartPositionY, centerTextPaint);

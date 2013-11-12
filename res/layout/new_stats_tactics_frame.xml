@@ -8,14 +8,6 @@
 	android:layout_height="match_parent"
 	android:background="@color/white">
 
-
-<!--	Rating Graph
-	<com.chess.ui.views.RatingGraphView
-		android:id="@+id/ratingGraphView"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical" />-->
-
 	<ListView
 		android:id="@+id/listView"
 		android:layout_width="match_parent"

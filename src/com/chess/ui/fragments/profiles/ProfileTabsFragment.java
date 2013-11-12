@@ -63,7 +63,7 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 			username = savedInstanceState.getString(USERNAME);
 		}
 
-		photoImageSize = (int) (80 * getResources().getDisplayMetrics().density);
+		photoImageSize = (int) (80 * density);
 		imageLoader = new EnhancedImageDownloader(getActivity());
 		userUpdateListener = new UserUpdateListener();
 	}

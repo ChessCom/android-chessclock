@@ -222,7 +222,7 @@
 	<color name="semitransparent_white_30">#4DFFFFFF</color>
 	<color name="semitransparent_white_50">#80FFFFFF</color>
 	<color name="semitransparent_white_65">#A5FFFFFF</color>
-	<color name="semitransparent_white_75">#c0FFFFFF</color>
+	<color name="semitransparent_white_75">#D0FFFFFF</color>
 	<color name="semitransparent_black_30">#4D000000</color>
 	<color name="semitransparent_black_65">#A5000000</color>
 	<color name="semitransparent_black_80">#CC000000</color>
@@ -377,7 +377,7 @@
     <color name="new_text_blue">#FF0d5988</color>
     <color name="new_text_blue_dark">#FF0e344d</color>
     <color name="new_friends_grey_text">#FFa7a6a2</color>
-    <color name="new_square_button">#FFf4f4f4</color>
+    <color name="new_square_button">#ffe0e0e0</color>
     <color name="new_square_button_p">#ffc7c7c7</color>
     <color name="new_grey_border_light">#FFbfbfbf</color>
     <color name="new_friends_list_divider">#FFdfdfdf</color>

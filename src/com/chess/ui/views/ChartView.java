@@ -4,12 +4,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.View;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
+import com.chess.utilities.FontsHelper;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class ChartView extends View {
 
 	private Paint graphPaint;
 	private Path graphPath;
-	private int widthPixels;
+//	private int widthPixels;
 	private float yAspect;
 	private int backColor;
 	private Paint borderPaint;
@@ -45,6 +44,7 @@ public class ChartView extends View {
 	private Paint strokePaint;
 	private Paint minValueTextPaint;
 	private int textOffset;
+	private float borderWidth;
 
 	public ChartView(Context context) {
 		super(context);
@@ -59,9 +59,9 @@ public class ChartView extends View {
 	private void init(Context context) {
 		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
-		widthPixels = resources.getDisplayMetrics().widthPixels;
 
 		clipBounds = new Rect();
+		borderWidth = 1 * density;
 
 		// set colors
 		int borderColor = resources.getColor(R.color.graph_border);
@@ -70,14 +70,14 @@ public class ChartView extends View {
 		graphBottomColor = resources.getColor(R.color.graph_gradient_bottom);
 
 		// Border
-		borderPaint = new Paint();
+		borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		borderPaint.setColor(borderColor);
 		borderPaint.setStyle(Paint.Style.STROKE);
 		borderPaint.setStrokeWidth(1.5f * density);
 
 		// Minimal Rating line
 		int minValueLineColor = resources.getColor(R.color.graph_min_value_line);
-		minValueLinePaint = new Paint();
+		minValueLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		minValueLinePaint.setColor(minValueLineColor);
 		minValueLinePaint.setStyle(Paint.Style.STROKE);
 		minValueLinePaint.setStrokeWidth(density);
@@ -85,7 +85,7 @@ public class ChartView extends View {
 		// Minimal Rating value
 		int minValueTextColor = resources.getColor(R.color.graph_min_value_text);
 		int textSize = (int) (13 * density);
-		minValueTextPaint = new Paint();
+		minValueTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		minValueTextPaint.setColor(minValueTextColor);
 		minValueTextPaint.setStyle(Paint.Style.FILL);
 		minValueTextPaint.setStrokeWidth(density);
@@ -95,7 +95,7 @@ public class ChartView extends View {
 		textOffset = (int) (16 * density);
 	}
 
-	private void setPoints(List<long[]> dataArray) {
+	private void setPoints(List<long[]> dataArray, int widthPixels) {
 		{ // get min and max of X values
 			// remove
 			long firstPoint = dataArray.get(0)[TIME] - dataArray.get(0)[TIME] % MILLISECONDS_PER_DAY;
@@ -154,6 +154,7 @@ public class ChartView extends View {
 	protected void onDraw(Canvas canvas) {
 		canvas.getClipBounds(clipBounds);
 		int bottom = clipBounds.bottom;
+		int width = clipBounds.right;
 		canvas.drawColor(backColor);
 
 		if (initialized) {
@@ -162,19 +163,28 @@ public class ChartView extends View {
 			int height = canvas.getClipBounds().bottom;
 
 			float yValue = height - (orignialMinY - minY) / yAspect + 1; // 1px offset below line
-			canvas.drawLine(0, yValue, widthPixels, yValue, minValueLinePaint);
+			canvas.drawLine(0, yValue, width, yValue, minValueLinePaint);
 			canvas.drawText(String.valueOf(orignialMinY), 0, yValue + textOffset, minValueTextPaint);
 		} else {
 			canvas.drawText("No Data :(", 0, 0, borderPaint);
 		}
 
-		canvas.drawLine(0, bottom, widthPixels, bottom, borderPaint);
-		canvas.drawLine(0, 0, widthPixels, 0, borderPaint);
+		// draw grey borders
+		// Top Line
+		canvas.drawLine(0, 0, width, 0, borderPaint);
+		// Left line
+		canvas.drawLine(0, 0, 0, bottom, borderPaint);
+		// Right Line
+		canvas.drawLine(width, 0, width, bottom, borderPaint);
+		// Top Line
+		canvas.drawLine(0, bottom, width, bottom, borderPaint);
+
 	}
 
 	private void createGraphPath(Canvas canvas) {
 		if (graphPath == null) {
 			int height = canvas.getClipBounds().bottom;
+			int width = canvas.getClipBounds().right;
 			int originalMaxY = maxY;
 			minY -= 200;
 			maxY += 400;
@@ -183,7 +193,7 @@ public class ChartView extends View {
 
 			yAspect = (float) (diff / height);
 
-			graphPath = createGraphPath(height);
+			graphPath = createGraphPath(height, width);
 
 			graphPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			graphPaint.setAntiAlias(true);
@@ -191,7 +201,7 @@ public class ChartView extends View {
 			LinearGradient shader = new LinearGradient(0, gradientYStart, 0, height, graphTopColor, graphBottomColor, Shader.TileMode.CLAMP);
 			graphPaint.setShader(shader);
 
-			strokePaint = new Paint();
+			strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			strokePaint.setAntiAlias(true);
 			strokePaint.setStyle(Paint.Style.STROKE);
 			strokePaint.setStrokeWidth(1.5f * density);
@@ -203,7 +213,7 @@ public class ChartView extends View {
 		canvas.drawPath(graphPath, strokePaint);
 	}
 
-	private Path createGraphPath(int height) {
+	private Path createGraphPath(int height, int widthPixels) {
 		Path path = new Path();
 
 		long yValue = pointsArray.get(0) - minY;
@@ -224,12 +234,12 @@ public class ChartView extends View {
 		return path;
 	}
 
-	private void logTest(String string) {
-		Log.d("TEST", string);
-	}
+//	private void logTest(String string) {
+//		Log.d("TEST", string);
+//	}
 
-	public void setGraphData(List<long[]> series) {
-		setPoints(series);
+	public void setGraphData(List<long[]> series, int width) {
+		setPoints(series, width);
 		invalidate();
 	}
 }

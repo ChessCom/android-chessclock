@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/white">
+
+	<LinearLayout
+		android:id="@+id/statsLinLay"
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:baselineAligned="false"
+		android:weightSum="1"
+		android:padding="@dimen/comments_side_padding">
+
+		<!--Left part-->
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_weight="1">
+
+			<!--Top Info Lay-->
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/graph_stats_top_info_height"
+				android:gravity="center_vertical">
+
+				<!--Current Rating-->
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/currentRatingTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="44sp"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:layout_marginTop="-6dp"
+					custom:ttf="Bold" />
+
+				<!--Absolute -->
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/absoluteRankTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="21sp"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:layout_toLeftOf="@+id/valuesDividerView"
+					custom:ttf="Bold" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/totalRankedTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/stats_label_grey"
+					android:layout_below="@id/absoluteRankTxt"
+					android:layout_toLeftOf="@+id/valuesDividerView"
+					android:layout_marginTop="-3dip"
+					android:textSize="@dimen/default_text_size_small" />
+
+				<!--Divider-->
+				<View
+					android:id="@id/valuesDividerView"
+					android:layout_width="1dip"
+					android:layout_height="wrap_content"
+					android:layout_alignTop="@id/absoluteRankTxt"
+					android:background="@color/new_friends_list_divider"
+					android:layout_toLeftOf="@+id/percentileLabelTxt"
+					android:layout_alignBottom="@+id/percentileLabelTxt"
+					android:layout_marginLeft="11dip"
+					android:layout_marginRight="11dip"
+					android:layout_marginTop="4dip"
+					android:layout_marginBottom="2dip" />
+
+				<!--Percentile-->
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/percentileValueTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:textSize="21sp"
+					android:textColor="@color/new_subtitle_dark_grey"
+					custom:ttf="Bold" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@id/percentileLabelTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/percentile"
+					android:layout_alignParentRight="true"
+					android:layout_below="@id/percentileValueTxt"
+					android:textColor="@color/stats_label_grey"
+					android:layout_marginTop="-3dip"
+					android:textSize="@dimen/default_text_size_small" />
+
+			</RelativeLayout>
+
+			<!--Rating Graph-->
+			<com.chess.ui.views.RatingGraphView
+				android:id="@+id/ratingGraphView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical" />
+
+			<!--Rating Table-->
+			<LinearLayout
+				android:id="@+id/ratingsLinearView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+
+			</LinearLayout>
+		</LinearLayout>
+
+		<!--Right Part-->
+		<LinearLayout
+			android:layout_width="@dimen/stats_left_part_width"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_weight="1"
+			android:layout_marginLeft="@dimen/comments_side_padding"
+			>
+			<!--Total Games-->
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:layout_marginBottom="11dp">
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/totalGamesValueTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:paddingRight="3dip"
+					android:textSize="27sp"
+					custom:ttf="Bold" />
+
+				<com.chess.widgets.RoboTextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/games"
+					android:textColor="@color/stats_label_grey"
+					android:paddingLeft="3dip"
+					android:textSize="27sp" />
+
+			</LinearLayout>
+
+			<!--Games PieChar-->
+			<com.chess.ui.views.PieChartView
+				android:id="@+id/pieChartView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content" />
+
+			<!--Games Table-->
+			<!--Divider-->
+			<View
+				android:id="@+id/divider"
+				android:layout_width="match_parent"
+				android:layout_height="1dip"
+				android:background="@color/new_friends_list_divider" />
+
+			<!--Average opponent rating-->
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:minHeight="@dimen/stats_rating_view_height"
+				android:paddingTop="13dip"
+				android:paddingBottom="13dip"
+				>
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/avgOpponentRatingTitleTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/avg_opp_rating_when_i"
+					android:textSize="@dimen/stats_rating_list_item_font"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:paddingBottom="4dip" />
+
+				<!--Win-->
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/winCntLabelTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/win"
+					android:paddingRight="3dp"
+					android:layout_below="@id/avgOpponentRatingTitleTxt"
+					android:textColor="@color/stats_label_light_grey" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/winCntValueTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="@dimen/stats_rating_list_item_font"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:layout_below="@id/avgOpponentRatingTitleTxt"
+					android:layout_alignBottom="@id/winCntLabelTxt"
+					android:layout_toRightOf="@id/winCntLabelTxt"
+					custom:ttf="Bold" />
+
+				<!--Loses-->
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/loseCntLabelTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/loss"
+					android:paddingRight="3dp"
+					android:layout_below="@id/avgOpponentRatingTitleTxt"
+					android:layout_toLeftOf="@+id/winLossCenterView"
+					android:textColor="@color/stats_label_light_grey" />
+
+				<!--Center point-->
+				<View
+					android:id="@id/winLossCenterView"
+					android:layout_width="0dip"
+					android:layout_height="0dip"
+					android:layout_centerInParent="true" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/loseCntValueTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="@dimen/stats_rating_list_item_font"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:layout_below="@id/avgOpponentRatingTitleTxt"
+					android:layout_alignBottom="@id/loseCntLabelTxt"
+					android:layout_toRightOf="@id/winLossCenterView"
+					custom:ttf="Bold" />
+
+				<!--Draw-->
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/drawCntLabelTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:paddingRight="3dp"
+					android:text="@string/draw"
+					android:layout_below="@id/avgOpponentRatingTitleTxt"
+					android:layout_toLeftOf="@+id/drawCntValueTxt"
+					android:textColor="@color/stats_label_light_grey" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@id/drawCntValueTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textSize="@dimen/stats_rating_list_item_font"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:layout_below="@id/avgOpponentRatingTitleTxt"
+					android:layout_alignBottom="@id/drawCntLabelTxt"
+					android:layout_alignParentRight="true"
+					custom:ttf="Bold" />
+
+			</RelativeLayout>
+
+			<!--Divider-->
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dip"
+				android:background="@color/new_friends_list_divider" />
+
+			<!--Winning Streak-->
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/stats_rating_view_height"
+				android:gravity="center_vertical">
+
+				<com.chess.widgets.RoboTextView
+					android:layout_width="0dip"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="@string/winning_streak"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="@dimen/stats_rating_list_item_font" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/winningStreakValueTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/games_arg"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="@dimen/stats_rating_list_item_font" />
+			</LinearLayout>
+
+			<!--Divider-->
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dip"
+				android:background="@color/new_friends_list_divider" />
+
+			<!--Losing Streak-->
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/stats_rating_view_height"
+				android:gravity="center_vertical">
+
+				<com.chess.widgets.RoboTextView
+					android:layout_width="0dip"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="@string/losing_streak"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="@dimen/stats_rating_list_item_font" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/losingStreakValueTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/games_arg"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="@dimen/stats_rating_list_item_font" />
+			</LinearLayout>
+
+			<!--Divider-->
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dip"
+				android:background="@color/new_friends_list_divider" />
+
+			<!--Timeouts-->
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/stats_rating_view_height"
+				android:gravity="center_vertical">
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/timeoutsLabelTxt"
+					android:layout_width="0dip"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="@string/timeouts_last_90_days"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="@dimen/stats_rating_list_item_font" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/timeoutsValueTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text=""
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="@dimen/stats_rating_list_item_font" />
+			</LinearLayout>
+
+
+			<!--Divider-->
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dip"
+				android:background="@color/new_friends_list_divider" />
+
+			<!--Glicko RD-->
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/stats_rating_view_height"
+				android:gravity="center_vertical">
+
+				<com.chess.widgets.RoboTextView
+					android:layout_width="0dip"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:text="@string/glicko_rd"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="@dimen/stats_rating_list_item_font" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/glickoValueTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="@dimen/stats_rating_list_item_font" />
+			</LinearLayout>
+
+
+			<!--Divider-->
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dip"
+				android:background="@color/new_friends_list_divider" />
+
+			<!--Most Frequent Opponent-->
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:minHeight="@dimen/stats_rating_view_height"
+				android:paddingTop="10dip"
+				android:paddingBottom="10dip">
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/frequentTitleTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/most_frequent_opponent"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="@dimen/stats_rating_list_item_font"
+					android:paddingBottom="7dip" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/mostFrequentOpponentTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@id/frequentTitleTxt"
+					android:textColor="@color/new_text_blue"
+					android:textSize="@dimen/stats_rating_list_item_font"
+					android:layout_marginTop="-3dip" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/mostFrequentOpponentGamesTxt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/games_arg"
+					android:textColor="@color/new_subtitle_dark_grey"
+					android:textSize="@dimen/stats_rating_list_item_font"
+					android:layout_alignParentRight="true"
+					android:layout_alignTop="@id/mostFrequentOpponentTxt" />
+			</RelativeLayout>
+
+			<!--Tournaments-->
+			<LinearLayout
+				android:id="@+id/tournamentsView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</ScrollView>

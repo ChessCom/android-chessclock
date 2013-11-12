@@ -186,7 +186,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 			} while (cursor.moveToNext());
 			cursor.close();
 
-			ratingGraphView.setGraphData(series);
+			ratingGraphView.setGraphData(series, getView().getWidth());
 		}
 	}
 

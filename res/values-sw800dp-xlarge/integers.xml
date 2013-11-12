@@ -3,5 +3,7 @@
 
 	<integer name="board_highlight_font">15</integer>
 	<integer name="screen_orientation">1</integer>
+	<integer name="rating_graph_height">164</integer>
+	<integer name="rating_graph_width">452</integer>
 
 </resources>

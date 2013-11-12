@@ -17,6 +17,9 @@
         android:paddingLeft="48dip"
         android:textSize="@dimen/actionbar_title_text_size"
         android:textColor="@color/semitransparent_white_75"
+		android:singleLine="true"
+		android:ellipsize="marquee"
+		android:marqueeRepeatLimit="2"
         style="@style/DarkShadowBottom"
         custom:ttf="Bold"
         />

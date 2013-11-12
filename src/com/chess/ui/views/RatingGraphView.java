@@ -7,10 +7,10 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import com.chess.*;
+import com.chess.R;
+import com.chess.utilities.FontsHelper;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboRadioButton;
-import com.chess.utilities.FontsHelper;
 
 import java.util.List;
 
@@ -23,14 +23,10 @@ import java.util.List;
 public class RatingGraphView extends LinearLayout {
 
 	private ChartView chartView;
+	private float chartSidesAspectRatio;
 
-	public RatingGraphView(Context context,  AttributeSet attrs) {
+	public RatingGraphView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init(context);
-	}
-
-	public RatingGraphView(Context context) {
-		super(context);
 		init(context);
 	}
 
@@ -38,27 +34,31 @@ public class RatingGraphView extends LinearLayout {
 		setOrientation(VERTICAL);
 
 		Resources resources = context.getResources();
-		float density = resources.getDisplayMetrics().density;
-		int paddingTop = (int) (10 * density);
-		int paddingSide = (int) (15 * density);
+
+		int paddingTop = resources.getDimensionPixelSize(R.dimen.graph_view_padding_top);
+		int paddingSide = resources.getDimensionPixelSize(R.dimen.graph_view_padding_side);
 
 		setPadding(0, paddingTop, 0, paddingTop);
 
-
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
 		params.setMargins(paddingSide, 0, paddingSide, 0);
 
 		{// ChartView
 			//adjust height to match design
-			float aspect = 192f / 640f;
+			int chartWidth = getResources().getInteger(R.integer.rating_graph_width);
+			int chartHeight = getResources().getInteger(R.integer.rating_graph_height);
+
+			chartSidesAspectRatio = (float) chartHeight / (float) chartWidth;
 
 			int widthPixels = getResources().getDisplayMetrics().widthPixels;
-			int height = (int) (widthPixels * aspect);
+			int height = (int) (widthPixels * chartSidesAspectRatio);
 
 			LinearLayout.LayoutParams chartParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height);
 
 			chartView = new ChartView(context);
 
+			// actual params updates in onSizeChanged callback
 			addView(chartView, chartParams);
 		}
 
@@ -66,8 +66,8 @@ public class RatingGraphView extends LinearLayout {
 			RadioGroup.LayoutParams wideParams = new RadioGroup.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
 			wideParams.weight = 1;
 
-			LinearLayout linearLayout = new LinearLayout(context);
-			linearLayout.setOrientation(HORIZONTAL);
+			LinearLayout radioGroupLayout = new LinearLayout(context);
+			radioGroupLayout.setOrientation(HORIZONTAL);
 			int textColor = resources.getColor(R.color.stats_label_grey);
 
 			{
@@ -78,9 +78,8 @@ public class RatingGraphView extends LinearLayout {
 				textView.setText("Sep");
 				textView.setGravity(Gravity.CENTER);
 
-				linearLayout.addView(textView, wideParams);
+				radioGroupLayout.addView(textView, wideParams);
 			}
-
 			{
 				RoboButton textView = new RoboButton(context, null, R.attr.sideGraphBtn);
 				textView.setTextColor(textColor);
@@ -89,7 +88,7 @@ public class RatingGraphView extends LinearLayout {
 				textView.setText("Oct");
 				textView.setGravity(Gravity.CENTER);
 
-				linearLayout.addView(textView, wideParams);
+				radioGroupLayout.addView(textView, wideParams);
 			}
 
 			{
@@ -100,12 +99,12 @@ public class RatingGraphView extends LinearLayout {
 				textView.setText("Nov");
 				textView.setGravity(Gravity.CENTER);
 
-				linearLayout.addView(textView, wideParams);
+				radioGroupLayout.addView(textView, wideParams);
 
-				linearLayout.setPadding(0, paddingTop, 0, paddingSide);
+				radioGroupLayout.setPadding(0, paddingTop, 0, paddingTop);
 			}
 
-			addView(linearLayout, params);
+			addView(radioGroupLayout, params);
 		}
 
 		{// add radioGroup
@@ -164,13 +163,18 @@ public class RatingGraphView extends LinearLayout {
 
 			addView(radioGroup, params);
 		}
-
-
 	}
 
-	public void setGraphData(List<long[]> series) {
+	@Override
+	protected void onSizeChanged(int width, int h, int oldw, int oldh) {
+		super.onSizeChanged(width, h, oldw, oldh);
+
+		chartView.getLayoutParams().height = (int) (width * chartSidesAspectRatio);
+	}
+
+	public void setGraphData(List<long[]> series, int width) {
 		// TODO get timestamps
-		chartView.setGraphData(series);
+		chartView.setGraphData(series, width);
 		invalidate();
 	}
 }

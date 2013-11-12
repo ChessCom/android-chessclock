@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,21 +46,26 @@ import com.chess.utilities.AppUtils;
  */
 public class FriendsFragment extends CommonLogicFragment implements ItemClickListenerFace {
 
-	private static final String CREATE_CHALLENGE_TAG = "create challenge confirm popup";
+	protected static final String CREATE_CHALLENGE_TAG = "create challenge confirm popup";
 	private static final String END_VACATION_TAG = "end vacation popup";
 
 	private ListView listView;
-	private View loadingView;
-	private TextView emptyView;
-	private FriendsCursorAdapter friendsAdapter;
+	protected View loadingView;
+	protected TextView emptyView;
+	protected FriendsCursorAdapter friendsAdapter;
 	private FriendsCursorUpdateListener friendsCursorUpdateListener;
 	private FriendsUpdateListener friendsUpdateListener;
 	private SaveFriendsListUpdateListener saveFriendsListUpdateListener;
-	private String opponentName;
+	protected String opponentName;
+	protected String username;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (TextUtils.isEmpty(username)) {
+			username = getUsername();
+		}
 
 		friendsAdapter = new FriendsCursorAdapter(this, null, getImageFetcher());
 		QueryFilterProvider queryFilterProvider = new QueryFilterProvider();
@@ -82,8 +88,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
-		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(friendsAdapter);
+		widgetsInit(view);
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_search, true);
@@ -157,11 +162,13 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+
 			getActivityFace().openFragment(NewMessageFragment.createInstance(username));
 		} else if (view.getId() == R.id.friendListItemView) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+
 			getActivityFace().openFragment(ProfileTabsFragment.createInstance(username));
 		}
 	}
@@ -317,7 +324,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		saveFriendsListUpdateListener = null;
 	}
 
-	private void showEmptyView(boolean show) {
+	protected void showEmptyView(boolean show) {
 		if (show) {
 			// don't hide loadingView if it's loading
 			if (loadingView.getVisibility() != View.VISIBLE) {
@@ -332,7 +339,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 	}
 
-	private void showLoadingView(boolean show) {
+	protected void showLoadingView(boolean show) {
 		if (show) {
 			emptyView.setVisibility(View.GONE);
 			if (friendsAdapter.getCount() == 0) {
@@ -426,4 +433,10 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			createDailyChallenge(opponentName);
 		}
 	}
+
+	protected void widgetsInit(View view) {
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setAdapter(friendsAdapter);
+	}
+
 }

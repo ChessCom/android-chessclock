@@ -125,5 +125,16 @@
 	<dimen name="panel_info_tactic_padding_top">3dip</dimen>
 	<dimen name="grid_view_spacing">11dp</dimen>
 	<dimen name="comments_side_padding">23dp</dimen>
+	<dimen name="stats_left_part_width">242dp</dimen>
+	<dimen name="pie_chart_donut_size">165dp</dimen>
+	<dimen name="pie_chart_donut_width_size">106dp</dimen>
+	<dimen name="graph_view_padding_side">0dp</dimen>
+	<dimen name="graph_view_padding_top">10dp</dimen>
+	<dimen name="graph_view_toggles_padding_top">10dp</dimen>
+	<dimen name="pie_chart_right_text_width">40dp</dimen>
+	<dimen name="graph_stats_top_info_height">48dp</dimen>
+	<dimen name="stats_rating_value_text_size">21sp</dimen>
+	<dimen name="stats_rating_list_item_font">16sp</dimen>
+	<dimen name="stats_padding_side">0dip</dimen>
 
 </resources>

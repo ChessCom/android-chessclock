@@ -298,7 +298,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 						series.add(point);
 					} while (cursor.moveToNext());
 
-					ratingGraphView.setGraphData(series);
+					ratingGraphView.setGraphData(series, getView().getWidth());
 				}
 			}
 
@@ -358,6 +358,13 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 		public StatsItemUpdateListener(String gameType) {
 			super(GameStatsItem.class);
 			this.gameType = gameType;
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (!isTablet) {
+				super.showProgress(show);
+			}
 		}
 
 		@Override

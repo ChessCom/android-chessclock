@@ -79,6 +79,7 @@
 	<dimen name="tab_button_text_size">18sp</dimen>
 	<dimen name="default_text_size_small">14sp</dimen>
 	<dimen name="panel_info_welcome_player_top_margin">3dp</dimen>
+	<dimen name="stats_rating_list_item_font">15sp</dimen>
 
 
 </resources>

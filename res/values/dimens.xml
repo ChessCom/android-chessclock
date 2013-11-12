@@ -369,5 +369,14 @@
 	<dimen name="tablet_side_menu_width">250dp</dimen>
 	<dimen name="grid_view_spacing">11dp</dimen>
 	<dimen name="comments_side_padding">15dp</dimen>
+	<dimen name="stats_left_part_width">232dp</dimen>
+	<dimen name="pie_chart_donut_size">174dp</dimen>
+	<dimen name="pie_chart_donut_width_size">112dp</dimen>
+	<dimen name="graph_view_padding_side">15dp</dimen>
+	<dimen name="graph_view_padding_top">10dp</dimen>
+	<dimen name="graph_view_toggles_padding_top">10dp</dimen>
+	<dimen name="pie_chart_right_text_width">20dp</dimen>
+	<dimen name="graph_stats_top_info_height">72dp</dimen>
+	<dimen name="stats_rating_value_text_size">26sp</dimen>
 
 </resources>

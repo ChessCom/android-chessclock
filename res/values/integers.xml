@@ -16,5 +16,7 @@
 
 	<integer name="button_switch_default_handle_shift">-49</integer>
 	<integer name="screen_orientation">1</integer>
+	<integer name="rating_graph_height">192</integer>
+	<integer name="rating_graph_width">640</integer>
 
 </resources>

@@ -72,8 +72,9 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 
 		{ // Library mode init
 			listView = (ListView) view.findViewById(R.id.listView);
-			LayoutInflater inflater = LayoutInflater.from(getActivity());
+
 			if (isNeedToUpgrade()) {
+				LayoutInflater inflater = LayoutInflater.from(getActivity());
 				View headerView = inflater.inflate(R.layout.new_lessons_upgrade_view, null, false);
 				headerView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 				TextView textView = (TextView) headerView.findViewById(R.id.lessonsUpgradeMessageTxt);

@@ -30,6 +30,7 @@ import com.chess.ui.fragments.lessons.LessonsFragmentTablet;
 import com.chess.ui.fragments.live.LiveHomeFragment;
 import com.chess.ui.fragments.live.LiveHomeFragmentTablet;
 import com.chess.ui.fragments.messages.MessagesInboxFragment;
+import com.chess.ui.fragments.profiles.ProfileBaseFragmentTablet;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
@@ -74,16 +75,16 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		}
 		menuItems.add(new NavigationMenuItem(getString(R.string.daily_chess), R.drawable.ic_nav_play_daily));
 		menuItems.add(new NavigationMenuItem(getString(R.string.play_live), R.drawable.ic_nav_play_live));
+		menuItems.add(new NavigationMenuItem(getString(R.string.vs_computer), R.drawable.ic_nav_vs_comp));
 		menuItems.add(new NavigationMenuItem(getString(R.string.tactics), R.drawable.ic_nav_tactics));
 		menuItems.add(new NavigationMenuItem(getString(R.string.lessons), R.drawable.ic_nav_lessons));
 		menuItems.add(new NavigationMenuItem(getString(R.string.videos), R.drawable.ic_nav_videos));
 		menuItems.add(new NavigationMenuItem(getString(R.string.articles), R.drawable.ic_nav_articles));
 		menuItems.add(new NavigationMenuItem(getString(R.string.forums), R.drawable.ic_nav_forums));
-		menuItems.add(new NavigationMenuItem(getString(R.string.stats), R.drawable.ic_nav_stats));
 		menuItems.add(new NavigationMenuItem(getString(R.string.friends), R.drawable.ic_nav_friends));
+		menuItems.add(new NavigationMenuItem(getString(R.string.stats), R.drawable.ic_nav_stats));
 		menuItems.add(new NavigationMenuItem(getString(R.string.messages), R.drawable.ic_nav_messages));
 		menuItems.add(new NavigationMenuItem(getString(R.string.settings), R.drawable.ic_nav_settings));
-		menuItems.add(new NavigationMenuItem(getString(R.string.vs_computer), R.drawable.ic_nav_vs_comp));
 
 		menuItems.get(0).selected = true;
 		getImageFetcher().setLoadingImage(R.drawable.empty);
@@ -221,9 +222,18 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_friends:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(FriendsFragment.class.getSimpleName());
+				if (!isTablet) {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(FriendsFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(ProfileBaseFragmentTablet.class.getSimpleName());
+				}
+
 				if (fragmentByTag == null) {
-					fragmentByTag = new FriendsFragment();
+					if (!isTablet) {
+						fragmentByTag = new FriendsFragment();
+					} else {
+						fragmentByTag = new ProfileBaseFragmentTablet();
+					}
 				}
 				break;
 			case R.drawable.ic_nav_messages:
@@ -233,9 +243,18 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_stats:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(StatsGameFragment.class.getSimpleName());
+				if (!isTablet) {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(StatsGameFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(ProfileBaseFragmentTablet.class.getSimpleName());
+				}
+
 				if (fragmentByTag == null) {
-					fragmentByTag = new StatsGameFragment();
+					if (!isTablet) {
+						fragmentByTag = new StatsGameFragment();
+					} else {
+						fragmentByTag = ProfileBaseFragmentTablet.createInstance(ProfileBaseFragmentTablet.STATS_MODE, getUsername()); // TODO show stats by deafult
+					}
 				}
 				break;
 			case R.drawable.ic_nav_settings:

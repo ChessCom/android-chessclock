@@ -59,7 +59,7 @@ public class IconDrawable extends Drawable {
 		int color = resources.getColor(colorId);
 		int size = resources.getDimensionPixelSize(sizeId);
 
-		iconPaint = new Paint();
+		iconPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		iconPaint.setStyle(Paint.Style.FILL);
 		iconPaint.setColor(color);
 		iconPaint.setTextSize(size);

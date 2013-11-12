@@ -10,15 +10,25 @@
 	android:background="@drawable/transparent_list_item_selector"
     >
 
+	<View
+		android:id="@+id/topDivideView"
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="@color/new_friends_list_divider"
+		android:layout_marginLeft="11dp"
+		android:layout_marginRight="11dp"
+		android:layout_marginBottom="11dp"
+		/>
+
     <com.chess.widgets.RoboButton
         android:id="@+id/challengeImgBtn"
         android:layout_width="@dimen/new_button_square_size"
         android:layout_height="@dimen/new_button_square_size"
         android:contentDescription="@string/challenge"
         android:background="@drawable/button_square_grey_selector"
+		android:layout_below="@id/topDivideView"
         android:text="@string/ic_board"
         android:textColor="@color/hint_text"
-        android:layout_marginTop="9dip"
         android:layout_marginLeft="15dip"
         style="@style/GlyphIcon.Square"
         />
@@ -30,10 +40,9 @@
         android:contentDescription="@string/photo"
         android:src="@drawable/img_profile_picture_stub"
         android:layout_toRightOf="@id/challengeImgBtn"
-        android:layout_centerInParent="true"
+		android:layout_below="@id/topDivideView"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
-        android:layout_marginTop="8dip"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         />
@@ -57,6 +66,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/photoImg"
         android:layout_alignTop="@id/photoImg"
+		android:layout_marginTop="-4dp"
+		android:layout_below="@id/topDivideView"
         android:textColor="@color/new_text_blue"
         custom:ttf="Bold"
         android:textSize="17sp"
@@ -68,7 +79,7 @@
         android:layout_height="27dip"
         android:contentDescription="@string/country"
         android:layout_toRightOf="@id/usernameTxt"
-		android:layout_marginTop="5dip"
+		android:layout_below="@id/topDivideView"
         android:layout_marginLeft="7dip"
         />
 
@@ -80,6 +91,7 @@
         android:layout_toRightOf="@id/countryImg"
         android:src="@drawable/ic_nav_upgrade"
         android:layout_alignTop="@id/photoImg"
+		android:layout_below="@id/topDivideView"
         android:layout_marginLeft="10dip"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"

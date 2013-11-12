@@ -41,16 +41,17 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	public static final int TACTICS = 5;
 	public static final int LESSONS = 6;
 
-	private static final String CATEGORY = "mode";
-	private static final String USERNAME = "username";
+	protected static final String CATEGORY = "mode";
+	protected static final String USERNAME = "username";
 
-	private Spinner statsSpinner;
+	protected Spinner statsSpinner;
 	private StatsItemUpdateListener statsItemUpdateListener;
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private String gameType;
-	private String username;
-	private int categoryId;
-	private int previousPosition = -1;
+	protected String username;
+	private int categoryPosition;
+	protected int previousPosition = -1;
+	protected List<SelectionItem> ratingsList;
 
 	public StatsGameFragment() {
 		Bundle bundle = new Bundle();
@@ -73,10 +74,10 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 		if (getArguments() != null) {
 			username = getArguments().getString(USERNAME);
-			categoryId = getArguments().getInt(CATEGORY);
+			categoryPosition = getArguments().getInt(CATEGORY);
 		} else {
 			username = savedInstanceState.getString(USERNAME);
-			categoryId = savedInstanceState.getInt(CATEGORY);
+			categoryPosition = savedInstanceState.getInt(CATEGORY);
 		}
 
 		if (TextUtils.isEmpty(username)) {
@@ -99,11 +100,10 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 		statsSpinner = (Spinner) view.findViewById(R.id.statsSpinner);
 
-		List<SelectionItem> sortList = createSpinnerList(getActivity());
-		statsSpinner.setAdapter(new DarkSpinnerIconAdapter(getActivity(), sortList));
+		ratingsList = createSpinnerList(getActivity());
+		statsSpinner.setAdapter(new DarkSpinnerIconAdapter(getActivity(), ratingsList));
 		statsSpinner.setOnItemSelectedListener(this);
-		int selectedPosition = categoryId;
-		statsSpinner.setSelection(selectedPosition);
+		statsSpinner.setSelection(categoryPosition);
 	}
 
 
@@ -111,7 +111,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		outState.putInt(CATEGORY, categoryId);
+		outState.putInt(CATEGORY, categoryPosition);
 		outState.putString(USERNAME, username);
 	}
 
@@ -120,7 +120,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		saveStatsUpdateListener = new SaveStatsUpdateListener();
 	}
 
-	private void updateUiData() {
+	protected void updateUiData() {
 		SelectionItem selectionItem = (SelectionItem) statsSpinner.getSelectedItem();
 		gameType = selectionItem.getCode();
 
@@ -142,10 +142,13 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 			return;
 		}
 		previousPosition = position;
+		updateBySelection();
+	}
 
-		if (position == TACTICS) {
+	protected void updateBySelection() {
+		if (previousPosition == TACTICS) {
 			changeInternalFragment(new StatsGameTacticsFragment());
-		} else if (position == LESSONS) {
+		} else if (previousPosition == LESSONS) {
 			changeInternalFragment(new StatsGameLessonsFragment());
 		} else {
 			updateUiData();
@@ -160,6 +163,13 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 		public StatsItemUpdateListener() {
 			super(GameStatsItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (!isTablet) {
+				super.showProgress(show);
+			}
 		}
 
 		@Override
@@ -178,7 +188,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		}
 	}
 
-	private void showSelectedStats() {
+	protected void showSelectedStats() {
 		statsSpinner.setEnabled(true);
 
 		// get selected position of spinner

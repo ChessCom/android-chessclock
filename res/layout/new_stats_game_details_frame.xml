@@ -16,17 +16,18 @@
         <!--Top Info Lay-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="72dip"
+            android:layout_height="@dimen/graph_stats_top_info_height"
             android:gravity="center_vertical"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip">
+            android:paddingLeft="@dimen/default_scr_side_padding"
+            android:paddingRight="@dimen/default_scr_side_padding">
 
             <!--Current Rating-->
             <com.chess.widgets.RoboTextView
                 android:id="@+id/currentRatingTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="44sp"
+                android:textSize="43sp"
+				android:layout_marginTop="-7dp"
                 android:textColor="@color/new_subtitle_dark_grey"
                 custom:ttf="Bold" />
 
@@ -133,7 +134,9 @@
             android:id="@+id/ratingsLinearView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+			android:paddingTop="10dp"
+			>
 
         </LinearLayout>
 
@@ -168,6 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/win_"
+				android:paddingRight="3dp"
                 android:layout_below="@id/avgOpponentRatingTitleTxt"
                 android:textColor="@color/stats_label_light_grey" />
 
@@ -187,6 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loss_"
+				android:paddingRight="3dp"
                 android:layout_below="@id/avgOpponentRatingTitleTxt"
                 android:layout_toLeftOf="@+id/winLossCenterView"
                 android:textColor="@color/stats_label_light_grey" />
@@ -214,6 +219,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/draw_"
+				android:paddingRight="3dp"
                 android:layout_below="@id/avgOpponentRatingTitleTxt"
                 android:layout_toLeftOf="@+id/drawCntValueTxt"
                 android:textColor="@color/stats_label_light_grey" />

@@ -40,7 +40,7 @@
         android:id="@+id/ratingValueTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="26sp"
+        android:textSize="@dimen/stats_rating_value_text_size"
         android:textColor="@color/new_subtitle_dark_grey"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

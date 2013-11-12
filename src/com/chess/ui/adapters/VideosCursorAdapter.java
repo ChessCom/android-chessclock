@@ -2,6 +2,7 @@ package com.chess.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.text.style.ForegroundColorSpan;
@@ -81,7 +82,7 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 					+ Symbol.SPACE + firstName + Symbol.SPACE + lastName;
 			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		}
-		holder.titleTxt.setText(DbDataManager.getString(cursor, DbScheme.V_TITLE));
+		holder.titleTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_TITLE)));
 		holder.authorTxt.setText(authorStr);
 		String durationStr = SLASH_DIVIDER + context.getString(R.string.min_arg, getString(cursor, DbScheme.V_MINUTES));
 		String viewsCntStr = SLASH_DIVIDER + context.getString(R.string.views_arg, getString(cursor, DbScheme.V_VIEW_COUNT));

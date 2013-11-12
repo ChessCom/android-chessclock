@@ -24,6 +24,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
@@ -63,7 +64,7 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 
 	public ProfileGamesFragment() {
 		Bundle bundle = new Bundle();
-		bundle.putString(USERNAME, "");
+		bundle.putString(USERNAME, Symbol.EMPTY);
 		setArguments(bundle);
 	}
 
