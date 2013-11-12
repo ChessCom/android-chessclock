@@ -2,22 +2,14 @@
 	<dimen name="default_text_size">16sp</dimen>
 	<dimen name="default_button_text_size">18sp</dimen>
 
-	<!--Sliding Menu-->
-	<dimen name="menu_item_padding">10dp</dimen>
-	<dimen name="menu_header_padding_top">8dp</dimen>
-	<dimen name="menu_header_line">3dp</dimen>
-	<dimen name="menu_icon_side">40dp</dimen>
-	<dimen name="slidingmenu_offset_right">420dp</dimen>
-	<dimen name="slidingmenu_offset_left">480dp</dimen>
-	<dimen name="list_padding">10dp</dimen>
-	<dimen name="shadow_width">15dp</dimen>
-
 	<!--SigIn-->
 	<dimen name="signin_scr_top_padding">20dip</dimen>
 	<dimen name="signin_scr_bottom_padding">20dip</dimen>
 	<dimen name="signin_scr_side_padding">100dip</dimen>
 	<dimen name="signin_logo_margin_top">15dip</dimen>
 	<dimen name="signin_main_margin_top">36dip</dimen>
+
+	<dimen name="tablet_side_menu_width">300dp</dimen>
 
 	<!--Game Modes-->
 	<dimen name="player_name_max_width">400dip</dimen>
@@ -43,8 +35,11 @@
     <dimen name="welcome_features_padding_bottom">26dip</dimen>
     <dimen name="new_top_button_height">48dip</dimen>
     <dimen name="new_bottom_button_height">48dip</dimen>
-    <dimen name="article_thumb_height">65dip</dimen>
-    <dimen name="article_thumb_width">105dip</dimen>
+    <dimen name="article_thumb_height">150dip</dimen>
+    <dimen name="article_thumb_width">150dip</dimen>
+	<dimen name="article_detail_image_width">423dp</dimen>
+	<dimen name="article_detail_image_height">423dp</dimen>
+
     <dimen name="nav_item_image_size">32dip</dimen>
     <dimen name="new_tactics_board_top_offset">72dip</dimen>
     <dimen name="popup_options_select_padding">120dip</dimen>
@@ -66,7 +61,7 @@
 	<dimen name="seek_bar_side_padding">8dip</dimen>
 	<dimen name="profile_frame_photo_size">80dip</dimen>
 	<dimen name="panel_info_avatar_big_size">44dip</dimen>
-	<dimen name="daily_list_item_image_size">70dip</dimen>
+	<dimen name="daily_list_item_image_size">50dip</dimen>
 	<dimen name="panel_info_player_text_size">18sp</dimen>
 	<dimen name="panel_info_player_rating_text_size">14sp</dimen>
 	<dimen name="panel_info_flag_size">28dip</dimen>
@@ -77,7 +72,7 @@
 	<dimen name="article_detail_image_height">213dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="options_list_item_height">56dip</dimen>
-	<dimen name="content_text_size">20sp</dimen>
+	<dimen name="content_text_size">17sp</dimen>
 	<dimen name="content_info_text_size">16sp</dimen>
 
 	<!--Switch Default-->
@@ -98,7 +93,7 @@
 	<dimen name="popup_title_text_size_big">33sp</dimen>
 	<dimen name="popup_title_text_size_medium">17sp</dimen>
 	<dimen name="diagram_icon_overlay_size">80dip</dimen>
-	<dimen name="daily_board_preview_size">120dip</dimen>
+	<dimen name="daily_board_preview_size">220dip</dimen>
 	<dimen name="notations_text_padding">2dip</dimen>
 	<dimen name="notations_text_side_padding">10dip</dimen>
 	<dimen name="_3dPiece_offset_for_board">21dip</dimen>
@@ -115,7 +110,7 @@
 	<dimen name="player_name_margin_top">4dp</dimen>
 	<dimen name="panel_info_flag_margin_top">0dp</dimen>
 	<dimen name="notations_text_size">19sp</dimen>
-	<dimen name="panel_info_avatar_left_margin">11dp</dimen>
+	<dimen name="panel_info_avatar_left_margin">2dp</dimen>
 	<dimen name="notations_text_view_height">30dp</dimen>
 	<dimen name="panel_info_welcome_player_top_margin">8dp</dimen>
 	<dimen name="daily_games_time_left_icon">28dp</dimen>

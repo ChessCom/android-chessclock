@@ -109,7 +109,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private ControlsDailyView controlsView;
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
-	private LabelsConfig labelsConfig;
+	protected LabelsConfig labelsConfig;
 	private SparseArray<String> optionsMap;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private String[] countryNames;
@@ -944,7 +944,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
 	}
 
-	private void widgetsInit(View view) {
+	protected void widgetsInit(View view) {
 		setControlsView(view.findViewById(R.id.controlsView));
 		setNotationsFace(view.findViewById(R.id.notationsView));
 

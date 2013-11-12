@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class ForumTopicsFragment extends CommonLogicFragment implements PageIndicatorView.PagerFace, AdapterView.OnItemClickListener {
 
-	private static final String CATEGORY_ID = "category_id";
+	protected static final String CATEGORY_ID = "category_id";
 	private int categoryId;
 
 	private ForumTopicsCursorAdapter topicsCursorAdapter;
@@ -45,7 +45,6 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 	private PageIndicatorView pageIndicatorView;
 	private int pagesToShow;
 	private int currentPage;
-	private ListView listView;
 
 	public ForumTopicsFragment() { }
 
@@ -97,7 +96,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_forum_header_view, null, false);
 		forumHeaderTxt = (TextView) headerView.findViewById(R.id.forumHeaderTxt);
 
-		listView = (ListView) view.findViewById(R.id.listView);
+		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(topicsCursorAdapter);
 		listView.setOnItemClickListener(this);

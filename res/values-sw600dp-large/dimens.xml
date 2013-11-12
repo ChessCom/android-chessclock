@@ -2,12 +2,19 @@
 	<dimen name="default_text_size">16sp</dimen>
 	<dimen name="default_button_text_size">18sp</dimen>
 
+
+	<dimen name="panel_info_avatar_left_margin">2dp</dimen>
+	<dimen name="notations_text_view_height">30dp</dimen>
+	<dimen name="tablet_side_menu_width">250dp</dimen>
+
     <!--SigIn-->
 	<dimen name="signin_scr_top_padding">20dip</dimen>
 	<dimen name="signin_scr_bottom_padding">20dip</dimen>
 	<dimen name="signin_scr_side_padding">160dip</dimen>
 	<dimen name="signin_logo_margin_top">15dip</dimen>
 	<dimen name="signin_main_margin_top">36dip</dimen>
+
+
 
 	<!--Game Modes-->
 	<dimen name="player_name_max_width">400dip</dimen>
@@ -28,8 +35,8 @@
     <dimen name="new_tab_button_height">56dip</dimen>
     <dimen name="new_top_button_height">52dip</dimen>
     <dimen name="new_bottom_button_height">48dip</dimen>
-    <dimen name="article_thumb_height">125dip</dimen>
-    <dimen name="article_thumb_width">199dip</dimen>
+    <dimen name="article_thumb_height">150dip</dimen>
+    <dimen name="article_thumb_width">150dip</dimen>
     <dimen name="nav_item_image_size">32dip</dimen>
     <dimen name="new_tactics_board_top_offset">72dip</dimen>
     <dimen name="popup_options_select_padding">100dip</dimen>
@@ -71,11 +78,11 @@
 	<dimen name="new_tactics_clock_icon_padding">6dip</dimen>
 	<dimen name="new_tactics_clock_icon_padding_top">4dip</dimen>
 	<dimen name="actionbar_title_text_size">24sp</dimen>
-	<dimen name="article_detail_image_width">413dip</dimen>
+	<dimen name="article_detail_image_width">286dip</dimen>
 	<dimen name="article_detail_image_height">286dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="options_list_item_height">56dip</dimen>
-	<dimen name="content_text_size">17sp</dimen>
+	<dimen name="content_text_size">15sp</dimen>
 	<dimen name="content_info_text_size">14sp</dimen>
 
 	<dimen name="daily_list_item_image_size">25dip</dimen>

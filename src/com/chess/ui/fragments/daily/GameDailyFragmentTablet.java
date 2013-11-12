@@ -1,7 +1,11 @@
 package com.chess.ui.fragments.daily;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.RadioGroup;
+import com.chess.R;
 import com.chess.ui.views.game_controls.ControlsDailyViewTablet;
 
 /**
@@ -10,9 +14,12 @@ import com.chess.ui.views.game_controls.ControlsDailyViewTablet;
  * Date: 05.11.13
  * Time: 18:42
  */
-public class GameDailyFragmentTablet extends GameDailyFragment {
+public class GameDailyFragmentTablet extends GameDailyFragment implements RadioGroup.OnCheckedChangeListener {
 
 	private ControlsDailyViewTablet controlsView;
+	private RadioGroup topButtonsGroup;
+	private int previousCheckedId;
+	private View chatFragmentContainer;
 
 	public GameDailyFragmentTablet() {
 	}
@@ -53,4 +60,47 @@ public class GameDailyFragmentTablet extends GameDailyFragment {
 		getActivityFace().openFragment(GameDailyAnalysisFragmentTablet.createInstance(gameId, username));
 	}
 
+	@Override
+	protected void widgetsInit(View view) {
+		super.widgetsInit(view);
+
+		topButtonsGroup = (RadioGroup) view.findViewById(R.id.topButtonsGroup);
+		topButtonsGroup.setOnCheckedChangeListener(this);
+		chatFragmentContainer = view.findViewById(R.id.chatFragmentContainer);
+	}
+
+	@Override
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		updateRightView();
+	}
+
+	private void updateRightView() {
+		int checkedButtonId = topButtonsGroup.getCheckedRadioButtonId();
+		if (checkedButtonId != previousCheckedId) {
+			previousCheckedId = checkedButtonId;
+			switch (checkedButtonId) {
+				case R.id.notationsBtn:
+					((View)getNotationsFace()).setVisibility(View.VISIBLE);
+					// hide chat
+					chatFragmentContainer.setVisibility(View.GONE);
+					break;
+				case R.id.chatBtn:
+					((View)getNotationsFace()).setVisibility(View.INVISIBLE);
+					chatFragmentContainer.setVisibility(View.VISIBLE);
+
+					String fragmentTag = DailyChatFragment.class.getSimpleName();
+
+					Fragment fragmentByTag = getChildFragmentManager().findFragmentByTag(fragmentTag);
+					if (fragmentByTag == null) {
+						fragmentByTag = DailyChatFragment.createInstance(gameId, labelsConfig.topPlayerAvatar);
+
+						FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+						transaction.replace(R.id.chatFragmentContainer, fragmentByTag, fragmentTag);
+						transaction.commit();
+					}
+
+					break;
+			}
+		}
+	}
 }

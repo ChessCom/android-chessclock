@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
 	<!--Sliding Menu-->
@@ -6,10 +5,9 @@
 	<dimen name="menu_header_padding_top">8dp</dimen>
 	<dimen name="menu_header_line">3dp</dimen>
 	<dimen name="menu_icon_side">40dp</dimen>
-	<dimen name="slidingmenu_offset_right">630dp</dimen>
-	<dimen name="slidingmenu_offset_left">650dp</dimen>
+	<dimen name="slidingmenu_offset_right">220dp</dimen>
+	<dimen name="slidingmenu_offset_left">280dp</dimen>
 	<dimen name="list_padding">10dp</dimen>
 	<dimen name="shadow_width">15dp</dimen>
 
-	<dimen name="daily_game_list_item_width">204dp</dimen>
 </resources>

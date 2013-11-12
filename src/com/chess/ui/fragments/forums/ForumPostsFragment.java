@@ -47,6 +47,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	private static final long KEYBOARD_DELAY = 100;
 	private static final long NON_EXIST = -1;
 	private int topicId;
+
 	private ForumPostsCursorAdapter postsCursorAdapter;
 	private SavePostsListener savePostsListener;
 	private PostsUpdateListener postsUpdateListener;

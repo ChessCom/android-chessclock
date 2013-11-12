@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class ForumCategoriesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
-	private CommonCategoriesCursorAdapter categoriesCursorAdapter;
+	protected CommonCategoriesCursorAdapter categoriesCursorAdapter;
 	private CategoriesUpdateListener categoriesUpdateListener;
 	private SaveForumCategoriesListener saveForumCategoriesListener;
 
@@ -43,7 +43,7 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_forum_categories_frame, container, false);
+		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
 	}
 
 	@Override
@@ -68,7 +68,6 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 		super.onResume();
 
 		if (need2update) {
-
 			if (!loadFromDb()) {
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.getInstance().CMD_FORUMS_CATEGORIES);
@@ -125,7 +124,7 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 		}
 	}
 
-	private boolean loadFromDb() {
+	protected boolean loadFromDb() {
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getForumCategories());
 		if (cursor != null && cursor.moveToFirst()) {
 			categoriesCursorAdapter.changeCursor(cursor);
@@ -137,7 +136,7 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 		return false;
 	}
 
-	private void init() {
+	protected void init() {
 		categoriesCursorAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
 		categoriesUpdateListener = new CategoriesUpdateListener();
 		saveForumCategoriesListener = new SaveForumCategoriesListener();

@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.chess.statics.StaticData;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.widgets.RoboButton;
@@ -43,6 +45,10 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 	private int selectedBtnPos;
 	private int hintColor;
 	private int selectedColor;
+	private float buttonMargin;
+	private boolean initialized;
+	private boolean enableRightButton;
+	private boolean enableLeftButton;
 
 	public PageIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -59,7 +65,9 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 
 		// get width
 		Resources resources = context.getResources();
-		int widthPixels = resources.getDisplayMetrics().widthPixels;
+
+
+		int width = resources.getDisplayMetrics().widthPixels;
 		float density = resources.getDisplayMetrics().density;
 
 		hintColor = resources.getColor(R.color.hint_text);
@@ -67,16 +75,40 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 		buttonSize = resources.getDimensionPixelSize(R.dimen.page_indicator_button_size);
 
 		buttonParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		float buttonMargin = 3 * density;
+		buttonMargin = 3 * density;
 		buttonParams.setMargins((int) buttonMargin, 0, (int) buttonMargin, 0);
 
+
+
+		initialized = false;
+		if (StaticData.USE_TABLETS) {
+			boolean isTablet = AppUtils.is7InchTablet(getContext()) || AppUtils.is10InchTablet(getContext());
+			if (!isTablet) {
+				initButtons(getContext(), width);
+			}
+		}
+	}
+
+	@Override
+	protected void onSizeChanged(int width, int h, int oldw, int oldh) {
+		super.onSizeChanged(width, h, oldw, oldh);
+
+		Log.d("TEST", "onSizeChanged");
+
+		if (width > 0 && !initialized) {
+
+			initButtons(getContext(), width);
+		}
+	}
+
+	private void initButtons(Context context, int widthPixels) {
 		buttonsCnt = (int) Math.floor(widthPixels / (buttonSize + buttonMargin * 2));
 		for (int i = 0; i < buttonsCnt; i++) {
-			RoboButton roboButton = getDefaultButton(context);
-			roboButton.setId(BASE_BTN_ID + i);
-			roboButton.setText(String.valueOf(i));
-			roboButton.setOnClickListener(this);
-			addView(roboButton);
+			RoboButton button = getDefaultButton(context);
+			button.setId(BASE_BTN_ID + i);
+			button.setText(String.valueOf(i));
+			button.setOnClickListener(this);
+			addView(button);
 		}
 
 		visiblePageButtonsCnt = buttonsCnt - 3; // 2 for arrows, one for "..."
@@ -96,6 +128,12 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 		selectedPage = 0;
 		RoboButton firstButton = (RoboButton) findViewById(getFirst());
 		activateButton(firstButton);
+
+		// update buttons state
+		enableLeftBtn(enableLeftButton);
+		enableRightBtn(enableRightButton);
+
+		initialized = true;
 	}
 
 	/**
@@ -391,11 +429,17 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 	}
 
 	public void enableLeftBtn(boolean enable) {
-		findViewById(getLeftBtn()).setEnabled(enable);
+		enableLeftButton = enable;
+		if (initialized) {
+			findViewById(getLeftBtn()).setEnabled(enable);
+		}
 	}
 
 	public void enableRightBtn(boolean enable) {
-		findViewById(getRightBtn()).setEnabled(enable);
+		enableRightButton = enable;
+		if (initialized) {
+			findViewById(getRightBtn()).setEnabled(enable);
+		}
 	}
 
 	public interface PagerFace {

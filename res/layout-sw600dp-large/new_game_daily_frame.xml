@@ -49,8 +49,7 @@
 			android:orientation="horizontal"
 			android:layout_below="@id/topPanelView"
 			android:layout_marginLeft="2dp"
-			android:layout_marginRight="2dp"
-			>
+			android:layout_marginRight="2dp">
 
 			<!--Notations Button-->
 			<com.chess.widgets.RoboRadioButton
@@ -62,8 +61,7 @@
 				android:text="@string/ic_live"
 				android:textSize="@dimen/glyph_icon_big2"
 				style="@style/Rect.Tablet.Left"
-				android:checked="true"
-				/>
+				android:checked="true" />
 
 			<!--Chat Button-->
 			<com.chess.widgets.RoboRadioButton
@@ -74,8 +72,7 @@
 				custom:ttf="Icon"
 				android:text="@string/ic_chat"
 				android:textSize="@dimen/glyph_icon_big2"
-				style="@style/Rect.Tablet.Left"
-				/>
+				style="@style/Rect.Tablet.Left" />
 
 			<!--Notes Button-->
 			<com.chess.widgets.RoboRadioButton
@@ -87,26 +84,38 @@
 				android:text="@string/ic_edit"
 				android:textSize="@dimen/glyph_icon_big2"
 				style="@style/Rect.Tablet.Left"
-				/>
+				android:visibility="gone" />
 
 		</RadioGroup>
 
-		<!--NotationsView-->
-		<com.chess.ui.views.NotationsViewTablet
-			android:id="@+id/notationsView"
+		<com.chess.widgets.RelLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/topButtonsGroup"
 			android:layout_above="@+id/controlsView"
-			android:numColumns="2"
-			android:horizontalSpacing="5dip"
-			android:verticalSpacing="1dip"
-			android:stretchMode="columnWidth"
-			android:padding="9dp"
 			android:layout_marginLeft="2dp"
 			android:layout_marginRight="2dp"
-			style="@style/Rect.Notations"
-			/>
+			style="@style/Rect.Notations" >
+
+			<!--NotationsView-->
+			<com.chess.ui.views.NotationsViewTablet
+				android:id="@+id/notationsView"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:numColumns="2"
+				android:horizontalSpacing="5dip"
+				android:verticalSpacing="1dip"
+				android:stretchMode="columnWidth"
+				android:padding="9dp"
+				/>
+
+			<FrameLayout
+				android:id="@+id/chatFragmentContainer"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent" />
+
+
+		</com.chess.widgets.RelLayout>
 
 		<!--Controls-->
 		<com.chess.ui.views.game_controls.ControlsDailyViewTablet
@@ -115,8 +124,7 @@
 			android:layout_height="wrap_content"
 			android:layout_above="@+id/bottomPanelView"
 			android:layout_marginLeft="2dp"
-			android:layout_marginRight="2dp"
-			/>
+			android:layout_marginRight="2dp" />
 
 		<!--BottomPanelInfo-->
 		<com.chess.ui.views.PanelInfoGameView

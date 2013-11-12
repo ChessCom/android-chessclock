@@ -5,13 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
-import com.chess.widgets.RoboButton;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
@@ -21,6 +18,7 @@ import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ChatMessagesAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.widgets.RoboButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +31,7 @@ import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
  * Date: 30.04.13
  * Time: 11:23
  */
-public class DailyChatFragment extends CommonLogicFragment{
+public class DailyChatFragment extends CommonLogicFragment implements View.OnTouchListener {
 
 	private static final String GAME_ID = "game_id";
 	private static final String OPPONENT_NAME = "opponent_name";
@@ -122,6 +120,11 @@ public class DailyChatFragment extends CommonLogicFragment{
 		super.onPause();
 
 		unRegisterMyReceiver(newChatUpdateReceiver);
+
+		// change softInputMode back
+		if (isTablet) {
+			getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+		}
 	}
 
 	@Override
@@ -129,6 +132,14 @@ public class DailyChatFragment extends CommonLogicFragment{
 		super.onSaveInstanceState(outState);
 		outState.putLong(GAME_ID, gameId);
 		outState.putString(OPPONENT_AVATAR, opponentAvatar);
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		if (isTablet) {
+			getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+		}
+		return false;
 	}
 
 	private class NewChatUpdateReceiver extends BroadcastReceiver {
@@ -140,6 +151,7 @@ public class DailyChatFragment extends CommonLogicFragment{
 
 	protected void widgetsInit(View view){
 		sendEdt = (EditText) view.findViewById(R.id.sendEdt);
+		sendEdt.setOnTouchListener(this);
 		listView = (ListView) view.findViewById(R.id.listView);
 
 		progressBar = view.findViewById(R.id.progressBar);
