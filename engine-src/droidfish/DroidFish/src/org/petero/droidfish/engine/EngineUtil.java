@@ -37,7 +37,7 @@ public class EngineUtil {
     /** Return file name of the internal stockfish executable,
      * or null if the internal stockfish engine is not supported. */
     public static String internalStockFishName() {
-        final int sdkVersion = Integer.parseInt(Build.VERSION.SDK);
+        final int sdkVersion = Build.VERSION.SDK_INT;
         if (sdkVersion < 4)
             return "stockfish15.mygz";
         String abi = CpuAbi.get();

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.*;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -82,6 +83,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final String NETWORK_CHECK_TAG = "network check popup";
 	protected static final int NETWORK_REQUEST = 3456;
 	protected static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
+	private static final String LOCKED_ACCOUNT_TAG = "locked account popup";
 	protected static final String CHECK_UPDATE_TAG = "check update";
 
 	protected static final String OPPONENT_NAME = "opponent_name";
@@ -500,6 +502,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		if (tag.equals(RE_LOGIN_TAG)) {
 			performLogout();
+		} else if (tag.equals(LOCKED_ACCOUNT_TAG)) {
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.chess.com")));
 		} else if (tag.equals(CHESS_NO_ACCOUNT_TAG)) {
 			getActivityFace().openFragment(new SignUpFragment());
 		}
@@ -642,6 +646,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				// get server code
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				switch (serverCode) {
+					case ServerErrorCodes.ACCOUNT_LOCKED:
+						popupItem.setButtons(1);
+						showPopupDialog(R.string.your_account_locked, LOCKED_ACCOUNT_TAG);
 					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
 						showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
 						if (passwordEdt != null) {

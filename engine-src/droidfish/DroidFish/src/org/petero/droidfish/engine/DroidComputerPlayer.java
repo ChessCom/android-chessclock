@@ -18,35 +18,28 @@
 
 package org.petero.droidfish.engine;
 
+import android.content.Context;
+import android.util.Log;
+import com.chess.MyFish;
+import org.petero.droidfish.EngineOptions;
+import org.petero.droidfish.book.BookOptions;
+import org.petero.droidfish.book.DroidBook;
+import org.petero.droidfish.gamelogic.*;
+import org.petero.droidfish.gamelogic.SearchListener.PvInfo;
+import org.petero.droidfish.gtb.Probe;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import android.util.Log;
-import com.chess.MyFish;
-import org.petero.droidfish.EngineOptions;
-import org.petero.droidfish.book.BookOptions;
-import org.petero.droidfish.book.DroidBook;
-import org.petero.droidfish.gamelogic.Move;
-import org.petero.droidfish.gamelogic.MoveGen;
-import org.petero.droidfish.gamelogic.Pair;
-import org.petero.droidfish.gamelogic.Position;
-import org.petero.droidfish.gamelogic.SearchListener;
-import org.petero.droidfish.gamelogic.TextIO;
-import org.petero.droidfish.gamelogic.UndoInfo;
-import org.petero.droidfish.gamelogic.SearchListener.PvInfo;
-import org.petero.droidfish.gtb.Probe;
-
-import android.content.Context;
-
 /**
  * A computer algorithm player.
  * @author petero
  */
 public class DroidComputerPlayer {
-    private UCIEngine uciEngine = null;
+    private UCIEngine uciEngine;
     private final Context context;
     private final SearchListener listener;
     private final DroidBook book;
@@ -462,7 +455,7 @@ public class DroidComputerPlayer {
         handleQueue();
     }
 
-    private final void handleQueue() {
+    private void handleQueue() {
         if (engineState.state == MainState.DEAD) {
             engineState.engine = "";
             engineState.setState(MainState.IDLE);
@@ -531,7 +524,7 @@ public class DroidComputerPlayer {
     }
 
     /** Determine what to do next when in idle state. */
-    private final void handleIdleState() {
+    private void handleIdleState() {
         SearchRequest sr = searchRequest;
         if (sr == null)
             return;

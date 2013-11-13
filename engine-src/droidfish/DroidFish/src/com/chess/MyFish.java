@@ -19,19 +19,19 @@
 
 package com.chess;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import org.petero.droidfish.*;
 import org.petero.droidfish.book.BookOptions;
 import org.petero.droidfish.gamelogic.*;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 import org.petero.droidfish.gtb.Probe;
-import android.content.Context;
-import android.os.Environment;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /*import android.app.*;
 import android.content.*;
@@ -80,6 +80,7 @@ import java.util.*;*/
 
 public class MyFish extends Activity implements GUIInterface {
 	public static final String TAG = "FISHLOG";
+	private static final String ENGINE_NAME = "stockfish";
 
     private ChessBoardPlay cb;
     private static DroidChessController ctrl = null;
@@ -265,9 +266,8 @@ public class MyFish extends Activity implements GUIInterface {
 
         mEngineThreads = 1;
 
-        String engine = "stockfish";
         int strength = 1000;
-        setEngineStrength(engine, strength);
+        setEngineStrength(ENGINE_NAME, strength);
 
         mPonderMode = false;
         if (!mPonderMode)

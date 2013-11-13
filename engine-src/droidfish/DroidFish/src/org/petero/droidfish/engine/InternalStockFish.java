@@ -18,25 +18,19 @@
 
 package org.petero.droidfish.engine;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import android.content.Context;
+
+import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.GZIPInputStream;
-
-import android.content.Context;
 
 /** Stockfish engine running as process, started from assets resource. */
 public class InternalStockFish extends ExternalEngine {
 
     public InternalStockFish(Context context, Report report) {
-        super(context, "", report);
+//        super(context, "", report);
+        super(context, "stockfish.sf", report); // try to prevent IOException FileNotFoundException: /: open failed: EISDIR (Is a directory)
     }
 
     /** @inheritDoc */
@@ -105,7 +99,11 @@ public class InternalStockFish extends ExternalEngine {
 
         // The checksum test is to avoid writing to /data unless necessary,
         // on the assumption that it will reduce memory wear.
-        long oldCSum = readCheckSum(new File(intSfPath));
+
+//		String intSfPath = getEngineDir().getPath() + INTERNAL_SF_PATH;
+		File file = new File(getEngineDir(), INTERNAL_SF_PATH);
+		String intSfPath =  file.getAbsolutePath();
+		long oldCSum = readCheckSum(file);
         long newCSum = computeAssetsCheckSum(sfExe);
         if (oldCSum == newCSum)
             return;
