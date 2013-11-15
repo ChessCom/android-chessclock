@@ -231,7 +231,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			boardViewFace.setFastMovesMode(false);
 			boardViewFace.moveForward();
 		}
-		boardViewFace.setFastMovesMode(false);
+			boardViewFace.setFastMovesMode(false);
 	}
 
 	@Override

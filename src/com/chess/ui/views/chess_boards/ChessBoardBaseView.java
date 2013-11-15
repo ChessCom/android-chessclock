@@ -1025,24 +1025,28 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (v.getId() == NotationView.NOTATION_ID) {// scroll to the specified position
 			Integer pos = (Integer) v.getTag(R.id.list_item_id);
 
-			resetValidMoves();
-			BoardFace boardFace = getBoardFace();
-			int totalHply = boardFace.getPly() - 1;
-			if (totalHply < pos) {
-				for (int i = totalHply; i < pos; i++) {
-					boardFace.takeNext(false);
-				}
-			} else {
-				for (int i = totalHply; i > pos; i--) {
-					boardFace.takeBack();
-				}
-			}
+			goToMove(pos);
 
 			gameFace.onNotationClicked(pos);
 
 			// TODO @comp: check, show animation for notation scroll
 //			checkControlsButtons();
 			invalidate();
+		}
+	}
+
+	public void goToMove(Integer pos) {
+		resetValidMoves();
+		BoardFace boardFace = getBoardFace();
+		int totalHply = boardFace.getPly() - 1;
+		if (totalHply < pos) {
+			for (int i = totalHply; i < pos; i++) {
+				boardFace.takeNext(false);
+			}
+		} else {
+			for (int i = totalHply; i > pos; i--) {
+				boardFace.takeBack();
+			}
 		}
 	}
 

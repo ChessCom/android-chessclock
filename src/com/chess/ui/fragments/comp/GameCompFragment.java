@@ -392,6 +392,24 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		topPanelView.showThinkingView(true);
 	}
 
+	@Override
+	public void onGameStarted(final int currentMovePosition) {
+		Log.d(CompEngineHelper.TAG, " onGameStarted " + currentMovePosition);
+
+		/*if (currentMovePosition < 0) {
+			return;
+		}*/
+
+		boardView.goToMove(currentMovePosition);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+
+				boardView.invalidate();
+			}
+		});
+	}
+
 	// todo: use only our Move class
 	@Override
 	public void updateEngineMove(final org.petero.droidfish.gamelogic.Move engineMove) {

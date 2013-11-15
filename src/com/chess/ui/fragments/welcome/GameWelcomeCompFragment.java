@@ -18,9 +18,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
-import com.chess.widgets.MultiDirectionSlidingDrawer;
 import com.chess.R;
-import com.chess.widgets.RoboTextView;
 import com.chess.backend.RestHelper;
 import com.chess.model.CompEngineItem;
 import com.chess.statics.AppConstants;
@@ -48,6 +46,8 @@ import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsCompView;
 import com.chess.utilities.FontsHelper;
+import com.chess.widgets.MultiDirectionSlidingDrawer;
+import com.chess.widgets.RoboTextView;
 import com.nineoldandroids.animation.ObjectAnimator;
 import org.petero.droidfish.GameMode;
 
@@ -410,6 +410,20 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onCompMove() {
 		topPanelView.showThinkingView(true);
+	}
+
+	@Override
+	public void onGameStarted(final int currentMovePosition) {
+		Log.d(CompEngineHelper.TAG, " onGameStarted " + currentMovePosition);
+
+		boardView.goToMove(currentMovePosition);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+
+				boardView.invalidate();
+			}
+		});
 	}
 
 	// todo: use only our Move class

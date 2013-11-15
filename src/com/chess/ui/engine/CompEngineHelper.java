@@ -161,6 +161,9 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.setEngineStrength(ENGINE, compEngineItem.getStrength());
 
 		engineCtrl.startGame(); // it was before setFENOrPGN - check fen init
+
+		gameCompActivityFace.onGameStarted(engineCtrl.getCurrentMovePosition());
+
 		log("FINISHED");
 	}
 

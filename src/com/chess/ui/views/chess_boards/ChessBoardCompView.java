@@ -69,24 +69,29 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
     @Override
 	public boolean isGameOver() {
-        //saving game for comp game mode if human is playing
-        if ((getAppData().isComputerVsHumanGameMode(getBoardFace()) || getAppData().isHumanVsHumanGameMode(getBoardFace()))
-                && !getBoardFace().isAnalysis()) {
+		saveCompGame();
+		return super.isGameOver();
+    }
+
+	private void saveCompGame() {
+		//saving game for comp game mode if human is playing
+		if ((getAppData().isComputerVsHumanGameMode(getBoardFace()) || getAppData().isHumanVsHumanGameMode(getBoardFace()))
+				&& !getBoardFace().isAnalysis()) {
 
 			StringBuilder builder = new StringBuilder();
 			builder.append(getBoardFace().getMode());
 
 			builder.append(" [").append(getBoardFace().getMoveListSAN()).append("] "); // todo: remove debug info
 
-            int i;
-            for (i = 0; i < getBoardFace().getMovesCount(); i++) {
-                Move move = getBoardFace().getHistDat()[i].move;
+			int i;
+			for (i = 0; i < getBoardFace().getMovesCount(); i++) {
+				Move move = getBoardFace().getHistDat()[i].move;
 				builder.append(DIVIDER_1)
 						.append(move.from).append(DIVIDER_2)
 						.append(move.to).append(DIVIDER_2)
 						.append(move.promote).append(DIVIDER_2)
 						.append(move.bits);
-            }
+			}
 
 			Log.d(CompEngineHelper.TAG, "STORE game " + builder.toString());
 
@@ -94,10 +99,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 			// todo: check analysis
 			CompEngineHelper.getInstance().storeEngineState();
-        }
-
-		return super.isGameOver();
-    }
+		}
+	}
 
 	public void postMoveToEngine(Move lastMove) {
 

@@ -18,16 +18,6 @@
 
 package org.petero.droidfish.gamelogic;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import android.util.Log;
 import com.chess.MyFish;
 import org.petero.droidfish.*;
@@ -38,17 +28,23 @@ import org.petero.droidfish.engine.DroidComputerPlayer.SearchType;
 import org.petero.droidfish.gamelogic.Game.GameState;
 import org.petero.droidfish.gamelogic.GameTree.Node;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 /**
  * The glue between the chess engine and the GUI.
  * @author petero
  */
 public class DroidChessController {
-    private DroidComputerPlayer computerPlayer = null;
-    private PgnToken.PgnTokenReceiver gameTextListener = null;
+    private DroidComputerPlayer computerPlayer;
+    private PgnToken.PgnTokenReceiver gameTextListener;
     private BookOptions bookOptions = new BookOptions();
     private EngineOptions engineOptions = new EngineOptions();
-    private Game game = null;
-    private Move ponderMove = null;
+    private Game game;
+    private Move ponderMove;
     private GUIInterface gui;
     private GameMode gameMode;
     private PGNOptions pgnOptions;
@@ -1143,4 +1139,16 @@ public class DroidChessController {
         if (game.getGameState() != GameState.ALIVE) return true;
         return false;
     }
+
+	public boolean isGamExist() {
+		return game != null;
+	}
+
+	/*public int getMovesCount() {
+		return game.tree.getMoveList().first.size();
+	}*/
+
+	public int getCurrentMovePosition() {
+		return game.tree.getMoveList().second - 1;
+	}
 }
