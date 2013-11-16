@@ -78,7 +78,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		menuItems.add(new NavigationMenuItem(getString(R.string.daily_chess), R.drawable.ic_nav_play_daily));
 		menuItems.add(new NavigationMenuItem(getString(R.string.play_live), R.drawable.ic_nav_play_live));
 		menuItems.add(new NavigationMenuItem(getString(R.string.vs_computer), R.drawable.ic_nav_vs_comp));
-		menuItems.add(new NavigationMenuItem("ThemesManager", R.drawable.ic_nav_badge));
+//		menuItems.add(new NavigationMenuItem("ThemesManager", R.drawable.ic_nav_badge));
 		menuItems.add(new NavigationMenuItem(getString(R.string.tactics), R.drawable.ic_nav_tactics));
 		menuItems.add(new NavigationMenuItem(getString(R.string.lessons), R.drawable.ic_nav_lessons));
 		menuItems.add(new NavigationMenuItem(getString(R.string.videos), R.drawable.ic_nav_videos));
