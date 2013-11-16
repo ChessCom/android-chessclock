@@ -1298,6 +1298,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			switch (code) {
 				case BOTTOM_AVATAR:
 					BoardAvatarDrawable boardAvatarDrawable = new BoardAvatarDrawable(getContext(), bitmap);
+					boardAvatarDrawable.setBorderThick((int) (2 * density));
 					topAvatarImg.setImageDrawable(boardAvatarDrawable);
 					bottomPanelView.invalidate();
 					break;
