@@ -26,6 +26,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -44,7 +45,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 	public static final String _3D_PART = "3d";
 
-	private static final String GAME_THEME_NAME = "Game";
 	public static final String THEME_ITEM = "theme_item";
 	public static final String SCREEN_WIDTH = "screen_width";
 	public static final String SCREEN_HEIGHT = "screen_height";
@@ -213,13 +213,13 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	}
 
 	private void installSelectedTheme() {
-		if (selectedThemeItem.getThemeName().equals(GAME_THEME_NAME)) {
+		if (selectedThemeItem.getThemeName().equals(AppConstants.DEFAULT_THEME_NAME)) {
 			// clear themed settings
 			getAppData().resetThemeToDefault();
 			getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
 
-			getAppData().setThemeName(getString(R.string.theme_game_room));
-			getAppData().setThemeBackgroundName(getString(R.string.theme_game_room));
+			getAppData().setThemeName(AppConstants.DEFAULT_THEME_NAME);
+			getAppData().setThemeBackgroundName(AppConstants.DEFAULT_THEME_NAME);
 			getActivityFace().updateActionBarBackImage();
 
 			isInstallingTheme = false;

@@ -156,17 +156,6 @@
     <string name="alerts_and_emails"><![CDATA[Alerts & Emails]]></string>
     <string name="account_history">Account History</string>
 
-    <!--Themes Names-->
-    <string name="theme_game_room">Game</string>
-    <string name="theme_dueling_tigers">Dueling Tigers</string>
-    <string name="theme_blackwood">Blackwood</string>
-    <string name="theme_blackstone">Blackstone</string>
-    <string name="theme_charcoal">Charcoal</string>
-    <string name="theme_agua">Agua</string>
-    <string name="theme_grey_felt">Grey felt</string>
-    <string name="theme_grass">Grass</string>
-
-
     <!--Video sort order-->
     <string name="latest">Latest</string>
     <string name="authors_name">Author\'s Name</string>

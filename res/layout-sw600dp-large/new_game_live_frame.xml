@@ -52,7 +52,7 @@
 		android:paddingBottom="@dimen/default_scr_bottom_padding">
 
 		<!--TopPanelInfo-->
-		<com.chess.ui.views.PanelInfoGameView
+		<com.chess.ui.views.PanelInfoLiveView
 			android:id="@+id/topPanelView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
 			/>
 
 		<!--BottomPanelInfo-->
-		<com.chess.ui.views.PanelInfoGameView
+		<com.chess.ui.views.PanelInfoLiveView
 			android:id="@id/bottomPanelView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

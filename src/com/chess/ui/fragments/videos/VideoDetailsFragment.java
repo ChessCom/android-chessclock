@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.videos;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -36,6 +37,7 @@ import com.chess.db.DbScheme;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
@@ -48,7 +50,7 @@ import java.util.List;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class VideoDetailsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
+public class VideoDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace {
 
 	private static final String BACK_IMG_LINK = "https://dl.dropboxusercontent.com/u/24444064/video_back.png";
 	public static final String ITEM_ID = "item_id";
@@ -134,7 +136,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		}
 
 		commentsUpdateListener = new CommentsUpdateListener();
-		commentsCursorAdapter = new CommentsCursorAdapter(getActivity(), null, getImageFetcher());
+		commentsCursorAdapter = new CommentsCursorAdapter(this, null, getImageFetcher());
 
 		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
 		commentPostListener = new CommentPostListener();
@@ -162,7 +164,6 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(commentsCursorAdapter);
-		listView.setOnItemClickListener(this);
 
 		replyView = view.findViewById(R.id.replyView);
 		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
@@ -241,6 +242,11 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 		}
 	}
 
+	@Override
+	public Context getMeContext() {
+		return getActivity();
+	}
+
 	private class VideoDetailsUpdateListener extends ChessLoadUpdateListener<VideoSingleItem> {
 
 		public VideoDetailsUpdateListener() {
@@ -315,7 +321,19 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 	public void onClick(View view) {
 		super.onClick(view);
 
-		if (view.getId() == R.id.playBtn) {
+		if (view.getId() == R.id.commentView) {
+			Integer position = (Integer) view.getTag(R.id.list_item_id);
+			Cursor cursor = (Cursor) commentsCursorAdapter.getItem(position);
+
+			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+			if (username.equals(getUsername())) {
+				commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+				commentForEditStr = String.valueOf(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_BODY)));
+
+				inEditMode = true;
+				showEditView(true);
+			}
+		} else if (view.getId() == R.id.playBtn) {
 
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setDataAndType(Uri.parse(videoUrl), "video/*");
@@ -357,22 +375,6 @@ public class VideoDetailsFragment extends CommonLogicFragment implements Adapter
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (position != 0) { // if NOT listView header
-			// get commentId
-			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
-			if (username.equals(getUsername())) {
-				commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
-				commentForEditStr = String.valueOf(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_BODY)));
-
-				inEditMode = true;
-				showEditView(true);
-			}
-		}
 	}
 
 	private void showEditView(boolean show) {

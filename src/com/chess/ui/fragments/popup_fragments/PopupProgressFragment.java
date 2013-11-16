@@ -38,8 +38,9 @@ public class PopupProgressFragment extends BasePopupDialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(!cancelable)
-            setCancelable(false);
+        if(!cancelable) {
+			setCancelable(false);
+		}
     }
 
 	public void setNotCancelable(){

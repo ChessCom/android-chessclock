@@ -12,6 +12,4 @@ import java.util.List;
  */
 public class BoardsItem extends BaseResponseItem<List<BoardSingleItem.Data>> {
 
-	public static final String PATH = "https://chess-redesign.s3.amazonaws.com/Boards/";
-
 }

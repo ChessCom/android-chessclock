@@ -16,7 +16,7 @@ public class PiecesItem extends BaseResponseItem<List<PieceSingleItem.Data>> {
     {
       "user_theme_pieces_id": 1,
       "name": "Lolz",
-      "piece_preview_url": "https://chess-redesign.s3.amazonaws.com/pieces/_previews_/line/lolz.png",
+      "piece_preview_url": "http://d1xrj4tlyewhek.cloudfront.net/pieces/_previews_/line/lolz.png",
       "theme_id": 17,
       "theme_dir": "lolz"
     },

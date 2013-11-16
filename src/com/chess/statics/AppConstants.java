@@ -92,8 +92,8 @@ public class AppConstants {
 	public static final String PREF_THEME_IS_PIECES_3D_PATH = "theme_is_pieces_3d";
     public static final String PREF_THEME_NAME = "theme_name";
     public static final String PREF_THEME_BACKGROUND_NAME = "theme_background_name";
-	public static final String DEFAULT_THEME_NAME = "Game";
-	public static final String DEFAULT_THEME_PIECES_NAME = "game";
+	public static final String DEFAULT_THEME_NAME = "Game Room";
+	public static final String DEFAULT_THEME_PIECES_NAME = "game_room";
 
 	public static final String PREF_DEMO_TACTICS_LOADED = "demo tactics loaded";
 	public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";

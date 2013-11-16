@@ -26,12 +26,8 @@ import com.chess.model.DataHolder;
 import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
 import com.chess.statics.IntentConstants;
-import com.chess.statics.StaticData;
 import com.chess.ui.engine.SoundPlayer;
-import com.chess.ui.fragments.BasePopupsFragment;
-import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.NavigationMenuFragment;
-import com.chess.ui.fragments.NotificationsRightFragment;
+import com.chess.ui.fragments.*;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
@@ -41,9 +37,9 @@ import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.fragments.videos.VideoDetailsFragment;
 import com.chess.ui.fragments.videos.VideosFragmentTablet;
-import com.chess.ui.fragments.welcome.WelcomeTourFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragmentTablet;
+import com.chess.ui.fragments.welcome.WelcomeTourFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
@@ -118,7 +114,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			} else if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
 				// set the Above View
 				switchFragment(new HomeTabsFragment());
-//				switchFragment(new ArticlesFragment());
+//				switchFragment(new ThemeManagerFragment());
 				showActionBar = true;
 			} else {
 				if (isTablet) {

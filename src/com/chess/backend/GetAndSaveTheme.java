@@ -29,6 +29,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.SoundPlayer;
+import com.chess.ui.fragments.settings.SettingsThemeFragment;
 import com.chess.utilities.AppUtils;
 
 import java.io.File;
@@ -51,7 +52,6 @@ public class GetAndSaveTheme extends Service {
 	public static final int DONE = -2;
 	private static final long SHUTDOWN_DELAY = 4 * 1000;
 
-	public static final String _3D_PART = "3d";
 	public static final int BOARD_SIZE_STEP = 8;
 	public static final int BOARD_START_NAME = 20;
 	public static final int BOARD_START_SIZE = 160;
@@ -250,7 +250,7 @@ public class GetAndSaveTheme extends Service {
 				boardSize += BOARD_SIZE_STEP;
 			}
 
-			boardUrl = BoardsItem.PATH + boardDir + "/" + name + ".png";
+			boardUrl = BoardSingleItem.PATH + boardDir + "/" + name + ".png";
 
 			showIndeterminateNotification(getString(R.string.loading_board));
 
@@ -258,7 +258,6 @@ public class GetAndSaveTheme extends Service {
 			imageDownloader.download(boardUrl, boardUpdateListener, screenWidth);
 		}
 	}
-
 
 	private class ImageUpdateListener implements ImageReadyListener {
 
@@ -450,7 +449,7 @@ public class GetAndSaveTheme extends Service {
 			getAppData().setUseThemePieces(true);
 			getAppData().setThemePiecesPath(selectedPieceDir);
 
-			if (selectedPieceDir.contains(_3D_PART)) {
+			if (selectedPieceDir.contains(SettingsThemeFragment._3D_PART)) {
 				getAppData().setThemePieces3d(true);
 			} else {
 				getAppData().setThemePieces3d(false);

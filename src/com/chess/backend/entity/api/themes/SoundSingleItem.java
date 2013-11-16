@@ -13,7 +13,7 @@ public class SoundSingleItem extends  BaseResponseItem<SoundSingleItem.Data> {
 	 "data": {
 		"user_theme_sound_id": 3,
 		"name": "Marble",
-		"sound_pack_zip": "https://chess-redesign.s3.amazonaws.com/sounds/marble.zip",
+		"sound_pack_zip": "http://d1xrj4tlyewhek.cloudfront.net/sounds/marble.zip",
 		"theme_id": 0
 	  },
 */

@@ -1,6 +1,7 @@
 package com.chess.backend.entity.api.themes;
 
 import com.chess.backend.entity.api.BaseResponseItem;
+import com.chess.ui.fragments.ThemeManagerFragment;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,14 +11,14 @@ import com.chess.backend.entity.api.BaseResponseItem;
  */
 public class PieceSingleItem extends BaseResponseItem<PieceSingleItem.Data> {
 
-	public static final String PATH = "https://chess-redesign.s3.amazonaws.com/pieces/";
+	public static final String PATH = ThemeManagerFragment.CLOUD_FRONT + ThemeManagerFragment.PIECES;
 
 /*
 	"data": [
 		{
 		"user_theme_pieces_id": 1,
 		"name": "Lolz",
-		"piece_preview_url": "https://chess-redesign.s3.amazonaws.com/pieces/_previews_/line/lolz.png",
+		"piece_preview_url": "http://d1xrj4tlyewhek.cloudfront.net/pieces/_previews_/line/lolz.png",
 		"theme_id": 17,
 		"theme_dir": "lolz"
 		},

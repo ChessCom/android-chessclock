@@ -14,7 +14,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.chess.R;
 import com.chess.backend.entity.api.themes.BoardSingleItem;
-import com.chess.backend.entity.api.themes.BoardsItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -162,7 +161,7 @@ public class GetAndSaveBoard extends Service {
 				boardSize += BOARD_SIZE_STEP;
 			}
 
-			boardUrl = BoardsItem.PATH + boardDir + "/" + name + ".png";
+			boardUrl = BoardSingleItem.PATH + boardDir + "/" + name + ".png";
 
 			// Start loading board image
 			imageDownloader.download(boardUrl, boardUpdateListener, screenWidth);

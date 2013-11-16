@@ -1290,18 +1290,18 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	public static final int[] gamePiecesDrawableIds = new int[]{
-			R.drawable.game_wp,
-			R.drawable.game_wn,
-			R.drawable.game_wb,
-			R.drawable.game_wr,
-			R.drawable.game_wq,
-			R.drawable.game_wk,
-			R.drawable.game_bp,
-			R.drawable.game_bn,
-			R.drawable.game_bb,
-			R.drawable.game_br,
-			R.drawable.game_bq,
-			R.drawable.game_bk,
+			R.drawable.game_room_wp,
+			R.drawable.game_room_wn,
+			R.drawable.game_room_wb,
+			R.drawable.game_room_wr,
+			R.drawable.game_room_wq,
+			R.drawable.game_room_wk,
+			R.drawable.game_room_bp,
+			R.drawable.game_room_bn,
+			R.drawable.game_room_bb,
+			R.drawable.game_room_br,
+			R.drawable.game_room_bq,
+			R.drawable.game_room_bk,
 	};
 
 	public static final int[] alphaPiecesDrawableIds = new int[]{

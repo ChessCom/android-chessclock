@@ -2,6 +2,7 @@ package com.chess.backend.entity.api.themes;
 
 import android.text.TextUtils;
 import com.chess.backend.entity.api.BaseResponseItem;
+import com.chess.ui.fragments.ThemeManagerFragment;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +11,7 @@ import com.chess.backend.entity.api.BaseResponseItem;
  * Time: 16:34
  */
 public class BoardSingleItem extends BaseResponseItem<BoardSingleItem.Data>{
-	public static final String PATH = "https://chess-redesign.s3.amazonaws.com/Boards/";
+	public static final String PATH = ThemeManagerFragment.CLOUD_FRONT + ThemeManagerFragment.BOARDS;
 	public static final String COLOR_DIVIDER = "#";
 
 /*

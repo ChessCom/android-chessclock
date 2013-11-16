@@ -166,10 +166,10 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	public void onResume() {
 		super.onResume();
 
-		if (TextUtils.isEmpty(getAppData().getThemeSoundPath())) {
-			getSounds();
-		} else {
+		if (DbDataManager.haveSavedSoundThemes(getContentResolver())) {
 			loadSoundsFromDb();
+		} else {
+			getSounds();
 		}
 
 		// show selected pieces line preview
@@ -249,6 +249,9 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			String themeBoardsName = getAppData().getThemeBoardName();
 			if (themeBoardsName.equals(Symbol.EMPTY)) {
 				boardLineImage.setImageDrawable(getResources().getDrawable(R.drawable.board_sample_wood_dark));
+
+				// load square preview image
+				boardPreviewImg.setImageDrawable(getResources().getDrawable(R.drawable.board_wood_dark));
 			} else {
 				for (int i = 0; i < defaultBoardNamesMap.size(); i++) {
 					int key = defaultBoardNamesMap.keyAt(i);
@@ -271,7 +274,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		// set background preview
 		String themeName = getAppData().getThemeBackgroundName();
-		if (themeName.equals(getString(R.string.theme_game_room))) {
+		if (themeName.equals(AppConstants.DEFAULT_THEME_NAME)) {
 			backgroundPreviewImg.setImageDrawable(getResources().getDrawable(R.drawable.img_theme_green_felt_sample));
 		} else {
 			imageLoader.download(getAppData().getThemeBackgroundPreviewUrl(), backgroundPreviewImg, screenWidth);
@@ -390,6 +393,12 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			DbDataManager.saveSoundPathToDb(getContentResolver(), selectedSoundPackUrl, returnedObj);
 
 			updateSelectedSoundScheme(returnedObj);
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			showToast("error occurred code " + resultCode);
 		}
 
 		@Override

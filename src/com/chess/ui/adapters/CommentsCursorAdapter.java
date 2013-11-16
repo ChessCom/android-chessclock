@@ -13,6 +13,7 @@ import com.chess.R;
 import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.util.HashMap;
@@ -28,9 +29,10 @@ public class CommentsCursorAdapter extends ItemsCursorAdapter {
 	private final int imageSize;
 	private final SparseArray<String> countryMap;
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
+	private final ItemClickListenerFace clickFace;
 
-	public CommentsCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
-		super(context, cursor, imageFetcher);
+	public CommentsCursorAdapter(ItemClickListenerFace clickFace, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(clickFace.getMeContext(), cursor, imageFetcher);
 		imageSize = (int) (40 * resources.getDisplayMetrics().density);
 
 		String[] countryNames = resources.getStringArray(R.array.new_countries);
@@ -41,6 +43,8 @@ public class CommentsCursorAdapter extends ItemsCursorAdapter {
 		}
 
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
+
+		this.clickFace = clickFace;
 	}
 
 	@Override
@@ -55,6 +59,7 @@ public class CommentsCursorAdapter extends ItemsCursorAdapter {
 		holder.bodyTxt = (TextView) view.findViewById(R.id.bodyTxt);
 		holder.bodyTxt.setMovementMethod(LinkMovementMethod.getInstance());
 
+		view.setOnClickListener(clickFace);
 		view.setTag(holder);
 		return view;
 	}
@@ -62,7 +67,7 @@ public class CommentsCursorAdapter extends ItemsCursorAdapter {
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
-
+		view.setTag(itemListId, cursor.getPosition());
 		holder.photoImg.setOnline(false);
 
 		String userAvatarUrl = getString(cursor, DbScheme.V_USER_AVATAR);

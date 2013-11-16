@@ -2576,7 +2576,24 @@ public class DbDataManager {
 		if (cursor != null && cursor.moveToFirst()) {
 			path = getString(cursor, V_PATH);
 		}
+		if (cursor != null) {
+			cursor.close();
+		}
 		return path;
+	}
+
+	public static boolean haveSavedSoundThemes(ContentResolver contentResolver) {
+		Uri uri = uriArray[Tables.THEME_SOUNDS.ordinal()];
+		Cursor cursor = contentResolver.query(uri, null, null, null, null);
+
+		if (cursor != null && cursor.getCount() > 0) {
+			cursor.close();
+			return true;
+		}
+		if (cursor != null) {
+			cursor.close();
+		}
+		return false;
 	}
 
 	public static void saveSoundPathToDb(ContentResolver contentResolver, String url, String path) {

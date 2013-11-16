@@ -61,8 +61,7 @@ import java.util.List;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class ArticleDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace,
-		AdapterView.OnItemClickListener {
+public class ArticleDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace {
 
 	private static final int CONTENT_SECTION = 0;
 	private static final int COMMENTS_SECTION = 1;
@@ -407,7 +406,20 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		int id = view.getId();
 
-		if (id == IMAGE_PREFIX || id == ICON_PREFIX) {
+		if (id == R.id.commentView) {
+			Integer position = (Integer) view.getTag(R.id.list_item_id);
+			Cursor cursor = (Cursor) commentsCursorAdapter.getItem(position);
+
+			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+			if (username.equals(getUsername())) {
+				commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+
+				commentForEditStr = String.valueOf(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_BODY)));
+
+				inEditMode = true;
+				showEditView(true);
+			}
+		} else if (id == IMAGE_PREFIX || id == ICON_PREFIX) {
 			//get diagramId from view tag
 			Integer pos = (Integer) view.getTag(R.id.list_item_id);
 			int diagramId = (int) diagramsAdapter.getItemId(pos);
@@ -450,23 +462,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 
 		return true;
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (position != 0) { // if NOT listView header
-			// get commentId
-			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
-			if (username.equals(getUsername())) {
-				commentId = DbDataManager.getLong(cursor, DbScheme.V_ID);
-
-				commentForEditStr = String.valueOf(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_BODY)));
-
-				inEditMode = true;
-				showEditView(true);
-			}
-		}
 	}
 
 	private Runnable markAsReadRunnable = new Runnable() {
@@ -1093,7 +1088,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		articleUpdateListener = new ArticleUpdateListener();
 		commentsUpdateListener = new CommentsUpdateListener();
-		commentsCursorAdapter = new CommentsCursorAdapter(getActivity(), null, getImageFetcher());
+		commentsCursorAdapter = new CommentsCursorAdapter(this, null, getImageFetcher());
 
 		paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
 		iconOverlaySize = (int) (resources.getDimension(R.dimen.diagram_icon_overlay_size) / density);
@@ -1128,7 +1123,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		ControlledListView listView = (ControlledListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(sectionedAdapter);
-		listView.setOnItemClickListener(this);
 		listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 			@Override
 			public void onScrollStateChanged(AbsListView absListView, int scrollState) {

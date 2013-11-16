@@ -70,7 +70,7 @@ public class RestHelper {
 	public String BASES_S_URL = "https://" + (HOST == null? HOST_PRODUCTION : HOST);
 	private static final String V1 = "/v1";
 
-	/* Methods calls*/
+	/* Methods calls */
 	public String PLAY_ANDROID_HTML = BASE_URL + "/play/android.html";
 //	public static final String GOOGLE_PLAY_URI = "market://details?id=com.chess";
 //	public static final String GET_ANDROID_VERSION = BASE_URL() + API + "/get_android_version";
@@ -187,6 +187,10 @@ public class RestHelper {
 	public String CMD_THEMES = BASE_URL + V1 + "/themes";
 	public String CMD_THEMES_DEFAULT = CMD_THEMES + "/default";
 	public String CMD_THEMES_USER = CMD_THEMES + "/user";
+
+	public String CMD_THEME_BY_ID(long id) {
+		return CMD_THEMES  + "/" + id;
+	}
 
 	public String CMD_THEME_DEFAULT_BY_ID(long id) {
 		return CMD_THEMES_DEFAULT + id;

@@ -7,16 +7,17 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.chess.R;
-import com.chess.statics.Symbol;
 import com.chess.model.PopupItem;
-import com.chess.ui.interfaces.PopupDialogFace;
+import com.chess.statics.Symbol;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
+import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
@@ -70,16 +71,17 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		isPaused = true;
 	}
 
-	protected ContentResolver getContentResolver(){
+	protected ContentResolver getContentResolver() {
 		return getActivity().getContentResolver();
 	}
 
 	/**
 	 * Make verification of tag
+	 *
 	 * @param fragment to check
 	 * @return true if tag is not null
 	 */
-	protected boolean isTagEmpty(DialogFragment fragment){
+	protected boolean isTagEmpty(DialogFragment fragment) {
 		String tag = fragment.getTag();
 		if (tag == null) {
 			onPositiveBtnClick(fragment);
@@ -103,7 +105,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		dismissFragmentDialog(fragment);
 	}
 
-	private void dismissFragmentDialog(DialogFragment fragment){
+	private void dismissFragmentDialog(DialogFragment fragment) {
 		popupItem.setPositiveBtnId(R.string.ic_check);
 		popupItem.setNegativeBtnId(R.string.ic_close);
 		fragment.setCancelable(true);
@@ -202,7 +204,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		getLastPopupFragment().show(getFragmentManager(), tag);
 	}
 
-	private synchronized void updatePopupAndShow(String tag){
+	private synchronized void updatePopupAndShow(String tag) {
 		popupManager.add(PopupDialogFragment.createInstance(popupItem, this));
 		getLastPopupFragment().show(getFragmentManager(), tag);
 	}
@@ -222,11 +224,42 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
-	private void updateProgressAndShow(PopupProgressFragment popupProgressDialogFragment){
+	private void updateProgressAndShow(PopupProgressFragment popupProgressDialogFragment) {
 		popupProgressDialogFragment.updatePopupItem(popupProgressItem);
+
+//		int last = popupProgressManager.size() - 1;
+		if (popupProgressManager.size() > 0/* && last >= 0*/) { // if we already showing, then just add but not show
+//			PopupProgressFragment fragment = popupProgressManager.get(last);
+//			if (fragment != null) {  // don't show new progress once we already show
+				popupProgressManager.add(popupProgressDialogFragment);
+				return;
+//			}
+		}
+		Log.d("TEST", "showLoadingProgress -> showPopupProgressDialog");
 		popupProgressDialogFragment.show(getFragmentManager(), PROGRESS_TAG);
 		popupProgressManager.add(popupProgressDialogFragment);
 	}
+
+	protected void dismissProgressDialog() {
+		Log.d("TEST", "dismissProgressDialog -> popupProgressManager.size() = " + popupProgressManager.size());
+		if (popupProgressManager.size() == 0) {
+			return;
+		}
+		// we get last first and dismiss it, then show next, and remove first
+		popupProgressManager.get(0).dismiss();
+		if (popupProgressManager.size() > 1) {
+			popupProgressManager.get(1).show(getFragmentManager(), PROGRESS_TAG);
+		}
+		popupProgressManager.remove(0);
+
+//		for (PopupProgressFragment progressFragment : popupProgressManager) {
+//			Log.d("TEST", "dismissProgressDialog -> progressFragment= " + progressFragment);
+//			if (progressFragment != null) {
+//				progressFragment.dismiss();
+//			}
+//		}
+	}
+
 
 	protected void dismissFragmentDialog() {
 		if (getLastPopupFragment() == null) {
@@ -234,24 +267,17 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		}
 
 		getLastPopupFragment().dismiss();
-		popupManager.remove(popupManager.size()-1);
+		popupManager.remove(popupManager.size() - 1);
 	}
 
-	protected PopupDialogFragment getLastPopupFragment(){
-		if (popupManager.size() == 0){
+	protected PopupDialogFragment getLastPopupFragment() {
+		if (popupManager.size() == 0) {
 			return null;
 		} else {
-			return popupManager.get(popupManager.size()-1);
+			return popupManager.get(popupManager.size() - 1);
 		}
 	}
 
-	protected void dismissProgressDialog() {
-		if(popupProgressManager.size() == 0) {
-			return;
-		}
-
-		popupProgressManager.get(popupProgressManager.size()-1).dismiss();
-	}
 
 	public void dismissAllPopups() {
 		for (PopupDialogFragment fragment : popupManager) {
@@ -260,7 +286,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	protected String getTextFromField(EditText editText) {
-		if (TextUtils.isEmpty(editText.getText())){
+		if (TextUtils.isEmpty(editText.getText())) {
 			return Symbol.EMPTY;
 		} else {
 			return editText.getText().toString().trim();
@@ -281,7 +307,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		}
 	}
 
-	public void showKeyBoard(EditText editText){
+	public void showKeyBoard(EditText editText) {
 		if (getActivity() == null) {
 			return;
 		}
@@ -289,7 +315,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
 	}
 
-	public void showKeyBoardImplicit(EditText editText){
+	public void showKeyBoardImplicit(EditText editText) {
 		if (getActivity() == null) {
 			return;
 		}
@@ -298,7 +324,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);   // Call twice to ensure it appear
 	}
 
-	public void hideKeyBoard(View editText){
+	public void hideKeyBoard(View editText) {
 		if (getActivity() == null) {
 			return;
 		}
@@ -306,7 +332,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
 
-	public void hideKeyBoard(){
+	public void hideKeyBoard() {
 		if (getActivity() == null) {
 			return;
 		}

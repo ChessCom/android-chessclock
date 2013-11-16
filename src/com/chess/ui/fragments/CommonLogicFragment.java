@@ -40,6 +40,7 @@ import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
 import com.chess.ui.fragments.welcome.SignInFragment;
 import com.chess.ui.fragments.welcome.SignUpFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
@@ -649,6 +650,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 					case ServerErrorCodes.ACCOUNT_LOCKED:
 						popupItem.setButtons(1);
 						showPopupDialog(R.string.your_account_locked, LOCKED_ACCOUNT_TAG);
+						break;
 					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
 						showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
 						if (passwordEdt != null) {
@@ -705,9 +707,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (show) {
 			showPopupProgressDialog(R.string.loading_);
 		} else {
-//			if (isPaused) // TODO check. We catch exception in Fragment itself, so should be safe
-//				return;
-
 			dismissProgressDialog();
 		}
 	}

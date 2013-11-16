@@ -64,7 +64,7 @@ public class GetAndSaveFileToSdTask extends AbstractUpdateTask<String, String> {
 			String url = param;
 			result = StaticData.EMPTY_DATA;
 
-			Log.d(TAG, "Loading image by url = " + url);
+			Log.d(TAG, "Loading file by url = " + url);
 			if (progressFace != null) {
 				progressFace.setProgress(-1);
 			}
