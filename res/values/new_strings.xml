@@ -352,5 +352,6 @@
 	<string name="attempts">Attempts</string>
 	<string name="upgrade_now">Upgrade Now</string>
 	<string name="your_account_locked">Account locked. Please login at Chess.com</string>
+	<string name="inbox">Inbox</string>
 
 </resources>

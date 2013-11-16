@@ -154,6 +154,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		long conversationId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 		String otherUserName = DbDataManager.getString(cursor, DbScheme.V_OTHER_USER_USERNAME);
+
 		getActivityFace().openFragment(MessagesConversationFragment.createInstance(conversationId, otherUserName));
 	}
 

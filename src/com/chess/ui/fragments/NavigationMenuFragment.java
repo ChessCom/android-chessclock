@@ -30,6 +30,7 @@ import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragmentTablet;
 import com.chess.ui.fragments.live.LiveHomeFragment;
 import com.chess.ui.fragments.live.LiveHomeFragmentTablet;
+import com.chess.ui.fragments.messages.MessagesFragmentTablet;
 import com.chess.ui.fragments.messages.MessagesInboxFragment;
 import com.chess.ui.fragments.profiles.ProfileBaseFragmentTablet;
 import com.chess.ui.fragments.settings.SettingsFragment;
@@ -240,7 +241,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				if (!isTablet) {
 					fragmentByTag = (BasePopupsFragment) findFragmentByTag(FriendsFragment.class.getSimpleName());
 				} else {
-					fragmentByTag = (BasePopupsFragment) findFragmentByTag(ProfileBaseFragmentTablet.class.getSimpleName());
+//					fragmentByTag = (BasePopupsFragment) findFragmentByTag(ProfileBaseFragmentTablet.class.getSimpleName());
 				}
 
 				if (fragmentByTag == null) {
@@ -252,9 +253,17 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_messages:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(MessagesInboxFragment.class.getSimpleName());
+				if (!isTablet) {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(MessagesInboxFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(MessagesFragmentTablet.class.getSimpleName());
+				}
 				if (fragmentByTag == null) {
-					fragmentByTag = new MessagesInboxFragment();
+					if (!isTablet) {
+						fragmentByTag = new MessagesInboxFragment();
+					} else {
+						fragmentByTag = new MessagesFragmentTablet();
+					}
 				}
 				break;
 			case R.drawable.ic_nav_stats:
