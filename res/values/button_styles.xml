@@ -546,7 +546,15 @@
         <item name="android:minHeight">@dimen/new_daily_games_item_height</item>
     </style>
 
-    <style name="ListItem.Header">
+	<style name="ListItem.Tablet">
+		<item name="btn_solid">@color/action_bar_overlay</item>
+		<item name="btn_rect_pos">listItemHeader</item>
+
+		<item name="android:minHeight">@dimen/default_header_height</item>
+	</style>
+
+
+	<style name="ListItem.Header">
         <item name="btn_solid">@color/glassy_header</item>
         <item name="btn_rect_pos">listItemHeader</item>
 

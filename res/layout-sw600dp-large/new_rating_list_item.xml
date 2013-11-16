@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="48dip"
     android:gravity="center_vertical"
-    style="@style/ListItem.Header"
-	custom:btn_solid="@color/action_bar_overlay"
+    style="@style/ListItem.Tablet"
     android:padding="10dip"
     >
 

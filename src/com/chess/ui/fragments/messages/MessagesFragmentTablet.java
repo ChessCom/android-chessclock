@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.messages;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,8 +17,7 @@ import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.articles.ArticleCategoriesFragmentTablet;
-import com.chess.ui.fragments.friends.FriendsFragmentTablet;
+import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
@@ -34,6 +34,7 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 
 	private boolean noCategoriesFragmentsAdded;
 	private List<SelectionItem> menuItems;
+	private OptionsAdapter optionsAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,27 +53,10 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 		super.onViewCreated(view, savedInstanceState);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(new OptionsAdapter(getActivity(), menuItems));
+		listView.setAdapter(optionsAdapter);
 		listView.setOnItemClickListener(this);
 	}
 
-	protected void init() {
-
-		menuItems = new ArrayList<SelectionItem>();
-		{ // inbox
-			SelectionItem selectionItem = new SelectionItem(null, getString(R.string.inbox));
-			selectionItem.setCode(getString(R.string.ic_inbox));
-			menuItems.add(selectionItem);
-		}
-		{ // new
-			SelectionItem selectionItem = new SelectionItem(null, getString(R.string.new_));
-			selectionItem.setCode(getString(R.string.ic_edit));
-			menuItems.add(selectionItem);
-		}
-		changeInternalFragment(new MessagesInboxFragmentTablet(this));
-
-		noCategoriesFragmentsAdded = true;
-	}
 
 	@Override
 	public void changeFragment(BasePopupsFragment fragment) {
@@ -112,6 +96,14 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		for (SelectionItem menuItem : menuItems) { // uncheck
+			menuItem.setChecked(false);
+		}
+
+		SelectionItem selectionItem = (SelectionItem) parent.getItemAtPosition(position);
+		selectionItem.setChecked(true);
+		optionsAdapter.notifyDataSetChanged();
+
 		if (position == 0) {
 			Fragment fragmentByTag = getChildFragmentManager().findFragmentByTag(MessagesInboxFragmentTablet.class.getSimpleName());
 			if (fragmentByTag == null) {
@@ -125,6 +117,27 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 			}
 			changeInternalFragment(fragmentByTag);
 		}
+	}
+
+	protected void init() {
+
+		menuItems = new ArrayList<SelectionItem>();
+		{ // inbox
+			SelectionItem selectionItem = new SelectionItem(null, getString(R.string.inbox));
+			selectionItem.setCode(getString(R.string.ic_inbox));
+			selectionItem.setChecked(true);
+			menuItems.add(selectionItem);
+		}
+		{ // new
+			SelectionItem selectionItem = new SelectionItem(null, getString(R.string.new_));
+			selectionItem.setCode(getString(R.string.ic_edit));
+			menuItems.add(selectionItem);
+		}
+		optionsAdapter = new OptionsAdapter(getActivity(), menuItems);
+
+		changeInternalFragment(new MessagesInboxFragmentTablet(this));
+
+		noCategoriesFragmentsAdded = true;
 	}
 
 	private class OptionsAdapter extends ItemsAdapter<SelectionItem> {
@@ -142,7 +155,7 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 		protected View createView(ViewGroup parent) {
 			View view = inflater.inflate(R.layout.new_dark_spinner_item, parent, false);
 
-			ButtonDrawableBuilder.setBackgroundToView(view, R.style.ListItem_Header_Dark);
+			ButtonDrawableBuilder.setBackgroundToView(view, R.style.ListItem_Tablet);
 			view.setPadding(sidePadding, 0, sidePadding, 0);
 
 			ViewHolder holder = new ViewHolder();
@@ -165,6 +178,13 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 
 			holder.nameTxt.setText(item.getText());
 			holder.iconTxt.setText(item.getCode());
+
+			Drawable background = convertView.getBackground();
+			if (item.isChecked()) {
+				background.mutate().setState(NavigationMenuFragment.SELECTED_STATE);
+			} else {
+				background.mutate().setState(NavigationMenuFragment.ENABLED_STATE);
+			}
 		}
 
 		private class ViewHolder {

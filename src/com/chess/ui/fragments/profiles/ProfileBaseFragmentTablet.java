@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.profiles;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -12,10 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
@@ -23,10 +21,17 @@ import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.model.RatingListItem;
+import com.chess.model.SelectionItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CustomSectionedAdapter;
+import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.adapters.RatingsAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.BasePopupsFragment;
@@ -42,6 +47,7 @@ import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -51,6 +57,8 @@ import java.util.List;
  * Time: 12:10
  */
 public class ProfileBaseFragmentTablet extends CommonLogicFragment implements FragmentParentFace, ItemClickListenerFace, AdapterView.OnItemClickListener {
+
+	private static final String CREATE_CHALLENGE_TAG = "create challenge confirm popup";
 
 	private final static int DAILY_CHESS = 0;
 	private final static int LIVE_STANDARD = 1;
@@ -67,7 +75,7 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 	public static final int STATS_MODE = 0;
 
 	protected String username;
-	private static final String CREATE_CHALLENGE_TAG = "create challenge confirm popup";
+	private List<SelectionItem> friendsList;
 	private boolean noCategoriesFragmentsAdded;
 	private CustomSectionedAdapter sectionedAdapter;
 	private ListView listView;
@@ -82,6 +90,9 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 	private UserUpdateListener userUpdateListener;
 	private int mode = FRIENDS_SECTION;
 	private String[] categories;
+	private View footerView;
+	private List<RatingListItem> ratingList;
+	private RatingsAdapter ratingsAdapter;
 
 	public ProfileBaseFragmentTablet() {
 		Bundle bundle = new Bundle();
@@ -153,6 +164,8 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		} else {
 			updateUiData();
 		}
+
+		fillUserStats();
 	}
 
 	@Override
@@ -196,7 +209,6 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		DailyGameConfig dailyGameConfig = new DailyGameConfig.Builder().build();
 		dailyGameConfig.setOpponentName(opponentName);
 
-
 		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), dailyGameConfig);
 		new RequestJsonTask<DailySeekItem>(new CreateChallengeUpdateListener()).executeTask(loadItem);
 	}
@@ -233,8 +245,6 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 			} else if (sectionName.equals(categories[LESSONS])) {
 				changeInternalFragment(StatsGameLessonsFragment.createInstance(username)); // TODO adjust Lessons
 			}
-		} else if (section == FRIENDS_SECTION) {
-
 		}
 	}
 
@@ -324,16 +334,36 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		photoImageSize = (int) (80 * density);
 		imageLoader = new EnhancedImageDownloader(getActivity());
 		userUpdateListener = new UserUpdateListener();
+		FriendsClickListener friendsClickListener = new FriendsClickListener();
 
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
-		List<RatingListItem> ratingList = createStatsList(getActivity());
 
-		RatingsAdapter ratingsAdapter = new RatingsAdapter(getActivity(), ratingList);
+		{ // load friends from DB
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+					DbScheme.Tables.FRIENDS));
 
-//		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null, getImageFetcher());
+			friendsList = new ArrayList<SelectionItem>();
+			if (cursor != null && cursor.moveToFirst()) {
+				do {
+					SelectionItem selectionItem = new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME));
+					selectionItem.setCode(DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL));
+					friendsList.add(selectionItem);
+				} while (cursor.moveToNext());
+			}
+		}
+
+		ratingList = createStatsList(getActivity());
+
+		ratingsAdapter = new RatingsAdapter(getActivity(), ratingList);
+
+		OpponentsAdapter friendsAdapter = new OpponentsAdapter(getActivity(), friendsList);
 
 		sectionedAdapter.addSection(getString(R.string.ratings), ratingsAdapter);
-//		sectionedAdapter.addSection(getString(R.string.new_my_move), currentGamesMyCursorAdapter);
+
+		footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_frineds_gridview, null, false);
+		GridView gridView = (GridView) footerView.findViewById(R.id.gridView);
+		gridView.setAdapter(friendsAdapter);
+		gridView.setOnItemClickListener(friendsClickListener);
 
 		if (mode == STATS_MODE) {
 			changeInternalFragment(StatsGameFragmentTablet.createInstance(this,
@@ -358,8 +388,120 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		}
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
+		listView.addFooterView(footerView);
 		listView.setAdapter(sectionedAdapter);
 		listView.setOnItemClickListener(this);
+	}
+
+	private class FriendsClickListener implements AdapterView.OnItemClickListener {
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			changeInternalFragment(FriendsFragmentTablet.createInstance(ProfileBaseFragmentTablet.this, username));
+		}
+	}
+
+	public class OpponentsAdapter extends ItemsAdapter<SelectionItem> {
+
+		private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
+		private final int imageSize;
+		private final EnhancedImageDownloader imageDownloader;
+
+		public OpponentsAdapter(Context context, List<SelectionItem> items) {
+			super(context, items, getImageFetcher());
+			imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
+			imageSize = (int) (40 * density);
+
+			imageDownloader = new EnhancedImageDownloader(getActivity());
+		}
+
+		@Override
+		protected View createView(ViewGroup parent) {
+			ProgressImageView imageView = new ProgressImageView(getActivity(), imageSize);
+			AbsListView.LayoutParams params = new AbsListView.LayoutParams(imageSize, imageSize);
+			imageView.setLayoutParams(params);
+			imageView.getImageView().setAdjustViewBounds(true);
+			imageView.getImageView().setScaleType(ImageView.ScaleType.CENTER_CROP);
+			return imageView;
+		}
+
+		@Override
+		protected void bindView(SelectionItem item, int pos, View convertView) {
+			// load avatar
+			String avatarUrl = item.getCode();
+
+			if (!imageDataMap.containsKey(avatarUrl)) {
+				imageDataMap.put(avatarUrl, new SmartImageFetcher.Data(avatarUrl, photoImageSize));
+			}
+
+			imageDownloader.download(avatarUrl, (ProgressImageView) convertView, imageSize);
+		}
+	}
+
+	private void fillUserStats() {
+		// fill ratings
+		String[] argument = new String[]{username};
+
+		{// standard
+			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
+				ratingList.get(LIVE_STANDARD).setValue(currentRating);
+			}
+		}
+		{// blitz
+			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
+				ratingList.get(LIVE_BLITZ).setValue(currentRating);
+			}
+		}
+		{// bullet
+			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
+
+				ratingList.get(LIVE_LIGHTNING).setValue(currentRating);
+			}
+		}
+		{// chess
+			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
+				ratingList.get(DAILY_CHESS).setValue(currentRating);
+			}
+		}
+		{// chess960
+			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_DAILY_CHESS960.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
+			if (cursor.moveToFirst()) {
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
+				ratingList.get(DAILY_CHESS960).setValue(currentRating);
+			}
+		}
+		{// tactics
+			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_TACTICS.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
+				ratingList.get(TACTICS).setValue(currentRating);
+			}
+		}
+		{// chess mentor
+			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LESSONS.ordinal()],
+					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
+				ratingList.get(LESSONS).setValue(currentRating);
+			}
+		}
+
+		ratingsAdapter.notifyDataSetInvalidated();
+		need2update = false;
 	}
 
 	@Override

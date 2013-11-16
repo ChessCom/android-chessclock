@@ -368,6 +368,13 @@ public class ButtonDrawableBuilder {
 
 				return rectButtonDrawable;
 			}
+			case R.style.ListItem_Tablet: {
+				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
+				rectButtonDrawable.rectPosition = LIST_ITEM_HEADER;
+				createRect(rectButtonDrawable, resources, R.color.action_bar_overlay);
+
+				return rectButtonDrawable;
+			}
 			case R.style.ListItem_Header: {
 				RectButtonDrawable rectButtonDrawable = setRectDefaults(context);
 				rectButtonDrawable.rectPosition = LIST_ITEM_HEADER;

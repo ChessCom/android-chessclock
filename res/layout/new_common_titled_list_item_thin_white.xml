@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <com.chess.widgets.LinLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:orientation="horizontal"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	style="@style/ListItem.Header"
-	custom:btn_solid="@color/action_bar_overlay"
+	style="@style/ListItem.Tablet"
 	android:gravity="center_vertical"
 	android:paddingLeft="@dimen/default_scr_side_padding"
 	android:paddingRight="8dip"

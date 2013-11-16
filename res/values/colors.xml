@@ -377,7 +377,7 @@
     <color name="new_text_blue">#FF0d5988</color>
     <color name="new_text_blue_dark">#FF0e344d</color>
     <color name="new_friends_grey_text">#FFa7a6a2</color>
-    <color name="new_square_button">#ffe0e0e0</color>
+    <color name="new_square_button">#ffeaeaea</color>
     <color name="new_square_button_p">#ffc7c7c7</color>
     <color name="new_grey_border_light">#FFbfbfbf</color>
     <color name="new_friends_list_divider">#FFdfdfdf</color>
