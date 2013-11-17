@@ -52,8 +52,6 @@ public class RectButtonDrawable extends ButtonDrawable {
 	int rectPosition = DEF_VALUE;
 
 	private int edgeOffset;
-	InsetInfo insetOne = new InsetInfo();
-	InsetInfo insetTwo = new InsetInfo();
 
 	/* state & other values */
 	private boolean boundsInit;
@@ -202,9 +200,9 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (!boundsInit) {
+//		if (!boundsInit) {
 			initBounds(canvas);
-		}
+//		}
 
 		super.draw(canvas);
 	}

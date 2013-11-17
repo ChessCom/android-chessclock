@@ -64,19 +64,19 @@ import java.util.List;
 public class GameWelcomeCompFragment extends GameBaseFragment implements GameCompFace,
 		PopupListSelectionFace, AdapterView.OnItemClickListener, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener {
 
-	private static final int WHAT_IS_CHESSCOM = 1;
-	private static final int PLAY_ONLINE_ITEM = 2;
-	private static final int CHALLENGE_ITEM = 3;
-	private static final int REMATCH_ITEM = 4;
-	private static final int TACTICS_ITEM = 5;
-	private static final int LESSONS_ITEM = 6;
-	private static final int VIDEOS_ITEM = 7;
+	protected static final int WHAT_IS_CHESSCOM = 1;
+	protected static final int PLAY_ONLINE_ITEM = 2;
+	protected static final int CHALLENGE_ITEM = 3;
+	protected static final int REMATCH_ITEM = 4;
+	protected static final int TACTICS_ITEM = 5;
+	protected static final int LESSONS_ITEM = 6;
+	protected static final int VIDEOS_ITEM = 7;
 
-	private static final String PLAY_ONLINE_TAG = "play online tag";
-	private static final String CHALLENGE_TAG = "challenge friend tag";
-	private static final String TACTICS_TAG = "tactics tag";
-	private static final String LESSONS_TAG = "lessons tag";
-	private static final String VIDEOS_TAG = "videos tag";
+	protected static final String PLAY_ONLINE_TAG = "play online tag";
+	protected static final String CHALLENGE_TAG = "challenge friend tag";
+	protected static final String TACTICS_TAG = "tactics tag";
+	protected static final String LESSONS_TAG = "lessons tag";
+	protected static final String VIDEOS_TAG = "videos tag";
 	private static final String OPTION_SELECTION = "option select popup";
 
 	// game op action ids
@@ -87,15 +87,15 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	private static final long AUTO_FLIP_DELAY = 500;
 	private static final int FADE_ANIM_DURATION = 300;
-	private static final long DRAWER_APPEAR_DELAY = 100;
+	protected static final long DRAWER_APPEAR_DELAY = 100;
 	private static final long END_GAME_DELAY = 1000L;
 	protected FragmentTabsFace parentFace;
 
 	protected ChessBoardCompView boardView;
 
-	private PanelInfoWelcomeView topPanelView;
-	private PanelInfoWelcomeView bottomPanelView;
-	private ControlsCompView controlsView;
+	protected PanelInfoWelcomeView topPanelView;
+	protected PanelInfoWelcomeView bottomPanelView;
+	protected ControlsCompView controlsView;
 
 	private ImageView topAvatarImg;
 	private ImageView bottomAvatarImg;
@@ -103,15 +103,15 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private LabelsConfig labelsConfig;
 	protected boolean labelsSet;
 
-	private NotationView notationsView;
+	protected NotationView notationsView;
 	private boolean humanBlack;
 	private SparseArray<String> optionsList;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private PromotesAdapter resultsAdapter;
-	private MultiDirectionSlidingDrawer slidingDrawer;
-	private RoboTextView resultTxt;
-	private ObjectAnimator fadeBoardAnimator;
-	private ObjectAnimator fadeDrawerAnimator;
+	protected MultiDirectionSlidingDrawer slidingDrawer;
+	protected RoboTextView resultTxt;
+	protected ObjectAnimator fadeBoardAnimator;
+	protected ObjectAnimator fadeDrawerAnimator;
 
 	// new engine
 	private int[] compStrengthArray;
@@ -120,7 +120,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 //	private TextView engineThinkingPath;
 	private Bundle savedInstanceState;
 
-	private CompGameConfig compGameConfig;
+	protected CompGameConfig compGameConfig;
 	private boolean isAutoFlip;
 
 	public GameWelcomeCompFragment() {
@@ -603,7 +603,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void onGameOver(final String message, boolean need2Finish) {
-		handler.postDelayed(new Runnable() {  // TODO add logic to set another delay for Nexus 7, bcz sometimes it show nothing after game over
+		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				boolean userWon = !message.equals(getString(R.string.black_wins)); // how it works for Black user? and how it works for human vs. human mode?
@@ -783,7 +783,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		startNewGame();
 	}
 
-	private void startNewGame() {
+	protected void startNewGame() {
 		//ChessBoardComp.resetInstance();
 		getBoardFace().setMode(compGameConfig.getMode());
 		resideBoardIfCompWhite();
@@ -878,8 +878,8 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			resultTxt.setFont(FontsHelper.BOLD_FONT);
 			resultTxt.setTextSize(30);
 			resultTxt.setGravity(Gravity.CENTER);
-			resultTxt.setMinHeight(activity.getResources().getDimensionPixelSize(R.dimen.result_title_min_height));
-			ButtonDrawableBuilder.setBackgroundToView(resultTxt, R.style.ListItem);
+			resultTxt.setMinHeight(getResources().getDimensionPixelSize(R.dimen.result_title_min_height));
+			ButtonDrawableBuilder.setBackgroundToView(resultTxt, getStyleForResultTitle());
 
 
 			resultsListView.setOnItemClickListener(this);
@@ -910,6 +910,10 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				controlsView.enableGameControls(true);
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
+	}
+
+	protected int getStyleForResultTitle() {
+		return R.style.ListItem;
 	}
 
 	@Override

@@ -112,23 +112,8 @@ public class ButtonDrawable extends StateListDrawable {
 	private static final int glassyBorderIndex = 0;
 	int glassyBevelSize;
 
-	InsetInfo insetOne = new InsetInfo();
-	InsetInfo insetTwo = new InsetInfo();
-
-	static {
-//		insetOne.top = new int[]{0, 0, 0, 1};
-//		insetOne.left = new int[]{1, 0, 0, 1};
-//		insetOne.right = new int[]{1, 1, 0, 1};
-//		insetOne.bottom = new int[]{1, 1, 1, 0};
-//		insetOne.button = new int[]{1, 1, 1, 1};
-//
-//		insetTwo.top = new int[]{0, 0, 0, 2};
-//		insetTwo.left = new int[]{2, 0, 0, 2};
-//		insetTwo.right = new int[]{2, 2, 0, 2};
-//		insetTwo.bottom = new int[]{2, 2, 2, 0};
-//		insetTwo.button = new int[]{2, 2, 2, 2};
-	}
-
+	InsetInfo insetOne;
+	InsetInfo insetTwo;
 
 	/**
 	 * Use for init ButtonDrawableBuilder
@@ -156,13 +141,14 @@ public class ButtonDrawable extends StateListDrawable {
 
 		disabledAlpha = 100;
 		enabledAlpha = 0xFF;
-
+		insetOne = new InsetInfo();
 		insetOne.top = new int[]{0, 0, 0, 1};
 		insetOne.left = new int[]{1, 0, 0, 1};
 		insetOne.right = new int[]{1, 1, 0, 1};
 		insetOne.bottom = new int[]{1, 1, 1, 0};
 		insetOne.button = new int[]{1, 1, 1, 1};
 
+		insetTwo = new InsetInfo();
 		insetTwo.top = new int[]{0, 0, 0, 2};
 		insetTwo.left = new int[]{2, 0, 0, 2};
 		insetTwo.right = new int[]{2, 2, 0, 2};
@@ -255,7 +241,7 @@ public class ButtonDrawable extends StateListDrawable {
 			}
 		}
 
-		if (isGlassy) {
+		if (isGlassy && useBorder) {
 			((ShapeDrawable) enabledDrawable.getDrawable(glassyBorderIndex)).getPaint().setShader(
 					makeLinear(width, height, colorGradientStart, colorGradientCenter, colorGradientEnd));
 		}
@@ -474,24 +460,24 @@ public class ButtonDrawable extends StateListDrawable {
 
 		Drawable drawable = mutate();
 		if (enabled && pressed) {
-			drawable.mutate().setColorFilter(pressedFilter);
-			drawable.mutate().setAlpha(enabledAlpha);
+			drawable.setColorFilter(pressedFilter);
+			drawable.setAlpha(enabledAlpha);
 		} else if (enabled && selected) {
-			drawable.mutate().setColorFilter(selectedFilter);
-			drawable.mutate().setAlpha(enabledAlpha);
+			drawable.setColorFilter(selectedFilter);
+			drawable.setAlpha(enabledAlpha);
 		} else if (enabled && checked) {
-			drawable.mutate().setColorFilter(checkedFilter);
-			drawable.mutate().setAlpha(enabledAlpha);
+			drawable.setColorFilter(checkedFilter);
+			drawable.setAlpha(enabledAlpha);
 		} else if (!enabled) {
-			drawable.mutate().setAlpha(disabledAlpha);
+			drawable.setAlpha(disabledAlpha);
 		} else {
-			drawable.mutate().setColorFilter(enabledFilter);
-			drawable.mutate().setAlpha(enabledAlpha);
+			drawable.setColorFilter(enabledFilter);
+			drawable.setAlpha(enabledAlpha);
 		}
 
 		if (!isClickable) { // override all states to default
-			drawable.mutate().setColorFilter(enabledFilter);
-			drawable.mutate().setAlpha(enabledAlpha);
+			drawable.setColorFilter(enabledFilter);
+			drawable.setAlpha(enabledAlpha);
 		}
 
 		invalidateSelf();// need to update for pre-HC

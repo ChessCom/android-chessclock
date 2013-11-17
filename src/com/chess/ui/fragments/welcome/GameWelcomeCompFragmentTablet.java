@@ -7,13 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
-import com.chess.widgets.MultiDirectionSlidingDrawer;
 import com.chess.R;
+import com.chess.statics.AppConstants;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
 import com.chess.ui.views.drawables.IconDrawable;
+import com.chess.widgets.MultiDirectionSlidingDrawer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,6 +24,10 @@ import com.chess.ui.views.drawables.IconDrawable;
  */
 public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment implements GameCompFace,
 		PopupListSelectionFace, AdapterView.OnItemClickListener, MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener {
+
+	private TextView whatIsChessComTxt;
+	private View loginBtn;
+	private View signUpBtn;
 
 	public GameWelcomeCompFragmentTablet() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -59,10 +64,117 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 	}
 
 	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		switch (position) {
+			case WHAT_IS_CHESSCOM:
+				parentFace.changeInternalFragment(WelcomeTabsFragment.WELCOME_FRAGMENT);
+				break;
+			case PLAY_ONLINE_ITEM:
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
+				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.play_online)), PLAY_ONLINE_TAG);
+				break;
+			case CHALLENGE_ITEM:
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
+				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.challenge_friend)), CHALLENGE_TAG);
+				break;
+			case REMATCH_ITEM:
+				int mode = compGameConfig.getMode();
+				if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE) {
+					compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK);
+				} else if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK) {
+					compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
+				}
+				getAppData().setCompGameMode(compGameConfig.getMode());
+				parentFace.changeInternalFragment(WelcomeTabsFragment.GAME_FRAGMENT);
+				break;
+			case TACTICS_ITEM:
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
+				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.solve_tactics_puzzles)), TACTICS_TAG);
+				break;
+			case LESSONS_ITEM:
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
+				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.learn_lessons)), LESSONS_TAG);
+				break;
+			case VIDEOS_ITEM:
+				popupItem.setPositiveBtnId(R.string.log_in);
+				popupItem.setNegativeBtnId(R.string.sign_up);
+				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.watch_videos)), VIDEOS_TAG);
+				break;
+		}
+	}
+
+	@Override
+	public void onGameOver(final String message, boolean need2Finish) {
+		boolean userWon = !message.equals(getString(R.string.black_wins)); // how it works for Black user? and how it works for human vs. human mode?
+
+		topPanelView.resetPieces();
+		bottomPanelView.resetPieces();
+
+		handler.postDelayed(new Runnable() { // delay to show fling animation
+			@Override
+			public void run() {
+				slidingDrawer.animateOpen();
+			}
+		}, DRAWER_APPEAR_DELAY);
+
+		slidingDrawer.setVisibility(View.VISIBLE);
+		fadeDrawerAnimator.reverse();
+
+		// hide game widgets from right side
+		topPanelView.setVisibility(View.GONE);
+		bottomPanelView.setVisibility(View.GONE);
+		loginBtn.setVisibility(View.GONE);
+		signUpBtn.setVisibility(View.GONE);
+		whatIsChessComTxt.setVisibility(View.GONE);
+		controlsView.setVisibility(View.GONE);
+//		fadeBoardAnimator.start();
+
+		if (userWon) {
+			resultTxt.setText(R.string.you_won);
+		} else {
+			resultTxt.setText(R.string.you_lose);
+		}
+	}
+
+	@Override
+	public void onDrawerOpened() {
+//		ChessBoardComp.resetInstance();
+//		getAppData().clearSavedCompGame();
+//		notationsView.resetNotations();
+//		boardView.invalidate();
+	}
+
+	@Override
+	public void onDrawerClosed() {
+		slidingDrawer.setVisibility(View.GONE);
+//		fadeBoardAnimator.reverse();
+		// show game widgets from right side
+		topPanelView.setVisibility(View.VISIBLE);
+		bottomPanelView.setVisibility(View.VISIBLE);
+		loginBtn.setVisibility(View.VISIBLE);
+		signUpBtn.setVisibility(View.VISIBLE);
+		whatIsChessComTxt.setVisibility(View.VISIBLE);
+		controlsView.setVisibility(View.VISIBLE);
+
+		fadeDrawerAnimator.start();
+
+		startNewGame();
+	}
+
+	@Override
+	protected int getStyleForResultTitle() {
+		return R.style.ListItem_Tablet;
+	}
+
+	@Override
 	protected void widgetsInit(View view) {
 		super.widgetsInit(view);
 
-		TextView whatIsChessComTxt = (TextView) view.findViewById(R.id.whatIsChessComTxt);
+		whatIsChessComTxt = (TextView) view.findViewById(R.id.whatIsChessComTxt);
 		Drawable icon = new IconDrawable(getActivity(), R.string.ic_round_right,  R.color.semitransparent_white_75,
 				R.dimen.glyph_icon_big);
 
@@ -70,8 +182,10 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 		whatIsChessComTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
 		whatIsChessComTxt.setOnClickListener(this);
 
-		view.findViewById(R.id.loginBtn).setOnClickListener(this);
-		view.findViewById(R.id.signUpBtn).setOnClickListener(this);
+		loginBtn = view.findViewById(R.id.loginBtn);
+		signUpBtn = view.findViewById(R.id.signUpBtn);
+		loginBtn.setOnClickListener(this);
+		signUpBtn.setOnClickListener(this);
 	}
 
 	@Override

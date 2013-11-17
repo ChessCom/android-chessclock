@@ -41,6 +41,7 @@
 	</com.chess.widgets.LinLayout>
 
 	<com.chess.widgets.RelLayout
+		android:id="@+id/rightSideView"
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
 		android:layout_toRightOf="@id/boardLinLay"
@@ -127,7 +128,10 @@
 			custom:direction="topToBottom"
 			custom:handle="@+id/handle"
 			custom:content="@+id/content"
-			android:visibility="gone">
+			android:visibility="gone"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			>
 
 			<LinearLayout
 				android:id="@id/content"

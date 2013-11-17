@@ -11,6 +11,7 @@ import com.chess.R;
 import com.chess.statics.WelcomeHolder;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.messages.MessagesInboxFragmentTablet;
 import com.chess.ui.interfaces.FragmentTabsFace;
 
 /**

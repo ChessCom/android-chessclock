@@ -158,6 +158,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 		.addToBackStack(fragment.getClass().getSimpleName()).commit();
 	}
 
+	@Override
 	public boolean showPreviousFragment() {
 		if (getChildFragmentManager().getBackStackEntryCount() > 0) {
 			FragmentManager.BackStackEntry entry = getChildFragmentManager().getBackStackEntryAt(0);  // findFragmentByTag gives null :(
