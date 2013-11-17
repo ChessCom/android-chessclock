@@ -1829,13 +1829,13 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public int getPiece(int pieceId) {
-		return pieces[pieceId];
+	public int getPiece(int position) {
+		return pieces[position];
 	}
 
 	@Override
-	public int getColor(int pieceId) {
-		return colors[pieceId];
+	public int getColor(int position) {
+		return colors[position];
 	}
 
 	@Override

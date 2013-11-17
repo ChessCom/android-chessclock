@@ -9,13 +9,13 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import com.chess.R;
 import com.chess.backend.entity.api.themes.PieceSingleItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.GetAndSaveFileToSdTask;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.model.SelectionItem;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.ChessBoard;
@@ -39,15 +39,15 @@ public class GetAndSavePieces extends Service {
 	private ServiceBinder serviceBinder = new ServiceBinder();
 
 	private Handler handler;
-	private NotificationManager notifymanager;
+	private NotificationManager notifyManager;
 	private NotificationCompat.Builder notificationBuilder;
 	private FileReadyListener progressUpdateListener;
 	private boolean installingPieces;
 	private AppData appData;
 	private PiecesPackSaveListener piecesPackSaveListener;
-	private PiecesSingleItemUpdateListener piecesSingleItemUpdateListener;
 	private String selectedPieceDir;
 	private int screenWidth;
+	private SelectionItem selectedThemePieceItem;
 
 	public class ServiceBinder extends Binder {
 		public GetAndSavePieces getService(){
@@ -64,7 +64,7 @@ public class GetAndSavePieces extends Service {
 		super.onCreate();
 
 		handler = new Handler();
-		notifymanager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// Creates an Intent for the Activity
 		Intent notifyIntent = new Intent(this, MainFragmentFaceActivity.class);
@@ -96,11 +96,12 @@ public class GetAndSavePieces extends Service {
 		return installingPieces;
 	}
 
-	public void loadPieces(int selectedPieceId, int screenWidth){
+	public void loadPieces(int selectedPieceId, SelectionItem selectedThemePieceItem, int screenWidth){
+		this.selectedThemePieceItem = selectedThemePieceItem;
 		installingPieces = true;
 
 		this.screenWidth = screenWidth;
-		piecesSingleItemUpdateListener = new PiecesSingleItemUpdateListener();
+		PiecesSingleItemUpdateListener piecesSingleItemUpdateListener = new PiecesSingleItemUpdateListener();
 		piecesPackSaveListener = new PiecesPackSaveListener();
 
 		// start loading pieces
@@ -117,8 +118,6 @@ public class GetAndSavePieces extends Service {
 
 		@Override
 		public void updateData(PieceSingleItem returnedObj) {
-
-			getAppData().setThemePiecesPath(returnedObj.getData().getName());
 
 			// get pieces dir in s3
 			selectedPieceDir = returnedObj.getData().getThemeDir();
@@ -175,6 +174,10 @@ public class GetAndSavePieces extends Service {
 				getAppData().setThemePieces3d(false);
 			}
 
+			// save pieces theme name to appData
+			getAppData().setThemePiecesName(selectedThemePieceItem.getCode());
+			getAppData().setThemePiecesPreviewUrl(selectedThemePieceItem.getText());
+
 			showCompleteToNotification();
 		}
 
@@ -203,7 +206,7 @@ public class GetAndSavePieces extends Service {
 		notificationBuilder.setContentText(title);
 		notificationBuilder.setProgress(0, 0, true);
 		// Displays the progress bar for the first time.
-		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
 
 		if (progressUpdateListener != null) {
 			progressUpdateListener.changeTitle(title);
@@ -214,7 +217,7 @@ public class GetAndSavePieces extends Service {
 	private void updateProgressToNotification(int progress) {
 		notificationBuilder.setProgress(100, progress, false);
 		// Displays the progress bar for the first time.
-		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(progress);
 		}
@@ -224,7 +227,7 @@ public class GetAndSavePieces extends Service {
 		notificationBuilder.setContentText(getString(R.string.download_comlete))
 				// Removes the progress bar
 				.setProgress(0, 0, false);
-		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(DONE);
 		}
@@ -234,7 +237,7 @@ public class GetAndSavePieces extends Service {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				notifymanager.cancel(R.id.notification_message);
+				notifyManager.cancel(R.id.notification_message);
 
 				stopSelf();
 			}
@@ -254,9 +257,5 @@ public class GetAndSavePieces extends Service {
 
 	private Context getContext() {
 		return this;
-	}
-
-	private void logTest(String message) {
-		Log.d("TEST", message);
 	}
 }

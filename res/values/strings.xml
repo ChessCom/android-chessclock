@@ -117,7 +117,7 @@
 	<string name="board_wood_dark">Wood Dark</string>
 
     <!--Pieces styles-->
-	<string name="pieces_game">Game</string>
+	<string name="pieces_game">Game Room</string>
 	<string name="pieces_alpha">Alpha</string>
 	<string name="pieces_book">Book</string>
 	<string name="pieces_cases">Cases</string>
@@ -127,7 +127,6 @@
 	<string name="pieces_maya">Maya</string>
 	<string name="pieces_modern">Modern</string>
 	<string name="pieces_vintage">Vintage</string>
-	<string name="pieces_the3d">3d</string>
 
     <!--Settings Screen-->
 	<string name="after_i_move">After I Move</string> <!--Selector title, action follows-->

@@ -20,6 +20,7 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.backend.tasks.SaveImageToSdTask;
+import com.chess.model.SelectionItem;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.utilities.AppUtils;
@@ -58,6 +59,7 @@ public class GetAndSaveBoard extends Service {
 	private FileReadyListener progressUpdateListener;
 	private Handler handler;
 	private boolean installingBoard;
+	private SelectionItem selectedThemeBoardItem;
 
 	@Override
 	public void onCreate() {
@@ -107,7 +109,8 @@ public class GetAndSaveBoard extends Service {
 		return serviceBinder;
 	}
 
-	public void loadBoard(int selectedBoardId, int screenWidth) {
+	public void loadBoard(int selectedBoardId, SelectionItem selectedThemeBoardItem, int screenWidth) {
+		this.selectedThemeBoardItem = selectedThemeBoardItem;
 		installingBoard = true;
 
 		this.screenWidth = screenWidth ;
@@ -215,6 +218,8 @@ public class GetAndSaveBoard extends Service {
 				// save board theme name to appData
 				getAppData().setUseThemeBoard(true);
 				getAppData().setThemeBoardPath(drawablePath);
+				getAppData().setThemeBoardName(selectedThemeBoardItem.getCode());
+				getAppData().setThemeBoardPreviewUrl(selectedThemeBoardItem.getText());
 
 			} catch (IOException e) {
 				e.printStackTrace();

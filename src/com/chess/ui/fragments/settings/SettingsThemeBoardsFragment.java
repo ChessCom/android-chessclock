@@ -31,11 +31,11 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
-import com.chess.ui.adapters.CustomSectionedAdapter;
+import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,25 +51,15 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 	private static final int THEME_SECTION = 0;
 	private static final int DEFAULT_SECTION = 1;
 
-	private static final String THEME_LOAD_TAG = "theme load popup";
-
-	public static final String BOARD_ITEM = "board_item";
-	public static final String SCREEN_WIDTH = "screen_width";
-
 	private BoardsItemUpdateListener boardsItemUpdateListener;
-	private CustomSectionedAdapter sectionedAdapter;
 	private ThemeBoardsAdapter themeBoardsAdapter;
 	private List<SelectionItem> defaultBoardSelectionList;
 	private String themeBoardName;
 	private List<SelectionItem> themeBoardSelectionList;
 	private int screenWidth;
-	private TextView loadProgressTxt;
-	private TextView taskTitleTxt;
-	private PopupCustomViewFragment loadProgressPopupFragment;
 	private List<BoardSingleItem.Data> themeBoardItemsList;
 	private SelectionItem selectedThemeBoardItem;
 	private boolean isBoardLoading;
-	private String boardUrl;
 	private LoadServiceConnectionListener loadServiceConnectionListener;
 	private boolean serviceBounded;
 	private ProgressUpdateListener progressUpdateListener;
@@ -79,44 +69,16 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 	private ProgressBar themeLoadProgressBar;
 	private View headerView;
 	private boolean needToLoadThemeAfterConnected;
+	private boolean isAuthenticatedUser;
+	private boolean loadThemedPieces;
+	private DefaultBoardsAdapter defaultBoardsAdapter;
+	private ListView listView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		screenWidth = getResources().getDisplayMetrics().widthPixels;
-
-		themeBoardName = getAppData().getThemeBoardName();
-
-		progressUpdateListener = new ProgressUpdateListener();
-		loadServiceConnectionListener = new LoadServiceConnectionListener();
-		boardsItemUpdateListener = new BoardsItemUpdateListener();
-
-		Resources resources = getResources();
-		themeBoardSelectionList = new ArrayList<SelectionItem>();
-		themeBoardItemsList = new ArrayList<BoardSingleItem.Data>();
-
-		// Boards bitmaps list init
-		defaultBoardSelectionList = new ArrayList<SelectionItem>();
-		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_wood_dark), getString(R.string.board_wood_dark)));
-		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_wood_light), getString(R.string.board_wood_light)));
-		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_blue), getString(R.string.board_blue)));
-		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_brown), getString(R.string.board_brown)));
-		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_green), getString(R.string.board_green)));
-		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_grey), getString(R.string.board_grey)));
-		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_marble), getString(R.string.board_marble)));
-		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_red), getString(R.string.board_red)));
-		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_tan), getString(R.string.board_tan)));
-
-		for (SelectionItem selectionItem : defaultBoardSelectionList) {
-			if (selectionItem.getCode().equals(themeBoardName)) {
-				selectionItem.setChecked(true);
-				break;
-			}
-		}
-
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
-				new int[]{THEME_SECTION, DEFAULT_SECTION});
+		init();
 	}
 
 	@Override
@@ -135,16 +97,11 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		themeLoadProgressBar = (ProgressBar) headerView.findViewById(R.id.themeLoadProgressBar);
 		headerView.setVisibility(View.GONE);
 
-		ListView listView = (ListView) view.findViewById(R.id.listView);
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setOnItemClickListener(this);
 
 		themeBoardsAdapter = new ThemeBoardsAdapter(getContext(), null);
-		DefaultBoardsAdapter defaultBoardsAdapter = new DefaultBoardsAdapter(getActivity(), defaultBoardSelectionList);
-
-		sectionedAdapter.addSection("Theme Boards", themeBoardsAdapter);
-		sectionedAdapter.addSection("Default Boards", defaultBoardsAdapter);
-
-		listView.setAdapter(sectionedAdapter);
-		listView.setOnItemClickListener(this);
+		defaultBoardsAdapter = new DefaultBoardsAdapter(getActivity(), defaultBoardSelectionList);
 	}
 
 	@Override
@@ -152,7 +109,8 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		super.onResume();
 
 		// Don't load custom board if we are not logged in
-		if (!TextUtils.isEmpty(getUserToken())) {
+		if (isAuthenticatedUser && AppUtils.isNetworkAvailable(getActivity())) {
+			loadThemedPieces = true;
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BOARDS));
 
 			if (cursor != null && cursor.moveToFirst()) {
@@ -164,6 +122,8 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			} else {
 				getBoards();
 			}
+		} else {
+			listView.setAdapter(defaultBoardsAdapter);
 		}
 	}
 
@@ -183,9 +143,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		int section = sectionedAdapter.getCurrentSection(position);
-
-		if (section == THEME_SECTION) {
+		if (loadThemedPieces) {
 			if (isBoardLoading) {
 				return;
 			}
@@ -201,11 +159,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 					selectionItem.setChecked(false);
 				}
 			}
-			for (SelectionItem selectionItem : defaultBoardSelectionList) {
-				selectionItem.setChecked(false);
-			}
-
-			sectionedAdapter.notifyDataSetChanged();
 
 			selectedBoardId = 1;
 			for (BoardSingleItem.Data data : themeBoardItemsList) {
@@ -215,11 +168,8 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 				}
 			}
 
-			getAppData().setThemeBoardName(selectedThemeBoardItem.getCode());
-			getAppData().setThemeBoardPreviewUrl(selectedThemeBoardItem.getText());
-
 			if (serviceBounded) {
-				serviceBinder.getService().loadBoard(selectedBoardId, screenWidth);
+				serviceBinder.getService().loadBoard(selectedBoardId, selectedThemeBoardItem, screenWidth);
 			} else {
 				needToLoadThemeAfterConnected = true;
 				getActivity().bindService(new Intent(getActivity(), GetAndSaveBoard.class), loadServiceConnectionListener,
@@ -235,11 +185,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 					getAppData().setUseThemeBoard(false);
 					getAppData().setThemeBoardName(selectionItem.getText());
 				} else {
-					selectionItem.setChecked(false);
-				}
-			}
-			if (themeBoardSelectionList != null) { // for guest mode we don't have theme board
-				for (SelectionItem selectionItem : themeBoardSelectionList) {
 					selectionItem.setChecked(false);
 				}
 			}
@@ -261,11 +206,11 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 			themeBoardItemsList = returnedObj.getData();
 
-			updateUiData();
-
 			for (BoardSingleItem.Data currentItem : themeBoardItemsList) {
 				DbDataManager.saveThemeBoardItemToDb(getContentResolver(), currentItem);
 			}
+
+			updateUiData();
 		}
 	}
 
@@ -282,9 +227,55 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 				break;
 			}
 		}
-
 		themeBoardsAdapter.setItemsList(themeBoardSelectionList);
-		sectionedAdapter.notifyDataSetChanged();
+		themeBoardsAdapter.notifyDataSetChanged();
+
+		listView.setAdapter(themeBoardsAdapter);
+	}
+
+	private void init() {
+		isAuthenticatedUser = !TextUtils.isEmpty(getUserToken());
+
+		screenWidth = getResources().getDisplayMetrics().widthPixels;
+
+		themeBoardName = getAppData().getThemeBoardName();
+
+		progressUpdateListener = new ProgressUpdateListener();
+		loadServiceConnectionListener = new LoadServiceConnectionListener();
+		boardsItemUpdateListener = new BoardsItemUpdateListener();
+
+		Resources resources = getResources();
+		themeBoardSelectionList = new ArrayList<SelectionItem>();
+		themeBoardItemsList = new ArrayList<BoardSingleItem.Data>();
+
+		// Boards bitmaps list init
+		defaultBoardSelectionList = new ArrayList<SelectionItem>();
+		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_green), getString(R.string.board_green)));
+		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_brown), getString(R.string.board_brown)));
+		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_blue), getString(R.string.board_blue)));
+		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_wood_dark), getString(R.string.board_wood_dark)));
+		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_wood_light), getString(R.string.board_wood_light)));
+		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_marble), getString(R.string.board_marble)));
+		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_grey), getString(R.string.board_grey)));
+		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_tan), getString(R.string.board_tan)));
+		defaultBoardSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.board_sample_red), getString(R.string.board_red)));
+
+		if (!isAuthenticatedUser) {
+			if (TextUtils.isEmpty(themeBoardName)) {
+				themeBoardName = getString(R.string.board_wood_dark);
+			}
+
+			for (SelectionItem selectionItem : defaultBoardSelectionList) {
+				if (selectionItem.getCode().equals(themeBoardName)) {
+					selectionItem.setChecked(true);
+					break;
+				}
+			}
+		} else {
+			if (TextUtils.isEmpty(themeBoardName)) {
+				themeBoardName = AppConstants.DEFAULT_THEME_BOARD_NAME;
+			}
+		}
 	}
 
 	private class LoadServiceConnectionListener implements ServiceConnection {
@@ -300,7 +291,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 				isBoardLoading = true;
 			}
 			if (needToLoadThemeAfterConnected) {
-				serviceBinder.getService().loadBoard(selectedBoardId, screenWidth);
+				serviceBinder.getService().loadBoard(selectedBoardId, selectedThemeBoardItem, screenWidth);
 			}
 		}
 

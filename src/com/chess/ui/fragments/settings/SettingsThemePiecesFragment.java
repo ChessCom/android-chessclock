@@ -17,7 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.*;
+import com.chess.backend.GetAndSavePieces;
+import com.chess.backend.GetAndSaveTheme;
+import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.themes.PieceSingleItem;
 import com.chess.backend.entity.api.themes.PiecesItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
@@ -28,10 +31,11 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
-import com.chess.ui.adapters.CustomSectionedAdapter;
+import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +48,7 @@ import java.util.List;
  */
 public class SettingsThemePiecesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
 
-	private static final int THEME_SECTION = 0;
-	private static final int DEFAULT_SECTION = 1;
-
 	private PiecesItemUpdateListener piecesItemUpdateListener;
-	private CustomSectionedAdapter sectionedAdapter;
 	private ThemePiecesAdapter themePiecesAdapter;
 	private List<SelectionItem> defaultPiecesSelectionList;
 	private String themePiecesName;
@@ -65,46 +65,17 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 	private LoadServiceConnectionListener loadServiceConnectionListener;
 	private ProgressUpdateListener progressUpdateListener;
 	private int selectedPiecesId;
+	private ListView listView;
+	private DefaultPiecesAdapter defaultPiecesAdapter;
+	private boolean isAuthenticatedUser;
+	private boolean loadThemedPieces;
+	private SelectionItem selectedThemePieceItem;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		screenWidth = getResources().getDisplayMetrics().widthPixels;
-
-		themePiecesName = getAppData().getThemePiecesName();
-
-		piecesItemUpdateListener = new PiecesItemUpdateListener();
-		loadServiceConnectionListener = new LoadServiceConnectionListener();
-		progressUpdateListener = new ProgressUpdateListener();
-
-		Resources resources = getResources();
-
-		themePiecesSelectionList = new ArrayList<SelectionItem>();
-		themePiecesItemsList = new ArrayList<PieceSingleItem.Data>();
-
-		// Pieces bitmaps list init
-		defaultPiecesSelectionList = new ArrayList<SelectionItem>();
-		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_game), getString(R.string.pieces_game)));
-		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_alpha), getString(R.string.pieces_alpha)));
-		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_book), getString(R.string.pieces_book)));
-		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_cases), getString(R.string.pieces_cases)));
-		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_classic), getString(R.string.pieces_classic)));
-		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_club), getString(R.string.pieces_club)));
-		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_condal), getString(R.string.pieces_condal)));
-		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_maya), getString(R.string.pieces_maya)));
-		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_modern), getString(R.string.pieces_modern)));
-		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_vintage), getString(R.string.pieces_vintage)));
-
-		for (SelectionItem selectionItem : defaultPiecesSelectionList) {
-			if (selectionItem.getCode().equals(themePiecesName)) {
-				selectionItem.setChecked(true);
-				break;
-			}
-		}
-
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
-				new int[]{THEME_SECTION, DEFAULT_SECTION});
+		init();
 	}
 
 	@Override
@@ -123,15 +94,10 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		themeLoadProgressBar = (ProgressBar) headerView.findViewById(R.id.themeLoadProgressBar);
 		headerView.setVisibility(View.GONE);
 
-		ListView listView = (ListView) view.findViewById(R.id.listView);
-
-		themePiecesAdapter = new ThemePiecesAdapter(getContext(), null);
-		DefaultPiecesAdapter defaultPiecesAdapter = new DefaultPiecesAdapter(getActivity(), defaultPiecesSelectionList);
-
-		sectionedAdapter.addSection("Theme Pieces", themePiecesAdapter);
-		sectionedAdapter.addSection("Default Pieces", defaultPiecesAdapter);
-		listView.setAdapter(sectionedAdapter);
+		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
+		themePiecesAdapter = new ThemePiecesAdapter(getContext(), null);
+		defaultPiecesAdapter = new DefaultPiecesAdapter(getActivity(), defaultPiecesSelectionList);
 	}
 
 	@Override
@@ -139,9 +105,9 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		super.onResume();
 
 		// Don't load custom pieces if we are not logged in
-		if (!TextUtils.isEmpty(getUserToken())) {
+		if (isAuthenticatedUser && AppUtils.isNetworkAvailable(getActivity())) {
+			loadThemedPieces = true;
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_PIECES));
-
 
 			if (cursor != null && cursor.moveToFirst()) {
 				do {
@@ -152,6 +118,8 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 			} else {
 				getPieces();
 			}
+		} else {
+			listView.setAdapter(defaultPiecesAdapter);
 		}
 	}
 
@@ -171,9 +139,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		int section = sectionedAdapter.getCurrentSection(position);
-
-		if (section == THEME_SECTION) {
+		if (loadThemedPieces) {
 			if (isPiecesLoading) {
 				return;
 			}
@@ -181,7 +147,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 			// don't allow to select while it's loading
 			isPiecesLoading = true;
 
-			SelectionItem selectedThemePieceItem = (SelectionItem) parent.getItemAtPosition(position);
+			selectedThemePieceItem = (SelectionItem) parent.getItemAtPosition(position);
 			for (SelectionItem selectionItem : themePiecesSelectionList) {
 				if (selectedThemePieceItem.getCode().equals(selectionItem.getCode())) {
 					selectionItem.setChecked(true);
@@ -189,11 +155,8 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 					selectionItem.setChecked(false);
 				}
 			}
-			for (SelectionItem selectionItem : defaultPiecesSelectionList) {
-				selectionItem.setChecked(false);
-			}
 
-			sectionedAdapter.notifyDataSetChanged();
+			themePiecesAdapter.notifyDataSetChanged();
 
 			selectedPiecesId = 1;
 			for (PieceSingleItem.Data data : themePiecesItemsList) {
@@ -203,12 +166,8 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 				}
 			}
 
-			// save pieces theme name to appData
-			getAppData().setThemePiecesName(selectedThemePieceItem.getCode());
-			getAppData().setThemePiecesPreviewUrl(selectedThemePieceItem.getText());
-
 			if (serviceBounded) {
-				serviceBinder.getService().loadPieces(selectedPiecesId, screenWidth);
+				serviceBinder.getService().loadPieces(selectedPiecesId, selectedThemePieceItem, screenWidth);
 			} else {
 				needToLoadThemeAfterConnected = true;
 				getActivity().bindService(new Intent(getActivity(), GetAndSavePieces.class), loadServiceConnectionListener,
@@ -224,11 +183,6 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 					getAppData().setUseThemePieces(false);
 					getAppData().setThemePiecesName(selectionItem.getText());
 				} else {
-					selectionItem.setChecked(false);
-				}
-			}
-			if (themePiecesSelectionList != null) { // for guest mode we don't have theme pieces
-				for (SelectionItem selectionItem : themePiecesSelectionList) {
 					selectionItem.setChecked(false);
 				}
 			}
@@ -249,12 +203,11 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 			super.updateData(returnedObj);
 
 			themePiecesItemsList = returnedObj.getData();
-
-			updateUiData();
-
 			for (PieceSingleItem.Data currentItem : themePiecesItemsList) {
 				DbDataManager.saveThemePieceItemToDb(getContentResolver(), currentItem);
 			}
+
+			updateUiData();
 		}
 	}
 
@@ -272,7 +225,9 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 			}
 		}
 		themePiecesAdapter.setItemsList(themePiecesSelectionList);
-		sectionedAdapter.notifyDataSetChanged();
+		themePiecesAdapter.notifyDataSetChanged();
+
+		listView.setAdapter(themePiecesAdapter);
 	}
 
 	private class LoadServiceConnectionListener implements ServiceConnection {
@@ -288,7 +243,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 				isPiecesLoading = true;
 			}
 			if (needToLoadThemeAfterConnected) {
-				serviceBinder.getService().loadPieces(selectedPiecesId, screenWidth);
+				serviceBinder.getService().loadPieces(selectedPiecesId, selectedThemePieceItem, screenWidth);
 			}
 		}
 
@@ -296,6 +251,53 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		public void onServiceDisconnected(ComponentName componentName) {
 			serviceBounded = false;
 			isPiecesLoading = false;
+		}
+	}
+
+	private void init() {
+		isAuthenticatedUser = !TextUtils.isEmpty(getUserToken());
+
+		screenWidth = getResources().getDisplayMetrics().widthPixels;
+
+		themePiecesName = getAppData().getThemePiecesName();
+
+		piecesItemUpdateListener = new PiecesItemUpdateListener();
+		loadServiceConnectionListener = new LoadServiceConnectionListener();
+		progressUpdateListener = new ProgressUpdateListener();
+
+		Resources resources = getResources();
+
+		themePiecesSelectionList = new ArrayList<SelectionItem>();
+		themePiecesItemsList = new ArrayList<PieceSingleItem.Data>();
+
+		// Pieces bitmaps list init
+		defaultPiecesSelectionList = new ArrayList<SelectionItem>();
+		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_classic), getString(R.string.pieces_classic)));
+		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_alpha), getString(R.string.pieces_alpha)));
+		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_modern), getString(R.string.pieces_modern)));
+		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_book), getString(R.string.pieces_book)));
+		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_club), getString(R.string.pieces_club)));
+		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_game), getString(R.string.pieces_game)));
+		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_cases), getString(R.string.pieces_cases)));
+		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_condal), getString(R.string.pieces_condal)));
+		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_vintage), getString(R.string.pieces_vintage)));
+		defaultPiecesSelectionList.add(new SelectionItem(resources.getDrawable(R.drawable.pieces_maya), getString(R.string.pieces_maya)));
+
+		if (!isAuthenticatedUser) {
+			if (TextUtils.isEmpty(themePiecesName)) {
+				themePiecesName = getString(R.string.pieces_game);
+			}
+
+			for (SelectionItem selectionItem : defaultPiecesSelectionList) {
+				if (selectionItem.getText().equals(themePiecesName)) {
+					selectionItem.setChecked(true);
+					break;
+				}
+			}
+		} else {
+			if (TextUtils.isEmpty(themePiecesName)) {
+				themePiecesName = AppConstants.DEFAULT_THEME_NAME; // use theme name instead of pieces
+			}
 		}
 	}
 

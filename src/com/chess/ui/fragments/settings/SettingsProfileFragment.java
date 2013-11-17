@@ -246,6 +246,13 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			if (!isTablet) {
+				super.showProgress(show);
+			}
+		}
+
+		@Override
 		public void updateData(UserItem returnedObj) {
 			super.updateData(returnedObj);
 			Activity activity = getActivity();
@@ -296,7 +303,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		}
 	}
 
-	private class GetDetailsListener extends ChessLoadUpdateListener<MembershipItem> {
+	private class GetDetailsListener extends ChessUpdateListener<MembershipItem> {
 
 		private GetDetailsListener() {
 			super(MembershipItem.class);

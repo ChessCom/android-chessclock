@@ -44,7 +44,7 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 			drawHighlights(canvas);
 
 			drawPiecesAndAnimation(canvas);
-			drawDragPosition(canvas);
+			drawPieceInDragMotion(canvas);
 		}
 	}
 

@@ -180,6 +180,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	public void updateParentView() {
 		if (boardFrame != null) { // shouldn't be null...
 			boardFrame.invalidate();
+			getActivityFace().updateActionBarBackImage(); // for staunton theme we have nice overdraw effect :D
 		}
 	}
 

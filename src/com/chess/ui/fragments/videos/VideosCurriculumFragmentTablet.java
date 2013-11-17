@@ -110,7 +110,6 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 			cursor.close();
 		}
 
-
 		expListView.setAdapter(curriculumAdapter);
 	}
 

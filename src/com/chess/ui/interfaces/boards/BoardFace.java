@@ -51,9 +51,9 @@ public interface BoardFace {
 
 	boolean isPerformCheck(int s);
 
-	int getPiece(int pieceId);
+	int getPiece(int position);
 
-	int getColor(int color);
+	int getColor(int position);
 
 	int getColor(int i, int j);
 

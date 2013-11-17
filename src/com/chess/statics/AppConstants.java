@@ -94,6 +94,7 @@ public class AppConstants {
     public static final String PREF_THEME_BACKGROUND_NAME = "theme_background_name";
 	public static final String DEFAULT_THEME_NAME = "Game Room";
 	public static final String DEFAULT_THEME_PIECES_NAME = "game_room";
+	public static final String DEFAULT_THEME_BOARD_NAME = "Dark Wood";
 
 	public static final String PREF_DEMO_TACTICS_LOADED = "demo tactics loaded";
 	public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";

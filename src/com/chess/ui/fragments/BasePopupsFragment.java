@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -227,21 +226,15 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	private void updateProgressAndShow(PopupProgressFragment popupProgressDialogFragment) {
 		popupProgressDialogFragment.updatePopupItem(popupProgressItem);
 
-//		int last = popupProgressManager.size() - 1;
-		if (popupProgressManager.size() > 0/* && last >= 0*/) { // if we already showing, then just add but not show
-//			PopupProgressFragment fragment = popupProgressManager.get(last);
-//			if (fragment != null) {  // don't show new progress once we already show
-				popupProgressManager.add(popupProgressDialogFragment);
-				return;
-//			}
+		if (popupProgressManager.size() > 0) { // if we already showing, then just add but not show
+			popupProgressManager.add(popupProgressDialogFragment);
+			return;
 		}
-		Log.d("TEST", "showLoadingProgress -> showPopupProgressDialog");
 		popupProgressDialogFragment.show(getFragmentManager(), PROGRESS_TAG);
 		popupProgressManager.add(popupProgressDialogFragment);
 	}
 
 	protected void dismissProgressDialog() {
-		Log.d("TEST", "dismissProgressDialog -> popupProgressManager.size() = " + popupProgressManager.size());
 		if (popupProgressManager.size() == 0) {
 			return;
 		}
@@ -251,13 +244,6 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 			popupProgressManager.get(1).show(getFragmentManager(), PROGRESS_TAG);
 		}
 		popupProgressManager.remove(0);
-
-//		for (PopupProgressFragment progressFragment : popupProgressManager) {
-//			Log.d("TEST", "dismissProgressDialog -> progressFragment= " + progressFragment);
-//			if (progressFragment != null) {
-//				progressFragment.dismiss();
-//			}
-//		}
 	}
 
 

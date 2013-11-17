@@ -44,8 +44,6 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 	public static final int RENAME_DELAY = 20 * 1000;
 
 
-	private TextView lessonsUpgradeMessageTxt;
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_lessons_upgrade_view, container, false);
@@ -55,7 +53,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		lessonsUpgradeMessageTxt = (TextView) view.findViewById(R.id.lessonsUpgradeMessageTxt);
+		TextView lessonsUpgradeMessageTxt = (TextView) view.findViewById(R.id.lessonsUpgradeMessageTxt);
 		lessonsUpgradeMessageTxt.setText("Upload Resources!");
 		RoboButton upgradeBtn = (RoboButton) view.findViewById(R.id.upgradeBtn);
 		upgradeBtn.setText("Upload");

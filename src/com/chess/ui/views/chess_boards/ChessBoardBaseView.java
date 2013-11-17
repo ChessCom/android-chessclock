@@ -42,7 +42,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace, NotationView.BoardForNotationFace {
 
-	public static final int PIECE_ANIM_SPEED = 100; // Erik said make 100ms
+	public static final int PIECE_ANIM_SPEED = 100; // 100ms
 	public static final int PIECE_ANIM_FAST_SPEED = 5; // should be very fast
 	public static final String VALID_MOVES = "valid_moves";
 	private static final long FAST_MOVE_TASK_DELAY = 5;
@@ -83,7 +83,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected Paint whitePaint;
 	protected Paint coordinatesPaint;
 	protected Paint madeMovePaint;
-//	protected Paint greenPaint;
+	//	protected Paint greenPaint;
 	protected Paint possibleMovePaint;
 
 	protected String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h"};
@@ -126,7 +126,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private BitmapFactory.Options bitmapOptions;
 	private int pieceInset;
 	private int customBoardId = NO_ID;
-	private boolean using3dPieces;
+	private boolean use3dPieces;
 	private Rect clipBoundsRect;
 	private int _3dPiecesOffset;
 	private int _3dPiecesOffsetDrag;
@@ -137,6 +137,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private String customPiecesName;
 	private boolean fastMode;
 	private boolean animationActive;
+	private int _3dPieceMaxHeight;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -300,21 +301,19 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			drawCoordinates(canvas);
 			drawHighlights(canvas);
 
-			if (using3dPieces) {
+			if (use3dPieces) {
 				getDrawingRect(clipBoundsRect);
 				int saveCount = canvas.save(Canvas.CLIP_SAVE_FLAG);
 				clipBoundsRect.set(clipBoundsRect.left, clipBoundsRect.top - _3dPiecesOffsetDrag, clipBoundsRect.right, clipBoundsRect.bottom);
 				canvas.clipRect(clipBoundsRect, Region.Op.REPLACE);
 
 				drawPiecesAndAnimation(canvas);
-				drawDragPosition(canvas);
+				drawPieceInDragMotion(canvas);
 
 				canvas.restoreToCount(saveCount);
-
-				gameFace.updateParentView();
 			} else {
 				drawPiecesAndAnimation(canvas);
-				drawDragPosition(canvas);
+				drawPieceInDragMotion(canvas);
 			}
 		}
 	}
@@ -387,6 +386,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	public boolean moveBack() {
 		BoardFace boardFace = getBoardFace();
 		if (noMovesToAnimate() && boardFace.getPly() > 0) {
+			gameFace.updateParentView();
 
 			boardFace.setFinished(false);
 			pieceSelected = false;
@@ -400,6 +400,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (notationsFace != null) { // we might don't have notations  so probably should be moved to fragment level
 				notationsFace.moveBack(boardFace.getPly());
 			}
+
 			return true;
 		} else {
 			return false;
@@ -409,6 +410,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	@Override
 	public boolean moveForward() {
 		if (noMovesToAnimate()) {
+			gameFace.updateParentView();
+
 			pieceSelected = false;
 
 			Move move = getBoardFace().getNextMove();
@@ -425,6 +428,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (notationsFace != null) {
 				notationsFace.moveForward(getBoardFace().getPly());
 			}
+
 			return true;
 		} else {
 			return false;
@@ -552,6 +556,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 						boardFace.takeBack();
 					}
 				} else {
+					gameFace.updateParentView();
 					navigating = false;
 				}
 			}
@@ -564,6 +569,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				secondMoveAnimator.draw(canvas);
 			} else {
 				secondMoveAnimator = null;
+				gameFace.updateParentView();
 				navigating = false;
 			}
 		}
@@ -598,50 +604,123 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		// draw piece that will be captured
 		if (animationActive && moveAnimator.getCapturedPieceBitmap() != null) {
-			int capturedPiecePosition = moveAnimator.getCapturedPiecePosition();
-			int x = ChessBoard.getColumn(capturedPiecePosition, boardFace.isReside());
-			int y = ChessBoard.getRow(capturedPiecePosition, boardFace.isReside());
+			Bitmap capturedPieceBitmap = moveAnimator.getCapturedPieceBitmap();
+			int piecePosition = moveAnimator.getCapturedPiecePosition();
+			int piece = boardFace.getPiece(piecePosition);
+			int column = ChessBoard.getColumn(piecePosition, boardFace.isReside());
+			int row = ChessBoard.getRow(piecePosition, boardFace.isReside());
 
-			int left = x * squareSize;
-			int right = x * squareSize + squareSize;
-			int bottom = y * squareSize + squareSize;
-			if (using3dPieces) {
-				int top = y * squareSize - _3dPiecesOffset;
+			int left = column * squareSize + pieceInset;
+			int right = column * squareSize + squareSize - pieceInset;
+			int bottom = row * squareSize + squareSize - pieceInset;
+			if (use3dPieces) {
+				int top = row * squareSize + pieceInset - _3dPiecesOffset;
+				if (capturedPieceBitmap.getHeight() < _3dPieceMaxHeight) {
+					int topDiff = _3dPieceMaxHeight - capturedPieceBitmap.getHeight();
+					// calculate scaled offset
+					float offset = (float) (bottom - top) * topDiff  / (float) capturedPieceBitmap.getHeight();
+					top += offset;
+					if (piece == ChessBoard.PAWN) {
+						top -= offset / 2;
+					}
+				}
+
 				rect.set(left, top, right, bottom);
 			} else {
-				int top = y * squareSize;
+				int top = row * squareSize + pieceInset;
 				rect.set(left, top, right, bottom);
 			}
-			canvas.drawBitmap(moveAnimator.getCapturedPieceBitmap(), null, rect, null);
+			canvas.drawBitmap(capturedPieceBitmap, null, rect, null);
 		}
 	}
 
 	private boolean drawPieceOnCanvas(Canvas canvas, BoardFace boardFace, int pos) {
 		int color = boardFace.getColor(pos);
 		int piece = boardFace.getPiece(pos);
-		int x = ChessBoard.getColumn(pos, boardFace.isReside());
-		int y = ChessBoard.getRow(pos, boardFace.isReside());
+		int column = ChessBoard.getColumn(pos, boardFace.isReside());
+		int row = ChessBoard.getRow(pos, boardFace.isReside());
 		// TODO rework logic to store changed pieces and redraw only them
 		if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {    // here is the simple replace/redraw of piece // draw it bit inside of square
-			// calculate piece size bounds
-			int left = x * squareSize + pieceInset;
-			int right = x * squareSize + squareSize - pieceInset;
-			int bottom = y * squareSize + squareSize - pieceInset;
-			if (using3dPieces) {
-				int top = y * squareSize + pieceInset - _3dPiecesOffset;
-				rect.set(left, top, right, bottom);
-			} else {
-				int top = y * squareSize + pieceInset;
-				rect.set(left, top, right, bottom);
-			}
 			Bitmap pieceBitmap = getPieceBitmap(color, piece);
 
 			if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
 				return true;
 			}
+
+			// calculate piece size bounds
+			int left = column * squareSize + pieceInset;
+			int right = column * squareSize + squareSize - pieceInset;
+			int bottom = row * squareSize + squareSize - pieceInset;
+			if (use3dPieces) {
+				int top = row * squareSize + pieceInset - _3dPiecesOffset;
+
+				if (pieceBitmap.getHeight() < _3dPieceMaxHeight) {
+					// calculate scaled offset
+					int topDiff = _3dPieceMaxHeight - pieceBitmap.getHeight();
+					float offset = (float) (bottom - Math.abs(top)) * topDiff  / (float) pieceBitmap.getHeight();
+					top += offset;
+					if (piece == ChessBoard.PAWN) {
+						top -= offset / 2;
+					}
+				}
+				rect.set(left, top, right, bottom);
+			} else {
+				int top = row * squareSize + pieceInset;
+				rect.set(left, top, right, bottom);
+			}
+
 			canvas.drawBitmap(pieceBitmap, null, rect, null);
 		}
 		return false;
+	}
+
+	protected void drawPieceInDragMotion(Canvas canvas) {
+		if (drag) {
+			int color = getBoardFace().getColor(draggingFrom);
+			int piece = getBoardFace().getPiece(draggingFrom);
+
+			int halfSquare = squareSize / 2;
+			int x = dragX - halfSquare;
+			int y = dragY - halfSquare;
+			int file = (dragX - dragX % squareSize) / squareSize;
+			int rank = ((dragY + squareSize) - (dragY + squareSize) % squareSize) / squareSize;
+			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {
+				Bitmap pieceBitmap = getPieceBitmap(color, piece);
+				if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
+					return;
+				}
+
+				// set piece bounds
+				int left = x - halfSquare;
+				int right = x + squareSize + halfSquare;
+				int bottom = y + squareSize + halfSquare;
+				if (use3dPieces) {
+					int top = y - halfSquare - _3dPiecesOffsetDrag;
+					if (pieceBitmap.getHeight() < _3dPieceMaxHeight) {
+						int topDiff = _3dPieceMaxHeight - pieceBitmap.getHeight();
+						// calculate scaled offset
+						float offset = (float) (bottom - top) * topDiff  / (float) pieceBitmap.getHeight();
+						top += offset;
+						if (piece == ChessBoard.PAWN) {
+							top -= offset / 2;
+						}
+					}
+					rect.set(left, top, right, bottom);
+				} else {
+					int pieceTop = y - halfSquare;
+					rect.set(left, pieceTop, right, bottom);
+				}
+				// draw piece
+				canvas.drawBitmap(pieceBitmap, null, rect, null);
+
+				// draw highlight rect around the square
+				int rectLeft = file * squareSize - halfSquare;
+				int rectTop = rank * squareSize - halfSquare;
+				int rectRight = file * squareSize + squareSize + halfSquare;
+				int rectBottom = rank * squareSize + squareSize + halfSquare;
+				canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, whitePaint);
+			}
+		}
 	}
 
 	protected void drawCoordinates(Canvas canvas) {
@@ -651,7 +730,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			float yPosition = SQUARES_IN_LINE * squareSize - textYOffset;
 			for (int i = 0; i < SQUARES_IN_LINE; i++) {
 
-				if (i %2 == 0) {
+				if (i % 2 == 0) {
 					coordinatesPaint.setColor(coordinateColorDark);
 				} else {
 					coordinatesPaint.setColor(coordinateColorLight);
@@ -680,7 +759,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int y = ChessBoard.getRow(from, boardFace.isReside());
 			canvas.drawRect(x * squareSize + offset, y * squareSize + offset,
 					x * squareSize + squareSize - offset, y * squareSize + squareSize - offset, selectedPiecePaint);
-		} else 	if (isHighlightEnabled && boardFace.getPly() > 0) { // draw moved piece highlight from -> to
+		} else if (isHighlightEnabled && boardFace.getPly() > 0) { // draw moved piece highlight from -> to
 			// from
 			Move move = boardFace.getHistDat()[boardFace.getPly() - 1].move;
 			int x1 = ChessBoard.getColumn(move.from, boardFace.isReside());
@@ -702,10 +781,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			boolean isUsersTurn = ((isUserWhite && isWhiteToMove) || (!isUserWhite && !isWhiteToMove))
 					|| appData.isHumanVsHumanGameMode(getBoardFace());
 
-			Log.d(VALID_MOVES, "draw validMoves.isEmpty() " + validMoves.isEmpty());
-			Log.d(VALID_MOVES, "draw validMoves.size() " + validMoves.size());
-			Log.d(VALID_MOVES, "draw isUsersTurn " + isUsersTurn);
-			Log.d(VALID_MOVES, "draw isNewMove() " + isNewMove());
+//			Log.d(VALID_MOVES, "draw validMoves.isEmpty() " + validMoves.isEmpty());
+//			Log.d(VALID_MOVES, "draw validMoves.size() " + validMoves.size());
+//			Log.d(VALID_MOVES, "draw isUsersTurn " + isUsersTurn);
+//			Log.d(VALID_MOVES, "draw isNewMove() " + isNewMove());
 			if (isNewMove()) {
 				if (isUserColor(boardFace.getColor(from)) && isUsersTurn) {
 					validMoves = boardFace.generateValidMoves(!isUsersTurn);
@@ -721,45 +800,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					int y = ChessBoard.getRow(move.to, boardFace.isReside()) + 1;
 					canvas.drawCircle(x * squareSize + squareSize / 2, y * squareSize - squareSize / 2, squareSize / 5, possibleMovePaint);
 				}
-			}
-		}
-	}
-
-	protected void drawDragPosition(Canvas canvas) {
-		if (drag) {
-			int color = getBoardFace().getColor(draggingFrom);
-			int piece = getBoardFace().getPiece(draggingFrom);
-
-			int halfSquare = squareSize / 2;
-			int x = dragX - halfSquare;
-			int y = dragY - halfSquare;
-			int file = (dragX - dragX % squareSize) / squareSize;
-			int rank = ((dragY + squareSize) - (dragY + squareSize) % squareSize) / squareSize;
-			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {
-				// set piece bounds
-				int pieceLeft = x - halfSquare;
-				int pieceRight = x + squareSize + halfSquare;
-				int pieceBottom = y + squareSize + halfSquare;
-				if (using3dPieces) {
-					int pieceTop = y - halfSquare - _3dPiecesOffsetDrag;
-					rect.set(pieceLeft, pieceTop, pieceRight, pieceBottom);
-				} else {
-					int pieceTop = y - halfSquare;
-					rect.set(pieceLeft, pieceTop, pieceRight, pieceBottom);
-				}
-
-				// draw yellow rect above the square
-				int rectLeft = file * squareSize - halfSquare;
-				int rectTop = rank * squareSize - halfSquare;
-				int rectRight = file * squareSize + squareSize + halfSquare;
-				int rectBottom = rank * squareSize + squareSize + halfSquare;
-				canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, whitePaint);
-				// draw piece
-				Bitmap pieceBitmap = getPieceBitmap(color, piece);
-				if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
-					return;
-				}
-				canvas.drawBitmap(pieceBitmap, null, rect, null);
 			}
 		}
 	}
@@ -802,8 +842,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (firstClick) {
 			from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 			//draggingFrom = from;
-			if (isUserColor(boardFace.getColor(from))
-					|| (boardFace.isAnalysis() /*&& boardFace.getPiece(to) != ChessBoard.EMPTY*/)) {
+			if (isUserColor(boardFace.getColor(from)) || (boardFace.isAnalysis())) {
 				pieceSelected = true;
 				firstClick = false;
 				invalidate();
@@ -850,6 +889,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected boolean onActionUp(MotionEvent event) {
+		gameFace.updateParentView();
 
 		int file = (int) (event.getX() - event.getX() % squareSize) / squareSize;
 		int rank = (int) (event.getY() - event.getY() % squareSize) / squareSize;
@@ -1001,7 +1041,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected void afterUserMove() {
-		Log.d(VALID_MOVES, "afterUserMove generate");
 		if (showLegalMoves && isNewMove()) {
 			validMoves = getBoardFace().generateValidMoves(true);
 			previousFrom = from;
@@ -1090,26 +1129,26 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		int resourceId;
 		if (customBoardId != NO_ID) {
 			resourceId = customBoardId;
-		}else {
+		} else {
 			String themeBoardName = appData.getThemeBoardName();
-			if(themeBoardName.equals(context.getString(R.string.board_wood_dark))) {
-				resourceId  = R.drawable.board_wood_dark;
+			if (themeBoardName.equals(context.getString(R.string.board_wood_dark))) {
+				resourceId = R.drawable.board_wood_dark;
 			} else if (themeBoardName.equals(context.getString(R.string.board_wood_light))) {
-				resourceId  = R.drawable.board_wood_light;
+				resourceId = R.drawable.board_wood_light;
 			} else if (themeBoardName.equals(context.getString(R.string.board_blue))) {
-				resourceId  = R.drawable.board_blue;
+				resourceId = R.drawable.board_blue;
 			} else if (themeBoardName.equals(context.getString(R.string.board_brown))) {
-				resourceId  = R.drawable.board_brown;
+				resourceId = R.drawable.board_brown;
 			} else if (themeBoardName.equals(context.getString(R.string.board_green))) {
-				resourceId  = R.drawable.board_green;
+				resourceId = R.drawable.board_green;
 			} else if (themeBoardName.equals(context.getString(R.string.board_grey))) {
-				resourceId  = R.drawable.board_grey;
+				resourceId = R.drawable.board_grey;
 			} else if (themeBoardName.equals(context.getString(R.string.board_marble))) {
-				resourceId  = R.drawable.board_marble;
+				resourceId = R.drawable.board_marble;
 			} else if (themeBoardName.equals(context.getString(R.string.board_red))) {
-				resourceId  = R.drawable.board_red;
+				resourceId = R.drawable.board_red;
 			} else if (themeBoardName.equals(context.getString(R.string.board_tan))) {
-				resourceId  = R.drawable.board_tan;
+				resourceId = R.drawable.board_tan;
 			} else { // if board wasn't selected yet, use default
 				resourceId = R.drawable.board_wood_dark;
 			}
@@ -1175,10 +1214,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private Bitmap createBitmapForPiece(int drawableId) {
 		Bitmap pieceBitmap;
 
-		// Calculate inSampleSize
-		int pieceSize = squareSize - pieceInset;
-		bitmapOptions.inSampleSize = AppUtils.calculateInSampleSize(bitmapOptions, pieceSize, pieceSize);
-
 		// Decode bitmap with inSampleSize set
 		bitmapOptions.inJustDecodeBounds = false;
 		pieceBitmap = BitmapFactory.decodeResource(getResources(), drawableId, bitmapOptions);
@@ -1189,11 +1224,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private Bitmap createBitmapForPiece(String filePath) {
 		Bitmap pieceBitmap;
 
-		// Calculate inSampleSize
-		int pieceSize = squareSize - pieceInset;
-		bitmapOptions.inSampleSize = AppUtils.calculateInSampleSize(bitmapOptions, pieceSize, pieceSize);
-
-		// Decode bitmap with inSampleSize set
 		bitmapOptions.inJustDecodeBounds = false;
 		pieceBitmap = BitmapFactory.decodeFile(filePath, bitmapOptions);
 
@@ -1218,7 +1248,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (getAppData().isUseThemePieces()) {
 			String piecesThemePath = appData.getThemePiecesPath();
 
-			using3dPieces = appData.isThemePieces3d();
+			use3dPieces = appData.isThemePieces3d();
 
 			if (whitePiecesMap == null) {
 				whitePiecesMap = new WeakHashMap<Integer, Bitmap>();
@@ -1236,19 +1266,29 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			bitmapOptions.inJustDecodeBounds = true;
 			BitmapFactory.decodeFile(testPath, bitmapOptions);
 
+			_3dPieceMaxHeight = 0;
+			// create white pieces
 			String[] whitePieceImageCodes = ChessBoard.whitePieceImageCodes;
 			for (int i = 0; i < whitePieceImageCodes.length; i++) {
 				String pieceImageCode = whitePieceImageCodes[i];
 				String filePath = dirForPieces.getAbsolutePath() + "/" + pieceImageCode + ".png";
 				Bitmap pieceBitmap = createBitmapForPiece(filePath);
+
 				whitePiecesMap.put(i, pieceBitmap);
+
+				// get max height for 3d pieces
+				if (use3dPieces) {
+					_3dPieceMaxHeight = Math.max(pieceBitmap.getHeight(), _3dPieceMaxHeight);
+				}
 			}
 
+			// create black pieces
 			String[] blackPieceImageCodes = ChessBoard.blackPieceImageCodes;
 			for (int i = 0; i < blackPieceImageCodes.length; i++) {
 				String pieceImageCode = blackPieceImageCodes[i];
 				String filePath = dirForPieces.getAbsolutePath() + "/" + pieceImageCode + ".png";
 				Bitmap pieceBitmap = createBitmapForPiece(filePath);
+
 				blackPiecesMap.put(i, pieceBitmap);
 			}
 		} else {
@@ -1258,7 +1298,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	private void setDefaultPiecesByName(Context context, String themePiecesName) {
-		if(themePiecesName.equals(context.getString(R.string.pieces_game))) {
+		if (themePiecesName.equals(context.getString(R.string.pieces_game))) {
 			setPieceBitmapFromArray(gamePiecesDrawableIds);
 		} else if (themePiecesName.equals(context.getString(R.string.pieces_alpha))) {
 			setPieceBitmapFromArray(alphaPiecesDrawableIds);
@@ -1573,6 +1613,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		long now;
 		int from1, to1, hide1 = -1;
 		int from2, to2, hide2 = -1; // rename
+		private int fromPiece;
 		private Bitmap pieceBitmap;
 		private Bitmap rookCastlingBitmap;
 		private Bitmap capturedPieceBitmap;
@@ -1590,7 +1631,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			BoardFace boardFace = getBoardFace();
 			int moveFromPosition = forward ? move.from : move.to;
 			int fromColor = boardFace.getColor(moveFromPosition);
-			int fromPiece = boardFace.getPiece(moveFromPosition);
+			fromPiece = boardFace.getPiece(moveFromPosition);
 
 			if (fromPiece == ChessBoard.EMPTY) {
 //				throw new IllegalArgumentException("fromPiece can't be EMPTY square here, check Move generation object. move is " + move);
@@ -1649,7 +1690,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 		}
 
-
 		public boolean isForward() {
 			return forward;
 		}
@@ -1674,10 +1714,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				firstRun = false;
 			}
 
-			if (/*(startTime < 0) ||*/ (now >= stopTime)) {
-				return false;
-			}
-			return true;
+			return (now < stopTime);
 		}
 
 		public long getAnimationTime() {
@@ -1685,8 +1722,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 
 		public boolean isSquareHidden(int square) {
-			/*if (!isAnimationActive())
-				return false;*/
 			return square == hide1 || square == hide2;
 		}
 
@@ -1715,17 +1750,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			double animationTimeFactor = (now - startTime) / (double) (stopTime - startTime);
 			drawAnimPiece(canvas, pieceBitmap, from1, to1, animationTimeFactor);
 			drawAnimPiece(canvas, rookCastlingBitmap, from2, to2, animationTimeFactor);
-			/*long now2 = System.currentTimeMillis();
-			long delay = 20 - (now2 - now);
-			if (delay < 1) {
-				delay = 1;
-			}*/
-			/*handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {*/
 			invalidate();
-				/*}
-			}, delay);*/
 		}
 
 		private void drawAnimPiece(Canvas canvas, Bitmap pieceBitmap, int from, int to, double animationTimeFactor) {
@@ -1738,10 +1763,22 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			final int xCrd2 = getXCoordinate(ChessBoard.getFile(to));
 			final int yCrd2 = getYCoordinate(ChessBoard.getRank(to));
 			final int xCrd = xCrd1 + (int) Math.round((xCrd2 - xCrd1) * animationTimeFactor);
-			final int yCrd = yCrd1 + (int) Math.round((yCrd2 - yCrd1) * animationTimeFactor);
+			int yCrd = yCrd1 + (int) Math.round((yCrd2 - yCrd1) * animationTimeFactor);
 
-			if (using3dPieces) {
-				rect.set(xCrd, yCrd - _3dPiecesOffset, xCrd + squareSize, yCrd + squareSize);
+			if (use3dPieces) {
+				int bottom = yCrd + squareSize;
+				int top = yCrd - _3dPiecesOffset;
+				if (pieceBitmap.getHeight() < _3dPieceMaxHeight) {
+					int topDiff = _3dPieceMaxHeight - pieceBitmap.getHeight();
+					// calculate scaled offset
+					float offset = (float) (bottom - top) * topDiff  / (float) pieceBitmap.getHeight();
+					top += offset;
+					if (fromPiece == ChessBoard.PAWN) {
+						top -= offset / 2;
+					}
+				}
+
+				rect.set(xCrd, top, xCrd + squareSize, bottom);
 			} else {
 				rect.set(xCrd, yCrd, xCrd + squareSize, yCrd + squareSize);
 			}
@@ -1755,7 +1792,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		public void setForceCompEngine(boolean forceCompEngine) {
 			this.forceCompEngine = forceCompEngine;
 		}
-
 	}
 
 	private Bitmap getPieceBitmap(int fromColor, int fromPiece) {
