@@ -138,6 +138,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private boolean fastMode;
 	private boolean animationActive;
 	private int _3dPieceMaxHeight;
+	private Paint piecesPaint;
+	private int _3dPiecesOffsetSmall;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -163,6 +165,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		rect = new Rect();
 
 		_3dPiecesOffset = resources.getDimensionPixelSize(R.dimen._3dPiece_offset_for_board);
+		_3dPiecesOffsetSmall = resources.getDimensionPixelSize(R.dimen._3dPiece_offset_for_board_small);
 		_3dPiecesOffsetDrag = resources.getDimensionPixelSize(R.dimen._3dPiece_offset_for_board_drag);
 		pieceInset = (int) (1 * density);
 
@@ -170,6 +173,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (highlightColor == AppData.UNDEFINED) {
 			highlightColor = resources.getColor(R.color.highlight_color);
 		}
+
+		piecesPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
 		selectedPiecePaint = new Paint();
 		selectedPiecePaint.setStrokeWidth(resources.getDimension(R.dimen.highlight_stroke_width));
@@ -621,7 +626,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					float offset = (float) (bottom - top) * topDiff  / (float) capturedPieceBitmap.getHeight();
 					top += offset;
 					if (piece == ChessBoard.PAWN) {
-						top -= offset / 2;
+						top -= offset / 4;
 					}
 				}
 
@@ -630,7 +635,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				int top = row * squareSize + pieceInset;
 				rect.set(left, top, right, bottom);
 			}
-			canvas.drawBitmap(capturedPieceBitmap, null, rect, null);
+			canvas.drawBitmap(capturedPieceBitmap, null, rect, piecesPaint);
 		}
 	}
 
@@ -651,25 +656,23 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int left = column * squareSize + pieceInset;
 			int right = column * squareSize + squareSize - pieceInset;
 			int bottom = row * squareSize + squareSize - pieceInset;
+			int top = row * squareSize + pieceInset;
 			if (use3dPieces) {
-				int top = row * squareSize + pieceInset - _3dPiecesOffset;
+				top = row * squareSize + pieceInset - _3dPiecesOffset;
 
 				if (pieceBitmap.getHeight() < _3dPieceMaxHeight) {
 					// calculate scaled offset
 					int topDiff = _3dPieceMaxHeight - pieceBitmap.getHeight();
-					float offset = (float) (bottom - Math.abs(top)) * topDiff  / (float) pieceBitmap.getHeight();
+					float offset = (float) (bottom - top) * topDiff  / (float) pieceBitmap.getHeight();
 					top += offset;
 					if (piece == ChessBoard.PAWN) {
-						top -= offset / 2;
+						top -= offset / 4;
 					}
 				}
-				rect.set(left, top, right, bottom);
-			} else {
-				int top = row * squareSize + pieceInset;
-				rect.set(left, top, right, bottom);
 			}
-
-			canvas.drawBitmap(pieceBitmap, null, rect, null);
+			rect.set(left, top, right, bottom);
+			canvas.drawBitmap(pieceBitmap, null, rect, piecesPaint);
+//			canvas.drawBitmap(pieceBitmap, left, top, piecesPaint);
 		}
 		return false;
 	}
@@ -702,7 +705,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 						float offset = (float) (bottom - top) * topDiff  / (float) pieceBitmap.getHeight();
 						top += offset;
 						if (piece == ChessBoard.PAWN) {
-							top -= offset / 2;
+							top -= offset / 4;
 						}
 					}
 					rect.set(left, top, right, bottom);
@@ -711,7 +714,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					rect.set(left, pieceTop, right, bottom);
 				}
 				// draw piece
-				canvas.drawBitmap(pieceBitmap, null, rect, null);
+				canvas.drawBitmap(pieceBitmap, null, rect, piecesPaint);
 
 				// draw highlight rect around the square
 				int rectLeft = file * squareSize - halfSquare;
@@ -1250,6 +1253,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 			use3dPieces = appData.isThemePieces3d();
 
+			if (use3dPieces && !appData.getThemePiecesName().toLowerCase().contains("chesskid")) { // little hardcode here, until i'll re-write the logic
+				_3dPiecesOffset = _3dPiecesOffsetSmall;
+			}
+
 			if (whitePiecesMap == null) {
 				whitePiecesMap = new WeakHashMap<Integer, Bitmap>();
 			}
@@ -1774,7 +1781,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					float offset = (float) (bottom - top) * topDiff  / (float) pieceBitmap.getHeight();
 					top += offset;
 					if (fromPiece == ChessBoard.PAWN) {
-						top -= offset / 2;
+						top -= offset / 4;
 					}
 				}
 
@@ -1782,7 +1789,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			} else {
 				rect.set(xCrd, yCrd, xCrd + squareSize, yCrd + squareSize);
 			}
-			canvas.drawBitmap(pieceBitmap, null, rect, null);
+			canvas.drawBitmap(pieceBitmap, null, rect, piecesPaint);
 		}
 
 		public boolean isForceCompEngine() {

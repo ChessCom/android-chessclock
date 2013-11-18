@@ -2,6 +2,10 @@ package com.chess.backend.interfaces;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
+import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCodes;
 
 import java.util.List;
 
@@ -68,6 +72,15 @@ public abstract class AbstractUpdateListener<ItemType> implements TaskUpdateInte
 
 	@Override
 	public void errorHandle(Integer resultCode) {
+		// show message only for re-login
+		if (RestHelper.containsServerCode(resultCode)) {
+			int serverCode = RestHelper.decodeServerCode(resultCode);
+			if (serverCode == ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
+				if (context != null) {
+					Toast.makeText(context, R.string.pleaseLoginAgain, Toast.LENGTH_SHORT).show();
+				}
+			}
+		}
 	}
 
 	@Override
