@@ -47,11 +47,13 @@
 			/>
 
 		<!--Moves-->
-		<ListView
+		<com.chess.widgets.RoboListView
 			android:id="@+id/listView"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			style="@style/ListItem.Header.Dark"
 			android:layout_below="@id/moveVariationTxt"
+			android:layout_marginBottom="5dp"
 			/>
 
 	</com.chess.widgets.RelLayout>
