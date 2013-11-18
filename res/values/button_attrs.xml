@@ -103,6 +103,10 @@
 			<enum name="tabletLeft" value="18"/>
 			<enum name="tabletMiddle" value="19"/>
 			<enum name="tabletRight" value="20"/>
+
+			<enum name="silverLeft" value="21"/>
+			<enum name="silverMiddle" value="22"/>
+			<enum name="silverRight" value="23"/>
         </attr>
 
     </declare-styleable>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	>
+	<!--android:background="@color/white"-->
+	<com.chess.widgets.RoboRadioGroup
+		android:id="@+id/tabRadioGroup"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:background="@color/white"
+		android:gravity="left"
+		>
+
+		<!--Activity-->
+		<com.chess.widgets.RoboRadioButton
+			android:id="@+id/activityTabBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			style="@style/Rect.Silver"
+			android:text="@string/activity"
+			android:textColor="@color/profile_grey_text"
+			android:minWidth="94dp"
+			android:visibility="gone"
+			/>
+
+		<!--About-->
+		<com.chess.widgets.RoboRadioButton
+			android:id="@+id/aboutTabBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			style="@style/Rect.Silver.Left"
+			android:text="@string/about"
+			android:textColor="@color/profile_grey_text"
+			android:minWidth="94dp"
+			/>
+
+		<!--Games-->
+		<com.chess.widgets.RoboRadioButton
+			android:id="@+id/gamesTabBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			style="@style/Rect.Silver.Middle"
+			android:text="@string/games"
+			android:textColor="@color/profile_grey_text"
+			android:minWidth="94dp"
+			/>
+
+		<!--Trophies-->
+		<com.chess.widgets.RoboRadioButton
+			android:id="@+id/trophiesTabBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			style="@style/Rect.Silver"
+			android:text="@string/trophies"
+			android:textColor="@color/new_subtitle_dark_grey"
+			android:minWidth="94dp"
+			android:visibility="gone"
+			/>
+
+		<!--Stub-->
+		<com.chess.widgets.RoboRadioButton
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/Rect.Silver.Right"
+			android:textColor="@color/new_subtitle_dark_grey"
+			android:minWidth="94dp"
+			android:clickable="false"
+			custom:btn_is_clickable="false"
+			/>
+
+	</com.chess.widgets.RoboRadioGroup>
+
+	<!--Indeterminate Progress-->
+	<ProgressBar
+		android:id="@+id/tabsLoadProgressBar"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:indeterminate="true"
+		style="@style/ChessProgressBar"
+		android:layout_centerInParent="true"
+		/>
+
+	<!--Tab content frame-->
+	<RelativeLayout
+		android:id="@+id/tab_content_frame"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@id/tabRadioGroup"
+		/>
+
+
+</RelativeLayout>
+

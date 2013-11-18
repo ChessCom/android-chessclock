@@ -40,7 +40,6 @@ import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
-import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
 import com.chess.ui.fragments.welcome.SignInFragment;
 import com.chess.ui.fragments.welcome.SignUpFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
@@ -79,6 +78,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private static final int MIN_USERNAME_LENGTH = 3;
 	private static final int MAX_USERNAME_LENGTH = 20;
 	private static final String IMAGE_CACHE_DIR = "thumbs";
+	protected static final int NON_INIT = -1;
 
 	protected static final String RE_LOGIN_TAG = "re-login popup";
 	protected static final String NETWORK_CHECK_TAG = "network check popup";
@@ -90,6 +90,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final String OPPONENT_NAME = "opponent_name";
 	protected static final String MODE = "mode";
 	protected static final String CONFIG = "config";
+	protected static final String USERNAME = "username";
 
 	public static final int CENTER_MODE = 1;
 	public static final int RIGHT_MENU_MODE = 2;

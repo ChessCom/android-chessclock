@@ -355,6 +355,7 @@
 	<dimen name="tablet_board_margin">15dip</dimen>
 	<dimen name="tablet_board_margin_bottom_welcome">8dip</dimen>
 	<dimen name="tablet_board_margin_bottom">5dip</dimen>
+	<dimen name="tablet_board_margin_left">15dip</dimen>
 	<dimen name="tablet_panel_info_top_margin">15dip</dimen>
 	<dimen name="welcome_pager_indicator_padding">5dip</dimen>
 	<dimen name="daily_game_list_item_width">204dp</dimen>

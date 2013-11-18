@@ -21,7 +21,6 @@ import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -101,12 +100,14 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		setArguments(bundle);
 	}
 
-	public ProfileBaseFragmentTablet(String username) {
-		Bundle bundle = new Bundle();
-		bundle.putString(USERNAME, username);
-		bundle.putInt(MODE, FRIENDS_SECTION);
-		setArguments(bundle);
-	}
+//	public static ProfileBaseFragmentTablet createInstance(String username) {
+//		ProfileBaseFragmentTablet fragment = new ProfileBaseFragmentTablet();
+//		Bundle bundle = new Bundle();
+//		bundle.putString(USERNAME, username);
+//		bundle.putInt(MODE, FRIENDS_SECTION);
+//		fragment.setArguments(bundle);
+//		return fragment;
+//	}
 
 	public static ProfileBaseFragmentTablet createInstance(int mode, String username) {
 		ProfileBaseFragmentTablet fragment = new ProfileBaseFragmentTablet();
@@ -323,6 +324,9 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 	}
 
 	private void updateUiData() {
+		if (userInfo == null) {
+			return;
+		}
 		imageLoader.download(userInfo.getAvatar(), photoImg, photoImageSize);
 		usernameTxt.setText(userInfo.getFirstName() + Symbol.SPACE + userInfo.getLastName());
 		locationTxt.setText(userInfo.getLocation());
@@ -356,7 +360,7 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 
 		ratingsAdapter = new RatingsAdapter(getActivity(), ratingList);
 
-		OpponentsAdapter friendsAdapter = new OpponentsAdapter(getActivity(), friendsList);
+		OpponentsAdapter friendsAdapter = new OpponentsAdapter(getActivity(), friendsList, getImageFetcher());
 
 		sectionedAdapter.addSection(getString(R.string.ratings), ratingsAdapter);
 
@@ -397,27 +401,30 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			changeInternalFragment(FriendsFragmentTablet.createInstance(ProfileBaseFragmentTablet.this, username));
+			getActivityFace().openFragment(ProfileTabsFragmentTablet.createInstance(ProfileBaseFragmentTablet.this, username));
+//			changeInternalFragment(FriendsFragmentTablet.createInstance(ProfileBaseFragmentTablet.this, username));
 		}
 	}
 
-	public class OpponentsAdapter extends ItemsAdapter<SelectionItem> {
+	public static class OpponentsAdapter extends ItemsAdapter<SelectionItem> {
 
 		private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 		private final int imageSize;
 		private final EnhancedImageDownloader imageDownloader;
+		private final int photoImageSize;
 
-		public OpponentsAdapter(Context context, List<SelectionItem> items) {
-			super(context, items, getImageFetcher());
+		public OpponentsAdapter(Context context, List<SelectionItem> items, SmartImageFetcher imageFetcher) {
+			super(context, items, imageFetcher);
 			imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 			imageSize = (int) (40 * density);
 
-			imageDownloader = new EnhancedImageDownloader(getActivity());
+			imageDownloader = new EnhancedImageDownloader(context);
+			photoImageSize = (int) (80 * density);
 		}
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			ProgressImageView imageView = new ProgressImageView(getActivity(), imageSize);
+			ProgressImageView imageView = new ProgressImageView(context, imageSize);
 			AbsListView.LayoutParams params = new AbsListView.LayoutParams(imageSize, imageSize);
 			imageView.setLayoutParams(params);
 			imageView.getImageView().setAdjustViewBounds(true);
@@ -518,7 +525,7 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 		transaction.replace(R.id.innerFragmentContainer, fragment, fragment.getClass().getSimpleName());
 		transaction.addToBackStack(fragment.getClass().getSimpleName());
-		transaction.commit();
+		transaction.commitAllowingStateLoss();
 	}
 
 	@Override

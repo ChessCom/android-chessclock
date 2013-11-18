@@ -350,7 +350,39 @@
         <item name="btn_solid">@color/transparent_button</item>
     </style>
 
-    <!-- ============= Top ===================== -->
+	<!--====================================== Silver Button =========================================== -->
+	<style name="Rect.Silver">
+		<item name="btn_is_solid">false</item>
+		<item name="btn_gradient_angle">TOP_BOTTOM</item>
+
+		<item name="btn_top">@color/transparent_button_border_right</item>
+		<item name="btn_left">@color/transparent_button_border_bottom</item>
+		<item name="btn_right">@color/transparent_button_border_right</item>
+		<item name="btn_bottom">@color/transparent_button_border_bottom</item>
+
+		<item name="btn_gradient_start">#FFfaf9f8</item>
+		<item name="btn_gradient_end">#ffe3e2e1</item>
+
+		<item name="android:textColor">@color/profile_grey_text</item>
+		<item name="android:textSize">14sp</item>
+		<item name="ttf">Bold</item>
+		<item name="android:minHeight">@dimen/new_top_button_height</item>
+
+	</style>
+
+	<style name="Rect.Silver.Left">
+		<item name="btn_rect_pos">silverLeft</item>
+	</style>
+
+	<style name="Rect.Silver.Middle">
+		<item name="btn_rect_pos">silverMiddle</item>
+	</style>
+
+	<style name="Rect.Silver.Right">
+		<item name="btn_rect_pos">silverRight</item>
+	</style>
+
+	<!-- ============= Top ===================== -->
     <style name="Rect.Top">
         <item name="btn_top">@color/transparent_button_border_left</item>
         <item name="btn_bottom">@color/transparent_button_border_bottom</item>
@@ -358,15 +390,15 @@
     </style>
 
     <style name="Rect.Top.Left">
-        <item name="btn_rect_pos">topLeft</item>
+        <item name="btn_rect_pos">bottomLeft</item>
     </style>
 
     <style name="Rect.Top.Middle">
-        <item name="btn_rect_pos">topMiddle</item>
+        <item name="btn_rect_pos">bottomMiddle</item>
     </style>
 
     <style name="Rect.Top.Right">
-        <item name="btn_rect_pos">topRight</item>
+        <item name="btn_rect_pos">bottomRight</item>
     </style>
 
     <!-- ============= Tab ===================== -->

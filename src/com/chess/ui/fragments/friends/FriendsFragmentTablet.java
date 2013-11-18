@@ -11,7 +11,7 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.messages.NewMessageFragment;
-import com.chess.ui.fragments.profiles.ProfileBaseFragmentTablet;
+import com.chess.ui.fragments.profiles.ProfileTabsFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
 
 /**
@@ -70,7 +70,7 @@ public class FriendsFragmentTablet extends FriendsFragment {
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 
-			getActivityFace().openFragment(new ProfileBaseFragmentTablet(username));
+			getActivityFace().openFragment(ProfileTabsFragmentTablet.createInstance(parentFace, username));
 		} else {
 			super.onClick(view);
 		}

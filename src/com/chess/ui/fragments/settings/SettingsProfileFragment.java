@@ -112,7 +112,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		AVATAR_SIZE = (int) (getResources().getDimension(R.dimen.img_profile_size_big) / density);
 		progressImageView = new ProgressImageView(getContext(), AVATAR_SIZE);
 
-		dateFormatter = new SimpleDateFormat(getString(R.string.membership_expire_date_format));
+		dateFormatter = new SimpleDateFormat(getString(R.string.common_date_format));
 		imageDownloader = new EnhancedImageDownloader(getActivity());
 		photoSelectedListener = new PhotoSelectedListener();
 		countryNames = getResources().getStringArray(R.array.new_countries);

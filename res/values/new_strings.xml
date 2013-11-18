@@ -168,7 +168,7 @@
     <string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice">Terms and Conditions.</a>]]></string>
     <string name="profile_account_message_3">If you would like \nto close your account,</string>
     <string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">tap here.</a>]]></string>
-    <string name="membership_expire_date_format">dd/MM/yyyy</string>
+    <string name="common_date_format">dd/MM/yyyy</string>
     <string name="basic">Basic</string>
     <string name="sign_up_now_free">Sign Up Now, It\'s FREE!</string>
     <string name="sign_up_free">Sign Up - It\'s FREE!</string>
@@ -353,5 +353,11 @@
 	<string name="upgrade_now">Upgrade Now</string>
 	<string name="your_account_locked">Account locked. Please login at Chess.com</string>
 	<string name="inbox">Inbox</string>
+	<string name="about">About</string>
+	<string name="member_since_">Member Since:  %s</string>
+	<string name="birthday_">Birthday:  %s</string>
+	<string name="last_login_">Last Login:  %s</string>
+	<string name="challenge_to_play">Challenge to play</string>
+	<string name="send_message">Send message</string>
 
 </resources>

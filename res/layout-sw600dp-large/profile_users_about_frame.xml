@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/white">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:minHeight="60dp"
+		android:background="@color/graph_back"
+		android:gravity="center_vertical">
+
+		<!--Member Since-->
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/memberSinceTxt"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textColor="@color/new_subtitle_dark_grey"
+			android:text="@string/member_since_"
+			android:paddingLeft="@dimen/comments_side_padding"
+			/>
+
+		<!--Last Login-->
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/lastLoginTxt"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textColor="@color/new_subtitle_dark_grey"
+			android:text="@string/last_login_"
+			android:paddingLeft="@dimen/comments_side_padding"
+			/>
+
+		<!--Birthday-->
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/birthdayTxt"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textColor="@color/new_subtitle_dark_grey"
+			android:text="@string/birthday_"
+			android:paddingLeft="@dimen/comments_side_padding"
+			/>
+
+	</LinearLayout>
+
+	<!--About description-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/aboutTxt"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:padding="@dimen/comments_side_padding"
+		android:textColor="@color/new_subtitle_dark_grey"
+		/>
+
+</LinearLayout>

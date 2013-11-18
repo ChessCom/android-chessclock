@@ -49,6 +49,10 @@ public class RectButtonDrawable extends ButtonDrawable {
 	static final int TABLET_MIDDLE = 19;
 	static final int TABLET_RIGHT = 20;
 
+	static final int SILVER_LEFT = 21;
+	static final int SILVER_MIDDLE = 22;
+	static final int SILVER_RIGHT = 23;
+
 	int rectPosition = DEF_VALUE;
 
 	private int edgeOffset;
@@ -151,6 +155,8 @@ public class RectButtonDrawable extends ButtonDrawable {
 		} else if (rectPosition == TABLET_LEFT || rectPosition == TABLET_MIDDLE || rectPosition == TABLET_RIGHT) {
 			insetOne.button = new int[]{in1, in1, in1, in1};
 			insetOne.bottom = new int[]{0, 0, 0, 0};
+		} else if (rectPosition == SILVER_LEFT || rectPosition == SILVER_MIDDLE || rectPosition == SILVER_RIGHT) {
+			insetOne.button = new int[]{in1 * 2, in1 * 2, in1 * 2, in1};
 		} else {
 			insetOne.button = new int[]{in1, in1, in1, in1};
 		}
@@ -200,9 +206,9 @@ public class RectButtonDrawable extends ButtonDrawable {
 
 	@Override
 	public void draw(Canvas canvas) {
-//		if (!boundsInit) {
+		if (!boundsInit) {
 			initBounds(canvas);
-//		}
+		}
 
 		super.draw(canvas);
 	}
@@ -268,6 +274,16 @@ public class RectButtonDrawable extends ButtonDrawable {
 				break;
 			case TABLET_RIGHT:
 				enabledDrawable.setBounds(-edgeOffset / 2, 0, width + edgeOffset, height - edgeOffset / 2);
+				break;
+			case SILVER_LEFT:
+				enabledDrawable.setBounds(-edgeOffset, 0, width + edgeOffset / 2, height);
+				break;
+			case SILVER_MIDDLE:
+				enabledDrawable.setBounds(-edgeOffset / 2, 0, width + edgeOffset / 2, height);
+				break;
+			case SILVER_RIGHT:
+				enabledDrawable.setBounds(-edgeOffset / 2, 0, width + edgeOffset, height);
+				break;
 		}
 
 		boundsInit = true;

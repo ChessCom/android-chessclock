@@ -10,7 +10,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
@@ -35,8 +38,7 @@ import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
-import com.chess.ui.fragments.home.HomeTabsFragment;
-import com.chess.ui.interfaces.FragmentTabsFace;
+import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -76,7 +78,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	private GridView gridView;
 	private View loadingView;
 	private List<DailyFinishedGameData> finishedGameDataList;
-	private FragmentTabsFace parentFace;
+	private FragmentParentFace parentFace;
 	private int mode;
 
 	public DailyGamesFragmentTablet() {
@@ -85,7 +87,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		setArguments(bundle);
 	}
 
-	public static DailyGamesFragmentTablet createInstance(FragmentTabsFace parentFace, int mode) {
+	public static DailyGamesFragmentTablet createInstance(FragmentParentFace parentFace, int mode) {
 		DailyGamesFragmentTablet fragment = new DailyGamesFragmentTablet();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, mode);
@@ -265,11 +267,9 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		super.onClick(view);
 		if (view.getId() == R.id.startNewGameBtn) {
 			if (parentFace != null) {
-				if (mode == HOME_MODE) {
-					parentFace.changeInternalFragment(HomeTabsFragment.NEW_GAME);
-				} else {
-					parentFace.changeInternalFragment(HomeTabsFragment.NEW_GAME);
-				}
+				parentFace.changeFragment(new HomePlayFragment());
+			} else {
+				getActivityFace().showPreviousFragment();
 			}
 		} else if (view.getId() == R.id.completedGamesHeaderView) {
 			getActivityFace().openFragment(new DailyFinishedGamesFragmentTablet());

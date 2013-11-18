@@ -187,7 +187,6 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 
 	private void createFriendRequest(String username, String message) {
 		LoadItem loadItem = LoadHelper.postFriend(getUserToken(), username, message);
-
 		new RequestJsonTask<RequestItem>(new RequestFriendListener()).executeTask(loadItem);
 	}
 

@@ -18,10 +18,12 @@ import com.chess.backend.entity.api.DailyGamesAllItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.statics.AppConstants;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragmentTablet;
+import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.utilities.AppUtils;
 
@@ -33,9 +35,9 @@ import java.util.List;
  * Date: 30.12.12
  * Time: 21:41
  */
-public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener, FragmentTabsFace {
+public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener,
+		FragmentParentFace {
 
-	private static final int NON_INIT = -1;
 	public static final int NEW_GAME = 0;
 
 	private RadioGroup tabRadioGroup;
@@ -203,15 +205,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	}
 
 	@Override
-	public void changeInternalFragment(int code) {
-		if (code == NEW_GAME) {
-			changeInternalFragment(new HomePlayFragment());
-		}
-	}
-
-	@Override
-	public void onPageSelected(int page) {
-
+	public void changeFragment(BasePopupsFragment fragment) {
+		changeInternalFragment(fragment);
 	}
 
 	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {

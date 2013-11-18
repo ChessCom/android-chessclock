@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -15,7 +16,6 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.DailyCurrentGameData;
-import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -25,7 +25,9 @@ import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.fragments.daily.DailyFinishedGamesFragmentTablet;
 import com.chess.ui.fragments.daily.GameDailyFragment;
+import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -48,7 +50,7 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 	private TextView emptyView;
 	private GridView gridView;
 	private View loadingView;
-	private List<DailyFinishedGameData> finishedGameDataList;
+	private FragmentParentFace parentFace;
 
 	public ProfileGamesFragmentTablet() {
 		Bundle bundle = new Bundle();
@@ -56,11 +58,12 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 		setArguments(bundle);
 	}
 
-	public static ProfileGamesFragmentTablet createInstance(String username) {
+	public static ProfileGamesFragmentTablet createInstance(FragmentParentFace parentFace, String username) {
 		ProfileGamesFragmentTablet fragment = new ProfileGamesFragmentTablet();
 		Bundle bundle = new Bundle();
 		bundle.putString(USERNAME, username);
 		fragment.setArguments(bundle);
+		fragment.parentFace = parentFace;
 		return fragment;
 	}
 
@@ -87,6 +90,38 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 		gridView = (GridView) view.findViewById(R.id.gridView);
 		gridView.setOnItemClickListener(this);
 		gridView.setAdapter(currentGamesMyCursorAdapter);
+
+		view.findViewById(R.id.completedGamesHeaderView).setOnClickListener(this);
+
+		if (gridView != null) {
+			gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
+				@Override
+				public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+					// Pause fetcher to ensure smoother scrolling when flinging
+					if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+						getImageFetcher().setPauseWork(true);
+					} else {
+						getImageFetcher().setPauseWork(false);
+					}
+				}
+
+				@Override
+				public void onScroll(AbsListView absListView, int firstVisibleItem,
+									 int visibleItemCount, int totalItemCount) {
+				}
+			});
+		}
+
+		View optionsFragmentContainerView = view.findViewById(R.id.optionsFragmentContainerView);
+		if (optionsFragmentContainerView != null) {
+			optionsFragmentContainerView.setVisibility(View.GONE);
+		}
+
+		// adjust action bar buttons
+		getActivityFace().showActionMenu(R.id.menu_message, false);
+		getActivityFace().showActionMenu(R.id.menu_challenge, false);
+		getActivityFace().showActionMenu(R.id.menu_notifications, true);
+		getActivityFace().showActionMenu(R.id.menu_games, true);
 	}
 
 	@Override
@@ -118,6 +153,18 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 		super.onPause();
 
 		releaseResources();
+	}
+
+	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+
+		if (view.getId() == R.id.completedGamesHeaderView) {
+			if (parentFace != null) {
+				parentFace.changeFragment(DailyFinishedGamesFragmentTablet.createInstance(username));
+			}
+
+		}
 	}
 
 	private void init() {

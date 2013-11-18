@@ -14,30 +14,30 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
-import com.chess.db.DbScheme;
-import com.chess.statics.IntentConstants;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.model.GameOnlineItem;
+import com.chess.statics.IntentConstants;
+import com.chess.statics.StaticData;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.home.HomeTabsFragment;
-import com.chess.ui.interfaces.FragmentTabsFace;
+import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -82,7 +82,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private View loadingView;
 	private Button startNewGameBtn;
 	private List<DailyFinishedGameData> finishedGameDataList;
-	private FragmentTabsFace parentFace;
+	private FragmentParentFace parentFace;
 	private int mode;
 
 	public DailyGamesFragment() {
@@ -91,7 +91,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		setArguments(bundle);
 	}
 
-	public static DailyGamesFragment createInstance(FragmentTabsFace parentFace, int mode) {
+	public static DailyGamesFragment createInstance(FragmentParentFace parentFace, int mode) {
 		DailyGamesFragment fragment = new DailyGamesFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, mode);
@@ -247,11 +247,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		super.onClick(view);
 		if (view.getId() == R.id.startNewGameBtn) {
 			if (parentFace != null) {
-				if (mode == HOME_MODE) {
-					parentFace.changeInternalFragment(HomeTabsFragment.NEW_GAME);
-				} else {
-					parentFace.changeInternalFragment(HomeTabsFragment.NEW_GAME);
-				}
+				parentFace.changeFragment(new HomePlayFragment());
+			} else {
+				getActivityFace().showPreviousFragment();
 			}
 		}
 	}

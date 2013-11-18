@@ -8,18 +8,22 @@ package com.chess.backend.entity.api;
  */
 public class UserItem extends BaseResponseItem<UserItem.Data> {
 /*
-        "id": 11436,
+ 		"id": 31,
         "country_id": 2,
-        "avatar": "//s3.amazonaws.com/chess-7/images_users/avatars/rest_origin.12.jpeg",
-        "username": "rest",
-        "last_login_date": 1371214315,
-        "points": 0,
-        "chess_title": null,
-        "status": "ciaaoooo",
-        "first_name": "",
-        "last_name": "",
-        "location": "",
-        "country_name": "United States"
+        "avatar_url": "//www.c.com/images/noavatar_l.gif",
+        "username": "jay",
+        "last_login_date": 1370443587,
+        "points": 549,
+        "chess_title": "GM",
+        "status": "ciaooooooo",
+        "first_name": "Jay",
+        "last_name": "S",
+        "location": "Israel",
+        "country_name": "United States",
+        "premium_status": 3,
+        "member_since": 1178526885,
+        "date_of_birth": 241167600,
+        "about": "I'm kinda like Tom fr"
 	*/
 
 	public static class Data {
@@ -36,6 +40,9 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 		private String first_name;
 		private String last_name;
 		private String location;
+		private long member_since;
+		private long date_of_birth;
+		private String about;
 
 		public long getId() {
 			return id;
@@ -87,6 +94,18 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 
 		public String getLocation() {
 			return location;
+		}
+
+		public long getMemberSince() {
+			return member_since;
+		}
+
+		public long getDateOfBirth() {
+			return date_of_birth;
+		}
+
+		public String getAbout() {
+			return about;
 		}
 	}
 

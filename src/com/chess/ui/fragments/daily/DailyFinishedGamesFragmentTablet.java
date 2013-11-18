@@ -5,10 +5,10 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +25,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
@@ -53,11 +54,35 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 	private TextView emptyView;
 	private ListView listView;
 	private View loadingView;
+	private String username;
 
+	public DailyFinishedGamesFragmentTablet(){
+		Bundle bundle = new Bundle();
+		bundle.putString(USERNAME, Symbol.EMPTY);
+		setArguments(bundle);
+	}
+
+	public static DailyFinishedGamesFragmentTablet createInstance(String username) {
+		DailyFinishedGamesFragmentTablet fragment = new DailyFinishedGamesFragmentTablet();
+		Bundle bundle = new Bundle();
+		bundle.putString(USERNAME, username);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			username = getArguments().getString(USERNAME);
+		} else {
+			username = savedInstanceState.getString(USERNAME);
+		}
+
+		if (TextUtils.isEmpty(username)) {
+			username = getUsername();
+		}
 
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
 
@@ -66,6 +91,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 			transaction.add(R.id.optionsFragmentContainer, HomePlayFragment.createInstance(RIGHT_MENU_MODE))
 					.commitAllowingStateLoss();
 		}
+
 		pullToRefresh(true);
 	}
 
@@ -88,23 +114,11 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(finishedGamesCursorAdapter);
 
-		if (listView != null) {
-			listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-				@Override
-				public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-					// Pause fetcher to ensure smoother scrolling when flinging
-					if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-						getImageFetcher().setPauseWork(true);
-					} else {
-						getImageFetcher().setPauseWork(false);
-					}
-				}
-
-				@Override
-				public void onScroll(AbsListView absListView, int firstVisibleItem,
-									 int visibleItemCount, int totalItemCount) {
-				}
-			});
+		if (!username.equals(getUsername())) {
+			View optionsFragmentContainerView = view.findViewById(R.id.optionsFragmentContainerView);
+			if (optionsFragmentContainerView != null) {
+				optionsFragmentContainerView.setVisibility(View.GONE);
+			}
 		}
 	}
 
@@ -122,7 +136,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		init();
 
 		if (need2update) {
-			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), getUsername());
+			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), username);
 
 			if (AppUtils.isNetworkAvailable(getActivity())) {
 				updateData();
@@ -177,7 +191,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
 
-		getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
+		getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId(), username));
 	}
 
 	@Override
@@ -200,12 +214,13 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		// if server have new ids we get those games with ids
 
 		LoadItem loadItem = LoadHelper.getAllGames(getUserToken());
+		loadItem.addRequestParams(RestHelper.P_USERNAME, username);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
 	private void loadDbGames() {
 		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-				DbHelper.getDailyFinishedListGames(getUsername()),
+				DbHelper.getDailyFinishedListGames(username),
 				getContentResolver()).executeTask();
 	}
 
@@ -220,7 +235,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
 			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getDailyFinishedListGames(getUsername()),
+					DbHelper.getDailyFinishedListGames(username),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -277,17 +292,18 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 			// finished
 			List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getFinished();
 			if (finishedGameDataList != null) {
-				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, getUsername());
+				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(),
+						finishedGameDataList, username);
 
 				if (gamesLeft) {
 					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-							getContentResolver(), getUsername()).executeTask();
+							getContentResolver(), username).executeTask();
 				} else {
 					finishedGamesCursorAdapter.changeCursor(null);
 				}
 			} else {
 				new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-						DbHelper.getDailyFinishedListGames(getUsername()),
+						DbHelper.getDailyFinishedListGames(username),
 						getContentResolver()).executeTask();
 			}
 		}
