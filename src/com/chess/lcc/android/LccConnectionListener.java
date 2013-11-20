@@ -23,13 +23,13 @@ public class LccConnectionListener implements ConnectionListener {
 		String message = lccHelper.getContext().getString(R.string.account_error)
 				+ lccHelper.getContext().getString(R.string.another_login_detected);
 
-		lccHelper.setConnected(false);
+		lccHelper.logout();
 		lccHelper.onOtherClientEntered(message);
 	}
 
 	@Override
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
-        lccHelper.setUser(user);
+		lccHelper.setUser(user);
 		LogMe.dl(TAG, "onConnectionEstablished: lccHelper = " + lccHelper);
 		lccHelper.setConnected(true);
 		lccHelper.setFriends(settings.getFriends());
@@ -69,7 +69,7 @@ public class LccConnectionListener implements ConnectionListener {
 
 	@Override
 	public void onConnectionReestablished(User user, UserSettings userSettings, ServerStats serverStats) {
-		LogMe.dl(TAG, "onConnectionReestablished");
+		LogMe.dl(TAG, "onConnectionReestablished:" + " lccClient=" + lccHelper.getClientId());
 		lccHelper.clearChallenges();
 		lccHelper.clearOwnChallenges();
 		lccHelper.clearSeeks();
@@ -90,7 +90,7 @@ public class LccConnectionListener implements ConnectionListener {
 
 	@Override
 	public void onConnectionRestored(User arg0) {
-		LogMe.dl(TAG, "Connection Restored");
+		LogMe.dl(TAG, "Connection Restored:" + " lccClient=" + lccHelper.getClientId());
 		lccHelper.setConnected(true);
 	}
 

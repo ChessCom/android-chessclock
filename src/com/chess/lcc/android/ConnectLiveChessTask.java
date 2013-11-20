@@ -9,7 +9,6 @@ import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.*;
 import com.chess.live.client.impl.HttpClientProvider;
-import com.chess.live.client.impl.LiveChessClientImpl;
 import com.chess.live.util.config.Config;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
@@ -115,7 +114,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			item.setSupportedClientFeature(ClientFeature.GenericChatSupport, true);
 			item.setSupportedClientFeature(ClientFeature.GameObserve, true);
 
-			((LiveChessClientImpl)item).setMaxBackoffInterval(MAX_BACKOFF_INTERVAL);
+			item.setMaxBackoffInterval(MAX_BACKOFF_INTERVAL);
 
 			//PublicChatsBasic
 			//PublicChatsFull

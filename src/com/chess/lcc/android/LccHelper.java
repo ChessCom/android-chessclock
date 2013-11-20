@@ -96,6 +96,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private final LiveChessService liveService;
 	private String networkTypeName;
 
+	private boolean connectionFailure;
+
 	public LccHelper(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
 		this.liveService = liveService;
 		this.context = context;
@@ -316,6 +318,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void processKicked() {
+
+		connectionFailure = true;
+		logout(false);
+
 		String kickMessage = context.getString(R.string.live_chess_server_upgrading);
 		liveChessClientEventListener.onConnectionFailure(kickMessage
 				/*+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.reason_) + reason
@@ -324,15 +330,21 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public void processConnectionFailure(FailureDetails details) {
 
-		if (details == null && !AppUtils.isNetworkAvailable(context)) {
+		//details = null;
+
+		// when there is no active connection details = Authentication service failed
+		// when connection is here but Live cannot reach server details = null
+		// and we should always disconnect() current instance and create new one after ConnectionFailure
+
+		/*if (details == null && !AppUtils.isNetworkAvailable(context)) {
 			// handle null-case when user tries to connect when device connection is off, just ignore
 			LogMe.dl(TAG, "processConnectionFailure: no active connection, wait for LCC reconnect");
 			return;
-		}
+		}*/
 
 		//setConnected(false);
-		cancelServiceNotification();
-		logout();
+		connectionFailure = true;
+		logout(false);
 
 		LogMe.dl(TAG, "processConnectionFailure: details=" + details);
 
@@ -346,17 +358,17 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 					break;
 				}
 				case ACCOUNT_FAILED: { // wrong authKey
-					AppData appData = new AppData(context);
+					/*AppData appData = new AppData(context);
 					if (appData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
-						appData.incrementLiveConnectAttempts(context);
+						appData.incrementLiveConnectAttempts(context);*/
 
-						try {
-							Thread.sleep(CONNECTION_FAILURE_DELAY);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						runConnectTask(true);
+					try {
+						Thread.sleep(CONNECTION_FAILURE_DELAY);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
+					runConnectTask(true);
+					//}
 					return;
 				}
 				case SERVER_STOPPED: {
@@ -377,9 +389,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			/*setConnected(false);
 			((LiveChessClientImpl) lccClient).leave();*/
 
-			AppData appData = new AppData(context);
-			if (appData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
-				appData.incrementLiveConnectAttempts(context);
+			// handle detail=null one time and try to reconnect
+			// we cannot autoconnect even 1 time because LCC receives extra onConnectionFailure and disconnects only after second onConnectionFailure
+			/*if (AppData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
+				LogMe.dl("handle Failure details=null, try to reconnect automatically");
+				AppData.incrementLiveConnectAttempts(context);
 
 				try {
 					Thread.sleep(CONNECTION_FAILURE_DELAY);
@@ -388,11 +402,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				}
 				runConnectTask(true);
 				return;
-			} else {
-				//logout();
-				detailsMessage = context.getString(R.string.pleaseLoginAgain);
-			}
-
+			} else {*/
+			//logout();
+			detailsMessage = context.getString(R.string.pleaseLoginAgain);
+			//}
 		}
 
 		liveChessClientEventListener.onConnectionFailure(detailsMessage);
@@ -434,6 +447,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public Game getLastGame() {
+		LogMe.dl(TAG, "debug getLastGame() lastGameId=" + lastGameId);
 		return lastGameId != null ? lccGames.get(lastGameId) : null;
 	}
 
@@ -482,6 +496,9 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		if (connected) {
 
 			new AppData(context).resetLiveConnectAttempts(context);
+
+			//AppData.resetLiveConnectAttempts(context);
+			connectionFailure = false;
 
 			liveChessClientEventListener.onConnectionEstablished();
 			liveService.onLiveConnected();
@@ -844,6 +861,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}*/
 
 	public void logout() {
+		logout(true);
+	}
+
+	public void logout(boolean resetClient) {
 		LogMe.dl(TAG, "USER LOGOUT");
 		new AppData(context).setLiveChessMode(false);
 		setCurrentGameId(null);
@@ -858,7 +879,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		clearOnlineFriends();
 		clearPausedEvents();
 
-		runDisconnectTask(); // disconnect and reset client instance
+		runDisconnectTask(resetClient); // disconnect and reset client instance
 
 		cancelServiceNotification();
 
@@ -869,7 +890,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		return seeks.containsKey(id);
 	}
 
-	public void removeSeek(Long id) {
+	  public void removeSeek(Long id) {
 		if (seeks.size() > 0) {
 			seeks.remove(id);
 		}
@@ -1064,16 +1085,26 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		new ConnectLiveChessTask(lccConnectUpdateListener, this).executeTask();
 	}
 
-	public void runDisconnectTask() {
-		new LiveDisconnectTask().execute();
+	public void runDisconnectTask(boolean resetClient) {
+		new LiveDisconnectTask(resetClient).execute();
 	}
 
 	private class LiveDisconnectTask extends AsyncTask<Void, Void, Void> {
+
+		private final boolean resetClient;
+
+		public LiveDisconnectTask(boolean resetClient) {
+			this.resetClient = resetClient;
+		}
+
 		@Override
 		protected Void doInBackground(Void... voids) {
 			if (lccClient != null) {
+				LogMe.dl(TAG, "DISCONNECT: lccClient=" + getClientId());
 				lccClient.disconnect();
-				resetClient();
+				if (resetClient) {
+					resetClient();
+				}
 			}
 			return null;
 		}
@@ -1303,5 +1334,13 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				LogMe.dl(TAG, "processFullGame");
 			}*/
 		}
+	}
+
+	public String getClientId() {
+		return lccClient == null ? null : String.valueOf(lccClient.hashCode());
+	}
+
+	public boolean isConnectionFailure() {
+		return connectionFailure;
 	}
 }
