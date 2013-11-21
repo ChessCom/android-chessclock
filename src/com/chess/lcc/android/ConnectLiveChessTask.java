@@ -55,6 +55,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 					"FIXED_PHPSESSID_WEBTIDE_903210957432054387723");*/
 
 	public static final int MAX_BACKOFF_INTERVAL = 10000;
+	public static final int WEB_SOCKET_MAX_MESSAGE_SIZE = 1048576; // 1mb
 
 	private boolean useCurrentCredentials;
 
@@ -115,6 +116,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			item.setSupportedClientFeature(ClientFeature.GameObserve, true);
 
 			item.setMaxBackoffInterval(MAX_BACKOFF_INTERVAL);
+			item.setWebSocketMaxMessageSize(WEB_SOCKET_MAX_MESSAGE_SIZE);
 
 			//PublicChatsBasic
 			//PublicChatsFull
