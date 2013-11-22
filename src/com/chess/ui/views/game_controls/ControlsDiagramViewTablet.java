@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import com.chess.R;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
-import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.PAUSE;
 
 /**
  * Created with IntelliJ IDEA.

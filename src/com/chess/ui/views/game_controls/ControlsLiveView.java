@@ -34,14 +34,6 @@ public class ControlsLiveView extends ControlsBaseView {
 	}
 
 	@Override
-	void init(Context context, AttributeSet attrs) {
-		super.init(context, attrs);
-
-		addButtons();
-
-		showDefault();
-	}
-
 	protected void addButtons() {
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
 		addControlButton(HOME, R.style.Rect_Bottom_Left);
@@ -51,6 +43,8 @@ public class ControlsLiveView extends ControlsBaseView {
 
 		addActionButton(CLOSE, R.string.ic_close, R.style.Rect_Bottom_Left);
 		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
+
+		showDefault();
 	}
 
 	@Override

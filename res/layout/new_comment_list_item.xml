@@ -14,8 +14,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="1dip"
 		android:background="@color/new_friends_list_divider"
-		android:layout_marginLeft="@dimen/comments_side_padding"
-		android:layout_marginRight="@dimen/comments_side_padding"
+		android:layout_marginLeft="@dimen/common_tablet_side_padding"
+		android:layout_marginRight="@dimen/common_tablet_side_padding"
 		/>
 
 	<com.chess.backend.image_load.AvatarView
@@ -23,8 +23,8 @@
 		android:layout_width="35dip"
 		android:layout_height="35dip"
 		android:background="@color/new_common_list_thumb_grey"
-		android:layout_marginTop="@dimen/comments_side_padding"
-		android:layout_marginLeft="@dimen/comments_side_padding"
+		android:layout_marginTop="@dimen/common_tablet_side_padding"
+		android:layout_marginLeft="@dimen/common_tablet_side_padding"
 		android:layout_below="@id/titleTxt"
 		android:contentDescription="@string/image"
 		android:layout_marginRight="11dip"
@@ -87,7 +87,7 @@
 		android:layout_below="@id/authorTxt"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingTop="5dip"
-		android:paddingRight="@dimen/comments_side_padding"
+		android:paddingRight="@dimen/common_tablet_side_padding"
 		/>
 
 </RelativeLayout>

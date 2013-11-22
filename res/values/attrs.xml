@@ -63,7 +63,11 @@
 	</declare-styleable>
 
 	<declare-styleable name="ControlsCompView">
-		<attr name="controlsRound" format="boolean|reference" />
+		<attr name="controls_style">
+			<enum name="rect" value="0"/>
+			<enum name="rounded" value="1"/>
+			<enum name="rectDark" value="2"/>
+		</attr>
 	</declare-styleable>
 
     <declare-styleable name="com.inneractive.api.ads.InneractiveAd">

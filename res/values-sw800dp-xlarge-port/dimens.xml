@@ -9,5 +9,6 @@
 	<dimen name="slidingmenu_offset_left">280dp</dimen>
 	<dimen name="list_padding">10dp</dimen>
 	<dimen name="shadow_width">15dp</dimen>
+	<dimen name="welcome_frame_login_btn_height">48dp</dimen>
 
 </resources>

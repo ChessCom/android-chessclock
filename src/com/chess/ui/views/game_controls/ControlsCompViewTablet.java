@@ -39,22 +39,6 @@ public class ControlsCompViewTablet extends ControlsCompView {
 		addControlButton(FORWARD, styles[RIGHT]);
 	}
 
-//	@Override
-//	public void onClick(View view) {  // TODO rework click handles
-//		super.onClick(view);
-//		if (blocked) {
-//			return;
-//		}
-//
-//		if (view.getId() == getButtonId(OPTIONS)) {
-//			boardViewFace.showOptions();
-//		} else if (view.getId() == getButtonId(HINT)) {
-//			boardViewFace.showHint();
-//		} else if (view.getId() == getButtonId(HELP)) {
-//			boardViewFace.switchAnalysis();
-//		}
-//	}
-
 	@Override
 	public void setBoardViewFace(BoardViewCompFace boardViewFace) {
 		super.setBoardViewFace(boardViewFace);

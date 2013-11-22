@@ -416,6 +416,10 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	public void onGameStarted(final int currentMovePosition) {
 		Log.d(CompEngineHelper.TAG, " onGameStarted " + currentMovePosition);
 
+		if (getActivity() == null) {
+			return;
+		}
+
 		boardView.goToMove(currentMovePosition);
 		getActivity().runOnUiThread(new Runnable() {
 			@Override

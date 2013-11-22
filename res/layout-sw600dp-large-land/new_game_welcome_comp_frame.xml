@@ -105,7 +105,7 @@
 			android:id="@+id/controlsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			custom:controlsRound="true"
+			custom:controls_style="rounded"
 			android:layout_above="@+id/bottomPanelView"
 			android:layout_marginLeft="7dp"
 			/>

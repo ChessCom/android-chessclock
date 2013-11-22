@@ -2,7 +2,6 @@ package com.chess.ui.views.game_controls;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import com.chess.R;
 import com.chess.ui.interfaces.boards.BoardViewAnalysisFace;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
@@ -17,11 +16,7 @@ public class ControlsAnalysisViewTablet extends ControlsAnalysisView {
 
 	private BoardViewAnalysisFace boardViewFace;
 
-	private static final int[] styles = new int[]{
-			R.style.Rect_Top_Middle,
-			R.style.Rect_Top_Middle,
-			R.style.Rect_Top_Middle
-	};
+
 
 	public ControlsAnalysisViewTablet(Context context) {
 		super(context);
@@ -39,22 +34,6 @@ public class ControlsAnalysisViewTablet extends ControlsAnalysisView {
 		addControlButton(BACK, styles[MIDDLE]);
 		addControlButton(FORWARD, styles[RIGHT]);
 	}
-
-//	@Override
-//	public void onClick(View view) {  // TODO rework click handles
-//		super.onClick(view);
-//		if (blocked)
-//			return;
-//
-//		if (view.getId() == getButtonId(EXIT)) {
-//			boardViewFace.closeBoard();
-//		} else if (view.getId() == getButtonId(SEARCH)) {
-//			boardViewFace.showExplorer();
-//			// TODO add search ability
-//		} else if (view.getId() == getButtonId(RESTART)) {
-//			boardViewFace.restart();
-//		}
-//	}
 
 	@Override
 	public void setBoardViewFace(BoardViewAnalysisFace boardViewFace) {

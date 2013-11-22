@@ -17,12 +17,6 @@ import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
  */
 public class ControlsTacticsViewTablet extends ControlsTacticsView {
 
-	private static final int[] styles = new int[]{
-			R.style.Button_Glassy,
-			R.style.Button_Glassy,
-			R.style.Button_Glassy
-	};
-
 	public ControlsTacticsViewTablet(Context context) {
 		super(context);
 	}

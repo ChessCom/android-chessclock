@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.daily;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -64,9 +65,11 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 	protected void widgetsInit(View view) {
 		super.widgetsInit(view);
 
-		topButtonsGroup = (RadioGroup) view.findViewById(R.id.topButtonsGroup);
-		topButtonsGroup.setOnCheckedChangeListener(this);
-		chatFragmentContainer = view.findViewById(R.id.chatFragmentContainer);
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			topButtonsGroup = (RadioGroup) view.findViewById(R.id.topButtonsGroup);
+			topButtonsGroup.setOnCheckedChangeListener(this);
+			chatFragmentContainer = view.findViewById(R.id.chatFragmentContainer);
+		}
 	}
 
 	@Override

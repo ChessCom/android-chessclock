@@ -22,12 +22,6 @@ public class ControlsDailyViewTablet extends ControlsDailyView {
 
 	private BoardViewNetworkFace boardViewFace;
 
-	private static final int[] styles = new int[]{
-			R.style.Rect_Top_Middle,
-			R.style.Rect_Top_Middle,
-			R.style.Rect_Top_Middle
-	};
-
 	public ControlsDailyViewTablet(Context context) {
 		super(context);
 	}

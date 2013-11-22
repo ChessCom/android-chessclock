@@ -13,7 +13,7 @@
 		android:layout_height="@dimen/article_detail_image_height"
 		android:background="@color/new_common_list_thumb_grey"
 		android:contentDescription="@string/image"
-		android:layout_margin="@dimen/comments_side_padding" />
+		android:layout_margin="@dimen/common_tablet_side_padding" />
 
 	<!--Title-->
 	<com.chess.widgets.RoboTextView
@@ -23,7 +23,7 @@
 		android:layout_toRightOf="@id/articleImg"
 		android:paddingTop="15dip"
 		android:paddingBottom="9dip"
-		android:paddingRight="@dimen/comments_side_padding"
+		android:paddingRight="@dimen/common_tablet_side_padding"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:textSize="18sp"
 		custom:ttf="Bold" />
@@ -77,8 +77,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="fill_horizontal"
-		android:paddingLeft="@dimen/comments_side_padding"
-		android:paddingRight="@dimen/comments_side_padding"
+		android:paddingLeft="@dimen/common_tablet_side_padding"
+		android:paddingRight="@dimen/common_tablet_side_padding"
 		android:layout_below="@id/articleImg"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingBottom="2dip"

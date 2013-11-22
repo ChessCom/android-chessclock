@@ -107,7 +107,6 @@
 	<dimen name="popup_title_text_size_big">33sp</dimen>
 	<dimen name="popup_title_text_size_medium">17sp</dimen>
 	<dimen name="diagram_icon_overlay_size">80dip</dimen>
-	<dimen name="daily_board_preview_size">200dip</dimen>
 	<dimen name="notations_text_padding">2dip</dimen>
 	<dimen name="notations_text_side_padding">15dip</dimen>
 	<dimen name="_3dPiece_offset_for_board">24dip</dimen>
@@ -132,7 +131,7 @@
 	<dimen name="panel_info_tactic_padding_side">0dp</dimen>
 	<dimen name="panel_info_tactic_padding_top">3dip</dimen>
 	<dimen name="grid_view_spacing">11dp</dimen>
-	<dimen name="comments_side_padding">23dp</dimen>
+	<dimen name="common_tablet_side_padding">22dp</dimen>
 	<dimen name="stats_left_part_width">242dp</dimen>
 	<dimen name="pie_chart_donut_size">165dp</dimen>
 	<dimen name="pie_chart_donut_width_size">106dp</dimen>

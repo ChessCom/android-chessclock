@@ -4,7 +4,7 @@
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:paddingBottom="@dimen/comments_side_padding"
+	android:paddingBottom="@dimen/common_tablet_side_padding"
 	>
 
 	<!--Video Thumbnail-->
@@ -13,7 +13,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
-		android:layout_margin="@dimen/comments_side_padding"
+		android:layout_margin="@dimen/common_tablet_side_padding"
 		>
 
 		<com.chess.backend.image_load.ProgressImageView
@@ -56,7 +56,7 @@
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/thumbnailImg"
 		android:paddingRight="@dimen/default_scr_side_padding"
-		android:paddingTop="@dimen/comments_side_padding"
+		android:paddingTop="@dimen/common_tablet_side_padding"
 		android:paddingBottom="9dip"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:layout_marginTop="-4dp"

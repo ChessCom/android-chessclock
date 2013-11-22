@@ -35,14 +35,6 @@ public class ControlsLessonsView extends ControlsBaseView {
 	}
 
 	@Override
-	void init(Context context, AttributeSet attrs) {
-		super.init(context, attrs);
-
-		addButtons();
-
-		showStart();
-	}
-
 	protected void addButtons() {
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
 
@@ -51,6 +43,8 @@ public class ControlsLessonsView extends ControlsBaseView {
 		addStartButton();
 		addWrongButton();
 		addYourMoveButton();
+
+		showStart();
 	}
 
 	protected void addNextButton(int styleId, ButtonIds id) {

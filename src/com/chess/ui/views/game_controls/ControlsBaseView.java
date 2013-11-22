@@ -4,6 +4,7 @@ package com.chess.ui.views.game_controls;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -42,6 +43,9 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	static final int MIDDLE = 1;
 	static final int RIGHT = 2;
 
+	static final int STYLE_DEFAULT = 0;
+	static final int STYLE_ROUNDED = 1;
+	static final int STYLE_RECT_DARK = 2;
 
 	int controlIconSize;
 	protected ColorStateList controlIconColor;
@@ -49,10 +53,26 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	protected int controlTextSize;
 	private BoardViewFace boardViewFace;
 	private boolean fastMode;
+	protected int controlsStyle;
+	protected int[] styles;
 
-	public void setBoardViewFace(BoardViewFace boardViewFace) {
-		this.boardViewFace = boardViewFace;
-	}
+	protected static final int[] roundStyles = new int[]{
+			R.style.Button_Glassy,
+			R.style.Button_Glassy,
+			R.style.Button_Glassy
+	};
+
+	protected static final int[] rectStyles = new int[] {
+			R.style.Rect_Bottom_Left,
+			R.style.Rect_Bottom_Middle,
+			R.style.Rect_Bottom_Right
+	};
+
+	protected static final int[] rectDarkStyles = new int[]{
+			R.style.Rect_Top_Middle,
+			R.style.Rect_Top_Middle,
+			R.style.Rect_Top_Middle
+	};
 
 	enum ButtonIds {
 		/* Diagram Controls */
@@ -142,7 +162,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			return;
 		}
 
-
 		handler = new Handler();
 
 		density = resources.getDisplayMetrics().density;
@@ -154,7 +173,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		buttonParams = new LayoutParams(0, controlButtonHeight);
 		buttonParams.weight = 1;
 
-
 		LayoutParams defaultLinLayParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -165,7 +183,45 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		for (int i = 0; i < glyphIds.length; i++) {
 			buttonGlyphsMap.put(values[i], glyphIds[i]);
 		}
+
+		iniStyle(context, attrs);
+
+		addButtons();
 	}
+
+	protected void iniStyle(Context context, AttributeSet attrs) {
+		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ControlsCompView);
+		if (array == null) {
+			return;
+		}
+		try {
+			if (array.hasValue(R.styleable.ControlsCompView_controls_style)) {
+				controlsStyle = array.getInt(R.styleable.ControlsCompView_controls_style, STYLE_DEFAULT);
+			} else {
+				styles = rectStyles;
+			}
+
+			switch (controlsStyle) {
+				case STYLE_DEFAULT:
+					styles = rectStyles;
+					break;
+				case STYLE_ROUNDED:
+					styles = roundStyles;
+					break;
+				case STYLE_RECT_DARK:
+					styles = rectDarkStyles;
+					break;
+			}
+		} finally {
+			array.recycle();
+		}
+	}
+
+	public void setBoardViewFace(BoardViewFace boardViewFace) {
+		this.boardViewFace = boardViewFace;
+	}
+
+	protected abstract void addButtons();
 
 	void addControlButton(ButtonIds buttonId, int backId) {
 		addView(createControlButton(buttonId, backId));

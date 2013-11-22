@@ -32,13 +32,11 @@
     </style>
 
     <style name="Button.OrangeNoBorder.Small">
-        <item name="btn_use_border">false</item>
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
 		<item name="android:textSize">@dimen/play_button_small_text_size</item>
     </style>
 
 	<style name="Button.OrangeNoBorder.Big">
-        <item name="btn_use_border">false</item>
         <item name="android:minHeight">@dimen/big_orange_button_height</item>
         <item name="android:textSize">@dimen/big_button_text_size</item>
     </style>
@@ -390,15 +388,15 @@
     </style>
 
     <style name="Rect.Top.Left">
-        <item name="btn_rect_pos">bottomLeft</item>
+        <item name="btn_rect_pos">topLeft</item>
     </style>
 
     <style name="Rect.Top.Middle">
-        <item name="btn_rect_pos">bottomMiddle</item>
+        <item name="btn_rect_pos">topMiddle</item>
     </style>
 
     <style name="Rect.Top.Right">
-        <item name="btn_rect_pos">bottomRight</item>
+        <item name="btn_rect_pos">topRight</item>
     </style>
 
     <!-- ============= Tab ===================== -->

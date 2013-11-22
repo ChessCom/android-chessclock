@@ -13,7 +13,7 @@
 		android:layout_height="wrap_content"
 		android:baselineAligned="false"
 		android:weightSum="1"
-		android:padding="@dimen/comments_side_padding">
+		android:padding="@dimen/common_tablet_side_padding">
 
 		<!--Left part-->
 		<LinearLayout
@@ -118,7 +118,7 @@
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			android:layout_weight="1"
-			android:layout_marginLeft="@dimen/comments_side_padding"
+			android:layout_marginLeft="@dimen/common_tablet_side_padding"
 			>
 			<!--Total Games-->
 			<LinearLayout

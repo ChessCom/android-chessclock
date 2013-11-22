@@ -103,7 +103,7 @@
 	<!--Default margins between screen widgets-->
 
 	<dimen name="margin_top_between_buttons">10dip</dimen>
-	<!--Linear Description paddings-->
+	<!--Linear Description padding-->
 	<dimen name="default_linear_bottom_padding">2dip</dimen>
 	<dimen name="default_linear_top_padding">2dip</dimen>
 	<dimen name="default_linear_left_padding">5dip</dimen>
@@ -352,11 +352,7 @@
 	<dimen name="pull_to_refresh_header_height">48dip</dimen>
 	<dimen name="tab_button_text_size">16sp</dimen>
 	<dimen name="default_text_size_small">13sp</dimen>
-	<dimen name="tablet_board_margin">15dip</dimen>
-	<dimen name="tablet_board_margin_bottom_welcome">8dip</dimen>
-	<dimen name="tablet_board_margin_bottom">5dip</dimen>
-	<dimen name="tablet_board_margin_left">15dip</dimen>
-	<dimen name="tablet_panel_info_top_margin">15dip</dimen>
+
 	<dimen name="welcome_pager_indicator_padding">5dip</dimen>
 	<dimen name="daily_game_list_item_width">204dp</dimen>
 	<dimen name="tablet_board_size">445dp</dimen>
@@ -370,7 +366,7 @@
 	<dimen name="panel_info_tactic_padding_side">15dp</dimen>
 	<dimen name="tablet_side_menu_width">250dp</dimen>
 	<dimen name="grid_view_spacing">11dp</dimen>
-	<dimen name="comments_side_padding">15dp</dimen>
+	<dimen name="common_tablet_side_padding">15dp</dimen>
 	<dimen name="stats_left_part_width">232dp</dimen>
 	<dimen name="pie_chart_donut_size">174dp</dimen>
 	<dimen name="pie_chart_donut_width_size">112dp</dimen>

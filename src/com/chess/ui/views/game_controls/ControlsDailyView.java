@@ -35,12 +35,6 @@ public class ControlsDailyView extends ControlsBaseView {
 	}
 
 	@Override
-	void init(Context context, AttributeSet attrs) {
-		super.init(context, attrs);
-
-		addButtons();
-	}
-
 	protected void addButtons() {
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
 		addControlButton(ANALYSIS, R.style.Rect_Bottom_Middle);

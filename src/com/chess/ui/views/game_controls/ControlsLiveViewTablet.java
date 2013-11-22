@@ -23,12 +23,6 @@ public class ControlsLiveViewTablet extends ControlsLiveView {
 
 	private BoardViewNetworkFace boardViewFace;
 
-	private static final int[] styles = new int[]{
-			R.style.Rect_Top_Middle,
-			R.style.Rect_Top_Middle,
-			R.style.Rect_Top_Middle
-	};
-
 	public ControlsLiveViewTablet(Context context) {
 		super(context);
 	}
@@ -48,29 +42,6 @@ public class ControlsLiveViewTablet extends ControlsLiveView {
 		addActionButton(CLOSE, R.string.ic_close, R.style.Rect_Bottom_Left);
 		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
 	}
-
-//	@Override
-//	public void onClick(View view) {  // TODO rework click handles
-//		super.onClick(view);
-//		if (blocked)
-//			return;
-//
-//		if (view.getId() == getButtonId(OPTIONS)) {
-//			boardViewFace.showOptions();
-//		} else if (view.getId() == getButtonId(HOME)) {
-//			boardViewFace.goHome();
-//		} else if (view.getId() == getButtonId(CHAT)) {
-//			boardViewFace.showChat();
-//		} else if (view.getId() == getButtonId(BACK)) {
-//			boardViewFace.moveBack();
-//		} else if (view.getId() == getButtonId(FORWARD)) {
-//			boardViewFace.moveForward();
-//		} else if (view.getId() == getButtonId(CLOSE)) {
-//			boardViewFace.cancelMove();
-//		} else if (view.getId() == getButtonId(MAKE_MOVE)) {
-//			boardViewFace.playMove();
-//		}
-//	}
 
 	@Override
 	public void setBoardViewFace(BoardViewNetworkFace boardViewFace) {

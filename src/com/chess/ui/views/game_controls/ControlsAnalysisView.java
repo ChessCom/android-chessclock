@@ -4,7 +4,6 @@ package com.chess.ui.views.game_controls;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import com.chess.R;
 import com.chess.ui.interfaces.boards.BoardViewAnalysisFace;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
@@ -34,12 +33,13 @@ public class ControlsAnalysisView extends ControlsBaseView {
 		addButtons();
 	}
 
+	@Override
 	protected void addButtons() {
-		addControlButton(EXIT, R.style.Rect_Bottom_Left);
-		addControlButton(SEARCH, R.style.Rect_Bottom_Middle);
-		addControlButton(RESTART, R.style.Rect_Bottom_Middle);
-		addControlButton(BACK, R.style.Rect_Bottom_Middle);
-		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
+		addControlButton(EXIT, styles[LEFT]);
+		addControlButton(SEARCH, styles[MIDDLE]);
+		addControlButton(RESTART, styles[MIDDLE]);
+		addControlButton(BACK, styles[MIDDLE]);
+		addControlButton(FORWARD, styles[RIGHT]);
 	}
 
 	@Override

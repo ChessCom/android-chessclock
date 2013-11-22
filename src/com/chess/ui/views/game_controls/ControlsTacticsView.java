@@ -23,12 +23,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 	private BoardViewTacticsFace boardViewFace;
 	protected State state;
 
-	private static final int[] styles = new int[]{
-			R.style.Rect_Bottom_Left,
-			R.style.Rect_Bottom_Middle,
-			R.style.Rect_Bottom_Right
-	};
-
 	public ControlsTacticsView(Context context) {
 		super(context);
 	}

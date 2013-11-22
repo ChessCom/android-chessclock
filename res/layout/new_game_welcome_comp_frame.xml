@@ -109,6 +109,7 @@
 			custom:ttf="Icon"
 			style="@style/ListItem.Header.Dark"
 			android:visibility="gone" />
+
 	</com.chess.widgets.MultiDirectionSlidingDrawer>
 
 

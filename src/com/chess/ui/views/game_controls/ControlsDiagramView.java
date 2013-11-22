@@ -1,7 +1,6 @@
 package com.chess.ui.views.game_controls;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
@@ -29,17 +28,6 @@ public class ControlsDiagramView extends ControlsBaseView {
 	}
 
 	@Override
-	void init(Context context, AttributeSet attrs) {
-		super.init(context, attrs);
-		Resources resources = getResources();
-		if (resources == null) {
-			return;
-		}
-		addButtons();
-
-		showDefault();
-	}
-
 	protected void addButtons() {
 		// game diagram controls
 		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
@@ -56,6 +44,8 @@ public class ControlsDiagramView extends ControlsBaseView {
 		addControlButton(SOLUTION, R.style.Rect_Bottom_Middle);
 
 		showGameButton(PAUSE, false);
+
+		showDefault();
 	}
 
 	@Override

@@ -22,7 +22,7 @@
 			android:layout_weight="1"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:text="@string/member_since_"
-			android:paddingLeft="@dimen/comments_side_padding"
+			android:paddingLeft="@dimen/common_tablet_side_padding"
 			/>
 
 		<!--Last Login-->
@@ -33,7 +33,7 @@
 			android:layout_weight="1"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:text="@string/last_login_"
-			android:paddingLeft="@dimen/comments_side_padding"
+			android:paddingLeft="@dimen/common_tablet_side_padding"
 			/>
 
 		<!--Birthday-->
@@ -44,7 +44,7 @@
 			android:layout_weight="1"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:text="@string/birthday_"
-			android:paddingLeft="@dimen/comments_side_padding"
+			android:paddingLeft="@dimen/common_tablet_side_padding"
 			/>
 
 	</LinearLayout>
@@ -54,7 +54,7 @@
 		android:id="@+id/aboutTxt"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:padding="@dimen/comments_side_padding"
+		android:padding="@dimen/common_tablet_side_padding"
 		android:textColor="@color/new_subtitle_dark_grey"
 		/>
 

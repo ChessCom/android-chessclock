@@ -30,12 +30,6 @@ public class ControlsLessonsViewTablet extends ControlsLessonsView {
 		super(context, attrs);
 	}
 
-	private static final int[] styles = new int[]{
-			R.style.Button_Glassy,
-			R.style.Button_Glassy,
-			R.style.Button_Glassy
-	};
-
 	@Override
 	protected void addButtons() {
 		addControlButton(OPTIONS, styles[LEFT]);

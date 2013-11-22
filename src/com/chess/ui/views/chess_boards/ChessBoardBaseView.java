@@ -66,13 +66,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected int W;
 	protected int H;
 	protected int side;
-	protected int squareSize;
+	protected float squareSize;
 	protected int from = -1;
 	protected int to = -1;
 	private int previousFrom;
 
-	protected int dragX = 0;
-	protected int dragY = 0;
+	protected float dragX = 0;
+	protected float dragY = 0;
 //	protected int trackX = 0;
 //	protected int trackY = 0;
 
@@ -89,9 +89,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h"};
 	protected String[] nums = {"1", "2", "3", "4", "5", "6", "7", "8"};
 
-	protected int viewWidth;
-	protected int viewHeight;
-	private int previousWidth;
+	protected float viewWidth;
+	protected float viewHeight;
+	private float previousWidth;
 
 	protected Rect rect;
 
@@ -269,6 +269,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
 		viewWidth = (xNew == 0 ? viewWidth : xNew);
+		Log.d("TEST","xNew = " + xNew + " viewWidth = " + viewWidth);
 		viewHeight = (yNew == 0 ? viewHeight : yNew);
 		squareSize = viewWidth / 8;
 
@@ -615,11 +616,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int column = ChessBoard.getColumn(piecePosition, boardFace.isReside());
 			int row = ChessBoard.getRow(piecePosition, boardFace.isReside());
 
-			int left = column * squareSize + pieceInset;
-			int right = column * squareSize + squareSize - pieceInset;
-			int bottom = row * squareSize + squareSize - pieceInset;
+			int left = (int) (column * squareSize + pieceInset);
+			int right = (int) (column * squareSize + squareSize - pieceInset);
+			int bottom = (int) (row * squareSize + squareSize - pieceInset);
 			if (use3dPieces) {
-				int top = row * squareSize + pieceInset - _3dPiecesOffset;
+				int top = (int) (row * squareSize + pieceInset - _3dPiecesOffset);
 				if (capturedPieceBitmap.getHeight() < _3dPieceMaxHeight) {
 					int topDiff = _3dPieceMaxHeight - capturedPieceBitmap.getHeight();
 					// calculate scaled offset
@@ -632,7 +633,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 				rect.set(left, top, right, bottom);
 			} else {
-				int top = row * squareSize + pieceInset;
+				int top = (int) (row * squareSize + pieceInset);
 				rect.set(left, top, right, bottom);
 			}
 			canvas.drawBitmap(capturedPieceBitmap, null, rect, piecesPaint);
@@ -653,12 +654,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 
 			// calculate piece size bounds
-			int left = column * squareSize + pieceInset;
-			int right = column * squareSize + squareSize - pieceInset;
-			int bottom = row * squareSize + squareSize - pieceInset;
-			int top = row * squareSize + pieceInset;
+			int left = (int) (column * squareSize + pieceInset);
+			int right = (int) (column * squareSize + squareSize - pieceInset);
+			int bottom = (int) (row * squareSize + squareSize - pieceInset);
+			int top = (int) (row * squareSize + pieceInset);
 			if (use3dPieces) {
-				top = row * squareSize + pieceInset - _3dPiecesOffset;
+				top = (int) (row * squareSize + pieceInset - _3dPiecesOffset);
 
 				if (pieceBitmap.getHeight() < _3dPieceMaxHeight) {
 					// calculate scaled offset
@@ -682,11 +683,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int color = getBoardFace().getColor(draggingFrom);
 			int piece = getBoardFace().getPiece(draggingFrom);
 
-			int halfSquare = squareSize / 2;
-			int x = dragX - halfSquare;
-			int y = dragY - halfSquare;
-			int file = (dragX - dragX % squareSize) / squareSize;
-			int rank = ((dragY + squareSize) - (dragY + squareSize) % squareSize) / squareSize;
+			float halfSquare = squareSize / 2;
+			int x = (int) (dragX - halfSquare);
+			int y = (int) (dragY - halfSquare);
+			int file = (int) ((dragX - dragX % squareSize) / squareSize);
+			int rank = (int) (((dragY + squareSize) - (dragY + squareSize) % squareSize) / squareSize);
 			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {
 				Bitmap pieceBitmap = getPieceBitmap(color, piece);
 				if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
@@ -694,11 +695,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				}
 
 				// set piece bounds
-				int left = x - halfSquare;
-				int right = x + squareSize + halfSquare;
-				int bottom = y + squareSize + halfSquare;
+				int left = (int) (x - halfSquare);
+				int right = (int) (x + squareSize + halfSquare);
+				int bottom = (int) (y + squareSize + halfSquare);
 				if (use3dPieces) {
-					int top = y - halfSquare - _3dPiecesOffsetDrag;
+					int top = (int) (y - halfSquare - _3dPiecesOffsetDrag);
 					if (pieceBitmap.getHeight() < _3dPieceMaxHeight) {
 						int topDiff = _3dPieceMaxHeight - pieceBitmap.getHeight();
 						// calculate scaled offset
@@ -710,17 +711,17 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					}
 					rect.set(left, top, right, bottom);
 				} else {
-					int pieceTop = y - halfSquare;
+					int pieceTop = (int) (y - halfSquare);
 					rect.set(left, pieceTop, right, bottom);
 				}
 				// draw piece
 				canvas.drawBitmap(pieceBitmap, null, rect, piecesPaint);
 
 				// draw highlight rect around the square
-				int rectLeft = file * squareSize - halfSquare;
-				int rectTop = rank * squareSize - halfSquare;
-				int rectRight = file * squareSize + squareSize + halfSquare;
-				int rectBottom = rank * squareSize + squareSize + halfSquare;
+				int rectLeft = (int) (file * squareSize - halfSquare);
+				int rectTop = (int) (rank * squareSize - halfSquare);
+				int rectRight = (int) (file * squareSize + squareSize + halfSquare);
+				int rectBottom = (int) (rank * squareSize + squareSize + halfSquare);
 				canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, whitePaint);
 			}
 		}
@@ -835,8 +836,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (squareSize == 0) {
 			return false;
 		}
-		int file = (int) (event.getX() - event.getX() % squareSize) / squareSize;
-		int rank = (int) (event.getY() - event.getY() % squareSize) / squareSize;
+		int file = (int) ((event.getX() - event.getX() % squareSize) / squareSize);
+		int rank = (int) ((event.getY() - event.getY() % squareSize) / squareSize);
 		if (file > 7 || file < 0 || rank > 7 || rank < 0) {
 			invalidate();
 			return false;
@@ -868,8 +869,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		dragX = (int) event.getX();
 		dragY = (int) event.getY() - squareSize;
 
-		int file = (dragX - dragX % squareSize) / squareSize;
-		int rank = (dragY - dragY % squareSize) / squareSize;
+		int file = (int) ((dragX - dragX % squareSize) / squareSize);
+		int rank = (int) ((dragY - dragY % squareSize) / squareSize);
 
 		if (file > 7 || file < 0 || rank > 7 || rank < 0) {
 			invalidate();
@@ -894,8 +895,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected boolean onActionUp(MotionEvent event) {
 		gameFace.updateParentView();
 
-		int file = (int) (event.getX() - event.getX() % squareSize) / squareSize;
-		int rank = (int) (event.getY() - event.getY() % squareSize) / squareSize;
+		int file = (int) ((event.getX() - event.getX() % squareSize) / squareSize);
+		int rank = (int) ((event.getY() - event.getY() % squareSize) / squareSize);
 
 		boolean showAnimation = !drag;
 
@@ -1115,7 +1116,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					boardBackPaint.setShader(setBoardFromResource());
 					return;
 				}
-				boardBitmap = Bitmap.createScaledBitmap(boardBitmap, viewWidth, viewWidth, true);
+				Log.e("TEST", " boardBitmap size = " + viewWidth);
+
+				boardBitmap = Bitmap.createScaledBitmap(boardBitmap, (int) viewWidth, (int) viewWidth, true);
 
 				shader = new BitmapShader(boardBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 			} else {
@@ -1162,7 +1165,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(resourceId);
 		boardBitmap = drawable.getBitmap();
 
-		int bitmapSize = viewWidth / 4;
+		int bitmapSize = (int) Math.ceil(viewWidth / 4);
 		Log.e("TEST", " boardBitmap size = " + bitmapSize);
 		boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
 		shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
@@ -1571,11 +1574,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 //	}
 
 	private int getXCoordinate(int x) {
-		return squareSize * (getBoardFace().isReside() ? 7 - x : x);
+		return (int) (squareSize * (getBoardFace().isReside() ? 7 - x : x));
 	}
 
 	private int getYCoordinate(int y) {
-		return squareSize * (getBoardFace().isReside() ? 7 - y : y);
+		return (int) (squareSize * (getBoardFace().isReside() ? 7 - y : y));
 	}
 
 	public void releaseBitmaps() {
@@ -1773,7 +1776,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			int yCrd = yCrd1 + (int) Math.round((yCrd2 - yCrd1) * animationTimeFactor);
 
 			if (use3dPieces) {
-				int bottom = yCrd + squareSize;
+				int bottom = (int) (yCrd + squareSize);
 				int top = yCrd - _3dPiecesOffset;
 				if (pieceBitmap.getHeight() < _3dPieceMaxHeight) {
 					int topDiff = _3dPieceMaxHeight - pieceBitmap.getHeight();
@@ -1785,9 +1788,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					}
 				}
 
-				rect.set(xCrd, top, xCrd + squareSize, bottom);
+				rect.set(xCrd, top, (int) (xCrd + squareSize), bottom);
 			} else {
-				rect.set(xCrd, yCrd, xCrd + squareSize, yCrd + squareSize);
+				rect.set(xCrd, yCrd, (int) (xCrd + squareSize), (int) (yCrd + squareSize));
 			}
 			canvas.drawBitmap(pieceBitmap, null, rect, piecesPaint);
 		}
