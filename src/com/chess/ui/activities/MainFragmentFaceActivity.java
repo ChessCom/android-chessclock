@@ -147,8 +147,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		// lock portrait mode for handsets and unlock for tablets
 		if (isTablet) {
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		} else {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
