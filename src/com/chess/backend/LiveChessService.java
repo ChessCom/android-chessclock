@@ -483,30 +483,12 @@ public class LiveChessService extends Service {
 		}
 	}
 
-	private void unobserveCurrentGame() {
-		if (lccHelper.getCurrentObservedGameId() != null) {
-			runUnobserveGameTask(lccHelper.getCurrentObservedGameId());
-		}
-	}
-
-	public void runUnobserveGameTask(Long gameId) {
-		new UnobserveGameTask().execute(gameId);
-	}
-
-	private class UnobserveGameTask extends AsyncTask<Long, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Long... params) {
-			lccHelper.unobserveGame(params[0]);
-			return null;
-		}
-	}
-
 	public void exitGameObserving() {
+		LogMe.dl(TAG, "exitGameObserving");
 		setLccObserveEventListener(null);
 		lccHelper.setCurrentGameId(null);
 		lccHelper.stopClock();
-		unobserveCurrentGame();
+		lccHelper.unobserveCurrentObservingGame();
 		lccHelper.setCurrentObservedGameId(null);
 	}
 }

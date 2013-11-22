@@ -54,7 +54,8 @@ public class LiveTopGameFragment extends GameLiveFragment {
 		setTitle(R.string.live);
 
 		widgetsInit(view);
-		blockGame(true);
+		boardView.lockBoard(true);
+		boardView.lockBoardControls(false);
 		/*try {
 			init();
 		} catch (DataNotValidException e) {
@@ -165,7 +166,7 @@ public class LiveTopGameFragment extends GameLiveFragment {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				boardView.lockBoard(true); // todo: do not lock controls
+				boardView.lockBoard(true);
 			}
 		});
 	}

@@ -73,9 +73,10 @@ public class LccGameListener implements GameListener {
 	public void onGameReset(Game game) {
 		LogMe.dl(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
-		if (lccHelper.isObservedGame(game)) {
+		if (isActualMyGame(game)) {
+			lccHelper.unobserveCurrentObservingGame();
 
-			// todo: check usage of currentGame, latestGame for observed game
+		} else if (lccHelper.isObservedGame(game)) {
 
 			if (lccHelper.isGameToUnobserve(game)) {
 				lccHelper.unobserveGame(game.getId());
@@ -88,10 +89,7 @@ public class LccGameListener implements GameListener {
 			}
 
 		} else {
-
-			if (!isActualGame(game)) {
-				return;
-			}
+			return; // ignore old game
 		}
 
 		lccHelper.putGame(game);
@@ -109,19 +107,17 @@ public class LccGameListener implements GameListener {
 			return;
 		}
 
-		if (lccHelper.isObservedGame(game)) {
+		if (isActualMyGame(game)) {
+			lccHelper.unobserveCurrentObservingGame();
 
-			// todo: check usage of currentGame, latestGame for observed game
+		} else if (lccHelper.isObservedGame(game)) {
 
 			if (lccHelper.isGameToUnobserve(game)) {
 				return;
 			}
 
 		} else {
-
-			if (!isActualGame(game)) {
-				return;
-			}
+			return; // ignore old game
 		}
 
 		lccHelper.putGame(game);
@@ -148,23 +144,23 @@ public class LccGameListener implements GameListener {
 		return gameId < latestGameId;
 	}
 
-	private boolean isActualGame(Game game) {
+	private boolean isActualMyGame(Game game) {
 		Long gameId = game.getId();
 
-		/*if (!isMyGame(game)) {
-			lccHelper.getClient().unobserveGame(gameId);
-			LogMe.dl(TAG, "GAME LISTENER: unobserve game " + gameId);
+		if (!lccHelper.isMyGame(game)) {
 			return false;
-		} else*/
-		if (lccHelper.isUserPlayingAnotherGame(gameId)) {
+
+		} else if (lccHelper.isUserPlayingAnotherGame(gameId)) {
 			LogMe.dl(TAG, "GAME LISTENER: abort and exit second game");
 			lccHelper.getClient().abortGame(game, "abort second game");
 			lccHelper.getClient().exitGame(game);
 			return false;
+
 		} else if (isOldGame(gameId)) { // TODO: check case
 			LogMe.dl(TAG, "GAME LISTENER: exit old game");
 			lccHelper.getClient().exitGame(game);
 			return false;
+
 		} else {
 			lccHelper.clearOwnChallenges();
 			lccHelper.clearChallenges();
@@ -203,7 +199,9 @@ public class LccGameListener implements GameListener {
 			}
 		}
 
-		lccHelper.checkAndProcessDrawOffer(game);
+		if (!lccHelper.isObservedGame(game)) {
+			lccHelper.checkAndProcessDrawOffer(game);
+		}
 	}
 
 	private void doEndGame(Game game) {

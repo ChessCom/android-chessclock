@@ -1343,4 +1343,24 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	public boolean isConnectionFailure() {
 		return connectionFailure;
 	}
+
+	public void unobserveCurrentObservingGame() {
+		LogMe.dl(TAG, "unobserveCurrentObservingGame: gameId=" + getCurrentObservedGameId());
+		if (getCurrentObservedGameId() != null) {
+			runUnobserveGameTask(getCurrentObservedGameId());
+		}
+	}
+
+	public void runUnobserveGameTask(Long gameId) {
+		new UnobserveGameTask().execute(gameId);
+	}
+
+	private class UnobserveGameTask extends AsyncTask<Long, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Long... params) {
+			unobserveGame(params[0]);
+			return null;
+		}
+	}
 }

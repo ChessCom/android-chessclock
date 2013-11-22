@@ -1095,9 +1095,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	public void lockBoard(boolean lock) {
 		locked = lock;
+		lockBoardControls(lock);
+		setEnabled(!lock);
+	}
+
+	public void lockBoardControls(boolean lock) {
 		// todo: probably also lock Notation navigator
 		controlsBaseView.lock(lock);
-		setEnabled(!lock);
 	}
 
 	protected void loadBoard() {
