@@ -7,6 +7,7 @@
 	android:layout_height="match_parent"
 	>
 
+	<!--Header with logo-->
 	<LinearLayout
 		android:id="@+id/topBarLay"
 		android:layout_width="match_parent"
@@ -27,7 +28,7 @@
 	</LinearLayout>
 
 	<com.chess.widgets.RelLayout
-		android:id="@+id/tourLeftView"
+		android:id="@+id/loginButtonsView"
 		android:layout_width="312dip"
 		android:layout_height="match_parent"
 		android:layout_below="@id/topBarLay"
@@ -94,7 +95,7 @@
 		android:id="@+id/tab_content_frame"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_toRightOf="@id/tourLeftView"
+		android:layout_toRightOf="@id/loginButtonsView"
 		android:layout_below="@id/topBarLay"
 		/>
 

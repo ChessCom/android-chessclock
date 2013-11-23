@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.statics.AppConstants;
+import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -109,49 +110,61 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 
 	@Override
 	public void onGameOver(final String message, boolean need2Finish) {
-		boolean userWon = !message.equals(getString(R.string.black_wins)); // how it works for Black user? and how it works for human vs. human mode?
-
-		topPanelView.resetPieces();
-		bottomPanelView.resetPieces();
-
-		handler.postDelayed(new Runnable() { // delay to show fling animation
+		long appearDelay = inLandscape() ? 0 : END_GAME_DELAY;
+		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				slidingDrawer.animateOpen();
+				boolean userWon = !message.equals(getString(R.string.black_wins)); // how it works for Black user? and how it works for human vs. human mode?
+
+				topPanelView.resetPieces();
+				bottomPanelView.resetPieces();
+
+				handler.postDelayed(new Runnable() { // delay to show fling animation
+					@Override
+					public void run() {
+						slidingDrawer.animateOpen();
+					}
+				}, DRAWER_APPEAR_DELAY);
+
+				slidingDrawer.setVisibility(View.VISIBLE);
+				fadeDrawerAnimator.reverse();
+
+				// hide game widgets from right side
+				topPanelView.setVisibility(View.GONE);
+				bottomPanelView.setVisibility(View.GONE);
+				loginBtn.setVisibility(View.GONE);
+				signUpBtn.setVisibility(View.GONE);
+				whatIsChessComTxt.setVisibility(View.GONE);
+				controlsView.setVisibility(View.GONE);
+				if (inPortrait()) {
+					fadeBoardAnimator.start();
+				}
+
+				if (userWon) {
+					resultTxt.setText(R.string.you_won);
+				} else {
+					resultTxt.setText(R.string.you_lose);
+				}
+
 			}
-		}, DRAWER_APPEAR_DELAY);
-
-		slidingDrawer.setVisibility(View.VISIBLE);
-		fadeDrawerAnimator.reverse();
-
-		// hide game widgets from right side
-		topPanelView.setVisibility(View.GONE);
-		bottomPanelView.setVisibility(View.GONE);
-		loginBtn.setVisibility(View.GONE);
-		signUpBtn.setVisibility(View.GONE);
-		whatIsChessComTxt.setVisibility(View.GONE);
-		controlsView.setVisibility(View.GONE);
-//		fadeBoardAnimator.start();
-
-		if (userWon) {
-			resultTxt.setText(R.string.you_won);
-		} else {
-			resultTxt.setText(R.string.you_lose);
-		}
+		}, appearDelay);
 	}
 
 	@Override
 	public void onDrawerOpened() {
-//		ChessBoardComp.resetInstance();
-//		getAppData().clearSavedCompGame();
-//		notationsView.resetNotations();
-//		boardView.invalidate();
+		if (inPortrait()) {
+			ChessBoardComp.resetInstance();
+			getAppData().clearSavedCompGame();
+			notationsView.resetNotations();
+			boardView.invalidate();
+
+			getView().findViewById(R.id.bottomView).setVisibility(View.GONE);
+		}
 	}
 
 	@Override
 	public void onDrawerClosed() {
 		slidingDrawer.setVisibility(View.GONE);
-//		fadeBoardAnimator.reverse();
 		// show game widgets from right side
 		topPanelView.setVisibility(View.VISIBLE);
 		bottomPanelView.setVisibility(View.VISIBLE);
@@ -161,13 +174,22 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 		controlsView.setVisibility(View.VISIBLE);
 
 		fadeDrawerAnimator.start();
+		if (inPortrait()) {
+			fadeBoardAnimator.reverse();
+			getView().findViewById(R.id.bottomView).setVisibility(View.VISIBLE);
+			whatIsChessComTxt.setVisibility(View.GONE);
+		}
 
 		startNewGame();
 	}
 
 	@Override
 	protected int getStyleForResultTitle() {
-		return R.style.ListItem_Tablet;
+		if (inLandscape()) {
+			return R.style.ListItem_Tablet;
+		} else {
+			return R.style.ListItem;
+		}
 	}
 
 	@Override
@@ -175,7 +197,7 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 		super.widgetsInit(view);
 
 		whatIsChessComTxt = (TextView) view.findViewById(R.id.whatIsChessComTxt);
-		Drawable icon = new IconDrawable(getActivity(), R.string.ic_round_right,  R.color.semitransparent_white_75,
+		Drawable icon = new IconDrawable(getActivity(), R.string.ic_round_right, R.color.semitransparent_white_75,
 				R.dimen.glyph_icon_big);
 
 		whatIsChessComTxt.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.glyph_icon_padding));

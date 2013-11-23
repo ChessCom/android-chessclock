@@ -87,7 +87,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected Paint possibleMovePaint;
 
 	protected String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h"};
-	protected String[] nums = {"1", "2", "3", "4", "5", "6", "7", "8"};
+	protected String[] numbers = {"1", "2", "3", "4", "5", "6", "7", "8"};
 
 	protected float viewWidth;
 	protected float viewHeight;
@@ -730,7 +730,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected void drawCoordinates(Canvas canvas) {
 		if (showCoordinates) {
 			BoardFace boardFace = getBoardFace();
-			float xOffset = (squareSize / 8) * 7;
+			// original square is 53 px, right offset is 2px
+			float xRightOffset = squareSize * 2 / 53;
+			float xNumberPosition = 2 * density;
 			float yPosition = SQUARES_IN_LINE * squareSize - textYOffset;
 			for (int i = 0; i < SQUARES_IN_LINE; i++) {
 
@@ -740,15 +742,23 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					coordinatesPaint.setColor(coordinateColorLight);
 				}
 				if (boardFace.isReside()) {
+					String letter = letters[i];
+					float letterWidth = coordinatesPaint.measureText(letter);
+					float textXCrd =  (8 - i) * squareSize - xRightOffset - letterWidth;
 					// draw ranks coordinates (1, 2, 3, 4, 5, 6, 7, 8)
-					canvas.drawText(nums[i], 2, i * squareSize + numYOffset, coordinatesPaint);
+					canvas.drawText(numbers[i], xNumberPosition, i * squareSize + numYOffset, coordinatesPaint);
 					// draw file coordinates (a, b, c, d, e, f, g, h)
-					canvas.drawText(letters[i], (7 - i) * squareSize + xOffset, yPosition, coordinatesPaint);
+
+					canvas.drawText(letter, textXCrd, yPosition, coordinatesPaint);
 				} else {
-					// draw ranks coordinates (1, 2, 3, 4, 5, 6, 7, 8)
-					canvas.drawText(nums[7 - i], 2, i * squareSize + numYOffset, coordinatesPaint);
-					// draw file coordinates (a, b, c, d, e, f, g, h)
-					canvas.drawText(letters[7 - i], (7 - i) * squareSize + xOffset, yPosition, coordinatesPaint);
+					String letter = letters[7 - i];
+					float letterWidth = coordinatesPaint.measureText(letter);
+					float textXCrd =  (8 - i) * squareSize - xRightOffset - letterWidth;
+
+					// draw ranks coordinates (8, 7, 6, 5, 4, 3, 2, 1)
+					canvas.drawText(numbers[7 - i], xNumberPosition, i * squareSize + numYOffset, coordinatesPaint);
+					// draw file coordinates (h, g, f, e, d, c, b,a,)
+					canvas.drawText(letter, textXCrd, yPosition, coordinatesPaint);
 				}
 			}
 		}

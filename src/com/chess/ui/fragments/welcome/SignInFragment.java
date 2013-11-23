@@ -69,7 +69,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 	public void onClick(View view) {
 		int id = view.getId();
 		if (id == R.id.signinBtn) {
-			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live   // TODO restore
+			if (!AppUtils.isNetworkAvailable(getActivity())) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 			} else {
@@ -103,7 +103,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 	public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
 		if (actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
 				|| keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
+			if (!AppUtils.isNetworkAvailable(getActivity())) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			} else {

@@ -11,7 +11,6 @@ import com.chess.R;
 import com.chess.statics.WelcomeHolder;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.messages.MessagesInboxFragmentTablet;
 import com.chess.ui.interfaces.FragmentTabsFace;
 
 /**
@@ -29,7 +28,7 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 
 	private boolean openWelcomeFragment;
 	private CompGameConfig config;
-	private View tourLeftView;
+	private View loginButtonsView;
 	private View loginBtn;
 	private View signUpBtn;
 
@@ -47,7 +46,7 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_welcome_tabs_frame_tablet, container, false);
+		return inflater.inflate(R.layout.new_welcome_tabs_frame, container, false);
 	}
 
 	@Override
@@ -58,8 +57,21 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 
 		view.findViewById(R.id.centerTabBtn).setOnClickListener(this);
 
-		tourLeftView = view.findViewById(R.id.tourLeftView);
-		tourLeftView.setVisibility(View.GONE);
+		loginButtonsView = view.findViewById(R.id.loginButtonsView);
+		loginButtonsView.setVisibility(View.GONE);
+//		if (inPortrait()) {
+//			int entryCount = getFragmentManager().getBackStackEntryCount();
+//			if (entryCount > 0) {
+//				FragmentManager.BackStackEntry entry = getFragmentManager().getBackStackEntryAt(entryCount - 1);
+//
+//				if (entry!= null && (entry.getName().equals(SignUpFragment.class.getSimpleName())
+//						|| entry.getName().equals(SignInFragment.class.getSimpleName()))) {
+//
+//					// show bottom view
+//					loginButtonsView.setVisibility(View.VISIBLE);
+//				}
+//			}
+//		}
 
 		showActionBar(false);
 
@@ -99,17 +111,21 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 			openInternalFragment(WelcomeTourFragmentTablet.createInstance(this));
 			openWelcomeFragment = true;
 
-			tourLeftView.setVisibility(View.VISIBLE);
+			loginButtonsView.setVisibility(View.VISIBLE);
 			loginBtn.setVisibility(View.VISIBLE);
 			signUpBtn.setVisibility(View.VISIBLE);
 		} else if (code == SIGN_IN_FRAGMENT) {
 
 			openSignInFragment();
-			tourLeftView.setVisibility(View.VISIBLE);
+			if (inLandscape()) {
+				loginButtonsView.setVisibility(View.VISIBLE);
+			}
 		} else if (code == SIGN_UP_FRAGMENT) {
 
 			openSingUpFragment();
-			tourLeftView.setVisibility(View.VISIBLE);
+			if (inLandscape()) {
+				loginButtonsView.setVisibility(View.VISIBLE);
+			}
 		} else if (code == GAME_FRAGMENT) {
 			config.setMode(getAppData().getCompGameMode());
 			config.setStrength(getAppData().getCompLevel());
@@ -123,8 +139,12 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 			fragment = new SignInFragment();
 		}
 		openInternalFragment(fragment);
-		loginBtn.setVisibility(View.GONE);
-		signUpBtn.setVisibility(View.GONE);
+		if (inLandscape()) {
+			loginBtn.setVisibility(View.GONE);
+			signUpBtn.setVisibility(View.GONE);
+		} else {
+			loginButtonsView.setVisibility(View.GONE);
+		}
 	}
 
 	private void openSingUpFragment() {
@@ -133,8 +153,12 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 			fragment = new SignUpFragment();
 		}
 		openInternalFragment(fragment);
-		signUpBtn.setVisibility(View.GONE);
-		loginBtn.setVisibility(View.GONE);
+		if (inLandscape()) {
+			signUpBtn.setVisibility(View.GONE);
+			loginBtn.setVisibility(View.GONE);
+		} else {
+		    loginButtonsView.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -166,6 +190,7 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 				getChildFragmentManager().popBackStackImmediate();
 				loginBtn.setVisibility(View.VISIBLE);
 				signUpBtn.setVisibility(View.VISIBLE);
+				loginButtonsView.setVisibility(View.VISIBLE);
 
 				openWelcomeFragment = false;
 				return true;
@@ -173,11 +198,13 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 								|| entry.getName().equals(SignInFragment.class.getSimpleName()))
 								&& !openWelcomeFragment) {
 				getChildFragmentManager().popBackStackImmediate();
-				tourLeftView.setVisibility(View.GONE);
+				loginButtonsView.setVisibility(View.GONE);
 
 				return true;
 			} else if (entry!= null && entry.getName().equals(WelcomeTourFragmentTablet.class.getSimpleName())) {
-				tourLeftView.setVisibility(View.GONE);
+				if (loginButtonsView != null) { // can be null if user turned from port to land
+					loginButtonsView.setVisibility(View.GONE);
+				}
 				getChildFragmentManager().popBackStackImmediate();
 				return true;
 			} else {

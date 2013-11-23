@@ -2,6 +2,7 @@ package com.chess.ui.fragments;
 
 import android.app.Activity;
 import android.content.*;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -933,4 +934,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		return false;
 	}
 
+	protected boolean inLandscape() {
+		return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+	}
+
+	protected boolean inPortrait() {
+		return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+	}
 }

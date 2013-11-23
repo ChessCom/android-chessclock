@@ -88,7 +88,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private static final long AUTO_FLIP_DELAY = 500;
 	private static final int FADE_ANIM_DURATION = 300;
 	protected static final long DRAWER_APPEAR_DELAY = 100;
-	private static final long END_GAME_DELAY = 1000L;
+	protected static final long END_GAME_DELAY = 1000L;
 	protected FragmentTabsFace parentFace;
 
 	protected ChessBoardCompView boardView;

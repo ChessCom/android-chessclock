@@ -13,8 +13,7 @@
 	<dimen name="signin_scr_side_padding">160dip</dimen>
 	<dimen name="signin_logo_margin_top">15dip</dimen>
 	<dimen name="signin_main_margin_top">36dip</dimen>
-
-
+	<dimen name="signin_button_margin_between">5dip</dimen>
 
 	<!--Game Modes-->
 	<dimen name="player_name_max_width">400dip</dimen>

@@ -17,5 +17,11 @@
 	<dimen name="daily_board_preview_size">240dip</dimen>
 	<dimen name="welcome_frame_login_btn_height">51dp</dimen>
 	<dimen name="tablet_board_margin_left">16dip</dimen>
+	<dimen name="welcome_port_bottom_view_height">106dp</dimen>
+
+	<dimen name="welcome_title_text_size">37sp</dimen>
+	<dimen name="welcome_features_padding_top">35dip</dimen>
+	<dimen name="welcome_feature_text_size">21sp</dimen>
+	<dimen name="welcome_features_padding_between_top">5dip</dimen>
 
 </resources>

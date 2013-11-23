@@ -21,7 +21,6 @@
  	<dimen name="signin_logo_margin_top">0dip</dimen>
  	<dimen name="signin_main_margin_top">10dip</dimen>
  	<dimen name="signin_button_margin_updown">14dip</dimen>
- 	<dimen name="signin_button_margin_between">5dip</dimen>
  	<dimen name="signin_footer_margin_bottom">5dip</dimen>
  	
  	<dimen name="home_main_padding_top">0dip</dimen>

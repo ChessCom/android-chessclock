@@ -105,7 +105,7 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_welcome_frame_tablet, container, false);
+		return inflater.inflate(R.layout.new_welcome_frame, container, false);
 	}
 
 	@Override
