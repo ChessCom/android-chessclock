@@ -19,7 +19,6 @@ import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.articles.ArticlesFragmentTablet;
 import com.chess.ui.fragments.comp.GameCompFragment;
-import com.chess.ui.fragments.comp.GameCompFragmentTablet;
 import com.chess.ui.fragments.daily.DailyHomeFragment;
 import com.chess.ui.fragments.daily.DailyHomeFragmentTablet;
 import com.chess.ui.fragments.forums.ForumCategoriesFragment;
@@ -37,7 +36,6 @@ import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.settings.SettingsFragmentTablet;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
-import com.chess.ui.fragments.tactics.GameTacticsFragmentTablet;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
 import com.chess.ui.fragments.videos.VideosFragmentTablet;
@@ -180,17 +178,17 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_tactics:
-				if (!isTablet) {
+//				if (!isTablet) {
 					fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
-				} else {
-					fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragmentTablet.class.getSimpleName());
-				}
+//				} else {
+//					fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragmentTablet.class.getSimpleName());
+//				}
 				if (fragmentByTag == null) {
-					if (!isTablet) {
+//					if (!isTablet) {
 						fragmentByTag = new GameTacticsFragment();
-					} else {
-						fragmentByTag = new GameTacticsFragmentTablet();
-					}
+//					} else {
+//						fragmentByTag = new GameTacticsFragmentTablet();
+//					}
 				}
 				break;
 			case R.drawable.ic_nav_lessons:
@@ -337,11 +335,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				.setMode(compGameMode)
 				.setStrength(getAppData().getCompLevel());
 
-		if (!isTablet) {
-			return GameCompFragment.createInstance(builder.build());
-		} else {
-			return GameCompFragmentTablet.createInstance(builder.build());
-		}
+		return GameCompFragment.createInstance(builder.build());
 	}
 
 	private class NavigationMenuItem {

@@ -1,8 +1,6 @@
 package com.chess.ui.fragments.daily;
 
 import android.os.Bundle;
-import android.view.View;
-import com.chess.ui.views.game_controls.ControlsAnalysisViewTablet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +10,7 @@ import com.chess.ui.views.game_controls.ControlsAnalysisViewTablet;
  */
 public class GameDailyAnalysisFragmentTablet extends GameDailyAnalysisFragment {
 
-	private ControlsAnalysisViewTablet controlsView;
+//	private ControlsAnalysisViewTablet controlsView;
 
 	public GameDailyAnalysisFragmentTablet(){}
 
@@ -26,13 +24,13 @@ public class GameDailyAnalysisFragmentTablet extends GameDailyAnalysisFragment {
 		return fragment;
 	}
 
-	@Override
-	protected ControlsAnalysisViewTablet getControlsView() {
-		return controlsView;
-	}
-
-	@Override
-	protected void setControlsView(View controlsView) {
-		this.controlsView = (ControlsAnalysisViewTablet) controlsView;
-	}
+//	@Override
+//	protected ControlsAnalysisViewTablet getControlsView() {
+//		return controlsView;
+//	}
+//
+//	@Override
+//	protected void setControlsView(View controlsView) {
+//		this.controlsView = (ControlsAnalysisViewTablet) controlsView;
+//	}
 }

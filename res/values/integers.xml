@@ -18,5 +18,6 @@
 	<integer name="screen_orientation">1</integer>
 	<integer name="rating_graph_height">192</integer>
 	<integer name="rating_graph_width">640</integer>
+	<integer name="columns_in_grid_view">2</integer>
 
 </resources>

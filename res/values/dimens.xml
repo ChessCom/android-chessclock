@@ -376,5 +376,6 @@
 	<dimen name="pie_chart_right_text_width">20dp</dimen>
 	<dimen name="graph_stats_top_info_height">72dp</dimen>
 	<dimen name="stats_rating_value_text_size">26sp</dimen>
+	<dimen name="stats_padding_side_main">0dp</dimen>
 
 </resources>

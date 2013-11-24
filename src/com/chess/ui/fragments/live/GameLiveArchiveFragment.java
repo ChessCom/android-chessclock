@@ -670,7 +670,12 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 	private void widgetsInit(View view) {
 
 		setControlsView(view.findViewById(R.id.controlsView));
-		setNotationsFace(view.findViewById(R.id.notationsView));
+		if (inPortrait()) {
+			setNotationsFace(view.findViewById(R.id.notationsView));
+		} else {
+			setNotationsFace(view.findViewById(R.id.notationsViewTablet));
+		}
+
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 

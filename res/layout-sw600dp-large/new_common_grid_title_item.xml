@@ -12,7 +12,7 @@
 		android:id="@+id/gridView"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:numColumns="2"
+		android:numColumns="@integer/columns_in_grid_view"
 		android:stretchMode="columnWidth"
 		android:cacheColorHint="@color/white"
 		android:background="@color/white"

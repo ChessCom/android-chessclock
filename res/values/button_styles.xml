@@ -497,6 +497,9 @@
 		<item name="btn_rect_pos">bottomMiddle</item>
 	</style>
 
+	<style name="Button.Glassy.Badge">
+	</style>
+
     <!-- ============= Colored Buttons ===================== -->
     <style name="Rect.Bottom.Right.Orange">
         <item name="btn_rect_pos">bottomRight</item>

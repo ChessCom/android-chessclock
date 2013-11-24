@@ -10,5 +10,7 @@
 	<dimen name="list_padding">10dp</dimen>
 	<dimen name="shadow_width">15dp</dimen>
 
+	<dimen name="tablet_side_menu_width">300dp</dimen>
+
 
 </resources>

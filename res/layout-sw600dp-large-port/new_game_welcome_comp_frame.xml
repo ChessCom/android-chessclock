@@ -23,7 +23,8 @@
 			android:layout_marginLeft="12dp"
 			android:layout_marginTop="@dimen/default_scr_side_padding"
 			android:layout_marginRight="@dimen/default_scr_side_padding"
-			android:layout_marginBottom="@dimen/default_scr_side_padding" />
+			android:layout_marginBottom="@dimen/default_scr_side_padding"
+			/>
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/engineThinkingPath"

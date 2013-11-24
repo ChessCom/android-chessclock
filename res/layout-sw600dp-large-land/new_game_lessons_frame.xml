@@ -134,10 +134,11 @@
 		</ScrollView>
 
 		<!--Controls-->
-		<com.chess.ui.views.game_controls.ControlsLessonsViewTablet
+		<com.chess.ui.views.game_controls.ControlsLessonsView
 			android:id="@id/controlsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			custom:controls_style="rectDark"
 			android:layout_alignParentBottom="true"
 			android:layout_marginTop="5dp"
 			android:layout_marginBottom="5dp"/>

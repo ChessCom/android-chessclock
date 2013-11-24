@@ -1,8 +1,6 @@
 package com.chess.ui.fragments.live;
 
 import android.os.Bundle;
-import android.view.View;
-import com.chess.ui.views.game_controls.ControlsDailyViewTablet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,8 +9,6 @@ import com.chess.ui.views.game_controls.ControlsDailyViewTablet;
  * Time: 10:23
  */
 public class GameLiveArchiveFragmentTablet extends GameLiveArchiveFragment {
-
-	private ControlsDailyViewTablet controlsView;
 
 	public GameLiveArchiveFragmentTablet() { }
 
@@ -25,14 +21,4 @@ public class GameLiveArchiveFragmentTablet extends GameLiveArchiveFragment {
 		return fragment;
 	}
 
-
-	@Override
-	protected ControlsDailyViewTablet getControlsView() {
-		return controlsView;
-	}
-
-	@Override
-	protected void setControlsView(View controlsView) {
-		this.controlsView = (ControlsDailyViewTablet) controlsView;
-	}
 }

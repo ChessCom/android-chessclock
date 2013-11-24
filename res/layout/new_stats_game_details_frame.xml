@@ -11,7 +11,10 @@
         android:id="@+id/statsLinLay"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+		android:paddingLeft="@dimen/stats_padding_side_main"
+		android:paddingRight="@dimen/stats_padding_side_main"
+		>
 
         <!--Top Info Lay-->
         <RelativeLayout
@@ -151,7 +154,8 @@
         <!--Average opponent rating-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/stats_rating_view_height"
+			android:layout_height="wrap_content"
+			android:minHeight="@dimen/stats_rating_view_height"
             android:paddingLeft="@dimen/stats_padding_side"
             android:paddingRight="@dimen/stats_padding_side"
             android:paddingTop="13dip">
@@ -245,7 +249,8 @@
         <!--Winning Streak-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/stats_rating_view_height"
+			android:layout_height="wrap_content"
+			android:minHeight="@dimen/stats_rating_view_height"
             android:paddingLeft="@dimen/stats_padding_side"
             android:paddingRight="@dimen/stats_padding_side"
             android:gravity="center_vertical">
@@ -276,7 +281,8 @@
         <!--Losing Streak-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/stats_rating_view_height"
+			android:layout_height="wrap_content"
+			android:minHeight="@dimen/stats_rating_view_height"
             android:paddingLeft="@dimen/stats_padding_side"
             android:paddingRight="@dimen/stats_padding_side"
             android:gravity="center_vertical">
@@ -307,7 +313,8 @@
         <!--Timeouts-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/stats_rating_view_height"
+			android:layout_height="wrap_content"
+			android:minHeight="@dimen/stats_rating_view_height"
             android:paddingLeft="@dimen/stats_padding_side"
             android:paddingRight="@dimen/stats_padding_side"
             android:gravity="center_vertical">
@@ -340,7 +347,8 @@
         <!--Glicko RD-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/stats_rating_view_height"
+			android:layout_height="wrap_content"
+			android:minHeight="@dimen/stats_rating_view_height"
             android:paddingLeft="@dimen/stats_padding_side"
             android:paddingRight="@dimen/stats_padding_side"
             android:gravity="center_vertical">
@@ -371,7 +379,8 @@
         <!--Most Frequent Opponent-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/stats_rating_view_height"
+            android:layout_height="wrap_content"
+			android:minHeight="@dimen/stats_rating_view_height"
             android:paddingLeft="@dimen/stats_padding_side"
             android:paddingRight="@dimen/stats_padding_side"
             android:paddingTop="10dip"

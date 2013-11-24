@@ -25,8 +25,7 @@ public class LessonsCourseFragmentTablet extends LessonsCourseFragment {
 
 	private LessonsItemsAdapterTablet lessonsItemAdapter;
 
-	public LessonsCourseFragmentTablet() {
-	}
+	public LessonsCourseFragmentTablet() {}
 
 	public static LessonsCourseFragmentTablet createInstance(int courseId, int categoryId) {
 		LessonsCourseFragmentTablet fragment = new LessonsCourseFragmentTablet();

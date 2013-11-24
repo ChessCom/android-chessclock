@@ -5,7 +5,6 @@
 
 	<dimen name="panel_info_avatar_left_margin">2dp</dimen>
 	<dimen name="notations_text_view_height">30dp</dimen>
-	<dimen name="tablet_side_menu_width">250dp</dimen>
 
     <!--SigIn-->
 	<dimen name="signin_scr_top_padding">20dip</dimen>
@@ -77,8 +76,7 @@
 	<dimen name="new_tactics_clock_icon_padding">6dip</dimen>
 	<dimen name="new_tactics_clock_icon_padding_top">4dip</dimen>
 	<dimen name="actionbar_title_text_size">24sp</dimen>
-	<dimen name="article_detail_image_width">286dip</dimen>
-	<dimen name="article_detail_image_height">286dip</dimen>
+
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="options_list_item_height">56dip</dimen>
 	<dimen name="content_text_size">15sp</dimen>
@@ -141,7 +139,6 @@
 	<dimen name="graph_stats_top_info_height">48dp</dimen>
 	<dimen name="stats_rating_value_text_size">21sp</dimen>
 	<dimen name="stats_rating_list_item_font">16sp</dimen>
-	<dimen name="stats_padding_side">0dip</dimen>
 	<dimen name="small_orange_button_height">37dip</dimen>
 
 </resources>

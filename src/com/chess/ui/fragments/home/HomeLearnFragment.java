@@ -32,7 +32,6 @@ import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragmentTablet;
 import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
-import com.chess.ui.fragments.tactics.GameTacticsFragmentTablet;
 import com.chess.ui.fragments.videos.VideoDetailsFragment;
 import com.chess.ui.fragments.videos.VideosFragment;
 import com.chess.ui.fragments.videos.VideosFragmentTablet;
@@ -181,11 +180,11 @@ public class HomeLearnFragment extends CommonLogicFragment {
 				getActivityFace().openFragment(new VideosFragmentTablet());
 			}
 		} else if (id == R.id.startTacticsBtn) {
-			if (!isTablet) {
+//			if (!isTablet) {
 				getActivityFace().openFragment(new GameTacticsFragment());
-			} else {
-				getActivityFace().openFragment(new GameTacticsFragmentTablet());
-			}
+//			} else {
+//				getActivityFace().openFragment(new GameTacticsFragmentTablet());
+//			}
 		} else if (id == R.id.startLessonsBtn) {
 			if (incompleteLesson != null) {
 				int lessonId = incompleteLesson.getId();

@@ -96,7 +96,12 @@ public class VideoCategoriesFragmentTablet extends VideoCategoriesFragment{
 		}
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		long videoId = DbDataManager.getLong(cursor, DbScheme.V_ID);
-		parentFace.changeFragment(VideoDetailsFragment.createInstance(videoId));
+		if (inPortrait()) {
+			getActivityFace().openFragment(VideoDetailsFragment.createInstance(videoId));
+		} else {
+			parentFace.changeFragment(VideoDetailsFragment.createInstance(videoId));
+		}
+
 	}
 
 	@Override

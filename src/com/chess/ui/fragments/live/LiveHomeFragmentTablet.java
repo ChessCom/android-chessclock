@@ -70,21 +70,23 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment {
 	public void onResume() {
 		super.onResume();
 
-		if (need2update) {
-			boolean haveSavedData = DbDataManager.haveSavedLiveArchiveGame(getActivity(), getUsername());
+		if (inLandscape()) {
+			if (need2update) {
+				boolean haveSavedData = DbDataManager.haveSavedLiveArchiveGame(getActivity(), getUsername());
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
-				updateData();
-			}
+				if (AppUtils.isNetworkAvailable(getActivity())) {
+					updateData();
+				}
 
-			if (haveSavedData) {
+				if (haveSavedData) {
+					loadDbGames();
+				}
+			} else {
 				loadDbGames();
 			}
-		} else {
-			loadDbGames();
-		}
 
-		loadRecentOpponents();
+			loadRecentOpponents();
+		}
 	}
 
 	protected void updateData() {
@@ -218,13 +220,13 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment {
 		int id = view.getId();
 		if (id == R.id.friendsHeaderView) {
 			getActivityFace().openFragment(new FriendsFragment());
-		} else if (id == R.id.statsHeaderView){
+		} else if (id == R.id.statsHeaderView) {
 			getActivityFace().openFragment(new StatsGameFragment());
-		} else if (id == R.id.statsView1){
+		} else if (id == R.id.statsView1) {
 			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_STANDARD, getUsername()));
-		} else if (id == R.id.statsView2){
+		} else if (id == R.id.statsView2) {
 			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_BLITZ, getUsername()));
-		} else if (id == R.id.statsView3){
+		} else if (id == R.id.statsView3) {
 			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_LIGHTNING, getUsername()));
 		} else if (view.getId() == R.id.inviteFriendView1) {
 			getActivityFace().changeRightFragment(LiveGameOptionsFragment.createInstance(RIGHT_MENU_MODE, firstFriendUserName));
@@ -237,6 +239,10 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment {
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		if (inPortrait()) {
+			super.onItemClick(parent, view, position, id);
+			return;
+		}
 		if (position != 0) {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 			long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
@@ -255,6 +261,10 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment {
 
 	@Override
 	protected void widgetsInit(View view) {
+		if (inPortrait()) {
+			super.widgetsInit(view);
+			return;
+		}
 		Resources resources = getResources();
 
 		{ // invite overlay setup

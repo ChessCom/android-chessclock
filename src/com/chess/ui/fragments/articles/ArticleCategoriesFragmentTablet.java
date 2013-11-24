@@ -85,7 +85,11 @@ public class ArticleCategoriesFragmentTablet extends ArticleCategoriesFragment {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		long articleId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
-		parentFace.changeFragment(ArticleDetailsFragment.createInstance(articleId));
+		if (inPortrait()) {
+			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(articleId));
+		} else {
+			parentFace.changeFragment(ArticleDetailsFragment.createInstance(articleId));
+		}
 	}
 
 	protected void setAdapter(ArticlesCursorAdapterTablet adapter) {

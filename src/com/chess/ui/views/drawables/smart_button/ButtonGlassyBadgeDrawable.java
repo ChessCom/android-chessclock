@@ -8,10 +8,10 @@ import com.chess.ui.views.drawables.ChatBadgeDrawable;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 29.09.13
- * Time: 20:56
+ * Date: 23.11.13
+ * Time: 19:18
  */
-public class RectButtonBadgeDrawable extends RectButtonDrawable {
+public class ButtonGlassyBadgeDrawable extends ButtonGlassyDrawable {
 
 	private ChatBadgeDrawable chatBadgeDrawable;
 	private Resources resources;
@@ -21,7 +21,7 @@ public class RectButtonBadgeDrawable extends RectButtonDrawable {
 	private int badgeOffset;
 	private String badgeValue;
 
-	public RectButtonBadgeDrawable() { }
+	public ButtonGlassyBadgeDrawable() { }
 
 	@Override
 	void init(Resources resources) {

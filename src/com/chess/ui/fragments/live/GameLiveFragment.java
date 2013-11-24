@@ -1235,7 +1235,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		fadeLay = view.findViewById(R.id.fadeLay);
 
 		setControlsView(view.findViewById(R.id.controlsView));
-		setNotationsFace(view.findViewById(R.id.notationsView));
+		if (inPortrait()) {
+			setNotationsFace(view.findViewById(R.id.notationsView));
+		} else {
+			setNotationsFace(view.findViewById(R.id.notationsViewTablet));
+		}
+
 		topPanelView = (PanelInfoLiveView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoLiveView) view.findViewById(R.id.bottomPanelView);
 

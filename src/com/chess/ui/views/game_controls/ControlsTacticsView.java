@@ -32,14 +32,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 	}
 
 	@Override
-	void init(Context context, AttributeSet attrs) {
-		super.init(context, attrs);
-
-		addButtons();
-
-		showStart();
-	}
-
 	protected void addButtons() {
 		addStartButton();
 		addControlButton(OPTIONS, styles[LEFT]);
@@ -53,8 +45,10 @@ public class ControlsTacticsView extends ControlsBaseView {
 		addControlButton(BACK, styles[MIDDLE]);
 		addControlButton(FORWARD, styles[RIGHT]);
 
-		addNextButton(R.style.Rect_Bottom_Right_Orange, SKIP);
+		addNextButton(styles[ORANGE], SKIP);
 		addWrongButton();
+
+		showStart();
 	}
 
 	protected void addStartButton() {
@@ -65,7 +59,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		button.setTextSize(controlTextSize);
 		button.setTextColor(Color.WHITE);
 		button.setShadowLayer(0, 0, 0, 0x00000000);
-		button.setDrawableStyle(R.style.Rect_Bottom_Right_Orange);
+		button.setDrawableStyle(styles[ORANGE]);
 		button.setId(getButtonId(START));
 		button.setVisibility(GONE);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
@@ -105,7 +99,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 	protected void addWrongButton() {
 		RoboButton button = getDefaultButton();
 		button.setText(R.string.ic_restore);
-		button.setDrawableStyle(R.style.Rect_Bottom_Right_Red);
+		button.setDrawableStyle(styles[RED]);
 		button.setId(getButtonId(RESTART));
 		button.setVisibility(GONE);
 		button.setTextColor(Color.WHITE);
@@ -164,7 +158,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(RESTORE, false);
 		showGameButton(EXIT, false);
 		showGameButton(COMP, false);
-//		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
 		showGameButton(FORWARD, false);
 	}
@@ -183,7 +176,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(RESTORE, false);
 		showGameButton(EXIT, false);
 		showGameButton(COMP, false);
-//		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
 		showGameButton(FORWARD, false);
 	}
@@ -202,7 +194,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(RESTORE, false);
 		showGameButton(EXIT, false);
 		showGameButton(COMP, false);
-//		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
 		showGameButton(FORWARD, false);
 	}
@@ -221,7 +212,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(RESTORE, false);
 		showGameButton(EXIT, false);
 		showGameButton(COMP, false);
-//		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
 		showGameButton(FORWARD, false);
 	}
@@ -240,7 +230,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(RESTORE, false);
 		showGameButton(EXIT, false);
 		showGameButton(COMP, false);
-//		showGameButton(FLIP, false);
 		showGameButton(BACK, false);
 		showGameButton(FORWARD, false);
 	}
@@ -259,7 +248,6 @@ public class ControlsTacticsView extends ControlsBaseView {
 		showGameButton(RESTORE, true);
 		showGameButton(EXIT, true);
 		showGameButton(COMP, true);
-//		showGameButton(FLIP, true);
 		showGameButton(BACK, true);
 		showGameButton(FORWARD, true);
 	}

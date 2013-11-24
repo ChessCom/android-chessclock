@@ -12,7 +12,6 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.ui.engine.ChessBoardLessons;
 import com.chess.ui.views.chess_boards.ChessBoardLessonsView;
-import com.chess.ui.views.game_controls.ControlsLessonsViewTablet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +23,6 @@ import java.util.List;
  * Time: 21:32
  */
 public class GameLessonsFragmentTablet extends GameLessonFragment {
-
-	private ControlsLessonsViewTablet controlsView;
-
 
 	public GameLessonsFragmentTablet() {}
 
@@ -84,17 +80,11 @@ public class GameLessonsFragmentTablet extends GameLessonFragment {
 	}
 
 	@Override
-	protected ControlsLessonsViewTablet getControlsView() {
-		return controlsView;
-	}
-
-	@Override
-	protected void setControlsView(View controlsView) {
-		this.controlsView = (ControlsLessonsViewTablet) controlsView;
-	}
-
-	@Override
 	protected void widgetsInit(View view) {
+		if (inPortrait()) {
+			super.widgetsInit(view);
+			return;
+		}
 		setControlsView(view.findViewById(R.id.controlsView));
 
 		boardView = (ChessBoardLessonsView) view.findViewById(R.id.boardview);

@@ -58,6 +58,22 @@ public class ButtonDrawableBuilder {
 		return buttonDrawable;
 	}
 
+	private static ButtonGlassyBadgeDrawable setGlassyBadgeDefaults(Context context) {
+		Resources resources = context.getResources();
+		ButtonGlassyBadgeDrawable buttonDrawable = new ButtonGlassyBadgeDrawable();
+		buttonDrawable.isSolid = true;
+		buttonDrawable.useBorder = true;
+		buttonDrawable.usePressedLayer = false;
+		buttonDrawable.gradientAngle = TL_BR;
+		buttonDrawable.bevelLvl = 1;
+		buttonDrawable.bevelInset = DEFAULT_BEVEL_INSET;
+
+		buttonDrawable.radius = resources.getDimensionPixelSize(R.dimen.rounded_button_radius);
+		buttonDrawable.colorOuterBorder = resources.getColor(R.color.semi_transparent_border);
+
+		return buttonDrawable;
+	}
+
 	private static RectButtonDrawable setRectDefaults(Context context) {
 		Resources resources = context.getResources();
 		RectButtonDrawable buttonDrawable = new RectButtonDrawable();// TODO improve code - remove duplicates
@@ -484,6 +500,12 @@ public class ButtonDrawableBuilder {
 				createRect(rectButtonDrawable, resources);
 
 				return rectButtonDrawable;
+			}
+			case R.style.Button_Glassy_Badge: {
+				ButtonGlassyBadgeDrawable buttonDrawable = setGlassyBadgeDefaults(context);
+				createGlassy(buttonDrawable, resources);
+
+				return buttonDrawable;
 			}
 			default: {
 				ButtonDrawable buttonDrawable = setDefaults(context);

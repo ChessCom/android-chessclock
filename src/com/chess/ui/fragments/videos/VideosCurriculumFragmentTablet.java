@@ -181,7 +181,11 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 			return;
 		}
 		int videoId = curriculumItems.getIds()[groupPosition][childPosition];
-		parentFace.changeFragment(VideoDetailsFragment.createInstance(videoId));
+		if (inPortrait()) {
+			getActivityFace().openFragment(VideoDetailsFragment.createInstance(videoId));
+		} else {
+			parentFace.changeFragment(VideoDetailsFragment.createInstance(videoId));
+		}
 	}
 
 	@Override
@@ -341,7 +345,7 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 		@Override
 		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-			convertView = inflater.inflate(R.layout.new_lesson_curriculum_item, parent, false);
+			convertView = inflater.inflate(R.layout.new_common_grid_title_item, parent, false);
 
 			GridView gridView = (GridView) convertView.findViewById(R.id.gridView);
 

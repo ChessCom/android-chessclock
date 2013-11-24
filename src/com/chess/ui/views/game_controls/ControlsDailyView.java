@@ -36,14 +36,14 @@ public class ControlsDailyView extends ControlsBaseView {
 
 	@Override
 	protected void addButtons() {
-		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
-		addControlButton(ANALYSIS, R.style.Rect_Bottom_Middle);
-		addControlButton(CHAT, R.style.Rect_Bottom_Middle);
-		addControlButton(BACK, R.style.Rect_Bottom_Middle);
-		addControlButton(FORWARD, R.style.Rect_Bottom_Right);
+		addControlButton(OPTIONS, styles[LEFT]);
+		addControlButton(ANALYSIS, styles[MIDDLE]);
+		addControlButton(CHAT, styles[MIDDLE]);
+		addControlButton(BACK, styles[MIDDLE]);
+		addControlButton(FORWARD, styles[RIGHT]);
 
-		addActionButton(CLOSE, R.string.ic_close, R.style.Rect_Bottom_Left);
-		addActionButton(MAKE_MOVE, R.string.ic_check, R.style.Rect_Bottom_Right_Orange);
+		addActionButton(CLOSE, R.string.ic_close, styles[LEFT]);
+		addActionButton(MAKE_MOVE, R.string.ic_check, styles[ORANGE]);
 	}
 
 	@Override
@@ -75,13 +75,13 @@ public class ControlsDailyView extends ControlsBaseView {
 		RoboButton chatButton = (RoboButton) findViewById(getButtonId(ButtonIds.CHAT));
 
 		if (newMessage) {
-			ButtonDrawableBuilder.setBackgroundToView(chatButton, R.style.Rect_Bottom_Middle_Badge);
+			ButtonDrawableBuilder.setBackgroundToView(chatButton, styles[BADGE]);
 			RectButtonBadgeDrawable background = (RectButtonBadgeDrawable) chatButton.getBackground();
 			if (background != null) {
 				background.setBadgeValue(NEW_MESSAGE_MARK);
 			}
 		} else {
-			ButtonDrawableBuilder.setBackgroundToView(chatButton, R.style.Rect_Bottom_Middle);
+			ButtonDrawableBuilder.setBackgroundToView(chatButton,styles[MIDDLE]);
 		}
 
 		invalidate();
@@ -129,7 +129,7 @@ public class ControlsDailyView extends ControlsBaseView {
 	private Runnable blinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			((RoboButton)findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Rect_Bottom_Left);
+			((RoboButton)findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(styles[LEFT]);
 
 			handler.removeCallbacks(unBlinkSubmitButton);
 			handler.postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
@@ -139,7 +139,7 @@ public class ControlsDailyView extends ControlsBaseView {
 	private Runnable unBlinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			((RoboButton)findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(R.style.Rect_Bottom_Right_Orange);
+			((RoboButton)findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(styles[ORANGE]);
 
 			blinkSubmitBtn();
 		}

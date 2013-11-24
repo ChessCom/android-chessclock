@@ -25,7 +25,7 @@
         android:cacheColorHint="@color/white"
         android:divider="@null"
         android:dividerHeight="0dip"
-		android:numColumns="2"
+		android:numColumns="@integer/columns_in_grid_view"
 		android:paddingTop="@dimen/grid_view_spacing"
         />
 

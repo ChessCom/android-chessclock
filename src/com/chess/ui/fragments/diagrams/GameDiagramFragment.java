@@ -703,7 +703,12 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 	private void widgetsInit(View view) {
 		setControlsView(view.findViewById(R.id.controlsView));
-		setNotationsFace(view.findViewById(R.id.notationsView));
+		if (inPortrait()) {
+			setNotationsFace(view.findViewById(R.id.notationsView));
+		} else {
+			setNotationsFace(view.findViewById(R.id.notationsViewTablet));
+		}
+
 		notationCommentTxt = (TextView) view.findViewById(R.id.notationCommentTxt);
 		notationCommentTxt.setOnClickListener(this);
 		moveResultTxt = (TextView) view.findViewById(R.id.moveResultTxt);

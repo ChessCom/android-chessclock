@@ -447,7 +447,7 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 
 		@Override
 		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-			convertView = inflater.inflate(R.layout.new_lesson_curriculum_item, parent, false);
+			convertView = inflater.inflate(R.layout.new_common_grid_title_item, parent, false);
 
 			GridView gridView = (GridView) convertView.findViewById(R.id.gridView);
 

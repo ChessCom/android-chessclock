@@ -57,8 +57,10 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 	@Override
 	public void onResume() {
 		super.onResume();
-		loadDbGames();
-		loadRecentOpponents();
+		if (inLandscape()) {
+			loadDbGames();
+			loadRecentOpponents();
+		}
 	}
 
 	private void loadDbGames() {
@@ -153,6 +155,10 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 
 	@Override
 	protected void widgetsInit(View view) {
+		if (inPortrait()) {
+			super.widgetsInit(view);
+			return;
+		}
 		Resources resources = getResources();
 
 		{ // invite overlay setup

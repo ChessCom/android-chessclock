@@ -77,7 +77,7 @@
 
 		<!--NotationsView-->
 		<com.chess.ui.views.NotationsViewTablet
-			android:id="@+id/notationsView"
+			android:id="@+id/notationsViewTablet"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/topTextContainer"
@@ -93,11 +93,12 @@
 			/>
 
 		<!--Controls-->
-		<com.chess.ui.views.game_controls.ControlsDiagramViewTablet
+		<com.chess.ui.views.game_controls.ControlsDiagramView
 			android:id="@+id/controlsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
+			custom:controls_style="rectDark"
 			android:layout_marginLeft="2dp"
 			android:layout_marginRight="2dp"
 			android:layout_marginBottom="2dp"

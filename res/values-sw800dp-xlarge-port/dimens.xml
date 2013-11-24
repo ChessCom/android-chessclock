@@ -11,4 +11,7 @@
 	<dimen name="shadow_width">15dp</dimen>
 	<dimen name="welcome_frame_login_btn_height">48dp</dimen>
 
+
+	<dimen name="tablet_side_menu_width">300dp</dimen>
+
 </resources>

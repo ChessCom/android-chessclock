@@ -3,7 +3,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
-	android:id="@+id/boardFrame"
+    android:id="@+id/boardFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -20,8 +20,8 @@
     <com.chess.ui.views.PanelInfoGameView
         android:id="@+id/topPanelView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="0dip"
+		android:layout_weight="1"
         custom:oneLine="@bool/one_line_for_board"
 		android:layout_marginLeft="@dimen/common_tablet_side_padding"
 		android:layout_marginRight="@dimen/common_tablet_side_padding"
@@ -37,7 +37,7 @@
 		android:background="@drawable/shadow_back_inset_shifted">
 
 		<!--BoardView-->
-		<com.chess.ui.views.chess_boards.ChessBoardDailyView
+		<com.chess.ui.views.chess_boards.ChessBoardAnalysisView
 			android:id="@+id/boardview"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content" />
@@ -45,7 +45,7 @@
 	</com.chess.widgets.LinLayout>
 
 	<!--BottomPanelInfo-->
-	<com.chess.ui.views.PanelInfoGameView
+    <com.chess.ui.views.PanelInfoGameView
         android:id="@+id/bottomPanelView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -55,7 +55,7 @@
 		android:layout_marginRight="@dimen/common_tablet_side_padding"
         />
 
-    <com.chess.ui.views.game_controls.ControlsDailyView
+    <com.chess.ui.views.game_controls.ControlsAnalysisView
         android:id="@+id/controlsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,5 +64,9 @@
 		android:layout_marginRight="@dimen/common_tablet_side_padding"
 		android:layout_marginBottom="@dimen/default_scr_side_padding"
         />
+
+
+
+
 
 </LinearLayout>

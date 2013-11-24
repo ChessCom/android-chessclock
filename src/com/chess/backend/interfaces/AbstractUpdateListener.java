@@ -3,7 +3,6 @@ package com.chess.backend.interfaces;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
-import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 
@@ -77,7 +76,7 @@ public abstract class AbstractUpdateListener<ItemType> implements TaskUpdateInte
 			int serverCode = RestHelper.decodeServerCode(resultCode);
 			if (serverCode == ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
 				if (context != null) {
-					Toast.makeText(context, R.string.pleaseLoginAgain, Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "Re-login required", Toast.LENGTH_SHORT).show();
 				}
 			}
 		}

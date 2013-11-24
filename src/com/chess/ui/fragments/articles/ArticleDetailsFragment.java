@@ -123,7 +123,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private int textColor;
 	private int textSize;
 	private DiagramImageProcessor diagramImageProcessor;
-	private int deviceSizeCode;
 	private boolean diagramsLoaded;
 	private List<DiagramListItem> contentPartsList;
 	private SmartImageFetcher articleImageFetcher;
@@ -700,12 +699,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			// add FrameLayout for imageView and fragment container
 			FrameLayout frameLayout = new FrameLayout(getActivity());
-			int frameWidth;
-//			if (isTablet) {
-//				frameWidth = (int) (mainArticleImageWidth /** IMAGE_WIDTH_PERCENT*/);
-//			} else {
-				frameWidth = screenWidth;
-//			}
+			int frameWidth = screenWidth;
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(frameWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
 			params.gravity = Gravity.CENTER;
 
@@ -713,12 +707,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 			{// add imageView with diagram bitmap
 				// take 80% of screen width
-				int imageSize;
-//				if (!isTablet) {
-					imageSize = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
-//				} else {
-//					imageSize = (int) (mainArticleImageWidth/* * IMAGE_WIDTH_PERCENT*/);
-//				}
+				int imageSize = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
 
 				FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(imageSize, imageSize);
 				imageParams.gravity = Gravity.CENTER;
@@ -843,21 +832,9 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				// create board with pieces based on diagram
 				View boardView = createBoardView(diagramItem);
 
-				int bitmapWidth;
-				int bitmapHeight;
-//				if (isTablet) {
-//					// get bitmap from fragmentView
-//
-//					// add offset for shadow background
-//
-//					bitmapWidth = (int) ((mainArticleImageWidth / density) * IMAGE_WIDTH_PERCENT) + 27;
-//					bitmapHeight = (int) ((mainArticleImageWidth / density) * IMAGE_WIDTH_PERCENT);
-//
-//				} else {
-					// get bitmap from fragmentView
-					bitmapWidth = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
-					bitmapHeight = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
-//				}
+				// get bitmap from fragmentView
+				int bitmapWidth = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
+				int bitmapHeight = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
 				// fill data for load image
 				DiagramImageProcessor.Data data = new DiagramImageProcessor.Data(item.diagramId, boardView);
 
@@ -1034,17 +1011,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		// little hack here
 		// we know the with of left visible menu for portrait!
-		if (isTablet) {
+		if (inLandscape()) {
 			screenWidth -= getResources().getDimensionPixelSize(R.dimen.tablet_side_menu_width) * 2;
 		}
 
 
-//		boolean sevenInchTablet = AppUtils.is7InchTablet(getActivity());
-//		if (sevenInchTablet) {
-//			deviceSizeCode = DiagramImageProcessor.NEXUS_7;
-//		} else {
-			deviceSizeCode = DiagramImageProcessor.DEFAULT;
-//		}
+		int deviceSizeCode = DiagramImageProcessor.DEFAULT;
 
 		{// set imageCache params for diagramProcessor
 			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);

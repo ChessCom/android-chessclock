@@ -81,7 +81,7 @@
 		android:divider="@null"
 		android:dividerHeight="0dip"
 		android:paddingTop="11dp"
-		android:numColumns="2" />
+		android:numColumns="@integer/columns_in_grid_view" />
 
 	<com.chess.widgets.RoboButton
 		android:id="@id/upgradeLessonsBtn"

@@ -99,7 +99,7 @@
 
 			<!--NotationsView-->
 			<com.chess.ui.views.NotationsViewTablet
-				android:id="@+id/notationsView"
+				android:id="@+id/notationsViewTablet"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:numColumns="2"
@@ -118,10 +118,11 @@
 		</com.chess.widgets.RelLayout>
 
 		<!--Controls-->
-		<com.chess.ui.views.game_controls.ControlsDailyViewTablet
+		<com.chess.ui.views.game_controls.ControlsDailyView
 			android:id="@id/controlsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			custom:controls_style="rectDark"
 			android:layout_above="@+id/bottomPanelView"
 			android:layout_marginLeft="2dp"
 			android:layout_marginRight="2dp" />

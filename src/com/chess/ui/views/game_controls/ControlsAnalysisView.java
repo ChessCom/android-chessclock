@@ -27,13 +27,6 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	}
 
 	@Override
-	void init(Context context, AttributeSet attrs) {
-		super.init(context, attrs);
-
-		addButtons();
-	}
-
-	@Override
 	protected void addButtons() {
 		addControlButton(EXIT, styles[LEFT]);
 		addControlButton(SEARCH, styles[MIDDLE]);

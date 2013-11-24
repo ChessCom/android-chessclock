@@ -1,8 +1,6 @@
 package com.chess.ui.fragments.live;
 
 import android.os.Bundle;
-import android.view.View;
-import com.chess.ui.views.game_controls.ControlsLiveViewTablet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,9 +10,7 @@ import com.chess.ui.views.game_controls.ControlsLiveViewTablet;
  */
 public class GameLiveFragmentTablet extends GameLiveFragment {
 
-	private ControlsLiveViewTablet controlsView;
-	public GameLiveFragmentTablet() {
-	}
+	public GameLiveFragmentTablet() { }
 
 	public static GameLiveFragmentTablet createInstance(long id) {
 		GameLiveFragmentTablet fragment = new GameLiveFragmentTablet();
@@ -22,16 +18,6 @@ public class GameLiveFragmentTablet extends GameLiveFragment {
 		bundle.putLong(GAME_ID, id);
 		fragment.setArguments(bundle);
 		return fragment;
-	}
-
-	@Override
-	protected ControlsLiveViewTablet getControlsView() {
-		return controlsView;
-	}
-
-	@Override
-	protected void setControlsView(View controlsView) {
-		this.controlsView = (ControlsLiveViewTablet) controlsView;
 	}
 
 }

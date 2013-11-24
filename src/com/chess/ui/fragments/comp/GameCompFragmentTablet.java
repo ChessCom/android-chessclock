@@ -1,9 +1,7 @@
 package com.chess.ui.fragments.comp;
 
 import android.os.Bundle;
-import android.view.View;
 import com.chess.ui.engine.configs.CompGameConfig;
-import com.chess.ui.views.game_controls.ControlsCompViewTablet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +11,7 @@ import com.chess.ui.views.game_controls.ControlsCompViewTablet;
  */
 public class GameCompFragmentTablet extends GameCompFragment {
 
-	private ControlsCompViewTablet controlsView;
+//	private ControlsCompViewTablet controlsView;
 
 	public GameCompFragmentTablet() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -30,14 +28,14 @@ public class GameCompFragmentTablet extends GameCompFragment {
 		return fragment;
 	}
 
-	@Override
-	protected ControlsCompViewTablet getControlsView() {
-		return controlsView;
-	}
-
-	@Override
-	protected void setControlsView(View controlsView) {
-		this.controlsView = (ControlsCompViewTablet) controlsView;
-	}
+//	@Override
+//	protected ControlsCompViewTablet getControlsView() {
+//		return controlsView;
+//	}
+//
+//	@Override
+//	protected void setControlsView(View controlsView) {
+//		this.controlsView = (ControlsCompViewTablet) controlsView;
+//	}
 
 }

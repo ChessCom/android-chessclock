@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.RadioGroup;
 import com.chess.R;
-import com.chess.ui.views.game_controls.ControlsDailyViewTablet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,13 +16,11 @@ import com.chess.ui.views.game_controls.ControlsDailyViewTablet;
  */
 public class GameDailyFragmentTablet extends GameDailyFragment implements RadioGroup.OnCheckedChangeListener {
 
-	private ControlsDailyViewTablet controlsView;
 	private RadioGroup topButtonsGroup;
 	private int previousCheckedId;
 	private View chatFragmentContainer;
 
-	public GameDailyFragmentTablet() {
-	}
+	public GameDailyFragmentTablet() {}
 
 	public static GameDailyFragmentTablet createInstance(long gameId, String username) {
 		GameDailyFragmentTablet fragment = new GameDailyFragmentTablet();
@@ -45,20 +42,10 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 	}
 
 	@Override
-	protected ControlsDailyViewTablet getControlsView() {
-		return controlsView;
-	}
-
-	@Override
-	protected void setControlsView(View controlsView) {
-		this.controlsView = (ControlsDailyViewTablet) controlsView;
-	}
-
-	@Override
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
-		getActivityFace().openFragment(GameDailyAnalysisFragmentTablet.createInstance(gameId, username));
+		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId, username));
 	}
 
 	@Override
@@ -83,12 +70,12 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.notationsBtn:
-					((View)getNotationsFace()).setVisibility(View.VISIBLE);
+					((View) getNotationsFace()).setVisibility(View.VISIBLE);
 					// hide chat
 					chatFragmentContainer.setVisibility(View.GONE);
 					break;
 				case R.id.chatBtn:
-					((View)getNotationsFace()).setVisibility(View.INVISIBLE);
+					((View) getNotationsFace()).setVisibility(View.INVISIBLE);
 					chatFragmentContainer.setVisibility(View.VISIBLE);
 
 					String fragmentTag = DailyChatFragment.class.getSimpleName();

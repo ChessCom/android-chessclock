@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:id="@+id/boardFrame"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/engineThinkingPath"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/notations_view_height"
+		android:visibility="gone" />
+
+	<com.chess.ui.views.NotationView
+		android:id="@+id/notationsView"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/notations_view_height"
+		style="@style/NotationsStyle" />
+
+	<!--TopPanelInfo-->
+	<com.chess.ui.views.PanelInfoGameView
+		android:id="@+id/topPanelView"
+		android:layout_width="match_parent"
+		android:layout_height="0dip"
+		android:layout_weight="1"
+		custom:oneLine="@bool/one_line_for_board"
+		android:layout_marginLeft="@dimen/common_tablet_side_padding"
+		android:layout_marginRight="@dimen/common_tablet_side_padding"
+		/>
+
+	<com.chess.widgets.LinLayout
+		android:id="@+id/boardLinLay"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:layout_marginLeft="@dimen/tablet_board_margin_left"
+		android:layout_marginRight="@dimen/tablet_board_margin_left"
+		android:background="@drawable/shadow_back_inset_shifted">
+
+		<!--BoardView-->
+		<com.chess.ui.views.chess_boards.ChessBoardCompView
+			android:id="@+id/boardview"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+
+	</com.chess.widgets.LinLayout>
+
+	<!--BottomPanelInfo-->
+	<com.chess.ui.views.PanelInfoGameView
+		android:id="@+id/bottomPanelView"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		custom:oneLine="@bool/one_line_for_board"
+		android:layout_marginLeft="@dimen/common_tablet_side_padding"
+		android:layout_marginRight="@dimen/common_tablet_side_padding"
+		/>
+
+
+	<com.chess.ui.views.game_controls.ControlsCompView
+		android:id="@+id/controlsView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		custom:controls_style="rounded"
+		android:layout_marginLeft="@dimen/common_tablet_side_padding"
+		android:layout_marginRight="@dimen/common_tablet_side_padding"
+		android:layout_marginBottom="@dimen/default_scr_side_padding"
+		/>
+
+</LinearLayout>
