@@ -812,7 +812,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private Runnable hideMoveResultTask = new Runnable() {
 		@Override
 		public void run() {
-			moveResultTxt.setVisibility(View.GONE);
+			moveResultTxt.setVisibility(View.INVISIBLE);
 			handler.removeCallbacks(hideMoveResultTask);
 		}
 	};
@@ -844,7 +844,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		getBoardFace().setAnalysis(isAnalysis);
 		bottomPanelView.showClock(!isAnalysis);
 
-		moveResultTxt.setVisibility(isAnalysis ? View.VISIBLE : View.GONE);
+		moveResultTxt.setVisibility(isAnalysis ? View.VISIBLE : View.INVISIBLE);
 		moveResultTxt.setText(R.string.analysis);
 		setIconToResultView(R.string.ic_board);
 	}
@@ -1042,7 +1042,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (isAnalysis) {
 			getControlsView().showAnalysis();
 		} else {
-			moveResultTxt.setVisibility(View.GONE);
+			moveResultTxt.setVisibility(View.INVISIBLE);
 		}
 		bottomPanelView.showPractice(isAnalysis);
 		getBoardFace().setAnalysis(isAnalysis);

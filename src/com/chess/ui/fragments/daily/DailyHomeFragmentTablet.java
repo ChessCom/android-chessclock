@@ -3,10 +3,12 @@ package com.chess.ui.fragments.daily;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.entity.api.DailyFinishedGameData;
@@ -26,7 +28,7 @@ import com.chess.ui.views.chess_boards.ChessBoardBaseView;
  * Date: 07.11.13
  * Time: 12:06
  */
-public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemClickListenerFace {
+public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemClickListenerFace, ViewTreeObserver.OnGlobalLayoutListener {
 
 	private DaileArchiveGamesCursorAdapter finishedGamesCursorAdapter;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
@@ -154,38 +156,52 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 	}
 
 	@Override
-	protected void widgetsInit(View view) {
-		if (inPortrait()) {
-			super.widgetsInit(view);
+	public void onGlobalLayout() {
+		if (getView() == null || getView().getViewTreeObserver() == null) {
 			return;
 		}
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+		} else {
+			getView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
+		}
+
 		Resources resources = getResources();
 
-		{ // invite overlay setup
-			View startOverlayView = view.findViewById(R.id.startOverlayView);
+		{ // new game overlay setup
+			View startOverlayView = getView().findViewById(R.id.startOverlayView);
 
 			// let's make it to match board properties
-			// it should be 2 squares inset from top of border and 4 squares tall + 1 squares from sides
+			// it should be 2.5 squares inset from top of border and 3 squares tall + 1.5 squares from sides
 
-			int boardWidth = resources.getDimensionPixelSize(R.dimen.tablet_board_size);
+			View boardview = getView().findViewById(R.id.boardview);
+			int boardWidth = boardview.getWidth();
 			int squareSize = boardWidth / 8; // one square size
 			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
 			// now we add few pixel to compensate shadow addition
 			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
 			borderOffset += shadowOffset;
-			int overlayHeight = squareSize * 4 + borderOffset + shadowOffset;
+			int overlayHeight = squareSize * 3 + borderOffset + shadowOffset;
 
-			int popupWidth = squareSize * 6 + squareSize;  // for tablets we need more width
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(popupWidth,
-					overlayHeight);
-			int topMargin = squareSize * 2 + borderOffset - shadowOffset * 2;
+			int popupWidth = squareSize * 5 + shadowOffset * 2 + borderOffset;  // for tablets we need more width
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(popupWidth, overlayHeight);
+			int topMargin = (int) (squareSize * 2.5f + borderOffset - shadowOffset * 2);
 
-			params.setMargins(squareSize - borderOffset, topMargin, squareSize - borderOffset, 0);
+			params.setMargins((int) (squareSize * 1.5f - shadowOffset), topMargin, squareSize - borderOffset, 0);
 			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
 			startOverlayView.setLayoutParams(params);
 
-			onlinePlayersCntTxt = (TextView) view.findViewById(R.id.onlinePlayersCntTxt);
+			onlinePlayersCntTxt = (TextView) getView().findViewById(R.id.onlinePlayersCntTxt);
 		}
+	}
+
+	@Override
+	protected void widgetsInit(View view) {
+		if (inPortrait()) {
+			super.widgetsInit(view);
+			return;
+		}
+		view.getViewTreeObserver().addOnGlobalLayoutListener(this);
 
 		view.findViewById(R.id.gamePlayBtn).setOnClickListener(this);
 
@@ -211,6 +227,8 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 		ChessBoardBaseView boardView = (ChessBoardBaseView) view.findViewById(R.id.boardview);
 		boardView.setGameFace(gameFaceHelper);
 	}
+
+
 
 	private void initHeaderViews(View view) {
 		view.findViewById(R.id.newGameHeaderView).setOnClickListener(this);

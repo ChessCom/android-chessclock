@@ -2,7 +2,6 @@ package com.chess.ui.fragments.daily;
 
 import android.app.AlertDialog;
 import android.content.*;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -110,7 +109,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+		if (inLandscape()) {
 			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 			transaction.add(R.id.optionsFragmentContainer, HomePlayFragment.createInstance(RIGHT_MENU_MODE))
 					.commitAllowingStateLoss();

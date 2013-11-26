@@ -26,7 +26,7 @@ public class GetAndSaveFriends extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		AppData appData = new AppData(this);
 
-		LoadItem loadItem = LoadHelper.getFriends(appData.getUserToken());
+		LoadItem loadItem = LoadHelper.getFriends(appData.getUserToken(), appData.getUsername());
 
 		FriendsItem item = null;
 		try {

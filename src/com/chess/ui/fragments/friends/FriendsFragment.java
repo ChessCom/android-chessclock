@@ -140,7 +140,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	}
 
 	private void updateData() {
-		LoadItem loadItem = LoadHelper.getFriends(getUserToken());
+		LoadItem loadItem = LoadHelper.getFriends(getUserToken(), username);
 		new RequestJsonTask<FriendsItem>(friendsUpdateListener).executeTask(loadItem);
 	}
 

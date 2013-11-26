@@ -20,8 +20,8 @@
 		<!--BoardView-->
 		<com.chess.ui.views.chess_boards.ChessBoardExplorerView
 			android:id="@+id/boardview"
-			android:layout_width="@dimen/tablet_board_size"
-			android:layout_height="@dimen/tablet_board_size" />
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent" />
 
 	</com.chess.widgets.LinLayout>
 

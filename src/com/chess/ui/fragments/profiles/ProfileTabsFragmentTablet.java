@@ -14,20 +14,20 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.DailySeekItem;
-import com.chess.backend.entity.api.RequestItem;
-import com.chess.backend.entity.api.UserItem;
-import com.chess.backend.entity.api.VacationItem;
+import com.chess.backend.entity.api.*;
 import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.tasks.SaveFriendsListTask;
 import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.RatingListItem;
 import com.chess.model.SelectionItem;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.ItemsAdapter;
@@ -97,6 +97,8 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 	private ArrayList<SelectionItem> menuItems;
 	private OptionsAdapter optionsAdapter;
 	private FragmentParentFace parentFace;
+	private FriendsUpdateListener friendsUpdateListener;
+	private ProfileBaseFragmentTablet.OpponentsAdapter friendsAdapter;
 
 	public static ProfileTabsFragmentTablet createInstance(FragmentParentFace parentFace, String username) {
 		ProfileTabsFragmentTablet fragment = new ProfileTabsFragmentTablet();
@@ -156,6 +158,10 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 			updateUiData();
 			fillUserStats();
 		}
+
+		// get friends for user
+		LoadItem loadItem = LoadHelper.getFriends(getUserToken(), username);
+		new RequestJsonTask<FriendsItem>(friendsUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -210,6 +216,27 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 			} else if (sectionName.equals(categories[LESSONS])) {
 				changeInternalFragment(StatsGameLessonsFragment.createInstance(username)); // TODO adjust Lessons
 			}
+		}
+	}
+
+	private class FriendsUpdateListener extends ChessUpdateListener<FriendsItem> {
+
+		public FriendsUpdateListener() {
+			super(FriendsItem.class);
+		}
+
+		@Override
+		public void updateData(FriendsItem returnedObj) {
+			super.updateData(returnedObj);
+
+			List<SelectionItem> friendsList = new ArrayList<SelectionItem>();
+			for (FriendsItem.Data friend : returnedObj.getData()) {
+				SelectionItem selectionItem = new SelectionItem(null, friend.getUsername());
+				selectionItem.setCode(friend.getAvatarUrl());
+				friendsList.add(selectionItem);
+			}
+
+			friendsAdapter.setItemsList(friendsList);
 		}
 	}
 
@@ -508,6 +535,8 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 		FragmentActivity context = getActivity();
 
 		userUpdateListener = new UserUpdateListener();
+		friendsUpdateListener = new FriendsUpdateListener();
+
 		photoImageSize = (int) (80 * density);
 		imageLoader = new EnhancedImageDownloader(context);
 		statsItemUpdateListener = new StatsItemUpdateListener();
@@ -518,22 +547,6 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 		ratingList = createStatsList(context);
 
 		ratingsAdapter = new RatingsAdapter(context, ratingList);
-
-		ArrayList<SelectionItem> friendsList;
-		{ // load friends from DB
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
-					DbScheme.Tables.FRIENDS));
-
-			friendsList = new ArrayList<SelectionItem>();
-			if (cursor != null && cursor.moveToFirst()) {
-				do {
-					SelectionItem selectionItem = new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME));
-					selectionItem.setCode(DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL));
-					friendsList.add(selectionItem);
-				} while (cursor.moveToNext());
-			}
-		}
-
 
 		menuItems = new ArrayList<SelectionItem>();
 		{ // Add Friend
@@ -563,8 +576,7 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 		sectionedAdapter.addSection(getString(R.string.ratings), ratingsAdapter);
 
 		footerView = LayoutInflater.from(context).inflate(R.layout.new_frineds_gridview, null, false);
-		ProfileBaseFragmentTablet.OpponentsAdapter friendsAdapter =
-				new ProfileBaseFragmentTablet.OpponentsAdapter(context, friendsList, getImageFetcher());
+		friendsAdapter = new ProfileBaseFragmentTablet.OpponentsAdapter(context, null, getImageFetcher());
 
 		GridView gridView = (GridView) footerView.findViewById(R.id.gridView);
 		gridView.setAdapter(friendsAdapter);

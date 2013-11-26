@@ -86,8 +86,6 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 //				changeNamesForResources(userToken);
 //			}
 //		}, RENAME_DELAY);
-
-
 	}
 
 	private void changeNamesForResources(String userToken) {
@@ -377,8 +375,6 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 		int soundsId;
 
 
-
-
 		public ThemeUploadItem(int position) {
 			themeName = AppUtils.upCaseFirst(themes[position]);
 			piecesPreviewUrl = PIECE_PREVIEW_SQUARE + resourceIdMap[position][T_SOUND_NAME] + PNG;
@@ -403,26 +399,26 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 
 	// theme name, board, piece,          backgroundId,boardId,pieceId, soundId
 	private static final String[][] resourceIdMap = new String[][]{
-			{"game_room", "dark_wood", "game_room", "5", "6", "8", "-1"},
-			{"dark", "green", "dark", "6", "2", "11", "-1"},
-			{"light", "light", "light", "7", "21", "10", "-1"},
-			{"wood", "dark_wood", "game_room", "8", "6", "8", "-1"},
-			{"glass", "glass", "glass", "9", "14", "9", "-1"},
-			{"tournament", "tournament", "tournament", "10", "8", "7", "-1"},
-			{"staunton", "burled_wood", "staunton", "11", "5", "12", "-1"},
-			{"newspaper", "newspaper", "newspaper", "12", "13", "15", "-1"},
-			{"tigers", "parchment", "tigers", "13", "9", "16", "-1"},
-			{"nature", "translucent", "nature", "14", "10", "17", "2"},
-			{"sky", "sky", "sky", "15", "11", "19", "-1"},
-			{"space", "translucent", "space", "16", "10", "20", "5"},
-			{"ocean", "sand", "ocean", "17", "12", "22", "-1"},
-			{"metal", "metal", "metal", "18", "16", "23", "3"},
-			{"gothic", "stone", "gothic", "19", "17", "24", "-1"},
-			{"marble", "marble", "marble", "20", "7", "25", "4"},
-			{"neon", "neon", "neon", "21", "15", "26", "-1"},
-			{"graffiti", "graffiti", "graffiti", "22", "18", "27", "6"},
-			{"bubblegum", "bubblegum", "bubblegum", "23", "19", "28", "-1"},
-			{"lolz", "lolz", "lolz", "24", "20", "29", "8"}
+			{"game_room", 	"dark_wood", 	"game_room", "5", "6",   "8", "-1"},
+			{"dark", 		"green", 		"dark", 	 "6", "2",   "11", "-1"},
+			{"light", 		"light", 		"light", 	 "7", "21",  "10", "-1"},
+			{"wood", 		"dark_wood", 	"game_room", "8", "6",   "8", "-1"},
+			{"glass", 		"glass", 		"glass", 	 "9", "14",  "9", "-1"},
+			{"tournament", 	"tournament", 	"tournament","10", "8",  "7", "-1"},
+			{"staunton", 	"burled_wood", 	"staunton",  "11", "5",  "12", "-1"},
+			{"newspaper", 	"newspaper", 	"newspaper", "12", "13", "15", "-1"},
+			{"tigers", 		"parchment", 	"tigers", 	 "13", "9",  "16", "-1"},
+			{"nature", 		"translucent", 	"nature", 	 "14", "10", "17", "2"},
+			{"sky", 		"sky", 			"sky", 		 "15", "11", "19", "-1"},
+			{"space", 		"translucent", 	"space", 	 "16", "10", "20", "5"},
+			{"ocean", 		"sand", 		"ocean", 	 "17", "12", "22", "-1"},
+			{"metal", 		"metal", 		"metal", 	 "18", "16", "24", "3"},
+			{"gothic", 		"stone", 		"gothic", 	 "19", "17", "26", "-1"},
+			{"marble", 		"marble", 		"marble", 	 "20", "7",  "28", "4"},
+			{"neon", 		"neon", 		"neon", 	 "21", "15", "30", "-1"},
+			{"graffiti", 	"graffiti", 	"graffiti",  "22", "18", "32", "6"},
+			{"bubblegum", 	"bubblegum", 	"bubblegum", "23", "19", "34", "-1"},
+			{"lolz", 		"lolz", 		"lolz", 	 "24", "20", "36", "8"}
 	};
 
 
@@ -597,7 +593,6 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			44,  // 30
 			46,  // 31
 			48,  // 32
-
 	};
 
 
@@ -606,7 +601,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 	private static final int C_HIGHLIGHT = 2;
 
 	//       light     dark      highlight
-	static String[][] boardColors = new String[][] {
+	static String[][] boardColors = new String[][]{
 			{"edeed1", "779952", "ffff33"},  // Green         2
 			{"edeed1", "779952", "ffff33"},  // Brown         3
 			{"edeed1", "779952", "73bbee"},  // Blue          4
@@ -638,7 +633,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 
 
 /*
-            highlight
+			highlight
 
 grdefault - ffff33
 girlie - 	de5d6f
@@ -735,21 +730,123 @@ winboard - 	ffffff
 			"sky",            // 19
 			"space",          // 20
 			"ocean",          // 22
-			"metal",          // 23
-			"gothic",         // 24
-			"marble",         // 25
-			"neon",           // 26
-			"graffiti",       // 27
-			"bubblegum",      // 28
-			"lolz",           // 29
-			"cases",          // 30
-			"condal",         // 31
-			"vintage",        // 32
-			"maya",           // 33
-			"3d_chesskid",    // 34
-			"blindfold"       // 35
+			"metal",          // 24
+			"gothic",         // 26
+			"marble",         // 28
+			"neon",           // 30
+			"graffiti",       // 32
+			"bubblegum",      // 34
+			"lolz",           // 36
+			"cases",          // 38
+			"condal",         // 40
+			"vintage",        // 42
+			"maya",           // 44
+			"3d_chesskid",    // 46
+			"blindfold"       // 48
 	};
 
+
+/*
+  "user_theme_pieces_id": 1,
+  "theme_dir": "classic"
+{
+  "user_theme_pieces_id": 2,
+  "theme_dir": "alpha"
+{
+  "user_theme_pieces_id": 3,
+  "theme_dir": "modern"
+{
+  "user_theme_pieces_id": 4,
+  "theme_dir": "book"
+{
+  "user_theme_pieces_id": 5,
+  "theme_dir": "club"
+{
+  "user_theme_pieces_id": 6,
+  "theme_dir": "game_room"
+{
+  "user_theme_pieces_id": 7,
+  "theme_dir": "tournament"
+{
+  "user_theme_pieces_id": 8,
+  "theme_dir": "wood"
+{
+  "user_theme_pieces_id": 9,
+  "theme_dir": "glass"
+{
+  "user_theme_pieces_id": 10,
+  "theme_dir": "light"
+{
+  "user_theme_pieces_id": 11,
+  "theme_dir": "dark"
+{
+  "user_theme_pieces_id": 12,
+  "theme_dir": "3d_staunton"
+{
+  "user_theme_pieces_id": 13,
+  "theme_dir": "3d_wood"
+{
+  "user_theme_pieces_id": 14,
+  "theme_dir": "3d_plastic"
+{
+  "user_theme_pieces_id": 15,
+  "theme_dir": "newspaper"
+{
+  "user_theme_pieces_id": 16,
+  "theme_dir": "tigers"
+{
+  "user_theme_pieces_id": 17,
+  "theme_dir": "nature"
+{
+  "user_theme_pieces_id": 19,
+  "theme_dir": "sky"
+{
+  "user_theme_pieces_id": 20,
+  "theme_dir": "space"
+{
+  "user_theme_pieces_id": 22,
+  "theme_dir": "ocean"
+{
+  "user_theme_pieces_id": 24,
+  "theme_dir": "metal"
+{
+  "user_theme_pieces_id": 26,
+  "theme_dir": "gothic"
+{
+  "user_theme_pieces_id": 28,
+  "theme_dir": "marble"
+{
+  "user_theme_pieces_id": 30,
+  "theme_dir": "neon"
+{
+  "user_theme_pieces_id": 32,
+  "theme_dir": "graffiti"
+{
+  "user_theme_pieces_id": 34,
+  "theme_dir": "bubblegum"
+{
+  "user_theme_pieces_id": 36,
+  "theme_dir": "lolz"
+{
+  "user_theme_pieces_id": 38,
+  "theme_dir": "cases"
+{
+  "user_theme_pieces_id": 40,
+  "theme_dir": "condal"
+{
+  "user_theme_pieces_id": 42,
+  "theme_dir": "vintage"
+{
+  "user_theme_pieces_id": 44,
+  "theme_dir": "maya"
+{
+  "user_theme_pieces_id": 46,
+  "theme_dir": "3d_chesskid"
+{
+  "user_theme_pieces_id": 48,
+  "theme_dir": "blindfold"
+
+	 */
 	static int[] soundIds = new int[]{
 			1,  // "default",
 			2,  // "nature",

@@ -13,6 +13,8 @@ public class SettingsBoardFragmentTablet extends SettingsBoardFragment {
 
 	private FragmentParentFace parentFace;
 
+	public SettingsBoardFragmentTablet() {}
+
 	public SettingsBoardFragmentTablet(FragmentParentFace parentFace) {
 		this.parentFace = parentFace;
 	}

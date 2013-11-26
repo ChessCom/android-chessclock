@@ -24,7 +24,6 @@ import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
-import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.utilities.AppUtils;
 
 import java.util.List;
@@ -43,7 +42,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId = NON_INIT;
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
-	private boolean showDailyGamesFragment = true;
+	private boolean showDailyGamesFragment;
 	private String themeName;
 	private View tabsLoadProgressBar;
 
@@ -53,10 +52,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 
-		if (!DbDataManager.haveSavedFriends(getActivity(), getUsername())) {
+		if (!DbDataManager.haveSavedFriends(getActivity(), getUsername()) && AppUtils.isNetworkAvailable(getActivity())) {
 			getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class));
 		}
-		if (!DbDataManager.haveSavedDailyStats(getActivity(), getUsername())) {
+		if (!DbDataManager.haveSavedDailyStats(getActivity(), getUsername()) && AppUtils.isNetworkAvailable(getActivity())) {
 			// update stats in async intent service and save in Db there
 			getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 		}
@@ -171,9 +170,16 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 							fragment = DailyGamesFragmentTablet.createInstance(HomeTabsFragment.this, DailyGamesFragment.HOME_MODE);
 						}
 					} else {
-						fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
-						if (fragment == null) {
-							fragment = new HomePlayFragment();
+						if (!isTablet) {
+							fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
+							if (fragment == null) {
+								fragment = new HomePlayFragment();
+							}
+						} else {
+							fragment = findFragmentByTag(HomePlayFragmentTablet.class.getSimpleName());
+							if (fragment == null) {
+								fragment = new HomePlayFragmentTablet();
+							}
 						}
 					}
 					changeInternalFragment(fragment);
@@ -197,6 +203,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //				}
 			}
 		}
+		tabsLoadProgressBar.setVisibility(View.GONE);
 	}
 
 	private void changeInternalFragment(Fragment fragment) {

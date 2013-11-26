@@ -506,7 +506,7 @@ public class RestHelper {
 		String requestMethod = loadItem.getRequestMethod();
 		String url = createSignature(loadItem, appId);
 
-		Log.d(TAG, "requesting by url = " + url);
+		Log.d(TAG, "method = " + loadItem.getRequestMethod() + ", request query = " + url);
 
 		HttpURLConnection connection = null;
 

@@ -15,17 +15,7 @@ public class SettingsThemeCustomizeFragmentTablet extends SettingsThemeCustomize
 
 	private FragmentParentFace parentFace;
 
-	public SettingsThemeCustomizeFragmentTablet() {
-//		this.parentFace = parentFace;
-//
-//			ThemeItem.Data customizeItem = new ThemeItem.Data();
-//		customizeItem.setThemeName("Customize");
-//		customizeItem.setLocal(true);
-//
-//		Bundle bundle = new Bundle();
-//		bundle.putParcelable(THEME_ITEM, customizeItem);
-//		setArguments(bundle);
-	}
+	public SettingsThemeCustomizeFragmentTablet() {	}
 
 	public static SettingsThemeCustomizeFragmentTablet createInstance(FragmentParentFace parentFace, ThemeItem.Data themeItem) {
 		SettingsThemeCustomizeFragmentTablet fragment = new SettingsThemeCustomizeFragmentTablet();

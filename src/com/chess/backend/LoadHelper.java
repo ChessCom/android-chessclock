@@ -53,11 +53,12 @@ public class LoadHelper {
 		return loadItem;
 	}
 
-	public static LoadItem getFriends(String userToken) {
+	public static LoadItem getFriends(String userToken, String username) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(getInstance().CMD_FRIENDS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_AVATAR_SIZE, RestHelper.V_AV_SIZE_SMALL);
+		loadItem.addRequestParams(P_USERNAME, username);
 		return loadItem;
 	}
 

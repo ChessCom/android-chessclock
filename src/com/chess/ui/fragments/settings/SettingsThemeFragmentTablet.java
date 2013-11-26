@@ -12,6 +12,8 @@ public class SettingsThemeFragmentTablet extends SettingsThemeFragment {
 
 	private FragmentParentFace parentFace;
 
+	public SettingsThemeFragmentTablet() {}
+
 	public SettingsThemeFragmentTablet(FragmentParentFace parentFace) {
 		this.parentFace = parentFace;
 	}

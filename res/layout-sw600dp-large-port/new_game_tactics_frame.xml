@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:animateLayoutChanges="true"
+	android:orientation="vertical"
 	>
 	<!--Show animation here for Correct/Incorrect views-->
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/moveResultTxt"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
-		android:layout_above="@+id/boardLayout"
-		android:layout_centerHorizontal="true"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:layout_gravity="center_horizontal"
 		android:gravity="center"
 		android:textSize="23sp"
 		android:textColor="@color/white"
 		custom:ttf="Bold"
-		android:visibility="gone"
+		android:visibility="invisible"
 		/>
 
 	<com.chess.widgets.LinLayout
@@ -29,7 +29,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
-		android:layout_above="@+id/topPanelView"
 		android:layout_marginLeft="@dimen/tablet_board_margin_left"
 		android:layout_marginRight="@dimen/tablet_board_margin_left"
 		android:background="@drawable/shadow_back_inset_shifted">
@@ -44,10 +43,11 @@
 
 
 	<com.chess.ui.views.PanelInfoTacticsView
-        android:id="@id/topPanelView"
+        android:id="@+id/topPanelView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/new_tactics_panel_info_height"
-        android:layout_above="@+id/controlsView"
+        android:layout_height="0dp"
+		android:layout_weight="1"
+		android:minHeight="@dimen/new_tactics_panel_info_height"
 		android:layout_marginLeft="@dimen/common_tablet_side_padding"
 		android:layout_marginRight="@dimen/common_tablet_side_padding"
         />
@@ -57,10 +57,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 		custom:controls_style="rounded"
-        android:layout_alignParentBottom="true"
 		android:layout_marginLeft="@dimen/common_tablet_side_padding"
 		android:layout_marginRight="@dimen/common_tablet_side_padding"
 		android:layout_marginBottom="@dimen/default_scr_side_padding"
 		/>
 
-</RelativeLayout>
+</LinearLayout>
