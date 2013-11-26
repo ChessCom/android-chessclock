@@ -37,6 +37,7 @@ import com.chess.ui.fragments.settings.SettingsFragmentTablet;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.fragments.videos.VideosFragment;
 import com.chess.ui.fragments.videos.VideosFragmentTablet;
 import com.chess.utilities.AppUtils;
@@ -132,9 +133,18 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}, SIDE_MENU_DELAY);
 				return;
 			case R.drawable.ic_nav_upgrade_shine:
-				fragmentByTag = (BasePopupsFragment) findFragmentByTag(UpgradeFragment.class.getSimpleName());
+				if (!isTablet) {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(UpgradeFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(UpgradeFragmentTablet.class.getSimpleName());
+				}
+
 				if (fragmentByTag == null) {
-					fragmentByTag = new UpgradeFragment();
+					if (!isTablet) {
+						fragmentByTag = new UpgradeFragment();
+					} else {
+						fragmentByTag = new UpgradeFragmentTablet();
+					}
 				}
 				break;
 //			case R.drawable.ic_nav_badge: // use to update themes resources // TODO rename to another icon usage if needed

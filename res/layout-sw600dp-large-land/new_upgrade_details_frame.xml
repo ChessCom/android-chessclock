@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/white">
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
+		android:padding="15dip">
+
+		<!--Plan Details-->
+		<RelativeLayout
+			android:id="@+id/planDetailsView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/button_upgrade_diamond_default"
+			android:paddingBottom="12dip">
+
+
+			<!--Plan Title-->
+			<LinearLayout
+				android:id="@+id/topView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingTop="13dp"
+				android:paddingBottom="7dp"
+				android:layout_centerHorizontal="true">
+
+				<ImageView
+					android:id="@+id/planImg"
+					android:layout_width="32dip"
+					android:layout_height="32dip"
+					android:scaleType="fitXY"
+					android:adjustViewBounds="true"
+					android:src="@drawable/ic_upgrade_diamond"
+					android:contentDescription="@string/image"
+					android:layout_marginRight="9dip" />
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/planTitleTxt"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/diamond"
+					android:textColor="@color/upgrade_diamond_title"
+					android:textSize="25sp"
+					custom:ttf="Bold" />
+
+			</LinearLayout>
+
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/planSubTitleTxt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center_horizontal"
+				android:text="@string/diamond_subtitle"
+				android:textColor="@color/upgrade_diamond_sub_title"
+				android:textSize="14sp"
+				android:layout_below="@id/topView"
+				android:paddingBottom="12dp"
+				custom:ttf="Italic" />
+
+			<!--Periods check boxes-->
+			<LinearLayout
+				android:id="@+id/periodView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/planSubTitleTxt"
+				android:baselineAligned="true">
+
+				<!--Month-->
+				<RelativeLayout
+					android:id="@+id/monthView"
+					android:layout_width="0dip"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:background="@color/diamond_back"
+					android:paddingTop="12dip"
+					android:paddingBottom="16dip"
+					android:layout_marginLeft="2dip"
+					android:layout_marginRight="1dip">
+
+					<com.chess.widgets.RoboTextView
+						android:id="@+id/monthValueTxt"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_toLeftOf="@+id/centerMonthView"
+						android:paddingBottom="8dip"
+						android:textSize="24sp"
+						android:textColor="@color/upgrade_diamond_title"
+						custom:ttf="Bold" />
+
+					<View
+						android:id="@id/centerMonthView"
+						android:layout_width="0dip"
+						android:layout_height="0dip"
+						android:layout_centerHorizontal="true" />
+
+					<com.chess.widgets.RoboTextView
+						android:id="@+id/monthLabelTxt"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_toRightOf="@id/centerMonthView"
+						android:layout_alignBaseline="@id/monthValueTxt"
+						android:textColor="@color/upgrade_diamond_sub_title"
+						android:textSize="15sp"
+						custom:ttf="Bold"
+						android:text="@string/per_month"
+						android:paddingLeft="4dip" />
+
+					<CheckBox
+						android:id="@+id/monthCheckBox"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@id/monthValueTxt"
+						android:layout_centerHorizontal="true"
+						android:button="@drawable/button_checkmark_diamond_selector"
+						android:minHeight="35dip" />
+
+				</RelativeLayout>
+
+				<!--Year-->
+				<RelativeLayout
+					android:id="@+id/yearView"
+					android:layout_width="0dip"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:background="@color/diamond_back"
+					android:paddingTop="12dip"
+					android:layout_marginLeft="1dip"
+					android:layout_marginRight="2dip"
+					android:paddingBottom="16dip">
+
+					<com.chess.widgets.RoboTextView
+						android:id="@+id/yearValueTxt"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_toLeftOf="@+id/centerYearView"
+						android:paddingBottom="8dip"
+						android:textSize="24sp"
+						android:textColor="@color/upgrade_diamond_title"
+						custom:ttf="Bold" />
+
+					<View
+						android:id="@id/centerYearView"
+						android:layout_width="0dip"
+						android:layout_height="0dip"
+						android:layout_centerHorizontal="true" />
+
+					<com.chess.widgets.RoboTextView
+						android:id="@+id/yearLabelTxt"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_toRightOf="@id/centerYearView"
+						android:textColor="@color/upgrade_diamond_sub_title"
+						android:textSize="15sp"
+						android:layout_alignBaseline="@id/yearValueTxt"
+						android:paddingLeft="4dip"
+						android:text="@string/per_year"
+						custom:ttf="Bold" />
+
+					<CheckBox
+						android:id="@+id/yearCheckBox"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@id/yearValueTxt"
+						android:layout_marginRight="11dip"
+						android:layout_centerHorizontal="true"
+						android:button="@drawable/button_checkmark_diamond_selector"
+						android:checked="true"
+						android:minHeight="35dip" />
+
+					<com.chess.widgets.RoboTextView
+						android:id="@+id/yearDiscountTxt"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_toRightOf="@id/yearCheckBox"
+						android:layout_alignTop="@id/yearCheckBox"
+						android:textColor="@color/red"
+						android:textSize="13sp"
+						android:visibility="gone" />
+
+				</RelativeLayout>
+
+			</LinearLayout>
+
+			<com.chess.widgets.RoboButton
+				android:id="@+id/setPlanBtn"
+				android:layout_width="match_parent"
+				android:layout_height="50dip"
+				android:layout_below="@id/periodView"
+				android:text="@string/upgrade"
+				android:layout_marginTop="15dip"
+				android:layout_marginLeft="15dip"
+				android:layout_marginRight="15dip"
+				android:layout_marginBottom="12dip" />
+
+		</RelativeLayout>
+
+
+		<LinearLayout
+			android:id="@+id/descriptionView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/upgrade_diamond_button"
+			android:padding="15dip"
+			android:layout_marginTop="15dip"
+			android:orientation="vertical"
+			android:visibility="gone" />
+
+	</LinearLayout>
+
+</ScrollView>

@@ -11,21 +11,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
-import com.chess.widgets.RoboButton;
-import com.chess.widgets.RoboTextView;
 import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.billing.*;
-import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.MembershipItem;
 import com.chess.backend.entity.api.MembershipKeyItem;
 import com.chess.backend.entity.api.PayloadItem;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.model.PopupItem;
+import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.utilities.FontsHelper;
+import com.chess.widgets.RoboButton;
+import com.chess.widgets.RoboTextView;
 
 import java.io.UnsupportedEncodingException;
 
@@ -46,9 +48,9 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	public static final int PLATINUM = 1;
 	public static final int GOLD = 2;
 
-	private static final String PLAN = "plan";
+	protected static final String PLAN = "plan";
 
-	private static final String YEAR_DISCOUNT = "40%";
+	protected static final String YEAR_DISCOUNT = "40%";
 	public static final String GOLD_MONTHLY = "gold_monthly";
 	public static final String GOLD_YEARLY = "gold_yearly";
 	public static final String PLATINUM_MONTHLY = "platinum_monthly";
@@ -57,50 +59,64 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	public static final String DIAMOND_YEARLY = "diamond_yearly";
 	private static final int HASH_LENGTH = 88;
 	public static final String PARAMS_DIVIDER = "||";
+	private static final String LOAD_TAG = "progress popup";
 
-	private boolean isGoldMonthPayed;
-	private boolean isGoldYearPayed;
-	private boolean isPlatinumMonthPayed;
-	private boolean isPlatinumYearPayed;
-	private boolean isDiamondMonthPayed;
-	private boolean isDiamondYearPayed;
+	protected boolean isGoldMonthPayed;
+	protected boolean isGoldYearPayed;
+	protected boolean isPlatinumMonthPayed;
+	protected boolean isPlatinumYearPayed;
+	protected boolean isDiamondMonthPayed;
+	protected boolean isDiamondYearPayed;
 
 	private RadioGroup radioGroup;
-	private View planDetailsView;
-	private ImageView planImg;
-	private TextView planTitleTxt;
-	private TextView planSubTitleTxt;
-	private View monthView;
-	private TextView monthValueTxt;
-	private TextView monthLabelTxt;
-	private CheckBox monthCheckBox;
-	private View yearView;
-	private TextView yearValueTxt;
-	private TextView yearLabelTxt;
-	private CheckBox yearCheckBox;
-	private RoboButton setPlanBtn;
-	private LinearLayout descriptionView;
+	protected View planDetailsView;
+	protected ImageView planImg;
+	protected TextView planTitleTxt;
+	protected TextView planSubTitleTxt;
+	protected View monthView;
+	protected TextView monthValueTxt;
+	protected TextView monthLabelTxt;
+	protected CheckBox monthCheckBox;
+	protected View yearView;
+	protected TextView yearValueTxt;
+	protected TextView yearLabelTxt;
+	protected CheckBox yearCheckBox;
+	protected RoboButton setPlanBtn;
+	protected LinearLayout descriptionView;
 
-	private float density;
-	private PlanConfig[] configs;
+	protected PlanConfig[] configs;
 	private IabHelper mHelper;
 	private PayloadItem.Data payloadData;
 	private GetDetailsListener detailsListener;
 	private GetPayloadListener getPayloadListener;
 	private String username;
-	private TextView yearDiscountTxt;
+	protected TextView yearDiscountTxt;
+	protected int planCode;
+	private View loadProgressBar;
+	private TextView loadProgressTxt;
+	private TextView taskTitleTxt;
+	private PopupCustomViewFragment loadProgressPopupFragment;
+
+	public UpgradeDetailsFragment() {
+	}
 
 	public static UpgradeDetailsFragment createInstance(int code) {
-		UpgradeDetailsFragment frag = new UpgradeDetailsFragment();
+		UpgradeDetailsFragment fragment = new UpgradeDetailsFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(PLAN, code);
-		frag.setArguments(bundle);
-		return frag;
+		fragment.setArguments(bundle);
+		return fragment;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			planCode = getArguments().getInt(PLAN);
+		} else {
+			planCode = savedInstanceState.getInt(PLAN);
+		}
 
 		configs = new PlanConfig[3];
 
@@ -131,37 +147,25 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 		setTitle(R.string.upgrade);
 
-		density = getResources().getDisplayMetrics().density;
-
-		radioGroup = (RadioGroup) view.findViewById(R.id.radioGroup);
-		radioGroup.setOnCheckedChangeListener(this);
-
-		planDetailsView = view.findViewById(R.id.planDetailsView);
-		planImg = (ImageView) view.findViewById(R.id.planImg);
-		planTitleTxt = (TextView) view.findViewById(R.id.planTitleTxt);
-		planSubTitleTxt = (TextView) view.findViewById(R.id.planSubTitleTxt);
-		monthView = view.findViewById(R.id.monthView);
-		monthValueTxt = (TextView) view.findViewById(R.id.monthValueTxt);
-		monthLabelTxt = (TextView) view.findViewById(R.id.monthLabelTxt);
-		monthCheckBox = (CheckBox) view.findViewById(R.id.monthCheckBox);
-		monthCheckBox.setOnCheckedChangeListener(this);
-		yearView = view.findViewById(R.id.yearView);
-		yearValueTxt = (TextView) view.findViewById(R.id.yearValueTxt);
-		yearLabelTxt = (TextView) view.findViewById(R.id.yearLabelTxt);
-		yearCheckBox = (CheckBox) view.findViewById(R.id.yearCheckBox);
-		yearCheckBox.setOnCheckedChangeListener(this);
-		yearDiscountTxt = (TextView) view.findViewById(R.id.yearDiscountTxt);
-		setPlanBtn = (RoboButton) view.findViewById(R.id.setPlanBtn);
-		setPlanBtn.setOnClickListener(this);
-		descriptionView = (LinearLayout) view.findViewById(R.id.descriptionView);
-
-		yearDiscountTxt.setText(getString(R.string.save) + Symbol.NEW_STR + YEAR_DISCOUNT);
+		widgetsInit(view);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		setPlan();
+	}
+
+	protected void setPlan() {
 		radioGroup.check(getIdForPlan());
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putInt(PLAN, planCode);
 	}
 
 	@Override
@@ -191,12 +195,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		mHelper = null;
 	}
 
-	@Override
-	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		updateData();
-	}
-
-	private void updateData() {
+	protected void updateUiData() {
 		configs[GOLD].setMonthPayed(isGoldMonthPayed);
 		configs[GOLD].setYearPayed(isGoldYearPayed);
 		configs[PLATINUM].setMonthPayed(isPlatinumMonthPayed);
@@ -217,7 +216,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		}
 	}
 
-	private void showPaymentPlan(PlanConfig planConfig) {
+	protected void showPaymentPlan(PlanConfig planConfig) {
 		planDetailsView.setBackgroundResource(planConfig.planDetailsBack);
 		planDetailsView.setPadding(0, 0, 0, (int) (12 * density));
 		planImg.setImageResource(planConfig.planIconId);
@@ -249,7 +248,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		yearCheckBox.setButtonDrawable(planConfig.checkBoxDrawableId);
 		yearCheckBox.setEnabled(!planConfig.isYearPayed());
 
-		yearDiscountTxt.setVisibility(planConfig.isYearPayed()? View.GONE : View.VISIBLE);
+		showDiscountLabel(planConfig);
 
 		setPlanBtn.setDrawableStyle(planConfig.buttonStyleId);
 		descriptionView.setBackgroundResource(planConfig.descriptionBackId);
@@ -258,7 +257,8 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 		descriptionView.removeAllViews();
 		// TODO improve!
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
 
 		RoboTextView unlockTitleTxt = new RoboTextView(getActivity());
 
@@ -274,16 +274,19 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			featureTxt.setText(feature);
 			featureTxt.setTextColor(planConfig.subTitleColor);
 			featureTxt.setFont(FontsHelper.BOLD_FONT);
-			featureTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+			featureTxt.setTextSize(14);
 			featureTxt.setPadding(0, 0, 0, (int) (6 * density));    // TODO remove hardcode
 
 			descriptionView.addView(featureTxt, params);
 		}
 	}
 
+	protected void showDiscountLabel(PlanConfig planConfig) {
+		yearDiscountTxt.setVisibility(planConfig.isYearPayed() ? View.GONE : View.VISIBLE);
+	}
+
 	private int getIdForPlan() {
-		int code = getArguments().getInt(PLAN);
-		switch (code) {
+		switch (planCode) {
 			case PLATINUM:
 				return R.id.platinumBtn;
 			case GOLD:
@@ -292,6 +295,11 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			default:
 				return R.id.diamondBtn;
 		}
+	}
+
+	@Override
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		updateUiData();
 	}
 
 	@Override
@@ -386,7 +394,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				return;
 			}
 
-			setWaitScreen(false);
+			setWaitScreen(false, Symbol.EMPTY);
 			if (result.isFailure()) {
 
 				showSinglePopupDialog("Failed to query inventory: " + result);
@@ -468,7 +476,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			setWaitScreen(show);
+			setWaitScreen(show, getString(R.string.upgrade_getting_user_details));
 		}
 
 		@Override
@@ -512,7 +520,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				}
 			}
 
-			UpgradeDetailsFragment.this.updateData();
+			updateUiData();
 		}
 
 		@Override
@@ -544,7 +552,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			setWaitScreen(show);
+			setWaitScreen(show, getString(R.string.upgrade_getting_user_details));
 		}
 
 		@Override
@@ -571,7 +579,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		}
 	}
 
-	private void sendPayment(String itemId) {
+	protected void sendPayment(String itemId) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_MEMBERSHIP_PAYLOAD);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
@@ -593,7 +601,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			setWaitScreen(show);
+			setWaitScreen(show, getString(R.string.upgrade_contacting_server));
 		}
 
 		@Override
@@ -634,7 +642,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				logTest(purchasePayload1);
 				logTest(serverPayLoad1);
 			}
-			setWaitScreen(true);
+			setWaitScreen(true, getString(R.string.upgrade_performing_purchase));
 			mHelper.launchPurchaseFlow(getActivity(), itemId, IabHelper.ITEM_TYPE_SUBS,
 					RC_REQUEST, new PurchaseFinishedListener(), purchasePayload);
 		}
@@ -655,7 +663,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		}
 	}
 
-
 	// Callback for when a purchase is finished
 	private class PurchaseFinishedListener implements IabHelper.OnIabPurchaseFinishedListener {
 
@@ -665,7 +672,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				logTest("onIabPurchaseFinished - >activity null");
 				return;
 			}
-			setWaitScreen(false);
+			setWaitScreen(false, Symbol.EMPTY);
 
 			Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
 			// skip if user canceled
@@ -705,7 +712,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 			// Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
 			mHelper.queryInventoryAsync(new GotInventoryListener());
-			setWaitScreen(true);
+			setWaitScreen(true, getString(R.string.upgrade_receiving_payments));
 		}
 	}
 
@@ -742,12 +749,63 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		}
 	}
 
-	private void setWaitScreen(boolean show) {
+	private void setWaitScreen(boolean show, String message) {
 		if (show) {
-			showPopupProgressDialog(R.string.processing_);
+
+			View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
+
+			TextView loadTitleTxt = (TextView) layout.findViewById(R.id.loadTitleTxt);
+			loadProgressBar = layout.findViewById(R.id.loadProgressBar);
+			loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
+			taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
+
+			loadTitleTxt.setText(R.string.verifying_payments);
+			taskTitleTxt.setText(message);
+			loadProgressTxt.setVisibility(View.GONE);
+			loadProgressBar.setVisibility(View.VISIBLE);
+
+			PopupItem popupItem = new PopupItem();
+			popupItem.setCustomView(layout);
+
+			loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+			loadProgressPopupFragment.show(getFragmentManager(), LOAD_TAG);
+
 		} else {
-			dismissProgressDialog();
+			if (loadProgressPopupFragment != null) {
+				loadProgressPopupFragment.dismiss();
+			}
 		}
+//		if (show) {
+//			showPopupProgressDialog(R.string.processing_);
+//		} else {
+//			dismissProgressDialog();
+//		}
+	}
+
+	protected void widgetsInit(View view) {
+		radioGroup = (RadioGroup) view.findViewById(R.id.radioGroup);
+		radioGroup.setOnCheckedChangeListener(this);
+
+		planDetailsView = view.findViewById(R.id.planDetailsView);
+		planImg = (ImageView) view.findViewById(R.id.planImg);
+		planTitleTxt = (TextView) view.findViewById(R.id.planTitleTxt);
+		planSubTitleTxt = (TextView) view.findViewById(R.id.planSubTitleTxt);
+		monthView = view.findViewById(R.id.monthView);
+		monthValueTxt = (TextView) view.findViewById(R.id.monthValueTxt);
+		monthLabelTxt = (TextView) view.findViewById(R.id.monthLabelTxt);
+		monthCheckBox = (CheckBox) view.findViewById(R.id.monthCheckBox);
+		monthCheckBox.setOnCheckedChangeListener(this);
+		yearView = view.findViewById(R.id.yearView);
+		yearValueTxt = (TextView) view.findViewById(R.id.yearValueTxt);
+		yearLabelTxt = (TextView) view.findViewById(R.id.yearLabelTxt);
+		yearCheckBox = (CheckBox) view.findViewById(R.id.yearCheckBox);
+		yearCheckBox.setOnCheckedChangeListener(this);
+		yearDiscountTxt = (TextView) view.findViewById(R.id.yearDiscountTxt);
+		setPlanBtn = (RoboButton) view.findViewById(R.id.setPlanBtn);
+		setPlanBtn.setOnClickListener(this);
+		descriptionView = (LinearLayout) view.findViewById(R.id.descriptionView);
+
+		yearDiscountTxt.setText(getString(R.string.save) + Symbol.NEW_STR + YEAR_DISCOUNT);
 	}
 
 	static class PlanConfig {

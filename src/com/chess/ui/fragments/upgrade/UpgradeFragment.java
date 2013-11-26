@@ -27,8 +27,7 @@ public class UpgradeFragment extends CommonLogicFragment {
 		super.onCreate(savedInstanceState);
 
 		imageDownloader = new EnhancedImageDownloader(getActivity());
-		imageSize = (int) (getResources().getDimension(R.dimen.daily_list_item_image_size) / getResources().getDisplayMetrics().density);
-
+		imageSize = (int) (getResources().getDimension(R.dimen.daily_list_item_image_size) / density);
 	}
 
 	@Override

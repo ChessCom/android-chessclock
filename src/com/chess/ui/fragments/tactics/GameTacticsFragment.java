@@ -526,6 +526,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
+				if (getActivity() == null || getBoardFace().getLastMove() == null) {
+					return;
+				}
+
 				boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 				boardView.resetValidMoves();
 				getBoardFace().takeBack();

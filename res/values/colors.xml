@@ -429,7 +429,7 @@
     <color name="upgrade_gold_sub_title">#FF9f8d60</color>
 
     <!--Upgrade Buttons-->
-    <color name="upgrade_diamond_button">#FFe6f5fb</color>
+    <color name="upgrade_diamond_button">#FFe6f5fa</color>
     <color name="upgrade_diamond_button_p">#ffd3e2e8</color>
     <color name="upgrade_diamond_button_border">#FFcad7dc</color>
     <color name="upgrade_diamond_button_border_1">#FF9fa9ad</color>

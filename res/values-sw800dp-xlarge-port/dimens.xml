@@ -13,5 +13,7 @@
 
 
 	<dimen name="tablet_side_menu_width">300dp</dimen>
+	<dimen name="all_premium_plans_features_title_size">33sp</dimen>
+	<dimen name="upgrade_options_text_size">15sp</dimen>
 
 </resources>

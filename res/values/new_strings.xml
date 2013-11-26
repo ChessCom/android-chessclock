@@ -67,8 +67,10 @@
 
     <!--Upgrade-->
     <string name="upgrade_main_title_1">Good Enough for Masters.</string>
+    <string name="upgrade_main_title_1_tablet">Good Enough for Masters. Simple Enough for Beginners. Try It Now!</string>
     <string name="upgrade_main_title_2">Simple Enough for Beginners.</string>
     <string name="upgrade_main_sub_title">Choose a plan to unlock premium features:</string>
+    <string name="upgrade_main_sub_title_tablet">Start improving now. 30-days money back guarantee. Cancel at any time.</string>
     <string name="diamond">Diamond</string>
     <string name="diamond_subtitle">Unlimited access to all features</string>
     <string name="platinum">Platinum</string>
@@ -359,5 +361,11 @@
 	<string name="last_login_">Last Login:  %s</string>
 	<string name="challenge_to_play">Challenge to play</string>
 	<string name="send_message">Send message</string>
+	<string name="all_premium_plans_features_title">All Premium Plans Include These Great Features</string>
+	<string name="verifying_payments">Verifying payments</string>
+	<string name="upgrade_getting_user_details">Getting user details</string>
+	<string name="upgrade_contacting_server">Contacting server</string>
+	<string name="upgrade_performing_purchase">Performing Purchase</string>
+	<string name="upgrade_receiving_payments">Receiving payments</string>
 
 </resources>

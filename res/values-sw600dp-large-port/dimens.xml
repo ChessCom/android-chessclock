@@ -32,5 +32,7 @@
 
 	<dimen name="article_detail_image_width">286dip</dimen>
 	<dimen name="article_detail_image_height">286dip</dimen>
+	<dimen name="all_premium_plans_features_title_size">23sp</dimen>
+	<dimen name="upgrade_options_text_size">13sp</dimen>
 
 </resources>
