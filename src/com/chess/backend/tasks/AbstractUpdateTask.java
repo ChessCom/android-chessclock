@@ -95,6 +95,9 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	@Override
 	protected void onPostExecute(Integer result) {
 		super.onPostExecute(result);
+		if (result == null) {
+			result = StaticData.UNKNOWN_ERROR;
+		}
 //		blockScreenRotation(false);
 
 		if (isCancelled()) {   // no need to check as we catch it

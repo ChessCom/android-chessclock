@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">Chesscom</string>
+	<string name="app_name">Шахматы</string>
 
 	<string name="connect_with_facebook">Вход Через Facebook</string>
 	<string name="live_chess_server_unavailable">В настоящее время сервер живых шахмат недоступен.</string>

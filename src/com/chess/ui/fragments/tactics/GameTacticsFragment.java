@@ -41,9 +41,10 @@ import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.fragments.settings.SettingsBoardFragment;
+import com.chess.ui.fragments.settings.SettingsGeneralFragment;
 import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.boards.TacticBoardFace;
@@ -631,7 +632,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else if (code == ID_PRACTICE) {
 			switch2Analysis();
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsBoardFragment());
+			getActivityFace().openFragment(new SettingsGeneralFragment());
 		}
 
 		optionsSelectFragment.dismiss();
@@ -1062,7 +1063,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {
 				FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_TACTICS);
-				getActivityFace().openFragment(new UpgradeFragment());
+				if (!isTablet) {
+					getActivityFace().openFragment(new UpgradeFragment());
+				} else {
+					getActivityFace().openFragment(new UpgradeFragmentTablet());
+				}
 			}
 		} else if (view.getId() == R.id.cancelBtn) {
 			dismissDialogs();

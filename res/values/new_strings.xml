@@ -275,7 +275,7 @@
 	<string name="saving_board">Saving board</string>
 	<string name="loading_board">Loading board</string>
 	<string name="loading_sounds">Loading sounds</string>
-	<string name="customize">Customize</string>
+	<string name="custom">Custom</string>
 	<string name="install">Install</string>
 	<string name="background">Background</string>
 	<string name="colors">Colors</string>
@@ -368,5 +368,6 @@
 	<string name="upgrade_performing_purchase">Performing Purchase</string>
 	<string name="upgrade_receiving_payments">Receiving payments</string>
 	<string name="nothing_to_share">Nothing to share</string>
+	<string name="general">General</string>
 
 </resources>

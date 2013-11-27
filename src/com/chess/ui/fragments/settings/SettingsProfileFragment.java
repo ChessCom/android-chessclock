@@ -38,6 +38,7 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCountriesFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSelectPhotoFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.AppUtils;
@@ -376,7 +377,11 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 			shareIntent.putExtra(Intent.EXTRA_TEXT, "Invitation text");
 			startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_a_friend)));
 		} else if (id == R.id.upgradeBtn) {
-			getActivityFace().openFragment(new UpgradeFragment());
+			if (!isTablet) {
+				getActivityFace().openFragment(new UpgradeFragment());
+			} else {
+				getActivityFace().openFragment(new UpgradeFragmentTablet());
+			}
 		}
 	}
 
@@ -785,7 +790,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 				}
 			}
 		} else {
-			Log.d(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
+			Log.d("TEST", "External storage is not mounted READ/WRITE.");
 		}
 
 		return storageDir;

@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import com.chess.R;
-import com.chess.statics.Symbol;
 import com.chess.ui.fragments.BasePopupsFragment;
-import com.chess.ui.fragments.articles.ArticleCategoriesFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
 
 /**
@@ -59,7 +57,7 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 				changeInternalFragment(new SettingsProfileFragment());
 				break;
 			case R.string.ic_board:
-				changeInternalFragment(new SettingsBoardFragmentTablet(this));
+				changeInternalFragment(new SettingsGeneralFragmentTablet(this));
 				break;
 			case R.string.ic_daily_game:
 				changeInternalFragment(new SettingsDailyChessFragment());

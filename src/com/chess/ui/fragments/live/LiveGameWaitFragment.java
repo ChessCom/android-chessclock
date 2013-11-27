@@ -7,11 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.DataNotValidException;
-import com.chess.lcc.android.interfaces.LccEventListener;
-import com.chess.live.client.Game;
-import com.chess.model.GameLiveItem;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.utilities.LogMe;
@@ -22,18 +18,16 @@ import com.chess.utilities.LogMe;
  * Date: 30.04.13
  * Time: 9:30
  */
-public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventListener {
+public class LiveGameWaitFragment extends LiveBaseFragment /*implements LccEventListener */{
 
 //	private static final String TAG = "LccLog-LiveGameWaitFragment";
 	private static final long FINISH_FRAGMENT_DELAY = 200;
 
 	private View loadingView;
 	private LiveGameConfig liveGameConfig;
-	private GameTaskListener gameTaskListener;
 	public boolean closeOnResume;
 
-	public LiveGameWaitFragment() {
-	}
+	public LiveGameWaitFragment() { }
 
 	public static LiveGameWaitFragment createInstance(LiveGameConfig config) {
 		LiveGameWaitFragment fragment = new LiveGameWaitFragment();
@@ -52,7 +46,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 			// when is it really reachable for fragment?
 			liveGameConfig = savedInstanceState.getParcelable(CONFIG);
 		}
-		gameTaskListener = new GameTaskListener();
+
 	}
 
 	@Override
@@ -102,11 +96,8 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
 			logTest(e.getMessage());
-			backToHomeFragment();
 			return;
 		}
-		liveService.setLccEventListener(this);
-		liveService.setGameTaskListener(gameTaskListener);
 
 		boolean isGameAlreadyPresent = liveService.checkAndProcessFullGame();
 		if (!isGameAlreadyPresent) {
@@ -134,34 +125,6 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 			getActivityFace().showPreviousFragment();
 		}
 	}
-
-	@Override
-	public void setWhitePlayerTimer(String timer) {
-	}
-
-	@Override
-	public void setBlackPlayerTimer(String timer) {
-	}
-
-	@Override
-	public void onGameRefresh(GameLiveItem gameItem) {
-	}
-
-	@Override
-	public void onDrawOffered(String drawOfferUsername) {
-	}
-
-	@Override
-	public void onGameEnd(String gameEndMessage) {
-	}
-
-	@Override
-	public void onInform(String title, String message) {
-	}
-
-//	@Override
-//	public void onGameRecreate() {
-//	}
 
 	@Override
 	public void startGameFromService() {
@@ -209,13 +172,4 @@ public class LiveGameWaitFragment extends LiveBaseFragment implements LccEventLi
 		}
 	}
 
-	@Override
-	public void expireGame() {
-	}
-
-	private class GameTaskListener extends ActionBarUpdateListener<Game> {
-		public GameTaskListener() {
-			super(getInstance());
-		}
-	}
 }

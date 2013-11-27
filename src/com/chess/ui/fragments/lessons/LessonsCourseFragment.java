@@ -23,6 +23,7 @@ import com.chess.db.tasks.SaveLessonsCourseTask;
 import com.chess.ui.adapters.LessonsItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
@@ -189,7 +190,11 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		super.onClick(view);
 
 		if (view.getId() == R.id.upgradeBtn || view.getId() == R.id.upgradeLessonsBtn) {
-			getActivityFace().openFragment(new UpgradeFragment());
+			if (!isTablet) {
+				getActivityFace().openFragment(new UpgradeFragment());
+			} else {
+				getActivityFace().openFragment(new UpgradeFragmentTablet());
+			}
 		}
 	}
 

@@ -4,7 +4,7 @@
 	<string name="connect_with_facebook">Connect With Facebook</string>
 	<string name="live_chess_server_unavailable">Live Chess server is currently unavailable.</string>
 	<string name="live_chess_server_upgrading">We are trying to improve chess.com! Currently the site is being upgraded. It will be live again in no time. Please try to login again shortly. Thanks!</string>
-	<string name="app_name">ChessCom</string>
+	<string name="app_name">Chess</string>
 	<string name="sign_out">Sign Out</string>
 
 	<string name="game_expired">Game expired</string>

@@ -941,4 +941,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected boolean inPortrait() {
 		return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 	}
+
+	protected boolean isNetworkAvailable() {
+		return getActivity() != null && AppUtils.isNetworkAvailable(getActivity());
+	}
 }

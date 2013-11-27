@@ -362,7 +362,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 			}
 
 		} else {
-			Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
+			Log.v("TEST", "External storage is not mounted READ/WRITE.");
 		}
 
 		return storageDir;

@@ -26,7 +26,7 @@ import com.chess.utilities.AppUtils;
  * Date: 28.04.13
  * Time: 5:23
  */
-public class SettingsBoardFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener {
+public class SettingsGeneralFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener {
 
 	private SwitchButton coordinatesSwitch;
 	private SwitchButton highlightLastMoveSwitch;
@@ -59,7 +59,7 @@ public class SettingsBoardFragment extends CommonLogicFragment implements Switch
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.board_and_pieces);
+		setTitle(R.string.general);
 
 		widgetsInit(view);
 	}

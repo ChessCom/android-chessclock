@@ -20,6 +20,9 @@ public class SettingsThemeFragmentTablet extends SettingsThemeFragment {
 
 	@Override
 	protected void openCustomizeFragment() {
+		if (parentFace == null) {
+			return;
+		}
 		parentFace.changeFragment(SettingsThemeCustomizeFragmentTablet.createInstance(parentFace, currentThemeItem));
 	}
 }

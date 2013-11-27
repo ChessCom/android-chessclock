@@ -29,6 +29,7 @@ import com.chess.model.CurriculumLessonsItems;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
@@ -221,7 +222,11 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 			getAppData().setUserChooseLessonsLibrary(!libraryMode);
 			showLibrary();
 		} else if (v.getId() == R.id.upgradeBtn) {
-			getActivityFace().openFragment(new UpgradeFragment());
+			if (!isTablet) {
+				getActivityFace().openFragment(new UpgradeFragment());
+			} else {
+				getActivityFace().openFragment(new UpgradeFragmentTablet());
+			}
 		}
 	}
 

@@ -27,6 +27,7 @@ import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.utilities.AppUtils;
 
@@ -152,7 +153,11 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 	public void onClick(View v) {
 		super.onClick(v);
 		if (v.getId() == R.id.upgradeBtn) {
-			getActivityFace().openFragment(new UpgradeFragment());
+			if (!isTablet) {
+				getActivityFace().openFragment(new UpgradeFragment());
+			} else {
+				getActivityFace().openFragment(new UpgradeFragmentTablet());
+			}
 		}
 	}
 

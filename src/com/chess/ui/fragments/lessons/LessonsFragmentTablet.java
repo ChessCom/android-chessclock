@@ -30,6 +30,7 @@ import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.utilities.AppUtils;
 
@@ -179,7 +180,11 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 			long courseId = incompleteLesson.getCourseId();
 			getActivityFace().openFragment(GameLessonsFragmentTablet.createInstance(lessonId, courseId));
 		} else if (v.getId() == R.id.upgradeBtn) {
-			getActivityFace().openFragment(new UpgradeFragment());
+			if (!isTablet) {
+				getActivityFace().openFragment(new UpgradeFragment());
+			} else {
+				getActivityFace().openFragment(new UpgradeFragmentTablet());
+			}
 		}
 	}
 

@@ -12,6 +12,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ServersStatsItem;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.lcc.android.DataNotValidException;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.SoundPlayer;
@@ -86,10 +87,28 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		super.onResume();
 
 		getAppData().setLiveChessMode(true);
-		liveBaseActivity.connectLcc();
+		if (isNetworkAvailable()) {
+			try {
+				if (!getLiveService().isConnected()) {
+					liveBaseActivity.connectLcc();
+				} else {
+					LiveItem currentGameItem = new LiveItem(R.string.ic_live_standard, R.string.current_games);
+					if (getLiveService().isCurrentGameExist()) {
+						if (!featuresList.contains(currentGameItem)) {
+							featuresList.add(currentGameItem);
+						}
+					} else {
+						featuresList.remove(currentGameItem);
+					}
+				}
+			} catch (DataNotValidException e) {
+				e.printStackTrace();
+			}
 
-		LoadItem loadItem = LoadHelper.getServerStats();
-		new RequestJsonTask<ServersStatsItem>(serverStatsUpdateListener).executeTask(loadItem);
+			// get online players count
+			LoadItem loadItem = LoadHelper.getServerStats();
+			new RequestJsonTask<ServersStatsItem>(serverStatsUpdateListener).executeTask(loadItem);
+		}
 	}
 
 	private class ServerStatsUpdateListener extends ChessUpdateListener<ServersStatsItem> {

@@ -39,7 +39,7 @@ import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.fragments.settings.SettingsBoardFragment;
+import com.chess.ui.fragments.settings.SettingsGeneralFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
@@ -97,8 +97,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private int gameEndTitleId;
 	protected SparseArray<String> optionsMap;
 
-	public GameLiveFragment() {
-	}
+	public GameLiveFragment() { }
 
 	public static GameLiveFragment createInstance(long id) {
 		GameLiveFragment fragment = new GameLiveFragment();
@@ -834,7 +833,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				e.printStackTrace();
 			}
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsBoardFragment());
+			getActivityFace().openFragment(new SettingsGeneralFragment());
 		}
 
 		optionsSelectFragment.dismiss();

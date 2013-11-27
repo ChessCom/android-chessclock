@@ -157,7 +157,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.customize);
+		setTitle(R.string.custom);
 
 		widgetsInit(view);
 	}

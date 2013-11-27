@@ -31,7 +31,7 @@ import com.chess.ui.engine.stockfish.CompEngineHelper;
 import com.chess.ui.engine.stockfish.StartEngineTask;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.fragments.settings.SettingsBoardFragment;
+import com.chess.ui.fragments.settings.SettingsGeneralFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
@@ -684,7 +684,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		} else if (code == ID_EMAIL_GAME) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsBoardFragment());
+			getActivityFace().openFragment(new SettingsGeneralFragment());
 		}
 
 		optionsSelectFragment.dismiss();

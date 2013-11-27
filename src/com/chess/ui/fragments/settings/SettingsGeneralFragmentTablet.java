@@ -9,13 +9,13 @@ import com.chess.ui.interfaces.FragmentParentFace;
  * Date: 12.11.13
  * Time: 10:46
  */
-public class SettingsBoardFragmentTablet extends SettingsBoardFragment {
+public class SettingsGeneralFragmentTablet extends SettingsGeneralFragment {
 
 	private FragmentParentFace parentFace;
 
-	public SettingsBoardFragmentTablet() {}
+	public SettingsGeneralFragmentTablet() {}
 
-	public SettingsBoardFragmentTablet(FragmentParentFace parentFace) {
+	public SettingsGeneralFragmentTablet(FragmentParentFace parentFace) {
 		this.parentFace = parentFace;
 	}
 

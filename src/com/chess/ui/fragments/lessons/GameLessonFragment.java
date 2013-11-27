@@ -33,7 +33,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.fragments.settings.SettingsBoardFragment;
+import com.chess.ui.fragments.settings.SettingsGeneralFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.LessonsBoardFace;
 import com.chess.ui.interfaces.game_ui.GameLessonFace;
@@ -691,7 +691,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			getCurrentCompleteItem().analysisUsed = true;
 			switch2Analysis();
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsBoardFragment());
+			getActivityFace().openFragment(new SettingsGeneralFragment());
 		}
 
 		optionsSelectFragment.dismiss();

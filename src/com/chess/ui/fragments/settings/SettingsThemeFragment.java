@@ -45,10 +45,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 	public static final String _3D_PART = "3d";
 
-	public static final String THEME_ITEM = "theme_item";
-	public static final String SCREEN_WIDTH = "screen_width";
-	public static final String SCREEN_HEIGHT = "screen_height";
-
 	private ListView listView;
 	private ThemesAdapter themesAdapter;
 	private ThemesUpdateListener themesUpdateListener;
@@ -112,17 +108,14 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 				updateUiData();
 			} else {
-
 				updateData();
 			}
-
 		} else {
 			listView.setAdapter(themesAdapter);
 		}
 
 		getActivity().bindService(new Intent(getActivity(), GetAndSaveTheme.class), loadServiceConnectionListener,
 				Activity.BIND_AUTO_CREATE);
-
 	}
 
 	private void updateData() {
@@ -162,10 +155,10 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	}
 
 	private void updateUiData() {
-		ThemeItem.Data customizeItem = new ThemeItem.Data();
-		customizeItem.setThemeName(getString(R.string.customize));
-		customizeItem.setLocal(true);
-		themesList.add(0, customizeItem);
+		ThemeItem.Data customItem = new ThemeItem.Data();
+		customItem.setThemeName(getString(R.string.custom));
+		customItem.setLocal(true);
+		themesList.add(0, customItem);
 
 		for (ThemeItem.Data theme : themesList) {
 			if (theme.getThemeName().equals(selectedThemeName)) {
@@ -183,7 +176,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		selectedThemeItem = (ThemeItem.Data) listView.getItemAtPosition(position);
-
+		currentThemeItem = selectedThemeItem;
 		if (selectedThemeItem.isLocal()) {
 			openCustomizeFragment();
 		} else {
@@ -201,7 +194,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			// mark selected
 			selectedThemeItem.setSelected(true);
 
-			currentThemeItem = selectedThemeItem;
 			((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
 
 			installSelectedTheme();
@@ -404,7 +396,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			}
 
 			if (item.isLocal()) {
-				holder.title.setText(R.string.customize);
+				holder.title.setText(R.string.custom);
 
 				holder.backImg.setImageDrawable(new ColorDrawable(customColor));
 				holder.boardPreviewImg.setImageDrawable(getResources().getDrawable(R.drawable.empty));
