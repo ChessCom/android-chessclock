@@ -126,7 +126,6 @@
         <item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item> <!--TODO check-->
         <item name="color">@color/f_button_1</item>
         <item name="ttf">Bold</item>
-
     </style>
 
     <style name="Button.Blue">
@@ -140,8 +139,8 @@
         <item name="btn_solid">@color/blue_button</item>
     </style>
 
-    <!-- Share -->
-    <style name="Button.Blue.Light">
+	<!--====================================== Share Buttons =========================================== -->
+    <style name="Button.Share">
         <item name="btn_top">@color/share_emboss_top</item>
         <item name="btn_left">@color/share_emboss_left</item>
         <item name="btn_right">@color/share_emboss_right</item>
@@ -149,6 +148,17 @@
 
         <item name="btn_solid">@color/share_button</item>
     </style>
+
+	<style name="Button.Share.Icon">
+		<item name="ttf">Icon</item>
+		<item name="android:textSize">@dimen/game_controls_icon_size</item>
+		<item name="android:text">@string/ic_share</item>
+	</style>
+
+	<style name="Button.Share.Small">
+		<item name="android:minHeight">@dimen/small_orange_button_height</item>
+		<item name="android:minWidth">@dimen/wide_button_min_width</item>
+	</style>
 
 	<!-- Chip light blue -->
 	<style name="Button.Blue.Chip">

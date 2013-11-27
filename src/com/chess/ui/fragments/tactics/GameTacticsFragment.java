@@ -1125,6 +1125,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_share:
+				if (trainerData == null) { // we haven't loaded tactic yet
+					showToast(R.string.nothing_to_share);
+					return true;
+				}
+
 				String tacticShareStr = "http://www.chess.com/tactics/?id=" + trainerData.getId();
 
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -1320,6 +1325,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 //		boardFace.setupBoard("r1q2r1k/3bb2p/p1p1N3/3pp2Q/6R1/2P1R3/1P3PPP/2B3K1 b - - 1 1"); // use as an example of disambiguation move
 //		boardFace.setPuzzleMoves("1... Re8 2. Ng6+ Kh7 3. Qxd7");
 //		boardFace.setPuzzleMoves("1... Bxe6 2. Qxh7+ Kxh7 3. Rh3+ Bh4 4. R3xh4#");
+
+	// rn2kb1r/p1p2ppp/1p3n2/4p3/4P3/P1N5/1PPB1PPP/R3KbNR w KQkq - 0 1
+	// 1. O-O-O Bxg2
 
 
 }

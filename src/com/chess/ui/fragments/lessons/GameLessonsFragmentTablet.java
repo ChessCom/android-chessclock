@@ -1,20 +1,13 @@
 package com.chess.ui.fragments.lessons;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.api.LessonSingleItem;
-import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
 import com.chess.ui.engine.ChessBoardLessons;
 import com.chess.ui.views.chess_boards.ChessBoardLessonsView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,50 +26,6 @@ public class GameLessonsFragmentTablet extends GameLessonFragment {
 		bundle.putLong(COURSE_ID, courseId);
 		fragment.setArguments(bundle);
 		return fragment;
-	}
-
-	@Override
-	public void newGame() {
-		Cursor courseCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCourseById((int) courseId));
-
-		if (courseCursor != null && courseCursor.moveToFirst()) {  // if we have saved course
-			Cursor lessonsListCursor = DbDataManager.query(getContentResolver(),
-					DbHelper.getLessonsListByCourseId((int) courseId, getUsername()));
-			if (lessonsListCursor.moveToFirst()) { // if we have saved lessons
-				List<LessonSingleItem> lessons = new ArrayList<LessonSingleItem>();
-				do {
-					lessons.add(DbDataManager.getLessonsListItemFromCursor(lessonsListCursor));
-				} while (lessonsListCursor.moveToNext());
-				lessonsListCursor.close();
-
-				int lessonsInCourse = lessons.size();
-				boolean nextLessonFound = false;
-				for (int i = 0; i < lessonsInCourse; i++) {
-					LessonSingleItem lesson = lessons.get(i);
-					if (lesson.getId() == lessonId && (i + 1 < lessonsInCourse)) { // get next lesson
-						LessonSingleItem nextLesson = lessons.get(i + 1);
-						lessonId = nextLesson.getId();
-						nextLessonFound = true;
-						break;
-					}
-				}
-
-				if (nextLessonFound) {
-					showDefaultControls();
-					updateUiData();
-					getControlsView().showStart();
-				} else {
-					getActivityFace().showPreviousFragment();
-				}
-			} else {
-				getActivityFace().showPreviousFragment();
-			}
-		}
-	}
-
-	@Override
-	public void startLesson() {
-		getControlsView().showDefault();
 	}
 
 	@Override
@@ -130,5 +79,12 @@ public class GameLessonsFragmentTablet extends GameLessonFragment {
 
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
+
+		// lesson complete widgets
+		lessonCompleteView = view.findViewById(R.id.lessonCompleteView);
+		lessonPercentTxt = (TextView) view.findViewById(R.id.lessonPercentTxt);
+		yourRatingTxt = (TextView) view.findViewById(R.id.yourRatingTxt);
+		lessonRatingTxt = (TextView) view.findViewById(R.id.lessonRatingTxt);
+		lessonRatingChangeTxt = (TextView) view.findViewById(R.id.lessonRatingChangeTxt);
 	}
 }

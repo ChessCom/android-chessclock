@@ -36,10 +36,10 @@ public class ControlsLessonsView extends ControlsBaseView {
 
 	@Override
 	protected void addButtons() {
-		addControlButton(OPTIONS, R.style.Rect_Bottom_Left);
+		addControlButton(OPTIONS, styles[LEFT]);
 
-		addNextButton(R.style.Rect_Bottom_Right_Green, NEXT);
-		addNextButton(R.style.Rect_Bottom_Right_Orange, SKIP);
+		addNextButton(styles[GREEN], NEXT);
+		addNextButton(styles[ORANGE], SKIP);
 		addStartButton();
 		addWrongButton();
 		addYourMoveButton();
@@ -65,7 +65,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 		RoboImageButton button = new RoboImageButton(getContext());
 		button.setOnClickListener(this);
 		button.setId(getButtonId(HINT));
-		ButtonDrawableBuilder.setBackgroundToView(button, R.style.Rect_Bottom_Right);
+		ButtonDrawableBuilder.setBackgroundToView(button, styles[RIGHT]);
 		yourMoveDrawable = new YourMoveDrawable(getContext());
 		button.setImageDrawable(yourMoveDrawable);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
@@ -83,7 +83,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 		button.setTextSize(controlTextSize);
 		button.setTextColor(Color.WHITE);
 		button.setShadowLayer(0, 0, 0, 0);
-		button.setDrawableStyle(R.style.Rect_Bottom_Right_Orange);
+		button.setDrawableStyle(styles[ORANGE]);
 		button.setId(getButtonId(START));
 		button.setVisibility(GONE);
 		LayoutParams params = new LayoutParams(0, controlButtonHeight);
@@ -96,7 +96,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 	protected void addWrongButton() {
 		RoboButton button = getDefaultButton();
 		button.setText(R.string.ic_restore);
-		button.setDrawableStyle(R.style.Rect_Bottom_Right_Red);
+		button.setDrawableStyle(styles[RED]);
 		button.setId(getButtonId(RESTART));
 		button.setVisibility(GONE);
 		button.setTextColor(Color.WHITE);

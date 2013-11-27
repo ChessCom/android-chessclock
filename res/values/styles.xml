@@ -42,10 +42,7 @@
         <item name="android:minHeight">@dimen/small_orange_button_height</item>
     </style>
 
-    <style name="Button.Share" parent="Button.Blue.Light" >
-        <item name="android:minHeight">@dimen/small_orange_button_height</item>
-        <item name="android:minWidth">@dimen/wide_button_min_width</item>
-    </style>
+
 
     <style name="GlyphIcon">
         <item name="android:padding">@dimen/glyph_icon_padding</item>

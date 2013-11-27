@@ -50,7 +50,9 @@ public class LessonsItemsAdapterTablet extends LessonsItemsAdapter {
 			holder.text.setTextColor(completedTextColor);
 			holder.completedIconTxt.setTextColor(completedIconColor);
 			holder.completedIconTxt.setText(R.string.ic_check);
-
+			holder.scoreValueTxt.setText(item.getLastScoreStr());
+			holder.attemptsValueTxt.setText(item.getLastScoreStr());
+			holder.ratingValueTxt.setText(item.getLastScoreStr());
 		} else {
 			holder.text.setTextColor(incompleteTextColor);
 			holder.completedIconTxt.setText(R.string.ic_lessons);

@@ -107,6 +107,9 @@
 				android:visibility="gone"
 				/>
 
+			<!--Lesson Complete view-->
+			<include layout="@layout/new_lesson_complete_view" />
+
 		</LinearLayout>
 	</ScrollView>
 
@@ -194,6 +197,7 @@
 		android:id="@+id/controlsView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		custom:controls_style="rectDark"
 		android:layout_alignParentBottom="true"
 		/>
 

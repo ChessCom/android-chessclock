@@ -165,12 +165,12 @@
     <color name="f_button_pressed_stroke_2">#FF93afee</color>
 
     <!--Share button-->
-    <color name="share_button">#FF00aced</color>
+	<color name="share_button">#FF0099cc</color>
 
-    <color name="share_emboss_top">#ff00b4f6</color>
-    <color name="share_emboss_left">#ff00b0f3</color>
-    <color name="share_emboss_right">#ff009bd8</color>
-    <color name="share_emboss_bottom">#ff008bcb</color>
+	<color name="share_emboss_top">#ff00a4d7</color>
+	<color name="share_emboss_left">#ff009ed2</color>
+	<color name="share_emboss_right">#ff0091c2</color>
+	<color name="share_emboss_bottom">#ff0087b8</color>
 
 	<!--Chip button-->
 	<color name="chip_button">#FFe4f1fc</color>

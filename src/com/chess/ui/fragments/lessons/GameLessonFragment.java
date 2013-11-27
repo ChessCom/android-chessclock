@@ -25,7 +25,6 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadLessonItemTask;
 import com.chess.db.tasks.SaveLessonsLessonTask;
-import com.chess.model.PopupItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLessons;
@@ -142,6 +141,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private PopupCustomViewFragment completedPopupFragment;
 	private int updatedUserRating;
 	private boolean wrongState;
+	protected View lessonCompleteView;
+	protected TextView lessonPercentTxt;
+	protected TextView yourRatingTxt;
+	protected TextView lessonRatingTxt;
+	protected TextView lessonRatingChangeTxt;
+	protected boolean showLessonsResult;
 
 	public GameLessonFragment() {}
 
@@ -282,6 +287,19 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public void newGame() {
+		if (showLessonsResult) {
+			lessonCompleteView.setVisibility(View.VISIBLE);
+
+			descriptionView.postDelayed(scrollDescriptionDown, 50);
+			if (!inLandscape()) {
+				slidingDrawer.animateClose();
+			}
+			showLessonsResult = false;
+			return;
+		} else {
+			lessonCompleteView.setVisibility(View.GONE);
+		}
+
 		Cursor courseCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCourseById((int) courseId));
 
 		if (courseCursor != null && courseCursor.moveToFirst()) {  // if we have saved course
@@ -307,17 +325,18 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				}
 
 				if (nextLessonFound) {
-					slidingDrawer.animateClose();
+					if (!inLandscape()) {
+						slidingDrawer.animateClose();
+					}
 					showDefaultControls();
 					updateUiData();
 					getControlsView().showStart();
-				} else {
-					getActivityFace().showPreviousFragment();
+					return;
 				}
-			} else {
-				getActivityFace().showPreviousFragment();
 			}
 		}
+
+		getActivityFace().showPreviousFragment();
 	}
 
 	@Override
@@ -376,7 +395,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	@Override
 	public void startLesson() {
 		getControlsView().showDefault();
-		if (!slidingDrawer.isOpened()) {
+		if (!inLandscape() && !slidingDrawer.isOpened()) {
 			slidingDrawer.animateOpen();
 		}
 	}
@@ -427,7 +446,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					}
 				} else if (possibleMove.getMoveType().equals(LessonProblemItem.MOVE_ALTERNATE)) { // Alternate Correct Move
 					// Correct move, try again!
-//					showToast(R.string.alternate_correct_move_ex);
 					showCorrectState();
 					correctMove = true;
 				} else if (possibleMove.getMoveType().equals(LessonProblemItem.MOVE_WRONG)) {
@@ -604,6 +622,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_share:
+				if (lessonItem == null) {
+					showToast(R.string.nothing_to_share);
+					return true;
+				}
 				submitShareIntent(getString(R.string.lesson_share_message,
 						lessonItem.getLesson().getName()));
 				break;
@@ -911,14 +933,15 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	}
 
 	private void showCompletedPopup(LessonRatingChangeItem.Data ratingChange) {
+		//	Move comment --> [next] --> Lesson result --> [next] --> Start next lesson
 		{ // show Lesson Complete! Popup
-			View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lesson_complete_popup, null, false);
-			popupView.findViewById(R.id.shareBtn).setOnClickListener(this);
-
-			TextView lessonPopupTitleTxt = (TextView) popupView.findViewById(R.id.lessonTitleTxt);
-			TextView lessonPercentTxt = (TextView) popupView.findViewById(R.id.lessonPercentTxt);
-			TextView lessonRatingTxt = (TextView) popupView.findViewById(R.id.lessonRatingTxt);
-			TextView lessonRatingChangeTxt = (TextView) popupView.findViewById(R.id.lessonRatingChangeTxt);
+//			View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lesson_complete_popup, null, false);
+//			popupView.findViewById(R.id.shareBtn).setOnClickListener(this);
+//
+//			TextView lessonPopupTitleTxt = (TextView) popupView.findViewById(R.id.lessonTitleTxt);
+//			TextView lessonPercentTxt = (TextView) popupView.findViewById(R.id.lessonPercentTxt);
+//			TextView lessonRatingTxt = (TextView) popupView.findViewById(R.id.lessonRatingTxt);
+//			TextView lessonRatingChangeTxt = (TextView) popupView.findViewById(R.id.lessonRatingChangeTxt);
 
 			float pointsForLesson = 0;
 			if (!lessonItem.isLessonCompleted()) {
@@ -926,7 +949,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				updatedUserRating += pointsForLesson;
 			}
 
-			lessonPopupTitleTxt.setText(lessonItem.getLesson().getName());
+//			lessonPopupTitleTxt.setText(lessonItem.getLesson().getName());
 			lessonPercentTxt.setText(String.valueOf(scorePercent) + Symbol.PERCENT);
 			lessonRatingTxt.setText(String.valueOf(updatedUserRating));
 			if (!lessonItem.isLessonCompleted()) {
@@ -937,11 +960,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				lessonItem.setLessonCompleted(true);
 			}
 
-			PopupItem popupItem = new PopupItem();
-			popupItem.setCustomView(popupView);
+//			PopupItem popupItem = new PopupItem();
+//			popupItem.setCustomView(popupView);
 
-			completedPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-			completedPopupFragment.show(getFragmentManager(), LESSON_COMPLETE_TAG);
+//			completedPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+//			completedPopupFragment.show(getFragmentManager(), LESSON_COMPLETE_TAG);
+			showLessonsResult = true;
 		}
 	}
 
@@ -1039,6 +1063,13 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
+
+		// lesson complete widgets
+		lessonCompleteView = view.findViewById(R.id.lessonCompleteView);
+		lessonPercentTxt = (TextView) view.findViewById(R.id.lessonPercentTxt);
+		yourRatingTxt = (TextView) view.findViewById(R.id.yourRatingTxt);
+		lessonRatingTxt = (TextView) view.findViewById(R.id.lessonRatingTxt);
+		lessonRatingChangeTxt = (TextView) view.findViewById(R.id.lessonRatingChangeTxt);
 	}
 
 	private class MoveCompleteItem {

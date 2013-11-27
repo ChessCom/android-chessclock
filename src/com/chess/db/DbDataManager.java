@@ -1814,6 +1814,10 @@ public class DbDataManager {
 		values.put(V_CATEGORY_ID, lesson.getCategoryId());
 		values.put(V_COURSE_ID, lesson.getCourseId());
 		values.put(V_LESSON_COMPLETED, lesson.isCompleted() ? 1 : 0);
+		values.put(V_INITIAL_SCORE, lesson.getInitialScore());
+		values.put(V_LAST_SCORE, lesson.getLastScore());
+		values.put(V_RATING, lesson.getRating());
+		values.put(V_ATTEMPT_CNT, lesson.getAttempts());
 		values.put(V_LESSON_STARTED, lesson.isStarted() ? 1 : 0);
 		values.put(V_USER, lesson.getUser());
 		values.put(V_NAME, lesson.getName());
@@ -1844,8 +1848,13 @@ public class DbDataManager {
 
 		dataObj.setId(getInt(cursor, V_ID));
 		dataObj.setUser(getString(cursor, V_USER));
-		dataObj.setCourseId(getLong(cursor, V_CATEGORY_ID));
+		dataObj.setCategoryId(getInt(cursor, V_CATEGORY_ID));
+		dataObj.setCourseId(getInt(cursor, V_COURSE_ID));
 		dataObj.setCompleted(getInt(cursor, V_LESSON_COMPLETED) > 0);
+		dataObj.setInitialScore(getInt(cursor, V_INITIAL_SCORE));
+		dataObj.setLastScore(getInt(cursor, V_LAST_SCORE));
+		dataObj.setAttempts(getInt(cursor, V_ATTEMPT_CNT));
+		dataObj.setRating(getInt(cursor, V_RATING));
 		dataObj.setStarted(getInt(cursor, V_LESSON_STARTED) > 0);
 		dataObj.setName(getString(cursor, V_NAME));
 

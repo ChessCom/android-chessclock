@@ -129,6 +129,9 @@
 					android:background="@color/header_light"
 					android:visibility="gone" />
 
+				<!--Lesson Complete view-->
+				<include layout="@layout/new_lesson_complete_view" />
+
 			</LinearLayout>
 
 		</ScrollView>
@@ -138,10 +141,10 @@
 			android:id="@id/controlsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			custom:controls_style="rectDark"
+			custom:controls_style="rounded"
 			android:layout_alignParentBottom="true"
 			android:layout_marginTop="5dp"
-			android:layout_marginBottom="5dp"/>
+			android:layout_marginBottom="2dp"/>
 
 	</com.chess.widgets.RelLayout>
 

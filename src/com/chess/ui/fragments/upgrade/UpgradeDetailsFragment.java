@@ -775,11 +775,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				loadProgressPopupFragment.dismiss();
 			}
 		}
-//		if (show) {
-//			showPopupProgressDialog(R.string.processing_);
-//		} else {
-//			dismissProgressDialog();
-//		}
 	}
 
 	protected void widgetsInit(View view) {

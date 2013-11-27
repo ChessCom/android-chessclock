@@ -137,7 +137,7 @@ public class TacticTrainerItem extends BaseResponseItem<TacticTrainerItem.Data> 
 		}
 
 		public int getProblemRating() {
-			return rating_info.getProblemRating();
+			return tactics_problem.getRating();
 		}
 
 		public int getAvgSeconds() {

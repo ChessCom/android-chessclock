@@ -44,7 +44,8 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	static final int RIGHT = 2;
 	static final int ORANGE = 3;
 	static final int RED = 4;
-	static final int BADGE = 5;
+	static final int GREEN = 5;
+	static final int BADGE = 6;
 
 	static final int STYLE_DEFAULT = 0;
 	static final int STYLE_ROUNDED = 1;
@@ -65,6 +66,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.style.Button_Glassy,
 			R.style.Button_OrangeNoBorder,
 			R.style.Button_Red,
+			R.style.Button_Green,
 			R.style.Button_Glassy_Badge
 	};
 
@@ -74,6 +76,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.style.Rect_Bottom_Right,
 			R.style.Rect_Bottom_Right_Orange,
 			R.style.Rect_Bottom_Right_Red,
+			R.style.Rect_Bottom_Right_Green,
 			R.style.Rect_Bottom_Middle_Badge
 	};
 
@@ -83,6 +86,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.style.Rect_Top_Middle,
 			R.style.Rect_Bottom_Right_Orange,
 			R.style.Rect_Bottom_Right_Red,
+			R.style.Rect_Bottom_Right_Green,
 			R.style.Rect_Bottom_Middle_Badge
 	};
 

@@ -6,10 +6,7 @@
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:paddingTop="15dp"
-	android:paddingLeft="23dp"
-	android:paddingRight="23dp"
-	android:paddingBottom="15dp"
+	android:padding="@dimen/grid_view_spacing"
 	style="@style/ListItem.Header"
 	custom:btn_solid="@color/action_bar_overlay"
 	>

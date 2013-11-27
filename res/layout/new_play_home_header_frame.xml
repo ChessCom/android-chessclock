@@ -88,7 +88,8 @@
 			android:paddingLeft="@dimen/start_new_game_overlay_padding_side"
 			android:paddingRight="@dimen/start_new_game_overlay_padding_side"
 			android:paddingBottom="@dimen/start_new_game_overlay_padding_side"
-			android:orientation="vertical">
+			android:orientation="vertical"
+			android:visibility="invisible">
 
 			<!--New Game-->
 			<com.chess.widgets.RoboTextView

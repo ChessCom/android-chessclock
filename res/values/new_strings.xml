@@ -367,5 +367,6 @@
 	<string name="upgrade_contacting_server">Contacting server</string>
 	<string name="upgrade_performing_purchase">Performing Purchase</string>
 	<string name="upgrade_receiving_payments">Receiving payments</string>
+	<string name="nothing_to_share">Nothing to share</string>
 
 </resources>

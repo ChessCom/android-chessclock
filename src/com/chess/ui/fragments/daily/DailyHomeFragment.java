@@ -180,7 +180,6 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		if (tag.equals(END_VACATION_TAG)) {
 			LoadItem loadItem = LoadHelper.deleteOnVacation(getUserToken());
 			new RequestJsonTask<VacationItem>(new VacationUpdateListener()).executeTask(loadItem);
-
 		}
 		super.onPositiveBtnClick(fragment);
 	}
@@ -235,6 +234,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 			params.setMargins(sideInset - borderOffset, topMargin, sideInset - borderOffset, 0);
 			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
 			startOverlayView.setLayoutParams(params);
+			startOverlayView.setVisibility(View.VISIBLE);
 
 			onlinePlayersCntTxt = (TextView) headerView.findViewById(R.id.onlinePlayersCntTxt);
 		}

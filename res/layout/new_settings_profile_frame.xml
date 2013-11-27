@@ -281,7 +281,7 @@
                 android:id="@+id/shareBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Button.Share"
+                style="@style/Button.Share.Small"
                 android:text="@string/share"
                 />
 

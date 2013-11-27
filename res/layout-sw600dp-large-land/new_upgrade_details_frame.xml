@@ -65,24 +65,27 @@
 				custom:ttf="Italic" />
 
 			<!--Periods check boxes-->
-			<LinearLayout
+			<RelativeLayout
 				android:id="@+id/periodView"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/planSubTitleTxt"
-				android:baselineAligned="true">
+				>
 
 				<!--Month-->
 				<RelativeLayout
 					android:id="@+id/monthView"
-					android:layout_width="0dip"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_weight="1"
+					android:layout_toLeftOf="@+id/centerPoint"
+					android:layout_alignParentLeft="true"
 					android:background="@color/diamond_back"
+					android:layout_alignBottom="@+id/yearView"
 					android:paddingTop="12dip"
 					android:paddingBottom="16dip"
 					android:layout_marginLeft="2dip"
-					android:layout_marginRight="1dip">
+					android:layout_marginRight="1dip"
+					>
 
 					<com.chess.widgets.RoboTextView
 						android:id="@+id/monthValueTxt"
@@ -92,13 +95,15 @@
 						android:paddingBottom="8dip"
 						android:textSize="24sp"
 						android:textColor="@color/upgrade_diamond_title"
-						custom:ttf="Bold" />
+						custom:ttf="Bold"
+						/>
 
 					<View
 						android:id="@id/centerMonthView"
 						android:layout_width="0dip"
 						android:layout_height="0dip"
-						android:layout_centerHorizontal="true" />
+						android:layout_centerHorizontal="true"
+						/>
 
 					<com.chess.widgets.RoboTextView
 						android:id="@+id/monthLabelTxt"
@@ -110,7 +115,8 @@
 						android:textSize="15sp"
 						custom:ttf="Bold"
 						android:text="@string/per_month"
-						android:paddingLeft="4dip" />
+						android:paddingLeft="4dip"
+						/>
 
 					<CheckBox
 						android:id="@+id/monthCheckBox"
@@ -119,21 +125,32 @@
 						android:layout_below="@id/monthValueTxt"
 						android:layout_centerHorizontal="true"
 						android:button="@drawable/button_checkmark_diamond_selector"
-						android:minHeight="35dip" />
+						android:minHeight="35dip"
+						/>
 
 				</RelativeLayout>
 
+				<!--Center point-->
+				<View
+					android:id="@id/centerPoint"
+					android:layout_width="0dp"
+					android:layout_height="0dp"
+					android:layout_centerInParent="true"
+					/>
+
 				<!--Year-->
 				<RelativeLayout
-					android:id="@+id/yearView"
-					android:layout_width="0dip"
+					android:id="@id/yearView"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:layout_weight="1"
+					android:layout_toRightOf="@+id/centerPoint"
+					android:layout_alignParentRight="true"
 					android:background="@color/diamond_back"
 					android:paddingTop="12dip"
 					android:layout_marginLeft="1dip"
 					android:layout_marginRight="2dip"
-					android:paddingBottom="16dip">
+					android:paddingBottom="16dip"
+					>
 
 					<com.chess.widgets.RoboTextView
 						android:id="@+id/yearValueTxt"
@@ -143,13 +160,15 @@
 						android:paddingBottom="8dip"
 						android:textSize="24sp"
 						android:textColor="@color/upgrade_diamond_title"
-						custom:ttf="Bold" />
+						custom:ttf="Bold"
+						/>
 
 					<View
 						android:id="@id/centerYearView"
 						android:layout_width="0dip"
 						android:layout_height="0dip"
-						android:layout_centerHorizontal="true" />
+						android:layout_centerHorizontal="true"
+						/>
 
 					<com.chess.widgets.RoboTextView
 						android:id="@+id/yearLabelTxt"
@@ -161,7 +180,8 @@
 						android:layout_alignBaseline="@id/yearValueTxt"
 						android:paddingLeft="4dip"
 						android:text="@string/per_year"
-						custom:ttf="Bold" />
+						custom:ttf="Bold"
+						/>
 
 					<CheckBox
 						android:id="@+id/yearCheckBox"
@@ -172,7 +192,8 @@
 						android:layout_centerHorizontal="true"
 						android:button="@drawable/button_checkmark_diamond_selector"
 						android:checked="true"
-						android:minHeight="35dip" />
+						android:minHeight="35dip"
+						/>
 
 					<com.chess.widgets.RoboTextView
 						android:id="@+id/yearDiscountTxt"
@@ -182,11 +203,12 @@
 						android:layout_alignTop="@id/yearCheckBox"
 						android:textColor="@color/red"
 						android:textSize="13sp"
-						android:visibility="gone" />
+						android:visibility="gone"
+						/>
 
 				</RelativeLayout>
 
-			</LinearLayout>
+			</RelativeLayout>
 
 			<com.chess.widgets.RoboButton
 				android:id="@+id/setPlanBtn"

@@ -170,18 +170,18 @@ public class MovesParser {
 		String[] moveTo = new String[2];
 		String currentMove = move.trim();
 
-		if (currentMove.contains(KINGSIDE_CASTLING) || currentMove.contains(KINGSIDE_CASTLING_AND_CHECK)) {
-			if (board.getSide() == ChessBoard.WHITE_SIDE) {
-				return new int[]{board.whiteKing, board.whiteKingMoveOO[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
-			} else if (board.getSide() == ChessBoard.BLACK_SIDE) {
-				return new int[]{board.blackKing, board.blackKingMoveOO[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
-			}
-		}
-		if (currentMove.contains(QUEENSIDE_CASTLING) || currentMove.contains(QUEENSIDE_CASTLING_AND_CHECK)) {
+		if (currentMove.contains(QUEENSIDE_CASTLING)) {
 			if (board.getSide() == ChessBoard.WHITE_SIDE) {
 				return new int[]{board.whiteKing, board.whiteKingMoveOOO[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
 			} else if (board.getSide() == ChessBoard.BLACK_SIDE) {
 				return new int[]{board.blackKing, board.blackKingMoveOOO[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
+			}
+		}
+		if (currentMove.contains(KINGSIDE_CASTLING)) {
+			if (board.getSide() == ChessBoard.WHITE_SIDE) {
+				return new int[]{board.whiteKing, board.whiteKingMoveOO[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
+			} else if (board.getSide() == ChessBoard.BLACK_SIDE) {
+				return new int[]{board.blackKing, board.blackKingMoveOO[ChessBoard.BLACK_KINGSIDE_CASTLE], 0, 2};
 			}
 		}
 

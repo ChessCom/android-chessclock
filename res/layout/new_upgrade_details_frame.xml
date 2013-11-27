@@ -124,7 +124,8 @@
 
             </RelativeLayout>
 
-            <LinearLayout
+			<!--Periods check boxes-->
+			<RelativeLayout
                 android:id="@+id/periodView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,10 +136,12 @@
                 <!--Month-->
                 <RelativeLayout
                     android:id="@+id/monthView"
-                    android:layout_width="0dip"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_toLeftOf="@+id/centerPoint"
+					android:layout_alignParentLeft="true"
                     android:background="@color/diamond_back"
+					android:layout_alignBottom="@+id/yearView"
                     android:paddingTop="12dip"
                     android:paddingBottom="16dip"
                     android:layout_marginLeft="2dip"
@@ -188,12 +191,21 @@
 
                 </RelativeLayout>
 
+				<!--Center point-->
+				<View
+					android:id="@id/centerPoint"
+					android:layout_width="0dp"
+					android:layout_height="0dp"
+					android:layout_centerInParent="true"
+					/>
+
                 <!--Year-->
                 <RelativeLayout
-                    android:id="@+id/yearView"
-                    android:layout_width="0dip"
+                    android:id="@id/yearView"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_toRightOf="@+id/centerPoint"
+					android:layout_alignParentRight="true"
                     android:background="@color/diamond_back"
                     android:paddingTop="12dip"
                     android:layout_marginLeft="1dip"
@@ -251,12 +263,13 @@
                         android:layout_toRightOf="@id/yearCheckBox"
                         android:layout_alignTop="@id/yearCheckBox"
                         android:textColor="@color/red"
+						android:layout_marginTop="-2dp"
                         android:textSize="14sp"
                         />
 
                 </RelativeLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <com.chess.widgets.RoboButton
                 android:id="@+id/setPlanBtn"
