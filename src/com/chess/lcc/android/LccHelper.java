@@ -998,7 +998,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public void setLastGameId(Long lastGameId) {
 		this.lastGameId = lastGameId;
-		LogMe.dl("REMATCHTEST", "setLastGameId " + lastGameId);
+		LogMe.dl(TAG, "setLastGameId " + lastGameId);
 	}
 
 	public void setCurrentGameId(Long gameId) {

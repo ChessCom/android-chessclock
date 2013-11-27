@@ -254,7 +254,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
 
 		} else if (tag.equals(EXIT_GAME_TAG)) {
-			liveService.runMakeResignTask();
+			liveService.runMakeResignAndExitTask();
+
 		}
 		super.onPositiveBtnClick(fragment);
 	}

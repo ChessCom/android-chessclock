@@ -264,6 +264,10 @@ public class LiveChessService extends Service {
 		gameTaskRunner.runMakeResignTask();
 	}
 
+	public void runMakeResignAndExitTask() {
+		gameTaskRunner.runMakeResignAndExitTask();
+	}
+
 	public void runRejectDrawTask() {
 		gameTaskRunner.runRejectDrawTask();
 	}

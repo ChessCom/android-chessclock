@@ -59,6 +59,22 @@ public class LccGameTaskRunner {
 		@Override
 		protected Integer doTheTask(Game... game) {
 			liveChessClient.makeResign(game[0], Symbol.EMPTY);
+			return StaticData.RESULT_OK;
+		}
+	}
+
+	public void runMakeResignAndExitTask() {
+		new LiveMakeResignAndExitTask().executeTask(lccHelper.getCurrentGame());
+	}
+
+	private class LiveMakeResignAndExitTask extends AbstractUpdateTask<Game, Game> {
+		public LiveMakeResignAndExitTask() {
+			super(gameTaskFace);
+		}
+
+		@Override
+		protected Integer doTheTask(Game... game) {
+			liveChessClient.makeResign(game[0], Symbol.EMPTY);
 			liveChessClient.exitGame(game[0]);
 			return StaticData.RESULT_OK;
 		}
