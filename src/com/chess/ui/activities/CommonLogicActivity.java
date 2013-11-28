@@ -1,5 +1,6 @@
 package com.chess.ui.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.EditText;
@@ -185,6 +187,12 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == Activity.RESULT_OK && (requestCode & 0xFFFF) == 0xFACE) { // if it was request to authorize facebook user
+			for (Fragment fragment : getSupportFragmentManager().getFragments()) { // transmit to all fragments? is it safe..? // TODO check logic
+				fragment.onActivityResult(requestCode & 0xffff, resultCode, data);
+			}
+		}
+
 		if (facebookActive) {
 			facebookUiHelper.onActivityResult(requestCode, resultCode, data);
 		}

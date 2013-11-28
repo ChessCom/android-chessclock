@@ -35,20 +35,19 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		menuItems = new ArrayList<SettingsMenuItem>();
 //		menuItems.add(new SettingsMenuItem(R.string.api, R.string.ic_key));
 		menuItems.add(new SettingsMenuItem(R.string.profile, R.string.ic_profile));
-		menuItems.add(new SettingsMenuItem(R.string.board_and_pieces, R.string.ic_board));
+		menuItems.add(new SettingsMenuItem(R.string.general, R.string.ic_board));
 		menuItems.add(new SettingsMenuItem(R.string.daily_chess, R.string.ic_daily_game));
-		menuItems.add(new SettingsMenuItem(R.string.live_chess, R.string.ic_live_standard));
+//		menuItems.add(new SettingsMenuItem(R.string.live_chess, R.string.ic_live_standard));
 		menuItems.add(new SettingsMenuItem(R.string.tactics, R.string.ic_help));
-		menuItems.add(new SettingsMenuItem(R.string.lessons, R.string.ic_lessons));
+//		menuItems.add(new SettingsMenuItem(R.string.lessons, R.string.ic_lessons));
 		menuItems.add(new SettingsMenuItem(R.string.theme, R.string.ic_theme));
-		menuItems.add(new SettingsMenuItem(R.string.password, R.string.ic_key_badge));
-		menuItems.add(new SettingsMenuItem(R.string.privacy, R.string.ic_settings));
-		menuItems.add(new SettingsMenuItem(R.string.blocking, R.string.ic_blocking));
-		menuItems.add(new SettingsMenuItem(R.string.tracking, R.string.ic_challenge_friend));
-		menuItems.add(new SettingsMenuItem(R.string.sharing, R.string.ic_share));
-		menuItems.add(new SettingsMenuItem(R.string.alerts_and_emails, R.string.ic_email_dark));
+//		menuItems.add(new SettingsMenuItem(R.string.privacy, R.string.ic_settings));
+//		menuItems.add(new SettingsMenuItem(R.string.blocking, R.string.ic_blocking));
+//		menuItems.add(new SettingsMenuItem(R.string.tracking, R.string.ic_challenge_friend));
+//		menuItems.add(new SettingsMenuItem(R.string.sharing, R.string.ic_share));
+//		menuItems.add(new SettingsMenuItem(R.string.alerts_and_emails, R.string.ic_email_dark));
 		menuItems.add(new SettingsMenuItem(R.string.password, R.string.ic_password));
-		menuItems.add(new SettingsMenuItem(R.string.account_history, R.string.ic_history));
+//		menuItems.add(new SettingsMenuItem(R.string.account_history, R.string.ic_history));
 		menuItems.add(new SettingsMenuItem(R.string.logout, R.string.ic_close));
 
 		adapter = new SettingsMenuAdapter(getActivity(), menuItems);
@@ -107,7 +106,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 			case R.string.ic_theme:
 				getActivityFace().openFragment(new SettingsThemeFragment());
 				break;
-			case R.string.ic_key_badge:
+			case R.string.ic_password:
 				getActivityFace().openFragment(new SettingsPasswordFragment());
 				break;
 			case R.string.ic_close:

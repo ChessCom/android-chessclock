@@ -41,8 +41,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	public static final int DRAW_DECLINE_ID = 0x00004418;
 	public static final int DRAW_ACCEPT_ID = 0x00004419;
 
-	private int FLAG_SIZE = 16;
-	private int FLAG_MARGIN = 5;
+	private int flagMargin = 5;
 
 	protected RoboTextView playerTxt;
 	protected ImageView avatarImg;
@@ -62,6 +61,9 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	private LinearLayout clockLayout;
 	private RelLayout drawOfferedRelLay;
 	private OnClickListener clickListener;
+	private int paddingTop;
+	private int paddingRight;
+	private int paddingLeft;
 
 	public PanelInfoLiveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -78,6 +80,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		Context context = getContext();
 		resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
+		int widthPixels = resources.getDisplayMetrics().widthPixels;
 
 		if (AppUtils.HONEYCOMB_PLUS_API) {
 			useSingleLine = true;
@@ -104,8 +107,8 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_big_size);
 		}
 
-		boolean hasSoftKeys = AppUtils.isNexus4Kind(getContext());
-		if (hasSoftKeys) {
+		boolean nexus4Kind = AppUtils.isNexus4Kind(getContext());
+		if (nexus4Kind) {
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_medium_size);
 		}
 
@@ -116,14 +119,25 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		int timeLeftSize = (int) resources.getDimension(R.dimen.panel_info_time_left_size);
 		int avatarMarginRight = (int) resources.getDimension(R.dimen.panel_info_avatar_margin_right);
 
-		FLAG_SIZE *= density;
-		FLAG_MARGIN *= density;
+		int flagSize = (int) resources.getDimension(R.dimen.panel_info_flag_size);
+		flagMargin *= density;
+
+		{ // set padding
+			paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
+			paddingRight = (int) (4 * density);
+
+			paddingLeft = resources.getDimensionPixelSize(R.dimen.panel_info_avatar_left_margin);
+
+			if (nexus4Kind) {
+				paddingTop = (int) (3 * density);
+			}
+		}
 
 		{// add avatar view
 			avatarImg = new ImageView(context);
 
 			LayoutParams avatarParams = new LayoutParams(avatarSize, avatarSize);
-			avatarParams.setMargins(0, 0, avatarMarginRight, 0);
+			avatarParams.setMargins(paddingLeft, paddingTop, avatarMarginRight, paddingTop);
 			avatarParams.addRule(CENTER_VERTICAL);
 
 			avatarImg.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -140,6 +154,8 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			playerTxt = new RoboTextView(context);
 			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
+			int playerNameMargin = resources.getDimensionPixelSize(R.dimen.player_name_margin_top);
+			playerParams.setMargins(0, -playerNameMargin, 0, 0);
 			if (useSingleLine) {
 				playerParams.addRule(CENTER_VERTICAL);
 				playerParams.addRule(ALIGN_PARENT_LEFT);
@@ -156,6 +172,10 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			playerTxt.setEllipsize(TextUtils.TruncateAt.MARQUEE);
 			playerTxt.setFont(FontsHelper.BOLD_FONT);
 
+			if (useSingleLine && smallScreen) {
+				playerTxt.setMaxWidth(widthPixels / 3);
+			}
+
 			addView(playerTxt, playerParams);
 		}
 
@@ -163,15 +183,20 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			playerRatingTxt = new RoboTextView(context);
 			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-
+			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_flag_margin_top);
+			playerParams.setMargins(0, -marginTop, 0, 0);
 			playerParams.addRule(RIGHT_OF, PLAYER_ID);
 			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
 
 			playerRatingTxt.setTextSize(playerRatingTextSize);
 			playerRatingTxt.setTextColor(playerTextColor);
 			playerRatingTxt.setId(RATING_ID);
-			playerRatingTxt.setPadding((int) (4 * density), (int) (3 * density), 0, 0);
+			playerRatingTxt.setPadding((int) (4 * density), 0, 0, 0);
 			playerRatingTxt.setFont(FontsHelper.BOLD_FONT);
+
+			if (useSingleLine && smallScreen) {
+				playerRatingTxt.setVisibility(GONE);
+			}
 
 			addView(playerRatingTxt, playerParams);
 		}
@@ -179,8 +204,9 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		{// add player flag
 			flagImg = new ImageView(context);
 
-			LayoutParams flagParams = new LayoutParams(FLAG_SIZE, FLAG_SIZE);
-			flagParams.setMargins(FLAG_MARGIN, 0, FLAG_MARGIN, FLAG_MARGIN);
+			LayoutParams flagParams = new LayoutParams(flagSize, flagSize);
+			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_flag_margin_top);
+			flagParams.setMargins(flagMargin, -marginTop, flagMargin, flagMargin);
 			flagParams.addRule(RIGHT_OF, RATING_ID);
 			if (useSingleLine) {
 				flagParams.addRule(CENTER_VERTICAL);
@@ -197,9 +223,10 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 		{// add player premium icon
 			premiumImg = new ImageView(context);
+			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_flag_margin_top);
 
-			LayoutParams premiumParams = new LayoutParams(FLAG_SIZE, FLAG_SIZE);
-			premiumParams.setMargins(FLAG_MARGIN, 0, FLAG_MARGIN, FLAG_MARGIN);
+			LayoutParams premiumParams = new LayoutParams(flagSize, flagSize);
+			premiumParams.setMargins(flagMargin, -marginTop, flagMargin, flagMargin);
 			premiumParams.addRule(RIGHT_OF, FLAG_ID);
 			if (useSingleLine) {
 				premiumParams.addRule(CENTER_VERTICAL);
@@ -237,18 +264,17 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size) / density; // 21;
 			clockIconTxt.setTextSize(clockIconSize);
 			clockIconTxt.setText(R.string.ic_clock);
-			int paddingIcon = (int) (4 * density);
-			int paddingIconTop = (int) (2 * density);
+			int paddingIcon = resources.getDimensionPixelSize(R.dimen.new_tactics_clock_icon_padding);
+			int paddingIconTop = resources.getDimensionPixelSize(R.dimen.new_tactics_clock_icon_padding_top);
 			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
 			clockIconTxt.setVisibility(GONE);
-
 
 			clockLayout.addView(clockIconTxt, clockIconParams);
 
 			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, timeLeftSize);
 			timeLeftParams.addRule(ALIGN_PARENT_RIGHT);
 			timeLeftParams.addRule(CENTER_VERTICAL);
-			timeLeftParams.setMargins((int) (7 * density), 0, 0, 0); // use to set space between captured pieces in single line mode
+			timeLeftParams.setMargins((int) (7 * density), paddingTop, paddingRight, paddingTop); // use to set space between captured pieces in single line mode
 
 			timeRemainTxt.setTextSize(playerTextSize);
 			timeRemainTxt.setTextColor(resources.getColor(R.color.light_grey));
@@ -265,18 +291,19 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 		{// add captured drawable view
 			capturedPiecesView = new View(context);
+			CapturedPiecesDrawable capturedPiecesDrawable = new CapturedPiecesDrawable(context);
 			LayoutParams capturedParams = new LayoutParams(capturedPiecesViewWidth, capturedPiecesViewHeight);
+			capturedParams.setMargins(0, 0, 0, (int) (-4 * density));
 			if (useSingleLine) {
 				capturedParams.addRule(LEFT_OF, TIME_LEFT_ID);
 				capturedParams.addRule(CENTER_VERTICAL);
-				capturedParams.addRule(RIGHT_OF, PLAYER_ID);
+				capturedParams.addRule(RIGHT_OF, PREMIUM_ID);
 			} else {
 				capturedParams.addRule(RIGHT_OF, AVATAR_ID);
 				capturedParams.addRule(BELOW, PLAYER_ID);
 				capturedParams.addRule(ALIGN_BOTTOM, AVATAR_ID);
 			}
 
-			CapturedPiecesDrawable capturedPiecesDrawable = new CapturedPiecesDrawable(context);
 			if (AppUtils.JELLYBEAN_PLUS_API) {
 				capturedPiecesView.setBackground(capturedPiecesDrawable);
 			} else {
@@ -354,18 +381,6 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			params.addRule(ALIGN_PARENT_RIGHT);
 			addView(drawOfferedRelLay, params);
 		}
-
-		{// Set padding
-			int padding = (int) resources.getDimension(R.dimen.panel_info_padding_top);
-			int paddingRight = (int) (4 * density);
-			int paddingLeft = (int) (11 * density);
-
-			if (hasSoftKeys) {
-				padding = (int) (3 * density);
-			}
-
-			setPadding(paddingLeft, padding, paddingRight, padding);
-		}
 	}
 
 	@Override
@@ -422,7 +437,11 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 	@Override
 	public void setPlayerFlag(String country) {
-		flagImg.setImageDrawable(AppUtils.getCountryFlagScaled(getContext(), country));
+		if (country != null) {
+			flagImg.setImageDrawable(AppUtils.getCountryFlagScaled(getContext(), country));
+		} else {
+			flagImg.setVisibility(GONE);
+		}
 	}
 
 	@Override
@@ -439,6 +458,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	@Override
 	public void setTimeRemain(String timeRemain) {
 		timeRemainTxt.setText(timeRemain);
+		clockIconTxt.setVisibility(timeRemain.length() > 0 ? View.VISIBLE : View.GONE);
 	}
 
 	@Override
@@ -474,7 +494,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 	private void setTimeRemainPadding() {
 		int timeLeftSmallPadding = (int) (2 * density);
-		int timeLeftBigPadding = (int) (12 * density);
+		int timeLeftBigPadding = (int) (10 * density);
 
 		if (smallScreen) {
 			clockLayout.setPadding(timeLeftSmallPadding, timeLeftSmallPadding, timeLeftSmallPadding, timeLeftSmallPadding);

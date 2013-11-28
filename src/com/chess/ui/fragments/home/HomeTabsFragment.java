@@ -42,7 +42,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId = NON_INIT;
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
-	private boolean showDailyGamesFragment;
+	private Boolean showDailyGamesFragment;
 	private String themeName;
 	private View tabsLoadProgressBar;
 
@@ -122,7 +122,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		// get games_id's and compare it to local DB
 		// if there are game_id which we don't have, then fetch it
 
-		if (AppUtils.isNetworkAvailable(getActivity()) && !TextUtils.isEmpty(getUserToken())) { // this check is for logout quick process
+		if (isNetworkAvailable() && !TextUtils.isEmpty(getUserToken())) { // this check is for logout quick process
 			LoadItem loadItem = LoadHelper.getAllGamesFiltered(getUserToken(), RestHelper.V_ID);
 			new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 		} else {
@@ -159,6 +159,9 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	private void updateTabs() {
 		int checkedButtonId = tabRadioGroup.getCheckedRadioButtonId();
 		if (checkedButtonId != previousCheckedId) {
+			if (showDailyGamesFragment == null && checkedButtonId == R.id.leftTabBtn) { // don't change internal fragment during orientation change while data is loading
+				return;
+			}
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.leftTabBtn: {
@@ -230,6 +233,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		@Override
 		public void updateData(DailyGamesAllItem returnedObj) {
 			super.updateData(returnedObj);
+
+			logTest("DailyGamesUpdateListener updateData");
 
 			// current games
 			List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();

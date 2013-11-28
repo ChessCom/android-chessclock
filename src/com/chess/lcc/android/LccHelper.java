@@ -865,6 +865,12 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void logout(boolean resetClient) {
+		try {
+			throw new Exception("lcclog");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		LogMe.dl(TAG, "USER LOGOUT");
 		new AppData(context).setLiveChessMode(false);
 		setCurrentGameId(null);

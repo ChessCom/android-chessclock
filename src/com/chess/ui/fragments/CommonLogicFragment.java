@@ -375,6 +375,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		} else if (exception != null) {
 			logTest(exception.getMessage());
 			showToast(exception.getMessage());
+			session.close();
 		}
 	}
 

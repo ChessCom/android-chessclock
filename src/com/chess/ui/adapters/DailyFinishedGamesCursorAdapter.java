@@ -22,24 +22,25 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 	protected static final String CHESS_960 = " (960)";
 	protected final int imageSize;
 	protected final String drawStr;
-	protected final String lossStr;
+	protected final String lostStr;
 	protected final String winStr;
-	private final int colorOrange;
-	private final int colorGreen;
-	private final int colorGrey;
+	private final int lostColor;
+	private final int wonColor;
+	private final int drawColor;
 	protected final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	public DailyFinishedGamesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
 
-		lossStr = context.getString(R.string.loss);
+		lostStr = AppUtils.upCaseFirst(context.getString(R.string.lost));
 		winStr = AppUtils.upCaseFirst(context.getString(R.string.won));
 		drawStr = context.getString(R.string.draw);
 
-		colorOrange = resources.getColor(R.color.orange_button_flat);
-		colorGreen = resources.getColor(R.color.new_dark_green);
-		colorGrey = resources.getColor(R.color.stats_label_grey);
+		// Also, won should be green, draw should be grey, loss should say "lost" and be red.
+		lostColor = resources.getColor(R.color.red_button);
+		wonColor = resources.getColor(R.color.new_dark_green);
+		drawColor = resources.getColor(R.color.stats_label_grey);
 
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 
@@ -101,17 +102,17 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 			holder.gameTypeTxt.setText(R.string.ic_daily960_game);
 		}
 
-		// Loss orange
-		String result = lossStr;
-		int resultColor = colorOrange;
+		// Lost red
+		String result = lostStr;
+		int resultColor = lostColor;
 		if (getInt(cursor, DbScheme.V_GAME_SCORE) == BaseGameItem.GAME_WON) {
 			// Win Green
 			result = winStr;
-			resultColor = colorGreen;
+			resultColor = wonColor;
 		} else if (getInt(cursor, DbScheme.V_GAME_SCORE) == BaseGameItem.GAME_DRAW) {
 			// Draw Grey
 			result = drawStr;
-			resultColor = colorGrey;
+			resultColor = drawColor;
 		}
 
 		holder.gameResultTxt.setText(result);

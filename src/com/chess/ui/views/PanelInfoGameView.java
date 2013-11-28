@@ -199,7 +199,6 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			playerParams.addRule(RIGHT_OF, PLAYER_ID);
 			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
 
-
 			playerRatingTxt.setTextSize(playerRatingTextSize);
 			playerRatingTxt.setTextColor(playerTextColor);
 			playerRatingTxt.setId(RATING_ID);
@@ -431,7 +430,6 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	public void resetPieces() {
 		((CapturedPiecesDrawable) capturedPiecesView.getBackground()).dropPieces();
 	}
-
 
 	private void setTimeRemainPadding() {
 		int timeLeftSmallPadding = (int) (2 * density);

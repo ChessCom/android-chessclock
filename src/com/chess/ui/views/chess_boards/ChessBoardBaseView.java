@@ -269,7 +269,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
 		viewWidth = (xNew == 0 ? viewWidth : xNew);
-		Log.d("TEST","xNew = " + xNew + " viewWidth = " + viewWidth);
 		viewHeight = (yNew == 0 ? viewHeight : yNew);
 		squareSize = viewWidth / 8;
 

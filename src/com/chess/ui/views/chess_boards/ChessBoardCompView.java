@@ -306,6 +306,10 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
     @Override
     public void showHint() {
+		if (getBoardFace().isFinished()) { // don't show hints for finished games
+			return;
+		}
+
         if (!isComputerMoving() && noMovesToAnimate() && !navigating && !isHint()) { // TODO !isHint() is redundant. UI logic shouldn't allow to press it during hint
 			makeHint();
         }

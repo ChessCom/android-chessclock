@@ -20,9 +20,9 @@ import com.chess.statics.Symbol;
  * Date: 07.11.13
  * Time: 14:49
  */
-public class DaileArchiveGamesCursorAdapter extends DailyFinishedGamesCursorAdapter {
+public class DailyArchiveGamesCursorAdapter extends DailyFinishedGamesCursorAdapter {
 
-	public DaileArchiveGamesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
+	public DailyArchiveGamesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 	}
 
@@ -83,7 +83,7 @@ public class DaileArchiveGamesCursorAdapter extends DailyFinishedGamesCursorAdap
 		}
 
 		// Loss orange
-		String result = lossStr;
+		String result = lostStr;
 		if (getInt(cursor, DbScheme.V_GAME_SCORE) == BaseGameItem.GAME_WON) {
 			// Win Green
 			result = winStr;

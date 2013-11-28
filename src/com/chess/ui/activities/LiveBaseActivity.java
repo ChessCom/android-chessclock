@@ -290,7 +290,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		LogMe.dl(TAG, "onActivityResult");
+		LogMe.dl(TAG, "onActivityResult, resultCode = " + resultCode + " data = " + data);
 		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
 			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
 		}

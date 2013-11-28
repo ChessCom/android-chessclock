@@ -548,11 +548,18 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		trainerData.setRetry(true);
 		TacticBoardFace boardFace = getBoardFace();
 
+		// if last move was correct we continue, if not, rewind back to start
+		if (!boardFace.isLastTacticMoveCorrect()) {
+			while (boardFace.takeBack()) {
+				currentTacticAnswerCnt--;
+			}
+			boardView.invalidate();
+		}
+
 		currentTacticAnswerCnt = boardFace.getPly();
 		maxTacticAnswerCnt = boardFace.getTacticMoves().length;
 
 		// show first move immediately
-
 		boolean sizeExceed = currentTacticAnswerCnt >= boardFace.getTacticMoves().length;
 
 		if (sizeExceed) { // rewind back
@@ -1334,5 +1341,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	// rn2kb1r/p1p2ppp/1p3n2/4p3/4P3/P1N5/1PPB1PPP/R3KbNR w KQkq - 0 1
 	// 1. O-O-O Bxg2
 
+	// verify this tactics from Michael
+	// 2n2rk1/r4ppp/pqb5/3Bp3/3p4/6Q1/1P1B2PP/6K1 w - - 0 1
+	// 1. Bh6 g6 2. Qxe5 1-0
 
+	// r1b1qrk1/pp1p1p1p/5p2/4b2Q/2n5/3R4/8/7K w - - 0 1
+	// 1. Rh3 h6 {a delaying move} 2. Qxh6 {threat Qh8#} f5 3. Qh7#
+
+	// 2b2rk1/p3R2p/1r3n2/1p1p1B2/2pP4/2P4P/PP1B4/5RK1 b - - 0 1
+	// 1... Bxf5 2. Rxf5 Ne4 3. Rxf8+ Kxf8 4. Rxa7 Nxd2
 }

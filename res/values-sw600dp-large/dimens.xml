@@ -142,5 +142,7 @@
 	<dimen name="small_orange_button_height">37dip</dimen>
 	<dimen name="tablet_board_margin">15dip</dimen>
 	<dimen name="tablet_board_margin_bottom">5dip</dimen>
+	<dimen name="premium_icon_list_size">20dip</dimen>
+	<dimen name="country_icon_list_size">27dip</dimen>
 
 </resources>

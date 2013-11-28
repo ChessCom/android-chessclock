@@ -51,6 +51,7 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 
 	@Override
 	public void setTacticMoves(String tacticMoves) {
+		tacticMoves = removeCommentsAndAlternatesFromMovesList(tacticMoves);
 		this.tacticMoves = movesParser.removeNumbers(tacticMoves)
 				.replaceAll("  ", Symbol.SPACE)
 				.substring(1).split(Symbol.SPACE);

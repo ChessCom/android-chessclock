@@ -404,7 +404,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-
+				controlsView.enableHintButton(true);
 				boardView.invalidate();
 			}
 		});
@@ -638,7 +638,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		getAppData().clearSavedCompGame();
 
-		getControlsView().enableHintButton(false);
+//		getControlsView().enableHintButton(false); // why do we block it here? logic moved to ChessBoardCompView
 //		if (AppUtils.isNeedToUpgrade(getActivity())) {
 //			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 //		}

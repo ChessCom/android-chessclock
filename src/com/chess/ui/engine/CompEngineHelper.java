@@ -33,7 +33,7 @@ public class CompEngineHelper implements GUIInterface {
 	public static final String GAME_STATE_VERSION_NAME = "gameStateVersion";
 	public static final int GAME_STATE_VERSION = 3;
 	public static final int MAX_NUM_HINT_ARROWS = 2;
-	private static final boolean LOGGING_ON = true;
+	private static final boolean LOGGING_ON = false;
 	public static final String TAG = "COMPENGINE";
 
 	private DroidChessController engineCtrl;

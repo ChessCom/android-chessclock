@@ -1,5 +1,7 @@
 package com.chess.ui.fragments.welcome;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -80,6 +82,16 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 
 		signUpBtn = view.findViewById(R.id.signUpBtn);
 		signUpBtn.setOnClickListener(this);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == Activity.RESULT_OK && (requestCode & 0xFFFF) == 0xFACE) { // if it was request to authorize facebook user
+			for (Fragment fragment : getChildFragmentManager().getFragments()) {
+				fragment.onActivityResult(requestCode, resultCode, data);
+			}
+		}
 	}
 
 	@Override

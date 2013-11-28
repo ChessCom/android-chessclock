@@ -16,7 +16,7 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.ui.adapters.DaileArchiveGamesCursorAdapter;
+import com.chess.ui.adapters.DailyArchiveGamesCursorAdapter;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -30,7 +30,7 @@ import com.chess.ui.views.chess_boards.ChessBoardBaseView;
  */
 public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemClickListenerFace, ViewTreeObserver.OnGlobalLayoutListener {
 
-	private DaileArchiveGamesCursorAdapter finishedGamesCursorAdapter;
+	private DailyArchiveGamesCursorAdapter finishedGamesCursorAdapter;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	/* Recent Opponents */
 	private View inviteFriendView1;
@@ -48,7 +48,7 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 
 		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener();
 
-		finishedGamesCursorAdapter = new DaileArchiveGamesCursorAdapter(getContext(), null, getImageFetcher());
+		finishedGamesCursorAdapter = new DailyArchiveGamesCursorAdapter(getContext(), null, getImageFetcher());
 	}
 
 	@Override
