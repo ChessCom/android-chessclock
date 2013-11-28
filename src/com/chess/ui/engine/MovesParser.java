@@ -172,16 +172,16 @@ public class MovesParser {
 
 		if (currentMove.contains(QUEENSIDE_CASTLING)) {
 			if (board.getSide() == ChessBoard.WHITE_SIDE) {
-				return new int[]{board.whiteKing, board.WHITE_QUEENSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				return new int[]{board.whiteKing, ChessBoard.WHITE_QUEENSIDE_KING_DEST, 0, Move.CASTLING_MASK};
 			} else if (board.getSide() == ChessBoard.BLACK_SIDE) {
-				return new int[]{board.blackKing, board.BLACK_QUEENSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				return new int[]{board.blackKing, ChessBoard.BLACK_QUEENSIDE_KING_DEST, 0, Move.CASTLING_MASK};
 			}
 		}
 		if (currentMove.contains(KINGSIDE_CASTLING)) {
 			if (board.getSide() == ChessBoard.WHITE_SIDE) {
-				return new int[]{board.whiteKing, board.WHITE_KINGSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				return new int[]{board.whiteKing, ChessBoard.WHITE_KINGSIDE_KING_DEST, 0, Move.CASTLING_MASK};
 			} else if (board.getSide() == ChessBoard.BLACK_SIDE) {
-				return new int[]{board.blackKing, board.BLACK_KINGSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				return new int[]{board.blackKing, ChessBoard.BLACK_KINGSIDE_KING_DEST, 0, Move.CASTLING_MASK};
 			}
 		}
 
