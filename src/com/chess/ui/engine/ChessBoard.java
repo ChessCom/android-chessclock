@@ -219,6 +219,11 @@ public class ChessBoard implements BoardFace {
 	public static final int WHITE_KINGSIDE_CASTLE = 2;
 	public static final int WHITE_QUEENSIDE_CASTLE = 3;
 
+	public static final int BLACK_KINGSIDE_KING_DEST = G8;
+	public static final int BLACK_QUEENSIDE_KING_DEST = C8;
+	public static final int WHITE_KINGSIDE_KING_DEST = G1;
+	public static final int WHITE_QUEENSIDE_KING_DEST = C1;
+
 	/**
 	 * Array of performed castling
 	 * You pass a position and it tells if castling was made for this position
@@ -243,11 +248,11 @@ public class ChessBoard implements BoardFace {
 	int whiteKing = 60; // initial position for white king
 	int whiteRook2 = WHITE_ROOK_2_INITIAL_POS;
 
-	int[] blackKingMoveOO = new int[]{6};
-	int[] blackKingMoveOOO = new int[]{2};
+	int[] blackKingMoveOO = new int[]{BLACK_KINGSIDE_KING_DEST};
+	int[] blackKingMoveOOO = new int[]{BLACK_QUEENSIDE_KING_DEST};
 
-	int[] whiteKingMoveOO = new int[]{62};
-	int[] whiteKingMoveOOO = new int[]{58};
+	int[] whiteKingMoveOO = new int[]{WHITE_KINGSIDE_KING_DEST};
+	int[] whiteKingMoveOOO = new int[]{WHITE_QUEENSIDE_KING_DEST};
 
 	protected GameFace gameFace;
 	private SoundPlayer soundPlayer;
@@ -767,7 +772,7 @@ public class ChessBoard implements BoardFace {
 	public Move convertMove(int[] moveFT) {
 		Move move;
 		if (moveFT.length == 4) {
-			if (moveFT[3] == 2)
+			if (moveFT[3] == Move.CASTLING_MASK)
 				move = new Move(moveFT[0], moveFT[1], 0, Move.CASTLING_MASK);
 			else
 				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
@@ -1178,21 +1183,21 @@ public class ChessBoard implements BoardFace {
 		/* move the piecesBitmap */
 		int tmp_to = -1;
 		if (castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
-			colors[58] = side;
-			pieces[58] = piece_tmp[move.from];
-			tmp_to = 58;
+			colors[WHITE_QUEENSIDE_KING_DEST] = side;
+			pieces[WHITE_QUEENSIDE_KING_DEST] = piece_tmp[move.from];
+			tmp_to = WHITE_QUEENSIDE_KING_DEST;
 		} else if (castleMaskPosition == WHITE_KINGSIDE_CASTLE) {
-			colors[62] = side;
-			pieces[62] = piece_tmp[move.from];
-			tmp_to = 62;
+			colors[WHITE_KINGSIDE_KING_DEST] = side;
+			pieces[WHITE_KINGSIDE_KING_DEST] = piece_tmp[move.from];
+			tmp_to = WHITE_KINGSIDE_KING_DEST;
 		} else if (castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
-			colors[2] = side;
-			pieces[2] = piece_tmp[move.from];
-			tmp_to = 2;
+			colors[BLACK_QUEENSIDE_KING_DEST] = side;
+			pieces[BLACK_QUEENSIDE_KING_DEST] = piece_tmp[move.from];
+			tmp_to = BLACK_QUEENSIDE_KING_DEST;
 		} else if (castleMaskPosition == BLACK_KINGSIDE_CASTLE) {
-			colors[6] = side;
-			pieces[6] = piece_tmp[move.from];
-			tmp_to = 6;
+			colors[BLACK_KINGSIDE_KING_DEST] = side;
+			pieces[BLACK_KINGSIDE_KING_DEST] = piece_tmp[move.from];
+			tmp_to = BLACK_KINGSIDE_KING_DEST;
 		}
 		if (pieces[move.from] != ROOK && tmp_to != move.from) {
 			colors[move.from] = EMPTY;
@@ -1350,17 +1355,17 @@ public class ChessBoard implements BoardFace {
 			int moveTo = move.to;
 			int pieceTo = pieces[moveTo];
 			if (castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
-				pieceTo = pieces[58];
-				moveTo = 58;
+				pieceTo = pieces[WHITE_QUEENSIDE_KING_DEST];
+				moveTo = WHITE_QUEENSIDE_KING_DEST;
 			} else if (castleMaskPosition == WHITE_KINGSIDE_CASTLE) {
-				pieceTo = pieces[62];
-				moveTo = 62;
+				pieceTo = pieces[WHITE_KINGSIDE_KING_DEST];
+				moveTo = WHITE_KINGSIDE_KING_DEST;
 			} else if (castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
-				pieceTo = pieces[2];
-				moveTo = 2;
+				pieceTo = pieces[BLACK_QUEENSIDE_KING_DEST];
+				moveTo = BLACK_QUEENSIDE_KING_DEST;
 			} else if (castleMaskPosition == BLACK_KINGSIDE_CASTLE) {
-				pieceTo = pieces[6];
-				moveTo = 6;
+				pieceTo = pieces[BLACK_KINGSIDE_KING_DEST];
+				moveTo = BLACK_KINGSIDE_KING_DEST;
 			}
 			/* move the piecesBitmap */
 			colors[move.from] = side;
