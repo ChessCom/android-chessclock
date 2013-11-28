@@ -57,19 +57,14 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	public static final int MAX_BACKOFF_INTERVAL = 10000;
 	public static final int WEB_SOCKET_MAX_MESSAGE_SIZE = 1048576; // 1mb
 
-	private boolean useCurrentCredentials;
+	private boolean useSessionId;
 
 	private LccHelper lccHelper;
 
-	public ConnectLiveChessTask(TaskUpdateInterface <LiveChessClient> taskFace, boolean useCurrentCredentials, LccHelper lccHelper) {
-		this(taskFace, lccHelper);
-		this.useCurrentCredentials = useCurrentCredentials;
-	}
-
-	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, LccHelper lccHelper) {
+	public ConnectLiveChessTask(TaskUpdateInterface <LiveChessClient> taskFace, boolean useSessionId, LccHelper lccHelper) {
 		super(taskFace);
 		this.lccHelper = lccHelper;
-
+		this.useSessionId = useSessionId;
 	}
 
 	@Override
@@ -176,7 +171,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 		//lccHelper.setNetworkTypeName(null); // todo: probably reset networkTypeName somewhere else
 		lccHelper.setLiveChessClient(item);
-		lccHelper.performConnect(useCurrentCredentials);
+		lccHelper.performConnect(useSessionId);
 		return StaticData.RESULT_OK;
 	}
 

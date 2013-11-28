@@ -271,21 +271,13 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	/**
 	 * Connect live chess client
 	 */
-	public void performConnect(boolean useCurrentCredentials) {
+	public void performConnect(boolean useSessionId) {
 		AppData appData = new AppData(context);
 		String username = appData.getUsername();
 		String pass = appData.getPassword();
 		boolean emptyPassword = pass.equals(Symbol.EMPTY);
 
-		if (!useCurrentCredentials) { // todo: rename flag
-			if (emptyPassword || RestHelper.getInstance().IS_TEST_SERVER_MODE) {
-				String sessionId = appData.getLiveSessionId();
-				connectBySessionId(sessionId);
-			} else {
-				connectByCreds(username, pass);
-			}
-
-		} else {
+		if (useSessionId) {
 			if (!emptyPassword && !RestHelper.getInstance().IS_TEST_SERVER_MODE) {
 				connectByCreds(username, pass);
 			} else {
@@ -293,6 +285,14 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				//String message = context.getString(R.string.account_error);
 				//liveChessClientEventListener.onConnectionFailure(message);
 			}
+		} else {
+			if (emptyPassword || RestHelper.getInstance().IS_TEST_SERVER_MODE) {
+				String sessionId = appData.getLiveSessionId();
+				connectBySessionId(sessionId);
+			} else {
+				connectByCreds(username, pass);
+			}
+
 		}
 	}
 
@@ -367,7 +367,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					runConnectTask(true);
+					runConnectTask(false);
 					//}
 					return;
 				}
@@ -1076,13 +1076,9 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		challengeListener.setOuterChallengeListener(outerChallengeListener);
 	}
 
-
-	public void runConnectTask(boolean useCurrentCredentials) {
-		new ConnectLiveChessTask(lccConnectUpdateListener, useCurrentCredentials, this).executeTask();
-	}
-
-	public void runConnectTask() {
-		new ConnectLiveChessTask(lccConnectUpdateListener, this).executeTask();
+	public void runConnectTask(boolean useSessionId) {
+		LogMe.dl(TAG, "runConnectTask: useSessionId=" + useSessionId);
+		new ConnectLiveChessTask(lccConnectUpdateListener, useSessionId, this).executeTask();
 	}
 
 	public void runDisconnectTask(boolean resetClient) {

@@ -89,7 +89,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		getAppData().setLiveChessMode(true);
 		if (isNetworkAvailable()) {
 			try {
-				if (!getLiveService().isConnected()) {
+				if (!isLCSBound) {
 					liveBaseActivity.connectLcc();
 				} else {
 					LiveItem currentGameItem = new LiveItem(R.string.ic_live_standard, R.string.current_games);

@@ -1,6 +1,5 @@
 package com.chess.lcc.android;
 
-import android.content.Context;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
@@ -15,11 +14,9 @@ public class LccGameListener implements GameListener {
 
 	private LccHelper lccHelper;
 	private Long latestGameId = 0L;
-	private Context context;
 
 	public LccGameListener(LccHelper lccHelper) {
 		this.lccHelper = lccHelper;
-		context = lccHelper.getContext();
 	}
 
 	@Override

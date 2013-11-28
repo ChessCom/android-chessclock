@@ -115,7 +115,7 @@ public class LiveChessService extends Service {
 
 		if (appData.isLiveChess() && !lccHelper.isConnected()) {
 			if (lccHelper.getClient() == null || lccHelper.isConnectionFailure()) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
-				lccHelper.runConnectTask();
+				lccHelper.runConnectTask(true);
 				LogMe.dl(TAG, "no lccClient running connection task");
 			} else { // when client is connecting, but device screen was rotated for example
 				LogMe.dl(TAG, "client is CONNECTING");
