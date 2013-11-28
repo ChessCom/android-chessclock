@@ -759,9 +759,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			bottomPanelView.setPlayerName(labelsConfig.bottomPlayerName);
 			bottomPanelView.setPlayerRating(labelsConfig.bottomPlayerRating);
 
-			if (getBoardFace().getNotationArray().length > 0) {
-				boardView.updateNotations(getBoardFace().getNotationArray());
-			}
+			boardView.updateNotations(getBoardFace().getNotationArray());
 
 			try {
 				getLiveService().paintClocks();

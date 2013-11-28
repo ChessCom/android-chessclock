@@ -117,10 +117,6 @@ public class LiveBaseFragment extends CommonLogicFragment implements LccEventLis
 	public void expireGame() {
 	}
 
-	public boolean isLCSBound() {
-		return isLCSBound;
-	}
-
 	public void setLCSBound(boolean LCSBound) {
 		isLCSBound = LCSBound;
 		if (isLCSBound) {
