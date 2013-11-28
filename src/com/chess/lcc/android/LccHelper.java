@@ -278,6 +278,13 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		boolean emptyPassword = pass.equals(Symbol.EMPTY);
 
 		if (useSessionId) {
+			if (emptyPassword || RestHelper.getInstance().IS_TEST_SERVER_MODE) {
+				String sessionId = appData.getLiveSessionId();
+				connectBySessionId(sessionId);
+			} else {
+				connectByCreds(username, pass);
+			}
+		} else {
 			if (!emptyPassword && !RestHelper.getInstance().IS_TEST_SERVER_MODE) {
 				connectByCreds(username, pass);
 			} else {
@@ -285,14 +292,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 				//String message = context.getString(R.string.account_error);
 				//liveChessClientEventListener.onConnectionFailure(message);
 			}
-		} else {
-			if (emptyPassword || RestHelper.getInstance().IS_TEST_SERVER_MODE) {
-				String sessionId = appData.getLiveSessionId();
-				connectBySessionId(sessionId);
-			} else {
-				connectByCreds(username, pass);
-			}
-
 		}
 	}
 
