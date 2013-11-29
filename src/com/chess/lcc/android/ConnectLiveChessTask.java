@@ -113,6 +113,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 			item.setSupportedClientFeature(ClientFeature.GenericGameSupport, true);
 			item.setSupportedClientFeature(ClientFeature.GenericChatSupport, true);
+			item.setSupportedClientFeature(ClientFeature.GameObserve, true);
 
 			//PublicChatsBasic
 			//PublicChatsFull
