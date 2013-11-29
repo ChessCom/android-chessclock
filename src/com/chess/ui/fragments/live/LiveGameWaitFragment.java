@@ -1,7 +1,6 @@
 package com.chess.ui.fragments.live;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import com.chess.backend.LiveChessService;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.LiveBaseFragment;
-import com.chess.utilities.LogMe;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,7 +44,6 @@ public class LiveGameWaitFragment extends LiveBaseFragment /*implements LccEvent
 			// when is it really reachable for fragment?
 			liveGameConfig = savedInstanceState.getParcelable(CONFIG);
 		}
-
 	}
 
 	@Override
@@ -88,22 +85,22 @@ public class LiveGameWaitFragment extends LiveBaseFragment /*implements LccEvent
 		outState.putParcelable(CONFIG, liveGameConfig);
 	}
 
-	@Override
-	public void onLiveServiceConnected() {
-		super.onLiveServiceConnected();
-		LiveChessService liveService;
-		try {
-			liveService = getLiveService();
-		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
-			return;
-		}
-
-		boolean isGameAlreadyPresent = liveService.checkAndProcessFullGame();
-		if (!isGameAlreadyPresent) {
-			createSeek();
-		}
-	}
+//	@Override
+//	public void onLiveServiceConnected() {
+//		super.onLiveServiceConnected();
+//		LiveChessService liveService;
+//		try {
+//			liveService = getLiveService();
+//		} catch (DataNotValidException e) {
+//			logTest(e.getMessage());
+//			return;
+//		}
+//
+//		boolean isGameAlreadyPresent = liveService.checkAndProcessFullGame();
+//		if (!isGameAlreadyPresent) {
+//			createSeek();
+//		}
+//	}
 
 	@Override
 	public void onClick(View view) {
@@ -128,33 +125,8 @@ public class LiveGameWaitFragment extends LiveBaseFragment /*implements LccEvent
 
 	@Override
 	public void startGameFromService() {
-
-		LogMe.dl("lcc", "startGameFromService");
-
-		final FragmentActivity activity = getActivity();
-		if (activity != null) {
-			activity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					LiveChessService liveService;
-					try {
-						liveService = getLiveService();
-					} catch (DataNotValidException e) {
-						logTest(e.getMessage());
-						getActivityFace().showPreviousFragment();   // TODO handle correctly
-						return;
-					}
-					loadingView.setVisibility(View.GONE);
-					logTest("challenge created, ready to start");
-
-					Long gameId = liveService.getCurrentGameId();
-					logTest("gameId = " + gameId);
-					getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
-
-					closeOnResume = true;
-				}
-			});
-		}
+		super.startGameFromService();
+		closeOnResume = true;
 	}
 
 	@Override

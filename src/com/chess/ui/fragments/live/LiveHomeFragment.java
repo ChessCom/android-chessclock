@@ -3,11 +3,14 @@ package com.chess.ui.fragments.live;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.LiveChessService;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ServersStatsItem;
@@ -17,6 +20,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.LiveGameConfig;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupLiveTimeOptionsFragment;
@@ -26,6 +30,7 @@ import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.utilities.LogMe;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -50,6 +55,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	protected List<LiveItem> featuresList;
 	private LiveGameConfig.Builder liveGameConfigBuilder;
 	private ServerStatsUpdateListener serverStatsUpdateListener;
+	private OptionsAdapter optionsAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +66,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		featuresList.add(new LiveItem(R.string.ic_stats, R.string.stats));
 		featuresList.add(new LiveItem(R.string.ic_challenge_friend, R.string.friends));
 		featuresList.add(new LiveItem(R.string.ic_board, R.string.archive));
+		optionsAdapter = new OptionsAdapter(getActivity(), featuresList);
 
 		liveGameConfigBuilder = new LiveGameConfig.Builder();
 
@@ -95,7 +102,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 					LiveItem currentGameItem = new LiveItem(R.string.ic_live_standard, R.string.current_games);
 					if (getLiveService().isCurrentGameExist()) {
 						if (!featuresList.contains(currentGameItem)) {
-							featuresList.add(currentGameItem);
+							featuresList.add(0, currentGameItem);
+							optionsAdapter.notifyDataSetChanged();
 						}
 					} else {
 						featuresList.remove(currentGameItem);
@@ -136,7 +144,26 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		}
 
 		if (liveItem.iconId == R.string.ic_binoculars) {
-			getActivityFace().openFragment(LiveTopGameFragment.createInstance());
+			Fragment fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
+			if (fragmentByTag == null) {
+				fragmentByTag = new GameLiveObserveFragment();
+			}
+			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
+		} else if (liveItem.iconId == R.string.ic_live_standard) {
+			Fragment fragmentByTag;
+			if (!isTablet) {
+				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveFragment.class.getSimpleName());
+			} else {
+				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveFragmentTablet.class.getSimpleName());
+			}
+			if (fragmentByTag == null) {
+				if (!isTablet) {
+					fragmentByTag = new GameLiveFragment();
+				} else {
+					fragmentByTag = new GameLiveFragmentTablet();
+				}
+			}
+			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
 		} else if (liveItem.iconId == R.string.ic_stats) {
 			getActivityFace().openFragment(StatsGameDetailsFragment.createInstance(
 					StatsGameFragment.LIVE_STANDARD, true, getUsername()));
@@ -184,6 +211,36 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
 	}
 
+	@Override
+	public void startGameFromService() {
+		LogMe.dl("lcc", "startGameFromService");
+
+		final FragmentActivity activity = getActivity();
+		if (activity != null) {
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					LiveChessService liveService;
+					try {
+						liveService = getLiveService();
+					} catch (DataNotValidException e) {
+						logTest(e.getMessage());
+						getActivityFace().showPreviousFragment();   // TODO handle correctly
+						return;
+					}
+//					loadingView.setVisibility(View.GONE);
+					logTest("challenge created, ready to start");
+
+					Long gameId = liveService.getCurrentGameId();
+					logTest("gameId = " + gameId);
+					getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
+
+//					closeOnResume = true;
+				}
+			});
+		}
+	}
+
 	protected void widgetsInit(View view) {
 		Resources resources = getResources();
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -222,13 +279,12 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			// TODO add sliding from outside animation for time modes in popup
 			timeSelectBtn = (Button) headerView.findViewById(R.id.timeSelectBtn);
 			timeSelectBtn.setOnClickListener(this);
-
 			timeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
 		}
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
-		listView.setAdapter(new OptionsAdapter(getActivity(), featuresList));
+		listView.setAdapter(optionsAdapter);
 		listView.setOnItemClickListener(this);
 
 		ChessBoardBaseView boardView = (ChessBoardBaseView) headerView.findViewById(R.id.boardview);

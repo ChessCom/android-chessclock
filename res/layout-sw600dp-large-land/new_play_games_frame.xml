@@ -102,13 +102,13 @@
 		android:layout_height="match_parent"
 		android:src="@drawable/defaultshadow"
 		android:contentDescription="@string/image"
-		android:layout_toLeftOf="@+id/listView" />
+		/>
 
 	<!--ListView-->
 	<ListView
 		android:id="@id/listView"
 		android:layout_width="@dimen/tablet_side_menu_width"
 		android:layout_height="match_parent"
-		android:layout_alignParentRight="true" />
+	 	/>
 
 </LinearLayout>

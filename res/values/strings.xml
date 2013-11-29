@@ -8,7 +8,7 @@
 	<string name="sign_out">Sign Out</string>
 
 	<string name="game_expired">Game expired</string>
-	<string name="exit_game">Exit game?</string>
+	<string name="leave_game">Leave game?</string>
 
 	<!--Dashboard labels-->
 	<string name="play_live">Play Live</string>

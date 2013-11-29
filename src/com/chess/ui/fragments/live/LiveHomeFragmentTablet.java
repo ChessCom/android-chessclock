@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveLiveArchiveGamesTask;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.LiveArchiveGamesAdapterTablet;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
@@ -222,6 +224,12 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 		int id = view.getId();
 		if (id == R.id.friendsHeaderView) {
 			getActivityFace().openFragment(new FriendsFragment());
+		} else if (id == R.id.topGameHeaderView) {
+			Fragment fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
+			if (fragmentByTag == null) {
+				fragmentByTag = new GameLiveObserveFragment();
+			}
+			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
 		} else if (id == R.id.statsHeaderView) {
 			getActivityFace().openFragment(new StatsGameFragment());
 		} else if (id == R.id.statsView1) {
@@ -336,6 +344,7 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 
 	private void initHeaderViews(View view) {
 		view.findViewById(R.id.newGameHeaderView).setOnClickListener(this);
+		view.findViewById(R.id.topGameHeaderView).setOnClickListener(this);
 		view.findViewById(R.id.friendsHeaderView).setOnClickListener(this);
 		view.findViewById(R.id.statsHeaderView).setOnClickListener(this);
 		view.findViewById(R.id.statsView1).setOnClickListener(this);

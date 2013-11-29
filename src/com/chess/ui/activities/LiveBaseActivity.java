@@ -12,10 +12,6 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.LoadItem;
@@ -39,7 +35,6 @@ import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
-import com.facebook.widget.LoginButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,11 +156,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			if (getAppData().isLiveChess() && isLCSBound) {
 				Fragment fragmentByTag = getLiveFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					showPopupDialog(R.string.warning, R.string.exit_game, EXIT_GAME_TAG);
+					showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
 					return true;
 				}
 
-				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveTopGameFragment.class.getSimpleName());
+				fragmentByTag = getSupportFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					liveService.exitGameObserving();
 					return super.onKeyUp(keyCode, event);
@@ -513,11 +508,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				// Logout first to make clear connect
+				liveService.logout();
+				unBindLiveService();
+
 				String password = getAppData().getPassword();
 				if (!TextUtils.isEmpty(password)) {
-					// Logout first to make clear connect
-					liveService.logout();
-					unBindLiveService();
 
 					LoadItem loadItem = new LoadItem();
 					loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
@@ -530,30 +526,31 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 					new RequestJsonTask<LoginItem>(new LoginUpdateListener()).executeTask(loadItem);
 				} else {
-					LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-					final LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_relogin_frame, null, false);
+					loginWithFacebook(getAppData().getFacebookToken());
 
-					PopupItem popupItem = new PopupItem();
-					popupItem.setCustomView(customView);
+					// TODO reuse for case when access token from Social network is invalid or expired
+//					LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//					final LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_relogin_frame, null, false);
 
-					reLoginFragment = PopupCustomViewFragment.createInstance(popupItem);
-					reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
+//					PopupItem popupItem = new PopupItem();
+//					popupItem.setCustomView(customView);
 
-					liveService.logout();
-					unBindLiveService();
+//					reLoginFragment = PopupCustomViewFragment.createInstance(popupItem);
+//					reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
 
-					((TextView) customView.findViewById(R.id.titleTxt)).setText(message);
 
-					EditText usernameEdt = (EditText) customView.findViewById(R.id.usernameEdt);
-					EditText passwordEdt = (EditText) customView.findViewById(R.id.passwordEdt);
-					setLoginFields(usernameEdt, passwordEdt);
+//					((TextView) customView.findViewById(R.id.titleTxt)).setText(message);
 
-					customView.findViewById(R.id.re_signin).setOnClickListener(LiveBaseActivity.this);
+//					EditText usernameEdt = (EditText) customView.findViewById(R.id.usernameEdt);
+//					EditText passwordEdt = (EditText) customView.findViewById(R.id.passwordEdt);
+//					setLoginFields(usernameEdt, passwordEdt);
 
-					LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
-					facebookInit(facebookLoginButton);
+//					customView.findViewById(R.id.re_signin).setOnClickListener(LiveBaseActivity.this);
 
-					usernameEdt.setText(getAppData().getUsername());
+//					LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
+//					facebookInit(facebookLoginButton);
+
+//					usernameEdt.setText(getAppData().getUsername());
 				}
 
 				needReLoginToLive = true;
@@ -682,7 +679,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			return;
 		}
 
-		LiveHomeFragment liveHomeFragment = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
+		LiveHomeFragment liveHomeFragment = getLiveHomeFragment();
 		LogMe.dl(TAG, "onLiveServiceConnected: liveHomeFragment=" + liveHomeFragment);
 		if (liveHomeFragment != null) {
 			liveHomeFragment.onLiveServiceConnected();
@@ -697,6 +694,16 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			gameLiveFragment = (GameLiveFragmentTablet) findFragmentByTag(GameLiveFragmentTablet.class.getSimpleName());
 		}
 		return gameLiveFragment;
+	}
+
+	protected LiveHomeFragment getLiveHomeFragment() {
+		LiveHomeFragment liveHomeFragment;
+		if (!isTablet) {
+			liveHomeFragment = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
+		} else {
+			liveHomeFragment = (LiveHomeFragmentTablet) findFragmentByTag(LiveHomeFragmentTablet.class.getSimpleName());
+		}
+		return liveHomeFragment;
 	}
 
 	public LiveChessService getLiveService() {

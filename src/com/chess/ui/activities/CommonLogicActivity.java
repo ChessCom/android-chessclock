@@ -189,7 +189,9 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK && (requestCode & 0xFFFF) == 0xFACE) { // if it was request to authorize facebook user
 			for (Fragment fragment : getSupportFragmentManager().getFragments()) { // transmit to all fragments? is it safe..? // TODO check logic
-				fragment.onActivityResult(requestCode & 0xffff, resultCode, data);
+				if (fragment != null) {
+					fragment.onActivityResult(requestCode & 0xffff, resultCode, data);
+				}
 			}
 		}
 
@@ -436,18 +438,18 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected void onSessionStateChange(Session session, SessionState state, Exception exception) {
 		if (state != null && state.isOpened()) {
-			loginWithFacebook(session);
+			loginWithFacebook(session.getAccessToken());
 		}
 	}
 
-	private void loginWithFacebook(Session session) {
+	protected void loginWithFacebook(String accessToken) {
 		// save facebook access token to appData for future re-login
-		getAppData().setFacebookToken(session.getAccessToken());
+		getAppData().setFacebookToken(accessToken);
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, session.getAccessToken());
+		loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, accessToken);
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_TACTICS_RATING);

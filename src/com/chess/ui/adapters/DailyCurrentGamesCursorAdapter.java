@@ -135,11 +135,15 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		// take only first part
 		fen = fen.split(Symbol.SPACE)[0];
 
+		boolean useFlip = false;
+		if (getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) { // if need to flip board
+			useFlip = true;
+		}
 		String imageUrl;
 		if (sevenInchTablet) {
-			imageUrl = RestHelper.GET_FEN_IMAGE(fen, FEN_IMAGE_BIG_SIZE);
+			imageUrl = RestHelper.GET_FEN_IMAGE(fen, FEN_IMAGE_BIG_SIZE, useFlip);
 		} else {
-			imageUrl = RestHelper.GET_FEN_IMAGE(fen);
+			imageUrl = RestHelper.GET_FEN_IMAGE(fen, useFlip);
 		}
 
 		if (!imageDataMap.containsKey(imageUrl)) {

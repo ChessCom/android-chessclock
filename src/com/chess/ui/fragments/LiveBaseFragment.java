@@ -2,6 +2,8 @@ package com.chess.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.DataNotValidException;
@@ -9,6 +11,8 @@ import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.activities.LiveBaseActivity;
+import com.chess.ui.fragments.live.GameLiveFragment;
+import com.chess.utilities.LogMe;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,11 +70,17 @@ public class LiveBaseFragment extends CommonLogicFragment implements LccEventLis
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
 			logTest(e.getMessage());
+			showToast(e.getMessage());
 			backToHomeFragment();
 			return;
 		}
 		liveService.setLccEventListener(this);
 		liveService.setGameTaskListener(gameTaskListener);
+
+		boolean isGameAlreadyPresent = liveService.checkAndProcessFullGame();
+		if (!isGameAlreadyPresent) {
+			createSeek();
+		}
 	}
 
 	public void onLiveServiceDisconnected() {
@@ -106,6 +116,32 @@ public class LiveBaseFragment extends CommonLogicFragment implements LccEventLis
 
 	@Override
 	public void startGameFromService() {
+		LogMe.dl("lcc", "startGameFromService");
+
+		final FragmentActivity activity = getActivity();
+		if (activity != null) {
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					LiveChessService liveService;
+					try {
+						liveService = getLiveService();
+					} catch (DataNotValidException e) {
+						logTest(e.getMessage());
+						getActivityFace().showPreviousFragment();   // TODO handle correctly
+						return;
+					}
+					loadingView.setVisibility(View.GONE);
+					logTest("challenge created, ready to start");
+
+					Long gameId = liveService.getCurrentGameId();
+					logTest("gameId = " + gameId);
+					getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
+
+//					closeOnResume = true;
+				}
+			});
+		}
 	}
 
 	@Override

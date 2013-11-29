@@ -11,24 +11,17 @@ import com.chess.lcc.android.DataNotValidException;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.utilities.LogMe;
 
 
-public class LiveTopGameFragment extends GameLiveFragment {
+public class GameLiveObserveFragment extends GameLiveFragment {
 
-	// todo: adjust LiveTopGameFragment and GameLiveFragment, lock board, load avatars, game end, chat, options dialog etc
+	// todo: adjust GameLiveObserveFragment and GameLiveFragment, lock board, load avatars, game end, chat, options dialog etc
 
-	private static final String TAG = "LccLog-LiveTopGameFragment";
-
-	public LiveTopGameFragment() {
-	}
-
-	public static LiveTopGameFragment createInstance() {
-		LiveTopGameFragment fragment = new LiveTopGameFragment();
-		return fragment;
-	}
+	private static final String TAG = "LccLog-GameLiveObserveFragment";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,10 +69,11 @@ public class LiveTopGameFragment extends GameLiveFragment {
 			public void run() {
 				try {
 					init();
+					getControlsView().showHome(true);
+
 				} catch (DataNotValidException e) {
 					logLiveTest(e.getMessage());
 				}
-
 			}
 		});
 
@@ -176,6 +170,27 @@ public class LiveTopGameFragment extends GameLiveFragment {
 	}
 
 	@Override
+	public void onClick(View view) {
+		if (view.getId() == R.id.newGamePopupBtn) {
+			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
+		} else if (view.getId() == R.id.rematchPopupBtn) {
+			if (isLCSBound) {
+				LiveChessService liveService;
+				try {
+					liveService = getLiveService();
+				} catch (DataNotValidException e) {
+					logLiveTest(e.getMessage());
+					return;
+				}
+				liveService.rematch();
+			}
+			dismissDialogs();
+		} else {
+			super.onClick(view);
+		}
+	}
+
+	@Override
 	protected void showGameEndPopup(View layout, String title, String message) {
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
@@ -189,10 +204,19 @@ public class LiveTopGameFragment extends GameLiveFragment {
 		PopupGameEndFragment endPopupFragment = PopupGameEndFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
 
-		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
-		//layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
+		// Next Game (Top)
+		TextView newGamePopupBtn = (TextView) layout.findViewById(R.id.newGamePopupBtn);
+		newGamePopupBtn.setText(R.string.next_game);
+		newGamePopupBtn.setOnClickListener(this);
+
+		// Next Game (Self)
+		TextView rematchPopupBtn = (TextView) layout.findViewById(R.id.rematchPopupBtn);
+		rematchPopupBtn.setText(R.string.new_game);
+		rematchPopupBtn.setOnClickListener(this);
+
 		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);
-		//layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
+
 
 		/*if (AppUtils.isNeedToUpgrade(getActivity())) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);

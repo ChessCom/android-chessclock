@@ -226,6 +226,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		showSubmitButtonsLay(false);
 		getControlsView().enableAnalysisMode(false);
 		getControlsView().showDefault();
+		getControlsView().showHome(false);
 
 		getBoardFace().setFinished(false);
 		getSoundPlayer().playGameStart();
@@ -248,6 +249,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void setWhitePlayerTimer(final String timeString) {
+		logTest("white timeString = " + timeString);
 		FragmentActivity activity = getActivity();
 		if (activity == null) {
 			return;
@@ -279,6 +281,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void setBlackPlayerTimer(final String timeString) {
+		logTest("black timeString = " + timeString);
 		FragmentActivity activity = getActivity();
 		if (activity == null) {
 			return;
@@ -1070,6 +1073,18 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			boardView.invalidate();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
 			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
+		} else if (view.getId() == R.id.rematchPopupBtn) {
+			if (isLCSBound) {
+				LiveChessService liveService;
+				try {
+					liveService = getLiveService();
+				} catch (DataNotValidException e) {
+					logLiveTest(e.getMessage());
+					return;
+				}
+				liveService.rematch();
+			}
+			dismissDialogs();
 		} else if (view.getId() == R.id.analyzePopupBtn) {
 			GameAnalysisItem analysisItem = new GameAnalysisItem();  // TODO reuse later
 			analysisItem.setGameType(RestHelper.V_GAME_CHESS);
@@ -1128,18 +1143,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					logLiveTest(e.getMessage());
 				}
 			}
-		} else if (view.getId() == R.id.rematchPopupBtn) {
-			if (isLCSBound) {
-				LiveChessService liveService;
-				try {
-					liveService = getLiveService();
-				} catch (DataNotValidException e) {
-					logLiveTest(e.getMessage());
-					return;
-				}
-				liveService.rematch();
-			}
-			dismissDialogs();
 		}
 	}
 
@@ -1250,21 +1253,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		setBoardView(boardView);
 		boardView.setGameFace(this);
 		getControlsView().setBoardViewFace(boardView);
+		getControlsView().showHome(false);
 		topPanelView.setClickHandler(this);
-	}
-
-	protected class LabelsConfig {
-		BoardAvatarDrawable topAvatar;
-		BoardAvatarDrawable bottomAvatar;
-		String topPlayerName;
-		String bottomPlayerName;
-		String topPlayerRating;
-		String bottomPlayerRating;
-		public int userSide;
-
-		int getOpponentSide() {
-			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
-		}
 	}
 
 	private class ImageUpdateListener extends ImageReadyListenerLight {

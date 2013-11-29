@@ -26,10 +26,11 @@
 		<!--Loading view-->
 		<RelativeLayout
 			android:id="@+id/fadeLay"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
 			android:background="@color/loading_overlay"
 			android:visibility="invisible"
+			android:layout_alignRight="@+id/boardView"
 			>
 
 			<ProgressBar
@@ -58,7 +59,6 @@
 			android:layout_height="wrap_content"
 			custom:oneLine="@bool/one_line_for_board"
 			android:layout_marginBottom="@dimen/tablet_panel_info_top_margin" />
-
 
 		<!--Top Buttons -->
 		<RadioGroup
@@ -110,22 +110,34 @@
 
 		</RadioGroup>
 
-		<!--NotationsView-->
-		<com.chess.ui.views.NotationsViewTablet
-			android:id="@+id/notationsViewTablet"
+		<com.chess.widgets.RelLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/topButtonsGroup"
 			android:layout_above="@+id/controlsView"
-			android:numColumns="2"
-			android:horizontalSpacing="5dip"
-			android:verticalSpacing="1dip"
-			android:stretchMode="columnWidth"
-			android:padding="9dp"
 			android:layout_marginLeft="2dp"
 			android:layout_marginRight="2dp"
-			style="@style/Rect.Notations"
-			/>
+			style="@style/Rect.Notations" >
+
+			<!--NotationsView-->
+			<com.chess.ui.views.NotationsViewTablet
+				android:id="@+id/notationsViewTablet"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:numColumns="2"
+				android:horizontalSpacing="5dip"
+				android:verticalSpacing="1dip"
+				android:stretchMode="columnWidth"
+				android:padding="9dp"
+				/>
+
+			<FrameLayout
+				android:id="@+id/chatFragmentContainer"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent" />
+
+
+		</com.chess.widgets.RelLayout>
 
 		<!--Controls-->
 		<com.chess.ui.views.game_controls.ControlsLiveView

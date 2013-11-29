@@ -373,6 +373,10 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	}
 
 	private void setRatings() {
+		if (liveRatingTxt == null) { // if we have closed this view
+			return;
+		}
+
 		// set live rating
 		int liveRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
 		liveRatingTxt.setText(String.valueOf(liveRating));

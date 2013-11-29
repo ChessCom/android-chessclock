@@ -458,7 +458,6 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	@Override
 	public void setTimeRemain(String timeRemain) {
 		timeRemainTxt.setText(timeRemain);
-		clockIconTxt.setVisibility(timeRemain.length() > 0 ? View.VISIBLE : View.GONE);
 	}
 
 	@Override

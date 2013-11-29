@@ -248,7 +248,7 @@
 		style="@style/ListItem.Header.Dark"
 		android:paddingLeft="8dip"
 		android:paddingRight="8dip"
-		android:layout_marginTop="2dip">
+		>
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView

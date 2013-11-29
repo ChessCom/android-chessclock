@@ -24,6 +24,7 @@ public class ControlsLiveView extends ControlsBaseView {
 	private static final long UNBLINK_DELAY = 400;
 
 	private BoardViewNetworkFace boardViewFace;
+	private boolean showHome;
 
 	public ControlsLiveView(Context context) {
 		super(context);
@@ -44,6 +45,7 @@ public class ControlsLiveView extends ControlsBaseView {
 		addActionButton(CLOSE, R.string.ic_close, styles[LEFT]);
 		addActionButton(MAKE_MOVE, R.string.ic_check, styles[ORANGE]);
 
+		showHome = false;
 		showDefault();
 	}
 
@@ -110,7 +112,9 @@ public class ControlsLiveView extends ControlsBaseView {
 
 	public void showSubmitButtons(boolean show) {
 		showGameButton(OPTIONS, !show);
-		showGameButton(HOME, !show);
+		if (showHome) {
+			showGameButton(HOME, !show);
+		}
 		showGameButton(CHAT, !show);
 		showGameButton(FORWARD, !show);
 		showGameButton(BACK, !show);
@@ -125,7 +129,9 @@ public class ControlsLiveView extends ControlsBaseView {
 
 	public void showDefault() {
 		showGameButton(OPTIONS, true);
-		showGameButton(HOME, false);
+		if (showHome) {
+			showGameButton(HOME, false);
+		}
 		showGameButton(CHAT, true);
 		showGameButton(FORWARD, true);
 		showGameButton(BACK, true);
@@ -143,6 +149,10 @@ public class ControlsLiveView extends ControlsBaseView {
 
 		showGameButton(CLOSE, false);
 		showGameButton(MAKE_MOVE, false);
+	}
+
+	public void showHome(boolean showHome) {
+		this.showHome = showHome;
 	}
 
 	private void blinkSubmitBtn() {

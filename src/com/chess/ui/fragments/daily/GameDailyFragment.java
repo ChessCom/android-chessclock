@@ -747,7 +747,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 //		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
-		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
+		TextView resultRatingTxt = (TextView) layout.findViewById(R.id.resultRatingTxt);
 //		endGameTitleTxt.setText(R.string.game_over); // already set to game over
 		endGameReasonTxt.setText(message);
 
@@ -765,7 +765,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 //		}
 
 		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
-		yourRatingTxt.setText(rating);
+		resultRatingTxt.setText(rating);
 
 //		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 //		MopubHelper.showRectangleAd(adViewWrapper, getActivity());

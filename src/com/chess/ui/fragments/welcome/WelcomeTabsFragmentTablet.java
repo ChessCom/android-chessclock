@@ -89,7 +89,9 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK && (requestCode & 0xFFFF) == 0xFACE) { // if it was request to authorize facebook user
 			for (Fragment fragment : getChildFragmentManager().getFragments()) {
-				fragment.onActivityResult(requestCode, resultCode, data);
+				if (fragment != null) {
+					fragment.onActivityResult(requestCode, resultCode, data);
+				}
 			}
 		}
 	}
