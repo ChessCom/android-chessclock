@@ -663,7 +663,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //			logLiveTest(e.getMessage());
 //			return;
 //		}
-//		if(!liveService.isCurrentGameExist()) return;
+//		if(!liveService.isActiveGamePresent()) return;
 //			liveService.getCurrentGame();
 //		currentGame.setHasNewMessage(false);
 		getControlsView().haveNewMessage(false);
@@ -1159,7 +1159,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		getNotationsFace().resetNotations();
 		enableScreenLockTimer();
 
-		if (!liveService.isCurrentGameExist()) {
+		if (!liveService.isActiveGamePresent()) {
 			getControlsView().enableAnalysisMode(true);
 			getBoardFace().setFinished(true);
 		}

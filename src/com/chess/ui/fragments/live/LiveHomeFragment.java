@@ -100,7 +100,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 					liveBaseActivity.connectLcc();
 				} else {
 					LiveItem currentGameItem = new LiveItem(R.string.ic_live_standard, R.string.current_games);
-					if (getLiveService().isCurrentGameExist()) {
+					if (getLiveService().isActiveGamePresent()) {
 						if (!featuresList.contains(currentGameItem)) {
 							featuresList.add(0, currentGameItem);
 							optionsAdapter.notifyDataSetChanged();

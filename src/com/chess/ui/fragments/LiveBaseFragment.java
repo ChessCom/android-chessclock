@@ -7,6 +7,7 @@ import android.view.View;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.DataNotValidException;
+import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
@@ -77,8 +78,11 @@ public class LiveBaseFragment extends CommonLogicFragment implements LccEventLis
 		liveService.setLccEventListener(this);
 		liveService.setGameTaskListener(gameTaskListener);
 
-		boolean isGameAlreadyPresent = liveService.checkAndProcessFullGame();
-		if (!isGameAlreadyPresent) {
+		if (liveService.isActiveGamePresent()) {
+			synchronized(LccHelper.LOCK) {
+				liveService.processFullGame();
+			}
+		} else {
 			createSeek();
 		}
 	}

@@ -282,15 +282,17 @@ public class LiveChessService extends Service {
 		return lccHelper != null && lccHelper.getUser() != null && isConnected();
 	}
 
-	public boolean isCurrentGameExist() {
-		return lccHelper != null && lccHelper.isCurrentGameExist();
+	public boolean isGameAlreadyPresent() { // todo: we have to add Current Game button and open active game or show results of previous game
+		return lccHelper != null && lccHelper.isGameAlreadyPresent();
 	}
 
-	public boolean isValidToMakeMove() {
-		return lccHelper != null && lccHelper.getUser() != null && isConnected() && lccHelper.isCurrentGameExist();
+	public boolean isActiveGamePresent() {
+		return lccHelper != null && lccHelper.isActiveGamePresent();
 	}
 
-
+	/*public boolean isValidToMakeMove() {
+		return lccHelper != null && lccHelper.getUser() != null && isConnected() && lccHelper.isActiveGamePresent();
+	}*/
 
 	public User getUser() {
 		return lccHelper.getUser();
@@ -355,8 +357,8 @@ public class LiveChessService extends Service {
 		return lccHelper.getCurrentGameId();
 	}
 
-	public boolean checkAndProcessFullGame() {
-		return lccHelper.checkAndProcessFullGame();
+	public void processFullGame() {
+		lccHelper.processFullGame();
 	}
 
 	public int getOwnSeeksCount() {

@@ -93,7 +93,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		boardView.updateBoardAndPiecesImgs();
 		//notationsView.resetNotations();
 		enableScreenLockTimer();
-		if (!liveService.isCurrentGameExist()) {
+		if (!liveService.isActiveGamePresent()) {
 			controlsView.enableAnalysisMode(true);
 			getBoardFace().setFinished(true);
 		}

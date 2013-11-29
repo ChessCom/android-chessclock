@@ -919,16 +919,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		return pausedActivityLiveEvents;
 	}
 
-	public boolean checkAndProcessFullGame() {
-		boolean isGameAlreadyPresent = currentGameId != null && getGame(currentGameId) != null;
-		if (isGameAlreadyPresent) {
-			synchronized(LccHelper.LOCK) {
-				processFullGame();
-			}
-		}
-		return isGameAlreadyPresent;
-	}
-
 	public void processFullGame() {
 //		if (lccEventListener != null) {
 //			lccEventListener.onGameRecreate();
@@ -1055,7 +1045,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		return null;
 	}
 
-	public boolean isCurrentGameExist() {
+	public boolean isGameAlreadyPresent() {
+		return currentGameId != null && getGame(currentGameId) != null;
+	}
+
+	public boolean isActiveGamePresent() {
 		return currentGameId != null && getGame(currentGameId) != null && !getGame(currentGameId).isGameOver();
 	}
 
