@@ -131,6 +131,10 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		LiveItem liveItem = (LiveItem) parent.getItemAtPosition(position);
 
+		if (liveItem == null) {
+			return;
+		}
+
 		if (liveItem.iconId == R.string.ic_binoculars) {
 			getActivityFace().openFragment(LiveTopGameFragment.createInstance());
 		} else if (liveItem.iconId == R.string.ic_stats) {
@@ -203,6 +207,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			params.setMargins(sideInset - borderOffset, topMargin, sideInset - borderOffset, 0);
 			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
 			startOverlayView.setLayoutParams(params);
+			startOverlayView.setVisibility(View.VISIBLE);
 
 			onlinePlayersCntTxt = (TextView) headerView.findViewById(R.id.onlinePlayersCntTxt);
 		}

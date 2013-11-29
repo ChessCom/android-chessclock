@@ -122,7 +122,14 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		// get games_id's and compare it to local DB
 		// if there are game_id which we don't have, then fetch it
 
-		if (isNetworkAvailable() && !TextUtils.isEmpty(getUserToken())) { // this check is for logout quick process
+		boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), getUsername());
+		if (haveSavedData) {
+			showDailyGamesFragment = true;
+			if (previousCheckedId == NON_INIT) {
+				tabRadioGroup.check(R.id.leftTabBtn);
+			}
+			updateTabs();
+		} else if (isNetworkAvailable() && !TextUtils.isEmpty(getUserToken())) { // this check is for logout quick process
 			LoadItem loadItem = LoadHelper.getAllGamesFiltered(getUserToken(), RestHelper.V_ID);
 			new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 		} else {
