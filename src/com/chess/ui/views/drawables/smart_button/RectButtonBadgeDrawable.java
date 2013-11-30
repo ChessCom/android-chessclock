@@ -17,7 +17,6 @@ public class RectButtonBadgeDrawable extends RectButtonDrawable {
 	private Resources resources;
 	private boolean initialized;
 	private int sideOffset;
-	private float density;
 	private int badgeOffset;
 	private String badgeValue;
 
@@ -28,7 +27,7 @@ public class RectButtonBadgeDrawable extends RectButtonDrawable {
 		super.init(resources);
 		this.resources = resources;
 
-		density = resources.getDisplayMetrics().density;
+		float density = resources.getDisplayMetrics().density;
 		sideOffset = (int) (3.5f * density);
 		badgeOffset = (int) (ChatBadgeDrawable.BADGE_SIZE * density) / 2;
 	}

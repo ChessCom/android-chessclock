@@ -144,7 +144,7 @@ public class LiveArchiveFragment extends CommonLogicFragment implements AdapterV
 		public void updateData(LiveArchiveGameItem returnedObj) {
 			super.updateData(returnedObj);
 
-			List<LiveArchiveGameData> liveArchiveGames = returnedObj.getData();
+			List<LiveArchiveGameData> liveArchiveGames = returnedObj.getData().getGames();
 			if (liveArchiveGames != null) {
 				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistLiveArchiveGames(getContext(), liveArchiveGames, getUsername());
 

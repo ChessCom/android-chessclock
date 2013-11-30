@@ -144,6 +144,10 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		}
 
 		if (liveItem.iconId == R.string.ic_binoculars) {
+			if (!isLCSBound) {
+				showToast("Not connected yet");
+				return;
+			}
 			Fragment fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
 			if (fragmentByTag == null) {
 				fragmentByTag = new GameLiveObserveFragment();
@@ -246,28 +250,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 		ViewGroup headerView = (ViewGroup) inflater.inflate(R.layout.new_play_home_header_frame, null, false);
 
-		{ // invite overlay setup
-			View startOverlayView = headerView.findViewById(R.id.startOverlayView);
-
-			// let's make it to match board properties
-			// it should be 2 squares inset from top of border and 4 squares tall + 1 squares from sides
-			int sideInset = resources.getDisplayMetrics().widthPixels / 8; // one square size
-			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
-			// now we add few pixel to compensate shadow addition
-			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
-			borderOffset += shadowOffset;
-			int overlayHeight = sideInset * 4 + borderOffset + shadowOffset;
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-					overlayHeight);
-			int topMargin = sideInset * 2 + borderOffset - shadowOffset * 2;
-
-			params.setMargins(sideInset - borderOffset, topMargin, sideInset - borderOffset, 0);
-			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
-			startOverlayView.setLayoutParams(params);
-			startOverlayView.setVisibility(View.VISIBLE);
-
-			onlinePlayersCntTxt = (TextView) headerView.findViewById(R.id.onlinePlayersCntTxt);
-		}
+		inviteOverlaySetup(resources,  headerView.findViewById(R.id.startOverlayView), resources.getDisplayMetrics().widthPixels / 8); // one square size);
+		onlinePlayersCntTxt = (TextView) headerView.findViewById(R.id.onlinePlayersCntTxt);
 
 		headerView.findViewById(R.id.newGameHeaderView).setOnClickListener(this);
 		headerView.findViewById(R.id.gamePlayBtn).setOnClickListener(this);
@@ -289,6 +273,24 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 		ChessBoardBaseView boardView = (ChessBoardBaseView) headerView.findViewById(R.id.boardview);
 		boardView.setGameFace(gameFaceHelper);
+	}
+
+	protected void inviteOverlaySetup(Resources resources, View startOverlayView, int squareSize) {
+		// let's make it to match board properties
+		// it should be 2 squares inset from top of border and 4 squares tall + 1 squares from sides
+		int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
+		// now we add few pixel to compensate shadow addition
+		int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
+		borderOffset += shadowOffset;
+		int overlayHeight = squareSize * 4 + borderOffset + shadowOffset;
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+				overlayHeight);
+		int topMargin = squareSize * 2 + borderOffset - shadowOffset * 2;
+
+		params.setMargins(squareSize - borderOffset, topMargin, squareSize - borderOffset, 0);
+		params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
+		startOverlayView.setLayoutParams(params);
+		startOverlayView.setVisibility(View.VISIBLE);
 	}
 
 	protected static class LiveItem {

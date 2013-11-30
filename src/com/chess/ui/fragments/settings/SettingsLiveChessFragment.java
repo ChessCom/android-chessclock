@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import com.chess.R;
-import com.chess.widgets.SwitchButton;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.VacationItem;
@@ -16,14 +15,15 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.widgets.SwitchButton;
 
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 30.09.13
- * Time: 5:53
+ * Date: 30.11.13
+ * Time: 5:32
  */
-public class SettingsDailyChessFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener,
+public class SettingsLiveChessFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener,
 		AdapterView.OnItemSelectedListener {
 
 	private SwitchButton showSubmitSwitch;
@@ -164,6 +164,4 @@ public class SettingsDailyChessFragment extends CommonLogicFragment implements S
 		afterMoveSpinner.setSelection(boardsPosition);
 		afterMoveSpinner.setOnItemSelectedListener(this);
 	}
-
 }
-

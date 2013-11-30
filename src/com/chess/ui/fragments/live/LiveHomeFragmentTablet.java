@@ -159,7 +159,7 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 		public void updateData(LiveArchiveGameItem returnedObj) {
 			super.updateData(returnedObj);
 
-			List<LiveArchiveGameData> liveArchiveGames = returnedObj.getData();
+			List<LiveArchiveGameData> liveArchiveGames = returnedObj.getData().getGames();
 			if (liveArchiveGames != null) {
 				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistLiveArchiveGames(getContext(), liveArchiveGames, getUsername());
 
@@ -176,11 +176,14 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
+				if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
+					showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
+					return;
+				}
 			} else if (resultCode == StaticData.INTERNAL_ERROR) {
 				showToast("Internal error occurred"); // TODO adjust properly
-//				showEmptyView(true);
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 
@@ -225,6 +228,10 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 		if (id == R.id.friendsHeaderView) {
 			getActivityFace().openFragment(new FriendsFragment());
 		} else if (id == R.id.topGameHeaderView) {
+			if (!isLCSBound) {
+				showToast("Not connected yet");
+				return;
+			}
 			Fragment fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
 			if (fragmentByTag == null) {
 				fragmentByTag = new GameLiveObserveFragment();
@@ -272,35 +279,34 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 			getView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
 		}
 
-		Resources resources = getResources();
-		{ // invite overlay setup
-			View startOverlayView = getView().findViewById(R.id.startOverlayView);
+		View boardview = getView().findViewById(R.id.boardview);
+		int boardWidth = boardview.getWidth();
+		int squareSize = boardWidth / 8; // one square size
+		inviteOverlaySetup(getResources(), getView().findViewById(R.id.startOverlayView), squareSize);
+		onlinePlayersCntTxt = (TextView) getView().findViewById(R.id.onlinePlayersCntTxt);
+	}
 
-			// let's make it to match board properties
-			// it should be 2.5 squares inset from top of border and 3 squares tall + 1.5 squares from sides
+	@Override
+	protected void inviteOverlaySetup(Resources resources, View startOverlayView, int squareSize) {
+		// let's make it to match board properties
+		// it should be 2.5 squares inset from top of border and 3 squares tall + 1.5 squares from sides
 
-			View boardview = getView().findViewById(R.id.boardview);
-			int boardWidth = boardview.getWidth();
-			int squareSize = boardWidth / 8; // one square size
-			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
-			// now we add few pixel to compensate shadow addition
-			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
-			borderOffset += shadowOffset;
-			int overlayHeight = squareSize * 3 + borderOffset + shadowOffset;
+		int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
+		// now we add few pixel to compensate shadow addition
+		int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
+		borderOffset += shadowOffset;
+		int overlayHeight = squareSize * 3 + borderOffset + shadowOffset;
 
-			int popupWidth = squareSize * 5 + shadowOffset * 2 + borderOffset;  // for tablets we need more width
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(popupWidth, overlayHeight);
-			int topMargin = (int) (squareSize * 2.5f + borderOffset - shadowOffset * 2);
+		int popupWidth = squareSize * 5 + shadowOffset * 2 + borderOffset;  // for tablets we need more width
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(popupWidth, overlayHeight);
+		int topMargin = (int) (squareSize * 2.5f + borderOffset - shadowOffset * 2);
 
-			params.setMargins((int) (squareSize * 1.5f - shadowOffset), topMargin, squareSize - borderOffset, 0);
-			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
-			startOverlayView.setLayoutParams(params);
-			startOverlayView.setVisibility(View.VISIBLE);
-			// set min width
-			startOverlayView.setMinimumWidth(squareSize * 6);
-
-			onlinePlayersCntTxt = (TextView) getView().findViewById(R.id.onlinePlayersCntTxt);
-		}
+		params.setMargins((int) (squareSize * 1.5f - shadowOffset), topMargin, squareSize - borderOffset, 0);
+		params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
+		startOverlayView.setLayoutParams(params);
+		startOverlayView.setVisibility(View.VISIBLE);
+		// set min width
+		startOverlayView.setMinimumWidth(squareSize * 6);
 	}
 
 	private void init() {

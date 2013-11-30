@@ -629,6 +629,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void showPreviousFragment() {
+		if (getSupportFragmentManager() == null) {
+			return;
+		}
 		boolean fragmentsLeft = getSupportFragmentManager().popBackStackImmediate();
 		List<Fragment> fragments = getSupportFragmentManager().getFragments();
 		for (int i = fragments.size() - 1; i > 0; i--) {

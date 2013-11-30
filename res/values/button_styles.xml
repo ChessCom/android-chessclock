@@ -507,6 +507,10 @@
 		<item name="btn_rect_pos">bottomMiddle</item>
 	</style>
 
+	<style name="Rect.Top.Middle.Badge">
+		<item name="btn_rect_pos">topMiddle</item>
+	</style>
+
 	<style name="Button.Glassy.Badge">
 	</style>
 

@@ -31,6 +31,8 @@
 		android:textColor="@color/new_author_dark_grey"
 		android:paddingTop="6dip"
 		android:paddingBottom="6dip"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
 		android:text="Reason" />
 
 	<!--Rating title-->

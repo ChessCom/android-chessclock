@@ -30,6 +30,7 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
+import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.live.*;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
@@ -322,16 +323,16 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			isLCSBound = true;
 			liveService.setLiveChessClientEventListener(LiveBaseActivity.this);
 
-			LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
-			if (waitFragment != null) {
-				waitFragment.setLCSBound(isLCSBound);
+			if (getSupportFragmentManager() == null) {
+				return;
 			}
-
-			LiveHomeFragment liveHomeFragment = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
-			if (liveHomeFragment != null) {
-				liveHomeFragment.setLCSBound(isLCSBound);
+			for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+				if (fragment != null) {
+					if (fragment instanceof LiveBaseFragment) {
+						((LiveBaseFragment) fragment).setLCSBound(isLCSBound);
+					}
+				}
 			}
-
 			liveService.checkAndConnect(this);
 		}
 

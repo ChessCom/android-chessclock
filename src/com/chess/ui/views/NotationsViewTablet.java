@@ -175,7 +175,7 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 		@Override
 		protected void bindView(String item, int pos, View convertView) {
 			TextView textView = (TextView) convertView;
-			String notation = setNumberToNotation(originalNotations.get(pos), pos);
+			String notation = setNumberToNotation(item, pos);
 			textView.setText(notation);
 
 			if (pos == selectedPosition) {
@@ -190,12 +190,10 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 			textView.setPadding(textSidePadding, textPadding, textSidePadding, textPadding);
 		}
 
-
 		public void selectItem(int pos) {
 			selectedPosition = pos;
 			notifyDataSetChanged();
 		}
-
 	}
 
 	public void show(boolean show) {

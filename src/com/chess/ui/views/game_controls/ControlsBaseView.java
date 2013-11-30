@@ -87,7 +87,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.style.Rect_Bottom_Right_Orange,
 			R.style.Rect_Bottom_Right_Red,
 			R.style.Rect_Bottom_Right_Green,
-			R.style.Rect_Bottom_Middle_Badge
+			R.style.Rect_Top_Middle_Badge
 	};
 
 	enum ButtonIds {

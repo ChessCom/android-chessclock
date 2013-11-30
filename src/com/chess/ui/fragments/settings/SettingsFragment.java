@@ -35,12 +35,12 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		menuItems = new ArrayList<SettingsMenuItem>();
 //		menuItems.add(new SettingsMenuItem(R.string.api, R.string.ic_key));
 		menuItems.add(new SettingsMenuItem(R.string.profile, R.string.ic_profile));
+		menuItems.add(new SettingsMenuItem(R.string.theme, R.string.ic_theme));
 		menuItems.add(new SettingsMenuItem(R.string.general, R.string.ic_board));
 		menuItems.add(new SettingsMenuItem(R.string.daily_chess, R.string.ic_daily_game));
-//		menuItems.add(new SettingsMenuItem(R.string.live_chess, R.string.ic_live_standard));
-		menuItems.add(new SettingsMenuItem(R.string.tactics, R.string.ic_help));
+		menuItems.add(new SettingsMenuItem(R.string.live_chess, R.string.ic_live_standard));
+//		menuItems.add(new SettingsMenuItem(R.string.tactics, R.string.ic_help));
 //		menuItems.add(new SettingsMenuItem(R.string.lessons, R.string.ic_lessons));
-		menuItems.add(new SettingsMenuItem(R.string.theme, R.string.ic_theme));
 //		menuItems.add(new SettingsMenuItem(R.string.privacy, R.string.ic_settings));
 //		menuItems.add(new SettingsMenuItem(R.string.blocking, R.string.ic_blocking));
 //		menuItems.add(new SettingsMenuItem(R.string.tracking, R.string.ic_challenge_friend));
@@ -100,9 +100,9 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 			case R.string.ic_daily_game:
 				getActivityFace().openFragment(new SettingsDailyChessFragment());
 				break;
-//			case R.string.ic_live_standard:
-//				getActivityFace().openFragment(new SettingsDailyChessFragment());
-//				break;
+			case R.string.ic_live_standard:
+				getActivityFace().openFragment(new SettingsDailyChessFragment());
+				break;
 			case R.string.ic_theme:
 				getActivityFace().openFragment(new SettingsThemeFragment());
 				break;

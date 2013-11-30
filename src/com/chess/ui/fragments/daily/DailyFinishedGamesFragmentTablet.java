@@ -312,10 +312,14 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
+				if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
+					showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
+					return;
+				}
 			} else if (resultCode == StaticData.INTERNAL_ERROR) {
 				showToast("Internal error occurred"); // TODO adjust properly
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 

@@ -196,7 +196,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	// ----------------------Lcc Events ---------------------------------------------
 
-	private void onGameStarted() throws DataNotValidException {
+	protected void onGameStarted() throws DataNotValidException {
 		logLiveTest("onGameStarted");
 
 		LiveChessService liveService = getLiveService();

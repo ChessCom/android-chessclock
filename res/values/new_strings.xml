@@ -194,7 +194,7 @@
     <string name="solved_with_hint">Solved with Hint</string>
     <string name="close">close</string>
     <string name="required">required</string>
-    <string name="new_game_rating_arg">New %s Rating:</string>
+    <string name="new_game_rating_arg">%s Rating:</string>
     <string name="lightning">Lightning</string> <!--Game mode-->
     <string name="blitz">Blitz</string> <!--Game mode-->
     <string name="standard">Standard</string>

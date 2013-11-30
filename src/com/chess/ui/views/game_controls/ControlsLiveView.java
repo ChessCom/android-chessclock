@@ -87,7 +87,7 @@ public class ControlsLiveView extends ControlsBaseView {
 				background.setBadgeValue(NEW_MESSAGE_MARK);
 			}
 		} else {
-			ButtonDrawableBuilder.setBackgroundToView(chatButton, R.style.Rect_Bottom_Middle);
+			ButtonDrawableBuilder.setBackgroundToView(chatButton, styles[MIDDLE]);
 		}
 		invalidate();
 	}
@@ -153,6 +153,7 @@ public class ControlsLiveView extends ControlsBaseView {
 
 	public void showHome(boolean showHome) {
 		this.showHome = showHome;
+		showGameButton(HOME, showHome);
 	}
 
 	private void blinkSubmitBtn() {

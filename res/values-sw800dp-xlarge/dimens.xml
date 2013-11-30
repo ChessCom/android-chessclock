@@ -78,7 +78,7 @@
 	<dimen name="button_switch_default_height">26dip</dimen>
 	<dimen name="highlight_stroke_width">3dip</dimen>
 	<dimen name="play_button_left_offset">25dip</dimen>
-	<dimen name="popup_end_game_width">300dip</dimen>
+	<dimen name="popup_end_game_width">400dip</dimen>
 	<dimen name="rating_result_text_size">32sp</dimen>
 	<dimen name="theme_board_preview_size">120dip</dimen>
 	<dimen name="welcome_features_padding_between_top">4dip</dimen>

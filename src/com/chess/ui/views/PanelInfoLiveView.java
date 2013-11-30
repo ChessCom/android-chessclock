@@ -10,17 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.chess.*;
+import com.chess.R;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.utilities.AppUtils;
+import com.chess.utilities.FontsHelper;
 import com.chess.widgets.RelLayout;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboTextView;
-import com.chess.utilities.AppUtils;
-import com.chess.utilities.FontsHelper;
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,9 +62,6 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	private LinearLayout clockLayout;
 	private RelLayout drawOfferedRelLay;
 	private OnClickListener clickListener;
-	private int paddingTop;
-	private int paddingRight;
-	private int paddingLeft;
 
 	public PanelInfoLiveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -122,15 +120,22 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		int flagSize = (int) resources.getDimension(R.dimen.panel_info_flag_size);
 		flagMargin *= density;
 
-		{ // set padding
-			paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
-			paddingRight = (int) (4 * density);
+		// set padding
+		int paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
+		int paddingRight = (int) (8 * density);
 
-			paddingLeft = resources.getDimensionPixelSize(R.dimen.panel_info_avatar_left_margin);
+		boolean isTablet;
+		if (StaticData.USE_TABLETS) {
+			isTablet = AppUtils.is7InchTablet(getContext()) || AppUtils.is10InchTablet(getContext());
+		}
+		if (!isTablet) {
+			setPadding(0, 0, paddingRight, 0);
+		}
 
-			if (nexus4Kind) {
-				paddingTop = (int) (3 * density);
-			}
+		int paddingLeft = resources.getDimensionPixelSize(R.dimen.panel_info_avatar_left_margin);
+
+		if (nexus4Kind) {
+			paddingTop = (int) (3 * density);
 		}
 
 		{// add avatar view
@@ -274,7 +279,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, timeLeftSize);
 			timeLeftParams.addRule(ALIGN_PARENT_RIGHT);
 			timeLeftParams.addRule(CENTER_VERTICAL);
-			timeLeftParams.setMargins((int) (7 * density), paddingTop, paddingRight, paddingTop); // use to set space between captured pieces in single line mode
+			timeLeftParams.setMargins((int) (4 * density), paddingTop, paddingRight, paddingTop);
 
 			timeRemainTxt.setTextSize(playerTextSize);
 			timeRemainTxt.setTextColor(resources.getColor(R.color.light_grey));
@@ -329,7 +334,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 				drawOfferedTxt.setTextColor(playerTextColor);
 				drawOfferedTxt.setTextSize(playerTextSize);
 
-				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,	ViewGroup.LayoutParams.WRAP_CONTENT);
+				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 				params.addRule(CENTER_VERTICAL);
 				params.addRule(LEFT_OF, DRAW_DECLINE_ID);
 
@@ -377,7 +382,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 				drawOfferedRelLay.addView(acceptDrawBtn, params);
 			}
-			LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,	ViewGroup.LayoutParams.WRAP_CONTENT);
+			LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 			params.addRule(ALIGN_PARENT_RIGHT);
 			addView(drawOfferedRelLay, params);
 		}
@@ -493,7 +498,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 	private void setTimeRemainPadding() {
 		int timeLeftSmallPadding = (int) (2 * density);
-		int timeLeftBigPadding = (int) (10 * density);
+		int timeLeftBigPadding = (int) (8 * density);
 
 		if (smallScreen) {
 			clockLayout.setPadding(timeLeftSmallPadding, timeLeftSmallPadding, timeLeftSmallPadding, timeLeftSmallPadding);
@@ -509,9 +514,10 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 	/**
 	 * For some unknown reason findViewById and setOnClickListener directly doesn't work. so use interceptor here
+	 *
 	 * @param listener that will intercept button clicks
 	 */
-	public void setClickHandler(OnClickListener listener){
+	public void setClickHandler(OnClickListener listener) {
 		this.clickListener = listener;
 	}
 }

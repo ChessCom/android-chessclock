@@ -15,6 +15,7 @@ import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.utilities.LogMe;
+import com.chess.widgets.RoboButton;
 
 
 public class GameLiveObserveFragment extends GameLiveFragment {
@@ -78,6 +79,14 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		});
 
 		super.startGameFromService();
+	}
+
+	@Override
+	protected void onGameStarted() throws DataNotValidException {
+		super.onGameStarted();
+
+		getControlsView().showDefault();
+		getControlsView().showHome(true);
 	}
 
 	@Override
@@ -204,15 +213,20 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		PopupGameEndFragment endPopupFragment = PopupGameEndFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
 
-		// Next Game (Top)
-		TextView newGamePopupBtn = (TextView) layout.findViewById(R.id.newGamePopupBtn);
-		newGamePopupBtn.setText(R.string.next_game);
-		newGamePopupBtn.setOnClickListener(this);
+		// New Rating
+		View ratingTitleTxt = layout.findViewById(R.id.ratingTitleTxt);
+		ratingTitleTxt.setVisibility(View.GONE);
 
-		// Next Game (Self)
+		// New Game (Self)
 		TextView rematchPopupBtn = (TextView) layout.findViewById(R.id.rematchPopupBtn);
 		rematchPopupBtn.setText(R.string.new_game);
 		rematchPopupBtn.setOnClickListener(this);
+
+		// Next Game (Top)
+		RoboButton newGamePopupBtn = (RoboButton) layout.findViewById(R.id.newGamePopupBtn);
+		newGamePopupBtn.setDrawableStyle(R.style.Button_Green);
+		newGamePopupBtn.setText(R.string.next_game);
+		newGamePopupBtn.setOnClickListener(this);
 
 		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
