@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.db.DbDataManager;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppData;
@@ -594,20 +595,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			}
 		}
 
-		if (!isTablet) {
-			WelcomeTabsFragment welcomeTabsFragment = (WelcomeTabsFragment) getSupportFragmentManager()
-					.findFragmentByTag(WelcomeTabsFragment.class.getSimpleName());
-			if (welcomeTabsFragment != null && welcomeTabsFragment.showPreviousFragment()) {
-				return;
-			}
-		} else {
-			WelcomeTabsFragmentTablet welcomeTabsFragment = (WelcomeTabsFragmentTablet) getSupportFragmentManager()
-					.findFragmentByTag(WelcomeTabsFragmentTablet.class.getSimpleName());
-			if (welcomeTabsFragment != null && welcomeTabsFragment.showPreviousFragment()) {
-				return;
-			}
-		}
-
 		// check if child fragment manager want to consume event an pop something up
 		List<Fragment> fragments = getSupportFragmentManager().getFragments();
 		if (fragments != null && fragments.size() > 0) {
@@ -615,6 +602,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			Fragment lastFragment = fragments.get(last);
 			if (lastFragment == null) { // there is a bug, that size tell for one more
 			    last--;
+				lastFragment = fragments.get(last);
+			}
+			if (lastFragment instanceof ImageCache.RetainFragment) {
+				last--;
 				lastFragment = fragments.get(last);
 			}
 			if (lastFragment instanceof CommonLogicFragment) { // check if fragment want to consume back button event

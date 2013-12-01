@@ -3,22 +3,19 @@ package com.chess.ui.views;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
-import com.chess.widgets.RoboTextView;
 import com.chess.statics.Symbol;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.FontsHelper;
+import com.chess.widgets.RoboTextView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,10 +26,6 @@ import com.chess.utilities.AppUtils;
 public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnClickListener {
 
 	private int side;
-	private RoboTextView thinkingTxt;
-	private int paddingTop;
-	private int paddingRight;
-	private int paddingLeft;
 
 	public PanelInfoWelcomeView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -81,14 +74,12 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		int capturedPiecesViewWidth = (int) resources.getDimension(R.dimen.panel_info_captured_pieces_width);
 		int avatarMarginRight = (int) resources.getDimension(R.dimen.panel_info_avatar_margin_right);
 
-		{ // set padding
-			paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
-			paddingRight = (int) (4 * density);
-			paddingLeft = (int) (11 * density);
+		 // set padding
+		int paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
+		int paddingLeft = (int) (11 * density);
 
-			if (hasSoftKeys) {
-				paddingTop = (int) (3 * density);
-			}
+		if (hasSoftKeys) {
+			paddingTop = (int) (3 * density);
 		}
 
 		{// add avatar view
@@ -106,6 +97,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			}
 
 			addView(avatarImg, avatarParams);
+			avatarImg.setVisibility(GONE);
 		}
 
 		{// add player name
@@ -126,6 +118,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			playerTxt.setEllipsize(TextUtils.TruncateAt.MARQUEE);
 
 			addView(playerTxt, playerParams);
+			playerTxt.setVisibility(GONE);
 		}
 
 
@@ -152,20 +145,20 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			addView(capturedPiecesView, capturedParams);
 		}
 
-		{ // Thinking View
-			thinkingTxt = new RoboTextView(getContext());
-			thinkingTxt.setFont(FontsHelper.BOLD_FONT);
-			thinkingTxt.setTextSize(playerTextSize);
-			thinkingTxt.setText(R.string.thinking_);
-			thinkingTxt.setTextColor(Color.WHITE);
-			thinkingTxt.setBackgroundResource(R.color.glassy_button);
-			thinkingTxt.setVisibility(GONE);
-			thinkingTxt.setGravity(Gravity.CENTER);
-
-			RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-			addView(thinkingTxt, params);
-		}
+//		{ // Thinking View
+//			RoboTextView thinkingTxt = new RoboTextView(getContext());
+//			thinkingTxt.setFont(FontsHelper.BOLD_FONT);
+//			thinkingTxt.setTextSize(playerTextSize);
+//			thinkingTxt.setText(R.string.thinking_);
+//			thinkingTxt.setTextColor(Color.WHITE);
+//			thinkingTxt.setBackgroundResource(R.color.glassy_button);
+//			thinkingTxt.setVisibility(GONE);
+//			thinkingTxt.setGravity(Gravity.CENTER);
+//
+//			RelativeLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//
+//			addView(thinkingTxt, params);
+//		}
 	}
 
 	@Override

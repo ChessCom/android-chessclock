@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="new_daily_grid_button_width">75dip</dimen>
-    <dimen name="welcome_features_padding_top">16dip</dimen>
+    <dimen name="welcome_features_padding_top">5dip</dimen>
     <dimen name="welcome_features_padding_bottom">6dip</dimen>
     <dimen name="popup_options_select_padding">16dip</dimen>
     <dimen name="chat_icon_size">30dip</dimen>
@@ -20,6 +20,7 @@
 	<dimen name="game_controls_button_height">44dip</dimen>
 	<dimen name="popup_title_text_size">21sp</dimen>
 	<dimen name="popup_end_game_width">300dip</dimen>
+	<dimen name="welcome_tab_button_height">56dp</dimen>
 	<dimen name="welcome_features_padding_between_top">2dip</dimen>
 	<dimen name="welcome_features_padding_between_bottom">2dip</dimen>
 	<dimen name="invite_overlay_top_offset">1dip</dimen>

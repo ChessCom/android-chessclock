@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/Rect.Top.Middle"
+		android:minHeight="@dimen/welcome_tab_button_height"
         >
 
         <ImageView

@@ -119,24 +119,18 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 
 		enableSlideMenus(false);
 
-//		logTest("Welcome Fragment onViewCreated");
 		inflater = LayoutInflater.from(getActivity());
 
-		if (viewPager == null) {
-//			logTest("viewPager == null");
-			viewPager = (ViewPager) view.findViewById(R.id.viewPager);
-			viewPager.setAdapter(mainPageAdapter);
-			viewPager.setOnPageChangeListener(pageChangeListener);
+		viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+		viewPager.setAdapter(mainPageAdapter);
+		viewPager.setOnPageChangeListener(pageChangeListener);
 
-			homePageRadioGroup = (RadioGroup) view.findViewById(R.id.pagerIndicatorGroup);
-			for (int i = 0; i < PAGE_CNT; ++i) {
-				inflater.inflate(R.layout.new_page_indicator_view, homePageRadioGroup, true);
-			}
+		homePageRadioGroup = (RadioGroup) view.findViewById(R.id.pagerIndicatorGroup);
+		for (int i = 0; i < PAGE_CNT; ++i) {
+			inflater.inflate(R.layout.new_page_indicator_view, homePageRadioGroup, true);
+		}
 
-			((RadioButton) homePageRadioGroup.getChildAt(0)).setChecked(true);
-		} /*else {
-			logTest("viewPager != null , " + viewPager + " mainAdapter " + mainPageAdapter);
-		}*/
+		((RadioButton) homePageRadioGroup.getChildAt(0)).setChecked(true);
 	}
 
 	@Override

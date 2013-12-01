@@ -11,6 +11,7 @@ import com.chess.R;
 import com.chess.statics.WelcomeHolder;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.articles.ArticleCategoriesFragmentTablet;
 import com.chess.ui.interfaces.FragmentTabsFace;
 
 /**
@@ -28,7 +29,6 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 
 	private View leftTabBtn;
 	private View rightTabBtn;
-	private boolean openWelcomeFragment;
 	private CompGameConfig config;
 
 	@Override
@@ -68,34 +68,12 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 	public void onClick(View view) {
 		super.onClick(view);
 
-		updateData(view);
-	}
-
-	private void updateData(View view) {
-		int id = view.getId();
-		CommonLogicFragment fragment;
-		if (id == R.id.leftTabBtn) {
-			openWelcomeFragment = false;
-			fragment = (CommonLogicFragment) findFragmentByTag(SignInFragment.class.getSimpleName());
-			if (fragment == null) {
-				fragment = new SignInFragment();
-			}
-			getActivityFace().openFragment(fragment);
-
-		} else if (id == R.id.centerTabBtn) {
-			openWelcomeFragment = false;
-			fragment = (CommonLogicFragment) findFragmentByTag(GameWelcomeCompFragment.class.getSimpleName());
-			if (fragment == null) {
-				fragment = GameWelcomeCompFragment.createInstance(this, config);
-			}
-			changeInternalFragment(fragment);
-		} else if (id == R.id.rightTabBtn) {
-			openWelcomeFragment = false;
-			fragment = (CommonLogicFragment) findFragmentByTag(SignUpFragment.class.getSimpleName());
-			if (fragment == null) {
-				fragment = new SignUpFragment();
-			}
-			getActivityFace().openFragment(fragment);
+		if (view.getId() == R.id.leftTabBtn) {
+			openSignInFragment();
+		} else if (view.getId() == R.id.centerTabBtn) {
+			changeInternalFragment(WELCOME_FRAGMENT);
+		} else if (view.getId() == R.id.rightTabBtn) {
+			openSingUpFragment();
 		}
 	}
 
@@ -103,23 +81,10 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 	public void changeInternalFragment(int code) {
 		if (code == WELCOME_FRAGMENT) {
 			openInternalFragment(WelcomeTourFragment.createInstance(this));
-			openWelcomeFragment = true;
 		} else if (code == SIGN_IN_FRAGMENT) {
-
-			CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(SignInFragment.class.getSimpleName());
-			if (fragment == null) {
-				fragment = new SignInFragment();
-			}
-			getActivityFace().openFragment(fragment);
-			openWelcomeFragment = true;
+			openSignInFragment();
 		} else if (code == SIGN_UP_FRAGMENT) {
-
-			CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(SignUpFragment.class.getSimpleName());
-			if (fragment == null) {
-				fragment = new SignUpFragment();
-			}
-			getActivityFace().openFragment(fragment);
-			openWelcomeFragment = true;
+			openSingUpFragment();
 		} else if (code == GAME_FRAGMENT) {
 			config.setMode(getAppData().getCompGameMode());
 			config.setStrength(getAppData().getCompLevel());
@@ -133,7 +98,14 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 			fragment = new SignInFragment();
 		}
 		getActivityFace().openFragment(fragment);
-		openWelcomeFragment = false;
+	}
+
+	private void openSingUpFragment() {
+		CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(SignUpFragment.class.getSimpleName());
+		if (fragment == null) {
+			fragment = new SignUpFragment();
+		}
+		getActivityFace().openFragment(fragment);
 	}
 
 	@Override
@@ -149,29 +121,40 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.tab_content_frame, fragment).commit();
+		transaction.replace(R.id.tab_content_frame, fragment, fragment.getClass().getSimpleName());
+		transaction.commit();
 	}
 
 	private void openInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.tab_content_frame, fragment)
-		.addToBackStack(fragment.getClass().getSimpleName()).commit();
+		transaction.replace(R.id.tab_content_frame, fragment, fragment.getClass().getSimpleName());
+		transaction.addToBackStack(fragment.getClass().getSimpleName());
+		transaction.commit();
 	}
 
 	@Override
 	public boolean showPreviousFragment() {
-		if (getChildFragmentManager().getBackStackEntryCount() > 0) {
-			FragmentManager.BackStackEntry entry = getChildFragmentManager().getBackStackEntryAt(0);  // findFragmentByTag gives null :(
-			if (entry!= null && entry.getName().equals(WelcomeTourFragment.class.getSimpleName()) && openWelcomeFragment){
-				getChildFragmentManager().popBackStackImmediate();
-				openWelcomeFragment = false;
-				return true;
-			} else {  // TODO fix bad navigation behaviour when moving back from Welcome -> SignUp/SignIn
-				return false;
-			}
-		} else {
+		if (getActivity() == null) {
 			return false;
 		}
+		int entryCount = getChildFragmentManager().getBackStackEntryCount();
+		if (entryCount > 0) {
+			return getChildFragmentManager().popBackStackImmediate();
+		} else {
+			return super.showPreviousFragment();
+		}
+//		if (getChildFragmentManager().getBackStackEntryCount() > 0) {
+////			FragmentManager.BackStackEntry entry = getChildFragmentManager().getBackStackEntryAt(0);
+////			if (entry!= null && entry.getName().equals(WelcomeTourFragment.class.getSimpleName()) && openWelcomeFragment){
+////				getChildFragmentManager().popBackStackImmediate();
+////				openWelcomeFragment = false;
+////				return true;
+////			} else {
+////				return false;
+////			}
+//		} else {
+//			return false;
+//		}
 	}
 
 }

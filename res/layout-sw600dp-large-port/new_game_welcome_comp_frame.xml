@@ -92,11 +92,12 @@
 				android:textColor="@color/text_controls_icons"
 				android:gravity="center_vertical|left"
 				android:layout_centerVertical="true"
-				android:layout_toRightOf="@+id/centerPoint"
+				android:layout_toRightOf="@id/centerPoint"
 				android:paddingLeft="@dimen/grid_view_spacing"
 				/>
 
 		</RelativeLayout>
+
 	</com.chess.widgets.LinLayout>
 
 	<!--Bottom view-->

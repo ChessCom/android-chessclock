@@ -61,27 +61,29 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:paddingTop="@dimen/welcome_features_padding_top"
-        android:paddingBottom="@dimen/welcome_features_padding_bottom"
+		android:paddingTop="@dimen/welcome_features_padding_top"
         >
 
         <com.chess.widgets.RoboTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+			android:layout_weight="1"
             android:text="@string/welcome_two_line_1"
             style="@style/WelcomeListFeature"
             />
 
         <com.chess.widgets.RoboTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+			android:layout_height="0dp"
+			android:layout_weight="1"
             android:text="@string/welcome_two_line_2"
             style="@style/WelcomeListFeature"
             />
 
         <com.chess.widgets.RoboTextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+			android:layout_height="0dp"
+			android:layout_weight="1"
             android:text="@string/welcome_two_line_3"
             style="@style/WelcomeListFeature"
             />

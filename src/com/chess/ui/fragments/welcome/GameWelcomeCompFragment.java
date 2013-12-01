@@ -122,6 +122,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	protected CompGameConfig compGameConfig;
 	private boolean isAutoFlip;
+	private TextView whatIsChessComTxt;
 
 	public GameWelcomeCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -424,7 +425,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-
 				boardView.invalidate();
 			}
 		});
@@ -512,6 +512,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	protected void restoreGame() {
 		ChessBoardComp.resetInstance();
 		ChessBoardComp.getInstance(this).setJustInitialized(false);
+		topPanelView.resetPieces();
 		boardView.setGameUiFace(this);
 		loadSavedGame();
 
@@ -697,6 +698,15 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+
+		if (view.getId() == R.id.whatIsChessComTxt) {
+			parentFace.changeInternalFragment(WelcomeTabsFragment.WELCOME_FRAGMENT);
+		}
+	}
+
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		switch (position) {
 			case WHAT_IS_CHESSCOM:
@@ -826,6 +836,14 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	protected void widgetsInit(View view) {
 		Activity activity = getActivity();
+
+		whatIsChessComTxt = (TextView) view.findViewById(R.id.whatIsChessComTxt);
+		Drawable icon = new IconDrawable(getActivity(), R.string.ic_round_right, R.color.semitransparent_white_75,
+				R.dimen.glyph_icon_big);
+
+		whatIsChessComTxt.setCompoundDrawablePadding(getResources().getDimensionPixelSize(R.dimen.glyph_icon_padding));
+		whatIsChessComTxt.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
+		whatIsChessComTxt.setOnClickListener(this);
 
 		controlsView = (ControlsCompView) view.findViewById(R.id.controlsView);
 		notationsView = (NotationView) view.findViewById(R.id.notationsView);

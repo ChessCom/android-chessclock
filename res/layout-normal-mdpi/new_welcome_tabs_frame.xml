@@ -5,22 +5,6 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-
-		<com.chess.widgets.RoboImageButton
-			android:id="@+id/centerTabBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			style="@style/Rect.Top.Middle"
-			android:src="@drawable/img_new_logo_bar"
-			android:minHeight="@dimen/welcome_tab_button_height"
-			/>
-
-	</LinearLayout>
-
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -31,11 +15,17 @@
 			android:layout_width="0dip"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			style="@style/Rect.Bottom.Left"
+			style="@style/Rect.Top.Left"
 			android:text="@string/log_in"
-			android:textColor="@color/white"
-			android:textSize="@dimen/welcome_tab_button_text_size"
-			android:minHeight="@dimen/welcome_tab_button_height"
+			/>
+
+		<com.chess.widgets.RoboImageButton
+			android:id="@+id/centerTabBtn"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			style="@style/Rect.Top.Middle"
+			android:src="@drawable/img_new_logo_bar"
 			/>
 
 		<com.chess.widgets.RoboButton
@@ -43,11 +33,8 @@
 			android:layout_width="0dip"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			style="@style/Rect.Bottom.Right"
+			style="@style/Rect.Top.Right"
 			android:text="@string/sign_up"
-			android:textColor="@color/white"
-			android:textSize="@dimen/welcome_tab_button_text_size"
-			android:minHeight="@dimen/welcome_tab_button_height"
 			/>
 
 	</LinearLayout>
