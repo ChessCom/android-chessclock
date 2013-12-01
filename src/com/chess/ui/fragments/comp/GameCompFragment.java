@@ -1,8 +1,6 @@
 package com.chess.ui.fragments.comp;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,7 +16,6 @@ import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
-import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.model.CompEngineItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
@@ -64,15 +61,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private static final long AUTO_FLIP_DELAY = 500;
 
 	private ChessBoardCompView boardView;
-
-	private PanelInfoGameView topPanelView;
-	private PanelInfoGameView bottomPanelView;
-
-	private ImageView topAvatarImg;
-	private ImageView bottomAvatarImg;
 	private ControlsCompView controlsView;
 
-	private LabelsConfig labelsConfig;
 	private boolean labelsSet;
 
 	private NotationFace notationsFace;
@@ -155,7 +145,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		isAutoFlip = getAppData().isAutoFlipFor2Players();
 
-		if (getAppData().haveSavedCompGame()) {
+		if (compGameConfig.getFen() != null) {
+			getBoardFace().setupBoard(compGameConfig.getFen());
+			getBoardFace().setMode(compGameConfig.getMode());
+		}else if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
 		} else {
 			getBoardFace().setMode(compGameConfig.getMode());
@@ -187,13 +180,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			boardView.stopComputerMove();
 			ChessBoardComp.resetInstance();
 		}
-
-		// there is shouldn't be such logic for fragment
-//		if (getBoardFace().getMode() != getArguments().getInt(AppConstants.GAME_MODE)) {
-//			Intent intent = getIntent();
-//			intent.putExtra(AppConstants.GAME_MODE, getBoardFace().getMode());
-//			getIntent().replaceExtras(intent);
-//		}
 	}
 
 	/*@Override
@@ -231,7 +217,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		int depth = Integer.parseInt(compDepth[compGameConfig.getStrength()]);
 
 		boolean isRestoreGame = getAppData().haveSavedCompGame() || getBoardFace().isAnalysis();
-		String fen = null;
+		String fen = compGameConfig.getFen();
 
 		CompEngineItem compEngineItem = new CompEngineItem();
 		compEngineItem.setGameMode(gameMode);
@@ -298,27 +284,27 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					humanBlack = false;
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
-					labelsConfig.topPlayerLabel = getString(R.string.computer);
-					labelsConfig.bottomPlayerLabel = username;
+					labelsConfig.topPlayerName = getString(R.string.computer);
+					labelsConfig.bottomPlayerName = username;
 					break;
 				}
 				case AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK: {    //w - comp; b - human
 					humanBlack = true;
 					labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 
-					labelsConfig.topPlayerLabel = getString(R.string.computer);
-					labelsConfig.bottomPlayerLabel = username;
+					labelsConfig.topPlayerName = getString(R.string.computer);
+					labelsConfig.bottomPlayerName = username;
 					break;
 				}
 				case AppConstants.GAME_MODE_2_PLAYERS: {    //w - human; b - human
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
 					if(getBoardFace().isReside()) {
-						labelsConfig.topPlayerLabel = whiteStr;
-						labelsConfig.bottomPlayerLabel = blackStr;
+						labelsConfig.topPlayerName = whiteStr;
+						labelsConfig.bottomPlayerName = blackStr;
 					} else {
-						labelsConfig.topPlayerLabel = blackStr;
-						labelsConfig.bottomPlayerLabel = whiteStr;
+						labelsConfig.topPlayerName = blackStr;
+						labelsConfig.bottomPlayerName = whiteStr;
 					}
 
 					break;
@@ -326,8 +312,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				case AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER: {    //w - comp; b - comp
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
-					labelsConfig.topPlayerLabel = getString(R.string.computer);
-					labelsConfig.bottomPlayerLabel = getString(R.string.computer);
+					labelsConfig.topPlayerName = getString(R.string.computer);
+					labelsConfig.bottomPlayerName = getString(R.string.computer);
 					break;
 				}
 			}
@@ -368,8 +354,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		labelsConfig.topAvatar.setSide(topSide);
 		labelsConfig.bottomAvatar.setSide(bottomSide);
 
-		topPanelView.setPlayerName(labelsConfig.topPlayerLabel);
-		bottomPanelView.setPlayerName(labelsConfig.bottomPlayerLabel);
+		topPanelView.setPlayerName(labelsConfig.topPlayerName);
+		bottomPanelView.setPlayerName(labelsConfig.bottomPlayerName);
 
 		if (topSide == ChessBoard.NO_SIDE) {
 			topPanelView.showFlags(false);
@@ -394,11 +380,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public void onGameStarted(final int currentMovePosition) {
-		Log.d(CompEngineHelper.TAG, " onGameStarted " + currentMovePosition);
-
-		/*if (currentMovePosition < 0) {
-			return;
-		}*/
+//		Log.d(CompEngineHelper.TAG, " onGameStarted " + currentMovePosition);
 
 		boardView.goToMove(currentMovePosition);
 		getActivity().runOnUiThread(new Runnable() {
@@ -425,8 +407,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		int[] moveFT = boardFace.parseCoordinate(engineMove.toString());
 		final Move move = boardFace.convertMove(moveFT);
 
-		Log.d(CompEngineHelper.TAG, "comp make move: " + move);
-		Log.d(CompEngineHelper.TAG, "isHint = " + boardView.isHint());
+//		Log.d(CompEngineHelper.TAG, "comp make move: " + move);
+//		Log.d(CompEngineHelper.TAG, "isHint = " + boardView.isHint());
 
 		if (boardView.isHint()) {
 			//onPlayerMove();
@@ -489,11 +471,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			String blackStr = getString(R.string.black);
 			String whiteStr = getString(R.string.white);
 			if(getBoardFace().isReside()) {
-				labelsConfig.topPlayerLabel = whiteStr;
-				labelsConfig.bottomPlayerLabel = blackStr;
+				labelsConfig.topPlayerName = whiteStr;
+				labelsConfig.bottomPlayerName = blackStr;
 			} else {
-				labelsConfig.topPlayerLabel = blackStr;
-				labelsConfig.bottomPlayerLabel = whiteStr;
+				labelsConfig.topPlayerName = blackStr;
+				labelsConfig.bottomPlayerName = whiteStr;
 			}
 		}
 	}
@@ -528,7 +510,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			}
 		}
 
-		int gameMode = new Integer(savedGame[0].substring(0, 1));
+		int gameMode = Integer.valueOf(savedGame[0].substring(0, 1));
 		getBoardFace().setMode(gameMode);
 
 		boardView.resetValidMoves();
@@ -608,15 +590,15 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		String winner;
 		if (message.equals(getString(R.string.black_wins))) {
 			if (labelsConfig.userSide == ChessBoard.BLACK_SIDE) {
-				winner = labelsConfig.bottomPlayerLabel;
+				winner = labelsConfig.bottomPlayerName;
 			} else {
-				winner = labelsConfig.topPlayerLabel;
+				winner = labelsConfig.topPlayerName;
 			}
 		} else {
 			if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
-				winner = labelsConfig.bottomPlayerLabel;
+				winner = labelsConfig.bottomPlayerName;
 			} else {
-				winner = labelsConfig.topPlayerLabel;
+				winner = labelsConfig.topPlayerName;
 			}
 		}
 		((TextView) layout.findViewById(R.id.endGameReasonTxt)).setText(getString(R.string.won_by_checkmate, winner)); // TODO adjust
@@ -751,52 +733,17 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		optionsSelectFragment = null;
 	}
 
-	private class LabelsConfig {
-		BoardAvatarDrawable topAvatar;
-		BoardAvatarDrawable bottomAvatar;
-		String topPlayerLabel;
-		String bottomPlayerLabel;
-		int userSide;
-
-		int getOpponentSide() {
-			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
-		}
-	}
-
-	private class ImageUpdateListener extends ImageReadyListenerLight {
-
-		private static final int TOP_AVATAR = 0;
-		private static final int BOTTOM_AVATAR = 1;
-		private int code;
-
-		private ImageUpdateListener(int code) {
-			this.code = code;
-		}
-
-		@Override
-		public void onImageReady(Bitmap bitmap) {
-			Activity activity = getActivity();
-			if (activity == null) {
-				return;
-			}
-			switch (code) {
-				case TOP_AVATAR:
-					labelsConfig.topAvatar = new BoardAvatarDrawable(getContext(), bitmap);
-
-					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
-					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-					topPanelView.invalidate();
-					break;
-				case BOTTOM_AVATAR:
-					labelsConfig.bottomAvatar = new BoardAvatarDrawable(getContext(), bitmap);
-
-					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
-					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-					bottomPanelView.invalidate();
-					break;
-			}
-		}
-	}
+//	private class LabelsConfig {
+//		BoardAvatarDrawable topAvatar;
+//		BoardAvatarDrawable bottomAvatar;
+//		String topPlayerName;
+//		String bottomPlayerName;
+//		int userSide;
+//
+//		int getOpponentSide() {
+//			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+//		}
+//	}
 
 	public class ShareItem {
 

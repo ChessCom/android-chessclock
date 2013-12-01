@@ -11,8 +11,6 @@ import com.chess.ui.engine.configs.CompGameConfig;
  */
 public class GameCompFragmentTablet extends GameCompFragment {
 
-//	private ControlsCompViewTablet controlsView;
-
 	public GameCompFragmentTablet() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
 		Bundle bundle = new Bundle();
@@ -27,15 +25,5 @@ public class GameCompFragmentTablet extends GameCompFragment {
 		fragment.setArguments(bundle);
 		return fragment;
 	}
-
-//	@Override
-//	protected ControlsCompViewTablet getControlsView() {
-//		return controlsView;
-//	}
-//
-//	@Override
-//	protected void setControlsView(View controlsView) {
-//		this.controlsView = (ControlsCompViewTablet) controlsView;
-//	}
 
 }

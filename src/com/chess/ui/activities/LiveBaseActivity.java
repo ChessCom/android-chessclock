@@ -32,7 +32,6 @@ import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.live.*;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
@@ -69,7 +68,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected LiveChessService liveService;
 	private List<PopupDialogFragment> popupChallengesList;
 	private boolean needReLoginToLive;
-	private PopupCustomViewFragment reLoginFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +85,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onStart() {
 		super.onStart();
 
-		LogMe.dl(TAG, "onStart: getAppData().isLiveChess()=" + getAppData().isLiveChess());
-		LogMe.dl(TAG, "onStart: isLCSBound=" + isLCSBound);
+//		LogMe.dl(TAG, "onStart: getAppData().isLiveChess() = " + getAppData().isLiveChess());
+//		LogMe.dl(TAG, "onStart: isLCSBound = " + isLCSBound);
 
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 			}
 			if (isLCSBound) {
 				onLiveServiceConnected();
@@ -110,7 +108,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	public void unBindLiveService() {
-		LogMe.dl(TAG, "unBindLiveService: isLCSBound=" + isLCSBound);
+//		LogMe.dl(TAG, "unBindLiveService: isLCSBound=" + isLCSBound);
 		if (isLCSBound) {
 			unbindService(liveServiceConnectionListener);
 			isLCSBound = false;
@@ -125,7 +123,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				if (getAppData().isLiveChess()) {
 					liveService.logout();
 				}
-//				backToHomeActivity();
 				unBindLiveService();
 				alive = false;
 			} else {
@@ -184,7 +181,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	public void executePausedActivityLiveEvents() {
 
 		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = liveService.getPausedActivityLiveEvents();
-		LogMe.dl(TAG, "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
+//		LogMe.dl(TAG, "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
 
 		if (pausedActivityLiveEvents.size() > 0) {
 
@@ -239,7 +236,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				unBindLiveService();
 			}
 		} else if (tag.contains(CHALLENGE_TAG)) { // Challenge accepted!
-			Log.i(TAG, "Accept challenge: " + currentChallenge);
+			Log.d(TAG, "Accept challenge: " + currentChallenge);
 			liveService.declineAllChallenges(currentChallenge);
 			liveService.runAcceptChallengeTask(currentChallenge); // TODO where is the end point of this call? We should go to wait screen after that
 
@@ -275,7 +272,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					return;
 				}
 
-				Log.i(TAG, "Decline challenge: " + currentChallenge);
+				Log.d(TAG, "Decline challenge: " + currentChallenge);
 				liveService.declineCurrentChallenge(currentChallenge);
 			}
 		}
@@ -285,22 +282,27 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		LogMe.dl(TAG, "onActivityResult, resultCode = " + resultCode + " data = " + data);
+//		LogMe.dl(TAG, "onActivityResult, resultCode = " + resultCode + " data = " + data);
 		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
 			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
 		}
 	}
 
 	public void connectLcc() {
-		LogMe.dl(TAG, "connectLcc: getAppData().isLiveChess()=" + getAppData().isLiveChess());
-		LogMe.dl(TAG, "connectLcc: isLCSBound=" + isLCSBound);
+//		LogMe.dl(TAG, "connectLcc: getAppData().isLiveChess() = " + getAppData().isLiveChess());
+//		LogMe.dl(TAG, "connectLcc: isLCSBound = " + isLCSBound);
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 			}
 			if (isLCSBound) {
-				onLiveServiceConnected();
+				if (liveService.getLccHelper() != null && liveService.getLccHelper().isConnected()) {
+					onLiveClientConnected();
+				} else {
+					showToast("Service bounded but client not connected"); // TODO improve handling via handler and exp retry
+					Log.d("TEST", "Service bounded but client not connected");
+				}
 			} else {
 				bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
 			}
@@ -315,7 +317,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-			LogMe.dl(TAG, "onServiceConnected");
+//			LogMe.dl(TAG, "onServiceConnected");
 
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
 			liveService = serviceBinder.getService();
@@ -333,12 +335,14 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					}
 				}
 			}
+
+			onLiveServiceConnected();
 			liveService.checkAndConnect(this);
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
-			LogMe.dl(TAG, "SERVICE: onServiceDisconnected");
+//			LogMe.dl(TAG, "SERVICE: onServiceDisconnected");
 			isLCSBound = false;
 			if (getSupportFragmentManager() == null) {
 				return;
@@ -658,9 +662,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.afterLogin();
 
 		if (needReLoginToLive) {
-			if (reLoginFragment != null) {
-				reLoginFragment.dismiss();
-			}
 			getAppData().setLiveChessMode(true);
 			connectLcc();
 		}
@@ -686,25 +687,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			}
 		}
 
-//		GameLiveFragment gameLiveFragment = getLiveFragment();
-//		LogMe.dl(TAG, "onLiveServiceConnected: gameLiveFragment=" + gameLiveFragment);
-//		if (gameLiveFragment != null) {
-//			gameLiveFragment.onLiveServiceConnected();
-//			return;
-//		}
-//
-//		LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
-//		LogMe.dl(TAG, "onLiveServiceConnected: waitFragment=" + waitFragment);
-//		if (waitFragment != null) {
-//			waitFragment.onLiveServiceConnected();
-//			return;
-//		}
-//
-//		LiveHomeFragment liveHomeFragment = getLiveHomeFragment();
-//		LogMe.dl(TAG, "onLiveServiceConnected: liveHomeFragment=" + liveHomeFragment);
-//		if (liveHomeFragment != null) {
-//			liveHomeFragment.onLiveServiceConnected();
-//		}
 	}
 
 	protected GameLiveFragment getLiveFragment() {

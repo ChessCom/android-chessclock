@@ -80,7 +80,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private float textYOffset = 3;
 
 	protected Paint selectedPiecePaint;
-	protected Paint whitePaint;
+	protected Paint moveToPaint;
 	protected Paint coordinatesPaint;
 	protected Paint madeMovePaint;
 	//	protected Paint greenPaint;
@@ -181,10 +181,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		selectedPiecePaint.setStyle(Style.FILL);
 		selectedPiecePaint.setColor(highlightColor);
 
-		whitePaint = new Paint();
-		whitePaint.setStrokeWidth(1.5f * density);
-		whitePaint.setStyle(Style.STROKE);
-		whitePaint.setColor(Color.WHITE);
+		int moveToIndicatorColor = resources.getColor(R.color.move_to_indicator_color);
+		moveToPaint = new Paint();
+		moveToPaint.setStrokeWidth(1.5f * density);
+		moveToPaint.setStyle(Style.STROKE);
+		moveToPaint.setColor(moveToIndicatorColor);
 
 		int coordinateFont = resources.getInteger(R.integer.board_highlight_font);
 		coordinateColorLight = appData.getThemeBoardCoordinateLight();
@@ -312,11 +313,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				clipBoundsRect.set(clipBoundsRect.left, clipBoundsRect.top - _3dPiecesOffsetDrag, clipBoundsRect.right, clipBoundsRect.bottom);
 				canvas.clipRect(clipBoundsRect, Region.Op.REPLACE);
 
+				drawMoveToIndicator(canvas);
 				drawPiecesAndAnimation(canvas);
 				drawPieceInDragMotion(canvas);
 
 				canvas.restoreToCount(saveCount);
 			} else {
+				drawMoveToIndicator(canvas);
 				drawPiecesAndAnimation(canvas);
 				drawPieceInDragMotion(canvas);
 			}
@@ -685,8 +688,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			float halfSquare = squareSize / 2;
 			int x = (int) (dragX - halfSquare);
 			int y = (int) (dragY - halfSquare);
-			int file = (int) ((dragX - dragX % squareSize) / squareSize);
-			int rank = (int) (((dragY + squareSize) - (dragY + squareSize) % squareSize) / squareSize);
 			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {
 				Bitmap pieceBitmap = getPieceBitmap(color, piece);
 				if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
@@ -715,13 +716,30 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				}
 				// draw piece
 				canvas.drawBitmap(pieceBitmap, null, rect, piecesPaint);
+			}
+		}
+	}
+
+	private void drawMoveToIndicator(Canvas canvas) {
+		if (drag) {
+			int color = getBoardFace().getColor(draggingFrom);
+			int piece = getBoardFace().getPiece(draggingFrom);
+
+			float halfSquare = squareSize / 2;
+			int file = (int) ((dragX - dragX % squareSize) / squareSize);
+			int rank = (int) (((dragY + squareSize) - (dragY + squareSize) % squareSize) / squareSize);
+			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {
+				Bitmap pieceBitmap = getPieceBitmap(color, piece);
+				if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
+					return;
+				}
 
 				// draw highlight rect around the square
 				int rectLeft = (int) (file * squareSize - halfSquare);
 				int rectTop = (int) (rank * squareSize - halfSquare);
 				int rectRight = (int) (file * squareSize + squareSize + halfSquare);
 				int rectBottom = (int) (rank * squareSize + squareSize + halfSquare);
-				canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, whitePaint);
+				canvas.drawRect(rectLeft, rectTop, rectRight, rectBottom, moveToPaint);
 			}
 		}
 	}

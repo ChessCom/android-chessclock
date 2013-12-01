@@ -58,7 +58,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		MultiDirectionSlidingDrawer.OnDrawerOpenListener, MultiDirectionSlidingDrawer.OnDrawerCloseListener,
 		MultiDirectionSlidingDrawer.OnDrawerScrollListener {
 
-	private static final String LESSON_COMPLETE_TAG = "lesson complete popup";
 	protected static final String COURSE_ID = "course_id";
 	protected static final String LESSON_ID = "lesson_id";
 	public static final String BOLD_DIVIDER = "##";
@@ -95,7 +94,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	protected int lessonId;
 	protected long courseId;
 	private boolean isAnalysis;
-	private LabelsConfig labelsConfig;
 
 	private ControlsLessonsView controlsView;
 	protected ChessBoardLessonsView boardView;

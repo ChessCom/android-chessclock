@@ -5,12 +5,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
+import com.chess.backend.image_load.ImageDownloaderToListener;
+import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.model.BaseGameItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
@@ -19,6 +24,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.interfaces.game_ui.GameFace;
+import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
@@ -56,6 +62,12 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected String endGameMessage;
 	protected long gameId;
 	private View boardFrame;
+	protected ImageView topAvatarImg;
+	protected ImageView bottomAvatarImg;
+	protected LabelsConfig labelsConfig;
+	protected ImageDownloaderToListener imageDownloader;
+	protected PanelInfoGameView topPanelView;
+	protected PanelInfoGameView bottomPanelView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +85,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		}
 		super.onCreate(savedInstanceState);
 
+		imageDownloader = new ImageDownloaderToListener(getActivity());
 		getActivityFace().addOnCloseMenuListener(this);
 	}
 
@@ -185,8 +198,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	protected void setBoardToFinishedState() { // TODO implement state conditions logic for board
-//		boardView.enableAnalysis(); // TODO recheck logic
-
 		getBoardFace().setFinished(true);
 
 		getSoundPlayer().playGameEnd();
@@ -293,6 +304,51 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 			return "Chess: " + currentGame.getWhiteUsername() + Symbol.SPACE
 					+ vsStr + Symbol.SPACE + currentGame.getBlackUsername(); // TODO adjust i18n
 		}
+	}
+
+	protected class ImageUpdateListener extends ImageReadyListenerLight {
+
+		public static final int TOP_AVATAR = 0;
+		public static final int BOTTOM_AVATAR = 1;
+		private int code;
+
+		public ImageUpdateListener(int code) {
+			this.code = code;
+		}
+
+		@Override
+		public void onImageReady(Bitmap bitmap) {
+			Activity activity = getActivity();
+			if (activity == null/* || bitmap == null*/) {
+				Log.e("TEST", "ImageLoader bitmap == null");
+				return;
+			}
+			switch (code) {
+				case TOP_AVATAR:
+					labelsConfig.topAvatar = new BoardAvatarDrawable(activity, bitmap);
+
+					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+					getTopPanelView().invalidate();
+
+					break;
+				case BOTTOM_AVATAR:
+					labelsConfig.bottomAvatar = new BoardAvatarDrawable(activity, bitmap);
+
+					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+					getBottomPanelView().invalidate();
+					break;
+			}
+		}
+	}
+
+	protected View getTopPanelView() {
+		return topPanelView;
+	}
+
+	protected View getBottomPanelView() {
+		return bottomPanelView;
 	}
 
 	public static class LabelsConfig {

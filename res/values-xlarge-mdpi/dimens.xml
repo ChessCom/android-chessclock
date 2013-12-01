@@ -33,8 +33,6 @@
     <dimen name="welcome_features_padding_bottom">26dip</dimen>
     <dimen name="new_top_button_height">48dip</dimen>
     <dimen name="new_bottom_button_height">48dip</dimen>
-    <dimen name="article_thumb_height">65dip</dimen>
-    <dimen name="article_thumb_width">105dip</dimen>
     <dimen name="nav_item_image_size">32dip</dimen>
     <dimen name="new_tactics_board_top_offset">72dip</dimen>
     <dimen name="popup_options_select_padding">30dip</dimen>

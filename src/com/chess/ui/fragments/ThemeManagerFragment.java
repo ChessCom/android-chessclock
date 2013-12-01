@@ -21,7 +21,6 @@ import com.chess.widgets.RoboButton;
  */
 public class ThemeManagerFragment extends CommonLogicFragment {
 
-
 	public static final String CLOUD_FRONT = "http://d1xrj4tlyewhek.cloudfront.net/";
 	private static final String PNG = ".png";
 	private static final String ZIP = ".zip";
@@ -405,7 +404,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			{"wood", 		"dark_wood", 	"game_room", "8", "6",   "8", "-1"},
 			{"glass", 		"glass", 		"glass", 	 "9", "14",  "9", "-1"},
 			{"tournament", 	"tournament", 	"tournament","10", "8",  "7", "-1"},
-			{"staunton", 	"burled_wood", 	"staunton",  "11", "5",  "12", "-1"},
+			{"staunton", 	"burled_wood", 	"3d_staunton","11", "5",  "12", "-1"},
 			{"newspaper", 	"newspaper", 	"newspaper", "12", "13", "15", "-1"},
 			{"tigers", 		"parchment", 	"tigers", 	 "13", "9",  "16", "-1"},
 			{"nature", 		"translucent", 	"nature", 	 "14", "10", "17", "2"},

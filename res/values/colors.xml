@@ -504,6 +504,7 @@
 	<color name="coordinate_color_dark">#FF765331</color>
     <color name="highlight_color">#80ffff65</color>
     <color name="made_move_color">#80FF0000</color>
+    <color name="move_to_indicator_color">#80FFFFFF</color>
     <!--<color name="made_move_color">#80CC3300</color>-->
 
 	<!--Graph-->

@@ -168,7 +168,7 @@ public class AppData {
 	}
 
 	public boolean getShowSubmitButtonsLive() {
-		return getBooleanValue(PREF_SHOW_SUBMIT_MOVE_LIVE, true);
+		return getBooleanValue(PREF_SHOW_SUBMIT_MOVE_LIVE, false);
 	}
 
 	public void setOnVacation(boolean show) {

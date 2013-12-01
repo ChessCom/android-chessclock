@@ -10,8 +10,6 @@ import android.os.Bundle;
  */
 public class GameDailyAnalysisFragmentTablet extends GameDailyAnalysisFragment {
 
-//	private ControlsAnalysisViewTablet controlsView;
-
 	public GameDailyAnalysisFragmentTablet(){}
 
 	public static GameDailyAnalysisFragmentTablet createInstance(long gameId, String username) {
@@ -23,14 +21,4 @@ public class GameDailyAnalysisFragmentTablet extends GameDailyAnalysisFragment {
 
 		return fragment;
 	}
-
-//	@Override
-//	protected ControlsAnalysisViewTablet getControlsView() {
-//		return controlsView;
-//	}
-//
-//	@Override
-//	protected void setControlsView(View controlsView) {
-//		this.controlsView = (ControlsAnalysisViewTablet) controlsView;
-//	}
 }

@@ -81,7 +81,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 			loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGES_INBOX);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
-			new RequestJsonTask<ConversationItem>(conversationsUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<ConversationItem>(conversationsUpdateListener).executeTask(loadItem);  // TODO rework with pagination
 		}
 	}
 

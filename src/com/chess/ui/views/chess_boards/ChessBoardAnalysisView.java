@@ -26,7 +26,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	private static final String DIVIDER_1 = "|";
 	private static final String DIVIDER_2 = ":";
 
-	private GameAnalysisFace gameAnalysisActivityFace;
+	private GameAnalysisFace gameAnalysisFace;
 
 
 	public ChessBoardAnalysisView(Context context, AttributeSet attrs) {
@@ -37,7 +37,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	public void setGameActivityFace(GameAnalysisFace gameActivityFace) {
 		super.setGameFace(gameActivityFace);
 
-		gameAnalysisActivityFace = gameActivityFace;
+		gameAnalysisFace = gameActivityFace;
 	}
 
 	public void setControlsView(ControlsAnalysisView controlsView) {
@@ -57,7 +57,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		super.afterUserMove();
 
 		getBoardFace().setMovesCount(getBoardFace().getPly());
-		gameAnalysisActivityFace.invalidateGameScreen();
+		gameAnalysisFace.invalidateGameScreen();
 
 		isGameOver();
 	}
@@ -146,7 +146,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 //						((to > 55) && (getBoardFace().getSide() == ChessBoard.BLACK_SIDE))) &&
 //						(getBoardFace().getPiece(from) == ChessBoard.PAWN) && found) {
 //
-//					gameAnalysisActivityFace.showChoosePieceDialog(col, row);
+//					gameAnalysisFace.showChoosePieceDialog(col, row);
 //					return true;
 //				}
 //
@@ -224,7 +224,12 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	public void flipBoard() {
 		getBoardFace().setReside(!getBoardFace().isReside());
 		invalidate();
-		gameAnalysisActivityFace.invalidateGameScreen();
+		gameAnalysisFace.invalidateGameScreen();
+	}
+
+	@Override
+	public void vsComputer() {
+		gameAnalysisFace.vsComputer();
 	}
 
 	@Override
@@ -235,17 +240,17 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 
 	@Override
 	public void restart() {
-		gameAnalysisActivityFace.restart();
+		gameAnalysisFace.restart();
 	}
 
 	@Override
 	public void closeBoard() {
-		gameAnalysisActivityFace.closeBoard();
+		gameAnalysisFace.closeBoard();
 	}
 
 	@Override
 	public void showExplorer() {
-		gameAnalysisActivityFace.showExplorer();
+		gameAnalysisFace.showExplorer();
 	}
 
 }

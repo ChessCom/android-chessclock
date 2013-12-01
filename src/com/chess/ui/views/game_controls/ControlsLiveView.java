@@ -141,7 +141,7 @@ public class ControlsLiveView extends ControlsBaseView {
 	}
 
 	public void showAfterMatch() {
-		showGameButton(OPTIONS, false);
+		showGameButton(OPTIONS, true);
 		showGameButton(HOME, true);
 		showGameButton(CHAT, true);
 		showGameButton(FORWARD, true);

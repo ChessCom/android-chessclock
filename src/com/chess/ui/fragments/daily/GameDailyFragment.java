@@ -1,17 +1,14 @@
 package com.chess.ui.fragments.daily;
 
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +24,6 @@ import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyCurrentGameItem;
 import com.chess.backend.entity.api.VacationItem;
-import com.chess.backend.image_load.ImageDownloaderToListener;
-import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -93,7 +88,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private GameDailyUpdatesListener sendMoveUpdateListener;
 	private GameDailyUpdatesListener createChallengeUpdateListener;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
-	private ImageDownloaderToListener imageDownloader;
 
 	private DailyCurrentGameData currentGame;
 	protected boolean userPlayWhite = true;
@@ -104,12 +98,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private NewChatUpdateReceiver newChatUpdateReceiver;
 
 	private ChessBoardNetworkView boardView;
-	private PanelInfoGameView topPanelView;
-	private PanelInfoGameView bottomPanelView;
 	private ControlsDailyView controlsView;
-	private ImageView topAvatarImg;
-	private ImageView bottomAvatarImg;
-	protected LabelsConfig labelsConfig;
 	private SparseArray<String> optionsMap;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private String[] countryNames;
@@ -938,8 +927,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener();
 
-		imageDownloader = new ImageDownloaderToListener(getActivity());
-
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
 	}
@@ -983,43 +970,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		// Don't show chat button for not your games
 		if (!username.equals(getUsername())) {
 			getControlsView().hideChatButton();
-		}
-	}
-
-	private class ImageUpdateListener extends ImageReadyListenerLight {
-
-		private static final int TOP_AVATAR = 0;
-		private static final int BOTTOM_AVATAR = 1;
-		private int code;
-
-		private ImageUpdateListener(int code) {
-			this.code = code;
-		}
-
-		@Override
-		public void onImageReady(Bitmap bitmap) {
-			Activity activity = getActivity();
-			if (activity == null/* || bitmap == null*/) {
-				Log.e("TEST", "ImageLoader bitmap == null");
-				return;
-			}
-			switch (code) {
-				case TOP_AVATAR:
-					labelsConfig.topAvatar = new BoardAvatarDrawable(activity, bitmap);
-
-					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
-					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-					topPanelView.invalidate();
-
-					break;
-				case BOTTOM_AVATAR:
-					labelsConfig.bottomAvatar = new BoardAvatarDrawable(activity, bitmap);
-
-					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
-					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-					bottomPanelView.invalidate();
-					break;
-			}
 		}
 	}
 

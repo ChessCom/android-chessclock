@@ -78,22 +78,21 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 
 	public void onLiveServiceConnected() {
 //		logTest("Live Base onLiveServiceConnected");
-//		showToast("Live Base onLiveServiceConnected");
 //		LiveChessService liveService;
 //		try {
 //			liveService = getLiveService();
 //		} catch (DataNotValidException e) {
-//			logTest(e.getMessage());
-//			showToast(e.getMessage());
-////			backToHomeFragment(); // don't throw back for a while
+//			logTest("onLiveServiceConnected - " + e.getMessage());
+//			showToast("onLiveServiceConnected - " + e.getMessage());
 //			return;
 //		}
 //		liveService.setLccEventListener(this);
 //		liveService.setGameTaskListener(gameTaskListener);
 //
-//		if (liveService.isActiveGamePresent()) {
+//		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
 //			synchronized(LccHelper.LOCK) {
-//				liveService.processFullGame();
+//				Long gameId = liveService.getCurrentGameId();
+//				getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
 //			}
 //		} else {
 //			createSeek();

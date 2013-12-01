@@ -153,6 +153,9 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 
 		boardFace.setJustInitialized(false);
 		boardFace.setAnalysis(true);
+
+		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
+		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 	}
 
 }

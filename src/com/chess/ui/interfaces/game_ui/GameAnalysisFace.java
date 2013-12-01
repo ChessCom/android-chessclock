@@ -13,4 +13,6 @@ public interface GameAnalysisFace extends GameFace {
 	void closeBoard();
 
 	void showExplorer();
+
+	void vsComputer();
 }

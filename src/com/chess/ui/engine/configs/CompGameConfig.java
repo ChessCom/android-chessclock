@@ -14,12 +14,14 @@ public class CompGameConfig implements Parcelable {
 
 	private int strength;
 	private int mode;
-	private boolean autoFlip;
+//	private boolean autoFlip;
+	private String fen;
 
 	public static class Builder{
 		private int strength;
 		private int mode;
-		private boolean autoFlip;
+		private String fen;
+//		private boolean autoFlip;
 
 
 		/**
@@ -28,6 +30,7 @@ public class CompGameConfig implements Parcelable {
 		public Builder(){
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 			strength = 5;
+			fen = null; // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
 		}
 
 		public Builder setStrength(int strength) {
@@ -40,10 +43,15 @@ public class CompGameConfig implements Parcelable {
 			return this;
 		}
 
-		public Builder setAutoFlip(boolean autoFlip) {
-			this.autoFlip = autoFlip;
+		public Builder setFen(String fen) {
+			this.fen = fen;
 			return this;
 		}
+
+		//		public Builder setAutoFlip(boolean autoFlip) {
+//			this.autoFlip = autoFlip;
+//			return this;
+//		}
 
 		public CompGameConfig build(){
 			return new CompGameConfig(this);
@@ -53,7 +61,8 @@ public class CompGameConfig implements Parcelable {
 	private CompGameConfig(Builder builder) {
 		this.strength = builder.strength;
 		this.mode = builder.mode;
-		this.autoFlip = builder.autoFlip;
+		this.fen = builder.fen;
+//		this.autoFlip = builder.autoFlip;
 	}
 
 	public int getStrength() {
@@ -72,14 +81,19 @@ public class CompGameConfig implements Parcelable {
 		this.strength = strength;
 	}
 
-	public void setAutoFlip(boolean autoFlip) {
-		this.autoFlip = autoFlip;
+	public String getFen() {
+		return fen;
+	}
+
+	public void setFen(String fen) {
+		this.fen = fen;
 	}
 
 	protected CompGameConfig(Parcel in) {
 		strength = in.readInt();
 		mode = in.readInt();
-		autoFlip = in.readByte() != 0x00;
+		fen = in.readString();
+//		autoFlip = in.readByte() != 0x00;
 	}
 
 	@Override
@@ -91,7 +105,8 @@ public class CompGameConfig implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeInt(strength);
 		dest.writeInt(mode);
-		dest.writeByte((byte) (autoFlip ? 0x01 : 0x00));
+		dest.writeString(fen);
+//		dest.writeByte((byte) (autoFlip ? 0x01 : 0x00));
 	}
 
 	public static final Parcelable.Creator<CompGameConfig> CREATOR = new Parcelable.Creator<CompGameConfig>() {

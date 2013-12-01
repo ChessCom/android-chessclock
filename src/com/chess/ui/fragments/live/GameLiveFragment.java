@@ -2,7 +2,6 @@ package com.chess.ui.fragments.live;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,8 +17,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
-import com.chess.backend.image_load.ImageDownloaderToListener;
-import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -30,6 +27,7 @@ import com.chess.model.GameAnalysisItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLive;
@@ -89,11 +87,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	protected ControlsLiveView controlsView;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 
-	protected LabelsConfig labelsConfig;
-	//	private UserInfoUpdateListener userInfoUpdateListener;
-	protected ImageView topAvatarImg;
-	protected ImageView bottomAvatarImg;
-	protected ImageDownloaderToListener imageDownloader;
 	private int gameEndTitleId;
 	protected SparseArray<String> optionsMap;
 
@@ -117,8 +110,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			gameId = savedInstanceState.getLong(GAME_ID);
 		}
 		logLiveTest("onCreate");
-
-		imageDownloader = new ImageDownloaderToListener(getActivity());
 	}
 
 	@Override
@@ -203,7 +194,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		invalidateGameScreen();
 		if (liveService.getPendingWarnings().size() > 0) {
 			warningMessage = liveService.getLastWarningMessage();
-			LogMe.dl("LCCLOG-WARNING", warningMessage);
+//			LogMe.dl("LCCLOG-WARNING", warningMessage);
 			popupItem.setNegativeBtnId(R.string.fair_play_policy);
 			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG);
 		}
@@ -1158,7 +1149,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 
 			String opponentAvatarUrl = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
-			if (opponentAvatarUrl != null) {
+			if (opponentAvatarUrl != null && !opponentAvatarUrl.contains(StaticData.GIF)) {
 				imageDownloader.download(opponentAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 			} else {
 				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
@@ -1168,6 +1159,19 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
 				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
 				topPanelView.invalidate();
+			}
+
+			String myAvatarUrl = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
+			if (myAvatarUrl != null && !myAvatarUrl.contains(StaticData.GIF)) {
+				imageDownloader.download(myAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+			} else {
+				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+						R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+				labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+				bottomPanelView.invalidate();
 			}
 		}
 
@@ -1200,6 +1204,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		return notationsFace;
 	}
 
+	@Override
+	protected View getTopPanelView() {
+		return topPanelView;
+	}
+
+	@Override
+	protected View getBottomPanelView() {
+		return bottomPanelView;
+	}
+
 	protected void widgetsInit(View view) {
 		fadeLay = view.findViewById(R.id.fadeLay);
 
@@ -1224,45 +1238,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		getControlsView().setBoardViewFace(boardView);
 		getControlsView().showHome(false);
 		topPanelView.setClickHandler(this);
-	}
-
-	protected class ImageUpdateListener extends ImageReadyListenerLight {
-
-		protected static final int TOP_AVATAR = 0;
-		protected static final int BOTTOM_AVATAR = 1;
-		private int code;
-
-		protected ImageUpdateListener(int code) {
-			this.code = code;
-		}
-
-		@Override
-		public void onImageReady(Bitmap bitmap) {
-			Activity activity = getActivity();
-			if (activity == null) {
-				return;
-			}
-			switch (code) {
-				case TOP_AVATAR:
-					labelsConfig.topAvatar = new BoardAvatarDrawable(activity, bitmap);
-
-					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
-					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-					topPanelView.invalidate();
-
-					String userAvatarUrl = getAppData().getUserAvatar();
-					imageDownloader.download(userAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
-
-					break;
-				case BOTTOM_AVATAR:
-					labelsConfig.bottomAvatar = new BoardAvatarDrawable(activity, bitmap);
-
-					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
-					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-					bottomPanelView.invalidate();
-					break;
-			}
-		}
 	}
 
 	protected void logLiveTest(String messageToLog) {

@@ -19,9 +19,12 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
 import com.chess.model.PopupItem;
+import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.configs.CompGameConfig;
+import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.explorer.GameExplorerFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
@@ -53,20 +56,16 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	protected boolean userPlayWhite = true;
 	protected LoadFromDbUpdateListener loadFromDbUpdateListener;
-	protected PanelInfoGameView topPanelView;
-	protected PanelInfoGameView bottomPanelView;
 	protected ControlsAnalysisView controlsView;
 	protected NotationFace notationsFace;
-	private ImageView topAvatarImg;
-	private ImageView bottomAvatarImg;
 	protected BoardAvatarDrawable opponentAvatarDrawable;
 	protected BoardAvatarDrawable userAvatarDrawable;
-	protected LabelsConfig labelsConfig;
 	protected String[] countryNames;
 	protected int[] countryCodes;
 	protected String username;
 
-	public GameDailyAnalysisFragment(){}
+	public GameDailyAnalysisFragment() {
+	}
 
 	public static GameDailyAnalysisFragment createInstance(long gameId, String username) {
 		GameDailyAnalysisFragment fragment = new GameDailyAnalysisFragment();
@@ -255,10 +254,11 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		playLastMoveAnimation();
 
 		boardFace.setJustInitialized(false);
-
 		boardFace.setAnalysis(true);
-	}
 
+		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
+		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+	}
 
 	@Override
 	public void toggleSides() {
@@ -384,6 +384,21 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	public void showOptions() {
+	}
+
+	@Override
+	public void vsComputer() {
+		int compGameMode = getAppData().getCompGameMode();
+		if (compGameMode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) { // replace this fast speed fun
+			compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
+			getAppData().setCompGameMode(compGameMode);
+		}
+		CompGameConfig.Builder builder = new CompGameConfig.Builder()
+				.setMode(compGameMode)
+				.setStrength(getAppData().getCompLevel())
+				.setFen(getBoardFace().generateFullFen());
+
+		getActivityFace().openFragment(GameCompFragment.createInstance(builder.build()));
 	}
 
 	private boolean isUserMove() {

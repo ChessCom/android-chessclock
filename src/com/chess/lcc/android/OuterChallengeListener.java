@@ -9,6 +9,7 @@ import com.chess.live.client.Challenge;
  * @created at: 09.04.12 4:03
  */
 public interface OuterChallengeListener {
+
 	void showDialog(Challenge challenge);
 
 	void showDialogImmediately(Challenge challenge);

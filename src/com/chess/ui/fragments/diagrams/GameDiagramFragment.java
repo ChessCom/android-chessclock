@@ -52,7 +52,6 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	private GameDiagramItem diagramItem;
 	protected boolean userPlayWhite = true;
 	private ControlsDiagramView controlsView;
-	private LabelsConfig labelsConfig;
 	private NotationFace notationsFace;
 	private HashMap<String, String> commentsMap;
 	private TextView notationCommentTxt;

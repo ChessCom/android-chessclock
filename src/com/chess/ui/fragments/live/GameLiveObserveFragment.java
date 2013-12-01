@@ -11,6 +11,7 @@ import com.chess.backend.LiveChessService;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
+import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
@@ -26,16 +27,19 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	// todo: adjust GameLiveObserveFragment and GameLiveFragment, lock board, load avatars, game end, chat, options dialog etc
 
 	private static final String TAG = "LccLog-GameLiveObserveFragment";
+	private static final long HIDE_POPUP_DELAY = 2000;
+	private ObserveTaskListener observeTaskListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		observeTaskListener = new ObserveTaskListener();
 		try {
 			LiveChessService liveService = getLiveService();
 			liveService.setLccObserveEventListener(this);
 
-			liveService.runObserveTopGameTask(new ObserveTaskListener());
+			liveService.runObserveTopGameTask(observeTaskListener);
 
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
@@ -85,19 +89,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 		{// fill labels
 			labelsConfig = new LabelsConfig();
-			//if (isUserColorWhite()) {
-				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-				labelsConfig.topPlayerName = currentGame.getBlackUsername();
-				labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
-				labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
-				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
-			/*} else {
-				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
-				labelsConfig.topPlayerName = currentGame.getWhiteUsername();
-				labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
-				labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
-				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
-			}*/
+			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+			labelsConfig.topPlayerName = currentGame.getBlackUsername();
+			labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
+			labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
+			labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
 		}
 
 		{// set avatars
@@ -110,7 +106,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 					.getOpponentForPlayer(currentGame.getBlackUsername()).getAvatarUrl();
 			logTest("topAvatarUrl = " + topAvatarUrl);
 			logTest("bottomAvatarUrl = " + bottomAvatarUrl);
-			if (topAvatarUrl != null && !topAvatarUrl.contains(".gif")) {
+			if (topAvatarUrl != null && !topAvatarUrl.contains(StaticData.GIF)) {
 				imageDownloader.download(topAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 			} else {
 				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
@@ -122,7 +118,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 				topPanelView.invalidate();
 			}
 
-			if (bottomAvatarUrl != null && !bottomAvatarUrl.contains(".gif")) {
+			if (bottomAvatarUrl != null && !bottomAvatarUrl.contains(StaticData.GIF)) {
 				imageDownloader.download(bottomAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 			} else {
 				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
@@ -205,6 +201,23 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 		PopupGameEndFragment endPopupFragment = PopupGameEndFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
+
+		// hide popup after 2 seconds and go to next game!
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				dismissEndGameDialog();
+
+				try {
+					getLiveService().runObserveTopGameTask(observeTaskListener);
+				} catch (DataNotValidException e) {
+					logLiveTest(e.getMessage());
+					showToast(e.getMessage());
+					getActivityFace().showPreviousFragment();
+				}
+			}
+		}, HIDE_POPUP_DELAY);
+
 
 		// New Rating
 		View ratingTitleTxt = layout.findViewById(R.id.ratingTitleTxt);

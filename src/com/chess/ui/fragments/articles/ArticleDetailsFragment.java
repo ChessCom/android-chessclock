@@ -222,7 +222,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	}
 
 	private void loadFullBody() {
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (isNetworkAvailable()) {
 			// get full body text from server
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLE_BY_ID(articleId));
@@ -264,7 +264,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			if (!isTablet) {
 				// Change main article Image params
 				mainArticleImageWidth = screenWidth;
-				int imageHeight = (int) (screenWidth * 0.6671f);
+				int imageHeight = (int) (screenWidth * 0.95f); // wide aspect is 0.6671f
 				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
 				articleImg.setLayoutParams(params);
 			} else {

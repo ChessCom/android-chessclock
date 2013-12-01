@@ -118,8 +118,9 @@ public class LccChallengeTaskRunner {
                 retainMe.add(challenge);
         }
 
-        if (retainMe.size() > 0)
-            challengeListener.getOuterChallengeListener().showDelayedDialog(retainMe.get(retainMe.size() - 1));
+        if (retainMe.size() > 0) {
+			challengeListener.getOuterChallengeListener().showDelayedDialog(retainMe.get(retainMe.size() - 1));
+		}
     }
 
 	public void runAcceptChallengeTask(Challenge challenge) {

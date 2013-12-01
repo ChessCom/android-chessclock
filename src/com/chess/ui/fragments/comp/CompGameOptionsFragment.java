@@ -172,7 +172,7 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 
 	@Override
 	public void onSwitchChanged(SwitchButton switchButton, boolean checked) {
-		gameConfigBuilder.setAutoFlip(checked);
+		getAppData().setAutoFlipFor2Players(checked);
 	}
 
 	@Override

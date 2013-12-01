@@ -17,7 +17,6 @@ import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 public class ControlsCompView extends ControlsBaseView {
 
 	private BoardViewCompFace boardViewFace;
-	private boolean controlsRound;
 
 	public ControlsCompView(Context context) {
 		super(context);

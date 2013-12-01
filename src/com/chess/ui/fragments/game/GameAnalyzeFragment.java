@@ -11,9 +11,12 @@ import android.widget.ImageView;
 import com.chess.R;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameAnalysisItem;
+import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardAnalysis;
+import com.chess.ui.engine.configs.CompGameConfig;
+import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.explorer.GameExplorerFragment;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
@@ -39,14 +42,9 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	private ChessBoardAnalysisView boardView;
 	private GameAnalysisItem analysisItem;
 	protected boolean userPlayWhite = true;
-	private PanelInfoGameView topPanelView;
-	private PanelInfoGameView bottomPanelView;
 	private ControlsAnalysisView controlsView;
-	private ImageView topAvatarImg;
-	private ImageView bottomAvatarImg;
 	private BoardAvatarDrawable opponentAvatarDrawable;
 	private BoardAvatarDrawable userAvatarDrawable;
-	private LabelsConfig labelsConfig;
 
 	public static GameAnalyzeFragment createInstance(GameAnalysisItem analysisItem) {
 		GameAnalyzeFragment fragment = new GameAnalyzeFragment();
@@ -121,6 +119,21 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	@Override
 	public void showExplorer() {
 		getActivityFace().openFragment(GameExplorerFragment.createInstance(getBoardFace().generateBaseFen()));
+	}
+
+	@Override
+	public void vsComputer() {
+		int compGameMode = getAppData().getCompGameMode();
+		if (compGameMode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) { // replace this fast speed fun
+			compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
+			getAppData().setCompGameMode(compGameMode);
+		}
+		CompGameConfig.Builder builder = new CompGameConfig.Builder()
+				.setMode(compGameMode)
+				.setStrength(getAppData().getCompLevel())
+				.setFen(getBoardFace().generateFullFen());
+
+		getActivityFace().openFragment(GameCompFragment.createInstance(builder.build()));
 	}
 
 	private void adjustBoardForGame() {

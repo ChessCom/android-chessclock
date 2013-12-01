@@ -11,8 +11,6 @@ import com.chess.model.GameDiagramItem;
  */
 public class GameDiagramFragmentTablet extends GameDiagramFragment {
 
-//	private NotationsViewTablet notationsFace;
-
 	public GameDiagramFragmentTablet() {}
 
 	public static GameDiagramFragmentTablet createInstance(GameDiagramItem analysisItem) {
@@ -23,16 +21,5 @@ public class GameDiagramFragmentTablet extends GameDiagramFragment {
 
 		return fragment;
 	}
-
-//	@Override
-//	public void setNotationsView(View notationsView) {
-//		this.notationsFace = (NotationsViewTablet) notationsView;
-//	}
-//
-//	@Override
-//	public NotationsViewTablet getNotationsView() {
-//		return notationsFace;
-//	}
-
 
 }

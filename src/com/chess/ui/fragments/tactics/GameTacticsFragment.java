@@ -21,7 +21,6 @@ import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.TacticProblemItem;
 import com.chess.backend.entity.api.TacticRatingData;
 import com.chess.backend.entity.api.TacticTrainerItem;
-import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.tasks.GetOfflineTacticsBatchTask;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -30,6 +29,7 @@ import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveTacticsBatchTask;
 import com.chess.model.PopupItem;
 import com.chess.model.TacticsDataHolder;
+import com.chess.statics.AppConstants;
 import com.chess.statics.FlurryData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
@@ -37,6 +37,8 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.Move;
+import com.chess.ui.engine.configs.CompGameConfig;
+import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -114,12 +116,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private boolean isAnalysis;
 	private boolean serverError;
 	private boolean userSawOfflinePopup;
-	private ImageUpdateListener imageUpdateListener;
-	private ImageView topAvatarImg;
-	private ImageDownloaderToListener imageDownloader;
 	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
-	private LabelsConfig labelsConfig;
 	private TextView moveResultTxt;
 	private int correctMovesBeforeHint;
 	private int startCount;
@@ -586,7 +584,17 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void vsComputer() {
-//		getActivityFace().openFragment(GameCompFragment.createInstance(getBoardFace().generateBaseFen()));
+		int compGameMode = getAppData().getCompGameMode();
+		if (compGameMode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) { // replace this fast speed fun
+			compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
+			getAppData().setCompGameMode(compGameMode);
+		}
+		CompGameConfig.Builder builder = new CompGameConfig.Builder()
+				.setMode(compGameMode)
+				.setStrength(getAppData().getCompLevel())
+				.setFen(getBoardFace().generateFullFen());
+
+		getActivityFace().openFragment(GameCompFragment.createInstance(builder.build()));
 	}
 
 	@Override
@@ -1086,7 +1094,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void loadNewTactic() {
-		noNetwork = !AppUtils.isNetworkAvailable(getActivity());
+		noNetwork = !isNetworkAvailable();
 		if (noNetwork || serverError) {
 			loadOfflineTacticsBatch();
 		} else {
@@ -1173,7 +1181,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else if (tag.equals(OFFLINE_RATING_TAG)) {
 			// user saw popup, don't show it again
 			if (!userSawOfflinePopup) {
-				getNextTactic();
+				loadOfflineTacticsBatch();
 			}
 			userSawOfflinePopup = true;
 		}
@@ -1231,15 +1239,18 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	protected void setControlsView(View controlsView) {
 		this.controlsView = (ControlsTacticsView) controlsView;
 	}
-	
+
+	@Override
+	protected View getBottomPanelView() {
+		return bottomPanelView;
+	}
+
 	private void init() {
 		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
 
 		labelsConfig = new LabelsConfig();
 
 		inflater = (LayoutInflater) getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-		imageUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR);
-		imageDownloader = new ImageDownloaderToListener(getContext());
 
 		getTacticsUpdateListener = new GetTacticsUpdateListener();
 		tacticCorrectUpdateListener = new TacticsTrainerUpdateListener(CORRECT_RESULT);
@@ -1274,10 +1285,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		lockBoard(true);
 
 		{// set avatars
-			topAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 			String userAvatarUrl = getAppData().getUserAvatar();
-			imageDownloader.download(userAvatarUrl, imageUpdateListener, AVATAR_SIZE);
+			imageDownloader.download(userAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 		}
 
 		{// options list setup
@@ -1302,7 +1313,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
-	private class ImageUpdateListener extends ImageReadyListenerLight {
+	private class ImageUpdateListener extends ImageReadyListenerLight { // use here it for black/white border
 		private static final int BOTTOM_AVATAR = 1;
 		private int code;
 

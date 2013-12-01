@@ -12,6 +12,8 @@ public interface BoardViewAnalysisFace extends BoardViewFace {
 
 	void flipBoard();
 
+	void vsComputer();
+
 	void closeBoard();
 
 	void showExplorer();

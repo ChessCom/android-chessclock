@@ -1,12 +1,9 @@
 package com.chess.ui.fragments.daily;
 
-import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +16,6 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
-import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -80,12 +76,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	protected boolean userPlayWhite = true;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
-	private PanelInfoGameView topPanelView;
-	private PanelInfoGameView bottomPanelView;
 	private ControlsDailyView controlsView;
-	private ImageView topAvatarImg;
-	private ImageView bottomAvatarImg;
-	private LabelsConfig labelsConfig;
 	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private ImageDownloaderToListener imageDownloader;
@@ -742,43 +733,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
-	private class ImageUpdateListener extends ImageReadyListenerLight {
 
-		private static final int TOP_AVATAR = 0;
-		private static final int BOTTOM_AVATAR = 1;
-		private int code;
-
-		private ImageUpdateListener(int code) {
-			this.code = code;
-		}
-
-		@Override
-		public void onImageReady(Bitmap bitmap) {
-			Activity activity = getActivity();
-			if (activity == null/* || bitmap == null*/) {
-				Log.e("TEST", "ImageLoader bitmap == null");
-				return;
-			}
-			switch (code) {
-				case TOP_AVATAR:
-					logTest("top avatar loaded");
-					labelsConfig.topAvatar = new BoardAvatarDrawable(activity, bitmap);
-
-					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
-					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-					topPanelView.invalidate();
-
-					break;
-				case BOTTOM_AVATAR:
-					logTest("bottom avatar loaded");
-					labelsConfig.bottomAvatar = new BoardAvatarDrawable(activity, bitmap);
-
-					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
-					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-					bottomPanelView.invalidate();
-					break;
-			}
-		}
-	}
 
 }

@@ -19,9 +19,6 @@ import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 public class ControlsCompWelcomeViewTablet extends ControlsCompView {
 
 	private BoardViewCompFace boardViewFace;
-	private LinearLayout topLayout;
-	private LinearLayout bottomLayout;
-	private int buttonMargin;
 
 	public ControlsCompWelcomeViewTablet(Context context) {
 		super(context);
@@ -38,16 +35,16 @@ public class ControlsCompWelcomeViewTablet extends ControlsCompView {
 		}
 
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			buttonMargin = (int) (3 * density);
+			int buttonMargin = (int) (3 * density);
 			buttonParams.setMargins(buttonMargin, buttonMargin, buttonMargin, buttonMargin);
 
 			// add 2 linear layouts for 2 rows
 			LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			topLayout = new LinearLayout(getContext());
+			LinearLayout topLayout = new LinearLayout(getContext());
 			topLayout.setLayoutParams(params);
 			topLayout.setOrientation(HORIZONTAL);
 
-			bottomLayout = new LinearLayout(getContext());
+			LinearLayout bottomLayout = new LinearLayout(getContext());
 			bottomLayout.setLayoutParams(params);
 			bottomLayout.setOrientation(HORIZONTAL);
 
@@ -66,9 +63,7 @@ public class ControlsCompWelcomeViewTablet extends ControlsCompView {
 			addControlButton(HINT, styles[MIDDLE]);
 			addControlButton(BACK, styles[MIDDLE]);
 			addControlButton(FORWARD, styles[RIGHT]);
-
 		}
-
 	}
 
 	@Override

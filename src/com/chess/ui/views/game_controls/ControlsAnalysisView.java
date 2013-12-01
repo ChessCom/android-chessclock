@@ -28,9 +28,10 @@ public class ControlsAnalysisView extends ControlsBaseView {
 
 	@Override
 	protected void addButtons() {
-		addControlButton(EXIT, styles[LEFT]);
+//		addControlButton(EXIT, styles[LEFT]);
+		addControlButton(RESTART, styles[LEFT]);
 		addControlButton(SEARCH, styles[MIDDLE]);
-		addControlButton(RESTART, styles[MIDDLE]);
+		addControlButton(COMP, styles[MIDDLE]);
 		addControlButton(BACK, styles[MIDDLE]);
 		addControlButton(FORWARD, styles[RIGHT]);
 	}
@@ -43,9 +44,10 @@ public class ControlsAnalysisView extends ControlsBaseView {
 
 		if (view.getId() == getButtonId(EXIT)) {
 			boardViewFace.closeBoard();
+		} else if (view.getId() == getButtonId(COMP)) {
+			boardViewFace.vsComputer();
 		} else if (view.getId() == getButtonId(SEARCH)) {
 			boardViewFace.showExplorer();
-			// TODO add search ability
 		} else if (view.getId() == getButtonId(RESTART)) {
 			boardViewFace.restart();
 		}
@@ -57,9 +59,10 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	}
 
 	public void enableGameControls(boolean enable) {
-		enableGameButton(EXIT, enable);
-		enableGameButton(SEARCH, enable);
+//		enableGameButton(EXIT, enable);
 		enableGameButton(RESTART, enable);
+		enableGameButton(SEARCH, enable);
+		enableGameButton(COMP, enable);
 		enableGameButton(BACK, enable);
 		enableGameButton(FORWARD, enable);
 	}

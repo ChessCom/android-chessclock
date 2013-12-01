@@ -1,11 +1,8 @@
 package com.chess.ui.fragments.live;
 
-import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +15,6 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.LiveArchiveGameData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
-import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -59,7 +55,6 @@ import java.util.Calendar;
  */
 public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNetworkFace, PopupListSelectionFace {
 
-	public static final String DOUBLE_SPACE = "  ";
 	private static final String ERROR_TAG = "send request failed popup";
 
 	private static final int CREATE_CHALLENGE_UPDATE = 2;
@@ -80,11 +75,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 	protected boolean userPlayWhite = true;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
-	private PanelInfoGameView topPanelView;
-	private PanelInfoGameView bottomPanelView;
 	private ControlsDailyView controlsView;
-	private ImageView topAvatarImg;
-	private ImageView bottomAvatarImg;
 	private LabelsConfig labelsConfig;
 	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
@@ -551,16 +542,6 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 		int currentPlayerNewRating = getCurrentPlayerRating();
 
-//		int ratingDiff; // TODO fill difference in ratings
-//		String sign;
-//		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
-//			ratingDiff = currentPlayerNewRating - currentPlayerRating;
-//			sign = StaticData.PLUS;
-//		} else { // 800 700
-//			ratingDiff = currentPlayerRating - currentPlayerNewRating;
-//			sign = StaticData.MINUS;
-//		}
-
 		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
 		yourRatingTxt.setText(rating);
 
@@ -654,6 +635,16 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		return notationsFace;
 	}
 
+	@Override
+	protected View getTopPanelView() {
+		return topPanelView;
+	}
+
+	@Override
+	protected View getBottomPanelView() {
+		return bottomPanelView;
+	}
+
 	public void init() {
 		labelsConfig = new LabelsConfig();
 
@@ -702,63 +693,6 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 			optionsArray.put(ID_FLIP_BOARD, getString(R.string.flip_board));
 			optionsArray.put(ID_EMAIL_GAME, getString(R.string.email_game));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
-		}
-	}
-
-//	private class LabelsConfig {
-//		BoardAvatarDrawable topAvatar;
-//		BoardAvatarDrawable bottomAvatar;
-//		String topPlayerName;
-//		String bottomPlayerName;
-//		String topPlayerRating;
-//		String bottomPlayerRating;
-//		String topPlayerAvatar;
-//		String bottomPlayerAvatar;
-//		String topPlayerCountry;
-//		String bottomPlayerCountry;
-//		int userSide;
-//
-//		int getOpponentSide() {
-//			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
-//		}
-//	}
-
-	private class ImageUpdateListener extends ImageReadyListenerLight {
-
-		private static final int TOP_AVATAR = 0;
-		private static final int BOTTOM_AVATAR = 1;
-		private int code;
-
-		private ImageUpdateListener(int code) {
-			this.code = code;
-		}
-
-		@Override
-		public void onImageReady(Bitmap bitmap) {
-			Activity activity = getActivity();
-			if (activity == null/* || bitmap == null*/) {
-				Log.e("TEST", "ImageLoader bitmap == null");
-				return;
-			}
-			switch (code) {
-				case TOP_AVATAR:
-					logTest("top avatar loaded");
-					labelsConfig.topAvatar = new BoardAvatarDrawable(activity, bitmap);
-
-					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
-					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-					topPanelView.invalidate();
-
-					break;
-				case BOTTOM_AVATAR:
-					logTest("bottom avatar loaded");
-					labelsConfig.bottomAvatar = new BoardAvatarDrawable(activity, bitmap);
-
-					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
-					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-					bottomPanelView.invalidate();
-					break;
-			}
 		}
 	}
 
