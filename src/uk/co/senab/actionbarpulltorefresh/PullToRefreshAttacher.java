@@ -919,7 +919,6 @@ public class PullToRefreshAttacher implements View.OnTouchListener {
 			if (DEBUG) {
 				Log.d(LOG_TAG, "fitSystemWindows: " + insets.toString());
 			}
-			Log.d("TEST", "fitSystemWindows: " + insets.toString());
 
 			new AppData(getContext()).setPullHeaderTopInset(insets.top);
 

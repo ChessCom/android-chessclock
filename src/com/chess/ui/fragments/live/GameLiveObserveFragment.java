@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.live;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -14,6 +15,8 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.views.PanelInfoGameView;
+import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.LogMe;
 import com.chess.widgets.RoboButton;
 
@@ -30,11 +33,9 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 		try {
 			LiveChessService liveService = getLiveService();
-			liveService.setGameTaskListener(gameTaskListener);
-			liveService.setLccEventListener(this);
 			liveService.setLccObserveEventListener(this);
 
-			liveService.runObserveTopGameTask();
+			liveService.runObserveTopGameTask(new ObserveTaskListener());
 
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
@@ -45,44 +46,18 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.live);
+		setTitle(R.string.top_game);
 
 		widgetsInit(view);
 		boardView.lockBoard(true);
 		boardView.lockBoardControls(false);
-		/*try {
-			init();
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-		}*/
+
 		enableSlideMenus(false);
 	}
 
 	@Override
-	public void startGameFromService() {
-
-		FragmentActivity activity = getActivity();
-		if (activity == null) {
-			return;
-		}
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					init();
-					getControlsView().showHome(true);
-
-				} catch (DataNotValidException e) {
-					logLiveTest(e.getMessage());
-				}
-			}
-		});
-
-		super.startGameFromService();
-	}
-
-	@Override
 	protected void onGameStarted() throws DataNotValidException {
+		init();
 		super.onGameStarted();
 
 		getControlsView().showDefault();
@@ -106,9 +81,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			controlsView.enableAnalysisMode(true);
 			getBoardFace().setFinished(true);
 		}
-		//liveService.setLccEventListener(this);
 		liveService.setLccChatMessageListener(this);
-		//liveService.setGameTaskListener(gameTaskListener);
 
 		{// fill labels
 			labelsConfig = new LabelsConfig();
@@ -131,15 +104,35 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-			/*String opponentName;
-			if (isUserColorWhite()) {
-				opponentName = currentGame.getBlackUsername();
+			String topAvatarUrl = liveService.getCurrentGame()
+					.getOpponentForPlayer(currentGame.getWhiteUsername()).getAvatarUrl();
+			String bottomAvatarUrl = liveService.getCurrentGame()
+					.getOpponentForPlayer(currentGame.getBlackUsername()).getAvatarUrl();
+			logTest("topAvatarUrl = " + topAvatarUrl);
+			logTest("bottomAvatarUrl = " + bottomAvatarUrl);
+			if (topAvatarUrl != null && !topAvatarUrl.contains(".gif")) {
+				imageDownloader.download(topAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 			} else {
-				opponentName = currentGame.getWhiteUsername();
+				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+						R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+				labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+				topPanelView.invalidate();
 			}
 
-			String opponentAvatarUrl = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
-			imageDownloader.download(opponentAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);*/
+			if (bottomAvatarUrl != null && !bottomAvatarUrl.contains(".gif")) {
+				imageDownloader.download(bottomAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+			} else {
+				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+						R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+				labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+				bottomPanelView.invalidate();
+			}
 		}
 
 		/*int resignTitleId = liveService.getResignTitle();
@@ -193,7 +186,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 				}
 				liveService.rematch();
 			}
-			dismissDialogs();
+			dismissEndGameDialog();
 		} else {
 			super.onClick(view);
 		}
@@ -251,4 +244,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		}
 		super.goHome();
 	}
+
+	private class ObserveTaskListener extends ChessLoadUpdateListener<Void> {
+		public ObserveTaskListener() {
+			super();
+		}
+	}
+
 }

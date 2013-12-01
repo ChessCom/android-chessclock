@@ -275,21 +275,17 @@ public class AppData {
 		setBooleanValue(IS_LIVE_CHESS_ON, enabled);
 	}
 
-	public void incrementLiveConnectAttempts(Context context) {
-		SharedPreferences.Editor editor = preferences.edit();
-		int attempts = getLiveConnectAttempts(context);
-		editor.putInt(AppConstants.LIVE_CONNECT_ATTEMPTS, ++attempts);
-		editor.commit();
+	public void incrementLiveConnectAttempts() {
+		int attempts = getLiveConnectAttempts();
+		setIntValue(AppConstants.LIVE_CONNECT_ATTEMPTS, ++attempts);
 	}
 
-	public int getLiveConnectAttempts(Context context) {;
-		return preferences.getInt(AppConstants.LIVE_CONNECT_ATTEMPTS, 0);
+	public int getLiveConnectAttempts() {
+		return getIntValue(LIVE_CONNECT_ATTEMPTS, 0);
 	}
 
-	public void resetLiveConnectAttempts(Context context) {
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.putInt(AppConstants.LIVE_CONNECT_ATTEMPTS, 0);
-		editor.commit();
+	public void resetLiveConnectAttempts() {
+		setIntValue(LIVE_CONNECT_ATTEMPTS, 0);
 	}
 
 	public int getDefaultDailyMode() {

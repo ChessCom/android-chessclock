@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.LiveChessService;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
@@ -28,7 +29,6 @@ import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
-import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -57,6 +57,7 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 	private TextView friendRealName2Txt;
 	private String firstFriendUserName;
 	private String secondFriendUserName;
+	private View currentGameHeaderView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,7 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 			if (need2update) {
 				boolean haveSavedData = DbDataManager.haveSavedLiveArchiveGame(getActivity(), getUsername());
 
-				if (AppUtils.isNetworkAvailable(getActivity())) {
+				if (isNetworkAvailable()) {
 					updateData();
 				}
 
@@ -110,6 +111,15 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 		new LoadDataFromDbTask(archiveGamesCursorUpdateListener,
 				DbHelper.getLiveArchiveListGames(getUsername()),
 				getContentResolver()).executeTask();
+	}
+
+	@Override
+	protected void addCurrentGameItem(LiveChessService liveService) {
+		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
+			currentGameHeaderView.setVisibility(View.VISIBLE);
+		} else {
+			currentGameHeaderView.setVisibility(View.GONE);
+		}
 	}
 
 	private void loadRecentOpponents() {
@@ -237,6 +247,13 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 				fragmentByTag = new GameLiveObserveFragment();
 			}
 			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
+		} else if (id == R.id.currentGameHeaderView) {
+			Fragment fragmentByTag;
+				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveFragmentTablet.class.getSimpleName());
+			if (fragmentByTag == null) {
+				fragmentByTag = new GameLiveFragmentTablet();
+			}
+			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
 		} else if (id == R.id.statsHeaderView) {
 			getActivityFace().openFragment(new StatsGameFragment());
 		} else if (id == R.id.statsView1) {
@@ -356,6 +373,9 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 		view.findViewById(R.id.statsView1).setOnClickListener(this);
 		view.findViewById(R.id.statsView2).setOnClickListener(this);
 		view.findViewById(R.id.archiveHeaderView).setOnClickListener(this);
+
+		currentGameHeaderView = view.findViewById(R.id.currentGameHeaderView);
+		currentGameHeaderView.setOnClickListener(this);
 
 		inviteFriendView1 = view.findViewById(R.id.inviteFriendView1);
 		inviteFriendView2 = view.findViewById(R.id.inviteFriendView2);

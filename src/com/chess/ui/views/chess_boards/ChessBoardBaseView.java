@@ -1129,7 +1129,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					boardBackPaint.setShader(setBoardFromResource());
 					return;
 				}
-				Log.e("TEST", " boardBitmap size = " + viewWidth);
 
 				boardBitmap = Bitmap.createScaledBitmap(boardBitmap, (int) viewWidth, (int) viewWidth, true);
 
@@ -1179,7 +1178,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		boardBitmap = drawable.getBitmap();
 
 		int bitmapSize = (int) Math.ceil(viewWidth / 4);
-		Log.e("TEST", " boardBitmap size = " + bitmapSize);
+//		Log.e("TEST", " boardBitmap size = " + bitmapSize);
 		boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
 		shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 		return shader;

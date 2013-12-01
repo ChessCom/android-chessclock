@@ -661,7 +661,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		if (view.getId() == R.id.newGamePopupBtn) {
 			newGame();
-			dismissDialogs();
+			dismissEndGameDialog();
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			// change sides
 			int mode = compGameConfig.getMode();
@@ -670,7 +670,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			} else if (mode == AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK) {
 				compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
 			}
-			dismissDialogs();
+			dismissEndGameDialog();
 
 			startNewGame();
 		}  else if (view.getId() == R.id.shareBtn) {
@@ -681,7 +681,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
 			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
 			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
-			dismissDialogs();
+			dismissEndGameDialog();
 		}
 	}
 

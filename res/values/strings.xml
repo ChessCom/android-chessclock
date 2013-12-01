@@ -421,6 +421,7 @@
 	<string name="cotent">Content</string>
 	<string name="comments">Comments</string>
 	<string name="download_comlete">Download complete</string>
+	<string name="live_game_ready">Live Game Ready!</string>
 
 	<!--Navigation Menu-->
 

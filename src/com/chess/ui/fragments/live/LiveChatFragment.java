@@ -63,7 +63,6 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 				listView.setAdapter(messagesAdapter);
 
 				showKeyBoard(sendEdt);
-				liveService.setLccChatMessageListener(this);
 				updateList();
 			} catch (DataNotValidException e) {
 				logTest(e.getMessage());

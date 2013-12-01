@@ -142,7 +142,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		super.onPause();
 
 		if (HONEYCOMB_PLUS_API) {
-			dismissDialogs();
+			dismissEndGameDialog();
 		}
 	}
 
@@ -599,11 +599,11 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.newGamePopupBtn) {
-			dismissDialogs();
+			dismissEndGameDialog();
 			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
-			dismissDialogs();
+			dismissEndGameDialog();
 		}
 	}
 

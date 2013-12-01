@@ -8,17 +8,18 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.chess.R;
-import com.chess.widgets.RoboButton;
 import com.chess.ui.interfaces.boards.BoardViewFace;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.ui.views.drawables.smart_button.RectButtonDrawable;
 import com.chess.utilities.FontsHelper;
+import com.chess.widgets.RoboButton;
 
 import java.util.HashMap;
 

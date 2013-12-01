@@ -9,6 +9,7 @@ import com.chess.model.GameLiveItem;
  * @created at: 24.05.12 21:47
  */
 public interface LccEventListener {
+
     void setWhitePlayerTimer(String timer);
 
     void setBlackPlayerTimer(String timer);

@@ -1,8 +1,7 @@
 package com.chess.lcc.android;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.content.Intent;
 import android.util.Log;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
@@ -18,11 +17,7 @@ import com.chess.live.util.GameRatingClass;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.GameType;
 import com.chess.model.GameLiveItem;
-import com.chess.statics.AppConstants;
-import com.chess.statics.AppData;
-import com.chess.statics.FlurryData;
-import com.chess.statics.Symbol;
-import com.chess.ui.engine.ChessBoardLive;
+import com.chess.statics.*;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
@@ -56,6 +51,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private final LccFriendStatusListener friendStatusListener;
 	private final LccAnnouncementListener announcementListener;
 	private final LccAdminEventListener adminEventListener;
+	private final AppData appData;
 	private LiveChessClient lccClient;
 	private User user;
 
@@ -102,7 +98,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		this.liveService = liveService;
 		this.context = context;
 		this.lccConnectUpdateListener = lccConnectUpdateListener;
-
+		appData = new AppData(context);
 		chatListener = new LccChatListener(this);
 		connectionListener = new LccConnectionListener(this);
 		gameListener = new LccGameListener(this);
@@ -494,9 +490,8 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		liveConnected = connected;
 		if (connected) {
 
-			new AppData(context).resetLiveConnectAttempts(context);
+			appData.resetLiveConnectAttempts();
 
-			//AppData.resetLiveConnectAttempts(context);
 			connectionFailure = false;
 
 			liveChessClientEventListener.onConnectionEstablished();
@@ -511,10 +506,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			lccClient.subscribeToAdminEvents(adminEventListener);
 			lccClient.subscribeToAnnounces(announcementListener);
 
-			ConnectivityManager connectivityManager = (ConnectivityManager)
-					context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-			//updateNetworkType(activeNetworkInfo.getTypeName());
+//			ConnectivityManager connectivityManager = (ConnectivityManager)
+//					context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+//			updateNetworkType(activeNetworkInfo.getTypeName());
 		}
 		liveChessClientEventListener.onConnectionBlocked(!connected);
 	}
@@ -925,15 +920,19 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 //		}
 
 		latestMoveNumber = 0; // it was null before
-		ChessBoardLive.resetInstance();
+//		ChessBoardLive.resetInstance(); // TODO why is it here??? LccHelper shouldn't know anything about GameBoard!
 		initClock();
 
-		Log.d(TAG, "processFullGame: lccEventListener=" + lccEventListener);
+		Log.d(TAG, "processFullGame: lccEventListener = " + lccEventListener);
+
+		if (!getCurrentGame().isTopObserved()) {
+			context.sendBroadcast(new Intent(IntentConstants.START_LIVE_GAME));
+		}
 
 		// todo: probably determine my/observed game listeners
-		if (lccEventListener != null) {
+//		if (lccEventListener != null) {
 			lccEventListener.startGameFromService();
-		}
+//		}
 	}
 
 	public Integer getLatestMoveNumber() {

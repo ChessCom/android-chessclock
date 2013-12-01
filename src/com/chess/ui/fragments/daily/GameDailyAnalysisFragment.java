@@ -123,7 +123,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 		DataHolder.getInstance().setInOnlineGame(gameId, false);
 		if (HONEYCOMB_PLUS_API) {
-			dismissDialogs();
+			dismissEndGameDialog();
 		}
 	}
 
@@ -459,7 +459,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.newGamePopupBtn) {
-			dismissDialogs();
+			dismissEndGameDialog();
 			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 		}
 	}

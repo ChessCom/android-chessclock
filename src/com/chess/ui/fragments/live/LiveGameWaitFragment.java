@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.live;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import com.chess.backend.LiveChessService;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.LiveBaseFragment;
+import com.chess.utilities.LogMe;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,7 +43,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment /*implements LccEvent
 		if (getArguments() != null) {
 			liveGameConfig = getArguments().getParcelable(CONFIG);
 		} else {
-			// when is it really reachable for fragment?
+			// when is it really reachable for fragment? // when fragment was killed and system restores it passing here savedInstance
 			liveGameConfig = savedInstanceState.getParcelable(CONFIG);
 		}
 	}
@@ -125,8 +127,33 @@ public class LiveGameWaitFragment extends LiveBaseFragment /*implements LccEvent
 
 	@Override
 	public void startGameFromService() {
-		super.startGameFromService();
-		closeOnResume = true;
+		LogMe.dl("lcc", "startGameFromService");
+
+		final Activity activity = getActivity();
+		if (activity != null) {
+			activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					LiveChessService liveService;
+					try {
+						liveService = getLiveService();
+					} catch (DataNotValidException e) {
+						logTest(e.getMessage());
+						showToast(e.getMessage() + " go back");
+						getActivityFace().showPreviousFragment();   // TODO handle correctly
+						return;
+					}
+					loadingView.setVisibility(View.GONE);
+					logTest("challenge created, ready to start");
+
+					Long gameId = liveService.getCurrentGameId();
+					logTest("gameId = " + gameId);
+					getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
+
+					closeOnResume = true;
+				}
+			});
+		}
 	}
 
 	@Override

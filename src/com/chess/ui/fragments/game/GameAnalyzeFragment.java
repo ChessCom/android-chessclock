@@ -97,7 +97,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		super.onPause();
 
 		if (HONEYCOMB_PLUS_API) {
-			dismissDialogs();
+			dismissEndGameDialog();
 		}
 	}
 

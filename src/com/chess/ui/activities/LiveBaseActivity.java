@@ -152,7 +152,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (getAppData().isLiveChess() && isLCSBound) {
 				Fragment fragmentByTag = getLiveFragment();
@@ -242,7 +241,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		} else if (tag.contains(CHALLENGE_TAG)) { // Challenge accepted!
 			Log.i(TAG, "Accept challenge: " + currentChallenge);
 			liveService.declineAllChallenges(currentChallenge);
-			liveService.runAcceptChallengeTask(currentChallenge);
+			liveService.runAcceptChallengeTask(currentChallenge); // TODO where is the end point of this call? We should go to wait screen after that
 
 
 			popupChallengesList.remove(fragment);
@@ -251,7 +250,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		} else if (tag.equals(EXIT_GAME_TAG)) {
 			liveService.runMakeResignAndExitTask();
-
+			onBackPressed();
 		}
 		super.onPositiveBtnClick(fragment);
 	}
@@ -298,7 +297,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
-				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
+				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 			}
 			if (isLCSBound) {
 				onLiveServiceConnected();
@@ -327,8 +326,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				return;
 			}
 			for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-				if (fragment != null) {
+				if (fragment != null && fragment.isVisible()) {
 					if (fragment instanceof LiveBaseFragment) {
+						((LiveBaseFragment) fragment).onLiveServiceConnected();
 						((LiveBaseFragment) fragment).setLCSBound(isLCSBound);
 					}
 				}
@@ -340,15 +340,16 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		public void onServiceDisconnected(ComponentName componentName) {
 			LogMe.dl(TAG, "SERVICE: onServiceDisconnected");
 			isLCSBound = false;
-			LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
-			if (waitFragment != null) {
-				waitFragment.setLCSBound(isLCSBound);
+			if (getSupportFragmentManager() == null) {
 				return;
 			}
-
-			LiveHomeFragment liveHomeFragment = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
-			if (liveHomeFragment != null) {
-				liveHomeFragment.setLCSBound(isLCSBound);
+			for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+				if (fragment != null && fragment.isVisible()) {
+					if (fragment instanceof LiveBaseFragment) {
+						((LiveBaseFragment) fragment).onLiveServiceDisconnected();
+						((LiveBaseFragment) fragment).setLCSBound(isLCSBound);
+					}
+				}
 			}
 		}
 
@@ -357,9 +358,22 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					onLiveServiceConnected();
+					onLiveClientConnected();
 				}
 			});
+		}
+	}
+
+	protected void onLiveClientConnected() {
+		if (getSupportFragmentManager() == null) {
+			return;
+		}
+		for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+			if (fragment != null && fragment.isVisible()) {
+				if (fragment instanceof LiveBaseFragment) {
+					((LiveBaseFragment) fragment).onLiveClientConnected();
+				}
+			}
 		}
 	}
 
@@ -653,12 +667,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	protected void onLiveServiceConnected() {
-//		LogMe.dl("TEST", "onLiveConnected callback, liveService.isConnected() = " + liveService.isConnected()
-//				+ " in " + LiveBaseActivity.this);
-//		LogMe.dl(TAG, " onLiveServiceConnected callback, liveService.isConnected() = " + liveService.isConnected());
-//		getActionBarHelper().showMenuItemById(R.id.menu_signOut, liveService.isConnected());
-
-		LogMe.dl(TAG, "onLiveServiceConnected: liveService.getLccHelper()=" + liveService.getLccHelper());
+		LogMe.dl(TAG, "onLiveServiceConnected: liveService.getLccHelper() = " + liveService.getLccHelper());
 		if (liveService.getLccHelper() == null) {
 			return;
 		}
@@ -666,25 +675,36 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		liveService.setOuterChallengeListener(outerChallengeListener);
 		liveService.setChallengeTaskListener(challengeTaskListener);
 
-		GameLiveFragment gameLiveFragment = getLiveFragment();
-		LogMe.dl(TAG, "onLiveServiceConnected: gameLiveFragment=" + gameLiveFragment);
-		if (gameLiveFragment != null) {
-			gameLiveFragment.onLiveServiceConnected();
+		if (getSupportFragmentManager() == null) {
 			return;
 		}
-
-		LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
-		LogMe.dl(TAG, "onLiveServiceConnected: waitFragment=" + waitFragment);
-		if (waitFragment != null) {
-			waitFragment.onLiveServiceConnected();
-			return;
+		for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+			if (fragment != null && fragment.isVisible()) {
+				if (fragment instanceof LiveBaseFragment) {
+					((LiveBaseFragment)fragment).onLiveServiceConnected();
+				}
+			}
 		}
 
-		LiveHomeFragment liveHomeFragment = getLiveHomeFragment();
-		LogMe.dl(TAG, "onLiveServiceConnected: liveHomeFragment=" + liveHomeFragment);
-		if (liveHomeFragment != null) {
-			liveHomeFragment.onLiveServiceConnected();
-		}
+//		GameLiveFragment gameLiveFragment = getLiveFragment();
+//		LogMe.dl(TAG, "onLiveServiceConnected: gameLiveFragment=" + gameLiveFragment);
+//		if (gameLiveFragment != null) {
+//			gameLiveFragment.onLiveServiceConnected();
+//			return;
+//		}
+//
+//		LiveGameWaitFragment waitFragment = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
+//		LogMe.dl(TAG, "onLiveServiceConnected: waitFragment=" + waitFragment);
+//		if (waitFragment != null) {
+//			waitFragment.onLiveServiceConnected();
+//			return;
+//		}
+//
+//		LiveHomeFragment liveHomeFragment = getLiveHomeFragment();
+//		LogMe.dl(TAG, "onLiveServiceConnected: liveHomeFragment=" + liveHomeFragment);
+//		if (liveHomeFragment != null) {
+//			liveHomeFragment.onLiveServiceConnected();
+//		}
 	}
 
 	protected GameLiveFragment getLiveFragment() {

@@ -193,7 +193,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void onPause() {
-		dismissDialogs();
+		dismissEndGameDialog();
 		super.onPause();
 
 		stopTacticsTimer();
@@ -267,7 +267,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	@Override
-	protected void dismissDialogs() {
+	protected void dismissEndGameDialog() {
 		if (findFragmentByTag(WRONG_MOVE_TAG) != null) {
 			((BasePopupDialogFragment) findFragmentByTag(WRONG_MOVE_TAG)).dismiss();
 		}
@@ -1066,7 +1066,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		super.onClick(view);
 		if (view.getId() == R.id.upgradeBtn) {
 
-			dismissDialogs();
+			dismissEndGameDialog();
 
 			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {
 				FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_TACTICS);
@@ -1077,7 +1077,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				}
 			}
 		} else if (view.getId() == R.id.cancelBtn) {
-			dismissDialogs();
+			dismissEndGameDialog();
 
 			if (TacticsDataHolder.getInstance().isTacticLimitReached()) {  // should be only way it was clicked
 				cancelTacticAndLeave();

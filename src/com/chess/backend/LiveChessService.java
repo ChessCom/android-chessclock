@@ -3,16 +3,12 @@ package com.chess.backend;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Binder;
 import android.os.IBinder;
 import com.chess.R;
 import com.chess.backend.entity.api.ChatItem;
-import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;
@@ -165,7 +161,7 @@ public class LiveChessService extends Service {
 
 			startForeground(R.drawable.ic_stat_live, notification);
 
-//			onLiveConnected();
+//			onLiveConnected(); // useless here because doesn't have user at that moment
 		}
 	}
 
@@ -173,56 +169,61 @@ public class LiveChessService extends Service {
 		return this;
 	}
 
-	private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(final Context context, final Intent intent) {
-
-			// todo: improve and refactor, just used old code.
-			// OtherClientEntered problem is here
-
-			if (!appData.isLiveChess()) {
-				return;
-			}
-
-			//LccHelper lccHolder = LccHelper.getInstance(context);
-
-			boolean failover = intent.getBooleanExtra("FAILOVER_CONNECTION", false);
-			LogMe.dl(TAG, "NetworkChangeReceiver failover=" + failover);
-
-			final ConnectivityManager connectivityManager = (ConnectivityManager)
-					context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-			final NetworkInfo wifi =
-					connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-			final NetworkInfo mobile =
-					connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-
-			LogMe.dl(TAG, "NetworkChangeReceiver failover wifi=" + wifi.isFailover() + ", mobile=" + mobile.isFailover());
-
-			NetworkInfo[] networkInfo
-					= connectivityManager.getAllNetworkInfo();
-
-			for (int i = 0; i < networkInfo.length; i++) {
-				if (networkInfo[i].isConnected()) {
-					LogMe.dl(TAG, "NetworkChangeReceiver isConnected " + networkInfo[i].getTypeName());
-
-					// todo: check NPE
-					if (lccHelper.getNetworkTypeName() != null && !networkInfo[i].getTypeName().equals(lccHelper.getNetworkTypeName())) {
-
-						/*((LiveChessClientImpl) lccHelper.getClient()).leave();
-						lccHelper.runConnectTask();*/
-
-						//setNetworkChangedNotification(true);
-						lccHelper.getContext().sendBroadcast(new Intent("com.chess.lcc.android-network-change"));
-					} else {
-						lccHelper.setNetworkTypeName(networkInfo[i].getTypeName());
-					}
-				}
-			}
-		}
-	};
+//	private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
+//
+//		@Override
+//		public void onReceive(final Context context, final Intent intent) {
+//
+//			// todo: improve and refactor, just used old code.
+//			// OtherClientEntered problem is here
+//
+//			if (!appData.isLiveChess()) {
+//				return;
+//			}
+//
+//			//LccHelper lccHolder = LccHelper.getInstance(context);
+//
+//			boolean failOver = intent.getBooleanExtra("FAIL_OVER_CONNECTION", false);
+//			LogMe.dl(TAG, "NetworkChangeReceiver failOver=" + failOver);
+//
+//			final ConnectivityManager connectivityManager = (ConnectivityManager)
+//					context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//
+//			final NetworkInfo wifi =
+//					connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+//
+//			final NetworkInfo mobile =
+//					connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+//
+//			if (wifi != null && mobile != null) {
+//				LogMe.dl(TAG, "NetworkChangeReceiver failOver wifi=" + wifi.isFailover() + ", mobile=" + mobile.isFailover());
+//			}
+//
+//			NetworkInfo[] networkInfo
+//					= connectivityManager.getAllNetworkInfo();
+//
+//			if (networkInfo != null) {
+//				for (NetworkInfo aNetworkInfo : networkInfo) {
+//					if (aNetworkInfo.isConnected()) {
+//						LogMe.dl(TAG, "NetworkChangeReceiver isConnected " + aNetworkInfo.getTypeName());
+//
+//						// todo: check NPE
+//						if (lccHelper.getNetworkTypeName() != null && !aNetworkInfo.getTypeName().equals(lccHelper.getNetworkTypeName())) {
+//
+//						/*((LiveChessClientImpl) lccHelper.getClient()).leave();
+//						lccHelper.runConnectTask();*/
+//
+//							//setNetworkChangedNotification(true);
+//							lccHelper.getContext().sendBroadcast(new Intent("com.chess.lcc.android-network-change"));
+//						} else {
+//							lccHelper.setNetworkTypeName(aNetworkInfo.getTypeName());
+//						}
+//					}
+//				}
+//
+//			}
+//		}
+//	};
 
 	// ------------------- Task runners wrapping ------------------------
 
@@ -453,9 +454,9 @@ public class LiveChessService extends Service {
 		lccHelper.createChallenge(config);
 	}
 
-	public void observeTopGame() {
-		lccHelper.observeTopGame();
-	}
+//	public void observeTopGame() {
+//		lccHelper.observeTopGame();
+//	}
 
 	public void sendMessage(String message, TaskUpdateInterface<String> taskFace) {
 		new SendLiveMessageTask(taskFace, message).executeTask(lccHelper.getCurrentGameId());
@@ -477,15 +478,20 @@ public class LiveChessService extends Service {
 		}
 	}
 
-	public void runObserveTopGameTask() {
-		new ObserveTopGameTask().execute();
+	public void runObserveTopGameTask(TaskUpdateInterface<Void> taskFace) {
+		new ObserveTopGameTask(taskFace).execute();
 	}
 
-	private class ObserveTopGameTask extends AsyncTask<Void, Void, Void> {
+	private class ObserveTopGameTask extends AbstractUpdateTask<Void, Void> {
+
+		public ObserveTopGameTask(TaskUpdateInterface<Void> taskFace) {
+			super(taskFace);
+		}
+
 		@Override
-		protected Void doInBackground(Void... voids) {
+		protected Integer doTheTask(Void... params) {
 			lccHelper.observeTopGame();
-			return null;
+			return StaticData.RESULT_OK;
 		}
 	}
 

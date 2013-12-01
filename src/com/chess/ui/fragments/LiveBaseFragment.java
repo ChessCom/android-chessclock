@@ -2,8 +2,6 @@ package com.chess.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.view.View;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.DataNotValidException;
@@ -13,7 +11,6 @@ import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.fragments.live.GameLiveFragment;
-import com.chess.utilities.LogMe;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,7 +18,7 @@ import com.chess.utilities.LogMe;
  * Date: 11.04.13
  * Time: 13:06
  */
-public class LiveBaseFragment extends CommonLogicFragment implements LccEventListener {
+public abstract class LiveBaseFragment extends CommonLogicFragment implements LccEventListener {
 
 	protected LiveBaseActivity liveBaseActivity;
 	private LiveChessService liveService;
@@ -34,10 +31,7 @@ public class LiveBaseFragment extends CommonLogicFragment implements LccEventLis
 
 		liveBaseActivity = (LiveBaseActivity) activity;
 		if (getAppData().isLiveChess()) {
-			if (liveBaseActivity.isLCSBound()) {
-				isLCSBound = true;
-				liveService = liveBaseActivity.getLiveService();
-			}
+			setLCSBound(liveBaseActivity.isLCSBound());
 		}
 	}
 
@@ -46,6 +40,23 @@ public class LiveBaseFragment extends CommonLogicFragment implements LccEventLis
 		super.onCreate(savedInstanceState);
 
 		gameTaskListener = new GameTaskListener();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		// update state of inherited fragments re-registering services
+		if (isLCSBound) {
+			LiveChessService liveChessService;
+			try {
+				liveChessService = getLiveService();
+				liveChessService.setLccEventListener(this);
+				liveChessService.setGameTaskListener(gameTaskListener);
+			} catch (DataNotValidException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	protected LiveChessService getLiveService() throws DataNotValidException {
@@ -66,25 +77,27 @@ public class LiveBaseFragment extends CommonLogicFragment implements LccEventLis
 	}
 
 	public void onLiveServiceConnected() {
-		LiveChessService liveService;
-		try {
-			liveService = getLiveService();
-		} catch (DataNotValidException e) {
-			logTest(e.getMessage());
-			showToast(e.getMessage());
-			backToHomeFragment();
-			return;
-		}
-		liveService.setLccEventListener(this);
-		liveService.setGameTaskListener(gameTaskListener);
-
-		if (liveService.isActiveGamePresent()) {
-			synchronized(LccHelper.LOCK) {
-				liveService.processFullGame();
-			}
-		} else {
-			createSeek();
-		}
+//		logTest("Live Base onLiveServiceConnected");
+//		showToast("Live Base onLiveServiceConnected");
+//		LiveChessService liveService;
+//		try {
+//			liveService = getLiveService();
+//		} catch (DataNotValidException e) {
+//			logTest(e.getMessage());
+//			showToast(e.getMessage());
+////			backToHomeFragment(); // don't throw back for a while
+//			return;
+//		}
+//		liveService.setLccEventListener(this);
+//		liveService.setGameTaskListener(gameTaskListener);
+//
+//		if (liveService.isActiveGamePresent()) {
+//			synchronized(LccHelper.LOCK) {
+//				liveService.processFullGame();
+//			}
+//		} else {
+//			createSeek();
+//		}
 	}
 
 	public void onLiveServiceDisconnected() {
@@ -120,32 +133,7 @@ public class LiveBaseFragment extends CommonLogicFragment implements LccEventLis
 
 	@Override
 	public void startGameFromService() {
-		LogMe.dl("lcc", "startGameFromService");
 
-		final FragmentActivity activity = getActivity();
-		if (activity != null) {
-			activity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					LiveChessService liveService;
-					try {
-						liveService = getLiveService();
-					} catch (DataNotValidException e) {
-						logTest(e.getMessage());
-						getActivityFace().showPreviousFragment();   // TODO handle correctly
-						return;
-					}
-					loadingView.setVisibility(View.GONE);
-					logTest("challenge created, ready to start");
-
-					Long gameId = liveService.getCurrentGameId();
-					logTest("gameId = " + gameId);
-					getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
-
-//					closeOnResume = true;
-				}
-			});
-		}
 	}
 
 	@Override
@@ -176,6 +164,31 @@ public class LiveBaseFragment extends CommonLogicFragment implements LccEventLis
 	protected class GameTaskListener extends ActionBarUpdateListener<Game> {
 		public GameTaskListener() {
 			super(getInstance());
+		}
+	}
+
+	public void onLiveClientConnected() {
+		logTest("Live Base onLiveClientConnected");
+//		showToast("Live Base onLiveClientConnected");
+		LiveChessService liveService;
+		try {
+			liveService = getLiveService();
+		} catch (DataNotValidException e) {
+			logTest("onLiveClientConnected - " + e.getMessage());
+			showToast("onLiveClientConnected - " + e.getMessage());
+//			backToHomeFragment(); // don't throw back for a while
+			return;
+		}
+		liveService.setLccEventListener(this);
+		liveService.setGameTaskListener(gameTaskListener);
+
+		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
+			synchronized(LccHelper.LOCK) {
+				Long gameId = liveService.getCurrentGameId();
+				getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
+			}
+		} else {
+			createSeek();
 		}
 	}
 

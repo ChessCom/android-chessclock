@@ -2,12 +2,12 @@ package com.chess.lcc.android;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.FlurryData;
-import com.chess.statics.StaticData;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.Game;
 import com.chess.live.client.LiveChessClient;
+import com.chess.statics.FlurryData;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import com.flurry.android.FlurryAgent;
 
 import java.util.HashMap;

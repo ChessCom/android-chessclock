@@ -156,7 +156,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		if (need2update) {
 			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), getUsername());
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				updateData();
 			} else if (!haveSavedData) {
 				emptyView.setText(R.string.no_network);

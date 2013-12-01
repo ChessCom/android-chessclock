@@ -41,6 +41,8 @@ import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
+import com.chess.ui.fragments.live.LiveHomeFragment;
+import com.chess.ui.fragments.live.LiveHomeFragmentTablet;
 import com.chess.ui.fragments.welcome.SignInFragment;
 import com.chess.ui.fragments.welcome.SignUpFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
@@ -132,6 +134,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private AbsListView listView;
 	private boolean usePullToRefresh;
 	protected boolean isTablet;
+	private IntentFilter startLIveGameFilter;
+	private StartLiveGameReceiver startLiveGameReceiver;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -167,6 +171,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		imageFetcher = new SmartImageFetcher(getActivity());
 		imageFetcher.setLoadingImage(R.drawable.img_profile_picture_stub);
 		imageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
+
+		startLIveGameFilter = new IntentFilter(IntentConstants.START_LIVE_GAME);
 	}
 
 	@Override
@@ -259,6 +265,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (loadingImages) {
 			imageFetcher.setExitTasksEarly(false);
 		}
+
+		// register receiver to start live game
+		startLiveGameReceiver = new StartLiveGameReceiver();
+		registerReceiver(startLiveGameReceiver, startLIveGameFilter);
 	}
 
 	@Override
@@ -275,6 +285,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 
 		dismissProgressDialog();
+
+		unRegisterMyReceiver(startLiveGameReceiver);
 	}
 
 	@Override
@@ -945,5 +957,27 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected boolean isNetworkAvailable() {
 		return getActivity() != null && AppUtils.isNetworkAvailable(getActivity());
+	}
+
+	private class StartLiveGameReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			showToast(R.string.live_game_ready);
+
+			BasePopupsFragment fragmentByTag;
+			if (!isTablet) {
+				fragmentByTag = (BasePopupsFragment) getFragmentManager().findFragmentByTag(LiveHomeFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
+					fragmentByTag = new LiveHomeFragment();
+				}
+			} else {
+				fragmentByTag = (BasePopupsFragment) getFragmentManager().findFragmentByTag(LiveHomeFragmentTablet.class.getSimpleName());
+				if (fragmentByTag == null) {
+					fragmentByTag = new LiveHomeFragmentTablet();
+				}
+			}
+
+			getActivityFace().openFragment(fragmentByTag);
+		}
 	}
 }

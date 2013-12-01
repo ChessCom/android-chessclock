@@ -245,7 +245,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		showToast(R.string.check);
 	}
 
-	protected void dismissDialogs() {
+	protected void dismissEndGameDialog() {
 		if (getEndPopupDialogFragment() != null) {
 			getEndPopupDialogFragment().dismiss();
 		}

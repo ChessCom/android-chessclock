@@ -56,11 +56,13 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	private LiveGameConfig.Builder liveGameConfigBuilder;
 	private ServerStatsUpdateListener serverStatsUpdateListener;
 	private OptionsAdapter optionsAdapter;
+	private LiveItem currentGameItem;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		currentGameItem = new LiveItem(R.string.ic_live_standard, R.string.current_game);
 		featuresList = new ArrayList<LiveItem>();
 		featuresList.add(new LiveItem(R.string.ic_binoculars, R.string.top_game));
 		featuresList.add(new LiveItem(R.string.ic_stats, R.string.stats));
@@ -98,16 +100,9 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			try {
 				if (!isLCSBound) {
 					liveBaseActivity.connectLcc();
+					showLoadingProgress(true);
 				} else {
-					LiveItem currentGameItem = new LiveItem(R.string.ic_live_standard, R.string.current_games);
-					if (getLiveService().isActiveGamePresent()) {
-						if (!featuresList.contains(currentGameItem)) {
-							featuresList.add(0, currentGameItem);
-							optionsAdapter.notifyDataSetChanged();
-						}
-					} else {
-						featuresList.remove(currentGameItem);
-					}
+					addCurrentGameItem(getLiveService());
 				}
 			} catch (DataNotValidException e) {
 				e.printStackTrace();
@@ -116,6 +111,17 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			// get online players count
 			LoadItem loadItem = LoadHelper.getServerStats();
 			new RequestJsonTask<ServersStatsItem>(serverStatsUpdateListener).executeTask(loadItem);
+		}
+	}
+
+	protected void addCurrentGameItem(LiveChessService liveService) {
+		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
+			if (!featuresList.contains(currentGameItem)) {
+				featuresList.add(0, currentGameItem);
+				optionsAdapter.notifyDataSetChanged();
+			}
+		} else {
+			featuresList.remove(currentGameItem);
 		}
 	}
 
@@ -216,6 +222,12 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	}
 
 	@Override
+	public void onLiveClientConnected() {
+		super.onLiveClientConnected();
+		showLoadingProgress(false);
+	}
+
+	@Override
 	public void startGameFromService() {
 		LogMe.dl("lcc", "startGameFromService");
 
@@ -229,17 +241,14 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 						liveService = getLiveService();
 					} catch (DataNotValidException e) {
 						logTest(e.getMessage());
-						getActivityFace().showPreviousFragment();   // TODO handle correctly
+						showToast(e.getMessage());
 						return;
 					}
-//					loadingView.setVisibility(View.GONE);
 					logTest("challenge created, ready to start");
 
 					Long gameId = liveService.getCurrentGameId();
 					logTest("gameId = " + gameId);
 					getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
-
-//					closeOnResume = true;
 				}
 			});
 		}

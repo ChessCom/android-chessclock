@@ -8,14 +8,13 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Spinner;
 import com.chess.R;
-import com.chess.widgets.SwitchButton;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.widgets.SwitchButton;
 
 /**
  * Created with IntelliJ IDEA.
@@ -154,14 +153,11 @@ public class SettingsDailyChessFragment extends CommonLogicFragment implements S
 		view.findViewById(R.id.showSubmitView).setOnClickListener(this);
 		view.findViewById(R.id.onVacationView).setOnClickListener(this);
 
-		String username = getAppData().getUsername();
-
-		showSubmitSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_SHOW_SUBMIT_MOVE_DAILY, true));
+		showSubmitSwitch.setChecked(getAppData().getShowSubmitButtonsDaily());
 
 		afterMoveSpinner = (Spinner) view.findViewById(R.id.afterMoveSpinner);
 		afterMoveSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), getItemsFromEntries(R.array.afterMyMove)));
-		int boardsPosition = preferences.getInt(username + AppConstants.PREF_ACTION_AFTER_MY_MOVE, 0);
-		afterMoveSpinner.setSelection(boardsPosition);
+		afterMoveSpinner.setSelection(getAppData().getAfterMoveAction());
 		afterMoveSpinner.setOnItemSelectedListener(this);
 	}
 

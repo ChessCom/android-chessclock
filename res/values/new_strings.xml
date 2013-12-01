@@ -369,5 +369,6 @@
 	<string name="upgrade_receiving_payments">Receiving payments</string>
 	<string name="nothing_to_share">Nothing to share</string>
 	<string name="general">General</string>
+	<string name="current_game">Current Game</string>
 
 </resources>

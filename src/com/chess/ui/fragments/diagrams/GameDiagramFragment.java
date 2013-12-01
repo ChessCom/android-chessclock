@@ -122,7 +122,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		super.onPause();
 
 		if (HONEYCOMB_PLUS_API) {
-			dismissDialogs();
+			dismissEndGameDialog();
 		}
 
 		handler.removeCallbacks(showNextMoveRunnable);
