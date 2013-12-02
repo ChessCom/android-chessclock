@@ -181,15 +181,12 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 		if (view.getId() == R.id.playBtn1) {
 			youTubePlayerFragment1 = initYoutubeFragment(R.id.youTubeFrameContainer1);
 			youTubeFrameContainer1.setVisibility(View.VISIBLE);
-			closeYouTubeBtn1.setVisibility(View.VISIBLE);
 		} else if (view.getId() == R.id.playBtn2) {
 			youTubePlayerFragment2 = initYoutubeFragment(R.id.youTubeFrameContainer2);
 			youTubeFrameContainer2.setVisibility(View.VISIBLE);
-			closeYouTubeBtn2.setVisibility(View.VISIBLE);
 		} else if (view.getId() == R.id.playBtn3) {
 			youTubePlayerFragment3 = initYoutubeFragment(R.id.youTubeFrameContainer3);
 			youTubeFrameContainer3.setVisibility(View.VISIBLE);
-			closeYouTubeBtn3.setVisibility(View.VISIBLE);
 		} else if (view.getId() == R.id.loginLinkTxt) {
 			((WelcomeTabsFragment)parentFace).openSignInFragment();
 		} else if (view.getId() == R.id.completeSignUpBtn) {
@@ -263,6 +260,7 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 					youTubePlayer1.setOnFullscreenListener(WelcomeTourFragment.this);
 					youTubePlayer1.setPlaybackEventListener(new YouTubePlaybackListener());
 					youTubePlayer1.loadVideo(YOUTUBE_DEMO_LINK1);
+					closeYouTubeBtn1.setVisibility(View.VISIBLE);
 					break;
 				case R.id.youTubeFrameContainer2:
 					if (!wasRestored) {
@@ -272,6 +270,7 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 					youTubePlayer2.setOnFullscreenListener(WelcomeTourFragment.this);
 					youTubePlayer2.setPlaybackEventListener(new YouTubePlaybackListener());
 					youTubePlayer2.loadVideo(YOUTUBE_DEMO_LINK2);
+					closeYouTubeBtn2.setVisibility(View.VISIBLE);
 					break;
 				case R.id.youTubeFrameContainer3:
 					if (!wasRestored) {
@@ -281,6 +280,7 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 					youTubePlayer3.setOnFullscreenListener(WelcomeTourFragment.this);
 					youTubePlayer3.setPlaybackEventListener(new YouTubePlaybackListener());
 					youTubePlayer3.loadVideo(YOUTUBE_DEMO_LINK3);
+					closeYouTubeBtn3.setVisibility(View.VISIBLE);
 					break;
 			}
 

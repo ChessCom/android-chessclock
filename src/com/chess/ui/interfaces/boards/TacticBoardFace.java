@@ -23,4 +23,6 @@ public interface TacticBoardFace extends BoardFace {
 	boolean isLastTacticMoveCorrect();
 
 	public boolean isLatestMoveMadeUser();
+
+	public void setPly(int ply); // need to set correct ply for tactics
 }

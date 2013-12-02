@@ -35,7 +35,6 @@ import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
-import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.comp.GameCompFragment;
@@ -90,6 +89,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	//	private static final int ID_HINT = 3;
 	private static final int ID_PERFORMANCE = 3;
 	private static final int ID_SETTINGS = 4;
+	public static final String FIRST_COMP_MOVE_PREFIX = "1. ... ";
 
 	private ChessBoardTacticsView boardView;
 
@@ -323,7 +323,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	@Override
 	public void verifyMove() {
 
-		noNetwork = !AppUtils.isNetworkAvailable(getContext());
+		noNetwork = !isNetworkAvailable();
 
 		TacticBoardFace boardFace = getBoardFace();
 
@@ -1006,20 +1006,21 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		int currentRating = getAppData().getUserTacticsRating();
 
 		bottomPanelView.setPlayerScore(currentRating);
+		String initialFen = trainerData.getInitialFen();
+//		initialFen = "r2nk1r1/pb3q1p/4p3/3p2pQ/8/BP6/PP3PPP/2R1R1K1 w q - 0 1";  // this as black, should be white
+//		initialFen = "r4rk1/ppp2pp1/7p/3P4/2P1Nnq1/5bB1/PP3PPP/R3QRK1 b - - 0 1";  // this one as white! should be black
+//		initialFen = "3r1bk1/ppq2Bpp/2p5/2P2Q2/8/1P4P1/P6P/5RK1 b - - 1 1";
+		boardFace.setupBoard(initialFen);
 
-		boardFace.setupBoard("r2nk1r1/pb3q1p/4p3/3p2pQ/8/BP6/PP3PPP/2R1R1K1 w q - 0 1");
-//		boardFace.setupBoard(trainerData.getInitialFen());
+		if (boardFace.isReside()) { // user always play at the bottom
+			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+		}
 
-		// based on FEN we detect which player is next to move
-		boolean whiteToMove = trainerData.getInitialFen().contains(FenHelper.WHITE_TO_MOVE);
-		// if whiteToMove that means that comp makes first move and user is on black side
-		labelsConfig.userSide = whiteToMove ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
-		// reside board for user to move
-		boardFace.setReside(!boardFace.isReside());
-
-		boardFace.setTacticMoves("1. Rc7 1... Qxh5 2. Re7+ Kf8 3. Rxb7+ Ke8 4. Re7+ Kf8 5. Rxh7+ Ke8 6. Rxh5");
-//		boardFace.setTacticMoves(trainerData.getCleanMoveString());
-		boardFace.setMovesCount(1);
+		String cleanMoveString = trainerData.getCleanMoveString();
+//		cleanMoveString = "1. Rc7 1... Qxh5 2. Re7+ Kf8 3. Rxb7+ Ke8 4. Re7+ Kf8 5. Rxh7+ Ke8 6. Rxh5";
+//		cleanMoveString = "1... Qh3 2. gxh3 Nxh3#";
+//		cleanMoveString = "1. ... Kh8 2. Be8 Rxe8 3. Qxf8+ Rxf8 4. Rxf8#";
+		boardFace.setTacticMoves(cleanMoveString);
 
 		if ((trainerData.isAnswerWasShowed() || trainerData.isCompleted()) && !isAnalysis) {
 			bottomPanelView.setPlayerTimeLeft(trainerData.getSecondsSpentStr());
@@ -1032,19 +1033,27 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else { // setup first move
 			startTacticsTimer(trainerData);
 
-			boardFace.makeMove(boardFace.getTacticMoves()[0], false);
+			if (cleanMoveString.startsWith(FIRST_COMP_MOVE_PREFIX)) {// means first move should do Comp
+				boardFace.setReside(!boardFace.isReside()); // flip board
 
-			// animate last move
-			boardView.resetValidMoves();
-			boardFace.takeBack();
-			boardView.invalidate();
+				boardFace.setMovesCount(1);
+				boardFace.makeMove(boardFace.getTacticMoves()[0], false);
 
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					playLastMoveAnimation();
-				}
-			}, START_DELAY);
+				// animate last move
+				boardView.resetValidMoves();
+				boardFace.takeBack();
+				boardView.invalidate();
+
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						playLastMoveAnimation();
+					}
+				}, START_DELAY);
+			} else {
+
+//				boardFace.setPly(0);
+			}
 		}
 
 		firstRun = false;
@@ -1367,15 +1376,20 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	//  ----- Incorrect first move tactics!
 //	http://www.chess.com/tactics/?id=20935 - played this as black, should be white
 	// r2nk1r1/pb3q1p/4p3/3p2pQ/8/BP6/PP3PPP/2R1R1K1 w q - 0 1
-	// 1. Rc7 1... Qxh5 2. Re7+ Kf8 3. Rxb7+ Ke8 4. Re7+ Kf8 5. Rxh7+ Ke8 6. Rxh5 *
+	// 1. Rc7 1... Qxh5 2. Re7+ Kf8 3. Rxb7+ Ke8 4. Re7+ Kf8 5. Rxh7+ Ke8 6. Rxh5
 
 //	http://www.chess.com/tactics/?id=26350 - i played this one as white! should be black
 	// r4rk1/ppp2pp1/7p/3P4/2P1Nnq1/5bB1/PP3PPP/R3QRK1 b - - 0 1
-	// 1... Qh3 2. gxh3 Nxh3# 0-1
+	// 1... Qh3 2. gxh3 Nxh3#
 //
 //	http://www.chess.com/tactics/?id=25378 - played this as black, should have been white
 	// 1r2r1k1/2q2p1p/b2p1npB/2pP4/3bNP2/1P4PB/3Q3P/1R2R1K1 w - - 0 1
     // 1. Qxd4 cxd4 2. Nxf6+ Kh8 3. Rxe8+ Rxe8 4. Bg7+ Kxg7 5. Nxe8+ Kf8 6. Nxc7
+
+	// http://www.chess.com/tactics/?id=748
+	// 3r1bk1/ppq2Bpp/2p5/2P2Q2/8/1P4P1/P6P/5RK1 b - - 1 1
+	// 1. ... Kh8 2. Be8 Rxe8 3. Qxf8+ Rxf8 4. Rxf8#
+
 
 //	http://www.chess.com/tactics/?id=24734 - played this as white, should have been black
 // ----------------------

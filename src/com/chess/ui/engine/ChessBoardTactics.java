@@ -93,4 +93,8 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 	public boolean isLatestMoveMadeUser() {
 		return ply > 0 && ply %2 == 0;
 	}
+
+	public void setPly(int ply) {
+		this.ply = ply;
+	}
 }
