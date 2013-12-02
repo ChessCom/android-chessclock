@@ -1007,7 +1007,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		bottomPanelView.setPlayerScore(currentRating);
 
-		boardFace.setupBoard(trainerData.getInitialFen());
+		boardFace.setupBoard("r2nk1r1/pb3q1p/4p3/3p2pQ/8/BP6/PP3PPP/2R1R1K1 w q - 0 1");
+//		boardFace.setupBoard(trainerData.getInitialFen());
 
 		// based on FEN we detect which player is next to move
 		boolean whiteToMove = trainerData.getInitialFen().contains(FenHelper.WHITE_TO_MOVE);
@@ -1016,7 +1017,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		// reside board for user to move
 		boardFace.setReside(!boardFace.isReside());
 
-		boardFace.setTacticMoves(trainerData.getCleanMoveString());
+		boardFace.setTacticMoves("1. Rc7 1... Qxh5 2. Re7+ Kf8 3. Rxb7+ Ke8 4. Re7+ Kf8 5. Rxh7+ Ke8 6. Rxh5");
+//		boardFace.setTacticMoves(trainerData.getCleanMoveString());
 		boardFace.setMovesCount(1);
 
 		if ((trainerData.isAnswerWasShowed() || trainerData.isCompleted()) && !isAnalysis) {
@@ -1331,7 +1333,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				case BOTTOM_AVATAR:
 					BoardAvatarDrawable boardAvatarDrawable = new BoardAvatarDrawable(getContext(), bitmap);
 					boardAvatarDrawable.setBorderThick((int) (2 * density));
-					topAvatarImg.setImageDrawable(boardAvatarDrawable);
+					bottomAvatarImg.setImageDrawable(boardAvatarDrawable);
 					bottomPanelView.invalidate();
 					break;
 			}
@@ -1361,4 +1363,27 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	// 2b2rk1/p3R2p/1r3n2/1p1p1B2/2pP4/2P4P/PP1B4/5RK1 b - - 0 1
 	// 1... Bxf5 2. Rxf5 Ne4 3. Rxf8+ Kxf8 4. Rxa7 Nxd2
+
+	//  ----- Incorrect first move tactics!
+//	http://www.chess.com/tactics/?id=20935 - played this as black, should be white
+	// r2nk1r1/pb3q1p/4p3/3p2pQ/8/BP6/PP3PPP/2R1R1K1 w q - 0 1
+	// 1. Rc7 1... Qxh5 2. Re7+ Kf8 3. Rxb7+ Ke8 4. Re7+ Kf8 5. Rxh7+ Ke8 6. Rxh5 *
+
+//	http://www.chess.com/tactics/?id=26350 - i played this one as white! should be black
+	// r4rk1/ppp2pp1/7p/3P4/2P1Nnq1/5bB1/PP3PPP/R3QRK1 b - - 0 1
+	// 1... Qh3 2. gxh3 Nxh3# 0-1
+//
+//	http://www.chess.com/tactics/?id=25378 - played this as black, should have been white
+	// 1r2r1k1/2q2p1p/b2p1npB/2pP4/3bNP2/1P4PB/3Q3P/1R2R1K1 w - - 0 1
+    // 1. Qxd4 cxd4 2. Nxf6+ Kh8 3. Rxe8+ Rxe8 4. Bg7+ Kxg7 5. Nxe8+ Kf8 6. Nxc7
+
+//	http://www.chess.com/tactics/?id=24734 - played this as white, should have been black
+// ----------------------
+	// ------ Correct examples
+	// http://www.chess.com/tactics/?id=22368
+	// 8/8/5Kpp/7k/7p/8/7P/8 w - - 0 1
+	// 1. h3 g5 2. Kf5 g4 3. hxg4# 1-0
+
+
+
 }
