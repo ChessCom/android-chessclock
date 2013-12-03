@@ -42,7 +42,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private static final int CONNECTION_FAILURE_DELAY = 2000;
 	public static final int LIVE_CONNECTION_ATTEMPTS_LIMIT = 1;
 	public static final Object LOCK = new Object();
-	private static final int CONNECTION_FAILURE_LIMIT_ATTEMPTS = 5;
+	private static final int CONNECTION_FAILURE_LIMIT_ATTEMPTS = 3;
 
 	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
@@ -387,9 +387,14 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 			// todo: change after LCC failure/fallback fixes
 
-			boolean resetClient = connectionFailureCounter > CONNECTION_FAILURE_LIMIT_ATTEMPTS;
 			connectionFailureCounter++;
-			logout(resetClient);
+			boolean resetClient = connectionFailureCounter > CONNECTION_FAILURE_LIMIT_ATTEMPTS;
+
+			if (resetClient) {
+				logout(true);
+			} else {
+				return;
+			}
 
 			// handle detail=null one time and try to reconnect
 			// we cannot autoconnect even 1 time because LCC receives extra onConnectionFailure and disconnects only after second onConnectionFailure

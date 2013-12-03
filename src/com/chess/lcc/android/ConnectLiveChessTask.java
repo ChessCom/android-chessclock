@@ -163,8 +163,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	}*/
 
 	private String getLiveHost() {
-		String liveHost = RestHelper.getInstance().HOST.equals(RestHelper.HOST_PRODUCTION) ? LIVE_HOST_PRODUCTION : LIVE_HOST_TEST;
-		return liveHost;
+		return RestHelper.HOST.equals(RestHelper.HOST_PRODUCTION) ? LIVE_HOST_PRODUCTION : LIVE_HOST_TEST;
 	}
 
 	private String getAuthUrl() {
@@ -179,7 +178,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	}
 
 	private String getWSSConnectionUrl() {
-		return "wss://" + getConfigBayeuxHost() + ":443/cometd";
+		return "wss://" + /*"zsldfngsdlf.com"*/ getConfigBayeuxHost() + ":443/cometd";
 	}
 
 	private String getHttpConnectionUrl() {
