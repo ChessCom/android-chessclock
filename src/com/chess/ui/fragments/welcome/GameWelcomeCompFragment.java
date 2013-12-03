@@ -566,7 +566,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
-	public Boolean isUserColorWhite() {
+	public boolean isUserColorWhite() {
 		return getAppData().isComputerVsHumanWhiteGameMode(getBoardFace());
 	}
 

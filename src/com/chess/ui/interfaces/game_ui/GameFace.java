@@ -13,7 +13,7 @@ public interface GameFace {
 
 	SoundPlayer getSoundPlayer();
 
-	Boolean isUserColorWhite();
+	boolean isUserColorWhite();
 
 	Long getGameId();
 
@@ -53,4 +53,6 @@ public interface GameFace {
 	void onNotationClicked(int pos);
 
 	void updateParentView();
+
+	boolean isUserAbleToMove(int color);
 }

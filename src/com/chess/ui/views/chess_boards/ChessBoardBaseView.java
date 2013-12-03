@@ -376,14 +376,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		gameFace.showOptions();
 	}
 
-	private boolean isUserWhite() {
-		return gameFace.isUserColorWhite() == null ? true : gameFace.isUserColorWhite();
+	protected boolean isUserWhite() {
+		return gameFace.isUserColorWhite();
 	}
 
-	private boolean isUserColor(int color) {
-		if (appData.isHumanVsHumanGameMode(getBoardFace())) {
+	protected boolean isUserColor(int color) {
+		/*if (appData.isHumanVsHumanGameMode(getBoardFace())) { // why do we check it for every game mode??
 			return getBoardFace().isWhiteToMove() ? color == ChessBoard.WHITE_SIDE : color == ChessBoard.BLACK_SIDE;
-		} else if (isUserWhite()) {
+		} else */if (isUserWhite()) {
 			return color == ChessBoard.WHITE_SIDE;
 		} else {
 			return color == ChessBoard.BLACK_SIDE;
@@ -872,8 +872,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		BoardFace boardFace = getBoardFace();
 		if (firstClick) {
 			from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
-			//draggingFrom = from;
-			if (isUserColor(boardFace.getColor(from)) || (boardFace.isAnalysis())) {
+
+			if (isUserAbleToMove(boardFace.getColor(from))) {
 				pieceSelected = true;
 				firstClick = false;
 				invalidate();
@@ -881,7 +881,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		} else {
 			int fromSquare = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 			// don't touch not our piece or don't make empty square as fromSquare
-			if (isUserColor(boardFace.getColor(fromSquare))
+			if (isUserAbleToMove(boardFace.getColor(fromSquare))
 					|| (boardFace.isAnalysis() && boardFace.getPiece(fromSquare) != ChessBoard.EMPTY)) {
 				from = fromSquare;
 				pieceSelected = true;
@@ -890,6 +890,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 		}
 		return true;
+	}
+
+	protected boolean isUserAbleToMove(int color) {
+		return gameFace.isUserAbleToMove(color);
 	}
 
 	protected boolean onActionMove(MotionEvent event) {
@@ -938,8 +942,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		BoardFace boardFace = getBoardFace();
 		if (firstClick) {
 			from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
-			if (isUserColor(boardFace.getColor(from))
-					|| (boardFace.isAnalysis() && boardFace.getPiece(to) != ChessBoard.EMPTY)) {
+			if (isUserAbleToMove(boardFace.getColor(from)) || (boardFace.isAnalysis() && boardFace.getPiece(to) != ChessBoard.EMPTY)) {
 				pieceSelected = true;
 				firstClick = false;
 				invalidate();
@@ -983,7 +986,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					afterUserMove();
 				}
 			} else if (boardFace.getPiece(to) != ChessBoard.EMPTY
-					&& (isUserColor(boardFace.getColor(to)) || boardFace.isAnalysis())) {
+//					&& (isUserColor(boardFace.getColor(to)) || boardFace.isAnalysis())) {
+					&& (isUserAbleToMove(boardFace.getColor(to)))) {
 				pieceSelected = true;
 				firstClick = false;
 				from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());

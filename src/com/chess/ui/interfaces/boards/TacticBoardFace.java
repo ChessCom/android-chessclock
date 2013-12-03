@@ -22,7 +22,8 @@ public interface TacticBoardFace extends BoardFace {
 
 	boolean isLastTacticMoveCorrect();
 
-	public boolean isLatestMoveMadeUser();
+	public boolean isLastMoveMadeWhitePlayer();
 
-	public void setPly(int ply); // need to set correct ply for tactics
+	public boolean isLastMoveMadeBlackPlayer();
+
 }

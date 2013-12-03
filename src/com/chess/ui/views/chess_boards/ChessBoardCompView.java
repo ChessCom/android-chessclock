@@ -67,6 +67,17 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		postMoveToEngine(getBoardFace().getLastMove());
     }
 
+//	@Override
+//	protected boolean isUserColor(int color) {
+//		if (appData.isHumanVsHumanGameMode(getBoardFace())) {
+//			return getBoardFace().isWhiteToMove() ? color == ChessBoard.WHITE_SIDE : color == ChessBoard.BLACK_SIDE;
+//		} else if (isUserWhite()) {
+//			return color == ChessBoard.WHITE_SIDE;
+//		} else {
+//			return color == ChessBoard.BLACK_SIDE;
+//		}
+//	}
+
     @Override
 	public boolean isGameOver() {
 		saveCompGame();

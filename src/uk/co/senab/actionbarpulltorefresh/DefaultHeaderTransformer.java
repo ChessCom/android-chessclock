@@ -139,8 +139,8 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
             mHeaderTextView.setText(mRefreshingLabel);
         }
         if (mHeaderProgressBar != null) {
-            mHeaderProgressBar.setVisibility(View.GONE);
-//            mHeaderProgressBar.setIndeterminate(true);
+            mHeaderProgressBar.setVisibility(View.VISIBLE);
+            mHeaderProgressBar.setIndeterminate(true);
         }
     }
 

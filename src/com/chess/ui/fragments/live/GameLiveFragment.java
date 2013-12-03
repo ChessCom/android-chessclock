@@ -812,8 +812,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	private boolean isUserMove() {
-		Boolean userColorWhite = isUserColorWhite();
-		return userColorWhite != null && (userColorWhite ? getBoardFace().isWhiteToMove() : !getBoardFace().isWhiteToMove());
+		return isUserColorWhite() ? getBoardFace().isWhiteToMove() : !getBoardFace().isWhiteToMove();
 	}
 
 	@Override
@@ -823,18 +822,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		if (!show) {
 			getBoardFace().setSubmit(false);
 		}
-	}
-
-	@Override
-	public Boolean isUserColorWhite() {
-		LiveChessService liveService;
-		try {
-			liveService = getLiveService();
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-			return null;
-		}
-		return liveService.isUserColorWhite();
 	}
 
 	@Override
@@ -1046,8 +1033,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			analysisItem.setMovesList(getBoardFace().getMoveListSAN());
 			String opponentName;
 			int userColor;
-			Boolean userColorWhite = isUserColorWhite();
-			if (userColorWhite != null && userColorWhite) {
+
+			if (isUserColorWhite()) {
 				opponentName = getBlackPlayerName();
 				userColor = ChessBoard.WHITE_SIDE;
 			} else {
@@ -1122,7 +1109,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		{// fill labels
 			labelsConfig = new LabelsConfig();
-			if (isUserColorWhite()) {
+			userPlayWhite = isUserColorWhite();
+			if (userPlayWhite) {
 				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 				labelsConfig.topPlayerName = currentGame.getBlackUsername();
 				labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
@@ -1141,8 +1129,25 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
+			{ // set stubs while avatars are loading
+				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+						R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+
+				labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+				topPanelView.invalidate();
+
+				labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+				bottomPanelView.invalidate();
+			}
+
 			String opponentName;
-			if (isUserColorWhite()) {
+			if (userPlayWhite) {
 				opponentName = currentGame.getBlackUsername();
 			} else {
 				opponentName = currentGame.getWhiteUsername();
@@ -1151,27 +1156,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			String opponentAvatarUrl = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
 			if (opponentAvatarUrl != null && !opponentAvatarUrl.contains(StaticData.GIF)) {
 				imageDownloader.download(opponentAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
-			} else {
-				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
-						R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-				labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
-
-				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
-				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-				topPanelView.invalidate();
 			}
 
 			String myAvatarUrl = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
 			if (myAvatarUrl != null && !myAvatarUrl.contains(StaticData.GIF)) {
 				imageDownloader.download(myAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
-			} else {
-				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
-						R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-				labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
-
-				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
-				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-				bottomPanelView.invalidate();
 			}
 		}
 

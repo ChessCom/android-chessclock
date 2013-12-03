@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.daily;
 
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
@@ -41,6 +42,7 @@ import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
@@ -321,8 +323,28 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		boardFace.setJustInitialized(false);
 
+		{ // set stubs while avatars are loading
+			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+
+			labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+			labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+			topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+			topPanelView.invalidate();
+
+			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+			labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+			bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+			bottomPanelView.invalidate();
+		}
+
+		// load avatars for players
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+
+		controlsView.enableChatButton(username.equals(getUsername()));
 	}
 
 
@@ -463,14 +485,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	@Override
 	public void newGame() {
 		loadGamesList();
-	}
-
-	@Override
-	public Boolean isUserColorWhite() {
-		if (currentGame != null && getActivity() != null)
-			return currentGame.getWhiteUsername().equals(username);
-		else
-			return null;
 	}
 
 	@Override

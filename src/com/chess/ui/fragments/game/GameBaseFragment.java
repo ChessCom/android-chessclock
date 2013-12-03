@@ -44,6 +44,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected static final String GAME_GOES = "*";
 	protected static final String WHITE_WINS = "1-0";
 	protected static final String BLACK_WINS = "0-1";
+	private static final long TOUCH_MODE_RECONFIRM_DELAY = 300;
 	protected int AVATAR_SIZE = 48;
 	public static final int NOTATION_REWIND_DELAY = 400;
 
@@ -68,6 +69,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected ImageDownloaderToListener imageDownloader;
 	protected PanelInfoGameView topPanelView;
 	protected PanelInfoGameView bottomPanelView;
+	protected boolean userPlayWhite;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +88,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		super.onCreate(savedInstanceState);
 
 		imageDownloader = new ImageDownloaderToListener(getActivity());
-		getActivityFace().addOnCloseMenuListener(this);
 	}
 
 	@Override
@@ -120,6 +121,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		// update boardView if boardId has changed
 		boardView.updateBoardAndPiecesImgs();
 		enableScreenLockTimer();
+		getActivityFace().addOnCloseMenuListener(this);
 	}
 
 	@Override
@@ -158,6 +160,25 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	@Override
 	public abstract String getBlackPlayerName();
+
+	@Override
+	public boolean isUserColorWhite() {
+		return labelsConfig.userSide == ChessBoard.WHITE_SIDE;
+	}
+
+	@Override
+	public boolean isUserAbleToMove(int color) {
+		if (!currentGameExist()) {
+			return false;
+		}
+		boolean isUserColor;
+		if (isUserColorWhite()) {
+			isUserColor = color == ChessBoard.WHITE_SIDE;
+		} else {
+			isUserColor = color == ChessBoard.BLACK_SIDE;
+		}
+		return isUserColor || getBoardFace().isAnalysis();
+	}
 
 	protected void enableScreenLockTimer() {
 		// set touches listener to chessboard. If user don't do any moves, screen will automatically turn off after WAKE_SCREEN_TIMEOUT time
@@ -269,6 +290,13 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	@Override
 	public void onClosed() {
 		getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+		// reconfirm bcz of glitches
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				getActivityFace().setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+			}
+		}, TOUCH_MODE_RECONFIRM_DELAY);
 	}
 
 	public class ShareItem {

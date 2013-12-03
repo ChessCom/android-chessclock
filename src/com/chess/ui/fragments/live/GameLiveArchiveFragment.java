@@ -440,14 +440,6 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 	}
 
 	@Override
-	public Boolean isUserColorWhite() {
-		if (currentGame != null && getActivity() != null)
-			return currentGame.getWhiteUsername().equals(getAppData().getUsername());
-		else
-			return null;
-	}
-
-	@Override
 	public Long getGameId() {
 		return gameId;
 	}

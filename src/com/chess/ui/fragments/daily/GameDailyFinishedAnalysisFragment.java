@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.daily;
 
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import com.chess.R;
 import com.chess.backend.entity.api.DailyFinishedGameData;
@@ -13,6 +14,8 @@ import com.chess.model.DataHolder;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.AppUtils;
 
 /**
@@ -154,6 +157,24 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 		boardFace.setJustInitialized(false);
 		boardFace.setAnalysis(true);
 
+		{ // set stubs while avatars are loading
+			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+
+			labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+			labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+			topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+			topPanelView.invalidate();
+
+			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+			labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+			bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+			bottomPanelView.invalidate();
+		}
+
+		// load avatars for players
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 	}

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
@@ -50,6 +51,7 @@ import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
@@ -90,7 +92,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
 
 	private DailyCurrentGameData currentGame;
-	protected boolean userPlayWhite = true;
 
 	private IntentFilter boardUpdateFilter;
 	private IntentFilter newChatUpdateFilter;
@@ -398,8 +399,28 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		boardFace.setJustInitialized(false);
 
+		{ // set stubs while avatars are loading
+			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+
+			labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+			labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+			topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+			topPanelView.invalidate();
+
+			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+			labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+			bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+			bottomPanelView.invalidate();
+		}
+
+		// load avatars for players
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+
+		controlsView.enableChatButton(username.equals(getUsername()));
 	}
 
 	@Override
@@ -494,7 +515,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	@Override
 	public boolean currentGameExist() {
-		return currentGame != null;
+		return currentGame != null && getActivity() != null;
 	}
 
 	@Override
@@ -599,11 +620,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	}
 
 	@Override
-	public Boolean isUserColorWhite() {
-		if (currentGame != null && getActivity() != null)
-			return currentGame.getWhiteUsername().equals(username);
-		else
-			return null;
+	public boolean isUserColorWhite() {
+		return labelsConfig.userSide == ChessBoard.WHITE_SIDE;
 	}
 
 	@Override
@@ -615,8 +633,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		userPlayWhite = currentGame.getWhiteUsername()
 				.equals(username);
 
-		return /*(*/currentGame.isMyTurn()/* && userPlayWhite)
-				|| (!currentGame.isWhiteMove() && !userPlayWhite)*/;
+		return currentGame.isMyTurn();
+	}
+
+	@Override
+	public boolean isUserAbleToMove(int color) {
+		return super.isUserAbleToMove(color) && username.equals(getUsername());
 	}
 
 	@Override
@@ -965,11 +987,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			optionsMap.put(ID_FLIP_BOARD, getString(R.string.flip_board));
 			optionsMap.put(ID_EMAIL_GAME, getString(R.string.email_game));
 			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
-		}
-
-		// Don't show chat button for not your games
-		if (!username.equals(getUsername())) {
-			getControlsView().hideChatButton();
 		}
 	}
 

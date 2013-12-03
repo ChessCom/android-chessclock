@@ -39,7 +39,7 @@ public abstract class AbstractGameNetworkFaceHelper implements GameNetworkFace {
 	}
 
 	@Override
-	public Boolean isUserColorWhite() {
+	public boolean isUserColorWhite() {
 		return true;
 	}
 
@@ -124,5 +124,10 @@ public abstract class AbstractGameNetworkFaceHelper implements GameNetworkFace {
 	@Override
 	public void updateParentView() {
 
+	}
+
+	@Override
+	public boolean isUserAbleToMove(int color) {
+		return false;
 	}
 }

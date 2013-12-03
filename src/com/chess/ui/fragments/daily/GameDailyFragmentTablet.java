@@ -19,6 +19,7 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 	private RadioGroup topButtonsGroup;
 	private int previousCheckedId;
 	private View chatFragmentContainer;
+	private View chatBtn;
 
 	public GameDailyFragmentTablet() {}
 
@@ -42,6 +43,15 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (!username.equals(getUsername())) {
+			chatBtn.setVisibility(View.GONE);
+		}
+	}
+
+	@Override
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
@@ -56,6 +66,9 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 			topButtonsGroup = (RadioGroup) view.findViewById(R.id.topButtonsGroup);
 			topButtonsGroup.setOnCheckedChangeListener(this);
 			chatFragmentContainer = view.findViewById(R.id.chatFragmentContainer);
+			chatBtn = view.findViewById(R.id.chatBtn);
+
+
 		}
 	}
 

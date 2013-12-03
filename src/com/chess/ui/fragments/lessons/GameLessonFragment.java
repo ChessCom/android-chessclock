@@ -243,11 +243,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	}
 
 	@Override
-	public Boolean isUserColorWhite() {
-		return labelsConfig.userSide == ChessBoard.WHITE_SIDE;
-	}
-
-	@Override
 	public Long getGameId() {
 		if (!currentGameExist()) {
 			return null;

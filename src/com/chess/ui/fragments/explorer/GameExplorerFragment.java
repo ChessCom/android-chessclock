@@ -233,7 +233,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	@Override
-	public Boolean isUserColorWhite() {
+	public boolean isUserColorWhite() {
 		return true;
 	}
 

@@ -19,4 +19,6 @@ public interface GameTacticsFace extends GameFace {
 	void vsComputer();
 
 	void onStartTactic();
+
+	boolean isLastMoveMadeUser();
 }

@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardTactics;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.boards.BoardViewTacticsFace;
 import com.chess.ui.interfaces.game_ui.GameTacticsFace;
@@ -57,12 +56,13 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
         track = false;
         if (!getBoardFace().isAnalysis()) {
-            if (getBoardFace().isFinished()) // TODO probably never happens
-                return true;
+//            if (getBoardFace().isFinished()) // TODO probably never happens
+//                return true;
 
-            if (((ChessBoardTactics)getBoardFace()).isLatestMoveMadeUser()) {
-                return true;
-            }
+//            if (gameTacticsFace.isLastMoveMadeUser()) {
+////            if (((ChessBoardTactics)getBoardFace()).isLatestMoveMadeUser()) {
+//                return true;
+//            }
         }
 
         return super.onTouchEvent(event);
@@ -90,7 +90,6 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 		if (moveMade) {
 			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 			setMoveAnimator(moveAnimator);
-			//afterUserMove(); //
 		} else if (getBoardFace().getPiece(to) != ChessBoard.EMPTY
 				&& getBoardFace().getSide() == getBoardFace().getColor(to)) {
 			pieceSelected = true;

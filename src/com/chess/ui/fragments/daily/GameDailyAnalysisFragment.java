@@ -256,6 +256,24 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		boardFace.setJustInitialized(false);
 		boardFace.setAnalysis(true);
 
+		{ // set stubs while avatars are loading
+			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+
+			labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+			labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+			topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+			topPanelView.invalidate();
+
+			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+			labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+			bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+			bottomPanelView.invalidate();
+		}
+
+		// load avatars for players
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 	}
@@ -370,17 +388,10 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	@Override
-	public Boolean isUserColorWhite() {
-		if (currentGame != null)
-			return currentGame.getWhiteUsername().equals(username);
-		else
-			return null;
-	}
-
-	@Override
 	public Long getGameId() {
 		return gameId;
 	}
+
 
 	@Override
 	public void showOptions() {

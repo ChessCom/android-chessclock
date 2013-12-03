@@ -43,8 +43,8 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	private GameAnalysisItem analysisItem;
 	protected boolean userPlayWhite = true;
 	private ControlsAnalysisView controlsView;
-	private BoardAvatarDrawable opponentAvatarDrawable;
-	private BoardAvatarDrawable userAvatarDrawable;
+//	private BoardAvatarDrawable opponentAvatarDrawable;
+//	private BoardAvatarDrawable userAvatarDrawable;
 
 	public static GameAnalyzeFragment createInstance(GameAnalysisItem analysisItem) {
 		GameAnalyzeFragment fragment = new GameAnalyzeFragment();
@@ -139,9 +139,6 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	private void adjustBoardForGame() {
 		ChessBoardAnalysis.resetInstance();
 		userPlayWhite = analysisItem.getUserColor() == ChessBoard.WHITE_SIDE;
-
-		labelsConfig.topAvatar = opponentAvatarDrawable;
-		labelsConfig.bottomAvatar = userAvatarDrawable;
 
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
@@ -297,11 +294,6 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	}
 
 	@Override
-	public Boolean isUserColorWhite() {
-		return labelsConfig.userSide == ChessBoard.WHITE_SIDE;
-	}
-
-	@Override
 	public Long getGameId() {
 		return gameId;
 	}
@@ -350,14 +342,12 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		{// set avatars
 			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
 					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-			opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
-			userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 
 			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-			labelsConfig.topAvatar = opponentAvatarDrawable;
-			labelsConfig.bottomAvatar = userAvatarDrawable;
+			labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
+			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
 		}
 
 		controlsView.enableGameControls(false);

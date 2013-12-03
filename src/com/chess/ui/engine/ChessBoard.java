@@ -898,8 +898,9 @@ public class ChessBoard implements BoardFace {
 		switchSides();
 
 
-		if (playSound && gameFace != null && gameFace.isUserColorWhite() != null) {
-			Boolean userColorWhite = gameFace.isUserColorWhite();
+		if (playSound && gameFace != null && gameFace.isUserAbleToMove(side)) {
+//		if (playSound && gameFace != null && gameFace.isUserColorWhite() != null) {
+			boolean userColorWhite = gameFace.isUserColorWhite();
 			if ((userColorWhite && colorFrom == 1) || (!userColorWhite && colorFrom == 0)) {
 				if (isPerformCheck(side)) {
 					soundPlayer.playMoveOpponentCheck();

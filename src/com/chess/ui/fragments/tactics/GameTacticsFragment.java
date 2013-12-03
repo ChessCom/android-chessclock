@@ -89,7 +89,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	//	private static final int ID_HINT = 3;
 	private static final int ID_PERFORMANCE = 3;
 	private static final int ID_SETTINGS = 4;
-	public static final String FIRST_COMP_MOVE_PREFIX = "1. ... ";
+	public static final String COMP_MOVE_PREFIX = "1. ... ";
+	public static final String COMP_MOVE_PREFIX_2 = "1...";
 
 	private ChessBoardTacticsView boardView;
 
@@ -165,7 +166,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				if (trainerData.isCompleted() || trainerData.isRetry()) {
 					adjustBoardForGame();
 
-					if (getBoardFace().isLatestMoveMadeUser()) {
+					if (isLastMoveMadeUser()) {
 						verifyMove();
 					}
 				} else {
@@ -213,7 +214,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 				adjustBoardForGame();
 
-				if (getBoardFace().isLatestMoveMadeUser()) {
+				if (isLastMoveMadeUser()) {
 					verifyMove();
 				}
 				handler.removeCallbacks(this);
@@ -295,7 +296,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		getBoardFace().takeNext();
 		invalidateGameScreen();
 
-		if (getBoardFace().isLatestMoveMadeUser()) {
+		if (isLastMoveMadeUser()) {
 			verifyMove();
 		}
 	}
@@ -319,6 +320,20 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	public TacticBoardFace getBoardFace() {
 		return ChessBoardTactics.getInstance(this);
 	}
+
+//	@Override
+//	public boolean isUserAbleToMove(int color) {
+//		if (!currentGameExist()) {
+//			return false;
+//		}
+//		boolean isUserColor;
+//		if (isUserColorWhite()) {
+//			isUserColor = color == ChessBoard.WHITE_SIDE;
+//		} else {
+//			isUserColor = color == ChessBoard.BLACK_SIDE;
+//		}
+//		return isUserColor || getBoardFace().isAnalysis();
+//	}
 
 	@Override
 	public void verifyMove() {
@@ -462,7 +477,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	@Override
-	public Boolean isUserColorWhite() {
+	public boolean isUserColorWhite() {
 		return labelsConfig.userSide == ChessBoard.WHITE_SIDE;
 	}
 
@@ -600,6 +615,15 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	@Override
 	public void onStartTactic() {
 		loadNewTactic();
+	}
+
+	@Override
+	public boolean isLastMoveMadeUser() {
+		if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
+			return getBoardFace().isLastMoveMadeWhitePlayer();
+		} else {
+			return getBoardFace().isLastMoveMadeBlackPlayer();
+		}
 	}
 
 	private boolean answerWasShowed() {
@@ -1007,9 +1031,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		bottomPanelView.setPlayerScore(currentRating);
 		String initialFen = trainerData.getInitialFen();
+//		initialFen = "2r3k1/8/5P2/Q3P2p/2q4P/8/P4bP1/5R1K w - - 1 2";
+//		initialFen = "1r4kR/1p2nrb1/p2qp1p1/4NpQ1/3P4/3B2P1/PP3P2/1K5R b - - 1 1";
 //		initialFen = "r2nk1r1/pb3q1p/4p3/3p2pQ/8/BP6/PP3PPP/2R1R1K1 w q - 0 1";  // this as black, should be white
 //		initialFen = "r4rk1/ppp2pp1/7p/3P4/2P1Nnq1/5bB1/PP3PPP/R3QRK1 b - - 0 1";  // this one as white! should be black
 //		initialFen = "3r1bk1/ppq2Bpp/2p5/2P2Q2/8/1P4P1/P6P/5RK1 b - - 1 1";
+		trainerData.getTacticsProblem().setFen(initialFen);
 		boardFace.setupBoard(initialFen);
 
 		if (boardFace.isReside()) { // user always play at the bottom
@@ -1017,9 +1044,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 
 		String cleanMoveString = trainerData.getCleanMoveString();
+//		cleanMoveString = "1. Rxf2 Qxh4+ 2. Kg1 Rc1+ 3. Rf1 Qd4+ ";
+//		cleanMoveString = "1... Bxh8 2. Rxh8+ Kxh8 3. Nxf7+ Kg7 4. Nxd6";
 //		cleanMoveString = "1. Rc7 1... Qxh5 2. Re7+ Kf8 3. Rxb7+ Ke8 4. Re7+ Kf8 5. Rxh7+ Ke8 6. Rxh5";
 //		cleanMoveString = "1... Qh3 2. gxh3 Nxh3#";
 //		cleanMoveString = "1. ... Kh8 2. Be8 Rxe8 3. Qxf8+ Rxf8 4. Rxf8#";
+		trainerData.getTacticsProblem().setMoveList(cleanMoveString);
 		boardFace.setTacticMoves(cleanMoveString);
 
 		if ((trainerData.isAnswerWasShowed() || trainerData.isCompleted()) && !isAnalysis) {
@@ -1033,7 +1063,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else { // setup first move
 			startTacticsTimer(trainerData);
 
-			if (cleanMoveString.startsWith(FIRST_COMP_MOVE_PREFIX)) {// means first move should do Comp
+			if (cleanMoveString.startsWith(COMP_MOVE_PREFIX) /*||
+				cleanMoveString.startsWith(COMP_MOVE_PREFIX_2)*/) {// means first move should do Comp
 				boardFace.setReside(!boardFace.isReside()); // flip board
 
 				boardFace.setMovesCount(1);
@@ -1051,8 +1082,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					}
 				}, START_DELAY);
 			} else {
-
-//				boardFace.setPly(0);
+				invalidateGameScreen();
 			}
 		}
 

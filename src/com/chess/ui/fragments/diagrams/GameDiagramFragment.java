@@ -613,11 +613,6 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	}
 
 	@Override
-	public Boolean isUserColorWhite() {
-		return labelsConfig.userSide == ChessBoard.WHITE_SIDE;
-	}
-
-	@Override
 	public Long getGameId() {
 		return gameId;
 	}

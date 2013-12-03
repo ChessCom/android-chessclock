@@ -5,10 +5,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
-import com.chess.widgets.RoboButton;
 import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.ui.views.drawables.smart_button.RectButtonBadgeDrawable;
+import com.chess.widgets.RoboButton;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 
@@ -24,7 +24,7 @@ public class ControlsDailyView extends ControlsBaseView {
 	private static final long UNBLINK_DELAY = 400;
 
 	private BoardViewNetworkFace boardViewFace;
-	private boolean hideChatButton;
+	private boolean enableChat;
 
 	public ControlsDailyView(Context context) {
 		super(context);
@@ -81,27 +81,18 @@ public class ControlsDailyView extends ControlsBaseView {
 				background.setBadgeValue(NEW_MESSAGE_MARK);
 			}
 		} else {
-			ButtonDrawableBuilder.setBackgroundToView(chatButton,styles[MIDDLE]);
+			ButtonDrawableBuilder.setBackgroundToView(chatButton, styles[MIDDLE]);
 		}
 
 		invalidate();
 	}
 
-	public void enableAnalysisMode(boolean enable) {
-		enableGameButton(ANALYSIS, enable);
-		enableGameButton(FORWARD, enable);
-		enableGameButton(BACK, enable);
-	}
-
-	public void enableControlButtons(boolean enable) {
-		enableGameButton(FORWARD, enable);
-		enableGameButton(BACK, enable);
-	}
-
 	public void enableGameControls(boolean enable) {
 		enableGameButton(OPTIONS, enable);
 		enableGameButton(ANALYSIS, enable);
-		enableGameButton(CHAT, enable);
+		if (enableChat) {
+			enableGameButton(CHAT, enable);
+		}
 		enableGameButton(FORWARD, enable);
 		enableGameButton(BACK, enable);
 	}
@@ -109,7 +100,9 @@ public class ControlsDailyView extends ControlsBaseView {
 	public void showSubmitButtons(boolean show) {
 		showGameButton(OPTIONS, !show);
 		showGameButton(ANALYSIS, !show);
-		showGameButton(CHAT, !show);
+		if (enableChat) {
+			showGameButton(CHAT, !show);
+		}
 		showGameButton(FORWARD, !show);
 		showGameButton(BACK, !show);
 
@@ -129,7 +122,7 @@ public class ControlsDailyView extends ControlsBaseView {
 	private Runnable blinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			((RoboButton)findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(styles[LEFT]);
+			((RoboButton) findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(styles[LEFT]);
 
 			handler.removeCallbacks(unBlinkSubmitButton);
 			handler.postDelayed(unBlinkSubmitButton, UNBLINK_DELAY);
@@ -139,14 +132,14 @@ public class ControlsDailyView extends ControlsBaseView {
 	private Runnable unBlinkSubmitButton = new Runnable() {
 		@Override
 		public void run() {
-			((RoboButton)findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(styles[ORANGE]);
+			((RoboButton) findViewById(getButtonId(MAKE_MOVE))).setDrawableStyle(styles[ORANGE]);
 
 			blinkSubmitBtn();
 		}
 	};
 
-
-	public void hideChatButton() {
-		hideChatButton = true;
+	public void enableChatButton(boolean enable) {
+		enableChat = enable;
+		enableGameButton(CHAT, enable);
 	}
 }

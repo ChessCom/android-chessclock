@@ -566,6 +566,14 @@ public class PullToRefreshAttacher implements View.OnTouchListener {
 		return false;
 	}
 
+	public void showProgress(boolean refreshing) {
+		if (refreshing) {
+			mHeaderTransformer.onRefreshStarted();
+		} else {
+			mHeaderTransformer.onReleaseToRefresh();
+		}
+	}
+
 	private void setRefreshingInt(View view, boolean refreshing, boolean fromTouch) {
 		if (DEBUG) {
 			Log.d(LOG_TAG, "setRefreshingInt: " + refreshing);

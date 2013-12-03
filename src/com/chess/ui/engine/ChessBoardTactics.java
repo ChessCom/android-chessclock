@@ -90,11 +90,12 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 	}
 
 	@Override
-	public boolean isLatestMoveMadeUser() {
-		return ply > 0 && ply %2 == 0;
+	public boolean isLastMoveMadeWhitePlayer() {
+		return ply >= 0 && ply %2 == 1;
 	}
 
-	public void setPly(int ply) {
-		this.ply = ply;
+	@Override
+	public boolean isLastMoveMadeBlackPlayer() {
+		return ply > 0 && ply %2 == 0; // side == WHITE_SIDE
 	}
 }

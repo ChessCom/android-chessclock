@@ -719,6 +719,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void showLoadingProgress(boolean show) {
+//		getActivityFace().getPullToRefreshAttacher().showProgress(show);
 		if (show) {
 			showPopupProgressDialog(R.string.loading_);
 		} else {
