@@ -178,7 +178,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	}
 
 	private String getWSSConnectionUrl() {
-		return "wss://" + /*"zsldfngsdlf.com"*/ getConfigBayeuxHost() + ":443/cometd";
+		return "wss://" + getConfigBayeuxHost() + ":443/cometd";
 	}
 
 	private String getHttpConnectionUrl() {
