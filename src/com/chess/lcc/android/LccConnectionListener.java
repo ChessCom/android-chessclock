@@ -23,7 +23,6 @@ public class LccConnectionListener implements ConnectionListener {
 		String message = lccHelper.getContext().getString(R.string.account_error)
 				+ lccHelper.getContext().getString(R.string.another_login_detected);
 
-		lccHelper.logout();
 		lccHelper.onOtherClientEntered(message);
 	}
 

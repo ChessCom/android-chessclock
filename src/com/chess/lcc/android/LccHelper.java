@@ -39,9 +39,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
-	public static final int CONNECTION_FAILURE_DELAY = 2000;
+	private static final int CONNECTION_FAILURE_DELAY = 2000;
 	public static final int LIVE_CONNECTION_ATTEMPTS_LIMIT = 1;
 	public static final Object LOCK = new Object();
+	private static final int CONNECTION_FAILURE_LIMIT_ATTEMPTS = 5;
 
 	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
@@ -93,6 +94,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private String networkTypeName;
 
 	private boolean connectionFailure;
+	private int connectionFailureCounter;
 
 	public LccHelper(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
 		this.liveService = liveService;
@@ -309,13 +311,14 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void onOtherClientEntered(String message) {
+		logout();
 		liveChessClientEventListener.onConnectionFailure(message);
 	}
 
 	public void processKicked() {
 
 		connectionFailure = true;
-		logout(false);
+		logout();
 
 		String kickMessage = context.getString(R.string.live_chess_server_upgrading);
 		liveChessClientEventListener.onConnectionFailure(kickMessage
@@ -339,13 +342,14 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		//setConnected(false);
 		connectionFailure = true;
-		logout(false);
 
 		LogMe.dl(TAG, "processConnectionFailure: details=" + details);
 
 		String detailsMessage;
 
 		if (details != null) {
+
+			logout();
 
 			switch (details) {
 				case USER_KICKED: {
@@ -381,8 +385,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			}
 		} else {
 
-			/*setConnected(false);
-			((LiveChessClientImpl) lccClient).leave();*/
+			// todo: change after LCC failure/fallback fixes
+
+			boolean resetClient = connectionFailureCounter > CONNECTION_FAILURE_LIMIT_ATTEMPTS;
+			connectionFailureCounter++;
+			logout(resetClient);
 
 			// handle detail=null one time and try to reconnect
 			// we cannot autoconnect even 1 time because LCC receives extra onConnectionFailure and disconnects only after second onConnectionFailure
@@ -493,6 +500,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			appData.resetLiveConnectAttempts();
 
 			connectionFailure = false;
+			connectionFailureCounter = 0;
 
 			liveChessClientEventListener.onConnectionEstablished();
 			liveService.onLiveConnected();
@@ -1094,7 +1102,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		@Override
 		protected Void doInBackground(Void... voids) {
 			if (lccClient != null) {
-				LogMe.dl(TAG, "DISCONNECT: lccClient=" + getClientId());
+				LogMe.dl(TAG, "DISCONNECT: lccClient=" + getClientId() + ", resetClient=" + resetClient);
 				lccClient.disconnect();
 				if (resetClient) {
 					resetClient();

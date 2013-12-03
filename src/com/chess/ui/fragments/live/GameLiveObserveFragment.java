@@ -74,7 +74,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		LiveChessService liveService = getLiveService();
 		GameLiveItem currentGame = liveService.getGameItem();
 		if (currentGame == null) {
-			throw new DataNotValidException(DataNotValidException.GAME_NOT_EXIST);
+			return;
 		}
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
