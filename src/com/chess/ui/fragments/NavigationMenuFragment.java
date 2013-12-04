@@ -1,6 +1,7 @@
 package com.chess.ui.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -56,12 +57,13 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 
 	private static final int HOME_POS = 0;
 
+	public static final int[] SELECTED_TITILE_STATE = new int[]{android.R.attr.state_selected};
 	public static final int[] SELECTED_STATE = new int[]{android.R.attr.state_enabled, android.R.attr.state_checked};
 	public static final int[] ENABLED_STATE = new int[]{android.R.attr.state_enabled};
 
 	private ListView listView;
 	private List<NavigationMenuItem> menuItems;
-	private NewNavigationMenuAdapter adapter;
+	private NavigationMenuAdapter adapter;
 	private int imageSize;
 
 	@Override
@@ -91,7 +93,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 
 		menuItems.get(0).selected = true;
 		getImageFetcher().setLoadingImage(R.drawable.empty);
-		adapter = new NewNavigationMenuAdapter(getActivity(), menuItems, getImageFetcher());
+		adapter = new NavigationMenuAdapter(getActivity(), menuItems, getImageFetcher());
 	}
 
 	@Override
@@ -359,16 +361,14 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		}
 	}
 
-	private class NewNavigationMenuAdapter extends ItemsAdapter<NavigationMenuItem> {
+	private class NavigationMenuAdapter extends ItemsAdapter<NavigationMenuItem> {
 
 		private final String userAvatarUrl;
-		private final String themeName;
 		private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
-		public NewNavigationMenuAdapter(Context context, List<NavigationMenuItem> menuItems, SmartImageFetcher imageFetcher) {
+		public NavigationMenuAdapter(Context context, List<NavigationMenuItem> menuItems, SmartImageFetcher imageFetcher) {
 			super(context, menuItems, imageFetcher);
 			userAvatarUrl = getAppData().getUserAvatar();
-			themeName = getAppData().getThemeName();
 			imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 		}
 
@@ -379,10 +379,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 			holder.icon = (ProgressImageView) view.findViewById(R.id.iconImg);
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
 
-			if (themeName.equals(AppConstants.LIGHT_THEME_NAME)) {
-				int lightColor = 0xFF606060; // resources.getColor(R.color.transparent_button_border_top)
-				holder.title.setTextColor(lightColor);
-			}
+			holder.title.setTextColor(themeFontColorStateList);
 			view.setTag(holder);
 
 			return view;
@@ -404,10 +401,18 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 
 			holder.title.setText(item.tag);
 
+
 			Drawable background = view.getBackground();
 			if (item.selected) {
+				int colorForState = themeFontColorStateList.getColorForState(SELECTED_TITILE_STATE, Color.WHITE);
+				logTest("selected = colorForState = " + colorForState);
+				holder.title.setTextColor(colorForState);
 				background.mutate().setState(SELECTED_STATE);
 			} else {
+				int colorForState = themeFontColorStateList.getColorForState(ENABLED_STATE, Color.WHITE);
+				logTest("NOT selected = colorForState = " + colorForState);
+
+				holder.title.setTextColor(colorForState);
 				background.mutate().setState(ENABLED_STATE);
 			}
 		}

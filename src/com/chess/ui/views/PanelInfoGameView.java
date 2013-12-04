@@ -68,6 +68,8 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	private int paddingTop;
 	private int paddingRight;
 	private int paddingLeft;
+	protected int playerTextColor;
+	private int dotsAdded;
 
 	public PanelInfoGameView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -101,7 +103,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 		int playerTextSize = (int) (resources.getDimension(R.dimen.panel_info_player_text_size) / density);
 		int playerRatingTextSize = (int) (resources.getDimension(R.dimen.panel_info_player_rating_text_size) / density);
-		int playerTextColor = resources.getColor(R.color.white);
+		playerTextColor = resources.getColor(R.color.white);
 
 		if (timeLeftHasBack) {
 			topPlayerTimeLeftColor = resources.getColor(R.color.semitransparent_white_65);
@@ -272,7 +274,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size) / density; // 21;
 			clockIconTxt.setTextSize(clockIconSize);
 			clockIconTxt.setText(R.string.ic_clock);
-			clockIconTxt.setTextColor(Color.WHITE);
+			clockIconTxt.setTextColor(playerTextColor);
 			int paddingIcon = resources.getDimensionPixelSize(R.dimen.new_tactics_clock_icon_padding);
 			int paddingIconTop = resources.getDimensionPixelSize(R.dimen.new_tactics_clock_icon_padding_top);
 			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
@@ -286,7 +288,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			timeLeftParams.setMargins((int) (7 * density), paddingTop, paddingRight, paddingTop); // use to set space between captured pieces in single line mode
 
 			timeRemainTxt.setTextSize(playerTextSize);
-			timeRemainTxt.setTextColor(resources.getColor(R.color.light_grey));
+			timeRemainTxt.setTextColor(playerTextColor);
 
 			if (timeLeftHasBack) {
 				clockLayout.setBackgroundResource(R.drawable.back_glassy_rounded);
@@ -453,7 +455,6 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		}
 	}
 
-	private int dotsAdded;
 	protected Runnable thinkingDotTask = new Runnable() {
 		@Override
 		public void run() {
@@ -467,4 +468,13 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
 		}
 	};
+
+	public void setLabelsTextColor(int labelsTextColor) {
+		this.playerTextColor = labelsTextColor;
+		playerTxt.setTextColor(playerTextColor);
+		timeRemainTxt.setTextColor(playerTextColor);
+		playerRatingTxt.setTextColor(playerTextColor);
+		clockIconTxt.setTextColor(playerTextColor);
+		invalidate();
+	}
 }

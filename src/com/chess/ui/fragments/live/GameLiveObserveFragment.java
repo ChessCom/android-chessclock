@@ -8,6 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
+import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.UserItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
@@ -104,8 +108,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 					.getOpponentForPlayer(currentGame.getWhiteUsername()).getAvatarUrl();
 			String bottomAvatarUrl = liveService.getCurrentGame()
 					.getOpponentForPlayer(currentGame.getBlackUsername()).getAvatarUrl();
-			logTest("topAvatarUrl = " + topAvatarUrl);
-			logTest("bottomAvatarUrl = " + bottomAvatarUrl);
+
 			if (topAvatarUrl != null && !topAvatarUrl.contains(StaticData.GIF)) {
 				imageDownloader.download(topAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 			} else {
@@ -129,6 +132,15 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
 				bottomPanelView.invalidate();
 			}
+		}
+
+		{ // get opponent info
+			LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
+			new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
+		}
+		{ // get users info
+			LoadItem loadItem = LoadHelper.getUserInfo(labelsConfig.bottomPlayerName);
+			new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
 		}
 
 		/*int resignTitleId = liveService.getResignTitle();

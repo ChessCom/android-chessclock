@@ -438,7 +438,15 @@ public class AppData {
 	}
 
 	public String getThemeBackPath() {
-		return getStringValue(PREF_THEME_BACK_PATH, "");
+		return getStringValue(PREF_THEME_BACK_PATH, Symbol.EMPTY);
+	}
+
+	public void setThemeFontColor(String path) {
+		setStringValue(PREF_THEME_FONT_COLOR, path);
+	}
+
+	public String getThemeFontColor() {
+		return getStringValue(PREF_THEME_FONT_COLOR, "FFFFFF");
 	}
 
 	public void setThemeBoardPath(String path) {

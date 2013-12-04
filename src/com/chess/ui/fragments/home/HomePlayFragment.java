@@ -399,6 +399,8 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		friendRealName1Txt = (TextView) view.findViewById(R.id.friendRealName1Txt);
 		friendUserName2Txt = (TextView) view.findViewById(R.id.friendUserName2Txt);
 		friendRealName2Txt = (TextView) view.findViewById(R.id.friendRealName2Txt);
+		TextView vsRandomTxt = (TextView) view.findViewById(R.id.vsRandomTxt);
+		TextView challengeFriendTxt = (TextView) view.findViewById(R.id.challengeFriendTxt);
 
 		if (positionMode == CENTER_MODE) { // we use white background and dark titles for centered mode
 			int darkTextColor = getResources().getColor(R.color.new_subtitle_dark_grey);
@@ -409,8 +411,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			TextView liveChessHeaderTxt = (TextView) view.findViewById(R.id.liveChessHeaderTxt);
 			Button liveTimeSelectBtn = (Button) view.findViewById(R.id.liveTimeSelectBtn);
 			TextView dailyChessHeaderTxt = (TextView) view.findViewById(R.id.dailyChessHeaderTxt);
-			TextView vsRandomTxt = (TextView) view.findViewById(R.id.vsRandomTxt);
-			TextView challengeFriendTxt = (TextView) view.findViewById(R.id.challengeFriendTxt);
 			TextView vsComputerHeaderTxt = (TextView) view.findViewById(R.id.vsComputerHeaderTxt);
 
 			liveChessHeaderTxt.setTextColor(darkTextColor);
@@ -423,6 +423,13 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			friendRealName2Txt.setTextColor(darkTextColor);
 			challengeFriendTxt.setTextColor(darkTextColor);
 			vsComputerHeaderTxt.setTextColor(darkTextColor);
+		} else {
+			vsRandomTxt.setTextColor(themeFontColorStateList);
+			friendUserName1Txt.setTextColor(themeFontColorStateList);
+			friendRealName1Txt.setTextColor(themeFontColorStateList);
+			friendUserName2Txt.setTextColor(themeFontColorStateList);
+			friendRealName2Txt.setTextColor(themeFontColorStateList);
+			challengeFriendTxt.setTextColor(themeFontColorStateList);
 		}
 
 		liveRatingTxt = (TextView) view.findViewById(R.id.liveRatingTxt);

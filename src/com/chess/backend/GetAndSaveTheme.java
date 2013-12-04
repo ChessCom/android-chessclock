@@ -42,7 +42,6 @@ import java.util.List;
  * Date: 27.10.13
  * Time: 8:24
  */
-//public class GetAndSaveTheme extends IntentService {
 public class GetAndSaveTheme extends Service {
 
 	static final int BACKGROUND = 0;
@@ -84,6 +83,8 @@ public class GetAndSaveTheme extends Service {
 	private Handler handler;
 	private boolean installingTheme;
 	private boolean isTablet;
+	private String themeFontColor;
+	private String selectedThemeName;
 
 	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {
 		this.progressUpdateListener = progressUpdateListener;
@@ -107,6 +108,7 @@ public class GetAndSaveTheme extends Service {
 			isTablet = AppUtils.is7InchTablet(this) || AppUtils.is10InchTablet(this);
 		}
 
+		appData = new AppData(this);
 		handler = new Handler();
 		notifymanager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -121,7 +123,6 @@ public class GetAndSaveTheme extends Service {
 						notifyIntent,
 						PendingIntent.FLAG_UPDATE_CURRENT
 				);
-
 
 		notificationBuilder = new NotificationCompat.Builder(this);
 		notificationBuilder.setContentTitle(getString(R.string.installing_theme))
@@ -143,9 +144,6 @@ public class GetAndSaveTheme extends Service {
 	}
 
 	public void loadTheme(ThemeItem.Data selectedThemeItem, int screenWidth, int screenHeight) {
-
-
-
 		installingTheme = true;
 
 		this.selectedThemeItem = selectedThemeItem;
@@ -168,10 +166,9 @@ public class GetAndSaveTheme extends Service {
 
 		imageDownloader = new ImageDownloaderToListener(this);
 
-		AppData appData = new AppData(this);
 		String userToken = appData.getUserToken();
 
-		String selectedThemeName = selectedThemeItem.getThemeName();
+		selectedThemeName = selectedThemeItem.getThemeName();
 		appData.setThemeName(selectedThemeName);
 
 		showIndeterminateNotification(getString(R.string.loading_background));
@@ -198,6 +195,7 @@ public class GetAndSaveTheme extends Service {
 		public void updateData(BackgroundSingleItem returnedObj) {
 
 			backgroundUrl = returnedObj.getData().getResizedImage();
+			themeFontColor = returnedObj.getData().getFontColor();
 
 			getAppData().setThemeBackgroundName(returnedObj.getData().getName());
 			getAppData().setThemeBackgroundPreviewUrl(returnedObj.getData().getBackgroundPreviewUrl());
@@ -319,6 +317,11 @@ public class GetAndSaveTheme extends Service {
 				try {
 					File imgFile = AppUtils.openFileByName(getContext(), filename);
 					getAppData().setThemeBackPath(imgFile.getAbsolutePath());
+
+					if (selectedThemeName.equals("Light") || selectedThemeName.equals("Newspaper")) {
+						themeFontColor = "606060";
+					}
+					getAppData().setThemeFontColor(themeFontColor);
 
 					sendBroadcast(new Intent(IntentConstants.BACKGROUND_LOADED));
 				} catch (IOException e) {

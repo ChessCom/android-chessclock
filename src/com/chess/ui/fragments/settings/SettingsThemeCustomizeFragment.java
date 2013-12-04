@@ -77,7 +77,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 	private List<String> colorsList;
 
-
 	private ThemeItem.Data themeItem;
 	private TextView backgroundNameTxt;
 	private Spinner soundsSpinner;
@@ -116,6 +115,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private SparseArray<String> defaultBoardNamesMap;
 	private SparseArray<String> defaultSquareBoardNamesMap;
 	private PiecePreviewImg piecesSquarePreviewImg;
+	private String themeFontColor;
 
 	public SettingsThemeCustomizeFragment() {
 		ThemeItem.Data customizeItem = new ThemeItem.Data();
@@ -497,7 +497,11 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			String filename = String.valueOf(backgroundUrl.hashCode());
 			try {
 				File imgFile = AppUtils.openFileByName(getActivity(), filename);
-				getActivityFace().setMainBackground(imgFile.getAbsolutePath());
+				getAppData().setThemeBackPath(imgFile.getAbsolutePath());
+				getActivityFace().updateMainBackground();
+//				getActivityFace().setMainBackground(imgFile.getAbsolutePath());
+				getAppData().setThemeFontColor(themeFontColor);
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -508,7 +512,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			if (loadProgressPopupFragment != null) {
 				loadProgressPopupFragment.dismiss();
 			}
-
 		}
 	}
 
@@ -615,6 +618,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			imageDownloader.download(backgroundUrl, backgroundUpdateListener, screenWidth, screenHeight);
 			String selectedThemeName = selectedBackgroundItem.getName();
 			getAppData().setThemeName(selectedThemeName);
+			themeFontColor = selectedBackgroundItem.getFontColor();
 
 			getActivityFace().updateActionBarBackImage();
 		}

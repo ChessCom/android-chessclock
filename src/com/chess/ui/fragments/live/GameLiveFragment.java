@@ -16,7 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
+import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.UserItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -89,6 +93,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	private int gameEndTitleId;
 	protected SparseArray<String> optionsMap;
+	private String[] countryNames;
+	private int[] countryCodes;
 
 	public GameLiveFragment() { }
 
@@ -109,7 +115,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		} else if (savedInstanceState != null) {
 			gameId = savedInstanceState.getLong(GAME_ID);
 		}
-		logLiveTest("onCreate");
+
+		countryNames = getResources().getStringArray(R.array.new_countries);
+		countryCodes = getResources().getIntArray(R.array.new_country_ids);
 	}
 
 	@Override
@@ -487,7 +495,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				getControlsView().showAfterMatch();
 			}
 		});
-
 	}
 
 	protected void showGameEndPopup(View layout, String title, String message) {
@@ -1159,6 +1166,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			if (myAvatarUrl != null && !myAvatarUrl.contains(StaticData.GIF)) {
 				imageDownloader.download(myAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 			}
+
+			{ // get opponent info
+				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
+				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
+			}
+			{ // get users info
+				LoadItem loadItem = LoadHelper.getUserInfo(labelsConfig.bottomPlayerName);
+				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
+			}
 		}
 
 		int resignTitleId = liveService.getResignTitle();
@@ -1172,6 +1188,36 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 
 		lccInitiated = true;
+	}
+
+	protected class GetUserUpdateListener extends ChessUpdateListener<UserItem> {
+
+		static final int BOTTOM_PLAYER = 0;
+		static final int TOP_PLAYER = 1;
+
+		private int itemCode;
+
+		public GetUserUpdateListener(int itemCode) {
+			super(UserItem.class);
+			this.itemCode = itemCode;
+		}
+
+		@Override
+		public void updateData(UserItem returnedObj) {
+			super.updateData(returnedObj);
+			UserItem.Data userInfo = returnedObj.getData();
+			if (itemCode == BOTTOM_PLAYER) {
+				labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, userInfo.getCountryId());
+
+				bottomPanelView.setPlayerFlag(labelsConfig.bottomPlayerCountry);
+				bottomPanelView.setPlayerPremiumIcon(userInfo.getPremiumStatus());
+			} else if (itemCode == TOP_PLAYER) {
+				labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, userInfo.getCountryId());
+
+				topPanelView.setPlayerFlag(labelsConfig.topPlayerCountry);
+				topPanelView.setPlayerPremiumIcon(userInfo.getPremiumStatus());
+			}
+		}
 	}
 
 	protected ControlsLiveView getControlsView() {

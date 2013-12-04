@@ -93,7 +93,6 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 		int playerTextSize = (int) (resources.getDimension(R.dimen.panel_info_player_text_size) / density);
 		int playerRatingTextSize = (int) (resources.getDimension(R.dimen.panel_info_player_rating_text_size) / density);
-		int playerTextColor = resources.getColor(R.color.white);
 
 		blackPlayerTimeColor = resources.getColor(R.color.semitransparent_white_65);
 		whitePlayerTimeColor = resources.getColor(R.color.semitransparent_black_80);

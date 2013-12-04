@@ -2,6 +2,7 @@ package com.chess.ui.fragments;
 
 import android.app.Activity;
 import android.content.*;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
@@ -136,6 +137,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected boolean isTablet;
 	private IntentFilter startLIveGameFilter;
 	private StartLiveGameReceiver startLiveGameReceiver;
+	protected ColorStateList themeFontColorStateList;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -173,6 +175,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		imageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
 
 		startLIveGameFilter = new IntentFilter(IntentConstants.START_LIVE_GAME);
+
+		themeFontColorStateList = getActivityFace().getThemeFontColorStateList();
 	}
 
 	@Override
@@ -705,12 +709,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		afterLogin();
 
-		String themeBackPath = getAppData().getThemeBackPath();
-		if (!TextUtils.isEmpty(themeBackPath)) {
-			getActivityFace().setMainBackground(themeBackPath);
-		} else {
-			getActivityFace().setMainBackground(getAppData().getThemeBackId());
-		}
+		getActivityFace().updateMainBackground();
+//		String themeBackPath = getAppData().getThemeBackPath();
+//		if (!TextUtils.isEmpty(themeBackPath)) {
+//			getActivityFace().setMainBackground(themeBackPath);
+//		} else {
+//			getActivityFace().setMainBackground(getAppData().getThemeBackId());
+//		}
 	}
 
 	protected void afterLogin() {

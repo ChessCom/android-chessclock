@@ -1,6 +1,7 @@
 package com.chess.ui.interfaces;
 
 
+import android.content.res.ColorStateList;
 import android.view.View;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.CoreActivityActionBar;
@@ -59,9 +60,11 @@ public interface ActiveFragmentInterface {
 
 	void showActionBar(boolean show);
 
+	void updateMainBackground();
+
 	void setMainBackground(int drawableThemeId);
 
-	void setMainBackground(String drawableThemeId);
+//	void setMainBackground(String drawableThemeId);
 
 	void showActionMenu(int menuId, boolean show);
 
@@ -78,4 +81,8 @@ public interface ActiveFragmentInterface {
 	void setPullToRefreshView(View view, PullToRefreshAttacher.OnRefreshListener refreshListener);
 
 	PullToRefreshAttacher getPullToRefreshAttacher();
+
+	ColorStateList getThemeFontColorStateList();
+
+	void setThemeFontColorStateList(ColorStateList themeFontColorStateList);
 }

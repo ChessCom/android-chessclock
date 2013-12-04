@@ -80,11 +80,9 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		view.findViewById(R.id.rightTabBtn).setVisibility(View.GONE);
 //		((TextView) view.findViewById(R.id.rightTabBtn)).setText(R.string.feed);
 
-//		if (themeName.equals(AppConstants.LIGHT_THEME_NAME)) {
-//			((TextView) view.findViewById(R.id.leftTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
-//			((TextView) view.findViewById(R.id.centerTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
-//			((TextView) view.findViewById(R.id.rightTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
-//		}
+		((TextView) view.findViewById(R.id.leftTabBtn)).setTextColor(themeFontColorStateList);
+		((TextView) view.findViewById(R.id.centerTabBtn)).setTextColor(themeFontColorStateList);
+		((TextView) view.findViewById(R.id.rightTabBtn)).setTextColor(themeFontColorStateList);
 
 		showActionBar(true);
 

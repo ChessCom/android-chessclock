@@ -421,6 +421,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 
 		controlsView.enableChatButton(username.equals(getUsername()));
+
+		// update player font color
+		topPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
+		bottomPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
 	}
 
 	@Override

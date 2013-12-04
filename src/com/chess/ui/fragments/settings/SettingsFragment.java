@@ -15,6 +15,7 @@ import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.utilities.AppUtils;
+import com.chess.widgets.RoboTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 	protected ListView listView;
 	protected List<SettingsMenuItem> menuItems;
 	private SettingsMenuAdapter adapter;
+	private AppUtils.DeviceInfo deviceInfo;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,15 +53,17 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 //		menuItems.add(new SettingsMenuItem(R.string.alerts_and_emails, R.string.ic_email_dark));
 		menuItems.add(new SettingsMenuItem(R.string.password, R.string.ic_password));
 //		menuItems.add(new SettingsMenuItem(R.string.account_history, R.string.ic_history));
+		menuItems.add(new SettingsMenuItem(R.string.report_problem, R.string.ic_ticket));
 		menuItems.add(new SettingsMenuItem(R.string.logout, R.string.ic_close));
-		menuItems.add(new SettingsMenuItem(R.string.report_problem, R.string.empty));
 
 		adapter = new SettingsMenuAdapter(getActivity(), menuItems);
+
+		deviceInfo = new AppUtils.DeviceInfo().getDeviceInfo(getActivity());
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_list_view_frame, container, false);
+		return inflater.inflate(R.layout.new_settings_frame, container, false);
 	}
 
 	@Override
@@ -67,6 +71,10 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.settings);
+
+		RoboTextView versionCodeTxt = (RoboTextView) view.findViewById(R.id.versionCodeTxt);
+		versionCodeTxt.setText("Build " + deviceInfo.APP_VERSION_NAME);
+		versionCodeTxt.setTextColor(themeFontColorStateList.getDefaultColor());
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
@@ -113,12 +121,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 			case R.string.ic_password:
 				getActivityFace().openFragment(new SettingsPasswordFragment());
 				break;
-			case R.string.ic_close:
-				logoutFromLive();
-				performLogout();
-
-				break;
-			case R.string.empty:
+			case R.string.ic_ticket:
 				Intent emailIntent = new Intent(Intent.ACTION_SEND);
 				emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
 				emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
@@ -126,11 +129,16 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose());
 				startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 				break;
+			case R.string.ic_close:
+				logoutFromLive();
+				performLogout();
+
+				break;
 		}
 	}
 
 	private String feedbackBodyCompose() {
-		AppUtils.DeviceInfo deviceInfo = new AppUtils.DeviceInfo().getDeviceInfo(getActivity());
+
 		return getResources().getString(R.string.feedback_mailbody) + ": " + AppConstants.VERSION_CODE
 				+ deviceInfo.APP_VERSION_CODE + ", " + AppConstants.VERSION_NAME + deviceInfo.APP_VERSION_NAME
 				+ ", " + deviceInfo.MODEL + ", " + AppConstants.SDK_API + deviceInfo.SDK_API + ", ";
@@ -160,6 +168,9 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 			ViewHolder holder = new ViewHolder();
 			holder.icon = (TextView) view.findViewById(R.id.iconTxt);
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
+
+			holder.icon.setTextColor(themeFontColorStateList);
+			holder.title.setTextColor(themeFontColorStateList);
 			view.setTag(holder);
 
 			return view;

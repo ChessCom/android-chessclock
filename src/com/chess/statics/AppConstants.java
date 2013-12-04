@@ -74,6 +74,7 @@ public class AppConstants {
 
     public static final String PREF_THEME_BACK_ID = "theme_background_id";
     public static final String PREF_THEME_BACK_PATH = "theme_background_path";
+    public static final String PREF_THEME_FONT_COLOR = "theme_font_color";
     public static final String PREF_THEME_BOARD_PATH = "theme_board_path";
     public static final String PREF_THEME_BOARD_COORDINATE_LIGHT = "theme_board_coordinate_light";
     public static final String PREF_THEME_BOARD_COORDINATE_DARK = "theme_board_coordinate_dark";
@@ -166,7 +167,6 @@ public class AppConstants {
 	public static final String NOTIFICATION = "notification";
 
     public static final String NEED_TO_RESTART = "needToRestart";
-	public static final String LIGHT_THEME_NAME = "Light";
 
 	public static final String LIVE_GAME_CONFIG = "live_game_config";
 }

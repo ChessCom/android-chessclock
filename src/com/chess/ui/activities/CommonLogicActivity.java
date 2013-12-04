@@ -102,7 +102,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	}
 
 	protected AppData getAppData() {
-		return appData == null? new AppData(this) : appData;
+		return appData == null ? new AppData(this) : appData;
 	}
 
 	protected String getCurrentUsername() {
@@ -213,37 +213,37 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		String setLocale = languageCodes[appData.getLanguageCode()];
 
 //		if(!prevLang.equals(setLocale)) {
-			Locale locale = new Locale(setLocale);
-			Locale.setDefault(locale);
-			Configuration config = new Configuration();
-			config.locale = locale;
-			getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+		Locale locale = new Locale(setLocale);
+		Locale.setDefault(locale);
+		Configuration config = new Configuration();
+		config.locale = locale;
+		getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 
 //			preferencesEditor.putString(AppConstants.CURRENT_LOCALE, setLocale);
 //			preferencesEditor.commit();
 
-			currentLocale = setLocale;
+		currentLocale = setLocale;
 //		}
 	}
 
-	protected void restartActivity(){
+	protected void restartActivity() {
 		Intent intent = getIntent();
 		finish();
 		startActivity(intent);
 	}
 
-	protected List<String> getItemsFromEntries(int entries){
+	protected List<String> getItemsFromEntries(int entries) {
 		String[] array = getResources().getStringArray(entries);
 		return getItemsFromArray(array);
 	}
 
-	protected List<String> getItemsFromArray(String[] array){
+	protected List<String> getItemsFromArray(String[] array) {
 		List<String> items = new ArrayList<String>();
 		items.addAll(Arrays.asList(array));
 		return items;
 	}
 
-	protected void registerGcmService(){
+	protected void registerGcmService() {
 		if (!appData.isNotificationsEnabled()) { // no need to register if user turned off notifications
 			return;
 		}
@@ -279,7 +279,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 	}
 
-	protected void unRegisterGcmService(){
+	protected void unRegisterGcmService() {
 		// save token to unregister from server
 		preferencesEditor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, appData.getUserToken());
 		preferencesEditor.commit();
@@ -297,22 +297,22 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		@Override
 		public void updateData(GcmItem returnedObj) {   // TODO invent exponential leap
 
-            if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
-                switch (requestCode) {
-                    case GcmHelper.REQUEST_REGISTER:
-                        GCMRegistrar.setRegisteredOnServer(getContext(), true);
-                        appData.registerOnChessGCM(appData.getUserToken());
-                        break;
-                    case GcmHelper.REQUEST_UNREGISTER:
-                        GCMRegistrar.setRegisteredOnServer(getContext(), false);
-                        appData.unRegisterOnChessGCM();
-                        // remove saved token
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, Symbol.EMPTY);
-                        editor.commit();
-                        break;
-                }
-            }
+			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+				switch (requestCode) {
+					case GcmHelper.REQUEST_REGISTER:
+						GCMRegistrar.setRegisteredOnServer(getContext(), true);
+						appData.registerOnChessGCM(appData.getUserToken());
+						break;
+					case GcmHelper.REQUEST_UNREGISTER:
+						GCMRegistrar.setRegisteredOnServer(getContext(), false);
+						appData.unRegisterOnChessGCM();
+						// remove saved token
+						SharedPreferences.Editor editor = preferences.edit();
+						editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, Symbol.EMPTY);
+						editor.commit();
+						break;
+				}
+			}
 		}
 
 		@Override
@@ -337,7 +337,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		this.passwordEdt = passedPasswordEdt;
 	}
 
-	protected void signInUser(){
+	protected void signInUser() {
 		String username = getTextFromField(loginUsernameEdt);
 		if (username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH) {
 			loginUsernameEdt.setError(getString(R.string.validateUsername));
@@ -383,10 +383,10 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		@Override
 		public void showProgress(boolean show) {
-			if (show){
+			if (show) {
 				showPopupHardProgressDialog(R.string.signing_in_);
 			} else {
-				if(isPaused)
+				if (isPaused)
 					return;
 
 				dismissProgressDialog();
@@ -411,7 +411,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			if (RestHelper.containsServerCode(resultCode)) {
 				// get server code
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				switch (serverCode){
+				switch (serverCode) {
 					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
 						passwordEdt.setError(getResources().getString(R.string.invalid_username_or_password));
 						passwordEdt.requestFocus();
@@ -431,7 +431,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
-			Log.d("TEST"," session callback session = " + session + " state = " + state);
+			Log.d("TEST", " session callback session = " + session + " state = " + state);
 			onSessionStateChange(session, state, exception);
 		}
 	};
@@ -473,7 +473,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		afterLogin();
 	}
 
-	protected void afterLogin(){ }
+	protected void afterLogin() {
+	}
 
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
@@ -483,9 +484,9 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			return;
 		}
 
-		if (tag.equals(NETWORK_CHECK_TAG)){
+		if (tag.equals(NETWORK_CHECK_TAG)) {
 			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
-		} else if (tag.equals(CHESS_NO_ACCOUNT_TAG)){
+		} else if (tag.equals(CHESS_NO_ACCOUNT_TAG)) {
 //			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.getInstance().REGISTER_HTML)));
 		}
 		super.onPositiveBtnClick(fragment);

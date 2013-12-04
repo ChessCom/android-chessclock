@@ -208,7 +208,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		if (selectedThemeItem.getThemeName().equals(AppConstants.DEFAULT_THEME_NAME)) {
 			// clear themed settings
 			getAppData().resetThemeToDefault();
-			getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
+			getActivityFace().updateMainBackground();
 
 			getAppData().setThemeName(AppConstants.DEFAULT_THEME_NAME);
 			getAppData().setThemeBackgroundName(AppConstants.DEFAULT_THEME_NAME);

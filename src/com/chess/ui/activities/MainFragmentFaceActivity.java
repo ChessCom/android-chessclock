@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -77,6 +79,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private IntentFilter backgroundUpdateFilter;
 	private BackgroundUpdateReceiver backgroundUpdateReceiver;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
+	private ColorStateList themeFontColorStateList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -153,6 +156,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		} else {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
+
+		// set main themeFontColor
+		updateFontColors();
 	}
 
 	@Override
@@ -300,7 +306,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		getWindow().setBackgroundDrawableResource(drawableThemeId);
 	}
 
-	@Override
+//	@Override
 	public void setMainBackground(String drawablePath) {
 		BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
 		bitmapOptions.inJustDecodeBounds = true;
@@ -522,7 +528,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 	}
 
-	private void updateMainBackground() {
+	@Override
+	public void updateMainBackground() {
 		String themeBackPath = getAppData().getThemeBackPath();
 		if (!TextUtils.isEmpty(themeBackPath)) {
 			setMainBackground(themeBackPath);
@@ -535,8 +542,30 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 
 		updateActionBarBackImage();
+		updateFontColors();
 	}
 
+	private void updateFontColors() {
+		int defaultFontColor = Color.parseColor("#D0" + getAppData().getThemeFontColor()); // add 75% opacity
+		int pressedFontColor = Color.parseColor("#40" + getAppData().getThemeFontColor()) ;
+//		int pressedFontColor = Color.parseColor("#40" + "FF0000");
+//		themeFontColor = Color.parseColor("#40" + "00FF00") ;
+
+		themeFontColorStateList = new ColorStateList(
+				new int[][]{
+						new int[]{android.R.attr.state_enabled},
+						new int[]{android.R.attr.state_pressed},
+						new int[]{android.R.attr.state_selected},
+						new int[]{android.R.attr.state_enabled, android.R.attr.state_checked},// selected
+						new int[]{-android.R.attr.state_enabled},
+				},
+				new int[]{
+						defaultFontColor,
+						pressedFontColor,
+						pressedFontColor,
+						Color.GREEN,
+						Color.RED});
+	}
 
 	private class NotificationsUpdateReceiver extends BroadcastReceiver {
 		@Override
@@ -744,4 +773,15 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public PullToRefreshAttacher getPullToRefreshAttacher() {
 		return mPullToRefreshAttacher;
 	}
+
+	@Override
+	public ColorStateList getThemeFontColorStateList() {
+		return themeFontColorStateList;
+	}
+
+	@Override
+	public void setThemeFontColorStateList(ColorStateList themeFontColorStateList) {
+		this.themeFontColorStateList = themeFontColorStateList;
+	}
+
 }
