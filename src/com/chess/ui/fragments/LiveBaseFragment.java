@@ -144,6 +144,10 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	public void expireGame() {
 	}
 
+	@Override
+	public void opponentStatusUpdated(boolean online) {
+	}
+
 	public void setLCSBound(boolean LCSBound) {
 		isLCSBound = LCSBound;
 		if (isLCSBound) {

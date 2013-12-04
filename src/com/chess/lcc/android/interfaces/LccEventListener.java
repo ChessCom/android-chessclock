@@ -30,4 +30,6 @@ public interface LccEventListener {
 	void createSeek();
 
 	void expireGame();
+
+	void opponentStatusUpdated(boolean online);
 }

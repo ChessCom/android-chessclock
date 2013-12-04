@@ -328,6 +328,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	@Override
+	public void opponentStatusUpdated(boolean online) {
+		LogMe.dl(TAG, "opponentStatusUpdated: online=" + online);
+	}
+
+	@Override
 	public void expireGame() {
 		showSinglePopupDialog(R.string.error, getString(R.string.game_expired), GAME_EXPIRED_TAG);
 		getLastPopupFragment().setCancelable(false);

@@ -48,8 +48,9 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private final LccConnectionListener connectionListener;
 	private final LccGameListener gameListener;
 	private final LccChallengeListener challengeListener;
-	private final LccSeekListListener seekListListener;
+	//private final LccSeekListListener seekListListener;
 	private final LccFriendStatusListener friendStatusListener;
+	//private final LccUserListListener userListListener;
 	private final LccAnnouncementListener announcementListener;
 	private final LccAdminEventListener adminEventListener;
 	private final AppData appData;
@@ -105,8 +106,9 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		connectionListener = new LccConnectionListener(this);
 		gameListener = new LccGameListener(this);
 		challengeListener = new LccChallengeListener(this);
-		seekListListener = new LccSeekListListener(this);
+		//seekListListener = new LccSeekListListener(this);
 		friendStatusListener = new LccFriendStatusListener(this);
+		//userListListener = new LccUserListListener(this);
 		announcementListener = new LccAnnouncementListener(this);
 		adminEventListener = new LccAdminEventListener();
 
@@ -516,6 +518,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			lccClient.subscribeToGameEvents(gameListener);
 			lccClient.subscribeToChatEvents(chatListener);
 			lccClient.subscribeToFriendStatusEvents(friendStatusListener);
+			//lccClient.subscribeToUserList(LiveChessClient.UserListOrderBy.Username, 1, userListListener);
 			lccClient.subscribeToAdminEvents(adminEventListener);
 			lccClient.subscribeToAnnounces(announcementListener);
 
@@ -556,14 +559,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public LccChallengeListener getChallengeListener() {
 		return challengeListener;
-	}
-
-	public LccSeekListListener getSeekListListener() {
-		return seekListListener;
-	}
-
-	public LccFriendStatusListener getFriendStatusListener() {
-		return friendStatusListener;
 	}
 
 	public boolean isUserBlocked(String username) {

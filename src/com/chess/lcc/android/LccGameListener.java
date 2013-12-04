@@ -1,5 +1,6 @@
 package com.chess.lcc.android;
 
+import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.live.client.GameListener;
 import com.chess.live.client.User;
@@ -198,6 +199,28 @@ public class LccGameListener implements GameListener {
 
 		if (!lccHelper.isObservedGame(game)) {
 			lccHelper.checkAndProcessDrawOffer(game);
+		}
+
+		User opponent = game.getOpponentForPlayer(lccHelper.getUsername());
+		User.Status opponentStatus = opponent.getStatus();
+		LogMe.dl(TAG, "opponent status: " + opponent.getUsername() + " is " + opponentStatus);
+
+		LccEventListener lccEventListener = lccHelper.getLccEventListener();
+		if (lccEventListener != null) {
+
+			boolean online = false;
+
+			switch (opponentStatus) {
+				case ONLINE:
+				case PLAYING: online = true;
+				break;
+				case IDLE:
+				case OFFLINE:
+				case UNKNOWN: online = false;
+			}
+
+			// todo: remember previous status
+			lccEventListener.opponentStatusUpdated(online);
 		}
 	}
 
