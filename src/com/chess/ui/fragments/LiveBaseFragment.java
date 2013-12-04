@@ -145,7 +145,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	}
 
 	@Override
-	public void opponentStatusUpdated(boolean online) {
+	public void updateOpponentOnlineStatus(boolean online) {
 	}
 
 	public void setLCSBound(boolean LCSBound) {

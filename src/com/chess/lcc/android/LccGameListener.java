@@ -208,19 +208,18 @@ public class LccGameListener implements GameListener {
 		LccEventListener lccEventListener = lccHelper.getLccEventListener();
 		if (lccEventListener != null) {
 
-			boolean online = false;
-
+			boolean online;
 			switch (opponentStatus) {
-				case ONLINE:
-				case PLAYING: online = true;
+				case PLAYING:
+				case ONLINE: online = true;
 				break;
-				case IDLE:
 				case OFFLINE:
-				case UNKNOWN: online = false;
+				case UNKNOWN:
+				case IDLE:
+				default: online = false;
 			}
 
-			// todo: remember previous status
-			lccEventListener.opponentStatusUpdated(online);
+			lccEventListener.updateOpponentOnlineStatus(online);
 		}
 	}
 

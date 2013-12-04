@@ -31,5 +31,5 @@ public interface LccEventListener {
 
 	void expireGame();
 
-	void opponentStatusUpdated(boolean online);
+	void updateOpponentOnlineStatus(boolean online);
 }

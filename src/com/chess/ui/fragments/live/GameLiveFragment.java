@@ -16,11 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
-import com.chess.backend.LoadHelper;
-import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.UserItem;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -95,6 +92,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	protected SparseArray<String> optionsMap;
 	private String[] countryNames;
 	private int[] countryCodes;
+	private boolean opponentOnline;
 
 	public GameLiveFragment() { }
 
@@ -336,8 +334,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	@Override
-	public void opponentStatusUpdated(boolean online) {
-		LogMe.dl(TAG, "opponentStatusUpdated: online=" + online);
+	public void updateOpponentOnlineStatus(boolean online) {
+		LogMe.dl(TAG, "updateOpponentOnlineStatus: online=" + online);
+
+		if (opponentOnline != online) {
+			// todo: update UI opponent's info as "Reconnecting..."
+			//updateOpponentStatus();
+			opponentOnline = online;
+		}
 	}
 
 	@Override
@@ -1167,6 +1171,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				imageDownloader.download(myAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 			}
 
+			// todo: please fix - cannot start Live game and Top game
+			/*
 			{ // get opponent info
 				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
 				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
@@ -1175,6 +1181,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				LoadItem loadItem = LoadHelper.getUserInfo(labelsConfig.bottomPlayerName);
 				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
 			}
+			*/
 		}
 
 		int resignTitleId = liveService.getResignTitle();

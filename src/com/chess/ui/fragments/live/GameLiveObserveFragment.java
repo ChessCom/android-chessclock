@@ -8,10 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
-import com.chess.backend.LoadHelper;
-import com.chess.backend.LoadItem;
-import com.chess.backend.entity.api.UserItem;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
@@ -134,6 +130,8 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			}
 		}
 
+		// todo: please fix - cannot start Live game and Top game
+		/*
 		{ // get opponent info
 			LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
 			new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
@@ -142,6 +140,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			LoadItem loadItem = LoadHelper.getUserInfo(labelsConfig.bottomPlayerName);
 			new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
 		}
+		*/
 
 		/*int resignTitleId = liveService.getResignTitle();
 		{// options list setup
