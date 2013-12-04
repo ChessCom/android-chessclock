@@ -149,7 +149,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && !getSlidingMenu().isMenuShowing()) {
 			if (getAppData().isLiveChess() && isLCSBound) {
 				Fragment fragmentByTag = getLiveFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {

@@ -967,15 +967,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 			BasePopupsFragment fragmentByTag;
 			if (!isTablet) {
-				fragmentByTag = (BasePopupsFragment) getFragmentManager().findFragmentByTag(LiveHomeFragment.class.getSimpleName());
-				if (fragmentByTag == null) {
+//				fragmentByTag = (BasePopupsFragment) getFragmentManager().findFragmentByTag(LiveHomeFragment.class.getSimpleName());
+//				if (fragmentByTag == null) {
 					fragmentByTag = new LiveHomeFragment();
-				}
+//				}
 			} else {
-				fragmentByTag = (BasePopupsFragment) getFragmentManager().findFragmentByTag(LiveHomeFragmentTablet.class.getSimpleName());
-				if (fragmentByTag == null) {
+//				fragmentByTag = (BasePopupsFragment) getFragmentManager().findFragmentByTag(LiveHomeFragmentTablet.class.getSimpleName());
+//				if (fragmentByTag == null) {
 					fragmentByTag = new LiveHomeFragmentTablet();
-				}
+//				}
 			}
 
 			getActivityFace().openFragment(fragmentByTag);

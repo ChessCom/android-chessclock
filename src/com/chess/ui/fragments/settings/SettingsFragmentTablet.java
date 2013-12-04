@@ -66,7 +66,7 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 				changeInternalFragment(new SettingsLiveChessFragment());
 				break;
 			case R.string.ic_theme:
-				changeInternalFragment(new SettingsThemeFragmentTablet(this));
+				changeInternalFragment(SettingsThemeFragmentTablet.createInstance(this));
 				break;
 			case R.string.ic_key_badge:
 				changeInternalFragment(new SettingsPasswordFragment());
@@ -86,14 +86,15 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.innerFragmentContainer, fragment).commitAllowingStateLoss();
+		transaction.replace(R.id.innerFragmentContainer, fragment);
+		transaction.commitAllowingStateLoss();
 	}
 
 	private void openInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 		transaction.replace(R.id.innerFragmentContainer, fragment, fragment.getClass().getSimpleName());
 		transaction.addToBackStack(fragment.getClass().getSimpleName());
-		transaction.commit();
+		transaction.commitAllowingStateLoss();
 	}
 
 	@Override

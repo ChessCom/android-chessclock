@@ -195,7 +195,7 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 		transaction.replace(R.id.innerFragmentContainer, fragment, fragment.getClass().getSimpleName());
 		transaction.addToBackStack(fragment.getClass().getSimpleName());
-		transaction.commit();
+		transaction.commitAllowingStateLoss();
 	}
 
 

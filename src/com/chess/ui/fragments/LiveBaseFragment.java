@@ -119,7 +119,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	}
 
 	@Override
-	public void onGameEnd(String gameEndMessage) {
+	public void onGameEnd(Game game, String gameEndMessage) {
 	}
 
 	@Override

@@ -14,8 +14,10 @@ public class SettingsThemeFragmentTablet extends SettingsThemeFragment {
 
 	public SettingsThemeFragmentTablet() {}
 
-	public SettingsThemeFragmentTablet(FragmentParentFace parentFace) {
-		this.parentFace = parentFace;
+	public static SettingsThemeFragmentTablet createInstance(FragmentParentFace parentFace) {
+		SettingsThemeFragmentTablet fragment = new SettingsThemeFragmentTablet();
+		fragment.parentFace = parentFace;
+		return fragment;
 	}
 
 	@Override

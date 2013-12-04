@@ -518,7 +518,8 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.innerFragmentContainer, fragment).commitAllowingStateLoss();
+		transaction.replace(R.id.innerFragmentContainer, fragment);
+		transaction.commitAllowingStateLoss();
 	}
 
 	private void openInternalFragment(Fragment fragment) {

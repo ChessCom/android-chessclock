@@ -17,7 +17,6 @@ import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.statics.AppConstants;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
@@ -81,11 +80,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		view.findViewById(R.id.rightTabBtn).setVisibility(View.GONE);
 //		((TextView) view.findViewById(R.id.rightTabBtn)).setText(R.string.feed);
 
-		if (themeName.equals(AppConstants.LIGHT_THEME_NAME)) {
-			((TextView) view.findViewById(R.id.leftTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
-			((TextView) view.findViewById(R.id.centerTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
-			((TextView) view.findViewById(R.id.rightTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
-		}
+//		if (themeName.equals(AppConstants.LIGHT_THEME_NAME)) {
+//			((TextView) view.findViewById(R.id.leftTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
+//			((TextView) view.findViewById(R.id.centerTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
+//			((TextView) view.findViewById(R.id.rightTabBtn)).setTextColor(getResources().getColor(R.color.transparent_button_border_top));
+//		}
 
 		showActionBar(true);
 

@@ -1314,7 +1314,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		}
 
 		if (!isGameActivityPausedMode()) {
-			getLccEventListener().onGameEnd(message);
+			getLccEventListener().onGameEnd(game, message);
 		} else {
 			LogMe.dl(TAG, "paused mode: postpone GAME END processing");
 			/*LogMe.dl(TAG, "ActivityPausedMode = true");

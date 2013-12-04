@@ -431,22 +431,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	@Override
-	public void onGameEnd(final String gameEndMessage) {
+	public void onGameEnd(final Game game, final String gameEndMessage) {
 		final Activity activity = getActivity();
 		if (activity == null) {
 			return;
 		}
 
-		LiveChessService liveService;
-		try {
-			liveService = getLiveService();
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-			return;
-		}
 		final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
-		final Game game = liveService.getLastGame();
 		final List<Integer> ratings = game.getRatings();
 		// Get side result
 		List<GameResult> gameResults = game.getResults();

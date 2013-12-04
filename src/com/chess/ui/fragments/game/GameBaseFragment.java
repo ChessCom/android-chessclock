@@ -87,6 +87,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		}
 		super.onCreate(savedInstanceState);
 
+		labelsConfig = new LabelsConfig();
 		imageDownloader = new ImageDownloaderToListener(getActivity());
 	}
 

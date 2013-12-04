@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.settings;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +11,10 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.LiveBaseFragment;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		menuItems.add(new SettingsMenuItem(R.string.password, R.string.ic_password));
 //		menuItems.add(new SettingsMenuItem(R.string.account_history, R.string.ic_history));
 		menuItems.add(new SettingsMenuItem(R.string.logout, R.string.ic_close));
+		menuItems.add(new SettingsMenuItem(R.string.report_problem, R.string.empty));
 
 		adapter = new SettingsMenuAdapter(getActivity(), menuItems);
 	}
@@ -114,8 +118,24 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				performLogout();
 
 				break;
+			case R.string.empty:
+				Intent emailIntent = new Intent(Intent.ACTION_SEND);
+				emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
+				emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
+				emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
+				emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose());
+				startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
+				break;
 		}
 	}
+
+	private String feedbackBodyCompose() {
+		AppUtils.DeviceInfo deviceInfo = new AppUtils.DeviceInfo().getDeviceInfo(getActivity());
+		return getResources().getString(R.string.feedback_mailbody) + ": " + AppConstants.VERSION_CODE
+				+ deviceInfo.APP_VERSION_CODE + ", " + AppConstants.VERSION_NAME + deviceInfo.APP_VERSION_NAME
+				+ ", " + deviceInfo.MODEL + ", " + AppConstants.SDK_API + deviceInfo.SDK_API + ", ";
+	}
+
 
 	protected class SettingsMenuItem {
 		public int nameId;

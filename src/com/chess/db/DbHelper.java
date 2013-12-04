@@ -27,7 +27,7 @@ public class DbHelper {
 		queryParams.setArguments(new String[]{username});
 		// SELECT *  FROM daily_current_games ORDER BY is_my_turn DESC, time_remaining DESC // use for multiple
 		queryParams.setOrder(DbScheme.V_IS_MY_TURN + DbDataManager.DESCEND + Symbol.COMMA
-				+ Symbol.SPACE + DbScheme.V_TIME_REMAINING + DbDataManager.DESCEND);
+				+ Symbol.SPACE + DbScheme.V_TIME_REMAINING + DbDataManager.ASCEND);
 		return queryParams;
 	}
 

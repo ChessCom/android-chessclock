@@ -444,7 +444,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		String simpleName = fragment.getClass().getSimpleName();
 		ft.replace(R.id.content_frame, fragment, simpleName);
 		ft.addToBackStack(simpleName);
-		ft.commitAllowingStateLoss();   // TODO check logic
+		ft.commitAllowingStateLoss();
 
 		FlurryAgent.logEvent(FlurryData.OPEN_FRAME + simpleName);
 	}

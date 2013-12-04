@@ -1,5 +1,6 @@
 package com.chess.lcc.android.interfaces;
 
+import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
 
 /**
@@ -18,7 +19,7 @@ public interface LccEventListener {
 
     void onDrawOffered(String drawOfferUsername);
 
-    void onGameEnd(String gameEndMessage);
+    void onGameEnd(Game game, String gameEndMessage);
 	
 	void onInform(String title, String message);
 

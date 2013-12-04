@@ -7,7 +7,7 @@
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="22dp"
+    android:padding="@dimen/common_tablet_side_padding"
     android:background="@drawable/transparent_list_item_selector"
     >
 

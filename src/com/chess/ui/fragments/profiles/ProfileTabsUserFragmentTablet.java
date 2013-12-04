@@ -112,14 +112,15 @@ public class ProfileTabsUserFragmentTablet extends CommonLogicFragment implement
 
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.tab_content_frame, fragment).commitAllowingStateLoss();
+		transaction.replace(R.id.tab_content_frame, fragment);
+		transaction.commitAllowingStateLoss();
 	}
 
 	private void openInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 		transaction.replace(R.id.tab_content_frame, fragment, fragment.getClass().getSimpleName());
 		transaction.addToBackStack(fragment.getClass().getSimpleName());
-		transaction.commit();
+		transaction.commitAllowingStateLoss();
 	}
 
 	@Override

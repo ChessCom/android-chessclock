@@ -380,7 +380,8 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
 
 			if (themeName.equals(AppConstants.LIGHT_THEME_NAME)) {
-				holder.title.setTextColor(resources.getColor(R.color.transparent_button_border_top));
+				int lightColor = 0xFF606060; // resources.getColor(R.color.transparent_button_border_top)
+				holder.title.setTextColor(lightColor);
 			}
 			view.setTag(holder);
 

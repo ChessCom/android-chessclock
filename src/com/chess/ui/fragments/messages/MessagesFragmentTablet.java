@@ -65,14 +65,15 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.innerFragmentContainer, fragment).commitAllowingStateLoss();
+		transaction.replace(R.id.innerFragmentContainer, fragment);
+		transaction.commitAllowingStateLoss();
 	}
 
 	private void openInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 		transaction.replace(R.id.innerFragmentContainer, fragment, fragment.getClass().getSimpleName());
 		transaction.addToBackStack(fragment.getClass().getSimpleName());
-		transaction.commit();
+		transaction.commitAllowingStateLoss();
 	}
 
 	@Override

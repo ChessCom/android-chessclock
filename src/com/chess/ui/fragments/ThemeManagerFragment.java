@@ -40,7 +40,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 	static final String PIECE_PREVIEW_LINE = CLOUD_FRONT + PIECES + PREVIEWS + LINE;
 	static final String PIECE_PREVIEW_SQUARE = CLOUD_FRONT + PIECES + PREVIEWS + SQUARE;
 	static final String SOUND_PACK = CLOUD_FRONT + SOUNDS + MP3;
-	public static final int RENAME_DELAY = 20 * 1000;
+	public static final int RENAME_DELAY = 40 * 1000;
 
 
 	@Override
@@ -297,7 +297,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			String themeName = backgrounds[position];
 			name = AppUtils.upCaseFirst(themes[position]);
 			backgroundPreviewUrl = BACKGROUND_PREVIEWS + themeName + PNG;
-			fontColor = "FFFFFF";
+			fontColor = backgroundFontColors[position];
 			originalHandset = BACKGROUND_ORIGINALS + backgroundsFolders[HANDSET] + themeName + PNG;
 			originalIphone = BACKGROUND_ORIGINALS + backgroundsFolders[IPHONE] + themeName + PNG;
 			originalIpad = BACKGROUND_ORIGINALS + backgroundsFolders[IPAD_LAND] + themeName + PNG;
@@ -612,7 +612,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			{"282f3f", "667188", "5b91b3"},  // Translucent   10
 			{"efefef", "c2d7e2", "65daf7"},  // Sky           11
 			{"e5d3c4", "b8a590", "e2bc87"},  // Sand          12
-			{"d1d0c7", "5a5956", "99976e"},  // Newspaper     13
+			{"5a5956", "5a5956", "99976e"},  // Newspaper     13
 			{"282f3f", "667188", "5b91b3"},  // Glass         14
 			{"b9b9b9", "636363", "6d90a6"},  // Neon          15
 			{"c9c9c9", "6e6e6e", "a3becd"},  // Metal         16
@@ -677,6 +677,29 @@ winboard - 	ffffff
 			"graffiti",
 			"bubblegum",
 			"lolz"
+	};
+
+	static String[] backgroundFontColors = new String[]{
+			"FFFFFF",   // "game_room",
+			"FFFFFF",        // "dark",
+			"606060",       // "light",
+			"FFFFFF",        // "wood",
+			"FFFFFF",       // "glass",
+			"FFFFFF",  // "tournament",
+			"FFFFFF",    // "staunton",
+			"606060",   // "newspaper",
+			"FFFFFF",      // "tigers",
+			"FFFFFF",      // "nature",
+			"FFFFFF",         // "sky",
+			"FFFFFF",       // "space",
+			"FFFFFF",       // "ocean",
+			"FFFFFF",       // "metal",
+			"FFFFFF",      // "gothic",
+			"FFFFFF",      // "marble",
+			"FFFFFF",        // "neon",
+			"FFFFFF",    // "graffiti",
+			"FFFFFF",   // "bubblegum",
+			"FFFFFF"         // "lolz"
 	};
 
 
