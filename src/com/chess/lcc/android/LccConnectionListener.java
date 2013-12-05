@@ -53,15 +53,8 @@ public class LccConnectionListener implements ConnectionListener {
 	}
 
 	@Override
-	public void onConnectionLost(User user, String message, FailureDetails details, Throwable throwable) {
-		String failureId = null;
-		String comments = null;
-		if (details != null) {
-			failureId = details.getFailureId();
-			comments = details.getComments();
-		}
-		LogMe.dl(TAG, "Connection Lost, with message = " + message
-				+ " \nDetails: id = " + failureId + " comments = " + comments);
+	public void onConnectionLost(User user, String message, Throwable throwable) {
+		LogMe.dl(TAG, "Connection Lost, with message = " + message);
 		LogMe.dl(TAG, "Connection Lost: isNetworkAvailable=" + AppUtils.isNetworkAvailable(lccHelper.getContext()));
 		lccHelper.setConnected(false);
 	}

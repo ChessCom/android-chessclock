@@ -333,7 +333,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		// when there is no active connection details = Authentication service failed
 		// when connection is here but Live cannot reach server details = null
-		// and we should always disconnect() current instance and create new one after ConnectionFailure
+		// and we should always create new instance after ConnectionFailure
 
 		/*if (details == null && !AppUtils.isNetworkAvailable(context)) {
 			// handle null-case when user tries to connect when device connection is off, just ignore
@@ -350,7 +350,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		if (details != null) {
 
-			logout();
+			// do not invoke client.disconnect() in this case
+			cleanupLiveInfo();
+			resetClient();
+			cancelServiceNotification();
 
 			switch (details) {
 				case USER_KICKED: {
@@ -865,32 +868,31 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		logout(true);
 	}
 
-	public void logout(boolean resetClient) {
-		try {
-			throw new Exception("lcclog");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		LogMe.dl(TAG, "USER LOGOUT");
+	public void cleanupLiveInfo() {
+		LogMe.dl(TAG, "cleanupLiveInfo");
 		new AppData(context).setLiveChessMode(false);
 		setCurrentGameId(null);
 		setCurrentObservedGameId(null);
 		setUser(null);
 		setConnected(false);
-
 		clearGames();
 		clearChallenges();
 		clearOwnChallenges();
 		clearSeeks();
 		clearOnlineFriends();
 		clearPausedEvents();
+	}
 
+	public void logout(boolean resetClient) {
+		LogMe.dl(TAG, "USER LOGOUT");
+		cleanupLiveInfo();
 		runDisconnectTask(resetClient); // disconnect and reset client instance
-
 		cancelServiceNotification();
+	}
 
-		//instance = null;
+	public void resetClient() {
+		LogMe.dl(TAG, "reset LCC instance");
+		lccClient = null;
 	}
 
 	public boolean isSeekContains(Long id) {
@@ -1110,10 +1112,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	public void unobserveGame(Long gameId) {
 		LogMe.dl(TAG, "unobserve game=" + gameId);
 		lccClient.unobserveGame(gameId);
-	}
-
-	public void resetClient() {
-		lccClient = null;
 	}
 
 	public Context getContext() {
