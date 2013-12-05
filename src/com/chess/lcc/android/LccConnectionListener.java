@@ -34,6 +34,7 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 		lccHelper.clearPausedEvents();
+		lccHelper.stopConnectionTimer();
 
 		LogMe.dl(TAG, "User has been connected: name=" + user.getUsername() + ", authKey=" + user.getAuthKey() + ", user=" + user);
 	}
@@ -47,7 +48,7 @@ public class LccConnectionListener implements ConnectionListener {
 
 	@Override
 	public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable) {
-		LogMe.dl(TAG, "User connection failure:" + message + ", details=" + details);
+		LogMe.dl(TAG, "User connection failure: " + message + ", details=" + details);
 
 		lccHelper.processConnectionFailure(details);
 	}
@@ -73,6 +74,8 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.storeBlockedUsers(userSettings.getBlockedUsers(), userSettings.getBlockingUsers());
 
 		lccHelper.clearPausedEvents();
+
+		lccHelper.stopConnectionTimer();
 	}
 
 	@Override

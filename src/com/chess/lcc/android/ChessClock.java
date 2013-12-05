@@ -1,9 +1,10 @@
 package com.chess.lcc.android;
 
-import com.chess.ui.engine.SoundPlayer;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
+import com.chess.ui.engine.SoundPlayer;
 
+import java.util.Timer;
 import java.util.TimerTask;
 
 public class ChessClock {
@@ -20,7 +21,7 @@ public class ChessClock {
 	private static final int MINUTES_SECONDS_THRESHOLD = 121 * 60 * SECOND_MS;
 	private LccHelper lccHelper;
 	private boolean isWhite;
-	private java.util.Timer myTimer;
+	private Timer timer;
 	private boolean tenSecondsPlayed;
 	private Game game;
 	private String playerName;
@@ -136,8 +137,8 @@ public class ChessClock {
 	}
 
 	private void startTimer() {
-		myTimer = new java.util.Timer();
-		myTimer.schedule(new TimerTask() {
+		timer = new Timer();
+		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
 
@@ -163,8 +164,8 @@ public class ChessClock {
 	}
 
 	private void stopTimer() {
-		if (myTimer != null) {
-			myTimer.cancel();
+		if (timer != null) {
+			timer.cancel();
 		}
 	}
 }
