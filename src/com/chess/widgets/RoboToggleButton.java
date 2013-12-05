@@ -41,6 +41,12 @@ public class RoboToggleButton extends ToggleButton implements Serializable {
 			if (array.hasValue(R.styleable.RoboTextView_ttf)) {
 				ttfName = array.getString(R.styleable.RoboTextView_ttf);
 			}
+			if (array.hasValue(R.styleable.RoboTextView_themeColor)) {
+				boolean useThemeColor = array.getBoolean(R.styleable.RoboTextView_themeColor, false);
+				if (useThemeColor) {
+					setTextColor(FontsHelper.getInstance().getThemeColorStateList(context));
+				}
+			}
 		} finally {
 			array.recycle();
 		}

@@ -42,7 +42,7 @@ import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.fragments.settings.SettingsGeneralFragment;
+import com.chess.ui.fragments.settings.SettingsDailyChessFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
@@ -210,7 +210,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		} else if (code == ID_EMAIL_GAME) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsGeneralFragment());
+			getActivityFace().openFragment(new SettingsDailyChessFragment());
 		}
 
 		optionsSelectFragment.dismiss();

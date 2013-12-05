@@ -89,8 +89,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	//	private static final int ID_HINT = 3;
 	private static final int ID_PERFORMANCE = 3;
 	private static final int ID_SETTINGS = 4;
-	public static final String COMP_MOVE_PREFIX = "1. ... ";
-	public static final String COMP_MOVE_PREFIX_2 = "1...";
 
 	private ChessBoardTacticsView boardView;
 
@@ -561,8 +559,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		trainerData.setRetry(true);
 		TacticBoardFace boardFace = getBoardFace();
 
-		// if last move was correct we continue, if not, rewind back to start
-		if (!boardFace.isLastTacticMoveCorrect()) {
+		// if move was made and it was correct we continue, if not, rewind back to start
+		if (boardFace.getPly() > 0 && !boardFace.isLastTacticMoveCorrect()) {
 			while (boardFace.takeBack()) {
 				currentTacticAnswerCnt--;
 			}
@@ -1063,8 +1061,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else { // setup first move
 			startTacticsTimer(trainerData);
 
-			if (cleanMoveString.startsWith(COMP_MOVE_PREFIX) /*||
-				cleanMoveString.startsWith(COMP_MOVE_PREFIX_2)*/) {// means first move should do Comp
+			if (trainerData.isUserMove()) {
 				boardFace.setReside(!boardFace.isReside()); // flip board
 
 				boardFace.setMovesCount(1);

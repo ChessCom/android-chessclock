@@ -935,6 +935,7 @@ public class DbDataManager {
 		values.put(V_MOVE_LIST, dataObj.getCleanMoveString());
 		values.put(V_ATTEMPT_CNT, dataObj.getAttemptCnt());
 		values.put(V_PASSED_CNT, dataObj.getPassedCnt());
+		values.put(V_IS_MY_TURN, dataObj.isUserMove() ? 1 : 0);
 		values.put(V_RATING, dataObj.getRating());
 		values.put(V_AVG_SECONDS, dataObj.getAvgSeconds());
 		values.put(V_SECONDS_SPENT, dataObj.getSecondsSpent());
@@ -955,6 +956,7 @@ public class DbDataManager {
 		tacticProblem.setMoveList(getString(cursor, V_MOVE_LIST));
 		tacticProblem.setAttemptCnt(getInt(cursor, V_ATTEMPT_CNT));
 		tacticProblem.setPassedCnt(getInt(cursor, V_PASSED_CNT));
+		tacticProblem.setIsUserMove(getInt(cursor, V_IS_MY_TURN) > 0);
 		tacticProblem.setRating(getInt(cursor, V_RATING));
 		tacticProblem.setAvgSeconds(getInt(cursor, V_AVG_SECONDS));
 		tacticProblem.setSecondsSpent(getInt(cursor, V_SECONDS_SPENT));

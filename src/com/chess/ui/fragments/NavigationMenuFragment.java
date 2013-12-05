@@ -1,7 +1,6 @@
 package com.chess.ui.fragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -57,7 +56,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 
 	private static final int HOME_POS = 0;
 
-	public static final int[] SELECTED_TITILE_STATE = new int[]{android.R.attr.state_selected};
+	public static final int[] SELECTED_TITLE_STATE = new int[]{android.R.attr.state_selected};
 	public static final int[] SELECTED_STATE = new int[]{android.R.attr.state_enabled, android.R.attr.state_checked};
 	public static final int[] ENABLED_STATE = new int[]{android.R.attr.state_enabled};
 
@@ -404,12 +403,12 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 
 			Drawable background = view.getBackground();
 			if (item.selected) {
-				int colorForState = themeFontColorStateList.getColorForState(SELECTED_TITILE_STATE, Color.WHITE);
-				holder.title.setTextColor(colorForState);
+//				int colorForState = themeFontColorStateList.getColorForState(SELECTED_TITLE_STATE, Color.WHITE);
+//				holder.title.setTextColor(colorForState);
 				background.mutate().setState(SELECTED_STATE);
 			} else {
-				int colorForState = themeFontColorStateList.getColorForState(ENABLED_STATE, Color.WHITE);
-				holder.title.setTextColor(colorForState);
+//				int colorForState = themeFontColorStateList.getColorForState(ENABLED_STATE, Color.WHITE);
+//				holder.title.setTextColor(colorForState);
 				background.mutate().setState(ENABLED_STATE);
 			}
 		}

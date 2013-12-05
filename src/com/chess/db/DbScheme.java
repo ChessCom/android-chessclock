@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 81;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 82;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -289,6 +289,7 @@ public class DbScheme {
 				+ addField_Long(V_SECONDS_SPENT)
 				+ addField_Int(V_ATTEMPT_CNT)
 				+ addField_Int(V_PASSED_CNT)
+				+ addField_Int(V_IS_MY_TURN)
 				+ addField_Int(V_RATING)
 				+ addField_Int(V_STOP)
 				+ addField_Int(V_COMPLETED)

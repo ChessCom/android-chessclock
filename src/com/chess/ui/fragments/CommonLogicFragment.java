@@ -5,7 +5,6 @@ import android.content.*;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -51,6 +50,7 @@ import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragmentTablet;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.FontsHelper;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
@@ -177,7 +177,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		startLIveGameFilter = new IntentFilter(IntentConstants.START_LIVE_GAME);
 
-		updateFontColors();
+		themeFontColorStateList = FontsHelper.getInstance().getThemeColorStateList(getActivity());
 	}
 
 	@Override
@@ -992,27 +992,5 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 			getActivityFace().openFragment(fragmentByTag);
 		}
-	}
-
-	private void updateFontColors() {
-		int defaultFontColor = Color.parseColor("#D0" + getAppData().getThemeFontColor()); // add 75% opacity
-		int pressedFontColor = Color.parseColor("#40" + getAppData().getThemeFontColor()) ;
-//		int pressedFontColor = Color.parseColor("#40" + "FF0000");
-//		themeFontColor = Color.parseColor("#40" + "00FF00") ;
-
-		themeFontColorStateList = new ColorStateList(
-				new int[][]{
-						new int[]{android.R.attr.state_enabled},
-						new int[]{android.R.attr.state_pressed},
-						new int[]{android.R.attr.state_selected},
-						new int[]{android.R.attr.state_enabled, android.R.attr.state_checked},// selected
-						new int[]{-android.R.attr.state_enabled},
-				},
-				new int[]{
-						defaultFontColor,
-						pressedFontColor,
-						pressedFontColor,
-						Color.GREEN,
-						Color.RED});
 	}
 }

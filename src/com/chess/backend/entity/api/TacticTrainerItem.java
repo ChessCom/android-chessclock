@@ -26,6 +26,7 @@ public class TacticTrainerItem extends BaseResponseItem<TacticTrainerItem.Data> 
             "clean_move_string": "1... Rxh5 2. Rxg6+ Kxg6 3. Re6# ",
             "attempt_count": 2,
             "passed_count": 0,
+            "is_user_move": false,
             "rating": 1424,
             "average_seconds": 20
         }
@@ -130,6 +131,10 @@ public class TacticTrainerItem extends BaseResponseItem<TacticTrainerItem.Data> 
 
 		public String getInitialFen() {
 			return tactics_problem.getInitialFen();
+		}
+
+		public boolean isUserMove() {
+			return tactics_problem.isUserMove();
 		}
 
 		public int getUserRating() {

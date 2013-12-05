@@ -2,6 +2,7 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -18,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/Rect.Tab.Left"
+			app:themeColor="true"
             />
         <com.chess.widgets.RoboRadioButton
             android:id="@+id/centerTabBtn"
@@ -25,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/Rect.Tab.Middle"
+			app:themeColor="true"
             />
         <com.chess.widgets.RoboRadioButton
             android:id="@+id/rightTabBtn"
@@ -32,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             style="@style/Rect.Tab.Right"
+			app:themeColor="true"
             />
 
     </RadioGroup>

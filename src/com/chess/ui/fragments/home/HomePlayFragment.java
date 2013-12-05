@@ -424,12 +424,12 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			challengeFriendTxt.setTextColor(darkTextColor);
 			vsComputerHeaderTxt.setTextColor(darkTextColor);
 		} else {
-			vsRandomTxt.setTextColor(themeFontColorStateList);
-			friendUserName1Txt.setTextColor(themeFontColorStateList);
-			friendRealName1Txt.setTextColor(themeFontColorStateList);
-			friendUserName2Txt.setTextColor(themeFontColorStateList);
-			friendRealName2Txt.setTextColor(themeFontColorStateList);
-			challengeFriendTxt.setTextColor(themeFontColorStateList);
+//			vsRandomTxt.setTextColor(themeFontColorStateList);
+//			friendUserName1Txt.setTextColor(themeFontColorStateList);
+//			friendRealName1Txt.setTextColor(themeFontColorStateList);
+//			friendUserName2Txt.setTextColor(themeFontColorStateList);
+//			friendRealName2Txt.setTextColor(themeFontColorStateList);
+//			challengeFriendTxt.setTextColor(themeFontColorStateList);
 		}
 
 		liveRatingTxt = (TextView) view.findViewById(R.id.liveRatingTxt);

@@ -178,8 +178,8 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 			holder.icon = (TextView) view.findViewById(R.id.iconTxt);
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
 
-			holder.icon.setTextColor(themeFontColorStateList);
-			holder.title.setTextColor(themeFontColorStateList);
+//			holder.icon.setTextColor(themeFontColorStateList);
+//			holder.title.setTextColor(themeFontColorStateList);
 			view.setTag(holder);
 
 			return view;

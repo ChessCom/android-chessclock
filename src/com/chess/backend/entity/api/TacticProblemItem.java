@@ -31,6 +31,7 @@ public class TacticProblemItem extends BaseResponseItem<List<TacticProblemItem.D
 		private String clean_move_string;
 		private int attempt_count;
 		private int passed_count;
+		private boolean is_user_move;
 		private int rating;
 		private int average_seconds;
 		/*Local addition */
@@ -68,6 +69,14 @@ public class TacticProblemItem extends BaseResponseItem<List<TacticProblemItem.D
 
 		public int getPassedCnt() {
 			return passed_count;
+		}
+
+		public boolean isUserMove() {
+			return is_user_move;
+		}
+
+		public void setIsUserMove(boolean is_user_move) {
+			this.is_user_move = is_user_move;
 		}
 
 		public int getRating() {

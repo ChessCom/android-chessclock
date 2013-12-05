@@ -1,8 +1,11 @@
 package com.chess.utilities;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import com.chess.statics.AppData;
 
 import java.util.HashMap;
 
@@ -24,9 +27,10 @@ public class FontsHelper {
 
 	private static FontsHelper ourInstance = new FontsHelper();
 	private HashMap<String, Typeface> fontsMap;
+	private AppData appData;
+	private ColorStateList themeColorStateList;
 
 	public static FontsHelper getInstance() {
-
 		return ourInstance;
 	}
 
@@ -49,4 +53,33 @@ public class FontsHelper {
 			return font;
 		}
 	}
+
+	public ColorStateList getThemeColorStateList(Context context) {
+		if (appData == null) {
+			appData = new AppData(context);
+		}
+
+		if (themeColorStateList == null) {
+			int defaultFontColor = Color.parseColor("#D0" + appData.getThemeFontColor()); // add 75% opacity
+			int pressedFontColor = Color.parseColor("#40" + appData.getThemeFontColor()) ;
+
+			themeColorStateList = new ColorStateList(
+					new int[][]{
+							new int[]{android.R.attr.state_enabled},
+							new int[]{android.R.attr.state_pressed},
+							new int[]{android.R.attr.state_selected},
+							new int[]{android.R.attr.state_enabled, android.R.attr.state_checked},// selected
+							new int[]{-android.R.attr.state_enabled},
+					},
+					new int[]{
+							defaultFontColor,
+							pressedFontColor,
+							pressedFontColor,
+							Color.GREEN,
+							Color.RED});
+		}
+		return themeColorStateList;
+
+	}
+
 }

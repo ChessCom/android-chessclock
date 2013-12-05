@@ -13,6 +13,7 @@
 
     <declare-styleable name="RoboTextView">
         <attr name="ttf" format="string" />
+        <attr name="themeColor" format="boolean|reference" />
     </declare-styleable>
 
     <declare-styleable name="SwitchButton">
