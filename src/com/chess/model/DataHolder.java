@@ -1,5 +1,6 @@
 package com.chess.model;
 
+import android.util.SparseIntArray;
 import com.chess.backend.gcm.LastMoveInfoItem;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.ChessBoardLive;
@@ -15,8 +16,11 @@ import java.util.List;
  * @author alien_roger
  * @created at: 26.04.12 6:11
  */
-public class DataHolder { // Shouldn't be used as a data holder due unreliable use in context of Android Lifecycle
+public class DataHolder {
+	 // Shouldn't be used as a data holder due unreliable use in context of Android Lifecycle
+	 public static final int SETTINGS = 0;
 	private static DataHolder ourInstance = new DataHolder();
+	private final SparseIntArray positionsArray;
 
 	private boolean isAdsLoading;
 
@@ -35,6 +39,7 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 	private DataHolder() {
 		playingGameItem = new GamePlayingItem();
 		lastMoveInfoItems = new ArrayList<LastMoveInfoItem>();
+		positionsArray = new SparseIntArray();
 	}
 
 	public static DataHolder getInstance() {
@@ -101,4 +106,13 @@ public class DataHolder { // Shouldn't be used as a data holder due unreliable u
 	public synchronized boolean isMainActivityVisible() {
 		return isMainActivityVisible;
 	}
+
+	public void setSelectedPositionForId(int id, int position) {
+		positionsArray.put(id, position);
+	}
+
+	public int getSelectedPositionForId(int id) {
+		return positionsArray.get(id);
+	}
+
 }

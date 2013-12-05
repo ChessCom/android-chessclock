@@ -29,11 +29,12 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 	private LoadFromDbUpdateListener loadFromDbUpdateListener;
 	private DailyFinishedGameData currentGame;
 
-	public static GameDailyFinishedAnalysisFragment createInstance(long gameId, String username) {
+	public static GameDailyFinishedAnalysisFragment createInstance(long gameId, String username, boolean isFinished) {
 		GameDailyFinishedAnalysisFragment fragment = new GameDailyFinishedAnalysisFragment();
 		Bundle arguments = new Bundle();
 		arguments.putLong(GAME_ID, gameId);
 		arguments.putString(USERNAME, username);
+		arguments.putBoolean(IS_FINISHED, isFinished);
 		fragment.setArguments(arguments);
 
 		return fragment;
@@ -177,6 +178,8 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 		// load avatars for players
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+
+		controlsView.showVsComp(isFinished);
 	}
 
 }

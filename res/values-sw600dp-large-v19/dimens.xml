@@ -2,6 +2,7 @@
 <resources>
 	<dimen name="panel_info_padding_top">1dip</dimen>
 	<dimen name="player_name_margin_top">4dp</dimen>
+	<dimen name="panel_info_rating_margin_top">2dp</dimen>
 	<dimen name="panel_info_flag_margin_top">2dp</dimen>
 	<dimen name="panel_info_welcome_player_top_margin">4dp</dimen>
 

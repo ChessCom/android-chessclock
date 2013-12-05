@@ -2,7 +2,6 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
@@ -923,24 +922,15 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void processFullGame() {
-//		if (lccEventListener != null) {
-//			lccEventListener.onGameRecreate();
-//		}
-
 		latestMoveNumber = 0; // it was null before
-//		ChessBoardLive.resetInstance(); // TODO why is it here??? LccHelper shouldn't know anything about GameBoard!
 		initClock();
-
-		Log.d(TAG, "processFullGame: lccEventListener = " + lccEventListener);
 
 		if (!getCurrentGame().isTopObserved()) {
 			context.sendBroadcast(new Intent(IntentConstants.START_LIVE_GAME));
 		}
 
 		// todo: probably determine my/observed game listeners
-//		if (lccEventListener != null) {
-			lccEventListener.startGameFromService();
-//		}
+		lccEventListener.startGameFromService();
 	}
 
 	public Integer getLatestMoveNumber() {

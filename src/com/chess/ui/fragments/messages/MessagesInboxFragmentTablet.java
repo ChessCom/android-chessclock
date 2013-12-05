@@ -15,10 +15,14 @@ import com.chess.ui.interfaces.FragmentParentFace;
  */
 public class MessagesInboxFragmentTablet extends MessagesInboxFragment {
 
-	private final FragmentParentFace parentFace;
+	private FragmentParentFace parentFace;
 
-	public MessagesInboxFragmentTablet(FragmentParentFace parentFace) {
-		this.parentFace = parentFace;
+	public MessagesInboxFragmentTablet() {}
+
+	public static MessagesInboxFragmentTablet createInstance(FragmentParentFace parentFace) {
+		MessagesInboxFragmentTablet fragment = new MessagesInboxFragmentTablet();
+		fragment.parentFace = parentFace;
+		return fragment;
 	}
 
 	@Override

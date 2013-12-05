@@ -55,7 +55,7 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
-		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId, username));
+		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId, username, false));
 	}
 
 	@Override

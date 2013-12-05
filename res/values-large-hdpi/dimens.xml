@@ -61,7 +61,6 @@
 	<dimen name="popup_border_width">1dip</dimen>
 	<dimen name="pull_to_refresh_header_height">72dip</dimen>
 	<dimen name="tab_button_text_size">18sp</dimen>
-	<dimen name="panel_info_flag_margin_top">0dp</dimen>
 	<dimen name="panel_info_avatar_left_margin">11dp</dimen>
 	<dimen name="notations_text_view_height">30dp</dimen>
 

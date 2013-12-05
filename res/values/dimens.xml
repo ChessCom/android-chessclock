@@ -357,6 +357,7 @@
 	<dimen name="daily_game_list_item_width">204dp</dimen>
 	<dimen name="player_name_margin_top">4dp</dimen>
 	<dimen name="panel_info_flag_margin_top">0dp</dimen>
+	<dimen name="panel_info_rating_margin_top">0dp</dimen>
 	<dimen name="panel_info_avatar_left_margin">11dp</dimen>
 	<dimen name="notations_text_view_height">30dp</dimen>
 	<dimen name="panel_info_welcome_player_top_margin">3dp</dimen>

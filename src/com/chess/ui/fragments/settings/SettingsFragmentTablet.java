@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import com.chess.R;
+import com.chess.model.DataHolder;
+import com.chess.statics.AppConstants;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
 
@@ -27,9 +30,9 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		openInternalFragment(new SettingsProfileFragment());
-
 		noCategoriesFragmentsAdded = true;
+		int position = DataHolder.getInstance().getSelectedPositionForId(DataHolder.SETTINGS);
+		selectMenuByPosition(position);
 	}
 
 	@Override
@@ -39,6 +42,11 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		selectMenuByPosition(position);
+	}
+
+	private void selectMenuByPosition(int position) {
+		DataHolder.getInstance().setSelectedPositionForId(DataHolder.SETTINGS, position);
 		for (SettingsMenuItem menuItem : menuItems) {
 			menuItem.selected = false;
 		}
@@ -46,7 +54,7 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 		menuItems.get(position).selected = true;
 		SettingsMenuItem menuItem = (SettingsMenuItem) listView.getItemAtPosition(position);
 		menuItem.selected = true;
-		((BaseAdapter)parent.getAdapter()).notifyDataSetChanged();
+		((BaseAdapter)adapter).notifyDataSetChanged();
 
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
@@ -68,8 +76,16 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 			case R.string.ic_theme:
 				changeInternalFragment(SettingsThemeFragmentTablet.createInstance(this));
 				break;
-			case R.string.ic_key_badge:
+			case R.string.ic_password:
 				changeInternalFragment(new SettingsPasswordFragment());
+				break;
+			case R.string.ic_ticket:
+				Intent emailIntent = new Intent(Intent.ACTION_SEND);
+				emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
+				emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
+				emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
+				emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose());
+				startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 				break;
 			case R.string.ic_close:
 				logoutFromLive();
@@ -91,9 +107,10 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 	}
 
 	private void openInternalFragment(Fragment fragment) {
+		String simpleName = fragment.getClass().getSimpleName();
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.innerFragmentContainer, fragment, fragment.getClass().getSimpleName());
-		transaction.addToBackStack(fragment.getClass().getSimpleName());
+		transaction.replace(R.id.innerFragmentContainer, fragment, simpleName);
+		transaction.addToBackStack(simpleName);
 		transaction.commitAllowingStateLoss();
 	}
 

@@ -421,10 +421,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 
 		controlsView.enableChatButton(username.equals(getUsername()));
-
-		// update player font color
-		topPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
-		bottomPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
 	}
 
 	@Override
@@ -578,7 +574,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
-		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId, username));
+		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId, username, false));
 	}
 
 	@Override

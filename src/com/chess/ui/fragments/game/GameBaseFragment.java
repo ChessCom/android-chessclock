@@ -123,6 +123,14 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		boardView.updateBoardAndPiecesImgs();
 		enableScreenLockTimer();
 		getActivityFace().addOnCloseMenuListener(this);
+
+		// update player font color
+		if (topPanelView != null) {
+			topPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
+		}
+		if (bottomPanelView != null) {
+			bottomPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
+		}
 	}
 
 	@Override

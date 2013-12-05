@@ -888,7 +888,7 @@ winboard - 	ffffff
 			"space",
 			"beat",
 			"silly",
-			"cat"
+			"lolz"
 	};
 
 /*

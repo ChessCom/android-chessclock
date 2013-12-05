@@ -446,7 +446,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
-		getActivityFace().openFragment(GameDailyFinishedAnalysisFragment.createInstance(gameId, username));
+		getActivityFace().openFragment(GameDailyFinishedAnalysisFragment.createInstance(gameId, username, true));
 	}
 
 	@Override

@@ -17,6 +17,7 @@ import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 public class ControlsAnalysisView extends ControlsBaseView {
 
 	private BoardViewAnalysisFace boardViewFace;
+	private boolean showComp;
 
 	public ControlsAnalysisView(Context context) {
 		super(context);
@@ -62,8 +63,15 @@ public class ControlsAnalysisView extends ControlsBaseView {
 //		enableGameButton(EXIT, enable);
 		enableGameButton(RESTART, enable);
 		enableGameButton(SEARCH, enable);
-		enableGameButton(COMP, enable);
+		if (showComp) {
+			enableGameButton(COMP, enable);
+		}
 		enableGameButton(BACK, enable);
 		enableGameButton(FORWARD, enable);
+	}
+
+	public void showVsComp(boolean showComp) {
+		this.showComp = showComp;
+		showGameButton(COMP, showComp);
 	}
 }

@@ -15,6 +15,7 @@ import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.utilities.AppUtils;
+import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboTextView;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 	protected ListView listView;
 	protected List<SettingsMenuItem> menuItems;
-	private SettingsMenuAdapter adapter;
+	protected SettingsMenuAdapter adapter;
 	private AppUtils.DeviceInfo deviceInfo;
 
 	@Override
@@ -72,9 +73,17 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 		setTitle(R.string.settings);
 
-		RoboTextView versionCodeTxt = (RoboTextView) view.findViewById(R.id.versionCodeTxt);
-		versionCodeTxt.setText("Build " + deviceInfo.APP_VERSION_NAME);
-		versionCodeTxt.setTextColor(themeFontColorStateList.getDefaultColor());
+		if (!isTablet) {
+			RoboTextView versionCodeTxt = (RoboTextView) view.findViewById(R.id.versionCodeTxt);
+			versionCodeTxt.setText("Build " + deviceInfo.APP_VERSION_NAME);
+			versionCodeTxt.setTextColor(themeFontColorStateList.getDefaultColor());
+		} else {
+			RoboButton resumeLessonBtn = (RoboButton) view.findViewById(R.id.resumeLessonBtn); // used only for beta
+			resumeLessonBtn.setDrawableStyle(R.style.ListItem);
+			resumeLessonBtn.setText("Build " + deviceInfo.APP_VERSION_NAME);
+			resumeLessonBtn.setTextColor(themeFontColorStateList.getDefaultColor());
+			resumeLessonBtn.setVisibility(View.VISIBLE);
+		}
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
@@ -106,6 +115,9 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 			case R.string.ic_profile:
 				getActivityFace().openFragment(new SettingsProfileFragment());
 				break;
+			case R.string.ic_theme:
+				getActivityFace().openFragment(new SettingsThemeFragment());
+				break;
 			case R.string.ic_board:
 				getActivityFace().openFragment(new SettingsGeneralFragment());
 				break;
@@ -114,9 +126,6 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				break;
 			case R.string.ic_live_standard:
 				getActivityFace().openFragment(new SettingsLiveChessFragment());
-				break;
-			case R.string.ic_theme:
-				getActivityFace().openFragment(new SettingsThemeFragment());
 				break;
 			case R.string.ic_password:
 				getActivityFace().openFragment(new SettingsPasswordFragment());
@@ -137,7 +146,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		}
 	}
 
-	private String feedbackBodyCompose() {
+	protected String feedbackBodyCompose() {
 
 		return getResources().getString(R.string.feedback_mailbody) + ": " + AppConstants.VERSION_CODE
 				+ deviceInfo.APP_VERSION_CODE + ", " + AppConstants.VERSION_NAME + deviceInfo.APP_VERSION_NAME

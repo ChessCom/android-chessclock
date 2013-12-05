@@ -16,8 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
+import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.UserItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -737,6 +740,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 			boardView.updateNotations(getBoardFace().getNotationArray());
 
+			topPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
+			bottomPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
+
 			try {
 				getLiveService().paintClocks();
 			} catch (DataNotValidException e) {
@@ -1171,17 +1177,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				imageDownloader.download(myAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 			}
 
-			// todo: please fix - cannot start Live game and Top game
-			/*
 			{ // get opponent info
 				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
 				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
 			}
 			{ // get users info
-				LoadItem loadItem = LoadHelper.getUserInfo(labelsConfig.bottomPlayerName);
+				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.bottomPlayerName);
 				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
 			}
-			*/
 		}
 
 		int resignTitleId = liveService.getResignTitle();
@@ -1224,6 +1227,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				topPanelView.setPlayerFlag(labelsConfig.topPlayerCountry);
 				topPanelView.setPlayerPremiumIcon(userInfo.getPremiumStatus());
 			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+
 		}
 	}
 

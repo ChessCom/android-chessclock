@@ -70,9 +70,10 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 	}
 
 	private void openInternalFragment(Fragment fragment) {
+		String simpleName = fragment.getClass().getSimpleName();
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.innerFragmentContainer, fragment, fragment.getClass().getSimpleName());
-		transaction.addToBackStack(fragment.getClass().getSimpleName());
+		transaction.replace(R.id.innerFragmentContainer, fragment, simpleName);
+		transaction.addToBackStack(simpleName);
 		transaction.commitAllowingStateLoss();
 	}
 
@@ -108,7 +109,7 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 		if (position == 0) {
 			Fragment fragmentByTag = getChildFragmentManager().findFragmentByTag(MessagesInboxFragmentTablet.class.getSimpleName());
 			if (fragmentByTag == null) {
-				fragmentByTag = new MessagesInboxFragmentTablet(this);
+				fragmentByTag = MessagesInboxFragmentTablet.createInstance(this);
 			}
 			changeInternalFragment(fragmentByTag);
 		} else {
@@ -136,7 +137,7 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 		}
 		optionsAdapter = new OptionsAdapter(getActivity(), menuItems);
 
-		changeInternalFragment(new MessagesInboxFragmentTablet(this));
+		changeInternalFragment(MessagesInboxFragmentTablet.createInstance(this));
 
 		noCategoriesFragmentsAdded = true;
 	}

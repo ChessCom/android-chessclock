@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.widgets.ChipsAutoCompleteTextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -205,7 +206,20 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 		public void updateData(ConversationSingleItem returnedObj) {
 			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 				showToast(R.string.message_sent);
-				getActivityFace().showPreviousFragment();
+				BasePopupsFragment fragmentByTag;
+				if (!isTablet) {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(MessagesInboxFragment.class.getSimpleName());
+				} else {
+					fragmentByTag = (BasePopupsFragment) findFragmentByTag(MessagesFragmentTablet.class.getSimpleName());
+				}
+				if (fragmentByTag == null) {
+					if (!isTablet) {
+						fragmentByTag = new MessagesInboxFragment();
+					} else {
+						fragmentByTag = new MessagesFragmentTablet();
+					}
+				}
+				getActivityFace().openFragment(fragmentByTag);
 			} else {
 				showToast(R.string.error);
 			}

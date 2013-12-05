@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,21 +45,16 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 	private int flagMargin = 5;
 
-	protected RoboTextView playerTxt;
 	protected ImageView avatarImg;
 	protected ImageView flagImg;
 	protected View capturedPiecesView;
-	protected RoboTextView timeRemainTxt;
 	protected ImageView premiumImg;
 
 	private int side;
 	private boolean smallScreen;
 	private float density;
-	private Resources resources;
-	private RoboTextView playerRatingTxt;
 	private int whitePlayerTimeColor;
 	private int blackPlayerTimeColor;
-	private RoboTextView clockIconTxt;
 	private LinearLayout clockLayout;
 	private RelLayout drawOfferedRelLay;
 	private OnClickListener clickListener;
@@ -76,7 +72,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		}
 
 		Context context = getContext();
-		resources = context.getResources();
+		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 		int widthPixels = resources.getDisplayMetrics().widthPixels;
 
@@ -187,7 +183,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			playerRatingTxt = new RoboTextView(context);
 			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_flag_margin_top);
+			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_rating_margin_top);
 			playerParams.setMargins(0, -marginTop, 0, 0);
 			playerParams.addRule(RIGHT_OF, PLAYER_ID);
 			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
@@ -430,6 +426,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 	@Override
 	public void setPlayerName(String playerName) {
+		Log.d("TEST", "player name = " + playerName);
 		playerTxt.setText(playerName);
 	}
 
@@ -518,5 +515,13 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	 */
 	public void setClickHandler(OnClickListener listener) {
 		this.clickListener = listener;
+	}
+
+	@Override
+	public void setLabelsTextColor(int labelsTextColor) {
+		this.playerTextColor = labelsTextColor;
+		playerTxt.setTextColor(playerTextColor);
+		playerRatingTxt.setTextColor(playerTextColor);
+		invalidate();
 	}
 }

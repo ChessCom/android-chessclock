@@ -57,14 +57,12 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	private int side;
 	private boolean smallScreen;
 	private float density;
-	private Resources resources;
-	private RoboTextView playerRatingTxt;
+	protected RoboTextView playerRatingTxt;
 	private boolean timeLeftHasBack;
 	private int topPlayerTimeLeftColor;
 	private int bottomPlayerTimeLeftColor;
-	private RoboTextView clockIconTxt;
+	protected RoboTextView clockIconTxt;
 	private LinearLayout clockLayout;
-	private RoboTextView thinkingTxt;
 	private int paddingTop;
 	private int paddingRight;
 	private int paddingLeft;
@@ -83,7 +81,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		}
 
 		Context context = getContext();
-		resources = context.getResources();
+		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 		int widthPixels = resources.getDisplayMetrics().widthPixels;
 
@@ -196,7 +194,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			playerRatingTxt = new RoboTextView(context);
 			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
-			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_flag_margin_top);
+			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_rating_margin_top);
 			playerParams.setMargins(0, -marginTop, 0, 0);
 			playerParams.addRule(RIGHT_OF, PLAYER_ID);
 			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
@@ -329,7 +327,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		}
 
 		{ // Thinking View
-			thinkingTxt = new RoboTextView(getContext());
+			RoboTextView thinkingTxt = new RoboTextView(getContext());
 			thinkingTxt.setFont(FontsHelper.BOLD_FONT);
 			thinkingTxt.setTextSize(playerTextSize);
 			thinkingTxt.setText(R.string.thinking_);

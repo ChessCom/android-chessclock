@@ -36,7 +36,7 @@ public class GameLiveFragmentTablet extends GameLiveFragment implements RadioGro
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
-		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId, getUsername()));
+		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId, getUsername(), false));
 	}
 
 	@Override

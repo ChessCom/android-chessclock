@@ -405,13 +405,10 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 			Drawable background = view.getBackground();
 			if (item.selected) {
 				int colorForState = themeFontColorStateList.getColorForState(SELECTED_TITILE_STATE, Color.WHITE);
-				logTest("selected = colorForState = " + colorForState);
 				holder.title.setTextColor(colorForState);
 				background.mutate().setState(SELECTED_STATE);
 			} else {
 				int colorForState = themeFontColorStateList.getColorForState(ENABLED_STATE, Color.WHITE);
-				logTest("NOT selected = colorForState = " + colorForState);
-
 				holder.title.setTextColor(colorForState);
 				background.mutate().setState(ENABLED_STATE);
 			}

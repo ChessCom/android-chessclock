@@ -35,6 +35,7 @@
 	<dimen name="tab_button_text_size">18sp</dimen>
 	<dimen name="default_text_size_small">14sp</dimen>
 	<dimen name="player_name_margin_top">4dp</dimen>
+	<dimen name="panel_info_rating_margin_top">0dp</dimen>
 	<dimen name="panel_info_flag_margin_top">0dp</dimen>
 	<dimen name="panel_info_avatar_left_margin">11dp</dimen>
 

@@ -49,6 +49,7 @@ import com.chess.utilities.AppUtils;
 public class GameDailyAnalysisFragment extends GameBaseFragment implements GameAnalysisFace {
 
 	private static final String ERROR_TAG = "send request failed popup";
+	protected static final String IS_FINISHED = "is_finished";
 
 	protected ChessBoardAnalysisView boardView;
 
@@ -63,15 +64,16 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	protected String[] countryNames;
 	protected int[] countryCodes;
 	protected String username;
+	protected boolean isFinished;
 
-	public GameDailyAnalysisFragment() {
-	}
+	public GameDailyAnalysisFragment() {}
 
-	public static GameDailyAnalysisFragment createInstance(long gameId, String username) {
+	public static GameDailyAnalysisFragment createInstance(long gameId, String username, boolean isFinished) {
 		GameDailyAnalysisFragment fragment = new GameDailyAnalysisFragment();
 		Bundle arguments = new Bundle();
 		arguments.putLong(GAME_ID, gameId);
 		arguments.putString(USERNAME, username);
+		arguments.putBoolean(IS_FINISHED, isFinished);
 		fragment.setArguments(arguments);
 
 		return fragment;
@@ -84,9 +86,11 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		if (getArguments() != null) {
 			gameId = getArguments().getLong(GAME_ID);
 			username = getArguments().getString(USERNAME);
+			isFinished = getArguments().getBoolean(IS_FINISHED);
 		} else {
 			gameId = savedInstanceState.getLong(GAME_ID);
 			username = savedInstanceState.getString(USERNAME);
+			isFinished = savedInstanceState.getBoolean(IS_FINISHED);
 		}
 		if (TextUtils.isEmpty(username)) {
 			username = getUsername();
@@ -131,6 +135,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		super.onSaveInstanceState(outState);
 
 		outState.putString(USERNAME, username);
+		outState.putBoolean(IS_FINISHED, isFinished);
 	}
 
 	protected void loadGame() {
@@ -276,6 +281,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		// load avatars for players
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+
+		controlsView.showVsComp(isFinished);
 	}
 
 	@Override
