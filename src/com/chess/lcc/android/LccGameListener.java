@@ -201,25 +201,30 @@ public class LccGameListener implements GameListener {
 			lccHelper.checkAndProcessDrawOffer(game);
 		}
 
-		User opponent = game.getOpponentForPlayer(lccHelper.getUsername());
-		User.Status opponentStatus = opponent.getStatus();
-		LogMe.dl(TAG, "opponent status: " + opponent.getUsername() + " is " + opponentStatus);
+		if (lccHelper.isMyGame(game)) {
 
-		LccEventListener lccEventListener = lccHelper.getLccEventListener();
-		if (lccEventListener != null) {
+			User opponent = game.getOpponentForPlayer(lccHelper.getUsername());
+			User.Status opponentStatus = opponent.getStatus();
+			LogMe.dl(TAG, "opponent status: " + opponent.getUsername() + " is " + opponentStatus);
 
-			boolean online;
-			switch (opponentStatus) {
-				case PLAYING:
-				case ONLINE: online = true;
-				break;
-				case OFFLINE:
-				case UNKNOWN:
-				case IDLE:
-				default: online = false;
+			LccEventListener lccEventListener = lccHelper.getLccEventListener();
+			if (lccEventListener != null) {
+
+				boolean online;
+				switch (opponentStatus) {
+					case PLAYING:
+					case ONLINE:
+						online = true;
+						break;
+					case OFFLINE:
+					case UNKNOWN:
+					case IDLE:
+					default:
+						online = false;
+				}
+
+				lccEventListener.updateOpponentOnlineStatus(online);
 			}
-
-			lccEventListener.updateOpponentOnlineStatus(online);
 		}
 	}
 
