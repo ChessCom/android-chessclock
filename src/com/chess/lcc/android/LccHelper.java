@@ -2,6 +2,7 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
@@ -97,7 +98,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	private boolean connectionFailure;
 	//private int connectionFailureCounter;
 	private boolean finishClientAfterFailure;
-	private Timer timer;
+	private Handler handler;
 
 	public LccHelper(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
 		this.liveService = liveService;
@@ -115,6 +116,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		adminEventListener = new LccAdminEventListener();
 
 		pendingWarnings = new ArrayList<String>();
+		handler = new Handler();
 	}
 
 	public void checkGameEvents() {
@@ -893,6 +895,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		cleanupLiveInfo();
 		runDisconnectTask(/*resetClient*/); // disconnect and reset client instance
 		cancelServiceNotification();
+		stopConnectionTimer();
 	}
 
 	public void resetClient() {
@@ -1352,22 +1355,17 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	private void startConnectionTimer() {
-
-		stopConnectionTimer();
-
-		timer = new Timer();
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				finishClientAfterFailure = true;
-				stopConnectionTimer();
-			}
-		}, CONNECTION_FAILURE_TIME_LIMIT);
+		handler.postDelayed(connectionTimerRunnable, CONNECTION_FAILURE_TIME_LIMIT);
 	}
 
-	public void stopConnectionTimer() {
-		if (timer != null) {
-			timer.cancel();
+	private Runnable connectionTimerRunnable = new Runnable() {
+		@Override
+		public void run() {
+			finishClientAfterFailure = true;
 		}
+	};
+
+	public void stopConnectionTimer() {
+		handler.removeCallbacks(connectionTimerRunnable);
 	}
 }
