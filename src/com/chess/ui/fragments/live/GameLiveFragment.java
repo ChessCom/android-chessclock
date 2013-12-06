@@ -694,7 +694,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void toggleSides() {
-		if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
+		// looks like we don't support board flip in Live
+		/*if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 		} else {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
@@ -710,6 +711,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		String tempScore = labelsConfig.topPlayerRating;
 		labelsConfig.topPlayerRating = labelsConfig.bottomPlayerRating;
 		labelsConfig.bottomPlayerRating = tempScore;
+		*/
 	}
 
 	@Override
@@ -1123,7 +1125,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		{// fill labels
 			labelsConfig = new LabelsConfig();
-			userPlayWhite = isUserColorWhite();
+			userPlayWhite = currentGame.getWhiteUsername().equals(liveService.getUsername()); // or check reside
 			if (userPlayWhite) {
 				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 				labelsConfig.topPlayerName = currentGame.getBlackUsername();
