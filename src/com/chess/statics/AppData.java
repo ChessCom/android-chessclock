@@ -446,7 +446,7 @@ public class AppData {
 	}
 
 	public String getThemeFontColor() {
-		return getStringValue(PREF_THEME_FONT_COLOR, "FFFFFF");
+		return getStringValue(PREF_THEME_FONT_COLOR, "FFFFFFBF");
 	}
 
 	public void setThemeBoardPath(String path) {
