@@ -283,7 +283,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	@Override
 	public void onCheck() {
-		showToast(R.string.check);
 	}
 
 	protected void dismissEndGameDialog() {

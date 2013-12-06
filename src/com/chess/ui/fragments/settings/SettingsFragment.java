@@ -39,7 +39,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		super.onCreate(savedInstanceState);
 
 		menuItems = new ArrayList<SettingsMenuItem>();
-//		menuItems.add(new SettingsMenuItem(R.string.api, R.string.ic_key));
+		menuItems.add(new SettingsMenuItem(R.string.api, R.string.ic_key));
 		menuItems.add(new SettingsMenuItem(R.string.profile, R.string.ic_profile));
 		menuItems.add(new SettingsMenuItem(R.string.theme, R.string.ic_theme));
 		menuItems.add(new SettingsMenuItem(R.string.general, R.string.ic_board));
@@ -109,9 +109,9 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
-//			case R.string.ic_key:
-//				getActivityFace().openFragment(new SettingsApiFragment());
-//				break;
+			case R.string.ic_key:
+				getActivityFace().openFragment(new SettingsApiFragment());
+				break;
 			case R.string.ic_profile:
 				getActivityFace().openFragment(new SettingsProfileFragment());
 				break;

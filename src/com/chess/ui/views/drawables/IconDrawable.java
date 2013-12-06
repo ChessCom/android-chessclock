@@ -1,11 +1,15 @@
 package com.chess.ui.views.drawables;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.*;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
+import com.chess.utilities.FontsHelper;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,6 +56,26 @@ public class IconDrawable extends Drawable {
 	public IconDrawable(Context context, int iconId) {
 		iconStr = context.getString(iconId);
 		init(context, R.color.semitransparent_white_75, R.dimen.edit_field_icon_size);
+	}
+
+	/**
+	 * Draw image from glyphIcon font resource with default parameters
+	 * @param context for resources
+	 * @param iconId to be used as an image, must be get from glyph_resources
+	 */
+	public IconDrawable(Context context, int iconId, ColorStateList colorStateList, int sizeId) {
+		iconStr = context.getString(iconId);
+		Resources resources = context.getResources();
+		int size = resources.getDimensionPixelSize(sizeId);
+
+		iconPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		iconPaint.setStyle(Paint.Style.FILL);
+		iconPaint.setColor(colorStateList.getDefaultColor());
+		iconPaint.setTextSize(size);
+		iconPaint.setTypeface(FontsHelper.getInstance().getTypeFace(context, FontsHelper.ICON_FONT));
+
+		iconSize = (int) iconPaint.measureText(iconStr);
+		iconHalfWidth = iconPaint.measureText(iconStr) / 2;
 	}
 
 	private void init(Context context, int colorId, int sizeId) {

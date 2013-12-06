@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 82;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 84;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -93,6 +93,8 @@ public class DbScheme {
 		THEME_PIECES,
 		THEME_BOARDS,
 		SOUND_PACKS,
+
+		THEMES_LOAD_STATE,
 	}
 
 	// Content URI
@@ -1198,6 +1200,8 @@ public class DbScheme {
 	public static final String V_COORDINATE_COLOR_DARK = "coordinate_color_dark";
 	public static final String V_HIGHLIGHT_COLOR = "highlight_color";
 
+	public static final String V_STATE = "state";
+
 	void createThemesTables() {
 
 		createTablesArray[Tables.THEMES.ordinal()] = createTableForName(Tables.THEMES)
@@ -1239,6 +1243,11 @@ public class DbScheme {
 		createTablesArray[Tables.SOUND_PACKS.ordinal()] = createTableForName(Tables.SOUND_PACKS)
 				+ addField_Text(V_URL)
 				+ addField_Text(V_PATH, true);
+
+		createTablesArray[Tables.THEMES_LOAD_STATE.ordinal()] = createTableForName(Tables.THEMES_LOAD_STATE)
+				+ addField_Int(V_ID)
+				+ addField_Text(V_USER)
+				+ addField_Text(V_STATE, true);
 	}
 
 	private String createTableForName(Tables tableName) {

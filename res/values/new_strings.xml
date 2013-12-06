@@ -372,5 +372,7 @@
 	<string name="current_game">Current Game</string>
 	<string name="report_problem">Report Problem</string>
 	<string name="send_mail">Send Email</string>
+	<string name="apply">Apply</string>
+	<string name="waiting_to_load">Waiting To Load</string>
 
 </resources>

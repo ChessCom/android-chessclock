@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.chess.R;
 import com.chess.backend.GetAndSaveTheme;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.ThemeState;
 import com.chess.backend.entity.api.themes.ThemeItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
@@ -57,7 +59,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private String selectedThemeName;
 	private LoadServiceConnectionListener loadServiceConnectionListener;
 	private ProgressUpdateListener progressUpdateListener;
-	private boolean isInstallingTheme;
+	//	private boolean isInstallingTheme;
 	private boolean serviceBounded;
 	private GetAndSaveTheme.ServiceBinder serviceBinder;
 	private boolean needToLoadThemeAfterConnected;
@@ -77,6 +79,12 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		selectedThemeName = getAppData().getThemeName();
 
 		pullToRefresh(true);
+
+		boolean needToLoadThemes = DbDataManager.haveSavedThemesToLoad(getActivity(), getUsername());
+		if (needToLoadThemes) { // connect to service to get state updates
+			getActivity().bindService(new Intent(getActivity(), GetAndSaveTheme.class), loadServiceConnectionListener,
+					Activity.BIND_AUTO_CREATE);
+		}
 	}
 
 	@Override
@@ -181,18 +189,20 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			openCustomizeFragment();
 		} else {
 
-			if (isInstallingTheme) {
-				return;
-			}
+//			if (isInstallingTheme) {
+//				return;
+//			}
+//
+//			isInstallingTheme = true;
 
-			isInstallingTheme = true;
+//			// deselect all themes
+//			for (ThemeItem.Data data : themesList) {
+//				data.setSelected(false);
+//			}
+//			// mark selected
+//			selectedThemeItem.setSelected(true);
 
-			// deselect all themes
-			for (ThemeItem.Data data : themesList) {
-				data.setSelected(false);
-			}
-			// mark selected
-			selectedThemeItem.setSelected(true);
+			themesAdapter.updateThemeLoadingStatus(position, ThemeState.ENQUIRED);
 
 			((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
 
@@ -214,7 +224,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			getAppData().setThemeBackgroundName(AppConstants.DEFAULT_THEME_NAME);
 			getActivityFace().updateActionBarBackImage();
 
-			isInstallingTheme = false;
+//			isInstallingTheme = false;
 		} else { // start loading main background image
 
 			if (serviceBounded) {
@@ -234,9 +244,9 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			serviceBounded = true;
 
 			serviceBinder = (GetAndSaveTheme.ServiceBinder) iBinder;
-			if (serviceBinder.getService().isInstallingTheme()) {
-				isInstallingTheme = true;
-			}
+//			if (serviceBinder.getService().isInstallingTheme()) {
+//				isInstallingTheme = true;
+//			}
 
 			serviceBinder.getService().setProgressUpdateListener(progressUpdateListener);
 			if (needToLoadThemeAfterConnected) {
@@ -247,7 +257,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
 			serviceBounded = false;
-			isInstallingTheme = false;
+//			isInstallingTheme = false;
 		}
 	}
 
@@ -276,14 +286,15 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				@Override
 				public void run() {
 					if (progress == GetAndSaveTheme.DONE) {
-						isInstallingTheme = false;
+//						isInstallingTheme = false;
 						needToLoadThemeAfterConnected = false;
 						if (serviceBounded) {
 							getActivity().unbindService(loadServiceConnectionListener);
 						}
 						serviceBounded = false;
 					}
-					themesAdapter.setProgressForItem(progress);
+					ThemeItem.Data loadingTheme = serviceBinder.getService().getLoadingTheme();
+					themesAdapter.setProgressForItem(progress, loadingTheme.getId());
 				}
 			});
 
@@ -301,8 +312,10 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		private final RelativeLayout.LayoutParams imageParams;
 		private final RelativeLayout.LayoutParams progressParams;
 		private final EnhancedImageDownloader imageLoader;
+		private final SparseArray<ThemeState> statusMap;
 		private int progressForItem;
 		private String titleForLoadingItem;
+		private int loadingThemeId;
 
 		public ThemesAdapter(Context context, List<ThemeItem.Data> menuItems) {
 			super(context, menuItems);
@@ -330,6 +343,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 			imageLoader = new EnhancedImageDownloader(context);
+			statusMap = new SparseArray<ThemeState>();
 		}
 
 		@Override
@@ -371,26 +385,39 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 			if (item.isSelected()) {
 				holder.check.setText(R.string.ic_check);
+			}
 
-				if (isInstallingTheme) {
-					if (progressForItem != GetAndSaveTheme.INDETERMINATE) {
-						holder.themeLoadProgressBar.setProgress(progressForItem);
-						holder.themeLoadProgressBar.setIndeterminate(false);
-					} else {
-						holder.themeLoadProgressBar.setIndeterminate(true);
-					}
-
-					holder.themeLoadProgressBar.setVisibility(View.VISIBLE);
-
-					holder.progressTitleTxt.setText(titleForLoadingItem);
-					holder.progressTitleTxt.setVisibility(View.VISIBLE);
+			ThemeState status = statusMap.get(item.getId(), ThemeState.DEFAULT);
+			if (status.equals(ThemeState.LOADING) && item.getId() == loadingThemeId) {
+//			if (isInstallingTheme) {
+				if (progressForItem != GetAndSaveTheme.INDETERMINATE) {
+					holder.themeLoadProgressBar.setProgress(progressForItem);
+					holder.themeLoadProgressBar.setIndeterminate(false);
 				} else {
-					holder.themeLoadProgressBar.setVisibility(View.GONE);
-					holder.progressTitleTxt.setVisibility(View.GONE);
+					holder.themeLoadProgressBar.setIndeterminate(true);
 				}
-			} else {
+
+				holder.themeLoadProgressBar.setVisibility(View.VISIBLE);
+
+				holder.progressTitleTxt.setText(titleForLoadingItem);
+				holder.progressTitleTxt.setVisibility(View.VISIBLE);
+//			} else {
+//				holder.themeLoadProgressBar.setVisibility(View.GONE);
+//				holder.progressTitleTxt.setVisibility(View.GONE);
+			} else if (status.equals(ThemeState.LOADED)) {
 				holder.themeLoadProgressBar.setVisibility(View.GONE);
 				holder.progressTitleTxt.setVisibility(View.GONE);
+
+				holder.check.setText(R.string.apply);
+			} else if (status.equals(ThemeState.DEFAULT)) {
+				holder.themeLoadProgressBar.setVisibility(View.GONE);
+				holder.progressTitleTxt.setVisibility(View.GONE);
+
+				holder.check.setText(Symbol.EMPTY);
+			} else if (status.equals(ThemeState.ENQUIRED)) {
+				holder.themeLoadProgressBar.setVisibility(View.GONE);
+				holder.progressTitleTxt.setVisibility(View.VISIBLE);
+				holder.progressTitleTxt.setText(R.string.waiting_to_load);
 
 				holder.check.setText(Symbol.EMPTY);
 			}
@@ -414,13 +441,24 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			return context;
 		}
 
-		public void setProgressForItem(int progressForItem) {
+		public void setProgressForItem(int progressForItem, int themeId) {
 			this.progressForItem = progressForItem;
+			this.loadingThemeId = themeId;
 			notifyDataSetChanged();
 		}
 
 		public void setTitleForLoadingItem(String titleForLoadingItem) {
 			this.titleForLoadingItem = titleForLoadingItem;
+			notifyDataSetChanged();
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return getItem(position).getId();
+		}
+
+		public void updateThemeLoadingStatus(int position, ThemeState status) {
+			statusMap.put((int) getItemId(position), status);
 			notifyDataSetChanged();
 		}
 
@@ -434,4 +472,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			TextView progressTitleTxt;
 		}
 	}
+
+
 }

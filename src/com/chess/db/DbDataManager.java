@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 import com.chess.backend.RestHelper;
+import com.chess.backend.ThemeState;
 import com.chess.backend.entity.api.*;
 import com.chess.backend.entity.api.stats.GameStatsItem;
 import com.chess.backend.entity.api.stats.GamesInfoByResult;
@@ -935,7 +936,7 @@ public class DbDataManager {
 		values.put(V_MOVE_LIST, dataObj.getCleanMoveString());
 		values.put(V_ATTEMPT_CNT, dataObj.getAttemptCnt());
 		values.put(V_PASSED_CNT, dataObj.getPassedCnt());
-		values.put(V_IS_MY_TURN, dataObj.isUserMove() ? 1 : 0);
+		values.put(V_IS_MY_TURN, dataObj.isUserMoveFirst() ? 1 : 0);
 		values.put(V_RATING, dataObj.getRating());
 		values.put(V_AVG_SECONDS, dataObj.getAvgSeconds());
 		values.put(V_SECONDS_SPENT, dataObj.getSecondsSpent());
@@ -956,7 +957,7 @@ public class DbDataManager {
 		tacticProblem.setMoveList(getString(cursor, V_MOVE_LIST));
 		tacticProblem.setAttemptCnt(getInt(cursor, V_ATTEMPT_CNT));
 		tacticProblem.setPassedCnt(getInt(cursor, V_PASSED_CNT));
-		tacticProblem.setIsUserMove(getInt(cursor, V_IS_MY_TURN) > 0);
+		tacticProblem.setIsUserMoveFirst(getInt(cursor, V_IS_MY_TURN) > 0);
 		tacticProblem.setRating(getInt(cursor, V_RATING));
 		tacticProblem.setAvgSeconds(getInt(cursor, V_AVG_SECONDS));
 		tacticProblem.setSecondsSpent(getInt(cursor, V_SECONDS_SPENT));
@@ -2640,6 +2641,52 @@ public class DbDataManager {
 
 			index++;
 		}
+	}
+
+	/* Theme load status */
+	public static boolean haveSavedThemesToLoad(Context context, String username) {
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = username;
+
+		Cursor cursor = contentResolver.query(uriArray[Tables.THEMES_LOAD_STATE.ordinal()],
+				null, SELECTION_USER, arguments1, null);
+
+		boolean exist = false;
+		if (cursor != null && cursor.moveToFirst()) {
+			do {
+				String state = getString(cursor, V_STATE);
+				if (state.equals(ThemeState.ENQUIRED.name()) || state.equals(ThemeState.LOADING.name())) {
+					exist = true;
+				}
+			} while (cursor.moveToNext());
+		}
+
+		if (cursor != null) {
+			cursor.close();
+		}
+
+		return exist;
+	}
+
+	public static void updateThemeLoadingStatus(ContentResolver contentResolver, ThemeItem.Data currentItem,
+												ThemeState status, String username) {
+		final String[] arguments1 = sArguments1;
+		arguments1[0] = String.valueOf(currentItem.getId());
+
+		Uri uri = uriArray[Tables.THEMES_LOAD_STATE.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID,
+				SELECTION_ITEM_ID, arguments1, null);
+
+		ContentValues values = new ContentValues();
+
+		values.put(V_ID, currentItem.getId());
+		values.put(V_USER, username);
+		values.put(V_STATE, status.name());
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
 	// ================================= global help methods =======================================

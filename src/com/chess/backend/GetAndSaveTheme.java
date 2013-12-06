@@ -29,12 +29,15 @@ import com.chess.statics.Symbol;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.SoundPlayer;
-import com.chess.ui.fragments.settings.SettingsThemeFragment;
 import com.chess.utilities.AppUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.chess.ui.fragments.settings.SettingsThemeFragment._3D_PART;
 
 /**
  * Created with IntelliJ IDEA.
@@ -75,7 +78,7 @@ public class GetAndSaveTheme extends Service {
 	private BoardSingleItemUpdateListener boardSingleItemUpdateListener;
 	private PiecesItemUpdateListener piecesItemUpdateListener;
 	private SoundsItemUpdateListener soundsItemUpdateListener;
-	private NotificationManager notifymanager;
+	private NotificationManager notifyManager;
 	private NotificationCompat.Builder notificationBuilder;
 
 	private ServiceBinder serviceBinder = new ServiceBinder();
@@ -85,14 +88,7 @@ public class GetAndSaveTheme extends Service {
 	private boolean isTablet;
 	private String themeFontColor;
 	private String selectedThemeName;
-
-	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {
-		this.progressUpdateListener = progressUpdateListener;
-	}
-
-	public boolean isInstallingTheme() {
-		return installingTheme;
-	}
+	private HashMap<ThemeItem.Data, ThemeState> themesQueue;
 
 	public class ServiceBinder extends Binder {
 		public GetAndSaveTheme getService(){
@@ -108,9 +104,10 @@ public class GetAndSaveTheme extends Service {
 			isTablet = AppUtils.is7InchTablet(this) || AppUtils.is10InchTablet(this);
 		}
 
+		themesQueue = new HashMap<ThemeItem.Data, ThemeState>();
 		appData = new AppData(this);
 		handler = new Handler();
-		notifymanager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// Creates an Intent for the Activity
 		Intent notifyIntent = new Intent(this, MainFragmentFaceActivity.class);
@@ -144,6 +141,17 @@ public class GetAndSaveTheme extends Service {
 	}
 
 	public void loadTheme(ThemeItem.Data selectedThemeItem, int screenWidth, int screenHeight) {
+		if (installingTheme) { // Enqueue load if we already loading theme
+			themesQueue.put(selectedThemeItem, ThemeState.ENQUIRED);
+			DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem,
+					ThemeState.ENQUIRED, getAppData().getUsername());
+			return;
+		}
+
+		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem,
+				ThemeState.LOADING, getAppData().getUsername());
+		themesQueue.put(selectedThemeItem, ThemeState.LOADING);
+
 		installingTheme = true;
 
 		this.selectedThemeItem = selectedThemeItem;
@@ -317,10 +325,6 @@ public class GetAndSaveTheme extends Service {
 				try {
 					File imgFile = AppUtils.openFileByName(getContext(), filename);
 					getAppData().setThemeBackPath(imgFile.getAbsolutePath());
-
-					if (selectedThemeName.equals("Light") || selectedThemeName.equals("Newspaper")) {
-						themeFontColor = "606060";
-					}
 					getAppData().setThemeFontColor(themeFontColor);
 
 					sendBroadcast(new Intent(IntentConstants.BACKGROUND_LOADED));
@@ -452,7 +456,7 @@ public class GetAndSaveTheme extends Service {
 			getAppData().setUseThemePieces(true);
 			getAppData().setThemePiecesPath(selectedPieceDir);
 
-			if (selectedPieceDir.contains(SettingsThemeFragment._3D_PART)) {
+			if (selectedPieceDir.contains(_3D_PART)) {
 				getAppData().setThemePieces3d(true);
 			} else {
 				getAppData().setThemePieces3d(false);
@@ -513,7 +517,7 @@ public class GetAndSaveTheme extends Service {
 		notificationBuilder.setContentText(title);
 		notificationBuilder.setProgress(0, 0, true);
 		// Displays the progress bar for the first time.
-		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
 
 		if (progressUpdateListener != null) {
 			progressUpdateListener.changeTitle(title);
@@ -525,7 +529,7 @@ public class GetAndSaveTheme extends Service {
 	private void showIndeterminateProgress() {
 		notificationBuilder.setProgress(0, 0, true);
 		// Displays the progress bar for the first time.
-		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
 
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(INDETERMINATE);
@@ -535,7 +539,7 @@ public class GetAndSaveTheme extends Service {
 	private void updateProgressToNotification(int progress) {
 		notificationBuilder.setProgress(100, progress, false);
 		// Displays the progress bar for the first time.
-		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(progress);
 		}
@@ -545,20 +549,47 @@ public class GetAndSaveTheme extends Service {
 		notificationBuilder.setContentText(getString(R.string.download_comlete))
 				// Removes the progress bar
 				.setProgress(0, 0, false);
-		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
+
+		// mark item as loaded
+		themesQueue.put(selectedThemeItem, ThemeState.LOADED);
+		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem,
+				ThemeState.LOADED, getAppData().getUsername());
+
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(DONE);
 		}
 
 		installingTheme = false;
 
+		// load next theme from queue
+		for (Map.Entry<ThemeItem.Data, ThemeState> entry : themesQueue.entrySet()) {
+			ThemeState status = entry.getValue();
+			if (status.equals(ThemeState.ENQUIRED)) {
+				loadTheme(entry.getKey(), screenWidth, screenHeight);
+				return;
+			}
+		}
+
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				notifymanager.cancel(R.id.notification_message);
+				notifyManager.cancel(R.id.notification_message);
 
 			}
 		}, SHUTDOWN_DELAY);
+	}
+
+	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {
+		this.progressUpdateListener = progressUpdateListener;
+	}
+
+	public boolean isInstallingTheme() {
+		return installingTheme;
+	}
+
+	public ThemeItem.Data getLoadingTheme() {
+		return selectedThemeItem;
 	}
 
 	private AppData getAppData() {

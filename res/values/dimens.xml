@@ -285,7 +285,7 @@
     <dimen name="new_tactics_clock_icon_size">21dip</dimen>
 	<dimen name="new_tactics_clock_icon_padding">4dip</dimen>
 	<dimen name="new_tactics_clock_icon_padding_top">2dip</dimen>
-    <dimen name="new_tactics_info_text_size">17sp</dimen>
+    <dimen name="new_tactics_info_text_size">16sp</dimen>
     <dimen name="home_play_live_labels_padding_side">25dip</dimen>
     <dimen name="new_right_live_option_button_width">88dip</dimen>
     <dimen name="daily_list_item_image_size">30dip</dimen>

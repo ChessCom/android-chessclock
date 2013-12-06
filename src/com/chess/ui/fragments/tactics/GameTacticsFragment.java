@@ -35,6 +35,7 @@ import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardTactics;
+import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.comp.GameCompFragment;
@@ -842,8 +843,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void setIconToResultView(int iconId) {
-		IconDrawable iconDrawable = new IconDrawable(getActivity(), iconId,
-				R.color.semitransparent_white_75, R.dimen.glyph_icon_big2);
+		IconDrawable iconDrawable = new IconDrawable(getActivity(), iconId,	themeFontColorStateList,
+				R.dimen.glyph_icon_big2);
 		moveResultTxt.setVisibility(View.VISIBLE);
 		moveResultTxt.setCompoundDrawablesWithIntrinsicBounds(iconDrawable, null, null, null);
 		moveResultTxt.setCompoundDrawablePadding(resultIconPadding);
@@ -1037,7 +1038,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		trainerData.getTacticsProblem().setFen(initialFen);
 		boardFace.setupBoard(initialFen);
 
-		if (boardFace.isReside()) { // user always play at the bottom
+		if (initialFen.contains(FenHelper.WHITE_TO_MOVE)) {
+			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+		} else {
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 		}
 
@@ -1061,7 +1064,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else { // setup first move
 			startTacticsTimer(trainerData);
 
-			if (trainerData.isUserMove()) {
+			if (!trainerData.isUserMoveFirst()) {
 				boardFace.setReside(!boardFace.isReside()); // flip board
 
 				boardFace.setMovesCount(1);
@@ -1079,7 +1082,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					}
 				}, START_DELAY);
 			} else {
-				invalidateGameScreen();
+				boardView.invalidate();
 			}
 		}
 

@@ -2,7 +2,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    xmlns:app="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,8 +20,9 @@
 		android:gravity="center"
 		android:textSize="23sp"
 		android:textColor="@color/white"
-		custom:ttf="Bold"
+		app:ttf="Bold"
 		android:visibility="invisible"
+		app:themeColor="true"
 		/>
 
 	<com.chess.widgets.LinLayout
@@ -56,7 +57,7 @@
         android:id="@+id/controlsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-		custom:controls_style="rounded"
+		app:controls_style="rounded"
 		android:layout_marginLeft="@dimen/common_tablet_side_padding"
 		android:layout_marginRight="@dimen/common_tablet_side_padding"
 		android:layout_marginBottom="@dimen/default_scr_side_padding"

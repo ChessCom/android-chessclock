@@ -499,7 +499,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 				File imgFile = AppUtils.openFileByName(getActivity(), filename);
 				getAppData().setThemeBackPath(imgFile.getAbsolutePath());
 				getActivityFace().updateMainBackground();
-//				getActivityFace().setMainBackground(imgFile.getAbsolutePath());
 				getAppData().setThemeFontColor(themeFontColor);
 
 			} catch (IOException e) {

@@ -40,7 +40,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 	static final String PIECE_PREVIEW_LINE = CLOUD_FRONT + PIECES + PREVIEWS + LINE;
 	static final String PIECE_PREVIEW_SQUARE = CLOUD_FRONT + PIECES + PREVIEWS + SQUARE;
 	static final String SOUND_PACK = CLOUD_FRONT + SOUNDS + MP3;
-	public static final int RENAME_DELAY = 40 * 1000;
+	public static final int RENAME_DELAY = 20 * 1000;
 
 
 	@Override
@@ -680,26 +680,26 @@ winboard - 	ffffff
 	};
 
 	static String[] backgroundFontColors = new String[]{
-			"FFFFFF",   // "game_room",
-			"FFFFFF",        // "dark",
-			"606060",       // "light",
-			"FFFFFF",        // "wood",
-			"FFFFFF",       // "glass",
-			"FFFFFF",  // "tournament",
-			"FFFFFF",    // "staunton",
-			"606060",   // "newspaper",
-			"FFFFFF",      // "tigers",
-			"FFFFFF",      // "nature",
-			"FFFFFF",         // "sky",
-			"FFFFFF",       // "space",
-			"FFFFFF",       // "ocean",
-			"FFFFFF",       // "metal",
-			"FFFFFF",      // "gothic",
-			"FFFFFF",      // "marble",
-			"FFFFFF",        // "neon",
-			"FFFFFF",    // "graffiti",
-			"FFFFFF",   // "bubblegum",
-			"FFFFFF"         // "lolz"
+			"FFFFFFBF",   // "game_room",
+			"FFFFFFBF",        // "dark",
+			"606060BF",       // "light",
+			"FFFFFFBF",        // "wood",
+			"FFFFFFBF",       // "glass",
+			"FFFFFFBF",  // "tournament",
+			"FFFFFFBF",    // "staunton",
+			"606060BF",   // "newspaper",
+			"FFFFFFBF",      // "tigers",
+			"FFFFFFBF",      // "nature",
+			"FFFFFFBF",         // "sky",
+			"FFFFFFBF",       // "space",
+			"FFFFFFBF",       // "ocean",
+			"FFFFFFBF",       // "metal",
+			"FFFFFFBF",      // "gothic",
+			"FFFFFFBF",      // "marble",
+			"FFFFFFBF",        // "neon",
+			"FFFFFFBF",    // "graffiti",
+			"FFFFFFBF",   // "bubblegum",
+			"FFFFFFBF"         // "lolz"
 	};
 
 
@@ -768,107 +768,6 @@ winboard - 	ffffff
 	};
 
 
-/*
-  "user_theme_pieces_id": 1,
-  "theme_dir": "classic"
-{
-  "user_theme_pieces_id": 2,
-  "theme_dir": "alpha"
-{
-  "user_theme_pieces_id": 3,
-  "theme_dir": "modern"
-{
-  "user_theme_pieces_id": 4,
-  "theme_dir": "book"
-{
-  "user_theme_pieces_id": 5,
-  "theme_dir": "club"
-{
-  "user_theme_pieces_id": 6,
-  "theme_dir": "game_room"
-{
-  "user_theme_pieces_id": 7,
-  "theme_dir": "tournament"
-{
-  "user_theme_pieces_id": 8,
-  "theme_dir": "wood"
-{
-  "user_theme_pieces_id": 9,
-  "theme_dir": "glass"
-{
-  "user_theme_pieces_id": 10,
-  "theme_dir": "light"
-{
-  "user_theme_pieces_id": 11,
-  "theme_dir": "dark"
-{
-  "user_theme_pieces_id": 12,
-  "theme_dir": "3d_staunton"
-{
-  "user_theme_pieces_id": 13,
-  "theme_dir": "3d_wood"
-{
-  "user_theme_pieces_id": 14,
-  "theme_dir": "3d_plastic"
-{
-  "user_theme_pieces_id": 15,
-  "theme_dir": "newspaper"
-{
-  "user_theme_pieces_id": 16,
-  "theme_dir": "tigers"
-{
-  "user_theme_pieces_id": 17,
-  "theme_dir": "nature"
-{
-  "user_theme_pieces_id": 19,
-  "theme_dir": "sky"
-{
-  "user_theme_pieces_id": 20,
-  "theme_dir": "space"
-{
-  "user_theme_pieces_id": 22,
-  "theme_dir": "ocean"
-{
-  "user_theme_pieces_id": 24,
-  "theme_dir": "metal"
-{
-  "user_theme_pieces_id": 26,
-  "theme_dir": "gothic"
-{
-  "user_theme_pieces_id": 28,
-  "theme_dir": "marble"
-{
-  "user_theme_pieces_id": 30,
-  "theme_dir": "neon"
-{
-  "user_theme_pieces_id": 32,
-  "theme_dir": "graffiti"
-{
-  "user_theme_pieces_id": 34,
-  "theme_dir": "bubblegum"
-{
-  "user_theme_pieces_id": 36,
-  "theme_dir": "lolz"
-{
-  "user_theme_pieces_id": 38,
-  "theme_dir": "cases"
-{
-  "user_theme_pieces_id": 40,
-  "theme_dir": "condal"
-{
-  "user_theme_pieces_id": 42,
-  "theme_dir": "vintage"
-{
-  "user_theme_pieces_id": 44,
-  "theme_dir": "maya"
-{
-  "user_theme_pieces_id": 46,
-  "theme_dir": "3d_chesskid"
-{
-  "user_theme_pieces_id": 48,
-  "theme_dir": "blindfold"
-
-	 */
 	static int[] soundIds = new int[]{
 			1,  // "default",
 			2,  // "nature",

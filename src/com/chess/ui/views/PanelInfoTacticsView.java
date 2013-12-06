@@ -2,6 +2,7 @@ package com.chess.ui.views;
 
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -30,19 +31,17 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	public static final String NO_TIME = "--:--";
 
 	private ImageView avatarImg;
-	private float density;
 
 	private RoboTextView ratingTxt;
 
 	private RoboTextView clockTxt;
 
 	private int side;
-	private OnClickListener listener;
 	private RoboTextView ratingChangeTxt;
 	private RoboTextView practiceTxt;
 	private LinearLayout clockLayout;
 	private RoboTextView clockIconTxt;
-	private int whiteColor;
+	private ColorStateList defaultColorStateList;
 	private int redColor;
 
 	public PanelInfoTacticsView(Context context) {
@@ -58,7 +57,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	public void onCreate() {
 		Context context = getContext();
 		Resources resources = context.getResources();
-		density = resources.getDisplayMetrics().density;
+		float density = resources.getDisplayMetrics().density;
 
 		int padding = (int) resources.getDimension(R.dimen.panel_info_tactic_padding_top);
 		int paddingLeft = resources.getDimensionPixelSize(R.dimen.panel_info_tactic_padding_side);
@@ -68,9 +67,10 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		float infoTextSize = resources.getDimension(R.dimen.new_tactics_info_text_size) / density;
 		int avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_tactic_size);
 		int avatarMarginRight = (int) resources.getDimension(R.dimen.panel_info_avatar_margin_right);
-		whiteColor = resources.getColor(R.color.white);
 		redColor = resources.getColor(R.color.red_button);
 		int lightGrey = resources.getColor(R.color.new_light_grey);
+
+		defaultColorStateList = FontsHelper.getInstance().getThemeColorStateList(context);
 
 		{// add avatar view
 			avatarImg = new ImageView(context);
@@ -94,12 +94,10 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			ratingParams.addRule(RIGHT_OF, AVATAR_ID);
 
 			ratingTxt.setTextSize(infoTextSize);
-			ratingTxt.setTextColor(Color.WHITE);
+			ratingTxt.setTextColor(defaultColorStateList);
 			ratingTxt.setId(RATING_ID);
-			ratingTxt.setShadowLayer(0.5f, 0, -1, Color.BLACK);
 			ratingTxt.setFont(FontsHelper.BOLD_FONT);
 			ratingTxt.setGravity(Gravity.CENTER_VERTICAL);
-			ratingTxt.setPadding(0, (int) (3 * density), 0, 0);
 
 			addView(ratingTxt, ratingParams);
 		}
@@ -112,11 +110,10 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			layoutParams.addRule(CENTER_VERTICAL);
 
 			ratingChangeTxt.setTextSize(infoTextSize);
-			ratingChangeTxt.setTextColor(lightGrey);
+			ratingChangeTxt.setTextColor(defaultColorStateList);
 			ratingChangeTxt.setId(RATING_CHANGE_ID);
 			ratingChangeTxt.setGravity(Gravity.CENTER_VERTICAL);
-			ratingChangeTxt.setPadding((int)(8 * density), 0, 0, 0);
-			ratingChangeTxt.setShadowLayer(0.5f, 0, -1, Color.BLACK);
+			ratingChangeTxt.setPadding((int)(4 * density), 0, 0, 0);
 			ratingChangeTxt.setFont(FontsHelper.BOLD_FONT);
 
 			addView(ratingChangeTxt, layoutParams);
@@ -138,10 +135,10 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			clockIconParams.gravity = CENTER_VERTICAL;
 
 			clockIconTxt.setFont(FontsHelper.ICON_FONT);
-			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size)/density; // 21;
+			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size)/ density; // 21;
 			clockIconTxt.setTextSize(clockIconSize);
 			clockIconTxt.setText(R.string.ic_clock);
-			clockIconTxt.setTextColor(whiteColor);
+			clockIconTxt.setTextColor(defaultColorStateList);
 			int paddingIcon = (int) (7 * density);
 			int paddingIconTop = (int) (3 * density);
 			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
@@ -149,7 +146,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			clockLayout.addView(clockIconTxt, clockIconParams);
 
 			clockTxt.setTextSize(infoTextSize);
-			clockTxt.setTextColor(whiteColor);
+			clockTxt.setTextColor(defaultColorStateList);
 			clockTxt.setFont(FontsHelper.BOLD_FONT);
 			clockTxt.setText(NO_TIME);
 			clockTxt.setId(TIME_LEFT_ID);
@@ -191,8 +188,16 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	}
 
 	public void makeTimerRed(boolean makeRed) {
-		clockIconTxt.setTextColor(makeRed ? redColor : whiteColor);
-		clockTxt.setTextColor(makeRed ? redColor : whiteColor);
+		if (makeRed) {
+			clockIconTxt.setTextColor(redColor);
+		} else {
+			clockIconTxt.setTextColor(defaultColorStateList);
+		}
+		if (makeRed) {
+			clockTxt.setTextColor(redColor);
+		} else {
+			clockTxt.setTextColor(defaultColorStateList);
+		}
 	}
 
 	public void setPlayerTimeLeft(String timeLeft) {

@@ -136,7 +136,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private AbsListView listView;
 	private boolean usePullToRefresh;
 	protected boolean isTablet;
-	private IntentFilter startLIveGameFilter;
+	private IntentFilter startLiveGameFilter;
 	private StartLiveGameReceiver startLiveGameReceiver;
 	protected ColorStateList themeFontColorStateList;
 
@@ -175,7 +175,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		imageFetcher.setLoadingImage(R.drawable.img_profile_picture_stub);
 		imageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
 
-		startLIveGameFilter = new IntentFilter(IntentConstants.START_LIVE_GAME);
+		startLiveGameFilter = new IntentFilter(IntentConstants.START_LIVE_GAME);
 
 		themeFontColorStateList = FontsHelper.getInstance().getThemeColorStateList(getActivity());
 	}
@@ -273,13 +273,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		// register receiver to start live game
 		startLiveGameReceiver = new StartLiveGameReceiver();
-		registerReceiver(startLiveGameReceiver, startLIveGameFilter);
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		themeFontColorStateList = getActivityFace().getThemeFontColorStateList();
+		registerReceiver(startLiveGameReceiver, startLiveGameFilter);
 	}
 
 	@Override
@@ -970,6 +964,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected boolean isNetworkAvailable() {
 		return getActivity() != null && AppUtils.isNetworkAvailable(getActivity());
+	}
+
+	public void updateFontColors() {
+		themeFontColorStateList = FontsHelper.getInstance().getThemeColorStateList(getActivity());
+
 	}
 
 	private class StartLiveGameReceiver extends BroadcastReceiver {

@@ -2,7 +2,7 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    xmlns:app="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,8 +20,9 @@
 		android:gravity="center"
 		android:textSize="23sp"
 		android:textColor="@color/white"
-		custom:ttf="Bold"
+		app:ttf="Bold"
 		android:visibility="gone"
+		app:themeColor="true"
 		/>
 
     <RelativeLayout

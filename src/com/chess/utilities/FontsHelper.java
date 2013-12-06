@@ -60,8 +60,12 @@ public class FontsHelper {
 		}
 
 		if (themeColorStateList == null) {
-			int defaultFontColor = Color.parseColor("#D0" + appData.getThemeFontColor()); // add 75% opacity
-			int pressedFontColor = Color.parseColor("#40" + appData.getThemeFontColor()) ;
+			// change alpha from last 2 letters to first (FFFFFFBF -> BFFFFFFF
+			String themeFontColor = appData.getThemeFontColor();
+			String alpha = themeFontColor.substring(6);
+			themeFontColor = themeFontColor.substring(0, 6);
+			int defaultFontColor = Color.parseColor("#" + alpha + themeFontColor); // add 75% opacity
+			int pressedFontColor = Color.parseColor("#" + alpha + themeFontColor) ;
 
 			themeColorStateList = new ColorStateList(
 					new int[][]{

@@ -322,4 +322,12 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	/* Themes */
+	public static QueryParams getThemeById(long themeId) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.THEMES.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID);
+		queryParams.setArguments(new String[]{String.valueOf(themeId)});
+		return queryParams;
+	}
 }

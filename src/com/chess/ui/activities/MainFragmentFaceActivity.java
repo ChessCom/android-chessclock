@@ -1,18 +1,18 @@
 package com.chess.ui.activities;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.app.Activity;
+import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,14 +23,22 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import com.chess.R;
+import com.chess.backend.GetAndSaveTheme;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.themes.ThemeItem;
 import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
 import com.chess.statics.IntentConstants;
 import com.chess.ui.engine.SoundPlayer;
-import com.chess.ui.fragments.*;
+import com.chess.ui.fragments.BasePopupsFragment;
+import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.NavigationMenuFragment;
+import com.chess.ui.fragments.NotificationsRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
@@ -79,7 +87,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private IntentFilter backgroundUpdateFilter;
 	private BackgroundUpdateReceiver backgroundUpdateReceiver;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
-	private ColorStateList themeFontColorStateList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -118,7 +125,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			} else if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
 				// set the Above View
 				switchFragment(new HomeTabsFragment());
-//				switchFragment(new ThemeManagerFragment());
 				showActionBar = true;
 			} else {
 				if (isTablet) {
@@ -145,20 +151,18 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		// restoring correct host
 		///////////////////////////////////////////////////
-		// RestHelper.resetInstance();					 //
-		// RestHelper.HOST = getAppData().getApiRoute(); //
+		RestHelper.resetInstance();					 //
+		RestHelper.HOST = getAppData().getApiRoute(); //
 		///////////////////////////////////////////////////
 
 		// lock portrait mode for handsets and unlock for tablets
 		if (isTablet) {
-//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		} else {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
 
-		// set main themeFontColor
-		updateFontColors();
+		checkThemesToLoad();
 	}
 
 	@Override
@@ -542,29 +546,16 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 
 		updateActionBarBackImage();
-		updateFontColors();
-	}
+		for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+			if (fragment != null && fragment instanceof CommonLogicFragment) {
+				((CommonLogicFragment)fragment).updateFontColors();
+			}
+		}
 
-	private void updateFontColors() {
-		int defaultFontColor = Color.parseColor("#D0" + getAppData().getThemeFontColor()); // add 75% opacity
-		int pressedFontColor = Color.parseColor("#40" + getAppData().getThemeFontColor()) ;
-//		int pressedFontColor = Color.parseColor("#40" + "FF0000");
-//		themeFontColor = Color.parseColor("#40" + "00FF00") ;
+		// force update all views with fonts
+		findViewById(R.id.content_frame).invalidate();
 
-		themeFontColorStateList = new ColorStateList(
-				new int[][]{
-						new int[]{android.R.attr.state_enabled},
-						new int[]{android.R.attr.state_pressed},
-						new int[]{android.R.attr.state_selected},
-						new int[]{android.R.attr.state_enabled, android.R.attr.state_checked},// selected
-						new int[]{-android.R.attr.state_enabled},
-				},
-				new int[]{
-						defaultFontColor,
-						pressedFontColor,
-						pressedFontColor,
-						Color.GREEN,
-						Color.RED});
+
 	}
 
 	private class NotificationsUpdateReceiver extends BroadcastReceiver {
@@ -774,14 +765,41 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		return mPullToRefreshAttacher;
 	}
 
-	@Override
-	public ColorStateList getThemeFontColorStateList() {
-		return themeFontColorStateList;
+	private void checkThemesToLoad() {
+		boolean needToLoadThemes = DbDataManager.haveSavedThemesToLoad(this, getCurrentUsername());
+		if (needToLoadThemes) {
+			bindService(new Intent(this, GetAndSaveTheme.class), new LoadServiceConnectionListener(),
+					Activity.BIND_AUTO_CREATE);
+		}
 	}
 
-	@Override
-	public void setThemeFontColorStateList(ColorStateList themeFontColorStateList) {
-		this.themeFontColorStateList = themeFontColorStateList;
+	private class LoadServiceConnectionListener implements ServiceConnection {
+
+		@Override
+		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+			int screenWidth = getResources().getDisplayMetrics().widthPixels;
+			int screenHeight = getResources().getDisplayMetrics().heightPixels;
+
+			GetAndSaveTheme.ServiceBinder serviceBinder = (GetAndSaveTheme.ServiceBinder) iBinder;
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEMES_LOAD_STATE));
+			if (cursor != null && cursor.moveToFirst()) {
+				do {
+					int id = DbDataManager.getInt(cursor, DbScheme.V_ID);
+					Cursor themeCursor = DbDataManager.query(getContentResolver(), DbHelper.getThemeById(id));
+
+					if (themeCursor != null && themeCursor.moveToFirst()) {
+						do {
+							ThemeItem.Data themeItem = DbDataManager.getThemeItemFromCursor(themeCursor);
+							serviceBinder.getService().loadTheme(themeItem, screenWidth, screenHeight);
+						} while (themeCursor.moveToNext());
+					}
+				} while (cursor.moveToNext());
+			}
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+		}
 	}
 
 }

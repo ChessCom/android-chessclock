@@ -51,6 +51,7 @@
 			android:textSize="23sp"
 			android:textColor="@color/white"
 			custom:ttf="Bold"
+			custom:themeColor="true"
 			android:visibility="gone" />
 
 		<!--Controls-->
