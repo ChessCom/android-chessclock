@@ -63,7 +63,7 @@
     <string name="pie_chart_drawn_legend">Drawn %.0f%%</string>
     <string name="percentile">Percentile</string>
     <string name="of_arg">of %s</string>
-    <string name="not_available">N/A</string>
+    <string name="not_available">--</string>
 
     <!--Upgrade-->
     <string name="upgrade_main_title_1">Good Enough for Masters.</string>

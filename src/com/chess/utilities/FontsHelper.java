@@ -54,12 +54,12 @@ public class FontsHelper {
 		}
 	}
 
-	public ColorStateList getThemeColorStateList(Context context) {
+	public ColorStateList getThemeColorStateList(Context context, boolean forceUpdate) {
 		if (appData == null) {
 			appData = new AppData(context);
 		}
 
-		if (themeColorStateList == null) {
+		if (themeColorStateList == null || forceUpdate) {
 			// change alpha from last 2 letters to first (FFFFFFBF -> BFFFFFFF
 			String themeFontColor = appData.getThemeFontColor();
 			String alpha = themeFontColor.substring(6);

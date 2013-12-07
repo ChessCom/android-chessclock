@@ -30,6 +30,8 @@ public class PieceSingleItem extends BaseResponseItem<PieceSingleItem.Data> {
 		private String piece_preview_url;
 		private int theme_id;
 		private String theme_dir;
+		/* Local addition */
+		private String localPath;
 
 		public int getThemePieceId() {
 			return user_theme_pieces_id;
@@ -69,6 +71,14 @@ public class PieceSingleItem extends BaseResponseItem<PieceSingleItem.Data> {
 
 		public void setThemeDir(String theme_dir) {
 			this.theme_dir = theme_dir;
+		}
+
+		public void setLocalPath(String localPath) {
+			this.localPath = localPath;
+		}
+
+		public String getLocalPath() {
+			return getSafeValue(localPath);
 		}
 	}
 }

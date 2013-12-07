@@ -11,19 +11,20 @@ import com.chess.backend.entity.api.BaseResponseItem;
 public class BackgroundSingleItem extends BaseResponseItem<BackgroundSingleItem.Data> {
 /*
 	"data": {
-		"name": "Glass",
-		"background_preview_url": "http://d1xrj4tlyewhek.cloudfront.net/backgrounds/previews/glass.png",
-		"font_color": "#FFFFFF",
-		"original_handset": "http://d1xrj4tlyewhek.cloudfront.net/backgrounds/originals/Android_720x1280/glass.png",
-		"original_iphone": "http://d1xrj4tlyewhek.cloudfront.net/backgrounds/originals/iPhone_5_2x/glass.png",
-		"original_ipad": "http://d1xrj4tlyewhek.cloudfront.net/backgrounds/originals/iPad_Landscape_2x/glass.png",
-		"original_ipad_port": "http://d1xrj4tlyewhek.cloudfront.net/backgrounds/originals/iPad_Portrait_2x/glass.png",
-		"original_tablet": "http://d1xrj4tlyewhek.cloudfront.net/backgrounds/originals/Web_1440x900/glass.png",
-		"resized_image": "http://chess-redesign.s3.amazonaws.com/backgrounds/originals/Android_720x1280/6_Glass1080x1920.png"
-  	},
+		"user_theme_background_id": 4,
+		"name": "Wave",
+		"background_preview_url": "www.some_zip_url.com/image.zip",
+		"font_color": "FFFFFF",
+		"original_handset": "http://chess-redesign.s3.amazonaws.com/backgrounds/originals/iPad_Landscape_2x/1_Graffity480x360.png",
+		"original_iphone": "http://chess-redesign.s3.amazonaws.com/backgrounds/originals/iPad_Landscape_2x/1_Graffity480x360.png",
+		"original_ipad": "http://chess-redesign.s3.amazonaws.com/backgrounds/originals/iPad_Landscape_2x/1_Graffity480x360.png",
+		"original_ipad_port": "http://chess-redesign.s3.amazonaws.com/backgrounds/originals/iPad_Landscape_2x/1_Graffity480x360.png",
+		"original_tablet": "http://chess-redesign.s3.amazonaws.com/backgrounds/originals/iPad_Landscape_2x/1_Graffity480x360.png",
+		"theme_id": 43
+	},
 */
 
-	public class Data {
+	public static class Data {
 		private int user_theme_background_id;
 		private String name;
 		private String background_preview_url;
@@ -31,6 +32,9 @@ public class BackgroundSingleItem extends BaseResponseItem<BackgroundSingleItem.
 		private String original_handset;
 		private String original_tablet;
 		private String resized_image;
+		private int theme_id;
+		/* Local addition */
+		private String localPath;
 
 		public int getBackgroundId() {
 			return user_theme_background_id;
@@ -58,6 +62,50 @@ public class BackgroundSingleItem extends BaseResponseItem<BackgroundSingleItem.
 
 		public String getResizedImage() {
 			return resized_image;
+		}
+
+		public int getThemeId() {
+			return theme_id;
+		}
+
+		public void setBackgroundId(int user_theme_background_id) {
+			this.user_theme_background_id = user_theme_background_id;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public void setBackgroundPreviewUrl(String background_preview_url) {
+			this.background_preview_url = background_preview_url;
+		}
+
+		public void setFontColor(String font_color) {
+			this.font_color = font_color;
+		}
+
+		public void setOriginalHandset(String original_handset) {
+			this.original_handset = original_handset;
+		}
+
+		public void setOriginalTablet(String original_tablet) {
+			this.original_tablet = original_tablet;
+		}
+
+		public void setResizedImage(String resized_image) {
+			this.resized_image = resized_image;
+		}
+
+		public void setThemeId(int theme_id) {
+			this.theme_id = theme_id;
+		}
+
+		public void setLocalPath(String localPath) {
+			this.localPath = localPath;
+		}
+
+		public String getLocalPath() {
+			return getSafeValue(localPath);
 		}
 	}
 

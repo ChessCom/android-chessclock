@@ -37,6 +37,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
+import com.chess.statics.AppData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.engine.SoundPlayer;
@@ -75,15 +76,9 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private ImageDownloaderToListener imageDownloader;
 	private EnhancedImageDownloader imageLoader;
 
-	private List<String> colorsList;
-
 	private ThemeItem.Data themeItem;
 	private TextView backgroundNameTxt;
 	private Spinner soundsSpinner;
-	private Spinner colorsSpinner;
-	private Spinner coordinatesSpinner;
-	private int screenWidth;
-	private int screenHeight;
 
 	private String backgroundUrl;
 
@@ -94,12 +89,10 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private TextView loadProgressTxt;
 	private TextView taskTitleTxt;
 
-	private int lightColor;
-	private int darkColor;
 	private PopupBackgroundsFragment backgroundsFragment;
 	private PopupCustomViewFragment loadProgressPopupFragment;
 	private SoundsItemUpdateListener soundsItemUpdateListener;
-	private List<String> soundsUrlsList;
+	private SparseArray<String> soundsUrlsMap;
 	private SoundPackSaveListener soundPackSaveListener;
 	private String selectedSoundPackUrl;
 	private View loadProgressBar;
@@ -119,7 +112,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 	public SettingsThemeCustomizeFragment() {
 		ThemeItem.Data customizeItem = new ThemeItem.Data();
-		customizeItem.setThemeName("Customize");
+		customizeItem.setThemeName(AppConstants.CUSTOM_THEME_NAME);
 		customizeItem.setLocal(true);
 
 		Bundle bundle = new Bundle();
@@ -166,7 +159,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	public void onResume() {
 		super.onResume();
 
-		if (DbDataManager.haveSavedSoundThemes(getContentResolver())) {
+		if (DbDataManager.haveSavedSoundThemes(getContentResolver()) && getAppData().isThemeSoundsLoaded()) {
 			loadSoundsFromDb();
 		} else {
 			getSounds();
@@ -280,6 +273,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			imageLoader.download(getAppData().getThemeBackgroundPreviewUrl(), backgroundPreviewImg, screenWidth);
 		}
 
+		updateThemeName();
 	}
 
 	@Override
@@ -306,10 +300,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			backgroundsFragment.show(getFragmentManager(), BACKGROUND_SELECTION);
 		} else if (id == R.id.soundsView) {
 			soundsSpinner.performClick();
-		} else if (id == R.id.colorsView) {
-			colorsSpinner.performClick();
-		} else if (id == R.id.coordinatesView) {
-			coordinatesSpinner.performClick();
 		} else if (id == R.id.applyBackgroundBtn) {
 			LoadItem loadItem;
 			if (!isTablet) {
@@ -333,7 +323,16 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	@Override
 	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
 		if (adapterView.getId() == R.id.soundsSpinner) {
-			selectedSoundPackUrl = soundsUrlsList.get(pos);
+			// check if sounds is different from theme's sounds
+			int soundsId = themeItem.getSoundsId();
+			int themeSoundsId = getAppData().getThemeSoundsId();
+			// default soundsId is 1, but theme items have -1(UNDEFINED)
+			if (soundsId != AppData.UNDEFINED
+					&& soundsId != themeSoundsId && themeSoundsId != AppData.UNDEFINED) {
+				getAppData().setThemeName(AppConstants.CUSTOM_THEME_NAME);
+			}
+
+			selectedSoundPackUrl = soundsUrlsMap.valueAt(pos);
 			getAppData().setSoundSetPosition(pos);
 
 			String savedPath = DbDataManager.haveSavedSoundPackForUrl(getContentResolver(), selectedSoundPackUrl);
@@ -343,13 +342,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			} else {
 				updateSelectedSoundScheme(savedPath);
 			}
-
-		} else if (adapterView.getId() == R.id.colorsSpinner) {
-			if (pos == 0) {
-				rowSampleTitleTxt.setTextColor(lightColor);
-			} else {
-				rowSampleTitleTxt.setTextColor(darkColor);
-			}
+			getAppData().setThemeSoundsId(soundsUrlsMap.keyAt(pos));
 		}
 
 		((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
@@ -433,7 +426,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	}
 
 	private void updateSelectedSoundScheme(String path) {
-		getAppData().setThemeSoundPath(path);
+		getAppData().setThemeSoundsPath(path);
 
 		// update sounds flag
 		SoundPlayer.setUseThemePack(true);
@@ -534,9 +527,9 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 			List<SoundSingleItem.Data> itemsList = returnedObj.getData();
 			for (SoundSingleItem.Data currentItem : itemsList) {
-				DbDataManager.saveSoundsPathToDb(getContentResolver(), currentItem);
+				DbDataManager.saveThemeSoundsItemToDb(getContentResolver(), currentItem);
 			}
-
+			getAppData().setThemeSoundsLoaded(true);
 			loadSoundsFromDb();
 		}
 	}
@@ -547,7 +540,9 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		List<String> soundsList = new ArrayList<String>();
 		if (cursor != null && cursor.moveToFirst()) {
 			do {
-				soundsUrlsList.add(DbDataManager.getString(cursor, DbScheme.V_URL));
+				int id = DbDataManager.getInt(cursor, DbScheme.V_ID);
+				String url = DbDataManager.getString(cursor, DbScheme.V_URL);
+				soundsUrlsMap.put(id, url);
 				soundsList.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
 			} while (cursor.moveToNext());
 		} else { // DB was cleared
@@ -557,6 +552,32 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		soundsSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), soundsList));
 		soundsSpinner.setEnabled(true);
 		soundsSpinner.setSelection(getAppData().getSoundSetPosition());
+	}
+
+	private void updateThemeName() {
+		AppData appData = getAppData();
+		// check if background is different from theme's background
+		String themeName = appData.getThemeName();
+		String themeBackgroundName = appData.getThemeBackgroundName();
+		if (!themeName.equalsIgnoreCase(themeBackgroundName) && !TextUtils.isEmpty(themeBackgroundName)) {
+			appData.setThemeName(AppConstants.CUSTOM_THEME_NAME);
+			return;
+		}
+
+		// check if board is different from theme's board
+		int boardId = themeItem.getBoardId();
+		int themeBoardId = appData.getThemeBoardId();
+		if (boardId != themeBoardId && themeBoardId != AppData.UNDEFINED) {
+			appData.setThemeName(AppConstants.CUSTOM_THEME_NAME);
+			return;
+		}
+
+		// check if pieces is different from theme's pieces
+		int piecesId = themeItem.getPiecesId();
+		int themePiecesId = appData.getThemePiecesId();
+		if (piecesId != themePiecesId && themePiecesId != AppData.UNDEFINED) {
+			appData.setThemeName(AppConstants.CUSTOM_THEME_NAME);
+		}
 	}
 
 	private class BackgroundPopupListener implements PopupListSelectionFace {
@@ -616,19 +637,16 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 			imageDownloader.download(backgroundUrl, backgroundUpdateListener, screenWidth, screenHeight);
 			String selectedThemeName = selectedBackgroundItem.getName();
-			getAppData().setThemeName(selectedThemeName);
+			getAppData().setThemeBackgroundName(selectedThemeName);
 			themeFontColor = selectedBackgroundItem.getFontColor();
 
 			getActivityFace().updateActionBarBackImage();
+			updateThemeName();
 		}
 	}
 
 	private void init() {
-		Resources resources = getResources();
-		screenWidth = getResources().getDisplayMetrics().widthPixels;
-		screenHeight = getResources().getDisplayMetrics().heightPixels;
-
-		soundsUrlsList = new ArrayList<String>();
+		soundsUrlsMap = new SparseArray<String>();
 
 		imageLoader = new EnhancedImageDownloader(getActivity());
 		{// Piece bitmaps list init
@@ -684,13 +702,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			defaultSquareBoardNamesMap.put(R.drawable.board_red, getString(R.string.board_red));
 			defaultSquareBoardNamesMap.put(R.drawable.board_tan, getString(R.string.board_tan));
 		}
-
-		colorsList = new ArrayList<String>();
-		colorsList.add(getString(R.string.light));
-		colorsList.add(getString(R.string.dark));
-
-		lightColor = resources.getColor(R.color.white);
-		darkColor = resources.getColor(R.color.new_subtitle_dark_grey);
 
 		backgroundPopupListener = new BackgroundPopupListener();
 		backgroundItemUpdateListener = new BackgroundItemUpdateListener();
@@ -774,12 +785,10 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		view.findViewById(R.id.piecesView).setOnClickListener(this);
 		view.findViewById(R.id.boardView).setOnClickListener(this);
 		view.findViewById(R.id.soundsView).setOnClickListener(this);
-		view.findViewById(R.id.colorsView).setOnClickListener(this);
+//		view.findViewById(R.id.colorsView).setOnClickListener(this);
 
 		applyBackgroundBtn = view.findViewById(R.id.applyBackgroundBtn);
 		applyBackgroundBtn.setOnClickListener(this);
-
-		String username = getUsername();
 
 		// Backgrounds
 		backgroundNameTxt = (TextView) view.findViewById(R.id.backgroundNameTxt);
@@ -791,20 +800,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		soundsSpinner = (Spinner) view.findViewById(R.id.soundsSpinner);
 		soundsSpinner.setEnabled(false);
 		soundsSpinner.setOnItemSelectedListener(this);
-
-		// Colors
-		colorsSpinner = (Spinner) view.findViewById(R.id.colorsSpinner);
-		colorsSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), colorsList));
-		int colorPosition = preferences.getInt(username + AppConstants.PREF_COLORS_SET, 0);
-		colorsSpinner.setSelection(colorPosition);
-		colorsSpinner.setOnItemSelectedListener(this);
-
-		// Coordinates
-		coordinatesSpinner = (Spinner) view.findViewById(R.id.coordinatesSpinner);
-		coordinatesSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), colorsList));
-		int coordinatesPosition = preferences.getInt(username + AppConstants.PREF_COORDINATES_SET, 0);
-		coordinatesSpinner.setSelection(coordinatesPosition);
-		coordinatesSpinner.setOnItemSelectedListener(this);
 	}
 
 }

@@ -41,7 +41,7 @@ public class RoboRadioButton extends RadioButton {
 			if (array.hasValue(R.styleable.RoboTextView_themeColor)) {
 				boolean useThemeColor = array.getBoolean(R.styleable.RoboTextView_themeColor, false);
 				if (useThemeColor) {
-					setTextColor(FontsHelper.getInstance().getThemeColorStateList(context));
+					setTextColor(FontsHelper.getInstance().getThemeColorStateList(context, false));
 				}
 			}
 		} finally {

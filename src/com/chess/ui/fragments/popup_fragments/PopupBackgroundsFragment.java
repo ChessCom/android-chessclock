@@ -2,6 +2,7 @@ package com.chess.ui.fragments.popup_fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,6 +21,9 @@ import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
 import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
@@ -118,11 +122,23 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		super.onResume();
 
 		if (need2update) {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_BACKGROUNDS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 
-			new RequestJsonTask<BackgroundsItem>(backgroundsUpdateListener).executeTask(loadItem);
+			Cursor cursor = DbDataManager.query(getActivity().getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BACKGROUNDS));
+
+			if (cursor != null && cursor.moveToFirst() && appData.isThemeBackgroundsLoaded()) {
+				do {
+					backgroundsThemeList.add(DbDataManager.getThemeBackgroundItemFromCursor(cursor));
+				} while (cursor.moveToNext());
+
+				updateUiData();
+			} else {
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.getInstance().CMD_BACKGROUNDS);
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
+
+				new RequestJsonTask<BackgroundsItem>(backgroundsUpdateListener).executeTask(loadItem);
+			}
+
 		} else {
 			listView.setAdapter(backgroundsAdapter);
 		}
@@ -154,23 +170,28 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		public void updateData(BackgroundsItem returnedObj) {
 			backgroundsThemeList = returnedObj.getData();
 
-			for (BackgroundSingleItem.Data theme : backgroundsThemeList) {
-				SelectionItem selectionItem = new SelectionItem(null, theme.getBackgroundPreviewUrl());
-				selectionItem.setCode(theme.getName());
-				backgroundsList.add(selectionItem);
-			}
-
-			for (SelectionItem selectionItem : backgroundsList) {
-				if (selectionItem.getCode().equals(themeItem.getThemeName())) {
-					selectionItem.setChecked(true);
-					break;
-				}
-			}
-			backgroundsAdapter = new BackgroundsAdapter(getActivity(), backgroundsList);
-			listView.setAdapter(backgroundsAdapter);
-
-			need2update = false;
+			appData.setThemeBackgroundsLoaded(true);
+			updateUiData();
 		}
+	}
+
+	private void updateUiData() {
+		for (BackgroundSingleItem.Data theme : backgroundsThemeList) {
+			SelectionItem selectionItem = new SelectionItem(null, theme.getBackgroundPreviewUrl());
+			selectionItem.setCode(theme.getName());
+			backgroundsList.add(selectionItem);
+		}
+
+		for (SelectionItem selectionItem : backgroundsList) {
+			if (selectionItem.getCode().equals(themeItem.getThemeName())) {
+				selectionItem.setChecked(true);
+				break;
+			}
+		}
+		backgroundsAdapter = new BackgroundsAdapter(getActivity(), backgroundsList);
+		listView.setAdapter(backgroundsAdapter);
+
+		need2update = false;
 	}
 
 

@@ -1125,7 +1125,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		{// fill labels
 			labelsConfig = new LabelsConfig();
-			userPlayWhite = currentGame.getWhiteUsername().equals(liveService.getUsername()); // or check reside
+			userPlayWhite = currentGame.getWhiteUsername().equals(liveService.getUsername());
 			if (userPlayWhite) {
 				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 				labelsConfig.topPlayerName = currentGame.getBlackUsername();

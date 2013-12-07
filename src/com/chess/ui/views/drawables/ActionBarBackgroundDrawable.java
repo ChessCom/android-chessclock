@@ -29,7 +29,7 @@ public class ActionBarBackgroundDrawable extends Drawable {
 		rect = new Rect();
 		AppData appData = new AppData(context);
 
-		String themeName = appData.getThemeName();
+		String themeName = appData.getThemeBackgroundName();
 		// if we have staunton theme, then set custom image
 		if (!TextUtils.isEmpty(themeName) && themeName.contains(STAUNTON)) {
 			backDawable = context.getResources().getDrawable(R.drawable.img_staunton_top_bar);

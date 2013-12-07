@@ -29,6 +29,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.ImageView;
 import com.chess.BuildConfig;
+import com.chess.utilities.AppUtils;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -399,8 +400,11 @@ public abstract class ImageWorker {
 					});
 			if (needLoadingImage) {
 				// Set background to loading bitmap
-				imageView.setBackgroundDrawable(
-						new BitmapDrawable(mResources, mLoadingBitmap));
+				if (AppUtils.JELLYBEAN_PLUS_API) {
+					imageView.setBackground(new BitmapDrawable(mResources, mLoadingBitmap));
+				} else {
+					imageView.setBackgroundDrawable(new BitmapDrawable(mResources, mLoadingBitmap));
+				}
 			}
 
 			imageView.setImageDrawable(td);

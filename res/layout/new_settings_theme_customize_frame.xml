@@ -138,7 +138,7 @@
 		</com.chess.widgets.LinLayout>
 
         <!--Fonts Color-->
-        <com.chess.widgets.LinLayout
+       <!-- <com.chess.widgets.LinLayout
             android:id="@+id/colorsView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -147,7 +147,7 @@
             android:background="@drawable/transparent_list_item_selector"
             >
 
-            <!--Label-->
+            &lt;!&ndash;Label&ndash;&gt;
             <com.chess.widgets.RoboTextView
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
 
 		</com.chess.widgets.LinLayout>
 
-		<!--Coordinates Color-->
+		&lt;!&ndash;Coordinates Color&ndash;&gt;
 		<com.chess.widgets.LinLayout
 			android:id="@+id/coordinatesView"
 			android:layout_width="match_parent"
@@ -175,7 +175,7 @@
 			android:background="@drawable/transparent_list_item_selector"
 			>
 
-			<!--Label-->
+			&lt;!&ndash;Label&ndash;&gt;
 			<com.chess.widgets.RoboTextView
 				android:layout_width="0dip"
 				android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
 				android:background="@drawable/transparent_list_item_selector"
 				/>
 
-		</com.chess.widgets.LinLayout>
+		</com.chess.widgets.LinLayout>-->
 
 		<!--Preview view-->
 		<com.chess.widgets.RelLayout

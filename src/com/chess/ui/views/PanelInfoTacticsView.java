@@ -70,7 +70,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		redColor = resources.getColor(R.color.red_button);
 		int lightGrey = resources.getColor(R.color.new_light_grey);
 
-		defaultColorStateList = FontsHelper.getInstance().getThemeColorStateList(context);
+		defaultColorStateList = FontsHelper.getInstance().getThemeColorStateList(context, false);
 
 		{// add avatar view
 			avatarImg = new ImageView(context);

@@ -49,27 +49,30 @@ import java.util.List;
 public class SettingsThemePiecesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
 
 	private PiecesItemUpdateListener piecesItemUpdateListener;
-	private ThemePiecesAdapter themePiecesAdapter;
-	private List<SelectionItem> defaultPiecesSelectionList;
-	private String themePiecesName;
-	private List<SelectionItem> themePiecesSelectionList;
-	private int screenWidth;
-	private List<PieceSingleItem.Data> themePiecesItemsList;
-	private boolean isPiecesLoading;
+	private GetAndSavePieces.ServiceBinder serviceBinder;
+	private LoadServiceConnectionListener loadServiceConnectionListener;
+	private ProgressUpdateListener progressUpdateListener;
+
 	private View headerView;
 	private TextView progressTitleTxt;
 	private ProgressBar themeLoadProgressBar;
-	private boolean serviceBounded;
-	private GetAndSavePieces.ServiceBinder serviceBinder;
-	private boolean needToLoadThemeAfterConnected;
-	private LoadServiceConnectionListener loadServiceConnectionListener;
-	private ProgressUpdateListener progressUpdateListener;
-	private int selectedPiecesId;
 	private ListView listView;
+
+	private ThemePiecesAdapter themePiecesAdapter;
 	private DefaultPiecesAdapter defaultPiecesAdapter;
+
+	private List<SelectionItem> defaultPiecesSelectionList;
+	private List<SelectionItem> themePiecesSelectionList;
+	private List<PieceSingleItem.Data> themePiecesItemsList;
+
 	private boolean isAuthenticatedUser;
 	private boolean loadThemedPieces;
 	private SelectionItem selectedThemePieceItem;
+	private String themePiecesName;
+	private boolean needToLoadThemeAfterConnected;
+	private boolean serviceBounded;
+	private boolean isPiecesLoading;
+	private int selectedPiecesId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -109,7 +112,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 			loadThemedPieces = true;
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_PIECES));
 
-			if (cursor != null && cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst() && getAppData().isThemePiecesLoaded()) {
 				do {
 					themePiecesItemsList.add(DbDataManager.getThemePieceItemFromCursor(cursor));
 				} while (cursor.moveToNext());
@@ -207,6 +210,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 				DbDataManager.saveThemePieceItemToDb(getContentResolver(), currentItem);
 			}
 
+			getAppData().setThemePiecesLoaded(true);
 			updateUiData();
 		}
 	}

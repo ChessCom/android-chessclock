@@ -528,10 +528,13 @@ public class LoginButton extends FacebookButton {
         if (sessionTracker != null && sessionTracker.getOpenSession() != null) {
             setText((logoutText != null) ? logoutText :
                     getResources().getString(R.string.com_facebook_loginview_log_out_button));
+			setPadding(0, 0, 0, 0);
         } else {
             setText((loginText != null) ? loginText :
                     getResources().getString(R.string.connect_with_facebook));
-        }
+			float density = getResources().getDisplayMetrics().density;
+			setPadding((int) (10 * density), 0, 0, 0);
+		}
     }
 
     private boolean initializeActiveSessionWithCachedToken(Context context) {

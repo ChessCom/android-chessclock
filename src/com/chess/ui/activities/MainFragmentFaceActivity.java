@@ -3,12 +3,10 @@ package com.chess.ui.activities;
 import android.app.Activity;
 import android.content.*;
 import android.content.pm.ActivityInfo;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -84,8 +82,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private IntentFilter movesUpdateFilter;
 	private NotificationsUpdateReceiver notificationsUpdateReceiver;
 	private MovesUpdateReceiver movesUpdateReceiver;
-	private IntentFilter backgroundUpdateFilter;
-	private BackgroundUpdateReceiver backgroundUpdateReceiver;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
 
 	@Override
@@ -147,7 +143,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		notificationsUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
 		movesUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
-		backgroundUpdateFilter = new IntentFilter(IntentConstants.BACKGROUND_LOADED);
 
 		// restoring correct host
 		///////////////////////////////////////////////////
@@ -226,13 +221,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		notificationsUpdateReceiver = new NotificationsUpdateReceiver();
 		movesUpdateReceiver = new MovesUpdateReceiver();
-		backgroundUpdateReceiver = new BackgroundUpdateReceiver();
 		registerReceiver(notificationsUpdateReceiver, notificationsUpdateFilter);
 		registerReceiver(movesUpdateReceiver, movesUpdateFilter);
-		registerReceiver(backgroundUpdateReceiver, backgroundUpdateFilter);
 
 		// apply sound theme
-		String soundThemePath = getAppData().getThemeSoundPath();
+		String soundThemePath = getAppData().getThemeSoundsPath();
 		if (!TextUtils.isEmpty(soundThemePath)) {
 			SoundPlayer.setUseThemePack(true);
 			SoundPlayer.setThemePath(soundThemePath);
@@ -247,7 +240,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		unRegisterMyReceiver(notificationsUpdateReceiver);
 		unRegisterMyReceiver(movesUpdateReceiver);
-		unRegisterMyReceiver(backgroundUpdateReceiver);
 	}
 
 	@Override
@@ -525,13 +517,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 	}
 
-	private class BackgroundUpdateReceiver extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			updateMainBackground();
-		}
-	}
-
 	@Override
 	public void updateMainBackground() {
 		String themeBackPath = getAppData().getThemeBackPath();
@@ -554,8 +539,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		// force update all views with fonts
 		findViewById(R.id.content_frame).invalidate();
-
-
+		sendBroadcast(new Intent(IntentConstants.BACKGROUND_LOADED));
 	}
 
 	private class NotificationsUpdateReceiver extends BroadcastReceiver {
@@ -766,7 +750,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	private void checkThemesToLoad() {
-		boolean needToLoadThemes = DbDataManager.haveSavedThemesToLoad(this, getCurrentUsername());
+		boolean needToLoadThemes = DbDataManager.haveSavedThemesToLoad(this);
 		if (needToLoadThemes) {
 			bindService(new Intent(this, GetAndSaveTheme.class), new LoadServiceConnectionListener(),
 					Activity.BIND_AUTO_CREATE);
@@ -781,7 +765,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			int screenHeight = getResources().getDisplayMetrics().heightPixels;
 
 			GetAndSaveTheme.ServiceBinder serviceBinder = (GetAndSaveTheme.ServiceBinder) iBinder;
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEMES_LOAD_STATE));
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getMeUsername(),					DbScheme.Tables.THEMES_LOAD_STATE));
 			if (cursor != null && cursor.moveToFirst()) {
 				do {
 					int id = DbDataManager.getInt(cursor, DbScheme.V_ID);

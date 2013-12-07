@@ -423,9 +423,13 @@ public class AppData {
 
 	public void resetThemeToDefault() {
 		setThemeBoardPath(Symbol.EMPTY);
+		setThemeBoardId(UNDEFINED);
 		setThemeBackPath(Symbol.EMPTY);
+		setThemeBackgroundName(Symbol.EMPTY);
 		setThemePiecesPath(Symbol.EMPTY);
-		setThemeSoundPath(Symbol.EMPTY);
+		setThemePiecesId(UNDEFINED);
+		setThemeSoundsPath(Symbol.EMPTY);
+		setThemeSoundsId(UNDEFINED);
 		setThemeBoardCoordinateDark(UNDEFINED);
 		setThemeBoardCoordinateLight(UNDEFINED);
 		setThemeBoardHighlight(UNDEFINED);
@@ -517,13 +521,20 @@ public class AppData {
 		return getIntValue(PREF_SOUNDS_SET, 0);
 	}
 
-
-	public void setThemeSoundPath(String themeName) {
+	public void setThemeSoundsPath(String themeName) {
 		setStringValue(PREF_THEME_SOUNDS_PATH, themeName);
 	}
 
-	public String getThemeSoundPath() {
+	public String getThemeSoundsPath() {
 		return getStringValue(PREF_THEME_SOUNDS_PATH, Symbol.EMPTY);
+	}
+
+	public void setThemeSoundsId(int value) {
+		setIntValue(PREF_THEME_SOUNDS_ID, value);
+	}
+
+	public int getThemeSoundsId() {
+		return getIntValue(PREF_THEME_SOUNDS_ID, UNDEFINED);
 	}
 
 	public void setThemePiecesPath(String themeName) {
@@ -566,6 +577,14 @@ public class AppData {
 		return getStringValue(PREF_THEME_BOARD_NAME, Symbol.EMPTY);
 	}
 
+	public void setThemeBoardId(int value) {
+		setIntValue(PREF_THEME_BOARD_ID, value);
+	}
+
+	public int getThemeBoardId() {
+		return getIntValue(PREF_THEME_BOARD_ID, UNDEFINED);
+	}
+
 	public void setThemePiecesId(int value) {
 		setIntValue(PREF_THEME_PIECES_ID, value);
 	}
@@ -596,6 +615,38 @@ public class AppData {
 
 	public boolean isThemePieces3d() {
 		return getBooleanValue(PREF_THEME_IS_PIECES_3D_PATH, false);
+	}
+
+	public void setThemeBackgroundsLoaded(boolean value) {
+		setBooleanValue(PREF_THEME_BACKGROUNDS_LOADED, value);
+	}
+
+	public boolean isThemeBackgroundsLoaded() {
+		return getBooleanValue(PREF_THEME_BACKGROUNDS_LOADED, false);
+	}
+
+	public void setThemeBoardsLoaded(boolean value) {
+		setBooleanValue(PREF_THEME_BOARDS_LOADED, value);
+	}
+
+	public boolean isThemeBoardsLoaded() {
+		return getBooleanValue(PREF_THEME_BOARDS_LOADED, false);
+	}
+
+	public void setThemePiecesLoaded(boolean value) {
+		setBooleanValue(PREF_THEME_PIECES_LOADED, value);
+	}
+
+	public boolean isThemePiecesLoaded() {
+		return getBooleanValue(PREF_THEME_PIECES_LOADED, false);
+	}
+
+	public void setThemeSoundsLoaded(boolean value) {
+		setBooleanValue(PREF_THEME_SOUNDS_LOADED, value);
+	}
+
+	public boolean isThemeSoundsLoaded() {
+		return getBooleanValue(PREF_THEME_SOUNDS_LOADED, false);
 	}
 
 	public void setUserChooseVideoLibrary(boolean value) {

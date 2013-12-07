@@ -23,6 +23,8 @@ public class SoundSingleItem extends  BaseResponseItem<SoundSingleItem.Data> {
 		private String name;
 		private String sound_pack_zip;
 		private int theme_id;
+		/* Local addition */
+		private String localPath;
 
 		public int getThemeSoundId() {
 			return user_theme_sound_id;
@@ -54,6 +56,14 @@ public class SoundSingleItem extends  BaseResponseItem<SoundSingleItem.Data> {
 
 		public void setThemeId(int theme_id) {
 			this.theme_id = theme_id;
+		}
+
+		public String getLocalPath() {
+			return getSafeValue(localPath);
+		}
+
+		public void setLocalPath(String localPath) {
+			this.localPath = localPath;
 		}
 	}
 }

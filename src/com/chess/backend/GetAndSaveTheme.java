@@ -6,7 +6,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -23,7 +22,6 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.backend.tasks.SaveImageToSdTask;
 import com.chess.db.DbDataManager;
 import com.chess.statics.AppData;
-import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.MainFragmentFaceActivity;
@@ -36,8 +34,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.chess.ui.fragments.settings.SettingsThemeFragment._3D_PART;
 
 /**
  * Created with IntelliJ IDEA.
@@ -86,9 +82,11 @@ public class GetAndSaveTheme extends Service {
 	private Handler handler;
 	private boolean installingTheme;
 	private boolean isTablet;
-	private String themeFontColor;
-	private String selectedThemeName;
 	private HashMap<ThemeItem.Data, ThemeState> themesQueue;
+	private BackgroundSingleItem.Data backgroundData;
+	private BoardSingleItem.Data boardData;
+	private PieceSingleItem.Data piecesData;
+	private SoundSingleItem.Data soundsData;
 
 	public class ServiceBinder extends Binder {
 		public GetAndSaveTheme getService(){
@@ -143,13 +141,11 @@ public class GetAndSaveTheme extends Service {
 	public void loadTheme(ThemeItem.Data selectedThemeItem, int screenWidth, int screenHeight) {
 		if (installingTheme) { // Enqueue load if we already loading theme
 			themesQueue.put(selectedThemeItem, ThemeState.ENQUIRED);
-			DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem,
-					ThemeState.ENQUIRED, getAppData().getUsername());
+			DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem,	ThemeState.ENQUIRED);
 			return;
 		}
 
-		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem,
-				ThemeState.LOADING, getAppData().getUsername());
+		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.LOADING);
 		themesQueue.put(selectedThemeItem, ThemeState.LOADING);
 
 		installingTheme = true;
@@ -176,9 +172,6 @@ public class GetAndSaveTheme extends Service {
 
 		String userToken = appData.getUserToken();
 
-		selectedThemeName = selectedThemeItem.getThemeName();
-		appData.setThemeName(selectedThemeName);
-
 		showIndeterminateNotification(getString(R.string.loading_background));
 
 		LoadItem loadItem;
@@ -202,11 +195,8 @@ public class GetAndSaveTheme extends Service {
 		@Override
 		public void updateData(BackgroundSingleItem returnedObj) {
 
-			backgroundUrl = returnedObj.getData().getResizedImage();
-			themeFontColor = returnedObj.getData().getFontColor();
-
-			getAppData().setThemeBackgroundName(returnedObj.getData().getName());
-			getAppData().setThemeBackgroundPreviewUrl(returnedObj.getData().getBackgroundPreviewUrl());
+			backgroundData = returnedObj.getData();
+			backgroundUrl = backgroundData.getResizedImage();
 
 			showIndeterminateNotification(getString(R.string.loading_background));
 
@@ -224,18 +214,7 @@ public class GetAndSaveTheme extends Service {
 		@Override
 		public void updateData(BoardSingleItem returnedObj) {
 
-			BoardSingleItem.Data boardData = returnedObj.getData();
-			String coordinateColorLight = boardData.getCoordinateColorLight();
-			String coordinateColorDark = boardData.getCoordinateColorDark();
-			String highlightColor = boardData.getHighlightColor();
-
-			getAppData().setUseThemeBoard(true);
-			getAppData().setThemeBoardName(boardData.getName());
-			getAppData().setThemeBoardPreviewUrl(boardData.getLineBoardPreviewUrl());
-
-			getAppData().setThemeBoardCoordinateLight(Color.parseColor(coordinateColorLight));
-			getAppData().setThemeBoardCoordinateDark(Color.parseColor(coordinateColorDark));
-			getAppData().setThemeBoardHighlight(Color.parseColor(highlightColor));
+			boardData = returnedObj.getData();
 
 			// get boards dir in s3
 			String boardDir = boardData.getThemeDir();
@@ -245,13 +224,11 @@ public class GetAndSaveTheme extends Service {
 			int name;
 			for (name = BOARD_START_NAME; name < BOARD_END_NAME; name++) {
 				if (boardSize == screenWidth) { // 480 == 480
-
 					break;
 				}
 
 //				// if we step over the range and missed needed size, than take the closest one
 //				if (screenWidth > boardSize) {
-//
 //				}
 				boardSize += BOARD_SIZE_STEP;
 			}
@@ -289,7 +266,6 @@ public class GetAndSaveTheme extends Service {
 				String filename = String.valueOf(backgroundUrl.hashCode()); // TODO rename to MD5
 				new SaveImageToSdTask(mainBackgroundImgSaveListener, bitmap).executeTask(filename);
 			} else if (listenerCode == BOARD) {
-				logTest("taskTitleTxt - " + getString(R.string.saving_board));
 				showIndeterminateNotification(getString(R.string.saving_board));
 
 				String filename = String.valueOf(boardUrl.hashCode()); // TODO rename to MD5
@@ -324,10 +300,11 @@ public class GetAndSaveTheme extends Service {
 				String filename = String.valueOf(backgroundUrl.hashCode());
 				try {
 					File imgFile = AppUtils.openFileByName(getContext(), filename);
-					getAppData().setThemeBackPath(imgFile.getAbsolutePath());
-					getAppData().setThemeFontColor(themeFontColor);
 
-					sendBroadcast(new Intent(IntentConstants.BACKGROUND_LOADED));
+					backgroundData.setLocalPath(imgFile.getAbsolutePath());
+					backgroundData.setBackgroundId(selectedThemeItem.getBackgroundId());
+					DbDataManager.saveThemeBackgroundItemToDb(getContentResolver(), backgroundData);
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -345,11 +322,11 @@ public class GetAndSaveTheme extends Service {
 				try {
 					File imgFile = AppUtils.openFileByName(getContext(), filename);
 					String drawablePath = imgFile.getAbsolutePath();
+					boardData.setLocalPath(drawablePath);
 
-					getAppData().setThemeBoardPath(drawablePath);
+					DbDataManager.saveThemeBoardItemToDb(getContentResolver(), boardData);
 				} catch (IOException e) {
 					e.printStackTrace();
-
 				}
 
 				// Get pieces main path on s3
@@ -368,11 +345,10 @@ public class GetAndSaveTheme extends Service {
 		@Override
 		public void updateData(PieceSingleItem returnedObj) {
 
-			getAppData().setThemePiecesName(returnedObj.getData().getName());
-			getAppData().setThemePiecesPreviewUrl(returnedObj.getData().getPreviewUrl());
+			piecesData = returnedObj.getData();
 
 			// get pieces dir in s3
-			selectedPieceDir = returnedObj.getData().getThemeDir();
+			selectedPieceDir = piecesData.getThemeDir();
 			int pieceWidth = screenWidth / 8;
 
 			String[] imagesToLoad = new String[12]; // 6 pieces for each side
@@ -406,17 +382,12 @@ public class GetAndSaveTheme extends Service {
 		}
 
 		@Override
-		public void updateData(String returnedObj) {
-			super.updateData(returnedObj);
+		public void updateData(String filePath) {
+			super.updateData(filePath);
 
-			DbDataManager.saveSoundPathToDb(getContentResolver(), selectedSoundPackUrl, returnedObj);
-
-			// save sounds path to settings
-			getAppData().setThemeSoundPath(returnedObj);
-
-			// update sounds flag
-			SoundPlayer.setUseThemePack(true);
-			SoundPlayer.setThemePath(returnedObj);
+			soundsData.setLocalPath(filePath);
+			DbDataManager.saveThemeSoundsItemToDb(getContentResolver(), soundsData);
+			DbDataManager.saveSoundPathToDb(getContentResolver(), selectedSoundPackUrl, filePath);
 
 			// hide progress
 			showCompleteToNotification();
@@ -424,8 +395,6 @@ public class GetAndSaveTheme extends Service {
 
 		@Override
 		public void changeTitle(final String title) {
-			logTest("changeTitle - " + title);
-
 			showIndeterminateNotification(title);
 		}
 
@@ -453,14 +422,8 @@ public class GetAndSaveTheme extends Service {
 		public void updateListData(List<String> itemsList) {
 			super.updateListData(itemsList);
 
-			getAppData().setUseThemePieces(true);
-			getAppData().setThemePiecesPath(selectedPieceDir);
-
-			if (selectedPieceDir.contains(_3D_PART)) {
-				getAppData().setThemePieces3d(true);
-			} else {
-				getAppData().setThemePieces3d(false);
-			}
+			piecesData.setLocalPath(selectedPieceDir);
+			DbDataManager.saveThemePieceItemToDb(getContentResolver(), piecesData);
 
 			// Get sounds zip url if id is valid
 			if (selectedThemeItem.getSoundsId() != -1) {
@@ -504,9 +467,11 @@ public class GetAndSaveTheme extends Service {
 
 		@Override
 		public void updateData(SoundSingleItem returnedObj) {
+			soundsData = returnedObj.getData();
+			DbDataManager.saveThemeSoundsItemToDb(getContentResolver(), soundsData);
 
 			// get sounds dir in s3
-			selectedSoundPackUrl = returnedObj.getData().getSoundPackZipUrl();
+			selectedSoundPackUrl = soundsData.getSoundPackZipUrl();
 
 			new GetAndSaveFileToSdTask(soundPackSaveListener, true, AppUtils.getLocalDirForSounds(getContext()))
 					.executeTask(selectedSoundPackUrl);
@@ -553,8 +518,7 @@ public class GetAndSaveTheme extends Service {
 
 		// mark item as loaded
 		themesQueue.put(selectedThemeItem, ThemeState.LOADED);
-		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem,
-				ThemeState.LOADED, getAppData().getUsername());
+		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.LOADED);
 
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(DONE);
@@ -582,10 +546,6 @@ public class GetAndSaveTheme extends Service {
 
 	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {
 		this.progressUpdateListener = progressUpdateListener;
-	}
-
-	public boolean isInstallingTheme() {
-		return installingTheme;
 	}
 
 	public ThemeItem.Data getLoadingTheme() {

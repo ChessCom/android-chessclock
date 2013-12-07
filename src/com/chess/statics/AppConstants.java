@@ -82,6 +82,7 @@ public class AppConstants {
 	public static final String PREF_THEME_PIECES_PATH = "theme_pieces_path";
 	public static final String PREF_THEME_PIECES_NAME = "theme_pieces_name";
 	public static final String PREF_THEME_BOARD_NAME = "theme_board_name";
+	public static final String PREF_THEME_BOARD_ID = "theme_board_id";
 	public static final String PREF_THEME_PIECES_PREVIEW = "theme_pieces_preview_url";
 	public static final String PREF_THEME_BOARD_PREVIEW = "theme_board_preview_url";
 	public static final String PREF_THEME_BACKGROUND_PREVIEW = "theme_background_preview_url";
@@ -90,9 +91,15 @@ public class AppConstants {
 	public static final String PREF_THEME_BOARD_USE_THEME = "is_use_theme_board";
 	public static final String PREF_THEME_PIECES_USE_THEME = "is_use_theme_pieces";
 	public static final String PREF_THEME_SOUNDS_PATH = "theme_sounds_path";
+	public static final String PREF_THEME_SOUNDS_ID = "theme_sounds_id";
 	public static final String PREF_THEME_IS_PIECES_3D_PATH = "theme_is_pieces_3d";
+	public static final String PREF_THEME_BACKGROUNDS_LOADED = "theme_backgrounds_loaded";
+	public static final String PREF_THEME_BOARDS_LOADED = "theme_boards_loaded";
+	public static final String PREF_THEME_PIECES_LOADED = "theme_pieces_loaded";
+	public static final String PREF_THEME_SOUNDS_LOADED = "theme_sounds_loaded";
     public static final String PREF_THEME_NAME = "theme_name";
     public static final String PREF_THEME_BACKGROUND_NAME = "theme_background_name";
+	public static final String CUSTOM_THEME_NAME = "Custom";
 	public static final String DEFAULT_THEME_NAME = "Game Room";
 	public static final String DEFAULT_THEME_PIECES_NAME = "game_room";
 	public static final String DEFAULT_THEME_BOARD_NAME = "Dark Wood";

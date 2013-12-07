@@ -132,6 +132,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private SmartImageFetcher imageFetcher;
 	protected float density;
 	protected int screenWidth;
+	protected int screenHeight;
 	private HashMap<String, ImageGetter.TextImage> textViewsImageCache;
 	private AbsListView listView;
 	private boolean usePullToRefresh;
@@ -161,6 +162,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		density = getResources().getDisplayMetrics().density;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
+		screenHeight = getResources().getDisplayMetrics().heightPixels;
 		padding = (int) (48 * density);
 
 		textViewsImageCache = new HashMap<String, ImageGetter.TextImage>();
@@ -177,7 +179,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		startLiveGameFilter = new IntentFilter(IntentConstants.START_LIVE_GAME);
 
-		themeFontColorStateList = FontsHelper.getInstance().getThemeColorStateList(getActivity());
+		themeFontColorStateList = FontsHelper.getInstance().getThemeColorStateList(getActivity(), false);
 	}
 
 	@Override
@@ -967,8 +969,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	public void updateFontColors() {
-		themeFontColorStateList = FontsHelper.getInstance().getThemeColorStateList(getActivity());
-
+		themeFontColorStateList = FontsHelper.getInstance().getThemeColorStateList(getActivity(), true);
 	}
 
 	private class StartLiveGameReceiver extends BroadcastReceiver {

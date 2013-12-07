@@ -48,6 +48,7 @@ public class GetAndSavePieces extends Service {
 	private String selectedPieceDir;
 	private int screenWidth;
 	private SelectionItem selectedThemePieceItem;
+	private PieceSingleItem.Data piecesData;
 
 	public class ServiceBinder extends Binder {
 		public GetAndSavePieces getService(){
@@ -119,8 +120,9 @@ public class GetAndSavePieces extends Service {
 		@Override
 		public void updateData(PieceSingleItem returnedObj) {
 
+			piecesData = returnedObj.getData();
 			// get pieces dir in s3
-			selectedPieceDir = returnedObj.getData().getThemeDir();
+			selectedPieceDir = piecesData.getThemeDir();
 			int pieceWidth = screenWidth / 8;
 
 			String[] imagesToLoad = new String[12]; // 6 pieces for each side
@@ -175,8 +177,9 @@ public class GetAndSavePieces extends Service {
 			}
 
 			// save pieces theme name to appData
-			getAppData().setThemePiecesName(selectedThemePieceItem.getCode());
-			getAppData().setThemePiecesPreviewUrl(selectedThemePieceItem.getText());
+			getAppData().setThemePiecesId(piecesData.getThemePieceId());
+			getAppData().setThemePiecesName(piecesData.getName());
+			getAppData().setThemePiecesPreviewUrl(piecesData.getPreviewUrl());
 
 			showCompleteToNotification();
 		}

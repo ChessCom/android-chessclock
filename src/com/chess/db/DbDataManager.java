@@ -12,10 +12,7 @@ import com.chess.backend.entity.api.stats.GameStatsItem;
 import com.chess.backend.entity.api.stats.GamesInfoByResult;
 import com.chess.backend.entity.api.stats.Tournaments;
 import com.chess.backend.entity.api.stats.UserStatsData;
-import com.chess.backend.entity.api.themes.BoardSingleItem;
-import com.chess.backend.entity.api.themes.PieceSingleItem;
-import com.chess.backend.entity.api.themes.SoundSingleItem;
-import com.chess.backend.entity.api.themes.ThemeItem;
+import com.chess.backend.entity.api.themes.*;
 import com.chess.backend.gcm.FriendRequestItem;
 import com.chess.backend.gcm.GameOverNotificationItem;
 import com.chess.backend.gcm.NewChallengeNotificationItem;
@@ -2484,6 +2481,47 @@ public class DbDataManager {
 		data.setBoardPreviewUrl(getString(cursor, V_BOARD_PREVIEW_URL));
 		data.setFontColor(getString(cursor, V_FONT_COLOR));
 		data.setThemeName(getString(cursor, V_NAME));
+
+		return data;
+	}
+
+	public static void saveThemeBackgroundItemToDb(ContentResolver contentResolver, BackgroundSingleItem.Data currentItem) {
+		final String[] arguments = sArguments1;
+		arguments[0] = String.valueOf(currentItem.getBackgroundId());
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = uriArray[Tables.THEME_BACKGROUNDS.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID, SELECTION_ITEM_ID, arguments, null);
+
+		ContentValues values = new ContentValues();
+
+		values.put(V_ID, currentItem.getBackgroundId());
+		values.put(V_THEME_ID, currentItem.getThemeId());
+		values.put(V_NAME, currentItem.getName());
+		values.put(V_BACKGROUND_PREVIEW_URL, currentItem.getBackgroundPreviewUrl());
+		values.put(V_RESIZED_URL, currentItem.getResizedImage());
+		values.put(V_FONT_COLOR, currentItem.getFontColor());
+		values.put(V_HANDSET_URL, currentItem.getOriginalHandset());
+		values.put(V_TABLET_URL, currentItem.getOriginalTablet());
+		values.put(V_PATH, currentItem.getLocalPath());
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	public static BackgroundSingleItem.Data getThemeBackgroundItemFromCursor(Cursor cursor) {
+		BackgroundSingleItem.Data data = new BackgroundSingleItem.Data();
+
+		data.setBackgroundId(getInt(cursor, V_ID));
+		data.setThemeId(getInt(cursor, V_THEME_ID));
+		data.setName(getString(cursor, V_NAME));
+		data.setBackgroundPreviewUrl(getString(cursor, V_BACKGROUND_PREVIEW_URL));
+		data.setResizedImage(getString(cursor, V_RESIZED_URL));
+		data.setFontColor(getString(cursor, V_FONT_COLOR));
+		data.setOriginalHandset(getString(cursor, V_HANDSET_URL));
+		data.setOriginalTablet(getString(cursor, V_TABLET_URL));
+		data.setLocalPath(getString(cursor, V_PATH));
+
 		return data;
 	}
 
@@ -2503,6 +2541,7 @@ public class DbDataManager {
 		values.put(V_NAME, currentItem.getName());
 		values.put(V_THEME_DIR, currentItem.getThemeDir());
 		values.put(V_PREVIEW_URL, currentItem.getPreviewUrl());
+		values.put(V_PATH, currentItem.getLocalPath());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
@@ -2515,6 +2554,7 @@ public class DbDataManager {
 		data.setName(getString(cursor, V_NAME));
 		data.setThemeDir(getString(cursor, V_THEME_DIR));
 		data.setPreviewUrl(getString(cursor, V_PREVIEW_URL));
+		data.setLocalPath(getString(cursor, V_PATH));
 
 		return data;
 	}
@@ -2539,6 +2579,7 @@ public class DbDataManager {
 		values.put(V_COORDINATE_COLOR_LIGHT, currentItem.getCoordinateColorLight());
 		values.put(V_COORDINATE_COLOR_DARK, currentItem.getCoordinateColorDark());
 		values.put(V_HIGHLIGHT_COLOR, currentItem.getHighlightColor());
+		values.put(V_PATH, currentItem.getLocalPath());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
@@ -2555,12 +2596,13 @@ public class DbDataManager {
 		data.setCoordinateColorLight(getString(cursor, V_COORDINATE_COLOR_LIGHT));
 		data.setCoordinateColorDark(getString(cursor, V_COORDINATE_COLOR_DARK));
 		data.setHighlightColor(getString(cursor, V_HIGHLIGHT_COLOR));
+		data.setLocalPath(getString(cursor, V_PATH));
 
 		return data;
 	}
 
 	/* Sounds */
-	public static void saveSoundsPathToDb(ContentResolver contentResolver, SoundSingleItem.Data item) {
+	public static void saveThemeSoundsItemToDb(ContentResolver contentResolver, SoundSingleItem.Data item) {
 		final String[] arguments = sArguments1;
 		arguments[0] = String.valueOf(item.getThemeSoundId());
 
@@ -2569,10 +2611,24 @@ public class DbDataManager {
 
 		ContentValues values = new ContentValues();
 		values.put(V_ID, item.getThemeSoundId());
+		values.put(V_THEME_ID, item.getName());
 		values.put(V_NAME, item.getName());
 		values.put(V_URL, item.getSoundPackZipUrl());
+		values.put(V_PATH, item.getLocalPath());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	public static SoundSingleItem.Data getThemeSoundItemFromCursor(Cursor cursor) {
+		SoundSingleItem.Data data = new SoundSingleItem.Data();
+
+		data.setUserThemeSoundId(getInt(cursor, V_ID));
+		data.setThemeId(getInt(cursor, V_THEME_ID));
+		data.setName(getString(cursor, V_NAME));
+		data.setSoundPackZip(getString(cursor, V_URL));
+		data.setLocalPath(getString(cursor, V_PATH));
+
+		return data;
 	}
 
 	/**
@@ -2644,14 +2700,12 @@ public class DbDataManager {
 	}
 
 	/* Theme load status */
-	public static boolean haveSavedThemesToLoad(Context context, String username) {
+	public static boolean haveSavedThemesToLoad(Context context) {
 
 		ContentResolver contentResolver = context.getContentResolver();
-		final String[] arguments1 = sArguments1;
-		arguments1[0] = username;
 
 		Cursor cursor = contentResolver.query(uriArray[Tables.THEMES_LOAD_STATE.ordinal()],
-				null, SELECTION_USER, arguments1, null);
+				null, null, null, null);
 
 		boolean exist = false;
 		if (cursor != null && cursor.moveToFirst()) {
@@ -2671,19 +2725,18 @@ public class DbDataManager {
 	}
 
 	public static void updateThemeLoadingStatus(ContentResolver contentResolver, ThemeItem.Data currentItem,
-												ThemeState status, String username) {
-		final String[] arguments1 = sArguments1;
-		arguments1[0] = String.valueOf(currentItem.getId());
+												ThemeState status) {
+		final String[] arguments = sArguments1;
+		arguments[0] = String.valueOf(currentItem.getId());
 
 		Uri uri = uriArray[Tables.THEMES_LOAD_STATE.ordinal()];
 
 		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID,
-				SELECTION_ITEM_ID, arguments1, null);
+				SELECTION_ITEM_ID, arguments, null);
 
 		ContentValues values = new ContentValues();
 
 		values.put(V_ID, currentItem.getId());
-		values.put(V_USER, username);
 		values.put(V_STATE, status.name());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);

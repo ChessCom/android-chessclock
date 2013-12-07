@@ -40,6 +40,8 @@ public class BoardSingleItem extends BaseResponseItem<BoardSingleItem.Data>{
 		private String highlight_color;
 		private int theme_id;
 		private String theme_dir;
+		/* Local addition */
+		private String localPath;
 
 		public int getThemeBoardId() {
 			return user_theme_board_id;
@@ -74,7 +76,12 @@ public class BoardSingleItem extends BaseResponseItem<BoardSingleItem.Data>{
 		}
 
 		public String getCoordinateColorLight() {
-			return COLOR_DIVIDER + getSafeColor(coordinate_color_light);
+			String coordinateColorLight = getSafeColor(coordinate_color_light);
+			if (coordinateColorLight.contains(COLOR_DIVIDER)) {
+				return coordinateColorLight;
+			} else {
+				return COLOR_DIVIDER + coordinateColorLight;
+			}
 		}
 
 		public void setCoordinateColorLight(String coordinate_color_light) {
@@ -82,7 +89,12 @@ public class BoardSingleItem extends BaseResponseItem<BoardSingleItem.Data>{
 		}
 
 		public String getCoordinateColorDark() {
-			return COLOR_DIVIDER + getSafeColor(coordinate_color_dark);
+			String coordinateColorDark = getSafeColor(coordinate_color_dark);
+			if (coordinateColorDark.contains(COLOR_DIVIDER)) {
+				return coordinateColorDark;
+			} else {
+				return COLOR_DIVIDER + coordinateColorDark;
+			}
 		}
 
 		public void setCoordinateColorDark(String coordinate_color_dark) {
@@ -90,7 +102,12 @@ public class BoardSingleItem extends BaseResponseItem<BoardSingleItem.Data>{
 		}
 
 		public String getHighlightColor() {
-			return ALPHA + getSafeColor(highlight_color);
+			String highlightColor = getSafeColor(highlight_color);
+			if (highlightColor.contains(ALPHA)) {
+				return highlightColor;
+			} else {
+				return ALPHA + highlightColor;
+			}
 		}
 
 		public void setHighlightColor(String highlight_color) {
@@ -119,6 +136,14 @@ public class BoardSingleItem extends BaseResponseItem<BoardSingleItem.Data>{
 			} else {
 				return color.trim();
 			}
+		}
+
+		public void setLocalPath(String localPath) {
+			this.localPath = localPath;
+		}
+
+		public String getLocalPath() {
+			return getSafeValue(localPath);
 		}
 	}
 }

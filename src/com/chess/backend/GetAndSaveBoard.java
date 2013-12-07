@@ -60,6 +60,7 @@ public class GetAndSaveBoard extends Service {
 	private Handler handler;
 	private boolean installingBoard;
 	private SelectionItem selectedThemeBoardItem;
+	private BoardSingleItem.Data boardData;
 
 	@Override
 	public void onCreate() {
@@ -135,16 +136,17 @@ public class GetAndSaveBoard extends Service {
 		@Override
 		public void updateData(BoardSingleItem returnedObj) {
 
-			String coordinateColorLight = returnedObj.getData().getCoordinateColorLight();
-			String coordinateColorDark = returnedObj.getData().getCoordinateColorDark();
-			String highlightColor = returnedObj.getData().getHighlightColor();
+			boardData = returnedObj.getData();
+			String coordinateColorLight = boardData.getCoordinateColorLight();
+			String coordinateColorDark = boardData.getCoordinateColorDark();
+			String highlightColor = boardData.getHighlightColor();
 
 			getAppData().setThemeBoardCoordinateLight(Color.parseColor(coordinateColorLight));
 			getAppData().setThemeBoardCoordinateDark(Color.parseColor(coordinateColorDark));
 			getAppData().setThemeBoardHighlight(Color.parseColor(highlightColor));
 
 			// get boards dir in s3
-			String boardDir = returnedObj.getData().getThemeDir();
+			String boardDir = boardData.getThemeDir();
 
 			showIndeterminateNotification(getString(R.string.loading_board));
 
@@ -218,8 +220,9 @@ public class GetAndSaveBoard extends Service {
 				// save board theme name to appData
 				getAppData().setUseThemeBoard(true);
 				getAppData().setThemeBoardPath(drawablePath);
-				getAppData().setThemeBoardName(selectedThemeBoardItem.getCode());
-				getAppData().setThemeBoardPreviewUrl(selectedThemeBoardItem.getText());
+				getAppData().setThemeBoardId(boardData.getThemeBoardId());
+				getAppData().setThemeBoardName(boardData.getName());
+				getAppData().setThemeBoardPreviewUrl(boardData.getPreviewUrl());
 
 			} catch (IOException e) {
 				e.printStackTrace();

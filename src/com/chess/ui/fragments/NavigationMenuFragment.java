@@ -1,6 +1,9 @@
 package com.chess.ui.fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.statics.AppConstants;
+import com.chess.statics.IntentConstants;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.articles.ArticlesFragment;
@@ -64,6 +68,9 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 	private List<NavigationMenuItem> menuItems;
 	private NavigationMenuAdapter adapter;
 	private int imageSize;
+	private IntentFilter fontsUpdateFilter;
+	private FontsUpdateReceiver fontsUpdateReceiver;
+	private boolean updateFonts;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -93,6 +100,8 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		menuItems.get(0).selected = true;
 		getImageFetcher().setLoadingImage(R.drawable.empty);
 		adapter = new NavigationMenuAdapter(getActivity(), menuItems, getImageFetcher());
+		fontsUpdateFilter = new IntentFilter(IntentConstants.BACKGROUND_LOADED);
+
 	}
 
 	@Override
@@ -107,6 +116,21 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 		listView.setAdapter(adapter);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		fontsUpdateReceiver = new FontsUpdateReceiver();
+		registerReceiver(fontsUpdateReceiver, fontsUpdateFilter);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		unRegisterMyReceiver(fontsUpdateReceiver);
 	}
 
 	@Override
@@ -411,6 +435,10 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 //				holder.title.setTextColor(colorForState);
 				background.mutate().setState(ENABLED_STATE);
 			}
+
+			if (updateFonts) {
+				holder.title.setTextColor(themeFontColorStateList); // need to update all views as they are not replacing each other in big list
+			}
 		}
 
 		public Context getContext() {
@@ -420,6 +448,14 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		public class ViewHolder {
 			ProgressImageView icon;
 			TextView title;
+		}
+	}
+
+	private class FontsUpdateReceiver extends BroadcastReceiver{
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			adapter.notifyDataSetChanged();
+			updateFonts = true;
 		}
 	}
 }

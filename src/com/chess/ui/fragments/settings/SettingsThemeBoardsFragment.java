@@ -113,7 +113,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			loadThemedPieces = true;
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BOARDS));
 
-			if (cursor != null && cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst() && getAppData().isThemeBoardsLoaded()) {
 				do {
 					themeBoardItemsList.add(DbDataManager.getThemeBoardItemFromCursor(cursor));
 				} while (cursor.moveToNext());
@@ -209,7 +209,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			for (BoardSingleItem.Data currentItem : themeBoardItemsList) {
 				DbDataManager.saveThemeBoardItemToDb(getContentResolver(), currentItem);
 			}
-
+			getAppData().setThemeBoardsLoaded(true);
 			updateUiData();
 		}
 	}

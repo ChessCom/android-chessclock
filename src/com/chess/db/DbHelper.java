@@ -19,6 +19,15 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	public static QueryParams getTableRecordById(DbScheme.Tables table, long id) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[table.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID);
+		queryParams.setArguments(new String[]{String.valueOf(id)});
+		return queryParams;
+	}
+
+	/* Daily Games */
 	public static QueryParams getDailyCurrentListGames(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()]);
@@ -323,11 +332,12 @@ public class DbHelper {
 	}
 
 	/* Themes */
-	public static QueryParams getThemeById(long themeId) {
+	public static QueryParams getThemeById(long id) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.THEMES.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID);
-		queryParams.setArguments(new String[]{String.valueOf(themeId)});
+		queryParams.setArguments(new String[]{String.valueOf(id)});
 		return queryParams;
 	}
+
 }

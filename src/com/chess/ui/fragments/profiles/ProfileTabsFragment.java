@@ -3,6 +3,7 @@ package com.chess.ui.fragments.profiles;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -164,7 +165,15 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 
 	private void updateUiData() {
 		imageLoader.download(userInfo.getAvatar(), photoImg, photoImageSize);
-		usernameTxt.setText(userInfo.getFirstName() + Symbol.SPACE + userInfo.getLastName());
+		String firstName = userInfo.getFirstName();
+		if (TextUtils.isEmpty(firstName)) {
+			firstName = Symbol.EMPTY;
+		}
+		String lastName = userInfo.getLastName();
+		if (TextUtils.isEmpty(lastName)) {
+			lastName = Symbol.EMPTY;
+		}
+		usernameTxt.setText(firstName + Symbol.SPACE + lastName);
 		locationTxt.setText(userInfo.getLocation());
 		countryImg.setImageDrawable(AppUtils.getCountryFlagScaled(getActivity(), userInfo.getCountryName()));
 		premiumIconImg.setImageResource(AppUtils.getPremiumIcon(userInfo.getPremiumStatus()));

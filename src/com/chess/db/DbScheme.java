@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 84;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 85;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -89,9 +89,10 @@ public class DbScheme {
 		EXPLORER_VARIATIONS,
 
 		THEMES,
-		THEME_SOUNDS,
-		THEME_PIECES,
+		THEME_BACKGROUNDS,
 		THEME_BOARDS,
+		THEME_PIECES,
+		THEME_SOUNDS,
 		SOUND_PACKS,
 
 		THEMES_LOAD_STATE,
@@ -1200,6 +1201,10 @@ public class DbScheme {
 	public static final String V_COORDINATE_COLOR_DARK = "coordinate_color_dark";
 	public static final String V_HIGHLIGHT_COLOR = "highlight_color";
 
+	public static final String V_RESIZED_URL = "resized_url";
+	public static final String V_HANDSET_URL = "handset_url";
+	public static final String V_TABLET_URL = "tablet_url";
+
 	public static final String V_STATE = "state";
 
 	void createThemesTables() {
@@ -1219,15 +1224,29 @@ public class DbScheme {
 
 		createTablesArray[Tables.THEME_SOUNDS.ordinal()] = createTableForName(Tables.THEME_SOUNDS)
 				+ addField_Int(V_ID) // user_theme_sound_id
-				+ addField_Text(V_NAME) // current auth user
-				+ addField_Text(V_URL, true);
+				+ addField_Text(V_NAME)
+				+ addField_Text(V_THEME_ID)
+				+ addField_Text(V_URL)
+				+ addField_Text(V_PATH, true);
 
 		createTablesArray[Tables.THEME_PIECES.ordinal()] = createTableForName(Tables.THEME_PIECES)
 				+ addField_Int(V_ID) // user_theme_pieces_id
 				+ addField_Int(V_THEME_ID)
 				+ addField_Text(V_NAME)
 				+ addField_Text(V_THEME_DIR)
-				+ addField_Text(V_PREVIEW_URL, true);
+				+ addField_Text(V_PREVIEW_URL)
+				+ addField_Text(V_PATH, true);
+
+		createTablesArray[Tables.THEME_BACKGROUNDS.ordinal()] = createTableForName(Tables.THEME_BACKGROUNDS)
+				+ addField_Int(V_ID) // user_theme_background_id
+				+ addField_Int(V_THEME_ID)
+				+ addField_Text(V_NAME)
+				+ addField_Text(V_BACKGROUND_PREVIEW_URL)
+				+ addField_Text(V_RESIZED_URL)
+				+ addField_Text(V_FONT_COLOR)
+				+ addField_Text(V_HANDSET_URL)
+				+ addField_Text(V_TABLET_URL)
+				+ addField_Text(V_PATH, true);
 
 		createTablesArray[Tables.THEME_BOARDS.ordinal()] = createTableForName(Tables.THEME_BOARDS)
 				+ addField_Int(V_ID) // user_theme_board_id
@@ -1238,7 +1257,8 @@ public class DbScheme {
 				+ addField_Text(V_LINE_PREVIEW_URL)
 				+ addField_Text(V_COORDINATE_COLOR_LIGHT)
 				+ addField_Text(V_COORDINATE_COLOR_DARK)
-				+ addField_Text(V_HIGHLIGHT_COLOR, true);
+				+ addField_Text(V_HIGHLIGHT_COLOR)
+				+ addField_Text(V_PATH, true);
 
 		createTablesArray[Tables.SOUND_PACKS.ordinal()] = createTableForName(Tables.SOUND_PACKS)
 				+ addField_Text(V_URL)
@@ -1246,7 +1266,6 @@ public class DbScheme {
 
 		createTablesArray[Tables.THEMES_LOAD_STATE.ordinal()] = createTableForName(Tables.THEMES_LOAD_STATE)
 				+ addField_Int(V_ID)
-				+ addField_Text(V_USER)
 				+ addField_Text(V_STATE, true);
 	}
 
