@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.chess"
 	android:orientation="vertical"
 	android:id="@+id/boardFrame"
 	android:layout_width="match_parent"
@@ -14,13 +15,11 @@
 		android:gravity="center"
 		android:minHeight="42dip"
 		android:textColor="@color/semitransparent_white_65"
-		android:textSize="15sp"
-		/>
+		android:textSize="15sp" />
 
 	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		>
+		android:layout_height="wrap_content">
 		<!--Top Border-->
 		<FrameLayout
 			android:id="@+id/topBorder"
@@ -45,10 +44,45 @@
 
 	</RelativeLayout>
 
-	<ListView
-		android:id="@+id/listView"
+	<RelativeLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		/>
+		android:layout_height="wrap_content">
+
+		<com.chess.widgets.RoboButton
+			android:id="@+id/leftBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			style="@style/Rect.Bottom.Left"
+			android:text="@string/ic_left"
+			android:textSize="@dimen/game_controls_icon_size"
+			android:textColor="@color/text_controls_icons"
+			android:minWidth="@dimen/game_controls_button_height"
+			app:ttf="Icon"
+			/>
+
+		<com.chess.widgets.RoboListView
+			android:id="@+id/listView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/leftBtn"
+			android:layout_toLeftOf="@+id/rightBtn"
+			style="@style/Rect.Bottom.Middle"
+			app:btn_is_clickable="false"
+			/>
+
+		<com.chess.widgets.RoboButton
+			android:id="@id/rightBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			style="@style/Rect.Bottom.Right"
+			android:text="@string/ic_right"
+			android:layout_alignParentRight="true"
+			android:textSize="@dimen/game_controls_icon_size"
+			android:textColor="@color/text_controls_icons"
+			android:minWidth="@dimen/game_controls_button_height"
+			app:ttf="Icon"
+			/>
+
+	</RelativeLayout>
 
 </LinearLayout>

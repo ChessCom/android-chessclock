@@ -122,9 +122,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		if (blocked)
 			return;
 
-		if (view.getId() == getButtonId(OPTIONS)) {
-			boardViewFace.showOptions();
-		} else if (view.getId() == getButtonId(START)) {
+		if (view.getId() == getButtonId(START)) {
 			boardViewFace.onStart();
 		} else if (view.getId() == getButtonId(RESTART) || view.getId() == getButtonId(RESTORE)) {
 			boardViewFace.restart();

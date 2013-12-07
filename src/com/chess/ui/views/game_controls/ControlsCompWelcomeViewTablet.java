@@ -73,9 +73,7 @@ public class ControlsCompWelcomeViewTablet extends ControlsCompView {
 			return;
 		}
 
-		if (view.getId() == getButtonId(OPTIONS)) {
-			boardViewFace.showOptions();
-		} else if (view.getId() == getButtonId(HINT)) {
+		if (view.getId() == getButtonId(HINT)) {
 			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(HELP)) {
 			boardViewFace.switchAnalysis();

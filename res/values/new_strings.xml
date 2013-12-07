@@ -374,5 +374,6 @@
 	<string name="send_mail">Send Email</string>
 	<string name="apply">Apply</string>
 	<string name="waiting_to_load">Waiting To Load</string>
+	<string name="no_data_for_position">No data for current position</string>
 
 </resources>

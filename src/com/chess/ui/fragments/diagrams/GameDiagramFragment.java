@@ -438,16 +438,17 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 		}
 
-		labelsConfig.topPlayerName = diagramItem.getOpponent();
-		labelsConfig.topPlayerRating = "----";
-		labelsConfig.bottomPlayerName = getUsername();
-		labelsConfig.bottomPlayerRating = "----";
-		labelsConfig.topPlayerAvatar = "";
-		labelsConfig.bottomPlayerAvatar = getAppData().getUserAvatar();
-		labelsConfig.topPlayerCountry = "International";
-		labelsConfig.bottomPlayerCountry = getAppData().getUserCountry();
-		labelsConfig.topPlayerPremiumStatus = 0;
-		labelsConfig.bottomPlayerPremiumStatus = getAppData().getUserPremiumStatus();
+		diagramItem.fillLabelsConfig(labelsConfig);
+//		labelsConfig.topPlayerName = diagramItem.getTopPlayer();
+//		labelsConfig.topPlayerRating = "----";
+//		labelsConfig.bottomPlayerName = getUsername();
+//		labelsConfig.bottomPlayerRating = "----";
+//		labelsConfig.topPlayerAvatar = "";
+//		labelsConfig.bottomPlayerAvatar = getAppData().getUserAvatar();
+//		labelsConfig.topPlayerCountry = "International";
+//		labelsConfig.bottomPlayerCountry = getAppData().getUserCountry();
+//		labelsConfig.topPlayerPremiumStatus = 0;
+//		labelsConfig.bottomPlayerPremiumStatus = getAppData().getUserPremiumStatus();
 
 		getControlsView().enableGameControls(true);
 		boardView.lockBoard(false);

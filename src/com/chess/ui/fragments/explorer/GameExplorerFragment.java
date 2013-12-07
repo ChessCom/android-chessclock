@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,6 +22,8 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveExplorerMovesListTask;
+import com.chess.model.BaseGameItem;
+import com.chess.model.GameExplorerItem;
 import com.chess.ui.adapters.ExplorerMovesCursorAdapter;
 import com.chess.ui.engine.ChessBoardExplorer;
 import com.chess.ui.engine.Move;
@@ -37,9 +40,10 @@ import com.chess.utilities.AppUtils;
  * Date: 03.09.13
  * Time: 6:42
  */
-public class GameExplorerFragment extends GameBaseFragment implements GameFace, ItemClickListenerFace, AdapterView.OnItemClickListener {
+public class GameExplorerFragment extends GameBaseFragment implements GameFace, ItemClickListenerFace,
+		AdapterView.OnItemClickListener, View.OnLongClickListener, View.OnTouchListener {
 
-	private static final String FEN = "fen";
+	private static final String EXPLORER_ITEM = "explorer_item";
 
 	private ExplorerMovesUpdateListener explorerMovesUpdateListener;
 	private SaveExplorerMovesUpdateListener saveExplorerMovesUpdateListener;
@@ -47,15 +51,17 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	private ExplorerMovesCursorAdapter explorerMovesCursorAdapter;
 
 	private ChessBoardExplorerView boardView;
-	private String fen;
+	private GameExplorerItem explorerItem;
 	private TextView moveVariationTxt;
+	private String fen;
+	private boolean fastMode;
 
 	public GameExplorerFragment() {}
 
-	public static GameExplorerFragment createInstance(String fen) {
+	public static GameExplorerFragment createInstance(GameExplorerItem explorerItem) {
 		GameExplorerFragment fragment = new GameExplorerFragment();
 		Bundle bundle = new Bundle();
-		bundle.putString(FEN, fen);
+		bundle.putParcelable(EXPLORER_ITEM, explorerItem);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
@@ -65,9 +71,9 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		super.onCreate(savedInstanceState);
 
 		if (getArguments() != null) {
-			fen = getArguments().getString(FEN);
+			explorerItem = getArguments().getParcelable(EXPLORER_ITEM);
 		} else {
-			fen = savedInstanceState.getString(FEN);
+			explorerItem = savedInstanceState.getParcelable(EXPLORER_ITEM);
 		}
 
 		init();
@@ -94,14 +100,18 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		if (need2update) {
 			adjustBoardForGame();
 
-			fen = getBoardFace().generateBaseFen();
-			boolean haveSavedData = DbDataManager.haveSavedExplorerMoves(getActivity(), fen);
+			loadCurrentBoard();
+		}
+	}
 
-			if (haveSavedData) {
-				loadFromDb();
-			} else if (AppUtils.isNetworkAvailable(getActivity())) {
-				updateData(fen);
-			}
+	private void loadCurrentBoard() {
+		fen = getBoardFace().generateBaseFen();
+		boolean haveSavedData = DbDataManager.haveSavedExplorerMoves(getActivity(), fen);
+
+		if (haveSavedData) {
+			loadFromDb();
+		} else if (AppUtils.isNetworkAvailable(getActivity())) {
+			updateData(fen);
 		}
 	}
 
@@ -109,15 +119,13 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		outState.putString(FEN, fen);
+		outState.putParcelable(EXPLORER_ITEM, explorerItem);
 	}
 
 	private void adjustBoardForGame() {
-		ChessBoardExplorer.resetInstance();
-		ChessBoardExplorer.getInstance(this);
-
-		getBoardFace().setupBoard(fen);
-
+		if (explorerItem.getGameType() == BaseGameItem.CHESS_960) {
+			getBoardFace().setChess960(true);
+		}
 		invalidateGameScreen();
 	}
 
@@ -148,6 +156,59 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		// update FEN and get next moves
 		fen = getBoardFace().generateBaseFen();
 		updateData(fen);
+	}
+
+	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+
+		if (view.getId() == R.id.leftBtn) {
+			boardView.setFastMovesMode(false);
+			boardView.moveBack();
+			loadCurrentBoard();
+		} else if (view.getId() == R.id.rightBtn) {
+			boardView.setFastMovesMode(false);
+			boardView.moveForward();
+			loadCurrentBoard();
+		}
+	}
+
+	@Override
+	public boolean onLongClick(View v) {
+		if (v.getId() == R.id.rightBtn) {
+			boardView.setFastMovesMode(true);
+			boardView.moveForwardFast();
+			fastMode = true;
+		} else if (v.getId() == R.id.leftBtn) {
+			boardView.setFastMovesMode(true);
+			boardView.moveBackFast();
+			fastMode = true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onTouch(View view, MotionEvent event) {
+		if (view.getId() == R.id.leftBtn) {
+			if (fastMode) {
+				switch (event.getAction() & MotionEvent.ACTION_MASK) {
+					case MotionEvent.ACTION_UP: {
+						boardView.setFastMovesMode(false);
+						fastMode = false;
+					}
+				}
+			}
+		} else if (view.getId() == R.id.rightBtn) {
+			if (fastMode) {
+				switch (event.getAction() & MotionEvent.ACTION_MASK) {
+					case MotionEvent.ACTION_UP: {
+						boardView.setFastMovesMode(false);
+						fastMode = false;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
@@ -192,7 +253,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND || serverCode == ServerErrorCodes.NO_MOVES_FOUND) {
-					showSinglePopupDialog(R.string.no_games_found);
+					moveVariationTxt.setText(R.string.no_data_for_position);
 				} else {
 					super.errorHandle(resultCode);
 				}
@@ -305,6 +366,9 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	private void widgetsInit(View view) {
+		ChessBoardExplorer.resetInstance();
+		ChessBoardExplorer.getInstance(this);
+
 		moveVariationTxt = (TextView) view.findViewById(R.id.moveVariationTxt);
 		if (AppUtils.isNexus4Kind(getActivity())) {
 			moveVariationTxt.setVisibility(View.GONE);
@@ -319,5 +383,14 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		boardView.setGameUiFace(this);
 
 		setBoardView(boardView);
+
+		getBoardFace().checkAndParseMovesList(explorerItem.getMovesList());
+
+		view.findViewById(R.id.leftBtn).setOnClickListener(this);
+		view.findViewById(R.id.rightBtn).setOnClickListener(this);
+		view.findViewById(R.id.leftBtn).setOnLongClickListener(this);
+		view.findViewById(R.id.rightBtn).setOnLongClickListener(this);
+		view.findViewById(R.id.leftBtn).setOnTouchListener(this);
+		view.findViewById(R.id.rightBtn).setOnTouchListener(this);
 	}
 }

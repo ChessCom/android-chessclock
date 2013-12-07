@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.BACK;
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.FORWARD;
+import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.OPTIONS;
 
 /**
  * GamePanelTestActivity class
@@ -104,7 +105,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		OPTIONS,
 		PAUSE,
 		HOME,
-		SEARCH,
+		BOOK,
 		EXIT,
 		ANALYSIS,
 		RESTORE,
@@ -136,7 +137,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.string.ic_options,
 			R.string.ic_pause,
 			R.string.ic_home,
-			R.string.ic_search,
+			R.string.ic_book,
 			R.string.ic_exit,
 			R.string.ic_board,
 			R.string.ic_restore,
@@ -296,14 +297,14 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == getButtonId(BACK)) {
-			boardViewFace.setFastMovesMode(false);
+		if (view.getId() == getButtonId(OPTIONS)) {
+			boardViewFace.showOptions();
+		} else if (view.getId() == getButtonId(BACK)) {
 			boardViewFace.moveBack();
 		} else if (view.getId() == getButtonId(FORWARD)) {
-			boardViewFace.setFastMovesMode(false);
 			boardViewFace.moveForward();
 		}
-			boardViewFace.setFastMovesMode(false);
+		boardViewFace.setFastMovesMode(false);
 	}
 
 	@Override
@@ -322,7 +323,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
-		if (view.getId() == getButtonId(FORWARD)) {
+		if (view.getId() == getButtonId(BACK)) {
 			if (fastMode) {
 				switch (event.getAction() & MotionEvent.ACTION_MASK) {
 					case MotionEvent.ACTION_UP: {

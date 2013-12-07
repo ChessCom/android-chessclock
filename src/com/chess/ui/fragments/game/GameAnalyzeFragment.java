@@ -9,9 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.chess.R;
+import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
+import com.chess.backend.entity.api.UserItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.GameAnalysisItem;
+import com.chess.model.GameExplorerItem;
 import com.chess.statics.AppConstants;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardAnalysis;
@@ -26,6 +32,7 @@ import com.chess.ui.views.chess_boards.ChessBoardAnalysisView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsAnalysisView;
+import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,8 +50,8 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	private GameAnalysisItem analysisItem;
 	protected boolean userPlayWhite = true;
 	private ControlsAnalysisView controlsView;
-//	private BoardAvatarDrawable opponentAvatarDrawable;
-//	private BoardAvatarDrawable userAvatarDrawable;
+	private String[] countryNames;
+	private int[] countryCodes;
 
 	public static GameAnalyzeFragment createInstance(GameAnalysisItem analysisItem) {
 		GameAnalyzeFragment fragment = new GameAnalyzeFragment();
@@ -87,7 +94,6 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		super.onResume();
 
 		adjustBoardForGame();
-
 	}
 
 	@Override
@@ -118,7 +124,11 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 	@Override
 	public void showExplorer() {
-		getActivityFace().openFragment(GameExplorerFragment.createInstance(getBoardFace().generateBaseFen()));
+		GameExplorerItem explorerItem = new GameExplorerItem();
+		explorerItem.setFen(getBoardFace().generateFullFen());
+		explorerItem.setMovesList(getBoardFace().getMoveListSAN());
+		explorerItem.setGameType(analysisItem.getGameType());
+		getActivityFace().openFragment(GameExplorerFragment.createInstance(explorerItem));
 	}
 
 	@Override
@@ -146,16 +156,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 		}
 
-		labelsConfig.topPlayerName = analysisItem.getOpponent();
-		labelsConfig.topPlayerRating = null;
-		labelsConfig.bottomPlayerName = getUsername();
-		labelsConfig.bottomPlayerRating = null;
-		labelsConfig.topPlayerAvatar = "";
-		labelsConfig.bottomPlayerAvatar = getAppData().getUserAvatar();
-		labelsConfig.topPlayerCountry = null;
-		labelsConfig.bottomPlayerCountry = getAppData().getUserCountry();
-		labelsConfig.topPlayerPremiumStatus = 0;
-		labelsConfig.bottomPlayerPremiumStatus = getAppData().getUserPremiumStatus();
+		analysisItem.fillLabelsConfig(labelsConfig);
 
 		controlsView.enableGameControls(true);
 		boardView.lockBoard(false);
@@ -191,6 +192,45 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 		boardFace.setJustInitialized(false);
 		boardFace.setAnalysis(true);
+
+		{// set avatars
+			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+
+			{ // set stubs while avatars are loading
+				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+						R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+
+				labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+				topPanelView.invalidate();
+
+				labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+				bottomPanelView.invalidate();
+			}
+
+			if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
+				imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
+			}
+
+			if (labelsConfig.bottomPlayerAvatar != null && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
+				imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+			}
+
+			{ // get opponent info
+				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
+				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
+			}
+			{ // get users info
+				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.bottomPlayerName);
+				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
+			}
+		}
 	}
 
 
@@ -331,6 +371,9 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 	private void init() {
 		labelsConfig = new LabelsConfig();
+		countryNames = getResources().getStringArray(R.array.new_countries);
+		countryCodes = getResources().getIntArray(R.array.new_country_ids);
+
 	}
 
 	private void widgetsInit(View view) {
@@ -363,6 +406,41 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 		boardView.setGameActivityFace(this);
 		boardView.lockBoard(true);
+	}
+
+	protected class GetUserUpdateListener extends ChessUpdateListener<UserItem> {
+
+		static final int BOTTOM_PLAYER = 0;
+		static final int TOP_PLAYER = 1;
+
+		private int itemCode;
+
+		public GetUserUpdateListener(int itemCode) {
+			super(UserItem.class);
+			this.itemCode = itemCode;
+		}
+
+		@Override
+		public void updateData(UserItem returnedObj) {
+			super.updateData(returnedObj);
+			UserItem.Data userInfo = returnedObj.getData();
+			if (itemCode == BOTTOM_PLAYER) {
+				labelsConfig.bottomPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, userInfo.getCountryId());
+
+				bottomPanelView.setPlayerFlag(labelsConfig.bottomPlayerCountry);
+				bottomPanelView.setPlayerPremiumIcon(userInfo.getPremiumStatus());
+			} else if (itemCode == TOP_PLAYER) {
+				labelsConfig.topPlayerCountry = AppUtils.getCountryIdByName(countryNames, countryCodes, userInfo.getCountryId());
+
+				topPanelView.setPlayerFlag(labelsConfig.topPlayerCountry);
+				topPanelView.setPlayerPremiumIcon(userInfo.getPremiumStatus());
+			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+
+		}
 	}
 
 }

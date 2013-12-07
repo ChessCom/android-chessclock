@@ -37,8 +37,8 @@ public class ControlsDailyView extends ControlsBaseView {
 	@Override
 	protected void addButtons() {
 		addControlButton(OPTIONS, styles[LEFT]);
-		addControlButton(ANALYSIS, styles[MIDDLE]);
 		addControlButton(CHAT, styles[MIDDLE]);
+		addControlButton(ANALYSIS, styles[MIDDLE]);
 		addControlButton(BACK, styles[MIDDLE]);
 		addControlButton(FORWARD, styles[RIGHT]);
 
@@ -52,9 +52,6 @@ public class ControlsDailyView extends ControlsBaseView {
 		if (blocked)
 			return;
 
-		if (view.getId() == getButtonId(OPTIONS)) {
-			boardViewFace.showOptions();
-		}
 		if (view.getId() == getButtonId(ANALYSIS)) {
 			boardViewFace.switchAnalysis();
 		} else if (view.getId() == getButtonId(CHAT)) {

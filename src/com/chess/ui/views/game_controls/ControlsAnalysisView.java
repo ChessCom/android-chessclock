@@ -31,7 +31,7 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	protected void addButtons() {
 //		addControlButton(EXIT, styles[LEFT]);
 		addControlButton(RESTART, styles[LEFT]);
-		addControlButton(SEARCH, styles[MIDDLE]);
+		addControlButton(BOOK, styles[MIDDLE]);
 		addControlButton(COMP, styles[MIDDLE]);
 		addControlButton(BACK, styles[MIDDLE]);
 		addControlButton(FORWARD, styles[RIGHT]);
@@ -47,7 +47,7 @@ public class ControlsAnalysisView extends ControlsBaseView {
 			boardViewFace.closeBoard();
 		} else if (view.getId() == getButtonId(COMP)) {
 			boardViewFace.vsComputer();
-		} else if (view.getId() == getButtonId(SEARCH)) {
+		} else if (view.getId() == getButtonId(BOOK)) {
 			boardViewFace.showExplorer();
 		} else if (view.getId() == getButtonId(RESTART)) {
 			boardViewFace.restart();
@@ -62,7 +62,7 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	public void enableGameControls(boolean enable) {
 //		enableGameButton(EXIT, enable);
 		enableGameButton(RESTART, enable);
-		enableGameButton(SEARCH, enable);
+		enableGameButton(BOOK, enable);
 		if (showComp) {
 			enableGameButton(COMP, enable);
 		}

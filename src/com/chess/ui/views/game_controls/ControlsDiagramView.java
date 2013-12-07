@@ -60,8 +60,6 @@ public class ControlsDiagramView extends ControlsBaseView {
 			boardViewFace.onRewindBack();
 		} else if (view.getId() == getButtonId(FWD_END)) {
 			boardViewFace.onRewindForward();
-		} else if (view.getId() == getButtonId(OPTIONS)) {
-			boardViewFace.showOptions();
 		} else if (view.getId() == getButtonId(HINT)) {
 			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(SOLUTION)) {

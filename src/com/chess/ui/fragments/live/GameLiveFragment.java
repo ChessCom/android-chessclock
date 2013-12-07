@@ -203,7 +203,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		invalidateGameScreen();
 		if (liveService.getPendingWarnings().size() > 0) {
 			warningMessage = liveService.getLastWarningMessage();
-//			LogMe.dl("LCCLOG-WARNING", warningMessage);
 			popupItem.setNegativeBtnId(R.string.fair_play_policy);
 			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG);
 		}
@@ -1047,18 +1046,26 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			analysisItem.setGameType(RestHelper.V_GAME_CHESS);
 			analysisItem.setFen(getBoardFace().generateFullFen());
 			analysisItem.setMovesList(getBoardFace().getMoveListSAN());
-			String opponentName;
+//			String topName;
+//			String bottomName;
 			int userColor;
 
 			if (isUserColorWhite()) {
-				opponentName = getBlackPlayerName();
+//				topName = getBlackPlayerName();
+//				bottomName = getWhitePlayerName();
 				userColor = ChessBoard.WHITE_SIDE;
 			} else {
-				opponentName = getWhitePlayerName();
+//				topName = getWhitePlayerName();
+//				bottomName = getBlackPlayerName();
 				userColor = ChessBoard.BLACK_SIDE;
 			}
-			analysisItem.setOpponent(opponentName);
+			analysisItem.copyLabelConfig(labelsConfig);
+//			analysisItem.setTopPlayer(topName);
+//			analysisItem.setBottomPlayer(bottomName);
+
 			analysisItem.setUserColor(userColor);
+//			analysisItem.setTopAvatar(labelsConfig.topPlayerAvatar);
+//			analysisItem.setBottomAvatar(labelsConfig.bottomPlayerAvatar);
 
 			getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
 		} else if (view.getId() == R.id.sharePopupBtn) {
@@ -1169,14 +1176,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				opponentName = currentGame.getWhiteUsername();
 			}
 
-			String opponentAvatarUrl = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
-			if (opponentAvatarUrl != null && !opponentAvatarUrl.contains(StaticData.GIF)) {
-				imageDownloader.download(opponentAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
+			labelsConfig.topPlayerAvatar = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
+			if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
+				imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 			}
 
-			String myAvatarUrl = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
-			if (myAvatarUrl != null && !myAvatarUrl.contains(StaticData.GIF)) {
-				imageDownloader.download(myAvatarUrl, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
+			labelsConfig.bottomPlayerAvatar = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
+			if (labelsConfig.bottomPlayerAvatar != null && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
+				imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 			}
 
 			{ // get opponent info

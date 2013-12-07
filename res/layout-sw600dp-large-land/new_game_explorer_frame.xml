@@ -2,6 +2,7 @@
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
@@ -52,8 +53,43 @@
 			android:layout_height="match_parent"
 			style="@style/ListItem.Header.Dark"
 			android:layout_below="@id/moveVariationTxt"
-			android:layout_marginBottom="5dp"
+			android:layout_above="@+id/movesControlsView"
 			/>
+
+		<LinearLayout
+			android:id="@id/movesControlsView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			>
+
+			<com.chess.widgets.RoboButton
+				android:id="@+id/leftBtn"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				style="@style/Rect.Tablet.Left"
+				android:text="@string/ic_left"
+				android:layout_weight="1"
+				android:textSize="@dimen/game_controls_icon_size"
+				android:textColor="@color/text_controls_icons"
+				android:minWidth="@dimen/game_controls_button_height"
+				app:ttf="Icon"
+				/>
+
+			<com.chess.widgets.RoboButton
+				android:id="@+id/rightBtn"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				style="@style/Rect.Tablet.Right"
+				android:text="@string/ic_right"
+				android:textSize="@dimen/game_controls_icon_size"
+				android:textColor="@color/text_controls_icons"
+				android:minWidth="@dimen/game_controls_button_height"
+				app:ttf="Icon"
+				/>
+
+		</LinearLayout>
 
 	</com.chess.widgets.RelLayout>
 

@@ -55,9 +55,7 @@ public class ControlsLiveView extends ControlsBaseView {
 		if (blocked)
 			return;
 
-		if (view.getId() == getButtonId(OPTIONS)) {
-			boardViewFace.showOptions();
-		} else if (view.getId() == getButtonId(HOME)) {
+		if (view.getId() == getButtonId(HOME)) {
 			boardViewFace.goHome();
 		} else if (view.getId() == getButtonId(CHAT)) {
 			boardViewFace.showChat();

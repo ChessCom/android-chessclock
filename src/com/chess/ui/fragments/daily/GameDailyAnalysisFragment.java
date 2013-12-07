@@ -18,6 +18,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
+import com.chess.model.GameExplorerItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
@@ -156,7 +157,11 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	public void showExplorer() {
-		getActivityFace().openFragment(GameExplorerFragment.createInstance(getBoardFace().generateFullFen()));
+		GameExplorerItem explorerItem = new GameExplorerItem();
+		explorerItem.setFen(getBoardFace().generateFullFen());
+		explorerItem.setMovesList(getBoardFace().getMoveListSAN());
+		explorerItem.setGameType(currentGame.getGameType());
+		getActivityFace().openFragment(GameExplorerFragment.createInstance(explorerItem));
 	}
 
 	protected class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
@@ -242,8 +247,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			boardFace.setChess960(true);
 		}
 
-		// boardFace.setupBoard(currentGame.getStartingFenPosition());
-		// if we pass FEN like this rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR, and them moveslist that lead to this position, it fails to load properly
 		if (!userPlayWhite) {
 			boardFace.setReside(true);
 		}
