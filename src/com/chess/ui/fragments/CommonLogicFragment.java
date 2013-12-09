@@ -45,8 +45,7 @@ import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
-import com.chess.ui.fragments.live.LiveHomeFragment;
-import com.chess.ui.fragments.live.LiveHomeFragmentTablet;
+import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.welcome.SignInFragment;
 import com.chess.ui.fragments.welcome.SignUpFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
@@ -988,22 +987,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private class StartLiveGameReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			showToast(R.string.live_game_ready);
-
-			BasePopupsFragment fragmentByTag;
-			if (!isTablet) {
-//				fragmentByTag = (BasePopupsFragment) getFragmentManager().findFragmentByTag(LiveHomeFragment.class.getSimpleName());
-//				if (fragmentByTag == null) {
-					fragmentByTag = new LiveHomeFragment();
-//				}
-			} else {
-//				fragmentByTag = (BasePopupsFragment) getFragmentManager().findFragmentByTag(LiveHomeFragmentTablet.class.getSimpleName());
-//				if (fragmentByTag == null) {
-					fragmentByTag = new LiveHomeFragmentTablet();
-//				}
+			if (!DataHolder.getInstance().isLiveGameOpened()) {
+				getActivityFace().openFragment(new LiveGameWaitFragment());
+				DataHolder.getInstance().setLiveGameOpened(true);
 			}
-
-			getActivityFace().openFragment(fragmentByTag);
 		}
 	}
 

@@ -228,6 +228,9 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
 				dismissEndGameDialog();
 
 				try {

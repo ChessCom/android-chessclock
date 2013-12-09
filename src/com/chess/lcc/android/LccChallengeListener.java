@@ -3,7 +3,6 @@ package com.chess.lcc.android;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.ChallengeListener;
 import com.chess.statics.AppConstants;
-import com.chess.ui.engine.SoundPlayer;
 import com.chess.utilities.LogMe;
 
 import java.util.Collection;
@@ -74,7 +73,6 @@ public class LccChallengeListener implements ChallengeListener {
 		}
 
 		if (challenge.getTo().equals(lccHelper.getUser().getUsername())) {
-			SoundPlayer.getInstance(lccHelper.getContext()).playNotify();
 			// show popup dialog with challenge invitation
 			outerChallengeListener.showDialog(challenge);
 		}

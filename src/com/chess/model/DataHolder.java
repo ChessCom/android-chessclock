@@ -34,6 +34,7 @@ public class DataHolder {
 	 */
 	private final List<LastMoveInfoItem> lastMoveInfoItems; // TODO should be saved in store and tied to GCM usage
 	private boolean isMainActivityVisible;
+	private boolean liveGameOpened;
 
 
 	private DataHolder() {
@@ -115,4 +116,11 @@ public class DataHolder {
 		return positionsArray.get(id);
 	}
 
+	public boolean isLiveGameOpened() {
+		return liveGameOpened;
+	}
+
+	public void setLiveGameOpened(boolean liveGameOpened) {
+		this.liveGameOpened = liveGameOpened;
+	}
 }

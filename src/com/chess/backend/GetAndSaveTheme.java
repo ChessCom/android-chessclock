@@ -511,7 +511,7 @@ public class GetAndSaveTheme extends Service {
 	}
 
 	private void showCompleteToNotification() {
-		notificationBuilder.setContentText(getString(R.string.download_comlete))
+		notificationBuilder.setContentText(getString(R.string.download_complete))
 				// Removes the progress bar
 				.setProgress(0, 0, false);
 		notifyManager.notify(R.id.notification_message, notificationBuilder.build());

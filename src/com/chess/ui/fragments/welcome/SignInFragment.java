@@ -122,7 +122,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 		}
 
 		if (tag.equals(NETWORK_CHECK_TAG)) {
-			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
+			startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), NETWORK_REQUEST);
 			return;
 		}
 

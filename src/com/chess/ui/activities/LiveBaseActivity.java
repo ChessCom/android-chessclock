@@ -29,7 +29,9 @@ import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
+import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.live.*;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
@@ -148,10 +150,16 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	@Override
-	public boolean onKeyUp(int keyCode, KeyEvent event) {
+	public boolean onKeyUp(int keyCode, KeyEvent event) {   // TODO refactor with showPreviousFragment logic
 		if (keyCode == KeyEvent.KEYCODE_BACK && !getSlidingMenu().isMenuShowing()) {
 			if (getAppData().isLiveChess() && isLCSBound) {
 				Fragment fragmentByTag = getLiveFragment();
+				if (fragmentByTag != null && fragmentByTag.isVisible()) {
+					showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
+					return true;
+				}
+
+				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
 					return true;
@@ -163,11 +171,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					return super.onKeyUp(keyCode, event);
 				}
 
-				if (!isTablet) {
-					fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveHomeFragment.class.getSimpleName());
-				} else {
-					fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveHomeFragmentTablet.class.getSimpleName());
-				}
+				fragmentByTag = getLiveHomeFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					liveService.logout();
 					unBindLiveService();
@@ -238,12 +242,14 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		} else if (tag.contains(CHALLENGE_TAG)) { // Challenge accepted!
 			Log.d(TAG, "Accept challenge: " + currentChallenge);
 			liveService.declineAllChallenges(currentChallenge);
-			liveService.runAcceptChallengeTask(currentChallenge); // TODO where is the end point of this call? We should go to wait screen after that
-
+			liveService.runAcceptChallengeTask(currentChallenge);
 
 			popupChallengesList.remove(fragment);
+
+			// open game wait fragment from here. If user close it it means he declined challenge
+			sendBroadcast(new Intent(IntentConstants.START_LIVE_GAME));
 		} else if (tag.equals(NETWORK_CHECK_TAG)) {
-			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
+			startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), NETWORK_REQUEST);
 
 		} else if (tag.equals(EXIT_GAME_TAG)) {
 			liveService.runMakeResignAndExitTask();
@@ -434,6 +440,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				liveEvent.setChallengeDelayed(false);
 				liveService.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
 			} else {
+				SoundPlayer.getInstance(getContext()).playNotify();
 				showDialogImmediately(challenge);
 			}
 		}
@@ -599,7 +606,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void onConnectionBlocked(final boolean blocked) {
-		LogMe.dl(TAG, "onConnectionBlocked = " + blocked);
+//		LogMe.dl(TAG, "onConnectionBlocked = " + blocked);
 		GameLiveFragment gameLiveFragment = getLiveFragment();
 		if (gameLiveFragment != null) {
 			gameLiveFragment.onConnectionBlocked(blocked);
@@ -689,7 +696,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				}
 			}
 		}
-
 	}
 
 	protected GameLiveFragment getLiveFragment() {

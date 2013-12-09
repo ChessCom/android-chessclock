@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +57,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	private LinearLayout clockLayout;
 	private RelLayout drawOfferedRelLay;
 	private OnClickListener clickListener;
+	private String playerName;
 
 	public PanelInfoLiveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -426,7 +426,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 	@Override
 	public void setPlayerName(String playerName) {
-		Log.d("TEST", "player name = " + playerName);
+		this.playerName = playerName;
 		playerTxt.setText(playerName);
 	}
 
@@ -523,5 +523,21 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		playerTxt.setTextColor(playerTextColor);
 		playerRatingTxt.setTextColor(playerTextColor);
 		invalidate();
+	}
+
+	public void setReconnecting(boolean online) {
+		if (online) {
+			playerTxt.setText(playerName);
+
+			playerRatingTxt.setVisibility(VISIBLE);
+			flagImg.setVisibility(VISIBLE);
+			premiumImg.setVisibility(VISIBLE);
+		} else {
+			playerTxt.setText(getContext().getString(R.string.reconnecting_));
+			playerRatingTxt.setVisibility(GONE);
+			flagImg.setVisibility(GONE);
+			premiumImg.setVisibility(GONE);
+		}
+
 	}
 }

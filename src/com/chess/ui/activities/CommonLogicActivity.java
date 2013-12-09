@@ -485,7 +485,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 
 		if (tag.equals(NETWORK_CHECK_TAG)) {
-			startActivityForResult(new Intent(Settings.ACTION_WIRELESS_SETTINGS), NETWORK_REQUEST);
+			startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), NETWORK_REQUEST);
 		} else if (tag.equals(CHESS_NO_ACCOUNT_TAG)) {
 //			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.getInstance().REGISTER_HTML)));
 		}

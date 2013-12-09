@@ -23,8 +23,6 @@ public interface LccEventListener {
 	
 	void onInform(String title, String message);
 
-//	void onGameRecreate();
-
 	void startGameFromService();
 
 	void createSeek();

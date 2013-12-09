@@ -173,13 +173,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void setLccEventListener(LccEventListener lccEventListener) {
-		LogMe.dl(TAG, "setLccEventListener: " + lccEventListener);
 		this.lccEventListener = lccEventListener;
-		// todo
-		/*if (isGameActivityPausedMode()) {
-			executePausedActivityGameEvents(lccEventListener);
-			setGameActivityPausedMode(false);
-		}*/
 	}
 
 	public void setLccObserveEventListener(LccEventListener lccObserveEventListener) {
@@ -628,7 +622,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public boolean isMyGame(Game game) {
 		boolean isMyGame = game.isPlayer(getUsername());
-		LogMe.dl(TAG, "isMyGame=" + isMyGame);
+//		LogMe.dl(TAG, "isMyGame=" + isMyGame);
 		return isMyGame;
 	}
 
@@ -923,10 +917,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 //		pausedActivityGameEvents.clear();
 	}
 
-	/*public Map<LiveGameEvent.Event, LiveGameEvent> getPausedActivityGameEvents() {
-		return pausedActivityGameEvents;
-	}*/
-
 	public Map<LiveEvent.Event, LiveEvent> getPausedActivityLiveEvents() {
 		return pausedActivityLiveEvents;
 	}
@@ -935,12 +925,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		latestMoveNumber = 0; // it was null before
 		initClock();
 
-		if (!getCurrentGame().isTopObserved()) {
+		if (lccEventListener == null) { // if we restart app and connected to service, but no live game screens opened
 			context.sendBroadcast(new Intent(IntentConstants.START_LIVE_GAME));
+		} else {
+			lccEventListener.startGameFromService();
 		}
-
-		// todo: probably determine my/observed game listeners
-		lccEventListener.startGameFromService();
 	}
 
 	public Integer getLatestMoveNumber() {
@@ -1166,20 +1155,13 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void clearPausedEvents() {
-		//pausedActivityGameEvents.clear();
 		pausedActivityLiveEvents.clear();
 	}
 
 	private void cancelServiceNotification() {
-		// http://stackoverflow.com/questions/11387320/notificationmanager-cancel-doesnt-work-for-me
-		/*NotificationManager notificationManager =
-				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.cancel(R.id.live_service_notification);*/
-
 		liveService.stopForeground(true); // exit Foreground mode and remove Notification icon
 	}
 
-	//	public void createChallenge(String friend) {
 	public void createChallenge(LiveGameConfig config) {
 		LogMe.dl(TAG, "createChallenge");
 
@@ -1223,13 +1205,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 			if (!isGameActivityPausedMode()) {
 				LogMe.dl(TAG, "DRAW SHOW");
 				getLccEventListener().onDrawOffered(opponentName);
-			} else {
-				LogMe.dl(TAG, "paused mode: postpone DRAW processing");
-				/*final LiveGameEvent drawOfferedEvent = new LiveGameEvent();
-				drawOfferedEvent.setEvent(LiveGameEvent.Event.DRAW_OFFER);
-				drawOfferedEvent.setGameId(game.getId());
-				drawOfferedEvent.setDrawOffererUsername(opponentName);
-				lccHelper.getPausedActivityGameEvents().put(drawOfferedEvent.getEvent(), drawOfferedEvent);*/
 			}
 		}
 	}
@@ -1290,13 +1265,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		//message = whiteUsername + " vs. " + blackUsername + " - " + message;
 		LogMe.dl(TAG, "GAME LISTENER: " + message);
 
-		/*if (getWhiteClock() != null) {
-			getWhiteClock().setRunning(false);
-		}
-		if (getBlackClock() != null) {
-			getBlackClock().setRunning(false);
-		}*/
-
 		String abortedCodeMessage = game.getCodeMessage(); // used only for aborted games
 		if (abortedCodeMessage != null) {
 			final String messageI18n = AppUtils.getI18nString(context, abortedCodeMessage, game.getAborterUsername());
@@ -1311,18 +1279,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 		if (!isGameActivityPausedMode()) {
 			getLccEventListener().onGameEnd(game, message);
-		} else {
-			LogMe.dl(TAG, "paused mode: postpone GAME END processing");
-			/*LogMe.dl(TAG, "ActivityPausedMode = true");
-			final LiveGameEvent gameEndedEvent = new LiveGameEvent();
-			gameEndedEvent.setGameId(gameId);
-			gameEndedEvent.setEvent(LiveGameEvent.Event.END_OF_GAME);
-			gameEndedEvent.setGameEndedMessage(message);
-			lccHelper.getPausedActivityGameEvents().put(gameEndedEvent.getEvent(), gameEndedEvent);
-			if (lccHelper.getLccEventListener() == null) { // if activity is not started yet
-				lccHelper.processFullGame(game);
-				LogMe.dl(TAG, "processFullGame");
-			}*/
 		}
 	}
 
@@ -1334,18 +1290,18 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		return connectionFailure;
 	}
 
-	public void unobserveCurrentObservingGame() {
-		LogMe.dl(TAG, "unobserveCurrentObservingGame: gameId=" + getCurrentObservedGameId());
+	public void unObserveCurrentObservingGame() {
+//		LogMe.dl(TAG, "unObserveCurrentObservingGame: gameId=" + getCurrentObservedGameId());
 		if (getCurrentObservedGameId() != null) {
-			runUnobserveGameTask(getCurrentObservedGameId());
+			runUnObserveGameTask(getCurrentObservedGameId());
 		}
 	}
 
-	public void runUnobserveGameTask(Long gameId) {
-		new UnobserveGameTask().execute(gameId);
+	public void runUnObserveGameTask(Long gameId) {
+		new UnObserveGameTask().execute(gameId);
 	}
 
-	private class UnobserveGameTask extends AsyncTask<Long, Void, Void> {
+	private class UnObserveGameTask extends AsyncTask<Long, Void, Void> {
 
 		@Override
 		protected Void doInBackground(Long... params) {

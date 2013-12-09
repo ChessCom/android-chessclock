@@ -191,27 +191,29 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 			GameLiveFragment gameLiveFragment = getLiveFragment();
 			if (gameLiveFragment != null) {
-				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 				currentActiveFragment = gameLiveFragment;
-
-				ft.replace(R.id.content_frame, gameLiveFragment, gameLiveFragment.getClass().getSimpleName());
-				ft.commitAllowingStateLoss();
+				String simpleName = gameLiveFragment.getClass().getSimpleName();
+				transaction.add(R.id.content_frame, gameLiveFragment, simpleName);
+				transaction.addToBackStack(simpleName);
+				transaction.commitAllowingStateLoss();
 				return;
 			}
+
 			LiveGameWaitFragment fragmentByTag = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
 			if (fragmentByTag == null) {
 				fragmentByTag = LiveGameWaitFragment.createInstance(getAppData().getLiveGameConfig());
 			}
 
-			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			currentActiveFragment = fragmentByTag;
 
-			ft.replace(R.id.content_frame, fragmentByTag, fragmentByTag.getClass().getSimpleName());
-			ft.commitAllowingStateLoss();
+			String simpleName = fragmentByTag.getClass().getSimpleName();
+			transaction.add(R.id.content_frame, fragmentByTag, simpleName);
+			transaction.addToBackStack(simpleName);
+			transaction.commitAllowingStateLoss();
 		}
-		// TODO open from notification
 	}
-
 
 	@Override
 	protected void onResume() {

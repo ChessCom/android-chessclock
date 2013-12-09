@@ -18,9 +18,8 @@ import com.chess.utilities.LogMe;
  * Date: 30.04.13
  * Time: 9:30
  */
-public class LiveGameWaitFragment extends LiveBaseFragment /*implements LccEventListener */{
+public class LiveGameWaitFragment extends LiveBaseFragment {
 
-//	private static final String TAG = "LccLog-LiveGameWaitFragment";
 	private static final long FINISH_FRAGMENT_DELAY = 200;
 
 	private View loadingView;
@@ -42,8 +41,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment /*implements LccEvent
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			liveGameConfig = getArguments().getParcelable(CONFIG);
-		} else {
-			// when is it really reachable for fragment? // when fragment was killed and system restores it passing here savedInstance
+		} else if (savedInstanceState != null) { // we start this fragment from broadcast receiver while waiting live game to be created, so no config here.
 			liveGameConfig = savedInstanceState.getParcelable(CONFIG);
 		}
 	}
@@ -86,23 +84,6 @@ public class LiveGameWaitFragment extends LiveBaseFragment /*implements LccEvent
 		super.onSaveInstanceState(outState);
 		outState.putParcelable(CONFIG, liveGameConfig);
 	}
-
-//	@Override
-//	public void onLiveServiceConnected() {
-//		super.onLiveServiceConnected();
-//		LiveChessService liveService;
-//		try {
-//			liveService = getLiveService();
-//		} catch (DataNotValidException e) {
-//			logTest(e.getMessage());
-//			return;
-//		}
-//
-//		boolean isGameAlreadyPresent = liveService.checkAndProcessFullGame();
-//		if (!isGameAlreadyPresent) {
-//			createSeek();
-//		}
-//	}
 
 	@Override
 	public void onClick(View view) {

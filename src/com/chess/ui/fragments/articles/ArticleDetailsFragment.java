@@ -1015,7 +1015,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			screenWidth -= getResources().getDimensionPixelSize(R.dimen.tablet_side_menu_width) * 2;
 		}
 
-
 		int deviceSizeCode = DiagramImageProcessor.DEFAULT;
 
 		{// set imageCache params for diagramProcessor
@@ -1073,7 +1072,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				new int[]{CONTENT_SECTION, COMMENTS_SECTION});
 
 		diagramsAdapter = new DiagramsAdapter(getActivity(), null);
-		sectionedAdapter.addSection(getString(R.string.cotent), diagramsAdapter);
+		sectionedAdapter.addSection(getString(R.string.content), diagramsAdapter);
 		sectionedAdapter.addSection(getString(R.string.comments), commentsCursorAdapter);
 	}
 

@@ -381,9 +381,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected boolean isUserColor(int color) {
-		/*if (appData.isHumanVsHumanGameMode(getBoardFace())) { // why do we check it for every game mode??
-			return getBoardFace().isWhiteToMove() ? color == ChessBoard.WHITE_SIDE : color == ChessBoard.BLACK_SIDE;
-		} else */if (isUserWhite()) {
+		if (isUserWhite()) {
 			return color == ChessBoard.WHITE_SIDE;
 		} else {
 			return color == ChessBoard.BLACK_SIDE;

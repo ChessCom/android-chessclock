@@ -390,10 +390,6 @@ public class LiveChessService extends Service {
 		lccHelper.setGameActivityPausedMode(gameActivityPausedMode);
 	}
 
-	/*public void executePausedActivityGameEvents() {
-		lccHelper.executePausedActivityGameEvents();
-	}*/
-
 	public void checkAndReplayMoves() {
 		lccHelper.checkAndReplayMoves();
 	}
@@ -500,7 +496,7 @@ public class LiveChessService extends Service {
 		setLccObserveEventListener(null);
 		lccHelper.setCurrentGameId(null);
 		lccHelper.stopClock();
-		lccHelper.unobserveCurrentObservingGame();
+		lccHelper.unObserveCurrentObservingGame();
 		lccHelper.setCurrentObservedGameId(null);
 	}
 }

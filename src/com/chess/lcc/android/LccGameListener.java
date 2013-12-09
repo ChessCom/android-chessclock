@@ -22,7 +22,7 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onGameListReceived(Collection<? extends Game> games) {
-		LogMe.dl(TAG, "Game list received, total size = " + games.size());
+//		LogMe.dl(TAG, "Game list received, total size = " + games.size());
 
 		Long previousGameId = latestGameId;
 		latestGameId = 0L;
@@ -41,26 +41,12 @@ public class LccGameListener implements GameListener {
 			}
 		}
 
-		LogMe.dl(TAG, "latestGameId=" + latestGameId);
+//		LogMe.dl(TAG, "latestGameId=" + latestGameId);
 
 		if (!latestGameId.equals(previousGameId) && lccHelper.getLccEventListener() != null) {
-			LogMe.dl(TAG, "onGameListReceived: game is expired");
+//			LogMe.dl(TAG, "onGameListReceived: game is expired");
 			lccHelper.getLccEventListener().expireGame();
 		}
-
-		/*if (latestGameId == 0) {
-			// todo: fix NPE
-			if (lccHelper == null) {
-				LogMe.dl(TAG, "onGameListReceived lccHelper is NULL");
-			}
-//			else if (lccHelper.getLccEventListener() == null) {
-//				LogMe.dl(TAG, "onGameListReceived lccEventListener is NULL");
-//			}
-
-			if (lccHelper.getLccEventListener() != null) {
-				lccHelper.getLccEventListener().createSeek();
-			}
-		}*/
 	}
 
 	@Override
@@ -69,10 +55,10 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onGameReset(Game game) {
-		LogMe.dl(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
+//		LogMe.dl(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
 		if (isActualMyGame(game)) {
-			lccHelper.unobserveCurrentObservingGame();
+			lccHelper.unObserveCurrentObservingGame();
 
 		} else if (lccHelper.isObservedGame(game)) {
 
@@ -98,15 +84,15 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onGameUpdated(Game game) {
-		LogMe.dl(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
+//		LogMe.dl(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
 
 		if (!lccHelper.isConnected()) {
-			LogMe.dl(TAG, "ignore onGameUpdated before onConnectionRestored"); // remove after cometd/lcc fix
+//			LogMe.dl(TAG, "ignore onGameUpdated before onConnectionRestored"); // remove after cometd/lcc fix
 			return;
 		}
 
 		if (isActualMyGame(game)) {
-			lccHelper.unobserveCurrentObservingGame();
+			lccHelper.unObserveCurrentObservingGame();
 
 		} else if (lccHelper.isObservedGame(game)) {
 
@@ -124,14 +110,29 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onGameOver(Game game) {
-		LogMe.dl(TAG, "GAME LISTENER: onGameOver " + game);
-		doEndGame(game);
+//		LogMe.dl(TAG, "GAME LISTENER: onGameOver " + game);
+		lccHelper.putGame(game);
+
+		Long gameId = game.getId();
+
+		if (isOldGame(gameId)) {
+			LogMe.dl(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
+			return;
+		}
+
+        /*lccHelper.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
+                                                        lccHelper.getSeekListListener());*/
+
+		// Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId; // vm: looks redundant
+		lccHelper.setLastGameId(gameId);
+
+		lccHelper.checkAndProcessEndGame(game);
 	}
 
 	@Override
 	public void onGameClockAdjusted(Game game, User player, Integer newClockValue, Integer clockAdjustment, Integer resultClock) {
-		LogMe.dl(TAG, "Game Clock adjusted: gameId=" + game.getId() + ", player=" + player.getUsername() +
-				", newClockValue=" + newClockValue + ", clockAdjustment=" + clockAdjustment);
+//		LogMe.dl(TAG, "Game Clock adjusted: gameId=" + game.getId() + ", player=" + player.getUsername() +
+//				", newClockValue=" + newClockValue + ", clockAdjustment=" + clockAdjustment);
 	}
 
 	@Override
@@ -149,13 +150,13 @@ public class LccGameListener implements GameListener {
 			return false;
 
 		} else if (lccHelper.isUserPlayingAnotherGame(gameId)) {
-			LogMe.dl(TAG, "GAME LISTENER: abort and exit second game");
+//			LogMe.dl(TAG, "GAME LISTENER: abort and exit second game");
 			lccHelper.getClient().abortGame(game, "abort second game");
 			lccHelper.getClient().exitGame(game);
 			return false;
 
 		} else if (isOldGame(gameId)) { // TODO: check case
-			LogMe.dl(TAG, "GAME LISTENER: exit old game");
+//			LogMe.dl(TAG, "GAME LISTENER: exit old game");
 			lccHelper.getClient().exitGame(game);
 			return false;
 
@@ -167,7 +168,7 @@ public class LccGameListener implements GameListener {
 			lccHelper.setCurrentGameId(gameId);
 			if (gameId > latestGameId) {
 				latestGameId = gameId;
-				LogMe.dl(TAG, "GAME LISTENER: latestGameId=" + gameId);
+//				LogMe.dl(TAG, "GAME LISTENER: latestGameId=" + gameId);
 			}
 			return true;
 		}
@@ -180,7 +181,6 @@ public class LccGameListener implements GameListener {
 				lccHelper.putGame(game);
 				return;
 			}
-			//lccHelper.setGameActivityPausedMode(true);
 			lccHelper.processFullGame();
 		}
 	}
@@ -190,8 +190,8 @@ public class LccGameListener implements GameListener {
 		if (checkMoves && (game.getMoveCount() == 1 || game.getMoveCount() - 1 > lccHelper.getLatestMoveNumber())) { // do not check moves if it was
 			User moveMaker = game.getLastMoveMaker();
 			String move = game.getLastMove();
-			LogMe.dl(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHelper.getUser().getUsername() +
-					", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
+//			LogMe.dl(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHelper.getUser().getUsername() +
+//					", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
 			synchronized (LccHelper.LOCK) {
 				lccHelper.doMoveMade(game, game.getMoveCount() - 1);
 			}
@@ -202,7 +202,6 @@ public class LccGameListener implements GameListener {
 		}
 
 		if (lccHelper.isMyGame(game)) {
-
 			User opponent = game.getOpponentForPlayer(lccHelper.getUsername());
 			User.Status opponentStatus = opponent.getStatus();
 			LogMe.dl(TAG, "opponent status: " + opponent.getUsername() + " is " + opponentStatus);
@@ -226,25 +225,6 @@ public class LccGameListener implements GameListener {
 				lccEventListener.updateOpponentOnlineStatus(online);
 			}
 		}
-	}
-
-	private void doEndGame(Game game) {
-		lccHelper.putGame(game);
-
-		Long gameId = game.getId();
-
-		if (isOldGame(gameId)) {
-			LogMe.dl(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
-			return;
-		}
-
-        /*lccHelper.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
-                                                        lccHelper.getSeekListListener());*/
-
-		// Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId; // vm: looks redundant
-		lccHelper.setLastGameId(gameId);
-
-		lccHelper.checkAndProcessEndGame(game);
 	}
 
     /*public void onDrawRejected(Game game, User rejector) {

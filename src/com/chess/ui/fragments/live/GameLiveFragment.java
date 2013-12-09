@@ -95,7 +95,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	protected SparseArray<String> optionsMap;
 	private String[] countryNames;
 	private int[] countryCodes;
-	private boolean opponentOnline;
+	private boolean userSawGameEndPopup;
+	private GameBaseFragment.ImageUpdateListener topImageUpdateListener;
+	private GameBaseFragment.ImageUpdateListener bottomImageUpdateListener;
 
 	public GameLiveFragment() {
 	}
@@ -117,6 +119,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		} else if (savedInstanceState != null) {
 			gameId = savedInstanceState.getLong(GAME_ID);
 		}
+
+		topImageUpdateListener = new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR);
+		bottomImageUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR);
 
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
@@ -148,20 +153,20 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onResume() {
 		super.onResume();
 
-		logLiveTest("onResume");
-
-		try {
-			Long currentGameId = getLiveService().getCurrentGameId();
-			if (isLCSBound && currentGameId != null && currentGameId != 0) {
-				gameId = currentGameId;
-				synchronized (LccHelper.LOCK) {
-					onGameStarted();
+		if (need2update) {
+			try {
+				Long currentGameId = getLiveService().getCurrentGameId();
+				if (isLCSBound && currentGameId != null && currentGameId != 0) {
+					gameId = currentGameId;
+					synchronized (LccHelper.LOCK) {
+						onGameStarted();
+					}
 				}
+			} catch (DataNotValidException e) {
+				logLiveTest(e.getMessage());
+				logTest(e.getMessage());
+				isLCSBound = false;
 			}
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-			logTest(e.getMessage());
-			isLCSBound = false;
 		}
 	}
 
@@ -193,11 +198,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		ChessBoardLive.resetInstance();
 		boardView.setGameFace(this);
 
-		Boolean isUserColorWhite = liveService.isUserColorWhite();
+		BoardFace boardFace = getBoardFace();
+		Boolean isUserColorWhite = liveService.isUserColorWhite(); // should throw exception if null
+		userPlayWhite = isUserColorWhite;
+		logLiveTest("onGameStarted reside = " + boardFace.isReside() + " isUserColorWhite = " + isUserColorWhite);
 
-		if (isUserColorWhite != null && !isUserColorWhite) {
-			getBoardFace().setReside(true);
-		}
+		boardFace.setReside(isUserColorWhite != null && !isUserColorWhite);
+
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 		boardView.updateBoardAndPiecesImgs();
 		getNotationsFace().resetNotations();
@@ -215,7 +222,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		getControlsView().showDefault();
 		getControlsView().showHome(false);
 
-		getBoardFace().setFinished(false);
+		boardFace.setFinished(false);
 		getSoundPlayer().playGameStart();
 
 		getControlsView().haveNewMessage(currentGame.hasNewMessage());
@@ -228,10 +235,71 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		liveService.checkFirstTestMove();
 
-		liveService.setGameActivityPausedMode(false); // probably set it above
+		liveService.setGameActivityPausedMode(false);
 		liveService.checkGameEvents();
 
-		//liveService.executePausedActivityGameEvents();
+		{// fill labels
+			userPlayWhite = liveService.isUserColorWhite();
+			if (userPlayWhite) {
+				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+				labelsConfig.topPlayerName = currentGame.getBlackUsername();
+				labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
+				labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
+				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
+			} else {
+				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+				labelsConfig.topPlayerName = currentGame.getWhiteUsername();
+				labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
+				labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
+				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
+			}
+		}
+
+		{// set avatars
+			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+
+			{ // set stubs while avatars are loading
+				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+						R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+
+				labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+				topPanelView.invalidate();
+
+				labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+				bottomPanelView.invalidate();
+			}
+
+			labelsConfig.topPlayerAvatar = liveService.getCurrentGame().
+					getOpponentForPlayer(labelsConfig.bottomPlayerName).getAvatarUrl();
+			if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
+				imageDownloader.download(labelsConfig.topPlayerAvatar, topImageUpdateListener, AVATAR_SIZE);
+			}
+
+			labelsConfig.bottomPlayerAvatar = liveService.getCurrentGame().
+					getOpponentForPlayer(labelsConfig.topPlayerName).getAvatarUrl();
+			if (labelsConfig.bottomPlayerAvatar != null && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
+				imageDownloader.download(labelsConfig.bottomPlayerAvatar, bottomImageUpdateListener, AVATAR_SIZE);
+			}
+
+			{ // get opponent info
+				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
+				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
+			}
+			{ // get users info
+				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.bottomPlayerName);
+				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
+			}
+		}
+
+		need2update = false;
+		userSawGameEndPopup = false;
 	}
 
 	@Override
@@ -296,15 +364,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		});
 	}
 
-	private void indicateCurrentMove(boolean userMove) {  // TODO adjust or remove
-		if (getBoardFace().isReside()) {
-			topPanelView.showTimeLeftIcon(userMove);
-			bottomPanelView.showTimeLeftIcon(!userMove);
-		} else {
-			topPanelView.showTimeLeftIcon(!userMove);
-			bottomPanelView.showTimeLeftIcon(userMove);
-		}
-	}
+//	private void indicateCurrentMove(boolean userMove) {  // TODO adjust or remove
+//		if (getBoardFace().isReside()) {
+//			topPanelView.showTimeLeftIcon(userMove);
+//			bottomPanelView.showTimeLeftIcon(!userMove);
+//		} else {
+//			topPanelView.showTimeLeftIcon(!userMove);
+//			bottomPanelView.showTimeLeftIcon(userMove);
+//		}
+//	}
 
 	// ----------------------Lcc Events ---------------------------------------------
 
@@ -334,19 +402,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	@Override
-	public void createSeek() {
-		// shouldn't be used here. Use in WaitFragment instead
-	}
-
-	@Override
-	public void updateOpponentOnlineStatus(boolean online) {
-		LogMe.dl(TAG, "updateOpponentOnlineStatus: online=" + online);
-
-		if (opponentOnline != online) {
-			// todo: update UI opponent's info as "Reconnecting..."
-			//updateOpponentStatus();
-			opponentOnline = online;
-		}
+	public void updateOpponentOnlineStatus(final boolean online) {
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				topPanelView.setReconnecting(online);
+			}
+		});
 	}
 
 	@Override
@@ -385,15 +447,24 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			gameId = gameItem.getGameId();
 		}
 
-		String[] actualMoves = gameItem.getMoveList().trim().split(" ");
+		String[] actualMoves = gameItem.getMoveList().trim().split(Symbol.SPACE);
 		int actualMovesSize = actualMoves.length;
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				boardView.setGameFace(GameLiveFragment.this);
-				boardView.resetValidMoves();
+//				boardView.setGameFace(GameLiveFragment.this);
+//				boardView.resetValidMoves();
 			}
 		});
+
+		Boolean userColorWhite = liveService.isUserColorWhite();  // should throw exception if null
+		userPlayWhite = userColorWhite;
+		logLiveTest("onGameRefresh reside = " + boardFace.isReside() + " isUserColorWhite = " + userColorWhite);
+		boardFace.setReside(userColorWhite != null && !userColorWhite);
+
+		logLiveTest("actualMoves = " + actualMoves.length + " boardFace moves = " + boardFace.getMovesCount());
+		logLiveTest("actualMoves last = " + actualMoves[actualMovesSize - 1]
+				+ " boardFace moves last = " + boardFace.getLastMoveSAN());
 
 		for (int i = boardFace.getMovesCount(); i < actualMovesSize; i++) {
 			int[] moveFT = boardFace.parseCoordinate(actualMoves[i]);
@@ -412,9 +483,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		boardFace.setMovesCount(actualMovesSize);
 
-		if (!liveService.isUserColorWhite()) {
-			boardFace.setReside(true);
-		}
 
 		activity.runOnUiThread(new Runnable() {
 			@Override
@@ -425,7 +493,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		});
 
 		liveService.checkTestMove();
-
 	}
 
 	public void onConnectionBlocked(boolean blocked) {
@@ -461,9 +528,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onGameEnd(final Game game, final String gameEndMessage) {
 		final Activity activity = getActivity();
-		if (activity == null) {
+		if (activity == null || userSawGameEndPopup) {
 			return;
 		}
+		userSawGameEndPopup = true;
 
 		final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
@@ -639,13 +707,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void switch2Analysis() {
-//		super.switch2Analysis(isAnalysis);
-//		LogMe.dl("live", "switch2Analysis analysis = " + isAnalysis); // TODO restore
-//		if (isAnalysis) {
-//			liveService.setLatestMoveNumber(0);
-//			ChessBoardLive.resetInstance();
-//		}
-//		getControlsView().enableControlButtons(isAnalysis);
 	}
 
 	@Override
@@ -702,24 +763,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void toggleSides() {
-		// looks like we don't support board flip in Live
-		/*if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
-			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
-		} else {
-			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-		}
-		BoardAvatarDrawable tempDrawable = labelsConfig.topAvatar;
-		labelsConfig.topAvatar = labelsConfig.bottomAvatar;
-		labelsConfig.bottomAvatar = tempDrawable;
-
-		String tempLabel = labelsConfig.topPlayerName;
-		labelsConfig.topPlayerName = labelsConfig.bottomPlayerName;
-		labelsConfig.bottomPlayerName = tempLabel;
-
-		String tempScore = labelsConfig.topPlayerRating;
-		labelsConfig.topPlayerRating = labelsConfig.bottomPlayerRating;
-		labelsConfig.bottomPlayerRating = tempScore;
-		*/
 	}
 
 	@Override
@@ -888,10 +931,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					onGameStarted();
 				} catch (DataNotValidException e) {
 					logLiveTest(e.getMessage());
-				}
-
-				if (!isUserColorWhite()) {
-					getBoardFace().setReside(true);
 				}
 			}
 		} else if (tag.equals(ABORT_GAME_TAG)) {
@@ -1120,71 +1159,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		liveService.setLccChatMessageListener(this);
 
-		{// fill labels
-			labelsConfig = new LabelsConfig();
-			userPlayWhite = currentGame.getWhiteUsername().equals(liveService.getUsername());
-			if (userPlayWhite) {
-				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-				labelsConfig.topPlayerName = currentGame.getBlackUsername();
-				labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
-				labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
-				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
-			} else {
-				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
-				labelsConfig.topPlayerName = currentGame.getWhiteUsername();
-				labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
-				labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
-				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
-			}
-		}
 
-		{// set avatars
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
-			{ // set stubs while avatars are loading
-				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
-						R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-
-				labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
-
-				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
-				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-				topPanelView.invalidate();
-
-				labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
-
-				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
-				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-				bottomPanelView.invalidate();
-			}
-
-			String opponentName;
-			if (userPlayWhite) {
-				opponentName = currentGame.getBlackUsername();
-			} else {
-				opponentName = currentGame.getWhiteUsername();
-			}
-
-			labelsConfig.topPlayerAvatar = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
-			if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
-				imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
-			}
-
-			labelsConfig.bottomPlayerAvatar = liveService.getCurrentGame().getOpponentForPlayer(opponentName).getAvatarUrl(); // TODO test
-			if (labelsConfig.bottomPlayerAvatar != null && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
-				imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
-			}
-
-			{ // get opponent info
-				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
-				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
-			}
-			{ // get users info
-				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.bottomPlayerName);
-				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
-			}
-		}
 
 		int resignTitleId = liveService.getResignTitle();
 		{// options list setup

@@ -77,26 +77,6 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	}
 
 	public void onLiveServiceConnected() {
-//		logTest("Live Base onLiveServiceConnected");
-//		LiveChessService liveService;
-//		try {
-//			liveService = getLiveService();
-//		} catch (DataNotValidException e) {
-//			logTest("onLiveServiceConnected - " + e.getMessage());
-//			showToast("onLiveServiceConnected - " + e.getMessage());
-//			return;
-//		}
-//		liveService.setLccEventListener(this);
-//		liveService.setGameTaskListener(gameTaskListener);
-//
-//		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
-//			synchronized(LccHelper.LOCK) {
-//				Long gameId = liveService.getCurrentGameId();
-//				getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
-//			}
-//		} else {
-//			createSeek();
-//		}
 	}
 
 	public void onLiveServiceDisconnected() {
@@ -125,10 +105,6 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	@Override
 	public void onInform(String title, String message) {
 	}
-
-//	@Override
-//	public void onGameRecreate() {
-//	}
 
 	@Override
 	public void startGameFromService() {
@@ -171,15 +147,10 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	}
 
 	public void onLiveClientConnected() {
-		logTest("Live Base onLiveClientConnected");
-//		showToast("Live Base onLiveClientConnected");
 		LiveChessService liveService;
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
-			logTest("onLiveClientConnected - " + e.getMessage());
-			showToast("onLiveClientConnected - " + e.getMessage());
-//			backToHomeFragment(); // don't throw back for a while
 			return;
 		}
 		liveService.setLccEventListener(this);
