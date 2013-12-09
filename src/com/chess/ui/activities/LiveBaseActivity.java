@@ -583,6 +583,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			LiveEvent connectionFailureEvent = new LiveEvent();
 			connectionFailureEvent.setEvent(LiveEvent.Event.CONNECTION_FAILURE);
 			connectionFailureEvent.setMessage(message);
+			if (liveService.getLccHelper() == null) {
+				throw new IllegalStateException(" LccHelper became NULL");
+			}
 			liveService.getPausedActivityLiveEvents().put(connectionFailureEvent.getEvent(), connectionFailureEvent);
 		} else {
 			processConnectionFailure(message);

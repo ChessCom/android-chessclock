@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ListAdapter;
 import com.chess.R;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
@@ -23,7 +24,6 @@ import com.chess.ui.interfaces.FragmentParentFace;
 public class FriendsFragmentTablet extends FriendsFragment {
 
 	private FragmentParentFace parentFace;
-	private GridView listView;
 
 	public FriendsFragmentTablet() {}
 
@@ -77,39 +77,12 @@ public class FriendsFragmentTablet extends FriendsFragment {
 	}
 
 	@Override
-	protected void showEmptyView(boolean show) {
-		if (show) {
-			// don't hide loadingView if it's loading
-			if (loadingView.getVisibility() != View.VISIBLE) {
-				loadingView.setVisibility(View.GONE);
-			}
-
-			emptyView.setVisibility(View.VISIBLE);
-			listView.setVisibility(View.GONE);
-		} else {
-			emptyView.setVisibility(View.GONE);
-			listView.setVisibility(View.VISIBLE);
-		}
-	}
-
-	@Override
-	protected void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			if (friendsAdapter.getCount() == 0) {
-				listView.setVisibility(View.GONE);
-
-			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
-		}
+	protected void setAdapter(ListAdapter adapter){
+		((GridView) listView).setAdapter(adapter);
 	}
 
 	@Override
 	protected void widgetsInit(View view) {
 		listView = (GridView) view.findViewById(R.id.listView);
-		listView.setAdapter(friendsAdapter);
 	}
 }

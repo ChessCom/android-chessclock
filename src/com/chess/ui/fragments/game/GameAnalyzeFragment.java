@@ -26,9 +26,9 @@ import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.explorer.GameExplorerFragment;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
-import com.chess.ui.views.NotationView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardAnalysisView;
+import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsAnalysisView;
@@ -52,6 +52,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	private ControlsAnalysisView controlsView;
 	private String[] countryNames;
 	private int[] countryCodes;
+	private NotationFace notationsFace;
 
 	public static GameAnalyzeFragment createInstance(GameAnalysisItem analysisItem) {
 		GameAnalyzeFragment fragment = new GameAnalyzeFragment();
@@ -148,8 +149,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 	private void adjustBoardForGame() {
 		ChessBoardAnalysis.resetInstance();
-		userPlayWhite = analysisItem.getUserColor() == ChessBoard.WHITE_SIDE;
-
+		userPlayWhite = analysisItem.getUserSide() == ChessBoard.WHITE_SIDE;
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 		} else {
@@ -369,6 +369,14 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		getBoardFace().setJustInitialized(false);
 	}
 
+	private NotationFace getNotationsFace() {
+		return notationsFace;
+	}
+
+	private void setNotationsFace(View notationsView) {
+		this.notationsFace = (NotationFace) notationsView;
+	}
+
 	private void init() {
 		labelsConfig = new LabelsConfig();
 		countryNames = getResources().getStringArray(R.array.new_countries);
@@ -378,7 +386,11 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 	private void widgetsInit(View view) {
 		controlsView = (ControlsAnalysisView) view.findViewById(R.id.controlsView);
-		NotationView notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		if (inPortrait()) {
+			setNotationsFace(view.findViewById(R.id.notationsView));
+		} else {
+			setNotationsFace(view.findViewById(R.id.notationsViewTablet));
+		}
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
@@ -400,7 +412,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
 		boardView.setControlsView(controlsView);
-		boardView.setNotationsFace(notationsView);
+		boardView.setNotationsFace(getNotationsFace());
 
 		setBoardView(boardView);
 

@@ -39,26 +39,26 @@ public class ChessBoard implements BoardFace {
 
 	public static final String EXCLAIM_SYMBOL = " $1";
 	public static final String DOUBLE_SPACE = "  ";
-	public static final String SYMBOL_SPACE = " ";
+	public static final String SYMBOL_SPACE = Symbol.SPACE;
 	public static final String SYMBOL_SLASH = "[/]";
 	public static final String NUMBERS_PATTERS = "[0-9]";
 
-	static final char A1 = 56;
-	static final char B1 = 57;
+//	static final char A1 = 56;
+//	static final char B1 = 57;
 	static final char C1 = 58;
 	static final char D1 = 59;
-	static final char E1 = 60;
+//	static final char E1 = 60;
 	static final char F1 = 61;
 	static final char G1 = 62;
-	static final char H1 = 63;
-	static final char A8 = 0;
-	static final char B8 = 1;
+//	static final char H1 = 63;
+//	static final char A8 = 0;
+//	static final char B8 = 1;
 	static final char C8 = 2;
 	static final char D8 = 3;
-	static final char E8 = 4;
+//	static final char E8 = 4;
 	static final char F8 = 5;
 	static final char G8 = 6;
-	static final char H8 = 7;
+//	static final char H8 = 7;
 	public static final String NUMBER_REGEXP_MATCHER = ".*\\d.*";
 
 	/* White Promotion algebraic notations */
@@ -90,13 +90,13 @@ public class ChessBoard implements BoardFace {
 
 	static final int CAPTURE_PIECE_SCORE = 1000000;
 
-	public final static int HIST_STACK = 1000;
+	public final static int HIST_STACK = 2000;
 
 	public static final String MOVE_NUMBER_DOT_SEPARATOR = ". ";
-	public static final String G8_STR = "g8";
-	public static final String C8_STR = "c8";
-	public static final String G1_STR = "g1";
-	public static final String C1_STR = "c1";
+//	public static final String G8_STR = "g8";
+//	public static final String C8_STR = "c8";
+//	public static final String G1_STR = "g1";
+//	public static final String C1_STR = "c1";
 	public static final String MOVE_TAG = "move:";
 
 	protected Long gameId;
@@ -1712,17 +1712,19 @@ public class ChessBoard implements BoardFace {
 	public String toString() {
 		StringBuilder sb = new StringBuilder("\n8 ");
 		for (int pos = 0; pos < SQUARES_CNT; ++pos) {
+			int pieceCode = pieces[pos];
+			char pieceChar = this.pieceChar[pieceCode];
 			switch (colors[pos]) {
 				case EMPTY:
 					sb.append(" .");
 					break;
 				case WHITE_SIDE:
-					sb.append(" ");
-					sb.append(pieceChar[pieces[pos]]);
+					sb.append(Symbol.SPACE);
+					sb.append(pieceChar);
 					break;
 				case BLACK_SIDE:
-					sb.append(" ");
-					sb.append((char) (pieceChar[pieces[pos]] + ('a' - 'A')));
+					sb.append(Symbol.SPACE);
+					sb.append((char) (pieceChar + ('a' - 'A')));
 					break;
 				default:
 					throw new IllegalStateException("Square not EMPTY, WHITE_SIDE or BLACK_SIDE: " + pos);
@@ -1730,7 +1732,7 @@ public class ChessBoard implements BoardFace {
 			if ((pos + 1) % 8 == 0 && pos != 63) {
 				sb.append("\n");
 				sb.append(Integer.toString(7 - getRank(pos)));
-				sb.append(" ");
+				sb.append(Symbol.SPACE);
 			}
 		}
 		sb.append("\n\n   a b c d e f g h\n\n");
@@ -2052,7 +2054,7 @@ public class ChessBoard implements BoardFace {
 		//String movesStr = new String();
 		for (Move move : moves) {
 			if (makeMove(move, false)) {
-				//movesStr += " " + move;
+				//movesStr += Symbol.SPACE + move;
 				takeBack();
 				validMoves.add(move);
 			}

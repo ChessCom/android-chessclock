@@ -33,17 +33,6 @@ import java.util.Map;
  */
 public class DailyNewGameFragment extends CommonLogicFragment {
 
-	private static final String ERROR_TAG = "error popup";
-
-	private View inviteFriendView1;
-	private View inviteFriendView2;
-	private TextView friendUserName1Txt;
-	private TextView friendUserName2Txt;
-	private TextView friendRealName1Txt;
-	private TextView friendRealName2Txt;
-	private String firstFriendUserName;
-	private String secondFriendUserName;
-
 	private DailyGameConfig.Builder gameConfigBuilder;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 	private int positionMode;
@@ -139,40 +128,40 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 		}
 	}
 
-	private void loadRecentOpponents() {
-		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());// TODO load avatars
-		if (cursor != null && cursor.moveToFirst()) {
-			if (cursor.getCount() >= 2) {
-				inviteFriendView1.setVisibility(View.VISIBLE);
-				inviteFriendView1.setOnClickListener(this);
-				inviteFriendView2.setVisibility(View.VISIBLE);
-				inviteFriendView2.setOnClickListener(this);
-
-				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-				if (firstFriendUserName.equals(getUsername())) {
-					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-				}
-				friendUserName1Txt.setText(firstFriendUserName);
-
-				cursor.moveToNext();
-
-				secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-				if (secondFriendUserName.equals(getUsername())) {
-					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-				}
-				friendUserName2Txt.setText(secondFriendUserName);
-			} else if (cursor.getCount() == 1) {
-				inviteFriendView1.setVisibility(View.VISIBLE);
-				inviteFriendView1.setOnClickListener(this);
-
-				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-				if (firstFriendUserName.equals(getUsername())) {
-					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-				}
-				friendUserName1Txt.setText(firstFriendUserName);
-			}
-		}
-	}
+//	private void loadRecentOpponents() {
+//		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());// TODO load avatars
+//		if (cursor != null && cursor.moveToFirst()) {
+//			if (cursor.getCount() >= 2) {
+//				inviteFriendView1.setVisibility(View.VISIBLE);
+//				inviteFriendView1.setOnClickListener(this);
+//				inviteFriendView2.setVisibility(View.VISIBLE);
+//				inviteFriendView2.setOnClickListener(this);
+//
+//				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+//				if (firstFriendUserName.equals(getUsername())) {
+//					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+//				}
+//				friendUserName1Txt.setText(firstFriendUserName);
+//
+//				cursor.moveToNext();
+//
+//				secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+//				if (secondFriendUserName.equals(getUsername())) {
+//					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+//				}
+//				friendUserName2Txt.setText(secondFriendUserName);
+//			} else if (cursor.getCount() == 1) {
+//				inviteFriendView1.setVisibility(View.VISIBLE);
+//				inviteFriendView1.setOnClickListener(this);
+//
+//				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+//				if (firstFriendUserName.equals(getUsername())) {
+//					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+//				}
+//				friendUserName1Txt.setText(firstFriendUserName);
+//			}
+//		}
+//	}
 
 	private void createDailyChallenge() {
 		// create challenge using formed configuration

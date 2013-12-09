@@ -16,19 +16,19 @@ import static com.chess.ui.engine.ChessBoard.*;
 public class FenHelper {
 
 	// white pieces
-	public static final String WHITE_QUEEN = "Q";
-	public static final String WHITE_ROOK = "R";
-	public static final String WHITE_BISHOP = "B";
-	public static final String WHITE_KNIGHT = "N";
-	public static final String WHITE_KING = "K";
-	public static final String WHITE_PAWN = "P";
+//	public static final String WHITE_QUEEN = "Q";
+//	public static final String WHITE_ROOK = "R";
+//	public static final String WHITE_BISHOP = "B";
+//	public static final String WHITE_KNIGHT = "N";
+//	public static final String WHITE_KING = "K";
+//	public static final String WHITE_PAWN = "P";
 	// black pieces
-	public static final String BLACK_QUEEN = "q";
-	public static final String BLACK_ROOK = "r";
-	public static final String BLACK_BISHOP = "b";
-	public static final String BLACK_KNIGHT = "n";
-	public static final String BLACK_KING = "k";
-	public static final String BLACK_PAWN = "p";
+//	public static final String BLACK_QUEEN = "q";
+//	public static final String BLACK_ROOK = "r";
+//	public static final String BLACK_BISHOP = "b";
+//	public static final String BLACK_KNIGHT = "n";
+//	public static final String BLACK_KING = "k";
+//	public static final String BLACK_PAWN = "p";
 
 	public static final int NO_CASTLING = 0;
 	public static final int KINGSIDE_CASTLING = 1;
@@ -41,6 +41,7 @@ public class FenHelper {
 
 	public static final String POSITION_DIVIDER = "|";
 	private static final String FEN_DIVIDER = "[/]";
+	private static final int ROWS_CNT = 8;
 	private final HashMap<String, PieceData> pieceDataMap;
 	public static final String whitePiecesChars[] = new String[]{"P", "N", "B", "R", "Q", "K"};
 	public static final String blackPiecesChars[] = new String[]{"p", "n", "b", "r", "q", "k"};
@@ -120,21 +121,27 @@ public class FenHelper {
 
 	public String generateBaseFen(ChessBoard board) {
 		StringBuilder sb = new StringBuilder();
-		String[] line = new String[8];
+		String[] line = new String[ROWS_CNT];
 
-		for (int i = 0; i < 64; i++) {
-			if (i > 0 && i % 8 == 0) { // if end of board line
+		for (int i = 0; i < ChessBoard.SQUARES_CNT; i++) {
+			if (i > 0 && i % ROWS_CNT == 0) { // if end of board line
 				fillTheFenLine(sb, line, false);
 			}
+			int pieceCode = board.pieces[i];
+			Log.e("TEST", "pieceCode = " + pieceCode);
 			switch (board.colors[i]) {
 				case EMPTY:
-					line[i % 8] = EMPTY_SQUARE;
+					line[i % ROWS_CNT] = EMPTY_SQUARE;
 					break;
 				case WHITE_SIDE:
-					line[i % 8] = String.valueOf(board.pieceChar[board.pieces[i]]);
+					char pieceChar = board.pieceChar[pieceCode];
+					Log.e("TEST", "pieceChar = " + pieceChar);
+					line[i % ROWS_CNT] = String.valueOf(pieceChar);
 					break;
 				case BLACK_SIDE:
-					line[i % 8] = String.valueOf((char) (board.pieceChar[board.pieces[i]] + ('a' - 'A')));
+					pieceChar = board.pieceChar[pieceCode];
+					Log.e("TEST", "pieceChar = " + pieceChar);
+					line[i % ROWS_CNT] = String.valueOf((char) (pieceChar + ('a' - 'A')));
 					break;
 				default:
 					throw new IllegalStateException("Square not EMPTY, WHITE_SIDE or BLACK_SIDE: " + i);

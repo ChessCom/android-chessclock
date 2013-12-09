@@ -32,15 +32,6 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 
 	private DailyArchiveGamesCursorAdapter finishedGamesCursorAdapter;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
-	/* Recent Opponents */
-	private View inviteFriendView1;
-	private View inviteFriendView2;
-	private TextView friendUserName1Txt;
-	private TextView friendUserName2Txt;
-	private TextView friendRealName1Txt;
-	private TextView friendRealName2Txt;
-	private String firstFriendUserName;
-	private String secondFriendUserName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,42 +62,7 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 				getContentResolver()).executeTask();
 	}
 
-	private void loadRecentOpponents() {
-		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());// TODO load avatars
-		if (cursor != null && cursor.moveToFirst()) {
-			if (cursor.getCount() >= 2) {
-				inviteFriendView1.setVisibility(View.VISIBLE);
-				inviteFriendView1.setOnClickListener(this);
-				inviteFriendView2.setVisibility(View.VISIBLE);
-				inviteFriendView2.setOnClickListener(this);
 
-				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-				if (firstFriendUserName.equals(getUsername())) {
-					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-				}
-				friendUserName1Txt.setText(firstFriendUserName);
-
-				cursor.moveToNext();
-
-				secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-				if (secondFriendUserName.equals(getUsername())) {
-					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-				}
-				friendUserName2Txt.setText(secondFriendUserName);
-			} else if (cursor.getCount() == 1) {
-				inviteFriendView1.setVisibility(View.VISIBLE);
-				inviteFriendView1.setOnClickListener(this);
-
-				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-				if (firstFriendUserName.equals(getUsername())) {
-					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-				}
-				friendUserName1Txt.setText(firstFriendUserName);
-			}
-
-			cursor.close();
-		}
-	}
 
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 

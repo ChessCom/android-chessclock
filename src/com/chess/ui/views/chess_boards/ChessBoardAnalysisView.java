@@ -6,7 +6,6 @@ import android.view.MotionEvent;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
-import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.boards.BoardViewAnalysisFace;
 import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
 import com.chess.ui.views.game_controls.ControlsAnalysisView;
@@ -20,8 +19,6 @@ import java.util.List;
  * Time: 18:18
  */
 public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardViewAnalysisFace {
-
-	private static final long HINT_REVERSE_DELAY = 1500;
 
 	private static final String DIVIDER_1 = "|";
 	private static final String DIVIDER_2 = ":";
@@ -43,12 +40,6 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	public void setControlsView(ControlsAnalysisView controlsView) {
 		super.setControlsView(controlsView);
 		controlsView.setBoardViewFace(this);
-	}
-
-	@Override
-	protected void onBoardFaceSet(BoardFace boardFace) {
-//		pieces_tmp = boardFace.getPieces().clone();
-//		colors_tmp = boardFace.getColor().clone();
 	}
 
 	@Override
@@ -230,12 +221,6 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	@Override
 	public void vsComputer() {
 		gameAnalysisFace.vsComputer();
-	}
-
-	@Override
-	public void switchAnalysis() {
-		super.switchAnalysis();
-//		controlsAnalysisView.en(ControlsCompView.B_HINT_ID, !getBoardFace().isAnalysis());
 	}
 
 	@Override

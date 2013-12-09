@@ -8,12 +8,56 @@
     android:background="@drawable/transparent_list_item_selector"
     >
 
-	<com.chess.backend.image_load.ProgressImageView
-		android:id="@+id/boardPreviewFrame"
+	<RelativeLayout
+		android:id="@+id/boardPreviewContainer"
 		android:layout_width="@dimen/daily_board_preview_size"
 		android:layout_height="@dimen/daily_board_preview_size"
-		android:layout_marginBottom="@dimen/default_scr_bottom_padding"
-		/>
+		>
+
+		<com.chess.backend.image_load.ProgressImageView
+			android:id="@+id/boardPreviewFrame"
+			android:layout_width="@dimen/daily_board_preview_size"
+			android:layout_height="@dimen/daily_board_preview_size"
+			android:layout_marginBottom="@dimen/default_scr_bottom_padding"
+			/>
+
+		<LinearLayout
+			android:id="@+id/timeOptionView"
+			android:orientation="vertical"
+			android:layout_width="@dimen/daily_board_preview_overlay"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:padding="15dp"
+			android:background="@drawable/invite_white_back"
+			android:gravity="fill"
+			>
+
+			<!--3 days-->
+			<com.chess.widgets.RoboButton
+				android:id="@+id/timeOptionBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:minHeight="@dimen/big_orange_button_height"
+				style="@style/Button.Glassy.Small"
+				android:textSize="@dimen/big_button_text_size"
+				android:textColor="@color/text_controls_icons_white"
+				android:text="3 days"
+				/>
+
+			<!--Play-->
+			<com.chess.widgets.RoboButton
+				android:id="@+id/playNewGameBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/new_play_ex"
+				style="@style/Button.OrangeNoBorder.Big"
+				/>
+
+		</LinearLayout>
+
+	</RelativeLayout>
+
+
 
 	<com.chess.backend.image_load.AvatarView
 		android:id="@+id/playerImg"
@@ -21,8 +65,8 @@
 		android:layout_height="@dimen/daily_list_item_image_size"
 		android:background="@drawable/img_profile_picture_stub"
 		android:layout_marginRight="5dip"
-		android:layout_below="@id/boardPreviewFrame"
-		android:layout_alignLeft="@id/boardPreviewFrame"
+		android:layout_below="@id/boardPreviewContainer"
+		android:layout_alignLeft="@id/boardPreviewContainer"
 		/>
 
     <com.chess.widgets.RoboTextView
@@ -32,7 +76,7 @@
         android:textColor="@color/new_text_blue"
         android:textSize="14sp"
         android:gravity="center_vertical"
-        android:layout_below="@id/boardPreviewFrame"
+        android:layout_below="@id/boardPreviewContainer"
         android:layout_toRightOf="@id/playerImg"
         android:layout_toLeftOf="@+id/timeLeftIcon"
 		android:paddingRight="3dp"
@@ -48,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/red"
-        android:layout_below="@id/boardPreviewFrame"
+        android:layout_below="@id/boardPreviewContainer"
 		android:layout_toLeftOf="@+id/timeLeftTxt"
         android:textSize="@dimen/daily_games_time_left_icon"
         custom:ttf="Icon"
@@ -67,8 +111,8 @@
         android:textColor="@color/red"
         android:textSize="13sp"
         android:gravity="right"
-        android:layout_below="@id/boardPreviewFrame"
-		android:layout_alignRight="@id/boardPreviewFrame"
+        android:layout_below="@id/boardPreviewContainer"
+		android:layout_alignRight="@id/boardPreviewContainer"
         android:text="8 min"
 		android:layout_marginTop="-4dip"
         android:paddingTop="2dip"

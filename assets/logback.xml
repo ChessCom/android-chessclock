@@ -3,7 +3,7 @@
 	<contextName>com.chess</contextName>
 
 	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>/sdcard/chess.log</file>
+		<file>/sdcard/Android/data/chess.com/cache/logs/chess.log</file>
 		<append>true</append>
 		<encoder>
 			<!--<pattern>%d %contextName %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>-->

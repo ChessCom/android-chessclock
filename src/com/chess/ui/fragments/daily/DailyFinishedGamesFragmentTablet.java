@@ -136,9 +136,9 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		init();
 
 		if (need2update) {
-			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), username);
+			boolean haveSavedData = DbDataManager.haveSavedAnyDailyGame(getActivity(), username); // TODO replace with pagination
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				updateData();
 			} else if (!haveSavedData) {
 				emptyView.setText(R.string.no_network);

@@ -8,7 +8,6 @@ public class GameAnalysisItem implements Parcelable {
 
 	private String fen;
 	private int gameType;
-	private int userColor;
 	private String movesList;
 	private String topPlayerName;
 	private String bottomPlayerName;
@@ -39,14 +38,6 @@ public class GameAnalysisItem implements Parcelable {
 
 	public void setGameType(int gameType) {
 		this.gameType = gameType;
-	}
-
-	public int getUserColor() {
-		return userColor;
-	}
-
-	public void setUserColor(int userColor) {
-		this.userColor = userColor;
 	}
 
 	public String getMovesList() {
@@ -177,7 +168,6 @@ public class GameAnalysisItem implements Parcelable {
 	protected GameAnalysisItem(Parcel in) {
 		fen = in.readString();
 		gameType = in.readInt();
-		userColor = in.readInt();
 		movesList = in.readString();
 		topPlayerName = in.readString();
 		bottomPlayerName = in.readString();
@@ -201,7 +191,6 @@ public class GameAnalysisItem implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(fen);
 		dest.writeInt(gameType);
-		dest.writeInt(userColor);
 		dest.writeString(movesList);
 		dest.writeString(topPlayerName);
 		dest.writeString(bottomPlayerName);

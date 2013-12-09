@@ -17,13 +17,13 @@ import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
@@ -32,7 +32,6 @@ import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.daily.GameDailyFinishedFragment;
 import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -115,9 +114,9 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 		init();
 
 		if (need2update) {
-			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), username);
+			boolean haveSavedData = DbDataManager.haveSavedAnyDailyGame(getActivity(), username);
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				updateData();
 			} else if (!haveSavedData) {
 				emptyView.setText(R.string.no_network);
@@ -173,10 +172,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 	}
 
 	protected void updateData() {
-		if (!AppUtils.isNetworkAvailable(getActivity())) {
-			return;
-		}
-
 		LoadItem loadItem = LoadHelper.getAllGames(getUserToken());
 		loadItem.addRequestParams(RestHelper.P_USERNAME, username);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);

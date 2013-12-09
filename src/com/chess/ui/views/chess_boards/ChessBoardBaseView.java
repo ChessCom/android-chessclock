@@ -534,7 +534,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	}
 
 	protected void drawPiecesAndAnimation(Canvas canvas) {
-//		boolean animationActive;
 		animationActive = false;
 
 		// draw just piece without animation
@@ -986,7 +985,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					afterUserMove();
 				}
 			} else if (boardFace.getPiece(to) != ChessBoard.EMPTY
-//					&& (isUserColor(boardFace.getColor(to)) || boardFace.isAnalysis())) {
 					&& (isUserAbleToMove(boardFace.getColor(to)))) {
 				pieceSelected = true;
 				firstClick = false;

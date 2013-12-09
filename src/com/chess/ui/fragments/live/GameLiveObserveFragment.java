@@ -10,13 +10,16 @@ import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
+import com.chess.model.GameAnalysisItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.views.PanelInfoGameView;
@@ -31,7 +34,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	// todo: adjust GameLiveObserveFragment and GameLiveFragment, lock board, load avatars, game end, chat, options dialog etc
 
 	private static final String TAG = "LccLog-GameLiveObserveFragment";
-	private static final long HIDE_POPUP_DELAY = 2000;
+	private static final long HIDE_POPUP_DELAY = 4000;
 	private ObserveTaskListener observeTaskListener;
 
 	@Override
@@ -177,6 +180,13 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 	@Override
 	public void showOptions() {
+		GameAnalysisItem analysisItem = new GameAnalysisItem();  // TODO reuse later
+		analysisItem.setGameType(RestHelper.V_GAME_CHESS);
+		analysisItem.setFen(getBoardFace().generateFullFen());
+		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
+		analysisItem.copyLabelConfig(labelsConfig);
+
+		getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
 	}
 
 	@Override

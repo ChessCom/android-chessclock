@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.*;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -33,7 +34,9 @@ import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbDataProvider;
+import com.chess.db.DbScheme;
 import com.chess.model.DataHolder;
 import com.chess.model.TacticsDataHolder;
 import com.chess.statics.*;
@@ -140,6 +143,16 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private IntentFilter startLiveGameFilter;
 	private StartLiveGameReceiver startLiveGameReceiver;
 	protected ColorStateList themeFontColorStateList;
+	/* Recent Opponents */
+	protected View inviteFriendView1;
+	protected View inviteFriendView2;
+	protected TextView friendUserName1Txt;
+	protected TextView friendUserName2Txt;
+	protected TextView friendRealName1Txt;
+	protected TextView friendRealName2Txt;
+	protected String firstFriendUserName;
+	protected String secondFriendUserName;
+
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -991,6 +1004,52 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 
 			getActivityFace().openFragment(fragmentByTag);
+		}
+	}
+
+	protected void loadRecentOpponents() {
+		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());// TODO load avatars
+		if (cursor != null && cursor.moveToFirst()) {
+			if (cursor.getCount() > 1) {
+				inviteFriendView1.setVisibility(View.VISIBLE);
+				inviteFriendView1.setOnClickListener(this);
+				inviteFriendView2.setVisibility(View.VISIBLE);
+				inviteFriendView2.setOnClickListener(this);
+
+				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+				if (firstFriendUserName.equals(getUsername())) {
+					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+				}
+				friendUserName1Txt.setText(firstFriendUserName);
+
+				cursor.moveToNext();
+				secondFriendUserName = firstFriendUserName;
+
+				while (secondFriendUserName.equals(firstFriendUserName)) {
+					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+					if (secondFriendUserName.equals(getUsername())) {
+						secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+					}
+					if (!secondFriendUserName.equals(firstFriendUserName)) {
+						break;
+					} else {
+						cursor.moveToNext();
+					}
+				}
+
+				friendUserName2Txt.setText(secondFriendUserName);
+			} else if (cursor.getCount() == 1) {
+				inviteFriendView1.setVisibility(View.VISIBLE);
+				inviteFriendView1.setOnClickListener(this);
+
+				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+				if (firstFriendUserName.equals(getUsername())) {
+					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+				}
+				friendUserName1Txt.setText(firstFriendUserName);
+			}
+
+			cursor.close();
 		}
 	}
 }

@@ -223,7 +223,7 @@ public class LoadHelper {
 		loadItem.setLoadPath(getInstance().CMD_FORUMS_TOPICS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_FORUM_CATEGORY_ID, categoryId);
-		loadItem.addRequestParams(P_PAGE_, page);
+		loadItem.addRequestParams(P_PAGE, page);
 		loadItem.addRequestParams(P_TOPICS_PER_PAGE, DEFAULT_ITEMS_PER_PAGE);
 		return loadItem;
 	}
@@ -233,7 +233,7 @@ public class LoadHelper {
 		loadItem.setLoadPath(getInstance().CMD_FORUMS_COMMENTS);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_FORUM_TOPIC_ID, topicId);
-		loadItem.addRequestParams(P_PAGE_, page);
+		loadItem.addRequestParams(P_PAGE, page);
 		loadItem.addRequestParams(P_COMMENTS_PER_PAGE, DEFAULT_ITEMS_PER_PAGE);
 		return loadItem;
 	}

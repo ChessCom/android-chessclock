@@ -29,7 +29,6 @@ import com.chess.ui.fragments.daily.DailyFinishedGamesFragmentTablet;
 import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -131,9 +130,9 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 		init();
 
 		if (need2update) {
-			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), username);
+			boolean haveSavedData = DbDataManager.haveSavedAnyDailyGame(getActivity(), username);
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				updateData();
 			} else if (!haveSavedData) {
 				emptyView.setText(R.string.no_network);
@@ -189,10 +188,6 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 	}
 
 	protected void updateData() {
-		if (!AppUtils.isNetworkAvailable(getActivity())) {
-			return;
-		}
-
 		LoadItem loadItem = LoadHelper.getAllGames(getUserToken());
 		loadItem.addRequestParams(RestHelper.P_USERNAME, username);
 		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
@@ -219,7 +214,6 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 			loadDbGames();
 		}
 	}
-
 
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
@@ -257,7 +251,6 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 
 		@Override
 		public void showProgress(boolean show) {
-			super.showProgress(show);
 			showLoadingView(show);
 		}
 

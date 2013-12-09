@@ -154,7 +154,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		registerReceiver(gamesUpdateReceiver, moveUpdateFilter);
 
 		if (need2update) {
-			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), getUsername());
+			boolean haveSavedData = DbDataManager.haveSavedAnyDailyGame(getActivity(), getUsername());
 
 			if (isNetworkAvailable()) {
 				updateData();
@@ -497,13 +497,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					returnedObj.moveToFirst();
 
 					currentGamesMyCursorAdapter.changeCursor(returnedObj);
-//					if (AppUtils.isNetworkAvailable(getContext()) && !hostUnreachable /*&& !isRestarted*/) { // TODO adjust
-//						updateData();
-//					} else {
-//						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-//								DbHelper.getDailyFinishedListGames(getContext()),
-//								getContentResolver()).executeTask();
-//					}
 
 					if (finishedGameDataList != null) {
 						boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(),

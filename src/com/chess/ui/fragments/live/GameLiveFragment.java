@@ -97,7 +97,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private int[] countryCodes;
 	private boolean opponentOnline;
 
-	public GameLiveFragment() { }
+	public GameLiveFragment() {
+	}
 
 	public static GameLiveFragment createInstance(long id) {
 		GameLiveFragment fragment = new GameLiveFragment();
@@ -149,16 +150,18 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		logLiveTest("onResume");
 
-		if (isLCSBound && gameId != 0) {
-			try {
+		try {
+			Long currentGameId = getLiveService().getCurrentGameId();
+			if (isLCSBound && currentGameId != null && currentGameId != 0) {
+				gameId = currentGameId;
 				synchronized (LccHelper.LOCK) {
 					onGameStarted();
 				}
-			} catch (DataNotValidException e) {
-				logLiveTest(e.getMessage());
-				logTest(e.getMessage());
-				isLCSBound = false;
 			}
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+			logTest(e.getMessage());
+			isLCSBound = false;
 		}
 	}
 
@@ -353,7 +356,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	@Override
-	public void onGameRefresh(GameLiveItem gameItem) {
+	public void onGameRefresh(final GameLiveItem gameItem) {
 		logLiveTest("onGameRefresh");
 		Activity activity = getActivity();
 		if (activity == null) {
@@ -363,60 +366,66 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		LiveChessService liveService;
 		try {
 			liveService = getLiveService();
-		} catch (DataNotValidException e) {
+		} catch (final DataNotValidException e) {
 			logLiveTest(e.getMessage());
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					showToast(e.getMessage());
+				}
+			});
 			return;
 		}
-
-		if (getBoardFace().isAnalysis() && gameItem.getGameId() == gameId) {
+		BoardFace boardFace = getBoardFace();
+		if (boardFace.isAnalysis() && gameItem.getGameId() == gameId) {
 			return;
 		} else {
-			getBoardFace().setAnalysis(false);
-			getBoardFace().setFinished(false);
+			boardFace.setAnalysis(false);
+			boardFace.setFinished(false);
 			gameId = gameItem.getGameId();
 		}
 
 		String[] actualMoves = gameItem.getMoveList().trim().split(" ");
 		int actualMovesSize = actualMoves.length;
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				boardView.setGameFace(GameLiveFragment.this);
+				boardView.resetValidMoves();
+			}
+		});
 
-		int[] moveFT;
-		Move move;
-		boolean playSound;
+		for (int i = boardFace.getMovesCount(); i < actualMovesSize; i++) {
+			int[] moveFT = boardFace.parseCoordinate(actualMoves[i]);
+			Move move = boardFace.convertMove(moveFT);
+			// we play sound and animate only for last move
+			boolean playSound;
+			if (i == actualMovesSize - 1) {
+				playSound = true;
+				boardView.setMoveAnimator(move, true);
+			} else {
+				playSound = false;
+			}
 
-		for (int i = getBoardFace().getMovesCount(); i < actualMovesSize; i++) {
-
-			moveFT = getBoardFace().parseCoordinate(actualMoves[i]);
-
-			move = getBoardFace().convertMove(moveFT);
-			playSound = i == actualMovesSize - 1;
-
-			boardView.setMoveAnimator(move, true);
-
-			getBoardFace().makeMove(move, playSound);
+			boardFace.makeMove(move, playSound);
 		}
 
-		boardView.resetValidMoves();
-
-		getBoardFace().setMovesCount(actualMovesSize);
+		boardFace.setMovesCount(actualMovesSize);
 
 		if (!liveService.isUserColorWhite()) {
-			getBoardFace().setReside(true);
+			boardFace.setReside(true);
 		}
 
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				boardView.setGameFace(GameLiveFragment.this);
-				boardView.invalidate();
 				invalidateGameScreen();
+				getControlsView().haveNewMessage(gameItem.hasNewMessage());
 			}
 		});
 
 		liveService.checkTestMove();
 
-		if (gameItem.hasNewMessage()) {
-			getControlsView().haveNewMessage(true);
-		}
 	}
 
 	public void onConnectionBlocked(boolean blocked) {
@@ -740,10 +749,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			bottomPanelView.setPlayerRating(labelsConfig.bottomPlayerRating);
 
 			boardView.updateNotations(getBoardFace().getNotationArray());
+			boardView.invalidate();
 
 			topPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
 			bottomPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
-
 			try {
 				getLiveService().paintClocks();
 			} catch (DataNotValidException e) {
@@ -1046,26 +1055,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			analysisItem.setGameType(RestHelper.V_GAME_CHESS);
 			analysisItem.setFen(getBoardFace().generateFullFen());
 			analysisItem.setMovesList(getBoardFace().getMoveListSAN());
-//			String topName;
-//			String bottomName;
-			int userColor;
-
-			if (isUserColorWhite()) {
-//				topName = getBlackPlayerName();
-//				bottomName = getWhitePlayerName();
-				userColor = ChessBoard.WHITE_SIDE;
-			} else {
-//				topName = getWhitePlayerName();
-//				bottomName = getBlackPlayerName();
-				userColor = ChessBoard.BLACK_SIDE;
-			}
 			analysisItem.copyLabelConfig(labelsConfig);
-//			analysisItem.setTopPlayer(topName);
-//			analysisItem.setBottomPlayer(bottomName);
-
-			analysisItem.setUserColor(userColor);
-//			analysisItem.setTopAvatar(labelsConfig.topPlayerAvatar);
-//			analysisItem.setBottomAvatar(labelsConfig.bottomPlayerAvatar);
 
 			getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
 		} else if (view.getId() == R.id.sharePopupBtn) {

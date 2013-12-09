@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -29,6 +30,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	private final int boardPreviewSize;
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 	private final boolean sevenInchTablet;
+	private boolean showNewGameAtFirst;
 
 	public DailyCurrentGamesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
@@ -46,6 +48,15 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	}
 
 	@Override
+	public int getCount() {
+		if (showNewGameAtFirst && isTablet) {
+			return super.getCount();
+		} else {
+			return super.getCount();
+		}
+	}
+
+	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_daily_games_home_item, parent, false);
 		ViewHolder holder = new ViewHolder();
@@ -55,6 +66,13 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		holder.timeLeftIcon = (TextView) view.findViewById(R.id.timeLeftIcon);
 		holder.boardPreviewFrame = (ProgressImageView) view.findViewById(R.id.boardPreviewFrame);
 
+		if (isTablet) {
+			holder.timeOptionView = view.findViewById(R.id.timeOptionView);
+			holder.timeOptionBtn = (Button) view.findViewById(R.id.timeOptionBtn);
+			holder.playNewGameBtn = (Button) view.findViewById(R.id.playNewGameBtn);
+//			holder.timeOptionBtn.setOnClickListener();
+		}
+
 		view.setTag(holder);
 		return view;
 	}
@@ -62,6 +80,18 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	@Override
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
+
+		if (isTablet) {
+			if (showNewGameAtFirst) {
+				if (cursor.isBeforeFirst()) {
+					holder.timeOptionView.setVisibility(View.VISIBLE);
+//				holder.timeOptionBtn
+//				holder.playNewGameBtn
+				}
+			} else {
+				holder.timeOptionView.setVisibility(View.GONE);
+			}
+		}
 
 		String gameType = Symbol.EMPTY;
 		if (getInt(cursor, DbScheme.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
@@ -157,11 +187,18 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		return amount /86400 < 1;
 	}
 
+	public void showNewGameAtFirst(boolean showNewGameAtFirst) {
+		this.showNewGameAtFirst = showNewGameAtFirst;
+	}
+
 	protected class ViewHolder {
 		public AvatarView playerImg;
 		public TextView playerTxt;
 		public TextView gameInfoTxt;
 		public TextView timeLeftIcon;
 		public ProgressImageView boardPreviewFrame;
+		public View timeOptionView;
+		public Button timeOptionBtn;
+		public Button playNewGameBtn;
 	}
 }

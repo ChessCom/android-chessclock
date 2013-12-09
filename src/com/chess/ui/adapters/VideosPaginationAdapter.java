@@ -25,7 +25,7 @@ public class VideosPaginationAdapter extends PaginationCursorAdapter<VideoSingle
 	@Override
 	protected List<VideoSingleItem.Data> fetchMoreItems(int page) {
 		if (loadItem != null) {
-			loadItem.replaceRequestParams(RestHelper.P_PAGE_, String.valueOf(page));
+			loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
 			VideosItem item = null;
 			try {
 				item = RestHelper.getInstance().requestData(loadItem, VideosItem.class, context);

@@ -1,7 +1,6 @@
 package com.chess.ui.fragments.home;
 
 import android.animation.LayoutTransition;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -58,15 +57,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	private boolean liveOptionsVisible;
 	private Button liveTimeSelectBtn;
 	private String[] newGameButtonsArray;
-	/* Recent Opponents */
-	private View inviteFriendView1;
-	private View inviteFriendView2;
-	private TextView friendUserName1Txt;
-	private TextView friendUserName2Txt;
-	private TextView friendRealName1Txt;
-	private TextView friendRealName2Txt;
-	private String firstFriendUserName;
-	private String secondFriendUserName;
 
 	private LinearLayout dailyGameQuickOptions;
 	private RelLayout liveOptionsView;
@@ -163,42 +153,42 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		outState.putInt(MODE, positionMode);
 	}
 
-	private void loadRecentOpponents() {
-		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());// TODO load avatars
-		if (cursor != null && cursor.moveToFirst()) {
-			if (cursor.getCount() >= 2) {
-				inviteFriendView1.setVisibility(View.VISIBLE);
-				inviteFriendView1.setOnClickListener(this);
-				inviteFriendView2.setVisibility(View.VISIBLE);
-				inviteFriendView2.setOnClickListener(this);
-
-				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-				if (firstFriendUserName.equals(getUsername())) {
-					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-				}
-				friendUserName1Txt.setText(firstFriendUserName);
-
-				cursor.moveToNext();
-
-				secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-				if (secondFriendUserName.equals(getUsername())) {
-					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-				}
-				friendUserName2Txt.setText(secondFriendUserName);
-			} else if (cursor.getCount() == 1) {
-				inviteFriendView1.setVisibility(View.VISIBLE);
-				inviteFriendView1.setOnClickListener(this);
-
-				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-				if (firstFriendUserName.equals(getUsername())) {
-					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-				}
-				friendUserName1Txt.setText(firstFriendUserName);
-			}
-
-			cursor.close();
-		}
-	}
+//	private void loadRecentOpponents() {
+//		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());// TODO load avatars
+//		if (cursor != null && cursor.moveToFirst()) {
+//			if (cursor.getCount() >= 2) {
+//				inviteFriendView1.setVisibility(View.VISIBLE);
+//				inviteFriendView1.setOnClickListener(this);
+//				inviteFriendView2.setVisibility(View.VISIBLE);
+//				inviteFriendView2.setOnClickListener(this);
+//
+//				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+//				if (firstFriendUserName.equals(getUsername())) {
+//					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+//				}
+//				friendUserName1Txt.setText(firstFriendUserName);
+//
+//				cursor.moveToNext();
+//
+//				secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+//				if (secondFriendUserName.equals(getUsername())) {
+//					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+//				}
+//				friendUserName2Txt.setText(secondFriendUserName);
+//			} else if (cursor.getCount() == 1) {
+//				inviteFriendView1.setVisibility(View.VISIBLE);
+//				inviteFriendView1.setOnClickListener(this);
+//
+//				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+//				if (firstFriendUserName.equals(getUsername())) {
+//					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+//				}
+//				friendUserName1Txt.setText(firstFriendUserName);
+//			}
+//
+//			cursor.close();
+//		}
+//	}
 
 	@Override
 	public void onClick(View view) {
@@ -258,11 +248,23 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		} else if (view.getId() == R.id.dailyPlayBtn) {
 			createDailyChallenge();
 		} else if (view.getId() == R.id.inviteFriendView1) {
-			dailyGameConfigBuilder.setOpponentName(firstFriendUserName);
-			createDailyChallenge();
+			dailyFullOptionsVisible = true;
+			dailyGameQuickOptions.setVisibility(View.GONE);
+			dailyExpandIconTxt.setText(R.string.ic_up);
+			if (dailyGameOptionsFragment == null) {
+				dailyGameOptionsFragment = DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE, firstFriendUserName);
+			}
+
+			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+			transaction.replace(R.id.dailyOptionsFrame, dailyGameOptionsFragment).commit();
 		} else if (view.getId() == R.id.inviteFriendView2) {
-			dailyGameConfigBuilder.setOpponentName(secondFriendUserName);
-			createDailyChallenge();
+			dailyFullOptionsVisible = true;
+			dailyGameQuickOptions.setVisibility(View.GONE);
+			dailyExpandIconTxt.setText(R.string.ic_up);
+			dailyGameOptionsFragment = DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE, secondFriendUserName);
+
+			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+			transaction.replace(R.id.dailyOptionsFrame, dailyGameOptionsFragment).commit();
 		} else if (view.getId() == R.id.playFriendView) {
 			ChallengeFriendFragment challengeFriendFragment;
 			if (positionMode == CENTER_MODE) {

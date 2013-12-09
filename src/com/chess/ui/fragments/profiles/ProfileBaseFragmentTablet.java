@@ -100,15 +100,6 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		setArguments(bundle);
 	}
 
-//	public static ProfileBaseFragmentTablet createInstance(String username) {
-//		ProfileBaseFragmentTablet fragment = new ProfileBaseFragmentTablet();
-//		Bundle bundle = new Bundle();
-//		bundle.putString(USERNAME, username);
-//		bundle.putInt(MODE, FRIENDS_SECTION);
-//		fragment.setArguments(bundle);
-//		return fragment;
-//	}
-
 	public static ProfileBaseFragmentTablet createInstance(int mode, String username) {
 		ProfileBaseFragmentTablet fragment = new ProfileBaseFragmentTablet();
 		Bundle bundle = new Bundle();
@@ -334,69 +325,6 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		premiumIconImg.setImageResource(AppUtils.getPremiumIcon(userInfo.getPremiumStatus()));
 	}
 
-	private void init() {
-		photoImageSize = (int) (80 * density);
-		imageLoader = new EnhancedImageDownloader(getActivity());
-		userUpdateListener = new UserUpdateListener();
-		FriendsClickListener friendsClickListener = new FriendsClickListener();
-
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
-
-		{ // load friends from DB
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
-					DbScheme.Tables.FRIENDS));
-
-			friendsList = new ArrayList<SelectionItem>();
-			if (cursor != null && cursor.moveToFirst()) {
-				do {
-					SelectionItem selectionItem = new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME));
-					selectionItem.setCode(DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL));
-					friendsList.add(selectionItem);
-				} while (cursor.moveToNext());
-			}
-		}
-
-		ratingList = createStatsList(getActivity());
-
-		ratingsAdapter = new RatingsAdapter(getActivity(), ratingList);
-
-		OpponentsAdapter friendsAdapter = new OpponentsAdapter(getActivity(), friendsList, getImageFetcher());
-
-		sectionedAdapter.addSection(getString(R.string.ratings), ratingsAdapter);
-
-		footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_frineds_gridview, null, false);
-		GridView gridView = (GridView) footerView.findViewById(R.id.gridView);
-		gridView.setAdapter(friendsAdapter);
-		gridView.setOnItemClickListener(friendsClickListener);
-
-		if (mode == STATS_MODE) {
-			changeInternalFragment(StatsGameFragmentTablet.createInstance(this,
-					StatsGameFragmentTablet.DAILY_CHESS, username));
-		} else {
-			changeInternalFragment(FriendsFragmentTablet.createInstance(this, username));
-		}
-
-		noCategoriesFragmentsAdded = true;
-	}
-
-	private void widgetsInit(View view) {
-		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		View headerView = inflater.inflate(R.layout.new_profiles_header_view, null, false);
-
-		{// Header init
-			photoImg = (ProgressImageView) headerView.findViewById(R.id.photoImg);
-			usernameTxt = (TextView) headerView.findViewById(R.id.usernameTxt);
-			locationTxt = (TextView) headerView.findViewById(R.id.locationTxt);
-			countryImg = (ImageView) headerView.findViewById(R.id.countryImg);
-			premiumIconImg = (ImageView) headerView.findViewById(R.id.premiumIconImg);
-		}
-		listView = (ListView) view.findViewById(R.id.listView);
-		listView.addHeaderView(headerView);
-		listView.addFooterView(footerView);
-		listView.setAdapter(sectionedAdapter);
-		listView.setOnItemClickListener(this);
-	}
-
 	private class FriendsClickListener implements AdapterView.OnItemClickListener {
 
 		@Override
@@ -523,9 +451,10 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 	}
 
 	private void openInternalFragment(Fragment fragment) {
+		String simpleName = fragment.getClass().getSimpleName();
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.innerFragmentContainer, fragment, fragment.getClass().getSimpleName());
-		transaction.addToBackStack(fragment.getClass().getSimpleName());
+		transaction.replace(R.id.innerFragmentContainer, fragment, simpleName);
+		transaction.addToBackStack(simpleName);
 		transaction.commitAllowingStateLoss();
 	}
 
@@ -546,5 +475,68 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		} else {
 			return super.showPreviousFragment();
 		}
+	}
+
+	private void init() {
+		photoImageSize = (int) (80 * density);
+		imageLoader = new EnhancedImageDownloader(getActivity());
+		userUpdateListener = new UserUpdateListener();
+		FriendsClickListener friendsClickListener = new FriendsClickListener();
+
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
+
+		{ // load friends from DB
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+					DbScheme.Tables.FRIENDS));
+
+			friendsList = new ArrayList<SelectionItem>();
+			if (cursor != null && cursor.moveToFirst()) {
+				do {
+					SelectionItem selectionItem = new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME));
+					selectionItem.setCode(DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL));
+					friendsList.add(selectionItem);
+				} while (cursor.moveToNext());
+			}
+		}
+
+		ratingList = createStatsList(getActivity());
+
+		ratingsAdapter = new RatingsAdapter(getActivity(), ratingList);
+
+		OpponentsAdapter friendsAdapter = new OpponentsAdapter(getActivity(), friendsList, getImageFetcher());
+
+		sectionedAdapter.addSection(getString(R.string.ratings), ratingsAdapter);
+
+		footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_frineds_gridview, null, false);
+		GridView gridView = (GridView) footerView.findViewById(R.id.gridView);
+		gridView.setAdapter(friendsAdapter);
+		gridView.setOnItemClickListener(friendsClickListener);
+
+		if (mode == STATS_MODE) {
+			changeInternalFragment(StatsGameFragmentTablet.createInstance(this,
+					StatsGameFragmentTablet.DAILY_CHESS, username));
+		} else {
+			changeInternalFragment(FriendsFragmentTablet.createInstance(this, username));
+		}
+
+		noCategoriesFragmentsAdded = true;
+	}
+
+	private void widgetsInit(View view) {
+		LayoutInflater inflater = LayoutInflater.from(getActivity());
+		View headerView = inflater.inflate(R.layout.new_profiles_header_view, null, false);
+
+		{// Header init
+			photoImg = (ProgressImageView) headerView.findViewById(R.id.photoImg);
+			usernameTxt = (TextView) headerView.findViewById(R.id.usernameTxt);
+			locationTxt = (TextView) headerView.findViewById(R.id.locationTxt);
+			countryImg = (ImageView) headerView.findViewById(R.id.countryImg);
+			premiumIconImg = (ImageView) headerView.findViewById(R.id.premiumIconImg);
+		}
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.addHeaderView(headerView);
+		listView.addFooterView(footerView);
+		listView.setAdapter(sectionedAdapter);
+		listView.setOnItemClickListener(this);
 	}
 }

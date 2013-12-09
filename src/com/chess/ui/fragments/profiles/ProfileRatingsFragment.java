@@ -81,7 +81,6 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 		ratingsAdapter = new RatingsAdapter(getActivity(), ratingList);
 		listView.setAdapter(ratingsAdapter);
 		listView.setOnItemClickListener(this);
-
 	}
 
 	@Override
@@ -160,7 +159,7 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 		{// chess960
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_DAILY_CHESS960.ordinal()],
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
-			if (cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				ratingList.get(DAILY_CHESS960).setValue(currentRating);
 			}
@@ -266,4 +265,12 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 				return new IconDrawable(context, R.string.ic_lessons, R.color.hint_text, R.dimen.glyph_icon_big);
 		}
 	}
+
+/*
+	If there is no results-based rating for a given rating type,
+	then we should just hide the whole row for that rating type in the UI.
+
+	If the user (friend or self) has NO rated activity (so no line items),
+	 we would show a message, like No rated activity.
+*/
 }

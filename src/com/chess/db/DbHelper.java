@@ -340,4 +340,14 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	/* Friends */
+	public static QueryParams getFriends(String username) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_USER);
+		queryParams.setArguments(new String[]{username});
+		queryParams.setOrder(DbScheme.V_LAST_LOGIN_DATE + DbDataManager.ASCEND);
+		return queryParams;
+	}
+
 }

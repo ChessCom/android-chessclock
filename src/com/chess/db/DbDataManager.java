@@ -392,7 +392,7 @@ public class DbDataManager {
 	 * @param context to get resources
 	 * @return true if cursor can be positioned to first
 	 */
-	public static boolean haveSavedDailyGame(Context context, String username) {
+	public static boolean haveSavedAnyDailyGame(Context context, String username) {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		final String[] arguments1 = sArguments1;
@@ -409,6 +409,22 @@ public class DbDataManager {
 					PROJECTION_USER, SELECTION_USER, arguments1, LIMIT_1);
 			exist = cursor != null && cursor.moveToFirst();
 		}
+		if (cursor != null) {
+			cursor.close();
+		}
+
+		return exist;
+	}
+
+	public static boolean haveSavedDailyGame(Context context, String username) {
+
+		ContentResolver contentResolver = context.getContentResolver();
+		final String[] arguments = sArguments1;
+		arguments[0] = username;
+
+		Cursor cursor = contentResolver.query(uriArray[Tables.DAILY_CURRENT_GAMES.ordinal()],
+				PROJECTION_USER, SELECTION_USER, arguments, LIMIT_1);
+		boolean exist = cursor != null && cursor.moveToFirst();
 		if (cursor != null) {
 			cursor.close();
 		}

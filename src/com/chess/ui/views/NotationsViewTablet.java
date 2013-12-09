@@ -124,16 +124,22 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 			Collections.addAll(originalNotations, notations);
 		}
 
-		if (notationsAdapter == null || newNotations) { // TODO invent logic to just invalidate adapter
+		if (notationsAdapter == null) {
 			notationsAdapter = new NotationsPagerAdapter(getContext(), originalNotations);
 			setAdapter(notationsAdapter);
-		} else {
-			notationsAdapter.notifyDataSetChanged();
 		}
 
-		notationsAdapter.selectItem(ply - 1);
+		if (newNotations) {
+			notationsAdapter.setItemsList(originalNotations);
+		}
+
+		selectNotation(ply -1);
 	}
 
+	private void selectNotation(int pos) {
+		notationsAdapter.selectItem(pos);
+		smoothScrollToPosition(pos);
+	}
 
 	private String setNumberToNotation(String notation, int position) {
 		if (position % 2 == 0) {
@@ -202,24 +208,23 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 
 	@Override
 	public void moveBack(int ply) {
-		notationsAdapter.selectItem(ply - 1);
+		selectNotation(ply - 1);
 	}
 
 	@Override
 	public void moveForward(int ply) {
-		notationsAdapter.selectItem(ply - 1);
+		selectNotation(ply - 1);
 	}
 
 	@Override
 	public void rewindBack() {
-		notationsAdapter.selectItem(0);
+		selectNotation(0);
 	}
 
 	@Override
 	public void rewindForward() {
 		int totalCnt = originalNotations.size() - 1;
-
-		notationsAdapter.selectItem(totalCnt);
+		selectNotation(totalCnt);
 	}
 
 	@Override

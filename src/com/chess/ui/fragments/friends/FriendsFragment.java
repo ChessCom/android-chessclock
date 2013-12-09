@@ -9,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FilterQueryProvider;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
@@ -30,13 +28,15 @@ import com.chess.db.tasks.SaveFriendsListTask;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.FriendsCursorAdapter;
+import com.chess.ui.adapters.FriendsPaginationAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.live.LiveGameOptionsFragment;
 import com.chess.ui.fragments.messages.NewMessageFragment;
 import com.chess.ui.fragments.profiles.ProfileTabsFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -49,15 +49,16 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	protected static final String CREATE_CHALLENGE_TAG = "create challenge confirm popup";
 	private static final String END_VACATION_TAG = "end vacation popup";
 
-	private ListView listView;
+	protected AbsListView listView;
 	protected View loadingView;
 	protected TextView emptyView;
 	protected FriendsCursorAdapter friendsAdapter;
 	private FriendsCursorUpdateListener friendsCursorUpdateListener;
-	private FriendsUpdateListener friendsUpdateListener;
+	protected FriendsUpdateListener friendsUpdateListener;
 	private SaveFriendsListUpdateListener saveFriendsListUpdateListener;
 	protected String opponentName;
 	protected String username;
+	protected FriendsPaginationAdapter paginationAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,9 +68,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			username = getUsername();
 		}
 
-		friendsAdapter = new FriendsCursorAdapter(this, null, getImageFetcher());
-		QueryFilterProvider queryFilterProvider = new QueryFilterProvider();
-		friendsAdapter.setFilterQueryProvider(queryFilterProvider);
+		init();
 
 		pullToRefresh(true);
 	}
@@ -101,11 +100,10 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	public void onResume() {
 		super.onResume();
 
-		init();
 		if (need2update){
-			boolean haveSavedData = DbDataManager.haveSavedFriends(getActivity(), getUsername());
+			boolean haveSavedData = DbDataManager.haveSavedFriends(getActivity(), username);
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				updateData();
 			} else if(!haveSavedData){
 				emptyView.setText(R.string.no_network);
@@ -115,6 +113,8 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			if (haveSavedData) {
 				loadFromDb();
 			}
+		} else {
+			setAdapter(paginationAdapter);
 		}
 	}
 
@@ -122,26 +122,21 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	public void onStop() {
 		super.onStop();
 
-		releaseResources();
+//		releaseResources();
 	}
 
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (isNetworkAvailable()) {
 			updateData();
 		}
 	}
 
-	private void init() {
-		friendsCursorUpdateListener = new FriendsCursorUpdateListener();
-		saveFriendsListUpdateListener = new SaveFriendsListUpdateListener();
-		friendsUpdateListener = new FriendsUpdateListener();
-	}
-
-	private void updateData() {
+	protected void updateData() {
 		LoadItem loadItem = LoadHelper.getFriends(getUserToken(), username);
-		new RequestJsonTask<FriendsItem>(friendsUpdateListener).executeTask(loadItem);
+		paginationAdapter.updateLoadItem(loadItem);
+		setAdapter(paginationAdapter);
 	}
 
 	@Override
@@ -178,24 +173,21 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		return getActivity();
 	}
 
-	private class FriendsUpdateListener extends ChessUpdateListener<FriendsItem> {
+	protected void setAdapter(ListAdapter adapter){
+		((ListView) listView).setAdapter(adapter);
+	}
 
-		public FriendsUpdateListener() {
-			super(FriendsItem.class);
-		}
+	protected class FriendsUpdateListener extends ChessUpdateListener<FriendsItem.Data> {
 
 		@Override
 		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
 		}
 
 		@Override
-		public void updateData(FriendsItem returnedObj) {
-			super.updateData(returnedObj);
+		public void updateListData(List<FriendsItem.Data> returnedObj) {
+			super.updateListData(returnedObj);
 
-			new SaveFriendsListTask(saveFriendsListUpdateListener, returnedObj.getData(),
-					getContentResolver()).executeTask();
+			new SaveFriendsListTask(saveFriendsListUpdateListener, returnedObj,	getContentResolver()).executeTask();
 		}
 
 		@Override
@@ -228,7 +220,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 	private void loadFromDb() {
 		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getTableForUser(getUsername(), DbScheme.Tables.FRIENDS),
+				DbHelper.getFriends(getUsername()),
 				getContentResolver()).executeTask();
 	}
 
@@ -245,6 +237,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			super.updateData(returnedObj);
 
 			friendsAdapter.changeCursor(returnedObj);
+			paginationAdapter.notifyDataSetChanged();
 			need2update = false;
 		}
 
@@ -318,8 +311,8 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	private void releaseResources() {
 		friendsCursorUpdateListener.releaseContext();
 		friendsCursorUpdateListener = null;
-		friendsUpdateListener.releaseContext();
-		friendsUpdateListener = null;
+//		friendsUpdateListener.releaseContext();
+//		friendsUpdateListener = null;
 		saveFriendsListUpdateListener.releaseContext();
 		saveFriendsListUpdateListener = null;
 	}
@@ -434,9 +427,19 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 	}
 
+	private void init() {
+		friendsCursorUpdateListener = new FriendsCursorUpdateListener();
+		saveFriendsListUpdateListener = new SaveFriendsListUpdateListener();
+
+		friendsAdapter = new FriendsCursorAdapter(this, null, getImageFetcher());
+		QueryFilterProvider queryFilterProvider = new QueryFilterProvider();
+		friendsAdapter.setFilterQueryProvider(queryFilterProvider);
+		friendsUpdateListener = new FriendsUpdateListener();
+		paginationAdapter = new FriendsPaginationAdapter(getActivity(), friendsAdapter, friendsUpdateListener, null);
+	}
+
 	protected void widgetsInit(View view) {
 		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(friendsAdapter);
 	}
 
 }

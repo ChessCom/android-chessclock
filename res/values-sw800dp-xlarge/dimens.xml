@@ -92,6 +92,7 @@
 	<dimen name="popup_title_text_size_medium">17sp</dimen>
 	<dimen name="diagram_icon_overlay_size">80dip</dimen>
 	<dimen name="daily_board_preview_size">220dip</dimen>
+	<dimen name="daily_board_preview_overlay">165dip</dimen>
 	<dimen name="notations_text_padding">2dip</dimen>
 	<dimen name="notations_text_side_padding">10dip</dimen>
 	<dimen name="_3dPiece_offset_for_board">21dip</dimen>

@@ -1,7 +1,6 @@
 package com.chess.ui.fragments.home;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,13 +13,9 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.*;
 import com.chess.backend.entity.api.DailyCurrentGameData;
-import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
-import com.chess.db.DbScheme;
-import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
@@ -40,13 +35,12 @@ import java.util.List;
 public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener,
 		FragmentParentFace {
 
-	public static final int NEW_GAME = 0;
-
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId = NON_INIT;
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
 	private Boolean showDailyGamesFragment;
 	private View tabsLoadProgressBar;
+	private boolean haveSavedData;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -81,10 +75,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		view.findViewById(R.id.rightTabBtn).setVisibility(View.GONE);
 //		((TextView) view.findViewById(R.id.rightTabBtn)).setText(R.string.feed);
 
-//		((TextView) view.findViewById(R.id.leftTabBtn)).setTextColor(themeFontColorStateList);
-//		((TextView) view.findViewById(R.id.centerTabBtn)).setTextColor(themeFontColorStateList);
-//		((TextView) view.findViewById(R.id.rightTabBtn)).setTextColor(themeFontColorStateList);
-
 		showActionBar(true);
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
@@ -112,24 +102,15 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onResume() {
 		super.onResume();
 
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.THEME_BACKGROUNDS.name()),
-				DbHelper.getAll(DbScheme.Tables.THEME_BACKGROUNDS),
-				getContentResolver()).executeTask();
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.THEME_BOARDS.name()),
-				DbHelper.getAll(DbScheme.Tables.THEME_BOARDS),
-				getContentResolver()).executeTask();
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.THEME_PIECES.name()),
-				DbHelper.getAll(DbScheme.Tables.THEME_PIECES),
-				getContentResolver()).executeTask();
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.THEME_SOUNDS.name()),
-				DbHelper.getAll(DbScheme.Tables.THEME_SOUNDS),
-				getContentResolver()).executeTask();
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.THEME_BACKGROUNDS.name()),
+//				DbHelper.getAll(DbScheme.Tables.THEME_BACKGROUNDS),
+//				getContentResolver()).executeTask();
 
 		// check if user have daily games in progress or completed. May check in DB
 		// get games_id's and compare it to local DB
 		// if there are game_id which we don't have, then fetch it
 
-		boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), getUsername());
+		haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), getUsername());
 		if (haveSavedData) {
 			showDailyGamesFragment = true;
 			if (previousCheckedId == NON_INIT) {
@@ -140,6 +121,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			LoadItem loadItem = LoadHelper.getAllGamesFiltered(getUserToken(), RestHelper.V_ID);
 			new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
 		} else {
+			if (!isNetworkAvailable()) {
+				showDailyGamesFragment = false;
+			}
+
 			if (previousCheckedId == NON_INIT) {
 				tabRadioGroup.check(R.id.leftTabBtn);
 			}
@@ -147,23 +132,23 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		}
 	}
 
-	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> { // use to show Db table content
-
-		private String tableName;
-
-		public DbCursorUpdateListener(String tableName) {
-			this.tableName = tableName;
-		}  // Used for test
-
-		@Override
-		public void updateData(Cursor cursor) {
-			super.updateData(cursor);
-
-			if (HONEYCOMB_PLUS_API) {
-				AppUtils.printTableContent(cursor, tableName);
-			}
-		}
-	}
+//	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> { // use to show Db table content
+//
+//		private String tableName;
+//
+//		public DbCursorUpdateListener(String tableName) {
+//			this.tableName = tableName;
+//		}  // Used for test
+//
+//		@Override
+//		public void updateData(Cursor cursor) {
+//			super.updateData(cursor);
+//
+//			if (HONEYCOMB_PLUS_API) {
+//				AppUtils.printTableContent(cursor, tableName);
+//			}
+//		}
+//	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -252,13 +237,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 			// current games
 			List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-			boolean currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContentResolver(), currentGamesList, getUsername());
 
-			// finished
-			List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getFinished();
-			boolean finishedGamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, getUsername());
-
-			showDailyGamesFragment = currentGamesLeft || finishedGamesLeft;
+			showDailyGamesFragment = DbDataManager.checkAndDeleteNonExistCurrentGames(getContentResolver(), currentGamesList, getUsername());
 
 			if (previousCheckedId == NON_INIT) {
 				tabRadioGroup.check(R.id.leftTabBtn);
@@ -270,7 +250,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
-
+			showDailyGamesFragment = haveSavedData;
 			updateTabs();
 		}
 	}

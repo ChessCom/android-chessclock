@@ -173,9 +173,9 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		registerReceiver(gamesUpdateReceiver, moveUpdateFilter);
 
 		if (need2update) {
-			boolean haveSavedData = DbDataManager.haveSavedDailyGame(getActivity(), getUsername());
+			boolean haveSavedData = DbDataManager.haveSavedAnyDailyGame(getActivity(), getUsername());
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				updateData();
 			} else if (!haveSavedData) {
 				emptyView.setText(R.string.no_network);
@@ -493,6 +493,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 						}
 					} while (returnedObj.moveToNext());
+					// add first fake game to daily games
+					currentGamesMyCursorAdapter.showNewGameAtFirst(!myTurnInDailyGames);
 
 					// restore position
 					returnedObj.moveToFirst();
@@ -566,6 +568,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 							getContentResolver(), getUsername()).executeTask();
 				} else {
 					currentGamesMyCursorAdapter.changeCursor(null);
+					// show not your turn view
+
 				}
 			}
 
