@@ -1830,7 +1830,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			} else {
 				rect.set(xCrd, yCrd, (int) (xCrd + squareSize), (int) (yCrd + squareSize));
 			}
-			canvas.drawBitmap(pieceBitmap, null, rect, piecesPaint);
+
+			if (!pieceBitmap.isRecycled()) {
+				canvas.drawBitmap(pieceBitmap, null, rect, piecesPaint);
+			}
 		}
 
 		public boolean isForceCompEngine() {
