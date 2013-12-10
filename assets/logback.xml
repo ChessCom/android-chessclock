@@ -1,23 +1,33 @@
 <configuration>
 
-	<contextName>com.chess</contextName>
-
 	<property name="lcc.log.level.info" value="OFF" />
 	<property name="lcc.log.level.debug" value="OFF" />
 	<property name="lcc.log.level.warn" value="OFF" />
 
-	<!-- Logging rules for Live Debug mode (should be uncommented) -->
+	<!-- Logging rules for LCC Debug mode (should be uncommented) -->
 	<!--<property name="lcc.log.level.info" value="INFO" />
 	<property name="lcc.log.level.debug" value="DEBUG" />
 	<property name="lcc.log.level.warn" value="WARN" />-->
 
-	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
-		<file>/sdcard/Android/data/chess.com/cache/logs/chess.log</file>
-		<append>true</append>
+	<property name="LOG_DIR" value="/sdcard/Android/data/com.chess/cache/logs" />
+
+	<contextName>com.chess</contextName>
+
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- active log file -->
+		<file>${LOG_DIR}/chess.log</file>
 		<encoder>
-			<!--<pattern>%d %contextName %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>-->
 			<pattern>%d %contextName %-4relative [%thread] %-5level - %msg%n</pattern>
 		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover period -->
+			<fileNamePattern>${LOG_DIR}/chess-%d.log</fileNamePattern>
+
+			<!-- 2 days history -->
+			<maxHistory>2</maxHistory>
+		</rollingPolicy>
 	</appender>
 
 	<appender name="LOGCAT" class="ch.qos.logback.classic.android.LogcatAppender">
@@ -25,6 +35,7 @@
 			<pattern>%msg</pattern>
 		</encoder>
 	</appender>
+
 
 	<logger name="com.chess.utilities.LogMe" level="DEBUG">
 		<appender-ref ref="LOGCAT" />
@@ -76,11 +87,10 @@
 		<appender-ref ref="FILE" />
 	</logger>
 
-	<!--This logger can be removed after LCC fix-->
-	<logger name="com.chess.live.client.impl.BayeuxClientImpl" level="${lcc.log.level.debug}">
+	<!--<logger name="com.chess.live.client.impl.BayeuxClientImpl" level="${lcc.log.level.debug}">
 		<appender-ref ref="LOGCAT" />
 		<appender-ref ref="FILE" />
-	</logger>
+	</logger>-->
 
 	<!--<root level="VERBOSE">
 		<appender-ref ref="FILE" />
