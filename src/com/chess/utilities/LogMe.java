@@ -49,7 +49,7 @@ public class LogMe {
 		if (ENABLED) {
 			LOG.debug(DEBUG_LIVE_TAG + TAG_MESSAGE_SEPARATOR + message);
 		} else {
-			Log.d(DEBUG_LIVE_TAG, TAG_MESSAGE_SEPARATOR + message);
+			Log.d(DEBUG_LIVE_TAG, message);
 		}
 	}
 
