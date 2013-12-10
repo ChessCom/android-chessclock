@@ -1096,6 +1096,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			Integer pos = (Integer) v.getTag(R.id.list_item_id);
 
 			goToMove(pos);
+			drawCapturedPieces();
 
 			gameFace.onNotationClicked(pos);
 

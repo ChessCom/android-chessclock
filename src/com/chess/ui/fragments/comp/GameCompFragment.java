@@ -148,7 +148,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		if (compGameConfig.getFen() != null) {
 			getBoardFace().setupBoard(compGameConfig.getFen());
 			getBoardFace().setMode(compGameConfig.getMode());
-		}else if (getAppData().haveSavedCompGame()) {
+		} else if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
 		} else {
 			getBoardFace().setMode(compGameConfig.getMode());
