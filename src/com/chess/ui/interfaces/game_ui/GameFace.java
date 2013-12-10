@@ -55,4 +55,6 @@ public interface GameFace {
 	void updateParentView();
 
 	boolean isUserAbleToMove(int color);
+
+	boolean isObservingMode();
 }

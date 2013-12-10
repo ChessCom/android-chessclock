@@ -130,4 +130,9 @@ public abstract class AbstractGameNetworkFaceHelper implements GameNetworkFace {
 	public boolean isUserAbleToMove(int color) {
 		return false;
 	}
+
+	@Override
+	public boolean isObservingMode() {
+		return false;
+	}
 }

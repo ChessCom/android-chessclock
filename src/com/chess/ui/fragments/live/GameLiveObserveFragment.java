@@ -289,4 +289,13 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		}
 	}
 
+	@Override
+	public boolean isUserAbleToMove(int color) {
+		return false;
+	}
+
+	@Override
+	public boolean isObservingMode() {
+		return true;
+	}
 }

@@ -877,10 +877,9 @@ public class ChessBoard implements BoardFace {
 		switchSides();
 
 
-		if (playSound && gameFace != null && gameFace.isUserAbleToMove(side)) {
-//		if (playSound && gameFace != null && gameFace.isUserColorWhite() != null) {
-			boolean userColorWhite = gameFace.isUserColorWhite();
-			if ((userColorWhite && colorFrom == 1) || (!userColorWhite && colorFrom == 0)) {
+		if (playSound && gameFace != null) {
+
+			if (gameFace.isObservingMode()) {
 				if (isPerformCheck(side)) {
 					soundPlayer.playMoveOpponentCheck();
 				} else if (pieceTo != EMPTY) {
@@ -888,13 +887,25 @@ public class ChessBoard implements BoardFace {
 				} else {
 					soundPlayer.playMoveOpponent();
 				}
-			} else if ((userColorWhite && colorFrom == 0) || (!userColorWhite && colorFrom == 1)) {
-				if (isPerformCheck(side)) {
-					soundPlayer.playMoveSelfCheck();
-				} else if (pieceTo != EMPTY) {
-					soundPlayer.playCapture();
-				} else {
-					soundPlayer.playMoveSelf();
+
+			} else if (gameFace.isUserAbleToMove(side)) {
+				boolean userColorWhite = gameFace.isUserColorWhite();
+				if ((userColorWhite && colorFrom == 1) || (!userColorWhite && colorFrom == 0)) {
+					if (isPerformCheck(side)) {
+						soundPlayer.playMoveOpponentCheck();
+					} else if (pieceTo != EMPTY) {
+						soundPlayer.playCapture();
+					} else {
+						soundPlayer.playMoveOpponent();
+					}
+				} else if ((userColorWhite && colorFrom == 0) || (!userColorWhite && colorFrom == 1)) {
+					if (isPerformCheck(side)) {
+						soundPlayer.playMoveSelfCheck();
+					} else if (pieceTo != EMPTY) {
+						soundPlayer.playCapture();
+					} else {
+						soundPlayer.playMoveSelf();
+					}
 				}
 			}
 		}

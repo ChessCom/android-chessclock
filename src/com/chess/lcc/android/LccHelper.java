@@ -1056,7 +1056,7 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public void observeTopGame() {
 		LogMe.dl(TAG, "observe top game: listener=" + gameListener);
-		lccClient.observeTopGame(GameRatingClass.Blitz, gameListener); // todo: check game types
+		lccClient.observeTopGame(GameRatingClass.Blitz, gameListener);
 	}
 
 	public void unobserveGame(Long gameId) {

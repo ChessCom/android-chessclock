@@ -178,6 +178,11 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	@Override
+	public boolean isObservingMode() {
+		return false;
+	}
+
+	@Override
 	public boolean isUserAbleToMove(int color) {
 		if (!currentGameExist()) {
 			return false;
