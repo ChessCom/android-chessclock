@@ -591,9 +591,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			boardFace.setReside(!boardFace.isReside());
 		}
 
-		if (diagramItem.isFlip()) {
-			boardFace.setReside(true);
-		}
+		boardFace.setReside(diagramItem.isFlip());
 
 		// remove comments from movesList
 		String movesList = diagramItem.getMovesList();

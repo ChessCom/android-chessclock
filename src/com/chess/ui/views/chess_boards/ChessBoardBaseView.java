@@ -1141,6 +1141,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (customBoardId != NO_ID) {
 				shader = setBoardFromResource();
 			} else if (appData.isUseThemeBoard()) {
+//				File cacheDir = null;
+//				try {
+//					cacheDir = AppUtils.getCacheDir(getContext());
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//				boardBitmap = BitmapFactory.decodeFile(cacheDir.getAbsolutePath() + "/135.GIF");
+
 				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
 				if (boardBitmap == null) {
 					getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme

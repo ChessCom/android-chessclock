@@ -131,40 +131,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		}
 	}
 
-	/*public void executePausedActivityGameEvents() {
-		*//*if (gameActivityPausedMode) {*//*
-
-		LogMe.dl(TAG, "executePausedActivityGameEvents size=" + pausedActivityGameEvents.size() + ", events=" + pausedActivityGameEvents);
-
-		setGameActivityPausedMode(false);
-
-		if (pausedActivityGameEvents.size() > 0) {
-
-			LiveGameEvent moveEvent = pausedActivityGameEvents.get(LiveGameEvent.Event.MOVE);
-			if (moveEvent != null && (currentGameId == null || currentGameId.equals(moveEvent.getGameId()))) {
-				pausedActivityGameEvents.remove(LiveGameEvent.Event.MOVE);
-				//lccHolder.getAndroidStuff().processMove(gameEvent.getGameId(), gameEvent.moveIndex);
-				GameLiveItem newGame = new GameLiveItem(getGame(moveEvent.getGameId()), getCurrentGame().getMoveCount() - 1*//*moveEvent.getMoveIndex()*//*);
-				lccEventListener.onGameRefresh(newGame);
-			}
-
-			LiveGameEvent drawEvent = pausedActivityGameEvents.get(LiveGameEvent.Event.DRAW_OFFER);
-			if (drawEvent != null && (currentGameId == null || currentGameId.equals(drawEvent.getGameId()))) {
-				pausedActivityGameEvents.remove(LiveGameEvent.Event.DRAW_OFFER);
-				lccEventListener.onDrawOffered(drawEvent.getDrawOffererUsername());
-			}
-
-			LiveGameEvent endGameEvent = pausedActivityGameEvents.get(LiveGameEvent.Event.END_OF_GAME);
-			if (endGameEvent != null && (currentGameId == null || currentGameId.equals(endGameEvent.getGameId()))) {
-				pausedActivityGameEvents.remove(LiveGameEvent.Event.END_OF_GAME);
-				lccEventListener.onGameEnd(endGameEvent.getGameEndedMessage());
-			}
-
-			//pausedActivityGameEvents.clear();
-		}
-		paintClocks();
-	}*/
-
 	public void paintClocks() {
 		if (whiteClock != null && blackClock != null) {
 			whiteClock.paint();
@@ -948,24 +914,11 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 	}
 
 	public void doMoveMade(final Game game, int moveIndex) {
-		/*if (((latestMoveNumber != null) && (moveIndex < latestMoveNumber)) || (latestMoveNumber == null && moveIndex > 0)) {
-			LogMe.dl(TAG, "GAME LISTENER: Extra onMoveMade received (currentMoveIndex=" + moveIndex
-					+ ", latestMoveNumber=" + latestMoveNumber + StaticData.RIGHT_PAR);
-			return;
-		} else {*/
 		latestMoveNumber = moveIndex;
-		//}
 
 		if (!isGameActivityPausedMode()) {
 			// todo: possible optimization - keep gameLiveItem between moves and just add new move when it comes
 			lccEventListener.onGameRefresh(new GameLiveItem(game, moveIndex));
-		} else {
-			LogMe.dl(TAG, "paused mode: postpone MOVE processing");
-			/*LiveGameEvent moveEvent = new LiveGameEvent();
-			moveEvent.setEvent(LiveGameEvent.Event.MOVE);
-			moveEvent.setGameId(game.getId());
-			//moveEvent.setMoveIndex(moveIndex);
-			getPausedActivityGameEvents().put(moveEvent.getEvent(), moveEvent);*/
 		}
 	}
 

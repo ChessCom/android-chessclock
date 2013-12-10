@@ -137,9 +137,7 @@ public class GameLiveArchiveAnalysisFragment extends GameDailyAnalysisFragment {
 		}
 
 		boardFace.setupBoard(currentGame.getStartingFenPosition());
-		if (!userPlayWhite) {
-			boardFace.setReside(true);
-		}
+		boardFace.setReside(!userPlayWhite);
 
 		boardFace.checkAndParseMovesList(currentGame.getMoveList());
 

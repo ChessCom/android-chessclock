@@ -22,11 +22,11 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
-import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.live.client.Game;
 import com.chess.live.rules.GameResult;
 import com.chess.live.util.GameRatingClass;
+import com.chess.model.DataHolder;
 import com.chess.model.GameAnalysisItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
@@ -153,20 +153,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onResume() {
 		super.onResume();
 
-		if (need2update) {
-			try {
-				Long currentGameId = getLiveService().getCurrentGameId();
-				if (isLCSBound && currentGameId != null && currentGameId != 0) {
-					gameId = currentGameId;
-					synchronized (LccHelper.LOCK) {
-						onGameStarted();
-					}
-				}
-			} catch (DataNotValidException e) {
-				logLiveTest(e.getMessage());
-				logTest(e.getMessage());
-				isLCSBound = false;
+		try {
+			Long currentGameId = getLiveService().getCurrentGameId();
+			if (isLCSBound && currentGameId != null && currentGameId != 0) {
+				onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronizid
 			}
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+			logTest(e.getMessage());
+			isLCSBound = false;
 		}
 	}
 
@@ -194,19 +189,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		LiveChessService liveService = getLiveService();
 		GameLiveItem currentGame = liveService.getGameItem();
+		gameId = currentGame.getGameId();
 
 		ChessBoardLive.resetInstance();
-		boardView.setGameFace(this);
-
 		BoardFace boardFace = getBoardFace();
+
 		Boolean isUserColorWhite = liveService.isUserColorWhite(); // should throw exception if null
 		userPlayWhite = isUserColorWhite;
-		logLiveTest("onGameStarted reside = " + boardFace.isReside() + " isUserColorWhite = " + isUserColorWhite);
 
 		boardFace.setReside(isUserColorWhite != null && !isUserColorWhite);
 
-		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
-		boardView.updateBoardAndPiecesImgs();
 		getNotationsFace().resetNotations();
 		boardView.resetValidMoves();
 
@@ -223,7 +215,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		getControlsView().showHome(false);
 
 		boardFace.setFinished(false);
-		getSoundPlayer().playGameStart();
+		if (need2update) {
+			getSoundPlayer().playGameStart();
+		}
 
 		getControlsView().haveNewMessage(currentGame.hasNewMessage());
 
@@ -255,26 +249,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 		}
 
+		boardView.updatePlayerNames(currentGame.getWhiteUsername(), currentGame.getBlackUsername());
+
 		{// set avatars
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-
-			{ // set stubs while avatars are loading
-				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
-						R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
-
-				labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
-
-				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
-				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-				topPanelView.invalidate();
-
-				labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
-
-				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
-				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-				bottomPanelView.invalidate();
-			}
 
 			labelsConfig.topPlayerAvatar = liveService.getCurrentGame().
 					getOpponentForPlayer(labelsConfig.bottomPlayerName).getAvatarUrl();
@@ -300,6 +277,130 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		need2update = false;
 		userSawGameEndPopup = false;
+	}
+
+	@Override
+	public void onGameRefresh(final GameLiveItem gameItem) {
+		logLiveTest("onGameRefresh");
+		Activity activity = getActivity();
+		if (activity == null) {
+			logLiveTest("activity = null, quit");
+			return;
+		}
+		LiveChessService liveService;
+		try {
+			liveService = getLiveService();
+		} catch (final DataNotValidException e) {
+			logLiveTest(e.getMessage());
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					showToast(e.getMessage());
+				}
+			});
+			return;
+		}
+		BoardFace boardFace = getBoardFace();
+		if (boardFace.isAnalysis() && gameItem.getGameId() == gameId) {
+			return;
+		} else {
+			boardFace.setAnalysis(false);
+			boardFace.setFinished(false);
+			gameId = gameItem.getGameId();
+		}
+
+
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				boardView.resetValidMoves();
+			}
+		});
+
+		String[] actualMoves = gameItem.getMoveList().trim().split(Symbol.SPACE);
+		int actualMovesSize = actualMoves.length;
+
+		for (int i = boardFace.getMovesCount(); i < actualMovesSize; i++) {
+			int[] moveFT = boardFace.parseCoordinate(actualMoves[i]);
+			Move move = boardFace.convertMove(moveFT);
+			// we play sound and animate only for the last move
+			boolean playSound;
+			if (i == actualMovesSize - 1) {
+				playSound = true;
+				boardView.setMoveAnimator(move, true);
+			} else {
+				playSound = false;
+			}
+
+			boardFace.makeMove(move, playSound);
+		}
+
+		boardFace.setMovesCount(actualMovesSize);
+
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				invalidateGameScreen();
+				getControlsView().haveNewMessage(gameItem.hasNewMessage());
+			}
+		});
+
+		liveService.checkTestMove();
+	}
+
+	@Override
+	public void onGameEnd(final Game game, final String gameEndMessage) {
+		final Activity activity = getActivity();
+		if (activity == null || userSawGameEndPopup) {
+			return;
+		}
+		userSawGameEndPopup = true;
+
+		final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
+		final List<Integer> ratings = game.getRatings();
+		// Get side result
+		List<GameResult> gameResults = game.getResults();
+		final GameResult whitePlayerResult = gameResults.get(0);
+		final GameResult blackPlayerResult = gameResults.get(1);
+
+		gameEndTitleId = R.string.black_wins;
+		if (whitePlayerResult == WIN) {
+			gameEndTitleId = R.string.white_wins;
+		} else if (blackPlayerResult != WIN) {
+			gameEndTitleId = R.string.game_drawn;
+		}
+
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				final View layout;
+
+				if (!AppUtils.isNeedToUpgrade(activity)) {
+					layout = inflater.inflate(R.layout.popup_end_game, null, false);
+				} else {
+					layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
+				}
+
+				int newWhiteRating = ratings.get(0);
+				int newBlackRating = ratings.get(1);
+
+				if (getBoardFace().isReside()) {
+					topPanelView.setPlayerRating(String.valueOf(newWhiteRating));
+					bottomPanelView.setPlayerRating(String.valueOf(newBlackRating));
+				} else {
+					topPanelView.setPlayerRating(String.valueOf(newBlackRating));
+					bottomPanelView.setPlayerRating(String.valueOf(newWhiteRating));
+				}
+
+				updatePlayerLabels(game, newWhiteRating, newBlackRating);
+				showGameEndPopup(layout, getString(gameEndTitleId), gameEndMessage);
+
+				setBoardToFinishedState();
+
+				getControlsView().showAfterMatch();
+			}
+		});
 	}
 
 	@Override
@@ -364,16 +465,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		});
 	}
 
-//	private void indicateCurrentMove(boolean userMove) {  // TODO adjust or remove
-//		if (getBoardFace().isReside()) {
-//			topPanelView.showTimeLeftIcon(userMove);
-//			bottomPanelView.showTimeLeftIcon(!userMove);
-//		} else {
-//			topPanelView.showTimeLeftIcon(!userMove);
-//			bottomPanelView.showTimeLeftIcon(userMove);
-//		}
-//	}
-
 	// ----------------------Lcc Events ---------------------------------------------
 
 	@Override
@@ -390,9 +481,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					dismissEndGameDialog(); // hide game end popup
 
 					try {
-						synchronized (LccHelper.LOCK) {
-							onGameStarted();
-						}
+						onGameStarted();
 					} catch (DataNotValidException e) {
 						logTest(e.getMessage());
 					}
@@ -417,83 +506,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		getLastPopupFragment().setCancelable(false);
 	}
 
-	@Override
-	public void onGameRefresh(final GameLiveItem gameItem) {
-		logLiveTest("onGameRefresh");
-		Activity activity = getActivity();
-		if (activity == null) {
-			logLiveTest("activity = null, quit");
-			return;
-		}
-		LiveChessService liveService;
-		try {
-			liveService = getLiveService();
-		} catch (final DataNotValidException e) {
-			logLiveTest(e.getMessage());
-			getActivity().runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					showToast(e.getMessage());
-				}
-			});
-			return;
-		}
-		BoardFace boardFace = getBoardFace();
-		if (boardFace.isAnalysis() && gameItem.getGameId() == gameId) {
-			return;
-		} else {
-			boardFace.setAnalysis(false);
-			boardFace.setFinished(false);
-			gameId = gameItem.getGameId();
-		}
-
-		String[] actualMoves = gameItem.getMoveList().trim().split(Symbol.SPACE);
-		int actualMovesSize = actualMoves.length;
-		getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-//				boardView.setGameFace(GameLiveFragment.this);
-//				boardView.resetValidMoves();
-			}
-		});
-
-		Boolean userColorWhite = liveService.isUserColorWhite();  // should throw exception if null
-		userPlayWhite = userColorWhite;
-		logLiveTest("onGameRefresh reside = " + boardFace.isReside() + " isUserColorWhite = " + userColorWhite);
-		boardFace.setReside(userColorWhite != null && !userColorWhite);
-
-		logLiveTest("actualMoves = " + actualMoves.length + " boardFace moves = " + boardFace.getMovesCount());
-		logLiveTest("actualMoves last = " + actualMoves[actualMovesSize - 1]
-				+ " boardFace moves last = " + boardFace.getLastMoveSAN());
-
-		for (int i = boardFace.getMovesCount(); i < actualMovesSize; i++) {
-			int[] moveFT = boardFace.parseCoordinate(actualMoves[i]);
-			Move move = boardFace.convertMove(moveFT);
-			// we play sound and animate only for last move
-			boolean playSound;
-			if (i == actualMovesSize - 1) {
-				playSound = true;
-				boardView.setMoveAnimator(move, true);
-			} else {
-				playSound = false;
-			}
-
-			boardFace.makeMove(move, playSound);
-		}
-
-		boardFace.setMovesCount(actualMovesSize);
-
-
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				invalidateGameScreen();
-				getControlsView().haveNewMessage(gameItem.hasNewMessage());
-			}
-		});
-
-		liveService.checkTestMove();
-	}
 
 	public void onConnectionBlocked(boolean blocked) {
 		blockGame(blocked);
@@ -525,60 +537,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		});
 	}
 
-	@Override
-	public void onGameEnd(final Game game, final String gameEndMessage) {
-		final Activity activity = getActivity();
-		if (activity == null || userSawGameEndPopup) {
-			return;
-		}
-		userSawGameEndPopup = true;
-
-		final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-
-		final List<Integer> ratings = game.getRatings();
-		// Get side result
-		List<GameResult> gameResults = game.getResults();
-		final GameResult whitePlayerResult = gameResults.get(0);
-		final GameResult blackPlayerResult = gameResults.get(1);
-
-		gameEndTitleId = R.string.black_wins;
-		if (whitePlayerResult == WIN) {
-			gameEndTitleId = R.string.white_wins;
-		} else if (blackPlayerResult != WIN) {
-			gameEndTitleId = R.string.game_drawn;
-		}
-
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				final View layout;
-				// todo: change game end layout for Observed game
-				if (!AppUtils.isNeedToUpgrade(activity)) {
-					layout = inflater.inflate(R.layout.popup_end_game, null, false);
-				} else {
-					layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
-				}
-
-				int newWhiteRating = ratings.get(0);
-				int newBlackRating = ratings.get(1);
-
-				if (getBoardFace().isReside()) {
-					topPanelView.setPlayerRating(String.valueOf(newWhiteRating));
-					bottomPanelView.setPlayerRating(String.valueOf(newBlackRating));
-				} else {
-					topPanelView.setPlayerRating(String.valueOf(newBlackRating));
-					bottomPanelView.setPlayerRating(String.valueOf(newWhiteRating));
-				}
-
-				updatePlayerLabels(game, newWhiteRating, newBlackRating);
-				showGameEndPopup(layout, getString(gameEndTitleId), gameEndMessage);
-
-				setBoardToFinishedState();
-
-				getControlsView().showAfterMatch();
-			}
-		});
-	}
 
 	protected void showGameEndPopup(View layout, String title, String message) {
 		LiveChessService liveService;
@@ -767,6 +725,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void invalidateGameScreen() {
+		logLiveTest("GameLive invalidateGameScreen = " );
 		if (isLCSBound) {
 			showSubmitButtonsLay(getBoardFace().isSubmit());
 
@@ -791,9 +750,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			bottomPanelView.setPlayerName(labelsConfig.bottomPlayerName);
 			bottomPanelView.setPlayerRating(labelsConfig.bottomPlayerRating);
 
-			boardView.updateNotations(getBoardFace().getNotationArray());
-			boardView.invalidate();
-
 			topPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
 			bottomPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
 			try {
@@ -801,6 +757,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
 			}
+
+			boardView.updateNotations(getBoardFace().getNotationArray());
+			boardView.invalidate();
 		}
 	}
 
@@ -920,19 +879,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			if (isLCSBound) {
 				liveService.getPendingWarnings().remove(warningMessage);
 			}
-			LogMe.dl("live", "positive clicked");
-			// TODO find a real cause of analysis block
-			// restore game to normal state
-//			switch2Analysis(false);
-			getBoardFace().setAnalysis(false);
 
-			synchronized (LccHelper.LOCK) {
-				try {
-					onGameStarted();
-				} catch (DataNotValidException e) {
-					logLiveTest(e.getMessage());
-				}
-			}
 		} else if (tag.equals(ABORT_GAME_TAG)) {
 			if (isLCSBound) {
 
@@ -1052,15 +999,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	protected void restoreGame() {
 		if (isLCSBound) {
-			synchronized (LccHelper.LOCK) {
-				try {
-					onGameStarted();
-				} catch (DataNotValidException e) {
-					logLiveTest(e.getMessage());
-					isLCSBound = false;
-					return;
-				}
-				getBoardFace().setJustInitialized(false);
+			try {
+				onGameStarted();
+			} catch (DataNotValidException e) {
+				logLiveTest(e.getMessage());
+				isLCSBound = false;
 			}
 		}
 	}
@@ -1089,6 +1032,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				liveService.rematch();
 			}
 			dismissEndGameDialog();
+
+			if (!DataHolder.getInstance().isLiveGameOpened()) {
+				getActivityFace().openFragment(new LiveGameWaitFragment());
+				DataHolder.getInstance().setLiveGameOpened(true);
+			}
 		} else if (view.getId() == R.id.analyzePopupBtn) {
 			GameAnalysisItem analysisItem = new GameAnalysisItem();  // TODO reuse later
 			analysisItem.setGameType(RestHelper.V_GAME_CHESS);
@@ -1142,24 +1090,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	protected void init() throws DataNotValidException {
 		LiveChessService liveService = getLiveService();
 
-		GameLiveItem currentGame = liveService.getGameItem();
-		if (currentGame == null) {
-			throw new DataNotValidException(DataNotValidException.GAME_NOT_EXIST);
-		}
-
-		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
-		boardView.updateBoardAndPiecesImgs();
-		getNotationsFace().resetNotations();
-		enableScreenLockTimer();
-
 		if (!liveService.isActiveGamePresent()) {
 			getControlsView().enableAnalysisMode(true);
 			getBoardFace().setFinished(true);
 		}
 
 		liveService.setLccChatMessageListener(this);
-
-
 
 		int resignTitleId = liveService.getResignTitle();
 		{// options list setup
@@ -1259,6 +1195,28 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		getControlsView().setBoardViewFace(boardView);
 		getControlsView().showHome(false);
 		topPanelView.setClickHandler(this);
+
+		{ // set avatars views
+			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+
+			{ // set stubs while avatars are loading
+				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
+						R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
+
+				labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
+				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+				topPanelView.invalidate();
+
+				labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
+
+				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
+				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+				bottomPanelView.invalidate();
+			}
+		}
 	}
 
 	protected void logLiveTest(String messageToLog) {

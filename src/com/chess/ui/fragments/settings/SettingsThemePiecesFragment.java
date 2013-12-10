@@ -170,7 +170,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 			}
 
 			if (serviceBounded) {
-				serviceBinder.getService().loadPieces(selectedPiecesId, selectedThemePieceItem, screenWidth);
+				serviceBinder.getService().loadPieces(selectedPiecesId, screenWidth);
 			} else {
 				needToLoadThemeAfterConnected = true;
 				getActivity().bindService(new Intent(getActivity(), GetAndSavePieces.class), loadServiceConnectionListener,
@@ -247,7 +247,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 				isPiecesLoading = true;
 			}
 			if (needToLoadThemeAfterConnected) {
-				serviceBinder.getService().loadPieces(selectedPiecesId, selectedThemePieceItem, screenWidth);
+				serviceBinder.getService().loadPieces(selectedPiecesId, screenWidth);
 			}
 		}
 

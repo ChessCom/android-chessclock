@@ -176,9 +176,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 			boardFace.setupBoard(analysisItem.getFen());
 		}
 
-		if (!userPlayWhite) {
-			boardFace.setReside(true);
-		}
+		boardFace.setReside(!userPlayWhite);
 
 		boardFace.checkAndParseMovesList(analysisItem.getMovesList());
 

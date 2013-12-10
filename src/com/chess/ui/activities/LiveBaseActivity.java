@@ -155,8 +155,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			if (getAppData().isLiveChess() && isLCSBound) {
 				Fragment fragmentByTag = getLiveFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
-					return true;
+					if (!liveService.getCurrentGame().isGameOver()) {
+						showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
+						return true;
+					}
 				}
 
 				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());

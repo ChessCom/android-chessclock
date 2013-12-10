@@ -268,9 +268,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		}
 
 		boardFace.setupBoard(currentGame.getStartingFenPosition());
-		if (!userPlayWhite) {
-			boardFace.setReside(true);
-		}
+		boardFace.setReside(!userPlayWhite);
 
 		boardFace.checkAndParseMovesList(currentGame.getMoveList());
 

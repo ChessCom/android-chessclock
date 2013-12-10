@@ -247,9 +247,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			boardFace.setChess960(true);
 		}
 
-		if (!userPlayWhite) {
-			boardFace.setReside(true);
-		}
+		boardFace.setReside(!userPlayWhite);
 
 		boardFace.checkAndParseMovesList(currentGame.getMoveList());
 

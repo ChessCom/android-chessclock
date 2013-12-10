@@ -15,7 +15,6 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.GetAndSaveFileToSdTask;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.model.SelectionItem;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.ChessBoard;
@@ -47,7 +46,6 @@ public class GetAndSavePieces extends Service {
 	private PiecesPackSaveListener piecesPackSaveListener;
 	private String selectedPieceDir;
 	private int screenWidth;
-	private SelectionItem selectedThemePieceItem;
 	private PieceSingleItem.Data piecesData;
 
 	public class ServiceBinder extends Binder {
@@ -97,8 +95,7 @@ public class GetAndSavePieces extends Service {
 		return installingPieces;
 	}
 
-	public void loadPieces(int selectedPieceId, SelectionItem selectedThemePieceItem, int screenWidth){
-		this.selectedThemePieceItem = selectedThemePieceItem;
+	public void loadPieces(int selectedPieceId, int screenWidth){
 		installingPieces = true;
 
 		this.screenWidth = screenWidth;

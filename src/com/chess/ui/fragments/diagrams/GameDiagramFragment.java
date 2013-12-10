@@ -467,9 +467,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			boardFace.setReside(!boardFace.isReside());
 		}
 
-		if (diagramItem.isFlip()) {
-			boardFace.setReside(true);
-		}
+		boardFace.setReside(diagramItem.isFlip());
 
 		// remove comments from movesList
 		String movesList = diagramItem.getMovesList();

@@ -361,9 +361,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		// boardFace.setupBoard(currentGame.getStartingFenPosition());
 		// if we pass FEN like this rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR, and them moveslist that lead to this position, it fails to load properly
-		if (!userPlayWhite) {
-			boardFace.setReside(true);
-		}
+		boardFace.setReside(!userPlayWhite);
 
 		boardFace.checkAndParseMovesList(currentGame.getMoveList());
 

@@ -1,9 +1,9 @@
 package com.chess.model;
 
 import android.os.Parcel;
-import com.chess.statics.Symbol;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameRatingClass;
+import com.chess.statics.Symbol;
 
 import java.util.Iterator;
 

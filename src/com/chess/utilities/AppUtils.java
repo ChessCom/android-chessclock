@@ -114,7 +114,7 @@ public class AppUtils {
 	public static File getSoundsThemeDir(Context context) {
 		AppData appData = new AppData(context);
 		String soundThemePath = appData.getThemeSoundsPath();
-		return getLocalDirForPath(context, "sounds" + UNZIPPED + soundThemePath);
+		return getLocalDirForPath(context, "themes" + UNZIPPED + soundThemePath);
 	}
 
 	public static File getLocalDirForSounds(Context context) {
