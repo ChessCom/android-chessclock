@@ -202,7 +202,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		getNotationsFace().resetNotations();
 		boardView.resetValidMoves();
 
-		invalidateGameScreen();
 		if (liveService.getPendingWarnings().size() > 0) {
 			warningMessage = liveService.getLastWarningMessage();
 			popupItem.setNegativeBtnId(R.string.fair_play_policy);
@@ -248,6 +247,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
 			}
 		}
+
+		invalidateGameScreen();
 
 		boardView.updatePlayerNames(currentGame.getWhiteUsername(), currentGame.getBlackUsername());
 
