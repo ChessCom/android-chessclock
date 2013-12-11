@@ -1121,6 +1121,10 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 	}
 
+	public void goToLatestMove() {
+		goToMove(getBoardFace().getMovesCount() - 1);
+	}
+
 	public void lockBoard(boolean lock) {
 		locked = lock;
 		lockBoardControls(lock);

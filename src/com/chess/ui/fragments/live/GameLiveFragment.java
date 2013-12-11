@@ -317,6 +317,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 		});
 
+		boardView.goToLatestMove();
+
 		String[] actualMoves = gameItem.getMoveList().trim().split(Symbol.SPACE);
 		int actualMovesSize = actualMoves.length;
 
