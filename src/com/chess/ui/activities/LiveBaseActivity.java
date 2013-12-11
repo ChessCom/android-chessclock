@@ -536,54 +536,34 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				// Logout first to make clear connect
-				liveService.logout();
-				unBindLiveService();
-
-				String password = getAppData().getPassword();
-				if (!TextUtils.isEmpty(password)) {
-
-					LoadItem loadItem = new LoadItem();
-					loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
-					loadItem.setRequestMethod(RestHelper.POST);
-					loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-					loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getAppData().getUsername());
-					loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
-					loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
-					loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
-
-					new RequestJsonTask<LoginItem>(new LoginUpdateListener()).executeTask(loadItem);
-				} else {
-					loginWithFacebook(getAppData().getFacebookToken());
-
-					// TODO reuse for case when access token from Social network is invalid or expired
-//					LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-//					final LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_relogin_frame, null, false);
-
-//					PopupItem popupItem = new PopupItem();
-//					popupItem.setCustomView(customView);
-
-//					reLoginFragment = PopupCustomViewFragment.createInstance(popupItem);
-//					reLoginFragment.show(getSupportFragmentManager(), RE_LOGIN_TAG);
-
-
-//					((TextView) customView.findViewById(R.id.titleTxt)).setText(message);
-
-//					EditText usernameEdt = (EditText) customView.findViewById(R.id.usernameEdt);
-//					EditText passwordEdt = (EditText) customView.findViewById(R.id.passwordEdt);
-//					setLoginFields(usernameEdt, passwordEdt);
-
-//					customView.findViewById(R.id.re_signin).setOnClickListener(LiveBaseActivity.this);
-
-//					LoginButton facebookLoginButton = (LoginButton) customView.findViewById(R.id.re_fb_connect);
-//					facebookInit(facebookLoginButton);
-
-//					usernameEdt.setText(getAppData().getUsername());
-				}
-
-				needReLoginToLive = true;
+				performReloginForLive();
 			}
 		});
+	}
+
+	private void performReloginForLive() {
+		// Logout first to make clear connect
+		liveService.logout();
+		unBindLiveService();
+
+		String password = getAppData().getPassword();
+		if (!TextUtils.isEmpty(password)) {
+
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
+			loadItem.setRequestMethod(RestHelper.POST);
+			loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
+			loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getAppData().getUsername());
+			loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
+			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
+			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
+
+			new RequestJsonTask<LoginItem>(new LoginUpdateListener()).executeTask(loadItem);
+		} else {
+			loginWithFacebook(getAppData().getFacebookToken());
+		}
+
+		needReLoginToLive = true;
 	}
 
 	@Override
@@ -602,8 +582,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	private void processConnectionFailure(String message) {
-		showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
-		getLastPopupFragment().setCancelable(false);
+		if (message.equals(getString(R.string.pleaseLoginAgain))) {
+			performReloginForLive();
+		} else {
+			showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
+			getLastPopupFragment().setCancelable(false);
+		}
 	}
 
 	@Override

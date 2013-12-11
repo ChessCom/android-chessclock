@@ -221,6 +221,7 @@
 	<color name="semitransparent_white_50">#80FFFFFF</color>
 	<color name="semitransparent_white_65">#A5FFFFFF</color>
 	<color name="semitransparent_white_75">#D0FFFFFF</color>
+	<color name="semitransparent_white_90">#E5FFFFFF</color> <!--E5-->
 	<color name="semitransparent_black_30">#4D000000</color>
 	<color name="semitransparent_black_65">#A5000000</color>
 	<color name="semitransparent_black_80">#CC000000</color>

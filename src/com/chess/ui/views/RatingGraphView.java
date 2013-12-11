@@ -3,6 +3,7 @@ package com.chess.ui.views;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -24,6 +25,10 @@ public class RatingGraphView extends LinearLayout {
 
 	private ChartView chartView;
 	private float chartSidesAspectRatio;
+	private RoboButton timeLabel1Txt;
+	private RoboButton timeLabel2Txt;
+	private RoboButton timeLabel3Txt;
+	private RadioGroup radioGroup;
 
 	public RatingGraphView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -62,7 +67,8 @@ public class RatingGraphView extends LinearLayout {
 			addView(chartView, chartParams);
 		}
 
-		{ // | Sept | Oct | Nov |
+		{ // set labels below graph
+			// | Sept | Oct | Nov |
 			RadioGroup.LayoutParams wideParams = new RadioGroup.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
 			wideParams.weight = 1;
 
@@ -71,35 +77,35 @@ public class RatingGraphView extends LinearLayout {
 			int textColor = resources.getColor(R.color.stats_label_grey);
 
 			{
-				RoboButton textView = new RoboButton(context, null, R.attr.sideGraphBtn);
-				textView.setDrawableStyle(R.style.Rect_Side_Left);
-				textView.setFont(FontsHelper.DEFAULT_FONT);
-				textView.setTextColor(textColor);
-				textView.setText("Sep");
-				textView.setGravity(Gravity.CENTER);
+				timeLabel1Txt = new RoboButton(context, null, R.attr.sideGraphBtn);
+				timeLabel1Txt.setDrawableStyle(R.style.Rect_Side_Left);
+				timeLabel1Txt.setFont(FontsHelper.DEFAULT_FONT);
+				timeLabel1Txt.setTextColor(textColor);
+				timeLabel1Txt.setText("---");
+				timeLabel1Txt.setGravity(Gravity.CENTER);
 
-				radioGroupLayout.addView(textView, wideParams);
+				radioGroupLayout.addView(timeLabel1Txt, wideParams);
 			}
 			{
-				RoboButton textView = new RoboButton(context, null, R.attr.sideGraphBtn);
-				textView.setTextColor(textColor);
-				textView.setDrawableStyle(R.style.Rect_Side_Middle);
-				textView.setFont(FontsHelper.DEFAULT_FONT);
-				textView.setText("Oct");
-				textView.setGravity(Gravity.CENTER);
+				timeLabel2Txt = new RoboButton(context, null, R.attr.sideGraphBtn);
+				timeLabel2Txt.setTextColor(textColor);
+				timeLabel2Txt.setDrawableStyle(R.style.Rect_Side_Middle);
+				timeLabel2Txt.setFont(FontsHelper.DEFAULT_FONT);
+				timeLabel2Txt.setText("---");
+				timeLabel2Txt.setGravity(Gravity.CENTER);
 
-				radioGroupLayout.addView(textView, wideParams);
+				radioGroupLayout.addView(timeLabel2Txt, wideParams);
 			}
 
 			{
-				RoboButton textView = new RoboButton(context, null, R.attr.sideGraphBtn);
-				textView.setDrawableStyle(R.style.Rect_Side_Right);
-				textView.setFont(FontsHelper.DEFAULT_FONT);
-				textView.setTextColor(textColor);
-				textView.setText("Nov");
-				textView.setGravity(Gravity.CENTER);
+				timeLabel3Txt = new RoboButton(context, null, R.attr.sideGraphBtn);
+				timeLabel3Txt.setDrawableStyle(R.style.Rect_Side_Right);
+				timeLabel3Txt.setFont(FontsHelper.DEFAULT_FONT);
+				timeLabel3Txt.setTextColor(textColor);
+				timeLabel3Txt.setText("---");
+				timeLabel3Txt.setGravity(Gravity.CENTER);
 
-				radioGroupLayout.addView(textView, wideParams);
+				radioGroupLayout.addView(timeLabel3Txt, wideParams);
 
 				radioGroupLayout.setPadding(0, paddingTop, 0, paddingTop);
 			}
@@ -111,7 +117,7 @@ public class RatingGraphView extends LinearLayout {
 			RadioGroup.LayoutParams buttonParams = new RadioGroup.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
 			buttonParams.weight = 1;
 
-			RadioGroup radioGroup = new RadioGroup(context);
+			radioGroup = new RadioGroup(context);
 			radioGroup.setOrientation(RadioGroup.HORIZONTAL);
 
 			// | 30 Days  | 90 Days | 1 Year | All Time |
@@ -156,7 +162,6 @@ public class RatingGraphView extends LinearLayout {
 				radioButton.setBackgroundResource(R.drawable.button_toggle_right_selector);
 				radioButton.setText(R.string.all_time);
 				radioButton.setFont(FontsHelper.BOLD_FONT);
-//				radioButton.setChecked(true);
 
 				radioGroup.addView(radioButton, buttonParams);
 			}
@@ -173,8 +178,20 @@ public class RatingGraphView extends LinearLayout {
 	}
 
 	public void setGraphData(List<long[]> series, int width) {
+		Log.d("TEST", "width = " + width);
+		if (width == 0) { // view was not initialized yet
+			return;
+		}
 		// TODO get timestamps
 		chartView.setGraphData(series, width);
 		invalidate();
+	}
+
+	public void setOnCheckChangeListener(RadioGroup.OnCheckedChangeListener listener) {
+		radioGroup.setOnCheckedChangeListener(listener);
+	}
+
+	public void setChecked(int timeBtnId) {
+		radioGroup.check(timeBtnId);
 	}
 }

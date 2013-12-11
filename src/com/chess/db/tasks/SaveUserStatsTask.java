@@ -120,7 +120,7 @@ public class SaveUserStatsTask extends AbstractUpdateTask<UserStatsItem.Data, Lo
 			values.put(V_PASSED_COUNT, statsData.getPassedCount());
 			values.put(V_FAILED_COUNT, statsData.getFailedCount());
 			values.put(V_TOTAL_SECONDS, statsData.getTotalSeconds());
-			values.put(V_TODAYS_ATTEMPTS, statsData.getTodaysAttemps());
+			values.put(V_TODAYS_ATTEMPTS, statsData.getTodaysAttempts());
 			values.put(V_TODAYS_AVG_SCORE, statsData.getTodaysAvgScore());
 
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);

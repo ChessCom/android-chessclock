@@ -7,8 +7,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
@@ -37,15 +39,19 @@ import java.util.List;
  * Date: 06.02.13
  * Time: 19:16
  */
-public class StatsGameTacticsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
+public class StatsGameTacticsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, RadioGroup.OnCheckedChangeListener, ViewTreeObserver.OnGlobalLayoutListener {
+
+	public static final int FIRST = 0;
+	public static final int LAST = 1;
 
 	private RatingGraphView ratingGraphView;
-	protected static final String USERNAME = "username";
 	private String username;
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private StatsItemUpdateListener statsItemUpdateListener;
 	private RecentStatsAdapter recentStatsAdapter;
 	private TextView recentProblemsTitleTxt;
+	private long lastTimestamp;
+	private int previousCheckedId = NON_INIT;
 
 	public StatsGameTacticsFragment() {
 		Bundle bundle = new Bundle();
@@ -97,27 +103,31 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 		ratingGraphView = (RatingGraphView) headerView.findViewById(R.id.ratingGraphView);
 		recentProblemsTitleTxt = (TextView) headerView.findViewById(R.id.recentProblemsTitleTxt);
 
+		ratingGraphView.setOnCheckChangeListener(this);
+
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(recentStatsAdapter);
 		listView.setOnItemClickListener(this);
+
+		view.getViewTreeObserver().addOnGlobalLayoutListener(this);
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		if (need2update) {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS_STATS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
-
-			new RequestJsonTask<TacticsHistoryItem>(statsItemUpdateListener).executeTask(loadItem);
-		} else {
-			updateUiData();
-		}
-	}
+//	@Override
+//	public void onResume() {
+//		super.onResume();
+//
+//		if (need2update) {
+//			LoadItem loadItem = new LoadItem();
+//			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS_STATS);
+//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+//			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
+//
+//			new RequestJsonTask<TacticsHistoryItem>(statsItemUpdateListener).executeTask(loadItem);
+//		} else {
+//			updateUiData();
+//		}
+//	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -129,6 +139,66 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO load selected tactic from DB
+	}
+
+	@Override
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		if (previousCheckedId == checkedId) {
+			return;
+		}
+
+		previousCheckedId = checkedId;
+		lastTimestamp = System.currentTimeMillis();
+		switch (checkedId) {
+			case R.id.thirtyDaysBtn:
+				logTest("30 days");
+				lastTimestamp = AppUtils.getLast30DaysTimeStamp();
+				break;
+			case R.id.ninetyDaysBtn:
+				logTest("90 days");
+				lastTimestamp = AppUtils.getLast90DaysTimeStamp();
+				break;
+			case R.id.oneYearBtn:
+				logTest("365 days");
+				lastTimestamp = AppUtils.getLastYearTimeStamp();
+				break;
+			case R.id.allTimeBtn:
+				logTest("all");
+				lastTimestamp = getAppData().getUserCreateDate();
+				break;
+		}
+		updateGraphAfter(lastTimestamp);
+	}
+
+
+	private void updateGraphAfter(long lastTimeStamp) {
+		this.lastTimestamp = lastTimeStamp;
+
+		long[] edgeTimestamps = DbDataManager.getEdgeTimestampForTacticsGraph(getContentResolver(), username);
+
+		long today = System.currentTimeMillis() / 1000;
+		logTest(" today = " + today + " edgeTimestamps[FIRST] = " + edgeTimestamps[FIRST]
+				+ " edgeTimestamps[LAST] = " + edgeTimestamps[LAST]);
+		long oneDay = AppUtils.SECONDS_IN_DAY;
+		// if we have saved data from last timestamp(30 days ago) until today, we don't load it from server
+		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimeStamp - oneDay) {
+			updateUiData();
+		} else { // else we only load difference since last saved point
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS_STATS);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
+			loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimeStamp);
+
+			new RequestJsonTask<TacticsHistoryItem>(statsItemUpdateListener).executeTask(loadItem);
+		}
+	}
+
+	@Override
+	public void onGlobalLayout() {
+		if (need2update) {
+			ratingGraphView.setChecked(R.id.thirtyDaysBtn);
+		}
 	}
 
 	private class StatsItemUpdateListener extends ChessUpdateListener<TacticsHistoryItem> {
@@ -171,7 +241,8 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 	protected void fillGraph() {
 		// Graph Rating Data
-		QueryParams params = DbHelper.getTableForUser(username, DbScheme.Tables.TACTICS_DAILY_STATS);
+		logTest(" get data from DB lastTimestamp = " + lastTimestamp);
+		QueryParams params = DbHelper.getTacticGraphItemForUser(username, lastTimestamp);
 		Cursor cursor = DbDataManager.query(getContentResolver(), params);
 
 		if (cursor != null && cursor.moveToFirst()) {
@@ -179,7 +250,6 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 			do {
 				long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP) * 1000L;
 				int rating = DbDataManager.getInt(cursor, DbScheme.V_CLOSE_RATING);
-				logTest(" tactic rating = " + rating);
 
 				long[] point = new long[]{timestamp, rating};
 				series.add(point);

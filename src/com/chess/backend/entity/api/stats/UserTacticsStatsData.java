@@ -63,7 +63,7 @@ public class UserTacticsStatsData {
 		return total_seconds;
 	}
 
-	public int getTodaysAttemps() {
+	public int getTodaysAttempts() {
 		return todays_attemps;
 	}
 

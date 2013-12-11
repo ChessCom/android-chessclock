@@ -289,6 +289,8 @@ public class RestHelper {
 	public static final String P_LAST_POS_NUMBER = "lastPositionNumber";
 	public static final String P_OLD_PASS = "oldPassword";
 	public static final String P_NEW_PASS = "newPassword";
+	public static final String P_DAYS_AGO = "daysAgo";
+	public static final String P_LAST_GRAPH_TIMESTAMP = "lastGraphTimestamp";
 
 	public static final String P_BACKGROUND_ID = "backgroundId";
 	public static final String P_SCREEN = "screen";

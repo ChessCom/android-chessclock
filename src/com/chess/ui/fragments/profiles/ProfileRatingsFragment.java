@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
@@ -48,8 +49,11 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 	private RatingsAdapter ratingsAdapter;
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private StatsItemUpdateListener statsItemUpdateListener;
+	private TextView emptyView;
+	private ListView listView;
 
-	public ProfileRatingsFragment() {}
+	public ProfileRatingsFragment() {
+	}
 
 	public static ProfileRatingsFragment createInstance(String username) {
 		ProfileRatingsFragment fragment = new ProfileRatingsFragment();
@@ -76,7 +80,9 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		ListView listView = (ListView) view.findViewById(R.id.listView);
+		emptyView = (TextView) view.findViewById(R.id.emptyView);
+
+		listView = (ListView) view.findViewById(R.id.listView);
 		ratingList = createStatsList(getActivity());
 		ratingsAdapter = new RatingsAdapter(getActivity(), ratingList);
 		listView.setAdapter(ratingsAdapter);
@@ -102,19 +108,29 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		switch (position) {
+		RatingListItem ratingListItem = ratingList.get(position);
+
+		switch (Integer.parseInt(ratingListItem.getCode())) {
 			case LIVE_STANDARD:
+				getActivityFace().openFragment(StatsGameFragment.createInstance(LIVE_STANDARD, username));
+				break;
 			case LIVE_BLITZ:
+				getActivityFace().openFragment(StatsGameFragment.createInstance(LIVE_BLITZ, username));
+				break;
 			case LIVE_LIGHTNING:
+				getActivityFace().openFragment(StatsGameFragment.createInstance(LIVE_LIGHTNING, username));
+				break;
 			case DAILY_CHESS:
+				getActivityFace().openFragment(StatsGameFragment.createInstance(DAILY_CHESS, username));
+				break;
 			case DAILY_CHESS960:
-				getActivityFace().openFragment(StatsGameFragment.createInstance(position, username));
+				getActivityFace().openFragment(StatsGameFragment.createInstance(DAILY_CHESS960, username));
 				break;
 			case TACTICS:
 				getActivityFace().openFragment(StatsGameTacticsFragment.createInstance(username));
 				break;
-			case LESSONS: // not used yet
-				getActivityFace().openFragment(StatsGameLessonsFragment.createInstance(username)); // TODO adjust Lessons
+			case LESSONS:
+				getActivityFace().openFragment(StatsGameLessonsFragment.createInstance(username));
 				break;
 		}
 	}
@@ -123,12 +139,17 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 		// fill ratings
 		String[] argument = new String[]{username};
 
+		List<RatingListItem> itemsToRemove = new ArrayList<RatingListItem>();
 		{// standard
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal()],
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
-				ratingList.get(LIVE_STANDARD).setValue(currentRating);
+				if (currentRating == 0) {
+					itemsToRemove.add(ratingList.get(LIVE_STANDARD));
+				} else {
+					ratingList.get(LIVE_STANDARD).setValue(currentRating);
+				}
 			}
 		}
 		{// blitz
@@ -136,7 +157,11 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
-				ratingList.get(LIVE_BLITZ).setValue(currentRating);
+				if (currentRating == 0) {
+					itemsToRemove.add(ratingList.get(LIVE_BLITZ));
+				} else {
+					ratingList.get(LIVE_BLITZ).setValue(currentRating);
+				}
 			}
 		}
 		{// bullet
@@ -144,8 +169,11 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
-
-				ratingList.get(LIVE_LIGHTNING).setValue(currentRating);
+				if (currentRating == 0) {
+					itemsToRemove.add(ratingList.get(LIVE_LIGHTNING));
+				} else {
+					ratingList.get(LIVE_LIGHTNING).setValue(currentRating);
+				}
 			}
 		}
 		{// chess
@@ -153,7 +181,11 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
-				ratingList.get(DAILY_CHESS).setValue(currentRating);
+				if (currentRating == 0) {
+					itemsToRemove.add(ratingList.get(DAILY_CHESS));
+				} else {
+					ratingList.get(DAILY_CHESS).setValue(currentRating);
+				}
 			}
 		}
 		{// chess960
@@ -161,7 +193,11 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
-				ratingList.get(DAILY_CHESS960).setValue(currentRating);
+				if (currentRating == 0) {
+					itemsToRemove.add(ratingList.get(DAILY_CHESS960));
+				} else {
+					ratingList.get(DAILY_CHESS960).setValue(currentRating);
+				}
 			}
 		}
 		{// tactics
@@ -169,7 +205,11 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
-				ratingList.get(TACTICS).setValue(currentRating);
+				if (currentRating == 0) {
+					itemsToRemove.add(ratingList.get(TACTICS));
+				} else {
+					ratingList.get(TACTICS).setValue(currentRating);
+				}
 			}
 		}
 		{// chess mentor
@@ -177,8 +217,24 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
-				ratingList.get(LESSONS).setValue(currentRating);
+				if (currentRating == 0) {
+					itemsToRemove.add(ratingList.get(LESSONS));
+				} else {
+					ratingList.get(LESSONS).setValue(currentRating);
+				}
 			}
+		}
+
+		ratingList.removeAll(itemsToRemove);
+
+		if (ratingList.size() == 0) {
+			listView.setVisibility(View.GONE);
+
+			emptyView.setVisibility(View.VISIBLE);
+			emptyView.setText(R.string.no_rated_activity);
+		} else {
+			emptyView.setVisibility(View.GONE);
+			listView.setVisibility(View.VISIBLE);
 		}
 
 		ratingsAdapter.notifyDataSetInvalidated();
@@ -228,6 +284,7 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 		for (int i = 0; i < categories.length; i++) {
 			String category = categories[i];
 			RatingListItem ratingListItem = new RatingListItem(getIconByCategory(i), category);
+			ratingListItem.setCode(String.valueOf(i));
 			selectionItems.add(ratingListItem);
 		}
 		return selectionItems;

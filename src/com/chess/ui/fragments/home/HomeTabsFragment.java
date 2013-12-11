@@ -14,6 +14,7 @@ import com.chess.R;
 import com.chess.backend.*;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
+import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.ui.fragments.BasePopupsFragment;
@@ -102,8 +103,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onResume() {
 		super.onResume();
 
-//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.THEME_BACKGROUNDS.name()),
-//				DbHelper.getAll(DbScheme.Tables.THEME_BACKGROUNDS),
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.TACTICS_DAILY_STATS.name()),
+//				DbHelper.getAll(DbScheme.Tables.TACTICS_DAILY_STATS),
 //				getContentResolver()).executeTask();
 
 		// check if user have daily games in progress or completed. May check in DB
@@ -129,6 +130,13 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 				tabRadioGroup.check(R.id.leftTabBtn);
 			}
 			updateTabs();
+		}
+
+		// get user info for global use
+		if (!getAppData().isUserInfoSaved()) {
+			LoadItem loadItem = LoadHelper.getUserInfo(getUserToken());
+
+			new RequestJsonTask<UserItem>(new GetUserUpdateListener()).executeTask(loadItem);
 		}
 	}
 
@@ -216,6 +224,28 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	@Override
 	public void changeFragment(BasePopupsFragment fragment) {
 		changeInternalFragment(fragment);
+	}
+
+	private class GetUserUpdateListener extends ChessLoadUpdateListener<UserItem> {
+
+		public GetUserUpdateListener() {
+			super(UserItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (!isTablet) {
+				super.showProgress(show);
+			}
+		}
+
+		@Override
+		public void updateData(UserItem returnedObj) {
+			super.updateData(returnedObj);
+
+			getAppData().setUserCreateDate(returnedObj.getData().getMemberSince());
+			getAppData().setUserInfoSaved(true);
+		}
 	}
 
 	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {

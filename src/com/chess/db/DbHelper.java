@@ -314,6 +314,15 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	/* Tactics Graph*/
+	public static QueryParams getTacticGraphItemForUser(String username, long timestamp) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.TACTICS_DAILY_STATS.ordinal()]);
+		queryParams.setSelection(DbDataManager.createSelectionForTimestampAndUser());
+		queryParams.setArguments(new String[]{String.valueOf(timestamp), username});
+		return queryParams;
+	}
+
 	/* Explorer */
 	public static QueryParams getExplorerMovesForFen(String fen) {
 		QueryParams queryParams = new QueryParams();

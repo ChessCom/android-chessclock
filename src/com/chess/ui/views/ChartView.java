@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -39,7 +40,7 @@ public class ChartView extends View {
 	private SparseArray<Long> pointsArray;
 	private SparseBooleanArray pointsExistArray;
 	private boolean initialized;
-	private int orignialMinY;
+	private int originalMinY;
 	private Paint minValueLinePaint;
 	private Paint strokePaint;
 	private Paint minValueTextPaint;
@@ -97,6 +98,7 @@ public class ChartView extends View {
 
 	private void setPoints(List<long[]> dataArray, int widthPixels) {
 		{ // get min and max of X values
+			graphPath = null;
 			// remove
 			long firstPoint = dataArray.get(0)[TIME] - dataArray.get(0)[TIME] % MILLISECONDS_PER_DAY;
 
@@ -106,7 +108,7 @@ public class ChartView extends View {
 			// distribute timestamps at whole width
 			long xDiff = lastPoint - firstPoint;
 			long xPointRange = xDiff / widthPixels;
-//			logTest("firstPoint = " + firstPoint + " lastPoint = " + lastPoint + " xDiff = " + xDiff + " xPointRange = " + xPointRange);
+			logTest("firstPoint = " + firstPoint + " lastPoint = " + lastPoint + " xDiff = " + xDiff + " xPointRange = " + xPointRange);
 
 			// convert xPointRange to optimal day{time} difference
 			pointsArray = new SparseArray<Long>();
@@ -143,9 +145,9 @@ public class ChartView extends View {
 				minY = Math.min(minY, yValue);
 				maxY = Math.max(maxY, yValue);
 			}
-			orignialMinY = minY;
+			originalMinY = minY;
 		}
-//		logTest("minY = " + minY + " maxY = " + maxY + " orignialMinY = " + orignialMinY);
+//		logTest("minY = " + minY + " maxY = " + maxY + " originalMinY = " + originalMinY);
 
 		initialized = true;
 	}
@@ -162,9 +164,9 @@ public class ChartView extends View {
 
 			int height = canvas.getClipBounds().bottom;
 
-			float yValue = height - (orignialMinY - minY) / yAspect + 1; // 1px offset below line
+			float yValue = height - (originalMinY - minY) / yAspect + 1; // 1px offset below line
 			canvas.drawLine(0, yValue, width, yValue, minValueLinePaint);
-			canvas.drawText(String.valueOf(orignialMinY), 0, yValue + textOffset, minValueTextPaint);
+			canvas.drawText(String.valueOf(originalMinY), 0, yValue + textOffset, minValueTextPaint);
 		} else {
 			canvas.drawText("No Data :(", 0, 0, borderPaint);
 		}
@@ -234,9 +236,9 @@ public class ChartView extends View {
 		return path;
 	}
 
-//	private void logTest(String string) {
-//		Log.d("TEST", string);
-//	}
+	private void logTest(String string) {
+		Log.d("TEST", string);
+	}
 
 	public void setGraphData(List<long[]> series, int width) {
 		setPoints(series, width);

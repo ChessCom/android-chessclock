@@ -21,6 +21,7 @@ import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.DarkSpinnerIconAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.drawables.IconDrawable;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,8 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 	public StatsGameFragment() {
 		Bundle bundle = new Bundle();
-		bundle.putInt(CATEGORY, LIVE_STANDARD);
+//		bundle.putInt(CATEGORY, LIVE_STANDARD);
+		bundle.putInt(CATEGORY, TACTICS);
 		setArguments(bundle);
 	}
 
@@ -130,6 +132,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
 		loadItem.addRequestParams(RestHelper.P_VIEW_USERNAME, username);
+		loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, AppUtils.getLast30DaysTimeStamp());
 
 		new RequestJsonTask<GameStatsItem>(statsItemUpdateListener).executeTask(loadItem);
 

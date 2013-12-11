@@ -786,6 +786,23 @@ public class AppData {
 		return preferences.getInt(PULL_TO_REFRESH_HEADER_TOP_INSET, UNDEFINED);
 	}
 
+	public void setUserCreateDate(long value) {
+		setLongValue(USER_CREATE_DATE, value);
+	}
+
+	public long getUserCreateDate() {
+		return getLongValue(USER_CREATE_DATE, UNDEFINED);
+	}
+
+	public void setUserInfoSaved(boolean value) {
+		setBooleanValue(USER_INFO_SAVED, value);
+	}
+
+	public boolean isUserInfoSaved() {
+		return getBooleanValue(USER_INFO_SAVED, false);
+	}
+
+
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {
@@ -805,6 +822,11 @@ public class AppData {
 	private void setStringValue(String field, String value) {
 		String username = getUsername();
 		editor.putString(username + field, value).commit();
+	}
+
+	private void setLongValue(String field, long value) {
+		String username = getUsername();
+		editor.putLong(username + field, value).commit();
 	}
 
 	private String getStringValue(String field, String defValue) {

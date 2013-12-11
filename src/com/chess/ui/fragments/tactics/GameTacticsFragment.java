@@ -702,10 +702,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		public void errorHandle(Integer resultCode) {  // TODO restore
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				switch (serverCode) {
-					case ServerErrorCodes.TACTICS_DAILY_LIMIT_REACHED:
-						showLimitReachedPopup();
-						break;
+				if (serverCode == ServerErrorCodes.TACTICS_DAILY_LIMIT_REACHED) {
+					showLimitReachedPopup();
+					return;
 				}
 			} else {
 				if (resultCode == StaticData.NO_NETWORK) {
@@ -715,6 +714,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					handleErrorRequest();
 				}
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 
@@ -1038,10 +1038,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		trainerData.getTacticsProblem().setFen(initialFen);
 		boardFace.setupBoard(initialFen);
 
-		if (initialFen.contains(FenHelper.WHITE_TO_MOVE)) {
-			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+		boolean boardForWhite = initialFen.contains(FenHelper.WHITE_TO_MOVE);
+		boolean userMoveFirst = trainerData.isUserMoveFirst();
+		if (userMoveFirst) {
+			labelsConfig.userSide = boardForWhite ? ChessBoard.WHITE_SIDE : ChessBoard.BLACK_SIDE;
 		} else {
-			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+			labelsConfig.userSide = boardForWhite ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
 		}
 
 		String cleanMoveString = trainerData.getCleanMoveString();
@@ -1064,7 +1066,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		} else { // setup first move
 			startTacticsTimer(trainerData);
 
-			if (!trainerData.isUserMoveFirst()) {
+			if (!userMoveFirst) {
 				boardFace.setReside(!boardFace.isReside()); // flip board
 
 				boardFace.setMovesCount(1);

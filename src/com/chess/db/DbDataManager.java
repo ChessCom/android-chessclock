@@ -42,6 +42,7 @@ public class DbDataManager {
 	public static final String LIKE_ = " LIKE ?";
 	public static final String AND_ = " AND ";
 	public static final String MORE_ = " > ";
+	public static final String MORE_EQUALS_ARG_ = " >=?";
 	public static final String EQUALS_ = " = ";
 	public static final String EQUALS_ARG_ = "=?";
 	public static final String NOT_EQUALS_ARG_ = "!=?";
@@ -363,6 +364,10 @@ public class DbDataManager {
 			selection.append(LIKE_);
 		}
 		return selection.toString();
+	}
+
+	public static String createSelectionForTimestampAndUser() {
+		return V_TIMESTAMP + MORE_EQUALS_ARG_ + AND_ + V_USER + EQUALS_ARG_;
 	}
 
 	public static Cursor query(ContentResolver contentResolver, QueryParams params) {
@@ -915,7 +920,6 @@ public class DbDataManager {
 	}
 
 	public static int getUserRatingFromUsersStats(Context context, int dbUriCode, String username) {
-		final int DEFAULT_RATING = 1200;
 
 		ContentResolver contentResolver = context.getContentResolver();
 
@@ -926,7 +930,6 @@ public class DbDataManager {
 
 		if (cursor != null && cursor.moveToFirst()) {
 			int rating = getInt(cursor, V_CURRENT);
-			rating = rating == 0 ? DEFAULT_RATING : rating;
 			cursor.close();
 
 			return rating;
@@ -934,7 +937,7 @@ public class DbDataManager {
 			if (cursor != null) {
 				cursor.close();
 			}
-			return DEFAULT_RATING;
+			return 0;
 		}
 	}
 
@@ -1258,7 +1261,6 @@ public class DbDataManager {
 	}
 
 	/**
-	 *
 	 * @param fullBody flag that is used for articles details body
 	 */
 	public static void saveArticleItem(ContentResolver contentResolver, ArticleItem.Data currentItem, boolean fullBody) {
@@ -2756,6 +2758,30 @@ public class DbDataManager {
 		values.put(V_STATE, status.name());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
+	/* Tactics Graph */
+	public static long[] getEdgeTimestampForTacticsGraph(ContentResolver contentResolver, String username) {
+		final String[] arguments = sArguments1;
+		arguments[0] = username;
+
+		Uri uri = uriArray[Tables.TACTICS_DAILY_STATS.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, PROJECTION_TIMESTAMP_AND_USER,
+				SELECTION_USER, arguments, V_TIMESTAMP + ASCEND);
+		long firstTimestamp = 0;
+		long lastTimestamp = 0;
+		if (cursor != null && cursor.moveToFirst()) {
+			firstTimestamp = getLong(cursor, V_TIMESTAMP);
+			do {
+				lastTimestamp = getLong(cursor, V_TIMESTAMP);
+			} while (cursor.moveToNext());
+
+		}
+		if (cursor != null) {
+			cursor.close();
+		}
+		return new long[]{firstTimestamp, lastTimestamp};
 	}
 
 	// ================================= global help methods =======================================

@@ -696,7 +696,6 @@ public class DbScheme {
 	public static final String V_RANK = "rank";
 	public static final String V_TOTAL_PLAYER_COUNT = "total_player_count";
 	public static final String V_TIMEOUTS = "timeouts";
-	public static final String V_TIME_PER_MOVE = "time_per_move";
 
 	/* Tactics */
 	public static final String V_LOWEST_RATING = "lowest_rating";

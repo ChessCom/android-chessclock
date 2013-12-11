@@ -7,7 +7,9 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
@@ -41,7 +43,10 @@ import static com.chess.ui.fragments.stats.StatsGameFragment.*;
  * Date: 23.01.13
  * Time: 10:37
  */
-public class StatsGameDetailsFragment extends CommonLogicFragment {
+public class StatsGameDetailsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener, ViewTreeObserver.OnGlobalLayoutListener {
+
+	public static final int FIRST = 0;
+	public static final int LAST = 1;
 
 	private static final String TAG = "StatsGameFragment";
 	public static final String GREY_COLOR_DIVIDER = "##";
@@ -86,6 +91,8 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 	private String username;
 	private RatingGraphView ratingGraphView;
 	private boolean showTitle;
+	private long lastTimestamp;
+	private int previousCheckedId;
 
 	public StatsGameDetailsFragment() {
 		Bundle bundle = new Bundle();
@@ -153,6 +160,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 		pieChartView = (PieChartView) view.findViewById(R.id.pieChartView);
 		ratingGraphView = (RatingGraphView) view.findViewById(R.id.ratingGraphView);
+		ratingGraphView.setOnCheckChangeListener(this);
 
 		LinearLayout ratingsLinearView = (LinearLayout) view.findViewById(R.id.ratingsLinearView);
 		addRatingsViews(ratingsLinearView);
@@ -169,6 +177,8 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 
 		mostFrequentOpponentTxt = (TextView) view.findViewById(R.id.mostFrequentOpponentTxt);
 		mostFrequentOpponentGamesTxt = (TextView) view.findViewById(R.id.mostFrequentOpponentGamesTxt);
+
+		view.getViewTreeObserver().addOnGlobalLayoutListener(this);
 	}
 
 	@Override
@@ -224,6 +234,64 @@ public class StatsGameDetailsFragment extends CommonLogicFragment {
 						DbScheme.Tables.GAME_STATS_DAILY_CHESS960), getContentResolver()).executeTask();
 				break;
 		}
+	}
+
+	@Override
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		if (previousCheckedId == checkedId) {
+			return;
+		}
+
+		previousCheckedId = checkedId;
+		lastTimestamp = System.currentTimeMillis();
+		switch (checkedId) {
+			case R.id.thirtyDaysBtn:
+				logTest("30 days");
+				lastTimestamp = AppUtils.getLast30DaysTimeStamp();
+				break;
+			case R.id.ninetyDaysBtn:
+				logTest("90 days");
+				lastTimestamp = AppUtils.getLast90DaysTimeStamp();
+				break;
+			case R.id.oneYearBtn:
+				logTest("365 days");
+				lastTimestamp = AppUtils.getLastYearTimeStamp();
+				break;
+			case R.id.allTimeBtn:
+				logTest("all");
+				lastTimestamp = getAppData().getUserCreateDate();
+				break;
+		}
+		updateUiData();
+//		updateGraphAfter(lastTimestamp);
+	}
+
+	private void updateGraphAfter(long lastTimeStamp) {
+		this.lastTimestamp = lastTimeStamp;
+
+		long[] edgeTimestamps = DbDataManager.getEdgeTimestampForTacticsGraph(getContentResolver(), username);
+
+		long today = System.currentTimeMillis() / 1000;
+		logTest(" today = " + today + " edgeTimestamps[FIRST] = " + edgeTimestamps[FIRST]
+				+ " edgeTimestamps[LAST] = " + edgeTimestamps[LAST]);
+		long oneDay = AppUtils.SECONDS_IN_DAY;
+		// if we have saved data from last timestamp(30 days ago) until today, we don't load it from server
+		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimeStamp - oneDay) {
+			updateUiData();
+		} else { // else we only load difference since last saved point
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS_STATS);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
+			loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimeStamp);
+
+//			new RequestJsonTask<TacticsHistoryItem>(statsItemUpdateListener).executeTask(loadItem);
+		}
+	}
+
+	@Override
+	public void onGlobalLayout() {
+
 	}
 
 	private class CursorUpdateListener extends ChessUpdateListener<Cursor> {

@@ -346,7 +346,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             style="@style/ListItem.Header"
-            android:paddingLeft="13dip"
+            android:paddingLeft="8dip"
             android:paddingRight="8dip"
             >
 

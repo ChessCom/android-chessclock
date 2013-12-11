@@ -5,7 +5,7 @@
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@color/white">
+	android:background="@color/semitransparent_white_90">
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/emptyView"
@@ -27,8 +27,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_above="@+id/completedGamesHeaderView"
-		android:background="@color/white"
-		android:cacheColorHint="@color/white"
+		android:background="@color/transparent"
 		android:dividerHeight="0px"
 		android:divider="@null"
 		android:columnWidth="@dimen/daily_game_list_item_width"

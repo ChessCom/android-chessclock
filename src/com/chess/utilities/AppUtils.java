@@ -68,6 +68,7 @@ public class AppUtils {
 	private static final String DAYS = "d";
 	private static final String H = "h";
 	private static final String M = "m";
+	public static final long SECONDS_IN_DAY = 86400;
 
 	public static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 	public static final boolean JELLYBEAN_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
@@ -164,6 +165,24 @@ public class AppUtils {
 			}
 		} catch (Exception ignored) {
 		}
+	}
+
+	public static long getLast30DaysTimeStamp() {
+		long currentTimeMillis = System.currentTimeMillis();
+		currentTimeMillis -= SECONDS_IN_DAY * 30 * 1000L;
+		return currentTimeMillis / 1000L;
+	}
+
+	public static long getLast90DaysTimeStamp() {
+		long currentTimeMillis = System.currentTimeMillis();
+		currentTimeMillis -= SECONDS_IN_DAY * 90 * 1000L;
+		return currentTimeMillis / 1000L;
+	}
+
+	public static long getLastYearTimeStamp() {
+		long currentTimeMillis = System.currentTimeMillis();
+		currentTimeMillis -= SECONDS_IN_DAY * 365 * 1000L;
+		return currentTimeMillis / 1000L;
 	}
 
 	public static class ListSelector implements Runnable{
