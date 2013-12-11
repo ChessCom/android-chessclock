@@ -57,6 +57,10 @@ id: 1,name: "Misc"
 	protected Integer doTheTask(Long... ids) {
 		int i = 0;
 		for (CommonFeedCategoryItem.Data currentItem : itemList) {
+			if (currentItem.getName().equals("Rules and Basics")) {
+				continue;
+			}
+
 			currentItem.setDisplay_order(i++);
 
 			if (curriculumCategoriesList.contains(currentItem.getName())) {

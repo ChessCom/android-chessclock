@@ -28,6 +28,7 @@ import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
@@ -37,9 +38,12 @@ import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.NotificationsRightFragment;
+import com.chess.ui.fragments.daily.GameDailyFragment;
+import com.chess.ui.fragments.daily.GameDailyFragmentTablet;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
+import com.chess.ui.fragments.live.GameLiveFragmentTablet;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.settings.SettingsProfileFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
@@ -96,11 +100,39 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();
 		closeMenuListeners = new ArrayList<SlidingMenu.OnClosedListener>();
 
+		slidingMenu = getSlidingMenu();
+		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		slidingMenu.setOnOpenedListener(onOpenMenuListener);
+		slidingMenu.setOnCloseListener(onCloseMenuListener);
+
+		badgeItems = new Hashtable<Integer, Integer>();
+
+		notificationsUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
+		movesUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
+
+		// restoring correct host
+		///////////////////////////////////////////////////
+		// RestHelper.resetInstance();					 //
+		// RestHelper.HOST = getAppData().getApiRoute(); //
+		///////////////////////////////////////////////////
+
+		// lock portrait mode for handsets and unlock for tablets
+		if (isTablet) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+		} else {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		}
+
+		checkThemesToLoad();
+		Intent intent = getIntent();
+
 		if (savedInstanceState == null) {
-			final String action = getIntent().getAction();
+
+
+			final String action = intent.getAction();
 
 			if (Intent.ACTION_VIEW.equals(action)) {
-				Uri data = getIntent().getData();
+				Uri data = intent.getData();
 				BasePopupsFragment fragment =  new HomeTabsFragment();
 				if (data != null) {
 					List<String> segments = data.getPathSegments();
@@ -135,30 +167,16 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			showActionBar = savedInstanceState.getBoolean(SHOW_ACTION_BAR);
 		}
 
-		slidingMenu = getSlidingMenu();
-		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-		slidingMenu.setOnOpenedListener(onOpenMenuListener);
-		slidingMenu.setOnCloseListener(onCloseMenuListener);
-
-		badgeItems = new Hashtable<Integer, Integer>();
-
-		notificationsUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
-		movesUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
-
-		// restoring correct host
-		///////////////////////////////////////////////////
-		RestHelper.resetInstance();					 //
-		RestHelper.HOST = getAppData().getApiRoute(); //
-		///////////////////////////////////////////////////
-
-		// lock portrait mode for handsets and unlock for tablets
-		if (isTablet) {
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-		} else {
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		if (intent != null && intent.hasExtra(IntentConstants.USER_MOVE_UPDATE)) {
+			long gameId = intent.getLongExtra(BaseGameItem.GAME_ID, 0);
+			if (gameId != 0) {
+				if (!isTablet) {
+					openFragment(GameDailyFragment.createInstance(gameId, true));
+				} else {
+					openFragment(GameDailyFragmentTablet.createInstance(gameId, true));
+				}
+			}
 		}
-
-		checkThemesToLoad();
 	}
 
 	@Override

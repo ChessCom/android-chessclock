@@ -81,17 +81,17 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		if (isTablet) {
-			if (showNewGameAtFirst) {
-				if (cursor.isBeforeFirst()) {
-					holder.timeOptionView.setVisibility(View.VISIBLE);
-//				holder.timeOptionBtn
-//				holder.playNewGameBtn
-				}
-			} else {
-				holder.timeOptionView.setVisibility(View.GONE);
-			}
-		}
+//		if (isTablet) {
+//			if (showNewGameAtFirst) {
+//				if (cursor.isBeforeFirst()) {
+//					holder.timeOptionView.setVisibility(View.VISIBLE);
+////				holder.timeOptionBtn
+////				holder.playNewGameBtn
+//				}
+//			} else {
+//				holder.timeOptionView.setVisibility(View.GONE);
+//			}
+//		}
 
 		String gameType = Symbol.EMPTY;
 		if (getInt(cursor, DbScheme.V_GAME_TYPE) == BaseGameItem.CHESS_960) {

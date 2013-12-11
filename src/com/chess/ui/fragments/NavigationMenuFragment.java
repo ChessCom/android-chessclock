@@ -357,7 +357,6 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 	}
 
 	public void onOpened() {
-		listView.setSelectionAfterHeaderView();
 	}
 
 	private GameCompFragment prepareGameCompFragmentInstance() {

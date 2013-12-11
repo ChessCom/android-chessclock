@@ -30,6 +30,7 @@
 			android:padding="15dp"
 			android:background="@drawable/invite_white_back"
 			android:gravity="fill"
+			android:visibility="gone"
 			>
 
 			<!--3 days-->

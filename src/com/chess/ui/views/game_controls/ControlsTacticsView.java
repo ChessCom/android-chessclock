@@ -35,7 +35,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 	protected void addButtons() {
 		addStartButton();
 		addControlButton(OPTIONS, styles[LEFT]);
-		addControlButton(EXIT, styles[LEFT]);
+		addControlButton(EXIT, styles[LEFT]); // TODO remove
 		addControlButton(HINT, styles[MIDDLE]);
 		addControlButton(SOLUTION, styles[MIDDLE]);
 		addControlButton(ANALYSIS, styles[MIDDLE]);

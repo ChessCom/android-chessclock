@@ -306,7 +306,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		// Saving play move notification to DB
 		ContentResolver contentResolver = context.getContentResolver();
-		String username = new AppData(context).getUsername();
+		String username = appData.getUsername();
 		DbDataManager.savePlayMoveNotification(contentResolver, username, Long.parseLong(gameId));
 
 		if (DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification

@@ -698,7 +698,7 @@
 
 	<!--Lessons-->
 	<string name="full_lesson_library">Full Lesson Library</string>
-	<string name="curriculum_lessons">Curriculum Lessons</string>
+	<string name="curriculum">Curriculum</string>
 	<string name="start_lesson">Start Lesson</string>
 	<string name="skip">Skip</string>
 	<string name="key_squares">Key Squares</string>

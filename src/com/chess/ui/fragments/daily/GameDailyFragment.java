@@ -69,6 +69,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private static final String DRAW_OFFER_TAG = "offer draw";
 	private static final String ERROR_TAG = "send request failed popup";
 	private static final String END_VACATION_TAG = "end vacation popup";
+	protected static final String FORCE_UPDATE = "force_update";
 
 	private static final int SEND_MOVE_UPDATE = 1;
 	private static final int CREATE_CHALLENGE_UPDATE = 2;
@@ -106,6 +107,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private int[] countryCodes;
 	protected String username;
 	private NotationFace notationsFace;
+	private boolean forceUpdate;
 
 	public GameDailyFragment() {
 	}
@@ -115,6 +117,16 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		Bundle arguments = new Bundle();
 		arguments.putLong(GAME_ID, gameId);
 		arguments.putString(USERNAME, username);
+		fragment.setArguments(arguments);
+
+		return fragment;
+	}
+
+	public static GameDailyFragment createInstance(long gameId, boolean forceUpdate) {
+		GameDailyFragment fragment = new GameDailyFragment();
+		Bundle arguments = new Bundle();
+		arguments.putLong(GAME_ID, gameId);
+		arguments.putBoolean(FORCE_UPDATE, forceUpdate);
 		fragment.setArguments(arguments);
 
 		return fragment;
@@ -136,9 +148,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		if (getArguments() != null) {
 			gameId = getArguments().getLong(GAME_ID);
 			username = getArguments().getString(USERNAME);
+			forceUpdate = getArguments().getBoolean(FORCE_UPDATE);
 		} else {
 			gameId = savedInstanceState.getLong(GAME_ID);
 			username = savedInstanceState.getString(USERNAME);
+			forceUpdate = savedInstanceState.getBoolean(FORCE_UPDATE);
 		}
 		if (TextUtils.isEmpty(username)) {
 			username = getUsername();
@@ -235,6 +249,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private class NewChatUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+
 			getControlsView().haveNewMessage(true);
 		}
 	}
@@ -244,7 +259,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		Cursor cursor = DbDataManager.query(getContentResolver(),
 				DbHelper.getDailyGame(gameId, username));
 
-		if (cursor.moveToFirst()) {
+		if (cursor.moveToFirst() && !forceUpdate) {
 			showSubmitButtonsLay(false);
 
 			currentGame = DbDataManager.getDailyCurrentGameFromCursor(cursor);

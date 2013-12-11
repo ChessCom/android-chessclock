@@ -16,6 +16,7 @@ import com.chess.R;
  */
 public class GameDailyFragmentTablet extends GameDailyFragment implements RadioGroup.OnCheckedChangeListener {
 
+
 	private RadioGroup topButtonsGroup;
 	private int previousCheckedId;
 	private View chatFragmentContainer;
@@ -28,6 +29,16 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 		Bundle arguments = new Bundle();
 		arguments.putLong(GAME_ID, gameId);
 		arguments.putString(USERNAME, username);
+		fragment.setArguments(arguments);
+
+		return fragment;
+	}
+
+	public static GameDailyFragmentTablet createInstance(long gameId, boolean forceUpdate) {
+		GameDailyFragmentTablet fragment = new GameDailyFragmentTablet();
+		Bundle arguments = new Bundle();
+		arguments.putLong(GAME_ID, gameId);
+		arguments.putBoolean(FORCE_UPDATE, forceUpdate);
 		fragment.setArguments(arguments);
 
 		return fragment;

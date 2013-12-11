@@ -110,7 +110,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 			}
 
 			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
-			((TextView) footerView.findViewById(R.id.headerTitleTxt)).setText(R.string.curriculum_lessons);
+			((TextView) footerView.findViewById(R.id.headerTitleTxt)).setText(R.string.curriculum);
 			footerView.setOnClickListener(this);
 			listView.addFooterView(footerView);
 			listView.setAdapter(categoriesCursorAdapter);

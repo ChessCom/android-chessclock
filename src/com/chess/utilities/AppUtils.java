@@ -24,6 +24,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
+import android.support.v4.app.NotificationCompat;
 import android.text.SpannableStringBuilder;
 import android.text.style.CharacterStyle;
 import android.util.DisplayMetrics;
@@ -35,8 +36,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.db.DbDataManager;
+import com.chess.model.BaseGameItem;
 import com.chess.model.GameListCurrentItem;
 import com.chess.statics.AppData;
+import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.MainFragmentFaceActivity;
@@ -336,22 +339,27 @@ public class AppUtils {
 
 	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id,
 													 GameListCurrentItem currentGameItem) {
-//		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//		notifyManager.cancelAll(); // clear all previous notifications
-//
-//		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
-//		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//
-//		Intent intent = new Intent(context, MainFragmentFaceActivity.class);
-//		intent.putExtra(BaseGameItem.GAME_ID, currentGameItem.getGameId());
-//		intent.putExtra(AppConstants.NOTIFICATION, true);
-////		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);  // as we are using singleTask mode for GameOnlineActivity we call enter there via onNewIntent callback
-//
-//		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
-//
-//		notification.setLatestEventInfo(context, title, body, contentIntent);
-//
-//		notifyManager.notify((int) currentGameItem.getGameId(), notification);
+		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		// Creates an Intent for the Activity
+		Intent notifyIntent = new Intent(context, MainFragmentFaceActivity.class);
+//		notifyIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		notifyIntent.putExtra(BaseGameItem.GAME_ID, currentGameItem.getGameId());
+		notifyIntent.putExtra(IntentConstants.USER_MOVE_UPDATE, true);
+
+		// Creates the PendingIntent
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, id, notifyIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+
+		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+		notificationBuilder.setContentTitle(title)
+				.setContentText(body)
+				.setSmallIcon(R.drawable.ic_stat_chess)
+				.setAutoCancel(true);
+		// Puts the PendingIntent into the notification builder
+		notificationBuilder.setContentIntent(pendingIntent);
+
+		notifyManager.notify((int) currentGameItem.getGameId(), notificationBuilder.build());
 	}
 
 	public static void showStatusBarNotification(Context context, String title,  String body) {
@@ -503,7 +511,7 @@ public class AppUtils {
 			sb.append(hours).append(Symbol.COLON);
 		}
 
-        if (minutes < 10) {
+        if (minutes < 10 && sb.length() > 0) {
             sb.append(0);
         }
         sb.append(minutes).append(Symbol.COLON);
