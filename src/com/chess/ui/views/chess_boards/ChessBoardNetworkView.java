@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import com.chess.statics.StaticData;
+import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 import com.chess.ui.views.game_controls.ControlsDailyView;
@@ -76,7 +77,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 
 		track = false;
 		if (!getBoardFace().isAnalysis()) {
-			if (getAppData().isFinishedEchessGameMode(getBoardFace()) || getBoardFace().isFinished() || getBoardFace().isSubmit() ||
+			if (ChessBoard.isFinishedEchessGameMode(getBoardFace()) || getBoardFace().isFinished() || getBoardFace().isSubmit() ||
 					(getBoardFace().getPly() < getBoardFace().getMovesCount())) {
 				return true;
 			}

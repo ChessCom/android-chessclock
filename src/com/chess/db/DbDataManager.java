@@ -143,7 +143,7 @@ public class DbDataManager {
 			V_USER
 	);
 
-	public static String SELECTION_GRAPH_TABLE = concatArguments(
+	public static String SELECTION_USER_AND_GAME_TYPE = concatArguments(
 			V_GAME_TYPE,
 			V_USER
 	);
@@ -367,7 +367,14 @@ public class DbDataManager {
 	}
 
 	public static String createSelectionForTimestampAndUser() {
-		return V_TIMESTAMP + MORE_EQUALS_ARG_ + AND_ + V_USER + EQUALS_ARG_;
+		return V_TIMESTAMP + MORE_EQUALS_ARG_ + AND_
+				+ V_USER + EQUALS_ARG_;
+	}
+
+	public static String createSelectionForTimestampAndUserGameType() {
+		return V_GAME_TYPE + EQUALS_ARG_ + AND_
+				+ V_USER + EQUALS_ARG_ + AND_
+				+ V_TIMESTAMP + MORE_EQUALS_ARG_;
 	}
 
 	public static Cursor query(ContentResolver contentResolver, QueryParams params) {
@@ -2783,6 +2790,54 @@ public class DbDataManager {
 		}
 		return new long[]{firstTimestamp, lastTimestamp};
 	}
+
+	public static long[] getEdgeTimestampForLessonsGraph(ContentResolver contentResolver, String username) {
+		final String[] arguments = sArguments1;
+		arguments[0] = username;
+
+		Uri uri = uriArray[Tables.LESSONS_GRAPH_STATS.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, PROJECTION_TIMESTAMP_AND_USER,
+				SELECTION_USER, arguments, V_TIMESTAMP + ASCEND);
+		long firstTimestamp = 0;
+		long lastTimestamp = 0;
+		if (cursor != null && cursor.moveToFirst()) {
+			firstTimestamp = getLong(cursor, V_TIMESTAMP);
+			do {
+				lastTimestamp = getLong(cursor, V_TIMESTAMP);
+			} while (cursor.moveToNext());
+
+		}
+		if (cursor != null) {
+			cursor.close();
+		}
+		return new long[]{firstTimestamp, lastTimestamp};
+	}
+
+	public static long[] getEdgeTimestampForGamesGraph(ContentResolver contentResolver, String username, String gameType) {
+		final String[] arguments = sArguments2;
+		arguments[0] = String.valueOf(gameType);
+		arguments[1] = username;
+
+		Uri uri = uriArray[Tables.GAME_STATS_GRAPH_DATA.ordinal()];
+
+		Cursor cursor = contentResolver.query(uri, PROJECTION_GRAPH_RECORD,
+				SELECTION_USER_AND_GAME_TYPE, arguments, V_TIMESTAMP + ASCEND);
+		long firstTimestamp = 0;
+		long lastTimestamp = 0;
+		if (cursor != null && cursor.moveToFirst()) {
+			firstTimestamp = getLong(cursor, V_TIMESTAMP);
+			do {
+				lastTimestamp = getLong(cursor, V_TIMESTAMP);
+			} while (cursor.moveToNext());
+
+		}
+		if (cursor != null) {
+			cursor.close();
+		}
+		return new long[]{firstTimestamp, lastTimestamp};
+	}
+
 
 	// ================================= global help methods =======================================
 	public static void updateOrInsertValues(ContentResolver contentResolver, Cursor cursor, Uri uri, ContentValues values) {

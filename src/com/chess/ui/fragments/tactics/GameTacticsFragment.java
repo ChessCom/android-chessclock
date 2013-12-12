@@ -598,11 +598,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void vsComputer() {
-		int compGameMode = getAppData().getCompGameMode();
-		if (compGameMode == AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER) { // replace this fast speed fun
-			compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
-			getAppData().setCompGameMode(compGameMode);
-		}
+		int compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
+		getAppData().setCompGameMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
+
+		// rewind one move back for appropriate analysis
+		getBoardFace().takeBack();
+//		boardView.invalidate();
+
 		CompGameConfig.Builder builder = new CompGameConfig.Builder()
 				.setMode(compGameMode)
 				.setStrength(getAppData().getCompLevel())

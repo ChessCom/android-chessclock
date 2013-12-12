@@ -481,12 +481,18 @@ public class AppUtils {
 		} else if (days > 0) {
 			sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.days)).append(Symbol.SPACE);
 		} else if (hours > 0) {
-			if (!sb.toString().trim().equals(Symbol.EMPTY))
+			if (!sb.toString().trim().equals(Symbol.EMPTY)) {
 				sb.append(Symbol.SPACE);
-			sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hours)).append(Symbol.SPACE);
+			}
+			if (hours > 1) {
+				sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hours));
+			} else {
+				sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hour));
+			}
 		} else if (minutes > 0) {
-			if (!sb.toString().trim().equals(Symbol.EMPTY))
+			if (!sb.toString().trim().equals(Symbol.EMPTY)) {
 				sb.append(Symbol.SPACE);
+			}
 			sb.append(context.getString(R.string.minutes_arg, minutes));
 		} else {
 			sb.append(context.getString(R.string.just_now));

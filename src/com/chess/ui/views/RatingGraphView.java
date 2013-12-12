@@ -2,8 +2,8 @@ package com.chess.ui.views;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -13,7 +13,10 @@ import com.chess.utilities.FontsHelper;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboRadioButton;
 
+import android.text.format.DateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -178,13 +181,75 @@ public class RatingGraphView extends LinearLayout {
 	}
 
 	public void setGraphData(List<long[]> series, int width) {
-		Log.d("TEST", "width = " + width);
 		if (width == 0) { // view was not initialized yet
 			return;
 		}
-		// TODO get timestamps
+
+		// detect edge points
+		long firstTimestamp = series.get(0)[ChartView.TIME];
+		long firstPoint = firstTimestamp - firstTimestamp % ChartView.MILLISECONDS_PER_DAY;
+
+		long lastPoint = System.currentTimeMillis();
+		lastPoint -= lastPoint % ChartView.MILLISECONDS_PER_DAY;
+
+		int middleCnt = series.size() / 2;
+		long middlePoint = series.get(middleCnt)[ChartView.TIME];
+
+		boolean useYearLabels = false;
+		// if points are more than one year, change labels to years
+		{
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(firstPoint);
+			int startYear = calendar.get(Calendar.YEAR);
+			calendar.setTimeInMillis(lastPoint);
+			int endYear = calendar.get(Calendar.YEAR);
+			if (startYear != endYear) {
+				useYearLabels = true;
+			}
+		}
+
+		{ // first label
+			CharSequence timeLabelStr;
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(firstPoint);
+			timeLabelStr = getLabel(useYearLabels, calendar);
+
+			timeLabel1Txt.setText(timeLabelStr);
+		}
+		{ // 2nd label
+			CharSequence timeLabelStr;
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(middlePoint);
+			timeLabelStr = getLabel(useYearLabels, calendar);
+
+
+			timeLabel2Txt.setText(timeLabelStr);
+		}
+		{ // 3rd label
+			CharSequence timeLabelStr;
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(lastPoint);
+			timeLabelStr = getLabel(useYearLabels, calendar);
+
+			timeLabel3Txt.setText(timeLabelStr);
+		}
+
 		chartView.setGraphData(series, width);
 		invalidate();
+	}
+
+	private CharSequence getLabel(boolean useYearLabels, Calendar calendar) {
+		CharSequence timeLabelStr;
+		if (useYearLabels) {
+			timeLabelStr = String.valueOf(calendar.get(Calendar.YEAR));
+		} else {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				timeLabelStr = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault());
+			} else {
+				timeLabelStr = DateFormat.format("M", calendar);
+			}
+		}
+		return timeLabelStr;
 	}
 
 	public void setOnCheckChangeListener(RadioGroup.OnCheckedChangeListener listener) {

@@ -87,7 +87,7 @@ public class ArticleItemAdapter extends ItemsAdapter<ArticleItem.Data> {
 
 		holder.titleTxt.setText(item.getTitle());
 		date.setTime(item.getCreateDate() * 1000L);
-		holder.dateTxt.setText(dateFormatter.format(date));
+		holder.dateTxt.setText(Symbol.DIVIDER + dateFormatter.format(date)); // TODO rework to use default locale
 
 		String imageUrl = item.getImageUrl();
 		if (!imageDataMap.containsKey(imageUrl)) {

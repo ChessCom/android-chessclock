@@ -306,11 +306,12 @@ public class DbHelper {
 	}
 
 	/* Graph Stats Data */
-	public static QueryParams getGraphItemForUser(String username, String gameType) {
+	public static QueryParams getGraphItemForUser(String username, String gameType, long timestamp) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.GAME_STATS_GRAPH_DATA.ordinal()]);
-		queryParams.setSelection(DbDataManager.SELECTION_GRAPH_TABLE);
-		queryParams.setArguments(new String[]{gameType, username});
+		queryParams.setSelection(DbDataManager.createSelectionForTimestampAndUserGameType());
+		queryParams.setArguments(new String[]{gameType, username, String.valueOf(timestamp)});
+		queryParams.setOrder(DbScheme.V_TIMESTAMP + DbDataManager.ASCEND);
 		return queryParams;
 	}
 
@@ -320,6 +321,7 @@ public class DbHelper {
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.TACTICS_DAILY_STATS.ordinal()]);
 		queryParams.setSelection(DbDataManager.createSelectionForTimestampAndUser());
 		queryParams.setArguments(new String[]{String.valueOf(timestamp), username});
+		queryParams.setOrder(DbScheme.V_TIMESTAMP + DbDataManager.ASCEND);
 		return queryParams;
 	}
 
@@ -355,7 +357,7 @@ public class DbHelper {
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{username});
-		queryParams.setOrder(DbScheme.V_LAST_LOGIN_DATE + DbDataManager.ASCEND);
+		queryParams.setOrder(DbScheme.V_LAST_LOGIN_DATE + DbDataManager.DESCEND);
 		return queryParams;
 	}
 

@@ -30,7 +30,8 @@ public class FriendsPaginationAdapter extends PaginationCursorAdapter<FriendsIte
 	@Override
 	protected List<FriendsItem.Data> fetchMoreItems(int page) {
 		if (loadItem != null) {
-			loadItem.replaceRequestParams(RestHelper.P_PAGE_NUMBER, String.valueOf(page));
+//			loadItem.replaceRequestParams(RestHelper.P_PAGE_NUMBER, String.valueOf(page));
+			loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
 			FriendsItem item = null;
 			try {
 				item = RestHelper.getInstance().requestData(loadItem, FriendsItem.class, context);

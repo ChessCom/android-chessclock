@@ -58,17 +58,15 @@ public class StatsGameFragmentTablet extends StatsGameFragment {
 		} else if (previousPosition == LESSONS) {
 			parentFace.changeFragment(new StatsGameLessonsFragment());
 		} else {
-			updateUiData();
+			showSelectedStats();
 		}
 	}
 
 	@Override
 	protected void showSelectedStats() {
-		statsSpinner.setEnabled(true);
+		// get selected position of spinner that match game type
+		int gameType = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
 
-		// get selected position of spinner
-		int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
-
-		parentFace.changeFragment(StatsGameDetailsFragment.createInstance(position, username));
+		parentFace.changeFragment(StatsGameDetailsFragment.createInstance(gameType, username));
 	}
 }

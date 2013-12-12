@@ -86,7 +86,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	private void saveCompGame() {
 		//saving game for comp game mode if human is playing
-		if ((getAppData().isComputerVsHumanGameMode(getBoardFace()) || getAppData().isHumanVsHumanGameMode(getBoardFace()))
+		if ((ChessBoard.isComputerVsHumanGameMode(getBoardFace()) || ChessBoard.isHumanVsHumanGameMode(getBoardFace()))
 				&& !getBoardFace().isAnalysis()) {
 
 			StringBuilder builder = new StringBuilder();
@@ -120,7 +120,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		if (isHint())
 			return;
 
-		if (!getAppData().isHumanVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
+		if (!ChessBoard.isHumanVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
 			setComputerMoving(true);
 			gameCompActivityFace.onCompMove();
 		}
@@ -232,7 +232,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
     public void flipBoard() {
         if (!isComputerMoving()) {
             getBoardFace().setReside(!getBoardFace().isReside());
-            if (getAppData().isComputerVsHumanGameMode(getBoardFace())) {
+            if (ChessBoard.isComputerVsHumanGameMode(getBoardFace())) {
 				int engineMode;
 				//if (getAppData().isComputerVsHumanWhiteGameMode(getBoardFace())) {
 				if (getBoardFace().isWhiteToMove()) { // supports Flip when user navigated moves Back
@@ -258,7 +258,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	@Override
     public boolean moveBack() {
 		boolean blackCompFirstMove =
-				getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getPly() == 1;
+				ChessBoard.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getPly() == 1;
 
         if (!isComputerMoving() && noMovesToAnimate() && !navigating && getBoardFace().getPly() > 0 && !blackCompFirstMove) {
 
@@ -273,7 +273,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			getBoardFace().takeBack();
 
 			Move move = getBoardFace().getLastMove();
-			if (move != null && getAppData().isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
+			if (move != null && ChessBoard.isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
 				setSecondMoveAnimator(new MoveAnimator(move, false));
 			}
             invalidate();
@@ -300,7 +300,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			resetValidMoves();
 			getBoardFace().takeNext();
 
-			if (getAppData().isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
+			if (ChessBoard.isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
 				move = getBoardFace().getNextMove();
 				if (move != null) {
 					setSecondMoveAnimator(new MoveAnimator(move, true));

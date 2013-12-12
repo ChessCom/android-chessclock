@@ -119,13 +119,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	}
 
 	@Override
-	public void onStop() {
-		super.onStop();
-
-//		releaseResources();
-	}
-
-	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
 		if (isNetworkAvailable()) {
@@ -219,8 +212,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	}
 
 	private void loadFromDb() {
-		new LoadDataFromDbTask(friendsCursorUpdateListener,
-				DbHelper.getFriends(getUsername()),
+		new LoadDataFromDbTask(friendsCursorUpdateListener,	DbHelper.getFriends(username),
 				getContentResolver()).executeTask();
 	}
 
@@ -228,7 +220,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 		@Override
 		public void showProgress(boolean show) {
-			super.showProgress(show);
 			showLoadingView(show);
 		}
 

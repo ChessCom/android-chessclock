@@ -19,9 +19,13 @@
         android:textColor="@color/semitransparent_white_75"
 		android:singleLine="true"
 		android:ellipsize="marquee"
-		android:marqueeRepeatLimit="2"
+		android:marqueeRepeatLimit="marquee_forever"
         style="@style/DarkShadowBottom"
         custom:ttf="Bold"
         />
+<!--
+	android:focusable="false"
+	android:scrollHorizontally="true"
+-->
 
 </LinearLayout>

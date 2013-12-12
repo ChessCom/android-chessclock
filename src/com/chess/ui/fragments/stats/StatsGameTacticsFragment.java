@@ -43,6 +43,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 	public static final int FIRST = 0;
 	public static final int LAST = 1;
+	public static final String NUMBER = "#";
 
 	private RatingGraphView ratingGraphView;
 	private String username;
@@ -97,12 +98,15 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.stats);
+		if (!username.equals(getUsername())) {
+			setTitle(username + Symbol.SPACE + getString(R.string.stats));
+		} else {
+			setTitle(R.string.stats);
+		}
 
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_tactics_stats_header_view, null, false);
-		ratingGraphView = (RatingGraphView) headerView.findViewById(R.id.ratingGraphView);
 		recentProblemsTitleTxt = (TextView) headerView.findViewById(R.id.recentProblemsTitleTxt);
-
+		ratingGraphView = (RatingGraphView) headerView.findViewById(R.id.ratingGraphView);
 		ratingGraphView.setOnCheckChangeListener(this);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
@@ -112,22 +116,6 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 		view.getViewTreeObserver().addOnGlobalLayoutListener(this);
 	}
-
-//	@Override
-//	public void onResume() {
-//		super.onResume();
-//
-//		if (need2update) {
-//			LoadItem loadItem = new LoadItem();
-//			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS_STATS);
-//			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-//			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
-//
-//			new RequestJsonTask<TacticsHistoryItem>(statsItemUpdateListener).executeTask(loadItem);
-//		} else {
-//			updateUiData();
-//		}
-//	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -151,44 +139,37 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 		lastTimestamp = System.currentTimeMillis();
 		switch (checkedId) {
 			case R.id.thirtyDaysBtn:
-				logTest("30 days");
 				lastTimestamp = AppUtils.getLast30DaysTimeStamp();
 				break;
 			case R.id.ninetyDaysBtn:
-				logTest("90 days");
 				lastTimestamp = AppUtils.getLast90DaysTimeStamp();
 				break;
 			case R.id.oneYearBtn:
-				logTest("365 days");
 				lastTimestamp = AppUtils.getLastYearTimeStamp();
 				break;
 			case R.id.allTimeBtn:
-				logTest("all");
 				lastTimestamp = getAppData().getUserCreateDate();
 				break;
 		}
 		updateGraphAfter(lastTimestamp);
 	}
 
-
-	private void updateGraphAfter(long lastTimeStamp) {
-		this.lastTimestamp = lastTimeStamp;
+	private void updateGraphAfter(long lastTimestamp) {
+		this.lastTimestamp = lastTimestamp;
 
 		long[] edgeTimestamps = DbDataManager.getEdgeTimestampForTacticsGraph(getContentResolver(), username);
 
 		long today = System.currentTimeMillis() / 1000;
-		logTest(" today = " + today + " edgeTimestamps[FIRST] = " + edgeTimestamps[FIRST]
-				+ " edgeTimestamps[LAST] = " + edgeTimestamps[LAST]);
 		long oneDay = AppUtils.SECONDS_IN_DAY;
 		// if we have saved data from last timestamp(30 days ago) until today, we don't load it from server
-		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimeStamp - oneDay) {
+		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimestamp - oneDay) {
 			updateUiData();
 		} else { // else we only load difference since last saved point
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS_STATS);
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
-			loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimeStamp);
+			loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimestamp);
 
 			new RequestJsonTask<TacticsHistoryItem>(statsItemUpdateListener).executeTask(loadItem);
 		}
@@ -302,7 +283,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 			passedDate.setTime(getLong(cursor, DbScheme.V_CREATE_DATE));
 			String dateStr = dateFormatter.format(passedDate);
 			holder.dateTxt.setText(dateStr);
-			holder.idTxt.setText(String.valueOf(getLong(cursor, DbScheme.V_ID)));
+			holder.idTxt.setText(NUMBER + String.valueOf(getLong(cursor, DbScheme.V_ID)));
 
 			String tacticRating = String.valueOf(getInt(cursor, DbScheme.V_RATING));
 			holder.ratingTxt.setText(tacticRating);

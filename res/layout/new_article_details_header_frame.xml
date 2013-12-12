@@ -73,6 +73,7 @@
 		android:textColor="@color/new_friends_grey_text"
 		android:textSize="@dimen/default_text_size_small" />
 
+	<!--Content-->
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/contentTxt"
 		android:layout_width="match_parent"

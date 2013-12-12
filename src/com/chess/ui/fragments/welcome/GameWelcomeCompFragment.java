@@ -208,9 +208,9 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 		if (!getBoardFace().isAnalysis()) {
 
-			boolean isComputerMove = (getAppData().isComputerVsComputerGameMode(getBoardFace()))
-					|| (getAppData().isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
-					|| (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
+			boolean isComputerMove = (ChessBoard.isComputerVsComputerGameMode(getBoardFace()))
+					|| (ChessBoard.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
+					|| (ChessBoard.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
 
 			if (isComputerMove) {
 				computerMove();
@@ -225,7 +225,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		CompEngineHelper.getInstance().stop();
 
 		super.onPause();
-		if (getAppData().isComputerVsComputerGameMode(getBoardFace()) || getAppData().isComputerVsHumanGameMode(getBoardFace())
+		if (ChessBoard.isComputerVsComputerGameMode(getBoardFace()) || ChessBoard.isComputerVsHumanGameMode(getBoardFace())
 				&& boardView.isComputerMoving()) { // probably isComputerMoving() is only necessary to check without extra check of game mode
 
 			boardView.stopComputerMove();
@@ -567,7 +567,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public boolean isUserColorWhite() {
-		return getAppData().isComputerVsHumanWhiteGameMode(getBoardFace());
+		return ChessBoard.isComputerVsHumanWhiteGameMode(getBoardFace());
 	}
 
 	@Override
@@ -637,7 +637,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	private void resideBoardIfCompWhite() {
-		if (getAppData().isComputerVsHumanBlackGameMode(getBoardFace())) {
+		if (ChessBoard.isComputerVsHumanBlackGameMode(getBoardFace())) {
 			getBoardFace().setReside(true);
 			boardView.invalidate();
 		}

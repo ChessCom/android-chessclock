@@ -128,32 +128,7 @@ public class AppData {
 		return preferences.getString(LIVE_SESSION_ID, Symbol.EMPTY);
 	}
 
-	/* Game modes */
-	public boolean isFinishedEchessGameMode(BoardFace boardFace) {
-		return boardFace.getMode() == GAME_MODE_VIEW_FINISHED_ECHESS;
-	}
 
-	public boolean isComputerVsComputerGameMode(BoardFace boardFace) {
-		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_COMPUTER;
-	}
-
-	public boolean isComputerVsHumanGameMode(BoardFace boardFace) {
-		final int mode = boardFace.getMode();
-		return mode == GAME_MODE_COMPUTER_VS_PLAYER_WHITE
-				|| mode == GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
-	}
-
-	public boolean isHumanVsHumanGameMode(BoardFace boardFace) {
-		return boardFace.getMode() == GAME_MODE_2_PLAYERS;
-	}
-
-	public boolean isComputerVsHumanWhiteGameMode(BoardFace boardFace) {
-		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
-	}
-
-	public boolean isComputerVsHumanBlackGameMode(BoardFace boardFace) {
-		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
-	}
 
 	public void setShowSubmitButtonsDaily(boolean show) {
 		setBooleanValue(PREF_SHOW_SUBMIT_MOVE_DAILY, show);

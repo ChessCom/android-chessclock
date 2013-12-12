@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static com.chess.statics.AppConstants.*;
+
 public class ChessBoard implements BoardFace {
 
 	public static final int WHITE_SIDE = 0;
@@ -2089,4 +2091,30 @@ public class ChessBoard implements BoardFace {
 		return movesParser.removeCommentsAndAlternatesFromMovesList(movesList);
 	}
 
+	/* Game modes */
+	public static boolean isFinishedEchessGameMode(BoardFace boardFace) {
+		return boardFace.getMode() == GAME_MODE_VIEW_FINISHED_ECHESS;
+	}
+
+	public static boolean isComputerVsComputerGameMode(BoardFace boardFace) {
+		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_COMPUTER;
+	}
+
+	public static boolean isComputerVsHumanGameMode(BoardFace boardFace) {
+		final int mode = boardFace.getMode();
+		return mode == GAME_MODE_COMPUTER_VS_PLAYER_WHITE
+				|| mode == GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
+	}
+
+	public static boolean isHumanVsHumanGameMode(BoardFace boardFace) {
+		return boardFace.getMode() == GAME_MODE_2_PLAYERS;
+	}
+
+	public static boolean isComputerVsHumanWhiteGameMode(BoardFace boardFace) {
+		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
+	}
+
+	public static boolean isComputerVsHumanBlackGameMode(BoardFace boardFace) {
+		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
+	}
 }

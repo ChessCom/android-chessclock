@@ -12,16 +12,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import com.chess.R;
-import com.chess.backend.RestHelper;
-import com.chess.backend.LoadItem;
-import com.chess.backend.entity.api.stats.GameStatsItem;
-import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.tasks.SaveGameStatsTask;
 import com.chess.model.SelectionItem;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.DarkSpinnerIconAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.drawables.IconDrawable;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +41,6 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	protected static final String USERNAME = "username";
 
 	protected Spinner statsSpinner;
-	private StatsItemUpdateListener statsItemUpdateListener;
-	private SaveStatsUpdateListener saveStatsUpdateListener;
-	private String gameType;
 	protected String username;
 	private int categoryPosition;
 	protected int previousPosition = -1;
@@ -56,8 +48,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 	public StatsGameFragment() {
 		Bundle bundle = new Bundle();
-//		bundle.putInt(CATEGORY, LIVE_STANDARD);
-		bundle.putInt(CATEGORY, TACTICS);
+		bundle.putInt(CATEGORY, LIVE_STANDARD);
 		setArguments(bundle);
 	}
 
@@ -85,8 +76,6 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		if (TextUtils.isEmpty(username)) {
 			username = getUsername();
 		}
-
-		init();
 	}
 
 	@Override
@@ -98,7 +87,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.stats);
+		updateTitle();
 
 		statsSpinner = (Spinner) view.findViewById(R.id.statsSpinner);
 
@@ -108,35 +97,12 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 		statsSpinner.setSelection(categoryPosition);
 	}
 
-
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
 		outState.putInt(CATEGORY, categoryPosition);
 		outState.putString(USERNAME, username);
-	}
-
-	private void init() {
-		statsItemUpdateListener = new StatsItemUpdateListener();
-		saveStatsUpdateListener = new SaveStatsUpdateListener();
-	}
-
-	protected void updateUiData() {
-		SelectionItem selectionItem = (SelectionItem) statsSpinner.getSelectedItem();
-		gameType = selectionItem.getCode();
-
-		// get full stats
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAME_STATS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
-		loadItem.addRequestParams(RestHelper.P_VIEW_USERNAME, username);
-		loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, AppUtils.getLast30DaysTimeStamp());
-
-		new RequestJsonTask<GameStatsItem>(statsItemUpdateListener).executeTask(loadItem);
-
-		statsSpinner.setEnabled(false);
 	}
 
 	@Override
@@ -150,11 +116,11 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 	protected void updateBySelection() {
 		if (previousPosition == TACTICS) {
-			changeInternalFragment(new StatsGameTacticsFragment());
+			changeInternalFragment(StatsGameTacticsFragment.createInstance(username));
 		} else if (previousPosition == LESSONS) {
-			changeInternalFragment(new StatsGameLessonsFragment());
+			changeInternalFragment(StatsGameLessonsFragment.createInstance(username));
 		} else {
-			updateUiData();
+			showSelectedStats();
 		}
 	}
 
@@ -162,57 +128,11 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	public void onNothingSelected(AdapterView<?> parent) {
 	}
 
-	private class StatsItemUpdateListener extends ChessLoadUpdateListener<GameStatsItem> {
-
-		public StatsItemUpdateListener() {
-			super(GameStatsItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			if (!isTablet) {
-				super.showProgress(show);
-			}
-		}
-
-		@Override
-		public void updateData(GameStatsItem returnedObj) {
-			super.updateData(returnedObj);
-
-			// Save stats to DB
-			new SaveGameStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver(),
-					gameType, username).executeTask();
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			showSelectedStats();
-		}
-	}
-
 	protected void showSelectedStats() {
-		statsSpinner.setEnabled(true);
-
 		// get selected position of spinner
-		int position = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
+		int gameType = statsSpinner.getSelectedItemPosition(); // specify which data to load in details
 
-		changeInternalFragment(StatsGameDetailsFragment.createInstance(position, username));
-	}
-
-	private class SaveStatsUpdateListener extends ChessLoadUpdateListener<GameStatsItem.Data> {
-
-		@Override
-		public void updateData(GameStatsItem.Data returnedObj) {
-			super.updateData(returnedObj);
-			showSelectedStats();
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			statsSpinner.setEnabled(true);
-		}
+		changeInternalFragment(StatsGameDetailsFragment.createInstance(gameType, username));
 	}
 
 	private void changeInternalFragment(Fragment fragment) {
@@ -260,6 +180,22 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 				return new IconDrawable(context, R.string.ic_daily960_game);
 			default: // case LESSONS:
 				return new IconDrawable(context, R.string.ic_help);
+		}
+	}
+
+	public void updateUsername(String username) {
+		this.username = username;
+		need2update = true;
+
+		updateTitle();
+		updateBySelection();
+	}
+
+	private void updateTitle() {
+		if (!username.equals(getUsername())) {
+			setTitle(username + Symbol.SPACE + getString(R.string.stats));
+		} else {
+			setTitle(R.string.stats);
 		}
 	}
 }

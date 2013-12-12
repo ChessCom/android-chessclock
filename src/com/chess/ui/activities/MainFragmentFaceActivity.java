@@ -210,12 +210,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 			GameLiveFragment gameLiveFragment = getLiveFragment();
 			if (gameLiveFragment != null) {
-				FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-				currentActiveFragment = gameLiveFragment;
-				String simpleName = gameLiveFragment.getClass().getSimpleName();
-				transaction.add(R.id.content_frame, gameLiveFragment, simpleName);
-				transaction.addToBackStack(simpleName);
-				transaction.commitAllowingStateLoss();
+				openFragment(gameLiveFragment);
 				return;
 			}
 
@@ -224,13 +219,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				fragmentByTag = LiveGameWaitFragment.createInstance(getAppData().getLiveGameConfig());
 			}
 
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-			currentActiveFragment = fragmentByTag;
-
-			String simpleName = fragmentByTag.getClass().getSimpleName();
-			transaction.add(R.id.content_frame, fragmentByTag, simpleName);
-			transaction.addToBackStack(simpleName);
-			transaction.commitAllowingStateLoss();
+			openFragment(fragmentByTag);
 		}
 	}
 
@@ -461,26 +450,26 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void openFragment(BasePopupsFragment fragment) {
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
 		String simpleName = fragment.getClass().getSimpleName();
-		ft.replace(R.id.content_frame, fragment, simpleName);
-		ft.addToBackStack(simpleName);
-		ft.commitAllowingStateLoss();
+		transaction.replace(R.id.content_frame, fragment, simpleName);
+		transaction.addToBackStack(simpleName);
+		transaction.commitAllowingStateLoss();
 
 		FlurryAgent.logEvent(FlurryData.OPEN_FRAME + simpleName);
 	}
 
 	@Override
 	public void openFragment(BasePopupsFragment fragment, int code) {
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
 		String simpleName = fragment.getClass().getSimpleName();
-		ft.replace(R.id.content_frame, fragment, simpleName);
-		ft.addToBackStack(simpleName);
-		ft.commit();
+		transaction.replace(R.id.content_frame, fragment, simpleName);
+		transaction.addToBackStack(simpleName);
+		transaction.commit();
 	}
 
 	@Override

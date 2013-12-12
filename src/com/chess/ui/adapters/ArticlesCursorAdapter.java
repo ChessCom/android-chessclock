@@ -90,7 +90,7 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 
 		holder.titleTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_TITLE)));
 		date.setTime(DbDataManager.getLong(cursor, DbScheme.V_CREATE_DATE) * 1000L);
-		holder.dateTxt.setText(dateFormatter.format(date));
+		holder.dateTxt.setText(Symbol.DIVIDER + dateFormatter.format(date));
 
 		String articleImageUrl = DbDataManager.getString(cursor, DbScheme.V_PHOTO_URL);
 		if (articleImageUrl.contains(NO_ITEM_IMAGE)) {

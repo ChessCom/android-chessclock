@@ -55,6 +55,7 @@
         android:layout_below="@id/titleTxt"
         android:layout_marginTop="-6dip"
         android:layout_marginLeft="7dip"
+		android:visibility="gone"
         />
 
     <com.chess.widgets.RoboTextView
@@ -62,9 +63,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="test date"
-        android:layout_toRightOf="@id/thumbnailImg"
-        android:layout_below="@id/authorTxt"
-        android:textColor="@color/new_friends_grey_text"
+        android:layout_toRightOf="@id/countryImg"
+        android:layout_below="@id/titleTxt"
+        android:textColor="@color/stats_label_light_grey"
         android:textSize="@dimen/default_text_size_small"
         />
 

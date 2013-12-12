@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.utilities.AppUtils;
 
@@ -19,6 +18,8 @@ import com.chess.utilities.AppUtils;
  * Time: 8:26
  */
 public class ForumTopicsCursorAdapter extends ItemsCursorAdapter {
+
+	public static final String DIVIDER = " | ";
 
 	public ForumTopicsCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
@@ -44,17 +45,17 @@ public class ForumTopicsCursorAdapter extends ItemsCursorAdapter {
 
 		long timestamp = getLong(cursor, DbScheme.V_LAST_POST_DATE);
 		String lastCommentAgoStr = AppUtils.getMomentsAgoFromSeconds(timestamp, context);
-		holder.lastCommentAgoTxt.setText(lastCommentAgoStr + Symbol.BULLET);
+		holder.lastCommentAgoTxt.setText(lastCommentAgoStr + DIVIDER);
 		holder.titleTxt.setText(Html.fromHtml(getString(cursor, DbScheme.V_TITLE)));
 
 		int postCount = getInt(cursor, DbScheme.V_POST_COUNT);
 		holder.postsCountTxt.setText(context.getString(R.string.posts_arg, postCount));
 
-		if (haveNewPosts()) {
-			holder.newPostImg.setImageResource(R.drawable.ic_new_post_t);
-		} else {
-			holder.newPostImg.setImageResource(R.drawable.ic_new_post_f);
-		}
+//		if (haveNewPosts()) {
+//			holder.newPostImg.setImageResource(R.drawable.ic_new_post_t);
+//		} else {
+//			holder.newPostImg.setImageResource(R.drawable.ic_new_post_f);
+//		}
 	}
 
 	private boolean haveNewPosts() {

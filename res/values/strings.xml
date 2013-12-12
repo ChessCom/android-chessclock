@@ -237,6 +237,7 @@
 
     <!--Games List Screen-->
     <string name="hours">hours</string>  <!--Units-->
+    <string name="hour">hour</string>  <!--Units-->
     <string name="days">days</string> <!--Units-->
 
     <string name="random">Random</string> <!--Player Color pick selector-->

@@ -10,6 +10,7 @@ import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.statics.StaticData;
+import com.chess.ui.views.ChartView;
 
 import java.util.List;
 
@@ -28,8 +29,7 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 	public static final String LIGHTNING = "lightning";
 	public static final String CHESS = "chess";
 	public static final String CHESS960 = "chess960";
-	private static final int TIMESTAMP = 0;
-	private static final int RATING = 1;
+
 	private final String username;
 
 	private ContentResolver contentResolver;
@@ -51,7 +51,7 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 	protected Integer doTheTask(Long... params) {
 
 		if (gameType.equals(STANDARD)) {
-			saveStatsGameLive( DbScheme.Tables.GAME_STATS_LIVE_STANDARD.ordinal());
+			saveStatsGameLive(DbScheme.Tables.GAME_STATS_LIVE_STANDARD.ordinal());
 			saveGraphStats(STANDARD);
 		} else if (gameType.equals(LIGHTNING)) {
 			saveStatsGameLive(DbScheme.Tables.GAME_STATS_LIVE_LIGHTNING.ordinal());
@@ -100,9 +100,18 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 		int minY = item.getGraphData().getMinY();
 
 		List<long[]> series = item.getGraphData().getSeries();
+		if (series == null) {
+			return;
+		}
+
+		if (series.size() > 0) {
+			// add one more for today to avoid unnecessary load
+			series.add(new long[]{System.currentTimeMillis(), series.get(series.size() - 1)[ChartView.VALUE]});
+		}
+
 		for (long[] graphPoints : series) {
 
-			long timestamp = graphPoints[TIMESTAMP];
+			long timestamp = graphPoints[ChartView.TIME];
 			final String[] arguments = sArguments3;
 			arguments[0] = String.valueOf(timestamp);
 			arguments[1] = gameType;
@@ -116,10 +125,10 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 			ContentValues values = new ContentValues();
 
 			values.put(V_USER, username);
-			values.put(V_TIMESTAMP, timestamp);
+			values.put(V_TIMESTAMP, timestamp / 1000);
 			values.put(V_MIN_Y, minY);
 			values.put(V_MAX_X, maxX);
-			values.put(V_RATING, graphPoints[RATING]);
+			values.put(V_RATING, graphPoints[ChartView.VALUE]);
 			values.put(V_GAME_TYPE, gameType);
 
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);

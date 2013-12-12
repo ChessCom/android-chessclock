@@ -28,7 +28,7 @@
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/photoImg"
 		android:textColor="@color/new_text_blue"
-		android:layout_marginTop="-6dip"
+		android:layout_marginTop="-4dip"
 		custom:ttf="Bold"
 		/>
 

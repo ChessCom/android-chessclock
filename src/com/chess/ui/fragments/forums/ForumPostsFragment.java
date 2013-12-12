@@ -40,7 +40,6 @@ import com.chess.ui.views.PageIndicatorView;
 public class ForumPostsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
 		PageIndicatorView.PagerFace, ItemClickListenerFace {
 
-
 	private static final String TOPIC_ID = "topic_id";
 	public static final String P_TAG_OPEN = "<p>";
 	public static final String P_TAG_CLOSE = "</p>";

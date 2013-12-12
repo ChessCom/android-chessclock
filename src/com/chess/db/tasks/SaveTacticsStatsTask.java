@@ -14,8 +14,6 @@ import com.chess.statics.StaticData;
 import java.util.List;
 
 import static com.chess.db.DbScheme.*;
-import static com.chess.db.DbScheme.V_CLOSE_RATING;
-import static com.chess.db.DbScheme.V_LOWEST_RATING;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,6 +41,12 @@ public class SaveTacticsStatsTask extends AbstractUpdateTask<TacticsHistoryItem.
 		// save daily ratings
 		List<TacticsHistoryItem.Data.DailyStats> dailyStatsList = item.getDailyStats();
 		if (dailyStatsList != null) {
+			if (dailyStatsList.size() > 0) {
+				// add one more for today to avoid unnecessary load
+				TacticsHistoryItem.Data.DailyStats dailyStats = dailyStatsList.get(dailyStatsList.size() - 1);
+				dailyStats.setTimestamp(System.currentTimeMillis() / 1000);
+			}
+
 			for (TacticsHistoryItem.Data.DailyStats dailyStats : dailyStatsList) {
 				final String[] arguments = sArguments2;
 				arguments[0] = String.valueOf(dailyStats.getTimestamp());

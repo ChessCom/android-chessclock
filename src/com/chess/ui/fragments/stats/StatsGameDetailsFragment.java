@@ -61,14 +61,8 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 	// 05/27/08
 	private final static SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yy");
 
-	private final static String MODE = "mode";
+	private final static String GAME_TYPE = "gameType";
 	private static final String USERNAME = "username";
-
-	private CursorUpdateListener standardCursorUpdateListener;
-	private CursorUpdateListener lightningCursorUpdateListener;
-	private CursorUpdateListener blitzCursorUpdateListener;
-	private CursorUpdateListener chessCursorUpdateListener;
-	private CursorUpdateListener chess960CursorUpdateListener;
 
 	private TextView winCntValueTxt;
 	private TextView loseCntValueTxt;
@@ -87,19 +81,24 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 	private TextView mostFrequentOpponentGamesTxt;
 	private TextView timeoutsLabelTxt;
 	private ForegroundColorSpan foregroundSpan;
-	private int mode;
+	private int gameType;
 	private String username;
 	private RatingGraphView ratingGraphView;
 	private boolean showTitle;
 	private long lastTimestamp;
 	private int previousCheckedId;
+	private SaveStatsUpdateListener saveStatsUpdateListener;
+	private CursorUpdateListener gameStatsCursorUpdateListener;
+	private String gameTypeStr;
+	private StatsItemUpdateListener statsItemUpdateListener;
 
 	public StatsGameDetailsFragment() {
 		Bundle bundle = new Bundle();
-		bundle.putInt(MODE, 0);
+		bundle.putInt(GAME_TYPE, 0);
 
 		setArguments(bundle);
 	}
+
 	public static StatsGameDetailsFragment createInstance(int code, boolean showTitle, String username) {
 		StatsGameDetailsFragment fragment = createInstance(code, username);
 		fragment.showTitle = showTitle;
@@ -109,7 +108,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 	public static StatsGameDetailsFragment createInstance(int code, String username) {
 		StatsGameDetailsFragment fragment = new StatsGameDetailsFragment();
 		Bundle bundle = new Bundle();
-		bundle.putInt(MODE, code);
+		bundle.putInt(GAME_TYPE, code);
 		bundle.putString(USERNAME, username);
 
 		fragment.setArguments(bundle);
@@ -122,10 +121,10 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 
 		if (getArguments() != null) {
 			username = getArguments().getString(USERNAME);
-			mode = getArguments().getInt(MODE);
+			gameType = getArguments().getInt(GAME_TYPE);
 		} else {
 			username = savedInstanceState.getString(USERNAME);
-			mode = savedInstanceState.getInt(MODE);
+			gameType = savedInstanceState.getInt(GAME_TYPE);
 		}
 
 		if (TextUtils.isEmpty(username)) {
@@ -145,7 +144,11 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		super.onViewCreated(view, savedInstanceState);
 
 		if (showTitle) {
-			setTitle(R.string.stats);
+			if (!username.equals(getUsername())) {
+				setTitle(username + Symbol.SPACE + getString(R.string.stats));
+			} else {
+				setTitle(R.string.stats);
+			}
 		}
 
 		currentRatingTxt = (TextView) view.findViewById(R.id.currentRatingTxt);
@@ -182,28 +185,37 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-
-		if (need2update) {
-			updateUiData();
-		}
-	}
-
-	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		outState.putInt(MODE, mode);
+		outState.putInt(GAME_TYPE, gameType);
 		outState.putString(USERNAME, username);
 	}
 
 	private void init() {
-		standardCursorUpdateListener = new CursorUpdateListener(SaveGameStatsTask.STANDARD);
-		lightningCursorUpdateListener = new CursorUpdateListener(SaveGameStatsTask.LIGHTNING);
-		blitzCursorUpdateListener = new CursorUpdateListener(SaveGameStatsTask.BLITZ);
-		chessCursorUpdateListener = new CursorUpdateListener(SaveGameStatsTask.CHESS);
-		chess960CursorUpdateListener = new CursorUpdateListener(SaveGameStatsTask.CHESS960);
+
+		switch (gameType) {
+			case LIVE_STANDARD:
+				gameTypeStr = SaveGameStatsTask.STANDARD;
+				break;
+			case LIVE_LIGHTNING:
+				gameTypeStr = SaveGameStatsTask.LIGHTNING;
+				break;
+			case LIVE_BLITZ:
+				gameTypeStr = SaveGameStatsTask.BLITZ;
+				break;
+			case DAILY_CHESS:
+				gameTypeStr = SaveGameStatsTask.CHESS;
+				break;
+			case DAILY_CHESS960:
+				gameTypeStr = SaveGameStatsTask.CHESS960;
+				break;
+		}
+
+		saveStatsUpdateListener = new SaveStatsUpdateListener();
+		statsItemUpdateListener = new StatsItemUpdateListener();
+
+		gameStatsCursorUpdateListener = new CursorUpdateListener();
 
 		int lightGrey = getResources().getColor(R.color.stats_label_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
@@ -211,29 +223,26 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 	}
 
 	private void updateUiData() {
-
-		switch (mode) {
+		DbScheme.Tables table = null;
+		switch (gameType) {
 			case LIVE_STANDARD:
-				new LoadDataFromDbTask(standardCursorUpdateListener, DbHelper.getTableForUser(username,
-						DbScheme.Tables.GAME_STATS_LIVE_STANDARD), getContentResolver()).executeTask();
+				table = DbScheme.Tables.GAME_STATS_LIVE_STANDARD;
 				break;
 			case LIVE_LIGHTNING:
-				new LoadDataFromDbTask(lightningCursorUpdateListener, DbHelper.getTableForUser(username,
-						DbScheme.Tables.GAME_STATS_LIVE_LIGHTNING), getContentResolver()).executeTask();
+				table = DbScheme.Tables.GAME_STATS_LIVE_LIGHTNING;
 				break;
 			case LIVE_BLITZ:
-				new LoadDataFromDbTask(blitzCursorUpdateListener, DbHelper.getTableForUser(username,
-						DbScheme.Tables.GAME_STATS_LIVE_BLITZ), getContentResolver()).executeTask();
+				table = DbScheme.Tables.GAME_STATS_LIVE_BLITZ;
 				break;
 			case DAILY_CHESS:
-				new LoadDataFromDbTask(chessCursorUpdateListener, DbHelper.getTableForUser(username,
-						DbScheme.Tables.GAME_STATS_DAILY_CHESS), getContentResolver()).executeTask();
+				table = DbScheme.Tables.GAME_STATS_DAILY_CHESS;
 				break;
 			case DAILY_CHESS960:
-				new LoadDataFromDbTask(chess960CursorUpdateListener, DbHelper.getTableForUser(username,
-						DbScheme.Tables.GAME_STATS_DAILY_CHESS960), getContentResolver()).executeTask();
+				table = DbScheme.Tables.GAME_STATS_DAILY_CHESS960;
 				break;
 		}
+		new LoadDataFromDbTask(gameStatsCursorUpdateListener, DbHelper.getTableForUser(username,
+				table), getContentResolver()).executeTask();
 	}
 
 	@Override
@@ -246,61 +255,58 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		lastTimestamp = System.currentTimeMillis();
 		switch (checkedId) {
 			case R.id.thirtyDaysBtn:
-				logTest("30 days");
 				lastTimestamp = AppUtils.getLast30DaysTimeStamp();
 				break;
 			case R.id.ninetyDaysBtn:
-				logTest("90 days");
 				lastTimestamp = AppUtils.getLast90DaysTimeStamp();
 				break;
 			case R.id.oneYearBtn:
-				logTest("365 days");
 				lastTimestamp = AppUtils.getLastYearTimeStamp();
 				break;
 			case R.id.allTimeBtn:
-				logTest("all");
 				lastTimestamp = getAppData().getUserCreateDate();
 				break;
 		}
-		updateUiData();
-//		updateGraphAfter(lastTimestamp);
+		updateGraphAfter(lastTimestamp);
 	}
 
-	private void updateGraphAfter(long lastTimeStamp) {
-		this.lastTimestamp = lastTimeStamp;
+	private void updateGraphAfter(long lastTimestamp) {
+		this.lastTimestamp = lastTimestamp;
 
-		long[] edgeTimestamps = DbDataManager.getEdgeTimestampForTacticsGraph(getContentResolver(), username);
+		long[] edgeTimestamps = DbDataManager.getEdgeTimestampForGamesGraph(getContentResolver(), username, gameTypeStr);
 
 		long today = System.currentTimeMillis() / 1000;
-		logTest(" today = " + today + " edgeTimestamps[FIRST] = " + edgeTimestamps[FIRST]
-				+ " edgeTimestamps[LAST] = " + edgeTimestamps[LAST]);
 		long oneDay = AppUtils.SECONDS_IN_DAY;
 		// if we have saved data from last timestamp(30 days ago) until today, we don't load it from server
-		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimeStamp - oneDay) {
+		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimestamp - oneDay) {
 			updateUiData();
 		} else { // else we only load difference since last saved point
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS_STATS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
-			loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimeStamp);
-
-//			new RequestJsonTask<TacticsHistoryItem>(statsItemUpdateListener).executeTask(loadItem);
+			getFullStats();
 		}
+	}
+
+	private void getFullStats() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAME_STATS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameTypeStr);
+		loadItem.addRequestParams(RestHelper.P_VIEW_USERNAME, username);
+		loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimestamp * 1000);
+
+		new RequestJsonTask<GameStatsItem>(statsItemUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
 	public void onGlobalLayout() {
-
+		if (need2update) {
+			ratingGraphView.setChecked(R.id.thirtyDaysBtn);
+		}
 	}
 
 	private class CursorUpdateListener extends ChessUpdateListener<Cursor> {
 
-		private String gameType;
-
-		public CursorUpdateListener(String gameType) {
+		public CursorUpdateListener() {
 			super();
-			this.gameType = gameType;
 		}
 
 		@Override
@@ -354,15 +360,16 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 			}
 
 			{ // Graph Rating Data
-				QueryParams params = DbHelper.getGraphItemForUser(username, gameType);
+				QueryParams params = DbHelper.getGraphItemForUser(username, gameTypeStr, lastTimestamp);
 				Cursor cursor = DbDataManager.query(getContentResolver(), params);
 
 				if (cursor != null && cursor.moveToFirst()) {
 					List<long[]> series = new ArrayList<long[]>();
 					do {
-						long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP);
+						long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP) * 1000;
 						int rating = DbDataManager.getInt(cursor, DbScheme.V_RATING);
-						long[] point = new long[]{timestamp, rating };
+						long[] point = new long[]{timestamp, rating};
+
 						series.add(point);
 					} while (cursor.moveToNext());
 
@@ -400,6 +407,8 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 				mostFrequentOpponentTxt.setText(mostFrequentOpponentName);
 				mostFrequentOpponentGamesTxt.setText(getString(R.string.games_arg, mostFrequentOpponentGamesPlayed));
 			}
+
+			need2update = false;
 		}
 
 		@Override
@@ -407,25 +416,15 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 			super.errorHandle(resultCode);
 
 			if (resultCode == StaticData.EMPTY_DATA) {
-				// get full stats
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.getInstance().CMD_GAME_STATS);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-				loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameType);
-				loadItem.addRequestParams(RestHelper.P_VIEW_USERNAME, username);
-
-				new RequestJsonTask<GameStatsItem>(new StatsItemUpdateListener(gameType)).executeTask(loadItem);
+				getFullStats();
 			}
 		}
 	}
 
 	private class StatsItemUpdateListener extends ChessLoadUpdateListener<GameStatsItem> {
 
-		private String gameType;
-
-		public StatsItemUpdateListener(String gameType) {
+		public StatsItemUpdateListener() {
 			super(GameStatsItem.class);
-			this.gameType = gameType;
 		}
 
 		@Override
@@ -439,9 +438,8 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		public void updateData(GameStatsItem returnedObj) {
 			super.updateData(returnedObj);
 
-			// Save stats to DB
-			new SaveGameStatsTask(new SaveStatsUpdateListener(), returnedObj.getData(), getContentResolver(),
-					gameType, username).executeTask();
+			new SaveGameStatsTask(saveStatsUpdateListener, returnedObj.getData(), getContentResolver(),
+					gameTypeStr, username).executeTask();
 		}
 	}
 

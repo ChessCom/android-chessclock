@@ -21,9 +21,10 @@ import java.util.List;
  */
 public class ChartView extends View {
 
-	private static final int TIME = 0;
-	private static final int VALUE = 1;
-	private static final long MILLISECONDS_PER_DAY = 86400 * 1000;
+	public static final int TIME = 0;
+	public static final int VALUE = 1;
+
+	public static final long MILLISECONDS_PER_DAY = 86400 * 1000;
 
 	private Paint graphPaint;
 	private Path graphPath;
@@ -107,15 +108,15 @@ public class ChartView extends View {
 
 			// distribute timestamps at whole width
 			long xDiff = lastPoint - firstPoint;
-			long xPointRange = xDiff / widthPixels;
-			logTest("firstPoint = " + firstPoint + " lastPoint = " + lastPoint + " xDiff = " + xDiff + " xPointRange = " + xPointRange);
+			long xPointStep = xDiff / widthPixels;
+			logTest("firstPoint = " + firstPoint + " lastPoint = " + lastPoint + " xDiff = " + xDiff + " xPointStep = " + xPointStep);
 
-			// convert xPointRange to optimal day{time} difference
+			// convert xPointStep to optimal day{time} difference
 			pointsArray = new SparseArray<Long>();
 			pointsExistArray = new SparseBooleanArray();
 
 			for (int i = 0; i < widthPixels; i++) {
-				long timestampValue = firstPoint + i * xPointRange;
+				long timestampValue = firstPoint + i * xPointStep;
 				timestampValue -= timestampValue % MILLISECONDS_PER_DAY;
 
 				boolean found = false;
@@ -125,7 +126,7 @@ public class ChartView extends View {
 
 					long rating = aDataArray[VALUE];
 //					logTest(" data rating = " + rating);
-					if ((timestampValue - graphTimestamp) >= 0 && (timestampValue - graphTimestamp) < (xPointRange * 2)) {
+					if ((timestampValue - graphTimestamp) >= 0 && (timestampValue - graphTimestamp) < (xPointStep * 2)) {
 						pointsArray.put(i, rating);
 						found = true;
 						break;

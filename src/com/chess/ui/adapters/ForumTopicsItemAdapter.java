@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.entity.api.ForumTopicItem;
-import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 
 import java.util.List;
@@ -19,6 +18,8 @@ import java.util.List;
  * Time: 20:11
  */
 public class ForumTopicsItemAdapter extends ItemsAdapter<ForumTopicItem.Topic> {
+
+	private static final String DIVIDER = " | ";
 
 	public ForumTopicsItemAdapter(Context context, List<ForumTopicItem.Topic> itemList) {
 		super(context, itemList);
@@ -44,17 +45,17 @@ public class ForumTopicsItemAdapter extends ItemsAdapter<ForumTopicItem.Topic> {
 
 		long timestamp = item.getLastPostDate();
 		String lastCommentAgoStr = AppUtils.getMomentsAgoFromSeconds(timestamp, context);
-		holder.lastCommentAgoTxt.setText(lastCommentAgoStr + Symbol.BULLET);
+		holder.lastCommentAgoTxt.setText(lastCommentAgoStr + DIVIDER);
 		holder.titleTxt.setText(item.getSubject());
 
 		int postCount = item.getPostCount();
 		holder.postsCountTxt.setText(context.getString(R.string.posts_arg, postCount));
 
-		if (haveNewPosts()) {
-			holder.newPostImg.setImageResource(R.drawable.ic_new_post_t);
-		} else {
-			holder.newPostImg.setImageResource(R.drawable.ic_new_post_f);
-		}
+//		if (haveNewPosts()) {
+//			holder.newPostImg.setImageResource(R.drawable.ic_new_post_t);
+//		} else {
+//			holder.newPostImg.setImageResource(R.drawable.ic_new_post_f);
+//		}
 	}
 
 	private boolean haveNewPosts() {

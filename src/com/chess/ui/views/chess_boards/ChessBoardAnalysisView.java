@@ -57,7 +57,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	@Override
 	protected boolean isGameOver() {
 		//saving game for comp game mode if human is playing
-		if ((getAppData().isComputerVsHumanGameMode(getBoardFace()) || getAppData().isHumanVsHumanGameMode(getBoardFace()))
+		if ((ChessBoard.isComputerVsHumanGameMode(getBoardFace()) || ChessBoard.isHumanVsHumanGameMode(getBoardFace()))
 				&& !getBoardFace().isAnalysis()) {
 
 			StringBuilder builder = new StringBuilder();

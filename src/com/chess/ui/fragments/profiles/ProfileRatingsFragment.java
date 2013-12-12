@@ -21,8 +21,6 @@ import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.RatingListItem;
 import com.chess.ui.adapters.RatingsAdapter;
 import com.chess.ui.fragments.stats.StatsGameFragment;
-import com.chess.ui.fragments.stats.StatsGameLessonsFragment;
-import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.IconDrawable;
 
@@ -110,29 +108,8 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		RatingListItem ratingListItem = ratingList.get(position);
 
-		switch (Integer.parseInt(ratingListItem.getCode())) {
-			case LIVE_STANDARD:
-				getActivityFace().openFragment(StatsGameFragment.createInstance(LIVE_STANDARD, username));
-				break;
-			case LIVE_BLITZ:
-				getActivityFace().openFragment(StatsGameFragment.createInstance(LIVE_BLITZ, username));
-				break;
-			case LIVE_LIGHTNING:
-				getActivityFace().openFragment(StatsGameFragment.createInstance(LIVE_LIGHTNING, username));
-				break;
-			case DAILY_CHESS:
-				getActivityFace().openFragment(StatsGameFragment.createInstance(DAILY_CHESS, username));
-				break;
-			case DAILY_CHESS960:
-				getActivityFace().openFragment(StatsGameFragment.createInstance(DAILY_CHESS960, username));
-				break;
-			case TACTICS:
-				getActivityFace().openFragment(StatsGameTacticsFragment.createInstance(username));
-				break;
-			case LESSONS:
-				getActivityFace().openFragment(StatsGameLessonsFragment.createInstance(username));
-				break;
-		}
+		int code = Integer.parseInt(ratingListItem.getCode());
+		getActivityFace().openFragment(StatsGameFragment.createInstance(code, username));
 	}
 
 	private void fillUserStats() {

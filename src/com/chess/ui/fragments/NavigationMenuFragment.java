@@ -213,17 +213,9 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_tactics:
-//				if (!isTablet) {
 					fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
-//				} else {
-//					fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragmentTablet.class.getSimpleName());
-//				}
 				if (fragmentByTag == null) {
-//					if (!isTablet) {
-						fragmentByTag = new GameTacticsFragment();
-//					} else {
-//						fragmentByTag = new GameTacticsFragmentTablet();
-//					}
+					fragmentByTag = new GameTacticsFragment();
 				}
 				break;
 			case R.drawable.ic_nav_lessons:
@@ -273,8 +265,6 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 			case R.drawable.ic_nav_friends:
 				if (!isTablet) {
 					fragmentByTag = (BasePopupsFragment) findFragmentByTag(FriendsFragment.class.getSimpleName());
-				} else {
-//					fragmentByTag = (BasePopupsFragment) findFragmentByTag(ProfileBaseFragmentTablet.class.getSimpleName());
 				}
 
 				if (fragmentByTag == null) {
@@ -312,6 +302,11 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 					} else {
 						fragmentByTag = ProfileBaseFragmentTablet.createInstance(ProfileBaseFragmentTablet.STATS_MODE, getUsername()); // TODO show stats by deafult
 					}
+				} else {
+					if (!isTablet) {
+						((StatsGameFragment)fragmentByTag).updateUsername(getUsername());
+					}
+
 				}
 				break;
 			case R.drawable.ic_nav_forums:

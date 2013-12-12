@@ -85,8 +85,7 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 		holder.titleTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_TITLE)));
 		holder.authorTxt.setText(authorStr);
 		String durationStr = SLASH_DIVIDER + context.getString(R.string.min_arg, getString(cursor, DbScheme.V_MINUTES));
-		String viewsCntStr = SLASH_DIVIDER + context.getString(R.string.views_arg, getString(cursor, DbScheme.V_VIEW_COUNT));
-		holder.durationTxt.setText(durationStr + viewsCntStr);
+		holder.durationTxt.setText(durationStr);
 
 		if (viewedMap.get(getInt(cursor, DbScheme.V_ID), false)) {
 			holder.titleTxt.setTextColor(completedTextColor);

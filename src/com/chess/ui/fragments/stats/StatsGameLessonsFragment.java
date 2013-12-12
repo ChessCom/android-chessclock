@@ -7,8 +7,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
@@ -24,6 +26,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.RatingGraphView;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +37,20 @@ import java.util.List;
  * Date: 27.09.13
  * Time: 7:13
  */
-public class StatsGameLessonsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
+public class StatsGameLessonsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, RadioGroup.OnCheckedChangeListener, ViewTreeObserver.OnGlobalLayoutListener {
+
+	public static final int FIRST = 0;
+	public static final int LAST = 1;
 
 	private RatingGraphView ratingGraphView;
-	protected static final String USERNAME = "username";
+
 	private String username;
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private StatsItemUpdateListener statsItemUpdateListener;
 	private RecentStatsAdapter recentStatsAdapter;
 	private TextView recentProblemsTitleTxt;
+	private int previousCheckedId;
+	private long lastTimestamp;
 
 	public StatsGameLessonsFragment() {
 		Bundle bundle = new Bundle();
@@ -88,18 +96,25 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.stats);
+		if (!username.equals(getUsername())) {
+			setTitle(username + Symbol.SPACE + getString(R.string.stats));
+		} else {
+			setTitle(R.string.stats);
+		}
 
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_tactics_stats_header_view, null, false);
 		recentProblemsTitleTxt = (TextView) headerView.findViewById(R.id.recentProblemsTitleTxt);
 		recentProblemsTitleTxt.setText(R.string.recent_lessons);
 
 		ratingGraphView = (RatingGraphView) headerView.findViewById(R.id.ratingGraphView);
+		ratingGraphView.setOnCheckChangeListener(this);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(recentStatsAdapter);
 		listView.setOnItemClickListener(this);
+
+		view.getViewTreeObserver().addOnGlobalLayoutListener(this);
 	}
 
 	@Override
@@ -128,6 +143,59 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// TODO load selected lesson from DB or load it from server
+	}
+
+	@Override
+	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		if (previousCheckedId == checkedId) {
+			return;
+		}
+
+		previousCheckedId = checkedId;
+		lastTimestamp = System.currentTimeMillis();
+		switch (checkedId) {
+			case R.id.thirtyDaysBtn:
+				lastTimestamp = AppUtils.getLast30DaysTimeStamp();
+				break;
+			case R.id.ninetyDaysBtn:
+				lastTimestamp = AppUtils.getLast90DaysTimeStamp();
+				break;
+			case R.id.oneYearBtn:
+				lastTimestamp = AppUtils.getLastYearTimeStamp();
+				break;
+			case R.id.allTimeBtn:
+				lastTimestamp = getAppData().getUserCreateDate();
+				break;
+		}
+		updateGraphAfter(lastTimestamp);
+	}
+
+	private void updateGraphAfter(long lastTimestamp) {
+		this.lastTimestamp = lastTimestamp;
+
+		long[] edgeTimestamps = DbDataManager.getEdgeTimestampForLessonsGraph(getContentResolver(), username);
+
+		long today = System.currentTimeMillis() / 1000;
+		long oneDay = AppUtils.SECONDS_IN_DAY;
+		// if we have saved data from last timestamp(30 days ago) until today, we don't load it from server
+		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimestamp - oneDay) {
+			updateUiData();
+		} else { // else we only load difference since last saved point
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS_STATS);
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
+			loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimestamp * 1000);
+
+			new RequestJsonTask<LessonsStatsItem>(statsItemUpdateListener).executeTask(loadItem);
+		}
+	}
+
+	@Override
+	public void onGlobalLayout() {
+		if (need2update) {
+			ratingGraphView.setChecked(R.id.thirtyDaysBtn);
+		}
 	}
 
 	private class StatsItemUpdateListener extends ChessUpdateListener<LessonsStatsItem> {
@@ -165,6 +233,7 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 		cursor.moveToFirst();
 		recentStatsAdapter.changeCursor(cursor);
 		recentProblemsTitleTxt.setVisibility(View.VISIBLE);
+		need2update = false;
 	}
 
 	protected void fillGraph() {
@@ -174,10 +243,10 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 
 		if (cursor != null && cursor.moveToFirst()) {
 			List<long[]> series = new ArrayList<long[]>();
-
 			do {
 				long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP) * 1000L;
 				int rating = DbDataManager.getInt(cursor, DbScheme.V_RATING);
+
 				long[] point = new long[]{timestamp, rating};
 				series.add(point);
 			} while (cursor.moveToNext());

@@ -807,7 +807,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			boolean isWhiteToMove = boardFace.isWhiteToMove();
 			boolean isUserWhite = isUserWhite();
 			boolean isUsersTurn = ((isUserWhite && isWhiteToMove) || (!isUserWhite && !isWhiteToMove))
-					|| appData.isHumanVsHumanGameMode(getBoardFace());
+					|| ChessBoard.isHumanVsHumanGameMode(getBoardFace());
 
 //			Log.d(VALID_MOVES, "draw validMoves.isEmpty() " + validMoves.isEmpty());
 //			Log.d(VALID_MOVES, "draw validMoves.size() " + validMoves.size());
