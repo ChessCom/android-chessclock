@@ -380,14 +380,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		return gameFace.isUserColorWhite();
 	}
 
-	protected boolean isUserColor(int color) {
-		if (isUserWhite()) {
-			return color == ChessBoard.WHITE_SIDE;
-		} else {
-			return color == ChessBoard.BLACK_SIDE;
-		}
-	}
-
 	@Override
 	public boolean moveBack() {
 		BoardFace boardFace = getBoardFace();
@@ -814,7 +806,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 //			Log.d(VALID_MOVES, "draw isUsersTurn " + isUsersTurn);
 //			Log.d(VALID_MOVES, "draw isNewMove() " + isNewMove());
 			if (isNewMove()) {
-				if (isUserColor(boardFace.getColor(from)) && isUsersTurn) {
+				if (isUserAbleToMove(boardFace.getColor(from)) && isUsersTurn) {
 					validMoves = boardFace.generateValidMoves(!isUsersTurn);
 				} else if (boardFace.isAnalysis()) {
 					validMoves = boardFace.generateValidMoves(false);
@@ -913,7 +905,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (!firstClick) {
 			draggingFrom = from;
 			// do not drag captured piece // ??
-			drag = isUserColor(boardFace.getColor(draggingFrom)) || (boardFace.isAnalysis());
+			drag = isUserAbleToMove(boardFace.getColor(draggingFrom)) || (boardFace.isAnalysis());
 			to = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 			invalidate();
 		}

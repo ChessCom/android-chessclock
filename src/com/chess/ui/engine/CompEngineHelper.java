@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import com.chess.statics.AppConstants;
 import com.chess.model.CompEngineItem;
+import com.chess.statics.AppConstants;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
 import org.petero.droidfish.*;
 import org.petero.droidfish.book.BookOptions;
@@ -464,6 +464,20 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.redoMove();
 	}
 
+	public void moveBackHalf() {
+		engineCtrl.undoHalfMove();
+		//engineCtrl.undoMoveNoUpdate();
+	}
+
+	public void moveForwardHalf() {
+		engineCtrl.redoHalfMove();
+		//engineCtrl.redoMoveNoUpdate();
+	}
+
+	public void updateEngineAfterHalfMove() {
+		engineCtrl.updateEngine();
+	}
+
 	private final byte[] strToByteArr(String str) {
 		if (str == null)
 			return null;
@@ -540,12 +554,12 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.shutdownEngine();
 	}
 
-	public boolean isWhitePiece(int square) {
+	/*public boolean isWhitePiece(int square) {
 		int piece = engineCtrl.getCurrentPosition().getPiece(square);
 		boolean result = Piece.isWhite(piece);
 
 		return result;
-	}
+	}*/
 
 	public boolean isGameValid() {
 		return engineCtrl.isGamExist();
@@ -557,6 +571,10 @@ public class CompEngineHelper implements GUIInterface {
 			storeEngineState();
 			shutdownEngine();
 		}
+	}
+
+	public void stopCompMoving() {
+		engineCtrl.abortSearch();
 	}
 
 	public void storeEngineState() {

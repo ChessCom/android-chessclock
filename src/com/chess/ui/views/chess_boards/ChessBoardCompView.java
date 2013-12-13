@@ -12,6 +12,7 @@ import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.stockfish.CompEngineHelper;
 import com.chess.ui.engine.stockfish.PostMoveToCompTask;
+import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.boards.BoardViewCompFace;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
 import com.chess.ui.views.game_controls.ControlsCompView;
@@ -80,7 +81,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
     @Override
 	public boolean isGameOver() {
-		saveCompGame();
+		if (!isHint()) {
+			saveCompGame();
+		}
 		return super.isGameOver();
     }
 
@@ -315,7 +318,39 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		}
     }
 
-    @Override
+	@Override
+	public void goToMove(Integer pos) {
+		resetValidMoves();
+		BoardFace boardFace = getBoardFace();
+		int totalHply = boardFace.getPly() - 1;
+
+		CompEngineHelper.getInstance().stopCompMoving();
+
+		if (totalHply < pos) {
+			for (int i = totalHply; i < pos; i++) {
+				boardFace.takeNext(false);
+				CompEngineHelper.getInstance().moveForwardHalf();
+			}
+		} else {
+			for (int i = totalHply; i > pos; i--) {
+				boardFace.takeBack();
+				CompEngineHelper.getInstance().moveBackHalf();
+			}
+		}
+        CompEngineHelper.getInstance().updateEngineAfterHalfMove();
+	}
+
+	@Override
+	public void goToLatestMove() {
+		// todo
+		/*boolean moved = super.goToLatestMove();
+		if (moved) {
+			Log.d("COMPE", "goToLatestMove !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + (getBoardFace().getMovesCount()));
+			CompEngineHelper.getInstance().goToHalfMove(getBoardFace().getMovesCount());
+		}*/
+	}
+
+	@Override
     public void showHint() {
 		if (getBoardFace().isFinished()) { // don't show hints for finished games
 			return;

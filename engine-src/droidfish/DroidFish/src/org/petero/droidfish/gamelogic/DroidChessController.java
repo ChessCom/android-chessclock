@@ -369,26 +369,18 @@ public class DroidChessController {
 
     /** Undo last move. Does not truncate game tree. */
     public final synchronized void undoMove() {
-		//Log.d("setAnimMove", "UNDO game.getLastMove() " + game.getLastMove());
         if (game.getLastMove() != null) {
-
-			//Log.d("setAnimMove", "UNDO gameMode.playerWhite() " + gameMode.playerWhite());
-			//Log.d("setAnimMove", "UNDO gameMode.playerBlack() " + gameMode.playerBlack());
-
-			//Log.d("FISHLOG", "UNDO move=" + game.getLastMove());
             abortSearch();
-            boolean didUndo = undoMoveNoUpdate(true);
-			//Log.d("FISHLOG", "UNDO didUndo=" + didUndo);
-			//Log.d("FISHLOG", "UNDO game.currPos()=" + game.currPos());
+
+            //boolean didUndo = undoMoveNoUpdate();
+			undoMoveNoUpdate();
+
             updateComputeThreads();
-			//Log.d("FISHLOG", "UNDO game.currPos()=" + game.currPos());
-            setSelection();
-			//Log.d("FISHLOG", "UNDO game.getNextMove()=" + game.getNextMove());
+
+            /*setSelection();
             if (didUndo)
-                setAnimMove(game.currPos(), game.getNextMove(), false);
+                setAnimMove(game.currPos(), game.getNextMove(), false);*/
             updateGUI();
-			//Log.d("setAnimMove", "UNDO gameMode.playerWhite() " + gameMode.playerWhite());
-			//Log.d("setAnimMove", "UNDO gameMode.playerBlack() " + gameMode.playerBlack());
         }
     }
 
@@ -396,13 +388,53 @@ public class DroidChessController {
     public final synchronized void redoMove() {
         if (game.canRedoMove()) {
             abortSearch();
+
             redoMoveNoUpdate();
+
             updateComputeThreads();
-            setSelection();
-            setAnimMove(game.prevPos(), game.getLastMove(), true);
+
+            /*setSelection();
+            setAnimMove(game.prevPos(), game.getLastMove(), true);*/
             updateGUI();
         }
     }
+
+	public boolean undoHalfMove() {
+		if (game.getLastMove() == null)
+			return false;
+		searchId++;
+		game.undoMove();
+		/*if (!humansTurn()) {
+			if (game.getLastMove() != null) {
+				game.undoMove(print);
+				if (!humansTurn()) {
+					game.redoMove();
+				}
+			} else {
+				// Don't undo first white move if playing black vs computer,
+				// because that would cause computer to immediately make
+				// a new move.
+				if (gameMode.playerWhite() || gameMode.playerBlack()) {
+					game.redoMove();
+					return false;
+				}
+			}
+		}*/
+
+		return true;
+	}
+
+	public void redoHalfMove() {
+		if (game.canRedoMove()) {
+			searchId++;
+			game.redoMove();
+			/*if (!humansTurn() && game.canRedoMove()) {
+				game.redoMove();
+				if (!humansTurn())
+					game.undoMove(false);
+			}*/
+		}
+	}
 
     /** Go back/forward to a given move number.
      * Follows default variations when going forward. */
@@ -410,7 +442,7 @@ public class DroidChessController {
         boolean needUpdate = false;
         while (game.currPos().fullMoveCounter > moveNr) { // Go backward
             int before = game.currPos().fullMoveCounter * 2 + (game.currPos().whiteMove ? 0 : 1);
-            undoMoveNoUpdate(false);
+            undoMoveNoUpdate();
             int after = game.currPos().fullMoveCounter * 2 + (game.currPos().whiteMove ? 0 : 1);
             if (after >= before)
                 break;
@@ -432,11 +464,18 @@ public class DroidChessController {
         }
     }
 
+	public void updateEngine() {
+		/*abortSearch();
+		updateComputeThreads();*/
+		//setSelection();
+		updateGUI();
+	}
+
     /** Go to start of the current variation. */
     public final synchronized void gotoStartOfVariation() {
         boolean needUpdate = false;
         while (true) {
-            if (!undoMoveNoUpdate(false))
+            if (!undoMoveNoUpdate())
                 break;
             needUpdate = true;
             if (game.numVariations() > 1)
@@ -458,7 +497,7 @@ public class DroidChessController {
             return;
         if (!humansTurn()) {
             if (game.getLastMove() != null) {
-                game.undoMove(false);
+                game.undoMove();
                 if (!humansTurn())
                     game.redoMove();
             }
@@ -849,7 +888,7 @@ public class DroidChessController {
     }
 
     /** Discard current search. Return true if GUI update needed. */
-    private final boolean abortSearch() {
+    public final boolean abortSearch() {
         ponderMove = null;
         searchId++;
         if (computerPlayer == null)
@@ -970,7 +1009,7 @@ public class DroidChessController {
         }
     }
 
-    private final synchronized void updatePlayerNames(String engineName) {
+    /*private final synchronized void updatePlayerNames(String engineName) {
         if (game != null) {
             if (strength < 1000)
                 engineName += String.format(Locale.US, " (%.1f%%)", strength * 0.1);
@@ -979,16 +1018,18 @@ public class DroidChessController {
             game.tree.setPlayerNames(white, black);
             updateMoveList();
         }
-    }
+    }*/
 
-    private final boolean undoMoveNoUpdate(boolean print) {
+
+
+    public boolean undoMoveNoUpdate() {
         if (game.getLastMove() == null)
             return false;
         searchId++;
-        game.undoMove(print);
+        game.undoMove();
         if (!humansTurn()) {
             if (game.getLastMove() != null) {
-                game.undoMove(print);
+                game.undoMove();
                 if (!humansTurn()) {
                     game.redoMove();
                 }
@@ -1005,14 +1046,14 @@ public class DroidChessController {
         return true;
     }
 
-    private final void redoMoveNoUpdate() {
+    public void redoMoveNoUpdate() {
         if (game.canRedoMove()) {
             searchId++;
             game.redoMove();
             if (!humansTurn() && game.canRedoMove()) {
                 game.redoMove();
                 if (!humansTurn())
-                    game.undoMove(false);
+                    game.undoMove();
             }
         }
     }

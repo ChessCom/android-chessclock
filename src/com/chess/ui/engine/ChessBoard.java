@@ -104,6 +104,7 @@ public class ChessBoard implements BoardFace {
 	protected int ply;
 	private int[][] history = new int[SQUARES_CNT][SQUARES_CNT];
 	protected HistoryData[] histDat = new HistoryData[HIST_STACK];
+	private HistoryData hintHistoryData;
 
 	public static final String[] whitePieceImageCodes = new String[]{"wp","wn","wb","wr","wq","wk"};
 	public static final String[] blackPieceImageCodes = new String[]{"bp","bn","bb","br","bq","bk"};
@@ -780,6 +781,12 @@ public class ChessBoard implements BoardFace {
 		return makeMove(move, true);
 	}
 
+	@Override
+	public boolean makeHintMove(Move move) {
+		hintHistoryData = histDat[ply];
+		return makeMove(move);
+	}
+
 	/**
 	 * Perform move on the board
 	 *
@@ -1250,7 +1257,6 @@ public class ChessBoard implements BoardFace {
 		histDat[ply].castleMaskPosition = castleMaskPosition;
 	}
 
-
 	private void updateCastling(Move move, int castleMaskPosition) {
 		if (castleMaskPosition != NOT_SET) {
 			castlingHistory[castleMaskPosition] = true;
@@ -1303,6 +1309,11 @@ public class ChessBoard implements BoardFace {
 				}
 			}
 		}
+	}
+
+
+	public void restoreBoardAfterHint() {
+        histDat[ply] = hintHistoryData;
 	}
 
 	/**

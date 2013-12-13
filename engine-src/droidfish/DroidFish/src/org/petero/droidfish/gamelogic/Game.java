@@ -18,14 +18,14 @@
 
 package org.petero.droidfish.gamelogic;
 
+import org.petero.droidfish.PGNOptions;
+import org.petero.droidfish.gamelogic.GameTree.Node;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.petero.droidfish.PGNOptions;
-import org.petero.droidfish.gamelogic.GameTree.Node;
 
 /**
  *
@@ -353,7 +353,7 @@ public class Game {
         return tree.currentNode.playerAction.equals("draw offer");
     }
 
-    public final void undoMove(boolean print) {
+    public final void undoMove() {
         Move m = tree.currentNode.move;
         if (m != null) {
             tree.goBack(/*print*/);

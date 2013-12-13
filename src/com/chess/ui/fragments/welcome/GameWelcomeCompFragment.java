@@ -466,13 +466,16 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 					//CompEngineHelper.getInstance().undoHint();
 				}
 
+				//boardView.goToLatestMove();
+
 				boardView.setMoveAnimator(move, true);
 				boardView.resetValidMoves();
-				boardFace.makeMove(move);
 
 				if (boardView.isHint()) {
+					boardFace.makeHintMove(move);
 					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
 				} else {
+					boardFace.makeMove(move);
 					boardView.setComputerMoving(false);
 					invalidateGameScreen();
 					onPlayerMove();
@@ -492,6 +495,9 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			boardView.setComputerMoving(false);
 			boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
+
+			getBoardFace().restoreBoardAfterHint();
+
 			boardView.invalidate();
 
 			boardView.setHint(false);
@@ -634,6 +640,15 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				}
 			}
 		}, END_GAME_DELAY);
+	}
+
+	@Override
+	public boolean isUserAbleToMove(int color) {
+		if (ChessBoard.isHumanVsHumanGameMode(getBoardFace())) {
+			return getBoardFace().isWhiteToMove() ? color == ChessBoard.WHITE_SIDE : color == ChessBoard.BLACK_SIDE;
+		}  else {
+			return super.isUserAbleToMove(color);
+		}
 	}
 
 	private void resideBoardIfCompWhite() {

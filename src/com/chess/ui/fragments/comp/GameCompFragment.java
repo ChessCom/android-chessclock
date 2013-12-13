@@ -426,13 +426,17 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 				boardView.setMoveAnimator(move, true);
 				boardView.resetValidMoves();
-				boardFace.makeMove(move);
 
 				if (boardView.isHint()) {
+					boardFace.makeHintMove(move);
+
 					//if (/*AppData.isComputerVsComputerGameMode(getBoardFace()) || */(!AppData.isHumanVsHumanGameMode(getBoardFace()))) {
 					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
 					//}
+
 				} else {
+					boardFace.makeMove(move);
+
 					boardView.setComputerMoving(false);
 					invalidateGameScreen();
 					onPlayerMove();
@@ -452,6 +456,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			boardView.setComputerMoving(false);
 			boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
+
+			getBoardFace().restoreBoardAfterHint();
+
 			boardView.invalidate();
 
 			boardView.setHint(false);
@@ -538,6 +545,15 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	@Override
 	public Long getGameId() {
 		return null;
+	}
+
+	@Override
+	public boolean isUserAbleToMove(int color) {
+		if (ChessBoard.isHumanVsHumanGameMode(getBoardFace())) {
+			return getBoardFace().isWhiteToMove() ? color == ChessBoard.WHITE_SIDE : color == ChessBoard.BLACK_SIDE;
+		}  else {
+			return super.isUserAbleToMove(color);
+		}
 	}
 
 	private void sendPGN() {
