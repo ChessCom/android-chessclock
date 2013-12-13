@@ -40,9 +40,8 @@
 				android:id="@+id/commentTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textColor="@color/new_subtitle_dark_grey"
+				style="@style/Content"
 				android:padding="15dip"
-				android:textSize="15sp"
 				custom:ttf="Italic" />
 
 			<!--Divider-->
@@ -56,8 +55,7 @@
 				android:id="@+id/descriptionTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textColor="@color/new_subtitle_dark_grey"
-				android:textSize="15sp"
+				style="@style/Content"
 				android:padding="15dip"
 				android:visibility="gone" />
 
@@ -74,8 +72,7 @@
 				android:id="@+id/positionDescriptionTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textColor="@color/new_subtitle_dark_grey"
-				android:textSize="15sp"
+				style="@style/Content"
 				android:padding="15dip" />
 
 			<!--Divider-->
@@ -91,11 +88,11 @@
 				android:id="@+id/hintTxt"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:textColor="@color/new_subtitle_dark_grey"
-				android:textSize="15sp"
 				android:padding="15dip"
 				android:background="@color/header_light"
-				android:visibility="gone" />
+				android:visibility="gone"
+				style="@style/Content"
+				/>
 
 			<!--Lesson Complete view-->
 			<include layout="@layout/new_lesson_complete_view" />
@@ -118,6 +115,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical">
+
 			<RelativeLayout
 				android:id="@+id/boardLayout"
 				android:layout_width="match_parent"

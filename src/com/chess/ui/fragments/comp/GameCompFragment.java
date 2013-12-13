@@ -842,7 +842,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			optionsArray = new SparseArray<String>();
 			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
 			optionsArray.put(ID_EMAIL_GAME, getString(R.string.email_game));
-			optionsArray.put(ID_FLIP_BOARD, getString(R.string.switch_colors));
+			optionsArray.put(ID_FLIP_BOARD, getString(R.string.switch_sides));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 
@@ -861,8 +861,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	@Override
 	public final void onEngineThinkingInfo(final String thinkingStr1, final String variantStr, final ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMoves, final ArrayList<org.petero.droidfish.gamelogic.Move> variantMoves, final ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
 
-		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
-		CompEngineHelper.log("variantStr " + variantStr);
+//		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
+//		CompEngineHelper.log("variantStr " + variantStr);
 
 		getActivity().runOnUiThread(new Runnable() {
 			@Override

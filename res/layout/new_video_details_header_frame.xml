@@ -112,9 +112,9 @@
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
 		android:layout_below="@id/thumbnailAuthorImg"
-		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingBottom="10dip"
-		android:textSize="@dimen/content_text_size" />
+		style="@style/Content"
+		/>
 
 	<ProgressBar
 		android:id="@+id/loadingCommentsView"

@@ -22,6 +22,9 @@ import java.util.HashMap;
  */
 public class MessagesCursorAdapter extends ItemsCursorAdapter {
 
+	public static final String ORIGINAL_MESSAGE_BY = "Original Message by";
+	public static final String MESSAGE_SEPARATOR = "----------------------------------------------------------------------";
+
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 	private int imageSize;
 	public MessagesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
@@ -60,7 +63,13 @@ public class MessagesCursorAdapter extends ItemsCursorAdapter {
 		imageFetcher.loadImage(imageDataMap.get(otherUserAvatarUrl), holder.photoImg.getImageView());
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_OTHER_USER_USERNAME));
-		loadTextWithImage(holder.messageTxt, getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT));
+		String message = getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT);
+		if (message.contains(ORIGINAL_MESSAGE_BY)) {
+			int quoteStart = message.indexOf(MESSAGE_SEPARATOR);
+			message = message.substring(0, quoteStart);
+		}
+
+		loadTextWithImage(holder.messageTxt, message, imageSize);
 
 		long timeAgo = getLong(cursor, DbScheme.V_CREATE_DATE);
 		String lastDate = AppUtils.getMomentsAgoFromSeconds(timeAgo, context);

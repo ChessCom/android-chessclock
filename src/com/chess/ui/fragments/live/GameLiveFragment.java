@@ -1036,10 +1036,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 			dismissEndGameDialog();
 
-			if (!DataHolder.getInstance().isLiveGameOpened()) {
-				getActivityFace().openFragment(new LiveGameWaitFragment());
-				DataHolder.getInstance().setLiveGameOpened(true);
-			}
+			getActivityFace().openFragment(new LiveGameWaitFragment());
+			DataHolder.getInstance().setLiveGameOpened(true);
 		} else if (view.getId() == R.id.analyzePopupBtn) {
 			GameAnalysisItem analysisItem = new GameAnalysisItem();  // TODO reuse later
 			analysisItem.setGameType(RestHelper.V_GAME_CHESS);

@@ -144,14 +144,14 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public void onResume() {
 		super.onResume();
 
-		DataHolder.getInstance().setInOnlineGame(gameId, true);
+		DataHolder.getInstance().setInDailyGame(gameId, true);
 		loadGameAndUpdate();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		DataHolder.getInstance().setInOnlineGame(gameId, false);
+		DataHolder.getInstance().setInDailyGame(gameId, false);
 
 		if (HONEYCOMB_PLUS_API) {
 			dismissEndGameDialog();
@@ -276,7 +276,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			labelsConfig.bottomPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
 		}
 
-		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
+		DataHolder.getInstance().setInDailyGame(currentGame.getGameId(), true);
 
 		getControlsView().enableGameControls(true);
 		boardView.lockBoard(false);

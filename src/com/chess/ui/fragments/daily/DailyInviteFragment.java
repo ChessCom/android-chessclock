@@ -163,7 +163,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		labelsConfig.topPlayerAvatar = currentGame.getOpponentAvatar();
 		labelsConfig.bottomPlayerAvatar = getAppData().getUserAvatar();
 
-		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
+		DataHolder.getInstance().setInDailyGame(currentGame.getGameId(), true);
 
 		controlsDailyView.enableGameControls(true);
 

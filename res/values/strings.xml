@@ -239,6 +239,7 @@
     <string name="hours">hours</string>  <!--Units-->
     <string name="hour">hour</string>  <!--Units-->
     <string name="days">days</string> <!--Units-->
+    <string name="day">day</string> <!--Units-->
 
     <string name="random">Random</string> <!--Player Color pick selector-->
     <string name="won">won</string> <!--Game results stats-->
@@ -664,6 +665,7 @@
 	<string name="x_days_ago">%s days ago</string>
 	<string name="today">today</string>
 	<string name="months">months</string>
+	<string name="month">month</string>
 	<string name="just_now">just now</string>
 	<string name="minutes_arg">%s minutes</string>
 	<string name="ago_arg">%s ago</string>
@@ -777,7 +779,7 @@
 	<string name="views_arg">%s views</string>
 
 	<string name="your_game_is_over">Your game is over</string>
-	<string name="switch_colors">Switch Colors</string>
+	<string name="switch_sides">Switch Sides</string>
 
 	<!--Moves Explorer-->
 	<string name="no_results_found">No Results Found</string>

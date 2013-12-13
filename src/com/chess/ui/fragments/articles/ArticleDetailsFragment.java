@@ -765,7 +765,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			}
 
 			{// add text content
-				RoboTextView textView = new RoboTextView(getActivity());
+				RoboTextView textView = new RoboTextView(getActivity(), null, R.attr.contentStyle);
 				textView.setTextSize(textSize);
 				textView.setTextColor(textColor);
 				textView.setPadding(paddingSide, paddingSide, paddingSide, 0);
@@ -784,7 +784,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		private View createContentView(ViewGroup parent) {
 			ContentViewHolder holder = new ContentViewHolder();
 
-			RoboTextView textView = new RoboTextView(getActivity());
+			RoboTextView textView = new RoboTextView(getActivity(), null, R.attr.contentStyle);
 			textView.setTextSize(textSize);
 			textView.setTextColor(textColor);
 			textView.setPadding(paddingSide, paddingSide, paddingSide, 0);

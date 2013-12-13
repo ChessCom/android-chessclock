@@ -105,7 +105,7 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 			labelsConfig.bottomPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
 		}
 
-		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
+		DataHolder.getInstance().setInDailyGame(currentGame.getGameId(), true);
 
 		controlsView.enableGameControls(true);
 		boardView.lockBoard(false);

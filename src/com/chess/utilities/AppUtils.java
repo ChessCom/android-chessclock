@@ -18,7 +18,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -37,6 +36,7 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.db.DbDataManager;
 import com.chess.model.BaseGameItem;
+import com.chess.model.DataHolder;
 import com.chess.model.GameListCurrentItem;
 import com.chess.statics.AppData;
 import com.chess.statics.IntentConstants;
@@ -277,42 +277,6 @@ public class AppUtils {
 		return  context.getResources().getBoolean(R.bool.is_x_large_tablet);
 	}
 
-	/**
-	 * Fire simplified notification with defined arguments
-	 *
-	 * @param context - Application Context for resources
-	 * @param title - title that will be visible at status bar
-	 * @param id - request code id
-	 * @param body - short description for notification message content
-	 * @param clazz - which class to open when User press notification
-	 */
-	public static void showMoveStatusNotification(Context context, String title,  String body, int id, Class<?> clazz) {
-		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-		Intent intent = new Intent(context, clazz);
-//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-		PendingIntent contentIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_ONE_SHOT);
-
-		notification.setLatestEventInfo(context, title, body, contentIntent);
-		notifyManager.cancelAll();
-		notifyManager.notify(R.id.notification_message, notification);
-
-		boolean playSoundsFlag = getSoundsPlayFlag(context);
-		if(playSoundsFlag){
-			final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
-
-			if(player == null) // someone hasn't player?
-				return;
-
-			player.setOnCompletionListener(completionListener);
-			player.start();
-		}
-	}
-
 	public static boolean getSoundsPlayFlag(Context context) {
 		int appSoundMode = new AppData(context).isPlaySounds();
 		boolean playSoundsFlag = false;
@@ -329,23 +293,19 @@ public class AppUtils {
 		return playSoundsFlag;
 	}
 
-	private static MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
-		@Override
-		public void onCompletion(MediaPlayer mediaPlayer) {
-			mediaPlayer.stop();
-			mediaPlayer.release();
-		}
-	};
-
 	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id,
 													 GameListCurrentItem currentGameItem) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		// Creates an Intent for the Activity
 		Intent notifyIntent = new Intent(context, MainFragmentFaceActivity.class);
-//		notifyIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		notifyIntent.putExtra(BaseGameItem.GAME_ID, currentGameItem.getGameId());
 		notifyIntent.putExtra(IntentConstants.USER_MOVE_UPDATE, true);
+		// Creates an Intent for the Activity
+		if (DataHolder.getInstance().isMainActivityVisible()) {
+			notifyIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		} else {
+			notifyIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		}
 
 		// Creates the PendingIntent
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, id, notifyIntent,
@@ -477,9 +437,17 @@ public class AppUtils {
 		StringBuilder sb = new StringBuilder();
 
 		if (months > 0) {
-			sb.append(months).append(Symbol.SPACE).append(context.getString(R.string.months)).append(Symbol.SPACE);
+			if (months > 1) {
+				sb.append(months).append(Symbol.SPACE).append(context.getString(R.string.months));
+			} else {
+				sb.append(months).append(Symbol.SPACE).append(context.getString(R.string.month));
+			}
 		} else if (days > 0) {
-			sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.days)).append(Symbol.SPACE);
+			if (days > 1) {
+				sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.days));
+			} else {
+				sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.day));
+			}
 		} else if (hours > 0) {
 			if (!sb.toString().trim().equals(Symbol.EMPTY)) {
 				sb.append(Symbol.SPACE);

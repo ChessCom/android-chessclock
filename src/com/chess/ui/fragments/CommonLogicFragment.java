@@ -620,11 +620,14 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
 
-		if (TextUtils.isEmpty(getAppData().getPassword())) { // Login with facebook
+		if (!TextUtils.isEmpty(getAppData().getFacebookToken())) { // Login with facebook
 			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, getAppData().getFacebookToken());
-		} else { // login with credentials
+		} else if (!TextUtils.isEmpty(getAppData().getPassword())) { // login with credentials
 			loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getUsername());
 			loadItem.addRequestParams(RestHelper.P_PASSWORD, getAppData().getPassword());
+		} else {
+			showToast(R.string.unable_to_relogin);
+			return;
 		}
 
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
@@ -690,6 +693,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 						if (passwordEdt != null) {
 							passwordEdt.requestFocus();
 						}
+						getAppData().setPassword(Symbol.EMPTY);
 						break;
 					case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
 						showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);

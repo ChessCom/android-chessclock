@@ -175,6 +175,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				} else {
 					openFragment(GameDailyFragmentTablet.createInstance(gameId, true));
 				}
+				setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
 			}
 		}
 	}
@@ -312,8 +313,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		getWindow().setBackgroundDrawableResource(drawableThemeId);
 	}
 
-//	@Override
-	public void setMainBackground(String drawablePath) {
+	private void setMainBackground(String drawablePath) {
 		BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
 		bitmapOptions.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(drawablePath, bitmapOptions);
@@ -436,10 +436,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@Override
 	public void changeLeftFragment(CommonLogicFragment fragment) {
 		// change left menu fragment
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		leftMenuFragment = fragment;
-		ft.replace(R.id.menu_frame_left, leftMenuFragment);
-		ft.commit();
+		transaction.replace(R.id.menu_frame_left, leftMenuFragment);
+		transaction.commit();
 	}
 
 	@Override

@@ -11,19 +11,21 @@ import android.widget.FilterQueryProvider;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ConversationItem;
-import com.chess.statics.StaticData;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.db.QueryParams;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveConversationsInboxTask;
+import com.chess.statics.StaticData;
 import com.chess.ui.adapters.ConversationsCursorAdapter;
+import com.chess.ui.adapters.MessagesInboxPaginationAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,6 +41,8 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	private ConversationCursorUpdateListener conversationCursorUpdateListener;
 	private ConversationsCursorAdapter conversationsAdapter;
 	private TextView emptyView;
+	private MessagesInboxPaginationAdapter paginationAdapter;
+	private QueryFilterProvider queryFilterProvider;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,22 +80,60 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	public void onResume() {
 		super.onResume();
 
-		if (need2update) {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGES_INBOX);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-
-			new RequestJsonTask<ConversationItem>(conversationsUpdateListener).executeTask(loadItem);  // TODO rework with pagination
+		if (need2update){
+			if (isNetworkAvailable()) {
+				updateData();
+			} else {
+				loadFromDb();
+			}
+		} else {
+			listView.setAdapter(paginationAdapter);
 		}
+
+//		if (need2update) {
+//			MessagesInboxPaginationAdapter
+//			if (isNetworkAvailable()) {
+//				LoadItem loadItem = new LoadItem();
+//				loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGES_INBOX);
+//				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+//
+//				new RequestJsonTask<ConversationItem>(conversationsUpdateListener).executeTask(loadItem);
+//			} else {
+//
+//			}
+//
+//		}
+	}
+
+	@Override
+	public void onRefreshStarted(View view) {
+		super.onRefreshStarted(view);
+		if (isNetworkAvailable()) {
+			updateData();
+		}
+	}
+
+	protected void updateData() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGES_INBOX);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		paginationAdapter.updateLoadItem(loadItem);
+		listView.setAdapter(paginationAdapter);
+	}
+
+	private void loadFromDb() {
+		new LoadDataFromDbTask(conversationCursorUpdateListener, DbHelper.getInboxMessages(getUsername()),
+				getContentResolver()).executeTask();
 	}
 
 	private void init() {
 		conversationsUpdateListener = new ConversationsUpdateListener();
 		saveConversationsListener = new SaveConversationsListener();
 		conversationsAdapter = new ConversationsCursorAdapter(getActivity(), null, getImageFetcher());
-		QueryFilterProvider queryFilterProvider = new QueryFilterProvider();
-		conversationsAdapter.setFilterQueryProvider(queryFilterProvider);
+		queryFilterProvider = new QueryFilterProvider();
 		conversationCursorUpdateListener = new ConversationCursorUpdateListener();
+		paginationAdapter = new MessagesInboxPaginationAdapter(getActivity(), conversationsAdapter,
+				conversationsUpdateListener, null);
 	}
 
 	@Override
@@ -142,6 +184,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 			queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.CONVERSATIONS_INBOX.ordinal()]);
 			queryParams.setSelection(selection);
 			queryParams.setArguments(arguments);
+			queryParams.setOrder(DbScheme.V_LAST_MESSAGE_CREATED_AT + DbDataManager.DESCEND);
 
 			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
 			cursor.moveToFirst();
@@ -158,23 +201,22 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		getActivityFace().openFragment(MessagesConversationFragment.createInstance(conversationId, otherUserName));
 	}
 
-	private class ConversationsUpdateListener extends ChessUpdateListener<ConversationItem> {
+	private class ConversationsUpdateListener extends ChessUpdateListener<ConversationItem.Data> {
 
-		private ConversationsUpdateListener() {
-			super(ConversationItem.class);
+		@Override
+		public void showProgress(boolean show) {
 		}
 
 		@Override
-		public void updateData(ConversationItem returnedObj) {
-			super.updateData(returnedObj);
-
-			if (returnedObj.getData().size() == 0) {
+		public void updateListData(List<ConversationItem.Data> itemsList) {
+			super.updateListData(itemsList);
+			if (itemsList.size() == 0) {
 				emptyView.setText(R.string.no_data);
 				showEmptyView(true);
 				return;
 			}
 
-			new SaveConversationsInboxTask(saveConversationsListener, returnedObj.getData(), getContentResolver()).executeTask();
+			new SaveConversationsInboxTask(saveConversationsListener, itemsList, getContentResolver()).executeTask();
 		}
 	}
 
@@ -184,8 +226,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		public void updateData(ConversationItem.Data returnedObj) {
 			super.updateData(returnedObj);
 
-			new LoadDataFromDbTask(conversationCursorUpdateListener,
-					DbHelper.getTableForUser(getUsername(), DbScheme.Tables.CONVERSATIONS_INBOX),
+			new LoadDataFromDbTask(conversationCursorUpdateListener, DbHelper.getInboxMessages(getUsername()),
 					getContentResolver()).executeTask();
 		}
 	}
@@ -197,6 +238,9 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 			super.updateData(returnedObj);
 
 			conversationsAdapter.changeCursor(returnedObj);
+			paginationAdapter.notifyDataSetChanged();
+			conversationsAdapter.setFilterQueryProvider(queryFilterProvider);
+
 			need2update = false;
 		}
 

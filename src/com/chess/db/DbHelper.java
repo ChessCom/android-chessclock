@@ -300,8 +300,17 @@ public class DbHelper {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.CONVERSATIONS_MESSAGES.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_USER_CONVERSATION_ID);
-		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.ASCEND);
+		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.DESCEND);
 		queryParams.setArguments(new String[]{username, String.valueOf(conversationId)});
+		return queryParams;
+	}
+
+	public static QueryParams getInboxMessages(String username) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.CONVERSATIONS_INBOX.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_USER);
+		queryParams.setOrder(DbScheme.V_LAST_MESSAGE_CREATED_AT + DbDataManager.DESCEND);
+		queryParams.setArguments(new String[]{username});
 		return queryParams;
 	}
 

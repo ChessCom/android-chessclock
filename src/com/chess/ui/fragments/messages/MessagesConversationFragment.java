@@ -110,7 +110,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 		super.onResume();
 
 		if (need2update) {
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				updateData();
 			}
 

@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="21sp"
-        android:textColor="@color/new_dark_green"
+        android:textColor="@color/new_subtitle_dark_grey"
         custom:ttf="Bold"
         />
 

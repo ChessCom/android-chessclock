@@ -70,6 +70,10 @@ public abstract class ItemsCursorAdapter extends CursorAdapter {
 		textView.setText(Html.fromHtml(sourceStr, getImageGetter(textView, sourceStr), null));
 	}
 
+	protected void loadTextWithImage(TextView textView, String sourceStr, int imageSize) {
+		textView.setText(Html.fromHtml(sourceStr, getImageGetter(textView, sourceStr, imageSize), null));
+	}
+
 	protected ImageGetter getImageGetter(TextView textView, String sourceStr) {
 		return new ImageGetter(context, textViewsImageCache, textView, sourceStr, screenWidth);
 	}

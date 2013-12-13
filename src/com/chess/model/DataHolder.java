@@ -83,7 +83,7 @@ public class DataHolder {
 	 * @param gameId id of the game
 	 * @param gameOpen flag that shows if current game board is opened to user
 	 */
-	public void setInOnlineGame(long gameId, boolean gameOpen) {
+	public void setInDailyGame(long gameId, boolean gameOpen) {
 		synchronized (playingGameItem) {
 			playingGameItem.setGameId(gameId);
 			playingGameItem.setBoardOpen(gameOpen);

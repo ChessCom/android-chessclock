@@ -248,7 +248,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 			labelsConfig.bottomPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
 		}
 
-		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
+		DataHolder.getInstance().setInDailyGame(currentGame.getGameId(), true);
 
 		getControlsView().enableGameControls(true);
 		boardView.lockBoard(false);

@@ -182,7 +182,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
 		registerReceiver(newChatUpdateReceiver, newChatUpdateFilter);
 
-		DataHolder.getInstance().setInOnlineGame(gameId, true);
+		DataHolder.getInstance().setInDailyGame(gameId, true);
 		loadGameAndUpdate();
 	}
 
@@ -193,7 +193,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		unRegisterMyReceiver(moveUpdateReceiver);
 		unRegisterMyReceiver(newChatUpdateReceiver);
 
-		DataHolder.getInstance().setInOnlineGame(gameId, false);
+		DataHolder.getInstance().setInDailyGame(gameId, false);
 		if (HONEYCOMB_PLUS_API) {
 			dismissEndGameDialog();
 		}
@@ -267,12 +267,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 			adjustBoardForGame();
 
-			// clear badge
-			DbDataManager.deletePlayMoveNotification(getContentResolver(), username, gameId);
-			updateNotificationBadges();
 		} else {
 			updateGameState(gameId);
 		}
+		// clear badge
+		DbDataManager.deletePlayMoveNotification(getContentResolver(), username, gameId);
+		updateNotificationBadges();
 	}
 
 	private class LoadFromDbUpdateListener extends ChessUpdateListener<Cursor> {
@@ -336,7 +336,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			labelsConfig.bottomPlayerPremiumStatus = currentGame.getBlackPremiumStatus();
 		}
 
-		DataHolder.getInstance().setInOnlineGame(currentGame.getGameId(), true);
+		DataHolder.getInstance().setInDailyGame(currentGame.getGameId(), true);
 
 		getControlsView().enableGameControls(true);
 		boardView.lockBoard(false);
@@ -905,12 +905,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.YOUR_ARE_ON_VACATAION) {
-
 					showPopupDialog(R.string.leave_vacation_to_submit_move_q, END_VACATION_TAG);
-				} else {
-					super.errorHandle(resultCode);
+					return;
+				} else if (serverCode == ServerErrorCodes.PLEASE_REFRESH_GAME) {
+					updateGameState(gameId);
+					return;
 				}
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 

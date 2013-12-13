@@ -107,9 +107,15 @@
         <item name="android:textColor">@color/new_subtitle_dark_grey</item>
     </style>
 
+    <style name="Content" >
+		<item name="android:textColor">@color/new_subtitle_dark_grey</item>
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:textSize">@dimen/content_text_size</item>
+		<item name="android:lineSpacingExtra">5sp</item>
+		<!--<item name="android:lineSpacingExtra">@dimen/text_line_spacing</item>-->
+    </style>
 
-
-    <style name="list_text" >
+	<style name="list_text" >
         <item name="android:textColor">@color/text_black</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/list_item_text_size</item>

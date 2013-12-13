@@ -45,6 +45,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected static final String WHITE_WINS = "1-0";
 	protected static final String BLACK_WINS = "0-1";
 	private static final long TOUCH_MODE_RECONFIRM_DELAY = 300;
+	private static final long SLIDE_TOUCH_DISABLE_DELAY = 500;
 	protected int AVATAR_SIZE = 48;
 	public static final int NOTATION_REWIND_DELAY = 400;
 
@@ -133,6 +134,17 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		if (bottomPanelView != null) {
 			bottomPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
 		}
+
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+				enableSlideMenus(false);
+				updateSlidingMenuState();
+			}
+		}, SLIDE_TOUCH_DISABLE_DELAY);
 	}
 
 	@Override

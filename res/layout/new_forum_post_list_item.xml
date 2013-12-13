@@ -103,7 +103,7 @@
 		android:layout_below="@id/photoImg"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingTop="15dip"
-		android:textSize="@dimen/content_text_size"
+		style="@style/Content"
 		/>
 
 </RelativeLayout>

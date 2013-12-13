@@ -602,8 +602,15 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		getAppData().setCompGameMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
 
 		// rewind one move back for appropriate analysis
-		getBoardFace().takeBack();
-//		boardView.invalidate();
+		TacticBoardFace boardFace = getBoardFace();
+		while (boardFace.takeBack()) {
+			// loop while we can move back
+		}
+		boardView.invalidate();
+		if (!trainerData.isUserMoveFirst()) {
+			boardFace.setMovesCount(1);
+			boardFace.makeMove(boardFace.getTacticMoves()[0], false);
+		}
 
 		CompGameConfig.Builder builder = new CompGameConfig.Builder()
 				.setMode(compGameMode)
@@ -701,7 +708,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 
 		@Override
-		public void errorHandle(Integer resultCode) {  // TODO restore
+		public void errorHandle(Integer resultCode) {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.TACTICS_DAILY_LIMIT_REACHED) {
@@ -1032,11 +1039,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		bottomPanelView.setPlayerScore(currentRating);
 		String initialFen = trainerData.getInitialFen();
-//		initialFen = "2r3k1/8/5P2/Q3P2p/2q4P/8/P4bP1/5R1K w - - 1 2";
-//		initialFen = "1r4kR/1p2nrb1/p2qp1p1/4NpQ1/3P4/3B2P1/PP3P2/1K5R b - - 1 1";
-//		initialFen = "r2nk1r1/pb3q1p/4p3/3p2pQ/8/BP6/PP3PPP/2R1R1K1 w q - 0 1";  // this as black, should be white
-//		initialFen = "r4rk1/ppp2pp1/7p/3P4/2P1Nnq1/5bB1/PP3PPP/R3QRK1 b - - 0 1";  // this one as white! should be black
-//		initialFen = "3r1bk1/ppq2Bpp/2p5/2P2Q2/8/1P4P1/P6P/5RK1 b - - 1 1";
 		trainerData.getTacticsProblem().setFen(initialFen);
 		boardFace.setupBoard(initialFen);
 
@@ -1049,11 +1051,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 
 		String cleanMoveString = trainerData.getCleanMoveString();
-//		cleanMoveString = "1. Rxf2 Qxh4+ 2. Kg1 Rc1+ 3. Rf1 Qd4+ ";
-//		cleanMoveString = "1... Bxh8 2. Rxh8+ Kxh8 3. Nxf7+ Kg7 4. Nxd6";
-//		cleanMoveString = "1. Rc7 1... Qxh5 2. Re7+ Kf8 3. Rxb7+ Ke8 4. Re7+ Kf8 5. Rxh7+ Ke8 6. Rxh5";
-//		cleanMoveString = "1... Qh3 2. gxh3 Nxh3#";
-//		cleanMoveString = "1. ... Kh8 2. Be8 Rxe8 3. Qxf8+ Rxf8 4. Rxf8#";
 		trainerData.getTacticsProblem().setMoveList(cleanMoveString);
 		boardFace.setTacticMoves(cleanMoveString);
 
@@ -1261,21 +1258,21 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 	}
 
-	private void releaseResources() {
-//		tacticsTimer = null;
-		inflater = null;
-
-		getTacticsUpdateListener.releaseContext();
-		getTacticsUpdateListener = null;
-		tacticCorrectUpdateListener.releaseContext();
-		tacticCorrectUpdateListener = null;
-		tacticWrongUpdateListener.releaseContext();
-		tacticWrongUpdateListener = null;
-		tacticHintedUpdateListener.releaseContext();
-		tacticHintedUpdateListener = null;
-		dbTacticBatchSaveListener.releaseContext();
-		dbTacticBatchSaveListener = null;
-	}
+//	private void releaseResources() { // TODO optimize resource usage
+////		tacticsTimer = null;
+//		inflater = null;
+//
+//		getTacticsUpdateListener.releaseContext();
+//		getTacticsUpdateListener = null;
+//		tacticCorrectUpdateListener.releaseContext();
+//		tacticCorrectUpdateListener = null;
+//		tacticWrongUpdateListener.releaseContext();
+//		tacticWrongUpdateListener = null;
+//		tacticHintedUpdateListener.releaseContext();
+//		tacticHintedUpdateListener = null;
+//		dbTacticBatchSaveListener.releaseContext();
+//		dbTacticBatchSaveListener = null;
+//	}
 
 	protected ControlsTacticsView getControlsView() {
 		return controlsView;
