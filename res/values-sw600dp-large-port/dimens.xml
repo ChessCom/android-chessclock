@@ -35,6 +35,7 @@
 	<dimen name="article_detail_image_height">286dip</dimen>
 	<dimen name="all_premium_plans_features_title_size">23sp</dimen>
 	<dimen name="upgrade_options_text_size">13sp</dimen>
-	<dimen name="theme_back_preview_height">124dip</dimen>
+	<dimen name="theme_back_preview_height">134dip</dimen>
+	<dimen name="theme_back_preview_aspect">2.6dp</dimen>
 
 </resources>

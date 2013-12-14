@@ -2,7 +2,7 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+    xmlns:app="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
@@ -44,7 +44,8 @@
                 android:imeOptions="actionDone"
                 style="@style/DefaultEdt.Empty"
                 android:ellipsize="end"
-                custom:ttf="Bold"
+                app:ttf="Bold"
+                app:themeColor="true"
                 />
             <!---->
 
@@ -89,8 +90,9 @@
                 android:imeOptions="actionDone"
                 style="@style/DefaultEdt.Empty"
                 android:ellipsize="end"
-                custom:ttf="Bold"
-                />
+                app:ttf="Bold"
+				app:themeColor="true"
+				/>
 
             <!--Clear Btn-->
             <com.chess.widgets.RoboTextView
@@ -134,7 +136,8 @@
                 style="@style/DefaultEdt.Empty"
                 android:layout_gravity="center_vertical"
                 android:ellipsize="end"
-                custom:ttf="Bold"
+                app:ttf="Bold"
+				app:themeColor="true"
                 />
 
             <!--Clear Btn-->
@@ -177,7 +180,8 @@
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:paddingRight="11dip"
-                custom:ttf="Bold"
+                app:ttf="Bold"
+				app:themeColor="true"
                 />
 
             <!--Country Flag-->
@@ -241,7 +245,7 @@
                 style="@style/SettingsListText"
                 android:textColor="@color/semitransparent_white_65"
                 android:paddingRight="30dip"
-                custom:ttf="Regular"
+                app:ttf="Regular"
                 android:visibility="invisible"
                 />
 
@@ -310,7 +314,7 @@
                 android:layout_centerInParent="true"
                 style="@style/SettingsListText"
                 android:textColor="@color/semitransparent_white_65"
-                custom:ttf="Regular"
+                app:ttf="Regular"
                 />
 
         </com.chess.widgets.RelLayout>

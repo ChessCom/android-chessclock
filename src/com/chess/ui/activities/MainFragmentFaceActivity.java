@@ -30,6 +30,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
+import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
 import com.chess.statics.IntentConstants;
@@ -64,6 +65,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+
+import static com.chess.db.DbScheme.uriArray;
 
 /**
  * Created with IntelliJ IDEA.
@@ -338,6 +341,17 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			getWindow().setBackgroundDrawable(drawable);
 		} else { // If user removed SD card or clear folder
 			getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
+
+			// clear DB entity to refill it
+			getContentResolver().delete(uriArray[DbScheme.Tables.THEMES_LOAD_STATE.ordinal()], null, null);
+
+			AppData appData = getAppData();
+			// clear themed settings
+			appData.resetThemeToDefault();
+
+			appData.setThemeName(AppConstants.DEFAULT_THEME_NAME);
+			appData.setThemeBackgroundName(AppConstants.DEFAULT_THEME_NAME);
+			updateActionBarBackImage();
 		}
 	}
 
@@ -775,7 +789,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			int screenHeight = getResources().getDisplayMetrics().heightPixels;
 
 			GetAndSaveTheme.ServiceBinder serviceBinder = (GetAndSaveTheme.ServiceBinder) iBinder;
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getMeUsername(),					DbScheme.Tables.THEMES_LOAD_STATE));
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEMES_LOAD_STATE));
 			if (cursor != null && cursor.moveToFirst()) {
 				do {
 					int id = DbDataManager.getInt(cursor, DbScheme.V_ID);

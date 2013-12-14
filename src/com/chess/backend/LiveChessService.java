@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import com.chess.R;
 import com.chess.backend.entity.api.ChatItem;
@@ -37,6 +38,7 @@ import java.util.Map;
 public class LiveChessService extends Service {
 
 	private static final String TAG = "LCCLOG-LiveChessService";
+	private static final long SHUTDOWN_TIMEOUT_DELAY = 15 * 60 * 1000;
 
 	private ServiceBinder serviceBinder = new ServiceBinder();
 
@@ -47,6 +49,7 @@ public class LiveChessService extends Service {
 	private LccChallengeTaskRunner challengeTaskRunner;
 	private LccGameTaskRunner gameTaskRunner;
 	private AppData appData;
+	private Handler handler;
 
 	public class ServiceBinder extends Binder {
 		public LiveChessService getService(){
@@ -60,19 +63,20 @@ public class LiveChessService extends Service {
 		super.onCreate();
 		//registerReceiver(networkChangeReceiver, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
 		appData = new AppData(this);
+		handler = new Handler();
 	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		LogMe.dl(TAG, "SERVICE: onBind");
-		LogMe.dl(TAG, "lccHelper instance before check = " + lccHelper);
+//		LogMe.dl(TAG, "SERVICE: onBind");
+//		LogMe.dl(TAG, "lccHelper instance before check = " + lccHelper);
 		if (lccHelper == null) {
 			lccHelper = new LccHelper(getContext(), this, new LccConnectUpdateListener());
-			LogMe.dl(TAG, "SERVICE: helper created");
+//			LogMe.dl(TAG, "SERVICE: helper created");
 		} else {
-			LogMe.dl(TAG, "SERVICE: helper exist!");
+//			LogMe.dl(TAG, "SERVICE: helper exist!");
 		}
-		LogMe.dl(TAG, "lccHelper instance after check = " + lccHelper);
+//		LogMe.dl(TAG, "lccHelper instance after check = " + lccHelper);
 		return serviceBinder;
 	}
 
@@ -131,7 +135,7 @@ public class LiveChessService extends Service {
 	}
 
 	public void onLiveConnected() {
-		LogMe.dl(TAG, "onLiveConnected, connectionUpdateFace = " + connectionUpdateFace);
+//		LogMe.dl(TAG, "onLiveConnected, connectionUpdateFace = " + connectionUpdateFace);
 		if (connectionUpdateFace != null) {
 			connectionUpdateFace.onConnected();
 		}
@@ -168,6 +172,22 @@ public class LiveChessService extends Service {
 	private Context getContext(){
 		return this;
 	}
+
+	public void startIdleTimeOutCounter() {
+		handler.postDelayed(shutDownRunnable, SHUTDOWN_TIMEOUT_DELAY);
+	}
+
+	public void stopIdleTimeOutCounter() {
+		handler.removeCallbacks(shutDownRunnable);
+	}
+
+	private final Runnable shutDownRunnable = new Runnable() {
+		@Override
+		public void run() {
+			logout();
+			stopSelf();
+		}
+	};
 
 //	private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
 //

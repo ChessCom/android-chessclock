@@ -147,7 +147,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		} else if (code == ID_EMAIL_GAME) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsLiveChessFragment());
+			getActivityFace().openFragment(SettingsLiveChessFragment.createInstance(true));
 		}
 
 		optionsSelectFragment.dismiss();

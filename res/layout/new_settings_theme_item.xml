@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/backgroundPreviewImg"
-		android:layout_width="360dip"
+		android:layout_width="match_parent"
 		android:layout_height="@dimen/theme_back_preview_height"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"

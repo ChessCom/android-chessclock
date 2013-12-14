@@ -224,7 +224,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		} else if (code == ID_EMAIL_GAME) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsDailyChessFragment());
+			getActivityFace().openFragment(SettingsDailyChessFragment.createInstance(true));
 		}
 
 		optionsSelectFragment.dismiss();

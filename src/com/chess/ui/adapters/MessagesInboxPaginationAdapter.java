@@ -30,8 +30,8 @@ public class MessagesInboxPaginationAdapter extends PaginationCursorAdapter<Conv
 	@Override
 	protected List<ConversationItem.Data> fetchMoreItems(int page) {
 		if (loadItem != null) {
-//			loadItem.replaceRequestParams(RestHelper.P_PAGE_NUMBER, String.valueOf(page));
-			loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
+			loadItem.replaceRequestParams(RestHelper.P_PAGE_NUMBER, String.valueOf(page));
+//			loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
 			ConversationItem item = null;
 			try {
 				item = RestHelper.getInstance().requestData(loadItem, ConversationItem.class, context);

@@ -104,6 +104,26 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		if (isLCSBound) {
+			executePausedActivityLiveEvents();
+			liveService.stopIdleTimeOutCounter();
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+
+		dismissFragmentDialog();
+
+		if (isLCSBound) {
+			liveService.startIdleTimeOutCounter();
+		}
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		unBindLiveService();
@@ -132,21 +152,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			}
 		}
 		return alive;
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (isLCSBound) {
-			executePausedActivityLiveEvents();
-		}
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-
-		dismissFragmentDialog();
 	}
 
 	@Override

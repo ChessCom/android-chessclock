@@ -66,11 +66,11 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private String selectedThemeName;
 	private LoadServiceConnectionListener loadServiceConnectionListener;
 	private ProgressUpdateListener progressUpdateListener;
-	//	private boolean isInstallingTheme;
 	private boolean serviceBounded;
 	private GetAndSaveTheme.ServiceBinder serviceBinder;
 	private boolean needToLoadThemeAfterConnected;
 	private SparseArray<ThemeState> themeLoadStateMap;
+	private boolean themeApplied;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		loadServiceConnectionListener = new LoadServiceConnectionListener();
 		progressUpdateListener = new ProgressUpdateListener();
 		themeLoadStateMap = new SparseArray<ThemeState>();
+
+		themeApplied = true;
 
 		pullToRefresh(true);
 
@@ -219,115 +221,124 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 			ThemeState themeState = themeLoadStateMap.get((int) themesAdapter.getItemId(position), ThemeState.DEFAULT);
 			if (themeState.equals(ThemeState.LOADED)) { // apply immediately
-				AppData appData = getAppData();
-				boolean themeLoaded = true;
-				appData.setThemeName(selectedThemeItem.getThemeName());
-
-				{ // load background
-					QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_BACKGROUNDS,
-							selectedThemeItem.getBackgroundId());
-					Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
-
-					if (cursor != null && cursor.moveToFirst()) {
-						BackgroundSingleItem.Data backgroundData = DbDataManager.getThemeBackgroundItemFromCursor(cursor);
-
-						appData.setThemeBackgroundName(backgroundData.getName());
-						appData.setThemeBackgroundPreviewUrl(backgroundData.getBackgroundPreviewUrl());
-						appData.setThemeBackPath(backgroundData.getLocalPath());
-						appData.setThemeFontColor(backgroundData.getFontColor());
-						getActivityFace().updateMainBackground();
-					} else {
-						themeLoaded = false;
-					}
+				if (!themeApplied) {
+					return;
 				}
 
-				{// load board
-					QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_BOARDS,
-							selectedThemeItem.getBoardId());
-					Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
+				applyLoadedTheme(id);
 
-					if (cursor != null && cursor.moveToFirst()) {
-						BoardSingleItem.Data boardData = DbDataManager.getThemeBoardItemFromCursor(cursor);
-
-						appData.setUseThemeBoard(true);
-						appData.setThemeBoardId(boardData.getThemeBoardId());
-						appData.setThemeBoardName(boardData.getName());
-						appData.setThemeBoardPreviewUrl(boardData.getLineBoardPreviewUrl());
-						appData.setThemeBoardCoordinateLight(Color.parseColor(boardData.getCoordinateColorLight()));
-						appData.setThemeBoardCoordinateDark(Color.parseColor(boardData.getCoordinateColorDark()));
-						appData.setThemeBoardHighlight(Color.parseColor(boardData.getHighlightColor()));
-						appData.setThemeBoardPath(boardData.getLocalPath());
-					} else {
-						themeLoaded = false;
-					}
-				}
-
-				{// load pieces
-					QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_PIECES,
-							selectedThemeItem.getPiecesId());
-					Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
-
-					if (cursor != null && cursor.moveToFirst()) {
-						PieceSingleItem.Data piecesData = DbDataManager.getThemePieceItemFromCursor(cursor);
-
-						appData.setThemePiecesId(piecesData.getThemePieceId());
-						appData.setThemePiecesName(piecesData.getName());
-						appData.setThemePiecesPreviewUrl(piecesData.getPreviewUrl());
-
-						appData.setUseThemePieces(true);
-						appData.setThemePiecesPath(piecesData.getLocalPath());
-
-						if (piecesData.getLocalPath().contains(_3D_PART)) {
-							appData.setThemePieces3d(true);
-						} else {
-							appData.setThemePieces3d(false);
-						}
-					} else {
-						themeLoaded = false;
-					}
-				}
-
-				{ // load sounds
-					QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_SOUNDS,
-							selectedThemeItem.getSoundsId());
-					Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
-
-					if (cursor != null && cursor.moveToFirst()) {
-						SoundSingleItem.Data soundData = DbDataManager.getThemeSoundItemFromCursor(cursor);
-
-						appData.setThemeSoundsId(soundData.getThemeSoundId());
-						appData.setThemeSoundsPath(soundData.getLocalPath());
-
-						SoundPlayer.setUseThemePack(true);
-						SoundPlayer.setThemePath(soundData.getLocalPath());
-					}
-				}
-
-				if (!themeLoaded) {
-					DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.ENQUIRED);
-					themesAdapter.updateThemeLoadingStatus(position, ThemeState.ENQUIRED);
-					((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
-					installSelectedTheme();
-				} else {
-					// deselect all themes
-					for (ThemeItem.Data data : themesList) {
-						data.setSelected(false);
-					}
-					// mark selected
-					selectedThemeItem.setSelected(true);
-					((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
-				}
+				themeApplied = true;
 				return;
 			} else if (themeState.equals(ThemeState.ENQUIRED) || themeState.equals(ThemeState.LOADING)) {
 				return;
 			}
 
-			themesAdapter.updateThemeLoadingStatus(position, ThemeState.ENQUIRED);
+			themesAdapter.updateThemeLoadingStatus(id, ThemeState.ENQUIRED);
 
 			((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
 
 			installSelectedTheme();
 		}
+	}
+
+	private void applyLoadedTheme(long id) {
+		AppData appData = getAppData();
+		boolean themeLoaded = true;
+		appData.setThemeName(selectedThemeItem.getThemeName());
+
+		{ // load background
+			QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_BACKGROUNDS,
+					selectedThemeItem.getBackgroundId());
+			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
+
+			if (cursor != null && cursor.moveToFirst()) {
+				BackgroundSingleItem.Data backgroundData = DbDataManager.getThemeBackgroundItemFromCursor(cursor);
+
+				appData.setThemeBackgroundName(backgroundData.getName());
+				appData.setThemeBackgroundPreviewUrl(backgroundData.getBackgroundPreviewUrl());
+				appData.setThemeBackPath(backgroundData.getLocalPath());
+				appData.setThemeFontColor(backgroundData.getFontColor());
+				getActivityFace().updateMainBackground();
+			} else {
+				themeLoaded = false;
+			}
+		}
+
+		{// load board
+			QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_BOARDS,
+					selectedThemeItem.getBoardId());
+			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
+
+			if (cursor != null && cursor.moveToFirst()) {
+				BoardSingleItem.Data boardData = DbDataManager.getThemeBoardItemFromCursor(cursor);
+
+				appData.setUseThemeBoard(true);
+				appData.setThemeBoardId(boardData.getThemeBoardId());
+				appData.setThemeBoardName(boardData.getName());
+				appData.setThemeBoardPreviewUrl(boardData.getLineBoardPreviewUrl());
+				appData.setThemeBoardCoordinateLight(Color.parseColor(boardData.getCoordinateColorLight()));
+				appData.setThemeBoardCoordinateDark(Color.parseColor(boardData.getCoordinateColorDark()));
+				appData.setThemeBoardHighlight(Color.parseColor(boardData.getHighlightColor()));
+				appData.setThemeBoardPath(boardData.getLocalPath());
+			} else {
+				themeLoaded = false;
+			}
+		}
+
+		{// load pieces
+			QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_PIECES,
+					selectedThemeItem.getPiecesId());
+			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
+
+			if (cursor != null && cursor.moveToFirst()) {
+				PieceSingleItem.Data piecesData = DbDataManager.getThemePieceItemFromCursor(cursor);
+
+				appData.setThemePiecesId(piecesData.getThemePieceId());
+				appData.setThemePiecesName(piecesData.getName());
+				appData.setThemePiecesPreviewUrl(piecesData.getPreviewUrl());
+
+				appData.setUseThemePieces(true);
+				appData.setThemePiecesPath(piecesData.getLocalPath());
+
+				if (piecesData.getLocalPath().contains(_3D_PART)) {
+					appData.setThemePieces3d(true);
+				} else {
+					appData.setThemePieces3d(false);
+				}
+			} else {
+				themeLoaded = false;
+			}
+		}
+
+		{ // load sounds
+			QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_SOUNDS,
+					selectedThemeItem.getSoundsId());
+			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
+
+			if (cursor != null && cursor.moveToFirst()) {
+				SoundSingleItem.Data soundData = DbDataManager.getThemeSoundItemFromCursor(cursor);
+
+				appData.setThemeSoundsId(soundData.getThemeSoundId());
+				appData.setThemeSoundsPath(soundData.getLocalPath());
+
+				SoundPlayer.setUseThemePack(true);
+				SoundPlayer.setThemePath(soundData.getLocalPath());
+			}
+		}
+
+		if (!themeLoaded) {
+			DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.ENQUIRED);
+			themesAdapter.updateThemeLoadingStatus(id, ThemeState.ENQUIRED);
+			installSelectedTheme();
+		} else {
+			// deselect all themes
+			for (ThemeItem.Data data : themesList) {
+				data.setSelected(false);
+			}
+			// mark selected
+			selectedThemeItem.setSelected(true);
+		}
+		themesAdapter.notifyDataSetChanged();
 	}
 
 	protected void openCustomizeFragment() {
@@ -345,8 +356,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			appData.setThemeName(AppConstants.DEFAULT_THEME_NAME);
 			appData.setThemeBackgroundName(AppConstants.DEFAULT_THEME_NAME);
 			getActivityFace().updateActionBarBackImage();
-
-//			isInstallingTheme = false;
 		} else { // start loading main background image
 
 			if (serviceBounded) {
@@ -379,7 +388,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
 			serviceBounded = false;
-//			isInstallingTheme = false;
 		}
 	}
 
@@ -409,13 +417,14 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 				public void run() {
 					ThemeItem.Data loadingTheme = serviceBinder.getService().getLoadingTheme();
 					if (progress == GetAndSaveTheme.DONE) {
-//						isInstallingTheme = false;
 						needToLoadThemeAfterConnected = false;
 						if (serviceBounded) {
 							getActivity().unbindService(loadServiceConnectionListener);
 						}
 						serviceBounded = false;
 						themeLoadStateMap.put(loadingTheme.getId(), ThemeState.LOADED);
+						selectedThemeItem = loadingTheme;
+						applyLoadedTheme(loadingTheme.getId());
 					} else {
 						themeLoadStateMap.put(loadingTheme.getId(), ThemeState.LOADING);
 					}
@@ -455,7 +464,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			} else {
 				screenWidth = SettingsThemeFragment.this.screenWidth
 						- resources.getDimensionPixelSize(R.dimen.tablet_side_menu_width);
-				imageHeight = (int) (screenWidth / 4.0f);
+				float aspect = resources.getDimension(R.dimen.theme_back_preview_aspect) / density;
+				imageHeight = (int) (screenWidth / aspect);
 			}
 
 			backImageParams = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
@@ -615,8 +625,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			return getItem(position).getId();
 		}
 
-		public void updateThemeLoadingStatus(int position, ThemeState status) {
-			themeLoadStateMap.put((int) getItemId(position), status);
+		public void updateThemeLoadingStatus(long id, ThemeState status) {
+			themeLoadStateMap.put((int) id, status);
 			notifyDataSetChanged();
 		}
 

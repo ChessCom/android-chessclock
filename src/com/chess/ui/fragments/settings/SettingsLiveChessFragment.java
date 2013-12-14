@@ -18,13 +18,34 @@ import com.chess.widgets.SwitchButton;
  */
 public class SettingsLiveChessFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener,
 		AdapterView.OnItemSelectedListener {
+	private static final String SHOW_GENERAL = "show_general";
 
 	private SwitchButton showSubmitSwitch;
+	private boolean showGeneralSettings;
+
+	public SettingsLiveChessFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(SHOW_GENERAL, false);
+		setArguments(bundle);
+	}
+
+	public static SettingsLiveChessFragment createInstance(boolean showGeneralSettings){
+		SettingsLiveChessFragment fragment = new SettingsLiveChessFragment();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(SHOW_GENERAL, showGeneralSettings);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if (getArguments() != null) {
+			showGeneralSettings = getArguments().getBoolean(SHOW_GENERAL);
+		} else {
+			showGeneralSettings = savedInstanceState.getBoolean(SHOW_GENERAL);
+		}
 	}
 
 	@Override
@@ -42,12 +63,21 @@ public class SettingsLiveChessFragment extends CommonLogicFragment implements Sw
 	}
 
 	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putBoolean(SHOW_GENERAL, showGeneralSettings);
+	}
+
+	@Override
 	public void onClick(View view) {
 		super.onClick(view);
 
 		int id = view.getId();
 		if (id == R.id.showSubmitView) {
 			showSubmitSwitch.toggle();
+		} else if (id == R.id.generalView) {
+			getActivityFace().openFragment(new SettingsGeneralFragment());
 		}
 	}
 
@@ -77,5 +107,9 @@ public class SettingsLiveChessFragment extends CommonLogicFragment implements Sw
 		showSubmitSwitch.setChecked(getAppData().getShowSubmitButtonsLive());
 
 		// TODO add auto-queen promotion switch
+		if (showGeneralSettings) {
+			view.findViewById(R.id.generalView).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.generalView).setOnClickListener(this);
+		}
 	}
 }

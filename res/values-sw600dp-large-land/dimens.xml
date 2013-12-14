@@ -29,5 +29,6 @@
 	<dimen name="all_premium_plans_features_title_size">30sp</dimen>
 	<dimen name="upgrade_options_text_size">15sp</dimen>
 	<dimen name="theme_back_preview_height">112dip</dimen>
+	<dimen name="theme_back_preview_aspect">4.0dp</dimen>
 
 </resources>

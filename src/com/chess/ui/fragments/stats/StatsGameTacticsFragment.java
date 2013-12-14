@@ -30,6 +30,7 @@ import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -91,7 +92,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
+		return inflater.inflate(R.layout.new_stats_frame, container, false);
 	}
 
 	@Override
@@ -113,6 +114,10 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 		listView.addHeaderView(headerView);
 		listView.setAdapter(recentStatsAdapter);
 		listView.setOnItemClickListener(this);
+
+		if (isNeedToUpgrade()) {
+			view.findViewById(R.id.demoOverlayView).setVisibility(View.VISIBLE);
+		}
 
 		view.getViewTreeObserver().addOnGlobalLayoutListener(this);
 	}
@@ -156,6 +161,11 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 	private void updateGraphAfter(long lastTimestamp) {
 		this.lastTimestamp = lastTimestamp;
+
+		if (isNeedToUpgrade()) { // show stub stats
+			updateUiData();
+			return;
+		}
 
 		long[] edgeTimestamps = DbDataManager.getEdgeTimestampForTacticsGraph(getContentResolver(), username);
 
@@ -208,37 +218,54 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 	}
 
 	private void updateUiData() {
-		fillGraph();
-
-		// load recent problems stats
-		QueryParams params = DbHelper.getTableForUser(username, DbScheme.Tables.TACTICS_RECENT_STATS);
-		Cursor cursor = DbDataManager.query(getContentResolver(), params);
-
-		cursor.moveToFirst();
-		recentStatsAdapter.changeCursor(cursor);
-		recentProblemsTitleTxt.setVisibility(View.VISIBLE);
-		need2update = false;
-	}
-
-	protected void fillGraph() {
-		// Graph Rating Data
-		logTest(" get data from DB lastTimestamp = " + lastTimestamp);
-		QueryParams params = DbHelper.getTacticGraphItemForUser(username, lastTimestamp);
-		Cursor cursor = DbDataManager.query(getContentResolver(), params);
-
-		if (cursor != null && cursor.moveToFirst()) {
+		{// Graph Rating Data
 			List<long[]> series = new ArrayList<long[]>();
-			do {
-				long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP) * 1000L;
-				int rating = DbDataManager.getInt(cursor, DbScheme.V_CLOSE_RATING);
+			if (isNeedToUpgrade()) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(Calendar.MONTH, -3);
 
-				long[] point = new long[]{timestamp, rating};
-				series.add(point);
-			} while (cursor.moveToNext());
-			cursor.close();
+				int pointsCnt = 100;
+				long startPoint = calendar.getTimeInMillis();
+				long endPoint = System.currentTimeMillis();
+				long step = (endPoint - startPoint) / pointsCnt;
 
+				for (int i = 0; i < pointsCnt; i++) {
+					startPoint += step;
+					int rating = (int) (1200 + Math.random() * 50);
+					long[] point = new long[]{startPoint, rating};
+					series.add(point);
+				}
+
+			} else {
+				QueryParams params = DbHelper.getTacticGraphItemForUser(username, lastTimestamp);
+				Cursor cursor = DbDataManager.query(getContentResolver(), params);
+
+				if (cursor != null && cursor.moveToFirst()) {
+
+					do {
+						long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP) * 1000L;
+						int rating = DbDataManager.getInt(cursor, DbScheme.V_CLOSE_RATING);
+
+						long[] point = new long[]{timestamp, rating};
+						series.add(point);
+					} while (cursor.moveToNext());
+					cursor.close();
+				}
+			}
 			ratingGraphView.setGraphData(series, getView().getWidth());
 		}
+
+		if (!isNeedToUpgrade()) {
+			// load recent problems stats
+			QueryParams params = DbHelper.getTableForUser(username, DbScheme.Tables.TACTICS_RECENT_STATS);
+			Cursor cursor = DbDataManager.query(getContentResolver(), params);
+
+			cursor.moveToFirst();
+			recentStatsAdapter.changeCursor(cursor);
+			recentProblemsTitleTxt.setVisibility(View.VISIBLE);
+		}
+
+		need2update = false;
 	}
 
 	public static class RecentStatsAdapter extends ItemsCursorAdapter {

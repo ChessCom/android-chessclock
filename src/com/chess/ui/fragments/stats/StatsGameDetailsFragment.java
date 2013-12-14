@@ -32,6 +32,7 @@ import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -181,6 +182,10 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		mostFrequentOpponentTxt = (TextView) view.findViewById(R.id.mostFrequentOpponentTxt);
 		mostFrequentOpponentGamesTxt = (TextView) view.findViewById(R.id.mostFrequentOpponentGamesTxt);
 
+		if (isNeedToUpgrade()) {
+			view.findViewById(R.id.demoOverlayView).setVisibility(View.VISIBLE);
+		}
+
 		view.getViewTreeObserver().addOnGlobalLayoutListener(this);
 	}
 
@@ -222,7 +227,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 
 	}
 
-	private void updateUiData() {
+	private void loadFromDb() {
 		DbScheme.Tables table = null;
 		switch (gameType) {
 			case LIVE_STANDARD:
@@ -273,13 +278,34 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 	private void updateGraphAfter(long lastTimestamp) {
 		this.lastTimestamp = lastTimestamp;
 
+		if (isNeedToUpgrade()) { // show stub stats
+			List<long[]> series = new ArrayList<long[]>();
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.MONTH, -3);
+
+			int pointsCnt = 100;
+			long startPoint = calendar.getTimeInMillis();
+			long endPoint = System.currentTimeMillis();
+			long step = (endPoint - startPoint) / pointsCnt;
+
+			for (int i = 0; i < pointsCnt; i++) {
+				startPoint += step;
+				int rating = (int) (1200 + Math.random() * 50);
+				long[] point = new long[]{startPoint, rating};
+				series.add(point);
+			}
+			ratingGraphView.setGraphData(series, getView().getWidth());
+
+			return;
+		}
+
 		long[] edgeTimestamps = DbDataManager.getEdgeTimestampForGamesGraph(getContentResolver(), username, gameTypeStr);
 
 		long today = System.currentTimeMillis() / 1000;
 		long oneDay = AppUtils.SECONDS_IN_DAY;
 		// if we have saved data from last timestamp(30 days ago) until today, we don't load it from server
 		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimestamp - oneDay) {
-			updateUiData();
+			loadFromDb();
 		} else { // else we only load difference since last saved point
 			getFullStats();
 		}
@@ -448,7 +474,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		@Override
 		public void updateData(GameStatsItem.Data returnedObj) {
 			super.updateData(returnedObj);
-			updateUiData();
+			loadFromDb();
 		}
 	}
 

@@ -25,16 +25,39 @@ import com.chess.widgets.SwitchButton;
 public class SettingsDailyChessFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener,
 		AdapterView.OnItemSelectedListener {
 
+	private static final String SHOW_GENERAL = "show_general";
+
 	private SwitchButton showSubmitSwitch;
 	private SwitchButton onVacationSwitch;
 	private Spinner afterMoveSpinner;
 	private VacationUpdateListener getVacationUpdateListener;
 	private VacationUpdateListener postVacationUpdateListener;
 	private VacationUpdateListener deleteVacationUpdateListener;
+	private boolean showGeneralSettings;
+
+	public SettingsDailyChessFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(SHOW_GENERAL, false);
+		setArguments(bundle);
+	}
+
+	public static SettingsDailyChessFragment createInstance(boolean showGeneralSettings){
+		SettingsDailyChessFragment fragment = new SettingsDailyChessFragment();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(SHOW_GENERAL, showGeneralSettings);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			showGeneralSettings = getArguments().getBoolean(SHOW_GENERAL);
+		} else {
+			showGeneralSettings = savedInstanceState.getBoolean(SHOW_GENERAL);
+		}
 
 		getVacationUpdateListener = new VacationUpdateListener(VacationUpdateListener.GET);
 		postVacationUpdateListener = new VacationUpdateListener(VacationUpdateListener.POST);
@@ -62,6 +85,13 @@ public class SettingsDailyChessFragment extends CommonLogicFragment implements S
 		LoadItem loadItem = LoadHelper.getOnVacation(getUserToken());
 
 		new RequestJsonTask<VacationItem>(getVacationUpdateListener).executeTask(loadItem);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putBoolean(SHOW_GENERAL, showGeneralSettings);
 	}
 
 	private class VacationUpdateListener extends ChessLoadUpdateListener<VacationItem> {
@@ -111,6 +141,8 @@ public class SettingsDailyChessFragment extends CommonLogicFragment implements S
 			showSubmitSwitch.toggle();
 		} else if (id == R.id.onVacationView) {
 			onVacationSwitch.toggle();
+		} else if (id == R.id.generalView) {
+			getActivityFace().openFragment(new SettingsGeneralFragment());
 		}
 	}
 
@@ -154,6 +186,11 @@ public class SettingsDailyChessFragment extends CommonLogicFragment implements S
 		view.findViewById(R.id.onVacationView).setOnClickListener(this);
 
 		showSubmitSwitch.setChecked(getAppData().getShowSubmitButtonsDaily());
+
+		if (showGeneralSettings) {
+			view.findViewById(R.id.generalView).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.generalView).setOnClickListener(this);
+		}
 
 		afterMoveSpinner = (Spinner) view.findViewById(R.id.afterMoveSpinner);
 		afterMoveSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), getItemsFromEntries(R.array.afterMyMove)));

@@ -80,7 +80,7 @@
 	<dimen name="panel_info_welcome_player_top_margin">3dp</dimen>
 	<dimen name="stats_rating_list_item_font">15sp</dimen>
 	<dimen name="_3dPiece_offset_for_board">21dip</dimen>
-	<dimen name="_3dPiece_offset_for_board_small">17dip</dimen>
+	<dimen name="_3dPiece_offset_for_board_small">16dip</dimen>
 
 
 </resources>

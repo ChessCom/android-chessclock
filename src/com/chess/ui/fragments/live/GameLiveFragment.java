@@ -828,7 +828,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				e.printStackTrace();
 			}
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsLiveChessFragment());
+			getActivityFace().openFragment(SettingsLiveChessFragment.createInstance(true));
 		}
 
 		optionsSelectFragment.dismiss();

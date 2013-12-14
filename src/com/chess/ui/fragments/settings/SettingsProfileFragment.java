@@ -32,8 +32,8 @@ import com.chess.backend.entity.api.MembershipItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCountriesFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSelectPhotoFragment;
@@ -373,8 +373,10 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 		} else if (id == R.id.shareBtn) {
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
 			shareIntent.setType("text/plain");
-			shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Invitation Subject");
-			shareIntent.putExtra(Intent.EXTRA_TEXT, "Invitation text");
+			shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Check out this awesome Chess app");
+			shareIntent.putExtra(Intent.EXTRA_TEXT, "Chess.com v3 Beta available now only via \n\nBeta community "
+					+ "\n\nhttps://plus.google.com/u/0/communities/103811010308225325535"
+					+ "\n\n Chess.com app in Google Play \n\nhttps://play.google.com/store/apps/details?id=com.chess");
 			startActivity(Intent.createChooser(shareIntent, getString(R.string.invite_a_friend)));
 		} else if (id == R.id.upgradeBtn) {
 			if (!isTablet) {
