@@ -107,7 +107,7 @@
 	<dimen name="notations_text_padding">2dip</dimen>
 	<dimen name="notations_text_side_padding">15dip</dimen>
 	<dimen name="_3dPiece_offset_for_board">24dip</dimen>
-	<dimen name="_3dPiece_offset_for_board_small">16dip</dimen>
+	<dimen name="_3dPiece_offset_for_board_small">19dip</dimen>
 	<dimen name="_3dPiece_offset_for_board_drag">35dip</dimen>
 	<dimen name="correct_move_puzzle_height">48dip</dimen>
 	<dimen name="pull_to_refresh_header_height">82dip</dimen>

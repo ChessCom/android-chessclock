@@ -669,7 +669,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 					scale = 0.95f;
 					break;
 				case ChessBoard.BISHOP:
-					scale = 0.73f;
+//					scale = 0.73f;
+					scale = 0.77f;
 					break;
 				case ChessBoard.ROOK:
 					scale = 0.7683f;
@@ -690,7 +691,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			// king 125 / 125
 			switch (piece) {
 				case ChessBoard.PAWN:
-					scale = 0.66f;
+					scale = 0.76f;
 					break;
 				case ChessBoard.KNIGHT:
 					scale = 0.912f;
