@@ -130,8 +130,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		Intent intent = getIntent();
 
 		if (savedInstanceState == null) {
-
-
 			final String action = intent.getAction();
 
 			if (Intent.ACTION_VIEW.equals(action)) {
@@ -334,7 +332,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		// Decode bitmap with inSampleSize set
 		bitmapOptions.inJustDecodeBounds = false;
-		Bitmap bitmap = BitmapFactory.decodeFile(drawablePath, bitmapOptions);
+		Bitmap bitmap = null;
+		try {
+			bitmap = BitmapFactory.decodeFile(drawablePath, bitmapOptions);
+		} catch (OutOfMemoryError ignore) {
+			showToast("Oops! Out of memory :(");
+		}
 
 		if (bitmap != null) {
 			BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
@@ -543,7 +546,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void updateMainBackground() {
-		String themeBackPath = getAppData().getThemeBackPath();
+		String themeBackPath;
+		if (inPortrait()) {
+			themeBackPath = getAppData().getThemeBackPathPort();
+		} else {
+			themeBackPath = getAppData().getThemeBackPathLand();
+		}
+
 		if (!TextUtils.isEmpty(themeBackPath)) {
 			setMainBackground(themeBackPath);
 		} else {

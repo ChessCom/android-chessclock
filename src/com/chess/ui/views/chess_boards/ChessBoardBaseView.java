@@ -141,6 +141,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private Paint piecesPaint;
 	private int _3dPiecesOffsetSmall;
 	private boolean isChessKid = true;
+	private boolean isTablet;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -161,6 +162,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		appData = new AppData(context);
 		clipBoundsRect = new Rect();
+		isTablet = AppUtils.isTablet(context);
 
 		handler = new Handler();
 		rect = new Rect();
@@ -663,17 +665,28 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (isChessKid) {
 			switch (piece) {
 				case ChessBoard.PAWN:
-					scale = 0.661f;
+					if (isTablet) {
+						scale = 0.861f;
+					} else {
+						scale = 0.661f;
+					}
 					break;
 				case ChessBoard.KNIGHT:
 					scale = 0.95f;
 					break;
 				case ChessBoard.BISHOP:
-//					scale = 0.73f;
-					scale = 0.77f;
+					if (isTablet) {
+						scale = 0.93f;
+					} else {
+						scale = 0.77f;
+					}
 					break;
 				case ChessBoard.ROOK:
-					scale = 0.7683f;
+					if (isTablet) {
+						scale = 0.9683f;
+					} else {
+						scale = 0.7683f;
+					}
 					break;
 				case ChessBoard.QUEEN:
 					scale = 0.971f;
@@ -691,7 +704,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			// king 125 / 125
 			switch (piece) {
 				case ChessBoard.PAWN:
-					scale = 0.76f;
+					if (isTablet) {
+						scale = 0.86f;
+					} else {
+						scale = 0.76f;
+					}
 					break;
 				case ChessBoard.KNIGHT:
 					scale = 0.912f;
@@ -1181,14 +1198,6 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (customBoardId != NO_ID) {
 				shader = setBoardFromResource();
 			} else if (appData.isUseThemeBoard()) {
-//				File cacheDir = null;
-//				try {
-//					cacheDir = AppUtils.getCacheDir(getContext());
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//				boardBitmap = BitmapFactory.decodeFile(cacheDir.getAbsolutePath() + "/135.GIF");
-
 				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
 				if (boardBitmap == null) {
 					getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme

@@ -256,7 +256,8 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 				appData.setThemeBackgroundName(backgroundData.getName());
 				appData.setThemeBackgroundPreviewUrl(backgroundData.getBackgroundPreviewUrl());
-				appData.setThemeBackPath(backgroundData.getLocalPath());
+				appData.setThemeBackPathPort(backgroundData.getLocalPathPort());
+				appData.setThemeBackPathLand(backgroundData.getLocalPathLand());
 				appData.setThemeFontColor(backgroundData.getFontColor());
 				getActivityFace().updateMainBackground();
 			} else {
@@ -504,7 +505,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 			// Change Placeholder
 			imageFetcher.setLoadingImage(placeHolderBitmap);
-//			holder.backImg.placeholder = placeHolderBitmap;
 
 			// Change Image params
 			holder.backImg.setLayoutParams(imageParams);
@@ -512,8 +512,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 			// Change ProgressBar params
 			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-//			holder.backImg.getProgressBar().setLayoutParams(progressParams);
-
 			return view;
 		}
 

@@ -5,16 +5,22 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import com.chess.R;
 import com.chess.backend.entity.api.themes.PieceSingleItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.GetAndSaveFileToSdTask;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.ChessBoard;
@@ -47,6 +53,8 @@ public class GetAndSavePieces extends Service {
 	private String selectedPieceDir;
 	private int screenWidth;
 	private PieceSingleItem.Data piecesData;
+	private PiecesSingleItemUpdateListener piecesSingleItemUpdateListener;
+	private String userToken;
 
 	public class ServiceBinder extends Binder {
 		public GetAndSavePieces getService(){
@@ -62,6 +70,7 @@ public class GetAndSavePieces extends Service {
 	public void onCreate() {
 		super.onCreate();
 
+		appData = new AppData(this);
 		handler = new Handler();
 		notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -77,7 +86,6 @@ public class GetAndSavePieces extends Service {
 				PendingIntent.FLAG_UPDATE_CURRENT
 		);
 
-
 		notificationBuilder = new NotificationCompat.Builder(this);
 		notificationBuilder.setContentTitle(getString(R.string.loading_pieces))
 				.setContentText(getString(R.string.loading_pieces))
@@ -85,6 +93,10 @@ public class GetAndSavePieces extends Service {
 				.setAutoCancel(true);
 		// Puts the PendingIntent into the notification builder
 		notificationBuilder.setContentIntent(pendingIntent);
+
+		userToken = appData.getUserToken();
+
+		piecesSingleItemUpdateListener = new PiecesSingleItemUpdateListener();
 	}
 
 	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {
@@ -99,11 +111,44 @@ public class GetAndSavePieces extends Service {
 		installingPieces = true;
 
 		this.screenWidth = screenWidth;
-		PiecesSingleItemUpdateListener piecesSingleItemUpdateListener = new PiecesSingleItemUpdateListener();
 		piecesPackSaveListener = new PiecesPackSaveListener();
 
-		// start loading pieces
-		LoadItem loadItem = LoadHelper.getPiecesById(getUserToken(), selectedPieceId);
+		QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_PIECES,
+				selectedPieceId);
+		Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
+
+		if (cursor != null && cursor.moveToFirst()) {
+			PieceSingleItem.Data piecesData = DbDataManager.getThemePieceItemFromCursor(cursor);
+
+			if (TextUtils.isEmpty(piecesData.getLocalPath())) {
+				loadPieces(selectedPieceId);
+				return;
+			}
+
+			appData.setThemePiecesId(piecesData.getThemePieceId());
+			appData.setThemePiecesName(piecesData.getName());
+			appData.setThemePiecesPreviewUrl(piecesData.getPreviewUrl());
+
+			appData.setUseThemePieces(true);
+			appData.setThemePiecesPath(piecesData.getLocalPath());
+
+			if (piecesData.getLocalPath().contains(SettingsThemeFragment._3D_PART)) {
+				appData.setThemePieces3d(true);
+			} else {
+				appData.setThemePieces3d(false);
+			}
+
+			// update listener
+			showCompleteToNotification();
+		} else {
+			// start loading pieces
+			loadPieces(selectedPieceId);
+		}
+
+	}
+
+	private void loadPieces(int selectedPieceId) {
+		LoadItem loadItem = LoadHelper.getPiecesById(userToken, selectedPieceId);
 		new RequestJsonTask<PieceSingleItem>(piecesSingleItemUpdateListener).executeTask(loadItem);
 	}
 
@@ -112,6 +157,13 @@ public class GetAndSavePieces extends Service {
 
 		private PiecesSingleItemUpdateListener() {
 			super(getContext(), PieceSingleItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (show) {
+				showIndeterminateNotification(getString(R.string.loading_pieces));
+			}
 		}
 
 		@Override
@@ -164,19 +216,22 @@ public class GetAndSavePieces extends Service {
 		public void updateListData(List<String> itemsList) {
 			super.updateListData(itemsList);
 
-			getAppData().setUseThemePieces(true);
-			getAppData().setThemePiecesPath(selectedPieceDir);
+			piecesData.setLocalPath(selectedPieceDir);
+			DbDataManager.saveThemePieceItemToDb(getContentResolver(), piecesData);
+
+			appData.setUseThemePieces(true);
+			appData.setThemePiecesPath(selectedPieceDir);
 
 			if (selectedPieceDir.contains(SettingsThemeFragment._3D_PART)) {
-				getAppData().setThemePieces3d(true);
+				appData.setThemePieces3d(true);
 			} else {
-				getAppData().setThemePieces3d(false);
+				appData.setThemePieces3d(false);
 			}
 
 			// save pieces theme name to appData
-			getAppData().setThemePiecesId(piecesData.getThemePieceId());
-			getAppData().setThemePiecesName(piecesData.getName());
-			getAppData().setThemePiecesPreviewUrl(piecesData.getPreviewUrl());
+			appData.setThemePiecesId(piecesData.getThemePieceId());
+			appData.setThemePiecesName(piecesData.getName());
+			appData.setThemePiecesPreviewUrl(piecesData.getPreviewUrl());
 
 			showCompleteToNotification();
 		}
@@ -242,17 +297,6 @@ public class GetAndSavePieces extends Service {
 				stopSelf();
 			}
 		}, SHUTDOWN_DELAY);
-	}
-
-	private AppData getAppData() {
-		if (appData == null) {
-			appData = new AppData(this);
-		}
-		return appData;
-	}
-
-	private String getUserToken() {
-		return getAppData().getUserToken();
 	}
 
 	private Context getContext() {

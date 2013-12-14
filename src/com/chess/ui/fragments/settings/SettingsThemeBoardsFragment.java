@@ -34,8 +34,8 @@ import com.chess.model.SelectionItem;
 import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +48,6 @@ import java.util.List;
  */
 public class SettingsThemeBoardsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
 
-	private static final int THEME_SECTION = 0;
-	private static final int DEFAULT_SECTION = 1;
-
 	private BoardsItemUpdateListener boardsItemUpdateListener;
 	private ThemeBoardsAdapter themeBoardsAdapter;
 	private List<SelectionItem> defaultBoardSelectionList;
@@ -58,7 +55,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 	private List<SelectionItem> themeBoardSelectionList;
 	private int screenWidth;
 	private List<BoardSingleItem.Data> themeBoardItemsList;
-	private SelectionItem selectedThemeBoardItem;
 	private boolean isBoardLoading;
 	private LoadServiceConnectionListener loadServiceConnectionListener;
 	private boolean serviceBounded;
@@ -73,6 +69,13 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 	private boolean loadThemedPieces;
 	private DefaultBoardsAdapter defaultBoardsAdapter;
 	private ListView listView;
+	private FragmentParentFace parentFace;
+
+	public SettingsThemeBoardsFragment(){}
+
+	public SettingsThemeBoardsFragment(FragmentParentFace parentFace) {
+		this.parentFace = parentFace;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -109,7 +112,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		super.onResume();
 
 		// Don't load custom board if we are not logged in
-		if (isAuthenticatedUser && AppUtils.isNetworkAvailable(getActivity())) {
+		if (isAuthenticatedUser) {
 			loadThemedPieces = true;
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BOARDS));
 
@@ -119,8 +122,10 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 				} while (cursor.moveToNext());
 
 				updateUiData();
-			} else {
+			} else if (isNetworkAvailable()) {
 				getBoards();
+			} else {
+				listView.setAdapter(defaultBoardsAdapter);
 			}
 		} else {
 			listView.setAdapter(defaultBoardsAdapter);
@@ -142,6 +147,17 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 	}
 
 	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+
+		if (view.getId() == R.id.text) {
+			showToast("test");
+		}
+
+		// TODO -> File | Settings | File Templates.
+	}
+
+	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		if (loadThemedPieces) {
 			if (isBoardLoading) {
@@ -151,7 +167,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			// don't allow to select while it's loading
 			isBoardLoading = true;
 
-			selectedThemeBoardItem = (SelectionItem) parent.getItemAtPosition(position);
+			SelectionItem selectedThemeBoardItem = (SelectionItem) parent.getItemAtPosition(position);
 			for (SelectionItem selectionItem : themeBoardSelectionList) {
 				if (selectedThemeBoardItem.getCode().equals(selectionItem.getCode())) {
 					selectionItem.setChecked(true);
@@ -189,8 +205,13 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 				}
 			}
 
-			// go back
-			getActivityFace().showPreviousFragment();
+			if (!isTablet) {// go back
+				getActivityFace().showPreviousFragment();
+			} else {
+				if (parentFace != null) {
+					parentFace.showPreviousFragment();
+				}
+			}
 		}
 	}
 
@@ -342,8 +363,13 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 							getActivity().unbindService(loadServiceConnectionListener);
 						}
 						serviceBounded = false;
-						// go back
-						getActivityFace().showPreviousFragment();
+						if (!isTablet) {// go back
+							getActivityFace().showPreviousFragment();
+						} else {
+							if (parentFace != null) {
+								parentFace.showPreviousFragment();
+							}
+						}
 					} else {
 						if (isBoardLoading) {
 							headerView.setVisibility(View.VISIBLE);
@@ -412,6 +438,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			holder.image.getProgressBar().setLayoutParams(progressParams);
 
 			holder.text = (CheckedTextView) view.findViewById(R.id.text);
+//			holder.text.setOnClickListener(SettingsThemeBoardsFragment.this);
 
 			view.setTag(holder);
 
@@ -484,6 +511,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			holder.image.getProgressBar().setLayoutParams(progressParams);
 
 			holder.text = (CheckedTextView) view.findViewById(R.id.text);
+//			holder.text.setOnClickListener(SettingsThemeBoardsFragment.this);
 
 			view.setTag(holder);
 

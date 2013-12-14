@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 86;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 87;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -1182,6 +1182,7 @@ public class DbScheme {
 
 	/* Themes */
 	public static final String V_PATH = "path";
+	public static final String V_PATH_LAND = "path_land";
 	public static final String V_BACKGROUND_ID = "background_id";
 	public static final String V_BOARD_ID = "board_id";
 	public static final String V_PIECES_ID = "pieces_id";
@@ -1245,7 +1246,8 @@ public class DbScheme {
 				+ addField_Text(V_FONT_COLOR)
 				+ addField_Text(V_HANDSET_URL)
 				+ addField_Text(V_TABLET_URL)
-				+ addField_Text(V_PATH, true);
+				+ addField_Text(V_PATH)
+				+ addField_Text(V_PATH_LAND, true);
 
 		createTablesArray[Tables.THEME_BOARDS.ordinal()] = createTableForName(Tables.THEME_BOARDS)
 				+ addField_Int(V_ID) // user_theme_board_id

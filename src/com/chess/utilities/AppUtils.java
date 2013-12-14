@@ -269,12 +269,28 @@ public class AppUtils {
 		}
 	}
 
+	public static boolean isTablet(Context context){
+		boolean isTablet;
+		if (StaticData.USE_TABLETS) {
+			isTablet = AppUtils.is7InchTablet(context) || AppUtils.is10InchTablet(context);
+		}
+		return isTablet;
+	}
+
 	public static boolean is7InchTablet(Context context) {
 		return  context.getResources().getBoolean(R.bool.is_large_tablet);
 	}
 
 	public static boolean is10InchTablet(Context context) {
 		return  context.getResources().getBoolean(R.bool.is_x_large_tablet);
+	}
+
+	public static boolean inLandscape(Context context) {
+		return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+	}
+
+	public static boolean inPortrait(Context context) {
+		return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 	}
 
 	public static boolean getSoundsPlayFlag(Context context) {

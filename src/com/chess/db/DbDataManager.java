@@ -2529,7 +2529,8 @@ public class DbDataManager {
 		values.put(V_FONT_COLOR, currentItem.getFontColor());
 		values.put(V_HANDSET_URL, currentItem.getOriginalHandset());
 		values.put(V_TABLET_URL, currentItem.getOriginalTablet());
-		values.put(V_PATH, currentItem.getLocalPath());
+		values.put(V_PATH, currentItem.getLocalPathPort());
+		values.put(V_PATH_LAND, currentItem.getLocalPathLand());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
@@ -2545,7 +2546,8 @@ public class DbDataManager {
 		data.setFontColor(getString(cursor, V_FONT_COLOR));
 		data.setOriginalHandset(getString(cursor, V_HANDSET_URL));
 		data.setOriginalTablet(getString(cursor, V_TABLET_URL));
-		data.setLocalPath(getString(cursor, V_PATH));
+		data.setLocalPathPort(getString(cursor, V_PATH));
+		data.setLocalPathLand(getString(cursor, V_PATH_LAND));
 
 		return data;
 	}

@@ -43,7 +43,9 @@ import java.util.Map;
  */
 public class GetAndSaveTheme extends Service {
 
-	static final int BACKGROUND = 0;
+	public static final int BACKGROUND_PORT = 0;
+	public static final int BACKGROUND_LAND = 2;
+
 	static final int BOARD = 1;
 
 	public static final int INDETERMINATE = -1;
@@ -59,11 +61,16 @@ public class GetAndSaveTheme extends Service {
 	private ThemeItem.Data selectedThemeItem;
 	private int screenWidth;
 	private int screenHeight;
-	private String backgroundUrl;
+	private int backgroundWidth;
+	private int backgroundHeight;
+	private String backgroundUrlPort;
+	private String backgroundUrlLand;
 	private ImageDownloaderToListener imageDownloader;
 	private ImageUpdateListener backgroundUpdateListener;
+	private ImageUpdateListener backgroundLandUpdateListener;
 	private ImageUpdateListener boardUpdateListener;
 	private ImageSaveListener mainBackgroundImgSaveListener;
+	private ImageSaveListener mainBackgroundLandImgSaveListener;
 	private ImageSaveListener boardImgSaveListener;
 	private AppData appData;
 	private String boardUrl;
@@ -87,6 +94,7 @@ public class GetAndSaveTheme extends Service {
 	private BoardSingleItem.Data boardData;
 	private PieceSingleItem.Data piecesData;
 	private SoundSingleItem.Data soundsData;
+	private String userToken;
 
 	public class ServiceBinder extends Binder {
 		public GetAndSaveTheme getService(){
@@ -126,6 +134,22 @@ public class GetAndSaveTheme extends Service {
 				.setAutoCancel(true);
 		// Puts the PendingIntent into the notification builder
 		notificationBuilder.setContentIntent(pendingIntent);
+
+		backgroundUpdateListener = new ImageUpdateListener(BACKGROUND_PORT);
+		backgroundLandUpdateListener = new ImageUpdateListener(BACKGROUND_LAND);
+		boardUpdateListener = new ImageUpdateListener(BOARD);
+		mainBackgroundImgSaveListener = new ImageSaveListener(BACKGROUND_PORT);
+		mainBackgroundLandImgSaveListener = new ImageSaveListener(BACKGROUND_LAND);
+		boardImgSaveListener = new ImageSaveListener(BOARD);
+		boardSingleItemUpdateListener = new BoardSingleItemUpdateListener();
+		piecesItemUpdateListener = new PiecesItemUpdateListener();
+		soundsItemUpdateListener = new SoundsItemUpdateListener();
+		soundPackSaveListener = new SoundPackSaveListener();
+		piecesPackSaveListener = new PiecesPackSaveListener();
+
+		imageDownloader = new ImageDownloaderToListener(this);
+
+		userToken = appData.getUserToken();
 	}
 
 	@Override
@@ -151,26 +175,14 @@ public class GetAndSaveTheme extends Service {
 		installingTheme = true;
 
 		this.selectedThemeItem = selectedThemeItem;
+
+		Log.d("TEST", "screenWidth = " + screenWidth);
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 
 		if (selectedThemeItem == null) {
 			return;
 		}
-
-		backgroundUpdateListener = new ImageUpdateListener(BACKGROUND);
-		boardUpdateListener = new ImageUpdateListener(BOARD);
-		mainBackgroundImgSaveListener = new ImageSaveListener(BACKGROUND);
-		boardImgSaveListener = new ImageSaveListener(BOARD);
-		boardSingleItemUpdateListener = new BoardSingleItemUpdateListener();
-		piecesItemUpdateListener = new PiecesItemUpdateListener();
-		soundsItemUpdateListener = new SoundsItemUpdateListener();
-		soundPackSaveListener = new SoundPackSaveListener();
-		piecesPackSaveListener = new PiecesPackSaveListener();
-
-		imageDownloader = new ImageDownloaderToListener(this);
-
-		String userToken = appData.getUserToken();
 
 		showIndeterminateNotification(getString(R.string.loading_background));
 
@@ -179,8 +191,17 @@ public class GetAndSaveTheme extends Service {
 			loadItem = LoadHelper.getBackgroundById(userToken, selectedThemeItem.getBackgroundId(),
 					screenWidth, screenHeight, RestHelper.V_HANDSET);
 		} else {
+			if (screenWidth > screenHeight) {
+				backgroundWidth = screenHeight;
+				backgroundHeight = screenWidth;
+			} else {
+				backgroundWidth = screenWidth;
+				backgroundHeight = screenHeight;
+			}
+
+			// we need to download port and landscape backgrounds for tablets
 			loadItem = LoadHelper.getBackgroundById(userToken, selectedThemeItem.getBackgroundId(),
-					screenWidth, screenHeight, RestHelper.V_TABLET);
+					backgroundWidth, backgroundHeight, RestHelper.V_HANDSET);
 		}
 
 		new RequestJsonTask<BackgroundSingleItem>(new BackgroundItemUpdateListener()).executeTask(loadItem);
@@ -188,20 +209,57 @@ public class GetAndSaveTheme extends Service {
 
 	private class BackgroundItemUpdateListener extends AbstractUpdateListener<BackgroundSingleItem> {
 
+		private int code;
+
 		private BackgroundItemUpdateListener() {
 			super(getContext(), BackgroundSingleItem.class);
+			this.code = BACKGROUND_PORT;
+		}
+
+		private BackgroundItemUpdateListener(int code) {
+			super(getContext(), BackgroundSingleItem.class);
+			this.code = code;
 		}
 
 		@Override
 		public void updateData(BackgroundSingleItem returnedObj) {
 
 			backgroundData = returnedObj.getData();
-			backgroundUrl = backgroundData.getResizedImage();
 
 			showIndeterminateNotification(getString(R.string.loading_background));
 
 			// Start loading background image
-			imageDownloader.download(backgroundUrl, backgroundUpdateListener, screenWidth, screenHeight);
+			if (code == BACKGROUND_PORT) {
+				backgroundUrlPort = backgroundData.getResizedImage();
+				imageDownloader.download(backgroundUrlPort, backgroundUpdateListener, backgroundWidth, backgroundHeight);
+			} else { // LAND
+				backgroundWidth = screenWidth;
+				backgroundHeight = screenHeight;
+
+				// 800 < 1280
+				if (screenWidth < screenHeight) {
+					backgroundHeight = screenWidth;
+					backgroundWidth = screenHeight;
+				}
+				backgroundUrlLand = backgroundData.getResizedImage();
+				imageDownloader.download(backgroundUrlLand, backgroundLandUpdateListener, backgroundWidth, backgroundHeight);
+			}
+
+			// load second image for tablet
+			if (isTablet && code == BACKGROUND_PORT) {
+				backgroundWidth = screenWidth;
+				backgroundHeight = screenHeight;
+
+				// 800 < 1280   // for landscape
+				if (screenWidth < screenHeight) {
+					backgroundHeight = screenWidth;
+					backgroundWidth = screenHeight;
+				}
+
+				LoadItem loadItem = LoadHelper.getBackgroundById(userToken, selectedThemeItem.getBackgroundId(),
+						backgroundWidth, backgroundHeight, RestHelper.V_TABLET);
+				new RequestJsonTask<BackgroundSingleItem>(new BackgroundItemUpdateListener(BACKGROUND_LAND)).executeTask(loadItem);
+			}
 		}
 	}
 
@@ -257,14 +315,27 @@ public class GetAndSaveTheme extends Service {
 			if (bitmap == null) {
 				logTest("error loading image. Internal error");
 				installingTheme = false;
+
+				showIndeterminateNotification("Error loading image");
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						showCompleteToNotification();
+					}
+				}, SHUTDOWN_DELAY);
 				return;
 			}
 
-			if (listenerCode == BACKGROUND) {
+			if (listenerCode == BACKGROUND_PORT) {
 				showIndeterminateNotification(getString(R.string.saving_background));
 
-				String filename = String.valueOf(backgroundUrl.hashCode()); // TODO rename to MD5
+				String filename = String.valueOf(backgroundUrlPort.hashCode()); // TODO rename to MD5
 				new SaveImageToSdTask(mainBackgroundImgSaveListener, bitmap).executeTask(filename);
+			} else if (listenerCode == BACKGROUND_LAND) {
+				showIndeterminateNotification(getString(R.string.saving_background));
+
+				String filename = String.valueOf(backgroundUrlLand.hashCode()); // TODO rename to MD5
+				new SaveImageToSdTask(mainBackgroundLandImgSaveListener, bitmap).executeTask(filename);
 			} else if (listenerCode == BOARD) {
 				showIndeterminateNotification(getString(R.string.saving_board));
 
@@ -294,14 +365,14 @@ public class GetAndSaveTheme extends Service {
 		@Override
 		public void updateData(Bitmap returnedObj) {
 
-			if (listenerCode == BACKGROUND) {
+			if (listenerCode == BACKGROUND_PORT) {
 
 				// set main background image as theme
-				String filename = String.valueOf(backgroundUrl.hashCode());
+				String filename = String.valueOf(backgroundUrlPort.hashCode());
 				try {
 					File imgFile = AppUtils.openFileByName(getContext(), filename);
 
-					backgroundData.setLocalPath(imgFile.getAbsolutePath());
+					backgroundData.setLocalPathPort(imgFile.getAbsolutePath());
 					backgroundData.setBackgroundId(selectedThemeItem.getBackgroundId());
 					DbDataManager.saveThemeBackgroundItemToDb(getContentResolver(), backgroundData);
 
@@ -316,6 +387,19 @@ public class GetAndSaveTheme extends Service {
 				notificationBuilder.setContentText(getString(R.string.loading_board));
 				updateProgressToNotification(0);
 
+			} else if (listenerCode == BACKGROUND_LAND) {
+				// set main background image as theme
+				String filename = String.valueOf(backgroundUrlLand.hashCode());
+				try {
+					File imgFile = AppUtils.openFileByName(getContext(), filename);
+
+					backgroundData.setLocalPathLand(imgFile.getAbsolutePath());
+					backgroundData.setBackgroundId(selectedThemeItem.getBackgroundId());
+					DbDataManager.saveThemeBackgroundItemToDb(getContentResolver(), backgroundData);
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			} else if (listenerCode == BOARD) {
 				// set board image as theme
 				String filename = String.valueOf(boardUrl.hashCode());

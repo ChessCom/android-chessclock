@@ -11,4 +11,6 @@ import com.chess.ui.fragments.BasePopupsFragment;
 public interface FragmentParentFace {
 
 	void changeFragment(BasePopupsFragment fragment);
+
+	boolean showPreviousFragment();
 }

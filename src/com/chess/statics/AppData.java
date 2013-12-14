@@ -6,7 +6,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.LiveGameConfig;
-import com.chess.ui.interfaces.boards.BoardFace;
 import com.google.gson.Gson;
 
 import static com.chess.statics.AppConstants.*;
@@ -399,7 +398,8 @@ public class AppData {
 	public void resetThemeToDefault() {
 		setThemeBoardPath(Symbol.EMPTY);
 		setThemeBoardId(UNDEFINED);
-		setThemeBackPath(Symbol.EMPTY);
+		setThemeBackPathPort(Symbol.EMPTY);
+		setThemeBackPathLand(Symbol.EMPTY);
 		setThemeBackgroundName(Symbol.EMPTY);
 		setThemePiecesPath(Symbol.EMPTY);
 		setThemePiecesId(UNDEFINED);
@@ -412,12 +412,20 @@ public class AppData {
 		setUseThemePieces(false);
 	}
 
-	public void setThemeBackPath(String path) {
-		setStringValue(PREF_THEME_BACK_PATH, path);
+	public void setThemeBackPathPort(String path) {
+		setStringValue(PREF_THEME_BACKGROUND_PATH_PORT, path);
 	}
 
-	public String getThemeBackPath() {
-		return getStringValue(PREF_THEME_BACK_PATH, Symbol.EMPTY);
+	public String getThemeBackPathPort() {
+		return getStringValue(PREF_THEME_BACKGROUND_PATH_PORT, Symbol.EMPTY);
+	}
+
+	public void setThemeBackPathLand(String path) {
+		setStringValue(PREF_THEME_BACKGROUND_PATH_LAND, path);
+	}
+
+	public String getThemeBackPathLand() {
+		return getStringValue(PREF_THEME_BACKGROUND_PATH_LAND, Symbol.EMPTY);
 	}
 
 	public void setThemeFontColor(String path) {

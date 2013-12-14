@@ -11,7 +11,7 @@
 		android:layout_height="wrap_content">
 
 		<LinearLayout android:id="@+id/linearLayout1"
-			android:background="@drawable/bkgrnd"
+			android:background="@drawable/empty"
 			android:weightSum="100"
 			android:layout_height="wrap_content"
 			android:layout_width="match_parent"

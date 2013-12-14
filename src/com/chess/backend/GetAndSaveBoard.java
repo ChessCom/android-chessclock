@@ -5,12 +5,14 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import com.chess.R;
 import com.chess.backend.entity.api.themes.BoardSingleItem;
@@ -20,6 +22,10 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.backend.tasks.SaveImageToSdTask;
+import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.utilities.AppUtils;
@@ -45,6 +51,8 @@ public class GetAndSaveBoard extends Service {
 	public static final int BOARD_END_NAME = 180;
 	public static final int BOARD_END_SIZE = 1440;
 
+	private static final long DISMISS_DELAY = 500;
+
 	private NotificationManager notifymanager;
 	private NotificationCompat.Builder notificationBuilder;
 	private AppData appData;
@@ -64,6 +72,7 @@ public class GetAndSaveBoard extends Service {
 	public void onCreate() {
 		super.onCreate();
 
+		appData = new AppData(this);
 		handler = new Handler();
 		notifymanager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -87,6 +96,11 @@ public class GetAndSaveBoard extends Service {
 				.setAutoCancel(true);
 		// Puts the PendingIntent into the notification builder
 		notificationBuilder.setContentIntent(pendingIntent);
+
+		boardImgSaveListener = new ImageSaveListener();
+		boardSingleItemUpdateListener = new BoardSingleItemUpdateListener();
+		imageDownloader = new ImageDownloaderToListener(this);
+		boardUpdateListener = new ImageUpdateListener();
 	}
 
 	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {
@@ -113,13 +127,35 @@ public class GetAndSaveBoard extends Service {
 
 		this.screenWidth = screenWidth ;
 
-		boardImgSaveListener = new ImageSaveListener();
-		boardSingleItemUpdateListener = new BoardSingleItemUpdateListener();
-		imageDownloader = new ImageDownloaderToListener(this);
-		boardUpdateListener = new ImageUpdateListener();
+		// check if we have saved board for that id
+		QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_BOARDS,	selectedBoardId);
+		Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
 
+		if (cursor != null && cursor.moveToFirst()) {
+			BoardSingleItem.Data boardData = DbDataManager.getThemeBoardItemFromCursor(cursor);
+			if (TextUtils.isEmpty(boardData.getLocalPath())) {
+				loadBoard(selectedBoardId);
+				return;
+			}
 
-		// start loading board
+			appData.setUseThemeBoard(true);
+			appData.setThemeBoardId(boardData.getThemeBoardId());
+			appData.setThemeBoardName(boardData.getName());
+			appData.setThemeBoardPreviewUrl(boardData.getLineBoardPreviewUrl());
+			appData.setThemeBoardCoordinateLight(Color.parseColor(boardData.getCoordinateColorLight()));
+			appData.setThemeBoardCoordinateDark(Color.parseColor(boardData.getCoordinateColorDark()));
+			appData.setThemeBoardHighlight(Color.parseColor(boardData.getHighlightColor()));
+			appData.setThemeBoardPath(boardData.getLocalPath());
+
+			// update listener
+			showCompleteToNotification();
+		} else {
+			// start loading board
+			loadBoard(selectedBoardId);
+		}
+	}
+
+	private void loadBoard(int selectedBoardId) {
 		LoadItem loadItem = LoadHelper.getBoardById(getUserToken(), selectedBoardId);
 		new RequestJsonTask<BoardSingleItem>(boardSingleItemUpdateListener).executeTask(loadItem);
 	}
@@ -128,6 +164,13 @@ public class GetAndSaveBoard extends Service {
 
 		private BoardSingleItemUpdateListener() {
 			super(getContext(), BoardSingleItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (show) {
+				showIndeterminateNotification(getString(R.string.loading_board));
+			}
 		}
 
 		@Override
@@ -214,12 +257,15 @@ public class GetAndSaveBoard extends Service {
 				File imgFile = AppUtils.openFileByName(getContext(), filename);
 				String drawablePath = imgFile.getAbsolutePath();
 
+				boardData.setLocalPath(drawablePath);
+				DbDataManager.saveThemeBoardItemToDb(getContentResolver(), boardData);
+
 				// save board theme name to appData
 				getAppData().setUseThemeBoard(true);
 				getAppData().setThemeBoardPath(drawablePath);
 				getAppData().setThemeBoardId(boardData.getThemeBoardId());
 				getAppData().setThemeBoardName(boardData.getName());
-				getAppData().setThemeBoardPreviewUrl(boardData.getPreviewUrl());
+				getAppData().setThemeBoardPreviewUrl(boardData.getLineBoardPreviewUrl());
 
 			} catch (IOException e) {
 				e.printStackTrace();

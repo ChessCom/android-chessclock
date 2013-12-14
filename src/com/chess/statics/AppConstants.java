@@ -75,7 +75,8 @@ public class AppConstants {
 	public static final String PREF_USER_COURSE_COMPLETE = "user_course_complete";
 
     public static final String PREF_THEME_BACK_ID = "theme_background_id";
-    public static final String PREF_THEME_BACK_PATH = "theme_background_path";
+    public static final String PREF_THEME_BACKGROUND_PATH_PORT = "theme_background_path_port";
+    public static final String PREF_THEME_BACKGROUND_PATH_LAND = "theme_background_path_land";
     public static final String PREF_THEME_FONT_COLOR = "theme_font_color";
     public static final String PREF_THEME_BOARD_PATH = "theme_board_path";
     public static final String PREF_THEME_BOARD_COORDINATE_LIGHT = "theme_board_coordinate_light";

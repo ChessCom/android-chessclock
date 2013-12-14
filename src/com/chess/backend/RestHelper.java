@@ -6,6 +6,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import com.chess.BuildConfig;
 import com.chess.R;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.exceptions.InternalErrorException;
@@ -479,7 +480,7 @@ public class RestHelper {
 			try {
 				value = URLEncoder.encode(pair.getValue(), HTTP.UTF_8);
 			} catch (UnsupportedEncodingException e) {
-				Log.e(TAG, "failed to encode url");
+				logE(TAG, "failed to encode url");
 				e.printStackTrace();
 				value = pair.getValue();
 			}
@@ -510,7 +511,7 @@ public class RestHelper {
 		String requestMethod = loadItem.getRequestMethod();
 		String url = createSignature(loadItem, appId);
 
-		Log.d(TAG, "method = " + loadItem.getRequestMethod() + ", request query = " + url);
+		logD(TAG, "method = " + loadItem.getRequestMethod() + ", request query = " + url);
 
 		HttpURLConnection connection = null;
 
@@ -548,13 +549,13 @@ public class RestHelper {
 
 			Gson gson = new Gson();
 			if (statusCode != HttpStatus.SC_OK) {
-				Log.e(TAG, "Error " + statusCode + " while retrieving data from " + url);
+				logE(TAG, "Error " + statusCode + " while retrieving data from " + url);
 				InputStream inputStream = connection.getErrorStream();
 				String resultString = convertStreamToString(inputStream);
-				Log.d(TAG, "SERVER RESPONSE: " + resultString);
+				logD(TAG, "SERVER RESPONSE: " + resultString);
 
 				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
-				Log.d(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
+				logD(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
 				throw new InternalErrorException(encodeServerCode(baseResponse.getCode()));
 			}
 
@@ -571,13 +572,13 @@ public class RestHelper {
 
 					resultString = resultString.substring(firstIndex, lastIndex + 1);
 
-					Log.d(TAG, "SERVER RESPONSE: " + resultString);
+					logD(TAG, "SERVER RESPONSE: " + resultString);
 					if (resultString.contains("\"challenges\":[[]")) {  // TODO remove before release
 						resultString = resultString.replace("[],", "").replace("[]]", "]");
-						Log.d(TAG, "After edit SERVER RESPONSE: " + resultString);
+						logD(TAG, "After edit SERVER RESPONSE: " + resultString);
 					}
 				} else {
-					Log.d(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
+					logD(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
 					throw new InternalErrorException(StaticData.INTERNAL_ERROR);
 				}
 				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
@@ -598,20 +599,20 @@ public class RestHelper {
 			throw new InternalErrorException(e, StaticData.INTERNAL_ERROR);
 		} catch (JsonSyntaxException e) {
 			e.printStackTrace();
-			Log.e(TAG, "JsonSyntaxException Error while retrieving data from " + url, e);
+			logE(TAG, "JsonSyntaxException Error while retrieving data from " + url, e);
 			throw new InternalErrorException(e, StaticData.INTERNAL_ERROR);
 		} catch (IOException e) {
 			if (e instanceof InternalErrorException) {
 				throw new InternalErrorException(e, ((InternalErrorException) e).getCode());
 			} else {
-				Log.e(TAG, "I/O error while retrieving data from " + url, e);
+				logE(TAG, "I/O error while retrieving data from " + url, e);
 				throw new InternalErrorException(e, StaticData.NO_NETWORK);
 			}
 		} catch (IllegalStateException e) {
-			Log.e(TAG, "Incorrect URL: " + url, e);
+			logE(TAG, "Incorrect URL: " + url, e);
 			throw new InternalErrorException(e, StaticData.UNKNOWN_ERROR);
 		} catch (Exception e) {
-			Log.e(TAG, "Error while retrieving data from " + requestMethod + " " + url, e);
+			logE(TAG, "Error while retrieving data from " + requestMethod + " " + url, e);
 			throw new InternalErrorException(e, StaticData.UNKNOWN_ERROR);
 		} finally {
 			if (connection != null) {
@@ -654,7 +655,7 @@ public class RestHelper {
 				writer.append("Content-Disposition: form-data; name=\"" + pair.getName() + "\"").append(CRLF);
 				writer.append("Content-Type: text/plain; charset=" + charset).append(CRLF);
 				writer.append(CRLF);
-				Log.d(TAG, "POST data: name = " + pair.getName() + " value = " + pair.getValue());
+				logD(TAG, "POST data: name = " + pair.getName() + " value = " + pair.getValue());
 				writer.append(pair.getValue()).append(CRLF).flush();
 			}
 
@@ -690,7 +691,7 @@ public class RestHelper {
 
 	private static void submitPostData(URLConnection connection, LoadItem loadItem) throws IOException {
 		String query = formPostData(loadItem);
-		Log.d(TAG, loadItem.getRequestMethod() + ": " + query);
+		logD(TAG, loadItem.getRequestMethod() + ": " + query);
 		String charset = HTTP.UTF_8;
 		connection.setDoOutput(true); // Triggers POST.
 		OutputStream output = null;
@@ -703,7 +704,7 @@ public class RestHelper {
 					try {
 						output.close();
 					} catch (IOException ex) {
-						Log.e(TAG, "Error while submiting POST data " + ex.toString());
+						logE(TAG, "Error while submiting POST data " + ex.toString());
 					}
 				}
 			}
@@ -834,6 +835,24 @@ public class RestHelper {
 			return keyStore;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	private static void logD(String tag, String message) {
+		if (BuildConfig.DEBUG) {
+			Log.d(tag, message);
+		}
+	}
+
+	private static void logE(String tag, String message) {
+		if (BuildConfig.DEBUG) {
+			Log.e(tag, message);
+		}
+	}
+
+	private static void logE(String tag, String message, Throwable ex) {
+		if (BuildConfig.DEBUG) {
+			Log.e(tag, message, ex);
 		}
 	}
 

@@ -88,21 +88,8 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 			}
 		} else {
 			listView.setAdapter(paginationAdapter);
+			loadFromDb();
 		}
-
-//		if (need2update) {
-//			MessagesInboxPaginationAdapter
-//			if (isNetworkAvailable()) {
-//				LoadItem loadItem = new LoadItem();
-//				loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGES_INBOX);
-//				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-//
-//				new RequestJsonTask<ConversationItem>(conversationsUpdateListener).executeTask(loadItem);
-//			} else {
-//
-//			}
-//
-//		}
 	}
 
 	@Override

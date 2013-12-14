@@ -464,7 +464,7 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 			return false;
 		}
 		int entryCount = getChildFragmentManager().getBackStackEntryCount();
-		if (entryCount > 0) {
+		if (entryCount > 1) {
 			int last = entryCount - 1;
 			FragmentManager.BackStackEntry stackEntry = getChildFragmentManager().getBackStackEntryAt(last);
 			if (stackEntry != null && stackEntry.getName().equals(FriendsFragmentTablet.class.getSimpleName())) {

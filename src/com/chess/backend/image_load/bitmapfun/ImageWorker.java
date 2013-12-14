@@ -62,7 +62,7 @@ public abstract class ImageWorker {
 
 	protected ImageWorker(Context context) {
 		mResources = context.getResources();
-		changingDrawable = new ColorDrawable(android.R.color.transparent);
+		changingDrawable = new ColorDrawable(0x00000000);
 	}
 
 	/**

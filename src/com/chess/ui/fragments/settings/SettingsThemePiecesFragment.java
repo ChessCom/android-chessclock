@@ -34,6 +34,7 @@ import com.chess.model.SelectionItem;
 import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -73,6 +74,13 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 	private boolean serviceBounded;
 	private boolean isPiecesLoading;
 	private int selectedPiecesId;
+	private FragmentParentFace parentFace;
+
+	public SettingsThemePiecesFragment() {}
+
+	public SettingsThemePiecesFragment(FragmentParentFace parentFace) {
+		this.parentFace = parentFace;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -190,8 +198,13 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 				}
 			}
 
-			// go back
-			getActivityFace().showPreviousFragment();
+			if (!isTablet) {// go back
+				getActivityFace().showPreviousFragment();
+			} else {
+				if (parentFace != null) {
+					parentFace.showPreviousFragment();
+				}
+			}
 		}
 	}
 
@@ -345,8 +358,13 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 							getActivity().unbindService(loadServiceConnectionListener);
 						}
 						serviceBounded = false;
-						// go back
-						getActivityFace().showPreviousFragment();
+						if (!isTablet) {// go back
+							getActivityFace().showPreviousFragment();
+						} else {
+							if (parentFace != null) {
+								parentFace.showPreviousFragment();
+							}
+						}
 					} else {
 						if (isPiecesLoading) {
 							headerView.setVisibility(View.VISIBLE);

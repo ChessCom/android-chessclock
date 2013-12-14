@@ -106,7 +106,7 @@
 	<dimen name="diagram_icon_overlay_size">80dip</dimen>
 	<dimen name="notations_text_padding">2dip</dimen>
 	<dimen name="notations_text_side_padding">15dip</dimen>
-	<dimen name="_3dPiece_offset_for_board">24dip</dimen>
+	<dimen name="_3dPiece_offset_for_board">21dip</dimen>
 	<dimen name="_3dPiece_offset_for_board_small">19dip</dimen>
 	<dimen name="_3dPiece_offset_for_board_drag">35dip</dimen>
 	<dimen name="correct_move_puzzle_height">48dip</dimen>

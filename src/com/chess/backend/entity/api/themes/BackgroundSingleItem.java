@@ -34,7 +34,8 @@ public class BackgroundSingleItem extends BaseResponseItem<BackgroundSingleItem.
 		private String resized_image;
 		private int theme_id;
 		/* Local addition */
-		private String localPath;
+		private String localPathLand;
+		private String localPathPort;
 
 		public int getBackgroundId() {
 			return user_theme_background_id;
@@ -100,12 +101,19 @@ public class BackgroundSingleItem extends BaseResponseItem<BackgroundSingleItem.
 			this.theme_id = theme_id;
 		}
 
-		public void setLocalPath(String localPath) {
-			this.localPath = localPath;
+		public void setLocalPathLand(String localPath) {
+			this.localPathLand = localPath;
+		}
+		public void setLocalPathPort(String localPath) {
+			this.localPathPort = localPath;
 		}
 
-		public String getLocalPath() {
-			return getSafeValue(localPath);
+		public String getLocalPathLand() {
+			return getSafeValue(localPathLand);
+		}
+
+		public String getLocalPathPort() {
+			return getSafeValue(localPathPort);
 		}
 	}
 

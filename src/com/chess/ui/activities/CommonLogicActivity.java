@@ -81,9 +81,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (StaticData.USE_TABLETS) {
-			isTablet = AppUtils.is7InchTablet(this) || AppUtils.is10InchTablet(this);
-		}
+		isTablet = AppUtils.isTablet(this);
 
 		loginUpdateListener = new LoginUpdateListener();
 
@@ -490,6 +488,14 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 //			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.getInstance().REGISTER_HTML)));
 		}
 		super.onPositiveBtnClick(fragment);
+	}
+
+	protected boolean inLandscape() {
+		return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+	}
+
+	protected boolean inPortrait() {
+		return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 	}
 
 }
