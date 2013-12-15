@@ -285,7 +285,7 @@ public class LiveChessService extends Service {
 		gameTaskRunner.runMakeResignTask();
 	}
 
-	public void runMakeResignAndExitTask() {
+	public void runMakeResignAndExitTask() { // TODO adjust NPE?
 		gameTaskRunner.runMakeResignAndExitTask();
 	}
 

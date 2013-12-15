@@ -3,6 +3,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:id="@+id/dailyGamesBaseView"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,11 +26,14 @@
         android:layout_centerInParent="true"
         />
 
+<!--	<include android:id="@+id/newGameHeaderView"
+		layout="@layout/new_daily_games_header_view" />-->
+
+	<!--android:layout_below="@id/newGameHeaderView"-->
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/startNewGameBtn"
+        android:layout_height="wrap_content"
         android:background="@color/transparent"
         android:dividerHeight="0px"
         android:divider="@null"
@@ -44,20 +48,5 @@
 		style="?android:attr/progressBarStyle"
 		android:visibility="gone"
 		/>
-
-	<!--Start New Game-->
-	<com.chess.widgets.RoboButton
-        android:id="@id/startNewGameBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:minHeight="@dimen/big_button_height"
-        android:text="@string/new_game"
-		android:textSize="@dimen/game_controls_text_size"
-		android:textColor="@color/white"
-        style="@style/Rect.Bottom.Right.Orange"
-        android:visibility="gone"
-		android:shadowColor="@color/transparent"
-        />
 
 </RelativeLayout>

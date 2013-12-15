@@ -142,6 +142,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private int _3dPiecesOffsetSmall;
 	private boolean isChessKid = true;
 	private boolean isTablet;
+	private Bitmap boardBitmap;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -538,6 +539,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (moveAnimator != null) {
 			animationActive = moveAnimator.updateState();
 			drawPieces(canvas, animationActive, moveAnimator);
+
 			if (animationActive) {
 				moveAnimator.draw(canvas);
 			} else {
@@ -605,6 +607,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		// draw piece that will be captured
 		if (animationActive && moveAnimator.getCapturedPieceBitmap() != null) {
 			Bitmap capturedPieceBitmap = moveAnimator.getCapturedPieceBitmap();
+
+			if (capturedPieceBitmap.isRecycled()) {
+				return;
+			}
+
 			int piecePosition = moveAnimator.getCapturedPiecePosition();
 			int piece = boardFace.getPiece(piecePosition);
 			int column = ChessBoard.getColumn(piecePosition, boardFace.isReside());
@@ -729,11 +736,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		}
 
 		float offset = pieceBitmap.getHeight() - pieceBitmap.getHeight() * scale;
-		if (isChessKid) {
-			top += offset;
-		} else {
-			top += offset;
-		}
+		top += offset;
 
 		return top;
 	}
@@ -1192,12 +1195,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		if (previousWidth != viewWidth) { // update only if size has changed
 			previousWidth = viewWidth;
 
-			Bitmap boardBitmap;
 			BitmapShader shader;
 
 			if (customBoardId != NO_ID) {
 				shader = setBoardFromResource();
 			} else if (appData.isUseThemeBoard()) {
+				// perform recycle
+				recycleBoardBitmap();
+
 				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
 				if (boardBitmap == null) {
 					getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme
@@ -1247,7 +1252,9 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 		}
 
-		Bitmap boardBitmap;
+		// perform recycle
+		recycleBoardBitmap();
+
 		BitmapShader shader;
 		BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(resourceId);
 		boardBitmap = drawable.getBitmap();
@@ -1257,6 +1264,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
 		shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 		return shader;
+	}
+
+	private void recycleBoardBitmap() {
+		if (boardBitmap != null) {
+			boardBitmap.recycle();
+			boardBitmap = null;
+		}
 	}
 
 	public void setCustomBoard(int resourceId) {
@@ -1305,22 +1319,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	 * pass bitmapOptions to get info
 	 */
 	private Bitmap createBitmapForPiece(int drawableId) {
-		Bitmap pieceBitmap;
-
 		// Decode bitmap with inSampleSize set
 		bitmapOptions.inJustDecodeBounds = false;
-		pieceBitmap = BitmapFactory.decodeResource(getResources(), drawableId, bitmapOptions);
-
-		return pieceBitmap;
+		return BitmapFactory.decodeResource(getResources(), drawableId, bitmapOptions);
 	}
 
 	private Bitmap createBitmapForPiece(String filePath) {
-		Bitmap pieceBitmap;
-
 		bitmapOptions.inJustDecodeBounds = false;
-		pieceBitmap = BitmapFactory.decodeFile(filePath, bitmapOptions);
-
-		return pieceBitmap;
+		return BitmapFactory.decodeFile(filePath, bitmapOptions);
 	}
 
 	protected AppData getAppData() {
@@ -1348,13 +1354,20 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				isChessKid = false;
 			}
 
-
 			if (whitePiecesMap == null) {
 				whitePiecesMap = new WeakHashMap<Integer, Bitmap>();
+			} else {
+				for (Bitmap bitmap : whitePiecesMap.values()) {
+					bitmap.recycle();
+				}
 			}
 
 			if (blackPiecesMap == null) {
 				blackPiecesMap = new WeakHashMap<Integer, Bitmap>(); // TODO probably we don't need weak or soft referemces
+			} else {
+				for (Bitmap bitmap : blackPiecesMap.values()) {
+					bitmap.recycle();
+				}
 			}
 
 			File dirForPieces = AppUtils.getLocalDirForPieces(context, piecesThemePath);
@@ -1372,6 +1385,16 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				String pieceImageCode = whitePieceImageCodes[i];
 				String filePath = dirForPieces.getAbsolutePath() + "/" + pieceImageCode + ".png";
 				Bitmap pieceBitmap = createBitmapForPiece(filePath);
+
+				if (pieceBitmap == null) {
+					appData.setUseThemePieces(false);
+					appData.setThemePiecesPath(Symbol.EMPTY);
+					appData.setThemePiecesId(AppData.UNDEFINED);
+					appData.setThemePieces3d(false);
+
+					loadPieces();
+					return;
+				}
 
 				whitePiecesMap.put(i, pieceBitmap);
 
@@ -1685,6 +1708,13 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 		whitePiecesMap = null;
 		blackPiecesMap = null;
+
+		if (boardBitmap != null) {
+			boardBitmap.recycle();
+			boardBitmap = null;
+		}
+
+		Runtime.getRuntime().gc(); // TODO remove that when find solution
 	}
 
 	public void setCustomHighlight(int customHighlight) {
@@ -1699,12 +1729,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		this.customPiecesName = customPiecesName;
 	}
 
-// todo: should be only one getYCoordinate method after refactoring
-//	private int getYCoordinateForArrow(int y) {
-//		return square * (getBoardFace().isReside() ? y : 7 - y);
-//	}
-
-// TODO: refactor!
+// TODO: refactor! Use ObjectAnimator for better drawing and performance
 
 	protected class MoveAnimator {
 		long startTime;
@@ -1718,12 +1743,20 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		private Bitmap capturedPieceBitmap;
 		private int capturedPiecePosition;
 		private boolean firstRun = true;
-		private final Move move;
-		private final boolean forward;
+		private Move move;
+		private boolean forward;
 		private long animationTime;
 		private boolean forceCompEngine;
 
 		public MoveAnimator(Move move, boolean forward) {
+			init(move, forward);
+		}
+
+		public void update(Move move, boolean forward) {
+			init(move, forward);
+		}
+
+		private void init(Move move, boolean forward) {
 			this.move = move;
 			this.forward = forward;
 
@@ -1740,6 +1773,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				fromColor = 0;
 			}
 
+			if (pieceBitmap != null) {
+				pieceBitmap.recycle();
+				pieceBitmap = null;
+			}
+
 			pieceBitmap = getPieceBitmap(fromColor, fromPiece);
 
 			// todo: check game load
@@ -1748,6 +1786,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			if (boardFace.getPiece(moveToPosition) != ChessBoard.EMPTY) {
 				int capturedColor = boardFace.getColor(moveToPosition);
 				int capturedPiece = boardFace.getPiece(moveToPosition);
+
+				if (capturedPieceBitmap != null) {
+					capturedPieceBitmap.recycle();
+					capturedPieceBitmap = null;
+				}
 
 				capturedPieceBitmap = getPieceBitmap(capturedColor, capturedPiece);
 				capturedPiecePosition = moveToPosition;
@@ -1768,6 +1811,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 						to2 = move.to + 1;
 					}
 					hide2 = to2;
+
+					if (rookCastlingBitmap != null) {
+						rookCastlingBitmap.recycle();
+						rookCastlingBitmap = null;
+					}
+
 					rookCastlingBitmap = getPieceBitmap(fromColor, ChessBoard.ROOK);
 				}
 			} else {
@@ -1784,6 +1833,11 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 						to2 = move.to - 2;
 					}
 					hide2 = to2;
+
+					if (rookCastlingBitmap != null) {
+						rookCastlingBitmap.recycle();
+						rookCastlingBitmap = null;
+					}
 					rookCastlingBitmap = getPieceBitmap(fromColor, ChessBoard.ROOK);
 				}
 			}

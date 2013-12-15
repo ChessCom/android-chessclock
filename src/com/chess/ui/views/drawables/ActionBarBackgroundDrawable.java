@@ -20,43 +20,53 @@ import com.chess.statics.AppData;
 public class ActionBarBackgroundDrawable extends Drawable {
 
 	public static final String STAUNTON = "Staunton";
-	private final Drawable backDawable;
+	private Drawable backDrawable;
 	private final Rect rect;
+	private final ColorDrawable colorDrawable;
+	private final AppData appData;
+	private final Drawable stauntonDrawable;
 
 	public ActionBarBackgroundDrawable(Context context) {
 
 		int topBarColor1 = context.getResources().getColor(R.color.action_bar_overlay);
 		rect = new Rect();
-		AppData appData = new AppData(context);
+		appData = new AppData(context);
 
-		String themeName = appData.getThemeBackgroundName();
-		// if we have staunton theme, then set custom image
-		if (!TextUtils.isEmpty(themeName) && themeName.contains(STAUNTON)) {
-			backDawable = context.getResources().getDrawable(R.drawable.img_staunton_top_bar);
-		} else {
-			backDawable = new ColorDrawable(topBarColor1);
-		}
+		stauntonDrawable = context.getResources().getDrawable(R.drawable.img_staunton_top_bar);
+		colorDrawable = new ColorDrawable(topBarColor1);
+
+		updateDrawable();
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		canvas.getClipBounds(rect);
-		backDawable.setBounds(rect);
-		backDawable.draw(canvas);
+		backDrawable.setBounds(rect);
+		backDrawable.draw(canvas);
 	}
 
 	@Override
 	public void setAlpha(int alpha) {
-		backDawable.setAlpha(alpha);
+		backDrawable.setAlpha(alpha);
 	}
 
 	@Override
 	public void setColorFilter(ColorFilter cf) {
-		backDawable.setColorFilter(cf);
+		backDrawable.setColorFilter(cf);
 	}
 
 	@Override
 	public int getOpacity() {
 		return PixelFormat.OPAQUE;
+	}
+
+	public void updateDrawable(){
+		String themeName = appData.getThemeBackgroundName();
+		// if we have staunton theme, then set custom image
+		if (!TextUtils.isEmpty(themeName) && themeName.contains(STAUNTON)) {
+			backDrawable = stauntonDrawable;
+		} else {
+			backDrawable = colorDrawable;
+		}
 	}
 }

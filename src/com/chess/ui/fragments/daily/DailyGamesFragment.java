@@ -2,25 +2,20 @@ package com.chess.ui.fragments.daily;
 
 import android.app.AlertDialog;
 import android.content.*;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.BaseResponseItem;
-import com.chess.backend.entity.api.DailyCurrentGameData;
-import com.chess.backend.entity.api.DailyFinishedGameData;
-import com.chess.backend.entity.api.DailyGamesAllItem;
+import com.chess.backend.entity.api.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -34,11 +29,18 @@ import com.chess.statics.StaticData;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
+import com.chess.ui.engine.ChessBoardDiagram;
 import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.SoundPlayer;
+import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.fragments.popup_fragments.PopupDailyTimeOptionsFragment;
+import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.ui.interfaces.PopupListSelectionFace;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.utilities.AppUtils;
 
 import java.util.List;
@@ -58,7 +60,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private static final int CURRENT_GAMES_SECTION = 0;
 	private static final int FINISHED_GAMES_SECTION = 1;
 
+	private static final String OPTION_SELECTION_TAG = "time options popup";
+	private static final String END_VACATION_TAG = "end vacation popup";
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
+
 	private static final long FRAGMENT_VISIBILITY_DELAY = 200;
 
 	private DailyUpdateListener challengeInviteUpdateListener;
@@ -80,10 +85,17 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private TextView emptyView;
 	private ListView listView;
 	private View loadingView;
-	private Button startNewGameBtn;
 	private List<DailyFinishedGameData> finishedGameDataList;
 	private FragmentParentFace parentFace;
 	private int mode;
+	private GameFaceHelper gameFaceHelper;
+	private int[] newGameButtonsArray;
+	private Button timeSelectBtn;
+	private ViewGroup newGameHeaderView;
+	private PopupDailyTimeOptionsFragment timeOptionsFragment;
+	private DailyGameConfig.Builder gameConfigBuilder;
+	private TimeOptionSelectedListener timeOptionSelectedListener;
+//	private CreateChallengeUpdateListener createChallengeUpdateListener;
 
 	public DailyGamesFragment() {
 		Bundle bundle = new Bundle();
@@ -109,10 +121,17 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			mode = savedInstanceState.getInt(MODE);
 		}
 
+		gameConfigBuilder = new DailyGameConfig.Builder();
+
+		gameFaceHelper = new GameFaceHelper();
+
+//		createChallengeUpdateListener = new CreateChallengeUpdateListener();
+		timeOptionSelectedListener = new TimeOptionSelectedListener();
+
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
 
-		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(getContext(), null, getImageFetcher());
+		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher());
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
 
 		sectionedAdapter.addSection(getString(R.string.new_my_move), currentGamesMyCursorAdapter);
@@ -132,17 +151,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		loadingView = view.findViewById(R.id.loadingView);
-		emptyView = (TextView) view.findViewById(R.id.emptyView);
-
-		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setOnItemClickListener(this);
-		listView.setOnItemLongClickListener(this);
-		listView.setAdapter(sectionedAdapter);
-
-		startNewGameBtn = (Button) view.findViewById(R.id.startNewGameBtn);
-		startNewGameBtn.setOnClickListener(this);
+		widgetsInit(view);
 	}
+
 
 	@Override
 	public void onResume() {
@@ -245,12 +256,17 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == R.id.startNewGameBtn) {
-			if (parentFace != null) {
-				parentFace.changeFragment(new HomePlayFragment());
-			} else {
-				getActivityFace().showPreviousFragment();
+		if (view.getId() == R.id.timeSelectBtn) {
+			// show popup
+			if (timeOptionsFragment != null) {
+				return;
 			}
+
+			timeOptionsFragment = PopupDailyTimeOptionsFragment.createInstance(timeOptionSelectedListener);
+			timeOptionsFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
+		} else if (view.getId() == R.id.gamePlayBtn) {
+			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE));
+			getActivityFace().toggleRightMenu();
 		}
 	}
 
@@ -488,10 +504,21 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					do {
 						if (DbDataManager.getInt(returnedObj, DbScheme.V_IS_MY_TURN) > 0) {
 							myTurnInDailyGames = true;
-
+							break;
 						}
 					} while (returnedObj.moveToNext());
-					startNewGameBtn.setVisibility(myTurnInDailyGames ? View.GONE : View.VISIBLE);
+
+					if (myTurnInDailyGames) {
+						listView.removeHeaderView(newGameHeaderView);
+					} else {
+
+						listView.removeHeaderView(newGameHeaderView);
+						listView.setAdapter(null);
+						listView.addHeaderView(newGameHeaderView);
+						listView.setAdapter(sectionedAdapter);
+					}
+					listView.invalidate();
+//					getView().requestLayout();
 
 					// restore position
 					returnedObj.moveToFirst();
@@ -610,6 +637,116 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				showToast("Internal error occurred"); // TODO adjust properly
 			}
 			super.errorHandle(resultCode);
+		}
+	}
+
+	private View createBoardView(ChessBoardDailyView boardView) {
+		boardView.setGameFace(gameFaceHelper);
+		int coordinateColorLight = getResources().getColor(R.color.transparent);
+		int coordinateColorDark = getResources().getColor(R.color.transparent);
+		boardView.setCustomCoordinatesColors(new int[]{coordinateColorLight, coordinateColorDark});
+
+		ChessBoardOnline.resetInstance();
+
+		return boardView;
+	}
+
+
+	private void widgetsInit(View view) {
+		loadingView = view.findViewById(R.id.loadingView);
+		emptyView = (TextView) view.findViewById(R.id.emptyView);
+
+		Resources resources = getResources();
+		LayoutInflater inflater = LayoutInflater.from(getActivity());
+		newGameHeaderView = (ViewGroup) inflater.inflate(R.layout.new_daily_games_header_view, null, false);
+
+		int squareSize;
+		{ // new game overlay setup
+			View startOverlayView = newGameHeaderView.findViewById(R.id.startOverlayView);
+
+			// let's make it to match board properties
+			// it should be 2 squares inset from top of border and 4 squares tall + 1 squares from sides
+			squareSize = resources.getDisplayMetrics().widthPixels / 8; // one square size
+			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
+			// now we add few pixel to compensate shadow addition
+			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
+			borderOffset += shadowOffset;
+
+			int overlayHeight = squareSize * 3 + borderOffset + shadowOffset;
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+					overlayHeight);
+			int topMargin = (int) (squareSize * 0.5f + borderOffset - shadowOffset * 2);
+
+			params.setMargins(squareSize - borderOffset, topMargin, squareSize - borderOffset, 0);
+			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
+
+			startOverlayView.setLayoutParams(params);
+			startOverlayView.setVisibility(View.VISIBLE);
+		}
+
+		newGameHeaderView.findViewById(R.id.gamePlayBtn).setOnClickListener(this);
+
+		{ // adjust boardView
+			ChessBoardDailyView boardView = (ChessBoardDailyView) newGameHeaderView.findViewById(R.id.boardView);
+
+			int height = squareSize * 4;
+
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
+			boardView.setLayoutParams(params);
+			createBoardView(boardView);
+		}
+
+
+		{ // Time mode adjustments
+			int mode = getAppData().getDefaultDailyMode();
+			// set texts to buttons
+			newGameButtonsArray = resources.getIntArray(R.array.days_per_move_array);
+			// TODO add sliding from outside animation for time modes in popup
+			timeSelectBtn = (Button) newGameHeaderView.findViewById(R.id.timeSelectBtn);
+			timeSelectBtn.setOnClickListener(this);
+
+			timeSelectBtn.setText(getDaysString(newGameButtonsArray[mode]));
+		}
+
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setOnItemClickListener(this);
+		listView.setOnItemLongClickListener(this);
+		listView.setAdapter(sectionedAdapter);
+	}
+
+	private class TimeOptionSelectedListener implements PopupListSelectionFace {
+
+		@Override
+		public void onValueSelected(int code) {
+			timeOptionsFragment.dismiss();
+			timeOptionsFragment = null;
+
+			setDefaultTimeMode(timeSelectBtn, code);
+		}
+
+		@Override
+		public void onDialogCanceled() {
+			timeOptionsFragment = null;
+		}
+	}
+
+	private void setDefaultTimeMode(View view, int mode) {
+		view.setSelected(true);
+		timeSelectBtn.setText(getDaysString(newGameButtonsArray[mode]));
+		gameConfigBuilder.setDaysPerMove(newGameButtonsArray[mode]);
+		getAppData().setDefaultDailyMode(mode);
+	}
+
+	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {
+
+		@Override
+		public SoundPlayer getSoundPlayer() {
+			return SoundPlayer.getInstance(getActivity());
+		}
+
+		@Override
+		public BoardFace getBoardFace() {
+			return ChessBoardDiagram.getInstance(this);
 		}
 	}
 

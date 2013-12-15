@@ -71,7 +71,7 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 		super.onCreate(savedInstanceState);
 
 		// init adapters
-		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(getContext(), null, getImageFetcher());
+		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher());
 	}
 
 	@Override

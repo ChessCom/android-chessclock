@@ -90,6 +90,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private NotificationsUpdateReceiver notificationsUpdateReceiver;
 	private MovesUpdateReceiver movesUpdateReceiver;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
+	private Bitmap backgroundBitmap;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -316,6 +317,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	private void setMainBackground(String drawablePath) {
 		BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+
 		bitmapOptions.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(drawablePath, bitmapOptions);
 
@@ -332,15 +334,20 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		// Decode bitmap with inSampleSize set
 		bitmapOptions.inJustDecodeBounds = false;
-		Bitmap bitmap = null;
+		if (backgroundBitmap != null) {
+			backgroundBitmap.recycle();
+			backgroundBitmap = null;
+			Runtime.getRuntime().gc();
+		}
+
 		try {
-			bitmap = BitmapFactory.decodeFile(drawablePath, bitmapOptions);
+			backgroundBitmap = BitmapFactory.decodeFile(drawablePath, bitmapOptions);
 		} catch (OutOfMemoryError ignore) {
 			showToast("Oops! Out of memory :(");
 		}
 
-		if (bitmap != null) {
-			BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
+		if (backgroundBitmap != null) {
+			BitmapDrawable drawable = new BitmapDrawable(getResources(), backgroundBitmap);
 			getWindow().setBackgroundDrawable(drawable);
 		} else { // If user removed SD card or clear folder
 			getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());

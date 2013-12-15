@@ -21,7 +21,7 @@
 			android:layout_marginLeft="@dimen/tablet_board_margin_left"
 			android:layout_marginRight="@dimen/tablet_board_margin"
 			android:layout_marginBottom="@dimen/tablet_board_margin_bottom"
-			android:background="@drawable/shadow_back_inset_shifted">
+			android:background="@drawable/shadow_back_square">
 
 			<!--BoardView-->
 			<com.chess.ui.views.chess_boards.ChessBoardLiveView
@@ -64,7 +64,7 @@
 						android:id="@+id/timeSelectBtn"
 						android:layout_width="0dip"
 						android:layout_height="wrap_content"
-						android:layout_weight="0.8"
+						android:layout_weight="1"
 						android:minHeight="@dimen/big_orange_button_height"
 						android:layout_marginRight="5dip"
 						style="@style/Button.Glassy.Small"
@@ -76,7 +76,7 @@
 						android:id="@+id/gamePlayBtn"
 						android:layout_width="0dip"
 						android:layout_height="wrap_content"
-						android:layout_weight="1.2"
+						android:layout_weight="1"
 						android:text="@string/new_play_ex"
 						style="@style/Button.OrangeNoBorder.Big"
 						android:layout_marginLeft="5dip" />

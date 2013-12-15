@@ -11,20 +11,47 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
-		android:layout_marginTop="@dimen/tablet_board_margin_bottom"
-		android:layout_marginLeft="@dimen/tablet_board_margin_left"
-		android:layout_marginRight="@dimen/tablet_board_margin"
-		android:layout_marginBottom="@dimen/tablet_board_margin_bottom"
-		android:background="@drawable/shadow_back_square"
-		android:layout_centerInParent="true">
+		android:layout_marginTop="@dimen/notations_view_height"
+		>
 
-		<!--BoardView-->
-		<com.chess.ui.views.chess_boards.ChessBoardLiveView
-			android:id="@+id/boardview"
+<!--
+	android:layout_marginTop="@dimen/tablet_board_margin_bottom"
+	android:layout_marginLeft="@dimen/tablet_board_margin_left"
+	android:layout_marginRight="@dimen/tablet_board_margin"
+	android:layout_marginBottom="@dimen/tablet_board_margin_bottom"
+
+	-->
+
+		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"
-			/>
+			>
+			<!--Top Border-->
+			<FrameLayout
+				android:id="@+id/topBorder"
+				android:layout_width="match_parent"
+				android:layout_height="3px"
+				android:background="@drawable/game_board_divider"
+				/>
+
+			<com.chess.ui.views.chess_boards.ChessBoardLiveView
+				android:id="@+id/boardview"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/topBorder"
+				android:layout_marginTop="-1px"
+				/>
+
+			<!--Bottom Border-->
+			<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/boardview"
+				android:background="@drawable/game_board_divider"
+				android:layout_marginTop="-1px"
+				/>
+
+		</RelativeLayout>
 
 		<!--New Game overlay-->
 		<LinearLayout

@@ -31,7 +31,7 @@ public class DbHelper {
 	public static QueryParams getDailyCurrentListGames(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()]);
-		queryParams.setProjection(DbDataManager.PROJECTION_CURRENT_GAMES);
+		queryParams.setProjection(DbDataManager.PROJECTION_DAILY_CURRENT_GAMES);
 		queryParams.setSelection(DbDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{username});
 		// SELECT *  FROM daily_current_games ORDER BY is_my_turn DESC, time_remaining DESC // use for multiple
@@ -43,7 +43,7 @@ public class DbHelper {
 	public static QueryParams getDailyCurrentMyListGames(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()]);
-		queryParams.setProjection(DbDataManager.PROJECTION_CURRENT_GAMES);
+		queryParams.setProjection(DbDataManager.PROJECTION_DAILY_CURRENT_GAMES);
 		queryParams.setSelection(DbDataManager.SELECTION_USER_TURN);
 		queryParams.setArguments(new String[]{username, RestHelper.V_TRUE});
 		return queryParams;
@@ -52,7 +52,7 @@ public class DbHelper {
 	public static QueryParams getDailyCurrentTheirListGames(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()]);
-		queryParams.setProjection(DbDataManager.PROJECTION_CURRENT_GAMES);
+		queryParams.setProjection(DbDataManager.PROJECTION_DAILY_CURRENT_GAMES);
 		queryParams.setSelection(DbDataManager.SELECTION_USER_TURN);
 		queryParams.setArguments(new String[]{username, RestHelper.V_FALSE});
 		return queryParams;

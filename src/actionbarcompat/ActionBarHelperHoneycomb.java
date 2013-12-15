@@ -41,6 +41,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	private Menu mOptionsMenu;
 	private View mRefreshIndeterminateProgressView = null;
 	private boolean showActionRefresh;
+	private ActionBarBackgroundDrawable actionBarBackgroundDrawable;
 
 	protected ActionBarHelperHoneycomb(ActionBarActivity activity) {
 		super(activity);
@@ -51,7 +52,13 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 		super.onPostCreate(savedInstanceState);
 		ActionBar actionBar = mActivity.getActionBar(); // could be null for small screens
 		if (actionBar != null) {
-			actionBar.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
+			if (actionBarBackgroundDrawable == null) {
+				actionBarBackgroundDrawable = new ActionBarBackgroundDrawable(mActivity);
+			} else {
+				actionBarBackgroundDrawable.updateDrawable();
+			}
+
+			actionBar.setBackgroundDrawable(actionBarBackgroundDrawable);
 		}
 	}
 
@@ -59,7 +66,12 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	public void updateActionBarBackground(){
 		ActionBar actionBar = mActivity.getActionBar(); // could be null for small screens
 		if (actionBar != null) {
-			actionBar.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
+			if (actionBarBackgroundDrawable == null) {
+				actionBarBackgroundDrawable = new ActionBarBackgroundDrawable(mActivity);
+			} else {
+				actionBarBackgroundDrawable.updateDrawable();
+			}
+			actionBar.setBackgroundDrawable(actionBarBackgroundDrawable);
 		}
 	}
 

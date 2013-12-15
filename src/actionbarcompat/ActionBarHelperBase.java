@@ -57,6 +57,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	private boolean useHomeIcon = true;
 	private CharSequence titleChars;
 	private boolean actionMode;
+	private ActionBarBackgroundDrawable actionBarBackgroundDrawable;
 
 	protected ActionBarHelperBase(ActionBarActivity activity) {
 		super(activity);
@@ -143,14 +144,24 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 			actionBarCompat.addView(customView, titleParams);
 		}
 
-		actionBarCompat.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
+		if (actionBarBackgroundDrawable == null) {
+			actionBarBackgroundDrawable = new ActionBarBackgroundDrawable(mActivity);
+		} else {
+			actionBarBackgroundDrawable.updateDrawable();
+		}
+		actionBarCompat.setBackgroundDrawable(actionBarBackgroundDrawable);
 	}
 
 	@Override
 	public void updateActionBarBackground(){
 		View actionBar = getActionBarCompat(); // could be null for small screens
 		if (actionBar != null) {
-			actionBar.setBackgroundDrawable(new ActionBarBackgroundDrawable(mActivity));
+			if (actionBarBackgroundDrawable == null) {
+				actionBarBackgroundDrawable = new ActionBarBackgroundDrawable(mActivity);
+			} else {
+				actionBarBackgroundDrawable.updateDrawable();
+			}
+			actionBar.setBackgroundDrawable(actionBarBackgroundDrawable);
 		}
 	}
 

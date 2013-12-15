@@ -194,7 +194,7 @@ public class DbDataManager {
 			V_USER_ID
 	};
 
-	public static final String[] PROJECTION_CURRENT_GAMES = new String[]{
+	public static final String[] PROJECTION_DAILY_CURRENT_GAMES = new String[]{
 			_ID,
 			V_USER,
 			V_ID,
@@ -1134,7 +1134,7 @@ public class DbDataManager {
 	}
 
 	/**
-	 * Fill data according to PROJECTION_CURRENT_GAMES
+	 * Fill data according to PROJECTION_DAILY_CURRENT_GAMES
 	 *
 	 * @param cursor to fill from
 	 * @return DailyCurrentGameData filled object

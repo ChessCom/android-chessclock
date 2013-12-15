@@ -3,6 +3,8 @@ package com.chess.ui.fragments.daily;
 import android.app.AlertDialog;
 import android.content.*;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
@@ -104,7 +106,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 			mode = savedInstanceState.getInt(MODE);
 		}
 
-		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(getContext(), null, getImageFetcher());
+		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher());
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
 
 		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
@@ -270,6 +272,12 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 			} else {
 				getActivityFace().showPreviousFragment();
 			}
+		} else if (view.getId() == R.id.timeOptionBtn) {
+			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE));
+			getActivityFace().toggleRightMenu();
+		} else if (view.getId() == R.id.playNewGameBtn) {
+			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE));
+			getActivityFace().toggleRightMenu();
 		} else if (view.getId() == R.id.completedGamesHeaderView) {
 			getActivityFace().openFragment(new DailyFinishedGamesFragmentTablet());
 		}
@@ -479,27 +487,63 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		}
 
 		@Override
-		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
+		public void updateData(Cursor cursor) {
+			super.updateData(cursor);
 
 			switch (gameType) {
 				case CURRENT_MY:
-					returnedObj.moveToFirst();
+					cursor.moveToFirst();
 					// check if we need to show new game button in dailyGamesFragment
 					boolean myTurnInDailyGames = false;
 					do {
-						if (DbDataManager.getInt(returnedObj, DbScheme.V_IS_MY_TURN) > 0) {
+						if (DbDataManager.getInt(cursor, DbScheme.V_IS_MY_TURN) > 0) {
 							myTurnInDailyGames = true;
 
 						}
-					} while (returnedObj.moveToNext());
+					} while (cursor.moveToNext());
+
+					// show not your turn view
+					if (!myTurnInDailyGames) {
+						MatrixCursor extras = new MatrixCursor(DbDataManager.PROJECTION_DAILY_CURRENT_GAMES);
+						extras.addRow(new String[]{
+								"-1",     // _ID,
+								"",     // V_USER,
+								"0",     // V_ID,
+								"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",     // V_FEN,
+								"1",     // V_I_PLAY_AS,
+								"New Game",     // V_WHITE_USERNAME,
+								"New Game",     // V_BLACK_USERNAME,
+								"",     // V_WHITE_AVATAR,
+								"",     // V_BLACK_AVATAR,
+								"0",     // V_WHITE_PREMIUM_STATUS,
+								"0",     // V_BLACK_PREMIUM_STATUS,
+								"0",     // V_GAME_TYPE,
+								"0",     // V_IS_MY_TURN,
+								"0",     // V_TIMESTAMP,
+								"0",     // V_OPPONENT_OFFERED_DRAW,
+								"0",     // V_IS_OPPONENT_ONLINE,
+								"0",     // V_HAS_NEW_MESSAGE,
+								"99999"     // V_TIME_REMAINING
+						}
+						);
+
+						Cursor[] cursors = {extras, cursor};
+						Cursor extendedCursor = new MergeCursor(cursors);
+
+						// restore position
+						extendedCursor.moveToFirst();
+
+						currentGamesMyCursorAdapter.changeCursor(extendedCursor);
+					} else {
+						// restore position
+						cursor.moveToFirst();
+
+						currentGamesMyCursorAdapter.changeCursor(cursor);
+					}
+
+
 					// add first fake game to daily games
 					currentGamesMyCursorAdapter.showNewGameAtFirst(!myTurnInDailyGames);
-
-					// restore position
-					returnedObj.moveToFirst();
-
-					currentGamesMyCursorAdapter.changeCursor(returnedObj);
 
 					if (finishedGameDataList != null) {
 						boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(),
@@ -518,7 +562,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 					}
 					break;
 				case FINISHED:
-					finishedGamesCursorAdapter.changeCursor(returnedObj);
+					finishedGamesCursorAdapter.changeCursor(cursor);
 					need2update = false;
 					break;
 			}
@@ -568,7 +612,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 							getContentResolver(), getUsername()).executeTask();
 				} else {
 					currentGamesMyCursorAdapter.changeCursor(null);
-					// show not your turn view
 
 				}
 			}

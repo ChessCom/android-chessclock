@@ -185,9 +185,9 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 						}
 					} else {
 						if (!isTablet) {
-							fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
+							fragment = findFragmentByTag(HomePlayFragmentNew.class.getSimpleName());
 							if (fragment == null) {
-								fragment = new HomePlayFragment();
+								fragment = new HomePlayFragmentNew();
 							}
 						} else {
 							fragment = findFragmentByTag(HomePlayFragmentTablet.class.getSimpleName());

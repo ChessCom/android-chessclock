@@ -48,6 +48,11 @@ public class SaveImageToSdTask extends AbstractUpdateTask<Bitmap, String> {
 			item.compress(Bitmap.CompressFormat.PNG, 0, os);
 			os.flush();
 			os.close();
+
+			// release bitmap
+			item.recycle();
+			item = null;
+
 		} catch (FileNotFoundException e) {
 			result = StaticData.VALUE_NOT_EXIST;
 			e.printStackTrace();

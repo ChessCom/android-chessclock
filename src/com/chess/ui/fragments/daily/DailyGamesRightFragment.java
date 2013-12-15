@@ -50,7 +50,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private static final int FINISHED_GAMES_SECTION = 3;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
-//	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
+	//	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
 	private static final String UNABLE_TO_MOVE_TAG = "unable to move popup";
 
 	private int successToastMsgId;
@@ -540,17 +540,29 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	}
 
 	private void releaseResources() {
-		challengeInviteUpdateListener.releaseContext();
-		challengeInviteUpdateListener = null;
-		acceptDrawUpdateListener.releaseContext();
-		acceptDrawUpdateListener = null;
-		saveCurrentGamesListUpdateListener.releaseContext();
-		saveCurrentGamesListUpdateListener = null;
-		currentGamesMyCursorUpdateListener.releaseContext();
-		currentGamesMyCursorUpdateListener = null;
+		if (challengeInviteUpdateListener != null) {
+			challengeInviteUpdateListener.releaseContext();
+			challengeInviteUpdateListener = null;
+		}
 
-		dailyGamesUpdateListener.releaseContext();
-		dailyGamesUpdateListener = null;
+		if (acceptDrawUpdateListener != null) {
+			acceptDrawUpdateListener.releaseContext();
+			acceptDrawUpdateListener = null;
+		}
+
+		if (saveCurrentGamesListUpdateListener != null) {
+			saveCurrentGamesListUpdateListener.releaseContext();
+			saveCurrentGamesListUpdateListener = null;
+		}
+		if (currentGamesMyCursorUpdateListener != null) {
+			currentGamesMyCursorUpdateListener.releaseContext();
+			currentGamesMyCursorUpdateListener = null;
+		}
+
+		if (dailyGamesUpdateListener != null) {
+			dailyGamesUpdateListener.releaseContext();
+			dailyGamesUpdateListener = null;
+		}
 	}
 
 	private void showEmptyView(boolean show) {

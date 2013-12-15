@@ -263,7 +263,7 @@ public class AppData {
 	}
 
 	public int getDefaultDailyMode() {
-		return getIntValue(PREF_DEFAULT_DAILY_MODE, 0);
+		return getIntValue(PREF_DEFAULT_DAILY_MODE, 5); // 10 days by default
 	}
 
 	public void setDefaultDailyMode(int mode) {
@@ -396,20 +396,25 @@ public class AppData {
 	}
 
 	public void resetThemeToDefault() {
-		setThemeBoardPath(Symbol.EMPTY);
-		setThemeBoardId(UNDEFINED);
 		setThemeBackPathPort(Symbol.EMPTY);
 		setThemeBackPathLand(Symbol.EMPTY);
 		setThemeBackgroundName(Symbol.EMPTY);
-		setThemePiecesPath(Symbol.EMPTY);
-		setThemePiecesId(UNDEFINED);
-		setThemeSoundsPath(Symbol.EMPTY);
-		setThemeSoundsId(UNDEFINED);
+
+		setThemeBoardPath(Symbol.EMPTY);
+		setThemeBoardId(UNDEFINED);
 		setThemeBoardCoordinateDark(UNDEFINED);
 		setThemeBoardCoordinateLight(UNDEFINED);
 		setThemeBoardHighlight(UNDEFINED);
 		setUseThemeBoard(false);
+
 		setUseThemePieces(false);
+		setThemePiecesPath(Symbol.EMPTY);
+		setThemePiecesId(UNDEFINED);
+		setThemePieces3d(false);
+
+		setThemeSoundsPath(Symbol.EMPTY);
+		setThemeSoundsId(UNDEFINED);
+
 	}
 
 	public void setThemeBackPathPort(String path) {

@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
+
         <!--Daily Chess-->
         <com.chess.widgets.LinLayout
             android:id="@+id/dailyHeaderView"

@@ -40,7 +40,7 @@
 			android:orientation="vertical"
 			android:layout_marginLeft="@dimen/tablet_board_margin_left"
 			android:layout_marginRight="@dimen/tablet_board_margin_left"
-			android:background="@drawable/shadow_back_inset_shifted">
+			android:background="@drawable/shadow_back_square">
 
 			<!--BoardView-->
 			<com.chess.ui.views.chess_boards.ChessBoardLiveView

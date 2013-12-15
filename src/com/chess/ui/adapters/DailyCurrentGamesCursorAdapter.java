@@ -11,9 +11,12 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
+import com.chess.statics.AppData;
 import com.chess.statics.Symbol;
+import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
 import java.util.HashMap;
@@ -30,11 +33,15 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	private final int boardPreviewSize;
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 	private final boolean sevenInchTablet;
+	private final ItemClickListenerFace clickListenerFace;
+	private final AppData appData;
+	private final int mode;
+	private final int[] newGameButtonsArray;
 	private boolean showNewGameAtFirst;
 
-	public DailyCurrentGamesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
-		super(context, cursor, imageFetcher);
-
+	public DailyCurrentGamesCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor, SmartImageFetcher imageFetcher) {
+		super(clickListenerFace.getMeContext(), cursor, imageFetcher);
+		this.clickListenerFace = clickListenerFace;
 		fullPadding = (int) context.getResources().getDimension(R.dimen.default_scr_side_padding);
 		halfPadding = fullPadding / 2;
 		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
@@ -45,6 +52,11 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 
 		sevenInchTablet = AppUtils.is7InchTablet(context);
+
+		appData = new AppData(context);
+		newGameButtonsArray = resources.getIntArray(R.array.days_per_move_array);
+
+		mode = appData.getDefaultDailyMode();
 	}
 
 	@Override
@@ -70,7 +82,9 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 			holder.timeOptionView = view.findViewById(R.id.timeOptionView);
 			holder.timeOptionBtn = (Button) view.findViewById(R.id.timeOptionBtn);
 			holder.playNewGameBtn = (Button) view.findViewById(R.id.playNewGameBtn);
-//			holder.timeOptionBtn.setOnClickListener();
+
+			holder.timeOptionBtn.setOnClickListener(clickListenerFace);
+			holder.playNewGameBtn.setOnClickListener(clickListenerFace);
 		}
 
 		view.setTag(holder);
@@ -81,17 +95,19 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-//		if (isTablet) {
-//			if (showNewGameAtFirst) {
-//				if (cursor.isBeforeFirst()) {
-//					holder.timeOptionView.setVisibility(View.VISIBLE);
-////				holder.timeOptionBtn
-////				holder.playNewGameBtn
-//				}
-//			} else {
-//				holder.timeOptionView.setVisibility(View.GONE);
-//			}
-//		}
+		if (isTablet) {
+			if (showNewGameAtFirst) {
+				if (DbDataManager.getId(cursor) == -1) {
+					holder.timeOptionView.setVisibility(View.VISIBLE);
+					String daysString = getDaysString(newGameButtonsArray[mode]);
+					holder.timeOptionBtn.setText(daysString);
+				} else {
+					holder.timeOptionView.setVisibility(View.GONE);
+				}
+			} else {
+				holder.timeOptionView.setVisibility(View.GONE);
+			}
+		}
 
 		String gameType = Symbol.EMPTY;
 		if (getInt(cursor, DbScheme.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
@@ -189,6 +205,14 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 
 	public void showNewGameAtFirst(boolean showNewGameAtFirst) {
 		this.showNewGameAtFirst = showNewGameAtFirst;
+	}
+
+	protected String getDaysString(int cnt) {
+		if (cnt > 1) {
+			return context.getString(R.string.days_arg, cnt);
+		} else {
+			return context.getString(R.string.day_arg, cnt);
+		}
 	}
 
 	protected class ViewHolder {
