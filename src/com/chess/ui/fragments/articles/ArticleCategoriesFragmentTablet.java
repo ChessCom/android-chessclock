@@ -75,19 +75,20 @@ public class ArticleCategoriesFragmentTablet extends ArticleCategoriesFragment {
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (position == parent.getCount()) {
+		// don't process clicks on pending view
+		if (position == articlesAdapter.getCount()) {
 			return;
 		}
 
-		if (parentFace == null) {
-			getActivityFace().showPreviousFragment();
-		}
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		long articleId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
 		if (inPortrait()) {
 			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(articleId));
 		} else {
+			if (parentFace == null) {
+				getActivityFace().showPreviousFragment();
+			}
 			parentFace.changeFragment(ArticleDetailsFragment.createInstance(articleId));
 		}
 	}

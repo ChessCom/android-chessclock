@@ -370,12 +370,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-		if (currentGame.getGameType() == BaseGameItem.CHESS_960) {
+		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
 		}
 
-		// boardFace.setupBoard(currentGame.getStartingFenPosition());
-		// if we pass FEN like this rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR, and them moveslist that lead to this position, it fails to load properly
+		boardFace.setupBoard(currentGame.getStartingFenPosition());
+
 		boardFace.setReside(!userPlayWhite);
 
 		boardFace.checkAndParseMovesList(currentGame.getMoveList());

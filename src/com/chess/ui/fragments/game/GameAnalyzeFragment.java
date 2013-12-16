@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.model.BaseGameItem;
 import com.chess.model.GameAnalysisItem;
 import com.chess.model.GameExplorerItem;
 import com.chess.statics.AppConstants;
@@ -168,7 +168,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		bottomPanelView.showTimeLeftIcon(false);
 
 		BoardFace boardFace = getBoardFace();
-		if (analysisItem.getGameType() == BaseGameItem.CHESS_960) {
+		if (analysisItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
 		}
 

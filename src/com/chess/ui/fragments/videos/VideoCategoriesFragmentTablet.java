@@ -88,17 +88,19 @@ public class VideoCategoriesFragmentTablet extends VideoCategoriesFragment{
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (position == parent.getCount()) {
+		// don't process clicks on pending view
+		if (position == videosAdapter.getCount()) {
 			return;
 		}
-		if (parentFace == null) {
-			getActivityFace().showPreviousFragment();
-		}
+
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		long videoId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 		if (inPortrait()) {
 			getActivityFace().openFragment(VideoDetailsFragment.createInstance(videoId));
 		} else {
+			if (parentFace == null) {
+				getActivityFace().showPreviousFragment();
+			}
 			parentFace.changeFragment(VideoDetailsFragment.createInstance(videoId));
 		}
 

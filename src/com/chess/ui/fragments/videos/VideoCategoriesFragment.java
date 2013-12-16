@@ -234,7 +234,8 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (position == parent.getCount()) {
+		// don't process clicks on pending view
+		if (position == videosAdapter.getCount()) {
 			return;
 		}
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);

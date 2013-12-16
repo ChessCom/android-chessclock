@@ -45,7 +45,7 @@ public class DailyCurrentGamesTheirCursorRightAdapter extends ItemsCursorAdapter
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		String gameType = Symbol.EMPTY;
-		if (getInt(cursor, DbScheme.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
+		if (getInt(cursor, DbScheme.V_GAME_TYPE) == RestHelper.V_GAME_CHESS_960) {
 			gameType = CHESS_960;
 		}
 

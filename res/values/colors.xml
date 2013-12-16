@@ -501,7 +501,7 @@
     <!--Board-->
 	<color name="coordinate_color_light">#FFccb07a</color>
 	<color name="coordinate_color_dark">#FF765331</color>
-    <color name="highlight_color">#80ffff65</color>
+    <color name="highlight_color">#80e7af4e</color>
     <color name="made_move_color">#80FF0000</color>
     <color name="move_to_indicator_color">#80FFFFFF</color>
     <!--<color name="made_move_color">#80CC3300</color>-->

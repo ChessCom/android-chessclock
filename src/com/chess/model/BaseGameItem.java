@@ -12,18 +12,11 @@ import com.chess.statics.Symbol;
  */
 public abstract class BaseGameItem implements Parcelable {
 
-	public static final int CLASSIC_CHESS = 1;
-	public static final int CHESS_960 = 2;
 	public static final int GAME_WON = 1;
 	public static final int GAME_LOSS = 0;
 	public static final int GAME_DRAW = 2;
 
-	public static final String FIRST_MOVE_INDEX = "1.";
-
 	public static final String GAME_ID = "game_id";
-	public static final String TIMESTAMP = "time_stamp";
-	// TODO use gameId to pass info about game to load
-//	public static final String GAME_INFO_ITEM = "game_info_item";
 
 	protected long gameId;
 	protected int color;

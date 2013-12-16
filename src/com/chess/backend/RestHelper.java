@@ -416,7 +416,7 @@ public class RestHelper {
 	public static final String V_ID = "id";
 
 	public static final int V_GAME_CHESS = 1;
-	public static final int V_GAME_CHESS_960 = 2;
+	public static final int V_GAME_CHESS_960 = 22;
 
 	public static final int V_GAME_LIVE_STANDARD = 1;
 	public static final int V_GAME_LIVE_BLITZ = 2;
@@ -867,11 +867,11 @@ public class RestHelper {
 	}
 
 	public String getOnlineGameLink(long gameId) {
-		return BASE_URL + "/echess/game?id=" + gameId;
+		return "http://www.chess.com" + "/echess/game?id=" + gameId;
 	}
 
 	public String getLiveGameLink(long gameId) {
-		return BASE_URL + "/livechess/game?id=" + gameId;
+		return "http://www.chess.com" + "/livechess/game?id=" + gameId;
 	}
 
 }

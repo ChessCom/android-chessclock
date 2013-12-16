@@ -3,12 +3,12 @@ package com.chess.ui.fragments.live;
 import android.database.Cursor;
 import android.os.Bundle;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.LiveArchiveGameData;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
@@ -132,7 +132,7 @@ public class GameLiveArchiveAnalysisFragment extends GameDailyAnalysisFragment {
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-		if (currentGame.getGameType() == BaseGameItem.CHESS_960) {
+		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
 		}
 

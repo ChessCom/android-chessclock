@@ -57,6 +57,14 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	public static final int HOME_MODE = 0;
 	public static final int DAILY_MODE = 1;
 
+	//action id
+	public static final int ID_UP     = 1;
+	public static final int ID_DOWN   = 2;
+	public static final int ID_SEARCH = 3;
+	public static final int ID_INFO   = 4;
+	public static final int ID_ERASE  = 5;
+	public static final int ID_OK     = 6;
+
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final long FRAGMENT_VISIBILITY_DELAY = 200;
 
@@ -273,6 +281,54 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 				getActivityFace().showPreviousFragment();
 			}
 		} else if (view.getId() == R.id.timeOptionBtn) {
+//			ActionItem nextItem 	= new ActionItem(ID_DOWN, "Next", getResources().getDrawable(R.drawable.img_profile_picture_stub));
+//			ActionItem prevItem 	= new ActionItem(ID_UP, "Prev", getResources().getDrawable(R.drawable.img_profile_picture_stub));
+//			ActionItem searchItem 	= new ActionItem(ID_SEARCH, "Find", getResources().getDrawable(R.drawable.img_profile_picture_stub));
+//
+//			//use setSticky(true) to disable QuickAction dialog being dismissed after an item is clicked
+//			prevItem.setSticky(true);
+//			nextItem.setSticky(true);
+//
+//			//create QuickAction. Use QuickAction.VERTICAL or QuickAction.HORIZONTAL param to define layout
+//			//orientation
+//			final QuickAction quickAction = new QuickAction(getActivity(), QuickAction.HORIZONTAL);
+//
+//			//add action items into QuickAction
+//			quickAction.addActionItem(nextItem);
+//			quickAction.addActionItem(prevItem);
+//			quickAction.addActionItem(searchItem);
+//
+//
+//			//Set listener for action item clicked
+//			quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+//				@Override
+//				public void onItemClick(QuickAction source, int pos, int actionId) {
+//					ActionItem actionItem = quickAction.getActionItem(pos);
+//
+//					//here we can filter which action item was clicked with pos or actionId parameter
+//					if (actionId == ID_SEARCH) {
+//						Toast.makeText(getActivity(), "Let's do some search action", Toast.LENGTH_SHORT).show();
+//					} else if (actionId == ID_INFO) {
+//						Toast.makeText(getMeContext(), "I have no info this time", Toast.LENGTH_SHORT).show();
+//					} else {
+//						Toast.makeText(getActivity(), actionItem.getTitle() + " selected", Toast.LENGTH_SHORT).show();
+//					}
+//				}
+//			});
+//
+//			//set listener for on dismiss event, this listener will be called only if QuickAction dialog was dismissed
+//			//by clicking the area outside the dialog.
+//			quickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
+//				@Override
+//				public void onDismiss() {
+//					Toast.makeText(getActivity(), "Dismissed", Toast.LENGTH_SHORT).show();
+//				}
+//			});
+//
+//			quickAction.show((View) view.getParent());
+//			quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
+
+
 			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE));
 			getActivityFace().toggleRightMenu();
 		} else if (view.getId() == R.id.playNewGameBtn) {

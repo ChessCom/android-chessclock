@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.model.BaseGameItem;
+import com.chess.backend.RestHelper;
 import com.chess.model.GameDiagramItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.Symbol;
@@ -455,7 +455,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 		boardFace.setFinished(false);
 
-		if (diagramItem.getGameType() == BaseGameItem.CHESS_960) {
+		if (diagramItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
 		}
 

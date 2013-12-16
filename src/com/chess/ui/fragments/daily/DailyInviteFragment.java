@@ -103,7 +103,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		super.onResume();
 
 		init();
-		adjustBoard();
+		adjustBoardForGame();
 	}
 
 	public void init() {
@@ -119,7 +119,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		countryCodes = resources.getIntArray(R.array.new_country_ids);
 	}
 
-	private void adjustBoard() {
+	private void adjustBoardForGame() {
 		DailyChallengeItem.Data currentGame = challengeItem;
 		challengeItem.getOpponentDrawCount();
 		challengeItem.getOpponentWinCount();
@@ -308,6 +308,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
+		controlsDailyView.enableChatButton(true);
 		controlsDailyView.showSubmitButtons(true);
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);

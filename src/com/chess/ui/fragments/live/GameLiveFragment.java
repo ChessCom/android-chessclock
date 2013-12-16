@@ -1023,6 +1023,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			boardView.invalidate();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
 			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
+			getActivityFace().toggleRightMenu();
+			dismissEndGameDialog();
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			if (isLCSBound) {
 				LiveChessService liveService;
@@ -1046,6 +1048,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			analysisItem.copyLabelConfig(labelsConfig);
 
 			getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
+			dismissEndGameDialog();
+
 		} else if (view.getId() == R.id.sharePopupBtn) {
 			LiveChessService liveService;
 			try {

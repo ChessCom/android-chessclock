@@ -199,8 +199,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 		@Override
 		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
 		}
 
 		@Override

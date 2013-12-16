@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.LiveArchiveGameData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
@@ -21,7 +22,6 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
 import com.chess.model.PopupItem;
 import com.chess.statics.Symbol;
@@ -263,7 +263,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-		if (currentGame.getGameType() == BaseGameItem.CHESS_960) {
+		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
 		}
 

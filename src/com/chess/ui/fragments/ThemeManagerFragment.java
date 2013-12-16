@@ -621,8 +621,6 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			{"fff3f3", "f9cdd3", "de5d6f"},  // Bubblegum     19
 			{"e0e9e9", "909898", "a3becd"},  // Lolz          20
 			{"dcdcdc", "aaaaaa", "a4b8c4"},  // Light         21
-//			{"dcdcdc", "aaaaaa", "a4b8c4"},  // Light Wood    22
-//			{"edeed1", "779952", "a4b8c4"},  // Olive Wood    23
 			{"edeed1", "779952", "f7d84a"},  // Tan           24
 			{"edeed1", "779952", "a4b8c4"},  // Purple        25
 			{"edeed1", "779952", "f8f893"},  // Red           26

@@ -561,7 +561,7 @@ public class CompEngineHelper implements GUIInterface {
 		return result;
 	}*/
 
-	public boolean isGameValid() {
+	public boolean isGameValid() { // TODO to vm: why do you access internal fields in singleton which is not initialized via getInstance()???
 		return engineCtrl.isGamExist();
 	}
 
@@ -578,7 +578,7 @@ public class CompEngineHelper implements GUIInterface {
 	}
 
 	public void storeEngineState() {
-		if (isGameValid()) {
+		if (isInitialized() && isGameValid()) {
 			byte[] data = toByteArray();
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			String dataStr = byteArrToString(data);

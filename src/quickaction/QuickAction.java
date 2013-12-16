@@ -255,8 +255,8 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 			
 		} else {
 			if (anchor.getWidth() > rootWidth) {
-//				xPos = anchorRect.centerX() - (rootWidth/2);
-				xPos = anchorRect.left;
+				xPos = anchorRect.centerX() - (rootWidth/2);
+//				xPos = anchorRect.left;
 			} else {
 				xPos = anchorRect.left;
 			}

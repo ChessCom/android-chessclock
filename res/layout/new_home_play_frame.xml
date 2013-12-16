@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textColor="@color/new_light_grey_2"
+				style="@style/HeaderTitle.Light"
                 app:ttf="Bold"
                 />
 
@@ -145,8 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textColor="@color/new_light_grey_2"
-                app:ttf="Bold"
+				style="@style/HeaderTitle.Light"
                 />
 
             <!--Expand Icon-->

@@ -13,7 +13,6 @@ import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
-import com.chess.model.BaseGameItem;
 import com.chess.statics.AppData;
 import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -110,7 +109,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		}
 
 		String gameType = Symbol.EMPTY;
-		if (getInt(cursor, DbScheme.V_GAME_TYPE) == BaseGameItem.CHESS_960) {
+		if (getInt(cursor, DbScheme.V_GAME_TYPE) == RestHelper.V_GAME_CHESS_960) {
 			gameType = CHESS_960;
 		}
 

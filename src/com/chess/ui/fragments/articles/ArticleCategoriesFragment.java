@@ -151,7 +151,8 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (position == parent.getCount()) {
+		// don't process clicks on pending view
+		if (position == articlesAdapter.getCount()) {
 			return;
 		}
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);

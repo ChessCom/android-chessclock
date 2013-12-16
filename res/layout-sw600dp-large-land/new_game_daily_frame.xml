@@ -125,7 +125,8 @@
 			custom:controls_style="rectDark"
 			android:layout_above="@+id/bottomPanelView"
 			android:layout_marginLeft="2dp"
-			android:layout_marginRight="2dp" />
+			android:layout_marginRight="2dp"
+			/>
 
 		<!--BottomPanelInfo-->
 		<com.chess.ui.views.PanelInfoGameView
@@ -134,7 +135,9 @@
 			android:layout_height="wrap_content"
 			custom:oneLine="@bool/one_line_for_board"
 			android:layout_alignParentBottom="true"
-			android:layout_marginTop="@dimen/tablet_panel_info_top_margin" />
+			android:layout_marginTop="@dimen/tablet_panel_info_top_margin"
+			android:layout_marginBottom="5dp"
+			/>
 
 	</com.chess.widgets.RelLayout>
 

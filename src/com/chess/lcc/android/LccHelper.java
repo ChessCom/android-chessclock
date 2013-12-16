@@ -496,7 +496,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 //			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 //			updateNetworkType(activeNetworkInfo.getTypeName());
 		}
-		liveChessClientEventListener.onConnectionBlocked(!connected);
+		// when onDestroy of service invoked, we don't have listeners anymore
+		if (liveChessClientEventListener != null) {
+			liveChessClientEventListener.onConnectionBlocked(!connected);
+		}
 	}
 
 	public void clearChallenges() {

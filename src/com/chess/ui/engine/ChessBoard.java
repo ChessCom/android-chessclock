@@ -1624,15 +1624,9 @@ public class ChessBoard implements BoardFace {
 	}
 
 	private String convertMove() {
-		Move move = new Move(0, 0, 0, 0);
-		try {
-			move = histDat[ply - 1].move;
-		} catch (ArrayIndexOutOfBoundsException e) {
-		}
-
+		Move move = histDat[ply - 1].move;
 
 		String output;
-//		try {
 		String to = movesParser.positionToString(move.to);
 		if (move.isCastling()) {
 
@@ -1665,9 +1659,6 @@ public class ChessBoard implements BoardFace {
 			}
 		}
 		output = movesParser.positionToString(move.from) + to;
-//			output = URLEncoder.encode(movesParser.positionToString(move.from) + to, HTTP.UTF_8); // Why do we might need to encode??
-//		} catch (Exception ignored) {
-//		}
 		Log.d(MOVE_TAG, output);
 		return output;
 	}
@@ -1813,16 +1804,18 @@ public class ChessBoard implements BoardFace {
 	 * Get vertical coordinate on the board for the given index of row
 	 */
 	public static int getRow(int y, boolean reside) {
-		if (reside)
+		if (reside) {
 			y = 63 - y;
+		}
 		return (y >> 3);  // the same as /8
 	}
 
 	public static int getPositionIndex(int col, int row, boolean reside) {
-		if (reside)
+		if (reside) {
 			return 63 - (8 * row + col);
-		else
+		} else {
 			return (8 * row + col);
+		}
 	}
 
 	@Override

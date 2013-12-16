@@ -22,7 +22,6 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveExplorerMovesListTask;
-import com.chess.model.BaseGameItem;
 import com.chess.model.GameExplorerItem;
 import com.chess.ui.adapters.ExplorerMovesCursorAdapter;
 import com.chess.ui.engine.ChessBoardExplorer;
@@ -123,7 +122,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	private void adjustBoardForGame() {
-		if (explorerItem.getGameType() == BaseGameItem.CHESS_960) {
+		if (explorerItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			getBoardFace().setChess960(true);
 		}
 		invalidateGameScreen();

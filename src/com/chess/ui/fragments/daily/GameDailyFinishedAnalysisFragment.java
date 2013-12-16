@@ -4,12 +4,12 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
@@ -135,12 +135,13 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-		if (currentGame.getGameType() == BaseGameItem.CHESS_960) {
+		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
 		}
 
-		// boardFace.setupBoard(currentGame.getStartingFenPosition());
-		// if we pass FEN like this rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR, and them moveslist that lead to this position, it fails to load properly
+		boardFace.setupBoard(currentGame.getStartingFenPosition()); // We need to pass fen for chess960 games
+		// if we pass FEN like this rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR, and them moveslist that lead
+		// to this position, it fails to load properly
 		boardFace.setReside(!userPlayWhite);
 
 		boardFace.checkAndParseMovesList(currentGame.getMoveList());

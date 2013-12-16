@@ -28,7 +28,6 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
-import com.chess.model.BaseGameItem;
 import com.chess.model.GameDiagramItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommentsCursorAdapter;
@@ -579,7 +578,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		ChessBoardDiagram.resetInstance();
 		BoardFace boardFace = gameFaceHelper.getBoardFace();
 
-		if (diagramItem.getGameType() == BaseGameItem.CHESS_960) {
+		if (diagramItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
 		}
 

@@ -15,7 +15,10 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.*;
+import com.chess.backend.entity.api.BaseResponseItem;
+import com.chess.backend.entity.api.DailyCurrentGameData;
+import com.chess.backend.entity.api.DailyFinishedGameData;
+import com.chess.backend.entity.api.DailyGamesAllItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -272,7 +275,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
-		int section = sectionedAdapter.getCurrentSection(position);
+		boolean headerAdded = listView.getHeaderViewsCount() > 0; // used to check if header added
+		int offset = headerAdded ? -1 : 0;
+
+		int section = sectionedAdapter.getCurrentSection(position + offset);
 
 		if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
