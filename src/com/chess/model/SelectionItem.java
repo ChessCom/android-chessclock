@@ -8,9 +8,15 @@ public class SelectionItem {
 	private String text = Symbol.EMPTY;
 	private String code = Symbol.EMPTY;
 	private boolean checked;
+	private int id;
 
 	public SelectionItem(Drawable image, String text) {
 		this.image = image;
+		this.text = text;
+	}
+
+	public SelectionItem(int id, String text) {
+		this.id = id;
 		this.text = text;
 	}
 
@@ -36,5 +42,13 @@ public class SelectionItem {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

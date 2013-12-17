@@ -435,7 +435,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		return activityFace.getActionBarActivity();
 	}
 
-	protected ActiveFragmentInterface getActivityFace() {
+	public ActiveFragmentInterface getActivityFace() {
 		return activityFace;
 	}
 
@@ -1017,6 +1017,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				secondFriendUserName = firstFriendUserName;
 
 				while (secondFriendUserName.equals(firstFriendUserName)) {
+					if (cursor.isLast()) {
+						break;
+					}
 					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
 					if (secondFriendUserName.equals(getUsername())) {
 						secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);

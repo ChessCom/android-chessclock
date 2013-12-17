@@ -262,6 +262,14 @@ public class AppData {
 		setIntValue(LIVE_CONNECT_ATTEMPTS, 0);
 	}
 
+	public boolean isLastUsedDailyMode() {
+		return getBooleanValue(PREF_LAST_USED_DAILY_MODE, true);
+	}
+
+	public void setLastUsedDailyMode(boolean value) {
+		setBooleanValue(PREF_LAST_USED_DAILY_MODE, value);
+	}
+
 	public int getDefaultDailyMode() {
 		return getIntValue(PREF_DEFAULT_DAILY_MODE, 5); // 10 days by default
 	}

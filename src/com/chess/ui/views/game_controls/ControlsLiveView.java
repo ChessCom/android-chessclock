@@ -5,10 +5,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import com.chess.R;
-import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
-import com.chess.ui.views.drawables.smart_button.RectButtonBadgeDrawable;
-import com.chess.widgets.RoboButton;
 import com.chess.ui.interfaces.boards.BoardViewNetworkFace;
+import com.chess.ui.views.drawables.smart_button.BadgeButtonFace;
+import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.widgets.RoboButton;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 
@@ -80,7 +80,7 @@ public class ControlsLiveView extends ControlsBaseView {
 
 		if (newMessage) {
 			ButtonDrawableBuilder.setBackgroundToView(chatButton, styles[BADGE]);
-			RectButtonBadgeDrawable background = (RectButtonBadgeDrawable) chatButton.getBackground();
+			BadgeButtonFace background = (BadgeButtonFace) chatButton.getBackground();
 			if (background != null) {
 				background.setBadgeValue(NEW_MESSAGE_MARK);
 			}

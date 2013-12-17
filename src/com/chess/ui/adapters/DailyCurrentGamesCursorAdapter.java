@@ -13,7 +13,6 @@ import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
-import com.chess.statics.AppData;
 import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -33,10 +32,11 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 	private final boolean sevenInchTablet;
 	private final ItemClickListenerFace clickListenerFace;
-	private final AppData appData;
-	private final int mode;
-	private final int[] newGameButtonsArray;
+//	private final AppData appData;
+//	private final int mode;
+//	private final int[] newGameButtonsArray;
 	private boolean showNewGameAtFirst;
+	private String timeLabel;
 
 	public DailyCurrentGamesCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(clickListenerFace.getMeContext(), cursor, imageFetcher);
@@ -52,10 +52,10 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 
 		sevenInchTablet = AppUtils.is7InchTablet(context);
 
-		appData = new AppData(context);
-		newGameButtonsArray = resources.getIntArray(R.array.days_per_move_array);
-
-		mode = appData.getDefaultDailyMode();
+//		appData = new AppData(context);
+//		newGameButtonsArray = resources.getIntArray(R.array.days_per_move_array);
+//
+//		mode = appData.getDefaultDailyMode();
 	}
 
 	@Override
@@ -70,6 +70,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.new_daily_games_home_item, parent, false);
+
 		ViewHolder holder = new ViewHolder();
 		holder.playerImg = (AvatarView) view.findViewById(R.id.playerImg);
 		holder.playerTxt = (TextView) view.findViewById(R.id.playerNameTxt);
@@ -98,8 +99,8 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 			if (showNewGameAtFirst) {
 				if (DbDataManager.getId(cursor) == -1) {
 					holder.timeOptionView.setVisibility(View.VISIBLE);
-					String daysString = getDaysString(newGameButtonsArray[mode]);
-					holder.timeOptionBtn.setText(daysString);
+//					String daysString = getDaysString(newGameButtonsArray[mode]);
+					holder.timeOptionBtn.setText(timeLabel);
 				} else {
 					holder.timeOptionView.setVisibility(View.GONE);
 				}
@@ -212,6 +213,11 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		} else {
 			return context.getString(R.string.day_arg, cnt);
 		}
+	}
+
+	public void setTimeLabel(String timeLabel) {
+		this.timeLabel = timeLabel;
+		notifyDataSetChanged();
 	}
 
 	protected class ViewHolder {

@@ -17,7 +17,7 @@ import android.widget.PopupWindow;
  *
  */
 public class PopupWindows {
-	protected Context mContext;
+	protected Context context;
 	protected PopupWindow mWindow;
 	protected View mRootView;
 	protected Drawable mBackground = null;
@@ -29,7 +29,7 @@ public class PopupWindows {
 	 * @param context Context
 	 */
 	public PopupWindows(Context context) {
-		mContext	= context;
+		this.context = context;
 		mWindow 	= new PopupWindow(context);
 
 		mWindow.setTouchInterceptor(new OnTouchListener() {
@@ -109,7 +109,7 @@ public class PopupWindows {
 	 * @param layoutResID Resource id
 	 */
 	public void setContentView(int layoutResID) {
-		LayoutInflater inflator = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflator = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
 		setContentView(inflator.inflate(layoutResID, null));
 	}

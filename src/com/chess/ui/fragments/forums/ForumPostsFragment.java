@@ -205,6 +205,9 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 					newPostEdt.requestFocus();
 					showKeyBoard(newPostEdt);
 					showKeyBoardImplicit(newPostEdt);
+
+					showEditView(true);
+
 				}
 			}, KEYBOARD_DELAY);
 		}
@@ -402,6 +405,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			}
 			showEditView(false);
 
+			requestPage(currentPage);
 		}
 	}
 }

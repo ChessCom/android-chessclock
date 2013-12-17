@@ -417,7 +417,14 @@
     <color name="chart_grey_1">#FFdbd9d6</color>
     <color name="chart_grey_2">#FFd5d2ce</color>
 
-    <!--Upgrade-->
+	<!--Grey NoBorder-->
+	<color name="grey_no_border">#FFdbd8d5</color>
+	<color name="grey_no_border_top_1">#ffe3e0dd</color>
+	<color name="grey_no_border_left_1">#ffe3e0dd</color>
+	<color name="grey_no_border_right_1">#FFa09e9b</color>
+	<color name="grey_no_border_bottom_1">#FFa09e9b</color>
+
+	<!--Upgrade-->
     <color name="upgrade_green_title">#FF4b7733</color>
     <color name="upgrade_grey_sub_title">#FF51504d</color>
     <color name="upgrade_diamond_title">#FF0c334e</color>

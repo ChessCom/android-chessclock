@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
  *
  */
 public class ActionItem {
+
 	private Drawable icon;
 	private Bitmap thumb;
 	private String title;

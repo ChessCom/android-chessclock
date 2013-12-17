@@ -11,7 +11,7 @@ import com.chess.ui.views.drawables.ChatBadgeDrawable;
  * Date: 29.09.13
  * Time: 20:56
  */
-public class RectButtonBadgeDrawable extends RectButtonDrawable {
+public class RectButtonBadgeDrawable extends RectButtonDrawable implements BadgeButtonFace {
 
 	private ChatBadgeDrawable chatBadgeDrawable;
 	private Resources resources;
@@ -59,6 +59,7 @@ public class RectButtonBadgeDrawable extends RectButtonDrawable {
 		initialized = false;
 	}
 
+	@Override
 	public void setBadgeValue(String badgeValue) {
 		this.badgeValue = badgeValue;
 		invalidateSelf();

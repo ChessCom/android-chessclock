@@ -59,7 +59,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:minHeight="160dip"
-			android:background="@drawable/invite_white_back"
+			android:background="@drawable/rounded_border_white_back"
 			android:padding="@dimen/start_new_game_overlay_padding_top"
 			android:paddingLeft="@dimen/start_new_game_overlay_padding_side"
 			android:paddingRight="@dimen/start_new_game_overlay_padding_side"

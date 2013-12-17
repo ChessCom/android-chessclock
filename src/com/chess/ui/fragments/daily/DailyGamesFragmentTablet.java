@@ -20,10 +20,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.BaseResponseItem;
-import com.chess.backend.entity.api.DailyCurrentGameData;
-import com.chess.backend.entity.api.DailyFinishedGameData;
-import com.chess.backend.entity.api.DailyGamesAllItem;
+import com.chess.backend.entity.api.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -39,9 +36,11 @@ import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.interfaces.ChallengeModeSetListener;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.ChallengeHelper;
 
 import java.util.List;
 
@@ -52,19 +51,40 @@ import java.util.List;
  * Time: 16:03
  */
 public class DailyGamesFragmentTablet extends CommonLogicFragment implements AdapterView.OnItemClickListener,
-		AdapterView.OnItemLongClickListener, ItemClickListenerFace {
+		AdapterView.OnItemLongClickListener, ItemClickListenerFace, ChallengeModeSetListener {
 
 	public static final int HOME_MODE = 0;
 	public static final int DAILY_MODE = 1;
 
 	//action id
-	public static final int ID_UP     = 1;
-	public static final int ID_DOWN   = 2;
-	public static final int ID_SEARCH = 3;
-	public static final int ID_INFO   = 4;
-	public static final int ID_ERASE  = 5;
-	public static final int ID_OK     = 6;
+	public static final int ID_DAILY_1_1 = 1;
+	public static final int ID_DAILY_1_2 = 2;
+	public static final int ID_DAILY_1_3 = 3;
 
+	public static final int ID_LIVE_1_1 = 4;
+	public static final int ID_LIVE_1_2 = 5;
+	public static final int ID_LIVE_2_1 = 6;
+	public static final int ID_LIVE_2_2 = 7;
+	public static final int ID_LIVE_2_3 = 8;
+	public static final int ID_LIVE_3_1 = 9;
+	public static final int ID_LIVE_3_2 = 10;
+
+	// array positions
+	private static final int DAY_1 = 0; // 1 day
+	private static final int DAY_2 = 1; // 3 days
+	private static final int DAY_3 = 4; // 7 days
+
+	private static final int LIVE_1_1 = 4; // 5 | 15
+	private static final int LIVE_1_2 = 0; // 30 min
+
+	private static final int LIVE_2_1 = 1; // 10 min
+	private static final int LIVE_2_2 = 2; // 5 | 2
+	private static final int LIVE_2_3 = 6; // 3 min
+
+	private static final int LIVE_3_1 = 3; // 2 | 1
+	private static final int LIVE_3_2 = 7; // 1 min
+
+	private static final String END_VACATION_TAG = "end vacation popup";
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final long FRAGMENT_VISIBILITY_DELAY = 200;
 
@@ -89,6 +109,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	private List<DailyFinishedGameData> finishedGameDataList;
 	private FragmentParentFace parentFace;
 	private int mode;
+	private boolean startDailyGame;
+	private ChallengeHelper challengeHelper;
 
 	public DailyGamesFragmentTablet() {
 		Bundle bundle = new Bundle();
@@ -113,6 +135,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		} else {
 			mode = savedInstanceState.getInt(MODE);
 		}
+
+		challengeHelper = new ChallengeHelper(this, true);
 
 		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher());
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
@@ -244,6 +268,15 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
+
+		boolean dailyMode = getAppData().isLastUsedDailyMode();
+		if (dailyMode) {
+			int timeMode = getAppData().getDefaultDailyMode();
+			setDefaultLiveTimeMode(timeMode);
+		} else {
+			int timeMode = getAppData().getDefaultLiveMode();
+			setDefaultLiveTimeMode(timeMode);
+		}
 	}
 
 	private DialogInterface.OnClickListener gameListItemDialogListener = new DialogInterface.OnClickListener() {
@@ -281,59 +314,14 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 				getActivityFace().showPreviousFragment();
 			}
 		} else if (view.getId() == R.id.timeOptionBtn) {
-//			ActionItem nextItem 	= new ActionItem(ID_DOWN, "Next", getResources().getDrawable(R.drawable.img_profile_picture_stub));
-//			ActionItem prevItem 	= new ActionItem(ID_UP, "Prev", getResources().getDrawable(R.drawable.img_profile_picture_stub));
-//			ActionItem searchItem 	= new ActionItem(ID_SEARCH, "Find", getResources().getDrawable(R.drawable.img_profile_picture_stub));
-//
-//			//use setSticky(true) to disable QuickAction dialog being dismissed after an item is clicked
-//			prevItem.setSticky(true);
-//			nextItem.setSticky(true);
-//
-//			//create QuickAction. Use QuickAction.VERTICAL or QuickAction.HORIZONTAL param to define layout
-//			//orientation
-//			final QuickAction quickAction = new QuickAction(getActivity(), QuickAction.HORIZONTAL);
-//
-//			//add action items into QuickAction
-//			quickAction.addActionItem(nextItem);
-//			quickAction.addActionItem(prevItem);
-//			quickAction.addActionItem(searchItem);
-//
-//
-//			//Set listener for action item clicked
-//			quickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
-//				@Override
-//				public void onItemClick(QuickAction source, int pos, int actionId) {
-//					ActionItem actionItem = quickAction.getActionItem(pos);
-//
-//					//here we can filter which action item was clicked with pos or actionId parameter
-//					if (actionId == ID_SEARCH) {
-//						Toast.makeText(getActivity(), "Let's do some search action", Toast.LENGTH_SHORT).show();
-//					} else if (actionId == ID_INFO) {
-//						Toast.makeText(getMeContext(), "I have no info this time", Toast.LENGTH_SHORT).show();
-//					} else {
-//						Toast.makeText(getActivity(), actionItem.getTitle() + " selected", Toast.LENGTH_SHORT).show();
-//					}
-//				}
-//			});
-//
-//			//set listener for on dismiss event, this listener will be called only if QuickAction dialog was dismissed
-//			//by clicking the area outside the dialog.
-//			quickAction.setOnDismissListener(new QuickAction.OnDismissListener() {
-//				@Override
-//				public void onDismiss() {
-//					Toast.makeText(getActivity(), "Dismissed", Toast.LENGTH_SHORT).show();
-//				}
-//			});
-//
-//			quickAction.show((View) view.getParent());
-//			quickAction.setAnimStyle(QuickAction.ANIM_REFLECT);
-
-
-			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE));
-			getActivityFace().toggleRightMenu();
+			View parent = (View) view.getParent();
+			challengeHelper.showOnSide(parent);
 		} else if (view.getId() == R.id.playNewGameBtn) {
-			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE));
-			getActivityFace().toggleRightMenu();
+			if (startDailyGame) {
+				challengeHelper.createDailyChallenge();
+			} else {
+				challengeHelper.createLiveChallenge();
+			}
 		} else if (view.getId() == R.id.completedGamesHeaderView) {
 			getActivityFace().openFragment(new DailyFinishedGamesFragmentTablet());
 		}
@@ -458,6 +446,9 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 					RestHelper.V_ACCEPTDRAW, gameListCurrentItem.getTimestamp());
 
 			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+		} else if (tag.equals(END_VACATION_TAG)) {
+			LoadItem loadItem = LoadHelper.deleteOnVacation(getUserToken());
+			new RequestJsonTask<VacationItem>(new VacationUpdateListener()).executeTask(loadItem);
 		}
 		super.onPositiveBtnClick(fragment);
 	}
@@ -716,6 +707,34 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 			super.errorHandle(resultCode);
 		}
 	}
+
+	private class VacationUpdateListener extends ChessLoadUpdateListener<VacationItem> {
+
+		public VacationUpdateListener() {
+			super(VacationItem.class);
+		}
+
+		@Override
+		public void updateData(VacationItem returnedObj) {
+		}
+	}
+
+	@Override
+	public void setDefaultDailyTimeMode(int mode) {
+		String daysString = challengeHelper.getDailyModeButtonLabel(mode);
+		currentGamesMyCursorAdapter.setTimeLabel(daysString);
+
+		startDailyGame = true;
+	}
+
+	@Override
+	public void setDefaultLiveTimeMode(int mode) {
+		String liveLabel = challengeHelper.getLiveModeButtonLabel(mode);
+		currentGamesMyCursorAdapter.setTimeLabel(liveLabel);
+
+		startDailyGame = false;
+	}
+
 
 	private void releaseResources() {
 		challengeInviteUpdateListener.releaseContext();

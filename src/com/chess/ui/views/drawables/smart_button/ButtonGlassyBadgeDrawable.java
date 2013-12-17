@@ -11,7 +11,7 @@ import com.chess.ui.views.drawables.ChatBadgeDrawable;
  * Date: 23.11.13
  * Time: 19:18
  */
-public class ButtonGlassyBadgeDrawable extends ButtonGlassyDrawable {
+public class ButtonGlassyBadgeDrawable extends ButtonGlassyDrawable implements BadgeButtonFace {
 
 	private ChatBadgeDrawable chatBadgeDrawable;
 	private Resources resources;

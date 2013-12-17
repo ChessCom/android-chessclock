@@ -2,13 +2,13 @@ package quickaction;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -149,7 +149,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 		actionItems.add(action);
 		
 		String title 	= action.getTitle();
-		Drawable icon 	= action.getIcon();
+//		Drawable icon 	= action.getIcon();
 		
 		View container;
 		
@@ -195,7 +195,8 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 		
 		container.setFocusable(true);
 		container.setClickable(true);
-			 
+
+		// add separator
 		if (mOrientation == HORIZONTAL && mChildPos != 0) {
             View separator = mInflater.inflate(R.layout.quick_horiz_separator, null);
             
@@ -214,12 +215,20 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 		mChildPos++;
 		mInsertPos++;
 	}
-	
+
 	/**
 	 * Show quickaction popup. Popup is automatically positioned, on top or bottom of anchor view.
 	 * 
 	 */
-	public void show (View anchor) {
+	public void showOnSide(View anchor) {
+		show(anchor, true);
+	}
+
+	public void show(View anchor) {
+		show(anchor, false);
+	}
+
+	public void show(View anchor, boolean showOnSide) {
 		preShow();
 		
 		int xPos, yPos, arrowPos;
@@ -289,8 +298,15 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 //		showArrow(((onTop) ? R.id.arrow_down : R.id.arrow_up), arrowPos);
 		
 		setAnimationStyle(screenWidth, anchorRect.centerX(), onTop);
-		
-		mWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, xPos, yPos);
+
+		if (showOnSide) {
+			int centerY = anchorRect.bottom - anchorRect.top;
+			int leftSide = anchorRect.right;
+
+			mWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, leftSide, centerY);
+		} else {
+			mWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, xPos, yPos);
+		}
 	}
 	
 	/**
@@ -359,9 +375,9 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 	 * Set listener for window dismissed. This listener will only be fired if the quicakction dialog is dismissed
 	 * by clicking outside the dialog or clicking on sticky item.
 	 */
-	public void setOnDismissListener(QuickAction.OnDismissListener listener) {
-		setOnDismissListener(this);
-		
+	@Override
+	public void setOnDismissListener(PopupWindow.OnDismissListener listener) {
+		super.setOnDismissListener(this);
 		mDismissListener = listener;
 	}
 	
@@ -380,11 +396,4 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 		public abstract void onItemClick(QuickAction source, int pos, int actionId);
 	}
 	
-	/**
-	 * Listener for window dismiss
-	 * 
-	 */
-	public interface OnDismissListener {
-		public abstract void onDismiss();
-	}
 }

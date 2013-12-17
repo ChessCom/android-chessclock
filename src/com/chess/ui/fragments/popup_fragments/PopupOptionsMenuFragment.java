@@ -113,7 +113,7 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			RoboButton button = new RoboButton(context, null, R.attr.greyButton);
+			RoboButton button = new RoboButton(context, null, R.attr.glassyButton);
 			button.setDrawableStyle(R.style.ListItem_Header);
 			button.setTextColor(textColor);
 			button.setMinHeight(minHeight);

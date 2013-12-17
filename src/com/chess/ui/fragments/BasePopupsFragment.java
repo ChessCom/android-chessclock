@@ -113,7 +113,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	// Single button no callback dialogs
-	protected void showSinglePopupDialog(int titleId, int messageId) {
+	public void showSinglePopupDialog(int titleId, int messageId) {
 		popupItem.setButtons(1);
 		showPopupDialog(titleId, messageId, INFO_POPUP_TAG);
 	}
@@ -182,7 +182,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		updatePopupAndShow(tag);
 	}
 
-	protected void showPopupDialog(int titleId, String tag) {
+	public void showPopupDialog(int titleId, String tag) {
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(Symbol.EMPTY);
 		updatePopupAndShow(tag);

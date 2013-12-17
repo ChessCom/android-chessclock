@@ -15,10 +15,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.BaseResponseItem;
-import com.chess.backend.entity.api.DailyCurrentGameData;
-import com.chess.backend.entity.api.DailyFinishedGameData;
-import com.chess.backend.entity.api.DailyGamesAllItem;
+import com.chess.backend.entity.api.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -35,16 +32,15 @@ import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardDiagram;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.SoundPlayer;
-import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.popup_fragments.PopupDailyTimeOptionsFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
+import com.chess.ui.interfaces.ChallengeModeSetListener;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.ChallengeHelper;
 
 import java.util.List;
 
@@ -55,7 +51,7 @@ import java.util.List;
  * Time: 7:42
  */
 public class DailyGamesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
-		AdapterView.OnItemLongClickListener, ItemClickListenerFace {
+		AdapterView.OnItemLongClickListener, ItemClickListenerFace, ChallengeModeSetListener {
 
 	public static final int HOME_MODE = 0;
 	public static final int DAILY_MODE = 1;
@@ -63,7 +59,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private static final int CURRENT_GAMES_SECTION = 0;
 	private static final int FINISHED_GAMES_SECTION = 1;
 
-	private static final String OPTION_SELECTION_TAG = "time options popup";
 	private static final String END_VACATION_TAG = "end vacation popup";
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 
@@ -92,13 +87,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private FragmentParentFace parentFace;
 	private int mode;
 	private GameFaceHelper gameFaceHelper;
-	private int[] newGameButtonsArray;
 	private Button timeSelectBtn;
 	private ViewGroup newGameHeaderView;
-	private PopupDailyTimeOptionsFragment timeOptionsFragment;
-	private DailyGameConfig.Builder gameConfigBuilder;
-	private TimeOptionSelectedListener timeOptionSelectedListener;
-//	private CreateChallengeUpdateListener createChallengeUpdateListener;
+
+	private boolean startDailyGame;
+	private ChallengeHelper challengeHelper;
 
 	public DailyGamesFragment() {
 		Bundle bundle = new Bundle();
@@ -124,12 +117,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			mode = savedInstanceState.getInt(MODE);
 		}
 
-		gameConfigBuilder = new DailyGameConfig.Builder();
-
+		challengeHelper = new ChallengeHelper(this);
 		gameFaceHelper = new GameFaceHelper();
 
-//		createChallengeUpdateListener = new CreateChallengeUpdateListener();
-		timeOptionSelectedListener = new TimeOptionSelectedListener();
 
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
@@ -220,16 +210,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
-	private void init() {
-		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.INVITE);
-		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
-		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
-		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
-		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
-		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
 
-		dailyGamesUpdateListener = new DailyGamesUpdateListener();
-	}
 
 	private DialogInterface.OnClickListener gameListItemDialogListener = new DialogInterface.OnClickListener() {
 
@@ -260,16 +241,15 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.timeSelectBtn) {
-			// show popup
-			if (timeOptionsFragment != null) {
-				return;
-			}
+			View parent = (View) view.getParent();
+			challengeHelper.show((View)parent.getParent());
 
-			timeOptionsFragment = PopupDailyTimeOptionsFragment.createInstance(timeOptionSelectedListener);
-			timeOptionsFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 		} else if (view.getId() == R.id.gamePlayBtn) {
-			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE));
-			getActivityFace().toggleRightMenu();
+			if (startDailyGame) {
+				challengeHelper.createDailyChallenge();
+			} else {
+				challengeHelper.createLiveChallenge();
+			}
 		}
 	}
 
@@ -336,6 +316,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private class GamesUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			challengeHelper.dismiss();
+
 			updateData();
 		}
 	}
@@ -414,6 +396,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					RestHelper.V_ACCEPTDRAW, gameListCurrentItem.getTimestamp());
 
 			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+		} else if (tag.equals(END_VACATION_TAG)) {
+			LoadItem loadItem = LoadHelper.deleteOnVacation(getUserToken());
+			new RequestJsonTask<VacationItem>(new VacationUpdateListener()).executeTask(loadItem);
 		}
 		super.onPositiveBtnClick(fragment);
 	}
@@ -448,6 +433,17 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 		}
 		super.onNegativeBtnClick(fragment);
+	}
+
+	private class VacationUpdateListener extends ChessLoadUpdateListener<VacationItem> {
+
+		public VacationUpdateListener() {
+			super(VacationItem.class);
+		}
+
+		@Override
+		public void updateData(VacationItem returnedObj) {
+		}
 	}
 
 	private class SaveCurrentGamesListUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
@@ -646,6 +642,22 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
+	@Override
+	public void setDefaultDailyTimeMode(int mode) {
+		String daysString = challengeHelper.getDailyModeButtonLabel(mode);
+		timeSelectBtn.setText(daysString);
+
+		startDailyGame = true;
+	}
+
+	@Override
+	public void setDefaultLiveTimeMode(int mode) {
+		String liveLabel = challengeHelper.getLiveModeButtonLabel(mode);
+		timeSelectBtn.setText(liveLabel);
+
+		startDailyGame = false;
+	}
+
 	private View createBoardView(ChessBoardDailyView boardView) {
 		boardView.setGameFace(gameFaceHelper);
 		int coordinateColorLight = getResources().getColor(R.color.transparent);
@@ -657,6 +669,16 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		return boardView;
 	}
 
+	private void init() {
+		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.INVITE);
+		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
+		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
+		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
+		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
+		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
+
+		dailyGamesUpdateListener = new DailyGamesUpdateListener();
+	}
 
 	private void widgetsInit(View view) {
 		loadingView = view.findViewById(R.id.loadingView);
@@ -702,16 +724,20 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			createBoardView(boardView);
 		}
 
-
 		{ // Time mode adjustments
-			int mode = getAppData().getDefaultDailyMode();
-			// set texts to buttons
-			newGameButtonsArray = resources.getIntArray(R.array.days_per_move_array);
 			// TODO add sliding from outside animation for time modes in popup
 			timeSelectBtn = (Button) newGameHeaderView.findViewById(R.id.timeSelectBtn);
 			timeSelectBtn.setOnClickListener(this);
 
-			timeSelectBtn.setText(getDaysString(newGameButtonsArray[mode]));
+			// set texts to buttons
+			boolean dailyMode = getAppData().isLastUsedDailyMode();
+			if (dailyMode) {
+				int timeMode = getAppData().getDefaultDailyMode();
+				setDefaultLiveTimeMode(timeMode);
+			} else {
+				int timeMode = getAppData().getDefaultLiveMode();
+				setDefaultLiveTimeMode(timeMode);
+			}
 		}
 
 		listView = (ListView) view.findViewById(R.id.listView);
@@ -720,28 +746,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		listView.setAdapter(sectionedAdapter);
 	}
 
-	private class TimeOptionSelectedListener implements PopupListSelectionFace {
 
-		@Override
-		public void onValueSelected(int code) {
-			timeOptionsFragment.dismiss();
-			timeOptionsFragment = null;
-
-			setDefaultTimeMode(timeSelectBtn, code);
-		}
-
-		@Override
-		public void onDialogCanceled() {
-			timeOptionsFragment = null;
-		}
-	}
-
-	private void setDefaultTimeMode(View view, int mode) {
-		view.setSelected(true);
-		timeSelectBtn.setText(getDaysString(newGameButtonsArray[mode]));
-		gameConfigBuilder.setDaysPerMove(newGameButtonsArray[mode]);
-		getAppData().setDefaultDailyMode(mode);
-	}
 
 	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {
 

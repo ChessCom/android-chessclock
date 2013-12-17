@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
@@ -42,7 +43,7 @@ import java.util.List;
  * Date: 30.07.13
  * Time: 15:00
  */
-public class PopupBackgroundsFragment extends DialogFragment implements AdapterView.OnItemClickListener {
+public class PopupBackgroundsFragment extends DialogFragment implements AdapterView.OnItemClickListener, ViewTreeObserver.OnGlobalLayoutListener {
 
 	private static final String THEME_ITEM = "theme_item";
 
@@ -115,31 +116,15 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
+
+		getView().getViewTreeObserver().addOnGlobalLayoutListener(this);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
-		if (need2update) {
-
-			Cursor cursor = DbDataManager.query(getActivity().getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BACKGROUNDS));
-
-			if (cursor != null && cursor.moveToFirst() && appData.isThemeBackgroundsLoaded()) {
-				do {
-					backgroundsThemeList.add(DbDataManager.getThemeBackgroundItemFromCursor(cursor));
-				} while (cursor.moveToNext());
-
-				updateUiData();
-			} else {
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.getInstance().CMD_BACKGROUNDS);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
-
-				new RequestJsonTask<BackgroundsItem>(backgroundsUpdateListener).executeTask(loadItem);
-			}
-
-		} else {
+		if (!need2update) {
 			listView.setAdapter(backgroundsAdapter);
 		}
 	}
@@ -153,6 +138,27 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 	public BackgroundSingleItem.Data getItemByCode(int code) {
 		return backgroundsThemeList.get(code);
+	}
+
+	@Override
+	public void onGlobalLayout() {
+		if (need2update) {
+			Cursor cursor = DbDataManager.query(getActivity().getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BACKGROUNDS));
+
+			if (cursor != null && cursor.moveToFirst() && appData.isThemeBackgroundsLoaded()) {
+				backgroundsThemeList = new ArrayList<BackgroundSingleItem.Data>();
+				do {
+					backgroundsThemeList.add(DbDataManager.getThemeBackgroundItemFromCursor(cursor));
+				} while (cursor.moveToNext());
+				cursor.close();
+			} else {
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.getInstance().CMD_BACKGROUNDS);
+				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
+
+				new RequestJsonTask<BackgroundsItem>(backgroundsUpdateListener).executeTask(loadItem);
+			}
+		}
 	}
 
 	private class BackgroundsUpdateListener extends ActionBarUpdateListener<BackgroundsItem> {
@@ -169,6 +175,10 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		@Override
 		public void updateData(BackgroundsItem returnedObj) {
 			backgroundsThemeList = returnedObj.getData();
+
+			for (BackgroundSingleItem.Data data : backgroundsThemeList) {
+				DbDataManager.saveThemeBackgroundItemToDb(getActivity().getContentResolver(), data);
+			}
 
 			appData.setThemeBackgroundsLoaded(true);
 			updateUiData();

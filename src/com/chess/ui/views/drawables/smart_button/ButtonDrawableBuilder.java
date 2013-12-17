@@ -220,7 +220,6 @@ public class ButtonDrawableBuilder {
 				ButtonDrawable buttonDrawable = setDefaults(context);
 				createGrey2SolidNoBorder(buttonDrawable, resources); // should set text color to white
 
-
 				return buttonDrawable;
 			}
 			case R.style.Button_White: {
@@ -530,20 +529,20 @@ public class ButtonDrawableBuilder {
 	}
 
 	private static void createGrey2SolidNoBorder(ButtonDrawable buttonDrawable, Resources resources) {
-		buttonDrawable.bevelLvl = 2;
+		buttonDrawable.bevelLvl = 1;
 		buttonDrawable.useBorder = false;
 		// Colors for bevel
 		buttonDrawable.colorTop = resources.getColor(R.color.upgrade_plan_platinum_top_1);
-		buttonDrawable.colorLeft = resources.getColor(R.color.upgrade_plan_platinum_left_1);
-		buttonDrawable.colorRight = resources.getColor(R.color.upgrade_plan_platinum_right_1);
-		buttonDrawable.colorBottom = resources.getColor(R.color.upgrade_plan_platinum_bottom_1);
+		buttonDrawable.colorLeft = resources.getColor(R.color.grey_no_border_left_1);
+		buttonDrawable.colorRight = resources.getColor(R.color.grey_no_border_right_1);
+		buttonDrawable.colorBottom = resources.getColor(R.color.grey_no_border_bottom_1);
 		// Level 2 for bevel
-		buttonDrawable.colorTop2 = resources.getColor(R.color.upgrade_plan_platinum_top_2);
-		buttonDrawable.colorLeft2 = resources.getColor(R.color.upgrade_plan_platinum_left_2);
-		buttonDrawable.colorRight2 = resources.getColor(R.color.upgrade_plan_platinum_right_2);
-		buttonDrawable.colorBottom2 = resources.getColor(R.color.upgrade_plan_platinum_bottom_2);
+//		buttonDrawable.colorTop2 = resources.getColor(R.color.grey_no_border_top_2);
+//		buttonDrawable.colorLeft2 = resources.getColor(R.color.grey_no_border_left_2);
+//		buttonDrawable.colorRight2 = resources.getColor(R.color.grey_no_border_right_2);
+//		buttonDrawable.colorBottom2 = resources.getColor(R.color.grey_no_border_bottom_2);
 		// Button colors
-		buttonDrawable.colorSolid = resources.getColor(R.color.upgrade_plan_platinum);
+		buttonDrawable.colorSolid = resources.getColor(R.color.grey_no_border);
 		// init layers
 		buttonDrawable.init(resources);
 	}

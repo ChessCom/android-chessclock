@@ -62,7 +62,7 @@ public class BackgroundSingleItem extends BaseResponseItem<BackgroundSingleItem.
 		}
 
 		public String getResizedImage() {
-			return resized_image;
+			return getSafeValue(resized_image);
 		}
 
 		public int getThemeId() {
