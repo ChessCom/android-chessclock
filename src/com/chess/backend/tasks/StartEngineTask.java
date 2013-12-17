@@ -35,8 +35,7 @@ public class StartEngineTask extends AbstractUpdateTask<CompEngineHelper, Void> 
 	@Override
 	protected Integer doTheTask(Void... params) {
 
-		CompEngineHelper.getInstance().init(context);
-		CompEngineHelper.getInstance().startGame(compEngineItem, gameCompActivityFace, settings, savedInstanceState);
+		CompEngineHelper.getInstance().startGame(context, compEngineItem, gameCompActivityFace, settings, savedInstanceState);
 
 		return StaticData.RESULT_OK;
 	}

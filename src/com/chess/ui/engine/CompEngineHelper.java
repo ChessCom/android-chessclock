@@ -36,25 +36,26 @@ public class CompEngineHelper implements GUIInterface {
 	private static final boolean LOGGING_ON = false;
 	public static final String TAG = "COMPENGINE";
 
-	private DroidChessController engineCtrl;
+	private static DroidChessController engineCtrl;
 
-	private final static CompEngineHelper ourInstance = new CompEngineHelper();
+	private static CompEngineHelper ourInstance;
 
-	private boolean whiteBasedScores;
+	private static boolean whiteBasedScores;
 
 	private int depth;
 	private GameMode gameMode;
-	private boolean mPonderMode;
-	private int mEngineThreads;
+	private static boolean mPonderMode;
+	private static int mEngineThreads;
 
 	private final static String bookDir = "ComChess";
 	/*private final static String pgnDir = "ComChess/pgn";
 	private final static String fenDir = "ComChess/epd";*/
 	private final static String engineDir = "ComChess/uci";
 	private final static String gtbDefaultDir = "ComChess/gtb";
-	private BookOptions bookOptions = new BookOptions();
-	private PGNOptions pgnOptions = new PGNOptions();
-	private EngineOptions engineOptions = new EngineOptions();
+	private static BookOptions bookOptions = new BookOptions();
+	private static PGNOptions pgnOptions = new PGNOptions();
+	private static EngineOptions engineOptions = new EngineOptions();
+	private static boolean egtbForceReload = false;
 
 	private Context context;
 	private GameCompFace gameCompActivityFace;
@@ -66,55 +67,55 @@ public class CompEngineHelper implements GUIInterface {
 	private ArrayList<Move> bookMoves;
 	private ArrayList<ArrayList<Move>> pvMoves;
 
-	public static CompEngineHelper getInstance() {
-		return ourInstance;
-	}
-
 	private CompEngineHelper() {
 	}
 
-	public DroidChessController init(Context context) {
+	public static CompEngineHelper getInstance() {
 
-		this.context = context;
+		if (ourInstance == null) {
+			ourInstance = new CompEngineHelper();
 
-		PgnToken.PgnTokenReceiver pgnTokenReceiver = new PgnToken.PgnTokenReceiver() { // updates moves list
-			@Override
-			public boolean isUpToDate() {
-				return true; // todo
-			}
+			PgnToken.PgnTokenReceiver pgnTokenReceiver = new PgnToken.PgnTokenReceiver() { // updates moves list
+				@Override
+				public boolean isUpToDate() {
+					return true; // todo
+				}
 
-			@Override
-			public void clear() {
-			}
+				@Override
+				public void clear() {
+				}
 
-			@Override
-			public void processToken(Node node, int type, String token) {
+				@Override
+				public void processToken(Node node, int type, String token) {
 				/*log("PgnTokenReceiver processToken: node =" + node);
 				log("PgnTokenReceiver processToken: type =" + type);
 				log("PgnTokenReceiver processToken: token =" + token);*/
-			}
+				}
 
-			@Override
-			public void setCurrent(Node node) {
-				//log("PgnTokenReceiver setCurrent: node =" + node);
-			}
-		};
+				@Override
+				public void setCurrent(Node node) {
+					//log("PgnTokenReceiver setCurrent: node =" + node);
+				}
+			};
 
-		createDirectories();
+			createDirectories();
 
-		if (engineCtrl != null)
-			engineCtrl.shutdownEngine();
+			if (engineCtrl != null)
+				engineCtrl.shutdownEngine();
 
-		engineCtrl = new DroidChessController(this, pgnTokenReceiver, pgnOptions);
-		//egtbForceReload = true;
-		readPrefs();
+			engineCtrl = new DroidChessController(ourInstance, pgnTokenReceiver, pgnOptions);
+			//egtbForceReload = true;
+			readPrefs();
+		}
 
-		return engineCtrl;
+		return ourInstance;
 	}
 
-	public void startGame(CompEngineItem compEngineItem, GameCompFace gameCompActivityFace, SharedPreferences sharedPreferences, Bundle savedInstanceState) {
+	public void startGame(Context context, CompEngineItem compEngineItem, GameCompFace gameCompActivityFace, SharedPreferences sharedPreferences, Bundle savedInstanceState) {
 
 		log("INIT ENGINE AND START GAME");
+
+		this.context = context;
 
 		setGameMode(compEngineItem.getGameMode());
 		this.gameCompActivityFace = gameCompActivityFace;
@@ -136,9 +137,11 @@ public class CompEngineHelper implements GUIInterface {
 			} else {*/
 				String dataStr = sharedPreferences.getString(CompEngineHelper.GAME_STATE, null);
 				version = sharedPreferences.getInt(GAME_STATE_VERSION_NAME, version);
+				log("debug: start restore dataStr=" + dataStr);
 				if (dataStr != null)
 					data = strToByteArr(dataStr);
 			//}
+			log("debug: start restore data=" + data);
 			if (data != null) {
 				engineCtrl.fromByteArray(data, version);
 			}
@@ -163,8 +166,6 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.startGame(); // it was before setFENOrPGN - check fen init
 
 		gameCompActivityFace.onGameStarted(engineCtrl.getCurrentMovePosition());
-
-		log("FINISHED");
 	}
 
 	public void makeMove(String move,/* boolean force,*/ GameCompFace gameCompActivityFace) {
@@ -181,7 +182,7 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.makeHumanMove(TextIO.UCIstringToMove(move));
 	}
 
-	private final static void createDirectories() {
+	private static void createDirectories() {
 
 		// todo @refactor: create directories only first time
 
@@ -202,7 +203,7 @@ public class CompEngineHelper implements GUIInterface {
 		log("createDirectories result=" + result);
 	}
 
-	private final void readPrefs() {
+	private static void readPrefs() {
 		whiteBasedScores = false;
 		mEngineThreads = 1;
 
@@ -258,7 +259,7 @@ public class CompEngineHelper implements GUIInterface {
 	public void updateTimeControlTitle() {
 	}
 
-	private final void setBookOptions() {
+	private static void setBookOptions() {
 		BookOptions options = new BookOptions(bookOptions);
 		if (options.filename.length() > 0) {
 			File extDir = Environment.getExternalStorageDirectory();
@@ -268,9 +269,7 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.setBookOptions(options);
 	}
 
-	private boolean egtbForceReload = false;
-
-	private final void setEngineOptions(boolean restart) {
+	private static void setEngineOptions(boolean restart) {
 		engineCtrl.setEngineOptions(new EngineOptions(engineOptions), restart);
 		Probe.getInstance().setPath(engineOptions.gtbPath, egtbForceReload);
 		egtbForceReload = false;
@@ -478,7 +477,7 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.updateEngine();
 	}
 
-	private final byte[] strToByteArr(String str) {
+	private byte[] strToByteArr(String str) {
 		if (str == null)
 			return null;
 		int nBytes = str.length() / 2;
@@ -491,15 +490,15 @@ public class CompEngineHelper implements GUIInterface {
 		return ret;
 	}
 
-	private final String byteArrToString(byte[] data) {
+	private String byteArrToString(byte[] data) {
 		if (data == null)
 			return null;
 		StringBuilder ret = new StringBuilder(32768);
-		int nBytes = data.length;
-		for (int i = 0; i < nBytes; i++) {
-			int b = data[i]; if (b < 0) b += 256;
-			char c1 = (char)('A' + (b / 16));
-			char c2 = (char)('A' + (b & 15));
+		for (byte aData : data) {
+			int b = aData;
+			if (b < 0) b += 256;
+			char c1 = (char) ('A' + (b / 16));
+			char c2 = (char) ('A' + (b & 15));
 			ret.append(c1);
 			ret.append(c2);
 		}
@@ -538,10 +537,6 @@ public class CompEngineHelper implements GUIInterface {
 		return timeControlData;
 	}
 
-	public boolean isInitialized() {
-		return engineCtrl != null;
-	}
-
 	public byte[] toByteArray() {
 		return engineCtrl.toByteArray();
 	}
@@ -561,16 +556,14 @@ public class CompEngineHelper implements GUIInterface {
 		return result;
 	}*/
 
-	public boolean isGameValid() { // TODO to vm: why do you access internal fields in singleton which is not initialized via getInstance()???
+	private boolean isGameValid() {
 		return engineCtrl.isGamExist();
 	}
 
 	public void stop() {
-		if (isInitialized()) {
-			//CompEngineHelper.getInstance().setPaused(true); // try to avoid this
-			storeEngineState();
-			shutdownEngine();
-		}
+		//CompEngineHelper.getInstance().setPaused(true); // try to avoid this
+		storeEngineState();
+		shutdownEngine();
 	}
 
 	public void stopCompMoving() {
@@ -578,7 +571,7 @@ public class CompEngineHelper implements GUIInterface {
 	}
 
 	public void storeEngineState() {
-		if (isInitialized() && isGameValid()) {
+		if (isGameValid()) {
 			byte[] data = toByteArray();
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			String dataStr = byteArrToString(data);
