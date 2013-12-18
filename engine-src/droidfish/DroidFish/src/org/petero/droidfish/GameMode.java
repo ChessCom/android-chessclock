@@ -66,6 +66,10 @@ public class GameMode {
         return modeNr == ANALYSIS;
     }
 
+	public boolean isHumanVsCompMode() {
+		return modeNr == PLAYER_WHITE || modeNr == PLAYER_BLACK;
+	}
+
     /** Return true if it is a humans turn to move. */
     public final boolean humansTurn(boolean whiteMove) {
         return whiteMove ? playerWhite() : playerBlack();

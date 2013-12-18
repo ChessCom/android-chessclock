@@ -421,10 +421,11 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			return;
 		}
 
-		boardView.goToMove(currentMovePosition);
+		boardView.updateBoardPosition(currentMovePosition);
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				invalidateGameScreen();
 				boardView.invalidate();
 			}
 		});
@@ -548,7 +549,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		Log.d("debugengine", "getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH) " + getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH));
 		Log.d("debugengine", "getBoardFace().getPly() " + getBoardFace().getPly());*/
 
-		int gameMode = new Integer(savedGame[0].substring(0, 1));
+		int gameMode = Integer.valueOf(savedGame[0].substring(0, 1));
 		getBoardFace().setMode(gameMode);
 
 		getBoardFace().setMovesCount(getBoardFace().getPly());
@@ -638,7 +639,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				} else {
 					resultTxt.setText(R.string.you_lose);
 				}
-			}
+	}
 		}, END_GAME_DELAY);
 	}
 
@@ -659,7 +660,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	private void computerMove() {
-		boardView.computerMove(getAppData().getCompThinkTime());
+		boardView.computerMove(/*getAppData().getCompThinkTime()*/);
 	}
 
 	private class InitComputerEngineUpdateListener extends ChessLoadUpdateListener<CompEngineHelper> {

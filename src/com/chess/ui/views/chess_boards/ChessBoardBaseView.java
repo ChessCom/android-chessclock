@@ -550,12 +550,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 				if (secondMoveAnimator != null) {
 					BoardFace boardFace = getBoardFace();
 					if (secondMoveAnimator.isForward()) {
-						resetValidMoves();
 						boardFace.takeNext();
 					} else {
-						resetValidMoves();
 						boardFace.takeBack();
 					}
+					resetValidMoves();
+					onSecondMoveAnimated();
 				} else {
 					gameFace.updateParentView();
 					navigating = false;
@@ -2005,5 +2005,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		// for example by moves list and currentMoveNumber
 		Log.d(VALID_MOVES, "validlog 2 clear");
 		validMoves.clear();
+	}
+
+	protected void onSecondMoveAnimated() {
 	}
 }

@@ -138,7 +138,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		computeMoveTask.execute();
 	}
 
-	public void computerMove(final int time) {
+	public void computerMove() {
 		if (isHint())
 			return;
 
@@ -340,14 +340,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
         CompEngineHelper.getInstance().updateEngineAfterHalfMove();
 	}
 
-	@Override
-	public void goToLatestMove() {
-		// todo
-		/*boolean moved = super.goToLatestMove();
-		if (moved) {
-			Log.d("COMPE", "goToLatestMove !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + (getBoardFace().getMovesCount()));
-			CompEngineHelper.getInstance().goToHalfMove(getBoardFace().getMovesCount());
-		}*/
+	public void updateBoardPosition(Integer pos) {
+		super.goToMove(pos);
 	}
 
 	@Override
@@ -375,5 +369,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	public boolean isComputerMoving() {
 		return getBoardComp().isComputerMoving();
+	}
+
+	protected void onSecondMoveAnimated() {
+		gameCompActivityFace.invalidateGameScreen();
 	}
 }

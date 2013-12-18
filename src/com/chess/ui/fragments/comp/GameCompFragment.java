@@ -382,10 +382,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	public void onGameStarted(final int currentMovePosition) {
 //		Log.d(CompEngineHelper.TAG, " onGameStarted " + currentMovePosition);
 
-		boardView.goToMove(currentMovePosition);
+		boardView.updateBoardPosition(currentMovePosition);
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				invalidateGameScreen();
 				controlsView.enableHintButton(true);
 				boardView.invalidate();
 			}
@@ -650,7 +651,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	private void computerMove() {
-		boardView.computerMove(getAppData().getCompThinkTime());
+		boardView.computerMove(/*getAppData().getCompThinkTime()*/);
 	}
 
 	@Override

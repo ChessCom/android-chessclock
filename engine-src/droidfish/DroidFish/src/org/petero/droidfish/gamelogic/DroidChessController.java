@@ -93,7 +93,7 @@ public class DroidChessController {
     /** Start playing a new game. Should be called after newGame(). */
     public final synchronized void startGame() {
         updateComputeThreads();
-        setSelection();
+        //setSelection();
         updateGUI();
         updateGameMode();
     }
@@ -276,6 +276,10 @@ public class DroidChessController {
         return gameMode.humansTurn(game.currPos().whiteMove);
     }
 
+	public boolean isHumanVsCompMode() {
+		return gameMode.isHumanVsCompMode();
+	}
+
     /** Return true if computer player is using CPU power. */
     public final synchronized boolean computerBusy() {
         return (computerPlayer != null) && computerPlayer.computerBusy();
@@ -375,7 +379,8 @@ public class DroidChessController {
             //boolean didUndo = undoMoveNoUpdate();
 			undoMoveNoUpdate();
 
-            updateComputeThreads();
+			abortSearch();
+            //updateComputeThreads();
 
             /*setSelection();
             if (didUndo)
@@ -391,7 +396,8 @@ public class DroidChessController {
 
             redoMoveNoUpdate();
 
-            updateComputeThreads();
+			abortSearch();
+            //updateComputeThreads();
 
             /*setSelection();
             setAnimMove(game.prevPos(), game.getLastMove(), true);*/
@@ -404,6 +410,7 @@ public class DroidChessController {
 			return false;
 		searchId++;
 		game.undoMove();
+		// todo: check first move undo when user is black
 		/*if (!humansTurn()) {
 			if (game.getLastMove() != null) {
 				game.undoMove(print);
@@ -465,8 +472,8 @@ public class DroidChessController {
     }
 
 	public void updateEngine() {
-		/*abortSearch();
-		updateComputeThreads();*/
+		abortSearch();
+		//updateComputeThreads();
 		//setSelection();
 		updateGUI();
 	}
@@ -907,7 +914,7 @@ public class DroidChessController {
         }
     }
 
-    private final void updateGameMode() {
+    public void updateGameMode() {
         if (game != null) {
             boolean gamePaused = !gameMode.clocksActive() || (humansTurn() && guiPaused); // TODO
             game.setGamePaused(gamePaused);
@@ -1020,19 +1027,18 @@ public class DroidChessController {
         }
     }*/
 
-
-
     public boolean undoMoveNoUpdate() {
         if (game.getLastMove() == null)
             return false;
         searchId++;
         game.undoMove();
-        if (!humansTurn()) {
+
+        if (isHumanVsCompMode()) {
             if (game.getLastMove() != null) {
                 game.undoMove();
-                if (!humansTurn()) {
+                /*if (!humansTurn()) {
                     game.redoMove();
-                }
+                }*/
             } else {
                 // Don't undo first white move if playing black vs computer,
                 // because that would cause computer to immediately make
@@ -1050,10 +1056,10 @@ public class DroidChessController {
         if (game.canRedoMove()) {
             searchId++;
             game.redoMove();
-            if (!humansTurn() && game.canRedoMove()) {
+            if (isHumanVsCompMode() && game.canRedoMove()) {
                 game.redoMove();
-                if (!humansTurn())
-                    game.undoMove();
+                /*if (!humansTurn())
+                    game.undoMove();*/
             }
         }
     }
@@ -1085,52 +1091,52 @@ public class DroidChessController {
         return false;
     }
 
-    private final void updateGUI() {
-        GUIInterface.GameStatus s = new GUIInterface.GameStatus();
-        s.state = game.getGameState();
-        if (s.state == Game.GameState.ALIVE) {
-            s.moveNr = game.currPos().fullMoveCounter;
-            s.white = game.currPos().whiteMove;
-            DroidComputerPlayer.SearchType st = SearchType.NONE;
-            if (computerPlayer != null)
-                st = computerPlayer.getSearchType();
-            switch (st) {
-            case SEARCH:  s.thinking  = true; break;
-            case PONDER:  s.ponder    = true; break;
-            case ANALYZE: s.analyzing = true; break;
-            }
-        } else {
-            if ((s.state == GameState.DRAW_REP) || (s.state == GameState.DRAW_50))
-                s.drawInfo = game.getDrawInfo(localPt());
-        }
-        gui.setStatus(s);
-        updateMoveList();
-
-        StringBuilder sb = new StringBuilder();
-        if (game.tree.currentNode != game.tree.rootNode) {
-            game.tree.goBack(/*false*/);
-            Position pos = game.currPos();
-            List<Move> prevVarList = game.tree.variations();
-            for (int i = 0; i < prevVarList.size(); i++) {
-                if (i > 0) sb.append(' ');
-                if (i == game.tree.currentNode.defaultChild)
-                    sb.append(Util.boldStart);
-                sb.append(TextIO.moveToString(pos, prevVarList.get(i), false, localPt()));
-                if (i == game.tree.currentNode.defaultChild)
-                    sb.append(Util.boldStop);
-            }
-            game.tree.goForward(-1);
-        }
-        gui.setPosition(game.currPos(), sb.toString(), game.tree.variations());
-
-        updateRemainingTime();
-        updateMaterialDiffList();
-        gui.updateTimeControlTitle();
-    }
-
     public final void updateMaterialDiffList() {
         gui.updateMaterialDifferenceTitle(Util.getMaterialDiff(game.currPos()));
     }
+
+	public void updateGUI() {
+		GUIInterface.GameStatus s = new GUIInterface.GameStatus();
+		s.state = game.getGameState();
+		if (s.state == Game.GameState.ALIVE) {
+			s.moveNr = game.currPos().fullMoveCounter;
+			s.white = game.currPos().whiteMove;
+			DroidComputerPlayer.SearchType st = SearchType.NONE;
+			if (computerPlayer != null)
+				st = computerPlayer.getSearchType();
+			switch (st) {
+				case SEARCH:  s.thinking  = true; break;
+				case PONDER:  s.ponder    = true; break;
+				case ANALYZE: s.analyzing = true; break;
+			}
+		} else {
+			if ((s.state == GameState.DRAW_REP) || (s.state == GameState.DRAW_50))
+				s.drawInfo = game.getDrawInfo(localPt());
+		}
+		gui.setStatus(s);
+		updateMoveList();
+
+		StringBuilder sb = new StringBuilder();
+		if (game.tree.currentNode != game.tree.rootNode) {
+			game.tree.goBack(/*false*/);
+			Position pos = game.currPos();
+			List<Move> prevVarList = game.tree.variations();
+			for (int i = 0; i < prevVarList.size(); i++) {
+				if (i > 0) sb.append(' ');
+				if (i == game.tree.currentNode.defaultChild)
+					sb.append(Util.boldStart);
+				sb.append(TextIO.moveToString(pos, prevVarList.get(i), false, localPt()));
+				if (i == game.tree.currentNode.defaultChild)
+					sb.append(Util.boldStop);
+			}
+			game.tree.goForward(-1);
+		}
+		gui.setPosition(game.currPos(), sb.toString(), game.tree.variations());
+
+		updateRemainingTime();
+		updateMaterialDiffList();
+		gui.updateTimeControlTitle();
+	}
 
     private final synchronized void setThinkingInfo(int id, ArrayList<ArrayList<Move>> pvMoves, String pvStr,
                                                     String statStr, String bookInfo, ArrayList<Move> bookMoves) {
@@ -1191,5 +1197,12 @@ public class DroidChessController {
 
 	public int getCurrentMovePosition() {
 		return game.tree.getMoveList().second - 1;
+	}
+
+	public boolean isCurrentPositionLatest() {
+		Pair<List<Node>, Integer> movesListInfo = game.tree.getMoveList();
+		int movesCount = movesListInfo.first.size();
+		int currentMovePosition = movesListInfo.second;
+		return currentMovePosition == movesCount;
 	}
 }

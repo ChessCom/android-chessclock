@@ -29,12 +29,13 @@ public class CompEngineHelper implements GUIInterface {
 	private static final String ENGINE = "stockfish";
 	//private static final String ENGINE = "cuckoochess";
 
+	public static final String TAG = "COMPENGINE";
+	private static final boolean LOGGING_ON = false;
+
 	public static final String GAME_STATE = "gameState";
 	public static final String GAME_STATE_VERSION_NAME = "gameStateVersion";
 	public static final int GAME_STATE_VERSION = 3;
 	public static final int MAX_NUM_HINT_ARROWS = 2;
-	private static final boolean LOGGING_ON = false;
-	public static final String TAG = "COMPENGINE";
 
 	private static DroidChessController engineCtrl;
 
@@ -163,7 +164,12 @@ public class CompEngineHelper implements GUIInterface {
 
 		engineCtrl.setEngineStrength(ENGINE, compEngineItem.getStrength());
 
-		engineCtrl.startGame(); // it was before setFENOrPGN - check fen init
+		if (engineCtrl.isCurrentPositionLatest()) {
+			engineCtrl.startGame(); // it was before setFENOrPGN - check fen init
+		} else {
+			engineCtrl.updateGUI();
+			engineCtrl.updateGameMode();
+		}
 
 		gameCompActivityFace.onGameStarted(engineCtrl.getCurrentMovePosition());
 	}
@@ -465,12 +471,10 @@ public class CompEngineHelper implements GUIInterface {
 
 	public void moveBackHalf() {
 		engineCtrl.undoHalfMove();
-		//engineCtrl.undoMoveNoUpdate();
 	}
 
 	public void moveForwardHalf() {
 		engineCtrl.redoHalfMove();
-		//engineCtrl.redoMoveNoUpdate();
 	}
 
 	public void updateEngineAfterHalfMove() {
@@ -546,6 +550,7 @@ public class CompEngineHelper implements GUIInterface {
 	}*/
 
 	public void shutdownEngine() {
+		log("shutdown engine");
 		engineCtrl.shutdownEngine();
 	}
 
@@ -572,6 +577,7 @@ public class CompEngineHelper implements GUIInterface {
 
 	public void storeEngineState() {
 		if (isGameValid()) {
+			log("store engine state");
 			byte[] data = toByteArray();
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			String dataStr = byteArrToString(data);
