@@ -41,10 +41,12 @@ public class SaveTacticsStatsTask extends AbstractUpdateTask<TacticsHistoryItem.
 		// save daily ratings
 		List<TacticsHistoryItem.Data.DailyStats> dailyStatsList = item.getDailyStats();
 		if (dailyStatsList != null) {
-			if (dailyStatsList.size() > 0) {
+			int size = dailyStatsList.size();
+			if (size > 0) {
 				// add one more for today to avoid unnecessary load
-				TacticsHistoryItem.Data.DailyStats dailyStats = dailyStatsList.get(dailyStatsList.size() - 1);
+				TacticsHistoryItem.Data.DailyStats dailyStats = dailyStatsList.get(size - 1).copy();
 				dailyStats.setTimestamp(System.currentTimeMillis() / 1000);
+				dailyStatsList.add(dailyStats);
 			}
 
 			for (TacticsHistoryItem.Data.DailyStats dailyStats : dailyStatsList) {

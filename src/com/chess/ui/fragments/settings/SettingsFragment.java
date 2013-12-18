@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.statics.AppConstants;
+import com.chess.statics.StaticData;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.utilities.AppUtils;
@@ -39,7 +40,9 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		super.onCreate(savedInstanceState);
 
 		menuItems = new ArrayList<SettingsMenuItem>();
-//		menuItems.add(new SettingsMenuItem(R.string.api, R.string.ic_key));
+		if (StaticData.USE_SWITCH_API) {
+			menuItems.add(new SettingsMenuItem(R.string.api, R.string.ic_key));
+		}
 		menuItems.add(new SettingsMenuItem(R.string.profile, R.string.ic_profile));
 		menuItems.add(new SettingsMenuItem(R.string.theme, R.string.ic_theme));
 		menuItems.add(new SettingsMenuItem(R.string.general, R.string.ic_board));
@@ -105,13 +108,15 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		menuItems.get(position).selected = true;
 		SettingsMenuItem menuItem = (SettingsMenuItem) listView.getItemAtPosition(position);
 		menuItem.selected = true;
-		((BaseAdapter)parent.getAdapter()).notifyDataSetChanged();
+		((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
 
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
-//			case R.string.ic_key:
-//				getActivityFace().openFragment(new SettingsApiFragment());
-//				break;
+			case R.string.ic_key:
+				if (StaticData.USE_SWITCH_API) {
+					getActivityFace().openFragment(new SettingsApiFragment());
+				}
+				break;
 			case R.string.ic_profile:
 				getActivityFace().openFragment(new SettingsProfileFragment());
 				break;

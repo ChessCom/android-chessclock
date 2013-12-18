@@ -128,18 +128,18 @@ public class FenHelper {
 				fillTheFenLine(sb, line, false);
 			}
 			int pieceCode = board.pieces[i];
-			Log.e("TEST", "pieceCode = " + pieceCode);
+//			Log.e("TEST", "pieceCode = " + pieceCode);
 			switch (board.colors[i]) {
 				case EMPTY:
 					line[i % ROWS_CNT] = EMPTY_SQUARE;
 					break;
 				case WHITE_SIDE:
-					char pieceChar = board.pieceChar[pieceCode];
+					char pieceChar = board.pieceChars[pieceCode];
 					Log.e("TEST", "pieceChar = " + pieceChar);
 					line[i % ROWS_CNT] = String.valueOf(pieceChar);
 					break;
 				case BLACK_SIDE:
-					pieceChar = board.pieceChar[pieceCode];
+					pieceChar = board.pieceChars[pieceCode];
 					Log.e("TEST", "pieceChar = " + pieceChar);
 					line[i % ROWS_CNT] = String.valueOf((char) (pieceChar + ('a' - 'A')));
 					break;
@@ -192,7 +192,7 @@ public class FenHelper {
 				break;
 		}
 
-		Log.d("TEST", "FEN = " + sb.toString());
+//		Log.d("TEST", "FEN = " + sb.toString());
 		return sb.toString();
 	}
 
@@ -331,23 +331,22 @@ public class FenHelper {
 			String[] piecesArray = line.trim().split(POSITION_DIVIDER);
 			for (j = 1; j < piecesArray.length; j++) {
 				String piece = piecesArray[j];
-				if (piece.matches(MovesParser.REGEXP_NUMBERS)) {
+				if (piece.matches(MovesParser.REGEXP_NUMBERS)) { // fill empty squares
 					int cnt = Integer.parseInt(piece);
 					while (cnt > 0) {
-						// Log.d("TEST","pos = " + pos + " piece = " + piece + " line = " + line);
+//						Log.d("TEST","pos = " + pos + " piece = " + piece + " line = " + line);
 						board.pieces[pos] = ChessBoard.EMPTY;
 						board.colors[pos] = ChessBoard.EMPTY;
 						cnt--;
 						pos++;
 					}
 				} else {
-					//Log.d("TEST","pos = " + pos + " piece = " + piece + " code = " + pieceDataMap.get(piece).pieceCode
-					//		+ " color = " + pieceDataMap.get(piece).pieceColor + " line = " + line);
+//					Log.d("TEST","pos = " + pos + " piece = " + piece + " code = " + pieceDataMap.get(piece).pieceCode
+//							+ " color = " + pieceDataMap.get(piece).pieceColor + " line = " + line);
 					board.pieces[pos] = pieceDataMap.get(piece).pieceCode;
 					board.colors[pos] = pieceDataMap.get(piece).pieceColor;
 					pos++;
 				}
-
 			}
 		}
 //		Log.d("TEST", "board = " + board.toString());

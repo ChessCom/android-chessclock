@@ -30,15 +30,14 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
-import com.chess.statics.AppConstants;
-import com.chess.statics.AppData;
-import com.chess.statics.FlurryData;
-import com.chess.statics.IntentConstants;
+import com.chess.statics.*;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.NotificationsRightFragment;
+import com.chess.ui.fragments.articles.ArticleDetailsFragment;
+import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.fragments.daily.GameDailyFragmentTablet;
 import com.chess.ui.fragments.home.HomeTabsFragment;
@@ -116,8 +115,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		// restoring correct host
 		///////////////////////////////////////////////////
-		// RestHelper.resetInstance();					 //
-		// RestHelper.HOST = getAppData().getApiRoute(); //
+		if (StaticData.USE_SWITCH_API) {
+			RestHelper.resetInstance();
+			RestHelper.HOST = getAppData().getApiRoute();
+		}
 		///////////////////////////////////////////////////
 
 		// lock portrait mode for handsets and unlock for tablets
@@ -155,7 +156,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			} else if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
 				// set the Above View
 				switchFragment(new HomeTabsFragment());
-//				switchFragment(new StatsGameFragment());
+//				openFragment(ArticleDetailsFragment.createInstance(13936));
+//				openFragment(ArticleDetailsFragment.createInstance(13982));
 				showActionBar = true;
 			} else {
 				if (isTablet) {

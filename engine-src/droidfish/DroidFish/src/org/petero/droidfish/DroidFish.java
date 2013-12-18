@@ -19,66 +19,14 @@
 
 package org.petero.droidfish;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.TreeMap;
-
-import android.util.Log;
-import org.petero.droidfish.ChessBoard.SquareDecoration;
-import org.petero.droidfish.activities.CPUWarning;
-import org.petero.droidfish.activities.EditBoard;
-import org.petero.droidfish.activities.EditPGNLoad;
-import org.petero.droidfish.activities.EditPGNSave;
-import org.petero.droidfish.activities.LoadFEN;
-import org.petero.droidfish.activities.LoadScid;
-import org.petero.droidfish.activities.Preferences;
-import org.petero.droidfish.book.BookOptions;
-import org.petero.droidfish.engine.EngineUtil;
-import org.petero.droidfish.gamelogic.DroidChessController;
-import org.petero.droidfish.gamelogic.ChessParseError;
-import org.petero.droidfish.gamelogic.Move;
-import org.petero.droidfish.gamelogic.Pair;
-import org.petero.droidfish.gamelogic.Piece;
-import org.petero.droidfish.gamelogic.Position;
-import org.petero.droidfish.gamelogic.TextIO;
-import org.petero.droidfish.gamelogic.PgnToken;
-import org.petero.droidfish.gamelogic.GameTree.Node;
-import org.petero.droidfish.gamelogic.TimeControlData;
-import org.petero.droidfish.gtb.Probe;
-
-import com.larvalabs.svgandroid.SVG;
-import com.larvalabs.svgandroid.SVGParser;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.app.*;
+import android.content.*;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ProviderInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ProviderInfo;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -86,47 +34,36 @@ import android.graphics.Typeface;
 import android.graphics.drawable.StateListDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.PowerManager;
+import android.os.*;
 import android.os.PowerManager.WakeLock;
-import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
-import android.text.Html;
-import android.text.Layout;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.TextUtils;
+import android.text.*;
 import android.text.method.LinkMovementMethod;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.LeadingMarginSpan;
-import android.text.style.StyleSpan;
+import android.text.style.*;
+import android.util.Log;
 import android.util.TypedValue;
-import android.view.GestureDetector;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
+import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
-import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.*;
 import android.widget.ImageView.ScaleType;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
+import com.larvalabs.svgandroid.SVG;
+import com.larvalabs.svgandroid.SVGParser;
+import org.petero.droidfish.ChessBoard.SquareDecoration;
+import org.petero.droidfish.activities.*;
+import org.petero.droidfish.book.BookOptions;
+import org.petero.droidfish.engine.EngineUtil;
+import org.petero.droidfish.gamelogic.*;
+import org.petero.droidfish.gamelogic.GameTree.Node;
+import org.petero.droidfish.gtb.Probe;
+
+import java.io.*;
+import java.util.*;
 
 public class DroidFish extends Activity implements GUIInterface {
 	// FIXME!!! book.txt (and test classes) should not be included in apk
@@ -508,7 +445,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	// Unicode code points for chess pieces
-	private static final String figurinePieceNames = Piece.NOTATION_PAWN   + " " +
+	public static final String figurinePieceNames = Piece.NOTATION_PAWN   + " " +
 			Piece.NOTATION_KNIGHT + " " +
 			Piece.NOTATION_BISHOP + " " +
 			Piece.NOTATION_ROOK   + " " +

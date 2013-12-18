@@ -375,6 +375,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	}
 
 	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
+		private String facebookToken;
+
 		public LoginUpdateListener() {
 			super(getContext(), LoginItem.class);
 		}
@@ -393,15 +395,22 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		@Override
 		public void updateData(LoginItem returnedObj) {
+			LoginItem.Data loginData = returnedObj.getData();
+			String username = loginData.getUsername();
+			if (!TextUtils.isEmpty(username)) {
+				preferencesEditor.putString(AppConstants.USERNAME, username.trim().toLowerCase());
+			}
+			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
+			preferencesEditor.putString(LIVE_SESSION_ID, loginData.getSessionId());
+			preferencesEditor.commit();
+
 			if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE) {
 				FlurryAgent.logEvent(FlurryData.FB_LOGIN);
+				// save facebook access token to appData for future re-login
+				getAppData().setFacebookToken(facebookToken);
 			}
-			if (!TextUtils.isEmpty(returnedObj.getData().getUsername())) {
-				preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
-			}
-			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
-			preferencesEditor.putString(LIVE_SESSION_ID, returnedObj.getData().getSessionId());
-			processLogin(returnedObj.getData());
+
+			processLogin(loginData);
 		}
 
 		@Override
@@ -424,6 +433,10 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				}
 			}
 		}
+
+		public void setFacebookToken(String facebookToken) {
+			this.facebookToken = facebookToken;
+		}
 	}
 
 	protected Session.StatusCallback callback = new Session.StatusCallback() {
@@ -441,9 +454,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	}
 
 	protected void loginWithFacebook(String accessToken) {
-		// save facebook access token to appData for future re-login
-		getAppData().setFacebookToken(accessToken);
-
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
@@ -452,8 +462,9 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_TACTICS_RATING);
 
-		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
+		loginUpdateListener.setFacebookToken(accessToken);
 		loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
+		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 	}
 
 	protected void processLogin(RegisterItem.Data returnedObj) {

@@ -175,7 +175,7 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 		}
 
 		private String getTagData(String tag) {
-			if (!diagram_code.contains("[" + tag)) {
+			if (!diagram_code.contains("[" + tag + Symbol.SPACE)) {
 				return Symbol.EMPTY;
 			}
 			int tagContentStartIndex = diagram_code.indexOf("[" + tag + " \"") + ("[" + tag + " \"").length();

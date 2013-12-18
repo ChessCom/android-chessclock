@@ -269,6 +269,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		} else {
 			updateGameState(gameId);
+//			updateGameState(80936834);
 		}
 		// clear badge
 		DbDataManager.deletePlayMoveNotification(getContentResolver(), username, gameId);
@@ -370,11 +371,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			boardFace.setChess960(true);
-		}
+		boardFace.setChess960(currentGame.getGameType() != RestHelper.V_GAME_CHESS);
 
-		boardFace.setupBoard(currentGame.getStartingFenPosition());
+		if (boardFace.isChess960()) {// we need to setup only position not made moves.
+			// Daily games tournaments already include those moves in movesList
+			boardFace.setupBoard(currentGame.getStartingFenPosition());
+		}
 
 		boardFace.setReside(!userPlayWhite);
 
@@ -545,11 +547,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			throw new IllegalStateException("Current game became NULL");
 //			updateGameState(gameId);
 		} else {
-			sendMove();
+			submitMove();
 		}
 	}
 
-	private void sendMove() {
+	private void submitMove() {
 		if (username.equals(getUsername())) { // allow only authenticated user to send move in his own games
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
 			loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());
@@ -608,7 +610,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	@Override
 	public void playMove() {
-		sendMove();
+		submitMove();
 	}
 
 	@Override

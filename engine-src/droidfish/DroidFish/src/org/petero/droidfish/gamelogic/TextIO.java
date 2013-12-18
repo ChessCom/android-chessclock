@@ -18,12 +18,13 @@
 
 package org.petero.droidfish.gamelogic;
 
+import org.petero.droidfish.DroidFish;
+import org.petero.droidfish.PGNOptions;
+import org.petero.droidfish.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import org.petero.droidfish.PGNOptions;
-import org.petero.droidfish.R;
 
 
 /**
@@ -34,7 +35,11 @@ public class TextIO {
     static public final String startPosFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
     /** Localized version of "P N B R Q K". */
-    private static String[] pieceNames = null;
+    private static String[] pieceNames;
+
+	static {
+		setPieceNames(DroidFish.figurinePieceNames);
+	}
 
     /** Set localized piece names. */
     public static final void setPieceNames(String pieceNames) {

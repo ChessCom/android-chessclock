@@ -425,6 +425,10 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+
 				invalidateGameScreen();
 				boardView.invalidate();
 			}

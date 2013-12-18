@@ -291,12 +291,12 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			boardFace.setChess960(true);
-		}
+		boardFace.setChess960(currentGame.getGameType() != RestHelper.V_GAME_CHESS);
 
-		boardFace.setupBoard(currentGame.getStartingFenPosition()); // TODO check
-		// if we pass FEN like this rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR, and them moveslist that lead to this position, it fails to load properly
+		if (boardFace.isChess960()) {// we need to setup only position not made moves.
+			// Daily games tournaments already include those moves in movesList
+			boardFace.setupBoard(currentGame.getStartingFenPosition());
+		}
 		boardFace.setReside(!userPlayWhite);
 
 		boardFace.checkAndParseMovesList(currentGame.getMoveList());

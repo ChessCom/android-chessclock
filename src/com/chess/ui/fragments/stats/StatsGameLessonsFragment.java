@@ -123,22 +123,6 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-
-		if (need2update && !isNeedToUpgrade()) {
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS_STATS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
-
-			new RequestJsonTask<LessonsStatsItem>(statsItemUpdateListener).executeTask(loadItem);
-		} else {
-			updateUiData();
-		}
-	}
-
-	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
@@ -186,14 +170,18 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimestamp - oneDay) {
 			updateUiData();
 		} else { // else we only load difference since last saved point
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS_STATS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
-			loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimestamp * 1000);
-
-			new RequestJsonTask<LessonsStatsItem>(statsItemUpdateListener).executeTask(loadItem);
+			getFullStats(lastTimestamp);
 		}
+	}
+
+	private void getFullStats(long lastTimestamp) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS_STATS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		loadItem.addRequestParams(RestHelper.P_USERNAME, username);
+		loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimestamp);
+
+		new RequestJsonTask<LessonsStatsItem>(statsItemUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -248,7 +236,7 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 				}
 
 			} else {
-				QueryParams params = DbHelper.getTableForUser(username, DbScheme.Tables.LESSONS_GRAPH_STATS);
+				QueryParams params = DbHelper.getLessonsGraphItemForUser(username, lastTimestamp);
 				Cursor cursor = DbDataManager.query(getContentResolver(), params);
 
 				if (cursor != null && cursor.moveToFirst()) {
@@ -262,6 +250,7 @@ public class StatsGameLessonsFragment extends CommonLogicFragment implements Ada
 					cursor.close();
 				}
 			}
+
 			ratingGraphView.setGraphData(series, getView().getWidth());
 		}
 

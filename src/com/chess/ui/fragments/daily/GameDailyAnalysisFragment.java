@@ -243,11 +243,12 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			boardFace.setChess960(true);
-		}
+		boardFace.setChess960(currentGame.getGameType() != RestHelper.V_GAME_CHESS);
 
-		boardFace.setupBoard(currentGame.getStartingFenPosition());
+		if (boardFace.isChess960()) {// we need to setup only position not made moves.
+			// Daily games tournaments already include those moves in movesList
+			boardFace.setupBoard(currentGame.getStartingFenPosition());
+		}
 
 		boardFace.setReside(!userPlayWhite);
 

@@ -1,7 +1,6 @@
 package com.chess.ui.engine;
 
 import android.text.TextUtils;
-import android.util.Log;
 import com.chess.statics.Symbol;
 
 import java.util.HashMap;
@@ -52,6 +51,7 @@ public class MovesParser {
 	public static final String QUEENSIDE_CASTLING = "O-O-O";
 	public static final String QUEENSIDE_CASTLING_AND_CHECK = "O-O-O+";
 	public static final String MOVE_NUMBERS_PATTERN = "[0-9]{1,4}[.]";
+	public static final String SECOND_MOVE_NUMBERS_PATTERN = "[0-9]{1,2}\\.\\.\\.";
 
 	private static final int PAWN = 0;
 	private static final int KNIGHT = 1;
@@ -60,7 +60,7 @@ public class MovesParser {
 	private static final int QUEEN = 4;
 	private static final int KING = 5;
 	private static final CharSequence COMMENTS_SYMBOL_START = "{";
-	private static final CharSequence ALTERNATE_MOVES_SYMBOL_START = "(";
+	private static final CharSequence ALTERNATE_MOVES_SYMBOL_START = Symbol.LEFT_PAR;
 	public static final String SPECIAL_SYMBOLS_PATTERN = "[+,!,?,#,x,=,‼,⁇,⁉,⁈,□,∞,⩲,⩱,±,∓,−]";
 	public static final String TAG = "MovesParser";
 
@@ -350,7 +350,11 @@ public class MovesParser {
 			String comment;
 			if (firstIndex == 0) {
 				comment = movesList.substring(firstIndex, lastIndex);
+				movesList = movesList.replace(comment, Symbol.EMPTY);
+
+				comment = comment.replace("{", Symbol.EMPTY).replace("}", Symbol.EMPTY);
 				commentsMap.put("", comment); // TODO add logic to show comment before first move
+
 			} else {
 				String movesBeforeComment = movesList.substring(0, firstIndex - 1);
 				int indexOfMoveBeforeComment = movesBeforeComment.lastIndexOf(Symbol.SPACE);
@@ -365,7 +369,8 @@ public class MovesParser {
 
 				String keyForSpecialSymbol = " \\" + moveBeforeComment.trim();
 				if (annotationsMapping.containsKey(keyForSpecialSymbol)) {
-					// if it's a special symbol we need to copy actual move before that symbol and not just last special symbol which separated with space
+					// if it's a special symbol we need to copy actual move before that symbol and not just last special
+					// symbol which separated with space
 					movesBeforeComment = movesList.substring(0, firstIndex - 1);
 					indexOfMoveBeforeComment = movesBeforeComment.lastIndexOf(Symbol.SPACE);
 					String actualMoveBeforeComment = movesBeforeComment.substring(0, indexOfMoveBeforeComment);
@@ -378,10 +383,24 @@ public class MovesParser {
 							.replace(moveBeforeComment, annotationsMapping.get(keyForSpecialSymbol))
 							.trim();
 				}
-				commentsMap.put(moveBeforeComment, comment.replace("{",Symbol.EMPTY).replace("}", Symbol.EMPTY));
-			}
+				if (moveBeforeComment.contains(Symbol.LEFT_PAR)) {
 
-			movesList = movesList.replace(comment, Symbol.EMPTY);
+					movesBeforeComment = movesList.substring(0, firstIndex - 1);
+					indexOfMoveBeforeComment = movesBeforeComment.lastIndexOf(Symbol.SPACE);
+					String actualMoveBeforeComment = movesBeforeComment.substring(0, indexOfMoveBeforeComment);
+					int moveIndex = actualMoveBeforeComment.lastIndexOf(Symbol.SPACE);
+
+					if (moveIndex > 0) {
+						actualMoveBeforeComment = actualMoveBeforeComment.substring(moveIndex);
+					}
+					moveBeforeComment = actualMoveBeforeComment;
+				}
+
+				movesList = movesList.replace(comment, Symbol.EMPTY);
+
+				comment = comment.replace("{", Symbol.EMPTY).replace("}", Symbol.EMPTY);
+				commentsMap.put(moveBeforeComment, comment);
+			}
 		}
 		return commentsMap;
 	}
@@ -395,39 +414,36 @@ public class MovesParser {
 			movesList = movesList.replace(result, Symbol.EMPTY);
 		}
 
-		String newMovesList = Symbol.EMPTY;
 		if (!movesList.contains(ALTERNATE_MOVES_SYMBOL_START)) {
 			return movesList.trim();
 		}
+		movesList = removeAlternateMoves(movesList);
 
-		String[] parts = movesList.split("\\(");
-		Log.d(TAG, " ________________________________________________");
 
-		for (String part : parts) {
-			Log.d(TAG,"before parts = " + part );
-			if (part.contains(")")) {
-				// remove number duplication like  27.Bxb7 cxb2 ) 27...cxb2 28.Bc2 Be4 // here we remove 27...
-				part = part.replaceAll("[0-9]{1,2}\\.\\.\\.", Symbol.EMPTY);
-				String[] parts1 = part.split("\\)");
-				for (int i = 0; i < parts1.length; i++) {
-					String part1 = parts1[i];
-					Log.d(TAG, " part1 = " + part1);
-					if (i + 1 < parts1.length && !part.equals(Symbol.SPACE)) {
-						part = part.replace(part1 + ")", Symbol.EMPTY);
-					}
-				}
-			}
-			Log.d(TAG, "after parts = " + part);
-			newMovesList += part;
+
+		return movesList.trim();
+	}
+
+	public String removeAlternateMoves(String movesList) {
+		int start = movesList.indexOf(Symbol.LEFT_PAR);
+		int end = movesList.indexOf(Symbol.RIGHT_PAR);
+
+		// no need to parse anything
+		if (end == -1) {
+			return movesList;
 		}
-		newMovesList = newMovesList.replaceAll("\\(", Symbol.EMPTY);
-		newMovesList = newMovesList.replaceAll("\\)", Symbol.EMPTY);
-		newMovesList = newMovesList.replaceAll("\\.\\.", Symbol.EMPTY); // ".."
-		Log.d(TAG, " ------------------------------------------------");
-		Log.d(TAG, " RESULT movesList = " + movesList);
-		Log.d(TAG, " RESULT newMovesList = " + newMovesList);
+		String substring;
+		String clearMoves = Symbol.EMPTY;
+		// if closing parenthesis is closer then opening
+		if (end < start || (end > 0 && start == -1)) {
+			substring = movesList.substring(end + 1);
+		} else {
+			clearMoves = movesList.substring(0, start); // remove alternate moves and parse further
+			substring = movesList.substring(end + 1);
+		}
 
-		return newMovesList.trim();
+		String moves = removeAlternateMoves(substring);
+		return clearMoves + moves;
 	}
 
 	public String replaceSpecialSymbols(String movesList) {

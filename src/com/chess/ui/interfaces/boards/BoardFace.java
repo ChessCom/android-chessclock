@@ -81,6 +81,8 @@ public interface BoardFace {
 
 	void setChess960(boolean chess960);
 
+	boolean isChess960();
+
 	void setupCastlingPositions(String fen);
 
 	String getMoveListSAN();

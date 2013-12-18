@@ -181,7 +181,7 @@ public class RatingGraphView extends LinearLayout {
 	}
 
 	public void setGraphData(List<long[]> series, int width) {
-		if (width == 0) { // view was not initialized yet
+		if (width == 0 || series.size() == 0) { // view was not initialized yet
 			return;
 		}
 

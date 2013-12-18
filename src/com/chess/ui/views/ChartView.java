@@ -28,7 +28,7 @@ public class ChartView extends View {
 
 	private Paint graphPaint;
 	private Path graphPath;
-//	private int widthPixels;
+	//	private int widthPixels;
 	private float yAspect;
 	private int backColor;
 	private Paint borderPaint;
@@ -97,61 +97,6 @@ public class ChartView extends View {
 		textOffset = (int) (16 * density);
 	}
 
-	private void setPoints(List<long[]> dataArray, int widthPixels) {
-		{ // get min and max of X values
-			graphPath = null;
-			// remove
-			long firstPoint = dataArray.get(0)[TIME] - dataArray.get(0)[TIME] % MILLISECONDS_PER_DAY;
-
-			long lastPoint = System.currentTimeMillis();
-			lastPoint -= lastPoint % MILLISECONDS_PER_DAY;
-
-			// distribute timestamps at whole width
-			long xDiff = lastPoint - firstPoint;
-			long xPointStep = xDiff / widthPixels;
-			logTest("firstPoint = " + firstPoint + " lastPoint = " + lastPoint + " xDiff = " + xDiff + " xPointStep = " + xPointStep);
-
-			// convert xPointStep to optimal day{time} difference
-			pointsArray = new SparseArray<Long>();
-			pointsExistArray = new SparseBooleanArray();
-
-			for (int i = 0; i < widthPixels; i++) {
-				long timestampValue = firstPoint + i * xPointStep;
-				timestampValue -= timestampValue % MILLISECONDS_PER_DAY;
-
-				boolean found = false;
-				long graphTimestamp;
-				for (long[] aDataArray : dataArray) {
-					graphTimestamp = aDataArray[TIME] - aDataArray[TIME] % MILLISECONDS_PER_DAY;
-
-					long rating = aDataArray[VALUE];
-//					logTest(" data rating = " + rating);
-					if ((timestampValue - graphTimestamp) >= 0 && (timestampValue - graphTimestamp) < (xPointStep * 2)) {
-						pointsArray.put(i, rating);
-						found = true;
-						break;
-					}
-				}
-
-				pointsExistArray.put(i, found);
-			}
-		}
-
-		{// get min and max of Y values
-			minY = Integer.MAX_VALUE;
-			maxY = Integer.MIN_VALUE;
-
-			for (long[] longs : dataArray) {
-				int yValue = (int) longs[VALUE];
-				minY = Math.min(minY, yValue);
-				maxY = Math.max(maxY, yValue);
-			}
-			originalMinY = minY;
-		}
-//		logTest("minY = " + minY + " maxY = " + maxY + " originalMinY = " + originalMinY);
-
-		initialized = true;
-	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -182,6 +127,73 @@ public class ChartView extends View {
 		// Top Line
 		canvas.drawLine(0, bottom, width, bottom, borderPaint);
 
+	}
+
+	private void logTest(String string) {
+		Log.d("TEST", string);
+	}
+
+	public void setGraphData(List<long[]> series, int width) {
+		setPoints(series, width);
+		invalidate();
+	}
+
+	private void setPoints(List<long[]> dataArray, int widthPixels) {
+		{ // get min and max of X values
+			graphPath = null;
+			// truncate hours and minutes and seconds from date
+			long firstPoint = dataArray.get(0)[TIME] - dataArray.get(0)[TIME] % MILLISECONDS_PER_DAY;
+
+			long lastPoint = System.currentTimeMillis();
+			lastPoint -= lastPoint % MILLISECONDS_PER_DAY;
+
+			// distribute timestamps at whole width
+			long xDiff = lastPoint - firstPoint;
+			long xPointStep = xDiff / widthPixels;
+//			logTest("firstPoint = " + firstPoint + " lastPoint = " + lastPoint + " xDiff = " + xDiff + " xPointStep = " + xPointStep);
+
+			// convert xPointStep to optimal day{time} difference
+			pointsArray = new SparseArray<Long>();
+			pointsExistArray = new SparseBooleanArray();
+
+			for (int i = 0; i < widthPixels; i++) {
+				long timestampValue = firstPoint + i * xPointStep;
+				timestampValue -= timestampValue % MILLISECONDS_PER_DAY;
+
+				boolean found = false;
+				long graphTimestamp;
+				for (long[] aDataArray : dataArray) {
+					graphTimestamp = aDataArray[TIME] - aDataArray[TIME] % MILLISECONDS_PER_DAY;
+
+					long rating = aDataArray[VALUE];
+//					logTest(" point at i = " + i + " added = "
+//							+ ((timestampValue - graphTimestamp) >= 0 && (timestampValue - graphTimestamp) < (xPointStep * 2)));
+//					logTest(" graphTimestamp = " + graphTimestamp);
+					if ((timestampValue - graphTimestamp) >= 0 && (timestampValue - graphTimestamp) < (xPointStep * 2)) {
+						pointsArray.put(i, rating);
+						found = true;
+						break;
+					}
+				}
+
+				pointsExistArray.put(i, found);
+			}
+		}
+
+		{// get min and max of Y values
+			minY = Integer.MAX_VALUE;
+			maxY = Integer.MIN_VALUE;
+
+			for (long[] longs : dataArray) {
+				int yValue = (int) longs[VALUE];
+				minY = Math.min(minY, yValue);
+				maxY = Math.max(maxY, yValue);
+			}
+			originalMinY = minY;
+		}
+//		logTest("minY = " + minY + " maxY = " + maxY + " originalMinY = " + originalMinY);
+
+		initialized = true;
 	}
 
 	private void createGraphPath(Canvas canvas) {
@@ -219,7 +231,11 @@ public class ChartView extends View {
 	private Path createGraphPath(int height, int widthPixels) {
 		Path path = new Path();
 
-		long yValue = pointsArray.get(0) - minY;
+		Long startPoint = pointsArray.get(0);
+		if (startPoint == null) {// this might be caused by empty data array on the input
+			startPoint = 1200L;
+		}
+		long yValue = startPoint - minY;
 		path.moveTo(0, height - yValue / yAspect);
 		path.lineTo(0, height - yValue / yAspect);
 		for (int i = 0; i < widthPixels; i++) {
@@ -235,14 +251,5 @@ public class ChartView extends View {
 		path.close();
 
 		return path;
-	}
-
-	private void logTest(String string) {
-		Log.d("TEST", string);
-	}
-
-	public void setGraphData(List<long[]> series, int width) {
-		setPoints(series, width);
-		invalidate();
 	}
 }

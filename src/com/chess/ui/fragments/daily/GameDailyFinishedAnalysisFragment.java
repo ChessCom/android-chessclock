@@ -135,13 +135,13 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			boardFace.setChess960(true);
+		boardFace.setChess960(currentGame.getGameType() != RestHelper.V_GAME_CHESS);
+
+		if (boardFace.isChess960()) {// we need to setup only position not made moves.
+			// Daily games tournaments already include those moves in movesList
+			boardFace.setupBoard(currentGame.getStartingFenPosition());
 		}
 
-		boardFace.setupBoard(currentGame.getStartingFenPosition()); // We need to pass fen for chess960 games
-		// if we pass FEN like this rn1qkbnr/pp2pppp/2p5/5b2/3PN3/8/PPP2PPP/R1BQKBNR, and them moveslist that lead
-		// to this position, it fails to load properly
 		boardFace.setReside(!userPlayWhite);
 
 		boardFace.checkAndParseMovesList(currentGame.getMoveList());

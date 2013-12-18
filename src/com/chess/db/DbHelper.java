@@ -334,6 +334,16 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	/* Lessons Graph*/
+	public static QueryParams getLessonsGraphItemForUser(String username, long timestamp) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LESSONS_GRAPH_STATS.ordinal()]);
+		queryParams.setSelection(DbDataManager.createSelectionForTimestampAndUser());
+		queryParams.setArguments(new String[]{String.valueOf(timestamp), username});
+		queryParams.setOrder(DbScheme.V_TIMESTAMP + DbDataManager.ASCEND);
+		return queryParams;
+	}
+
 	/* Explorer */
 	public static QueryParams getExplorerMovesForFen(String fen) {
 		QueryParams queryParams = new QueryParams();

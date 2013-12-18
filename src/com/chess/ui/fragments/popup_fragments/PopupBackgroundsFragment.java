@@ -27,7 +27,6 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
 import com.chess.statics.AppData;
-import com.chess.statics.StaticData;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -77,9 +76,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		super.onCreate(savedInstanceState);
 		setStyle(STYLE_NO_TITLE, 0);
 
-		if (StaticData.USE_TABLETS) {
-			isTablet = AppUtils.is7InchTablet(getActivity()) || AppUtils.is10InchTablet(getActivity());
-		}
+		isTablet = AppUtils.isTablet(getActivity());
 
 		if (getArguments() != null) {
 			themeItem = getArguments().getParcelable(THEME_ITEM);
@@ -151,6 +148,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 					backgroundsThemeList.add(DbDataManager.getThemeBackgroundItemFromCursor(cursor));
 				} while (cursor.moveToNext());
 				cursor.close();
+				updateUiData();
 			} else {
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.getInstance().CMD_BACKGROUNDS);

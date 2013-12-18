@@ -154,7 +154,7 @@ public class ChessBoard implements BoardFace {
 			3, 1, 2, 4, 5, 2, 1, 3
 	};
 
-	final char pieceChar[] = {'P', 'N', 'B', 'R', 'Q', 'K'};
+	final char pieceChars[] = {'P', 'N', 'B', 'R', 'Q', 'K'};
 									 // PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING
 	private boolean possibleToSlide[] = {false, false, true, true, true, false};
 	                      // PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING
@@ -808,7 +808,7 @@ public class ChessBoard implements BoardFace {
 		backupHistory(move, castleMaskPosition);
 
 		histDat[ply].notation = getMoveSAN();
-		++ply;
+		ply++;
 
 		// update the castle,
 		updateCastling(move, castleMaskPosition);
@@ -867,6 +867,7 @@ public class ChessBoard implements BoardFace {
 			pieces[move.to] = pieces[move.from];
 		}
 
+		// mark moved square as empty
 		colors[move.from] = EMPTY;
 		pieces[move.from] = EMPTY;
 
@@ -1496,8 +1497,8 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public String[] getNotationArray() {
-		String[] output = new String[movesCount];
-		for (int i = 0; i < movesCount; i++) {
+		String[] output = new String[ply];
+		for (int i = 0; i < ply; i++) {
 			output[i] = histDat[i].notation;
 		}
 		return output;
@@ -1713,21 +1714,23 @@ public class ChessBoard implements BoardFace {
 		StringBuilder sb = new StringBuilder("\n8 ");
 		for (int pos = 0; pos < SQUARES_CNT; ++pos) {
 			int pieceCode = pieces[pos];
-			char pieceChar = this.pieceChar[pieceCode];
+//			Log.e("TEST", "pieceCode = " + pieceCode);
 			switch (colors[pos]) {
 				case EMPTY:
 					sb.append(" .");
 					break;
 				case WHITE_SIDE:
+					char pieceChar = pieceChars[pieceCode];
 					sb.append(Symbol.SPACE);
 					sb.append(pieceChar);
 					break;
 				case BLACK_SIDE:
 					sb.append(Symbol.SPACE);
+					pieceChar = pieceChars[pieceCode];
 					sb.append((char) (pieceChar + ('a' - 'A')));
 					break;
 				default:
-					throw new IllegalStateException("Square not EMPTY, WHITE_SIDE or BLACK_SIDE: " + pos);
+					throw new IllegalStateException("Square NOT EMPTY, WHITE_SIDE or BLACK_SIDE: " + pos);
 			}
 			if ((pos + 1) % 8 == 0 && pos != 63) {
 				sb.append("\n");
@@ -1735,7 +1738,7 @@ public class ChessBoard implements BoardFace {
 				sb.append(Symbol.SPACE);
 			}
 		}
-		sb.append("\n\n   a b c d e f g h\n\n");
+		sb.append("\n\n___a b c d e f g h\n\n");
 		return sb.toString();
 	}
 
@@ -1877,7 +1880,10 @@ public class ChessBoard implements BoardFace {
 
 			setMovesCount(moves.length);
 			for (String move : moves) {
+//				Log.d("TEST", " before move = " + move + " board = " + this.toString());
+
 				makeMove(move, false);
+//				Log.d("TEST", " after move " + move + " board = " + this.toString());
 			}
 			return true;
 		} else {
@@ -1958,6 +1964,11 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public void setChess960(boolean chess960) {
 		this.chess960 = chess960;
+	}
+
+	@Override
+	public boolean isChess960() {
+		return chess960;
 	}
 
 	@Override
@@ -2070,7 +2081,7 @@ public class ChessBoard implements BoardFace {
 			colors = colorsBackup;
 		}
 
-		Log.d("validmoves", "generated validMoves.size() " + validMoves.size());
+//		Log.d("validmoves", "generated validMoves.size() " + validMoves.size());
 
 		return validMoves;
 	}

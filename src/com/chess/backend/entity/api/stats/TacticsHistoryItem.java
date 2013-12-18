@@ -123,6 +123,16 @@ public class TacticsHistoryItem extends BaseResponseItem<TacticsHistoryItem.Data
 			public void setDayCloseRating(int day_close_rating) {
 				this.day_close_rating = day_close_rating;
 			}
+
+			public DailyStats copy(){
+				DailyStats newStats = new DailyStats();
+				newStats.timestamp = timestamp;
+				newStats.day_open_rating = day_open_rating;
+				newStats.day_high_rating = day_high_rating;
+				newStats.day_low_rating = day_low_rating;
+				newStats.day_close_rating = day_close_rating;
+				return newStats;
+			}
 		}
 
 		public static class RecentProblem {

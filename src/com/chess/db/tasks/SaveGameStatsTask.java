@@ -12,6 +12,7 @@ import com.chess.db.DbScheme;
 import com.chess.statics.StaticData;
 import com.chess.ui.views.ChartView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.chess.db.DbScheme.*;
@@ -101,12 +102,14 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 
 		List<long[]> series = item.getGraphData().getSeries();
 		if (series == null) {
-			return;
+			series = new ArrayList<long[]>();
+			long rating = minY + (maxX - minY) / 2;
+			series.add(new long[]{System.currentTimeMillis() / 1000 - 1000, rating}); // add some random timestamp
 		}
 
 		if (series.size() > 0) {
 			// add one more for today to avoid unnecessary load
-			series.add(new long[]{System.currentTimeMillis(), series.get(series.size() - 1)[ChartView.VALUE]});
+			series.add(new long[]{System.currentTimeMillis() / 1000, series.get(series.size() - 1)[ChartView.VALUE]});
 		}
 
 		for (long[] graphPoints : series) {

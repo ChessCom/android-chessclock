@@ -60,7 +60,9 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 	public void onResume() {
 		super.onResume();
 
-		getDialog().setCanceledOnTouchOutside(true); // always cancel on touchOutside
+		if (getDialog() != null) {
+			getDialog().setCanceledOnTouchOutside(true); // always cancel on touchOutside
+		}
 
 		buttonsNumber = popupItem.getButtons();
 		if (buttonsNumber == 0) {

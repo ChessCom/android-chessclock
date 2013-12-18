@@ -11,6 +11,7 @@ import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.statics.StaticData;
+import com.chess.ui.views.ChartView;
 
 import java.util.List;
 
@@ -70,7 +71,12 @@ public class SaveLessonsStatsTask extends AbstractUpdateTask<LessonsStatsItem.Da
 		// save graph data
 		GraphData graphData = item.getGraph_data();
 		if (graphData != null) {
-			for (long[] graphPoints : graphData.getSeries()) {
+			List<long[]> series = graphData.getSeries();
+			if (series.size() > 0) {
+				series.add(new long[]{System.currentTimeMillis() / 1000, series.get(series.size() - 1)[ChartView.VALUE]});
+			}
+
+			for (long[] graphPoints : series) {
 
 				long timestamp = graphPoints[TIMESTAMP];
 				final String[] arguments = sArguments2;

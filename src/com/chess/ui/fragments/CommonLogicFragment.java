@@ -79,9 +79,6 @@ import static com.chess.statics.AppConstants.*;
 public abstract class CommonLogicFragment extends BasePopupsFragment implements View.OnClickListener,
 		PullToRefreshAttacher.OnRefreshListener, Session.StatusCallback {
 
-	private static final int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
-	private static final int SIGNIN_CALLBACK_CODE = 16;
-	protected static final long FACEBOOK_DELAY = 200;
 	private static final int MIN_USERNAME_LENGTH = 3;
 	private static final int MAX_USERNAME_LENGTH = 20;
 	private static final String IMAGE_CACHE_DIR = "thumbs";
@@ -111,8 +108,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private static final long PULL_TO_UPDATE_RELEASE_DELAY = 1000;
 
 	private LoginUpdateListener loginUpdateListener;
+	private LoginUpdateListener facebookLoginUpdateListener;
 
-	private int loginReturnCode;
 	private ActiveFragmentInterface activityFace;
 	protected static Handler handler;
 	private EditText loginUsernameEdt;
@@ -248,6 +245,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		updateSlidingMenuState();
 
 		loginUpdateListener = new LoginUpdateListener();
+		facebookLoginUpdateListener = new LoginUpdateListener(LoginUpdateListener.FACEBOOK);
 
 		LoginButton facebookButton = (LoginButton) getView().findViewById(R.id.fb_connect);
 		if (facebookButton != null) {
@@ -402,7 +400,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected void onSessionStateChange(Session session, SessionState state, Exception exception) {
 		if (state != null && state.isOpened()) {
-			loginWithFacebook(session);
+			loginWithFacebook(session.getAccessToken());
 		} else if (exception != null) {
 			logTest(exception.getMessage());
 			showToast(exception.getMessage());
@@ -410,20 +408,18 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 	}
 
-	private void loginWithFacebook(Session session) {
-		// save facebook access token to appData for future re-login
-		getAppData().setFacebookToken(session.getAccessToken());
+	private void loginWithFacebook(String accessToken) {
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, session.getAccessToken());
+		loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, accessToken);
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_TACTICS_RATING);
 
-		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
-		loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
+		facebookLoginUpdateListener.setFacebookToken(accessToken);
+		new RequestJsonTask<LoginItem>(facebookLoginUpdateListener).executeTask(loadItem);
 	}
 
 	protected void setLoginFields(EditText passedUsernameEdt, EditText passedPasswordEdt) {
@@ -487,8 +483,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
 
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
-
-		loginReturnCode = SIGNIN_CALLBACK_CODE;
 	}
 
 	protected void signInUser(EditText loginUsernameEdt, EditText passwordEdt) {
@@ -518,8 +512,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
 
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
-
-		loginReturnCode = SIGNIN_CALLBACK_CODE;
 	}
 
 	@Override
@@ -650,16 +642,25 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	private class LoginUpdateListener extends ChessLoadUpdateListener<LoginItem> {
+
+		public static final int FACEBOOK = 1;
+		private int loginReturnCode;
+		private String facebookToken;
+
 		public LoginUpdateListener() {
 			super(LoginItem.class);
 		}
 
+		public LoginUpdateListener(int loginReturnCode) {
+			super(LoginItem.class);
+
+			this.loginReturnCode = loginReturnCode;
+		}
+
 		@Override
 		public void updateData(LoginItem returnedObj) {
-			if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE) {
-				FlurryAgent.logEvent(FlurryData.FB_LOGIN);
-			}
 			String username = returnedObj.getData().getUsername();
+
 			if (!TextUtils.isEmpty(username)) {
 				preferencesEditor.putString(USERNAME, username);
 			}
@@ -673,6 +674,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 			preferencesEditor.putInt(username + USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
 			preferencesEditor.putString(LIVE_SESSION_ID, returnedObj.getData().getSessionId());
+			preferencesEditor.commit();
+
+			if (loginReturnCode == FACEBOOK) {
+				FlurryAgent.logEvent(FlurryData.FB_LOGIN);
+				// save facebook access token to appData for future re-login
+				getAppData().setFacebookToken(facebookToken);
+			}
 			processLogin(returnedObj.getData());
 		}
 
@@ -705,6 +713,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 						break;
 				}
 			}
+		}
+
+		public void setFacebookToken(String facebookToken) {
+			this.facebookToken = facebookToken;
 		}
 	}
 
@@ -999,6 +1011,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void loadRecentOpponents() {
+		if (inviteFriendView1 == null) { // if widgets ini wasn't called yet, we skip
+			return;
+		}
+
 		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());// TODO load avatars
 		if (cursor != null && cursor.moveToFirst()) {
 			if (cursor.getCount() > 1) {

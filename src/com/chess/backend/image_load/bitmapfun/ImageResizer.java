@@ -192,7 +192,13 @@ public class ImageResizer extends ImageWorker {
             addInBitmapOptions(options, cache);
         }
 
-        return BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+		Bitmap bitmap = null;
+		try {
+			bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor, null, options);
+		} catch (OutOfMemoryError ignore) {
+
+		}
+        return bitmap;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

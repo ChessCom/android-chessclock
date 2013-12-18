@@ -632,8 +632,8 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 	private boolean drawPieceOnCanvas(Canvas canvas, BoardFace boardFace, int pos) {
 		int color = boardFace.getColor(pos);
 		int piece = boardFace.getPiece(pos);
-		int column = ChessBoard.getColumn(pos, boardFace.isReside());
-		int row = ChessBoard.getRow(pos, boardFace.isReside());
+		int file = ChessBoard.getColumn(pos, boardFace.isReside());
+		int rank = ChessBoard.getRow(pos, boardFace.isReside());
 		// TODO rework logic to store changed pieces and redraw only them
 		if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {    // here is the simple replace/redraw of piece // draw it bit inside of square
 			Bitmap pieceBitmap = getPieceBitmap(color, piece);
@@ -643,12 +643,12 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			}
 
 			// calculate piece size bounds
-			int left = (int) (column * squareSize + pieceInset);
-			int right = (int) (column * squareSize + squareSize - pieceInset);
-			int bottom = (int) (row * squareSize + squareSize - pieceInset);
-			int top = (int) (row * squareSize + pieceInset);
+			int left = (int) (file * squareSize + pieceInset);
+			int right = (int) (file * squareSize + squareSize - pieceInset);
+			int bottom = (int) (rank * squareSize + squareSize - pieceInset);
+			int top = (int) (rank * squareSize + pieceInset);
 			if (use3dPieces) {
-				top = (int) (row * squareSize + pieceInset - _3dPiecesOffset);
+				top = (int) (rank * squareSize + pieceInset - _3dPiecesOffset);
 				top = adjustHeightFor3dPiece(pieceBitmap, bottom, top, piece);
 			}
 
@@ -1792,11 +1792,14 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 			fromPiece = boardFace.getPiece(moveFromPosition);
 
 			if (fromPiece == ChessBoard.EMPTY) {
-//				throw new IllegalArgumentException("fromPiece can't be EMPTY square here, check Move generation object. move is " + move);
+//				throw new IllegalArgumentException("fromPiece can't be EMPTY square here, check Move generation object." +
+//						" move is " + move + " board is " + boardFace);
 				fromPiece = ChessBoard.PAWN; // TODO fix real problem
 			}
 			if (fromColor == ChessBoard.EMPTY) {
-				fromColor = 0;
+//				throw new IllegalArgumentException("fromColor can't be EMPTY square here, check Move generation object. " +
+//						"move is " + move + " board is " + boardFace);
+				fromColor = 0; // TODO fix real problem
 			}
 
 			if (pieceBitmap != null) {

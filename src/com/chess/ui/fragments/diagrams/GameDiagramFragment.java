@@ -337,13 +337,13 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 		// get next valid move
 		final Move move = boardFace.convertMoveAlgebraic(boardFace.getPuzzleMoves()[hintMoveNumber]);
-		boardFace.setMovesCount(boardFace.getMovesCount() + hintMoveNumber);
-
 		// play move animation
 		boardView.setMoveAnimator(move, true);
 		boardView.resetValidMoves();
 		// make actual move
 		boardFace.makeMove(move, true);
+		boardFace.setMovesCount(boardFace.getPly() + hintMoveNumber);
+
 		invalidateGameScreen();
 
 		// restore move back
@@ -376,13 +376,14 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		}
 		// get next valid move
 		final Move move = boardFace.convertMoveAlgebraic(boardFace.getPuzzleMoves()[currentPuzzleAnswerCnt]);
-		boardFace.setMovesCount(boardFace.getMovesCount() + currentPuzzleAnswerCnt);
+		boardFace.setMovesCount(boardFace.getPly() + currentPuzzleAnswerCnt);
 
 		// play move animation
 		boardView.setMoveAnimator(move, true);
 		boardView.resetValidMoves();
 		// make actual move
 		boardFace.makeMove(move, true);
+
 		invalidateGameScreen();
 
 		currentPuzzleAnswerCnt++;
@@ -410,13 +411,14 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 			// get next valid move
 			final Move move = boardFace.convertMoveAlgebraic(boardFace.getPuzzleMoves()[currentPuzzleAnswerCnt]);
-			boardFace.setMovesCount(boardFace.getMovesCount() + currentPuzzleAnswerCnt);
+			boardFace.setMovesCount(boardFace.getPly() + currentPuzzleAnswerCnt);
 
 			// play move animation
 			boardView.setMoveAnimator(move, true);
 			boardView.resetValidMoves();
 			// make actual move
 			boardFace.makeMove(move, true);
+//			boardFace.setMovesCount();
 			invalidateGameScreen();
 
 			currentPuzzleAnswerCnt++;
@@ -430,34 +432,14 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 		userPlayWhite = !diagramItem.isFlip();
 
-		if (userPlayWhite) {
-			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-			moveResultTxt.setText(R.string.white_to_move);
-		} else {
-			moveResultTxt.setText(R.string.black_to_move);
-			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
-		}
-
 		diagramItem.fillLabelsConfig(labelsConfig);
-//		labelsConfig.topPlayerName = diagramItem.getTopPlayer();
-//		labelsConfig.topPlayerRating = "----";
-//		labelsConfig.bottomPlayerName = getUsername();
-//		labelsConfig.bottomPlayerRating = "----";
-//		labelsConfig.topPlayerAvatar = "";
-//		labelsConfig.bottomPlayerAvatar = getAppData().getUserAvatar();
-//		labelsConfig.topPlayerCountry = "International";
-//		labelsConfig.bottomPlayerCountry = getAppData().getUserCountry();
-//		labelsConfig.topPlayerPremiumStatus = 0;
-//		labelsConfig.bottomPlayerPremiumStatus = getAppData().getUserPremiumStatus();
 
 		getControlsView().enableGameControls(true);
 		boardView.lockBoard(false);
 
 		boardFace.setFinished(false);
 
-		if (diagramItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			boardFace.setChess960(true);
-		}
+		boardFace.setChess960(diagramItem.getGameType() != RestHelper.V_GAME_CHESS);
 
 		String fen = diagramItem.getFen();
 		boardFace.setupBoard(fen);
@@ -465,6 +447,19 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		// revert reside back, because for diagrams white is always at bottom
 		if (!TextUtils.isEmpty(fen) && !fen.contains(FenHelper.WHITE_TO_MOVE)) {
 			boardFace.setReside(!boardFace.isReside());
+		}
+
+		if (isPuzzle) { // if user should do first move
+			boolean userNextMoveAsBlack = !fen.contains(FenHelper.WHITE_TO_MOVE);
+			userPlayWhite = !userNextMoveAsBlack;
+		}
+
+		if (userPlayWhite) {
+			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+			moveResultTxt.setText(R.string.white_to_move);
+		} else {
+			moveResultTxt.setText(R.string.black_to_move);
+			labelsConfig.userSide = ChessBoard.BLACK_SIDE;
 		}
 
 		boardFace.setReside(diagramItem.isFlip());
@@ -480,6 +475,8 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 				getControlsView().showPuzzle();
 				getNotationsView().setVisibility(View.GONE);
 				boardFace.setPuzzleMoves(movesList);
+
+
 			} else {
 				moveResultTxt.setVisibility(View.INVISIBLE);
 				getNotationsView().setVisibility(View.VISIBLE);

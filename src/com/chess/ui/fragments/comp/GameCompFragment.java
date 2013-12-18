@@ -380,12 +380,17 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public void onGameStarted(final int currentMovePosition) {
-//		Log.d(CompEngineHelper.TAG, " onGameStarted " + currentMovePosition);
+		if (getActivity() == null) {
+			return;
+		}
 
 		boardView.updateBoardPosition(currentMovePosition);
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
 				invalidateGameScreen();
 				controlsView.enableHintButton(true);
 				boardView.invalidate();

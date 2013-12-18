@@ -122,9 +122,8 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	private void adjustBoardForGame() {
-		if (explorerItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			getBoardFace().setChess960(true);
-		}
+		getBoardFace().setChess960(explorerItem.getGameType() != RestHelper.V_GAME_CHESS);
+
 		invalidateGameScreen();
 	}
 

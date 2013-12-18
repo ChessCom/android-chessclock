@@ -20,20 +20,21 @@ public class ChessBoardDiagram extends ChessBoard implements PuzzlesBoardFace {
 	}
 
 	public static ChessBoardDiagram getInstance(GameFace gameFace) {
-		if (instance == null ) {
+		if (instance == null) {
 			instance = new ChessBoardDiagram(gameFace);
 		}
 		return instance;
 	}
 
-	public static void resetInstance(){
+	public static void resetInstance() {
 		instance = null;
 	}
 
 	@Override
 	public void setPuzzleMoves(String moveList) {
-		moveList =  movesParser.replaceSpecialSymbols(moveList);
+		moveList = movesParser.replaceSpecialSymbols(moveList);
 		puzzleMoves = moveList.replaceAll(MovesParser.MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
+				.replaceAll("\\.\\.", Symbol.EMPTY)
 				.replaceAll(DOUBLE_SPACE, Symbol.SPACE)
 				.replaceAll(DOUBLE_SPACE, Symbol.SPACE)
 				.trim().split(Symbol.SPACE);

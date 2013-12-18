@@ -103,7 +103,10 @@ public class HomeLearnFragment extends CommonLogicFragment {
 		// Lessons
 		lessonTitleTxt = (TextView) view.findViewById(R.id.lessonTitleTxt);
 		lessonsRatingTxt = (TextView) view.findViewById(R.id.lessonsRatingTxt);
-		lessonsRatingTxt.setText(String.valueOf(getAppData().getUserLessonsRating()));
+		if (!isNeedToUpgrade()) {
+			lessonsRatingTxt.setText(String.valueOf(getAppData().getUserLessonsRating()));
+		}
+
 
 		// Videos
 		headerView = view.findViewById(R.id.videoThumbItemView);
@@ -180,11 +183,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 				getActivityFace().openFragment(new VideosFragmentTablet());
 			}
 		} else if (id == R.id.startTacticsBtn) {
-//			if (!isTablet) {
-				getActivityFace().openFragment(new GameTacticsFragment());
-//			} else {
-//				getActivityFace().openFragment(new GameTacticsFragmentTablet());
-//			}
+			getActivityFace().openFragment(new GameTacticsFragment());
 		} else if (id == R.id.startLessonsBtn) {
 			if (incompleteLesson != null) {
 				int lessonId = incompleteLesson.getId();
@@ -226,9 +225,13 @@ public class HomeLearnFragment extends CommonLogicFragment {
 			todaysAttemptsValueTxt.setText(String.valueOf(tacticsTodaysAttempts));
 			avgScoreValueTxt.setText(String.valueOf(todaysAverageScore) + Symbol.PERCENT);
 
-			// Load lessons ratings
-			LoadItem loadItem = LoadHelper.getLessonsRating(getUserToken());
-			new RequestJsonTask<LessonsRatingItem>(lessonsRatingUpdateListener).executeTask(loadItem);
+			if (!isNeedToUpgrade()) {
+				// Load lessons ratings
+				LoadItem loadItem = LoadHelper.getLessonsRating(getUserToken());
+				new RequestJsonTask<LessonsRatingItem>(lessonsRatingUpdateListener).executeTask(loadItem);
+			} else {
+				lessonsRatingTxt.setText(Symbol.EMPTY);
+			}
 		}
 	}
 

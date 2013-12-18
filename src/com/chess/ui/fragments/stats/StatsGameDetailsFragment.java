@@ -224,7 +224,6 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 
 		int lightGrey = getResources().getColor(R.color.stats_label_light_grey);
 		foregroundSpan = new ForegroundColorSpan(lightGrey);
-
 	}
 
 	private void loadFromDb() {

@@ -29,8 +29,6 @@ import com.chess.utilities.AppUtils;
  */
 public class ProfileTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener {
 
-
-	private static final String USERNAME = "username";
 	private int photoImageSize;
 	private String username;
 	private UserUpdateListener userUpdateListener;
@@ -140,13 +138,14 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 	}
 
 	private void changeInternalFragment(Fragment fragment) {
+		String simpleName = fragment.getClass().getSimpleName();
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.tab_content_frame, fragment, fragment.getClass().getSimpleName());
-		transaction.addToBackStack(fragment.getClass().getSimpleName());
+		transaction.replace(R.id.tab_content_frame, fragment, simpleName);
+		transaction.addToBackStack(simpleName);
 		transaction.commit();
 	}
 
-	private class UserUpdateListener extends ChessLoadUpdateListener<UserItem> {
+	private class UserUpdateListener extends ChessUpdateListener<UserItem> {
 
 		public UserUpdateListener() {
 			super(UserItem.class);

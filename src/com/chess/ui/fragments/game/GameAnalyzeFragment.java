@@ -168,9 +168,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		bottomPanelView.showTimeLeftIcon(false);
 
 		BoardFace boardFace = getBoardFace();
-		if (analysisItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			boardFace.setChess960(true);
-		}
+		boardFace.setChess960(analysisItem.getGameType() != RestHelper.V_GAME_CHESS);
 
 		if (TextUtils.isEmpty(analysisItem.getMovesList())) {  // don't parse FEN if we have movesList
 			boardFace.setupBoard(analysisItem.getFen());

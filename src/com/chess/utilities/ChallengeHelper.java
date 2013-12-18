@@ -53,7 +53,7 @@ public class ChallengeHelper {
 
 	// array positions
 	private static final int DAY_1 = 0; // 1 day
-	private static final int DAY_2 = 1; // 3 days
+	private static final int DAY_2 = 2; // 3 days
 	private static final int DAY_3 = 4; // 7 days
 
 	private static final int LIVE_1_1 = 4; // 5 | 15

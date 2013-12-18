@@ -107,13 +107,12 @@ public class AppData {
 	}
 
 	public void setFacebookToken(String value) {
-		editor.putString(FACEBOOK_TOKEN, value).commit();
+		setStringValue(FACEBOOK_TOKEN, value);
 	}
 
 	public String getFacebookToken() {
-		return preferences.getString(FACEBOOK_TOKEN, Symbol.EMPTY);
+		return getStringValue(FACEBOOK_TOKEN, Symbol.EMPTY);
 	}
-
 
 	public void setBackgroundSetId(int value) {
 		setIntValue(PREF_BACKGROUND_SET, value);

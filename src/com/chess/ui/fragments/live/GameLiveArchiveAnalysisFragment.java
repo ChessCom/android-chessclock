@@ -3,7 +3,6 @@ package com.chess.ui.fragments.live;
 import android.database.Cursor;
 import android.os.Bundle;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.LiveArchiveGameData;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.db.DbDataManager;
@@ -132,11 +131,12 @@ public class GameLiveArchiveAnalysisFragment extends GameDailyAnalysisFragment {
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			boardFace.setChess960(true);
-		}
-
-		boardFace.setupBoard(currentGame.getStartingFenPosition());
+//		boardFace.setChess960(currentGame.getGameType() != RestHelper.V_GAME_CHESS); // i don't this we will use it here
+//
+//		if (boardFace.isChess960()) {// we need to setup only position not made moves.
+//			// Daily games tournaments already include those moves in movesList
+//			boardFace.setupBoard(currentGame.getStartingFenPosition());
+//		}
 		boardFace.setReside(!userPlayWhite);
 
 		boardFace.checkAndParseMovesList(currentGame.getMoveList());

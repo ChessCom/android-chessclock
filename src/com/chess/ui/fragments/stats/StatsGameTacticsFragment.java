@@ -175,14 +175,18 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimestamp - oneDay) {
 			updateUiData();
 		} else { // else we only load difference since last saved point
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS_STATS);
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-			loadItem.addRequestParams(RestHelper.P_USERNAME, username);
-			loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimestamp);
-
-			new RequestJsonTask<TacticsHistoryItem>(statsItemUpdateListener).executeTask(loadItem);
+			getFullStats(lastTimestamp);
 		}
+	}
+
+	private void getFullStats(long lastTimestamp) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTICS_STATS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		loadItem.addRequestParams(RestHelper.P_USERNAME, username);
+		loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimestamp);
+
+		new RequestJsonTask<TacticsHistoryItem>(statsItemUpdateListener).executeTask(loadItem);
 	}
 
 	@Override
@@ -241,9 +245,8 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 				Cursor cursor = DbDataManager.query(getContentResolver(), params);
 
 				if (cursor != null && cursor.moveToFirst()) {
-
 					do {
-						long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP) * 1000L;
+						long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP) * 1000;
 						int rating = DbDataManager.getInt(cursor, DbScheme.V_CLOSE_RATING);
 
 						long[] point = new long[]{timestamp, rating};

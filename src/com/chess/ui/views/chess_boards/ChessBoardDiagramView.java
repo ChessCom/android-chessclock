@@ -47,15 +47,12 @@ public class ChessBoardDiagramView extends ChessBoardBaseView implements BoardVi
 
 	@Override
 	public void afterUserMove() {
-
 		super.afterUserMove();
 
 		getBoardFace().setMovesCount(getBoardFace().getPly());
 		gameDiagramFace.invalidateGameScreen();
 
 		gameDiagramFace.verifyMove();
-
-//		isGameOver();
 	}
 
 
