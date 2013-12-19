@@ -101,7 +101,6 @@ public class LccChallengeListener implements ChallengeListener {
 		} else {
 			lccHelper.addPendingWarning(warning, by);
 		}
-
 	}
 
 	@Override

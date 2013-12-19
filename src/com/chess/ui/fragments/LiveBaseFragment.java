@@ -162,6 +162,13 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	}
 
 	public void onLiveClientConnected() {
+
+		// onAttach
+		liveBaseActivity = (LiveBaseActivity) getActivity();
+		if (getAppData().isLiveChess()) {
+			setLCSBound(liveBaseActivity.isLCSBound());
+		}//
+
 		LiveChessService liveService;
 		try {
 			liveService = getLiveService();

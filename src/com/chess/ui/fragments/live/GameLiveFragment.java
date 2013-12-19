@@ -516,7 +516,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void onMessageReceived() {
-		getActivity().runOnUiThread(new Runnable() {
+
+		Activity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				getControlsView().haveNewMessage(true);

@@ -41,7 +41,6 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//todo: all LiveService-related code should be used after service Bind
 		observeTaskListener = new ObserveTaskListener();
 		try {
 			LiveChessService liveService = getLiveService();
@@ -304,6 +303,18 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	@Override
 	public void onLiveClientConnected() {
 		super.onLiveClientConnected();
-		LogMe.dl(TAG, "onLiveClientConnected");
+
+		// onResume
+		try {
+			Long currentGameId = getLiveService().getCurrentGameId();
+			if (isLCSBound && currentGameId != null && currentGameId != 0) {
+				onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronizid
+			}
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+			logTest(e.getMessage());
+			isLCSBound = false;
+		}
+		//
 	}
 }
