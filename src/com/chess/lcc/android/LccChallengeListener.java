@@ -95,7 +95,13 @@ public class LccChallengeListener implements ChallengeListener {
 		LogMe.dl(TAG, "CHALLENGE LISTENER. Seek/Challenge rejected: user: " + lccHelper.getUser().getUsername() + AppConstants.CHALLENGE +
 				challengeId + ", by: " + by + AppConstants.WARNING + warning);
 		lccHelper.removeChallenge(challengeId);
-		lccHelper.addPendingWarning(warning, by);
+
+		if (warning == null) {
+			lccHelper.onChallengeRejected(by);
+		} else {
+			lccHelper.addPendingWarning(warning, by);
+		}
+
 	}
 
 	@Override

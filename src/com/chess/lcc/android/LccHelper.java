@@ -27,7 +27,7 @@ import java.util.*;
 
 import static com.chess.live.rules.GameResult.WIN;
 
-public class LccHelper { // todo: keep LccHelper instance in LiveChessService as well?
+public class LccHelper {
 
 	public static final boolean TESTING_GAME = false;
 	public static final String[] TEST_MOVES_COORD = {"d2d4", "c7c6", "c2c4", "d7d5", "g1f3", "g8f6", "b1c3", "e7e6",
@@ -1022,6 +1022,10 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 
 	public void runDisconnectTask(/*boolean resetClient*/) {
 		new LiveDisconnectTask(/*resetClient*/).execute();
+	}
+
+	public void onChallengeRejected(String by) {
+		lccEventListener.onChallengeRejected(by);
 	}
 
 	private class LiveDisconnectTask extends AsyncTask<Void, Void, Void> {

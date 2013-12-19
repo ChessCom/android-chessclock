@@ -3,6 +3,7 @@ package com.chess.ui.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.DataNotValidException;
@@ -114,12 +115,20 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 
 	@Override
 	public void startGameFromService() {
-
 	}
 
 	@Override
 	public void createSeek() {
+	}
 
+	@Override
+	public void onChallengeRejected(final String by) {
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				showToast(getString(R.string.challengeRejected, by)); // todo: show dialog popup with OK button if necessary
+			}
+		});
 	}
 
 	@Override

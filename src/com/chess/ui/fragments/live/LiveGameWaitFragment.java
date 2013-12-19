@@ -152,4 +152,14 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 		}
 	}
 
+	@Override
+	public void onChallengeRejected(String by) {
+		super.onChallengeRejected(by);
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				getActivityFace().showPreviousFragment();
+			}
+		});
+	}
 }

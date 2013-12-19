@@ -30,4 +30,6 @@ public interface LccEventListener {
 	void expireGame();
 
 	void updateOpponentOnlineStatus(boolean online);
+
+	void onChallengeRejected(String by);
 }
