@@ -42,6 +42,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 	private SparseArray<String> defaultBoardNamesMap;
 	private int previewLineWidth;
 	private EnhancedImageDownloader imageLoader;
+	private SwitchButton notificationsSwitch;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -130,6 +131,8 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 //			alwaysShowWhiteBottomSwitch.toggle();
 		} else if (id == R.id.soundsView) {
 			soundsSwitch.toggle();
+		} else if (id == R.id.notificationsView) {
+			notificationsSwitch.toggle();
 		} else if (view.getId() == R.id.autoFlipView) {
 			autoFlipSwitch.toggle();
 		}
@@ -152,6 +155,8 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 		} else if (switchButton.getId() == R.id.soundsSwitch) {
 			int appSoundMode = checked ? AppData.TRUE : AppData.FALSE;
 			getAppData().setPlaySounds(getActivity(), appSoundMode);
+		} else if (switchButton.getId() == R.id.notificationsSwitch) {
+			getAppData().setNotificationsEnabled(checked);
 		} else if (switchButton.getId() == R.id.autoFlipSwitch) {
 			getAppData().setAutoFlipFor2Players(autoFlipSwitch.isChecked());
 		}
@@ -164,6 +169,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 		showLegalMovesSwitch = (SwitchButton) view.findViewById(R.id.showLegalMovesSwitch);
 //		alwaysShowWhiteBottomSwitch = (SwitchButton) view.findViewById(R.id.answerShowBottomSwitch);
 		soundsSwitch = (SwitchButton) view.findViewById(R.id.soundsSwitch);
+		notificationsSwitch = (SwitchButton) view.findViewById(R.id.notificationsSwitch);
 		View autoFlipView = view.findViewById(R.id.autoFlipView);
 		autoFlipSwitch = (SwitchButton) view.findViewById(R.id.autoFlipSwitch);
 
@@ -186,6 +192,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 		view.findViewById(R.id.showLegalMovesView).setOnClickListener(this);
 //		view.findViewById(R.id.alwaysShowWhiteBottomView).setOnClickListener(this);
 		view.findViewById(R.id.soundsView).setOnClickListener(this);
+		view.findViewById(R.id.notificationsView).setOnClickListener(this);
 
 		String username = getAppData().getUsername();
 
@@ -195,6 +202,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 		showLegalMovesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_SHOW_LEGAL_MOVES, true));
 //		alwaysShowWhiteBottomSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_SHOW_ANSWER_BOTTOM, true));
 		autoFlipSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_AUTO_FLIP, true));
+		notificationsSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_DAILY_NOTIFICATIONS, true));
 
 		//spinners
 		view.findViewById(R.id.piecesView).setOnClickListener(this);

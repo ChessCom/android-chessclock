@@ -1684,7 +1684,7 @@ public class ChessBoard implements BoardFace {
 			default:
 				break;
 		}
-		return output;
+		return output.toLowerCase(); // need to be lowercase
 	}
 
 	@Override

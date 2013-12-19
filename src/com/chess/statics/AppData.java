@@ -216,6 +216,10 @@ public class AppData {
 		return getIntValue(PREF_COMPUTER_DELAY, COMPUTER_THINK_TIME);
 	}
 
+	public void setNotificationsEnabled(boolean value) {
+		setBooleanValue(PREF_DAILY_NOTIFICATIONS, value);
+	}
+
 	public boolean isNotificationsEnabled() {
 		return getBooleanValue(PREF_DAILY_NOTIFICATIONS);
 	}
