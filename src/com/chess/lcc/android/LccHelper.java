@@ -826,18 +826,6 @@ public class LccHelper { // todo: keep LccHelper instance in LiveChessService as
 		}
 	}
 
-	/*private void stopService() {
-		// from doc: Note that if a stopped service still has ServiceConnection objects bound to it with
-		// the BIND_AUTO_CREATE set, it will not be destroyed until all of these bindings are removed.
-		boolean result = context.stopService(new Intent(context, LiveChessService.class));
-		LogMe.dl(TAG, "Live stopService: " + result);
-		liveService.stopSelf(); // don't work too
-	}*/
-
-	/*public void logout() {
-		logout(true);
-	}*/
-
 	public void cleanupLiveInfo() {
 		LogMe.dl(TAG, "cleanupLiveInfo");
 		new AppData(context).setLiveChessMode(false);

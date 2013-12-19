@@ -41,6 +41,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		//todo: all LiveService-related code should be used after service Bind
 		observeTaskListener = new ObserveTaskListener();
 		try {
 			LiveChessService liveService = getLiveService();
@@ -51,6 +52,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
 		}
+		//
 	}
 
 	@Override
@@ -297,5 +299,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	@Override
 	public boolean isObservingMode() {
 		return true;
+	}
+
+	@Override
+	public void onLiveClientConnected() {
+		super.onLiveClientConnected();
+		LogMe.dl(TAG, "onLiveClientConnected");
 	}
 }

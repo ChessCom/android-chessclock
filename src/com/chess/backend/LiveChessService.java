@@ -42,8 +42,6 @@ public class LiveChessService extends Service {
 
 	private ServiceBinder serviceBinder = new ServiceBinder();
 
-	// or move holder code to Service itself.
-	// but in this case we should have ability to reset holder data when it is necessary, for instance logout
 	private LccHelper lccHelper;
 	private LccConnectionUpdateFace connectionUpdateFace;
 	private LccChallengeTaskRunner challengeTaskRunner;
@@ -82,7 +80,7 @@ public class LiveChessService extends Service {
 
 	@Override
 	public boolean onUnbind(Intent intent) {
-		LogMe.dl(TAG, "SERVICE: onUnbind , this service have no binders anymore");
+		LogMe.dl(TAG, "SERVICE: onUnbind, this service have no binders anymore");
 
 		return super.onUnbind(intent);
 	}
@@ -135,7 +133,7 @@ public class LiveChessService extends Service {
 	}
 
 	public void onLiveConnected() {
-//		LogMe.dl(TAG, "onLiveConnected, connectionUpdateFace = " + connectionUpdateFace);
+		LogMe.dl(TAG, "onLiveConnected, connectionUpdateFace = " + connectionUpdateFace);
 		if (connectionUpdateFace != null) {
 			connectionUpdateFace.onConnected();
 		}

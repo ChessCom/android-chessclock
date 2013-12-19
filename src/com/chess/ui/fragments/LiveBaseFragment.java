@@ -2,6 +2,7 @@ package com.chess.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.DataNotValidException;
@@ -20,6 +21,8 @@ import com.chess.ui.fragments.live.GameLiveFragment;
  */
 public abstract class LiveBaseFragment extends CommonLogicFragment implements LccEventListener {
 
+	private static final String TAG = "LccLog-LiveBaseFragment";
+
 	protected LiveBaseActivity liveBaseActivity;
 	private LiveChessService liveService;
 	protected boolean isLCSBound;
@@ -37,6 +40,9 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+
+		Log.d(TAG, "onCreate class=" + getClass());
+
 		super.onCreate(savedInstanceState);
 
 		gameTaskListener = new GameTaskListener();
@@ -136,7 +142,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	protected void logoutFromLive() {
 		if (isLCSBound) {
 			liveService.logout();
-			liveBaseActivity.unBindLiveService();
+			liveBaseActivity.unBindAndStopLiveService();
 		}
 	}
 
@@ -166,4 +172,9 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		}
 	}
 
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		Log.d(TAG, "onActivityCreated class=" + getClass());
+	}
 }

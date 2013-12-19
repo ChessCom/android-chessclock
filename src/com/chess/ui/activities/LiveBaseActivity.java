@@ -98,7 +98,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			if (isLCSBound) {
 				onLiveServiceConnected();
 			} else {
-				bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
+				bindAndStartLiveService();
 			}
 		}
 	}
@@ -126,16 +126,20 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		unBindLiveService();
+		unbindLiveService();
 	}
 
-	public void unBindLiveService() {
-//		LogMe.dl(TAG, "unBindLiveService: isLCSBound=" + isLCSBound);
+	public void unBindAndStopLiveService() {
+//		LogMe.dl(TAG, "unBindAndStopLiveService: isLCSBound=" + isLCSBound);
+		unbindLiveService();
+		stopService(new Intent(this, LiveChessService.class));
+	}
+
+	private void unbindLiveService() {
 		if (isLCSBound) {
 			unbindService(liveServiceConnectionListener);
 			isLCSBound = false;
 		}
-		stopService(new Intent(this, LiveChessService.class));
 	}
 
 	protected boolean checkIfLiveUserAlive() {
@@ -145,7 +149,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				if (getAppData().isLiveChess()) {
 					liveService.logout();
 				}
-				unBindLiveService();
+				unBindAndStopLiveService();
 				alive = false;
 			} else {
 				alive = true;
@@ -181,7 +185,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				fragmentByTag = getLiveHomeFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					liveService.logout();
-					unBindLiveService();
+					unBindAndStopLiveService();
 					return super.onKeyUp(keyCode, event);
 				}
 			}
@@ -227,7 +231,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			if (getAppData().isLiveChess()) {
 				liveService.logout();
 			}
-			unBindLiveService();
+			unBindAndStopLiveService();
 		} else if (tag.equals(OBSOLETE_VERSION_TAG)) {
 			// Show site and
 			runOnUiThread(new Runnable() {
@@ -239,12 +243,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				}
 			});
 
-			unBindLiveService();
+			unBindAndStopLiveService();
 
 		} else if (tag.equals(LOGOUT_TAG)) {
 			if (isLCSBound) {
 				liveService.logout();
-				unBindLiveService();
+				unBindAndStopLiveService();
 			}
 		} else if (tag.contains(CHALLENGE_TAG)) { // Challenge accepted!
 			Log.d(TAG, "Accept challenge: " + currentChallenge);
@@ -281,7 +285,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				// todo: refactor with new LCC
 				if (!liveService.isConnected() || liveService.getClient() == null) { // TODO should leave that screen on connection lost or when LCC is become null
 					liveService.logout();
-					unBindLiveService();
+					unBindAndStopLiveService();
 					return;
 				}
 
@@ -297,7 +301,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.onActivityResult(requestCode, resultCode, data);
 //		LogMe.dl(TAG, "onActivityResult, resultCode = " + resultCode + " data = " + data);
 		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
-			bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
+			bindAndStartLiveService();
 		}
 	}
 
@@ -317,9 +321,16 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					Log.d("TEST", "Service bounded but client not connected");
 				}
 			} else {
-				bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
+				bindAndStartLiveService();
 			}
 		}
+	}
+
+	private void bindAndStartLiveService() {
+		Log.d(TAG, "bindAndStartLiveService " + getClass());
+
+		startService(new Intent(this, LiveChessService.class));
+		bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
 	}
 
 	public boolean isLCSBound() {
@@ -549,7 +560,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private void performReloginForLive() {
 		// Logout first to make clear connect
 		liveService.logout();
-		unBindLiveService();
+		unBindAndStopLiveService();
 
 		String password = getAppData().getPassword();
 		if (!TextUtils.isEmpty(password)) {
