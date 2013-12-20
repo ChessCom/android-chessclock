@@ -5,9 +5,9 @@
 	<property name="lcc.log.level.warn" value="OFF" />
 
 	<!-- Logging rules for LCC Debug mode (should be uncommented) -->
-	<property name="lcc.log.level.info" value="INFO" />
+	<!--<property name="lcc.log.level.info" value="INFO" />
 	<property name="lcc.log.level.debug" value="DEBUG" />
-	<property name="lcc.log.level.warn" value="WARN" />
+	<property name="lcc.log.level.warn" value="WARN" />-->
 
 	<property name="LOG_DIR" value="/sdcard/Android/data/com.chess/cache/logs" />
 
@@ -62,7 +62,7 @@
 		<appender-ref ref="FILE" />
 	</logger>
 
-	<!--<logger name="com.chess.live.util.Log4JJettyWrapper" level="${lcc.log.level.warn}">
+	<logger name="com.chess.live.util.Log4JJettyWrapper" level="${lcc.log.level.warn}">
 		<appender-ref ref="LOGCAT" />
 		<appender-ref ref="FILE" />
 	</logger>
@@ -70,29 +70,18 @@
 	<logger name="com.chess.live.util.Log4JOutputStreamWrapper" level="${lcc.log.level.warn}">
 		<appender-ref ref="LOGCAT" />
 		<appender-ref ref="FILE" />
-	</logger>-->
+	</logger>
 
-	<!-- Should be ignored -->
-	<!--<logger name="org.cometd.bayeux" level="${lcc.log.level.debug}">
+	<logger name="org.eclipse.jetty" level="${lcc.log.level.debug}">
 		<appender-ref ref="LOGCAT" />
 		<appender-ref ref="FILE" />
 	</logger>
 
-	<logger name="org.cometd.client" level="${lcc.log.level.debug}">
-		<appender-ref ref="LOGCAT" />
-		<appender-ref ref="FILE" />
-	</logger>-->
-
-	<!--<logger name="org.eclipse.jetty" level="${lcc.log.level.debug}">
-		<appender-ref ref="LOGCAT" />
-		<appender-ref ref="FILE" />
-	</logger>-->
-
 	<!-- Enable CometD logging -->
-	<!--<logger name="com.chess.live.client.impl.BayeuxClientImpl" level="${lcc.log.level.debug}">
+	<logger name="com.chess.live.client.impl.BayeuxClientImpl" level="${lcc.log.level.debug}">
 		<appender-ref ref="LOGCAT" />
 		<appender-ref ref="FILE" />
-	</logger>-->
+	</logger>
 
 	<!--<root level="VERBOSE">
 		<appender-ref ref="FILE" />
