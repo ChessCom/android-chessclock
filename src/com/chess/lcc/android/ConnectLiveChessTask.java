@@ -32,7 +32,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	public static final String LIVE_HOST_PRODUCTION = "chess.com";
 	public static final String LIVE_HOST_TEST = "chess-2.com";
 
-	private static final int MAX_BACKOFF_INTERVAL = 10000;
+	private static final int BACKOFF_INCREMENT = 500;
+	private static final int MAX_BACKOFF_INTERVAL = 2000;
 	private static final long WS_CONNECT_TIMEOUT = 10000L;
 	private static final int WS_MAX_MESSAGE_SIZE = 1024 * 1024;
 
@@ -125,6 +126,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 			//ExamineBoards
 			//PingService
 
+			item.setBackoffIncrement(BACKOFF_INCREMENT);
 			item.setMaxBackoffInterval(MAX_BACKOFF_INTERVAL);
 
 			httpClient.start();
