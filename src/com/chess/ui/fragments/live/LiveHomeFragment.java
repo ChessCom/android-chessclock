@@ -218,6 +218,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	}
 
 	private void createLiveChallenge() {
+		liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[getAppData().getDefaultLiveMode()]);
 		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
 	}
 
@@ -385,7 +386,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	}
 
 	protected String getLiveModeButtonLabel(String label) {
-		if (label.contains(Symbol.SLASH)) { // "5 | 2"
+		if (label.contains(Symbol.SLASH)) { // like "5 | 2"
 			return label;
 		} else { // "10 min"
 			return getString(R.string.min_arg, label);
@@ -394,7 +395,6 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 	private void setDefaultTimeMode(int mode) {
 		timeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
-		liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[mode]);
 		getAppData().setDefaultLiveMode(mode);
 	}
 

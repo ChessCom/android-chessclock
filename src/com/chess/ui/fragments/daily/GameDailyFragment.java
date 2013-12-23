@@ -371,7 +371,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-		boardFace.setChess960(currentGame.getGameType() != RestHelper.V_GAME_CHESS);
+		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
+			boardFace.setChess960(true);
+		} else {
+			boardFace.setChess960(false);
+		}
 
 		if (boardFace.isChess960()) {// we need to setup only position not made moves.
 			// Daily games tournaments already include those moves in movesList

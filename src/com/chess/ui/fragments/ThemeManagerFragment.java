@@ -727,7 +727,6 @@ winboard - 	ffffff
 			"red",           // 26,    22
 			"orange",        // 28     23
 	};
-//	"pink",
 
 	static String[] pieces = new String[]{
 			"classic",        // 1

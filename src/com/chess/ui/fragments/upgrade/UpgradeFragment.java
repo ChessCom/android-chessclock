@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.chess.R;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
+import com.chess.statics.StaticData;
 import com.chess.ui.fragments.CommonLogicFragment;
 
 /**
@@ -21,6 +22,10 @@ public class UpgradeFragment extends CommonLogicFragment {
 	private ProgressImageView quoteImg;
 	private EnhancedImageDownloader imageDownloader;
 	private int imageSize;
+	private View goldBtnLay;
+	private View platinumBtnLay;
+	private View disabledGoldView;
+	private View disabledPlatinumView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,8 @@ public class UpgradeFragment extends CommonLogicFragment {
 
 		imageDownloader = new EnhancedImageDownloader(getActivity());
 		imageSize = (int) (getResources().getDimension(R.dimen.daily_list_item_image_size) / density);
+
+
 	}
 
 	@Override
@@ -44,8 +51,13 @@ public class UpgradeFragment extends CommonLogicFragment {
 		quoteImg = (ProgressImageView) view.findViewById(R.id.quoteImg);
 
 		view.findViewById(R.id.diamondBtnLay).setOnClickListener(this);
-		view.findViewById(R.id.platinumBtnLay).setOnClickListener(this);
-		view.findViewById(R.id.goldBtnLay).setOnClickListener(this);
+		platinumBtnLay = view.findViewById(R.id.platinumBtnLay);
+		platinumBtnLay.setOnClickListener(this);
+		goldBtnLay = view.findViewById(R.id.goldBtnLay);
+		goldBtnLay.setOnClickListener(this);
+
+		disabledGoldView = view.findViewById(R.id.disabledGoldView);
+		disabledPlatinumView = view.findViewById(R.id.disabledPlatinumView);
 	}
 
 	@Override
@@ -64,6 +76,24 @@ public class UpgradeFragment extends CommonLogicFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		// get user membership level
+		int premiumStatus = getAppData().getUserPremiumStatus();
+
+		if (premiumStatus == StaticData.PLATINUM_USER) { // disable gold
+			goldBtnLay.setEnabled(false);
+			disabledGoldView.setVisibility(View.VISIBLE);
+		} else if (premiumStatus == StaticData.DIAMOND_USER) { // disable platinum & gold
+			platinumBtnLay.setEnabled(false);
+			goldBtnLay.setEnabled(false);
+			disabledPlatinumView.setVisibility(View.VISIBLE);
+			disabledGoldView.setVisibility(View.VISIBLE);
+		} else {
+			platinumBtnLay.setEnabled(true);
+			goldBtnLay.setEnabled(true);
+			disabledPlatinumView.setVisibility(View.GONE);
+			disabledGoldView.setVisibility(View.GONE);
+		}
 
 		imageDownloader.download(IMG_URL, quoteImg, imageSize);
 	}

@@ -13,7 +13,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import com.chess.R;
 import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
@@ -40,7 +39,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author alien_roger
  * @created at: 25.04.12 10:54
  */
-public abstract class ChessBoardBaseView extends ImageView implements BoardViewFace, NotationView.BoardForNotationFace {
+public abstract class ChessBoardBaseView extends View implements BoardViewFace, NotationView.BoardForNotationFace {
 
 	public static final int PIECE_ANIM_SPEED = 100; // 100ms
 	public static final int PIECE_ANIM_FAST_SPEED = 5; // should be very fast
@@ -252,16 +251,32 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
 		int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
+//		logTest("onMeasure parentWidth = " + parentWidth + " parentHeight = " + parentHeight);
+
+		int width = 0;
+		int height = 0;      // TODO fix incorrect board sizes for 10" tablet
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-			setMeasuredDimension(resolveSize(parentWidth, widthMeasureSpec),
-					resolveSize(parentWidth, heightMeasureSpec));
+			width = resolveSize(parentWidth, widthMeasureSpec);
+			height = resolveSize(parentWidth, heightMeasureSpec);
 		} else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			setMeasuredDimension(resolveSize(parentHeight, widthMeasureSpec),
-					resolveSize(parentHeight, heightMeasureSpec));
+			width = resolveSize(parentHeight, widthMeasureSpec);
+			height = resolveSize(parentHeight, heightMeasureSpec);
 		}
+
+//		int measureSpecWidth = MeasureSpec.makeMeasureSpec(width, MeasureSpec.AT_MOST);
+//		int measureSpecHeight = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
+
+//		logTest("onMeasure width = " + width + " height = " + height);
+
+//		super.onMeasure(measureSpecWidth, measureSpecHeight);
+
+//		width = getSuggestedMinimumHeight();
+//		height = getSuggestedMinimumWidth();
+
+
+		setMeasuredDimension(width, height);
 
 		pieceXDelta = -1;
 		pieceYDelta = -1;
@@ -273,8 +288,7 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 		viewWidth = (xNew == 0 ? viewWidth : xNew);
 		viewHeight = (yNew == 0 ? viewHeight : yNew);
 		squareSize = viewWidth / 8;
-		logTest("viewWidth = " + viewWidth);
-		logTest("squareSize = " + squareSize);
+//		logTest("onSizeChanged width = " + viewWidth + " height = " + viewHeight);
 
 		loadBoard();
 		loadPieces();
@@ -1282,12 +1296,17 @@ public abstract class ChessBoardBaseView extends ImageView implements BoardViewF
 
 
 		int bitmapSize = (int) Math.ceil(viewWidth / 4);
-//		Log.e("TEST", " boardBitmap size = " + bitmapSize);
+		Log.d("TEST", " squareSize = " + squareSize);
+		Log.d("TEST", " boardBitmap size = " + bitmapSize);
 		boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
 		shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 
 		// update squareSize to match board properties and draw highlights correctly
-		squareSize = bitmapSize / 2;
+//		if (!AppUtils.is10InchTablet(context)) {
+			squareSize = bitmapSize / 2f;
+//		}
+
+		Log.d("TEST", " squareSize = " + squareSize);
 
 		return shader;
 	}

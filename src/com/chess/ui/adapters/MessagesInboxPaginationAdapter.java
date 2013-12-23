@@ -1,6 +1,7 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ConversationItem;
@@ -18,8 +19,6 @@ import java.util.List;
  */
 public class MessagesInboxPaginationAdapter extends PaginationCursorAdapter<ConversationItem.Data> {
 
-	protected LoadItem loadItem;
-
 	public MessagesInboxPaginationAdapter(Context context, ItemsCursorAdapter adapter,
 									TaskUpdateInterface<ConversationItem.Data> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
@@ -30,7 +29,6 @@ public class MessagesInboxPaginationAdapter extends PaginationCursorAdapter<Conv
 	@Override
 	protected List<ConversationItem.Data> fetchMoreItems(int page) {
 		if (loadItem != null) {
-//			loadItem.replaceRequestParams(RestHelper.P_PAGE_NUMBER, String.valueOf(page));
 			loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
 			ConversationItem item = null;
 			try {
@@ -44,6 +42,8 @@ public class MessagesInboxPaginationAdapter extends PaginationCursorAdapter<Conv
 				result = StaticData.RESULT_OK;
 
 				itemList = item.getData();
+				Log.d("TEST", "fetchMoreItems itemsList count = " + itemList.size() + " page = " + page);
+
 				return itemList;
 			} else {
 				result = StaticData.EMPTY_DATA;
@@ -57,10 +57,4 @@ public class MessagesInboxPaginationAdapter extends PaginationCursorAdapter<Conv
 		}
 	}
 
-	public void updateLoadItem(LoadItem loadItem) {
-		this.loadItem = loadItem;
-		setFirstPage(0);
-		setKeepOnAppending(true);
-		notifyDataSetChanged();
-	}
 }

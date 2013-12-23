@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--Border-->
+    <item>
+        <shape >
+            <solid android:color="@color/transparent"/>
+            <stroke
+                android:color="@color/upgrade_toggle_button_border_d"
+                android:width="1dip"
+                />
+        </shape>
+    </item>
+
+    <!--Button-->
+    <item
+        android:left="1px"
+        android:right="1px"
+        android:bottom="1dip"
+        android:top="1dip"
+        >
+        <shape >
+            <solid android:color="@color/upgrade_toggle_button_d" />
+        </shape>
+    </item>
+
+
+
+</layer-list>

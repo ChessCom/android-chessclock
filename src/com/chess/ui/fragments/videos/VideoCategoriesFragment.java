@@ -32,7 +32,6 @@ import com.chess.ui.adapters.VideosCursorAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,9 +175,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			super.updateData(returnedObj);
 
 			getAdapter().changeCursor(returnedObj);
-			if (paginationAdapter != null) {
-				paginationAdapter.notifyDataSetChanged();
-			}
+			paginationAdapter.notifyDataSetChanged();
 		}
 
 		@Override
@@ -258,7 +255,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			// clear current list
 			getAdapter().changeCursor(null);
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.getInstance().CMD_VIDEOS);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
@@ -283,6 +280,9 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		@Override
 		public void updateListData(List<VideoSingleItem.Data> itemsList) {
+			logTest("VideosUpdateListener updateListData itemsList count = " + itemsList.size());
+
+
 			new SaveVideosListTask(saveVideosUpdateListener, itemsList, getContentResolver()).executeTask();
 		}
 	}
@@ -293,7 +293,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		public void updateData(VideoSingleItem.Data returnedObj) {
 			super.updateData(returnedObj);
 
-			need2update = false;
+			logTest("SaveVideosUpdateListener updateData returnedObj= " + returnedObj);
 
 			loadFromDb();
 		}

@@ -71,7 +71,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/button_upgrade_diamond_default"
-            android:paddingBottom="12dip"
             >
 
             <!--Plan Title-->
@@ -80,7 +79,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_upgrade_height"
                 android:clickable="true"
-                android:layout_marginBottom="15dip"
                 >
 
                 <ImageView
@@ -280,8 +278,20 @@
                 android:layout_marginTop="15dip"
                 android:layout_marginLeft="15dip"
                 android:layout_marginRight="15dip"
-                android:layout_marginBottom="12dip"
+                android:layout_marginBottom="15dip"
                 />
+
+			<!--Disable overlay-->
+			<View
+				android:id="@+id/disableOverlayView"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@drawable/rounded_disable_overlay"
+				android:layout_alignParentTop="true"
+				android:layout_alignBottom="@id/setPlanBtn"
+				android:layout_marginBottom="-15dip"
+				android:visibility="gone"
+				/>
 
         </RelativeLayout>
 

@@ -25,16 +25,10 @@ public class UpgradeFragmentTablet extends CommonLogicFragment {
 
 	private static final String IMG_URL_1 = "http://images.chesscomfiles.com/images/icons/reviews/membership/peter.png";
 	private static final String IMG_URL_2 = "http://images.chesscomfiles.com/images/icons/reviews/membership/lou.png";
-	private LinearLayout featuresContainer1;
-	private LinearLayout featuresContainer2;
-	private LinearLayout featuresContainer3;
 	private EnhancedImageDownloader imageDownloader;
 	private int imageSize;
 	private ProgressImageView quoteImg;
 	private ProgressImageView quoteImg2;
-	private LinearLayout diamondOptionsLay;
-	private LinearLayout platinumOptionsLay;
-	private LinearLayout goldOptionsLay;
 	private String[] upgradeOptions;
 	private LinearLayout.LayoutParams optionsParams;
 	private LinearLayout.LayoutParams valuesParams;
@@ -71,7 +65,6 @@ public class UpgradeFragmentTablet extends CommonLogicFragment {
 		setTitle(R.string.upgrade);
 
 		widgetsInit(view);
-
 	}
 
 	@Override
@@ -88,9 +81,9 @@ public class UpgradeFragmentTablet extends CommonLogicFragment {
 
 		Resources resources = getResources();
 		{ // all features list
-			featuresContainer1 = (LinearLayout) view.findViewById(R.id.featuresContainer1);
-			featuresContainer2 = (LinearLayout) view.findViewById(R.id.featuresContainer2);
-			featuresContainer3 = (LinearLayout) view.findViewById(R.id.featuresContainer3);
+			LinearLayout featuresContainer1 = (LinearLayout) view.findViewById(R.id.featuresContainer1);
+			LinearLayout featuresContainer2 = (LinearLayout) view.findViewById(R.id.featuresContainer2);
+			LinearLayout featuresContainer3 = (LinearLayout) view.findViewById(R.id.featuresContainer3);
 
 			String[] features1 = resources.getStringArray(R.array.upgrade_great_features_1);
 			String[] features2 = resources.getStringArray(R.array.upgrade_great_features_2);
@@ -106,9 +99,9 @@ public class UpgradeFragmentTablet extends CommonLogicFragment {
 		}
 
 		{// fill features comparison list
-			diamondOptionsLay = (LinearLayout) view.findViewById(R.id.diamondOptionsLay);
-			platinumOptionsLay = (LinearLayout) view.findViewById(R.id.platinumOptionsLay);
-			goldOptionsLay = (LinearLayout) view.findViewById(R.id.goldOptionsLay);
+			LinearLayout diamondOptionsLay = (LinearLayout) view.findViewById(R.id.diamondOptionsLay);
+			LinearLayout platinumOptionsLay = (LinearLayout) view.findViewById(R.id.platinumOptionsLay);
+			LinearLayout goldOptionsLay = (LinearLayout) view.findViewById(R.id.goldOptionsLay);
 
 			upgradeOptions = resources.getStringArray(R.array.upgrade_options);
 			optionsParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -126,10 +119,6 @@ public class UpgradeFragmentTablet extends CommonLogicFragment {
 			int diamondTextColor = resources.getColor(R.color.upgrade_diamond_sub_title);
 			int platinumTextColor = resources.getColor(R.color.upgrade_platinum_sub_title);
 			int goldTextColor = resources.getColor(R.color.upgrade_gold_sub_title);
-
-//			int diamondBackColor =  resources.getColor(R.color.upgrade_diamond_button);
-//			int platinumBackColor =  resources.getColor(R.color.upgrade_platinum_button);
-//			int goldBackColor =  resources.getColor(R.color.upgrade_gold_button);
 
 			int diamondBackResId = R.drawable.button_upgrade_diamond_flat;
 			int platinumBackResId = R.drawable.button_upgrade_platinum_flat;
@@ -190,7 +179,8 @@ public class UpgradeFragmentTablet extends CommonLogicFragment {
 			featureTxt.setTextColor(getResources().getColor(R.color.upgrade_diamond_sub_title));
 			featureTxt.setFont(FontsHelper.BOLD_FONT);
 			featureTxt.setTextSize(14);
-			featureTxt.setPadding(0, 0, 0, (int) (6 * density));    // TODO remove hardcode
+			int padding = (int) (6 * density);
+			featureTxt.setPadding(0, 0, 0, padding);
 
 			featuresLinLay.addView(featureTxt, params);
 		}

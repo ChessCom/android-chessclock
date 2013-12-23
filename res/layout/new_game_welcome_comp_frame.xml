@@ -26,12 +26,11 @@
 			style="@style/NotationsStyle"
 			android:visibility="gone"/>
 
-
-
 		<RelativeLayout
 			android:id="@+id/welcomeBoardView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
+
 			<!--Top Border-->
 			<FrameLayout
 				android:id="@+id/topBorder"

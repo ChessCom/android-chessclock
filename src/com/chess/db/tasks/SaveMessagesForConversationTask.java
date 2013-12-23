@@ -27,6 +27,9 @@ import static com.chess.db.DbScheme.V_OTHER_USER_AVATAR_URL;
  */
 public class SaveMessagesForConversationTask extends AbstractUpdateTask<MessagesItem.Data, Long> {
 
+	public static final String ORIGINAL_MESSAGE_BY = "Original Message by";
+	public static final String MESSAGE_SEPARATOR = "----------------------------------------------------------------------";
+
 	private final String username;
 
 	private ContentResolver contentResolver;
@@ -70,7 +73,13 @@ public class SaveMessagesForConversationTask extends AbstractUpdateTask<Messages
 			values.put(V_USER, currentItem.getUser());
 			values.put(V_OTHER_USER_USERNAME, currentItem.getSenderUsername());
 			values.put(V_OTHER_USER_AVATAR_URL, currentItem.getSenderAvatarUrl());
-			values.put(V_LAST_MESSAGE_CONTENT, currentItem.getContent());
+
+			String message = currentItem.getContent();
+			if (message.contains(ORIGINAL_MESSAGE_BY)) {
+				int quoteStart = message.indexOf(MESSAGE_SEPARATOR);
+				message = message.substring(0, quoteStart);
+			}
+			values.put(V_LAST_MESSAGE_CONTENT, message);
 
 			DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 		}

@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class FriendsPaginationAdapter extends PaginationCursorAdapter<FriendsItem.Data> {
 
-	protected LoadItem loadItem;
-
 	public FriendsPaginationAdapter(Context context, ItemsCursorAdapter adapter,
 									TaskUpdateInterface<FriendsItem.Data> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
@@ -30,7 +28,6 @@ public class FriendsPaginationAdapter extends PaginationCursorAdapter<FriendsIte
 	@Override
 	protected List<FriendsItem.Data> fetchMoreItems(int page) {
 		if (loadItem != null) {
-//			loadItem.replaceRequestParams(RestHelper.P_PAGE_NUMBER, String.valueOf(page));
 			loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
 			FriendsItem item = null;
 			try {
@@ -56,10 +53,5 @@ public class FriendsPaginationAdapter extends PaginationCursorAdapter<FriendsIte
 		}
 	}
 
-	public void updateLoadItem(LoadItem loadItem) {
-		this.loadItem = loadItem;
-		setFirstPage(0);
-		setKeepOnAppending(true);
-		notifyDataSetChanged();
-	}
+
 }

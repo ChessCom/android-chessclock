@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.statics.StaticData;
@@ -33,6 +34,8 @@ public abstract class PaginationCursorAdapter<T> extends EndlessAdapter {
 	protected Context context;
 	private TaskUpdateInterface<T> taskFace;
 	protected int result;
+	protected LoadItem loadItem;
+
 
 	protected int maxItems = RestHelper.MAX_ITEMS_CNT;
 	protected boolean taskCanceled;
@@ -154,4 +157,11 @@ public abstract class PaginationCursorAdapter<T> extends EndlessAdapter {
 	protected boolean isTaskCanceled() {
 		return taskCanceled;
 	}
+
+	public void updateLoadItem(LoadItem loadItem) {
+		this.loadItem = loadItem;
+		setFirstPage(0);
+		setKeepOnAppending(true);
+	}
+
 }

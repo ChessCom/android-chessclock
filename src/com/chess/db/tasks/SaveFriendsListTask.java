@@ -30,7 +30,8 @@ public class SaveFriendsListTask extends AbstractUpdateTask<FriendsItem.Data, Lo
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
-		DbDataManager.checkAndDeleteNonExistFriends(contentResolver, itemList, username);
+		// doesn't work properly with pagination
+//		DbDataManager.checkAndDeleteNonExistFriends(contentResolver, itemList, username);
 
 		for (FriendsItem.Data currentItem : itemList) {
 			DbDataManager.saveFriendToDB(username, contentResolver, currentItem);

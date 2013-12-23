@@ -129,7 +129,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	protected void updateData() {
 		LoadItem loadItem = LoadHelper.getFriends(getUserToken(), username);
 		paginationAdapter.updateLoadItem(loadItem);
-		setAdapter(paginationAdapter);
 	}
 
 	@Override
@@ -193,6 +192,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	}
 
 	private class SaveFriendsListUpdateListener extends ChessUpdateListener<FriendsItem.Data> {
+
 		public SaveFriendsListUpdateListener() {
 			super(FriendsItem.Data.class);
 		}
@@ -218,7 +218,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 		@Override
 		public void showProgress(boolean show) {
-			showLoadingView(show);
 		}
 
 		@Override
@@ -254,7 +253,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 	@Override
 	public void onSearchAutoCompleteQuery(String query) {
-		if (!inSearch) {
+		if (!inSearch && !need2update) {
 			inSearch = true;
 			if (friendsAdapter == null) {
 				return;
@@ -421,14 +420,15 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		saveFriendsListUpdateListener = new SaveFriendsListUpdateListener();
 
 		friendsAdapter = new FriendsCursorAdapter(this, null, getImageFetcher());
-		QueryFilterProvider queryFilterProvider = new QueryFilterProvider();
-		friendsAdapter.setFilterQueryProvider(queryFilterProvider);
+		friendsAdapter.setFilterQueryProvider(new QueryFilterProvider());
 		friendsUpdateListener = new FriendsUpdateListener();
 		paginationAdapter = new FriendsPaginationAdapter(getActivity(), friendsAdapter, friendsUpdateListener, null);
 	}
 
 	protected void widgetsInit(View view) {
 		listView = (ListView) view.findViewById(R.id.listView);
+		setAdapter(paginationAdapter);
+
 	}
 
 }

@@ -18,21 +18,15 @@
 
 package org.petero.droidfish.gamelogic;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.petero.droidfish.PGNOptions;
 import org.petero.droidfish.gamelogic.Game.GameState;
 import org.petero.droidfish.gamelogic.TimeControlData.TimeControlField;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class GameTree {
     // Data from the seven tag roster (STR) part of the PGN standard
@@ -97,7 +91,7 @@ public class GameTree {
         updateListener();
     }
 
-    private final void updateListener() {
+    private void updateListener() {
         if (gameStateListener != null)
             gameStateListener.clear();
     }
@@ -116,25 +110,25 @@ public class GameTree {
             String[] words = sb.toString().split(" ");
             int currLineLength = 0;
             final int arrLen = words.length;
-            for (int i = 0; i < arrLen; i++) {
-                String word = words[i].trim();
-                int wordLen = word.length();
-                if (wordLen > 0) {
-                    if (currLineLength == 0) {
-                        ret.append(word);
-                        currLineLength = wordLen;
-                    } else if (currLineLength + 1 + wordLen >= 80) {
-                        ret.append('\n');
-                        ret.append(word);
-                        currLineLength = wordLen;
-                    } else {
-                        ret.append(' ');
-                        currLineLength++;
-                        ret.append(word);
-                        currLineLength += wordLen;
-                    }
-                }
-            }
+			for (String word1 : words) {
+				String word = word1.trim();
+				int wordLen = word.length();
+				if (wordLen > 0) {
+					if (currLineLength == 0) {
+						ret.append(word);
+						currLineLength = wordLen;
+					} else if (currLineLength + 1 + wordLen >= 80) {
+						ret.append('\n');
+						ret.append(word);
+						currLineLength = wordLen;
+					} else {
+						ret.append(' ');
+						currLineLength++;
+						ret.append(word);
+						currLineLength += wordLen;
+					}
+				}
+			}
             ret.append("\n\n");
             return ret.toString();
         }
@@ -233,7 +227,7 @@ public class GameTree {
             goForward(currPath.get(i), false);
     }
 
-    private final void translateMovesHelper() {
+    private void translateMovesHelper() {
         ArrayList<Integer> currPath = new ArrayList<Integer>();
         currPath.add(0);
         while (!currPath.isEmpty()) {
@@ -316,8 +310,9 @@ public class GameTree {
             addTagPair(out, "BlackTimeControl", blackTimeControl);
 
         // Write other non-standard tag pairs
-        for (int i = 0; i < tagPairs.size(); i++)
-            addTagPair(out, tagPairs.get(i).tagName, tagPairs.get(i).tagValue);
+		for (TagPair tagPair : tagPairs) {
+			addTagPair(out, tagPair.tagName, tagPair.tagValue);
+		}
 
         // Write moveText section
         MoveNumber mn = new MoveNumber(startPos.fullMoveCounter, startPos.whiteMove);
@@ -326,7 +321,7 @@ public class GameTree {
         out.processToken(null, PgnToken.EOF, null);
     }
 
-    private final void addTagPair(PgnToken.PgnTokenReceiver out, String tagName, String tagValue) {
+    private void addTagPair(PgnToken.PgnTokenReceiver out, String tagName, String tagValue) {
         out.processToken(null, PgnToken.LEFT_BRACKET, null);
         out.processToken(null, PgnToken.SYMBOL, tagName);
         out.processToken(null, PgnToken.STRING, tagValue);
@@ -402,7 +397,7 @@ public class GameTree {
                         break;
                     } else if (c == '{') {
                         ret.type = PgnToken.COMMENT;
-                        StringBuilder sb = new StringBuilder();;
+                        StringBuilder sb = new StringBuilder();
                         while ((c = data.charAt(idx++)) != '}') {
                             sb.append(c);
                         }
@@ -410,7 +405,7 @@ public class GameTree {
                         break;
                     } else if (c == ';') {
                         ret.type = PgnToken.COMMENT;
-                        StringBuilder sb = new StringBuilder();;
+                        StringBuilder sb = new StringBuilder();
                         while (true) {
                             c = data.charAt(idx++);
                             if ((c == '\n') || (c == '\r'))
@@ -421,7 +416,7 @@ public class GameTree {
                         break;
                     } else if (c == '"') {
                         ret.type = PgnToken.STRING;
-                        StringBuilder sb = new StringBuilder();;
+                        StringBuilder sb = new StringBuilder();
                         while (true) {
                             c = data.charAt(idx++);
                             if (c == '"') {
@@ -435,7 +430,7 @@ public class GameTree {
                         break;
                     } else if (c == '$') {
                         ret.type = PgnToken.NAG;
-                        StringBuilder sb = new StringBuilder();;
+                        StringBuilder sb = new StringBuilder();
                         while (true) {
                             c = data.charAt(idx++);
                             if (!Character.isDigit(c)) {
@@ -536,43 +531,43 @@ public class GameTree {
         // Store parsed data in GameTree
         String fen = TextIO.startPosFEN;
         int nTags = tagPairs.size();
-        for (int i = 0; i < nTags; i++) {
-            if (tagPairs.get(i).tagName.equals("FEN")) {
-                fen = tagPairs.get(i).tagValue;
-            }
-        }
+		for (TagPair tagPair1 : tagPairs) {
+			if (tagPair1.tagName.equals("FEN")) {
+				fen = tagPair1.tagValue;
+			}
+		}
         setStartPos(TextIO.readFEN(fen));
 
         String result = "";
-        for (int i = 0; i < nTags; i++) {
-            String name = tagPairs.get(i).tagName;
-            String val = tagPairs.get(i).tagValue;
-            if (name.equals("FEN") || name.equals("Setup")) {
-                // Already handled
-            } else if (name.equals("Event")) {
-                event = val;
-            } else if (name.equals("Site")) {
-                site = val;
-            } else if (name.equals("Date")) {
-                date = val;
-            } else if (name.equals("Round")) {
-                round = val;
-            } else if (name.equals("White")) {
-                white = val;
-            } else if (name.equals("Black")) {
-                black = val;
-            } else if (name.equals("Result")) {
-                result = val;
-            } else if (name.equals("TimeControl")) {
-                timeControl = val;
-            } else if (name.equals("WhiteTimeControl")) {
-                whiteTimeControl = val;
-            } else if (name.equals("BlackTimeControl")) {
-                blackTimeControl = val;
-            } else {
-                this.tagPairs.add(tagPairs.get(i));
-            }
-        }
+		for (TagPair tagPair : tagPairs) {
+			String name = tagPair.tagName;
+			String val = tagPair.tagValue;
+			if (name.equals("FEN") || name.equals("Setup")) {
+				// Already handled
+			} else if (name.equals("Event")) {
+				event = val;
+			} else if (name.equals("Site")) {
+				site = val;
+			} else if (name.equals("Date")) {
+				date = val;
+			} else if (name.equals("Round")) {
+				round = val;
+			} else if (name.equals("White")) {
+				white = val;
+			} else if (name.equals("Black")) {
+				black = val;
+			} else if (name.equals("Result")) {
+				result = val;
+			} else if (name.equals("TimeControl")) {
+				timeControl = val;
+			} else if (name.equals("WhiteTimeControl")) {
+				whiteTimeControl = val;
+			} else if (name.equals("BlackTimeControl")) {
+				blackTimeControl = val;
+			} else {
+				this.tagPairs.add(tagPair);
+			}
+		}
 
         rootNode = gameRoot;
         currentNode = rootNode;
@@ -625,16 +620,17 @@ public class GameTree {
         dos.writeUTF(blackTimeControl);
         int nTags = tagPairs.size();
         dos.writeInt(nTags);
-        for (int i = 0; i < nTags; i++) {
-            dos.writeUTF(tagPairs.get(i).tagName);
-            dos.writeUTF(tagPairs.get(i).tagValue);
-        }
+		for (TagPair tagPair : tagPairs) {
+			dos.writeUTF(tagPair.tagName);
+			dos.writeUTF(tagPair.tagValue);
+		}
         Node.writeToStream(dos, rootNode);
         ArrayList<Integer> pathFromRoot = currentNode.getPathFromRoot();
         int pathLen = pathFromRoot.size();
         dos.writeInt(pathLen);
-        for (int i = 0; i < pathLen; i++)
-            dos.writeInt(pathFromRoot.get(i));
+		for (Integer aPathFromRoot : pathFromRoot) {
+			dos.writeInt(aPathFromRoot);
+		}
     }
 
     /** De-serialize from input stream. */
@@ -946,7 +942,7 @@ public class GameTree {
         return gameResult;
     }
 
-    private static final boolean insufficientMaterial(Position pos) {
+    private static boolean insufficientMaterial(Position pos) {
         if (pos.nPieces(Piece.WQUEEN) > 0) return false;
         if (pos.nPieces(Piece.WROOK)  > 0) return false;
         if (pos.nPieces(Piece.WPAWN)  > 0) return false;
@@ -1061,10 +1057,10 @@ public class GameTree {
         }
 
         /** nodePos must represent the same position as this Node object. */
-        private final boolean verifyChildren(Position nodePos) {
+        private boolean verifyChildren(Position nodePos) {
             return verifyChildren(nodePos, null);
         }
-        private final boolean verifyChildren(Position nodePos, ArrayList<Move> moves) {
+        private boolean verifyChildren(Position nodePos, ArrayList<Move> moves) {
             boolean anyToRemove = false;
             for (Node child : children) {
                 if (child.move == null) {
@@ -1110,7 +1106,7 @@ public class GameTree {
             return ret;
         }
 
-        static final void writeToStream(DataOutputStream dos, Node node) throws IOException {
+        static void writeToStream(DataOutputStream dos, Node node) throws IOException {
             while (true) {
                 dos.writeUTF(node.moveStr);
                 if (node.move != null) {
@@ -1137,7 +1133,7 @@ public class GameTree {
             }
         }
 
-        static final void readFromStream(DataInputStream dis, Node node) throws IOException {
+        static void readFromStream(DataInputStream dis, Node node) throws IOException {
             while (true) {
                 node.moveStr = dis.readUTF();
                 node.moveStrLocal = node.moveStr;

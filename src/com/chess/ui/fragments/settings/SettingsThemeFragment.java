@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -254,6 +255,11 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			if (cursor != null && cursor.moveToFirst()) {
 				BackgroundSingleItem.Data backgroundData = DbDataManager.getThemeBackgroundItemFromCursor(cursor);
 
+				if (TextUtils.isEmpty(backgroundData.getLocalPathPort())
+						|| TextUtils.isEmpty(backgroundData.getLocalPathLand())) {
+					themeLoaded = false;
+				}
+
 				appData.setThemeBackgroundName(backgroundData.getName());
 				appData.setThemeBackgroundPreviewUrl(backgroundData.getBackgroundPreviewUrl());
 				appData.setThemeBackPathPort(backgroundData.getLocalPathPort());
@@ -270,8 +276,12 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 					selectedThemeItem.getBoardId());
 			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
 
-			if (cursor != null && cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst() && themeLoaded) {
 				BoardSingleItem.Data boardData = DbDataManager.getThemeBoardItemFromCursor(cursor);
+
+				if (TextUtils.isEmpty(boardData.getLocalPath())) {
+					themeLoaded = false;
+				}
 
 				appData.setUseThemeBoard(true);
 				appData.setThemeBoardId(boardData.getThemeBoardId());
@@ -291,7 +301,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 					selectedThemeItem.getPiecesId());
 			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
 
-			if (cursor != null && cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst() && themeLoaded) {
 				PieceSingleItem.Data piecesData = DbDataManager.getThemePieceItemFromCursor(cursor);
 
 				appData.setThemePiecesId(piecesData.getThemePieceId());
@@ -316,7 +326,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 					selectedThemeItem.getSoundsId());
 			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
 
-			if (cursor != null && cursor.moveToFirst()) {
+			if (cursor != null && cursor.moveToFirst() && themeLoaded) {
 				SoundSingleItem.Data soundData = DbDataManager.getThemeSoundItemFromCursor(cursor);
 
 				appData.setThemeSoundsId(soundData.getThemeSoundId());

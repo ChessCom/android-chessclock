@@ -84,5 +84,6 @@ public class FriendsFragmentTablet extends FriendsFragment {
 	@Override
 	protected void widgetsInit(View view) {
 		listView = (GridView) view.findViewById(R.id.listView);
+		setAdapter(paginationAdapter);
 	}
 }

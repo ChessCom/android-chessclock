@@ -1,6 +1,7 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.VideoSingleItem;
@@ -13,7 +14,6 @@ import java.util.List;
 
 public class VideosPaginationAdapter extends PaginationCursorAdapter<VideoSingleItem.Data> {
 
-	protected LoadItem loadItem;
 
 	public VideosPaginationAdapter(Context context, ItemsCursorAdapter adapter,
 								   TaskUpdateInterface<VideoSingleItem.Data> taskFace, LoadItem loadItem) {
@@ -37,6 +37,8 @@ public class VideosPaginationAdapter extends PaginationCursorAdapter<VideoSingle
 				result = StaticData.RESULT_OK;
 
 				itemList = item.getData();
+				Log.d("TEST", "fetchMoreItems itemsList count = " + itemList.size() + " page = " + page);
+
 				return itemList;
 			} else {
 				return null;
@@ -44,11 +46,5 @@ public class VideosPaginationAdapter extends PaginationCursorAdapter<VideoSingle
 		} else {
 			return null;
 		}
-	}
-
-	public void updateLoadItem(LoadItem loadItem) {
-		this.loadItem = loadItem;
-		setFirstPage(0);
-		setKeepOnAppending(true);
 	}
 }

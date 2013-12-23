@@ -708,58 +708,58 @@ public class DbDataManager {
 		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static boolean checkAndDeleteNonExistFriends(ContentResolver contentResolver, List<FriendsItem.Data> friendsList, String username) {
-		// compare to current list games
-
-		final String[] arguments1 = sArguments1;
-		arguments1[0] = username;
-
-		Uri uri = uriArray[Tables.FRIENDS.ordinal()];
-		long[] userIds;
-		// get all user's friends. Drink beer, have fun. Collect all ids
-		Cursor cursor = contentResolver.query(uri, PROJECTION_USER_ID, SELECTION_USER, arguments1, null);
-		if (cursor != null && cursor.moveToFirst()) {
-			userIds = new long[cursor.getCount()];
-			int i = 0;
-			do {
-				userIds[i++] = getLong(cursor, V_USER_ID);
-			} while (cursor.moveToNext());
-		} else if (friendsList.size() == 0) { // means no friends exist for that user
-			arguments1[0] = username;
-			contentResolver.delete(uri, SELECTION_USER, arguments1);
-
-			return false;
-		} else { // friends exist, but not saved yet
-			return true;
-		}
-
-		List<Long> idsToRemove = new ArrayList<Long>();
-		for (long userId : userIds) {
-			boolean found = false;
-			// if friend is still with us, then add him to alive
-			for (FriendsItem.Data listCurrentItem : friendsList) {
-				if (listCurrentItem.getUserId() == userId) {
-					found = true;
-					break;
-				}
-			}
-			// else he probably already not with us :)
-			if (!found) {
-				idsToRemove.add(userId);
-			}
-		}
-
-		if (idsToRemove.size() > 0) {
-			for (Long id : idsToRemove) {
-				final String[] arguments2 = sArguments2;
-				arguments2[0] = username;
-				arguments2[1] = String.valueOf(id);
-				contentResolver.delete(uri, SELECTION_USER_ID, arguments2);
-			}
-		}
-
-		return userIds.length > idsToRemove.size();
-	}
+//	public static boolean checkAndDeleteNonExistFriends(ContentResolver contentResolver, List<FriendsItem.Data> friendsList, String username) {
+//		// compare to current list games
+//
+//		final String[] arguments1 = sArguments1;
+//		arguments1[0] = username;
+//
+//		Uri uri = uriArray[Tables.FRIENDS.ordinal()];
+//		long[] userIds;
+//		// get all user's friends. Drink beer, have fun. Collect all ids
+//		Cursor cursor = contentResolver.query(uri, PROJECTION_USER_ID, SELECTION_USER, arguments1, null);
+//		if (cursor != null && cursor.moveToFirst()) {
+//			userIds = new long[cursor.getCount()];
+//			int i = 0;
+//			do {
+//				userIds[i++] = getLong(cursor, V_USER_ID);
+//			} while (cursor.moveToNext());
+//		} else if (friendsList.size() == 0) { // means no friends exist for that user
+//			arguments1[0] = username;
+//			contentResolver.delete(uri, SELECTION_USER, arguments1);
+//
+//			return false;
+//		} else { // friends exist, but not saved yet
+//			return true;
+//		}
+//
+//		List<Long> idsToRemove = new ArrayList<Long>();
+//		for (long userId : userIds) {
+//			boolean found = false;
+//			// if friend is still with us, then add him to alive
+//			for (FriendsItem.Data listCurrentItem : friendsList) {
+//				if (listCurrentItem.getUserId() == userId) {
+//					found = true;
+//					break;
+//				}
+//			}
+//			// else he probably already not with us :)
+//			if (!found) {
+//				idsToRemove.add(userId);
+//			}
+//		}
+//
+//		if (idsToRemove.size() > 0) {
+//			for (Long id : idsToRemove) {
+//				final String[] arguments2 = sArguments2;
+//				arguments2[0] = username;
+//				arguments2[1] = String.valueOf(id);
+//				contentResolver.delete(uri, SELECTION_USER_ID, arguments2);
+//			}
+//		}
+//
+//		return userIds.length > idsToRemove.size();
+//	}
 
 	public static boolean haveSavedDailyStats(Context context, String username) {
 
@@ -2020,25 +2020,6 @@ public class DbDataManager {
 		values.put(V_NAME, dataObj.getName());
 		values.put(V_CATEGORY_ID, dataObj.getId());
 		values.put(V_DISPLAY_ORDER, dataObj.getDisplayOrder());
-
-		return values;
-	}
-
-	/* ========================================== Messages ========================================== */
-	public static ContentValues putConversationItemToValues(ConversationItem.Data dataObj) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_ID, dataObj.getId());
-		values.put(V_OTHER_USER_ID, dataObj.getOtherUserId());
-		values.put(V_LAST_MESSAGE_ID, dataObj.getLastMessageId());
-		values.put(V_LAST_MESSAGE_CREATED_AT, dataObj.getLastMessageCreatedAt());
-		values.put(V_OTHER_USER_IS_ONLINE, dataObj.isOtherUserIsOnline() ? 1 : 0);
-		values.put(V_NEW_MESSAGES_COUNT, dataObj.getNewMessagesCount());
-		values.put(V_USER, dataObj.getUser());
-		values.put(V_OTHER_USER_USERNAME, dataObj.getOtherUserUsername());
-		values.put(V_OTHER_USER_AVATAR_URL, dataObj.getOtherUserAvatarUrl());
-		values.put(V_LAST_MESSAGE_SENDER_USERNAME, dataObj.getLastMessageSenderUsername());
-		values.put(V_LAST_MESSAGE_CONTENT, dataObj.getLastMessageContent());
 
 		return values;
 	}

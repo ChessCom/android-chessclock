@@ -59,6 +59,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
 	private static final String OBSOLETE_VERSION_TAG = "obsolete version";
 	private static final String EXIT_GAME_TAG = "exit_game";
+	private static final long RETRY_DELAY = 100;
 
 	protected LiveOuterChallengeListener outerChallengeListener;
 	protected Challenge currentChallenge;
@@ -317,7 +318,20 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				if (liveService.getLccHelper() != null && liveService.getLccHelper().isConnected()) {
 					onLiveClientConnected();
 				} else {
-					showToast("Service bounded but client not connected"); // TODO improve handling via handler and exp retry
+					handler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							if (isLCSBound) {
+								if (liveService.getLccHelper() != null && liveService.getLccHelper().isConnected()) {
+									onLiveClientConnected();
+									handler.removeCallbacks(this);
+								} else {
+									handler.postDelayed(this, RETRY_DELAY);
+									Log.d("TEST", "Service bounded but client not connected");
+								}
+							}
+						}
+					}, RETRY_DELAY);
 					Log.d("TEST", "Service bounded but client not connected");
 				}
 			} else {
@@ -654,12 +668,14 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void updateData(LoginItem returnedObj) {
-			if (!TextUtils.isEmpty(returnedObj.getData().getUsername())) {
-				preferencesEditor.putString(AppConstants.USERNAME, returnedObj.getData().getUsername().trim().toLowerCase());
+			LoginItem.Data loginData = returnedObj.getData();
+
+			if (!TextUtils.isEmpty(loginData.getUsername())) {
+				preferencesEditor.putString(AppConstants.USERNAME, loginData.getUsername().trim().toLowerCase());
 			}
-			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
-			preferencesEditor.putString(LIVE_SESSION_ID, returnedObj.getData().getSessionId());
-			preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getData().getLoginToken());
+			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
+			preferencesEditor.putString(LIVE_SESSION_ID, loginData.getSessionId());
+			preferencesEditor.putString(AppConstants.USER_TOKEN, loginData.getLoginToken());
 			preferencesEditor.commit();
 
 			registerGcmService();
@@ -694,7 +710,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		for (Fragment fragment : getSupportFragmentManager().getFragments()) {
 			if (fragment != null && fragment.isVisible()) {
 				if (fragment instanceof LiveBaseFragment) {
-					((LiveBaseFragment)fragment).onLiveServiceConnected();
+					((LiveBaseFragment) fragment).onLiveServiceConnected();
 				}
 			}
 		}

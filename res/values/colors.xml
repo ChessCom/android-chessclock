@@ -212,7 +212,7 @@
 
 
 	<color name="transparent">#00000000</color>
-	<color name="disabled">#FF7a7a7a</color>
+	<color name="disabled">#A0FFFFFF</color>
 
 	<color name="semitransparent">#7f000000</color>
 	<color name="semitransparent_white">#46FFFFFF</color>
@@ -374,6 +374,7 @@
     <color name="header_dark">#44000000</color>
 
     <color name="new_text_blue">#FF0d5988</color>
+    <color name="new_text_blue_d">#800d5988</color>
     <color name="new_text_blue_dark">#FF0e344d</color>
     <color name="new_friends_grey_text">#FFa7a6a2</color>
     <color name="new_square_button">#ffeaeaea</color>
@@ -439,24 +440,35 @@
     <color name="upgrade_diamond_button_p">#ffd3e2e8</color>
     <color name="upgrade_diamond_button_border">#FFcad7dc</color>
     <color name="upgrade_diamond_button_border_1">#FF9fa9ad</color>
+    <color name="upgrade_diamond_button_d">#80e6f5fa</color>
+    <color name="upgrade_diamond_button_border_d">#80cad7dc</color>
+    <color name="upgrade_diamond_button_border_1_d">#809fa9ad</color>
 
     <color name="upgrade_platinum_button">#FFf3f0ee</color>
     <color name="upgrade_platinum_button_p">#ffe2dfdd</color>
     <color name="upgrade_platinum_button_border">#FFd5d3d1</color>
     <color name="upgrade_platinum_button_border_1">#FFa8a6a4</color>
+    <color name="upgrade_platinum_button_d">#80f3f0ee</color>
+    <color name="upgrade_platinum_button_border_d">#80d5d3d1</color>
+    <color name="upgrade_platinum_button_border_1_d">#80a8a6a4</color>
 
     <color name="upgrade_gold_button">#FFfaf8d7</color>
     <color name="upgrade_gold_button_p">#ffe8e6c5</color>
     <color name="upgrade_gold_button_border">#FFdcdabd</color>
     <color name="upgrade_gold_button_border_1">#FFadab94</color>
+    <color name="upgrade_gold_button_d">#80faf8d7</color>
+    <color name="upgrade_gold_button_border_d">#80dcdabd</color>
+    <color name="upgrade_gold_button_border_1_d">#80adab94</color>
 
     <color name="diamond_back">#FFccebfd</color>
     <color name="platinum_back">#FFdcd8d5</color>
     <color name="gold_back">#FFedeaca</color>
 
     <color name="upgrade_toggle_button_border">#FFbfbfbf</color>
+    <color name="upgrade_toggle_button_border_d">#80bfbfbf</color>
     <color name="upgrade_toggle_button">#FFf7f7f7</color>
     <color name="upgrade_toggle_button_p">#ffd8d8d8</color>
+    <color name="upgrade_toggle_button_d">#80d8d8d8</color>
     <color name="upgrade_toggle_button_c">#FFe7e7e7</color>
     <color name="upgrade_toggle_shadow">#18000000</color>
 

@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class ArticlesPaginationAdapter extends PaginationCursorAdapter<ArticleItem.Data> {
 
-	protected LoadItem loadItem;
-
 	public ArticlesPaginationAdapter(Context context, ItemsCursorAdapter adapter,
 								   TaskUpdateInterface<ArticleItem.Data> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
@@ -51,9 +49,4 @@ public class ArticlesPaginationAdapter extends PaginationCursorAdapter<ArticleIt
 		}
 	}
 
-	public void updateLoadItem(LoadItem loadItem) {
-		this.loadItem = loadItem;
-		setFirstPage(0);
-		setKeepOnAppending(true);
-	}
 }

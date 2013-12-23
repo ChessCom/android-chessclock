@@ -19,8 +19,6 @@ import java.util.List;
  */
 public class LessonsPaginationAdapter extends PaginationCursorAdapter<LessonSingleItem> {
 
-	protected LoadItem loadItem;
-
 	public LessonsPaginationAdapter(Context context, ItemsCursorAdapter adapter,
 								   TaskUpdateInterface<LessonSingleItem> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
@@ -56,10 +54,4 @@ public class LessonsPaginationAdapter extends PaginationCursorAdapter<LessonSing
 		}
 	}
 
-	public void updateLoadItem(LoadItem loadItem) {
-		this.loadItem = loadItem;
-		setFirstPage(0);
-		setKeepOnAppending(true);
-		notifyDataSetChanged();
-	}
 }

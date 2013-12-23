@@ -32,6 +32,7 @@ public final class GcmHelper {
 	public static final String NOTIFICATION_NEW_CHALLENGE = "NOTIFICATION_NEW_CHALLENGE";
 	public static final String NOTIFICATION_NEW_FRIEND_REQUEST = "NOTIFICATION_NEW_FRIEND_REQUEST";
 	public static final String NOTIFICATION_GAME_OVER = "NOTIFICATION_GAME_OVER";
+	public static final String NOTIFICATION_MOVE_MADE = "NOTIFICATION_MOVE_MADE";
 
 /*
     $payload = array(

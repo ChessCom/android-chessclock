@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.settings;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -59,7 +60,7 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
 //			case R.string.ic_key:
-//				getActivityFace().openFragment(new SettingsApiFragment());
+//				changeInternalFragment(new SettingsApiFragment());
 //				break;
 			case R.string.ic_profile:
 				changeInternalFragment(new SettingsProfileFragment());
@@ -130,6 +131,19 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 			return getChildFragmentManager().popBackStackImmediate();
 		} else {
 			return super.showPreviousFragment();
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (resultCode == Activity.RESULT_OK ) {
+			for (Fragment fragment : getChildFragmentManager().getFragments()) {
+				if (fragment != null) {
+					fragment.onActivityResult(requestCode, resultCode, data);
+				}
+			}
 		}
 	}
 }

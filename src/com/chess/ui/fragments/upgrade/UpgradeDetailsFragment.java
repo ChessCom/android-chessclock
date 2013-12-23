@@ -22,6 +22,7 @@ import com.chess.backend.entity.api.MembershipKeyItem;
 import com.chess.backend.entity.api.PayloadItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.PopupItem;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -92,10 +93,14 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private String username;
 	protected TextView yearDiscountTxt;
 	protected int planCode;
-	private View loadProgressBar;
 	private TextView loadProgressTxt;
 	private TextView taskTitleTxt;
 	private PopupCustomViewFragment loadProgressPopupFragment;
+	private View goldBtn;
+	private View platinumBtn;
+	protected int premiumStatus;
+	private View disabledOverlayView;
+	private int topPadding;
 
 	public UpgradeDetailsFragment() {
 	}
@@ -128,6 +133,11 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		getPayloadListener = new GetPayloadListener();
 
 		username = getAppData().getUsername();
+
+		// get user membership level
+		premiumStatus = getAppData().getUserPremiumStatus();
+		topPadding = (int) (15 * density);
+
 		// get key from server
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_MEMBERSHIP_KEY);
@@ -171,7 +181,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+//		Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
 
 		// Pass on the activity result to the helper for handling
 		if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
@@ -180,7 +190,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			// billing...
 			super.onActivityResult(requestCode, resultCode, data);
 		} else {
-			Log.d(TAG, "onActivityResult handled by IABUtil.");
+//			Log.d(TAG, "onActivityResult handled by IABUtil.");
 		}
 	}
 
@@ -190,12 +200,36 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		super.onDestroy();
 
 		// very important:
-		Log.d(TAG, "Destroying helper.");
-		if (mHelper != null) mHelper.dispose();
-		mHelper = null;
+		if (mHelper != null) {
+			mHelper.dispose();
+			mHelper = null;
+		}
 	}
 
 	protected void updateUiData() {
+		// don't show lower upgrade options.
+		if (premiumStatus == StaticData.DIAMOND_USER) { // disable platinum & gold
+			platinumBtn.setEnabled(false);
+			goldBtn.setEnabled(false);
+			if (planCode == GOLD || planCode == PLATINUM) {
+				disabledOverlayView.setVisibility(View.VISIBLE);
+			} else {
+				disabledOverlayView.setVisibility(View.GONE);
+			}
+		} else if (premiumStatus == StaticData.PLATINUM_USER) { // disable gold
+			if (planCode == GOLD) {
+				disabledOverlayView.setVisibility(View.VISIBLE);
+			} else {
+				disabledOverlayView.setVisibility(View.GONE);
+			}
+			goldBtn.setEnabled(false);
+			platinumBtn.setEnabled(true);
+		} else if (premiumStatus == StaticData.GOLD_USER) { // enable all
+			disabledOverlayView.setVisibility(View.GONE);
+			platinumBtn.setEnabled(true);
+			goldBtn.setEnabled(true);
+		}
+
 		configs[GOLD].setMonthPayed(isGoldMonthPayed);
 		configs[GOLD].setYearPayed(isGoldYearPayed);
 		configs[PLATINUM].setMonthPayed(isPlatinumMonthPayed);
@@ -203,22 +237,33 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		configs[DIAMOND].setMonthPayed(isDiamondMonthPayed);
 		configs[DIAMOND].setYearPayed(isDiamondYearPayed);
 
-		switch (radioGroup.getCheckedRadioButtonId()) {
-			case R.id.diamondBtn:
-				showPaymentPlan(configs[DIAMOND]);
-				break;
-			case R.id.platinumBtn:
-				showPaymentPlan(configs[PLATINUM]);
-				break;
-			case R.id.goldBtn:
-				showPaymentPlan(configs[GOLD]);
-				break;
-		}
+		showPaymentPlan(configs[planCode]);
 	}
 
 	protected void showPaymentPlan(PlanConfig planConfig) {
 		planDetailsView.setBackgroundResource(planConfig.planDetailsBack);
-		planDetailsView.setPadding(0, 0, 0, (int) (12 * density));
+		if (premiumStatus == StaticData.DIAMOND_USER) {
+			if (planCode == GOLD || planCode == PLATINUM) {
+				planDetailsView.setPadding(0, 0, 0, 0);
+			} else {
+				if (!isTablet) {
+					planDetailsView.setPadding(0, 0, 0, topPadding);
+				}
+			}
+		} else if (premiumStatus == StaticData.PLATINUM_USER) {
+			if (planCode == GOLD) {
+				planDetailsView.setPadding(0, 0, 0, 0);
+			} else {
+				if (!isTablet) {
+					planDetailsView.setPadding(0, 0, 0, topPadding);
+				}
+			}
+		} else {
+			if (!isTablet) {
+				planDetailsView.setPadding(0, 0, 0, topPadding);
+			}
+		}
+
 		planImg.setImageResource(planConfig.planIconId);
 
 		planTitleTxt.setTextColor(planConfig.titleColor);
@@ -299,6 +344,17 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
+		switch (checkedId) {
+			case R.id.diamondBtn:
+				planCode = DIAMOND;
+				break;
+			case R.id.platinumBtn:
+				planCode = PLATINUM;
+				break;
+			case R.id.goldBtn:
+				planCode = GOLD;
+				break;
+		}
 		updateUiData();
 	}
 
@@ -490,7 +546,8 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 			// update selected modes
 			if (returnedObj.getData().getIs_premium() > 0) {
-				getAppData().setUserPremiumStatus(returnedObj.getData().getLevel());
+				premiumStatus = returnedObj.getData().getLevel();
+				getAppData().setUserPremiumStatus(premiumStatus);
 
 				String sku = returnedObj.getData().getSku();
 
@@ -610,38 +667,38 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 			payloadData = returnedObj.getData();
 
-			// cut previous additional params // TODO shouldn't be in prod
+			// cut previous additional params
 			String usernameEncoded = Base64.encode((username + PARAMS_DIVIDER + itemId).getBytes());
 
 			String load = payloadData.getPayload().substring(0, HASH_LENGTH);
 
 			String purchasePayload = load + usernameEncoded;
 
-			{// Test part // TODO remove after tests
-				String serverPayLoad = payloadData.getPayload();
-				String userNameSku = purchasePayload.substring(HASH_LENGTH);
-				String purchasePayload1 = purchasePayload.substring(0, HASH_LENGTH);
-				String serverPayLoad1 = serverPayLoad.substring(0, HASH_LENGTH);
-				try {
-					byte[] decode = Base64.decode(userNameSku);
-					userNameSku = new String(decode, "UTF-8");
-				} catch (Base64DecoderException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-
-				String[] purchaseParams = userNameSku.split("[||]");
-				if (purchaseParams.length == 3) {
-					String purchaseUserName = purchaseParams[0];
-					String purchaseSku = purchaseParams[2];
-					logTest(purchaseUserName);
-					logTest(purchaseSku);
-				}
-
-				logTest(purchasePayload1);
-				logTest(serverPayLoad1);
-			}
+//			{// Test part
+//				String serverPayLoad = payloadData.getPayload();
+//				String userNameSku = purchasePayload.substring(HASH_LENGTH);
+//				String purchasePayload1 = purchasePayload.substring(0, HASH_LENGTH);
+//				String serverPayLoad1 = serverPayLoad.substring(0, HASH_LENGTH);
+//				try {
+//					byte[] decode = Base64.decode(userNameSku);
+//					userNameSku = new String(decode, "UTF-8");
+//				} catch (Base64DecoderException e) {
+//					e.printStackTrace();
+//				} catch (UnsupportedEncodingException e) {
+//					e.printStackTrace();
+//				}
+//
+//				String[] purchaseParams = userNameSku.split("[||]");
+//				if (purchaseParams.length == 3) {
+//					String purchaseUserName = purchaseParams[0];
+//					String purchaseSku = purchaseParams[2];
+//					logTest(purchaseUserName);
+//					logTest(purchaseSku);
+//				}
+//
+//				logTest(purchasePayload1);
+//				logTest(serverPayLoad1);
+//			}
 			setWaitScreen(true, getString(R.string.upgrade_performing_purchase));
 			mHelper.launchPurchaseFlow(getActivity(), itemId, IabHelper.ITEM_TYPE_SUBS,
 					RC_REQUEST, new PurchaseFinishedListener(), purchasePayload);
@@ -755,7 +812,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
 
 			TextView loadTitleTxt = (TextView) layout.findViewById(R.id.loadTitleTxt);
-			loadProgressBar = layout.findViewById(R.id.loadProgressBar);
+			View loadProgressBar = layout.findViewById(R.id.loadProgressBar);
 			loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
 			taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
 
@@ -801,6 +858,11 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		descriptionView = (LinearLayout) view.findViewById(R.id.descriptionView);
 
 		yearDiscountTxt.setText(getString(R.string.save) + Symbol.NEW_STR + YEAR_DISCOUNT);
+
+		platinumBtn = view.findViewById(R.id.platinumBtn);
+		goldBtn = view.findViewById(R.id.goldBtn);
+
+		disabledOverlayView = view.findViewById(R.id.disableOverlayView);
 	}
 
 	static class PlanConfig {

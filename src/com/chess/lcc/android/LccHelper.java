@@ -64,7 +64,7 @@ public class LccHelper {
 	private Collection<? extends User> blockedUsers = new HashSet<User>();
 	private Collection<? extends User> blockingUsers = new HashSet<User>();
 	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
-	private final HashSet<Game> gamesToUnobserve = new HashSet<Game>();
+	private final HashSet<Game> gamesToUnObserve = new HashSet<Game>();
 	private final Map<String, User> friends = new HashMap<String, User>();
 	private final Map<String, User> onlineFriends = new HashMap<String, User>();
 	/*private Map<LiveGameEvent.Event, LiveGameEvent> pausedActivityGameEvents = new HashMap<LiveGameEvent.Event, LiveGameEvent>();*/
@@ -952,16 +952,16 @@ public class LccHelper {
 		return currentObservedGameId;
 	}
 
-	public boolean isGameToUnobserve(Game game) {
-		return gamesToUnobserve.contains(game);
+	public boolean isGameToUnObserve(Game game) {
+		return gamesToUnObserve.contains(game);
 	}
 
-	public boolean addGameToUnobserve(Game game) {
-		return gamesToUnobserve.add(game);
+	public boolean addGameToUnObserve(Game game) {
+		return gamesToUnObserve.add(game);
 	}
 
-	/*public boolean removeGameToUnobserve(Game game) {
-		return gamesToUnobserve.remove(game);
+	/*public boolean removeGameToUnObserve(Game game) {
+		return gamesToUnObserve.remove(game);
 	}*/
 
 	public void putGameChat(Long gameId, Chat chat) {
@@ -1054,8 +1054,8 @@ public class LccHelper {
 		lccClient.observeTopGame(GameRatingClass.Blitz, gameListener);
 	}
 
-	public void unobserveGame(Long gameId) {
-		LogMe.dl(TAG, "unobserve game=" + gameId);
+	public void unObserveGame(Long gameId) {
+		LogMe.dl(TAG, "unObserve game=" + gameId);
 		lccClient.unobserveGame(gameId);
 	}
 
@@ -1253,7 +1253,7 @@ public class LccHelper {
 
 		@Override
 		protected Void doInBackground(Long... params) {
-			unobserveGame(params[0]);
+			unObserveGame(params[0]);
 			return null;
 		}
 	}

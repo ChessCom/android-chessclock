@@ -3,7 +3,6 @@ package com.chess.ui.fragments.comp;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.SparseArray;
@@ -166,7 +165,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			}
 		}
 
-		startGame(savedInstanceState);
+		startGame();
 	}
 
 	@Override
@@ -202,7 +201,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		outState.putParcelable(CONFIG, compGameConfig);
 	}*/
 
-	private void startGame(Bundle savedInstanceState) {
+	private void startGame() {
 		int gameMode;
 		if (getBoardFace().isAnalysis()) {
 			gameMode = GameMode.ANALYSIS;
@@ -227,9 +226,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		compEngineItem.setStrength(strength);
 		compEngineItem.setTime(time);
 
-		new StartEngineTask(compEngineItem, this,
-				PreferenceManager.getDefaultSharedPreferences(getActivity()), savedInstanceState, getActivity().getApplicationContext(),
-				new InitComputerEngineUpdateListener()).executeTask();
+		new StartEngineTask(compEngineItem, this, new InitComputerEngineUpdateListener()).executeTask();
 	}
 
 	@Override
@@ -695,7 +692,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		getBoardFace().setMode(compGameConfig.getMode());
 		resideBoardIfCompWhite();
 		invalidateGameScreen();
-		startGame(null);
+		startGame();
 	}
 
 	public void updateConfig(CompGameConfig config) {

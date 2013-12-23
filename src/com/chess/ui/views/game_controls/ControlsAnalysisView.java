@@ -29,7 +29,7 @@ public class ControlsAnalysisView extends ControlsBaseView {
 
 	@Override
 	protected void addButtons() {
-//		addControlButton(EXIT, styles[LEFT]);
+		addControlButton(EXIT, styles[LEFT]);
 		addControlButton(RESTART, styles[LEFT]);
 		addControlButton(BOOK, styles[MIDDLE]);
 		addControlButton(COMP, styles[MIDDLE]);
@@ -60,7 +60,7 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	}
 
 	public void enableGameControls(boolean enable) {
-//		enableGameButton(EXIT, enable);
+		enableGameButton(EXIT, enable);
 		enableGameButton(RESTART, enable);
 		enableGameButton(BOOK, enable);
 		if (showComp) {

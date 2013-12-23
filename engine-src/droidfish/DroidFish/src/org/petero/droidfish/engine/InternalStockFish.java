@@ -29,7 +29,6 @@ import java.util.zip.GZIPInputStream;
 public class InternalStockFish extends ExternalEngine {
 
     public InternalStockFish(Context context, Report report) {
-//        super(context, "", report);
         super(context, "stockfish.sf", report); // try to prevent IOException FileNotFoundException: /: open failed: EISDIR (Is a directory)
     }
 

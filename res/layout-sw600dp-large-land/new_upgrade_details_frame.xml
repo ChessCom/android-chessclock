@@ -19,8 +19,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:background="@drawable/button_upgrade_diamond_default"
-			android:paddingBottom="12dip">
-
+			>
 
 			<!--Plan Title-->
 			<LinearLayout
@@ -191,7 +190,7 @@
 						android:layout_marginRight="11dip"
 						android:layout_centerHorizontal="true"
 						android:button="@drawable/button_checkmark_diamond_selector"
-						android:checked="true"
+						android:checked="false"
 						android:minHeight="35dip"
 						/>
 
@@ -213,24 +212,35 @@
 			<com.chess.widgets.RoboButton
 				android:id="@+id/setPlanBtn"
 				android:layout_width="match_parent"
-				android:layout_height="50dip"
+				android:layout_height="wrap_content"
+				android:minHeight="50dip"
 				android:layout_below="@id/periodView"
 				android:text="@string/upgrade"
 				android:layout_marginTop="15dip"
 				android:layout_marginLeft="15dip"
 				android:layout_marginRight="15dip"
-				android:layout_marginBottom="12dip" />
+				android:layout_marginBottom="15dip"
+				/>
+
+			<!--Disable overlay-->
+			<View
+				android:id="@+id/disableOverlayView"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@drawable/rounded_disable_overlay"
+				android:layout_alignParentTop="true"
+				android:layout_alignBottom="@id/setPlanBtn"
+				android:layout_marginBottom="-15dp"
+				android:visibility="gone"
+				/>
 
 		</RelativeLayout>
-
 
 		<LinearLayout
 			android:id="@+id/descriptionView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:background="@color/upgrade_diamond_button"
-			android:padding="15dip"
-			android:layout_marginTop="15dip"
 			android:orientation="vertical"
 			android:visibility="gone" />
 

@@ -19,7 +19,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:background="@drawable/button_upgrade_diamond_default"
-			android:paddingBottom="12dip">
+			>
 
 
 			<!--Plan Title-->
@@ -29,7 +29,9 @@
 				android:layout_height="wrap_content"
 				android:paddingTop="13dp"
 				android:paddingBottom="7dp"
-				android:layout_centerHorizontal="true">
+				android:layout_centerHorizontal="true"
+				android:duplicateParentState="true"
+				>
 
 				<ImageView
 					android:id="@+id/planImg"
@@ -39,7 +41,8 @@
 					android:adjustViewBounds="true"
 					android:src="@drawable/ic_upgrade_diamond"
 					android:contentDescription="@string/image"
-					android:layout_marginRight="9dip" />
+					android:layout_marginRight="9dip"
+					android:duplicateParentState="true"/>
 
 				<com.chess.widgets.RoboTextView
 					android:id="@+id/planTitleTxt"
@@ -48,7 +51,8 @@
 					android:text="@string/diamond"
 					android:textColor="@color/upgrade_diamond_title"
 					android:textSize="25sp"
-					custom:ttf="Bold" />
+					custom:ttf="Bold"
+					android:duplicateParentState="true"/>
 
 			</LinearLayout>
 
@@ -63,7 +67,8 @@
 				android:layout_below="@id/topView"
 				android:paddingBottom="12dp"
 				android:minHeight="50dp"
-				custom:ttf="Italic" />
+				custom:ttf="Italic"
+				android:duplicateParentState="true"/>
 
 			<!--Periods check boxes-->
 			<LinearLayout
@@ -72,7 +77,8 @@
 				android:layout_height="wrap_content"
 				android:layout_below="@id/planSubTitleTxt"
 				android:orientation="vertical"
-				android:baselineAligned="true">
+				android:baselineAligned="true"
+				android:duplicateParentState="true">
 
 				<!--Month-->
 				<RelativeLayout
@@ -83,7 +89,8 @@
 					android:paddingTop="12dip"
 					android:paddingBottom="16dip"
 					android:layout_marginLeft="2dip"
-					android:layout_marginRight="2dip">
+					android:layout_marginRight="2dip"
+					android:duplicateParentState="true">
 
 					<com.chess.widgets.RoboTextView
 						android:id="@+id/monthValueTxt"
@@ -93,7 +100,8 @@
 						android:paddingBottom="8dip"
 						android:textSize="22sp"
 						android:textColor="@color/upgrade_diamond_title"
-						custom:ttf="Bold" />
+						custom:ttf="Bold"
+						android:duplicateParentState="true"/>
 
 					<View
 						android:id="@id/centerMonthView"
@@ -120,7 +128,8 @@
 						android:layout_below="@id/monthValueTxt"
 						android:layout_centerHorizontal="true"
 						android:button="@drawable/button_checkmark_diamond_selector"
-						android:minHeight="35dip" />
+						android:minHeight="35dip"
+						android:duplicateParentState="true"/>
 
 				</RelativeLayout>
 
@@ -133,7 +142,8 @@
 					android:paddingTop="12dip"
 					android:layout_marginLeft="2dip"
 					android:layout_marginRight="2dip"
-					android:paddingBottom="16dip">
+					android:paddingBottom="16dip"
+					android:duplicateParentState="true">
 
 					<com.chess.widgets.RoboTextView
 						android:id="@+id/yearValueTxt"
@@ -171,8 +181,8 @@
 						android:layout_marginRight="11dip"
 						android:layout_centerHorizontal="true"
 						android:button="@drawable/button_checkmark_diamond_selector"
-						android:checked="true"
-						android:minHeight="35dip" />
+						android:checked="false"
+						android:minHeight="35dip"/>
 
 					<com.chess.widgets.RoboTextView
 						android:id="@+id/yearDiscountTxt"
@@ -197,7 +207,19 @@
 				android:layout_marginTop="15dip"
 				android:layout_marginLeft="15dip"
 				android:layout_marginRight="15dip"
-				android:layout_marginBottom="12dip" />
+				android:layout_marginBottom="15dip"
+				/>
+
+			<!--Disable overlay-->
+			<View
+				android:id="@+id/disableOverlayView"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@drawable/rounded_disable_overlay"
+				android:layout_alignParentTop="true"
+				android:layout_alignBottom="@id/setPlanBtn"
+				android:layout_marginBottom="-15dip"
+				/>
 
 		</RelativeLayout>
 
@@ -208,7 +230,6 @@
 			android:layout_height="wrap_content"
 			android:background="@color/upgrade_diamond_button"
 			android:padding="15dip"
-			android:layout_marginTop="15dip"
 			android:orientation="vertical"
 			android:visibility="gone" />
 

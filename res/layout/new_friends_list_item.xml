@@ -10,8 +10,7 @@
 	android:background="@drawable/transparent_list_item_selector"
     >
 
-
-
+	<!--Avatar-->
     <com.chess.backend.image_load.AvatarView
         android:id="@+id/photoImg"
         android:layout_width="@dimen/friend_list_photo_size"
@@ -26,7 +25,7 @@
         android:scaleType="fitXY"
         />
 
-
+	<!--Username-->
     <com.chess.widgets.RoboTextView
         android:id="@+id/usernameTxt"
         android:layout_width="wrap_content"
@@ -38,6 +37,7 @@
         android:textSize="17sp"
         />
 
+	<!--Country-->
     <ImageView
         android:id="@+id/countryImg"
         android:layout_width="@dimen/country_icon_list_size"
@@ -48,6 +48,7 @@
         android:layout_marginLeft="7dip"
         />
 
+	<!--Premium img-->
 	<ImageView
         android:id="@+id/premiumImg"
         android:layout_width="@dimen/premium_icon_list_size"
@@ -61,6 +62,7 @@
         android:scaleType="fitXY"
         />
 
+	<!--Location-->
     <com.chess.widgets.RoboTextView
         android:id="@+id/locationTxt"
         android:layout_width="wrap_content"
@@ -71,6 +73,7 @@
         android:paddingTop="2dip"
         />
 
+	<!--Online status-->
     <com.chess.widgets.RoboTextView
         android:id="@+id/onlineTxt"
         android:layout_width="wrap_content"
@@ -83,6 +86,7 @@
         android:textSize="@dimen/default_text_size_small"
         />
 
+	<!--Challenge Btn-->
 	<com.chess.widgets.RoboButton
 		android:id="@+id/challengeImgBtn"
 		android:layout_width="@dimen/new_button_square_size"
@@ -98,6 +102,7 @@
 		style="@style/GlyphIcon.Square"
 		/>
 
+	<!--Message Btn-->
 	<com.chess.widgets.RoboButton
 		android:id="@+id/messageImgBtn"
 		android:layout_width="@dimen/new_button_square_size"

@@ -57,7 +57,9 @@ public class PopupGameEndFragment extends BasePopupDialogFragment {
 	public void onResume() {
 		super.onResume();
 
-		getDialog().setCanceledOnTouchOutside(true); // always cancel on touchOutside
+		if (getDialog() != null) {
+			getDialog().setCanceledOnTouchOutside(true); // always cancel on touchOutside
+		}
 	}
 
 }

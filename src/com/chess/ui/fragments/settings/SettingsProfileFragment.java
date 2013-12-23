@@ -60,8 +60,8 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	private static final String EDIT_MODE = "edit_mode";
 	public static final String BLUE_COLOR_DIVIDER = "##";
 
-	private static final int REQ_CODE_PICK_IMAGE = 33;
-	private static final int REQ_CODE_TAKE_IMAGE = 55;
+	public static final int REQ_CODE_PICK_IMAGE = 33;
+	public static final int REQ_CODE_TAKE_IMAGE = 55;
 	private static final int FILE_SIZE_LIMIT = 2 * 1024 * 1024;
 	private static final int IMG_SIZE_LIMIT_H = 600; // limit for maximum side size
 	private static final int IMG_SIZE_LIMIT_W = 800; // limit for maximum side size
@@ -219,7 +219,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 	public void onResume() {
 		super.onResume();
 
-		logTest("inEditMode = " + inEditMode);
+//		logTest("inEditMode = " + inEditMode);
 		if (!inEditMode && need2update) {
 			updateData();
 		}
@@ -233,7 +233,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 	public void discardChanges() {
 		discarded = true;
-		logTest("discard");
+//		logTest("discard");
 		inEditMode = false;
 		if (actionModeHelper != null) {
 			actionModeHelper.closeActionMode();

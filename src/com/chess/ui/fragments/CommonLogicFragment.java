@@ -659,21 +659,22 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		@Override
 		public void updateData(LoginItem returnedObj) {
-			String username = returnedObj.getData().getUsername();
+			LoginItem.Data loginData = returnedObj.getData();
+			String username = loginData.getUsername();
 
 			if (!TextUtils.isEmpty(username)) {
 				preferencesEditor.putString(USERNAME, username);
 			}
 
-			preferencesEditor.putString(username + PREF_USER_AVATAR_URL, returnedObj.getData().getAvatarUrl());
-			preferencesEditor.putLong(username + PREF_USER_ID, returnedObj.getData().getUserId());
-			preferencesEditor.putInt(username + PREF_USER_COUNTRY_ID, returnedObj.getData().getCountryId());
+			preferencesEditor.putString(username + PREF_USER_AVATAR_URL, loginData.getAvatarUrl());
+			preferencesEditor.putLong(username + PREF_USER_ID, loginData.getUserId());
+			preferencesEditor.putInt(username + PREF_USER_COUNTRY_ID, loginData.getCountryId());
 
-			if (returnedObj.getData().getTacticsRating() != 0) {
-				preferencesEditor.putInt(username + PREF_USER_TACTICS_RATING, returnedObj.getData().getTacticsRating());
+			if (loginData.getTacticsRating() != 0) {
+				preferencesEditor.putInt(username + PREF_USER_TACTICS_RATING, loginData.getTacticsRating());
 			}
-			preferencesEditor.putInt(username + USER_PREMIUM_STATUS, returnedObj.getData().getPremiumStatus());
-			preferencesEditor.putString(LIVE_SESSION_ID, returnedObj.getData().getSessionId());
+			preferencesEditor.putInt(username + USER_PREMIUM_STATUS, loginData.getPremiumStatus());
+			preferencesEditor.putString(LIVE_SESSION_ID, loginData.getSessionId());
 			preferencesEditor.commit();
 
 			if (loginReturnCode == FACEBOOK) {
@@ -681,7 +682,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				// save facebook access token to appData for future re-login
 				getAppData().setFacebookToken(facebookToken);
 			}
-			processLogin(returnedObj.getData());
+			processLogin(loginData);
 		}
 
 		@Override
@@ -1014,8 +1015,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (inviteFriendView1 == null) { // if widgets ini wasn't called yet, we skip
 			return;
 		}
-
-		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());// TODO load avatars
+		String username = getUsername();
+		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), username);// TODO load avatars
 		if (cursor != null && cursor.moveToFirst()) {
 			if (cursor.getCount() > 1) {
 				inviteFriendView1.setVisibility(View.VISIBLE);
@@ -1024,7 +1025,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				inviteFriendView2.setOnClickListener(this);
 
 				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-				if (firstFriendUserName.equals(getUsername())) {
+				if (firstFriendUserName.equals(username)) {
 					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
 				}
 				friendUserName1Txt.setText(firstFriendUserName);
@@ -1032,28 +1033,35 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				cursor.moveToNext();
 				secondFriendUserName = firstFriendUserName;
 
+				boolean anotherPlayerFound = false;
 				while (secondFriendUserName.equals(firstFriendUserName)) {
-					if (cursor.isLast()) {
+					if (cursor.isAfterLast()) {
 						break;
 					}
 					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-					if (secondFriendUserName.equals(getUsername())) {
+					if (secondFriendUserName.equals(username)) {
 						secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
 					}
 					if (!secondFriendUserName.equals(firstFriendUserName)) {
+						anotherPlayerFound = true;
 						break;
 					} else {
 						cursor.moveToNext();
 					}
 				}
 
-				friendUserName2Txt.setText(secondFriendUserName);
+				if (anotherPlayerFound) {
+					friendUserName2Txt.setText(secondFriendUserName);
+				} else {
+					inviteFriendView2.setVisibility(View.GONE);
+				}
+
 			} else if (cursor.getCount() == 1) {
 				inviteFriendView1.setVisibility(View.VISIBLE);
 				inviteFriendView1.setOnClickListener(this);
 
 				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-				if (firstFriendUserName.equals(getUsername())) {
+				if (firstFriendUserName.equals(username)) {
 					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
 				}
 				friendUserName1Txt.setText(firstFriendUserName);

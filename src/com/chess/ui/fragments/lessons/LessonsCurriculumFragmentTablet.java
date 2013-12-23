@@ -457,7 +457,12 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 			gridView.setOnItemClickListener(LessonsCurriculumFragmentTablet.this);
 
 			// calculate the column and row counts based on your display
-			final int rowCount = (int) Math.ceil(child.size() / (float) 2);
+			final int rowCount;
+			if (inLandscape()) {
+				rowCount = (int) Math.ceil(child.size() / (float) 2);
+			} else {
+				rowCount = (int) Math.ceil(child.size() / (float) 1);
+			}
 
 			// calculate and set the height for the current gridView
 			gridView.getLayoutParams().height = Math.round(rowCount * (columnHeight + spacing * 2));

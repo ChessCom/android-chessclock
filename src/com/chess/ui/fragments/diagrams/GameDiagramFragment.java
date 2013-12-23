@@ -439,7 +439,11 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 		boardFace.setFinished(false);
 
-		boardFace.setChess960(diagramItem.getGameType() != RestHelper.V_GAME_CHESS);
+		if (diagramItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
+			boardFace.setChess960(true);
+		} else {
+			boardFace.setChess960(false);
+		}
 
 		String fen = diagramItem.getFen();
 		boardFace.setupBoard(fen);

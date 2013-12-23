@@ -167,7 +167,7 @@ public class LoadHelper {
 		loadItem.addRequestParams(P_DAYS_PER_MOVE, days);
 		loadItem.addRequestParams(P_USER_SIDE, RestHelper.P_RANDOM); // always random!
 		loadItem.addRequestParams(P_IS_RATED, isRated);
-		loadItem.addRequestParams(P_GAME_TYPE, gameType);
+		loadItem.addRequestParams(P_GAME_TYPE_CODE_ID, gameType);
 		if (!TextUtils.isEmpty(opponentName)) {
 			loadItem.addRequestParams(P_OPPONENT, opponentName);
 		}

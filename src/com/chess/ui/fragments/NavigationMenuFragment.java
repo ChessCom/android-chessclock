@@ -44,7 +44,6 @@ import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.fragments.videos.VideosFragment;
 import com.chess.ui.fragments.videos.VideosFragmentTablet;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +79,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 
 		menuItems = new ArrayList<NavigationMenuItem>();
 		menuItems.add(new NavigationMenuItem(getString(R.string.home), R.drawable.ic_nav_home));
-		if (AppUtils.isNeedToUpgrade(getActivity())) {
+		if (isNeedToUpgradePremium()) {
 			menuItems.add(new NavigationMenuItem(getString(R.string.upgrade), R.drawable.ic_nav_upgrade_shine));
 		}
 		menuItems.add(new NavigationMenuItem(getString(R.string.play_live), R.drawable.ic_nav_play_live));

@@ -2,19 +2,17 @@ package com.chess.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
-import com.chess.widgets.RoboTextView;
 import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.FontsHelper;
+import com.chess.widgets.RoboTextView;
 
 import java.util.HashMap;
 
@@ -81,7 +79,7 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 		imageFetcher.loadImage(imageDataMap.get(otherUserAvatarUrl), holder.photoImg.getImageView());
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_OTHER_USER_USERNAME));
-		Spanned message = Html.fromHtml(getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT));
+		String message = getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT); // already saved in DB as plain text
 		holder.lastMessageTxt.setText(message);
 		long timeAgo = getLong(cursor, DbScheme.V_LAST_MESSAGE_CREATED_AT);
 		String lastDate = AppUtils.getMomentsAgoFromSeconds(timeAgo, context);

@@ -10,7 +10,7 @@ public class DailyFinishedGameData extends DailyGameBaseData {
 	/*
     "id": 35000778,
 	"i_play_as": 1,
-	"game_type": 1,
+	"game_type_id": 1,
 	"fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
 	"timestamp": 1357166897,
 	"name": "marcos",

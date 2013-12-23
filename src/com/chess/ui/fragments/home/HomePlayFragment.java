@@ -153,43 +153,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		outState.putInt(MODE, positionMode);
 	}
 
-//	private void loadRecentOpponents() {
-//		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());// TODO load avatars
-//		if (cursor != null && cursor.moveToFirst()) {
-//			if (cursor.getCount() >= 2) {
-//				inviteFriendView1.setVisibility(View.VISIBLE);
-//				inviteFriendView1.setOnClickListener(this);
-//				inviteFriendView2.setVisibility(View.VISIBLE);
-//				inviteFriendView2.setOnClickListener(this);
-//
-//				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-//				if (firstFriendUserName.equals(getUsername())) {
-//					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-//				}
-//				friendUserName1Txt.setText(firstFriendUserName);
-//
-//				cursor.moveToNext();
-//
-//				secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-//				if (secondFriendUserName.equals(getUsername())) {
-//					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-//				}
-//				friendUserName2Txt.setText(secondFriendUserName);
-//			} else if (cursor.getCount() == 1) {
-//				inviteFriendView1.setVisibility(View.VISIBLE);
-//				inviteFriendView1.setOnClickListener(this);
-//
-//				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-//				if (firstFriendUserName.equals(getUsername())) {
-//					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-//				}
-//				friendUserName1Txt.setText(firstFriendUserName);
-//			}
-//
-//			cursor.close();
-//		}
-//	}
-
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
@@ -316,7 +279,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	private void setDefaultQuickLiveMode(View view, int mode) {
 		view.setSelected(true);
 		liveTimeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
-		liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[mode]);
 		getAppData().setDefaultLiveMode(mode);
 	}
 
@@ -389,6 +351,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	}
 
 	private void createLiveChallenge() {
+		liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[getAppData().getDefaultLiveMode()]);
 		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
 	}
 

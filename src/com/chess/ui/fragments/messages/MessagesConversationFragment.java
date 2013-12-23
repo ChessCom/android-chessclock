@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
@@ -46,7 +45,6 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 	private EditText newPostEdt;
 	private String otherUsername;
 	private ReplyCreateListener replyCreateListener;
-	private TextView emptyView;
 	private MessagesCursorUpdateListener messageCursorUpdateListener;
 	private int paddingSide;
 	private boolean inEditMode;
@@ -95,7 +93,6 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 
 		replyView = view.findViewById(R.id.replyView);
 		newPostEdt = (EditText) view.findViewById(R.id.messageBodyEdt);
-		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		// adjust actionBar icons
 		getActivityFace().showActionMenu(R.id.menu_edit, true);

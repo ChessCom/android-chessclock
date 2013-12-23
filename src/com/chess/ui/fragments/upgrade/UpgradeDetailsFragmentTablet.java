@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.billing.IabHelper;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.widgets.RoboButton;
 
@@ -19,8 +20,9 @@ import com.chess.widgets.RoboButton;
  */
 public class UpgradeDetailsFragmentTablet extends UpgradeDetailsFragment {
 
-	public UpgradeDetailsFragmentTablet() {
-	}
+	private View disabledOverlayView;
+
+	public UpgradeDetailsFragmentTablet() {}
 
 	public static UpgradeDetailsFragmentTablet createInstance(int code) {
 		UpgradeDetailsFragmentTablet fragment = new UpgradeDetailsFragmentTablet();
@@ -37,6 +39,28 @@ public class UpgradeDetailsFragmentTablet extends UpgradeDetailsFragment {
 
 	@Override
 	protected void updateUiData() {
+		// don't show lower upgrade options.
+		if (premiumStatus == StaticData.DIAMOND_USER) { // disable platinum & gold
+			if (planCode == GOLD || planCode == PLATINUM) {
+				disabledOverlayView.setVisibility(View.VISIBLE);
+			} else {
+				disabledOverlayView.setVisibility(View.GONE);
+			}
+		} else if (premiumStatus == StaticData.PLATINUM_USER) { // disable gold
+			if (planCode == GOLD) {
+				disabledOverlayView.setVisibility(View.VISIBLE);
+			} else {
+				disabledOverlayView.setVisibility(View.GONE);
+			}
+		} else if (premiumStatus == StaticData.GOLD_USER) { // enable all
+			disabledOverlayView.setVisibility(View.GONE);
+		}
+
+		// check diamond by default
+		if (planCode == DIAMOND) {
+			yearCheckBox.setChecked(true);
+		}
+
 		configs[GOLD].setMonthPayed(isGoldMonthPayed);
 		configs[GOLD].setYearPayed(isGoldYearPayed);
 		configs[PLATINUM].setMonthPayed(isPlatinumMonthPayed);
@@ -44,17 +68,7 @@ public class UpgradeDetailsFragmentTablet extends UpgradeDetailsFragment {
 		configs[DIAMOND].setMonthPayed(isDiamondMonthPayed);
 		configs[DIAMOND].setYearPayed(isDiamondYearPayed);
 
-		switch (planCode) {
-			case DIAMOND:
-				showPaymentPlan(configs[DIAMOND]);
-				break;
-			case PLATINUM:
-				showPaymentPlan(configs[PLATINUM]);
-				break;
-			case GOLD:
-				showPaymentPlan(configs[GOLD]);
-				break;
-		}
+		showPaymentPlan(configs[planCode]);
 	}
 
 	@Override
@@ -127,6 +141,7 @@ public class UpgradeDetailsFragmentTablet extends UpgradeDetailsFragment {
 		} else {
 			yearDiscountTxt.setVisibility(View.GONE);
 		}
-	}
 
+		disabledOverlayView = view.findViewById(R.id.disableOverlayView);
+	}
 }

@@ -36,15 +36,13 @@ import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.NotificationsRightFragment;
-import com.chess.ui.fragments.articles.ArticleDetailsFragment;
-import com.chess.ui.fragments.articles.ArticlesFragment;
 import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.fragments.daily.GameDailyFragmentTablet;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
-import com.chess.ui.fragments.live.GameLiveFragmentTablet;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
+import com.chess.ui.fragments.settings.SettingsFragmentTablet;
 import com.chess.ui.fragments.settings.SettingsProfileFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
@@ -617,11 +615,23 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			if (fragment != null) {
 				fragment.onActivityResult(requestCode, resultCode, data);
 			}
-		} else if (isTablet && (requestCode & 0xFFFF) == VideoDetailsFragment.WATCH_VIDEO_REQUEST) {
+		} else if (isTablet && (requestCode & 0xFFFF) == VideoDetailsFragment.WATCH_VIDEO_REQUEST) { // TODO improve that non universal logic
 			FragmentManager fragmentManager = getSupportFragmentManager();
 			Fragment fragment = fragmentManager.findFragmentByTag(VideosFragmentTablet.class.getSimpleName());
 			if (fragment != null) {
 				fragment.onActivityResult(requestCode, resultCode, data);
+			}
+		} else if (isTablet && (requestCode & 0xFFFF) == SettingsProfileFragment.REQ_CODE_PICK_IMAGE) {
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			Fragment fragment = fragmentManager.findFragmentByTag(SettingsFragmentTablet.class.getSimpleName());
+			if (fragment != null) {
+				fragment.onActivityResult(requestCode & 0xffff, resultCode, data);
+			}
+		} else if (isTablet && (requestCode & 0xFFFF) == SettingsProfileFragment.REQ_CODE_TAKE_IMAGE) {
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			Fragment fragment = fragmentManager.findFragmentByTag(SettingsFragmentTablet.class.getSimpleName());
+			if (fragment != null) {
+				fragment.onActivityResult(requestCode & 0xffff, resultCode, data);
 			}
 		}
 	}
@@ -695,7 +705,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			SettingsProfileFragment fragmentByTag = (SettingsProfileFragment) getSupportFragmentManager()
 					.findFragmentByTag(SettingsProfileFragment.class.getSimpleName());

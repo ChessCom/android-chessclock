@@ -231,7 +231,9 @@ public class ChallengeHelper {
 	}
 
 	public void createLiveChallenge() {
-		((CommonLogicFragment) fragment).getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
+		liveGameConfigBuilder.setTimeFromLabel(newLiveGameButtonsArray[getAppData().getDefaultLiveMode()]);
+		LiveGameWaitFragment waitFragment = LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build());
+		((CommonLogicFragment) fragment).getActivityFace().openFragment(waitFragment);
 	}
 
 	public void createDailyChallenge() {

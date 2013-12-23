@@ -268,7 +268,6 @@ public class RestHelper {
 	public static final String P_FIELDS = "fields[]";
 	public static final String P_LOGIN_TOKEN = "loginToken";
 	public static final String P_PAGE = "page";
-	public static final String P_PAGE_NUMBER = "pageNo";
 	public static final String P_ITEMS_PER_PAGE = "itemsPerPage";
 	public static final String P_LIMIT = "limit";
 	public static final String GCM_P_REGISTER_ID = "registrationId";
@@ -315,7 +314,8 @@ public class RestHelper {
 	public static final String V_2 = "MmE5NzUxNmMzNTRiNjg4NDhjZGJkOGY1NGFhc2RmYXNkZmFkZmVkMTM4ZTIwN2FkNmM1Y2JiOWMwMGFhNWFlYQ==";
 	public static final String V_3 = "MmE5NzUxNmMzNTRiNjg4NDhjZGJkOGY1NGEyMjZhMGE1NWIyMWVkMTM4ZTIwN2FkNmM1Y2JiOWMwMGFhNWFlYQ==";
 	public static final String V_2_2 = "ZTEyMzI4NTdjM2U3NGE3YmI4M2NhNjhlYWNiNzg3ZGFzZHUwMGFzZGtsa2ZhOXNiNjE4M2U2OGM4OTUxNTVlNQ==";
-	public static final String V_3_0 = "ZTEyMzI4NTdjM2U3NGE3YmI4M2NhNjhlYWNiNzg3NWRlZTQ1NTA4NWY0NWIyNmZiNjE4M2U2OGM4OTUxNTVlNQ==";
+	public static final String V_3_0 = "ZTEyMzI4NTdjM2U3NGE3YmI4M2NhNjhlYWNiNzg3NWRlZTQ1NTA4NWY0NWIyNmZiNjE4M2U2OGM4OTUxNTVlNR==";
+	public static final String V_3_1 = "ZGFjYTRlNDBhMjEyYWU5YTdiYjY0NzZmMjJhZDI4YWQyMTc5OGM5OTc3M2MwNTIxZmRkNWRkODFmNjVlZDRmOA==";
 	public static final String V_2_1 = "ZTEyMzI4NTdjM2U3NGE3YmI4M2NhNjhlYWNiNzg3NWRlZTQ1NTA4aWFhc2Q4ZmFzODk4M2U2OGM4OTUxNTVlNQ=";
 
 	public static final String P_DAYS_PER_MOVE = "daysPerMove";
@@ -323,6 +323,8 @@ public class RestHelper {
 	public static final String P_MIN_RATING = "minRating";
 	public static final String P_MAX_RATING = "maxRating";
 	public static final String P_IS_RATED = "isRated";
+	public static final String P_GAME_TYPE_CODE_ID = "gameTypeCodeId";
+	public static final String P_GAME_TYPE_ID = "game_type_id";
 	public static final String P_GAME_TYPE = "gameTypeCode";
 	public static final String P_TYPE = "type";
 	public static final String P_PRODUCT_SKU = "productSku";
@@ -345,7 +347,7 @@ public class RestHelper {
 	public static final String P_CORRECT_MOVES = "correctMoves";
 	public static final String P_SECONDS = "seconds";
 
-	public String P_SYMBOL = !BASE_URL.equals("http://" + HOST_PRODUCTION) ? V_3 : V_3_0;
+	public String P_SYMBOL = !BASE_URL.equals("http://" + HOST_PRODUCTION) ? V_3 : V_3_1;
 
 	public static final String P_FEN = "fen";
 
@@ -416,7 +418,7 @@ public class RestHelper {
 	public static final String V_ID = "id";
 
 	public static final int V_GAME_CHESS = 1;
-	public static final int V_GAME_CHESS_960 = 22;
+	public static final int V_GAME_CHESS_960 = 2;
 
 	public static final int V_GAME_LIVE_STANDARD = 1;
 	public static final int V_GAME_LIVE_BLITZ = 2;

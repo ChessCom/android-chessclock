@@ -64,10 +64,6 @@ public class MessagesCursorAdapter extends ItemsCursorAdapter {
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_OTHER_USER_USERNAME));
 		String message = getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT);
-		if (message.contains(ORIGINAL_MESSAGE_BY)) {
-			int quoteStart = message.indexOf(MESSAGE_SEPARATOR);
-			message = message.substring(0, quoteStart);
-		}
 
 		loadTextWithImage(holder.messageTxt, message, imageSize);
 

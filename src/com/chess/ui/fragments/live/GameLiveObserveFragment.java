@@ -3,6 +3,7 @@ package com.chess.ui.fragments.live;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,18 +11,16 @@ import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
-import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
-import com.chess.model.GameAnalysisItem;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.fragments.game.GameAnalyzeFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
+import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
+import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
@@ -32,25 +31,21 @@ import com.chess.widgets.RoboButton;
 public class GameLiveObserveFragment extends GameLiveFragment {
 
 	// todo: adjust GameLiveObserveFragment and GameLiveFragment, lock board, load avatars, game end, chat, options dialog etc
+	// Options ids
+	private static final int ID_NEW_GAME = 0;
+	private static final int ID_SETTINGS = 1;
 
 	private static final String TAG = "LccLog-GameLiveObserveFragment";
 	private static final long HIDE_POPUP_DELAY = 4000;
 	private ObserveTaskListener observeTaskListener;
+	private PopupOptionsMenuFragment optionsSelectFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		observeTaskListener = new ObserveTaskListener();
-		try {
-			LiveChessService liveService = getLiveService();
-			liveService.setLccObserveEventListener(this);
-
-			liveService.runObserveTopGameTask(observeTaskListener);
-
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-		}
+		runNewObserverGame();
 		//
 	}
 
@@ -147,15 +142,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
 		}
 
-		/*int resignTitleId = liveService.getResignTitle();
 		{// options list setup
 			optionsMap = new SparseArray<String>();
 			optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
-			optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
-			optionsMap.put(ID_ABORT_RESIGN, getString(resignTitleId));
-			optionsMap.put(ID_REMATCH, getString(R.string.rematch));
 			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
-		}*/
+		}
 
 		lccInitiated = true;
 	}
@@ -181,31 +172,49 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 	@Override
 	public void showOptions() {
-		GameAnalysisItem analysisItem = new GameAnalysisItem();  // TODO reuse later
-		analysisItem.setGameType(RestHelper.V_GAME_CHESS);
-		analysisItem.setFen(getBoardFace().generateFullFen());
-		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
-		analysisItem.copyLabelConfig(labelsConfig);
+		if (optionsSelectFragment != null) {
+			return;
+		}
 
-		getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);
+		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
+	}
+
+	@Override
+	public void onValueSelected(int code) {
+		if (code == ID_NEW_GAME) {
+			runNewObserverGame();
+		} else if (code == ID_SETTINGS) {
+			getActivityFace().openFragment(SettingsLiveChessFragment.createInstance(true));
+		}
+
+		optionsSelectFragment.dismiss();
+		optionsSelectFragment = null;
+	}
+
+	@Override
+	public void onDialogCanceled() {
+		optionsSelectFragment = null;
 	}
 
 	@Override
 	public void onClick(View view) {
-		if (view.getId() == R.id.newGamePopupBtn) {
-			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
-		} else if (view.getId() == R.id.rematchPopupBtn) {
-			if (isLCSBound) {
-				LiveChessService liveService;
-				try {
-					liveService = getLiveService();
-				} catch (DataNotValidException e) {
-					logLiveTest(e.getMessage());
-					return;
-				}
-				liveService.rematch();
-			}
+		if (view.getId() == R.id.newGamePopupBtn) { // Next Game
 			dismissEndGameDialog();
+			runNewObserverGame();
+		} else if (view.getId() == R.id.rematchPopupBtn) { // New Game Self
+			dismissEndGameDialog();
+			try {
+				getLiveService().exitGameObserving();
+			} catch (DataNotValidException e) {
+				e.printStackTrace();
+				getActivityFace().showPreviousFragment();
+				return;
+			}
+			String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
+
+			liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[getAppData().getDefaultLiveMode()]);
+			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
 		} else {
 			super.onClick(view);
 		}
@@ -234,13 +243,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 				}
 				dismissEndGameDialog();
 
-				try {
-					getLiveService().runObserveTopGameTask(observeTaskListener);
-				} catch (DataNotValidException e) {
-					logLiveTest(e.getMessage());
-					showToast(e.getMessage());
-					getActivityFace().showPreviousFragment();
-				}
+				runNewObserverGame();
 			}
 		}, HIDE_POPUP_DELAY);
 
@@ -263,10 +266,24 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
 
-
 		/*if (AppUtils.isNeedToUpgrade(getActivity())) {
 			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 		}*/
+	}
+
+	private void runNewObserverGame() {
+		try {
+			LiveChessService liveService = getLiveService();
+			// exit previous game
+			liveService.exitGameObserving();
+			liveService.setLccObserveEventListener(this);
+
+			liveService.runObserveTopGameTask(observeTaskListener);
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+			showToast(e.getMessage());
+			getActivityFace().showPreviousFragment();
+		}
 	}
 
 	@Override
@@ -304,7 +321,6 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	public void onLiveClientConnected() {
 		super.onLiveClientConnected();
 
-		// onResume
 		try {
 			Long currentGameId = getLiveService().getCurrentGameId();
 			if (isLCSBound && currentGameId != null && currentGameId != 0) {
@@ -315,6 +331,5 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			logTest(e.getMessage());
 			isLCSBound = false;
 		}
-		//
 	}
 }

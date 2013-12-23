@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -217,14 +216,15 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			}
 		}
 
-		startGame(savedInstanceState);
+		startGame();
 	}
 
 	@Override
 	public void onPause() {
+		super.onPause();
+
 		CompEngineHelper.getInstance().stop();
 
-		super.onPause();
 		if (ChessBoard.isComputerVsComputerGameMode(getBoardFace()) || ChessBoard.isComputerVsHumanGameMode(getBoardFace())
 				&& boardView.isComputerMoving()) { // probably isComputerMoving() is only necessary to check without extra check of game mode
 
@@ -254,7 +254,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		outState.putParcelable(CONFIG, compGameConfig);
 	}*/
 
-	private void startGame(Bundle savedInstanceState) {
+	private void startGame() {
 		int gameMode;
 		if (getBoardFace().isAnalysis()) {
 			gameMode = GameMode.ANALYSIS;
@@ -278,9 +278,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		compEngineItem.setStrength(strength);
 		compEngineItem.setTime(time);
 
-		new StartEngineTask(compEngineItem, this,
-				PreferenceManager.getDefaultSharedPreferences(getActivity()), savedInstanceState, getActivity().getApplicationContext(),
-				new InitComputerEngineUpdateListener()).executeTask();
+		new StartEngineTask(compEngineItem, this, new InitComputerEngineUpdateListener()).executeTask();
 	}
 
 	@Override
@@ -822,7 +820,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		getBoardFace().setMode(compGameConfig.getMode());
 		resideBoardIfCompWhite();
 		invalidateGameScreen();
-		startGame(null);
+		startGame();
 	}
 
 	private class LabelsConfig {

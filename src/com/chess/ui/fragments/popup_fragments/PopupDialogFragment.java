@@ -78,7 +78,7 @@ public class PopupDialogFragment extends BasePopupDialogFragment {
 	public void onResume() {
 		super.onResume();
 
-		if (cancelableOnTouch) {
+		if (cancelableOnTouch && getDialog() != null) {
 			getDialog().setCanceledOnTouchOutside(true);
 		}
 

@@ -36,6 +36,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
+import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
@@ -98,6 +99,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private boolean userSawGameEndPopup;
 	private GameBaseFragment.ImageUpdateListener topImageUpdateListener;
 	private GameBaseFragment.ImageUpdateListener bottomImageUpdateListener;
+	protected LiveGameConfig.Builder liveGameConfigBuilder;
+	private String[] newGameButtonsArray;
 
 	public GameLiveFragment() {
 	}
@@ -125,6 +128,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
+
+
+		newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
+
+		liveGameConfigBuilder = new LiveGameConfig.Builder();
 	}
 
 	@Override
@@ -1028,8 +1036,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
-			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
-			getActivityFace().toggleRightMenu();
+			liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[getAppData().getDefaultLiveMode()]);
+			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
+
 			dismissEndGameDialog();
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			if (isLCSBound) {
@@ -1047,7 +1056,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			getActivityFace().openFragment(new LiveGameWaitFragment());
 			DataHolder.getInstance().setLiveGameOpened(true);
 		} else if (view.getId() == R.id.analyzePopupBtn) {
-			GameAnalysisItem analysisItem = new GameAnalysisItem();  // TODO reuse later
+			GameAnalysisItem analysisItem = new GameAnalysisItem();
 			analysisItem.setGameType(RestHelper.V_GAME_CHESS);
 			analysisItem.setFen(getBoardFace().generateFullFen());
 			analysisItem.setMovesList(getBoardFace().getMoveListSAN());

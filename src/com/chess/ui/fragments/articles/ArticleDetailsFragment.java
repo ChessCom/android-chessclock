@@ -578,7 +578,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		ChessBoardDiagram.resetInstance();
 		BoardFace boardFace = gameFaceHelper.getBoardFace();
 
-		boardFace.setChess960(diagramItem.getGameType() != RestHelper.V_GAME_CHESS);
+		if (diagramItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
+			boardFace.setChess960(true);
+		} else {
+			boardFace.setChess960(false);
+		}
 
 		String fen = diagramItem.getFen();
 		boardFace.setupBoard(fen);

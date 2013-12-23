@@ -36,13 +36,11 @@ import java.util.List;
 public class MessagesInboxFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
 	private ListView listView;
-	private ConversationsUpdateListener conversationsUpdateListener;
 	private SaveConversationsListener saveConversationsListener;
 	private ConversationCursorUpdateListener conversationCursorUpdateListener;
 	private ConversationsCursorAdapter conversationsAdapter;
 	private TextView emptyView;
 	private MessagesInboxPaginationAdapter paginationAdapter;
-	private QueryFilterProvider queryFilterProvider;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +62,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		setTitle(R.string.messages);
 
 		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(conversationsAdapter);
+		listView.setAdapter(paginationAdapter);
 		listView.setOnItemClickListener(this);
 
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
@@ -105,7 +103,6 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_MESSAGES_INBOX);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		paginationAdapter.updateLoadItem(loadItem);
-		listView.setAdapter(paginationAdapter);
 	}
 
 	private void loadFromDb() {
@@ -114,13 +111,12 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	}
 
 	private void init() {
-		conversationsUpdateListener = new ConversationsUpdateListener();
 		saveConversationsListener = new SaveConversationsListener();
 		conversationsAdapter = new ConversationsCursorAdapter(getActivity(), null, getImageFetcher());
-		queryFilterProvider = new QueryFilterProvider();
+		conversationsAdapter.setFilterQueryProvider(new QueryFilterProvider());
 		conversationCursorUpdateListener = new ConversationCursorUpdateListener();
 		paginationAdapter = new MessagesInboxPaginationAdapter(getActivity(), conversationsAdapter,
-				conversationsUpdateListener, null);
+				new ConversationsUpdateListener(), null);
 	}
 
 	@Override
@@ -135,7 +131,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 
 	@Override
 	public void onSearchAutoCompleteQuery(String query) {
-		if (!inSearch) {
+		if (!inSearch && !need2update) { // search only if we received data
 			inSearch = true;
 			if (conversationsAdapter == null) {
 				return;
@@ -198,6 +194,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		@Override
 		public void updateListData(List<ConversationItem.Data> itemsList) {
 			super.updateListData(itemsList);
+
 			if (itemsList.size() == 0) {
 				emptyView.setText(R.string.no_data);
 				showEmptyView(true);
@@ -211,15 +208,22 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	private class SaveConversationsListener extends ChessUpdateListener<ConversationItem.Data> {
 
 		@Override
+		public void showProgress(boolean show) {
+		}
+
+		@Override
 		public void updateData(ConversationItem.Data returnedObj) {
 			super.updateData(returnedObj);
 
-			new LoadDataFromDbTask(conversationCursorUpdateListener, DbHelper.getInboxMessages(getUsername()),
-					getContentResolver()).executeTask();
+			loadFromDb();
 		}
 	}
 
 	private class ConversationCursorUpdateListener extends ChessUpdateListener<Cursor> {
+
+		@Override
+		public void showProgress(boolean show) {
+		}
 
 		@Override
 		public void updateData(Cursor returnedObj) {
@@ -227,8 +231,6 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 
 			conversationsAdapter.changeCursor(returnedObj);
 			paginationAdapter.notifyDataSetChanged();
-			conversationsAdapter.setFilterQueryProvider(queryFilterProvider);
-
 			need2update = false;
 		}
 

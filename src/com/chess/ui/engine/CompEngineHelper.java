@@ -2,11 +2,11 @@ package com.chess.ui.engine.stockfish;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import com.chess.model.CompEngineItem;
 import com.chess.statics.AppConstants;
+import com.chess.statics.AppData;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
 import org.petero.droidfish.*;
 import org.petero.droidfish.book.BookOptions;
@@ -37,7 +37,7 @@ public class CompEngineHelper implements GUIInterface {
 	public static final int GAME_STATE_VERSION = 3;
 	public static final int MAX_NUM_HINT_ARROWS = 2;
 
-	private static DroidChessController engineCtrl;
+	private DroidChessController engineCtrl;
 
 	private static CompEngineHelper ourInstance;
 
@@ -53,10 +53,11 @@ public class CompEngineHelper implements GUIInterface {
 	private final static String fenDir = "ComChess/epd";*/
 	private final static String engineDir = "ComChess/uci";
 	private final static String gtbDefaultDir = "ComChess/gtb";
-	private static BookOptions bookOptions = new BookOptions();
-	private static PGNOptions pgnOptions = new PGNOptions();
-	private static EngineOptions engineOptions = new EngineOptions();
-	private static boolean egtbForceReload = false;
+
+	private BookOptions bookOptions = new BookOptions();
+	private PGNOptions pgnOptions = new PGNOptions();
+	private EngineOptions engineOptions = new EngineOptions();
+	private boolean egtbForceReload = false;
 
 	private Context context;
 	private GameCompFace gameCompActivityFace;
@@ -65,54 +66,57 @@ public class CompEngineHelper implements GUIInterface {
 	private TimeControlData timeControlData;
 	private String variantStr = "";
 	private ArrayList<Move> variantMoves;
-	private ArrayList<Move> bookMoves;
-	private ArrayList<ArrayList<Move>> pvMoves;
+//	private ArrayList<Move> bookMoves;
+//	private ArrayList<ArrayList<Move>> pvMoves;
 
 	private CompEngineHelper() {
-	}
+		bookOptions = new BookOptions();
+		pgnOptions = new PGNOptions();
+		engineOptions = new EngineOptions();
+		egtbForceReload = false;
 
-	public static CompEngineHelper getInstance() {
+		PgnToken.PgnTokenReceiver pgnTokenReceiver = new PgnToken.PgnTokenReceiver() { // updates moves list
+			@Override
+			public boolean isUpToDate() {
+				return true; // todo
+			}
 
-		if (ourInstance == null) {
-			ourInstance = new CompEngineHelper();
+			@Override
+			public void clear() {
+			}
 
-			PgnToken.PgnTokenReceiver pgnTokenReceiver = new PgnToken.PgnTokenReceiver() { // updates moves list
-				@Override
-				public boolean isUpToDate() {
-					return true; // todo
-				}
-
-				@Override
-				public void clear() {
-				}
-
-				@Override
-				public void processToken(Node node, int type, String token) {
+			@Override
+			public void processToken(Node node, int type, String token) {
 				/*log("PgnTokenReceiver processToken: node =" + node);
 				log("PgnTokenReceiver processToken: type =" + type);
 				log("PgnTokenReceiver processToken: token =" + token);*/
-				}
+			}
 
-				@Override
-				public void setCurrent(Node node) {
-					//log("PgnTokenReceiver setCurrent: node =" + node);
-				}
-			};
+			@Override
+			public void setCurrent(Node node) {
+				//log("PgnTokenReceiver setCurrent: node =" + node);
+			}
+		};
 
-			createDirectories();
+		createDirectories();
 
-			if (engineCtrl != null)
-				engineCtrl.shutdownEngine();
-
-			engineCtrl = new DroidChessController(ourInstance, pgnTokenReceiver, pgnOptions);
-			//egtbForceReload = true;
-			readPrefs();
+		if (engineCtrl != null) {
+			engineCtrl.shutdownEngine();
 		}
 
+		engineCtrl = new DroidChessController(this, pgnTokenReceiver, pgnOptions);
+		//egtbForceReload = true;
+		readPrefs();
+	}
+
+	public static CompEngineHelper getInstance() {
+		if (ourInstance == null) {
+			ourInstance = new CompEngineHelper();
+		}
 		return ourInstance;
 	}
 
-	public void startGame(Context context, CompEngineItem compEngineItem, GameCompFace gameCompActivityFace, SharedPreferences sharedPreferences, Bundle savedInstanceState) {
+	public void startGame(Context context, CompEngineItem compEngineItem, GameCompFace gameCompActivityFace) {
 
 		log("INIT ENGINE AND START GAME");
 
@@ -120,7 +124,7 @@ public class CompEngineHelper implements GUIInterface {
 
 		setGameMode(compEngineItem.getGameMode());
 		this.gameCompActivityFace = gameCompActivityFace;
-		this.sharedPreferences = sharedPreferences;
+		this.sharedPreferences = new AppData(context).getPreferences();
 		this.depth = compEngineItem.getDepth();
 
 		initTimeControlData(compEngineItem.getTime());
@@ -188,7 +192,7 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.makeHumanMove(TextIO.UCIstringToMove(move));
 	}
 
-	private static void createDirectories() {
+	private void createDirectories() {
 
 		// todo @refactor: create directories only first time
 
@@ -209,7 +213,7 @@ public class CompEngineHelper implements GUIInterface {
 		log("createDirectories result=" + result);
 	}
 
-	private static void readPrefs() {
+	private void readPrefs() {
 		whiteBasedScores = false;
 		mEngineThreads = 1;
 
@@ -265,7 +269,7 @@ public class CompEngineHelper implements GUIInterface {
 	public void updateTimeControlTitle() {
 	}
 
-	private static void setBookOptions() {
+	private void setBookOptions() {
 		BookOptions options = new BookOptions(bookOptions);
 		if (options.filename.length() > 0) {
 			File extDir = Environment.getExternalStorageDirectory();
@@ -275,7 +279,7 @@ public class CompEngineHelper implements GUIInterface {
 		engineCtrl.setBookOptions(options);
 	}
 
-	private static void setEngineOptions(boolean restart) {
+	private void setEngineOptions(boolean restart) {
 		engineCtrl.setEngineOptions(new EngineOptions(engineOptions), restart);
 		Probe.getInstance().setPath(engineOptions.gtbPath, egtbForceReload);
 		egtbForceReload = false;
@@ -375,9 +379,9 @@ public class CompEngineHelper implements GUIInterface {
 
         String thinkingStr1 = pvStr;
 		//String thinkingStr2 = statStr;
-		this.pvMoves = pvMoves;
-		String bookInfoStr = bookInfo;
-		this.bookMoves = bookMoves;
+//		this.pvMoves = pvMoves;
+//		String bookInfoStr = bookInfo;
+//		this.bookMoves = bookMoves;
 
  		gameCompActivityFace.onEngineThinkingInfo(thinkingStr1, variantStr, pvMoves, variantMoves, bookMoves);
 
@@ -579,7 +583,8 @@ public class CompEngineHelper implements GUIInterface {
 		if (isGameValid()) {
 			log("store engine state");
 			byte[] data = toByteArray();
-			SharedPreferences.Editor editor = sharedPreferences.edit();
+
+			SharedPreferences.Editor editor = sharedPreferences.edit(); // TODO
 			String dataStr = byteArrToString(data);
 			editor.putString(CompEngineHelper.GAME_STATE, dataStr);
 			editor.putInt(CompEngineHelper.GAME_STATE_VERSION_NAME, CompEngineHelper.GAME_STATE_VERSION);

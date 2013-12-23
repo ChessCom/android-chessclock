@@ -157,6 +157,16 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true" />
 
+
+			<!--Disable overlay-->
+			<View
+				android:id="@+id/disabledPlatinumView"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@drawable/rounded_disable_overlay"
+				android:visibility="gone"
+				/>
+
         </RelativeLayout>
 
         <!--gold button-->
@@ -214,7 +224,16 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true" />
 
-        </RelativeLayout>
+			<!--Disable overlay-->
+			<View
+				android:id="@+id/disabledGoldView"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@drawable/rounded_disable_overlay"
+				android:visibility="gone"
+				/>
+
+		</RelativeLayout>
 
         <!--Quote-->
         <RelativeLayout
