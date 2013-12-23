@@ -255,10 +255,17 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			if (cursor != null && cursor.moveToFirst()) {
 				BackgroundSingleItem.Data backgroundData = DbDataManager.getThemeBackgroundItemFromCursor(cursor);
 
-				if (TextUtils.isEmpty(backgroundData.getLocalPathPort())
-						|| TextUtils.isEmpty(backgroundData.getLocalPathLand())) {
-					themeLoaded = false;
+				if (!isTablet) {
+					if (TextUtils.isEmpty(backgroundData.getLocalPathPort())) {
+						themeLoaded = false;
+					}
+				} else {
+					if (TextUtils.isEmpty(backgroundData.getLocalPathPort())
+							|| TextUtils.isEmpty(backgroundData.getLocalPathLand())) {
+						themeLoaded = false;
+					}
 				}
+
 
 				appData.setThemeBackgroundName(backgroundData.getName());
 				appData.setThemeBackgroundPreviewUrl(backgroundData.getBackgroundPreviewUrl());
