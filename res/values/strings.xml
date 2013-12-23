@@ -675,6 +675,7 @@
 	<string name="you_have_new_friend_request">You have a New Friend Request</string>
 	<string name="you_have_new_chat_message">You have a New Chat Message</string>
 	<string name="you_have_new_challenge">You have a New Challenge</string>
+	<string name="you_have_new_message">You have a New Message</string>
 
 	<!--Profile-->
 	<string name="unable_to_select_this_photo">Unable to pick this photo</string>

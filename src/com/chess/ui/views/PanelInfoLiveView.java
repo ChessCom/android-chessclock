@@ -321,19 +321,25 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			drawOfferedRelLay = new RelLayout(getContext());
 			drawOfferedRelLay.setVisibility(GONE);
 
-			{ // Text label
-				RoboTextView drawOfferedTxt = new RoboTextView(getContext());
-				drawOfferedTxt.setFont(FontsHelper.BOLD_FONT);
-				drawOfferedTxt.setId(DRAW_TEXT_ID);
-				drawOfferedTxt.setText(R.string.draw);
-				drawOfferedTxt.setTextColor(playerTextColor);
-				drawOfferedTxt.setTextSize(playerTextSize);
+			{ // Accept Button
+				RoboButton acceptDrawBtn = new RoboButton(getContext());
+				acceptDrawBtn.setFont(FontsHelper.ICON_FONT);
+				acceptDrawBtn.setId(DRAW_ACCEPT_ID);
+				acceptDrawBtn.setText(R.string.ic_check);
+				acceptDrawBtn.setTextSize(buttonsTextSize);
+				acceptDrawBtn.setDrawableStyle(R.style.Button_Glassy);
+				acceptDrawBtn.setMinimumWidth(panelButtonWidth);
+				acceptDrawBtn.setMinimumHeight(panelButtonHeight);
+				acceptDrawBtn.setMinWidth(panelButtonWidth);
+				acceptDrawBtn.setMinHeight(panelButtonHeight);
+				acceptDrawBtn.setOnClickListener(this);
 
 				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				params.addRule(ALIGN_PARENT_RIGHT);
 				params.addRule(CENTER_VERTICAL);
-				params.addRule(LEFT_OF, DRAW_DECLINE_ID);
+				params.setMargins((int) (5 * density), 0, 0, 0);
 
-				drawOfferedRelLay.addView(drawOfferedTxt, params);
+				drawOfferedRelLay.addView(acceptDrawBtn, params);
 			}
 
 			{ // Decline button
@@ -357,26 +363,26 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 				drawOfferedRelLay.addView(declineDrawBtn, params);
 			}
 
-			{ // Accept Button
-				RoboButton acceptDrawBtn = new RoboButton(getContext());
-				acceptDrawBtn.setFont(FontsHelper.ICON_FONT);
-				acceptDrawBtn.setId(DRAW_ACCEPT_ID);
-				acceptDrawBtn.setText(R.string.ic_check);
-				acceptDrawBtn.setTextSize(buttonsTextSize);
-				acceptDrawBtn.setDrawableStyle(R.style.Button_Glassy);
-				acceptDrawBtn.setMinimumWidth(panelButtonWidth);
-				acceptDrawBtn.setMinimumHeight(panelButtonHeight);
-				acceptDrawBtn.setMinWidth(panelButtonWidth);
-				acceptDrawBtn.setMinHeight(panelButtonHeight);
-				acceptDrawBtn.setOnClickListener(this);
+			{ // Text label
+
+				RoboButton drawOfferedTxt = new RoboButton(getContext());
+				drawOfferedTxt.setFont(FontsHelper.ICON_FONT);
+				drawOfferedTxt.setId(DRAW_TEXT_ID);
+				drawOfferedTxt.setText(R.string.ic_handshake);
+				drawOfferedTxt.setTextSize(buttonsTextSize);
+				drawOfferedTxt.setMinimumWidth(panelButtonWidth);
+				drawOfferedTxt.setMinimumHeight(panelButtonHeight);
+				drawOfferedTxt.setMinWidth(panelButtonWidth);
+				drawOfferedTxt.setMinHeight(panelButtonHeight);
 
 				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-				params.addRule(ALIGN_PARENT_RIGHT);
 				params.addRule(CENTER_VERTICAL);
+				params.addRule(LEFT_OF, DRAW_DECLINE_ID);
 				params.setMargins((int) (5 * density), 0, 0, 0);
 
-				drawOfferedRelLay.addView(acceptDrawBtn, params);
+				drawOfferedRelLay.addView(drawOfferedTxt, params);
 			}
+
 			LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 			params.addRule(ALIGN_PARENT_RIGHT);
 			addView(drawOfferedRelLay, params);
@@ -506,6 +512,10 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	public void showDrawOfferedView(boolean show) {
 		drawOfferedRelLay.setVisibility(show ? VISIBLE : GONE);
 		clockLayout.setVisibility(show ? GONE : VISIBLE);
+		flagImg.setVisibility(show ? GONE : VISIBLE);
+		premiumImg.setVisibility(show ? GONE : VISIBLE);
+		playerRatingTxt.setVisibility(show ? GONE : VISIBLE);
+		playerTxt.setVisibility(show ? GONE : VISIBLE);
 	}
 
 	/**

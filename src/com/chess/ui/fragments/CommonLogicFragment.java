@@ -698,9 +698,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 						showPopupDialog(R.string.your_account_locked, LOCKED_ACCOUNT_TAG);
 						break;
 					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
-						showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
 						if (passwordEdt != null) {
+							passwordEdt.setError(getResources().getString(R.string.invalid_username_or_password));
 							passwordEdt.requestFocus();
+						} else {
+							showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
 						}
 						getAppData().setPassword(Symbol.EMPTY);
 						break;

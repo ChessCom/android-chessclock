@@ -78,8 +78,6 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 			topButtonsGroup.setOnCheckedChangeListener(this);
 			chatFragmentContainer = view.findViewById(R.id.chatFragmentContainer);
 			chatBtn = view.findViewById(R.id.chatBtn);
-
-
 		}
 	}
 

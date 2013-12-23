@@ -184,6 +184,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 		showLegalMovesSwitch.setSwitchChangeListener(this);
 //		alwaysShowWhiteBottomSwitch.setSwitchChangeListener(this);
 		soundsSwitch.setSwitchChangeListener(this);
+		notificationsSwitch.setSwitchChangeListener(this);
 		autoFlipView.setOnClickListener(this);
 		autoFlipSwitch.setSwitchChangeListener(this);
 

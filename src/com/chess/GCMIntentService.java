@@ -143,13 +143,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		String type = intent.getStringExtra("type");
 		Log.d(TAG, "type = " + type + " intent = " + intent);
-		if (intent.hasExtra("message")) {
+		if (BuildConfig.DEBUG && intent.hasExtra("message")) {
 			Log.d(TAG, "type = " + type + " message = " + intent.getStringExtra("message"));
 
 			String message = intent.getStringExtra("message");          // TODO remove after debug
-//			if (message.length() >= 20) {
-//				message = message.substring(0, 20);
-//			}
+			if (message.length() >= 20) {
+				message = message.substring(0, 20);
+			}
 			AppUtils.showStatusBarNotification(context, type, message);
 		}
 
@@ -167,6 +167,15 @@ public class GCMIntentService extends GCMBaseIntentService {
 				String body = context.getString(R.string.you_have_new_friend_request);
 				AppUtils.showStatusBarNotification(context, title, body);
 			}
+		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_MESSAGE)) {
+
+//			showNewMessage(intent, context);
+			sendNotificationBroadcast(context, type);
+			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
+				String title = context.getString(R.string.you_have_new_message);
+				String body = context.getString(R.string.you_have_new_message);
+				AppUtils.showStatusBarNotification(context, title, body);
+			}
 		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_CHAT_MESSAGE)) {
 
 			showNewChatMessage(intent, context);
@@ -176,6 +185,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 				String body = context.getString(R.string.you_have_new_chat_message);
 				AppUtils.showStatusBarNotification(context, title, body);
 			}
+		} else if (type.equals(GcmHelper.NOTIFICATION_MOVE_MADE)) {
+			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 		} else if (type.equals(GcmHelper.NOTIFICATION_GAME_OVER)) {
 
 			showGameOver(intent, context);
@@ -234,6 +245,22 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String username = new AppData(context).getUsername();
 		DbDataManager.saveNewChatNotification(contentResolver, chatNotificationItem, username);
 	}
+
+//	private synchronized void showNewMessage(Intent intent, Context context){
+//		NewChatNotificationItem chatNotificationItem = new NewChatNotificationItem();
+//
+//		chatNotificationItem.setMessage(intent.getStringExtra("message"));
+//		chatNotificationItem.setUsername(intent.getStringExtra("sender"));
+//		chatNotificationItem.setGameId(Long.parseLong(intent.getStringExtra("game_id")));
+//		chatNotificationItem.setCreatedAt(Long.parseLong(intent.getStringExtra("created_at")));
+//		chatNotificationItem.setAvatar(intent.getStringExtra("avatar_url"));
+//		Log.d(TAG, " _________________________________");
+//		Log.d(TAG, " NewChatNotificationItem = " + new Gson().toJson(chatNotificationItem));
+//
+//		ContentResolver contentResolver = context.getContentResolver();
+//		String username = new AppData(context).getUsername();
+//		DbDataManager.saveNewChatNotification(contentResolver, chatNotificationItem, username);
+//	}
 
 	private synchronized void showGameOver(Intent intent, Context context) {
 		GameOverNotificationItem gameOverNotificationItem = new GameOverNotificationItem();

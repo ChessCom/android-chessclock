@@ -62,6 +62,7 @@ public class LiveGameConfig implements Parcelable {
 				bonusTime = Integer.valueOf(params[1].trim());
 			} else { // "10 min"),
 				initialTime = Integer.valueOf(label);
+				bonusTime = 0;
 			}
 		}
 

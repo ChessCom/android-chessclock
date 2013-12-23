@@ -12,8 +12,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.CommonFeedCategoryItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.db.tasks.SaveArticleCategoriesTask;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ArticlesCursorAdapter;
 import com.chess.ui.adapters.ArticlesCursorAdapterTablet;
@@ -33,6 +39,8 @@ public class ArticleCategoriesFragmentTablet extends ArticleCategoriesFragment {
 
 	private ArticlesCursorAdapterTablet articlesAdapter;
 	private FragmentParentFace parentFace;
+	private CategoriesUpdateListener categoriesUpdateListener;
+	private SaveCategoriesUpdateListener saveCategoriesUpdateListener;
 
 	public ArticleCategoriesFragmentTablet() {
 		Bundle bundle = new Bundle();
@@ -59,13 +67,6 @@ public class ArticleCategoriesFragmentTablet extends ArticleCategoriesFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(sectionName);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		updateByCategory();
 	}
 
 	@Override
@@ -106,7 +107,8 @@ public class ArticleCategoriesFragmentTablet extends ArticleCategoriesFragment {
 	protected void init() {
 		categoriesNames = new ArrayList<String>();
 		categoriesMap = new HashMap<String, Integer>();
-
+		categoriesUpdateListener = new CategoriesUpdateListener();
+		saveCategoriesUpdateListener = new SaveCategoriesUpdateListener();
 		viewedArticlesMap = new SparseBooleanArray();
 
 		setAdapter(new ArticlesCursorAdapterTablet(getActivity(), null, getImageFetcher()));
@@ -137,7 +139,7 @@ public class ArticleCategoriesFragmentTablet extends ArticleCategoriesFragment {
 		boolean loaded = categoriesMap.size() != 0 || fillCategories();
 
 		if (loaded) {
-			int position = 0;
+			int position;
 			if (TextUtils.isEmpty(sectionName)) {
 				sectionName = categoriesNames.get(0);
 				selectedCategoryId = categoriesMap.get(categoriesNames.get(0));
@@ -151,10 +153,62 @@ public class ArticleCategoriesFragmentTablet extends ArticleCategoriesFragment {
 					}
 				}
 			}
-//			categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
-//			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), categoriesNames));
-//			categorySpinner.setOnItemSelectedListener(this);
-//			categorySpinner.setSelection(position);
+
+			updateByCategory();
+		} else {
+			getCategories();
+		}
+	}
+
+	private void getCategories() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES_CATEGORIES);
+		new RequestJsonTask<CommonFeedCategoryItem>(categoriesUpdateListener).executeTask(loadItem);
+	}
+
+	private class CategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem> {
+		public CategoriesUpdateListener() {
+			super(CommonFeedCategoryItem.class);
+		}
+
+		@Override
+		public void updateData(CommonFeedCategoryItem returnedObj) {
+			super.updateData(returnedObj);
+
+			new SaveArticleCategoriesTask(saveCategoriesUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			if (resultCode == StaticData.UNKNOWN_ERROR) {
+				emptyView.setText(R.string.no_network);
+			}
+		}
+	}
+
+	private class SaveCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem.Data> {
+		@Override
+		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
+			super.updateData(returnedObj);
+
+			if (fillCategories()) {
+				int position;
+				if (TextUtils.isEmpty(sectionName)) {
+					sectionName = categoriesNames.get(0);
+					selectedCategoryId = categoriesMap.get(categoriesNames.get(0));
+					setTitle(sectionName);
+				} else {
+					for (position = 0; position < categoriesNames.size(); position++) {
+						String category = categoriesNames.get(position);
+						if (category.equals(sectionName)) {
+							selectedCategoryId = categoriesMap.get(category);
+							break;
+						}
+					}
+				}
+				updateByCategory();
+			}
 		}
 	}
 }

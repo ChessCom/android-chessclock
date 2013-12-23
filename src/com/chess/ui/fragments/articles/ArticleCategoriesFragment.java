@@ -27,7 +27,6 @@ import com.chess.ui.adapters.ArticlesPaginationAdapter;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -176,7 +175,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 			// clear current list
 			getAdapter().changeCursor(null);
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.getInstance().CMD_ARTICLES_LIST);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());

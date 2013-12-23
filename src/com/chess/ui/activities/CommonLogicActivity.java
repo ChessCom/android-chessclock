@@ -420,8 +420,13 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				switch (serverCode) {
 					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
-						passwordEdt.setError(getResources().getString(R.string.invalid_username_or_password));
-						passwordEdt.requestFocus();
+						if (passwordEdt != null) {
+							passwordEdt.setError(getResources().getString(R.string.invalid_username_or_password));
+							passwordEdt.requestFocus();
+						} else {
+							showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
+						}
+						getAppData().setPassword(Symbol.EMPTY);
 						break;
 					case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
 						popupItem.setPositiveBtnId(R.string.sign_up);
