@@ -1,12 +1,8 @@
 package com.chess.utilities;
 
-import com.chess.statics.AppConstants;
-import com.chess.statics.FlurryData;
-import com.flurry.android.FlurryAgent;
+import android.util.Log;
+import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,42 +11,44 @@ import java.util.Map;
  * Time: 0:34
  * To change this template use File | Settings | File Templates.
  */
-public class MopubListener implements MoPubView.OnAdWillLoadListener, MoPubView.OnAdLoadedListener, MoPubView.OnAdFailedListener,
-		MoPubView.OnAdPresentedOverlayListener, MoPubView.OnAdClosedListener, MoPubView.OnAdClickedListener {
+public class MopubListener implements MoPubView.BannerAdListener {
+
+	private static final String TAG = "MopubBannerLog";
 
 	@Override
-	public void OnAdClicked(MoPubView moPubView) {
-	}
-
-	@Override
-	public void OnAdClosed(MoPubView moPubView) {
-	}
-
-	@Override
-	public void OnAdFailed(MoPubView moPubView) {
-		String response = moPubView.getResponseString();
-		if (response != null && response.contains(AppConstants.MATOMY_AD)) {
-			Map<String, String> params = new HashMap<String, String>();
-			params.put(AppConstants.RESPONSE, response);
-			FlurryAgent.logEvent(FlurryData.MATOMY_AD_FAILED, params);
-		}
-	}
-
-	@Override
-	public void OnAdLoaded(MoPubView moPubView) {
-		String response = moPubView.getResponseString();
+	public void onBannerLoaded(MoPubView banner) {
+		Log.d(TAG, "onBannerLoaded: " + banner);
+		/*String response = moPubBannerView.getResponseString();
 		if (response != null && response.contains(AppConstants.MATOMY_AD)) {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put(AppConstants.RESPONSE, response);
 			FlurryAgent.logEvent(FlurryData.MATOMY_AD_LOADED, params);
-		}
+		}*/
 	}
 
 	@Override
-	public void OnAdPresentedOverlay(MoPubView moPubView) {
+	public void onBannerFailed(MoPubView banner, MoPubErrorCode errorCode) {
+		Log.d(TAG, "onBannerFailed: " + banner + ", error: " + errorCode);
+		/*String response = moPubBannerView.getResponseString();
+		if (response != null && response.contains(AppConstants.MATOMY_AD)) {
+			Map<String, String> params = new HashMap<String, String>();
+			params.put(AppConstants.RESPONSE, response);
+			FlurryAgent.logEvent(FlurryData.MATOMY_AD_FAILED, params);
+		}*/
 	}
 
 	@Override
-	public void OnAdWillLoad(MoPubView moPubView, String url) {
+	public void onBannerClicked(MoPubView banner) {
+		Log.d(TAG, "onBannerClicked: " + banner);
+	}
+
+	@Override
+	public void onBannerExpanded(MoPubView banner) {
+		Log.d(TAG, "onBannerExpanded: " + banner);
+	}
+
+	@Override
+	public void onBannerCollapsed(MoPubView banner) {
+		Log.d(TAG, "onBannerCollapsed: " + banner);
 	}
 }

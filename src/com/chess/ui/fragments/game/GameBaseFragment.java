@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
@@ -29,6 +31,7 @@ import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
+import com.mopub.mobileads.MoPubView;
 import com.slidingmenu.lib.SlidingMenu;
 
 import java.text.SimpleDateFormat;
@@ -72,6 +75,9 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected PanelInfoGameView bottomPanelView;
 	protected boolean userPlayWhite;
 
+	protected LinearLayout mopubAdLayout;
+	private MoPubView moPubBannerView;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		if (AppUtils.isNeedFullScreen(getActivity())) {
@@ -98,6 +104,29 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 		boardFrame = view.findViewById(R.id.boardFrame);
 		enableSlideMenus(false);
+	}
+
+	protected void initUpgradeAndAdWidgets(View view) {
+		if (!AppUtils.isNeedToUpgrade(getActivity())) {
+			view.findViewById(R.id.bannerUpgradeView).setVisibility(View.GONE);
+		} else {
+			view.findViewById(R.id.bannerUpgradeView).setVisibility(View.VISIBLE);
+
+			Button upgradeBtn = (Button) view.findViewById(R.id.upgradeBtn);
+			upgradeBtn.setOnClickListener(this);
+
+			mopubAdLayout = (LinearLayout) view.findViewById(R.id.mopubAdLayout);
+			moPubBannerView = MopubHelper.showBannerAd(upgradeBtn, mopubAdLayout, getActivity());
+		}
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		if (moPubBannerView != null) {
+			moPubBannerView.destroy();
+		}
 	}
 
 	@Override
@@ -223,11 +252,12 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 			if (!AppUtils.isNeedToUpgrade(getActivity())) {
 				endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
-			}else {
+			} else {
 				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
 			}
 
 			showGameEndPopup(endGamePopupView, endGameMessage);
+			//initUpgradeAndAdWidgets(endGamePopupView); //todo: uncomment in order to show ads
 			setBoardToFinishedState();
 		}
 	}

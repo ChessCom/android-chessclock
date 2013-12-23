@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.util.SparseBooleanArray;
 import android.view.*;
 import android.widget.SearchView;
@@ -25,12 +24,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected Handler handler;
 
 	private SparseBooleanArray actionMenuMap;
-	private ActionBarDrawerToggle mDrawerToggle;
-
-	// we may have this add on every screen, so control it on the lowest level
-	//protected MoPubView moPubView;
-//	protected InneractiveAd inneractiveBannerAd;
-//	protected InneractiveAd inneractiveRectangleAd;
 
 	public void setFullScreen() {
 //		requestWindowFeature(Window.FEATURE_NO_TITLE);  // TODO solve problem for QVGA screens
@@ -67,21 +60,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	private void hideUpIcon(ActionBar actionBar) {
 		actionBar.setHomeAsUpIndicator(getResources().getDrawable(R.drawable.ic_ab_back_empty));
 	}
-
-	protected void initUpgradeAndAdWidgets() {
-//		if (!AppUtils.isNeedToUpgrade(this)) {
-//			findViewById(R.id.bannerUpgradeView).setVisibility(View.GONE);
-//		} else {
-//			findViewById(R.id.bannerUpgradeView).setVisibility(View.VISIBLE);
-//		}
-//
-//		Button upgradeBtn = (Button) findViewById(R.id.upgradeBtn);
-//		upgradeBtn.setOnClickListener(this);
-//
-//		inneractiveBannerAd = (InneractiveAd) findViewById(R.id.inneractiveBannerAd);
-//		InneractiveAdHelper.showBannerAd(upgradeBtn, inneractiveBannerAd, this);
-	}
-
 
 	@Override
 	protected void onStart() {

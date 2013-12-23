@@ -1,19 +1,19 @@
 /*
- * Copyright (c) 2010, MoPub Inc.
+ * Copyright (c) 2010-2013, MoPub Inc.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
  *
- * * Redistributions of source code must retain the above copyright
+ *  Redistributions of source code must retain the above copyright
  *   notice, this list of conditions and the following disclaimer.
  *
- * * Redistributions in binary form must reproduce the above copyright
+ *  Redistributions in binary form must reproduce the above copyright
  *   notice, this list of conditions and the following disclaimer in the
  *   documentation and/or other materials provided with the distribution.
  *
- * * Neither the name of 'MoPub Inc.' nor the names of its contributors
+ *  Neither the name of 'MoPub Inc.' nor the names of its contributors
  *   may be used to endorse or promote products derived from this software
  *   without specific prior written permission.
  *
@@ -34,86 +34,96 @@ package com.mopub.mobileads;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.provider.Settings.Secure;
 import android.util.Log;
-import com.chess.statics.Symbol;
+import com.mopub.mobileads.factories.HttpClientFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.io.IOException;
+import static android.content.Context.MODE_PRIVATE;
 
 public class MoPubConversionTracker {
-    private Context mContext;
-    private String mPackageName;
-
-	private static final String TRACK_HOST = "ads.mopub.com";
+    private static final String TRACK_HOST = "ads.mopub.com";
     private static final String TRACK_HANDLER = "/m/open";
+    private static final String PREFERENCE_NAME = "mopubSettings";
+
+    private Context mContext;
+    private String mIsTrackedKey;
+    private SharedPreferences mSharedPreferences;
+    private String mPackageName;
 
     public void reportAppOpen(Context context) {
         if (context == null) {
             return;
         }
+
         mContext = context;
         mPackageName = mContext.getPackageName();
+        mIsTrackedKey = mPackageName + " tracked";
+        mSharedPreferences = mContext.getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
 
-        SharedPreferences settings = mContext.getSharedPreferences("mopubSettings", 0);
-        if (!settings.getBoolean(mPackageName + " tracked", false)) {
-            new Thread(mTrackOpen).start();
+        if (!isAlreadyTracked()) {
+            new Thread(new TrackOpen()).start();
         } else {
-            Log.d(AdView.MOPUB, "Conversion already tracked");
+            Log.d("MoPub", "Conversion already tracked");
         }
     }
 
-    Runnable mTrackOpen = new Runnable() {
-        @Override
-		public void run() {
-            StringBuilder sz = new StringBuilder("http://"+TRACK_HOST+TRACK_HANDLER);
-            sz.append("?v=6&id=" + mPackageName);
-            
-            String udid = Secure.getString(mContext.getContentResolver(), Secure.ANDROID_ID);
-            String udidDigest = (udid == null) ? Symbol.EMPTY : Utils.sha1(udid);
-            sz.append("&udid=sha:" + udidDigest);
-            String url = sz.toString();
-            Log.d(AdView.MOPUB, "Conversion track: " + url);
+    private boolean isAlreadyTracked() {
+        return mSharedPreferences.getBoolean(mIsTrackedKey, false);
+    }
 
-            DefaultHttpClient httpclient = new DefaultHttpClient();
+    private class ConversionUrlGenerator extends BaseUrlGenerator {
+        @Override
+        public String generateUrlString(String serverHostname) {
+            initUrlString(serverHostname, TRACK_HANDLER);
+
+            setApiVersion("6");
+            setPackageId(mPackageName);
+            setUdid(getUdidFromContext(mContext));
+            setAppVersion(getAppVersionFromContext(mContext));
+            return getFinalUrlString();
+        }
+
+        private void setPackageId(String packageName) {
+            addParam("id", packageName);
+        }
+    }
+
+    private class TrackOpen implements Runnable {
+        public void run() {
+            String url = new ConversionUrlGenerator().generateUrlString(TRACK_HOST);
+            Log.d("MoPub", "Conversion track: " + url);
+
+            DefaultHttpClient httpClient = HttpClientFactory.create();
             HttpResponse response;
             try {
                 HttpGet httpget = new HttpGet(url);
-                response = httpclient.execute(httpget);
-            } catch (IllegalArgumentException e) {
-                Log.d(AdView.MOPUB, "Conversion track failed (IllegalArgumentException): "+url);
-                return;
-            } catch (ClientProtocolException e) {
-                // Just fail silently. We'll try the next time the app opens
-                Log.d(AdView.MOPUB, "Conversion track failed: ClientProtocolException (no signal?)");
-                return;
-            } catch (IOException e) {
-                // Just fail silently. We'll try the next time the app opens
-                Log.d(AdView.MOPUB, "Conversion track failed: IOException (no signal?)");
+                response = httpClient.execute(httpget);
+            } catch (Exception e) {
+                Log.d("MoPub", "Conversion track failed [" + e.getClass().getSimpleName() + "]: " + url);
                 return;
             }
 
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                Log.d(AdView.MOPUB, "Conversion track failed: Status code != 200");
+                Log.d("MoPub", "Conversion track failed: Status code != 200.");
                 return;
             }
 
             HttpEntity entity = response.getEntity();
             if (entity == null || entity.getContentLength() == 0) {
-                Log.d(AdView.MOPUB, "Conversion track failed: Response was empty");
+                Log.d("MoPub", "Conversion track failed: Response was empty.");
                 return;
             }
 
             // If we made it here, the request has been tracked
-            Log.d(AdView.MOPUB, "Conversion track successful");
-            SharedPreferences.Editor editor
-            = mContext.getSharedPreferences("mopubSettings", 0).edit();
-            editor.putBoolean(mPackageName+" tracked", true).commit();
+            Log.d("MoPub", "Conversion track successful.");
+            mSharedPreferences
+                    .edit()
+                    .putBoolean(mIsTrackedKey, true)
+                    .commit();
         }
-    };
+    }
 }

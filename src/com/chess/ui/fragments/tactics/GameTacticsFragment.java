@@ -59,7 +59,6 @@ import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsTacticsView;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.MopubHelper;
 import com.flurry.android.FlurryAgent;
 
 import java.util.List;
@@ -449,7 +448,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		lockBoard(true);
 	}
 
-
 	private void showLimitReachedPopup() {
 		FlurryAgent.logEvent(FlurryData.TACTICS_DAILY_LIMIT_EXCEEDED);
 
@@ -457,12 +455,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_limit_reached, null, false);
 
-		LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
+		// should be removed I think?
+		/*LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
 		if (AppUtils.isNeedToUpgrade(getActivity())) {
 			MopubHelper.showRectangleAd(adViewWrapper, getActivity());
 		} else {
 			adViewWrapper.setVisibility(View.GONE);
-		}
+		}*/
 
 		clearSavedTactics();
 

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/bannerUpgradeView"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
 
     <com.chess.widgets.RoboButton
             android:id="@+id/upgradeBtn"
@@ -11,38 +13,13 @@
             style="@style/Button.Upgrade"
             android:text="@string/upgrade_my_account"
             android:layout_marginBottom="0dip"
-            android:visibility="gone"
-            />
+            android:visibility="gone"/>
 
-    <com.mopub.mobileads.MoPubView
-            android:id="@+id/mopub_adview"
+    <LinearLayout
+            android:id="@+id/mopubAdLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:visibility="gone"
-            />
-
-    <!-- todo: rename ad view template -->
-
-    <!--<LinearLayout
-            android:id="@+id/inneractiveAdLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            />-->
-
-    <!-- todo: set app id, set update time
-         android:layout_alignParentBottom="true"
-         android:layout_centerHorizontal="true" -->
-
-    <com.inneractive.api.ads.InneractiveAd
-            android:id="@+id/inneractiveAd"
-            xmlns:inneractive="http://schemas.android.com/apk/res/com.chess"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            inneractive:appID="Android_IA_Test"
-            inneractive:adType="Banner"
-            inneractive:refreshInterval="60"
-            inneractive:adAlignment="CENTER"
-            android:visibility="gone" />
+            android:orientation="horizontal"/>
 
 </LinearLayout>

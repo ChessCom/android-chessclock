@@ -1,3 +1,35 @@
+/*
+ * Copyright (c) 2010-2013, MoPub Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *  Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ *  Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ *
+ *  Neither the name of 'MoPub Inc.' nor the names of its contributors
+ *   may be used to endorse or promote products derived from this software
+ *   without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package com.mopub.mobileads;
 
 import android.content.ActivityNotFoundException;
@@ -8,12 +40,11 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.webkit.JsResult;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import com.chess.R;
-import com.chess.statics.Symbol;
+import com.mopub.mobileads.factories.HttpClientFactory;
+import com.mopub.mobileads.resource.MraidJavascript;
+import com.mopub.mobileads.util.Strings;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -21,41 +52,35 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.*;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class MraidView extends WebView {
+import static com.mopub.mobileads.MraidCommandFactory.MraidJavascriptCommand;
+import static com.mopub.mobileads.ViewGestureDetector.UserClickListener;
+
+public class MraidView extends BaseWebView implements UserClickListener {
     private static final String LOGTAG = "MraidView";
     
     private MraidBrowserController mBrowserController;
     private MraidDisplayController mDisplayController;
     
     private WebViewClient mWebViewClient;
-    private WebChromeClient mWebChromeClient;
-    
+
     private boolean mHasFiredReadyEvent;
+    private boolean mClicked;
     private final PlacementType mPlacementType;
-    
+    private ViewGestureDetector mViewGestureDetector;
+    private AdConfiguration mAdConfiguration;
+
     static class MraidListenerInfo {
-        private OnExpandListener mOnExpandListener;
-        private OnCloseListener mOnCloseListener;
-        private OnReadyListener mOnReadyListener;
-        private OnFailureListener mOnFailureListener;
+        private MraidListener mMraidListener;
         private OnCloseButtonStateChangeListener mOnCloseButtonListener;
         private OnOpenListener mOnOpenListener;
     }
     private MraidListenerInfo mListenerInfo;
-    
-    public static final int PLACEHOLDER_VIEW_ID = 100;
-    public static final int MODAL_CONTAINER_LAYOUT_ID = 101;
-    public static final int AD_CONTAINER_LAYOUT_ID = 102;
-    
+
     public enum ViewState {
         LOADING,
         DEFAULT,
@@ -63,34 +88,54 @@ public class MraidView extends WebView {
         HIDDEN
     }
 
-    enum ExpansionStyle {
+    public enum ExpansionStyle {
         ENABLED,
         DISABLED
     }
 
-    enum NativeCloseButtonStyle {
+    public enum NativeCloseButtonStyle {
         ALWAYS_VISIBLE,
         ALWAYS_HIDDEN,
         AD_CONTROLLED
     }
-    
-    enum PlacementType {
+
+    public enum PlacementType {
         INLINE,
         INTERSTITIAL
     }
 
-    public MraidView(Context context) {
-        this(context, ExpansionStyle.ENABLED, NativeCloseButtonStyle.AD_CONTROLLED,
+    public MraidView(Context context, AdConfiguration adConfiguration) {
+        this(context, adConfiguration, ExpansionStyle.ENABLED, NativeCloseButtonStyle.AD_CONTROLLED,
                 PlacementType.INLINE);
     }
 
-    MraidView(Context context, ExpansionStyle expStyle, NativeCloseButtonStyle buttonStyle,
-            PlacementType placementType) {
+    public MraidView(Context context, AdConfiguration adConfiguration, ExpansionStyle expStyle, NativeCloseButtonStyle buttonStyle,
+                     PlacementType placementType) {
         super(context);
         mPlacementType = placementType;
+
+        mAdConfiguration = adConfiguration;
+        mViewGestureDetector = new ViewGestureDetector(context, this, adConfiguration);
+        mViewGestureDetector.setUserClickListener(this);
+
         initialize(expStyle, buttonStyle);
     }
-    
+
+    @Override
+    public void onUserClick() {
+        mClicked = true;
+    }
+
+    @Override
+    public void onResetUserClick() {
+        mClicked = false;
+    }
+
+    @Override
+    public boolean wasClicked() {
+        return mClicked;
+    }
+
     private void initialize(ExpansionStyle expStyle, NativeCloseButtonStyle buttonStyle) {
         setScrollContainer(false);
         setBackgroundColor(Color.TRANSPARENT);
@@ -99,8 +144,9 @@ public class MraidView extends WebView {
         setHorizontalScrollBarEnabled(false);
         
         setOnTouchListener(new View.OnTouchListener() {
-            @Override
-			public boolean onTouch(View v, MotionEvent event) {
+            public boolean onTouch(View v, MotionEvent event) {
+                mViewGestureDetector.sendTouchEvent(event);
+
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_UP:
@@ -120,37 +166,50 @@ public class MraidView extends WebView {
         
         mWebViewClient = new MraidWebViewClient();
         setWebViewClient(mWebViewClient);
-        
-        mWebChromeClient = new MraidWebChromeClient();
-        setWebChromeClient(mWebChromeClient);
-        
+
         mListenerInfo = new MraidListenerInfo();
     }
-    
+
+    AdConfiguration getAdConfiguration() {
+        return mAdConfiguration;
+    }
+
     @Override
-	public void destroy() {
+    public void destroy() {
         mDisplayController.destroy();
         super.destroy();
     }
 
     public void loadHtmlData(String data) {
+        if (data == null) {
+            return;
+        }
+
         // If the string data lacks the HTML boilerplate, add it.
-        if (data.indexOf("<html>") == -1) {
-            data = "<html><head></head><body style='margin:0;padding:0;'>" + data + 
+        if (!data.contains("<html>")) {
+            data = "<html><head></head><body style='margin:0;padding:0;'>" + data +
                     "</body></html>";
         }
         
         // Inject the MRAID JavaScript bridge.
-        String mraid = "file:/" + copyRawResourceToFilesDir(R.raw.mraid, "mraid.js");
-        data = data.replace("<head>", "<head><script src='" + mraid + "'></script>");
-        
+        data = data.replace("<head>", "<head><script>" + MraidJavascript.JAVASCRIPT_SOURCE + "</script>");
+
         loadDataWithBaseURL(null, data, "text/html", "UTF-8", null);
     }
 
     @Override
-	public void loadUrl(String url) {
-        HttpClient httpClient = new DefaultHttpClient();
-        StringBuffer out = new StringBuffer();
+    public void loadUrl(String url) {
+        if (url == null) {
+            return;
+        }
+
+        if (url.startsWith("javascript:")) {
+            super.loadUrl(url);
+            return;
+        }
+
+        HttpClient httpClient = HttpClientFactory.create();
+        String outString = "";
         
         try {
             HttpGet httpGet = new HttpGet(url);
@@ -158,14 +217,10 @@ public class MraidView extends WebView {
             HttpEntity entity = response.getEntity();
     
             if (entity != null) {
-                InputStream is = entity.getContent();
-                byte[] b = new byte[4096];
-                for (int n; (n = is.read(b)) != -1;) {
-                    out.append(new String(b, 0, n));
-                }
+                outString = Strings.fromStream(entity.getContent());
             }
         } catch (IllegalArgumentException e) {
-            Log.d(AdView.MOPUB, "Mraid loadUrl failed (IllegalArgumentException): "+url);
+            Log.d("MoPub", "Mraid loadUrl failed (IllegalArgumentException): "+url);
             notifyOnFailureListener();
             return;
         } catch (ClientProtocolException e) {
@@ -176,12 +231,12 @@ public class MraidView extends WebView {
             return;
         }
 
-        loadHtmlData(out.toString());
+        loadHtmlData(outString);
     }
     
     private void notifyOnFailureListener() {
-        if (mListenerInfo.mOnFailureListener != null) {
-            mListenerInfo.mOnFailureListener.onFailure(this);
+        if (mListenerInfo.mMraidListener != null) {
+            mListenerInfo.mMraidListener.onFailure(this);
         }
     }
 
@@ -196,39 +251,15 @@ public class MraidView extends WebView {
     }
     
     // Listeners ///////////////////////////////////////////////////////////////////////////////////
-    
-    public void setOnExpandListener(OnExpandListener listener) {
-        mListenerInfo.mOnExpandListener = listener;
+
+    public void setMraidListener(MraidListener mraidListener) {
+        mListenerInfo.mMraidListener = mraidListener;
     }
-    
-    public OnExpandListener getOnExpandListener() {
-        return mListenerInfo.mOnExpandListener;
+
+    public MraidListener getMraidListener() {
+        return mListenerInfo.mMraidListener;
     }
-    
-    public void setOnCloseListener(OnCloseListener listener) {
-        mListenerInfo.mOnCloseListener = listener;
-    }
-    
-    public OnCloseListener getOnCloseListener() {
-        return mListenerInfo.mOnCloseListener;
-    }
-    
-    public void setOnReadyListener(OnReadyListener listener) {
-        mListenerInfo.mOnReadyListener = listener;
-    }
-    
-    public OnReadyListener getOnReadyListener() {
-        return mListenerInfo.mOnReadyListener;
-    }
-    
-    public void setOnFailureListener(OnFailureListener listener) {
-        mListenerInfo.mOnFailureListener = listener;
-    }
-    
-    public OnFailureListener getOnFailureListener() {
-        return mListenerInfo.mOnFailureListener;
-    }
-    
+
     public void setOnCloseButtonStateChange(OnCloseButtonStateChangeListener listener) {
         mListenerInfo.mOnCloseButtonListener = listener;
     }
@@ -266,7 +297,9 @@ public class MraidView extends WebView {
         Log.d(LOGTAG, "Fire changes: " + json);
     }
     
-    protected void fireErrorEvent(String action, String message) {
+    protected void fireErrorEvent(MraidJavascriptCommand mraidJavascriptCommand, String message) {
+        String action = mraidJavascriptCommand.getCommand();
+
         injectJavaScript("window.mraidbridge.fireErrorEvent('" + action + "', '" + message + "');");
     }
     
@@ -285,10 +318,13 @@ public class MraidView extends WebView {
         for (NameValuePair pair : list) {
             params.put(pair.getName(), pair.getValue());
         }
-        
-        MraidCommand command = MraidCommandRegistry.createCommand(commandType, params, this);
+
+        MraidCommand command = MraidCommandFactory.create(commandType, params, this);
+
         if (command == null) {
             fireNativeCommandCompleteEvent(commandType);
+            return false;
+        } else if (command.isCommandDependentOnUserClick(mPlacementType) && !wasClicked()) {
             return false;
         } else {
             command.execute();
@@ -296,41 +332,10 @@ public class MraidView extends WebView {
             return true;
         }
     }
-    
-    /* 
-     * Copies a file from res/raw to <destinationFilename> in the application file directory.
-     */
-    private String copyRawResourceToFilesDir(int resourceId, String destinationFilename) {
-        InputStream is = getContext().getResources().openRawResource(resourceId);
-        
-        String destinationPath = getContext().getFilesDir().getAbsolutePath() + File.separator + 
-                destinationFilename;
-        File destinationFile = new File(destinationPath);
-        FileOutputStream fos;
-        try {
-            fos = new FileOutputStream(destinationFile);
-        } catch (FileNotFoundException e) {
-            return Symbol.EMPTY;
-        }
-        
-        byte[] b = new byte[8192];
-        try {
-            for (int n; (n = is.read(b)) != -1;) {
-                fos.write(b, 0, n);
-            }
-        } catch (IOException e) {
-            return Symbol.EMPTY;
-        } finally {
-            try { is.close(); fos.close(); } catch (IOException e) { }
-        }
-        
-        return destinationPath;
-    }
-    
+
     private class MraidWebViewClient extends WebViewClient {
         @Override
-        public void onReceivedError(WebView view, int errorCode, String description, 
-                String failingUrl) {
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             Log.d(LOGTAG, "Error: " + description);
             super.onReceivedError(view, errorCode, description, failingUrl);
         }
@@ -345,28 +350,33 @@ public class MraidView extends WebView {
                 tryCommand(URI.create(url)); // java.net.URI, not android.net.Uri
                 return true;
             }
-            
-            Intent i = new Intent();
-            i.setAction(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            
-            try {
-                getContext().startActivity(i);
-                return true;
-            } catch (ActivityNotFoundException e) {
-                return false;
+
+            if (wasClicked()) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                try {
+                    getContext().startActivity(i);
+                    return true;
+                } catch (ActivityNotFoundException e) {
+                    return false;
+                }
             }
+
+            return false;
         }
         
         @Override
         public void onPageFinished(WebView view, String url) {
             if (!mHasFiredReadyEvent) {
                 mDisplayController.initializeJavaScriptState();
-                fireChangeEventForProperty(
-                        MraidPlacementTypeProperty.createWithType(mPlacementType));
+                fireChangeEventForProperty(MraidPlacementTypeProperty.createWithType(mPlacementType));
                 fireReadyEvent();
-                if (getOnReadyListener() != null) getOnReadyListener().onReady(MraidView.this);
+                if (getMraidListener() != null) {
+                    getMraidListener().onReady(MraidView.this);
+                }
                 mHasFiredReadyEvent = true;
             }
         }
@@ -376,36 +386,36 @@ public class MraidView extends WebView {
             Log.d(LOGTAG, "Loaded resource: " + url);
         }
     }
-    
-    private class MraidWebChromeClient extends WebChromeClient {
-        @Override
-        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-            Log.d(LOGTAG, message);
-            return false;
-        }
-    }
-    
-    public interface OnExpandListener {
+
+    public interface MraidListener {
+        public void onReady(MraidView view);
+        public void onFailure(MraidView view);
         public void onExpand(MraidView view);
-    }
-    
-    public interface OnCloseListener {
         public void onClose(MraidView view, ViewState newViewState);
     }
-    
-    public interface OnReadyListener {
-        public void onReady(MraidView view);
+
+    public static class BaseMraidListener implements MraidListener {
+        @Override public void onReady(MraidView view) { }
+        @Override public void onFailure(MraidView view) { }
+        @Override public void onExpand(MraidView view) { }
+        @Override public void onClose(MraidView view, ViewState newViewState) { }
     }
-    
-    public interface OnFailureListener {
-        public void onFailure(MraidView view);
-    }
-    
+
     public interface OnCloseButtonStateChangeListener {
         public void onCloseButtonStateChange(MraidView view, boolean enabled);
     }
     
     public interface OnOpenListener {
         public void onOpen(MraidView view);
+    }
+
+    @Deprecated // for testing
+    WebViewClient getMraidWebViewClient() {
+        return mWebViewClient;
+    }
+
+    @Deprecated // for testing
+    void setMraidDisplayController(MraidDisplayController mraidDisplayController) {
+        mDisplayController = mraidDisplayController;
     }
 }

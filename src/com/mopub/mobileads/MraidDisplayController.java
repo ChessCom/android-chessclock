@@ -1,148 +1,215 @@
+/*
+ * Copyright (c) 2010-2013, MoPub Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ *  Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ *  Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ *
+ *  Neither the name of 'MoPub Inc.' nor the names of its contributors
+ *   may be used to endorse or promote products derived from this software
+ *   without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package com.mopub.mobileads;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.CalendarContract;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.*;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.URLUtil;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.chess.R;
+import android.widget.Toast;
 import com.mopub.mobileads.MraidView.ExpansionStyle;
 import com.mopub.mobileads.MraidView.NativeCloseButtonStyle;
 import com.mopub.mobileads.MraidView.PlacementType;
 import com.mopub.mobileads.MraidView.ViewState;
+import com.mopub.mobileads.factories.HttpClientFactory;
+import com.mopub.mobileads.util.HttpResponses;
+import com.mopub.mobileads.util.Mraids;
+import com.mopub.mobileads.util.Streams;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 
-import java.util.ArrayList;
+import java.io.*;
+import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static com.mopub.mobileads.MraidCommandFactory.MraidJavascriptCommand.CREATE_CALENDAR_EVENT;
+import static com.mopub.mobileads.MraidCommandFactory.MraidJavascriptCommand.EXPAND;
+import static com.mopub.mobileads.MraidCommandFactory.MraidJavascriptCommand.GET_CURRENT_POSITION;
+import static com.mopub.mobileads.MraidCommandFactory.MraidJavascriptCommand.GET_DEFAULT_POSITION;
+import static com.mopub.mobileads.MraidCommandFactory.MraidJavascriptCommand.GET_MAX_SIZE;
+import static com.mopub.mobileads.MraidCommandFactory.MraidJavascriptCommand.GET_SCREEN_SIZE;
+import static com.mopub.mobileads.MraidCommandFactory.MraidJavascriptCommand.STORE_PICTURE;
+import static com.mopub.mobileads.MraidCommandStorePicture.MIME_TYPE_HEADER;
+import static com.mopub.mobileads.MraidView.BaseMraidListener;
+import static com.mopub.mobileads.resource.Drawables.INTERSTITIAL_CLOSE_BUTTON_NORMAL;
+import static com.mopub.mobileads.resource.Drawables.INTERSTITIAL_CLOSE_BUTTON_PRESSED;
+import static com.mopub.mobileads.util.Mraids.ANDROID_CALENDAR_CONTENT_TYPE;
+import static com.mopub.mobileads.util.Mraids.isCalendarAvailable;
+import static com.mopub.mobileads.util.Mraids.isInlineVideoAvailable;
+import static com.mopub.mobileads.util.Mraids.isSmsAvailable;
+import static com.mopub.mobileads.util.Mraids.isStorePictureSupported;
+import static com.mopub.mobileads.util.Mraids.isTelAvailable;
+import static com.mopub.mobileads.util.ResponseHeader.LOCATION;
 
 class MraidDisplayController extends MraidAbstractController {
     private static final String LOGTAG = "MraidDisplayController";
     private static final long VIEWABILITY_TIMER_MILLIS = 3000;
     private static final int CLOSE_BUTTON_SIZE_DP = 50;
-    
+    private static final String[] DATE_FORMATS = {
+            "yyyy-MM-dd'T'HH:mm:ssZZZZZ",
+            "yyyy-MM-dd'T'HH:mmZZZZZ"
+    };
+    private static final int MAX_NUMBER_DAYS_IN_MONTH = 31;
+
     // The view's current state.
     private ViewState mViewState = ViewState.HIDDEN;
-    
+
     // Tracks whether this controller's view responds to expand() calls.
     private final ExpansionStyle mExpansionStyle;
 
-    // Tracks how this controller's view should display its native closeBoard button.
+    // Tracks how this controller's view should display its native close button.
     private final NativeCloseButtonStyle mNativeCloseButtonStyle;
 
     // Separate instance of MraidView, for displaying "two-part" creatives via the expand(URL) API.
     private MraidView mTwoPartExpansionView;
-    
+
     // A reference to the root view.
     private FrameLayout mRootView;
-    
+
     // Tracks whether this controller's view is currently on-screen.
     private boolean mIsViewable;
-    
+
     // Task that periodically checks whether this controller's view is on-screen.
     private Runnable mCheckViewabilityTask = new Runnable() {
-        @Override
-		public void run() {
+        public void run() {
             boolean currentViewable = checkViewable();
             if (mIsViewable != currentViewable) {
                 mIsViewable = currentViewable;
-                getView().fireChangeEventForProperty(
+                getMraidView().fireChangeEventForProperty(
                         MraidViewableProperty.createWithViewable(mIsViewable));
             }
             mHandler.postDelayed(this, VIEWABILITY_TIMER_MILLIS);
         }
     };
-    
+
     // Handler for scheduling viewability checks.
     private Handler mHandler = new Handler();
-    
+
     // Stores the requested orientation for the Activity to which this controller's view belongs.
     // This is needed to restore the Activity's requested orientation in the event that the view
     // itself requires an orientation lock.
     private final int mOriginalRequestedOrientation;
-	private OrientationBroadcastReceiver mOrientationBroadcastReceiver;
 
-	private class OrientationBroadcastReceiver extends BroadcastReceiver {
-        private int mLastRotation;
-        
-        @Override
-		public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
-                int orientation = MraidDisplayController.this.getDisplayRotation();
-                if (orientation != mLastRotation) {
-                    mLastRotation = orientation;
-                    MraidDisplayController.this.onOrientationChanged(mLastRotation);
-                }
-            }
-        }
-    };
-    
-    // Native closeBoard button, used for expanded content.
+    private OrientationBroadcastReceiver mOrientationBroadcastReceiver = new OrientationBroadcastReceiver();
+
+    // Native close button, used for expanded content.
     private ImageView mCloseButton;
-    
-    // Tracks whether expanded content provides its own, non-native closeBoard button.
+
+    // Tracks whether expanded content provides its own, non-native close button.
     private boolean mAdWantsCustomCloseButton;
-    
+
     // The scale factor for a dip (relative to a 160 dpi screen).
     protected float mDensity;
-    
+
     // The width of the screen in pixels.
     protected int mScreenWidth = -1;
-    
+
     // The height of the screen in pixels.
     protected int mScreenHeight = -1;
-    
+
     // The view's position within its parent.
     private int mViewIndexInParent;
-    
+
     // A view that replaces the MraidView within its parent view when the MraidView is expanded
     // (i.e. moved to the top of the view hierarchy).
-    FrameLayout mPlaceholderView;
-    
-    MraidDisplayController(MraidView view, MraidView.ExpansionStyle expStyle, 
+    private FrameLayout mPlaceholderView;
+    private FrameLayout mAdContainerLayout;
+    private RelativeLayout mExpansionLayout;
+
+    MraidDisplayController(MraidView view, MraidView.ExpansionStyle expStyle,
             MraidView.NativeCloseButtonStyle buttonStyle) {
         super(view);
         mExpansionStyle = expStyle;
         mNativeCloseButtonStyle = buttonStyle;
-        
-        Context context = getView().getContext();
-        mOriginalRequestedOrientation = (context instanceof Activity) ? 
+
+        Context context = getContext();
+        mOriginalRequestedOrientation = (context instanceof Activity) ?
                 ((Activity) context).getRequestedOrientation() :
                 ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
-                
+
+        mAdContainerLayout = createAdContainerLayout();
+        mExpansionLayout = createExpansionLayout();
+        mPlaceholderView = createPlaceholderView();
+
         initialize();
     }
-    
+
     private void initialize() {
         mViewState = ViewState.LOADING;
         initializeScreenMetrics();
         initializeViewabilityTimer();
-		mOrientationBroadcastReceiver = new OrientationBroadcastReceiver();
-        getView().getContext().registerReceiver(mOrientationBroadcastReceiver, 
-                new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED));
+        mOrientationBroadcastReceiver.register(getContext());
     }
-    
+
     private void initializeScreenMetrics() {
-        Context context = getView().getContext();
+        Context context = getContext();
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getMetrics(metrics);
         mDensity = metrics.density;
-        
+
         int statusBarHeight = 0, titleBarHeight = 0;
         if (context instanceof Activity) {
             Activity activity = (Activity) context;
@@ -153,121 +220,111 @@ class MraidDisplayController extends MraidAbstractController {
             int contentViewTop = window.findViewById(Window.ID_ANDROID_CONTENT).getTop();
             titleBarHeight = contentViewTop - statusBarHeight;
         }
-        
+
         int widthPixels = metrics.widthPixels;
         int heightPixels = metrics.heightPixels - statusBarHeight - titleBarHeight;
         mScreenWidth = (int) (widthPixels * (160.0 / metrics.densityDpi));
         mScreenHeight = (int) (heightPixels * (160.0 / metrics.densityDpi));
     }
-    
+
     private void initializeViewabilityTimer() {
         mHandler.removeCallbacks(mCheckViewabilityTask);
         mHandler.post(mCheckViewabilityTask);
     }
-    
+
     private int getDisplayRotation() {
-        WindowManager wm = (WindowManager) getView().getContext()
+        WindowManager wm = (WindowManager) getContext()
                 .getSystemService(Context.WINDOW_SERVICE);
         return wm.getDefaultDisplay().getOrientation();
     }
-    
+
     private void onOrientationChanged(int currentRotation) {
         initializeScreenMetrics();
-        getView().fireChangeEventForProperty(
+        getMraidView().fireChangeEventForProperty(
                 MraidScreenSizeProperty.createWithSize(mScreenWidth, mScreenHeight));
     }
-    
+
     public void destroy() {
         mHandler.removeCallbacks(mCheckViewabilityTask);
         try {
-            unRegisterMyReceiver(mOrientationBroadcastReceiver);
+            mOrientationBroadcastReceiver.unregister();
         } catch (IllegalArgumentException e) {
-            if (e.getMessage().contains("Receiver not registered")) {
-                // Ignore this exception.
-            } else throw e;
+            if (!e.getMessage().contains("Receiver not registered")) {
+                throw e;
+            } // Else ignore this exception.
         }
     }
 
-	protected void unRegisterMyReceiver(BroadcastReceiver broadcastReceiver) {
-		if (broadcastReceiver != null) {
-			getView().getContext().unregisterReceiver(broadcastReceiver);
-		}
-	}
-    
     protected void initializeJavaScriptState() {
         ArrayList<MraidProperty> properties = new ArrayList<MraidProperty>();
         properties.add(MraidScreenSizeProperty.createWithSize(mScreenWidth, mScreenHeight));
         properties.add(MraidViewableProperty.createWithViewable(mIsViewable));
-        getView().fireChangeEventForProperties(properties);
-        
+        getMraidView().fireChangeEventForProperties(properties);
+
         mViewState = ViewState.DEFAULT;
-        getView().fireChangeEventForProperty(MraidStateProperty.createWithViewState(mViewState));
+        getMraidView().fireChangeEventForProperty(MraidStateProperty.createWithViewState(mViewState));
+        initializeSupportedFunctionsProperty();
     }
-    
+
     protected boolean isExpanded() {
         return (mViewState == ViewState.EXPANDED);
     }
-    
+
     protected void close() {
         if (mViewState == ViewState.EXPANDED) {
             resetViewToDefaultState();
             setOrientationLockEnabled(false);
             mViewState = ViewState.DEFAULT;
-            getView().fireChangeEventForProperty(MraidStateProperty.createWithViewState(mViewState));
+            getMraidView().fireChangeEventForProperty(MraidStateProperty.createWithViewState(mViewState));
         } else if (mViewState == ViewState.DEFAULT) {
-            getView().setVisibility(View.INVISIBLE);
+            getMraidView().setVisibility(View.INVISIBLE);
             mViewState = ViewState.HIDDEN;
-            getView().fireChangeEventForProperty(MraidStateProperty.createWithViewState(mViewState));
+            getMraidView().fireChangeEventForProperty(MraidStateProperty.createWithViewState(mViewState));
         }
-        
-        if (getView().getOnCloseListener() != null) {
-            getView().getOnCloseListener().onClose(getView(), mViewState);
+
+        if (getMraidView().getMraidListener() != null) {
+            getMraidView().getMraidListener().onClose(getMraidView(), mViewState);
         }
     }
-    
-    private void resetViewToDefaultState() {        
-        FrameLayout adContainerLayout = 
-            (FrameLayout) mRootView.findViewById(MraidView.AD_CONTAINER_LAYOUT_ID);
-        RelativeLayout expansionLayout = (RelativeLayout) mRootView.findViewById(
-                MraidView.MODAL_CONTAINER_LAYOUT_ID);
-        
+
+    private void resetViewToDefaultState() {
         setNativeCloseButtonEnabled(false);
-        adContainerLayout.removeAllViewsInLayout();
-        mRootView.removeView(expansionLayout);
-        
-        getView().requestLayout();
-        
+        mAdContainerLayout.removeAllViewsInLayout();
+        mExpansionLayout.removeAllViewsInLayout();
+        mRootView.removeView(mExpansionLayout);
+
+        getMraidView().requestLayout();
+
         ViewGroup parent = (ViewGroup) mPlaceholderView.getParent();
-        parent.addView(getView(), mViewIndexInParent);
+        parent.addView(getMraidView(), mViewIndexInParent);
         parent.removeView(mPlaceholderView);
         parent.invalidate();
     }
-    
+
     protected void expand(String url, int width, int height, boolean shouldUseCustomClose,
             boolean shouldLockOrientation) {
         if (mExpansionStyle == MraidView.ExpansionStyle.DISABLED) return;
-        
+
         if (url != null && !URLUtil.isValidUrl(url)) {
-            getView().fireErrorEvent("expand", "URL passed to expand() was invalid.");
+            getMraidView().fireErrorEvent(EXPAND, "URL passed to expand() was invalid.");
             return;
         }
 
         // Obtain the root content view, since that's where we're going to insert the expanded 
         // content. We must do this before swapping the MraidView with its place-holder;
         // otherwise, getRootView() will return the wrong view (or null).
-        mRootView = (FrameLayout) getView().getRootView().findViewById(android.R.id.content);
+        mRootView = (FrameLayout) getMraidView().getRootView().findViewById(android.R.id.content);
 
         useCustomClose(shouldUseCustomClose);
         setOrientationLockEnabled(shouldLockOrientation);
         swapViewWithPlaceholderView();
 
-        View expansionContentView = getView();
+        View expansionContentView = getMraidView();
         if (url != null) {
-            mTwoPartExpansionView = new MraidView(getView().getContext(), ExpansionStyle.DISABLED,
+            mTwoPartExpansionView = new MraidView(getContext(), getMraidView().getAdConfiguration(), ExpansionStyle.DISABLED,
                     NativeCloseButtonStyle.AD_CONTROLLED, PlacementType.INLINE);
-            mTwoPartExpansionView.setOnCloseListener(new MraidView.OnCloseListener() {
-                @Override
-				public void onClose(MraidView view, ViewState newViewState) {
+            mTwoPartExpansionView.setMraidListener(new BaseMraidListener() {
+                public void onClose(MraidView view, ViewState newViewState) {
                     close();
                 }
             });
@@ -275,142 +332,566 @@ class MraidDisplayController extends MraidAbstractController {
             expansionContentView = mTwoPartExpansionView;
         }
 
-        ViewGroup expansionViewContainer = createExpansionViewContainer(expansionContentView, 
-                (int) (width * mDensity), (int) (height * mDensity));
-        mRootView.addView(expansionViewContainer, new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        
-        if (mNativeCloseButtonStyle == MraidView.NativeCloseButtonStyle.ALWAYS_VISIBLE || 
-                (!mAdWantsCustomCloseButton && 
+        expandLayouts(expansionContentView, (int) (width * mDensity), (int) (height * mDensity));
+        mRootView.addView(mExpansionLayout, new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+
+        if (mNativeCloseButtonStyle == MraidView.NativeCloseButtonStyle.ALWAYS_VISIBLE ||
+                (!mAdWantsCustomCloseButton &&
                 mNativeCloseButtonStyle != MraidView.NativeCloseButtonStyle.ALWAYS_HIDDEN)) {
             setNativeCloseButtonEnabled(true);
         }
-        
+
         mViewState = ViewState.EXPANDED;
-        getView().fireChangeEventForProperty(MraidStateProperty.createWithViewState(mViewState));
-        if (getView().getOnExpandListener() != null) getView().getOnExpandListener().onExpand(getView());
+        getMraidView().fireChangeEventForProperty(MraidStateProperty.createWithViewState(mViewState));
+        if (getMraidView().getMraidListener() != null) getMraidView().getMraidListener().onExpand(getMraidView());
     }
-    
+
+    protected void showUserDownloadImageAlert(String imageUrl) {
+        Context context = getContext();
+        if (!isStorePictureSupported(context)) {
+            getMraidView().fireErrorEvent(STORE_PICTURE, "Error downloading file - the device does not have an SD card mounted, or the Android permission is not granted.");
+            Log.d("MoPub", "Error downloading file - the device does not have an SD card mounted, or the Android permission is not granted.");
+            return;
+        }
+
+        if (context instanceof Activity) {
+            showUserDialog(imageUrl);
+        } else {
+            showUserToast("Downloading image to Picture gallery...");
+            downloadImage(imageUrl);
+        }
+    }
+
+    private void showUserToast(final String message) {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void downloadImage(final String uriString) {
+        final File pictureStoragePath = getPictureStoragePath();
+
+        pictureStoragePath.mkdirs();
+
+        new Thread(new Runnable() {
+            private URI uri;
+            private InputStream pictureInputStream;
+            private OutputStream pictureOutputStream;
+            private MediaScannerConnection mediaScannerConnection;
+
+            @Override
+            public void run() {
+                try {
+                    uri = URI.create(uriString);
+                    HttpClient httpClient = HttpClientFactory.create();
+                    HttpGet httpGet = new HttpGet(uri);
+
+                    HttpResponse httpResponse = httpClient.execute(httpGet);
+                    pictureInputStream = httpResponse.getEntity().getContent();
+
+                    String redirectLocation = HttpResponses.extractHeader(httpResponse, LOCATION);
+                    if (redirectLocation != null) {
+                        uri = URI.create(redirectLocation);
+                    }
+
+                    final String pictureFileName = getFileNameForUriAndHttpResponse(uri, httpResponse);
+                    File pictureFile = new File(pictureStoragePath, pictureFileName);
+                    final String pictureFileFullPath = pictureFile.toString();
+                    pictureOutputStream = new FileOutputStream(pictureFile);
+
+                    Streams.copyContent(pictureInputStream, pictureOutputStream);
+
+                    loadPictureIntoGalleryApp(pictureFileFullPath);
+                } catch (Exception exception) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            showUserToast("Image failed to download.");
+                            getMraidView().fireErrorEvent(STORE_PICTURE, "Error downloading and saving image file.");
+                            Log.d("MoPub", "Error downloading and saving image file.");
+                        }
+                    });
+                } finally {
+                    Streams.closeStream(pictureInputStream);
+                    Streams.closeStream(pictureOutputStream);
+                }
+            }
+
+            private void loadPictureIntoGalleryApp(final String filename) {
+                MoPubMediaScannerConnectionClient mediaScannerConnectionClient = new MoPubMediaScannerConnectionClient(filename, null);
+                mediaScannerConnection = new MediaScannerConnection(getContext().getApplicationContext(), mediaScannerConnectionClient);
+                mediaScannerConnectionClient.setMediaScannerConnection(mediaScannerConnection);
+                mediaScannerConnection.connect();
+            }
+        }).start();
+    }
+
+    private void showUserDialog(final String imageUrl) {
+        AlertDialog.Builder alertDialogDownloadImage = new AlertDialog.Builder(getContext());
+        alertDialogDownloadImage
+                .setTitle("Save Image")
+                .setMessage("Download image to Picture gallery?")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        downloadImage(imageUrl);
+                    }
+                })
+                .setCancelable(true)
+                .show();
+    }
+
+    protected void showVideo(String videoUrl) {
+        MraidVideoPlayerActivity.startMraid(getContext(), videoUrl);
+    }
+
+    protected void getCurrentPosition(){
+        getMraidView().fireErrorEvent(GET_CURRENT_POSITION, "Unsupported action getCurrentPosition");
+    }
+
+    protected void getDefaultPosition(){
+        getMraidView().fireErrorEvent(GET_DEFAULT_POSITION, "Unsupported action getDefaultPosition");
+    }
+
+    protected void getMaxSize(){
+        getMraidView().fireErrorEvent(GET_MAX_SIZE, "Unsupported action getMaxSize");
+    }
+
+    protected void getScreenSize(){
+        getMraidView().fireErrorEvent(GET_SCREEN_SIZE, "Unsupported action getScreenSize");
+    }
+
+    protected void createCalendarEvent(Map<String, String> params) {
+        Context context = getMraidView().getContext();
+        if (Mraids.isCalendarAvailable(context)) {
+            try {
+                Map<String, Object> calendarParams = translateJSParamsToAndroidCalendarEventMapping(params);
+                Intent intent = new Intent(Intent.ACTION_INSERT).setType(ANDROID_CALENDAR_CONTENT_TYPE);
+                for (String key : calendarParams.keySet()) {
+                    Object value = calendarParams.get(key);
+                    if (value instanceof Long) {
+                        intent.putExtra(key, ((Long) value).longValue());
+                    } else if (value instanceof Integer) {
+                        intent.putExtra(key, ((Integer) value).intValue());
+                    } else {
+                        intent.putExtra(key, (String) value);
+                    }
+                }
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            } catch (ActivityNotFoundException anfe) {
+                Log.d(LOGTAG, "no calendar app installed");
+                getMraidView().fireErrorEvent(CREATE_CALENDAR_EVENT, "Action is unsupported on this device - no calendar app installed");
+            } catch (IllegalArgumentException iae) {
+                Log.d(LOGTAG, "create calendar: invalid parameters " + iae.getMessage());
+                getMraidView().fireErrorEvent(CREATE_CALENDAR_EVENT, iae.getMessage());
+            } catch (Exception exception){
+                Log.d(LOGTAG, "could not create calendar event");
+                getMraidView().fireErrorEvent(CREATE_CALENDAR_EVENT, "could not create calendar event");
+            }
+        } else {
+            Log.d(LOGTAG, "unsupported action createCalendarEvent for devices pre-ICS");
+            getMraidView().fireErrorEvent(CREATE_CALENDAR_EVENT, "Action is unsupported on this device (need Android version Ice Cream Sandwich or above)");
+        }
+    }
+
+    private Map<String, Object> translateJSParamsToAndroidCalendarEventMapping(Map<String, String> params) throws Exception {
+        Map<String, Object> validatedParamsMapping = new HashMap<String, Object>();
+        if (!params.containsKey("description") || !params.containsKey("start")) {
+            throw new IllegalArgumentException("Missing start and description fields");
+        }
+
+        validatedParamsMapping.put(CalendarContract.Events.TITLE, params.get("description"));
+
+        if (params.containsKey("start") && params.get("start") != null) {
+            Date startDateTime = parseDate(params.get("start"));
+            if (startDateTime != null) {
+                validatedParamsMapping.put(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDateTime.getTime());
+            } else {
+                throw new IllegalArgumentException("Invalid calendar event: start time is malformed. Date format expecting (yyyy-MM-DDTHH:MM:SS-xx:xx) or (yyyy-MM-DDTHH:MM-xx:xx) i.e. 2013-08-14T09:00:01-08:00");
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid calendar event: start is null.");
+        }
+
+        if (params.containsKey("end") && params.get("end") != null) {
+            Date endDateTime = parseDate(params.get("end"));
+            if (endDateTime != null) {
+                validatedParamsMapping.put(CalendarContract.EXTRA_EVENT_END_TIME, endDateTime.getTime());
+            } else {
+                throw new IllegalArgumentException("Invalid calendar event: end time is malformed. Date format expecting (yyyy-MM-DDTHH:MM:SS-xx:xx) or (yyyy-MM-DDTHH:MM-xx:xx) i.e. 2013-08-14T09:00:01-08:00");
+            }
+        }
+
+        if (params.containsKey("location")) {
+            validatedParamsMapping.put(CalendarContract.Events.EVENT_LOCATION, params.get("location"));
+        }
+
+        if (params.containsKey("summary")) {
+            validatedParamsMapping.put(CalendarContract.Events.DESCRIPTION, params.get("summary"));
+        }
+
+        if (params.containsKey("transparency")) {
+            validatedParamsMapping.put(
+                    CalendarContract.Events.AVAILABILITY,
+                    params.get("transparency").equals("transparent") ?
+                            CalendarContract.Events.AVAILABILITY_FREE :
+                            CalendarContract.Events.AVAILABILITY_BUSY
+            );
+        }
+
+        validatedParamsMapping.put(CalendarContract.Events.RRULE, parseRecurrenceRule(params));
+
+        return validatedParamsMapping;
+    }
+
+    private Date parseDate(String dateTime) {
+        Date result = null;
+        for (int i=0; i<DATE_FORMATS.length; i++) {
+            try {
+                result = new SimpleDateFormat(DATE_FORMATS[i]).parse(dateTime);
+                if (result != null) {
+                    break;
+                }
+            } catch (ParseException e) {
+                // an exception is okay, just try the next format and find the first one that works
+            }
+        }
+        return result;
+    }
+
+    private String parseRecurrenceRule(Map<String, String> params) throws IllegalArgumentException {
+        StringBuilder rule = new StringBuilder();
+        if (params.containsKey("frequency")) {
+            String frequency = params.get("frequency");
+            int interval = -1;
+            if (params.containsKey("interval")) {
+                interval = Integer.parseInt(params.get("interval"));
+            }
+            if ("daily".equals(frequency)) {
+                rule.append("FREQ=DAILY;");
+                if (interval != -1) {
+                    rule.append("INTERVAL=" + interval + ";");
+                }
+            } else if("weekly".equals(frequency)) {
+                rule.append("FREQ=WEEKLY;");
+                if (interval != -1) {
+                    rule.append("INTERVAL=" + interval + ";");
+                }
+                if (params.containsKey("daysInWeek")) {
+                    String weekdays = translateWeekIntegersToDays(params.get("daysInWeek"));
+                    if (weekdays == null) {
+                       throw new IllegalArgumentException("invalid ");
+                    }
+                    rule.append("BYDAY=" + weekdays + ";");
+                }
+            } else if("monthly".equals(frequency)) {
+                rule.append("FREQ=MONTHLY;");
+                if (interval != -1) {
+                    rule.append("INTERVAL=" + interval + ";");
+                }
+                if (params.containsKey("daysInMonth")) {
+                    String monthDays = translateMonthIntegersToDays(params.get("daysInMonth"));
+                    if (monthDays == null) {
+                        throw new IllegalArgumentException();
+                    }
+                    rule.append("BYMONTHDAY=" + monthDays + ";");
+                }
+            } else {
+                throw new IllegalArgumentException("frequency is only supported for daily, weekly, and monthly.");
+            }
+        }
+        return rule.toString();
+    }
+
+    private String translateWeekIntegersToDays(String expression) throws IllegalArgumentException{
+        StringBuilder daysResult = new StringBuilder();
+        boolean[] daysAlreadyCounted = new boolean[7];
+        String[] days = expression.split(",");
+        int dayNumber;
+        for (int i=0; i<days.length; i++) {
+            dayNumber = Integer.parseInt(days[i]);
+            dayNumber = dayNumber == 7 ? 0 : dayNumber;
+            if (!daysAlreadyCounted[dayNumber]) {
+                daysResult.append(dayNumberToDayOfWeekString(dayNumber) + ",");
+                daysAlreadyCounted[dayNumber] = true;
+            }
+        }
+        if (days.length == 0) {
+            throw new IllegalArgumentException("must have at least 1 day of the week if specifying repeating weekly");
+        }
+        daysResult.deleteCharAt(daysResult.length()-1);
+        return daysResult.toString();
+    }
+
+    private String translateMonthIntegersToDays(String expression) throws IllegalArgumentException {
+        StringBuilder daysResult = new StringBuilder();
+        boolean[] daysAlreadyCounted = new boolean[2*MAX_NUMBER_DAYS_IN_MONTH +1]; //for -31 to 31
+        String[] days = expression.split(",");
+        int dayNumber;
+        for (int i=0; i<days.length; i++) {
+            dayNumber = Integer.parseInt(days[i]);
+            if (!daysAlreadyCounted[dayNumber+MAX_NUMBER_DAYS_IN_MONTH]) {
+                daysResult.append(dayNumberToDayOfMonthString(dayNumber) + ",");
+                daysAlreadyCounted[dayNumber+MAX_NUMBER_DAYS_IN_MONTH] = true;
+            }
+        }
+        if (days.length == 0) {
+            throw new IllegalArgumentException("must have at least 1 day of the month if specifying repeating weekly");
+        }
+        daysResult.deleteCharAt(daysResult.length() - 1);
+        return daysResult.toString();
+    }
+
+    private String dayNumberToDayOfWeekString(int number) throws IllegalArgumentException {
+        String dayOfWeek;
+        switch(number) {
+            case 0: dayOfWeek="SU"; break;
+            case 1: dayOfWeek="MO"; break;
+            case 2: dayOfWeek="TU"; break;
+            case 3: dayOfWeek="WE"; break;
+            case 4: dayOfWeek="TH"; break;
+            case 5: dayOfWeek="FR"; break;
+            case 6: dayOfWeek="SA"; break;
+            default: throw new IllegalArgumentException("invalid day of week " + number);
+        }
+        return dayOfWeek;
+    }
+
+    private String dayNumberToDayOfMonthString(int number) throws IllegalArgumentException {
+        String dayOfMonth;
+        // https://android.googlesource.com/platform/frameworks/opt/calendar/+/504844526f1b7afec048c6d2976ffb332670d5ba/src/com/android/calendarcommon2/EventRecurrence.java
+        if (number != 0 && number >= -MAX_NUMBER_DAYS_IN_MONTH && number <= MAX_NUMBER_DAYS_IN_MONTH) {
+            dayOfMonth = "" + number;
+        } else {
+            throw new IllegalArgumentException("invalid day of month " + number);
+        }
+        return dayOfMonth;
+    }
+
     private void swapViewWithPlaceholderView() {
-        ViewGroup parent = (ViewGroup) getView().getParent();
+        ViewGroup parent = (ViewGroup) getMraidView().getParent();
         if (parent == null) return;
-        
-        mPlaceholderView = new FrameLayout(getView().getContext());
-        
+
         int index;
         int count = parent.getChildCount();
         for (index = 0; index < count; index++) {
-            if (parent.getChildAt(index) == getView()) break;
+            if (parent.getChildAt(index) == getMraidView()) break;
         }
-        
+
         mViewIndexInParent = index;
-        parent.addView(mPlaceholderView, index, 
-                new ViewGroup.LayoutParams(getView().getWidth(), getView().getHeight()));
-        parent.removeView(getView());
+        parent.addView(mPlaceholderView, index,
+                new ViewGroup.LayoutParams(getMraidView().getWidth(), getMraidView().getHeight()));
+        parent.removeView(getMraidView());
     }
-    
-    private ViewGroup createExpansionViewContainer(View expansionContentView, int expandWidth, 
-            int expandHeight) {
+
+    private void expandLayouts(View expansionContentView, int expandWidth, int expandHeight) {
         int closeButtonSize = (int) (CLOSE_BUTTON_SIZE_DP * mDensity + 0.5f);
         if (expandWidth < closeButtonSize) expandWidth = closeButtonSize;
         if (expandHeight < closeButtonSize) expandHeight = closeButtonSize;
 
-        RelativeLayout expansionLayout = new RelativeLayout(getView().getContext());
-        expansionLayout.setId(MraidView.MODAL_CONTAINER_LAYOUT_ID);
-        
-        View dimmingView = new View(getView().getContext());
+        View dimmingView = new View(getContext());
         dimmingView.setBackgroundColor(Color.TRANSPARENT);
         dimmingView.setOnTouchListener(new OnTouchListener() {
-            @Override
-			public boolean onTouch(View v, MotionEvent event) {
+            public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
         });
-        
-        expansionLayout.addView(dimmingView, new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        
-        FrameLayout adContainerLayout = new FrameLayout(getView().getContext());
-        adContainerLayout.setId(MraidView.AD_CONTAINER_LAYOUT_ID);
-        
-        adContainerLayout.addView(expansionContentView, new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-        
+
+        mExpansionLayout.addView(dimmingView, new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+
+        mAdContainerLayout.addView(expansionContentView, new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(expandWidth, expandHeight);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-        expansionLayout.addView(adContainerLayout, lp);
-        
-        return expansionLayout;
+        mExpansionLayout.addView(mAdContainerLayout, lp);
     }
-    
+
     private void setOrientationLockEnabled(boolean enabled) {
-        Context context = getView().getContext();
+        Context context = getContext();
         Activity activity = null;
         try {
             activity = (Activity) context;
-            int requestedOrientation = enabled ? 
+            int requestedOrientation = enabled ?
                     activity.getResources().getConfiguration().orientation :
                     mOriginalRequestedOrientation;
-            activity.setRequestedOrientation(requestedOrientation);   // TODO handle to allow intercept onConfigChanges for android 4.0
+            activity.setRequestedOrientation(requestedOrientation);
         } catch (ClassCastException e) {
             Log.d(LOGTAG, "Unable to modify device orientation.");
         }
     }
-    
+
     protected void setNativeCloseButtonEnabled(boolean enabled) {
         if (mRootView == null) return;
-        
-        FrameLayout adContainerLayout = 
-            (FrameLayout) mRootView.findViewById(MraidView.AD_CONTAINER_LAYOUT_ID);
-        
+
         if (enabled) {
             if (mCloseButton == null) {
                 StateListDrawable states = new StateListDrawable();
-                states.addState(new int[] {-android.R.attr.state_pressed},
-                        getView().getResources().getDrawable(R.drawable.close_button_normal));
-                states.addState(new int[] {android.R.attr.state_pressed},
-                        getView().getResources().getDrawable(R.drawable.close_button_pressed));
-                mCloseButton = new ImageButton(getView().getContext());
+                states.addState(new int[] {-android.R.attr.state_pressed}, INTERSTITIAL_CLOSE_BUTTON_NORMAL.decodeImage(mRootView.getContext()));
+                states.addState(new int[] {android.R.attr.state_pressed}, INTERSTITIAL_CLOSE_BUTTON_PRESSED.decodeImage(mRootView.getContext()));
+                mCloseButton = new ImageButton(getContext());
                 mCloseButton.setImageDrawable(states);
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN){
-					mCloseButton.setBackground(null);
-				} else {
-					mCloseButton.setBackgroundDrawable(null);
-				}
+                mCloseButton.setBackgroundDrawable(null);
                 mCloseButton.setOnClickListener(new OnClickListener() {
-                    @Override
-					public void onClick(View v) {
+                    public void onClick(View v) {
                         MraidDisplayController.this.close();
                     }
                 });
             }
-            
+
             int buttonSize = (int) (CLOSE_BUTTON_SIZE_DP * mDensity + 0.5f);
             FrameLayout.LayoutParams buttonLayout = new FrameLayout.LayoutParams(
                     buttonSize, buttonSize, Gravity.RIGHT);
-            adContainerLayout.addView(mCloseButton, buttonLayout);
+            mAdContainerLayout.addView(mCloseButton, buttonLayout);
         } else {
-            adContainerLayout.removeView(mCloseButton);
+            mAdContainerLayout.removeView(mCloseButton);
         }
-        
-        MraidView view = getView();
+
+        MraidView view = getMraidView();
         if (view.getOnCloseButtonStateChangeListener() != null) {
             view.getOnCloseButtonStateChangeListener().onCloseButtonStateChange(view, enabled);
         }
     }
-    
+
     protected void useCustomClose(boolean shouldUseCustomCloseButton) {
         mAdWantsCustomCloseButton = shouldUseCustomCloseButton;
-        
-        MraidView view = getView();
+
+        MraidView view = getMraidView();
         boolean enabled = !shouldUseCustomCloseButton;
         if (view.getOnCloseButtonStateChangeListener() != null) {
             view.getOnCloseButtonStateChangeListener().onCloseButtonStateChange(view, enabled);
         }
     }
-    
+
     protected boolean checkViewable() {
-        // TODO: Perform more sophisticated check for viewable.
         return true;
+    }
+
+    FrameLayout createAdContainerLayout() {
+        return new FrameLayout(getContext());
+    }
+
+    RelativeLayout createExpansionLayout() {
+        return new RelativeLayout(getContext());
+    }
+
+    FrameLayout createPlaceholderView() {
+        return new FrameLayout(getContext());
+    }
+
+    private Context getContext() {
+        return getMraidView().getContext();
+    }
+
+    protected void initializeSupportedFunctionsProperty() {
+        Context context = getContext();
+        getMraidView().fireChangeEventForProperty(
+                new MraidSupportsProperty()
+                        .withTel(isTelAvailable(context))
+                        .withSms(isSmsAvailable(context))
+                        .withCalendar(isCalendarAvailable(context))
+                        .withInlineVideo(isInlineVideoAvailable(context))
+                        .withStorePicture(isStorePictureSupported(context)));
+    }
+
+    private File getPictureStoragePath() {
+        return new File(Environment.getExternalStorageDirectory(), "Pictures");
+    }
+
+    private String getFileNameForUriAndHttpResponse(final URI uri, final HttpResponse response) {
+        final String path = uri.getPath();
+
+        if (path == null) {
+            return null;
+        }
+
+        String filename = new File(path).getName();
+
+        Header header = response.getFirstHeader(MIME_TYPE_HEADER);
+        if (header != null) {
+            String[] fields = header.getValue().split(";");
+            for (final String field : fields) {
+                String extension;
+                if (field.contains("image/")) {
+                    extension = "." + field.split("/")[1];
+                    if (!filename.endsWith(extension)) {
+                        filename += extension;
+                    }
+                    break;
+                }
+            }
+        }
+
+        return filename;
+    }
+
+    private class MoPubMediaScannerConnectionClient implements MediaScannerConnection.MediaScannerConnectionClient {
+        private final String mFilename;
+        private final String mMimeType;
+        private MediaScannerConnection mMediaScannerConnection;
+
+        private MoPubMediaScannerConnectionClient(String filename, String mimeType) {
+            mFilename = filename;
+            mMimeType = mimeType;
+        }
+
+        private void setMediaScannerConnection(MediaScannerConnection connection) {
+            mMediaScannerConnection = connection;
+        }
+
+        @Override
+        public void onMediaScannerConnected() {
+            if (mMediaScannerConnection != null) {
+                mMediaScannerConnection.scanFile(mFilename, mMimeType);
+            }
+        }
+
+        @Override
+        public void onScanCompleted(String path, Uri uri) {
+            if (mMediaScannerConnection != null) {
+                mMediaScannerConnection.disconnect();
+            }
+        }
+    }
+
+    class OrientationBroadcastReceiver extends BroadcastReceiver {
+        private int mLastRotation;
+        private Context mContext;
+
+        public void onReceive(Context context, Intent intent) {
+            if(!isRegistered()) {
+                return;
+            }
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
+                int orientation = MraidDisplayController.this.getDisplayRotation();
+                if (orientation != mLastRotation) {
+                    mLastRotation = orientation;
+                    MraidDisplayController.this.onOrientationChanged(mLastRotation);
+                }
+            }
+        }
+
+        private boolean isRegistered() {
+            return mContext != null;
+        }
+
+        public void register(Context context) {
+            mContext = context;
+            context.registerReceiver(this,
+                    new IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED));
+        }
+
+        public void unregister() {
+            mContext.unregisterReceiver(this);
+            mContext = null;
+        }
     }
 }
