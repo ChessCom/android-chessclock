@@ -283,8 +283,11 @@ public class LiveChessService extends Service {
 		gameTaskRunner.runMakeResignTask();
 	}
 
-	public void runMakeResignAndExitTask() { // TODO adjust NPE?
-		gameTaskRunner.runMakeResignAndExitTask();
+	public void runMakeResignAndExitTask() {
+		// todo: gameTaskRunner sets in onLiveClientConnected and onResume. Investigate why it is null here
+		if (gameTaskRunner != null) {
+			gameTaskRunner.runMakeResignAndExitTask();
+		}
 	}
 
 	public void runRejectDrawTask() {
