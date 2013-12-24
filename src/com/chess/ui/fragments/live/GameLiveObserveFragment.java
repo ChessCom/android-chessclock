@@ -45,8 +45,10 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		super.onCreate(savedInstanceState);
 
 		observeTaskListener = new ObserveTaskListener();
-		runNewObserverGame();
-		//
+
+		if (isLCSBound) {
+			runNewObserverGame();
+		}
 	}
 
 	@Override
@@ -204,13 +206,13 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			runNewObserverGame();
 		} else if (view.getId() == R.id.rematchPopupBtn) { // New Game Self
 			dismissEndGameDialog();
-			try {
-				getLiveService().exitGameObserving();
-			} catch (DataNotValidException e) {
+				try {
+				    getLiveService().exitGameObserving();
+				} catch (DataNotValidException e) {
 				e.printStackTrace();
 				getActivityFace().showPreviousFragment();
-				return;
-			}
+					return;
+				}
 			String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
 
 			liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[getAppData().getDefaultLiveMode()]);
@@ -244,7 +246,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 				dismissEndGameDialog();
 
 				runNewObserverGame();
-			}
+				}
 		}, HIDE_POPUP_DELAY);
 
 
