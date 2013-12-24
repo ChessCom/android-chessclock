@@ -164,7 +164,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		try {
 			Long currentGameId = getLiveService().getCurrentGameId();
 			if (isLCSBound && currentGameId != null && currentGameId != 0) {
-				onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronizid
+				onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronized
 			}
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
@@ -572,10 +572,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		endGameReasonTxt.setText(message);
 
 		String liveUsername = liveService.getUsername();
-		int currentPlayerNewRating = liveService.getLastGame().getRatingForPlayer(liveUsername);
-		int ratingChange = liveService.getLastGame().getRatingChangeForPlayer(liveUsername);
+		Game game = liveService.getCurrentGame();
 
-		GameRatingClass gameRatingClass = liveService.getLastGame().getGameRatingClass();
+		int currentPlayerNewRating = game.getRatingForPlayer(liveUsername);
+		int ratingChange = game.getRatingChangeForPlayer(liveUsername);
+
+		GameRatingClass gameRatingClass = game.getGameRatingClass();
 		String newRatingStr = getString(R.string.live);
 		if (gameRatingClass == GameRatingClass.Standard) {
 			newRatingStr += Symbol.SPACE + getString(R.string.standard);
