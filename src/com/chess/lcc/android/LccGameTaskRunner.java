@@ -74,8 +74,8 @@ public class LccGameTaskRunner {
 
 		@Override
 		protected Integer doTheTask(Game... game) {
-			liveChessClient.makeResign(game[0], Symbol.EMPTY);
 			liveChessClient.exitGame(game[0]);
+			liveChessClient.makeResign(game[0], Symbol.EMPTY);
 			return StaticData.RESULT_OK;
 		}
 	}
