@@ -62,8 +62,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private static final String END_VACATION_TAG = "end vacation popup";
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 
-	private static final long FRAGMENT_VISIBILITY_DELAY = 200;
-
 	private DailyUpdateListener challengeInviteUpdateListener;
 	private DailyUpdateListener acceptDrawUpdateListener;
 
@@ -133,6 +131,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 
 		pullToRefresh(true);
+
+		if (!getAppData().isUserSawHelpForDaily()) {
+			showToastLong(R.string.help_toast_for_daily_games);
+			getAppData().setUserSawHelpForDaily(true);
+		}
 	}
 
 	@Override
@@ -147,32 +150,25 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		widgetsInit(view);
 	}
 
-
 	@Override
 	public void onResume() {
 		super.onResume();
 
 		init();
 
-		gamesUpdateReceiver = new GamesUpdateReceiver();
-		registerReceiver(gamesUpdateReceiver, moveUpdateFilter);
-
 		if (need2update) {
-			boolean haveSavedData = DbDataManager.haveSavedAnyDailyGame(getActivity(), getUsername());
-
 			if (isNetworkAvailable()) {
 				updateData();
-			} else if (!haveSavedData) {
-				emptyView.setText(R.string.no_network);
-				showEmptyView(true);
 			}
 
-			if (haveSavedData) {
-				handler.postDelayed(delayedLoadFromDb, FRAGMENT_VISIBILITY_DELAY);
-			}
-		} else {
 			loadDbGames();
+		} else {
+			updateData(); // TODO temporary force to update
+//			loadDbGames();
 		}
+
+		gamesUpdateReceiver = new GamesUpdateReceiver();
+		registerReceiver(gamesUpdateReceiver, moveUpdateFilter);
 	}
 
 	@Override
@@ -181,7 +177,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		unRegisterMyReceiver(gamesUpdateReceiver);
 
-		handler.removeCallbacks(delayedLoadFromDb);
 		releaseResources();
 	}
 
@@ -192,16 +187,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		outState.putInt(MODE, mode);
 	}
 
-	private Runnable delayedLoadFromDb = new Runnable() {
-		@Override
-		public void run() {
-			if (getActivity() == null) {
-				return;
-			}
-			loadDbGames();
-		}
-	};
-
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
@@ -209,8 +194,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			updateData();
 		}
 	}
-
-
 
 	private DialogInterface.OnClickListener gameListItemDialogListener = new DialogInterface.OnClickListener() {
 
@@ -334,13 +317,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(BaseResponseItem returnedObj) {
 			if (isPaused || getActivity() == null) {
 				return;
@@ -449,12 +425,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private class SaveCurrentGamesListUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(DailyCurrentGameData returnedObj) {
 			super.updateData(returnedObj);
 
@@ -463,12 +433,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	private class SaveFinishedGamesListUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
 
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
@@ -487,11 +451,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		public GamesCursorUpdateListener(int gameType) {
 			super();
 			this.gameType = gameType;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
 		}
 
 		@Override
@@ -573,12 +532,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		public DailyGamesUpdateListener() {
 			super(DailyGamesAllItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
 		}
 
 		@Override

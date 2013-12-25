@@ -5,4 +5,7 @@
 	<string name="unable_to_relogin">Unable to re-login</string>
 	<string name="notifications">Notifications</string>
 	<string name="challengeRejected">%s rejected challenge</string>
+	<string name="total_games">Total Games</string>
+	<string name="help_toast_for_daily_games">Pull Down To Update Games</string>
+	<string name="not_connected_yet">Not connected yet</string>
 </resources>

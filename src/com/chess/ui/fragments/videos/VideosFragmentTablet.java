@@ -185,11 +185,6 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(CommonFeedCategoryItem returnedObj) {
 			super.updateData(returnedObj);
 

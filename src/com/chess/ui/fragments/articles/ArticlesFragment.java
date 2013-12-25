@@ -41,7 +41,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 	private static final int LATEST_ARTICLES_CNT = 3;
 
-	private static final int LATEST_SECTION = 0;
+	private static final int RECENT_TOP_3_SECTION = 0;
 	private static final int CATEGORIES_SECTION = 1;
 
 	private ListView listView;
@@ -68,7 +68,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 		articlesViewedMap = new SparseBooleanArray();
 
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light,
-				new int[]{LATEST_SECTION, CATEGORIES_SECTION});
+				new int[]{RECENT_TOP_3_SECTION, CATEGORIES_SECTION});
 
 		articlesCursorAdapter = new ArticlesCursorAdapter(getActivity(), null, getImageFetcher());
 		articlesCursorAdapter.addViewedMap(articlesViewedMap);
@@ -119,7 +119,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 			}
 
 			// loading articles
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				updateData();
 			}
 
@@ -200,7 +200,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 		int section = sectionedAdapter.getCurrentSection(position);
 
-		if (section == LATEST_SECTION) {
+		if (section == RECENT_TOP_3_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			long articleId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 			getActivityFace().openFragment(ArticleDetailsFragment.createInstance(articleId));

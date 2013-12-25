@@ -63,7 +63,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 	private ChessBoardBaseView boardView;
-	protected View endGamePopupView;
 	protected String endGameMessage;
 	protected long gameId;
 	private View boardFrame;
@@ -77,6 +76,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	protected LinearLayout mopubAdLayout;
 	private MoPubView moPubBannerView;
+	protected LayoutInflater inflater;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -96,6 +96,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 		labelsConfig = new LabelsConfig();
 		imageDownloader = new ImageDownloaderToListener(getActivity());
+
+		inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
@@ -246,11 +248,11 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	@Override
 	public void onGameOver(String message, boolean need2Finish) {
 		endGameMessage = message;
-		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
 		if (!getBoardFace().isSubmit()) {
 
-			if (!AppUtils.isNeedToUpgrade(getActivity())) {
+			View endGamePopupView;
+			if (!isNeedToUpgrade()) {
 				endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
 			} else {
 				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);

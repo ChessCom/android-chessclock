@@ -151,6 +151,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			init();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
+			showToast(e.getMessage());
 			logTest(e.getMessage());
 		}
 		enableSlideMenus(false);
@@ -554,14 +555,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 
-	protected void showGameEndPopup(View layout, String title, String message) {
-		LiveChessService liveService;
-		try {
-			liveService = getLiveService();
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-			return;
-		}
+	protected void showGameEndPopup(View layout, String title, String message, Game game) {
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
 		TextView ratingTitleTxt = (TextView) layout.findViewById(R.id.ratingTitleTxt);
@@ -570,9 +564,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(message);
 
-		String liveUsername = liveService.getUsername();
-		Game game = liveService.getCurrentGame();
-
+		String liveUsername = getUsername();
 		int currentPlayerNewRating = game.getRatingForPlayer(liveUsername);
 		int ratingChange = game.getRatingChangeForPlayer(liveUsername);
 

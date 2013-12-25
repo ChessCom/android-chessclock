@@ -262,9 +262,6 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 	protected class SaveCourseListener extends ChessUpdateListener<LessonCourseItem.Data> {
 
-		@Override
-		public void showProgress(boolean show) {
-		}
 	}
 
 	protected void setAdapter(LessonsItemsAdapter lessonsItemsAdapter) {

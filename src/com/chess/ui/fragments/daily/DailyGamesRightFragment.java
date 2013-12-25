@@ -298,13 +298,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(BaseResponseItem returnedObj) {
 			switch (itemCode) {
 				case CHALLENGE:
@@ -416,12 +409,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private class SaveCurrentGamesListUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(DailyCurrentGameData returnedObj) {
 			super.updateData(returnedObj);
 
@@ -430,12 +417,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	}
 
 	private class SaveFinishedGamesListUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
 
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
@@ -454,12 +435,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 		public GamesCursorUpdateListener(int gameType) {
 			this.gameType = gameType;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
 		}
 
 		@Override
@@ -506,12 +481,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 		public DailyGamesUpdateListener() {
 			super(DailyChallengeItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
 		}
 
 		@Override

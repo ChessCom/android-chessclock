@@ -202,12 +202,6 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 	private class SaveCurrentGamesListUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(DailyCurrentGameData returnedObj) {
 			super.updateData(returnedObj);
 
@@ -216,12 +210,6 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 	}
 
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
 
 		@Override
 		public void updateData(Cursor returnedObj) {
@@ -247,11 +235,6 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 
 		public DailyGamesUpdateListener() {
 			super(DailyGamesAllItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
 		}
 
 		@Override

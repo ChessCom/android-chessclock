@@ -195,10 +195,6 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 	private class SaveArchiveGamesListUpdateListener extends ChessUpdateListener<LiveArchiveGameData> {
 
 		@Override
-		public void showProgress(boolean show) {
-		}
-
-		@Override
 		public void updateData(LiveArchiveGameData returnedObj) {
 			loadDbGames();
 		}
@@ -207,11 +203,6 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		public GamesCursorUpdateListener() {
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
 		}
 
 		@Override

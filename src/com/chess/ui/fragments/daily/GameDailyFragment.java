@@ -92,7 +92,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private GameDailyUpdatesListener createChallengeUpdateListener;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
 
-	private DailyCurrentGameData currentGame;
+	protected DailyCurrentGameData currentGame;
 
 	private IntentFilter boardUpdateFilter;
 	private IntentFilter newChatUpdateFilter;
@@ -573,6 +573,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		DbDataManager.saveDailyGame(getContentResolver(), currentGame, username);
 
 		if (getBoardFace().isFinished()) {
+			View endGamePopupView;
+			if (!isNeedToUpgrade()) {
+				endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
+			} else {
+				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
+			}
 			showGameEndPopup(endGamePopupView, endGameMessage);
 		} else {
 			int action = getAppData().getAfterMoveAction();

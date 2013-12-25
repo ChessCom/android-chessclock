@@ -384,13 +384,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(BaseResponseItem returnedObj) {
 			if (isPaused || getActivity() == null) {
 				return;
@@ -488,12 +481,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	private class SaveCurrentGamesListUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(DailyCurrentGameData returnedObj) {
 			super.updateData(returnedObj);
 
@@ -502,12 +489,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	}
 
 	private class SaveFinishedGamesListUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
 
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
@@ -526,11 +507,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		public GamesCursorUpdateListener(int gameType) {
 			super();
 			this.gameType = gameType;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
 		}
 
 		@Override
@@ -638,12 +614,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 		public DailyGamesUpdateListener() {
 			super(DailyGamesAllItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
 		}
 
 		@Override

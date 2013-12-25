@@ -203,11 +203,6 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-
-		}
-
-		@Override
 		public void updateListData(List<ArticleItem.Data> itemsList) {
 			for (ArticleItem.Data currentItem : itemsList) {
 				DbDataManager.saveArticleItem(getContentResolver(), currentItem, false);
@@ -228,7 +223,12 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	private void loadFromDb() {
-		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getArticlesListByCategory(selectedCategoryId));
+		Cursor cursor;
+		if (selectedCategoryId == 0) { // load all
+			cursor = DbDataManager.query(getContentResolver(), DbHelper.getAllArticlesList());
+		} else {
+			cursor = DbDataManager.query(getContentResolver(), DbHelper.getArticlesListByCategory(selectedCategoryId));
+		}
 		if (cursor != null && cursor.moveToFirst()) {
 			getAdapter().changeCursor(cursor);
 			if (paginationAdapter != null) {

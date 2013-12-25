@@ -186,12 +186,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 	private class SaveCurrentGamesListUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(DailyCurrentGameData returnedObj) {
 			super.updateData(returnedObj);
 
@@ -200,12 +194,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 	}
 
 	private class SaveFinishedGamesListUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
 
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
@@ -223,12 +211,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 
 		public GamesCursorUpdateListener(int gameType) {
 			this.gameType = gameType;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
 		}
 
 		@Override
@@ -285,12 +267,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 
 		public DailyGamesUpdateListener() {
 			super(DailyGamesAllItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
 		}
 
 		@Override

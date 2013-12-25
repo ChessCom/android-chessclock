@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.RadioGroup;
 import com.chess.R;
+import com.chess.db.DbDataManager;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,7 +23,8 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 	private View chatFragmentContainer;
 	private View chatBtn;
 
-	public GameDailyFragmentTablet() {}
+	public GameDailyFragmentTablet() {
+	}
 
 	public static GameDailyFragmentTablet createInstance(long gameId, String username) {
 		GameDailyFragmentTablet fragment = new GameDailyFragmentTablet();
@@ -67,6 +69,22 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 		showSubmitButtonsLay(false);
 
 		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId, username, false));
+	}
+
+	@Override
+	public void switch2Chat() {
+		if (currentGame == null) {
+			return;
+		}
+
+		// update game state in DB
+		currentGame.setHasNewMessage(false);
+		DbDataManager.saveDailyGame(getContentResolver(), currentGame, username);
+
+		currentGame.setHasNewMessage(false);
+		getControlsView().haveNewMessage(false);
+
+		topButtonsGroup.check(R.id.chatBtn);
 	}
 
 	@Override

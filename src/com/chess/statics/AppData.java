@@ -801,6 +801,13 @@ public class AppData {
 		return getBooleanValue(USER_INFO_SAVED, false);
 	}
 
+	public boolean isUserSawHelpForDaily() {
+		return getBooleanValue(USER_SAW_HELP_FOR_DAILY, false);
+	}
+
+	public void setUserSawHelpForDaily(boolean value) {
+		setBooleanValue(USER_SAW_HELP_FOR_DAILY, value);
+	}
 
 	/*--------------------------- Common Shared logic ------------------------*/
 

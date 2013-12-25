@@ -34,10 +34,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
+import com.chess.backend.entity.api.YourTurnItem;
 import com.chess.db.DbDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
-import com.chess.model.GameListCurrentItem;
 import com.chess.statics.AppData;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
@@ -93,7 +93,6 @@ public class AppUtils {
 	}
 
 	/**
-	 *
 	 * @param context te get packageName & {@code cacheDir} from internal storage
 	 * @return file for {@code cacheDir} either SD card or internal storage. Or {@code null} if cacheDir doesn't exist
 	 */
@@ -160,7 +159,7 @@ public class AppUtils {
 		final int buffer_size = 1024;
 		try {
 			byte[] bytes = new byte[buffer_size];
-			for (;;) {
+			for (; ; ) {
 				int count = is.read(bytes, 0, buffer_size);
 				if (count == -1)
 					break;
@@ -188,14 +187,15 @@ public class AppUtils {
 		return currentTimeMillis / 1000L;
 	}
 
-	public static class ListSelector implements Runnable{
+	public static class ListSelector implements Runnable {
 		private int pos;
 		private ListView listView;
 
-		public ListSelector(int pos, ListView listView){
+		public ListSelector(int pos, ListView listView) {
 			this.pos = pos;
 			this.listView = listView;
 		}
+
 		@Override
 		public void run() {
 			listView.setSelection(pos);
@@ -204,6 +204,7 @@ public class AppUtils {
 
 	/**
 	 * For QVGA screens we don't need a title bar and Action bar
+	 *
 	 * @param context
 	 * @return
 	 */
@@ -216,6 +217,7 @@ public class AppUtils {
 
 	/**
 	 * For mdpi normal screens we don't need a action bar only
+	 *
 	 * @param context
 	 * @return
 	 */
@@ -229,6 +231,7 @@ public class AppUtils {
 
 	/**
 	 * For mdpi normal screens we don't need a action bar only
+	 *
 	 * @param context
 	 * @return
 	 */
@@ -245,11 +248,12 @@ public class AppUtils {
 
 	/**
 	 * Check if device has software keys and height of screen need to be adjusted
+	 *
 	 * @return {@code true} if device has software keys like Nexus 4 or Galaxy Nexus
 	 */
-	public static boolean hasSoftKeys(Context context){
+	public static boolean hasSoftKeys(Context context) {
 		if (JELLYBEAN_1_PLUS_API) {
-			Display display = ((Activity)context).getWindowManager().getDefaultDisplay();
+			Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
 
 			DisplayMetrics realDisplayMetrics = new DisplayMetrics();
 			display.getRealMetrics(realDisplayMetrics);
@@ -269,7 +273,7 @@ public class AppUtils {
 		}
 	}
 
-	public static boolean isTablet(Context context){
+	public static boolean isTablet(Context context) {
 		boolean isTablet;
 		if (StaticData.USE_TABLETS) {
 			isTablet = AppUtils.is7InchTablet(context) || AppUtils.is10InchTablet(context);
@@ -278,11 +282,11 @@ public class AppUtils {
 	}
 
 	public static boolean is7InchTablet(Context context) {
-		return  context.getResources().getBoolean(R.bool.is_large_tablet);
+		return context.getResources().getBoolean(R.bool.is_large_tablet);
 	}
 
 	public static boolean is10InchTablet(Context context) {
-		return  context.getResources().getBoolean(R.bool.is_x_large_tablet);
+		return context.getResources().getBoolean(R.bool.is_x_large_tablet);
 	}
 
 	public static boolean inLandscape(Context context) {
@@ -309,12 +313,16 @@ public class AppUtils {
 		return playSoundsFlag;
 	}
 
-	public static void showNewMoveStatusNotification(Context context, String title,  String body, int id,
-													 GameListCurrentItem currentGameItem) {
+	public static void showNewMoveStatusNotification(Context context, List<YourTurnItem> yourTurnItems, int requestCode) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
+
+		int number = yourTurnItems.size();
+		YourTurnItem yourTurnItem = yourTurnItems.get(0);
 
 		Intent notifyIntent = new Intent(context, MainFragmentFaceActivity.class);
-		notifyIntent.putExtra(BaseGameItem.GAME_ID, currentGameItem.getGameId());
+		notifyIntent.putExtra(BaseGameItem.GAME_ID, yourTurnItem.getGameId());
+
 		notifyIntent.putExtra(IntentConstants.USER_MOVE_UPDATE, true);
 		// Creates an Intent for the Activity
 		if (DataHolder.getInstance().isMainActivityVisible()) {
@@ -324,21 +332,60 @@ public class AppUtils {
 		}
 
 		// Creates the PendingIntent
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, id, notifyIntent,
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, notifyIntent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
+		Bitmap bigImage;
 
-		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
-		notificationBuilder.setContentTitle(title)
-				.setContentText(body)
-				.setSmallIcon(R.drawable.ic_stat_chess)
-				.setAutoCancel(true);
+		if (number == 1) {
+			bigImage = ((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_stat_chess)).getBitmap();
+			String title = context.getString(R.string.your_move);
+			String body = context.getString(R.string.your_turn_in_game_with,
+					yourTurnItem.getOpponent(),
+					yourTurnItem.getLastMove());
+
+			notificationBuilder.setContentTitle(title)
+					.setContentText(body)
+					.setSmallIcon(R.drawable.ic_stat_chess)
+					.setLargeIcon(bigImage)
+					.setNumber(number)
+					.setPriority(NotificationCompat.PRIORITY_HIGH)
+					.setAutoCancel(true);
+		} else {
+			bigImage = ((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_stat_notification_big_many)).getBitmap();
+			String title = context.getString(R.string.your_move);
+			String content = context.getString(R.string.total_games);
+
+			NotificationCompat.InboxStyle inboxStyle =	new NotificationCompat. InboxStyle();
+			// Sets a title for the Inbox style big view
+			inboxStyle.setBigContentTitle(title);
+			// Moves events into the big view
+			for (YourTurnItem turnItem : yourTurnItems) {
+				String body = context.getString(R.string.your_turn_in_game_with,
+						turnItem.getOpponent(),
+						turnItem.getLastMove());
+				inboxStyle.addLine(body);
+			}
+			inboxStyle.setSummaryText(content);
+
+			// Moves the big view style object into the notification object.
+			notificationBuilder.setStyle(inboxStyle);
+
+			notificationBuilder.setContentTitle(title)
+					.setSmallIcon(R.drawable.ic_stat_chess)
+					.setContentText(content)
+					.setLargeIcon(bigImage)
+					.setNumber(number)
+					.setPriority(NotificationCompat.PRIORITY_HIGH)
+					.setAutoCancel(true);
+		}
+
 		// Puts the PendingIntent into the notification builder
 		notificationBuilder.setContentIntent(pendingIntent);
 
-		notifyManager.notify((int) currentGameItem.getGameId(), notificationBuilder.build());
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
 	}
 
-	public static void showStatusBarNotification(Context context, String title,  String body) {
+	public static void showStatusBarNotification(Context context, String title, String body) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notifyManager.cancelAll(); // clear all previous notifications
 
@@ -351,18 +398,19 @@ public class AppUtils {
 
 		notification.setLatestEventInfo(context, title, body, contentIntent);
 
-		notifyManager.notify(R.id.menu_notifications, notification);
+		notifyManager.notify(R.id.notification_message, notification);
 	}
 
 	/**
 	 * Use default android.util.Log with Flag trigger
 	 * Use this method to track changes, but avoid to use in uncertain cases,
 	 * where release version can tell where some bugs were born
+	 *
 	 * @param tag
 	 * @param message
 	 */
-	public static void logD(String tag, String message){
-		if(ENABLE_LOG) // can be set false for release version.
+	public static void logD(String tag, String message) {
+		if (ENABLE_LOG) // can be set false for release version.
 			Log.d(tag, message);
 	}
 
@@ -395,16 +443,16 @@ public class AppUtils {
 		notifyManager.cancelAll();
 	}
 
-	public static void cancelNotification(Context context, int id){
+	public static void cancelNotification(Context context, int id) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notifyManager.cancel(id);
 	}
 
-	public static boolean isNeedToUpgrade(Context context){
+	public static boolean isNeedToUpgrade(Context context) {
 		return new AppData(context).getUserPremiumStatus() < StaticData.GOLD_USER;
 	}
 
-	public static boolean isNeedToUpgradePremium(Context context){
+	public static boolean isNeedToUpgradePremium(Context context) {
 		return new AppData(context).getUserPremiumStatus() < StaticData.DIAMOND_USER;
 	}
 
@@ -423,9 +471,9 @@ public class AppUtils {
 	}
 
 	public static String getTimeLeftFromSeconds(long duration, Context context) {
-		long minutes = duration /60%60;
-		long hours = duration /3600%24;
-		long days = duration /86400;
+		long minutes = duration / 60 % 60;
+		long hours = duration / 3600 % 24;
+		long days = duration / 86400;
 		StringBuilder sb = new StringBuilder();
 
 		if (days > 0) {
@@ -444,12 +492,12 @@ public class AppUtils {
 	}
 
 	public static String getMomentsAgoFromSeconds(long lastStamp, Context context) {
-		long current = System.currentTimeMillis()/ 1000L;
+		long current = System.currentTimeMillis() / 1000L;
 		long difference = current - lastStamp;
-		long minutes = difference /60%60;
-		long hours = difference /3600%24;
-		long days = difference /86400;
-		long months = difference /2592000;
+		long minutes = difference / 60 % 60;
+		long hours = difference / 3600 % 24;
+		long days = difference / 86400;
+		long months = difference / 2592000;
 		StringBuilder sb = new StringBuilder();
 
 		if (months > 0) {
@@ -487,29 +535,29 @@ public class AppUtils {
 	}
 
 	public static String getSecondsTimeFromSecondsStr(long duration) {
-		long seconds = duration %60;
-		long minutes = duration /60%60;
-		long hours = duration /3600%24;
-		long days = duration /86400;
+		long seconds = duration % 60;
+		long minutes = duration / 60 % 60;
+		long hours = duration / 3600 % 24;
+		long days = duration / 86400;
 		StringBuilder sb = new StringBuilder();
 
 		if (days > 0) {
-            sb.append(days).append(Symbol.COLON);
-        }
+			sb.append(days).append(Symbol.COLON);
+		}
 
 		if (hours > 0) {
 			sb.append(hours).append(Symbol.COLON);
 		}
 
-        if (minutes < 10 && sb.length() > 0) {
-            sb.append(0);
-        }
-        sb.append(minutes).append(Symbol.COLON);
+		if (minutes < 10 && sb.length() > 0) {
+			sb.append(0);
+		}
+		sb.append(minutes).append(Symbol.COLON);
 
-        if (seconds < 10) {
-            sb.append(0);
-        }
-        sb.append(seconds);
+		if (seconds < 10) {
+			sb.append(0);
+		}
+		sb.append(seconds);
 
 		return sb.toString();
 	}
@@ -564,13 +612,14 @@ public class AppUtils {
 		public String APP_VERSION_NAME = Symbol.EMPTY;
 		public int APP_VERSION_CODE = 0;
 		public String android_id;
+
 		/*
 		 * Get information about device model, App version and API version
 		 */
 		public DeviceInfo getDeviceInfo(Context context) {
 			DeviceInfo deviceInfo = new DeviceInfo();
 
-			deviceInfo.android_id =  Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+			deviceInfo.android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 
 
 			deviceInfo.MODEL = Build.MODEL;
@@ -612,22 +661,22 @@ public class AppUtils {
 		return out.toString();
 	}
 
-	public static void showKeyBoard(Context context, EditText view){
+	public static void showKeyBoard(Context context, EditText view) {
 		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.showSoftInput(view, 0 );
+		imm.showSoftInput(view, 0);
 	}
 
-//	public static void showKeyBoard(Context context, EditText editText){
+	//	public static void showKeyBoard(Context context, EditText editText){
 //		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 //		imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
 //	}
 //
-	public static void hideKeyBoard(Context context, View editText){
+	public static void hideKeyBoard(Context context, View editText) {
 		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
 
-	public static List<String> convertArrayToList(String[] array){
+	public static List<String> convertArrayToList(String[] array) {
 		List<String> items = new ArrayList<String>();
 		items.addAll(Arrays.asList(array));
 		return items;
@@ -637,19 +686,18 @@ public class AppUtils {
 	 * Given either a Spannable String or a regular String and a token, apply
 	 * the given CharacterStyle to the span between the tokens, and also
 	 * remove tokens.
-	 * <p>
+	 * <p/>
 	 * For example, {@code setSpanBetweenTokens("Hello ##world##!", "##",
-	 * new ForegroundColorSpan(0xFFFF0000));} will return a CharSequence
+	 *new ForegroundColorSpan(0xFFFF0000));} will return a CharSequence
 	 * {@code "Hello world!"} with {@code world} in red.
 	 *
-	 * @param text The text, with the tokens, to adjust.
+	 * @param text  The text, with the tokens, to adjust.
 	 * @param token The token string; there should be at least two instances
-	 *             of token in text.
-	 * @param cs The style to apply to the CharSequence. WARNING: You cannot
-	 *            send the same two instances of this parameter, otherwise
-	 *            the second call will remove the original span.
+	 *              of token in text.
+	 * @param cs    The style to apply to the CharSequence. WARNING: You cannot
+	 *              send the same two instances of this parameter, otherwise
+	 *              the second call will remove the original span.
 	 * @return A Spannable CharSequence with the new style applied.
-	 *
 	 * @see {@link <a>http://developer.android.com/reference/android/text/style/CharacterStyle.html</a> }
 	 */
 	public static CharSequence setSpanBetweenTokens(CharSequence text, String token, CharacterStyle... cs) {
@@ -658,8 +706,7 @@ public class AppUtils {
 		int start = text.toString().indexOf(token) + tokenLen;
 		int end = text.toString().indexOf(token, start);
 
-		if (start > -1 && end > -1)
-		{
+		if (start > -1 && end > -1) {
 			// Copy the spannable string to a mutable spannable string
 			SpannableStringBuilder ssb = new SpannableStringBuilder(text);
 			for (CharacterStyle c : cs)
@@ -715,7 +762,7 @@ public class AppUtils {
 	}
 
 	public static int[] getValidThemeBackIds() {
-		return new int[] {
+		return new int[]{
 				R.drawable.img_theme_green_felt
 //				,
 //				R.drawable.img_theme_dueling_tigers
@@ -729,10 +776,10 @@ public class AppUtils {
 		};
 	}
 
-	public static boolean isThemeBackIdValid(int backId){
+	public static boolean isThemeBackIdValid(int backId) {
 		int[] validThemeBackIds = getValidThemeBackIds();
 		for (int validThemeBackId : validThemeBackIds) {
-			if (validThemeBackId == backId){
+			if (validThemeBackId == backId) {
 				return true;
 			}
 		}
@@ -747,27 +794,30 @@ public class AppUtils {
 	public static void printTableContent(Cursor cursor, String tableName) {
 		if (cursor.moveToFirst()) {
 			Log.d("TABLE", "____________" + tableName + "_______________");
-			do{
+			do {
 				int columnCount = cursor.getColumnCount();
 				StringBuilder builder = new StringBuilder();
 
-				for(int i=0; i <= columnCount; i++) {
+				for (int i = 0; i <= columnCount; i++) {
 					switch (cursor.getType(i)) {
 						case Cursor.FIELD_TYPE_INTEGER: {
 							builder.append(cursor.getColumnName(i)).append(DbDataManager.EQUALS_).append(cursor.getInt(i)).append(Symbol.SPACE);
-						} break;
+						}
+						break;
 						case Cursor.FIELD_TYPE_STRING: {
 							builder.append(cursor.getColumnName(i)).append(DbDataManager.EQUALS_).append(cursor.getString(i)).append(Symbol.SPACE);
-						} break;
+						}
+						break;
 					}
 				}
 				Log.d("TABLE", builder.toString());
 
-			}while(cursor.moveToNext());
+			} while (cursor.moveToNext());
 		}
 	}
 
 	public static final String DEFAULT_COUNTRY = "United States";
+
 	public static String getCountryIdByName(String[] countryNames, int[] countryCodes, int userCountryId) {
 		for (int i = 0; i < countryCodes.length; i++) {
 			int countryCode = countryCodes[i];
@@ -778,24 +828,24 @@ public class AppUtils {
 		return DEFAULT_COUNTRY;
 	}
 
-	 public static Bitmap getBitmapFromView(View view, int width, int height) {
-		 view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-				 View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
-		 view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+	public static Bitmap getBitmapFromView(View view, int width, int height) {
+		view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+				View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
+		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
 
-		 // Build the Drawing Cache
-		 view.buildDrawingCache();
+		// Build the Drawing Cache
+		view.buildDrawingCache();
 
-		 // Create Bitmap
-		 Bitmap drawingCache = view.getDrawingCache();
-		 if (drawingCache == null) {
-			 return null;
-		 }
+		// Create Bitmap
+		Bitmap drawingCache = view.getDrawingCache();
+		if (drawingCache == null) {
+			return null;
+		}
 
-		 Bitmap bitmap = Bitmap.createBitmap(drawingCache);
-		 drawingCache.recycle();
-		 view.setDrawingCacheEnabled(false);
-		 return bitmap;
+		Bitmap bitmap = Bitmap.createBitmap(drawingCache);
+		drawingCache.recycle();
+		view.setDrawingCacheEnabled(false);
+		return bitmap;
 	}
 
 /*	public static Bitmap getBitmapFromView(View view, int width, int height) {

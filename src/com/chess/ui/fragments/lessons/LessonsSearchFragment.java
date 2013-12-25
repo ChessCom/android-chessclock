@@ -213,10 +213,6 @@ public class LessonsSearchFragment extends BaseSearchFragment implements Adapter
 	private class SaveLessonsUpdateListener extends ChessUpdateListener<LessonSingleItem> {
 
 		@Override
-		public void showProgress(boolean show) {
-		}
-
-		@Override
 		public void updateData(LessonSingleItem returnedObj) {
 			super.updateData(returnedObj);
 

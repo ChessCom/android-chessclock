@@ -11,7 +11,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.EditText;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
@@ -30,14 +29,9 @@ import com.chess.utilities.AppUtils;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
-import com.facebook.model.GraphUser;
-import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 import static com.chess.statics.AppConstants.LIVE_SESSION_ID;
@@ -54,12 +48,9 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	private static final int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
 	private static final int SIGNIN_CALLBACK_CODE = 16;
-	protected static final long FACEBOOK_DELAY = 200;
+
 	private static final int MIN_USERNAME_LENGTH = 3;
 	private static final int MAX_USERNAME_LENGTH = 20;
-
-	protected static final int REQUEST_REGISTER = 11;
-	private static final int REQUEST_UNREGISTER = 22;
 
 	private LoginUpdateListener loginUpdateListener;
 	private int loginReturnCode;
@@ -67,15 +58,13 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	private String currentLocale;
 
 	protected Handler handler;
-	private EditText loginUsernameEdt;
-	private EditText passwordEdt;
 	protected boolean isRestarted;
 	private AppData appData;
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
 	private UiLifecycleHelper facebookUiHelper;
-	private boolean facebookActive;
 	protected boolean isTablet;
+	private CommonLogicActivity.GcmRegisterUpdateListener gcmRegisterUpdateListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +86,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		facebookUiHelper = new UiLifecycleHelper(this, callback);
 		facebookUiHelper.onCreate(savedInstanceState);
+
+		gcmRegisterUpdateListener = new GcmRegisterUpdateListener();
 	}
 
 	protected AppData getAppData() {
@@ -109,26 +100,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected String getCurrentUserToken() {
 		return getAppData().getUserToken();
-	}
-
-	protected void facebookInit(LoginButton fbLoginBtn) {
-		if (fbLoginBtn != null) {
-			facebookActive = true;
-
-			// logout from facebook
-			Session facebookSession = Session.getActiveSession();
-			if (facebookSession != null) {
-				facebookSession.closeAndClearTokenInformation();
-				Session.setActiveSession(null);
-			}
-
-			fbLoginBtn.setReadPermissions(Arrays.asList("user_status", "email"));
-			fbLoginBtn.setUserInfoChangedCallback(new LoginButton.UserInfoChangedCallback() {
-				@Override
-				public void onUserInfoFetched(GraphUser user) {
-				}
-			});
-		}
 	}
 
 	@Override
@@ -150,21 +121,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (facebookActive) {
-			facebookUiHelper.onResume();
-		}
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		if (facebookActive) {
-			facebookUiHelper.onPause();
-		}
-	}
 
 	@Override
 	protected void onStop() {
@@ -174,13 +130,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		isRestarted = false;
 	}
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if (facebookActive) {
-			facebookUiHelper.onSaveInstanceState(outState);
-		}
-	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -193,9 +142,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			}
 		}
 
-		if (facebookActive) {
-			facebookUiHelper.onActivityResult(requestCode, resultCode, data);
-		}
 	}
 
 	@Override
@@ -230,21 +176,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		startActivity(intent);
 	}
 
-	protected List<String> getItemsFromEntries(int entries) {
-		String[] array = getResources().getStringArray(entries);
-		return getItemsFromArray(array);
-	}
-
-	protected List<String> getItemsFromArray(String[] array) {
-		List<String> items = new ArrayList<String>();
-		items.addAll(Arrays.asList(array));
-		return items;
-	}
-
 	protected void registerGcmService() {
-		if (!appData.isNotificationsEnabled()) { // no need to register if user turned off notifications
-			return;
-		}
 		/* When an application is updated, it should invalidate its existing registration ID.
 		The best way to achieve this validation is by storing the current
 		 application version when a registration ID is stored.
@@ -258,7 +190,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			// Automatically registers application on startup.
 			GCMRegistrar.register(this, GcmHelper.SENDER_ID);
 		} else {
-			// Device is already registered on GCM, check server.
+			// Device is already registered on GCM, check our server.
 			if (GCMRegistrar.isRegisteredOnServer(this) && appData.isRegisterOnChessGCM()) {
 				// Skips registration.
 			} else {
@@ -272,45 +204,28 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
-				new RequestJsonTask<GcmItem>(new GcmRegisterUpdateListener(REQUEST_REGISTER)).execute(loadItem);
+				new RequestJsonTask<GcmItem>(gcmRegisterUpdateListener).execute(loadItem);
 			}
 		}
 	}
 
-	protected void unRegisterGcmService() {
-		// save token to unregister from server
-		preferencesEditor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, appData.getUserToken());
-		preferencesEditor.commit();
-		GCMRegistrar.unregister(this);
+	protected void unRegisterGcmService() { // We should not unregister manually http://developer.android.com/google/gcm/adv.html#unreg
+//		// save token to unregister from server
+//		preferencesEditor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, appData.getUserToken());
+//		preferencesEditor.commit();
+//		GCMRegistrar.unregister(this);
 	}
 
 	protected class GcmRegisterUpdateListener extends AbstractUpdateListener<GcmItem> {
-		private int requestCode;
 
-		public GcmRegisterUpdateListener(int requestCode) {
+		public GcmRegisterUpdateListener() {
 			super(CommonLogicActivity.this, GcmItem.class);
-			this.requestCode = requestCode;
 		}
 
 		@Override
-		public void updateData(GcmItem returnedObj) {   // TODO invent exponential leap
-
-			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
-				switch (requestCode) {
-					case GcmHelper.REQUEST_REGISTER:
-						GCMRegistrar.setRegisteredOnServer(getContext(), true);
-						appData.registerOnChessGCM(appData.getUserToken());
-						break;
-					case GcmHelper.REQUEST_UNREGISTER:
-						GCMRegistrar.setRegisteredOnServer(getContext(), false);
-						appData.unRegisterOnChessGCM();
-						// remove saved token
-						SharedPreferences.Editor editor = preferences.edit();
-						editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, Symbol.EMPTY);
-						editor.commit();
-						break;
-				}
-			}
+		public void updateData(GcmItem returnedObj) {
+			GCMRegistrar.setRegisteredOnServer(getContext(), true);
+			appData.registerOnChessGCM(appData.getUserToken());
 		}
 
 		@Override
@@ -330,47 +245,39 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 	}
 
-	protected void setLoginFields(EditText passedUsernameEdt, EditText passedPasswordEdt) {
-		this.loginUsernameEdt = passedUsernameEdt;
-		this.passwordEdt = passedPasswordEdt;
-	}
-
-	protected void signInUser() {
-		String username = getTextFromField(loginUsernameEdt);
-		if (username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH) {
-			loginUsernameEdt.setError(getString(R.string.validateUsername));
-			loginUsernameEdt.requestFocus();
-			return;
-		}
-
-		String pass = getTextFromField(passwordEdt);
-		if (pass.length() == 0) {
-			passwordEdt.setError(getString(R.string.password_cant_be_empty));
-			passwordEdt.requestFocus();
-			return;
-		}
-
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
-		loadItem.setRequestMethod(RestHelper.POST);
-		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, username);
-		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
-
-		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
-
-		loginReturnCode = SIGNIN_CALLBACK_CODE;
-	}
+//	protected void signInUser() {
+//		String username = getTextFromField(loginUsernameEdt);
+//		if (username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH) {
+//			loginUsernameEdt.setError(getString(R.string.validateUsername));
+//			loginUsernameEdt.requestFocus();
+//			return;
+//		}
+//
+//		String pass = getTextFromField(passwordEdt);
+//		if (pass.length() == 0) {
+//			passwordEdt.setError(getString(R.string.password_cant_be_empty));
+//			passwordEdt.requestFocus();
+//			return;
+//		}
+//
+//		LoadItem loadItem = new LoadItem();
+//		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
+//		loadItem.setRequestMethod(RestHelper.POST);
+//		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
+//		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, username);
+//		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
+//		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
+//		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
+//
+//		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
+//
+//		loginReturnCode = SIGNIN_CALLBACK_CODE;
+//	}
 
 	protected String getDeviceId() {
 		String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
 		deviceId = ImageCache.hashKeyForDisk(deviceId);
-//			while ((deviceId != null ? deviceId.length() : 0) < 32) { // 32 length is requirement for deviceId parameter
-//				deviceId += deviceId;
-//			}
 		return deviceId.substring(0, 32);
 	}
 
@@ -420,12 +327,12 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				switch (serverCode) {
 					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
-						if (passwordEdt != null) {
-							passwordEdt.setError(getResources().getString(R.string.invalid_username_or_password));
-							passwordEdt.requestFocus();
-						} else {
+//						if (passwordEdt != null) {
+//							passwordEdt.setError(getResources().getString(R.string.invalid_username_or_password));
+//							passwordEdt.requestFocus();
+//						} else {
 							showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
-						}
+//						}
 						getAppData().setPassword(Symbol.EMPTY);
 						break;
 					case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
@@ -447,7 +354,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
-			Log.d("TEST", " session callback session = " + session + " state = " + state);
 			onSessionStateChange(session, state, exception);
 		}
 	};
@@ -473,9 +379,9 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	}
 
 	protected void processLogin(RegisterItem.Data returnedObj) {
-		if (TextUtils.isEmpty(getTextFromField(passwordEdt))) {
-			preferencesEditor.putString(AppConstants.PASSWORD, getTextFromField(passwordEdt));
-		}
+//		if (TextUtils.isEmpty(getTextFromField(passwordEdt))) {
+//			preferencesEditor.putString(AppConstants.PASSWORD, getTextFromField(passwordEdt));
+//		}
 
 		preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLoginToken());
 		preferencesEditor.commit();
@@ -500,7 +406,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		if (tag.equals(NETWORK_CHECK_TAG)) {
 			startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), NETWORK_REQUEST);
-		} else if (tag.equals(CHESS_NO_ACCOUNT_TAG)) {
+		} else if (tag.equals(CHESS_NO_ACCOUNT_TAG)) { // TODO add logic to lead to register screen
 //			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.getInstance().REGISTER_HTML)));
 		}
 		super.onPositiveBtnClick(fragment);

@@ -43,6 +43,7 @@ public class AppConstants {
 	public static final String USER_PREMIUM_SKU = "premium_sku";
 	public static final String USER_INFO_SAVED = "user_info_saved";
 	public static final String USER_CREATE_DATE = "user_create_date";
+	public static final String USER_SAW_HELP_FOR_DAILY = "user_saw_help_for_daily";
 
 	/* Board and Game Preferences */
 	public static final String PREF_SOUNDS = "enable sounds_"; // change field name to avoid class cast exceptions

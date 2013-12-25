@@ -169,6 +169,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			showActionBar = savedInstanceState.getBoolean(SHOW_ACTION_BAR);
 		}
 
+		handleOpenDailyGames(intent);
+	}
+
+	private void handleOpenDailyGames(Intent intent) {
 		if (intent != null && intent.hasExtra(IntentConstants.USER_MOVE_UPDATE)) {
 			long gameId = intent.getLongExtra(BaseGameItem.GAME_ID, 0);
 			if (gameId != 0) {
@@ -210,9 +214,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 
 		if (intent.hasExtra(IntentConstants.LIVE_CHESS)) {
-
-
-			GameLiveFragment gameLiveFragment = getGameLiveFragment();
+			GameLiveFragment gameLiveFragment = getLiveFragment();
 			if (gameLiveFragment != null) {
 				openFragment(gameLiveFragment);
 				return;
@@ -228,6 +230,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 			openFragment(fragmentByTag);
 		}
+
+		handleOpenDailyGames(intent);
 	}
 
 	@Override

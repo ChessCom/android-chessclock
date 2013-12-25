@@ -316,7 +316,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameTypeStr);
 		loadItem.addRequestParams(RestHelper.P_VIEW_USERNAME, username);
-		loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimestamp * 1000);
+		loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimestamp);
 
 		new RequestJsonTask<GameStatsItem>(statsItemUpdateListener).executeTask(loadItem);
 	}
@@ -389,7 +389,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 				Cursor cursor = DbDataManager.query(getContentResolver(), params);
 
 				if (cursor != null && cursor.moveToFirst()) {
-					List<long[]> series = new ArrayList<long[]>();
+					final List<long[]> series = new ArrayList<long[]>();
 					do {
 						long timestamp = DbDataManager.getLong(cursor, DbScheme.V_TIMESTAMP) * 1000;
 						int rating = DbDataManager.getInt(cursor, DbScheme.V_RATING);
@@ -398,7 +398,16 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 						series.add(point);
 					} while (cursor.moveToNext());
 
-					ratingGraphView.setGraphData(series, getView().getWidth());
+					if (getView().getWidth() == 0) {
+						handler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								ratingGraphView.setGraphData(series, getView().getWidth());
+							}
+						}, VIEW_UPDATE_DELAY);
+					} else {
+						ratingGraphView.setGraphData(series, getView().getWidth());
+					}
 				}
 			}
 

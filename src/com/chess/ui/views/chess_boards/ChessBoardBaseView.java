@@ -1238,7 +1238,11 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				// perform recycle
 				recycleBoardBitmap();
 
-				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
+				try{
+					boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
+				} catch (OutOfMemoryError ignore) {
+
+				}
 				if (boardBitmap == null) {
 					getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme
 					boardBackPaint.setShader(setBoardFromResource());

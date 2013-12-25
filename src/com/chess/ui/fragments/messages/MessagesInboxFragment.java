@@ -188,10 +188,6 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	private class ConversationsUpdateListener extends ChessUpdateListener<ConversationItem.Data> {
 
 		@Override
-		public void showProgress(boolean show) {
-		}
-
-		@Override
 		public void updateListData(List<ConversationItem.Data> itemsList) {
 			super.updateListData(itemsList);
 
@@ -208,10 +204,6 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	private class SaveConversationsListener extends ChessUpdateListener<ConversationItem.Data> {
 
 		@Override
-		public void showProgress(boolean show) {
-		}
-
-		@Override
 		public void updateData(ConversationItem.Data returnedObj) {
 			super.updateData(returnedObj);
 
@@ -220,10 +212,6 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	}
 
 	private class ConversationCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		@Override
-		public void showProgress(boolean show) {
-		}
 
 		@Override
 		public void updateData(Cursor returnedObj) {

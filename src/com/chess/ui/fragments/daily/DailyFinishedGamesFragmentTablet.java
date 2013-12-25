@@ -227,12 +227,6 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 	private class SaveFinishedGamesListUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
 			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
 					DbHelper.getDailyFinishedListGames(username),
@@ -244,11 +238,6 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 
 		public GamesCursorUpdateListener() {
 			super();
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
 		}
 
 		@Override
@@ -277,12 +266,6 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 
 		public DailyGamesUpdateListener() {
 			super(DailyGamesAllItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
 		}
 
 		@Override

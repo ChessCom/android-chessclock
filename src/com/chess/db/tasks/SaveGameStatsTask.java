@@ -128,7 +128,7 @@ public class SaveGameStatsTask extends AbstractUpdateTask<GameStatsItem.Data, Lo
 			ContentValues values = new ContentValues();
 
 			values.put(V_USER, username);
-			values.put(V_TIMESTAMP, timestamp / 1000);
+			values.put(V_TIMESTAMP, timestamp);
 			values.put(V_MIN_Y, minY);
 			values.put(V_MAX_X, maxX);
 			values.put(V_RATING, graphPoints[ChartView.VALUE]);

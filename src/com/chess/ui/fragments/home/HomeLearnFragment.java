@@ -24,6 +24,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.lessons.GameLessonFragment;
@@ -225,7 +226,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 			todaysAttemptsValueTxt.setText(String.valueOf(tacticsTodaysAttempts));
 			avgScoreValueTxt.setText(String.valueOf(todaysAverageScore) + Symbol.PERCENT);
 
-			if (!isNeedToUpgrade()) {
+			if (getAppData().getUserPremiumStatus() > StaticData.GOLD_USER) {
 				// Load lessons ratings
 				LoadItem loadItem = LoadHelper.getLessonsRating(getUserToken());
 				new RequestJsonTask<LessonsRatingItem>(lessonsRatingUpdateListener).executeTask(loadItem);

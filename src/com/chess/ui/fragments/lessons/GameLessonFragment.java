@@ -516,7 +516,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			saveLessonInfo();
 
 			// Update server with whole lesson scores
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				submitCorrectSolution();
 			}
 
@@ -580,20 +580,25 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public void showHint() {
-		if (usedHints < YourMoveDrawable.MAX_HINTS) {
+		String hint = Symbol.EMPTY;
+		if (hintToShow == 0) {
+			hint = getMentorPosition().getAdvice1();
+		} else if (hintToShow == 1) {
+			hint = getMentorPosition().getAdvice2();
+		} else if (hintToShow == 2) {
+			hint = getMentorPosition().getAdvice3();
+		}
+
+		if (usedHints < YourMoveDrawable.MAX_HINTS && !TextUtils.isEmpty(hint)) {
 			hintToShow = ++usedHints;
 			getCurrentCompleteItem().usedHints = usedHints;
 		} else {
-			hintToShow = hintToShow > 2 ? 1 : ++hintToShow;
+			hintToShow = hintToShow > 1 ? 0 : ++hintToShow;
 		}
 
-		String hint = Symbol.EMPTY;
-		if (hintToShow == 1) {
-			hint = getMentorPosition().getAdvice1();
-		} else if (hintToShow == 2) {
-			hint = getMentorPosition().getAdvice2();
-		} else if (hintToShow == 3) {
-			hint = getMentorPosition().getAdvice3();
+		if (TextUtils.isEmpty(hint)) {
+			showToast(R.string.no_hint);
+			return;
 		}
 
 		String hintNumberStr = getString(R.string.hint_arg, hintToShow);
@@ -937,7 +942,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 //			TextView lessonRatingChangeTxt = (TextView) popupView.findViewById(R.id.lessonRatingChangeTxt);
 
 			float pointsForLesson = 0;
-			if (!lessonItem.isLessonCompleted()) {
+			if (!lessonItem.isLessonCompleted()) { // For completed lesson ratingChange is null
 				pointsForLesson = ratingChange.getChange();
 				updatedUserRating += pointsForLesson;
 			}
@@ -953,7 +958,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				lessonItem.setLessonCompleted(true);
 			}
 
-//			PopupItem popupItem = new PopupItem();
+//			PopupItem popupItem = new PopupItem();   // TODO check popup for completed Course
 //			popupItem.setCustomView(popupView);
 
 //			completedPopupFragment = PopupCustomViewFragment.createInstance(popupItem);

@@ -149,11 +149,19 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			return;
 		}
 
-		if (liveItem.iconId == R.string.ic_binoculars) {
+		if (liveItem.iconId == R.string.ic_binoculars) {  // Top Game
 			if (!isLCSBound) {
-				showToast("Not connected yet");
+				showToast(R.string.not_connected_yet);
 				return;
 			}
+			try { // check for valid data
+				 getLiveService();
+			} catch (DataNotValidException e) {
+				e.printStackTrace();
+				showToast(R.string.not_connected_yet);
+				return;
+			}
+
 			Fragment fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
 			if (fragmentByTag == null) {
 				fragmentByTag = new GameLiveObserveFragment();

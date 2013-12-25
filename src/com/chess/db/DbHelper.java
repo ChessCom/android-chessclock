@@ -178,7 +178,14 @@ public class DbHelper {
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_CATEGORY_ID);
 		queryParams.setArguments(new String[]{String.valueOf(categoryId)});
-		queryParams.setOrder(DbScheme.V_TITLE);
+		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.DESCEND);
+		return queryParams;
+	}
+
+	public static QueryParams getAllArticlesList() {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.ARTICLES.ordinal()]);
+		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.DESCEND);
 		return queryParams;
 	}
 

@@ -539,8 +539,26 @@ public class PullToRefreshAttacher implements View.OnTouchListener {
 		}
 	}
 
+	void showHeaderLine() {
+		if (mHeaderTransformer.showHeaderLine()) {
+			if (mHeaderViewListener != null) {
+				mHeaderViewListener.onStateChanged(mHeaderView,
+						HeaderViewListener.STATE_VISIBLE);
+			}
+		}
+	}
+
 	void hideHeaderView() {
 		if (mHeaderTransformer.hideHeaderView()) {
+			if (mHeaderViewListener != null) {
+				mHeaderViewListener.onStateChanged(mHeaderView,
+						HeaderViewListener.STATE_HIDDEN);
+			}
+		}
+	}
+
+	void hideHeaderLine() {
+		if (mHeaderTransformer.hideHeaderLine()) {
 			if (mHeaderViewListener != null) {
 				mHeaderViewListener.onStateChanged(mHeaderView,
 						HeaderViewListener.STATE_HIDDEN);
@@ -567,10 +585,40 @@ public class PullToRefreshAttacher implements View.OnTouchListener {
 	}
 
 	public void showProgress(boolean refreshing) {
-		if (refreshing) {
-			mHeaderTransformer.onRefreshStarted();
+		if (mIsRefreshing == refreshing) {
+			return;
+		}
+		mIsRefreshing = refreshing;
+
+		resetTouch();
+
+		if (mIsRefreshing) {
+			startRefreshLine();
 		} else {
-			mHeaderTransformer.onReleaseToRefresh();
+			// Update isRefreshing state
+			mIsRefreshing = false;
+
+			// Hide Header View
+			hideHeaderLine();
+		}
+	}
+
+	private void startRefreshLine() {
+		// Update isRefreshing state
+		mIsRefreshing = true;
+
+		// Call OnRefreshListener if this call has originated from a touch event
+
+		// Call Transformer
+		mHeaderTransformer.onRefreshStarted();
+
+		// Show Header View
+		showHeaderLine();
+
+		mHeaderTransformer.onRefreshMinimized();
+
+		if (mHeaderViewListener != null) {
+			mHeaderViewListener.onStateChanged(mHeaderView, HeaderViewListener.STATE_MINIMIZED);
 		}
 	}
 
@@ -785,12 +833,16 @@ public class PullToRefreshAttacher implements View.OnTouchListener {
 		 */
 		public abstract boolean showHeaderView();
 
+		public abstract boolean showHeaderLine();
+
 		/**
 		 * Called when the Header View should be made invisible, usually with an animation.
 		 *
 		 * @return true if the visibility has changed.
 		 */
 		public abstract boolean hideHeaderView();
+
+		public abstract boolean hideHeaderLine();
 
 		/**
 		 * Called when the Activity's configuration has changed.

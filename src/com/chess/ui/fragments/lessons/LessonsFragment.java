@@ -258,11 +258,6 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(CommonFeedCategoryItem returnedObj) {
 			super.updateData(returnedObj);
 
@@ -326,11 +321,6 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 	private class LessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseListItem> {
 		public LessonsCoursesUpdateListener() {
 			super(LessonCourseListItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
 		}
 
 		@Override
@@ -638,11 +628,6 @@ id: 1,name: "Misc"
 
 		private LessonsRatingUpdateListener() {
 			super(LessonsRatingItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			// don't show any progress
 		}
 
 		@Override

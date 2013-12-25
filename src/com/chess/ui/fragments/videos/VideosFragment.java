@@ -325,11 +325,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(CommonFeedCategoryItem returnedObj) {
 			super.updateData(returnedObj);
 
@@ -346,11 +341,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 		public VideosItemUpdateListener() {
 			super(VideosItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
 		}
 
 		@Override

@@ -293,6 +293,20 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		}
 	}
 
+	protected void showToastLong(String msg) {
+		Context context = getActivity();
+		if (context != null) {
+			Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+		}
+	}
+
+	protected void showToastLong(int msgId) {
+		Context context = getActivity();
+		if (context != null) {
+			Toast.makeText(context, msgId, Toast.LENGTH_LONG).show();
+		}
+	}
+
 	public void showKeyBoard(EditText editText) {
 		if (getActivity() == null) {
 			return;

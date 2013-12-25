@@ -41,7 +41,8 @@ import java.util.Iterator;
 /**
  * This class handles disk and memory caching of bitmaps in conjunction with the
  * {@link ImageWorker} class and its subclasses. Use
- * {@link ImageCache#getInstance(android.support.v4.app.FragmentManager, ImageCacheParams)} to get an instance of this
+ * {@link ImageCache#getInstance(android.support.v4.app.FragmentManager, ImageCacheParams)}
+ * to get an instance of this
  * class, although usually a cache should be added directly to an {@link ImageWorker} by calling
  * {@link ImageWorker#addImageCache(android.support.v4.app.FragmentManager, ImageCacheParams)}.
  */
@@ -49,10 +50,10 @@ public class ImageCache {
     private static final String TAG = "ImageCache";
 
     // Default memory cache size in kilobytes
-    private static final int DEFAULT_MEM_CACHE_SIZE = 1024 * 5; // 5MB
+    private static final int DEFAULT_MEM_CACHE_SIZE = 1024 * 2; // 2MB
 
     // Default disk cache size in bytes
-    private static final int DEFAULT_DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
+    private static final int DEFAULT_DISK_CACHE_SIZE = 1024 * 1024 * 20; // 10MB
 
     // Compression settings when writing images to disk cache
     private static final CompressFormat DEFAULT_COMPRESS_FORMAT = CompressFormat.JPEG;

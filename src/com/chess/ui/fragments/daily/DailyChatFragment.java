@@ -81,7 +81,6 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 		newChatUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
 
 		myUserId = getAppData().getUserId();
-
 	}
 
 	@Override

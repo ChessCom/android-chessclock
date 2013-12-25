@@ -14,7 +14,6 @@ import com.chess.R;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
-import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.adapters.DailyArchiveGamesCursorAdapter;
 import com.chess.ui.fragments.friends.FriendsFragment;
@@ -65,10 +64,6 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 
 
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		@Override
-		public void showProgress(boolean show) {
-		}
 
 		@Override
 		public void updateData(Cursor returnedObj) {

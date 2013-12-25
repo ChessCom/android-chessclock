@@ -310,8 +310,9 @@
 
     <!--Notifications-->
     <string name="chess_com">Chess.Com</string>
-    <string name="your_move">"Chess.com - It's Your Move"</string>
-    <string name="your_turn_in_game_with">In your game with %1$s , %2$s</string>
+    <string name="your_move">"It's Your Turn"</string>
+    <string name="your_turn_in_game_with">In Game with %1$s , %2$s</string>
+    <string name="your_turn_in_daily_games">In Daily Games</string>
     <string name="your_turn">Your Turn!</string>
 
 
@@ -833,5 +834,6 @@
 	<string name="you">You</string>
 
 	<string name="add">Add</string>
+	<string name="no_hint">No Hint</string>
 
 </resources>

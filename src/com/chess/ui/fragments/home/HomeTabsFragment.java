@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.home;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +18,9 @@ import com.chess.backend.entity.api.DailyGamesAllItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
+import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
@@ -82,6 +86,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		tabRadioGroup.setOnCheckedChangeListener(this);
 
 		tabsLoadProgressBar = view.findViewById(R.id.tabsLoadProgressBar);
+		tabsLoadProgressBar.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -103,8 +108,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onResume() {
 		super.onResume();
 
-//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.FRIENDS.name()),
-//				DbHelper.getAll(DbScheme.Tables.FRIENDS),
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.NOTIFICATION_YOUR_MOVE.name()),
+//				DbHelper.getAll(DbScheme.Tables.NOTIFICATION_YOUR_MOVE),
 //				getContentResolver()).executeTask();
 
 		// check if user have daily games in progress or completed. May check in DB
@@ -256,7 +261,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		@Override
 		public void showProgress(boolean show) {
-			tabsLoadProgressBar.setVisibility(show? View.VISIBLE : View.GONE);
+//			tabsLoadProgressBar.setVisibility(show? View.VISIBLE : View.GONE);
 		}
 
 		@Override

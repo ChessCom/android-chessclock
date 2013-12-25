@@ -204,7 +204,7 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.re_signin) {
-			signInUser();
+//			signInUser();
 		}
 	}
 

@@ -18,7 +18,7 @@ public class CommonFeedCategoryItem extends BaseResponseItem<List<CommonFeedCate
 },
 */
 
-	public class Data {
+	public static class Data {
 		private int id;
 		private String name;
 		private int display_order;
@@ -27,6 +27,10 @@ public class CommonFeedCategoryItem extends BaseResponseItem<List<CommonFeedCate
 
 		public int getId() {
 			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
 		}
 
 		public String getName() {

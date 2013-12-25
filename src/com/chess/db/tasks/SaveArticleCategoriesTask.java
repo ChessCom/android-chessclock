@@ -25,6 +25,15 @@ public class SaveArticleCategoriesTask extends AbstractUpdateTask<CommonFeedCate
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
+		CommonFeedCategoryItem.Data allCategory = new CommonFeedCategoryItem.Data();
+
+		allCategory.setId(0);
+		allCategory.setName(StaticData.ALL);
+		allCategory.setDisplay_order(0);
+		allCategory.setCurriculum(false);
+
+		itemList.add(0, allCategory);
+
 		for (CommonFeedCategoryItem.Data currentItem : itemList) {
 			DbDataManager.saveArticleCategory(contentResolver, currentItem);
 		}

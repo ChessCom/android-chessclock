@@ -135,12 +135,6 @@ public class LiveArchiveFragment extends CommonLogicFragment implements AdapterV
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(LiveArchiveGameItem returnedObj) {
 			super.updateData(returnedObj);
 
@@ -173,12 +167,6 @@ public class LiveArchiveFragment extends CommonLogicFragment implements AdapterV
 	private class SaveArchiveGamesListUpdateListener extends ChessUpdateListener<LiveArchiveGameData> {
 
 		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(LiveArchiveGameData returnedObj) {
 			loadDbGames();
 		}
@@ -187,12 +175,6 @@ public class LiveArchiveFragment extends CommonLogicFragment implements AdapterV
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		public GamesCursorUpdateListener() {
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			super.showProgress(show);
-			showLoadingView(show);
 		}
 
 		@Override

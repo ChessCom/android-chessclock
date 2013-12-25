@@ -28,18 +28,19 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.GcmItem;
+import com.chess.backend.entity.api.YourTurnItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.gcm.*;
 import com.chess.db.DbDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
-import com.chess.model.GameListCurrentItem;
 import com.chess.statics.*;
 import com.chess.utilities.AppUtils;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -93,47 +94,46 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 
 	@Override
-	protected void onUnregistered(Context context, String registrationId) {
-		AppData appData = new AppData(context);
-		Log.d(TAG, "User = " + appData.getUsername() + " Device unregistered, registrationId = " + registrationId);
-
-		if (GCMRegistrar.isRegisteredOnServer(context)) {
-			preferences = appData.getPreferences();
-			// TODO temporary unregister only if user loged out
-			String realToken = preferences.getString(AppConstants.USER_TOKEN, Symbol.EMPTY);
-			if (realToken.equals(Symbol.EMPTY)) {
-
-				String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, Symbol.EMPTY);
-
-				LoadItem loadItem = new LoadItem();
-				loadItem.setLoadPath(RestHelper.getInstance().CMD_GCM);
-				loadItem.setRequestMethod(RestHelper.DELETE);
-				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, token);
-//				loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
-
-				GcmItem item = null;
-				try {
-					item = RestHelper.getInstance().requestData(loadItem, GcmItem.class, context);
-				} catch (InternalErrorException e) {
-					e.logMe();
-				}
-
-				if (item != null && item.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
-					GCMRegistrar.setRegisteredOnServer(context, false);
-					appData.unRegisterOnChessGCM();
-					// remove saved token
-					SharedPreferences.Editor editor = preferences.edit();
-					editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, Symbol.EMPTY);
-					editor.commit();
-				}
-
-				Log.d(TAG, "Unregistering from server, registrationId = " + registrationId + "token = " + token);
-			}
-		} else {
-			// This callback results from the call to unregister made on
-			// GcmHelper when the registration to the server failed.
-			Log.d(TAG, "Ignoring unregister callback");
-		}
+	protected void onUnregistered(Context context, String registrationId) {  // Do nothing here
+//		AppData appData = new AppData(context);
+//		Log.d(TAG, "User = " + appData.getUsername() + " Device unregistered, registrationId = " + registrationId);
+//
+//		if (GCMRegistrar.isRegisteredOnServer(context)) {
+//			preferences = appData.getPreferences();
+//			// TODO temporary unregister only if user loged out
+//			String realToken = preferences.getString(AppConstants.USER_TOKEN, Symbol.EMPTY);
+//			if (realToken.equals(Symbol.EMPTY)) {
+//
+//				String token = preferences.getString(AppConstants.PREF_TEMP_TOKEN_GCM, Symbol.EMPTY);
+//
+//				LoadItem loadItem = new LoadItem();
+//				loadItem.setLoadPath(RestHelper.getInstance().CMD_GCM);
+//				loadItem.setRequestMethod(RestHelper.DELETE);
+//				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, token);
+//
+//				GcmItem item = null;
+//				try {
+//					item = RestHelper.getInstance().requestData(loadItem, GcmItem.class, context);
+//				} catch (InternalErrorException e) {
+//					e.logMe();
+//				}
+//
+//				if (item != null && item.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+//					GCMRegistrar.setRegisteredOnServer(context, false);
+//					appData.unRegisterOnChessGCM();
+//					// remove saved token
+//					SharedPreferences.Editor editor = preferences.edit();
+//					editor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, Symbol.EMPTY);
+//					editor.commit();
+//				}
+//
+//				Log.d(TAG, "Unregistering from server, registrationId = " + registrationId + "token = " + token);
+//			}
+//		} else {
+//			// This callback results from the call to unregister made on
+//			// GcmHelper when the registration to the server failed.
+//			Log.d(TAG, "Ignoring unregister callback");
+//		}
 	}
 
 	@Override
@@ -214,7 +214,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		context.sendBroadcast(notifyIntent);
 	}
 
-	private synchronized void showNewFriendRequest(Intent intent, Context context){
+	private synchronized void showNewFriendRequest(Intent intent, Context context) {
 		FriendRequestItem friendRequestItem = new FriendRequestItem();
 
 		friendRequestItem.setMessage(intent.getStringExtra("message"));
@@ -227,10 +227,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
+
 		DbDataManager.saveNewFriendRequest(contentResolver, friendRequestItem, username);
 	}
 
-	private synchronized void showNewChatMessage(Intent intent, Context context){
+	private synchronized void showNewChatMessage(Intent intent, Context context) {
 		NewChatNotificationItem chatNotificationItem = new NewChatNotificationItem();
 
 		chatNotificationItem.setMessage(intent.getStringExtra("message"));
@@ -243,6 +244,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
+
 		DbDataManager.saveNewChatNotification(contentResolver, chatNotificationItem, username);
 	}
 
@@ -272,10 +274,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, " GameOverNotificationItem = " + new Gson().toJson(gameOverNotificationItem));
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
+
 		DbDataManager.saveGameOverNotification(contentResolver, gameOverNotificationItem, username);
 	}
 
-	private synchronized void showNewChallenge(Intent intent, Context context){
+	private synchronized void showNewChallenge(Intent intent, Context context) {
 		NewChallengeNotificationItem challengeNotificationItem = new NewChallengeNotificationItem();
 
 		challengeNotificationItem.setUsername(intent.getStringExtra("sender"));
@@ -290,6 +293,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	private synchronized void showYouTurnNotification(Intent intent, Context context) {
 		AppData appData = new AppData(context);
+		String username = appData.getUsername();
 
 		String lastMoveSan = intent.getStringExtra("last_move_san");
 //			String opponentUserId = intent.getStringExtra("opponent_user_id");
@@ -297,7 +301,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String opponentUsername = intent.getStringExtra("opponent_username");
 		String gameId = intent.getStringExtra("game_id");
 
-		boolean gameInfoFound = false;
+//		boolean gameInfoFound = false;
 		Log.d(TAG, " _________________________________");
 		Log.d(TAG, " LastMoveSan = " + lastMoveSan);
 		Log.d(TAG, " gameId = " + gameId);
@@ -305,82 +309,54 @@ public class GCMIntentService extends GCMBaseIntentService {
 		Log.d(TAG, " is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
 
 		// we use the same registerId for all users on a device, so check username to notify only the needed user
-		if (opponentUsername.equalsIgnoreCase(appData.getUsername())) {
+		if (opponentUsername.equalsIgnoreCase(username)) {
 			return; // don't need notification of myself game
 		}
 //		Log.d("TEST", " lastMoveInfoItems.size() = " + DataHolder.getInstance().getLastMoveInfoItems().size());
 
 		// check if we already received that notification
-		for (LastMoveInfoItem lastMoveInfoItem : DataHolder.getInstance().getLastMoveInfoItems()) {
-			if (lastMoveInfoItem.getGameId().equals(gameId)) { // if have info about this game
-				Log.d(TAG, " lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan) = " + lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan));
-				if (lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan)) { // if this game info already contains the same move update
-					return; // no need to update
-				} else { // if move info is different
-					lastMoveInfoItem.setLastMoveSan(lastMoveSan);
-				}
-				gameInfoFound = true;
-			}
-		}
+//		for (LastMoveInfoItem lastMoveInfoItem : DataHolder.getInstance().getLastMoveInfoItems()) {
+//			if (lastMoveInfoItem.getGameId().equals(gameId)) { // if have info about this game
+//				Log.d(TAG, " lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan) = " + lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan));
+//				if (lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan)) { // if this game info already contains the same move update
+//					return; // no need to update
+//				} else { // if move info is different
+//					lastMoveInfoItem.setLastMoveSan(lastMoveSan);
+//				}
+//				gameInfoFound = true;
+//			}
+//		}
 
-		if (!gameInfoFound) { // if we have no info about this game, then add last move to list of objects
-			Log.d(TAG, " adding new game info");
-			LastMoveInfoItem lastMoveInfoItem = new LastMoveInfoItem();
-			lastMoveInfoItem.setLastMoveSan(lastMoveSan);
-			lastMoveInfoItem.setGameId(gameId);
-			DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
-		}
+//		if (!gameInfoFound) { // if we have no info about this game, then add last move to list of objects
+//			Log.d(TAG, " adding new game info");
+//			LastMoveInfoItem lastMoveInfoItem = new LastMoveInfoItem();
+//			lastMoveInfoItem.setLastMoveSan(lastMoveSan);
+//			lastMoveInfoItem.setGameId(gameId);
+//			DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
+//		}
 
 		// Saving play move notification to DB
 		ContentResolver contentResolver = context.getContentResolver();
-		String username = appData.getUsername();
-		DbDataManager.savePlayMoveNotification(contentResolver, username, Long.parseLong(gameId));
+
+		YourTurnItem yourTurnItem = new YourTurnItem(lastMoveSan, username, Long.parseLong(gameId));
+		yourTurnItem.setOpponent(opponentUsername);
+
+		DbDataManager.savePlayMoveNotification(contentResolver, username, yourTurnItem);
+
+
+		List<YourTurnItem> moveNotifications = DbDataManager.getAllPlayMoveNotifications(contentResolver, username);
 
 		if (DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
-			Log.d(TAG, " updating board");
+
 			Intent gameUpdateIntent = new Intent(IntentConstants.BOARD_UPDATE);
 			gameUpdateIntent.putExtra(BaseGameItem.GAME_ID, Long.parseLong(gameId));
 			context.sendBroadcast(gameUpdateIntent);
 		} else {
 			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 
-			long gameTimeLeft = Long.parseLong(intent.getStringExtra("game_time_left"));
-
-			long minutes = gameTimeLeft / 60 % 60;
-			long hours = gameTimeLeft / 3600 % 24;
-			long days = gameTimeLeft / 86400;
-
-			String remainingUnits;
-			String remainingTime;
-
-			if (days > 0) {
-				remainingUnits = "d";
-				remainingTime = String.valueOf(days);
-			} else if (hours > 0) {
-				remainingUnits = "h";
-				remainingTime = String.valueOf(hours);
-			} else {
-				remainingUnits = "m";
-				remainingTime = String.valueOf(minutes);
-			}
-			// compose gameInfoItem
-			String[] gameInfoValues = new String[]{
-					gameId,
-					remainingTime,
-					remainingUnits
-			};
-
-			// TODO add item in Privacy Settings
 			if (appData.isNotificationsEnabled()) {  // we check it here because we will use GCM for lists update, so it need to be registered.
-				GameListCurrentItem gameListItem = GameListCurrentItem.createInstance(gameInfoValues);
 
-				AppUtils.showNewMoveStatusNotification(context,
-						context.getString(R.string.your_move),
-						context.getString(R.string.your_turn_in_game_with,
-								opponentUsername,
-								lastMoveSan),
-						StaticData.MOVE_REQUEST_CODE,
-						gameListItem);
+				AppUtils.showNewMoveStatusNotification(context, moveNotifications, StaticData.MOVE_REQUEST_CODE);
 
 				boolean playSoundsFlag = AppUtils.getSoundsPlayFlag(context);
 				if (playSoundsFlag) {

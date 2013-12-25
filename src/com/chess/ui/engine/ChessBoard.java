@@ -1002,7 +1002,7 @@ public class ChessBoard implements BoardFace {
 			i++;
 		}
 
-		if (castlingHistory[castleMaskPosition]) {
+		if (castleMaskPosition != NOT_SET && castlingHistory[castleMaskPosition]) {
 			return false;
 		}
 

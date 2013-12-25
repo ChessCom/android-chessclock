@@ -18,7 +18,7 @@
 
     <!--Button-->
     <item
-        android:left="1px"
+        android:left="1dp"
         android:right="1dip"
         android:bottom="1dip"
         android:top="1dip"
@@ -35,7 +35,7 @@
     <!-- Inner Shadows -->
     <!-- Right -->
     <item
-        android:left="1px"
+        android:left="1dp"
         android:right="0dip"
         android:bottom="1dip"
         android:top="1dip"

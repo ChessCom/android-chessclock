@@ -2289,10 +2289,9 @@ public class DbDataManager {
 	}
 
 	// ============================ Play Move GCM notifications ===========================================================
-
-	public static void savePlayMoveNotification(ContentResolver contentResolver, String username, long gameId) {
+	public static void savePlayMoveNotification(ContentResolver contentResolver, String username, YourTurnItem yourTurnItem) {
 		final String[] arguments1 = sArguments2;
-		arguments1[0] = String.valueOf(gameId);
+		arguments1[0] = String.valueOf(yourTurnItem.getGameId());
 		arguments1[1] = username; // current auth username
 
 		Uri uri = uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()];
@@ -2301,27 +2300,58 @@ public class DbDataManager {
 
 		ContentValues values = new ContentValues();
 
-		values.put(V_ID, gameId);
+		values.put(V_ID, yourTurnItem.getGameId());
 		values.put(V_USER, username);
+		values.put(V_LAST_MOVE_TO_SQUARE, yourTurnItem.getLastMove());
+		values.put(V_OTHER_USER_USERNAME, yourTurnItem.getOpponent());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
+	public static List<YourTurnItem> getAllPlayMoveNotifications(ContentResolver contentResolver, String username) {
+
+		final String[] arguments = sArguments1;
+		arguments[0] = username;
+
+		Cursor cursor = contentResolver.query(uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()],
+				null, SELECTION_USER, arguments, null);
+
+		ArrayList<YourTurnItem> yourTurnItems = new ArrayList<YourTurnItem>();
+
+		if (cursor != null && cursor.moveToFirst()) {
+			do {
+				String lastMove = getString(cursor, V_LAST_MOVE_TO_SQUARE);
+				String opponent = getString(cursor, V_OTHER_USER_USERNAME);
+				long gameId = getLong(cursor, V_ID);
+
+				YourTurnItem yourTurnItem = new YourTurnItem(lastMove, username, gameId);
+				yourTurnItem.setOpponent(opponent);
+
+				yourTurnItems.add(yourTurnItem);
+			} while (cursor.moveToNext());
+		}
+		if (cursor != null) {
+			cursor.close();
+		}
+		return yourTurnItems;
+
+	}
+
 	public static int getPlayMoveNotificationsCnt(ContentResolver contentResolver, String username) {
 		int notificationsCnt = 0;
-		{
-			final String[] arguments = sArguments1;
-			arguments[0] = username;
 
-			Cursor cursor = contentResolver.query(uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()],
-					PROJECTION_USER, SELECTION_USER, arguments, null);
-			if (cursor != null && cursor.moveToFirst()) {
-				notificationsCnt += cursor.getCount();
-			}
-			if (cursor != null) {
-				cursor.close();
-			}
+		final String[] arguments = sArguments1;
+		arguments[0] = username;
+
+		Cursor cursor = contentResolver.query(uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()],
+				PROJECTION_USER, SELECTION_USER, arguments, null);
+		if (cursor != null && cursor.moveToFirst()) {
+			notificationsCnt += cursor.getCount();
 		}
+		if (cursor != null) {
+			cursor.close();
+		}
+
 		return notificationsCnt;
 	}
 

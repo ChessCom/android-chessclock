@@ -14,6 +14,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
+import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.StaticData;
@@ -45,9 +46,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		super.onCreate(savedInstanceState);
 
 		observeTaskListener = new ObserveTaskListener();
-
-		if (isLCSBound) {
+		try {
 			runNewObserverGame();
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+			showToast(e.getMessage());
 		}
 	}
 
@@ -183,13 +186,6 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			return;
 		}
 
-		try {
-			getLiveService();
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-			return;
-		}
-
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 	}
@@ -197,7 +193,12 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	@Override
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
-			runNewObserverGame();
+			try {
+				runNewObserverGame();
+			} catch (DataNotValidException e) {
+				logLiveTest(e.getMessage());
+				showToast(e.getMessage());
+			}
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(SettingsLiveChessFragment.createInstance(true));
 		}
@@ -215,16 +216,21 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	public void onClick(View view) {
 		if (view.getId() == R.id.newGamePopupBtn) { // Next Game
 			dismissEndGameDialog();
-			runNewObserverGame();
+			try {
+				runNewObserverGame();
+			} catch (DataNotValidException e) {
+				logLiveTest(e.getMessage());
+				showToast(e.getMessage());
+			}
 		} else if (view.getId() == R.id.rematchPopupBtn) { // New Game Self
 			dismissEndGameDialog();
-				try {
-				    getLiveService().exitGameObserving();
-				} catch (DataNotValidException e) {
+			try {
+				getLiveService().exitGameObserving();
+			} catch (DataNotValidException e) {
 				e.printStackTrace();
 				getActivityFace().showPreviousFragment();
-					return;
-				}
+				return;
+			}
 			String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
 
 			liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[getAppData().getDefaultLiveMode()]);
@@ -235,7 +241,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	}
 
 	@Override
-	protected void showGameEndPopup(View layout, String title, String message) {
+	protected void showGameEndPopup(View layout, String title, String message, Game game) {
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
 
@@ -257,8 +263,14 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 				}
 				dismissEndGameDialog();
 
-				runNewObserverGame();
+				try {
+					runNewObserverGame();
+				} catch (DataNotValidException e) {
+					logLiveTest(e.getMessage());
+					showToast(e.getMessage());
+					getActivityFace().showPreviousFragment();
 				}
+			}
 		}, HIDE_POPUP_DELAY);
 
 
@@ -285,19 +297,13 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		}*/
 	}
 
-	private void runNewObserverGame() {
-		try {
-			LiveChessService liveService = getLiveService();
-			// exit previous game
-			liveService.exitGameObserving();
-			liveService.setLccObserveEventListener(this);
+	private void runNewObserverGame() throws DataNotValidException {
+		LiveChessService liveService = getLiveService();
+		// exit previous game
+		liveService.exitGameObserving();
+		liveService.setLccObserveEventListener(this);
 
-			liveService.runObserveTopGameTask(observeTaskListener);
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-			showToast(e.getMessage());
-			getActivityFace().showPreviousFragment();
-		}
+		liveService.runObserveTopGameTask(observeTaskListener);
 	}
 
 	@Override

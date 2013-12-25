@@ -179,11 +179,6 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	private class LessonsCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
@@ -276,11 +271,6 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	}
 
 	private class SaveLessonsUpdateListener extends ChessUpdateListener<LessonSingleItem> {
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
-		}
 
 		@Override
 		public void updateData(LessonSingleItem returnedObj) {

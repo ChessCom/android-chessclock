@@ -223,7 +223,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 	private void updateUiData() {
 		{// Graph Rating Data
-			List<long[]> series = new ArrayList<long[]>();
+			final List<long[]> series = new ArrayList<long[]>();
 			if (isNeedToUpgrade()) {
 				Calendar calendar = Calendar.getInstance();
 				calendar.add(Calendar.MONTH, -3);
@@ -255,7 +255,16 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 					cursor.close();
 				}
 			}
-			ratingGraphView.setGraphData(series, getView().getWidth());
+			if (getView().getWidth() == 0) {
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						ratingGraphView.setGraphData(series, getView().getWidth());
+					}
+				}, VIEW_UPDATE_DELAY);
+			} else {
+				ratingGraphView.setGraphData(series, getView().getWidth());
+			}
 		}
 
 		if (!isNeedToUpgrade()) {

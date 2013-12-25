@@ -19,7 +19,7 @@
     <!--Button-->
     <item
         android:left="1dip"
-        android:right="1px"
+        android:right="1dp"
         android:bottom="1dip"
         android:top="1dip"
         >

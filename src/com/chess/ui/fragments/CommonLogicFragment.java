@@ -83,6 +83,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private static final int MAX_USERNAME_LENGTH = 20;
 	private static final String IMAGE_CACHE_DIR = "thumbs";
 	protected static final int NON_INIT = -1;
+	public static final long VIEW_UPDATE_DELAY = 500;
 
 	protected static final String RE_LOGIN_TAG = "re-login popup";
 	protected static final String NETWORK_CHECK_TAG = "network check popup";
@@ -102,7 +103,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected static final int DEFAULT_ICON = 0;
 	protected static final int ONE_ICON = 1;
 	protected static final int TWO_ICON = 2;
-//	protected static final long SIDE_MENU_DELAY = 150;
+	//	protected static final long SIDE_MENU_DELAY = 150;
 	protected static final long SIDE_MENU_DELAY = 50;
 	private static final long SWITCH_DELAY = 50;
 	private static final long PULL_TO_UPDATE_RELEASE_DELAY = 1000;
@@ -585,8 +586,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			if (loadingView != null) {
-				loadingView.setVisibility(show ? View.VISIBLE : View.GONE);
+			if (getActivityFace().getPullToRefreshAttacher() != null) {
+				getActivityFace().getPullToRefreshAttacher().showProgress(show);
+			} else {
+				if (loadingView != null) {
+					loadingView.setVisibility(show ? View.VISIBLE : View.GONE);
+				}
 			}
 		}
 
@@ -744,12 +749,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		afterLogin();
 
 		getActivityFace().updateMainBackground();
-//		String themeBackPath = getAppData().getThemeBackPath();
-//		if (!TextUtils.isEmpty(themeBackPath)) {
-//			getActivityFace().setMainBackground(themeBackPath);
-//		} else {
-//			getActivityFace().setMainBackground(getAppData().getThemeBackId());
-//		}
 	}
 
 	protected void afterLogin() {
@@ -758,11 +757,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void showLoadingProgress(boolean show) {
-//		getActivityFace().getPullToRefreshAttacher().showProgress(show);
-		if (show) {
-			showPopupProgressDialog(R.string.loading_);
+		PullToRefreshAttacher pullToRefreshAttacher = getActivityFace().getPullToRefreshAttacher();
+		if (pullToRefreshAttacher != null) {
+			pullToRefreshAttacher.showProgress(show);
 		} else {
-			dismissProgressDialog();
+			if (show) {
+				showPopupProgressDialog(R.string.loading_);
+			} else {
+				dismissProgressDialog();
+			}
 		}
 	}
 
@@ -871,7 +874,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected void clearTempData() {
 		// un-register from GCM
-		unRegisterGcmService();
+//		unRegisterGcmService();
 
 		// logout from facebook
 		Session facebookSession = Session.getActiveSession();
@@ -899,10 +902,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	public int getStatusBarHeight() {
-		Rect r = new Rect();
-		Window w = getActivity().getWindow();
-		w.getDecorView().getWindowVisibleDisplayFrame(r);
-		return r.top;
+		Rect rect = new Rect();
+		Window window = getActivity().getWindow();
+		window.getDecorView().getWindowVisibleDisplayFrame(rect);
+		return rect.top;
 	}
 
 	public boolean isNeedToUpgrade() {
@@ -981,6 +984,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	/**
 	 * Use it inherited fragment where you want to consume onBackPressed event
+	 *
 	 * @return {@code true} if event was successfully consumed
 	 */
 	public boolean showPreviousFragment() {

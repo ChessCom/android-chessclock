@@ -78,12 +78,12 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 		if (!isTablet) {
 			RoboTextView versionCodeTxt = (RoboTextView) view.findViewById(R.id.versionCodeTxt);
-			versionCodeTxt.setText("Build " + deviceInfo.APP_VERSION_NAME);
+			versionCodeTxt.setText("v" + deviceInfo.APP_VERSION_NAME);
 			versionCodeTxt.setTextColor(themeFontColorStateList.getDefaultColor());
 		} else {
 			RoboButton resumeLessonBtn = (RoboButton) view.findViewById(R.id.resumeLessonBtn); // used only for beta
 			resumeLessonBtn.setDrawableStyle(R.style.ListItem);
-			resumeLessonBtn.setText("Build " + deviceInfo.APP_VERSION_NAME);
+			resumeLessonBtn.setText("v" + deviceInfo.APP_VERSION_NAME);
 			resumeLessonBtn.setTextColor(themeFontColorStateList.getDefaultColor());
 			resumeLessonBtn.setVisibility(View.VISIBLE);
 		}
@@ -182,9 +182,6 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 			ViewHolder holder = new ViewHolder();
 			holder.icon = (TextView) view.findViewById(R.id.iconTxt);
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);
-
-//			holder.icon.setTextColor(themeFontColorStateList);
-//			holder.title.setTextColor(themeFontColorStateList);
 			view.setTag(holder);
 
 			return view;

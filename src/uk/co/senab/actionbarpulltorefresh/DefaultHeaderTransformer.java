@@ -185,6 +185,25 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
         return changeVis;
     }
 
+	@Override
+    public boolean showHeaderLine() {  // TODO move to another inherited class
+        final boolean changeVis = mHeaderView.getVisibility() != View.VISIBLE;
+
+        if (changeVis) {
+            mHeaderView.setVisibility(View.VISIBLE);
+            AnimatorSet animSet = new AnimatorSet();
+
+//            ObjectAnimator transAnim = ObjectAnimator.ofFloat(mContentLayout, "translationY",
+//                    -mContentLayout.getHeight(), 0f);
+			ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHeaderView, "alpha", 0f, 1f);
+            animSet.playTogether(alphaAnim);
+            animSet.setDuration(0);
+            animSet.start();
+        }
+
+        return changeVis;
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
     public boolean hideHeaderView() {
@@ -205,6 +224,33 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 				animator = ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
 			}
             animator.setDuration(mAnimationDuration);
+            animator.addListener(new HideAnimationCallback());
+            animator.start();
+        }
+
+        return changeVis;
+    }
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	@Override
+	public boolean hideHeaderLine() {  // TODO move to another inherited class
+        final boolean changeVis = mHeaderView.getVisibility() != View.GONE;
+
+        if (changeVis) {
+            Animator animator;
+			if (mContentLayout.getAlpha() >= 0.5f) {
+				// If the content layout is showing, translate and fade out
+				animator = new AnimatorSet();
+//				ObjectAnimator transAnim = ObjectAnimator.ofFloat(mContentLayout, "translationY",
+//						0f, -mContentLayout.getHeight());
+
+				ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
+				((AnimatorSet) animator).play(alphaAnim);
+			} else {
+				// If the content layout isn't showing (minimized), just fade out
+				animator = ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
+			}
+            animator.setDuration(0);
             animator.addListener(new HideAnimationCallback());
             animator.start();
         }

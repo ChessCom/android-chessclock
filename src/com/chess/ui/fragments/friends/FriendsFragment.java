@@ -172,10 +172,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	protected class FriendsUpdateListener extends ChessUpdateListener<FriendsItem.Data> {
 
 		@Override
-		public void showProgress(boolean show) {
-		}
-
-		@Override
 		public void updateListData(List<FriendsItem.Data> returnedObj) {
 			super.updateListData(returnedObj);
 
@@ -198,10 +194,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-		}
-
-		@Override
 		public void updateData(FriendsItem.Data returnedObj) {
 			super.updateData(returnedObj);
 
@@ -215,10 +207,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	}
 
 	private class FriendsCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		@Override
-		public void showProgress(boolean show) {
-		}
 
 		@Override
 		public void updateData(Cursor returnedObj) {

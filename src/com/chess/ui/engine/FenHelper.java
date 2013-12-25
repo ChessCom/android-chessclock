@@ -135,12 +135,12 @@ public class FenHelper {
 					break;
 				case WHITE_SIDE:
 					char pieceChar = board.pieceChars[pieceCode];
-					Log.e("TEST", "pieceChar = " + pieceChar);
+//					Log.e("TEST", "pieceChar = " + pieceChar);
 					line[i % ROWS_CNT] = String.valueOf(pieceChar);
 					break;
 				case BLACK_SIDE:
 					pieceChar = board.pieceChars[pieceCode];
-					Log.e("TEST", "pieceChar = " + pieceChar);
+//					Log.e("TEST", "pieceChar = " + pieceChar);
 					line[i % ROWS_CNT] = String.valueOf((char) (pieceChar + ('a' - 'A')));
 					break;
 				default:

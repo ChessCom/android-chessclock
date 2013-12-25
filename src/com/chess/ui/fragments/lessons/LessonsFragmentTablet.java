@@ -205,11 +205,6 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
-		}
-
-		@Override
 		public void updateData(CommonFeedCategoryItem returnedObj) {
 			super.updateData(returnedObj);
 
@@ -238,11 +233,6 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 	private class LessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseListItem> {
 		public LessonsCoursesUpdateListener() {
 			super(LessonCourseListItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			showLoadingView(show);
 		}
 
 		@Override
@@ -335,11 +325,6 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 
 		private LessonsRatingUpdateListener() {
 			super(LessonsRatingItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			// don't show any progress
 		}
 
 		@Override
