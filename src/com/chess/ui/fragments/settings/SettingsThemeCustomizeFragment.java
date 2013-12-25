@@ -404,12 +404,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		}
 
 		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			showToast("error occurred code " + resultCode);
-		}
-
-		@Override
 		public void changeTitle(final String title) {
 			FragmentActivity activity = getActivity();
 			if (activity == null) {

@@ -64,7 +64,7 @@ public class LccHelper {
 	private Collection<? extends User> blockedUsers = new HashSet<User>();
 	private Collection<? extends User> blockingUsers = new HashSet<User>();
 	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
-	private final HashSet<Game> gamesToUnobserve = new HashSet<Game>();
+	private final HashSet<Game> gamesToUnObserve = new HashSet<Game>();
 	private final Map<String, User> friends = new HashMap<String, User>();
 	private final Map<String, User> onlineFriends = new HashMap<String, User>();
 	/*private Map<LiveGameEvent.Event, LiveGameEvent> pausedActivityGameEvents = new HashMap<LiveGameEvent.Event, LiveGameEvent>();*/
@@ -627,7 +627,7 @@ public class LccHelper {
 	}
 
 	public void setFriends(Collection<? extends User> friends) {
-		LogMe.dl(TAG, "CONNECTION: get friends list: " + friends);
+//		LogMe.dl(TAG, "CONNECTION: get friends list: " + friends);
 		if (friends == null) {
 			return;
 		}
@@ -685,7 +685,7 @@ public class LccHelper {
 		lccGames.clear();
 	}
 
-//	public String[] getGameData(Long gameId, int moveIndex) {
+//	public String[] getGameData(Long gameId, int moveIndex) {   // todo: vm: do we need it? please remove all commented code that we will not need further
 //		Game lccGame = getGame(gameId);
 //		String[] gameData = new String[GameItem.GAME_DATA_ELEMENTS_COUNT];
 //
@@ -765,7 +765,7 @@ public class LccHelper {
 	public void rematch() {
 		final Game lastGame = getLastGame();
 
-		LogMe.dl("REMATCHTEST", "rematch getLastGame " + lastGame);
+//		LogMe.dl("REMATCHTEST", "rematch getLastGame " + lastGame);
 
 		final List<GameResult> gameResults = lastGame.getResults();
 		final String whiteUsername = lastGame.getWhitePlayer().getUsername();
@@ -953,15 +953,15 @@ public class LccHelper {
 	}
 
 	public boolean isGameToUnobserve(Game game) {
-		return gamesToUnobserve.contains(game);
+		return gamesToUnObserve.contains(game);
 	}
 
 	public boolean addGameToUnobserve(Game game) {
-		return gamesToUnobserve.add(game);
+		return gamesToUnObserve.add(game);
 	}
 
 	/*public boolean removeGameToUnobserve(Game game) {
-		return gamesToUnobserve.remove(game);
+		return gamesToUnObserve.remove(game);
 	}*/
 
 	public void putGameChat(Long gameId, Chat chat) {
@@ -1238,18 +1238,18 @@ public class LccHelper {
 		return connectionFailure;
 	}
 
-	public void unobserveCurrentObservingGame() {
-//		LogMe.dl(TAG, "unobserveCurrentObservingGame: gameId=" + getCurrentObservedGameId());
+	public void unObserveCurrentObservingGame() {
+//		LogMe.dl(TAG, "unObserveCurrentObservingGame: gameId=" + getCurrentObservedGameId());
 		if (getCurrentObservedGameId() != null) {
-			runUnobserveGameTask(getCurrentObservedGameId());
+			runUnObserveGameTask(getCurrentObservedGameId());
 		}
 	}
 
-	public void runUnobserveGameTask(Long gameId) {
-		new UnobserveGameTask().execute(gameId);
+	public void runUnObserveGameTask(Long gameId) {
+		new UnObserveGameTask().execute(gameId);
 	}
 
-	private class UnobserveGameTask extends AsyncTask<Long, Void, Void> {
+	private class UnObserveGameTask extends AsyncTask<Long, Void, Void> {
 
 		@Override
 		protected Void doInBackground(Long... params) {

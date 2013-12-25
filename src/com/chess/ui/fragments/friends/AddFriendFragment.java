@@ -12,18 +12,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import com.chess.widgets.EditButton;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.RequestItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.widgets.EditButton;
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
@@ -210,12 +210,10 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND) {
 
 					showSinglePopupDialog(R.string.username_not_found);
-				} else {
-					super.errorHandle(resultCode);
+					return;
 				}
-			} else {
-				super.errorHandle(resultCode);
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 

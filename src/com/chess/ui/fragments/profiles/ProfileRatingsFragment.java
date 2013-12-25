@@ -246,11 +246,6 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 			fillUserStats();
 		}
 
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			showToast(" code " + resultCode);
-		}
 	}
 
 

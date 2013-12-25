@@ -320,6 +320,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 		@Override
 		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
 			if (itemCode == GameOnlineItem.CURRENT_TYPE || itemCode == GameOnlineItem.CHALLENGES_TYPE
 					|| itemCode == GameOnlineItem.FINISHED_TYPE) {
 				if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
@@ -499,6 +500,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 		@Override
 		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));

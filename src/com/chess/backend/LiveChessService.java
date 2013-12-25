@@ -517,7 +517,7 @@ public class LiveChessService extends Service {
 		setLccObserveEventListener(null);
 		lccHelper.setCurrentGameId(null);
 		lccHelper.stopClock();
-		lccHelper.unobserveCurrentObservingGame();
+		lccHelper.unObserveCurrentObservingGame();
 		lccHelper.setCurrentObservedGameId(null);
 	}
 }

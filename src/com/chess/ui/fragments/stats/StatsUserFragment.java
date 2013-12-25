@@ -139,11 +139,6 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 
 	private class SaveStatsUpdateListener extends ChessUpdateListener<UserStatsItem.Data> {
 
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			showToast(" code " + resultCode);
-		}
 	}
 
 	private void changeInternalFragment(Fragment fragment) {

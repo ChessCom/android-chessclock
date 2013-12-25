@@ -809,6 +809,14 @@ public class AppData {
 		setBooleanValue(USER_SAW_HELP_FOR_DAILY, value);
 	}
 
+	public boolean isFirstInitFinished() {
+		return getBooleanValue(FIRST_INIT_FINISHED, false);
+	}
+
+	public void setFirstInitFinished(boolean value) {
+		setBooleanValue(FIRST_INIT_FINISHED, value);
+	}
+
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {

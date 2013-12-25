@@ -117,6 +117,17 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 	private class SaveForumCategoriesListener extends ChessUpdateListener<ForumCategoryItem.Data> {
 
 		@Override
+		public void showProgress(boolean show) {
+			if (!isTablet) {
+				super.showProgress(show);
+			} else {
+				if (loadingView != null) {
+					loadingView.setVisibility(show ? View.VISIBLE : View.GONE);
+				}
+			}
+		}
+
+		@Override
 		public void updateData(ForumCategoryItem.Data returnedObj) {
 			super.updateData(returnedObj);
 

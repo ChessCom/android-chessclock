@@ -1,6 +1,7 @@
 package com.chess.backend.tasks;
 
 import android.os.Build;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.backend.interfaces.TaskUpdateInterface;
@@ -106,7 +107,7 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 
 		try {
 			if (notValidToReturnForFragment()) {
-				Log.d(TAG, " fragment is not valid to return data");
+				Log.d(TAG, ">>>>> fragment (" + getTaskFace().getStartedFragment() + ") is not valid to return data <<<<<");
 				return;
 			}
 			getTaskFace().showProgress(false);
@@ -126,14 +127,20 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 	}
 
 	private boolean notValidToReturnForFragment() {
-//		if (getTaskFace().isUsedForFragment()) {
-//			Log.d(TAG, "getTaskFace().getStartedFragment() == null = " + (getTaskFace().getStartedFragment() == null));
-//			Log.d(TAG, "getTaskFace().getStartedFragment().getActivity() == null = " + (getTaskFace().getStartedFragment().getActivity() == null));
-//			Log.d(TAG, "!getTaskFace().getStartedFragment().isVisible() = " + (!getTaskFace().getStartedFragment().isVisible()));
-//		}
-		return getTaskFace().isUsedForFragment() && (getTaskFace().getStartedFragment() == null
-				|| getTaskFace().getStartedFragment().getActivity() == null
-				|| !getTaskFace().getStartedFragment().isVisible());
+		Fragment startedFragment = getTaskFace().getStartedFragment();
+		if (getTaskFace().isUsedForFragment()) {
+			Log.d(TAG, "_____________________________________________________________");
+
+			Log.d(TAG, "fragment = " + startedFragment + ", taskFace = " + taskFace + ", task = " + this
+					+ ", fragment == null = " + (startedFragment == null));
+			if (startedFragment != null) {
+				Log.d(TAG, "startedFragment.getActivity() == null = " + (startedFragment.getActivity() == null));
+				Log.d(TAG, "!startedFragment.isVisible() = " + (!startedFragment.isVisible()));
+			}
+		}
+		return getTaskFace().isUsedForFragment() && (startedFragment == null
+				|| startedFragment.getActivity() == null
+				|| !startedFragment.isVisible());
 	}
 
 	protected TaskUpdateInterface<ItemType> getTaskFace() throws IllegalStateException {

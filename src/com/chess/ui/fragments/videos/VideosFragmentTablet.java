@@ -166,22 +166,25 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 //		boolean headerAdded = listView.getHeaderViewsCount() > 0; // used to check if header added
 //		int offset = headerAdded ? -1 : 0;
 
-		if (position != 0) { // if listView header
-			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
 
-			if (noCategoriesFragmentsAdded) {
-				openInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
-				noCategoriesFragmentsAdded = false;
-			} else {
-				changeInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
-			}
+		if (noCategoriesFragmentsAdded) {
+			openInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
+			noCategoriesFragmentsAdded = false;
+		} else {
+			changeInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
 		}
 	}
 
 	private class VideoCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem> {
 		public VideoCategoriesUpdateListener() {
 			super(CommonFeedCategoryItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
 		}
 
 		@Override
@@ -198,6 +201,11 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 	}
 
 	private class SaveVideoCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem.Data> {
+
+		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
+		}
 
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {

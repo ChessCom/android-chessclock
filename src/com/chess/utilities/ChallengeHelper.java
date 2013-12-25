@@ -216,8 +216,9 @@ public class ChallengeHelper {
 	}
 
 	public String getLiveModeButtonLabel(int mode) {
-	    return getLiveModeButtonLabel(newLiveGameButtonsArray[mode]);
+		return getLiveModeButtonLabel(newLiveGameButtonsArray[mode]);
 	}
+
 	protected String getLiveModeButtonLabel(String label) {
 		if (label.contains(Symbol.SLASH)) { // "5 | 2"
 			return label;
@@ -264,7 +265,7 @@ public class ChallengeHelper {
 		quickAction.dismiss();
 	}
 
-	public String getDailyModeButtonLabel(int mode){
+	public String getDailyModeButtonLabel(int mode) {
 		return getDaysString(newDailyGameButtonsArray[mode]);
 	}
 
@@ -294,10 +295,10 @@ public class ChallengeHelper {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.YOUR_ARE_ON_VACATAION) {
 					fragment.showPopupDialog(R.string.leave_vacation_to_play_q, END_VACATION_TAG);
-				} else {
-					super.errorHandle(resultCode);
+					return;
 				}
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 

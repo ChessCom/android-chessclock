@@ -401,6 +401,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 		@Override
 		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
 			if (itemCode == GameOnlineItem.CURRENT_TYPE || itemCode == GameOnlineItem.CHALLENGES_TYPE
 					|| itemCode == GameOnlineItem.FINISHED_TYPE) {
 				if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {

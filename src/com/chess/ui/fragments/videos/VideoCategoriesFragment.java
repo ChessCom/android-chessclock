@@ -171,6 +171,13 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	private class VideosCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		@Override
+		public void showProgress(boolean show) {
+			if (!isTablet) { // don't show progress for pagination here for tablet
+				super.showProgress(show);
+			}
+		}
+
+		@Override
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 

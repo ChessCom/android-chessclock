@@ -39,11 +39,12 @@ public class GetAndSaveFriends extends IntentService {
 			String username = appData.getUsername();
 			ContentResolver contentResolver = getContentResolver();
 
-//			DbDataManager.checkAndDeleteNonExistFriends(contentResolver, item.getData(), username);
 			for (FriendsItem.Data currentItem : item.getData()) {
 				DbDataManager.saveFriendToDB(username, contentResolver, currentItem);
 			}
 		}
+
+		appData.setFirstInitFinished(true);
 	}
 
 

@@ -172,6 +172,11 @@ public class ArticleCategoriesFragmentTablet extends ArticleCategoriesFragment {
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			// don't show progress for pagination here
+		}
+
+		@Override
 		public void updateData(CommonFeedCategoryItem returnedObj) {
 			super.updateData(returnedObj);
 

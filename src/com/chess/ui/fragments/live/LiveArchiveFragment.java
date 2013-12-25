@@ -157,11 +157,14 @@ public class LiveArchiveFragment extends CommonLogicFragment implements AdapterV
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
+				return;
 			} else if (resultCode == StaticData.INTERNAL_ERROR) {
 				showToast("Internal error occurred"); // TODO adjust properly
-//				showEmptyView(true);
+				return;
 			}
+			super.errorHandle(resultCode);
 		}
+
 	}
 
 	private class SaveArchiveGamesListUpdateListener extends ChessUpdateListener<LiveArchiveGameData> {

@@ -88,6 +88,8 @@ public class RestHelper {
 	/*Games*/
 	public String CMD_GAMES = BASE_URL + V1 + "/games/";
 	public String CMD_GAMES_ALL = CMD_GAMES + "all";
+	public String CMD_GAMES_CURRENT = CMD_GAMES + "current";
+	public String CMD_GAMES_FINISHED = CMD_GAMES + "finished";
 	public String CMD_GAMES_CHALLENGES = CMD_GAMES + "challenges";
 	public String CMD_VACATIONS = CMD_GAMES + "vacations";
 	public String CMD_SEEKS = CMD_GAMES + "seeks";
@@ -323,6 +325,7 @@ public class RestHelper {
 	public static final String P_MIN_RATING = "minRating";
 	public static final String P_MAX_RATING = "maxRating";
 	public static final String P_IS_RATED = "isRated";
+	public static final String P_MY_TURN_ONLY = "showOnlyMyTurn";
 	public static final String P_GAME_TYPE_CODE_ID = "gameTypeCodeId";
 	public static final String P_GAME_TYPE_ID = "game_type_id";
 	public static final String P_GAME_TYPE = "gameTypeCode";

@@ -405,7 +405,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				}
 
 				updatePlayerLabels(game, newWhiteRating, newBlackRating);
-				showGameEndPopup(layout, getString(gameEndTitleId), gameEndMessage);
+				showGameEndPopup(layout, getString(gameEndTitleId), gameEndMessage, game);
 
 				setBoardToFinishedState();
 
@@ -1152,10 +1152,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 		}
 
-		@Override
-		public void errorHandle(Integer resultCode) {
-
-		}
 	}
 
 	protected ControlsLiveView getControlsView() {

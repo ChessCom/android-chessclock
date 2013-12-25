@@ -13,12 +13,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.DailyFinishedGameData;
-import com.chess.backend.entity.api.DailyGamesAllItem;
+import com.chess.backend.entity.api.DailyFinishedGamesItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -30,9 +29,10 @@ import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.List;
+
+import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
 
 /**
  * Created with IntelliJ IDEA.
@@ -47,7 +47,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 
 	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
-	protected DailyGamesUpdateListener dailyGamesUpdateListener;
+	protected DailyFinishedGamesUpdateListener dailyFinishedGamesUpdateListener;
 
 	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 
@@ -174,7 +174,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (isNetworkAvailable()) {
 			updateData();
 		}
 	}
@@ -183,7 +183,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
 		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener();
 
-		dailyGamesUpdateListener = new DailyGamesUpdateListener();
+		dailyFinishedGamesUpdateListener = new DailyFinishedGamesUpdateListener();
 	}
 
 	@Override
@@ -209,13 +209,11 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 	}
 
 	protected void updateData() {
-		// First we check ids of games what we have. Challenges also will be stored in DB
-		// when we ask server about new ids of games and challenges
-		// if server have new ids we get those games with ids
-
-		LoadItem loadItem = LoadHelper.getAllGames(getUserToken());
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_FINISHED);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_USERNAME, username);
-		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<DailyFinishedGamesItem>(dailyFinishedGamesUpdateListener).executeTask(loadItem);
 	}
 
 	private void loadDbGames() {
@@ -244,7 +242,6 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
-
 			finishedGamesCursorAdapter.changeCursor(returnedObj);
 			need2update = false;
 		}
@@ -262,18 +259,17 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		}
 	}
 
-	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {
+	private class DailyFinishedGamesUpdateListener extends ChessUpdateListener<DailyFinishedGamesItem> {
 
-		public DailyGamesUpdateListener() {
-			super(DailyGamesAllItem.class);
+		public DailyFinishedGamesUpdateListener() {
+			super(DailyFinishedGamesItem.class);
 		}
 
 		@Override
-		public void updateData(DailyGamesAllItem returnedObj) {
+		public void updateData(DailyFinishedGamesItem returnedObj) {
 			super.updateData(returnedObj);
 
-			// finished
-			List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getFinished();
+			List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getGames();
 			if (finishedGameDataList != null) {
 				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(),
 						finishedGameDataList, username);
@@ -307,8 +303,8 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 	}
 
 	private void releaseResources() {
-		dailyGamesUpdateListener.releaseContext();
-		dailyGamesUpdateListener = null;
+		dailyFinishedGamesUpdateListener.releaseContext();
+		dailyFinishedGamesUpdateListener = null;
 	}
 
 	private void showEmptyView(boolean show) {

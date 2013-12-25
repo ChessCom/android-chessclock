@@ -1,7 +1,6 @@
 package com.chess.ui.fragments.home;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,12 +14,8 @@ import com.chess.R;
 import com.chess.backend.*;
 import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
-import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
-import com.chess.db.DbScheme;
-import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
@@ -40,6 +35,8 @@ import java.util.List;
 public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener,
 		FragmentParentFace {
 
+	private static final long FIRST_INIT_DELAY = 5 * 1000;
+
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId = NON_INIT;
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
@@ -53,12 +50,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 
-		if (!DbDataManager.haveSavedFriends(getActivity(), getUsername()) && AppUtils.isNetworkAvailable(getActivity())) {
-			getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class));
-		}
-		if (!DbDataManager.haveSavedDailyStats(getActivity(), getUsername()) && AppUtils.isNetworkAvailable(getActivity())) {
-			// update stats in async intent service and save in Db there
-			getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
+		if (!getAppData().isFirstInitFinished()) {
+			handler.postDelayed(firstInitRunnable, FIRST_INIT_DELAY);
 		}
 	}
 
@@ -135,13 +128,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 				tabRadioGroup.check(R.id.leftTabBtn);
 			}
 			updateTabs();
-		}
-
-		// get user info for global use
-		if (!getAppData().isUserInfoSaved()) {
-			LoadItem loadItem = LoadHelper.getUserInfo(getUserToken());
-
-			new RequestJsonTask<UserItem>(new GetUserUpdateListener()).executeTask(loadItem);
 		}
 	}
 
@@ -231,28 +217,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		changeInternalFragment(fragment);
 	}
 
-	private class GetUserUpdateListener extends ChessLoadUpdateListener<UserItem> {
-
-		public GetUserUpdateListener() {
-			super(UserItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			if (!isTablet) {
-				super.showProgress(show);
-			}
-		}
-
-		@Override
-		public void updateData(UserItem returnedObj) {
-			super.updateData(returnedObj);
-
-			getAppData().setUserCreateDate(returnedObj.getData().getMemberSince());
-			getAppData().setUserInfoSaved(true);
-		}
-	}
-
 	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {
 
 		public DailyGamesUpdateListener() {
@@ -261,14 +225,16 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		@Override
 		public void showProgress(boolean show) {
-//			tabsLoadProgressBar.setVisibility(show? View.VISIBLE : View.GONE);
+			if (getActivityFace().getPullToRefreshAttacher() != null) {
+				getActivityFace().getPullToRefreshAttacher().showProgress(show);
+			} else {
+				tabsLoadProgressBar.setVisibility(show? View.VISIBLE : View.GONE);
+			}
 		}
 
 		@Override
 		public void updateData(DailyGamesAllItem returnedObj) {
 			super.updateData(returnedObj);
-
-			logTest("DailyGamesUpdateListener updateData");
 
 			// current games
 			List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
@@ -289,4 +255,17 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			updateTabs();
 		}
 	}
+
+	private Runnable firstInitRunnable =  new Runnable() {
+		@Override
+		public void run() {
+			if (!DbDataManager.haveSavedFriends(getActivity(), getUsername()) && AppUtils.isNetworkAvailable(getActivity())) {
+				getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class));
+			}
+			if (!DbDataManager.haveSavedDailyStats(getActivity(), getUsername()) && AppUtils.isNetworkAvailable(getActivity())) {
+				// update stats in async intent service and save in Db there
+				getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
+			}
+		}
+	};
 }

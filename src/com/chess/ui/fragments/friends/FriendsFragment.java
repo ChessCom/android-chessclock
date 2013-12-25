@@ -100,12 +100,12 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	public void onResume() {
 		super.onResume();
 
-		if (need2update){
+		if (need2update) {
 			boolean haveSavedData = DbDataManager.haveSavedFriends(getActivity(), username);
 
 			if (isNetworkAvailable()) {
 				updateData();
-			} else if(!haveSavedData){
+			} else if (!haveSavedData) {
 				emptyView.setText(R.string.no_network);
 				showEmptyView(true);
 			}
@@ -165,7 +165,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		return getActivity();
 	}
 
-	protected void setAdapter(ListAdapter adapter){
+	protected void setAdapter(ListAdapter adapter) {
 		((ListView) listView).setAdapter(adapter);
 	}
 
@@ -175,11 +175,12 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		public void updateListData(List<FriendsItem.Data> returnedObj) {
 			super.updateListData(returnedObj);
 
-			new SaveFriendsListTask(saveFriendsListUpdateListener, returnedObj,	getContentResolver()).executeTask();
+			new SaveFriendsListTask(saveFriendsListUpdateListener, returnedObj, getContentResolver()).executeTask();
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
 			if (resultCode == StaticData.INTERNAL_ERROR) {
 				emptyView.setText("Internal error occurred");
 				showEmptyView(true);
@@ -202,7 +203,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	}
 
 	private void loadFromDb() {
-		new LoadDataFromDbTask(friendsCursorUpdateListener,	DbHelper.getFriends(username),
+		new LoadDataFromDbTask(friendsCursorUpdateListener, DbHelper.getFriends(username),
 				getContentResolver()).executeTask();
 	}
 
@@ -263,7 +264,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			}
 
 			String query = (String) constraint;
-			String[] selectionArgs = new String[] {DbScheme.V_USER, DbScheme.V_USERNAME, DbScheme.V_LOCATION};
+			String[] selectionArgs = new String[]{DbScheme.V_USER, DbScheme.V_USERNAME, DbScheme.V_LOCATION};
 			String selection = DbDataManager.concatLikeArguments(selectionArgs);
 
 			String[] arguments = new String[selectionArgs.length];
@@ -384,10 +385,10 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 				if (serverCode == ServerErrorCodes.YOUR_ARE_ON_VACATAION) {
 
 					showPopupDialog(R.string.leave_vacation_to_challenge_q, END_VACATION_TAG);
-				} else {
-					super.errorHandle(resultCode);
+					return;
 				}
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 

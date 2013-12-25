@@ -619,15 +619,16 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		if (!TextUtils.isEmpty(getAppData().getFacebookToken())) { // Login with facebook
 			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, getAppData().getFacebookToken());
+
+			new RequestJsonTask<LoginItem>(facebookLoginUpdateListener).executeTask(loadItem);
 		} else if (!TextUtils.isEmpty(getAppData().getPassword())) { // login with credentials
 			loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getUsername());
 			loadItem.addRequestParams(RestHelper.P_PASSWORD, getAppData().getPassword());
+
+			new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 		} else {
 			showToast(R.string.unable_to_relogin);
-			return;
 		}
-
-		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 	}
 
 	protected class ChessLoadUpdateListener<ItemType> extends ChessUpdateListener<ItemType> {
@@ -1074,6 +1075,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 
 			cursor.close();
+		} else {
+			inviteFriendView1.setVisibility(View.GONE);
+			inviteFriendView2.setVisibility(View.GONE);
 		}
 	}
 }

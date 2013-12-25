@@ -449,10 +449,6 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 			}
 		}
 
-		@Override
-		public void errorHandle(Integer resultCode) {
-
-		}
 	}
 
 }

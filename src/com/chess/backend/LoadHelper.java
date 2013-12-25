@@ -53,6 +53,16 @@ public class LoadHelper {
 		return loadItem;
 	}
 
+	public static LoadItem getCurrentMyTurnGames(String userToken) {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(getInstance().CMD_GAMES_CURRENT);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
+		loadItem.addRequestParams(P_GAME_TYPE_ID, RestHelper.V_GAME_CHESS);
+		loadItem.addRequestParams(P_MY_TURN_ONLY, RestHelper.V_TRUE);
+		loadItem.addRequestParams(P_FIELDS, RestHelper.V_ID);
+		return loadItem;
+	}
+
 	public static LoadItem getFriends(String userToken, String username) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(getInstance().CMD_FRIENDS);

@@ -58,7 +58,7 @@ public class LccGameListener implements GameListener {
 //		LogMe.dl(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
 		if (isActualMyGame(game)) {
-			lccHelper.unobserveCurrentObservingGame();
+			lccHelper.unObserveCurrentObservingGame();
 
 		} else if (lccHelper.isObservedGame(game)) {
 
@@ -92,7 +92,7 @@ public class LccGameListener implements GameListener {
 		}
 
 		if (isActualMyGame(game)) {
-			lccHelper.unobserveCurrentObservingGame();
+			lccHelper.unObserveCurrentObservingGame();
 
 		} else if (lccHelper.isObservedGame(game)) {
 

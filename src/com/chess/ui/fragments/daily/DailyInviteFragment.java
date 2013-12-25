@@ -255,6 +255,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 
 		@Override
 		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
 			if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
 				showToast(R.string.host_unreachable_load_local);
 			}

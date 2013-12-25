@@ -806,12 +806,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.USER_HAS_REACHED_THE_DAILY_LIMIT_OF_LESSONS) {
 					getAppData().setLessonLimitWasReached(true);
-				} else {
-					super.errorHandle(resultCode);
+					return;
 				}
-			} else {
-				super.errorHandle(resultCode);
 			}
+			super.errorHandle(resultCode);
 			// in case of any error leave this fragment, as data will be unreliable
 			getActivityFace().showPreviousFragment();
 		}

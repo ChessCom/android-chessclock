@@ -627,12 +627,11 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.USER_DONT_HAVE_VALID_PAYLOAD) {
 					requestPayload(RestHelper.V_FALSE);
-				} else {
-					super.errorHandle(resultCode);
+					return;
 				}
-			} else {
-				super.errorHandle(resultCode);
+
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 
@@ -710,13 +709,10 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.USER_DONT_HAVE_VALID_PAYLOAD) {
 					requestPayload(RestHelper.V_FALSE);
-				} else {
-					super.errorHandle(resultCode);
+					return;
 				}
-			} else {
-				super.errorHandle(resultCode);
-
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 

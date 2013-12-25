@@ -8,19 +8,19 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
-import com.chess.ui.fragments.BasePopupsFragment;
-import com.chess.widgets.ChipsAutoCompleteTextView;
 import com.chess.R;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ConversationSingleItem;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.Symbol;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
+import com.chess.widgets.ChipsAutoCompleteTextView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -102,7 +102,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 			if (cursor != null && cursor.moveToFirst()) { // TODO check if friends already loaded
 				friendsList = new String[cursor.getCount()];
 				int i = 0;
-				do{
+				do {
 					friendsList[i++] = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 				} while (cursor.moveToNext());
 			}
@@ -204,7 +204,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 
 		@Override
 		public void updateData(ConversationSingleItem returnedObj) {
-			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 				showToast(R.string.message_sent);
 				BasePopupsFragment fragmentByTag;
 				if (!isTablet) {
@@ -232,12 +232,10 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND) {
 
 					showSinglePopupDialog(R.string.username_not_found);
-				} else {
-					super.errorHandle(resultCode);
+					return;
 				}
-			} else {
-				super.errorHandle(resultCode);
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 

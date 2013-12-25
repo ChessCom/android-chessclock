@@ -342,7 +342,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	private void bindAndStartLiveService() {
-		Log.d(TAG, "bindAndStartLiveService " + getClass());
+//		Log.d(TAG, "bindAndStartLiveService " + getClass());
 
 		startService(new Intent(this, LiveChessService.class));
 		bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);

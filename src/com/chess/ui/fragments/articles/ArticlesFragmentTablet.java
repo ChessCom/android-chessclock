@@ -49,6 +49,7 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 	private SaveCategoriesUpdateListener saveCategoriesUpdateListener;
 
 	private boolean noCategoriesFragmentsAdded;
+	private boolean categoriesLoaded;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,7 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 
 		if (need2update) {
 
-			if (!loadCategoriesFromDB()) {
+			if (!categoriesLoaded) {
 				getCategories();
 			}
 
@@ -143,6 +144,11 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
+		}
+
+		@Override
 		public void updateData(CommonFeedCategoryItem returnedObj) {
 			super.updateData(returnedObj);
 
@@ -159,12 +165,22 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 	}
 
 	private class SaveCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem.Data> {
+
+		@Override
+		public void showProgress(boolean show) {
+			showLoadingView(show);
+		}
+
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			super.updateData(returnedObj);
 
+			if (!categoriesLoaded) { // if categories were not loaded we didn't show main fragment on right side
+				changeInternalFragment(ArticleCategoriesFragmentTablet.createInstance(Symbol.EMPTY,
+						ArticlesFragmentTablet.this));
+			}
 			// show list of categories
-			loadCategoriesFromDB();
+			categoriesLoaded = loadCategoriesFromDB();
 		}
 	}
 
@@ -175,7 +191,10 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 		categoriesUpdateListener = new CategoriesUpdateListener();
 		saveCategoriesUpdateListener = new SaveCategoriesUpdateListener();
 
-		changeInternalFragment(ArticleCategoriesFragmentTablet.createInstance(Symbol.EMPTY, this));
+		categoriesLoaded = loadCategoriesFromDB();
+		if (categoriesLoaded) {
+			changeInternalFragment(ArticleCategoriesFragmentTablet.createInstance(Symbol.EMPTY, this));
+		}
 
 		noCategoriesFragmentsAdded = true;
 	}
@@ -192,9 +211,10 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 	}
 
 	private void openInternalFragment(Fragment fragment) {
+		String simpleName = fragment.getClass().getSimpleName();
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.innerFragmentContainer, fragment, fragment.getClass().getSimpleName());
-		transaction.addToBackStack(fragment.getClass().getSimpleName());
+		transaction.replace(R.id.innerFragmentContainer, fragment, simpleName);
+		transaction.addToBackStack(simpleName);
 		transaction.commitAllowingStateLoss();
 	}
 
@@ -221,5 +241,15 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 	@Override
 	public Context getMeContext() {
 		return getActivity();
+	}
+
+	private void showLoadingView(boolean show) {
+		if (show) {
+			emptyView.setVisibility(View.GONE);
+			loadingView.setVisibility(View.VISIBLE);
+		} else {
+			listView.setVisibility(View.VISIBLE);
+			loadingView.setVisibility(View.GONE);
+		}
 	}
 }

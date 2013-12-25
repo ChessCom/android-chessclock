@@ -100,7 +100,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			try {
 				if (!isLCSBound) {
 					liveBaseActivity.connectLcc();
-					showLoadingProgress(true);
+					showPopupProgressDialog(R.string.loading_);
 				} else {
 					addCurrentGameItem(getLiveService());
 				}
@@ -233,7 +233,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	@Override
 	public void onLiveClientConnected() {
 		super.onLiveClientConnected();
-		showLoadingProgress(false);
+		dismissProgressDialog();
 	}
 
 	@Override

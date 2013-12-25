@@ -803,6 +803,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					handleErrorRequest();
 				}
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 

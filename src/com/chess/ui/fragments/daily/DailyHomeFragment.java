@@ -162,10 +162,10 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.YOUR_ARE_ON_VACATAION) {
 					showPopupDialog(R.string.leave_vacation_to_play_q, END_VACATION_TAG);
-				} else {
-					super.errorHandle(resultCode);
+					return;
 				}
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 

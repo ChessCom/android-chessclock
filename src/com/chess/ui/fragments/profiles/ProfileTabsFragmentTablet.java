@@ -18,16 +18,12 @@ import com.chess.backend.entity.api.*;
 import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
-import com.chess.db.tasks.SaveFriendsListTask;
 import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.RatingListItem;
 import com.chess.model.SelectionItem;
-import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.ItemsAdapter;
@@ -36,7 +32,6 @@ import com.chess.ui.adapters.SectionedListAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.friends.FriendsFragmentTablet;
 import com.chess.ui.fragments.live.LiveGameOptionsFragment;
 import com.chess.ui.fragments.messages.NewMessageFragment;
@@ -46,7 +41,6 @@ import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.IconDrawable;
-import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
@@ -188,9 +182,9 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 			if (optionItem.getText().equals(getString(R.string.add_friend))) {
 				createFriendRequest(username, getString(R.string.add_friend_request_message));
 
-			} else if (optionItem.getText().equals(getString(R.string.send_message))){
+			} else if (optionItem.getText().equals(getString(R.string.send_message))) {
 				changeInternalFragment(NewMessageFragment.createInstance(username));
-			} else if (optionItem.getText().equals(getString(R.string.challenge_to_play))){
+			} else if (optionItem.getText().equals(getString(R.string.challenge_to_play))) {
 				String title = getString(R.string.challenge) + Symbol.SPACE + username + Symbol.QUESTION;
 				popupItem.setNegativeBtnId(R.string.daily);
 				popupItem.setPositiveBtnId(R.string.live);
@@ -346,12 +340,10 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND) {
 
 					showSinglePopupDialog(R.string.username_not_found);
-				} else {
-					super.errorHandle(resultCode);
+					return;
 				}
-			} else {
-				super.errorHandle(resultCode);
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 
@@ -377,12 +369,6 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 			super.updateData(returnedObj);
 
 			fillUserStats();
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			showToast(" code " + resultCode);
 		}
 	}
 

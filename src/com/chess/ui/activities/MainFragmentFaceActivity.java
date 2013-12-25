@@ -214,7 +214,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 
 		if (intent.hasExtra(IntentConstants.LIVE_CHESS)) {
-			GameLiveFragment gameLiveFragment = getLiveFragment();
+			GameLiveFragment gameLiveFragment = getGameLiveFragment();
 			if (gameLiveFragment != null) {
 				openFragment(gameLiveFragment);
 				return;

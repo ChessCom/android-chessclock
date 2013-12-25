@@ -44,6 +44,8 @@ import com.chess.utilities.ChallengeHelper;
 
 import java.util.List;
 
+import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -90,6 +92,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private boolean startDailyGame;
 	private ChallengeHelper challengeHelper;
+	private DailyFinishedGamesUpdateListener dailyFinishedGamesUpdateListener;
 
 	public DailyGamesFragment() {
 		Bundle bundle = new Bundle();
@@ -115,9 +118,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			mode = savedInstanceState.getInt(MODE);
 		}
 
+		init();
+
 		challengeHelper = new ChallengeHelper(this);
 		gameFaceHelper = new GameFaceHelper();
-
 
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
@@ -154,17 +158,22 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	public void onResume() {
 		super.onResume();
 
-		init();
-
 		if (need2update) {
+			boolean haveSavedData = DbDataManager.haveSavedAnyDailyGame(getActivity(), getUsername());
+
 			if (isNetworkAvailable()) {
 				updateData();
+			} else if (!haveSavedData) {
+				emptyView.setText(R.string.no_network);
+				showEmptyView(true);
 			}
 
-			loadDbGames();
+			if (haveSavedData) {
+				loadDbGames(); // we need delay here because when LoadFromDbTask is finished fragment is not visible yet
+			}
 		} else {
 			updateData(); // TODO temporary force to update
-//			loadDbGames();
+			loadDbGames();
 		}
 
 		gamesUpdateReceiver = new GamesUpdateReceiver();
@@ -177,7 +186,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		unRegisterMyReceiver(gamesUpdateReceiver);
 
-		releaseResources();
+//		releaseResources();
 	}
 
 	@Override
@@ -225,7 +234,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		super.onClick(view);
 		if (view.getId() == R.id.timeSelectBtn) {
 			View parent = (View) view.getParent();
-			challengeHelper.show((View)parent.getParent());
+			challengeHelper.show((View) parent.getParent());
 
 		} else if (view.getId() == R.id.gamePlayBtn) {
 			if (startDailyGame) {
@@ -334,6 +343,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		@Override
 		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
 			if (itemCode == GameOnlineItem.CURRENT_TYPE || itemCode == GameOnlineItem.CHALLENGES_TYPE
 					|| itemCode == GameOnlineItem.FINISHED_TYPE) {
 				if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
@@ -345,18 +355,24 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	protected void updateData() {
-		// First we check ids of games what we have. Challenges also will be stored in DB
-		// when we ask server about new ids of games and challenges
-		// if server have new ids we get those games with ids
+		// get Current games first
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_CURRENT);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, getUserToken());
 
-		LoadItem loadItem = LoadHelper.getAllGames(getUserToken());
-		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<DailyCurrentGamesItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
 	private void loadDbGames() {
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener,
-				DbHelper.getDailyCurrentListGames(getUsername()),
-				getContentResolver()).executeTask();
+		// TODO let's try to load directly w/o async task to avoid delays. But we need to check performance here!!!
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getDailyCurrentListGames(getUsername()));
+
+		if (cursor != null && cursor.moveToFirst()) {
+			updateUiData(cursor);
+		}
+//		new LoadDataFromDbTask(currentGamesCursorUpdateListener,
+//				DbHelper.getDailyCurrentListGames(getUsername()),
+//				getContentResolver()).executeTask();
 	}
 
 	@Override
@@ -454,56 +470,17 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		@Override
-		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
+		public void updateData(Cursor cursor) {
+			super.updateData(cursor);
 
 			switch (gameType) {
 				case CURRENT_MY:
-					returnedObj.moveToFirst();
-					// check if we need to show new game button in dailyGamesFragment
-					boolean myTurnInDailyGames = false;
-					do {
-						if (DbDataManager.getInt(returnedObj, DbScheme.V_IS_MY_TURN) > 0) {
-							myTurnInDailyGames = true;
-							break;
-						}
-					} while (returnedObj.moveToNext());
+					cursor.moveToFirst();
+					updateUiData(cursor);
 
-					if (myTurnInDailyGames) {
-						listView.removeHeaderView(newGameHeaderView);
-					} else {
-
-						listView.removeHeaderView(newGameHeaderView);
-						listView.setAdapter(null);
-						listView.addHeaderView(newGameHeaderView);
-						listView.setAdapter(sectionedAdapter);
-					}
-					listView.invalidate();
-//					getView().requestLayout();
-
-					// restore position
-					returnedObj.moveToFirst();
-
-					currentGamesMyCursorAdapter.changeCursor(returnedObj);
-
-					if (finishedGameDataList != null) {
-						boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(),
-								finishedGameDataList, getUsername());
-
-						if (gamesLeft) {
-							new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-									getContentResolver(), getUsername()).executeTask();
-						} else {
-							finishedGamesCursorAdapter.changeCursor(null);
-						}
-					} else {
-						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-								DbHelper.getDailyFinishedListGames(getUsername()),
-								getContentResolver()).executeTask();
-					}
 					break;
 				case FINISHED:
-					finishedGamesCursorAdapter.changeCursor(returnedObj);
+					finishedGamesCursorAdapter.changeCursor(cursor);
 					need2update = false;
 					break;
 			}
@@ -528,18 +505,62 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
-	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {
+	private void updateUiData(Cursor cursor) {
+		// check if we need to show new game button in dailyGamesFragment
+		boolean myTurnInDailyGames = false;
+		do {
+			if (DbDataManager.getInt(cursor, DbScheme.V_IS_MY_TURN) > 0) {
+				myTurnInDailyGames = true;
+				break;
+			}
+		} while (cursor.moveToNext());
+
+		if (myTurnInDailyGames) {
+			listView.removeHeaderView(newGameHeaderView);
+		} else {
+
+			listView.removeHeaderView(newGameHeaderView);
+			listView.setAdapter(null);
+			listView.addHeaderView(newGameHeaderView);
+			listView.setAdapter(sectionedAdapter);
+		}
+		listView.invalidate();
+
+		// restore position
+		cursor.moveToFirst();
+
+		currentGamesMyCursorAdapter.changeCursor(cursor);
+
+		if (finishedGameDataList != null) {
+			boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(),
+					finishedGameDataList, getUsername());
+
+			if (gamesLeft) {
+				new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
+						getContentResolver(), getUsername()).executeTask();
+			} else {
+				finishedGamesCursorAdapter.changeCursor(null);
+			}
+		} else {
+			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+					DbHelper.getDailyFinishedListGames(getUsername()),
+					getContentResolver()).executeTask();
+		}
+	}
+
+
+	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyCurrentGamesItem> {
 
 		public DailyGamesUpdateListener() {
-			super(DailyGamesAllItem.class);
+			super(DailyCurrentGamesItem.class);
 		}
 
 		@Override
-		public void updateData(DailyGamesAllItem returnedObj) {
+		public void updateData(DailyCurrentGamesItem returnedObj) {
 			super.updateData(returnedObj);
 			boolean currentGamesLeft;
 			{ // current games
-				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
+				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData();
 				currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContentResolver(), currentGamesList, getUsername());
 
 				if (currentGamesLeft) {
@@ -550,34 +571,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				}
 			}
 
-			// finished
-			finishedGameDataList = returnedObj.getData().getFinished();
-			if (!currentGamesLeft) { // if SaveTask will not return to LoadFinishedGamesPoint
-				if (finishedGameDataList != null) {
-					boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, getUsername());
-
-					if (gamesLeft) {
-						new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-								getContentResolver(), getUsername()).executeTask();
-					} else {
-						finishedGamesCursorAdapter.changeCursor(null);
-					}
-				} else {
-					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getDailyFinishedListGames(getUsername()),
-							getContentResolver()).executeTask();
+			// load finished games // TODO restore!
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					getFinishedGames();
 				}
-			}
-
-//				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
-//
-//				if (gamesLeft) {
-//					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-//							getContentResolver()).executeTask();
-//				} else {
-//					finishedGamesCursorAdapter.changeCursor(null);
-//				}
-//			}
+			}, VIEW_UPDATE_DELAY);
 		}
 
 		@Override
@@ -594,6 +594,59 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			super.errorHandle(resultCode);
 		}
 	}
+
+	protected void getFinishedGames() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_FINISHED);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, getUserToken());
+		loadItem.addRequestParams(RestHelper.P_USERNAME, getUsername());
+
+		new RequestJsonTask<DailyFinishedGamesItem>(dailyFinishedGamesUpdateListener).executeTask(loadItem);
+	}
+
+	private class DailyFinishedGamesUpdateListener extends ChessUpdateListener<DailyFinishedGamesItem> {
+
+		public DailyFinishedGamesUpdateListener() {
+			super(DailyFinishedGamesItem.class);
+		}
+
+		@Override
+		public void updateData(DailyFinishedGamesItem returnedObj) {
+			super.updateData(returnedObj);
+
+			// finished
+			finishedGameDataList = returnedObj.getData().getGames();
+			if (finishedGameDataList != null) {
+				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, getUsername());
+
+				if (gamesLeft) {
+					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
+							getContentResolver(), getUsername()).executeTask();
+				} else {
+					finishedGamesCursorAdapter.changeCursor(null);
+				}
+			} else {
+				new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+						DbHelper.getDailyFinishedListGames(getUsername()),
+						getContentResolver()).executeTask();
+			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
+					showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
+					return;
+				}
+			} else if (resultCode == StaticData.INTERNAL_ERROR) {
+				showToast("Internal error occurred"); // TODO adjust properly
+			}
+			super.errorHandle(resultCode);
+		}
+	}
+
 
 	@Override
 	public void setDefaultDailyTimeMode(int mode) {
@@ -630,6 +683,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
 		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
 
+		dailyFinishedGamesUpdateListener = new DailyFinishedGamesUpdateListener();
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 	}
 
@@ -678,7 +732,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		{ // Time mode adjustments
-			// TODO add sliding from outside animation for time modes in popup
 			timeSelectBtn = (Button) newGameHeaderView.findViewById(R.id.timeSelectBtn);
 			timeSelectBtn.setOnClickListener(this);
 
@@ -698,8 +751,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(sectionedAdapter);
 	}
-
-
 
 	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {
 
@@ -744,17 +795,4 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			if (sectionedAdapter.getCount() == 0) {
-				listView.setVisibility(View.GONE);
-
-			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
-		}
-	}
 }
