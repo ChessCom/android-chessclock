@@ -599,7 +599,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 
-			// show message only for re-login
+			// perform auto re-login here
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {

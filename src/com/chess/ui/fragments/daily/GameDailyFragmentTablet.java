@@ -84,7 +84,12 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 		currentGame.setHasNewMessage(false);
 		getControlsView().haveNewMessage(false);
 
-		topButtonsGroup.check(R.id.chatBtn);
+		if (inLandscape()) {
+			topButtonsGroup.check(R.id.chatBtn);
+		} else {
+			getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, labelsConfig.topPlayerAvatar));
+		}
+
 	}
 
 	@Override

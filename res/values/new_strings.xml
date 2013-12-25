@@ -8,4 +8,6 @@
 	<string name="total_games">Total Games</string>
 	<string name="help_toast_for_daily_games">Pull Down To Update Games</string>
 	<string name="not_connected_yet">Not connected yet</string>
+	<string name="no_email_found">No email found</string>
+	<string name="unable_to_send_challenge">Unable to send Challenge</string>
 </resources>

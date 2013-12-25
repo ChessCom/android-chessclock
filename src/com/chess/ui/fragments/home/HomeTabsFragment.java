@@ -259,6 +259,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	private Runnable firstInitRunnable =  new Runnable() {
 		@Override
 		public void run() {
+			if (getActivity() == null) {
+				return;
+			}
+
 			if (!DbDataManager.haveSavedFriends(getActivity(), getUsername()) && AppUtils.isNetworkAvailable(getActivity())) {
 				getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class));
 			}

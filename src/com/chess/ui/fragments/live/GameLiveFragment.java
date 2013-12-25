@@ -199,6 +199,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		GameLiveItem currentGame = liveService.getGameItem();
 		gameId = currentGame.getGameId();
 
+		int resignTitleId = liveService.getResignTitle();
+		{// options list setup
+			optionsMap = new SparseArray<String>();
+			optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
+			optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
+			optionsMap.put(ID_ABORT_RESIGN, getString(resignTitleId));
+			optionsMap.put(ID_REMATCH, getString(R.string.rematch));
+			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
+		}
+
 		ChessBoardLive.resetInstance();
 		BoardFace boardFace = getBoardFace();
 
@@ -1109,16 +1119,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 
 		liveService.setLccChatMessageListener(this);
-
-		int resignTitleId = liveService.getResignTitle();
-		{// options list setup
-			optionsMap = new SparseArray<String>();
-			optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
-			optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
-			optionsMap.put(ID_ABORT_RESIGN, getString(resignTitleId));
-			optionsMap.put(ID_REMATCH, getString(R.string.rematch));
-			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
-		}
 
 		lccInitiated = true;
 	}

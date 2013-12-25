@@ -89,6 +89,7 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 
 		if (need2update) {
 
+			categoriesLoaded = loadCategoriesFromDB();
 			if (!categoriesLoaded) {
 				getCategories();
 			}
@@ -191,7 +192,9 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 		categoriesUpdateListener = new CategoriesUpdateListener();
 		saveCategoriesUpdateListener = new SaveCategoriesUpdateListener();
 
-		categoriesLoaded = loadCategoriesFromDB();
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.ARTICLE_CATEGORIES));
+		categoriesLoaded = cursor != null && cursor.moveToFirst();
+
 		if (categoriesLoaded) {
 			changeInternalFragment(ArticleCategoriesFragmentTablet.createInstance(Symbol.EMPTY, this));
 		}

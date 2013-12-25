@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -106,7 +107,11 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		TextView skipBtn = (TextView) view.findViewById(R.id.skipBtn);
 		skipBtn.setOnClickListener(this);
 		IconDrawable rightIconDrawable = new IconDrawable(getActivity(), R.string.ic_right);
-		skipBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, rightIconDrawable, null);
+
+		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			skipBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, rightIconDrawable, null);
+		}
+
 		firstNameEdt = (LeftImageEditText) view.findViewById(R.id.firstNameEdt);
 		lastNameEdt = (LeftImageEditText) view.findViewById(R.id.lastNameEdt);
 		countryEdt = (LeftRightImageEditText) view.findViewById(R.id.countryEdt);

@@ -135,10 +135,12 @@ public class CompGameOptionsFragment extends CommonLogicFragment implements Swit
 			}
 		}
 
-		// TODO shouldn't be null
-		gameCompFragment.updateConfig(config);
+		if (gameCompFragment.isVisible()) {
+			gameCompFragment.updateConfig(config);
+		} else {
+			getActivityFace().openFragment(gameCompFragment);
+		}
 
-//		getActivityFace().switchFragment(gameCompFragment);
 		getActivityFace().toggleRightMenu();
 	}
 

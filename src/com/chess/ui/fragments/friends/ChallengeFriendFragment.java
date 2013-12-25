@@ -6,12 +6,14 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.widgets.EditButton;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
@@ -210,6 +212,20 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 		public void updateData(DailySeekItem returnedObj) {
 			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+
+
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCodes.INVALID_EMAIL_DOMAIN) {
+					showToast(R.string.unable_to_send_challenge);
+					return;
+				}
+			}
+			super.errorHandle(resultCode);
+		}
 	}
 
 	@Override
@@ -238,8 +254,16 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 			if (cursor != null && cursor.moveToFirst()) {
 				int emailIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
 				String email = cursor.getString(emailIdx);
-				createDailyChallenge(email);
-//				showToast("email = " + email); // TODO maybe add email confirmation logic
+
+				if (TextUtils.isEmpty(email)) {
+					showToast(R.string.no_email_found);
+					return;
+				}
+
+				showEmailEdit(true);
+				emailEditBtn.setText(email);
+			} else {
+				showToast(R.string.no_email_found);
 			}
 		}
 	}

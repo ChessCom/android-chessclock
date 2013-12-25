@@ -11,8 +11,10 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.DataHolder;
+import com.chess.model.GameExplorerItem;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.fragments.explorer.GameExplorerFragment;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
@@ -70,6 +72,15 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 
 			adjustBoardForGame();
 		}
+	}
+
+	@Override
+	public void showExplorer() {
+		GameExplorerItem explorerItem = new GameExplorerItem();
+		explorerItem.setFen(getBoardFace().generateFullFen());
+		explorerItem.setMovesList(getBoardFace().getMoveListSAN());
+		explorerItem.setGameType(currentGame.getGameType());
+		getActivityFace().openFragment(GameExplorerFragment.createInstance(explorerItem));
 	}
 
 	@Override

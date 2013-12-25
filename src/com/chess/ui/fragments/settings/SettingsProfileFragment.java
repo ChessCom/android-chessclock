@@ -648,7 +648,6 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 		@Override
 		public void onDoneClicked() {
-			logTest("done clicked");
 			if (!discarded && fieldsWasChanged()) {
 				hideKeyBoard();
 				// hide close buttons

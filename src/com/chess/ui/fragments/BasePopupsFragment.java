@@ -230,6 +230,11 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 			popupProgressManager.add(popupProgressDialogFragment);
 			return;
 		}
+
+		if (getFragmentManager() == null) {
+			return;
+		}
+
 		popupProgressDialogFragment.show(getFragmentManager(), PROGRESS_TAG);
 		popupProgressManager.add(popupProgressDialogFragment);
 	}

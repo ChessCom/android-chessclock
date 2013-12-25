@@ -66,8 +66,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	protected int H;
 	protected int side;
 	protected float squareSize;
-	protected int from = -1;
-	protected int to = -1;
+	protected int from;
+	protected int to;
 	private int previousFrom;
 
 	protected float dragX = 0;

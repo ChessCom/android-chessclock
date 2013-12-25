@@ -193,6 +193,12 @@ public class ArticleCategoriesFragmentTablet extends ArticleCategoriesFragment {
 	}
 
 	private class SaveCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem.Data> {
+
+		@Override
+		public void showProgress(boolean show) {
+			// don't show progress for pagination here
+		}
+
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			super.updateData(returnedObj);
