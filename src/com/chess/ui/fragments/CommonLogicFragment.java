@@ -410,6 +410,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	private void loginWithFacebook(String accessToken) {
+		if (getActivity() == null) {
+			return;
+		}
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
@@ -546,14 +549,18 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		FragmentActivity activity = getActivity();
 		if (activity != null) {
 			String deviceId = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
+			if (TextUtils.isEmpty(deviceId)) {
+				deviceId = getAppData().getDeviceId();
+				if (TextUtils.isEmpty(deviceId)) { // generate a new one
+					deviceId = "Hello" +  (Math.random() * 100) + "There" + System.currentTimeMillis();
+					getAppData().setDeviceId(deviceId);
+				}
+			}
 
 			deviceId = ImageCache.hashKeyForDisk(deviceId);
-//			while ((deviceId != null ? deviceId.length() : 0) < 32) { // 32 length is requirement for deviceId parameter
-//				deviceId += deviceId;
-//			}
 			return deviceId.substring(0, 32);
 		} else {
-			return Symbol.EMPTY;
+			return ImageCache.hashKeyForDisk("Hello" +  (Math.random() * 100) + "There" + System.currentTimeMillis());
 		}
 	}
 

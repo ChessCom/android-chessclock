@@ -12,8 +12,6 @@
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-	<!--We need to read contact information after we receive a result from Contact app pick-->
-	<uses-permission android:name="android.permission.READ_CONTACTS" />
 
 	<!--============ GCM Permissions ==========================-->
 	<uses-permission android:name="android.permission.INTERNET" />

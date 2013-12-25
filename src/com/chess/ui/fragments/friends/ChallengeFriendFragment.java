@@ -1,32 +1,29 @@
 package com.chess.ui.fragments.friends;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import com.chess.backend.ServerErrorCodes;
-import com.chess.widgets.EditButton;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.widgets.EditButton;
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
@@ -127,7 +124,7 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 			createDailyChallenge(getTextFromField(emailEditBtn));
 			showEmailEdit(false);
 		} else if (id == R.id.yourContactsView) {
-			startContactPicker();
+			sendEmailInvite();
 		}
 	}
 
@@ -138,9 +135,12 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 		addEmailBtn.setVisibility(show ? View.VISIBLE : View.GONE);
 	}
 
-	public void startContactPicker() {
-		Intent contactPickerIntent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-		startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);
+	public void sendEmailInvite() {
+		Intent emailIntent = new Intent(Intent.ACTION_SEND);
+		emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
+		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Let's Play on Chess.com!");
+		emailIntent.putExtra(Intent.EXTRA_TEXT, "Hey let's Play on Chess.com!");
+		startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 	}
 
 	private void sendRequestDialog() {
@@ -228,43 +228,43 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 		}
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == Activity.RESULT_OK && requestCode == CONTACT_PICKER_RESULT) {
-			// handle contact results
-			Bundle extras = data.getExtras();
-			if (extras == null) {
-				return;
-			}
-
-			Uri result = data.getData();
-			if (result == null) {
-				return;
-			}
-			// get the contact id from the Uri
-			String id = result.getLastPathSegment();
-
-			// query for everything email
-			Cursor cursor = getContentResolver().query(
-					ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-					ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?",
-					new String[]{id}, null);
-
-			if (cursor != null && cursor.moveToFirst()) {
-				int emailIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
-				String email = cursor.getString(emailIdx);
-
-				if (TextUtils.isEmpty(email)) {
-					showToast(R.string.no_email_found);
-					return;
-				}
-
-				showEmailEdit(true);
-				emailEditBtn.setText(email);
-			} else {
-				showToast(R.string.no_email_found);
-			}
-		}
-	}
+//	@Override
+//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		super.onActivityResult(requestCode, resultCode, data);
+//		if (resultCode == Activity.RESULT_OK && requestCode == CONTACT_PICKER_RESULT) {
+//			// handle contact results
+//			Bundle extras = data.getExtras();
+//			if (extras == null) {
+//				return;
+//			}
+//
+//			Uri result = data.getData();
+//			if (result == null) {
+//				return;
+//			}
+//			// get the contact id from the Uri
+//			String id = result.getLastPathSegment();
+//
+//			// query for everything email
+//			Cursor cursor = getContentResolver().query(
+//					ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
+//					ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?",
+//					new String[]{id}, null);
+//
+//			if (cursor != null && cursor.moveToFirst()) {
+//				int emailIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
+//				String email = cursor.getString(emailIdx);
+//
+//				if (TextUtils.isEmpty(email)) {
+//					showToast(R.string.no_email_found);
+//					return;
+//				}
+//
+//				showEmailEdit(true);
+//				emailEditBtn.setText(email);
+//			} else {
+//				showToast(R.string.no_email_found);
+//			}
+//		}
+//	}
 }

@@ -137,6 +137,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		Bundle arguments = new Bundle();
 		arguments.putLong(GAME_ID, gameId);
 		fragment.setArguments(arguments);
+		arguments.putBoolean(FORCE_UPDATE, true); //  temporary force update
 
 		return fragment;
 	}
@@ -212,12 +213,20 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			getActivityFace().changeRightFragment(new DailyGameOptionsFragment());
 			getActivityFace().toggleRightMenu();
 		} else if (code == ID_ABORT_RESIGN) {
+			if (!username.equals(getUsername())) { // don't let unAuth users to make action
+				showToast("=)");
+				 return;
+			}
 			if (getBoardFace().getPly() < 1 && isUserMove()) {
 				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
 			} else {
 				showPopupDialog(R.string.resign_game_, ABORT_GAME_TAG);
 			}
 		} else if (code == ID_OFFER_DRAW) {
+			if (!username.equals(getUsername())) { // don't let unAuth users to make action
+				showToast("=)");
+				return;
+			}
 			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();

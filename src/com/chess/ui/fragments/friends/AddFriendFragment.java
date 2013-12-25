@@ -1,11 +1,8 @@
 package com.chess.ui.fragments.friends;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +18,7 @@ import com.chess.backend.entity.api.RequestItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.widgets.EditButton;
@@ -107,7 +105,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		} else if (id == R.id.facebookFriendsView) {
 			sendRequestDialog();
 		} else if (id == R.id.yourContactsView) {
-			startContactPicker();
+			sendEmailInvite();
 		} else if (id == R.id.yourEmailView) {
 			showEmailEdit(true);
 		} else if (id == R.id.addEmailBtn) {
@@ -168,9 +166,12 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		requestsDialog.show();
 	}
 
-	public void startContactPicker() {
-		Intent contactPickerIntent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-		startActivityForResult(contactPickerIntent, CONTACT_PICKER_RESULT);
+	public void sendEmailInvite() {
+		Intent emailIntent = new Intent(Intent.ACTION_SEND);
+		emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
+		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Let's Play on Chess.com!");
+		emailIntent.putExtra(Intent.EXTRA_TEXT, "Hey let's Play on Chess.com!");
+		startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 	}
 
 	@Override
@@ -217,35 +218,5 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		}
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == Activity.RESULT_OK && requestCode == CONTACT_PICKER_RESULT) {
-			// handle contact results
-			Bundle extras = data.getExtras();
-			if (extras == null) {
-				return;
-			}
 
-			Uri result = data.getData();
-			if (result == null) {
-				return;
-			}
-			// get the contact id from the Uri
-			String id = result.getLastPathSegment();
-
-			// query for everything email
-			Cursor cursor = getContentResolver().query(
-					ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-					ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?",
-					new String[]{id}, null);
-
-			if (cursor != null && cursor.moveToFirst()) {
-				int emailIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
-				String email = cursor.getString(emailIdx);
-
-				createFriendRequestByEmail(email);
-			}
-		}
-	}
 }

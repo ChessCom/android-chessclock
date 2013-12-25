@@ -1154,6 +1154,10 @@ public class ChessBoard implements BoardFace {
 			to = Board.F8.ordinal();
 		}
 
+		if (to == NOT_SET || from == NOT_SET) { // TODO investigate real problem
+			return false;
+		}
+
 		colors[to] = colors[from];
 		pieces[to] = pieces[from];
 		if (to != from) {

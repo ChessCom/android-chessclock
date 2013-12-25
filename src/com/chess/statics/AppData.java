@@ -817,6 +817,14 @@ public class AppData {
 		setBooleanValue(FIRST_INIT_FINISHED, value);
 	}
 
+	public void setDeviceId(String value) {
+		setStringValue(DEVICE_ID, value);
+	}
+
+	public String getDeviceId() {
+		return getStringValue(DEVICE_ID, Symbol.EMPTY);
+	}
+
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {

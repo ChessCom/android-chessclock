@@ -28,7 +28,6 @@ import com.chess.statics.*;
 import com.chess.utilities.AppUtils;
 import com.facebook.Session;
 import com.facebook.SessionState;
-import com.facebook.UiLifecycleHelper;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gcm.GCMRegistrar;
 
@@ -62,7 +61,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	private AppData appData;
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
-	private UiLifecycleHelper facebookUiHelper;
 	protected boolean isTablet;
 	private CommonLogicActivity.GcmRegisterUpdateListener gcmRegisterUpdateListener;
 
@@ -83,9 +81,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		handler = new Handler();
 		setLocale();
-
-		facebookUiHelper = new UiLifecycleHelper(this, callback);
-		facebookUiHelper.onCreate(savedInstanceState);
 
 		gcmRegisterUpdateListener = new GcmRegisterUpdateListener();
 	}
@@ -245,37 +240,15 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 	}
 
-//	protected void signInUser() {
-//		String username = getTextFromField(loginUsernameEdt);
-//		if (username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH) {
-//			loginUsernameEdt.setError(getString(R.string.validateUsername));
-//			loginUsernameEdt.requestFocus();
-//			return;
-//		}
-//
-//		String pass = getTextFromField(passwordEdt);
-//		if (pass.length() == 0) {
-//			passwordEdt.setError(getString(R.string.password_cant_be_empty));
-//			passwordEdt.requestFocus();
-//			return;
-//		}
-//
-//		LoadItem loadItem = new LoadItem();
-//		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
-//		loadItem.setRequestMethod(RestHelper.POST);
-//		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-//		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, username);
-//		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
-//		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
-//		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
-//
-//		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
-//
-//		loginReturnCode = SIGNIN_CALLBACK_CODE;
-//	}
-
 	protected String getDeviceId() {
 		String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+		if (TextUtils.isEmpty(deviceId)) {
+			deviceId = getAppData().getDeviceId();
+			if (TextUtils.isEmpty(deviceId)) { // generate a new one
+				deviceId = "Hello" +  (Math.random() * 100) + "There" + System.currentTimeMillis();
+				getAppData().setDeviceId(deviceId);
+			}
+		}
 
 		deviceId = ImageCache.hashKeyForDisk(deviceId);
 		return deviceId.substring(0, 32);
