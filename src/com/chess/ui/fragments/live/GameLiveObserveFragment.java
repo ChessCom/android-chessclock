@@ -167,6 +167,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				if (block) {
+					fadeLay.setVisibility(View.VISIBLE);
+				} else {
+					fadeLay.setVisibility(View.INVISIBLE);
+				}
 				boardView.lockBoard(true);
 			}
 		});
@@ -175,6 +180,13 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	@Override
 	public void showOptions() {
 		if (optionsSelectFragment != null) {
+			return;
+		}
+
+		try {
+			getLiveService();
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
 			return;
 		}
 

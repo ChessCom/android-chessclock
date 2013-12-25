@@ -82,7 +82,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	protected ChessBoardLiveView boardView;
 
-	private View fadeLay;
+	protected View fadeLay;
 	protected boolean lccInitiated;
 	private String warningMessage;
 
@@ -151,7 +151,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			init();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
-			showToast(e.getMessage());
 			logTest(e.getMessage());
 		}
 		enableSlideMenus(false);
@@ -1238,6 +1237,17 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
 				bottomPanelView.invalidate();
 			}
+		}
+	}
+
+	@Override
+	public void onLiveClientConnected() {
+		super.onLiveClientConnected();
+		try {
+			init();
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+			logTest(e.getMessage());
 		}
 	}
 

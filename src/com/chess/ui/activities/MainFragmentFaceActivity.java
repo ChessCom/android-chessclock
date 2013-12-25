@@ -211,11 +211,15 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		if (intent.hasExtra(IntentConstants.LIVE_CHESS)) {
 
-			GameLiveFragment gameLiveFragment = getLiveFragment();
+
+			GameLiveFragment gameLiveFragment = getGameLiveFragment();
 			if (gameLiveFragment != null) {
 				openFragment(gameLiveFragment);
 				return;
 			}
+
+			// todo: Alex, should we really need to create new WaitFragment here by Notification bar click?
+			// I think no, but if yes then we have to check GameLiveObserveFragment here like GameLiveFragment as well
 
 			LiveGameWaitFragment fragmentByTag = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
 			if (fragmentByTag == null) {

@@ -163,7 +163,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	public boolean onKeyUp(int keyCode, KeyEvent event) {   // TODO refactor with showPreviousFragment logic
 		if (keyCode == KeyEvent.KEYCODE_BACK && !getSlidingMenu().isMenuShowing()) {
 			if (getAppData().isLiveChess() && isLCSBound) {
-				Fragment fragmentByTag = getLiveFragment();
+
+				Fragment fragmentByTag = getGameLiveFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					if (!liveService.getCurrentGame().isGameOver()) {
 						showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
@@ -622,11 +623,18 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void onConnectionBlocked(final boolean blocked) {
-//		LogMe.dl(TAG, "onConnectionBlocked = " + blocked);
-		GameLiveFragment gameLiveFragment = getLiveFragment();
+
+		GameLiveFragment gameLiveFragment = getGameLiveFragment();
+		if (gameLiveFragment != null) {
+			gameLiveFragment.onConnectionBlocked(blocked);
+			return;
+		}
+
+		gameLiveFragment = (GameLiveObserveFragment) findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
 		if (gameLiveFragment != null) {
 			gameLiveFragment.onConnectionBlocked(blocked);
 		}
+
 	}
 
 	@Override
@@ -716,7 +724,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 	}
 
-	protected GameLiveFragment getLiveFragment() {
+	protected GameLiveFragment getGameLiveFragment() {
 		GameLiveFragment gameLiveFragment;
 		if (!isTablet) {
 			gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());

@@ -64,7 +64,7 @@ public class LccHelper {
 	private Collection<? extends User> blockedUsers = new HashSet<User>();
 	private Collection<? extends User> blockingUsers = new HashSet<User>();
 	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
-	private final HashSet<Game> gamesToUnObserve = new HashSet<Game>();
+	private final HashSet<Game> gamesToUnobserve = new HashSet<Game>();
 	private final Map<String, User> friends = new HashMap<String, User>();
 	private final Map<String, User> onlineFriends = new HashMap<String, User>();
 	/*private Map<LiveGameEvent.Event, LiveGameEvent> pausedActivityGameEvents = new HashMap<LiveGameEvent.Event, LiveGameEvent>();*/
@@ -952,16 +952,16 @@ public class LccHelper {
 		return currentObservedGameId;
 	}
 
-	public boolean isGameToUnObserve(Game game) {
-		return gamesToUnObserve.contains(game);
+	public boolean isGameToUnobserve(Game game) {
+		return gamesToUnobserve.contains(game);
 	}
 
-	public boolean addGameToUnObserve(Game game) {
-		return gamesToUnObserve.add(game);
+	public boolean addGameToUnobserve(Game game) {
+		return gamesToUnobserve.add(game);
 	}
 
-	/*public boolean removeGameToUnObserve(Game game) {
-		return gamesToUnObserve.remove(game);
+	/*public boolean removeGameToUnobserve(Game game) {
+		return gamesToUnobserve.remove(game);
 	}*/
 
 	public void putGameChat(Long gameId, Chat chat) {
@@ -1054,8 +1054,8 @@ public class LccHelper {
 		lccClient.observeTopGame(GameRatingClass.Blitz, gameListener);
 	}
 
-	public void unObserveGame(Long gameId) {
-		LogMe.dl(TAG, "unObserve game=" + gameId);
+	public void unobserveGame(Long gameId) {
+		LogMe.dl(TAG, "unobserve game=" + gameId);
 		lccClient.unobserveGame(gameId);
 	}
 
@@ -1238,22 +1238,22 @@ public class LccHelper {
 		return connectionFailure;
 	}
 
-	public void unObserveCurrentObservingGame() {
-//		LogMe.dl(TAG, "unObserveCurrentObservingGame: gameId=" + getCurrentObservedGameId());
+	public void unobserveCurrentObservingGame() {
+//		LogMe.dl(TAG, "unobserveCurrentObservingGame: gameId=" + getCurrentObservedGameId());
 		if (getCurrentObservedGameId() != null) {
-			runUnObserveGameTask(getCurrentObservedGameId());
+			runUnobserveGameTask(getCurrentObservedGameId());
 		}
 	}
 
-	public void runUnObserveGameTask(Long gameId) {
-		new UnObserveGameTask().execute(gameId);
+	public void runUnobserveGameTask(Long gameId) {
+		new UnobserveGameTask().execute(gameId);
 	}
 
-	private class UnObserveGameTask extends AsyncTask<Long, Void, Void> {
+	private class UnobserveGameTask extends AsyncTask<Long, Void, Void> {
 
 		@Override
 		protected Void doInBackground(Long... params) {
-			unObserveGame(params[0]);
+			unobserveGame(params[0]);
 			return null;
 		}
 	}

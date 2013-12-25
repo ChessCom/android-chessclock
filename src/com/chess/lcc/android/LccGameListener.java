@@ -31,10 +31,10 @@ public class LccGameListener implements GameListener {
 		for (Game game : games) {
 			gameId = game.getId();
 			if (lccHelper.isObservedGame(game)) {
-				lccHelper.addGameToUnObserve(game); // ignore previously subscribed observed games
+				lccHelper.addGameToUnobserve(game); // ignore previously subscribed observed games
 				/*LogMe.dl(TAG, "unobserve game " + gameId);
 				games.remove(game);*/
-				//lccHelper.getClient().unObserveGame(gameId);
+				//lccHelper.getClient().unobserveGame(gameId);
 			}
 			else if (gameId > latestGameId) {
 				latestGameId = gameId;
@@ -58,12 +58,12 @@ public class LccGameListener implements GameListener {
 //		LogMe.dl(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
 		if (isActualMyGame(game)) {
-			lccHelper.unObserveCurrentObservingGame();
+			lccHelper.unobserveCurrentObservingGame();
 
 		} else if (lccHelper.isObservedGame(game)) {
 
-			if (lccHelper.isGameToUnObserve(game)) {
-				lccHelper.unObserveGame(game.getId());
+			if (lccHelper.isGameToUnobserve(game)) {
+				lccHelper.unobserveGame(game.getId());
 				if (lccHelper.getLccObserveEventListener() != null) {
 					lccHelper.getLccObserveEventListener().expireGame();
 				}
@@ -92,11 +92,11 @@ public class LccGameListener implements GameListener {
 		}
 
 		if (isActualMyGame(game)) {
-			lccHelper.unObserveCurrentObservingGame();
+			lccHelper.unobserveCurrentObservingGame();
 
 		} else if (lccHelper.isObservedGame(game)) {
 
-			if (lccHelper.isGameToUnObserve(game)) {
+			if (lccHelper.isGameToUnobserve(game)) {
 				return;
 			}
 
