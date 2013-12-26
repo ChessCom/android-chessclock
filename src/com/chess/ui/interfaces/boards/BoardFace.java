@@ -144,4 +144,6 @@ public interface BoardFace {
 	HashMap<String, String> getCommentsFromMovesList(String movesList);
 
 	String removeCommentsAndAlternatesFromMovesList(String movesList);
+
+	boolean isCurrentPositionLatest();
 }

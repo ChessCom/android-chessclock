@@ -155,14 +155,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		resideBoardIfCompWhite();
 		invalidateGameScreen();
 
-		if (!getBoardFace().isAnalysis()) {
-			boolean isComputerMove = (ChessBoard.isComputerVsComputerGameMode(getBoardFace()))
-					|| (ChessBoard.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
-					|| (ChessBoard.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
-
-			if (isComputerMove) {
-				computerMove();
-			}
+		if (!getBoardFace().isAnalysis() && boardView.isComputerToMove() && getBoardFace().isCurrentPositionLatest()) {
+			computerMove();
 		}
 
 		startGame();
@@ -180,14 +174,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			ChessBoardComp.resetInstance();
 		}
 	}
-
-	/*@Override
-	public void onDestroy() {
-		if (CompEngineHelper.getInstance().isInitialized())
-			CompEngineHelper.getInstance().shutdownEngine();
-		super.onDestroy();
-	}*/
-
 
 	// todo: check rotate screen when it will be actual
 	/*@Override
@@ -362,7 +348,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			bottomPanelView.showFlags(false);
 		}
 
-		boardView.updateNotations(getBoardFace().getNotationArray());
+		boardView.updateNotations(getBoardFace().getFullNotationsArray());
 	}
 
 	@Override

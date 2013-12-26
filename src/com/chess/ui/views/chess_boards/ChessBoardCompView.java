@@ -146,7 +146,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	}
 
-	public void makeHint() {
+	private void makeHint() {
 		controlsCompView.enableHintButton(false);
 
 		setHint(true);
@@ -263,9 +263,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		boolean blackCompFirstMove =
 				ChessBoard.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getPly() == 1;
 
-        if (!isComputerMoving() && noMovesToAnimate() && !navigating && getBoardFace().getPly() > 0 && !blackCompFirstMove) {
+        if (!isComputerMoving() && noMovesToAnimate() /*&& !navigating*/ && getBoardFace().getPly() > 0 && !blackCompFirstMove) {
 
-			navigating = true;
+			//navigating = true;
 			CompEngineHelper.getInstance().moveBack();
 
 			getBoardFace().setFinished(false);
@@ -289,7 +289,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
     @Override
     public boolean moveForward() {
-        if (!isComputerMoving() && noMovesToAnimate() && !navigating) {
+        if (!isComputerMoving() && noMovesToAnimate() /*&& !navigating*/) {
 
 			pieceSelected = false;
 
@@ -297,7 +297,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			if (move == null) {
 				return false;
 			}
-			navigating = true;
+			//navigating = true;
 			CompEngineHelper.getInstance().moveForward();
 			setMoveAnimator(move, true);
 			resetValidMoves();
@@ -350,7 +350,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			return;
 		}
 
-        if (!isComputerMoving() && noMovesToAnimate() && !navigating && !isHint()) { // TODO !isHint() is redundant. UI logic shouldn't allow to press it during hint
+        if (!isComputerMoving() && !isComputerToMove() && noMovesToAnimate()) {
 			makeHint();
         }
     }
@@ -373,5 +373,11 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	protected void onSecondMoveAnimated() {
 		gameCompActivityFace.invalidateGameScreen();
+	}
+
+	public boolean isComputerToMove() {
+		return (ChessBoard.isComputerVsComputerGameMode(getBoardFace()))
+				|| (ChessBoard.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
+				|| (ChessBoard.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
 	}
 }

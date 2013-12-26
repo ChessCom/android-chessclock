@@ -205,15 +205,9 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		resideBoardIfCompWhite();
 		invalidateGameScreen();
 
-		if (!getBoardFace().isAnalysis()) {
-
-			boolean isComputerMove = (ChessBoard.isComputerVsComputerGameMode(getBoardFace()))
-					|| (ChessBoard.isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
-					|| (ChessBoard.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove());
-
-			if (isComputerMove) {
-				computerMove();
-			}
+		// todo: check restore on comp move navigated back
+		if (!getBoardFace().isAnalysis() && boardView.isComputerToMove() && getBoardFace().isCurrentPositionLatest()) {
+			computerMove();
 		}
 
 		startGame();
@@ -233,14 +227,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		}
 		labelsSet = false;
 	}
-
-	/*@Override
-	public void onDestroy() {
-		Log.d("DEBUGDEBUG", "DESTROY CompEngineHelper.getInstance().isInitialized() " + CompEngineHelper.getInstance().isInitialized());
-		if (CompEngineHelper.getInstance().isInitialized())
-			CompEngineHelper.getInstance().shutdownEngine();
-		super.onDestroy();
-	}*/
 
 	// todo: check rotate screen when it will be actual
 	/*@Override

@@ -1442,7 +1442,7 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public boolean takeNext() {
-		if (ply + 1 <= movesCount) {
+		if (isCurrentPositionLatest()) {
 			if (histDat[ply] == null) {
 //				Log.e(TAG, " histDat[ply] == null, ply = " + ply + " histDat.length = " + histDat.length);
 				// TODO find real problem
@@ -1455,7 +1455,11 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public boolean takeNext(boolean playSound) {
-		return ply + 1 <= movesCount && histDat[ply] != null && makeMove(histDat[ply].move, playSound);
+		return isCurrentPositionLatest() && histDat[ply] != null && makeMove(histDat[ply].move, playSound);
+	}
+
+	public boolean isCurrentPositionLatest() {
+		return ply < movesCount;
 	}
 
 /*
@@ -2036,7 +2040,7 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public Move getNextMove() {
-		boolean isHistoryPresent = ply < movesCount && histDat[ply] != null;
+		boolean isHistoryPresent = isCurrentPositionLatest() && histDat[ply] != null;
 		return isHistoryPresent ? histDat[ply].move : null;
 	}
 

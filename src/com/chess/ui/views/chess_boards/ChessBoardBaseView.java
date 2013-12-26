@@ -119,7 +119,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 //			new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
 //	private Paint whiteMoveArrowPaint;
 //	private Paint blackMoveArrowPaint;
-	protected boolean navigating;
+	//protected boolean navigating;
 	private int draggingFrom = -1;
 	private CopyOnWriteArrayList<Move> validMoves = new CopyOnWriteArrayList<Move>(); // lets try this type
 	private BitmapFactory.Options bitmapOptions;
@@ -572,7 +572,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 					onSecondMoveAnimated();
 				} else {
 					gameFace.updateParentView();
-					navigating = false;
+					//navigating = false;
 				}
 			}
 		}
@@ -585,7 +585,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			} else {
 				secondMoveAnimator = null;
 				gameFace.updateParentView();
-				navigating = false;
+				//navigating = false;
 			}
 		}
 	}
