@@ -147,11 +147,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
 		}
 
-		{// options list setup
-			optionsMap = new SparseArray<String>();
-			optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
-			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
-		}
+		optionsMapInit();
 
 		lccInitiated = true;
 	}
@@ -351,5 +347,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			logTest(e.getMessage());
 			isLCSBound = false;
 		}
+	}
+
+	protected void optionsMapInit() {
+		optionsMap = new SparseArray<String>();
+		optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
+		optionsMap.put(ID_SETTINGS, getString(R.string.settings));
 	}
 }

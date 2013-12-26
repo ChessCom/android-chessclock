@@ -151,7 +151,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			init();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
-			showToast(e.getMessage());
+			showToast(e.getMessage()); // todo: Alex, we should not show this Toast each time when user rotated screen
 			logTest(e.getMessage());
 		}
 		enableSlideMenus(false);
@@ -199,15 +199,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		GameLiveItem currentGame = liveService.getGameItem();
 		gameId = currentGame.getGameId();
 
-		int resignTitleId = liveService.getResignTitle();
-		{// options list setup
-			optionsMap = new SparseArray<String>();
-			optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
-			optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
-			optionsMap.put(ID_ABORT_RESIGN, getString(resignTitleId));
-			optionsMap.put(ID_REMATCH, getString(R.string.rematch));
-			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
-		}
+		optionsMapInit();
 
 		ChessBoardLive.resetInstance();
 		BoardFace boardFace = getBoardFace();
@@ -1241,5 +1233,17 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	protected void logLiveTest(String messageToLog) {
 		LogMe.dl(TAG, "LIVE GAME FRAGMENT: " + messageToLog);
+	}
+
+	protected void optionsMapInit() throws DataNotValidException {
+		LiveChessService liveService = getLiveService();
+		int resignTitleId = liveService.getResignTitle();
+
+		optionsMap = new SparseArray<String>();
+		optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
+		optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
+		optionsMap.put(ID_ABORT_RESIGN, getString(resignTitleId));
+		optionsMap.put(ID_REMATCH, getString(R.string.rematch));
+		optionsMap.put(ID_SETTINGS, getString(R.string.settings));
 	}
 }
