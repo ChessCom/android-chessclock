@@ -28,9 +28,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.widgets.RoboTextView;
 import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
 import com.chess.ui.views.drawables.BadgeDrawable;
+import com.chess.widgets.RoboTextView;
 
 /**
  * An extension of {@link ActionBarHelper} that provides Android 3.0-specific
@@ -42,6 +42,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	private View mRefreshIndeterminateProgressView = null;
 	private boolean showActionRefresh;
 	private ActionBarBackgroundDrawable actionBarBackgroundDrawable;
+	private ActionBar actionBar;
 
 	protected ActionBarHelperHoneycomb(ActionBarActivity activity) {
 		super(activity);
@@ -50,7 +51,8 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		ActionBar actionBar = mActivity.getActionBar(); // could be null for small screens
+		provideActionBar();
+
 		if (actionBar != null) {
 			if (actionBarBackgroundDrawable == null) {
 				actionBarBackgroundDrawable = new ActionBarBackgroundDrawable(mActivity);
@@ -63,8 +65,9 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	}
 
 	@Override
-	public void updateActionBarBackground(){
-		ActionBar actionBar = mActivity.getActionBar(); // could be null for small screens
+	public void updateActionBarBackground() {
+		provideActionBar();
+
 		if (actionBar != null) {
 			if (actionBarBackgroundDrawable == null) {
 				actionBarBackgroundDrawable = new ActionBarBackgroundDrawable(mActivity);
@@ -88,7 +91,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 			return;
 		}
 
-		if(mActivity == null) {
+		if (mActivity == null) {
 			return;
 		}
 
@@ -116,10 +119,11 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	/**
 	 * Free space in actionBar for title. Don't change visibility if we have visible button.
+	 *
 	 * @param refreshItem contains menuItem with icon
-	 * @param refreshing currently refreshing state
+	 * @param refreshing  currently refreshing state
 	 */
-	private void hideRefreshIcon(MenuItem refreshItem, boolean refreshing){
+	private void hideRefreshIcon(MenuItem refreshItem, boolean refreshing) {
 		if (!showActionRefresh) {
 			refreshItem.setVisible(refreshing);
 		}
@@ -131,17 +135,17 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	@Override
 	public void showMenuItemById(int id, boolean show) {
-		if(mActivity != null)
+		if (mActivity != null)
 			mActivity.invalidateOptionsMenu();
 	}
 
 	@Override
 	public void showMenuItemById(int itemId, boolean visible, Menu menu) {
-		if(itemId == R.id.menu_refresh){
+		if (itemId == R.id.menu_refresh) {
 			showActionRefresh = visible;
 //			menu.findItem(itemId).setIcon(visible? R.drawable.ic_action_refresh
 //					:R.drawable.empty);
-		}else {
+		} else {
 			menu.findItem(itemId).setVisible(visible);
 			menu.findItem(itemId).setEnabled(visible);
 		}
@@ -149,7 +153,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	@Override
 	public void setBadgeValueForId(int menuId, int value) {
-		if(mActivity != null)
+		if (mActivity != null)
 			mActivity.invalidateOptionsMenu();
 	}
 
@@ -162,7 +166,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 		Drawable icon = item.getIcon();
 		if (icon instanceof BadgeDrawable) {
-			((BadgeDrawable)icon).setValue(value);
+			((BadgeDrawable) icon).setValue(value);
 		} else {
 			item.setIcon(new BadgeDrawable(getActionBarThemedContext(), icon, value));
 		}
@@ -170,30 +174,38 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	@Override
 	public void showActionBar(boolean show) {
-		if (show) {
-			mActivity.getActionBar().show();
-		} else {
-			mActivity.getActionBar().hide();
+		provideActionBar();
+
+		if (actionBar != null) {
+			if (show) {
+				actionBar.show();
+			} else {
+				actionBar.hide();
+			}
 		}
 	}
 
 	@Override
 	public void setTitle(CharSequence title) {
-		if (mActivity == null || mActivity.getActionBar() == null || mActivity.getActionBar().getCustomView() == null) {
+		provideActionBar();
+
+		if (mActivity == null || actionBar == null || actionBar.getCustomView() == null) {
 			return;
 		}
-		View titleTxt =  mActivity.getActionBar().getCustomView().findViewById(R.id.actionbar_compat_title);
+		View titleTxt = actionBar.getCustomView().findViewById(R.id.actionbar_compat_title);
 		if (titleTxt != null) {
-			((TextView)titleTxt).setText(title);
+			((TextView) titleTxt).setText(title);
 		}
 	}
 
 	@Override
 	public void setTitlePadding(int padding) {
-		if (mActivity == null || mActivity.getActionBar() == null || mActivity.getActionBar().getCustomView() == null) {
+		provideActionBar();
+
+		if (mActivity == null || actionBar == null || actionBar.getCustomView() == null) {
 			return;
 		}
-		RoboTextView titleTxt = (RoboTextView) mActivity.getActionBar().getCustomView().findViewById(R.id.actionbar_compat_title);
+		RoboTextView titleTxt = (RoboTextView) actionBar.getCustomView().findViewById(R.id.actionbar_compat_title);
 		if (titleTxt != null) {
 			titleTxt.setPadding(padding, 0, 0, 0);
 		}
@@ -201,10 +213,17 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 
 	@Override
 	public void setCustomView(int layoutId) {
-		if (mActivity == null || mActivity.getActionBar() == null) {
+		provideActionBar();
+		if (mActivity == null || actionBar == null) {
 			return;
 		}
-		mActivity.getActionBar().setCustomView(layoutId);
+		actionBar.setCustomView(layoutId);
+	}
+
+	private void provideActionBar() {
+		if (actionBar == null && mActivity != null) {
+			actionBar = mActivity.getActionBar();
+		}
 	}
 
 	@Override

@@ -201,6 +201,7 @@ public class DbHelper {
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.FORUM_TOPICS.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_CATEGORY_ID_AND_PAGE);
 		queryParams.setArguments(new String[]{String.valueOf(categoryId), String.valueOf(currentPage)});
+		queryParams.setOrder(DbScheme.V_LAST_POST_DATE + DbDataManager.DESCEND);
 		return queryParams;
 	}
 
@@ -217,6 +218,7 @@ public class DbHelper {
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.FORUM_POSTS.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID_AND_PAGE);
 		queryParams.setArguments(new String[]{String.valueOf(topicId), String.valueOf(currentPage)});
+		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.DESCEND);
 		return queryParams;
 	}
 

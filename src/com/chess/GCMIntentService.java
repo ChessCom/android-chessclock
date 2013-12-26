@@ -139,9 +139,17 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@Override
 	protected void onMessage(Context context, Intent intent) {
 		AppData appData = new AppData(context);
-		Log.d(TAG, "User = " + appData.getUsername() + " Received message");
+		String username = appData.getUsername();
+		Log.d(TAG, "User = " + username + " Received message");
 
 		String type = intent.getStringExtra("type");
+		if (intent.hasExtra("owner")) {
+			String owner = intent.getStringExtra("owner");
+			if (owner != null && !owner.equals(username)) { // don't handle not our messages
+				return;
+			}
+		}
+
 		Log.d(TAG, "type = " + type + " intent = " + intent);
 		if (BuildConfig.DEBUG && intent.hasExtra("message")) {
 			Log.d(TAG, "type = " + type + " message = " + intent.getStringExtra("message"));
