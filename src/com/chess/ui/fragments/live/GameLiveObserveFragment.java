@@ -138,12 +138,12 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			}
 		}
 
-		{ // get opponent info
+		{ // get top player info
 			LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
 			new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
 		}
-		{ // get users info
-			LoadItem loadItem = LoadHelper.getUserInfo(labelsConfig.bottomPlayerName);
+		{ // get bottom player info
+			LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.bottomPlayerName);
 			new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
 		}
 
