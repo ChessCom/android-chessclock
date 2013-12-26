@@ -1,5 +1,6 @@
 package com.chess.ui.fragments;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -426,11 +427,15 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 		public void updateData(FriendRequestResultItem returnedObj) {
 			showToast(successToastMsgId);
 
+			ContentResolver contentResolver = getContentResolver();
+			String opponentUsername = selectedChallengeItem.getOpponentUsername();
+			String username = getUsername();
+
+			DbDataManager.deleteNewFriendRequestNotification(contentResolver, username,
+					opponentUsername);
+
 			// remove that item from challenges list adapter
 			challengesGamesAdapter.remove(selectedChallengeItem);
-
-			DbDataManager.deleteNewFriendRequestNotification(getContentResolver(), getUsername(),
-					selectedChallengeItem.getOpponentUsername());
 
 			updateNotificationBadges();
 
