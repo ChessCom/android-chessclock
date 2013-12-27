@@ -117,7 +117,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private String[] compTimeLimitArray;
 	private String[] compDepth;
 //	private TextView engineThinkingPath;
-	private Bundle savedInstanceState;
 
 	protected CompGameConfig compGameConfig;
 	private boolean isAutoFlip;
@@ -177,8 +176,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			compTimeLimitArray = getResources().getStringArray(R.array.comp_time_limit);
 			compDepth = getResources().getStringArray(R.array.comp_book_depth);
 		}
-
-		this.savedInstanceState = savedInstanceState;
 	}
 
 	@Override

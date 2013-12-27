@@ -75,8 +75,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private String[] compDepth;
 //	private TextView engineThinkingPath;
 
-	private Bundle savedInstanceState;
-
 	private CompGameConfig compGameConfig;
 	private boolean isAutoFlip;
 
@@ -127,8 +125,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			compTimeLimitArray = getResources().getStringArray(R.array.comp_time_limit);
 			compDepth = getResources().getStringArray(R.array.comp_book_depth);
 		}
-
-		this.savedInstanceState = savedInstanceState;
 	}
 
 	@Override

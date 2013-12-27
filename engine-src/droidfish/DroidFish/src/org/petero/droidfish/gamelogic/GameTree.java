@@ -672,7 +672,7 @@ public class GameTree {
 
     /** Go backward in game tree. */
     public final void goBack(/*boolean print*/) {
-        if (currentNode.parent != null) {
+        //if (currentNode.parent != null) {
 			/*if (print) {
 				Log.d("FISHLOG", "UNDO currentNode.parent " + currentNode.parent);
 				Log.d("FISHLOG", "UNDO currentNode.move " + currentNode.move);
@@ -684,7 +684,7 @@ public class GameTree {
 			}*/
 
             currentNode = currentNode.parent;
-        }
+        //}
     }
 
     /** Go forward in game tree.

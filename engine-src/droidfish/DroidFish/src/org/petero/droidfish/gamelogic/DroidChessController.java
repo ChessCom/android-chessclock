@@ -373,7 +373,7 @@ public class DroidChessController {
 
     /** Undo last move. Does not truncate game tree. */
     public final synchronized void undoMove() {
-        if (game.getLastMove() != null) {
+        //if (game.getLastMove() != null) {
             abortSearch();
 
             //boolean didUndo = undoMoveNoUpdate();
@@ -386,7 +386,7 @@ public class DroidChessController {
             if (didUndo)
                 setAnimMove(game.currPos(), game.getNextMove(), false);*/
             updateGUI();
-        }
+        //}
     }
 
     /** Redo last move. Follows default variation. */
@@ -410,7 +410,6 @@ public class DroidChessController {
 			return false;
 		searchId++;
 		game.undoMove();
-		// todo: check first move undo when user is black
 		/*if (!humansTurn()) {
 			if (game.getLastMove() != null) {
 				game.undoMove(print);
@@ -1029,8 +1028,8 @@ public class DroidChessController {
     }*/
 
     public boolean undoMoveNoUpdate() {
-        if (game.getLastMove() == null)
-            return false;
+        /*if (game.getLastMove() == null)
+            return false;*/
         searchId++;
         game.undoMove();
 
@@ -1044,7 +1043,7 @@ public class DroidChessController {
                 // Don't undo first white move if playing black vs computer,
                 // because that would cause computer to immediately make
                 // a new move.
-                if (gameMode.playerWhite() || gameMode.playerBlack()) {
+                if (/*gameMode.playerWhite() || */gameMode.playerBlack()) {
                     game.redoMove();
                     return false;
                 }
