@@ -99,8 +99,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private boolean userSawGameEndPopup;
 	private GameBaseFragment.ImageUpdateListener topImageUpdateListener;
 	private GameBaseFragment.ImageUpdateListener bottomImageUpdateListener;
-	protected LiveGameConfig.Builder liveGameConfigBuilder;
-	private String[] newGameButtonsArray;
+//	protected LiveGameConfig.Builder liveGameConfigBuilder;
+//	private String[] newGameButtonsArray;
 
 	public GameLiveFragment() {
 	}
@@ -128,11 +128,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
-
-
-		newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
-
-		liveGameConfigBuilder = new LiveGameConfig.Builder();
 	}
 
 	@Override
@@ -777,7 +772,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void showOptions() {
-		if (optionsSelectFragment != null) {
+		if (optionsSelectFragment != null || optionsMap == null) {
 			return;
 		}
 
@@ -1031,8 +1026,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			getBoardFace().decreaseMovesCount();
 			boardView.invalidate();
 		} else if (view.getId() == R.id.newGamePopupBtn) {
-			liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[getAppData().getDefaultLiveMode()]);
-			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
+			LiveGameConfig gameConfig = getAppData().getLiveGameConfigBuilder().build();
+			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(gameConfig));
 
 			dismissEndGameDialog();
 		} else if (view.getId() == R.id.rematchPopupBtn) {

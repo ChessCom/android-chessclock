@@ -7,6 +7,7 @@ import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.statics.AppData;
+import com.chess.statics.IntentConstants;
 
 /**
  * Created with IntelliJ IDEA.
@@ -60,5 +61,7 @@ public class GetAndSaveUserStats extends IntentService {
 				appData.setUserInfoSaved(true);
 			}
 		}
+
+		sendBroadcast(new Intent(IntentConstants.STATS_SAVED));
 	}
 }

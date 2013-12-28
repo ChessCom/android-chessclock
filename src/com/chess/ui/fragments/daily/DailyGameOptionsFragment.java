@@ -227,7 +227,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 
 		@Override
 		public void updateData(DailySeekItem returnedObj) {
-			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
+			showSinglePopupDialog(R.string.challenge_created, R.string.you_will_notified_when_game_starts);
 		}
 	}
 
@@ -440,7 +440,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 			ratedGameSwitch = (SwitchButton) view.findViewById(R.id.ratedGameSwitch);
 			{// options list setup
 				optionsMap = new SparseArray<String>();
-				optionsMap.put(ID_CHESS, getString(R.string.chess));
+				optionsMap.put(ID_CHESS, getString(R.string.standard));
 				optionsMap.put(ID_CHESS_960, getString(R.string.chess_960));
 			}
 			{// Rating part

@@ -72,15 +72,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				>
-				<!--Play! -->
-				<com.chess.widgets.RoboButton
-					android:id="@+id/livePlayBtn"
-					android:layout_width="0dip"
-					android:layout_height="wrap_content"
-					android:text="@string/new_play_ex"
-					style="@style/Button.OrangeNoBorder.Big"
-					android:layout_marginRight="5dip"
-					android:layout_weight="1" />
 
 				<!--10|5-->
 				<com.chess.widgets.RoboButton
@@ -89,9 +80,19 @@
 					android:layout_height="wrap_content"
 					android:minHeight="@dimen/big_orange_button_height"
 					android:minWidth="112dip"
-					android:layout_marginLeft="5dip"
+					android:layout_marginRight="5dip"
 					style="@style/Button.Glassy.Small"
 					android:textSize="@dimen/big_button_text_size"/>
+
+				<!--Play! -->
+				<com.chess.widgets.RoboButton
+					android:id="@+id/livePlayBtn"
+					android:layout_width="0dip"
+					android:layout_height="wrap_content"
+					android:text="@string/new_play_ex"
+					style="@style/Button.OrangeNoBorder.Big"
+					android:layout_marginLeft="5dip"
+					android:layout_weight="1" />
 
 			</LinearLayout>
 

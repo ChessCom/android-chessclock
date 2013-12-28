@@ -156,7 +156,7 @@ public class LiveChessService extends Service {
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			intent.putExtra(IntentConstants.LIVE_CHESS, true);
 
-			PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+			PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 			notification.setLatestEventInfo(getContext(), getString(R.string.ches_com), getString(R.string.live), pendingIntent);
 			notification.flags |= Notification.FLAG_NO_CLEAR;
@@ -470,10 +470,6 @@ public class LiveChessService extends Service {
 	public void createChallenge(LiveGameConfig config) {
 		lccHelper.createChallenge(config);
 	}
-
-//	public void observeTopGame() {
-//		lccHelper.observeTopGame();
-//	}
 
 	public void sendMessage(String message, TaskUpdateInterface<String> taskFace) {
 		new SendLiveMessageTask(taskFace, message).executeTask(lccHelper.getCurrentGameId());

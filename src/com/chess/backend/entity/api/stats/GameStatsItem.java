@@ -189,8 +189,8 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 			return lowest == null? new BaseRating() : lowest;
 		}
 
-		public float getAverageOpponent() {
-			return average_opponent;
+		public int getAverageOpponent() {
+			return (int) average_opponent;
 		}
 
 		public BestWin getBestWin() {

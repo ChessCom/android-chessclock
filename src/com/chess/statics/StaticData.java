@@ -76,5 +76,5 @@ public class StaticData {
 	public static final boolean USE_TABLETS = true;
 	public static final String GIF = ".gif";
 	public static final boolean USE_SWITCH_API = false;
-//	public static final boolean USE_SWITCH_API = BuildConfig.DEBUG;
+//	public static final boolean USE_SWITCH_API = com.chess.BuildConfig.DEBUG;
 }

@@ -146,7 +146,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	protected TextView lessonRatingChangeTxt;
 	protected boolean showLessonsResult;
 
-	public GameLessonFragment() {}
+	public GameLessonFragment() {
+	}
 
 	public static GameLessonFragment createInstance(int lessonId, long courseId) {
 		GameLessonFragment fragment = new GameLessonFragment();
@@ -508,8 +509,23 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 				pointsForLesson += pointsForMove;
 			}
-			// Add them together and we get 11.5 out of 15 points, or 77% out of 100% on the lesson.
-			scorePercent = (int) (pointsForLesson * 100 / totalPointsForLesson);
+
+			if (pointsForLesson == 0) {
+				int totalDifficulty = 0;
+				for (int t = startLearningPosition; t < movesCompleteMap.size(); t++) {
+					MoveCompleteItem completeItem = movesCompleteMap.get(t);
+					totalDifficulty += completeItem.moveDifficulty;
+				}
+				if (totalDifficulty == 0) { // we might gain 0 points for moves which are not Free
+					scorePercent = 100; // else for free moves we set 100%
+				} else {
+					// Add them together and we get 11.5 out of 15 points, or 77% out of 100% on the lesson.
+					scorePercent = (int) (pointsForLesson * 100 / totalPointsForLesson);
+				}
+			} else {
+				// Add them together and we get 11.5 out of 15 points, or 77% out of 100% on the lesson.
+				scorePercent = (int) (pointsForLesson * 100 / totalPointsForLesson);
+			}
 
 			updatedUserRating = getAppData().getUserLessonsRating();
 
@@ -850,13 +866,13 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		setDescriptionText(mentorLesson.getAbout());
 		positionDescriptionTxt.setText(Html.fromHtml(positionToSolve.getAbout()));
-		descriptionView.post(scrollDescriptionDown);
+		descriptionView.post(scrollDescriptionUp);
 
 		// add currentLearningPosition in case we load from DB
 		solvedPositionsList.add(currentLearningPosition);
 	}
 
-	private void setDescriptionText(String descriptionStr){
+	private void setDescriptionText(String descriptionStr) {
 		Spanned description = Html.fromHtml(descriptionStr);
 		if (!TextUtils.isEmpty(description)) {
 			descriptionTxt.setText(description);

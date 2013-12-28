@@ -2,8 +2,8 @@ package com.chess.ui.engine.configs;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.chess.backend.RestHelper;
-import com.chess.statics.Symbol;
+
+import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +12,14 @@ import com.chess.statics.Symbol;
  * Time: 6:55
  */
 public class LiveGameConfig implements Parcelable {
+
+	public static final int STANDARD = 0;
+	public static final int BLITZ = 1;
+	public static final int BULLET = 2;
+
+	public static final int MIN_RATING_DIFF = 200;
+	public static final int MAX_RATING_DIFF = 200;
+
 	private boolean rated;
 	private int minRating;
 	private int maxRating;
@@ -26,6 +34,8 @@ public class LiveGameConfig implements Parcelable {
 		private int minRating;
 		private int maxRating;
 		private String opponentName;
+		private HashMap<Integer, Integer> timeModesMap;
+		private int timeMode;
 
 		/**
 		 * Create new Seek game with default values
@@ -33,6 +43,16 @@ public class LiveGameConfig implements Parcelable {
 		public Builder() {
 			rated = true;
 			initialTime = 30;
+
+			timeModesMap = new HashMap<Integer, Integer>();
+			timeModesMap.put(0, STANDARD);    // 30		 = 0
+			timeModesMap.put(4, STANDARD);    // 10		 = 1
+			timeModesMap.put(1, BLITZ);       // 5 | 2	 = 2
+			timeModesMap.put(2, BLITZ);       // 2 | 1	 = 3
+			timeModesMap.put(5, BLITZ);       // 15 | 10 = 4
+			timeModesMap.put(6, BLITZ);       // 5		 = 5
+			timeModesMap.put(3, BULLET);      // 3		 = 6
+			timeModesMap.put(7, BULLET);      // 1		 = 7
 		}
 
 		public Builder setRated(boolean rated) {
@@ -55,15 +75,50 @@ public class LiveGameConfig implements Parcelable {
 			return this;
 		}
 
-		public void setTimeFromLabel(String label) {
-			if(label.contains(Symbol.SLASH)){// "5 | 2"),
-				String[] params = label.split(RestHelper.SYMBOL_ITEM_SPLIT);
-				initialTime = Integer.valueOf(params[0].trim());
-				bonusTime = Integer.valueOf(params[1].trim());
-			} else { // "10 min"),
-				initialTime = Integer.valueOf(label);
-				bonusTime = 0;
+		/**
+		 * This should be in sync with arrays_values resource file:
+		 * 30		 = 0
+		 * 10		 = 1
+		 * 5 | 2	 = 2
+		 * 2 | 1	 = 3
+		 * 15 | 10	 = 4
+		 * 5		 = 5
+		 * 3		 = 6
+		 * 1		 = 7
+		 *
+		 */
+		public Builder setTimeFromMode(int mode){
+			if (timeModesMap.get(mode) == STANDARD) {
+				timeMode = STANDARD;
+			} else if (timeModesMap.get(mode) == BLITZ) {
+				timeMode = BLITZ;
+			} else if (timeModesMap.get(mode) == BULLET) {
+				timeMode = BULLET;
 			}
+
+			switch (mode){
+				case 0:	initialTime = 30;	bonusTime = 0;	break;
+				case 1:	initialTime = 10;	bonusTime = 0;	break;
+				case 2:	initialTime = 5;	bonusTime = 2;	break;
+				case 3:	initialTime = 2;	bonusTime = 1;	break;
+				case 4:	initialTime = 15;	bonusTime = 10;	break;
+				case 5:	initialTime = 5;	bonusTime = 0;	break;
+				case 6:	initialTime = 3;	bonusTime = 0;	break;
+				case 7:	initialTime = 1;	bonusTime = 0;	break;
+			}
+			return this;
+		}
+
+		public int getMinRating() {
+			return minRating;
+		}
+
+		public int getMaxRating() {
+			return maxRating;
+		}
+
+		public int getTimeMode() {
+			return timeMode;
 		}
 
 		public LiveGameConfig build() {
@@ -78,6 +133,8 @@ public class LiveGameConfig implements Parcelable {
 		this.maxRating = builder.maxRating;
 		this.initialTime = builder.initialTime;
 		this.bonusTime = builder.bonusTime;
+
+
 	}
 
 	public boolean isRated() {

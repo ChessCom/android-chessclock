@@ -11,6 +11,8 @@ import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
+import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
 import com.chess.statics.AppData;
 import com.chess.statics.Symbol;
@@ -89,10 +91,14 @@ public class ChallengeHelper {
 	}
 
 	private void init(ChallengeModeSetListener listener) {
-		this.context = listener.getMeContext();
+		initResources(listener.getMeContext());
+
 		this.listener = listener;
 		this.fragment = (BasePopupsFragment) listener;
+	}
 
+	private void initResources(Context context) {
+		this.context = context;
 		appData = new AppData(context);
 
 		quickAction = createMultiQuickAction();
@@ -101,7 +107,7 @@ public class ChallengeHelper {
 		newLiveGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
 
 		dailyGameConfigBuilder = new DailyGameConfig.Builder();
-		liveGameConfigBuilder = new LiveGameConfig.Builder();
+		liveGameConfigBuilder = getAppData().getLiveGameConfigBuilder();
 
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 	}
@@ -198,7 +204,7 @@ public class ChallengeHelper {
 	private void setDefaultLiveTimeMode(int mode) {
 		listener.setDefaultLiveTimeMode(mode);
 
-		liveGameConfigBuilder.setTimeFromLabel(newLiveGameButtonsArray[mode]);
+		liveGameConfigBuilder.setTimeFromMode(mode);
 		getAppData().setDefaultLiveMode(mode);
 		getAppData().setLastUsedDailyMode(false);
 	}
@@ -232,7 +238,37 @@ public class ChallengeHelper {
 	}
 
 	public void createLiveChallenge() {
-		liveGameConfigBuilder.setTimeFromLabel(newLiveGameButtonsArray[getAppData().getDefaultLiveMode()]);
+		int minRating = liveGameConfigBuilder.getMinRating();
+		int maxRating = liveGameConfigBuilder.getMaxRating();
+		if (minRating == 0 || maxRating == 0) {
+			String username = getAppData().getUsername();
+
+			int liveStandardRating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
+					DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), username);
+			int liveBlitzRating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
+					DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), username);
+			int liveLightningRating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
+					DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), username);
+
+			if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
+				minRating = liveStandardRating - LiveGameConfig.MIN_RATING_DIFF;
+				maxRating = liveStandardRating + LiveGameConfig.MAX_RATING_DIFF;
+			} else if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
+				minRating = liveBlitzRating - LiveGameConfig.MIN_RATING_DIFF;
+				maxRating = liveBlitzRating + LiveGameConfig.MAX_RATING_DIFF;
+			} else if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.BULLET) {
+				minRating = liveLightningRating - LiveGameConfig.MIN_RATING_DIFF;
+				maxRating = liveLightningRating + LiveGameConfig.MAX_RATING_DIFF;
+			}
+
+			liveGameConfigBuilder.setMinRating(minRating);
+			liveGameConfigBuilder.setMaxRating(maxRating);
+
+			// save config
+			getAppData().setLiveGameConfigBuilder(liveGameConfigBuilder);
+		}
+
+		liveGameConfigBuilder.setTimeFromMode(getAppData().getDefaultLiveMode());
 		LiveGameWaitFragment waitFragment = LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build());
 		((CommonLogicFragment) fragment).getActivityFace().openFragment(waitFragment);
 	}
@@ -286,7 +322,7 @@ public class ChallengeHelper {
 
 		@Override
 		public void updateData(DailySeekItem returnedObj) {
-			fragment.showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
+			fragment.showSinglePopupDialog(R.string.challenge_created, R.string.you_will_notified_when_game_starts);
 		}
 
 		@Override

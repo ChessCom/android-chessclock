@@ -41,7 +41,7 @@ import com.chess.ui.fragments.daily.GameDailyFragmentTablet;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
-import com.chess.ui.fragments.live.LiveGameWaitFragment;
+import com.chess.ui.fragments.live.LiveHomeFragment;
 import com.chess.ui.fragments.settings.SettingsFragmentTablet;
 import com.chess.ui.fragments.settings.SettingsProfileFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
@@ -220,12 +220,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				return;
 			}
 
-			// todo: Alex, should we really need to create new WaitFragment here by Notification bar click?
-			// I think no, but if yes then we have to check GameLiveObserveFragment here like GameLiveFragment as well
-
-			LiveGameWaitFragment fragmentByTag = (LiveGameWaitFragment) findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
+			LiveHomeFragment fragmentByTag = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
 			if (fragmentByTag == null) {
-				fragmentByTag = LiveGameWaitFragment.createInstance(getAppData().getLiveGameConfig());
+				fragmentByTag = new LiveHomeFragment();
 			}
 
 			openFragment(fragmentByTag);

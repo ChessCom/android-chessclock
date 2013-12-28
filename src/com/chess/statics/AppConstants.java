@@ -140,6 +140,9 @@ public class AppConstants {
 	public static final String EXTRA_WEB_URL = "extras weblink url";
 	public static final String EXTRA_TITLE = "screen title";
 
+	/* Live Chess params */
+	public static final String LIVE_GAME_CONFIG_BUILDER = "live_game_config_builder";
+
 	public final static int GAME_MODE_COMPUTER_VS_PLAYER_WHITE = 0;
 	public final static int GAME_MODE_COMPUTER_VS_PLAYER_BLACK = 1;
 	public final static int GAME_MODE_2_PLAYERS = 2;
@@ -182,5 +185,4 @@ public class AppConstants {
 
     public static final String NEED_TO_RESTART = "needToRestart";
 
-	public static final String LIVE_GAME_CONFIG = "live_game_config";
 }

@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import com.chess.R;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppConstants;
+import com.chess.statics.StaticData;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
 
@@ -59,9 +60,11 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
-//			case R.string.ic_key:
-//				changeInternalFragment(new SettingsApiFragment());
-//				break;
+			case R.string.ic_key:
+				if (StaticData.USE_SWITCH_API) {
+					changeInternalFragment(new SettingsApiFragment());
+				}
+				break;
 			case R.string.ic_profile:
 				changeInternalFragment(new SettingsProfileFragment());
 				break;

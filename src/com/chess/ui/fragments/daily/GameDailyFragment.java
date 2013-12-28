@@ -910,7 +910,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 //					switchToNextGame(returnedObj);
 //					break;
 				case CREATE_CHALLENGE_UPDATE:
-					showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
+					showSinglePopupDialog(R.string.challenge_created, R.string.you_will_notified_when_game_starts);
 					break;
 				case DRAW_OFFER_UPDATE:
 					showToast(R.string.draw_offered);

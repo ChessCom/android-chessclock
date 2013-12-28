@@ -61,8 +61,6 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 				getContentResolver()).executeTask();
 	}
 
-
-
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		@Override
@@ -98,11 +96,15 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (position != 0) { // don't click on header
-			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
+		if (inPortrait()) {
+			super.onItemClick(parent, view, position, id);
+		} else {
+			if (position != 0) { // don't click on header
+				Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+				DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
 
-			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
+				getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
+			}
 		}
 	}
 

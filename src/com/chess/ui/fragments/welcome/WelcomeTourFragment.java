@@ -643,7 +643,7 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 		@Override
 		public void updateData(RegisterItem returnedObj) {
 			FlurryAgent.logEvent(FlurryData.NEW_ACCOUNT_CREATED);
-			showToast(R.string.congratulations);
+			showToast(R.string.challenge_created);
 
 			preferencesEditor.putString(AppConstants.USERNAME, getTextFromField(userNameEdt));
 			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, RestHelper.V_BASIC_MEMBER);

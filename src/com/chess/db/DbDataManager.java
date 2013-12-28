@@ -932,6 +932,7 @@ public class DbDataManager {
 
 		final String[] arguments1 = sArguments1;
 		arguments1[0] = username;
+
 		Cursor cursor = contentResolver.query(uriArray[dbUriCode],
 				PROJECTION_USER_CURRENT_RATING, SELECTION_USER, arguments1, null);
 

@@ -497,7 +497,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		@Override
 		public void updateData(PostCommentItem returnedObj) {
 			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
-				showToast(R.string.post_created);
+				showToast(R.string.posted);
 			} else {
 				showToast(R.string.error);
 			}

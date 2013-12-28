@@ -73,18 +73,18 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 		// -------------------------------------
 		// Before usage uncomment needed parts!
 		// -------------------------------------
-//		updateBackgrounds(userToken);
+		updateBackgrounds(userToken);
 //		updateBoards(userToken);
 //		updatePieces(userToken);
 //		updateSounds(userToken);
 //		updateThemes(userToken);
 
-//		handler.postDelayed(new Runnable() {
-//			@Override
-//			public void run() {
-//				changeNamesForResources(userToken);
-//			}
-//		}, RENAME_DELAY);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				changeNamesForResources(userToken);
+			}
+		}, RENAME_DELAY);
 	}
 
 	private void changeNamesForResources(String userToken) {
@@ -685,7 +685,7 @@ winboard - 	ffffff
 			"FFFFFFBF",       // "glass",
 			"FFFFFFBF",  // "tournament",
 			"FFFFFFBF",    // "staunton",
-			"606060BF",   // "newspaper",
+			"FFFFFFBF",   // "newspaper",
 			"FFFFFFBF",      // "tigers",
 			"FFFFFFBF",      // "nature",
 			"FFFFFFBF",         // "sky",

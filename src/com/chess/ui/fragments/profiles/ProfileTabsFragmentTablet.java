@@ -286,7 +286,7 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 
 		@Override
 		public void updateData(DailySeekItem returnedObj) {
-			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
+			showSinglePopupDialog(R.string.challenge_created, R.string.you_will_notified_when_game_starts);
 		}
 
 		@Override

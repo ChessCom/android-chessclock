@@ -505,8 +505,8 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 
 		{ // average opponent
 			String rating = DbDataManager.getString(cursor, DbScheme.V_AVERAGE_OPPONENT_RATING);
-
-			setTextById((AVERAGE_ID + RATING_VALUE_ID), rating);
+			int ratingInt = Integer.parseInt(rating); // TODO should be fixed in later releases
+			setTextById((AVERAGE_ID + RATING_VALUE_ID), String.valueOf(ratingInt));
 		}
 
 		{ // best win on

@@ -2,6 +2,8 @@ package com.chess.statics;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
+import android.util.Log;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.ui.engine.SoundPlayer;
@@ -125,7 +127,6 @@ public class AppData {
 	public String getLiveSessionId() {
 		return preferences.getString(LIVE_SESSION_ID, Symbol.EMPTY);
 	}
-
 
 
 	public void setShowSubmitButtonsDaily(boolean show) {
@@ -366,7 +367,6 @@ public class AppData {
 	}
 
 	/**
-	 *
 	 * @param play int value used to differentiate if it was set manually by user or depends on general sound system profile
 	 */
 	public void setPlaySounds(Context context, int play) {
@@ -674,6 +674,7 @@ public class AppData {
 
 	/**
 	 * Set Vs Computer default mode for auth user.
+	 *
 	 * @param value mode ( PLAYER_WHITE & COMB_BLACK, PLAYER_BLACK & COMP_WHITE, COMP & COMP, PLAY & PLAYER
 	 */
 	public void setCompGameMode(int value) {
@@ -682,6 +683,7 @@ public class AppData {
 
 	/**
 	 * Get default Vs Computer mode for CompOptionsFragment
+	 *
 	 * @return mode
 	 */
 	public int getCompGameMode() {
@@ -690,6 +692,7 @@ public class AppData {
 
 	/**
 	 * When it is WHITE human to play, he should be on bottom. once he moves, flip so BLACK is on the bottom.
+	 *
 	 * @param autoFlip flag
 	 */
 	public void setAutoFlipFor2Players(boolean autoFlip) {
@@ -711,22 +714,40 @@ public class AppData {
 		setBooleanValue(LESSONS_LIMIT_HAS_REACHED, value);
 	}
 
-	public void setLiveGameConfig(LiveGameConfig liveGameConfig) {
+	/**
+	 * We should use it as the only one option to save config
+	 *
+	 * @param liveGameConfigBuilder that will be saved to shared prefs
+	 */
+	public void setLiveGameConfigBuilder(LiveGameConfig.Builder liveGameConfigBuilder) {
 		Gson gson = new Gson();
-		setStringValue(LIVE_GAME_CONFIG, gson.toJson(liveGameConfig));
-		editor.commit();
+//		Log.d("TEST", "save live builder = " + gson.toJson(liveGameConfigBuilder));
+		setStringValue(LIVE_GAME_CONFIG_BUILDER, gson.toJson(liveGameConfigBuilder));
 	}
 
-	public LiveGameConfig getLiveGameConfig() {
-		Gson gson = new Gson();
+	/**
+	 * We should use this as the only one method to get build to keep it always synced with data that we save
+	 * @return {@code LiveGameConfig.Builder}
+	 */
+	public LiveGameConfig.Builder getLiveGameConfigBuilder() {
+		LiveGameConfig.Builder builder;
 
-		LiveGameConfig liveGameConfig = gson.fromJson(getStringValue(LIVE_GAME_CONFIG, ""), LiveGameConfig .class);
+		String builderStr = getStringValue(LIVE_GAME_CONFIG_BUILDER, Symbol.EMPTY);
+//		Log.d("TEST", "load live builder = " + builderStr);
 
-		if (liveGameConfig == null) {
-			liveGameConfig = new LiveGameConfig.Builder().build();
+		if (TextUtils.isEmpty(builderStr)) {
+			builder = new LiveGameConfig.Builder();
+			builder.setTimeFromMode(getDefaultLiveMode());
+
+
+			// saving now for next time call
+			setLiveGameConfigBuilder(builder);
+		} else {
+			Gson gson = new Gson();
+			builder = gson.fromJson(builderStr, LiveGameConfig.Builder.class);
 		}
 
-		return liveGameConfig;
+		return builder;
 	}
 
 	public void setTestUsername(String value) {

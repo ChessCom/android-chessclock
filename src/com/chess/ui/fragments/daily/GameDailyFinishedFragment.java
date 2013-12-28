@@ -665,7 +665,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		public void updateData(BaseResponseItem returnedObj) {
 			switch (listenerCode) {
 				case CREATE_CHALLENGE_UPDATE:
-					showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
+					showSinglePopupDialog(R.string.challenge_created, R.string.you_will_notified_when_game_starts);
 					break;
 			}
 		}

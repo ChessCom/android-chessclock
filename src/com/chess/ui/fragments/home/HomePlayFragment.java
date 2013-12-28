@@ -1,6 +1,10 @@
 package com.chess.ui.fragments.home;
 
 import android.animation.LayoutTransition;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -11,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.GetAndSaveUserStats;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.DailySeekItem;
@@ -18,6 +23,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.statics.AppConstants;
+import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.engine.configs.DailyGameConfig;
@@ -50,7 +56,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	private TextView dailyRatingTxt;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 	private DailyGameConfig.Builder dailyGameConfigBuilder;
-	private LiveGameConfig.Builder liveGameConfigBuilder;
+//	private LiveGameConfig.Builder liveGameConfigBuilder;
 	private int positionMode;
 	private List<View> liveOptionsGroup;
 	private HashMap<Integer, Button> liveButtonsModeMap;
@@ -66,6 +72,9 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	private DailyGameOptionsFragment dailyGameOptionsFragment;
 	private TextView liveExpandIconTxt;
 	private TextView dailyExpandIconTxt;
+	private IntentFilter statsUpdateFilter;
+	private boolean statsLoaded;
+	private StatsSavedReceiver statsSavedReceiver;
 
 	public HomePlayFragment() {
 		Bundle bundle = new Bundle();
@@ -92,7 +101,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		}
 
 		dailyGameConfigBuilder = new DailyGameConfig.Builder();
-		liveGameConfigBuilder = new LiveGameConfig.Builder();
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 
 		getActivityFace().addOnOpenMenuListener(this);
@@ -138,6 +146,11 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 
 		setRatings();
 		loadRecentOpponents();
+
+		if (statsUpdateFilter != null) {
+			statsSavedReceiver = new StatsSavedReceiver();
+			registerReceiver(statsSavedReceiver, statsUpdateFilter);
+		}
 	}
 
 	@Override
@@ -145,12 +158,27 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		super.onPause();
 
 		getActivityFace().removeOnOpenMenuListener(this);
+
+		if (statsUpdateFilter != null) {
+			unRegisterMyReceiver(statsSavedReceiver);
+		}
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(MODE, positionMode);
+	}
+
+	private class StatsSavedReceiver extends BroadcastReceiver {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			statsLoaded = true;
+			showLoadingProgress(false);
+
+			setRatings();
+		}
 	}
 
 	@Override
@@ -316,7 +344,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 
 		@Override
 		public void updateData(DailySeekItem returnedObj) {
-			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
+			showSinglePopupDialog(R.string.challenge_created, R.string.you_will_notified_when_game_starts);
 		}
 	}
 
@@ -348,11 +376,24 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		// set daily rating
 		int dailyRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
 		dailyRatingTxt.setText(String.valueOf(dailyRating));
+
+		if (liveRating == 0 || dailyRating == 0 && !statsLoaded) { // if stats were not save
+			showLoadingProgress(true);
+
+			getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
+
+			statsUpdateFilter = new IntentFilter(IntentConstants.STATS_SAVED);
+
+			statsLoaded = false;
+		}  else {
+			statsLoaded = true;
+		}
+
 	}
 
 	private void createLiveChallenge() {
-		liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[getAppData().getDefaultLiveMode()]);
-		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
+		LiveGameConfig gameConfig = getAppData().getLiveGameConfigBuilder().build();
+		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(gameConfig));
 	}
 
 	private void widgetsInit(View view) {

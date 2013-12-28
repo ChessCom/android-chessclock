@@ -1,7 +1,6 @@
 package com.chess.ui.fragments.daily;
 
 import android.animation.LayoutTransition;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +13,6 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.friends.ChallengeFriendFragment;
@@ -179,7 +176,7 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 
 		@Override
 		public void updateData(DailySeekItem returnedObj) {
-			showSinglePopupDialog(R.string.congratulations, R.string.daily_game_created);
+			showSinglePopupDialog(R.string.challenge_created, R.string.you_will_notified_when_game_starts);
 		}
 	}
 

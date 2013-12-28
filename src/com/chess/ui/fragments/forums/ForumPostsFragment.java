@@ -399,7 +399,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		@Override
 		public void updateData(VacationItem returnedObj) {
 			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
-				showToast(R.string.post_created);
+				showToast(R.string.posted);
 			} else {
 				showToast(R.string.error);
 			}

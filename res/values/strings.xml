@@ -66,8 +66,8 @@
     <string name="create_challenge">Create Challenge</string>
 	<string name="open_challenges">Open Challenges</string>
 	<string name="challenge_friend">Challenge Friend</string>
-    <string name="congratulations">Congratulations!</string>  <!--Congratulations new challenge created-->
-    <string name="daily_game_created">Daily game created!</string>
+    <string name="challenge_created">Challenge Created!</string>  <!--Congratulations new challenge created-->
+    <string name="you_will_notified_when_game_starts">You will be notified when the game starts.</string>
     <string name="challenge_sent">Challenge Sent!</string>
 	<string name="create_open_challenge">Create Open Challenge</string>
 	<string name="current_live_game">Current Live Game</string>
@@ -695,7 +695,7 @@
 	<string name="quote">Quote</string>
 	<string name="new_topic">New Topic</string>
 	<string name="topic_created">Topic created</string>
-	<string name="post_created">Post created</string>
+	<string name="posted">Posted</string>
 	<string name="post">Post</string>
 	<string name="write_reply_">Write reply…</string>
 	<string name="write_comment_">Write a comment…</string>

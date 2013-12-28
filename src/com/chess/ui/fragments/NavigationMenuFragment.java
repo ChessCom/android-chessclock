@@ -100,7 +100,6 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		getImageFetcher().setLoadingImage(R.drawable.empty);
 		adapter = new NavigationMenuAdapter(getActivity(), menuItems, getImageFetcher());
 		fontsUpdateFilter = new IntentFilter(IntentConstants.BACKGROUND_LOADED);
-
 	}
 
 	@Override
@@ -212,7 +211,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_tactics:
-					fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(GameTacticsFragment.class.getSimpleName());
 				if (fragmentByTag == null) {
 					fragmentByTag = new GameTacticsFragment();
 				}
@@ -303,9 +302,8 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 					}
 				} else {
 					if (!isTablet) {
-						((StatsGameFragment)fragmentByTag).updateUsername(getUsername());
+						((StatsGameFragment) fragmentByTag).updateUsername(getUsername());
 					}
-
 				}
 				break;
 			case R.drawable.ic_nav_forums:
@@ -444,7 +442,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		}
 	}
 
-	private class FontsUpdateReceiver extends BroadcastReceiver{
+	private class FontsUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			adapter.notifyDataSetChanged();

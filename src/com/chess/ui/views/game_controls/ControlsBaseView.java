@@ -139,7 +139,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.string.ic_home,
 			R.string.ic_book,
 			R.string.ic_exit,
-			R.string.ic_board,
+			R.string.ic_product,
 			R.string.ic_restore,
 			R.string.ic_restore,
 			R.string.ic_flip,

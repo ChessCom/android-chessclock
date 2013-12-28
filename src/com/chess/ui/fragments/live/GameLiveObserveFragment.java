@@ -19,6 +19,7 @@ import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
@@ -227,10 +228,9 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 				getActivityFace().showPreviousFragment();
 				return;
 			}
-			String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
 
-			liveGameConfigBuilder.setTimeFromLabel(newGameButtonsArray[getAppData().getDefaultLiveMode()]);
-			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build()));
+			LiveGameConfig liveGameConfig = getAppData().getLiveGameConfigBuilder().build();
+			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfig));
 		} else {
 			super.onClick(view);
 		}

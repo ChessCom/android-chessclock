@@ -21,7 +21,6 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.model.GameOnlineItem;
 import com.chess.statics.IntentConstants;
@@ -370,9 +369,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		if (cursor != null && cursor.moveToFirst()) {
 			updateUiData(cursor);
 		}
-//		new LoadDataFromDbTask(currentGamesCursorUpdateListener,
-//				DbHelper.getDailyCurrentListGames(getUsername()),
-//				getContentResolver()).executeTask();
 	}
 
 	@Override
@@ -441,6 +437,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private class SaveCurrentGamesListUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
 
 		@Override
+		public void showProgress(boolean show) {
+			// don't show progress
+		}
+
+		@Override
 		public void updateData(DailyCurrentGameData returnedObj) {
 			super.updateData(returnedObj);
 
@@ -451,10 +452,17 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private class SaveFinishedGamesListUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
 
 		@Override
+		public void showProgress(boolean show) {
+			// don't show progress
+		}
+
+		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
-			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getDailyFinishedListGames(getUsername()),
-					getContentResolver()).executeTask();
+			loadFromDbFinishedGames();
+
+//			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+//					DbHelper.getDailyFinishedListGames(getUsername()),
+//					getContentResolver()).executeTask();
 		}
 	}
 
@@ -542,9 +550,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				finishedGamesCursorAdapter.changeCursor(null);
 			}
 		} else {
-			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getDailyFinishedListGames(getUsername()),
-					getContentResolver()).executeTask();
+			loadFromDbFinishedGames();
+
+//			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+//					DbHelper.getDailyFinishedListGames(getUsername()),
+//					getContentResolver()).executeTask();
 		}
 	}
 
@@ -564,8 +574,12 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContentResolver(), currentGamesList, getUsername());
 
 				if (currentGamesLeft) {
-					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList,
-							getContentResolver(), getUsername()).executeTask();
+					for (DailyCurrentGameData currentItem : currentGamesList) {
+						DbDataManager.saveDailyGame(getContentResolver(), currentItem, getUsername());
+					}
+					loadDbGames();
+//					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList,
+//							getContentResolver(), getUsername()).executeTask();
 				} else {
 					currentGamesMyCursorAdapter.changeCursor(null);
 				}
@@ -626,9 +640,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					finishedGamesCursorAdapter.changeCursor(null);
 				}
 			} else {
-				new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-						DbHelper.getDailyFinishedListGames(getUsername()),
-						getContentResolver()).executeTask();
+				loadFromDbFinishedGames();
+
+				need2update = false;
 			}
 		}
 
@@ -644,6 +658,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				showToast("Internal error occurred"); // TODO adjust properly
 			}
 			super.errorHandle(resultCode);
+		}
+	}
+
+	private void loadFromDbFinishedGames() {
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getDailyFinishedListGames(getUsername()));
+		if (cursor != null && cursor.moveToFirst()) {
+			finishedGamesCursorAdapter.changeCursor(cursor);
 		}
 	}
 
