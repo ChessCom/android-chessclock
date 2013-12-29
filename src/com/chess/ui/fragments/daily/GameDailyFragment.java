@@ -139,7 +139,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		Bundle arguments = new Bundle();
 		arguments.putLong(GAME_ID, gameId);
 		fragment.setArguments(arguments);
-		arguments.putBoolean(FORCE_UPDATE, true); //  temporary force update
 
 		return fragment;
 	}
@@ -270,7 +269,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		Cursor cursor = DbDataManager.query(getContentResolver(),
 				DbHelper.getDailyGame(gameId, username));
 
-		if (cursor.moveToFirst()) {
+		if (cursor.moveToFirst() && !forceUpdate) {
 			showSubmitButtonsLay(false);
 
 			currentGame = DbDataManager.getDailyCurrentGameFromCursor(cursor);
@@ -278,12 +277,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 			adjustBoardForGame();
 		} else {
-			forceUpdate = true;
-		}
-
-		if (forceUpdate) {
 			updateGameState(gameId);
 		}
+
 		// clear badge
 		DbDataManager.deletePlayMoveNotification(getContentResolver(), username, gameId);
 		updateNotificationBadges();

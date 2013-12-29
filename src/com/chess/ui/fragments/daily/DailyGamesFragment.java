@@ -93,6 +93,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private ChallengeHelper challengeHelper;
 	private DailyFinishedGamesUpdateListener dailyFinishedGamesUpdateListener;
 	private Button startNewGameBtn;
+	private boolean showMiniBoards;
 
 	public DailyGamesFragment() {
 		Bundle bundle = new Bundle();
@@ -140,6 +141,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			showToastLong(R.string.help_toast_for_daily_games);
 			getAppData().setUserSawHelpForDaily(true);
 		}
+
+		showMiniBoards = getAppData().isMiniBoardsEnabled();
 	}
 
 	@Override
@@ -174,6 +177,12 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		} else {
 			updateData(); // TODO temporary force to update
 			loadDbGames();
+		}
+
+		if (showMiniBoards != getAppData().isMiniBoardsEnabled()) {
+			showMiniBoards = getAppData().isMiniBoardsEnabled();
+			currentGamesMyCursorAdapter.setShowMiniBoards(showMiniBoards);
+			currentGamesMyCursorAdapter.notifyDataSetInvalidated();
 		}
 
 		gamesUpdateReceiver = new GamesUpdateReceiver();

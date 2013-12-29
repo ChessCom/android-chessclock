@@ -43,6 +43,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 	private int previewLineWidth;
 	private EnhancedImageDownloader imageLoader;
 	private SwitchButton notificationsSwitch;
+	private SwitchButton miniBoardsSwitch;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -133,6 +134,8 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 			soundsSwitch.toggle();
 		} else if (id == R.id.notificationsView) {
 			notificationsSwitch.toggle();
+		} else if (id == R.id.miniBoardsView) {
+			miniBoardsSwitch.toggle();
 		} else if (view.getId() == R.id.autoFlipView) {
 			autoFlipSwitch.toggle();
 		}
@@ -157,6 +160,8 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 			getAppData().setPlaySounds(getActivity(), appSoundMode);
 		} else if (switchButton.getId() == R.id.notificationsSwitch) {
 			getAppData().setNotificationsEnabled(checked);
+		} else if (switchButton.getId() == R.id.miniBoardsSwitch) {
+			getAppData().setMiniBoardsEnabled(checked);
 		} else if (switchButton.getId() == R.id.autoFlipSwitch) {
 			getAppData().setAutoFlipFor2Players(autoFlipSwitch.isChecked());
 		}
@@ -170,6 +175,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 //		alwaysShowWhiteBottomSwitch = (SwitchButton) view.findViewById(R.id.answerShowBottomSwitch);
 		soundsSwitch = (SwitchButton) view.findViewById(R.id.soundsSwitch);
 		notificationsSwitch = (SwitchButton) view.findViewById(R.id.notificationsSwitch);
+		miniBoardsSwitch = (SwitchButton) view.findViewById(R.id.miniBoardsSwitch);
 		View autoFlipView = view.findViewById(R.id.autoFlipView);
 		autoFlipSwitch = (SwitchButton) view.findViewById(R.id.autoFlipSwitch);
 
@@ -185,6 +191,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 //		alwaysShowWhiteBottomSwitch.setSwitchChangeListener(this);
 		soundsSwitch.setSwitchChangeListener(this);
 		notificationsSwitch.setSwitchChangeListener(this);
+		miniBoardsSwitch.setSwitchChangeListener(this);
 		autoFlipView.setOnClickListener(this);
 		autoFlipSwitch.setSwitchChangeListener(this);
 
@@ -194,6 +201,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 //		view.findViewById(R.id.alwaysShowWhiteBottomView).setOnClickListener(this);
 		view.findViewById(R.id.soundsView).setOnClickListener(this);
 		view.findViewById(R.id.notificationsView).setOnClickListener(this);
+		view.findViewById(R.id.miniBoardsView).setOnClickListener(this);
 
 		String username = getAppData().getUsername();
 
@@ -204,6 +212,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 //		alwaysShowWhiteBottomSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_SHOW_ANSWER_BOTTOM, true));
 		autoFlipSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_AUTO_FLIP, true));
 		notificationsSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_DAILY_NOTIFICATIONS, true));
+		miniBoardsSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_DAILY_MINI_BOARDS, true));
 
 		//spinners
 		view.findViewById(R.id.piecesView).setOnClickListener(this);

@@ -259,6 +259,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (usePullToRefresh && listView != null) {
 			getActivityFace().setPullToRefreshView(listView, CommonLogicFragment.this);
 		}
+		PullToRefreshAttacher pullToRefreshAttacher = getActivityFace().getPullToRefreshAttacher();
+		if (pullToRefreshAttacher != null) {
+			pullToRefreshAttacher.showProgress(false); // hide if it was showing from previous screen
+		}
 	}
 
 	protected void updateSlidingMenuState() {

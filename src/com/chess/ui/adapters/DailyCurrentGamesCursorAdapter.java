@@ -1,9 +1,7 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.database.Cursor;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,6 +13,7 @@ import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.AppData;
 import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
@@ -34,7 +33,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 	private final boolean sevenInchTablet;
 	private final ItemClickListenerFace clickListenerFace;
-	private final boolean noNeedThumbnails;
+	private boolean showMiniBoards;
 	private boolean showNewGameAtFirst;
 	private String timeLabel;
 
@@ -51,9 +50,8 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 
 		sevenInchTablet = AppUtils.is7InchTablet(context);
-		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-		Configuration config = context.getResources().getConfiguration();
-		noNeedThumbnails = displayMetrics.heightPixels <= 800 && config.orientation == Configuration.ORIENTATION_PORTRAIT;
+
+		showMiniBoards = new AppData(context).isMiniBoardsEnabled();
 	}
 
 	@Override
@@ -68,10 +66,10 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view;
-		if (noNeedThumbnails) {
-			view = inflater.inflate(R.layout.new_daily_games_home_item_no_thumbs, parent, false);
-		} else {
+		if (showMiniBoards) {
 			view = inflater.inflate(R.layout.new_daily_games_home_item, parent, false);
+		} else {
+			view = inflater.inflate(R.layout.new_daily_games_home_item_no_thumbs, parent, false);
 		}
 
 		ViewHolder holder = new ViewHolder();
@@ -221,6 +219,10 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	public void setTimeLabel(String timeLabel) {
 		this.timeLabel = timeLabel;
 		notifyDataSetChanged();
+	}
+
+	public void setShowMiniBoards(boolean showMiniBoards) {
+		this.showMiniBoards = showMiniBoards;
 	}
 
 	protected class ViewHolder {

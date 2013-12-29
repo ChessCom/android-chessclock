@@ -223,7 +223,15 @@ public class AppData {
 	}
 
 	public boolean isNotificationsEnabled() {
-		return getBooleanValue(PREF_DAILY_NOTIFICATIONS);
+		return getBooleanValue(PREF_DAILY_NOTIFICATIONS, true);
+	}
+
+	public void setMiniBoardsEnabled(boolean value) {
+		setBooleanValue(PREF_DAILY_MINI_BOARDS, value);
+	}
+
+	public boolean isMiniBoardsEnabled() {
+		return getBooleanValue(PREF_DAILY_MINI_BOARDS, true);
 	}
 
 	public boolean isRegisterOnChessGCM() {
@@ -384,7 +392,7 @@ public class AppData {
 	}
 
 	public boolean isShowLegalMoves() {
-		return getBooleanValue(PREF_SHOW_LEGAL_MOVES);
+		return getBooleanValue(PREF_SHOW_LEGAL_MOVES, true);
 	}
 
 	public void setShowCoordinates(boolean checked) {
@@ -392,11 +400,11 @@ public class AppData {
 	}
 
 	public boolean isShowCoordinates() {
-		return getBooleanValue(PREF_BOARD_COORDINATES);
+		return getBooleanValue(PREF_BOARD_COORDINATES, true);
 	}
 
 	public boolean isHighlightLastMove() {
-		return getBooleanValue(PREF_BOARD_HIGHLIGHT_LAST_MOVE);
+		return getBooleanValue(PREF_BOARD_HIGHLIGHT_LAST_MOVE, true);
 	}
 
 	public void setHighlightLastMove(boolean checked) {
@@ -887,10 +895,6 @@ public class AppData {
 	private void setBooleanValue(String field, boolean checked) {
 		String username = getUsername();
 		preferences.edit().putBoolean(username + field, checked).commit();
-	}
-
-	private boolean getBooleanValue(String field) {
-		return getBooleanValue(field, true);
 	}
 
 	private boolean getBooleanValue(String field, boolean defValue) {

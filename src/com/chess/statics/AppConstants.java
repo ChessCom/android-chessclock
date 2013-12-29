@@ -52,6 +52,7 @@ public class AppConstants {
 	public static final String PREF_SHOW_SUBMIT_MOVE_LIVE = "show submit move live";
 	public static final String PREF_SHOW_SUBMIT_MOVE_DAILY = "show submit button daily";
 	public static final String PREF_DAILY_NOTIFICATIONS = "use daily notifications";
+	public static final String PREF_DAILY_MINI_BOARDS = "use_mini_boards";
 	public static final String PREF_ON_VACATION = "user on vacation";
 	public static final String PREF_SHOW_LEGAL_MOVES = "show possible move highlights";
 	public static final String PREF_BOARD_COORDINATES = "show coordinates";
