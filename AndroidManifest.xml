@@ -52,8 +52,7 @@
 		android:logo="@drawable/ic_action_menu"
 		android:theme="@style/OrangeButtonTheme"
 		android:allowBackup="false"
-		android:hardwareAccelerated="true"
-		android:debuggable="true">
+		android:hardwareAccelerated="true">
 
 		<activity
 			android:name=".ui.activities.MainFragmentFaceActivity"
