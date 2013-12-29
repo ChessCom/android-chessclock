@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
@@ -789,7 +790,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			 * Here we create a PullToRefreshAttacher manually without an Options instance.
 			 * PullToRefreshAttacher will manually create one using default values.
 			 */
-			if (HONEYCOMB_PLUS_API){
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH){
 				mPullToRefreshAttacher = PullToRefreshAttacher.get(this);
 			} else{
 				mPullToRefreshAttacher = AbcPullToRefreshAttacher.get(this);

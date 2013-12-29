@@ -1,7 +1,9 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,9 +34,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 	private final boolean sevenInchTablet;
 	private final ItemClickListenerFace clickListenerFace;
-//	private final AppData appData;
-//	private final int mode;
-//	private final int[] newGameButtonsArray;
+	private final boolean noNeedThumbnails;
 	private boolean showNewGameAtFirst;
 	private String timeLabel;
 
@@ -51,11 +51,9 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 
 		sevenInchTablet = AppUtils.is7InchTablet(context);
-
-//		appData = new AppData(context);
-//		newGameButtonsArray = resources.getIntArray(R.array.days_per_move_array);
-//
-//		mode = appData.getDefaultDailyMode();
+		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+		Configuration config = context.getResources().getConfiguration();
+		noNeedThumbnails = displayMetrics.heightPixels <= 800 && config.orientation == Configuration.ORIENTATION_PORTRAIT;
 	}
 
 	@Override
@@ -69,7 +67,12 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_daily_games_home_item, parent, false);
+		View view;
+		if (noNeedThumbnails) {
+			view = inflater.inflate(R.layout.new_daily_games_home_item_no_thumbs, parent, false);
+		} else {
+			view = inflater.inflate(R.layout.new_daily_games_home_item, parent, false);
+		}
 
 		ViewHolder holder = new ViewHolder();
 		holder.playerImg = (AvatarView) view.findViewById(R.id.playerImg);
@@ -200,7 +203,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	}
 
 	private boolean lessThanDay(long amount) {
-		return amount /86400 < 1;
+		return amount / 86400 < 1;
 	}
 
 	public void showNewGameAtFirst(boolean showNewGameAtFirst) {

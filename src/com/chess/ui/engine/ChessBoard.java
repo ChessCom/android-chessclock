@@ -1317,6 +1317,7 @@ public class ChessBoard implements BoardFace {
 	}
 
 
+	@Override
 	public void restoreBoardAfterHint() {
         histDat[ply] = hintHistoryData;
 	}
@@ -1458,8 +1459,9 @@ public class ChessBoard implements BoardFace {
 		return isCurrentPositionLatest() && histDat[ply] != null && makeMove(histDat[ply].move, playSound);
 	}
 
+	@Override
 	public boolean isCurrentPositionLatest() {
-		return ply < movesCount;
+		return ply == 0 && movesCount == 0 || ply < movesCount;
 	}
 
 /*

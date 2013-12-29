@@ -142,6 +142,7 @@
 
 		<!--Rating View-->
 		<com.chess.widgets.RelLayout
+			android:id="@+id/ratingView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
@@ -150,23 +151,17 @@
 			android:paddingRight="12dip"
 			android:paddingTop="12dip"
 			android:paddingBottom="7dip"
+			android:animateLayoutChanges="true"
 			>
 
 			<com.chess.widgets.RoboTextView
 				android:id="@+id/minRatingTxt"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/min_rating"
-				android:paddingLeft="2dip"
-				android:textColor="@color/semitransparent_white_65" />
-
-			<com.chess.widgets.RoboTextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/max_rating"
-				android:layout_alignParentRight="true"
-				android:paddingRight="2dip"
-				android:textColor="@color/semitransparent_white_65" />
+				android:text="@string/rating_range"
+				android:layout_centerHorizontal="true"
+				android:textColor="@color/semitransparent_white_65"
+				/>
 
 			<RelativeLayout
 				android:id="@+id/ratingButtonsLay"
@@ -185,15 +180,19 @@
 					android:layout_height="wrap_content"
 					style="@style/Button.Glassy.Small"
 					android:button="@null"
-					android:inputType="numberDecimal" />
+					android:inputType="numberDecimal"
+					/>
 
 				<com.chess.widgets.RoboTextView
+					android:id="@+id/currentRatingTxt"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="@string/to"
 					android:paddingTop="9dip"
+					style="@style/SettingsListText"
 					android:layout_centerInParent="true"
-					android:textColor="@color/semitransparent_white_65" />
+					android:textSize="@dimen/big_button_text_size"
+					android:textColor="@color/semitransparent_white_65"
+					/>
 
 				<com.chess.widgets.RoboRadioButton
 					android:id="@+id/maxRatingBtn"
@@ -202,20 +201,23 @@
 					android:layout_alignParentRight="true"
 					style="@style/Button.Glassy.Small"
 					android:button="@null"
-					android:inputType="numberDecimal" />
+					android:inputType="numberDecimal"
+					/>
 			</RelativeLayout>
 
 			<SeekBar
-				android:id="@+id/ratingBar"
+				android:id="@+id/ratingSeekBar"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/ratingButtonsLay"
 				android:paddingLeft="@dimen/seek_bar_side_padding"
 				android:paddingRight="@dimen/seek_bar_side_padding"
-				android:max="100"
-				android:progress="50"
+				android:max="10"
+				android:progress="5"
 				android:layout_marginTop="11dip"
-				style="@style/RatingSeekBar" />
+				style="@style/RatingSeekBar"
+				/>
+
 		</com.chess.widgets.RelLayout>
 
 		<!--Play Button-->

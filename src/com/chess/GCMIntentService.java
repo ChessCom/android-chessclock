@@ -34,8 +34,12 @@ import com.chess.backend.gcm.*;
 import com.chess.db.DbDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
-import com.chess.statics.*;
+import com.chess.statics.AppConstants;
+import com.chess.statics.AppData;
+import com.chess.statics.IntentConstants;
+import com.chess.statics.StaticData;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.LogMe;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
@@ -59,7 +63,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@Override
 	protected void onRegistered(Context context, String registrationId) {
 		AppData appData = new AppData(context);
-		Log.d(TAG, "User = " + appData.getUsername() + " Device registered: regId = " + registrationId);
+		LogMe.dl(TAG, "User = " + appData.getUsername() + " Device registered: regId = " + registrationId);
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_GCM);
@@ -67,7 +71,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
 		loadItem.addRequestParams(RestHelper.GCM_P_REGISTER_ID, registrationId);
 
-		Log.d(TAG, "Registering to server, registrationId = " + registrationId
+		LogMe.dl(TAG, "Registering to server, registrationId = " + registrationId
 				+ " \ntoken = " + appData.getUserToken());
 
 		GcmItem item = null;
@@ -80,7 +84,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 				if (serverCode == ServerErrorCodes.YOUR_GCM_ID_ALREADY_REGISTERED) {
 					GCMRegistrar.setRegisteredOnServer(context, true);
 					appData.registerOnChessGCM(appData.getUserToken());
-					Log.d(TAG, "Already registered on server -> Re-registering GCM");
+					LogMe.dl(TAG, "Already registered on server -> Re-registering GCM");
 				}
 			}
 
@@ -140,7 +144,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	protected void onMessage(Context context, Intent intent) {
 		AppData appData = new AppData(context);
 		String username = appData.getUsername();
-		Log.d(TAG, "User = " + username + " Received message");
+		LogMe.dl(TAG, "User = " + username + " Received message");
 
 		String type = intent.getStringExtra("type");
 		if (intent.hasExtra("owner")) {
@@ -150,8 +154,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 			}
 		}
 
-		Log.d(TAG, "type = " + type + " intent = " + intent);
-		if (BuildConfig.DEBUG && intent.hasExtra("message")) {
+		LogMe.dl(TAG, "type = " + type + " intent = " + intent);
+		if (/*BuildConfig.DEBUG && */intent.hasExtra("message")) {
 			Log.d(TAG, "type = " + type + " message = " + intent.getStringExtra("message"));
 
 			String message = intent.getStringExtra("message");          // TODO remove after debug
@@ -162,7 +166,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 
 		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)) {
-			Log.d(TAG, "received move notification, notifications enabled = " + appData.isNotificationsEnabled());
+			LogMe.dl(TAG, "received move notification, notifications enabled = " + appData.isNotificationsEnabled());
 
 			showYouTurnNotification(intent, context);
 		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_FRIEND_REQUEST)) {
@@ -230,8 +234,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 		friendRequestItem.setCreatedAt(Long.parseLong(intent.getStringExtra("created_at")));
 		friendRequestItem.setAvatar(intent.getStringExtra("avatar_url"));
 		friendRequestItem.setRequestId(Long.parseLong(intent.getStringExtra("request_id")));
-		Log.d(TAG, " _________________________________");
-		Log.d(TAG, " FriendRequestItem = " + new Gson().toJson(friendRequestItem));
+		LogMe.dl(TAG, " _________________________________");
+		LogMe.dl(TAG, " FriendRequestItem = " + new Gson().toJson(friendRequestItem));
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
@@ -247,8 +251,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 		chatNotificationItem.setGameId(Long.parseLong(intent.getStringExtra("game_id")));
 		chatNotificationItem.setCreatedAt(Long.parseLong(intent.getStringExtra("created_at")));
 		chatNotificationItem.setAvatar(intent.getStringExtra("avatar_url"));
-		Log.d(TAG, " _________________________________");
-		Log.d(TAG, " NewChatNotificationItem = " + new Gson().toJson(chatNotificationItem));
+		LogMe.dl(TAG, " _________________________________");
+		LogMe.dl(TAG, " NewChatNotificationItem = " + new Gson().toJson(chatNotificationItem));
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
@@ -278,8 +282,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 		gameOverNotificationItem.setMessage(intent.getStringExtra("message"));
 		gameOverNotificationItem.setGameId(Long.parseLong(intent.getStringExtra("game_id")));
 		gameOverNotificationItem.setAvatar(intent.getStringExtra("avatar_url"));
-		Log.d(TAG, " _________________________________");
-		Log.d(TAG, " GameOverNotificationItem = " + new Gson().toJson(gameOverNotificationItem));
+		LogMe.dl(TAG, " _________________________________");
+		LogMe.dl(TAG, " GameOverNotificationItem = " + new Gson().toJson(gameOverNotificationItem));
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
 
@@ -292,8 +296,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 		challengeNotificationItem.setUsername(intent.getStringExtra("sender"));
 		challengeNotificationItem.setAvatar(intent.getStringExtra("avatar_url"));
 		challengeNotificationItem.setChallengeId(Long.parseLong(intent.getStringExtra("challenge_id")));
-		Log.d(TAG, " _________________________________");
-		Log.d(TAG, " NewChallengeNotificationItem = " + new Gson().toJson(challengeNotificationItem));
+		LogMe.dl(TAG, " _________________________________");
+		LogMe.dl(TAG, " NewChallengeNotificationItem = " + new Gson().toJson(challengeNotificationItem));
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
 		DbDataManager.saveNewChallengeNotification(contentResolver, challengeNotificationItem, username);
@@ -310,11 +314,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String gameId = intent.getStringExtra("game_id");
 
 //		boolean gameInfoFound = false;
-		Log.d(TAG, " _________________________________");
-		Log.d(TAG, " LastMoveSan = " + lastMoveSan);
-		Log.d(TAG, " gameId = " + gameId);
-		Log.d(TAG, " opponentUsername = " + opponentUsername);
-		Log.d(TAG, " is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
+		LogMe.dl(TAG, " _________________________________");
+		LogMe.dl(TAG, " LastMoveSan = " + lastMoveSan);
+		LogMe.dl(TAG, " gameId = " + gameId);
+		LogMe.dl(TAG, " opponentUsername = " + opponentUsername);
+		LogMe.dl(TAG, " is inOnlineGame = " + DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId)));
 
 		// we use the same registerId for all users on a device, so check username to notify only the needed user
 		if (opponentUsername.equalsIgnoreCase(username)) {
@@ -391,7 +395,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	@Override
 	public void onError(Context context, String errorId) {
-		Log.d(TAG, "Received error: " + errorId);
+		LogMe.dl(TAG, "Received error: " + errorId);
 		if (errorId != null) {
 			if ("SERVICE_NOT_AVAILABLE".equals(errorId)) {
 				long backoffTimeMs = preferences.getLong(AppConstants.GCM_RETRY_TIME, 100);// get back-off time from shared preferences
@@ -408,14 +412,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 				editor.commit();
 			} else {
 				// Unrecoverable error, log it
-				Log.i(TAG, "Received error: " + errorId);
+				LogMe.dl(TAG, "Received error: " + errorId);
 			}
 		}
 	}
 
 	@Override
 	protected boolean onRecoverableError(Context context, String errorId) {
-		Log.d(TAG, "Received recoverable error: " + errorId);
+		LogMe.dl(TAG, "Received recoverable error: " + errorId);
 		return super.onRecoverableError(context, errorId);
 	}
 

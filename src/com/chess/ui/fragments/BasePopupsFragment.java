@@ -338,7 +338,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	public void hideKeyBoard() {
-		if (getActivity() == null) {
+		if (getActivity() == null || getView() == null) {
 			return;
 		}
 		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

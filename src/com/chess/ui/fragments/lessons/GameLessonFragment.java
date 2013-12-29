@@ -63,7 +63,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	public static final String BOLD_DIVIDER = "##";
 
 	private static final long DRAWER_UPDATE_DELAY = 100;
-	private static final long TACTIC_ANSWER_DELAY = 1500;
+	private static final long SHOW_ANSWER_DELAY = 1500;
 
 
 	// Options ids
@@ -227,6 +227,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			// drop flag here for lessons limit reached
 			getAppData().setLessonLimitWasReached(false);
 
+			getControlsView().enableGameControls(false);
+
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSON_BY_ID(lessonId));
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken()); // looks like restart parameter is useless here, because we load from DB
@@ -271,7 +273,15 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public void nextPosition() {
-		if (++currentLearningPosition < totalLearningPositionsCnt) {
+		if (currentLearningPosition < totalLearningPositionsCnt) {
+			if (getMentorPosition().getMoveDifficulty() == 0 && !getCurrentCompleteItem().answerWasShown) { // If Free move
+				showAnswer();
+				return;
+			}
+		}
+
+		if (currentLearningPosition <= totalLearningPositionsCnt) {
+			currentLearningPosition++;
 			userLesson.setCurrentPosition(currentLearningPosition);
 
 			showDefaultControls();
@@ -421,7 +431,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	 */
 	@Override
 	public void verifyMove() {
-		LessonsBoardFace boardFace = getBoardFace();
+		final LessonsBoardFace boardFace = getBoardFace();
 
 		// iterate through possible moves and perform deduction
 		boolean moveRecognized = false;
@@ -434,9 +444,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					correctMove = true;
 					if (!TextUtils.isEmpty(possibleMove.getShortResponseMove())) {
 						final Move move = boardFace.convertMoveCoordinate(possibleMove.getShortResponseMove());
+						// play move animation
 						boardView.setMoveAnimator(move, true);
 						boardView.resetValidMoves();
+						// make actual move
 						boardFace.makeMove(move, true);
+						invalidateGameScreen();
 					}
 				} else if (possibleMove.getMoveType().equals(LessonProblemItem.MOVE_ALTERNATE)) { // Alternate Correct Move
 					// Correct move, try again!
@@ -674,18 +687,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			newGame();
 		} else if (code == ID_SHOW_ANSWER) {
 
-			LessonProblemItem.MentorPosition mentorPosition = getMentorPosition();
-			LessonProblemItem.MentorPosition.PossibleMove correctMove = mentorPosition.getCorrectMove();
-
-			moveToShow = correctMove.getMove();
-
-			ChessBoardLessons.resetInstance();
-			boardView.setGameFace(this);
-
-			getBoardFace().setupBoard(getMentorPosition().getFen());
-
-			handler.postDelayed(showTacticMoveTask, TACTIC_ANSWER_DELAY);
-			getCurrentCompleteItem().answerWasShown = true;
+			showAnswer();
 
 //		} else if (code == ID_KEY_SQUARES) {
 //			showToast("key squares");
@@ -712,18 +714,58 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		optionsSelectFragment = null;
 	}
 
+	private void showAnswer() {
+		// avoid changing currentLearningPosition
+		getControlsView().enableGameControls(false);
+
+		LessonProblemItem.MentorPosition mentorPosition = getMentorPosition();
+		LessonProblemItem.MentorPosition.PossibleMove correctMove = mentorPosition.getCorrectMove();
+
+		moveToShow = correctMove.getMove();
+
+		ChessBoardLessons.resetInstance();
+		boardView.setGameFace(this);
+		slidingDrawer.open();
+
+		getBoardFace().setupBoard(getMentorPosition().getFen());
+
+		handler.postDelayed(showTacticMoveTask, SHOW_ANSWER_DELAY);
+		getCurrentCompleteItem().answerWasShown = true;
+	}
+
 	private Runnable showTacticMoveTask = new Runnable() {
 		@Override
 		public void run() {
 			handler.removeCallbacks(this);
+			if (getActivity() == null) {
+				return;
+			}
 
 			LessonsBoardFace boardFace = getBoardFace();
 
+			// get next valid move
 			final Move move = boardFace.convertMoveAlgebraic(moveToShow);
+
+			// play move animation
 			boardView.setMoveAnimator(move, true);
 			boardView.resetValidMoves();
+			// make actual move
 			boardFace.makeMove(move, true);
 			invalidateGameScreen();
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					handler.removeCallbacks(this);
+
+					if (getActivity() == null) {
+						return;
+					}
+					getControlsView().enableGameControls(true);
+
+					verifyMove();
+				}
+			}, SHOW_ANSWER_DELAY);
 		}
 	};
 
@@ -734,6 +776,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public void onDrawerOpened() {
+		if (lessonItem == null) {
+			return;
+		}
+
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -742,9 +788,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			}
 		}, 25);
 
-
 		if (!solvedPositionsList.contains(currentLearningPosition) && !wrongState) {
 			getControlsView().showDefault();
+		}
+
+		if (getMentorPosition().getMoveDifficulty() == 0) { // It's a Free move, user may skip it.
+			controlsView.showCorrect();
 		}
 
 		descriptionView.setPadding(0, 0, 0, openDescriptionPadding);
@@ -833,6 +882,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	private void adjustBoardForGame() {
 		wrongState = false;
+
 		ChessBoardLessons.resetInstance();
 		LessonsBoardFace boardFace = getBoardFace();
 		boardView.setGameUiFace(this);
@@ -956,7 +1006,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 //			TextView lessonRatingChangeTxt = (TextView) popupView.findViewById(R.id.lessonRatingChangeTxt);
 
 			float pointsForLesson = 0;
-			if (!lessonItem.isLessonCompleted()) { // For completed lesson ratingChange is null
+			if (!lessonItem.isLessonCompleted() && ratingChange != null) { // For completed lesson ratingChange is null
 				pointsForLesson = ratingChange.getChange();
 				updatedUserRating += pointsForLesson;
 			}

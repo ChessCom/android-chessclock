@@ -43,7 +43,6 @@ import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.MainFragmentFaceActivity;
-import org.apache.http.HttpEntity;
 
 import java.io.File;
 import java.io.IOException;
@@ -401,43 +400,6 @@ public class AppUtils {
 		notifyManager.notify(R.id.notification_message, notification);
 	}
 
-	/**
-	 * Use default android.util.Log with Flag trigger
-	 * Use this method to track changes, but avoid to use in uncertain cases,
-	 * where release version can tell where some bugs were born
-	 *
-	 * @param tag
-	 * @param message
-	 */
-	public static void logD(String tag, String message) {
-		if (ENABLE_LOG) // can be set false for release version.
-			Log.d(tag, message);
-	}
-
-	public static void startNotificationsUpdate(Context context) {
-//		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
-//
-//		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID,
-//				statusUpdate, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//		// schedule the service for updating
-//		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//		alarms.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis(), StaticData.REMIND_ALARM_INTERVAL, pendingIntent);
-	}
-
-	public static void stopNotificationsUpdate(Context context) {
-//		Intent statusUpdate = new Intent(context, AlarmReceiver.class);
-//
-//		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, StaticData.YOUR_MOVE_UPDATE_ID, statusUpdate,
-//				PendingIntent.FLAG_UPDATE_CURRENT);
-//		AlarmManager alarms = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-//		alarms.cancel(pendingIntent);
-//
-//		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//		notifyManager.cancel(R.id.notification_message);
-	}
-
 	public static void cancelNotifications(Context context) {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		notifyManager.cancelAll();
@@ -644,23 +606,6 @@ public class AppUtils {
 		}
 	}
 
-	public static String httpEntityToString(HttpEntity entity) throws IOException {
-
-		InputStream inputStream = entity.getContent();
-		int numberBytesRead = 0;
-		StringBuilder out = new StringBuilder();
-		byte[] bytes = new byte[4096];
-
-		while (numberBytesRead != -1) {
-			out.append(new String(bytes, 0, numberBytesRead));
-			numberBytesRead = inputStream.read(bytes);
-		}
-
-		inputStream.close();
-
-		return out.toString();
-	}
-
 	public static void showKeyBoard(Context context, EditText view) {
 		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.showSoftInput(view, 0);
@@ -759,35 +704,6 @@ public class AppUtils {
 		final Intent intent = new Intent(action);
 		List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 		return list.size() > 0;
-	}
-
-	public static int[] getValidThemeBackIds() {
-		return new int[]{
-				R.drawable.img_theme_green_felt
-//				,
-//				R.drawable.img_theme_dueling_tigers
-//				,
-//				R.drawable.img_theme_blackwood,
-//				R.drawable.img_theme_blackstone,
-//				R.drawable.img_theme_charcoal,
-//				R.drawable.img_theme_agua,
-//				R.drawable.img_theme_grey_felt,
-//				R.drawable.img_theme_grass
-		};
-	}
-
-	public static boolean isThemeBackIdValid(int backId) {
-		int[] validThemeBackIds = getValidThemeBackIds();
-		for (int validThemeBackId : validThemeBackIds) {
-			if (validThemeBackId == backId) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static void iconRestore() { // TODO restore icons
-
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)

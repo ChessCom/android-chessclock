@@ -318,7 +318,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		curriculumItems.setDisplayOrder(curriculumCategoriesOrder);
 	}
 
-	private class LessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseListItem> {
+	private class LessonsCoursesUpdateListener extends ChessUpdateListener<LessonCourseListItem> {
 		public LessonsCoursesUpdateListener() {
 			super(LessonCourseListItem.class);
 		}

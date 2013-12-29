@@ -46,6 +46,7 @@ public class DbHelper {
 		queryParams.setProjection(DbDataManager.PROJECTION_DAILY_CURRENT_GAMES);
 		queryParams.setSelection(DbDataManager.SELECTION_USER_TURN);
 		queryParams.setArguments(new String[]{username, RestHelper.V_TRUE});
+		queryParams.setOrder(DbScheme.V_TIMESTAMP + DbDataManager.DESCEND);
 		return queryParams;
 	}
 
@@ -55,6 +56,7 @@ public class DbHelper {
 		queryParams.setProjection(DbDataManager.PROJECTION_DAILY_CURRENT_GAMES);
 		queryParams.setSelection(DbDataManager.SELECTION_USER_TURN);
 		queryParams.setArguments(new String[]{username, RestHelper.V_FALSE});
+		queryParams.setOrder(DbScheme.V_TIMESTAMP + DbDataManager.DESCEND);
 		return queryParams;
 	}
 
@@ -64,6 +66,7 @@ public class DbHelper {
 		queryParams.setProjection(DbDataManager.PROJECTION_FINISHED_GAMES);
 		queryParams.setSelection(DbDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{username});
+		queryParams.setOrder(DbScheme.V_TIMESTAMP + DbDataManager.DESCEND);
 		return queryParams;
 	}
 
@@ -81,6 +84,7 @@ public class DbHelper {
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.LIVE_ARCHIVE_GAMES.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_USER_AND_ID);
 		queryParams.setArguments(new String[]{username, String.valueOf(gameId)});
+		queryParams.setOrder(DbScheme.V_TIMESTAMP + DbDataManager.DESCEND);
 		return queryParams;
 	}
 
@@ -169,7 +173,7 @@ public class DbHelper {
 	public static QueryParams getVideosList() {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.VIDEOS.ordinal()]);
-		queryParams.setOrder(DbScheme.V_CATEGORY);
+		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.DESCEND);
 		return queryParams;
 	}
 

@@ -1,5 +1,7 @@
 package com.chess.ui.engine.configs;
 
+import com.chess.backend.RestHelper;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -29,7 +31,29 @@ public class DailyGameConfig {
 		public Builder(){
 			daysPerMove = 3;
 			rated = true;
-			gameType = 1;
+			gameType =  RestHelper.V_GAME_CHESS;
+		}
+
+		/**
+		 * This should be in sync with arrays_values resource file:
+		 * 1  = 0
+		 * 2  = 1
+		 * 3  = 2
+		 * 5  = 3
+		 * 7  = 4
+		 * 10 = 5
+		 *
+		 */
+		public Builder setTimeFromMode(int mode){
+			switch (mode) {
+				case 0: daysPerMove = 1; break;
+				case 1: daysPerMove = 2; break;
+				case 2: daysPerMove = 3; break;
+				case 3: daysPerMove = 5; break;
+				case 4: daysPerMove = 7; break;
+				case 5: daysPerMove = 10; break;
+			}
+			return this;
 		}
 
 		public Builder setDaysPerMove(int daysPerMove) {
@@ -64,6 +88,18 @@ public class DailyGameConfig {
 
 		public DailyGameConfig build(){
 			return new DailyGameConfig(this);
+		}
+
+		public int getGameType() {
+			return gameType;
+		}
+
+		public int getMinRating() {
+			return minRating;
+		}
+
+		public int getMaxRating() {
+			return maxRating;
 		}
 	}
 

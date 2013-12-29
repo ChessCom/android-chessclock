@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.daily;
 
+import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -13,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.chess.*;
+import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
@@ -23,8 +24,10 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
+import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -45,19 +48,18 @@ import java.util.List;
  * Date: 24.04.13
  * Time: 14:26
  */
-public class DailyGameOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemSelectedListener, PopupListSelectionFace {
+public class DailyGameOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace,
+		AdapterView.OnItemSelectedListener, PopupListSelectionFace, SeekBar.OnSeekBarChangeListener {
 
-	private static final int RATING_VARIABLE_DIFF = 100;
-	private static final int MIN_RATING_DIFF = 200;
-	private static final int MAX_RATING_DIFF = 200;
-	private static final int MIN_RATING_MIN = 1000;
-	private static final int MIN_RATING_MAX = 2000;
-	private static final int MAX_RATING_MIN = 1000;
-	private static final int MAX_RATING_MAX = 2400;
+	private static final int MIN_RATING_MIN = -1000;
+	private static final int MIN_RATING_MAX = 0;
+	private static final int MAX_RATING_MIN = 0;
+	private static final int MAX_RATING_MAX = 1000;
 
 	private static final int ID_CHESS = 0;
 	private static final int ID_CHESS_960 = 1;
 	private static final String OPTION_SELECTION_TAG = "options selection popup";
+	private static final long SEEK_BAR_HIDE_DELAY = 5 * 1000;
 
 	private DailyGamesButtonsAdapter dailyGamesButtonsAdapter;
 	private DailyGameConfig.Builder gameConfigBuilder;
@@ -67,13 +69,16 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 	private List<SelectionItem> friendsList;
-	private int dailyRating;
+	private int chessRating;
+	private int chess960Rating;
 	private int positionMode;
-	private View ratingView;
+	private ViewGroup ratingView;
 	private SparseArray<String> optionsMap;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private Button gameTypeBtn;
 	private String opponentName;
+	private SeekBar ratingSeekBar;
+	private TextView currentRatingTxt;
 
 	public DailyGameOptionsFragment() {
 		Bundle bundle = new Bundle();
@@ -102,6 +107,8 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		String username = getUsername();
+
 		if (getArguments() != null) {
 			positionMode = getArguments().getInt(MODE);
 			opponentName = getArguments().getString(OPPONENT_NAME);
@@ -110,23 +117,27 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 			opponentName = savedInstanceState.getString(OPPONENT_NAME);
 		}
 
-		gameConfigBuilder = new DailyGameConfig.Builder();
+		gameConfigBuilder = getAppData().getDailyGameConfigBuilder();
 
 		{ // load friends from DB
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(), DbScheme.Tables.FRIENDS));
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(username, DbScheme.Tables.FRIENDS));
 
 			friendsList = new ArrayList<SelectionItem>();
 			friendsList.add(new SelectionItem(null, getString(R.string.random)));
 			if (cursor != null && cursor.moveToFirst()) {
-				do{
+				do {
 					friendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
-				}while (cursor.moveToNext());
+				} while (cursor.moveToNext());
+			}
+			if (cursor != null) {
+				cursor.close();
 			}
 
 			friendsList.get(0).setChecked(true);
 		}
 
-		dailyRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
+		chessRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), username);
+		chess960Rating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS960.ordinal(), username);
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 	}
 
@@ -147,6 +158,14 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 		super.onResume();
 
 		updateDailyMode(getAppData().getDefaultDailyMode());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		// save config
+		getAppData().setDailyGameConfigBuilder(gameConfigBuilder);
 	}
 
 	@Override
@@ -204,9 +223,13 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 		if (code == ID_CHESS) {
 			gameConfigBuilder.setGameType(RestHelper.V_GAME_CHESS);
 			gameTypeBtn.setText(R.string.standard);
+
+			currentRatingTxt.setText(String.valueOf(chessRating));
 		} else if (code == ID_CHESS_960) {
 			gameConfigBuilder.setGameType(RestHelper.V_GAME_CHESS_960);
 			gameTypeBtn.setText(R.string.chess_960);
+
+			currentRatingTxt.setText(String.valueOf(chess960Rating));
 		}
 
 		optionsSelectFragment.dismiss();
@@ -217,7 +240,6 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	public void onDialogCanceled() {
 		optionsSelectFragment = null;
 	}
-
 
 	private class CreateChallengeUpdateListener extends ChessLoadUpdateListener<DailySeekItem> {
 
@@ -238,74 +260,68 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 				minRatingBtn.setChecked(true);
 				maxRatingBtn.setChecked(false);
 
-			} else if (buttonView.getId() == R.id.maxRatingBtn && isChecked){
+			} else if (buttonView.getId() == R.id.maxRatingBtn && isChecked) {
 				maxRatingBtn.setChecked(true);
 				minRatingBtn.setChecked(false);
 			}
 		}
 	};
 
-	private SeekBar.OnSeekBarChangeListener ratingBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
-		@Override
-		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-			TextView checkedButton;
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		int rating = chessRating;
+		if (gameConfigBuilder.getGameType() == RestHelper.V_GAME_CHESS_960) {
+			rating = chess960Rating;
+		}
 
-			int minRatingValue = Integer.parseInt(minRatingBtn.getText().toString());
-			int maxRatingValue = Integer.parseInt(maxRatingBtn.getText().toString());
+		TextView checkedButton;
 
-			int minRating;
-			int maxRating;
-			if (maxRatingBtn.isChecked()) {
-				checkedButton = maxRatingBtn;
-				minRating = MAX_RATING_MIN;
-				maxRating = MAX_RATING_MAX;
-			} else {
-				checkedButton = minRatingBtn;
-				minRating = MIN_RATING_MIN;
-				maxRating = MIN_RATING_MAX;
+		float factor;
+		int value;
+		String symbol = Symbol.EMPTY;
+		if (minRatingBtn.isChecked()) {
+			checkedButton = minRatingBtn;
+
+			factor = (MIN_RATING_MAX - MIN_RATING_MIN) / 10; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
+			value = 1000 - (int) (factor * progress);
+			if (value != 0) {
+				symbol = Symbol.MINUS;
 			}
 
-			// get percent progress and convert it to values
-			int diff = minRating;
-			float factor = (maxRating - minRating) / 100; // (maxRating - minRating) / maxSeekProgress
-			// progress - percent
-			int value = (int) (factor * progress) + diff; // k * x + b
+			// update min rating
+			gameConfigBuilder.setMinRating(rating - value);
+		} else {
+			checkedButton = maxRatingBtn;
 
-			if (maxRatingBtn.isChecked()) {
-				if (value < minRatingValue) { // if minRating is lower that minRating
-					value = minRatingValue + RATING_VARIABLE_DIFF;
-				}
-
-				gameConfigBuilder.setMaxRating(value);
-				gameConfigBuilder.setMinRating(minRatingValue);
-			} else {
-				if (value > maxRatingValue) { // if minRating is greater that maxRating
-					value = maxRatingValue - RATING_VARIABLE_DIFF;
-				}
-
-				gameConfigBuilder.setMinRating(value);
-				gameConfigBuilder.setMaxRating(maxRatingValue);
+			factor = (MAX_RATING_MAX - MAX_RATING_MIN) / 10; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
+			value = (int) (factor * progress);
+			if (value != 0) {
+				symbol = Symbol.PLUS;
 			}
 
-			checkedButton.setText(String.valueOf(value));
+			// update max rating
+			gameConfigBuilder.setMaxRating(rating - value);
 		}
 
-		@Override
-		public void onStartTrackingTouch(SeekBar seekBar) {
-		}
+		checkedButton.setText(symbol + String.valueOf(value));
+	}
 
-		@Override
-		public void onStopTrackingTouch(SeekBar seekBar) {
-		}
-	};
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		handler.removeCallbacks(hideSeekBarRunnable);
+	}
 
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
+	}
 
 	private class DailyGameButtonItem {
 		public boolean checked;
 		public int days;
 		public String label;
 
-		DailyGameButtonItem(int label){
+		DailyGameButtonItem(int label) {
 			this.days = label;
 			this.label = String.valueOf(label);
 		}
@@ -318,20 +334,34 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			updateDailyMode(position);
 			getAppData().setDefaultDailyMode(position);
-		} else if (view.getId() == R.id.dailyHeaderView){
+		} else if (view.getId() == R.id.dailyHeaderView) {
 			getActivityFace().toggleRightMenu();
-		} else if (view.getId() == R.id.gameTypeBtn){
+		} else if (view.getId() == R.id.gameTypeBtn) {
 			if (optionsSelectFragment != null) { // if we already showing these options
 				return;
 			}
 			optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);
 			optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
-		} else if (view.getId() == R.id.ratedGameView){
+		} else if (view.getId() == R.id.ratedGameView) {
 			ratedGameSwitch.toggle();
-		} else if (view.getId() == R.id.playBtn){
+		} else if (view.getId() == R.id.minRatingBtn) {
+			ratingSeekBar.setVisibility(View.VISIBLE);
+			handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
+		} else if (view.getId() == R.id.maxRatingBtn) {
+			ratingSeekBar.setVisibility(View.VISIBLE);
+			handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
+		} else if (view.getId() == R.id.playBtn) {
 			createDailyChallenge();
 		}
 	}
+
+
+	Runnable hideSeekBarRunnable = new Runnable() {
+		@Override
+		public void run() {
+			ratingSeekBar.setVisibility(View.GONE);
+		}
+	};
 
 	private class DailyGamesButtonsAdapter extends ItemsAdapter<DailyGameButtonItem> {
 
@@ -361,20 +391,19 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 		protected void bindView(DailyGameButtonItem item, int pos, View convertView) {
 			convertView.setTag(itemListId, pos);
 
-			((RoboButton)convertView).setText(item.label);
+			((RoboButton) convertView).setText(item.label);
 
 			Drawable background = convertView.getBackground();
-			logTest(" pos = " + pos + " checked = " + item.checked);
 			if (item.checked) {
-				((RoboButton)convertView).setTextColor(Color.WHITE);
+				((RoboButton) convertView).setTextColor(Color.WHITE);
 				background.mutate().setState(ButtonGlassyDrawable.STATE_SELECTED);
 			} else {
-				((RoboButton)convertView).setTextColor(textColor);
+				((RoboButton) convertView).setTextColor(textColor);
 				background.mutate().setState(ButtonGlassyDrawable.STATE_ENABLED);
 			}
 		}
 
-		public void checkButton(int checkedPosition){
+		public void checkButton(int checkedPosition) {
 			for (DailyGameButtonItem item : itemsList) {
 				item.checked = false;
 			}
@@ -385,9 +414,25 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 		}
 	}
 
-	public DailyGameConfig getDailyGameConfig(){
+	public DailyGameConfig getDailyGameConfig() {
 		// set params
 		gameConfigBuilder.setRated(ratedGameSwitch.isChecked());
+
+		String minRatingBtnText = minRatingBtn.getText().toString();
+		String maxRatingBtnText = maxRatingBtn.getText().toString();
+
+		Integer minRatingValue = Integer.valueOf(minRatingBtnText.replace(Symbol.PLUS, Symbol.EMPTY).replace(Symbol.MINUS, Symbol.EMPTY));
+		Integer maxRatingValue = Integer.valueOf(maxRatingBtnText.replace(Symbol.PLUS, Symbol.EMPTY).replace(Symbol.MINUS, Symbol.EMPTY));
+
+		int rating = chessRating;
+		if (gameConfigBuilder.getGameType() == RestHelper.V_GAME_CHESS_960) {
+			rating = chess960Rating;
+		}
+
+		gameConfigBuilder.setMinRating(rating - minRatingValue);
+		gameConfigBuilder.setMaxRating(rating + maxRatingValue);
+
+		getAppData().setDailyGameConfigBuilder(gameConfigBuilder);
 
 		return gameConfigBuilder.build();
 	}
@@ -444,24 +489,71 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 				optionsMap.put(ID_CHESS_960, getString(R.string.chess_960));
 			}
 			{// Rating part
-				ratingView = view.findViewById(R.id.ratingView);
-				int minRatingDefault = dailyRating - MIN_RATING_DIFF;
-				int maxRatingDefault = dailyRating + MAX_RATING_DIFF;
+				ratingView = (ViewGroup) view.findViewById(R.id.ratingView);
+				int minRatingDefault;
+				int maxRatingDefault;
+
+				int minRating = gameConfigBuilder.getMinRating();
+				int maxRating = gameConfigBuilder.getMaxRating();
+
+
+				int rating;
+				if (gameConfigBuilder.getGameType() == RestHelper.V_GAME_CHESS) {
+					rating = chessRating;
+				} else {
+					rating = chess960Rating;
+				}
+
+				if (minRating == 0) { // first time
+					minRating = rating - LiveGameConfig.RATING_STEP;
+					gameConfigBuilder.setMinRating(minRating);
+				}
+				if (maxRating == 0) { // first time
+					maxRating = rating + LiveGameConfig.RATING_STEP;
+					gameConfigBuilder.setMaxRating(maxRating);
+				}
+
+				minRatingDefault = minRating - rating;
+				maxRatingDefault = maxRating - rating;
+
+				String minRatingStr;
+				String maxRatingStr;
+				if (minRatingDefault == 0) {
+					minRatingStr = Symbol.MINUS + LiveGameConfig.RATING_STEP;
+				} else {
+					minRatingStr = String.valueOf(minRatingDefault);
+				}
+				if (maxRatingDefault == 0) {
+					maxRatingStr = Symbol.PLUS + LiveGameConfig.RATING_STEP;
+				} else {
+					maxRatingStr = Symbol.PLUS + String.valueOf(maxRatingDefault);
+				}
+
+				if (JELLY_BEAN_PLUS_API) {
+					LayoutTransition layoutTransition = ratingView.getLayoutTransition();
+					layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+				}
+
+				currentRatingTxt = (TextView) view.findViewById(R.id.currentRatingTxt);
+				currentRatingTxt.setText(String.valueOf(chessRating));
 
 				minRatingBtn = (RoboRadioButton) view.findViewById(R.id.minRatingBtn);
 				minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
-				minRatingBtn.setText(String.valueOf(minRatingDefault));
+				minRatingBtn.setOnClickListener(this);
+				minRatingBtn.setText(minRatingStr);
 
 				maxRatingBtn = (RoboRadioButton) view.findViewById(R.id.maxRatingBtn);
 				maxRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
-				maxRatingBtn.setText(String.valueOf(maxRatingDefault));
+				maxRatingBtn.setOnClickListener(this);
+				maxRatingBtn.setText(maxRatingStr);
 
 				// set checked minRating Button
 				minRatingBtn.setChecked(true);
 
-				SeekBar ratingBar = (SeekBar) view.findViewById(R.id.ratingBar);
-				ratingBar.setOnSeekBarChangeListener(ratingBarChangeListener);
-				ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
+				ratingSeekBar = (SeekBar) view.findViewById(R.id.ratingSeekBar);
+				ratingSeekBar.setOnSeekBarChangeListener(this);
+				ratingSeekBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingSeekBar));
+				ratingSeekBar.setVisibility(View.GONE);
 			}
 			view.findViewById(R.id.playBtn).setOnClickListener(this);
 		}

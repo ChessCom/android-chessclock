@@ -15,10 +15,9 @@ public class LiveGameConfig implements Parcelable {
 
 	public static final int STANDARD = 0;
 	public static final int BLITZ = 1;
-	public static final int BULLET = 2;
+	public static final int LIGHTNING = 2;
 
-	public static final int MIN_RATING_DIFF = 200;
-	public static final int MAX_RATING_DIFF = 200;
+	public static final int RATING_STEP = 100;
 
 	private boolean rated;
 	private int minRating;
@@ -51,8 +50,8 @@ public class LiveGameConfig implements Parcelable {
 			timeModesMap.put(2, BLITZ);       // 2 | 1	 = 3
 			timeModesMap.put(5, BLITZ);       // 15 | 10 = 4
 			timeModesMap.put(6, BLITZ);       // 5		 = 5
-			timeModesMap.put(3, BULLET);      // 3		 = 6
-			timeModesMap.put(7, BULLET);      // 1		 = 7
+			timeModesMap.put(3, LIGHTNING);      // 3		 = 6
+			timeModesMap.put(7, LIGHTNING);      // 1		 = 7
 		}
 
 		public Builder setRated(boolean rated) {
@@ -92,8 +91,8 @@ public class LiveGameConfig implements Parcelable {
 				timeMode = STANDARD;
 			} else if (timeModesMap.get(mode) == BLITZ) {
 				timeMode = BLITZ;
-			} else if (timeModesMap.get(mode) == BULLET) {
-				timeMode = BULLET;
+			} else if (timeModesMap.get(mode) == LIGHTNING) {
+				timeMode = LIGHTNING;
 			}
 
 			switch (mode){

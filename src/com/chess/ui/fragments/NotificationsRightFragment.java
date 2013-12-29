@@ -427,6 +427,10 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 		public void updateData(FriendRequestResultItem returnedObj) {
 			showToast(successToastMsgId);
 
+			if (selectedChallengeItem == null) { // TODO investigate why it's null
+				return;
+			}
+
 			ContentResolver contentResolver = getContentResolver();
 			String opponentUsername = selectedChallengeItem.getOpponentUsername();
 			String username = getUsername();

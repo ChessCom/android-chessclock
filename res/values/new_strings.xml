@@ -10,4 +10,5 @@
 	<string name="not_connected_yet">Not connected yet</string>
 	<string name="no_email_found">No email found</string>
 	<string name="unable_to_send_challenge">Unable to send Challenge</string>
+	<string name="rating_range">Rating Range:</string>
 </resources>

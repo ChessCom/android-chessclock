@@ -231,7 +231,10 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-		int section = sectionedAdapter.getCurrentSection(pos);
+		boolean headerAdded = listView.getHeaderViewsCount() > 0; // use to check if header added
+		int offset = headerAdded ? -1 : 0;
+
+		int section = sectionedAdapter.getCurrentSection(pos + offset);
 
 		if (section == CHALLENGES_SECTION) {
 			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));

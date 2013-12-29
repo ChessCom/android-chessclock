@@ -384,7 +384,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			public void run() {
 				final View layout;
 
-				if (!AppUtils.isNeedToUpgrade(activity)) {
+				if (!isNeedToUpgrade()) {
 					layout = inflater.inflate(R.layout.popup_end_game, null, false);
 				} else {
 					layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
@@ -561,9 +561,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(message);
 
+		int currentPlayerNewRating;
+		int ratingChange;
 		String liveUsername = getUsername();
-		int currentPlayerNewRating = game.getRatingForPlayer(liveUsername);
-		int ratingChange = game.getRatingChangeForPlayer(liveUsername);
+		if (game.getWhitePlayer().getUsername().equals(liveUsername)) {
+			currentPlayerNewRating = game.getRatingForPlayer(game.getWhitePlayer().getUsername());
+			ratingChange = game.getRatingChangeForPlayer(game.getWhitePlayer().getUsername());
+		} else {
+			currentPlayerNewRating = game.getRatingForPlayer(game.getBlackPlayer().getUsername());
+			ratingChange = game.getRatingChangeForPlayer(game.getBlackPlayer().getUsername());
+		}
 
 		GameRatingClass gameRatingClass = game.getGameRatingClass();
 		String newRatingStr = getString(R.string.live);
@@ -601,7 +608,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //		}
 	}
 
-
 	@Override
 	protected void setBoardToFinishedState() { // TODO implement state conditions logic for board
 		super.setBoardToFinishedState();
@@ -618,6 +624,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				if (getActivity() == null || fadeLay == null) {
+					return;
+				}
+
 				if (block) {
 					fadeLay.setVisibility(View.VISIBLE);
 				} else {
@@ -732,7 +742,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void invalidateGameScreen() {
-		logLiveTest("GameLive invalidateGameScreen = " );
+		logLiveTest("GameLive invalidateGameScreen = ");
 		if (isLCSBound) {
 			showSubmitButtonsLay(getBoardFace().isSubmit());
 

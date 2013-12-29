@@ -178,6 +178,10 @@ public class ControlsLessonsView extends ControlsBaseView {
 
 	public void enableGameControls(boolean enable) {
 		enableGameButton(OPTIONS, enable);
+		enableGameButton(HINT, enable);
+		enableGameButton(RESTART, enable);
+		enableGameButton(NEXT, enable);
+		enableGameButton(SKIP, enable);
 	}
 
 	public void dropUsedHints() {

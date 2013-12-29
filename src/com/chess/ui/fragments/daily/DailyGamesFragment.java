@@ -21,7 +21,6 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.model.GameOnlineItem;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
@@ -32,6 +31,7 @@ import com.chess.ui.engine.ChessBoardDiagram;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
 import com.chess.ui.interfaces.FragmentParentFace;
@@ -92,6 +92,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private boolean startDailyGame;
 	private ChallengeHelper challengeHelper;
 	private DailyFinishedGamesUpdateListener dailyFinishedGamesUpdateListener;
+	private Button startNewGameBtn;
 
 	public DailyGamesFragment() {
 		Bundle bundle = new Bundle();
@@ -241,6 +242,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			} else {
 				challengeHelper.createLiveChallenge();
 			}
+		} else if (view.getId() == R.id.startNewGameBtn) {
+			getActivityFace().changeRightFragment(new HomePlayFragment());
+			getActivityFace().toggleRightMenu();
 		}
 	}
 
@@ -523,15 +527,25 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			}
 		} while (cursor.moveToNext());
 
-		if (myTurnInDailyGames) {
-			listView.removeHeaderView(newGameHeaderView);
+		// if user have more than 5 active games, do not show 1/2 size board, only new game button at bottom
+		if (cursor.getCount() < 5) {
+			if (myTurnInDailyGames) {
+				listView.removeHeaderView(newGameHeaderView);
+			} else {
+				listView.removeHeaderView(newGameHeaderView);
+				listView.setAdapter(null);
+				listView.addHeaderView(newGameHeaderView);
+				listView.setAdapter(sectionedAdapter);
+			}
 		} else {
-
-			listView.removeHeaderView(newGameHeaderView);
-			listView.setAdapter(null);
-			listView.addHeaderView(newGameHeaderView);
-			listView.setAdapter(sectionedAdapter);
+			if (myTurnInDailyGames) {
+				startNewGameBtn.setVisibility(View.GONE);
+			} else {
+				startNewGameBtn.setVisibility(View.VISIBLE);
+			}
 		}
+
+
 		listView.invalidate();
 
 		// restore position
@@ -544,8 +558,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					finishedGameDataList, getUsername());
 
 			if (gamesLeft) {
-				new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-						getContentResolver(), getUsername()).executeTask();
+				for (DailyFinishedGameData finishedGameData : finishedGameDataList) {
+					DbDataManager.saveDailyFinishedGameItemToDb(getContentResolver(), finishedGameData, getUsername());
+				}
+				loadFromDbFinishedGames();
+
+//				new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
+//						getContentResolver(), getUsername()).executeTask();
 			} else {
 				finishedGamesCursorAdapter.changeCursor(null);
 			}
@@ -585,13 +604,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				}
 			}
 
-			// load finished games // TODO restore!
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					getFinishedGames();
-				}
-			}, VIEW_UPDATE_DELAY);
+			getFinishedGames();
 		}
 
 		@Override
@@ -634,8 +647,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, getUsername());
 
 				if (gamesLeft) {
-					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-							getContentResolver(), getUsername()).executeTask();
+					for (DailyFinishedGameData finishedGameData : finishedGameDataList) {
+						DbDataManager.saveDailyFinishedGameItemToDb(getContentResolver(), finishedGameData, getUsername());
+					}
+					loadFromDbFinishedGames();
+
+//					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
+//							getContentResolver(), getUsername()).executeTask();
 				} else {
 					finishedGamesCursorAdapter.changeCursor(null);
 				}
@@ -711,6 +729,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private void widgetsInit(View view) {
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
+
+		startNewGameBtn = (Button) view.findViewById(R.id.startNewGameBtn);
+		startNewGameBtn.setOnClickListener(this);
 
 		Resources resources = getResources();
 		LayoutInflater inflater = LayoutInflater.from(getActivity());

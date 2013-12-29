@@ -56,7 +56,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	private TextView dailyRatingTxt;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 	private DailyGameConfig.Builder dailyGameConfigBuilder;
-//	private LiveGameConfig.Builder liveGameConfigBuilder;
 	private int positionMode;
 	private List<View> liveOptionsGroup;
 	private HashMap<Integer, Button> liveButtonsModeMap;
@@ -175,9 +174,17 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			statsLoaded = true;
-			showLoadingProgress(false);
 
-			setRatings();
+			if (liveRatingTxt == null) {
+				return;
+			}
+			// set live rating
+			int liveRating = DbDataManager.getUserRatingFromUsersStats(context, DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
+			liveRatingTxt.setText(String.valueOf(liveRating));
+
+			// set daily rating
+			int dailyRating = DbDataManager.getUserRatingFromUsersStats(context, DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
+			dailyRatingTxt.setText(String.valueOf(dailyRating));
 		}
 	}
 
@@ -378,8 +385,6 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		dailyRatingTxt.setText(String.valueOf(dailyRating));
 
 		if (liveRating == 0 || dailyRating == 0 && !statsLoaded) { // if stats were not save
-			showLoadingProgress(true);
-
 			getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 
 			statsUpdateFilter = new IntentFilter(IntentConstants.STATS_SAVED);

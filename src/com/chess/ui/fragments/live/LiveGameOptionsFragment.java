@@ -43,11 +43,11 @@ import java.util.Map;
 public class LiveGameOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace,
 		AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener {
 
-	private static final int RATING_VARIABLE_DIFF = 100;
-	private static final int MIN_RATING_MIN = 0;
-	private static final int MIN_RATING_MAX = 2600;
+	private static final int MIN_RATING_MIN = -1000;
+	private static final int MIN_RATING_MAX = 0;
 	private static final int MAX_RATING_MIN = 0;
-	private static final int MAX_RATING_MAX = 2800;
+	private static final int MAX_RATING_MAX = 1000;
+	private static final long SEEK_BAR_HIDE_DELAY = 5 * 1000;
 
 	private LiveGameConfig.Builder gameConfigBuilder;
 	private RoboRadioButton minRatingBtn;
@@ -59,20 +59,18 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	private HashMap<Integer, Button> liveButtonsModeMap;
 	private boolean liveOptionsVisible;
 
-	private String[] newGameButtonsArray;
 	private int positionMode;
-	//	private int liveRating;
 	private String opponentName;
-	private int liveStandardRating;
-	private int liveBlitzRating;
-	private int liveLightningRating;
+	private int standardRating;
+	private int blitzRating;
+	private int lightningRating;
 
-	private HashMap<Integer, Integer> liveModesMap;
-	private int liveGameMode;
-	private SeekBar ratingBar;
+	private SeekBar ratingSeekBar;
 	private IntentFilter statsUpdateFilter;
 	private StatsSavedReceiver statsSavedReceiver;
 	private boolean statsLoaded;
+	private ViewGroup ratingView;
+	private TextView currentRatingTxt;
 
 	public LiveGameOptionsFragment() {
 		Bundle bundle = new Bundle();
@@ -109,15 +107,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			opponentName = savedInstanceState.getString(OPPONENT_NAME);
 		}
 
-//		LiveGameConfig liveGameConfig = ;
 		gameConfigBuilder = getAppData().getLiveGameConfigBuilder();
-
-		if (gameConfigBuilder.getMinRating() == 0) {
-			gameConfigBuilder.setMinRating(MIN_RATING_MIN);
-		}
-		if (gameConfigBuilder.getMaxRating() == 0) {
-			gameConfigBuilder.setMaxRating(MAX_RATING_MIN);
-		}
 
 		{ // load friends from DB
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(), DbScheme.Tables.FRIENDS));
@@ -129,15 +119,18 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 					friendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
 				} while (cursor.moveToNext());
 			}
+			if (cursor != null) {
+				cursor.close();
+			}
 
 			friendsList.get(0).setChecked(true);
 		}
 
-		liveStandardRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
-		liveBlitzRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), getUsername());
-		liveLightningRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), getUsername());
+		standardRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
+		blitzRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), getUsername());
+		lightningRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), getUsername());
 
-		if (liveStandardRating == 0 || liveBlitzRating == 0 || liveLightningRating == 0 && !statsLoaded) { // if stats were not save
+		if (standardRating == 0 || blitzRating == 0 || lightningRating == 0 && !statsLoaded) { // if stats were not save
 			showLoadingProgress(true);
 
 			getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
@@ -179,6 +172,9 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		if (statsUpdateFilter != null) {
 			unRegisterMyReceiver(statsSavedReceiver);
 		}
+
+		// save config
+		getAppData().setLiveGameConfigBuilder(gameConfigBuilder);
 	}
 
 	@Override
@@ -194,9 +190,9 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			statsLoaded = true;
 			showLoadingProgress(false);
 
-			liveStandardRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
-			liveBlitzRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), getUsername());
-			liveLightningRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), getUsername());
+			standardRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
+			blitzRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), getUsername());
+			lightningRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), getUsername());
 
 			updateRatingRange();
 		}
@@ -217,8 +213,15 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		SelectionItem opponent = (SelectionItem) parent.getItemAtPosition(position);
-		gameConfigBuilder.setOpponentName(opponent.getText());
+		if (parent.getAdapter() instanceof OpponentsAdapter) {
+			SelectionItem opponent = (SelectionItem) parent.getItemAtPosition(position);
+			gameConfigBuilder.setOpponentName(opponent.getText());
+			if (!opponent.getText().equals(getString(R.string.random))) {
+				ratingView.setVisibility(View.GONE);
+			} else {
+				ratingView.setVisibility(View.VISIBLE);
+			}
+		}
 	}
 
 	@Override
@@ -250,9 +253,9 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	private void setDefaultQuickLiveMode(View view, int mode) {
 		view.setSelected(true);
 
-		updateRatingRange();
-
 		gameConfigBuilder.setTimeFromMode(mode);
+
+		updateRatingRange();
 		getAppData().setDefaultLiveMode(mode);
 	}
 
@@ -290,59 +293,61 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		int rating = standardRating;
+		if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
+			rating = blitzRating;
+		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
+			rating = lightningRating;
+		}
+
 		TextView checkedButton;
 
-//		int minRatingValue = gameConfigBuilder.getMinRating();
-//		int maxRatingValue = gameConfigBuilder.getMaxRating();
-		int minRatingValue = Integer.parseInt(minRatingBtn.getText().toString());
-		int maxRatingValue = Integer.parseInt(maxRatingBtn.getText().toString());
-
-		int minRating;
-		int maxRating;
-		if (maxRatingBtn.isChecked()) {
-			checkedButton = maxRatingBtn;
-			minRating = MAX_RATING_MIN;
-			maxRating = MAX_RATING_MAX;
-		} else {
+		float factor;
+		int value;
+		String symbol = Symbol.EMPTY;
+		if (minRatingBtn.isChecked()) {
 			checkedButton = minRatingBtn;
-			minRating = MIN_RATING_MIN;
-			maxRating = MIN_RATING_MAX;
-		}
 
-		// get percent progress and convert it to values
-		float factor = (maxRating - minRating) / 100; // (maxRating - minRating) / maxSeekProgress
-		// progress - percent
-		int value = (int) (factor * progress) + minRating; // k * x + b
-
-		if (maxRatingBtn.isChecked()) {
-			int maxRatingToSave = value;
-			if (maxRatingToSave < minRatingValue) { // if maxRating is lower than minRating
-				maxRatingToSave = minRatingValue + RATING_VARIABLE_DIFF;
+			factor = (MIN_RATING_MAX - MIN_RATING_MIN) / 10; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
+			value =  1000 - (int) (factor * progress);
+			if (value != 0) {
+				symbol = Symbol.MINUS;
 			}
 
-			gameConfigBuilder.setMaxRating(maxRatingToSave);
-			gameConfigBuilder.setMinRating(minRatingValue);
+			// update min rating
+			gameConfigBuilder.setMinRating(rating - value);
 		} else {
-			int minRatingToSave = value;
-			if (minRatingToSave > maxRatingValue) { // if minRating is greater than maxRating
-				minRatingToSave = maxRatingValue - RATING_VARIABLE_DIFF;
+			checkedButton = maxRatingBtn;
+
+			factor = (MAX_RATING_MAX - MAX_RATING_MIN) / 10; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
+			value =  (int) (factor * progress);
+			if (value != 0) {
+				symbol = Symbol.PLUS;
 			}
 
-			gameConfigBuilder.setMinRating(minRatingToSave);
-			gameConfigBuilder.setMaxRating(maxRatingValue);
+			// update max rating
+			gameConfigBuilder.setMaxRating(rating - value);
 		}
 
-		checkedButton.setText(String.valueOf(value));
-
+		checkedButton.setText(symbol + String.valueOf(value));
 	}
 
 	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {
+		handler.removeCallbacks(hideSeekBarRunnable);
 	}
 
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
+		handler.removeCallbacks(hideSeekBarRunnable);
 	}
+
+	Runnable hideSeekBarRunnable = new Runnable() {
+		@Override
+		public void run() {
+			ratingSeekBar.setVisibility(View.GONE);
+		}
+	};
 
 	@Override
 	public void onClick(View view) {
@@ -350,6 +355,12 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 		if (view.getId() == R.id.liveHeaderView) {
 			getActivityFace().toggleRightMenu();
+		} else if (view.getId() == R.id.minRatingBtn) {
+			ratingSeekBar.setVisibility(View.VISIBLE);
+			handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
+		} else if (view.getId() == R.id.maxRatingBtn) {
+			ratingSeekBar.setVisibility(View.VISIBLE);
+			handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
 		} else if (view.getId() == R.id.playBtn) {
 			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(getLiveGameConfig()));
 			getActivityFace().toggleRightMenu();
@@ -359,33 +370,37 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	}
 
 	private void updateRatingRange() {
-		int minRating = gameConfigBuilder.getMinRating();
-		int maxRating = gameConfigBuilder.getMaxRating();
-		if (minRating == 0 || maxRating == 0) {
-			if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
-				minRating = liveStandardRating - LiveGameConfig.MIN_RATING_DIFF;
-				maxRating = liveStandardRating + LiveGameConfig.MAX_RATING_DIFF;
-
-			} else if (liveGameMode == LiveGameConfig.BLITZ) {
-				minRating = liveBlitzRating - LiveGameConfig.MIN_RATING_DIFF;
-				maxRating = liveBlitzRating + LiveGameConfig.MAX_RATING_DIFF;
-
-			} else if (liveGameMode == LiveGameConfig.BULLET) {
-				minRating = liveLightningRating - LiveGameConfig.MIN_RATING_DIFF;
-				maxRating = liveLightningRating + LiveGameConfig.MAX_RATING_DIFF;
-			}
-
-			gameConfigBuilder.setMinRating(minRating);
-			gameConfigBuilder.setMaxRating(maxRating);
+		if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
+			currentRatingTxt.setText(String.valueOf(standardRating));
+		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
+			currentRatingTxt.setText(String.valueOf(blitzRating));
+		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
+			currentRatingTxt.setText(String.valueOf(lightningRating));
 		}
-
-		minRatingBtn.setText(String.valueOf(minRating));
-		maxRatingBtn.setText(String.valueOf(maxRating));
 	}
 
 	public LiveGameConfig getLiveGameConfig() {
 		// set params
 		gameConfigBuilder.setRated(ratedGameSwitch.isChecked());
+
+		String minRatingBtnText = minRatingBtn.getText().toString();
+		String maxRatingBtnText = maxRatingBtn.getText().toString();
+
+		Integer minRatingValue = Integer.valueOf(minRatingBtnText.replace(Symbol.PLUS,Symbol.EMPTY).replace(Symbol.MINUS, Symbol.EMPTY));
+		Integer maxRatingValue = Integer.valueOf(maxRatingBtnText.replace(Symbol.PLUS,Symbol.EMPTY).replace(Symbol.MINUS, Symbol.EMPTY));
+
+		int rating = 0;
+		if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
+			rating = standardRating;
+		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
+			rating = blitzRating;
+		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
+			rating = lightningRating;
+		}
+
+		gameConfigBuilder.setMinRating(rating - minRatingValue);
+		gameConfigBuilder.setMaxRating(rating + maxRatingValue);
+
 		getAppData().setLiveGameConfigBuilder(gameConfigBuilder);
 
 		return gameConfigBuilder.build();
@@ -448,15 +463,69 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 				ratedGameSwitch = (SwitchButton) view.findViewById(R.id.ratedGameSwitch);
 
 				{// Rating part
-					ratingBar = (SeekBar) view.findViewById(R.id.ratingBar);
-					ratingBar.setOnSeekBarChangeListener(this);
-					ratingBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingBar));
+					ratingView = (ViewGroup) view.findViewById(R.id.ratingView);
+
+					int minRatingDefault;
+					int maxRatingDefault;
+
+					int minRating = gameConfigBuilder.getMinRating();
+					int maxRating = gameConfigBuilder.getMaxRating();
+
+					int rating = 0;
+					if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
+						rating = standardRating;
+					} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
+						rating = blitzRating;
+					} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
+						rating = lightningRating;
+					}
+
+					if (minRating == 0) { // first time
+						minRating = rating - LiveGameConfig.RATING_STEP;
+						gameConfigBuilder.setMinRating(minRating);
+					}
+					if (maxRating == 0) { // first time
+						maxRating = rating + LiveGameConfig.RATING_STEP;
+						gameConfigBuilder.setMaxRating(maxRating);
+					}
+
+					minRatingDefault = minRating - rating;
+					maxRatingDefault = maxRating - rating;
+
+					String minRatingStr;
+					String maxRatingStr;
+					if (minRatingDefault == 0) {
+						minRatingStr = Symbol.MINUS + LiveGameConfig.RATING_STEP;
+					} else {
+						minRatingStr = String.valueOf(minRatingDefault);
+					}
+					if (maxRatingDefault == 0) {
+						maxRatingStr = Symbol.PLUS + LiveGameConfig.RATING_STEP;
+					} else {
+						maxRatingStr = Symbol.PLUS + String.valueOf(maxRatingDefault);
+					}
+
+					if (JELLY_BEAN_PLUS_API) {
+						LayoutTransition layoutTransition = ratingView.getLayoutTransition();
+						layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+					}
+
+					currentRatingTxt = (TextView) view.findViewById(R.id.currentRatingTxt);
+
+					ratingSeekBar = (SeekBar) view.findViewById(R.id.ratingSeekBar);
+					ratingSeekBar.setOnSeekBarChangeListener(this);
+					ratingSeekBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingSeekBar));
+					ratingSeekBar.setVisibility(View.GONE);
 
 					minRatingBtn = (RoboRadioButton) view.findViewById(R.id.minRatingBtn);
 					minRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+					minRatingBtn.setOnClickListener(this);
+					minRatingBtn.setText(minRatingStr);
 
 					maxRatingBtn = (RoboRadioButton) view.findViewById(R.id.maxRatingBtn);
 					maxRatingBtn.setOnCheckedChangeListener(ratingSelectionChangeListener);
+					maxRatingBtn.setOnClickListener(this);
+					maxRatingBtn.setText(maxRatingStr);
 
 					// set checked minRating Button
 					minRatingBtn.setChecked(true);
@@ -467,8 +536,17 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 			{// time mode buttons
 				int mode = getAppData().getDefaultLiveMode();
+				gameConfigBuilder.setTimeFromMode(mode);
+
+				currentRatingTxt.setText(String.valueOf(standardRating));
+				if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
+					currentRatingTxt.setText(String.valueOf(blitzRating));
+				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
+					currentRatingTxt.setText(String.valueOf(lightningRating));
+				}
+
 				// set texts to buttons
-				newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
+				String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
 				for (Map.Entry<Integer, Button> buttonEntry : liveButtonsModeMap.entrySet()) {
 					int key = buttonEntry.getKey();
 					buttonEntry.getValue().setText(getLiveModeButtonLabel(newGameButtonsArray[key]));

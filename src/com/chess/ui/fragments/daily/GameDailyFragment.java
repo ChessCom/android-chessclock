@@ -38,6 +38,7 @@ import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
@@ -108,6 +109,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	protected String username;
 	private NotationFace notationsFace;
 	private boolean forceUpdate;
+	private int dailyRating;
 
 	public GameDailyFragment() {
 	}
@@ -215,7 +217,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		} else if (code == ID_ABORT_RESIGN) {
 			if (!username.equals(getUsername())) { // don't let unAuth users to make action
 				showToast("=)");
-				 return;
+				return;
 			}
 			if (getBoardFace().getPly() < 1 && isUserMove()) {
 				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
@@ -268,17 +270,19 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		Cursor cursor = DbDataManager.query(getContentResolver(),
 				DbHelper.getDailyGame(gameId, username));
 
-		if (cursor.moveToFirst() && !forceUpdate) {
+		if (cursor.moveToFirst()) {
 			showSubmitButtonsLay(false);
 
 			currentGame = DbDataManager.getDailyCurrentGameFromCursor(cursor);
 			cursor.close();
 
 			adjustBoardForGame();
-
 		} else {
+			forceUpdate = true;
+		}
+
+		if (forceUpdate) {
 			updateGameState(gameId);
-//			updateGameState(80936834);
 		}
 		// clear badge
 		DbDataManager.deletePlayMoveNotification(getContentResolver(), username, gameId);
@@ -406,9 +410,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				if (getActivity() == null) {
+				if (getActivity() == null || getNotationsFace() == null) {
 					return;
 				}
+
 				getNotationsFace().rewindForward();
 
 			}
@@ -418,7 +423,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				if (getActivity() == null) {
+				if (getActivity() == null || getNotationsFace() == null) {
 					return;
 				}
 				getControlsView().enableGameControls(true);
@@ -865,8 +870,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			opponent = currentGame.getWhiteUsername();
 		}
 
+		int minRating = dailyRating - LiveGameConfig.RATING_STEP;
+		int maxRating = dailyRating + LiveGameConfig.RATING_STEP;
 		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(),
-				currentGame.isRated() ? 1 : 0, currentGame.getGameType(), opponent);
+				currentGame.isRated() ? 1 : 0, currentGame.getGameType(), opponent, minRating, maxRating);
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
@@ -987,6 +994,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
+
+		// get current user rating
+		dailyRating = getAppData().getUserDailyRating();
+		if (dailyRating == 0) {
+			dailyRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
+		}
 	}
 
 	protected void widgetsInit(View view) {

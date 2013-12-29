@@ -230,8 +230,15 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		bmOptions.inJustDecodeBounds = false;
 		bmOptions.inSampleSize = scaleFactor;
 		bmOptions.inPurgeable = true;
+		Bitmap bitmap;
+		try{
+			bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+		}catch (OutOfMemoryError ignore) {
+			Log.d("TEST", ignore.toString());
+			showToast(R.string.unable_to_select_this_photo);
+			return;
+		}
 
-		Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
 		float density = getResources().getDisplayMetrics().density;
 		int size = (int) (58.5f * density); // TODO remove hardcode
 		bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);

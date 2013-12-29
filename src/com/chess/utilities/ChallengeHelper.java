@@ -251,14 +251,14 @@ public class ChallengeHelper {
 					DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), username);
 
 			if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
-				minRating = liveStandardRating - LiveGameConfig.MIN_RATING_DIFF;
-				maxRating = liveStandardRating + LiveGameConfig.MAX_RATING_DIFF;
+				minRating = liveStandardRating - LiveGameConfig.RATING_STEP;
+				maxRating = liveStandardRating + LiveGameConfig.RATING_STEP;
 			} else if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
-				minRating = liveBlitzRating - LiveGameConfig.MIN_RATING_DIFF;
-				maxRating = liveBlitzRating + LiveGameConfig.MAX_RATING_DIFF;
-			} else if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.BULLET) {
-				minRating = liveLightningRating - LiveGameConfig.MIN_RATING_DIFF;
-				maxRating = liveLightningRating + LiveGameConfig.MAX_RATING_DIFF;
+				minRating = liveBlitzRating - LiveGameConfig.RATING_STEP;
+				maxRating = liveBlitzRating + LiveGameConfig.RATING_STEP;
+			} else if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
+				minRating = liveLightningRating - LiveGameConfig.RATING_STEP;
+				maxRating = liveLightningRating + LiveGameConfig.RATING_STEP;
 			}
 
 			liveGameConfigBuilder.setMinRating(minRating);

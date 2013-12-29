@@ -26,10 +26,6 @@
         android:layout_centerInParent="true"
         />
 
-<!--	<include android:id="@+id/newGameHeaderView"
-		layout="@layout/new_daily_games_header_view" />-->
-
-	<!--android:layout_below="@id/newGameHeaderView"-->
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
@@ -45,7 +41,23 @@
 		android:layout_height="@dimen/pending_progress_bar_size"
 		android:layout_margin="5dip"
 		android:layout_centerInParent="true"
+		android:layout_above="@+id/startNewGameBtn"
 		style="?android:attr/progressBarStyle"
+		android:visibility="gone"
+		/>
+
+	<!--Start New Game-->
+	<com.chess.widgets.RoboButton
+		android:id="@id/startNewGameBtn"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:minHeight="@dimen/big_button_height"
+		android:text="@string/new_game"
+		android:textSize="@dimen/game_controls_text_size"
+		android:textColor="@color/white"
+		style="@style/Rect.Bottom.Right.Orange"
+		android:shadowColor="@color/transparent"
 		android:visibility="gone"
 		/>
 

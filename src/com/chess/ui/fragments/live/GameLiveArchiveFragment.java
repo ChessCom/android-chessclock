@@ -10,13 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.LoadHelper;
-import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.LiveArchiveGameData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
@@ -573,23 +570,23 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		if (view.getId() == R.id.newGamePopupBtn) {
 			dismissEndGameDialog();
 			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
-		} else if (view.getId() == R.id.rematchPopupBtn) {
+		} else if (view.getId() == R.id.rematchPopupBtn) { // TODO fix, shouldn't be here
 			sendRematch();
 			dismissEndGameDialog();
 		}
 	}
 
 	private void sendRematch() {
-		String opponent;
-		if (userPlayWhite) {
-			opponent = currentGame.getBlackUsername();
-		} else {
-			opponent = currentGame.getWhiteUsername();
-		}
-
-		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(),
-				currentGame.isRated() ? 1 : 0, currentGame.getGameType(), opponent);
-		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
+//		String opponent;
+//		if (userPlayWhite) {
+//			opponent = currentGame.getBlackUsername();
+//		} else {
+//			opponent = currentGame.getWhiteUsername();
+//		}
+//
+//		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(),
+//				currentGame.isRated() ? 1 : 0, currentGame.getGameType(), opponent, 0);
+//		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
 	private class DailyGameUpdatesListener extends ChessLoadUpdateListener<BaseResponseItem> {

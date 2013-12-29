@@ -166,10 +166,13 @@ public class LoadHelper {
 		int gameType = dailyGameConfig.getGameType();
 		int isRated = dailyGameConfig.isRated() ? 1 : 0;
 		String opponentName = dailyGameConfig.getOpponentName();
-		return postGameSeek(userToken, days, isRated, gameType, opponentName);
+		int minRating = dailyGameConfig.getMinRating();
+		int maxRating = dailyGameConfig.getMaxRating();
+		return postGameSeek(userToken, days, isRated, gameType, opponentName, minRating, maxRating);
 	}
 
-	public static LoadItem postGameSeek(String userToken, int days, int isRated, int gameType, String opponentName) {
+	public static LoadItem postGameSeek(String userToken, int days, int isRated, int gameType, String opponentName,
+										int minRating, int maxRating) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(getInstance().CMD_SEEKS);
 		loadItem.setRequestMethod(POST);
@@ -180,6 +183,9 @@ public class LoadHelper {
 		loadItem.addRequestParams(P_GAME_TYPE_CODE_ID, gameType);
 		if (!TextUtils.isEmpty(opponentName)) {
 			loadItem.addRequestParams(P_OPPONENT, opponentName);
+		} else {
+			loadItem.addRequestParams(P_MIN_RATING, minRating);
+			loadItem.addRequestParams(P_MAX_RATING, maxRating);
 		}
 		return loadItem;
 	}

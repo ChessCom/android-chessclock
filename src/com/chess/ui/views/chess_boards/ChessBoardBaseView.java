@@ -577,6 +577,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			}
 		}
 
+		// if first part of animation(castling) finished, start second
 		if (moveAnimator == null && secondMoveAnimator != null) {
 			animationActive = secondMoveAnimator.updateState();
 			drawPieces(canvas, animationActive, secondMoveAnimator);
@@ -1238,7 +1239,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				// perform recycle
 				recycleBoardBitmap();
 
-				try{
+				try {
 					boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
 				} catch (OutOfMemoryError ignore) {
 
@@ -1300,17 +1301,17 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 
 		int bitmapSize = (int) Math.ceil(viewWidth / 4);
-		Log.d("TEST", " squareSize = " + squareSize);
-		Log.d("TEST", " boardBitmap size = " + bitmapSize);
+//		Log.d("TEST", " squareSize = " + squareSize);
+//		Log.d("TEST", " boardBitmap size = " + bitmapSize);
 		boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
 		shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 
 		// update squareSize to match board properties and draw highlights correctly
 //		if (!AppUtils.is10InchTablet(context)) {
-			squareSize = bitmapSize / 2f;
+		squareSize = bitmapSize / 2f;
 //		}
 
-		Log.d("TEST", " squareSize = " + squareSize);
+//		Log.d("TEST", " squareSize = " + squareSize);
 
 		return shader;
 	}

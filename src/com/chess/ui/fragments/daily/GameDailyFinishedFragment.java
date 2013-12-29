@@ -29,6 +29,7 @@ import com.chess.model.PopupItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -85,6 +86,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	private String[] countryNames;
 	private int[] countryCodes;
 	private NotationFace notationsFace;
+	private int dailyRating;
 
 	public GameDailyFinishedFragment() { }
 
@@ -648,8 +650,10 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			opponent = currentGame.getWhiteUsername();
 		}
 
+		int minRating = dailyRating - LiveGameConfig.RATING_STEP;
+		int maxRating = dailyRating + LiveGameConfig.RATING_STEP;
 		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(),
-				currentGame.isRated() ? 1 : 0,  currentGame.getGameType(), opponent);
+				currentGame.isRated() ? 1 : 0,  currentGame.getGameType(), opponent, minRating, maxRating);
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
@@ -698,6 +702,12 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
+
+		// get current user rating
+		dailyRating = getAppData().getUserDailyRating();
+		if (dailyRating == 0) {
+			dailyRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
+		}
 	}
 
 	private void widgetsInit(View view) {

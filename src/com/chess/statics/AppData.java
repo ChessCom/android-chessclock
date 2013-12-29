@@ -7,6 +7,7 @@ import android.util.Log;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.ui.engine.SoundPlayer;
+import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.google.gson.Gson;
 
@@ -275,7 +276,7 @@ public class AppData {
 	}
 
 	public int getDefaultDailyMode() {
-		return getIntValue(PREF_DEFAULT_DAILY_MODE, 5); // 10 days by default
+		return getIntValue(PREF_DEFAULT_DAILY_MODE, 2); // 3 days by default
 	}
 
 	public void setDefaultDailyMode(int mode) {
@@ -721,7 +722,7 @@ public class AppData {
 	 */
 	public void setLiveGameConfigBuilder(LiveGameConfig.Builder liveGameConfigBuilder) {
 		Gson gson = new Gson();
-//		Log.d("TEST", "save live builder = " + gson.toJson(liveGameConfigBuilder));
+		Log.d("TEST", "save live builder = " + gson.toJson(liveGameConfigBuilder));
 		setStringValue(LIVE_GAME_CONFIG_BUILDER, gson.toJson(liveGameConfigBuilder));
 	}
 
@@ -733,7 +734,7 @@ public class AppData {
 		LiveGameConfig.Builder builder;
 
 		String builderStr = getStringValue(LIVE_GAME_CONFIG_BUILDER, Symbol.EMPTY);
-//		Log.d("TEST", "load live builder = " + builderStr);
+		Log.d("TEST", "load live builder = " + builderStr);
 
 		if (TextUtils.isEmpty(builderStr)) {
 			builder = new LiveGameConfig.Builder();
@@ -745,6 +746,41 @@ public class AppData {
 		} else {
 			Gson gson = new Gson();
 			builder = gson.fromJson(builderStr, LiveGameConfig.Builder.class);
+		}
+
+		return builder;
+	}
+
+	/**
+	 * We should use it as the only one option to save config
+	 *
+	 * @param dailyGameConfigBuilder that will be saved to shared prefs
+	 */
+	public void setDailyGameConfigBuilder(DailyGameConfig.Builder dailyGameConfigBuilder) {
+		Gson gson = new Gson();
+		Log.d("TEST", "save daily builder = " + gson.toJson(dailyGameConfigBuilder));
+		setStringValue(DAILY_GAME_CONFIG_BUILDER, gson.toJson(dailyGameConfigBuilder));
+	}
+
+	/**
+	 * We should use this as the only one method to get build to keep it always synced with data that we save
+	 * @return {@code LiveGameConfig.Builder}
+	 */
+	public DailyGameConfig.Builder getDailyGameConfigBuilder() {
+		DailyGameConfig.Builder builder;
+
+		String builderStr = getStringValue(DAILY_GAME_CONFIG_BUILDER, Symbol.EMPTY);
+		Log.d("TEST", "load daily builder = " + builderStr);
+
+		if (TextUtils.isEmpty(builderStr)) {
+			builder = new DailyGameConfig.Builder();
+			builder.setTimeFromMode(getDefaultDailyMode());
+
+			// saving now for next time call
+			setDailyGameConfigBuilder(builder);
+		} else {
+			Gson gson = new Gson();
+			builder = gson.fromJson(builderStr, DailyGameConfig.Builder.class);
 		}
 
 		return builder;

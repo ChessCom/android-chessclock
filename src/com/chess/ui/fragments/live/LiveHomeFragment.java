@@ -236,14 +236,14 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 
 				if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
-					minRating = standardRating - LiveGameConfig.MIN_RATING_DIFF;
-					maxRating = standardRating + LiveGameConfig.MAX_RATING_DIFF;
+					minRating = standardRating - LiveGameConfig.RATING_STEP;
+					maxRating = standardRating + LiveGameConfig.RATING_STEP;
 				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
-					minRating = blitzRating - LiveGameConfig.MIN_RATING_DIFF;
-					maxRating = blitzRating + LiveGameConfig.MAX_RATING_DIFF;
-				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BULLET) {
-					minRating = lightningRating - LiveGameConfig.MIN_RATING_DIFF;
-					maxRating = lightningRating + LiveGameConfig.MAX_RATING_DIFF;
+					minRating = blitzRating - LiveGameConfig.RATING_STEP;
+					maxRating = blitzRating + LiveGameConfig.RATING_STEP;
+				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
+					minRating = lightningRating - LiveGameConfig.RATING_STEP;
+					maxRating = lightningRating + LiveGameConfig.RATING_STEP;
 				}
 
 				gameConfigBuilder.setMinRating(minRating);

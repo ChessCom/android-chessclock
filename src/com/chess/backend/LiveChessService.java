@@ -30,6 +30,7 @@ import com.chess.statics.StaticData;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.utilities.LogMe;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ import java.util.Map;
 public class LiveChessService extends Service {
 
 	private static final String TAG = "LCCLOG-LiveChessService";
-	private static final long SHUTDOWN_TIMEOUT_DELAY = 15 * 60 * 1000;
+	private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec
 
 	private ServiceBinder serviceBinder = new ServiceBinder();
 
@@ -66,15 +67,9 @@ public class LiveChessService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-//		LogMe.dl(TAG, "SERVICE: onBind");
-//		LogMe.dl(TAG, "lccHelper instance before check = " + lccHelper);
 		if (lccHelper == null) {
 			lccHelper = new LccHelper(getContext(), this, new LccConnectUpdateListener());
-//			LogMe.dl(TAG, "SERVICE: helper created");
-		} else {
-//			LogMe.dl(TAG, "SERVICE: helper exist!");
 		}
-//		LogMe.dl(TAG, "lccHelper instance after check = " + lccHelper);
 		return serviceBinder;
 	}
 
@@ -468,6 +463,8 @@ public class LiveChessService extends Service {
 	}
 
 	public void createChallenge(LiveGameConfig config) {
+		Gson gson = new Gson();
+		LogMe.dl("TEST", "live config = " + gson.toJson(config));
 		lccHelper.createChallenge(config);
 	}
 

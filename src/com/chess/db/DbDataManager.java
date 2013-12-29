@@ -1047,15 +1047,25 @@ public class DbDataManager {
 	}
 
 	// ----------------------------------- Daily Games -------------------------------------------------------
-	public static ContentValues putDailyFinishedGameToValues(DailyFinishedGameData dataObj, String username) {
+	public static void saveDailyFinishedGameItemToDb(ContentResolver contentResolver, DailyFinishedGameData finishedItem, String username) {
+		final String[] arguments2 = sArguments2;
+		arguments2[0] = String.valueOf(username);
+		arguments2[1] = String.valueOf(finishedItem.getGameId());
+
+		Uri uri = DbScheme.uriArray[Tables.DAILY_FINISHED_GAMES.ordinal()];
+		final Cursor cursor = contentResolver.query(uri, DbDataManager.PROJECTION_GAME_ID,
+				DbDataManager.SELECTION_USER_AND_ID, arguments2, null);
+
+
 		ContentValues values = new ContentValues();
 
-		setValuesFromGameItem(values, dataObj);
+		DbDataManager.setValuesFromGameItem(values, finishedItem);
 		values.put(V_FINISHED, 1);
 		values.put(V_USER, username);
-		values.put(V_GAME_SCORE, dataObj.getGameScore());
-		values.put(V_RESULT_MESSAGE, dataObj.getResultMessage());
-		return values;
+		values.put(V_GAME_SCORE, finishedItem.getGameScore());
+		values.put(V_RESULT_MESSAGE, finishedItem.getResultMessage());
+
+		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
 	public static DailyFinishedGameData getDailyFinishedGameFromCursor(Cursor cursor) {
@@ -1096,7 +1106,7 @@ public class DbDataManager {
 		return values;
 	}
 
-	private static void setValuesFromGameItem(ContentValues values, DailyGameBaseData dataObj) { // TODO remove
+	public static void setValuesFromGameItem(ContentValues values, DailyGameBaseData dataObj) {
 		values.put(V_ID, dataObj.getGameId());
 		values.put(V_FEN, dataObj.getFen());
 		values.put(V_I_PLAY_AS, dataObj.getMyColor());
