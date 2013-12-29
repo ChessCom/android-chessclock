@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
 	android:versionCode="420"
-	android:versionName="3.0.120"
+	android:versionName="3.0.120b"
 	package="com.chess"
 	android:installLocation="auto">
 
