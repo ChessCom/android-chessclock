@@ -16,7 +16,7 @@ import org.slf4j.MarkerFactory;
  */
 public class LogMe {
 
-	public static final boolean ENABLED = true; // use it only for builds that need it
+	public static final boolean ENABLED = false; // use it only for builds that need it
 
 	private static final Logger LOG = LoggerFactory.getLogger(LogMe.class); // todo: check class
 

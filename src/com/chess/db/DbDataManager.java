@@ -110,9 +110,9 @@ public class DbDataManager {
 			V_CURRENT_POSITION,
 			V_NUMBER);
 
-	public static String SELECTION_ID_CATEGORY_ID_USER = concatArguments(
+	public static String SELECTION_ID_COURSE_ID_USER = concatArguments(
 			V_ID,
-			V_CATEGORY_ID,
+			V_COURSE_ID,
 			V_USER
 	);
 
@@ -291,7 +291,7 @@ public class DbDataManager {
 			V_NUMBER
 	};
 
-	public static final String[] PROJECTION_ID_CATEGORY_ID_USER = new String[]{_ID, V_ID, V_CATEGORY_ID, V_USER};
+	public static final String[] PROJECTION_ID_COURSE_ID_USER = new String[]{_ID, V_ID, V_COURSE_ID, V_USER};
 
 	public static final String[] PROJECTION_ID_USER_CONVERSATION_ID = new String[]{
 			_ID,
@@ -1841,8 +1841,8 @@ public class DbDataManager {
 
 		// TODO implement beginTransaction logic for performance increase
 		Uri uri = uriArray[Tables.LESSONS_LESSONS_LIST.ordinal()];
-		Cursor cursor = contentResolver.query(uri, PROJECTION_ID_CATEGORY_ID_USER,
-				SELECTION_ID_CATEGORY_ID_USER, arguments, null);
+		Cursor cursor = contentResolver.query(uri, PROJECTION_ID_COURSE_ID_USER,
+				SELECTION_ID_COURSE_ID_USER, arguments, null);
 
 		ContentValues values = new ContentValues();
 

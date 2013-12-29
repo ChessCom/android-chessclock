@@ -1,7 +1,6 @@
 package com.chess.ui.fragments.home;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,9 +16,6 @@ import com.chess.backend.entity.api.DailyCurrentGameData;
 import com.chess.backend.entity.api.DailyGamesAllItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
-import com.chess.db.DbScheme;
-import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.NavigationMenuFragment;
@@ -105,15 +101,9 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onResume() {
 		super.onResume();
 
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.USER_STATS_LIVE_STANDARD.name()),
-				DbHelper.getAll(DbScheme.Tables.USER_STATS_LIVE_STANDARD),
-				getContentResolver()).executeTask();
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.USER_STATS_LIVE_BLITZ.name()),
-				DbHelper.getAll(DbScheme.Tables.USER_STATS_LIVE_BLITZ),
-				getContentResolver()).executeTask();
-		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.name()),
-				DbHelper.getAll(DbScheme.Tables.USER_STATS_LIVE_LIGHTNING),
-				getContentResolver()).executeTask();
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.LESSONS_LESSONS_LIST.name()),
+//				DbHelper.getAll(DbScheme.Tables.LESSONS_LESSONS_LIST),
+//				getContentResolver()).executeTask();
 
 		// check if user have daily games in progress or completed. May check in DB
 		// get games_id's and compare it to local DB
@@ -141,23 +131,23 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		}
 	}
 
-	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> { // use to show Db table content
-
-		private String tableName;
-
-		public DbCursorUpdateListener(String tableName) {
-			this.tableName = tableName;
-		}  // Used for test
-
-		@Override
-		public void updateData(Cursor cursor) {
-			super.updateData(cursor);
-
-			if (HONEYCOMB_PLUS_API) {
-				AppUtils.printTableContent(cursor, tableName);
-			}
-		}
-	}
+//	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> { // use to show Db table content
+//
+//		private String tableName;
+//
+//		public DbCursorUpdateListener(String tableName) {
+//			this.tableName = tableName;
+//		}  // Used for test
+//
+//		@Override
+//		public void updateData(Cursor cursor) {
+//			super.updateData(cursor);
+//
+//			if (HONEYCOMB_PLUS_API) {
+//				AppUtils.printTableContent(cursor, tableName);
+//			}
+//		}
+//	}
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
