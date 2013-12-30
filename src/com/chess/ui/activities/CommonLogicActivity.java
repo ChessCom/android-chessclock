@@ -33,7 +33,6 @@ import com.google.android.gcm.GCMRegistrar;
 
 import java.util.Locale;
 
-import static com.chess.statics.AppConstants.LIVE_SESSION_ID;
 
 //import com.facebook.android.Facebook;
 
@@ -254,7 +253,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		return deviceId.substring(0, 32);
 	}
 
-	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
+	protected class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
 		private String facebookToken;
 
 		public LoginUpdateListener() {
@@ -281,7 +280,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				preferencesEditor.putString(AppConstants.USERNAME, username.trim().toLowerCase());
 			}
 			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
-			preferencesEditor.putString(LIVE_SESSION_ID, loginData.getSessionId());
+			preferencesEditor.putString(AppConstants.LIVE_SESSION_ID, loginData.getSessionId());
+			preferencesEditor.putLong(AppConstants.LIVE_SESSION_ID_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.commit();
 
 			if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE) {
@@ -357,6 +357,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 //		}
 
 		preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLoginToken());
+		preferencesEditor.putLong(AppConstants.USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();
 
 		getAppData().setLiveChessMode(false);

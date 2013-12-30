@@ -2,6 +2,7 @@ package com.chess.lcc.android;
 
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
+import com.chess.statics.Symbol;
 import com.chess.ui.engine.SoundPlayer;
 
 import java.util.Timer;
@@ -16,6 +17,7 @@ public class ChessClock {
 	public static final int TIME_DEPENDENT_DISPLAY_MODE = 3;
 	public static final int DISPLAY_MODE = TIME_DEPENDENT_DISPLAY_MODE;
 	private static final String TAG = "LccLog-Clock";
+	public static final char ZERO_CHAR = '0';
 	private int time;
 	private static final int SECOND_TENTHS_THRESHOLD = 20 * SECOND_MS;
 	private static final int MINUTES_SECONDS_THRESHOLD = 121 * 60 * SECOND_MS;
@@ -55,9 +57,9 @@ public class ChessClock {
 	}
 
 	public int getActualDisplayMode() {
-		if (DISPLAY_MODE != TIME_DEPENDENT_DISPLAY_MODE) {
-			return DISPLAY_MODE;
-		}
+//		if (DISPLAY_MODE != TIME_DEPENDENT_DISPLAY_MODE) { // alwasy false
+//			return DISPLAY_MODE;
+//		}
 		if (time < SECOND_TENTHS_THRESHOLD) {
 			return SECOND_TENTHS_DISPLAY_MODE;
 		} else if (time < MINUTES_SECONDS_THRESHOLD) {
@@ -106,19 +108,18 @@ public class ChessClock {
 		int seconds = time / SECOND_MS;
 		time -= seconds * SECOND_MS;
 		int tenths = time / TENTH_MS;
-		time -= tenths * TENTH_MS;
-		//String signString = isNegative ? "-" : StaticData.SYMBOL_EMPTY;
+//		time -= tenths * TENTH_MS;  // useless assignment
 		switch (getActualDisplayMode()) {
 			case HOUR_MINUTE_DISPLAY_MODE:
-				String sepString = (Math.abs(tenths) > 4) || !isRunning ? ":" : " ";
-				return /*signString + */String.valueOf(hours) +
-						sepString + padStart(String.valueOf(minutes), '0', 2);
+				String sepString = (Math.abs(tenths) > 4) || !isRunning ? Symbol.COLON : Symbol.SPACE;
+				return String.valueOf(hours) +
+						sepString + padStart(String.valueOf(minutes), ZERO_CHAR, 2);
 			case MINUTE_SECOND_DISPLAY_MODE:
-				return /*signString + */String.valueOf(60 * hours + minutes)/*padStart(String.valueOf(60 * hours + minutes), '0', 2)*/ +
-						":" + padStart(String.valueOf(seconds), '0', 2);
+				return String.valueOf(60 * hours + minutes) +
+						Symbol.COLON + padStart(String.valueOf(seconds), ZERO_CHAR, 2);
 			case SECOND_TENTHS_DISPLAY_MODE:
-				return /*signString + */padStart(String.valueOf(60 * hours + minutes), '0', 2) +
-						":" + padStart(String.valueOf(seconds), '0', 2) + "." +
+				return padStart(String.valueOf(60 * hours + minutes), ZERO_CHAR, 2) +
+						Symbol.COLON + padStart(String.valueOf(seconds), ZERO_CHAR, 2) + Symbol.DOT +
 						String.valueOf(tenths);
 			default:
 				throw new IllegalStateException("Bad display mode value: " + DISPLAY_MODE);

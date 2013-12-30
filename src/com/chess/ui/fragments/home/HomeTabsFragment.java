@@ -32,8 +32,7 @@ import java.util.List;
  * Date: 30.12.12
  * Time: 21:41
  */
-public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener,
-		FragmentParentFace {
+public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener, FragmentParentFace {
 
 	private static final long FIRST_INIT_DELAY = 5 * 1000;
 

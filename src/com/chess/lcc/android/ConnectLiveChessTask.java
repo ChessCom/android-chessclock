@@ -37,13 +37,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	private static final long WS_CONNECT_TIMEOUT = 10000L;
 	private static final int WS_MAX_MESSAGE_SIZE = 1024 * 1024;
 
-	private boolean useCurrentCredentials;
 	private LccHelper lccHelper;
 
-	public  ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, boolean useCurrentCredentials, LccHelper lccHelper) {
-		this(taskFace, lccHelper);
-		this.useCurrentCredentials = useCurrentCredentials;
-	}
 
 	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, LccHelper lccHelper) {
 		super(taskFace);
@@ -142,7 +137,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 		//lccHelper.updateNetworkType(null); // todo: probably reset networkTypeName somewhere else?
 		//lccHelper.setConnectionFailure(false);
 		lccHelper.setLiveChessClient(item);
-		lccHelper.performConnect(useCurrentCredentials);
+		lccHelper.performConnect();
 		return StaticData.RESULT_OK;
 	}
 

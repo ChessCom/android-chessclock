@@ -6,6 +6,7 @@ package com.chess.lcc.android.interfaces;
  * @modified 15.06.12
  */
 public interface LiveChessClientEventListener {
+
 	void onConnecting();
 
     void onConnectionEstablished();

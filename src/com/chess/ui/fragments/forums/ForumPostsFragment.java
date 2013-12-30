@@ -217,6 +217,9 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		// get commentId
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		if (cursor == null) { // TODO investigate when it might happen
+			return;
+		}
 		String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 		if (username.equals(getUsername())) {
 			commentId = DbDataManager.getLong(cursor, DbScheme.V_COMMENT_ID);

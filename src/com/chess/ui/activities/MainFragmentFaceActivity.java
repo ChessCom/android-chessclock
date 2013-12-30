@@ -23,9 +23,12 @@ import android.view.Menu;
 import android.view.View;
 import com.chess.R;
 import com.chess.backend.GetAndSaveTheme;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.entity.api.themes.ThemeItem;
 import com.chess.backend.image_load.bitmapfun.ImageCache;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
@@ -33,16 +36,12 @@ import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
 import com.chess.statics.*;
 import com.chess.ui.engine.SoundPlayer;
-import com.chess.ui.fragments.BasePopupsFragment;
-import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.NavigationMenuFragment;
-import com.chess.ui.fragments.NotificationsRightFragment;
+import com.chess.ui.fragments.*;
 import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.fragments.daily.GameDailyFragmentTablet;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
-import com.chess.ui.fragments.live.GameLiveFragment;
-import com.chess.ui.fragments.live.LiveHomeFragment;
+import com.chess.ui.fragments.live.*;
 import com.chess.ui.fragments.settings.SettingsFragmentTablet;
 import com.chess.ui.fragments.settings.SettingsProfileFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
@@ -75,6 +74,7 @@ import static com.chess.db.DbScheme.uriArray;
 public class MainFragmentFaceActivity extends LiveBaseActivity implements ActiveFragmentInterface {
 
 	private static final String SHOW_ACTION_BAR = "show_actionbar_in_activity";
+	private static final long CHECK_THEMES_TO_LOAD_DELAY = 5 * 1000;
 
 	private Fragment currentActiveFragment;
 	private Hashtable<Integer, Integer> badgeItems;
@@ -153,10 +153,30 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				showActionBar = true;
 
 			} else if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
+				long tokenSaveTime = getAppData().getUserTokenSaveTime();
+				long currentTime = System.currentTimeMillis();
+
+				if (currentTime - tokenSaveTime > AppConstants.USER_TOKEN_EXPIRE_TIME) {
+					String password = getAppData().getPassword(); // TODO create unified login method
+					if (!TextUtils.isEmpty(password)) {
+
+						LoadItem loadItem = new LoadItem();
+						loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
+						loadItem.setRequestMethod(RestHelper.POST);
+						loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
+						loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getAppData().getUsername());
+						loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
+						loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
+						loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
+
+						new RequestJsonTask<LoginItem>(new CommonLogicActivity.LoginUpdateListener()).executeTask(loadItem);
+					} else {
+						loginWithFacebook(getAppData().getFacebookToken());
+					}
+				}
+
 				// set the Above View
 				switchFragment(new HomeTabsFragment());
-//				openFragment(ArticleDetailsFragment.createInstance(13936));
-//				openFragment(ArticleDetailsFragment.createInstance(13982));
 				showActionBar = true;
 			} else {
 				if (isTablet) {
@@ -489,17 +509,29 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		transaction.commitAllowingStateLoss();
 
 		FlurryAgent.logEvent(FlurryData.OPEN_FRAME + simpleName);
+
+//		if (isNotLiveFragment(simpleName)) {
+//			if (isLCSBound) {
+//				getAppData().setLiveChessMode(false);
+//				unBindAndStopLiveService();
+//				isLCSBound = false;
+//			}
+//		}
 	}
 
-	@Override
-	public void openFragment(BasePopupsFragment fragment, int code) {
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		currentActiveFragment = fragment;
-
-		String simpleName = fragment.getClass().getSimpleName();
-		transaction.replace(R.id.content_frame, fragment, simpleName);
-		transaction.addToBackStack(simpleName);
-		transaction.commit();
+	private boolean isNotLiveFragment(String fragmentName) {
+		String liveFragment1 = LiveHomeFragment.class.getSimpleName();
+		String liveFragment2 = LiveHomeFragmentTablet.class.getSimpleName();
+		String liveFragment3 = GameLiveFragment.class.getSimpleName();
+		String liveFragment4 = GameLiveObserveFragment.class.getSimpleName();
+		String liveFragment5 = LiveChatFragment.class.getSimpleName();
+		String liveFragment6 = LiveGameWaitFragment.class.getSimpleName();
+		return !fragmentName.equals(liveFragment1)
+				&& !fragmentName.equals(liveFragment2)
+				&& !fragmentName.equals(liveFragment3)
+				&& !fragmentName.equals(liveFragment4)
+				&& !fragmentName.equals(liveFragment5)
+				&& !fragmentName.equals(liveFragment6);
 	}
 
 	@Override
@@ -807,11 +839,20 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	private void checkThemesToLoad() {
-		boolean needToLoadThemes = DbDataManager.haveSavedThemesToLoad(this);
-		if (needToLoadThemes) {
-			bindService(new Intent(this, GetAndSaveTheme.class), new LoadServiceConnectionListener(),
-					Activity.BIND_AUTO_CREATE);
-		}
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				if (getContext() == null) {
+					return;
+				}
+
+				boolean needToLoadThemes = DbDataManager.haveSavedThemesToLoad(getContext());
+				if (needToLoadThemes) {
+					bindService(new Intent(getContext(), GetAndSaveTheme.class), new LoadServiceConnectionListener(),
+							Activity.BIND_AUTO_CREATE);
+				}
+			}
+		}, CHECK_THEMES_TO_LOAD_DELAY);
 	}
 
 	private class LoadServiceConnectionListener implements ServiceConnection {

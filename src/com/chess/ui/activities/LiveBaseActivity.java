@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.chess.statics.AppConstants.LIVE_SESSION_ID;
+
 
 /**
  * LiveBaseActivity class
@@ -119,6 +119,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		dismissFragmentDialog();
 
+		Log.d("TEST", " LiveBaseActivity go pause, isLCSBound = " + isLCSBound);
 		if (isLCSBound) {
 			liveService.startIdleTimeOutCounter();
 		}
@@ -662,16 +663,16 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			if (show) {
-				showPopupHardProgressDialog(R.string.signing_in_);
-			} else {
-				if (isPaused) {
-					return;
-				}
-
-				dismissProgressDialog();
-			}
+		public void showProgress(boolean show) { // DO not show progress as we already showing it while making first attempt to connect
+//			if (show) {
+//				showPopupHardProgressDialog(R.string.signing_in_);
+//			} else {
+//				if (isPaused) {
+//					return;
+//				}
+//
+//				dismissProgressDialog();
+//			}
 		}
 
 		@Override
@@ -682,8 +683,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				preferencesEditor.putString(AppConstants.USERNAME, loginData.getUsername().trim().toLowerCase());
 			}
 			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
-			preferencesEditor.putString(LIVE_SESSION_ID, loginData.getSessionId());
+			preferencesEditor.putString(AppConstants.LIVE_SESSION_ID, loginData.getSessionId());
+			preferencesEditor.putLong(AppConstants.LIVE_SESSION_ID_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.putString(AppConstants.USER_TOKEN, loginData.getLoginToken());
+			preferencesEditor.putLong(AppConstants.USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.commit();
 
 			registerGcmService();

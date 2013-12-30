@@ -349,6 +349,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		}
 	}
 
+	@Override
 	protected void optionsMapInit() {
 		optionsMap = new SparseArray<String>();
 		optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));

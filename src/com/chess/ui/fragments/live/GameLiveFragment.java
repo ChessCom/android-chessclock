@@ -99,8 +99,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private boolean userSawGameEndPopup;
 	private GameBaseFragment.ImageUpdateListener topImageUpdateListener;
 	private GameBaseFragment.ImageUpdateListener bottomImageUpdateListener;
-//	protected LiveGameConfig.Builder liveGameConfigBuilder;
-//	private String[] newGameButtonsArray;
 
 	public GameLiveFragment() {
 	}
@@ -171,8 +169,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onPause() {
 		super.onPause();
-
-		logLiveTest("onPause");
 
 		dismissEndGameDialog();
 		if (isLCSBound) {
@@ -298,12 +294,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			liveService = getLiveService();
 		} catch (final DataNotValidException e) {
 			logLiveTest(e.getMessage());
-			getActivity().runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					showToast(e.getMessage());
-				}
-			});
 			return;
 		}
 		BoardFace boardFace = getBoardFace();
@@ -348,6 +338,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				if (getActivity() == null) {
+					return;
+				}
+
 				invalidateGameScreen();
 				getControlsView().haveNewMessage(gameItem.hasNewMessage());
 			}

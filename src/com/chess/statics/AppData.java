@@ -47,14 +47,12 @@ public class AppData {
 				.commit();
 	}
 
-	public void setUserToken(String token) {
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString(USER_TOKEN, token);
-		editor.commit();
-	}
-
 	public String getUserToken() {
 		return preferences.getString(USER_TOKEN, Symbol.EMPTY);
+	}
+
+	public long getUserTokenSaveTime() {
+		return preferences.getLong(USER_TOKEN_SAVE_TIME, 0);
 	}
 
 	public long getUserId() {
@@ -129,6 +127,13 @@ public class AppData {
 		return preferences.getString(LIVE_SESSION_ID, Symbol.EMPTY);
 	}
 
+	public void setLiveSessionIdSaveTime(long value) {
+		preferences.edit().putLong(LIVE_SESSION_ID_SAVE_TIME, value).commit();
+	}
+
+	public long getLiveSessionIdSaveTime() {
+		return preferences.getLong(LIVE_SESSION_ID_SAVE_TIME, 0);
+	}
 
 	public void setShowSubmitButtonsDaily(boolean show) {
 		setBooleanValue(PREF_SHOW_SUBMIT_MOVE_DAILY, show);

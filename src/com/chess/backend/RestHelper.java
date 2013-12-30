@@ -455,7 +455,7 @@ public class RestHelper {
 
 	public final String LOGIN_HTML_ALS = BASE_WEB_URL + "/login.html?als=";
 	private static final String GOTO = "&goto=";
-	public final String TOURNAMENTS = BASE_URL + "/tournaments";
+	public final String TOURNAMENTS = BASE_WEB_URL + "/tournaments";
 
 
 	public String getTournamentsLink(String userToken) {

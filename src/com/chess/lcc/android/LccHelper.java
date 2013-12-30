@@ -235,10 +235,18 @@ public class LccHelper {
 	/**
 	 * Connect live chess client
 	 */
-	public void performConnect(boolean useSessionId) {
+	public void performConnect() {
 		AppData appData = new AppData(context);
 		String username = appData.getUsername();
 		String pass = appData.getPassword();
+
+		// here we check if sessionId is not expired(ttl = 60min)
+		long sessionIdSaveTime = appData.getLiveSessionIdSaveTime();
+		long currentTime = System.currentTimeMillis();
+		LogMe.dl(TAG, "sessionIdSaveTime = " + sessionIdSaveTime + ", currentTime = " + currentTime);
+
+		boolean useSessionId = currentTime - sessionIdSaveTime <= AppConstants.LIVE_SESSION_EXPIRE_TIME;
+
 		boolean emptyPassword = pass.equals(Symbol.EMPTY);
 
 		if (useSessionId) {
@@ -328,7 +336,7 @@ public class LccHelper {
 					detailsMessage = context.getString(R.string.live_chess_server_upgrading);
 					break;
 				}
-				case ACCOUNT_FAILED: { // wrong authKey
+				case ACCOUNT_FAILED: { // wrong authKey  // TODO we should use check for correct login BEFORE connection
 					/*AppData appData = new AppData(context);
 					if (appData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
 						appData.incrementLiveConnectAttempts(context);*/
@@ -338,7 +346,7 @@ public class LccHelper {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					runConnectTask(false);
+					runConnectTask();
 					//}
 					return;
 				}
@@ -1015,9 +1023,8 @@ public class LccHelper {
 		challengeListener.setOuterChallengeListener(outerChallengeListener);
 	}
 
-	public void runConnectTask(boolean useSessionId) {
-		LogMe.dl(TAG, "runConnectTask: useSessionId=" + useSessionId);
-		new ConnectLiveChessTask(lccConnectUpdateListener, useSessionId, this).executeTask();
+	public void runConnectTask() {
+		new ConnectLiveChessTask(lccConnectUpdateListener, this).executeTask();
 	}
 
 	public void runDisconnectTask(/*boolean resetClient*/) {
@@ -1259,7 +1266,7 @@ public class LccHelper {
 	}
 
 	private void startConnectionTimer() {
-		handler.postDelayed(connectionTimerRunnable, CONNECTION_FAILURE_TIME_LIMIT);
+		handler.postDelayed(connectionTimerRunnable, CONNECTION_FAILURE_TIME_LIMIT); // It is not limit! It is delay, to repeat this event you should use it in different way
 	}
 
 	private Runnable connectionTimerRunnable = new Runnable() {

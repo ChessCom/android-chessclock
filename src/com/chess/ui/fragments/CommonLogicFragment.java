@@ -692,6 +692,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			}
 			preferencesEditor.putInt(username + USER_PREMIUM_STATUS, loginData.getPremiumStatus());
 			preferencesEditor.putString(LIVE_SESSION_ID, loginData.getSessionId());
+			preferencesEditor.putLong(LIVE_SESSION_ID_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.commit();
 
 			if (loginReturnCode == FACEBOOK) {
@@ -750,6 +751,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			preferencesEditor.putString(PASSWORD, getTextFromField(passwordEdt));
 		}
 		preferencesEditor.putString(USER_TOKEN, returnedObj.getLoginToken());
+		preferencesEditor.putLong(USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();
 
 		getAppData().setLiveChessMode(false);
@@ -855,8 +857,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			Session.setActiveSession(null);
 		}
 
-		preferencesEditor.putString(AppConstants.PASSWORD, Symbol.EMPTY);
-		preferencesEditor.putString(AppConstants.USER_TOKEN, Symbol.EMPTY);
+		preferencesEditor.putString(PASSWORD, Symbol.EMPTY);
+		preferencesEditor.putString(USER_TOKEN, Symbol.EMPTY);
+		preferencesEditor.putLong(USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();
 
 		AppUtils.cancelNotifications(getActivity());

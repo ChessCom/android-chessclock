@@ -41,6 +41,10 @@ public class LoginItem extends BaseResponseItem<LoginItem.Data>{
 			return username;
 		}
 
+		/**
+		 * As it might expire after 60 minutes we should check when it was received and perform re-login before using it again
+		 * @return key to connect to live chess chess server
+		 */
 		public String getSessionId(){
 			return session_id;
 		}

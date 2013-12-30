@@ -41,9 +41,6 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
-		Log.d(TAG, "onCreate class=" + getClass());
-
 		super.onCreate(savedInstanceState);
 
 		gameTaskListener = new GameTaskListener();

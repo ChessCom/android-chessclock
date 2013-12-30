@@ -12,6 +12,7 @@ public class AppConstants {
 	public static final String GAME_MODE = "game_mode";
 
 	public static final String USER_TOKEN = "user_token_v3";
+	public static final String USER_TOKEN_SAVE_TIME = "user_token_v3_save_time";
 	public static final String IS_LIVE_CHESS_ON = "is_live_chess_mode_on";
 	public static final String IS_LIVE_CONNECTED = "is_live_connected";
 	public static final String CHALLENGE_INITIAL_TIME = "initial_time";
@@ -34,6 +35,7 @@ public class AppConstants {
 	public static final String FACEBOOK_TOKEN = "facebook_token";
 	public static final String GUEST_NAME = "guest user";
 	public static final String LIVE_SESSION_ID = "live_session_id";
+	public static final String LIVE_SESSION_ID_SAVE_TIME = "live_session_id_save_time"; // used to detect if it is expired
 //	public static final String API_VERSION = "api_version";
 	public static final String PREF_COMPUTER_DELAY = "computer think delay";
 	public static final String PREF_COMPUTER_MODE = "vs computer game mode";
@@ -187,4 +189,6 @@ public class AppConstants {
 
     public static final String NEED_TO_RESTART = "needToRestart";
 
+	public static final long LIVE_SESSION_EXPIRE_TIME = 60 * 60 * 1000; // 60 min
+	public static final long USER_TOKEN_EXPIRE_TIME = 4 * 60 * 60 * 1000; // 4 hrs
 }

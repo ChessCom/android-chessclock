@@ -21,7 +21,6 @@ public interface ActiveFragmentInterface {
 
 	void switchFragment(BasePopupsFragment fragment);
 
-	void openFragment(BasePopupsFragment fragment, int code);
 
 	void switchFragment(BasePopupsFragment fragment, int code);
 

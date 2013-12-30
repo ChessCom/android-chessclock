@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import com.chess.R;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -108,7 +109,7 @@ public class LiveChessService extends Service {
 
 		if (appData.isLiveChess() && !lccHelper.isConnected()) {
 			if (lccHelper.getClient() == null || lccHelper.isConnectionFailure()) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
-				lccHelper.runConnectTask(true);
+				lccHelper.runConnectTask();
 				LogMe.dl(TAG, "no lccClient running connection task");
 			} else { // when client is connecting, but device screen was rotated for example
 				LogMe.dl(TAG, "client is CONNECTING");
@@ -177,8 +178,11 @@ public class LiveChessService extends Service {
 	private final Runnable shutDownRunnable = new Runnable() {
 		@Override
 		public void run() {
-			logout();
+//			logout(); // don't do logout just stop service
+			Log.d("TEST", "shutDownRunnable = ");
+
 			stopSelf();
+			stopForeground(true);
 		}
 	};
 
