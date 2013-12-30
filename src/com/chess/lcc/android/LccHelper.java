@@ -327,7 +327,7 @@ public class LccHelper {
 
 			// do not invoke client.disconnect() in this case
 			cleanupLiveInfo();
-			resetClient();
+			//resetClient();
 			cancelServiceNotification();
 			stopConnectionTimer();
 
@@ -340,6 +340,8 @@ public class LccHelper {
 					/*AppData appData = new AppData(context);
 					if (appData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
 						appData.incrementLiveConnectAttempts(context);*/
+
+					logout();
 
 					try {
 						Thread.sleep(CONNECTION_FAILURE_DELAY);
@@ -363,6 +365,9 @@ public class LccHelper {
 					detailsMessage = context.getString(R.string.pleaseLoginAgain);
 					break;
 			}
+
+			resetClient();
+
 		} else {
 
 			/*connectionFailureCounter++;
@@ -1047,7 +1052,7 @@ public class LccHelper {
 		protected Void doInBackground(Void... voids) {
 			if (lccClient != null) {
 				LogMe.dl(TAG, "DISCONNECT: lccClient=" + getClientId()/* + ", resetClient=" + resetClient*/);
-				lccClient.disconnect();
+				lccClient.disconnect(); // todo: use lccClient.leave()
 				//if (/*resetClient*/) {
 					resetClient();
 				//}
