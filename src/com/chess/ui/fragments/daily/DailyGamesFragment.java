@@ -31,6 +31,7 @@ import com.chess.ui.engine.ChessBoardDiagram;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.WebViewFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
@@ -251,8 +252,12 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			} else {
 				challengeHelper.createLiveChallenge();
 			}
+		} else if (view.getId() == R.id.tournamentsView) {
+			String tournamentsLink = RestHelper.getInstance().getTournamentsLink(getUserToken());
+			WebViewFragment webViewFragment = WebViewFragment.createInstance(tournamentsLink, getString(R.string.tournaments));
+			getActivityFace().openFragment(webViewFragment);
 		} else if (view.getId() == R.id.startNewGameBtn) {
-			getActivityFace().changeRightFragment(new HomePlayFragment());
+			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 			getActivityFace().toggleRightMenu();
 		}
 	}
@@ -554,7 +559,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			}
 		}
 
-
 		listView.invalidate();
 
 		// restore position
@@ -797,9 +801,22 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			}
 		}
 
+		// add Tournaments link
+		ViewGroup tournamentsHeaderView = (ViewGroup) inflater.inflate(R.layout.new_tournaments_header_view, null, false);
+		tournamentsHeaderView.setOnClickListener(this);
+//		RoboButton tournamentsBtn = new RoboButton(getActivity());
+//
+//		tournamentsBtn.setDrawableStyle(R.style.Rect_Bottom_Middle_Grey);
+//		tournamentsBtn.setMinHeight(resources.getDimensionPixelSize(R.dimen.big_button_height));
+//		tournamentsBtn.setTextSize(resources.getDimensionPixelSize(R.dimen.game_controls_text_size) / density);
+//		tournamentsBtn.setId(R.id.tournamentsBtn);
+//		tournamentsBtn.setText(R.string.tournaments);
+//		tournamentsBtn.setOnClickListener(this);
+
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
+		listView.addFooterView(tournamentsHeaderView);
 		listView.setAdapter(sectionedAdapter);
 	}
 

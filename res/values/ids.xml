@@ -6,6 +6,7 @@
     <item name="firstWelcomeImg" type="id"/>
     <item name="secondWelcomeImg" type="id"/>
     <item name="thirdWelcomeImg" type="id"/>
+	<item name="tournamentsBtn" type="id"/>
 
 	<!--Notification-->
 	<item name="notification_message" type="id"/>

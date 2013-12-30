@@ -292,7 +292,7 @@ public class AppData {
 	}
 
 	public int getDefaultLiveMode() {
-		return getIntValue(PREF_DEFAULT_LIVE_MODE, 4);  // 4 = 15 | 10 time mode
+		return getIntValue(PREF_DEFAULT_LIVE_MODE, 1);  // 1 = 10 time mode
 	}
 
 	public void setDefaultLiveMode(int mode) {

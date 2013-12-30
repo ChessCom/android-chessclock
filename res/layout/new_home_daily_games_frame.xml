@@ -30,6 +30,7 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+		android:layout_above="@+id/startNewGameBtn"
         android:background="@color/transparent"
         android:dividerHeight="0px"
         android:divider="@null"
@@ -41,7 +42,6 @@
 		android:layout_height="@dimen/pending_progress_bar_size"
 		android:layout_margin="5dip"
 		android:layout_centerInParent="true"
-		android:layout_above="@+id/startNewGameBtn"
 		style="?android:attr/progressBarStyle"
 		android:visibility="gone"
 		/>

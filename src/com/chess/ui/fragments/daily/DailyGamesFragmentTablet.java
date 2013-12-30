@@ -35,6 +35,7 @@ import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.WebViewFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
 import com.chess.ui.interfaces.FragmentParentFace;
@@ -55,34 +56,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 	public static final int HOME_MODE = 0;
 	public static final int DAILY_MODE = 1;
-
-	//action id
-	public static final int ID_DAILY_1_1 = 1;
-	public static final int ID_DAILY_1_2 = 2;
-	public static final int ID_DAILY_1_3 = 3;
-
-	public static final int ID_LIVE_1_1 = 4;
-	public static final int ID_LIVE_1_2 = 5;
-	public static final int ID_LIVE_2_1 = 6;
-	public static final int ID_LIVE_2_2 = 7;
-	public static final int ID_LIVE_2_3 = 8;
-	public static final int ID_LIVE_3_1 = 9;
-	public static final int ID_LIVE_3_2 = 10;
-
-	// array positions
-	private static final int DAY_1 = 0; // 1 day
-	private static final int DAY_2 = 1; // 3 days
-	private static final int DAY_3 = 4; // 7 days
-
-	private static final int LIVE_1_1 = 4; // 5 | 15
-	private static final int LIVE_1_2 = 0; // 30 min
-
-	private static final int LIVE_2_1 = 1; // 10 min
-	private static final int LIVE_2_2 = 2; // 5 | 2
-	private static final int LIVE_2_3 = 6; // 3 min
-
-	private static final int LIVE_3_1 = 3; // 2 | 1
-	private static final int LIVE_3_2 = 7; // 1 min
 
 	private static final String END_VACATION_TAG = "end vacation popup";
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
@@ -169,6 +142,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		gridView.setAdapter(currentGamesMyCursorAdapter);
 
 		view.findViewById(R.id.completedGamesHeaderView).setOnClickListener(this);
+		view.findViewById(R.id.tournamentsView).setOnClickListener(this);
 
 		if (gridView != null) {
 			gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -322,6 +296,10 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 			} else {
 				challengeHelper.createLiveChallenge();
 			}
+		} else if (view.getId() == R.id.tournamentsView) {
+			String tournamentsLink = RestHelper.getInstance().getTournamentsLink(getUserToken());
+			WebViewFragment webViewFragment = WebViewFragment.createInstance(tournamentsLink, getString(R.string.tournaments));
+			getActivityFace().openFragment(webViewFragment);
 		} else if (view.getId() == R.id.completedGamesHeaderView) {
 			getActivityFace().openFragment(new DailyFinishedGamesFragmentTablet());
 		}

@@ -67,6 +67,7 @@ public class RestHelper {
 	public static final String HOST_TEST = "api.chess-7.com";
 	public static String HOST = HOST_PRODUCTION; // switch production/test server
 
+	public String BASE_WEB_URL = "http://www.chess.com";
 	public String BASE_URL = "http://" + (HOST == null? HOST_PRODUCTION : HOST);
 	public String BASES_S_URL = "https://" + (HOST == null? HOST_PRODUCTION : HOST);
 	private static final String V1 = "/v1";
@@ -452,6 +453,22 @@ public class RestHelper {
 	private static final String AND = "&";
 	private static final String EQUALS = "=";
 
+	public final String LOGIN_HTML_ALS = BASE_WEB_URL + "/login.html?als=";
+	private static final String GOTO = "&goto=";
+	public final String TOURNAMENTS = BASE_URL + "/tournaments";
+
+
+	public String getTournamentsLink(String userToken) {
+		return LOGIN_HTML_ALS + userToken + GOTO + TOURNAMENTS;
+	}
+
+	public String getOnlineGameLink(long gameId) {
+		return BASE_WEB_URL + "/echess/game?id=" + gameId;
+	}
+
+	public String getLiveGameLink(long gameId) {
+		return BASE_WEB_URL + "/livechess/game?id=" + gameId;
+	}
 
 	private static String formUrl(List<NameValuePair> nameValuePairs) {
 		List<NameValuePair> safeList = new ArrayList<NameValuePair>();
@@ -869,14 +886,6 @@ public class RestHelper {
 	public static String convertStreamToString(InputStream is) {
 		Scanner scanner = new Scanner(is).useDelimiter("\\A");
 		return scanner.hasNext() ? scanner.next() : "";
-	}
-
-	public String getOnlineGameLink(long gameId) {
-		return "http://www.chess.com" + "/echess/game?id=" + gameId;
-	}
-
-	public String getLiveGameLink(long gameId) {
-		return "http://www.chess.com" + "/livechess/game?id=" + gameId;
 	}
 
 }
