@@ -215,6 +215,12 @@ public class DbDataManager {
 			V_TIME_REMAINING
 	};
 
+	public static final String[] PROJECTION_USER_AND_MY_TURN = new String[]{
+			_ID,
+			V_USER,
+			V_IS_MY_TURN
+	};
+
 	public static final String[] PROJECTION_FINISHED_GAMES = new String[]{
 			_ID,
 			V_USER,
@@ -2441,13 +2447,14 @@ public class DbDataManager {
 		contentResolver.delete(uri, SELECTION_USER_AND_USERNAME, arguments);
 	}
 
-	public static void deleteNewFriendRequestNotification(ContentResolver contentResolver, String authUser, String username) {
+	public static void deleteNewFriendRequestNotification(ContentResolver contentResolver, String authUser,
+														  long requestId) {
 		final String[] arguments = sArguments2;
 		arguments[0] = authUser;
-		arguments[1] = username;
+		arguments[1] = String.valueOf(requestId);
 
 		Uri uri = uriArray[Tables.NOTIFICATION_FRIEND_REQUEST.ordinal()];
-		contentResolver.delete(uri, SELECTION_USER_AND_USERNAME, arguments);
+		contentResolver.delete(uri, SELECTION_USER_AND_ID, arguments);
 	}
 
 	public static void deleteNewChallengeNotification(ContentResolver contentResolver, String authUser, Long challengeId) {

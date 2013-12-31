@@ -57,4 +57,6 @@ public interface GameFace {
 	boolean isUserAbleToMove(int color);
 
 	boolean isObservingMode();
+
+	boolean isAlive();
 }

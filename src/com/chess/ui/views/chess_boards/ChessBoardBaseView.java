@@ -479,14 +479,18 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	private Runnable moveBackRunnable = new Runnable() {
 		@Override
 		public void run() {
-			moveBackFast();
+			if (gameFace.isAlive()) {
+				moveBackFast();
+			}
 		}
 	};
 
 	private Runnable moveForwardRunnable = new Runnable() {
 		@Override
 		public void run() {
-			moveForwardFast();
+			if (gameFace.isAlive()) {
+				moveForwardFast();
+			}
 		}
 	};
 

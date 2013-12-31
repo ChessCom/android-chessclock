@@ -210,6 +210,11 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	@Override
+	public boolean isAlive() {
+		return getActivity() != null;
+	}
+
+	@Override
 	public abstract String getWhitePlayerName();
 
 	@Override

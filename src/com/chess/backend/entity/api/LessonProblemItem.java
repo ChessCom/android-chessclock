@@ -268,6 +268,10 @@ public class LessonProblemItem extends BaseResponseItem<LessonProblemItem.Data> 
 			return null;
 		}
 
+		public boolean isFreeMove() {
+			return move_difficulty == 0;
+		}
+
 		public static class PossibleMove {
 			private int move_number;
 			private String move;

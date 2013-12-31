@@ -405,6 +405,11 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		public SoundPlayer getSoundPlayer() {
 			return SoundPlayer.getInstance(getActivity());
 		}
+
+		@Override
+		public boolean isAlive() {
+			return getActivity() != null;
+		}
 	}
 
 	private class TimeOptionSelectedListener implements PopupListSelectionFace {

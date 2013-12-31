@@ -295,7 +295,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-		int section = sectionedAdapter.getCurrentSection(pos);
+		boolean headerAdded = listView.getHeaderViewsCount() > 0; // used to check if header added
+		int offset = headerAdded ? -1 : 0;
+
+		int section = sectionedAdapter.getCurrentSection(pos + offset);
 
 		if (section == FINISHED_GAMES_SECTION) {
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
@@ -543,13 +546,21 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		// if user have more than 5 active games, do not show 1/2 size board, only new game button at bottom
 		if (cursor.getCount() < 5) {
-			if (myTurnInDailyGames) {
-				listView.removeHeaderView(newGameHeaderView);
-			} else {
-				listView.removeHeaderView(newGameHeaderView);
-				listView.setAdapter(null);
-				listView.addHeaderView(newGameHeaderView);
-				listView.setAdapter(sectionedAdapter);
+			if (HONEYCOMB_PLUS_API) {
+				if (myTurnInDailyGames) {
+					listView.removeHeaderView(newGameHeaderView);
+				} else {
+					listView.removeHeaderView(newGameHeaderView);
+					listView.setAdapter(null);
+					listView.addHeaderView(newGameHeaderView);
+					listView.setAdapter(sectionedAdapter);
+				}
+			} else {  // for preHC we can't fix bug when we need to add header after setAdapter was called.
+				if (myTurnInDailyGames) {
+					startNewGameBtn.setVisibility(View.GONE);
+				} else {
+					startNewGameBtn.setVisibility(View.VISIBLE);
+				}
 			}
 		} else {
 			if (myTurnInDailyGames) {
@@ -696,7 +707,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getDailyFinishedListGames(getUsername()));
 		if (cursor != null && cursor.moveToFirst()) {
 			finishedGamesCursorAdapter.changeCursor(cursor);
+		} else if (cursor != null) {
+			cursor.close();
 		}
+
 	}
 
 
@@ -830,6 +844,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		@Override
 		public BoardFace getBoardFace() {
 			return ChessBoardDiagram.getInstance(this);
+		}
+
+		@Override
+		public boolean isAlive() {
+			return getActivity() != null;
 		}
 	}
 

@@ -50,6 +50,15 @@ public class DbHelper {
 		return queryParams;
 	}
 
+	public static QueryParams getDailyCurrentMyListGamesCnt(String username) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()]);
+		queryParams.setProjection(DbDataManager.PROJECTION_USER_AND_MY_TURN);
+		queryParams.setSelection(DbDataManager.SELECTION_USER_TURN);
+		queryParams.setArguments(new String[]{username, RestHelper.V_TRUE});
+		return queryParams;
+	}
+
 	public static QueryParams getDailyCurrentTheirListGames(String username) {
 		QueryParams queryParams = new QueryParams();
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.DAILY_CURRENT_GAMES.ordinal()]);

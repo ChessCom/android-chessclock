@@ -1,6 +1,5 @@
 package com.chess.ui.fragments;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -58,7 +57,6 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 	private int successToastMsgId;
 	private DailyChallengeItem.Data selectedChallengeItem;
 	private ChallengeUpdateListener challengeInviteUpdateListener;
-	private FriendRequestUpdateListener friendRequestUpdateListener;
 	private TextView emptyView;
 	private ListView listView;
 	private boolean emptyData;
@@ -69,7 +67,6 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 
 		emptyData = true;
 
-		friendRequestUpdateListener = new FriendRequestUpdateListener();
 		challengeInviteUpdateListener = new ChallengeUpdateListener(ChallengeUpdateListener.INVITE);
 		newChallengesUpdateListener = new NewChallengesUpdateListener();
 		// init adapters
@@ -191,6 +188,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 	}
 
 	private void loadNotifications() {
+		emptyData = true;
 		{ // get friend requests
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
 					DbScheme.Tables.NOTIFICATION_FRIEND_REQUEST));
@@ -232,7 +230,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 		}
 
 		if (emptyData) {
-			emptyView.setText(R.string.all_clear);
+			emptyView.setText(R.string.no_activity);
 			emptyView.setVisibility(View.VISIBLE);
 			listView.setVisibility(View.GONE);
 		} else {
@@ -252,7 +250,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 			super.updateData(returnedObj);
 
 			if (returnedObj.getData().size() == 0 && emptyData) {
-				emptyView.setText(R.string.all_clear);
+				emptyView.setText(R.string.no_activity);
 				emptyView.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);
 			} else {
@@ -365,14 +363,14 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 	private void acceptFriendRequest(long requestId) {
 		LoadItem loadItem = LoadHelper.acceptFriendRequest(getUserToken(), requestId);
 		successToastMsgId = R.string.request_accepted;
-		new RequestJsonTask<FriendRequestResultItem>(friendRequestUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<FriendRequestResultItem>(new FriendRequestUpdateListener(requestId)).executeTask(loadItem);
 	}
 
 	private void declineFriendRequest(long requestId) {
 		LoadItem loadItem = LoadHelper.declineFriendRequest(getUserToken(), requestId);
 		successToastMsgId = R.string.request_declined;
 
-		new RequestJsonTask<FriendRequestResultItem>(friendRequestUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<FriendRequestResultItem>(new FriendRequestUpdateListener(requestId)).executeTask(loadItem);
 	}
 
 	private void acceptChallenge() {
@@ -419,27 +417,31 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 
 	private class FriendRequestUpdateListener extends ChessLoadUpdateListener<FriendRequestResultItem> {
 
-		public FriendRequestUpdateListener() {
+		private long requestId;
+
+		public FriendRequestUpdateListener(long requestId) {
 			super(FriendRequestResultItem.class);
+			this.requestId = requestId;
 		}
 
 		@Override
 		public void updateData(FriendRequestResultItem returnedObj) {
 			showToast(successToastMsgId);
 
-			if (selectedChallengeItem == null) { // TODO investigate why it's null
-				return;
-			}
+			DbDataManager.deleteNewFriendRequestNotification(getContentResolver(), getUsername(),
+					requestId);
 
-			ContentResolver contentResolver = getContentResolver();
-			String opponentUsername = selectedChallengeItem.getOpponentUsername();
-			String username = getUsername();
+			updateNotificationBadges();
 
-			DbDataManager.deleteNewFriendRequestNotification(contentResolver, username,
-					opponentUsername);
+			loadNotifications();
+		}
 
-			// remove that item from challenges list adapter
-			challengesGamesAdapter.remove(selectedChallengeItem);
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			DbDataManager.deleteNewFriendRequestNotification(getContentResolver(), getUsername(),
+					requestId);
 
 			updateNotificationBadges();
 

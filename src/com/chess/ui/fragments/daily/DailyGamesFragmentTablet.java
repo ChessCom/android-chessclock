@@ -84,6 +84,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	private int mode;
 	private boolean startDailyGame;
 	private ChallengeHelper challengeHelper;
+	private boolean showMiniBoards;
 
 	public DailyGamesFragmentTablet() {
 		Bundle bundle = new Bundle();
@@ -122,6 +123,13 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 					.commitAllowingStateLoss();
 		}
 		pullToRefresh(true);
+
+		if (!getAppData().isUserSawHelpForDaily()) {
+			showToastLong(R.string.help_toast_for_daily_games);
+			getAppData().setUserSawHelpForDaily(true);
+		}
+
+		showMiniBoards = getAppData().isMiniBoardsEnabled();
 	}
 
 	@Override
@@ -195,6 +203,12 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 			}
 		} else {
 			loadDbGames();
+		}
+
+		if (showMiniBoards != getAppData().isMiniBoardsEnabled()) {
+			showMiniBoards = getAppData().isMiniBoardsEnabled();
+			currentGamesMyCursorAdapter.setShowMiniBoards(showMiniBoards);
+			currentGamesMyCursorAdapter.notifyDataSetInvalidated();
 		}
 	}
 

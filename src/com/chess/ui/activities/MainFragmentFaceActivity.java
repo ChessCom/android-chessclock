@@ -636,7 +636,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void updateNotificationsBadges() {
-		int playMovesCnt = DbDataManager.getPlayMoveNotificationsCnt(getContentResolver(), getMeUsername());
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getDailyCurrentMyListGamesCnt(getMeUsername()));
+		int playMovesCnt = 0;
+		if (cursor != null) {
+			playMovesCnt = cursor.getCount();
+		}
+
+//		int playMovesCnt = DbDataManager.getPlayMoveNotificationsCnt(getContentResolver(), getMeUsername());
 		int notificationsCnt = DbDataManager.getUnreadNotificationsCnt(getContentResolver(), getMeUsername());
 		setBadgeValueForId(R.id.menu_notifications, notificationsCnt);
 		setBadgeValueForId(R.id.menu_games, playMovesCnt);

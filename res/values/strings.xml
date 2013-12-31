@@ -826,7 +826,7 @@
 	<string name="report_problem">Report Problem</string>
 	<string name="send_mail">Send Email</string>
 	<string name="apply">Apply</string>
-	<string name="all_clear">All Clear</string>
+	<string name="no_activity">No Activity</string>
 	<string name="select_style">Select Style</string>
 	<string name="password_changed">Password Changed</string>
 	<string name="close">close</string>

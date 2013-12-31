@@ -203,5 +203,10 @@ public class HomePlayFragmentTablet extends CommonLogicFragment implements ViewT
 		public SoundPlayer getSoundPlayer() {
 			return SoundPlayer.getInstance(getActivity());
 		}
+
+		@Override
+		public boolean isAlive() {
+			return getActivity() != null;
+		}
 	}
 }

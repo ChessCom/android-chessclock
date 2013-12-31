@@ -350,5 +350,10 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		public SoundPlayer getSoundPlayer() {
 			return SoundPlayer.getInstance(getActivity());
 		}
+
+		@Override
+		public boolean isAlive() {
+			return getActivity() != null;
+		}
 	}
 }

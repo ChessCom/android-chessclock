@@ -15,10 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
-import com.chess.backend.LoadHelper;
-import com.chess.backend.LoadItem;
-import com.chess.backend.RestHelper;
+import com.chess.backend.*;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
@@ -1143,6 +1140,17 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 		}
 
+		@Override
+		public void errorHandle(Integer resultCode) {
+			// don't show error here
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND) {
+					return;
+				}
+			}
+			super.errorHandle(resultCode);
+		}
 	}
 
 	protected ControlsLiveView getControlsView() {

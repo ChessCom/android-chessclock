@@ -453,13 +453,15 @@ public class RestHelper {
 	private static final String AND = "&";
 	private static final String EQUALS = "=";
 
-	public final String LOGIN_HTML_ALS = BASE_WEB_URL + "/login.html?als=";
-	private static final String GOTO = "&goto=";
+	public static final String LOGIN_HTML_LOGIN_TOKEN = "/login.html?loginToken=";
+
+	public final String LOGIN_HTML_ALS = BASE_WEB_URL + LOGIN_HTML_LOGIN_TOKEN;
+	private static final String GO_TO = "&goto=";
 	public final String TOURNAMENTS = BASE_WEB_URL + "/tournaments";
 
 
 	public String getTournamentsLink(String userToken) {
-		return LOGIN_HTML_ALS + userToken + GOTO + TOURNAMENTS;
+		return LOGIN_HTML_ALS + userToken + GO_TO + TOURNAMENTS;
 	}
 
 	public String getOnlineGameLink(long gameId) {

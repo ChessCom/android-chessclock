@@ -912,6 +912,11 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		public BoardFace getBoardFace() {
 			return ChessBoardDiagram.getInstance(this);
 		}
+
+		@Override
+		public boolean isAlive() {
+			return getActivity() != null;
+		}
 	}
 
 	private void updateComments() {

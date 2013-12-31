@@ -167,7 +167,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 				Fragment fragmentByTag = getGameLiveFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					if (!liveService.getCurrentGame().isGameOver()) {
+					if (liveService.getCurrentGame() != null && !liveService.getCurrentGame().isGameOver()) {
 						showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
 						return true;
 					}

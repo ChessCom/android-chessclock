@@ -264,27 +264,24 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 	}
 
-	protected void showDefaultControls() {
-		getControlsView().showDefault();
-		getControlsView().dropUsedHints();
-		usedHints = 0;
-		showHintViews(false);
-	}
-
 	@Override
 	public void nextPosition() {
 		if (currentLearningPosition < totalLearningPositionsCnt) {
-			if (getMentorPosition().getMoveDifficulty() == 0 && !getCurrentCompleteItem().answerWasShown) { // If Free move
+			if (getMentorPosition().isFreeMove() && !getCurrentCompleteItem().answerWasShown) {
 				showAnswer();
 				return;
 			}
 		}
 
+		loadNextPosition();
+	}
+
+	private void loadNextPosition() {
 		if (currentLearningPosition <= totalLearningPositionsCnt) {
 			currentLearningPosition++;
 			userLesson.setCurrentPosition(currentLearningPosition);
 
-			showDefaultControls();
+			showDefaultState();
 			adjustBoardForGame();
 		}
 	}
@@ -332,7 +329,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					if (!inLandscape()) {
 						slidingDrawer.animateClose();
 					}
-					showDefaultControls();
+					showDefaultState();
 					updateUiData();
 					getControlsView().showStart();
 					return;
@@ -551,7 +548,16 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 			// show next lesson button
 			getControlsView().showNewGame();
+		} else if (correctMove) {
+			loadNextPosition();
 		}
+	}
+
+	protected void showDefaultState() {
+		getControlsView().showDefault();
+		getControlsView().dropUsedHints();
+		usedHints = 0;
+		showHintViews(false);
 	}
 
 	private void showCorrectState() {
@@ -598,6 +604,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	}
 
 	private LessonProblemItem.MentorPosition getMentorPosition() {
+		// TODO investigate real problem here, probably bcz of nextPosition for free move do incorrect counts
+		if (currentLearningPosition >= positionsToLearn.size()) {
+			currentLearningPosition = positionsToLearn.size() - 1;
+		}
+
 		return positionsToLearn.get(currentLearningPosition);
 	}
 
@@ -776,7 +787,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public void onDrawerOpened() {
-		if (lessonItem == null) {
+		if (getActivity() == null || lessonItem == null) {
 			return;
 		}
 
@@ -792,7 +803,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			getControlsView().showDefault();
 		}
 
-		if (getMentorPosition().getMoveDifficulty() == 0) { // It's a Free move, user may skip it.
+		if (getMentorPosition().isFreeMove()) {
 			controlsView.showCorrect();
 		}
 
@@ -969,7 +980,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		userLesson.setLegalMoveCheck(lessonItem.getLegalMoveCheck());
 		userLesson.setLegalPositionCheck(lessonItem.getLegalPositionCheck());
 		userLesson.setLessonCompleted(lessonItem.isLessonCompleted());
-
+//		userLesson.setCurrentPosition(0);
 		startLearningPosition = userLesson.getCurrentPosition();
 		currentLearningPosition = userLesson.getCurrentPosition();
 

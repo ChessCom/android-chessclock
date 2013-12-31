@@ -1093,5 +1093,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			inviteFriendView1.setVisibility(View.GONE);
 			inviteFriendView2.setVisibility(View.GONE);
 		}
+
+		if (cursor != null) {
+			cursor.close();
+		}
 	}
 }

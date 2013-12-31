@@ -378,5 +378,10 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		public BoardFace getBoardFace() {
 			return ChessBoardOnline.getInstance(this);
 		}
+
+		@Override
+		public boolean isAlive() {
+			return getActivity() != null;
+		}
 	}
 }

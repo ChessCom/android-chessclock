@@ -163,5 +163,10 @@ public class HomePlayFragmentNew extends CommonLogicFragment implements ViewTree
 		public SoundPlayer getSoundPlayer() {
 			return SoundPlayer.getInstance(getActivity());
 		}
+
+		@Override
+		public boolean isAlive() {
+			return getActivity() != null;
+		}
 	}
 }

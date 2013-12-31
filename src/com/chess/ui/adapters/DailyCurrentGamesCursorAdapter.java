@@ -79,7 +79,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		holder.timeLeftIcon = (TextView) view.findViewById(R.id.timeLeftIcon);
 		holder.boardPreviewFrame = (ProgressImageView) view.findViewById(R.id.boardPreviewFrame);
 
-		if (isTablet) {
+		if (isTablet && showMiniBoards) {
 			holder.timeOptionView = view.findViewById(R.id.timeOptionView);
 			holder.timeOptionBtn = (Button) view.findViewById(R.id.timeOptionBtn);
 			holder.playNewGameBtn = (Button) view.findViewById(R.id.playNewGameBtn);
@@ -96,7 +96,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View convertView, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		if (isTablet) {
+		if (isTablet && showMiniBoards) {
 			if (showNewGameAtFirst) {
 				if (DbDataManager.getId(cursor) == -1) {
 					holder.timeOptionView.setVisibility(View.VISIBLE);

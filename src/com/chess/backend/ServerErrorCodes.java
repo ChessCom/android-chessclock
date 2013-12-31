@@ -136,6 +136,8 @@ public class ServerErrorCodes {
 	public static final int NO_MOVES_FOUND = 123;							//	"No moves found
 	public static final int YOU_PROVIDED_INVALID_PASSWORD = 124;			//	"You provided invalid password.
 	public static final int YOUR_GCM_ID_ALREADY_REGISTERED = 125;			//	"Your registration ID is already registered!
+	public static final int ERROR_USER_NOT_ENABLED  = 126;					//	"The selected user must be enabled.
+	public static final int ERROR_INSUFFICIENT_MEMBERSHIP_LEVEL  = 127;		//	"Gold members cannot view other member\'s stats.
 
 
 	public static String getUserFriendlyMessage(Context context, int code) {    // TODO convert to strings for i18n
