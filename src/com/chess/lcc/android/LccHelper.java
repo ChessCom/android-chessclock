@@ -1156,6 +1156,11 @@ public class LccHelper {
 	}
 
 	public void checkAndProcessDrawOffer(Game game) {
+
+		if (isObservedGame(game)) {
+			return;
+		}
+
 		final String opponentName = getOpponentName();
 
 		if (opponentName != null && game.isDrawOfferedByPlayer(opponentName)) { // check if game is not ended?

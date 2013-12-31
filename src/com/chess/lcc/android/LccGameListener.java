@@ -197,9 +197,7 @@ public class LccGameListener implements GameListener {
 			}
 		}
 
-		if (!lccHelper.isObservedGame(game)) {
-			lccHelper.checkAndProcessDrawOffer(game);
-		}
+		lccHelper.checkAndProcessDrawOffer(game);
 
 		if (lccHelper.isMyGame(game)) {
 			User opponent = game.getOpponentForPlayer(lccHelper.getUsername());
