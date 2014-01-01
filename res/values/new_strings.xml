@@ -1,15 +1,5 @@
 <resources>
 
 
-	<string name="no_rated_activity">No rated activity</string>
-	<string name="unable_to_relogin">Unable to re-login</string>
-	<string name="notifications">Notifications</string>
-	<string name="challengeRejected">%s rejected challenge</string>
-	<string name="total_games">Total Games</string>
-	<string name="help_toast_for_daily_games">Pull Down To Update Games</string>
-	<string name="not_connected_yet">Not connected yet</string>
-	<string name="no_email_found">No email found</string>
-	<string name="unable_to_send_challenge">Unable to send Challenge</string>
-	<string name="rating_range">Rating Range:</string>
-	<string name="show_mini_boards">Show Mini Boards</string>
+
 </resources>

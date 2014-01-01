@@ -11,7 +11,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.RegisterItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.utilities.AppUtils;
 
 import static com.chess.statics.AppConstants.PASSWORD;
 
@@ -64,7 +63,7 @@ public class SettingsPasswordFragment extends CommonLogicFragment {
 				return;
 			}
 
-			if (!AppUtils.isNetworkAvailable(getActivity())){ // check only if live
+			if (!isNetworkAvailable()){ // check only if live
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 				return;

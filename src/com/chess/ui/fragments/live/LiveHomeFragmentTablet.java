@@ -228,9 +228,17 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 				showToast("Not connected yet");
 				return;
 			}
-			Fragment fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
-			if (fragmentByTag == null) {
-				fragmentByTag = new GameLiveObserveFragment();
+			Fragment fragmentByTag;
+			if (!isTablet) {
+				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
+					fragmentByTag = new GameLiveObserveFragment();
+				}
+			}else {
+				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragmentTablet.class.getSimpleName());
+				if (fragmentByTag == null) {
+					fragmentByTag = new GameLiveObserveFragmentTablet();
+				}
 			}
 			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
 		} else if (id == R.id.currentGameHeaderView) {

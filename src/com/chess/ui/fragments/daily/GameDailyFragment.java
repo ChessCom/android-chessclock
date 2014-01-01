@@ -885,6 +885,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 			currentGame = returnedObj.getData();
 
+			boolean userPlayWhite = currentGame.getWhiteUsername().equals(username);
+			boolean whiteToMove = currentGame.getUserToMove() == RestHelper.P_WHITE;
+			currentGame.setMyTurn(userPlayWhite ? whiteToMove : !whiteToMove);
+
 			DbDataManager.updateDailyGame(getContentResolver(), currentGame, username);
 
 			adjustBoardForGame();

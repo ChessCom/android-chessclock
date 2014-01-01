@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.widgets.RoboButton;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
@@ -26,7 +25,7 @@ import com.chess.statics.Symbol;
 import com.chess.statics.WelcomeHolder;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
-import com.chess.utilities.AppUtils;
+import com.chess.widgets.RoboButton;
 import com.flurry.android.FlurryAgent;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -182,7 +181,7 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 				return;
 			}
 
-			if (!AppUtils.isNetworkAvailable(getActivity())) {
+			if (!isNetworkAvailable()) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 				return;

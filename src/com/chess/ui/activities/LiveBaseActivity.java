@@ -179,7 +179,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					return true;
 				}
 
-				fragmentByTag = getSupportFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
+				fragmentByTag = getGameLiveObserverFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					liveService.exitGameObserving();
 					return super.onKeyUp(keyCode, event);
@@ -631,7 +631,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			return;
 		}
 
-		gameLiveFragment = (GameLiveObserveFragment) findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
+		gameLiveFragment = getGameLiveObserverFragment();
 		if (gameLiveFragment != null) {
 			gameLiveFragment.onConnectionBlocked(blocked);
 		}
@@ -733,6 +733,16 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
 		} else {
 			gameLiveFragment = (GameLiveFragmentTablet) findFragmentByTag(GameLiveFragmentTablet.class.getSimpleName());
+		}
+		return gameLiveFragment;
+	}
+
+	protected GameLiveObserveFragment getGameLiveObserverFragment() {
+		GameLiveObserveFragment gameLiveFragment;
+		if (!isTablet) {
+			gameLiveFragment = (GameLiveObserveFragment) findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
+		} else {
+			gameLiveFragment = (GameLiveObserveFragmentTablet) findFragmentByTag(GameLiveObserveFragmentTablet.class.getSimpleName());
 		}
 		return gameLiveFragment;
 	}

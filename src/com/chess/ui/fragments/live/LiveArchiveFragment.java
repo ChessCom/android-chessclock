@@ -23,7 +23,6 @@ import com.chess.db.tasks.SaveLiveArchiveGamesTask;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.LiveArchiveGamesAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -82,7 +81,7 @@ public class LiveArchiveFragment extends CommonLogicFragment implements AdapterV
 		if (need2update) {
 			boolean haveSavedData = DbDataManager.haveSavedLiveArchiveGame(getActivity(), getUsername());
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				updateData();
 			}
 
@@ -97,7 +96,7 @@ public class LiveArchiveFragment extends CommonLogicFragment implements AdapterV
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (isNetworkAvailable()) {
 			updateData();
 		}
 	}

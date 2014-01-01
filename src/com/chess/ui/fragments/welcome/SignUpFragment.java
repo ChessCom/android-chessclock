@@ -16,15 +16,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.RegisterItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.statics.AppConstants;
 import com.chess.statics.FlurryData;
 import com.chess.statics.Symbol;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
 import java.util.regex.Pattern;
@@ -97,7 +96,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 				return;
 			}
 
-			if (!AppUtils.isNetworkAvailable(getActivity())){ // check only if live
+			if (!isNetworkAvailable()){ // check only if live
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 				return;

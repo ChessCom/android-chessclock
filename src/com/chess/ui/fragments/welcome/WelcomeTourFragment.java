@@ -194,7 +194,7 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 				return;
 			}
 
-			if (!AppUtils.isNetworkAvailable(getActivity())) {
+			if (!isNetworkAvailable()) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 				return;

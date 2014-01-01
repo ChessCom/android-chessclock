@@ -39,7 +39,6 @@ import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
-import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChallengeHelper;
 
 import java.util.List;
@@ -209,7 +208,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (isNetworkAvailable()) {
 			updateData();
 		}
 	}

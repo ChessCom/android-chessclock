@@ -116,7 +116,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		super.onResume();
 
 		// Don't load custom pieces if we are not logged in
-		if (isAuthenticatedUser && AppUtils.isNetworkAvailable(getActivity())) {
+		if (isAuthenticatedUser && isNetworkAvailable()) {
 			loadThemedPieces = true;
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_PIECES));
 

@@ -38,7 +38,6 @@ import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.utilities.AppUtils;
 import com.chess.widgets.LinLayout;
 
 import java.util.ArrayList;
@@ -166,7 +165,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (isNetworkAvailable()) {
 			updateData();
 		}
 	}

@@ -109,7 +109,7 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 				} else {
 					getFullCourses();
 				}
-			} else if (AppUtils.isNetworkAvailable(getActivity())) {
+			} else if (isNetworkAvailable()) {
 				getCategories();
 			}
 

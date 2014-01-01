@@ -108,7 +108,7 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 				categoriesAdapter.changeCursor(categoriesCursor);
 			}
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				getCategories();
 			}
 

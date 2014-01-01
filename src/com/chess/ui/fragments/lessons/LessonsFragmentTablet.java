@@ -1,6 +1,8 @@
 package com.chess.ui.fragments.lessons;
 
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -32,7 +34,6 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -44,6 +45,7 @@ import java.util.List;
  */
 public class LessonsFragmentTablet extends CommonLogicFragment implements AdapterView.OnItemClickListener, FragmentParentFace {
 
+	public static final String CURRICULUM = "Curriculum";
 	private ListView listView;
 	private View loadingView;
 	private TextView emptyView;
@@ -131,10 +133,10 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		if (need2update) {
 
 			// check if we have saved categories
-			// get saved categories
+			// get saved categories  // TODO improve performance load only one field and record
 			Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsCurriculumCategories());
 
-			if (categoriesCursor == null || !categoriesCursor.moveToFirst() && AppUtils.isNetworkAvailable(getActivity())) {
+			if (categoriesCursor == null || !categoriesCursor.moveToFirst() && isNetworkAvailable()) {
 				getCategories();
 			}
 
@@ -161,8 +163,20 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		boolean headerAdded = listView.getHeaderViewsCount() > 0; // used to check if header added
+		int offset = headerAdded ? -1 : 0;
+
+		if (headerAdded && position == 0) {
+			return;
+		}
+
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
+
+		if (sectionName.equals(CURRICULUM)) {
+			changeInternalFragment(LessonsCurriculumFragmentTablet.createInstance(this));
+			return;
+		}
 
 		if (noCategoriesFragmentsAdded) {
 			openInternalFragment(LessonsCategoriesFragmentTablet.createInstance(sectionName));
@@ -199,7 +213,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class LessonsCategoriesUpdateListener extends CommonLogicFragment.ChessUpdateListener<CommonFeedCategoryItem> {
+	private class LessonsCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem> {
 		public LessonsCategoriesUpdateListener() {
 			super(CommonFeedCategoryItem.class);
 		}
@@ -212,14 +226,42 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		}
 	}
 
-	private class SaveLessonsCategoriesUpdateListener extends CommonLogicFragment.ChessUpdateListener<CommonFeedCategoryItem.Data> {
+	private class SaveLessonsCategoriesUpdateListener extends ChessUpdateListener<CommonFeedCategoryItem.Data> {
 
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 
-			Cursor libraryCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
-			categoriesCursorAdapter.changeCursor(libraryCursor);
+			Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
+
+			Cursor extendedCursor = updateCategoriesCursor(categoriesCursor);
+			categoriesCursorAdapter.changeCursor(extendedCursor);
 		}
+	}
+
+	private Cursor updateCategoriesCursor(Cursor categoriesCursor) {
+		String[] projection = {
+				DbScheme._ID,
+				DbScheme.V_NAME,
+				DbScheme.V_CATEGORY_ID,
+				DbScheme.V_IS_CURRICULUM,
+				DbScheme.V_DISPLAY_ORDER
+		};
+		MatrixCursor extras = new MatrixCursor(projection);
+		extras.addRow(new String[]{
+				"-1",     		// _ID,
+				CURRICULUM,   // V_NAME,
+				"0",     		// V_CATEGORY_ID,
+				"0",     		// V_IS_CURRICULUM,
+				"0",     		// V_DISPLAY_ORDER
+		}
+		);
+
+		Cursor[] cursors = {extras, categoriesCursor};
+		Cursor extendedCursor = new MergeCursor(cursors);
+
+		// restore position
+		extendedCursor.moveToFirst();
+		return extendedCursor;
 	}
 
 	private void getFullCourses() {
@@ -230,7 +272,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		new RequestJsonTask<LessonCourseListItem>(lessonsCoursesUpdateListener).executeTask(loadItem);
 	}
 
-	private class LessonsCoursesUpdateListener extends CommonLogicFragment.ChessUpdateListener<LessonCourseListItem> {
+	private class LessonsCoursesUpdateListener extends ChessUpdateListener<LessonCourseListItem> {
 		public LessonsCoursesUpdateListener() {
 			super(LessonCourseListItem.class);
 		}
@@ -276,8 +318,9 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		lessonsRatingUpdateListener = new LessonsRatingUpdateListener();
 
 		// get from DB categories for Full Lessons Library(not Curriculum)
-		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
-		categoriesCursorAdapter.changeCursor(cursor);
+		Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
+		Cursor updateCategoriesCursor = updateCategoriesCursor(categoriesCursor);
+		categoriesCursorAdapter.changeCursor(updateCategoriesCursor);
 
 		changeInternalFragment(LessonsCurriculumFragmentTablet.createInstance(this));
 

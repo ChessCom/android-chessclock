@@ -217,7 +217,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (isNetworkAvailable()) {
 			 updateComments();
 		}
 	}

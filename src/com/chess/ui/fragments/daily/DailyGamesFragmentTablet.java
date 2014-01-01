@@ -40,7 +40,6 @@ import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 import com.chess.utilities.ChallengeHelper;
 
 import java.util.List;
@@ -242,7 +241,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	@Override
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (isNetworkAvailable()) {
 			updateData();
 		}
 	}

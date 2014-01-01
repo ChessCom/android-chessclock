@@ -16,7 +16,6 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ArticleItem;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -24,12 +23,12 @@ import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveArticleCategoriesTask;
 import com.chess.db.tasks.SaveArticlesListTask;
+import com.chess.statics.StaticData;
 import com.chess.ui.adapters.ArticlesCursorAdapter;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -146,7 +145,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
 		// loading articles
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (isNetworkAvailable()) {
 			updateData();
 		}
 	}

@@ -26,7 +26,6 @@ import com.chess.ui.adapters.LessonsCursorAdapter;
 import com.chess.ui.adapters.LessonsPaginationAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -235,7 +234,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 			// clear current list
 			getAdapter().changeCursor(null);
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSONS);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());

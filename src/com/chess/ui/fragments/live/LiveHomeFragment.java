@@ -160,9 +160,17 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 				return;
 			}
 
-			Fragment fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
-			if (fragmentByTag == null) {
-				fragmentByTag = new GameLiveObserveFragment();
+			Fragment fragmentByTag;
+			if (!isTablet) {
+				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
+				if (fragmentByTag == null) {
+					fragmentByTag = new GameLiveObserveFragment();
+				}
+			}else {
+				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragmentTablet.class.getSimpleName());
+				if (fragmentByTag == null) {
+					fragmentByTag = new GameLiveObserveFragmentTablet();
+				}
 			}
 			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
 		} else if (liveItem.iconId == R.string.ic_live_standard) {

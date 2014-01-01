@@ -10,17 +10,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.SuccessItem;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.WhiteSpinnerAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 
@@ -136,7 +135,7 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
 				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
+			if (!isNetworkAvailable()) { // check only if live
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			} else {

@@ -13,6 +13,7 @@ import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.LogMe;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.apache.http.HttpStatus;
@@ -864,7 +865,7 @@ public class RestHelper {
 
 	private static void logD(String tag, String message) {
 		if (BuildConfig.DEBUG) {
-			Log.d(tag, message);
+			LogMe.dl(tag, message);
 		}
 	}
 

@@ -24,7 +24,6 @@ import com.chess.ui.adapters.LessonsItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,7 +171,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		} else {
 			int lessonId = ((LessonSingleItem) parent.getItemAtPosition(position)).getId();
 
-			if (AppUtils.isNetworkAvailable(getActivity())) {
+			if (isNetworkAvailable()) {
 				getActivityFace().openFragment(GameLessonFragment.createInstance(lessonId, courseId));
 			} else { // else check if we have saved lesson with that id
 				Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getMentorLessonById(lessonId));

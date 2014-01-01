@@ -177,6 +177,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 				// set the Above View
 				switchFragment(new HomeTabsFragment());
+//				openFragment(ArticleDetailsFragment.createInstance(11820));
+
 				showActionBar = true;
 			} else {
 				if (isTablet) {
@@ -524,14 +526,16 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		String liveFragment2 = LiveHomeFragmentTablet.class.getSimpleName();
 		String liveFragment3 = GameLiveFragment.class.getSimpleName();
 		String liveFragment4 = GameLiveObserveFragment.class.getSimpleName();
-		String liveFragment5 = LiveChatFragment.class.getSimpleName();
-		String liveFragment6 = LiveGameWaitFragment.class.getSimpleName();
+		String liveFragment5 = GameLiveObserveFragmentTablet.class.getSimpleName();
+		String liveFragment6 = LiveChatFragment.class.getSimpleName();
+		String liveFragment7 = LiveGameWaitFragment.class.getSimpleName();
 		return !fragmentName.equals(liveFragment1)
 				&& !fragmentName.equals(liveFragment2)
 				&& !fragmentName.equals(liveFragment3)
 				&& !fragmentName.equals(liveFragment4)
 				&& !fragmentName.equals(liveFragment5)
-				&& !fragmentName.equals(liveFragment6);
+				&& !fragmentName.equals(liveFragment6)
+				&& !fragmentName.equals(liveFragment7);
 	}
 
 	@Override

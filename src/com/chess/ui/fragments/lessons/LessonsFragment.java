@@ -18,7 +18,6 @@ import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.LessonCourseListItem;
 import com.chess.backend.entity.api.LessonSingleItem;
 import com.chess.backend.entity.api.LessonsRatingItem;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -26,11 +25,11 @@ import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveLessonsCategoriesTask;
 import com.chess.db.tasks.SaveLessonsCoursesListTask;
 import com.chess.model.CurriculumLessonsItems;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -171,7 +170,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 					} else {
 						getFullCourses();
 					}
-				} else if (AppUtils.isNetworkAvailable(getActivity())) {
+				} else if (isNetworkAvailable()) {
 					getCategories();
 				}
 
@@ -252,7 +251,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		return super.onOptionsItemSelected(item);
 	}
 
-	private class LessonsCategoriesUpdateListener extends CommonLogicFragment.ChessUpdateListener<CommonFeedCategoryItem> {
+	private class LessonsCategoriesUpdateListener extends ChessLoadUpdateListener<CommonFeedCategoryItem> {
 		public LessonsCategoriesUpdateListener() {
 			super(CommonFeedCategoryItem.class);
 		}
@@ -265,7 +264,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		}
 	}
 
-	private class SaveLessonsCategoriesUpdateListener extends CommonLogicFragment.ChessUpdateListener<CommonFeedCategoryItem.Data> {
+	private class SaveLessonsCategoriesUpdateListener extends ChessLoadUpdateListener<CommonFeedCategoryItem.Data> {
 
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {

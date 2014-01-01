@@ -185,6 +185,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		LiveChessService liveService = getLiveService();
 		GameLiveItem currentGame = liveService.getGameItem();
+		if (currentGame == null) { // this happens when we resume to fragment via back navigation
+			throw new DataNotValidException(DataNotValidException.GAME_NOT_EXIST);
+		}
 		gameId = currentGame.getGameId();
 
 		optionsMapInit();

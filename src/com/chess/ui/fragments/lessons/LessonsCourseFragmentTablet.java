@@ -48,7 +48,7 @@ public class LessonsCourseFragmentTablet extends LessonsCourseFragment {
 
 		int lessonId = ((LessonSingleItem) parent.getItemAtPosition(position)).getId();
 
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (isNetworkAvailable()) {
 			getActivityFace().openFragment(GameLessonsFragmentTablet.createInstance(lessonId, courseId));
 		} else { // else check if we have saved lesson with that id
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getMentorLessonById(lessonId));

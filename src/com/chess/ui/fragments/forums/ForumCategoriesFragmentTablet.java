@@ -13,10 +13,7 @@ import com.chess.R;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
-import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.BasePopupsFragment;
-import com.chess.ui.fragments.articles.ArticleCategoriesFragmentTablet;
-import com.chess.ui.fragments.settings.SettingsProfileFragment;
 import com.chess.ui.fragments.settings.SettingsThemeCustomizeFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
 

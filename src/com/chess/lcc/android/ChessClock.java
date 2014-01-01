@@ -118,7 +118,13 @@ public class ChessClock {
 				return String.valueOf(60 * hours + minutes) +
 						Symbol.COLON + padStart(String.valueOf(seconds), ZERO_CHAR, 2);
 			case SECOND_TENTHS_DISPLAY_MODE:
-				return padStart(String.valueOf(60 * hours + minutes), ZERO_CHAR, 2) +
+				String minutesStr = String.valueOf(60 * hours + minutes);
+				if (minutes < 10) {
+					minutesStr = padStart(minutesStr, ZERO_CHAR, 1);
+				} else {
+					minutesStr = padStart(minutesStr, ZERO_CHAR, 2);
+				}
+				return minutesStr +
 						Symbol.COLON + padStart(String.valueOf(seconds), ZERO_CHAR, 2) + Symbol.DOT +
 						String.valueOf(tenths);
 			default:
@@ -126,15 +132,15 @@ public class ChessClock {
 		}
 	}
 
-	public String padStart(String s, char c, int length) {
-		if (s.length() >= length) {
-			return s;
+	public String padStart(String timeStr, char symbol, int length) {
+		if (timeStr.length() >= length) {
+			return timeStr;
 		}
-		StringBuilder buf = new StringBuilder(s);
-		for (int i = s.length(); i < length; i++) {
-			buf.insert(0, c);
+		StringBuilder builder = new StringBuilder(timeStr);
+		for (int i = timeStr.length(); i < length; i++) {
+			builder.insert(0, symbol);
 		}
-		return buf.toString();
+		return builder.toString();
 	}
 
 	private void startTimer() {

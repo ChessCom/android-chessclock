@@ -432,6 +432,37 @@ public class MovesParser {
 		if (end == -1) {
 			return movesList;
 		}
+//		// we need to remove all alternate moves in case ( asdasd ( asdas ( asdas ) asdas ) asdas )
+//		// also there are cases like ( asdas (asdasd ) asdas (asdfasd) asdasdas)
+////		int firstStartMark = movesList.indexOf("(");
+////		int firstEndMark = movesList.indexOf(")");
+////		String listToCountStartMarks = movesList.substring(start, end + 1);
+//		// count how many startMarks we have here
+//		int startCnt = 0;
+//		int endCnt = 0;
+//		int closePoint = end;
+//		for(int k=0; k< movesList.length(); k++){
+//			char symbol = movesList.charAt(k);
+//			if (symbol == '(') {
+//				startCnt++;
+//			}
+//			if (symbol == ')') {
+//				endCnt++;
+//				closePoint = k;
+//			}
+//		}
+//
+//		String tempList = movesList;
+//		while (endCnt < startCnt) {
+//			tempList = tempList.substring(end + 1);
+//			end = tempList.indexOf(")");
+//			String tempStringForStart = tempList.substring(0, end);
+//			if (tempStringForStart.contains("(")) { // if there is another open string for alternative moves
+//				startCnt++;
+//			}
+//			endCnt++;
+//		}
+
 		String substring;
 		String clearMoves = Symbol.EMPTY;
 		// if closing parenthesis is closer then opening

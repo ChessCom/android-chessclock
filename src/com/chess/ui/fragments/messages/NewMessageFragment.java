@@ -19,7 +19,6 @@ import com.chess.db.DbScheme;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.utilities.AppUtils;
 import com.chess.widgets.ChipsAutoCompleteTextView;
 
 /**
@@ -160,7 +159,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
 				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-			if (!AppUtils.isNetworkAvailable(getActivity())) { // check only if live
+			if (!isNetworkAvailable()) { // check only if live
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			} else {

@@ -557,8 +557,6 @@
 	<string name="average_score">Average Score:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lessons</string>
-	<string name="play_again">Play Again!</string>
-	<string name="play_daily">Play Daily</string>
 	<string name="new_">New</string>
 	<string name="analysis">Analysis</string>
 
@@ -573,8 +571,6 @@
 	<string name="account_history">Account History</string>
 
 	<!--Video sort order-->
-	<string name="latest">Latest</string>
-	<string name="authors_name">Author\'s Name</string>
 	<string name="location">Location</string>
 	<string name="share">Share</string>
 	<string name="profile_membership_renew_cancel">Your %1$s membership will renew on %2$s.</string>
@@ -589,14 +585,10 @@
 	<string name="sign_up_now_free">Sign Up Now, It\'s FREE!</string>
 	<string name="sign_up_free">Sign Up - It\'s FREE!</string>
 	<string name="invite_friend">Invite Friend</string>
-	<string name="chess_com_friends">Chess.com Friends</string>
 	<string name="chess_com_username">Chess.com Username</string>
-	<string name="facebook_friends">Facebook Friends</string>
-	<string name="your_contacts">Your Contacts</string>
 	<string name="processing_">Processing…</string>
 
 	<!--Settings-->
-	<string name="next_tactic">Next Tactic</string>
 	<string name="coordinates">Coordinates</string>
 	<string name="highlight_last_move">Highlight Last Move</string>
 	<string name="on">on</string>
@@ -660,7 +652,6 @@
 	<string name="contacts">Contacts</string>
 	<string name="facebook_invite_friend_to_play">\"Let\'s play Chess via Chess.com android app\"</string>
 	<string name="add_friend_request_message">Let\'s play!</string>
-	<string name="select_contact">Select Contact</string>
 	<string name="online_today">Online today</string>
 	<string name="last_played">Online %s</string>
 	<string name="x_days_ago">%s days ago</string>
@@ -706,10 +697,6 @@
 	<string name="curriculum">Curriculum</string>
 	<string name="start_lesson">Start Lesson</string>
 	<string name="skip">Skip</string>
-	<string name="key_squares">Key Squares</string>
-	<string name="correct_square">Correct Square</string>
-	<string name="key_pieces">Key Pieces</string>
-	<string name="correct_piece">Correct Piece</string>
 	<string name="skip_lesson">Skip Lesson</string>
 	<string name="hint_arg">Hint %s:</string>
 	<string name="your_lesson_rating">Your Lesson Rating:</string>
@@ -718,7 +705,6 @@
 	<string name="rating_">Rating:</string>
 	<string name="lessons_completed">Lessons Completed</string>
 	<string name="courses_completed">Courses Completed</string>
-	<string name="alternate_correct_move_ex">Alternate correct move!</string>
 	<string name="lesson_share_message">Check out this lesson @Chess.com %1$s </string>
 	<string name="lesson_completed_message">I\'ve just completed lesson @Chess.com %1$s , and gained %2$s score</string>
 	<string name="share_completed_lesson_title">Chess.com Mentor Lesson completed!</string>
@@ -733,16 +719,11 @@
 	<string name="loading_board">Loading board</string>
 	<string name="loading_sounds">Loading sounds</string>
 	<string name="custom">Custom</string>
-	<string name="install">Install</string>
 	<string name="background">Background</string>
-	<string name="colors">Colors</string>
-	<string name="light">Light</string>
-	<string name="dark">Dark</string>
 	<string name="select_background">Select Background</string>
 	<string name="edit">Edit</string>
 	<string name="installing_sound_pack">Installing sound pack</string>
 	<string name="waiting_to_load">Waiting To Load</string>
-	<string name="select_theme">Select Theme</string>
 
 	<!--Messages-->
 	<string name="message_sent">Message Sent</string>
@@ -754,7 +735,6 @@
 
 	<!--Comp game-->
 	<string name="random">Random</string>
-	<string name="comp_play_as">Comp Play As:</string>
 	<string name="two_players">2 Players</string>
 	<string name="activity">Activity</string>
 
@@ -787,7 +767,6 @@
 	<string name="no_results_found">No Results Found</string>
 	<string name="game_explorer">Game Explorer</string>
 	<string name="no_games_found">No games found</string>
-	<string name="no_data_for_position">No data for current position</string>
 
 	<string name="recent_problems">Recent Problems</string>
 	<string name="recent_lessons">Recent Lessons</string>
@@ -795,7 +774,6 @@
 	<string name="improve_your_chess">Improve Your Chess!</string>
 
 	<string name="loading_pieces">Loading Pieces</string>
-	<string name="diagram">Diagram</string>
 	<string name="white_to_move">White To Move</string>
 	<string name="black_to_move">Black To Move</string>
 	<string name="puzzle">Puzzle</string>
@@ -825,7 +803,6 @@
 	<string name="general">General</string>
 	<string name="report_problem">Report Problem</string>
 	<string name="send_mail">Send Email</string>
-	<string name="apply">Apply</string>
 	<string name="no_activity">No Activity</string>
 	<string name="select_style">Select Style</string>
 	<string name="password_changed">Password Changed</string>
@@ -835,5 +812,16 @@
 
 	<string name="add">Add</string>
 	<string name="no_hint">No Hint</string>
+
+	<string name="no_rated_activity">No rated activity</string>
+	<string name="unable_to_relogin">Unable to re-login</string>
+	<string name="notifications">Notifications</string>
+	<string name="challengeRejected">%s rejected challenge</string>
+	<string name="total_games">Total Games</string>
+	<string name="help_toast_for_daily_games">Pull Down To Update Games</string>
+	<string name="not_connected_yet">Not connected yet</string>
+	<string name="unable_to_send_challenge">Unable to send Challenge</string>
+	<string name="rating_range">Rating Range:</string>
+	<string name="show_mini_boards">Show Mini Boards</string>
 
 </resources>

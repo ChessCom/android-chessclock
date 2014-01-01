@@ -22,7 +22,6 @@ import com.chess.ui.fragments.NavigationMenuFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -262,10 +261,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 				return;
 			}
 
-			if (!DbDataManager.haveSavedFriends(getActivity(), getUsername()) && AppUtils.isNetworkAvailable(getActivity())) {
+			if (!DbDataManager.haveSavedFriends(getActivity(), getUsername()) && isNetworkAvailable()) {
 				getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class));
 			}
-			if (!DbDataManager.haveSavedDailyStats(getActivity(), getUsername()) && AppUtils.isNetworkAvailable(getActivity())) {
+			if (!DbDataManager.haveSavedDailyStats(getActivity(), getUsername()) && isNetworkAvailable()) {
 				// update stats in async intent service and save in Db there
 				getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 			}

@@ -22,7 +22,6 @@ import com.chess.db.tasks.SaveMessagesForConversationTask;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.MessagesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -135,7 +134,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
 
-		if (AppUtils.isNetworkAvailable(getActivity())) {
+		if (isNetworkAvailable()) {
 			updateData();
 		}
 	}

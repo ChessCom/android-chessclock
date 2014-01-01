@@ -177,7 +177,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 					categoriesCursorAdapter.changeCursor(categoriesCursor);
 				}
 
-				if (AppUtils.isNetworkAvailable(getActivity())) {
+				if (isNetworkAvailable()) {
 					updateData();
 					getCategories();
 				}
