@@ -132,8 +132,6 @@ public class LiveGameConfig implements Parcelable {
 		this.maxRating = builder.maxRating;
 		this.initialTime = builder.initialTime;
 		this.bonusTime = builder.bonusTime;
-
-
 	}
 
 	public boolean isRated() {

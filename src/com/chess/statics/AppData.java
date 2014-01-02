@@ -761,7 +761,6 @@ public class AppData {
 			builder = new LiveGameConfig.Builder();
 			builder.setTimeFromMode(getDefaultLiveMode());
 
-
 			// saving now for next time call
 			setLiveGameConfigBuilder(builder);
 		} else {

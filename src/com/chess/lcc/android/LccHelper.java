@@ -50,7 +50,7 @@ public class LccHelper {
 	private final LccGameListener gameListener;
 	private final LccChallengeListener challengeListener;
 	//private final LccSeekListListener seekListListener;
-	private final LccFriendStatusListener friendStatusListener;
+	//private final LccFriendStatusListener friendStatusListener;
 	//private final LccUserListListener userListListener;
 	private final LccAnnouncementListener announcementListener;
 	private final LccAdminEventListener adminEventListener;
@@ -110,7 +110,7 @@ public class LccHelper {
 		gameListener = new LccGameListener(this);
 		challengeListener = new LccChallengeListener(this);
 		//seekListListener = new LccSeekListListener(this);
-		friendStatusListener = new LccFriendStatusListener(this);
+		//friendStatusListener = new LccFriendStatusListener(this);
 		//userListListener = new LccUserListListener(this);
 		announcementListener = new LccAnnouncementListener(this);
 		adminEventListener = new LccAdminEventListener();
@@ -499,7 +499,7 @@ public class LccHelper {
 			lccClient.subscribeToChallengeEvents(challengeListener);
 			lccClient.subscribeToGameEvents(gameListener);
 			lccClient.subscribeToChatEvents(chatListener);
-			lccClient.subscribeToFriendStatusEvents(friendStatusListener);
+			//lccClient.subscribeToFriendStatusEvents(friendStatusListener);
 			//lccClient.subscribeToUserList(LiveChessClient.UserListOrderBy.Username, 1, userListListener);
 			lccClient.subscribeToAdminEvents(adminEventListener);
 			lccClient.subscribeToAnnounces(announcementListener);
@@ -639,7 +639,7 @@ public class LccHelper {
 		seeks.put(challenge.getId(), challenge);
 	}
 
-	public void setFriends(Collection<? extends User> friends) {
+	/*public void setFriends(Collection<? extends User> friends) {
 //		LogMe.dl(TAG, "CONNECTION: get friends list: " + friends);
 		if (friends == null) {
 			return;
@@ -667,7 +667,7 @@ public class LccHelper {
 
 	public void clearOnlineFriends() {
 		onlineFriends.clear();
-	}
+	}*/
 
 	public String[] getOnlineFriends() {
 		final String[] array = new String[]{Symbol.EMPTY};
@@ -850,7 +850,7 @@ public class LccHelper {
 		clearChallenges();
 		clearOwnChallenges();
 		clearSeeks();
-		clearOnlineFriends();
+		//clearOnlineFriends();
 		clearPausedEvents();
 	}
 

@@ -28,7 +28,7 @@ public class LccChallengeListener implements ChallengeListener {
 		LogMe.dl(TAG, text);
 		lccHelper.clearOwnChallenges();
 		for (Challenge challenge : challenges) {
-			if (challenge.getFrom().getUsername().equals(lccHelper.getUser().getUsername())) {
+			if (isMy(challenge)) {
 				lccHelper.addOwnChallenge(challenge);
 			}
 		}
@@ -45,7 +45,7 @@ public class LccChallengeListener implements ChallengeListener {
 			LogMe.dl(TAG, "Challenge received: blocked user");
 			return;
 		}
-		if (challenge.getFrom().getUsername().equals(lccHelper.getUser().getUsername())) {
+		if (isMy(challenge)) {
 			lccHelper.addOwnChallenge(challenge);
 			if (lccHelper.getOwnSeeksCount() > LccHelper.OWN_SEEKS_LIMIT) {
 				lccHelper.getClient().cancelChallenge(challenge);
@@ -55,7 +55,7 @@ public class LccChallengeListener implements ChallengeListener {
 			}
 		}
 		if (challenge.isSeek()) {
-			if (challenge.getFrom().getUsername().equals(lccHelper.getUser().getUsername())) {
+			if (isMy(challenge)) {
 				LogMe.dl(TAG, "My seek added: user: " + lccHelper.getUser().getUsername() + ", seek: " + challenge);
 				lccHelper.putSeek(challenge);
 			}
@@ -120,5 +120,9 @@ public class LccChallengeListener implements ChallengeListener {
 
 	public OuterChallengeListener getOuterChallengeListener() {
 		return outerChallengeListener;
+	}
+
+	private boolean isMy(Challenge challenge) {
+		return challenge.getFrom().getUsername().equals(lccHelper.getUser().getUsername());
 	}
 }

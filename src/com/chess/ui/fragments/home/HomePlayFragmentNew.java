@@ -36,7 +36,6 @@ public class HomePlayFragmentNew extends CommonLogicFragment implements ViewTree
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-
 		gameFaceHelper = new GameFaceHelper();
 		challengeHelper = new ChallengeHelper(this);
 	}

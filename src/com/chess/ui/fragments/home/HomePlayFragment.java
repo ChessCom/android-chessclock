@@ -50,12 +50,13 @@ import java.util.Map;
  * Date: 11.04.13
  * Time: 18:29
  */
-public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu.OnOpenedListener{
+public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu.OnOpenedListener {
 
 	private TextView liveRatingTxt;
 	private TextView dailyRatingTxt;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 	private DailyGameConfig.Builder dailyGameConfigBuilder;
+	private LiveGameConfig.Builder liveGameConfigBuilder;
 	private int positionMode;
 	private List<View> liveOptionsGroup;
 	private HashMap<Integer, Button> liveButtonsModeMap;
@@ -100,6 +101,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		}
 
 		dailyGameConfigBuilder = new DailyGameConfig.Builder();
+		liveGameConfigBuilder = getAppData().getLiveGameConfigBuilder();
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 
 		getActivityFace().addOnOpenMenuListener(this);
@@ -315,6 +317,9 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		view.setSelected(true);
 		liveTimeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
 		getAppData().setDefaultLiveMode(mode);
+
+		liveGameConfigBuilder.setTimeFromMode(getAppData().getDefaultLiveMode());
+		getAppData().setLiveGameConfigBuilder(liveGameConfigBuilder);
 	}
 
 	private void toggleLiveOptionsView() {
@@ -397,7 +402,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	}
 
 	private void createLiveChallenge() {
-		LiveGameConfig gameConfig = getAppData().getLiveGameConfigBuilder().build();
+		LiveGameConfig gameConfig = liveGameConfigBuilder.build();
 		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(gameConfig));
 	}
 

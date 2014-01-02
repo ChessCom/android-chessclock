@@ -18,7 +18,7 @@ public class LccFriendStatusListener implements FriendStatusListener {
 	@Override
 	public void onFriendStatusReceived(User friend) {
 //		LogMe.dl(TAG, "FRIENDS STATUS LISTENER: onFriendStatusReceived " + friend);
-		lccHelper.putFriend(friend);
+		//lccHelper.putFriend(friend);
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class LccFriendStatusListener implements FriendStatusListener {
 		} else if (lccHelper.getUser().getUsername().equals(to.getUsername())) {
 			deletedFriend = from;
 		}
-		lccHelper.removeFriend(deletedFriend);
+		//lccHelper.removeFriend(deletedFriend);
 	}
 
 	@Override

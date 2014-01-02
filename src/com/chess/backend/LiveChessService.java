@@ -40,7 +40,8 @@ import java.util.Map;
 public class LiveChessService extends Service {
 
 	private static final String TAG = "LCCLOG-LiveChessService";
-	private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec
+	private static final long SHUTDOWN_TIMEOUT_DELAY = 15 * 60 * 1000;
+	// private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec // use for testing automatic shutdown
 
 	private ServiceBinder serviceBinder = new ServiceBinder();
 
@@ -434,20 +435,12 @@ public class LiveChessService extends Service {
 		return lccHelper.getLatestMoveNumber();
 	}
 
-	public void setLatestMoveNumber(int latestMoveNumber) {
-		lccHelper.setLatestMoveNumber(latestMoveNumber);
-	}
-
 	public Boolean isUserColorWhite() {
 		return lccHelper.isUserColorWhite();
 	}
 
 	public boolean isFairPlayRestriction() {
 		return lccHelper.isFairPlayRestriction();
-	}
-
-	public Game getLastGame() {
-		return lccHelper.getLastGame();
 	}
 
 	public void makeMove(String move, String temporaryDebugInfo) {
