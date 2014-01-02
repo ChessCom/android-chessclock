@@ -45,7 +45,8 @@ public class AppConstants {
 	public static final String USER_PREMIUM_SKU = "premium_sku";
 	public static final String USER_INFO_SAVED = "user_info_saved";
 	public static final String USER_CREATE_DATE = "user_create_date";
-	public static final String USER_SAW_HELP_FOR_DAILY = "user_saw_help_for_daily";
+	public static final String USER_SAW_HELP_FOR_PULL_TO_UPDATE = "user_saw_help_for_pull_to_update";
+	public static final String USER_SAW_HELP_FOR_QUICK_SCROLL = "user_saw_help_for_quick_scroll_notations";
 	public static final String FIRST_INIT_FINISHED = "first_init_finished";
 	public static final String DEVICE_ID = "device_id"; // sometimes getDeviceId gives empty string
 
@@ -53,6 +54,7 @@ public class AppConstants {
 	public static final String PREF_SOUNDS = "enable sounds_"; // change field name to avoid class cast exceptions
 	public static final String PREF_SHOW_SUBMIT_MOVE_LIVE = "show submit move live";
 	public static final String PREF_SHOW_SUBMIT_MOVE_DAILY = "show submit button daily";
+	public static final String PREF_SHOW_TIMER_IN_TACTICS = "show_timer_in_tactics";
 	public static final String PREF_DAILY_NOTIFICATIONS = "use daily notifications";
 	public static final String PREF_DAILY_MINI_BOARDS = "use_mini_boards";
 	public static final String PREF_ON_VACATION = "user on vacation";

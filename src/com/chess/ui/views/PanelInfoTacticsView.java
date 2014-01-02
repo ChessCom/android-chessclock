@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
-import com.chess.widgets.RoboTextView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.utilities.FontsHelper;
+import com.chess.widgets.RoboTextView;
 
 /**
  * GamePanelTestActivity class

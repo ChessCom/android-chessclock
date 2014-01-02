@@ -40,7 +40,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 	static final String PIECE_PREVIEW_LINE = CLOUD_FRONT + PIECES + PREVIEWS + LINE;
 	static final String PIECE_PREVIEW_SQUARE = CLOUD_FRONT + PIECES + PREVIEWS + SQUARE;
 	static final String SOUND_PACK = CLOUD_FRONT + SOUNDS + MP3;
-	public static final int RENAME_DELAY = 20 * 1000;
+	public static final int RENAME_DELAY = 30 * 1000;
 
 
 	@Override
@@ -73,18 +73,18 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 		// -------------------------------------
 		// Before usage uncomment needed parts!
 		// -------------------------------------
-		updateBackgrounds(userToken);
+//		updateBackgrounds(userToken);
 //		updateBoards(userToken);
 //		updatePieces(userToken);
 //		updateSounds(userToken);
 //		updateThemes(userToken);
 
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				changeNamesForResources(userToken);
-			}
-		}, RENAME_DELAY);
+//		handler.postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+//				changeNamesForResources(userToken);
+//			}
+//		}, RENAME_DELAY);
 	}
 
 	private void changeNamesForResources(String userToken) {
@@ -96,7 +96,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 			loadItem.addRequestParams(P_THEME_NAME, "Game Room");
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 		// ---------------------- Pieces ----------------------------------------
 		{ // Game_room
@@ -107,7 +107,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 			loadItem.addRequestParams(P_NAME, "Game Room");
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 		{// 3d_staunton
 			LoadItem loadItem = new LoadItem();
@@ -117,7 +117,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 			loadItem.addRequestParams(P_NAME, "3D Staunton");
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 		{// 3d_plastic
 			LoadItem loadItem = new LoadItem();
@@ -127,7 +127,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 			loadItem.addRequestParams(P_NAME, "3D Wood");
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 		{// 3d_wood
 			LoadItem loadItem = new LoadItem();
@@ -137,7 +137,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 			loadItem.addRequestParams(P_NAME, "3D Plastic");
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 		{// 3d_chesskid
 			LoadItem loadItem = new LoadItem();
@@ -147,7 +147,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 			loadItem.addRequestParams(P_NAME, "3D Chesskid");
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 		// ---------------------- Boards ----------------------------------------
 		{// burled_wood
@@ -157,7 +157,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 			loadItem.addRequestParams(P_NAME, "Burled Wood");
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 		{// dark_wood
 			LoadItem loadItem = new LoadItem();
@@ -166,7 +166,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, userToken);
 			loadItem.addRequestParams(P_NAME, "Dark Wood");
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 	}
 
@@ -188,12 +188,12 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(P_PIECES_ID, uploadItem.piecesId);
 			loadItem.addRequestParams(P_SOUNDS_ID, uploadItem.soundsId);
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 	}
 
 	private void updateSounds(String userToken) {
-		for (int i = 0; i < sounds.length; i++) {
+		for (int i = 8; i < sounds.length; i++) {
 			LoadItem loadItem = new LoadItem();
 			SoundUploadItem uploadItem = new SoundUploadItem(i);
 
@@ -204,7 +204,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(P_SOUNDPACK_ZIP, uploadItem.soundPackZip);
 			loadItem.addRequestParams(P_THEME_ID, uploadItem.themeId);
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 	}
 
@@ -221,7 +221,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(P_THEME_DIR, uploadItem.themeDir);
 			loadItem.addRequestParams(P_THEME_ID, uploadItem.themeId);
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 	}
 
@@ -242,7 +242,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(P_THEME_DIR, uploadItem.themeDir);
 			loadItem.addRequestParams(P_THEME_ID, uploadItem.themeId);
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 	}
 
@@ -264,13 +264,13 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			loadItem.addRequestParams(P_ORIGINAL_TABLET, uploadItem.originalTablet);
 			loadItem.addRequestParams(P_THEME_ID, uploadItem.themeId);
 
-			new RequestJsonTask<SuccessItem>(new CommentPostListener()).executeTask(loadItem);
+			new RequestJsonTask<SuccessItem>(new UpdateDataListener()).executeTask(loadItem);
 		}
 	}
 
-	private class CommentPostListener extends ChessLoadUpdateListener<SuccessItem> {
+	private class UpdateDataListener extends ChessLoadUpdateListener<SuccessItem> {
 
-		private CommentPostListener() {
+		private UpdateDataListener() {
 			super(SuccessItem.class);
 		}
 
@@ -405,8 +405,8 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			{"glass", 		"glass", 		"glass", 	 "9", "14",  "9", "-1"},
 			{"tournament", 	"tournament", 	"tournament","10", "8",  "7", "-1"},
 			{"staunton", 	"burled_wood", 	"3d_staunton","11", "5",  "12", "-1"},
-			{"newspaper", 	"newspaper", 	"newspaper", "12", "13", "15", "-1"},
-			{"tigers", 		"parchment", 	"tigers", 	 "13", "9",  "16", "-1"},
+			{"newspaper", 	"newspaper", 	"newspaper", "12", "13", "15", "10"},
+			{"tigers", 		"parchment", 	"tigers", 	 "13", "9",  "16", "10"},
 			{"nature", 		"translucent", 	"nature", 	 "14", "10", "17", "2"},
 			{"sky", 		"sky", 			"sky", 		 "15", "11", "19", "-1"},
 			{"space", 		"translucent", 	"space", 	 "16", "10", "20", "5"},
@@ -773,7 +773,8 @@ winboard - 	ffffff
 			5,  // "space",
 			6,  // "beat",
 			7,  // "silly",
-			8   // "cat"
+			8,   // "lolz"
+			10   // "paper"
 	};
 
 	static String[] sounds = new String[]{
@@ -784,7 +785,8 @@ winboard - 	ffffff
 			"space",
 			"beat",
 			"silly",
-			"lolz"
+			"lolz",
+			"paper"
 	};
 
 /*
@@ -892,7 +894,7 @@ Backgrounds
 	Space
 	Beat
 	Silly
-	Cat
+	Lolz
 */
 
 /*

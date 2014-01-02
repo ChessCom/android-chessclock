@@ -58,7 +58,6 @@
 	<string name="computer">Computer</string> <!--Label for computer player-->
     <string name="new_game_white">New Game (white)</string> <!--Title-->
     <string name="new_game_black">New Game (black)</string>  <!--Title-->
-    <string name="email_game">Email Game</string> <!--Send game by email-->
     <string name="load">Load Saved Game</string>
 	<string name="thinking_">Thinking…</string>  <!--Computer player is thinking during his turn-->
 
@@ -285,7 +284,6 @@
 
 	<string name="live_game">Live Game</string>
 	<string name="online_game">Online Game</string>
-	<string name="send_mail_">Send mail…</string>
 	<string name="tournaments">Tournaments</string>
 	<string name="stats">Stats</string>
 
@@ -542,6 +540,7 @@
 	<string name="chess_com_live">Chess.com Live</string>
 	<string name="ches_com">Chess.com</string>
 	<string name="share_game">Share Game</string>
+	<string name="share_pgn">Share PGN</string>
 	<string name="share_lesson">Share Lesson</string>
 	<string name="chess">Chess</string>
 	<string name="via_chesscom">via @Chesscom</string>
@@ -819,9 +818,12 @@
 	<string name="challengeRejected">%s rejected challenge</string>
 	<string name="total_games">Total Games</string>
 	<string name="help_toast_for_daily_games">Pull Down To Update Games</string>
+	<string name="help_toast_for_quick_in_game_navigation">Hold \u003c or \u003e for fast scrolling</string>
 	<string name="not_connected_yet">Not connected yet</string>
 	<string name="unable_to_send_challenge">Unable to send Challenge</string>
 	<string name="rating_range">Rating Range:</string>
 	<string name="show_mini_boards">Show Mini Boards</string>
+	<string name="show_timer">Show Timer</string>
+	<string name="file_saved_to_download">File Saved to \"Download\"</string>
 
 </resources>

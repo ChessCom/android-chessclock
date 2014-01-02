@@ -44,15 +44,6 @@ import java.util.Locale;
  */
 public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
-	private static final int SIGNIN_FACEBOOK_CALLBACK_CODE = 128;
-	private static final int SIGNIN_CALLBACK_CODE = 16;
-
-	private static final int MIN_USERNAME_LENGTH = 3;
-	private static final int MAX_USERNAME_LENGTH = 20;
-
-	private LoginUpdateListener loginUpdateListener;
-	private int loginReturnCode;
-
 	private String currentLocale;
 
 	protected Handler handler;
@@ -68,8 +59,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		super.onCreate(savedInstanceState);
 
 		isTablet = AppUtils.isTablet(this);
-
-		loginUpdateListener = new LoginUpdateListener();
 
 		appData = new AppData(this);
 		preferences = appData.getPreferences();
@@ -256,6 +245,11 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
 		private String facebookToken;
 
+		public LoginUpdateListener(String facebookToken) {
+			super(getContext(), LoginItem.class);
+			this.facebookToken = facebookToken;
+		}
+
 		public LoginUpdateListener() {
 			super(getContext(), LoginItem.class);
 		}
@@ -284,7 +278,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			preferencesEditor.putLong(AppConstants.LIVE_SESSION_ID_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.commit();
 
-			if (loginReturnCode == SIGNIN_FACEBOOK_CALLBACK_CODE) {
+			if (!TextUtils.isEmpty(facebookToken)) {
 				FlurryAgent.logEvent(FlurryData.FB_LOGIN);
 				// save facebook access token to appData for future re-login
 				getAppData().setFacebookToken(facebookToken);
@@ -346,9 +340,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_TACTICS_RATING);
 
-		loginUpdateListener.setFacebookToken(accessToken);
-		loginReturnCode = SIGNIN_FACEBOOK_CALLBACK_CODE;
-		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<LoginItem>(new LoginUpdateListener(accessToken)).executeTask(loadItem);
 	}
 
 	protected void processLogin(RegisterItem.Data returnedObj) {

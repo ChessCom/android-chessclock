@@ -137,9 +137,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		pullToRefresh(true);
 
-		if (!getAppData().isUserSawHelpForDaily()) {
+		if (!getAppData().isUserSawHelpForPullToUpdate()) {
 			showToastLong(R.string.help_toast_for_daily_games);
-			getAppData().setUserSawHelpForDaily(true);
+			getAppData().setUserSawHelpForPullToUpdate(true);
 		}
 
 		showMiniBoards = getAppData().isMiniBoardsEnabled();

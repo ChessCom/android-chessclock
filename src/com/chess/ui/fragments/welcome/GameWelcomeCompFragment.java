@@ -20,7 +20,9 @@ import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.model.CompEngineItem;
+import com.chess.model.PgnItem;
 import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardComp;
@@ -80,7 +82,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	// game op action ids
 	private static final int ID_NEW_GAME = 0;
-	private static final int ID_EMAIL_GAME = 1;
+	private static final int ID_SHARE_PGN = 1;
 	private static final int ID_FLIP_BOARD = 2;
 	private static final int ID_SETTINGS = 3;
 
@@ -569,33 +571,42 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	private void sendPGN() {
 		String moves = getBoardFace().getMoveListSAN();
-		String whitePlayerName = getAppData().getUsername();
-		String blackPlayerName = getString(R.string.comp);
+		String whitePlayerName = userPlayWhite? getUsername() : getString(R.string.comp);
+		String blackPlayerName = userPlayWhite? getString(R.string.comp) : getUsername();
 		String result = GAME_GOES;
-		if (getBoardFace().isFinished()) {// means in check state
+
+		boolean finished = getBoardFace().isFinished();
+		if (finished) {// means in check state
 			if (getBoardFace().getSide() == ChessBoard.WHITE_SIDE) {
 				result = BLACK_WINS;
 			} else {
 				result = WHITE_WINS;
 			}
 		}
-		if (!isUserColorWhite()) {
-			whitePlayerName = getString(R.string.comp);
-			blackPlayerName = getAppData().getUsername();
-		}
+
 		String date = datePgnFormat.format(Calendar.getInstance().getTime());
 
 		StringBuilder builder = new StringBuilder();
-		builder.append("\n [Site \" Chess.com\"]")
+		builder.append("[Event \"").append(getString(R.string.vs_computer)).append("\"]")
+				.append("\n [Site \" Chess.com\"]")
 				.append("\n [Date \"").append(date).append("\"]")
 				.append("\n [White \"").append(whitePlayerName).append("\"]")
 				.append("\n [Black \"").append(blackPlayerName).append("\"]")
-				.append("\n [Result \"").append(result).append("\"]");
-
-		builder.append("\n ").append(moves)
+				.append("\n [Result \"").append(result).append("\"]")
+				.append("\n [WhiteElo \"").append("--").append("\"]")
+				.append("\n [BlackElo \"").append("--").append("\"]")
+				.append("\n [TimeControl \"").append("--").append("\"]");
+		if (finished) {
+			builder.append("\n [Termination \"").append(endGameMessage).append("\"]");
+		}
+		builder.append("\n ").append(moves).append(Symbol.SPACE).append(result)
 				.append("\n \n Sent from my Android");
 
-		sendPGN(builder.toString());
+		PgnItem pgnItem = new PgnItem(whitePlayerName, blackPlayerName);
+		pgnItem.setStartDate(date);
+		pgnItem.setPgn(builder.toString());
+
+		sendPGN(pgnItem);
 	}
 
 	@Override
@@ -683,7 +694,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		} else if (code == ID_FLIP_BOARD) {
 			//resideBoardIfCompWhite();
 			boardView.flipBoard();
-		} else if (code == ID_EMAIL_GAME) {
+		} else if (code == ID_SHARE_PGN) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsGeneralFragment());
@@ -889,7 +900,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			optionsList = new SparseArray<String>();
 			optionsList.put(ID_NEW_GAME, getString(R.string.new_game));
 			optionsList.put(ID_FLIP_BOARD, getString(R.string.flip_board));
-			optionsList.put(ID_EMAIL_GAME, getString(R.string.email_game));
+			optionsList.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsList.put(ID_SETTINGS, getString(R.string.settings));
 		}
 

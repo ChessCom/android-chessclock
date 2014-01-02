@@ -25,6 +25,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.DataHolder;
+import com.chess.model.PgnItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
@@ -67,7 +68,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	// Quick action ids
 	private static final int ID_NEW_GAME = 0;
 	private static final int ID_FLIP_BOARD = 1;
-	private static final int ID_EMAIL_GAME = 2;
+	private static final int ID_SHARE_PGN = 2;
 	private static final int ID_SETTINGS = 3;
 
 	private DailyGameUpdatesListener createChallengeUpdateListener;
@@ -173,7 +174,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			getActivityFace().openFragment(new DailyNewGameFragment());
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
-		} else if (code == ID_EMAIL_GAME) {
+		} else if (code == ID_SHARE_PGN) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsGeneralFragment());
@@ -554,7 +555,11 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 		builder.append("\n ").append(moves)
 				.append("\n \n Sent from my Android");
 
-		sendPGN(builder.toString());
+		PgnItem pgnItem = new PgnItem(whitePlayerName, blackPlayerName);
+		pgnItem.setStartDate(date);
+		pgnItem.setPgn(builder.toString());
+
+		sendPGN(pgnItem);
 	}
 
 	@Override
@@ -743,7 +748,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 			optionsArray = new SparseArray<String>();
 			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
 			optionsArray.put(ID_FLIP_BOARD, getString(R.string.flip_board));
-			optionsArray.put(ID_EMAIL_GAME, getString(R.string.email_game));
+			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 

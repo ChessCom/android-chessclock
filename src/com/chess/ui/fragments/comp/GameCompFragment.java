@@ -16,6 +16,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.model.CompEngineItem;
+import com.chess.model.PgnItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
@@ -54,9 +55,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	// Quick action ids
 	private static final int ID_NEW_GAME = 0;
-	private static final int ID_EMAIL_GAME = 1;
+	private static final int ID_SHARE_PGN = 1;
 	private static final int ID_FLIP_BOARD = 2;
 	private static final int ID_SETTINGS = 3;
+
 	private static final long AUTO_FLIP_DELAY = 500;
 
 	private ChessBoardCompView boardView;
@@ -542,47 +544,43 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	private void sendPGN() {
-		/*
-				[Event "Let's Play!"]
-				[Site "Chess.com"]
-				[Date "2012.09.13"]
-				[White "anotherRoger"]
-				[Black "alien_roger"]
-				[Result "0-1"]
-				[WhiteElo "1221"]
-				[BlackElo "1119"]
-				[TimeControl "1 in 1 day"]
-				[Termination "alien_roger won on time"]
-				 */
 		String moves = getBoardFace().getMoveListSAN();
-		String whitePlayerName = getAppData().getUsername();
-		String blackPlayerName = getString(R.string.comp);
+		String whitePlayerName = userPlayWhite? getUsername() : getString(R.string.comp);
+		String blackPlayerName = userPlayWhite? getString(R.string.comp) : getUsername();
 		String result = GAME_GOES;
 
-		if (getBoardFace().isFinished()) {// means in check state
+		boolean finished = getBoardFace().isFinished();
+		if (finished) {// means in check state
 			if (getBoardFace().getSide() == ChessBoard.WHITE_SIDE) {
 				result = BLACK_WINS;
 			} else {
 				result = WHITE_WINS;
 			}
 		}
-		if (!isUserColorWhite()) {
-			whitePlayerName = getString(R.string.comp);
-			blackPlayerName = getAppData().getUsername();
-		}
+
 		String date = datePgnFormat.format(Calendar.getInstance().getTime());
 
 		StringBuilder builder = new StringBuilder();
-		builder.append("\n [Site \" Chess.com\"]")
+		builder.append("[Event \"").append(getString(R.string.vs_computer)).append("\"]")
+				.append("\n [Site \" Chess.com\"]")
 				.append("\n [Date \"").append(date).append("\"]")
 				.append("\n [White \"").append(whitePlayerName).append("\"]")
 				.append("\n [Black \"").append(blackPlayerName).append("\"]")
-				.append("\n [Result \"").append(result).append("\"]");
-
-		builder.append("\n ").append(moves)
+				.append("\n [Result \"").append(result).append("\"]")
+				.append("\n [WhiteElo \"").append("--").append("\"]")
+				.append("\n [BlackElo \"").append("--").append("\"]")
+				.append("\n [TimeControl \"").append("--").append("\"]");
+		if (finished) {
+			builder.append("\n [Termination \"").append(endGameMessage).append("\"]");
+		}
+		builder.append("\n ").append(moves).append(Symbol.SPACE).append(result)
 				.append("\n \n Sent from my Android");
 
-		sendPGN(builder.toString());
+		PgnItem pgnItem = new PgnItem(whitePlayerName, blackPlayerName);
+		pgnItem.setStartDate(date);
+		pgnItem.setPgn(builder.toString());
+
+		sendPGN(pgnItem);
 	}
 
 	@Override
@@ -719,7 +717,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			newGame();
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
-		} else if (code == ID_EMAIL_GAME) {
+		} else if (code == ID_SHARE_PGN) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsGeneralFragment());
@@ -842,7 +840,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		{// options list setup
 			optionsArray = new SparseArray<String>();
 			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
-			optionsArray.put(ID_EMAIL_GAME, getString(R.string.email_game));
+			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsArray.put(ID_FLIP_BOARD, getString(R.string.switch_sides));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}

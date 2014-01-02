@@ -164,7 +164,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 						loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 						loadItem.setRequestMethod(RestHelper.POST);
 						loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-						loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getAppData().getUsername());
+						loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getMeUsername());
 						loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
 						loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
 						loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);

@@ -48,7 +48,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		menuItems.add(new SettingsMenuItem(R.string.general, R.string.ic_board));
 		menuItems.add(new SettingsMenuItem(R.string.daily_chess, R.string.ic_daily_game));
 		menuItems.add(new SettingsMenuItem(R.string.live_chess, R.string.ic_live_standard));
-//		menuItems.add(new SettingsMenuItem(R.string.tactics, R.string.ic_help));
+		menuItems.add(new SettingsMenuItem(R.string.tactics, R.string.ic_help));
 //		menuItems.add(new SettingsMenuItem(R.string.lessons, R.string.ic_lessons));
 //		menuItems.add(new SettingsMenuItem(R.string.privacy, R.string.ic_settings));
 //		menuItems.add(new SettingsMenuItem(R.string.blocking, R.string.ic_blocking));
@@ -131,6 +131,9 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				break;
 			case R.string.ic_live_standard:
 				getActivityFace().openFragment(new SettingsLiveChessFragment());
+				break;
+			case R.string.ic_help:
+				getActivityFace().openFragment(new SettingsTacticsFragment());
 				break;
 			case R.string.ic_password:
 				getActivityFace().openFragment(new SettingsPasswordFragment());

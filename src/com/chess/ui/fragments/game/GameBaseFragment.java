@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,9 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
+import com.chess.backend.tasks.SaveTextFileToSDTask;
 import com.chess.model.BaseGameItem;
+import com.chess.model.PgnItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
@@ -34,6 +38,7 @@ import com.chess.utilities.MopubHelper;
 import com.mopub.mobileads.MoPubView;
 import com.slidingmenu.lib.SlidingMenu;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 
 /**
@@ -49,6 +54,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected static final String BLACK_WINS = "0-1";
 	private static final long TOUCH_MODE_RECONFIRM_DELAY = 300;
 	private static final long SLIDE_TOUCH_DISABLE_DELAY = 500;
+	public static final String DOWNLOADS = "Download";
 	protected int AVATAR_SIZE = 48;
 	public static final int NOTATION_REWIND_DELAY = 400;
 
@@ -98,6 +104,11 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		imageDownloader = new ImageDownloaderToListener(getActivity());
 
 		inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
+		if (!getAppData().isUserSawHelpForQuickScroll()) {
+			showToastLong(R.string.help_toast_for_quick_in_game_navigation);
+			getAppData().setUserSawHelpForQuickScroll(true);
+		}
 	}
 
 	@Override
@@ -273,7 +284,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	@Override
-	public void onNotationClicked(int pos) {}
+	public void onNotationClicked(int pos) {
+	}
 
 	@Override
 	public void updateParentView() {
@@ -289,12 +301,47 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		getSoundPlayer().playGameEnd();
 	}
 
-	protected void sendPGN(String message) {
-		Intent emailIntent = new Intent(Intent.ACTION_SEND);
-		emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
-		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");  // TODO localize
-		emailIntent.putExtra(Intent.EXTRA_TEXT, message);
-		startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail_)));
+	protected void sendPGN(PgnItem pgnItem) {
+		String filename = pgnItem.getWhitePlayer() + "_vs_" + pgnItem.getBlackPlayer() + "_"
+				+ pgnItem.getStartDate() + ".PGN";
+
+		// save file as <white_player>_vs_<black_player>_<game_start_date>.pgn
+		String path = DOWNLOADS;
+		new SaveTextFileToSDTask(new FileSaveListener(filename), pgnItem.getPgn(), path).executeTask(filename);
+	}
+
+	private class FileSaveListener extends ChessLoadUpdateListener<String> {
+
+		private String filename;
+
+		public FileSaveListener(String filename) {
+
+			this.filename = filename;
+		}
+
+		@Override
+		public void updateData(String returnedObj) {
+			super.updateData(returnedObj);
+
+			showToast(R.string.file_saved_to_download);
+
+			File cacheDir;
+			if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+				cacheDir = new File(Environment.getExternalStorageDirectory(), DOWNLOADS);
+			} else {
+				cacheDir = getActivity().getCacheDir();
+			}
+
+			File fileToSave = new File(cacheDir, filename);
+
+			Intent shareIntent = new Intent();
+			shareIntent.setAction(Intent.ACTION_SEND);
+			shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Chess Game on Android - Chess.com");  // TODO localize
+			shareIntent.putExtra(Intent.EXTRA_TEXT, filename);
+			shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileToSave));
+			shareIntent.setType("file/txt");
+			startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.share_pgn)));
+		}
 	}
 
 	protected abstract void restoreGame();
@@ -330,7 +377,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		getBoardFace().takeNext();
 
 		invalidateGameScreen();
-
 	}
 
 	public Context getMeContext() {

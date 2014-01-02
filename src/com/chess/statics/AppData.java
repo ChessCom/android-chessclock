@@ -151,6 +151,14 @@ public class AppData {
 		return getBooleanValue(PREF_SHOW_SUBMIT_MOVE_LIVE, false);
 	}
 
+	public void setShowTimerInTactics(boolean show) {
+		setBooleanValue(PREF_SHOW_TIMER_IN_TACTICS, show);
+	}
+
+	public boolean getShowTimerInTactics() {
+		return getBooleanValue(PREF_SHOW_TIMER_IN_TACTICS, true);
+	}
+
 	public void setOnVacation(boolean show) {
 		setBooleanValue(PREF_ON_VACATION, show);
 	}
@@ -871,12 +879,20 @@ public class AppData {
 		return getBooleanValue(USER_INFO_SAVED, false);
 	}
 
-	public boolean isUserSawHelpForDaily() {
-		return getBooleanValue(USER_SAW_HELP_FOR_DAILY, false);
+	public boolean isUserSawHelpForPullToUpdate() {
+		return getBooleanValue(USER_SAW_HELP_FOR_PULL_TO_UPDATE, false);
 	}
 
-	public void setUserSawHelpForDaily(boolean value) {
-		setBooleanValue(USER_SAW_HELP_FOR_DAILY, value);
+	public void setUserSawHelpForPullToUpdate(boolean value) {
+		setBooleanValue(USER_SAW_HELP_FOR_PULL_TO_UPDATE, value);
+	}
+
+	public boolean isUserSawHelpForQuickScroll() {
+		return getBooleanValue(USER_SAW_HELP_FOR_QUICK_SCROLL, false);
+	}
+
+	public void setUserSawHelpForQuickScroll(boolean value) {
+		setBooleanValue(USER_SAW_HELP_FOR_QUICK_SCROLL, value);
 	}
 
 	public boolean isFirstInitFinished() {

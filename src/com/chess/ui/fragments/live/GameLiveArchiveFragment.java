@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.LiveArchiveGameData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -19,6 +18,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.DataHolder;
+import com.chess.model.PgnItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
@@ -53,17 +53,14 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 	private static final String ERROR_TAG = "send request failed popup";
 
-	private static final int CREATE_CHALLENGE_UPDATE = 2;
 	private static final int CURRENT_GAME = 0;
 	private static final int GAMES_LIST = 1;
 
 	// Quick action ids
 	private static final int ID_NEW_GAME = 0;
 	private static final int ID_FLIP_BOARD = 1;
-	private static final int ID_EMAIL_GAME = 2;
+	private static final int ID_SHARE_PGN = 2;
 	private static final int ID_SETTINGS = 3;
-
-	private DailyGameUpdatesListener createChallengeUpdateListener;
 
 	private ChessBoardNetworkView boardView;
 
@@ -140,7 +137,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 			getActivityFace().toggleRightMenu();
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
-		} else if (code == ID_EMAIL_GAME) {
+		} else if (code == ID_SHARE_PGN) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(SettingsLiveChessFragment.createInstance(true));
@@ -498,7 +495,11 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		builder.append("\n ").append(moves)
 				.append("\n \n Sent from my Android");
 
-		sendPGN(builder.toString());
+		PgnItem pgnItem = new PgnItem(whitePlayerName, blackPlayerName);
+		pgnItem.setStartDate(date);
+		pgnItem.setPgn(builder.toString());
+
+		sendPGN(pgnItem);
 	}
 
 	@Override
@@ -577,35 +578,8 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 	}
 
 	private void sendRematch() {
-//		String opponent;
-//		if (userPlayWhite) {
-//			opponent = currentGame.getBlackUsername();
-//		} else {
-//			opponent = currentGame.getWhiteUsername();
-//		}
-//
-//		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(),
-//				currentGame.isRated() ? 1 : 0, currentGame.getGameType(), opponent, 0);
-//		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
-	private class DailyGameUpdatesListener extends ChessLoadUpdateListener<BaseResponseItem> {
-		private int listenerCode;
-
-		private DailyGameUpdatesListener(int listenerCode) {
-			super(BaseResponseItem.class);
-			this.listenerCode = listenerCode;
-		}
-
-		@Override
-		public void updateData(BaseResponseItem returnedObj) {
-			switch (listenerCode) {
-				case CREATE_CHALLENGE_UPDATE:
-					showSinglePopupDialog(R.string.challenge_created, R.string.you_will_notified_when_game_starts);
-					break;
-			}
-		}
-	}
 
 	protected ControlsDailyView getControlsView() {
 		return controlsView;
@@ -635,8 +609,6 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 	public void init() {
 		labelsConfig = new LabelsConfig();
-
-		createChallengeUpdateListener = new DailyGameUpdatesListener(CREATE_CHALLENGE_UPDATE);
 
 		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener(GAMES_LIST);
 
@@ -679,7 +651,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 			optionsArray = new SparseArray<String>();
 			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
 			optionsArray.put(ID_FLIP_BOARD, getString(R.string.flip_board));
-			optionsArray.put(ID_EMAIL_GAME, getString(R.string.email_game));
+			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 	}

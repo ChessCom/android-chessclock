@@ -32,6 +32,7 @@ import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
+import com.chess.model.PgnItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
@@ -79,11 +80,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	// Options ids
 	private static final int ID_NEW_GAME = 0;
-	private static final int ID_OFFER_DRAW = 1;
-	private static final int ID_ABORT_RESIGN = 2;
-	private static final int ID_FLIP_BOARD = 3;
-	private static final int ID_EMAIL_GAME = 4;
-	private static final int ID_SETTINGS = 5;
+	private static final int ID_SKIP_GAME = 1;
+	private static final int ID_OFFER_DRAW = 2;
+	private static final int ID_ABORT_RESIGN = 3;
+	private static final int ID_FLIP_BOARD = 4;
+	private static final int ID_SHARE_PGN = 5;
+	private static final int ID_SETTINGS = 6;
 
 	private GameDailyUpdatesListener abortGameUpdateListener;
 	private GameDailyUpdatesListener drawOfferedUpdateListener;
@@ -231,7 +233,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
-		} else if (code == ID_EMAIL_GAME) {
+		} else if (code == ID_SHARE_PGN) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(SettingsDailyChessFragment.createInstance(true));
@@ -744,10 +746,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		if (finished) {
 			builder.append("\n [Termination \"").append(endGameMessage).append("\"]");
 		}
-		builder.append("\n ").append(moves)
+		builder.append("\n ").append(moves).append(Symbol.SPACE).append(result)
 				.append("\n \n Sent from my Android");
 
-		sendPGN(builder.toString());
+		PgnItem pgnItem = new PgnItem(whitePlayerName, blackPlayerName);
+		pgnItem.setStartDate(date);
+		pgnItem.setPgn(builder.toString());
+
+		sendPGN(pgnItem);
 	}
 
 	@Override
@@ -1034,7 +1040,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			optionsMap = new SparseArray<String>();
 			optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
 			optionsMap.put(ID_FLIP_BOARD, getString(R.string.flip_board));
-			optionsMap.put(ID_EMAIL_GAME, getString(R.string.email_game));
+			optionsMap.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
 		}
 	}

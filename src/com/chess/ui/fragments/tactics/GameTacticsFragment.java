@@ -27,6 +27,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveTacticsBatchTask;
+import com.chess.model.PgnItem;
 import com.chess.model.PopupItem;
 import com.chess.model.TacticsDataHolder;
 import com.chess.statics.AppConstants;
@@ -43,7 +44,7 @@ import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.fragments.settings.SettingsGeneralFragment;
+import com.chess.ui.fragments.settings.SettingsTacticsFragment;
 import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
@@ -61,6 +62,7 @@ import com.chess.ui.views.game_controls.ControlsTacticsView;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -83,12 +85,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private static final int WRONG_RESULT = 1;
 	private static final int HINTED_RESULT = 4;
 	// Menu Options ids
-//	private static final int ID_NEXT_TACTIC = 0;
 	private static final int ID_SHOW_ANSWER = 1;
 	private static final int ID_PRACTICE = 2;
-	//	private static final int ID_HINT = 3;
-	private static final int ID_PERFORMANCE = 3;
-	private static final int ID_SETTINGS = 4;
+	private static final int ID_SHARE_PGN = 3;
+	private static final int ID_PERFORMANCE = 4;
+	private static final int ID_SETTINGS = 5;
 
 	private ChessBoardTacticsView boardView;
 
@@ -677,8 +678,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			getActivityFace().openFragment(new StatsGameTacticsFragment());
 		} else if (code == ID_PRACTICE) {
 			switch2Analysis();
+		} else if (code == ID_SHARE_PGN) {
+			sendPGN();
 		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsGeneralFragment());
+			getActivityFace().openFragment(SettingsTacticsFragment.createInstance(true));
 		}
 
 		optionsSelectFragment.dismiss();
@@ -688,6 +691,46 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	@Override
 	public void onDialogCanceled() {
 		optionsSelectFragment = null;
+	}
+
+	private void sendPGN() {
+		String moves = getBoardFace().getMoveListSAN();
+		String whitePlayerName = "--";
+		String blackPlayerName = "--";
+		String result = GAME_GOES;
+
+		boolean finished = getBoardFace().isFinished();
+		if (finished) {// means in check state
+			if (getBoardFace().getSide() == ChessBoard.WHITE_SIDE) {
+				result = BLACK_WINS;
+			} else {
+				result = WHITE_WINS;
+			}
+		}
+		String timeControl = "Avg Seconds " + trainerData.getAvgSeconds();
+		String date = datePgnFormat.format(Calendar.getInstance().getTime());
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("[Event \"").append("--").append("\"]")
+				.append("\n [Site \" Chess.com\"]")
+				.append("\n [Date \"").append(date).append("\"]")
+				.append("\n [White \"").append(whitePlayerName).append("\"]")
+				.append("\n [Black \"").append(blackPlayerName).append("\"]")
+				.append("\n [Result \"").append(result).append("\"]")
+				.append("\n [WhiteElo \"").append("--").append("\"]")
+				.append("\n [BlackElo \"").append("--").append("\"]")
+				.append("\n [TimeControl \"").append(timeControl).append("\"]");
+		if (finished) {
+			builder.append("\n [Termination \"").append(endGameMessage).append("\"]");
+		}
+		builder.append("\n ").append(moves).append(Symbol.SPACE).append(result)
+				.append("\n \n Sent from my Android");
+
+		PgnItem pgnItem = new PgnItem(whitePlayerName, blackPlayerName);
+		pgnItem.setStartDate(date);
+		pgnItem.setPgn(builder.toString());
+
+		sendPGN(pgnItem);
 	}
 
 	private class GetTacticsUpdateListener extends ChessLoadUpdateListener<TacticTrainerItem> {
@@ -852,7 +895,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void setIconToResultView(int iconId) {
-		IconDrawable iconDrawable = new IconDrawable(getActivity(), iconId,	themeFontColorStateList,
+		IconDrawable iconDrawable = new IconDrawable(getActivity(), iconId, themeFontColorStateList,
 				R.dimen.glyph_icon_big2);
 		moveResultTxt.setVisibility(View.VISIBLE);
 		moveResultTxt.setCompoundDrawablesWithIntrinsicBounds(iconDrawable, null, null, null);
@@ -1109,6 +1152,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		bottomPanelView.showPractice(isAnalysis);
 		getBoardFace().setAnalysis(isAnalysis);
 		bottomPanelView.showClock(!isAnalysis);
+
+		if (!getAppData().getShowTimerInTactics()){
+			bottomPanelView.showClock(false);
+		}
 	}
 
 	@Override
@@ -1204,7 +1251,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 						+ "Problem Difficulty Rating: " + trainerData.getProblemRating()
 						+ ", Average Time: " + trainerData.getAvgSeconds() + " seconds"
 						+ Symbol.NEW_STR + tacticShareStr);
-				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_article)));
+				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -1335,10 +1382,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		{// options list setup
 			optionsArray = new SparseArray<String>();
-//			optionsArray.put(ID_NEXT_TACTIC, getString(R.string.next_tactic));
 			optionsArray.put(ID_SHOW_ANSWER, getString(R.string.show_answer));
 			optionsArray.put(ID_PRACTICE, getString(R.string.practice));
-//			optionsArray.put(ID_HINT, getString(R.string.hint));
+			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsArray.put(ID_PERFORMANCE, getString(R.string.performance));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
@@ -1415,7 +1461,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 //
 //	http://www.chess.com/tactics/?id=25378 - played this as black, should have been white
 	// 1r2r1k1/2q2p1p/b2p1npB/2pP4/3bNP2/1P4PB/3Q3P/1R2R1K1 w - - 0 1
-    // 1. Qxd4 cxd4 2. Nxf6+ Kh8 3. Rxe8+ Rxe8 4. Bg7+ Kxg7 5. Nxe8+ Kf8 6. Nxc7
+	// 1. Qxd4 cxd4 2. Nxf6+ Kh8 3. Rxe8+ Rxe8 4. Bg7+ Kxg7 5. Nxe8+ Kf8 6. Nxc7
 
 	// http://www.chess.com/tactics/?id=748
 	// 3r1bk1/ppq2Bpp/2p5/2P2Q2/8/1P4P1/P6P/5RK1 b - - 1 1
@@ -1428,7 +1474,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	// http://www.chess.com/tactics/?id=22368
 	// 8/8/5Kpp/7k/7p/8/7P/8 w - - 0 1
 	// 1. h3 g5 2. Kf5 g4 3. hxg4# 1-0
-
 
 
 }
