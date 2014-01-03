@@ -121,17 +121,24 @@ public class LiveGameConfig implements Parcelable {
 		}
 
 		public LiveGameConfig build() {
-			return new LiveGameConfig(this);
+			return new LiveGameConfig(this, false);
+		}
+
+		public LiveGameConfig build(boolean challengeFriend) {
+			return new LiveGameConfig(this, challengeFriend);
 		}
 	}
 
-	private LiveGameConfig(Builder builder) {
+	private LiveGameConfig(Builder builder, boolean challengeFriend) {
 		this.rated = builder.rated;
-		this.opponentName = builder.opponentName;
 		this.minRating = builder.minRating;
 		this.maxRating = builder.maxRating;
 		this.initialTime = builder.initialTime;
 		this.bonusTime = builder.bonusTime;
+
+		if (challengeFriend) {
+			this.opponentName = builder.opponentName;
+		}
 	}
 
 	public boolean isRated() {

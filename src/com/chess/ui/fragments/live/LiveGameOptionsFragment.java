@@ -215,12 +215,14 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		if (parent.getAdapter() instanceof OpponentsAdapter) {
 			SelectionItem opponent = (SelectionItem) parent.getItemAtPosition(position);
-			gameConfigBuilder.setOpponentName(opponent.getText());
-			if (!opponent.getText().equals(getString(R.string.random))) {
-				ratingView.setVisibility(View.GONE);
-			} else {
+			String opponentName = opponent.getText();
+			if (opponentName.equals(getString(R.string.random))) {
 				ratingView.setVisibility(View.VISIBLE);
+				opponentName = null;
+			} else {
+				ratingView.setVisibility(View.GONE);
 			}
+			gameConfigBuilder.setOpponentName(opponentName);
 		}
 	}
 
@@ -403,7 +405,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 		getAppData().setLiveGameConfigBuilder(gameConfigBuilder);
 
-		return gameConfigBuilder.build();
+		return gameConfigBuilder.build(true);
 	}
 
 	private void widgetsInit(View view) {
