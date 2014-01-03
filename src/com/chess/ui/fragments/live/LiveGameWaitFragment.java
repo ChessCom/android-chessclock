@@ -10,6 +10,7 @@ import com.chess.backend.LiveChessService;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.LiveBaseFragment;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 
 /**
@@ -59,6 +60,11 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 
 		loadingView = view.findViewById(R.id.loadingView);
 		view.findViewById(R.id.cancelLiveBtn).setOnClickListener(this);
+
+		if (AppUtils.isNexus4Kind(getActivity())) {
+			view.findViewById(R.id.stubView).setVisibility(View.GONE);
+			view.findViewById(R.id.stubControls).setVisibility(View.GONE);
+		}
 	}
 
 	@Override

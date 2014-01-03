@@ -63,7 +63,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	public static final String BOLD_DIVIDER = "##";
 
 	private static final long DRAWER_UPDATE_DELAY = 100;
-	private static final long SHOW_ANSWER_DELAY = 1500;
+	private static final long SHOW_ANSWER_DELAY = 1700;
 
 
 	// Options ids

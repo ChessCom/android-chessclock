@@ -138,7 +138,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.daily);
+		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
 
 		widgetsInit(view);
 	}

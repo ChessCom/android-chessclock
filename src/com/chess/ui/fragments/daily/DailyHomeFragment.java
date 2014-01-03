@@ -21,6 +21,7 @@ import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.WebViewFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDailyTimeOptionsFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
@@ -76,6 +77,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		featuresList.add(new DailyItem(R.string.ic_stats, R.string.stats));
 		featuresList.add(new DailyItem(R.string.ic_challenge_friend, R.string.friends));
 		featuresList.add(new DailyItem(R.string.ic_board, R.string.archive));
+		featuresList.add(new DailyItem(R.string.ic_tournaments, R.string.tournaments));
 	}
 
 	@Override
@@ -277,6 +279,10 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 			} else {
 				getActivityFace().openFragment(new DailyGamesFragmentTablet());
 			}
+		} else if (dailyItem.iconId == R.string.ic_tournaments) {
+			String tournamentsLink = RestHelper.getInstance().getTournamentsLink(getUserToken());
+			WebViewFragment webViewFragment = WebViewFragment.createInstance(tournamentsLink, getString(R.string.tournaments));
+			getActivityFace().openFragment(webViewFragment);
 		}
 	}
 

@@ -94,8 +94,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private String[] countryNames;
 	private int[] countryCodes;
 	private boolean userSawGameEndPopup;
-	private GameBaseFragment.ImageUpdateListener topImageUpdateListener;
-	private GameBaseFragment.ImageUpdateListener bottomImageUpdateListener;
+	private ImageUpdateListener topImageUpdateListener;
+	private ImageUpdateListener bottomImageUpdateListener;
 
 	public GameLiveFragment() {
 	}
@@ -134,7 +134,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.live);
+		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
 
 		widgetsInit(view);
 		try {

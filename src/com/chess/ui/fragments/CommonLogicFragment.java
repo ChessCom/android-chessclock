@@ -161,13 +161,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		FragmentActivity activity = getActivity();
+
 		preferences = getAppData().getPreferences();
 		preferencesEditor = getAppData().getEditor();
 
 		handler = new Handler();
 		setHasOptionsMenu(true);
 		if (StaticData.USE_TABLETS) {
-			isTablet = AppUtils.is7InchTablet(getActivity()) || AppUtils.is10InchTablet(getActivity());
+			isTablet = AppUtils.is7InchTablet(activity) || AppUtils.is10InchTablet(activity);
 		}
 
 		density = getResources().getDisplayMetrics().density;
@@ -178,18 +180,18 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		textViewsImageCache = new HashMap<String, ImageGetter.TextImage>();
 
 		// initialize imageFetcher
-		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
+		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(activity, IMAGE_CACHE_DIR);
 
 		cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
 
 		// The ImageFetcher takes care of loading images into our ImageView children asynchronously
-		imageFetcher = new SmartImageFetcher(getActivity());
+		imageFetcher = new SmartImageFetcher(activity);
 		imageFetcher.setLoadingImage(R.drawable.img_profile_picture_stub);
-		imageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
+		imageFetcher.addImageCache(activity.getSupportFragmentManager(), cacheParams);
 
 		startLiveGameFilter = new IntentFilter(IntentConstants.START_LIVE_GAME);
 
-		themeFontColorStateList = FontsHelper.getInstance().getThemeColorStateList(getActivity(), false);
+		themeFontColorStateList = FontsHelper.getInstance().getThemeColorStateList(activity, false);
 	}
 
 	@Override
@@ -384,10 +386,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		slideMenusEnabled = enable;
 	}
 
-	protected void unRegisterGcmService() {
-		getActivityFace().unRegisterGcm();
-	}
-
 	protected void facebookInit(LoginButton loginBtn) {
 		loginBtn.setFragment(this);
 		loginBtn.setReadPermissions(Arrays.asList("user_status", "email"));
@@ -423,8 +421,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, accessToken);
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_TACTICS_RATING);
+		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_USERNAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_TACTICS_RATING);
 
 		facebookLoginUpdateListener.setFacebookToken(accessToken);
 		new RequestJsonTask<LoginItem>(facebookLoginUpdateListener).executeTask(loadItem);
@@ -487,8 +485,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, username);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
+		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_USERNAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
 
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 	}
@@ -516,8 +514,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 		loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, username);
 		loadItem.addRequestParams(RestHelper.P_PASSWORD, getTextFromField(passwordEdt));
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
+		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_USERNAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
 
 		new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 	}
@@ -556,7 +554,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			if (TextUtils.isEmpty(deviceId)) {
 				deviceId = getAppData().getDeviceId();
 				if (TextUtils.isEmpty(deviceId)) { // generate a new one
-					deviceId = "Hello" +  (Math.random() * 100) + "There" + System.currentTimeMillis();
+					deviceId = "Hello" + (Math.random() * 100) + "There" + System.currentTimeMillis();
 					getAppData().setDeviceId(deviceId);
 				}
 			}
@@ -564,7 +562,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			deviceId = ImageCache.hashKeyForDisk(deviceId);
 			return deviceId.substring(0, 32);
 		} else {
-			return ImageCache.hashKeyForDisk("Hello" +  (Math.random() * 100) + "There" + System.currentTimeMillis());
+			return ImageCache.hashKeyForDisk("Hello" + (Math.random() * 100) + "There" + System.currentTimeMillis());
 		}
 	}
 
@@ -625,8 +623,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
+		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_USERNAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
 
 		if (!TextUtils.isEmpty(getAppData().getFacebookToken())) { // Login with facebook
 			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, getAppData().getFacebookToken());
@@ -672,6 +670,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			super(LoginItem.class);
 
 			this.loginReturnCode = loginReturnCode;
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			if (show) {
+				showPopupProgressDialog(R.string.loading_);
+			} else {
+				dismissProgressDialog();
+			}
 		}
 
 		@Override
@@ -847,14 +854,18 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (getActivity() == null) {
 			return;
 		}
-		// un-register from GCM
-		unRegisterGcmService();
 
 		// logout from facebook
 		Session facebookSession = Session.getActiveSession();
+		logTest("facebookSession = " + facebookSession);
 		if (facebookSession != null) {
 			facebookSession.closeAndClearTokenInformation();
+			logTest("facebookSession != null , call closeAndClearTokenInformation()");
 			Session.setActiveSession(null);
+		} else {
+			facebookSession = new Session(getActivity());
+			Session.setActiveSession(facebookSession);
+			facebookSession.closeAndClearTokenInformation();
 		}
 
 		preferencesEditor.putString(PASSWORD, Symbol.EMPTY);

@@ -255,7 +255,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND || serverCode == ServerErrorCodes.NO_MOVES_FOUND) {
-					moveVariationTxt.setText(R.string.no_games_found);
+					moveVariationTxt.setText(R.string.no_results);
 					return;
 				}
 			}

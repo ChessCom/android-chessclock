@@ -123,6 +123,10 @@ public class AppData {
 		return getIntValue(PREF_LANGUAGE, 0);
 	}
 
+	public void setLiveSessionId(String value) {
+		preferences.edit().putString(LIVE_SESSION_ID, value).commit();
+	}
+
 	public String getLiveSessionId() {
 		return preferences.getString(LIVE_SESSION_ID, Symbol.EMPTY);
 	}
@@ -766,6 +770,7 @@ public class AppData {
 		} else {
 			Gson gson = new Gson();
 			builder = gson.fromJson(builderStr, LiveGameConfig.Builder.class);
+			builder.setTimeFromMode(getDefaultLiveMode());
 		}
 
 		return builder;

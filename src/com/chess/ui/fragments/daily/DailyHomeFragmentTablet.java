@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.*;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.adapters.DailyArchiveGamesCursorAdapter;
+import com.chess.ui.fragments.WebViewFragment;
 import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -91,6 +93,10 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 		} else if (view.getId() == R.id.inviteFriendView2) {
 			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE, secondFriendUserName));
 			getActivityFace().toggleRightMenu();
+		} else if (view.getId() == R.id.tournamentsView) {
+			String tournamentsLink = RestHelper.getInstance().getTournamentsLink(getUserToken());
+			WebViewFragment webViewFragment = WebViewFragment.createInstance(tournamentsLink, getString(R.string.tournaments));
+			getActivityFace().openFragment(webViewFragment);
 		}
 	}
 
@@ -190,6 +196,7 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 		view.findViewById(R.id.statsHeaderView).setOnClickListener(this);
 		view.findViewById(R.id.statsView1).setOnClickListener(this);
 		view.findViewById(R.id.statsView2).setOnClickListener(this);
+		view.findViewById(R.id.tournamentsView).setOnClickListener(this);
 		view.findViewById(R.id.archiveHeaderView).setOnClickListener(this);
 
 		inviteFriendView1 = view.findViewById(R.id.inviteFriendView1);

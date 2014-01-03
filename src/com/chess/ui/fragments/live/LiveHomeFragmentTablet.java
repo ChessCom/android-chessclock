@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,11 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveLiveArchiveGamesTask;
+import com.chess.lcc.android.DataNotValidException;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.LiveArchiveGamesAdapterTablet;
 import com.chess.ui.fragments.BasePopupsFragment;
-import com.chess.ui.fragments.friends.FriendsFragment;
+import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 
@@ -117,43 +119,6 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 		}
 	}
 
-//	private void loadRecentOpponents() {
-//		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());// TODO load avatars
-//		if (cursor != null && cursor.moveToFirst()) {
-//			if (cursor.getCount() >= 2) {
-//				inviteFriendView1.setVisibility(View.VISIBLE);
-//				inviteFriendView1.setOnClickListener(this);
-//				inviteFriendView2.setVisibility(View.VISIBLE);
-//				inviteFriendView2.setOnClickListener(this);
-//
-//				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-//				if (firstFriendUserName.equals(getUsername())) {
-//					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-//				}
-//				friendUserName1Txt.setText(firstFriendUserName);
-//
-//				cursor.moveToNext();
-//
-//				secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-//				if (secondFriendUserName.equals(getUsername())) {
-//					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-//				}
-//				friendUserName2Txt.setText(secondFriendUserName);
-//			} else if (cursor.getCount() == 1) {
-//				inviteFriendView1.setVisibility(View.VISIBLE);
-//				inviteFriendView1.setOnClickListener(this);
-//
-//				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-//				if (firstFriendUserName.equals(getUsername())) {
-//					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-//				}
-//				friendUserName1Txt.setText(firstFriendUserName);
-//			}
-//
-//			cursor.close();
-//		}
-//	}
-
 	private class ArchiveGamesUpdateListener extends ChessUpdateListener<LiveArchiveGameItem> {
 
 		public ArchiveGamesUpdateListener() {
@@ -222,7 +187,23 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 
 		int id = view.getId();
 		if (id == R.id.friendsHeaderView) {
-			getActivityFace().openFragment(new FriendsFragment());
+			if (isLCSBound) {
+				try {
+					LiveChessService liveService = getLiveService();
+					liveFriends = liveService.getOnlineFriends();
+
+					SparseArray<String> optionsMap = new SparseArray<String>();
+					for (int i = 0; i < liveFriends.length; i++) {
+						String friend = liveFriends[i];
+						optionsMap.put(i, friend);
+					}
+
+					friendSelectFragment = PopupOptionsMenuFragment.createInstance(friendSelectedListener, optionsMap);
+					friendSelectFragment.show(getFragmentManager(), FRIEND_SELECTION_TAG);
+				} catch (DataNotValidException e) {
+					e.printStackTrace();
+				}
+			}
 		} else if (id == R.id.topGameHeaderView) {
 			if (!isLCSBound) {
 				showToast("Not connected yet");

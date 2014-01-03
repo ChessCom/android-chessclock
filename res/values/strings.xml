@@ -763,7 +763,7 @@
 	<string name="switch_sides">Switch Sides</string>
 
 	<!--Moves Explorer-->
-	<string name="no_results_found">No Results Found</string>
+	<string name="no_results">No Results</string>
 	<string name="game_explorer">Game Explorer</string>
 	<string name="no_games_found">No games found</string>
 
@@ -788,11 +788,6 @@
 	<string name="upgrade_now">Upgrade Now</string>
 	<string name="completed_daily">Completed Daily</string>
 	<string name="all_premium_plans_features_title">All Premium Plans Include These Great Features</string>
-	<string name="verifying_payments">Verifying payments</string>
-	<string name="upgrade_getting_user_details">Getting user details</string>
-	<string name="upgrade_contacting_server">Contacting server</string>
-	<string name="upgrade_performing_purchase">Performing Purchase</string>
-	<string name="upgrade_receiving_payments">Receiving payments</string>
 	<string name="nothing_to_share">Nothing to share</string>
 
 	<string name="attempts">Attempts</string>
@@ -802,7 +797,8 @@
 	<string name="general">General</string>
 	<string name="report_problem">Report Problem</string>
 	<string name="send_mail">Send Email</string>
-	<string name="no_activity">No Activity</string>
+	<string name="no_alerts">No Alerts</string>
+	<string name="no_messages">No Messages</string>
 	<string name="select_style">Select Style</string>
 	<string name="password_changed">Password Changed</string>
 	<string name="close">close</string>

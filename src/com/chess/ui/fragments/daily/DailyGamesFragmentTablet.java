@@ -149,7 +149,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		gridView.setAdapter(currentGamesMyCursorAdapter);
 
 		view.findViewById(R.id.completedGamesHeaderView).setOnClickListener(this);
-		view.findViewById(R.id.tournamentsView).setOnClickListener(this);
 
 		if (gridView != null) {
 			gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -274,14 +273,17 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 				getActivityFace().openFragment(DailyChatFragment.createInstance(gameListCurrentItem.getGameId(),
 						gameListCurrentItem.getBlackAvatar())); // TODO adjust
 			} else if (pos == 1) {
-				String draw = RestHelper.V_OFFERDRAW;
-				if (gameListCurrentItem.isDrawOffered() > 0) {
-					draw = RestHelper.V_ACCEPTDRAW;
-				}
-
-				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
-						draw, gameListCurrentItem.getTimestamp());
-				new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+				// update game state before accepting draw
+				LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameListCurrentItem.getGameId());
+				new RequestJsonTask<DailyCurrentGameItem>(new GameStateUpdatesListener()).executeTask(loadItem);
+//				String draw = RestHelper.V_OFFERDRAW;
+//				if (gameListCurrentItem.isDrawOffered() > 0) {
+//					draw = RestHelper.V_ACCEPTDRAW;
+//				}
+//
+//				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
+//						draw, gameListCurrentItem.getTimestamp());
+//				new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 			} else if (pos == 2) {
 
 				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
@@ -363,6 +365,25 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		}
 	}
 
+	private class GameStateUpdatesListener extends ChessLoadUpdateListener<DailyCurrentGameItem> {
+
+		private GameStateUpdatesListener() {
+			super(DailyCurrentGameItem.class);
+		}
+
+		@Override
+		public void updateData(DailyCurrentGameItem returnedObj) {
+			String draw = RestHelper.V_OFFERDRAW;
+			if (returnedObj.getData().isDrawOffered() > 0) {
+				draw = RestHelper.V_ACCEPTDRAW;
+			}
+
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
+					draw, gameListCurrentItem.getTimestamp());
+			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+		}
+	}
+
 	private class DailyUpdateListener extends ChessUpdateListener<BaseResponseItem> {
 		public static final int INVITE = 3;
 		public static final int DRAW = 4;
@@ -427,10 +448,9 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
-					RestHelper.V_ACCEPTDRAW, gameListCurrentItem.getTimestamp());
-
-			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+			// update game state before accepting draw
+			LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameListCurrentItem.getGameId());
+			new RequestJsonTask<DailyCurrentGameItem>(new GameStateUpdatesListener()).executeTask(loadItem);
 		} else if (tag.equals(END_VACATION_TAG)) {
 			LoadItem loadItem = LoadHelper.deleteOnVacation(getUserToken());
 			new RequestJsonTask<VacationItem>(new VacationUpdateListener()).executeTask(loadItem);

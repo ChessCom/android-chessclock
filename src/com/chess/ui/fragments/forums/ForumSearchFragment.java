@@ -128,7 +128,7 @@ public class ForumSearchFragment extends BaseSearchFragment {
 			super.updateData(returnedObj);
 
 			if (returnedObj.getData().getTopics().size() == 0) {
-				showSinglePopupDialog(R.string.no_results_found);
+				showSinglePopupDialog(R.string.no_results);
 				return;
 			}
 

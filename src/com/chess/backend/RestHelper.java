@@ -269,7 +269,8 @@ public class RestHelper {
 
 	/* Parameters */
 	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";
-	public static final String P_FIELDS = "fields[]";
+	public static final String P_FIELDS_ = "fields[]";
+	public static final String P_FIELDS = "fields";
 	public static final String P_LOGIN_TOKEN = "loginToken";
 	public static final String P_PAGE = "page";
 	public static final String P_ITEMS_PER_PAGE = "itemsPerPage";
@@ -410,6 +411,8 @@ public class RestHelper {
 	/* Theme background values */
 	public static final String V_HANDSET = "handset";
 	public static final String V_TABLET = "tablet";
+
+	public static final String V_SESSION_ID = "sessionId";
 
 	// old
 	public static final String V_RESIGN = "RESIGN";

@@ -50,8 +50,8 @@ public class LccHelper {
 	private final LccGameListener gameListener;
 	private final LccChallengeListener challengeListener;
 	//private final LccSeekListListener seekListListener;
-	//private final LccFriendStatusListener friendStatusListener;
-	//private final LccUserListListener userListListener;
+	private final LccFriendStatusListener friendStatusListener;
+	private final LccUserListListener userListListener;
 	private final LccAnnouncementListener announcementListener;
 	private final LccAdminEventListener adminEventListener;
 	private final AppData appData;
@@ -65,9 +65,7 @@ public class LccHelper {
 	private Collection<? extends User> blockingUsers = new HashSet<User>();
 	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
 	private final HashSet<Game> gamesToUnObserve = new HashSet<Game>();
-	private final Map<String, User> friends = new HashMap<String, User>();
 	private final Map<String, User> onlineFriends = new HashMap<String, User>();
-	/*private Map<LiveGameEvent.Event, LiveGameEvent> pausedActivityGameEvents = new HashMap<LiveGameEvent.Event, LiveGameEvent>();*/
 	// todo: clear pausedActivityLiveEvents
 	private Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = new HashMap<LiveEvent.Event, LiveEvent>();
 	private final HashMap<Long, Chat> gameChats = new HashMap<Long, Chat>();
@@ -110,8 +108,8 @@ public class LccHelper {
 		gameListener = new LccGameListener(this);
 		challengeListener = new LccChallengeListener(this);
 		//seekListListener = new LccSeekListListener(this);
-		//friendStatusListener = new LccFriendStatusListener(this);
-		//userListListener = new LccUserListListener(this);
+		friendStatusListener = new LccFriendStatusListener(this);
+		userListListener = new LccUserListListener(this);
 		announcementListener = new LccAnnouncementListener(this);
 		adminEventListener = new LccAdminEventListener();
 
@@ -226,12 +224,6 @@ public class LccHelper {
 		return pendingWarnings.get(pendingWarnings.size() - 1);
 	}
 
-	/*public void checkAndConnect() {
-		if(getAppData().isLiveChess(context) && !connected && lccClient == null){
-			LccHelper.getInstance(context).runConnectTask();
-		}
-	}*/
-
 	/**
 	 * Connect live chess client
 	 */
@@ -343,13 +335,19 @@ public class LccHelper {
 
 					logout();
 
-					try {
-						Thread.sleep(CONNECTION_FAILURE_DELAY);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					// first of all we need to invalidate sessionId key
+					new AppData(context).setLiveSessionId(null);
+
+					if (isPossibleToReconnect()) {
+						try {
+							Thread.sleep(CONNECTION_FAILURE_DELAY);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						runConnectTask();
+					} else {
+						liveChessClientEventListener.onConnectionFailure(context.getString(R.string.pleaseLoginAgain));
 					}
-					runConnectTask();
-					//}
 					return;
 				}
 				case SERVER_STOPPED: {
@@ -407,6 +405,30 @@ public class LccHelper {
 			liveChessClientEventListener.onSessionExpired(context.getString(R.string.login_failed));*/
 		//}
 
+	}
+
+	private boolean isPossibleToReconnect() {
+		AppData appData = new AppData(context);
+		String username = appData.getUsername();
+		String pass = appData.getPassword();
+
+		// here we check if sessionId is not expired(ttl = 60min)
+		long sessionIdSaveTime = appData.getLiveSessionIdSaveTime();
+		long currentTime = System.currentTimeMillis();
+
+		boolean useSessionId = currentTime - sessionIdSaveTime <= AppConstants.LIVE_SESSION_EXPIRE_TIME;
+
+		boolean emptyPassword = pass.equals(Symbol.EMPTY);
+
+		if (useSessionId) {
+			if (emptyPassword || RestHelper.getInstance().IS_TEST_SERVER_MODE) {
+				return true;
+			} else {
+				return true;
+			}
+		} else {
+			return !emptyPassword && !RestHelper.getInstance().IS_TEST_SERVER_MODE;
+		}
 	}
 
 	public void onObsoleteProtocolVersion() {
@@ -499,8 +521,8 @@ public class LccHelper {
 			lccClient.subscribeToChallengeEvents(challengeListener);
 			lccClient.subscribeToGameEvents(gameListener);
 			lccClient.subscribeToChatEvents(chatListener);
-			//lccClient.subscribeToFriendStatusEvents(friendStatusListener);
-			//lccClient.subscribeToUserList(LiveChessClient.UserListOrderBy.Username, 1, userListListener);
+			lccClient.subscribeToFriendStatusEvents(friendStatusListener);
+			lccClient.subscribeToUserList(LiveChessClient.UserListOrderBy.Username, 1, userListListener);
 			lccClient.subscribeToAdminEvents(adminEventListener);
 			lccClient.subscribeToAnnounces(announcementListener);
 
@@ -639,8 +661,7 @@ public class LccHelper {
 		seeks.put(challenge.getId(), challenge);
 	}
 
-	/*public void setFriends(Collection<? extends User> friends) {
-//		LogMe.dl(TAG, "CONNECTION: get friends list: " + friends);
+	public void setFriends(Collection<? extends User> friends) {
 		if (friends == null) {
 			return;
 		}
@@ -652,22 +673,19 @@ public class LccHelper {
 	public void putFriend(User friend) {
 		if (friend.getStatus() != User.Status.OFFLINE) {
 			onlineFriends.put(friend.getUsername(), friend);
-			friends.put(friend.getUsername(), friend);
 		} else {
 			onlineFriends.remove(friend.getUsername());
-			friends.remove(friend.getUsername());
 		}
 		liveChessClientEventListener.onFriendsStatusChanged();
 	}
 
 	public void removeFriend(User friend) {
-		friends.remove(friend.getUsername());
 		onlineFriends.remove(friend.getUsername());
 	}
 
 	public void clearOnlineFriends() {
 		onlineFriends.clear();
-	}*/
+	}
 
 	public String[] getOnlineFriends() {
 		final String[] array = new String[]{Symbol.EMPTY};
@@ -850,7 +868,7 @@ public class LccHelper {
 		clearChallenges();
 		clearOwnChallenges();
 		clearSeeks();
-		//clearOnlineFriends();
+		clearOnlineFriends();
 		clearPausedEvents();
 	}
 
@@ -871,7 +889,7 @@ public class LccHelper {
 		return seeks.containsKey(id);
 	}
 
-	  public void removeSeek(Long id) {
+	public void removeSeek(Long id) {
 		if (seeks.size() > 0) {
 			seeks.remove(id);
 		}
@@ -1054,7 +1072,7 @@ public class LccHelper {
 				LogMe.dl(TAG, "DISCONNECT: lccClient=" + getClientId()/* + ", resetClient=" + resetClient*/);
 				lccClient.disconnect(); // todo: use lccClient.leave()
 				//if (/*resetClient*/) {
-					resetClient();
+				resetClient();
 				//}
 			}
 			return null;

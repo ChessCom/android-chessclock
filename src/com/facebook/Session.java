@@ -23,7 +23,6 @@ import android.os.*;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import com.facebook.internal.Validate;
 import com.facebook.internal.SessionAuthorizationType;
 import com.facebook.internal.Utility;
 import com.facebook.internal.Validate;
@@ -747,7 +746,7 @@ public class Session implements Serializable {
      * @param session A Session to use as the active Session, or null to indicate
      *                that there is no active Session.
      */
-    public static final void setActiveSession(Session session) {
+    public static void setActiveSession(Session session) {
         synchronized (Session.STATIC_LOCK) {
             if (session != Session.activeSession) {
                 Session oldSession = Session.activeSession;

@@ -166,11 +166,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 						loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 						loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getMeUsername());
 						loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
-						loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
-						loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
+						loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_USERNAME);
+						loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
 
 						new RequestJsonTask<LoginItem>(new CommonLogicActivity.LoginUpdateListener()).executeTask(loadItem);
-					} else {
+					} else if (!TextUtils.isEmpty(getAppData().getFacebookToken())) {
 						loginWithFacebook(getAppData().getFacebookToken());
 					}
 				}
@@ -463,11 +463,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@Override
 	public void registerGcm() {
 		registerGcmService();
-	}
-
-	@Override
-	public void unRegisterGcm() {
-		unRegisterGcmService();
 	}
 
 	@Override

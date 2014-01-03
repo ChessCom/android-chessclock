@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,8 @@ import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.LiveBaseFragment;
-import com.chess.ui.fragments.friends.FriendsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupLiveTimeOptionsFragment;
+import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
@@ -46,6 +47,7 @@ import java.util.List;
 public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelectionFace, AdapterView.OnItemClickListener {
 
 	private static final String OPTION_SELECTION_TAG = "time options popup";
+	protected static final String FRIEND_SELECTION_TAG = "friend select popup";
 
 	protected GameFaceHelper gameFaceHelper;
 	protected Button timeSelectBtn;
@@ -57,6 +59,9 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	private ServerStatsUpdateListener serverStatsUpdateListener;
 	private OptionsAdapter optionsAdapter;
 	private LiveItem currentGameItem;
+	protected PopupOptionsMenuFragment friendSelectFragment;
+	protected FriendSelectedListener friendSelectedListener;
+	protected String[] liveFriends;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 		gameFaceHelper = new GameFaceHelper();
 		timeOptionSelectedListener = new TimeOptionSelectedListener();
+		friendSelectedListener = new FriendSelectedListener();
 		serverStatsUpdateListener = new ServerStatsUpdateListener();
 	}
 
@@ -86,6 +92,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 		setTitle(R.string.live);
 
+		getAppData().setLiveChessMode(true); // we should set it before parent call to update isLCSBound flag
+
 		widgetsInit(view);
 	}
 
@@ -93,7 +101,6 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	public void onResume() {
 		super.onResume();
 
-		getAppData().setLiveChessMode(true);
 		if (isNetworkAvailable()) {
 			try {
 				if (!isLCSBound) {
@@ -173,7 +180,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 				}
 			}
 			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
-		} else if (liveItem.iconId == R.string.ic_live_standard) {
+		} else if (liveItem.iconId == R.string.ic_live_standard) { // Current game
 			Fragment fragmentByTag;
 			if (!isTablet) {
 				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveFragment.class.getSimpleName());
@@ -188,12 +195,33 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 				}
 			}
 			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
-		} else if (liveItem.iconId == R.string.ic_stats) {
+		} else if (liveItem.iconId == R.string.ic_stats) { // Stats
 			getActivityFace().openFragment(StatsGameDetailsFragment.createInstance(
 					StatsGameFragment.LIVE_STANDARD, true, getUsername()));
-		} else if (liveItem.iconId == R.string.ic_challenge_friend) {
-			getActivityFace().openFragment(new FriendsFragment());
-		} else if (liveItem.iconId == R.string.ic_board) {
+		} else if (liveItem.iconId == R.string.ic_challenge_friend) { // Friends
+			if (isLCSBound) {
+				try {
+					LiveChessService liveService = getLiveService();
+					liveFriends = liveService.getOnlineFriends();
+
+					if (liveFriends == null || liveFriends.length == 0) {
+						showToast(R.string.no_friends_online);
+						return;
+					}
+
+					SparseArray<String> optionsMap = new SparseArray<String>();
+					for (int i = 0; i < liveFriends.length; i++) {
+						String friend = liveFriends[i];
+						optionsMap.put(i, friend);
+					}
+
+					friendSelectFragment = PopupOptionsMenuFragment.createInstance(friendSelectedListener, optionsMap);
+					friendSelectFragment.show(getFragmentManager(), FRIEND_SELECTION_TAG);
+				} catch (DataNotValidException e) {
+					e.printStackTrace();
+				}
+			}
+		} else if (liveItem.iconId == R.string.ic_board) { // Archive
 			getActivityFace().openFragment(new LiveArchiveFragment());
 		}
 	}
@@ -433,6 +461,25 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		@Override
 		public void onDialogCanceled() {
 			timeOptionsFragment = null;
+		}
+	}
+
+	private class FriendSelectedListener implements PopupListSelectionFace {
+
+		@Override
+		public void onValueSelected(int code) {
+			friendSelectFragment.dismiss();
+			friendSelectFragment = null;
+
+			String friend = liveFriends[code];
+
+			getActivityFace().changeRightFragment(LiveGameOptionsFragment.createInstance(RIGHT_MENU_MODE, friend));
+			getActivityFace().toggleRightMenu();
+		}
+
+		@Override
+		public void onDialogCanceled() {
+			friendSelectFragment = null;
 		}
 	}
 

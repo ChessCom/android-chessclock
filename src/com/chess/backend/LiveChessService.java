@@ -1,13 +1,15 @@
 package com.chess.backend;
 
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.chess.R;
 import com.chess.backend.entity.api.ChatItem;
@@ -40,8 +42,7 @@ import java.util.Map;
 public class LiveChessService extends Service {
 
 	private static final String TAG = "LCCLOG-LiveChessService";
-	private static final long SHUTDOWN_TIMEOUT_DELAY = 15 * 60 * 1000;
-	// private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec // use for testing automatic shutdown
+	private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec, shutdown after user leave app.
 
 	private ServiceBinder serviceBinder = new ServiceBinder();
 
@@ -53,7 +54,7 @@ public class LiveChessService extends Service {
 	private Handler handler;
 
 	public class ServiceBinder extends Binder {
-		public LiveChessService getService(){
+		public LiveChessService getService() {
 			LogMe.dl(TAG, "SERVICE: getService called");
 			return LiveChessService.this;
 		}
@@ -85,6 +86,12 @@ public class LiveChessService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		LogMe.dl(TAG, "SERVICE: onStartCommand");
+		if (lccHelper != null) {
+			if (lccHelper.isConnected()) {
+				onLiveConnected();
+
+			}
+		}
 
 		return START_STICKY_COMPATIBILITY;
 	}
@@ -134,6 +141,42 @@ public class LiveChessService extends Service {
 		if (connectionUpdateFace != null) {
 			connectionUpdateFace.onConnected();
 		}
+
+		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
+
+		Intent notifyIntent = new Intent(getContext(), MainFragmentFaceActivity.class);
+		notifyIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		notifyIntent.putExtra(IntentConstants.LIVE_CHESS, true);
+
+		// Creates the PendingIntent
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 11, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		Bitmap bigImage = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_stat_chess)).getBitmap();
+		String title = getString(R.string.chess_com_live);
+
+		notificationBuilder.setContentTitle(title)
+				.setSmallIcon(R.drawable.ic_stat_live)
+				.setLargeIcon(bigImage);
+
+		// Puts the PendingIntent into the notification builder
+		notificationBuilder.setContentIntent(pendingIntent);
+		notificationBuilder.setOngoing(true);
+
+		startForeground(R.drawable.ic_stat_live, notificationBuilder.build());
+
+		// todo: tune notification
+//		Notification notification = new Notification(R.drawable.ic_stat_live, getString(R.string.chess_com_live),
+//				System.currentTimeMillis());
+//
+//		Intent intent = new Intent(getContext(), MainFragmentFaceActivity.class);
+//		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//		intent.putExtra(IntentConstants.LIVE_CHESS, true);
+//
+//		PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+//		notification.setLatestEventInfo(getContext(), getString(R.string.ches_com), getString(R.string.live), pendingIntent);
+//		notification.flags |= Notification.FLAG_NO_CLEAR;
+
+//		startForeground(R.drawable.ic_stat_live, notification);
 	}
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
@@ -145,26 +188,11 @@ public class LiveChessService extends Service {
 		public void updateData(LiveChessClient returnedObj) {
 			LogMe.dl(TAG, "LiveChessClient initialized " + returnedObj);
 
-			// todo: tune notification
-			Notification notification = new Notification(R.drawable.ic_stat_live, getString(R.string.chess_com_live),
-					System.currentTimeMillis());
-
-			Intent intent = new Intent(getContext(), MainFragmentFaceActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			intent.putExtra(IntentConstants.LIVE_CHESS, true);
-
-			PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-			notification.setLatestEventInfo(getContext(), getString(R.string.ches_com), getString(R.string.live), pendingIntent);
-			notification.flags |= Notification.FLAG_NO_CLEAR;
-
-			startForeground(R.drawable.ic_stat_live, notification);
-
 //			onLiveConnected(); // useless here because doesn't have user at that moment
 		}
 	}
 
-	private Context getContext(){
+	private Context getContext() {
 		return this;
 	}
 
@@ -274,7 +302,6 @@ public class LiveChessService extends Service {
 	}
 
 
-
 	public void runMakeDrawTask() {
 		gameTaskRunner.runMakeDrawTask();
 	}
@@ -296,7 +323,7 @@ public class LiveChessService extends Service {
 
 
 	// ------------------- Lcc Holder wrapping --------------------------
-	public LccHelper getLccHelper(){
+	public LccHelper getLccHelper() {
 		return lccHelper;
 	}
 
@@ -385,11 +412,11 @@ public class LiveChessService extends Service {
 
 	public int getOwnSeeksCount() {
 		return lccHelper.getOwnSeeksCount();
-	}
+	}*/
 
 	public String[] getOnlineFriends() {
 		return lccHelper.getOnlineFriends();
-	}*/
+	}
 
 	public GameLiveItem getGameItem() {
 		return lccHelper.getGameItem();

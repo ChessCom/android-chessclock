@@ -21,7 +21,6 @@ import com.chess.backend.entity.api.MembershipItem;
 import com.chess.backend.entity.api.MembershipKeyItem;
 import com.chess.backend.entity.api.PayloadItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.model.PopupItem;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -450,7 +449,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				return;
 			}
 
-			setWaitScreen(false, Symbol.EMPTY);
+			setWaitScreen(false);
 			if (result.isFailure()) {
 
 				showSinglePopupDialog("Failed to query inventory: " + result);
@@ -532,7 +531,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			setWaitScreen(show, getString(R.string.upgrade_getting_user_details));
+			setWaitScreen(show);
 		}
 
 		@Override
@@ -609,7 +608,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			setWaitScreen(show, getString(R.string.upgrade_getting_user_details));
+			setWaitScreen(show);
 		}
 
 		@Override
@@ -657,7 +656,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			setWaitScreen(show, getString(R.string.upgrade_contacting_server));
+			setWaitScreen(show);
 		}
 
 		@Override
@@ -698,7 +697,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 //				logTest(purchasePayload1);
 //				logTest(serverPayLoad1);
 //			}
-			setWaitScreen(true, getString(R.string.upgrade_performing_purchase));
+			setWaitScreen(true);
 			mHelper.launchPurchaseFlow(getActivity(), itemId, IabHelper.ITEM_TYPE_SUBS,
 					RC_REQUEST, new PurchaseFinishedListener(), purchasePayload);
 		}
@@ -725,7 +724,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				logTest("onIabPurchaseFinished - >activity null");
 				return;
 			}
-			setWaitScreen(false, Symbol.EMPTY);
+			setWaitScreen(false);
 
 			Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
 			// skip if user canceled
@@ -765,7 +764,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 			// Hooray, IAB is fully set up. Now, let's get an inventory of stuff we own.
 			mHelper.queryInventoryAsync(new GotInventoryListener());
-			setWaitScreen(true, getString(R.string.upgrade_receiving_payments));
+			setWaitScreen(true);
 		}
 	}
 
@@ -802,32 +801,33 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		}
 	}
 
-	private void setWaitScreen(boolean show, String message) {
-		if (show) {
-
-			View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
-
-			TextView loadTitleTxt = (TextView) layout.findViewById(R.id.loadTitleTxt);
-			View loadProgressBar = layout.findViewById(R.id.loadProgressBar);
-			loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
-			taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
-
-			loadTitleTxt.setText(R.string.verifying_payments);
-			taskTitleTxt.setText(message);
-			loadProgressTxt.setVisibility(View.GONE);
-			loadProgressBar.setVisibility(View.VISIBLE);
-
-			PopupItem popupItem = new PopupItem();
-			popupItem.setCustomView(layout);
-
-			loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-			loadProgressPopupFragment.show(getFragmentManager(), LOAD_TAG);
-
-		} else {
-			if (loadProgressPopupFragment != null) {
-				loadProgressPopupFragment.dismiss();
-			}
-		}
+	private void setWaitScreen(boolean show) {
+		showLoadingProgress(show);
+//		if (show) {
+//
+//			View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
+//
+//			TextView loadTitleTxt = (TextView) layout.findViewById(R.id.loadTitleTxt);
+//			View loadProgressBar = layout.findViewById(R.id.loadProgressBar);
+//			loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
+//			taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
+//
+//			loadTitleTxt.setText(R.string.verifying_payments);
+//			taskTitleTxt.setText(message);
+//			loadProgressTxt.setVisibility(View.GONE);
+//			loadProgressBar.setVisibility(View.VISIBLE);
+//
+//			PopupItem popupItem = new PopupItem();
+//			popupItem.setCustomView(layout);
+//
+//			loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+//			loadProgressPopupFragment.show(getFragmentManager(), LOAD_TAG);
+//
+//		} else {
+//			if (loadProgressPopupFragment != null) {
+//				loadProgressPopupFragment.dismiss();
+//			}
+//		}
 	}
 
 	protected void widgetsInit(View view) {

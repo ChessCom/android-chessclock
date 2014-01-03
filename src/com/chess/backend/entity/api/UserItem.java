@@ -43,6 +43,7 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 		private long member_since;
 		private long date_of_birth;
 		private String about;
+		private String session_id;
 
 		public long getId() {
 			return id;
@@ -106,6 +107,10 @@ public class UserItem extends BaseResponseItem<UserItem.Data> {
 
 		public String getAbout() {
 			return about;
+		}
+
+		public String getSessionId() {
+			return getSafeValue(session_id);
 		}
 	}
 

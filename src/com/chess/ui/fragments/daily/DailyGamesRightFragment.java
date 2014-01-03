@@ -18,10 +18,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.BaseResponseItem;
-import com.chess.backend.entity.api.DailyChallengeItem;
-import com.chess.backend.entity.api.DailyCurrentGameData;
-import com.chess.backend.entity.api.DailyFinishedGameData;
+import com.chess.backend.entity.api.*;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -163,13 +160,16 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 				getActivityFace().openFragment(DailyChatFragment.createInstance(gameListCurrentItem.getGameId(),
 						gameListCurrentItem.getBlackAvatar())); // TODO adjust avatar
 			} else if (pos == 1) {
-				String draw = RestHelper.V_OFFERDRAW;
-				if (gameListCurrentItem.isDrawOffered() > 0)
-					draw = RestHelper.V_ACCEPTDRAW;
-
-				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
-						draw, gameListCurrentItem.getTimestamp());
-				new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+				// update game state before accepting draw
+				LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameListCurrentItem.getGameId());
+				new RequestJsonTask<DailyCurrentGameItem>(new GameStateUpdatesListener()).executeTask(loadItem);
+//				String draw = RestHelper.V_OFFERDRAW;
+//				if (gameListCurrentItem.isDrawOffered() > 0)
+//					draw = RestHelper.V_ACCEPTDRAW;
+//
+//				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
+//						draw, gameListCurrentItem.getTimestamp());
+//				new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 			} else if (pos == 2) {
 
 				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
@@ -288,6 +288,25 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		getActivityFace().toggleRightMenu();
 	}
 
+	private class GameStateUpdatesListener extends ChessLoadUpdateListener<DailyCurrentGameItem> {
+
+		private GameStateUpdatesListener() {
+			super(DailyCurrentGameItem.class);
+		}
+
+		@Override
+		public void updateData(DailyCurrentGameItem returnedObj) {
+			String draw = RestHelper.V_OFFERDRAW;
+			if (returnedObj.getData().isDrawOffered() > 0) {
+				draw = RestHelper.V_ACCEPTDRAW;
+			}
+
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
+					draw, gameListCurrentItem.getTimestamp());
+			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+		}
+	}
+
 	private class DailyUpdateListener extends ChessUpdateListener<BaseResponseItem> {
 		public static final int CHALLENGE = 3;
 		public static final int DRAW = 4;
@@ -355,10 +374,9 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
-					RestHelper.V_ACCEPTDRAW, gameListCurrentItem.getTimestamp());
-
-			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+			// update game state before accepting draw
+			LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameListCurrentItem.getGameId());
+			new RequestJsonTask<DailyCurrentGameItem>(new GameStateUpdatesListener()).executeTask(loadItem);
 		}
 		super.onPositiveBtnClick(fragment);
 	}

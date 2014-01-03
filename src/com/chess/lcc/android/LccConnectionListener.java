@@ -31,7 +31,7 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.setUser(user);
 		LogMe.dl(TAG, "onConnectionEstablished: lccHelper = " + lccHelper);
 		lccHelper.setConnected(true);
-		//lccHelper.setFriends(settings.getFriends());
+		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 		lccHelper.clearPausedEvents();
 		lccHelper.stopConnectionTimer();
@@ -42,7 +42,7 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onSettingsChanged(User user, UserSettings settings) {
 		LogMe.dl(TAG, "onSettingsChanged");
-		//lccHelper.setFriends(settings.getFriends());
+		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 	}
 
@@ -70,7 +70,7 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.setCurrentGameId(null);
 		lccHelper.setConnected(true);
 
-		//lccHelper.setFriends(userSettings.getFriends());
+		lccHelper.setFriends(userSettings.getFriends());
 		lccHelper.storeBlockedUsers(userSettings.getBlockedUsers(), userSettings.getBlockingUsers());
 
 		lccHelper.clearPausedEvents();

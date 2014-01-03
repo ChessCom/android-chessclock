@@ -230,7 +230,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 		}
 
 		if (emptyData) {
-			emptyView.setText(R.string.no_activity);
+			emptyView.setText(R.string.no_alerts);
 			emptyView.setVisibility(View.VISIBLE);
 			listView.setVisibility(View.GONE);
 		} else {
@@ -250,7 +250,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 			super.updateData(returnedObj);
 
 			if (returnedObj.getData().size() == 0 && emptyData) {
-				emptyView.setText(R.string.no_activity);
+				emptyView.setText(R.string.no_alerts);
 				emptyView.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);
 			} else {

@@ -187,7 +187,7 @@ public class LessonsSearchFragment extends BaseSearchFragment implements Adapter
 			super.updateData(returnedObj);
 
 			if (returnedObj.getData().getLessons().size() == 0) {
-				showSinglePopupDialog(R.string.no_results_found);
+				showSinglePopupDialog(R.string.no_results);
 				return;
 			}
 

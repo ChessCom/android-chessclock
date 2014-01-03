@@ -31,7 +31,6 @@ import com.chess.ui.engine.ChessBoardDiagram;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.WebViewFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
@@ -69,6 +68,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private IntentFilter moveUpdateFilter;
 	private GamesUpdateReceiver gamesUpdateReceiver;
 	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
+	private DailyFinishedGamesUpdateListener dailyFinishedGamesUpdateListener;
 	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener currentGamesCursorUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
@@ -91,7 +91,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private boolean startDailyGame;
 	private ChallengeHelper challengeHelper;
-	private DailyFinishedGamesUpdateListener dailyFinishedGamesUpdateListener;
 	private Button startNewGameBtn;
 	private boolean showMiniBoards;
 
@@ -221,14 +220,17 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				getActivityFace().openFragment(DailyChatFragment.createInstance(gameListCurrentItem.getGameId(),
 						gameListCurrentItem.getBlackAvatar())); // TODO adjust
 			} else if (pos == 1) {
-				String draw = RestHelper.V_OFFERDRAW;
-				if (gameListCurrentItem.isDrawOffered() > 0) {
-					draw = RestHelper.V_ACCEPTDRAW;
-				}
-
-				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
-						draw, gameListCurrentItem.getTimestamp());
-				new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+				// update game state before accepting draw
+				LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameListCurrentItem.getGameId());
+				new RequestJsonTask<DailyCurrentGameItem>(new GameStateUpdatesListener()).executeTask(loadItem);
+//				String draw = RestHelper.V_OFFERDRAW;
+//				if (gameListCurrentItem.isDrawOffered() > 0) {
+//					draw = RestHelper.V_ACCEPTDRAW;
+//				}
+//
+//				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
+//						draw, gameListCurrentItem.getTimestamp());
+//				new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 			} else if (pos == 2) {
 
 				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
@@ -251,10 +253,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			} else {
 				challengeHelper.createLiveChallenge();
 			}
-		} else if (view.getId() == R.id.tournamentsView) {
-			String tournamentsLink = RestHelper.getInstance().getTournamentsLink(getUserToken());
-			WebViewFragment webViewFragment = WebViewFragment.createInstance(tournamentsLink, getString(R.string.tournaments));
-			getActivityFace().openFragment(webViewFragment);
 		} else if (view.getId() == R.id.startNewGameBtn) {
 			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 			getActivityFace().toggleRightMenu();
@@ -333,6 +331,25 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
+	private class GameStateUpdatesListener extends ChessLoadUpdateListener<DailyCurrentGameItem> {
+
+		private GameStateUpdatesListener() {
+			super(DailyCurrentGameItem.class);
+		}
+
+		@Override
+		public void updateData(DailyCurrentGameItem returnedObj) {
+			String draw = RestHelper.V_OFFERDRAW;
+			if (returnedObj.getData().isDrawOffered() > 0) {
+				draw = RestHelper.V_ACCEPTDRAW;
+			}
+
+			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
+					draw, gameListCurrentItem.getTimestamp());
+			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+		}
+	}
+
 	private class DailyUpdateListener extends ChessUpdateListener<BaseResponseItem> {
 		public static final int INVITE = 3;
 		public static final int DRAW = 4;
@@ -346,10 +363,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		@Override
 		public void updateData(BaseResponseItem returnedObj) {
-			if (isPaused || getActivity() == null) {
-				return;
-			}
-
 			switch (itemCode) {
 				case INVITE:
 					DailyGamesFragment.this.updateData();
@@ -400,10 +413,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
-					RestHelper.V_ACCEPTDRAW, gameListCurrentItem.getTimestamp());
-
-			new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
+			// update game state before accepting draw
+			LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameListCurrentItem.getGameId());
+			new RequestJsonTask<DailyCurrentGameItem>(new GameStateUpdatesListener()).executeTask(loadItem);
 		} else if (tag.equals(END_VACATION_TAG)) {
 			LoadItem loadItem = LoadHelper.deleteOnVacation(getUserToken());
 			new RequestJsonTask<VacationItem>(new VacationUpdateListener()).executeTask(loadItem);
@@ -815,21 +827,13 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		// add Tournaments link
-		ViewGroup tournamentsHeaderView = (ViewGroup) inflater.inflate(R.layout.new_tournaments_header_view, null, false);
-		tournamentsHeaderView.setOnClickListener(this);
-//		RoboButton tournamentsBtn = new RoboButton(getActivity());
-//
-//		tournamentsBtn.setDrawableStyle(R.style.Rect_Bottom_Middle_Grey);
-//		tournamentsBtn.setMinHeight(resources.getDimensionPixelSize(R.dimen.big_button_height));
-//		tournamentsBtn.setTextSize(resources.getDimensionPixelSize(R.dimen.game_controls_text_size) / density);
-//		tournamentsBtn.setId(R.id.tournamentsBtn);
-//		tournamentsBtn.setText(R.string.tournaments);
-//		tournamentsBtn.setOnClickListener(this);
+//		ViewGroup tournamentsHeaderView = (ViewGroup) inflater.inflate(R.layout.new_tournaments_header_view, null, false);
+//		tournamentsHeaderView.setOnClickListener(this);
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
-		listView.addFooterView(tournamentsHeaderView);
+//		listView.addFooterView(tournamentsHeaderView);
 		listView.setAdapter(sectionedAdapter);
 	}
 

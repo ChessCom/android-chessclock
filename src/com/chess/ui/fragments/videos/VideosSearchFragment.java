@@ -177,7 +177,7 @@ public class VideosSearchFragment extends BaseSearchFragment implements ItemClic
 			super.updateData(returnedObj);
 
 			if (returnedObj.getData().size() == 0) {
-				showSinglePopupDialog(R.string.no_results_found);
+				showSinglePopupDialog(R.string.no_results);
 				return;
 			}
 

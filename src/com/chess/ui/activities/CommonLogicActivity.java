@@ -192,13 +192,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 	}
 
-	protected void unRegisterGcmService() { // We should not unregister manually http://developer.android.com/google/gcm/adv.html#unreg
-//		// save token to unregister from server
-//		preferencesEditor.putString(AppConstants.PREF_TEMP_TOKEN_GCM, appData.getUserToken());
-//		preferencesEditor.commit();
-//		GCMRegistrar.unregister(this);
-	}
-
 	protected class GcmRegisterUpdateListener extends AbstractUpdateListener<GcmItem> {
 
 		public GcmRegisterUpdateListener() {
@@ -271,7 +264,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			LoginItem.Data loginData = returnedObj.getData();
 			String username = loginData.getUsername();
 			if (!TextUtils.isEmpty(username)) {
-				preferencesEditor.putString(AppConstants.USERNAME, username.trim().toLowerCase());
+				preferencesEditor.putString(AppConstants.USERNAME, username);
 			}
 			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
 			preferencesEditor.putString(AppConstants.LIVE_SESSION_ID, loginData.getSessionId());
@@ -312,10 +305,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				}
 			}
 		}
-
-		public void setFacebookToken(String facebookToken) {
-			this.facebookToken = facebookToken;
-		}
 	}
 
 	protected Session.StatusCallback callback = new Session.StatusCallback() {
@@ -337,17 +326,13 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, accessToken);
 		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_USERNAME);
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_TACTICS_RATING);
+		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_USERNAME);
+		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_TACTICS_RATING);
 
 		new RequestJsonTask<LoginItem>(new LoginUpdateListener(accessToken)).executeTask(loadItem);
 	}
 
 	protected void processLogin(RegisterItem.Data returnedObj) {
-//		if (TextUtils.isEmpty(getTextFromField(passwordEdt))) {
-//			preferencesEditor.putString(AppConstants.PASSWORD, getTextFromField(passwordEdt));
-//		}
-
 		preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLoginToken());
 		preferencesEditor.putLong(AppConstants.USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();

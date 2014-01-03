@@ -41,7 +41,7 @@ public class LoadHelper {
 
 	public static LoadItem getAllGamesFiltered(String userToken, String filter) {
 		LoadItem loadItem = getAllGames(userToken);
-		loadItem.addRequestParams(P_FIELDS, filter);
+		loadItem.addRequestParams(P_FIELDS_, filter);
 		return loadItem;
 	}
 
@@ -59,7 +59,7 @@ public class LoadHelper {
 		loadItem.addRequestParams(P_LOGIN_TOKEN, userToken);
 		loadItem.addRequestParams(P_GAME_TYPE_ID, RestHelper.V_GAME_CHESS);
 		loadItem.addRequestParams(P_MY_TURN_ONLY, RestHelper.V_TRUE);
-		loadItem.addRequestParams(P_FIELDS, RestHelper.V_ID);
+		loadItem.addRequestParams(P_FIELDS_, RestHelper.V_ID);
 		return loadItem;
 	}
 

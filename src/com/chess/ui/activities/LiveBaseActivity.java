@@ -14,9 +14,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
+import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.LoginItem;
+import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -41,7 +43,6 @@ import com.chess.utilities.LogMe;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 
 
 /**
@@ -71,6 +72,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected LiveChessService liveService;
 	private List<PopupDialogFragment> popupChallengesList;
 	private boolean needReLoginToLive;
+	private AbstractUpdateListener<UserItem> sessionIdUpdateListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +124,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		Log.d("TEST", " LiveBaseActivity go pause, isLCSBound = " + isLCSBound);
 		if (isLCSBound) {
 			liveService.startIdleTimeOutCounter();
+			isLCSBound = false;
 		}
 	}
 
@@ -316,29 +319,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 			}
-			if (isLCSBound) {
-				if (liveService.getLccHelper() != null && liveService.getLccHelper().isConnected()) {
-					onLiveClientConnected();
-				} else {
-					handler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							if (isLCSBound) {
-								if (liveService.getLccHelper() != null && liveService.getLccHelper().isConnected()) {
-									onLiveClientConnected();
-									handler.removeCallbacks(this);
-								} else {
-									handler.postDelayed(this, RETRY_DELAY);
-									Log.d("TEST", "Service bounded but client not connected");
-								}
-							}
-						}
-					}, RETRY_DELAY);
-					Log.d("TEST", "Service bounded but client not connected");
-				}
-			} else {
-				bindAndStartLiveService();
-			}
+			// first we check live sessionId
+			LoadItem loadItem = LoadHelper.getUserInfo(getCurrentUserToken());
+			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_SESSION_ID);
+
+			new RequestJsonTask<UserItem>(new SessionIdUpdateListener()).executeTask(loadItem);
 		}
 	}
 
@@ -351,6 +336,54 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	public boolean isLCSBound() {
 		return isLCSBound;
+	}
+
+	private class SessionIdUpdateListener extends AbstractUpdateListener<UserItem>{
+
+		public SessionIdUpdateListener() {
+			super(getContext(), UserItem.class);
+		}
+
+		@Override
+		public void updateData(UserItem returnedObj) {
+			super.updateData(returnedObj);
+
+			if (TextUtils.isEmpty(returnedObj.getData().getSessionId())) { // if API was not updated to get a single sessionId field
+				// we perform re-login
+				performReloginForLive();
+				needReLoginToLive = true;
+				return;
+			} else {
+				getAppData().setLiveSessionId(returnedObj.getData().getSessionId());
+			}
+			performServiceConnection();
+		}
+	}
+
+	private void performServiceConnection() {
+		if (isLCSBound) {
+			if (liveService.getLccHelper() != null && liveService.getLccHelper().isConnected()) {
+				onLiveClientConnected();
+			} else {
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						if (isLCSBound) {
+							if (liveService.getLccHelper() != null && liveService.getLccHelper().isConnected()) {
+								onLiveClientConnected();
+								handler.removeCallbacks(this);
+							} else {
+								handler.postDelayed(this, RETRY_DELAY);
+								Log.d("TEST", "Service bounded but client not connected");
+							}
+						}
+					}
+				}, RETRY_DELAY);
+				Log.d("TEST", "Service bounded but client not connected");
+			}
+		} else {
+			bindAndStartLiveService();
+		}
 	}
 
 	private class LiveServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
@@ -402,6 +435,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
+					isLCSBound = true;
 					onLiveClientConnected();
 				}
 			});
@@ -575,8 +609,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	private void performReloginForLive() {
 		// Logout first to make clear connect
-		liveService.logout();
-		unBindAndStopLiveService();
+		if (isLCSBound) {
+			liveService.logout();
+			unBindAndStopLiveService();
+		}
 
 		String password = getAppData().getPassword();
 		if (!TextUtils.isEmpty(password)) {
@@ -587,8 +623,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
 			loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getAppData().getUsername());
 			loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
-			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_USERNAME);
-			loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.P_TACTICS_RATING);
+			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_USERNAME);
+			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
 
 			new RequestJsonTask<LoginItem>(new LoginUpdateListener()).executeTask(loadItem);
 		} else {

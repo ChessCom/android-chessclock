@@ -173,7 +173,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.daily);
+		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
 
 		widgetsInit(view);
 	}
