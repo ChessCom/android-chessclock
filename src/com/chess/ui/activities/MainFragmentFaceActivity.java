@@ -177,7 +177,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 				// set the Above View
 				switchFragment(new HomeTabsFragment());
-//				openFragment(ArticleDetailsFragment.createInstance(11820));
+
+				// force create pullToRefreshAttacher bcz in some cases we skip home screen and it's not created, and we use chess spinner
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+					mPullToRefreshAttacher = PullToRefreshAttacher.get(this);
+				} else{
+					mPullToRefreshAttacher = AbcPullToRefreshAttacher.get(this);
+				}
 
 				showActionBar = true;
 			} else {

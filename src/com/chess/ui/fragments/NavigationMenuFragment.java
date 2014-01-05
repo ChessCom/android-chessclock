@@ -38,6 +38,7 @@ import com.chess.ui.fragments.messages.MessagesInboxFragment;
 import com.chess.ui.fragments.profiles.ProfileBaseFragmentTablet;
 import com.chess.ui.fragments.settings.SettingsFragment;
 import com.chess.ui.fragments.settings.SettingsFragmentTablet;
+import com.chess.ui.fragments.stats.StatsBasicFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
@@ -289,14 +290,24 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 				break;
 			case R.drawable.ic_nav_stats:
 				if (!isTablet) {
-					fragmentByTag = (BasePopupsFragment) findFragmentByTag(StatsGameFragment.class.getSimpleName());
+					if (isNeedToUpgrade()) {
+						fragmentByTag = (BasePopupsFragment) findFragmentByTag(StatsBasicFragment.class.getSimpleName());
+					} else {
+						fragmentByTag = (BasePopupsFragment) findFragmentByTag(StatsGameFragment.class.getSimpleName());
+					}
+
 				} else {
 					fragmentByTag = (BasePopupsFragment) findFragmentByTag(ProfileBaseFragmentTablet.class.getSimpleName());
 				}
 
 				if (fragmentByTag == null) {
 					if (!isTablet) {
-						fragmentByTag = new StatsGameFragment();
+						if (isNeedToUpgrade()) {
+							fragmentByTag = new StatsBasicFragment();
+						} else {
+							fragmentByTag = new StatsGameFragment();
+						}
+
 					} else {
 						fragmentByTag = ProfileBaseFragmentTablet.createInstance(ProfileBaseFragmentTablet.STATS_MODE, getUsername()); // TODO show stats by deafult
 					}

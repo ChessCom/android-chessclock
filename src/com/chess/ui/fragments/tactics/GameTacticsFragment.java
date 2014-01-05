@@ -456,7 +456,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_limit_reached, null, false);
 
-		// should be removed I think?
+
 		/*LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
 		if (AppUtils.isNeedToUpgrade(getActivity())) {
 			MopubHelper.showRectangleAd(adViewWrapper, getActivity());

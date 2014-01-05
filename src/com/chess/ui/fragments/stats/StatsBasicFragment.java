@@ -1,15 +1,14 @@
-package com.chess.ui.fragments.profiles;
+package com.chess.ui.fragments.stats;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
@@ -18,10 +17,18 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveUserStatsTask;
+import com.chess.model.PopupItem;
 import com.chess.model.RatingListItem;
+import com.chess.statics.FlurryData;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.RatingsAdapter;
-import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.views.drawables.IconDrawable;
+import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +36,10 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 05.08.13
- * Time: 10:32
+ * Date: 05.01.14
+ * Time: 19:45
  */
-public class ProfileRatingsFragment extends ProfileBaseFragment implements AdapterView.OnItemClickListener, ItemClickListenerFace {
+public class StatsBasicFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
 	private final static int DAILY_CHESS = 0;
 	private final static int LIVE_STANDARD = 1;
@@ -41,6 +48,7 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 	private final static int DAILY_CHESS960 = 4;
 	private final static int TACTICS = 5;
 	private final static int LESSONS = 6;
+	private static final String UPGRADE_STATS_TAG = "upgrade stats popup";
 
 	private List<RatingListItem> ratingList;
 	private RatingsAdapter ratingsAdapter;
@@ -48,12 +56,17 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 	private StatsItemUpdateListener statsItemUpdateListener;
 	private TextView emptyView;
 	private ListView listView;
+	private String username;
+	private LinearLayout customView;
 
-	public ProfileRatingsFragment() {
+	public StatsBasicFragment() {
+		Bundle bundle = new Bundle();
+		bundle.putString(USERNAME, Symbol.EMPTY);
+		setArguments(bundle);
 	}
 
-	public static ProfileRatingsFragment createInstance(String username) {
-		ProfileRatingsFragment fragment = new ProfileRatingsFragment();
+	public static StatsBasicFragment createInstance(String username) {
+		StatsBasicFragment fragment = new StatsBasicFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString(USERNAME, username);
 		fragment.setArguments(bundle);
@@ -63,6 +76,16 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			username = getArguments().getString(USERNAME);
+		} else {
+			username = savedInstanceState.getString(USERNAME);
+		}
+
+		if (TextUtils.isEmpty(username)) {
+			username = getUsername();
+		}
 
 		statsItemUpdateListener = new StatsItemUpdateListener();
 		saveStatsUpdateListener = new SaveStatsUpdateListener();
@@ -77,13 +100,29 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		emptyView = (TextView) view.findViewById(R.id.emptyView);
+		setTitle(R.string.stats);
 
-		listView = (ListView) view.findViewById(R.id.listView);
+		LayoutInflater inflater = LayoutInflater.from(getActivity());
+
+		View headerView = inflater.inflate(R.layout.new_lessons_upgrade_view, null, false);
+		headerView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+
+		((TextView) headerView.findViewById(R.id.lessonsUpgradeMessageTxt)).setText(R.string.get_detailed_stats);
+
+		emptyView = (TextView) view.findViewById(R.id.emptyView);
 		ratingList = createStatsList(getActivity());
 		ratingsAdapter = new RatingsAdapter(getActivity(), ratingList);
+
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.addHeaderView(headerView);
 		listView.setAdapter(ratingsAdapter);
 		listView.setOnItemClickListener(this);
+
+		// upgrade popup view
+		customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_limit_reached, null, false);
+		((TextView) customView.findViewById(R.id.titleTxt)).setText(R.string.get_detailed_stats);
+		customView.findViewById(R.id.descriptionTxt).setVisibility(View.GONE);
+		customView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 	}
 
 	@Override
@@ -104,11 +143,32 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		RatingListItem ratingListItem = ratingList.get(position);
+	public void onClick(View view) {
+		super.onClick(view);
 
-		int code = Integer.parseInt(ratingListItem.getCode());
-		openStatsForUser(code, username);
+		if (view.getId() == R.id.upgradeBtn) {
+
+			if (findFragmentByTag(UPGRADE_STATS_TAG) != null) {
+				((BasePopupDialogFragment) findFragmentByTag(UPGRADE_STATS_TAG)).dismiss();
+			}
+
+			FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_STATS);
+			if (!isTablet) {
+				getActivityFace().openFragment(new UpgradeFragment());
+			} else {
+				getActivityFace().openFragment(new UpgradeFragmentTablet());
+			}
+		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+		PopupItem popupItem = new PopupItem();
+		popupItem.setCustomView(customView);
+
+		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.createInstance(popupItem);
+		customViewFragment.show(getFragmentManager(), UPGRADE_STATS_TAG);
 	}
 
 	private void fillUserStats() {
@@ -217,11 +277,6 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 		need2update = false;
 	}
 
-	@Override
-	public Context getMeContext() {
-		return getActivity();
-	}
-
 	private class StatsItemUpdateListener extends ChessUpdateListener<UserStatsItem> {
 
 		public StatsItemUpdateListener() {
@@ -294,11 +349,4 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 		}
 	}
 
-/*
-	If there is no results-based rating for a given rating type,
-	then we should just hide the whole row for that rating type in the UI.
-
-	If the user (friend or self) has NO rated activity (so no line items),
-	 we would show a message, like No rated activity.
-*/
 }

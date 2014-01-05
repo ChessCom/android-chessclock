@@ -84,9 +84,9 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 		} else if (id == R.id.statsHeaderView){
 			getActivityFace().openFragment(new StatsGameFragment());
 		} else if (id == R.id.statsView1){
-			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.DAILY_CHESS, getUsername()));
+			openStatsForUser(StatsGameFragment.DAILY_CHESS, getUsername());
 		} else if (id == R.id.statsView2){
-			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.DAILY_CHESS960, getUsername()));
+			openStatsForUser(StatsGameFragment.DAILY_CHESS960, getUsername());
 		} else if (view.getId() == R.id.inviteFriendView1) {
 			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE, firstFriendUserName));
 			getActivityFace().toggleRightMenu();

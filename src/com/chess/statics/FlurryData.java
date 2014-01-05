@@ -16,6 +16,7 @@ public class FlurryData {
 	public static final String TACTICS_DAILY_LIMIT_EXCEEDED = "Tactics Daily Limit Exceeded";
 	public static final String TACTICS_SESSION_STARTED_FOR_GUEST = "Tactics Session Started For Guest";
 	public static final String UPGRADE_FROM_TACTICS = "Upgrade From Tactics";
+	public static final String UPGRADE_FROM_STATS = "Upgrade From Stats";
 	public static final String LOGGED_IN = "Logged In";
 	public static final String VIDEO_PLAYED = "Video Played";
 	public static final String UPGRADE_FROM_VIDEOS = "upgrade From Videos";

@@ -824,5 +824,7 @@
 	<string name="file_saved_to_download">File Saved to \"Download\"</string>
 	<string name="with">with</string>
 	<string name="tactics_limit_explain">Basic members are allowed 3 per day</string>
+	<string name="get_detailed_stats">Get Detailed Stats!</string>
+	<string name="select_plan">Select Plan</string>
 
 </resources>

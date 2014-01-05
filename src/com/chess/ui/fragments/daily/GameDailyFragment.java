@@ -318,6 +318,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 			getActivityFace().showPreviousFragment();
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			getActivityFace().showPreviousFragment();
+		}
 	}
 
 	protected void updateGameState(long gameId) {
@@ -611,7 +618,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	}
 
 	private void loadNextMyTurnGame() {
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(username),
+		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGames(username),
 				getContentResolver()).executeTask();
 	}
 

@@ -52,7 +52,7 @@ public class UpgradeDetailsFragmentTablet extends UpgradeDetailsFragment {
 			} else {
 				disabledOverlayView.setVisibility(View.GONE);
 			}
-		} else if (premiumStatus == StaticData.GOLD_USER) { // enable all
+		} else /*if (premiumStatus == StaticData.GOLD_USER)*/ { // enable all for Gold and Basic
 			disabledOverlayView.setVisibility(View.GONE);
 		}
 
@@ -74,7 +74,23 @@ public class UpgradeDetailsFragmentTablet extends UpgradeDetailsFragment {
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.setPlanBtn) {
+
+			if (premiumStatus == StaticData.DIAMOND_USER) { // disable platinum & gold
+				if (planCode == GOLD || planCode == PLATINUM) {
+					return;
+				}
+			} else if (premiumStatus == StaticData.PLATINUM_USER) { // disable gold
+				if (planCode == GOLD) {
+					return;
+				}
+			}
+
 			boolean monthSubscription = monthCheckBox.isChecked();
+			boolean yearSubscription = yearCheckBox.isChecked();
+			if (!monthSubscription && !yearSubscription) {
+				showToast(R.string.select_plan);
+				return;
+			}
 			String sku;
 			switch (planCode) {
 				case DIAMOND:
@@ -91,7 +107,6 @@ public class UpgradeDetailsFragmentTablet extends UpgradeDetailsFragment {
 						sku = IabHelper.SKU_PLATINUM_YEAR;
 					}
 					break;
-				default:
 				case GOLD:
 					if (monthSubscription) {
 						sku = IabHelper.SKU_GOLD_MONTH;
@@ -99,6 +114,9 @@ public class UpgradeDetailsFragmentTablet extends UpgradeDetailsFragment {
 						sku = IabHelper.SKU_GOLD_YEAR;
 					}
 					break;
+				default:
+					showToast(R.string.select_plan);
+					return;
 			}
 			sendPayment(sku);
 		}

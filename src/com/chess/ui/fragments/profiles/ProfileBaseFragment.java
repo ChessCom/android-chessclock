@@ -22,7 +22,6 @@ import com.chess.ui.fragments.messages.NewMessageFragment;
  */
 public abstract class ProfileBaseFragment extends CommonLogicFragment {
 
-	protected static final String USERNAME = "username";
 	protected String username;
 	private static final String CREATE_CHALLENGE_TAG = "create challenge confirm popup";
 

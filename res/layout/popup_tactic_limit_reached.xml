@@ -21,8 +21,9 @@
 		custom:ttf="Bold"
 		/>
 
-	<!--Wins reason-->
+	<!--description reason-->
 	<com.chess.widgets.RoboTextView
+		android:id="@+id/descriptionTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"

@@ -232,11 +232,11 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 		} else if (id == R.id.statsHeaderView) {
 			getActivityFace().openFragment(new StatsGameFragment());
 		} else if (id == R.id.statsView1) {
-			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_STANDARD, getUsername()));
+			openStatsForUser(StatsGameFragment.LIVE_STANDARD, getUsername());
 		} else if (id == R.id.statsView2) {
-			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_BLITZ, getUsername()));
+			openStatsForUser(StatsGameFragment.LIVE_BLITZ, getUsername());
 		} else if (id == R.id.statsView3) {
-			getActivityFace().openFragment(StatsGameFragment.createInstance(StatsGameFragment.LIVE_LIGHTNING, getUsername()));
+			openStatsForUser(StatsGameFragment.LIVE_LIGHTNING, getUsername());
 		} else if (view.getId() == R.id.inviteFriendView1) {
 			getActivityFace().changeRightFragment(LiveGameOptionsFragment.createInstance(RIGHT_MENU_MODE, firstFriendUserName));
 			getActivityFace().toggleRightMenu();

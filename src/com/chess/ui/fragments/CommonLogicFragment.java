@@ -46,6 +46,8 @@ import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
+import com.chess.ui.fragments.stats.StatsBasicFragment;
+import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.welcome.SignInFragment;
 import com.chess.ui.fragments.welcome.SignUpFragment;
 import com.chess.ui.fragments.welcome.WelcomeTabsFragment;
@@ -1105,6 +1107,14 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		if (cursor != null) {
 			cursor.close();
+		}
+	}
+
+	protected void openStatsForUser(int statId, String username) {
+		if (isNeedToUpgrade()) {
+			getActivityFace().openFragment(StatsBasicFragment.createInstance(username));
+		} else {
+			getActivityFace().openFragment(StatsGameFragment.createInstance(statId, username));
 		}
 	}
 }

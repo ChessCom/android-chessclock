@@ -17,7 +17,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyChallengeItem;
-import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.FriendRequestResultItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -160,9 +159,8 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 			DbDataManager.deleteGameOverNotification(getContentResolver(), getUsername(), gameId);
 
 			updateNotificationBadges();
-			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
 
-			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
+			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(gameId));
 			getActivityFace().toggleRightMenu();
 		}
 	}

@@ -23,12 +23,16 @@ import com.chess.db.DbScheme;
 import com.chess.db.QueryParams;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveGameStatsTask;
+import com.chess.statics.FlurryData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.views.PieChartView;
 import com.chess.ui.views.RatingGraphView;
 import com.chess.utilities.AppUtils;
+import com.flurry.android.FlurryAgent;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -183,6 +187,8 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		mostFrequentOpponentGamesTxt = (TextView) view.findViewById(R.id.mostFrequentOpponentGamesTxt);
 
 		if (isNeedToUpgrade()) {
+			view.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+			((TextView) view.findViewById(R.id.lessonsUpgradeMessageTxt)).setText(R.string.get_detailed_stats);
 			view.findViewById(R.id.demoOverlayView).setVisibility(View.VISIBLE);
 		}
 
@@ -247,6 +253,21 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		}
 		new LoadDataFromDbTask(gameStatsCursorUpdateListener, DbHelper.getTableForUser(username,
 				table), getContentResolver()).executeTask();
+	}
+
+	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+
+		if (view.getId() == R.id.upgradeBtn) {
+
+			FlurryAgent.logEvent(FlurryData.UPGRADE_FROM_STATS);
+			if (!isTablet) {
+				getActivityFace().openFragment(new UpgradeFragment());
+			} else {
+				getActivityFace().openFragment(new UpgradeFragmentTablet());
+			}
+		}
 	}
 
 	@Override

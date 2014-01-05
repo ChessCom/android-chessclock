@@ -369,7 +369,22 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.setPlanBtn) {
+			if (premiumStatus == StaticData.DIAMOND_USER) { // disable platinum & gold
+				if (planCode == GOLD || planCode == PLATINUM) {
+					return;
+				}
+			} else if (premiumStatus == StaticData.PLATINUM_USER) { // disable gold
+				if (planCode == GOLD) {
+					return;
+				}
+			}
+
 			boolean monthSubscription = monthCheckBox.isChecked();
+			boolean yearSubscription = yearCheckBox.isChecked();
+			if (!monthSubscription && !yearSubscription) {
+				showToast(R.string.select_plan);
+				return;
+			}
 			String sku;
 			switch (radioGroup.getCheckedRadioButtonId()) {
 				case R.id.diamondBtn:
@@ -386,7 +401,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 						sku = IabHelper.SKU_PLATINUM_YEAR;
 					}
 					break;
-				default:
 				case R.id.goldBtn:
 					if (monthSubscription) {
 						sku = IabHelper.SKU_GOLD_MONTH;
@@ -394,6 +408,9 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 						sku = IabHelper.SKU_GOLD_YEAR;
 					}
 					break;
+				default:
+					showToast(R.string.select_plan);
+					return;
 			}
 			sendPayment(sku);
 		}
@@ -803,31 +820,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 	private void setWaitScreen(boolean show) {
 		showLoadingProgress(show);
-//		if (show) {
-//
-//			View layout = LayoutInflater.from(getActivity()).inflate(R.layout.new_progress_load_popup, null, false);
-//
-//			TextView loadTitleTxt = (TextView) layout.findViewById(R.id.loadTitleTxt);
-//			View loadProgressBar = layout.findViewById(R.id.loadProgressBar);
-//			loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
-//			taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
-//
-//			loadTitleTxt.setText(R.string.verifying_payments);
-//			taskTitleTxt.setText(message);
-//			loadProgressTxt.setVisibility(View.GONE);
-//			loadProgressBar.setVisibility(View.VISIBLE);
-//
-//			PopupItem popupItem = new PopupItem();
-//			popupItem.setCustomView(layout);
-//
-//			loadProgressPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-//			loadProgressPopupFragment.show(getFragmentManager(), LOAD_TAG);
-//
-//		} else {
-//			if (loadProgressPopupFragment != null) {
-//				loadProgressPopupFragment.dismiss();
-//			}
-//		}
 	}
 
 	protected void widgetsInit(View view) {
