@@ -400,15 +400,16 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	public void onGameStarted(final int currentMovePosition) {
 		Log.d(CompEngineHelper.TAG, " onGameStarted " + currentMovePosition);
 
-		if (getActivity() == null) {
+		final FragmentActivity activity = getActivity();
+		if (activity == null) {
 			return;
 		}
 
 		boardView.updateBoardPosition(currentMovePosition);
-		getActivity().runOnUiThread(new Runnable() {
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				if (getActivity() == null) {
+				if (activity == null) {
 					return;
 				}
 
