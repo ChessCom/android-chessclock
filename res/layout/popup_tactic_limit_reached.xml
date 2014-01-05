@@ -4,21 +4,36 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	android:paddingTop="30dp"
+	android:paddingTop="15dp"
 	>
 
-	<!--Complete title-->
+	<!--Limit title-->
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/titleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
+		android:gravity="center"
 		android:textSize="@dimen/game_end_popup_text_size"
 		android:textColor="@color/new_subtitle_dark_grey"
-		android:text="@string/daily_limit_reached"
-		android:paddingBottom="35dip"
+		android:text="@string/upgrade_for_unlimited_tactics"
+		android:padding="8dip"
 		custom:ttf="Bold"
 		/>
+
+	<!--Wins reason-->
+	<com.chess.widgets.RoboTextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center_horizontal"
+		android:textSize="@dimen/popup_title_text_size_medium"
+		android:textColor="@color/new_author_dark_grey"
+		android:paddingTop="6dip"
+		android:paddingBottom="6dip"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:text="@string/tactics_limit_explain" />
 
 	<!--Ads-->
 	<LinearLayout
@@ -47,7 +62,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/upgrade"
+			android:text="@string/upgrade_now"
 			style="@style/Button.Upgrade"
 			android:minHeight="@dimen/main_button_height"
 			/>

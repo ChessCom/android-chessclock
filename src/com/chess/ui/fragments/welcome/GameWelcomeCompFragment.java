@@ -597,7 +597,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				.append("\n [BlackElo \"").append("--").append("\"]")
 				.append("\n [TimeControl \"").append("--").append("\"]");
 		if (finished) {
-			builder.append("\n [Termination \"").append(endGameMessage).append("\"]");
+			builder.append("\n [Termination \"").append(endGameReason).append("\"]");
 		}
 		builder.append("\n ").append(moves).append(Symbol.SPACE).append(result)
 				.append("\n \n Sent from my Android");
@@ -610,11 +610,11 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
-	public void onGameOver(final String message, boolean need2Finish) {
+	public void onGameOver(final String title, String reason) {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				boolean userWon = !message.equals(getString(R.string.black_wins)); // how it works for Black user? and how it works for human vs. human mode?
+				boolean userWon = !title.equals(getString(R.string.black_wins)); // how it works for Black user? and how it works for human vs. human mode?
 
 				topPanelView.resetPieces();
 				bottomPanelView.resetPieces();

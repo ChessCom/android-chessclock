@@ -16,6 +16,7 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.model.CompEngineItem;
+import com.chess.model.GameAnalysisItem;
 import com.chess.model.PgnItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
@@ -26,6 +27,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.engine.stockfish.CompEngineHelper;
 import com.chess.ui.engine.stockfish.StartEngineTask;
+import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
@@ -215,12 +217,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public String getWhitePlayerName() {
-		return null;
+		return labelsConfig.userSide == ChessBoard.WHITE_SIDE ? getUsername() : getString(R.string.comp);
 	}
 
 	@Override
-	public String getBlackPlayerName() {  // TODO use correct interfaces
-		return null;
+	public String getBlackPlayerName() {
+		return labelsConfig.userSide == ChessBoard.BLACK_SIDE ? getUsername() : getString(R.string.comp);
 	}
 
 	@Override
@@ -571,7 +573,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				.append("\n [BlackElo \"").append("--").append("\"]")
 				.append("\n [TimeControl \"").append("--").append("\"]");
 		if (finished) {
-			builder.append("\n [Termination \"").append(endGameMessage).append("\"]");
+			builder.append("\n [Termination \"").append(endGameReason).append("\"]");
 		}
 		builder.append("\n ").append(moves).append(Symbol.SPACE).append(result)
 				.append("\n \n Sent from my Android");
@@ -584,23 +586,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	@Override
-	protected void showGameEndPopup(View layout, String message) {
-		((TextView) layout.findViewById(R.id.endGameTitleTxt)).setText(message);
-		String winner;
-		if (message.equals(getString(R.string.black_wins))) {
-			if (labelsConfig.userSide == ChessBoard.BLACK_SIDE) {
-				winner = labelsConfig.bottomPlayerName;
-			} else {
-				winner = labelsConfig.topPlayerName;
-			}
-		} else {
-			if (labelsConfig.userSide == ChessBoard.WHITE_SIDE) {
-				winner = labelsConfig.bottomPlayerName;
-			} else {
-				winner = labelsConfig.topPlayerName;
-			}
-		}
-		((TextView) layout.findViewById(R.id.endGameReasonTxt)).setText(getString(R.string.won_by_checkmate, winner)); // TODO adjust
+	protected void showGameEndPopup(View layout, String title, String reason) {
+		((TextView) layout.findViewById(R.id.endGameTitleTxt)).setText(title);
+		((TextView) layout.findViewById(R.id.endGameReasonTxt)).setText(reason);
 		layout.findViewById(R.id.ratingTitleTxt).setVisibility(View.GONE);
 		layout.findViewById(R.id.resultRatingTxt).setVisibility(View.GONE);
 		layout.findViewById(R.id.resultRatingChangeTxt).setVisibility(View.GONE);
@@ -616,6 +604,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
+		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);
 
 		getAppData().clearSavedCompGame();
 
@@ -642,6 +631,15 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		if (view.getId() == R.id.newGamePopupBtn) {
 			newGame();
+			dismissEndGameDialog();
+		} else if (view.getId() == R.id.analyzePopupBtn) {
+			GameAnalysisItem analysisItem = new GameAnalysisItem();
+			analysisItem.setGameType(RestHelper.V_GAME_CHESS);
+			analysisItem.setFen(getBoardFace().generateFullFen());
+			analysisItem.setMovesList(getBoardFace().getMoveListSAN());
+			analysisItem.copyLabelConfig(labelsConfig);
+
+			getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
 			dismissEndGameDialog();
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			// change sides

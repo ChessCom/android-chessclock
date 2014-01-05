@@ -128,7 +128,7 @@
 			android:layout_weight="1"
 			android:padding="1dip"
 			android:text="@string/analyze"
-			style="@style/Button.Grey2Solid.NoBorder.Light"
+			style="@style/Button.Glassy"
 			android:layout_marginRight="5dip" />
 
 		<!--Share-->

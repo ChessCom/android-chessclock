@@ -9,6 +9,7 @@
 	<item name="tournamentsBtn" type="id"/>
 
 	<!--Notification-->
+	<item name="notification_id" type="id"/>
 	<item name="notification_message" type="id"/>
 
 	<item name="list_item_id" type="id"/>

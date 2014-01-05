@@ -216,7 +216,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		getActionBarHelper().showActionBar(showActionBar);
 
-		updateNotificationsBadges();
 		updateMainBackground();
 	}
 
@@ -257,6 +256,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		updateNotificationsBadges();
 
 		DataHolder.getInstance().setMainActivityVisible(true);
 

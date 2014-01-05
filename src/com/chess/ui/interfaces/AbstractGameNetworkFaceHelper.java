@@ -84,7 +84,7 @@ public abstract class AbstractGameNetworkFaceHelper implements GameNetworkFace {
 	}
 
 	@Override
-	public void onGameOver(String message, boolean need2Finish) {
+	public void onGameOver(String title, String reason) {
 
 	}
 

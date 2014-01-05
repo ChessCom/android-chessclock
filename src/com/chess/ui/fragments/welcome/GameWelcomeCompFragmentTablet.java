@@ -109,12 +109,12 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 	}
 
 	@Override
-	public void onGameOver(final String message, boolean need2Finish) {
+	public void onGameOver(final String title, String reason) {
 		long appearDelay = inLandscape() ? 0 : END_GAME_DELAY;
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				boolean userWon = !message.equals(getString(R.string.black_wins)); // how it works for Black user? and how it works for human vs. human mode?
+				boolean userWon = !title.equals(getString(R.string.black_wins)); // how it works for Black user? and how it works for human vs. human mode?
 
 				topPanelView.resetPieces();
 				bottomPanelView.resetPieces();

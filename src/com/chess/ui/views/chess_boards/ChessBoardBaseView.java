@@ -1130,24 +1130,42 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	protected boolean isGameOver() {
 		drawCapturedPieces();
 
+		if (getResources() == null) {
+			Log.e("TEST"," resources are null"); // shouldn't be anyway
+		}
+
 		BoardFace boardFace = getBoardFace();
 		int side = boardFace.getSide();
 		if (!boardFace.isAnalysis()) {
-			int messageId = 0;
+			int titleId = 0;
+			String reasonStr = Symbol.EMPTY;
 
 			if (!boardFace.isPossibleToMakeMoves()) {
 				if (boardFace.isPerformCheck(side)) {
-					messageId = side == ChessBoard.WHITE_SIDE ? R.string.black_wins : R.string.white_wins;
+					String whitePlayerName = gameFace.getWhitePlayerName();
+					String blackPlayerName = gameFace.getBlackPlayerName();
+					if (side == ChessBoard.WHITE_SIDE) {
+						titleId = R.string.black_wins;
+						reasonStr = getResources().getString(R.string.won_by_checkmate, blackPlayerName);
+					} else {
+						titleId = R.string.white_wins;
+						reasonStr = getResources().getString(R.string.won_by_checkmate, whitePlayerName);
+					}
 				} else {
-					messageId = R.string.draw_by_stalemate;
+					titleId = R.string.draw_by_stalemate;
+					reasonStr = getResources().getString(R.string.stalemate);
 				}
 			} else if (boardFace.getRepetitions() == 3) {
-				messageId = R.string.draw_by_3fold_repetition;
+				titleId = R.string.draw_by_3fold_repetition;
+				reasonStr = getResources().getString(R.string.draw_rep);
+
 			}
 
-			if (messageId != 0) {
+			if (titleId != 0) {
 				boardFace.setFinished(true);
-				gameFace.onGameOver(getResources().getString(messageId), false);
+
+				String title = getResources().getString(titleId);
+				gameFace.onGameOver(title, reasonStr);
 				return true;
 			}
 		} else if (boardFace.isPerformCheck(side)) {

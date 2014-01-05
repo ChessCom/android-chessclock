@@ -31,12 +31,7 @@ public interface GameFace {
 
 	void invalidateGameScreen();
 
-	/**
-	 *
-	 * @param message to be shown
-	 * @param need2Finish tells the activity that it needs to finish
-	 */
-	void onGameOver(String message, boolean need2Finish);
+	void onGameOver(String title, String reason);
 
 	String getWhitePlayerName();
 

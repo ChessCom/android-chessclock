@@ -597,7 +597,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			} else {
 				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
 			}
-			showGameEndPopup(endGamePopupView, endGameMessage);
+			showGameEndPopup(endGamePopupView, endGameTitle, endGameReason);
 		} else {
 			int action = getAppData().getAfterMoveAction();
 			if (action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
@@ -759,7 +759,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 				.append("\n [BlackElo \"").append(currentGame.getBlackRating()).append("\"]")
 				.append("\n [TimeControl \"").append(timeControl.toString()).append("\"]");
 		if (finished) {
-			builder.append("\n [Termination \"").append(endGameMessage).append("\"]");
+			builder.append("\n [Termination \"").append(endGameReason).append("\"]");
 		}
 		builder.append("\n ").append(moves).append(Symbol.SPACE).append(result)
 				.append("\n \n Sent from my Android");
@@ -807,32 +807,20 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	}
 
 	@Override
-	protected void showGameEndPopup(View layout, String message) {
+	protected void showGameEndPopup(View layout, String title, String reason) {
 		if (currentGame == null) {
 			throw new IllegalStateException("showGameEndPopup starts with currentGame = null");
 		}
 
-//		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
+		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
 		TextView resultRatingTxt = (TextView) layout.findViewById(R.id.resultRatingTxt);
-//		endGameTitleTxt.setText(R.string.game_over); // already set to game over
-		endGameReasonTxt.setText(message);
+		TextView ratingTitleTxt = (TextView) layout.findViewById(R.id.ratingTitleTxt);
+		endGameTitleTxt.setText(title);
+		endGameReasonTxt.setText(reason);
 
-
-		int currentPlayerNewRating = getCurrentPlayerRating();
-
-//		int ratingDiff; // TODO fill difference in ratings
-//		String sign;
-//		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
-//			ratingDiff = currentPlayerNewRating - currentPlayerRating;
-//			sign = StaticData.PLUS;
-//		} else { // 800 700
-//			ratingDiff = currentPlayerRating - currentPlayerNewRating;
-//			sign = StaticData.MINUS;
-//		}
-
-		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
-		resultRatingTxt.setText(rating);
+		ratingTitleTxt.setText(getString(R.string.new_game_rating_arg, getString(R.string.new_)));
+		resultRatingTxt.setText(String.valueOf(getCurrentPlayerRating()));
 
 //		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 //		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
@@ -932,7 +920,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 					NotificationManager mNotificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
 					mNotificationManager.cancel((int) gameId);
-					mNotificationManager.cancel(R.id.notification_message);
+					mNotificationManager.cancel(R.id.notification_id);
 					break;
 //				case NEXT_GAME_UPDATE:
 //					switchToNextGame(returnedObj);
@@ -944,7 +932,18 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 					showToast(R.string.draw_offered);
 					break;
 				case ABORT_GAME_UPDATE:
-					onGameOver(getString(R.string.game_over), true);
+					String title;
+					String opponentName;
+					if (isUserColorWhite()) {
+						title = getString(R.string.black_wins);
+						opponentName = getBlackPlayerName();
+					} else {
+						title = getString(R.string.white_wins);
+						opponentName = getWhitePlayerName();
+					}
+
+					String reason = getString(R.string.won_by_resignation, opponentName);
+					onGameOver(title, reason);
 					break;
 			}
 		}

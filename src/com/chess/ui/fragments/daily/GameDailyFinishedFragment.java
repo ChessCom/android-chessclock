@@ -550,7 +550,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 				.append("\n [BlackElo \"").append(currentGame.getBlackRating()).append("\"]")
 				.append("\n [TimeControl \"").append(timeControl.toString()).append("\"]");
 		if (finished) {
-			builder.append("\n [Termination \"").append(endGameMessage).append("\"]");
+			builder.append("\n [Termination \"").append(endGameReason).append("\"]");
 		}
 		builder.append("\n ").append(moves)
 				.append("\n \n Sent from my Android");
@@ -577,32 +577,20 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	}
 
 	@Override
-	protected void showGameEndPopup(View layout, String message) {
+	protected void showGameEndPopup(View layout, String title, String reason) {
 		if (currentGame == null) {
 			throw new IllegalStateException("showGameEndPopup starts with currentGame = null");
 		}
 
-//		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
+		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
-		TextView yourRatingTxt = (TextView) layout.findViewById(R.id.yourRatingTxt);
-//		endGameTitleTxt.setText(R.string.game_over); // already set to game over
-		endGameReasonTxt.setText(message);
+		TextView resultRatingTxt = (TextView) layout.findViewById(R.id.resultRatingTxt);
+		TextView ratingTitleTxt = (TextView) layout.findViewById(R.id.ratingTitleTxt);
+		endGameTitleTxt.setText(title);
+		endGameReasonTxt.setText(reason);
 
-
-		int currentPlayerNewRating = getCurrentPlayerRating();
-
-//		int ratingDiff; // TODO fill difference in ratings
-//		String sign;
-//		if(currentPlayerRating < currentPlayerNewRating){ // 800 1200
-//			ratingDiff = currentPlayerNewRating - currentPlayerRating;
-//			sign = StaticData.PLUS;
-//		} else { // 800 700
-//			ratingDiff = currentPlayerRating - currentPlayerNewRating;
-//			sign = StaticData.MINUS;
-//		}
-
-		String rating = getString(R.string.your_end_game_rating_online, currentPlayerNewRating);
-		yourRatingTxt.setText(rating);
+		ratingTitleTxt.setText(getString(R.string.new_game_rating_arg, getString(R.string.new_)));
+		resultRatingTxt.setText(String.valueOf(getCurrentPlayerRating()));
 
 //		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 //		MopubHelper.showRectangleAd(adViewWrapper, getActivity());

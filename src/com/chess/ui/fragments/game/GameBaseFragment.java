@@ -69,7 +69,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected SimpleDateFormat datePgnFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 	private ChessBoardBaseView boardView;
-	protected String endGameMessage;
+	protected String endGameTitle;
+	protected String endGameReason;
 	protected long gameId;
 	private View boardFrame;
 	protected ImageView topAvatarImg;
@@ -262,8 +263,9 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	@Override
-	public void onGameOver(String message, boolean need2Finish) {
-		endGameMessage = message;
+	public void onGameOver(String title, String reason) {
+		endGameTitle = title;
+		endGameReason = reason;
 
 		if (!getBoardFace().isSubmit()) {
 
@@ -274,13 +276,13 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
 			}
 
-			showGameEndPopup(endGamePopupView, endGameMessage);
+			showGameEndPopup(endGamePopupView, endGameTitle, endGameReason);
 			//initUpgradeAndAdWidgets(endGamePopupView); //todo: uncomment in order to show ads
 			setBoardToFinishedState();
 		}
 	}
 
-	protected void showGameEndPopup(final View layout, final String message) {
+	protected void showGameEndPopup(final View layout, final String title, String reason) {
 	}
 
 	@Override

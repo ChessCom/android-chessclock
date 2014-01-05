@@ -357,7 +357,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	}
 
 	@Override
-	protected void showGameEndPopup(View layout, String message) {
+	protected void showGameEndPopup(View layout, String title, String reason) {
 
 	}
 

@@ -34,10 +34,7 @@ import com.chess.backend.gcm.*;
 import com.chess.db.DbDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
-import com.chess.statics.AppConstants;
-import com.chess.statics.AppData;
-import com.chess.statics.IntentConstants;
-import com.chess.statics.StaticData;
+import com.chess.statics.*;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 import com.google.android.gcm.GCMBaseIntentService;
@@ -54,6 +51,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	private static final String TAG = "GCMIntentService";
 	private static final String TOKEN = Long.toBinaryString(new Random().nextLong());
+
+	public static final String SENDER = "sender";
+	public static final String MESSAGE = "message";
+	public static final String CREATED_AT = "created_at";
+	public static final String AVATAR_URL = "avatar_url";
+	public static final String GAME_ID = "game_id";
+	public static final String REQUEST_ID = "request_id";
+	public static final String CHALLENGE_ID = "challenge_id";
+	public static final String LAST_MOVE_SAN = "last_move_san";
+	public static final String OPPONENT_USERNAME = "opponent_username";
 	private SharedPreferences preferences;
 
 	public GCMIntentService() {
@@ -147,6 +154,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 		LogMe.dl(TAG, "User = " + username + " Received message");
 
 		String type = intent.getStringExtra("type");
+		if (type == null) {
+			return;
+		}
+
 		if (intent.hasExtra("owner")) {
 			String owner = intent.getStringExtra("owner");
 			if (owner != null && !owner.equals(username)) { // don't handle not our messages
@@ -155,14 +166,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 		}
 
 		LogMe.dl(TAG, "type = " + type + " intent = " + intent);
-		if (/*BuildConfig.DEBUG && */intent.hasExtra("message")) {
-			Log.d(TAG, "type = " + type + " message = " + intent.getStringExtra("message"));
+		if (BuildConfig.DEBUG && intent.hasExtra(MESSAGE)) {
+			Log.d(TAG, "type = " + type + " message = " + intent.getStringExtra(MESSAGE));
 
-			String message = intent.getStringExtra("message");          // TODO remove after debug
+			String message = intent.getStringExtra(MESSAGE);          // TODO remove after debug
 			if (message.length() >= 20) {
 				message = message.substring(0, 20);
 			}
-			AppUtils.showStatusBarNotification(context, type, message);
+//			AppUtils.showStatusBarNotification(context, type, message);
 		}
 
 		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)) {
@@ -175,48 +186,53 @@ public class GCMIntentService extends GCMBaseIntentService {
 			sendNotificationBroadcast(context, type);
 
 			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
-				String title = context.getString(R.string.you_have_new_friend_request);
-				String body = context.getString(R.string.you_have_new_friend_request);
+				String title = context.getString(R.string.new_friend_request);
+				String body = intent.getStringExtra(SENDER) + Symbol.COLON + Symbol.SPACE + intent.getStringExtra(MESSAGE);
 				AppUtils.showStatusBarNotification(context, title, body);
 			}
 		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_MESSAGE)) {
 
 //			showNewMessage(intent, context);
 			sendNotificationBroadcast(context, type);
+
 			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
-				String title = context.getString(R.string.you_have_new_message);
-				String body = context.getString(R.string.you_have_new_message);
+				String title = context.getString(R.string.new_message);
+				String body = context.getString(R.string.new_message);
 				AppUtils.showStatusBarNotification(context, title, body);
 			}
 		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_CHAT_MESSAGE)) {
 
 			showNewChatMessage(intent, context);
 			sendNotificationBroadcast(context, type);
+
 			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
-				String title = context.getString(R.string.you_have_new_chat_message);
-				String body = context.getString(R.string.you_have_new_chat_message);
+				String title = context.getString(R.string.new_chat_message);
+				String body = intent.getStringExtra(SENDER) + Symbol.COLON + Symbol.SPACE + intent.getStringExtra(MESSAGE);
 				AppUtils.showStatusBarNotification(context, title, body);
 			}
-		} else if (type.equals(GcmHelper.NOTIFICATION_MOVE_MADE)) {
-			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
-		} else if (type.equals(GcmHelper.NOTIFICATION_GAME_OVER)) {
+		} else if (type.equals(GcmHelper.NOTIFICATION_GAME_OVER)) {  // Game over
 
 			showGameOver(intent, context);
 			sendNotificationBroadcast(context, type);
+
 			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
 				String title = context.getString(R.string.your_game_is_over);
-				String body = context.getString(R.string.your_game_is_over);
+				String body = intent.getStringExtra(MESSAGE);
 				AppUtils.showStatusBarNotification(context, title, body);
 			}
 		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_CHALLENGE)) {
 
 			showNewChallenge(intent, context);
 			sendNotificationBroadcast(context, type);
+
 			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
-				String title = context.getString(R.string.you_have_new_challenge);
-				String body = context.getString(R.string.you_have_new_challenge);
+				String title = context.getString(R.string.new_challenge);
+				String body = getString(R.string.game) + Symbol.SPACE + getString(R.string.with)
+						+ Symbol.SPACE + intent.getStringExtra(SENDER);
 				AppUtils.showStatusBarNotification(context, title, body);
 			}
+		} else if (type.equals(GcmHelper.NOTIFICATION_MOVE_MADE)) {
+			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 		}
 	}
 
@@ -229,11 +245,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private synchronized void showNewFriendRequest(Intent intent, Context context) {
 		FriendRequestItem friendRequestItem = new FriendRequestItem();
 
-		friendRequestItem.setMessage(intent.getStringExtra("message"));
-		friendRequestItem.setUsername(intent.getStringExtra("sender"));
-		friendRequestItem.setCreatedAt(Long.parseLong(intent.getStringExtra("created_at")));
-		friendRequestItem.setAvatar(intent.getStringExtra("avatar_url"));
-		friendRequestItem.setRequestId(Long.parseLong(intent.getStringExtra("request_id")));
+		friendRequestItem.setMessage(intent.getStringExtra(MESSAGE));
+		friendRequestItem.setUsername(intent.getStringExtra(SENDER));
+		friendRequestItem.setCreatedAt(Long.parseLong(intent.getStringExtra(CREATED_AT)));
+		friendRequestItem.setAvatar(intent.getStringExtra(AVATAR_URL));
+		friendRequestItem.setRequestId(Long.parseLong(intent.getStringExtra(REQUEST_ID)));
 		LogMe.dl(TAG, " _________________________________");
 		LogMe.dl(TAG, " FriendRequestItem = " + new Gson().toJson(friendRequestItem));
 
@@ -246,11 +262,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private synchronized void showNewChatMessage(Intent intent, Context context) {
 		NewChatNotificationItem chatNotificationItem = new NewChatNotificationItem();
 
-		chatNotificationItem.setMessage(intent.getStringExtra("message"));
-		chatNotificationItem.setUsername(intent.getStringExtra("sender"));
-		chatNotificationItem.setGameId(Long.parseLong(intent.getStringExtra("game_id")));
-		chatNotificationItem.setCreatedAt(Long.parseLong(intent.getStringExtra("created_at")));
-		chatNotificationItem.setAvatar(intent.getStringExtra("avatar_url"));
+		chatNotificationItem.setMessage(intent.getStringExtra(MESSAGE));
+		chatNotificationItem.setUsername(intent.getStringExtra(SENDER));
+		chatNotificationItem.setGameId(Long.parseLong(intent.getStringExtra(GAME_ID)));
+		chatNotificationItem.setCreatedAt(Long.parseLong(intent.getStringExtra(CREATED_AT)));
+		chatNotificationItem.setAvatar(intent.getStringExtra(AVATAR_URL));
 		LogMe.dl(TAG, " _________________________________");
 		LogMe.dl(TAG, " NewChatNotificationItem = " + new Gson().toJson(chatNotificationItem));
 
@@ -279,9 +295,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private synchronized void showGameOver(Intent intent, Context context) {
 		GameOverNotificationItem gameOverNotificationItem = new GameOverNotificationItem();
 
-		gameOverNotificationItem.setMessage(intent.getStringExtra("message"));
-		gameOverNotificationItem.setGameId(Long.parseLong(intent.getStringExtra("game_id")));
-		gameOverNotificationItem.setAvatar(intent.getStringExtra("avatar_url"));
+		gameOverNotificationItem.setMessage(intent.getStringExtra(MESSAGE));
+		gameOverNotificationItem.setGameId(Long.parseLong(intent.getStringExtra(GAME_ID)));
+		gameOverNotificationItem.setAvatar(intent.getStringExtra(AVATAR_URL));
 		LogMe.dl(TAG, " _________________________________");
 		LogMe.dl(TAG, " GameOverNotificationItem = " + new Gson().toJson(gameOverNotificationItem));
 		ContentResolver contentResolver = context.getContentResolver();
@@ -293,9 +309,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private synchronized void showNewChallenge(Intent intent, Context context) {
 		NewChallengeNotificationItem challengeNotificationItem = new NewChallengeNotificationItem();
 
-		challengeNotificationItem.setUsername(intent.getStringExtra("sender"));
-		challengeNotificationItem.setAvatar(intent.getStringExtra("avatar_url"));
-		challengeNotificationItem.setChallengeId(Long.parseLong(intent.getStringExtra("challenge_id")));
+		challengeNotificationItem.setUsername(intent.getStringExtra(SENDER));
+		challengeNotificationItem.setAvatar(intent.getStringExtra(AVATAR_URL));
+		challengeNotificationItem.setChallengeId(Long.parseLong(intent.getStringExtra(CHALLENGE_ID)));
 		LogMe.dl(TAG, " _________________________________");
 		LogMe.dl(TAG, " NewChallengeNotificationItem = " + new Gson().toJson(challengeNotificationItem));
 		ContentResolver contentResolver = context.getContentResolver();
@@ -307,13 +323,12 @@ public class GCMIntentService extends GCMBaseIntentService {
 		AppData appData = new AppData(context);
 		String username = appData.getUsername();
 
-		String lastMoveSan = intent.getStringExtra("last_move_san");
+		String lastMoveSan = intent.getStringExtra(LAST_MOVE_SAN);
 //			String opponentUserId = intent.getStringExtra("opponent_user_id");
 //			String collapseKey = intent.getStringExtra("collapse_key");
-		String opponentUsername = intent.getStringExtra("opponent_username");
-		String gameId = intent.getStringExtra("game_id");
+		String opponentUsername = intent.getStringExtra(OPPONENT_USERNAME);
+		String gameId = intent.getStringExtra(GAME_ID);
 
-//		boolean gameInfoFound = false;
 		LogMe.dl(TAG, " _________________________________");
 		LogMe.dl(TAG, " LastMoveSan = " + lastMoveSan);
 		LogMe.dl(TAG, " gameId = " + gameId);
@@ -324,28 +339,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 		if (opponentUsername.equalsIgnoreCase(username)) {
 			return; // don't need notification of myself game
 		}
-//		Log.d("TEST", " lastMoveInfoItems.size() = " + DataHolder.getInstance().getLastMoveInfoItems().size());
-
-		// check if we already received that notification
-//		for (LastMoveInfoItem lastMoveInfoItem : DataHolder.getInstance().getLastMoveInfoItems()) {
-//			if (lastMoveInfoItem.getGameId().equals(gameId)) { // if have info about this game
-//				Log.d(TAG, " lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan) = " + lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan));
-//				if (lastMoveInfoItem.getLastMoveSan().equals(lastMoveSan)) { // if this game info already contains the same move update
-//					return; // no need to update
-//				} else { // if move info is different
-//					lastMoveInfoItem.setLastMoveSan(lastMoveSan);
-//				}
-//				gameInfoFound = true;
-//			}
-//		}
-
-//		if (!gameInfoFound) { // if we have no info about this game, then add last move to list of objects
-//			Log.d(TAG, " adding new game info");
-//			LastMoveInfoItem lastMoveInfoItem = new LastMoveInfoItem();
-//			lastMoveInfoItem.setLastMoveSan(lastMoveSan);
-//			lastMoveInfoItem.setGameId(gameId);
-//			DataHolder.getInstance().addLastMoveInfo(lastMoveInfoItem);
-//		}
 
 		// Saving play move notification to DB
 		ContentResolver contentResolver = context.getContentResolver();
@@ -354,7 +347,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 		yourTurnItem.setOpponent(opponentUsername);
 
 		DbDataManager.savePlayMoveNotification(contentResolver, username, yourTurnItem);
-
 
 		List<YourTurnItem> moveNotifications = DbDataManager.getAllPlayMoveNotifications(contentResolver, username);
 

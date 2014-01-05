@@ -2,7 +2,6 @@ package com.chess.utilities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -343,6 +342,7 @@ public class AppUtils {
 					yourTurnItem.getLastMove());
 
 			notificationBuilder.setContentTitle(title)
+					.setTicker(title + Symbol.NEW_STR + body)
 					.setContentText(body)
 					.setSmallIcon(R.drawable.ic_stat_chess)
 					.setLargeIcon(bigImage)
@@ -354,7 +354,7 @@ public class AppUtils {
 			String title = context.getString(R.string.your_move);
 			String content = context.getString(R.string.total_games);
 
-			NotificationCompat.InboxStyle inboxStyle =	new NotificationCompat. InboxStyle();
+			NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
 			// Sets a title for the Inbox style big view
 			inboxStyle.setBigContentTitle(title);
 			// Moves events into the big view
@@ -370,6 +370,7 @@ public class AppUtils {
 			notificationBuilder.setStyle(inboxStyle);
 
 			notificationBuilder.setContentTitle(title)
+					.setTicker(title + Symbol.NEW_STR + content)
 					.setSmallIcon(R.drawable.ic_stat_chess)
 					.setContentText(content)
 					.setLargeIcon(bigImage)
@@ -381,23 +382,37 @@ public class AppUtils {
 		// Puts the PendingIntent into the notification builder
 		notificationBuilder.setContentIntent(pendingIntent);
 
-		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_id, notificationBuilder.build());
 	}
 
-	public static void showStatusBarNotification(Context context, String title, String body) {
+	public static void showStatusBarNotification(Context context, String title, String body) { // TODO add logic to open corresponding screen
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notifyManager.cancelAll(); // clear all previous notifications
+		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
 
-		Notification notification = new Notification(R.drawable.ic_stat_chess, title, System.currentTimeMillis());
-		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		Intent notifyIntent = new Intent(context, MainFragmentFaceActivity.class);
+		// Creates an Intent for the Activity
+		if (DataHolder.getInstance().isMainActivityVisible()) {
+			notifyIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		} else {
+			notifyIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		}
 
-		Intent intent = new Intent(context, MainFragmentFaceActivity.class);
+		// Creates the PendingIntent
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 22, notifyIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		Bitmap bigImage = ((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_stat_chess)).getBitmap();
+		notificationBuilder.setContentTitle(title)
+				.setTicker(title + Symbol.NEW_STR + body)
+				.setContentText(body)
+				.setSmallIcon(R.drawable.ic_stat_chess)
+				.setLargeIcon(bigImage)
+				.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+				.setAutoCancel(true);
 
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+		// Puts the PendingIntent into the notification builder
+		notificationBuilder.setContentIntent(pendingIntent);
 
-		notification.setLatestEventInfo(context, title, body, contentIntent);
-
-		notifyManager.notify(R.id.notification_message, notification);
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
 	}
 
 	public static void cancelNotifications(Context context) {

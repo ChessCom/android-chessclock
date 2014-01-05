@@ -89,6 +89,7 @@ public class GetAndSaveBoard extends Service {
 
 		notificationBuilder = new NotificationCompat.Builder(this);
 		notificationBuilder.setContentTitle(getString(R.string.loading_board))
+				.setTicker(getString(R.string.loading_board))
 				.setContentText(getString(R.string.loading_board))
 				.setSmallIcon(R.drawable.ic_stat_download)
 				.setAutoCancel(true);
@@ -277,7 +278,7 @@ public class GetAndSaveBoard extends Service {
 		notificationBuilder.setContentText(title);
 		notificationBuilder.setProgress(0, 0, true);
 		// Displays the progress bar for the first time.
-		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_id, notificationBuilder.build());
 
 		if (progressUpdateListener != null) {
 			progressUpdateListener.changeTitle(title);
@@ -288,7 +289,7 @@ public class GetAndSaveBoard extends Service {
 	private void updateProgressToNotification(int progress) {
 		notificationBuilder.setProgress(100, progress, false);
 		// Displays the progress bar for the first time.
-		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_id, notificationBuilder.build());
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(progress);
 		}
@@ -298,7 +299,7 @@ public class GetAndSaveBoard extends Service {
 		notificationBuilder.setContentText(getString(R.string.download_complete))
 				// Removes the progress bar
 				.setProgress(0, 0, false);
-		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_id, notificationBuilder.build());
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(DONE);
 		}
@@ -308,7 +309,7 @@ public class GetAndSaveBoard extends Service {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				notifyManager.cancel(R.id.notification_message);
+				notifyManager.cancel(R.id.notification_id);
 
 				stopSelf();
 			}

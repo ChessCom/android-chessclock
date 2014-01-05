@@ -721,7 +721,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				.append("\n [BlackElo \"").append("--").append("\"]")
 				.append("\n [TimeControl \"").append(timeControl).append("\"]");
 		if (finished) {
-			builder.append("\n [Termination \"").append(endGameMessage).append("\"]");
+			builder.append("\n [Termination \"").append(endGameReason).append("\"]");
 		}
 		builder.append("\n ").append(moves).append(Symbol.SPACE).append(result)
 				.append("\n \n Sent from my Android");

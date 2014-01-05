@@ -160,6 +160,7 @@ public class LiveChessService extends Service {
 		String body = getString(R.string.live_chess_connected_description);
 
 		notificationBuilder.setContentTitle(title)
+				.setTicker(title)
 				.setContentText(body)
 				.setSmallIcon(R.drawable.ic_stat_live)
 				.setLargeIcon(bigImage);

@@ -17,6 +17,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.DailyChallengeItem;
+import com.chess.backend.entity.api.DailyFinishedGameData;
 import com.chess.backend.entity.api.FriendRequestResultItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -25,8 +26,9 @@ import com.chess.db.DbScheme;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.*;
+import com.chess.ui.fragments.daily.DailyChatFragment;
 import com.chess.ui.fragments.daily.DailyInviteFragment;
-import com.chess.ui.fragments.daily.GameDailyFragment;
+import com.chess.ui.fragments.daily.GameDailyFinishedFragment;
 import com.chess.ui.fragments.profiles.ProfileTabsFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.slidingmenu.lib.SlidingMenu;
@@ -143,27 +145,25 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 			getActivityFace().toggleRightMenu();
 		} else if (section == NEW_CHATS_SECTION) {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+			String opponentName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 			long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
-			DbDataManager.deleteNewChatMessageNotification(getContentResolver(), getUsername(), username);
+			DbDataManager.deleteNewChatMessageNotification(getContentResolver(), getUsername(), opponentName);
 
 			updateNotificationBadges();
 
-			getActivityFace().openFragment(GameDailyFragment.createInstance(gameId));
+			getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, opponentName));
 			getActivityFace().toggleRightMenu();
-
 		} else if (section == GAME_OVER_SECTION) {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 			long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 			DbDataManager.deleteGameOverNotification(getContentResolver(), getUsername(), gameId);
 
 			updateNotificationBadges();
-//			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
+			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
 
-//			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
-//			getActivityFace().toggleRightMenu();
-
+			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
+			getActivityFace().toggleRightMenu();
 		}
 	}
 

@@ -650,7 +650,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	}
 
 	@Override
-	protected void showGameEndPopup(View layout, String message) {
+	protected void showGameEndPopup(View layout, String title, String reason) {
 
 	}
 

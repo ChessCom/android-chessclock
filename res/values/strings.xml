@@ -230,7 +230,7 @@
 
     <string name="retry">Retry</string>
     <string name="stop">Stop</string>
-    <string name="daily_limit_reached">Daily Limit Reached</string>
+    <string name="upgrade_for_unlimited_tactics">Upgrade For Unlimited Tactics!</string>
     <string name="solution">Solution</string> <!--Action-->
 
 
@@ -348,7 +348,7 @@
 	<string name="rematch">Rematch</string> <!--Action-->
 	<string name="review">Review</string> <!--Action-->
 	<string name="your_end_game_rating">Your Rating (%1$s) : (%2$s)</string>
-	<string name="your_end_game_rating_online">Your Rating (%1$s)</string>
+	<string name="your_end_game_rating_daily">Your Rating (%1$s)</string>
 
 	<string name="draw_declined">draw declined</string>
 	<string name="has_declined_draw">%s has declined a draw</string>
@@ -664,10 +664,10 @@
 	<string name="request_sent">Request sent</string>
 	<string name="username_not_found">Username not found</string>
 	<string name="you_have_not_added_friends_yet">You haven\'t added friends yet</string>
-	<string name="you_have_new_friend_request">You have a New Friend Request</string>
-	<string name="you_have_new_chat_message">You have a New Chat Message</string>
-	<string name="you_have_new_challenge">You have a New Challenge</string>
-	<string name="you_have_new_message">You have a New Message</string>
+	<string name="new_friend_request">New Friend Request</string>
+	<string name="new_chat_message">New Chat Message</string>
+	<string name="new_challenge">New Challenge</string>
+	<string name="new_message">New Message</string>
 
 	<!--Profile-->
 	<string name="unable_to_select_this_photo">Unable to pick this photo</string>
@@ -822,5 +822,7 @@
 	<string name="show_mini_boards">Show Mini Boards</string>
 	<string name="show_timer">Show Timer</string>
 	<string name="file_saved_to_download">File Saved to \"Download\"</string>
+	<string name="with">with</string>
+	<string name="tactics_limit_explain">Basic members are allowed 3 per day</string>
 
 </resources>
