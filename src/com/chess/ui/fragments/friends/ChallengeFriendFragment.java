@@ -3,6 +3,7 @@ package com.chess.ui.fragments.friends;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +18,26 @@ import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
+import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.model.SelectionItem;
 import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.daily.DailyGameOptionsFragment;
 import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.widgets.EditButton;
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
 import com.facebook.widget.UserSettingsFragment;
 import com.facebook.widget.WebDialog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,7 +47,7 @@ import com.facebook.widget.WebDialog;
  */
 public class ChallengeFriendFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
-	private static final int CONTACT_PICKER_RESULT = 1001;
+	protected static final String FRIEND_SELECTION_TAG = "friend select popup";
 
 	private EditButton usernameEditBtn;
 	private View headerView;
@@ -47,6 +56,9 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	private EditButton emailEditBtn;
 	private Button addEmailBtn;
 	private RecentOpponentsCursorAdapter adapter;
+	private List<SelectionItem> friendsList;
+	private PopupOptionsMenuFragment friendSelectFragment;
+	private FriendSelectedListener friendSelectedListener;
 
 	public ChallengeFriendFragment() {
 		Bundle bundle = new Bundle();
@@ -65,6 +77,25 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		{ // load friends from DB
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(), DbScheme.Tables.FRIENDS));
+
+			friendsList = new ArrayList<SelectionItem>();
+			friendsList.add(new SelectionItem(null, getString(R.string.random)));
+			if (cursor != null && cursor.moveToFirst()) {
+				do {
+					friendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
+				} while (cursor.moveToNext());
+			}
+			if (cursor != null) {
+				cursor.close();
+			}
+
+			friendsList.get(0).setChecked(true);
+		}
+
+		friendSelectedListener = new FriendSelectedListener();
 
 		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
 		adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor, getImageFetcher());
@@ -112,8 +143,15 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 				getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
 			}
 		} else if (id == R.id.chesscomFriendsView) {
-			getActivityFace().openFragment(new FriendsFragment());
-			getActivityFace().toggleRightMenu();
+
+			SparseArray<String> optionsMap = new SparseArray<String>();
+			for (int i = 0; i < friendsList.size(); i++) {
+				String friend = friendsList.get(i).getText();
+				optionsMap.put(i, friend);
+			}
+
+			friendSelectFragment = PopupOptionsMenuFragment.createInstance(friendSelectedListener, optionsMap);
+			friendSelectFragment.show(getFragmentManager(), FRIEND_SELECTION_TAG);
 		} else if (id == R.id.dailyPlayBtn) {
 			createDailyChallenge(getTextFromField(usernameEditBtn));
 		} else if (id == R.id.facebookFriendsView) {
@@ -215,8 +253,6 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-
-
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.INVALID_EMAIL_DOMAIN) {
@@ -228,43 +264,21 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 		}
 	}
 
-//	@Override
-//	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//		super.onActivityResult(requestCode, resultCode, data);
-//		if (resultCode == Activity.RESULT_OK && requestCode == CONTACT_PICKER_RESULT) {
-//			// handle contact results
-//			Bundle extras = data.getExtras();
-//			if (extras == null) {
-//				return;
-//			}
-//
-//			Uri result = data.getData();
-//			if (result == null) {
-//				return;
-//			}
-//			// get the contact id from the Uri
-//			String id = result.getLastPathSegment();
-//
-//			// query for everything email
-//			Cursor cursor = getContentResolver().query(
-//					ContactsContract.CommonDataKinds.Email.CONTENT_URI, null,
-//					ContactsContract.CommonDataKinds.Email.CONTACT_ID + "=?",
-//					new String[]{id}, null);
-//
-//			if (cursor != null && cursor.moveToFirst()) {
-//				int emailIdx = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
-//				String email = cursor.getString(emailIdx);
-//
-//				if (TextUtils.isEmpty(email)) {
-//					showToast(R.string.no_email_found);
-//					return;
-//				}
-//
-//				showEmailEdit(true);
-//				emailEditBtn.setText(email);
-//			} else {
-//				showToast(R.string.no_email_found);
-//			}
-//		}
-//	}
+	private class FriendSelectedListener implements PopupListSelectionFace {
+
+		@Override
+		public void onValueSelected(int code) {
+			friendSelectFragment.dismiss();
+			friendSelectFragment = null;
+
+			String friend = friendsList.get(code).getText();
+
+			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE, friend));
+		}
+
+		@Override
+		public void onDialogCanceled() {
+			friendSelectFragment = null;
+		}
+	}
 }
