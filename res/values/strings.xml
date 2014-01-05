@@ -73,8 +73,8 @@
     <string name="friend">Friend</string>
     <string name="friends">Friends</string>
     <string name="sorry">Sorry</string>  <!--Popup title, description message appears below-->
-    <string name="no_friends_invite">You have no friends yet. You can invite them via www.chess.com.</string>
-    <string name="no_friends_online">"Your friends are not online. If You didn't invite them yet, go to www.chess.com."</string>
+    <string name="no_friends_invite">You have no friends yet</string>
+    <string name="no_friends_online">"No Friends online"</string>
     <string name="invite">Invite</string>   <!--Invite a friend-->
     <string name="draw_accepted">Draw accepted!</string>
     <string name="accept">Accept</string>  <!--Accept action-->
@@ -537,7 +537,8 @@
 	<string name="menu_notifications">Notifications</string>
 	<string name="menu_games">Games</string>
 
-	<string name="chess_com_live">Chess.com Live</string>
+	<string name="live_chess_connected">Live Chess Connected</string>
+	<string name="live_chess_connected_description">Shutdown after 30 sec idle</string>
 	<string name="ches_com">Chess.com</string>
 	<string name="share_game">Share Game</string>
 	<string name="share_pgn">Share PGN</string>

@@ -82,16 +82,9 @@
 		android:id="@+id/fadeLay"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="@color/loading_overlay"
+		android:background="@color/disabled"
 		android:visibility="invisible"
 		>
-
-		<ProgressBar
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			style="@style/ChessProgressBar"
-			android:layout_centerInParent="true"
-			/>
 
 	</RelativeLayout>
 

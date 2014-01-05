@@ -702,7 +702,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			preferencesEditor.putLong(LIVE_SESSION_ID_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.commit();
 
-			if (loginReturnCode == FACEBOOK) {
+			if (loginReturnCode == FACEBOOK && !TextUtils.isEmpty(facebookToken)) {
 				FlurryAgent.logEvent(FlurryData.FB_LOGIN);
 				// save facebook access token to appData for future re-login
 				getAppData().setFacebookToken(facebookToken);
@@ -857,10 +857,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		// logout from facebook
 		Session facebookSession = Session.getActiveSession();
-		logTest("facebookSession = " + facebookSession);
 		if (facebookSession != null) {
 			facebookSession.closeAndClearTokenInformation();
-			logTest("facebookSession != null , call closeAndClearTokenInformation()");
 			Session.setActiveSession(null);
 		} else {
 			facebookSession = new Session(getActivity());

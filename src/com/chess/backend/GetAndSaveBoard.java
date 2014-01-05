@@ -48,12 +48,10 @@ public class GetAndSaveBoard extends Service {
 	public static final int BOARD_SIZE_STEP = 8;
 	public static final int BOARD_START_NAME = 20;
 	public static final int BOARD_START_SIZE = 160;
-	public static final int BOARD_END_NAME = 180;
-	public static final int BOARD_END_SIZE = 1440;
+	public static final int BOARD_END_NAME = 200;
+	public static final int BOARD_END_SIZE = 1600;
 
-	private static final long DISMISS_DELAY = 500;
-
-	private NotificationManager notifymanager;
+	private NotificationManager notifyManager;
 	private NotificationCompat.Builder notificationBuilder;
 	private AppData appData;
 	private BoardSingleItemUpdateListener boardSingleItemUpdateListener;
@@ -74,7 +72,7 @@ public class GetAndSaveBoard extends Service {
 
 		appData = new AppData(this);
 		handler = new Handler();
-		notifymanager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// Creates an Intent for the Activity
 		Intent notifyIntent = new Intent(this, MainFragmentFaceActivity.class);
@@ -279,7 +277,7 @@ public class GetAndSaveBoard extends Service {
 		notificationBuilder.setContentText(title);
 		notificationBuilder.setProgress(0, 0, true);
 		// Displays the progress bar for the first time.
-		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
 
 		if (progressUpdateListener != null) {
 			progressUpdateListener.changeTitle(title);
@@ -290,7 +288,7 @@ public class GetAndSaveBoard extends Service {
 	private void updateProgressToNotification(int progress) {
 		notificationBuilder.setProgress(100, progress, false);
 		// Displays the progress bar for the first time.
-		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(progress);
 		}
@@ -300,7 +298,7 @@ public class GetAndSaveBoard extends Service {
 		notificationBuilder.setContentText(getString(R.string.download_complete))
 				// Removes the progress bar
 				.setProgress(0, 0, false);
-		notifymanager.notify(R.id.notification_message, notificationBuilder.build());
+		notifyManager.notify(R.id.notification_message, notificationBuilder.build());
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(DONE);
 		}
@@ -310,7 +308,7 @@ public class GetAndSaveBoard extends Service {
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				notifymanager.cancel(R.id.notification_message);
+				notifyManager.cancel(R.id.notification_message);
 
 				stopSelf();
 			}

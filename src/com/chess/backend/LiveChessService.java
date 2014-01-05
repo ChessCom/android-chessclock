@@ -86,11 +86,11 @@ public class LiveChessService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		LogMe.dl(TAG, "SERVICE: onStartCommand");
-		if (lccHelper != null) {
-			if (lccHelper.isConnected()) {
-				onLiveConnected();
-
-			}
+		if (lccHelper == null) {
+			lccHelper = new LccHelper(getContext(), this, new LccConnectUpdateListener());
+		}
+		if (lccHelper.isLiveChessEventListenerSet()) {
+			checkAndConnectLiveClient();
 		}
 
 		return START_STICKY_COMPATIBILITY;
@@ -109,16 +109,20 @@ public class LiveChessService extends Service {
 
 	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
 		this.connectionUpdateFace = connectionUpdateFace;
-		LogMe.dl(TAG, "appData.isLiveChess(getContext()) " + appData.isLiveChess());
+//		LogMe.dl(TAG, "appData.isLiveChess(getContext()) " + appData.isLiveChess());
 		LogMe.dl(TAG, "lccHelper instance in checkAndConnect = " + lccHelper);
 		LogMe.dl(TAG, "lccClient instance in checkAndConnect = " + lccHelper.getClient());
 
 		LogMe.dl(TAG, "lccHelper.getClient() " + lccHelper.getClient());
 
+		checkAndConnectLiveClient();
+	}
+
+	private void checkAndConnectLiveClient() {
 		if (appData.isLiveChess() && !lccHelper.isConnected()) {
 			if (lccHelper.getClient() == null || lccHelper.isConnectionFailure()) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
+				LogMe.dl(TAG, "start Connection Task");
 				lccHelper.runConnectTask();
-				LogMe.dl(TAG, "no lccClient running connection task");
 			} else { // when client is connecting, but device screen was rotated for example
 				LogMe.dl(TAG, "client is CONNECTING");
 				//onConnecting();
@@ -128,7 +132,7 @@ public class LiveChessService extends Service {
 			onLiveConnected();
 		} else {
 			// we get here when network connection changes and we get different ip address
-			//lccHelper.performConnect(true);  // probably need to be changed to create new instance of live client and perform connect
+			// lccHelper.performConnect(true);  // probably need to be changed to create new instance of live client and perform connect
 
 			// vm: lets avoid any manual connects here, LCC is in charge on that.
 
@@ -142,6 +146,7 @@ public class LiveChessService extends Service {
 			connectionUpdateFace.onConnected();
 		}
 
+		// Show status bar for ongoing notification
 		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
 
 		Intent notifyIntent = new Intent(getContext(), MainFragmentFaceActivity.class);
@@ -151,9 +156,11 @@ public class LiveChessService extends Service {
 		// Creates the PendingIntent
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 11, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		Bitmap bigImage = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_stat_chess)).getBitmap();
-		String title = getString(R.string.chess_com_live);
+		String title = getString(R.string.live_chess_connected);
+		String body = getString(R.string.live_chess_connected_description);
 
 		notificationBuilder.setContentTitle(title)
+				.setContentText(body)
 				.setSmallIcon(R.drawable.ic_stat_live)
 				.setLargeIcon(bigImage);
 
@@ -162,21 +169,6 @@ public class LiveChessService extends Service {
 		notificationBuilder.setOngoing(true);
 
 		startForeground(R.drawable.ic_stat_live, notificationBuilder.build());
-
-		// todo: tune notification
-//		Notification notification = new Notification(R.drawable.ic_stat_live, getString(R.string.chess_com_live),
-//				System.currentTimeMillis());
-//
-//		Intent intent = new Intent(getContext(), MainFragmentFaceActivity.class);
-//		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//		intent.putExtra(IntentConstants.LIVE_CHESS, true);
-//
-//		PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 11, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-//		notification.setLatestEventInfo(getContext(), getString(R.string.ches_com), getString(R.string.live), pendingIntent);
-//		notification.flags |= Notification.FLAG_NO_CLEAR;
-
-//		startForeground(R.drawable.ic_stat_live, notification);
 	}
 
 	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
@@ -207,8 +199,10 @@ public class LiveChessService extends Service {
 	private final Runnable shutDownRunnable = new Runnable() {
 		@Override
 		public void run() {
-//			logout(); // don't do logout just stop service
-			Log.d("TEST", "shutDownRunnable = ");
+			if (lccHelper != null) {
+				lccHelper.runLeaveTask();
+			}
+			Log.d("TEST", "shutDownRunnable, performing leave, and stopping service, hide notification");
 
 			stopSelf();
 			stopForeground(true);

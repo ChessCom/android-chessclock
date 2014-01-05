@@ -191,6 +191,12 @@ public class AppConstants {
 
     public static final String NEED_TO_RESTART = "needToRestart";
 
-	public static final long LIVE_SESSION_EXPIRE_TIME = 60 * 60 * 1000; // 60 min
-	public static final long USER_TOKEN_EXPIRE_TIME = 4 * 60 * 60 * 1000; // 4 hrs
+	/**
+	 * 4 hrs the same as login token, but it might be changed if there was a login from another device
+	 */
+	public static final long LIVE_SESSION_EXPIRE_TIME = 4 * 60 * 60 * 1000;
+	/**
+	 * 4 hrs on server
+	 */
+	public static final long USER_TOKEN_EXPIRE_TIME = 4 * 60 * 60 * 1000;
 }

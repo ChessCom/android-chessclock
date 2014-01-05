@@ -543,15 +543,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	@Override
-	public void switchFragment(BasePopupsFragment fragment, int code) {
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		currentActiveFragment = fragment;
-
-		ft.replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName());
-		ft.commit();
-	}
-
-	@Override
 	public void toggleLeftMenu() {
 		toggleMenu(SlidingMenu.LEFT);
 	}

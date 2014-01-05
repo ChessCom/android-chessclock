@@ -22,7 +22,7 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onGameListReceived(Collection<? extends Game> games) {
-//		LogMe.dl(TAG, "Game list received, total size = " + games.size());
+		LogMe.dl(TAG, "Game list received, total size = " + games.size());
 
 		Long previousGameId = latestGameId;
 		latestGameId = 0L;
@@ -30,11 +30,11 @@ public class LccGameListener implements GameListener {
 		Long gameId;
 		for (Game game : games) {
 			gameId = game.getId();
-			if (lccHelper.isObservedGame(game)) {
-				lccHelper.addGameToUnobserve(game); // ignore previously subscribed observed games
-				/*LogMe.dl(TAG, "unobserve game " + gameId);
+			if (lccHelper.isObservedGame(game)) { // TODO to vm: why we should ignore ? In this case after restoring app we force to exit from observe mode right after it's loaded
+//				lccHelper.addGameToUnObserve(game); // ignore previously subscribed observed games
+				/*LogMe.dl(TAG, "unObserve game " + gameId);
 				games.remove(game);*/
-				//lccHelper.getClient().unobserveGame(gameId);
+				//lccHelper.getClient().unObserveGame(gameId);
 			}
 			else if (gameId > latestGameId) {
 				latestGameId = gameId;
@@ -44,7 +44,7 @@ public class LccGameListener implements GameListener {
 //		LogMe.dl(TAG, "latestGameId=" + latestGameId);
 
 		if (!latestGameId.equals(previousGameId) && lccHelper.getLccEventListener() != null) {
-//			LogMe.dl(TAG, "onGameListReceived: game is expired");
+			LogMe.dl(TAG, "onGameListReceived: game is expired");
 			lccHelper.getLccEventListener().expireGame();
 		}
 	}
@@ -55,15 +55,17 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onGameReset(Game game) {
-//		LogMe.dl(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
+		LogMe.dl(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
 		if (isActualMyGame(game)) {
 			lccHelper.unObserveCurrentObservingGame();
 
 		} else if (lccHelper.isObservedGame(game)) {
 
-			if (lccHelper.isGameToUnobserve(game)) {
-				lccHelper.unobserveGame(game.getId());
+			if (lccHelper.isGameToUnObserve(game)) {
+				LogMe.dl(TAG, "GAME LISTENER: isGameToUnObserve true");
+
+				lccHelper.unObserveGame(game.getId());
 				if (lccHelper.getLccObserveEventListener() != null) {
 					lccHelper.getLccObserveEventListener().expireGame();
 				}
@@ -96,7 +98,7 @@ public class LccGameListener implements GameListener {
 
 		} else if (lccHelper.isObservedGame(game)) {
 
-			if (lccHelper.isGameToUnobserve(game)) {
+			if (lccHelper.isGameToUnObserve(game)) {
 				return;
 			}
 

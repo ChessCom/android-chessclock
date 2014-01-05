@@ -2,7 +2,6 @@ package com.chess.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
@@ -188,9 +187,5 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		}
 	}
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		Log.d(TAG, "onActivityCreated class=" + getClass());
-	}
+
 }

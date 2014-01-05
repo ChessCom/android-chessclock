@@ -21,6 +21,7 @@ import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.FlurryData;
 import com.chess.statics.Symbol;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
@@ -339,6 +340,28 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 
 	private void updateProgressAndShow(PopupProgressFragment popupProgressDialogFragment){
 		popupProgressDialogFragment.updatePopupItem(popupProgressItem);
+
+		if (getSupportFragmentManager() == null) {
+			return;
+		}
+
+		if (getSupportFragmentManager().getFragments() != null) {
+			for (Fragment fragment : getSupportFragmentManager().getFragments()) { // transmit to all fragments? is it safe..? // TODO check logic
+				if (fragment != null && fragment instanceof BasePopupsFragment) {
+					List<PopupProgressFragment> progressFragments = ((BasePopupsFragment) fragment).getPopupFragmentManager();
+					if (progressFragments != null && progressFragments.size() > 0) {
+						popupProgressManager.add(popupProgressDialogFragment);
+						return;
+					}
+				}
+			}
+		}
+
+		if (popupProgressManager.size() > 0) { // if we already showing, then just add but not show
+			popupProgressManager.add(popupProgressDialogFragment);
+			return;
+		}
+
 		popupProgressDialogFragment.show(getSupportFragmentManager(), PROGRESS_TAG);
 		popupProgressManager.add(popupProgressDialogFragment);
 	}
@@ -360,11 +383,31 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	}
 
 	protected void dismissProgressDialog() {
+		if (getSupportFragmentManager() == null) {
+			return;
+		}
+
+		if (getSupportFragmentManager().getFragments() != null) {
+			for (Fragment fragment : getSupportFragmentManager().getFragments()) { // transmit to all fragments? is it safe..? // TODO check logic
+				if (fragment != null && fragment instanceof BasePopupsFragment) {
+					List<PopupProgressFragment> progressFragments = ((BasePopupsFragment) fragment).getPopupFragmentManager();
+					if (progressFragments != null && progressFragments.size() > 0) { // if there are progresses to show, then don' do anything
+						return;
+					}
+				}
+			}
+		}
+
 		if(popupProgressManager.size() == 0) {
 			return;
 		}
 
-		popupProgressManager.get(popupProgressManager.size()-1).dismiss();
+		// we get first and dismiss it, then show next, and remove first
+		popupProgressManager.get(0).dismiss();
+		if (popupProgressManager.size() > 1) {
+			popupProgressManager.get(1).show(getSupportFragmentManager(), PROGRESS_TAG);
+		}
+		popupProgressManager.remove(0);
 	}
 
 	public void dismissAllPopups() {

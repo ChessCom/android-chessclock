@@ -3,6 +3,7 @@ package com.chess.lcc.android;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.text.TextUtils;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
@@ -12,6 +13,7 @@ import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
 import com.chess.live.client.*;
+import com.chess.live.client.impl.LiveChessClientImpl;
 import com.chess.live.rules.GameResult;
 import com.chess.live.util.GameRatingClass;
 import com.chess.live.util.GameTimeConfig;
@@ -235,9 +237,10 @@ public class LccHelper {
 		// here we check if sessionId is not expired(ttl = 60min)
 		long sessionIdSaveTime = appData.getLiveSessionIdSaveTime();
 		long currentTime = System.currentTimeMillis();
-		LogMe.dl(TAG, "sessionIdSaveTime = " + sessionIdSaveTime + ", currentTime = " + currentTime);
+		LogMe.dl(TAG, "sessionIdSaveTime = " + sessionIdSaveTime + ", currentTime = " + currentTime + ", sessionId = " + appData.getLiveSessionId());
 
-		boolean useSessionId = currentTime - sessionIdSaveTime <= AppConstants.LIVE_SESSION_EXPIRE_TIME;
+		boolean useSessionId = currentTime - sessionIdSaveTime <= AppConstants.LIVE_SESSION_EXPIRE_TIME
+				&& !TextUtils.isEmpty(appData.getLiveSessionId());
 
 		boolean emptyPassword = pass.equals(Symbol.EMPTY);
 
@@ -252,7 +255,8 @@ public class LccHelper {
 			if (!emptyPassword && !RestHelper.getInstance().IS_TEST_SERVER_MODE) {
 				connectByCreds(username, pass);
 			} else {
-				liveChessClientEventListener.onSessionExpired(context.getString(R.string.session_expired));
+				connectionFailure = true; // we need this flag to able to re-connect from live chess
+				liveChessClientEventListener.onSessionExpired();
 				//String message = context.getString(R.string.account_error);
 				//liveChessClientEventListener.onConnectionFailure(message);
 			}
@@ -274,8 +278,17 @@ public class LccHelper {
 		liveChessClientEventListener.onConnecting();
 	}
 
+	/**
+	 * This method should be invoked only when live chess service bounded to activity.
+	 * Thus we can use it to check if activity is bounded
+	 * @param liveChessClientEventListener listener for events
+	 */
 	public void setLiveChessClientEventListener(LiveChessClientEventListener liveChessClientEventListener) {
 		this.liveChessClientEventListener = liveChessClientEventListener;
+	}
+
+	public boolean isLiveChessEventListenerSet() {
+		return liveChessClientEventListener != null;
 	}
 
 	public void onOtherClientEntered(String message) {
@@ -688,7 +701,7 @@ public class LccHelper {
 	}
 
 	public String[] getOnlineFriends() {
-		final String[] array = new String[]{Symbol.EMPTY};
+		final String[] array = new String[]{};
 		return onlineFriends.size() != 0 ? onlineFriends.keySet().toArray(array) : array;
 	}
 
@@ -983,15 +996,15 @@ public class LccHelper {
 		return currentObservedGameId;
 	}
 
-	public boolean isGameToUnobserve(Game game) {
+	public boolean isGameToUnObserve(Game game) {
 		return gamesToUnObserve.contains(game);
 	}
 
-	public boolean addGameToUnobserve(Game game) {
+	public boolean addGameToUnObserve(Game game) {
 		return gamesToUnObserve.add(game);
 	}
 
-	/*public boolean removeGameToUnobserve(Game game) {
+	/*public boolean removeGameToUnObserve(Game game) {
 		return gamesToUnObserve.remove(game);
 	}*/
 
@@ -1058,6 +1071,10 @@ public class LccHelper {
 		lccEventListener.onChallengeRejected(by);
 	}
 
+	public void runLeaveTask() {
+		new LiveLeaveTask().execute();
+	}
+
 	private class LiveDisconnectTask extends AsyncTask<Void, Void, Void> {
 
 		/*private final boolean resetClient;
@@ -1070,10 +1087,23 @@ public class LccHelper {
 		protected Void doInBackground(Void... voids) {
 			if (lccClient != null) {
 				LogMe.dl(TAG, "DISCONNECT: lccClient=" + getClientId()/* + ", resetClient=" + resetClient*/);
-				lccClient.disconnect(); // todo: use lccClient.leave()
+				lccClient.disconnect(); // why we should use leave when we do logout??? Let's create a 2 different methods for different purpose
 				//if (/*resetClient*/) {
 				resetClient();
 				//}
+			}
+			return null;
+		}
+	}
+
+	private class LiveLeaveTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... voids) {
+			if (lccClient != null) {
+				LogMe.dl(TAG, "LEAVE: lccClient=" + getClientId());
+				((LiveChessClientImpl)lccClient).leave();
+				resetClient();
 			}
 			return null;
 		}
@@ -1084,8 +1114,8 @@ public class LccHelper {
 		lccClient.observeTopGame(GameRatingClass.Blitz, gameListener);
 	}
 
-	public void unobserveGame(Long gameId) {
-		LogMe.dl(TAG, "unobserve game=" + gameId);
+	public void unObserveGame(Long gameId) {
+		LogMe.dl(TAG, "unObserve game=" + gameId);
 		lccClient.unobserveGame(gameId);
 	}
 
@@ -1158,8 +1188,12 @@ public class LccHelper {
 		Integer minMembershipLevel = null;
 		PieceColor pieceColor = PieceColor.UNDEFINED;  // always random!
 
-		String opponentName =
-				config.getOpponentName() == null || config.getOpponentName().equals(AppConstants.RANDOM) ? null : config.getOpponentName();
+		String opponentName;
+		if (config.getOpponentName() == null || config.getOpponentName().equalsIgnoreCase(AppConstants.RANDOM)) {
+			opponentName = null;
+		} else {
+			opponentName = config.getOpponentName().toLowerCase();
+		}
 
 		final GameType gameType = GameType.Chess;
 		Challenge challenge = LiveChessClientFacade.createCustomSeekOrChallenge(
@@ -1288,7 +1322,7 @@ public class LccHelper {
 
 		@Override
 		protected Void doInBackground(Long... params) {
-			unobserveGame(params[0]);
+			unObserveGame(params[0]);
 			return null;
 		}
 	}

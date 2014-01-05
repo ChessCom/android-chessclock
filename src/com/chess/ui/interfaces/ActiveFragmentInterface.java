@@ -21,9 +21,6 @@ public interface ActiveFragmentInterface {
 
 	void switchFragment(BasePopupsFragment fragment);
 
-
-	void switchFragment(BasePopupsFragment fragment, int code);
-
     void showPreviousFragment();
 
     void updateNotificationsBadges();

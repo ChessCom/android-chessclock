@@ -120,6 +120,7 @@
 
 		<!--Rated Game-->
 		<com.chess.widgets.LinLayout
+			android:id="@+id/ratedGameView"
 			android:layout_width="match_parent"
 			android:layout_height="50dip"
 			android:gravity="center_vertical"

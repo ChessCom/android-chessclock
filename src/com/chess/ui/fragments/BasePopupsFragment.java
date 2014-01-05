@@ -243,7 +243,7 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 		if (popupProgressManager.size() == 0) {
 			return;
 		}
-		// we get last first and dismiss it, then show next, and remove first
+		// we get first and dismiss it, then show next, and remove first
 		popupProgressManager.get(0).dismiss();
 		if (popupProgressManager.size() > 1) {
 			popupProgressManager.get(1).show(getFragmentManager(), PROGRESS_TAG);
@@ -355,5 +355,9 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	public void onSaveInstanceState(Bundle outState) {
 		outState.putSerializable("smth", "value");
 		super.onSaveInstanceState(outState);
+	}
+
+	public List<PopupProgressFragment> getPopupFragmentManager() {
+		return popupProgressManager;
 	}
 }

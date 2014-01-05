@@ -18,6 +18,7 @@ public class ChessClock {
 	public static final int DISPLAY_MODE = TIME_DEPENDENT_DISPLAY_MODE;
 	private static final String TAG = "LccLog-Clock";
 	public static final char ZERO_CHAR = '0';
+	private static final String DOT = ".";
 	private int time;
 	private static final int SECOND_TENTHS_THRESHOLD = 20 * SECOND_MS;
 	private static final int MINUTES_SECONDS_THRESHOLD = 121 * 60 * SECOND_MS;
@@ -125,7 +126,7 @@ public class ChessClock {
 					minutesStr = padStart(minutesStr, ZERO_CHAR, 2);
 				}
 				return minutesStr +
-						Symbol.COLON + padStart(String.valueOf(seconds), ZERO_CHAR, 2) + Symbol.DOT +
+						Symbol.COLON + padStart(String.valueOf(seconds), ZERO_CHAR, 2) + DOT +
 						String.valueOf(tenths);
 			default:
 				throw new IllegalStateException("Bad display mode value: " + DISPLAY_MODE);

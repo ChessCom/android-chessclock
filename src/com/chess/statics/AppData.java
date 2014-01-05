@@ -3,7 +3,6 @@ package com.chess.statics;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.ui.engine.SoundPlayer;
@@ -113,10 +112,6 @@ public class AppData {
 
 	public String getFacebookToken() {
 		return getStringValue(FACEBOOK_TOKEN, Symbol.EMPTY);
-	}
-
-	public void setBackgroundSetId(int value) {
-		setIntValue(PREF_BACKGROUND_SET, value);
 	}
 
 	public int getLanguageCode() {
@@ -747,7 +742,7 @@ public class AppData {
 	 */
 	public void setLiveGameConfigBuilder(LiveGameConfig.Builder liveGameConfigBuilder) {
 		Gson gson = new Gson();
-		Log.d("TEST", "save live builder = " + gson.toJson(liveGameConfigBuilder));
+//		Log.d("TEST", "save live builder = " + gson.toJson(liveGameConfigBuilder));
 		setStringValue(LIVE_GAME_CONFIG_BUILDER, gson.toJson(liveGameConfigBuilder));
 	}
 
@@ -759,7 +754,7 @@ public class AppData {
 		LiveGameConfig.Builder builder;
 
 		String builderStr = getStringValue(LIVE_GAME_CONFIG_BUILDER, Symbol.EMPTY);
-		Log.d("TEST", "load live builder = " + builderStr);
+//		Log.d("TEST", "load live builder = " + builderStr);
 
 		if (TextUtils.isEmpty(builderStr)) {
 			builder = new LiveGameConfig.Builder();
@@ -783,7 +778,7 @@ public class AppData {
 	 */
 	public void setDailyGameConfigBuilder(DailyGameConfig.Builder dailyGameConfigBuilder) {
 		Gson gson = new Gson();
-		Log.d("TEST", "save daily builder = " + gson.toJson(dailyGameConfigBuilder));
+//		Log.d("TEST", "save daily builder = " + gson.toJson(dailyGameConfigBuilder));
 		setStringValue(DAILY_GAME_CONFIG_BUILDER, gson.toJson(dailyGameConfigBuilder));
 	}
 
@@ -795,7 +790,7 @@ public class AppData {
 		DailyGameConfig.Builder builder;
 
 		String builderStr = getStringValue(DAILY_GAME_CONFIG_BUILDER, Symbol.EMPTY);
-		Log.d("TEST", "load daily builder = " + builderStr);
+//		Log.d("TEST", "load daily builder = " + builderStr);
 
 		if (TextUtils.isEmpty(builderStr)) {
 			builder = new DailyGameConfig.Builder();

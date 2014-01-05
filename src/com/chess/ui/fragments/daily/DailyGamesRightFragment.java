@@ -466,14 +466,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 			switch (gameType) {
 				case CURRENT_MY:
 					currentGamesMyCursorAdapter.changeCursor(returnedObj);
-//					if (AppUtils.isNetworkAvailable(getContext()) && !hostUnreachable /*&& !isRestarted*/) { // TODO adjust
-//						updateData();
-//					} else {
-//						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-//								DbHelper.getDailyFinishedListGames(getContext()),
-//								getContentResolver()).executeTask();
-//					}
-
 					break;
 				case THEIR:
 					currentGamesTheirCursorAdapter.changeCursor(returnedObj);
@@ -489,6 +481,19 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
+			switch (gameType) {
+				case CURRENT_MY:
+					currentGamesMyCursorAdapter.changeCursor(null);
+					break;
+				case THEIR:
+					currentGamesTheirCursorAdapter.changeCursor(null);
+					break;
+				case FINISHED:
+					finishedGamesCursorAdapter.changeCursor(null);
+					need2update = false;
+					break;
+			}
+
 			if (resultCode == StaticData.EMPTY_DATA) {
 				emptyView.setText(R.string.no_games);
 			} else if (resultCode == StaticData.UNKNOWN_ERROR) {

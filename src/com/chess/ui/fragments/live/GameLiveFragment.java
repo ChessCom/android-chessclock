@@ -622,12 +622,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					return;
 				}
 
-				if (block) {
-					fadeLay.setVisibility(View.VISIBLE);
-				} else {
-					fadeLay.setVisibility(View.INVISIBLE);
-				}
-
+				showLoadingProgress(block);
+				fadeLay.setVisibility(block ? View.VISIBLE : View.INVISIBLE);
 				boardView.lockBoard(block);
 			}
 		});

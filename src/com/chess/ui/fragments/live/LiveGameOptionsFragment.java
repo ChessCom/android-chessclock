@@ -357,6 +357,8 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 		if (view.getId() == R.id.liveHeaderView) {
 			getActivityFace().toggleRightMenu();
+		} else if (view.getId() == R.id.ratedGameView) {
+			ratedGameSwitch.toggle();
 		} else if (view.getId() == R.id.minRatingBtn) {
 			ratingSeekBar.setVisibility(View.VISIBLE);
 			handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
@@ -410,6 +412,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 	private void widgetsInit(View view) {
 		view.findViewById(R.id.liveOptionsView).setOnClickListener(this);
+		view.findViewById(R.id.ratedGameView).setOnClickListener(this);
 
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		RelativeLayout liveHomeOptionsFrame = (RelativeLayout) view.findViewById(R.id.liveHomeOptionsFrame);

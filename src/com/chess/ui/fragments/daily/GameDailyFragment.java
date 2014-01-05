@@ -215,6 +215,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		if (code == ID_NEW_GAME) {
 			getActivityFace().changeRightFragment(new DailyGameOptionsFragment());
 			getActivityFace().toggleRightMenu();
+		} else if (code == ID_SKIP_GAME) { // get next game where it's my turn
+			loadNextMyTurnGame();
 		} else if (code == ID_ABORT_RESIGN) {
 			if (!username.equals(getUsername())) { // don't let unAuth users to make action
 				showToast("=)");
@@ -290,25 +292,29 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private class LoadFromDbUpdateListener extends ChessUpdateListener<Cursor> {
 
 		@Override
-		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
+		public void updateData(Cursor cursor) {
+			super.updateData(cursor);
 
 			// iterate through all loaded items in cursor
 			do {
 				// check if it's user's move in this game
-				long localDbGameId = DbDataManager.getLong(returnedObj, DbScheme.V_ID);
-				boolean isMyTurn = DbDataManager.getInt(returnedObj, DbScheme.V_IS_MY_TURN) > 0;
+				long localDbGameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+				boolean isMyTurn = DbDataManager.getInt(cursor, DbScheme.V_IS_MY_TURN) > 0;
 				if (localDbGameId != gameId && isMyTurn) {
 					gameId = localDbGameId;
+
 					showSubmitButtonsLay(false);
 					boardView.setGameFace(GameDailyFragment.this);
 
 					getBoardFace().setAnalysis(false);
 
 					loadGameAndUpdate();
+
+					cursor.close();
 					return;
 				}
-			} while (returnedObj.moveToNext());
+			} while (cursor.moveToNext());
+			cursor.close();
 
 			getActivityFace().showPreviousFragment();
 		}
@@ -597,12 +603,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			if (action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
 				backToHomeFragment();
 			else if (action == StaticData.AFTER_MOVE_GO_TO_NEXT_GAME) {
-				loadGamesList();
+				loadNextMyTurnGame();
 			}
 		}
+
+		updateNotificationBadges();
 	}
 
-	private void loadGamesList() {
+	private void loadNextMyTurnGame() {
 		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentListGames(username),
 				getContentResolver()).executeTask();
 	}
@@ -653,7 +661,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 
 	@Override
 	public void newGame() {
-		loadGamesList();
+		loadNextMyTurnGame();
 	}
 
 	@Override
@@ -682,6 +690,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	public void showOptions() {
 		if (optionsSelectFragment != null) {
 			return;
+		}
+
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getDailyCurrentMyListGamesCnt(getUsername()));
+		if (cursor != null && cursor.getCount() > 0) { // show skip button if there are more games, where is my turn
+			optionsMap.put(ID_SKIP_GAME, getString(R.string.next_game));
+		} else {
+			optionsMap.remove(ID_SKIP_GAME);
 		}
 
 		if (getBoardFace().getPly() < 1 && isUserMove()) {

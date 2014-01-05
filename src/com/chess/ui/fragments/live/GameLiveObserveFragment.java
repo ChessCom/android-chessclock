@@ -167,11 +167,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				if (block) {
-					fadeLay.setVisibility(View.VISIBLE);
-				} else {
-					fadeLay.setVisibility(View.INVISIBLE);
+				if (getActivity() == null || fadeLay == null) {
+					return;
 				}
+				showLoadingProgress(block);
+				fadeLay.setVisibility(block ? View.VISIBLE : View.INVISIBLE);
 				boardView.lockBoard(true);
 			}
 		});
@@ -304,11 +304,14 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 	@Override
 	public void expireGame() {
+		logTest("expireGame");
+
 		goHome();
 	}
 
 	@Override
 	public void goHome() {
+		logTest("goHome");
 		try {
 			getLiveService().exitGameObserving();
 		} catch (DataNotValidException e) {

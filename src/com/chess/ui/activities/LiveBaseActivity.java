@@ -101,6 +101,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			if (isLCSBound) {
 				onLiveServiceConnected();
 			} else {
+				Log.d(TAG, "onStart -> bindAndStartLiveService " + getClass());
 				bindAndStartLiveService();
 			}
 		}
@@ -111,6 +112,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.onResume();
 		if (isLCSBound) {
 			executePausedActivityLiveEvents();
+		}
+
+		if (liveService != null) { // if we return after shutdown procedure as started
+			Log.d("TEST", "liveService.stopIdleTimeOutCounter() ");
 			liveService.stopIdleTimeOutCounter();
 		}
 	}
@@ -124,7 +129,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		Log.d("TEST", " LiveBaseActivity go pause, isLCSBound = " + isLCSBound);
 		if (isLCSBound) {
 			liveService.startIdleTimeOutCounter();
-			isLCSBound = false;
+			isLCSBound = false;  // we drop here flag because we can't drop it after shutdown, as Activity will not exist and only service will be alive
 		}
 	}
 
@@ -307,17 +312,19 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.onActivityResult(requestCode, resultCode, data);
 //		LogMe.dl(TAG, "onActivityResult, resultCode = " + resultCode + " data = " + data);
 		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
+			Log.d(TAG, "onActivityResult, -> bindAndStartLiveService " + getClass());
 			bindAndStartLiveService();
 		}
 	}
 
 	public void connectLcc() {
 //		LogMe.dl(TAG, "connectLcc: getAppData().isLiveChess() = " + getAppData().isLiveChess());
-//		LogMe.dl(TAG, "connectLcc: isLCSBound = " + isLCSBound);
+		LogMe.dl(TAG, "connectLcc: isLCSBound = " + isLCSBound);
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
 				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
+				return;
 			}
 			// first we check live sessionId
 			LoadItem loadItem = LoadHelper.getUserInfo(getCurrentUserToken());
@@ -328,7 +335,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	private void bindAndStartLiveService() {
-//		Log.d(TAG, "bindAndStartLiveService " + getClass());
+		Log.d(TAG, "bindAndStartLiveService " + getClass());
 
 		startService(new Intent(this, LiveChessService.class));
 		bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
@@ -347,6 +354,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		@Override
 		public void updateData(UserItem returnedObj) {
 			super.updateData(returnedObj);
+			Log.d(TAG, "SessionIdUpdateListener -> updateData");
 
 			if (TextUtils.isEmpty(returnedObj.getData().getSessionId())) { // if API was not updated to get a single sessionId field
 				// we perform re-login
@@ -364,24 +372,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		if (isLCSBound) {
 			if (liveService.getLccHelper() != null && liveService.getLccHelper().isConnected()) {
 				onLiveClientConnected();
-			} else {
-				handler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						if (isLCSBound) {
-							if (liveService.getLccHelper() != null && liveService.getLccHelper().isConnected()) {
-								onLiveClientConnected();
-								handler.removeCallbacks(this);
-							} else {
-								handler.postDelayed(this, RETRY_DELAY);
-								Log.d("TEST", "Service bounded but client not connected");
-							}
-						}
-					}
-				}, RETRY_DELAY);
-				Log.d("TEST", "Service bounded but client not connected");
+			} else { // lccHelper here null, so we need to start again connection logic and create all instances
+				Log.d(TAG, "performServiceConnection is LCSBound, lcc helper null or !connected-> bindAndStartLiveService " + getClass());
+				bindAndStartLiveService();
 			}
 		} else {
+			Log.d(TAG, "performServiceConnection, !isLCSBound -> bindAndStartLiveService " + getClass());
 			bindAndStartLiveService();
 		}
 	}
@@ -598,16 +594,20 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	@Override
-	public void onSessionExpired(final String message) {
+	public void onSessionExpired() {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				Log.d("lcc", "onSessionExpired");
+
 				performReloginForLive();
 			}
 		});
 	}
 
 	private void performReloginForLive() {
+		Log.d("lcc", "performReloginForLive");
+
 		// Logout first to make clear connect
 		if (isLCSBound) {
 			liveService.logout();
@@ -627,7 +627,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
 
 			new RequestJsonTask<LoginItem>(new LoginUpdateListener()).executeTask(loadItem);
-		} else {
+		} else if (!TextUtils.isEmpty(getAppData().getFacebookToken())) {
 			loginWithFacebook(getAppData().getFacebookToken());
 		}
 
@@ -728,6 +728,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			registerGcmService();
 
 			getAppData().setLiveChessMode(true);
+			Log.d(TAG, "LBA LoginUpdateListener -> updateData");
 			connectLcc();
 		}
 	}
@@ -738,6 +739,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		if (needReLoginToLive) {
 			getAppData().setLiveChessMode(true);
+			Log.d(TAG, "LBA afterLogin");
 			connectLcc();
 		}
 	}
