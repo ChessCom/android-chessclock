@@ -37,10 +37,7 @@ import com.chess.backend.entity.api.YourTurnItem;
 import com.chess.db.DbDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
-import com.chess.statics.AppData;
-import com.chess.statics.IntentConstants;
-import com.chess.statics.StaticData;
-import com.chess.statics.Symbol;
+import com.chess.statics.*;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 
 import java.io.File;
@@ -183,6 +180,10 @@ public class AppUtils {
 		long currentTimeMillis = System.currentTimeMillis();
 		currentTimeMillis -= SECONDS_IN_DAY * 365 * 1000L;
 		return currentTimeMillis / 1000L;
+	}
+
+	public static String getGooglePlayLinkForApp(Context context) {
+		return "market://details?id=" + context.getPackageName();
 	}
 
 	public static class ListSelector implements Runnable {

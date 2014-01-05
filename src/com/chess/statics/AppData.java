@@ -669,6 +669,22 @@ public class AppData {
 		return getBooleanValue(PREF_THEME_SOUNDS_LOADED, false);
 	}
 
+	public void setFirstTimeStart(long value) {
+		setLongValue(FIRST_TIME_START, value);
+	}
+
+	public long getFirstTimeStart() {
+		return getLongValue(FIRST_TIME_START, 0);
+	}
+
+	public void setUserAskedForFeedback(boolean value) {
+		setBooleanValue(USER_ASKED_FOR_FEEDBACK, value);
+	}
+
+	public boolean isUserAskedForFeedback() {
+		return getBooleanValue(USER_ASKED_FOR_FEEDBACK, false);
+	}
+
 	public void setUserChooseVideoLibrary(boolean value) {
 		setBooleanValue(PREF_USER_CHOOSE_VIDEO_LIBRARY, value);
 	}

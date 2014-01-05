@@ -119,6 +119,7 @@ public class AppConstants {
 	public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
     public static final String PREF_USER_CHOOSE_VIDEO_LIBRARY = "user choose video library mode";
     public static final String PREF_USER_CHOOSE_LESSONS_LIBRARY = "user choose lesson library mode";
+    public static final String USER_ASKED_FOR_FEEDBACK = "user was asked for feedback";
 
 	public static final String PULL_TO_REFRESH_HEADER_TOP_INSET = "pull_to_refresh_header_top_inset";
 
@@ -180,7 +181,7 @@ public class AppConstants {
 	/*Email Feedback*/
 	public static final String VERSION_CODE = "versionCode ";
 	public static final String VERSION_NAME = "versionName ";
-	public static final String SDK_API = "API ";
+	public static final String SDK_API = "Android API ";
 
 	/* GCM */
 	public static final String GCM_RETRY_TIME = "GCM retry time";
@@ -199,4 +200,5 @@ public class AppConstants {
 	 * 4 hrs on server
 	 */
 	public static final long USER_TOKEN_EXPIRE_TIME = 4 * 60 * 60 * 1000;
+	public static final long TIME_FOR_APP_REVIEW = 7 * 86400 * 1000; // 7 days
 }

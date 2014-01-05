@@ -152,6 +152,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected String firstFriendUserName;
 	protected String secondFriendUserName;
 
+	protected AppUtils.DeviceInfo deviceInfo;
+
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -164,6 +166,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		super.onCreate(savedInstanceState);
 
 		FragmentActivity activity = getActivity();
+
+		deviceInfo = new AppUtils.DeviceInfo().getDeviceInfo(getActivity());
 
 		preferences = getAppData().getPreferences();
 		preferencesEditor = getAppData().getEditor();
@@ -1116,5 +1120,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		} else {
 			getActivityFace().openFragment(StatsGameFragment.createInstance(statId, username));
 		}
+	}
+
+	protected String feedbackBodyCompose(String username) {
+		return getResources().getString(R.string.feedback_mail_body) + ": \n"
+				+ deviceInfo.MODEL + Symbol.NEW_STR
+				+ AppConstants.SDK_API + deviceInfo.SDK_API + Symbol.NEW_STR
+				+ AppConstants.VERSION_CODE + deviceInfo.APP_VERSION_CODE + Symbol.NEW_STR
+				+ AppConstants.VERSION_NAME + deviceInfo.APP_VERSION_NAME + Symbol.NEW_STR
+				+ AppConstants.USERNAME + " - " + username;
+
 	}
 }

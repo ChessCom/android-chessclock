@@ -97,8 +97,8 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		super.onStart();
 		FlurryAgent.onStartSession(this, FlurryData.API_KEY);
 
-		if (preferences.getLong(AppConstants.FIRST_TIME_START, 0) == 0) {
-			preferencesEditor.putLong(AppConstants.FIRST_TIME_START, System.currentTimeMillis());
+		if (getAppData().getFirstTimeStart() == 0) {
+			getAppData().setFirstTimeStart(System.currentTimeMillis());
 			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
 			preferencesEditor.commit();
 		}

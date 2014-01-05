@@ -15,7 +15,6 @@ import com.chess.statics.AppConstants;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.LiveBaseFragment;
-import com.chess.utilities.AppUtils;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboTextView;
 
@@ -33,7 +32,6 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 	protected ListView listView;
 	protected List<SettingsMenuItem> menuItems;
 	protected SettingsMenuAdapter adapter;
-	private AppUtils.DeviceInfo deviceInfo;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,8 +59,6 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		menuItems.add(new SettingsMenuItem(R.string.logout, R.string.ic_close));
 
 		adapter = new SettingsMenuAdapter(getActivity(), menuItems);
-
-		deviceInfo = new AppUtils.DeviceInfo().getDeviceInfo(getActivity());
 	}
 
 	@Override
@@ -143,7 +139,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
 				emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
 				emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
-				emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose());
+				emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose(getUsername()));
 				startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 				break;
 			case R.string.ic_close:
@@ -153,14 +149,6 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 				break;
 		}
 	}
-
-	protected String feedbackBodyCompose() {
-
-		return getResources().getString(R.string.feedback_mailbody) + ": " + AppConstants.VERSION_CODE
-				+ deviceInfo.APP_VERSION_CODE + ", " + AppConstants.VERSION_NAME + deviceInfo.APP_VERSION_NAME
-				+ ", " + deviceInfo.MODEL + ", " + AppConstants.SDK_API + deviceInfo.SDK_API + ", ";
-	}
-
 
 	protected class SettingsMenuItem {
 		public int nameId;

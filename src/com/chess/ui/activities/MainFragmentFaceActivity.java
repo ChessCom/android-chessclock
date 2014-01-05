@@ -17,10 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.View;
+import android.view.*;
 import com.chess.R;
 import com.chess.backend.GetAndSaveTheme;
 import com.chess.backend.LoadItem;
@@ -34,6 +31,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
+import com.chess.model.PopupItem;
 import com.chess.statics.*;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.*;
@@ -42,6 +40,7 @@ import com.chess.ui.fragments.daily.GameDailyFragmentTablet;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.*;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.settings.SettingsFragmentTablet;
 import com.chess.ui.fragments.settings.SettingsProfileFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
@@ -75,6 +74,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	private static final String SHOW_ACTION_BAR = "show_actionbar_in_activity";
 	private static final long CHECK_THEMES_TO_LOAD_DELAY = 5 * 1000;
+	private static final String ASK_FOR_REVIEW_TAG = "ask for review popup";
 
 	private Fragment currentActiveFragment;
 	private Hashtable<Integer, Integer> badgeItems;
@@ -89,6 +89,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private MovesUpdateReceiver movesUpdateReceiver;
 	private PullToRefreshAttacher mPullToRefreshAttacher;
 	private Bitmap backgroundBitmap;
+	private PopupCustomViewFragment reviewPopupFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -277,6 +278,26 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		if (!TextUtils.isEmpty(soundThemePath)) {
 			SoundPlayer.setUseThemePack(true);
 			SoundPlayer.setThemePath(soundThemePath);
+		}
+
+		// check if it's 7th day after install, then ask for feedback
+		if (!getAppData().isUserAskedForFeedback()) {
+			boolean askForReview = System.currentTimeMillis() - getAppData().getFirstTimeStart() > AppConstants.TIME_FOR_APP_REVIEW;
+			if (!askForReview) {
+				return;
+			}
+
+			View layout = LayoutInflater.from(this).inflate(R.layout.new_review_app_popup, null, false);
+			layout.findViewById(R.id.positiveBtn).setOnClickListener(this);
+			layout.findViewById(R.id.negativeBtn).setOnClickListener(this);
+			layout.findViewById(R.id.ignoreBtn).setOnClickListener(this);
+
+			PopupItem popupItem = new PopupItem();
+			popupItem.setCustomView(layout);
+
+			reviewPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+			reviewPopupFragment.show(getSupportFragmentManager(), ASK_FOR_REVIEW_TAG);
+			reviewPopupFragment.setCancelable(false);
 		}
 	}
 
@@ -745,6 +766,39 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	@Override
+	public void onClick(View view) {
+		super.onClick(view);
+
+		if (view.getId() == R.id.positiveBtn) { // Yes (leave us feedback)
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setData(Uri.parse(AppUtils.getGooglePlayLinkForApp(this)));
+			startActivity(intent);
+
+			if (reviewPopupFragment != null) {
+				reviewPopupFragment.dismiss();
+			}
+			getAppData().setUserAskedForFeedback(true);
+		} else if (view.getId() == R.id.negativeBtn) { // No (send us suggestions)
+			Intent emailIntent = new Intent(Intent.ACTION_SEND);
+			emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
+			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
+			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
+			emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose(getMeUsername()));
+			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
+
+			if (reviewPopupFragment != null) {
+				reviewPopupFragment.dismiss();
+			}
+			getAppData().setUserAskedForFeedback(true);
+		} else if (view.getId() == R.id.ignoreBtn) {
+			if (reviewPopupFragment != null) {
+				reviewPopupFragment.dismiss();
+			}
+			getAppData().setUserAskedForFeedback(true);
+		}
+	}
+
+	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			SettingsProfileFragment fragmentByTag = (SettingsProfileFragment) getSupportFragmentManager()
@@ -885,6 +939,17 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
 		}
+	}
+
+	protected String feedbackBodyCompose(String username) {
+		AppUtils.DeviceInfo deviceInfo = new AppUtils.DeviceInfo().getDeviceInfo(this);
+
+		return getResources().getString(R.string.feedback_mail_body) + ": \n"
+				+ deviceInfo.MODEL + Symbol.NEW_STR
+				+ AppConstants.SDK_API + deviceInfo.SDK_API + Symbol.NEW_STR
+				+ AppConstants.VERSION_CODE + deviceInfo.APP_VERSION_CODE + Symbol.NEW_STR
+				+ AppConstants.VERSION_NAME + deviceInfo.APP_VERSION_NAME + Symbol.NEW_STR
+				+ AppConstants.USERNAME + " - " + username;
 	}
 
 }

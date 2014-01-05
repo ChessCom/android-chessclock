@@ -429,7 +429,7 @@
 	<string name="finished_games">Finished Games</string>
 	<string name="no_challenges_during_vacation">Challenges will not show during vacation</string>
 	<string name="end_vacation">End Vacation</string>
-	<string name="feedback_mailbody">Device info</string>
+	<string name="feedback_mail_body">Please don\'t edit the information below</string>
 
 	<string name="win_">Win:</string>
 	<string name="loss_">Loss:</string>
@@ -826,5 +826,9 @@
 	<string name="tactics_limit_explain">Basic members are allowed 3 per day</string>
 	<string name="get_detailed_stats">Get Detailed Stats!</string>
 	<string name="select_plan">Select Plan</string>
+	<string name="ignore">Ignore</string>
+	<string name="no_it_has_issues">No (send us suggestions)</string>
+	<string name="yes_leave_feedback">Yes (leave us feedback)</string>
+	<string name="do_you_love_app">Do you love Chess.com app?</string>
 
 </resources>

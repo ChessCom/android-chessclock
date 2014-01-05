@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="@dimen/popup_dialog_width"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:minWidth="@dimen/popup_dialog_width"
+	android:paddingTop="@dimen/popup_top_padding"
+	android:background="@drawable/popup_white_back"
+	android:layout_marginRight="@dimen/popup_side_margin"
+	android:layout_marginLeft="@dimen/popup_side_margin"
+	android:paddingBottom="1dip"
+	android:paddingLeft="1dip"
+	android:paddingRight="1dip"
+	>
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/popupTitle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:maxWidth="@dimen/popup_dialog_text_max_width"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:paddingBottom="@dimen/default_scr_bottom_padding"
+		android:gravity="center"
+		android:textSize="@dimen/popup_title_text_size"
+		android:textColor="@color/new_normal_grey"
+		style="@style/ListItem"
+		custom:ttf="Bold"
+		android:text="@string/do_you_love_app"
+		/>
+
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		>
+
+		<com.chess.widgets.RoboButton
+			android:id="@+id/positiveBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/ListItem"
+			android:text="@string/yes_leave_feedback"
+			android:textColor="@color/new_normal_grey"
+			/>
+
+		<com.chess.widgets.RoboButton
+			android:id="@+id/negativeBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/ListItem"
+			android:text="@string/no_it_has_issues"
+			android:textColor="@color/new_normal_grey"
+			/>
+
+		<com.chess.widgets.RoboButton
+			android:id="@+id/ignoreBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/ListItem"
+			android:text="@string/ignore"
+			android:textColor="@color/new_normal_grey"
+			/>
+
+	</LinearLayout>
+
+</LinearLayout>
