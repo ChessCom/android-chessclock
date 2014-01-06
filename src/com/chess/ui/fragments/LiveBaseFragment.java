@@ -180,7 +180,13 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
 			synchronized(LccHelper.LOCK) {
 				Long gameId = liveService.getCurrentGameId();
-				getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
+				GameLiveFragment liveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+				if (liveFragment == null) {
+					liveFragment = GameLiveFragment.createInstance(gameId);
+				} else {
+					liveFragment.invalidateGameScreen();
+				}
+				getActivityFace().openFragment(liveFragment);
 			}
 		} else {
 			createSeek();

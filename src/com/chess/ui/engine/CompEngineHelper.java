@@ -175,7 +175,10 @@ public class CompEngineHelper implements GUIInterface {
 			engineCtrl.updateGameMode();
 		}
 
-		gameCompActivityFace.onGameStarted(engineCtrl.getCurrentMovePosition());
+		if (gameCompActivityFace.isAlive()) {
+			gameCompActivityFace.onGameStarted(engineCtrl.getCurrentMovePosition());
+		}
+
 	}
 
 	public void makeMove(String move,/* boolean force,*/ GameCompFace gameCompActivityFace) {

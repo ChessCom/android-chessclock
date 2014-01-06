@@ -453,7 +453,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected void unRegisterMyReceiver(BroadcastReceiver broadcastReceiver) {
 		if (broadcastReceiver != null) {
-			getActivity().unregisterReceiver(broadcastReceiver);
+			try {
+				getActivity().unregisterReceiver(broadcastReceiver);
+			} catch (IllegalArgumentException ignore) {
+
+			}
 		}
 	}
 

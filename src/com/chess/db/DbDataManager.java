@@ -1303,7 +1303,9 @@ public class DbDataManager {
 		values.put(V_CREATE_DATE, currentItem.getCreateDate());
 		if (fullBody) {
 			values.put(V_BODY, currentItem.getBody());
-			values.put(V_PREVIEW_BODY, currentItem.getBody().substring(0, 250));
+			if (currentItem.getBody().length() >= 250) {
+				values.put(V_PREVIEW_BODY, currentItem.getBody().substring(0, 250));
+			}
 		} else {
 			values.put(V_BODY, currentItem.getBody());
 			values.put(V_PREVIEW_BODY, currentItem.getBody());

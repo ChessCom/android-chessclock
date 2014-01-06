@@ -732,7 +732,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void invalidateGameScreen() {
-		logLiveTest("GameLive invalidateGameScreen = ");
 		if (isLCSBound) {
 			showSubmitButtonsLay(getBoardFace().isSubmit());
 

@@ -137,7 +137,7 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 
 	private void changeInternalFragment(Fragment fragment) {
 		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.replace(R.id.stats_content_frame, fragment).commit();
+		transaction.replace(R.id.stats_content_frame, fragment).commitAllowingStateLoss();
 	}
 
 	private List<SelectionItem> createSpinnerList(Context context) {
