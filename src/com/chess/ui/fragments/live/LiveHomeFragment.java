@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,7 +105,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			try {
 				if (!isLCSBound) {
 					liveBaseActivity.connectLcc();
-					showPopupProgressDialog(R.string.loading_);
+					showPopupProgressDialog();
 				} else {
 					addCurrentGameItem(getLiveService());
 				}

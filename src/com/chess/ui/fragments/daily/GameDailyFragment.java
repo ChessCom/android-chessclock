@@ -826,7 +826,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(reason);
 
-		ratingTitleTxt.setText(getString(R.string.new_game_rating_arg, getString(R.string.new_)));
+		ratingTitleTxt.setText(getString(R.string.new_) + Symbol.SPACE + getString(R.string.rating_));
 		resultRatingTxt.setText(String.valueOf(getCurrentPlayerRating()));
 
 //		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
@@ -960,7 +960,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.YOUR_ARE_ON_VACATAION) {
-					showPopupDialog(R.string.leave_vacation_to_submit_move_q, END_VACATION_TAG);
+					showPopupDialog(R.string.leave_vacation_q, END_VACATION_TAG);
 					return;
 				} else if (serverCode == ServerErrorCodes.PLEASE_REFRESH_GAME) {
 					updateGameState(gameId);

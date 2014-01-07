@@ -201,13 +201,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected void onSearchQuery(String query) {
 	}
 
-	@Override
-	public void onClick(View view) {
-		if (view.getId() == R.id.re_signin) {
-//			signInUser();
-		}
-	}
-
 	public ActionBarHelper provideActionBarHelper() {
 		return getActionBarHelper();
 	}

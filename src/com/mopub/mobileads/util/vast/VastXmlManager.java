@@ -39,9 +39,9 @@ class VastXmlManager {
         public String getName() {
             return this.name;
         }
-    };
+    }
 
-    enum VastElementAttributeName {
+	enum VastElementAttributeName {
         EVENT ("event");
 
         private final String name;
@@ -53,9 +53,9 @@ class VastXmlManager {
         public String getName() {
             return this.name;
         }
-    };
+    }
 
-    enum VastElementAttributeValue {
+	enum VastElementAttributeValue {
         START ("start"),
         FIRST_QUARTILE ("firstQuartile"),
         MIDPOINT ("midpoint"),
@@ -71,9 +71,9 @@ class VastXmlManager {
         public String getValue() {
             return this.value;
         }
-    };
+    }
 
-    private Document mVastDoc;
+	private Document mVastDoc;
 
     void parseVastXml(String xmlString) throws ParserConfigurationException, IOException, SAXException {
         // if the xml string starts with <?xml?>, this tag can break parsing if it isn't formatted exactly right

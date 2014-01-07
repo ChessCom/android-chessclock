@@ -333,11 +333,11 @@ public class TranspositionTable {
         }
     }
     
-    private final int h0(long key) {
+    private int h0(long key) {
         return (int)(key & (table.length - 1));
     }
     
-    private final int h1(long key) {
+    private int h1(long key) {
         return (int)((key >> 32) & (table.length - 1));
     }
 }

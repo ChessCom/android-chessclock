@@ -133,7 +133,8 @@ class MraidDisplayController extends MraidAbstractController {
 
     // Task that periodically checks whether this controller's view is on-screen.
     private Runnable mCheckViewabilityTask = new Runnable() {
-        public void run() {
+        @Override
+		public void run() {
             boolean currentViewable = checkViewable();
             if (mIsViewable != currentViewable) {
                 mIsViewable = currentViewable;
@@ -324,7 +325,8 @@ class MraidDisplayController extends MraidAbstractController {
             mTwoPartExpansionView = new MraidView(getContext(), getMraidView().getAdConfiguration(), ExpansionStyle.DISABLED,
                     NativeCloseButtonStyle.AD_CONTROLLED, PlacementType.INLINE);
             mTwoPartExpansionView.setMraidListener(new BaseMraidListener() {
-                public void onClose(MraidView view, ViewState newViewState) {
+                @Override
+				public void onClose(MraidView view, ViewState newViewState) {
                     close();
                 }
             });
@@ -698,7 +700,8 @@ class MraidDisplayController extends MraidAbstractController {
         View dimmingView = new View(getContext());
         dimmingView.setBackgroundColor(Color.TRANSPARENT);
         dimmingView.setOnTouchListener(new OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
+            @Override
+			public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
         });
@@ -740,7 +743,8 @@ class MraidDisplayController extends MraidAbstractController {
                 mCloseButton.setImageDrawable(states);
                 mCloseButton.setBackgroundDrawable(null);
                 mCloseButton.setOnClickListener(new OnClickListener() {
-                    public void onClick(View v) {
+                    @Override
+					public void onClick(View v) {
                         MraidDisplayController.this.close();
                     }
                 });
@@ -865,7 +869,8 @@ class MraidDisplayController extends MraidAbstractController {
         private int mLastRotation;
         private Context mContext;
 
-        public void onReceive(Context context, Intent intent) {
+        @Override
+		public void onReceive(Context context, Intent intent) {
             if(!isRegistered()) {
                 return;
             }

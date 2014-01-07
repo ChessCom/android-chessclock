@@ -1,67 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>Ферзь</item>
-		<item>Ладья</item>
-		<item>Слон</item>
-		<item>Конь</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>Случайный</item>
-		<item>Белый</item>
-		<item>Чёрный</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 день</item>
-		<item>2 дня </item>
-		<item>3 дня </item>
-		<item>5 дней</item>
-		<item>7 дней </item>
-		<item>14 дней</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Начинающий уровень</item>
-		<item>Промежуточный уровень</item>
-		<item>Продвинутый</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Удивительные игры</item>
-		<item>Консолидации</item>
-		<item>Отверстия</item>
-		<item>Основные правила</item>
-		<item>Стратегии</item>
-		<item>Тактики</item>
-	</string-array>	
-
 	<string-array name="afterMyMove">
 	    <item>Перейти к следующей готовой игре</item>
 		<item>Остаться в текущей</item>
 		<item>Вернуться к списку игр</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Нет</item>
-		<item>Вибрация</item>
-		<item>Звонок</item>
-		<item>Мигающий индикатор</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 сек</item>
-		<item>3 сек</item>
-		<item>5 сек</item>
-		<item>10 сек</item>
-		<item>30 сек</item>
-		<item>1/мин</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>Соединённые Штаты</item>
         <item>Канада</item>

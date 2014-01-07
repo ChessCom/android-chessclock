@@ -107,7 +107,7 @@ public class Parameters {
         addPar(new SpinParam("pV", false, -200, 200, 0));
     }
 
-    private final void addPar(ParamBase p) {
+    private void addPar(ParamBase p) {
         params.put(p.name.toLowerCase(), p);
     }
 

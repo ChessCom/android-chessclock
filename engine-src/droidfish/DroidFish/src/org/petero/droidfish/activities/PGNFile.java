@@ -111,8 +111,8 @@ public class PGNFile {
         OK,
         CANCEL,
         NOT_PGN,
-        OUT_OF_MEMORY;
-    }
+        OUT_OF_MEMORY
+	}
 
     /** Return info about all PGN games in a file. */
     public final Pair<GameInfoResult,ArrayList<GameInfo>> getGameInfo(Activity activity,
@@ -226,7 +226,7 @@ public class PGNFile {
         return new Pair<GameInfoResult,ArrayList<GameInfo>>(GameInfoResult.OK, gamesInFile);
     }
 
-    private final void mkDirs() {
+    private void mkDirs() {
         File dirFile = fileName.getParentFile();
         dirFile.mkdirs();
     }
@@ -315,7 +315,7 @@ public class PGNFile {
         return false;
     }
 
-    private final static void copyData(RandomAccessFile fileReader,
+    private static void copyData(RandomAccessFile fileReader,
                RandomAccessFile fileWriter,
                long nBytes) throws IOException {
         byte[] buffer = new byte[8192];

@@ -19,7 +19,7 @@ public interface GameFace {
 
 	void showOptions();
 
-	void showChoosePieceDialog(final int col, final int row);
+	void showChoosePieceDialog(final int file, final int rank);
 
 	void newGame();
 

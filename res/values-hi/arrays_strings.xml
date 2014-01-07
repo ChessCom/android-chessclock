@@ -1,67 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>रानी</item>
-		<item>कौआ</item>
-		<item>बिशप</item>
-		<item>शूरवीर</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>रैंडम</item>
-		<item>सफेद</item>
-		<item>काला</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 दिन</item>
-		<item>2 दिन</item>
-		<item>3 दिन</item>
-		<item>5 दिन</item>
-		<item>7 दिन</item>
-		<item>14 दिन</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>बिगिनर</item>
-		<item>मध्यवर्ती </item>
-		<item>विकसित</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>अद्भुत खेल</item>
-		<item>एंडगेम्स</item>
-		<item>उद्घाटन</item>
-		<item>नियम मूल बातें</item>
-		<item>रणनीति</item>
-		<item>रणनीति</item>
-	</string-array>	
-	
 	<string-array name="afterMyMove">
 	    <item>अगले तैयार खेल</item>
 		<item>एक ही खेल रहो</item>
 		<item>खेल सूची</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>कोई नहीं </item>
-		<item>कंपन करें </item>
-		<item>अंगूठी</item>
-		<item>निमिष एलईडी</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 सेकंड</item>
-		<item>3 सेकंड</item>
-		<item>5 सेकंड</item>
-		<item>10 सेकंड</item>
-		<item>30 सेकंड</item>
-		<item>1 मिनट</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>संयुक्त राज्य अमेरिका</item>
         <item>कनाडा</item>

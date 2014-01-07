@@ -1,66 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>Königin</item>
-		<item>Turm</item>
-		<item>Bischof</item>
-		<item>Ritter</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-	<string-array name="playas">
-		<item>Zufällig</item>
-		<item>Weiß</item>
-		<item>Schwarz</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 Tag</item>
-		<item>2 Tage</item>
-		<item>3 Tage</item>
-		<item>5 Tage</item>
-		<item>7 Tage</item>
-		<item>14 Tage</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Anfänger</item>
-		<item>Fortgeschrittene</item>
-		<item>Erweitert</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Erstaunlich Spiele</item>
-		<item>Endspiele</item>
-		<item>Öffnungen</item>
-		<item>Regeln Basics</item>
-		<item>strategie</item>
-		<item>Taktik</item>
-	</string-array>	
-	
 	<string-array name="afterMyMove">
 	    <item>Zum nächsten Spiel bereit</item>
 		<item>Stay On Same Game</item>
 		<item>Return To Game List</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Keine</item>
-		<item>Vibration</item>
-		<item>Ring= anrufton/anruf</item>
-		<item>Blinkende LED</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 Sekunde</item>
-		<item>3 Sekunde.</item>
-		<item>5 Sekunden</item>
-		<item>10 Sekunden</item>
-		<item>30 Sekunden</item>
-		<item>1 Min.</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>Vereinigte Staaten</item>
         <item>Kanada</item>

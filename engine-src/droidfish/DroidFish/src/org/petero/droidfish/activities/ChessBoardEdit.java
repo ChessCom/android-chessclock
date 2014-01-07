@@ -70,7 +70,7 @@ public class ChessBoardEdit extends ChessBoard {
         y0 = landScape ? 0 : (height - getHeight(sqSize)) / 2;
     }
 
-    private final int extraPieces(int x, int y) {
+    private int extraPieces(int x, int y) {
         if (landScape) {
             if (x == 8) {
                 switch (y) {

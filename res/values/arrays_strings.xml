@@ -82,46 +82,6 @@
 		<item>Türk</item>
 	</string-array>
 
-	<string-array name="promotion_options">
-		<item>Queen</item>
-		<item>Rook</item>
-		<item>Bishop</item>
-		<item>Knight</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>Random</item>
-		<item>White</item>
-		<item>Black</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-		<item>1 day</item>
-		<item>2 days</item>
-		<item>3 days</item>
-		<item>5 days</item>
-		<item>7 days</item>
-		<item>14 days</item>
-	</string-array>
-
-
-	<string-array name="skill">
-		<item>Beginner</item>
-		<item>Intermediate</item>
-		<item>Advanced</item>
-	</string-array>
-
-	<string-array name="category">
-		<item>Amazing games</item>
-		<item>Endgames</item>
-		<item>Openings</item>
-		<item>Rules Basics</item>
-		<item>Strategy</item>
-		<item>Tactics</item>
-	</string-array>
-
 	<string-array name="game_stats_categories">
 		<item>Daily Chess</item>
 		<item>Live Chess - Standard</item>
@@ -261,22 +221,6 @@
 		<item>Go To Next Ready Game</item>
 		<item>Stay On Same Game</item>
 		<item>Return To Games List</item>
-	</string-array>
-
-	<string-array name="Notif">
-		<item>None</item>
-		<item>Vibrate</item>
-		<item>Ring</item>
-		<item>Blinking LED</item>
-	</string-array>
-
-	<string-array name="strength">
-		<item>1 sec</item>
-		<item>3 sec</item>
-		<item>5 sec</item>
-		<item>10 sec</item>
-		<item>30 sec</item>
-		<item>1 min</item>
 	</string-array>
 
 	<string-array name="countries">

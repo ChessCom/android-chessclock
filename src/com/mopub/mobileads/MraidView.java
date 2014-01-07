@@ -144,7 +144,8 @@ public class MraidView extends BaseWebView implements UserClickListener {
         setHorizontalScrollBarEnabled(false);
         
         setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
+            @Override
+			public boolean onTouch(View v, MotionEvent event) {
                 mViewGestureDetector.sendTouchEvent(event);
 
                 switch (event.getAction()) {
@@ -159,7 +160,7 @@ public class MraidView extends BaseWebView implements UserClickListener {
             }
         });
         
-        getSettings().setJavaScriptEnabled(true);
+//        getSettings().setJavaScriptEnabled(true);
         
         mBrowserController = new MraidBrowserController(this);
         mDisplayController = new MraidDisplayController(this, expStyle, buttonStyle);

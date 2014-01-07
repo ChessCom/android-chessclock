@@ -65,9 +65,9 @@ public class AdViewController {
                     FrameLayout.LayoutParams.WRAP_CONTENT,
                     FrameLayout.LayoutParams.WRAP_CONTENT,
                     Gravity.CENTER);
-    private static WeakHashMap<View,Boolean> sViewShouldHonorServerDimensions = new WeakHashMap<View, Boolean>();;
+    private static WeakHashMap<View,Boolean> sViewShouldHonorServerDimensions = new WeakHashMap<View, Boolean>();
 
-    private final Context mContext;
+	private final Context mContext;
     private MoPubView mMoPubView;
     private final AdUrlGenerator mUrlGenerator;
     private AdFetcher mAdFetcher;
@@ -106,7 +106,8 @@ public class AdViewController {
         mAdFetcher = AdFetcherFactory.create(this, mAdConfiguration.getUserAgent());
 
         mRefreshRunnable = new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 loadAd();
             }
         };
@@ -336,7 +337,8 @@ public class AdViewController {
 
     void trackImpression() {
         new Thread(new Runnable() {
-            public void run () {
+            @Override
+			public void run () {
                 if (mAdConfiguration.getImpressionUrl() == null) return;
 
                 DefaultHttpClient httpClient = HttpClientFactory.create();
@@ -355,7 +357,8 @@ public class AdViewController {
 
     void registerClick() {
         new Thread(new Runnable() {
-            public void run () {
+            @Override
+			public void run () {
                 if (mAdConfiguration.getClickthroughUrl() == null) return;
 
                 DefaultHttpClient httpClient = HttpClientFactory.create();

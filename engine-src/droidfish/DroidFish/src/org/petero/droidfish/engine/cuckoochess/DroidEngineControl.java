@@ -220,7 +220,7 @@ public class DroidEngineControl {
 		Log.d("FISHLOG", "computeTimeLimit maxTimeLimit " + maxTimeLimit);
     }
 
-    static final int clamp(int val, int min, int max) {
+    static int clamp(int val, int min, int max) {
         if (val < min) {
             return min;
         } else if (val > max) {
@@ -230,7 +230,7 @@ public class DroidEngineControl {
         }
     }
 
-    final private void startThread(final int minTimeLimit, final int maxTimeLimit,
+    private void startThread(final int minTimeLimit, final int maxTimeLimit,
                                    int maxDepth, final int maxNodes) {
         synchronized (threadMutex) {} // Must not start new search until old search is finished
         sc = new Search(pos, posHashList, posHashListSize, tt, ht);
@@ -313,7 +313,7 @@ public class DroidEngineControl {
     }
 
 
-    private final void setupTT() {
+    private void setupTT() {
         int nEntries = hashSizeMB > 0 ? hashSizeMB * (1 << 20) / 24 : 1024;
         int logSize = (int) Math.floor(Math.log(nEntries) / Math.log(2));
         tt = new TranspositionTable(logSize);

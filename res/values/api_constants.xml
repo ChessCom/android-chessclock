@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-	<item type="string" name="inneractiveAdsAppId">Android_IA_Test</item>
+	<item type="string" name="inneractiveAdsAppId" tools:ignore="UnusedResources">Android_IA_Test</item>
 	<!--<item type="string" name="inneractiveAdsAppId">Chesscom_LearnAndPlayChess_Android</item>-->
     <string name="facebook_app_id">2427617054</string>
 </resources>

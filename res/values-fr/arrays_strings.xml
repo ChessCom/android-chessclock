@@ -1,66 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>Reine</item>
-		<item>Freux</item>
-		<item>évêque</item>
-		<item>Chevalier</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-	<string-array name="playas">
-		<item>Aléatoire</item>
-		<item>Blanc</item>
-		<item>Noir</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 jour</item>
-		<item>2 jours</item>
-		<item>3 jours</item>
-		<item>5 jours</item>
-		<item>7 jours</item>
-		<item>14 jours</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Débutant</item>
-		<item>Intermédiaire</item>
-		<item>Avancé</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Jeux étonnants</item>
-		<item>Finales</item>
-		<item>Ouvertures</item>
-		<item>Notions de base sur les règles</item>
-		<item>Stratégie</item>
-		<item>La mise en oeuvre</item>
-	</string-array>	
-	
 	<string-array name="afterMyMove">
 	    <item>Aller à Game Ready Suivant</item>
 		<item>Restez sur Same Game</item>
 		<item>Retour à la liste de jeu</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Aucune</item>
-		<item>Vibreur</item>
-		<item>Anneau</item>
-		<item>Clignotement de la LED</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 sec</item>
-		<item>3 sec</item>
-		<item>5 sec</item>
-		<item>10 sec </item>
-		<item>30 sec</item>
-		<item>1 mn</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>États-Unis</item>
         <item>Canada</item>

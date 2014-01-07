@@ -664,7 +664,7 @@ public class Session implements Serializable {
      * @param session the Session to save
      * @param bundle  the Bundle to save the Session to
      */
-    public static final void saveSession(Session session, Bundle bundle) {
+    public static void saveSession(Session session, Bundle bundle) {
         if (bundle != null && session != null && !bundle.containsKey(SESSION_BUNDLE_SAVE_KEY)) {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             try {
@@ -689,7 +689,7 @@ public class Session implements Serializable {
      * @param bundle          the bundle to restore the Session from
      * @return the restored Session, or null
      */
-    public static final Session restoreSession(
+    public static Session restoreSession(
             Context context, TokenCachingStrategy cachingStrategy, StatusCallback callback, Bundle bundle) {
         if (bundle == null) {
             return null;
@@ -725,7 +725,7 @@ public class Session implements Serializable {
      *
      * @return the current active Session, or null if there is none.
      */
-    public static final Session getActiveSession() {
+    public static Session getActiveSession() {
         synchronized (Session.STATIC_LOCK) {
             return Session.activeSession;
         }

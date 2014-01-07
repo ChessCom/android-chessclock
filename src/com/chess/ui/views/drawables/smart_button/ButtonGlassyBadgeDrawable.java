@@ -60,6 +60,7 @@ public class ButtonGlassyBadgeDrawable extends ButtonGlassyDrawable implements B
 		initialized = false;
 	}
 
+	@Override
 	public void setBadgeValue(String badgeValue) {
 		this.badgeValue = badgeValue;
 		invalidateSelf();

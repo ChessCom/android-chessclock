@@ -83,7 +83,7 @@ public final class Settings {
      *
      * @return a set containing enabled logging behaviors
      */
-    public static final Set<LoggingBehavior> getLoggingBehaviors() {
+    public static Set<LoggingBehavior> getLoggingBehaviors() {
         synchronized (loggingBehaviors) {
             return Collections.unmodifiableSet(new HashSet<LoggingBehavior>(loggingBehaviors));
         }
@@ -98,7 +98,7 @@ public final class Settings {
      * @param behavior
      *          The LoggingBehavior to enable
      */
-    public static final void addLoggingBehavior(LoggingBehavior behavior) {
+    public static void addLoggingBehavior(LoggingBehavior behavior) {
         synchronized (loggingBehaviors) {
             loggingBehaviors.add(behavior);
         }
@@ -113,7 +113,7 @@ public final class Settings {
      * @param behavior
      *          The LoggingBehavior to disable
      */
-    public static final void removeLoggingBehavior(LoggingBehavior behavior) {
+    public static void removeLoggingBehavior(LoggingBehavior behavior) {
         synchronized (loggingBehaviors) {
             loggingBehaviors.remove(behavior);
         }
@@ -125,7 +125,7 @@ public final class Settings {
      *
      * Disables all extended logging behaviors.
      */
-    public static final void clearLoggingBehaviors() {
+    public static void clearLoggingBehaviors() {
         synchronized (loggingBehaviors) {
             loggingBehaviors.clear();
         }
@@ -141,7 +141,7 @@ public final class Settings {
      *          The LoggingBehavior to check
      * @return whether behavior is enabled
      */
-    public static final boolean isLoggingBehaviorEnabled(LoggingBehavior behavior) {
+    public static boolean isLoggingBehaviorEnabled(LoggingBehavior behavior) {
         synchronized (loggingBehaviors) {
             return BuildConfig.DEBUG && loggingBehaviors.contains(behavior);
         }

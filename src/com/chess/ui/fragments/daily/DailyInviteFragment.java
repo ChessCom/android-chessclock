@@ -22,7 +22,6 @@ import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
-import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
@@ -150,7 +149,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 			} else if (challengeItem.getColor() == RestHelper.P_WHITE) {
 				color = getString(R.string.white);
 			}
-			detailsStr1 += Symbol.NEW_STR + getString(R.string.i_play_as) + Symbol.SPACE + color;
+			detailsStr1 += Symbol.NEW_STR + getString(R.string.i_play_as_) + Symbol.SPACE + color;
 
 			inviteDetails1Txt.setText(detailsStr1);
 		}
@@ -251,14 +250,6 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		@Override
 		public void updateData(BaseResponseItem returnedObj) {
 			showToast(successToastMsgId);
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
-				showToast(R.string.host_unreachable_load_local);
-			}
 		}
 	}
 

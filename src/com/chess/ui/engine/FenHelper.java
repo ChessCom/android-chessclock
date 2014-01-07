@@ -15,21 +15,6 @@ import static com.chess.ui.engine.ChessBoard.*;
  */
 public class FenHelper {
 
-	// white pieces
-//	public static final String WHITE_QUEEN = "Q";
-//	public static final String WHITE_ROOK = "R";
-//	public static final String WHITE_BISHOP = "B";
-//	public static final String WHITE_KNIGHT = "N";
-//	public static final String WHITE_KING = "K";
-//	public static final String WHITE_PAWN = "P";
-	// black pieces
-//	public static final String BLACK_QUEEN = "q";
-//	public static final String BLACK_ROOK = "r";
-//	public static final String BLACK_BISHOP = "b";
-//	public static final String BLACK_KNIGHT = "n";
-//	public static final String BLACK_KING = "k";
-//	public static final String BLACK_PAWN = "p";
-
 	public static final int NO_CASTLING = 0;
 	public static final int KINGSIDE_CASTLING = 1;
 	public static final int QUEENSIDE_CASTLING = 2;

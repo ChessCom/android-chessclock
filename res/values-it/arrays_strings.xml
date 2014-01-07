@@ -1,89 +1,12 @@
 <resources>
 
-<!--	<string-array name="languages">
-		<item>Inglese</item>
-		<item>Arabo</item>
-		<item>Cinese</item>
-		<item>Danese</item>
-		<item>Olandese</item>
-		<item>Francese</item>
-		<item>Tedesco</item>
-		<item>Ebraico</item>
-		<item>Hindi</item>
-		<item>Italiano</item>
-		<item>Giapponese</item>
-		<item>Coreano</item>
-		<item>Norvegese</item>
-		<item>Persiano</item>
-		<item>Polacco</item>
-		<item>Portoghese</item>
-		<item>Russo</item>
-		<item>Spagnolo</item>
-		<item>Svedese</item>
-		<item>Turco</item>
-	</string-array>-->
 
-	<string-array name="promotion_options">
-		<item>Regina</item>
-		<item>Torre</item>
-		<item>Vescovo</item>
-		<item>Cavaliere</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-	<string-array name="playas">
-		<item>Random</item>
-		<item>bianco</item>
-		<item>Nero</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 giorno</item>
-		<item>2 giorni</item>
-		<item>3 giorni</item>
-		<item>5 giorni</item>
-		<item>7 giorni</item>
-		<item>14 giorni</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Debuttante</item>
-		<item>Intermedio</item>
-		<item>Avanzate</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Fantastici giochi</item>
-		<item>Finali</item>
-		<item>Aperture</item>
-		<item>Regole di base</item>
-		<item>Strategia</item>
-		<item>Tattica</item>
-	</string-array>	
-	
 	<string-array name="afterMyMove">
 	    <item>Vai al prossimo Game Ready</item>
 		<item>Stay On Same Game</item>
 		<item>Return To Game List</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Nessuno</item>
-		<item>Vibrazione</item>
-		<item>Suoneria</item>
-		<item>LED lampeggiante</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>sec</item>
-		<item>sec</item>
-		<item>5 sec</item>
-		<item>10 sec</item>
-		<item>30 sec</item>
-		<item>1 min</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>Stati Uniti</item>
         <item>Canada</item>

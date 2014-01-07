@@ -81,7 +81,7 @@ public class WebViewFragment extends CommonLogicFragment {
 	private void widgetsInit(View view) {
 		webView = (WebView) view.findViewById(R.id.webView);
 
-		webView.getSettings().setJavaScriptEnabled(true);
+//		webView.getSettings().setJavaScriptEnabled(true);
 		webView.setWebViewClient(new MyWebViewClient());
 		webView.setWebChromeClient(new MyWebChromeClient());
 

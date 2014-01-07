@@ -1,67 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>Królowa</item>
-		<item>Gawron</item>
-		<item>Biskup</item>
-		<item>Rycerz</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>Losowo</item>
-		<item>Biały</item>
-		<item>Czarny</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 dzień</item>
-		<item>2 dni</item>
-		<item>3 dni</item>
-		<item>5 dni</item>
-		<item>7 dni</item>
-		<item>14 dni</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Początkujący</item>
-		<item>Średni poziom zaawansowania</item>
-		<item>Advanced</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Niesamowite gry</item>
-		<item>Endgames</item>
-		<item>Otwory</item>
-		<item>Regulamin Podstawy</item>
-		<item>Strategie.</item>
-		<item>Taktyka</item>
-	</string-array>	
-
 	<string-array name="afterMyMove">
 	    <item>Przejdź do następnego Gotowe gry</item>
 		<item>Pobyt na jednej grze</item>
 		<item>Powrót do listy gier</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Brak</item>
-		<item>Wibracja</item>
-		<item>Dzwonek</item>
-		<item>Miga dioda</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 sek.</item>
-		<item>3 sek.</item>
-		<item>5 sek.</item>
-		<item>10 sek</item>
-		<item>30 sek</item>
-		<item>1 min</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>Stany Zjednoczone</item>
         <item>Canada</item>

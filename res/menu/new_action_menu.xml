@@ -33,13 +33,13 @@
 
 
 	<item android:id="@+id/menu_notifications"
-		android:title="@string/menu_notifications"
+		android:title="@string/notifications"
 		android:icon="@drawable/ic_action_notifications"
 		android:orderInCategory="2"
 		android:showAsAction="always" />
 
 	<item android:id="@+id/menu_games"
-		android:title="@string/menu_games"
+		android:title="@string/games"
 		android:orderInCategory="3"
 		android:icon="@drawable/ic_action_games"
 		android:showAsAction="always"

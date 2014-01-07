@@ -1,15 +1,14 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 	<dimen name="actionbar_compat_height">54dp</dimen>
 
 	<!--Dashboard-->
-	<dimen name="dashboard_padding_top">80dip</dimen>
+	<dimen name="dashboard_padding_top" tools:ignore="UnusedResources">80dip</dimen>
 	<dimen name="dashboard_padding_bot">100dip</dimen>
 	<dimen name="dashboard_padding_side">60dip</dimen>
     <dimen name="dashboard_text_size">18sp</dimen>
 
     <!--SigIn-->
 	<dimen name="signin_scr_top_padding">20dip</dimen>
-	<dimen name="signin_scr_bottom_padding">20dip</dimen>
 	<dimen name="signin_scr_side_padding">100dip</dimen>
 	<dimen name="signin_logo_margin_top">15dip</dimen>
 	<dimen name="signin_main_margin_top">36dip</dimen>

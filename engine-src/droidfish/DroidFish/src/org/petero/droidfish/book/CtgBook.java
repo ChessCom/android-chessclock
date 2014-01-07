@@ -18,18 +18,14 @@
 
 package org.petero.droidfish.book;
 
+import org.petero.droidfish.book.DroidBook.BookEntry;
+import org.petero.droidfish.gamelogic.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.petero.droidfish.book.DroidBook.BookEntry;
-import org.petero.droidfish.gamelogic.Move;
-import org.petero.droidfish.gamelogic.Piece;
-import org.petero.droidfish.gamelogic.Position;
-import org.petero.droidfish.gamelogic.TextIO;
-import org.petero.droidfish.gamelogic.UndoInfo;
 
 class CtgBook implements IOpeningBook {
     private BookOptions options = new BookOptions();
@@ -127,7 +123,7 @@ class CtgBook implements IOpeningBook {
     }
 
     /** Read len bytes from offs in file f. */
-    private final static byte[] readBytes(RandomAccessFile f, int offs, int len) throws IOException {
+    private static byte[] readBytes(RandomAccessFile f, int offs, int len) throws IOException {
         byte[] ret = new byte[len];
         f.seek(offs);
         f.readFully(ret);
@@ -135,7 +131,7 @@ class CtgBook implements IOpeningBook {
     }
 
     /** Convert len bytes starting at offs in buf to an integer. */
-    private final static int extractInt(byte[] buf, int offs, int len) {
+    private static int extractInt(byte[] buf, int offs, int len) {
         int ret = 0;
         for (int i = 0; i < len; i++) {
             int b = buf[offs + i];
@@ -191,7 +187,7 @@ class CtgBook implements IOpeningBook {
     }
 
     /** Converts a position to a byte array. */
-    private final static byte[] positionToByteArray(Position pos) {
+    private static byte[] positionToByteArray(Position pos) {
         BitVector bits = new BitVector();
         bits.addBits(0, 8); // Header byte
         for (int x = 0; x < 8; x++) {
@@ -289,7 +285,7 @@ class CtgBook implements IOpeningBook {
             0x274c7e7c, 0x1e8be65c, 0x2fa0b0bb, 0x1eb6c371
         };
 
-        private final static int getHashValue(byte[] encodedPos) {
+        private static int getHashValue(byte[] encodedPos) {
             int hash = 0;
             int tmp = 0;
             for (int i = 0; i < encodedPos.length; i++) {
@@ -349,7 +345,7 @@ class CtgBook implements IOpeningBook {
             return pd;
         }
 
-        private final PositionData findInPage(int page, byte[] encodedPos) throws IOException {
+        private PositionData findInPage(int page, byte[] encodedPos) throws IOException {
             byte[] pageBuf = readBytes(f, (page+1)*4096, 4096);
             try {
                 int nPos = extractInt(pageBuf, 0, 2);
@@ -448,7 +444,7 @@ class CtgBook implements IOpeningBook {
             int dy;
         }
 
-        private final static MoveInfo MI(int piece, int pieceNo, int dx, int dy) {
+        private static MoveInfo MI(int piece, int pieceNo, int dx, int dy) {
             MoveInfo mi = new MoveInfo();
             mi.piece = piece;
             mi.pieceNo = pieceNo;
@@ -627,7 +623,7 @@ class CtgBook implements IOpeningBook {
             moveInfo[0xfe] = MI(Piece.WQUEEN , 1, -3, +3);
         }
 
-        private final static int findPiece(Position pos, int piece, int pieceNo) {
+        private static int findPiece(Position pos, int piece, int pieceNo) {
             for (int x = 0; x < 8; x++)
                 for (int y = 0; y < 8; y++) {
                     int sq = Position.getSquare(x, y);
@@ -638,7 +634,7 @@ class CtgBook implements IOpeningBook {
             return -1;
         }
 
-        private final Move decodeMove(Position pos, int moveCode) {
+        private Move decodeMove(Position pos, int moveCode) {
             MoveInfo mi = moveInfo[moveCode];
             if (mi == null)
                 return null;
@@ -656,13 +652,13 @@ class CtgBook implements IOpeningBook {
         }
     }
 
-    private final static int mirrorSquareColor(int sq) {
+    private static int mirrorSquareColor(int sq) {
         int x = Position.getX(sq);
         int y = 7 - Position.getY(sq);
         return Position.getSquare(x, y);
     }
 
-    private final static int mirrorPieceColor(int piece) {
+    private static int mirrorPieceColor(int piece) {
         if (Piece.isWhite(piece)) {
             piece = Piece.makeBlack(piece);
         } else {
@@ -671,7 +667,7 @@ class CtgBook implements IOpeningBook {
         return piece;
     }
 
-    private final static Position mirrorPosColor(Position pos) {
+    private static Position mirrorPosColor(Position pos) {
         Position ret = new Position(pos);
         for (int sq = 0; sq < 64; sq++) {
             int mSq = mirrorSquareColor(sq);
@@ -696,7 +692,7 @@ class CtgBook implements IOpeningBook {
         return ret;
     }
 
-    private final static Move mirrorMoveColor(Move m) {
+    private static Move mirrorMoveColor(Move m) {
         if (m == null) return null;
         Move ret = new Move(m);
         ret.from = mirrorSquareColor(m.from);
@@ -705,13 +701,13 @@ class CtgBook implements IOpeningBook {
         return ret;
     }
 
-    private final static int mirrorSquareLeftRight(int sq) {
+    private static int mirrorSquareLeftRight(int sq) {
         int x = 7 - Position.getX(sq);
         int y = Position.getY(sq);
         return Position.getSquare(x, y);
     }
 
-    private final static Position mirrorPosLeftRight(Position pos) {
+    private static Position mirrorPosLeftRight(Position pos) {
         Position ret = new Position(pos);
         for (int sq = 0; sq < 64; sq++) {
             int mSq = mirrorSquareLeftRight(sq);
@@ -728,7 +724,7 @@ class CtgBook implements IOpeningBook {
         return ret;
     }
 
-    private final static Move mirrorMoveLeftRight(Move m) {
+    private static Move mirrorMoveLeftRight(Move m) {
         if (m == null) return null;
         Move ret = new Move(m);
         ret.from = mirrorSquareLeftRight(m.from);

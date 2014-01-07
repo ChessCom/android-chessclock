@@ -917,7 +917,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		noNetwork = true;      // TODO handle button click properly
 		if (!userSawOfflinePopup) {
-			showPopupDialog(R.string.offline_mode, R.string.no_network_rating_not_changed, OFFLINE_RATING_TAG);
+			showPopupDialog(R.string.offline_mode, R.string.you_are_offline, OFFLINE_RATING_TAG);
 		}
 	}
 

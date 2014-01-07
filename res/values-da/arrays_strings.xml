@@ -1,66 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>Dronning</item>
-		<item>Råge</item>
-		<item>Biskop</item>
-		<item>Knight</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-	<string-array name="playas">
-		<item>Tilfældig</item>
-		<item>Hvid</item>
-		<item>Sort</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 dag</item>
-		<item>2 dage</item>
-		<item>3 dage</item>
-		<item>5 dage</item>
-		<item>7 dage</item>
-		<item>14 dage</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Begynder</item>
-		<item>Intermediate</item>
-		<item>Avanceret</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Fantastiske spil</item>
-		<item>Endgames</item>
-		<item>Åbninger</item>
-		<item>Regler Grundlæggende</item>
-		<item>Strategi</item>
-		<item>Taktik</item>
-	</string-array>	
-	
 	<string-array name="afterMyMove">
 	    <item>Gå til næste Klar Spil</item>
 		<item>Ophold på samme spil</item>
 		<item>Tilbage til listen over spil</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Ingen </item>
-		<item>Vibrer</item>
-		<item>Ring</item>
-		<item>Blinkende LED</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 sek</item>
-		<item>3 sek</item>
-		<item>5 sek</item>
-		<item>10 sek</item>
-		<item>30 sek</item>
-		<item>1 min</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>USA</item>
         <item>Canada</item>

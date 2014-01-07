@@ -99,16 +99,20 @@ class MraidBanner extends CustomEventBanner {
 
     private void initMraidListener() {
         mMraidView.setMraidListener(new MraidListener() {
-            public void onReady(MraidView view) {
+            @Override
+			public void onReady(MraidView view) {
                 MraidBanner.this.onReady();
             }
-            public void onFailure(MraidView view) {
+            @Override
+			public void onFailure(MraidView view) {
                 onFail();
             }
-            public void onExpand(MraidView view) {
+            @Override
+			public void onExpand(MraidView view) {
                 MraidBanner.this.onExpand();
             }
-            public void onClose(MraidView view, ViewState newViewState) {
+            @Override
+			public void onClose(MraidView view, ViewState newViewState) {
                 MraidBanner.this.onClose();
             }
         });

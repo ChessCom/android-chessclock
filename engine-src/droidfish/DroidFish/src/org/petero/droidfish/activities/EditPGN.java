@@ -242,7 +242,7 @@ public class EditPGN extends ListActivity {
         return false;
     }
 
-    private final void showList() {
+    private void showList() {
         progress.dismiss();
         setContentView(R.layout.select_game);
         Util.overrideFonts(findViewById(android.R.id.content));
@@ -415,7 +415,7 @@ public class EditPGN extends ListActivity {
         }
     }
 
-    private final boolean readFile() {
+    private boolean readFile() {
         String fileName = pgnFile.getName();
         if (!fileName.equals(lastFileName))
             defaultItem = 0;
@@ -457,7 +457,7 @@ public class EditPGN extends ListActivity {
         return true;
     }
 
-    private final void sendBackResult(GameInfo gi) {
+    private void sendBackResult(GameInfo gi) {
         String pgn = pgnFile.readOneGame(gi);
         if (pgn != null) {
             setResult(RESULT_OK, (new Intent()).setAction(pgn));
@@ -468,7 +468,7 @@ public class EditPGN extends ListActivity {
         }
     }
 
-    private final void deleteGame(GameInfo gi) {
+    private void deleteGame(GameInfo gi) {
         if (pgnFile.deleteGame(gi, getApplicationContext(), gamesInFile)) {
             ListView lv = getListView();
             int pos = lv.pointToPosition(0,0);

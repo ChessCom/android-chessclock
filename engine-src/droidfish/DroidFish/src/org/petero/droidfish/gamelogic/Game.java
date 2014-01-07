@@ -86,9 +86,9 @@ public class Game {
         ADD_LAST,
         /** Remove all variations not matching the new move. */
         REPLACE
-    };
+    }
 
-    /** Set whether new moves are entered as mainline moves or variations. */
+	/** Set whether new moves are entered as mainline moves or variations. */
     public final void setAddFirst(AddMoveBehavior amb) {
         addMoveBehavior = amb;
     }
@@ -167,7 +167,7 @@ public class Game {
         return true;
     }
 
-    private final void addToGameTree(Move m, String playerAction) {
+    private void addToGameTree(Move m, String playerAction) {
         if (m.equals(new Move(0, 0, 0))) { // Don't create more than one game-ending move at a node
             List<Move> varMoves = tree.variations();
             for (int i = varMoves.size() - 1; i >= 0; i--) {
@@ -217,7 +217,7 @@ public class Game {
         pendingDrawOffer = false;
     }
 
-    private final void updateTimeControl(boolean discardElapsed) {
+    private void updateTimeControl(boolean discardElapsed) {
         Position currPos = currPos();
         int move = currPos.fullMoveCounter;
         boolean wtm = currPos.whiteMove;
@@ -412,7 +412,7 @@ public class Game {
         return new Pair<Position, ArrayList<Move>>(pos, mList);
     }
 
-    private final void handleDrawCmd(String drawCmd) {
+    private void handleDrawCmd(String drawCmd) {
         Position pos = tree.currentPos;
         if (drawCmd.startsWith("rep") || drawCmd.startsWith("50")) {
             boolean rep = drawCmd.startsWith("rep");

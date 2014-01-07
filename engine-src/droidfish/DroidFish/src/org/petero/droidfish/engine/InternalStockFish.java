@@ -38,7 +38,7 @@ public class InternalStockFish extends ExternalEngine {
         setOption("Skill Level", strength/50);
     }
 
-    private final long readCheckSum(File f) {
+    private long readCheckSum(File f) {
         InputStream is = null;
         try {
             is = new FileInputStream(f);
@@ -51,7 +51,7 @@ public class InternalStockFish extends ExternalEngine {
         }
     }
 
-    private final void writeCheckSum(File f, long checkSum) {
+    private void writeCheckSum(File f, long checkSum) {
         OutputStream os = null;
         try {
             os = new FileOutputStream(f);
@@ -63,7 +63,7 @@ public class InternalStockFish extends ExternalEngine {
         }
     }
 
-    private final long computeAssetsCheckSum(String sfExe) {
+    private long computeAssetsCheckSum(String sfExe) {
         InputStream is = null;
         try {
             is = context.getAssets().open(sfExe);

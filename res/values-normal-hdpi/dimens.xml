@@ -9,7 +9,6 @@
 	<dimen name="signin_scr_bottom_padding">48dip</dimen>
 	<dimen name="signin_scr_side_padding">38dip</dimen>
 	<dimen name="signin_logo_margin_top">25dip</dimen>
-	<dimen name="signin_main_margin_top">53dip</dimen>
 
     <!--New Design-->
     <!--Welcome-->

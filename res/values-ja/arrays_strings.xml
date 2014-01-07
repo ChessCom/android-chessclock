@@ -1,67 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>女王</item>
-		<item>ルーク</item>
-		<item>ビショップ</item>
-		<item>ナイト</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>ランダム</item>
-		<item>白</item>
-		<item>黒</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1日</item>
-		<item>2日</item>
-		<item>3日</item>
-		<item>5日</item>
-		<item>7日間</item>
-		<item>14日</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>初心者向け</item>
-		<item>中級オプション</item>
-		<item>拡張機能</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>驚くべきゲーム</item>
-		<item>エンドゲームの状態</item>
-		<item>開口部</item>
-		<item>ルールの基本</item>
-		<item>戦略。</item>
-		<item>戦術</item>
-	</string-array>	
-	
 	<string-array name="afterMyMove">
 	    <item>次の準備試合を見に行く</item>
 		<item>同じゲームにとどまる</item>
 		<item>ゲームリストに戻る</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>なし</item>
-		<item>バイブレーション</item>
-		<item>Ring</item>
-		<item>LEDの点滅</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 秒</item>
-		<item>3 秒</item>
-		<item>5 秒</item>
-		<item>10秒</item>
-		<item>30秒</item>
-		<item>1分</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>米国</item>
         <item>カナダ</item>

@@ -119,7 +119,7 @@ public class SettingsPasswordFragment extends CommonLogicFragment {
 		@Override
 		public void showProgress(boolean show) {
 			if (show) {
-				showPopupHardProgressDialog(R.string.processing_);
+				showPopupHardProgressDialog();
 			} else {
 				if (isPaused) {
 					return;

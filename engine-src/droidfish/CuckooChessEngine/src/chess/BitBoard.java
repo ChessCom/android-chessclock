@@ -170,7 +170,7 @@ public class BitBoard {
         0x000000007efa8146L, 0x0000007ed3e2ef60L, 0x00007f47243adcd6L, 0x007fb65afabfb3b5L
     };
 
-    private static final long createPattern(int i, long mask) {
+    private static long createPattern(int i, long mask) {
         long ret = 0L;
         for (int j = 0; ; j++) {
             long nextMask = mask & (mask - 1);
@@ -184,7 +184,7 @@ public class BitBoard {
         return ret;
     }
     
-    private static final long addRookRays(int x, int y, long occupied, boolean inner) {
+    private static long addRookRays(int x, int y, long occupied, boolean inner) {
         long mask = 0;
         mask = addRay(mask, x, y,  1,  0, occupied, inner);
         mask = addRay(mask, x, y, -1,  0, occupied, inner);
@@ -192,7 +192,7 @@ public class BitBoard {
         mask = addRay(mask, x, y,  0, -1, occupied, inner);
         return mask;
     }
-    private static final long addBishopRays(int x, int y, long occupied, boolean inner) {
+    private static long addBishopRays(int x, int y, long occupied, boolean inner) {
         long mask = 0;
         mask = addRay(mask, x, y,  1,  1, occupied, inner);
         mask = addRay(mask, x, y, -1, -1, occupied, inner);
@@ -201,7 +201,7 @@ public class BitBoard {
         return mask;
     }
 
-    private static final long addRay(long mask, int x, int y, int dx, int dy, 
+    private static long addRay(long mask, int x, int y, int dx, int dy,
                                      long occupied, boolean inner) {
         int lo = inner ? 1 : 0;
         int hi = inner ? 6 : 7;

@@ -1,67 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>Kraliçe</item>
-		<item>Kale</item>
-		<item>Piskopos</item>
-		<item>şövalye</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>Rastgele</item>
-		<item>Beyaz</item>
-		<item>Siyah</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 saat</item>
-		<item>2 gün</item>
-		<item>3 gün</item>
-		<item>5 gün</item>
-		<item>7 gün</item>
-		<item>14 gün</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Acemi</item>
-		<item>Ara</item>
-		<item>Gelişmiş</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>İnanılmaz oyunlar</item>
-		<item>Hamleler</item>
-		<item>Açılışlar</item>
-		<item>Kuralları Temelleri</item>
-		<item>Strateji</item>
-		<item>Taktikler</item>
-	</string-array>	
-
 	<string-array name="afterMyMove">
 	    <item>Sonraki Hazır Oyun Git</item>
 		<item>Aynı Oyunu Stay</item>
 		<item>Oyun Listesi Return To</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Yok</item>
-		<item>Titreşim</item>
-		<item>Zilsesi</item>
-		<item>Yanıp sönen LED</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 sn</item>
-		<item>3 sn</item>
-		<item>5 sn</item>
-		<item>10 sn</item>
-		<item>30 sn</item>
-		<item>1 dakika</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>Amerika Birleşik Devletleri</item>
         <item>Kanada</item>

@@ -1,67 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>Rainha</item>
-		<item>Torre</item>
-		<item>Bispo</item>
-		<item>Cavaleiro</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>Aleatório</item>
-		<item>Branco</item>
-		<item>Preto</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 dia</item>
-		<item>2 dias</item>
-		<item>3 dias</item>
-		<item>5 dias</item>
-		<item>7 dias</item>
-		<item>14=Dias</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Iniciante</item>
-		<item>Intermediário</item>
-		<item>Avançada</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Jogos incríveis</item>
-		<item>Endgames</item>
-		<item>Aberturas</item>
-		<item>Noções básicas sobre regras</item>
-		<item>Estratégia</item>
-		<item>Táticas</item>
-	</string-array>	
-
 	<string-array name="afterMyMove">
 	    <item>Ir para o Jogo Pronto Próxima</item>
 		<item>Stay On mesmo jogo</item>
 		<item>Voltar à Lista de Jogo</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Nenhuma</item>
-		<item>Vibrar</item>
-		<item>Ring</item>
-		<item>LED piscando</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 seg</item>
-		<item>3 seg</item>
-		<item>5 seg</item>
-		<item>10 seg</item>
-		<item>30 seg</item>
-		<item>1 min</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>Estados Unidos</item>
         <item>Canadá</item>

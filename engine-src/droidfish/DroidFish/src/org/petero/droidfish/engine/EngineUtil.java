@@ -27,11 +27,11 @@ public class EngineUtil {
     }
 
     /** Return number of physical processors, i.e. hyper-threading ignored. */
-    final static native int getNPhysicalProcessors();
+    static native int getNPhysicalProcessors();
 
     @TargetApi(4)
     private static final class CpuAbi {
-        static final String get() { return Build.CPU_ABI; }
+        static String get() { return Build.CPU_ABI; }
     }
 
     /** Return file name of the internal stockfish executable,
@@ -49,7 +49,7 @@ public class EngineUtil {
     }
 
     /** Executes chmod 744 exePath. */
-    final static native boolean chmod(String exePath);
+    static native boolean chmod(String exePath);
 
     /** For synchronizing non thread safe native calls. */
     public static Object nativeLock = new Object();

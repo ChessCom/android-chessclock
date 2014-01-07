@@ -26,7 +26,7 @@ public class ColorTheme {
     private static ColorTheme inst = null;
 
     /** Get singleton instance. */
-    public static final ColorTheme instance() {
+    public static ColorTheme instance() {
         if (inst == null)
             inst = new ColorTheme();
         return inst;

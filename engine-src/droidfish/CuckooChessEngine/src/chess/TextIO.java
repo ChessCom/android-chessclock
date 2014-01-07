@@ -28,7 +28,7 @@ public class TextIO {
     static public final String startPosFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
     /** Parse a FEN string and return a chess Position object. */
-    public static final Position readFEN(String fen) throws ChessParseError {
+    public static Position readFEN(String fen) throws ChessParseError {
         Position pos = new Position();
         String[] words = fen.split(" ");
         if (words.length < 2) {
@@ -152,7 +152,7 @@ public class TextIO {
     }
 
     /** Remove pseudo-legal EP square if it is not legal, ie would leave king in check. */
-    public static final void fixupEPSquare(Position pos) {
+    public static void fixupEPSquare(Position pos) {
         int epSquare = pos.getEpSquare();
         if (epSquare >= 0) {
             MoveGen.MoveList moves = MoveGen.instance.pseudoLegalMoves(pos);
@@ -173,7 +173,7 @@ public class TextIO {
         }
     }
 
-    private static final void safeSetPiece(Position pos, int col, int row, int p) throws ChessParseError {
+    private static void safeSetPiece(Position pos, int col, int row, int p) throws ChessParseError {
         if (row < 0) throw new ChessParseError("Too many rows");
         if (col > 7) throw new ChessParseError("Too many columns");
         if ((p == Piece.WPAWN) || (p == Piece.BPAWN)) {
@@ -280,7 +280,7 @@ public class TextIO {
         MoveGen.removeIllegal(pos, moves);
         return moveToString(pos, move, longForm, moves);
     }
-    private static final String moveToString(Position pos, Move move, boolean longForm, MoveGen.MoveList moves) {
+    private static String moveToString(Position pos, Move move, boolean longForm, MoveGen.MoveList moves) {
         StringBuilder ret = new StringBuilder();
         int wKingOrigPos = Position.getSquare(4, 0);
         int bKingOrigPos = Position.getSquare(4, 7);
@@ -444,7 +444,7 @@ public class TextIO {
         return m;
     }
 
-    private static final boolean isCapture(Position pos, Move move) {
+    private static boolean isCapture(Position pos, Move move) {
         if (pos.getPiece(move.to) == Piece.EMPTY) {
             int p = pos.getPiece(move.from);
             if ((p == (pos.whiteMove ? Piece.WPAWN : Piece.BPAWN)) && (move.to == pos.getEpSquare())) {
@@ -591,7 +591,7 @@ public class TextIO {
     /**
      * Convert move string to lower case and remove special check/mate symbols.
      */
-    private static final String normalizeMoveString(String str) {
+    private static String normalizeMoveString(String str) {
         if (str.length() > 0) {
             char lastChar = str.charAt(str.length() - 1);
             if ((lastChar == '#') || (lastChar == '+')) {
@@ -601,7 +601,7 @@ public class TextIO {
         return str;
     }
     
-    private final static String pieceToChar(int p) {
+    private static String pieceToChar(int p) {
         switch (p) {
             case Piece.WQUEEN:  case Piece.BQUEEN:  return "Q";
             case Piece.WROOK:   case Piece.BROOK:   return "R";

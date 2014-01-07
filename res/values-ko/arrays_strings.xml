@@ -1,67 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>여왕</item>
-		<item>떼까마귀</item>
-		<item>주교</item>
-		<item>기사</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>무작위</item>
-		<item>백색</item>
-		<item>검은</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1일</item>
-		<item>이일</item>
-		<item>삼일</item>
-		<item>오일</item>
-		<item>칠일</item>
-		<item>십사일</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>초보자</item>
-		<item>중간</item>
-		<item>세부 설정</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>놀라운 게임</item>
-		<item>엔드 게임 상태</item>
-		<item>개구부</item>
-		<item>규칙의 기초</item>
-		<item>병법</item>
-		<item>전술</item>
-	</string-array>	
-	
 	<string-array name="afterMyMove">
 	    <item>다음을 준비 게임 이동</item>
 		<item>같은 게임을 그대로</item>
 		<item>게임 목록으로 돌아갑니다</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>해당사항 없음</item>
-		<item>진동</item>
-		<item>반지</item>
-		<item>점멸 LED가</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 초</item>
-		<item>3 초</item>
-		<item>5초</item>
-		<item>10초</item>
-		<item>30초</item>
-		<item>1 분</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>미국</item>
         <item>캐나다</item>

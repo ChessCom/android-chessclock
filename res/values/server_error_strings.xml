@@ -36,7 +36,7 @@
     <string name="tooFewGames">Too few games.</string>
     <string name="mustBePremium">Must be premium.</string>
     <string name="moveSpeedTooSlow">Move speed too slow.</string>
-    <string name="cantAcceptOwnSeek">Cant accept own seek.</string>
+    <string name="cantAcceptOwnSeek">Can\'t accept own seek.</string>
     <string name="notYourChallenge">Not your challenge.</string>
     <string name="gameAlreadyStarted2">Game already started!</string>
     <string name="needUsernameOrAuthUser">Need username or auth user.</string>

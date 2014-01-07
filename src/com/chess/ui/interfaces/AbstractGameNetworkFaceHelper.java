@@ -54,7 +54,7 @@ public abstract class AbstractGameNetworkFaceHelper implements GameNetworkFace {
 	}
 
 	@Override
-	public void showChoosePieceDialog(int col, int row) {
+	public void showChoosePieceDialog(int file, int rank) {
 
 	}
 

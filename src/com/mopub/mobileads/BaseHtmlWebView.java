@@ -50,7 +50,7 @@ public class BaseHtmlWebView extends BaseWebView implements UserClickListener {
         super(context);
 
         disableScrollingAndZoom();
-        getSettings().setJavaScriptEnabled(true);
+//        getSettings().setJavaScriptEnabled(true);
 
         mViewGestureDetector = new ViewGestureDetector(context, this, adConfiguration);
         mViewGestureDetector.setUserClickListener(this);

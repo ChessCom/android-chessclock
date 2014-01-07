@@ -185,7 +185,7 @@
 						android:id="@+id/winCntLabelTxt"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:text="@string/win"
+						android:text="@string/won"
 						android:paddingRight="3dp"
 						android:layout_below="@id/avgOpponentRatingTitleTxt"
 						android:textColor="@color/stats_label_light_grey" />
@@ -206,7 +206,7 @@
 						android:id="@+id/loseCntLabelTxt"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:text="@string/loss"
+						android:text="@string/lost"
 						android:paddingRight="3dp"
 						android:layout_below="@id/avgOpponentRatingTitleTxt"
 						android:layout_toLeftOf="@+id/winLossCenterView"

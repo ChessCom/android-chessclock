@@ -437,7 +437,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 					int rawSize = AppUtils.sizeOfBitmap(bitmap);
 					if (rawSize > FILE_SIZE_LIMIT) {         // TODO
-						showToast(R.string.optimizing_image);
+						showToast(R.string.hang_on);
 						saveImageForUpload(bitmap);
 					}
 

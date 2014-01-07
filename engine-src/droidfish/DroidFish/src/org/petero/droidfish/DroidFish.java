@@ -452,7 +452,7 @@ public class DroidFish extends Activity implements GUIInterface {
 			Piece.NOTATION_QUEEN  + " " +
 			Piece.NOTATION_KING;
 
-	private final void setPieceNames(int pieceType) {
+	private void setPieceNames(int pieceType) {
 		if (pieceType == PGNOptions.PT_FIGURINE) {
 			TextIO.setPieceNames(figurinePieceNames);
 		} else {
@@ -461,7 +461,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Create directory structure on SD card. */
-	private final void createDirectories() {
+	private void createDirectories() {
 		File extDir = Environment.getExternalStorageDirectory();
 		String sep = File.separator;
 		new File(extDir + sep + bookDir).mkdirs();
@@ -475,7 +475,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	 * Return PGN/FEN data or filename from the Intent. Both can not be non-null.
 	 * @return Pair of PGN/FEN data and filename.
 	 */
-	private final Pair<String,String> getPgnOrFenIntent() {
+	private Pair<String,String> getPgnOrFenIntent() {
 		String pgnOrFen = null;
 		String filename = null;
 		try {
@@ -517,7 +517,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return new Pair<String,String>(pgnOrFen,filename);
 	}
 
-	private final byte[] strToByteArr(String str) {
+	private byte[] strToByteArr(String str) {
 		if (str == null)
 			return null;
 		int nBytes = str.length() / 2;
@@ -530,7 +530,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return ret;
 	}
 
-	private final String byteArrToString(byte[] data) {
+	private String byteArrToString(byte[] data) {
 		if (data == null)
 			return null;
 		StringBuilder ret = new StringBuilder(32768);
@@ -552,7 +552,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Re-initialize UI when layout should change because of rotation or handedness change. */
-	private final void reInitUI() {
+	private void reInitUI() {
 		ChessBoardPlay oldCB = cb;
 		String statusStr = status.getText().toString();
 		initUI();
@@ -577,13 +577,13 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Return true if left-handed layout should be used. */
-	private final boolean leftHandedView() {
+	private boolean leftHandedView() {
 		return settings.getBoolean("leftHanded", false) &&
 				(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
 	}
 
 	/** Re-read preferences settings. */
-	private final void handlePrefsChange() {
+	private void handlePrefsChange() {
 		if (leftHanded != leftHandedView())
 			reInitUI();
 		else
@@ -591,7 +591,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		ctrl.setGameMode(gameMode);
 	}
 
-	private final void initUI() {
+	private void initUI() {
 		leftHanded = leftHandedView();
 		setContentView(leftHanded ? R.layout.main_left_handed : R.layout.main);
 		Util.overrideFonts(findViewById(android.R.id.content));
@@ -713,7 +713,7 @@ public class DroidFish extends Activity implements GUIInterface {
 					handleClick(e);
 				return true;
 			}
-			private final void handleClick(MotionEvent e) {
+			private void handleClick(MotionEvent e) {
 				if (ctrl.humansTurn()) {
 					int sq = cb.eventToSquare(e);
 					Move m = cb.mousePressed(sq);
@@ -862,13 +862,13 @@ public class DroidFish extends Activity implements GUIInterface {
 		super.onDestroy();
 	}
 
-	private final int getIntSetting(String settingName, int defaultValue) {
+	private int getIntSetting(String settingName, int defaultValue) {
 		String tmp = settings.getString(settingName, String.format(Locale.US, "%d", defaultValue));
 		int value = Integer.parseInt(tmp);
 		return value;
 	}
 
-	private final void readPrefs() {
+	private void readPrefs() {
 		int modeNr = getIntSetting("gameMode", 1);
 		gameMode = new GameMode(modeNr);
 		String oldPlayerName = playerName;
@@ -993,7 +993,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	/**
 	 * Change the Pieces into figurine or regular (i.e. letters) display
 	 */
-	private final void setFigurineNotation(boolean displayAsFigures, int fontSize) {
+	private void setFigurineNotation(boolean displayAsFigures, int fontSize) {
 		if (displayAsFigures) {
 			// increase the font cause it has different kerning and looks small
 			float increaseFontSize = fontSize * 1.1f;
@@ -1008,7 +1008,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Enable/disable title bar scrolling. */
-	private final void setTitleScrolling() {
+	private void setTitleScrolling() {
 		TextUtils.TruncateAt where = autoScrollTitle ? TextUtils.TruncateAt.MARQUEE
 				: TextUtils.TruncateAt.END;
 		whiteTitleText.setEllipsize(where);
@@ -1017,7 +1017,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		blackFigText.setEllipsize(where);
 	}
 
-	private final void updateButtons() {
+	private void updateButtons() {
 		boolean largeButtons = settings.getBoolean("largeButtons", false);
 		Resources r = getResources();
 		int bWidth  = (int)Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, r.getDisplayMetrics()));
@@ -1048,7 +1048,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		setButtonData(redoButton, bWidth, bHeight, R.raw.right, svg);
 	}
 
-	private final void setButtonData(ImageButton button, int bWidth, int bHeight,
+	private void setButtonData(ImageButton button, int bWidth, int bHeight,
 									 int svgResId, SVG touched) {
 		SVG svg = SVGParser.getSVGFromResource(getResources(), svgResId);
 		button.setBackgroundDrawable(new SVGPictureDrawable(svg));
@@ -1065,7 +1065,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		button.setScaleType(ScaleType.FIT_XY);
 	}
 
-	private synchronized final void setWakeLock(boolean enableLock) {
+	private synchronized void setWakeLock(boolean enableLock) {
 		WakeLock wl = wakeLock;
 		if (wl != null) {
 			if (wl.isHeld())
@@ -1075,12 +1075,12 @@ public class DroidFish extends Activity implements GUIInterface {
 		}
 	}
 
-	private final void setEngineStrength(String engine, int strength) {
+	private void setEngineStrength(String engine, int strength) {
 		ctrl.setEngineStrength(engine, strength);
 		setEngineTitle(engine, strength);
 	}
 
-	private final void setEngineTitle(String engine, int strength) {
+	private void setEngineTitle(String engine, int strength) {
 		if (engine.contains("/")) {
 			int idx = engine.lastIndexOf('/');
 			String eName = engine.substring(idx + 1);
@@ -1131,7 +1131,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		blackFigText.setText(diff.black);
 	}
 
-	private final void setBookOptions() {
+	private void setBookOptions() {
 		BookOptions options = new BookOptions(bookOptions);
 		if (options.filename.length() > 0) {
 			File extDir = Environment.getExternalStorageDirectory();
@@ -1143,14 +1143,14 @@ public class DroidFish extends Activity implements GUIInterface {
 
 	private boolean egtbForceReload = false;
 
-	private final void setEngineOptions(boolean restart) {
+	private void setEngineOptions(boolean restart) {
 		computeNetEngineID();
 		ctrl.setEngineOptions(new EngineOptions(engineOptions), restart);
 		Probe.getInstance().setPath(engineOptions.gtbPath, egtbForceReload);
 		egtbForceReload = false;
 	}
 
-	private final void computeNetEngineID() {
+	private void computeNetEngineID() {
 		String id = "";
 		try {
 			String engine = settings.getString("engine", "stockfish");
@@ -1162,7 +1162,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		engineOptions.networkID = id;
 	}
 
-	private final void setEgtbHints(int sq) {
+	private void setEgtbHints(int sq) {
 		if (!engineOptions.hints || (sq < 0)) {
 			cb.setSquareDecorations(null);
 			return;
@@ -1361,7 +1361,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Set new game mode. */
-	private final void newGameMode(int gameModeType) {
+	private void newGameMode(int gameModeType) {
 		Editor editor = settings.edit();
 		String gameModeStr = String.format(Locale.US, "%d", gameModeType);
 		editor.putString("gameMode", gameModeStr);
@@ -1376,14 +1376,14 @@ public class DroidFish extends Activity implements GUIInterface {
 		return uri.getPath();
 	}
 
-	private final String getParseErrString(ChessParseError e) {
+	private String getParseErrString(ChessParseError e) {
 		if (e.resourceId == -1)
 			return e.getMessage();
 		else
 			return getString(e.resourceId);
 	}
 
-	private final int nameMatchScore(String name, String match) {
+	private int nameMatchScore(String name, String match) {
 		if (name == null)
 			return 0;
 		String lName = name.toLowerCase(Locale.US);
@@ -1403,25 +1403,25 @@ public class DroidFish extends Activity implements GUIInterface {
 		return 0;
 	}
 
-	private final void setBoardFlip() {
+	private void setBoardFlip() {
 		setBoardFlip(false);
 	}
 
 	/** Set a boolean preference setting. */
-	private final void setBooleanPref(String name, boolean value) {
+	private void setBooleanPref(String name, boolean value) {
 		Editor editor = settings.edit();
 		editor.putBoolean(name, value);
 		editor.commit();
 	}
 
 	/** Toggle a boolean preference setting. Return new value. */
-	private final boolean toggleBooleanPref(String name) {
+	private boolean toggleBooleanPref(String name) {
 		boolean value = !settings.getBoolean(name, false);
 		setBooleanPref(name, value);
 		return value;
 	}
 
-	private final void setBoardFlip(boolean matchPlayerNames) {
+	private void setBoardFlip(boolean matchPlayerNames) {
 		boolean flipped = boardFlipped;
 		if (playerNameFlip && matchPlayerNames && (ctrl != null)) {
 			final TreeMap<String,String> headers = new TreeMap<String,String>();
@@ -1512,7 +1512,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		setStatusString(str);
 	}
 
-	private final void setStatusString(String str) {
+	private void setStatusString(String str) {
 		status.setText(str);
 	}
 
@@ -1605,7 +1605,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		updateNotification();
 	}
 
-	private final void updateThinkingInfo() {
+	private void updateThinkingInfo() {
 		boolean thinkingEmpty = true;
 		{
 			String s = "";
@@ -1727,7 +1727,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return null;
 	}
 
-	private final Dialog newGameDialog() {
+	private Dialog newGameDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.option_new_game);
 		builder.setMessage(R.string.start_new_game);
@@ -1752,7 +1752,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return builder.create();
 	}
 
-	private final void startNewGame(int type) {
+	private void startNewGame(int type) {
 		if (type != 2) {
 			int gameModeType = (type == 0) ? GameMode.PLAYER_WHITE : GameMode.PLAYER_BLACK;
 			Editor editor = settings.edit();
@@ -1770,7 +1770,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		updateEngineTitle();
 	}
 
-	private final Dialog promoteDialog() {
+	private Dialog promoteDialog() {
 		final CharSequence[] items = {
 				getString(R.string.queen), getString(R.string.rook),
 				getString(R.string.bishop), getString(R.string.knight)
@@ -1787,7 +1787,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final Dialog clipBoardDialog() {
+	private Dialog clipBoardDialog() {
 		final int COPY_GAME      = 0;
 		final int COPY_POSITION  = 1;
 		final int PASTE          = 2;
@@ -1836,7 +1836,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final Dialog boardMenuDialog() {
+	private Dialog boardMenuDialog() {
 		final int CLIPBOARD = 0;
 		final int FILEMENU  = 1;
 		final int SHARE     = 2;
@@ -1880,7 +1880,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final void shareGame() {
+	private void shareGame() {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 		i.setType("text/plain");
@@ -1888,7 +1888,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		startActivity(Intent.createChooser(i, getString(R.string.share_pgn_game)));
 	}
 
-	private final Dialog fileMenuDialog() {
+	private Dialog fileMenuDialog() {
 		final int LOAD_LAST_FILE = 0;
 		final int LOAD_GAME      = 1;
 		final int LOAD_POS       = 2;
@@ -1939,7 +1939,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Open dialog to select a game/position from the last used file. */
-	final private void loadLastFile() {
+	private void loadLastFile() {
 		String path = currPathName();
 		if (path.length() == 0)
 			return;
@@ -1958,7 +1958,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		}
 	}
 
-	private final Dialog aboutDialog() {
+	private Dialog aboutDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		String title = getString(R.string.app_name);
 		WebView wv = new WebView(this);
@@ -1979,7 +1979,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final Dialog selectMoveDialog() {
+	private Dialog selectMoveDialog() {
 		View content = View.inflate(this, R.layout.select_move_number, null);
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setView(content);
@@ -2021,7 +2021,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return dialog;
 	}
 
-	private final Dialog selectBookDialog() {
+	private Dialog selectBookDialog() {
 		String[] fileNames = findFilesInDirectory(bookDir, new FileNameFilter() {
 			@Override
 			public boolean accept(String filename) {
@@ -2065,12 +2065,12 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final static boolean internalEngine(String name) {
+	private static boolean internalEngine(String name) {
 		return "cuckoochess".equals(name) ||
 				"stockfish".equals(name);
 	}
 
-	private final Dialog selectEngineDialog(final boolean abortOnCancel) {
+	private Dialog selectEngineDialog(final boolean abortOnCancel) {
 		String[] fileNames = findFilesInDirectory(engineDir, new FileNameFilter() {
 			@Override
 			public boolean accept(String filename) {
@@ -2136,7 +2136,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		void load(String pathName);
 	}
 
-	private final Dialog selectPgnFileDialog() {
+	private Dialog selectPgnFileDialog() {
 		return selectFileDialog(pgnDir, R.string.select_pgn_file, R.string.no_pgn_files,
 				"currentPGNFile", new Loader() {
 			@Override
@@ -2146,7 +2146,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		});
 	}
 
-	private final Dialog selectFenFileDialog() {
+	private Dialog selectFenFileDialog() {
 		return selectFileDialog(fenDir, R.string.select_fen_file, R.string.no_fen_files,
 				"currentFENFile", new Loader() {
 			@Override
@@ -2156,7 +2156,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		});
 	}
 
-	private final Dialog selectFileDialog(final String defaultDir, int selectFileMsg, int noFilesMsg,
+	private Dialog selectFileDialog(final String defaultDir, int selectFileMsg, int noFilesMsg,
 										  String settingsName, final Loader loader) {
 		final String[] fileNames = findFilesInDirectory(defaultDir, null);
 		final int numFiles = fileNames.length;
@@ -2191,7 +2191,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final Dialog selectPgnFileSaveDialog() {
+	private Dialog selectPgnFileSaveDialog() {
 		final String[] fileNames = findFilesInDirectory(pgnDir, null);
 		final int numFiles = fileNames.length;
 		int defaultItem = 0;
@@ -2230,7 +2230,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final Dialog selectPgnSaveNewFileDialog() {
+	private Dialog selectPgnSaveNewFileDialog() {
 		View content = View.inflate(this, R.layout.create_pgn_file, null);
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setView(content);
@@ -2271,7 +2271,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return dialog;
 	}
 
-	private final Dialog setColorThemeDialog() {
+	private Dialog setColorThemeDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.select_color_theme);
 		String[] themeNames = new String[ColorTheme.themeNames.length];
@@ -2291,7 +2291,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return builder.create();
 	}
 
-	private final Dialog gameModeDialog() {
+	private Dialog gameModeDialog() {
 		final CharSequence[] items = {
 				getString(R.string.analysis_mode),
 				getString(R.string.edit_replay_game),
@@ -2333,7 +2333,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final Dialog moveListMenuDialog() {
+	private Dialog moveListMenuDialog() {
 		final int EDIT_HEADERS   = 0;
 		final int EDIT_COMMENTS  = 1;
 		final int REMOVE_SUBTREE = 2;
@@ -2471,7 +2471,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final Dialog thinkingMenuDialog() {
+	private Dialog thinkingMenuDialog() {
 		final int ADD_ANALYSIS = 0;
 		final int MULTIPV_DEC = 1;
 		final int MULTIPV_INC = 2;
@@ -2547,7 +2547,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final Dialog goBackMenuDialog() {
+	private Dialog goBackMenuDialog() {
 		final int GOTO_START_GAME = 0;
 		final int GOTO_START_VAR  = 1;
 		final int GOTO_PREV_VAR   = 2;
@@ -2601,7 +2601,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final Dialog goForwardMenuDialog() {
+	private Dialog goForwardMenuDialog() {
 		final int GOTO_END_VAR   = 0;
 		final int GOTO_NEXT_VAR  = 1;
 		final int LOAD_NEXT_GAME = 2;
@@ -2676,7 +2676,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return builder.create();
 	}
 
-	private final Dialog manageEnginesDialog() {
+	private Dialog manageEnginesDialog() {
 		final CharSequence[] items = {
 				getString(R.string.select_engine),
 				getString(R.string.configure_network_engine)
@@ -2702,7 +2702,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return alert;
 	}
 
-	private final Dialog networkEngineDialog() {
+	private Dialog networkEngineDialog() {
 		String[] fileNames = findFilesInDirectory(engineDir, new FileNameFilter() {
 			@Override
 			public boolean accept(String filename) {
@@ -2772,7 +2772,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	private String networkEngineToConfig = "";
 
 	// Ask for name of new network engine
-	private final Dialog newNetworkEngineDialog() {
+	private Dialog newNetworkEngineDialog() {
 		View content = View.inflate(this, R.layout.create_network_engine, null);
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setView(content);
@@ -2843,7 +2843,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	// Configure network engine settings
-	private final Dialog networkEngineConfigDialog() {
+	private Dialog networkEngineConfigDialog() {
 		View content = View.inflate(this, R.layout.network_engine_config, null);
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setView(content);
@@ -2995,7 +2995,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		}
 	}
 
-	private final boolean hasScidProvider() {
+	private boolean hasScidProvider() {
 		List<ProviderInfo> providers = getPackageManager().queryContentProviders(null, 0, 0);
 		for (ProviderInfo info : providers)
 			if (info.authority.equals("org.scid.database.scidprovider"))
@@ -3003,7 +3003,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return false;
 	}
 
-	private final void selectScidFile() {
+	private void selectScidFile() {
 		Intent intent = new Intent();
 		intent.setComponent(new ComponentName("org.scid.android",
 				"org.scid.android.SelectFileActivity"));
@@ -3022,7 +3022,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		return (resolvers != null) && (resolvers.size() > 0);
 	}
 
-	private final void getFen() {
+	private void getFen() {
 		Intent i = new Intent(Intent.ACTION_GET_CONTENT);
 		i.setType("application/x-chess-fen");
 		try {
@@ -3037,12 +3037,12 @@ public class DroidFish extends Activity implements GUIInterface {
 	final static int FT_SCID = 2;
 	final static int FT_FEN  = 3;
 
-	private final int currFileType() {
+	private int currFileType() {
 		return settings.getInt("currFT", FT_NONE);
 	}
 
 	/** Return path name for the last used PGN or SCID file. */
-	private final String currPathName() {
+	private String currPathName() {
 		int ft = settings.getInt("currFT", FT_NONE);
 		switch (ft) {
 			case FT_PGN: {
@@ -3065,7 +3065,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		boolean accept(String filename);
 	}
 
-	private final String[] findFilesInDirectory(String dirName, final FileNameFilter filter) {
+	private String[] findFilesInDirectory(String dirName, final FileNameFilter filter) {
 		File extDir = Environment.getExternalStorageDirectory();
 		String sep = File.separator;
 		File dir = new File(extDir.getAbsolutePath() + sep + dirName);
@@ -3088,7 +3088,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Save current game to a PGN file. */
-	private final void savePGNToFile(String pathName, boolean silent) {
+	private void savePGNToFile(String pathName, boolean silent) {
 		String pgn = ctrl.getPGN();
 		Editor editor = settings.edit();
 		editor.putString("currentPGNFile", pathName);
@@ -3103,7 +3103,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Load a PGN game from a file. */
-	private final void loadPGNFromFile(String pathName) {
+	private void loadPGNFromFile(String pathName) {
 		Editor editor = settings.edit();
 		editor.putString("currentPGNFile", pathName);
 		editor.putInt("currFT", FT_PGN);
@@ -3115,7 +3115,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Load a FEN position from a file. */
-	private final void loadFENFromFile(String pathName) {
+	private void loadFENFromFile(String pathName) {
 		if (pathName == null)
 			return;
 		Editor editor = settings.edit();
@@ -3128,7 +3128,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		startActivityForResult(i, RESULT_LOAD_FEN);
 	}
 
-	private final void setFenHelper(String fen) {
+	private void setFenHelper(String fen) {
 		if (fen == null)
 			return;
 		try {
@@ -3192,7 +3192,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	}
 
 	/** Decide if user should be warned about heavy CPU usage. */
-	private final void updateNotification() {
+	private void updateNotification() {
 		boolean warn = false;
 		if (lastVisibleMillis != 0) { // GUI not visible
 			warn = lastComputationMillis >= lastVisibleMillis + 90000;
@@ -3203,7 +3203,7 @@ public class DroidFish extends Activity implements GUIInterface {
 	private boolean notificationActive = false;
 
 	/** Set/clear the "heavy CPU usage" notification. */
-	private final void setNotification(boolean show) {
+	private void setNotification(boolean show) {
 		if (notificationActive == show)
 			return;
 		notificationActive = show;
@@ -3231,7 +3231,7 @@ public class DroidFish extends Activity implements GUIInterface {
 		}
 	}
 
-	private final String timeToString(int time) {
+	private String timeToString(int time) {
 		int secs = (int)Math.floor((time + 999) / 1000.0);
 		boolean neg = false;
 		if (secs < 0) {
@@ -3314,8 +3314,8 @@ public class DroidFish extends Activity implements GUIInterface {
 		int paraStart = 0;
 		int paraIndent = 0;
 		boolean paraBold = false;
-		private final void newLine() { newLine(false); }
-		private final void newLine(boolean eof) {
+		private void newLine() { newLine(false); }
+		private void newLine(boolean eof) {
 			if (!col0) {
 				if (paraIndent > 0) {
 					int paraEnd = sb.length();

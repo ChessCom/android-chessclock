@@ -424,7 +424,7 @@ public class Search {
         return bestMove;
     }
 
-    private final void notifyPV(int depth, int score, boolean uBound, boolean lBound, Move m) {
+    private void notifyPV(int depth, int score, boolean uBound, boolean lBound, Move m) {
         if (listener != null) {
             boolean isMate = false;
             if (score > MATE0 / 2) {
@@ -442,7 +442,7 @@ public class Search {
         }
     }
 
-    private final void notifyStats() {
+    private void notifyStats() {
         long tNow = System.currentTimeMillis();
         if (listener != null) {
             int time = (int) (tNow - tStart);
@@ -885,7 +885,7 @@ public class Search {
     }
 
     /** Return true if move m2 was made possible by move m1. */
-    private final boolean relatedMoves(Move m1, Move m2) {
+    private boolean relatedMoves(Move m1, Move m2) {
         if ((m1.from == m1.to) || (m2.from == m2.to))
             return false;
         if ((m1.to == m2.from) || (m1.from == m2.to) ||
@@ -895,7 +895,7 @@ public class Search {
     }
 
     /** Return true if move should be skipped in order to make engine play weaker. */
-    private final boolean weakPlaySkipMove(Position pos, Move m, int ply) {
+    private boolean weakPlaySkipMove(Position pos, Move m, int ply) {
         long rndL = pos.zobristHash() ^ Position.psHashKeys[0][m.from] ^
                     Position.psHashKeys[0][m.to] ^ randomSeed;
         double rnd = ((rndL & 0x7fffffffffffffffL) % 1000000000) / 1e9;
@@ -914,7 +914,7 @@ public class Search {
         return false;
     }
 
-    private static final boolean passedPawnPush(Position pos, Move m) {
+    private static boolean passedPawnPush(Position pos, Move m) {
         int p = pos.getPiece(m.from);
         if (pos.whiteMove) {
             if (p != Piece.WPAWN)
@@ -934,7 +934,7 @@ public class Search {
     /**
      * Quiescence search. Only non-losing captures are searched.
      */
-    final private int quiesce(int alpha, int beta, int ply, int depth, final boolean inCheck) {
+    private int quiesce(int alpha, int beta, int ply, int depth, final boolean inCheck) {
         int score;
         if (inCheck) {
             score = -(MATE0 - (ply+1));
@@ -1216,7 +1216,7 @@ public class Search {
             m.score = score;
         }
     }
-    private final void scoreMoveListMvvLva(MoveGen.MoveList moves) {
+    private void scoreMoveListMvvLva(MoveGen.MoveList moves) {
         for (int i = 0; i < moves.size; i++) {
             Move m = moves.m[i];
             int v = pos.getPiece(m.to);
@@ -1280,7 +1280,7 @@ public class Search {
         return (reps >= 2);
     }
 
-    private final void initNodeStats() {
+    private void initNodeStats() {
         nodes = qNodes = 0;
         nodesPlyVec = new int[20];
         nodesDepthVec = new int[20];

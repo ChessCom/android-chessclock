@@ -93,7 +93,8 @@ public class MoPubConversionTracker {
     }
 
     private class TrackOpen implements Runnable {
-        public void run() {
+        @Override
+		public void run() {
             String url = new ConversionUrlGenerator().generateUrlString(TRACK_HOST);
             Log.d("MoPub", "Conversion track: " + url);
 

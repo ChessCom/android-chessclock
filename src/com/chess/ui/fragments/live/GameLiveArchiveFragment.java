@@ -531,7 +531,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 		String currentPlayerNewRating = Symbol.SPACE +  getCurrentPlayerRating();
 
-		ratingTitleTxt.setText(getString(R.string.new_game_rating_arg, getString(R.string.new_)));
+		ratingTitleTxt.setText(getString(R.string.new_) + Symbol.SPACE + getString(R.string.rating_));
 		String rating = getString(R.string.rating_, currentPlayerNewRating);
 		resultRatingTxt.setText(rating);
 

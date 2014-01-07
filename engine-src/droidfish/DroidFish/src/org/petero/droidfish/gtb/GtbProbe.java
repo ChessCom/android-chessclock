@@ -106,5 +106,5 @@ class GtbProbe {
                                           byte[] blackPieces,
                                           int[] result);
 
-    private final native static boolean init(String tbPath);
+    private native static boolean init(String tbPath);
 }

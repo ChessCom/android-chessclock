@@ -150,7 +150,8 @@ abstract class BaseInterstitialActivity extends Activity {
         mCloseButton.setImageDrawable(states);
         mCloseButton.setBackgroundDrawable(null);
         mCloseButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
+            @Override
+			public void onClick(View v) {
                 finish();
             }
         });

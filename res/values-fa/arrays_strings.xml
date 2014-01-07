@@ -1,66 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>ملکه</item>
-		<item>کلاغ سیاه</item>
-		<item>اسقف</item>
-		<item>شوالیه</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-	<string-array name="playas">
-		<item>تصادفی</item>
-		<item>سفید</item>
-		<item>سیاه</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 روز</item>
-		<item>2 روز</item>
-		<item>3 روز</item>
-		<item>5 روز</item>
-		<item>7 روز</item>
-		<item>14 روز</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>مبتدی</item>
-		<item>متوسط</item>
-		<item>پیشرفته</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>بازی شگفت انگیز</item>
-		<item>آخر بازی</item>
-		<item>دهانه</item>
-		<item>قوانین مبانی</item>
-		<item>استراتژی</item>
-		<item>تاکتیک</item>
-	</string-array>	
-	
 	<string-array name="afterMyMove">
 	    <item>برو برای بازی بعدی آماده</item>
 		<item>اقامت در بازی همان</item>
 		<item>بازگشت به لیست بازی</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>هیچ یک</item>
-		<item>ارتعاش داشتن</item>
-		<item>حلقه</item>
-		<item>چشمک زدن چراغ</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 ثانیه</item>
-		<item>3 ثانیه</item>
-		<item>5 ثانیه</item>
-		<item>10 ثانیه</item>
-		<item>30 ثانیه</item>
-		<item>1 دقیقه</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>ایالات متحده</item>
         <item>کانادا</item>

@@ -384,7 +384,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.YOUR_ARE_ON_VACATAION) {
 
-					showPopupDialog(R.string.leave_vacation_to_challenge_q, END_VACATION_TAG);
+					showPopupDialog(R.string.leave_vacation_q, END_VACATION_TAG);
 					return;
 				}
 			}

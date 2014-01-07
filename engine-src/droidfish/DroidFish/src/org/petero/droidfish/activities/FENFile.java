@@ -18,14 +18,13 @@
 
 package org.petero.droidfish.activities;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import org.petero.droidfish.gamelogic.Pair;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import org.petero.droidfish.gamelogic.Pair;
-
-import android.app.Activity;
-import android.app.ProgressDialog;
 
 public class FENFile {
     private final File fileName;
@@ -59,8 +58,8 @@ public class FENFile {
     public static enum FenInfoResult {
         OK,
         CANCEL,
-        OUT_OF_MEMORY;
-    }
+        OUT_OF_MEMORY
+	}
 
     /** Read all FEN strings (one per line) in a file. */
     public final Pair<FenInfoResult,ArrayList<FenInfo>> getFenInfo(Activity activity,

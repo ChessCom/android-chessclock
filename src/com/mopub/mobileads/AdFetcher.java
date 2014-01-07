@@ -64,8 +64,8 @@ public class AdFetcher {
         INVALID_SERVER_RESPONSE_BACKOFF,
         INVALID_SERVER_RESPONSE_NOBACKOFF,
         CLEAR_AD_TYPE,
-        AD_WARMING_UP;
-    }
+        AD_WARMING_UP
+	}
 
     public AdFetcher(AdViewController adview, String userAgent) {
         mAdViewController = adview;

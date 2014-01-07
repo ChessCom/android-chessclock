@@ -249,14 +249,14 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		@Override
 		public void showProgress(boolean show) {
-			if (show) {
-				showPopupHardProgressDialog(R.string.signing_in_);
-			} else {
-				if (isPaused)
-					return;
-
-				dismissProgressDialog();
-			}
+//			if (show) {    // let's try to not show overlay
+//				showPopupHardProgressDialog();
+//			} else {
+//				if (isPaused)
+//					return;
+//
+//				dismissProgressDialog();
+//			}
 		}
 
 		@Override
@@ -287,12 +287,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				switch (serverCode) {
 					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
-//						if (passwordEdt != null) {
-//							passwordEdt.setError(getResources().getString(R.string.invalid_username_or_password));
-//							passwordEdt.requestFocus();
-//						} else {
-							showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
-//						}
+						showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
 						getAppData().setPassword(Symbol.EMPTY);
 						break;
 					case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:

@@ -94,10 +94,6 @@
 	<dimen name="game_label_text_size">12sp</dimen>
 
 	<!--ControlsBaseView-->
-	<dimen name="game_control_padding_left">10dip</dimen>
-	<dimen name="game_control_padding_right">10dip</dimen>
-	<dimen name="game_control_padding_top">0dip</dimen>
-	<dimen name="game_control_padding_bottom">0dip</dimen>
     <dimen name="game_controls_button_height">37dip</dimen>
     <dimen name="game_controls_icon_size">30dip</dimen>
 

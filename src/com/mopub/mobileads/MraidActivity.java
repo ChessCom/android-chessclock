@@ -117,18 +117,21 @@ public class MraidActivity extends BaseInterstitialActivity {
         mMraidView = MraidViewFactory.create(this, getAdConfiguration(), ExpansionStyle.DISABLED, NativeCloseButtonStyle.AD_CONTROLLED, PlacementType.INTERSTITIAL);
 
         mMraidView.setMraidListener(new MraidView.BaseMraidListener(){
-            public void onReady(MraidView view) {
+            @Override
+			public void onReady(MraidView view) {
                 mMraidView.loadUrl(WEB_VIEW_DID_APPEAR.getUrl());
                 showInterstitialCloseButton();
             }
-            public void onClose(MraidView view, ViewState newViewState) {
+            @Override
+			public void onClose(MraidView view, ViewState newViewState) {
                 mMraidView.loadUrl(WEB_VIEW_DID_CLOSE.getUrl());
                 finish();
             }
         });
 
         mMraidView.setOnCloseButtonStateChange(new MraidView.OnCloseButtonStateChangeListener() {
-            public void onCloseButtonStateChange(MraidView view, boolean enabled) {
+            @Override
+			public void onCloseButtonStateChange(MraidView view, boolean enabled) {
                 if (enabled) {
                     showInterstitialCloseButton();
                 } else {

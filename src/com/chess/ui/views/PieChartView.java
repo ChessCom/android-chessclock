@@ -22,6 +22,7 @@ import com.chess.backend.entity.api.stats.GamesInfoByResult;
  */
 public class PieChartView extends View {
 
+	public static final String PERCENT_FORMAT = " %.0f%%";
 	private int topOffset;
 	private float lineLeftOffset;
 	public int donutHalfSize;
@@ -32,7 +33,7 @@ public class PieChartView extends View {
 	private ShapeDrawable[] mDrawables;
 	private GamesInfoByResult games;
 	private float winsPercent;
-	private float lossPercent;
+	private float lostPercent;
 	private float drawPercent;
 
 	private String winsText;
@@ -92,25 +93,31 @@ public class PieChartView extends View {
 			winsPercent = ((float) games.getWins() / games.getTotal());
 		}
 		float winsDegree = totalDegree * winsPercent;
-		winsText = getResources().getString(R.string.pie_chart_win_legend, winsPercent * 100);
-
+		{
+			String result = resources.getString(R.string.won) + PERCENT_FORMAT;
+			winsText = String.format(resources.getConfiguration().locale, result, winsPercent * 100);
+		}
 		if (games != null) {
 			drawPercent = ((float) games.getDraws() / games.getTotal());
 		}
 		float drawDegree = totalDegree * drawPercent;
 		float drawStartDegree = startDegree - winsDegree;
-		drawsText = getResources().getString(R.string.pie_chart_drawn_legend, drawPercent * 100);
-
-		if (games != null) {
-			lossPercent = ((float) games.getLosses() / games.getTotal());
+		{
+			String result = resources.getString(R.string.draw) + PERCENT_FORMAT;
+			drawsText = String.format(resources.getConfiguration().locale, result, drawPercent * 100);
 		}
-		float lossDegree = totalDegree * lossPercent;
+		if (games != null) {
+			lostPercent = ((float) games.getLosses() / games.getTotal());
+		}
+		float lostDegree = totalDegree * lostPercent;
 		float lossStartDegree = startDegree - winsDegree - drawDegree;
-		lossText = getResources().getString(R.string.pie_chart_loss_legend, lossPercent * 100);
-
+		{
+			String result = resources.getString(R.string.lost) + PERCENT_FORMAT;
+			lossText = String.format(resources.getConfiguration().locale, result, lostPercent * 100);
+		}
 		mDrawables[0] = new MyShapeDrawable(new ArcShape(startDegree, -winsDegree));
 		mDrawables[1] = new MyShapeDrawable(new ArcShape(drawStartDegree, -drawDegree));
-		mDrawables[2] = new MyShapeDrawable(new ArcShape(lossStartDegree, -lossDegree));
+		mDrawables[2] = new MyShapeDrawable(new ArcShape(lossStartDegree, -lostDegree));
 		mDrawables[3] = new ShapeDrawable(new OvalShape());
 
 		mDrawables[3].getPaint().setColor(backgroundColor);

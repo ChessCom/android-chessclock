@@ -62,7 +62,6 @@
 			android:id="@+id/upgradeBtn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_weight="1"
 			android:text="@string/upgrade_now"
 			style="@style/Button.Upgrade"
 			android:minHeight="@dimen/main_button_height"

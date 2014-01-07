@@ -12,6 +12,7 @@ import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
+import com.chess.utilities.AppUtils;
 
 import java.util.HashMap;
 
@@ -20,11 +21,18 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 	protected static final String CHESS_960 = " (960)";
 	private final int imageSize;
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
+	private final String lossStr;
+	private final String winStr;
+	private final String drawStr;
 
 
 	public DailyFinishedGamesCursorRightAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
+
+		lossStr = context.getString(R.string.lost);
+		winStr = AppUtils.upCaseFirst(context.getString(R.string.won));
+		drawStr = context.getString(R.string.draw);
 
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}
@@ -71,11 +79,14 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);
 
-		String result = context.getString(R.string.loss);
+		// Lost orange
+		String result = lossStr;
 		if (getInt(cursor, DbScheme.V_GAME_SCORE) == BaseGameItem.GAME_WON) {
-			result = context.getString(R.string.won);
+			// Won Green
+			result = winStr;
 		} else if (getInt(cursor, DbScheme.V_GAME_SCORE) == BaseGameItem.GAME_DRAW) {
-			result = context.getString(R.string.draw);
+			// Draw Grey
+			result = drawStr;
 		}
 		holder.gameInfoTxt.setText(result);
 

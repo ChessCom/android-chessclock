@@ -178,7 +178,7 @@ public class LoadScid extends ListActivity {
         super.onDestroy();
     }
 
-    private final void showList() {
+    private void showList() {
         progress.dismiss();
         final ArrayAdapter<GameInfo> aa =
             new ArrayAdapter<GameInfo>(this, R.layout.select_game_list_item, gamesInFile) {
@@ -229,7 +229,7 @@ public class LoadScid extends ListActivity {
         }
     }
 
-    private final boolean readFile() {
+    private boolean readFile() {
         if (!fileName.equals(lastFileName))
             defaultItem = 0;
         long modTime = new File(fileName).lastModified();
@@ -311,7 +311,7 @@ public class LoadScid extends ListActivity {
         gamesInFile.add(gi);
     }
 
-    private final void sendBackResult(GameInfo gi) {
+    private void sendBackResult(GameInfo gi) {
         if (gi.gameId >= 0) {
             Cursor cursor = getOneGameCursor(gi.gameId);
             if (cursor != null && cursor.moveToFirst()) {

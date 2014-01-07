@@ -84,7 +84,7 @@
 						android:id="@+id/gamePlayBtn"
 						android:layout_width="0dip"
 						android:layout_height="wrap_content"
-						android:text="@string/new_play_ex"
+						android:text="@string/play"
 						style="@style/Button.OrangeNoBorder.Big"
 						android:layout_marginLeft="5dip"
 						android:layout_weight="1.2" />

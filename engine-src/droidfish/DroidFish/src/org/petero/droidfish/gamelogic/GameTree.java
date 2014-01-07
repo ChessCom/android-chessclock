@@ -1167,7 +1167,7 @@ public class GameTree {
         }
 
         /** Export whole tree rooted at "node" in PGN format. */
-        public static final void addPgnData(PgnToken.PgnTokenReceiver out, Node node,
+        public static void addPgnData(PgnToken.PgnTokenReceiver out, Node node,
                                             MoveNumber moveNum, PGNOptions options) {
             boolean needMoveNr = node.addPgnDataOneNode(out, moveNum, true, options);
             while (true) {
@@ -1190,7 +1190,7 @@ public class GameTree {
         }
 
         /** Export this node in PGN (or display text) format. */
-        private final boolean addPgnDataOneNode(PgnToken.PgnTokenReceiver out, MoveNumber mn,
+        private boolean addPgnDataOneNode(PgnToken.PgnTokenReceiver out, MoveNumber mn,
                                                 boolean needMoveNr, PGNOptions options) {
             if ((preComment.length() > 0) && options.exp.comments) {
                 out.processToken(this, PgnToken.COMMENT, preComment);
@@ -1241,12 +1241,12 @@ public class GameTree {
             return needMoveNr;
         }
 
-        private final void addExtendedInfo(PgnToken.PgnTokenReceiver out,
+        private void addExtendedInfo(PgnToken.PgnTokenReceiver out,
                                                   String extCmd, String extData) {
             out.processToken(this, PgnToken.COMMENT, "[%" + extCmd + " " + extData + "]");
         }
 
-        private static final String getTimeStr(int remainingTime) {
+        private static String getTimeStr(int remainingTime) {
             int secs = (int)Math.floor((remainingTime + 999) / 1000.0);
             boolean neg = false;
             if (secs < 0) {
@@ -1270,7 +1270,7 @@ public class GameTree {
             return ret.toString();
         }
 
-        private final Node addChild(Node child) {
+        private Node addChild(Node child) {
             child.parent = this;
             children.add(child);
             return child;
@@ -1392,7 +1392,7 @@ public class GameTree {
             }
         }
 
-        private static final Pair<String, String> extractExtInfo(String comment, String cmd) {
+        private static Pair<String, String> extractExtInfo(String comment, String cmd) {
             comment = comment.replaceAll("\n|\r|\t", " ");
             String remaining = comment;
             String param = null;
@@ -1409,7 +1409,7 @@ public class GameTree {
         }
 
         /** Convert hh:mm:ss to milliseconds */
-        private static final int parseTimeString(String str) {
+        private static int parseTimeString(String str) {
             str = str.trim();
             int ret = 0;
             boolean neg = false;

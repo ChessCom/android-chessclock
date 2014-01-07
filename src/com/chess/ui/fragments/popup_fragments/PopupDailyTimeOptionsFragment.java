@@ -24,7 +24,6 @@ public class PopupDailyTimeOptionsFragment extends SimplePopupDialogFragment imp
 	private HashMap<Integer, Button> timeButtonsModeMap;
 	private AppData appData;
 	private PopupListSelectionFace listener;
-	private int[] newGameButtonsArray;
 
 	public static PopupDailyTimeOptionsFragment createInstance(PopupListSelectionFace listener) {
 		PopupDailyTimeOptionsFragment frag = new PopupDailyTimeOptionsFragment();
@@ -64,7 +63,7 @@ public class PopupDailyTimeOptionsFragment extends SimplePopupDialogFragment imp
 		int mode = appData.getDefaultDailyMode();
 //		darkBtnColor = getResources().getColor(R.color.text_controls_icons_white);
 		// set texts to buttons
-		newGameButtonsArray = getResources().getIntArray(R.array.days_per_move_array);
+		int[] newGameButtonsArray = getResources().getIntArray(R.array.days_per_move_array);
 		for (Map.Entry<Integer, Button> buttonEntry : timeButtonsModeMap.entrySet()) {
 			int key = buttonEntry.getKey();
 			Button button = buttonEntry.getValue();

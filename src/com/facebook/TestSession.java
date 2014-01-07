@@ -361,7 +361,7 @@ public class TestSession extends Session {
         setCurrentTokenRefreshRequest(new TokenRefreshRequest());
     }
 
-    static final String getAppAccessToken() {
+    static String getAppAccessToken() {
         return testApplicationId + "|" + testApplicationSecret;
     }
 

@@ -1,66 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>Dronning</item>
-		<item>Rook</item>
-		<item>Bishop</item>
-		<item>Knight</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>Tilfeldig</item>
-		<item>Hvit</item>
-		<item>Svart</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 dag</item>
-		<item>2 dager</item>
-		<item>3 dager</item>
-		<item>5 dager</item>
-		<item>7 dager</item>
-		<item>14 dager</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Nybegynner</item>
-		<item>Intermediate</item>
-		<item>Fremskreden Alzheimers</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Amazing Games</item>
-		<item>Endgames</item>
-		<item>Åpninger</item>
-		<item>Regler Grunnleggende</item>
-		<item>Strategi</item>
-		<item>Tactics</item>
-	</string-array>	
-	
 	<string-array name="afterMyMove">
 	    <item>Gå til neste Ready spill</item>
 		<item>Stay On samme spillet</item>
 		<item>Returner til Spill liste</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Ingen</item>
-		<item>Vibrer</item>
-		<item>Ring</item>
-		<item>Blinkende LED</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 sek</item>
-		<item>3 sek</item>
-		<item>5 sek</item>
-		<item>10 sek</item>
-		<item>30 sek</item>
-		<item>1 min</item>
-	</string-array>
 	
     <string-array name="countries">
         <item>USA</item>

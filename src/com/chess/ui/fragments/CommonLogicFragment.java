@@ -685,7 +685,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		@Override
 		public void showProgress(boolean show) {
 			if (show) {
-				showPopupProgressDialog(R.string.loading_);
+				showPopupProgressDialog();
 			} else {
 				dismissProgressDialog();
 			}
@@ -793,7 +793,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			pullToRefreshAttacher.showProgress(show);
 		} else {
 			if (show) {
-				showPopupProgressDialog(R.string.loading_);
+				showPopupProgressDialog();
 			} else {
 				dismissProgressDialog();
 			}

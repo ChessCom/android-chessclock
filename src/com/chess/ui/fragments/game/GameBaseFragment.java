@@ -1,9 +1,7 @@
 package com.chess.ui.fragments.game;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -29,6 +27,8 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
+import com.chess.ui.fragments.popup_fragments.PopupPromotionFragment;
+import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
@@ -62,6 +62,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected static final String DRAW_OFFER_RECEIVED_TAG = "draw offer message received";
 	protected static final String ABORT_GAME_TAG = "abort or resign game";
 	protected static final String OPTION_SELECTION_TAG = "option select popup";
+	protected static final String PROMOTION_SELECTION_TAG = "promotion popup";
 
 	protected static final String GAME_ID = "game_id";
 	protected static final String USERNAME = "username";
@@ -84,6 +85,10 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected LinearLayout mopubAdLayout;
 	private MoPubView moPubBannerView;
 	protected LayoutInflater inflater;
+	private PopupPromotionFragment promotionFragment;
+	private PromotionSelectedListener promotionSelectedListener;
+	private int promotionFile;
+	private int promotionRank;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,6 +109,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		labelsConfig = new LabelsConfig();
 		imageDownloader = new ImageDownloaderToListener(getActivity());
 
+		promotionSelectedListener = new PromotionSelectedListener();
 		inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
 		if (!getAppData().isUserSawHelpForQuickScroll()) {
@@ -349,21 +355,34 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected abstract void restoreGame();
 
 	@Override
-	public void showChoosePieceDialog(final int col, final int row) {
-		new AlertDialog.Builder(getActivity()) // TODO replace with FragmentDialog
-				.setTitle(getString(R.string.choose_a_piece)) // add localized strings
-				.setItems(getResources().getStringArray(R.array.promotion_options),
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								if (which == 4) {
-									boardView.invalidate();
-									return;
-								}
-								boardView.promote(4 - which, col, row);
-							}
-						}).setCancelable(false)
-				.create().show();
+	public void showChoosePieceDialog(int file, int rank) {
+		promotionFile = file;
+		promotionRank = rank;
+		// show popup
+		if (promotionFragment != null) {
+			return;
+		}
+
+
+		promotionFragment = PopupPromotionFragment.createInstance(promotionSelectedListener, getBoardFace().getSide());
+		promotionFragment.show(getFragmentManager(), PROMOTION_SELECTION_TAG);
+	}
+
+	private class PromotionSelectedListener implements PopupListSelectionFace {
+
+		@Override
+		public void onValueSelected(int code) {
+			promotionFragment.dismiss();
+			promotionFragment = null;
+
+			boardView.promote(code, promotionFile, promotionRank);
+		}
+
+		@Override
+		public void onDialogCanceled() {
+			promotionFragment = null;
+			boardView.invalidate();
+		}
 	}
 
 	protected void playLastMoveAnimation() {

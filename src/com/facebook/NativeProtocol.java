@@ -59,7 +59,7 @@ final class NativeProtocol {
     public static final String KATANA_PROXY_AUTH_PERMISSIONS_KEY = "scope";
     public static final String KATANA_PROXY_AUTH_APP_ID_KEY = "client_id";
 
-    static final boolean validateSignature(Context context, String packageName) {
+    static boolean validateSignature(Context context, String packageName) {
         PackageInfo packageInfo = null;
         try {
             packageInfo = context.getPackageManager().getPackageInfo(packageName,

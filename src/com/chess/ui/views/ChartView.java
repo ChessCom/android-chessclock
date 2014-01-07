@@ -47,6 +47,7 @@ public class ChartView extends View {
 	private Paint minValueTextPaint;
 	private int textOffset;
 	private float borderWidth;
+	private Rect rect;
 
 	public ChartView(Context context) {
 		super(context);
@@ -95,6 +96,8 @@ public class ChartView extends View {
 		minValueTextPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.DEFAULT_FONT));
 
 		textOffset = (int) (16 * density);
+
+		rect = new Rect();
 	}
 
 
@@ -107,8 +110,9 @@ public class ChartView extends View {
 
 		if (initialized) {
 			createGraphPath(canvas);
+			canvas.getClipBounds(rect);
 
-			int height = canvas.getClipBounds().bottom;
+			int height = rect.bottom;
 
 			float yValue = height - (originalMinY - minY) / yAspect + 1; // 1px offset below line
 			canvas.drawLine(0, yValue, width, yValue, minValueLinePaint);

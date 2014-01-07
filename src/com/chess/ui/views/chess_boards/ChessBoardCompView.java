@@ -371,6 +371,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		return getBoardComp().isComputerMoving();
 	}
 
+	@Override
 	protected void onSecondMoveAnimated() {
 		gameCompActivityFace.invalidateGameScreen();
 	}

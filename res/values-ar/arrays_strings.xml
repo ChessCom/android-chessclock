@@ -1,66 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>ملكة</item>
-		<item>غراب</item>
-		<item>أسقف</item>
-		<item>فارس</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-	<string-array name="playas">
-		<item>عشوائيًا</item>
-		<item>الأبيض</item>
-		<item>الشاي الأسود</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 يوم</item>
-		<item>2 أيام</item>
-		<item>3 أيام</item>
-		<item>5 أيام</item>
-		<item>7 أيام</item>
-		<item>14 يوما</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>المبتدئ</item>
-		<item>التوتر العضلي المعتدل</item>
-		<item>متقدمين</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>مدهش ألعاب</item>
-		<item>Endgames</item>
-		<item>الفتحات</item>
-		<item>أساسيات قواعد</item>
-		<item>ب- الاستراتيجية</item>
-		<item>التكتيكات</item>
-	</string-array>	
-
 	<string-array name="afterMyMove">
 	    <item>انتقل إلى لعبة جاهز التالي</item>
 		<item>البقاء على نفس اللعبة</item>
 		<item>العودة إلى قائمة لعبة</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>لا إجراء</item>
-		<item>يَهْتَزّ</item>
-		<item>الحلقة</item>
-		<item>الصمام الوميض</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 ثانية</item>
-		<item>3 ثانية</item>
-		<item>5 ثانية</item>
-		<item>10 ثانية</item>
-		<item>30 ثانية</item>
-		<item>1 دقيقة</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>الولايات المتحدة</item>
         <item>كندا</item>

@@ -53,7 +53,7 @@ public class Book {
         this.verbose = verbose;
     }
 
-    private final void initBook() {
+    private void initBook() {
         if (numBookMoves >= 0)
             return;
         long t0 = System.currentTimeMillis();
@@ -106,7 +106,7 @@ public class Book {
     }
 
     /** Add a move to a position in the opening book. */
-    private final void addToBook(Position pos, Move moveToAdd) {
+    private void addToBook(Position pos, Move moveToAdd) {
         List<BookEntry> ent = bookMap.get(pos.zobristHash());
         if (ent == null) {
             ent = new ArrayList<BookEntry>();
@@ -164,7 +164,7 @@ public class Book {
         throw new RuntimeException();
     }
 
-    final private int getWeight(int count) {
+    private int getWeight(int count) {
         double tmp = Math.sqrt(count);
         return (int)(tmp * Math.sqrt(tmp) * 100 + 1);
     }

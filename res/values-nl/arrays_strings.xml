@@ -1,67 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>Koningin</item>
-		<item>Roek</item>
-		<item>Bisschop</item>
-		<item>Ridder</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>Willekeurig</item>
-		<item>Wit</item>
-		<item>Zwart</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 dag</item>
-		<item>2 dagen</item>
-		<item>3 dagen</item>
-		<item>5 dagen</item>
-		<item>7 dagen</item>
-		<item>14 dagen</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Beginner</item>
-		<item>Intermediate</item>
-		<item>Geavanceerd</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Geweldige games</item>
-		<item>Eindspelen</item>
-		<item>Openingen</item>
-		<item>Regels Basics</item>
-		<item>Strategie</item>
-		<item>Tactiek</item>
-	</string-array>	
-
 	<string-array name="afterMyMove">
 	    <item>Ga naar volgende Klaar Game</item>
 		<item>Stay On Same Game</item>
 		<item>Return To Game List</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Geen</item>
-		<item>Trillen</item>
-		<item>Ringen…</item>
-		<item>Knipperende LED</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 sec.</item>
-		<item>3 sec</item>
-		<item>5 sec</item>
-		<item>10 sec</item>
-		<item>30 sec</item>
-		<item>1 min.</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>Verenigde Staten</item>
         <item>Canada</item>

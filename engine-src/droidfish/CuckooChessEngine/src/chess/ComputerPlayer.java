@@ -236,7 +236,7 @@ public class ComputerPlayer implements Player {
         return null;
     }
 
-    private final static int moveProbWeight(int moveScore, int bestScore) {
+    private static int moveProbWeight(int moveScore, int bestScore) {
         double d = (bestScore - moveScore) / 100.0;
         double w = 100*Math.exp(-d*d/2);
         return (int)Math.ceil(w);

@@ -417,7 +417,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 			if (itemCode == GameOnlineItem.CURRENT_TYPE || itemCode == GameOnlineItem.CHALLENGES_TYPE
 					|| itemCode == GameOnlineItem.FINISHED_TYPE) {
 				if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
-					showToast(R.string.host_unreachable_load_local);
 					loadDbGames();
 				}
 			}

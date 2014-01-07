@@ -46,7 +46,8 @@ abstract class ResponseBodyInterstitial extends CustomEventInterstitial {
 
     abstract protected void extractExtras(Map<String, String> serverExtras);
     abstract protected void preRenderHtml(CustomEventInterstitialListener customEventInterstitialListener);
-    abstract protected void showInterstitial();
+    @Override
+	abstract protected void showInterstitial();
 
     @Override
     protected void loadInterstitial(

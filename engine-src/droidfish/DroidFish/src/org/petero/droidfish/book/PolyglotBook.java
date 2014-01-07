@@ -300,7 +300,7 @@ class PolyglotBook implements IOpeningBook {
             data = new byte[16];
         }
 
-        private final long getBytes(int start, int len) {
+        private long getBytes(int start, int len) {
             long ret = 0;
             int stop = start + len;
             for (int i = start; i < stop; i++) {
@@ -355,7 +355,7 @@ class PolyglotBook implements IOpeningBook {
         final int getWeight() { return (int)getBytes(10, 2); }
     }
 
-    private final void readEntry(RandomAccessFile f, long entNo, PGBookEntry ent) throws IOException {
+    private void readEntry(RandomAccessFile f, long entNo, PGBookEntry ent) throws IOException {
         f.seek(entNo * 16);
         if (f.read(ent.data) != 16) {
             for (int i = 0; i < 16; i++) ent.data[i] = 0;
@@ -363,7 +363,7 @@ class PolyglotBook implements IOpeningBook {
     }
 
     /** Return true if key1 < key2, when compared as unsigned longs. */
-    private final boolean keyLess(long key1, long key2) {
+    private boolean keyLess(long key1, long key2) {
         if ((key1 < 0) == (key2 < 0)) { // Same sign, normal compare
             return key1 < key2;
         } else { // The negative number is largest

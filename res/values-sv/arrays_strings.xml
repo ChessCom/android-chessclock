@@ -1,67 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>drottning</item>
-		<item>Rook</item>
-		<item>Bishop</item>
-		<item>Knight</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>Slumpa…</item>
-		<item>Vit</item>
-		<item>Svart:</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 dag</item>
-		<item>2 dagar</item>
-		<item>3 dagar</item>
-		<item>5 dagar</item>
-		<item>7 dagar</item>
-		<item>14 dagar</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Nybörjare</item>
-		<item>Mellan</item>
-		<item>Avancerad</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Fantastiska spel</item>
-		<item>Slutspel</item>
-		<item>Öppningar</item>
-		<item>Regler Grundläggande</item>
-		<item>Strategin</item>
-		<item>Taktik</item>
-	</string-array>	
-
 	<string-array name="afterMyMove">
 	    <item>Gå till nästa Ready Game</item>
 		<item>Stay On Same Game</item>
 		<item>Återgå till Game List</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Ingen</item>
-		<item>Vibrera</item>
-		<item>Ring</item>
-		<item>Blinkande lysdioden</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 sek</item>
-		<item>3 sek</item>
-		<item>5 sek</item>
-		<item>10 sekunder</item>
-		<item>30 sek</item>
-		<item>1 minut</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>USA</item>
         <item>Kanada</item>

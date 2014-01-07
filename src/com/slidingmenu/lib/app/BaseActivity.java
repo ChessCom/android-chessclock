@@ -6,7 +6,7 @@ import android.view.Menu;
 import com.chess.R;
 import com.slidingmenu.lib.SlidingMenu;
 
-public class BaseActivity extends SlidingFragmentActivity {
+public abstract class BaseActivity extends SlidingFragmentActivity {
 
 	private int mTitleRes;
 	protected Fragment leftMenuFragment;

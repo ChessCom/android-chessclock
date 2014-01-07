@@ -85,7 +85,7 @@
 				android:id="@+id/livePlayBtn"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/new_play_ex"
+				android:text="@string/play"
 				android:layout_alignParentRight="true"
 				style="@style/Button.OrangeNoBorder.Small" />
 
@@ -190,7 +190,7 @@
 					android:id="@+id/dailyPlayBtn"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:text="@string/new_play_ex"
+					android:text="@string/play"
 					android:layout_centerVertical="true"
 					android:layout_alignParentRight="true"
 					style="@style/Button.OrangeNoBorder.Small" />

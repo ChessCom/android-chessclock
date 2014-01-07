@@ -136,6 +136,10 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 		//lccHelper.updateNetworkType(null); // todo: probably reset networkTypeName somewhere else?
 		//lccHelper.setConnectionFailure(false);
+		if (item == null) {
+			throw new LiveChessClientException("Unable to initialize HttpClient, client became null");
+		}
+
 		lccHelper.setLiveChessClient(item);
 		lccHelper.performConnect();
 		return StaticData.RESULT_OK;

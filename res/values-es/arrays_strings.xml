@@ -1,67 +1,11 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>Reina</item>
-		<item>Torre</item>
-		<item>Obispo</item>
-		<item>Caballero</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-	<string-array name="playas">
-		<item>Azar</item>
-		<item>Blanco</item>
-		<item>NEGRO</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 día</item>
-		<item>2 días</item>
-		<item>3 días</item>
-		<item>5 días</item>
-		<item>7 días</item>
-		<item>14 días</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>Principiante</item>
-		<item>intermedias</item>
-		<item>Avanzado</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>Juegos asombrosos</item>
-		<item>Finales</item>
-		<item>Las aperturas</item>
-		<item>Reglas Básico</item>
-		<item>estrategia.</item>
-		<item>Tácticas</item>
-	</string-array>	
-	
-
 	<string-array name="afterMyMove">
 	    <item>Ir a juego listo Siguiente</item>
 		<item>Permanecer en el mismo juego</item>
 		<item>Volver a la lista de juegos</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>Ninguno</item>
-		<item>Vibración</item>
-		<item>Anillo</item>
-		<item>LED parpadeante</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1 seg.</item>
-		<item>3 seg</item>
-		<item>5 s</item>
-		<item>10 s</item>
-		<item>30 s</item>
-		<item>1 min.</item>
-	</string-array>
-	
     <string-array name="countries">
         <item>Estados Unidos</item>
         <item>Canadá</item>

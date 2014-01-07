@@ -39,7 +39,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 		menuItems = new ArrayList<SettingsMenuItem>();
 		if (StaticData.USE_SWITCH_API) {
-			menuItems.add(new SettingsMenuItem(R.string.api, R.string.ic_key));
+			menuItems.add(new SettingsMenuItem(R.string.app_name, R.string.ic_key));
 		}
 		menuItems.add(new SettingsMenuItem(R.string.profile, R.string.ic_profile));
 		menuItems.add(new SettingsMenuItem(R.string.theme, R.string.ic_theme));

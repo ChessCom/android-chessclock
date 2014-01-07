@@ -92,7 +92,7 @@ public class ChessBoardPlay extends ChessBoard {
     protected void drawExtraSquares(Canvas canvas) {
     }
 
-    private final boolean myColor(int piece) {
+    private boolean myColor(int piece) {
         return (piece != Piece.EMPTY) && (Piece.isWhite(piece) == pos.whiteMove);
     }
 
@@ -168,7 +168,7 @@ public class ChessBoardPlay extends ChessBoard {
      * @return      Matching move if unique.
      *              Boolean indicating if there was at least one match.
      */
-    private final Pair<Move, Boolean> matchingMove(int sq1, int sq2, ArrayList<Move> moves) {
+    private Pair<Move, Boolean> matchingMove(int sq1, int sq2, ArrayList<Move> moves) {
         Move matchingMove = null;
         boolean anyMatch = false;
         for (Move m : moves) {

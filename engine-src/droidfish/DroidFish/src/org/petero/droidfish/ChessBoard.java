@@ -18,26 +18,20 @@
 
 package org.petero.droidfish;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import android.content.Context;
+import android.graphics.*;
+import android.os.Handler;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
 import org.petero.droidfish.gamelogic.Move;
 import org.petero.droidfish.gamelogic.Piece;
 import org.petero.droidfish.gamelogic.Position;
 import org.petero.droidfish.gamelogic.UndoInfo;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.os.Handler;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public abstract class ChessBoard extends View {
     public Position pos;
@@ -176,7 +170,7 @@ public abstract class ChessBoard extends View {
             now = System.currentTimeMillis();
             return animActive();
         }
-        private final boolean animActive() {
+        private boolean animActive() {
             if (paused || (startTime < 0) || (now >= stopTime) || (posHash != pos.zobristHash()))
                 return false;
             return true;
@@ -449,7 +443,7 @@ public abstract class ChessBoard extends View {
 //      System.out.printf("draw: %d\n", t1-t0);
     }
 
-    private final void drawMoveHints(Canvas canvas) {
+    private void drawMoveHints(Canvas canvas) {
         if ((moveHints == null) || blindMode)
             return;
         float h = (float)(sqSize / 2.0);
@@ -545,7 +539,7 @@ public abstract class ChessBoard extends View {
 
     private Rect labelBounds = null;
 
-    private final void drawLabel(Canvas canvas, int xCrd, int yCrd, boolean right,
+    private void drawLabel(Canvas canvas, int xCrd, int yCrd, boolean right,
                                  boolean bottom, char c) {
         String s = Character.toString(c);
         if (labelBounds == null) {
@@ -667,7 +661,7 @@ public abstract class ChessBoard extends View {
         }
     }
 
-    private final void drawDecorations(Canvas canvas) {
+    private void drawDecorations(Canvas canvas) {
         if (decorations == null)
             return;
         long decorated = 0;

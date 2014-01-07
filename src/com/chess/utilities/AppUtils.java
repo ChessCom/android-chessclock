@@ -515,7 +515,7 @@ public class AppUtils {
 			if (!sb.toString().trim().equals(Symbol.EMPTY)) {
 				sb.append(Symbol.SPACE);
 			}
-			sb.append(context.getString(R.string.minutes_arg, minutes));
+			sb.append(context.getString(R.string.min_arg, minutes));
 		} else {
 			sb.append(context.getString(R.string.just_now));
 			return sb.toString();

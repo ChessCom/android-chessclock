@@ -42,7 +42,7 @@ public class LiveArchiveGamesAdapter extends ItemsCursorAdapter {
 		super(context, cursor, imageFetcher);
 		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
 
-		lossStr = context.getString(R.string.loss);
+		lossStr = context.getString(R.string.lost);
 		winStr = AppUtils.upCaseFirst(context.getString(R.string.won));
 		drawStr = context.getString(R.string.draw);
 
@@ -110,11 +110,11 @@ public class LiveArchiveGamesAdapter extends ItemsCursorAdapter {
 			holder.gameTypeTxt.setText(R.string.ic_live_blitz);
 		}
 
-		// Loss orange
+		// Lost orange
 		String result = lossStr;
 		holder.gameResultTxt.setTextColor(colorOrange);
 		if (getInt(cursor, DbScheme.V_GAME_SCORE) == BaseGameItem.GAME_WON) {
-			// Win Green
+			// Won Green
 			result = winStr;
 			holder.gameResultTxt.setTextColor(colorGreen);
 		} else if (getInt(cursor, DbScheme.V_GAME_SCORE) == BaseGameItem.GAME_DRAW) {

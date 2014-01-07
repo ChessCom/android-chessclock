@@ -323,8 +323,8 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
-	protected void showPopupHardProgressDialog(int titleId) {
-		popupProgressItem.setTitle(titleId);
+	protected void showPopupHardProgressDialog() {
+		popupProgressItem.setTitle(Symbol.EMPTY);
 		popupProgressItem.setMessage(Symbol.EMPTY);
 		PopupProgressFragment popupProgressDialogFragment = PopupProgressFragment.createInstance(popupItem);
 		popupProgressDialogFragment.setNotCancelable();

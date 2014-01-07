@@ -95,7 +95,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private ProgressImageView boardPreviewImg;
 	private ProgressImageView piecePreviewImg;
 	private ProgressImageView backgroundPreviewImg;
-	private TextView rowSampleTitleTxt;
 	private TextView loadProgressTxt;
 	private TextView taskTitleTxt;
 
@@ -853,7 +852,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		boardLineImage.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
 
 		// Preview Sample
-		rowSampleTitleTxt = (TextView) view.findViewById(R.id.rowSampleTitleTxt);
+		TextView rowSampleTitleTxt = (TextView) view.findViewById(R.id.rowSampleTitleTxt);
 		int fontColor = Color.parseColor("#" + themeItem.getFontColor());
 		rowSampleTitleTxt.setTextColor(fontColor);
 

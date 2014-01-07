@@ -626,7 +626,7 @@ public class Request {
      *
      * @return the Facebook application ID to use for batched requests if none can be determined
      */
-    public static final String getDefaultBatchApplicationId() {
+    public static String getDefaultBatchApplicationId() {
         return Request.defaultBatchApplicationId;
     }
 
@@ -638,7 +638,7 @@ public class Request {
      * @param applicationId
      *            the Facebook application ID to use for batched requests if none can be determined
      */
-    public static final void setDefaultBatchApplicationId(String applicationId) {
+    public static void setDefaultBatchApplicationId(String applicationId) {
         Request.defaultBatchApplicationId = applicationId;
     }
 
@@ -1408,7 +1408,7 @@ public class Request {
         }
     }
 
-    final static void serializeToUrlConnection(RequestBatch requests, HttpURLConnection connection)
+    static void serializeToUrlConnection(RequestBatch requests, HttpURLConnection connection)
     throws IOException, JSONException {
         Logger logger = new Logger(LoggingBehavior.REQUESTS, "Request");
 

@@ -101,7 +101,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			if (isLCSBound) {
 				onLiveServiceConnected();
 			} else {
-				Log.d(TAG, "onStart -> bindAndStartLiveService " + getClass());
+//				Log.d(TAG, "onStart -> bindAndStartLiveService " + getClass());
 				bindAndStartLiveService();
 			}
 		}
@@ -310,16 +310,14 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-//		LogMe.dl(TAG, "onActivityResult, resultCode = " + resultCode + " data = " + data);
 		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
-			Log.d(TAG, "onActivityResult, -> bindAndStartLiveService " + getClass());
 			bindAndStartLiveService();
 		}
 	}
 
 	public void connectLcc() {
 //		LogMe.dl(TAG, "connectLcc: getAppData().isLiveChess() = " + getAppData().isLiveChess());
-		LogMe.dl(TAG, "connectLcc: isLCSBound = " + isLCSBound);
+//		LogMe.dl(TAG, "connectLcc: isLCSBound = " + isLCSBound);
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				popupItem.setPositiveBtnId(R.string.wireless_settings);
@@ -335,7 +333,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	private void bindAndStartLiveService() {
-		Log.d(TAG, "bindAndStartLiveService " + getClass());
+//		Log.d(TAG, "bindAndStartLiveService " + getClass());
 
 		startService(new Intent(this, LiveChessService.class));
 		bindService(new Intent(this, LiveChessService.class), liveServiceConnectionListener, BIND_AUTO_CREATE);
@@ -345,7 +343,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		return isLCSBound;
 	}
 
-	private class SessionIdUpdateListener extends AbstractUpdateListener<UserItem>{
+	private class SessionIdUpdateListener extends AbstractUpdateListener<UserItem> {
 
 		public SessionIdUpdateListener() {
 			super(getContext(), UserItem.class);
@@ -373,11 +371,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			if (liveService.getLccHelper() != null && liveService.getLccHelper().isConnected()) {
 				onLiveClientConnected();
 			} else { // lccHelper here null, so we need to start again connection logic and create all instances
-				Log.d(TAG, "performServiceConnection is LCSBound, lcc helper null or !connected-> bindAndStartLiveService " + getClass());
+//				Log.d(TAG, "performServiceConnection is LCSBound, lcc helper null or !connected-> bindAndStartLiveService " + getClass());
 				bindAndStartLiveService();
 			}
 		} else {
-			Log.d(TAG, "performServiceConnection, !isLCSBound -> bindAndStartLiveService " + getClass());
+//			Log.d(TAG, "performServiceConnection, !isLCSBound -> bindAndStartLiveService " + getClass());
 			bindAndStartLiveService();
 		}
 	}
@@ -519,11 +517,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			GameTimeConfig config = challenge.getGameTimeConfig();
 			String blitz = Symbol.EMPTY;
 			if (config.isBlitz()) {
-				blitz = getString(R.string.blitz_game);
+				blitz = Symbol.wrapInPars(getString(R.string.blitz));
 			} else if (config.isLightning()) {
-				blitz = getString(R.string.lightning_game);
+				blitz = Symbol.wrapInPars(getString(R.string.lightning));
 			} else if (config.isStandard()) {
-				blitz = getString(R.string.standard_game);
+				blitz = Symbol.wrapInPars(getString(R.string.standard));
 			}
 
 			String timeIncrement = Symbol.EMPTY;

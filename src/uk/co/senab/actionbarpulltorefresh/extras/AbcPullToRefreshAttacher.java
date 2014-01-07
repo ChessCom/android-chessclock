@@ -50,7 +50,8 @@ public class AbcPullToRefreshAttacher extends
         /**
          * @return Context which should be used for inflating the header layout
          */
-        public Context getContextForInflater(Activity activity) {
+        @Override
+		public Context getContextForInflater(Activity activity) {
             if (activity instanceof ActionBarActivity) {
                 return ((ActionBarActivity) activity);
 //                return ((ActionBarActivity) activity).getSupportActionBar().getThemedContext();

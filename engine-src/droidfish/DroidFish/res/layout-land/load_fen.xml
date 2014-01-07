@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+	android:baselineAligned="false">
     <ListView
         android:id="@android:id/list"
         android:layout_weight="1"
@@ -34,20 +35,20 @@
             android:layout_weight="1"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
-            <Button
-                android:id="@+id/loadfen_ok"
-                android:text="@android:string/ok"
-                android:layout_weight="1"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-            </Button>
-            <Button
-                android:id="@+id/loadfen_cancel"
-                android:text="@string/cancel"
-                android:layout_weight="1"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-            </Button>
+			<Button
+				android:id="@+id/loadfen_ok"
+				android:text="@android:string/ok"
+				android:layout_weight="1"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent">
+			</Button>
+			<Button
+				android:id="@+id/loadfen_cancel"
+				android:text="@string/cancel"
+				android:layout_weight="1"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent">
+			</Button>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

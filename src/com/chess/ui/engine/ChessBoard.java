@@ -416,8 +416,6 @@ public class ChessBoard implements BoardFace {
 				whiteKingMoveOOO = new int[]{56};
 			}
 		}
-
-//		return new int[]{blackRook1, blackKing, blackRook2, whiteRook1, whiteKing, whiteRook2}; // not used anywhere
 	}
 
 	@Override

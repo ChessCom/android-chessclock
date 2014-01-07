@@ -1,65 +1,9 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>מלכה</item>
-		<item>צריח</item>
-		<item>בישוף</item>
-		<item>אביר</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-
-	<string-array name="playas">
-		<item>"אקראי"</item>
-		<item>"לבן"</item>
-		<item>"שחור"</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-		<item>"יום אחד"</item>
-		<item>"2 ימים"</item>
-		<item>"3 ימים"</item>
-		<item>"5 ימים"</item>
-		<item>"7 ימים"</item>
-		<item>"14 ימים"</item>
-	</string-array>
-
-
-	<string-array name="skill">
-		<item>"מתחיל"</item>
-		<item>"ביניים"</item>
-		<item>"מתקדם"</item>
-	</string-array>
-
-	<string-array name="category">
-		<item>"מדהים משחקים"</item>
-		<item>"משחק סוף המדינה"</item>
-		<item>"פתחים"</item>
-		<item>"כללים בסיסיים"</item>
-		<item>"אסטרטגיה"</item>
-		<item>"טקטיקה"</item>
-	</string-array>
-
 	<string-array name="afterMyMove">
 		<item>"מוכן ללכת למשחק הבא"</item>
 		<item>"להישאר על אותו משחק"</item>
 		<item>"חזרה ל רשימת משחק"</item>
-	</string-array>
-
-	<string-array name="Notif">
-		<item>"אין"</item>
-		<item>"רטט"</item>
-		<item>"מצלצל …"</item>
-		<item>"הנורית מהבהבת"</item>
-	</string-array>
-
-	<string-array name="strength">
-		<item>"1 שניות"</item>
-		<item>"3 שניות"</item>
-		<item>"5 שניות"</item>
-		<item>"10 שניות"</item>
-		<item>"30 שניות"</item>
-		<item>"דקה"</item>
 	</string-array>
 
 	<string-array name="countries">

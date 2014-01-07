@@ -20,7 +20,6 @@
         android:paddingLeft="10dip"
         custom:ttf="Bold"
         style="@style/DarkShadowBottom"
-        android:layout_centerInParent="true"
         />
 
 </LinearLayout>

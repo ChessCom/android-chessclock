@@ -768,7 +768,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void onClick(View view) {
-		super.onClick(view);
 
 		if (view.getId() == R.id.positiveBtn) { // Yes (leave us feedback)
 			Intent intent = new Intent(Intent.ACTION_VIEW);

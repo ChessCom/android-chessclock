@@ -580,7 +580,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		resultRatingTxt.setText(String.valueOf(currentPlayerNewRating));
 		resultRatingChangeTxt.setText(ratingChangeString);
-		ratingTitleTxt.setText(getString(R.string.new_game_rating_arg, newRatingStr));
+
+		ratingTitleTxt.setText(newRatingStr + Symbol.SPACE + getString(R.string.rating_));
 
 //		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
 //		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);

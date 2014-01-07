@@ -721,7 +721,7 @@ public final class MoveGen {
     /**
      * Return true if the side to move is in check.
      */
-    public static final boolean inCheck(Position pos) {
+    public static boolean inCheck(Position pos) {
         int kingSq = pos.getKingSq(pos.whiteMove);
         return sqAttacked(pos, kingSq);
     }
@@ -729,7 +729,7 @@ public final class MoveGen {
     /**
      * Return the next piece in a given direction, starting from sq.
      */
-    private static final int nextPiece(Position pos, int sq, int delta) {
+    private static int nextPiece(Position pos, int sq, int delta) {
         while (true) {
             sq += delta;
             int p = pos.getPiece(sq);
@@ -739,7 +739,7 @@ public final class MoveGen {
     }
 
     /** Like nextPiece(), but handles board edges. */
-    private static final int nextPieceSafe(Position pos, int sq, int delta) {
+    private static int nextPieceSafe(Position pos, int sq, int delta) {
         int dx = 0, dy = 0;
         switch (delta) {
         case 1: dx=1; dy=0; break;
@@ -971,7 +971,7 @@ public final class MoveGen {
         moveList.size = length;
     }
 
-    private final static boolean addPawnMovesByMask(MoveList moveList, Position pos, long mask,
+    private static boolean addPawnMovesByMask(MoveList moveList, Position pos, long mask,
                                                     int delta, boolean allPromotions) {
         if (mask == 0)
             return false;
@@ -1012,7 +1012,7 @@ public final class MoveGen {
         return false;
     }
 
-    private final static void addPawnDoubleMovesByMask(MoveList moveList, Position pos,
+    private static void addPawnDoubleMovesByMask(MoveList moveList, Position pos,
                                                        long mask, int delta) {
         while (mask != 0) {
             int sq = BitBoard.numberOfTrailingZeros(mask);
@@ -1021,7 +1021,7 @@ public final class MoveGen {
         }
     }
     
-    private final static boolean addMovesByMask(MoveList moveList, Position pos, int sq0, long mask) {
+    private static boolean addMovesByMask(MoveList moveList, Position pos, int sq0, long mask) {
         long oKingMask = pos.pieceTypeBB[pos.whiteMove ? Piece.BKING : Piece.WKING];
         if ((mask & oKingMask) != 0) {
             int sq = BitBoard.numberOfTrailingZeros(mask & oKingMask);
@@ -1037,7 +1037,7 @@ public final class MoveGen {
         return false;
     }
 
-    private final static void setMove(MoveList moveList, int from, int to, int promoteTo) {
+    private static void setMove(MoveList moveList, int from, int to, int promoteTo) {
         Move m = moveList.m[moveList.size++];
         m.from = from;
         m.to = to;
@@ -1051,7 +1051,7 @@ public final class MoveGen {
     
     private static final int MAX_MOVES = 256;
 
-    private final MoveList getMoveListObj() {
+    private MoveList getMoveListObj() {
         MoveList ml;
         if (moveListsInCache > 0) {
             ml = (MoveList)moveListCache[--moveListsInCache];

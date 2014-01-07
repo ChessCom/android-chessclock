@@ -214,7 +214,7 @@ public class ExternalEngine extends UCIEngineBase {
 	/**
 	 * Reduce too large hash sizes.
 	 */
-	private final int getHashMB(int hashMB) {
+	private int getHashMB(int hashMB) {
 		if (hashMB > 16) {
 			int maxMem = (int) (Runtime.getRuntime().maxMemory() / (1024 * 1024));
 			if (maxMem < 16)
@@ -345,7 +345,7 @@ public class ExternalEngine extends UCIEngineBase {
 		return engineDir;
 	}
 
-	private final void chmod(String exePath) throws IOException {
+	private void chmod(String exePath) throws IOException {
 		if (!EngineUtil.chmod(exePath))
 			throw new IOException("chmod failed");
 	}

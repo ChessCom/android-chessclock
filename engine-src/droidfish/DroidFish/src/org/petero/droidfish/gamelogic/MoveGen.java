@@ -162,7 +162,7 @@ public class MoveGen {
     /**
      * Return true if the side to move is in check.
      */
-    public static final boolean inCheck(Position pos) {
+    public static boolean inCheck(Position pos) {
         int kingSq = pos.getKingSq(pos.whiteMove);
         if (kingSq < 0)
             return false;
@@ -172,7 +172,7 @@ public class MoveGen {
     /**
      * Return true if a square is attacked by the opposite side.
      */
-    public static final boolean sqAttacked(Position pos, int sq) {
+    public static boolean sqAttacked(Position pos, int sq) {
         int x = Position.getX(sq);
         int y = Position.getY(sq);
         boolean isWhiteMove = pos.whiteMove;
@@ -229,7 +229,7 @@ public class MoveGen {
      * "moveList" is assumed to be a list of pseudo-legal moves.
      * This function removes the moves that don't defend from check threats.
      */
-    public static final ArrayList<Move> removeIllegal(Position pos, ArrayList<Move> moveList) {
+    public static ArrayList<Move> removeIllegal(Position pos, ArrayList<Move> moveList) {
         ArrayList<Move> ret = new ArrayList<Move>();
         UndoInfo ui = new UndoInfo();
         int mlSize = moveList.size();
@@ -250,7 +250,7 @@ public class MoveGen {
      * @param maxSteps Max steps until reaching a border. Set to 1 for non-sliding pieces.
      * @ return True if the enemy king could be captured, false otherwise.
      */
-    private final boolean addDirection(ArrayList<Move> moveList, Position pos, int sq0, int maxSteps, int delta) {
+    private boolean addDirection(ArrayList<Move> moveList, Position pos, int sq0, int maxSteps, int delta) {
         int sq = sq0;
         boolean wtm = pos.whiteMove;
         final int oKing = (wtm ? Piece.BKING : Piece.WKING);
@@ -280,7 +280,7 @@ public class MoveGen {
     /**
      * Generate all possible pawn moves from (x0,y0) to (x1,y1), taking pawn promotions into account.
      */
-    private final void addPawnMoves(ArrayList<Move> moveList, int sq0, int sq1) {
+    private void addPawnMoves(ArrayList<Move> moveList, int sq0, int sq1) {
         if (sq1 >= 56) { // White promotion
             moveList.add(getMoveObj(sq0, sq1, Piece.WQUEEN));
             moveList.add(getMoveObj(sq0, sq1, Piece.WKNIGHT));
@@ -303,7 +303,7 @@ public class MoveGen {
      * @return The first piece in the given direction, or EMPTY if there is no piece
      *         in that direction.
      */
-    private static final int checkDirection(Position pos, int sq, int maxSteps, int delta) {
+    private static int checkDirection(Position pos, int sq, int maxSteps, int delta) {
         while (maxSteps > 0) {
             sq += delta;
             int p = pos.getPiece(sq);
@@ -321,7 +321,7 @@ public class MoveGen {
     private Object[] moveListCache = new Object[200];
     private int moveListsInCache = 0;
 
-    private final Move getMoveObj(int from, int to, int promoteTo) {
+    private Move getMoveObj(int from, int to, int promoteTo) {
         if (movesInCache > 0) {
             Move m = moveCache[--movesInCache];
             m.from = from;
@@ -333,7 +333,7 @@ public class MoveGen {
     }
 
     @SuppressWarnings("unchecked")
-    private final ArrayList<Move> getMoveListObj() {
+    private ArrayList<Move> getMoveListObj() {
         if (moveListsInCache > 0) {
             return (ArrayList<Move>)moveListCache[--moveListsInCache];
         }

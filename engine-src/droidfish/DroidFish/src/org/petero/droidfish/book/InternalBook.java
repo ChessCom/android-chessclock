@@ -71,7 +71,7 @@ final class InternalBook implements IOpeningBook {
     public void setOptions(BookOptions options) {
     }
 
-    private synchronized final void initInternalBook() {
+    private synchronized void initInternalBook() {
         if (numBookMoves >= 0)
             return;
 //        long t0 = System.currentTimeMillis();
@@ -125,7 +125,7 @@ final class InternalBook implements IOpeningBook {
 
 
     /** Add a move to a position in the opening book. */
-    private final void addToBook(Position pos, Move moveToAdd) {
+    private void addToBook(Position pos, Move moveToAdd) {
         ArrayList<BookEntry> ent = bookMap.get(pos.zobristHash());
         if (ent == null) {
             ent = new ArrayList<BookEntry>();

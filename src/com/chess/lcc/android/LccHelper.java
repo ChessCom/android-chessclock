@@ -1063,8 +1063,8 @@ public class LccHelper {
 		new ConnectLiveChessTask(lccConnectUpdateListener, this).executeTask();
 	}
 
-	public void runDisconnectTask(/*boolean resetClient*/) {
-		new LiveDisconnectTask(/*resetClient*/).execute();
+	public void runDisconnectTask() {
+		new LiveDisconnectTask().execute();
 	}
 
 	public void onChallengeRejected(String by) {
@@ -1077,20 +1077,15 @@ public class LccHelper {
 
 	private class LiveDisconnectTask extends AsyncTask<Void, Void, Void> {
 
-		/*private final boolean resetClient;
-
-		public LiveDisconnectTask(boolean resetClient) {
-			this.resetClient = resetClient;
-		}*/
-
 		@Override
 		protected Void doInBackground(Void... voids) {
 			if (lccClient != null) {
-				LogMe.dl(TAG, "DISCONNECT: lccClient=" + getClientId()/* + ", resetClient=" + resetClient*/);
-				lccClient.disconnect(); // why we should use leave when we do logout??? Let's create a 2 different methods for different purpose
-				//if (/*resetClient*/) {
-				resetClient();
-				//}
+				try {
+					lccClient.disconnect(); // why we should use leave when we do logout??? Let's create a 2 different methods for different purpose
+					lccClient = null;
+				} catch (Exception ignore) {
+
+				}
 			}
 			return null;
 		}

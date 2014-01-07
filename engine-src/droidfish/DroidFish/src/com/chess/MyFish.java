@@ -216,7 +216,7 @@ public class MyFish extends Activity implements GUIInterface {
     }
 
     /** Create directory structure on SD card. */
-    private final static void createDirectories() {
+    private static void createDirectories() {
         File extDir = Environment.getExternalStorageDirectory();
 
 		Log.d(TAG, "createDirectories extDir=" + extDir);
@@ -259,7 +259,7 @@ public class MyFish extends Activity implements GUIInterface {
         super.onDestroy();
     }
 
-    private final void readPrefs() {
+    private void readPrefs() {
         playerName = "Player";
 
         mWhiteBasedScores = false;
@@ -314,7 +314,7 @@ public class MyFish extends Activity implements GUIInterface {
         pgnOptions.exp.clockInfo    = false;*/
     }
 
-    private final void setEngineStrength(String engine, int strength) {
+    private void setEngineStrength(String engine, int strength) {
         ctrl.setEngineStrength(engine, strength);
     }
 
@@ -331,7 +331,7 @@ public class MyFish extends Activity implements GUIInterface {
 		//To change body of implemented methods use File | Settings | File Templates.
 	}
 
-	private final void setBookOptions() {
+	private void setBookOptions() {
         BookOptions options = new BookOptions(bookOptions);
         if (options.filename.length() > 0) {
             File extDir = Environment.getExternalStorageDirectory();
@@ -343,7 +343,7 @@ public class MyFish extends Activity implements GUIInterface {
 
     private boolean egtbForceReload = false;
 
-    private final void setEngineOptions(boolean restart) {
+    private void setEngineOptions(boolean restart) {
         ctrl.setEngineOptions(new EngineOptions(engineOptions), restart);
         Probe.getInstance().setPath(engineOptions.gtbPath, egtbForceReload);
         egtbForceReload = false;
@@ -433,7 +433,7 @@ public class MyFish extends Activity implements GUIInterface {
         updateNotification();*/
     }
 
-    private final void startNewGame(int type) {
+    private void startNewGame(int type) {
         if (type != 2) {
             /*int gameModeType = (type == 0) ? GameMode.PLAYER_WHITE : GameMode.PLAYER_BLACK;
             Editor editor = settings.edit();

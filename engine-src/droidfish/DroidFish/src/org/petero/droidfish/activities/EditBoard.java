@@ -122,7 +122,7 @@ public class EditBoard extends Activity {
         checkValidAndUpdateMaterialDiff();
     }
 
-    private final void initUI() {
+    private void initUI() {
         setContentView(R.layout.editboard);
         Util.overrideFonts(findViewById(android.R.id.content));
 
@@ -211,7 +211,7 @@ public class EditBoard extends Activity {
                 ((Vibrator)getSystemService(Context.VIBRATOR_SERVICE)).vibrate(20);
                 showDialog(EDIT_DIALOG);
             }
-            private final void handleClick(MotionEvent e) {
+            private void handleClick(MotionEvent e) {
                 int sq = cb.eventToSquare(e);
                 Move m = cb.mousePressed(sq);
                 if (m != null)
@@ -242,12 +242,12 @@ public class EditBoard extends Activity {
         return false;
     }
 
-    private final void setSelection(int sq) {
+    private void setSelection(int sq) {
         cb.setSelection(sq);
         setEgtbHints(sq);
     }
 
-    private final void setEgtbHints(int sq) {
+    private void setEgtbHints(int sq) {
         if (!egtbHints || (sq < 0)) {
             cb.setSquareDecorations(null);
             return;
@@ -308,7 +308,7 @@ public class EditBoard extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
-    private final void sendBackResult() {
+    private void sendBackResult() {
         if (checkValidAndUpdateMaterialDiff()) {
             setPosFields();
             String fen = TextIO.toFEN(cb.pos);
@@ -319,19 +319,19 @@ public class EditBoard extends Activity {
         finish();
     }
 
-    private final void setPosFields() {
+    private void setPosFields() {
         setEPFile(getEPFile()); // To handle sideToMove change
         TextIO.fixupEPSquare(cb.pos);
         TextIO.removeBogusCastleFlags(cb.pos);
     }
 
-    private final int getEPFile() {
+    private int getEPFile() {
         int epSquare = cb.pos.getEpSquare();
         if (epSquare < 0) return 8;
         return Position.getX(epSquare);
     }
 
-    private final void setEPFile(int epFile) {
+    private void setEPFile(int epFile) {
         int epSquare = -1;
         if ((epFile >= 0) && (epFile < 8)) {
             int epRank = cb.pos.whiteMove ? 5 : 2;
@@ -341,7 +341,7 @@ public class EditBoard extends Activity {
     }
 
     /** Test if a position is valid and update material diff display. */
-    private final boolean checkValidAndUpdateMaterialDiff() {
+    private boolean checkValidAndUpdateMaterialDiff() {
         try {
             MaterialDiff md = Util.getMaterialDiff(cb.pos);
             whiteFigText.setText(md.white);
@@ -357,7 +357,7 @@ public class EditBoard extends Activity {
         return false;
     }
 
-    private final String getParseErrString(ChessParseError e) {
+    private String getParseErrString(ChessParseError e) {
         if (e.resourceId == -1)
             return e.getMessage();
         else
@@ -599,7 +599,7 @@ public class EditBoard extends Activity {
         return null;
     }
 
-    private final void setFEN(String fen) {
+    private void setFEN(String fen) {
         if (fen == null)
             return;
         try {

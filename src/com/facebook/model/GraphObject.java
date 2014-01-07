@@ -478,7 +478,7 @@ public interface GraphObject {
                 return throwUnexpectedMethodSignature(method);
             }
 
-            private final Object proxyMapMethods(Method method, Object[] args) {
+            private Object proxyMapMethods(Method method, Object[] args) {
                 String methodName = method.getName();
                 if (methodName.equals(CLEAR_METHOD)) {
                     JsonUtil.jsonObjectClear(this.state);
@@ -520,7 +520,7 @@ public interface GraphObject {
                 return throwUnexpectedMethodSignature(method);
             }
 
-            private final Object proxyGraphObjectMethods(Object proxy, Method method, Object[] args) {
+            private Object proxyGraphObjectMethods(Object proxy, Method method, Object[] args) {
                 String methodName = method.getName();
                 if (methodName.equals(CAST_METHOD)) {
                     @SuppressWarnings("unchecked")
@@ -549,7 +549,7 @@ public interface GraphObject {
                 return throwUnexpectedMethodSignature(method);
             }
 
-            private final Object proxyGraphObjectGettersAndSetters(Method method, Object[] args) throws JSONException {
+            private Object proxyGraphObjectGettersAndSetters(Method method, Object[] args) throws JSONException {
                 String methodName = method.getName();
                 int parameterCount = method.getParameterTypes().length;
                 PropertyName propertyNameOverride = method.getAnnotation(PropertyName.class);

@@ -1,5 +1,6 @@
 package com.chess.backend;
 
+import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -77,7 +79,11 @@ public class GetAndSavePieces extends Service {
 		// Creates an Intent for the Activity
 		Intent notifyIntent = new Intent(this, MainFragmentFaceActivity.class);
 		// Sets the Activity to start in a new, empty task
-		notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		if (AppUtils.HONEYCOMB_PLUS_API) {
+			setFlagsForNotifyIntent(notifyIntent);
+		} else {
+			notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		}
 		// Creates the PendingIntent
 		PendingIntent pendingIntent = PendingIntent.getActivity(
 				this,
@@ -98,6 +104,11 @@ public class GetAndSavePieces extends Service {
 		userToken = appData.getUserToken();
 
 		piecesSingleItemUpdateListener = new PiecesSingleItemUpdateListener();
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void setFlagsForNotifyIntent(Intent notifyIntent) {
+		notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 	}
 
 	public void setProgressUpdateListener(FileReadyListener progressUpdateListener) {

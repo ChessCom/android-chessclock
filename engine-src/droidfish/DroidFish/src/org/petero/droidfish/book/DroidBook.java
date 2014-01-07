@@ -166,7 +166,7 @@ public final class DroidBook {
         return new Pair<String, ArrayList<Move>>(ret.toString(), bookMoveList);
     }
 
-    private final double scaleWeight(double w) {
+    private double scaleWeight(double w) {
         if (w <= 0)
             return 0;
         if (options == null)
@@ -174,7 +174,7 @@ public final class DroidBook {
         return Math.pow(w, Math.exp(-options.random));
     }
 
-    private final IOpeningBook getBook() {
+    private IOpeningBook getBook() {
         if (externalBook.enabled()) {
             return externalBook;
         } else {

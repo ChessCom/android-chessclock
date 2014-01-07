@@ -475,7 +475,7 @@ public class EvaluateTest {
     }
 
     /** Return static evaluation score for white, regardless of whose turn it is to move. */
-    final static int evalWhite(Position pos) {
+    static int evalWhite(Position pos) {
         Evaluate eval = new Evaluate();
         int ret = eval.evalPos(pos);
         Position symPos = swapColors(pos);
@@ -487,7 +487,7 @@ public class EvaluateTest {
         return ret;
     }
 
-    final static Position swapColors(Position pos) {
+    static Position swapColors(Position pos) {
         Position sym = new Position();
         sym.whiteMove = !pos.whiteMove;
         for (int x = 0; x < 8; x++) {
@@ -518,7 +518,7 @@ public class EvaluateTest {
     }
 
     /** Compute change in eval score for white after making "moveStr" in position "pos". */
-    private final int moveScore(Position pos, String moveStr) {
+    private int moveScore(Position pos, String moveStr) {
         int score1 = evalWhite(pos);
         Position tmpPos = new Position(pos);
         UndoInfo ui = new UndoInfo();

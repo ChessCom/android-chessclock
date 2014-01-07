@@ -448,6 +448,6 @@ public final class FacebookRequestError {
          * not limited to, JSON parsing errors or {@link java.io.IOException}s.
          */
         CLIENT
-    };
+    }
 
 }

@@ -183,7 +183,7 @@ public class LoadFEN extends ListActivity {
         super.onDestroy();
     }
 
-    private final void showList() {
+    private void showList() {
         progress.dismiss();
         setContentView(R.layout.load_fen);
 
@@ -277,7 +277,7 @@ public class LoadFEN extends ListActivity {
         }
     }
 
-    private final boolean readFile() {
+    private boolean readFile() {
         String fileName = fenFile.getName();
         if (!fileName.equals(lastFileName))
             defaultItem = 0;
@@ -310,7 +310,7 @@ public class LoadFEN extends ListActivity {
         return true;
     }
 
-    private final void sendBackResult(FenInfo fi) {
+    private void sendBackResult(FenInfo fi) {
         String fen = fi.fen;
         if (fen != null) {
             setResult(RESULT_OK, (new Intent()).setAction(fen));

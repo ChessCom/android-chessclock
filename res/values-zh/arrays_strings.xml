@@ -1,70 +1,13 @@
 <resources>
 
-	<string-array name="promotion_options">
-		<item>女王</item>
-		<item>车</item>
-		<item>主教</item>
-		<item>骑士</item>
-		<item>@string/cancel</item>
-	</string-array>
-
-	<string-array name="playas">
-		<item>随机</item>
-		<item>白色</item>
-		<item>黑色</item>
-	</string-array>
-
-	<string-array name="dayspermove">
-	    <item>1 天</item>
-		<item>2天</item>
-		<item>3天</item>
-		<item>5天</item>
-		<item>7天</item>
-		<item>14天</item>
-	</string-array>
-	
-
-	<string-array name="skill">
-	    <item>入门级</item>
-		<item>中阶</item>
-		<item>高级</item>
-	</string-array>
-	
-	<string-array name="category">
-	    <item>惊人的游戏</item>
-		<item>残局</item>
-		<item>开口</item>
-		<item>规则基础</item>
-		<item>n.战略;n.战略,战略学</item>
-		<item>策略</item>
-	</string-array>	
-	
 	<string-array name="afterMyMove">
 	    <item>转到下一步准备游戏</item>
 		<item>留在相同的游戏</item>
 		<item>返回游戏列表</item>
 	</string-array>
 
-	<string-array name="Notif">
-	    <item>None</item>
-		<item>振动</item>
-		<item>戒指</item>
-		<item>闪烁的LED</item>
-	</string-array>
-	
-	<string-array name="strength">
-	    <item>1秒</item>
-		<item>3秒</item>
-		<item>5秒</item>
-		<item>10秒</item>
-		<item>30秒</item>
-		<item>1 分钟</item>
-	</string-array>
-	
     <string-array name="countries">
-        <item>美国
-
-答复：</item>
+        <item>美国答复：</item>
         <item>加拿大</item>
         <item>阿根廷</item>
         <item>比利时</item>

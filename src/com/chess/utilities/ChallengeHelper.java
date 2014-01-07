@@ -330,7 +330,7 @@ public class ChallengeHelper {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.YOUR_ARE_ON_VACATAION) {
-					fragment.showPopupDialog(R.string.leave_vacation_to_play_q, END_VACATION_TAG);
+					fragment.showPopupDialog(R.string.leave_vacation_q, END_VACATION_TAG);
 					return;
 				}
 			}

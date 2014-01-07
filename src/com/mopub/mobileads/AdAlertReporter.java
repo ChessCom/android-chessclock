@@ -196,7 +196,7 @@ public class AdAlertReporter {
         }
 
         try {
-            fileOutputStream = mContext.openFileOutput(fileName, Context.MODE_WORLD_READABLE);
+            fileOutputStream = mContext.openFileOutput(fileName, Context.MODE_PRIVATE);
             // image quality is okay to be 0 here, since PNG is lossless and will ignore compression quality
             bitmap.compress(Bitmap.CompressFormat.PNG, IMAGE_QUALITY, fileOutputStream);
 
@@ -217,7 +217,7 @@ public class AdAlertReporter {
         }
 
         try {
-            fileOutputStream = mContext.openFileOutput(fileName, Context.MODE_WORLD_READABLE);
+            fileOutputStream = mContext.openFileOutput(fileName, Context.MODE_PRIVATE); // was MODE_READABLE
             fileOutputStream.write(body.getBytes());
 
             Uri fileUri = Uri.fromFile(new File(mContext.getFilesDir() + File.separator + fileName));

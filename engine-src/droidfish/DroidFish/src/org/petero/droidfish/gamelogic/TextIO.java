@@ -42,14 +42,14 @@ public class TextIO {
 	}
 
     /** Set localized piece names. */
-    public static final void setPieceNames(String pieceNames) {
+    public static void setPieceNames(String pieceNames) {
         String[] pn = pieceNames.split(" ");
         if (pn.length == 6)
             TextIO.pieceNames = pn;
     }
 
     /** Parse a FEN string and return a chess Position object. */
-    public static final Position readFEN(String fen) throws ChessParseError {
+    public static Position readFEN(String fen) throws ChessParseError {
         Position pos = new Position();
         String[] words = fen.split(" ");
         if (words.length < 2) {
@@ -194,7 +194,7 @@ public class TextIO {
         return pos;
     }
 
-    public static final void removeBogusCastleFlags(Position pos) {
+    public static void removeBogusCastleFlags(Position pos) {
         int castleMask = pos.getCastleMask();
         int validCastle = 0;
         if (pos.getPiece(4) == Piece.WKING) {
@@ -210,7 +210,7 @@ public class TextIO {
     }
 
     /** Remove pseudo-legal EP square if it is not legal, ie would leave king in check. */
-    public static final void fixupEPSquare(Position pos) {
+    public static void fixupEPSquare(Position pos) {
         int epSquare = pos.getEpSquare();
         if (epSquare >= 0) {
             ArrayList<Move> moves = MoveGen.instance.legalMoves(pos);
@@ -228,7 +228,7 @@ public class TextIO {
         }
     }
 
-    private static final void safeSetPiece(Position pos, int col, int row, int p) throws ChessParseError {
+    private static void safeSetPiece(Position pos, int col, int row, int p) throws ChessParseError {
         if (row < 0) throw new ChessParseError(R.string.err_too_many_rows);
         if (col > 7) throw new ChessParseError(R.string.err_too_many_columns);
         if ((p == Piece.WPAWN) || (p == Piece.BPAWN)) {
@@ -435,7 +435,7 @@ public class TextIO {
         return ret.toString();
     }
 
-    private static final boolean isCapture(Position pos, Move move) {
+    private static boolean isCapture(Position pos, Move move) {
         if (pos.getPiece(move.to) == Piece.EMPTY) {
             int p = pos.getPiece(move.from);
             if ((p == (pos.whiteMove ? Piece.WPAWN : Piece.BPAWN)) && (move.to == pos.getEpSquare())) {
@@ -751,7 +751,7 @@ public class TextIO {
         return ret.toString();
     }
 
-    private final static String pieceToChar(int p) {
+    private static String pieceToChar(int p) {
         switch (p) {
             case Piece.WQUEEN:  case Piece.BQUEEN:  return "Q";
             case Piece.WROOK:   case Piece.BROOK:   return "R";
@@ -773,7 +773,7 @@ public class TextIO {
         return "";
     }
 
-    private final static int charToPiece(boolean white, char c) {
+    private static int charToPiece(boolean white, char c) {
         switch (c) {
         case 'Q': case 'q': return white ? Piece.WQUEEN  : Piece.BQUEEN;
         case 'R': case 'r': return white ? Piece.WROOK   : Piece.BROOK;
