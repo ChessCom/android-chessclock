@@ -336,7 +336,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public void onLiveClientConnected() {
 		super.onLiveClientConnected();
 
@@ -350,7 +350,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			logTest(e.getMessage());
 			isLCSBound = false;
 		}
-	}
+	}*/
 
 	@Override
 	protected void optionsMapInit() {

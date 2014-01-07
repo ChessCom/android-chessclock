@@ -181,11 +181,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					}
 				}
 
-				fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
+				// Why we should try to resign current game by clicking back on Wait fragment?
+				// Can we avoid this?
+				/*fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
 					return true;
-				}
+				}*/
 
 				fragmentByTag = getGameLiveObserverFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
@@ -747,6 +749,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		if (liveService.getLccHelper() == null) {
 			return;
 		}
+
+		liveService.stopIdleTimeOutCounter(); // screen rotated case
 
 		liveService.setOuterChallengeListener(outerChallengeListener);
 		liveService.setChallengeTaskListener(challengeTaskListener);

@@ -633,9 +633,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	protected void sendMove() throws DataNotValidException {
 		LiveChessService liveService = getLiveService();
 
-
 		String debugString = " no debug log";
-		getBoardFace().setSubmit(false);
 		showSubmitButtonsLay(false);
 
 		String move = getBoardFace().convertMoveLive();
@@ -1231,9 +1229,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		super.onLiveClientConnected();
 		try {
 			init();
+			Long currentGameId = getLiveService().getCurrentGameId();
+			if (isLCSBound && currentGameId != null && currentGameId != 0) {
+				// screen rotated case
+				onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronized
+			}
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
 			logTest(e.getMessage());
+			isLCSBound = false;
 		}
 	}
 
