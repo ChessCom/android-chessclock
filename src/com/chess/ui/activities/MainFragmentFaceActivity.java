@@ -255,12 +255,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			}
 
 			openFragment(fragmentByTag);
-		} else if (intent.hasExtra(IntentConstants.SHUTDOWN_LIVE_CHESS)) {
-			if (liveService != null) {
-				liveService.logout();
-			}
-			unBindAndStopLiveService();
-			return;
 		}
 
 		handleOpenDailyGames(intent);
