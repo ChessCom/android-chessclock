@@ -40,20 +40,6 @@
 				style="@style/SettingsListText"
 				/>
 
-
-			<com.chess.widgets.RoboTextView
-				android:id="@+id/applyBackgroundBtn"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/ic_check"
-				android:layout_alignParentRight="true"
-				android:layout_centerVertical="true"
-				style="@style/GlyphIcon.Big"
-				android:textColor="@color/text_controls_icons"
-				android:visibility="gone"
-				android:padding="15dip"
-				/>
-
 		</com.chess.widgets.LinLayout>
 
         <!-- Pieces -->

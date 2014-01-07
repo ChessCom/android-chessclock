@@ -507,7 +507,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 					if (maxRatingDefault == 0) {
 						maxRatingStr = Symbol.PLUS + LiveGameConfig.RATING_STEP;
 					} else {
-						maxRatingStr = Symbol.PLUS + String.valueOf(maxRatingDefault);
+						maxRatingStr = Symbol.PLUS + String.valueOf(Math.abs(maxRatingDefault));
 					}
 
 					if (JELLY_BEAN_PLUS_API) {

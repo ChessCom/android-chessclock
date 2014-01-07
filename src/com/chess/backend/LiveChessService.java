@@ -43,6 +43,8 @@ public class LiveChessService extends Service {
 
 	private static final String TAG = "LCCLOG-LiveChessService";
 	private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec, shutdown after user leave app.
+	private static final int GO_TO_LIVE = 11;
+	private static final int SHUTDOWN_LIVE = 22;
 
 	private ServiceBinder serviceBinder = new ServiceBinder();
 
@@ -154,15 +156,22 @@ public class LiveChessService extends Service {
 		notifyIntent.putExtra(IntentConstants.LIVE_CHESS, true);
 
 		// Creates the PendingIntent
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 11, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, GO_TO_LIVE, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		Bitmap bigImage = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_stat_chess)).getBitmap();
 		String title = getString(R.string.live_chess_connected);
 		String body = getString(R.string.live_chess_connected_description);
 
+		Intent shutDownActionIntent = new Intent(getContext(), MainFragmentFaceActivity.class);
+		shutDownActionIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		shutDownActionIntent.putExtra(IntentConstants.SHUTDOWN_LIVE_CHESS, true);
+		PendingIntent shutdownIntent = PendingIntent.getActivity(this, SHUTDOWN_LIVE, shutDownActionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		String shutdownString = getString(R.string.shutdown);
 		notificationBuilder.setContentTitle(title)
 				.setTicker(title)
 				.setContentText(body)
 				.setSmallIcon(R.drawable.ic_stat_live)
+				.addAction(R.drawable.ic_action_cancel, shutdownString, shutdownIntent)
 				.setLargeIcon(bigImage);
 
 		// Puts the PendingIntent into the notification builder

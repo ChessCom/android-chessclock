@@ -13,6 +13,7 @@ public class IntentConstants {
 	public static final String BACKGROUND_LOADED = "com.chess.background_loaded";
 	public static final String BOARD_UPDATE = "com.chess.board_update";
 	public static final String LIVE_CHESS = "com.chess.live_chess_game";
+	public static final String SHUTDOWN_LIVE_CHESS = "com.chess.shutdown_live_chess_service";
 	public static final String START_LIVE_GAME = "com.chess.start_live_game";
 	public static final String STATS_SAVED = "com.chess.stats_saved";
 

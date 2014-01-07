@@ -191,10 +191,11 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 		if (parent.getAdapter() instanceof OpponentsAdapter) {
 			SelectionItem opponent = (SelectionItem) parent.getItemAtPosition(position);
-			gameConfigBuilder.setOpponentName(opponent.getText());
 			if (!opponent.getText().equals(getString(R.string.random))) {
+				gameConfigBuilder.setOpponentName(opponent.getText());
 				ratingView.setVisibility(View.GONE);
 			} else {
+				gameConfigBuilder.setOpponentName(Symbol.EMPTY);
 				ratingView.setVisibility(View.VISIBLE);
 			}
 		} else {
@@ -493,9 +494,8 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 				int minRatingDefault;
 				int maxRatingDefault;
 
-				int minRating = gameConfigBuilder.getMinRating();
+				int minRating = gameConfigBuilder.getMinRating(); // TODO improve it,  use range values for config
 				int maxRating = gameConfigBuilder.getMaxRating();
-
 
 				int rating;
 				if (gameConfigBuilder.getGameType() == RestHelper.V_GAME_CHESS) {
@@ -526,7 +526,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 				if (maxRatingDefault == 0) {
 					maxRatingStr = Symbol.PLUS + LiveGameConfig.RATING_STEP;
 				} else {
-					maxRatingStr = Symbol.PLUS + String.valueOf(maxRatingDefault);
+					maxRatingStr = Symbol.PLUS + String.valueOf(Math.abs(maxRatingDefault));
 				}
 
 				if (JELLY_BEAN_PLUS_API) {

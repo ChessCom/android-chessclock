@@ -105,7 +105,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private SparseArray<String> soundsUrlsMap;
 	private String selectedSoundPackUrl;
 	private View loadProgressBar;
-	private View applyBackgroundBtn;
 	private BackgroundSingleItem.Data selectedBackgroundItem;
 
 	private int previewLineWidth;
@@ -308,26 +307,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			backgroundsFragment.show(getFragmentManager(), BACKGROUND_SELECTION);
 		} else if (id == R.id.soundsView) {
 			soundsSpinner.performClick();
-		} else if (id == R.id.applyBackgroundBtn) {
-			LoadItem loadItem;
-			if (!isTablet) {
-				// Get exactly sized url for theme background
-				loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedBackgroundItem.getBackgroundId(),
-						screenWidth, screenHeight, RestHelper.V_HANDSET);
-			} else {
-				if (screenWidth > screenHeight) {
-					backgroundWidth = screenHeight;
-					backgroundHeight = screenWidth;
-				} else {
-					backgroundWidth = screenWidth;
-					backgroundHeight = screenHeight;
-				}
-				// Get exactly sized url for theme background
-				loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedBackgroundItem.getBackgroundId(),
-						backgroundWidth, backgroundHeight, RestHelper.V_TABLET);
-			}
-
-			new RequestJsonTask<BackgroundSingleItem>(backgroundItemUpdateListener).executeTask(loadItem);
 		}
 	}
 
@@ -542,10 +521,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 				}
 			}
 
-
-			// hide checkMark button
-			applyBackgroundBtn.setVisibility(View.GONE);
-
 			if (loadProgressPopupFragment != null) {
 				loadProgressPopupFragment.dismiss();
 			}
@@ -640,8 +615,25 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			backgroundsFragment.dismiss();
 			backgroundsFragment = null;
 
-			// show button to apply changes
-			applyBackgroundBtn.setVisibility(View.VISIBLE);
+			LoadItem loadItem;
+			if (!isTablet) {
+				// Get exactly sized url for theme background
+				loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedBackgroundItem.getBackgroundId(),
+						screenWidth, screenHeight, RestHelper.V_HANDSET);
+			} else {
+				if (screenWidth > screenHeight) {
+					backgroundWidth = screenHeight;
+					backgroundHeight = screenWidth;
+				} else {
+					backgroundWidth = screenWidth;
+					backgroundHeight = screenHeight;
+				}
+				// Get exactly sized url for theme background
+				loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedBackgroundItem.getBackgroundId(),
+						backgroundWidth, backgroundHeight, RestHelper.V_TABLET);
+			}
+
+			new RequestJsonTask<BackgroundSingleItem>(backgroundItemUpdateListener).executeTask(loadItem);
 		}
 
 		@Override
@@ -870,10 +862,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		view.findViewById(R.id.piecesView).setOnClickListener(this);
 		view.findViewById(R.id.boardView).setOnClickListener(this);
 		view.findViewById(R.id.soundsView).setOnClickListener(this);
-//		view.findViewById(R.id.colorsView).setOnClickListener(this);
-
-		applyBackgroundBtn = view.findViewById(R.id.applyBackgroundBtn);
-		applyBackgroundBtn.setOnClickListener(this);
 
 		// Backgrounds
 		backgroundNameTxt = (TextView) view.findViewById(R.id.backgroundNameTxt);

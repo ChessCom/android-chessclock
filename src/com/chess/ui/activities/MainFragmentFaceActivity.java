@@ -255,6 +255,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			}
 
 			openFragment(fragmentByTag);
+		} else if (intent.hasExtra(IntentConstants.SHUTDOWN_LIVE_CHESS)) {
+			if (liveService != null) {
+				liveService.logout();
+			}
+			unBindAndStopLiveService();
+			return;
 		}
 
 		handleOpenDailyGames(intent);
@@ -385,7 +391,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		int displayHeight = displayMetrics.heightPixels;
 		int displayWidth = displayMetrics.widthPixels;
 
-		displayWidth -= AppUtils.getStatusBarHeight(this);
+		displayHeight -= AppUtils.getStatusBarHeight(this);
 		bitmapOptions.inSampleSize = AppUtils.calculateInSampleSize(bitmapOptions, displayWidth, displayHeight);
 
 		// Decode bitmap with inSampleSize set
@@ -404,6 +410,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		if (backgroundBitmap != null) {
 			BitmapDrawable drawable = new BitmapDrawable(getResources(), backgroundBitmap);
+			drawable.setBounds(0, 0, backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
 			getWindow().setBackgroundDrawable(drawable);
 		} else { // If user removed SD card or clear folder
 			getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());

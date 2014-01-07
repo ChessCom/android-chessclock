@@ -44,7 +44,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/ListItem"
-			android:text="@string/yes_leave_feedback"
+			android:text="@string/yes"
 			android:textColor="@color/new_normal_grey"
 			/>
 
@@ -53,7 +53,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/ListItem"
-			android:text="@string/no_it_has_issues"
+			android:text="@string/no"
 			android:textColor="@color/new_normal_grey"
 			/>
 

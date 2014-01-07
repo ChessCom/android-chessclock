@@ -242,7 +242,7 @@ public class AppUtils {
 	}
 
 	public static boolean isNexus4Kind(Context context) {
-		return AppUtils.hasSoftKeys(context) && !is7InchTablet(context) && !is10InchTablet(context);
+		return AppUtils.hasSoftKeys(context) && !is7InchTablet(context) && !is10InchTablet(context) && !isTallScreen(context);
 	}
 
 	/**
@@ -286,6 +286,18 @@ public class AppUtils {
 
 	public static boolean is10InchTablet(Context context) {
 		return context.getResources().getBoolean(R.bool.is_x_large_tablet);
+	}
+
+	public static boolean isTallScreen(Context context) {
+		Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
+
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		display.getMetrics(displayMetrics);
+
+		int displayHeight = displayMetrics.heightPixels;
+
+		int orientation = context.getResources().getConfiguration().orientation;
+		return orientation != Configuration.ORIENTATION_PORTRAIT || displayHeight >= 1280;
 	}
 
 	public static boolean inLandscape(Context context) {

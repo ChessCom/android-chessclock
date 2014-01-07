@@ -827,8 +827,7 @@
 	<string name="get_detailed_stats">Get Detailed Stats!</string>
 	<string name="select_plan">Select Plan</string>
 	<string name="ignore">Ignore</string>
-	<string name="no_it_has_issues">No (send us suggestions)</string>
-	<string name="yes_leave_feedback">Yes (leave us feedback)</string>
 	<string name="do_you_love_app">Do you love Chess.com app?</string>
+	<string name="shutdown">Shutdown</string>
 
 </resources>
