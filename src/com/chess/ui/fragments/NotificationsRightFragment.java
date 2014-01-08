@@ -28,6 +28,8 @@ import com.chess.ui.adapters.*;
 import com.chess.ui.fragments.daily.DailyChatFragment;
 import com.chess.ui.fragments.daily.DailyInviteFragment;
 import com.chess.ui.fragments.daily.GameDailyFinishedFragment;
+import com.chess.ui.fragments.messages.MessagesFragmentTablet;
+import com.chess.ui.fragments.messages.MessagesInboxFragment;
 import com.chess.ui.fragments.profiles.ProfileTabsFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.slidingmenu.lib.SlidingMenu;
@@ -45,12 +47,14 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 
 	private static final int FRIEND_REQUEST_SECTION = 0;
 	private static final int CHALLENGES_SECTION = 1;
-	private static final int NEW_CHATS_SECTION = 2;
-	private static final int GAME_OVER_SECTION = 3;
+	private static final int NEW_MESSAGES_SECTION = 2;
+	private static final int NEW_CHATS_SECTION = 3;
+	private static final int GAME_OVER_SECTION = 4;
 
 	private CustomSectionedAdapter sectionedAdapter;
 	private CommonAcceptDeclineCursorAdapter friendRequestsAdapter;
 	private DailyChallengesGamesAdapter challengesGamesAdapter;
+	private NewChatMessagesCursorAdapter messagesAdapter;
 	private NewChatMessagesCursorAdapter chatMessagesAdapter;
 	private DailyGamesOverCursorAdapter gamesOverAdapter;
 	private NewChallengesUpdateListener newChallengesUpdateListener;
@@ -74,12 +78,14 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
 		friendRequestsAdapter = new CommonAcceptDeclineCursorAdapter(new FriendAcceptDeclineFace(), null, getImageFetcher());
 		challengesGamesAdapter = new DailyChallengesGamesAdapter(new ChallengeAcceptDeclineFace(), null, getImageFetcher());
+		messagesAdapter = new NewChatMessagesCursorAdapter(new NewMessageClearFace(), null, getImageFetcher());
 		chatMessagesAdapter = new NewChatMessagesCursorAdapter(new NewChatClearFace(), null, getImageFetcher());
 		gamesOverAdapter = new DailyGamesOverCursorAdapter(new GameOverClearFace(), null, getImageFetcher());
 
 		sectionedAdapter.addSection(getString(R.string.friend_requests), friendRequestsAdapter);
 		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
-		sectionedAdapter.addSection(getString(R.string.new_message), chatMessagesAdapter);
+		sectionedAdapter.addSection(getString(R.string.new_message), messagesAdapter);
+		sectionedAdapter.addSection(getString(R.string.new_chat_message), chatMessagesAdapter);
 		sectionedAdapter.addSection(upCaseFirst(getString(R.string.game_over)), gamesOverAdapter);
 	}
 
@@ -141,6 +147,29 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 			}
 
 			getActivityFace().openFragment(DailyInviteFragment.createInstance(challengeItem));
+			getActivityFace().toggleRightMenu();
+		} else if (section == NEW_MESSAGES_SECTION) {
+			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+			String opponentName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+
+			DbDataManager.deleteNewMessageNotification(getContentResolver(), getUsername(), opponentName);
+
+			updateNotificationBadges();
+			BasePopupsFragment fragmentByTag;
+			if (!isTablet) {
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(MessagesInboxFragment.class.getSimpleName());
+			} else {
+				fragmentByTag = (BasePopupsFragment) findFragmentByTag(MessagesFragmentTablet.class.getSimpleName());
+			}
+			if (fragmentByTag == null) {
+				if (!isTablet) {
+					fragmentByTag = new MessagesInboxFragment();
+				} else {
+					fragmentByTag = new MessagesFragmentTablet();
+				}
+			}
+
+			getActivityFace().openFragment(fragmentByTag);
 			getActivityFace().toggleRightMenu();
 		} else if (section == NEW_CHATS_SECTION) {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
@@ -208,6 +237,14 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 					newChallengeIds.add(challengeId);
 
 				} while (cursor.moveToNext());
+			}
+		}
+		{ // get new messages notifications
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+					DbScheme.Tables.NOTIFICATION_NEW_MESSAGES));
+			if (cursor.moveToFirst()) {
+				emptyData = false;
+				messagesAdapter.changeCursor(cursor);
 			}
 		}
 		{ // get new chat notifications
@@ -350,6 +387,28 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 				String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 
 				DbDataManager.deleteNewChatMessageNotification(getContentResolver(), getUsername(), username);
+
+				updateNotificationBadges();
+
+				loadNotifications();
+			}
+		}
+	}
+
+	private class NewMessageClearFace implements ItemClickListenerFace {
+
+		@Override
+		public Context getMeContext() {
+			return getActivity();
+		}
+
+		@Override
+		public void onClick(View view) {
+			if (view.getId() == R.id.clearBtn) {
+				Cursor cursor = (Cursor) view.getTag(R.id.list_item_id);
+				String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+
+				DbDataManager.deleteNewMessageNotification(getContentResolver(), getUsername(), username);
 
 				updateNotificationBadges();
 

@@ -13,10 +13,7 @@ import com.chess.backend.entity.api.stats.GamesInfoByResult;
 import com.chess.backend.entity.api.stats.Tournaments;
 import com.chess.backend.entity.api.stats.UserStatsData;
 import com.chess.backend.entity.api.themes.*;
-import com.chess.backend.gcm.FriendRequestItem;
-import com.chess.backend.gcm.GameOverNotificationItem;
-import com.chess.backend.gcm.NewChallengeNotificationItem;
-import com.chess.backend.gcm.NewChatNotificationItem;
+import com.chess.backend.gcm.*;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 
@@ -2267,6 +2264,26 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
+	public static void saveNewMessageNotification(ContentResolver contentResolver, NewMessageNotificationItem item, String username) {
+		final String[] arguments1 = sArguments2;
+		arguments1[0] = username; // current auth username
+		arguments1[1] = item.getSenderUsername();
+
+		Uri uri = uriArray[Tables.NOTIFICATION_NEW_MESSAGES.ordinal()];
+		Cursor cursor = contentResolver.query(uri, PROJECTION_USER_AND_USERNAME,
+				SELECTION_USER_AND_USERNAME, arguments1, null);
+
+		ContentValues values = new ContentValues();
+
+		values.put(V_CREATE_DATE, item.getCreatedAt());
+		values.put(V_USER, username);
+		values.put(V_MESSAGE, item.getMessage());
+		values.put(V_USERNAME, item.getSenderUsername());
+		values.put(V_USER_AVATAR, item.getAvatarUrl());
+
+		updateOrInsertValues(contentResolver, cursor, uri, values);
+	}
+
 	public static void saveNewChallengeNotification(ContentResolver contentResolver, NewChallengeNotificationItem item, String username) {
 
 		final String[] arguments1 = sArguments2;
@@ -2418,6 +2435,16 @@ public class DbDataManager {
 			}
 		}
 		{
+			Cursor cursor = contentResolver.query(uriArray[Tables.NOTIFICATION_NEW_MESSAGES.ordinal()],
+					PROJECTION_USER, SELECTION_USER, arguments1, null);
+			if (cursor != null && cursor.moveToFirst()) {
+				notificationsCnt += cursor.getCount();
+			}
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+		{
 			Cursor cursor = contentResolver.query(uriArray[Tables.NOTIFICATION_NEW_CHALLENGES.ordinal()],
 					PROJECTION_USER, SELECTION_USER, arguments1, null);
 			if (cursor != null && cursor.moveToFirst()) {
@@ -2446,6 +2473,15 @@ public class DbDataManager {
 		arguments[1] = username;
 
 		Uri uri = uriArray[Tables.NOTIFICATION_NEW_CHAT_MESSAGES.ordinal()];
+		contentResolver.delete(uri, SELECTION_USER_AND_USERNAME, arguments);
+	}
+
+	public static void deleteNewMessageNotification(ContentResolver contentResolver, String authUser, String username) {
+		final String[] arguments = sArguments2;
+		arguments[0] = authUser;
+		arguments[1] = username;
+
+		Uri uri = uriArray[Tables.NOTIFICATION_NEW_MESSAGES.ordinal()];
 		contentResolver.delete(uri, SELECTION_USER_AND_USERNAME, arguments);
 	}
 

@@ -61,6 +61,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	public static final String CHALLENGE_ID = "challenge_id";
 	public static final String LAST_MOVE_SAN = "last_move_san";
 	public static final String OPPONENT_USERNAME = "opponent_username";
+	public static final String SENDER_USERNAME = "sender_username";
 	private SharedPreferences preferences;
 
 	public GCMIntentService() {
@@ -192,12 +193,12 @@ public class GCMIntentService extends GCMBaseIntentService {
 			}
 		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_MESSAGE)) {
 
-//			showNewMessage(intent, context);
+			showNewMessage(intent, context);
 			sendNotificationBroadcast(context, type);
 
 			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
 				String title = context.getString(R.string.new_message);
-				String body = context.getString(R.string.new_message);
+				String body = intent.getStringExtra(SENDER_USERNAME) + Symbol.COLON + Symbol.SPACE + intent.getStringExtra(MESSAGE);
 				AppUtils.showStatusBarNotification(context, title, body);
 			}
 		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_CHAT_MESSAGE)) {
@@ -276,21 +277,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 		DbDataManager.saveNewChatNotification(contentResolver, chatNotificationItem, username);
 	}
 
-//	private synchronized void showNewMessage(Intent intent, Context context){
-//		NewChatNotificationItem chatNotificationItem = new NewChatNotificationItem();
-//
-//		chatNotificationItem.setMessage(intent.getStringExtra("message"));
-//		chatNotificationItem.setUsername(intent.getStringExtra("sender"));
-//		chatNotificationItem.setGameId(Long.parseLong(intent.getStringExtra("game_id")));
-//		chatNotificationItem.setCreatedAt(Long.parseLong(intent.getStringExtra("created_at")));
-//		chatNotificationItem.setAvatar(intent.getStringExtra("avatar_url"));
-//		Log.d(TAG, " _________________________________");
-//		Log.d(TAG, " NewChatNotificationItem = " + new Gson().toJson(chatNotificationItem));
-//
-//		ContentResolver contentResolver = context.getContentResolver();
-//		String username = new AppData(context).getUsername();
-//		DbDataManager.saveNewChatNotification(contentResolver, chatNotificationItem, username);
-//	}
+	private synchronized void showNewMessage(Intent intent, Context context){
+		NewMessageNotificationItem messageNotificationItem = new NewMessageNotificationItem(intent);
+
+		Log.d(TAG, " _________________________________");
+		Log.d(TAG, " NewChatNotificationItem = " + new Gson().toJson(messageNotificationItem));
+
+		ContentResolver contentResolver = context.getContentResolver();
+		String username = new AppData(context).getUsername();
+		DbDataManager.saveNewMessageNotification(contentResolver, messageNotificationItem, username);
+	}
 
 	private synchronized void showGameOver(Intent intent, Context context) {
 		GameOverNotificationItem gameOverNotificationItem = new GameOverNotificationItem();
