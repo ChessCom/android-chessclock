@@ -86,7 +86,7 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 			case R.string.ic_ticket:
 				Intent emailIntent = new Intent(Intent.ACTION_SEND);
 				emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
-				emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
+				emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.FEEDBACK_EMAIL});
 				emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
 				emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose(getUsername()));
 				startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));

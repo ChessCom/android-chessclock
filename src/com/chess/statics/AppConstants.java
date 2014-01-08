@@ -120,6 +120,7 @@ public class AppConstants {
     public static final String PREF_USER_CHOOSE_VIDEO_LIBRARY = "user choose video library mode";
     public static final String PREF_USER_CHOOSE_LESSONS_LIBRARY = "user choose lesson library mode";
     public static final String USER_ASKED_FOR_FEEDBACK = "user was asked for feedback";
+    public static final String LAST_TIME_ASKED_FOR_FEEDBACK = "last time user was asked for feedback";
 
 	public static final String PULL_TO_REFRESH_HEADER_TOP_INSET = "pull_to_refresh_header_top_inset";
 
@@ -166,7 +167,8 @@ public class AppConstants {
 	public static final String LISTENER = ": listener=";
 
 	/* Stuff */
-	public static final String EMAIL_MOBILE_CHESS_COM = "mobile@chess.com";
+	public static final String FEEDBACK_SUBJECT = "Chess App Feedback - Android";
+	public static final String FEEDBACK_EMAIL = "feedback@chess.com";
 	public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
 	public static final String MIME_TYPE_MESSAGE_RFC822 = "message/rfc822";
 
@@ -179,6 +181,10 @@ public class AppConstants {
 	public static final String EXCEPTION = "exception";
 
 	/*Email Feedback*/
+	public static final String OS_VERSION = "OS Version: ";
+	public static final String DEVICE = "Device: ";
+	public static final String APP_VERSION = "App Version: ";
+	public static final String USERNAME_ = "Username: ";
 	public static final String VERSION_CODE = "versionCode ";
 	public static final String VERSION_NAME = "versionName ";
 	public static final String SDK_API = "Android API ";

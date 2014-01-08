@@ -685,6 +685,14 @@ public class AppData {
 		return getBooleanValue(USER_ASKED_FOR_FEEDBACK, false);
 	}
 
+	public void setLastTimeAskedForFeedback(long value) {
+		setLongValue(LAST_TIME_ASKED_FOR_FEEDBACK, value);
+	}
+
+	public long getLastTimeAskedForFeedback() {
+		return getLongValue(LAST_TIME_ASKED_FOR_FEEDBACK, 0);
+	}
+
 	public void setUserChooseVideoLibrary(boolean value) {
 		setBooleanValue(PREF_USER_CHOOSE_VIDEO_LIBRARY, value);
 	}

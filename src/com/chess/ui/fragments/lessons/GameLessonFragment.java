@@ -1128,7 +1128,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 //			optionsArray.put(ID_KEY_PIECES, getString(R.string.key_pieces));
 //			optionsArray.put(ID_CORRECT_PIECE, getString(R.string.correct_piece));
 
-			optionsArray.put(ID_ANALYSIS_BOARD, getString(R.string.analysis_board));
+			optionsArray.put(ID_ANALYSIS_BOARD, getString(R.string.analysis));
 
 			optionsArray.put(ID_SHOW_ANSWER, getString(R.string.show_answer));
 //			optionsArray.put(ID_VS_COMPUTER, getString(R.string.vs_computer));

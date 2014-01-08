@@ -1127,12 +1127,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected String feedbackBodyCompose(String username) {
-		return getResources().getString(R.string.feedback_mail_body) + ": \n"
-				+ deviceInfo.MODEL + Symbol.NEW_STR
-				+ AppConstants.SDK_API + deviceInfo.SDK_API + Symbol.NEW_STR
-				+ AppConstants.VERSION_CODE + deviceInfo.APP_VERSION_CODE + Symbol.NEW_STR
-				+ AppConstants.VERSION_NAME + deviceInfo.APP_VERSION_NAME + Symbol.NEW_STR
-				+ AppConstants.USERNAME + " - " + username;
-
+		return getResources().getString(R.string.feedback_mail_body) + ": \n\n"
+				+ AppConstants.OS_VERSION + AppConstants.SDK_API + deviceInfo.SDK_API + Symbol.NEW_STR
+				+ AppConstants.DEVICE + deviceInfo.MODEL + Symbol.NEW_STR
+				+ AppConstants.APP_VERSION + deviceInfo.APP_VERSION_CODE + Symbol.SLASH + deviceInfo.APP_VERSION_NAME + Symbol.NEW_STR
+				+ AppConstants.USERNAME_ + username;
 	}
 }

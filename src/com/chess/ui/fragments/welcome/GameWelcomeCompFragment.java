@@ -839,7 +839,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		menuItems.add(new PromoteItem(R.string.what_is_chess_com, R.string.ic_pawn));
 		menuItems.add(new PromoteItem(R.string.play_online, R.string.ic_play_online));
 		menuItems.add(new PromoteItem(R.string.challenge_friend, R.string.ic_challenge_friend));
-		menuItems.add(new PromoteItem(R.string.rematch_computer, R.string.ic_comp_game));
+		menuItems.add(new PromoteItem(R.string.rematch, R.string.ic_comp_game));
 		menuItems.add(new PromoteItem(R.string.tactics_and_puzzles, R.string.ic_help));
 		menuItems.add(new PromoteItem(R.string.interactive_lessons, R.string.ic_lessons));
 		menuItems.add(new PromoteItem(R.string.videos, R.string.ic_play));

@@ -34,7 +34,10 @@ import com.chess.model.DataHolder;
 import com.chess.model.PopupItem;
 import com.chess.statics.*;
 import com.chess.ui.engine.SoundPlayer;
-import com.chess.ui.fragments.*;
+import com.chess.ui.fragments.BasePopupsFragment;
+import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.NavigationMenuFragment;
+import com.chess.ui.fragments.NotificationsRightFragment;
 import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.fragments.daily.GameDailyFragmentTablet;
 import com.chess.ui.fragments.home.HomeTabsFragment;
@@ -136,7 +139,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 			if (Intent.ACTION_VIEW.equals(action)) {
 				Uri data = intent.getData();
-				BasePopupsFragment fragment =  new HomeTabsFragment();
+				BasePopupsFragment fragment = new HomeTabsFragment();
 				if (data != null) {
 					List<String> segments = data.getPathSegments();
 					if (segments != null && segments.size() > 0) {
@@ -180,9 +183,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				switchFragment(new HomeTabsFragment());
 
 				// force create pullToRefreshAttacher bcz in some cases we skip home screen and it's not created, and we use chess spinner
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 					mPullToRefreshAttacher = PullToRefreshAttacher.get(this);
-				} else{
+				} else {
 					mPullToRefreshAttacher = AbcPullToRefreshAttacher.get(this);
 				}
 
@@ -282,8 +285,18 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		// check if it's 7th day after install, then ask for feedback
 		if (!getAppData().isUserAskedForFeedback()) {
-			boolean askForReview = System.currentTimeMillis() - getAppData().getFirstTimeStart() > AppConstants.TIME_FOR_APP_REVIEW;
-			if (!askForReview) {
+			// first we check if 7 days has passed
+			long timeNow = System.currentTimeMillis();
+			long firstTimeStart = getAppData().getFirstTimeStart();
+			boolean askForReviewNow = timeNow - firstTimeStart > AppConstants.TIME_FOR_APP_REVIEW;
+			if (!askForReviewNow) {
+				return;
+			}
+
+			// if 2 weeks passed, then ask again
+			long lastTimeAskedForFeedback = getAppData().getLastTimeAskedForFeedback();
+			boolean reAskForReviewNow = timeNow - lastTimeAskedForFeedback > AppConstants.TIME_FOR_APP_REVIEW * 2;// two times longer
+			if (!reAskForReviewNow) {
 				return;
 			}
 
@@ -630,7 +643,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		updateActionBarBackImage();
 		for (Fragment fragment : getSupportFragmentManager().getFragments()) {
 			if (fragment != null && fragment instanceof CommonLogicFragment) {
-				((CommonLogicFragment)fragment).updateFontColors();
+				((CommonLogicFragment) fragment).updateFontColors();
 			}
 		}
 
@@ -720,7 +733,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			int last = fragments.size() - 1;
 			Fragment lastFragment = fragments.get(last);
 			if (lastFragment == null) { // there is a bug, that size tell for one more
-			    last--;
+				last--;
 				lastFragment = fragments.get(last);
 			}
 			if (lastFragment instanceof ImageCache.RetainFragment) {
@@ -728,7 +741,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				lastFragment = fragments.get(last);
 			}
 			if (lastFragment instanceof CommonLogicFragment) { // check if fragment want to consume back button event
-				if (((CommonLogicFragment)lastFragment).showPreviousFragment()) {
+				if (((CommonLogicFragment) lastFragment).showPreviousFragment()) {
 					return;
 				}
 			}
@@ -781,20 +794,21 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		} else if (view.getId() == R.id.negativeBtn) { // No (send us suggestions)
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
-			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.EMAIL_MOBILE_CHESS_COM});
-			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Android Support");
+			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.FEEDBACK_EMAIL});
+			emailIntent.putExtra(Intent.EXTRA_SUBJECT, AppConstants.FEEDBACK_SUBJECT);
 			emailIntent.putExtra(Intent.EXTRA_TEXT, feedbackBodyCompose(getMeUsername()));
 			startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 
 			if (reviewPopupFragment != null) {
 				reviewPopupFragment.dismiss();
 			}
-			getAppData().setUserAskedForFeedback(true);
+
+			getAppData().setLastTimeAskedForFeedback(System.currentTimeMillis());
 		} else if (view.getId() == R.id.ignoreBtn) {
 			if (reviewPopupFragment != null) {
 				reviewPopupFragment.dismiss();
 			}
-			getAppData().setUserAskedForFeedback(true);
+			getAppData().setLastTimeAskedForFeedback(System.currentTimeMillis());
 		}
 	}
 
@@ -833,7 +847,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 
-
 	public void startActivityFromFragmentForResult(Intent intent, int requestCode) {
 		if (currentActiveFragment != null) {
 			startActivityFromFragment(currentActiveFragment, intent, requestCode);
@@ -858,14 +871,14 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@Override
 	protected void onSearchQuery(String query) {
 		if (currentActiveFragment instanceof CommonLogicFragment) {
-			((CommonLogicFragment)currentActiveFragment).onSearchQuery(query);
+			((CommonLogicFragment) currentActiveFragment).onSearchQuery(query);
 		}
 	}
 
 	@Override
 	protected void onSearchAutoCompleteQuery(String query) {
 		if (currentActiveFragment instanceof CommonLogicFragment) {
-			((CommonLogicFragment)currentActiveFragment).onSearchAutoCompleteQuery(query);
+			((CommonLogicFragment) currentActiveFragment).onSearchAutoCompleteQuery(query);
 		}
 	}
 
@@ -879,9 +892,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			 * Here we create a PullToRefreshAttacher manually without an Options instance.
 			 * PullToRefreshAttacher will manually create one using default values.
 			 */
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 				mPullToRefreshAttacher = PullToRefreshAttacher.get(this);
-			} else{
+			} else {
 				mPullToRefreshAttacher = AbcPullToRefreshAttacher.get(this);
 			}
 		}
@@ -944,12 +957,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	protected String feedbackBodyCompose(String username) {
 		AppUtils.DeviceInfo deviceInfo = new AppUtils.DeviceInfo().getDeviceInfo(this);
 
-		return getResources().getString(R.string.feedback_mail_body) + ": \n"
-				+ deviceInfo.MODEL + Symbol.NEW_STR
-				+ AppConstants.SDK_API + deviceInfo.SDK_API + Symbol.NEW_STR
-				+ AppConstants.VERSION_CODE + deviceInfo.APP_VERSION_CODE + Symbol.NEW_STR
-				+ AppConstants.VERSION_NAME + deviceInfo.APP_VERSION_NAME + Symbol.NEW_STR
-				+ AppConstants.USERNAME + " - " + username;
+		return getResources().getString(R.string.feedback_mail_body) + ": \n\n"
+				+ AppConstants.OS_VERSION + AppConstants.SDK_API + deviceInfo.SDK_API + Symbol.NEW_STR
+				+ AppConstants.DEVICE + deviceInfo.MODEL + Symbol.NEW_STR
+				+ AppConstants.APP_VERSION + deviceInfo.APP_VERSION_CODE + Symbol.SLASH + deviceInfo.APP_VERSION_NAME + Symbol.NEW_STR
+				+ AppConstants.USERNAME_ + username;
 	}
 
 }

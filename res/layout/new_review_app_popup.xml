@@ -46,6 +46,7 @@
 			style="@style/ListItem"
 			android:text="@string/yes"
 			android:textColor="@color/new_normal_grey"
+			android:textSize="17sp"
 			/>
 
 		<com.chess.widgets.RoboButton
@@ -55,6 +56,7 @@
 			style="@style/ListItem"
 			android:text="@string/no"
 			android:textColor="@color/new_normal_grey"
+			android:textSize="17sp"
 			/>
 
 		<com.chess.widgets.RoboButton
@@ -64,6 +66,7 @@
 			style="@style/ListItem"
 			android:text="@string/ignore"
 			android:textColor="@color/new_normal_grey"
+			android:textSize="17sp"
 			/>
 
 	</LinearLayout>

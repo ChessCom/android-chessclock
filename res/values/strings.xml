@@ -92,7 +92,6 @@
 
     <!--In Game controls and misc-->
 	<string name="messages">Messages</string>
-	<string name="analysis_board">Analysis Board</string>
 	<string name="offer_draw">Offer A Draw</string>
 	<string name="resign_or_abort">Resign (Or Abort)</string>
 	<string name="resign">Resign</string>  <!--Action-->
@@ -397,7 +396,6 @@
 
 	<!--Computer-->
 	<string name="computer_level">Computer Level</string>
-	<string name="rematch_computer">Rematch Computer</string>
 	<string name="auto_flip">Auto Flip</string>
 	<string name="analyze">Analyze</string>
 
