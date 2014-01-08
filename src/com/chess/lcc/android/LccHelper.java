@@ -56,6 +56,7 @@ public class LccHelper {
 	private final LccUserListListener userListListener;
 	private final LccAnnouncementListener announcementListener;
 	private final LccAdminEventListener adminEventListener;
+	private final LccSubscriptionListener subscriptionListener;
 	private final AppData appData;
 	private LiveChessClient lccClient;
 	private User user;
@@ -114,6 +115,7 @@ public class LccHelper {
 		userListListener = new LccUserListListener(this);
 		announcementListener = new LccAnnouncementListener(this);
 		adminEventListener = new LccAdminEventListener();
+		subscriptionListener = new LccSubscriptionListener();
 
 		pendingWarnings = new ArrayList<String>();
 		handler = new Handler();
@@ -266,14 +268,14 @@ public class LccHelper {
 	public void connectByCreds(String username, String pass) {
 //		LogMe.dl(TAG, "connectByCreds : user = " + username + " pass = " + pass); // do not post in prod
 		LogMe.dl(TAG, "connectByCreds : hidden"); // do not post in pod
-		lccClient.connect(username, pass, connectionListener);
+		lccClient.connect(username, pass, connectionListener, subscriptionListener);
 		startConnectionTimer();
 		liveChessClientEventListener.onConnecting();
 	}
 
 	public void connectBySessionId(String sessionId) {
 		LogMe.dl(TAG, "connectBySessionId : sessionId = " + sessionId);
-		lccClient.connect(sessionId, connectionListener);
+		lccClient.connect(sessionId, connectionListener, subscriptionListener);
 		startConnectionTimer();
 		liveChessClientEventListener.onConnecting();
 	}
@@ -422,7 +424,6 @@ public class LccHelper {
 
 	private boolean isPossibleToReconnect() {
 		AppData appData = new AppData(context);
-		String username = appData.getUsername();
 		String pass = appData.getPassword();
 
 		// here we check if sessionId is not expired(ttl = 60min)
