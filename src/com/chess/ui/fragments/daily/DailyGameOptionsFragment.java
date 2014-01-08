@@ -60,6 +60,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	private static final int ID_CHESS_960 = 1;
 	private static final String OPTION_SELECTION_TAG = "options selection popup";
 	private static final long SEEK_BAR_HIDE_DELAY = 5 * 1000;
+	public static final int MAX_PROGRESS = 20;
 
 	private DailyGamesButtonsAdapter dailyGamesButtonsAdapter;
 	private DailyGameConfig.Builder gameConfigBuilder;
@@ -283,7 +284,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 		if (minRatingBtn.isChecked()) {
 			checkedButton = minRatingBtn;
 
-			factor = (MIN_RATING_MAX - MIN_RATING_MIN) / 10; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
+			factor = (MIN_RATING_MAX - MIN_RATING_MIN) / MAX_PROGRESS; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
 			value = 1000 - (int) (factor * progress);
 			if (value != 0) {
 				symbol = Symbol.MINUS;
@@ -294,7 +295,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 		} else {
 			checkedButton = maxRatingBtn;
 
-			factor = (MAX_RATING_MAX - MAX_RATING_MIN) / 10; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
+			factor = (MAX_RATING_MAX - MAX_RATING_MIN) / MAX_PROGRESS; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
 			value = (int) (factor * progress);
 			if (value != 0) {
 				symbol = Symbol.PLUS;
@@ -408,8 +409,6 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 			for (DailyGameButtonItem item : itemsList) {
 				item.checked = false;
 			}
-
-			logTest(" position = " + checkedPosition);
 			itemsList.get(checkedPosition).checked = true;
 			notifyDataSetChanged();
 		}

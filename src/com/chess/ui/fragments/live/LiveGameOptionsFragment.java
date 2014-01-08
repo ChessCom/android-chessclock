@@ -48,6 +48,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	private static final int MAX_RATING_MIN = 0;
 	private static final int MAX_RATING_MAX = 1000;
 	private static final long SEEK_BAR_HIDE_DELAY = 5 * 1000;
+	public static final int MAX_PROGRESS = 20;
 
 	private LiveGameConfig.Builder gameConfigBuilder;
 	private RoboRadioButton minRatingBtn;
@@ -319,7 +320,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		if (minRatingBtn.isChecked()) {
 			checkedButton = minRatingBtn;
 
-			factor = (MIN_RATING_MAX - MIN_RATING_MIN) / 10; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
+			factor = (MIN_RATING_MAX - MIN_RATING_MIN) / MAX_PROGRESS; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
 			value =  1000 - (int) (factor * progress);
 			if (value != 0) {
 				symbol = Symbol.MINUS;
@@ -330,7 +331,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		} else {
 			checkedButton = maxRatingBtn;
 
-			factor = (MAX_RATING_MAX - MAX_RATING_MIN) / 10; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
+			factor = (MAX_RATING_MAX - MAX_RATING_MIN) / MAX_PROGRESS; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
 			value =  (int) (factor * progress);
 			if (value != 0) {
 				symbol = Symbol.PLUS;

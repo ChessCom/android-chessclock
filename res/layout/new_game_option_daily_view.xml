@@ -236,8 +236,8 @@
                 android:layout_below="@id/ratingButtonsLay"
 				android:paddingLeft="@dimen/seek_bar_side_padding"
 				android:paddingRight="@dimen/seek_bar_side_padding"
-                android:max="10"
-                android:progress="5"
+                android:max="20"
+                android:progress="10"
                 android:layout_marginTop="11dip"
                 style="@style/RatingSeekBar"
                 />
