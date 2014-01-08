@@ -803,7 +803,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				reviewPopupFragment.dismiss();
 			}
 
-			getAppData().setLastTimeAskedForFeedback(System.currentTimeMillis());
+			getAppData().setUserAskedForFeedback(true);
 		} else if (view.getId() == R.id.ignoreBtn) {
 			if (reviewPopupFragment != null) {
 				reviewPopupFragment.dismiss();
