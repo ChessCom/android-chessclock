@@ -232,7 +232,6 @@
 
 	<!--New Game Menu-->
 	<string name="difficulty">Difficulty</string>
-	<string name="normal">Normal</string>
 	<string name="vs">vs</string>
 
 	<string name="leave_vacation_q">Leave Vacation?</string>
@@ -565,7 +564,6 @@
 	<!--Upgrade-->
 	<string name="upgrade_to_unlimited_access">Upgrade to Unlimited Access on Chess.com!</string>
 	<string name="upgrade_now">Upgrade Now</string>
-	<string name="completed_daily">Completed Daily</string>
 	<string name="all_premium_plans_features_title">All Premium Plans Include These Great Features</string>
 	<string name="nothing_to_share">Nothing to share</string>
 

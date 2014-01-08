@@ -311,12 +311,13 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected void onSessionStateChange(Session session, SessionState state, Exception exception) {
 		if (state != null && state.isOpened()) {
+			Log.d("TEST","onSessionStateChange -> login with facebook");
 			loginWithFacebook(session.getAccessToken());
 		}
 	}
 
 	protected void loginWithFacebook(String accessToken) {
-		Log.d("lcc", "loginWithFacebook");
+		Log.d("TEST", "loginWithFacebook");
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);

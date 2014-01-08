@@ -2,6 +2,8 @@ package com.chess.backend;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -29,6 +31,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -40,15 +43,17 @@ import java.util.Scanner;
 public class RestHelper {
 
 	private static RestHelper ourInstance = new RestHelper();
+	private String userAgent;
 
-	public static RestHelper getInstance(){
+	public static RestHelper getInstance() {
 		if (ourInstance == null) {
 			ourInstance = new RestHelper();
 		}
 		return ourInstance;
 	}
 
-	private RestHelper(){}
+	private RestHelper() {
+	}
 
 	public static void resetInstance() {
 		ourInstance = null;
@@ -69,8 +74,8 @@ public class RestHelper {
 	public static String HOST = HOST_PRODUCTION; // switch production/test server
 
 	public String BASE_WEB_URL = "http://www.chess.com";
-	public String BASE_URL = "http://" + (HOST == null? HOST_PRODUCTION : HOST);
-	public String BASES_S_URL = "https://" + (HOST == null? HOST_PRODUCTION : HOST);
+	public String BASE_URL = "http://" + (HOST == null ? HOST_PRODUCTION : HOST);
+	public String BASES_S_URL = "https://" + (HOST == null ? HOST_PRODUCTION : HOST);
 	private static final String V1 = "/v1";
 
 	/* Methods calls */
@@ -188,13 +193,13 @@ public class RestHelper {
 
 	/**
 	 * Themes
- 	 */
+	 */
 	public String CMD_THEMES = BASE_URL + V1 + "/themes";
 	public String CMD_THEMES_DEFAULT = CMD_THEMES + "/default";
 	public String CMD_THEMES_USER = CMD_THEMES + "/user";
 
 	public String CMD_THEME_BY_ID(long id) {
-		return CMD_THEMES  + "/" + id;
+		return CMD_THEMES + "/" + id;
 	}
 
 	public String CMD_THEME_DEFAULT_BY_ID(long id) {
@@ -216,7 +221,7 @@ public class RestHelper {
 
 	/**
 	 * Theme Boards
- 	 */
+	 */
 	public String CMD_BOARDS = BASE_URL + V1 + "/board";
 
 	public String CMD_BOARD_BY_ID(long id) {
@@ -225,7 +230,7 @@ public class RestHelper {
 
 	/**
 	 * Theme Pieces
- 	 */
+	 */
 	public String CMD_PIECES = BASE_URL + V1 + "/pieces";
 
 	public String CMD_PIECES_BY_ID(long id) {
@@ -234,7 +239,7 @@ public class RestHelper {
 
 	/**
 	 * Theme Sounds
- 	 */
+	 */
 	public String CMD_SOUND = BASE_URL + V1 + "/sound";
 
 	public String CMD_SOUND_BY_ID(long id) {
@@ -257,8 +262,8 @@ public class RestHelper {
 
 	public static String GET_FEN_IMAGE(String fen, int size, boolean useFlip) {
 		// fen should be like "rnbqkbnr%2Fpppppppp%2F8%2F8%2F3P4%2F8%2FPPP1PPPP%2FRNBQKBNR"
-		int flip = useFlip? 1: 0;
-		return "http://www.chess.com/diagram?fen=" + fen+ "&size=" + size + "&flip=" + flip;
+		int flip = useFlip ? 1 : 0;
+		return "http://www.chess.com/diagram?fen=" + fen + "&size=" + size + "&flip=" + flip;
 	}
 
 	public static String GET_FEN_IMAGE(String fen, boolean useFlip) {
@@ -536,6 +541,7 @@ public class RestHelper {
 	public <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass, Context context) throws InternalErrorException {
 		CustomType item = null;
 		String appId = AppUtils.getAppId(context);
+		userAgent = getUserAgent(context);
 		String requestMethod = loadItem.getRequestMethod();
 		String url = createSignature(loadItem, appId);
 
@@ -553,13 +559,14 @@ public class RestHelper {
 
 				SSLContext sslContext = createSslContext(context, true);
 				connection = (HttpURLConnection) urlObj.openConnection();
-				((HttpsURLConnection)connection).setSSLSocketFactory(sslContext.getSocketFactory());
+				((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
 
 			} else {
 				connection = (HttpURLConnection) urlObj.openConnection();
 				connection.setRequestMethod(requestMethod);
 			}
 
+			connection.setRequestProperty("User-Agent", userAgent);
 			if (IS_TEST_SERVER_MODE) {
 				connection.setRequestProperty("Authorization", getBasicAuth());
 			}
@@ -648,6 +655,33 @@ public class RestHelper {
 			}
 		}
 		return item;
+	}
+
+	/**
+	 * Chesscom-{app type}/{app 3-dot version} ({OS version}; {platform}; {locale})
+	 * "app type" = "iOS" or "Android"
+	 * "OS version" should include the name and version of the OS
+	 * "platform" is the device name and version if appropriate
+	 * Examples:
+	 * Chesscom-Android/3.0.23 (Android/4.3; Samsung Galaxy Nexus; en-US)
+	 * Chesscom-Android/3.3.324 (Android/2.3.3; HTC Desire Z; pt-BR)
+	 */
+	private String getUserAgent(Context context) {
+		if (userAgent == null) {
+			// get version number and name
+			String versionName = null;
+			try {
+				PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+				versionName = info.versionName;
+			} catch (PackageManager.NameNotFoundException nnf) {
+				nnf.printStackTrace();
+			}
+			String locale = Locale.getDefault().toString();
+			userAgent = "Chesscom-Android/" + versionName + " (Android/" + Build.VERSION.RELEASE + Symbol.SEMICOLON
+						+ Symbol.SPACE + Build.MODEL + Symbol.SEMICOLON + Symbol.SPACE + locale + ")";
+			logD(TAG, "userAgent = " + userAgent);
+		}
+		return userAgent;
 	}
 
 	private boolean needSecureConnection(LoadItem loadItem) {
@@ -808,7 +842,7 @@ public class RestHelper {
 		KeyStore keyStore = loadKeyStore(context);
 
 		MyTrustManager myTrustManager = new MyTrustManager(trustStore);
-		TrustManager[] tms = new TrustManager[] { myTrustManager };
+		TrustManager[] tms = new TrustManager[]{myTrustManager};
 
 		KeyManager[] kms = null;
 		if (clientAuth) {
@@ -839,6 +873,7 @@ public class RestHelper {
 			throw new RuntimeException(e);
 		}
 	}
+
 	private KeyStore keyStore;
 
 	private static final String TRUSTSTORE_PASSWORD = "asd234p";

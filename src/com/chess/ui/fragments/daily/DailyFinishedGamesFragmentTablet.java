@@ -104,7 +104,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.completed_daily);
+		setTitle(R.string.finished_games);
 
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);

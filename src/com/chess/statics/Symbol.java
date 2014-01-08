@@ -14,6 +14,7 @@ public class Symbol {
 	public static final String MINUS = "-";
 	public static final String TAG = "<";
 	public static final String COLON = ":";
+	public static final String SEMICOLON = ";";
 	public static final String SLASH = "|";
 	public static final String EX = "!";
 	public static final String DOT = ". ";

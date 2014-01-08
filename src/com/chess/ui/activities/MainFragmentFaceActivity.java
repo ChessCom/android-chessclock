@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.*;
 import com.chess.R;
 import com.chess.backend.GetAndSaveTheme;
@@ -175,6 +176,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 						new RequestJsonTask<LoginItem>(new CommonLogicActivity.LoginUpdateListener()).executeTask(loadItem);
 					} else if (!TextUtils.isEmpty(getAppData().getFacebookToken())) {
+						Log.d("TEST"," MainActivity fb token is not empty -> login with FB");
 						loginWithFacebook(getAppData().getFacebookToken());
 					}
 				}
