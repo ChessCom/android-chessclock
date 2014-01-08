@@ -243,7 +243,7 @@ public class ChessBoard implements BoardFace {
 
 	public ChessBoard(GameFace gameFace) {
 		this.gameFace = gameFace;
-		if (gameFace != null) { // TODO improve logic to create a new ChessBoard only for parsing movesList to FEN
+		if (gameFace != null && gameFace.isAlive()) { // TODO improve logic to create a new ChessBoard only for parsing movesList to FEN
 			soundPlayer = gameFace.getSoundPlayer();
 		}
 

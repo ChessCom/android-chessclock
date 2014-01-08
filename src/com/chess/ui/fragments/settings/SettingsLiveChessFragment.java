@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import com.chess.R;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.widgets.SwitchButton;
@@ -16,12 +14,13 @@ import com.chess.widgets.SwitchButton;
  * Date: 30.11.13
  * Time: 5:32
  */
-public class SettingsLiveChessFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener,
-		AdapterView.OnItemSelectedListener {
+public class SettingsLiveChessFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener {
+
 	private static final String SHOW_GENERAL = "show_general";
 
 	private SwitchButton showSubmitSwitch;
 	private boolean showGeneralSettings;
+	private SwitchButton autoQueenSwitch;
 
 	public SettingsLiveChessFragment() {
 		Bundle bundle = new Bundle();
@@ -29,7 +28,7 @@ public class SettingsLiveChessFragment extends CommonLogicFragment implements Sw
 		setArguments(bundle);
 	}
 
-	public static SettingsLiveChessFragment createInstance(boolean showGeneralSettings){
+	public static SettingsLiveChessFragment createInstance(boolean showGeneralSettings) {
 		SettingsLiveChessFragment fragment = new SettingsLiveChessFragment();
 		Bundle bundle = new Bundle();
 		bundle.putBoolean(SHOW_GENERAL, showGeneralSettings);
@@ -76,6 +75,8 @@ public class SettingsLiveChessFragment extends CommonLogicFragment implements Sw
 		int id = view.getId();
 		if (id == R.id.showSubmitView) {
 			showSubmitSwitch.toggle();
+		} else if (id == R.id.autoQueenView) {
+			autoQueenSwitch.toggle();
 		} else if (id == R.id.generalView) {
 			getActivityFace().openFragment(new SettingsGeneralFragment());
 		}
@@ -85,28 +86,22 @@ public class SettingsLiveChessFragment extends CommonLogicFragment implements Sw
 	public void onSwitchChanged(SwitchButton switchButton, boolean checked) {
 		if (switchButton.getId() == R.id.showSubmitSwitch) {
 			getAppData().setShowSubmitButtonsLive(checked);
+		} else 	if (switchButton.getId() == R.id.autoQueenSwitch) {
+			getAppData().setAutoQueenForLive(checked);
 		}
-	}
-
-	@Override
-	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-		getAppData().setAfterMoveAction(pos);
-
-		((BaseAdapter) adapterView.getAdapter()).notifyDataSetChanged();
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> adapterView) {
 	}
 
 	private void widgetsInit(View view) {
 		showSubmitSwitch = (SwitchButton) view.findViewById(R.id.showSubmitSwitch);
 		showSubmitSwitch.setSwitchChangeListener(this);
 		view.findViewById(R.id.showSubmitView).setOnClickListener(this);
+		autoQueenSwitch = (SwitchButton) view.findViewById(R.id.autoQueenSwitch);
+		autoQueenSwitch.setSwitchChangeListener(this);
+		view.findViewById(R.id.autoQueenView).setOnClickListener(this);
 
 		showSubmitSwitch.setChecked(getAppData().getShowSubmitButtonsLive());
+		autoQueenSwitch.setChecked(getAppData().getAutoQueenForLive());
 
-		// TODO add auto-queen promotion switch
 		if (showGeneralSettings) {
 			view.findViewById(R.id.generalView).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.generalView).setOnClickListener(this);

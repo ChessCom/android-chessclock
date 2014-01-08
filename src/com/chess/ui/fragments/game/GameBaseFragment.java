@@ -26,6 +26,8 @@ import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.LiveBaseFragment;
+import com.chess.ui.fragments.live.GameLiveFragment;
+import com.chess.ui.fragments.live.GameLiveFragmentTablet;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupPromotionFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -358,11 +360,16 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	public void showChoosePieceDialog(int file, int rank) {
 		promotionFile = file;
 		promotionRank = rank;
+
+		// if it's a live game fragment
+		if ((this instanceof GameLiveFragment || this instanceof GameLiveFragmentTablet) && getAppData().getAutoQueenForLive()) {
+			boardView.promote(ChessBoard.QUEEN, promotionFile, promotionRank);
+			return;
+		}
 		// show popup
 		if (promotionFragment != null) {
 			return;
 		}
-
 
 		promotionFragment = PopupPromotionFragment.createInstance(promotionSelectedListener, getBoardFace().getSide());
 		promotionFragment.show(getFragmentManager(), PROMOTION_SELECTION_TAG);

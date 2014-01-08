@@ -53,6 +53,7 @@ public class AppConstants {
 	/* Board and Game Preferences */
 	public static final String PREF_SOUNDS = "enable sounds_"; // change field name to avoid class cast exceptions
 	public static final String PREF_SHOW_SUBMIT_MOVE_LIVE = "show submit move live";
+	public static final String PREF_AUTO_QUEEN_FOR_LIVE = "use auto queen promotion for live";
 	public static final String PREF_SHOW_SUBMIT_MOVE_DAILY = "show submit button daily";
 	public static final String PREF_SHOW_TIMER_IN_TACTICS = "show_timer_in_tactics";
 	public static final String PREF_DAILY_NOTIFICATIONS = "use daily notifications";

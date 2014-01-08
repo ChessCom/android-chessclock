@@ -150,6 +150,14 @@ public class AppData {
 		return getBooleanValue(PREF_SHOW_SUBMIT_MOVE_LIVE, false);
 	}
 
+	public void setAutoQueenForLive(boolean value) {
+		setBooleanValue(PREF_AUTO_QUEEN_FOR_LIVE, value);
+	}
+
+	public boolean getAutoQueenForLive() {
+		return getBooleanValue(PREF_AUTO_QUEEN_FOR_LIVE, false);
+	}
+
 	public void setShowTimerInTactics(boolean show) {
 		setBooleanValue(PREF_SHOW_TIMER_IN_TACTICS, show);
 	}

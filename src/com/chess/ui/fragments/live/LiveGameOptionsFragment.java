@@ -114,9 +114,14 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 			friendsList = new ArrayList<SelectionItem>();
 			friendsList.add(new SelectionItem(null, getString(R.string.random)));
+			boolean opponentFound = false;
 			if (cursor != null && cursor.moveToFirst()) {
 				do {
-					friendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
+					String friendName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+					friendsList.add(new SelectionItem(null, friendName));
+					if (friendName.equals(opponentName)) {
+						opponentFound = true;
+					}
 				} while (cursor.moveToNext());
 			}
 			if (cursor != null) {
@@ -124,6 +129,10 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			}
 
 			friendsList.get(0).setChecked(true);
+
+			if (!opponentFound) {// add manually opponent if it wasn't found
+				friendsList.add(new SelectionItem(null, opponentName));
+			}
 		}
 
 		standardRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
