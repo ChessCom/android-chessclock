@@ -273,6 +273,12 @@ public class GetAndSaveTheme extends Service {
 				new RequestJsonTask<BackgroundSingleItem>(new BackgroundItemUpdateListener(BACKGROUND_LAND)).executeTask(loadItem);
 			}
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			dropThemeLoadingState();
+		}
 	}
 
 	private class BoardSingleItemUpdateListener extends AbstractUpdateListener<BoardSingleItem> {
@@ -309,6 +315,12 @@ public class GetAndSaveTheme extends Service {
 
 			// Start loading board image
 			imageDownloader.download(boardUrl, boardUpdateListener, screenWidth);
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			dropThemeLoadingState();
 		}
 	}
 
@@ -430,6 +442,13 @@ public class GetAndSaveTheme extends Service {
 				new RequestJsonTask<PieceSingleItem>(piecesItemUpdateListener).executeTask(loadItem);
 			}
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			dropThemeLoadingState();
+		}
+
 	}
 
 	private class PiecesItemUpdateListener extends AbstractUpdateListener<PieceSingleItem> {
@@ -467,6 +486,13 @@ public class GetAndSaveTheme extends Service {
 			new GetAndSaveFileToSdTask(piecesPackSaveListener, AppUtils.getLocalDirForPieces(getContext(), selectedPieceDir))
 					.executeTask(imagesToLoad);
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			dropThemeLoadingState();
+		}
+
 	}
 
 	private class SoundPackSaveListener extends AbstractUpdateListener<String> implements FileReadyListener {
@@ -502,6 +528,12 @@ public class GetAndSaveTheme extends Service {
 				previousProgress = progress;
 				updateProgressToNotification(progress);
 			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			dropThemeLoadingState();
 		}
 	}
 
@@ -553,6 +585,13 @@ public class GetAndSaveTheme extends Service {
 				}
 			}
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			dropThemeLoadingState();
+		}
+
 	}
 
 	private class SoundsItemUpdateListener extends AbstractUpdateListener<SoundSingleItem> {
@@ -571,6 +610,12 @@ public class GetAndSaveTheme extends Service {
 
 			new GetAndSaveFileToSdTask(soundPackSaveListener, true, AppUtils.getLocalDirForSounds(getContext()))
 					.executeTask(selectedSoundPackUrl);
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			dropThemeLoadingState();
 		}
 	}
 
@@ -615,6 +660,40 @@ public class GetAndSaveTheme extends Service {
 		// mark item as loaded
 		themesQueue.put(selectedThemeItem, ThemeState.LOADED);
 		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.LOADED);
+
+		if (progressUpdateListener != null) {
+			progressUpdateListener.setProgress(DONE);
+		}
+
+		installingTheme = false;
+
+		// load next theme from queue
+		for (Map.Entry<ThemeItem.Data, ThemeState> entry : themesQueue.entrySet()) {
+			ThemeState status = entry.getValue();
+			if (status.equals(ThemeState.ENQUIRED)) {
+				loadTheme(entry.getKey(), screenWidth, screenHeight);
+				return;
+			}
+		}
+
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				notifyManager.cancel(R.id.notification_id);
+
+			}
+		}, SHUTDOWN_DELAY);
+	}
+
+	private void dropThemeLoadingState() {
+		notificationBuilder.setContentText(getString(R.string.error))
+				// Removes the progress bar
+				.setProgress(0, 0, false);
+		notifyManager.notify(R.id.notification_id, notificationBuilder.build());
+
+		// mark item as loaded
+		themesQueue.put(selectedThemeItem, ThemeState.DEFAULT);
+		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.DEFAULT);
 
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(DONE);
