@@ -43,7 +43,8 @@ public class DailyGameBaseData {
 	white_last_name: "",
 	black_first_name: "Alien",
 	black_last_name: "Roger",
-	is_tournament_game: false
+	is_tournament_game: false,
+	is_opponent_on_vacation: false
 */
 
 	private long id;
@@ -72,6 +73,8 @@ public class DailyGameBaseData {
 	private int black_premium_status;
 	private boolean is_rated;
 	private int days_per_move;
+	private boolean is_tournament_game;
+	private boolean is_opponent_on_vacation;
 
 	public long getGameId() {
 		return id;
@@ -287,6 +290,22 @@ public class DailyGameBaseData {
 
 	public void setBlackPremiumStatus(int black_premium_status) {
 		this.black_premium_status = black_premium_status;
+	}
+
+	public boolean isOpponentOnVacation() {
+		return is_opponent_on_vacation;
+	}
+
+	public void setIsOpponentOnVacation(boolean is_opponent_on_vacation) {
+		this.is_opponent_on_vacation = is_opponent_on_vacation;
+	}
+
+	public boolean isTournamentGame() {
+		return is_tournament_game;
+	}
+
+	public void setIsTournamentGame(boolean is_tournament_game) {
+		this.is_tournament_game = is_tournament_game;
 	}
 
 	protected static String getSafeValue(String value) {

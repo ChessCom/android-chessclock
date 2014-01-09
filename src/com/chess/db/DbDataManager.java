@@ -209,7 +209,9 @@ public class DbDataManager {
 			V_OPPONENT_OFFERED_DRAW,
 			V_IS_OPPONENT_ONLINE,
 			V_HAS_NEW_MESSAGE,
-			V_TIME_REMAINING
+			V_TIME_REMAINING,
+			V_IS_TOURNAMENT_GAME,
+			V_IS_OPPONENT_ON_VACATION
 	};
 
 	public static final String[] PROJECTION_USER_AND_MY_TURN = new String[]{
@@ -1094,9 +1096,7 @@ public class DbDataManager {
 		ContentValues values = DbDataManager.putDailyGameCurrentItemToValues(currentItem, username);
 
 		DbDataManager.updateOrInsertValues(contentResolver, cursor, uri, values);
-
 	}
-
 
 	public static ContentValues putDailyGameCurrentItemToValues(DailyCurrentGameData dataObj, String username) {
 		ContentValues values = new ContentValues();
@@ -1134,7 +1134,9 @@ public class DbDataManager {
 		values.put(V_HAS_NEW_MESSAGE, dataObj.hasNewMessage() ? 1 : 0);
 		values.put(V_RATED, dataObj.isRated() ? 1 : 0);
 		values.put(V_DAYS_PER_MOVE, dataObj.getDaysPerMove());
-		values.put(V_IS_OPPONENT_ONLINE, dataObj.isOpponentOnline());
+		values.put(V_IS_OPPONENT_ONLINE, dataObj.isOpponentOnline() ? 1 : 0);
+		values.put(V_IS_OPPONENT_ON_VACATION, dataObj.isOpponentOnVacation() ? 1 : 0);
+		values.put(V_IS_TOURNAMENT_GAME, dataObj.isTournamentGame() ? 1 : 0);
 	}
 
 	public static DailyCurrentGameData getDailyCurrentGameFromCursor(Cursor cursor) {
@@ -1218,6 +1220,8 @@ public class DbDataManager {
 		dataObj.setTimeRemaining(getLong(cursor, V_TIME_REMAINING));
 		dataObj.setRated(getInt(cursor, V_RATED) > 0);
 		dataObj.setDaysPerMove(getInt(cursor, V_DAYS_PER_MOVE));
+		dataObj.setIsTournamentGame(getInt(cursor, V_IS_TOURNAMENT_GAME) > 0);
+		dataObj.setIsOpponentOnVacation(getInt(cursor, V_IS_OPPONENT_ON_VACATION) > 0);
 	}
 
 	// ------------------------------------- Friends ----------------------------------------------

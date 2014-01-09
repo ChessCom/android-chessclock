@@ -390,6 +390,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			labelsConfig.bottomPlayerTime = defaultTime;
 		}
 
+		if (currentGame.isOpponentOnVacation()) {
+			labelsConfig.topPlayerTime = getString(R.string.vacation_on);
+		}
+
 		topPanelView.showTimeLeftIcon(!userMove);
 		bottomPanelView.showTimeLeftIcon(userMove);
 
@@ -714,6 +718,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
 		}
 
+		// tournaments games are not abortable
+		if (currentGame.isTournamentGame()) {
+			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.resign));
+		}
+
+		// user able to offer draw only when it's his turn
 		if (!isUserMove()) {
 			optionsMap.remove(ID_OFFER_DRAW);
 		}

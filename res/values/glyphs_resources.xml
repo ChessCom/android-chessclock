@@ -41,6 +41,7 @@
     <string name="ic_exit">×</string>
     <string name="ic_clear">Q</string>
     <string name="ic_clock">\'</string>
+    <string name="ic_pause">\u004B</string>
     <string name="ic_facebook">S</string>
     <string name="ic_facebook_square">D</string>
     <string name="ic_first_name">h</string>

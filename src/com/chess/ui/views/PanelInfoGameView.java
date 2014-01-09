@@ -14,15 +14,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
-import com.chess.widgets.RelLayout;
-import com.chess.widgets.RoboTextView;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.FontsHelper;
+import com.chess.widgets.RelLayout;
+import com.chess.widgets.RoboTextView;
 
 
 /**
@@ -411,8 +411,14 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	}
 
 	public void setTimeRemain(String timeRemain) {
-		timeRemainTxt.setText(timeRemain);
-		clockIconTxt.setVisibility(timeRemain.length() > 0 ? View.VISIBLE : View.GONE);
+		if (timeRemain.equals(getContext().getString(R.string.vacation_on))) {
+			clockIconTxt.setText(R.string.ic_pause);
+			timeRemainTxt.setText(R.string.vacation_on);
+		} else {
+			timeRemainTxt.setText(timeRemain);
+			clockIconTxt.setVisibility(timeRemain.length() > 0 ? View.VISIBLE : View.GONE);
+			clockIconTxt.setText(R.string.ic_clock);
+		}
 	}
 
 	public void showTimeRemain(boolean show) {
