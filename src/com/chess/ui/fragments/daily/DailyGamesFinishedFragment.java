@@ -1,10 +1,8 @@
 package com.chess.ui.fragments.daily;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +13,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.DailyFinishedGameData;
-import com.chess.backend.entity.api.DailyFinishedGamesItem;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -26,8 +21,8 @@ import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
+import com.chess.ui.adapters.DailyFinishedGamesPaginationAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
 import java.util.List;
@@ -37,13 +32,11 @@ import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 05.11.13
- * Time: 18:31
+ * Date: 09.01.14
+ * Time: 16:33
  */
-public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implements AdapterView.OnItemClickListener,
-		AdapterView.OnItemLongClickListener, ItemClickListenerFace {
-
-	private static final long FRAGMENT_VISIBILITY_DELAY = 200;
+public class DailyGamesFinishedFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
+		ItemClickListenerFace {
 
 	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
@@ -52,18 +45,19 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 
 	private TextView emptyView;
-	private ListView listView;
+	protected ListView listView;
 	private View loadingView;
-	private String username;
+	protected String username;
+	protected DailyFinishedGamesPaginationAdapter paginationAdapter;
 
-	public DailyFinishedGamesFragmentTablet(){
+	public DailyGamesFinishedFragment(){
 		Bundle bundle = new Bundle();
 		bundle.putString(USERNAME, Symbol.EMPTY);
 		setArguments(bundle);
 	}
 
-	public static DailyFinishedGamesFragmentTablet createInstance(String username) {
-		DailyFinishedGamesFragmentTablet fragment = new DailyFinishedGamesFragmentTablet();
+	public static DailyGamesFinishedFragment createInstance(String username) {
+		DailyGamesFinishedFragment fragment = new DailyGamesFinishedFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString(USERNAME, username);
 		fragment.setArguments(bundle);
@@ -84,20 +78,14 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 			username = getUsername();
 		}
 
-		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
-
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-			transaction.add(R.id.optionsFragmentContainer, HomePlayFragment.createInstance(RIGHT_MENU_MODE))
-					.commitAllowingStateLoss();
-		}
+		init();
 
 		pullToRefresh(true);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_home_daily_finished_games_frame, container, false);
+		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
 	}
 
 	@Override
@@ -109,31 +97,12 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
-		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setOnItemClickListener(this);
-		listView.setOnItemLongClickListener(this);
-		listView.setAdapter(finishedGamesCursorAdapter);
-
-		if (!username.equals(getUsername())) {
-			View optionsFragmentContainerView = view.findViewById(R.id.optionsFragmentContainerView);
-			if (optionsFragmentContainerView != null) {
-				optionsFragmentContainerView.setVisibility(View.GONE);
-			}
-		}
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		getActivityFace().setPullToRefreshView(listView, this);
+		widgetsInit(view);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		init();
 
 		if (need2update) {
 			boolean haveSavedData = DbDataManager.haveSavedAnyDailyGame(getActivity(), username); // TODO replace with pagination
@@ -146,30 +115,12 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 			}
 
 			if (haveSavedData) {
-				handler.postDelayed(delayedLoadFromDb, FRAGMENT_VISIBILITY_DELAY);
+				loadDbGames();
 			}
 		} else {
-			loadDbGames();
+			listView.setAdapter(paginationAdapter);
 		}
 	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-
-		handler.removeCallbacks(delayedLoadFromDb);
-		releaseResources();
-	}
-
-	private Runnable delayedLoadFromDb = new Runnable() {
-		@Override
-		public void run() {
-			if (getActivity() == null) {
-				return;
-			}
-			loadDbGames();
-		}
-	};
 
 	@Override
 	public void onRefreshStarted(View view) {
@@ -179,28 +130,12 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		}
 	}
 
-	private void init() {
-		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
-		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener();
-
-		dailyFinishedGamesUpdateListener = new DailyFinishedGamesUpdateListener();
-	}
-
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
 
 		getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId(), username));
-	}
-
-	@Override
-	public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-		Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-		DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameListFromCursor(cursor);
-
-		getActivityFace().openFragment(GameDailyFinishedFragmentTablet.createInstance(finishedItem.getGameId()));
-		return true;
 	}
 
 	@Override
@@ -213,7 +148,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_FINISHED);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_USERNAME, username);
-		new RequestJsonTask<DailyFinishedGamesItem>(dailyFinishedGamesUpdateListener).executeTask(loadItem);
+		paginationAdapter.updateLoadItem(loadItem);
 	}
 
 	private void loadDbGames() {
@@ -226,23 +161,18 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 
 		@Override
 		public void updateData(DailyFinishedGameData returnedObj) {
-			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getDailyFinishedListGames(username),
-					getContentResolver()).executeTask();
+			loadDbGames();
 		}
 	}
 
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
-
-		public GamesCursorUpdateListener() {
-			super();
-		}
 
 		@Override
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
 			finishedGamesCursorAdapter.changeCursor(returnedObj);
+			paginationAdapter.notifyDataSetChanged();
 			need2update = false;
 		}
 
@@ -259,52 +189,28 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		}
 	}
 
-	private class DailyFinishedGamesUpdateListener extends ChessUpdateListener<DailyFinishedGamesItem> {
+	private class DailyFinishedGamesUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
 
 		public DailyFinishedGamesUpdateListener() {
-			super(DailyFinishedGamesItem.class);
+			super(DailyFinishedGameData.class);
+			useList = true;
 		}
 
 		@Override
-		public void updateData(DailyFinishedGamesItem returnedObj) {
-			super.updateData(returnedObj);
+		public void updateListData(List<DailyFinishedGameData> itemsList) {
+			super.updateListData(itemsList);
 
-			List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getGames();
-			if (finishedGameDataList != null) {
-				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(),
-						finishedGameDataList, username);
-
-				if (gamesLeft) {
-					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-							getContentResolver(), username).executeTask();
-				} else {
-					finishedGamesCursorAdapter.changeCursor(null);
-				}
-			} else {
-				new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-						DbHelper.getDailyFinishedListGames(username),
-						getContentResolver()).executeTask();
-			}
+			new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, itemsList,
+					getContentResolver(), username).executeTask();
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			if (RestHelper.containsServerCode(resultCode)) {
-				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
-					showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
-					return;
-				}
-			} else if (resultCode == StaticData.INTERNAL_ERROR) {
+			super.errorHandle(resultCode);
+			if (resultCode == StaticData.INTERNAL_ERROR) {
 				showToast("Internal error occurred"); // TODO adjust properly
 			}
-			super.errorHandle(resultCode);
 		}
-	}
-
-	private void releaseResources() {
-		dailyFinishedGamesUpdateListener.releaseContext();
-		dailyFinishedGamesUpdateListener = null;
 	}
 
 	private void showEmptyView(boolean show) {
@@ -313,7 +219,7 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 			if (loadingView.getVisibility() != View.VISIBLE) {
 				loadingView.setVisibility(View.GONE);
 			}
-			if (listView.getAdapter().getCount() == 0) { // TODO check
+			if (finishedGamesCursorAdapter.getCount() == 0) { // TODO check
 				emptyView.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);
 			}
@@ -323,18 +229,23 @@ public class DailyFinishedGamesFragmentTablet extends CommonLogicFragment implem
 		}
 	}
 
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			if (finishedGamesCursorAdapter.getCount() == 0) {
-				listView.setVisibility(View.GONE);
+	private void init() {
+		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener();
+		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
 
-			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
-		}
+		dailyFinishedGamesUpdateListener = new DailyFinishedGamesUpdateListener();
+
+		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
+
+		paginationAdapter = new DailyFinishedGamesPaginationAdapter(getActivity(), finishedGamesCursorAdapter,
+				dailyFinishedGamesUpdateListener, null);
+	}
+
+	protected void widgetsInit(View view) {
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setOnItemClickListener(this);
+		listView.setAdapter(paginationAdapter);
 	}
 }
+
 

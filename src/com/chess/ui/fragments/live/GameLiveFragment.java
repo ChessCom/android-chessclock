@@ -929,7 +929,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			if (isLCSBound) {
 				liveService.getPendingWarnings().remove(warningMessage);
 			}
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.fair_play_policy_url))));
+			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.FAIR_POLICY_LINK)));
 		}
 		super.onNegativeBtnClick(fragment);
 	}

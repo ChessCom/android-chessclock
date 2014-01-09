@@ -222,7 +222,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 				}
 			}
 		} else if (liveItem.iconId == R.string.ic_board) { // Archive
-			getActivityFace().openFragment(new LiveArchiveFragment());
+			getActivityFace().openFragment(new LiveGamesArchiveFragment());
 		}
 	}
 

@@ -3,7 +3,8 @@ package com.chess.ui.adapters;
 import android.content.Context;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.FriendsItem;
+import com.chess.backend.entity.api.DailyFinishedGameData;
+import com.chess.backend.entity.api.DailyFinishedGamesItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.statics.StaticData;
@@ -13,33 +14,34 @@ import java.util.List;
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
- * Date: 08.12.13
- * Time: 16:59
+ * Date: 09.01.14
+ * Time: 16:57
  */
-public class FriendsPaginationAdapter extends PaginationCursorAdapter<FriendsItem.Data> {
+public class DailyFinishedGamesPaginationAdapter extends PaginationCursorAdapter<DailyFinishedGameData> {
 
-	public FriendsPaginationAdapter(Context context, ItemsCursorAdapter adapter,
-									TaskUpdateInterface<FriendsItem.Data> taskFace, LoadItem loadItem) {
+	public DailyFinishedGamesPaginationAdapter(Context context, ItemsCursorAdapter adapter,
+											   TaskUpdateInterface<DailyFinishedGameData> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
 		this.loadItem = loadItem;
 		setFirstPage(0);
 	}
 
 	@Override
-	protected List<FriendsItem.Data> fetchMoreItems(int page) {
+	protected List<DailyFinishedGameData> fetchMoreItems(int page) {
 		if (loadItem != null) {
 			loadItem.replaceRequestParams(RestHelper.P_PAGE, String.valueOf(page));
-			FriendsItem item = null;
+			DailyFinishedGamesItem item = null;
 			try {
-				item = RestHelper.getInstance().requestData(loadItem, FriendsItem.class, context);
+				item = RestHelper.getInstance().requestData(loadItem, DailyFinishedGamesItem.class, context);
 			} catch (InternalErrorException e) {
 				e.logMe();
 			}
 
-			if (item != null && item.getData() != null && item.getData().size() > 0) {
+			if (item != null && item.getData() != null && item.getData().getGames() != null
+					&& item.getData().getGames().size() > 0) {
 				result = StaticData.RESULT_OK;
 
-				itemList = item.getData();
+				itemList = item.getData().getGames();
 				return itemList;
 			} else {
 				result = StaticData.EMPTY_DATA;

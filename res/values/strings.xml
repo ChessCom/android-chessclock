@@ -33,7 +33,6 @@
     <string name="challenge_created">Challenge Created!</string>  <!--Congratulations new challenge created-->
     <string name="you_will_notified_when_game_starts">You will be notified when the game starts.</string>
     <string name="challenge_sent">Challenge Sent!</string>
-	<string name="create_open_challenge">Create Open Challenge</string>
     <string name="friends">Friends</string>
     <string name="no_friends_online">No Friends online</string>
     <string name="accept">Accept</string>  <!--Accept action-->
@@ -122,7 +121,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ten_tactics_completed">Demo tactics completed!</string>
-    <string name="offline_mode">Offline mode</string>
+    <!--<string name="offline_mode">Offline mode</string>-->
     <string name="you_are_offline">You are offline</string>
     <string name="correct">Correct</string>  <!--Popup Title-->
     <string name="incorrect">Incorrect</string>  <!--Popup Title-->
@@ -197,7 +196,6 @@
 	<string name="rematch">Rematch</string> <!--Action-->
 
 	<string name="min_arg">%s min</string>
-    <string name="fair_play_policy_url">"http://support.chess.com/Knowledgebase/Article/View/171/6/fair-play-policy"</string>
     <string name="fair_play_policy">Fair Policy</string>
 
 	<string name="home">Home</string>
@@ -368,7 +366,7 @@
 	<string name="invite_friends_profile_message">Chess is more fun with Friends! Invite them to join!</string>
 	<string name="profile_account_message_1">Your account is subject to the site </string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice">Terms and Conditions.</a>]]></string>
-	<string name="profile_account_message_3">If you would like \nto close your account,</string>
+	<string name="profile_account_message_3">If you would like to close your account,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">tap here.</a>]]></string>
 	<string name="basic">Basic</string>
 	<string name="sign_up_now_free">Sign Up Now, It\'s FREE!</string>

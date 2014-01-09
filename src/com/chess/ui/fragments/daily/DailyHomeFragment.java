@@ -139,6 +139,28 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		}
 	}
 
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		DailyItem dailyItem = (DailyItem) parent.getItemAtPosition(position);
+
+		if (dailyItem.iconId == R.string.ic_stats) {
+			getActivityFace().openFragment(StatsGameDetailsFragment.createInstance(
+					StatsGameFragment.DAILY_CHESS, true, getUsername()));
+		} else if (dailyItem.iconId == R.string.ic_challenge_friend) {
+			getActivityFace().openFragment(new FriendsFragment());
+		} else if (dailyItem.iconId == R.string.ic_board) {
+			if (!isTablet) {
+				getActivityFace().openFragment(new DailyGamesFinishedFragment());
+			} else {
+				getActivityFace().openFragment(new DailyGamesFinishedFragmentTablet());
+			}
+		} else if (dailyItem.iconId == R.string.ic_tournaments) {
+			String tournamentsLink = RestHelper.getInstance().getTournamentsLink(getUserToken());
+			WebViewFragment webViewFragment = WebViewFragment.createInstance(tournamentsLink, getString(R.string.tournaments));
+			getActivityFace().openFragment(webViewFragment);
+		}
+	}
+
 	private void createDailyChallenge() {
 		// create challenge using formed configuration
 		DailyGameConfig dailyGameConfig = gameConfigBuilder.build();
@@ -248,7 +270,6 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 			int mode = getAppData().getDefaultDailyMode();
 			// set texts to buttons
 			newGameButtonsArray = getResources().getIntArray(R.array.days_per_move_array);
-			// TODO add sliding from outside animation for time modes in popup
 			timeSelectBtn = (Button) headerView.findViewById(R.id.timeSelectBtn);
 			timeSelectBtn.setOnClickListener(this);
 
@@ -262,28 +283,6 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 
 		ChessBoardBaseView boardView = (ChessBoardBaseView) headerView.findViewById(R.id.boardview);
 		boardView.setGameFace(gameFaceHelper);
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		DailyItem dailyItem = (DailyItem) parent.getItemAtPosition(position);
-
-		if (dailyItem.iconId == R.string.ic_stats) {
-			getActivityFace().openFragment(StatsGameDetailsFragment.createInstance(
-					StatsGameFragment.DAILY_CHESS, true, getUsername()));
-		} else if (dailyItem.iconId == R.string.ic_challenge_friend) {
-			getActivityFace().openFragment(new FriendsFragment());
-		} else if (dailyItem.iconId == R.string.ic_board) {
-			if (!isTablet) {
-				getActivityFace().openFragment(new DailyGamesFragment());
-			} else {
-				getActivityFace().openFragment(new DailyGamesFragmentTablet());
-			}
-		} else if (dailyItem.iconId == R.string.ic_tournaments) {
-			String tournamentsLink = RestHelper.getInstance().getTournamentsLink(getUserToken());
-			WebViewFragment webViewFragment = WebViewFragment.createInstance(tournamentsLink, getString(R.string.tournaments));
-			getActivityFace().openFragment(webViewFragment);
-		}
 	}
 
 	private void setDefaultTimeMode(View view, int mode) {

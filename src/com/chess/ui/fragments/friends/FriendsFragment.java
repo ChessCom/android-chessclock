@@ -285,15 +285,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 	}
 
-	private void releaseResources() {
-		friendsCursorUpdateListener.releaseContext();
-		friendsCursorUpdateListener = null;
-//		friendsUpdateListener.releaseContext();
-//		friendsUpdateListener = null;
-		saveFriendsListUpdateListener.releaseContext();
-		saveFriendsListUpdateListener = null;
-	}
-
 	protected void showEmptyView(boolean show) {
 		if (show) {
 			// don't hide loadingView if it's loading

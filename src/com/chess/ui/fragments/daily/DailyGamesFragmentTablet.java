@@ -316,7 +316,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 			WebViewFragment webViewFragment = WebViewFragment.createInstance(tournamentsLink, getString(R.string.tournaments));
 			getActivityFace().openFragment(webViewFragment);
 		} else if (view.getId() == R.id.completedGamesHeaderView) {
-			getActivityFace().openFragment(new DailyFinishedGamesFragmentTablet());
+			getActivityFace().openFragment(new DailyGamesFinishedFragmentTablet());
 		}
 	}
 

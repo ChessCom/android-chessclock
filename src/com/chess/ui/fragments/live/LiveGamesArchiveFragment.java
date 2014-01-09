@@ -35,7 +35,7 @@ import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
  * Date: 22.09.13
  * Time: 7:07
  */
-public class LiveArchiveFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
+public class LiveGamesArchiveFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
 	private ListView listView;
 	private LiveArchiveGamesAdapter archiveGamesAdapter;

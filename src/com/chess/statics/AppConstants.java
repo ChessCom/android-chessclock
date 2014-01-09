@@ -151,6 +151,7 @@ public class AppConstants {
 	/* Live Chess params */
 	public static final String LIVE_GAME_CONFIG_BUILDER = "live_game_config_builder";
 	public static final String DAILY_GAME_CONFIG_BUILDER = "daily_game_config_builder";
+	public static final String FAIR_POLICY_LINK = "http://support.chess.com/Knowledgebase/Article/View/171/6/fair-play-policy";
 
 	public final static int GAME_MODE_COMPUTER_VS_PLAYER_WHITE = 0;
 	public final static int GAME_MODE_COMPUTER_VS_PLAYER_BLACK = 1;

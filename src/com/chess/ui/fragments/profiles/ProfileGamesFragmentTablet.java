@@ -25,7 +25,7 @@ import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
-import com.chess.ui.fragments.daily.DailyFinishedGamesFragmentTablet;
+import com.chess.ui.fragments.daily.DailyGamesFinishedFragmentTablet;
 import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -160,7 +160,7 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 
 		if (view.getId() == R.id.completedGamesHeaderView) {
 			if (parentFace != null) {
-				parentFace.changeFragment(DailyFinishedGamesFragmentTablet.createInstance(username));
+				parentFace.changeFragment(DailyGamesFinishedFragmentTablet.createInstance(username));
 			}
 
 		}
