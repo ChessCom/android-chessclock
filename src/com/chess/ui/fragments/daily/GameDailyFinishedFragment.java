@@ -474,7 +474,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 	@Override
 	public void cancelMove() {
 		showSubmitButtonsLay(false);
-
 		boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 		boardView.resetValidMoves();
 		getBoardFace().takeBack();

@@ -691,6 +691,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void cancelMove() {
+		// cancelMove() code is the same in Game Live/Daily fragments. Probably could be moved to some common place
 		showSubmitButtonsLay(false);
 		boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 		boardView.resetValidMoves();
@@ -1016,14 +1017,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onClick(View view) {
 		super.onClick(view);
-		if (view.getId() == R.id.cancelBtn) {
-			showSubmitButtonsLay(false);
-			boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
-			getBoardFace().takeBack();
-			boardView.resetValidMoves();
-			getBoardFace().decreaseMovesCount();
-			boardView.invalidate();
-		} else if (view.getId() == R.id.newGamePopupBtn) {
+		if (view.getId() == R.id.newGamePopupBtn) {
 			LiveGameConfig gameConfig = getAppData().getLiveGameConfigBuilder().build();
 			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(gameConfig));
 

@@ -60,7 +60,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	protected boolean firstClick = true;
 	protected boolean pieceSelected;
 	protected boolean track;
-	protected boolean drag;
+	private boolean dragging;
 
 	protected int W;
 	protected int H;
@@ -110,7 +110,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	private PanelInfoGameView topPanelView;
 	private PanelInfoGameView bottomPanelView;
 	private Paint boardBackPaint;
-	private String[] originalNotations;
 
 	// new engine
 	private MoveAnimator moveAnimator;
@@ -399,6 +398,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 	@Override
 	public boolean moveBack() {
+		resetMoving();
+
 		BoardFace boardFace = getBoardFace();
 		if (noMovesToAnimate() && boardFace.getPly() > 0) {
 			gameFace.updateParentView();
@@ -424,6 +425,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 	@Override
 	public boolean moveForward() {
+		resetMoving();
+
 		if (noMovesToAnimate()) {
 			gameFace.updateParentView();
 
@@ -505,9 +508,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	public void updateNotations(String[] notations) {
-		if (originalNotations == null || originalNotations.length < notations.length) {
-			originalNotations = notations;
-		}
 		if (notationsFace != null) {
 			notationsFace.updateNotations(notations, this, getBoardFace().getPly());
 		}
@@ -601,7 +601,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		if (boardFace.isReside()) {
 			for (int pos = ChessBoard.SQUARES_CNT - 1; pos >= 0; pos--) {
 				// do not draw if in drag or animated
-				if ((drag && pos == from) || (animationActive && moveAnimator.isSquareHidden(pos))) {
+				if ((dragging && pos == from) || (animationActive && moveAnimator.isSquareHidden(pos))) {
 					continue;
 				}
 
@@ -612,7 +612,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		} else {
 			for (int pos = 0; pos < ChessBoard.SQUARES_CNT; pos++) {
 				// do not draw if in drag or animated
-				if ((drag && pos == from) || (animationActive && moveAnimator.isSquareHidden(pos))) {
+				if ((dragging && pos == from) || (animationActive && moveAnimator.isSquareHidden(pos))) {
 					continue;
 				}
 
@@ -760,7 +760,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	protected void drawPieceInDragMotion(Canvas canvas) {
-		if (drag) {
+		if (dragging) {
 			int color = getBoardFace().getColor(draggingFrom);
 			int piece = getBoardFace().getPiece(draggingFrom);
 
@@ -791,7 +791,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	private void drawMoveToIndicator(Canvas canvas) {
-		if (drag) {
+		if (dragging) {
 			int color = getBoardFace().getColor(draggingFrom);
 			int piece = getBoardFace().getPiece(draggingFrom);
 
@@ -995,14 +995,14 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		}
 
 		BoardFace boardFace = getBoardFace();
-		if (!drag && !pieceSelected) {
+		if (!dragging && !pieceSelected) {
 			from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 		}
 
 		if (!firstClick) {
 			draggingFrom = from;
 			// do not drag captured piece // ??
-			drag = isUserAbleToMove(boardFace.getColor(draggingFrom)) || (boardFace.isAnalysis());
+			dragging = isUserAbleToMove(boardFace.getColor(draggingFrom)) || (boardFace.isAnalysis());
 			to = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 			invalidate();
 		}
@@ -1015,9 +1015,9 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		int file = (int) ((event.getX() - event.getX() % squareSize) / squareSize);
 		int rank = (int) ((event.getY() - event.getY() % squareSize) / squareSize);
 
-		boolean showAnimation = !drag;
+		boolean showAnimation = !dragging;
 
-		drag = false;
+		dragging = false;
 		draggingFrom = -1;
 		// if outside of the boardBitmap - return
 		if (file > 7 || file < 0 || rank > 7 || rank < 0) { // if touched out of board
@@ -1206,6 +1206,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == NotationView.NOTATION_ID) {// scroll to the specified position
+			resetMoving();
+
 			Integer pos = (Integer) v.getTag(R.id.list_item_id);
 
 			goToMove(pos);
@@ -2057,5 +2059,13 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	protected void onSecondMoveAnimated() {
+	}
+
+	protected void resetMoving() {
+		if (dragging) {
+			dragging = false;
+			pieceSelected = false;
+			invalidate();
+		}
 	}
 }

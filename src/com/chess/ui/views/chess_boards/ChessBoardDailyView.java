@@ -35,5 +35,4 @@ public class ChessBoardDailyView extends ChessBoardNetworkView {
 	public void goHome() {
 
 	}
-
 }

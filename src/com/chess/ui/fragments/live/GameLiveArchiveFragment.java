@@ -414,7 +414,6 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 	@Override
 	public void cancelMove() {
 		showSubmitButtonsLay(false);
-
 		boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 		boardView.resetValidMoves();
 		getBoardFace().takeBack();
