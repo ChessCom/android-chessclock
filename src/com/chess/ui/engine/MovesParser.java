@@ -71,7 +71,7 @@ public class MovesParser {
 		fillMapping();
 	}
 
-	String removeNumbers(String moves) {
+	public static String removeNumbers(String moves) {
 		return moves.replaceAll(MOVE_NUMBERS_PATTERN, Symbol.EMPTY)
 				.replaceAll("[.]", Symbol.EMPTY);
 	}

@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
+import com.chess.statics.Symbol;
+import com.chess.ui.engine.MovesParser;
 
 import java.text.NumberFormat;
 
@@ -20,6 +21,7 @@ public class ExplorerMovesCursorAdapter extends ItemsCursorAdapter {
 	private final int regularPadding;
 	private final int topFirstPadding;
 	private final int sidePadding;
+	private String moveNumber;
 
 	public ExplorerMovesCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
@@ -59,9 +61,11 @@ public class ExplorerMovesCursorAdapter extends ItemsCursorAdapter {
 		}
 
 		String moveStr = getString(cursor, DbScheme.V_MOVE);
+		moveStr = MovesParser.removeNumbers(moveStr);
+
 		long numberOfGames = getLong(cursor, DbScheme.V_NUM_GAMES);
 		String numGamesStr = NumberFormat.getInstance().format(numberOfGames);
-		holder.moveTxt.setText(moveStr);
+		holder.moveTxt.setText(moveNumber + moveStr);
 		holder.numGamesTxt.setText(numGamesStr);
 
 		int whiteWonPercent = getInt(cursor, DbScheme.V_WHITE_WON_PERCENT);
@@ -102,6 +106,10 @@ public class ExplorerMovesCursorAdapter extends ItemsCursorAdapter {
 		holder.whiteWinsPercentTxt.setText(whiteWinsStr);
 		holder.drawsPercentTxt.setText(drawsStr);
 		holder.blackWinsPercentTxt.setText(blackWinsStr);
+	}
+
+	public void setMoveNumber(String moveNumber) {
+		this.moveNumber = moveNumber;
 	}
 
 	private class ViewHolder {

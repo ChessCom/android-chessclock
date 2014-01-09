@@ -455,7 +455,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		TacticsDataHolder.getInstance().setTacticLimitReached(true);
 
 		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_limit_reached, null, false);
-
+		String title = getString(R.string.upgrade_for_unlimited_arg, getString(R.string.tactics));
+		((TextView) customView.findViewById(R.id.titleTxt)).setText(title);
 
 		/*LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
 		if (AppUtils.isNeedToUpgrade(getActivity())) {

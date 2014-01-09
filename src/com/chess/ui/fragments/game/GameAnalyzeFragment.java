@@ -94,7 +94,10 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	public void onResume() {
 		super.onResume();
 
-		adjustBoardForGame();
+		if (need2update) {
+			adjustBoardForGame();
+			need2update = false;
+		}
 	}
 
 	@Override

@@ -71,8 +71,16 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 			returnedObj.close();
 
 			adjustBoardForGame();
+			need2update = false;
 		}
 	}
+
+	@Override
+	public boolean currentGameExist() {
+		return currentGame != null;
+	}
+
+
 
 	@Override
 	public void showExplorer() {

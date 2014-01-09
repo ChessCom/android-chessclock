@@ -117,8 +117,10 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	public void onResume() {
 		super.onResume();
 
-		DataHolder.getInstance().setInDailyGame(gameId, true);
-		loadGame();
+		if (need2update) {
+			DataHolder.getInstance().setInDailyGame(gameId, true);
+			loadGame();
+		}
 	}
 
 	@Override
@@ -178,6 +180,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			returnedObj.close();
 
 			adjustBoardForGame();
+			need2update = false;
 		}
 	}
 
@@ -344,11 +347,10 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		topPanelView.setPlayerFlag(labelsConfig.topPlayerCountry);
 		bottomPanelView.setPlayerFlag(labelsConfig.bottomPlayerCountry);
 
-
 		topPanelView.setPlayerPremiumIcon(labelsConfig.topPlayerPremiumStatus);
 		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
 
-		if (currentGameExist()) {
+		if (currentGameExist() && !isFinished) {
 			topPanelView.setTimeRemain(labelsConfig.topPlayerTime);
 			bottomPanelView.setTimeRemain(labelsConfig.bottomPlayerTime);
 

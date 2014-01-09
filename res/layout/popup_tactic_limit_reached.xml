@@ -16,7 +16,6 @@
 		android:gravity="center"
 		android:textSize="@dimen/game_end_popup_text_size"
 		android:textColor="@color/new_subtitle_dark_grey"
-		android:text="@string/upgrade_for_unlimited_tactics"
 		android:padding="8dip"
 		custom:ttf="Bold"
 		/>
@@ -34,7 +33,7 @@
 		android:paddingBottom="6dip"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
-		android:text="@string/tactics_limit_explain" />
+		android:text="@string/basic_members_allowed_3_per_day" />
 
 	<!--Ads-->
 	<LinearLayout

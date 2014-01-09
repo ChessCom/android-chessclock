@@ -127,7 +127,7 @@
     <string name="correct">Correct</string>  <!--Popup Title-->
     <string name="incorrect">Incorrect</string>  <!--Popup Title-->
 
-    <string name="upgrade_for_unlimited_tactics">Upgrade For Unlimited Tactics!</string>
+    <string name="upgrade_for_unlimited_arg">Upgrade For Unlimited %s!</string>
 
     <!--Games List Screen-->
     <string name="hours">hours</string>  <!--Units-->
@@ -598,7 +598,7 @@
 	<string name="show_timer">Show Timer</string>
 	<string name="file_saved_to_download">File Saved to \"Download\"</string>
 	<string name="with">with</string>
-	<string name="tactics_limit_explain">Basic members are allowed 3 per day</string>
+	<string name="basic_members_allowed_3_per_day">Basic members are allowed 3 per day</string>
 	<string name="get_detailed_stats">Get Detailed Stats!</string>
 	<string name="select_plan">Select Plan</string>
 	<string name="ignore">Ignore</string>

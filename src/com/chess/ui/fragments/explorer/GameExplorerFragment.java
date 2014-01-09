@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.chess.R;
@@ -23,10 +24,15 @@ import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveExplorerMovesListTask;
 import com.chess.model.GameExplorerItem;
+import com.chess.model.PopupItem;
 import com.chess.ui.adapters.ExplorerMovesCursorAdapter;
 import com.chess.ui.engine.ChessBoardExplorer;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.game.GameBaseFragment;
+import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragment;
+import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
@@ -43,6 +49,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		AdapterView.OnItemClickListener, View.OnLongClickListener, View.OnTouchListener {
 
 	private static final String EXPLORER_ITEM = "explorer_item";
+	private static final String LIMIT_REACHED_TAG = "limit reached popup";
 
 	private ExplorerMovesUpdateListener explorerMovesUpdateListener;
 	private SaveExplorerMovesUpdateListener saveExplorerMovesUpdateListener;
@@ -54,8 +61,10 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	private TextView moveVariationTxt;
 	private String fen;
 	private boolean fastMode;
+	private int positionsLoaded;
 
-	public GameExplorerFragment() {}
+	public GameExplorerFragment() {
+	}
 
 	public static GameExplorerFragment createInstance(GameExplorerItem explorerItem) {
 		GameExplorerFragment fragment = new GameExplorerFragment();
@@ -104,6 +113,8 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	private void loadCurrentBoard() {
+
+
 		fen = getBoardFace().generateBaseFen();
 		boolean haveSavedData = DbDataManager.haveSavedExplorerMoves(getActivity(), fen);
 
@@ -138,6 +149,12 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+		if (isNeedToUpgrade() && positionsLoaded == 3) {// 3 position for basic members
+			showLimitReachedPopup();
+			return;
+		}
+		positionsLoaded++;
+
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		String moveStr = DbDataManager.getString(cursor, DbScheme.V_MOVE);
 
@@ -169,9 +186,26 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 			boardView.moveBack();
 			loadCurrentBoard();
 		} else if (view.getId() == R.id.rightBtn) {
+			if (isNeedToUpgrade() && positionsLoaded == 3) {// 3 position for basic members
+				showLimitReachedPopup();
+				return;
+			}
+			positionsLoaded++;
+
 			boardView.setFastMovesMode(false);
 			boardView.moveForward();
 			loadCurrentBoard();
+		} if (view.getId() == R.id.upgradeBtn) {
+
+			if (findFragmentByTag(LIMIT_REACHED_TAG) != null) {
+				((BasePopupDialogFragment) findFragmentByTag(LIMIT_REACHED_TAG)).dismiss();
+			}
+
+			if (!isTablet) {
+				getActivityFace().openFragment(new UpgradeFragment());
+			} else {
+				getActivityFace().openFragment(new UpgradeFragmentTablet());
+			}
 		}
 	}
 
@@ -230,6 +264,27 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		super.onPositiveBtnClick(fragment);
 	}
 
+	private void showLimitReachedPopup() {
+		LinearLayout customView = (LinearLayout) inflater.inflate(R.layout.popup_tactic_limit_reached, null, false);
+
+		customView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
+		String title = getString(R.string.upgrade_for_unlimited_arg, getString(R.string.game_explorer));
+		((TextView) customView.findViewById(R.id.titleTxt)).setText(title);
+		/*
+			LinearLayout adViewWrapper = (LinearLayout) customView.findViewById(R.id.adview_wrapper);
+			if (AppUtils.isNeedToUpgrade(getActivity())) {
+				MopubHelper.showRectangleAd(adViewWrapper, getActivity());
+			} else {
+				adViewWrapper.setVisibility(View.GONE);
+			}
+		*/
+		PopupItem popupItem = new PopupItem();
+		popupItem.setCustomView(customView);
+
+		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.createInstance(popupItem);
+		customViewFragment.show(getFragmentManager(), LIMIT_REACHED_TAG);
+	}
+
 	private class ExplorerMovesUpdateListener extends ChessLoadUpdateListener<ExplorerMovesItem> {
 
 		public ExplorerMovesUpdateListener() {
@@ -285,6 +340,15 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
+			int ply = getBoardFace().getPly();
+			String moveNumber = String.valueOf(ply + 1);
+
+			if (ply %2 == 0) { // if second move, than add dots
+				moveNumber += ".";
+			} else {
+				moveNumber += "...";
+			}
+			explorerMovesCursorAdapter.setMoveNumber(moveNumber);
 			explorerMovesCursorAdapter.changeCursor(returnedObj);
 
 			// get variation name
