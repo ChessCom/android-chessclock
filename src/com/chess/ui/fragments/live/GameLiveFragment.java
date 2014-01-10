@@ -96,6 +96,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private boolean userSawGameEndPopup;
 	private ImageUpdateListener topImageUpdateListener;
 	private ImageUpdateListener bottomImageUpdateListener;
+	private boolean submitClicked;
 
 	public GameLiveFragment() {
 	}
@@ -623,6 +624,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					return;
 				}
 
+				if (block && getBoardFace().isSubmit()) {
+					cancelMove();
+				}
+
 				showLoadingProgress(block);
 				fadeLay.setVisibility(block ? View.VISIBLE : View.INVISIBLE);
 				boardView.lockBoard(block);
@@ -682,11 +687,17 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void playMove() {
-		try {
-			sendMove();
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
+
+		if (!submitClicked) {
+			submitClicked = true;
+
+			try {
+				sendMove();
+			} catch (DataNotValidException e) {
+				logLiveTest(e.getMessage());
+			}
 		}
+
 	}
 
 	@Override
@@ -851,7 +862,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void showSubmitButtonsLay(boolean show) {  // TODO remove arg and get state from boardFace
 		getControlsView().showSubmitButtons(show);
 
-		if (!show) {
+		if (show) {
+			submitClicked = false;
+		} else {
 			getBoardFace().setSubmit(false);
 		}
 	}
@@ -1174,7 +1187,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		fadeLay = view.findViewById(R.id.fadeLay);
 
 		setControlsView(view.findViewById(R.id.controlsView));
-		if (inPortrait()) {
+		if (true) {
 			setNotationsFace(view.findViewById(R.id.notationsView));
 		} else {
 			setNotationsFace(view.findViewById(R.id.notationsViewTablet));
