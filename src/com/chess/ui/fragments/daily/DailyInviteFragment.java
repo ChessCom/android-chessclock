@@ -16,7 +16,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.BaseResponseItem;
-import com.chess.backend.entity.api.DailyChallengeItem;
+import com.chess.backend.entity.api.daily_games.DailyChallengeItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
@@ -45,36 +45,45 @@ import com.chess.utilities.AppUtils;
 public class DailyInviteFragment extends CommonLogicFragment {
 
 	private static final String ERROR_TAG = "send request failed popup";
+	protected static final String GAME_ITEM = "game item";
 	protected int AVATAR_SIZE = 48;
 
-	private ControlsDailyView controlsDailyView;
-	private PanelInfoGameView topPanelView;
-	private PanelInfoGameView bottomPanelView;
+	protected ControlsDailyView controlsView;
+	protected PanelInfoGameView topPanelView;
+	protected PanelInfoGameView bottomPanelView;
 	private String[] countryNames;
 	private int[] countryCodes;
 	private ImageDownloaderToListener imageDownloader;
 	private DailyChallengeItem.Data challengeItem;
 	private GameBaseFragment.LabelsConfig labelsConfig;
-	private ImageView topAvatarImg;
-	private ImageView bottomAvatarImg;
-	private ChessBoardDailyView boardView;
-	private TextView inviteDetails1Txt;
-	private TextView inviteTitleTxt;
+	protected ImageView topAvatarImg;
+	protected ImageView bottomAvatarImg;
+	protected ChessBoardDailyView boardView;
+	protected TextView inviteDetails1Txt;
+	protected TextView inviteTitleTxt;
 	private int successToastMsgId;
 	private DailyUpdateListener challengeInviteUpdateListener;
-	private GameFaceHelper gameFaceHelper;
+	protected GameFaceHelper gameFaceHelper;
 
 	public DailyInviteFragment() { }
 
 	public static DailyInviteFragment createInstance(DailyChallengeItem.Data challengeItem) {
 		DailyInviteFragment fragment = new DailyInviteFragment();
-		fragment.challengeItem = challengeItem;
+		Bundle bundle = new Bundle();
+		bundle.putParcelable(GAME_ITEM, challengeItem);
+		fragment.setArguments(bundle);
 		return fragment;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			challengeItem = getArguments().getParcelable(GAME_ITEM);
+		} else {
+			challengeItem = savedInstanceState.getParcelable(GAME_ITEM);
+		}
 
 		init();
 	}
@@ -88,7 +97,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		if(challengeItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
+		if(challengeItem.getGameTypeId() == RestHelper.V_GAME_CHESS_960) {
 			setTitle(R.string.daily_960);
 		} else {
 			setTitle(R.string.daily);
@@ -103,6 +112,13 @@ public class DailyInviteFragment extends CommonLogicFragment {
 
 		init();
 		adjustBoardForGame();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putParcelable(GAME_ITEM, challengeItem);
 	}
 
 	public void init() {
@@ -164,7 +180,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 
 		DataHolder.getInstance().setInDailyGame(currentGame.getGameId(), true);
 
-		controlsDailyView.enableGameControls(true);
+		controlsView.enableGameControls(true);
 
 		topPanelView.setTimeRemain(getDaysString(daysPerMove));
 		bottomPanelView.setTimeRemain(getDaysString(daysPerMove));
@@ -267,24 +283,24 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		super.onPositiveBtnClick(fragment);
 	}
 
-	private void widgetsInit(View view) {
+	protected void widgetsInit(View view) {
 		Resources resources = getResources();
 		{ // invite overlay setup
 			View inviteOverlay = view.findViewById(R.id.inviteOverlay);
 
 			// let's make it to match board properties
 			// it should be 2 squares inset from top of border and 4 squares tall + 1 squares from sides
-			int sideInset = resources.getDisplayMetrics().widthPixels / 8; // one square size
+			int squareSize = resources.getDisplayMetrics().widthPixels / 8; // one square size
 			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
 			// now we add few pixel to compensate shadow addition
 			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
 			borderOffset += shadowOffset;
-			int overlayHeight = sideInset * 4 + borderOffset + shadowOffset;
+			int overlayHeight = squareSize * 4 + borderOffset + shadowOffset;
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 					overlayHeight);
-			int topMargin = sideInset * 2 + borderOffset - shadowOffset * 2;
+			int topMargin = squareSize * 2 + borderOffset - shadowOffset * 2;
 
-			params.setMargins(sideInset - borderOffset, topMargin, sideInset - borderOffset, 0);
+			params.setMargins(squareSize - borderOffset, topMargin, squareSize - borderOffset, 0);
 			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
 			params.addRule(RelativeLayout.ALIGN_BOTTOM, R.id.boardView);
 			inviteOverlay.setLayoutParams(params);
@@ -292,7 +308,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 			inviteDetails1Txt = (TextView) view.findViewById(R.id.inviteDetails1Txt);
 			inviteTitleTxt = (TextView) view.findViewById(R.id.inviteTitleTxt);
 		}
-		controlsDailyView = (ControlsDailyView) view.findViewById(R.id.controlsView);
+		controlsView = (ControlsDailyView) view.findViewById(R.id.controlsView);
 
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
@@ -300,13 +316,13 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-		controlsDailyView.enableChatButton(true);
-		controlsDailyView.showSubmitButtons(true);
+		controlsView.enableChatButton(true);
+		controlsView.showSubmitButtons(true);
 		boardView = (ChessBoardDailyView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsDailyView);
+		boardView.setControlsView(controlsView);
 
 		boardView.setGameFace(gameFaceHelper);
 		boardView.lockBoard(true);

@@ -14,14 +14,6 @@
 		android:layout_marginTop="@dimen/notations_view_height"
 		>
 
-<!--
-	android:layout_marginTop="@dimen/tablet_board_margin_bottom"
-	android:layout_marginLeft="@dimen/tablet_board_margin_left"
-	android:layout_marginRight="@dimen/tablet_board_margin"
-	android:layout_marginBottom="@dimen/tablet_board_margin_bottom"
-
-	-->
-
 		<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

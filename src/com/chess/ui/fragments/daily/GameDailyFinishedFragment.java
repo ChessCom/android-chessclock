@@ -16,7 +16,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.BaseResponseItem;
-import com.chess.backend.entity.api.DailyFinishedGameData;
+import com.chess.backend.entity.api.daily_games.DailyFinishedGameData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;

@@ -1,5 +1,7 @@
 package com.chess.backend.entity.api;
 
+import com.chess.backend.entity.api.daily_games.DailyGameBaseData;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com

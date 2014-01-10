@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	xmlns:app="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:id="@+id/liveGameOptionsMainView"
@@ -48,7 +48,7 @@
 				android:layout_height="wrap_content"
 				android:gravity="center_vertical"
 				android:textColor="@color/new_light_grey_2"
-				custom:ttf="Bold" />
+				app:ttf="Bold" />
 
 			<!--Right Icon-->
 			<com.chess.widgets.RoboTextView
@@ -107,6 +107,7 @@
 				android:layout_weight="1"
 				android:text="@string/i_play_as_"
 				android:textColor="@color/semitransparent_white_65"
+				app:themeColor="true"
 				/>
 
 			<com.chess.widgets.RoboButton
@@ -133,7 +134,9 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:text="@string/rated_game_"
-				android:textColor="@color/semitransparent_white_65" />
+				android:textColor="@color/semitransparent_white_65"
+				app:themeColor="true"
+				/>
 
 			<com.chess.widgets.SwitchButton
 				android:id="@+id/ratedGameSwitch"
@@ -162,6 +165,7 @@
 				android:text="@string/rating_range"
 				android:layout_centerHorizontal="true"
 				android:textColor="@color/semitransparent_white_65"
+				app:themeColor="true"
 				/>
 
 			<RelativeLayout

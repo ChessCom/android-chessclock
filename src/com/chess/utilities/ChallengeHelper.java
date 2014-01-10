@@ -8,7 +8,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.DailySeekItem;
+import com.chess.backend.entity.api.daily_games.DailySeekItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;

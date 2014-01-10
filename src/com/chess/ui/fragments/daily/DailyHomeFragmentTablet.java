@@ -12,7 +12,7 @@ import android.view.ViewTreeObserver;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.DailyFinishedGameData;
+import com.chess.backend.entity.api.daily_games.DailyFinishedGameData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
@@ -97,6 +97,8 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 			String tournamentsLink = RestHelper.getInstance().getTournamentsLink(getUserToken());
 			WebViewFragment webViewFragment = WebViewFragment.createInstance(tournamentsLink, getString(R.string.tournaments));
 			getActivityFace().openFragment(webViewFragment);
+		} else if (view.getId() == R.id.challengesView) {
+			getActivityFace().openFragment(new DailyOpenChallengesFragment());
 		}
 	}
 
@@ -169,7 +171,6 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 			int mode = getAppData().getDefaultDailyMode();
 			// set texts to buttons
 			newGameButtonsArray = getResources().getIntArray(R.array.days_per_move_array);
-			// TODO add sliding from outside animation for time modes in popup
 			timeSelectBtn = (Button) view.findViewById(R.id.timeSelectBtn);
 			timeSelectBtn.setOnClickListener(this);
 
@@ -197,6 +198,7 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 		view.findViewById(R.id.statsView1).setOnClickListener(this);
 		view.findViewById(R.id.statsView2).setOnClickListener(this);
 		view.findViewById(R.id.tournamentsView).setOnClickListener(this);
+		view.findViewById(R.id.challengesView).setOnClickListener(this);
 		view.findViewById(R.id.archiveHeaderView).setOnClickListener(this);
 
 		inviteFriendView1 = view.findViewById(R.id.inviteFriendView1);

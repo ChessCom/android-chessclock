@@ -17,8 +17,8 @@ import java.util.List;
  * @created at: 26.04.12 6:11
  */
 public class DataHolder {
-	 // Shouldn't be used as a data holder due unreliable use in context of Android Lifecycle
-	 public static final int SETTINGS = 0;
+	// Shouldn't be used as a data holder due unreliable use in context of Android Lifecycle
+	public static final int SETTINGS = 0;
 	private static DataHolder ourInstance = new DataHolder();
 	private final SparseIntArray positionsArray;
 
@@ -65,12 +65,13 @@ public class DataHolder {
 
 	/**
 	 * Checks if game with this Id is currently open to the user
+	 *
 	 * @param gameId id of the game
 	 * @return true if gameBoard is open now
 	 */
 	public synchronized boolean inOnlineGame(long gameId) {
 		synchronized (playingGameItem) {
-			if (playingGameItem.getGameId() == gameId){
+			if (playingGameItem.getGameId() == gameId) {
 				return playingGameItem.isBoardOpen();
 			}
 		}
@@ -79,8 +80,9 @@ public class DataHolder {
 	}
 
 	/**
-	 *  Set flag for notifications to avoid every move notification
-	 * @param gameId id of the game
+	 * Set flag for notifications to avoid every move notification
+	 *
+	 * @param gameId   id of the game
 	 * @param gameOpen flag that shows if current game board is opened to user
 	 */
 	public void setInDailyGame(long gameId, boolean gameOpen) {

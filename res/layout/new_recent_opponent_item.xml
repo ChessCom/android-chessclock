@@ -2,6 +2,7 @@
 
 <com.chess.widgets.LinLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -28,6 +29,7 @@
         android:layout_weight="1"
         android:textColor="@color/new_light_grey"
         android:gravity="center_vertical"
+		app:themeColor="true"
         />
 
 </com.chess.widgets.LinLayout>

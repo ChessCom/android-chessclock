@@ -884,7 +884,8 @@ public class PullToRefreshAttacher implements View.OnTouchListener {
 		 */
 		public Context getContextForInflater(Activity activity) {
 			if (Build.VERSION.SDK_INT >= 14) {
-				return activity.getActionBar().getThemedContext();
+//				return activity.getActionBar().getThemedContext(); // this requires explicit init of window that cause a lot of memory waste
+				return activity;
 			} else {
 				return activity;
 			}

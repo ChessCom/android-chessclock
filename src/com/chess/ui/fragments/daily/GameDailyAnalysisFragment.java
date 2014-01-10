@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.DailyCurrentGameData;
+import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;

@@ -1,7 +1,7 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
-import com.chess.backend.entity.api.DailyFinishedGameData;
+import com.chess.backend.entity.api.daily_games.DailyFinishedGameData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.db.DbDataManager;
 import com.chess.statics.StaticData;

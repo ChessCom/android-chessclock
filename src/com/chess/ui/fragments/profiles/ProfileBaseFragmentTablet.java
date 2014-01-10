@@ -17,7 +17,7 @@ import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
-import com.chess.backend.entity.api.DailySeekItem;
+import com.chess.backend.entity.api.daily_games.DailySeekItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;

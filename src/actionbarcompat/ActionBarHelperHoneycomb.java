@@ -42,7 +42,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 	private View mRefreshIndeterminateProgressView = null;
 	private boolean showActionRefresh;
 	private ActionBarBackgroundDrawable actionBarBackgroundDrawable;
-	private ActionBar actionBar;
+	protected ActionBar actionBar;
 
 	protected ActionBarHelperHoneycomb(ActionBarActivity activity) {
 		super(activity);
@@ -220,7 +220,7 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 		actionBar.setCustomView(layoutId);
 	}
 
-	private void provideActionBar() {
+	protected void provideActionBar() {
 		if (actionBar == null && mActivity != null) {
 			actionBar = mActivity.getActionBar();
 		}

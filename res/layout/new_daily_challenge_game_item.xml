@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.chess.widgets.RelLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.chess"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/ListItem"
@@ -28,6 +29,7 @@
         android:textColor="@color/new_light_grey"
         android:layout_toRightOf="@id/playerImg"
         android:layout_centerVertical="true"
+		app:themeColor="true"
         />
 
     <com.chess.widgets.RoboTextView
@@ -40,6 +42,7 @@
         android:layout_marginRight="10dip"
         style="@style/GlyphIcon.Big"
         android:textColor="@color/text_controls_icons"
+		app:themeColor="true"
         />
 
     <com.chess.widgets.RoboTextView
@@ -51,6 +54,7 @@
         android:layout_centerVertical="true"
         style="@style/GlyphIcon.Big"
         android:textColor="@color/text_controls_icons"
+		app:themeColor="true"
         />
 
 </com.chess.widgets.RelLayout>

@@ -1,4 +1,6 @@
-package com.chess.backend.entity.api;
+package com.chess.backend.entity.api.daily_games;
+
+import com.chess.backend.entity.api.BaseResponseItem;
 
 import java.util.List;
 
@@ -8,7 +10,7 @@ import java.util.List;
  * Date: 24.12.12
  * Time: 6:29
  */
-public class DailyGamesAllItem extends BaseResponseItem<DailyGamesAllItem.Data>{
+public class DailyGamesAllItem extends BaseResponseItem<DailyGamesAllItem.Data> {
 	/*
 {
     "status": "success",

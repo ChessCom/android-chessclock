@@ -15,6 +15,7 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.*;
+import com.chess.backend.entity.api.daily_games.DailySeekItem;
 import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;

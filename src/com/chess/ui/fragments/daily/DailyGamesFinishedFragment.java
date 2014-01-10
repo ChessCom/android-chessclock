@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.DailyFinishedGameData;
+import com.chess.backend.entity.api.daily_games.DailyFinishedGameData;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;

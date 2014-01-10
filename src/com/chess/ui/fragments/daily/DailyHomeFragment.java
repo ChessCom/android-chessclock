@@ -13,7 +13,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.DailySeekItem;
+import com.chess.backend.entity.api.daily_games.DailySeekItem;
 import com.chess.backend.entity.api.ServersStatsItem;
 import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -78,6 +78,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		featuresList.add(new DailyItem(R.string.ic_challenge_friend, R.string.friends));
 		featuresList.add(new DailyItem(R.string.ic_board, R.string.archive));
 		featuresList.add(new DailyItem(R.string.ic_tournaments, R.string.tournaments));
+		featuresList.add(new DailyItem(R.string.ic_binoculars, R.string.open_challenges));
 	}
 
 	@Override
@@ -158,6 +159,8 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 			String tournamentsLink = RestHelper.getInstance().getTournamentsLink(getUserToken());
 			WebViewFragment webViewFragment = WebViewFragment.createInstance(tournamentsLink, getString(R.string.tournaments));
 			getActivityFace().openFragment(webViewFragment);
+		} else if (dailyItem.iconId == R.string.ic_binoculars) {
+			getActivityFace().openFragment(new DailyOpenChallengesFragment());
 		}
 	}
 

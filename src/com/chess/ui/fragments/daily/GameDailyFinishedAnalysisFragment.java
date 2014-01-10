@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.DailyFinishedGameData;
+import com.chess.backend.entity.api.daily_games.DailyFinishedGameData;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;

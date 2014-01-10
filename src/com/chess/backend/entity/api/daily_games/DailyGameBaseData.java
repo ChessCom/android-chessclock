@@ -1,4 +1,4 @@
-package com.chess.backend.entity.api;
+package com.chess.backend.entity.api.daily_games;
 
 import com.chess.statics.Symbol;
 

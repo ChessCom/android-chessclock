@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.entity.api.DailyChallengeItem;
+import com.chess.backend.entity.api.daily_games.DailyChallengeItem;
 import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.ui.interfaces.ItemClickListenerFace;

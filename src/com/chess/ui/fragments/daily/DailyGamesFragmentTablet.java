@@ -21,6 +21,10 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.*;
+import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
+import com.chess.backend.entity.api.daily_games.DailyCurrentGameItem;
+import com.chess.backend.entity.api.daily_games.DailyFinishedGameData;
+import com.chess.backend.entity.api.daily_games.DailyGamesAllItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -556,6 +560,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 								"0",     // V_TIMESTAMP,
 								"0",     // V_OPPONENT_OFFERED_DRAW,
 								"0",     // V_IS_OPPONENT_ONLINE,
+								"0",     // V_IS_OPPONENT_ON_VACATION,
+								"0",     // V_IS_TOURNAMENT_GAME,
 								"0",     // V_HAS_NEW_MESSAGE,
 								"99999"     // V_TIME_REMAINING
 						}

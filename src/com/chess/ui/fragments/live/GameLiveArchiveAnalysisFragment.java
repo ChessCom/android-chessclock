@@ -133,7 +133,7 @@ public class GameLiveArchiveAnalysisFragment extends GameDailyAnalysisFragment {
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-//		boardFace.setChess960(currentGame.getGameType() != RestHelper.V_GAME_CHESS); // i don't this we will use it here
+//		boardFace.setChess960(currentGame.getGameTypeId() != RestHelper.V_GAME_CHESS); // i don't this we will use it here
 //
 //		if (boardFace.isChess960()) {// we need to setup only position not made moves.
 //			// Daily games tournaments already include those moves in movesList

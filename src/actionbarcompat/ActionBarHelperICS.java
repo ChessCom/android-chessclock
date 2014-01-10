@@ -32,8 +32,9 @@ public class ActionBarHelperICS extends ActionBarHelperHoneycomb {
 
 	@Override
 	protected Context getActionBarThemedContext() {
-		if (mActivity != null && mActivity.getActionBar() != null) {
-			return mActivity.getActionBar().getThemedContext();
+		provideActionBar();
+		if (mActivity != null && actionBar != null) {
+			return actionBar.getThemedContext();
 		} else {
 			return null;
 		}

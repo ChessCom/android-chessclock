@@ -256,7 +256,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-//		boardFace.setChess960(currentGame.getGameType() != RestHelper.V_GAME_CHESS); / not used in live
+//		boardFace.setChess960(currentGame.getGameTypeId() != RestHelper.V_GAME_CHESS); / not used in live
 //
 //		if (boardFace.isChess960()) {// we need to setup only position not made moves.
 //			// Daily games tournaments already include those moves in movesList
