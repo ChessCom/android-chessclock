@@ -87,11 +87,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-
-//		LogMe.dl(TAG, "onStart: getAppData().isLiveChess() = " + getAppData().isLiveChess());
-//		LogMe.dl(TAG, "onStart: isLCSBound = " + isLCSBound);
+	protected void onResume() {
+		super.onResume();
 
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
@@ -100,18 +97,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			}
 			if (isLCSBound) {
 				onLiveServiceConnected();
+				executePausedActivityLiveEvents();
 			} else {
 //				Log.d(TAG, "onStart -> bindAndStartLiveService " + getClass());
 				bindAndStartLiveService();
 			}
-		}
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (isLCSBound) {
-			executePausedActivityLiveEvents();
 		}
 
 		if (liveService != null) { // if we return after shutdown procedure as started
@@ -152,6 +142,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 	}
 
+	/*
 	protected boolean checkIfLiveUserAlive() {
 		boolean alive = false;
 		if (isLCSBound) {
@@ -167,6 +158,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 		return alive;
 	}
+	*/
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {   // TODO refactor with showPreviousFragment logic
