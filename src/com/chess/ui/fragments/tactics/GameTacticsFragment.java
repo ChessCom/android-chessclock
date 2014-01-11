@@ -344,10 +344,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		if (trainerData.hintWasUsed() && boardFace.isLastTacticMoveCorrect()) { // used hint
 			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
 				final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[boardFace.getPly()]);
-				boardView.setMoveAnimator(move, true);
-				boardView.resetValidMoves();
-				boardFace.makeMove(move, true);
-				invalidateGameScreen();
+				if (move != null) {
+					boardView.setMoveAnimator(move, true);
+					boardView.resetValidMoves();
+					boardFace.makeMove(move, true);
+					invalidateGameScreen();
+				}
 			} else {
 				if (trainerData.isRetry() || noNetwork) {
 					String newRatingStr = Symbol.EMPTY;
@@ -373,10 +375,12 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			if (boardFace.getMovesCount() < boardFace.getTacticMoves().length - 1) { // if it's not last move, make comp move
 				final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[boardFace.getPly()]);
-				boardView.setMoveAnimator(move, true);
-				boardView.resetValidMoves();
-				boardFace.makeMove(move, true);
-				invalidateGameScreen();
+				if (move != null) {
+					boardView.setMoveAnimator(move, true);
+					boardView.resetValidMoves();
+					boardFace.makeMove(move, true);
+					invalidateGameScreen();
+				}
 			} else {
 				if (trainerData.isRetry() || trainerData.isCompleted() || noNetwork) {
 					String newRatingStr = Symbol.EMPTY;
@@ -527,6 +531,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		// get next valid move
 		final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[hintMoveNumber]);
+		if (move == null) {
+			return;
+		}
 		boardFace.setMovesCount(boardFace.getMovesCount() + hintMoveNumber);
 
 		// play move animation
@@ -583,6 +590,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		}
 		// get next valid move
 		final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[currentTacticAnswerCnt]);
+		if (move == null) {
+			return;
+		}
 		boardFace.setMovesCount(boardFace.getMovesCount() + currentTacticAnswerCnt);
 
 		// play move animation
@@ -657,6 +667,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			// get next valid move
 			final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[currentTacticAnswerCnt]);
+			if (move == null) {
+				return;
+			}
 			boardFace.setMovesCount(boardFace.getMovesCount() + currentTacticAnswerCnt);
 
 			// play move animation
@@ -1202,7 +1215,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private void loadOfflineTacticsBatch() {
 		if (getAppData().isDemoTacticsLoaded()) {
 			popupItem.setButtons(1);
-			showPopupDialog(R.string.ten_tactics_completed, DEMO_TACTICS_TAG);
+			showPopupDialog(R.string.available_tactics_completed, DEMO_TACTICS_TAG);
 		} else {
 			new GetOfflineTacticsBatchTask(new DemoTacticsUpdateListener(), getResources()).executeTask(R.raw.tactics10batch_new);
 			FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_GUEST);

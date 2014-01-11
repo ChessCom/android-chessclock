@@ -136,7 +136,7 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
 				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 			if (!isNetworkAvailable()) { // check only if live
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			} else {
 				createTopic();

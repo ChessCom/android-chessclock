@@ -57,10 +57,6 @@ public class LessonsItemsAdapter extends ItemsAdapter<LessonSingleItem> {
 		}
 	}
 
-	public void updateCompletedLessonAtPosition(int position) {
-		itemsList.get(position).setCompleted(true);
-	}
-
 	public boolean isAllLessonsCompleted() {
 		for (LessonSingleItem item : itemsList) {
 			if(!item.isCompleted()) {

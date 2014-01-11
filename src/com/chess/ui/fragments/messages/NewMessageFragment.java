@@ -160,7 +160,7 @@ public class NewMessageFragment extends CommonLogicFragment implements TextView.
 		if (actionId == EditorInfo.IME_ACTION_DONE || event.getAction() == KeyEvent.FLAG_EDITOR_ACTION
 				|| event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 			if (!isNetworkAvailable()) { // check only if live
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			} else {
 				createMessage();

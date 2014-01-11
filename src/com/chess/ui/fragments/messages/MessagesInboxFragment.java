@@ -192,7 +192,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 			super.updateListData(itemsList);
 
 			if (itemsList.size() == 0) {
-				emptyView.setText(R.string.no_data);
+				emptyView.setText(R.string.no_messages);
 				showEmptyView(true);
 				return;
 			}
@@ -226,7 +226,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.UNKNOWN_ERROR) {
-				emptyView.setText(R.string.no_data);
+				emptyView.setText(R.string.no_messages);
 			}
 			showEmptyView(true);
 		}

@@ -63,7 +63,8 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	private boolean isSmallScreen;
 	private boolean nexus4Kind;
 
-	public GameDiagramFragment() {}
+	public GameDiagramFragment() {
+	}
 
 	public static GameDiagramFragment createInstance(GameDiagramItem analysisItem) {
 		GameDiagramFragment fragment = new GameDiagramFragment();
@@ -233,6 +234,9 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 			}
 
 			final Move move = boardFace.convertMoveAlgebraic(notations[currentPosition]);
+			if (move == null) {
+				return;
+			}
 			boardView.setMoveAnimator(move, true);
 			boardView.resetValidMoves();
 			boardFace.makeMove(move, true);
@@ -256,10 +260,12 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		if (boardFace.isLastPuzzleMoveCorrect()) { // Correct
 			if (boardFace.getMovesCount() < boardFace.getPuzzleMoves().length - 1) { // if it's not last move, make comp move
 				final Move move = boardFace.convertMoveAlgebraic(boardFace.getPuzzleMoves()[boardFace.getPly()]);
-				boardView.setMoveAnimator(move, true);
-				boardView.resetValidMoves();
-				boardFace.makeMove(move, true);
-				invalidateGameScreen();
+				if (move != null) {
+					boardView.setMoveAnimator(move, true);
+					boardView.resetValidMoves();
+					boardFace.makeMove(move, true);
+					invalidateGameScreen();
+				}
 			} else {
 				showCorrectViews();
 			}
@@ -337,6 +343,9 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 		// get next valid move
 		final Move move = boardFace.convertMoveAlgebraic(boardFace.getPuzzleMoves()[hintMoveNumber]);
+		if (move == null) {
+			return;
+		}
 		// play move animation
 		boardView.setMoveAnimator(move, true);
 		boardView.resetValidMoves();
@@ -360,7 +369,6 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 	@Override
 	public void showAnswer() {
-
 		PuzzlesBoardFace boardFace = getBoardFace();
 
 		currentPuzzleAnswerCnt = boardFace.getPly();
@@ -376,6 +384,9 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		}
 		// get next valid move
 		final Move move = boardFace.convertMoveAlgebraic(boardFace.getPuzzleMoves()[currentPuzzleAnswerCnt]);
+		if (move == null) {
+			return;
+		}
 		boardFace.setMovesCount(boardFace.getPly() + currentPuzzleAnswerCnt);
 
 		// play move animation
@@ -411,6 +422,9 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 			// get next valid move
 			final Move move = boardFace.convertMoveAlgebraic(boardFace.getPuzzleMoves()[currentPuzzleAnswerCnt]);
+			if (move == null) {
+				return;
+			}
 			boardFace.setMovesCount(boardFace.getPly() + currentPuzzleAnswerCnt);
 
 			// play move animation

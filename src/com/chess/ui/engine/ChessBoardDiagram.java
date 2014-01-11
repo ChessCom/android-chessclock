@@ -52,6 +52,6 @@ public class ChessBoardDiagram extends ChessBoard implements PuzzlesBoardFace {
 
 		Move lastUsersMove = convertMoveAlgebraic(getLastMoveSAN());
 		Move tacticMove = convertMoveAlgebraic(puzzleMoves[lastIndex]);
-		return lastUsersMove.equals(tacticMove);
+		return lastUsersMove != null && tacticMove != null && lastUsersMove.equals(tacticMove);
 	}
 }

@@ -69,7 +69,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 		int id = view.getId();
 		if (id == R.id.signinBtn) {
 			if (!isNetworkAvailable()) {
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 			} else {
 				signInUser();
@@ -103,7 +103,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 		if (actionId == EditorInfo.IME_ACTION_DONE || keyEvent.getAction() == KeyEvent.FLAG_EDITOR_ACTION
 				|| keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 			if (!isNetworkAvailable()) {
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 			} else {
 				signInUser();

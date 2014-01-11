@@ -86,18 +86,18 @@ public class FenHelper {
 		StringBuilder sb = new StringBuilder(fen);
 
 		// add  En passant target square
-		String enPassantStr = "-";
+		String enPassantStr = Symbol.MINUS;
 		if (board.enPassant != NOT_SET) {
 			enPassantStr = getEnpassantMoveStr(board);
 		}
 
-		sb.append(" ").append(enPassantStr);
+		sb.append(Symbol.SPACE).append(enPassantStr);
 
 		// add halfmove or ply
-		sb.append(" ").append(board.fifty);
+		sb.append(Symbol.SPACE).append(board.fifty);
 
 		// add fullmove
-		sb.append(" ").append(board.ply);
+		sb.append(Symbol.SPACE).append(board.ply);
 
 		Log.d("TEST", "FULL FEN = " + sb.toString());
 		return sb.toString();
@@ -136,45 +136,53 @@ public class FenHelper {
 		// filling last line
 		fillTheFenLine(sb, line, true);
 
+		// add divider
+		sb.append(Symbol.SPACE);
+
 		// add active color
 		if (board.isWhiteToMove()) {
-			sb.append(" w");
+			sb.append("w");
 		} else {
-			sb.append(" b");
+			sb.append("b");
 		}
+
+		// add divider
+		sb.append(Symbol.SPACE);
 
 		// add castling availability
 		int whiteCastling = castlingAvailabilityForWhite(board);
-
-		switch (whiteCastling) {
-			case NO_CASTLING:
-				sb.append(" -");
-				break;
-			case KINGSIDE_CASTLING:
-				sb.append(" K");
-				break;
-			case QUEENSIDE_CASTLING:
-				sb.append(" Q");
-				break;
-			case BOTH_CASTLING:
-				sb.append(" KQ");
-				break;
-		}
 		int blackCastling = castlingAvailabilityForBlack(board);
+		// If neither side can castle, this is "-".
+		if (whiteCastling == NO_CASTLING && blackCastling == NO_CASTLING) {
+			sb.append(Symbol.MINUS);
+		} else {
+			// Otherwise, this has one or more letters: "K" (White can castle kingside), "Q" (White can castle queenside),
+			switch (whiteCastling) {
+				case KINGSIDE_CASTLING:
+					sb.append("K");
+					break;
+				case QUEENSIDE_CASTLING:
+					sb.append("Q");
+					break;
+				case BOTH_CASTLING:
+					sb.append("KQ");
+					break;
+			}
 
-		switch (blackCastling) {
-			case NO_CASTLING:
-				sb.append("-");
-				break;
-			case KINGSIDE_CASTLING:
-				sb.append("k");
-				break;
-			case QUEENSIDE_CASTLING:
-				sb.append("q");
-				break;
-			case BOTH_CASTLING:
-				sb.append("kq");
-				break;
+			// "k" (Black can castle kingside), and/or "q" (Black can castle queenside).
+			switch (blackCastling) {
+				case NO_CASTLING:
+					break;
+				case KINGSIDE_CASTLING:
+					sb.append("k");
+					break;
+				case QUEENSIDE_CASTLING:
+					sb.append("q");
+					break;
+				case BOTH_CASTLING:
+					sb.append("kq");
+					break;
+			}
 		}
 
 //		Log.d("TEST", "FEN = " + sb.toString());

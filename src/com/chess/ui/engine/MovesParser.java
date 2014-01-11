@@ -198,7 +198,7 @@ public class MovesParser {
 
 		int i = fileToIntPosition(moveTo[0]);
 		int j = rankToIntPosition(moveTo[1]);
-		int from = 0;
+//		int from = 0;
 		int squareTo = j * 8 - i;
 
 		int pieceType = PAWN;
@@ -306,7 +306,8 @@ public class MovesParser {
 			}
 		}
 
-		return new int[]{from, squareTo, promotion};
+//		return new int[]{from, squareTo, promotion};  // means that real move was not found!
+		return null;
 	}
 
 	int fileToIntPosition(String letter) {

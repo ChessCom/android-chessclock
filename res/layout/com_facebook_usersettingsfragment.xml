@@ -62,8 +62,8 @@
             android:id="@+id/closeFacebookSettingsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/close"
-            style="@style/Button.Facebook"
+            android:text="@string/ic_close"
+            style="@style/GlyphIcon.Big"
             android:visibility="visible"
             android:padding="2dip"
             />

@@ -69,6 +69,13 @@ public class ChessBoard implements BoardFace {
 	public static final String TAG = "ChessBoard";
 	public static final int SQUARES_CNT = 64;
 	private static final int INVALID_POSITION = -1;
+	// FEN fields positions
+	private static final int ACTIVE_COLOR = 1;
+	private static final int CASTLING_AVAILABILITY = 2;
+	private static final int EN_PASSANT = 3;
+	private static final int HALF_MOVE_CLOCK = 4;
+	private static final int FULL_MOVE_NUMBER = 5;
+
 	protected final MovesParser movesParser;
 
 
@@ -736,10 +743,20 @@ public class ChessBoard implements BoardFace {
 		}
 	}
 
+	/**
+	 * Sometimes we have FEN that already contains made move,
+	 * and that move can not be parsed, so we return null here
+	 * @param move to make
+	 * @return either move that was made, or null if move wasn't recognized
+	 */
 	@Override
 	public Move convertMoveAlgebraic(String move) {
 		int[] moveFT = movesParser.parse(this, move);
-		return convertMove(moveFT);
+		if (moveFT != null) {
+			return convertMove(moveFT);
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -752,10 +769,11 @@ public class ChessBoard implements BoardFace {
 	public Move convertMove(int[] moveFT) {
 		Move move;
 		if (moveFT.length == 4) {
-			if (moveFT[3] == Move.CASTLING_MASK)
+			if (moveFT[3] == Move.CASTLING_MASK) {
 				move = new Move(moveFT[0], moveFT[1], 0, Move.CASTLING_MASK);
-			else
+			} else {
 				move = new Move(moveFT[0], moveFT[1], moveFT[2], moveFT[3]);
+			}
 		} else {
 			move = new Move(moveFT[0], moveFT[1], 0, 0);
 		}
@@ -765,7 +783,7 @@ public class ChessBoard implements BoardFace {
 	@Override
 	public boolean makeMove(String newMove, boolean playSound) {
 		final Move move = convertMoveAlgebraic(newMove);
-		return makeMove(move, playSound);
+		return move != null && makeMove(move, playSound);
 	}
 
 	/**
@@ -1184,7 +1202,7 @@ public class ChessBoard implements BoardFace {
 				updateEnPassant(move.to - 8);
 			}
 		} else {
-			updateEnPassant(-1);
+			updateEnPassant(NOT_SET);
 		}
 
 		increaseHalfMoveClock(move);
@@ -1886,13 +1904,20 @@ public class ChessBoard implements BoardFace {
 					.replaceAll("[ ]{2,}", Symbol.SPACE)
 					.trim().split(Symbol.SPACE);
 
-			setMovesCount(moves.length);
+			int madeMovesCnt = 0;
 			for (String move : moves) {
 //				Log.d("TEST", " before move = " + move + " board = " + this.toString());
 
-				makeMove(move, false);
+				boolean moveMade = makeMove(move, false);
+				if (!moveMade) {
+					return false;
+				} else {
+					madeMovesCnt++;
+				}
 //				Log.d("TEST", " after move " + move + " board = " + this.toString());
 			}
+			setMovesCount(madeMovesCnt);
+
 			return true;
 		} else {
 			setMovesCount(0);
@@ -2004,11 +2029,19 @@ public class ChessBoard implements BoardFace {
 			setupCastlingPositions(fen);
 
 			fenHelper.parseFen(fen, this);
-			String[] tmp = fen.split(Symbol.SPACE);
-			if (tmp.length > 1) {
+
+			String[] fields = fen.split(Symbol.SPACE);
+			// setup additional fields if exist
+			if (fields.length > 1) {
 				// Active color. "w" means white moves next, "b" means black. // http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
-				if (!tmp[1].trim().equals(FenHelper.WHITE_TO_MOVE)) {
+				if (!fields[ACTIVE_COLOR].trim().equals(FenHelper.WHITE_TO_MOVE)) {
 					setReside(true);
+				}
+
+				// set enPassant move
+				String enPassant = fields[EN_PASSANT].toUpperCase();
+				if (!enPassant.equals(Symbol.MINUS)) {
+					updateEnPassant(Board.valueOf(enPassant).ordinal());
 				}
 			}
 		}

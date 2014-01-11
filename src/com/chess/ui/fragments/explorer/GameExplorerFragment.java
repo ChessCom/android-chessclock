@@ -162,6 +162,9 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 		{
 			// get next valid move
 			final Move move = boardFace.convertMoveAlgebraic(moveStr);
+			if (move == null) {
+				return;
+			}
 			boardFace.setMovesCount(boardFace.getMovesCount());
 
 			// play move animation

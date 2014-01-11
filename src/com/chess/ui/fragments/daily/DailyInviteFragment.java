@@ -98,7 +98,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		if(challengeItem.getGameTypeId() == RestHelper.V_GAME_CHESS_960) {
-			setTitle(R.string.daily_960);
+			setTitle(R.string.chess_960);
 		} else {
 			setTitle(R.string.daily);
 		}

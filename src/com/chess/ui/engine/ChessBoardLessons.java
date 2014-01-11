@@ -51,6 +51,10 @@ public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 		takeBack();
 		Move userLastMove = convertMoveAlgebraic(lastUserMove);
 		Move validLessonMove = convertMoveAlgebraic(validMove);
+
+		if (userLastMove == null || validLessonMove == null) {
+			return false;
+		}
 		// step forward to the normal, current state
 		takeNext(false);
 		return validLessonMove.equals(userLastMove);

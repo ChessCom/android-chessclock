@@ -157,7 +157,7 @@ public class LiveChessService extends Service {
 		// Creates the PendingIntent
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, GO_TO_LIVE, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		Bitmap bigImage = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_stat_chess)).getBitmap();
-		String title = getString(R.string.live_chess_connected);
+		String title = getString(R.string.live_chess_connection);
 		String body = getString(R.string.live_chess_connected_description);
 
 		notificationBuilder.setContentTitle(title)

@@ -95,7 +95,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 			}
 			if (isLCSBound) {
@@ -322,7 +322,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 //		LogMe.dl(TAG, "connectLcc: isLCSBound = " + isLCSBound);
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 				return;
 			}

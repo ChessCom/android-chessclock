@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.lessons;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,8 +21,11 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.SaveLessonsCourseTask;
+import com.chess.model.PopupItem;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.LessonsItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 
@@ -38,6 +42,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 	protected static final String COURSE_ID = "course_id";
 	protected static final String CATEGORY_ID = "category_id";
+	private static final String COURSE_COMPLETE_POPUP = "course complete popup";
 
 	protected CourseUpdateListener courseUpdateListener;
 	protected SaveCourseListener courseSaveListener;
@@ -53,6 +58,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	protected Button upgradeLessonsBtn;
 	protected TextView lessonsUpgradeMessageTxt;
 	protected View upgradeBtn;
+	private PopupCustomViewFragment completedPopupFragment;
 
 	public LessonsCourseFragment() {
 	}
@@ -96,10 +102,9 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
+		getActivityFace().showActionMenu(R.id.menu_share, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
-
-		setTitlePadding(ONE_ICON);
 	}
 
 	@Override
@@ -194,6 +199,13 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			} else {
 				getActivityFace().openFragment(new UpgradeFragmentTablet());
 			}
+		} else if (view.getId() == R.id.shareBtn) {
+			if (completedPopupFragment != null) {
+				completedPopupFragment.dismiss();
+			}
+
+			submitShareIntent(getString(R.string.course_share_message,
+					courseItem.getCourseName()));
 		}
 	}
 
@@ -203,8 +215,24 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			case R.id.menu_search_btn:
 				getActivityFace().openFragment(new LessonsSearchFragment());
 				break;
+			case R.id.menu_share:
+				if (courseItem == null) {
+					showToast(R.string.nothing_to_share);
+					return true;
+				}
+				submitShareIntent(getString(R.string.course_share_message,
+						courseItem.getCourseName()));
+				break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void submitShareIntent(String message) {
+		Intent shareIntent = new Intent(Intent.ACTION_SEND);
+		shareIntent.setType("text/plain");
+		shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_completed_course_title));
+		shareIntent.putExtra(Intent.EXTRA_TEXT, message);
+		startActivity(Intent.createChooser(shareIntent, getString(R.string.share_course)));
 	}
 
 	protected class CourseUpdateListener extends ChessLoadUpdateListener<LessonCourseItem> {
@@ -256,6 +284,42 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			course.setCourseCompleted(true);
 
 			DbDataManager.saveCourseListItemToDb(getContentResolver(), course);
+
+			if (getAppData().isUserSawCompletePopupForCourse(courseId)) {
+				return;
+			}
+
+			// show Course Completed Popup
+			View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lesson_course_complete_popup, null, false);
+			popupView.findViewById(R.id.shareBtn).setOnClickListener(this);
+
+			TextView completeTitleTxt = (TextView) popupView.findViewById(R.id.completeTitleTxt);
+			TextView lessonPopupTitleTxt = (TextView) popupView.findViewById(R.id.lessonTitleTxt);
+			TextView lessonPercentTxt = (TextView) popupView.findViewById(R.id.lessonPercentTxt);
+			TextView lessonRatingTxt = (TextView) popupView.findViewById(R.id.lessonRatingTxt);
+
+			int scoreForCourse = 0;
+
+			int totalScore;
+			for (LessonSingleItem singleItem : courseItem.getLessons()) {
+				scoreForCourse += singleItem.getLastScore();
+			}
+
+			totalScore = scoreForCourse / courseItem.getLessons().size();
+
+			String courseCompletedStr = getString(R.string.course) + Symbol.SPACE + getString(R.string.completed);
+			completeTitleTxt.setText(courseCompletedStr);
+			lessonPopupTitleTxt.setText(courseItem.getCourseName());
+			lessonPercentTxt.setText(String.valueOf(totalScore) + Symbol.PERCENT);
+			lessonRatingTxt.setText(String.valueOf(getAppData().getUserLessonsRating()));
+
+			PopupItem popupItem = new PopupItem();
+			popupItem.setCustomView(popupView);
+
+			completedPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+			completedPopupFragment.show(getFragmentManager(), COURSE_COMPLETE_POPUP);
+
+			getAppData().setUserSawCompletePopupForCourse(courseId, true);
 		}
 	}
 

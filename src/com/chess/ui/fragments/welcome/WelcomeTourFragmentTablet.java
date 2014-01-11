@@ -182,7 +182,7 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 			}
 
 			if (!isNetworkAvailable()) {
-				popupItem.setPositiveBtnId(R.string.wireless_settings);
+				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 				return;
 			}

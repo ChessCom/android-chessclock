@@ -98,7 +98,7 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 			case LESSONS_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.learn_lessons)), LESSONS_TAG);
+				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.use_lessons)), LESSONS_TAG);
 				break;
 			case VIDEOS_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);

@@ -926,6 +926,14 @@ public class AppData {
 		setBooleanValue(USER_SAW_HELP_FOR_QUICK_SCROLL, value);
 	}
 
+	public boolean isUserSawCompletePopupForCourse(int courseId) {
+		return getBooleanValue(USER_SAW_COURSE_COMPLETED_POPUP + courseId, false);
+	}
+
+	public void setUserSawCompletePopupForCourse(int courseId, boolean value) {
+		setBooleanValue(USER_SAW_COURSE_COMPLETED_POPUP + courseId, value);
+	}
+
 	public boolean isFirstInitFinished() {
 		return getBooleanValue(FIRST_INIT_FINISHED, false);
 	}

@@ -467,14 +467,24 @@ public class AppUtils {
 		StringBuilder sb = new StringBuilder();
 
 		if (days > 0) {
-			sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.days)).append(Symbol.SPACE);
+			if (days > 1) {
+				sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.days)).append(Symbol.SPACE);
+			} else {
+				sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.day)).append(Symbol.SPACE);
+			}
 		} else if (hours > 0) {
-			if (!sb.toString().trim().equals(Symbol.EMPTY))
+			if (!sb.toString().trim().equals(Symbol.EMPTY)) {
 				sb.append(Symbol.SPACE);
-			sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hours)).append(Symbol.SPACE);
+			}
+			if (hours > 1) {
+				sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hours)).append(Symbol.SPACE);
+			} else {
+				sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hour)).append(Symbol.SPACE);
+			}
 		} else if (minutes > 0) {
-			if (!sb.toString().trim().equals(Symbol.EMPTY))
+			if (!sb.toString().trim().equals(Symbol.EMPTY)) {
 				sb.append(Symbol.SPACE);
+			}
 			sb.append(context.getString(R.string.min_arg, minutes));
 		}
 

@@ -25,11 +25,13 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadLessonItemTask;
 import com.chess.db.tasks.SaveLessonsLessonTask;
+import com.chess.model.GameAnalysisItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLessons;
 import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.Move;
+import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
@@ -63,6 +65,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	public static final String BOLD_DIVIDER = "##";
 
 	private static final long DRAWER_UPDATE_DELAY = 100;
+	private static final long SHOW_FIRST_MOVE_DELAY = 700;
 	private static final long SHOW_ANSWER_DELAY = 1700;
 
 
@@ -75,7 +78,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	//	private static final int ID_VS_COMPUTER = 1;
 	protected static final int ID_SKIP_LESSON = 1;
 	protected static final int ID_SHOW_ANSWER = 2;
-	protected static final int ID_SETTINGS = 3;
+	protected static final int ID_REVIEW_LESSON = 3;
+	protected static final int ID_SETTINGS = 4;
+
 	/* When user use hints he decrease total points by values below. Values are given in percents*/
 	protected static final float HINT_1_COST = 2f;
 	protected static final float HINT_2_COST = 6f;
@@ -83,6 +88,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private static final float WRONG_MOVE_COST = 40f;
 	private static final float ANALYSIS_COST = 4f;
 	private static final float ANSWER_COST = 100f;
+
 	public static final String FLOAT_FORMAT = "%.1f";
 	public static final String SUBMIT_FLOAT_FORMAT = "%.2f";
 
@@ -93,7 +99,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	protected int lessonId;
 	protected long courseId;
-	private boolean isAnalysis;
 
 	private ControlsLessonsView controlsView;
 	protected ChessBoardLessonsView boardView;
@@ -260,6 +265,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			return;
 		}
 
+		if (userLesson.isLessonCompleted()) {
+			optionsArray.put(ID_REVIEW_LESSON, getString(R.string.review_lesson));
+		} else {
+			optionsArray.remove(ID_REVIEW_LESSON);
+		}
+
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 	}
@@ -342,12 +353,13 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public void switch2Analysis() {
-		isAnalysis = !isAnalysis;
-		if (!isAnalysis) {
-			restoreGame();
-		}
-		getBoardFace().setAnalysis(isAnalysis);
-		getControlsView().showDefault();
+		GameAnalysisItem analysisItem = new GameAnalysisItem();
+		analysisItem.setGameType(RestHelper.V_GAME_CHESS);
+		analysisItem.setFen(getBoardFace().generateFullFen());
+		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
+		analysisItem.copyLabelConfig(labelsConfig);
+
+		getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
 	}
 
 	@Override
@@ -615,7 +627,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	@Override
 	public void restart() {
 		adjustBoardForGame();
-		getControlsView().showDefault();
+		if (getMentorPosition().isFreeMove()) {
+			getControlsView().showCorrect();
+		} else {
+			getControlsView().showDefault();
+		}
 	}
 
 	@Override
@@ -687,8 +703,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private void submitShareIntent(String message) {
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);
 		shareIntent.setType("text/plain");
-		shareIntent.putExtra(Intent.EXTRA_TEXT, message);
 		shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_completed_lesson_title));
+		shareIntent.putExtra(Intent.EXTRA_TEXT, message);
 		startActivity(Intent.createChooser(shareIntent, getString(R.string.share_lesson)));
 	}
 
@@ -699,6 +715,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		} else if (code == ID_SHOW_ANSWER) {
 
 			showAnswer();
+		} else if (code == ID_REVIEW_LESSON) {
+			currentLearningPosition = 0;
+			userLesson.setCurrentPosition(0);
+			restart();
 
 //		} else if (code == ID_KEY_SQUARES) {
 //			showToast("key squares");
@@ -713,7 +733,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 //			showToast("correct piece");
 
 //		} else if (code == ID_VS_COMPUTER) {
-//			getActivityFace().openFragment(GameCompFragment.createInstance()); // TODO pass FEN here
+//			getActivityFace().openFragment(GameCompFragment.createInstance(getBoardFace().generateFullFen()));
 		} else if (code == ID_ANALYSIS_BOARD) {
 			getCurrentCompleteItem().analysisUsed = true;
 			switch2Analysis();
@@ -740,11 +760,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		getBoardFace().setupBoard(getMentorPosition().getFen());
 
-		handler.postDelayed(showTacticMoveTask, SHOW_ANSWER_DELAY);
+		handler.postDelayed(showNextMoveTask, SHOW_FIRST_MOVE_DELAY);
 		getCurrentCompleteItem().answerWasShown = true;
 	}
 
-	private Runnable showTacticMoveTask = new Runnable() {
+	private Runnable showNextMoveTask = new Runnable() {
 		@Override
 		public void run() {
 			handler.removeCallbacks(this);
@@ -756,6 +776,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 			// get next valid move
 			final Move move = boardFace.convertMoveAlgebraic(moveToShow);
+			if (move == null) {
+				return;
+			}
 
 			// play move animation
 			boardView.setMoveAnimator(move, true);
@@ -912,7 +935,12 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		// based on FEN we detect which player is next to move
 		boolean whiteToMove = positionToSolve.getFen().contains(FenHelper.WHITE_TO_MOVE);
+		// fill labelsConfig for analysis mode
 		labelsConfig.userSide = whiteToMove ? ChessBoard.WHITE_SIDE : ChessBoard.BLACK_SIDE;
+		labelsConfig.topPlayerName = getString(R.string.comp);
+		labelsConfig.topPlayerRating = Symbol.EMPTY;
+		labelsConfig.bottomPlayerName = getUsername();
+		labelsConfig.bottomPlayerRating = String.valueOf(getAppData().getUserLessonsRating());
 
 		invalidateGameScreen();
 		getControlsView().enableGameControls(true);
@@ -931,6 +959,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		// add currentLearningPosition in case we load from DB
 		solvedPositionsList.add(currentLearningPosition);
+
+		if (slidingDrawer.isOpened() && getMentorPosition().isFreeMove()) {
+			controlsView.showCorrect();
+		}
 	}
 
 	private void setDescriptionText(String descriptionStr) {
@@ -1007,14 +1039,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	private void showCompletedPopup(LessonRatingChangeItem.Data ratingChange) {
 		//	Move comment --> [next] --> Lesson result --> [next] --> Start next lesson
-		{ // show Lesson Complete! Popup
-//			View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lesson_complete_popup, null, false);
-//			popupView.findViewById(R.id.shareBtn).setOnClickListener(this);
-//
-//			TextView lessonPopupTitleTxt = (TextView) popupView.findViewById(R.id.lessonTitleTxt);
-//			TextView lessonPercentTxt = (TextView) popupView.findViewById(R.id.lessonPercentTxt);
-//			TextView lessonRatingTxt = (TextView) popupView.findViewById(R.id.lessonRatingTxt);
-//			TextView lessonRatingChangeTxt = (TextView) popupView.findViewById(R.id.lessonRatingChangeTxt);
+		{ // show Lesson Complete! View
 
 			float pointsForLesson = 0;
 			if (!lessonItem.isLessonCompleted() && ratingChange != null) { // For completed lesson ratingChange is null
@@ -1022,7 +1047,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				updatedUserRating += pointsForLesson;
 			}
 
-//			lessonPopupTitleTxt.setText(lessonItem.getLesson().getName());
 			lessonPercentTxt.setText(String.valueOf(scorePercent) + Symbol.PERCENT);
 			lessonRatingTxt.setText(String.valueOf(updatedUserRating));
 			if (!lessonItem.isLessonCompleted()) {
@@ -1033,11 +1057,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				lessonItem.setLessonCompleted(true);
 			}
 
-//			PopupItem popupItem = new PopupItem();   // TODO check popup for completed Course
-//			popupItem.setCustomView(popupView);
-
-//			completedPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-//			completedPopupFragment.show(getFragmentManager(), LESSON_COMPLETE_TAG);
 			showLessonsResult = true;
 		}
 	}
@@ -1086,7 +1105,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 					if (getActivity() == null) {
 						return;
 					}
-					// TODO adjust properly for tablets later
+
 					int statusBarHeight = getStatusBarHeight();
 					int width = getResources().getDisplayMetrics().widthPixels;
 					int height = getResources().getDisplayMetrics().heightPixels;
@@ -1131,6 +1150,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			optionsArray.put(ID_ANALYSIS_BOARD, getString(R.string.analysis));
 
 			optionsArray.put(ID_SHOW_ANSWER, getString(R.string.show_answer));
+			optionsArray.put(ID_REVIEW_LESSON, getString(R.string.review_lesson));
 //			optionsArray.put(ID_VS_COMPUTER, getString(R.string.vs_computer));
 			optionsArray.put(ID_SKIP_LESSON, getString(R.string.skip_lesson));
 

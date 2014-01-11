@@ -87,7 +87,7 @@
 	<string name="vacation_off">Not on Vacation</string> <!--Checkbox if user is not on vacation-->
     <string name="warning">Warning!</string> <!--Popup message title-->
     <string name="account_error">Account error.</string>
-    <string name="server_stopped">Server stopped.</string>
+    <string name="server_stopped">Server Unavailable</string>
 
     <!--In Game controls and misc-->
 	<string name="messages">Messages</string>
@@ -120,7 +120,7 @@
     <!--Tactics-->
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="ten_tactics_completed">Demo tactics completed!</string>
+    <string name="available_tactics_completed">All Available Tactics Completed</string>
     <!--<string name="offline_mode">Offline mode</string>-->
     <string name="you_are_offline">You are offline</string>
     <string name="correct">Correct</string>  <!--Popup Title-->
@@ -145,9 +145,9 @@
 	<string name="validateUsername">Your Username must be between 3 and 20 characters long, and only contain letters, numbers, underscores, and dashes. Spaces are not allowed.</string>
 	<string name="validatePassword">Your password must be between 6 and 20 characters long!</string>
 
-	<string name="image">image</string>  <!--Content description-->
+	<string name="image">Image</string>  <!--Content description-->
     <string name="no_network">No Network</string> <!--Popup Title-->
-    <string name="wireless_settings">Wireless Settings</string>
+    <string name="check_connection">Check Connection</string>
     <string name="too_short">Too short</string> <!--Error notification-->
     <string name="can_not_be_empty">Can\'t be empty</string> <!--Field can't be empty-->
     <string name="no_chess_account_signup_please">You have no Chess.com account, sign up, please.</string>
@@ -216,7 +216,6 @@
 	<string name="new_by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Terms of Service</a>]]></string>
 	<string name="new_create_chess_profile">Create Your Online Chess Profile</string>
 	<string name="daily">Daily</string>
-	<string name="daily_960">Daily 960</string>
 	<string name="improve_game_with_lessons">Improve your game with unlimited lessons</string>
 	<string name="improve_game_with_videos">Improve your game with unlimited videos</string>
 
@@ -237,7 +236,7 @@
 	<string name="finished_games">Finished Games</string>
 	<string name="feedback_mail_body">Please don\'t edit the information below</string>
 
-	<string name="no_games">No Games, yet.</string>
+	<string name="no_games">No Games</string>
 
 	<!--DailyGames-->
 	<string name="new_my_move">My Move</string>
@@ -325,12 +324,13 @@
 	<string name="notifications">Notifications</string>
 	<string name="games">Games</string>
 
-	<string name="live_chess_connected">Live Chess Connected</string>
+	<string name="live_chess_connection">Live Chess Connection</string>
 	<string name="live_chess_connected_description">Shutdown after 30 sec idle</string>
 
 	<string name="share_game">Share Game</string>
 	<string name="share_pgn">Share PGN</string>
 	<string name="share_lesson">Share Lesson</string>
+	<string name="share_course">Share Course</string>
 	<string name="chess">Chess</string>
 	<string name="via_chesscom">via @Chesscom</string>
 
@@ -417,7 +417,7 @@
 	<string name="you_lose">You Lost!</string>
 	<string name="you_must_have_account_to">You must have an account to %s</string>
 	<string name="solve_tactics_puzzles">solve Tactics &amp; Puzzles</string>
-	<string name="learn_lessons">learn Lessons</string>
+	<string name="use_lessons">use Lessons</string>
 	<string name="watch_videos">watch Video Lessons</string>
 	<string name="interactive_lessons">Interactive Lessons</string>
 	<string name="tactics_and_puzzles"><![CDATA[Tactics & Puzzles]]></string>
@@ -431,7 +431,7 @@
 	<string name="invite_from_contacts">Invite From Contacts</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Contacts</string>
-	<string name="facebook_invite_friend_to_play">\"Let\'s play Chess via Chess.com android app\"</string>
+	<string name="facebook_invite_friend_to_play">Let\'s play chess! You can play online at Chess.com, or on mobile with Android or iPhone/iPad.</string>
 	<string name="add_friend_request_message">Let\'s play!</string>
 	<string name="online_today">Online today</string>
 	<string name="last_played">Online %s</string>
@@ -443,14 +443,14 @@
 	<string name="ago_arg">%s ago</string>
 	<string name="request_sent">Request sent</string>
 	<string name="username_not_found">Username not found</string>
-	<string name="you_have_not_added_friends_yet">You haven\'t added friends yet</string>
+	<string name="you_have_not_added_friends_yet">"You don't have any friends yet. Add some!"</string>
 	<string name="new_friend_request">New Friend Request</string>
 	<string name="new_chat_message">New Chat Message</string>
 	<string name="new_challenge">New Challenge</string>
 
 	<!--Profile-->
 	<string name="unable_to_select_this_photo">Unable to pick this photo</string>
-	<string name="hang_on">Hang on…</string>
+	<string name="hang_on">Processing…</string>
 	<string name="about">About</string>
 	<string name="member_since_">Member Since: %s</string>
 	<string name="birthday_">Birthday:  %s</string>
@@ -460,7 +460,7 @@
 
 	<!--Videos-->
 	<string name="video_curriculum">Video Curriculum</string>
-	<string name="no_data">No Data</string>
+	<!--<string name="no_data">No Data</string>-->
 	<string name="posts_arg">%s Posts</string>
 	<string name="quote">Quote</string>
 	<string name="new_topic">New Topic</string>
@@ -479,14 +479,17 @@
 	<string name="skip_lesson">Skip Lesson</string>
 	<string name="hint_arg">Hint %s:</string>
 	<string name="your_lesson_rating">Your Lesson Rating:</string>
+	<string name="your_course_rating">Your Course Rating:</string>
 	<string name="score_">Score:</string>
-	<string name="lesson_complete">Lesson Complete!</string>
 	<string name="rating_">Rating:</string>
+	<string name="course">Course</string>
 	<string name="lessons_completed">Lessons Completed</string>
 	<string name="courses_completed">Courses Completed</string>
 	<string name="lesson_share_message">Check out this lesson @Chess.com %1$s </string>
+	<string name="course_share_message">Check out this course @Chess.com %1$s </string>
 	<string name="lesson_completed_message">I\'ve just completed lesson @Chess.com %1$s , and gained %2$s score</string>
-	<string name="share_completed_lesson_title">Chess.com Mentor Lesson completed!</string>
+	<string name="share_completed_lesson_title">Chess.com Lesson completed!</string>
+	<string name="share_completed_course_title">Chess.com Course completed!</string>
 	<string name="lessons_limit_reached_message">Lesson limit reached for the day. Upgrade now to improve your game with unlimited lessons.</string>
 	<string name="resume_lesson">Resume Lesson</string>
 
@@ -536,7 +539,7 @@
 	<string name="share_video">Share Video</string>
 	<string name="views_arg">%s views</string>
 
-	<string name="your_game_is_over">Your game is over</string>
+	<string name="your_game_is_over">Your Game is Over</string>
 	<string name="switch_sides">Switch Sides</string>
 
 	<!--Moves Explorer-->
@@ -576,8 +579,7 @@
 	<string name="no_messages">No Messages</string>
 	<string name="select_style">Select Style</string>
 	<string name="password_changed">Password Changed</string>
-	<string name="close">close</string>
-	<string name="required">required</string>
+	<string name="required">Required</string>
 	<string name="you">You</string>
 
 	<string name="add">Add</string>
@@ -589,7 +591,7 @@
 	<string name="total_games">Total Games</string>
 	<string name="help_toast_for_daily_games">Pull Down To Update Games</string>
 	<string name="help_toast_for_quick_in_game_navigation">Hold \u003c or \u003e for fast scrolling</string>
-	<string name="not_connected_yet">Not connected yet</string>
+	<string name="not_connected_yet">Still Connecting…</string>
 	<string name="unable_to_send_challenge">Unable to send Challenge</string>
 	<string name="rating_range">Rating Range:</string>
 	<string name="show_mini_boards">Show Mini Boards</string>
@@ -602,5 +604,6 @@
 	<string name="ignore">Ignore</string>
 	<string name="do_you_love_app">Do you love Chess.com app?</string>
 	<string name="auto_queen">Auto-Queen</string>
+	<string name="review_lesson">Review Lesson</string>
 
 </resources>

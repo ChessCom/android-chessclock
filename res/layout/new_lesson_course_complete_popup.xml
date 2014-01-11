@@ -13,7 +13,7 @@
 		android:layout_gravity="center"
 		android:textSize="@dimen/game_end_popup_text_size"
 		android:textColor="@color/new_subtitle_dark_grey"
-		android:text="@string/lesson_complete"
+		android:text="Title"
 		android:paddingBottom="35dip"
 		custom:ttf="Bold" />
 
@@ -66,7 +66,7 @@
 		android:layout_gravity="center"
 		android:textColor="@color/new_author_dark_grey"
 		android:textSize="17sp"
-		android:text="@string/your_lesson_rating"
+		android:text="@string/your_course_rating"
 		custom:ttf="Bold" />
 
 	<LinearLayout

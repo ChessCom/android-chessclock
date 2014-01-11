@@ -12,7 +12,7 @@
 		android:id="@+id/emptyView"
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
-		android:text="@string/no_data"
+		android:text="@string/no_games"
 		android:gravity="center"
 		android:layout_centerInParent="true"
 		android:textSize="20sp"

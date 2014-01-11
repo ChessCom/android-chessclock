@@ -3,7 +3,6 @@ package com.chess.ui.fragments.game;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,6 +96,9 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		if (need2update) {
 			adjustBoardForGame();
 			need2update = false;
+		} else {
+			controlsView.enableGameControls(true);
+			boardView.lockBoard(false);
 		}
 	}
 
@@ -164,22 +166,21 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		controlsView.enableGameControls(true);
 		boardView.lockBoard(false);
 
-		getBoardFace().setFinished(false);
-
+		BoardFace boardFace = getBoardFace();
+		boardFace.setFinished(false);
 
 		topPanelView.showTimeLeftIcon(false);
 		bottomPanelView.showTimeLeftIcon(false);
 
-		BoardFace boardFace = getBoardFace();
 		if (analysisItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
 		} else {
 			boardFace.setChess960(false);
 		}
 
-		if (TextUtils.isEmpty(analysisItem.getMovesList())) {  // don't parse FEN if we have movesList
-			boardFace.setupBoard(analysisItem.getFen());
-		}
+//		if (TextUtils.isEmpty(analysisItem.getMovesList())) {  // don't parse FEN if we have movesList
+			boardFace.setupBoard(analysisItem.getFen()); // we better don't parse move than load incorrect fen
+//		}
 
 		boardFace.setReside(!userPlayWhite);
 
@@ -235,7 +236,6 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 			}
 		}
 	}
-
 
 	@Override
 	public void toggleSides() { // TODO

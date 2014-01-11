@@ -15,9 +15,9 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.daily_games.DailySeekItem;
 import com.chess.backend.entity.api.FriendsItem;
 import com.chess.backend.entity.api.VacationItem;
+import com.chess.backend.entity.api.daily_games.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -108,13 +108,13 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			} else if (!haveSavedData) {
 				emptyView.setText(R.string.no_network);
 				showEmptyView(true);
-			}
-
-			if (haveSavedData) {
+			} else {
 				loadFromDb();
 			}
+
 		} else {
 			setAdapter(paginationAdapter);
+			loadFromDb();
 		}
 	}
 
@@ -213,6 +213,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
+			paginationAdapter.notifyDataSetChanged();
 			friendsAdapter.changeCursor(returnedObj);
 			paginationAdapter.notifyDataSetChanged();
 			need2update = false;
@@ -242,15 +243,15 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 
 	@Override
 	public void onSearchAutoCompleteQuery(String query) {
-		if (!inSearch && !need2update) {
+		if (!inSearch && !need2update) { // search only if we received data
 			inSearch = true;
 			if (friendsAdapter == null) {
 				return;
 			}
-			Cursor cursor = friendsAdapter.runQueryOnBackgroundThread(query);
-			if (cursor != null) {
-				friendsAdapter.changeCursor(cursor);
-			}
+//			Cursor cursor = friendsAdapter.runQueryOnBackgroundThread(query);
+//			if (cursor != null) {
+//				friendsAdapter.changeCursor(cursor);
+//			}
 			inSearch = false;
 		}
 	}
@@ -264,8 +265,9 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 			}
 
 			String query = (String) constraint;
-			String[] selectionArgs = new String[]{DbScheme.V_USER, DbScheme.V_USERNAME, DbScheme.V_LOCATION};
+			String[] selectionArgs = new String[]{DbScheme.V_USERNAME, DbScheme.V_LOCATION};
 			String selection = DbDataManager.concatLikeArguments(selectionArgs);
+			selection += DbDataManager.AND_ + DbScheme.V_USER + DbDataManager.EQUALS_ARG_;
 
 			String[] arguments = new String[selectionArgs.length];
 			arguments[0] = DbDataManager.concatArguments(query);
