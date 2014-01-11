@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string-array name="game_stats_types">
+		<item>chess</item>
+		<item>standard</item>
+		<item>blitz</item>
+		<item>lightning</item>
+		<item>chess960</item>
+		<item>tactics</item>
+		<item>lessons</item>
+	</string-array>
+
+	<string-array name="user_stats_types">
+		<item>standard</item>
+		<item>blitz</item>
+		<item>lightning</item>
+		<item>chess</item>
+		<item>chess960</item>
+		<item>tactics</item>
+		<item>chess_mentor</item>
+	</string-array>
+
     <!--Curriculum Links-->
     <string-array name="video_cur_beginners">
         <item>http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/everything-you-need-to-know-start-playing-chess.mp4</item>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string-array name="game_stats_categories">
+		<item>Daily Chess</item>
+		<item>Live Chess - Standard</item>
+		<item>Live Chess - Blitz</item>
+		<item>Live Chess - Bullet</item>
+		<item>Daily Chess960</item>
+		<item>Tactics</item>
+		<item>Lessons</item>
+	</string-array>
+
+	<string-array name="upgrade_diamond_features">
+		<item>Unlimited Videos</item>
+		<item>Unlimited Tactics</item>
+		<item>Unlimited Lessons</item>
+		<item>Opening Explorer</item>
+		<item>Full Stats</item>
+		<item>Daily Timeout Protection</item>
+		<item>No Ads</item>
+	</string-array>
+
+	<string-array name="upgrade_platinum_features">
+		<item> </item>
+		<item>Unlimited Tactics</item>
+		<item>5 Lessons per Day</item>
+		<item>Opening Explorer</item>
+		<item>Full Stats</item>
+		<item>Daily Timeout Protection</item>
+		<item>No Ads</item>
+	</string-array>
+
+	<string-array name="upgrade_gold_features">
+		<item> </item>
+		<item>25 Tactics per Day</item>
+		<item>3 Lessons per Day</item>
+		<item>Opening Explorer</item>
+		<item>Personal Stats</item>
+		<item>Daily Timeout Protection</item>
+		<item>No Ads</item>
+	</string-array>
+
+	<string-array name="afterMyMove">
+		<item>Go To Next Ready Game</item>
+		<item>Stay On Same Game</item>
+		<item>Return To Games List</item>
+	</string-array>
+
+</resources>

@@ -314,7 +314,7 @@ public class StatsBasicFragment extends CommonLogicFragment implements AdapterVi
 	private List<RatingListItem> createStatsList(Context context) {
 		ArrayList<RatingListItem> selectionItems = new ArrayList<RatingListItem>();
 
-		String[] categories = context.getResources().getStringArray(R.array.user_stats_categories);
+		String[] categories = context.getResources().getStringArray(R.array.game_stats_categories);
 		for (int i = 0; i < categories.length; i++) {
 			String category = categories[i];
 			RatingListItem ratingListItem = new RatingListItem(getIconByCategory(i), category);

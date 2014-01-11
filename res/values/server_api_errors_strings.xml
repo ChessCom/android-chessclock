@@ -1,5 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+	<string-array name="site_api_error_messages">
+		<item>Invalid User ID</item>
+		<item>Invalid Content ID</item>
+		<item>Please login again.</item>
+		<item>Too many login attempts.</item>
+		<item>Account not yet active!</item>
+		<item>Account has been disabled.</item>
+		<item>Invalid username parameter.</item>
+		<item>Invalid Place</item>
+		<item>Invalid Tournament ID</item>
+		<item>Trophy Already Inserted</item>
+		<item>You are on vacation.</item>
+		<item>Invalid days per move.</item>
+		<item>Invalid email.</item>
+		<item>Invalid username.</item>
+		<item>Self challenge.</item>
+		<item>Opponent on vacation.</item>
+		<item>Opponent unavailable.</item>
+		<item>Rating too low.</item>
+		<item>Rating too high.</item>
+		<item>Opponent mismatched time control.</item>
+		<item>You are blocked.</item>
+		<item>Invalid ratings.</item>
+		<item>Min rating too low.</item>
+		<item>Max rating too high.</item>
+		<item>Max rating too low.</item>
+		<item>Min rating too high.</item>
+		<item>Rating range too small.</item>
+		<item>Rating range must include your own rating.</item>
+		<item>Max seeks exceeded.</item>
+		<item>Make moves before creating more games.</item>
+		<item>Game already started.</item>
+		<item>Timeout % too high.</item>
+		<item>Too few games.</item>
+		<item>Must be premium.</item>
+		<item>Move speed too slow.</item>
+		<item>Cant accept own seek.</item>
+		<item>Not your challenge.</item>
+		<item>Game already started!</item>
+		<item>Need username or auth user.</item>
+		<item>Invalid Username</item>
+		<item>Invalid Fen</item>
+		<item>Max ply</item>
+		<item>Invalid friend request id.</item>
+		<item>Invalid action parameters.</item>
+		<item>Invalid ID.</item>
+		<item>Invalid Game ID.</item>
+		<item>Invalid Key</item>
+		<item>Multiple login methods found. Do not submit username or password with other credentials.</item>
+		<item>Please enter username, not email.</item>
+		<item>Username does not exist.</item>
+		<item>Must give username.</item>
+		<item>Account locked. Login at Chess.com.</item>
+		<item>You must setup a password at Chess.com.</item>
+		<item>Invalid password.</item>
+		<item>Invalid Facebook access token</item>
+		<item>Facebook user has no Chess.com account</item>
+		<item>Invalid app type.</item>
+		<item>Missing username.</item>
+		<item>Missing password.</item>
+		<item>Missing email.</item>
+		<item>Missing country.</item>
+		<item>Invalid country id.</item>
+		<item>Email already taken.</item>
+		<item>Invalid Chess.com email.</item>
+		<item>Username already taken.</item>
+		<item>Username not allowed.</item>
+		<item>Invalid email domain.</item>
+		<item>System error.</item>
+		<item>Weak password.</item>
+		<item>Invalid User</item>
+		<item>Invalid Game Location Type</item>
+		<item>Please request 50 or less games</item>
+		<item>Game Id must be numeric</item>
+		<item>Invalid Game ID</item>
+		<item>Please refresh the game.</item>
+		<item>Game Already Over.</item>
+		<item>Oops! Not your game.</item>
+		<item>It is not your move.</item>
+		<item>Illegal move.</item>
+		<item>No open draw offer.</item>
+		<item>Chat is disabled.</item>
+		<item>Invalid command.</item>
+		<item>Live Game ID must be numeric.</item>
+		<item>Invalid Live Game Id</item>
+		<item>Already on vacation.</item>
+		<item>Out of vacation time.</item>
+		<item>Complete all game moves.</item>
+		<item>User not on vacation.</item>
+		<item>Non existing game seek</item>
+		<item>You are not allowed to edit that seek</item>
+		<item>Invalid product name</item>
+		<item>Invalid developer payload length</item>
+		<item>User has reached the daily limit of lessons</item>
+		<item>Incomplete lesson</item>
+		<item>Invalid lesson</item>
+		<item>No game seek update parameters passed</item>
+		<item>The selected game seek is not open, and the parameters passed are only for an open game seek</item>
+		<item>Invalid parameter: newMode</item>
+		<item>You must pass a username or an email</item>
+		<item>Invalid email address</item>
+		<item>User submitted spam content</item>
+		<item>Unable to remove user friend</item>
+		<item>The forum topic does not exist</item>
+		<item>No update permission for the selected forum topic</item>
+		<item>The selected forum category does not exist</item>
+		<item>The parent forum topic does not exist</item>
+		<item>User has no access for the selected forum category</item>
+		<item>Non existing course</item>
+		<item>Missing parameters</item>
+		<item>Error creating background theme</item>
+		<item>You must pass the parent topic id when adding a new comment</item>
+		<item>Invalid value for items per page</item>
+		<item>No moves found</item>
+		<item>You provided invalid password.</item>
+		<item>Your registration ID is already registered!</item>
+		<item>The selected user must be enabled.</item>
+
+	</string-array>
+
 	<string-array name="new_site_api_error_messages">
 		<item>Multiple login methods found. Do not submit username or password with other credentials.</item>
 		<item>Invalid Facebook access token.</item>

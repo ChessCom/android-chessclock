@@ -468,7 +468,7 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 	private List<RatingListItem> createStatsList(Context context) {
 		List<RatingListItem> ratingListItems = new ArrayList<RatingListItem>();
 
-		categories = context.getResources().getStringArray(R.array.user_stats_categories);
+		categories = context.getResources().getStringArray(R.array.game_stats_categories);
 		for (int i = 0; i < categories.length; i++) {
 			String category = categories[i];
 			RatingListItem ratingListItem = new RatingListItem(getIconByCategory(i), category);
