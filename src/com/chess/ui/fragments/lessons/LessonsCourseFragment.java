@@ -232,7 +232,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 		shareIntent.setType("text/plain");
 		shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_completed_course_title));
 		shareIntent.putExtra(Intent.EXTRA_TEXT, message);
-		startActivity(Intent.createChooser(shareIntent, getString(R.string.share_course)));
+		startActivity(Intent.createChooser(shareIntent, getString(R.string.share_via)));
 	}
 
 	protected class CourseUpdateListener extends ChessLoadUpdateListener<LessonCourseItem> {

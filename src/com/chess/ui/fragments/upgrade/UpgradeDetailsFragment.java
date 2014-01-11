@@ -142,7 +142,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_MEMBERSHIP_KEY);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
-		new RequestJsonTask<MembershipKeyItem>(new GetKeyListener()).executeTask(loadItem); // TODO set proper item
+		new RequestJsonTask<MembershipKeyItem>(new GetKeyListener()).executeTask(loadItem);
 	}
 
 	@Override
@@ -283,7 +283,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		monthCheckBox.setEnabled(!planConfig.isMonthPayed());
 		// per year
 		yearView.setBackgroundResource(planConfig.payViewColorId);
-		yearView.setPadding(0, (int) (12 * density), 0, (int) (16 * density)); // TODO improve performance
+		yearView.setPadding(0, (int) (12 * density), 0, (int) (16 * density));
 
 		yearValueTxt.setText(planConfig.yearValue);
 		yearValueTxt.setTextColor(planConfig.titleColor);
@@ -300,26 +300,27 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		descriptionView.setPadding(padding, padding, padding, padding);
 
 		descriptionView.removeAllViews();
-		// TODO improve!
+
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 
 		RoboTextView unlockTitleTxt = new RoboTextView(getActivity());
 
 		unlockTitleTxt.setTextColor(planConfig.subTitleColor);
-		unlockTitleTxt.setText(planConfig.unlockFeaturesTitleId);
 		unlockTitleTxt.setFont(FontsHelper.ITALIC_FONT);
 		unlockTitleTxt.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
 		unlockTitleTxt.setPadding(0, 0, 0, (int) (7 * density));
-		descriptionView.addView(unlockTitleTxt, params);
 
 		for (String feature : planConfig.features) {
+			if (feature.trim().equals(Symbol.EMPTY)) {
+				continue;
+			}
 			RoboTextView featureTxt = new RoboTextView(getActivity());
 			featureTxt.setText(feature);
 			featureTxt.setTextColor(planConfig.subTitleColor);
 			featureTxt.setFont(FontsHelper.BOLD_FONT);
 			featureTxt.setTextSize(14);
-			featureTxt.setPadding(0, 0, 0, (int) (6 * density));    // TODO remove hardcode
+			featureTxt.setPadding(0, 0, 0, (int) (6 * density));
 
 			descriptionView.addView(featureTxt, params);
 		}
@@ -874,7 +875,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		int checkBoxDrawableId;
 		int descriptionBackId;
 		int buttonStyleId;
-		int unlockFeaturesTitleId;
+//		int unlockFeaturesTitleId;
 		String[] features;
 		private boolean yearPayed;
 		private boolean monthPayed;
@@ -911,7 +912,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			diamondConfig.checkBoxDrawableId = R.drawable.button_checkmark_diamond_selector;
 			diamondConfig.buttonStyleId = R.style.Button_Blue;
 			diamondConfig.descriptionBackId = R.drawable.button_upgrade_diamond_flat;
-			diamondConfig.unlockFeaturesTitleId = R.string.upgrade_diamond_unlock_features_title;
 			diamondConfig.features = resources.getStringArray(R.array.upgrade_diamond_features);
 
 			return diamondConfig;
@@ -933,7 +933,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			platinumConfig.checkBoxDrawableId = R.drawable.button_checkmark_platinum_selector;
 			platinumConfig.buttonStyleId = R.style.Button_Grey2Solid_NoBorder;
 			platinumConfig.descriptionBackId = R.drawable.button_upgrade_platinum_flat;
-			platinumConfig.unlockFeaturesTitleId = R.string.upgrade_platinum_unlock_features_title;
+//			platinumConfig.unlockFeaturesTitleId = R.string.upgrade_platinum_unlock_features_title;
 			platinumConfig.features = resources.getStringArray(R.array.upgrade_platinum_features);
 			return platinumConfig;
 		}
@@ -954,7 +954,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			goldConfig.checkBoxDrawableId = R.drawable.button_checkmark_gold_selector;
 			goldConfig.buttonStyleId = R.style.Button_Brown;
 			goldConfig.descriptionBackId = R.drawable.button_upgrade_gold_flat;
-			goldConfig.unlockFeaturesTitleId = R.string.upgrade_gold_unlock_features_title;
+//			goldConfig.unlockFeaturesTitleId = R.string.upgrade_gold_unlock_features_title;
 			goldConfig.features = resources.getStringArray(R.array.upgrade_gold_features);
 			return goldConfig;
 		}

@@ -29,7 +29,6 @@ public class UpgradeFragmentTablet extends CommonLogicFragment {
 	private int imageSize;
 	private ProgressImageView quoteImg;
 	private ProgressImageView quoteImg2;
-	private String[] upgradeOptions;
 	private LinearLayout.LayoutParams optionsParams;
 	private LinearLayout.LayoutParams valuesParams;
 	private int optionsTextSize;
@@ -80,30 +79,12 @@ public class UpgradeFragmentTablet extends CommonLogicFragment {
 		quoteImg2 = (ProgressImageView) view.findViewById(R.id.quoteImg2);
 
 		Resources resources = getResources();
-		{ // all features list
-			LinearLayout featuresContainer1 = (LinearLayout) view.findViewById(R.id.featuresContainer1);
-			LinearLayout featuresContainer2 = (LinearLayout) view.findViewById(R.id.featuresContainer2);
-			LinearLayout featuresContainer3 = (LinearLayout) view.findViewById(R.id.featuresContainer3);
-
-			String[] features1 = resources.getStringArray(R.array.upgrade_great_features_1);
-			String[] features2 = resources.getStringArray(R.array.upgrade_great_features_2);
-			String[] features3 = resources.getStringArray(R.array.upgrade_great_features_3);
-
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-
-			setFeatures(featuresContainer1, features1, params);
-			setFeatures(featuresContainer2, features2, params);
-			setFeatures(featuresContainer3, features3, params);
-
-		}
 
 		{// fill features comparison list
 			LinearLayout diamondOptionsLay = (LinearLayout) view.findViewById(R.id.diamondOptionsLay);
 			LinearLayout platinumOptionsLay = (LinearLayout) view.findViewById(R.id.platinumOptionsLay);
 			LinearLayout goldOptionsLay = (LinearLayout) view.findViewById(R.id.goldOptionsLay);
 
-			upgradeOptions = resources.getStringArray(R.array.upgrade_options);
 			optionsParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
 			optionsParams.weight = 1;
 
@@ -112,9 +93,9 @@ public class UpgradeFragmentTablet extends CommonLogicFragment {
 
 			optionsTextSize = (int) (resources.getDimensionPixelSize(R.dimen.upgrade_options_text_size) / density);
 
-			String[] diamondValues = resources.getStringArray(R.array.upgrade_values_diamond);
-			String[] platinumValues = resources.getStringArray(R.array.upgrade_values_platinum);
-			String[] goldValues = resources.getStringArray(R.array.upgrade_values_gold);
+			String[] diamondValues = resources.getStringArray(R.array.upgrade_diamond_features);
+			String[] platinumValues = resources.getStringArray(R.array.upgrade_platinum_features);
+			String[] goldValues = resources.getStringArray(R.array.upgrade_gold_features);
 
 			int diamondTextColor = resources.getColor(R.color.upgrade_diamond_sub_title);
 			int platinumTextColor = resources.getColor(R.color.upgrade_platinum_sub_title);
@@ -131,9 +112,7 @@ public class UpgradeFragmentTablet extends CommonLogicFragment {
 	}
 
 	private void setOptionsValues(LinearLayout optionsLay, String[] values, int backResId, int color) {
-		for (int i = 0; i < upgradeOptions.length; i++) {
-			String option = upgradeOptions[i];
-			String value = values[i];
+		for (String option : values) {
 			int padding = (int) (18 * density);
 			LinearLayout linearLayout = new LinearLayout(getActivity());
 			linearLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -157,32 +136,18 @@ public class UpgradeFragmentTablet extends CommonLogicFragment {
 
 				linearLayout.addView(optionTxt, optionsParams);
 			}
-			{// add value
-				RoboTextView valueTxt = new RoboTextView(getActivity());
-				valueTxt.setText(value);
-				valueTxt.setTextColor(color);
-				valueTxt.setFont(FontsHelper.BOLD_FONT);
-				valueTxt.setTextSize(optionsTextSize);
-
-				linearLayout.addView(valueTxt, valuesParams);
-
-			}
+//			{// add value
+//				RoboTextView valueTxt = new RoboTextView(getActivity());
+//				valueTxt.setText(option);
+//				valueTxt.setTextColor(color);
+//				valueTxt.setFont(FontsHelper.BOLD_FONT);
+//				valueTxt.setTextSize(optionsTextSize);
+//
+//				linearLayout.addView(valueTxt, valuesParams);
+//
+//			}
 
 			optionsLay.addView(linearLayout);
-		}
-	}
-
-	private void setFeatures(LinearLayout featuresLinLay, String[] features1, LinearLayout.LayoutParams params) {
-		for (String feature : features1) {
-			RoboTextView featureTxt = new RoboTextView(getActivity());
-			featureTxt.setText(feature);
-			featureTxt.setTextColor(getResources().getColor(R.color.upgrade_diamond_sub_title));
-			featureTxt.setFont(FontsHelper.BOLD_FONT);
-			featureTxt.setTextSize(14);
-			int padding = (int) (6 * density);
-			featureTxt.setPadding(0, 0, 0, padding);
-
-			featuresLinLay.addView(featureTxt, params);
 		}
 	}
 }

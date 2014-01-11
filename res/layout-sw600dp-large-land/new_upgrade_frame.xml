@@ -23,18 +23,8 @@
 			android:paddingTop="15dp"
 			android:textColor="@color/upgrade_green_title"
 			android:textSize="21sp"
-			custom:ttf="Bold" />
-
-		<com.chess.widgets.RoboTextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/upgrade_main_sub_title_tablet"
-			android:gravity="center"
-			android:textColor="@color/upgrade_grey_sub_title"
-			android:textSize="12sp"
 			android:paddingBottom="15dip"
 			custom:ttf="Bold" />
-
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -96,7 +86,7 @@
 					android:id="@+id/quoteTxt"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:text="&quot;Tactics Trainer and Chess Mentor really help my chess skills&quot;"
+					android:text="&quot;Tactics and Lessons really help my chess skills&quot;"
 					android:textColor="@color/upgrade_grey_sub_title"
 					android:textSize="12sp"
 					android:paddingBottom="4dip"
@@ -211,7 +201,6 @@
 			<com.chess.widgets.RoboTextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="@string/all_premium_plans_features_title"
 				android:textSize="@dimen/all_premium_plans_features_title_size"
 				android:textColor="@color/upgrade_diamond_title"
 				android:gravity="center_horizontal"
@@ -219,6 +208,7 @@
 				custom:ttf="Bold"
 				android:background="@drawable/button_upgrade_diamond_flat"
 				android:layout_marginBottom="2dp"
+				android:visibility="gone"
 				/>
 
 			<!--Features description-->
@@ -228,6 +218,7 @@
 				android:layout_height="wrap_content"
 				android:baselineAligned="false"
 				android:background="@drawable/button_upgrade_diamond_flat"
+				android:visibility="gone"
 				>
 
 				<LinearLayout

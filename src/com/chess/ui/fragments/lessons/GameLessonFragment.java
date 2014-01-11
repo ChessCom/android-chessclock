@@ -705,7 +705,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		shareIntent.setType("text/plain");
 		shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_completed_lesson_title));
 		shareIntent.putExtra(Intent.EXTRA_TEXT, message);
-		startActivity(Intent.createChooser(shareIntent, getString(R.string.share_lesson)));
+		startActivity(Intent.createChooser(shareIntent, getString(R.string.share_via)));
 	}
 
 	@Override

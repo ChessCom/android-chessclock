@@ -392,7 +392,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				shareIntent.setType("text/plain");
 				shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this article - "
 						+ Symbol.NEW_STR + articleShareStr);
-				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_article)));
+				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_via)));
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

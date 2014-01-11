@@ -30,19 +30,9 @@
             android:layout_height="wrap_content"
             android:text="@string/upgrade_main_title_2"
             android:gravity="center"
-            android:paddingBottom="10dip"
+            android:paddingBottom="35dip"
             android:textColor="@color/upgrade_green_title"
             android:textSize="21sp"
-            custom:ttf="Bold" />
-
-        <com.chess.widgets.RoboTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/upgrade_main_sub_title"
-            android:gravity="center"
-            android:textColor="@color/upgrade_grey_sub_title"
-            android:textSize="12sp"
-            android:paddingBottom="15dip"
             custom:ttf="Bold" />
 
         <!--Diamond button-->
@@ -255,7 +245,7 @@
                 android:id="@+id/quoteTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="&quot;Tactics Trainer and Chess Mentor really help my chess skills&quot;"
+                android:text="&quot;Tactics and Lessons really help my chess skills&quot;"
                 android:textColor="@color/upgrade_grey_sub_title"
                 android:textSize="12sp"
                 android:paddingBottom="4dip"

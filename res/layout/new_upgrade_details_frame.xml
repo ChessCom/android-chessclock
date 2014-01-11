@@ -16,17 +16,6 @@
         android:padding="15dip"
         >
 
-        <com.chess.widgets.RoboTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/upgrade_details_title"
-            android:textColor="@color/upgrade_grey_sub_title"
-            android:textSize="12sp"
-            android:paddingBottom="12dip"
-            android:gravity="center"
-            custom:ttf="Bold"
-            />
-
         <!--Upgrade options-->
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -34,6 +23,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="15dip"
+			android:visibility="gone"
             >
 
             <com.chess.widgets.RoboRadioButton

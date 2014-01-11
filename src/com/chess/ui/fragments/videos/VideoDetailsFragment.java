@@ -371,7 +371,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 				shareIntent.setType("text/plain");
 				shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this video - "
 						+ Symbol.NEW_STR + shareStr);
-				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_video)));
+				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_via)));
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

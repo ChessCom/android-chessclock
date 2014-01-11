@@ -123,98 +123,33 @@
 	</string-array>
 
 	<string-array name="upgrade_diamond_features">
-		<item>Video Lessons</item>
-		<item>Chess Mentor Online Training</item>
-		<item>Computer Analysis of Games (web)</item>
-		<item>Chess.com TV - Live Shows (web)</item>
-		<item>Openings &amp; Game Explorer</item>
-		<item>Tactics Trainer</item>
-		<item>Live Tournaments</item>
-		<item>Turn-Based Tournaments</item>
-		<item>Performance Stats</item>
-		<item>No Ads!</item>
+		<item>Unlimited Videos</item>
+		<item>Unlimited Tactics</item>
+		<item>Unlimited Lessons</item>
+		<item>Opening Explorer</item>
+		<item>Full Stats</item>
+		<item>Daily Timeout Protection</item>
+		<item>No Ads</item>
 	</string-array>
 
 	<string-array name="upgrade_platinum_features">
-		<item>Computer Analysis of Games (web) 25/week</item>
-		<item>Chess.com TV - Live Shows (web)</item>
-		<item>Openings &amp; Game Explorer</item>
-		<item>Tactics Trainer</item>
-		<item>Live Tournaments</item>
-		<item>Turn-Based Tournaments</item>
-		<item>Performance Stats</item>
-		<item>No Ads!</item>
+		<item> </item>
+		<item>Unlimited Tactics</item>
+		<item>5 Lessons per Day</item>
+		<item>Opening Explorer</item>
+		<item>Full Stats</item>
+		<item>Daily Timeout Protection</item>
+		<item>No Ads</item>
 	</string-array>
 
 	<string-array name="upgrade_gold_features">
-		<item>Tactics Trainer 25/day</item>
-		<item>Live Tournaments 3/day</item>
-		<item>Turn-Based Tournaments 10/time</item>
-		<item>Performance Stats Self Only</item>
-		<item>No Ads!</item>
-	</string-array>
-
-	<string-array name="upgrade_options">
-		<item>Lessons</item>
-		<item>Videos</item>
-		<item>Explorer</item>
-		<item>Tactics</item>
-		<item>Stats</item>
-		<item>Tournaments</item>
-		<item>Live Tournaments</item>
-	</string-array>
-
-	<string-array name="upgrade_values_diamond">
-		<item>Unlimited</item>
-		<item>Unlimited</item>
-		<item>Unlimited</item>
-		<item>Unlimited</item>
-		<item>All Players</item>
-		<item>Unlimited</item>
-		<item>Unlimited</item>
-	</string-array>
-
-	<string-array name="upgrade_values_platinum">
-		<item>—</item>
-		<item>—</item>
-		<item>Unlimited</item>
-		<item>Unlimited</item>
-		<item>All Players</item>
-		<item>Unlimited</item>
-		<item>Unlimited</item>
-	</string-array>
-
-	<string-array name="upgrade_values_gold">
-		<item>—</item>
-		<item>—</item>
-		<item>—</item>
-		<item>25/day</item>
-		<item>Self</item>
-		<item>10/time</item>
-		<item>3/day</item>
-	</string-array>
-
-	<string-array name="upgrade_great_features_1">
+		<item> </item>
+		<item>25 Tactics per Day</item>
+		<item>3 Lessons per Day</item>
+		<item>Opening Explorer</item>
+		<item>Personal Stats</item>
+		<item>Daily Timeout Protection</item>
 		<item>No Ads</item>
-		<item>Auto timeout protection</item>
-		<item>Games/Video on Profile (Web)</item>
-		<item>Vacation Time</item>
-		<item>Computer Workout</item>
-	</string-array>
-
-	<string-array name="upgrade_great_features_2">
-		<item>Vote Chess</item>
-		<item>3D Boards and Pieces (Web)</item>
-		<item>Private Forums</item>
-		<item>Interactive Maps (Web)</item>
-		<item>Games Archive</item>
-	</string-array>
-
-	<string-array name="upgrade_great_features_3">
-		<item>Groups and Teams</item>
-		<item>Faster Load Times</item>
-		<item>Premium Member Icon</item>
-		<item>Support Chess.com</item>
 	</string-array>
 
 	<string-array name="afterMyMove">
