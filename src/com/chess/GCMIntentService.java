@@ -24,6 +24,7 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.SystemClock;
 import android.util.Log;
+import com.chess.backend.GetAndSaveUserStats;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
@@ -231,6 +232,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 				String body = getString(R.string.game) + Symbol.SPACE + getString(R.string.with)
 						+ Symbol.SPACE + intent.getStringExtra(SENDER);
 				AppUtils.showStatusBarNotification(context, title, body);
+
+				// update user stats
+				startService(new Intent(this, GetAndSaveUserStats.class));
 			}
 		} else if (type.equals(GcmHelper.NOTIFICATION_MOVE_MADE)) {
 			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));

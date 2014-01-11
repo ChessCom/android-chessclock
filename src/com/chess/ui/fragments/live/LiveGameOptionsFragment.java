@@ -14,9 +14,14 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.GetAndSaveUserStats;
+import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.stats.UserStatsItem;
+import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.SelectionItem;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
@@ -50,6 +55,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	private static final long SEEK_BAR_HIDE_DELAY = 5 * 1000;
 	public static final int MAX_PROGRESS = 20;
 
+	private RatingUpdateListener ratingUpdateListener;
 	private LiveGameConfig.Builder gameConfigBuilder;
 	private RoboRadioButton minRatingBtn;
 	private RoboRadioButton maxRatingBtn;
@@ -72,6 +78,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	private boolean statsLoaded;
 	private ViewGroup ratingView;
 	private TextView currentRatingTxt;
+	private Button playBtn;
 
 	public LiveGameOptionsFragment() {
 		Bundle bundle = new Bundle();
@@ -140,6 +147,8 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		blitzRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), getUsername());
 		lightningRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), getUsername());
 
+		ratingUpdateListener = new RatingUpdateListener();
+
 		if (standardRating == 0 || blitzRating == 0 || lightningRating == 0 && !statsLoaded) { // if stats were not save
 			showLoadingProgress(true);
 
@@ -173,6 +182,15 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			statsSavedReceiver = new StatsSavedReceiver();
 			registerReceiver(statsSavedReceiver, statsUpdateFilter);
 		}
+
+		playBtn.setEnabled(false);
+
+		// update current rating
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_USER_STATS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+		new RequestJsonTask<UserStatsItem>(ratingUpdateListener).execute(loadItem);
 	}
 
 	@Override
@@ -546,7 +564,8 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 					minRatingBtn.setChecked(true);
 				}
 
-				view.findViewById(R.id.playBtn).setOnClickListener(this);
+				playBtn = (Button) view.findViewById(R.id.playBtn);
+				playBtn.setOnClickListener(this);
 			}
 
 			{// time mode buttons
@@ -575,6 +594,35 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		}
 
 		toggleLiveOptionsView();
+	}
+
+	private class RatingUpdateListener extends ChessLoadUpdateListener<UserStatsItem> {
+
+		public RatingUpdateListener() {
+			super(UserStatsItem.class);
+		}
+
+		@Override
+		public void updateData(UserStatsItem returnedObj) {
+			super.updateData(returnedObj);
+
+			playBtn.setEnabled(true);
+
+			standardRating = returnedObj.getData().getLiveStandard().getRating();
+			blitzRating = returnedObj.getData().getLiveBlitz().getRating();
+			lightningRating = returnedObj.getData().getLiveBullet().getRating();
+
+			updateRatingRange();
+
+			SaveUserStatsTask.saveLiveStats(getUsername(), returnedObj.getData(), getContentResolver());
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			playBtn.setEnabled(true);
+		}
 	}
 
 	public class OpponentsAdapter extends ItemsAdapter<SelectionItem> {

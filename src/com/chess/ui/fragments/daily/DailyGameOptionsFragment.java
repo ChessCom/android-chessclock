@@ -19,10 +19,13 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.daily_games.DailySeekItem;
+import com.chess.backend.entity.api.stats.UserStatsData;
+import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.model.SelectionItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
@@ -69,6 +72,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	private SwitchButton ratedGameSwitch;
 
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
+	private RatingUpdateListener ratingUpdateListener;
 	private List<SelectionItem> friendsList;
 	private int chessRating;
 	private int chess960Rating;
@@ -80,6 +84,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	private String opponentName;
 	private SeekBar ratingSeekBar;
 	private TextView currentRatingTxt;
+	private Button playBtn;
 
 	public DailyGameOptionsFragment() {
 		Bundle bundle = new Bundle();
@@ -140,6 +145,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 		chessRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), username);
 		chess960Rating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS960.ordinal(), username);
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
+		ratingUpdateListener = new RatingUpdateListener();
 	}
 
 	@Override
@@ -159,6 +165,15 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 		super.onResume();
 
 		updateDailyMode(getAppData().getDefaultDailyMode());
+
+		playBtn.setEnabled(false);
+
+		// update current rating
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_USER_STATS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+		new RequestJsonTask<UserStatsItem>(ratingUpdateListener).execute(loadItem);
 	}
 
 	@Override
@@ -316,6 +331,34 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
 		handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
+	}
+
+	private class RatingUpdateListener extends ChessLoadUpdateListener<UserStatsItem> {
+
+		public RatingUpdateListener() {
+			super(UserStatsItem.class);
+		}
+
+		@Override
+		public void updateData(UserStatsItem returnedObj) {
+			super.updateData(returnedObj);
+
+			playBtn.setEnabled(true);
+
+			UserStatsData dailyChess = returnedObj.getData().getDailyChess();
+
+			currentRatingTxt.setText(String.valueOf(dailyChess.getRating()));
+
+			SaveUserStatsTask.saveDailyStats(getUsername(), returnedObj.getData(), getContentResolver());
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			playBtn.setEnabled(true);
+		}
+
 	}
 
 	private class DailyGameButtonItem {
@@ -554,7 +597,8 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 				ratingSeekBar.setProgressDrawable(new RatingProgressDrawable(getContext(), ratingSeekBar));
 				ratingSeekBar.setVisibility(View.GONE);
 			}
-			view.findViewById(R.id.playBtn).setOnClickListener(this);
+			playBtn = (Button) view.findViewById(R.id.playBtn);
+			playBtn.setOnClickListener(this);
 		}
 	}
 
