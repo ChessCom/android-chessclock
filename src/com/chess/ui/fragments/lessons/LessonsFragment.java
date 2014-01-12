@@ -445,15 +445,6 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		}
 	}
 
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			loadingView.setVisibility(View.GONE);
-		}
-	}
-
 	private void init() {
 
 		curriculumItems = new CurriculumLessonsItems();
@@ -623,7 +614,7 @@ id: 1,name: "Misc"
 		}
 	}
 
-	private class LessonsRatingUpdateListener extends ChessUpdateListener<LessonsRatingItem> {
+	private class LessonsRatingUpdateListener extends ChessLoadUpdateListener<LessonsRatingItem> {
 
 		private LessonsRatingUpdateListener() {
 			super(LessonsRatingItem.class);

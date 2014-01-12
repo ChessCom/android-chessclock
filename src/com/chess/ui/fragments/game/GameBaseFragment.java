@@ -26,10 +26,12 @@ import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.Move;
 import com.chess.ui.fragments.LiveBaseFragment;
+import com.chess.ui.fragments.lessons.GameLessonFragment;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.GameLiveFragmentTablet;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupPromotionFragment;
+import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.views.PanelInfoGameView;
@@ -114,10 +116,14 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		promotionSelectedListener = new PromotionSelectedListener();
 		inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
-		if (!getAppData().isUserSawHelpForQuickScroll()) {
+		if (!getAppData().isUserSawHelpForQuickScroll() && fragmentHaveArrows()) {
 			showToastLong(R.string.help_toast_for_quick_in_game_navigation);
 			getAppData().setUserSawHelpForQuickScroll(true);
 		}
+	}
+
+	private boolean fragmentHaveArrows() {
+		return !(this instanceof GameLessonFragment || this instanceof GameTacticsFragment);
 	}
 
 	@Override

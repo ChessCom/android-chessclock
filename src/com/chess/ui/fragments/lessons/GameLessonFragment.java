@@ -568,6 +568,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	protected void showDefaultState() {
 		getControlsView().showDefault();
 		getControlsView().dropUsedHints();
+		solvedPositionsList.clear();
 		usedHints = 0;
 		showHintViews(false);
 	}
@@ -716,6 +717,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 			showAnswer();
 		} else if (code == ID_REVIEW_LESSON) {
+			showDefaultState();
 			currentLearningPosition = 0;
 			userLesson.setCurrentPosition(0);
 			restart();
@@ -962,6 +964,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		if (slidingDrawer.isOpened() && getMentorPosition().isFreeMove()) {
 			controlsView.showCorrect();
+		} else if (slidingDrawer.isOpened()) {
+			controlsView.showDefault();
+		} else {
+			controlsView.showStart();
 		}
 	}
 
@@ -1033,31 +1039,30 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		@Override
 		public void updateData(LessonRatingChangeItem returnedObj) {
 			LessonRatingChangeItem.Data ratingChange = returnedObj.getData();
-			showCompletedPopup(ratingChange);
-		}
-	}
+			//	Move comment --> [next] --> Lesson result --> [next] --> Start next lesson
+			{ // show Lesson Complete! View
 
-	private void showCompletedPopup(LessonRatingChangeItem.Data ratingChange) {
-		//	Move comment --> [next] --> Lesson result --> [next] --> Start next lesson
-		{ // show Lesson Complete! View
+				int pointsForLesson = 0;
+				if (!lessonItem.isLessonCompleted() && ratingChange != null) { // For completed lesson ratingChange is null
+					pointsForLesson = ratingChange.getChange();
+					if (updatedUserRating == 0) {
+						updatedUserRating = ratingChange.getNewRating() - ratingChange.getChange();
+					}
+					updatedUserRating += pointsForLesson;
+				}
 
-			float pointsForLesson = 0;
-			if (!lessonItem.isLessonCompleted() && ratingChange != null) { // For completed lesson ratingChange is null
-				pointsForLesson = ratingChange.getChange();
-				updatedUserRating += pointsForLesson;
+				lessonPercentTxt.setText(String.valueOf(scorePercent) + Symbol.PERCENT);
+				lessonRatingTxt.setText(String.valueOf(updatedUserRating));
+				if (!lessonItem.isLessonCompleted()) {
+					String symbol = pointsForLesson > 0 ? Symbol.PLUS : Symbol.EMPTY;
+					lessonRatingChangeTxt.setText(Symbol.wrapInPars(symbol + pointsForLesson));
+					// save updated user lessons rating
+					getAppData().setUserLessonsRating(updatedUserRating);
+					lessonItem.setLessonCompleted(true);
+				}
+
+				showLessonsResult = true;
 			}
-
-			lessonPercentTxt.setText(String.valueOf(scorePercent) + Symbol.PERCENT);
-			lessonRatingTxt.setText(String.valueOf(updatedUserRating));
-			if (!lessonItem.isLessonCompleted()) {
-				String symbol = pointsForLesson > 0 ? Symbol.PLUS : Symbol.EMPTY;
-				lessonRatingChangeTxt.setText(Symbol.wrapInPars(symbol + String.format(FLOAT_FORMAT, pointsForLesson)));
-				// save updated user lessons rating
-				getAppData().setUserLessonsRating(updatedUserRating);
-				lessonItem.setLessonCompleted(true);
-			}
-
-			showLessonsResult = true;
 		}
 	}
 

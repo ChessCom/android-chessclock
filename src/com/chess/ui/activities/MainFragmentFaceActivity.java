@@ -549,7 +549,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		transaction.addToBackStack(simpleName);
 		transaction.commitAllowingStateLoss();
 
-		FlurryAgent.logEvent(FlurryData.OPEN_FRAME + simpleName);
+//		FlurryAgent.logEvent(FlurryData.OPEN_FRAME + simpleName);
 
 //		if (isNotLiveFragment(simpleName)) {
 //			if (isLCSBound) {

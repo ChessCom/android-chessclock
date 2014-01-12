@@ -364,7 +364,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		}
 	}
 
-	private class LessonsRatingUpdateListener extends ChessUpdateListener<LessonsRatingItem> {
+	private class LessonsRatingUpdateListener extends ChessLoadUpdateListener<LessonsRatingItem> {
 
 		private LessonsRatingUpdateListener() {
 			super(LessonsRatingItem.class);

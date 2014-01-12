@@ -22,9 +22,10 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.BaseResponseItem;
+import com.chess.backend.entity.api.VacationItem;
+import com.chess.backend.entity.api.YourTurnItem;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameItem;
-import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -59,6 +60,7 @@ import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -280,6 +282,15 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			cursor.close();
 
 			adjustBoardForGame();
+
+			// clear notification for this game
+			List<YourTurnItem> moveNotifications = DbDataManager.getAllPlayMoveNotifications(getContentResolver(), username);
+			if (moveNotifications.size() == 1) { // TODO update notification w/o re-showing it(w/o animation)
+				if (moveNotifications.get(0).getGameId() == gameId) {
+					((NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE))
+							.cancel(R.id.notification_id);
+				}
+			}
 		} else {
 			updateGameState(gameId);
 		}
@@ -934,10 +945,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			switch (listenerCode) {
 				case SEND_MOVE_UPDATE:
 					moveWasSent();
-
-					NotificationManager mNotificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-					mNotificationManager.cancel((int) gameId);
-					mNotificationManager.cancel(R.id.notification_id);
 					break;
 //				case NEXT_GAME_UPDATE:
 //					switchToNextGame(returnedObj);

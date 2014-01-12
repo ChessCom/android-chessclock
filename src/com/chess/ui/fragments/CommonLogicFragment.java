@@ -718,6 +718,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				getAppData().setFacebookToken(facebookToken);
 			}
 			processLogin(loginData);
+
+			// force to create pullToRefresh view, to display progress line instead of spinner with fade
+			getActivityFace().setPullToRefreshView(null, CommonLogicFragment.this);
 		}
 
 		@Override

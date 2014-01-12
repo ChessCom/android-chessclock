@@ -36,13 +36,20 @@ public class GetAndSaveUserStats extends IntentService {
 				e.logMe();
 			}
 
-			if (item != null) {
+			if (item != null && item.getData() != null) {
 				String username = appData.getUsername();
 
 				SaveUserStatsTask.saveLiveStats(username, item.getData(), getContentResolver());
 				SaveUserStatsTask.saveDailyStats(username, item.getData(), getContentResolver());
 				SaveUserStatsTask.saveTacticsStats(username, item.getData(), getContentResolver());
 				SaveUserStatsTask.saveLessonsStats(username, item.getData(), getContentResolver());
+
+				if (item.getData().getTactics() != null) {
+					appData.setUserTacticsRating(item.getData().getTactics().getCurrent());
+				}
+				if (item.getData().getLessons() != null) {
+					appData.setUserLessonsRating(item.getData().getLessons().getRatings().getCurrent());
+				}
 			}
 		}
 		appData.setFirstInitFinished(true);

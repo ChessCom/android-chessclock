@@ -51,6 +51,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		if (!getAppData().isFirstInitFinished()) {
 			handler.postDelayed(firstInitRunnable, FIRST_INIT_DELAY);
 		}
+		// always update stats in async intent service and save in Db there
+		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 	}
 
 	@Override
@@ -264,8 +266,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			if (!DbDataManager.haveSavedFriends(getActivity(), getUsername()) && isNetworkAvailable()) {
 				getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class));
 			}
-			// always update stats in async intent service and save in Db there
-			getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 		}
 	};
 }
