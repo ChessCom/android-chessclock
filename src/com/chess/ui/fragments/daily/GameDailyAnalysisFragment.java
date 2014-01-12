@@ -13,10 +13,8 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
-import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.DataHolder;
 import com.chess.model.GameExplorerItem;
 import com.chess.model.PopupItem;
@@ -57,7 +55,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	private DailyCurrentGameData currentGame;
 
 	protected boolean userPlayWhite = true;
-	protected LoadFromDbUpdateListener loadFromDbUpdateListener;
 	protected ControlsAnalysisView controlsView;
 	protected NotationFace notationsFace;
 	protected BoardAvatarDrawable opponentAvatarDrawable;
@@ -67,7 +64,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	protected String username;
 	protected boolean isFinished;
 
-	public GameDailyAnalysisFragment() {}
+	public GameDailyAnalysisFragment() {
+	}
 
 	public static GameDailyAnalysisFragment createInstance(long gameId, String username, boolean isFinished) {
 		GameDailyAnalysisFragment fragment = new GameDailyAnalysisFragment();
@@ -117,9 +115,11 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	public void onResume() {
 		super.onResume();
 
+		DataHolder.getInstance().setInDailyGame(gameId, true);
 		if (need2update) {
-			DataHolder.getInstance().setInDailyGame(gameId, true);
 			loadGame();
+		} else {
+			controlsView.showVsComp(isFinished);
 		}
 	}
 
@@ -143,8 +143,14 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	protected void loadGame() {
 		// load game from DB. After load update
-		new LoadDataFromDbTask(loadFromDbUpdateListener, DbHelper.getDailyGame(gameId, username),
-				getContentResolver()).executeTask();
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getDailyGame(gameId, username));
+		cursor.moveToFirst();
+		currentGame = DbDataManager.getDailyCurrentGameFromCursor(cursor);
+		cursor.close();
+
+		adjustBoardForGame();
+
+		need2update = false;
 	}
 
 	@Override
@@ -166,23 +172,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		getActivityFace().openFragment(GameExplorerFragment.createInstance(explorerItem));
 	}
 
-	protected class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
-
-		public LoadFromDbUpdateListener() {
-			super(getContext());
-		}
-
-		@Override
-		public void updateData(Cursor returnedObj) {
-			super.updateData(returnedObj);
-
-			currentGame = DbDataManager.getDailyCurrentGameFromCursor(returnedObj);
-			returnedObj.close();
-
-			adjustBoardForGame();
-			need2update = false;
-		}
-	}
 
 	protected void adjustBoardForGame() {
 		userPlayWhite = currentGame.getWhiteUsername().equals(username);
@@ -524,8 +513,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	protected void init() {
 		labelsConfig = new LabelsConfig();
-
-		loadFromDbUpdateListener = new LoadFromDbUpdateListener();
 
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
