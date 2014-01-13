@@ -80,6 +80,7 @@
 		<item>Español</item>
 		<item>Svenska</item>
 		<item>Türk</item>
+		<item>Translation strings</item>
 	</string-array>
 
 	<string-array name="countries">

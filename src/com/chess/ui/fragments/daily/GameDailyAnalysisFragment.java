@@ -119,6 +119,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		if (need2update) {
 			loadGame();
 		} else {
+			getControlsView().enableGameControls(true);
+			boardView.lockBoard(false);
 			controlsView.showVsComp(isFinished);
 		}
 	}

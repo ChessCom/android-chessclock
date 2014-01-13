@@ -217,6 +217,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
+			paginationAdapter.notifyDataSetChanged();
 			conversationsAdapter.changeCursor(returnedObj);
 			paginationAdapter.notifyDataSetChanged();
 			need2update = false;

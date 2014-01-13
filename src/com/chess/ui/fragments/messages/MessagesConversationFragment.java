@@ -84,7 +84,7 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.message);
+		setTitle(R.string.messages);
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(messagesCursorAdapter);

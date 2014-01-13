@@ -24,7 +24,7 @@
                  android:layout_width="wrap_content"
                  android:layout_height="50dip"
                  android:id="@+id/com_facebook_picker_row_activity_circle"
-                 style="@android:style/Widget.ProgressBar.Small"
+                 style="@style/ChessProgressBar"
                  android:layout_centerInParent="true"
                  android:visibility="visible"
                  android:indeterminateOnly="true"

@@ -17,8 +17,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.ui.interfaces.PopupDialogFace;
 
-public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener
-		, PopupDialogFace {
+public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener, PopupDialogFace {
 
 	protected Bundle extras;
 	protected Handler handler;
@@ -27,7 +26,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	private ActionBar actionBar;
 
 	public void setFullScreen() {
-//		requestWindowFeature(Window.FEATURE_NO_TITLE);  // TODO solve problem for QVGA screens
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	}

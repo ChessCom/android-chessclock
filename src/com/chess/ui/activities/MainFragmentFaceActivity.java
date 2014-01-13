@@ -176,7 +176,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 						new RequestJsonTask<LoginItem>(new CommonLogicActivity.LoginUpdateListener()).executeTask(loadItem);
 					} else if (!TextUtils.isEmpty(getAppData().getFacebookToken())) {
-						Log.d("TEST"," MainActivity fb token is not empty -> login with FB");
 						loginWithFacebook(getAppData().getFacebookToken());
 					}
 				}
@@ -954,6 +953,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
 		}
+	}
+
+	@Override
+	public void updateLocale() {
+		setLocale();
+		restartActivity();
 	}
 
 	protected String feedbackBodyCompose(String username) {

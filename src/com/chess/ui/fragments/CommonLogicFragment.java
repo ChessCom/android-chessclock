@@ -1055,7 +1055,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void loadRecentOpponents() {
-		if (inviteFriendView1 == null) { // if widgets ini wasn't called yet, we skip
+		if (inviteFriendView1 == null) { // if widgets init wasn't called yet, we skip
 			return;
 		}
 		String username = getUsername();
@@ -1110,7 +1110,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				friendUserName1Txt.setText(firstFriendUserName);
 			}
 
-			cursor.close();
 		} else {
 			inviteFriendView1.setVisibility(View.GONE);
 			inviteFriendView2.setVisibility(View.GONE);

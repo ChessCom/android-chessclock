@@ -64,8 +64,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		preferences = appData.getPreferences();
 		preferencesEditor = appData.getEditor();
 
-//		currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
-		currentLocale = StaticData.LOCALE_EN;
+		currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
 
 		handler = new Handler();
 		setLocale();
@@ -139,18 +138,18 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		String setLocale = languageCodes[appData.getLanguageCode()];
 
-//		if(!prevLang.equals(setLocale)) {
-		Locale locale = new Locale(setLocale);
-		Locale.setDefault(locale);
-		Configuration config = new Configuration();
-		config.locale = locale;
-		getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+		if (!prevLang.equals(setLocale)) {
+			Locale locale = new Locale(setLocale);
+			Locale.setDefault(locale);
+			Configuration config = new Configuration();
+			config.locale = locale;
+			getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 
-//			preferencesEditor.putString(AppConstants.CURRENT_LOCALE, setLocale);
-//			preferencesEditor.commit();
+			preferencesEditor.putString(AppConstants.CURRENT_LOCALE, setLocale);
+			preferencesEditor.commit();
 
-		currentLocale = setLocale;
-//		}
+			currentLocale = setLocale;
+		}
 	}
 
 	protected void restartActivity() {
@@ -226,7 +225,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		if (TextUtils.isEmpty(deviceId)) {
 			deviceId = getAppData().getDeviceId();
 			if (TextUtils.isEmpty(deviceId)) { // generate a new one
-				deviceId = "Hello" +  (Math.random() * 100) + "There" + System.currentTimeMillis();
+				deviceId = "Hello" + (Math.random() * 100) + "There" + System.currentTimeMillis();
 				getAppData().setDeviceId(deviceId);
 			}
 		}
@@ -311,7 +310,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected void onSessionStateChange(Session session, SessionState state, Exception exception) {
 		if (state != null && state.isOpened()) {
-			Log.d("TEST","onSessionStateChange -> login with facebook");
+			Log.d("TEST", "onSessionStateChange -> login with facebook");
 			loginWithFacebook(session.getAccessToken());
 		}
 	}

@@ -853,6 +853,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		// Preview Sample
 		TextView rowSampleTitleTxt = (TextView) view.findViewById(R.id.rowSampleTitleTxt);
+
 		int fontColor = Color.parseColor("#" + themeItem.getFontColor());
 		rowSampleTitleTxt.setTextColor(fontColor);
 

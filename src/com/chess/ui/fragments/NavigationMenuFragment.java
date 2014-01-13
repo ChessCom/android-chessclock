@@ -80,7 +80,7 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 
 		menuItems = new ArrayList<NavigationMenuItem>();
 		menuItems.add(new NavigationMenuItem(getString(R.string.home), R.drawable.ic_nav_home));
-		if (isNeedToUpgradePremium()) {
+		if (isNeedToUpgrade()) {
 			menuItems.add(new NavigationMenuItem(getString(R.string.upgrade), R.drawable.ic_nav_upgrade_shine));
 		}
 		menuItems.add(new NavigationMenuItem(getString(R.string.play_live), R.drawable.ic_nav_play_live));
@@ -95,6 +95,9 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 		menuItems.add(new NavigationMenuItem(getString(R.string.friends), R.drawable.ic_nav_friends));
 		menuItems.add(new NavigationMenuItem(getString(R.string.stats), R.drawable.ic_nav_stats));
 		menuItems.add(new NavigationMenuItem(getString(R.string.messages), R.drawable.ic_nav_messages));
+		if (isNeedToUpgradePremium() && !isNeedToUpgrade()) {
+			menuItems.add(new NavigationMenuItem(getString(R.string.upgrade), R.drawable.ic_nav_upgrade_shine));
+		}
 		menuItems.add(new NavigationMenuItem(getString(R.string.settings), R.drawable.ic_nav_settings));
 
 		menuItems.get(0).selected = true;

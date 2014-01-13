@@ -83,6 +83,9 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 			case R.string.ic_password:
 				changeInternalFragment(new SettingsPasswordFragment());
 				break;
+			case R.string.ic_home:
+				changeInternalFragment(new SettingsLanguageFragment());
+				break;
 			case R.string.ic_ticket:
 				Intent emailIntent = new Intent(Intent.ACTION_SEND);
 				emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);

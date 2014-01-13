@@ -561,10 +561,11 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				return;
 			}
 
+			premiumStatus = returnedObj.getData().getLevel();
+			getAppData().setUserPremiumStatus(premiumStatus);
+
 			// update selected modes
 			if (returnedObj.getData().getIs_premium() > 0) {
-				premiumStatus = returnedObj.getData().getLevel();
-				getAppData().setUserPremiumStatus(premiumStatus);
 
 				String sku = returnedObj.getData().getSku();
 

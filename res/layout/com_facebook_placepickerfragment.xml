@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright 2010-present Facebook.
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,38 +15,38 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:background="#FFFFFF"
-              android:descendantFocusability="beforeDescendants"
-              android:focusableInTouchMode="true">
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#FFFFFF"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true">
 
-    <include layout="@layout/com_facebook_picker_title_bar_stub"/>
+	<include layout="@layout/com_facebook_picker_title_bar_stub" />
 
-    <ViewStub android:id="@+id/com_facebook_placepickerfragment_search_box_stub"
-              android:inflatedId="@+id/search_box"
-              android:layout="@layout/com_facebook_picker_search_box"
-              android:layout_height="wrap_content"
-              android:layout_width="fill_parent"/>
+	<ViewStub
+		android:id="@+id/com_facebook_placepickerfragment_search_box_stub"
+		android:inflatedId="@+id/search_box"
+		android:layout="@layout/com_facebook_picker_search_box"
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent" />
 
-    <ListView
-            android:id="@+id/com_facebook_picker_list_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"
-            android:divider="@color/new_friends_list_divider"
-            android:fastScrollEnabled="true"
-            android:scrollbars="vertical"
-            android:listSelector="@drawable/transparent_list_item_selector"
-            android:cacheColorHint="#FFFFFF"
-            />
+	<ListView
+		android:id="@+id/com_facebook_picker_list_view"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_alignParentTop="true"
+		android:divider="@color/new_friends_list_divider"
+		android:fastScrollEnabled="true"
+		android:scrollbars="vertical"
+		android:listSelector="@drawable/transparent_list_item_selector"
+		android:cacheColorHint="#FFFFFF" />
 
-    <ProgressBar android:indeterminate="true"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:id="@+id/com_facebook_picker_activity_circle"
-                 style="@android:style/Widget.ProgressBar"
-                 android:layout_centerInParent="true"
-                 android:visibility="invisible"
-            />
+	<ProgressBar
+		android:indeterminate="true"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:id="@+id/com_facebook_picker_activity_circle"
+		style="@style/ChessProgressBar"
+		android:layout_centerInParent="true"
+		android:visibility="invisible" />
 </RelativeLayout>

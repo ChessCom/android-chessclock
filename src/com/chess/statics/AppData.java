@@ -114,6 +114,10 @@ public class AppData {
 		return getStringValue(FACEBOOK_TOKEN, Symbol.EMPTY);
 	}
 
+	public void setLanguageCode(int value) {
+		setIntValue(PREF_LANGUAGE, value);
+	}
+
 	public int getLanguageCode() {
 		return getIntValue(PREF_LANGUAGE, 0);
 	}

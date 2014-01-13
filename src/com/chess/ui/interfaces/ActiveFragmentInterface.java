@@ -74,4 +74,6 @@ public interface ActiveFragmentInterface {
 	void setPullToRefreshView(View view, PullToRefreshAttacher.OnRefreshListener refreshListener);
 
 	PullToRefreshAttacher getPullToRefreshAttacher();
+
+	void updateLocale();
 }

@@ -126,8 +126,9 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 			if (previousCheckedId == NON_INIT) {
 				tabRadioGroup.check(R.id.leftTabBtn);
+			} else {
+				updateTabs();
 			}
-			updateTabs();
 		}
 	}
 
@@ -225,11 +226,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		@Override
 		public void showProgress(boolean show) {
-			if (getActivityFace().getPullToRefreshAttacher() != null) {
-				getActivityFace().getPullToRefreshAttacher().showProgress(show);
-			} else {
-				tabsLoadProgressBar.setVisibility(show? View.VISIBLE : View.GONE);
-			}
+			tabsLoadProgressBar.setVisibility(show? View.VISIBLE : View.GONE);
 		}
 
 		@Override
@@ -243,9 +240,9 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 			if (previousCheckedId == NON_INIT) {
 				tabRadioGroup.check(R.id.leftTabBtn);
+			} else {
+				updateTabs();
 			}
-
-			updateTabs();
 		}
 
 		@Override

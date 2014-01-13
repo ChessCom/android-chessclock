@@ -171,6 +171,7 @@ public class DailyGamesFinishedFragment extends CommonLogicFragment implements A
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
+			paginationAdapter.notifyDataSetChanged();
 			finishedGamesCursorAdapter.changeCursor(returnedObj);
 			paginationAdapter.notifyDataSetChanged();
 			need2update = false;

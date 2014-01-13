@@ -701,15 +701,6 @@ public class GetAndSaveTheme extends Service {
 
 		installingTheme = false;
 
-		// load next theme from queue
-		for (Map.Entry<ThemeItem.Data, ThemeState> entry : themesQueue.entrySet()) {
-			ThemeState status = entry.getValue();
-			if (status.equals(ThemeState.ENQUIRED)) {
-				loadTheme(entry.getKey(), screenWidth, screenHeight);
-				return;
-			}
-		}
-
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {

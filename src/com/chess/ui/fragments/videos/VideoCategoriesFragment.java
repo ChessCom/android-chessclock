@@ -181,6 +181,7 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
+			paginationAdapter.notifyDataSetChanged();
 			getAdapter().changeCursor(returnedObj);
 			paginationAdapter.notifyDataSetChanged();
 		}

@@ -128,16 +128,16 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 
 	private boolean notValidToReturnForFragment() {
 		Fragment startedFragment = getTaskFace().getStartedFragment();
-		if (getTaskFace().isUsedForFragment()) {
-			Log.d(TAG, "_____________________________________________________________");
-
-			Log.d(TAG, "fragment = " + startedFragment + ", taskFace = " + taskFace + ", task = " + this
-					+ ", fragment == null = " + (startedFragment == null));
-			if (startedFragment != null) {
-				Log.d(TAG, "startedFragment.getActivity() == null = " + (startedFragment.getActivity() == null));
-				Log.d(TAG, "!startedFragment.isVisible() = " + (!startedFragment.isVisible()));
-			}
-		}
+//		if (getTaskFace().isUsedForFragment()) {
+//			Log.d(TAG, "_____________________________________________________________");
+//
+//			Log.d(TAG, "fragment = " + startedFragment + ", taskFace = " + taskFace + ", task = " + this
+//					+ ", fragment == null = " + (startedFragment == null));
+//			if (startedFragment != null) {
+//				Log.d(TAG, "startedFragment.getActivity() == null = " + (startedFragment.getActivity() == null));
+//				Log.d(TAG, "!startedFragment.isVisible() = " + (!startedFragment.isVisible()));
+//			}
+//		}
 		return getTaskFace().isUsedForFragment() && (startedFragment == null
 				|| startedFragment.getActivity() == null
 				|| !startedFragment.isVisible());

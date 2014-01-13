@@ -207,7 +207,7 @@
 
 	<!--Setup Screens-->
 	<string name="new_create_profile">Create Profile</string>
-	<string name="new_skip_this_step">Skip This Step</string>
+	<string name="skip_this_step">Skip This Step</string>
 	<string name="last_name">Last Name</string>
 	<string name="first_name">First Name</string>
 	<string name="profile_picture">Profile Picture</string>
@@ -443,7 +443,7 @@
 
 	<!--Profile-->
 	<string name="unable_to_select_this_photo">Unable to pick this photo</string>
-	<string name="hang_on">Processing…</string>
+	<string name="processing_">Processing…</string>
 	<string name="about">About</string>
 	<string name="member_since_">Member Since: %s</string>
 	<string name="birthday_">Birthday:  %s</string>
@@ -454,7 +454,7 @@
 	<!--Videos-->
 	<string name="video_curriculum">Video Curriculum</string>
 	<!--<string name="no_data">No Data</string>-->
-	<string name="posts_arg">%s Posts</string>
+	<string name="posts_arg">%s posts</string>
 	<string name="quote">Quote</string>
 	<string name="new_topic">New Topic</string>
 	<string name="topic_created">Topic created</string>
