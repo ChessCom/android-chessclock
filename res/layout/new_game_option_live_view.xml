@@ -116,7 +116,10 @@
 				android:layout_height="wrap_content"
 				android:text="@string/random"
 				style="@style/Button.Glassy.Small"
-				android:clickable="false"/>
+				android:clickable="false"
+				android:paddingLeft="5dp"
+				android:paddingRight="5dp"
+				/>
 		</com.chess.widgets.LinLayout>
 
 		<!--Rated Game-->

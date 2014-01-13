@@ -136,7 +136,7 @@
   <string name="draw_agree">Игра закончена, ничья по соглашению!</string>
   <string name="resign_white">Игра закончена, белые сдаются!</string>
   <string name="resign_black">Игра закончена, черные сдаются!</string>
-  <string name="book">Книга:</string>
+  <string name="pieces_book">Книга:</string>
   <string name="invalid_move">Неправильный ход</string>
   <string name="piece_can_not_be_moved">Фигура не может быть перемещена</string>
   <string name="preferences">Предпочтения</string>

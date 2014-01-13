@@ -92,8 +92,8 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorRightAdapter(getContext(), null, getImageFetcher());
 
 		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
-		sectionedAdapter.addSection(getString(R.string.new_my_move), currentGamesMyCursorAdapter);
-		sectionedAdapter.addSection(getString(R.string.new_their_move), currentGamesTheirCursorAdapter);
+		sectionedAdapter.addSection(getString(R.string.my_move), currentGamesMyCursorAdapter);
+		sectionedAdapter.addSection(getString(R.string.their_move), currentGamesTheirCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
 	}
 

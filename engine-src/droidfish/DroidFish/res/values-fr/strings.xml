@@ -143,7 +143,7 @@ préserver la batterie, ou de quitter <i>DroidFish</i> en utilisant la touche re
   <string name="draw_agree">Fin de la partie, nulle par accord mutuel!</string>
   <string name="resign_white">Fin de la partie, les Blancs abandonnent!</string>
   <string name="resign_black">Fin de la partie, les Noirs abandonnent!</string>
-  <string name="book">Livre:</string>
+  <string name="pieces_book">Livre:</string>
   <string name="invalid_move">Coup non valide</string>
   <string name="piece_can_not_be_moved">La pièce ne peut pas être déplacée</string>
   <string name="preferences">Préférences</string>

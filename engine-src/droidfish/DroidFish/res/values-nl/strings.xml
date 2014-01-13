@@ -144,7 +144,7 @@ daadwerkelijk af te sluiten (gebruik hiervoor de return toets op uw telefoon).\<
   <string name="draw_agree">Einde partij, remise overeengekomen!</string>
   <string name="resign_white">Einde partij, wit geeft op!</string>
   <string name="resign_black">Einde partij, zwart geeft op!</string>
-  <string name="book">Boek:</string>
+  <string name="pieces_book">Boek:</string>
   <string name="invalid_move">Ongeldige zet</string>
   <string name="piece_can_not_be_moved">Stuk kan niet verplaatst worden</string>
   <string name="preferences">Voorkeuren</string>

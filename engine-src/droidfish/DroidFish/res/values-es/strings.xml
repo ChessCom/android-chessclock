@@ -144,7 +144,7 @@ Si está usted utilizando la batería, se recomienda que cambie los ajustes para
   <string name="draw_agree">Fin de la partida, tablas por acuerdo mutuo!</string>
   <string name="resign_white">Fin de la partida, blancas rinden!</string>
   <string name="resign_black">Fin de la partida, negras rinden!</string>
-  <string name="book">Libro:</string>
+  <string name="pieces_book">Libro:</string>
   <string name="invalid_move">Jugada no válida</string>
   <string name="piece_can_not_be_moved">La pieza no puede moverse</string>
   <string name="preferences">Preferencias</string>

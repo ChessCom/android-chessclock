@@ -159,7 +159,7 @@ you are not actively using the program.\
     <string name="draw_agree">Game over, draw by agreement!</string>
     <string name="resign_white">Game over, white resigns!</string>
     <string name="resign_black">Game over, black resigns!</string>
-    <string name="book">Book:</string>
+    <string name="pieces_book">Book:</string>
     <string name="invalid_move">Invalid move</string>
     <string name="piece_can_not_be_moved">Piece can not be moved</string>
     <string name="preferences">Preferences</string>

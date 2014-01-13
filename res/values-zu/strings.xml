@@ -205,15 +205,15 @@
 	<string name="performance">performance</string>
 
 	<!--Setup Screens-->
-	<string name="new_create_profile">new_create_profile</string>
+	<string name="create_profile">new_create_profile</string>
 	<string name="skip_this_step">new_skip_this_step</string>
 	<string name="last_name">last_name</string>
 	<string name="first_name">first_name</string>
 	<string name="profile_picture">profile_picture</string>
 	<string name="or_use_your_email">or_use_your_email</string>
-	<string name="new_by_signing_up_accept_mobile">new_by_signing_up_accept_mobile</string>
-	<string name="new_by_signing_up_accept_mobile1">new_by_signing_up_accept_mobile1</string>
-	<string name="new_create_chess_profile">new_create_chess_profile</string>
+	<string name="by_signing_up_accept_mobile">new_by_signing_up_accept_mobile</string>
+	<string name="by_signing_up_accept_mobile1">new_by_signing_up_accept_mobile1</string>
+	<string name="create_chess_profile">new_create_chess_profile</string>
 	<string name="daily">daily</string>
 	<string name="improve_game_with_lessons">improve_game_with_lessons</string>
 	<string name="improve_game_with_videos">improve_game_with_videos</string>
@@ -238,8 +238,8 @@
 	<string name="no_games">no_games</string>
 
 	<!--DailyGames-->
-	<string name="new_my_move">new_my_move</string>
-	<string name="new_their_move">new_their_move</string>
+	<string name="my_move">new_my_move</string>
+	<string name="their_move">new_their_move</string>
 
 	<string name="days_arg">days_arg</string>
 	<string name="day_arg">day_arg</string>

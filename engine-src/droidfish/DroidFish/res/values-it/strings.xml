@@ -137,7 +137,7 @@
   <string name="draw_agree">Partita terminata, patta per accordo!</string>
   <string name="resign_white">Partita terminata, il bianco abbandona!</string>
   <string name="resign_black">Partita terminata, il nero abbandona!</string>
-  <string name="book">Libro:</string>
+  <string name="pieces_book">Libro:</string>
   <string name="invalid_move">Mossa non valida</string>
   <string name="piece_can_not_be_moved">Il pezzo non puó essere mosso</string>
   <string name="preferences">Preferenze</string>

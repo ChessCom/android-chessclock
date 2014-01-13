@@ -77,8 +77,8 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 		{ // Terms link handle
 			TextView termsLinkTxt = (TextView) view.findViewById(R.id.termsLinkTxt);
 			termsLinkTxt.setClickable(true);
-			String termsText = getString(R.string.new_by_signing_up_accept_mobile) + Symbol.NEW_STR + Symbol.NEW_STR
-					+ getString(R.string.new_by_signing_up_accept_mobile1) ;
+			String termsText = getString(R.string.by_signing_up_accept_mobile) + Symbol.NEW_STR + Symbol.NEW_STR
+					+ getString(R.string.by_signing_up_accept_mobile1) ;
 			termsLinkTxt.setText(Html.fromHtml(termsText));
 			Linkify.addLinks(termsLinkTxt, Linkify.WEB_URLS);
 			termsLinkTxt.setMovementMethod(LinkMovementMethod.getInstance());

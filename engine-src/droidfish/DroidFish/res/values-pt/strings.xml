@@ -145,7 +145,7 @@ não estiver usando o programa diretamente.\</string>
   <string name="draw_agree">Partida encerrada, empate por acordo mútuo!</string>
   <string name="resign_white">Partida encerrada, Brancas abandonam!</string>
   <string name="resign_black">Partida encerrada, Pretas abandonam!</string>
-  <string name="book">Livro:</string>
+  <string name="pieces_book">Livro:</string>
   <string name="invalid_move">Lance inválido</string>
   <string name="piece_can_not_be_moved">Peça não pode ser movida</string>
   <string name="preferences">Preferências</string>

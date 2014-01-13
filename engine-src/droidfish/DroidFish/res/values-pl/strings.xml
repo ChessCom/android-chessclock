@@ -145,7 +145,7 @@ nie korzystasz aktywnie z programu.\</string>
   <string name="draw_agree">Koniec gry, strony ustaliły remis!</string>
   <string name="resign_white">Koniec gry, białe się poddały!</string>
   <string name="resign_black">Koniec gry, czarne się poddały!</string>
-  <string name="book">Książka:</string>
+  <string name="pieces_book">Książka:</string>
   <string name="invalid_move">Niepoprawny ruch</string>
   <string name="piece_can_not_be_moved">Ruch bierką niemożliwy</string>
   <string name="preferences">Preferencje</string>

@@ -146,7 +146,7 @@ wenn Sie es nicht aktiv nutzen.\
   <string name="draw_agree">Spielende, Remis (Vereinbarung)!</string>
   <string name="resign_white">Spielende, Aufgabe durch Weiß!</string>
   <string name="resign_black">Spielende, Aufgabe durch Schwarz!</string>
-  <string name="book">Buch:</string>
+  <string name="pieces_book">Buch:</string>
   <string name="invalid_move">Unzulässiger Zug</string>
   <string name="piece_can_not_be_moved">Figur kann nicht gezogen werden</string>
   <string name="preferences">Einstellungen</string>

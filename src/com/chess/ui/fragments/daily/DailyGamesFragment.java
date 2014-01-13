@@ -130,7 +130,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher());
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
 
-		sectionedAdapter.addSection(getString(R.string.new_my_move), currentGamesMyCursorAdapter);
+		sectionedAdapter.addSection(getString(R.string.my_move), currentGamesMyCursorAdapter);
 		sectionedAdapter.addSection(getString(R.string.completed), finishedGamesCursorAdapter);
 
 		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
