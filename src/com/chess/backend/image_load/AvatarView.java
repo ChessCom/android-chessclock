@@ -35,7 +35,6 @@ public class AvatarView extends ProgressImageView {
 
 		int indicatorSize = (int) (size * INDICATOR_SCALE_FACTOR);
 
-
 		// add isOnline indication
 		{// image
 			onlineBadge = new ImageView(getContext());
@@ -48,7 +47,6 @@ public class AvatarView extends ProgressImageView {
 			onlineBadge.setScaleType(ImageView.ScaleType.FIT_XY);
 			int onlineColor = getResources().getColor(R.color.is_online_color);
 			ColorDrawable drawable = new ColorDrawable(onlineColor);
-//			Drawable drawable = getResources().getDrawable(R.drawable.is_online_drawable);
 			onlineBadge.setImageDrawable(drawable);
 
 			addView(onlineBadge, indicatorParams);

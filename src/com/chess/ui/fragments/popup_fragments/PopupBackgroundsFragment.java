@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 	private View loadingView;
 	private List<BackgroundSingleItem.Data> backgroundsThemeList;
 	private boolean isTablet;
+	private boolean adapterSet;
 
 	public PopupBackgroundsFragment() {
 	}
@@ -139,7 +141,8 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 	@Override
 	public void onGlobalLayout() {
-		if (need2update) {
+		if (getView() != null & getView().getWidth() != 0 && !adapterSet) {
+			adapterSet = true;
 			Cursor cursor = DbDataManager.query(getActivity().getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BACKGROUNDS));
 
 			if (cursor != null && cursor.moveToFirst() && appData.isThemeBackgroundsLoaded()) {
@@ -148,6 +151,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 					backgroundsThemeList.add(DbDataManager.getThemeBackgroundItemFromCursor(cursor));
 				} while (cursor.moveToNext());
 				cursor.close();
+
 				updateUiData();
 			} else {
 				LoadItem loadItem = new LoadItem();

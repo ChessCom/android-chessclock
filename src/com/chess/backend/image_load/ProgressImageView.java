@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import com.chess.R;
+import com.chess.widgets.ProfileImageView;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
@@ -32,7 +33,7 @@ public class ProgressImageView extends RelativeLayout implements View.OnTouchLis
 
 	public static final int DEFAULT_IMG_SIZE = 80;
 	public Bitmap placeholder;
-	private ImageView imageView;
+	private ProfileImageView imageView;
 	private Bitmap bitmap;
 	public ProgressBar progress;
 	public Bitmap noImage;
@@ -88,7 +89,7 @@ public class ProgressImageView extends RelativeLayout implements View.OnTouchLis
 		noImage = ((BitmapDrawable) getResources().getDrawable(R.drawable.img_profile_picture_stub)).getBitmap();
 
 		{// image
-			imageView = new ImageView(getContext());
+			imageView = new ProfileImageView(getContext());
 			LayoutParams photoParams = new LayoutParams(size, size);
 			photoParams.addRule(CENTER_IN_PARENT);
 
@@ -148,11 +149,11 @@ public class ProgressImageView extends RelativeLayout implements View.OnTouchLis
 		imageView.setImageBitmap(bitmap);
 	}
 
-	public ImageView getImageView() {
+	public ProfileImageView getImageView() {
 		return imageView;
 	}
 
-	public void setImageView(ImageView imageView) {
+	public void setImageView(ProfileImageView imageView) {
 		this.imageView = imageView;
 	}
 

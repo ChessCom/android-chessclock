@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
@@ -27,6 +26,7 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.LogMe;
+import com.chess.widgets.ProfileImageView;
 import com.chess.widgets.RoboButton;
 
 
@@ -106,8 +106,8 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		}
 
 		{// set avatars
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 			String topAvatarUrl = liveService.getCurrentGame()
 					.getOpponentForPlayer(currentGame.getWhiteUsername()).getAvatarUrl();

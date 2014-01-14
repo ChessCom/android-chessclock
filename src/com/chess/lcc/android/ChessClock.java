@@ -1,5 +1,6 @@
 package com.chess.lcc.android;
 
+import android.util.Log;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.statics.Symbol;
@@ -29,6 +30,8 @@ public class ChessClock {
 	private Game game;
 	private String playerName;
 	private boolean isRunning;
+	private int previousTime = -999;
+	private String previousTimeString;
 
 	public ChessClock(LccHelper lccHelper, boolean isWhite, boolean isGameOver) {
 		this.lccHelper = lccHelper;
@@ -80,26 +83,27 @@ public class ChessClock {
 			updateTime();
 		}
 
+		if (previousTime == time) { // do not update if time hasn't changed
+			return;
+		}
+		previousTime = time;
+
 		String timeString = createTimeString();
+		if (timeString.equals(previousTimeString)) { // don't update UI if it's really wasn't changed
+			return;
+		}
+		previousTimeString = timeString;
+
 		if (isWhite) { // if white player move
+			Log.d("TEST","clock setWhitePlayerTimer");
 			eventListener.setWhitePlayerTimer(timeString);
 		} else {
+			Log.d("TEST","clock setBlackPlayerTimer");
 			eventListener.setBlackPlayerTimer(timeString);
 		}
-//		eventListener.runOnUiThread(new Runnable() {
-//			@Override
-//			public void run() {
-//				String timeString = createTimeString(getTime());
-//				if (isWhite) { // if white player move
-//					eventListener.setWhitePlayerTimer(timeString);
-//				} else {
-//					eventListener.setBlackPlayerTimer(timeString);
-//				}
-//			}
-//		});
 	}
 
-	public String createTimeString() { // TODO simplify . Use Calendar & SimpleDateTime formatter methods
+	public String createTimeString() {
 		//boolean isNegative = time < 0;
 		int time = this.time;
 		int hours = time / (SECOND_MS * 60 * 60);

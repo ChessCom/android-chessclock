@@ -19,9 +19,12 @@ import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
+import com.chess.widgets.ProfileImageView;
 import com.chess.widgets.RelLayout;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboTextView;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,7 +47,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 	private int flagMargin = 5;
 
-	protected ImageView avatarImg;
+	protected ProfileImageView avatarImg;
 	protected ImageView flagImg;
 	protected View capturedPiecesView;
 	protected ImageView premiumImg;
@@ -58,6 +61,12 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 	private RelLayout drawOfferedRelLay;
 	private OnClickListener clickListener;
 	private String playerName;
+
+	/* Timer Animation */
+	private static final int DURATION = 200;
+	private static final float alphaPressed = 0.2f;
+	private AnimatorSet bumpAnimationSet;
+
 
 	public PanelInfoLiveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -134,7 +143,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		}
 
 		{// add avatar view
-			avatarImg = new ImageView(context);
+			avatarImg = new ProfileImageView(context);
 
 			LayoutParams avatarParams = new LayoutParams(avatarSize, avatarSize);
 			avatarParams.setMargins(paddingLeft, paddingTop, avatarMarginRight, paddingTop);
@@ -387,6 +396,8 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			params.addRule(ALIGN_PARENT_RIGHT);
 			addView(drawOfferedRelLay, params);
 		}
+
+		initBumpAnimation();
 	}
 
 	@Override
@@ -549,5 +560,19 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			premiumImg.setVisibility(GONE);
 		}
 
+	}
+
+	private void initBumpAnimation() {
+		bumpAnimationSet = new AnimatorSet();
+		bumpAnimationSet.playTogether(
+				ObjectAnimator.ofFloat(clockLayout, "scaleX", 1, 1.25f, 1),
+				ObjectAnimator.ofFloat(clockLayout, "scaleY", 1, 1.25f, 1),
+				ObjectAnimator.ofFloat(clockLayout, "alpha", 1, alphaPressed, 1)
+		);
+		bumpAnimationSet.setDuration(DURATION);
+	}
+
+	public void bumpTimer() {
+		bumpAnimationSet.start();
 	}
 }

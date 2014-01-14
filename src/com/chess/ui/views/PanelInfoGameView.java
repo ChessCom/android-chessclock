@@ -21,6 +21,7 @@ import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
+import com.chess.widgets.ProfileImageView;
 import com.chess.widgets.RelLayout;
 import com.chess.widgets.RoboTextView;
 
@@ -48,7 +49,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	protected Handler handler;
 
 	protected RoboTextView playerTxt;
-	protected ImageView avatarImg;
+	protected ProfileImageView avatarImg;
 	protected ImageView flagImg;
 	protected View capturedPiecesView;
 	protected RoboTextView timeRemainTxt;
@@ -145,7 +146,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		}
 
 		{// add avatar view
-			avatarImg = new ImageView(context);
+			avatarImg = new ProfileImageView(context);
 
 			LayoutParams avatarParams = new LayoutParams(avatarSize, avatarSize);
 			avatarParams.setMargins(paddingLeft, paddingTop, avatarMarginRight, paddingTop);

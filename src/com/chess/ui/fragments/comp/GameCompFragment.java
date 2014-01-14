@@ -9,7 +9,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
@@ -42,6 +41,7 @@ import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsCompView;
+import com.chess.widgets.ProfileImageView;
 import org.petero.droidfish.GameMode;
 
 import java.util.ArrayList;
@@ -790,8 +790,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
-		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+		topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+		bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 		int mode = getBoardFace().getMode();
 		{// set avatars
@@ -806,8 +806,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			}
 			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), user);
 
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 			if (mode != AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER	&& mode != AppConstants.GAME_MODE_2_PLAYERS) {
 				ImageDownloaderToListener imageDownloader = new ImageDownloaderToListener(getContext());

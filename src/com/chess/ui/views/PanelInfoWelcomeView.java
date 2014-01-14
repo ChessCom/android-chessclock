@@ -15,6 +15,7 @@ import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.CapturedPiecesDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
+import com.chess.widgets.ProfileImageView;
 import com.chess.widgets.RoboTextView;
 
 /**
@@ -83,7 +84,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		}
 
 		{// add avatar view
-			avatarImg = new ImageView(context);
+			avatarImg = new ProfileImageView(context);
 			LayoutParams avatarParams = new LayoutParams(avatarSize, avatarSize);
 			avatarParams.setMargins(paddingLeft, paddingTop, avatarMarginRight, paddingTop);
 

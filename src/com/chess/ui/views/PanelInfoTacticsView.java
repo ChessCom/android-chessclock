@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.chess.R;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.FontsHelper;
+import com.chess.widgets.ProfileImageView;
 import com.chess.widgets.RoboTextView;
 
 /**
@@ -30,7 +31,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 	public static final int RATING_CHANGE_ID = 0x00004406;
 	public static final String NO_TIME = "-:--";
 
-	private ImageView avatarImg;
+	private ProfileImageView avatarImg;
 
 	private RoboTextView ratingTxt;
 
@@ -73,7 +74,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		defaultColorStateList = FontsHelper.getInstance().getThemeColorStateList(context, false);
 
 		{// add avatar view
-			avatarImg = new ImageView(context);
+			avatarImg = new ProfileImageView(context);
 
 			LayoutParams avatarParams = new LayoutParams(avatarSize, avatarSize);
 			avatarParams.setMargins(0, 0, avatarMarginRight, 0);

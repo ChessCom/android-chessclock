@@ -31,6 +31,7 @@ import java.util.List;
 public abstract class BasePopupsFragment extends Fragment implements PopupDialogFace {
 
 	protected static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+	protected static final boolean ICS_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 	protected static final boolean JELLY_BEAN_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
 
 	protected static final String INFO_POPUP_TAG = "information popup";

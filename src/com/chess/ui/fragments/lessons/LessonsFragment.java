@@ -184,6 +184,17 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 				expListView.setAdapter(curriculumAdapter);
 				curriculumAdapter.notifyDataSetChanged();
+				/*
+					this is an important one! both for VIDEOS and LESSONS curriculum,
+					we should auto-open the category with the lowest unfinished video/lesson.
+					so, first time i use the app the Rules and Basics for both would be expanded.
+					that's more beautiful and inviting!
+			 	*/
+				if (ICS_PLUS_API) {
+					expListView.expandGroup(0, true); // TODO adjust properly last incomplete
+				} else {
+					expListView.expandGroup(0);
+				}
 			}
 		} else {
 			listView.setAdapter(categoriesCursorAdapter);
@@ -235,7 +246,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		int courseId = curriculumItems.getIds().get(categoryId).get(childPosition);
 		if (!isTablet) {
 			getActivityFace().openFragment(LessonsCourseFragment.createInstance(courseId, categoryId));
-		}else {
+		} else {
 			getActivityFace().openFragment(LessonsCourseFragmentTablet.createInstance(courseId, categoryId));
 		}
 		return false;
@@ -269,7 +280,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			// get saved categories
-			Cursor cursor =	DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.LESSONS_CATEGORIES));
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.LESSONS_CATEGORIES));
 
 			if (cursor != null && cursor.moveToFirst()) {
 

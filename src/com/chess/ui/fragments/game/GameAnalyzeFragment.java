@@ -6,7 +6,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
@@ -32,6 +31,7 @@ import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsAnalysisView;
 import com.chess.utilities.AppUtils;
+import com.chess.widgets.ProfileImageView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -198,8 +198,8 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		boardFace.setAnalysis(true);
 
 		{// set avatars
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 			{ // set stubs while avatars are loading
 				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
@@ -401,8 +401,8 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
 					R.color.new_normal_grey_2, R.dimen.board_avatar_icon_size);
 
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 			labelsConfig.topAvatar = new BoardAvatarDrawable(getActivity(), src);
 			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);

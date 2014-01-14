@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -38,6 +37,7 @@ import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsAnalysisView;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.utilities.AppUtils;
+import com.chess.widgets.ProfileImageView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -537,8 +537,8 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			opponentAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 			userAvatarDrawable = new BoardAvatarDrawable(getActivity(), src);
 
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 			labelsConfig.topAvatar = opponentAvatarDrawable;
 			labelsConfig.bottomAvatar = userAvatarDrawable;

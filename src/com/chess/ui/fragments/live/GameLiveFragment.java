@@ -12,7 +12,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.*;
@@ -52,6 +51,7 @@ import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsLiveView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
+import com.chess.widgets.ProfileImageView;
 
 import java.util.List;
 
@@ -97,6 +97,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private ImageUpdateListener topImageUpdateListener;
 	private ImageUpdateListener bottomImageUpdateListener;
 	private boolean submitClicked;
+	private int previousSide;
 
 	public GameLiveFragment() {
 	}
@@ -422,16 +423,31 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 				boolean whiteToMove = getBoardFace().isWhiteToMove();
 
+				int newSide;
+
 				if (getBoardFace().isReside()) { // if white at top
 					topPanelView.showTimeLeftIcon(whiteToMove);
 					bottomPanelView.showTimeLeftIcon(!whiteToMove);
 
 					topPanelView.setTimeRemain(timeString);
+
+					newSide = ChessBoard.WHITE_SIDE;
+					if (previousSide != newSide) {
+						previousSide = newSide;
+						topPanelView.bumpTimer();
+					}
 				} else {
 					topPanelView.showTimeLeftIcon(!whiteToMove);
 					bottomPanelView.showTimeLeftIcon(whiteToMove);
 
 					bottomPanelView.setTimeRemain(timeString);
+
+					newSide = ChessBoard.BLACK_SIDE;
+
+					if (previousSide != newSide) {
+						previousSide = newSide;
+						bottomPanelView.bumpTimer();
+					}
 				}
 			}
 		});
@@ -453,16 +469,29 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 				boolean blackToMove = !getBoardFace().isWhiteToMove();
 
+				int newSide;
 				if (getBoardFace().isReside()) {
 					topPanelView.showTimeLeftIcon(!blackToMove);
 					bottomPanelView.showTimeLeftIcon(blackToMove);
 
 					bottomPanelView.setTimeRemain(timeString);
+
+					newSide = ChessBoard.BLACK_SIDE;
+					if (previousSide != newSide) {
+						previousSide = newSide;
+						bottomPanelView.bumpTimer();
+					}
 				} else {
 					topPanelView.showTimeLeftIcon(blackToMove);
 					bottomPanelView.showTimeLeftIcon(!blackToMove);
 
 					topPanelView.setTimeRemain(timeString);
+
+					newSide = ChessBoard.WHITE_SIDE;
+					if (previousSide != newSide) {
+						previousSide = newSide;
+						topPanelView.bumpTimer();
+					}
 				}
 			}
 		});
@@ -1209,8 +1238,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		topPanelView.setClickHandler(this);
 
 		{ // set avatars views
-			topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-			bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+			bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 			{ // set stubs while avatars are loading
 				Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,

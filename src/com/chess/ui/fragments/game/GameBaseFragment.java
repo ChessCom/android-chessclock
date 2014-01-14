@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.backend.RestHelper;
@@ -31,6 +30,7 @@ import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.GameLiveFragmentTablet;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupPromotionFragment;
+import com.chess.ui.fragments.profiles.ProfileTabsFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
@@ -39,6 +39,7 @@ import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
+import com.chess.widgets.ProfileImageView;
 import com.mopub.mobileads.MoPubView;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -51,7 +52,7 @@ import java.text.SimpleDateFormat;
  * Date: 15.01.13
  * Time: 13:46
  */
-public abstract class GameBaseFragment extends LiveBaseFragment implements GameFace, SlidingMenu.OnClosedListener {
+public abstract class GameBaseFragment extends LiveBaseFragment implements GameFace, SlidingMenu.OnClosedListener, ProfileImageView.ProfileOpenFace {
 
 	protected static final String GAME_GOES = "*";
 	protected static final String WHITE_WINS = "1-0";
@@ -78,8 +79,8 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected String endGameReason;
 	protected long gameId;
 	private View boardFrame;
-	protected ImageView topAvatarImg;
-	protected ImageView bottomAvatarImg;
+	protected ProfileImageView topAvatarImg;
+	protected ProfileImageView bottomAvatarImg;
 	protected LabelsConfig labelsConfig;
 	protected ImageDownloaderToListener imageDownloader;
 	protected PanelInfoGameView topPanelView;
@@ -115,11 +116,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 		promotionSelectedListener = new PromotionSelectedListener();
 		inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-
-		if (!getAppData().isUserSawHelpForQuickScroll() && fragmentHaveArrows()) {
-			showToastLong(R.string.help_toast_for_quick_in_game_navigation);
-			getAppData().setUserSawHelpForQuickScroll(true);
-		}
 	}
 
 	private boolean fragmentHaveArrows() {
@@ -294,6 +290,11 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 			//initUpgradeAndAdWidgets(endGamePopupView); //todo: uncomment in order to show ads
 			setBoardToFinishedState();
 		}
+
+		if (!getAppData().isUserSawHelpForQuickScroll() && fragmentHaveArrows()) {
+			showToastLong(R.string.help_toast_for_quick_in_game_navigation);
+			getAppData().setUserSawHelpForQuickScroll(true);
+		}
 	}
 
 	protected void showGameEndPopup(final View layout, final String title, String reason) {
@@ -324,6 +325,11 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		// save file as <white_player>_vs_<black_player>_<game_start_date>.pgn
 		String path = DOWNLOADS;
 		new SaveTextFileToSDTask(new FileSaveListener(filename), pgnItem.getPgn(), path).executeTask(filename);
+	}
+
+	@Override
+	public void openProfile(String username) {
+		getActivityFace().openFragment(ProfileTabsFragment.createInstance(username));
 	}
 
 	private class FileSaveListener extends ChessLoadUpdateListener<String> {
@@ -501,6 +507,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
 					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+					topAvatarImg.setUsername(labelsConfig.topPlayerName, GameBaseFragment.this);
 					getTopPanelView().invalidate();
 
 					break;
@@ -509,6 +516,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
 					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+					bottomAvatarImg.setUsername(labelsConfig.bottomPlayerName, GameBaseFragment.this);
 					getBottomPanelView().invalidate();
 					break;
 			}
