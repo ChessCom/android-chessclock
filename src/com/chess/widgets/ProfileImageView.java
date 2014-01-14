@@ -32,12 +32,12 @@ public class ProfileImageView extends ImageView implements View.OnClickListener 
 	}
 
 	private void onCreate(Context context) {
-		setOnClickListener(this);
 	}
 
 	public void setUsername(String username, ProfileOpenFace profileOpenFace) {
 		this.username = username;
 		this.profileOpenFace = profileOpenFace;
+		setOnClickListener(this);
 	}
 
 	@Override

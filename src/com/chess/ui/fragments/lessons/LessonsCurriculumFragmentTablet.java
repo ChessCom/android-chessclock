@@ -25,7 +25,6 @@ import com.chess.model.CurriculumLessonsItems;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -123,6 +122,7 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 
 			expListView.setAdapter(curriculumAdapter);
 			curriculumAdapter.notifyDataSetChanged();
+			expandLastSection();
 		}
 	}
 
@@ -324,14 +324,14 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 
 		curriculumAdapter = new CurriculumListAdapter(curriculumItems);
 		expListView.setAdapter(curriculumAdapter);
+		expandLastSection();
 	}
 
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			loadingView.setVisibility(View.VISIBLE);
+	private void expandLastSection() {
+		if (ICS_PLUS_API) {
+			expListView.expandGroup(0, true); // TODO adjust properly last incomplete
 		} else {
-			loadingView.setVisibility(View.GONE);
+			expListView.expandGroup(0);
 		}
 	}
 

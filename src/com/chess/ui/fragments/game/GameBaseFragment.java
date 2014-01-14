@@ -30,7 +30,6 @@ import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.GameLiveFragmentTablet;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupPromotionFragment;
-import com.chess.ui.fragments.profiles.ProfileTabsFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
@@ -52,7 +51,7 @@ import java.text.SimpleDateFormat;
  * Date: 15.01.13
  * Time: 13:46
  */
-public abstract class GameBaseFragment extends LiveBaseFragment implements GameFace, SlidingMenu.OnClosedListener, ProfileImageView.ProfileOpenFace {
+public abstract class GameBaseFragment extends LiveBaseFragment implements GameFace, SlidingMenu.OnClosedListener {
 
 	protected static final String GAME_GOES = "*";
 	protected static final String WHITE_WINS = "1-0";
@@ -327,11 +326,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		new SaveTextFileToSDTask(new FileSaveListener(filename), pgnItem.getPgn(), path).executeTask(filename);
 	}
 
-	@Override
-	public void openProfile(String username) {
-		getActivityFace().openFragment(ProfileTabsFragment.createInstance(username));
-	}
-
 	private class FileSaveListener extends ChessLoadUpdateListener<String> {
 
 		private String filename;
@@ -498,7 +492,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		public void onImageReady(Bitmap bitmap) {
 			Activity activity = getActivity();
 			if (activity == null/* || bitmap == null*/) {
-				Log.e("TEST", "ImageLoader bitmap == null");
 				return;
 			}
 			switch (code) {

@@ -188,17 +188,21 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			}
 		} else {
 			expListView.setAdapter(curriculumAdapter);
-			/*
-				this is an important one! both for VIDEOS and LESSONS curriculum,
-				we should auto-open the category with the lowest unfinished video/lesson.
-				so, first time i use the app the Rules and Basics for both would be expanded.
-				that's more beautiful and inviting!
-			*/
-			if (ICS_PLUS_API) {
-				expListView.expandGroup(0, true); // TODO adjust properly last incomplete
-			} else {
-				expListView.expandGroup(0);
-			}
+			expandLastSection();
+		}
+	}
+
+	/**
+	 * We should auto-open the category with the lowest unfinished video/lesson.
+	 * so, first time i use the app the Rules and Basics for both would be expanded.
+	 * that's more beautiful and inviting!
+	 */
+	private void expandLastSection() {
+		// get last unfinished video
+		if (ICS_PLUS_API) {
+			expListView.expandGroup(0, true); // TODO adjust properly last incomplete
+		} else {
+			expListView.expandGroup(0);
 		}
 	}
 

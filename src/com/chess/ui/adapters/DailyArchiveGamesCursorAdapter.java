@@ -49,20 +49,16 @@ public class DailyArchiveGamesCursorAdapter extends DailyFinishedGamesCursorAdap
 		String avatarUrl;
 		String opponentName;
 		String opponentRating;
-		int premiumStatus;
 		if (getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
 			avatarUrl = getString(cursor, DbScheme.V_WHITE_AVATAR);
 			opponentName = getString(cursor, DbScheme.V_WHITE_USERNAME);
 			opponentRating = getString(cursor, DbScheme.V_WHITE_RATING);
-			premiumStatus = getInt(cursor, DbScheme.V_WHITE_PREMIUM_STATUS);
 		} else {
 			avatarUrl = getString(cursor, DbScheme.V_BLACK_AVATAR);
 			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME);
 			opponentRating = getString(cursor, DbScheme.V_BLACK_RATING);
-			premiumStatus = getInt(cursor, DbScheme.V_BLACK_PREMIUM_STATUS);
 		}
 
-//		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(premiumStatus));
 		holder.playerTxt.setText(opponentName);
 		holder.ratingTxt.setText(Symbol.wrapInPars(opponentRating));
 

@@ -98,7 +98,6 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 	}
 
 	private void showLibrary() {
-
 		// get viewed marks here after we return to this from details fragment
 		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());
 		if (cursor != null) {
@@ -111,6 +110,16 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 		}
 
 		expListView.setAdapter(curriculumAdapter);
+
+		expandLastSection();
+	}
+
+	private void expandLastSection() {
+		if (ICS_PLUS_API) {
+			expListView.expandGroup(0, true); // TODO adjust properly last incomplete
+		} else {
+			expListView.expandGroup(0);
+		}
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
@@ -13,6 +12,7 @@ import com.chess.backend.entity.api.daily_games.DailyChallengeItem;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.game_controls.ControlsDailyView;
+import com.chess.widgets.ProfileImageView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -48,26 +48,6 @@ public class DailyInviteFragmentTablet extends DailyInviteFragment implements Vi
 		Resources resources = getResources();
 		{ // invite overlay setup
 			View inviteOverlay = view.findViewById(R.id.inviteOverlay);
-
-/*
-	View boardview = getView().findViewById(R.id.boardview);
-	int boardWidth = boardview.getWidth();
-	int squareSize = boardWidth / 8; // one square size
-	int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
-	// now we add few pixel to compensate shadow addition
-	int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
-	borderOffset += shadowOffset;
-	int overlayHeight = squareSize * 3 + borderOffset + shadowOffset;
-
-	int popupWidth = squareSize * 5 + shadowOffset * 2 + borderOffset;  // for tablets we need more width
-	RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(popupWidth, overlayHeight);
-	int topMargin = (int) (squareSize * 2.5f + borderOffset - shadowOffset * 2);
-
-	params.setMargins((int) (squareSize * 1.5f - shadowOffset), topMargin, squareSize - borderOffset, 0);
-	params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
-	startOverlayView.setLayoutParams(params);
-	startOverlayView.setVisibility(View.VISIBLE);
-*/
 
 			// let's make it to match board properties
 			// it should be 2 squares inset from top of border and 4 squares tall + 1 squares from sides
@@ -107,8 +87,8 @@ public class DailyInviteFragmentTablet extends DailyInviteFragment implements Vi
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
-		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+		topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+		bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 		controlsView.enableChatButton(true);
 		controlsView.showSubmitButtons(true);

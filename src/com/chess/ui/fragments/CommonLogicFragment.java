@@ -46,6 +46,7 @@ import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
+import com.chess.ui.fragments.profiles.ProfileTabsFragment;
 import com.chess.ui.fragments.stats.StatsBasicFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.welcome.SignInFragment;
@@ -55,6 +56,7 @@ import com.chess.ui.fragments.welcome.WelcomeTabsFragmentTablet;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
+import com.chess.widgets.ProfileImageView;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
@@ -79,7 +81,7 @@ import static com.chess.statics.AppConstants.*;
  * Time: 10:18
  */
 public abstract class CommonLogicFragment extends BasePopupsFragment implements View.OnClickListener,
-		PullToRefreshAttacher.OnRefreshListener, Session.StatusCallback {
+		PullToRefreshAttacher.OnRefreshListener, Session.StatusCallback, ProfileImageView.ProfileOpenFace  {
 
 	private static final int MIN_USERNAME_LENGTH = 3;
 	private static final int MAX_USERNAME_LENGTH = 20;
@@ -1135,5 +1137,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				+ AppConstants.DEVICE + deviceInfo.MODEL + Symbol.NEW_STR
 				+ AppConstants.APP_VERSION + deviceInfo.APP_VERSION_CODE + Symbol.SLASH + deviceInfo.APP_VERSION_NAME + Symbol.NEW_STR
 				+ AppConstants.USERNAME_ + username;
+	}
+
+	@Override
+	public void openProfile(String username) {
+		getActivityFace().openFragment(ProfileTabsFragment.createInstance(username));
 	}
 }

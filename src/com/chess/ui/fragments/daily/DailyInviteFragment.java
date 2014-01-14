@@ -8,7 +8,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
@@ -16,8 +15,8 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.BaseResponseItem;
-import com.chess.backend.entity.api.daily_games.DailyChallengeItem;
 import com.chess.backend.entity.api.UserItem;
+import com.chess.backend.entity.api.daily_games.DailyChallengeItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -35,6 +34,7 @@ import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
+import com.chess.widgets.ProfileImageView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -56,8 +56,8 @@ public class DailyInviteFragment extends CommonLogicFragment {
 	private ImageDownloaderToListener imageDownloader;
 	private DailyChallengeItem.Data challengeItem;
 	private GameBaseFragment.LabelsConfig labelsConfig;
-	protected ImageView topAvatarImg;
-	protected ImageView bottomAvatarImg;
+	protected ProfileImageView topAvatarImg;
+	protected ProfileImageView bottomAvatarImg;
 	protected ChessBoardDailyView boardView;
 	protected TextView inviteDetails1Txt;
 	protected TextView inviteTitleTxt;
@@ -313,8 +313,8 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		topPanelView = (PanelInfoGameView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoGameView) view.findViewById(R.id.bottomPanelView);
 
-		topAvatarImg = (ImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
-		bottomAvatarImg = (ImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+		topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
+		bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
 		controlsView.enableChatButton(true);
 		controlsView.showSubmitButtons(true);
@@ -350,14 +350,15 @@ public class DailyInviteFragment extends CommonLogicFragment {
 
 					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
 					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
+					topAvatarImg.setUsername(labelsConfig.topPlayerName, DailyInviteFragment.this);
 					topPanelView.invalidate();
-
 					break;
 				case BOTTOM_AVATAR:
 					labelsConfig.bottomAvatar = new BoardAvatarDrawable(activity, bitmap);
 
 					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
 					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
+					bottomAvatarImg.setUsername(labelsConfig.bottomPlayerName, DailyInviteFragment.this);
 					bottomPanelView.invalidate();
 					break;
 			}

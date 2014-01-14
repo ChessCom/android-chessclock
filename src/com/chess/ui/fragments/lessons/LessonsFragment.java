@@ -184,20 +184,44 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 				expListView.setAdapter(curriculumAdapter);
 				curriculumAdapter.notifyDataSetChanged();
-				/*
-					this is an important one! both for VIDEOS and LESSONS curriculum,
-					we should auto-open the category with the lowest unfinished video/lesson.
-					so, first time i use the app the Rules and Basics for both would be expanded.
-					that's more beautiful and inviting!
-			 	*/
-				if (ICS_PLUS_API) {
-					expListView.expandGroup(0, true); // TODO adjust properly last incomplete
-				} else {
-					expListView.expandGroup(0);
-				}
+				expandLastSection();
 			}
 		} else {
 			listView.setAdapter(categoriesCursorAdapter);
+		}
+	}
+
+	/**
+	 * We should auto-open the category with the lowest unfinished video/lesson.
+	 * so, first time i use the app the Rules and Basics for both would be expanded.
+	 * that's more beautiful and inviting!
+	 */
+	private void expandLastSection() {
+		// get last unfinished lesson
+		int groupToExpand = 0;
+		if (incompleteLesson != null) {
+
+			int size = curriculumItems.getViewedMarks().size();
+			for (int m = 0; m < size; m++) {
+				SparseBooleanArray viewedChecks = curriculumItems.getViewedMarks().valueAt(m);
+				int checksSize = viewedChecks.size();
+				for (int z = 0; z < checksSize; z++) {
+					boolean viewed = viewedChecks.valueAt(z);
+					if (!viewed) {
+						groupToExpand = m;
+						break;
+					}
+				}
+				if (groupToExpand != 0) { // if was found
+					break;
+				}
+			}
+		}
+
+		if (ICS_PLUS_API) {
+			expListView.expandGroup(groupToExpand, true); // TODO adjust properly last incomplete
+		} else {
+			expListView.expandGroup(groupToExpand);
 		}
 	}
 
@@ -391,6 +415,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 			}
 
 		} while (cursor.moveToNext());
+		cursor.close();
 
 		{ // Titles
 			// organize by category
@@ -443,8 +468,6 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		curriculumAdapter = new LessonsGroupsListAdapter(curriculumItems);
 		expListView.setAdapter(curriculumAdapter);
 
-		cursor.close();
-
 		// check if we have incomplete lessons
 		List<LessonSingleItem> incompleteLessons = DbDataManager.getIncompleteLessons(getContentResolver(), getUsername());
 		if (incompleteLessons != null) {
@@ -454,6 +477,8 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		} else {
 			resumeLessonBtn.setVisibility(View.GONE);
 		}
+
+		expandLastSection();
 	}
 
 	private void init() {

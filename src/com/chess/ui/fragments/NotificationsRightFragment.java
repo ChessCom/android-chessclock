@@ -16,8 +16,8 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.BaseResponseItem;
-import com.chess.backend.entity.api.daily_games.DailyChallengeItem;
 import com.chess.backend.entity.api.FriendRequestResultItem;
+import com.chess.backend.entity.api.daily_games.DailyChallengeItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -43,7 +43,8 @@ import java.util.List;
  * Date: 11.08.13
  * Time: 20:21
  */
-public class NotificationsRightFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, ItemClickListenerFace, SlidingMenu.OnOpenedListener {
+public class NotificationsRightFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
+		ItemClickListenerFace, SlidingMenu.OnOpenedListener {
 
 	private static final int FRIEND_REQUEST_SECTION = 0;
 	private static final int CHALLENGES_SECTION = 1;
@@ -77,7 +78,7 @@ public class NotificationsRightFragment extends CommonLogicFragment implements A
 		// init adapters
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
 		friendRequestsAdapter = new CommonAcceptDeclineCursorAdapter(new FriendAcceptDeclineFace(), null, getImageFetcher());
-		challengesGamesAdapter = new DailyChallengesGamesAdapter(new ChallengeAcceptDeclineFace(), null, getImageFetcher());
+		challengesGamesAdapter = new DailyChallengesGamesAdapter(new ChallengeAcceptDeclineFace(), null, getImageFetcher(), this);
 		messagesAdapter = new NewChatMessagesCursorAdapter(new NewMessageClearFace(), null, getImageFetcher());
 		chatMessagesAdapter = new NewChatMessagesCursorAdapter(new NewChatClearFace(), null, getImageFetcher());
 		gamesOverAdapter = new DailyGamesOverCursorAdapter(new GameOverClearFace(), null, getImageFetcher());

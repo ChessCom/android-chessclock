@@ -8,6 +8,7 @@ import com.chess.backend.entity.api.daily_games.DailyChallengeItem;
 import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+import com.chess.widgets.ProfileImageView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,9 +18,12 @@ public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeItem
 	private final ItemClickListenerFace clickListenerFace;
 	private final int imageSize;
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
+	private ProfileImageView.ProfileOpenFace profileOpenFace;
 
-	public DailyChallengesGamesAdapter(ItemClickListenerFace clickListenerFace, List<DailyChallengeItem.Data> itemList, SmartImageFetcher imageFetcher) {
+	public DailyChallengesGamesAdapter(ItemClickListenerFace clickListenerFace, List<DailyChallengeItem.Data> itemList,
+									   SmartImageFetcher imageFetcher, ProfileImageView.ProfileOpenFace profileOpenFace) {
 		super(clickListenerFace.getMeContext(), itemList, imageFetcher);
+		this.profileOpenFace = profileOpenFace;
 		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
 		this.clickListenerFace = clickListenerFace;
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
@@ -50,6 +54,7 @@ public class DailyChallengesGamesAdapter extends ItemsAdapter<DailyChallengeItem
 		holder.acceptBtn.setTag(itemListId, pos);
 
 		holder.playerTxt.setText(item.getOpponentUsername());
+		holder.playerImg.getImageView().setUsername(item.getOpponentUsername(), profileOpenFace);
 
 		String imageUrl = item.getOpponentAvatar();
 		if (!imageDataMap.containsKey(imageUrl)) {
