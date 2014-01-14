@@ -1,10 +1,6 @@
 package com.chess.ui.fragments.home;
 
 import android.animation.LayoutTransition;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -15,15 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.GetAndSaveUserStats;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.daily_games.DailySeekItem;
+import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
+import com.chess.db.tasks.SaveUserStatsTask;
 import com.chess.statics.AppConstants;
-import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.engine.configs.DailyGameConfig;
@@ -71,9 +66,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	private DailyGameOptionsFragment dailyGameOptionsFragment;
 	private TextView liveExpandIconTxt;
 	private TextView dailyExpandIconTxt;
-	private IntentFilter statsUpdateFilter;
-	private boolean statsLoaded;
-	private StatsSavedReceiver statsSavedReceiver;
+	private RatingUpdateListener ratingUpdateListener;
 
 	public HomePlayFragment() {
 		Bundle bundle = new Bundle();
@@ -101,6 +94,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 
 		dailyGameConfigBuilder = new DailyGameConfig.Builder();
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
+		ratingUpdateListener = new RatingUpdateListener();
 
 		getActivityFace().addOnOpenMenuListener(this);
 	}
@@ -143,13 +137,8 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	public void onResume() {
 		super.onResume();
 
-		setRatings();
+		loadRatings();
 		loadRecentOpponents();
-
-		if (statsUpdateFilter != null) {
-			statsSavedReceiver = new StatsSavedReceiver();
-			registerReceiver(statsSavedReceiver, statsUpdateFilter);
-		}
 	}
 
 	@Override
@@ -157,35 +146,12 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		super.onPause();
 
 		getActivityFace().removeOnOpenMenuListener(this);
-
-		if (statsUpdateFilter != null) {
-			unRegisterMyReceiver(statsSavedReceiver);
-		}
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(MODE, positionMode);
-	}
-
-	private class StatsSavedReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			statsLoaded = true;
-
-			if (liveRatingTxt == null) {
-				return;
-			}
-			// set live rating
-			int liveRating = DbDataManager.getUserRatingFromUsersStats(context, DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
-			liveRatingTxt.setText(String.valueOf(liveRating));
-
-			// set daily rating
-			int dailyRating = DbDataManager.getUserRatingFromUsersStats(context, DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
-			dailyRatingTxt.setText(String.valueOf(dailyRating));
-		}
 	}
 
 	@Override
@@ -366,32 +332,39 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			return;
 		}
 		if (positionMode == RIGHT_MENU_MODE && !isPaused) {
-			setRatings();
+			loadRatings();
 			loadRecentOpponents();
 		}
 	}
 
-	private void setRatings() {
-		if (liveRatingTxt == null) { // if we have closed this view
-			return;
+	private void loadRatings() {
+		// update current rating
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_USER_STATS);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+		new RequestJsonTask<UserStatsItem>(ratingUpdateListener).execute(loadItem);
+	}
+
+	private class RatingUpdateListener extends ChessLoadUpdateListener<UserStatsItem> {
+
+		public RatingUpdateListener() {
+			super(UserStatsItem.class);
 		}
 
-		// set live rating
-		int liveRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
-		liveRatingTxt.setText(String.valueOf(liveRating));
+		@Override
+		public void updateData(UserStatsItem returnedObj) {
+			super.updateData(returnedObj);
 
-		// set daily rating
-		int dailyRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), getUsername());
-		dailyRatingTxt.setText(String.valueOf(dailyRating));
+			SaveUserStatsTask.saveDailyStats(getUsername(), returnedObj.getData(), getContentResolver());
+			SaveUserStatsTask.saveLiveStats(getUsername(), returnedObj.getData(), getContentResolver());
 
-		if (liveRating == 0 || dailyRating == 0 && !statsLoaded) { // if stats were not save
-			getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
+			if (liveRatingTxt == null) { // if we have closed this view
+				return;
+			}
 
-			statsUpdateFilter = new IntentFilter(IntentConstants.STATS_SAVED);
-
-			statsLoaded = false;
-		}  else {
-			statsLoaded = true;
+			liveRatingTxt.setText(String.valueOf(returnedObj.getData().getLiveStandard().getRating()));
+			dailyRatingTxt.setText(String.valueOf(returnedObj.getData().getDailyChess().getRating()));
 		}
 	}
 
