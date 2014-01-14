@@ -148,7 +148,7 @@ public class ServerErrorCodes {
 		if (code < codesArray.length) {
 			return codesArray[code - 1];
 		} else {
-			return "Something wrong has happened, developers working on it";
+			return "Something wrong has happened. Check new version.";
 		}
 	}
 }
