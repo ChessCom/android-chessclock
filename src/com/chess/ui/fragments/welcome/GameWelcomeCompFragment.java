@@ -389,11 +389,13 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	@Override
 	public void onPlayerMove() {
 		topPanelView.showThinkingView(false);
+		notationsView.setClickable(true);
 	}
 
 	@Override
 	public void onCompMove() {
 		topPanelView.showThinkingView(true);
+		notationsView.setClickable(false);
 	}
 
 	@Override
@@ -442,19 +444,12 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		Log.d(CompEngineHelper.TAG, "isHint = " + boardView.isHint());
 
 		if (boardView.isHint()) {
-			//onPlayerMove();
 			CompEngineHelper.getInstance().undoHint();
 		}
 
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-
-				if (boardView.isHint()) {
-					onPlayerMove();
-					//CompEngineHelper.getInstance().undoHint();
-				}
-
 				//boardView.goToLatestMove();
 
 				boardView.setMoveAnimator(move, true);
@@ -491,6 +486,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 			boardView.setHint(false);
 			controlsView.enableGameControls(true);
+			onPlayerMove();
 		}
 	};
 

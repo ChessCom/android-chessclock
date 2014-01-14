@@ -53,6 +53,7 @@ public class NotationView extends LinearLayout implements NotationFace,
 	private int screenPadding;
 	private float density;
 	private Handler handler;
+	private boolean clickable;
 
 	public NotationView(Context context) {
 		super(context);
@@ -135,6 +136,7 @@ public class NotationView extends LinearLayout implements NotationFace,
 			setVisibility(GONE);
 		}
 
+		clickable = true;
 	}
 
 	@Override
@@ -267,6 +269,11 @@ public class NotationView extends LinearLayout implements NotationFace,
 
 	@Override
 	public void onClick(View v) {
+
+		if (!clickable) {
+			return;
+		}
+
 		Integer pos = (Integer) v.getTag(R.id.list_item_id);
 		highlightPosition(pos);
 
@@ -500,6 +507,13 @@ public class NotationView extends LinearLayout implements NotationFace,
 		newNotations = true;
 		notationsAdapter.selectItem(-1);
 		viewPager.invalidate();
+	}
+
+	@Override
+	public void setClickable(boolean clickable) {
+		super.setClickable(clickable);
+		// todo: rename field and do not override base method?
+		this.clickable = clickable;
 	}
 
 	public static interface BoardForNotationFace extends OnClickListener {

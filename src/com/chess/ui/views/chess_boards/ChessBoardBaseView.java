@@ -134,7 +134,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	private int[] customCoordinatesColors;
 	private String customPiecesName;
 	private boolean fastMode;
-	private boolean animationActive;
 	private int _3dPieceMaxHeight;
 	private Paint piecesPaint;
 	private int _3dPiecesOffsetSmall;
@@ -545,7 +544,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	protected void drawPiecesAndAnimation(Canvas canvas) {
-		animationActive = false;
+		boolean animationActive;
 
 		// draw just piece without animation
 		if (moveAnimator == null && secondMoveAnimator == null) {

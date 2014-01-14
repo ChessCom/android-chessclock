@@ -354,11 +354,13 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	@Override
 	public void onPlayerMove() {
 		topPanelView.showThinkingView(false);
+		getNotationsFace().setClickable(true);
 	}
 
 	@Override
 	public void onCompMove() {
 		topPanelView.showThinkingView(true);
+		getNotationsFace().setClickable(false);
 	}
 
 	@Override
@@ -400,18 +402,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 //		Log.d(CompEngineHelper.TAG, "isHint = " + boardView.isHint());
 
 		if (boardView.isHint()) {
-			//onPlayerMove();
 			CompEngineHelper.getInstance().undoHint();
 		}
 
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-
-				if (boardView.isHint()) {
-					onPlayerMove();
-					//CompEngineHelper.getInstance().undoHint();
-				}
 
 				boardView.setMoveAnimator(move, true);
 				boardView.resetValidMoves();
@@ -452,6 +448,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 			boardView.setHint(false);
 			getControlsView().enableGameControls(true);
+			onPlayerMove();
 		}
 	};
 

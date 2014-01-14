@@ -21,4 +21,6 @@ public interface NotationFace {
 	void rewindForward();
 
 	void resetNotations();
+
+	void setClickable(boolean active);
 }

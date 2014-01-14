@@ -42,6 +42,7 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 	public int textColorSelected;
 	private int textSidePadding;
 	private int textViewMinHeight;
+	private boolean clickable;
 
 	public NotationsViewTablet(Context context) {
 		super(context);
@@ -98,6 +99,8 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 
 //		ButtonDrawableBuilder.setBackgroundToView(this, R.style.Rect_Tab_Middle);
 		setPadding(screenPaddingSide, screenPadding, screenPaddingSide, 0);
+
+		clickable = true;
 	}
 
 	@Override
@@ -151,8 +154,11 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		notationsAdapter.selectItem(position);
 
+		if (!clickable) {
+			return;
+		}
+		notationsAdapter.selectItem(position);
 		selectionFace.onClick(view);
 	}
 
@@ -233,6 +239,13 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 		notationsAdapter.notifyDataSetChanged();
 		newNotations = true;
 		notationsAdapter.selectItem(-1);
+	}
+
+	@Override
+	public void setClickable(boolean clickable) {
+		super.setClickable(clickable);
+		// todo: rename field and do not override base method?
+		this.clickable = clickable;
 	}
 
 }
