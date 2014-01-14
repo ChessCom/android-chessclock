@@ -783,7 +783,7 @@ public class RestHelper {
 		String requestPath = loadItem.getLoadPath().substring(BASE_URL.length());
 
 		String data = Q_ + formPostData(loadItem);
-		if (requestMethod.equals(POST)) {
+		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
 			data = formPostData(loadItem);
 		}
 		if (!TextUtils.isEmpty(loadItem.getFilePath())) {
@@ -798,7 +798,7 @@ public class RestHelper {
 			e.printStackTrace();
 		}
 		String addStr = AND;
-		if (requestMethod.equals(POST)) {
+		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
 			data = Symbol.EMPTY;
 			addStr = Q_;
 		}
