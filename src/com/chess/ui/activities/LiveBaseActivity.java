@@ -13,10 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
-import com.chess.backend.LoadHelper;
-import com.chess.backend.LoadItem;
-import com.chess.backend.RestHelper;
+import com.chess.backend.*;
 import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -722,6 +719,25 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			getAppData().setLiveChessMode(true);
 			Log.d(TAG, "LBA LoginUpdateListener -> updateData");
 			connectLcc();
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			// show message only for re-login and app update
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCodes.ACCESS_DENIED_CODE) { // handled in CommonLogicFragment
+					String message = getString(R.string.update_available_please_update);
+					safeShowSinglePopupDialog(R.string.error, message);
+					return;
+				} else if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) { // handled in CommonLogicFragment
+					String serverMessage = ServerErrorCodes.getUserFriendlyMessage(LiveBaseActivity.this, serverCode); // TODO restore
+
+					safeShowSinglePopupDialog(R.string.error, serverMessage);
+					return;
+				}
+			}
+			super.errorHandle(resultCode);
 		}
 	}
 

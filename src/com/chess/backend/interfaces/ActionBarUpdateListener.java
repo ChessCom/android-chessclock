@@ -62,16 +62,20 @@ public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateLi
 
 	@Override
 	public void errorHandle(Integer resultCode) {
-		super.errorHandle(resultCode);
-
-		// show message only for re-login
+		// show message only for re-login and app update
 		if (RestHelper.containsServerCode(resultCode)) {
 			int serverCode = RestHelper.decodeServerCode(resultCode);
-			if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) { // handled in CommonLogicFragment
+			if (serverCode == ServerErrorCodes.ACCESS_DENIED_CODE) { // handled in CommonLogicFragment
+				String message = coreActivityActionBar.getString(R.string.update_available_please_update);
+				coreActivityActionBar.safeShowSinglePopupDialog(R.string.error, message);
+				return;
+			} else if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) { // handled in CommonLogicFragment
 				String serverMessage = ServerErrorCodes.getUserFriendlyMessage(coreActivityActionBar, serverCode); // TODO restore
 
 				coreActivityActionBar.safeShowSinglePopupDialog(R.string.error, serverMessage);
+				return;
 			}
 		}
+		super.errorHandle(resultCode);
 	}
 }

@@ -323,6 +323,7 @@ public class RestHelper {
 	public static final String V_0 = "MmE5NzUxNmMzNTRiNjg4NDhjZGJkOGY1NGEyMjZhMGE1NWIyMWVkMTM4ZTIwN2FzZGZhc2RmYXN3ZWUyM2FlYQ==";
 	public static final String V_2 = "MmE5NzUxNmMzNTRiNjg4NDhjZGJkOGY1NGFhc2RmYXNkZmFkZmVkMTM4ZTIwN2FkNmM1Y2JiOWMwMGFhNWFlYQ==";
 	public static final String V_3 = "MmE5NzUxNmMzNTRiNjg4NDhjZGJkOGY1NGEyMjZhMGE1NWIyMWVkMTM4ZTIwN2FkNmM1Y2JiOWMwMGFhNWFlYQ==";
+	public static final String V_3_2 = "M2Q5MWIwZjNmYjE4ZDNkNDgyYTdmNDExZGM1Y2FiNGU0MTg2ZDg0MDlhODg1YmYwODY0MzI3NmFlNWU2MGU1Yg==";
 	public static final String V_2_2 = "ZTEyMzI4NTdjM2U3NGE3YmI4M2NhNjhlYWNiNzg3ZGFzZHUwMGFzZGtsa2ZhOXNiNjE4M2U2OGM4OTUxNTVlNQ==";
 	public static final String V_3_0 = "ZTEyMzI4NTdjM2U3NGE3YmI4M2NhNjhlYWNiNzg3NWRlZTQ1NTA4NWY0NWIyNmZiNjE4M2U2OGM4OTUxNTVlNR==";
 	public static final String V_3_1 = "ZGFjYTRlNDBhMjEyYWU5YTdiYjY0NzZmMjJhZDI4YWQyMTc5OGM5OTc3M2MwNTIxZmRkNWRkODFmNjVlZDRmOA==";
@@ -358,7 +359,7 @@ public class RestHelper {
 	public static final String P_CORRECT_MOVES = "correctMoves";
 	public static final String P_SECONDS = "seconds";
 
-	public String P_SYMBOL = !BASE_URL.equals("http://" + HOST_PRODUCTION) ? V_3 : V_3_1;
+	public String P_SYMBOL = !BASE_URL.equals("http://" + HOST_PRODUCTION) ? V_3 : V_3_2;
 
 	public static final String P_FEN = "fen";
 
@@ -588,6 +589,9 @@ public class RestHelper {
 				InputStream inputStream = connection.getErrorStream();
 				String resultString = convertStreamToString(inputStream);
 				logD(TAG, "SERVER RESPONSE: " + resultString);
+				if (resultString.equals(ServerErrorCodes.ACCESS_DENIED)) {
+					throw new InternalErrorException(encodeServerCode(ServerErrorCodes.ACCESS_DENIED_CODE));
+				}
 
 				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
 				logD(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());

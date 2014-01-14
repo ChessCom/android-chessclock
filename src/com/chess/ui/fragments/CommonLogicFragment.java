@@ -616,15 +616,20 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-
 			// perform auto re-login here
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode == ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
+				if (serverCode == ServerErrorCodes.ACCESS_DENIED_CODE) { // handled in CommonLogicFragment
+					String message = getString(R.string.version_is_obsolete_update);
+					safeShowSinglePopupDialog(R.string.error, message);
+
+					return;
+				} else if (serverCode == ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
 					performReLogin();
+					return;
 				}
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 
@@ -734,7 +739,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 					case ServerErrorCodes.ACCOUNT_LOCKED:
 						popupItem.setButtons(1);
 						showPopupDialog(R.string.your_account_locked, LOCKED_ACCOUNT_TAG);
-						break;
+						return;
 					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
 						if (passwordEdt != null) {
 							passwordEdt.setError(getResources().getString(R.string.invalid_username_or_password));
@@ -743,17 +748,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 							showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
 						}
 						getAppData().setPassword(Symbol.EMPTY);
-						break;
+						return;
 					case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
 						showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
-						break;
-					default:
-						String serverMessage = ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode); // TODO restore
-						showToast(serverMessage);
-
-						break;
+						return;
 				}
 			}
+			super.errorHandle(resultCode);
 		}
 
 		public void setFacebookToken(String facebookToken) {

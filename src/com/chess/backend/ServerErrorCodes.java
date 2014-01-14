@@ -139,6 +139,9 @@ public class ServerErrorCodes {
 	public static final int ERROR_USER_NOT_ENABLED  = 126;					//	"The selected user must be enabled.
 	public static final int ERROR_INSUFFICIENT_MEMBERSHIP_LEVEL  = 127;		//	"Gold members cannot view other member\'s stats.
 
+	public static final String ACCESS_DENIED = "Access denied.";
+
+	public static final int ACCESS_DENIED_CODE = 999;                		// Please update app
 
 	public static String getUserFriendlyMessage(Context context, int code) {    // TODO convert to strings for i18n
 		String[] codesArray = context.getResources().getStringArray(R.array.new_site_api_error_messages);

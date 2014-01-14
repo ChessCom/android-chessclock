@@ -288,16 +288,17 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
 						showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
 						getAppData().setPassword(Symbol.EMPTY);
-						break;
+						return;
 					case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
 						popupItem.setPositiveBtnId(R.string.sign_up);
 						showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
-						break;
+						return;
 					default:
-
-						break;
+						super.errorHandle(resultCode);
+						return;
 				}
 			}
+			super.errorHandle(resultCode);
 		}
 	}
 
