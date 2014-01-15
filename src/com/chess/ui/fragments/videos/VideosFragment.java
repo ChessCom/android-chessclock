@@ -22,6 +22,7 @@ import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.VideoSingleItem;
 import com.chess.backend.entity.api.VideosItem;
+import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -29,6 +30,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveVideoCategoriesTask;
 import com.chess.model.CurriculumItems;
+import com.chess.ui.activities.VideoActivity;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -289,9 +291,10 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 			String currentPlayingLink = curriculumItems.getUrls()[groupPosition][childPosition];
 			currentPlayingId = curriculumItems.getIds()[groupPosition][childPosition];
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(currentPlayingLink), "video/*");
-			startActivityForResult(Intent.createChooser(intent, "Select Player"), WATCH_VIDEO_REQUEST);
+
+			Intent intent = new Intent(getActivity(), VideoActivity.class);
+			intent.putExtra(AppConstants.VIDEO_LINK, currentPlayingLink);
+			startActivity(intent);
 
 			// start record time to watch
 			playButtonClickTime = System.currentTimeMillis();

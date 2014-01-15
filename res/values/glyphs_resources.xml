@@ -106,6 +106,7 @@
     <string name="ic_number_none">T</string>
 
     <string name="ic_round_help">(</string>
+    <string name="ic_extend">\u00BF</string>
 
 
     <!--Dimens -->

@@ -47,6 +47,9 @@
 		<item name="android:buttonStyle">@style/Button.Glassy</item>
 	</style>
 
+	<style name="FullScreen" parent="android:Theme.Black.NoTitleBar">
+
+	</style>
 
 
 </resources>

@@ -151,7 +151,7 @@ public abstract class ImageWorker {
 	 */
 	public void addImageCache(FragmentActivity activity, String diskCacheDirectoryName) throws IOException {
 		mImageCacheParams = new ImageCache.ImageCacheParams(activity, diskCacheDirectoryName);
-		mImageCacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+		mImageCacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
 		mImageCache = ImageCache.getInstance(activity.getSupportFragmentManager(), mImageCacheParams);
 		new CacheAsyncTask().execute(MESSAGE_INIT_DISK_CACHE);
 	}

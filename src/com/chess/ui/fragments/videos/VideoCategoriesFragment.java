@@ -3,7 +3,6 @@ package com.chess.ui.fragments.videos;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
@@ -25,8 +24,10 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveVideosListTask;
+import com.chess.statics.AppConstants;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
+import com.chess.ui.activities.VideoActivity;
 import com.chess.ui.adapters.DarkSpinnerAdapter;
 import com.chess.ui.adapters.VideosCursorAdapter;
 import com.chess.ui.adapters.VideosPaginationAdapter;
@@ -204,9 +205,10 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 
 			currentPlayingId = DbDataManager.getInt(cursor, DbScheme.V_ID);
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(DbDataManager.getString(cursor, DbScheme.V_URL)), "video/*");
-			startActivityForResult(Intent.createChooser(intent, getString(R.string.select_player)), WATCH_VIDEO_REQUEST);
+
+			Intent intent = new Intent(getActivity(), VideoActivity.class);
+			intent.putExtra(AppConstants.VIDEO_LINK, DbDataManager.getString(cursor, DbScheme.V_URL));
+			startActivity(intent);
 
 			// start record time to watch
 			playButtonClickTime = System.currentTimeMillis();

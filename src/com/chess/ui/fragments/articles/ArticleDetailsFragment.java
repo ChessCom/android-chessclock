@@ -1024,7 +1024,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		{// set imageCache params for diagramProcessor
 			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
 
-			cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
 
 			diagramImageProcessor = new DiagramImageProcessor(getActivity(), deviceSizeCode);
 			diagramImageProcessor.setLoadingImage(R.drawable.board_green_default);
@@ -1036,7 +1036,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		{// set imageCache params for articleImageFetcher
 			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), THUMBS_CACHE_DIR);
 
-			cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
 			articleImageFetcher = new SmartImageFetcher(getActivity());
 			articleImageFetcher.setLoadingImage(R.drawable.img_profile_picture_stub);
 			articleImageFetcher.addImageCache(getFragmentManager(), cacheParams);

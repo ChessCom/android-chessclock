@@ -35,6 +35,7 @@ public class DataHolder {
 	private final List<LastMoveInfoItem> lastMoveInfoItems; // TODO should be saved in store and tied to GCM usage
 	private boolean isMainActivityVisible;
 	private boolean liveGameOpened;
+	private boolean performingRelogin;
 
 
 	private DataHolder() {
@@ -124,5 +125,13 @@ public class DataHolder {
 
 	public void setLiveGameOpened(boolean liveGameOpened) {
 		this.liveGameOpened = liveGameOpened;
+	}
+
+	public boolean isPerformingRelogin() {
+		return performingRelogin;
+	}
+
+	public void setPerformingRelogin(boolean performingRelogin) {
+		this.performingRelogin = performingRelogin;
 	}
 }

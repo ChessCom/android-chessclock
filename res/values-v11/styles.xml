@@ -54,5 +54,9 @@
 
 	</style>
 
+	<style name="FullScreen" parent="android:Theme.Holo.NoActionBar">
+
+	</style>
+
 
 </resources>

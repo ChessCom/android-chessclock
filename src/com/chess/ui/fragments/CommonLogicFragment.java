@@ -190,7 +190,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		// initialize imageFetcher
 		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(activity, IMAGE_CACHE_DIR);
 
-		cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+		cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
 
 		// The ImageFetcher takes care of loading images into our ImageView children asynchronously
 		imageFetcher = new SmartImageFetcher(activity);
@@ -621,12 +621,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			// perform auto re-login here
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode == ServerErrorCodes.ACCESS_DENIED_CODE) { // handled in CommonLogicFragment
-					String message = getString(R.string.version_is_obsolete_update);
-					safeShowSinglePopupDialog(R.string.error, message);
-
-					return;
-				} else if (serverCode == ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
+				if (serverCode == ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
 					performReLogin();
 					return;
 				}
@@ -636,6 +631,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	private void performReLogin() {
+		if (DataHolder.getInstance().isPerformingRelogin()) {
+			return;
+		}
+
+		DataHolder.getInstance().setPerformingRelogin(true);
+
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
@@ -700,6 +701,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		@Override
 		public void updateData(LoginItem returnedObj) {
+			DataHolder.getInstance().setPerformingRelogin(false);
+
 			LoginItem.Data loginData = returnedObj.getData();
 			String username = loginData.getUsername();
 

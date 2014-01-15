@@ -3,7 +3,6 @@ package com.chess.ui.fragments.videos;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -16,12 +15,14 @@ import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.VideoSingleItem;
 import com.chess.backend.entity.api.VideosItem;
-import com.chess.db.QueryParams;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
+import com.chess.statics.AppConstants;
+import com.chess.statics.Symbol;
+import com.chess.ui.activities.VideoActivity;
 import com.chess.ui.adapters.VideosItemAdapter;
 import com.chess.ui.fragments.BaseSearchFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -132,9 +133,10 @@ public class VideosSearchFragment extends BaseSearchFragment implements ItemClic
 			VideoSingleItem.Data videoItem = (VideoSingleItem.Data) listView.getItemAtPosition(position);
 
 			currentPlayingId = (int) videoItem.getVideoId();
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(videoItem.getUrl()), "video/*");
-			startActivityForResult(Intent.createChooser(intent, getString(R.string.select_player)), WATCH_VIDEO_REQUEST);
+
+			Intent intent = new Intent(getActivity(), VideoActivity.class);
+			intent.putExtra(AppConstants.VIDEO_LINK, videoItem.getUrl());
+			startActivity(intent);
 
 			// start record time to watch
 			playButtonClickTime = System.currentTimeMillis();

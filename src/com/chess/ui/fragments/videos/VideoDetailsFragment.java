@@ -2,8 +2,6 @@ package com.chess.ui.fragments.videos;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
@@ -34,7 +32,9 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
+import com.chess.ui.activities.VideoActivity;
 import com.chess.ui.adapters.CommentsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -42,7 +42,6 @@ import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -96,6 +95,9 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	protected int widthPixels;
 	private View loadingCommentsView;
 	private SmartImageFetcher backImageFetcher;
+	private VideoView videoView;
+	private TextView fullScrBtn;
+	private View playBtnBackView;
 
 	public static VideoDetailsFragment createInstance(long videoId) {
 		VideoDetailsFragment frag = new VideoDetailsFragment();
@@ -128,7 +130,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		{// set imageCache params for articleImageFetcher
 			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), THUMBS_CACHE_DIR);
 
-			cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
 
 			backImageFetcher = new SmartImageFetcher(getActivity());
 			backImageFetcher.setLoadingImage(R.drawable.board_green_default);
@@ -180,6 +182,20 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		playBtnTxt = (TextView) view.findViewById(R.id.playBtn);
 		playBtnTxt.setOnClickListener(this);
 		playBtnTxt.setEnabled(false);
+
+		playBtnBackView = view.findViewById(R.id.playBtnBackView);
+
+		fullScrBtn = (TextView) view.findViewById(R.id.fullScrBtn);
+		fullScrBtn.setOnClickListener(this);
+		fullScrBtn.setVisibility(View.INVISIBLE);
+
+		videoView = (VideoView) view.findViewById(R.id.videoView);
+		MediaController mediaController = new MediaController(getActivity());
+		mediaController.show(1);
+
+		videoView.setMediaController(mediaController);
+		videoView.requestFocus();
+
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_edit, true);
@@ -333,17 +349,19 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 				inEditMode = true;
 				showEditView(true);
 			}
+		} else if (view.getId() == R.id.fullScrBtn) {
+			Intent intent = new Intent(getActivity(), VideoActivity.class);
+			intent.putExtra(AppConstants.VIDEO_LINK, videoUrl);
+			startActivity(intent);
+
 		} else if (view.getId() == R.id.playBtn) {
 
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.parse(videoUrl), "video/*");
-
-			PackageManager packageManager = getActivity().getPackageManager();
-			List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
-			boolean isIntentSafe = activities.size() > 0;
-			if (isIntentSafe) {
-				startActivityForResult(Intent.createChooser(intent, getString(R.string.select_player)), WATCH_VIDEO_REQUEST);
-			}
+			videoView.setVideoURI(Uri.parse(videoUrl));
+			playBtnBackView.setVisibility(View.INVISIBLE);
+			videoBackImg.setVisibility(View.INVISIBLE);
+			fullScrBtn.setVisibility(View.VISIBLE);
+			videoView.setVisibility(View.VISIBLE);
+			videoView.start();
 		}
 	}
 

@@ -148,6 +148,7 @@ public class AppConstants {
 	public static final String ID = "id";
 	public static final String EXTRA_WEB_URL = "extras weblink url";
 	public static final String EXTRA_TITLE = "screen title";
+	public static final String VIDEO_LINK = "video_link";
 
 	/* Live Chess params */
 	public static final String LIVE_GAME_CONFIG_BUILDER = "live_game_config_builder";

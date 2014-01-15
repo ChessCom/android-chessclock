@@ -24,8 +24,17 @@
 			android:contentDescription="@string/image"
 			android:background="@drawable/video_thumb_back" />
 
+		<VideoView
+			android:id="@+id/videoView"
+			android:layout_width="wrap_content"
+			android:layout_height="240dip"
+			android:layout_centerHorizontal="true"
+			android:visibility="invisible"
+			/>
+
 		<!--Back round for icon-->
 		<RelativeLayout
+			android:id="@+id/playBtnBackView"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
@@ -44,7 +53,19 @@
 				android:layout_marginLeft="30dip"
 				android:gravity="fill" />
 
+
 		</RelativeLayout>
+
+		<!--FullScrBtn-->
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/fullScrBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/ic_extend"
+			style="@style/GlyphIcon.Big"
+			android:layout_alignParentRight="true"
+			android:layout_margin="8dp"/>
+
 	</RelativeLayout>
 
 	<!--Title-->
