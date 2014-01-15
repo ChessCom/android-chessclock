@@ -28,6 +28,7 @@ public class LccGameListener implements GameListener {
 		latestGameId = 0L;
 
 		Long gameId;
+		Game latestGame = null;
 		for (Game game : games) {
 			gameId = game.getId();
 			if (lccHelper.isObservedGame(game)) { // TODO to vm: why we should ignore ? In this case after restoring app we force to exit from observe mode right after it's loaded
@@ -35,9 +36,10 @@ public class LccGameListener implements GameListener {
 				/*LogMe.dl(TAG, "unObserve game " + gameId);
 				games.remove(game);*/
 				//lccHelper.getClient().unObserveGame(gameId);
-			}
-			else if (gameId > latestGameId) {
+
+			} else if (gameId > latestGameId) {
 				latestGameId = gameId;
+				latestGame = game;
 			}
 		}
 
@@ -45,6 +47,9 @@ public class LccGameListener implements GameListener {
 
 		if (!latestGameId.equals(previousGameId) && lccHelper.getLccEventListener() != null) {
 			LogMe.dl(TAG, "onGameListReceived: game is expired");
+			if (latestGame != null) {
+				lccHelper.putGame(latestGame); // update expired game
+			}
 			lccHelper.getLccEventListener().expireGame();
 		}
 	}
@@ -177,7 +182,7 @@ public class LccGameListener implements GameListener {
 	}
 
 	private void doResetGame(Game game) {
-		synchronized (LccHelper.LOCK) {
+		synchronized (LccHelper.GAME_SYNC_LOCK) {
 			lccHelper.setCurrentGameId(game.getId());
 			if (game.isGameOver()) {
 				lccHelper.putGame(game);
@@ -194,7 +199,7 @@ public class LccGameListener implements GameListener {
 			String move = game.getLastMove();
 			LogMe.dl(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHelper.getUser().getUsername() +
 					", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
-			synchronized (LccHelper.LOCK) {
+			synchronized (LccHelper.GAME_SYNC_LOCK) {
 				lccHelper.doMoveMade(game, game.getMoveCount() - 1);
 			}
 		}

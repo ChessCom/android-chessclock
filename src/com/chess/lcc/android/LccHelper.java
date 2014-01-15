@@ -42,9 +42,8 @@ public class LccHelper {
 	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
 	private static final int CONNECTION_FAILURE_DELAY = 2000;
-	public static final int LIVE_CONNECTION_ATTEMPTS_LIMIT = 1;
-	public static final Object LOCK = new Object();
-	private static final int CONNECTION_FAILURE_LIMIT_ATTEMPTS = 3;
+	public static final Object CLIENT_SYNC_LOCK = new Object();
+	public static final Object GAME_SYNC_LOCK = new Object();
 	public static final int CONNECTION_FAILURE_TIME_LIMIT = 20000;
 
 	private final LccChatListener chatListener;
@@ -379,7 +378,9 @@ public class LccHelper {
 					break;
 			}
 
-			resetClient();
+			synchronized (CLIENT_SYNC_LOCK) {
+				resetClient();
+			}
 
 		} else {
 
@@ -1080,12 +1081,10 @@ public class LccHelper {
 
 		@Override
 		protected Void doInBackground(Void... voids) {
-			if (lccClient != null) {
-				try {
-					lccClient.disconnect(); // why we should use leave when we do logout??? Let's create a 2 different methods for different purpose
-					lccClient = null;
-				} catch (Exception ignore) {
-
+			synchronized (CLIENT_SYNC_LOCK) {
+				if (lccClient != null) {
+					lccClient.disconnect();
+					resetClient();
 				}
 			}
 			return null;
@@ -1096,10 +1095,12 @@ public class LccHelper {
 
 		@Override
 		protected Void doInBackground(Void... voids) {
-			if (lccClient != null) {
-				LogMe.dl(TAG, "LEAVE: lccClient=" + getClientId());
-				((LiveChessClientImpl)lccClient).leave();
-				resetClient();
+			synchronized (CLIENT_SYNC_LOCK) {
+				if (lccClient != null) {
+					LogMe.dl(TAG, "LEAVE: lccClient=" + getClientId());
+					((LiveChessClientImpl)lccClient).leave();
+					resetClient();
+				}
 			}
 			return null;
 		}

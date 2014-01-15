@@ -379,7 +379,6 @@ public class LiveChessService extends Service {
 
 	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {
 		lccHelper.setOuterChallengeListener(outerChallengeListener);
-
 	}
 
 	public void setLccChatMessageListener(LccChatMessageListener chatMessageListener) {

@@ -534,8 +534,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void expireGame() {
-		showSinglePopupDialog(R.string.error, getString(R.string.game_expired), GAME_EXPIRED_TAG);
-		getLastPopupFragment().setCancelable(false);
+		showSinglePopupDialog(R.string.error, getString(R.string.game_expired));
+		// todo: check LCC clock behaviour here, stop clock
+		/*try {
+			onGameStarted();
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+			logTest(e.getMessage());
+		}*/
+		setBoardToFinishedState();
+		getControlsView().showAfterMatch();
 	}
 
 
@@ -940,8 +948,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				}
 				liveService.runMakeResignTask();
 			}
-		} else if (tag.equals(GAME_EXPIRED_TAG)) {
-			goHome();
 		}
 		super.onPositiveBtnClick(fragment);
 	}

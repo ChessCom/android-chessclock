@@ -12,6 +12,7 @@ import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.fragments.live.GameLiveFragment;
+import com.chess.utilities.LogMe;
 
 /**
  * Created with IntelliJ IDEA.
@@ -172,13 +173,14 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		try {
 			liveService = getLiveService();
 		} catch (DataNotValidException e) {
+			LogMe.dl(TAG, e.getMessage());
 			return;
 		}
 		liveService.setLccEventListener(this);
 		liveService.setGameTaskListener(gameTaskListener);
 
 		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
-			synchronized(LccHelper.LOCK) {
+			synchronized(LccHelper.GAME_SYNC_LOCK) {
 				Long gameId = liveService.getCurrentGameId();
 				GameLiveFragment liveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
 				if (liveFragment == null) {
@@ -192,6 +194,4 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 			createSeek();
 		}
 	}
-
-
 }

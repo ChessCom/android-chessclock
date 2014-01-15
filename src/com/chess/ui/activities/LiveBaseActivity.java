@@ -595,7 +595,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	private void performReloginForLive() {
-		Log.d("lcc", "performReloginForLive");
+		//Log.d(TAG, "performReloginForLive isLCSBound=" + isLCSBound);
 
 		// Logout first to make clear connect
 		if (isLCSBound) {
@@ -639,6 +639,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	private void processConnectionFailure(String message) {
+		// TODO: emulate connection failure and check
 		if (message.equals(getString(R.string.pleaseLoginAgain))) {
 			performReloginForLive();
 		} else {

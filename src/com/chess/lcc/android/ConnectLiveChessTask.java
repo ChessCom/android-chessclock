@@ -49,100 +49,100 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	protected Integer doTheTask(Void... params) {
 		Context context = getTaskFace().getMeContext();
 
-		try {
+		synchronized (LccHelper.CLIENT_SYNC_LOCK) {
 
-			String versionName = null;
 			try {
-				versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-			} catch (PackageManager.NameNotFoundException e) {
-				result = StaticData.UNKNOWN_ERROR;
-			}
-			versionName += ", OS: " + android.os.Build.VERSION.RELEASE + ", " + android.os.Build.MODEL;
 
-			AppData appData = new AppData(context);
+				String versionName = null;
+				try {
+					versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+				} catch (PackageManager.NameNotFoundException e) {
+					result = StaticData.UNKNOWN_ERROR;
+				}
+				versionName += ", OS: " + android.os.Build.VERSION.RELEASE + ", " + android.os.Build.MODEL;
 
-			LogMe.forceLog(TAG, "User " + appData.getUsername() + ", " + versionName, context);
-			LogMe.dl(TAG, "Start Chess.Com LCC ");
-			LogMe.dl(TAG, "Connecting to: " + getConfigBayeuxHost());
+				AppData appData = new AppData(context);
 
-			HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
+				LogMe.forceLog(TAG, "User " + appData.getUsername() + ", " + versionName, context);
+				LogMe.dl(TAG, "Start Chess.Com LCC ");
+				LogMe.dl(TAG, "Connecting to: " + getConfigBayeuxHost());
 
-			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
-				httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
-			} else {
-				httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET); // Android 2.2
-			}
+				HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
+
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
+					httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+				} else {
+					httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET); // Android 2.2
+				}
 
 			/*LogMe.dl(TAG, "INITIAL httpClient.getTimeout() = " + httpClient.getTimeout());
 			LogMe.dl(TAG, "INITIAL httpClient.getSoTimeout() = " + httpClient.getSoTimeout());
 			LogMe.dl(TAG, "INITIAL getIdleTimeout = " + httpClient.getIdleTimeout());
 			LogMe.dl(TAG, "INITIAL httpClient.getConnectTimeout() = " + httpClient.getConnectTimeout());*/
 
-			httpClient.setMaxConnectionsPerAddress(2);
-			//httpClient.setSoTimeout(11000);
-			httpClient.setConnectTimeout(10000); // 75000 is default
-			httpClient.setTimeout(10000); // 320000 is default
+				httpClient.setMaxConnectionsPerAddress(2);
+				//httpClient.setSoTimeout(11000);
+				httpClient.setConnectTimeout(10000); // 75000 is default
+				httpClient.setTimeout(10000); // 320000 is default
 
-			List<ConnectionConfiguration> conConfs = new LinkedList<ConnectionConfiguration>();
+				List<ConnectionConfiguration> conConfs = new LinkedList<ConnectionConfiguration>();
 
-			if (Build.VERSION.SDK_INT == Build.VERSION_CODES.FROYO) { // Android 2.2
-				LogMe.dl(TAG, "Support HTTP Live transport");
-				conConfs.add(createHttpConnectionConfig(httpClient));
+				if (Build.VERSION.SDK_INT == Build.VERSION_CODES.FROYO) { // Android 2.2
+					LogMe.dl(TAG, "Support HTTP Live transport");
+					conConfs.add(createHttpConnectionConfig(httpClient));
 
-			} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) { // prior to 4.1
-				LogMe.dl(TAG, "Support WS and HTTP Live transports");
-				conConfs.add(createWSConnectionConfig());
-				conConfs.add(createHttpConnectionConfig(httpClient));
+				} else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) { // prior to 4.1
+					LogMe.dl(TAG, "Support WS and HTTP Live transports");
+					conConfs.add(createWSConnectionConfig());
+					conConfs.add(createHttpConnectionConfig(httpClient));
 
-			} else { // 4.1+
-				LogMe.dl(TAG, "Support WSS and HTTP Live transports");
-				conConfs.add(createWSSConnectionConfig());
-				conConfs.add(createHttpConnectionConfig(httpClient));
+				} else { // 4.1+
+					LogMe.dl(TAG, "Support WSS and HTTP Live transports");
+					conConfs.add(createWSSConnectionConfig());
+					conConfs.add(createHttpConnectionConfig(httpClient));
+				}
+
+				item = LiveChessClientFacade.createClient(getAuthUrl(), conConfs);
+
+				item.setClientInfo("Android", versionName, "No-Key");
+
+				item.setSupportedClientFeature(ClientFeature.AnnounceService, true);
+				item.setSupportedClientFeature(ClientFeature.AdminService, true); // UPDATELCC todo: check
+
+				item.setSupportedClientFeature(ClientFeature.GenericGameSupport, true);
+				item.setSupportedClientFeature(ClientFeature.GenericChatSupport, true);
+				item.setSupportedClientFeature(ClientFeature.GameObserve, true);
+
+				//PublicChatsBasic
+				//PublicChatsFull
+				//PrivateChats
+				//MultiGames
+				//GameObserve
+				//MultiGameObserve
+				//Tournaments
+				//ExamineBoards
+				//PingService
+
+				item.setBackoffIncrement(BACKOFF_INCREMENT);
+				item.setMaxBackoffInterval(MAX_BACKOFF_INTERVAL);
+
+				httpClient.start();
+			} catch (IOException e) {
+//            e.printStackTrace();
+				result = StaticData.NO_NETWORK;
+				LogMe.dl(TAG, e.toString());
+			} catch (Exception e) {
+				result = StaticData.UNKNOWN_ERROR;
+				throw new LiveChessClientException("Unable to initialize HttpClient", e);
 			}
 
-			item = LiveChessClientFacade.createClient(getAuthUrl(), conConfs);
+			//lccHelper.updateNetworkType(null); // todo: probably reset networkTypeName somewhere else?
+			//lccHelper.setConnectionFailure(false);
 
-			item.setClientInfo("Android", versionName, "No-Key");
-
-			item.setSupportedClientFeature(ClientFeature.AnnounceService, true);
-			item.setSupportedClientFeature(ClientFeature.AdminService, true); // UPDATELCC todo: check
-
-			item.setSupportedClientFeature(ClientFeature.GenericGameSupport, true);
-			item.setSupportedClientFeature(ClientFeature.GenericChatSupport, true);
-			item.setSupportedClientFeature(ClientFeature.GameObserve, true);
-
-			//PublicChatsBasic
-			//PublicChatsFull
-			//PrivateChats
-			//MultiGames
-			//GameObserve
-			//MultiGameObserve
-			//Tournaments
-			//ExamineBoards
-			//PingService
-
-			item.setBackoffIncrement(BACKOFF_INCREMENT);
-			item.setMaxBackoffInterval(MAX_BACKOFF_INTERVAL);
-
-			httpClient.start();
-		} catch (IOException e) {
-//            e.printStackTrace();
-			result = StaticData.NO_NETWORK;
-			LogMe.dl(TAG, e.toString());
-		} catch (Exception e) {
-			result = StaticData.UNKNOWN_ERROR;
-			throw new LiveChessClientException("Unable to initialize HttpClient", e);
+			lccHelper.setLiveChessClient(item);
+			lccHelper.performConnect();
+			return StaticData.RESULT_OK;
 		}
-
-		//lccHelper.updateNetworkType(null); // todo: probably reset networkTypeName somewhere else?
-		//lccHelper.setConnectionFailure(false);
-		if (item == null) {
-			throw new LiveChessClientException("Unable to initialize HttpClient, client became null");
-		}
-
-		lccHelper.setLiveChessClient(item);
-		lccHelper.performConnect();
-		return StaticData.RESULT_OK;
 	}
 
 	private SimpleHttpConnectionConfiguration createHttpConnectionConfig(HttpClient httpClient) {
