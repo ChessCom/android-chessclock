@@ -87,7 +87,7 @@
 	<dimen name="popup_border_width">2dip</dimen>
 	<dimen name="start_new_game_overlay_padding_top">25dip</dimen>
 	<dimen name="start_new_game_overlay_padding_side">26dip</dimen>
-	<dimen name="overlay_shadow_offset">6dip</dimen>
+	<dimen name="overlay_shadow_offset">7dip</dimen>
 	<dimen name="popup_title_text_size_big">33sp</dimen>
 	<dimen name="popup_title_text_size_medium">17sp</dimen>
 	<dimen name="diagram_icon_overlay_size">80dip</dimen>

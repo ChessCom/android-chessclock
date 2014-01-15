@@ -11,6 +11,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
+		android:layout_centerVertical="true"
+		android:gravity="center"
 		android:layout_marginTop="@dimen/tablet_board_margin_bottom"
 		android:layout_marginLeft="@dimen/tablet_board_margin_left"
 		android:layout_marginRight="@dimen/tablet_board_margin"
@@ -21,7 +23,8 @@
 		<com.chess.ui.views.chess_boards.ChessBoardDailyView
 			android:id="@+id/boardview"
 			android:layout_width="wrap_content"
-			android:layout_height="match_parent" />
+			android:layout_height="match_parent"
+			/>
 
 	</com.chess.widgets.LinLayout>
 

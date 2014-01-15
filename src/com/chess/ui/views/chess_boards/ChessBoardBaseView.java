@@ -140,6 +140,9 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	private boolean isChessKid = true;
 	private boolean isTablet;
 	private Bitmap boardBitmap;
+	private int originalParentWidth;
+	private int originalParentHeight;
+	private boolean borderSubtracted;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -254,7 +257,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 //		logTest("onMeasure parentWidth = " + parentWidth + " parentHeight = " + parentHeight);
 
 		int width = 0;
-		int height = 0;      // TODO fix incorrect board sizes for 10" tablet
+		int height = 0;
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 			width = resolveSize(parentWidth, widthMeasureSpec);
 			height = resolveSize(parentWidth, heightMeasureSpec);
@@ -263,19 +266,9 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			height = resolveSize(parentHeight, heightMeasureSpec);
 		}
 
-//		int measureSpecWidth = MeasureSpec.makeMeasureSpec(width, MeasureSpec.AT_MOST);
-//		int measureSpecHeight = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
+		int size = Math.min(width, height);
 
-//		logTest("onMeasure width = " + width + " height = " + height);
-
-//		super.onMeasure(measureSpecWidth, measureSpecHeight);
-
-//		width = getSuggestedMinimumHeight();
-//		height = getSuggestedMinimumWidth();
-
-
-		setMeasuredDimension(width, height);
-
+		setMeasuredDimension(size, size);
 		pieceXDelta = -1;
 		pieceYDelta = -1;
 	}
@@ -285,8 +278,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		super.onSizeChanged(xNew, yNew, xOld, yOld);
 		viewWidth = (xNew == 0 ? viewWidth : xNew);
 		viewHeight = (yNew == 0 ? viewHeight : yNew);
-		squareSize = viewWidth / 8;
-//		logTest("onSizeChanged width = " + viewWidth + " height = " + viewHeight);
+		squareSize = viewWidth / 8f;
+//		logTest("onSizeChanged width = " + viewWidth + " height = " + viewHeight + ", squareSize = " + squareSize);
 
 		loadBoard();
 		loadPieces();
@@ -1130,7 +1123,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		drawCapturedPieces();
 
 		if (getResources() == null) {
-			Log.e("TEST"," resources are null"); // shouldn't be anyway
+			Log.e("TEST", " resources are null"); // shouldn't be anyway
 		}
 
 		BoardFace boardFace = getBoardFace();
@@ -1251,7 +1244,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	protected void loadBoard() {
-		if (viewWidth > 0 && (previousWidth != viewWidth || boardBitmap == null)) { // update only if size has changed
+		if (viewWidth > 0 /*&& (previousWidth != viewWidth || boardBitmap == null)*/) { // update only if size has changed
 			previousWidth = viewWidth;
 
 			BitmapShader shader;

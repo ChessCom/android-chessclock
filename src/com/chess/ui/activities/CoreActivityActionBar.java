@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.SparseBooleanArray;
 import android.view.*;
 import android.widget.SearchView;
@@ -18,9 +17,6 @@ import com.chess.R;
 import com.chess.ui.interfaces.PopupDialogFace;
 
 public abstract class CoreActivityActionBar extends ActionBarActivity implements View.OnClickListener, PopupDialogFace {
-
-	protected Bundle extras;
-	protected Handler handler;
 
 	private SparseBooleanArray actionMenuMap;
 	private ActionBar actionBar;
@@ -36,10 +32,11 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 
 		adjustActionBarHomeIcon();
 
-
-		handler = new Handler();
-		extras = getIntent().getExtras();
 		actionMenuMap = new SparseBooleanArray();
+
+		if (getAppData().isFullScreen()) {
+			setFullScreen();
+		}
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)

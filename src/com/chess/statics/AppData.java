@@ -258,6 +258,14 @@ public class AppData {
 		return getBooleanValue(PREF_DAILY_MINI_BOARDS, true);
 	}
 
+	public void setFullScreen(boolean value) {
+		setBooleanValue(PREF_FULL_SCREEN, value);
+	}
+
+	public boolean isFullScreen() {
+		return getBooleanValue(PREF_FULL_SCREEN, false);
+	}
+
 	public boolean isRegisterOnChessGCM() {
 		String savedToken = preferences.getString(GCM_SAVED_TOKEN, Symbol.EMPTY);
 		String userToken = preferences.getString(USER_TOKEN, Symbol.EMPTY);

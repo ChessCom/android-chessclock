@@ -324,6 +324,33 @@
 
 		</com.chess.widgets.LinLayout>
 
-    </com.chess.widgets.LinLayout>
+		<!--FullScreen-->
+		<com.chess.widgets.LinLayout
+			android:id="@+id/fullScreenView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem"
+			android:paddingRight="10dip"
+			android:background="@drawable/transparent_list_item_selector"
+			>
+
+			<!--Label-->
+			<com.chess.widgets.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:text="@string/full_screen"
+				android:layout_weight="1"
+				style="@style/SettingsListText"
+				/>
+
+			<com.chess.widgets.SwitchButton
+				android:id="@+id/fullScreenSwitch"
+				style="@style/Switch.Default"
+				/>
+
+		</com.chess.widgets.LinLayout>
+
+
+	</com.chess.widgets.LinLayout>
 
 </ScrollView>

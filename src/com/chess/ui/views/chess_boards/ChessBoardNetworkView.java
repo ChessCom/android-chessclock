@@ -105,6 +105,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 		controlsView.setBoardViewFace(this);
 	}
 
+	@Override
 	protected void resetMoving() {
 		super.resetMoving();
 		if (getBoardFace().isSubmit()) {

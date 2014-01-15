@@ -248,17 +248,17 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 
 			// let's make it to match board properties
 			// it should be 2 squares inset from top of border and 4 squares tall + 1 squares from sides
-			int sideInset = resources.getDisplayMetrics().widthPixels / 8; // one square size
+			int squareSize = resources.getDisplayMetrics().widthPixels / 8; // one square size
 			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
 			// now we add few pixel to compensate shadow addition
 			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
 			borderOffset += shadowOffset;
-			int overlayHeight = sideInset * 4 + borderOffset + shadowOffset;
+			int overlayHeight = squareSize * 4 + borderOffset + shadowOffset;
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 					overlayHeight);
-			int topMargin = sideInset * 2 + borderOffset - shadowOffset * 2;
+			int topMargin = squareSize * 2 + borderOffset - shadowOffset * 2;
 
-			params.setMargins(sideInset - borderOffset, topMargin, sideInset - borderOffset, 0);
+			params.setMargins(squareSize - borderOffset, topMargin, squareSize - borderOffset, 0);
 			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
 			startOverlayView.setLayoutParams(params);
 			startOverlayView.setVisibility(View.VISIBLE);

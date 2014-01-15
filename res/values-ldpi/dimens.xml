@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<dimen name="actionbar_compat_height">32dp</dimen>
+
+
+	<!--ControlsBaseView-->
+	<dimen name="game_controls_button_height">32dip</dimen>
+	<dimen name="game_controls_icon_size">20dip</dimen>
+
+	<dimen name="new_tab_button_height">32dip</dimen>
+
+</resources>

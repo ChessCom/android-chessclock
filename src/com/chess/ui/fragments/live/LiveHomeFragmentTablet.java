@@ -293,8 +293,8 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(popupWidth, overlayHeight);
 		int topMargin = (int) (squareSize * 2.5f + borderOffset - shadowOffset * 2);
 
-		params.setMargins((int) (squareSize * 1.5f - shadowOffset), topMargin, squareSize - borderOffset, 0);
-		params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
+		params.setMargins((int) (squareSize * 2.2f - shadowOffset), topMargin, squareSize - borderOffset, 0);
+		params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardLinLay);
 		startOverlayView.setLayoutParams(params);
 		startOverlayView.setVisibility(View.VISIBLE);
 		// set min width

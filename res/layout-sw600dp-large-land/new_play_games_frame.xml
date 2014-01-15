@@ -8,26 +8,34 @@
 
 	<LinearLayout
 		android:layout_width="0dp"
-		android:layout_height="wrap_content"
+		android:layout_height="match_parent"
 		android:layout_weight="1"
 		android:gravity="center">
 
-		<com.chess.widgets.RelLayout
-			android:id="@+id/boardLinLay"
+		<RelativeLayout
 			android:layout_width="wrap_content"
-			android:layout_height="match_parent"
-			android:orientation="vertical"
-			android:layout_marginTop="@dimen/tablet_board_margin_bottom"
-			android:layout_marginLeft="@dimen/tablet_board_margin_left"
-			android:layout_marginRight="@dimen/tablet_board_margin"
-			android:layout_marginBottom="@dimen/tablet_board_margin_bottom"
-			android:background="@drawable/shadow_back_square">
+			android:layout_height="wrap_content">
 
-			<!--BoardView-->
-			<com.chess.ui.views.chess_boards.ChessBoardLiveView
-				android:id="@+id/boardview"
+			<LinearLayout
+				android:id="@+id/boardLinLay"
 				android:layout_width="wrap_content"
-				android:layout_height="match_parent" />
+				android:layout_height="match_parent"
+				android:layout_gravity="center"
+				android:gravity="center"
+				android:layout_marginTop="@dimen/tablet_board_margin_bottom"
+				android:layout_marginLeft="@dimen/tablet_board_margin_left"
+				android:layout_marginRight="@dimen/tablet_board_margin"
+				android:layout_marginBottom="@dimen/tablet_board_margin_bottom"
+				android:background="@drawable/shadow_back_square">
+
+				<!--BoardView-->
+				<com.chess.ui.views.chess_boards.ChessBoardDailyView
+					android:id="@+id/boardview"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent" />
+
+
+			</LinearLayout>
 
 			<!--Start New Game overlay-->
 			<LinearLayout
@@ -93,7 +101,7 @@
 
 			</LinearLayout>
 
-		</com.chess.widgets.RelLayout>
+		</RelativeLayout>
 
 	</LinearLayout>
 
@@ -102,14 +110,12 @@
 		android:layout_width="10dp"
 		android:layout_height="match_parent"
 		android:src="@drawable/defaultshadow"
-		android:contentDescription="@string/image"
-		/>
+		android:contentDescription="@string/image" />
 
 	<!--ListView-->
 	<ListView
 		android:id="@id/listView"
 		android:layout_width="@dimen/tablet_side_menu_width"
-		android:layout_height="match_parent"
-	 	/>
+		android:layout_height="match_parent" />
 
 </LinearLayout>

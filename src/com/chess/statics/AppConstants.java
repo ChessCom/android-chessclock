@@ -59,6 +59,7 @@ public class AppConstants {
 	public static final String PREF_SHOW_TIMER_IN_TACTICS = "show_timer_in_tactics";
 	public static final String PREF_DAILY_NOTIFICATIONS = "use daily notifications";
 	public static final String PREF_DAILY_MINI_BOARDS = "use_mini_boards";
+	public static final String PREF_FULL_SCREEN = "use_full_screen";
 	public static final String PREF_ON_VACATION = "user on vacation";
 	public static final String PREF_SHOW_LEGAL_MOVES = "show possible move highlights";
 	public static final String PREF_BOARD_COORDINATES = "show coordinates";

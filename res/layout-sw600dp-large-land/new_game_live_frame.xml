@@ -6,11 +6,13 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-	<com.chess.widgets.RelLayout
+	<com.chess.widgets.LinLayout
 		android:id="@+id/boardLinLay"
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
+		android:layout_centerVertical="true"
+		android:gravity="center"
 		android:layout_marginTop="@dimen/tablet_board_margin_bottom"
 		android:layout_marginLeft="@dimen/tablet_board_margin_left"
 		android:layout_marginRight="@dimen/tablet_board_margin"
@@ -23,19 +25,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent" />
 
-		<!--Loading view-->
-		<RelativeLayout
-			android:id="@+id/fadeLay"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:background="@color/disabled"
-			android:visibility="invisible"
-			android:layout_alignRight="@+id/boardView"
-			>
-
-		</RelativeLayout>
-
-	</com.chess.widgets.RelLayout>
+	</com.chess.widgets.LinLayout>
 
 	<com.chess.widgets.RelLayout
 		android:layout_width="wrap_content"
@@ -154,5 +144,14 @@
 			android:layout_marginTop="@dimen/tablet_panel_info_top_margin" />
 
 	</com.chess.widgets.RelLayout>
+
+	<!--Loading view-->
+	<RelativeLayout
+		android:id="@+id/fadeLay"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/disabled"
+		android:visibility="invisible"
+		/>
 
 </RelativeLayout>

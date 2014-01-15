@@ -224,7 +224,7 @@ public class AppUtils {
 	public static boolean noNeedTitleBar(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 		Configuration config = context.getResources().getConfiguration();
-		return (displayMetrics.density == MDPI || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM)
+		return (displayMetrics.density <= MDPI || displayMetrics.densityDpi <= DisplayMetrics.DENSITY_MEDIUM)
 				&& (displayMetrics.heightPixels <= 480 && config.orientation == Configuration.ORIENTATION_PORTRAIT
 				|| displayMetrics.heightPixels <= 300 && config.orientation == Configuration.ORIENTATION_LANDSCAPE);
 	}

@@ -52,7 +52,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
 	protected boolean isTablet;
-	private CommonLogicActivity.GcmRegisterUpdateListener gcmRegisterUpdateListener;
+	private GcmRegisterUpdateListener gcmRegisterUpdateListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

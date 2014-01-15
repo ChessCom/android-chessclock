@@ -568,4 +568,5 @@
 	<string name="do_you_love_app">Do you love the Chess.com app?</string>
 	<string name="auto_queen">Auto-Queen</string>
 	<string name="review_lesson">Review Lesson</string>
+	<string name="full_screen">Full Screen</string>
 </resources>
