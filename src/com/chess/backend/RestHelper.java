@@ -601,7 +601,7 @@ public class RestHelper {
 			InputStream inputStream = null;
 			String resultString;
 			try {
-				inputStream = connection.getInputStream();
+				inputStream = new BufferedInputStream(connection.getInputStream());
 
 				resultString = convertStreamToString(inputStream);
 				if (resultString.contains(OBJ_START)) {
@@ -710,7 +710,7 @@ public class RestHelper {
 		connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 		PrintWriter writer = null;
 		try {
-			OutputStream output = connection.getOutputStream();
+			OutputStream output = new BufferedOutputStream(connection.getOutputStream());
 			writer = new PrintWriter(new OutputStreamWriter(output, charset), true); // true = autoFlush, important!
 
 			// Send Normal params
@@ -755,14 +755,16 @@ public class RestHelper {
 		}
 	}
 
-	private static void submitPostData(URLConnection connection, LoadItem loadItem) throws IOException {
+	private static void submitPostData(HttpURLConnection connection, LoadItem loadItem) throws IOException {
 		String query = formPostData(loadItem);
 		logD(TAG, loadItem.getRequestMethod() + ": " + query);
 		String charset = HTTP.UTF_8;
 		connection.setDoOutput(true); // Triggers POST.
+		connection.setChunkedStreamingMode(0);
+
 		OutputStream output = null;
 		try {
-			output = connection.getOutputStream();
+			output = new BufferedOutputStream(connection.getOutputStream());
 			output.write(query.getBytes(charset));
 		} finally {
 			if (TextUtils.isEmpty(loadItem.getFilePath()) || !AppUtils.JELLYBEAN_PLUS_API) {  // don't close if we will continue to write. But close if we are on pre JB
