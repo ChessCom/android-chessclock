@@ -534,16 +534,27 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void expireGame() {
-		showSinglePopupDialog(R.string.error, getString(R.string.game_expired));
-		// todo: check LCC clock behaviour here, stop clock
-		/*try {
-			onGameStarted();
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-			logTest(e.getMessage());
-		}*/
-		setBoardToFinishedState();
-		getControlsView().showAfterMatch();
+
+		Activity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				showSinglePopupDialog(R.string.error, getString(R.string.game_expired));
+
+				setBoardToFinishedState();
+				getControlsView().showAfterMatch();
+
+				try {
+					getLiveService().stopClock(); // wait for LCC fix
+				} catch (DataNotValidException e) {
+					logLiveTest(e.getMessage());
+				}
+			}
+		});
 	}
 
 

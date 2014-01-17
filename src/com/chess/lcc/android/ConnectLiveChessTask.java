@@ -62,10 +62,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 				versionName += ", OS: " + android.os.Build.VERSION.RELEASE + ", " + android.os.Build.MODEL;
 
 				AppData appData = new AppData(context);
-
-				LogMe.forceLog(TAG, "User " + appData.getUsername() + ", " + versionName, context);
-				LogMe.dl(TAG, "Start Chess.Com LCC ");
-				LogMe.dl(TAG, "Connecting to: " + getConfigBayeuxHost());
+				String message = "Live connecting to " + getConfigBayeuxHost() + ", user=" + appData.getUsername() + ", " + versionName;
+				LogMe.forceLog(TAG, message, context);
 
 				HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
 
@@ -74,11 +72,6 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 				} else {
 					httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET); // Android 2.2
 				}
-
-			/*LogMe.dl(TAG, "INITIAL httpClient.getTimeout() = " + httpClient.getTimeout());
-			LogMe.dl(TAG, "INITIAL httpClient.getSoTimeout() = " + httpClient.getSoTimeout());
-			LogMe.dl(TAG, "INITIAL getIdleTimeout = " + httpClient.getIdleTimeout());
-			LogMe.dl(TAG, "INITIAL httpClient.getConnectTimeout() = " + httpClient.getConnectTimeout());*/
 
 				httpClient.setMaxConnectionsPerAddress(2);
 				//httpClient.setSoTimeout(11000);

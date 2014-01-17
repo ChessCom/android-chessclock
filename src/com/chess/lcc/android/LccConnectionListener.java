@@ -2,7 +2,6 @@ package com.chess.lcc.android;
 
 import com.chess.R;
 import com.chess.live.client.*;
-import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 
 /**
@@ -20,8 +19,8 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onOtherClientEntered(User user) {
 		LogMe.dl(TAG, "Another client entered: user=" + user.getUsername());
-		String message = lccHelper.getContext().getString(R.string.account_error)
-				+ lccHelper.getContext().getString(R.string.another_login_detected);
+		String message = lccHelper.getContext().getString(R.string.account_error) + " " +
+				lccHelper.getContext().getString(R.string.another_login_detected);
 
 		lccHelper.onOtherClientEntered(message);
 	}
@@ -56,7 +55,7 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onConnectionLost(User user, String message, Throwable throwable) {
 		LogMe.dl(TAG, "Connection Lost, with message = " + message);
-		LogMe.dl(TAG, "Connection Lost: isNetworkAvailable=" + AppUtils.isNetworkAvailable(lccHelper.getContext()));
+		//LogMe.dl(TAG, "Connection Lost: isNetworkAvailable=" + AppUtils.isNetworkAvailable(lccHelper.getContext()));
 		lccHelper.setConnected(false);
 	}
 

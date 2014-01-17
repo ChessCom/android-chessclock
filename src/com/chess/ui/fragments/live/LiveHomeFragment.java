@@ -101,23 +101,44 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	public void onResume() {
 		super.onResume();
 
-		if (isNetworkAvailable()) {
-			try {
-				if (!isLCSBound) {
-					liveBaseActivity.connectLcc();
-					showPopupProgressDialog();
-				} else {
-					addCurrentGameItem(getLiveService());
-				}
-			} catch (DataNotValidException e) {
-				e.printStackTrace();
+		//LogMe.dl("LCCLOG", "LiveHomeFragment onResume isNetworkAvailable() " + isNetworkAvailable());
+
+		try {
+
+			if (!isNetworkAvailable()) {
+				// ask user to turn device connection on, prevent showing several instances of "connection settings"
+				/*
+				popupItem.setPositiveBtnId(R.string.check_connection);
+				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
+				*/
 			}
 
+			if (!isLCSBound) {
+				liveBaseActivity.connectLcc();
+				showPopupProgressDialog();
+			} else {
+				addCurrentGameItem(getLiveService());
+			}
+
+		} catch (DataNotValidException e) {
+			e.printStackTrace();
+		}
+
+		if (isNetworkAvailable()) {
 			// get online players count
 			LoadItem loadItem = LoadHelper.getServerStats();
 			new RequestJsonTask<ServersStatsItem>(serverStatsUpdateListener).executeTask(loadItem);
 		}
 	}
+
+	/*
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		liveBaseActivity.stopConnectTimer();
+	}
+	*/
 
 	protected void addCurrentGameItem(LiveChessService liveService) {
 		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
@@ -496,4 +517,19 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		getAppData().setDefaultLiveMode(mode);
 	}
 
+	/*
+	@Override
+	public void onPositiveBtnClick(DialogFragment fragment) {
+		String tag = fragment.getTag();
+		if (tag == null) {
+			super.onPositiveBtnClick(fragment);
+			return;
+		}
+
+		if (tag.equals(NETWORK_CHECK_TAG)) {
+			startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), NETWORK_REQUEST);
+		}
+		super.onPositiveBtnClick(fragment);
+	}
+	*/
 }

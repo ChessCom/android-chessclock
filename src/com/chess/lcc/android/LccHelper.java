@@ -44,7 +44,7 @@ public class LccHelper {
 	private static final int CONNECTION_FAILURE_DELAY = 2000;
 	public static final Object CLIENT_SYNC_LOCK = new Object();
 	public static final Object GAME_SYNC_LOCK = new Object();
-	public static final int CONNECTION_FAILURE_TIME_LIMIT = 20000;
+	public static final int FINISH_CONNECT_ATTEMPTS_DELAY = 60 * 1000;
 
 	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
@@ -97,7 +97,7 @@ public class LccHelper {
 
 	private boolean connectionFailure;
 	//private int connectionFailureCounter;
-	private boolean finishClientAfterFailure;
+	private boolean continueReloginForLive;
 	private Handler handler;
 
 	public LccHelper(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
@@ -303,18 +303,10 @@ public class LccHelper {
 		logout();
 
 		String kickMessage = context.getString(R.string.live_chess_server_upgrading);
-		liveChessClientEventListener.onConnectionFailure(kickMessage
-				/*+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.reason_) + reason
-				+ StaticData.SYMBOL_NEW_STR + context.getString(R.string.message_) + message*/);
+		liveChessClientEventListener.onConnectionFailure(kickMessage);
 	}
 
 	public void processConnectionFailure(FailureDetails details) {
-
-		//details = null;
-
-		// when there is no active connection details = Authentication service failed
-		// when connection is here but Live cannot reach server details = null
-		// and we should always create new instance after ConnectionFailure
 
 		/*if (details == null && !AppUtils.isNetworkAvailable(context)) {
 			// handle null-case when user tries to connect when device connection is off, just ignore
@@ -322,18 +314,15 @@ public class LccHelper {
 			return;
 		}*/
 
-		//setConnected(false);
-		connectionFailure = true;
-
 		LogMe.dl(TAG, "processConnectionFailure: details=" + details);
 
+		connectionFailure = true;
 		String detailsMessage;
 
-		if (details != null) {
+		if (details != null) { // LCC stops client, create new one manually
 
 			// do not invoke client.disconnect() in this case
 			cleanupLiveInfo();
-			//resetClient();
 			cancelServiceNotification();
 			stopConnectionTimer();
 
@@ -369,9 +358,12 @@ public class LccHelper {
 							+ context.getString(R.string.live_chess_server_unavailable);
 					break;
 				}
-				/*case AUTH_URL_FAILED: {
+				// when connect(login, pswd) and auth_url is unreachable, details="Authentication service failed"
+				/*
+				case AUTH_URL_FAILED: {
 					return;
-				}*/
+				}
+				*/
 				default:
 					// todo: show login/password popup instead
 					detailsMessage = context.getString(R.string.pleaseLoginAgain);
@@ -382,45 +374,21 @@ public class LccHelper {
 				resetClient();
 			}
 
-		} else {
+		} else { // when connect(authKey) and Live server in unreachable, details=null
 
-			/*connectionFailureCounter++;
-			boolean resetClient = connectionFailureCounter > CONNECTION_FAILURE_LIMIT_ATTEMPTS;*/
-
-			if (finishClientAfterFailure) {
-				finishClientAfterFailure = false;
-				logout(/*true*/);
+			// todo: handle
+			/*
+			if (continueReloginForLive) {
+				return;
 			} else {
-				return;
+				continueReloginForLive = false; //?
+				logout();
 			}
-
-			// handle detail=null one time and try to reconnect
-			// we cannot autoconnect even 1 time because LCC receives extra onConnectionFailure and disconnects only after second onConnectionFailure
-			/*if (AppData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
-				LogMe.dl("handle Failure details=null, try to reconnect automatically");
-				AppData.incrementLiveConnectAttempts(context);
-
-				try {
-					Thread.sleep(CONNECTION_FAILURE_DELAY);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				runConnectTask(true);
-				return;
-			} else {*/
-			//logout();
+			*/
 			detailsMessage = context.getString(R.string.pleaseLoginAgain);
-			//}
 		}
 
 		liveChessClientEventListener.onConnectionFailure(detailsMessage);
-
-		/*else {
-			/*setConnected(false);
-			cancelServiceNotification();
-			liveChessClientEventListener.onSessionExpired(context.getString(R.string.login_failed));*/
-		//}
-
 	}
 
 	private boolean isPossibleToReconnect() {
@@ -874,7 +842,7 @@ public class LccHelper {
 
 	public void cleanupLiveInfo() {
 		LogMe.dl(TAG, "cleanupLiveInfo");
-		new AppData(context).setLiveChessMode(false);
+		//new AppData(context).setLiveChessMode(false); // let UI set it
 		setCurrentGameId(null);
 		setCurrentObservedGameId(null);
 		setUser(null);
@@ -887,10 +855,10 @@ public class LccHelper {
 		clearPausedEvents();
 	}
 
-	public void logout(/*boolean resetClient*/) {
+	public void logout() {
 		LogMe.dl(TAG, "USER LOGOUT");
 		cleanupLiveInfo();
-		runDisconnectTask(/*resetClient*/); // disconnect and reset client instance
+		runDisconnectTask();
 		cancelServiceNotification();
 		stopConnectionTimer();
 	}
@@ -1324,14 +1292,15 @@ public class LccHelper {
 		}
 	}
 
-	private void startConnectionTimer() {
-		handler.postDelayed(connectionTimerRunnable, CONNECTION_FAILURE_TIME_LIMIT); // It is not limit! It is delay, to repeat this event you should use it in different way
+	public void startConnectionTimer() {
+		stopConnectionTimer();
+		handler.postDelayed(connectionTimerRunnable, FINISH_CONNECT_ATTEMPTS_DELAY); // It is not limit! It is delay, to repeat this event you should use it in different way
 	}
 
 	private Runnable connectionTimerRunnable = new Runnable() {
 		@Override
 		public void run() {
-			finishClientAfterFailure = true;
+			continueReloginForLive = false;
 		}
 	};
 

@@ -532,4 +532,18 @@ public class LiveChessService extends Service {
 		lccHelper.unObserveCurrentObservingGame();
 		lccHelper.setCurrentObservedGameId(null);
 	}
+
+	public void stopClock() {
+		lccHelper.stopClock();
+	}
+
+	/*
+	public boolean isContinueReloginForLive() {
+		return lccHelper.isContinueReloginForLive();
+	}
+
+	public void startConnectionTimer() {
+		lccHelper.startConnectionTimer();
+	}
+	*/
 }
