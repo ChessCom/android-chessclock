@@ -266,9 +266,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			height = resolveSize(parentHeight, heightMeasureSpec);
 		}
 
-		int size = Math.min(width, height);
-
-		setMeasuredDimension(size, size);
+		setMeasuredDimension(width, height);
 		pieceXDelta = -1;
 		pieceYDelta = -1;
 	}

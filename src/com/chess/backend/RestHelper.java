@@ -29,10 +29,7 @@ import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * RestHelper class
@@ -58,6 +55,8 @@ public class RestHelper {
 	public static void resetInstance() {
 		ourInstance = null;
 	}
+
+	private static final boolean USE_HEADERS_FOR_LOG = false;
 
 	/* Methods*/
 	public static final String GET = "GET";
@@ -588,6 +587,18 @@ public class RestHelper {
 				logE(TAG, "Error " + statusCode + " while retrieving data from " + url);
 				InputStream inputStream = connection.getErrorStream();
 				String resultString = convertStreamToString(inputStream);
+
+				if (BuildConfig.DEBUG && USE_HEADERS_FOR_LOG) {
+					Map<String,List<String>> headerFields = connection.getHeaderFields();
+					for (Map.Entry<String, List<String>> entry : headerFields.entrySet()) {
+						if (entry != null) {
+							for (String header : entry.getValue()) {
+								logD(TAG, "HEADER ERR SERVER RESPONSE HEADER: " + header);
+							}
+						}
+					}
+				}
+
 				logD(TAG, "SERVER RESPONSE: " + resultString);
 				if (resultString.equals(ServerErrorCodes.ACCESS_DENIED)) {
 					throw new InternalErrorException(encodeServerCode(ServerErrorCodes.ACCESS_DENIED_CODE));
@@ -604,6 +615,18 @@ public class RestHelper {
 				inputStream = new BufferedInputStream(connection.getInputStream());
 
 				resultString = convertStreamToString(inputStream);
+
+				if (BuildConfig.DEBUG && USE_HEADERS_FOR_LOG) {
+					Map<String,List<String>> headerFields = connection.getHeaderFields();
+					for (Map.Entry<String, List<String>> entry : headerFields.entrySet()) {
+						if (entry != null) {
+							for (String header : entry.getValue()) {
+								logD(TAG, "HEADER OK SERVER RESPONSE HEADER: " + header);
+							}
+						}
+					}
+				}
+
 				if (resultString.contains(OBJ_START)) {
 					int firstIndex = resultString.indexOf(OBJ_START);
 
@@ -612,12 +635,8 @@ public class RestHelper {
 					resultString = resultString.substring(firstIndex, lastIndex + 1);
 
 					logD(TAG, "SERVER RESPONSE: " + resultString);
-					if (resultString.contains("\"challenges\":[[]")) {  // TODO remove before release
-						resultString = resultString.replace("[],", "").replace("[]]", "]");
-						logD(TAG, "After edit SERVER RESPONSE: " + resultString);
-					}
 				} else {
-					logD(TAG, "ERROR -> WebRequest SERVER RESPONSE: " + resultString);
+					logD(TAG, "ERROR -> SERVER RESPONSE: " + resultString);
 					throw new InternalErrorException(StaticData.INTERNAL_ERROR);
 				}
 				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
@@ -682,7 +701,7 @@ public class RestHelper {
 			}
 			String locale = Locale.getDefault().toString();
 			userAgent = "Chesscom-Android/" + versionName + " (Android/" + Build.VERSION.RELEASE + Symbol.SEMICOLON
-						+ Symbol.SPACE + Build.MODEL + Symbol.SEMICOLON + Symbol.SPACE + locale + ")";
+					+ Symbol.SPACE + Build.MODEL + Symbol.SEMICOLON + Symbol.SPACE + locale + ")";
 			logD(TAG, "userAgent = " + userAgent);
 		}
 		return userAgent;
@@ -935,4 +954,21 @@ public class RestHelper {
 		return scanner.hasNext() ? scanner.next() : "";
 	}
 
+
+	/*  Server guys said we don't need to send certificate, but save it here for re-use
+			if (needSecureConnection(loadItem)) {
+				KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+				String algorithm = TrustManagerFactory.getDefaultAlgorithm();
+				TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
+				tmf.init(keyStore);
+
+				SSLContext sslContext = createSslContext(context, true);
+				connection = (HttpURLConnection) urlObj.openConnection();
+				((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
+
+			} else {
+				connection = (HttpURLConnection) urlObj.openConnection();
+				connection.setRequestMethod(requestMethod);
+			}
+	 */
 }
