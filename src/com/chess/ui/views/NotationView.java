@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.chess.R;
+import com.chess.statics.AppData;
 import com.chess.widgets.RoboTextView;
 import com.chess.statics.Symbol;
 import com.chess.ui.views.chess_boards.NotationFace;
@@ -67,6 +68,8 @@ public class NotationView extends LinearLayout implements NotationFace,
 
 	public void onCreate(AttributeSet attrs) {
 		Context context = getContext();
+
+		AppData appData = new AppData(context);
 		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 
@@ -131,7 +134,7 @@ public class NotationView extends LinearLayout implements NotationFace,
 		if (smallScreen) {
 			setVisibility(GONE);
 		}
-		smallScreen = AppUtils.isNexus4Kind(context);
+		smallScreen = AppUtils.isNexus4Kind(context) && !appData.isFullScreen();
 		if (smallScreen) {
 			setVisibility(GONE);
 		}
