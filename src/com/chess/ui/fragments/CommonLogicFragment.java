@@ -1026,7 +1026,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	/**
-	 * Use it inherited fragment where you want to consume onBackPressed event
+	 * Use it in inherited fragment where you want to consume onBackPressed event
 	 *
 	 * @return {@code true} if event was successfully consumed
 	 */

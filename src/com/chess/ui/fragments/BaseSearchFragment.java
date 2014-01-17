@@ -203,4 +203,14 @@ public abstract class BaseSearchFragment extends CommonLogicFragment implements 
 		});
 		fadeSearchAnimator.start();
 	}
+
+	@Override
+	public boolean showPreviousFragment() {
+		if (slidingDrawer.isOpened()) {
+			slidingDrawer.close();
+			return true;
+		}
+
+		return super.showPreviousFragment();
+	}
 }

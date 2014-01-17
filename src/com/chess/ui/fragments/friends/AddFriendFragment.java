@@ -18,8 +18,9 @@ import com.chess.backend.entity.api.RequestItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.model.OpponentItem;
 import com.chess.statics.AppConstants;
-import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
+import com.chess.ui.adapters.RecentOpponentsItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.widgets.EditButton;
 import com.facebook.FacebookException;
@@ -29,6 +30,9 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.UserSettingsFragment;
 import com.facebook.widget.WebDialog;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -37,22 +41,45 @@ import com.facebook.widget.WebDialog;
  */
 public class AddFriendFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
-	private static final int CONTACT_PICKER_RESULT = 1001;
-
 	private EditButton usernameEditBtn;
 	private View headerView;
 	private View emailIconTxt;
 	private View emailTxt;
 	private EditButton emailEditBtn;
 	private Button addEmailBtn;
-	private RecentOpponentsCursorAdapter adapter;
+	private RecentOpponentsItemsAdapter opponentsItemsAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
-		adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor, getImageFetcher());
+		List<OpponentItem> opponentItems = new ArrayList<OpponentItem>();
+		List<String> opponentNames = new ArrayList<String>();
+		String username = getUsername();
+
+		if (cursor != null && cursor.moveToFirst()) {
+			do {
+
+				String opponentName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
+				String avatarUrl = DbDataManager.getString(cursor, DbScheme.V_BLACK_AVATAR);
+				if (opponentName.equals(username)) {
+					opponentName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
+					avatarUrl = DbDataManager.getString(cursor, DbScheme.V_WHITE_AVATAR);
+				}
+
+				if (!opponentNames.contains(opponentName)) {
+					opponentNames.add(opponentName);
+					opponentItems.add(new OpponentItem(opponentName, avatarUrl));
+				}
+			} while(cursor.moveToNext());
+		}
+
+		if (cursor != null) {
+			cursor.close();
+		}
+
+		opponentsItemsAdapter = new RecentOpponentsItemsAdapter(getActivity(), opponentItems, getImageFetcher());
 	}
 
 	@Override
@@ -70,7 +97,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 
 		listView.addHeaderView(headerView);
-		listView.setAdapter(adapter);
+		listView.setAdapter(opponentsItemsAdapter);
 		listView.setOnItemClickListener(this);
 
 		usernameEditBtn = (EditButton) headerView.findViewById(R.id.usernameEditBtn);
@@ -176,14 +203,9 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String opponentName;
-		if (DbDataManager.getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
-			opponentName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
-		} else {
-			opponentName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);
-		}
-		createFriendRequest(opponentName, getString(R.string.add_friend_request_message));
+		OpponentItem opponentItem = (OpponentItem) parent.getItemAtPosition(position);
+
+		createFriendRequest(opponentItem.getName(), getString(R.string.add_friend_request_message));
 	}
 
 	private void createFriendRequest(String username, String message) {
