@@ -14,7 +14,6 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.CommonViewedItem;
 import com.chess.backend.entity.api.VideoSingleItem;
-import com.chess.backend.entity.api.VideosItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -24,6 +23,7 @@ import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.VideoActivity;
 import com.chess.ui.adapters.VideosItemAdapter;
+import com.chess.ui.adapters.VideosPaginationItemAdapter;
 import com.chess.ui.fragments.BaseSearchFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
@@ -37,22 +37,21 @@ import java.util.List;
  */
 public class VideosSearchFragment extends BaseSearchFragment implements ItemClickListenerFace {
 
-	private static final int WATCH_VIDEO_REQUEST = 9806;
-
-	private VideoItemUpdateListener videoItemUpdateListener;
 	private VideosItemAdapter videosAdapter;
 	private SparseBooleanArray viewedVideosMap;
 	private long playButtonClickTime;
 	private long currentPlayingId;
+	private VideosPaginationItemAdapter paginationAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		videoItemUpdateListener = new VideoItemUpdateListener();
 		viewedVideosMap = new SparseBooleanArray();
 
 		videosAdapter = new VideosItemAdapter(this, null);
+		paginationAdapter = new VideosPaginationItemAdapter(getActivity(), videosAdapter,
+				new VideoItemUpdateListener(), null);
 
 		// restore state
 		if (savedInstanceState != null) {
@@ -93,7 +92,7 @@ public class VideosSearchFragment extends BaseSearchFragment implements ItemClic
 
 	@Override
 	protected ListAdapter getAdapter() {
-		return videosAdapter;
+		return paginationAdapter;
 	}
 
 	@Override
@@ -153,7 +152,8 @@ public class VideosSearchFragment extends BaseSearchFragment implements ItemClic
 			loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
 		}
 
-		new RequestJsonTask<VideosItem>(videoItemUpdateListener).executeTask(loadItem);
+		showSearchResults();
+		paginationAdapter.updateLoadItem(loadItem);
 	}
 
 	@Override
@@ -168,22 +168,29 @@ public class VideosSearchFragment extends BaseSearchFragment implements ItemClic
 		return getActivity();
 	}
 
-	private class VideoItemUpdateListener extends ChessLoadUpdateListener<VideosItem> {
+	private class VideoItemUpdateListener extends ChessLoadUpdateListener<VideoSingleItem.Data> {
 
 		private VideoItemUpdateListener() {
-			super(VideosItem.class);
+			super(VideoSingleItem.Data.class);
+			useList = true;
 		}
 
 		@Override
-		public void updateData(VideosItem returnedObj) {
-			super.updateData(returnedObj);
+		public void updateListData(List<VideoSingleItem.Data> itemsList) {
+			super.updateListData(itemsList);
 
-			if (returnedObj.getData().size() == 0) {
+			if (itemsList.size() == 0) {
 				showSinglePopupDialog(R.string.no_results);
 				return;
 			}
 
-			videosAdapter.setItemsList(returnedObj.getData());
+			for (VideoSingleItem.Data data : itemsList) {
+				DbDataManager.saveVideoItem(getContentResolver(), data);
+			}
+
+			paginationAdapter.notifyDataSetChanged();
+			videosAdapter.setItemsList(itemsList);
+			paginationAdapter.notifyDataSetChanged();
 			need2update = false;
 			resultsFound = true;
 

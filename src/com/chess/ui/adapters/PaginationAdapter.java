@@ -1,10 +1,12 @@
 package com.chess.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
+import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.statics.StaticData;
@@ -23,15 +25,12 @@ public abstract class PaginationAdapter<T> extends EndlessAdapter {
 	protected Context context;
     protected TaskUpdateInterface<T> taskFace;
     protected int result;
+	protected LoadItem loadItem;
 
 	protected int maxItems = RestHelper.MAX_ITEMS_CNT;
     protected boolean taskCanceled;
 
-    protected void setMaxItems(int maxItems) {
-		this.maxItems = maxItems;
-	}
-
-	public PaginationAdapter(Context context, ItemsAdapter<T> adapter, TaskUpdateInterface<T> taskFace) {
+    public PaginationAdapter(Context context, ItemsAdapter<T> adapter, TaskUpdateInterface<T> taskFace) {
 		super(adapter);
 		this.context = context;
         this.taskFace = taskFace;
@@ -83,6 +82,11 @@ public abstract class PaginationAdapter<T> extends EndlessAdapter {
 			return;
 		}
 
+		if (notValidToReturnForFragment()) {
+			Log.d("PaginationAdapter", " fragment is not valid to return data");
+			return;
+		}
+
         if (result == StaticData.RESULT_OK && !taskCanceled) {
             taskFace.updateListData(itemList);
         }else {
@@ -111,6 +115,12 @@ public abstract class PaginationAdapter<T> extends EndlessAdapter {
 		return mPendingView;
 	}
 
+	private boolean notValidToReturnForFragment() {
+		return taskFace.isUsedForFragment() && (taskFace.getStartedFragment() == null
+				|| taskFace.getStartedFragment().getActivity() == null
+				|| !taskFace.getStartedFragment().isVisible());
+	}
+
     public void cancelLoad() {
         taskCanceled = true;
     }
@@ -118,4 +128,10 @@ public abstract class PaginationAdapter<T> extends EndlessAdapter {
     protected boolean isTaskCanceled(){
         return taskCanceled;
     }
+
+	public void updateLoadItem(LoadItem loadItem) {
+		this.loadItem = loadItem;
+		setFirstPage(0);
+		setKeepOnAppending(true);
+	}
 }

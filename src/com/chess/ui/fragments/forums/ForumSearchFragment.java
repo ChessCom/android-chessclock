@@ -16,8 +16,11 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.QueryParams;
 import com.chess.ui.adapters.ForumTopicsItemAdapter;
+import com.chess.ui.adapters.ForumTopicsPaginationAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.fragments.BaseSearchFragment;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,16 +30,16 @@ import com.chess.ui.fragments.BaseSearchFragment;
  */
 public class ForumSearchFragment extends BaseSearchFragment {
 
-	private ForumTopicsUpdateListener forumTopicsUpdateListener;
 	private ForumTopicsItemAdapter forumTopicsAdapter;
-
+	private ForumTopicsPaginationAdapter paginationAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		forumTopicsUpdateListener = new ForumTopicsUpdateListener();
 		forumTopicsAdapter = new ForumTopicsItemAdapter(getActivity(), null);
+		paginationAdapter = new ForumTopicsPaginationAdapter(getActivity(), forumTopicsAdapter,
+				new ForumTopicsUpdateListener(), null);
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public class ForumSearchFragment extends BaseSearchFragment {
 
 	@Override
 	protected ListAdapter getAdapter() {
-		return forumTopicsAdapter;
+		return paginationAdapter;
 	}
 
 	@Override
@@ -79,7 +82,8 @@ public class ForumSearchFragment extends BaseSearchFragment {
 			loadItem.addRequestParams(RestHelper.P_FORUM_CATEGORY_ID, categoryId);
 		}
 
-		new RequestJsonTask<ForumTopicItem>(forumTopicsUpdateListener).executeTask(loadItem);
+		showSearchResults();
+		paginationAdapter.updateLoadItem(loadItem);
 	}
 
 	@Override
@@ -110,6 +114,7 @@ public class ForumSearchFragment extends BaseSearchFragment {
 			for (ForumCategoryItem.Data currentItem : returnedObj.getData()) {
 				DbDataManager.saveForumCategoryItem(getContentResolver(), currentItem);
 			}
+
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.FORUM_CATEGORIES));
 			if (cursor != null && cursor.moveToFirst()) {
 				fillCategoriesList(cursor);
@@ -117,22 +122,29 @@ public class ForumSearchFragment extends BaseSearchFragment {
 		}
 	}
 
-	private class ForumTopicsUpdateListener extends ChessLoadUpdateListener<ForumTopicItem> {
+	private class ForumTopicsUpdateListener extends ChessLoadUpdateListener<ForumTopicItem.Topic> {
 
 		private ForumTopicsUpdateListener() {
-			super(ForumTopicItem.class);
+			super(ForumTopicItem.Topic.class);
+			useList = true;
 		}
 
 		@Override
-		public void updateData(ForumTopicItem returnedObj) {
-			super.updateData(returnedObj);
+		public void updateListData(List<ForumTopicItem.Topic> itemsList) {
+			super.updateListData(itemsList);
 
-			if (returnedObj.getData().getTopics().size() == 0) {
+			if (itemsList.size() == 0) {
 				showSinglePopupDialog(R.string.no_results);
 				return;
 			}
 
-			forumTopicsAdapter.setItemsList(returnedObj.getData().getTopics());
+			for (ForumTopicItem.Topic topic : itemsList) {
+				DbDataManager.saveForumTopicItem(getContentResolver(), topic);
+			}
+
+			paginationAdapter.notifyDataSetChanged();
+			forumTopicsAdapter.setItemsList(itemsList);
+			paginationAdapter.notifyDataSetChanged();
 			need2update = false;
 
 			resultsFound = true;

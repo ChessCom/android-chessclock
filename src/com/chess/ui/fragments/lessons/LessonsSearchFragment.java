@@ -13,15 +13,14 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.entity.api.LessonSingleItem;
-import com.chess.backend.entity.api.LessonsItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.QueryParams;
-import com.chess.db.tasks.SaveLessonsListTask;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.LessonsItemsAdapter;
+import com.chess.ui.adapters.LessonsPaginationItemAdapter;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.fragments.BaseSearchFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -38,20 +37,19 @@ import java.util.List;
 public class LessonsSearchFragment extends BaseSearchFragment implements AdapterView.OnItemClickListener {
 
 	private Spinner difficultySpinner;
-	private LessonItemUpdateListener lessonItemUpdateListener;
 	private LessonsItemsAdapter lessonsItemsAdapter;
 	private String lastDifficulty;
 	private StringSpinnerAdapter difficultySpinnerAdapter;
-	private SaveLessonsUpdateListener saveLessonsUpdateListener;
 	private int categoryId;
+	private LessonsPaginationItemAdapter paginationAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		lessonItemUpdateListener = new LessonItemUpdateListener();
 		lessonsItemsAdapter = new LessonsItemsAdapter(getActivity(), null);
-		saveLessonsUpdateListener = new SaveLessonsUpdateListener();
+		paginationAdapter = new LessonsPaginationItemAdapter(getActivity(), lessonsItemsAdapter,
+				new LessonItemUpdateListener(), null);
 
 		String[] difficultyArray = getResources().getStringArray(R.array.lesson_difficulty);
 		List<String> difficultyList = AppUtils.convertArrayToList(difficultyArray);
@@ -78,7 +76,7 @@ public class LessonsSearchFragment extends BaseSearchFragment implements Adapter
 
 	@Override
 	protected ListAdapter getAdapter() {
-		return lessonsItemsAdapter;
+		return paginationAdapter;
 	}
 
 	@Override
@@ -155,7 +153,10 @@ public class LessonsSearchFragment extends BaseSearchFragment implements Adapter
 				loadItem.addRequestParams(RestHelper.P_DIFFICULTY, difficulty);
 			}
 
-			new RequestJsonTask<LessonsItem>(lessonItemUpdateListener).executeTask(loadItem);
+			hideKeyBoard(keywordsEdt);
+
+			showSearchResults();
+			paginationAdapter.updateLoadItem(loadItem);
 		} else {
 			super.onClick(view);
 		}
@@ -176,46 +177,40 @@ public class LessonsSearchFragment extends BaseSearchFragment implements Adapter
 		}
 	}
 
-	private class LessonItemUpdateListener extends ChessLoadUpdateListener<LessonsItem> {
+	private class LessonItemUpdateListener extends ChessLoadUpdateListener<LessonSingleItem> {
 
 		private LessonItemUpdateListener() {
-			super(LessonsItem.class);
+			super(LessonSingleItem.class);
+			useList = true;
 		}
 
 		@Override
-		public void updateData(LessonsItem returnedObj) {
-			super.updateData(returnedObj);
+		public void updateListData(List<LessonSingleItem> itemsList) {
+			super.updateListData(itemsList);
 
-			if (returnedObj.getData().getLessons().size() == 0) {
+			if (itemsList.size() == 0) {
 				showSinglePopupDialog(R.string.no_results);
 				return;
 			}
 
-			List<LessonSingleItem> lessons = returnedObj.getData().getLessons();
-			lessonsItemsAdapter.setItemsList(lessons);
-
 			// save lessons for future offline reference
-			for (LessonSingleItem lessonSingleItem : lessons) {
+			for (LessonSingleItem lessonSingleItem : itemsList) {
 				lessonSingleItem.setUser(getUsername());
 				lessonSingleItem.setCategoryId(categoryId);
 				lessonSingleItem.setCourseId(0);
 				lessonSingleItem.setStarted(false);
+
+				DbDataManager.saveLessonListItemToDb(getContentResolver(), lessonSingleItem);
 			}
-			new SaveLessonsListTask(saveLessonsUpdateListener, lessons, getContentResolver()).executeTask();
+
+			paginationAdapter.notifyDataSetChanged();
+			lessonsItemsAdapter.setItemsList(itemsList);
+			paginationAdapter.notifyDataSetChanged();
 
 			need2update = false;
 			resultsFound = true;
 
 			showSearchResults();
-		}
-	}
-
-	private class SaveLessonsUpdateListener extends ChessUpdateListener<LessonSingleItem> {
-
-		@Override
-		public void updateData(LessonSingleItem returnedObj) {
-			super.updateData(returnedObj);
-
 		}
 	}
 }

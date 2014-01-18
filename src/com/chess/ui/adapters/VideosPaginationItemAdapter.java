@@ -11,10 +11,16 @@ import com.chess.statics.StaticData;
 
 import java.util.List;
 
-public class VideosPaginationAdapter extends PaginationCursorAdapter<VideoSingleItem.Data> {
+/**
+ * Created with IntelliJ IDEA.
+ * User: roger sent2roger@gmail.com
+ * Date: 18.01.14
+ * Time: 6:59
+ */
+public class VideosPaginationItemAdapter extends PaginationAdapter<VideoSingleItem.Data> {
 
 
-	public VideosPaginationAdapter(Context context, ItemsCursorAdapter adapter,
+	public VideosPaginationItemAdapter(Context context, ItemsAdapter<VideoSingleItem.Data> adapter,
 								   TaskUpdateInterface<VideoSingleItem.Data> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
 		this.loadItem = loadItem;

@@ -7,13 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.chess.widgets.MultiDirectionSlidingDrawer;
 import com.chess.R;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.db.QueryParams;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.StringSpinnerAdapter;
+import com.chess.widgets.MultiDirectionSlidingDrawer;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
 
@@ -162,6 +162,8 @@ public abstract class BaseSearchFragment extends CommonLogicFragment implements 
 			resultsFound = false;
 
 			startSearch(keyword, categoryId);
+
+			hideKeyBoard(keywordsEdt);
 		}
 	}
 
@@ -179,34 +181,36 @@ public abstract class BaseSearchFragment extends CommonLogicFragment implements 
 	}
 
 	protected void showSearchResults() {
-		slidingDrawer.setVisibility(View.VISIBLE);
-		fadeDrawerAnimator.reverse();
-		fadeDrawerAnimator.addListener(new Animator.AnimatorListener() {
-			@Override
-			public void onAnimationStart(Animator animator) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animator animator) {
-				if (!slidingDrawer.isOpened()) {
-					slidingDrawer.animateOpen();
+		if (slidingDrawer.getVisibility() != View.VISIBLE) {
+			slidingDrawer.setVisibility(View.VISIBLE);
+			fadeDrawerAnimator.reverse();
+			fadeDrawerAnimator.addListener(new Animator.AnimatorListener() {
+				@Override
+				public void onAnimationStart(Animator animator) {
 				}
-			}
 
-			@Override
-			public void onAnimationCancel(Animator animator) {
-			}
+				@Override
+				public void onAnimationEnd(Animator animator) {
+					if (!slidingDrawer.isOpened()) {
+						slidingDrawer.animateOpen();
+					}
+				}
 
-			@Override
-			public void onAnimationRepeat(Animator animator) {
-			}
-		});
-		fadeSearchAnimator.start();
+				@Override
+				public void onAnimationCancel(Animator animator) {
+				}
+
+				@Override
+				public void onAnimationRepeat(Animator animator) {
+				}
+			});
+			fadeSearchAnimator.start();
+		}
 	}
 
 	@Override
 	public boolean showPreviousFragment() {
-		if (slidingDrawer.isOpened()) {
+		if (slidingDrawer.isOpened() && slidingDrawer.getVisibility() == View.VISIBLE) {
 			slidingDrawer.close();
 			return true;
 		}

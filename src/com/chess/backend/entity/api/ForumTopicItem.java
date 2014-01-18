@@ -88,7 +88,7 @@ public class ForumTopicItem extends BaseResponseItem<ForumTopicItem.Data>{
 		}
 
 		public String getCategoryName() {
-			return category_name;
+			return getSafeValue(category_name);
 		}
 
 		public void setCategoryName(String category_name) {

@@ -17,7 +17,10 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.QueryParams;
 import com.chess.ui.adapters.ArticleItemAdapter;
+import com.chess.ui.adapters.ArticlesPaginationItemAdapter;
 import com.chess.ui.fragments.BaseSearchFragment;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,9 +30,9 @@ import com.chess.ui.fragments.BaseSearchFragment;
  */
 public class ArticlesSearchFragment extends BaseSearchFragment  {
 
-	private ArticleItemUpdateListener articleItemUpdateListener;
 	private ArticleItemAdapter articleItemAdapter;
 	private SparseBooleanArray articlesViewedMap;
+	protected ArticlesPaginationItemAdapter paginationAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,8 +40,9 @@ public class ArticlesSearchFragment extends BaseSearchFragment  {
 
 		articlesViewedMap = new SparseBooleanArray();
 
-		articleItemUpdateListener = new ArticleItemUpdateListener();
 		articleItemAdapter = new ArticleItemAdapter(getActivity(), null, getImageFetcher());
+		paginationAdapter = new ArticlesPaginationItemAdapter(getActivity(), articleItemAdapter,
+				new ArticleItemUpdateListener(), null);
 	}
 
 	@Override
@@ -62,7 +66,7 @@ public class ArticlesSearchFragment extends BaseSearchFragment  {
 
 	@Override
 	protected ListAdapter getAdapter() {
-		return articleItemAdapter;
+		return paginationAdapter;
 	}
 
 	@Override
@@ -117,29 +121,33 @@ public class ArticlesSearchFragment extends BaseSearchFragment  {
 			loadItem.addRequestParams(RestHelper.P_CATEGORY_ID, categoryId);
 		}
 
-		new RequestJsonTask<ArticleItem>(articleItemUpdateListener).executeTask(loadItem);
+		showSearchResults();
+		paginationAdapter.updateLoadItem(loadItem);
 	}
 
-	private class ArticleItemUpdateListener extends ChessLoadUpdateListener<ArticleItem> {
+	private class ArticleItemUpdateListener extends ChessLoadUpdateListener<ArticleItem.Data> {
 
 		private ArticleItemUpdateListener() {
-			super(ArticleItem.class);
+			super(ArticleItem.Data.class);
+			useList = true;
 		}
 
 		@Override
-		public void updateData(ArticleItem returnedObj) {
-			super.updateData(returnedObj);
+		public void updateListData(List<ArticleItem.Data> itemsList) {
+			super.updateListData(itemsList);
 
-			if (returnedObj.getData().size() == 0) {
+			if (itemsList.size() == 0) {
 				showSinglePopupDialog(R.string.no_results);
 				return;
 			}
 
-			for (ArticleItem.Data currentItem : returnedObj.getData()) {
+			for (ArticleItem.Data currentItem : itemsList) {
 				DbDataManager.saveArticleItem(getContentResolver(), currentItem, false);
 			}
 
-			articleItemAdapter.setItemsList(returnedObj.getData());
+			paginationAdapter.notifyDataSetChanged();
+			articleItemAdapter.setItemsList(itemsList);
+			paginationAdapter.notifyDataSetChanged();
 			need2update = false;
 
 			resultsFound = true;

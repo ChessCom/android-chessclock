@@ -96,6 +96,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		cursor.moveToFirst();
 		topicTitle = DbDataManager.getString(cursor, DbScheme.V_TITLE);
 		topicUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
+		cursor.close();
 
 		pullToRefresh(true);
 	}

@@ -36,13 +36,8 @@ public abstract class PaginationCursorAdapter<T> extends EndlessAdapter {
 	protected int result;
 	protected LoadItem loadItem;
 
-
 	protected int maxItems = RestHelper.MAX_ITEMS_CNT;
 	protected boolean taskCanceled;
-
-	protected void setMaxItems(int maxItems) {
-		this.maxItems = maxItems;
-	}
 
 	public PaginationCursorAdapter(Context context, ItemsCursorAdapter adapter, TaskUpdateInterface<T> taskFace) {
 		super(adapter);

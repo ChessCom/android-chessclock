@@ -149,7 +149,7 @@
 		<com.chess.widgets.RoboTextView
 			android:id="@id/handle"
 			android:layout_width="match_parent"
-			android:layout_height="@dimen/drawer_handler_height"
+			android:layout_height="0dp"
 			android:textColor="@color/white"
 			android:text="@string/ic_handler"
 			android:padding="0dip"
