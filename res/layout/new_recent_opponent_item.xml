@@ -3,6 +3,7 @@
 <com.chess.widgets.LinLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.chess"
+	android:id="@+id/friendListItemView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"

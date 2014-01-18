@@ -962,12 +962,20 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		// add currentLearningPosition in case we load from DB
 		solvedPositionsList.add(currentLearningPosition);
 
-		if (slidingDrawer.isOpened() && getMentorPosition().isFreeMove()) {
-			controlsView.showCorrect();
-		} else if (slidingDrawer.isOpened()) {
-			controlsView.showDefault();
+		if (inPortrait()) {
+			if (slidingDrawer.isOpened() && getMentorPosition().isFreeMove()) {
+				controlsView.showCorrect();
+			} else if (slidingDrawer.isOpened()) {
+				controlsView.showDefault();
+			} else {
+				controlsView.showStart();
+			}
 		} else {
-			controlsView.showStart();
+			if (getMentorPosition().isFreeMove()) {
+				controlsView.showCorrect();
+			} else {
+				controlsView.showDefault();
+			}
 		}
 	}
 

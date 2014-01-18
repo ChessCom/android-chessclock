@@ -18,7 +18,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.ui.adapters.DailyArchiveGamesCursorAdapter;
 import com.chess.ui.fragments.WebViewFragment;
-import com.chess.ui.fragments.friends.FriendsFragment;
+import com.chess.ui.fragments.friends.FriendsRightFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
@@ -53,7 +53,7 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 		super.onResume();
 		if (inLandscape()) {
 			loadDbGames();
-			loadRecentOpponents();
+			loadRecentFriends();
 		}
 	}
 
@@ -80,7 +80,8 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 
 		int id = view.getId();
 		if (id == R.id.friendsHeaderView) {
-			getActivityFace().openFragment(new FriendsFragment());
+			getActivityFace().changeRightFragment(FriendsRightFragment.createInstance(FriendsRightFragment.DAILY_OPPONENT_REQUEST));
+			getActivityFace().toggleRightMenu();
 		} else if (id == R.id.statsHeaderView){
 			getActivityFace().openFragment(new StatsGameFragment());
 		} else if (id == R.id.statsView1){

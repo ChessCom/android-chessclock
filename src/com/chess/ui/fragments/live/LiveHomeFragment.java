@@ -177,14 +177,14 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 		if (liveItem.iconId == R.string.ic_binoculars) {  // Top Game
 			if (!isLCSBound) {
-				showToast(R.string.not_connected_yet);
+				showToast(R.string.still_connecting);
 				return;
 			}
 			try { // check for valid data
 				 getLiveService();
 			} catch (DataNotValidException e) {
 				e.printStackTrace();
-				showToast(R.string.not_connected_yet);
+				showToast(R.string.still_connecting);
 				return;
 			}
 

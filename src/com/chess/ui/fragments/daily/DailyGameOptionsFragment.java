@@ -4,7 +4,6 @@ import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,14 +20,13 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.daily_games.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
-import com.chess.model.SelectionItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.friends.FriendsRightFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -36,7 +34,6 @@ import com.chess.ui.views.drawables.RatingProgressDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonGlassyDrawable;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboRadioButton;
-import com.chess.widgets.RoboSpinner;
 import com.chess.widgets.SwitchButton;
 
 import java.util.ArrayList;
@@ -69,7 +66,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	private SwitchButton ratedGameSwitch;
 
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
-	private List<SelectionItem> friendsList;
+//	private List<SelectionItem> friendsList;
 	private int chessRating;
 	private int chess960Rating;
 	private int positionMode;
@@ -80,6 +77,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	private String opponentName;
 	private SeekBar ratingSeekBar;
 	private TextView currentRatingTxt;
+	private TextView opponentNameTxt;
 
 	public DailyGameOptionsFragment() {
 		Bundle bundle = new Bundle();
@@ -119,23 +117,6 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 		}
 
 		gameConfigBuilder = getAppData().getDailyGameConfigBuilder();
-
-		{ // load friends from DB
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(username, DbScheme.Tables.FRIENDS));
-
-			friendsList = new ArrayList<SelectionItem>();
-			friendsList.add(new SelectionItem(null, getString(R.string.random)));
-			if (cursor != null && cursor.moveToFirst()) {
-				do {
-					friendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
-				} while (cursor.moveToNext());
-			}
-			if (cursor != null) {
-				cursor.close();
-			}
-
-			friendsList.get(0).setChecked(true);
-		}
 
 		chessRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), username);
 		chess960Rating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS960.ordinal(), username);
@@ -190,18 +171,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		if (parent.getAdapter() instanceof OpponentsAdapter) {
-			SelectionItem opponent = (SelectionItem) parent.getItemAtPosition(position);
-			if (!opponent.getText().equals(getString(R.string.random))) {
-				gameConfigBuilder.setOpponentName(opponent.getText());
-				ratingView.setVisibility(View.GONE);
-			} else {
-				gameConfigBuilder.setOpponentName(Symbol.EMPTY);
-				ratingView.setVisibility(View.VISIBLE);
-			}
-		} else {
-			updateDailyMode(getAppData().getDefaultDailyMode());
-		}
+		updateDailyMode(getAppData().getDefaultDailyMode());
 	}
 
 	@Override
@@ -354,6 +324,8 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 		} else if (view.getId() == R.id.maxRatingBtn) {
 			ratingSeekBar.setVisibility(View.VISIBLE);
 			handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
+		} else if (view.getId() == R.id.opponentView) {
+			getActivityFace().changeRightFragment(FriendsRightFragment.createInstance(FriendsRightFragment.DAILY_OPPONENT_REQUEST));
 		} else if (view.getId() == R.id.playBtn) {
 			createDailyChallenge();
 		}
@@ -440,23 +412,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	}
 
 	private void widgetsInit(View view) {
-		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
 		Resources resources = getResources();
-
-		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), friendsList);
-		opponentSpinner.setAdapter(selectionAdapter);
-		opponentSpinner.setOnItemSelectedListener(this);
-		opponentSpinner.setSelection(0);
-
-		if (!TextUtils.isEmpty(opponentName)) {
-			for (int i = 0; i < friendsList.size(); i++) {
-				SelectionItem selectionItem = friendsList.get(i);
-				if (selectionItem.getText().equals(opponentName)) {
-					opponentSpinner.setSelection(i);
-					break;
-				}
-			}
-		}
 
 		if (positionMode == CENTER_MODE) {
 			View dailyHeaderView = view.findViewById(R.id.dailyHeaderView);
@@ -495,7 +451,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 				int minRatingDefault;
 				int maxRatingDefault;
 
-				int minRating = gameConfigBuilder.getMinRating(); // TODO improve it,  use range values for config
+				int minRating = gameConfigBuilder.getMinRating();
 				int maxRating = gameConfigBuilder.getMaxRating();
 
 				int rating;
@@ -557,57 +513,20 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 				ratingSeekBar.setVisibility(View.GONE);
 			}
 
-			view.findViewById(R.id.playBtn).setOnClickListener(this);
-		}
-	}
-
-	public class OpponentsAdapter extends ItemsAdapter<SelectionItem> {
-
-		public OpponentsAdapter(Context context, List<SelectionItem> items) {
-			super(context, items);
-		}
-
-		@Override
-		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_game_opponent_spinner_item, parent, false);
-			ViewHolder holder = new ViewHolder();
-			holder.textTxt = (TextView) view.findViewById(R.id.opponentNameTxt);
-
-			view.setTag(holder);
-			return view;
-		}
-
-		@Override
-		protected void bindView(SelectionItem item, int pos, View convertView) {
-			ViewHolder holder = (ViewHolder) convertView.getTag();
-			holder.textTxt.setText(item.getText());
-		}
-
-		@Override
-		public View getDropDownView(int position, View convertView, ViewGroup parent) {
-			DropViewHolder holder = new DropViewHolder();
-			if (convertView == null) {
-				convertView = inflater.inflate(android.R.layout.simple_list_item_single_choice, parent, false);
-				holder.textTxt = (TextView) convertView.findViewById(android.R.id.text1);
-
-				convertView.setTag(holder);
-			} else {
-				holder = (DropViewHolder) convertView.getTag();
+			{ // Opponent View
+				view.findViewById(R.id.opponentView).setOnClickListener(this);
+				opponentNameTxt = (TextView) view.findViewById(R.id.opponentNameTxt);
+				if (!TextUtils.isEmpty(opponentName)) {
+					opponentNameTxt.setText(opponentName);
+					gameConfigBuilder.setOpponentName(opponentName);
+					ratingView.setVisibility(View.GONE);
+				} else {
+					gameConfigBuilder.setOpponentName(Symbol.EMPTY);
+					ratingView.setVisibility(View.VISIBLE);
+				}
 			}
 
-			holder.textTxt.setTextColor(context.getResources().getColor(R.color.black));
-			holder.textTxt.setText(itemsList.get(position).getText());
-
-			return convertView;
+			view.findViewById(R.id.playBtn).setOnClickListener(this);
 		}
-
-		private class ViewHolder {
-			TextView textTxt;
-		}
-
-		private class DropViewHolder {
-			TextView textTxt;
-		}
-
 	}
 }

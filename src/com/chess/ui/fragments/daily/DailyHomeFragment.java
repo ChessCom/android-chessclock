@@ -13,16 +13,16 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.daily_games.DailySeekItem;
 import com.chess.backend.entity.api.ServersStatsItem;
 import com.chess.backend.entity.api.VacationItem;
+import com.chess.backend.entity.api.daily_games.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.WebViewFragment;
-import com.chess.ui.fragments.friends.FriendsFragment;
+import com.chess.ui.fragments.friends.FriendsRightFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDailyTimeOptionsFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
@@ -112,7 +112,6 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		public void updateData(ServersStatsItem returnedObj) {
 			super.updateData(returnedObj);
 
-
 			long cnt = returnedObj.getData().getTotals().getOnline();
 			String playersOnlineStr = NumberFormat.getInstance().format(cnt);
 
@@ -148,7 +147,8 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 			getActivityFace().openFragment(StatsGameDetailsFragment.createInstance(
 					StatsGameFragment.DAILY_CHESS, true, getUsername()));
 		} else if (dailyItem.iconId == R.string.ic_challenge_friend) {
-			getActivityFace().openFragment(new FriendsFragment());
+			getActivityFace().changeRightFragment(FriendsRightFragment.createInstance(FriendsRightFragment.DAILY_OPPONENT_REQUEST));
+			getActivityFace().toggleRightMenu();
 		} else if (dailyItem.iconId == R.string.ic_board) {
 			if (!isTablet) {
 				getActivityFace().openFragment(new DailyGamesFinishedFragment());

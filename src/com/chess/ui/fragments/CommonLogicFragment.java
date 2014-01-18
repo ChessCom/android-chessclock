@@ -36,6 +36,7 @@ import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbDataProvider;
+import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.model.DataHolder;
 import com.chess.model.TacticsDataHolder;
@@ -1065,7 +1066,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			return;
 		}
 		String username = getUsername();
-		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), username);// TODO load avatars
+		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), username);
 		if (cursor != null && cursor.moveToFirst()) {
 			if (cursor.getCount() > 1) {
 				inviteFriendView1.setVisibility(View.VISIBLE);
@@ -1113,6 +1114,63 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				if (firstFriendUserName.equals(username)) {
 					firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
 				}
+				friendUserName1Txt.setText(firstFriendUserName);
+			}
+
+		} else {
+			inviteFriendView1.setVisibility(View.GONE);
+			inviteFriendView2.setVisibility(View.GONE);
+		}
+
+		if (cursor != null) {
+			cursor.close();
+		}
+	}
+
+	protected void loadRecentFriends() {
+		if (inviteFriendView1 == null) { // if widgets init wasn't called yet, we skip
+			return;
+		}
+		String username = getUsername();
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getRecentFriends(username));
+		if (cursor != null && cursor.moveToFirst()) {
+			if (cursor.getCount() > 1) {
+				inviteFriendView1.setVisibility(View.VISIBLE);
+				inviteFriendView1.setOnClickListener(this);
+				inviteFriendView2.setVisibility(View.VISIBLE);
+				inviteFriendView2.setOnClickListener(this);
+
+				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+				friendUserName1Txt.setText(firstFriendUserName);
+
+				cursor.moveToNext();
+				secondFriendUserName = firstFriendUserName;
+
+				boolean anotherPlayerFound = false;
+				while (secondFriendUserName.equals(firstFriendUserName)) {
+					if (cursor.isAfterLast()) {
+						break;
+					}
+					secondFriendUserName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+					if (!secondFriendUserName.equals(firstFriendUserName)) {
+						anotherPlayerFound = true;
+						break;
+					} else {
+						cursor.moveToNext();
+					}
+				}
+
+				if (anotherPlayerFound) {
+					friendUserName2Txt.setText(secondFriendUserName);
+				} else {
+					inviteFriendView2.setVisibility(View.GONE);
+				}
+
+			} else if (cursor.getCount() == 1) {
+				inviteFriendView1.setVisibility(View.VISIBLE);
+				inviteFriendView1.setOnClickListener(this);
+
+				firstFriendUserName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 				friendUserName1Txt.setText(firstFriendUserName);
 			}
 

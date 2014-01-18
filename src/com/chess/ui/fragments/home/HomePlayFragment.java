@@ -3,6 +3,7 @@ package com.chess.ui.fragments.home;
 import android.animation.LayoutTransition;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,11 +48,14 @@ import java.util.Map;
  */
 public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu.OnOpenedListener {
 
+	public static final int DAILY_CHALLENGE_MODE = 11;
+	public static final int LIVE_CHALLENGE_MODE = 22;
+
 	private TextView liveRatingTxt;
 	private TextView dailyRatingTxt;
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
 	private DailyGameConfig.Builder dailyGameConfigBuilder;
-	private int positionMode;
+	private int mode;
 	private List<View> liveOptionsGroup;
 	private HashMap<Integer, Button> liveButtonsModeMap;
 	private boolean liveOptionsVisible;
@@ -67,10 +71,12 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	private TextView liveExpandIconTxt;
 	private TextView dailyExpandIconTxt;
 	private RatingUpdateListener ratingUpdateListener;
+	private String opponentName;
 
 	public HomePlayFragment() {
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, CENTER_MODE);
+		bundle.putString(OPPONENT_NAME, Symbol.EMPTY);
 		setArguments(bundle);
 	}
 
@@ -82,14 +88,25 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		return fragment;
 	}
 
+	public static HomePlayFragment createInstance(int mode, String opponentName) {
+		HomePlayFragment fragment = new HomePlayFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, mode);
+		bundle.putString(OPPONENT_NAME, opponentName);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		if (getArguments() != null) {
-			positionMode = getArguments().getInt(MODE);
+			mode = getArguments().getInt(MODE);
+			opponentName = getArguments().getString(OPPONENT_NAME);
 		} else {
-			positionMode = savedInstanceState.getInt(MODE);
+			mode = savedInstanceState.getInt(MODE);
+			opponentName = savedInstanceState.getString(OPPONENT_NAME);
 		}
 
 		dailyGameConfigBuilder = new DailyGameConfig.Builder();
@@ -116,7 +133,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		liveOptionsView = (RelLayout) view.findViewById(R.id.liveOptionsView);
 		dailyGameQuickOptions = (LinearLayout) view.findViewById(R.id.dailyGameQuickOptions);
 
-		if (positionMode == CENTER_MODE) {
+		if (mode == CENTER_MODE) {
 			inflater.inflate(R.layout.new_home_live_options_view, liveHomeOptionsFrame, true);
 			liveExpandIconTxt.setText(R.string.ic_right);
 			dailyExpandIconTxt.setText(R.string.ic_right);
@@ -139,6 +156,12 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 
 		loadRatings();
 		loadRecentOpponents();
+
+		if (mode == DAILY_CHALLENGE_MODE) {
+			toggleDailyOptionsMode();
+		} else if (mode == LIVE_CHALLENGE_MODE) {
+			toggleLiveOptionsMode();
+		}
 	}
 
 	@Override
@@ -151,7 +174,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt(MODE, positionMode);
+		outState.putInt(MODE, mode);
 	}
 
 	@Override
@@ -161,54 +184,24 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		if (view.getId() == R.id.liveTimeSelectBtn) {
 			toggleLiveOptionsView();
 		} else if (view.getId() == R.id.liveHeaderView) {
-			if (positionMode == RIGHT_MENU_MODE) {
-				liveFullOptionsVisible = !liveFullOptionsVisible;
-				liveOptionsView.setVisibility(liveFullOptionsVisible ? View.GONE : View.VISIBLE);
-				if (liveFullOptionsVisible) {
-					liveExpandIconTxt.setText(R.string.ic_up);
-					if (liveGameOptionsFragment == null) {
-						liveGameOptionsFragment = new LiveGameOptionsFragment();
-					}
-
-					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-					transaction.replace(R.id.liveOptionsFrame, liveGameOptionsFragment).commit();
-				} else {
-					liveExpandIconTxt.setText(R.string.ic_down);
-					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-					transaction.remove(liveGameOptionsFragment).commit();
-				}
-			} else {
+			if (mode == RIGHT_MENU_MODE || mode == LIVE_CHALLENGE_MODE || mode == DAILY_CHALLENGE_MODE) {
+				toggleLiveOptionsMode();
+			} else if (mode == CENTER_MODE) {
 				getActivityFace().changeRightFragment(LiveGameOptionsFragment.createInstance(CENTER_MODE));
 				getActivityFace().toggleRightMenu();
 			}
-
-		} else if (view.getId() == R.id.livePlayBtn) {
-			createLiveChallenge();
-			if (positionMode == RIGHT_MENU_MODE) {
-				getActivityFace().toggleRightMenu();
-			}
 		} else if (view.getId() == R.id.dailyHeaderView) {
-			if (positionMode == RIGHT_MENU_MODE) {
-				dailyFullOptionsVisible = !dailyFullOptionsVisible;
-				dailyGameQuickOptions.setVisibility(dailyFullOptionsVisible ? View.GONE : View.VISIBLE);
-				if (dailyFullOptionsVisible) {
-					dailyExpandIconTxt.setText(R.string.ic_up);
-					if (dailyGameOptionsFragment == null) {
-						dailyGameOptionsFragment = new DailyGameOptionsFragment();
-					}
-
-					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-					transaction.replace(R.id.dailyOptionsFrame, dailyGameOptionsFragment).commit();
-				} else {
-					dailyExpandIconTxt.setText(R.string.ic_down);
-					FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-					transaction.remove(dailyGameOptionsFragment).commit();
-				}
-			} else {
+			if (mode == RIGHT_MENU_MODE || mode == LIVE_CHALLENGE_MODE || mode == DAILY_CHALLENGE_MODE) {
+				toggleDailyOptionsMode();
+			} else if (mode == CENTER_MODE) {
 				getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(CENTER_MODE));
 				getActivityFace().toggleRightMenu();
 			}
-
+		} else if (view.getId() == R.id.livePlayBtn) {
+			createLiveChallenge();
+			if (mode == RIGHT_MENU_MODE) {
+				getActivityFace().toggleRightMenu();
+			}
 		} else if (view.getId() == R.id.dailyPlayBtn) {
 			createDailyChallenge();
 		} else if (view.getId() == R.id.inviteFriendView1) {
@@ -231,7 +224,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			transaction.replace(R.id.dailyOptionsFrame, dailyGameOptionsFragment).commit();
 		} else if (view.getId() == R.id.playFriendView) {
 			ChallengeFriendFragment challengeFriendFragment;
-			if (positionMode == CENTER_MODE) {
+			if (mode == CENTER_MODE) {
 				challengeFriendFragment = ChallengeFriendFragment.createInstance(CENTER_MODE);
 				getActivityFace().toggleRightMenu();
 			} else {
@@ -248,11 +241,55 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 				getActivityFace().openFragment(GameCompFragmentTablet.createInstance(compGameConfig));
 			}
 
-			if (positionMode == RIGHT_MENU_MODE) {
+			if (mode == RIGHT_MENU_MODE) {
 				getActivityFace().toggleRightMenu();
 			}
 		} else {
 			handleLiveModeClicks(view);
+		}
+	}
+
+	private void toggleDailyOptionsMode() {
+		dailyFullOptionsVisible = !dailyFullOptionsVisible;
+		dailyGameQuickOptions.setVisibility(dailyFullOptionsVisible ? View.GONE : View.VISIBLE);
+		if (dailyFullOptionsVisible) {
+			dailyExpandIconTxt.setText(R.string.ic_up);
+			if (dailyGameOptionsFragment == null) {
+				dailyGameOptionsFragment = new DailyGameOptionsFragment();
+			}
+
+			if (!TextUtils.isEmpty(opponentName)) {
+				dailyGameOptionsFragment = DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE, opponentName);
+			}
+
+			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+			transaction.replace(R.id.dailyOptionsFrame, dailyGameOptionsFragment).commit();
+		} else {
+			dailyExpandIconTxt.setText(R.string.ic_down);
+			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+			transaction.remove(dailyGameOptionsFragment).commit();
+		}
+	}
+
+	private void toggleLiveOptionsMode() {
+		liveFullOptionsVisible = !liveFullOptionsVisible;
+		liveOptionsView.setVisibility(liveFullOptionsVisible ? View.GONE : View.VISIBLE);
+		if (liveFullOptionsVisible) {
+			liveExpandIconTxt.setText(R.string.ic_up);
+			if (liveGameOptionsFragment == null) {
+				liveGameOptionsFragment = new LiveGameOptionsFragment();
+			}
+
+			if (!TextUtils.isEmpty(opponentName)) {
+				liveGameOptionsFragment = LiveGameOptionsFragment.createInstance(RIGHT_MENU_MODE, opponentName);
+			}
+
+			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+			transaction.replace(R.id.liveOptionsFrame, liveGameOptionsFragment).commit();
+		} else {
+			liveExpandIconTxt.setText(R.string.ic_down);
+			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+			transaction.remove(liveGameOptionsFragment).commit();
 		}
 	}
 
@@ -331,7 +368,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		if (getActivity() == null) {
 			return;
 		}
-		if (positionMode == RIGHT_MENU_MODE && !isPaused) {
+		if (mode == RIGHT_MENU_MODE && !isPaused) {
 			loadRatings();
 			loadRecentOpponents();
 		}
@@ -385,7 +422,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		TextView vsRandomTxt = (TextView) view.findViewById(R.id.vsRandomTxt);
 		TextView challengeFriendTxt = (TextView) view.findViewById(R.id.challengeFriendTxt);
 
-		if (positionMode == CENTER_MODE) { // we use white background and dark titles for centered mode
+		if (mode == CENTER_MODE) { // we use white background and dark titles for centered mode
 			int darkTextColor = getResources().getColor(R.color.new_subtitle_dark_grey);
 
 			View homePlayScrollView = view.findViewById(R.id.homePlayScrollView);
@@ -458,7 +495,7 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 				buttonEntry.getValue().setText(getLiveModeButtonLabel(newGameButtonsArray[key]));
 				buttonEntry.getValue().setOnClickListener(this);
 
-				if (positionMode == CENTER_MODE) {
+				if (this.mode == CENTER_MODE) {
 					buttonEntry.getValue().setTextColor(darkBtnColor);
 				}
 

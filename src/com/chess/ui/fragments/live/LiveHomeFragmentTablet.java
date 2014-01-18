@@ -83,7 +83,7 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 				loadDbGames();
 			}
 
-			loadRecentOpponents();
+			loadRecentFriends();
 		}
 	}
 
@@ -206,7 +206,7 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 			}
 		} else if (id == R.id.topGameHeaderView) {
 			if (!isLCSBound) {
-				showToast("Not connected yet");
+				showToast(R.string.still_connecting);
 				return;
 			}
 			Fragment fragmentByTag;

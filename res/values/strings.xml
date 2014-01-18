@@ -408,6 +408,8 @@
 	<string name="today">today</string>
 	<string name="months">months</string>
 	<string name="month">month</string>
+	<string name="years">years</string>
+	<string name="year">year</string>
 	<string name="just_now">just now</string>
 	<string name="ago_arg">%s ago</string>
 	<string name="request_sent">Request Sent</string>
@@ -554,7 +556,7 @@
 	<string name="total_games">Total Games</string>
 	<string name="help_toast_for_daily_games">Pull Down to Update Games</string>
 	<string name="help_toast_for_quick_in_game_navigation">Hold \u003c or \u003e for Fast Moving</string>
-	<string name="not_connected_yet">Still Connecting…</string>
+	<string name="still_connecting">Still Connecting…</string>
 	<string name="unable_to_send_challenge">Unable to Send Challenge</string>
 	<string name="rating_range">Rating Range:</string>
 	<string name="show_mini_boards">Show Mini Boards</string>

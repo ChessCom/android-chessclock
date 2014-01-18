@@ -3,6 +3,7 @@ package com.chess.ui.fragments.settings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,9 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 //		menuItems.add(new SettingsMenuItem(R.string.tracking, R.string.ic_challenge_friend));
 //		menuItems.add(new SettingsMenuItem(R.string.sharing, R.string.ic_share));
 //		menuItems.add(new SettingsMenuItem(R.string.alerts_and_emails, R.string.ic_email_dark));
-		menuItems.add(new SettingsMenuItem(R.string.password, R.string.ic_password));
+		if (!TextUtils.isEmpty(getAppData().getPassword())) {
+			menuItems.add(new SettingsMenuItem(R.string.password, R.string.ic_password));
+		}
 //		menuItems.add(new SettingsMenuItem(R.string.account_history, R.string.ic_history));
 		menuItems.add(new SettingsMenuItem(R.string.report_problem, R.string.ic_ticket));
 		menuItems.add(new SettingsMenuItem(R.string.language, R.string.ic_home));

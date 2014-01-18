@@ -576,7 +576,7 @@
 	<string name="total_games">total_games</string>
 	<string name="help_toast_for_daily_games">help_toast_for_daily_games</string>
 	<string name="help_toast_for_quick_in_game_navigation">help_toast_for_quick_in_game_navigation</string>
-	<string name="not_connected_yet">not_connected_yet</string>
+	<string name="still_connecting">not_connected_yet</string>
 	<string name="unable_to_send_challenge">unable_to_send_challenge</string>
 	<string name="rating_range">rating_range</string>
 	<string name="show_mini_boards">show_mini_boards</string>

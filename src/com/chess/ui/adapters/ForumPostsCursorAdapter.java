@@ -3,10 +3,6 @@ package com.chess.ui.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
-import android.text.Editable;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.style.StrikethroughSpan;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +15,6 @@ import com.chess.db.DbScheme;
 import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
-import org.xml.sax.XMLReader;
 
 import java.util.HashMap;
 
@@ -121,46 +116,5 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		public TextView quoteTxt;
 		public TextView bodyTxt;
 		public TextView commentNumberTxt;
-	}
-
-	public class MyHtmlTagHandler implements Html.TagHandler {
-
-		@Override
-		public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-			if (tag.equalsIgnoreCase("strike") || tag.equals("s")) {
-				processStrike(opening, output);
-			}
-		}
-
-		private void processStrike(boolean opening, Editable output) {
-			int len = output.length();
-			if (opening) {
-				output.setSpan(new StrikethroughSpan(), len, len, Spannable.SPAN_MARK_MARK);
-			} else {
-				Object obj = getLast(output, StrikethroughSpan.class);
-				int where = output.getSpanStart(obj);
-
-				output.removeSpan(obj);
-
-				if (where != len) {
-					output.setSpan(new StrikethroughSpan(), where, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-				}
-			}
-		}
-
-		private Object getLast(Editable text, Class kind) {
-			Object[] spans = text.getSpans(0, text.length(), kind);
-
-			if (spans.length == 0) {
-				return null;
-			} else {
-				for (int i = spans.length; i > 0; i--) {
-					if (text.getSpanFlags(spans[i - 1]) == Spannable.SPAN_MARK_MARK) {
-						return spans[i - 1];
-					}
-				}
-				return null;
-			}
-		}
 	}
 }

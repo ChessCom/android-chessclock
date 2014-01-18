@@ -64,13 +64,39 @@
         </com.chess.widgets.LinLayout>
 
         <!--Opponent-->
-        <com.chess.widgets.RoboSpinner
-            android:id="@+id/opponentSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/default_list_item_height"
-            style="@style/ListItem"
-            />
+		<com.chess.widgets.LinLayout
+			android:id="@+id/opponentView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center_vertical"
+			style="@style/ListItem"
+			android:paddingLeft="@dimen/new_game_frame_padding_side"
+			android:paddingRight="@dimen/new_game_frame_padding_side"
+			>
+
+			<com.chess.widgets.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/opponent_"
+				android:textColor="@color/semitransparent_white_65"
+				app:themeColor="true"
+				/>
+
+			<!--Opponent Name-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/opponentNameTxt"
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/random"
+				android:gravity="right"
+				android:textColor="@color/semitransparent_white_65"
+				android:paddingRight="6dip"
+				app:themeColor="true"
+				/>
+
+		</com.chess.widgets.LinLayout>
 
         <!--Days Per Move - Mode-->
         <com.chess.widgets.LinLayout

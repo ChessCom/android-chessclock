@@ -232,7 +232,7 @@ public class DbHelper {
 		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.FORUM_POSTS.ordinal()]);
 		queryParams.setSelection(DbDataManager.SELECTION_ITEM_ID_AND_PAGE);
 		queryParams.setArguments(new String[]{String.valueOf(topicId), String.valueOf(currentPage)});
-		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.DESCEND);
+		queryParams.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.ASCEND);
 		return queryParams;
 	}
 
@@ -400,6 +400,16 @@ public class DbHelper {
 		queryParams.setSelection(DbDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{username});
 		queryParams.setOrder(DbScheme.V_LAST_LOGIN_DATE + DbDataManager.DESCEND);
+		return queryParams;
+	}
+
+	public static QueryParams getRecentFriends(String username) {
+		QueryParams queryParams = new QueryParams();
+		queryParams.setUri(DbScheme.uriArray[DbScheme.Tables.FRIENDS.ordinal()]);
+		queryParams.setSelection(DbDataManager.SELECTION_USER);
+		queryParams.setArguments(new String[]{username});
+		queryParams.setOrder(DbScheme.V_LAST_LOGIN_DATE + DbDataManager.DESCEND
+				+ DbDataManager.LIMIT_ + 2);
 		return queryParams;
 	}
 

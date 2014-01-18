@@ -100,7 +100,6 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 			if (showNewGameAtFirst) {
 				if (DbDataManager.getId(cursor) == -1) {
 					holder.timeOptionView.setVisibility(View.VISIBLE);
-//					String daysString = getDaysString(newGameButtonsArray[mode]);
 					holder.timeOptionBtn.setText(timeLabel);
 				} else {
 					holder.timeOptionView.setVisibility(View.GONE);
@@ -132,6 +131,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		}
 
 		holder.playerTxt.setText(opponentName);
+
 		if (!imageDataMap.containsKey(avatarUrl)) {
 			imageDataMap.put(avatarUrl, new SmartImageFetcher.Data(avatarUrl, imageSize));
 		}

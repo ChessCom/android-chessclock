@@ -499,9 +499,16 @@ public class AppUtils {
 		long hours = difference / 3600 % 24;
 		long days = difference / 86400;
 		long months = difference / 2592000;
+		long years = difference / 31536000;
 		StringBuilder sb = new StringBuilder();
 
-		if (months > 0) {
+		if (years > 0) {
+			if (years > 1) {
+				sb.append(years).append(Symbol.SPACE).append(context.getString(R.string.years));
+			} else {
+				sb.append(years).append(Symbol.SPACE).append(context.getString(R.string.year));
+			}
+		} else if (months > 0) {
 			if (months > 1) {
 				sb.append(months).append(Symbol.SPACE).append(context.getString(R.string.months));
 			} else {

@@ -451,7 +451,7 @@
 	<string name="total_games">Всего игр</string>
 	<string name="help_toast_for_daily_games">Потяните вниз для обновления игр</string>
 	<string name="help_toast_for_quick_in_game_navigation">Держите \u003c или \u003e для быстрого перемещения</string>
-	<string name="not_connected_yet">Выполняется подключение…</string>
+	<string name="still_connecting">Выполняется подключение…</string>
 	<string name="unable_to_send_challenge">Не удается отправить вызов</string>
 	<string name="rating_range">Диапазон рейтинга:</string>
 	<string name="show_mini_boards">Показать мини-доски</string>

@@ -23,10 +23,10 @@ import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.friends.FriendsRightFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
 import com.chess.widgets.RoboRadioButton;
-import com.chess.widgets.RoboSpinner;
 import com.chess.widgets.SwitchButton;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ import java.util.Map;
  * Time: 10:00
  */
 public class LiveGameOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace,
-		AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener {
+												SeekBar.OnSeekBarChangeListener {
 
 	private static final int MIN_RATING_MIN = -1000;
 	private static final int MIN_RATING_MAX = 0;
@@ -72,6 +72,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	private boolean statsLoaded;
 	private ViewGroup ratingView;
 	private TextView currentRatingTxt;
+	private TextView opponentNameTxt;
 
 	public LiveGameOptionsFragment() {
 		Bundle bundle = new Bundle();
@@ -221,26 +222,6 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		return getActivity();
 	}
 
-	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-		if (parent.getAdapter() instanceof OpponentsAdapter) {
-			SelectionItem opponent = (SelectionItem) parent.getItemAtPosition(position);
-			String opponentName = opponent.getText();
-			if (opponentName.equals(getString(R.string.random))) {
-				ratingView.setVisibility(View.VISIBLE);
-				opponentName = null;
-			} else {
-				ratingView.setVisibility(View.GONE);
-			}
-			gameConfigBuilder.setOpponentName(opponentName);
-		}
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> parent) {
-
-	}
-
 	private void handleLiveModeClicks(View view) {
 		int id = view.getId();
 		boolean liveModeButton = false;
@@ -375,6 +356,8 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		} else if (view.getId() == R.id.maxRatingBtn) {
 			ratingSeekBar.setVisibility(View.VISIBLE);
 			handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
+		} else if (view.getId() == R.id.opponentView) {
+			getActivityFace().changeRightFragment(FriendsRightFragment.createInstance(FriendsRightFragment.LIVE_OPPONENT_REQUEST));
 		} else if (view.getId() == R.id.playBtn) {
 			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(getLiveGameConfig()));
 			getActivityFace().toggleRightMenu();
@@ -432,23 +415,6 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			View liveHeaderView = view.findViewById(R.id.liveHeaderView);
 			liveHeaderView.setVisibility(View.VISIBLE);
 			liveHeaderView.setOnClickListener(this);
-		}
-
-		RoboSpinner opponentSpinner = (RoboSpinner) view.findViewById(R.id.opponentSpinner);
-
-		OpponentsAdapter selectionAdapter = new OpponentsAdapter(getActivity(), friendsList);
-		opponentSpinner.setAdapter(selectionAdapter);
-		opponentSpinner.setOnItemSelectedListener(this);
-		opponentSpinner.setSelection(0);
-
-		if (!TextUtils.isEmpty(opponentName)) {
-			for (int i = 0; i < friendsList.size(); i++) {
-				SelectionItem selectionItem = friendsList.get(i);
-				if (selectionItem.getText().equals(opponentName)) {
-					opponentSpinner.setSelection(i);
-					break;
-				}
-			}
 		}
 
 		{ // live options
@@ -546,6 +512,19 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 					minRatingBtn.setChecked(true);
 				}
 
+				{ // Opponent View
+					view.findViewById(R.id.opponentView).setOnClickListener(this);
+					opponentNameTxt = (TextView) view.findViewById(R.id.opponentNameTxt);
+					if (!TextUtils.isEmpty(opponentName)) {
+						opponentNameTxt.setText(opponentName);
+						gameConfigBuilder.setOpponentName(opponentName);
+						ratingView.setVisibility(View.GONE);
+					} else {
+						gameConfigBuilder.setOpponentName(Symbol.EMPTY);
+						ratingView.setVisibility(View.VISIBLE);
+					}
+				}
+
 				view.findViewById(R.id.playBtn).setOnClickListener(this);
 			}
 
@@ -575,55 +554,5 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		}
 
 		toggleLiveOptionsView();
-	}
-
-	public class OpponentsAdapter extends ItemsAdapter<SelectionItem> {
-
-		public OpponentsAdapter(Context context, List<SelectionItem> items) {
-			super(context, items);
-		}
-
-		@Override
-		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_game_opponent_spinner_item, parent, false);
-			ViewHolder holder = new ViewHolder();
-			holder.textTxt = (TextView) view.findViewById(R.id.opponentNameTxt);
-
-			view.setTag(holder);
-			return view;
-		}
-
-		@Override
-		protected void bindView(SelectionItem item, int pos, View convertView) {
-			ViewHolder holder = (ViewHolder) convertView.getTag();
-			holder.textTxt.setText(item.getText());
-		}
-
-		@Override
-		public View getDropDownView(int position, View convertView, ViewGroup parent) {
-			DropViewHolder holder = new DropViewHolder();
-			if (convertView == null) {
-				convertView = inflater.inflate(android.R.layout.simple_list_item_single_choice, parent, false);
-				holder.textTxt = (TextView) convertView.findViewById(android.R.id.text1);
-
-				convertView.setTag(holder);
-			} else {
-				holder = (DropViewHolder) convertView.getTag();
-			}
-
-			holder.textTxt.setTextColor(context.getResources().getColor(R.color.black));
-			holder.textTxt.setText(itemsList.get(position).getText());
-
-			return convertView;
-		}
-
-		private class ViewHolder {
-			TextView textTxt;
-		}
-
-		private class DropViewHolder {
-			TextView textTxt;
-		}
-
 	}
 }

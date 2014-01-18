@@ -90,7 +90,7 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 		int status = getInt(cursor, DbScheme.V_PREMIUM_STATUS);
 		holder.premiumImg.setImageResource(AppUtils.getPremiumIcon(status));
 
-		boolean isOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0 ; // TODO adjust logic for offline mode
+		boolean isOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.photoImg.setOnline(isOnline);
 
 		String locationStr = getString(cursor, DbScheme.V_LOCATION);

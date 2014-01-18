@@ -31,6 +31,7 @@ import com.chess.ui.adapters.FriendsCursorAdapter;
 import com.chess.ui.adapters.FriendsPaginationAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.daily.DailyGameOptionsFragment;
 import com.chess.ui.fragments.live.LiveGameOptionsFragment;
 import com.chess.ui.fragments.messages.NewMessageFragment;
 import com.chess.ui.fragments.profiles.ProfileTabsFragment;
@@ -53,9 +54,9 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	protected View loadingView;
 	protected TextView emptyView;
 	protected FriendsCursorAdapter friendsAdapter;
-	private FriendsCursorUpdateListener friendsCursorUpdateListener;
+	protected FriendsCursorUpdateListener friendsCursorUpdateListener;
 	protected FriendsUpdateListener friendsUpdateListener;
-	private SaveFriendsListUpdateListener saveFriendsListUpdateListener;
+	protected SaveFriendsListUpdateListener saveFriendsListUpdateListener;
 	protected String opponentName;
 	protected String username;
 	protected FriendsPaginationAdapter paginationAdapter;
@@ -188,7 +189,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 	}
 
-	private class SaveFriendsListUpdateListener extends ChessUpdateListener<FriendsItem.Data> {
+	protected class SaveFriendsListUpdateListener extends ChessUpdateListener<FriendsItem.Data> {
 
 		public SaveFriendsListUpdateListener() {
 			super(FriendsItem.Data.class);
@@ -207,7 +208,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 				getContentResolver()).executeTask();
 	}
 
-	private class FriendsCursorUpdateListener extends ChessUpdateListener<Cursor> {
+	protected class FriendsCursorUpdateListener extends ChessUpdateListener<Cursor> {
 
 		@Override
 		public void updateData(Cursor returnedObj) {
@@ -256,7 +257,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 	}
 
-	private class QueryFilterProvider implements FilterQueryProvider {
+	protected class QueryFilterProvider implements FilterQueryProvider {
 
 		@Override
 		public Cursor runQuery(CharSequence constraint) {
@@ -344,7 +345,8 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 
 		if (tag.equals(CREATE_CHALLENGE_TAG)) {
-			createDailyChallenge(opponentName);
+			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE, opponentName));
+			getActivityFace().toggleRightMenu();
 		}
 		super.onNegativeBtnClick(fragment);
 	}
@@ -397,7 +399,7 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 		}
 	}
 
-	private void init() {
+	protected void init() {
 		friendsCursorUpdateListener = new FriendsCursorUpdateListener();
 		saveFriendsListUpdateListener = new SaveFriendsListUpdateListener();
 
@@ -410,7 +412,6 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	protected void widgetsInit(View view) {
 		listView = (ListView) view.findViewById(R.id.listView);
 		setAdapter(paginationAdapter);
-
 	}
 
 }
