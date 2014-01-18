@@ -551,22 +551,11 @@ public class RestHelper {
 
 		try {
 			URL urlObj = new URL(url);
-			if (needSecureConnection(loadItem)) {
-				KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-				String algorithm = TrustManagerFactory.getDefaultAlgorithm();
-				TrustManagerFactory tmf = TrustManagerFactory.getInstance(algorithm);
-				tmf.init(keyStore);
 
-				SSLContext sslContext = createSslContext(context, true);
-				connection = (HttpURLConnection) urlObj.openConnection();
-				((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
-
-			} else {
-				connection = (HttpURLConnection) urlObj.openConnection();
-				connection.setRequestMethod(requestMethod);
-			}
-
+			connection = (HttpURLConnection) urlObj.openConnection();
+			connection.setRequestMethod(requestMethod);
 			connection.setRequestProperty("User-Agent", userAgent);
+
 			if (IS_TEST_SERVER_MODE) {
 				connection.setRequestProperty("Authorization", getBasicAuth());
 			}
