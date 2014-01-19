@@ -768,7 +768,6 @@ public class RestHelper {
 		logD(TAG, loadItem.getRequestMethod() + ": " + query);
 		String charset = HTTP.UTF_8;
 		connection.setDoOutput(true); // Triggers POST.
-		connection.setChunkedStreamingMode(0);
 
 		OutputStream output = null;
 		try {

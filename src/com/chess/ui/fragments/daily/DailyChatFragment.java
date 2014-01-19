@@ -39,7 +39,6 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 	private static final String GAME_ID = "game_id";
 	private static final String OPPONENT_NAME = "opponent_name";
 	private static final String OPPONENT_AVATAR = "opponent_avatar";
-	private int UPDATE_DELAY = 10000;
 
 	private EditText sendEdt;
 	private ListView listView;
