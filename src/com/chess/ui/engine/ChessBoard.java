@@ -1912,10 +1912,6 @@ public class ChessBoard implements BoardFace {
 			for (String move : moves) {
 //				Log.d("TEST", " before move = " + move + " board = " + this.toString());
 
-				if (move.equals("O-O")){
-					Log.d("TEST", " move = " + move);
-				}
-
 				boolean moveMade = makeMove(move, false);
 				if (!moveMade) {
 					setMovesCount(madeMovesCnt);
