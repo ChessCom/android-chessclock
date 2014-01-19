@@ -229,7 +229,7 @@ public class ChessBoard implements BoardFace {
 	int mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 
 	int BLACK_ROOK_1_INITIAL_POS = Board.A8.ordinal();
-	int BLACK_ROOK_2_INITIAL_POS = Board.A8.ordinal();
+	int BLACK_ROOK_2_INITIAL_POS = Board.H8.ordinal();
 	int WHITE_ROOK_1_INITIAL_POS = Board.A1.ordinal();
 	int WHITE_ROOK_2_INITIAL_POS = Board.H1.ordinal();
 
@@ -1911,6 +1911,10 @@ public class ChessBoard implements BoardFace {
 			int madeMovesCnt = 0;
 			for (String move : moves) {
 //				Log.d("TEST", " before move = " + move + " board = " + this.toString());
+
+				if (move.equals("O-O")){
+					Log.d("TEST", " move = " + move);
+				}
 
 				boolean moveMade = makeMove(move, false);
 				if (!moveMade) {
