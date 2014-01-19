@@ -172,16 +172,32 @@ public class MovesParser {
 
 		if (currentMove.contains(QUEENSIDE_CASTLING)) {
 			if (board.getSide() == ChessBoard.WHITE_SIDE) {
-				return new int[]{board.whiteKing, ChessBoard.WHITE_QUEENSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				if (board.whiteKing == ChessBoard.WHITE_QUEENSIDE_KING_DEST) { // for chess960 king can be already on this position
+					return new int[]{board.whiteKing, ChessBoard.WHITE_QUEENSIDE_KING_DEST_B1, 0, Move.CASTLING_MASK};
+				} else {
+					return new int[]{board.whiteKing, ChessBoard.WHITE_QUEENSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				}
 			} else if (board.getSide() == ChessBoard.BLACK_SIDE) {
-				return new int[]{board.blackKing, ChessBoard.BLACK_QUEENSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				if (board.blackKing == ChessBoard.BLACK_QUEENSIDE_KING_DEST) { // for chess960 king can be already on this position
+					return new int[]{board.blackKing, ChessBoard.BLACK_QUEENSIDE_KING_DEST_B8, 0, Move.CASTLING_MASK};
+				} else {
+					return new int[]{board.blackKing, ChessBoard.BLACK_QUEENSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				}
 			}
 		}
 		if (currentMove.contains(KINGSIDE_CASTLING)) {
 			if (board.getSide() == ChessBoard.WHITE_SIDE) {
-				return new int[]{board.whiteKing, ChessBoard.WHITE_KINGSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				if (board.whiteKing == ChessBoard.WHITE_KINGSIDE_KING_DEST) { // for chess960 king can be already on this position
+					return new int[]{board.whiteKing, ChessBoard.WHITE_KINGSIDE_KING_DEST_H1, 0, Move.CASTLING_MASK};
+				} else {
+					return new int[]{board.whiteKing, ChessBoard.WHITE_KINGSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				}
 			} else if (board.getSide() == ChessBoard.BLACK_SIDE) {
-				return new int[]{board.blackKing, ChessBoard.BLACK_KINGSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				if (board.blackKing == ChessBoard.BLACK_KINGSIDE_KING_DEST) { // for chess960 king can be already on this position
+					return new int[]{board.blackKing, ChessBoard.BLACK_KINGSIDE_KING_DEST_H8, 0, Move.CASTLING_MASK};
+				} else {
+					return new int[]{board.blackKing, ChessBoard.BLACK_KINGSIDE_KING_DEST, 0, Move.CASTLING_MASK};
+				}
 			}
 		}
 

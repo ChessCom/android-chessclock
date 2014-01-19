@@ -226,9 +226,9 @@ public class FenHelper {
 	 */
 	private int castlingAvailabilityForWhite(ChessBoard board) {
 		if (board.whiteCanCastle) {
-			if (!board.castlingHistory[WHITE_KINGSIDE_CASTLE] && !board.castlingHistory[WHITE_QUEENSIDE_CASTLE]) { // if non of castling was made
+			if (!board.castlingWasMadeForPosition[WHITE_KINGSIDE_CASTLE] && !board.castlingWasMadeForPosition[WHITE_QUEENSIDE_CASTLE]) { // if non of castling was made
 				return BOTH_CASTLING;
-			} else if (!board.castlingHistory[WHITE_KINGSIDE_CASTLE]) { // if kingside castling wasn't performed
+			} else if (!board.castlingWasMadeForPosition[WHITE_KINGSIDE_CASTLE]) { // if kingside castling wasn't performed
 				return KINGSIDE_CASTLING;
 			} else {
 				return QUEENSIDE_CASTLING;
@@ -240,9 +240,9 @@ public class FenHelper {
 
 	private int castlingAvailabilityForBlack(ChessBoard board) {
 		if (board.blackCanCastle) {
-			if (!board.castlingHistory[BLACK_KINGSIDE_CASTLE] && !board.castlingHistory[BLACK_QUEENSIDE_CASTLE]) { // if non of castling was made
+			if (!board.castlingWasMadeForPosition[BLACK_KINGSIDE_CASTLE] && !board.castlingWasMadeForPosition[BLACK_QUEENSIDE_CASTLE]) { // if non of castling was made
 				return BOTH_CASTLING;
-			} else if (!board.castlingHistory[BLACK_KINGSIDE_CASTLE]) { // if kingside castling wasn't performed
+			} else if (!board.castlingWasMadeForPosition[BLACK_KINGSIDE_CASTLE]) { // if kingside castling wasn't performed
 				return KINGSIDE_CASTLING;
 			} else {
 				return QUEENSIDE_CASTLING;

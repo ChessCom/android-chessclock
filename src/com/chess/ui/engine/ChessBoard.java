@@ -209,32 +209,36 @@ public class ChessBoard implements BoardFace {
 	public static final int WHITE_QUEENSIDE_CASTLE = 3;
 
 	public static final int BLACK_KINGSIDE_KING_DEST = Board.G8.ordinal();
+	public static final int BLACK_KINGSIDE_KING_DEST_H8 = Board.H8.ordinal();
 	public static final int BLACK_QUEENSIDE_KING_DEST = Board.C8.ordinal();
+	public static final int BLACK_QUEENSIDE_KING_DEST_B8 = Board.B8.ordinal();
 	public static final int WHITE_KINGSIDE_KING_DEST = Board.G1.ordinal();
+	public static final int WHITE_KINGSIDE_KING_DEST_H1 = Board.H1.ordinal();
 	public static final int WHITE_QUEENSIDE_KING_DEST = Board.C1.ordinal();
+	public static final int WHITE_QUEENSIDE_KING_DEST_B1 = Board.B1.ordinal();
 
 	/**
 	 * Array of performed castling
 	 * You pass a position and it tells if castling was made for this position
 	 */
-	boolean[] castlingHistory = {false, false, false, false};
+	boolean[] castlingWasMadeForPosition = {false, false, false, false};
 	boolean whiteCanCastle = true;
 	boolean blackCanCastle = true;
 
 
 	int mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 
-	int BLACK_ROOK_1_INITIAL_POS = 0;
-	int BLACK_ROOK_2_INITIAL_POS = 7;
-	int WHITE_ROOK_1_INITIAL_POS = 56;
-	int WHITE_ROOK_2_INITIAL_POS = 63;
+	int BLACK_ROOK_1_INITIAL_POS = Board.A8.ordinal();
+	int BLACK_ROOK_2_INITIAL_POS = Board.A8.ordinal();
+	int WHITE_ROOK_1_INITIAL_POS = Board.A1.ordinal();
+	int WHITE_ROOK_2_INITIAL_POS = Board.H1.ordinal();
 
 	int blackRook1 = BLACK_ROOK_1_INITIAL_POS;
-	int blackKing = 4; // initial position for black king
+	int blackKing = Board.E8.ordinal(); // initial position for black king
 	int blackRook2 = BLACK_ROOK_2_INITIAL_POS;
 
 	int whiteRook1 = WHITE_ROOK_1_INITIAL_POS;
-	int whiteKing = 60; // initial position for white king
+	int whiteKing = Board.E1.ordinal(); // initial position for white king
 	int whiteRook2 = WHITE_ROOK_2_INITIAL_POS;
 
 	int[] blackKingMoveOO = new int[]{BLACK_KINGSIDE_KING_DEST};
@@ -267,10 +271,10 @@ public class ChessBoard implements BoardFace {
 		if (tmp.length > 2) { // if we have info about castling like KQkq
 			String castling = tmp[2].trim();
 			if (!castling.contains(MovesParser.WHITE_KING)) {
-				castlingHistory[WHITE_KINGSIDE_CASTLE] = true;
+				castlingWasMadeForPosition[WHITE_KINGSIDE_CASTLE] = true;
 			}
 			if (!castling.contains(MovesParser.WHITE_QUEEN)) {
-				castlingHistory[WHITE_QUEENSIDE_CASTLE] = true;
+				castlingWasMadeForPosition[WHITE_QUEENSIDE_CASTLE] = true;
 			}
 
 			if (!castling.contains(MovesParser.WHITE_KING) && !castling.contains(MovesParser.WHITE_QUEEN)) {
@@ -278,10 +282,10 @@ public class ChessBoard implements BoardFace {
 			}
 
 			if (!castling.contains(MovesParser.BLACK_KING)) {
-				castlingHistory[BLACK_KINGSIDE_CASTLE] = true;
+				castlingWasMadeForPosition[BLACK_KINGSIDE_CASTLE] = true;
 			}
 			if (!castling.contains(MovesParser.BLACK_QUEEN)) {
-				castlingHistory[BLACK_QUEENSIDE_CASTLE] = true;
+				castlingWasMadeForPosition[BLACK_QUEENSIDE_CASTLE] = true;
 			}
 
 			if (!castling.contains(MovesParser.BLACK_KING) && !castling.contains(MovesParser.BLACK_QUEEN)) {
@@ -528,20 +532,20 @@ public class ChessBoard implements BoardFace {
 		/* generate castle moves */
 		int i;
 		if (side == WHITE_SIDE) {
-			if (!castlingHistory[2] && whiteCanCastle) {
+			if (!castlingWasMadeForPosition[2] && whiteCanCastle) {
 				for (i = 0; i < whiteKingMoveOO.length; i++)
 					addMoveToStack(movesSet, whiteKing, whiteKingMoveOO[i], Move.CASTLING_MASK);
 			}
-			if (!castlingHistory[3] && whiteCanCastle) {
+			if (!castlingWasMadeForPosition[3] && whiteCanCastle) {
 				for (i = 0; i < whiteKingMoveOOO.length; i++)
 					addMoveToStack(movesSet, whiteKing, whiteKingMoveOOO[i], Move.CASTLING_MASK);
 			}
 		} else {
-			if (!castlingHistory[0] && blackCanCastle) {
+			if (!castlingWasMadeForPosition[0] && blackCanCastle) {
 				for (i = 0; i < blackKingMoveOO.length; i++)
 					addMoveToStack(movesSet, blackKing, blackKingMoveOO[i], Move.CASTLING_MASK);
 			}
-			if (!castlingHistory[1] && blackCanCastle) {
+			if (!castlingWasMadeForPosition[1] && blackCanCastle) {
 				for (i = 0; i < blackKingMoveOOO.length; i++)
 					addMoveToStack(movesSet, blackKing, blackKingMoveOOO[i], Move.CASTLING_MASK);
 			}
@@ -832,27 +836,27 @@ public class ChessBoard implements BoardFace {
 		checkCastlingForRooks(move);
 
 		// attacked rook
-		if (move.to == BLACK_ROOK_1_INITIAL_POS && !castlingHistory[BLACK_QUEENSIDE_CASTLE]) { // q (fen castle)
-			castlingHistory[BLACK_QUEENSIDE_CASTLE] = true;
-			if (castlingHistory[BLACK_KINGSIDE_CASTLE]) {
+		if (move.to == BLACK_ROOK_1_INITIAL_POS && !castlingWasMadeForPosition[BLACK_QUEENSIDE_CASTLE]) { // q (fen castle)
+			castlingWasMadeForPosition[BLACK_QUEENSIDE_CASTLE] = true;
+			if (castlingWasMadeForPosition[BLACK_KINGSIDE_CASTLE]) {
 				blackCanCastle = false;
 			}
 		}
-		if (move.to == BLACK_ROOK_2_INITIAL_POS && !castlingHistory[BLACK_KINGSIDE_CASTLE]) {// k (fen castle)
-			castlingHistory[BLACK_KINGSIDE_CASTLE] = true;
-			if (castlingHistory[BLACK_QUEENSIDE_CASTLE]) {
+		if (move.to == BLACK_ROOK_2_INITIAL_POS && !castlingWasMadeForPosition[BLACK_KINGSIDE_CASTLE]) {// k (fen castle)
+			castlingWasMadeForPosition[BLACK_KINGSIDE_CASTLE] = true;
+			if (castlingWasMadeForPosition[BLACK_QUEENSIDE_CASTLE]) {
 				blackCanCastle = false;
 			}
 		}
-		if (move.to == WHITE_ROOK_1_INITIAL_POS && !castlingHistory[WHITE_QUEENSIDE_CASTLE]) {// Q (fen castle)
-			castlingHistory[WHITE_QUEENSIDE_CASTLE] = true;
-			if (castlingHistory[WHITE_KINGSIDE_CASTLE]) {
+		if (move.to == WHITE_ROOK_1_INITIAL_POS && !castlingWasMadeForPosition[WHITE_QUEENSIDE_CASTLE]) {// Q (fen castle)
+			castlingWasMadeForPosition[WHITE_QUEENSIDE_CASTLE] = true;
+			if (castlingWasMadeForPosition[WHITE_KINGSIDE_CASTLE]) {
 				whiteCanCastle = false;
 			}
 		}
-		if (move.to == WHITE_ROOK_2_INITIAL_POS && !castlingHistory[WHITE_KINGSIDE_CASTLE]) {// K (fen castle)
-			castlingHistory[WHITE_KINGSIDE_CASTLE] = true;
-			if (castlingHistory[WHITE_QUEENSIDE_CASTLE]) {
+		if (move.to == WHITE_ROOK_2_INITIAL_POS && !castlingWasMadeForPosition[WHITE_KINGSIDE_CASTLE]) {// K (fen castle)
+			castlingWasMadeForPosition[WHITE_KINGSIDE_CASTLE] = true;
+			if (castlingWasMadeForPosition[WHITE_QUEENSIDE_CASTLE]) {
 				whiteCanCastle = false;
 			}
 		}
@@ -1018,7 +1022,7 @@ public class ChessBoard implements BoardFace {
 			i++;
 		}
 
-		if (castleMaskPosition != NOT_SET && castlingHistory[castleMaskPosition]) {
+		if (castleMaskPosition != NOT_SET && castlingWasMadeForPosition[castleMaskPosition]) {
 			return false;
 		}
 
@@ -1272,7 +1276,7 @@ public class ChessBoard implements BoardFace {
 		histDat[ply].enPassant = enPassant;
 		histDat[ply].enPassantPrev = enPassantPrev;
 		histDat[ply].fifty = fifty;
-		histDat[ply].castleMask = castlingHistory.clone();
+		histDat[ply].castleMask = castlingWasMadeForPosition.clone();
 		histDat[ply].whiteCanCastle = whiteCanCastle;
 		histDat[ply].blackCanCastle = blackCanCastle;
 		histDat[ply].castleMaskPosition = castleMaskPosition;
@@ -1280,7 +1284,7 @@ public class ChessBoard implements BoardFace {
 
 	private void updateCastling(Move move, int castleMaskPosition) {
 		if (castleMaskPosition != NOT_SET) {
-			castlingHistory[castleMaskPosition] = true;
+			castlingWasMadeForPosition[castleMaskPosition] = true;
 			if (castleMaskPosition == BLACK_KINGSIDE_CASTLE || castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
 				blackCanCastle = false;
 			} else if (castleMaskPosition == WHITE_KINGSIDE_CASTLE || castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
@@ -1289,12 +1293,12 @@ public class ChessBoard implements BoardFace {
 		}
 		if (pieces[move.from] == KING) {
 			if (side == BLACK_SIDE) {
-				castlingHistory[BLACK_KINGSIDE_CASTLE] = true;
-				castlingHistory[BLACK_QUEENSIDE_CASTLE] = true;
+				castlingWasMadeForPosition[BLACK_KINGSIDE_CASTLE] = true;
+				castlingWasMadeForPosition[BLACK_QUEENSIDE_CASTLE] = true;
 				blackCanCastle = false;
 			} else {
-				castlingHistory[WHITE_KINGSIDE_CASTLE] = true;
-				castlingHistory[WHITE_QUEENSIDE_CASTLE] = true;
+				castlingWasMadeForPosition[WHITE_KINGSIDE_CASTLE] = true;
+				castlingWasMadeForPosition[WHITE_QUEENSIDE_CASTLE] = true;
 				whiteCanCastle = false;
 			}
 		}
@@ -1304,27 +1308,27 @@ public class ChessBoard implements BoardFace {
 		if (pieces[move.from] == ROOK) {
 			if (side == BLACK_SIDE) {
 				if (move.from == blackRook2) {
-					castlingHistory[BLACK_KINGSIDE_CASTLE] = true;
-					if (castlingHistory[BLACK_QUEENSIDE_CASTLE]) {
+					castlingWasMadeForPosition[BLACK_KINGSIDE_CASTLE] = true;
+					if (castlingWasMadeForPosition[BLACK_QUEENSIDE_CASTLE]) {
 						blackCanCastle = false;
 					}
 				}
 				if (move.from == blackRook1) {
-					castlingHistory[BLACK_QUEENSIDE_CASTLE] = true;
-					if (castlingHistory[BLACK_KINGSIDE_CASTLE]) {
+					castlingWasMadeForPosition[BLACK_QUEENSIDE_CASTLE] = true;
+					if (castlingWasMadeForPosition[BLACK_KINGSIDE_CASTLE]) {
 						blackCanCastle = false;
 					}
 				}
 			} else {
 				if (move.from == whiteRook2) {
-					castlingHistory[WHITE_KINGSIDE_CASTLE] = true;
-					if (castlingHistory[WHITE_QUEENSIDE_CASTLE]) {
+					castlingWasMadeForPosition[WHITE_KINGSIDE_CASTLE] = true;
+					if (castlingWasMadeForPosition[WHITE_QUEENSIDE_CASTLE]) {
 						whiteCanCastle = false;
 					}
 				}
 				if (move.from == whiteRook1) {
-					castlingHistory[WHITE_QUEENSIDE_CASTLE] = true;
-					if (castlingHistory[WHITE_KINGSIDE_CASTLE]) {
+					castlingWasMadeForPosition[WHITE_QUEENSIDE_CASTLE] = true;
+					if (castlingWasMadeForPosition[WHITE_KINGSIDE_CASTLE]) {
 						whiteCanCastle = false;
 					}
 				}
@@ -1355,7 +1359,7 @@ public class ChessBoard implements BoardFace {
 		enPassant = histDat[ply].enPassant;
 		enPassantPrev = histDat[ply].enPassantPrev;
 		fifty = histDat[ply].fifty;
-		castlingHistory = histDat[ply].castleMask.clone();
+		castlingWasMadeForPosition = histDat[ply].castleMask.clone();
 		whiteCanCastle = histDat[ply].whiteCanCastle;
 		blackCanCastle = histDat[ply].blackCanCastle;
 
@@ -1910,6 +1914,7 @@ public class ChessBoard implements BoardFace {
 
 				boolean moveMade = makeMove(move, false);
 				if (!moveMade) {
+					setMovesCount(madeMovesCnt);
 					return false;
 				} else {
 					madeMovesCnt++;
