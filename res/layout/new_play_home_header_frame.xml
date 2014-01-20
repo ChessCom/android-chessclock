@@ -7,7 +7,7 @@
 	android:orientation="vertical">
 
 	<!--Game Board and Game Panel-->
-	<com.chess.ui.views.NotationView
+	<com.chess.ui.views.NotationsView
 		android:id="@+id/notationsView"
 		android:layout_width="match_parent"
 		android:layout_height="@dimen/notations_view_height"

@@ -34,7 +34,7 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 
 	private NotationsPagerAdapter notationsAdapter;
 	private List<String> originalNotations;
-	private NotationView.BoardForNotationFace selectionFace;
+	private NotationsView.BoardForNotationFace selectionFace;
 	private int textPadding;
 	private boolean newNotations;
 	public int textSize;
@@ -66,16 +66,16 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 		textColor = resources.getColor(R.color.notations_text_color);
 		textColorSelected = resources.getColor(R.color.notations_text_color_selected);
 		textViewMinHeight = resources.getDimensionPixelSize(R.dimen.notations_text_view_height);
-		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.NotationView);
+		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.NotationsView);
 		if (array == null) {
 			return;
 		}
 		try {
-			if (array.hasValue(R.styleable.NotationView_textColorBack)) {
-				textColor = array.getColor(R.styleable.NotationView_textColorBack, 0xFF00FF00);
+			if (array.hasValue(R.styleable.NotationsView_textColorBack)) {
+				textColor = array.getColor(R.styleable.NotationsView_textColorBack, 0xFF00FF00);
 			}
-			if (array.hasValue(R.styleable.NotationView_textColorSelected)) {
-				textColorSelected = array.getColor(R.styleable.NotationView_textColorSelected, 0xFF00FF00);
+			if (array.hasValue(R.styleable.NotationsView_textColorSelected)) {
+				textColorSelected = array.getColor(R.styleable.NotationsView_textColorSelected, 0xFF00FF00);
 			}
 		} finally {
 			array.recycle();
@@ -104,7 +104,7 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 	}
 
 	@Override
-	public void updateNotations(String[] notations, NotationView.BoardForNotationFace selectionFace, int ply) {
+	public void updateNotations(String[] notations, NotationsView.BoardForNotationFace selectionFace, int ply) {
 		this.selectionFace = selectionFace;
 
 		newNotations = false;

@@ -52,7 +52,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	protected ChessBoardAnalysisView boardView;
 
-	private DailyCurrentGameData currentGame;
+	protected DailyCurrentGameData currentGame;
 
 	protected boolean userPlayWhite = true;
 	protected ControlsAnalysisView controlsView;
@@ -119,10 +119,14 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		if (need2update) {
 			loadGame();
 		} else {
-			getControlsView().enableGameControls(true);
-			boardView.lockBoard(false);
-			controlsView.showVsComp(isFinished);
+			updateControls();
 		}
+	}
+
+	protected void updateControls() {
+		getControlsView().enableGameControls(true);
+		boardView.lockBoard(false);
+		controlsView.showVsComp(isFinished);
 	}
 
 	@Override
@@ -380,10 +384,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	public void updateAfterMove() {
-		if (currentGame == null) { // TODO fix inappropriate state, current game can't be null here // if we don't have Game entity
-			// get game entity
-			throw new IllegalStateException("Current game became NULL");
-		}
 	}
 
 	@Override
@@ -520,7 +520,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
 	}
 
-	private void widgetsInit(View view) {
+	protected void widgetsInit(View view) {
 		setControlsView(view.findViewById(R.id.controlsView));
 		if (inPortrait()) {
 			setNotationsFace(view.findViewById(R.id.notationsView));

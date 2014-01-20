@@ -100,6 +100,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		DOTS_OPTIONS,
 
 		/* Default Game Controls*/
+		CONDITIONAL,
 		COMP,
 		SOLUTION,
 		OPTIONS,
@@ -132,6 +133,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.string.ic_rewind_back,
 			R.string.ic_dots,
 			/* Default Game Controls*/
+			R.string.ic_conditional,
 			R.string.ic_comp_game,
 			R.string.ic_round_help,
 			R.string.ic_options,

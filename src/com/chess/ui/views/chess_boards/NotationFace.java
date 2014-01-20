@@ -1,6 +1,6 @@
 package com.chess.ui.views.chess_boards;
 
-import com.chess.ui.views.NotationView;
+import com.chess.ui.views.NotationsView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +14,7 @@ public interface NotationFace {
 
 	void moveForward(int ply);
 
-	void updateNotations(String[] notations, NotationView.BoardForNotationFace updateFace, int ply);
+	void updateNotations(String[] notations, NotationsView.BoardForNotationFace updateFace, int ply);
 
 	void rewindBack();
 

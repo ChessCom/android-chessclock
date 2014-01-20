@@ -25,6 +25,7 @@ public class ControlsDailyView extends ControlsBaseView {
 
 	private BoardViewNetworkFace boardViewFace;
 	private boolean enableChat;
+//	private boolean showConditional;
 
 	public ControlsDailyView(Context context) {
 		super(context);
@@ -41,6 +42,7 @@ public class ControlsDailyView extends ControlsBaseView {
 		addControlButton(ANALYSIS, styles[MIDDLE]);
 		addControlButton(BACK, styles[MIDDLE]);
 		addControlButton(FORWARD, styles[RIGHT]);
+//		addControlButton(CONDITIONAL, styles[RIGHT]);
 
 		addActionButton(CLOSE, R.string.ic_close, styles[LEFT]);
 		addActionButton(MAKE_MOVE, R.string.ic_check, styles[ORANGE]);
@@ -48,7 +50,6 @@ public class ControlsDailyView extends ControlsBaseView {
 
 	@Override
 	public void onClick(View view) {  // TODO rework click handles
-		super.onClick(view);
 		if (blocked)
 			return;
 
@@ -56,10 +57,18 @@ public class ControlsDailyView extends ControlsBaseView {
 			boardViewFace.switchAnalysis();
 		} else if (view.getId() == getButtonId(CHAT)) {
 			boardViewFace.showChat();
+		} else if (view.getId() == getButtonId(CONDITIONAL)) {
+			boardViewFace.openConditions();
 		} else if (view.getId() == getButtonId(CLOSE)) {
 			boardViewFace.cancelMove();
 		} else if (view.getId() == getButtonId(MAKE_MOVE)) {
 			boardViewFace.playMove();
+		} else if (view.getId() == getButtonId(BACK)) {
+			boardViewFace.moveBack();
+		} else if (view.getId() == getButtonId(FORWARD)) {
+			boardViewFace.moveForward();
+		} else {
+			super.onClick(view);
 		}
 	}
 
@@ -90,8 +99,12 @@ public class ControlsDailyView extends ControlsBaseView {
 		if (enableChat) {
 			enableGameButton(CHAT, enable);
 		}
-		enableGameButton(FORWARD, enable);
 		enableGameButton(BACK, enable);
+//		if (showConditional) {
+//			enableGameButton(CONDITIONAL, enable);
+//		} else {
+		enableGameButton(FORWARD, enable);
+//		}
 	}
 
 	public void showSubmitButtons(boolean show) {
@@ -100,8 +113,12 @@ public class ControlsDailyView extends ControlsBaseView {
 		if (enableChat) {
 			showGameButton(CHAT, !show);
 		}
-		showGameButton(FORWARD, !show);
 		showGameButton(BACK, !show);
+//		if (showConditional) {
+//			showGameButton(CONDITIONAL, !show);
+//		} else {
+		showGameButton(FORWARD, !show);
+//		}
 
 		showGameButton(CLOSE, show);
 		showGameButton(MAKE_MOVE, show);
@@ -109,6 +126,13 @@ public class ControlsDailyView extends ControlsBaseView {
 		if (!show) {
 			handler.removeCallbacks(blinkSubmitButton);
 		}
+	}
+
+	public void showConditional(boolean showConditional) {
+//		this.showConditional = showConditional;
+
+//		showGameButton(CONDITIONAL, showConditional);
+//		showGameButton(FORWARD, !showConditional);
 	}
 
 	private void blinkSubmitBtn() {

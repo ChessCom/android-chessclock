@@ -35,6 +35,11 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 	}
 
 	@Override
+	public void openConditions() {
+		// not used here.
+	}
+
+	@Override
 	public void playMove() {
 		gameNetworkFace.playMove();
 	}

@@ -22,7 +22,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.boards.BoardViewFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
-import com.chess.ui.views.NotationView;
+import com.chess.ui.views.NotationsView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.utilities.AppUtils;
@@ -39,7 +39,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author alien_roger
  * @created at: 25.04.12 10:54
  */
-public abstract class ChessBoardBaseView extends View implements BoardViewFace, NotationView.BoardForNotationFace {
+public abstract class ChessBoardBaseView extends View implements BoardViewFace, NotationsView.BoardForNotationFace {
 
 	public static final int PIECE_ANIM_SPEED = 100; // 100ms
 	public static final int PIECE_ANIM_FAST_SPEED = 5; // should be very fast
@@ -1195,7 +1195,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 	@Override
 	public void onClick(View v) {
-		if (v.getId() == NotationView.NOTATION_ID) {// scroll to the specified position
+		if (v.getId() == NotationsView.NOTATION_ID) {// scroll to the specified position
 			resetMoving();
 
 			Integer pos = (Integer) v.getTag(R.id.list_item_id);
@@ -1242,7 +1242,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	protected void loadBoard() {
-		if (viewWidth > 0 /*&& (previousWidth != viewWidth || boardBitmap == null)*/) { // update only if size has changed
+		if (viewWidth > 0 ) {
 			previousWidth = viewWidth;
 
 			BitmapShader shader;

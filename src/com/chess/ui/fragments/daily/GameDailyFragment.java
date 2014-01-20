@@ -47,10 +47,9 @@ import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsDailyChessFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
-import com.chess.ui.interfaces.game_ui.GameNetworkFace;
+import com.chess.ui.interfaces.game_ui.GameDailyFace;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
-import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
@@ -68,7 +67,7 @@ import java.util.List;
  * Date: 15.01.13
  * Time: 13:45
  */
-public class GameDailyFragment extends GameBaseFragment implements GameNetworkFace, PopupListSelectionFace {
+public class GameDailyFragment extends GameBaseFragment implements GameDailyFace, PopupListSelectionFace {
 
 	private static final String DRAW_OFFER_TAG = "offer draw";
 	private static final String ERROR_TAG = "send request failed popup";
@@ -104,7 +103,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 	private BroadcastReceiver moveUpdateReceiver;
 	private NewChatUpdateReceiver newChatUpdateReceiver;
 
-	private ChessBoardNetworkView boardView;
+	private ChessBoardDailyView boardView;
 	private ControlsDailyView controlsView;
 	private SparseArray<String> optionsMap;
 	private PopupOptionsMenuFragment optionsSelectFragment;
@@ -445,6 +444,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			}
 		}, NOTATION_REWIND_DELAY);
 
+		getControlsView().showConditional(true);
 		getControlsView().enableGameControls(false);
 		handler.postDelayed(new Runnable() {
 			@Override
@@ -456,7 +456,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 
-		boardFace.setJustInitialized(false);
+//		boardFace.setJustInitialized(false);
 
 		{ // set stubs while avatars are loading
 			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
@@ -658,6 +658,16 @@ public class GameDailyFragment extends GameBaseFragment implements GameNetworkFa
 		getControlsView().haveNewMessage(false);
 
 		getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, labelsConfig.topPlayerAvatar)); // TODO check when flip
+	}
+
+	@Override
+	public void openConditions() {
+		getActivityFace().openFragment(GameDailyConditionsFragment.createInstance(gameId, username, false));
+	}
+
+	@Override
+	public void showConditionsBtn(boolean show) {
+		getControlsView().showConditional(show);
 	}
 
 	@Override

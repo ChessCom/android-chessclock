@@ -32,7 +32,7 @@ import java.util.List;
  * @author alien_roger
  * @created at: 06.03.12 7:39
  */
-public class NotationView extends LinearLayout implements NotationFace,
+public class NotationsView extends LinearLayout implements NotationFace,
 		View.OnClickListener, ViewPager.OnPageChangeListener {
 
 	public static final int NOTATION_ID = 0x00003321;
@@ -56,12 +56,12 @@ public class NotationView extends LinearLayout implements NotationFace,
 	private Handler handler;
 	private boolean clickable;
 
-	public NotationView(Context context) {
+	public NotationsView(Context context) {
 		super(context);
 		onCreate(null);
 	}
 
-	public NotationView(Context context, AttributeSet attrs) {
+	public NotationsView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		onCreate(attrs);
 	}
@@ -85,16 +85,16 @@ public class NotationView extends LinearLayout implements NotationFace,
 
 		textColor = resources.getColor(R.color.notations_text_color);
 		textColorSelected = resources.getColor(R.color.notations_text_color_selected);
-		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.NotationView);
+		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.NotationsView);
 		if (array == null) {
 			return;
 		}
 		try {
-			if (array.hasValue(R.styleable.NotationView_textColorBack)) {
-				textColor = array.getColor(R.styleable.NotationView_textColorBack, 0xFF00FF00);
+			if (array.hasValue(R.styleable.NotationsView_textColorBack)) {
+				textColor = array.getColor(R.styleable.NotationsView_textColorBack, 0xFF00FF00);
 			}
-			if (array.hasValue(R.styleable.NotationView_textColorSelected)) {
-				textColorSelected = array.getColor(R.styleable.NotationView_textColorSelected, 0xFF00FF00);
+			if (array.hasValue(R.styleable.NotationsView_textColorSelected)) {
+				textColorSelected = array.getColor(R.styleable.NotationsView_textColorSelected, 0xFF00FF00);
 			}
 		} finally {
 			array.recycle();
@@ -230,7 +230,7 @@ public class NotationView extends LinearLayout implements NotationFace,
 				totalWidthsPerPage += notationViewWidth1;
 			}
 
-			// add NotationView padding
+			// add NotationsView padding
 			totalWidthsPerPage += screenPadding * 2;
 
 //			Log.d("TEST"," totalWidthsPerPage " + totalWidthsPerPage);
@@ -335,7 +335,7 @@ public class NotationView extends LinearLayout implements NotationFace,
 				textView.setId(NOTATION_ID);
 				textView.setTextSize(textSize);
 				textView.setTextColor(textColor);
-				textView.setOnClickListener(NotationView.this);
+				textView.setOnClickListener(NotationsView.this);
 				textView.setGravity(Gravity.CENTER);
 
 				int currentPosition = i + absoluteNumber;
@@ -398,7 +398,7 @@ public class NotationView extends LinearLayout implements NotationFace,
 
 						textView.setText(notation);
 						textView.setTag(R.id.list_item_id, currentPosition);
-						textView.setOnClickListener(NotationView.this);
+						textView.setOnClickListener(NotationsView.this);
 					} else if (newNotations) {
 						textView.setText(Symbol.SPACE);
 					}
@@ -434,7 +434,7 @@ public class NotationView extends LinearLayout implements NotationFace,
 						textView.setBackgroundDrawable(null);
 					}
 					textView.setPadding(textSidePadding, textPadding, textSidePadding, textPadding);
-					textView.setOnClickListener(NotationView.this);
+					textView.setOnClickListener(NotationsView.this);
 
 				}
 				invalidate();

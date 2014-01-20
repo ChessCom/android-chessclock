@@ -59,7 +59,7 @@
 		<attr name="contentStyle" format="reference"/>
 	</declare-styleable>
 
-	<declare-styleable name="NotationView">
+	<declare-styleable name="NotationsView">
 		<attr name="textColorBack" format="color|reference" />
 		<attr name="textColorSelected" format="color|reference" />
 	</declare-styleable>

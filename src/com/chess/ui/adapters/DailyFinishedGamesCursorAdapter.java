@@ -43,7 +43,6 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		drawColor = resources.getColor(R.color.stats_label_grey);
 
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
-
 	}
 
 	@Override

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.chess"
+	android:orientation="horizontal"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:padding="8dp"
+	>
+
+	<com.chess.widgets.RoboButton
+		android:id="@+id/lineBtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		style="@style/Button.Glassy"
+		android:text="@string/line"
+		/>
+
+	<com.chess.ui.views.NotationsView
+		android:id="@+id/notationsView"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:text="@string/ic_add"
+		/>
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/closeBtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		style="@style/GlyphIcon.Big"
+		app:ttf="Icon"
+		android:text="@string/ic_close"
+		/>
+
+
+</LinearLayout>

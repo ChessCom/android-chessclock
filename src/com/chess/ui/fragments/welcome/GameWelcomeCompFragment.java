@@ -37,7 +37,7 @@ import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameCompFace;
-import com.chess.ui.views.NotationView;
+import com.chess.ui.views.NotationsView;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.PanelInfoWelcomeView;
 import com.chess.ui.views.chess_boards.ChessBoardCompView;
@@ -104,7 +104,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private LabelsConfig labelsConfig;
 	protected boolean labelsSet;
 
-	protected NotationView notationsView;
+	protected NotationsView notationsView;
 	private boolean humanBlack;
 	private SparseArray<String> optionsList;
 	private PopupOptionsMenuFragment optionsSelectFragment;
@@ -855,7 +855,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		whatIsChessComTxt.setOnClickListener(this);
 
 		controlsView = (ControlsCompView) view.findViewById(R.id.controlsView);
-		notationsView = (NotationView) view.findViewById(R.id.notationsView);
+		notationsView = (NotationsView) view.findViewById(R.id.notationsView);
 		topPanelView = (PanelInfoWelcomeView) view.findViewById(R.id.topPanelView);
 		bottomPanelView = (PanelInfoWelcomeView) view.findViewById(R.id.bottomPanelView);
 
