@@ -186,6 +186,9 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		} else if (view.getId() == R.id.liveHeaderView) {
 			if (mode == RIGHT_MENU_MODE || mode == LIVE_CHALLENGE_MODE || mode == DAILY_CHALLENGE_MODE) {
 				toggleLiveOptionsMode();
+				if (dailyFullOptionsVisible) {
+					toggleDailyOptionsMode();
+				}
 			} else if (mode == CENTER_MODE) {
 				getActivityFace().changeRightFragment(LiveGameOptionsFragment.createInstance(CENTER_MODE));
 				getActivityFace().toggleRightMenu();
@@ -193,6 +196,9 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 		} else if (view.getId() == R.id.dailyHeaderView) {
 			if (mode == RIGHT_MENU_MODE || mode == LIVE_CHALLENGE_MODE || mode == DAILY_CHALLENGE_MODE) {
 				toggleDailyOptionsMode();
+				if (liveFullOptionsVisible) {
+					toggleLiveOptionsMode();
+				}
 			} else if (mode == CENTER_MODE) {
 				getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(CENTER_MODE));
 				getActivityFace().toggleRightMenu();

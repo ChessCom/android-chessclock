@@ -66,7 +66,6 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	private SwitchButton ratedGameSwitch;
 
 	private CreateChallengeUpdateListener createChallengeUpdateListener;
-//	private List<SelectionItem> friendsList;
 	private int chessRating;
 	private int chess960Rating;
 	private int positionMode;
@@ -261,7 +260,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 			}
 
 			// update min rating
-			gameConfigBuilder.setMinRating(rating - value);
+			gameConfigBuilder.setMinRatingOffset(value);
 		} else {
 			checkedButton = maxRatingBtn;
 
@@ -272,7 +271,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 			}
 
 			// update max rating
-			gameConfigBuilder.setMaxRating(rating - value);
+			gameConfigBuilder.setMaxRatingOffset(value);
 		}
 
 		checkedButton.setText(symbol + String.valueOf(value));
@@ -403,8 +402,9 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 			rating = chess960Rating;
 		}
 
-		gameConfigBuilder.setMinRating(rating - minRatingValue);
-		gameConfigBuilder.setMaxRating(rating + maxRatingValue);
+		gameConfigBuilder.setRating(rating);
+		gameConfigBuilder.setMinRatingOffset(minRatingValue);
+		gameConfigBuilder.setMaxRatingOffset(maxRatingValue);
 
 		getAppData().setDailyGameConfigBuilder(gameConfigBuilder);
 
@@ -451,40 +451,25 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 				int minRatingDefault;
 				int maxRatingDefault;
 
-				int minRating = gameConfigBuilder.getMinRating();
-				int maxRating = gameConfigBuilder.getMaxRating();
+				int minRatingOffset = gameConfigBuilder.getMinRatingOffset();
+				int maxRatingOffset = gameConfigBuilder.getMaxRatingOffset();
 
-				int rating;
-				if (gameConfigBuilder.getGameType() == RestHelper.V_GAME_CHESS) {
-					rating = chessRating;
-				} else {
-					rating = chess960Rating;
+				if (minRatingOffset == 0) { // first time
+					minRatingOffset = LiveGameConfig.RATING_STEP;
+					gameConfigBuilder.setMinRatingOffset(minRatingOffset);
+				}
+				if (maxRatingOffset == 0) { // first time
+					maxRatingOffset = LiveGameConfig.RATING_STEP;
+					gameConfigBuilder.setMaxRatingOffset(maxRatingOffset);
 				}
 
-				if (minRating == 0) { // first time
-					minRating = rating - LiveGameConfig.RATING_STEP;
-					gameConfigBuilder.setMinRating(minRating);
-				}
-				if (maxRating == 0) { // first time
-					maxRating = rating + LiveGameConfig.RATING_STEP;
-					gameConfigBuilder.setMaxRating(maxRating);
-				}
-
-				minRatingDefault = minRating - rating;
-				maxRatingDefault = maxRating - rating;
+				minRatingDefault = minRatingOffset;
+				maxRatingDefault = maxRatingOffset;
 
 				String minRatingStr;
 				String maxRatingStr;
-				if (minRatingDefault == 0) {
-					minRatingStr = Symbol.MINUS + LiveGameConfig.RATING_STEP;
-				} else {
-					minRatingStr = String.valueOf(minRatingDefault);
-				}
-				if (maxRatingDefault == 0) {
-					maxRatingStr = Symbol.PLUS + LiveGameConfig.RATING_STEP;
-				} else {
-					maxRatingStr = Symbol.PLUS + String.valueOf(Math.abs(maxRatingDefault));
-				}
+				minRatingStr = Symbol.MINUS + String.valueOf(minRatingDefault);
+				maxRatingStr = Symbol.PLUS + String.valueOf(Math.abs(maxRatingDefault));
 
 				if (JELLY_BEAN_PLUS_API) {
 					LayoutTransition layoutTransition = ratingView.getLayoutTransition();
@@ -504,7 +489,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 				maxRatingBtn.setOnClickListener(this);
 				maxRatingBtn.setText(maxRatingStr);
 
-				// set checked minRating Button
+				// set checked minRatingOffset Button
 				minRatingBtn.setChecked(true);
 
 				ratingSeekBar = (SeekBar) view.findViewById(R.id.ratingSeekBar);

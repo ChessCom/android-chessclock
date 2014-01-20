@@ -119,7 +119,7 @@
 	<string name="no_chess_account_signup_please">У вас нет аккаунта Chess.com, зарегистрируйтесь, пожалуйста!</string>
 	<string name="pass_dont_match">Пароли не совпадают</string>
 	<string name="version_check">Проверка версии</string>
-	<string name="version_is_obsolete_update">Эта версия больше не поддерживается. Пожалуйста, обновите. </string>
+	<string name="version_is_obsolete_update">Эта версия больше не поддерживается. Пожалуйста, обновите.</string>
 	<string name="tournaments">Турниры</string>
 	<string name="stats">Статистика</string>
 	<string name="you_been_challenged">"Вам брошен вызов"</string>

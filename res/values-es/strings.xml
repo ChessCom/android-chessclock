@@ -279,7 +279,7 @@
 
 	<string name="encoding_unsupported">Codificación no soportada</string>
 	<string name="error_occurred_while_login">Ocurrió un error al inicio de sesión, por favor, iniciar la sesión!</string>
-	<string name="update_available_please_update">Una actualización está disponible! Por favor, actualice</string>
+	<string name="version_is_obsolete_update">Una actualización está disponible! Por favor, actualice</string>
 	<string name="update_check">Comprobación de actualizaciones</string>
 	<string name="won_on_time">\n ganó en el tiempo</string>
 	<string name="won_by_resignation">\n ganada por la resignación</string>

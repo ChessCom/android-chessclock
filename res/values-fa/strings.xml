@@ -276,7 +276,7 @@
 
 	<string name="encoding_unsupported">کدبندی پشتیبانی نشده</string>
 	<string name="error_occurred_while_login">خطا رخ داده است در حالی که ورود به سیستم، لطفا relogin!</string>
-	<string name="update_available_please_update">به روز رسانی در دسترس است! لطفا به روز رسانی</string>
+	<string name="version_is_obsolete_update">به روز رسانی در دسترس است! لطفا به روز رسانی</string>
 	<string name="update_check">بررسی به روز رسانی</string>
 	<string name="won_on_time">\n در زمان به دست آورد</string>
 	<string name="won_by_resignation">\n برنده توسط استعفای</string>

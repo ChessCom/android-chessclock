@@ -277,7 +277,7 @@
 
 	<string name="encoding_unsupported">Codifica non supportata</string>
 	<string name="error_occurred_while_login">Errore durante il login, nuovo login!</string>
-	<string name="update_available_please_update">Un aggiornamento è disponibile! Si prega di aggiornare</string>
+	<string name="version_is_obsolete_update">Un aggiornamento è disponibile! Si prega di aggiornare</string>
 	<string name="update_check">Aggiornamento Verifica</string>
 	<string name="won_on_time">\n ha vinto in tempo</string>
 	<string name="won_by_resignation">\n vinta da dimissioni</string>

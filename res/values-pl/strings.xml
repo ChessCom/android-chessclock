@@ -276,7 +276,7 @@
 
 	<string name="encoding_unsupported">Kodowanie nieobsługiwane</string>
 	<string name="error_occurred_while_login">Wystąpił błąd podczas logowania, należy przelogować!</string>
-	<string name="update_available_please_update">Aktualizacja jest dostępna! Proszę zaktualizować</string>
+	<string name="version_is_obsolete_update">Aktualizacja jest dostępna! Proszę zaktualizować</string>
 	<string name="update_check">Aktualizacja Sprawdź</string>
 	<string name="won_on_time">\n wygrała na czas</string>
 	<string name="won_by_resignation">\n wygrała rezygnacji</string>

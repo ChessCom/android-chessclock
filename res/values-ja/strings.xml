@@ -276,7 +276,7 @@
 
 	<string name="encoding_unsupported">サポートされていないエンコーディング</string>
 	<string name="error_occurred_while_login">エラーが発生したログインの間、再ログインしてください！</string>
-	<string name="update_available_please_update">アップデートが利用可能です！更新してください</string>
+	<string name="version_is_obsolete_update">アップデートが利用可能です！更新してください</string>
 	<string name="update_check">チェック更新</string>
 	<string name="won_on_time">時間の\n 赢得</string>
 	<string name="won_by_resignation">辞任によって\n 赢得</string>

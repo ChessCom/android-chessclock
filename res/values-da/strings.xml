@@ -278,7 +278,7 @@
 
 	<string name="encoding_unsupported">Kodning understøttet</string>
 	<string name="error_occurred_while_login">Der opstod en fejl under login, bedes du logger ind igen!</string>
-	<string name="update_available_please_update">En opdatering er tilgængelig! Opdater venligst</string>
+	<string name="version_is_obsolete_update">En opdatering er tilgængelig! Opdater venligst</string>
 	<string name="update_check">Opdater Check</string>
 	<string name="won_on_time">\n vandt til tiden</string>
 	<string name="won_by_resignation">\n vandt af resignation</string>

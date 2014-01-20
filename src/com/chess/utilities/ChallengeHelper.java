@@ -238,9 +238,9 @@ public class ChallengeHelper {
 	}
 
 	public void createLiveChallenge() {
-		int minRating = liveGameConfigBuilder.getMinRating();
-		int maxRating = liveGameConfigBuilder.getMaxRating();
-		if (minRating == 0 || maxRating == 0) {
+		int minRatingOffset = liveGameConfigBuilder.getMinRatingOffset();
+		int maxRatingOffset = liveGameConfigBuilder.getMaxRatingOffset();
+		if (minRatingOffset == 0 || maxRatingOffset == 0) {
 			String username = getAppData().getUsername();
 
 			int liveStandardRating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
@@ -251,18 +251,21 @@ public class ChallengeHelper {
 					DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), username);
 
 			if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
-				minRating = liveStandardRating - LiveGameConfig.RATING_STEP;
-				maxRating = liveStandardRating + LiveGameConfig.RATING_STEP;
+				liveGameConfigBuilder.setRating(liveStandardRating);
+				minRatingOffset = liveStandardRating - LiveGameConfig.RATING_STEP;
+				maxRatingOffset = liveStandardRating + LiveGameConfig.RATING_STEP;
 			} else if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
-				minRating = liveBlitzRating - LiveGameConfig.RATING_STEP;
-				maxRating = liveBlitzRating + LiveGameConfig.RATING_STEP;
+				liveGameConfigBuilder.setRating(liveBlitzRating);
+				minRatingOffset = liveBlitzRating - LiveGameConfig.RATING_STEP;
+				maxRatingOffset = liveBlitzRating + LiveGameConfig.RATING_STEP;
 			} else if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
-				minRating = liveLightningRating - LiveGameConfig.RATING_STEP;
-				maxRating = liveLightningRating + LiveGameConfig.RATING_STEP;
+				liveGameConfigBuilder.setRating(liveLightningRating);
+				minRatingOffset = liveLightningRating - LiveGameConfig.RATING_STEP;
+				maxRatingOffset = liveLightningRating + LiveGameConfig.RATING_STEP;
 			}
 
-			liveGameConfigBuilder.setMinRating(minRating);
-			liveGameConfigBuilder.setMaxRating(maxRating);
+			liveGameConfigBuilder.setMinRatingOffset(minRatingOffset);
+			liveGameConfigBuilder.setMaxRatingOffset(maxRatingOffset);
 
 			// save config
 			getAppData().setLiveGameConfigBuilder(liveGameConfigBuilder);

@@ -829,7 +829,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.ACCESS_DENIED_CODE) { // handled in CommonLogicFragment
-					String message = getString(R.string.update_available_please_update);
+					String message = getString(R.string.version_is_obsolete_update);
 					safeShowSinglePopupDialog(R.string.error, message);
 					return;
 				} else if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) { // handled in CommonLogicFragment

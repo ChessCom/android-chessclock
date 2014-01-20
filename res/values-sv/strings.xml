@@ -276,7 +276,7 @@
 
 	<string name="encoding_unsupported">Kodar ouppburen</string>
 	<string name="error_occurred_while_login">Fel uppstod när inloggning, vänligen logga in igen!</string>
-	<string name="update_available_please_update">En uppdatering finns tillgänglig! Uppdatera</string>
+	<string name="version_is_obsolete_update">En uppdatering finns tillgänglig! Uppdatera</string>
 	<string name="update_check">Uppdatera Kontrollera</string>
 	<string name="won_on_time">\n vann på tiden</string>
 	<string name="won_by_resignation">\n vann med avgång</string>

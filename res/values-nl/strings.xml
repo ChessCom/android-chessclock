@@ -276,7 +276,7 @@
 
 	<string name="encoding_unsupported">Coderen van niet-ondersteunde</string>
 	<string name="error_occurred_while_login">Fout opgetreden tijdens het aanmelden, dan kunt u weer inloggen!</string>
-	<string name="update_available_please_update">Er is een update beschikbaar! Werk</string>
+	<string name="version_is_obsolete_update">Er is een update beschikbaar! Werk</string>
 	<string name="update_check">Werk Controleer</string>
 	<string name="won_on_time">\n won op tijd</string>
 	<string name="won_by_resignation">\n gewonnen door ontslag</string>

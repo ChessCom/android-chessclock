@@ -275,7 +275,7 @@
 
 	<string name="encoding_unsupported">Koding som ikke støttes</string>
 	<string name="error_occurred_while_login">Feil oppstod ved pålogging, kan du logge inn på nytt!</string>
-	<string name="update_available_please_update">En oppdatering er tilgjengelig! Vennligst oppdater</string>
+	<string name="version_is_obsolete_update">En oppdatering er tilgjengelig! Vennligst oppdater</string>
 	<string name="update_check">Oppdater Sjekk</string>
 	<string name="won_on_time">\n vant på tid</string>
 	<string name="won_by_resignation">\n vunnet av resignasjon</string>

@@ -276,7 +276,7 @@
 
 	<string name="encoding_unsupported">Desteklenmeyen Kodlama</string>
 	<string name="error_occurred_while_login">Hata oluştu giriş yaparken, relogin lütfen!</string>
-	<string name="update_available_please_update">Bir güncelleştirme kullanılabilir! Güncelleyin</string>
+	<string name="version_is_obsolete_update">Bir güncelleştirme kullanılabilir! Güncelleyin</string>
 	<string name="update_check">Kontrol güncelleyin</string>
 	<string name="won_on_time">\n zaman kazandı</string>
 	<string name="won_by_resignation">\n istifa kazandı</string>

@@ -20,7 +20,6 @@ import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
-import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.friends.FriendsRightFragment;
@@ -308,7 +307,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			}
 
 			// update min rating
-			gameConfigBuilder.setMinRating(rating - value);
+			gameConfigBuilder.setMinRatingOffset(value);
 		} else {
 			checkedButton = maxRatingBtn;
 
@@ -319,7 +318,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			}
 
 			// update max rating
-			gameConfigBuilder.setMaxRating(rating - value);
+			gameConfigBuilder.setMaxRatingOffset(value);
 		}
 
 		checkedButton.setText(symbol + String.valueOf(value));
@@ -395,8 +394,9 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			rating = lightningRating;
 		}
 
-		gameConfigBuilder.setMinRating(rating - minRatingValue);
-		gameConfigBuilder.setMaxRating(rating + maxRatingValue);
+		gameConfigBuilder.setRating(rating);
+		gameConfigBuilder.setMinRatingOffset(minRatingValue);
+		gameConfigBuilder.setMaxRatingOffset(maxRatingValue);
 
 		getAppData().setLiveGameConfigBuilder(gameConfigBuilder);
 
@@ -449,8 +449,8 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 					int minRatingDefault;
 					int maxRatingDefault;
 
-					int minRating = gameConfigBuilder.getMinRating();
-					int maxRating = gameConfigBuilder.getMaxRating();
+					int minRatingOffset = gameConfigBuilder.getMinRatingOffset();
+					int maxRatingOffset = gameConfigBuilder.getMaxRatingOffset();
 
 					int rating = 0;
 					if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
@@ -461,30 +461,22 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 						rating = lightningRating;
 					}
 
-					if (minRating == 0) { // first time
-						minRating = rating - LiveGameConfig.RATING_STEP;
-						gameConfigBuilder.setMinRating(minRating);
+					if (minRatingOffset == 0) { // first time
+						minRatingOffset = LiveGameConfig.RATING_STEP;
+						gameConfigBuilder.setMinRatingOffset(minRatingOffset);
 					}
-					if (maxRating == 0) { // first time
-						maxRating = rating + LiveGameConfig.RATING_STEP;
-						gameConfigBuilder.setMaxRating(maxRating);
+					if (maxRatingOffset == 0) { // first time
+						maxRatingOffset = LiveGameConfig.RATING_STEP;
+						gameConfigBuilder.setMaxRatingOffset(maxRatingOffset);
 					}
 
-					minRatingDefault = minRating - rating;
-					maxRatingDefault = maxRating - rating;
+					minRatingDefault = minRatingOffset;
+					maxRatingDefault = maxRatingOffset;
 
 					String minRatingStr;
 					String maxRatingStr;
-					if (minRatingDefault == 0) {
-						minRatingStr = Symbol.MINUS + LiveGameConfig.RATING_STEP;
-					} else {
-						minRatingStr = String.valueOf(minRatingDefault);
-					}
-					if (maxRatingDefault == 0) {
-						maxRatingStr = Symbol.PLUS + LiveGameConfig.RATING_STEP;
-					} else {
-						maxRatingStr = Symbol.PLUS + String.valueOf(Math.abs(maxRatingDefault));
-					}
+					minRatingStr = Symbol.MINUS + String.valueOf(minRatingDefault);
+					maxRatingStr = Symbol.PLUS + String.valueOf(Math.abs(maxRatingDefault));
 
 					if (JELLY_BEAN_PLUS_API) {
 						LayoutTransition layoutTransition = ratingView.getLayoutTransition();
@@ -508,7 +500,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 					maxRatingBtn.setOnClickListener(this);
 					maxRatingBtn.setText(maxRatingStr);
 
-					// set checked minRating Button
+					// set checked minRatingOffset Button
 					minRatingBtn.setChecked(true);
 				}
 

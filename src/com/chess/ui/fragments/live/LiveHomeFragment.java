@@ -282,29 +282,31 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 	private void createLiveChallenge() {
 		LiveGameConfig.Builder gameConfigBuilder = getAppData().getLiveGameConfigBuilder();
-		int minRating = gameConfigBuilder.getMinRating();
-		int maxRating = gameConfigBuilder.getMaxRating();
-		if (minRating == 0 || maxRating == 0) {
+		int minRatingOffset = gameConfigBuilder.getMinRatingOffset();
+		int maxRatingOffset = gameConfigBuilder.getMaxRatingOffset();
+		if (minRatingOffset == 0 || maxRatingOffset == 0) {
 			try {
 				LiveChessService liveService = getLiveService();
 				Integer standardRating = liveService.getUser().getRatingFor(GameRatingClass.Standard);
 				Integer blitzRating = liveService.getUser().getRatingFor(GameRatingClass.Blitz);
 				Integer lightningRating = liveService.getUser().getRatingFor(GameRatingClass.Lightning);
 
-
 				if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
-					minRating = standardRating - LiveGameConfig.RATING_STEP;
-					maxRating = standardRating + LiveGameConfig.RATING_STEP;
+					gameConfigBuilder.setRating(standardRating);
+					minRatingOffset = standardRating - LiveGameConfig.RATING_STEP;
+					maxRatingOffset = standardRating + LiveGameConfig.RATING_STEP;
 				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
-					minRating = blitzRating - LiveGameConfig.RATING_STEP;
-					maxRating = blitzRating + LiveGameConfig.RATING_STEP;
+					gameConfigBuilder.setRating(blitzRating);
+					minRatingOffset = blitzRating - LiveGameConfig.RATING_STEP;
+					maxRatingOffset = blitzRating + LiveGameConfig.RATING_STEP;
 				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
-					minRating = lightningRating - LiveGameConfig.RATING_STEP;
-					maxRating = lightningRating + LiveGameConfig.RATING_STEP;
+					gameConfigBuilder.setRating(lightningRating);
+					minRatingOffset = lightningRating - LiveGameConfig.RATING_STEP;
+					maxRatingOffset = lightningRating + LiveGameConfig.RATING_STEP;
 				}
 
-				gameConfigBuilder.setMinRating(minRating);
-				gameConfigBuilder.setMaxRating(maxRating);
+				gameConfigBuilder.setMinRatingOffset(minRatingOffset);
+				gameConfigBuilder.setMaxRatingOffset(maxRatingOffset);
 
 				// save config
 				getAppData().setLiveGameConfigBuilder(gameConfigBuilder);

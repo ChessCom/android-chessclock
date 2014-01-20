@@ -278,7 +278,7 @@
 
 	<string name="encoding_unsupported">Encodage non pris en charge</string>
 	<string name="error_occurred_while_login">Une erreur s\'est produite tout en identifiant, s\'il vous plaît se reconnecter!</string>
-	<string name="update_available_please_update">Une mise à jour est disponible! S\'il vous plaît mettre à jour</string>
+	<string name="version_is_obsolete_update">Une mise à jour est disponible! S\'il vous plaît mettre à jour</string>
 	<string name="update_check">Mise à jour Vérifiez</string>
 	<string name="won_on_time">\n gagné sur le temps</string>
 	<string name="won_by_resignation">\n remporté par la démission</string>

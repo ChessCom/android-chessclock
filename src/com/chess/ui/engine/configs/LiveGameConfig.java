@@ -30,8 +30,9 @@ public class LiveGameConfig implements Parcelable {
 		private boolean rated;
 		private int initialTime;
 		private int bonusTime;
-		private int minRating;
-		private int maxRating;
+		private int rating;
+		private int minRatingOffset;
+		private int maxRatingOffset;
 		private String opponentName;
 		private HashMap<Integer, Integer> timeModesMap;
 		private int timeMode;
@@ -61,16 +62,6 @@ public class LiveGameConfig implements Parcelable {
 
 		public Builder setOpponentName(String opponentName) {
 			this.opponentName = opponentName;
-			return this;
-		}
-
-		public Builder setMinRating(int minRating) {
-			this.minRating = minRating;
-			return this;
-		}
-
-		public Builder setMaxRating(int maxRating) {
-			this.maxRating = maxRating;
 			return this;
 		}
 
@@ -108,16 +99,35 @@ public class LiveGameConfig implements Parcelable {
 			return this;
 		}
 
-		public int getMinRating() {
-			return minRating;
-		}
-
-		public int getMaxRating() {
-			return maxRating;
-		}
-
 		public int getTimeMode() {
 			return timeMode;
+		}
+
+		public int getRating() {
+			return rating;
+		}
+
+		public Builder setRating(int rating) {
+			this.rating = rating;
+			return this;
+		}
+
+		public int getMinRatingOffset() {
+			return minRatingOffset;
+		}
+
+		public Builder setMinRatingOffset(int minRatingOffset) {
+			this.minRatingOffset = minRatingOffset;
+			return this;
+		}
+
+		public int getMaxRatingOffset() {
+			return maxRatingOffset;
+		}
+
+		public Builder setMaxRatingOffset(int maxRatingOffset) {
+			this.maxRatingOffset = maxRatingOffset;
+			return this;
 		}
 
 		public LiveGameConfig build() {
@@ -131,8 +141,8 @@ public class LiveGameConfig implements Parcelable {
 
 	private LiveGameConfig(Builder builder, boolean challengeFriend) {
 		this.rated = builder.rated;
-		this.minRating = builder.minRating;
-		this.maxRating = builder.maxRating;
+		this.minRating = builder.rating - builder.minRatingOffset;
+		this.maxRating = builder.rating + builder.maxRatingOffset;
 		this.initialTime = builder.initialTime;
 		this.bonusTime = builder.bonusTime;
 
@@ -163,10 +173,6 @@ public class LiveGameConfig implements Parcelable {
 
 	public int getBonusTime() {
 		return bonusTime;
-	}
-
-	public String getDefaultModeLabel() {
-		return String.valueOf(initialTime) + " | " + bonusTime;
 	}
 
 	protected LiveGameConfig(Parcel in) {

@@ -20,8 +20,9 @@ public class DailyGameConfig {
 	public static class Builder{
 		private int daysPerMove;
 		private boolean rated;
-		private int minRating;
-		private int maxRating;
+		private int rating;
+		private int minRatingOffset;
+		private int maxRatingOffset;
 		private int gameType;
 		private String opponentName;
 
@@ -76,30 +77,38 @@ public class DailyGameConfig {
 			return this;
 		}
 
-		public Builder setMinRating(int minRating) {
-			this.minRating = minRating;
+		public int getGameType() {
+			return gameType;
+		}
+		public int getRating() {
+			return rating;
+		}
+
+		public Builder setRating(int rating) {
+			this.rating = rating;
 			return this;
 		}
 
-		public Builder setMaxRating(int maxRating) {
-			this.maxRating = maxRating;
+		public int getMinRatingOffset() {
+			return minRatingOffset;
+		}
+
+		public Builder setMinRatingOffset(int minRatingOffset) {
+			this.minRatingOffset = minRatingOffset;
+			return this;
+		}
+
+		public int getMaxRatingOffset() {
+			return maxRatingOffset;
+		}
+
+		public Builder setMaxRatingOffset(int maxRatingOffset) {
+			this.maxRatingOffset = maxRatingOffset;
 			return this;
 		}
 
 		public DailyGameConfig build(){
 			return new DailyGameConfig(this);
-		}
-
-		public int getGameType() {
-			return gameType;
-		}
-
-		public int getMinRating() {
-			return minRating;
-		}
-
-		public int getMaxRating() {
-			return maxRating;
 		}
 	}
 
@@ -108,8 +117,8 @@ public class DailyGameConfig {
 		this.rated = builder.rated;
 		this.gameType = builder.gameType;
 		this.opponentName = builder.opponentName;
-		this.minRating = builder.minRating;
-		this.maxRating = builder.maxRating;
+		this.minRating = builder.rating - builder.minRatingOffset;
+		this.maxRating = builder.rating + builder.maxRatingOffset;
 	}
 
 	public int getDaysPerMove() {

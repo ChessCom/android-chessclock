@@ -278,7 +278,7 @@
 
 	<string name="encoding_unsupported">ترميز غير معتمد</string>
 	<string name="error_occurred_while_login">حدث خطأ أثناء تسجيل الدخول، يرجى relogin!</string>
-	<string name="update_available_please_update">يتوفر تحديث! يرجى تحديث</string>
+	<string name="version_is_obsolete_update">يتوفر تحديث! يرجى تحديث</string>
 	<string name="update_check">تحديث تحقق</string>
 	<string name="won_on_time">\nوفاز في الوقت المحدد</string>
 	<string name="won_by_resignation">وفاز من قبل استقالة\n</string>

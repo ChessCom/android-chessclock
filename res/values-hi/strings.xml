@@ -278,7 +278,7 @@
 
 	<string name="encoding_unsupported">असमर्थित एनकोडिंग</string>
 	<string name="error_occurred_while_login">त्रुटि हुई लॉगिन जबकि, relogin कृपया!</string>
-	<string name="update_available_please_update">एक अद्यतन उपलब्ध है! अपडेट करें</string>
+	<string name="version_is_obsolete_update">एक अद्यतन उपलब्ध है! अपडेट करें</string>
 	<string name="update_check">जाँच करें अद्यतन</string>
 	<string name="won_on_time">\n समय पर जीता</string>
 	<string name="won_by_resignation">\n इस्तीफे से जीता</string>

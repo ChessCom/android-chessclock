@@ -278,7 +278,7 @@
 
 	<string name="encoding_unsupported">Encoding nicht unterstützten</string>
 	<string name="error_occurred_while_login">Fehler beim Login, wenden Sie sich bitte erneut anmelden!</string>
-	<string name="update_available_please_update">Ein Update ist verfügbar! Bitte aktualisieren</string>
+	<string name="version_is_obsolete_update">Ein Update ist verfügbar! Bitte aktualisieren</string>
 	<string name="update_check">Update Check</string>
 	<string name="won_on_time">\n gewann auf Zeit</string>
 	<string name="won_by_resignation">\n gewonnen durch Rücktritt</string>

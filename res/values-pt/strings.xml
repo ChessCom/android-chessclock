@@ -276,7 +276,7 @@
 
 	<string name="encoding_unsupported">Codificação não suportada</string>
 	<string name="error_occurred_while_login">Ocorreu um erro enquanto login, por favor relogin!</string>
-	<string name="update_available_please_update">Uma atualização está disponível! Por favor, atualize</string>
+	<string name="version_is_obsolete_update">Uma atualização está disponível! Por favor, atualize</string>
 	<string name="update_check">Atualize Confira</string>
 	<string name="won_on_time">\n ganhou no tempo</string>
 	<string name="won_by_resignation">\n ganhou por renúncia</string>

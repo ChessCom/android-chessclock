@@ -278,7 +278,7 @@
 
 	<string name="encoding_unsupported">קידוד לא נתמך</string>
 	<string name="error_occurred_while_login">שגיאה בזמן ההתחברות, אנא relogin!</string>
-	<string name="update_available_please_update">עדכון זמין! אנא עדכן</string>
+	<string name="version_is_obsolete_update">עדכון זמין! אנא עדכן</string>
 	<string name="update_check">הסימון עדכן</string>
 	<string name="won_on_time">\n ניצח על הזמן</string>
 	<string name="won_by_resignation">\n ניצח התפטרותו</string>
