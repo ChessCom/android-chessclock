@@ -118,8 +118,15 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 					((View) getNotationsFace()).setVisibility(View.VISIBLE);
 					// hide chat
 					chatFragmentContainer.setVisibility(View.GONE);
+
+					// change action buttons back
+					getActivityFace().showActionMenu(R.id.menu_cancel, false);
+					getActivityFace().showActionMenu(R.id.menu_accept, false);
+					getActivityFace().showActionMenu(R.id.menu_notifications, true);
+					getActivityFace().showActionMenu(R.id.menu_games, true);
+
 					break;
-				case R.id.chatBtn:
+				case R.id.chatBtn: {
 					((View) getNotationsFace()).setVisibility(View.INVISIBLE);
 					chatFragmentContainer.setVisibility(View.VISIBLE);
 
@@ -134,7 +141,24 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 						transaction.commit();
 					}
 
-					break;
+				}
+				break;
+				case R.id.notesBtn: {
+					((View) getNotationsFace()).setVisibility(View.INVISIBLE);
+					chatFragmentContainer.setVisibility(View.VISIBLE);
+
+					String fragmentTag = DailyNotesFragment.class.getSimpleName();
+
+					Fragment fragmentByTag = getChildFragmentManager().findFragmentByTag(fragmentTag);
+					if (fragmentByTag == null) {
+						fragmentByTag = DailyNotesFragment.createInstance(gameId);
+
+						FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+						transaction.replace(R.id.chatFragmentContainer, fragmentByTag, fragmentTag);
+						transaction.commit();
+					}
+				}
+				break;
 			}
 		}
 	}

@@ -387,6 +387,11 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	@Override
+	public void openNotes() {
+		getActivityFace().openFragment(DailyNotesFragment.createInstance(gameId));
+	}
+
+	@Override
 	public void newGame() {
 
 	}

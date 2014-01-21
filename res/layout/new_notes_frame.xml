@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.chess.widgets.RelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:paddingTop="15dp"
+	style="@style/ListItem">
+
+	<com.chess.widgets.RoboEditText
+		android:id="@+id/noteEdt"
+		android:inputType="textMultiLine"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:hint="@string/private_note"
+		android:minHeight="100dip"
+		android:gravity="top"
+		android:minLines="5"
+		android:singleLine="false"
+		android:background="@drawable/edit_grey_one_default"
+		android:paddingTop="@dimen/default_scr_side_padding"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:paddingBottom="8dip"
+		android:layout_marginLeft="@dimen/default_scr_side_padding"
+		android:layout_marginRight="@dimen/default_scr_side_padding"
+		android:layout_marginBottom="@dimen/default_scr_side_padding"
+		android:imeActionLabel="@string/post" />
+
+
+</com.chess.widgets.RelLayout>

@@ -65,6 +65,7 @@ public abstract class BasePopupDialogFragment extends DialogFragment implements 
 	public void onResume() {
 		super.onResume();
 		isPaused = false;
+		isShowed = true;
 	}
 
 	@Override

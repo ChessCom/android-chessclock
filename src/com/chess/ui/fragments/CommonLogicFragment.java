@@ -82,7 +82,7 @@ import static com.chess.statics.AppConstants.*;
  * Time: 10:18
  */
 public abstract class CommonLogicFragment extends BasePopupsFragment implements View.OnClickListener,
-		PullToRefreshAttacher.OnRefreshListener, Session.StatusCallback, ProfileImageView.ProfileOpenFace  {
+		PullToRefreshAttacher.OnRefreshListener, Session.StatusCallback, ProfileImageView.ProfileOpenFace {
 
 	private static final int MIN_USERNAME_LENGTH = 3;
 	private static final int MAX_USERNAME_LENGTH = 20;
@@ -188,16 +188,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		textViewsImageCache = new HashMap<String, ImageGetter.TextImage>();
 
-		// initialize imageFetcher
-		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(activity, IMAGE_CACHE_DIR);
+		{// initialize imageFetcher
+			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(activity, IMAGE_CACHE_DIR);
+			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
 
-		cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
-
-		// The ImageFetcher takes care of loading images into our ImageView children asynchronously
-		imageFetcher = new SmartImageFetcher(activity);
-		imageFetcher.setLoadingImage(R.drawable.img_profile_picture_stub);
-		imageFetcher.addImageCache(activity.getSupportFragmentManager(), cacheParams);
-
+			// The ImageFetcher takes care of loading images into our ImageView children asynchronously
+			imageFetcher = new SmartImageFetcher(activity);
+			imageFetcher.setLoadingImage(R.drawable.img_profile_picture_stub);
+			imageFetcher.addImageCache(activity.getSupportFragmentManager(), cacheParams);
+		}
 		startLiveGameFilter = new IntentFilter(IntentConstants.START_LIVE_GAME);
 
 		themeFontColorStateList = FontsHelper.getInstance().getThemeColorStateList(activity, false);
@@ -655,7 +654,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 			new RequestJsonTask<LoginItem>(loginUpdateListener).executeTask(loadItem);
 		} else {
-			showToast(R.string.unable_to_relogin);
+			if (!TextUtils.isEmpty(getUserToken())) {
+				showToast(R.string.unable_to_relogin);
+			}
+
+			DataHolder.getInstance().setPerformingRelogin(false);
 		}
 	}
 

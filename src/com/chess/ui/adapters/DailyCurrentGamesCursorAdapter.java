@@ -33,13 +33,16 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 	private final boolean sevenInchTablet;
 	private final ItemClickListenerFace clickListenerFace;
+	private SmartImageFetcher boardFetcher;
 	private boolean showMiniBoards;
 	private boolean showNewGameAtFirst;
 	private String timeLabel;
 
-	public DailyCurrentGamesCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor, SmartImageFetcher imageFetcher) {
+	public DailyCurrentGamesCursorAdapter(ItemClickListenerFace clickListenerFace, Cursor cursor,
+										  SmartImageFetcher imageFetcher, SmartImageFetcher boardFetcher) {
 		super(clickListenerFace.getMeContext(), cursor, imageFetcher);
 		this.clickListenerFace = clickListenerFace;
+		this.boardFetcher = boardFetcher;
 		fullPadding = (int) context.getResources().getDimension(R.dimen.default_scr_side_padding);
 		halfPadding = fullPadding / 2;
 		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);
@@ -197,7 +200,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 			imageDataMap.put(imageUrl, new SmartImageFetcher.Data(imageUrl, boardPreviewSize));
 		}
 
-		imageFetcher.loadImage(imageDataMap.get(imageUrl), holder.boardPreviewFrame.getImageView());
+		boardFetcher.loadImage(imageDataMap.get(imageUrl), holder.boardPreviewFrame.getImageView());
 	}
 
 	private boolean lessThanDay(long amount) {

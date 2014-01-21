@@ -229,6 +229,11 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 	}
 
 	@Override
+	public void openNotes() {
+		gameAnalysisFace.openNotes();
+	}
+
+	@Override
 	public void closeBoard() {
 		gameAnalysisFace.closeBoard();
 	}

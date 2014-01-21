@@ -575,4 +575,6 @@
 	<string name="predict_move_or_add_new_line">Predict move or add new line...</string>
 	<string name="make_your_conditional_move">Make your conditional move...</string>
 	<string name="predict_opponent_next_move">Predict opponent\'s next move...</string>
+	<string name="notes">Notes</string>
+	<string name="private_note">Private Note</string>
 </resources>

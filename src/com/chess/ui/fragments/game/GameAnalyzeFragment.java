@@ -124,6 +124,12 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	}
 
 	@Override
+	public void openNotes() {
+
+		// don't used for non daily games
+	}
+
+	@Override
 	public void closeBoard() {
 		getActivityFace().showPreviousFragment();
 	}

@@ -29,8 +29,9 @@ public class ControlsAnalysisView extends ControlsBaseView {
 
 	@Override
 	protected void addButtons() {
-		addControlButton(EXIT, styles[LEFT]);
+//		addControlButton(EXIT, styles[LEFT]);
 		addControlButton(RESTART, styles[LEFT]);
+		addControlButton(NOTES, styles[MIDDLE]);
 		addControlButton(BOOK, styles[MIDDLE]);
 		addControlButton(COMP, styles[MIDDLE]);
 		addControlButton(BACK, styles[MIDDLE]);
@@ -45,6 +46,8 @@ public class ControlsAnalysisView extends ControlsBaseView {
 
 		if (view.getId() == getButtonId(EXIT)) {
 			boardViewFace.closeBoard();
+		} else if (view.getId() == getButtonId(NOTES)) {
+			boardViewFace.openNotes();
 		} else if (view.getId() == getButtonId(COMP)) {
 			boardViewFace.vsComputer();
 		} else if (view.getId() == getButtonId(BOOK)) {
@@ -60,8 +63,9 @@ public class ControlsAnalysisView extends ControlsBaseView {
 	}
 
 	public void enableGameControls(boolean enable) {
-		enableGameButton(EXIT, enable);
+//		enableGameButton(EXIT, enable);
 		enableGameButton(RESTART, enable);
+		enableGameButton(NOTES, enable);
 		enableGameButton(BOOK, enable);
 		if (showComp) {
 			enableGameButton(COMP, enable);

@@ -83,7 +83,7 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
 
-		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher());
+		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher(), getImageFetcher());
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
 
 		sectionedAdapter.addSection(getString(R.string.my_move), currentGamesMyCursorAdapter);

@@ -182,6 +182,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	@Override
 	public void onResume() {
 		super.onResume();
+
 		moveUpdateReceiver = new MoveUpdateReceiver();
 		newChatUpdateReceiver = new NewChatUpdateReceiver();
 		registerReceiver(moveUpdateReceiver, boardUpdateFilter);
@@ -455,8 +456,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 				getControlsView().enableGameControls(true);
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
-
-//		boardFace.setJustInitialized(false);
 
 		{ // set stubs while avatars are loading
 			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,

@@ -10,6 +10,8 @@ public interface BoardViewAnalysisFace extends BoardViewFace {
 
 	void restart();
 
+	void openNotes();
+
 	void flipBoard();
 
 	void vsComputer();

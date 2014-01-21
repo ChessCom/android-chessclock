@@ -396,6 +396,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 	public void setPlayerFlag(String country) {
 		if (country != null) {
+			flagImg.setVisibility(VISIBLE);
 			flagImg.setImageDrawable(AppUtils.getCountryFlagScaled(getContext(), country));
 		} else {
 			flagImg.setVisibility(GONE);

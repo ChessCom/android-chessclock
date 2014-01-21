@@ -17,6 +17,8 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.*;
 import com.chess.backend.entity.api.daily_games.*;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -62,6 +64,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private static final String END_VACATION_TAG = "end vacation popup";
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
+	private static final String IMAGE_CACHE_DIR = "boards";
 
 	private DailyUpdateListener challengeInviteUpdateListener;
 	private DailyUpdateListener acceptDrawUpdateListener;
@@ -74,6 +77,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private GamesCursorUpdateListener currentGamesCursorUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	protected DailyGamesUpdateListener dailyGamesUpdateListener;
+	private SmartImageFetcher boardImgFetcher;
 
 	private DailyCurrentGamesCursorAdapter currentGamesMyCursorAdapter;
 	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
@@ -127,7 +131,15 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
 
-		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher());
+		{// initialize boardsFetcher
+			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
+			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
+
+			boardImgFetcher = new SmartImageFetcher(getActivity());
+			boardImgFetcher.setLoadingImage(R.drawable.board_green_default);
+			boardImgFetcher.addImageCache(getFragmentManager(), cacheParams);
+		}
+		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher(), boardImgFetcher);
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
 
 		sectionedAdapter.addSection(getString(R.string.my_move), currentGamesMyCursorAdapter);
@@ -155,6 +167,23 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		super.onViewCreated(view, savedInstanceState);
 
 		widgetsInit(view);
+
+		listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+				// Pause fetcher to ensure smoother scrolling when flinging
+				if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+					boardImgFetcher.setPauseWork(true);
+				} else {
+					boardImgFetcher.setPauseWork(false);
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView absListView, int firstVisibleItem,
+								 int visibleItemCount, int totalItemCount) {
+			}
+		});
 	}
 
 	@Override
@@ -187,6 +216,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		gamesUpdateReceiver = new GamesUpdateReceiver();
 		registerReceiver(gamesUpdateReceiver, moveUpdateFilter);
+
+		boardImgFetcher.setExitTasksEarly(false);
 	}
 
 	@Override
@@ -195,7 +226,18 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		unRegisterMyReceiver(gamesUpdateReceiver);
 
+		boardImgFetcher.setPauseWork(false);
+		boardImgFetcher.setExitTasksEarly(true);
+		boardImgFetcher.flushCache();
+
 //		releaseResources();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		boardImgFetcher.closeCache();
 	}
 
 	@Override

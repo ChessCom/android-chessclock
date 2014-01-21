@@ -25,6 +25,8 @@ import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameItem;
 import com.chess.backend.entity.api.daily_games.DailyFinishedGameData;
 import com.chess.backend.entity.api.daily_games.DailyGamesAllItem;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
+import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -62,6 +64,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 	private static final String END_VACATION_TAG = "end vacation popup";
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
+	private static final String IMAGE_CACHE_DIR = "boards";
+
 	private static final long FRAGMENT_VISIBILITY_DELAY = 200;
 
 	private DailyUpdateListener challengeInviteUpdateListener;
@@ -88,6 +92,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	private boolean startDailyGame;
 	private ChallengeHelper challengeHelper;
 	private boolean showMiniBoards;
+	private SmartImageFetcher boardImgFetcher;
 
 	public DailyGamesFragmentTablet() {
 		Bundle bundle = new Bundle();
@@ -115,7 +120,16 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 		challengeHelper = new ChallengeHelper(this, true);
 
-		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher());
+		{// initialize boardsFetcher
+			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
+			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
+
+			boardImgFetcher = new SmartImageFetcher(getActivity());
+			boardImgFetcher.setLoadingImage(R.drawable.board_green_default);
+			boardImgFetcher.addImageCache(getFragmentManager(), cacheParams);
+		}
+
+		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher(), boardImgFetcher);
 		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
 
 		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
@@ -160,8 +174,10 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 				public void onScrollStateChanged(AbsListView absListView, int scrollState) {
 					// Pause fetcher to ensure smoother scrolling when flinging
 					if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+						boardImgFetcher.setPauseWork(true);
 						getImageFetcher().setPauseWork(true);
 					} else {
+						boardImgFetcher.setPauseWork(false);
 						getImageFetcher().setPauseWork(false);
 					}
 				}
@@ -212,6 +228,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 			currentGamesMyCursorAdapter.setShowMiniBoards(showMiniBoards);
 			currentGamesMyCursorAdapter.notifyDataSetInvalidated();
 		}
+
+		boardImgFetcher.setExitTasksEarly(false);
 	}
 
 	@Override
@@ -222,6 +240,17 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 		handler.removeCallbacks(delayedLoadFromDb);
 		releaseResources();
+
+		boardImgFetcher.setPauseWork(false);
+		boardImgFetcher.setExitTasksEarly(true);
+		boardImgFetcher.flushCache();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		boardImgFetcher.closeCache();
 	}
 
 	@Override

@@ -285,7 +285,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 
 		// check if it's 7th day after install, then ask for feedback
-		if (!getAppData().isUserAskedForFeedback()) {
+		if (!getAppData().isUserAskedForFeedback() && !getMeUsername().equals(Symbol.EMPTY)
+				&& !getMeUsername().equals(AppConstants.GUEST_NAME)) {
+
 			// first we check if 7 days has passed
 			long timeNow = System.currentTimeMillis();
 			long firstTimeStart = getAppData().getFirstTimeStart();
@@ -300,6 +302,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			if (!reAskForReviewNow) {
 				return;
 			}
+
+			// avoid multiple popup appears
+			getAppData().setLastTimeAskedForFeedback(System.currentTimeMillis());
 
 			View layout = LayoutInflater.from(this).inflate(R.layout.new_review_app_popup, null, false);
 			layout.findViewById(R.id.positiveBtn).setOnClickListener(this);
@@ -784,6 +789,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void onClick(View view) {
 
 		if (view.getId() == R.id.positiveBtn) { // Yes (leave us feedback)
+			getAppData().setUserAskedForFeedback(true);
+
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setData(Uri.parse(AppUtils.getGooglePlayLinkForApp(this)));
 			startActivity(intent);
@@ -791,8 +798,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			if (reviewPopupFragment != null) {
 				reviewPopupFragment.dismiss();
 			}
-			getAppData().setUserAskedForFeedback(true);
 		} else if (view.getId() == R.id.negativeBtn) { // No (send us suggestions)
+			getAppData().setUserAskedForFeedback(true);
+
 			Intent emailIntent = new Intent(Intent.ACTION_SEND);
 			emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
 			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppConstants.FEEDBACK_EMAIL});
@@ -804,12 +812,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				reviewPopupFragment.dismiss();
 			}
 
-			getAppData().setUserAskedForFeedback(true);
 		} else if (view.getId() == R.id.ignoreBtn) {
 			if (reviewPopupFragment != null) {
 				reviewPopupFragment.dismiss();
 			}
-			getAppData().setLastTimeAskedForFeedback(System.currentTimeMillis());
 		}
 	}
 
