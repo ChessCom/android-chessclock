@@ -33,13 +33,13 @@ public class ChessClock {
 	private int previousTime = -999;
 	private String previousTimeString;
 
-	public ChessClock(LccHelper lccHelper, boolean isWhite, boolean isGameOver) {
+	public ChessClock(LccHelper lccHelper, boolean isWhite, boolean isRunning) {
 		this.lccHelper = lccHelper;
 		this.isWhite = isWhite;
 		game = lccHelper.getCurrentGame();
 		playerName = isWhite ? game.getWhitePlayer().getUsername() : game.getBlackPlayer().getUsername();
 
-		setRunning(!isGameOver);
+		setRunning(isRunning);
 	}
 
 	public void updateTime() {

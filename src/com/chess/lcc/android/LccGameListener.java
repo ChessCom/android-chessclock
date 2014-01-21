@@ -24,11 +24,18 @@ public class LccGameListener implements GameListener {
 	public void onGameListReceived(Collection<? extends Game> games) {
 		LogMe.dl(TAG, "Game list received, total size = " + games.size());
 
+		Game currentGame = lccHelper.getCurrentGame();
+		if (currentGame != null) {
+			lccHelper.setLastGame(currentGame);
+		}
+		lccHelper.clearGames();
+		lccHelper.setCurrentGameId(null);
+		lccHelper.setCurrentObservedGameId(null);
+
 		Long previousGameId = latestGameId;
 		latestGameId = 0L;
 
 		Long gameId;
-		Game latestGame = null;
 		for (Game game : games) {
 			gameId = game.getId();
 			if (lccHelper.isObservedGame(game)) { // TODO to vm: why we should ignore ? In this case after restoring app we force to exit from observe mode right after it's loaded
@@ -39,7 +46,6 @@ public class LccGameListener implements GameListener {
 
 			} else if (gameId > latestGameId) {
 				latestGameId = gameId;
-				latestGame = game;
 			}
 		}
 
@@ -47,9 +53,6 @@ public class LccGameListener implements GameListener {
 
 		if (!latestGameId.equals(previousGameId) && lccHelper.getLccEventListener() != null) {
 			LogMe.dl(TAG, "onGameListReceived: game is expired");
-			if (latestGame != null) {
-				lccHelper.putGame(latestGame); // update expired game
-			}
 			lccHelper.getLccEventListener().expireGame();
 		}
 	}
@@ -131,7 +134,7 @@ public class LccGameListener implements GameListener {
                                                         lccHelper.getSeekListListener());*/
 
 		// Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId; // vm: looks redundant
-		lccHelper.setLastGameId(gameId);
+		lccHelper.setLastGame(game);
 
 		lccHelper.checkAndProcessEndGame(game);
 	}

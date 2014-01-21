@@ -80,7 +80,7 @@ public class LccHelper {
 	private boolean gameActivityPausedMode = true;
 	private Integer latestMoveNumber;
 	private Long currentGameId;
-	private Long lastGameId;
+	private Game lastGame;
 	private Long currentObservedGameId;
 	private Context context;
 	private List<String> pendingWarnings;
@@ -440,8 +440,7 @@ public class LccHelper {
 	}
 
 	public Game getLastGame() {
-		LogMe.dl(TAG, "debug getLastGame() lastGameId=" + lastGameId);
-		return lastGameId != null ? lccGames.get(lastGameId) : null;
+		return lastGame;
 	}
 
 	/*public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
@@ -816,7 +815,7 @@ public class LccHelper {
 				user, to, gameType, color, lastGame.isRated(),
 				lastGame.getGameTimeConfig(), minMembershipLevel, minRating, maxRating);
 
-		challenge.setRematchGameId(lastGameId);
+		challenge.setRematchGameId(lastGame.getId());
 
 		liveService.runSendChallengeTask(challenge);
 	}
@@ -824,8 +823,8 @@ public class LccHelper {
 	public void initClock() {
 		stopClock();
 
-		whiteClock = new ChessClock(this, true, getCurrentGame().isGameOver());
-		blackClock = new ChessClock(this, false, getCurrentGame().isGameOver());
+		whiteClock = new ChessClock(this, true, isActiveGamePresent());
+		blackClock = new ChessClock(this, false, isActiveGamePresent());
 	}
 
 	public void stopClock() {
@@ -942,9 +941,8 @@ public class LccHelper {
 		}
 	}*/
 
-	public void setLastGameId(Long lastGameId) {
-		this.lastGameId = lastGameId;
-		LogMe.dl(TAG, "setLastGameId " + lastGameId);
+	public void setLastGame(Game lastGame) {
+		this.lastGame = lastGame;
 	}
 
 	public void setCurrentGameId(Long gameId) {
@@ -994,10 +992,6 @@ public class LccHelper {
 			}
 		}
 		return null;
-	}
-
-	public boolean isGameAlreadyPresent() {
-		return currentGameId != null && getGame(currentGameId) != null;
 	}
 
 	public boolean isActiveGamePresent() {

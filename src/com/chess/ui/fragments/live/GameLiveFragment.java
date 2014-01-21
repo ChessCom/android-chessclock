@@ -866,7 +866,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			return;
 		}
 
-		boolean isGameOver = liveService.getCurrentGame() != null && liveService.getCurrentGame().isGameOver();
+		boolean isGameOver = !liveService.isActiveGamePresent();
 
 		if (isGameOver) {
 			optionsMap.put(ID_REMATCH, getString(R.string.rematch));

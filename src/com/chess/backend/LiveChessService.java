@@ -327,10 +327,6 @@ public class LiveChessService extends Service {
 		return lccHelper != null && lccHelper.getUser() != null && isConnected();
 	}
 
-	/*public boolean isGameAlreadyPresent() { // todo: we have to add Current Game button and open active game or show results of previous game
-		return lccHelper != null && lccHelper.isGameAlreadyPresent();
-	}*/
-
 	public boolean isActiveGamePresent() {
 		return lccHelper != null && lccHelper.isActiveGamePresent();
 	}
