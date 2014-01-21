@@ -1,8 +1,11 @@
 package com.chess.ui.fragments.live;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.SparseArray;
@@ -106,11 +109,9 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		try {
 
 			if (!isNetworkAvailable()) {
-				// ask user to turn device connection on, prevent showing several instances of "connection settings"
-				/*
+				dismissNetworkCheckDialog();
 				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
-				*/
 			}
 
 			if (!isLCSBound) {
@@ -323,6 +324,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	public void onLiveClientConnected() {
 		super.onLiveClientConnected();
 		dismissProgressDialog();
+		dismissNetworkCheckDialog();
 	}
 
 	@Override
@@ -519,7 +521,6 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		getAppData().setDefaultLiveMode(mode);
 	}
 
-	/*
 	@Override
 	public void onPositiveBtnClick(DialogFragment fragment) {
 		String tag = fragment.getTag();
@@ -529,9 +530,12 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		}
 
 		if (tag.equals(NETWORK_CHECK_TAG)) {
-			startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), NETWORK_REQUEST);
+			startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
 		}
 		super.onPositiveBtnClick(fragment);
 	}
-	*/
+
+	private void dismissNetworkCheckDialog() {
+		dismissFragmentDialogByTag(NETWORK_CHECK_TAG);
+	}
 }

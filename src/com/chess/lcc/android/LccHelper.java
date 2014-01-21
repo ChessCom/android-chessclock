@@ -44,7 +44,7 @@ public class LccHelper {
 	private static final int CONNECTION_FAILURE_DELAY = 2000;
 	public static final Object CLIENT_SYNC_LOCK = new Object();
 	public static final Object GAME_SYNC_LOCK = new Object();
-	public static final int FINISH_CONNECT_ATTEMPTS_DELAY = 60 * 1000;
+	public static final int FINISH_LCC_CONNECT_ATTEMPTS_DELAY = 20 * 1000;
 
 	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
@@ -97,7 +97,7 @@ public class LccHelper {
 
 	private boolean connectionFailure;
 	//private int connectionFailureCounter;
-	private boolean continueReloginForLive;
+	private boolean allowLccConnecting;
 	private Handler handler;
 
 	public LccHelper(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
@@ -238,16 +238,16 @@ public class LccHelper {
 		// here we check if sessionId is not expired(ttl = 60min)
 		long sessionIdSaveTime = appData.getLiveSessionIdSaveTime();
 		long currentTime = System.currentTimeMillis();
-		LogMe.dl(TAG, "sessionIdSaveTime = " + sessionIdSaveTime + ", currentTime = " + currentTime + ", sessionId = " + appData.getLiveSessionId());
+		String sessionId = appData.getLiveSessionId();
+		LogMe.dl(TAG, "sessionIdSaveTime = " + sessionIdSaveTime + ", currentTime = " + currentTime + ", sessionId = " + sessionId);
 
 		boolean useSessionId = currentTime - sessionIdSaveTime <= AppConstants.LIVE_SESSION_EXPIRE_TIME
-				&& !TextUtils.isEmpty(appData.getLiveSessionId());
+				&& !TextUtils.isEmpty(sessionId);
 
 		boolean emptyPassword = pass.equals(Symbol.EMPTY);
 
 		if (useSessionId) {
 			if (emptyPassword || RestHelper.getInstance().IS_TEST_SERVER_MODE) {
-				String sessionId = appData.getLiveSessionId();
 				connectBySessionId(sessionId);
 			} else {
 				connectByCreds(username, pass);
@@ -267,15 +267,15 @@ public class LccHelper {
 	public void connectByCreds(String username, String pass) {
 //		LogMe.dl(TAG, "connectByCreds : user = " + username + " pass = " + pass); // do not post in prod
 		LogMe.dl(TAG, "connectByCreds : hidden"); // do not post in pod
-		lccClient.connect(username, pass, connectionListener, subscriptionListener);
 		startConnectionTimer();
+		lccClient.connect(username, pass, connectionListener, subscriptionListener);
 		liveChessClientEventListener.onConnecting();
 	}
 
 	public void connectBySessionId(String sessionId) {
 		LogMe.dl(TAG, "connectBySessionId : sessionId = " + sessionId);
-		lccClient.connect(sessionId, connectionListener, subscriptionListener);
 		startConnectionTimer();
+		lccClient.connect(sessionId, connectionListener, subscriptionListener);
 		liveChessClientEventListener.onConnecting();
 	}
 
@@ -293,6 +293,7 @@ public class LccHelper {
 	}
 
 	public void onOtherClientEntered(String message) {
+		connectionFailure = true;
 		logout();
 		liveChessClientEventListener.onConnectionFailure(message);
 	}
@@ -316,12 +317,11 @@ public class LccHelper {
 
 		LogMe.dl(TAG, "processConnectionFailure: details=" + details);
 
-		connectionFailure = true;
 		String detailsMessage;
 
 		if (details != null) { // LCC stops client, create new one manually
 
-			// do not invoke client.disconnect() in this case
+			connectionFailure = true;
 			cleanupLiveInfo();
 			cancelServiceNotification();
 			stopConnectionTimer();
@@ -376,15 +376,12 @@ public class LccHelper {
 
 		} else { // when connect(authKey) and Live server in unreachable, details=null
 
-			// todo: handle
-			/*
-			if (continueReloginForLive) {
+			if (allowLccConnecting) {
 				return;
 			} else {
-				continueReloginForLive = false; //?
+				connectionFailure = true;
 				logout();
 			}
-			*/
 			detailsMessage = context.getString(R.string.pleaseLoginAgain);
 		}
 
@@ -1294,17 +1291,24 @@ public class LccHelper {
 
 	public void startConnectionTimer() {
 		stopConnectionTimer();
-		handler.postDelayed(connectionTimerRunnable, FINISH_CONNECT_ATTEMPTS_DELAY); // It is not limit! It is delay, to repeat this event you should use it in different way
+		setAllowLccConnecting(true);
+		handler.postDelayed(connectionTimerRunnable, FINISH_LCC_CONNECT_ATTEMPTS_DELAY); // It is not limit! It is delay, to repeat this event you should use it in different way
 	}
 
 	private Runnable connectionTimerRunnable = new Runnable() {
 		@Override
 		public void run() {
-			continueReloginForLive = false;
+			stopConnectionTimer();
 		}
 	};
 
 	public void stopConnectionTimer() {
+		setAllowLccConnecting(false);
 		handler.removeCallbacks(connectionTimerRunnable);
+	}
+
+	private void setAllowLccConnecting(boolean allowLccConnecting) {
+		this.allowLccConnecting = allowLccConnecting;
+		liveChessClientEventListener.updateLccConnecting(allowLccConnecting);
 	}
 }

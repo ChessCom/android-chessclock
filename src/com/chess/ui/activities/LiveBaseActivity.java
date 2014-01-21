@@ -19,7 +19,6 @@ import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
@@ -60,6 +59,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private static final String EXIT_GAME_TAG = "exit_game";
 	private static final long RETRY_DELAY = 100;
 	public static final int NEXT_CONNECTION_DELAY = 5000;
+	public static final int FINISH_CONNECT_ATTEMPTS_DELAY = 60 * 1000;
+	public static final int RECONNECT_BY_LCC_FAILURE_LIMIT = 2;
 
 	protected LiveOuterChallengeListener outerChallengeListener;
 	protected Challenge currentChallenge;
@@ -73,6 +74,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private boolean needReLoginToLive;
 	private boolean continueSessionIdCheck;
 	private boolean continueReloginForLive;
+	private boolean lccConnecting;
+	private int reconnectByLccFailureCounter;
 
 
 	@Override
@@ -93,8 +96,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		LogMe.dl(TAG, "LiveBaseActivity onResume getAppData().isLiveChess()=" + getAppData().isLiveChess() + ", isLCSBound=");
 
-		if (getAppData().isLiveChess()) { // not working after idle shutdown restore
+		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
+				dismissNetworkCheckDialog();
 				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 			}
@@ -306,29 +310,19 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.onNegativeBtnClick(fragment);
 	}
 
-	// try to avoid
-	/*
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == RESULT_OK && requestCode == NETWORK_REQUEST) {
-			bindAndStartLiveService();
-		}
-	}
-	*/
-
 	public void connectLcc() {
 //		LogMe.dl(TAG, "connectLcc: getAppData().isLiveChess() = " + getAppData().isLiveChess());
 //		LogMe.dl(TAG, "connectLcc: isLCSBound = " + isLCSBound);
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
+				dismissNetworkCheckDialog();
 				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 				//return;
 			}
 
 			// first we check live sessionId
-			if (!continueReloginForLive && !continueSessionIdCheck) {
+			if (!continueReloginForLive && !continueSessionIdCheck && !lccConnecting) {
 				startSessionIdCheck();
 				sessionIdCheck();
 			}
@@ -338,13 +332,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private void startSessionIdCheck() {
 		stopReloginForLive();
 		continueSessionIdCheck = true;
-		handler.postDelayed(connectTimerRunnable, LccHelper.FINISH_CONNECT_ATTEMPTS_DELAY);
+		handler.postDelayed(connectTimerRunnable, FINISH_CONNECT_ATTEMPTS_DELAY);
 	}
 
 	private void startReloginForLive() {
 		stopSessionIdCheck();
 		continueReloginForLive = true;
-		handler.postDelayed(connectTimerRunnable, LccHelper.FINISH_CONNECT_ATTEMPTS_DELAY);
+		handler.postDelayed(connectTimerRunnable, FINISH_CONNECT_ATTEMPTS_DELAY);
 	}
 
 	private Runnable connectTimerRunnable = new Runnable() {
@@ -505,6 +499,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	protected void onLiveClientConnected() {
+		dismissNetworkCheckDialog();
 		if (getSupportFragmentManager() == null) {
 			return;
 		}
@@ -719,7 +714,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private void processConnectionFailure(String message) {
 		if (message.equals(getString(R.string.pleaseLoginAgain))) {
 
-			if (!continueReloginForLive) {
+			boolean moreAttempts = reconnectByLccFailureCounter < RECONNECT_BY_LCC_FAILURE_LIMIT;
+
+			if (!continueReloginForLive && !lccConnecting && moreAttempts) {
+				reconnectByLccFailureCounter++;
 				startReloginForLive();
 				performReloginForLive();
 			}
@@ -773,6 +771,15 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public void onAdminAnnounce(String message) {
 		showSinglePopupDialog(message);
+	}
+
+	@Override
+	public void updateLccConnecting(boolean lccConnecting) {
+		this.lccConnecting = lccConnecting;
+
+		if (lccConnecting) {
+			stopConnectTimer();
+		}
 	}
 
 	// -----------------------------------------------------
@@ -909,5 +916,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	public LiveChessService getLiveService() {
 		return liveService;
+	}
+
+	private void dismissNetworkCheckDialog() {
+		dismissFragmentDialogByTag(NETWORK_CHECK_TAG);
 	}
 }

@@ -30,4 +30,6 @@ public interface LiveChessClientEventListener {
     void onFriendsStatusChanged();
 
 	void onAdminAnnounce(String message);
+
+	void updateLccConnecting(boolean lccConnecting);
 }
