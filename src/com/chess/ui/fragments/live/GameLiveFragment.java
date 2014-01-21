@@ -68,7 +68,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	private static final String TAG = "LccLog-GameLiveFragment";
 	private static final String WARNING_TAG = "warning message popup";
-	private static final String GAME_EXPIRED_TAG = "game expired popup";
 
 	// Options ids
 	private static final int ID_NEW_GAME = 0;
@@ -735,6 +734,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void playMove() {
+
+		if (!getBoardFace().isSubmit()) {
+			return;
+		}
 
 		if (!submitClicked) {
 			submitClicked = true;
