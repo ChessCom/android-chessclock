@@ -159,7 +159,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
-			logTest(e.getMessage());
 			isLCSBound = false;
 		}
 	}
@@ -425,19 +424,25 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				int newSide;
 
 				if (getBoardFace().isReside()) { // if white at top
-					topPanelView.showTimeLeftIcon(whiteToMove);
-					bottomPanelView.showTimeLeftIcon(!whiteToMove);
+
+					if (!getBoardFace().isSubmit()) {
+						topPanelView.showTimeLeftIcon(whiteToMove);
+						bottomPanelView.showTimeLeftIcon(!whiteToMove);
+					}
 
 					topPanelView.setTimeRemain(timeString);
 
 					newSide = ChessBoard.WHITE_SIDE;
 					if (previousSide != newSide) {
 						previousSide = newSide;
-						topPanelView.bumpTimer();
+						bumpTopTimer();
 					}
 				} else {
-					topPanelView.showTimeLeftIcon(!whiteToMove);
-					bottomPanelView.showTimeLeftIcon(whiteToMove);
+
+					if (!getBoardFace().isSubmit()) {
+						topPanelView.showTimeLeftIcon(!whiteToMove);
+						bottomPanelView.showTimeLeftIcon(whiteToMove);
+					}
 
 					bottomPanelView.setTimeRemain(timeString);
 
@@ -445,7 +450,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 					if (previousSide != newSide) {
 						previousSide = newSide;
-						bottomPanelView.bumpTimer();
+						bumpBottomTimer();
 					}
 				}
 			}
@@ -470,30 +475,46 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 				int newSide;
 				if (getBoardFace().isReside()) {
-					topPanelView.showTimeLeftIcon(!blackToMove);
-					bottomPanelView.showTimeLeftIcon(blackToMove);
+
+					if (!getBoardFace().isSubmit()) {
+						topPanelView.showTimeLeftIcon(!blackToMove);
+						bottomPanelView.showTimeLeftIcon(blackToMove);
+					}
 
 					bottomPanelView.setTimeRemain(timeString);
 
 					newSide = ChessBoard.BLACK_SIDE;
 					if (previousSide != newSide) {
 						previousSide = newSide;
-						bottomPanelView.bumpTimer();
+						bumpBottomTimer();
 					}
 				} else {
-					topPanelView.showTimeLeftIcon(blackToMove);
-					bottomPanelView.showTimeLeftIcon(!blackToMove);
+
+					if (!getBoardFace().isSubmit()) {
+						topPanelView.showTimeLeftIcon(blackToMove);
+						bottomPanelView.showTimeLeftIcon(!blackToMove);
+					}
 
 					topPanelView.setTimeRemain(timeString);
 
 					newSide = ChessBoard.WHITE_SIDE;
 					if (previousSide != newSide) {
 						previousSide = newSide;
-						topPanelView.bumpTimer();
+						bumpTopTimer();
 					}
 				}
 			}
 		});
+	}
+
+	private void bumpBottomTimer() {
+		topPanelView.cancelTimerBump();
+		bottomPanelView.startTimerBump();
+	}
+
+	private void bumpTopTimer() {
+		bottomPanelView.cancelTimerBump();
+		topPanelView.startTimerBump();
 	}
 
 	// ----------------------Lcc Events ---------------------------------------------

@@ -572,7 +572,11 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		bumpAnimationSet.setDuration(DURATION);
 	}
 
-	public void bumpTimer() {
+	public void startTimerBump() {
 		bumpAnimationSet.start();
+	}
+
+	public void cancelTimerBump() {
+		bumpAnimationSet.cancel();
 	}
 }
