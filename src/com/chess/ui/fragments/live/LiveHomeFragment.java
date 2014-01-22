@@ -142,7 +142,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	*/
 
 	protected void addCurrentGameItem(LiveChessService liveService) {
-		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
+		if (liveService.isActiveGamePresent() && !liveService.isCurrentGameObserved()) {
 			if (!featuresList.contains(currentGameItem)) {
 				featuresList.add(0, currentGameItem);
 				optionsAdapter.notifyDataSetChanged();
@@ -349,7 +349,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 					Long gameId = liveService.getCurrentGameId();
 					logTest("gameId = " + gameId);
 
-					if (liveService.getCurrentGame().isTopObserved()) {
+					if (liveService.isCurrentGameObserved()) {
 						if (isTablet) {
 							getActivityFace().openFragment(GameLiveObserveFragmentTablet.createInstance(gameId));
 						} else {

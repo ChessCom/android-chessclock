@@ -611,9 +611,7 @@ public class LccHelper {
 	}
 
 	public boolean isMyGame(Game game) {
-		boolean isMyGame = game.isPlayer(getUsername());
-//		LogMe.dl(TAG, "isMyGame=" + isMyGame);
-		return isMyGame;
+		return game.isPlayer(getUsername());
 	}
 
 	public boolean isUserPlaying() {
@@ -863,6 +861,12 @@ public class LccHelper {
 		cleanupLiveInfo();
 		runDisconnectTask();
 		cancelServiceNotification();
+		stopConnectionTimer();
+	}
+
+	public void leave() {
+		cleanupLiveInfo();
+		runLeaveTask();
 		stopConnectionTimer();
 	}
 
@@ -1146,14 +1150,18 @@ public class LccHelper {
 
 		GameTimeConfig gameTimeConfig = new GameTimeConfig(initialTime * 60 * 10, bonusTime * 10);
 
-		Integer minRating = config.getMinRating() == 0 ? null : config.getMinRating();
-		Integer maxRating = config.getMaxRating() == 0 ? null : config.getMaxRating();
 		Integer minMembershipLevel = null;
 		PieceColor pieceColor = PieceColor.UNDEFINED;  // always random!
+
+		// known opponent challenge ratings should be null
+		Integer minRating = null;
+		Integer maxRating = null;
 
 		String opponentName;
 		if (config.getOpponentName() == null || config.getOpponentName().equalsIgnoreCase(AppConstants.RANDOM)) {
 			opponentName = null;
+			minRating = config.getMinRating() == 0 ? null : config.getMinRating();
+			maxRating = config.getMaxRating() == 0 ? null : config.getMaxRating();
 		} else {
 			opponentName = config.getOpponentName().toLowerCase();
 		}

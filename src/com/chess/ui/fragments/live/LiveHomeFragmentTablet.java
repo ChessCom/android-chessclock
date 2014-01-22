@@ -112,7 +112,7 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 			super.addCurrentGameItem(liveService);
 			return;
 		}
-		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
+		if (liveService.isActiveGamePresent() && !liveService.isCurrentGameObserved()) {
 			currentGameHeaderView.setVisibility(View.VISIBLE);
 		} else {
 			currentGameHeaderView.setVisibility(View.GONE);

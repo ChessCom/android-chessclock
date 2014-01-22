@@ -202,7 +202,7 @@ public class LiveChessService extends Service {
 		@Override
 		public void run() {
 			if (lccHelper != null) {
-				lccHelper.runLeaveTask();
+				lccHelper.leave();
 			}
 			Log.d("TEST", "shutDownRunnable, performing leave, and stopping service, hide notification");
 
@@ -543,5 +543,12 @@ public class LiveChessService extends Service {
 
 	public boolean isAllowLccConnecting() {
 		return lccHelper != null && lccHelper.isAllowLccConnecting();
+	}
+
+	public boolean isCurrentGameObserved() {
+		Game currentGame = lccHelper.getCurrentGame();
+		boolean isCurrentGameObserved = currentGame != null && lccHelper.isObservedGame(currentGame);
+
+		return isCurrentGameObserved;
 	}
 }

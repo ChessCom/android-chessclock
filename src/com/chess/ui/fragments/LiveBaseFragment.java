@@ -179,7 +179,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		liveService.setLccEventListener(this);
 		liveService.setGameTaskListener(gameTaskListener);
 
-		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
+		if (liveService.isActiveGamePresent() && !liveService.isCurrentGameObserved()) {
 			synchronized(LccHelper.GAME_SYNC_LOCK) {
 				Long gameId = liveService.getCurrentGameId();
 
