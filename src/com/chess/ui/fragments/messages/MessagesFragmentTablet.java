@@ -131,7 +131,7 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 			menuItems.add(selectionItem);
 		}
 		{ // new
-			SelectionItem selectionItem = new SelectionItem(null, getString(R.string.new_));
+			SelectionItem selectionItem = new SelectionItem(null, getString(R.string.new_message));
 			selectionItem.setCode(getString(R.string.ic_edit));
 			menuItems.add(selectionItem);
 		}

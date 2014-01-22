@@ -132,10 +132,17 @@ public class LccHelper {
 		}
 	}
 
-	public void paintClocks() {
+	public void updatePlayersClock() {
 		if (whiteClock != null && blackClock != null) {
-			whiteClock.paint();
-			blackClock.paint();
+			whiteClock.updatePlayerTimer();
+			blackClock.updatePlayerTimer();
+		}
+	}
+
+	public void requestTimeForPlayers() {
+		if (whiteClock != null && blackClock != null) {
+			whiteClock.requestTimeForPlayers();
+			blackClock.requestTimeForPlayers();
 		}
 	}
 
@@ -820,14 +827,14 @@ public class LccHelper {
 		liveService.runSendChallengeTask(challenge);
 	}
 
-	public void initClock() {
-		stopClock();
+	public void initClocks() {
+		stopClocks();
 
 		whiteClock = new ChessClock(this, true, isActiveGamePresent());
 		blackClock = new ChessClock(this, false, isActiveGamePresent());
 	}
 
-	public void stopClock() {
+	public void stopClocks() {
 		if (whiteClock != null) {
 			whiteClock.setRunning(false);
 		}
@@ -890,7 +897,7 @@ public class LccHelper {
 
 	public void processFullGame() {
 		latestMoveNumber = 0; // it was null before
-		initClock();
+//		initClocks(); // init after widgets set
 
 		if (lccEventListener == null) { // if we restart app and connected to service, but no live game screens opened
 			context.sendBroadcast(new Intent(IntentConstants.START_LIVE_GAME));

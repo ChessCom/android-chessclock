@@ -30,13 +30,11 @@ import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
-import com.chess.ui.interfaces.game_ui.GameNetworkFace;
+import com.chess.ui.interfaces.game_ui.GameDailyFace;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
-import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
-import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
 import com.chess.widgets.ProfileImageView;
@@ -49,7 +47,7 @@ import java.util.Calendar;
  * Date: 25.09.13
  * Time: 8:27
  */
-public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNetworkFace, PopupListSelectionFace {
+public class GameLiveArchiveFragment  extends GameBaseFragment implements GameDailyFace, PopupListSelectionFace {
 
 	private static final String ERROR_TAG = "send request failed popup";
 
@@ -62,7 +60,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 	private static final int ID_SHARE_PGN = 2;
 	private static final int ID_SETTINGS = 3;
 
-	private ChessBoardNetworkView boardView;
+	private ChessBoardDailyView boardView;
 
 	private LiveArchiveGameData currentGame;
 
@@ -109,7 +107,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.daily);
+		setTitle(R.string.live);
 
 		widgetsInit(view);
 	}
@@ -164,6 +162,16 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 			adjustBoardForGame();
 		}
+	}
+
+	@Override
+	public void openConditions() {
+		// not used here
+	}
+
+	@Override
+	public void showConditionsBtn(boolean show) {
+		// not used here
 	}
 
 	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {
@@ -256,12 +264,6 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 
 		ChessBoardOnline.resetInstance();
 		BoardFace boardFace = getBoardFace();
-//		boardFace.setChess960(currentGame.getGameTypeId() != RestHelper.V_GAME_CHESS); / not used in live
-//
-//		if (boardFace.isChess960()) {// we need to setup only position not made moves.
-//			// Daily games tournaments already include those moves in movesList
-//			boardFace.setupBoard(currentGame.getStartingFenPosition());
-//		}
 
 		boardFace.setReside(!userPlayWhite);
 
@@ -331,17 +333,6 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameNe
 		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
-
-		getControlsView().enableGameControls(false);
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				if (getActivity() == null) {
-					return;
-				}
-				getControlsView().enableGameControls(true);
-			}
-		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
 
 	@Override

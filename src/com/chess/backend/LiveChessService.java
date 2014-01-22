@@ -465,8 +465,12 @@ public class LiveChessService extends Service {
 		lccHelper.makeMove(move, gameTaskRunner, temporaryDebugInfo);
 	}
 
-	public void paintClocks() {
-		lccHelper.paintClocks();
+	public void updatePlayersClock() {
+		lccHelper.updatePlayersClock();
+	}
+
+	public void requestTimeForPlayers() {
+		lccHelper.requestTimeForPlayers();
 	}
 
 	public void rematch() {
@@ -524,13 +528,17 @@ public class LiveChessService extends Service {
 		LogMe.dl(TAG, "exitGameObserving");
 		setLccObserveEventListener(null);
 		lccHelper.setCurrentGameId(null);
-		lccHelper.stopClock();
+		lccHelper.stopClocks();
 		lccHelper.unObserveCurrentObservingGame();
 		lccHelper.setCurrentObservedGameId(null);
 	}
 
-	public void stopClock() {
-		lccHelper.stopClock();
+	public void initClocks() {
+		lccHelper.initClocks();
+	}
+
+	public void stopClocks() {
+		lccHelper.stopClocks();
 	}
 
 	/*

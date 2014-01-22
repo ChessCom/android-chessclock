@@ -1,6 +1,5 @@
 package com.chess.lcc.android;
 
-import android.util.Log;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.statics.Symbol;
@@ -61,7 +60,7 @@ public class ChessClock {
 	}
 
 	public int getActualDisplayMode() {
-//		if (DISPLAY_MODE != TIME_DEPENDENT_DISPLAY_MODE) { // alwasy false
+//		if (DISPLAY_MODE != TIME_DEPENDENT_DISPLAY_MODE) { // always false
 //			return DISPLAY_MODE;
 //		}
 		if (time < SECOND_TENTHS_THRESHOLD) {
@@ -73,7 +72,7 @@ public class ChessClock {
 		}
 	}
 
-	public void paint() {
+	public void updatePlayerTimer() {
 		LccEventListener eventListener = lccHelper.getLccEventListener();
 		if (eventListener == null) {
 			return;
@@ -95,12 +94,16 @@ public class ChessClock {
 		previousTimeString = timeString;
 
 		if (isWhite) { // if white player move
-			Log.d("TEST","clock setWhitePlayerTimer");
 			eventListener.setWhitePlayerTimer(timeString);
 		} else {
-			Log.d("TEST","clock setBlackPlayerTimer");
 			eventListener.setBlackPlayerTimer(timeString);
 		}
+	}
+
+	public void requestTimeForPlayers(){
+		time = -999;
+		previousTimeString = Symbol.EMPTY;
+		updatePlayerTimer();
 	}
 
 	public String createTimeString() {
@@ -161,16 +164,12 @@ public class ChessClock {
 					return;
 				}
 
-				paint();
+				updatePlayerTimer();
 
 				if (time <= SECOND_TENTHS_THRESHOLD && !tenSecondsPlayed) {
 					tenSecondsPlayed = true;
 					SoundPlayer.getInstance(lccHelper.getContext()).playTenSeconds();
 				}
-
-				/*if (time < TENTH_MS) {
-					stopTimer();
-				}*/
 			}
 		}, 0, TENTH_MS);
 	}

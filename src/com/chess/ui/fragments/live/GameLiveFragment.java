@@ -142,7 +142,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			init();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
-			showToast(e.getMessage()); // todo: Alex, we should not show this Toast each time when user rotated screen
 			logTest(e.getMessage());
 		}
 		enableSlideMenus(false);
@@ -248,6 +247,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
 			}
 		}
+		liveService.initClocks();
 
 		invalidateGameScreen();
 
@@ -357,6 +357,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			return;
 		}
 		userSawGameEndPopup = true;
+
+		try {
+			getLiveService().stopClocks();
+		} catch (DataNotValidException e) {
+			e.printStackTrace();
+		}
 
 		final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
@@ -569,7 +575,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				getControlsView().showAfterMatch();
 
 				try {
-					getLiveService().stopClock(); // wait for LCC fix
+					getLiveService().stopClocks(); // wait for LCC fix
 				} catch (DataNotValidException e) {
 					logLiveTest(e.getMessage());
 				}
@@ -842,7 +848,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			topPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
 			bottomPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
 			try {
-				getLiveService().paintClocks();
+				getLiveService().updatePlayersClock();
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
 			}

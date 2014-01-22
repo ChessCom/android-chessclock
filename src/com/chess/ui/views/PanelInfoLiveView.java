@@ -566,8 +566,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		bumpAnimationSet = new AnimatorSet();
 		bumpAnimationSet.playTogether(
 				ObjectAnimator.ofFloat(clockLayout, "scaleX", 1, 1.25f, 1),
-				ObjectAnimator.ofFloat(clockLayout, "scaleY", 1, 1.25f, 1),
-				ObjectAnimator.ofFloat(clockLayout, "alpha", 1, alphaPressed, 1)
+				ObjectAnimator.ofFloat(clockLayout, "scaleY", 1, 1.25f, 1)
 		);
 		bumpAnimationSet.setDuration(DURATION);
 	}
