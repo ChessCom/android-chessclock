@@ -541,13 +541,7 @@ public class LiveChessService extends Service {
 		lccHelper.stopClocks();
 	}
 
-	/*
-	public boolean isContinueReloginForLive() {
-		return lccHelper.isContinueReloginForLive();
+	public boolean isAllowLccConnecting() {
+		return lccHelper != null && lccHelper.isAllowLccConnecting();
 	}
-
-	public void startConnectionTimer() {
-		lccHelper.startConnectionTimer();
-	}
-	*/
 }

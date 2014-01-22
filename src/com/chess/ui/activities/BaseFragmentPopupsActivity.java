@@ -376,18 +376,18 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 
 	public void dismissFragmentDialogByTag(String tag) {
 		for (PopupDialogFragment fragment : popupManager) {
-			if (fragment.getTag().equals(tag)) {
+			if (fragment.getTag() != null && fragment.getTag().equals(tag)) {
 				fragment.dismiss();
 				popupManager.remove(fragment);
 			}
 		}
 	}
 
-	protected PopupDialogFragment getLastPopupFragment(){
-		if (popupManager.size() == 0){
+	protected PopupDialogFragment getLastPopupFragment() {
+		if (popupManager.size() == 0) {
 			return null;
 		} else {
-			return popupManager.get(popupManager.size()-1);
+			return popupManager.get(popupManager.size() - 1);
 		}
 	}
 

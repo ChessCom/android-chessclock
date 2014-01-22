@@ -22,8 +22,6 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import com.facebook.FacebookException;
 import com.facebook.internal.Utility;
-import com.facebook.FacebookException;
-import com.facebook.internal.Utility;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -182,6 +182,8 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		if (liveService.isActiveGamePresent() && !liveService.getCurrentGame().isTopObserved()) {
 			synchronized(LccHelper.GAME_SYNC_LOCK) {
 				Long gameId = liveService.getCurrentGameId();
+
+				// todo: should we handle tablet mode here?
 				GameLiveFragment liveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
 				if (liveFragment == null) {
 					liveFragment = GameLiveFragment.createInstance(gameId);

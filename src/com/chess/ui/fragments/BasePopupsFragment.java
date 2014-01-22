@@ -262,7 +262,8 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 
 	public void dismissFragmentDialogByTag(String tag) {
 		for (PopupDialogFragment fragment : popupManager) {
-			if (fragment.getTag().equals(tag)) {
+
+			if (fragment.getTag() != null && fragment.getTag().equals(tag)) {
 				fragment.dismiss();
 				popupManager.remove(fragment);
 			}

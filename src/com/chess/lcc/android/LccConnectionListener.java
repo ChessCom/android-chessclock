@@ -28,7 +28,7 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
 		lccHelper.setUser(user);
-		LogMe.dl(TAG, "onConnectionEstablished: lccHelper = " + lccHelper);
+		LogMe.dl(TAG, "onConnectionEstablished: client=" + lccHelper.getClientId());
 		lccHelper.setConnected(true);
 		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
@@ -54,7 +54,7 @@ public class LccConnectionListener implements ConnectionListener {
 
 	@Override
 	public void onConnectionLost(User user, String message, Throwable throwable) {
-		LogMe.dl(TAG, "Connection Lost, with message = " + message);
+		LogMe.dl(TAG, "Connection Lost, with message = " + message + ", client=" + lccHelper.getClientId());
 		//LogMe.dl(TAG, "Connection Lost: isNetworkAvailable=" + AppUtils.isNetworkAvailable(lccHelper.getContext()));
 		lccHelper.setConnected(false);
 	}

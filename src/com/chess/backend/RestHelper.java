@@ -41,6 +41,7 @@ public class RestHelper {
 
 	private static RestHelper ourInstance = new RestHelper();
 	private String userAgent;
+	private final int TIMEOUT = 10 * 1000;
 
 	public static RestHelper getInstance() {
 		if (ourInstance == null) {
@@ -559,6 +560,9 @@ public class RestHelper {
 			connection = (HttpURLConnection) urlObj.openConnection();
 			connection.setRequestMethod(requestMethod);
 			connection.setRequestProperty("User-Agent", userAgent);
+
+			connection.setConnectTimeout(TIMEOUT); // default = 0
+			connection.setReadTimeout(TIMEOUT); // default = 0
 
 			if (IS_TEST_SERVER_MODE) {
 				connection.setRequestProperty("Authorization", getBasicAuth());

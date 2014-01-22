@@ -35,7 +35,6 @@ import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
-import com.chess.utilities.LogMe;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -49,6 +48,7 @@ import java.util.List;
  */
 public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelectionFace, AdapterView.OnItemClickListener {
 
+	private static final String TAG = "LccLog-LiveHomeFragment";
 	private static final String OPTION_SELECTION_TAG = "time options popup";
 	protected static final String FRIEND_SELECTION_TAG = "friend select popup";
 
@@ -195,7 +195,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 				if (fragmentByTag == null) {
 					fragmentByTag = new GameLiveObserveFragment();
 				}
-			}else {
+			} else {
 				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragmentTablet.class.getSimpleName());
 				if (fragmentByTag == null) {
 					fragmentByTag = new GameLiveObserveFragmentTablet();
@@ -329,7 +329,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 	@Override
 	public void startGameFromService() {
-		LogMe.dl("lcc", "startGameFromService");
+		//LogMe.dl(TAG, "startGameFromService");
 
 		final FragmentActivity activity = getActivity();
 		if (activity != null) {
@@ -348,7 +348,20 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 					Long gameId = liveService.getCurrentGameId();
 					logTest("gameId = " + gameId);
-					getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
+
+					if (liveService.getCurrentGame().isTopObserved()) {
+						if (isTablet) {
+							getActivityFace().openFragment(GameLiveObserveFragmentTablet.createInstance(gameId));
+						} else {
+							getActivityFace().openFragment(GameLiveObserveFragment.createInstance(gameId));
+						}
+					} else {
+						if (isTablet) {
+							getActivityFace().openFragment(GameLiveFragmentTablet.createInstance(gameId));
+						} else {
+							getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
+						}
+					}
 				}
 			});
 		}

@@ -215,7 +215,7 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 				if (fragmentByTag == null) {
 					fragmentByTag = new GameLiveObserveFragment();
 				}
-			}else {
+			} else {
 				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragmentTablet.class.getSimpleName());
 				if (fragmentByTag == null) {
 					fragmentByTag = new GameLiveObserveFragmentTablet();

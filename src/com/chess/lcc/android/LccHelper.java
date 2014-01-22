@@ -1312,4 +1312,8 @@ public class LccHelper {
 		this.allowLccConnecting = allowLccConnecting;
 		liveChessClientEventListener.updateLccConnecting(allowLccConnecting);
 	}
+
+	public boolean isAllowLccConnecting() {
+		return allowLccConnecting; // rename
+	}
 }

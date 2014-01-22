@@ -74,7 +74,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private boolean needReLoginToLive;
 	private boolean continueSessionIdCheck;
 	private boolean continueReloginForLive;
-	private boolean lccConnecting;
 	private int reconnectByLccFailureCounter;
 
 
@@ -259,11 +258,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 			unBindAndStopLiveService();
 
-		} else if (tag.equals(LOGOUT_TAG)) {
-			if (isLCSBound) {
-				liveService.logout();
-				unBindAndStopLiveService();
-			}
 		} else if (tag.contains(CHALLENGE_TAG)) { // Challenge accepted!
 			Log.d(TAG, "Accept challenge: " + currentChallenge);
 			liveService.declineAllChallenges(currentChallenge);
@@ -322,7 +316,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			}
 
 			// first we check live sessionId
-			if (!continueReloginForLive && !continueSessionIdCheck && !lccConnecting) {
+			boolean isLccConnecting = liveService != null && liveService.isAllowLccConnecting();
+			if (!continueReloginForLive && !continueSessionIdCheck && !isLccConnecting) {
 				startSessionIdCheck();
 				sessionIdCheck();
 			}
@@ -715,8 +710,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		if (message.equals(getString(R.string.pleaseLoginAgain))) {
 
 			boolean moreAttempts = reconnectByLccFailureCounter < RECONNECT_BY_LCC_FAILURE_LIMIT;
+			boolean isLccConnecting = liveService != null && liveService.isAllowLccConnecting();
 
-			if (!continueReloginForLive && !lccConnecting && moreAttempts) {
+			if (!continueReloginForLive && !isLccConnecting && moreAttempts) {
 				reconnectByLccFailureCounter++;
 				startReloginForLive();
 				performReloginForLive();
@@ -775,8 +771,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void updateLccConnecting(boolean lccConnecting) {
-		this.lccConnecting = lccConnecting;
-
 		if (lccConnecting) {
 			stopConnectTimer();
 		}

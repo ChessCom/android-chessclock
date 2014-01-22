@@ -42,6 +42,14 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	private ObserveTaskListener observeTaskListener;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 
+	public static GameLiveFragment createInstance(long id) {
+		GameLiveFragment fragment = new GameLiveObserveFragment();
+		Bundle bundle = new Bundle();
+		bundle.putLong(GAME_ID, id);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -335,22 +343,6 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	public boolean isObservingMode() {
 		return true;
 	}
-
-	/*@Override
-	public void onLiveClientConnected() {
-		super.onLiveClientConnected();
-
-		try {
-			Long currentGameId = getLiveService().getCurrentGameId();
-			if (isLCSBound && currentGameId != null && currentGameId != 0) {
-				onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronizid
-			}
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-			logTest(e.getMessage());
-			isLCSBound = false;
-		}
-	}*/
 
 	@Override
 	protected void optionsMapInit() {
