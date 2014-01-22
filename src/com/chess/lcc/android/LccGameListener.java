@@ -24,14 +24,6 @@ public class LccGameListener implements GameListener {
 	public void onGameListReceived(Collection<? extends Game> games) {
 		LogMe.dl(TAG, "Game list received, total size = " + games.size());
 
-		Game currentGame = lccHelper.getCurrentGame();
-		if (currentGame != null) {
-			lccHelper.setLastGame(currentGame);
-		}
-		lccHelper.clearGames();
-		lccHelper.setCurrentGameId(null);
-		lccHelper.setCurrentObservedGameId(null);
-
 		Long previousGameId = latestGameId;
 		latestGameId = 0L;
 
@@ -51,9 +43,20 @@ public class LccGameListener implements GameListener {
 
 //		LogMe.dl(TAG, "latestGameId=" + latestGameId);
 
-		if (!latestGameId.equals(previousGameId) && lccHelper.getLccEventListener() != null) {
-			LogMe.dl(TAG, "onGameListReceived: game is expired");
-			lccHelper.getLccEventListener().expireGame();
+		if (!latestGameId.equals(previousGameId)) {
+
+			Game currentGame = lccHelper.getCurrentGame();
+			if (currentGame != null) {
+				lccHelper.setLastGame(currentGame);
+			}
+			lccHelper.clearGames();
+			lccHelper.setCurrentGameId(null);
+			lccHelper.setCurrentObservedGameId(null);
+
+			if (lccHelper.getLccEventListener() != null) {
+				LogMe.dl(TAG, "onGameListReceived: game is expired");
+				lccHelper.getLccEventListener().expireGame();
+			}
 		}
 	}
 
