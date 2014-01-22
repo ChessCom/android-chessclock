@@ -161,8 +161,7 @@
 
 	<!--Notifications-->
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move">"It's Your Turn"</string>
-	<string name="your_turn_in_game_with">In Game with %1$s , %2$s</string>
+	<string name="your_move_vs">Your move vs %1$s , %2$s</string>
 	<string name="won_on_time">%s Won on Time</string>
 	<string name="won_by_resignation">%s Won by Resignation</string>
 	<string name="won_by_checkmate">%s Won by Checkmate</string>
@@ -416,8 +415,10 @@
 	<string name="username_not_found">Username not Found</string>
 	<string name="you_have_not_added_friends_yet">"You don't have any friends yet. Add some!"</string>
 	<string name="new_friend_request">New Friend Request</string>
+	<string name="friend_request_from_arg">Friend request from %s</string>
 	<string name="new_chat_message">New Chat Message</string>
-	<string name="new_challenge">New Challenge</string>
+	<string name="new_daily_challenge">New Daily Challenge</string>
+	<string name="arg_wants_to_play">%s wants to play!</string>
 
 	<!--Profile-->
 	<string name="unable_to_select_this_photo">Unable to Use this Photo</string>
@@ -507,7 +508,8 @@
 	<string name="comments_arg">%s comments</string>
 	<string name="views_arg">%s views</string>
 
-	<string name="your_game_is_over">Your Game is Over</string>
+	<string name="game_is_over">Game Over</string>
+	<string name="game_over_vs">Game Over vs. %@";</string>
 	<string name="switch_sides">Switch Sides</string>
 
 	<!--Moves Explorer-->

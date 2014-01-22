@@ -256,8 +256,6 @@
 	<string name="lightning_game">번개</string>
 	<string name="network_was_changed_please_relogin">네트워크가 변경되었습니다. 살기 로그인을 다시하시기 바랍니다</string>
 	<string name="ches_com">ChessCom</string>
-	<string name="your_move">Chess.com - 그것은 네 차례야</string>
-	<string name="your_turn">당신 차례!</string>
 	<string name="login_failed">로그인 실패 :</string>
 	<string name="loggin_out">로그아웃</string>
 	<string name="you_logged_out">당신은 로그아웃!</string>
@@ -321,7 +319,7 @@
 	<string name="no_network">어떤 네트워크도</string>
 	<string name="wireless_settings">무선 설정</string>
 	<string name="invalid_password">비밀 번호가 잘못되었습니다</string>
-	<string name="your_turn_in_game_with">게임과 관련 %1$s , %2$s</string>
+	<string name="your_move_vs">게임과 관련 %1$s , %2$s</string>
 	<string name="register">레지스터</string>
 	<string name="session_expired">세션이 만료되었고, 다시 로그인하시기 바랍니다</string>
 	<string name="problem_solved_">문제는 풀렸다!</string>

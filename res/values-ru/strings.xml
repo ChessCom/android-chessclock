@@ -129,8 +129,6 @@
 	<string name="unrated">Без рейтинга</string>
 	<string name="you_play">Вы играете:</string>
 	<string name="chess_com">Chess.Com</string>
-	<string name="your_move">"Ваш ход"</string>
-	<string name="your_turn_in_game_with">В игре с %1$ s, %2$ s</string>
 	<string name="won_on_time">%s выиграл, время вышло</string>
 	<string name="won_by_resignation">%s выйграл, соперник сдался</string>
 	<string name="won_by_checkmate">%s выиграл, шах и мат</string>
@@ -344,7 +342,6 @@
 	<string name="you_have_not_added_friends_yet">"У вас еще нет друзей. Добавьте скорей!"</string>
 	<string name="new_friend_request">Новый запрос от друга</string>
 	<string name="new_chat_message">Новое сообщение в чате</string>
-	<string name="new_challenge">Новый вызов</string>
 	<string name="unable_to_select_this_photo">Не удается выбрать фото</string>
 	<string name="processing_">Обработка…</string>
 	<string name="about">О</string>
@@ -413,7 +410,6 @@
 	<string name="all_time">Все время</string>
 	<string name="comments_arg">%s комментариев</string>
 	<string name="views_arg">%s просмотров</string>
-	<string name="your_game_is_over">Ваша Игра окончена</string>
 	<string name="switch_sides">Поменяться сторонами</string>
 	<string name="no_results">Не найдено</string>
 	<string name="game_explorer">Обзор игр</string>

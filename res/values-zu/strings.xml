@@ -168,8 +168,7 @@
 
     <!--Notifications-->
     <string name="chess_com">chess_com</string>
-    <string name="your_move">your_move</string>
-    <string name="your_turn_in_game_with">your_turn_in_game_with</string>
+    <string name="your_move_vs">your_move_vs</string>
 
 	<string name="won_on_time">won_on_time</string>
 	<string name="won_by_resignation">won_by_resignation</string>
@@ -435,7 +434,6 @@
 	<string name="you_have_not_added_friends_yet">you_have_not_added_friends_yet</string>
 	<string name="new_friend_request">new_friend_request</string>
 	<string name="new_chat_message">new_chat_message</string>
-	<string name="new_challenge">new_challenge</string>
 
 	<!--Profile-->
 	<string name="unable_to_select_this_photo">unable_to_select_this_photo</string>
@@ -525,7 +523,7 @@
 	<string name="comments_arg">comments_arg</string>
 	<string name="views_arg">views_arg</string>
 
-	<string name="your_game_is_over">your_game_is_over</string>
+	<string name="game_is_over">your_game_is_over</string>
 	<string name="switch_sides">switch_sides</string>
 
 	<!--Moves Explorer-->

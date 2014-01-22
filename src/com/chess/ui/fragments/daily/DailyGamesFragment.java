@@ -65,6 +65,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private static final String END_VACATION_TAG = "end vacation popup";
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final String IMAGE_CACHE_DIR = "boards";
+	public static final int MIN_GAMES_TO_SHOW_BANNER = 5;
 
 	private DailyUpdateListener challengeInviteUpdateListener;
 	private DailyUpdateListener acceptDrawUpdateListener;
@@ -73,7 +74,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private GamesUpdateReceiver gamesUpdateReceiver;
 	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
 	private DailyFinishedGamesUpdateListener dailyFinishedGamesUpdateListener;
-	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener currentGamesCursorUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	protected DailyGamesUpdateListener dailyGamesUpdateListener;
@@ -523,23 +523,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
-	private class SaveFinishedGamesListUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
-
-		@Override
-		public void showProgress(boolean show) {
-			// don't show progress
-		}
-
-		@Override
-		public void updateData(DailyFinishedGameData returnedObj) {
-			loadFromDbFinishedGames();
-
-//			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-//					DbHelper.getDailyFinishedListGames(getUsername()),
-//					getContentResolver()).executeTask();
-		}
-	}
-
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 		public static final int CURRENT_MY = 0;
 		public static final int FINISHED = 2;
@@ -598,7 +581,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		} while (cursor.moveToNext());
 
 		// if user have more than 5 active games, do not show 1/2 size board, only new game button at bottom
-		if (cursor.getCount() < 5) {
+		if (cursor.getCount() < MIN_GAMES_TO_SHOW_BANNER) {
 			if (HONEYCOMB_PLUS_API) {
 				if (myTurnInDailyGames) {
 					listView.removeHeaderView(newGameHeaderView);
@@ -639,18 +622,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					DbDataManager.saveDailyFinishedGameItemToDb(getContentResolver(), finishedGameData, getUsername());
 				}
 				loadFromDbFinishedGames();
-
-//				new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-//						getContentResolver(), getUsername()).executeTask();
 			} else {
 				finishedGamesCursorAdapter.changeCursor(null);
 			}
 		} else {
 			loadFromDbFinishedGames();
-
-//			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-//					DbHelper.getDailyFinishedListGames(getUsername()),
-//					getContentResolver()).executeTask();
 		}
 	}
 
@@ -674,14 +650,21 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 						DbDataManager.saveDailyGame(getContentResolver(), currentItem, getUsername());
 					}
 					loadDbGames();
-//					new SaveDailyCurrentGamesListTask(saveCurrentGamesListUpdateListener, currentGamesList,
-//							getContentResolver(), getUsername()).executeTask();
 				} else {
 					currentGamesMyCursorAdapter.changeCursor(null);
 				}
 			}
 
-			getFinishedGames();
+			// postpone start of task to avoid glitches
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					if (getActivity() == null) {
+						return;
+					}
+					getFinishedGames();
+				}
+			}, VIEW_UPDATE_DELAY);
 		}
 
 		@Override
@@ -728,9 +711,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 						DbDataManager.saveDailyFinishedGameItemToDb(getContentResolver(), finishedGameData, getUsername());
 					}
 					loadFromDbFinishedGames();
-
-//					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-//							getContentResolver(), getUsername()).executeTask();
 				} else {
 					finishedGamesCursorAdapter.changeCursor(null);
 				}
@@ -763,7 +743,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		} else if (cursor != null) {
 			cursor.close();
 		}
-
 	}
 
 
@@ -798,7 +777,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.INVITE);
 		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
 		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
-		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
 		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
 		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
 

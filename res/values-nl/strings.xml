@@ -259,8 +259,6 @@
 	<string name="lightning_game">(Lightning)</string>
 	<string name="network_was_changed_please_relogin">Netwerk is gewijzigd. Gelieve weer inloggen om te leven</string>
 	<string name="ches_com">Chesscom</string>
-	<string name="your_move">Chess.com - Het is je moves</string>
-	<string name="your_turn">Your Turn!</string>
 	<string name="login_failed">Login mislukt:</string>
 	<string name="loggin_out">Log uit</string>
 	<string name="you_logged_out">U bent uitgelogd!</string>
@@ -324,7 +322,7 @@
 	<string name="no_network">Geen Netwerk</string>
 	<string name="wireless_settings">Draadloze Instellingen</string>
 	<string name="invalid_password">Ongeldig wachtwoord</string>
-	<string name="your_turn_in_game_with">In uw spel met %1$s , %2$s</string>
+	<string name="your_move_vs">In uw spel met %1$s , %2$s</string>
 	<string name="register">Registreren</string>
 	<string name="session_expired">Uw sessie is verlopen, dan kunt u opnieuw in te loggen</string>
 	<string name="problem_solved_">Probleem Opgelost!</string>

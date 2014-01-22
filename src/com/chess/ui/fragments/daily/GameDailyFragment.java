@@ -285,7 +285,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 
 			// clear notification for this game
 			List<YourTurnItem> moveNotifications = DbDataManager.getAllPlayMoveNotifications(getContentResolver(), username);
-			if (moveNotifications.size() == 1) { // TODO update notification w/o re-showing it(w/o animation)
+			if (moveNotifications.size() == 1) {
 				if (moveNotifications.get(0).getGameId() == gameId) {
 					((NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE))
 							.cancel(R.id.notification_id);

@@ -329,11 +329,15 @@ public class AppUtils {
 		NotificationManager notifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context);
 
+		if (yourTurnItems.size() == 0) {
+			notifyManager.cancel(R.id.notification_id);
+			return;
+		}
+
 		int number = yourTurnItems.size();
 		YourTurnItem yourTurnItem = yourTurnItems.get(0);
 
 		Intent notifyIntent = new Intent(context, MainFragmentFaceActivity.class);
-		notifyIntent.putExtra(BaseGameItem.GAME_ID, yourTurnItem.getGameId());
 
 		notifyIntent.putExtra(IntentConstants.USER_MOVE_UPDATE, true);
 		// Creates an Intent for the Activity
@@ -343,20 +347,18 @@ public class AppUtils {
 			notifyIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		}
 
-		// Creates the PendingIntent
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, notifyIntent,
-				PendingIntent.FLAG_UPDATE_CURRENT);
 		Bitmap bigImage;
-
 		if (number == 1) {
+			notifyIntent.putExtra(BaseGameItem.GAME_ID, yourTurnItem.getGameId());
+
 			bigImage = ((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_stat_chess)).getBitmap();
-			String title = context.getString(R.string.your_move);
-			String body = context.getString(R.string.your_turn_in_game_with,
+			String title = context.getString(R.string.daily_chess);
+			String body = context.getString(R.string.your_move_vs,
 					yourTurnItem.getOpponent(),
 					yourTurnItem.getLastMove());
 
 			notificationBuilder.setContentTitle(title)
-					.setTicker(title + Symbol.NEW_STR + body)
+					.setTicker(body)
 					.setContentText(body)
 					.setSmallIcon(R.drawable.ic_stat_chess)
 					.setLargeIcon(bigImage)
@@ -365,7 +367,7 @@ public class AppUtils {
 					.setAutoCancel(true);
 		} else {
 			bigImage = ((BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_stat_notification_big_many)).getBitmap();
-			String title = context.getString(R.string.your_move);
+			String title = context.getString(R.string.my_move);
 			String content = context.getString(R.string.total_games);
 
 			NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
@@ -373,7 +375,7 @@ public class AppUtils {
 			inboxStyle.setBigContentTitle(title);
 			// Moves events into the big view
 			for (YourTurnItem turnItem : yourTurnItems) {
-				String body = context.getString(R.string.your_turn_in_game_with,
+				String body = context.getString(R.string.your_move_vs,
 						turnItem.getOpponent(),
 						turnItem.getLastMove());
 				inboxStyle.addLine(body);
@@ -392,6 +394,10 @@ public class AppUtils {
 					.setPriority(NotificationCompat.PRIORITY_HIGH)
 					.setAutoCancel(true);
 		}
+
+		// Creates the PendingIntent
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, notifyIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		// Puts the PendingIntent into the notification builder
 		notificationBuilder.setContentIntent(pendingIntent);

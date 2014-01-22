@@ -258,8 +258,6 @@
 	<string name="lightning_game">(Lynet)</string>
 	<string name="network_was_changed_please_relogin">Nettverket ble endret. Vennligst logge inn på nytt til Live</string>
 	<string name="ches_com">Chesscom</string>
-	<string name="your_move">Chess.com - Det er Your Move</string>
-	<string name="your_turn">Din tur!</string>
 	<string name="login_failed">Logg mislyktes:</string>
 	<string name="loggin_out">Logge ut …</string>
 	<string name="you_logged_out">Du har logget ut!</string>
@@ -323,7 +321,7 @@
 	<string name="no_network">No Network</string>
 	<string name="wireless_settings">Trådløse Innstillinger</string>
 	<string name="invalid_password">Ugyldig passord</string>
-	<string name="your_turn_in_game_with">I spillet ditt med %1$s , %2$s</string>
+	<string name="your_move_vs">I spillet ditt med %1$s , %2$s</string>
 	<string name="register">Register</string>
 	<string name="session_expired">Økten er utløpt, vennligst re-login</string>
 	<string name="problem_solved_">Problem løst!</string>

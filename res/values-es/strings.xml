@@ -261,8 +261,6 @@
 	<string name="lightning_game">· Explosión</string>
 	<string name="network_was_changed_please_relogin">Red ha cambiado. Por favor, iniciar la sesión a Live</string>
 	<string name="ches_com">Chesscom</string>
-	<string name="your_move">Chess.com - Ponte en movimiento</string>
-	<string name="your_turn">Tu turno!</string>
 	<string name="login_failed">Inicio de sesión fallido.</string>
 	<string name="loggin_out">Cerrar sesión</string>
 	<string name="you_logged_out">Ha finalizado la sesión!</string>
@@ -328,7 +326,7 @@
 	<string name="no_network">No Hay Red</string>
 	<string name="wireless_settings">Configuración Inalámbrica</string>
 	<string name="invalid_password">Contraseña no válida</string>
-	<string name="your_turn_in_game_with">En el juego con %1$s , %2$s</string>
+	<string name="your_move_vs">En el juego con %1$s , %2$s</string>
 	<string name="register">Registrar</string>
 	<string name="session_expired">Su sesión ha caducado, por favor vuelve a iniciar sesión</string>
 	<string name="problem_solved_">Problema resuelto!</string>

@@ -260,8 +260,6 @@
 	<string name="lightning_game">बिजली चमकना</string>
 	<string name="network_was_changed_please_relogin">नेटवर्क बदल गया था. कृपया relogin लाइव के लिए</string>
 	<string name="ches_com">ChessCom</string>
-	<string name="your_move">Chess.com - यह अपनी चाल है</string>
-	<string name="your_turn">तुम्हारी बारी है!</string>
 	<string name="login_failed">लॉग इन विफल| </string>
 	<string name="loggin_out">लॉगआउट</string>
 	<string name="you_logged_out">आप लॉग आउट हो गए!</string>
@@ -327,7 +325,7 @@
 	<string name="no_network">कोई नेटवर्क</string>
 	<string name="wireless_settings">वायरलेस सेटिंग्स</string>
 	<string name="invalid_password">अमान्य पासवर्ड</string>
-	<string name="your_turn_in_game_with">अपने खेल के साथ %1$s , %2$s</string>
+	<string name="your_move_vs">अपने खेल के साथ %1$s , %2$s</string>
 	<string name="register">रजिस्टर</string>
 	<string name="session_expired">आपका सत्र समाप्त हो गया है, फिर से लॉगिन करने के लिए कृपया</string>
 	<string name="problem_solved_">समस्या का हल!</string>

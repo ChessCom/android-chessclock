@@ -261,8 +261,6 @@
 	<string name="lightning_game">(Foudre)</string>
 	<string name="network_was_changed_please_relogin">Réseau a été changé. S\'il vous plaît se reconnecter à vivre</string>
 	<string name="ches_com">Chesscom</string>
-	<string name="your_move">Chess.com - C\'est votre déménagement</string>
-	<string name="your_turn">Votre tour!</string>
 	<string name="login_failed">Échec de la connexion:</string>
 	<string name="loggin_out">Déconnexion …</string>
 	<string name="you_logged_out">Vous êtes déconnecté!</string>
@@ -326,7 +324,7 @@
 	<string name="no_network">Pas de réseau</string>
 	<string name="wireless_settings">Paramètres sans fil</string>
 	<string name="invalid_password">Invalid password</string>
-	<string name="your_turn_in_game_with">Dans votre jeu avec %1$s , %2$s</string>
+	<string name="your_move_vs">Dans votre jeu avec %1$s , %2$s</string>
 	<string name="register">S\'inscrire</string>
 	<string name="session_expired">Votre session a expiré, s\'il vous plaît ré-ouvrir une session</string>
 	<string name="problem_solved_">Problème résolu!</string>

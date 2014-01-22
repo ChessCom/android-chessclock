@@ -260,8 +260,6 @@
 	<string name="lightning_game">(Lightning)</string>
 	<string name="network_was_changed_please_relogin">Network è stato modificato. Si prega di nuovo login a Live</string>
 	<string name="ches_com">Chesscom</string>
-	<string name="your_move">Chess.com - E \'Your Move</string>
-	<string name="your_turn">Il tuo turno!</string>
 	<string name="login_failed">Accesso non riuscito:</string>
 	<string name="loggin_out">Disconnessione…</string>
 	<string name="you_logged_out">Avete effettuato il logout!</string>
@@ -326,7 +324,7 @@
 	<string name="no_network">No Network</string>
 	<string name="wireless_settings">Impostazioni Wireless</string>
 	<string name="invalid_password">Password non valida</string>
-	<string name="your_turn_in_game_with">Nel vostro gioco con %1$s , %2$s</string>
+	<string name="your_move_vs">Nel vostro gioco con %1$s , %2$s</string>
 	<string name="register">Registro</string>
 	<string name="session_expired">La sessione è scaduta, si prega di ri-effettuare il login</string>
 	<string name="problem_solved_">Problema risolto!</string>

@@ -30,6 +30,8 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.GcmItem;
 import com.chess.backend.entity.api.YourTurnItem;
+import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
+import com.chess.backend.entity.api.daily_games.DailyCurrentGamesItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.backend.gcm.*;
 import com.chess.db.DbDataManager;
@@ -42,8 +44,11 @@ import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
 
 /**
  * IntentService responsible for handling GCM messages.
@@ -170,12 +175,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 		LogMe.dl(TAG, "type = " + type + " intent = " + intent);
 		if (BuildConfig.DEBUG && intent.hasExtra(MESSAGE)) {
 			Log.d(TAG, "type = " + type + " message = " + intent.getStringExtra(MESSAGE));
-
-			String message = intent.getStringExtra(MESSAGE);          // TODO remove after debug
-			if (message.length() >= 20) {
-				message = message.substring(0, 20);
-			}
-//			AppUtils.showStatusBarNotification(context, type, message);
 		}
 
 		if (type.equals(GcmHelper.NOTIFICATION_YOUR_MOVE)) {
@@ -189,7 +188,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
 				String title = context.getString(R.string.new_friend_request);
-				String body = intent.getStringExtra(SENDER) + Symbol.COLON + Symbol.SPACE + intent.getStringExtra(MESSAGE);
+				String body = context.getString(R.string.friend_request_from_arg, intent.getStringExtra(SENDER));
 				AppUtils.showStatusBarNotification(context, title, body);
 			}
 		} else if (type.equals(GcmHelper.NOTIFICATION_NEW_MESSAGE)) {
@@ -218,7 +217,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			sendNotificationBroadcast(context, type);
 
 			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
-				String title = context.getString(R.string.your_game_is_over);
+				String title = context.getString(R.string.game_is_over);
 				String body = intent.getStringExtra(MESSAGE);
 				AppUtils.showStatusBarNotification(context, title, body);
 			}
@@ -228,15 +227,22 @@ public class GCMIntentService extends GCMBaseIntentService {
 			sendNotificationBroadcast(context, type);
 
 			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
-				String title = context.getString(R.string.new_challenge);
-				String body = getString(R.string.game) + Symbol.SPACE + getString(R.string.with)
-						+ Symbol.SPACE + intent.getStringExtra(SENDER);
+				String title = context.getString(R.string.new_daily_challenge);
+				String body = context.getString(R.string.arg_wants_to_play, intent.getStringExtra(SENDER));
 				AppUtils.showStatusBarNotification(context, title, body);
 
 				// update user stats
 				startService(new Intent(this, GetAndSaveUserStats.class));
 			}
 		} else if (type.equals(GcmHelper.NOTIFICATION_MOVE_MADE)) {
+			List<YourTurnItem> moveNotifications = DbDataManager.getAllPlayMoveNotifications(getContentResolver(), username);
+
+			moveNotifications = updateDailyGames(appData, username, getContentResolver(), moveNotifications);
+
+			if (appData.isNotificationsEnabled()) {
+				AppUtils.showNewMoveStatusNotification(context, moveNotifications, StaticData.MOVE_REQUEST_CODE);
+			}
+
 			context.sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 		}
 	}
@@ -281,7 +287,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		DbDataManager.saveNewChatNotification(contentResolver, chatNotificationItem, username);
 	}
 
-	private synchronized void showNewMessage(Intent intent, Context context){
+	private synchronized void showNewMessage(Intent intent, Context context) {
 		NewMessageNotificationItem messageNotificationItem = new NewMessageNotificationItem(intent);
 
 		Log.d(TAG, " _________________________________");
@@ -324,8 +330,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String username = appData.getUsername();
 
 		String lastMoveSan = intent.getStringExtra(LAST_MOVE_SAN);
-//			String opponentUserId = intent.getStringExtra("opponent_user_id");
-//			String collapseKey = intent.getStringExtra("collapse_key");
 		String opponentUsername = intent.getStringExtra(OPPONENT_USERNAME);
 		String gameId = intent.getStringExtra(GAME_ID);
 
@@ -348,7 +352,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		DbDataManager.savePlayMoveNotification(contentResolver, username, yourTurnItem);
 
+		// get all saved move notifications
 		List<YourTurnItem> moveNotifications = DbDataManager.getAllPlayMoveNotifications(contentResolver, username);
+
+		// update game states from server
+		moveNotifications = updateDailyGames(appData, username, contentResolver, moveNotifications);
 
 		if (DataHolder.getInstance().inOnlineGame(Long.parseLong(gameId))) { // don't show notification
 
@@ -378,6 +386,47 @@ public class GCMIntentService extends GCMBaseIntentService {
 				}
 			}
 		}
+	}
+
+	private List<YourTurnItem> updateDailyGames(AppData appData, String username, ContentResolver contentResolver,
+								  List<YourTurnItem> moveNotifications) {
+
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_CURRENT);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, appData.getUserToken());
+
+		DailyCurrentGamesItem item = null;
+		List<DailyCurrentGameData> currentGamesList;
+		try {
+			item = RestHelper.getInstance().requestData(loadItem, DailyCurrentGamesItem.class, getApplicationContext());
+		} catch (InternalErrorException e) {
+			e.logMe();
+		}
+
+		if (item != null) {
+			currentGamesList = item.getData();
+			for (DailyCurrentGameData currentItem : currentGamesList) {
+				DbDataManager.saveDailyGame(getContentResolver(), currentItem, username);
+			}
+
+			DbDataManager.checkAndDeleteNonExistCurrentGames(contentResolver, currentGamesList, username);
+			List<YourTurnItem> notificationsToRemove = new ArrayList<YourTurnItem>();
+			for (YourTurnItem turnItem : moveNotifications) {
+				// compare with games list
+				for (DailyCurrentGameData gameData : currentGamesList) {
+					if (turnItem.getGameId() == gameData.getGameId()) {
+						if (!gameData.isMyTurn()) {
+							notificationsToRemove.add(turnItem);
+							DbDataManager.deletePlayMoveNotification(contentResolver, username, gameData.getGameId());
+						}
+						break;
+					}
+				}
+			}
+			moveNotifications.removeAll(notificationsToRemove);
+		}
+
+		return moveNotifications;
 	}
 
 	@Override

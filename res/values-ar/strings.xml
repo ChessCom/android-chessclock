@@ -261,8 +261,6 @@
 	<string name="lightning_game">بَرْق</string>
 	<string name="network_was_changed_please_relogin">تم تغيير شبكة. يرجى relogin لايف</string>
 	<string name="ches_com">ChessCom</string>
-	<string name="your_move">Chess.com - إنها عملكم</string>
-	<string name="your_turn">دورك!</string>
 	<string name="login_failed">فشل تسجيل الدخول:</string>
 	<string name="loggin_out">تسجيل الخروج …</string>
 	<string name="you_logged_out">لقد قمت بالخروج!</string>
@@ -326,7 +324,7 @@
 	<string name="no_network">لا شبكة</string>
 	<string name="wireless_settings">الإعدادات اللاسلكية</string>
 	<string name="invalid_password">كلمة السر غير صحيحة</string>
-	<string name="your_turn_in_game_with">%2$s, %1$s  في لعبتك مع</string>
+	<string name="your_move_vs">%2$s, %1$s  في لعبتك مع</string>
 	<string name="register">تسجيل</string>
 	<string name="session_expired">جلسة العمل الخاصة بك قد انتهت صلاحيتها، الرجاء إعادة تسجيل الدخول</string>
 	<string name="problem_solved_">حل المشكلة!</string>

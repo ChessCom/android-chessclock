@@ -208,14 +208,20 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	private void handleOpenDailyGames(Intent intent) {
 		if (intent != null && intent.hasExtra(IntentConstants.USER_MOVE_UPDATE)) {
-			long gameId = intent.getLongExtra(BaseGameItem.GAME_ID, 0);
-			if (gameId != 0) {
-				if (!isTablet) {
-					openFragment(GameDailyFragment.createInstance(gameId, true));
-				} else {
-					openFragment(GameDailyFragmentTablet.createInstance(gameId, true));
+			if (intent.hasExtra(BaseGameItem.GAME_ID)) {
+				long gameId = intent.getLongExtra(BaseGameItem.GAME_ID, 0);
+				if (gameId != 0) {
+					if (!isTablet) {
+						openFragment(GameDailyFragment.createInstance(gameId, true));
+					} else {
+						openFragment(GameDailyFragmentTablet.createInstance(gameId, true));
+					}
+					setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
 				}
-				setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+			} else {
+				clearFragmentStack();
+				switchFragment(new HomeTabsFragment());
+				setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
 			}
 		}
 	}
@@ -587,7 +593,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		currentActiveFragment = fragment;
 
 		ft.replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName());
-		ft.commit();
+		ft.commitAllowingStateLoss();
 	}
 
 	@Override

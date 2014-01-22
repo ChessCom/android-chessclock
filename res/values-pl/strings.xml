@@ -259,8 +259,6 @@
 	<string name="lightning_game">(Lightning)</string>
 	<string name="network_was_changed_please_relogin">Sieć została zmieniona. Proszę przelogować na żywo</string>
 	<string name="ches_com">Chesscom</string>
-	<string name="your_move">Chess.com - Czas na Twój ruch</string>
-	<string name="your_turn">Twoja kolej!</string>
 	<string name="login_failed">Logowanie nie powiodło się.</string>
 	<string name="loggin_out">Wyloguj się</string>
 	<string name="you_logged_out">Zalogowaniu się!</string>
@@ -324,7 +322,7 @@
 	<string name="no_network">Nie Sieć</string>
 	<string name="wireless_settings">Ustawienia Bezprzewodowe</string>
 	<string name="invalid_password">Nieprawidłowe hasło</string>
-	<string name="your_turn_in_game_with">W swojej grze z %1$s , %2$s</string>
+	<string name="your_move_vs">W swojej grze z %1$s , %2$s</string>
 	<string name="register">Zarejestrować</string>
 	<string name="session_expired">Twoja sesja wygasła, należy ponownie zalogować</string>
 	<string name="problem_solved_">Problem rozwiązany!</string>
