@@ -303,7 +303,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			lessonCompleteView.setVisibility(View.VISIBLE);
 
 			descriptionView.postDelayed(scrollDescriptionDown, 50);
-			if (!inLandscape()) {
+			if (inPortrait()) {
 				slidingDrawer.animateClose();
 			}
 			showLessonsResult = false;
@@ -337,7 +337,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				}
 
 				if (nextLessonFound) {
-					if (!inLandscape()) {
+					if (inPortrait()) {
 						slidingDrawer.animateClose();
 					}
 					showDefaultState();
@@ -408,7 +408,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	@Override
 	public void startLesson() {
 		getControlsView().showDefault();
-		if (!inLandscape() && !slidingDrawer.isOpened()) {
+		if (inPortrait() && !slidingDrawer.isOpened()) {
 			slidingDrawer.animateOpen();
 		}
 	}
@@ -758,7 +758,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		ChessBoardLessons.resetInstance();
 		boardView.setGameFace(this);
-		slidingDrawer.open();
+		if (inPortrait()) {
+			slidingDrawer.open();
+		}
 
 		getBoardFace().setupBoard(getMentorPosition().getFen());
 
