@@ -2,6 +2,7 @@ package com.chess.backend.tasks;
 
 import android.net.Uri;
 import android.util.Log;
+import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;
@@ -77,8 +78,10 @@ public class GetAndSaveFileToSdTask extends AbstractUpdateTask<String, String> {
 			try {
 				// Start loading
 				URLConnection urlConnection = new URL(url).openConnection();
-				int totalSize = urlConnection.getContentLength();
+				urlConnection.setConnectTimeout(RestHelper.TIME_OUT);
+				urlConnection.setReadTimeout(RestHelper.TIME_OUT);
 
+				int totalSize = urlConnection.getContentLength();
 				InputStream is = urlConnection.getInputStream();
 
 				// create descriptor

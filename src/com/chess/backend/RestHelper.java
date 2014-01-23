@@ -39,9 +39,10 @@ import java.util.*;
  */
 public class RestHelper {
 
+	public static final int TIME_OUT = 10 * 1000;
+
 	private static RestHelper ourInstance = new RestHelper();
 	private String userAgent;
-	private static final int TIMEOUT = 10 * 1000;
 
 	public static RestHelper getInstance() {
 		if (ourInstance == null) {
@@ -561,8 +562,8 @@ public class RestHelper {
 			connection.setRequestMethod(requestMethod);
 			connection.setRequestProperty("User-Agent", userAgent);
 
-			connection.setConnectTimeout(TIMEOUT); // default = 0
-			connection.setReadTimeout(TIMEOUT); // default = 0
+			connection.setConnectTimeout(TIME_OUT); // default = 0
+			connection.setReadTimeout(TIME_OUT); // default = 0
 
 			if (IS_TEST_SERVER_MODE) {
 				connection.setRequestProperty("Authorization", getBasicAuth());

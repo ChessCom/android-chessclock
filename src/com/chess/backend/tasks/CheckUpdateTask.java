@@ -3,6 +3,7 @@ package com.chess.backend.tasks;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
@@ -44,6 +45,9 @@ public class CheckUpdateTask extends AbstractUpdateTask<Boolean, String> {
 		try {
 			URL updateURL = new URL(urls[0]);
 			URLConnection conn = updateURL.openConnection();
+			conn.setConnectTimeout(RestHelper.TIME_OUT);
+			conn.setReadTimeout(RestHelper.TIME_OUT);
+
 			InputStream is = conn.getInputStream();
 			BufferedInputStream bis = new BufferedInputStream(is);
 			ByteArrayBuffer baf = new ByteArrayBuffer(50);

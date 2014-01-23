@@ -23,6 +23,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
 import com.chess.BuildConfig;
+import com.chess.backend.RestHelper;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -264,6 +265,9 @@ public class ImageFetcher extends ImageResizer {
         try {
             final URL url = new URL(urlString);
             urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setConnectTimeout(RestHelper.TIME_OUT);
+			urlConnection.setReadTimeout(RestHelper.TIME_OUT);
+
             in = new BufferedInputStream(urlConnection.getInputStream(), IO_BUFFER_SIZE);
             out = new BufferedOutputStream(outputStream, IO_BUFFER_SIZE);
 

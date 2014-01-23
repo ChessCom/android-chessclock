@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.utilities.AppUtils;
 
@@ -247,8 +248,11 @@ public class ImageDownloaderToListener {
 		try {
 			// Start loading
 			URLConnection urlConnection = new URL(url).openConnection();
-			int totalSize = urlConnection.getContentLength();
 
+			urlConnection.setConnectTimeout(RestHelper.TIME_OUT);
+			urlConnection.setReadTimeout(RestHelper.TIME_OUT);
+
+			int totalSize = urlConnection.getContentLength();
 			InputStream is = urlConnection.getInputStream();
 
 			if (cacheDir != null) {
