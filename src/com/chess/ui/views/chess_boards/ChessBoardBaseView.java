@@ -948,21 +948,19 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			return false;
 		}
 		BoardFace boardFace = getBoardFace();
+		int fromSquare = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
+		boolean userAbleToMove = isUserAbleToMove(boardFace.getColor(fromSquare));
 		if (firstClick) {
-			from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
+			from = fromSquare;
 
-			if (isUserAbleToMove(boardFace.getColor(from))) {
+			if (userAbleToMove) {
 				pieceSelected = true;
 				firstClick = false;
 				invalidate();
 			}
 		} else {
-			int fromSquare = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 			// don't touch not our piece or don't make empty square as fromSquare
-			boolean userAbleToMove = isUserAbleToMove(boardFace.getColor(fromSquare));
-//			boolean inAnalysisFromNonEmpty = boardFace.isAnalysis() && boardFace.getPiece(fromSquare) != ChessBoard.EMPTY;
-
-			if (!boardFace.isAnalysis() && userAbleToMove) {
+			if (!boardFace.isAnalysis() && userAbleToMove && !pieceSelected) {
 				from = fromSquare;
 				pieceSelected = true;
 				firstClick = false;
@@ -992,7 +990,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		if (!firstClick) {
 			draggingFrom = from;
 			// do not drag captured piece // ??
-			dragging = isUserAbleToMove(boardFace.getColor(draggingFrom)) || (boardFace.isAnalysis());
+			dragging = isUserAbleToMove(boardFace.getColor(draggingFrom)); // we do check in GameBaseFragment if boardFace is in Analysis mode
 			to = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 			invalidate();
 		}
@@ -1017,16 +1015,17 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 		BoardFace boardFace = getBoardFace();
 
+		int selectedSquare = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
+		boolean isUserAbleToMove = isUserAbleToMove(boardFace.getColor(selectedSquare));
 		if (firstClick) {
-			from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
-			if (isUserAbleToMove(boardFace.getColor(from))
-					|| (boardFace.isAnalysis() && boardFace.getPiece(to) != ChessBoard.EMPTY)) {
+			from = selectedSquare;
+			if (isUserAbleToMove || (boardFace.isAnalysis() && boardFace.getPiece(to) != ChessBoard.EMPTY)) {
 				pieceSelected = true;
 				firstClick = false;
 				invalidate();
 			}
 		} else {
-			to = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
+			to = selectedSquare;
 			pieceSelected = false;
 			firstClick = true;
 
@@ -1063,11 +1062,10 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				} else {
 					afterUserMove();
 				}
-			} else if (boardFace.getPiece(to) != ChessBoard.EMPTY
-					&& isUserAbleToMove(boardFace.getColor(to))) { // capture
+			} else if (boardFace.getPiece(to) != ChessBoard.EMPTY && isUserAbleToMove) { // capture
 				pieceSelected = true;
 				firstClick = false;
-				from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
+				from = selectedSquare;
 			}
 			invalidate();
 		}

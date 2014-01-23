@@ -46,7 +46,7 @@ public class DbHelper {
 		queryParams.setProjection(DbDataManager.PROJECTION_DAILY_CURRENT_GAMES);
 		queryParams.setSelection(DbDataManager.SELECTION_USER_TURN);
 		queryParams.setArguments(new String[]{username, RestHelper.V_TRUE});
-		queryParams.setOrder(DbScheme.V_TIMESTAMP + DbDataManager.DESCEND);
+		queryParams.setOrder(DbScheme.V_TIME_REMAINING + DbDataManager.ASCEND);
 		return queryParams;
 	}
 

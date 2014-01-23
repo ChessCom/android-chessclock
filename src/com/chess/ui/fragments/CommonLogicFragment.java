@@ -797,7 +797,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected void afterLogin() {
 		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
-		backToHomeFragment();
+//		backToHomeFragment(); // TODO why do we need to go home?
 	}
 
 	protected void showLoadingProgress(boolean show) {

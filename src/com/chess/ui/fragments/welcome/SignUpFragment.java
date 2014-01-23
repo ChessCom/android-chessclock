@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 public class SignUpFragment extends CommonLogicFragment implements View.OnClickListener{
 
 	protected Pattern emailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-Z]{2,4}");
-	protected Pattern gMailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[g]");   // TODO use for autoComplete
+//	protected Pattern gMailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[g]");   // TODO use for autoComplete
 
 	private EditText userNameEdt;
 	private EditText emailEdt;
@@ -137,7 +137,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 			return false;
 		}
 
-		if (!password.equals(passwordRetypeEdt.getText().toString())) {
+		if (!password.equals(getTextFromField(passwordRetypeEdt))) {
 			passwordRetypeEdt.setError(getString(R.string.pass_dont_match));
 			passwordRetypeEdt.requestFocus();
 			return false;
@@ -183,12 +183,12 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 
 	@Override
 	protected void afterLogin() {
-		FlurryAgent.logEvent(FlurryData.LOGGED_IN);     // duplicate logic -> moved to CommonLogicFragment class
+		super.afterLogin();
 		getActivityFace().openFragment(new CreateProfileFragment());
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {  // TODO restore
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == Activity.RESULT_OK ){
 			if(requestCode == NETWORK_REQUEST){

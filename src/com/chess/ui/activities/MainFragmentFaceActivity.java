@@ -219,9 +219,14 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 					setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
 				}
 			} else {
-				clearFragmentStack();
-				switchFragment(new HomeTabsFragment());
-				setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						clearFragmentStack();
+						switchFragment(new HomeTabsFragment());
+						setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
+					}
+				}, CommonLogicFragment.VIEW_UPDATE_DELAY);
 			}
 		}
 	}
@@ -529,7 +534,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		getSupportFragmentManager()
 				.beginTransaction()
 				.replace(R.id.menu_frame_right, fragment)
-				.commit();
+				.commitAllowingStateLoss();
 		sm.setSecondaryShadowDrawable(R.drawable.defaultshadow_right);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
 	}
@@ -540,7 +545,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 		leftMenuFragment = fragment;
 		transaction.replace(R.id.menu_frame_left, leftMenuFragment);
-		transaction.commit();
+		transaction.commitAllowingStateLoss();
 	}
 
 	@Override
@@ -787,7 +792,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		int count = fragmentManager.getBackStackEntryCount();
 		if (count > 0) {
 			int firstFragmentId = fragmentManager.getBackStackEntryAt(0).getId();
-			fragmentManager.popBackStack(firstFragmentId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			fragmentManager.popBackStackImmediate(firstFragmentId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		}
 	}
 

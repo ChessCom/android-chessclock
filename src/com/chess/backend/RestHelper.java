@@ -41,7 +41,7 @@ public class RestHelper {
 
 	private static RestHelper ourInstance = new RestHelper();
 	private String userAgent;
-	private final int TIMEOUT = 10 * 1000;
+	private static final int TIMEOUT = 10 * 1000;
 
 	public static RestHelper getInstance() {
 		if (ourInstance == null) {

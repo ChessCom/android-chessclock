@@ -651,6 +651,12 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 	}
 
 	@Override
+	protected void afterLogin() {
+		super.afterLogin();
+		backToHomeFragment();
+	}
+
+	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {  // TODO restore
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
