@@ -48,7 +48,7 @@ public class LccConnectionListener implements ConnectionListener {
 
 	@Override
 	public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable) {
-		LogMe.dl(TAG, "User connection failure: " + message + ", details=" + details);
+		LogMe.dl(TAG, "User connection failure: " + message + ", details=" + details + ", client=" + lccHelper.getClientId() );
 
 		lccHelper.processConnectionFailure(details);
 	}

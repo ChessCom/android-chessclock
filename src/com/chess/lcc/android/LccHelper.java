@@ -275,6 +275,7 @@ public class LccHelper {
 	public void connectByCreds(String username, String pass) {
 //		LogMe.dl(TAG, "connectByCreds : user = " + username + " pass = " + pass); // do not post in prod
 		LogMe.dl(TAG, "connectByCreds : hidden"); // do not post in pod
+		setConnecting(true);
 		startConnectionTimer();
 		lccClient.connect(username, pass, connectionListener, subscriptionListener);
 		liveChessClientEventListener.onConnecting();
@@ -282,6 +283,7 @@ public class LccHelper {
 
 	public void connectBySessionId(String sessionId) {
 		LogMe.dl(TAG, "connectBySessionId : sessionId = " + sessionId);
+		setConnecting(true);
 		startConnectionTimer();
 		lccClient.connect(sessionId, connectionListener, subscriptionListener);
 		liveChessClientEventListener.onConnecting();

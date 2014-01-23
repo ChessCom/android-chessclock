@@ -95,6 +95,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		LogMe.dl(TAG, "LiveBaseActivity onResume getAppData().isLiveChess()=" + getAppData().isLiveChess() + ", isLCSBound=" + isLCSBound);
 
+		reconnectByLccFailureCounter = 0;
+
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				dismissNetworkCheckDialog();
@@ -193,6 +195,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					return super.onKeyUp(keyCode, event);
 				}
 
+				// todo: we should exit Live even if isLCSBound=false
 				fragmentByTag = getLiveHomeFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					stopConnectTimer();
@@ -688,12 +691,43 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
 
 			new RequestJsonTask<LoginItem>(new LoginUpdateListener()).executeTask(loadItem);
+
 		} else if (!TextUtils.isEmpty(getAppData().getFacebookToken())) {
-			// todo: add checkAndPerformReloginForLiveDelayed() for Facebook case
-			loginWithFacebook(getAppData().getFacebookToken());
+
+			String accessToken = getAppData().getFacebookToken();
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
+			loadItem.setRequestMethod(RestHelper.POST);
+			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, accessToken);
+			loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
+			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_USERNAME);
+			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_TACTICS_RATING);
+
+			new RequestJsonTask<LoginItem>(new FacebookLoginUpdateListener(accessToken)).executeTask(loadItem);
 		}
 
 		needReLoginToLive = true;
+	}
+
+	protected class FacebookLoginUpdateListener extends CommonLogicActivity.LoginUpdateListener {
+
+		public FacebookLoginUpdateListener(String facebookToken) {
+			super(facebookToken);
+		}
+
+		@Override
+		public void updateData(LoginItem returnedObj) {
+			stopConnectTimer();
+			super.updateData(returnedObj);
+			//getAppData().setLiveChessMode(true);
+			connectLcc();
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			checkAndPerformReloginForLiveDelayed();
+			super.errorHandle(resultCode);
+		}
 	}
 
 	@Override
@@ -721,6 +755,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				reconnectByLccFailureCounter++;
 				startReloginForLive();
 				performReloginForLive();
+
+			} if (!moreAttempts) {
+				showToast(R.string.pleaseLoginAgain);
 			}
 		} else {
 			showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
