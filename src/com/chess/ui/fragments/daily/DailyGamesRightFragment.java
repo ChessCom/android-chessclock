@@ -472,7 +472,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 					break;
 				case THEIR:
 					currentGamesTheirCursorAdapter.changeCursor(returnedObj);
-
 					break;
 				case FINISHED:
 					finishedGamesCursorAdapter.changeCursor(returnedObj);

@@ -9,9 +9,8 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
-import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
-import com.chess.model.BaseGameItem;
+import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 
 import java.util.HashMap;
@@ -59,13 +58,13 @@ public class DailyCurrentGamesTheirCursorRightAdapter extends ItemsCursorAdapter
 		String opponentName;
 		if (getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
 			avatarUrl = getString(cursor, DbScheme.V_WHITE_AVATAR);
-			opponentName = getString(cursor, DbScheme.V_WHITE_USERNAME) + gameType + draw;
+			opponentName = getString(cursor, DbScheme.V_WHITE_USERNAME);
 		} else {
 			avatarUrl = getString(cursor, DbScheme.V_BLACK_AVATAR);
-			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME) + gameType + draw;
+			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME);
 		}
 
-		holder.playerTxt.setText(opponentName + gameType);
+		holder.playerTxt.setText(opponentName + gameType + draw);
 
 		if (!imageDataMap.containsKey(avatarUrl)) {
 			imageDataMap.put(avatarUrl, new SmartImageFetcher.Data(avatarUrl, imageSize));
