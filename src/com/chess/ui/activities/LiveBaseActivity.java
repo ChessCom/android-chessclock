@@ -93,7 +93,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onResume() {
 		super.onResume();
 
-		LogMe.dl(TAG, "LiveBaseActivity onResume getAppData().isLiveChess()=" + getAppData().isLiveChess() + ", isLCSBound=");
+		LogMe.dl(TAG, "LiveBaseActivity onResume getAppData().isLiveChess()=" + getAppData().isLiveChess() + ", isLCSBound=" + isLCSBound);
 
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
@@ -316,7 +316,12 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			}
 
 			// first we check live sessionId
-			boolean isLccConnecting = liveService != null && liveService.isAllowLccConnecting();
+			boolean isLccConnecting = liveService != null && liveService.isLccConnectedOrConnecting();
+
+			LogMe.dl("!!!!!!!!!!!!!!!!!!!!!!!! sessionid isLccConnecting " + isLccConnecting);
+			LogMe.dl("!!!!!!!!!!!!!!!!!!!!!!!! sessionid continueReloginForLive " + continueReloginForLive);
+			LogMe.dl("!!!!!!!!!!!!!!!!!!!!!!!! sessionid continueSessionIdCheck " + continueSessionIdCheck);
+
 			if (!continueReloginForLive && !continueSessionIdCheck && !isLccConnecting) {
 				startSessionIdCheck();
 				sessionIdCheck();
@@ -662,7 +667,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	private void performReloginForLive() {
-		//Log.d(TAG, "performReloginForLive isLCSBound=" + isLCSBound);
+		Log.d(TAG, "performReloginForLive isLCSBound=" + isLCSBound);
 
 		// Logout first to make clear connect
 		if (isLCSBound) {
@@ -710,7 +715,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		if (message.equals(getString(R.string.pleaseLoginAgain))) {
 
 			boolean moreAttempts = reconnectByLccFailureCounter < RECONNECT_BY_LCC_FAILURE_LIMIT;
-			boolean isLccConnecting = liveService != null && liveService.isAllowLccConnecting();
+			boolean isLccConnecting = liveService != null && liveService.isLccConnectedOrConnecting();
 
 			if (!continueReloginForLive && !isLccConnecting && moreAttempts) {
 				reconnectByLccFailureCounter++;

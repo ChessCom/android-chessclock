@@ -73,7 +73,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 					httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET); // Android 2.2
 				}
 
-				httpClient.setMaxConnectionsPerAddress(2);
+				httpClient.setMaxConnectionsPerAddress(2); //
 				//httpClient.setSoTimeout(11000);
 				httpClient.setConnectTimeout(10000); // 75000 is default
 				httpClient.setTimeout(10000); // 320000 is default

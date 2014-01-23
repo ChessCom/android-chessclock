@@ -30,6 +30,7 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.setUser(user);
 		LogMe.dl(TAG, "onConnectionEstablished: client=" + lccHelper.getClientId());
 		lccHelper.setConnected(true);
+		lccHelper.setConnecting(false);
 		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 		lccHelper.clearPausedEvents();
@@ -57,6 +58,7 @@ public class LccConnectionListener implements ConnectionListener {
 		LogMe.dl(TAG, "Connection Lost, with message = " + message + ", client=" + lccHelper.getClientId());
 		//LogMe.dl(TAG, "Connection Lost: isNetworkAvailable=" + AppUtils.isNetworkAvailable(lccHelper.getContext()));
 		lccHelper.setConnected(false);
+		lccHelper.setConnecting(true);
 	}
 
 	@Override
@@ -68,6 +70,7 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.clearGames();
 		lccHelper.setCurrentGameId(null);
 		lccHelper.setConnected(true);
+		lccHelper.setConnecting(false);
 
 		lccHelper.setFriends(userSettings.getFriends());
 		lccHelper.storeBlockedUsers(userSettings.getBlockedUsers(), userSettings.getBlockingUsers());
@@ -86,6 +89,7 @@ public class LccConnectionListener implements ConnectionListener {
 	public void onConnectionRestored(User arg0) {
 		LogMe.dl(TAG, "Connection Restored:" + " lccClient=" + lccHelper.getClientId());
 		lccHelper.setConnected(true);
+		lccHelper.setConnecting(false);
 	}
 
 	@Override
@@ -105,7 +109,6 @@ public class LccConnectionListener implements ConnectionListener {
 		LogMe.dl(TAG, "The client kicked: " + user.getUsername() + ", reason=" + reason +
 				", message=" + message + ", period=" + period);
 
-		lccHelper.setConnected(false);
 		lccHelper.processKicked();
 	}
 }

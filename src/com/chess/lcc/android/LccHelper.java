@@ -99,6 +99,7 @@ public class LccHelper {
 	//private int connectionFailureCounter;
 	private boolean allowLccConnecting;
 	private Handler handler;
+	private boolean liveConnecting;
 
 	public LccHelper(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
 		this.liveService = liveService;
@@ -329,9 +330,12 @@ public class LccHelper {
 		if (details != null) { // LCC stops client, create new one manually
 
 			connectionFailure = true;
-			cleanupLiveInfo();
+
+			logout();
+
+			/*cleanupLiveInfo();
 			cancelServiceNotification();
-			stopConnectionTimer();
+			stopConnectionTimer();*/
 
 			switch (details) {
 				case USER_KICKED: {
@@ -343,7 +347,7 @@ public class LccHelper {
 					if (appData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
 						appData.incrementLiveConnectAttempts(context);*/
 
-					logout();
+					//logout();
 
 					// first of all we need to invalidate sessionId key
 					new AppData(context).setLiveSessionId(null);
@@ -377,12 +381,9 @@ public class LccHelper {
 					break;
 			}
 
-			synchronized (CLIENT_SYNC_LOCK) {
-				resetClient();
-			}
-
 		} else { // when connect(authKey) and Live server in unreachable, details=null
 
+			setConnecting(true);
 			if (allowLccConnecting) {
 				return;
 			} else {
@@ -487,11 +488,12 @@ public class LccHelper {
 	}
 
 	public boolean isConnected() {
-		return liveConnected;
+		return lccClient != null && liveConnected;
 	}
 
 	public void setConnected(boolean connected) {
 		liveConnected = connected;
+
 		if (connected) {
 
 			appData.resetLiveConnectAttempts();
@@ -847,7 +849,6 @@ public class LccHelper {
 		setCurrentGameId(null);
 		setCurrentObservedGameId(null);
 		setUser(null);
-		setConnected(false);
 		clearGames();
 		clearChallenges();
 		clearOwnChallenges();
@@ -858,6 +859,8 @@ public class LccHelper {
 
 	public void logout() {
 		LogMe.dl(TAG, "USER LOGOUT");
+		setConnected(false);
+		setConnecting(false);
 		cleanupLiveInfo();
 		runDisconnectTask();
 		cancelServiceNotification();
@@ -865,6 +868,8 @@ public class LccHelper {
 	}
 
 	public void leave() {
+		setConnected(false);
+		setConnecting(false);
 		cleanupLiveInfo();
 		runLeaveTask();
 		stopConnectionTimer();
@@ -1321,7 +1326,15 @@ public class LccHelper {
 		liveChessClientEventListener.updateLccConnecting(allowLccConnecting);
 	}
 
-	public boolean isAllowLccConnecting() {
-		return allowLccConnecting; // rename
+	public void setConnecting(boolean liveConnecting) {
+		this.liveConnecting = liveConnecting;
+	}
+
+	public boolean isLccConnecting() {
+		return lccClient != null && liveConnecting; // check for lccClient != null because sometimes LCC sends few Connection Lost messages after logout
+	}
+
+	public boolean isLccConnectedOrConnecting() {
+		return liveConnected || isLccConnecting();
 	}
 }
