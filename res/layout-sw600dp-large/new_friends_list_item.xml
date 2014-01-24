@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/friendListItemView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="10dip"
-	android:background="@drawable/transparent_list_item_selector"
-    >
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:paddingBottom="10dip"
+	android:background="@drawable/transparent_list_item_selector">
 
 	<View
 		android:id="@+id/topDivideView"
@@ -17,87 +15,80 @@
 		android:background="@color/new_friends_list_divider"
 		android:layout_marginLeft="11dp"
 		android:layout_marginRight="11dp"
-		android:layout_marginBottom="11dp"
-		/>
+		android:layout_marginBottom="11dp" />
 
 
 	<!--Avatar-->
-    <com.chess.backend.image_load.AvatarView
-        android:id="@+id/photoImg"
-        android:layout_width="@dimen/friend_list_photo_size"
-        android:layout_height="@dimen/friend_list_photo_size"
-        android:contentDescription="@string/photo"
-        android:src="@drawable/img_profile_picture_stub"
+	<com.chess.backend.image_load.AvatarView
+		android:id="@+id/photoImg"
+		android:layout_width="@dimen/friend_list_photo_size"
+		android:layout_height="@dimen/friend_list_photo_size"
+		android:contentDescription="@string/photo"
+		android:src="@drawable/img_profile_picture_stub"
 		android:layout_below="@id/topDivideView"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        />
+		android:layout_marginLeft="10dip"
+		android:layout_marginRight="10dip"
+		android:adjustViewBounds="true"
+		android:scaleType="fitXY" />
 
 	<!--Username-->
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/usernameTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/photoImg"
-        android:layout_alignTop="@id/photoImg"
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/usernameTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/photoImg"
+		android:layout_alignTop="@id/photoImg"
 		android:layout_marginTop="-4dp"
 		android:layout_below="@id/topDivideView"
-        android:textColor="@color/new_text_blue"
-        custom:ttf="Bold"
-        android:textSize="17sp"
-        />
+		android:textColor="@color/new_text_blue"
+		custom:ttf="Bold"
+		android:textSize="17sp" />
 
 	<!--Country flag-->
-    <ImageView
-        android:id="@+id/countryImg"
-        android:layout_width="27dip"
-        android:layout_height="27dip"
-        android:contentDescription="@string/country"
-        android:layout_toRightOf="@id/usernameTxt"
+	<ImageView
+		android:id="@+id/countryImg"
+		android:layout_width="27dip"
+		android:layout_height="27dip"
+		android:contentDescription="@string/country"
+		android:layout_toRightOf="@id/usernameTxt"
 		android:layout_below="@id/topDivideView"
-        android:layout_marginLeft="7dip"
-        />
+		android:layout_marginLeft="7dip" />
 
 	<!--Premium icon-->
 	<ImageView
-        android:id="@+id/premiumImg"
-        android:layout_width="20dip"
-        android:layout_height="20dip"
-        android:contentDescription="@string/image"
-        android:layout_toRightOf="@id/countryImg"
-        android:src="@drawable/ic_nav_upgrade"
-        android:layout_alignTop="@id/photoImg"
+		android:id="@+id/premiumImg"
+		android:layout_width="20dip"
+		android:layout_height="20dip"
+		android:contentDescription="@string/image"
+		android:layout_toRightOf="@id/countryImg"
+		android:src="@drawable/ic_nav_upgrade"
+		android:layout_alignTop="@id/photoImg"
 		android:layout_below="@id/topDivideView"
-        android:layout_marginLeft="10dip"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        />
+		android:layout_marginLeft="10dip"
+		android:adjustViewBounds="true"
+		android:scaleType="fitXY" />
 
 	<!--Location-->
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/locationTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/photoImg"
-        android:layout_below="@id/usernameTxt"
-        android:textColor="@color/new_friends_grey_text"
-        android:paddingTop="2dip"
-        />
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/locationTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/photoImg"
+		android:layout_below="@id/usernameTxt"
+		android:textColor="@color/new_friends_grey_text"
+		android:paddingTop="2dip" />
 
 	<!--Online status-->
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/onlineTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/photoImg"
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/onlineTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/photoImg"
 		android:layout_below="@id/locationTxt"
 		android:paddingTop="3dip"
-        android:textColor="@color/new_friends_grey_text"
-        custom:ttf="Italic"
-        android:textSize="@dimen/default_text_size_small"
-        />
+		android:textColor="@color/new_friends_grey_text"
+		custom:ttf="Italic"
+		android:textSize="@dimen/default_text_size_small" />
 
 	<!--Challenge Btn-->
 	<com.chess.widgets.RoboButton
@@ -111,8 +102,7 @@
 		android:textColor="@color/hint_text"
 		android:layout_marginLeft="8dip"
 		android:layout_marginRight="8dip"
-		style="@style/GlyphIcon.Square"
-		/>
+		style="@style/GlyphIcon.Square" />
 
 	<!--Message Btn-->
 	<com.chess.widgets.RoboButton
@@ -126,7 +116,6 @@
 		android:layout_alignBottom="@id/photoImg"
 		android:layout_marginLeft="8dip"
 		android:layout_marginRight="8dip"
-		style="@style/GlyphIcon.Square"
-		/>
+		style="@style/GlyphIcon.Square" />
 
 </RelativeLayout>

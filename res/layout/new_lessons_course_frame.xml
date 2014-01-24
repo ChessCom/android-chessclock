@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@color/white"
-	android:orientation="vertical"
-	>
+	android:orientation="vertical">
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/emptyView"
@@ -21,8 +19,7 @@
 		android:paddingLeft="10dip"
 		custom:ttf="Bold"
 		style="@style/DarkShadowBottom"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 
 	<RelativeLayout
@@ -30,16 +27,14 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:minHeight="60dip"
-		android:visibility="gone"
-		>
+		android:visibility="gone">
 
 		<ProgressBar
 			android:layout_width="@dimen/pending_progress_bar_size"
 			android:layout_height="@dimen/pending_progress_bar_size"
 			android:layout_margin="5dip"
 			android:layout_centerInParent="true"
-			style="?android:attr/progressBarStyle"
-			/>
+			style="?android:attr/progressBarStyle" />
 
 	</RelativeLayout>
 
@@ -51,8 +46,7 @@
 		android:background="@color/white"
 		android:cacheColorHint="@color/white"
 		android:divider="@color/new_friends_list_divider"
-		android:dividerHeight="1dip"
-		/>
+		android:dividerHeight="1dip" />
 
 	<com.chess.widgets.RoboButton
 		android:id="@id/upgradeLessonsBtn"
@@ -65,7 +59,6 @@
 		android:textColor="@color/white"
 		style="@style/Rect.Bottom.Right.Blue"
 		android:visibility="gone"
-		android:shadowColor="@color/transparent"
-		/>
+		android:shadowColor="@color/transparent" />
 
 </RelativeLayout>

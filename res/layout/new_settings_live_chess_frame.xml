@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	>
+	android:layout_height="match_parent">
 
 	<com.chess.widgets.LinLayout
 		android:orientation="vertical"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		>
+		android:layout_height="wrap_content">
 
 		<!--Show Submit button-->
 		<com.chess.widgets.LinLayout
@@ -19,8 +16,7 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
 			android:paddingRight="10dip"
-			android:background="@drawable/transparent_list_item_selector"
-			>
+			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
 			<com.chess.widgets.RoboTextView
@@ -28,13 +24,11 @@
 				android:layout_height="wrap_content"
 				android:text="@string/show_submit_button"
 				android:layout_weight="1"
-				style="@style/SettingsListText"
-				/>
+				style="@style/SettingsListText" />
 
 			<com.chess.widgets.SwitchButton
 				android:id="@+id/showSubmitSwitch"
-				style="@style/Switch.Default.Yes"
-				/>
+				style="@style/Switch.Default.Yes" />
 		</com.chess.widgets.LinLayout>
 
 		<!--Auto-queen pawn promotion-->
@@ -44,8 +38,7 @@
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
 			android:paddingRight="10dip"
-			android:background="@drawable/transparent_list_item_selector"
-			>
+			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
 			<com.chess.widgets.RoboTextView
@@ -53,13 +46,11 @@
 				android:layout_height="wrap_content"
 				android:text="@string/auto_queen"
 				android:layout_weight="1"
-				style="@style/SettingsListText"
-				/>
+				style="@style/SettingsListText" />
 
 			<com.chess.widgets.SwitchButton
 				android:id="@+id/autoQueenSwitch"
-				style="@style/Switch.Default.Yes"
-				/>
+				style="@style/Switch.Default.Yes" />
 		</com.chess.widgets.LinLayout>
 
 		<!--General-->
@@ -70,8 +61,7 @@
 			style="@style/LinearListItem"
 			android:paddingRight="10dip"
 			android:background="@drawable/transparent_list_item_selector"
-			android:visibility="gone"
-			>
+			android:visibility="gone">
 
 			<!--Label-->
 			<com.chess.widgets.RoboTextView
@@ -79,8 +69,7 @@
 				android:layout_height="wrap_content"
 				android:text="@string/general"
 				android:layout_weight="1"
-				style="@style/SettingsListText"
-				/>
+				style="@style/SettingsListText" />
 
 		</com.chess.widgets.LinLayout>
 

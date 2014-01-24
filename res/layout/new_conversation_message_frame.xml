@@ -5,8 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:paddingTop="13dip"
-	android:background="@color/white"
-	>
+	android:background="@color/white">
 
 	<com.chess.widgets.ChipsAutoCompleteTextView
 		android:id="@+id/receiverNameEdt"
@@ -23,8 +22,7 @@
 		android:paddingTop="6dip"
 		android:paddingLeft="15dip"
 		android:paddingRight="15dip"
-		android:paddingBottom="6dip"
-		/>
+		android:paddingBottom="6dip" />
 
 	<com.chess.widgets.LinLayout
 		android:orientation="vertical"
@@ -33,8 +31,7 @@
 		style="@style/ListItem.Header_2"
 		android:paddingTop="15dip"
 		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
-		>
+		android:paddingRight="@dimen/default_scr_side_padding">
 
 		<com.chess.widgets.RoboEditText
 			android:id="@+id/messageBodyEdt"
@@ -52,8 +49,7 @@
 			android:paddingLeft="15dip"
 			android:paddingRight="15dip"
 			android:paddingBottom="8dip"
-			android:imeActionLabel="@string/post"
-			/>
+			android:imeActionLabel="@string/post" />
 
 	</com.chess.widgets.LinLayout>
 

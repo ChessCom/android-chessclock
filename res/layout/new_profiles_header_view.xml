@@ -7,8 +7,7 @@
 	style="@style/Rect.Bottom"
 	custom:btn_solid="@color/action_bar_overlay"
 	android:gravity="fill"
-	android:padding="10dip"
-	>
+	android:padding="10dip">
 
 	<!--Avatar-->
 	<com.chess.backend.image_load.ProgressImageView

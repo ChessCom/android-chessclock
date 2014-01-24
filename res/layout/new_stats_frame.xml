@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:background="@color/semitransparent_white_90"
-	android:orientation="vertical"
-	>
+	android:orientation="vertical">
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/emptyView"
@@ -21,8 +19,7 @@
 		android:paddingLeft="10dip"
 		app:ttf="Bold"
 		style="@style/DarkShadowBottom"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 	<ListView
 		android:id="@+id/listView"
@@ -30,8 +27,7 @@
 		android:layout_height="wrap_content"
 		android:background="@color/transparent"
 		android:divider="@color/new_friends_list_divider"
-		android:dividerHeight="1dip"
-		/>
+		android:dividerHeight="1dip" />
 
 	<ProgressBar
 		android:id="@+id/loadingView"
@@ -40,8 +36,7 @@
 		android:layout_height="wrap_content"
 		android:layout_centerInParent="true"
 		style="?android:attr/progressBarStyle"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 	<!--Demo overlay-->
 	<RelativeLayout
@@ -49,8 +44,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:background="@color/semitransparent_white_65"
-		android:visibility="gone"
-		>
+		android:visibility="gone">
 
 		<com.chess.widgets.RoboTextView
 			android:layout_width="wrap_content"
@@ -59,8 +53,7 @@
 			android:textSize="33sp"
 			android:text="Demo"
 			app:ttf="Bold"
-			android:layout_centerInParent="true"
-			/>
+			android:layout_centerInParent="true" />
 	</RelativeLayout>
 
 </RelativeLayout>

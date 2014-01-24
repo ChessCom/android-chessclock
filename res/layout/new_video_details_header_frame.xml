@@ -3,8 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	>
+	android:layout_height="match_parent">
 
 	<!--Video Thumbnail-->
 	<RelativeLayout
@@ -29,8 +28,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="240dip"
 			android:layout_centerHorizontal="true"
-			android:visibility="invisible"
-			/>
+			android:visibility="invisible" />
 
 		<!--Back round for icon-->
 		<RelativeLayout
@@ -64,7 +62,7 @@
 			android:text="@string/ic_extend"
 			style="@style/GlyphIcon.Big"
 			android:layout_alignParentRight="true"
-			android:layout_margin="8dp"/>
+			android:layout_margin="8dp" />
 
 	</RelativeLayout>
 
@@ -134,8 +132,7 @@
 		android:paddingRight="@dimen/default_scr_side_padding"
 		android:layout_below="@id/thumbnailAuthorImg"
 		android:paddingBottom="10dip"
-		style="@style/Content"
-		/>
+		style="@style/Content" />
 
 	<ProgressBar
 		android:id="@+id/loadingCommentsView"
@@ -145,7 +142,6 @@
 		android:layout_margin="10dip"
 		android:layout_centerInParent="true"
 		style="?android:attr/progressBarStyle"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 </RelativeLayout>

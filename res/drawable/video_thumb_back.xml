@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--Border-->
-    <item
-        >
-        <shape>
-            <solid android:color="@color/thumbnail_border"/>
-        </shape>
+	<!--Border-->
+	<item>
+		<shape>
+			<solid android:color="@color/thumbnail_border" />
+		</shape>
 
-    </item>
+	</item>
 
-    <!--Background-->
-    <item
-        android:top="1px"
-        android:left="1px"
-        android:right="1px"
-        android:bottom="1px"
-        >
-        <shape>
-            <solid android:color="@color/header_light"/>
-        </shape>
+	<!--Background-->
+	<item
+		android:top="1px"
+		android:left="1px"
+		android:right="1px"
+		android:bottom="1px">
+		<shape>
+			<solid android:color="@color/header_light" />
+		</shape>
 
-    </item>
+	</item>
 
 </layer-list>

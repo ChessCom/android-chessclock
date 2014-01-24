@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
 	<style name="Widget.PullToRefresh.ProgressBar.Horizontal.Center" parent="android:Widget.ProgressBar.Horizontal">
 		<item name="android:progressDrawable">@drawable/ptr_progress_horizontal_holo_center</item>
 		<item name="android:indeterminateDrawable">@drawable/ptr_progress_indeterminate_horizontal_holo</item>
@@ -7,24 +8,24 @@
 		<item name="android:maxHeight">3dip</item>
 	</style>
 
-<!--	<style name="Widget.Custom.PtrHeader" parent="android:Widget">
-		<item name="ptrHeaderBackground">@color/holo_dark_green</item>
+	<!--	<style name="Widget.Custom.PtrHeader" parent="android:Widget">
+			<item name="ptrHeaderBackground">@color/holo_dark_green</item>
 
-		&lt;!&ndash; This is commented out as you should not set this unless you know what you're doing &ndash;&gt;
-		<item name="ptrHeaderHeight">@dimen/pull_to_refresh_header_height</item>
+			&lt;!&ndash; This is commented out as you should not set this unless you know what you're doing &ndash;&gt;
+			<item name="ptrHeaderHeight">@dimen/pull_to_refresh_header_height</item>
 
-		<item name="ptrHeaderTitleTextAppearance">@style/TextAppearance.Custom.PtrHeader.Title</item>
-		<item name="ptrProgressBarColor">@color/holo_dark_green</item>
+			<item name="ptrHeaderTitleTextAppearance">@style/TextAppearance.Custom.PtrHeader.Title</item>
+			<item name="ptrProgressBarColor">@color/holo_dark_green</item>
 
-		<item name="ptrPullText">Keep going...</item>
-		<item name="ptrRefreshingText">Pulling down the internet</item>
-		<item name="ptrReleaseText">Let go if you want me to refresh!</item>
-	</style>-->
+			<item name="ptrPullText">Keep going...</item>
+			<item name="ptrRefreshingText">Pulling down the internet</item>
+			<item name="ptrReleaseText">Let go if you want me to refresh!</item>
+		</style>-->
 
-<!--	<style name="TextAppearance.Custom.PtrHeader.Title"
-		parent="android:TextAppearance.Large.Inverse">
-		<item name="android:textSize">20dp</item>
-	</style>-->
+	<!--	<style name="TextAppearance.Custom.PtrHeader.Title"
+			parent="android:TextAppearance.Large.Inverse">
+			<item name="android:textSize">20dp</item>
+		</style>-->
 
 
 </resources>

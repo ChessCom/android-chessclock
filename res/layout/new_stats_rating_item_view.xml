@@ -1,51 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/stats_rating_view_height"
-    android:background="@color/white"
-    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="@dimen/stats_rating_view_height"
+	android:background="@color/white">
 
-    <!--Divider-->
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dip"
-        android:background="@color/new_friends_list_divider"
-        />
+	<!--Divider-->
+	<View
+		android:id="@+id/divider"
+		android:layout_width="match_parent"
+		android:layout_height="1dip"
+		android:background="@color/new_friends_list_divider" />
 
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/ratingLabelTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/stats_rating_list_item_font"
-        android:textColor="@color/new_subtitle_dark_grey"
-        android:paddingTop="14dip"
-        android:paddingLeft="@dimen/stats_padding_side"
-        />
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/ratingLabelTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="@dimen/stats_rating_list_item_font"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:paddingTop="14dip"
+		android:paddingLeft="@dimen/stats_padding_side" />
 
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/subtitleTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ratingLabelTxt"
-        android:paddingLeft="@dimen/stats_padding_side"
-        android:textColor="@color/stats_label_light_grey"
-        android:textSize="@dimen/default_text_size_small"
-        />
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/subtitleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/ratingLabelTxt"
+		android:paddingLeft="@dimen/stats_padding_side"
+		android:textColor="@color/stats_label_light_grey"
+		android:textSize="@dimen/default_text_size_small" />
 
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/ratingValueTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/stats_rating_value_text_size"
-        android:textColor="@color/new_subtitle_dark_grey"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:paddingRight="@dimen/stats_padding_side"
-        custom:ttf="Bold"
-        />
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/ratingValueTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="@dimen/stats_rating_value_text_size"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"
+		android:paddingRight="@dimen/stats_padding_side"
+		custom:ttf="Bold" />
 
 </RelativeLayout>

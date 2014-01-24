@@ -8,8 +8,7 @@
 	android:layout_height="wrap_content"
 	android:padding="@dimen/grid_view_spacing"
 	style="@style/ListItem.Header"
-	custom:btn_solid="@color/action_bar_overlay"
-	>
+	custom:btn_solid="@color/action_bar_overlay">
 
 	<!--Lessons Rating-->
 	<com.chess.widgets.RoboTextView
@@ -19,8 +18,7 @@
 		android:textColor="@color/white"
 		android:textSize="33sp"
 		custom:ttf="Bold"
-		android:text="-"
-		/>
+		android:text="-" />
 
 	<!--Divider-->
 	<View
@@ -30,8 +28,7 @@
 		android:layout_below="@id/lessonsRatingTxt"
 		android:background="@color/semitransparent_white_65"
 		android:layout_marginTop="14dp"
-		android:layout_marginBottom="14dp"
-		/>
+		android:layout_marginBottom="14dp" />
 
 	<!--Lessons Completed value-->
 	<com.chess.widgets.RoboTextView
@@ -43,8 +40,7 @@
 		android:paddingRight="9dp"
 		android:textSize="14sp"
 		custom:ttf="Bold"
-		android:text="-"
-		/>
+		android:text="-" />
 
 	<!--Lessons Completed label-->
 	<com.chess.widgets.RoboTextView
@@ -55,8 +51,7 @@
 		android:layout_below="@id/divider1"
 		android:text="@string/lessons_completed"
 		android:textSize="@dimen/default_text_size_small"
-		android:layout_toRightOf="@id/lessonsCompletedValueTxt"
-		/>
+		android:layout_toRightOf="@id/lessonsCompletedValueTxt" />
 
 	<!--Courses Completed value-->
 	<com.chess.widgets.RoboTextView
@@ -69,8 +64,7 @@
 		android:paddingBottom="8dp"
 		android:textSize="14sp"
 		custom:ttf="Bold"
-		android:text="-"
-		/>
+		android:text="-" />
 
 	<!--Courses Completed label-->
 	<com.chess.widgets.RoboTextView
@@ -82,7 +76,6 @@
 		android:layout_below="@id/lessonsCompletedValueTxt"
 		android:layout_toRightOf="@id/coursesCompletedValueTxt"
 		android:text="@string/courses_completed"
-		android:textSize="@dimen/default_text_size_small"
-		/>
+		android:textSize="@dimen/default_text_size_small" />
 
 </com.chess.widgets.RelLayout>

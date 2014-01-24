@@ -1,153 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources xmlns:custom="http://schemas.android.com/apk/res/com.chess">
+<resources>
 
-    <style name="Button" parent="Text.Button">
-        <item name="btn_radius">@dimen/rounded_button_radius</item>
-        <item name="btn_is_solid">true</item>
-        <item name="btn_padding">@dimen/rounded_button_padding_left</item>
-        <item name="btn_bevel_lvl">1</item>
-        <item name="btn_bevel_inset">1dip</item> <!--2px-->
-        <item name="btn_is_rect">false</item>
-        <item name="btn_outer_border">@color/semi_transparent_border</item>
-        <item name="btn_use_border">true</item>
-        <item name="btn_use_pressed_layer">false</item>
-    </style>
+	<style name="Button" parent="Text.Button">
+		<item name="btn_radius">@dimen/rounded_button_radius</item>
+		<item name="btn_is_solid">true</item>
+		<item name="btn_padding">@dimen/rounded_button_padding_left</item>
+		<item name="btn_bevel_lvl">1</item>
+		<item name="btn_bevel_inset">1dip</item>
+		<!--2px-->
+		<item name="btn_is_rect">false</item>
+		<item name="btn_outer_border">@color/semi_transparent_border</item>
+		<item name="btn_use_border">true</item>
+		<item name="btn_use_pressed_layer">false</item>
+	</style>
 
-    <!-- ================================= Orange Buttons ============================================= -->
-    <style name="Button.OrangeNoBorder">
-        <item name="btn_use_border">false</item>
+	<!-- ================================= Orange Buttons ============================================= -->
+	<style name="Button.OrangeNoBorder">
+		<item name="btn_use_border">false</item>
 
-        <item name="btn_top">@color/orange_emboss_top_1</item>
-        <item name="btn_left">@color/orange_emboss_left_1</item>
-        <item name="btn_right">@color/orange_emboss_right_1</item>
-        <item name="btn_bottom">@color/orange_emboss_bottom_1</item>
+		<item name="btn_top">@color/orange_emboss_top_1</item>
+		<item name="btn_left">@color/orange_emboss_left_1</item>
+		<item name="btn_right">@color/orange_emboss_right_1</item>
+		<item name="btn_bottom">@color/orange_emboss_bottom_1</item>
 
-        <item name="btn_solid">@color/orange_button</item>
+		<item name="btn_solid">@color/orange_button</item>
 		<!--No shadow-->
 		<item name="android:shadowColor">@null</item>
 		<item name="android:shadowRadius">0</item>
 		<item name="android:shadowDx">0</item>
 		<item name="android:shadowDy">0</item>
-    </style>
+	</style>
 
-    <style name="Button.OrangeNoBorder.Small">
-        <item name="android:minHeight">@dimen/small_orange_button_height</item>
+	<style name="Button.OrangeNoBorder.Small">
+		<item name="android:minHeight">@dimen/small_orange_button_height</item>
 		<item name="android:textSize">@dimen/play_button_small_text_size</item>
-    </style>
+	</style>
 
 	<style name="Button.OrangeNoBorder.Big">
-        <item name="android:minHeight">@dimen/big_orange_button_height</item>
-        <item name="android:textSize">@dimen/big_button_text_size</item>
-    </style>
+		<item name="android:minHeight">@dimen/big_orange_button_height</item>
+		<item name="android:textSize">@dimen/big_button_text_size</item>
+	</style>
 
-    <!--====================================== Glassy Buttons =========================================== -->
-    <style name="Button.Glassy">
-        <item name="btn_is_solid">true</item>
-        <item name="btn_use_border">false</item>
-        <item name="btn_is_glassy">true</item>
-        <item name="btn_gradient_angle">TOP_BOTTOM</item>
-        <item name="btn_use_pressed_layer">false</item>
+	<!--====================================== Glassy Buttons =========================================== -->
+	<style name="Button.Glassy">
+		<item name="btn_is_solid">true</item>
+		<item name="btn_use_border">false</item>
+		<item name="btn_is_glassy">true</item>
+		<item name="btn_gradient_angle">TOP_BOTTOM</item>
+		<item name="btn_use_pressed_layer">false</item>
 
-        <item name="btn_top">@color/transparent_button_border_top</item>
-        <item name="btn_left">@color/transparent_button_border_left</item>
-        <item name="btn_right">@color/transparent_button_border_right</item>
-        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+		<item name="btn_top">@color/transparent_button_border_top</item>
+		<item name="btn_left">@color/transparent_button_border_left</item>
+		<item name="btn_right">@color/transparent_button_border_right</item>
+		<item name="btn_bottom">@color/transparent_button_border_bottom</item>
 
-        <item name="btn_solid">@color/glassy_button_1</item>
-        <item name="btn_solid_p">@color/glassy_button_p</item>
-        <item name="btn_solid_s">@color/glassy_button_s</item>
+		<item name="btn_solid">@color/glassy_button_1</item>
+		<item name="btn_solid_p">@color/glassy_button_p</item>
+		<item name="btn_solid_s">@color/glassy_button_s</item>
 
-        <item name="btn_gradient_start">@color/transparent_button_border_left</item>
-        <item name="btn_gradient_end">@color/transparent_button_border_top</item>
+		<item name="btn_gradient_start">@color/transparent_button_border_left</item>
+		<item name="btn_gradient_end">@color/transparent_button_border_top</item>
 
-        <item name="android:minHeight">@dimen/grey_button_height</item>
-        <item name="android:textColor">@color/text_controls_icons</item>
-        <!--No shadow-->
+		<item name="android:minHeight">@dimen/grey_button_height</item>
+		<item name="android:textColor">@color/text_controls_icons</item>
+		<!--No shadow-->
 		<item name="android:shadowColor">@null</item>
-        <item name="android:shadowRadius">0</item>
-        <item name="android:shadowDx">0</item>
-        <item name="android:shadowDy">0</item>
-    </style>
+		<item name="android:shadowRadius">0</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">0</item>
+	</style>
 
-    <style name="Button.Glassy.Small">
-        <item name="android:minHeight">@dimen/small_button_height</item>
-        <item name="android:textSize">13sp</item>
-    </style>
+	<style name="Button.Glassy.Small">
+		<item name="android:minHeight">@dimen/small_button_height</item>
+		<item name="android:textSize">13sp</item>
+	</style>
 
-    <!--====================================== Grey Buttons =========================================== -->
-    <style name="Button.Grey2Solid">
-        <item name="btn_bevel_lvl">1</item>
+	<!--====================================== Grey Buttons =========================================== -->
+	<style name="Button.Grey2Solid">
+		<item name="btn_bevel_lvl">1</item>
 
-        <item name="btn_top">@color/grey_no_border_top_1</item>
-        <item name="btn_left">@color/grey_no_border_left_1</item>
-        <item name="btn_right">@color/grey_no_border_right_1</item>
-        <item name="btn_bottom">@color/grey_no_border_bottom_1</item>
+		<item name="btn_top">@color/grey_no_border_top_1</item>
+		<item name="btn_left">@color/grey_no_border_left_1</item>
+		<item name="btn_right">@color/grey_no_border_right_1</item>
+		<item name="btn_bottom">@color/grey_no_border_bottom_1</item>
 
-<!--        <item name="btn_top_2">@color/grey_no_border_top_2</item>
-        <item name="btn_left_2">@color/grey_no_border_left_2</item>
-        <item name="btn_right_2">@color/grey_no_border_right_2</item>
-        <item name="btn_bottom_2">@color/grey_no_border_bottom_2</item>-->
+		<!--        <item name="btn_top_2">@color/grey_no_border_top_2</item>
+				<item name="btn_left_2">@color/grey_no_border_left_2</item>
+				<item name="btn_right_2">@color/grey_no_border_right_2</item>
+				<item name="btn_bottom_2">@color/grey_no_border_bottom_2</item>-->
 
-        <item name="btn_solid">@color/grey_no_border</item>
+		<item name="btn_solid">@color/grey_no_border</item>
 
-        <!--<item name="android:minHeight">@dimen/grey_button_height</item>-->
-        <item name="android:minHeight">@dimen/main_button_height</item>
-    </style>
+		<!--<item name="android:minHeight">@dimen/grey_button_height</item>-->
+		<item name="android:minHeight">@dimen/main_button_height</item>
+	</style>
 
-    <style name="Button.Grey2Solid.NoBorder">
-        <item name="btn_use_border">false</item>
-    </style>
+	<style name="Button.Grey2Solid.NoBorder">
+		<item name="btn_use_border">false</item>
+	</style>
 
-    <style name="Button.Grey2Solid.NoBorder.Light">
-        <item name="android:textColor">@color/white</item>
-    </style>
-    <!--====================================== Blue Buttons =========================================== -->
+	<style name="Button.Grey2Solid.NoBorder.Light">
+		<item name="android:textColor">@color/white</item>
+	</style>
+	<!--====================================== Blue Buttons =========================================== -->
 
-    <!-- Facebook -->
-    <style name="Button.Facebook">
-        <item name="btn_bevel_lvl">1</item>
-        <item name="btn_is_solid">false</item>
-        <item name="btn_use_border">false</item>
+	<!-- Facebook -->
+	<style name="Button.Facebook">
+		<item name="btn_bevel_lvl">1</item>
+		<item name="btn_is_solid">false</item>
+		<item name="btn_use_border">false</item>
 
-        <item name="btn_top">@color/f_emboss_top_1</item>
-        <item name="btn_left">@color/f_emboss_left_1</item>
-        <item name="btn_right">@color/f_emboss_right_1</item>
-        <item name="btn_bottom">@color/f_emboss_bottom_1</item>
+		<item name="btn_top">@color/f_emboss_top_1</item>
+		<item name="btn_left">@color/f_emboss_left_1</item>
+		<item name="btn_right">@color/f_emboss_right_1</item>
+		<item name="btn_bottom">@color/f_emboss_bottom_1</item>
 
-        <item name="btn_top_2">@color/f_emboss_top_2</item>
-        <item name="btn_left_2">@color/f_emboss_left_2</item>
-        <item name="btn_right_2">@color/f_emboss_right_2</item>
-        <item name="btn_bottom_2">@color/f_emboss_bottom_2</item>
+		<item name="btn_top_2">@color/f_emboss_top_2</item>
+		<item name="btn_left_2">@color/f_emboss_left_2</item>
+		<item name="btn_right_2">@color/f_emboss_right_2</item>
+		<item name="btn_bottom_2">@color/f_emboss_bottom_2</item>
 
-        <item name="btn_gradient_start">@color/f_button_1</item>
-        <item name="btn_gradient_end">@color/f_button_2</item>
+		<item name="btn_gradient_start">@color/f_button_1</item>
+		<item name="btn_gradient_end">@color/f_button_2</item>
 
-        <!--<item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item> &lt;!&ndash;TODO check&ndash;&gt;-->
-        <item name="color">@color/f_button_1</item>
-        <item name="ttf">Bold</item>
-    </style>
+		<!--<item name="android:paddingLeft">@dimen/button_login_fb_left_padding</item> &lt;!&ndash;TODO check&ndash;&gt;-->
+		<item name="color">@color/f_button_1</item>
+		<item name="ttf">Bold</item>
+	</style>
 
-    <style name="Button.Blue">
-        <item name="btn_use_border">false</item>
+	<style name="Button.Blue">
+		<item name="btn_use_border">false</item>
 
-        <item name="btn_top">@color/blue_emboss_top</item>
-        <item name="btn_left">@color/blue_emboss_left</item>
-        <item name="btn_right">@color/blue_emboss_right</item>
-        <item name="btn_bottom">@color/blue_emboss_bottom</item>
+		<item name="btn_top">@color/blue_emboss_top</item>
+		<item name="btn_left">@color/blue_emboss_left</item>
+		<item name="btn_right">@color/blue_emboss_right</item>
+		<item name="btn_bottom">@color/blue_emboss_bottom</item>
 
-        <item name="btn_solid">@color/blue_button</item>
-    </style>
+		<item name="btn_solid">@color/blue_button</item>
+	</style>
 
 	<!--====================================== Share Buttons =========================================== -->
-    <style name="Button.Share">
-        <item name="btn_top">@color/share_emboss_top</item>
-        <item name="btn_left">@color/share_emboss_left</item>
-        <item name="btn_right">@color/share_emboss_right</item>
-        <item name="btn_bottom">@color/share_emboss_bottom</item>
+	<style name="Button.Share">
+		<item name="btn_top">@color/share_emboss_top</item>
+		<item name="btn_left">@color/share_emboss_left</item>
+		<item name="btn_right">@color/share_emboss_right</item>
+		<item name="btn_bottom">@color/share_emboss_bottom</item>
 
-        <item name="btn_solid">@color/share_button</item>
-    </style>
+		<item name="btn_solid">@color/share_button</item>
+	</style>
 
 	<style name="Button.Share.Icon">
 		<item name="ttf">Icon</item>
@@ -176,111 +177,111 @@
 
 	<!--====================================== Green Buttons =========================================== -->
 
-    <style name="Button.Green">
-        <item name="btn_use_border">false</item>
+	<style name="Button.Green">
+		<item name="btn_use_border">false</item>
 
-        <item name="btn_top">@color/green_emboss_top_left</item>
-        <item name="btn_left">@color/green_emboss_top_left</item>
-        <item name="btn_right">@color/green_emboss_low_right</item>
-        <item name="btn_bottom">@color/green_emboss_low_right</item>
+		<item name="btn_top">@color/green_emboss_top_left</item>
+		<item name="btn_left">@color/green_emboss_top_left</item>
+		<item name="btn_right">@color/green_emboss_low_right</item>
+		<item name="btn_bottom">@color/green_emboss_low_right</item>
 
-        <item name="btn_solid">@color/green_button</item>
-    </style>
+		<item name="btn_solid">@color/green_button</item>
+	</style>
 
-    <style name="Button.Green.Light">
-        <item name="btn_use_border">true</item>
+	<style name="Button.Green.Light">
+		<item name="btn_use_border">true</item>
 
-        <item name="btn_top">@color/light_green_emboss_top_1</item>
-        <item name="btn_left">@color/light_green_emboss_top_1</item>
-        <item name="btn_right">@color/light_green_emboss_bot_2</item>
-        <item name="btn_bottom">@color/light_green_emboss_bot_1</item>
+		<item name="btn_top">@color/light_green_emboss_top_1</item>
+		<item name="btn_left">@color/light_green_emboss_top_1</item>
+		<item name="btn_right">@color/light_green_emboss_bot_2</item>
+		<item name="btn_bottom">@color/light_green_emboss_bot_1</item>
 
-        <item name="btn_solid">@color/light_green_button</item>
-    </style>
+		<item name="btn_solid">@color/light_green_button</item>
+	</style>
 
-    <!--====================================== Red Buttons =========================================== -->
+	<!--====================================== Red Buttons =========================================== -->
 
-    <style name="Button.Red">
-        <item name="btn_use_border">false</item>
+	<style name="Button.Red">
+		<item name="btn_use_border">false</item>
 
-        <item name="btn_top">@color/red_emboss_top_1</item>
-        <item name="btn_left">@color/red_emboss_top_2</item>
-        <item name="btn_right">@color/red_emboss_bottom_2</item>
-        <item name="btn_bottom">@color/red_emboss_bottom_1</item>
+		<item name="btn_top">@color/red_emboss_top_1</item>
+		<item name="btn_left">@color/red_emboss_top_2</item>
+		<item name="btn_right">@color/red_emboss_bottom_2</item>
+		<item name="btn_bottom">@color/red_emboss_bottom_1</item>
 
-        <item name="btn_solid">@color/red_button</item>
-    </style>
+		<item name="btn_solid">@color/red_button</item>
+	</style>
 
-    <!--====================================== Brown Buttons =========================================== -->
+	<!--====================================== Brown Buttons =========================================== -->
 
-    <style name="Button.Brown">
-        <item name="btn_bevel_lvl">2</item>
-        <item name="btn_use_border">false</item>
+	<style name="Button.Brown">
+		<item name="btn_bevel_lvl">2</item>
+		<item name="btn_use_border">false</item>
 
-        <item name="btn_top">@color/upgrade_plan_gold_top_1</item>
-        <item name="btn_left">@color/upgrade_plan_gold_left_1</item>
-        <item name="btn_right">@color/upgrade_plan_gold_right_1</item>
-        <item name="btn_bottom">@color/upgrade_plan_gold_bottom_1</item>
+		<item name="btn_top">@color/upgrade_plan_gold_top_1</item>
+		<item name="btn_left">@color/upgrade_plan_gold_left_1</item>
+		<item name="btn_right">@color/upgrade_plan_gold_right_1</item>
+		<item name="btn_bottom">@color/upgrade_plan_gold_bottom_1</item>
 
-        <item name="btn_top_2">@color/upgrade_plan_gold_top_2</item>
-        <item name="btn_left_2">@color/upgrade_plan_gold_left_2</item>
-        <item name="btn_right_2">@color/upgrade_plan_gold_right_2</item>
-        <item name="btn_bottom_2">@color/upgrade_plan_gold_bottom_2</item>
+		<item name="btn_top_2">@color/upgrade_plan_gold_top_2</item>
+		<item name="btn_left_2">@color/upgrade_plan_gold_left_2</item>
+		<item name="btn_right_2">@color/upgrade_plan_gold_right_2</item>
+		<item name="btn_bottom_2">@color/upgrade_plan_gold_bottom_2</item>
 
-        <item name="btn_solid">@color/upgrade_plan_gold</item>
-    </style>
+		<item name="btn_solid">@color/upgrade_plan_gold</item>
+	</style>
 
-    <!--====================================== White Buttons =========================================== -->
+	<!--====================================== White Buttons =========================================== -->
 
-    <style name="Button.White">
-        <item name="btn_top">@color/white_button_solid</item>
-        <item name="btn_left">@color/white_button_solid</item>
-        <item name="btn_right">@color/white_button_solid</item>
-        <item name="btn_bottom">@color/white_button_solid</item>
+	<style name="Button.White">
+		<item name="btn_top">@color/white_button_solid</item>
+		<item name="btn_left">@color/white_button_solid</item>
+		<item name="btn_right">@color/white_button_solid</item>
+		<item name="btn_bottom">@color/white_button_solid</item>
 
-        <item name="btn_solid">@color/white_button_solid</item>
-    </style>
+		<item name="btn_solid">@color/white_button_solid</item>
+	</style>
 
-    <style name="Button.White.30">
+	<style name="Button.White.30">
 		<item name="btn_use_border">false</item>
 		<item name="btn_is_glassy">true</item>
 		<item name="btn_solid">@color/semitransparent_white_30</item>
-    </style>
+	</style>
 
-    <style name="Button.White.50">
+	<style name="Button.White.50">
 		<item name="btn_use_border">false</item>
 		<item name="btn_is_glassy">true</item>
-        <item name="btn_solid">@color/semitransparent_white_50</item>
-    </style>
+		<item name="btn_solid">@color/semitransparent_white_50</item>
+	</style>
 
-    <style name="Button.White.75">
+	<style name="Button.White.75">
 		<item name="btn_use_border">false</item>
 		<item name="btn_is_glassy">true</item>
-        <item name="btn_solid">@color/semitransparent_white_75</item>
-    </style>
+		<item name="btn_solid">@color/semitransparent_white_75</item>
+	</style>
 
-    <!--====================================== Black Buttons =========================================== -->
+	<!--====================================== Black Buttons =========================================== -->
 
-    <style name="Button.Black">
-        <item name="btn_top">@color/transparent</item>
-        <item name="btn_left">@color/transparent</item>
-        <item name="btn_right">@color/transparent</item>
-        <item name="btn_bottom">@color/transparent</item>
+	<style name="Button.Black">
+		<item name="btn_top">@color/transparent</item>
+		<item name="btn_left">@color/transparent</item>
+		<item name="btn_right">@color/transparent</item>
+		<item name="btn_bottom">@color/transparent</item>
 
-        <item name="btn_solid">@color/semitransparent_black_65</item>
-    </style>
+		<item name="btn_solid">@color/semitransparent_black_65</item>
+	</style>
 
-    <style name="Button.Black.30">
+	<style name="Button.Black.30">
 		<item name="btn_use_border">false</item>
 		<item name="btn_is_glassy">true</item>
-        <item name="btn_solid">@color/semitransparent_black_30</item>
-    </style>
+		<item name="btn_solid">@color/semitransparent_black_30</item>
+	</style>
 
-    <style name="Button.Black.65">
+	<style name="Button.Black.65">
 		<item name="btn_use_border">false</item>
 		<item name="btn_is_glassy">true</item>
-        <item name="btn_solid">@color/semitransparent_black_65</item>
-    </style>
+		<item name="btn_solid">@color/semitransparent_black_65</item>
+	</style>
 
 
 	<!--====================================== Page Indicator Button =========================================== -->
@@ -324,39 +325,39 @@
 		<item name="btn_solid">@color/white</item>
 
 	</style>
-    <!--====================================== Rect Buttons =========================================== -->
+	<!--====================================== Rect Buttons =========================================== -->
 
-    <style name="Rect" parent="android:Widget.CompoundButton.RadioButton">
-        <item name="android:button">@null</item>
-        <item name="android:textSize">@dimen/default_button_text_size</item>
-        <item name="android:textColor">@color/new_light_grey</item>
-        <item name="android:gravity">center</item>
-        <item name="android:minHeight">@dimen/new_tab_button_height</item>
-        <item name="ttf">Bold</item>
+	<style name="Rect" parent="android:Widget.CompoundButton.RadioButton">
+		<item name="android:button">@null</item>
+		<item name="android:textSize">@dimen/default_button_text_size</item>
+		<item name="android:textColor">@color/new_light_grey</item>
+		<item name="android:gravity">center</item>
+		<item name="android:minHeight">@dimen/new_tab_button_height</item>
+		<item name="ttf">Bold</item>
 
-        <!--ButtonDrawable params-->
-        <item name="btn_is_solid">true</item>
-        <item name="btn_padding">@dimen/rounded_button_padding_left</item>
-        <item name="btn_outer_border">@color/semi_transparent_border</item>
-        <item name="btn_use_pressed_layer">false</item>
+		<!--ButtonDrawable params-->
+		<item name="btn_is_solid">true</item>
+		<item name="btn_padding">@dimen/rounded_button_padding_left</item>
+		<item name="btn_outer_border">@color/semi_transparent_border</item>
+		<item name="btn_use_pressed_layer">false</item>
 
-        <item name="btn_radius">0dip</item>
-        <item name="btn_use_border">false</item>
-        <item name="btn_bevel_lvl">1</item>
-        <item name="btn_is_rect">true</item>
+		<item name="btn_radius">0dip</item>
+		<item name="btn_use_border">false</item>
+		<item name="btn_bevel_lvl">1</item>
+		<item name="btn_is_rect">true</item>
 
-        <item name="btn_top">@color/transparent_button</item>
-        <item name="btn_left">@color/transparent_button</item>
-        <item name="btn_right">@color/transparent_button_border_right</item>
-        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+		<item name="btn_top">@color/transparent_button</item>
+		<item name="btn_left">@color/transparent_button</item>
+		<item name="btn_right">@color/transparent_button_border_right</item>
+		<item name="btn_bottom">@color/transparent_button_border_bottom</item>
 
-        <item name="btn_top_2">@color/transparent_button_border_top_2</item>
-        <item name="btn_left_2">@color/transparent_button_border_left_2</item>
-        <item name="btn_right_2">@color/transparent_button_border_right_2</item>
-        <item name="btn_bottom_2">@color/transparent_button_border_bottom_2</item>
+		<item name="btn_top_2">@color/transparent_button_border_top_2</item>
+		<item name="btn_left_2">@color/transparent_button_border_left_2</item>
+		<item name="btn_right_2">@color/transparent_button_border_right_2</item>
+		<item name="btn_bottom_2">@color/transparent_button_border_bottom_2</item>
 
-        <item name="btn_solid">@color/transparent_button</item>
-    </style>
+		<item name="btn_solid">@color/transparent_button</item>
+	</style>
 
 	<!--====================================== Silver Button =========================================== -->
 	<style name="Rect.Silver">
@@ -391,53 +392,57 @@
 	</style>
 
 	<!-- ============= Top ===================== -->
-    <style name="Rect.Top">
-        <item name="btn_top">@color/transparent_button_border_left</item>
-        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
-        <item name="android:minHeight">@dimen/new_top_button_height</item>
-    </style>
+	<style name="Rect.Top">
+		<item name="btn_top">@color/transparent_button_border_left</item>
+		<item name="btn_bottom">@color/transparent_button_border_bottom</item>
+		<item name="android:minHeight">@dimen/new_top_button_height</item>
+	</style>
 
-    <style name="Rect.Top.Left">
-        <item name="btn_rect_pos">topLeft</item>
-    </style>
+	<style name="Rect.Top.Left">
+		<item name="btn_rect_pos">topLeft</item>
+	</style>
 
-    <style name="Rect.Top.Middle">
-        <item name="btn_rect_pos">topMiddle</item>
-    </style>
+	<style name="Rect.Top.Middle">
+		<item name="btn_rect_pos">topMiddle</item>
+	</style>
 
-    <style name="Rect.Top.Right">
-        <item name="btn_rect_pos">topRight</item>
-    </style>
+	<style name="Rect.Top.Right">
+		<item name="btn_rect_pos">topRight</item>
+	</style>
 
-    <!-- ============= Tab ===================== -->
+	<!-- ============= Tab ===================== -->
 
-    <style name="Rect.Tab">
+	<style name="Rect.Tab">
 		<item name="android:textSize">@dimen/tab_button_text_size</item>
-		<item name="btn_top">@color/transparent_button_border_left</item>  <!--dark-->
-        <item name="btn_bottom">@color/transparent_button_border_bottom</item> <!--dark-->
-        <item name="btn_solid">#01000000</item>
+		<item name="btn_top">@color/transparent_button_border_left</item>
+		<!--dark-->
+		<item name="btn_bottom">@color/transparent_button_border_bottom</item>
+		<!--dark-->
+		<item name="btn_solid">#01000000</item>
 		<item name="android:textColor">@color/text_tabs_color_selector</item>
 
 	</style>
 
-    <style name="Rect.Tab.Left">
-        <item name="btn_rect_pos">tabLeft</item>
-    </style>
+	<style name="Rect.Tab.Left">
+		<item name="btn_rect_pos">tabLeft</item>
+	</style>
 
-    <style name="Rect.Tab.Middle">
-        <item name="btn_rect_pos">tabMiddle</item>
-    </style>
+	<style name="Rect.Tab.Middle">
+		<item name="btn_rect_pos">tabMiddle</item>
+	</style>
 
-    <style name="Rect.Tab.Right">
-        <item name="btn_rect_pos">tabRight</item>
-    </style>
+	<style name="Rect.Tab.Right">
+		<item name="btn_rect_pos">tabRight</item>
+	</style>
 
 	<!-- ============= Notations for Tablets ===================== -->
 
 	<style name="Rect.Tablet">
 		<item name="android:textSize">@dimen/tab_button_text_size</item>
-		<item name="btn_top">@color/transparent_button_border_left</item>  <!--dark-->
-		<item name="btn_bottom">@color/transparent_button_border_bottom</item> <!--dark-->
+		<item name="btn_top">@color/transparent_button_border_left</item>
+		<!--dark-->
+		<item name="btn_bottom">@color/transparent_button_border_bottom</item>
+		<!--dark-->
 		<item name="btn_solid">#2B000000</item>
 		<item name="android:textColor">@color/text_tabs_color_selector</item>
 	</style>
@@ -462,44 +467,44 @@
 	</style>
 
 	<!-- ============= Side ===================== -->
-    <style name="Rect.Side">
-        <item name="btn_top">@color/transparent_button_border_left</item>
-        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
-        <item name="android:minHeight">@dimen/new_side_graph_button_height</item>
+	<style name="Rect.Side">
+		<item name="btn_top">@color/transparent_button_border_left</item>
+		<item name="btn_bottom">@color/transparent_button_border_bottom</item>
+		<item name="android:minHeight">@dimen/new_side_graph_button_height</item>
 	</style>
 
-    <style name="Rect.Side.Left">
-        <item name="btn_rect_pos">sideLeft</item>
-    </style>
+	<style name="Rect.Side.Left">
+		<item name="btn_rect_pos">sideLeft</item>
+	</style>
 
-    <style name="Rect.Side.Middle">
-        <item name="btn_rect_pos">sideMiddle</item>
-    </style>
+	<style name="Rect.Side.Middle">
+		<item name="btn_rect_pos">sideMiddle</item>
+	</style>
 
-    <style name="Rect.Side.Right">
-        <item name="btn_rect_pos">sideRight</item>
-    </style>
+	<style name="Rect.Side.Right">
+		<item name="btn_rect_pos">sideRight</item>
+	</style>
 
-    <!-- ============= Bottom(Controls) ===================== -->
-    <style name="Rect.Bottom">
-        <item name="btn_rect_pos">bottomLeft</item>
+	<!-- ============= Bottom(Controls) ===================== -->
+	<style name="Rect.Bottom">
+		<item name="btn_rect_pos">bottomLeft</item>
 
-        <item name="btn_top">@color/transparent_button_border_left</item>
-        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
-        <item name="android:minHeight">@dimen/new_bottom_button_height</item>
-    </style>
+		<item name="btn_top">@color/transparent_button_border_left</item>
+		<item name="btn_bottom">@color/transparent_button_border_bottom</item>
+		<item name="android:minHeight">@dimen/new_bottom_button_height</item>
+	</style>
 
-    <style name="Rect.Bottom.Left">
-        <item name="btn_rect_pos">bottomLeft</item>
-    </style>
+	<style name="Rect.Bottom.Left">
+		<item name="btn_rect_pos">bottomLeft</item>
+	</style>
 
-    <style name="Rect.Bottom.Middle">
-        <item name="btn_rect_pos">bottomMiddle</item>
-    </style>
+	<style name="Rect.Bottom.Middle">
+		<item name="btn_rect_pos">bottomMiddle</item>
+	</style>
 
-    <style name="Rect.Bottom.Right">
-        <item name="btn_rect_pos">bottomRight</item>
-    </style>
+	<style name="Rect.Bottom.Right">
+		<item name="btn_rect_pos">bottomRight</item>
+	</style>
 
 	<!-- ============= Chat Badge Button ===================== -->
 
@@ -511,45 +516,44 @@
 		<item name="btn_rect_pos">topMiddle</item>
 	</style>
 
-	<style name="Button.Glassy.Badge">
+	<style name="Button.Glassy.Badge"></style>
+
+	<!-- ============= Colored Buttons ===================== -->
+	<style name="Rect.Bottom.Right.Orange">
+		<item name="btn_rect_pos">bottomRight</item>
+
+		<item name="btn_solid">@color/orange_button_flat</item>
 	</style>
 
-    <!-- ============= Colored Buttons ===================== -->
-    <style name="Rect.Bottom.Right.Orange">
-        <item name="btn_rect_pos">bottomRight</item>
+	<style name="Rect.Bottom.Right.Red">
+		<item name="btn_rect_pos">bottomRight</item>
 
-        <item name="btn_solid">@color/orange_button_flat</item>
-    </style>
+		<item name="btn_solid">@color/red_button</item>
+	</style>
 
-    <style name="Rect.Bottom.Right.Red">
-        <item name="btn_rect_pos">bottomRight</item>
+	<style name="Rect.Bottom.Right.Green">
+		<item name="btn_rect_pos">bottomRight</item>
 
-        <item name="btn_solid">@color/red_button</item>
-    </style>
+		<item name="btn_solid">@color/light_green_button</item>
+	</style>
 
-    <style name="Rect.Bottom.Right.Green">
-        <item name="btn_rect_pos">bottomRight</item>
+	<style name="Rect.Bottom.Left.Green">
+		<item name="btn_rect_pos">bottomLeft</item>
 
-        <item name="btn_solid">@color/light_green_button</item>
-    </style>
+		<item name="btn_solid">@color/light_green_button</item>
+	</style>
 
-    <style name="Rect.Bottom.Left.Green">
-        <item name="btn_rect_pos">bottomLeft</item>
+	<style name="Rect.Bottom.Middle.Green">
+		<item name="btn_rect_pos">bottomMiddle</item>
 
-        <item name="btn_solid">@color/light_green_button</item>
-    </style>
+		<item name="btn_solid">@color/light_green_button</item>
+	</style>
 
-    <style name="Rect.Bottom.Middle.Green">
-        <item name="btn_rect_pos">bottomMiddle</item>
+	<style name="Rect.Bottom.Right.Blue">
+		<item name="btn_rect_pos">bottomRight</item>
 
-        <item name="btn_solid">@color/light_green_button</item>
-    </style>
-
-    <style name="Rect.Bottom.Right.Blue">
-        <item name="btn_rect_pos">bottomRight</item>
-
-        <item name="btn_solid">@color/blue_button</item>
-    </style>
+		<item name="btn_solid">@color/blue_button</item>
+	</style>
 
 	<style name="Rect.Bottom.Left.Grey">
 		<item name="btn_solid">@color/new_normal_grey</item>
@@ -563,35 +567,38 @@
 	<style name="Rect.Bottom.Left.LightGrey">
 		<item name="btn_solid">@color/new_soft_grey4</item>
 	</style>
+
 	<style name="Rect.Bottom.Middle.LightGrey">
 		<item name="btn_solid">@color/new_soft_grey4</item>
 	</style>
+
 	<style name="Rect.Bottom.Right.LightGrey">
 		<item name="btn_solid">@color/new_soft_grey4</item>
 	</style>
 
 	<!--====================================== List Items(can't be derived from Text or Button) =================== -->
 
-    <style name="ListItem">
-        <!--ButtonDrawable params-->
-        <item name="btn_radius">0dip</item>
-        <item name="btn_is_rect">true</item>
-        <item name="btn_padding">@dimen/rounded_button_padding_left</item>
-        <item name="btn_is_solid">true</item>
-        <item name="btn_use_border">false</item>
-        <item name="btn_bevel_lvl">1</item>
-        <item name="btn_bevel_inset">1dip</item> <!--2px-->
-        <item name="btn_use_pressed_layer">false</item>
+	<style name="ListItem">
+		<!--ButtonDrawable params-->
+		<item name="btn_radius">0dip</item>
+		<item name="btn_is_rect">true</item>
+		<item name="btn_padding">@dimen/rounded_button_padding_left</item>
+		<item name="btn_is_solid">true</item>
+		<item name="btn_use_border">false</item>
+		<item name="btn_bevel_lvl">1</item>
+		<item name="btn_bevel_inset">1dip</item>
+		<!--2px-->
+		<item name="btn_use_pressed_layer">false</item>
 
-        <item name="btn_rect_pos">listItem</item>
+		<item name="btn_rect_pos">listItem</item>
 
-        <item name="btn_top">@color/transparent_button_border_left</item>
-        <item name="btn_bottom">@color/transparent_button_border_bottom</item>
+		<item name="btn_top">@color/transparent_button_border_left</item>
+		<item name="btn_bottom">@color/transparent_button_border_bottom</item>
 
-        <item name="btn_solid">@color/transparent_button</item>
+		<item name="btn_solid">@color/transparent_button</item>
 
-        <item name="android:minHeight">@dimen/new_daily_games_item_height</item>
-    </style>
+		<item name="android:minHeight">@dimen/new_daily_games_item_height</item>
+	</style>
 
 	<style name="ListItem.Tablet">
 		<item name="btn_solid">@color/action_bar_overlay</item>
@@ -602,44 +609,46 @@
 
 
 	<style name="ListItem.Header">
-        <item name="btn_solid">@color/glassy_header</item>
-        <item name="btn_rect_pos">listItemHeader</item>
+		<item name="btn_solid">@color/glassy_header</item>
+		<item name="btn_rect_pos">listItemHeader</item>
 
-        <item name="android:minHeight">@dimen/default_header_height</item>
-    </style>
+		<item name="android:minHeight">@dimen/default_header_height</item>
+	</style>
 
-    <style name="ListItem.Header_2">
-        <item name="btn_solid">@color/glassy_header</item>
-        <item name="btn_rect_pos">listItemHeader_2</item>
+	<style name="ListItem.Header_2">
+		<item name="btn_solid">@color/glassy_header</item>
+		<item name="btn_rect_pos">listItemHeader_2</item>
 
-        <item name="btn_top">@color/transparent_button_border_top</item>
-        <item name="btn_left">@color/transparent_button_border_left</item>
+		<item name="btn_top">@color/transparent_button_border_top</item>
+		<item name="btn_left">@color/transparent_button_border_left</item>
 
-        <item name="android:minHeight">@dimen/default_header_height</item>
-    </style>
+		<item name="android:minHeight">@dimen/default_header_height</item>
+	</style>
 
-    <style name="ListItem.Header_2.Light">
-        <item name="btn_solid">@color/header_light</item>
-    </style>
+	<style name="ListItem.Header_2.Light">
+		<item name="btn_solid">@color/header_light</item>
+	</style>
 
-    <style name="ListItem.Header.Dark">
-        <item name="btn_rect_pos">listItemHeaderDark</item>
-        <item name="btn_solid">@color/header_dark</item>
-    </style>
-    <style name="ListItem.Header_2.Dark">
-        <item name="btn_rect_pos">listItemHeaderDark_2</item>
+	<style name="ListItem.Header.Dark">
+		<item name="btn_rect_pos">listItemHeaderDark</item>
+		<item name="btn_solid">@color/header_dark</item>
+	</style>
 
-        <item name="btn_top">@color/transparent_button_border_top</item>
-        <item name="btn_left">@color/transparent_button_border_top</item>
-        <item name="btn_solid">@color/header_dark</item>
-    </style>
-    <style name="ListItem.Header.Dark.Small">
-        <item name="android:minHeight">@dimen/default_header_height_small</item>
-    </style>
+	<style name="ListItem.Header_2.Dark">
+		<item name="btn_rect_pos">listItemHeaderDark_2</item>
 
-    <style name="ListItem.Header.Notations">
-        <item name="btn_rect_pos">listItemHeaderDark</item>
-        <item name="btn_solid">@color/notations_back</item>
-    </style>
+		<item name="btn_top">@color/transparent_button_border_top</item>
+		<item name="btn_left">@color/transparent_button_border_top</item>
+		<item name="btn_solid">@color/header_dark</item>
+	</style>
+
+	<style name="ListItem.Header.Dark.Small">
+		<item name="android:minHeight">@dimen/default_header_height_small</item>
+	</style>
+
+	<style name="ListItem.Header.Notations">
+		<item name="btn_rect_pos">listItemHeaderDark</item>
+		<item name="btn_solid">@color/notations_back</item>
+	</style>
 
 </resources>

@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--Button-->
-    <item
-        >
-        <shape >
-            <solid android:color="@color/glassy_button" />
-            <corners
-                android:radius="1dip"
-                />
-            <padding
-                android:top="1px"
-                android:left="1px"
-                android:right="1px"
-                android:bottom="1px"
-                />
-        </shape>
-    </item>
+	<!--Button-->
+	<item>
+		<shape>
+			<solid android:color="@color/glassy_button" />
+			<corners android:radius="1dip" />
+			<padding
+				android:top="1px"
+				android:left="1px"
+				android:right="1px"
+				android:bottom="1px" />
+		</shape>
+	</item>
 
 </layer-list>

@@ -23,8 +23,7 @@
 			android:id="@+id/boardview"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"
-			/>
+			android:layout_centerInParent="true" />
 
 		<!--New Game overlay-->
 		<LinearLayout
@@ -38,8 +37,7 @@
 			android:paddingRight="@dimen/start_new_game_overlay_padding_side"
 			android:paddingBottom="@dimen/start_new_game_overlay_padding_side"
 			android:orientation="vertical"
-			android:layout_centerInParent="true"
-			>
+			android:layout_centerInParent="true">
 
 			<!--New Game-->
 			<com.chess.widgets.RoboTextView
@@ -78,8 +76,7 @@
 					android:layout_weight="1"
 					android:text="@string/play"
 					style="@style/Button.OrangeNoBorder.Big"
-					android:layout_marginLeft="5dip"
-					/>
+					android:layout_marginLeft="5dip" />
 
 			</LinearLayout>
 
@@ -94,7 +91,7 @@
 		android:src="@drawable/defaultshadow"
 		android:contentDescription="@string/image"
 		android:layout_toLeftOf="@+id/optionsFragmentContainerView"
-		android:visibility="gone"/>
+		android:visibility="gone" />
 
 
 	<!--Right quick access side panel-->

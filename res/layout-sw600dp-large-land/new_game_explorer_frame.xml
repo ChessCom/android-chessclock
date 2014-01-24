@@ -43,8 +43,7 @@
 			android:gravity="center"
 			android:minHeight="42dip"
 			android:textColor="@color/semitransparent_white_65"
-			android:textSize="15sp"
-			/>
+			android:textSize="15sp" />
 
 		<!--Moves-->
 		<com.chess.widgets.RoboListView
@@ -53,15 +52,13 @@
 			android:layout_height="match_parent"
 			style="@style/ListItem.Header.Dark"
 			android:layout_below="@id/moveVariationTxt"
-			android:layout_above="@+id/movesControlsView"
-			/>
+			android:layout_above="@+id/movesControlsView" />
 
 		<LinearLayout
 			android:id="@id/movesControlsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			>
+			android:layout_alignParentBottom="true">
 
 			<com.chess.widgets.RoboButton
 				android:id="@+id/leftBtn"
@@ -73,8 +70,7 @@
 				android:textSize="@dimen/game_controls_icon_size"
 				android:textColor="@color/text_controls_icons"
 				android:minWidth="@dimen/game_controls_button_height"
-				app:ttf="Icon"
-				/>
+				app:ttf="Icon" />
 
 			<com.chess.widgets.RoboButton
 				android:id="@+id/rightBtn"
@@ -86,8 +82,7 @@
 				android:textSize="@dimen/game_controls_icon_size"
 				android:textColor="@color/text_controls_icons"
 				android:minWidth="@dimen/game_controls_button_height"
-				app:ttf="Icon"
-				/>
+				app:ttf="Icon" />
 
 		</LinearLayout>
 

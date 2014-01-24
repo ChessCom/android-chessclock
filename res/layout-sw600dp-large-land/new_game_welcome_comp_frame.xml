@@ -46,8 +46,7 @@
 		android:layout_toRightOf="@id/boardLinLay"
 		android:paddingTop="13dip"
 		android:paddingRight="@dimen/default_scr_side_padding"
-		android:paddingBottom="@dimen/default_scr_bottom_padding"
-		>
+		android:paddingBottom="@dimen/default_scr_bottom_padding">
 
 		<!--TopPanelInfo-->
 		<com.chess.ui.views.PanelInfoWelcomeView
@@ -56,8 +55,7 @@
 			android:layout_height="wrap_content"
 			custom:oneLine="@bool/one_line_for_board"
 			android:layout_marginBottom="@dimen/tablet_panel_info_top_margin"
-			android:layout_marginLeft="-2dp"
-			/>
+			android:layout_marginLeft="-2dp" />
 
 		<!--Login-->
 		<com.chess.widgets.RoboButton
@@ -68,8 +66,7 @@
 			style="@style/Button.OrangeNoBorder.Big"
 			android:minHeight="@dimen/big_orange_button_height"
 			android:layout_below="@id/topPanelView"
-			android:layout_marginLeft="9dp"
-			/>
+			android:layout_marginLeft="9dp" />
 
 		<!--SignUp-->
 		<com.chess.widgets.RoboButton
@@ -81,8 +78,7 @@
 			style="@style/Button.OrangeNoBorder.Big"
 			android:layout_below="@id/loginBtn"
 			android:minHeight="@dimen/big_orange_button_height"
-			android:layout_marginLeft="9dp"
-			/>
+			android:layout_marginLeft="9dp" />
 
 		<!--What is Chess.com-->
 		<com.chess.widgets.RoboTextView
@@ -96,8 +92,7 @@
 			android:gravity="center"
 			android:paddingTop="25dip"
 			android:layout_marginTop="-2dp"
-			android:layout_centerHorizontal="true"
-			/>
+			android:layout_centerHorizontal="true" />
 
 		<!--Controls-->
 		<com.chess.ui.views.game_controls.ControlsCompWelcomeViewTablet
@@ -106,8 +101,7 @@
 			android:layout_height="wrap_content"
 			custom:controls_style="rounded"
 			android:layout_above="@+id/bottomPanelView"
-			android:layout_marginLeft="7dp"
-			/>
+			android:layout_marginLeft="7dp" />
 
 		<!--BottomPanelInfo-->
 		<com.chess.ui.views.PanelInfoWelcomeView
@@ -117,8 +111,7 @@
 			custom:oneLine="@bool/one_line_for_board"
 			android:layout_alignParentBottom="true"
 			android:layout_marginTop="@dimen/tablet_panel_info_top_margin"
-			android:layout_marginLeft="-2dp"
-			/>
+			android:layout_marginLeft="-2dp" />
 
 		<com.chess.widgets.MultiDirectionSlidingDrawer
 			android:id="@+id/slidingDrawer"
@@ -129,8 +122,7 @@
 			custom:content="@+id/content"
 			android:visibility="gone"
 			android:layout_marginTop="5dp"
-			android:layout_marginBottom="5dp"
-			>
+			android:layout_marginBottom="5dp">
 
 			<LinearLayout
 				android:id="@id/content"

@@ -57,8 +57,7 @@
 			android:textSize="@dimen/game_controls_icon_size"
 			android:textColor="@color/text_controls_icons"
 			android:minWidth="@dimen/game_controls_button_height"
-			app:ttf="Icon"
-			/>
+			app:ttf="Icon" />
 
 		<com.chess.widgets.RoboListView
 			android:id="@+id/listView"
@@ -67,8 +66,7 @@
 			android:layout_toRightOf="@id/leftBtn"
 			android:layout_toLeftOf="@+id/rightBtn"
 			style="@style/Rect.Bottom.Middle"
-			app:btn_is_clickable="false"
-			/>
+			app:btn_is_clickable="false" />
 
 		<com.chess.widgets.RoboButton
 			android:id="@id/rightBtn"
@@ -80,8 +78,7 @@
 			android:textSize="@dimen/game_controls_icon_size"
 			android:textColor="@color/text_controls_icons"
 			android:minWidth="@dimen/game_controls_button_height"
-			app:ttf="Icon"
-			/>
+			app:ttf="Icon" />
 
 	</RelativeLayout>
 

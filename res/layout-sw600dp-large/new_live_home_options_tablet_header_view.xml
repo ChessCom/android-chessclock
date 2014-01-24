@@ -13,8 +13,7 @@
 		android:gravity="center_vertical"
 		style="@style/ListItem.Header_2.Dark"
 		android:paddingLeft="8dip"
-		android:paddingRight="8dip"
-		>
+		android:paddingRight="8dip">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -42,8 +41,7 @@
 		android:gravity="center_vertical"
 		style="@style/ListItem.Header_2.Dark"
 		android:paddingLeft="8dip"
-		android:paddingRight="8dip"
-		>
+		android:paddingRight="8dip">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -72,8 +70,7 @@
 		style="@style/ListItem.Header_2.Dark"
 		android:paddingLeft="8dip"
 		android:paddingRight="8dip"
-		android:visibility="gone"
-		>
+		android:visibility="gone">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -253,8 +250,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
 			android:textColor="@color/new_light_grey_2"
-			android:text="1200"
-			/>
+			android:text="1200" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -290,8 +286,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
 			android:textColor="@color/new_light_grey_2"
-			android:text="1200"
-			/>
+			android:text="1200" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -327,8 +322,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
 			android:textColor="@color/new_light_grey_2"
-			android:text="1200"
-			/>
+			android:text="1200" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -341,8 +335,7 @@
 		android:gravity="center_vertical"
 		style="@style/ListItem.Header.Dark"
 		android:paddingLeft="8dip"
-		android:paddingRight="8dip"
-		>
+		android:paddingRight="8dip">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView

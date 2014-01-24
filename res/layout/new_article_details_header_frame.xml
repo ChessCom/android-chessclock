@@ -4,8 +4,7 @@
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:animateLayoutChanges="false"
-	>
+	android:animateLayoutChanges="false">
 
 	<com.chess.backend.image_load.ProgressImageView
 		android:id="@+id/articleImg"
@@ -83,8 +82,7 @@
 		android:paddingRight="@dimen/default_scr_side_padding"
 		android:layout_below="@id/thumbnailAuthorImg"
 		style="@style/Content"
-		android:paddingBottom="2dip"
-		/>
+		android:paddingBottom="2dip" />
 
 	<ProgressBar
 		android:id="@+id/loadingCommentsView"

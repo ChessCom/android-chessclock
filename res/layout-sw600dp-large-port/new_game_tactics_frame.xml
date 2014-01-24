@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.chess"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
 	android:animateLayoutChanges="true"
-	android:orientation="vertical"
-	>
+	android:orientation="vertical">
 	<!--Show animation here for Correct/Incorrect views-->
 
 	<com.chess.widgets.RoboTextView
@@ -22,8 +20,7 @@
 		android:textColor="@color/white"
 		app:ttf="Bold"
 		android:visibility="invisible"
-		app:themeColor="true"
-		/>
+		app:themeColor="true" />
 
 	<com.chess.widgets.LinLayout
 		android:id="@id/boardLayout"
@@ -44,23 +41,21 @@
 
 
 	<com.chess.ui.views.PanelInfoTacticsView
-        android:id="@+id/topPanelView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+		android:id="@+id/topPanelView"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
 		android:layout_weight="1"
 		android:minHeight="@dimen/new_tactics_panel_info_height"
 		android:layout_marginLeft="@dimen/common_tablet_side_padding"
-		android:layout_marginRight="@dimen/common_tablet_side_padding"
-        />
+		android:layout_marginRight="@dimen/common_tablet_side_padding" />
 
-    <com.chess.ui.views.game_controls.ControlsTacticsView
-        android:id="@+id/controlsView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+	<com.chess.ui.views.game_controls.ControlsTacticsView
+		android:id="@+id/controlsView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
 		app:controls_style="rounded"
 		android:layout_marginLeft="@dimen/common_tablet_side_padding"
 		android:layout_marginRight="@dimen/common_tablet_side_padding"
-		android:layout_marginBottom="@dimen/default_scr_side_padding"
-		/>
+		android:layout_marginBottom="@dimen/default_scr_side_padding" />
 
 </LinearLayout>

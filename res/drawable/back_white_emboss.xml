@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--Button-->
-    <item
-        android:top="1px"
-        android:left="1px"
-        android:right="1px"
-        android:bottom="1px"
+	<!--Button-->
+	<item
+		android:top="1px"
+		android:left="1px"
+		android:right="1px"
+		android:bottom="1px"
 
-        >
-        <shape android:dither="true" >
-            <solid android:color="@color/back_white_emboss_solid" />
-            <corners
-                android:radius="@dimen/rounded_button_radius"
-                />
-            <padding
-                android:left="10dip"
-                android:right="10dip"
-                android:top="2dip"
-                android:bottom="2dip"
-                />
-        </shape>
-    </item>
+		>
+		<shape android:dither="true">
+			<solid android:color="@color/back_white_emboss_solid" />
+			<corners android:radius="@dimen/rounded_button_radius" />
+			<padding
+				android:left="10dip"
+				android:right="10dip"
+				android:top="2dip"
+				android:bottom="2dip" />
+		</shape>
+	</item>
 
 </layer-list>

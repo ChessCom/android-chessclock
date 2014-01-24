@@ -739,6 +739,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		@Override
 		public void errorHandle(Integer resultCode) {
+			DataHolder.getInstance().setPerformingRelogin(false);
 			dismissProgressDialog();
 
 			if (RestHelper.containsServerCode(resultCode)) {

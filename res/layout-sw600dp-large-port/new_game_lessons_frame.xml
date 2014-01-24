@@ -4,8 +4,7 @@
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	>
+	android:layout_height="match_parent">
 
 	<ScrollView
 		android:id="@+id/descriptionView"
@@ -16,14 +15,12 @@
 		android:layout_alignBottom="@+id/slidingDrawer"
 		android:background="@color/white"
 		android:scrollbars="none"
-		android:paddingBottom="20dip"
-		>
+		android:paddingBottom="20dip">
 
 		<LinearLayout
 			android:orientation="vertical"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			>
+			android:layout_height="wrap_content">
 
 			<!--Title-->
 			<com.chess.widgets.RoboTextView
@@ -46,15 +43,13 @@
 				android:textColor="@color/new_subtitle_dark_grey"
 				android:padding="15dip"
 				android:textSize="15sp"
-				custom:ttf="Italic"
-				/>
+				custom:ttf="Italic" />
 
 			<!--Divider-->
 			<View
 				android:layout_width="match_parent"
 				android:layout_height="1dip"
-				android:background="@color/new_friends_list_divider"
-				/>
+				android:background="@color/new_friends_list_divider" />
 
 			<!--Lesson Description-->
 			<com.chess.widgets.RoboTextView
@@ -64,8 +59,7 @@
 				android:textColor="@color/new_subtitle_dark_grey"
 				android:textSize="15sp"
 				android:padding="15dip"
-				android:visibility="gone"
-				/>
+				android:visibility="gone" />
 
 			<!--Divider-->
 			<View
@@ -73,8 +67,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="1dip"
 				android:background="@color/new_friends_list_divider"
-				android:visibility="gone"
-				/>
+				android:visibility="gone" />
 
 			<!--Position Description-->
 			<com.chess.widgets.RoboTextView
@@ -83,8 +76,7 @@
 				android:layout_height="wrap_content"
 				android:textColor="@color/new_subtitle_dark_grey"
 				android:textSize="15sp"
-				android:padding="15dip"
-				/>
+				android:padding="15dip" />
 
 			<!--Divider-->
 			<View
@@ -92,8 +84,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="1dip"
 				android:background="@color/new_friends_list_divider"
-				android:visibility="gone"
-				/>
+				android:visibility="gone" />
 
 			<!--Hint-->
 			<com.chess.widgets.RoboTextView
@@ -104,8 +95,7 @@
 				android:textSize="15sp"
 				android:padding="15dip"
 				android:background="@color/header_light"
-				android:visibility="gone"
-				/>
+				android:visibility="gone" />
 
 			<!--Lesson Complete view-->
 			<include layout="@layout/new_lesson_complete_view" />
@@ -120,44 +110,38 @@
 		custom:direction="bottomToTop"
 		custom:handle="@+id/handle"
 		custom:content="@+id/content"
-		android:layout_above="@+id/controlsView"
-		>
+		android:layout_above="@+id/controlsView">
 
 		<LinearLayout
 			android:id="@id/content"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			>
+			android:orientation="vertical">
 			<RelativeLayout
 				android:id="@+id/boardLayout"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				>
+				android:layout_height="wrap_content">
 
 				<!--Top Border-->
 				<FrameLayout
 					android:id="@+id/topBorder"
 					android:layout_width="match_parent"
 					android:layout_height="0px"
-					android:background="@drawable/game_board_divider"
-					/>
+					android:background="@drawable/game_board_divider" />
 
 				<com.chess.ui.views.chess_boards.ChessBoardLessonsView
 					android:id="@+id/boardview"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/topBorder"
-					android:layout_marginTop="0px"
-					/>
+					android:layout_marginTop="0px" />
 				<!--Bottom Border-->
 				<FrameLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_below="@id/boardview"
 					android:background="@drawable/game_board_divider"
-					android:layout_marginTop="-1px"
-					/>
+					android:layout_marginTop="-1px" />
 
 			</RelativeLayout>
 
@@ -167,8 +151,7 @@
 			android:id="@id/handle"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@color/white"
-			>
+			android:background="@color/white">
 
 			<!--Handle-->
 			<com.chess.widgets.RoboTextView
@@ -185,8 +168,7 @@
 				android:shadowColor="@color/switch_white_back_border_bot_1"
 				android:shadowRadius="4"
 				android:shadowDx="0"
-				android:shadowDy="0"
-				/>
+				android:shadowDy="0" />
 
 		</RelativeLayout>
 
@@ -198,7 +180,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		custom:controls_style="rectDark"
-		android:layout_alignParentBottom="true"
-		/>
+		android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

@@ -16,8 +16,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			style="@style/Rect.Top.Left"
-			android:text="@string/log_in"
-			/>
+			android:text="@string/log_in" />
 
 		<com.chess.widgets.RoboImageButton
 			android:id="@+id/centerTabBtn"
@@ -25,8 +24,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			style="@style/Rect.Top.Middle"
-			android:src="@drawable/img_new_logo_bar"
-			/>
+			android:src="@drawable/img_new_logo_bar" />
 
 		<com.chess.widgets.RoboButton
 			android:id="@+id/rightTabBtn"
@@ -34,8 +32,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			style="@style/Rect.Top.Right"
-			android:text="@string/sign_up"
-			/>
+			android:text="@string/sign_up" />
 
 	</LinearLayout>
 

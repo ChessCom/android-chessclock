@@ -16,8 +16,7 @@
 			android:layout_height="wrap_content"
 			style="@style/Rect.Top.Middle"
 			android:src="@drawable/img_new_logo_bar"
-			android:minHeight="@dimen/welcome_tab_button_height"
-			/>
+			android:minHeight="@dimen/welcome_tab_button_height" />
 
 	</LinearLayout>
 
@@ -35,8 +34,7 @@
 			android:text="@string/log_in"
 			android:textColor="@color/white"
 			android:textSize="@dimen/welcome_tab_button_text_size"
-			android:minHeight="@dimen/welcome_tab_button_height"
-			/>
+			android:minHeight="@dimen/welcome_tab_button_height" />
 
 		<com.chess.widgets.RoboButton
 			android:id="@+id/rightTabBtn"
@@ -47,8 +45,7 @@
 			android:text="@string/sign_up"
 			android:textColor="@color/white"
 			android:textSize="@dimen/welcome_tab_button_text_size"
-			android:minHeight="@dimen/welcome_tab_button_height"
-			/>
+			android:minHeight="@dimen/welcome_tab_button_height" />
 
 	</LinearLayout>
 

@@ -1,124 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Use Icon as custom font to draw icons Mapping are here - link TBD -->
-    <!--Names as strings-->
-    <string name="ic_pawn">1</string>
-    <string name="ic_daily_game">2</string>
-    <string name="ic_live">0</string>
-    <string name="ic_live_standard">3</string>
-    <string name="ic_live_blitz">4</string>
-    <string name="ic_live_bullet">5</string>
-    <string name="ic_play_friend">n</string>
-    <string name="ic_daily960_game">6</string>
-    <string name="ic_help">7</string>
-    <string name="ic_lessons">8</string>
-    <string name="ic_comp_game">9</string>
-    <string name="ic_conditional">I</string>
-    <string name="ic_ticket">\u00BD</string>
-    <string name="ic_flag">\u0059</string>
-    <string name="ic_tournaments">\u2021</string>
-    <string name="ic_add">V</string>
-    <string name="ic_edit">Z</string>
-    <string name="ic_inbox">e</string>
+	<!-- Use Icon as custom font to draw icons Mapping are here - link TBD -->
+	<!--Names as strings-->
+	<string name="ic_pawn">1</string>
+	<string name="ic_daily_game">2</string>
+	<string name="ic_live">0</string>
+	<string name="ic_live_standard">3</string>
+	<string name="ic_live_blitz">4</string>
+	<string name="ic_live_bullet">5</string>
+	<string name="ic_play_friend">n</string>
+	<string name="ic_daily960_game">6</string>
+	<string name="ic_help">7</string>
+	<string name="ic_lessons">8</string>
+	<string name="ic_comp_game">9</string>
+	<string name="ic_conditional">I</string>
+	<string name="ic_ticket">\u00BD</string>
+	<string name="ic_flag">\u0059</string>
+	<string name="ic_tournaments">\u2021</string>
+	<string name="ic_add">V</string>
+	<string name="ic_edit">Z</string>
+	<string name="ic_inbox">e</string>
 
-    <string name="ic_skills">s</string>
-    <string name="ic_profile">b</string>
-    <string name="ic_board">\u2019</string>
-    <string name="ic_product">\u2018</string>
-    <string name="ic_contacts">o</string>
-    <string name="ic_info">)</string>
-    <string name="ic_settings">d</string>
-    <string name="ic_theme">l</string>
-    <string name="ic_blocking">&amp;</string>
-    <string name="ic_share">¥</string>
-    <string name="ic_recent">f</string>
-    <string name="ic_menu">t</string>
-    <string name="ic_handler">=</string>
-    <string name="ic_email_dark">y</string>
-    <string name="ic_email_light">u</string>
-    <string name="ic_password">d</string>
-    <string name="ic_history">°</string>
-    <string name="ic_close">B</string>
-    <string name="ic_exit">×</string>
-    <string name="ic_clear">Q</string>
-    <string name="ic_clock">\'</string>
-    <string name="ic_pause">\u004B</string>
-    <string name="ic_facebook">S</string>
-    <string name="ic_facebook_square">D</string>
-    <string name="ic_first_name">h</string>
-    <string name="ic_country">Y</string>
-    <string name="ic_photo">H</string>
-    <string name="ic_round_right">÷</string>
+	<string name="ic_skills">s</string>
+	<string name="ic_profile">b</string>
+	<string name="ic_board">\u2019</string>
+	<string name="ic_product">\u2018</string>
+	<string name="ic_contacts">o</string>
+	<string name="ic_info">)</string>
+	<string name="ic_settings">d</string>
+	<string name="ic_theme">l</string>
+	<string name="ic_blocking">&amp;</string>
+	<string name="ic_share">¥</string>
+	<string name="ic_recent">f</string>
+	<string name="ic_menu">t</string>
+	<string name="ic_handler">=</string>
+	<string name="ic_email_dark">y</string>
+	<string name="ic_email_light">u</string>
+	<string name="ic_password">d</string>
+	<string name="ic_history">°</string>
+	<string name="ic_close">B</string>
+	<string name="ic_exit">×</string>
+	<string name="ic_clear">Q</string>
+	<string name="ic_clock">\'</string>
+	<string name="ic_pause">\u004B</string>
+	<string name="ic_facebook">S</string>
+	<string name="ic_facebook_square">D</string>
+	<string name="ic_first_name">h</string>
+	<string name="ic_country">Y</string>
+	<string name="ic_photo">H</string>
+	<string name="ic_round_right">÷</string>
 
-    <string name="ic_play_online">ˆ</string>
-    <string name="ic_challenge_friend">m</string>
-    <string name="ic_vs_random">-</string>
-    <string name="ic_key">¢</string>
-    <string name="ic_key_badge">a</string>
-
-
-
-    <string name="ic_options">r</string>
-    <string name="ic_home">w</string>
-    <string name="ic_restore">L</string>
-    <string name="ic_refresh">:</string>
-    <string name="ic_flip">N</string>
-    <string name="ic_check">G</string>
-    <string name="ic_play">J</string>
-    <string name="ic_pause">K</string>
-    <string name="ic_chat">c</string>
-    <string name="ic_chat_nm">v</string>
-    <string name="ic_stats">;</string>
-    <string name="ic_search">–</string>
-    <string name="ic_book">\u006F</string>
-    <string name="ic_hint">g</string>
-    <string name="ic_binoculars">—</string>
-    <string name="ic_handshake">\u002B</string>
-
-    <string name="ic_expand_above">M</string>
-    <string name="ic_expand">¿</string>
-    <string name="ic_collapse">¡</string>
-
-    <string name="ic_right">.</string> 			<!-- > -->
-    <string name="ic_left">,</string>         	<!-- < -->
-	<string name="ic_up">&#62;</string>         <!-- ^ -->
-    <string name="ic_down">&#60;</string>
-
-    <string name="ic_arrow_right">]</string>    <!-- -> -->
-    <string name="ic_arrow_left">[</string>		<!-- <- -->
-    <string name="ic_arrow_up">}</string>
-    <string name="ic_arrow_down">{</string>
-
-    <string name="ic_triangle_right">\</string>
-    <string name="ic_triangle_left">/</string>
-    <string name="ic_triangle_up">|</string>
-    <string name="ic_triangle_down">"?"</string>
-
-    <string name="ic_back_end">"#"</string>	<!-- |< -->
-    <string name="ic_fwd_end">"@"</string>	<!-- >| -->
-    <string name="ic_rewind_fwd">"!"</string>	<!-- >> -->
-    <string name="ic_rewind_back">"~"</string>	<!-- << -->
-    <string name="ic_dots">"%"</string>	<!-- *** -->
-
-    <string name="ic_number_one">W</string>
-    <string name="ic_number_two">E</string>
-    <string name="ic_number_three">R</string>
-    <string name="ic_number_none">T</string>
-
-    <string name="ic_round_help">(</string>
-    <string name="ic_extend">\u00BF</string>
+	<string name="ic_play_online">ˆ</string>
+	<string name="ic_challenge_friend">m</string>
+	<string name="ic_vs_random">-</string>
+	<string name="ic_key">¢</string>
+	<string name="ic_key_badge">a</string>
 
 
-    <!--Dimens -->
-    <dimen name="glyph_icon_padding">8dip</dimen>
-    <dimen name="glyph_icon_big">30dip</dimen>
-    <dimen name="glyph_icon_big2">37dip</dimen>
-    <dimen name="glyph_icon_round_back">30dip</dimen>
-    <dimen name="glyph_icon_round_back_medium">65dip</dimen>
-    <dimen name="glyph_icon_round_back_big">85dip</dimen>
-    <dimen name="glyph_icon_default">28dip</dimen>
-    <dimen name="glyph_icon_small">18dip</dimen>
+	<string name="ic_options">r</string>
+	<string name="ic_home">w</string>
+	<string name="ic_restore">L</string>
+	<string name="ic_refresh">:</string>
+	<string name="ic_flip">N</string>
+	<string name="ic_check">G</string>
+	<string name="ic_play">J</string>
+	<string name="ic_pause">K</string>
+	<string name="ic_chat">c</string>
+	<string name="ic_chat_nm">v</string>
+	<string name="ic_stats">;</string>
+	<string name="ic_search">–</string>
+	<string name="ic_book">\u006F</string>
+	<string name="ic_hint">g</string>
+	<string name="ic_binoculars">—</string>
+	<string name="ic_handshake">\u002B</string>
+
+	<string name="ic_expand_above">M</string>
+	<string name="ic_expand">¿</string>
+	<string name="ic_collapse">¡</string>
+
+	<string name="ic_right">.</string>
+	<!-- > -->
+	<string name="ic_left">,</string>
+	<!-- < -->
+	<string name="ic_up">&#62;</string>
+	<!-- ^ -->
+	<string name="ic_down">&#60;</string>
+
+	<string name="ic_arrow_right">]</string>
+	<!-- -> -->
+	<string name="ic_arrow_left">[</string>
+	<!-- <- -->
+	<string name="ic_arrow_up">}</string>
+	<string name="ic_arrow_down">{</string>
+
+	<string name="ic_triangle_right">\</string>
+	<string name="ic_triangle_left">/</string>
+	<string name="ic_triangle_up">|</string>
+	<string name="ic_triangle_down">"?"</string>
+
+	<string name="ic_back_end">"#"</string>
+	<!-- |< -->
+	<string name="ic_fwd_end">"@"</string>
+	<!-- >| -->
+	<string name="ic_rewind_fwd">"!"</string>
+	<!-- >> -->
+	<string name="ic_rewind_back">"~"</string>
+	<!-- << -->
+	<string name="ic_dots">"%"</string>
+	<!-- *** -->
+
+	<string name="ic_number_one">W</string>
+	<string name="ic_number_two">E</string>
+	<string name="ic_number_three">R</string>
+	<string name="ic_number_none">T</string>
+
+	<string name="ic_round_help">(</string>
+	<string name="ic_extend">\u00BF</string>
+
+
+	<!--Dimens -->
+	<dimen name="glyph_icon_padding">8dip</dimen>
+	<dimen name="glyph_icon_big">30dip</dimen>
+	<dimen name="glyph_icon_big2">37dip</dimen>
+	<dimen name="glyph_icon_round_back">30dip</dimen>
+	<dimen name="glyph_icon_round_back_medium">65dip</dimen>
+	<dimen name="glyph_icon_round_back_big">85dip</dimen>
+	<dimen name="glyph_icon_default">28dip</dimen>
+	<dimen name="glyph_icon_small">18dip</dimen>
 
 
 </resources>

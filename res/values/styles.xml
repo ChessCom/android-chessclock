@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources xmlns:chess="http://schemas.android.com/apk/res/com.chess">
+<resources>
 
-    <style name="ActionBarCompatBackground" parent="ActionBarCompat">
+	<style name="ActionBarCompatBackground" parent="ActionBarCompat">
 
-    </style>
+	</style>
 
 	<style name="Text" parent="@android:style/TextAppearance.Small">
 		<item name="android:textSize">@dimen/default_text_size</item>
@@ -27,185 +27,184 @@
 		<item name="android:minHeight">@dimen/main_button_height</item>
 		<item name="android:textColor">@color/white</item>
 
-        <!--Add Shadow Top to text-->
-<!--
-        <item name="android:shadowColor">@color/back_shadows_chess</item>
-        <item name="android:shadowRadius">0.5</item>
-        <item name="android:shadowDx">0</item>
-        <item name="android:shadowDy">-1.0</item>
--->
+		<!--Add Shadow Top to text-->
+		<!--
+				<item name="android:shadowColor">@color/back_shadows_chess</item>
+				<item name="android:shadowRadius">0.5</item>
+				<item name="android:shadowDx">0</item>
+				<item name="android:shadowDy">-1.0</item>
+		-->
 
 	</style>
 
-    <style name="Button.Upgrade" parent="Button.Blue" >
-        <item name="android:minWidth">@dimen/wide_button_min_width</item>
-        <item name="android:minHeight">@dimen/small_orange_button_height</item>
-    </style>
+	<style name="Button.Upgrade" parent="Button.Blue">
+		<item name="android:minWidth">@dimen/wide_button_min_width</item>
+		<item name="android:minHeight">@dimen/small_orange_button_height</item>
+	</style>
 
 
+	<style name="GlyphIcon">
+		<item name="android:padding">@dimen/glyph_icon_padding</item>
+		<item name="android:gravity">center</item>
+		<item name="android:textSize">@dimen/glyph_icon_default</item>
+		<item name="ttf">Icon</item>
 
-    <style name="GlyphIcon">
-        <item name="android:padding">@dimen/glyph_icon_padding</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/glyph_icon_default</item>
-        <item name="ttf">Icon</item>
+		<!--No Shadow-->
+		<item name="android:shadowRadius">0</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">0</item>
+	</style>
 
-        <!--No Shadow-->
-        <item name="android:shadowRadius">0</item>
-        <item name="android:shadowDx">0</item>
-        <item name="android:shadowDy">0</item>
-    </style>
+	<style name="GlyphIcon.Small">
+		<item name="android:textSize">@dimen/glyph_icon_small</item>
+	</style>
 
-    <style name="GlyphIcon.Small">
-        <item name="android:textSize">@dimen/glyph_icon_small</item>
-    </style>
+	<style name="GlyphIcon.Big">
+		<item name="android:textSize">@dimen/glyph_icon_big</item>
+	</style>
 
-    <style name="GlyphIcon.Big">
-        <item name="android:textSize">@dimen/glyph_icon_big</item>
-    </style>
+	<style name="GlyphIcon.Square">
+		<item name="android:padding">3dip</item>
+		<item name="android:textSize">@dimen/glyph_icon_big</item>
+	</style>
 
-    <style name="GlyphIcon.Square">
-        <item name="android:padding">3dip</item>
-        <item name="android:textSize">@dimen/glyph_icon_big</item>
-    </style>
+	<style name="GlyphIcon.RoundBack">
+		<item name="android:padding">0dip</item>
+		<item name="android:textColor">@color/new_light_grey_2</item>
+		<item name="android:textSize">@dimen/glyph_icon_round_back</item>
+		<item name="android:background">@drawable/video_play_btn_back_small_selector</item>
+		<item name="android:minWidth">0dip</item>
+	</style>
 
-    <style name="GlyphIcon.RoundBack">
-        <item name="android:padding">0dip</item>
-        <item name="android:textColor">@color/new_light_grey_2</item>
-        <item name="android:textSize">@dimen/glyph_icon_round_back</item>
-        <item name="android:background">@drawable/video_play_btn_back_small_selector</item>
-        <item name="android:minWidth">0dip</item>
-    </style>
-
-    <style name="GlyphIcon.RoundBack.Play">
-        <item name="android:textColor">@color/play_orange</item>
+	<style name="GlyphIcon.RoundBack.Play">
+		<item name="android:textColor">@color/play_orange</item>
 		<item name="android:background">@null</item>
 
-        <!--Shadow-->
-        <item name="android:shadowColor">@color/back_shadows_chess</item>
-        <item name="android:shadowRadius">0.5</item>
-        <item name="android:shadowDx">0</item>
-        <item name="android:shadowDy">1.0</item>
-    </style>
+		<!--Shadow-->
+		<item name="android:shadowColor">@color/back_shadows_chess</item>
+		<item name="android:shadowRadius">0.5</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">1.0</item>
+	</style>
 
-    <style name="RightIcon" parent="GlyphIcon.Small">
-        <item name="android:text">@string/ic_right</item>
-        <item name="android:textColor">@color/new_light_grey_2</item>
-    </style>
+	<style name="RightIcon" parent="GlyphIcon.Small">
+		<item name="android:text">@string/ic_right</item>
+		<item name="android:textColor">@color/new_light_grey_2</item>
+	</style>
 
 
-    <style name="HeaderTitle">
-        <item name="android:textSize">@dimen/header_title_size</item>
-        <item name="ttf">Bold</item>
-    </style>
+	<style name="HeaderTitle">
+		<item name="android:textSize">@dimen/header_title_size</item>
+		<item name="ttf">Bold</item>
+	</style>
 
-    <style name="HeaderTitle.Light">
-        <item name="android:textColor">@color/new_list_header_text</item>
-    </style>
+	<style name="HeaderTitle.Light">
+		<item name="android:textColor">@color/new_list_header_text</item>
+	</style>
 
-    <style name="HeaderTitle.Dark">
-        <item name="android:textColor">@color/new_subtitle_dark_grey</item>
-    </style>
-
-    <style name="Content" >
+	<style name="HeaderTitle.Dark">
 		<item name="android:textColor">@color/new_subtitle_dark_grey</item>
-        <item name="android:textIsSelectable">true</item>
-        <item name="android:textSize">@dimen/content_text_size</item>
+	</style>
+
+	<style name="Content">
+		<item name="android:textColor">@color/new_subtitle_dark_grey</item>
+		<item name="android:textIsSelectable">true</item>
+		<item name="android:textSize">@dimen/content_text_size</item>
 		<item name="android:lineSpacingExtra">5sp</item>
 		<!--<item name="android:lineSpacingExtra">@dimen/text_line_spacing</item>-->
-    </style>
+	</style>
 
-	<style name="list_text" >
-        <item name="android:textColor">@color/text_black</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/list_item_text_size</item>
-    </style>
+	<style name="list_text">
+		<item name="android:textColor">@color/text_black</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textSize">@dimen/list_item_text_size</item>
+	</style>
 
-    <style name="HomeLiveOptionsButton" parent="Button.Glassy.Small">
-        <item name="android:layout_width">0dip</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:padding">2dip</item>
-        <item name="android:layout_margin">1px</item>
-        <item name="android:visibility">gone</item>
-    </style>
+	<style name="HomeLiveOptionsButton" parent="Button.Glassy.Small">
+		<item name="android:layout_width">0dip</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:padding">2dip</item>
+		<item name="android:layout_margin">1px</item>
+		<item name="android:visibility">gone</item>
+	</style>
 
-    <style name="HomeDailyOptionsButton" parent="Button.Glassy">
-        <item name="android:layout_width">0dip</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:padding">2dip</item>
-        <item name="android:layout_margin">5dip</item>
-        <item name="android:visibility">gone</item>
-    </style>
+	<style name="HomeDailyOptionsButton" parent="Button.Glassy">
+		<item name="android:layout_width">0dip</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:padding">2dip</item>
+		<item name="android:layout_margin">5dip</item>
+		<item name="android:visibility">gone</item>
+	</style>
 
-    <style name="RightLiveOptionsButton" parent="Button.Glassy.Small">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minWidth">@dimen/new_right_live_option_button_width</item>
-        <item name="android:padding">2dip</item>
-        <item name="android:layout_margin">1px</item>
-        <item name="android:visibility">gone</item>
-    </style>
+	<style name="RightLiveOptionsButton" parent="Button.Glassy.Small">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:minWidth">@dimen/new_right_live_option_button_width</item>
+		<item name="android:padding">2dip</item>
+		<item name="android:layout_margin">1px</item>
+		<item name="android:visibility">gone</item>
+	</style>
 
 
-    <style name="NotationsStyle" parent="ListItem.Header.Notations">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:layout_marginTop">@dimen/notations_margin_top</item>
-    </style>
+	<style name="NotationsStyle" parent="ListItem.Header.Notations">
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:layout_marginTop">@dimen/notations_margin_top</item>
+	</style>
 
-    <style name="NotationsDiagramStyle" parent="ListItem.Header.Notations">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:layout_marginTop">@dimen/notations_margin_top</item>
+	<style name="NotationsDiagramStyle" parent="ListItem.Header.Notations">
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:layout_marginTop">@dimen/notations_margin_top</item>
 		<item name="textColorBack">@color/controls_icon</item>
 		<item name="textColorSelected">@color/controls_icon</item>
 		<item name="btn_solid">@color/notations_back</item>
 
 	</style>
 
-    <style name="DefaultEdt" >
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:clickable">true</item>
-        <item name="android:background">@drawable/textfield_selector</item>
-        <item name="android:textSize">17sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:minHeight">@dimen/default_field_height</item>
-        <item name="android:paddingBottom">7dip</item>
-        <item name="android:gravity">bottom</item>
-        <item name="android:textColorHint">@color/hint_text</item>
+	<style name="DefaultEdt">
+		<item name="android:focusable">true</item>
+		<item name="android:focusableInTouchMode">true</item>
+		<item name="android:clickable">true</item>
+		<item name="android:background">@drawable/textfield_selector</item>
+		<item name="android:textSize">17sp</item>
+		<item name="android:textColor">@color/black</item>
+		<item name="android:minHeight">@dimen/default_field_height</item>
+		<item name="android:paddingBottom">7dip</item>
+		<item name="android:gravity">bottom</item>
+		<item name="android:textColorHint">@color/hint_text</item>
 		<item name="android:layout_marginTop">2dip</item>
 		<item name="android:layout_marginBottom">2dip</item>
-    </style>
+	</style>
 
-    <style name="DefaultEdt.Empty" >
-        <!--<item name="android:background">@drawable/textfield_selector</item>-->
-        <item name="android:background">@color/transparent</item>
-        <item name="android:gravity">center</item>
-        <item name="android:minHeight">20dip</item>
-    </style>
+	<style name="DefaultEdt.Empty">
+		<!--<item name="android:background">@drawable/textfield_selector</item>-->
+		<item name="android:background">@color/transparent</item>
+		<item name="android:gravity">center</item>
+		<item name="android:minHeight">20dip</item>
+	</style>
 
-    <style name="EditButton" parent="Button.Glassy.Small">
-        <item name="android:textColorHint">@color/new_light_grey</item>
-        <item name="android:textSize">@dimen/edit_button_text_size</item>
-        <!--No Shadow-->
-        <item name="android:shadowColor">@color/transparent</item>
-        <item name="android:shadowRadius">0</item>
-        <item name="android:shadowDx">0</item>
-        <item name="android:shadowDy">0</item>
-    </style>
+	<style name="EditButton" parent="Button.Glassy.Small">
+		<item name="android:textColorHint">@color/new_light_grey</item>
+		<item name="android:textSize">@dimen/edit_button_text_size</item>
+		<!--No Shadow-->
+		<item name="android:shadowColor">@color/transparent</item>
+		<item name="android:shadowRadius">0</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">0</item>
+	</style>
 
-    <style name="DefaultListView">
-        <item name="android:background">@null</item>
-        <item name="android:divider">@null</item>
-        <item name="android:dividerHeight">0px</item>
-        <item name="android:cacheColorHint">@color/transparent</item>
-        <item name="android:listSelector">@color/transparent</item>
-        <item name="android:fadingEdge">none</item>
-        <item name="android:scrollbars">none</item>
-    </style>
+	<style name="DefaultListView">
+		<item name="android:background">@null</item>
+		<item name="android:divider">@null</item>
+		<item name="android:dividerHeight">0px</item>
+		<item name="android:cacheColorHint">@color/transparent</item>
+		<item name="android:listSelector">@color/transparent</item>
+		<item name="android:fadingEdge">none</item>
+		<item name="android:scrollbars">none</item>
+	</style>
 
-	<style name="DefaultAutoComplete" parent="DefaultEdt" >
+	<style name="DefaultAutoComplete" parent="DefaultEdt">
 		<item name="android:completionHintView">@layout/simple_dropdown_hint</item>
 		<item name="android:completionThreshold">2</item>
 		<item name="android:dropDownSelector">@android:drawable/list_selector_background</item>
@@ -215,124 +214,124 @@
 		<item name="android:dropDownWidth">wrap_content</item>
 	</style>
 
-    <style name="DashboardItemText" parent="@android:style/Widget.TextView">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">13sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
+	<style name="DashboardItemText" parent="@android:style/Widget.TextView">
+		<item name="android:textColor">@android:color/white</item>
+		<item name="android:textSize">13sp</item>
+		<item name="android:textStyle">bold</item>
+	</style>
 
-    <style name="ChessProgressBar" parent="@android:style/Widget.ProgressBar">
-        <item name="android:indeterminateDrawable">@drawable/ic_chess_progress</item>
-    </style>
+	<style name="ChessProgressBar" parent="@android:style/Widget.ProgressBar">
+		<item name="android:indeterminateDrawable">@drawable/ic_chess_progress</item>
+	</style>
 
 	<style name="ChessProgressBar.Horizontal" parent="@android:style/Widget.ProgressBar.Horizontal">
 
 	</style>
 
 	<style name="Spinner" parent="@android:style/Widget.Spinner">
-        <item name="android:drawSelectorOnTop">true</item>
-        <item name="android:background">@drawable/edit_grey_one_default</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/hint_text</item>
-        <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:selectable">true</item>
-    </style>
+		<item name="android:drawSelectorOnTop">true</item>
+		<item name="android:background">@drawable/edit_grey_one_default</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:textColor">@color/hint_text</item>
+		<item name="android:layout_gravity">center_vertical</item>
+		<item name="android:selectable">true</item>
+	</style>
 
-    <style name="SpinnerDropDown" parent="Text">
-        <item name="android:textColor">@color/black</item>
-    </style>
+	<style name="SpinnerDropDown" parent="Text">
+		<item name="android:textColor">@color/black</item>
+	</style>
 
-    <style name="SpinnerText" parent="Text">
-        <item name="android:textColor">@color/hint_text</item>
-    </style>
+	<style name="SpinnerText" parent="Text">
+		<item name="android:textColor">@color/hint_text</item>
+	</style>
 
-    <style name="CheckBox" parent="android:Widget.CompoundButton.CheckBox">
-        <item name="android:button">@drawable/btn_check_selector</item>
-        <item name="android:textSize">17sp</item>
-        <item name="android:textColor">@color/hint_text</item>
-        <item name="android:textStyle">normal</item>
+	<style name="CheckBox" parent="android:Widget.CompoundButton.CheckBox">
+		<item name="android:button">@drawable/btn_check_selector</item>
+		<item name="android:textSize">17sp</item>
+		<item name="android:textColor">@color/hint_text</item>
+		<item name="android:textStyle">normal</item>
 		<item name="android:gravity">center_vertical</item>
-    </style>
+	</style>
 
 
-    <style name="RadioButton" parent="android:Widget.CompoundButton.RadioButton">
-        <item name="android:button">@drawable/btn_radio_selector</item>
-        <item name="android:textSize">17sp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">normal</item>
+	<style name="RadioButton" parent="android:Widget.CompoundButton.RadioButton">
+		<item name="android:button">@drawable/btn_radio_selector</item>
+		<item name="android:textSize">17sp</item>
+		<item name="android:textColor">@color/white</item>
+		<item name="android:textStyle">normal</item>
 		<item name="android:layout_marginTop">2dip</item>
 		<item name="android:layout_marginBottom">2dip</item>
 		<item name="android:gravity">center_vertical</item>
-    </style>
+	</style>
 
-    <style name="SeekBar" parent="android:style/Widget.SeekBar">
-        <!--<item name="android:progressDrawable">@drawable/progress_horizontal</item>-->
-        <!--<item name="android:indeterminateDrawable">@drawable/progress_horizontal</item>-->
-        <!--<item name="android:thumb">@drawable/seek_thumb_selector</item>-->
-        <item name="android:thumbOffset">8dip</item>
-        <item name="android:paddingLeft">7dip</item>
-        <item name="android:paddingRight">7dip</item>
-        <item name="android:minHeight">14dip</item>
-        <item name="android:maxHeight">14dip</item>
-    </style>
+	<style name="SeekBar" parent="android:style/Widget.SeekBar">
+		<!--<item name="android:progressDrawable">@drawable/progress_horizontal</item>-->
+		<!--<item name="android:indeterminateDrawable">@drawable/progress_horizontal</item>-->
+		<!--<item name="android:thumb">@drawable/seek_thumb_selector</item>-->
+		<item name="android:thumbOffset">8dip</item>
+		<item name="android:paddingLeft">7dip</item>
+		<item name="android:paddingRight">7dip</item>
+		<item name="android:minHeight">14dip</item>
+		<item name="android:maxHeight">14dip</item>
+	</style>
 
-    <style name="RatingSeekBar" parent="android:style/Widget.SeekBar">
-         <item name="android:indeterminateDrawable">@drawable/empty</item>
-        <item name="android:thumb">@drawable/seek_thumb_selector</item>
-        <item name="android:thumbOffset">8dip</item>
-        <item name="android:paddingLeft">7dip</item>
-        <item name="android:paddingRight">7dip</item>
-        <item name="android:minHeight">20dip</item>
-        <item name="android:maxHeight">20dip</item>
-    </style>
+	<style name="RatingSeekBar" parent="android:style/Widget.SeekBar">
+		<item name="android:indeterminateDrawable">@drawable/empty</item>
+		<item name="android:thumb">@drawable/seek_thumb_selector</item>
+		<item name="android:thumbOffset">8dip</item>
+		<item name="android:paddingLeft">7dip</item>
+		<item name="android:paddingRight">7dip</item>
+		<item name="android:minHeight">20dip</item>
+		<item name="android:maxHeight">20dip</item>
+	</style>
 
-    <!--Home Tabs-->
-    <style name="TabRadioButton" parent="android:Widget.CompoundButton.RadioButton">
-        <item name="android:button">@null</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/new_light_grey</item>
+	<!--Home Tabs-->
+	<style name="TabRadioButton" parent="android:Widget.CompoundButton.RadioButton">
+		<item name="android:button">@null</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:textColor">@color/new_light_grey</item>
 		<item name="android:gravity">center</item>
-        <item name="android:shadowColor">@color/black</item>
-        <item name="android:shadowRadius">1.0</item>
-        <item name="android:shadowDx">1.0</item>
-        <item name="android:shadowDy">1.0</item>
-        <item name="android:minHeight">@dimen/new_tab_button_height</item>
-        <item name="ttf">Bold</item>
-    </style>
+		<item name="android:shadowColor">@color/black</item>
+		<item name="android:shadowRadius">1.0</item>
+		<item name="android:shadowDx">1.0</item>
+		<item name="android:shadowDy">1.0</item>
+		<item name="android:minHeight">@dimen/new_tab_button_height</item>
+		<item name="ttf">Bold</item>
+	</style>
 
-    <style name="TabRadioButton.Left" >
-        <!--<item name="android:background">@drawable/button_tab_home_left_selector</item>-->
-    </style>
+	<style name="TabRadioButton.Left">
+		<!--<item name="android:background">@drawable/button_tab_home_left_selector</item>-->
+	</style>
 
-    <style name="TabRadioButton.Middle" >
-        <!--<item name="android:background">@drawable/button_tab_home_middle_selector</item>-->
-    </style>
+	<style name="TabRadioButton.Middle">
+		<!--<item name="android:background">@drawable/button_tab_home_middle_selector</item>-->
+	</style>
 
-    <style name="TabRadioButton.Right" >
-        <!--<item name="android:background">@drawable/button_tab_home_right_selector</item>-->
-    </style>
+	<style name="TabRadioButton.Right">
+		<!--<item name="android:background">@drawable/button_tab_home_right_selector</item>-->
+	</style>
 
-    <!--Upgrade-->
-    <style name="RoundRadioButton" parent="android:Widget.CompoundButton.RadioButton">
-        <item name="android:button">@null</item>
-        <item name="android:textSize">11sp</item>
-        <item name="android:textColor">@color/text_blue</item>
+	<!--Upgrade-->
+	<style name="RoundRadioButton" parent="android:Widget.CompoundButton.RadioButton">
+		<item name="android:button">@null</item>
+		<item name="android:textSize">11sp</item>
+		<item name="android:textColor">@color/text_blue</item>
 		<item name="android:gravity">center</item>
-        <item name="android:minHeight">32dip</item>
-        <item name="ttf">Bold</item>
-    </style>
+		<item name="android:minHeight">32dip</item>
+		<item name="ttf">Bold</item>
+	</style>
 
-    <style name="RoundRadioButton.Left" >
-        <item name="android:background">@drawable/button_toggle_left_selector</item>
-    </style>
+	<style name="RoundRadioButton.Left">
+		<item name="android:background">@drawable/button_toggle_left_selector</item>
+	</style>
 
-    <style name="RoundRadioButton.Middle" >
-        <item name="android:background">@drawable/button_toggle_middle_selector</item>
-    </style>
+	<style name="RoundRadioButton.Middle">
+		<item name="android:background">@drawable/button_toggle_middle_selector</item>
+	</style>
 
-    <style name="RoundRadioButton.Right" >
-        <item name="android:background">@drawable/button_toggle_right_selector</item>
-    </style>
+	<style name="RoundRadioButton.Right">
+		<item name="android:background">@drawable/button_toggle_right_selector</item>
+	</style>
 
 	<style name="SettingsDividerText" parent="Text">
 		<item name="android:paddingTop">10dip</item>
@@ -340,19 +339,19 @@
 		<item name="android:textStyle">bold</item>
 	</style>
 
-	<style name="lineDivider" >
+	<style name="lineDivider">
 		<item name="android:layout_marginBottom">5dip</item>
 	</style>
 
-    <style name="PageRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:button">@drawable/empty</item>
-        <item name="android:layout_margin">5dip</item>
-        <item name="android:clickable">false</item>
-        <item name="android:textSize">1sp</item>
-        <item name="android:background">@drawable/pager_indicator_selector</item>
-    </style>
+	<style name="PageRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:button">@drawable/empty</item>
+		<item name="android:layout_margin">5dip</item>
+		<item name="android:clickable">false</item>
+		<item name="android:textSize">1sp</item>
+		<item name="android:background">@drawable/pager_indicator_selector</item>
+	</style>
 
 	<style name="LinearDescription">
 		<item name="android:weightSum">10</item>
@@ -406,79 +405,79 @@
 		<item name="android:marqueeRepeatLimit">marquee_forever</item>
 	</style>
 
-    <style name="Switch">
+	<style name="Switch">
 
-    </style>
+	</style>
 
-    <style name="Switch.Dark">
-        <item name="switchBackOn">@drawable/button_switch_dark_back</item>
-        <item name="switchBackOff">@drawable/button_switch_dark_back</item>
-        <item name="switchHandle">@drawable/button_switch_dark_handle_selector</item>
-        <item name="switchHandleWidth">42</item>
-        <item name="switchHandleHeight">22</item>
-        <item name="switchHandleShift">-36.0</item>
-        <item name="switchHandleMargin">2.5</item>
-        <item name="switchTextShift">40.0</item>
-        <item name="switchTextSize">10sp</item>
-        <item name="switchTextColorOn">@color/new_square_button_p</item>
-        <item name="switchTextColorOff">@color/new_square_button_p</item>
-        <item name="switchTextOn">@string/yes</item>
-        <item name="switchTextOff">@string/no</item>
-        <item name="switchTextFont">Bold</item>
-        <item name="switchTextLeftPadding">13</item>
-        <item name="switchTextUseShadow">true</item>
-        <item name="android:layout_width">@dimen/button_switch_dark_width</item>
-        <item name="android:layout_height">@dimen/button_switch_dark_height</item>
-    </style>
+	<style name="Switch.Dark">
+		<item name="switchBackOn">@drawable/button_switch_dark_back</item>
+		<item name="switchBackOff">@drawable/button_switch_dark_back</item>
+		<item name="switchHandle">@drawable/button_switch_dark_handle_selector</item>
+		<item name="switchHandleWidth">42</item>
+		<item name="switchHandleHeight">22</item>
+		<item name="switchHandleShift">-36.0</item>
+		<item name="switchHandleMargin">2.5</item>
+		<item name="switchTextShift">40.0</item>
+		<item name="switchTextSize">10sp</item>
+		<item name="switchTextColorOn">@color/new_square_button_p</item>
+		<item name="switchTextColorOff">@color/new_square_button_p</item>
+		<item name="switchTextOn">@string/yes</item>
+		<item name="switchTextOff">@string/no</item>
+		<item name="switchTextFont">Bold</item>
+		<item name="switchTextLeftPadding">13</item>
+		<item name="switchTextUseShadow">true</item>
+		<item name="android:layout_width">@dimen/button_switch_dark_width</item>
+		<item name="android:layout_height">@dimen/button_switch_dark_height</item>
+	</style>
 
-<!--    <style name="Switch.White">
-        <item name="switchBackOn">@drawable/button_switch_white_back_checked</item>
-        <item name="switchBackOff">@drawable/button_switch_white_back_default</item>
-        <item name="switchHandle">@drawable/button_switch_white_handle_selector</item>
-        <item name="switchHandleWidth">26</item>
-        <item name="switchHandleHeight">26</item>
-        <item name="switchHandleShift">-51.0</item>
-        <item name="switchHandleMargin">0</item>
-        <item name="switchTextShift">21.0</item>
-        <item name="switchTextSize">16sp</item>
-        <item name="switchTextColorOn">@color/white</item>
-        <item name="switchTextColorOff">@color/switch_white_back_border_top_1</item>
-        <item name="switchTextFont">Bold</item>
-        <item name="switchTextOn">@string/on</item>
-        <item name="switchTextOff">@string/off</item>
-        <item name="switchTextLeftPadding">13</item>
-        <item name="switchTextUseShadow">true</item>
-        <item name="android:layout_width">@dimen/button_switch_white_width</item>
-        <item name="android:layout_height">@dimen/button_switch_white_height</item>
-    </style>-->
+	<!--    <style name="Switch.White">
+			<item name="switchBackOn">@drawable/button_switch_white_back_checked</item>
+			<item name="switchBackOff">@drawable/button_switch_white_back_default</item>
+			<item name="switchHandle">@drawable/button_switch_white_handle_selector</item>
+			<item name="switchHandleWidth">26</item>
+			<item name="switchHandleHeight">26</item>
+			<item name="switchHandleShift">-51.0</item>
+			<item name="switchHandleMargin">0</item>
+			<item name="switchTextShift">21.0</item>
+			<item name="switchTextSize">16sp</item>
+			<item name="switchTextColorOn">@color/white</item>
+			<item name="switchTextColorOff">@color/switch_white_back_border_top_1</item>
+			<item name="switchTextFont">Bold</item>
+			<item name="switchTextOn">@string/on</item>
+			<item name="switchTextOff">@string/off</item>
+			<item name="switchTextLeftPadding">13</item>
+			<item name="switchTextUseShadow">true</item>
+			<item name="android:layout_width">@dimen/button_switch_white_width</item>
+			<item name="android:layout_height">@dimen/button_switch_white_height</item>
+		</style>-->
 
-    <style name="Switch.Default">
-        <item name="switchBackOn">@drawable/button_switch_default_back_checked</item>
-        <item name="switchBackOff">@drawable/button_switch_default_back_default</item>
-        <item name="switchHandle">@drawable/button_switch_default_handle_selector</item>
-        <item name="switchHandleWidth">36</item>
-        <item name="switchHandleHeight">27</item>
-        <item name="switchHandleShift">@integer/button_switch_default_handle_shift</item>
-        <item name="switchHandleMargin">0</item>
-        <item name="switchTextShift">33.0</item>
-        <item name="switchTextSize">16sp</item>
-        <item name="switchTextColorOn">@color/white</item>
-        <item name="switchTextColorOff">@color/switch_default_back_border_top_1</item>
-        <item name="switchTextFont">Bold</item>
-        <item name="switchTextOn">@string/on</item>
-        <item name="switchTextOff">@string/off</item>
-        <item name="switchTextLeftPadding">13</item>
-        <item name="switchTextUseShadow">true</item>
-        <item name="android:layout_width">@dimen/button_switch_default_width</item>
-        <item name="android:layout_height">@dimen/button_switch_default_height</item>
-    </style>
+	<style name="Switch.Default">
+		<item name="switchBackOn">@drawable/button_switch_default_back_checked</item>
+		<item name="switchBackOff">@drawable/button_switch_default_back_default</item>
+		<item name="switchHandle">@drawable/button_switch_default_handle_selector</item>
+		<item name="switchHandleWidth">36</item>
+		<item name="switchHandleHeight">27</item>
+		<item name="switchHandleShift">@integer/button_switch_default_handle_shift</item>
+		<item name="switchHandleMargin">0</item>
+		<item name="switchTextShift">33.0</item>
+		<item name="switchTextSize">16sp</item>
+		<item name="switchTextColorOn">@color/white</item>
+		<item name="switchTextColorOff">@color/switch_default_back_border_top_1</item>
+		<item name="switchTextFont">Bold</item>
+		<item name="switchTextOn">@string/on</item>
+		<item name="switchTextOff">@string/off</item>
+		<item name="switchTextLeftPadding">13</item>
+		<item name="switchTextUseShadow">true</item>
+		<item name="android:layout_width">@dimen/button_switch_default_width</item>
+		<item name="android:layout_height">@dimen/button_switch_default_height</item>
+	</style>
 
-    <style name="Switch.Default.Yes">
-        <item name="switchTextOn">@string/yes</item>
-        <item name="switchTextOff">@string/no</item>
-        <item name="switchTextLeftPadding">8</item>
+	<style name="Switch.Default.Yes">
+		<item name="switchTextOn">@string/yes</item>
+		<item name="switchTextOff">@string/no</item>
+		<item name="switchTextLeftPadding">8</item>
 		<item name="switchTextShift">41.0</item>
-    </style>
+	</style>
 
 	<style name="DarkShadowBottom">
 		<item name="android:textColor">@color/white</item>
@@ -488,73 +487,73 @@
 		<item name="android:shadowDy">1.0</item>
 	</style>
 
-    <!--New Slide Menu Design Styles-->
+	<!--New Slide Menu Design Styles-->
 
-    <style name="GreyImageButton" parent="Button.Glassy">
-        <item name="color">@color/grey_button_1</item>
-        <item name="ttf">Bold</item>
-    </style>
+	<style name="GreyImageButton" parent="Button.Glassy">
+		<item name="color">@color/grey_button_1</item>
+		<item name="ttf">Bold</item>
+	</style>
 
-    <style name="WhiteGrayEditText">
-        <item name="android:singleLine">true</item>
-        <item name="color">@color/new_soft_grey</item>
-        <item name="android:minHeight">@dimen/new_edit_field_height</item>
-    </style>
+	<style name="WhiteGrayEditText">
+		<item name="android:singleLine">true</item>
+		<item name="color">@color/new_soft_grey</item>
+		<item name="android:minHeight">@dimen/new_edit_field_height</item>
+	</style>
 
-    <style name="WhiteGrayEditText.One">
-        <item name="android:background">@drawable/edit_white_one_selector</item>
-        <item name="android:imeOptions">actionNext</item>
-        <item name="round_mode">@integer/left_edit_mode_one</item>
-    </style>
+	<style name="WhiteGrayEditText.One">
+		<item name="android:background">@drawable/edit_white_one_selector</item>
+		<item name="android:imeOptions">actionNext</item>
+		<item name="round_mode">@integer/left_edit_mode_one</item>
+	</style>
 
-    <style name="WhiteGrayEditText.Top">
-        <item name="android:background">@drawable/edit_white_top_selector</item>
-        <item name="android:imeOptions">actionNext</item>
-        <item name="round_mode">@integer/left_edit_mode_top</item>
-    </style>
+	<style name="WhiteGrayEditText.Top">
+		<item name="android:background">@drawable/edit_white_top_selector</item>
+		<item name="android:imeOptions">actionNext</item>
+		<item name="round_mode">@integer/left_edit_mode_top</item>
+	</style>
 
-    <style name="WhiteGrayEditText.Middle">
-        <item name="android:background">@drawable/edit_white_middle_selector</item>
-        <item name="android:imeOptions">actionNext</item>
-        <item name="round_mode">@integer/left_edit_mode_mid</item>
-    </style>
+	<style name="WhiteGrayEditText.Middle">
+		<item name="android:background">@drawable/edit_white_middle_selector</item>
+		<item name="android:imeOptions">actionNext</item>
+		<item name="round_mode">@integer/left_edit_mode_mid</item>
+	</style>
 
-    <style name="WhiteGrayEditText.Bottom">
-        <item name="android:background">@drawable/edit_white_bottom_selector</item>
-        <item name="android:imeOptions">actionDone</item>
-        <item name="round_mode">@integer/left_edit_mode_bot</item>
-    </style>
+	<style name="WhiteGrayEditText.Bottom">
+		<item name="android:background">@drawable/edit_white_bottom_selector</item>
+		<item name="android:imeOptions">actionDone</item>
+		<item name="round_mode">@integer/left_edit_mode_bot</item>
+	</style>
 
 
-    <style name="SetupSmallFont">
-        <item name="android:textSize">@dimen/new_setup_small_fonts_size</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:gravity">center</item>
-    </style>
+	<style name="SetupSmallFont">
+		<item name="android:textSize">@dimen/new_setup_small_fonts_size</item>
+		<item name="android:textColor">@color/white</item>
+		<item name="android:gravity">center</item>
+	</style>
 
-    <style name="WelcomeFeatureTitle">
-        <item name="android:textSize">@dimen/welcome_title_text_size</item>
-        <item name="android:textColor">@color/new_subtitle_dark_grey</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@color/welcome_title_background</item>
-        <item name="ttf">Bold</item>
-    </style>
+	<style name="WelcomeFeatureTitle">
+		<item name="android:textSize">@dimen/welcome_title_text_size</item>
+		<item name="android:textColor">@color/new_subtitle_dark_grey</item>
+		<item name="android:gravity">center</item>
+		<item name="android:background">@color/welcome_title_background</item>
+		<item name="ttf">Bold</item>
+	</style>
 
-    <style name="WelcomeListFeature">
-        <item name="android:textSize">@dimen/welcome_feature_text_size</item>
-        <item name="android:textColor">@color/welcome_list_feature_text_color</item>
-        <item name="android:gravity">center</item>
-    </style>
+	<style name="WelcomeListFeature">
+		<item name="android:textSize">@dimen/welcome_feature_text_size</item>
+		<item name="android:textColor">@color/welcome_list_feature_text_color</item>
+		<item name="android:gravity">center</item>
+	</style>
 
-    <style name="welcomeCloseBtn" parent="@style/Button.Glassy.Small">
-         <item name="android:layout_alignParentRight">true</item>
-         <item name="android:textColor">@color/text_controls_icons</item>
-         <item name="ttf">Icon</item>
-         <item name="android:text">@string/ic_close</item>
-         <item name="android:textSize">40dip</item>
-         <item name="android:minWidth">48dip</item>
-         <item name="android:visibility">gone</item>
-    </style>
+	<style name="welcomeCloseBtn" parent="@style/Button.Glassy.Small">
+		<item name="android:layout_alignParentRight">true</item>
+		<item name="android:textColor">@color/text_controls_icons</item>
+		<item name="ttf">Icon</item>
+		<item name="android:text">@string/ic_close</item>
+		<item name="android:textSize">40dip</item>
+		<item name="android:minWidth">48dip</item>
+		<item name="android:visibility">gone</item>
+	</style>
 
 	<style name="ExplorerWeightItem">
 		<item name="android:textSize">9sp</item>

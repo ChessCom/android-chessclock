@@ -11,8 +11,7 @@
 	<FrameLayout
 		android:id="@+id/stubView"
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/notations_view_height"
-		/>
+		android:layout_height="@dimen/notations_view_height" />
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/centerTxt"
@@ -84,8 +83,7 @@
 		android:id="@+id/stubControls"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:minHeight="@dimen/game_controls_button_height"
-		/>
+		android:minHeight="@dimen/game_controls_button_height" />
 
 </LinearLayout>
 

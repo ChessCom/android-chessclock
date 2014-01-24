@@ -4,6 +4,7 @@
 	<color name="pager_indicator_selected">#FF699142</color>
 	<color name="welcome_title_background">#00000000</color>
 	<color name="notations_back">#2B000000</color>
-	<color name="notations_text_color">#c0FFFFFF</color>  <!--75% white-->
+	<color name="notations_text_color">#c0FFFFFF</color>
+	<!--75% white-->
 
 </resources>

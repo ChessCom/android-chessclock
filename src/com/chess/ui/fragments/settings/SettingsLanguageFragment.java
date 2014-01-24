@@ -5,10 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Spinner;
+import android.widget.ListView;
 import com.chess.R;
-import com.chess.ui.adapters.StringSpinnerAdapter;
+import com.chess.model.SelectionItem;
+import com.chess.ui.adapters.SelectionAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,11 +20,11 @@ import com.chess.ui.fragments.CommonLogicFragment;
  * Date: 13.01.14
  * Time: 17:03
  */
-public class SettingsLanguageFragment extends CommonLogicFragment implements AdapterView.OnItemSelectedListener {
+public class SettingsLanguageFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_language_frame, container, false);
+		return inflater.inflate(R.layout.new_list_view_frame, container, false);
 	}
 
 	@Override
@@ -29,24 +33,33 @@ public class SettingsLanguageFragment extends CommonLogicFragment implements Ada
 
 		setTitle(R.string.language);
 
-		Spinner langSpinner = (Spinner) view.findViewById(R.id.languageSpinner);
-		langSpinner.setAdapter(new StringSpinnerAdapter(getActivity(), getItemsFromEntries(R.array.languages)));
-		langSpinner.setOnItemSelectedListener(this);
-		langSpinner.setSelection(getAppData().getLanguageCode());
+		ListView listView = (ListView) view.findViewById(R.id.listView);
+
+		String[] array = getResources().getStringArray(R.array.languages);
+		List<SelectionItem> itemsList = new ArrayList<SelectionItem>();
+		int prevCode = getAppData().getLanguageCode();
+		String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
+
+		String currentLocale = languageCodes[prevCode];
+		for (String language : array) {
+			SelectionItem selectionItem = new SelectionItem(null, language);
+			if (currentLocale.equals(language)) {
+				selectionItem.setChecked(true);
+			}
+			itemsList.add(selectionItem);
+		}
+
+		listView.setAdapter(new SelectionAdapter(getActivity(), itemsList));
+		listView.setOnItemClickListener(this);
 	}
 
 	@Override
-	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		int prevCode = getAppData().getLanguageCode();
 		if (prevCode != position) {
 			getAppData().setLanguageCode(position);
 
 			getActivityFace().updateLocale();
 		}
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> parent) {
-
 	}
 }

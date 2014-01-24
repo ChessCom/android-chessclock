@@ -21,34 +21,34 @@
 		<item name="android:actionButtonStyle">@style/ActionButton</item>
 		<!--<item name="android:windowContentOverlay">@color/transparent</item>-->
 		<item name="android:selectableItemBackground">@drawable/actionbar_compat_item_selector</item>
-        <!--ActionMode-->
-        <item name="android:actionModeBackground">@color/glassy_button</item>
-        <item name="android:actionModeCloseDrawable">@drawable/ic_cab_done</item>
-    </style>
+		<!--ActionMode-->
+		<item name="android:actionModeBackground">@color/glassy_button</item>
+		<item name="android:actionModeCloseDrawable">@drawable/ic_cab_done</item>
+	</style>
 
 	<style name="NoTitle" parent="android:style/Theme.Holo.Light.NoActionBar">
 		<item name="android:windowBackground">@color/transparent</item>
-        <item name="android:progressBarStyle">@style/ChessProgressBar</item>
+		<item name="android:progressBarStyle">@style/ChessProgressBar</item>
 	</style>
 
 	<style name="ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:titleTextStyle">@style/ActionBarTitle</item>
-        <item name="android:icon">@drawable/ic_logo_bar</item>
-        <item name="android:background">@color/action_bar_overlay</item>
-    </style>
-
-	<style name="ActionButton" parent="android:style/Widget.ActionButton">
-        <item name="android:minWidth">@dimen/actionbar_compat_button_width</item>
+		<item name="android:titleTextStyle">@style/ActionBarTitle</item>
+		<item name="android:icon">@drawable/ic_logo_bar</item>
+		<item name="android:background">@color/action_bar_overlay</item>
 	</style>
 
-    <style name="ActionBarTitle">
-        <!--<item name="android:textColor">@color/actionbar_title_color</item>-->
-        <item name="android:textColor">@color/semitransparent_white_75</item>
+	<style name="ActionButton" parent="android:style/Widget.ActionButton">
+		<item name="android:minWidth">@dimen/actionbar_compat_button_width</item>
+	</style>
+
+	<style name="ActionBarTitle">
+		<!--<item name="android:textColor">@color/actionbar_title_color</item>-->
+		<item name="android:textColor">@color/semitransparent_white_75</item>
 		<item name="android:shadowColor">#000000</item>
 		<item name="android:shadowRadius">1.5</item>
 		<item name="android:shadowDx">0</item>
 		<item name="android:shadowDy">2</item>
-    </style>
+	</style>
 
 	<style name="ChessProgressBar.Horizontal" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
 

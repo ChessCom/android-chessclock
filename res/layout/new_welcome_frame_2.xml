@@ -18,8 +18,7 @@
 		android:layout_height="wrap_content"
 		android:layout_centerInParent="true"
 		android:background="@drawable/video_play_btn_back_medium_selector"
-		android:gravity="fill"
-		>
+		android:gravity="fill">
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/playBtn2"
@@ -29,8 +28,7 @@
 			android:text="@string/ic_play"
 			style="@style/GlyphIcon.RoundBack.Play"
 			android:textSize="@dimen/glyph_icon_round_back_medium"
-			android:layout_marginLeft="@dimen/play_button_left_offset"
-			/>
+			android:layout_marginLeft="@dimen/play_button_left_offset" />
 
 	</RelativeLayout>
 
@@ -55,8 +53,7 @@
 		android:layout_centerHorizontal="true"
 		android:layout_alignParentBottom="true"
 		android:orientation="vertical"
-		android:paddingTop="@dimen/welcome_features_padding_top"
-		>
+		android:paddingTop="@dimen/welcome_features_padding_top">
 
 		<com.chess.widgets.RoboTextView
 			android:layout_width="wrap_content"

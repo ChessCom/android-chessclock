@@ -1,11 +1,9 @@
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	android:paddingTop="15dp"
-	>
+	android:paddingTop="15dp">
 
 	<!--Limit title-->
 	<com.chess.widgets.RoboTextView
@@ -17,8 +15,7 @@
 		android:textSize="@dimen/game_end_popup_text_size"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:padding="8dip"
-		custom:ttf="Bold"
-		/>
+		custom:ttf="Bold" />
 
 	<!--description reason-->
 	<com.chess.widgets.RoboTextView
@@ -42,8 +39,7 @@
 		android:layout_height="@dimen/ad_popup_height"
 		android:layout_gravity="center"
 		android:orientation="vertical"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 	<FrameLayout
 		android:layout_width="match_parent"
@@ -53,8 +49,7 @@
 		android:paddingLeft="33dip"
 		android:paddingTop="20dip"
 		android:paddingRight="33dip"
-		android:paddingBottom="20dip"
-		>
+		android:paddingBottom="20dip">
 
 		<!--Upgrade To Continue-->
 		<com.chess.widgets.RoboButton
@@ -63,8 +58,7 @@
 			android:layout_height="wrap_content"
 			android:text="@string/upgrade_now"
 			style="@style/Button.Upgrade"
-			android:minHeight="@dimen/main_button_height"
-			/>
+			android:minHeight="@dimen/main_button_height" />
 
 	</FrameLayout>
 

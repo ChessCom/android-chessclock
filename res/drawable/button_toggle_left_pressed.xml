@@ -1,81 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--Border-->
-    <item>
-        <shape >
-            <corners
-                android:topLeftRadius="@dimen/button_upgrade_toggle_radius"
-                android:bottomRightRadius="@dimen/button_upgrade_toggle_radius"
-                />
-            <solid android:color="@color/transparent"/>
-            <stroke
-                android:color="@color/upgrade_toggle_button_border"
-                android:width="1dip"
-                />
-        </shape>
-    </item>
+	<!--Border-->
+	<item>
+		<shape>
+			<corners
+				android:topLeftRadius="@dimen/button_upgrade_toggle_radius"
+				android:bottomRightRadius="@dimen/button_upgrade_toggle_radius" />
+			<solid android:color="@color/transparent" />
+			<stroke
+				android:color="@color/upgrade_toggle_button_border"
+				android:width="1dip" />
+		</shape>
+	</item>
 
-    <!--Button-->
-    <item
-        android:left="1dip"
-        android:right="1px"
-        android:bottom="1dip"
-        android:top="1dip"
-        >
-        <shape >
-            <corners
-                android:topLeftRadius="@dimen/button_upgrade_toggle_radius"
-                android:bottomRightRadius="@dimen/button_upgrade_toggle_radius"
-                />
-            <solid android:color="@color/upgrade_toggle_button_p" />
-        </shape>
-    </item>
+	<!--Button-->
+	<item
+		android:left="1dip"
+		android:right="1px"
+		android:bottom="1dip"
+		android:top="1dip">
+		<shape>
+			<corners
+				android:topLeftRadius="@dimen/button_upgrade_toggle_radius"
+				android:bottomRightRadius="@dimen/button_upgrade_toggle_radius" />
+			<solid android:color="@color/upgrade_toggle_button_p" />
+		</shape>
+	</item>
 
-    <!-- Inner Shadows -->
-    <!-- Left -->
-    <item
-        android:left="0dip"
-        android:right="1px"
-        android:bottom="1dip"
-        android:top="1dip"
-        >
-        <shape android:dither="true" >
-            <corners
-                android:topLeftRadius="@dimen/button_upgrade_toggle_radius"
-                android:bottomRightRadius="@dimen/button_upgrade_toggle_radius"
-                />
-            <gradient
-                android:angle="180"
-                android:startColor="@color/transparent"
-                android:centerColor="@color/transparent"
-                android:endColor="@color/upgrade_toggle_shadow"
-                android:centerX="85%"
-                android:centerY="0"
-                />
-        </shape>
-    </item>
-    <!-- Top -->
-    <item
-        android:left="0dip"
-        android:right="1px"
-        android:bottom="1dip"
-        android:top="1dip"
-        >
-        <shape android:dither="true">
-            <corners
-                android:topLeftRadius="@dimen/button_upgrade_toggle_radius"
-                android:bottomRightRadius="@dimen/button_upgrade_toggle_radius"
-                />
-            <gradient
-                android:centerColor="@color/transparent"
-                android:startColor="@color/transparent"
-                android:endColor="@color/upgrade_toggle_shadow"
-                android:angle="90"
-                android:centerY="75%"
-                />
-        </shape>
-    </item>
+	<!-- Inner Shadows -->
+	<!-- Left -->
+	<item
+		android:left="0dip"
+		android:right="1px"
+		android:bottom="1dip"
+		android:top="1dip">
+		<shape android:dither="true">
+			<corners
+				android:topLeftRadius="@dimen/button_upgrade_toggle_radius"
+				android:bottomRightRadius="@dimen/button_upgrade_toggle_radius" />
+			<gradient
+				android:angle="180"
+				android:startColor="@color/transparent"
+				android:centerColor="@color/transparent"
+				android:endColor="@color/upgrade_toggle_shadow"
+				android:centerX="85%"
+				android:centerY="0" />
+		</shape>
+	</item>
+	<!-- Top -->
+	<item
+		android:left="0dip"
+		android:right="1px"
+		android:bottom="1dip"
+		android:top="1dip">
+		<shape android:dither="true">
+			<corners
+				android:topLeftRadius="@dimen/button_upgrade_toggle_radius"
+				android:bottomRightRadius="@dimen/button_upgrade_toggle_radius" />
+			<gradient
+				android:centerColor="@color/transparent"
+				android:startColor="@color/transparent"
+				android:endColor="@color/upgrade_toggle_shadow"
+				android:angle="90"
+				android:centerY="75%" />
+		</shape>
+	</item>
 
 
 </layer-list>

@@ -18,9 +18,10 @@ public class SelectionAdapter extends ItemsAdapter<SelectionItem> {
 
 	@Override
 	protected View createView(ViewGroup parent) {
-		View view = inflater.inflate(R.layout.selection_item, parent, false);
+		View view = inflater.inflate(R.layout.selection_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.image = (ImageView) view.findViewById(R.id.image);
+		holder.text = (CheckedTextView) view.findViewById(R.id.text);
 
 		view.setTag(holder);
 		return view;
@@ -28,26 +29,6 @@ public class SelectionAdapter extends ItemsAdapter<SelectionItem> {
 
 	@Override
 	protected void bindView(SelectionItem item, int pos, View convertView) {
-		ViewHolder holder = (ViewHolder) convertView.getTag();
-		holder.image.setImageDrawable(item.getImage());
-	}
-
-	@Override
-	public View getDropDownView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.selection_item_dropdown, parent, false);
-			ViewHolder holder = new ViewHolder();
-			holder.image = (ImageView) convertView.findViewById(R.id.image);
-			holder.text = (CheckedTextView) convertView.findViewById(R.id.text);
-
-			convertView.setTag(holder);
-		}
-		bindDropDownView(itemsList.get(position), convertView);
-
-		return convertView;
-	}
-
-	private void bindDropDownView(SelectionItem item, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
 		holder.image.setImageDrawable(item.getImage());

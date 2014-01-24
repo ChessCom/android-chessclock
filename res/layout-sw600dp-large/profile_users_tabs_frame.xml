@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	>
+	android:orientation="vertical">
 	<!--android:background="@color/white"-->
 	<com.chess.widgets.RoboRadioGroup
 		android:id="@+id/tabRadioGroup"
@@ -14,8 +12,7 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
 		android:background="@color/white"
-		android:gravity="left"
-		>
+		android:gravity="left">
 
 		<!--Activity-->
 		<com.chess.widgets.RoboRadioButton
@@ -26,8 +23,7 @@
 			android:text="@string/activity"
 			android:textColor="@color/profile_grey_text"
 			android:minWidth="94dp"
-			android:visibility="gone"
-			/>
+			android:visibility="gone" />
 
 		<!--About-->
 		<com.chess.widgets.RoboRadioButton
@@ -37,8 +33,7 @@
 			style="@style/Rect.Silver.Left"
 			android:text="@string/about"
 			android:textColor="@color/profile_grey_text"
-			android:minWidth="94dp"
-			/>
+			android:minWidth="94dp" />
 
 		<!--Games-->
 		<com.chess.widgets.RoboRadioButton
@@ -48,8 +43,7 @@
 			style="@style/Rect.Silver.Middle"
 			android:text="@string/games"
 			android:textColor="@color/profile_grey_text"
-			android:minWidth="94dp"
-			/>
+			android:minWidth="94dp" />
 
 		<!--Trophies-->
 		<com.chess.widgets.RoboRadioButton
@@ -60,8 +54,7 @@
 			android:text="@string/trophies"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:minWidth="94dp"
-			android:visibility="gone"
-			/>
+			android:visibility="gone" />
 
 		<!--Stub-->
 		<com.chess.widgets.RoboRadioButton
@@ -71,8 +64,7 @@
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:minWidth="94dp"
 			android:clickable="false"
-			custom:btn_is_clickable="false"
-			/>
+			custom:btn_is_clickable="false" />
 
 	</com.chess.widgets.RoboRadioGroup>
 
@@ -83,16 +75,14 @@
 		android:layout_height="wrap_content"
 		android:indeterminate="true"
 		style="@style/ChessProgressBar"
-		android:layout_centerInParent="true"
-		/>
+		android:layout_centerInParent="true" />
 
 	<!--Tab content frame-->
 	<RelativeLayout
 		android:id="@+id/tab_content_frame"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_below="@id/tabRadioGroup"
-		/>
+		android:layout_below="@id/tabRadioGroup" />
 
 
 </RelativeLayout>

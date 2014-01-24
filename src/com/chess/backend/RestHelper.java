@@ -39,7 +39,7 @@ import java.util.*;
  */
 public class RestHelper {
 
-	public static final int TIME_OUT = 10 * 1000;
+	public static final int TIME_OUT = 20 * 1000;
 
 	private static RestHelper ourInstance = new RestHelper();
 	private String userAgent;

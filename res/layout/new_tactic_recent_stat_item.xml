@@ -17,8 +17,7 @@
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
 		android:paddingTop="5dip"
-		android:paddingBottom="5dip"
-		>
+		android:paddingBottom="5dip">
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/idTxt"
@@ -27,8 +26,7 @@
 			android:text="12312"
 			android:textColor="@color/new_text_blue"
 			android:textSize="17sp"
-			custom:ttf="Bold"
-			/>
+			custom:ttf="Bold" />
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/dateTxt"
@@ -59,8 +57,7 @@
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:textSize="16sp"
 			android:text="1233"
-			custom:ttf="Bold"
-			/>
+			custom:ttf="Bold" />
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/ratingTxt"
@@ -92,7 +89,7 @@
 			android:paddingRight="5dip"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:text="11:05"
-			custom:ttf="Bold"/>
+			custom:ttf="Bold" />
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/avgTimeTxt"
@@ -134,8 +131,7 @@
 
 			android:layout_below="@id/scoreTxt"
 			android:textSize="@dimen/default_text_size_small"
-			android:text="-14"
-			/>
+			android:text="-14" />
 
 	</RelativeLayout>
 </LinearLayout>

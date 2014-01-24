@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.chess.widgets.RelLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chess.widgets.RelLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="80dip"
 	android:minHeight="60dip"
-	style="@style/ListItem"
-	>
+	style="@style/ListItem">
 
 	<ProgressBar
-        android:id="@+id/pending_list_item_ProgressBar"
+		android:id="@+id/pending_list_item_ProgressBar"
 		android:layout_width="@dimen/pending_progress_bar_size"
 		android:layout_height="@dimen/pending_progress_bar_size"
 		android:layout_centerInParent="true"
 		android:layout_margin="5dip"
 		android:layout_centerVertical="true"
-        style="?android:attr/progressBarStyle"
-        />
+		style="?android:attr/progressBarStyle" />
 
 </com.chess.widgets.RelLayout>

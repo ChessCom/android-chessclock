@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-	<item android:drawable="@drawable/shadow_back_inset_shifted">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:drawable="@drawable/shadow_back_inset_shifted"></item>
+
+
+	<item>
+		<shape
+			android:dither="true"
+			android:shape="rectangle">
+			<solid android:color="@color/transparent" />
+			<corners android:radius="@dimen/new_round_button_radius" />
+			<stroke
+				android:width="@dimen/popup_border_width"
+				android:color="@color/invite_white_border_grey" />
+		</shape>
 	</item>
 
-
-    <item>
-        <shape
-            android:dither="true"
-            android:shape="rectangle">
-            <solid android:color="@color/transparent" />
-            <corners android:radius="@dimen/new_round_button_radius" />
-            <stroke
-                android:width="@dimen/popup_border_width"
-                android:color="@color/invite_white_border_grey"/>
-        </shape>
-    </item>
-
-    <item
-        android:bottom="@dimen/popup_border_width"
-        android:left="@dimen/popup_border_width"
-        android:right="@dimen/popup_border_width"
-        android:top="@dimen/popup_border_width"
-        >
-        <shape >
-            <corners android:radius="@dimen/new_round_button_radius" />
-            <solid android:color="@color/popup_back_white" />
-        </shape>
-    </item>
+	<item
+		android:bottom="@dimen/popup_border_width"
+		android:left="@dimen/popup_border_width"
+		android:right="@dimen/popup_border_width"
+		android:top="@dimen/popup_border_width">
+		<shape>
+			<corners android:radius="@dimen/new_round_button_radius" />
+			<solid android:color="@color/popup_back_white" />
+		</shape>
+	</item>
 
 </layer-list>

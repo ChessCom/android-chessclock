@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/upgradeView"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:background="@color/upgrade_diamond_button"
-	android:padding="14dp"
-	>
+	android:padding="14dp">
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/lessonsUpgradeMessageTxt"
@@ -32,7 +30,6 @@
 		android:minHeight="@dimen/big_button_height"
 		android:textSize="17sp"
 		android:text="@string/upgrade_now"
-		android:layout_centerHorizontal="true"
-		/>
+		android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

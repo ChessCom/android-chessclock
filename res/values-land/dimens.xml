@@ -2,27 +2,27 @@
 
 <resources>
 
-  	<!-- Rounded buttons -->
-  	<dimen name="rounded_list_item_radius">7dip</dimen>
-  	
-  	<dimen name="small_button_height">35dip</dimen>
-  	<dimen name="rounded_button_height">60dip</dimen>
+	<!-- Rounded buttons -->
+	<dimen name="rounded_list_item_radius">7dip</dimen>
+
+	<dimen name="small_button_height">35dip</dimen>
+	<dimen name="rounded_button_height">60dip</dimen>
 	<dimen name="rounded_button_padding_disabled">0dip</dimen>
-  	<dimen name="rounded_button_padding">0dip</dimen>
-  	    
-  	<dimen name="default_field_height">40dip</dimen>
-  	<dimen name="default_button_height">40dip</dimen>
- 	<dimen name="signin_button_height">45dip</dimen>
+	<dimen name="rounded_button_padding">0dip</dimen>
+
+	<dimen name="default_field_height">40dip</dimen>
+	<dimen name="default_button_height">40dip</dimen>
+	<dimen name="signin_button_height">45dip</dimen>
 	<!--<dimen name="default_stroke_width">1dip</dimen>-->
- 	
- 	<dimen name="list_item_image_size">26dip</dimen>
- 	<dimen name="list_item_stroke_width">1px</dimen>
- 	
- 	<dimen name="signin_logo_margin_top">0dip</dimen>
- 	<dimen name="signin_main_margin_top">10dip</dimen>
- 	<dimen name="signin_button_margin_updown">14dip</dimen>
- 	<dimen name="signin_footer_margin_bottom">5dip</dimen>
- 	
+
+	<dimen name="list_item_image_size">26dip</dimen>
+	<dimen name="list_item_stroke_width">1px</dimen>
+
+	<dimen name="signin_logo_margin_top">0dip</dimen>
+	<dimen name="signin_main_margin_top">10dip</dimen>
+	<dimen name="signin_button_margin_updown">14dip</dimen>
+	<dimen name="signin_footer_margin_bottom">5dip</dimen>
+
 	<!--Game Modes-->
 	<dimen name="game_submit_buttons_lay_bot_padding">10dip</dimen>
 	<dimen name="player_name_max_width">120dip</dimen>
@@ -33,9 +33,9 @@
 	<dimen name="dashboard_padding_bot">21dip</dimen>
 	<dimen name="dashboard_padding_side">42dip</dimen>
 
- 	<dimen name="smallLogo_width">100dip</dimen>
+	<dimen name="smallLogo_width">100dip</dimen>
 	<dimen name="smallLogo_height">37dip</dimen>
- 	
+
 	<dimen name="list_item_padding">2dip</dimen>
 	<dimen name="list_item_image_marging">3dip</dimen>
 	<dimen name="list_item_text_size">14sp</dimen>

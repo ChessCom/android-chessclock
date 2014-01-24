@@ -4,14 +4,12 @@
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	>
+	android:layout_height="match_parent">
 
 	<RelativeLayout
 		android:id="@+id/leftListView"
 		android:layout_width="@dimen/tablet_side_menu_width"
-		android:layout_height="match_parent"
-		>
+		android:layout_height="match_parent">
 
 		<ListView
 			android:id="@+id/listView"
@@ -20,8 +18,7 @@
 			android:layout_above="@+id/resumeLessonBtn"
 			android:divider="@null"
 			android:dividerHeight="0dip"
-			android:background="@android:color/transparent"
-			/>
+			android:background="@android:color/transparent" />
 
 		<com.chess.widgets.RoboButton
 			android:id="@id/resumeLessonBtn"
@@ -34,8 +31,7 @@
 			android:textColor="@color/white"
 			style="@style/Rect.Bottom.Right.Orange"
 			android:shadowColor="@color/transparent"
-			android:visibility="gone"
-			/>
+			android:visibility="gone" />
 
 		<RelativeLayout
 			android:id="@+id/loadingView"
@@ -65,8 +61,7 @@
 			android:paddingLeft="10dip"
 			custom:ttf="Bold"
 			style="@style/DarkShadowBottom"
-			android:visibility="gone"
-			/>
+			android:visibility="gone" />
 
 		<!--Shadow-->
 		<ImageView

@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@color/white"
-	>
+	android:background="@color/white">
 
 	<FrameLayout
 		android:id="@+id/topView"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		>
+		android:layout_height="wrap_content">
 		<include layout="@layout/new_lessons_upgrade_view" />
 		<include layout="@layout/new_lesson_stats_view" />
 
@@ -31,24 +28,21 @@
 		android:paddingLeft="10dip"
 		custom:ttf="Bold"
 		style="@style/DarkShadowBottom"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 	<RelativeLayout
 		android:id="@+id/loadingView"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:minHeight="60dip"
-		android:visibility="gone"
-		>
+		android:visibility="gone">
 
 		<ProgressBar
 			android:layout_width="@dimen/pending_progress_bar_size"
 			android:layout_height="@dimen/pending_progress_bar_size"
 			android:layout_margin="5dip"
 			android:layout_centerInParent="true"
-			style="?android:attr/progressBarStyle"
-			/>
+			style="?android:attr/progressBarStyle" />
 
 	</RelativeLayout>
 
@@ -61,8 +55,7 @@
 		android:divider="@null"
 		android:dividerHeight="0dip"
 		android:background="@android:color/transparent"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 	<ExpandableListView
 		android:id="@+id/expListView"
@@ -74,8 +67,7 @@
 		android:dividerHeight="0dip"
 		android:background="@android:color/transparent"
 		android:listSelector="@android:color/transparent"
-		android:cacheColorHint="@android:color/transparent"
-		/>
+		android:cacheColorHint="@android:color/transparent" />
 
 	<com.chess.widgets.RoboButton
 		android:id="@id/resumeLessonBtn"
@@ -88,7 +80,6 @@
 		android:textColor="@color/white"
 		style="@style/Rect.Bottom.Right.Orange"
 		android:visibility="gone"
-		android:shadowColor="@color/transparent"
-		/>
+		android:shadowColor="@color/transparent" />
 
 </RelativeLayout>

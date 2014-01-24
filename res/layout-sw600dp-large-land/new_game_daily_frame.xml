@@ -23,8 +23,7 @@
 		<com.chess.ui.views.chess_boards.ChessBoardDailyView
 			android:id="@+id/boardview"
 			android:layout_width="wrap_content"
-			android:layout_height="match_parent"
-			/>
+			android:layout_height="match_parent" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -86,8 +85,7 @@
 				custom:ttf="Icon"
 				android:text="@string/ic_edit"
 				android:textSize="@dimen/glyph_icon_big2"
-				style="@style/Rect.Tablet.Left"
-				/>
+				style="@style/Rect.Tablet.Left" />
 
 		</RadioGroup>
 
@@ -98,7 +96,7 @@
 			android:layout_above="@+id/controlsView"
 			android:layout_marginLeft="2dp"
 			android:layout_marginRight="2dp"
-			style="@style/Rect.Notations" >
+			style="@style/Rect.Notations">
 
 			<!--NotationsView-->
 			<com.chess.ui.views.NotationsViewTablet
@@ -109,8 +107,7 @@
 				android:horizontalSpacing="5dip"
 				android:verticalSpacing="1dip"
 				android:stretchMode="columnWidth"
-				android:padding="9dp"
-				/>
+				android:padding="9dp" />
 
 			<FrameLayout
 				android:id="@+id/chatFragmentContainer"
@@ -128,8 +125,7 @@
 			custom:controls_style="rectDark"
 			android:layout_above="@+id/bottomPanelView"
 			android:layout_marginLeft="2dp"
-			android:layout_marginRight="2dp"
-			/>
+			android:layout_marginRight="2dp" />
 
 		<!--BottomPanelInfo-->
 		<com.chess.ui.views.PanelInfoGameView
@@ -139,8 +135,7 @@
 			custom:oneLine="@bool/one_line_for_board"
 			android:layout_alignParentBottom="true"
 			android:layout_marginTop="@dimen/tablet_panel_info_top_margin"
-			android:layout_marginBottom="5dp"
-			/>
+			android:layout_marginBottom="5dp" />
 
 	</com.chess.widgets.RelLayout>
 

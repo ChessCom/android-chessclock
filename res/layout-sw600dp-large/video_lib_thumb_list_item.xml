@@ -27,8 +27,7 @@
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
 			android:text="@string/ic_play"
-			style="@style/GlyphIcon.RoundBack"
-			/>
+			style="@style/GlyphIcon.RoundBack" />
 
 	</RelativeLayout>
 

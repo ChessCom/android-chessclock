@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	>
+	android:orientation="vertical">
 
 	<include layout="@layout/new_profiles_header_view" />
 
@@ -15,39 +13,35 @@
 		android:id="@+id/tabRadioGroup"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		>
-<!--		<RoboRadioButton
-			android:id="@+id/leftTabBtn"
-			android:layout_width="0dip"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			style="@style/Rect.Tab.Left"
-			app:themeColor="true"
-			/>-->
+		android:orientation="horizontal">
+		<!--		<RoboRadioButton
+					android:id="@+id/leftTabBtn"
+					android:layout_width="0dip"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					style="@style/Rect.Tab.Left"
+					app:themeColor="true"
+					/>-->
 		<com.chess.widgets.RoboRadioButton
 			android:id="@+id/centerTabBtn"
 			android:layout_width="0dip"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			style="@style/Rect.Tab.Middle"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 		<com.chess.widgets.RoboRadioButton
 			android:id="@+id/rightTabBtn"
 			android:layout_width="0dip"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			style="@style/Rect.Tab.Right"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 	</RadioGroup>
 
 	<RelativeLayout
 		android:id="@+id/tab_content_frame"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		/>
+		android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/video_play_btn_back_big_pressed" android:state_pressed="true"/>
-    <item android:drawable="@drawable/video_play_btn_back_big_default" />
+	<item android:drawable="@drawable/video_play_btn_back_big_pressed" android:state_pressed="true" />
+	<item android:drawable="@drawable/video_play_btn_back_big_default" />
 </selector>

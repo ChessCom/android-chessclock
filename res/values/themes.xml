@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <style name="MyAppTheme" parent="AppTheme">
-        <item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatBackground</item>
-        <item name="android:windowBackground">@drawable/img_theme_green_felt</item>
+
+	<style name="MyAppTheme" parent="AppTheme">
+		<item name="android:windowTitleBackgroundStyle">@style/ActionBarCompatBackground</item>
+		<item name="android:windowBackground">@drawable/img_theme_green_felt</item>
 		<!--<item name="ptrHeaderStyle">@style/Widget.Custom.PtrHeader</item>-->
-    </style>
+	</style>
 
 
-    <style name="OrangeButtonTheme" parent="MyAppTheme">
-        <item name="android:buttonStyle">@style/Text.Button</item>
-        <item name="android:textAppearanceSmall">@style/Text</item>
-        <item name="android:textViewStyle">@style/Text</item>
-        <item name="android:scrollViewStyle">@android:style/Widget.ScrollView</item>
-        <item name="android:editTextStyle">@style/DefaultEdt</item>
+	<style name="OrangeButtonTheme" parent="MyAppTheme">
+		<item name="android:buttonStyle">@style/Text.Button</item>
+		<item name="android:textAppearanceSmall">@style/Text</item>
+		<item name="android:textViewStyle">@style/Text</item>
+		<item name="android:scrollViewStyle">@android:style/Widget.ScrollView</item>
+		<item name="android:editTextStyle">@style/DefaultEdt</item>
 		<item name="android:autoCompleteTextViewStyle">@style/DefaultAutoComplete</item>
-        <item name="android:spinnerStyle">@style/Spinner</item>
-        <item name="android:progressBarStyle">@style/ChessProgressBar</item>
-        <item name="android:checkboxStyle">@style/CheckBox</item>
-        <item name="android:radioButtonStyle">@style/RadioButton</item>
+		<item name="android:spinnerStyle">@style/Spinner</item>
+		<item name="android:progressBarStyle">@style/ChessProgressBar</item>
+		<item name="android:checkboxStyle">@style/CheckBox</item>
+		<item name="android:radioButtonStyle">@style/RadioButton</item>
 		<item name="android:listViewStyle">@style/DefaultListView</item>
 		<item name="android:listChoiceIndicatorSingle">@drawable/btn_radio_selector</item>
 		<item name="timerLabelStyle">@style/GameLabel.Timer</item>
-        <item name="greyButtonSmallSolid">@style/Button.Glassy.Small</item>
+		<item name="greyButtonSmallSolid">@style/Button.Glassy.Small</item>
 		<item name="glassyButton">@style/Button.Glassy</item>
 		<item name="orangeButton">@style/Text.Button</item>
 		<item name="orangeButtonSmall">@style/Button.OrangeNoBorder.Small</item>
@@ -30,18 +31,18 @@
 		<item name="pageButton">@style/Button.Page</item>
 		<item name="roundedRadioBtn">@style/RoundRadioButton</item>
 		<item name="sideGraphBtn">@style/Rect.Side</item>
-        <item name="android:scrollbars">none</item>
-    </style>
+		<item name="android:scrollbars">none</item>
+	</style>
 
 
-    <style name="OrangeButtonNotitle" parent="android:style/Theme.Black.NoTitleBar">
-        <item name="android:buttonStyle">@style/Text.Button</item>
-        <item name="android:textAppearanceSmall">@style/Text</item>
-        <item name="android:editTextStyle">@style/DefaultEdt</item>
-        <item name="android:spinnerStyle">@style/Spinner</item>
-        <item name="android:checkboxStyle">@style/CheckBox</item>
-        <item name="android:radioButtonStyle">@style/RadioButton</item>
-    </style>
+	<style name="OrangeButtonNotitle" parent="android:style/Theme.Black.NoTitleBar">
+		<item name="android:buttonStyle">@style/Text.Button</item>
+		<item name="android:textAppearanceSmall">@style/Text</item>
+		<item name="android:editTextStyle">@style/DefaultEdt</item>
+		<item name="android:spinnerStyle">@style/Spinner</item>
+		<item name="android:checkboxStyle">@style/CheckBox</item>
+		<item name="android:radioButtonStyle">@style/RadioButton</item>
+	</style>
 
 	<style name="GreyButtonTheme" parent="OrangeButtonTheme">
 		<item name="android:buttonStyle">@style/Button.Glassy</item>

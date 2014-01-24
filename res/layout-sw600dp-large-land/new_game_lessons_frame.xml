@@ -144,7 +144,7 @@
 			custom:controls_style="rounded"
 			android:layout_alignParentBottom="true"
 			android:layout_marginTop="5dp"
-			android:layout_marginBottom="2dp"/>
+			android:layout_marginBottom="2dp" />
 
 	</com.chess.widgets.RelLayout>
 

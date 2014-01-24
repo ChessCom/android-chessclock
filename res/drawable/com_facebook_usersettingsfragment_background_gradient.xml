@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright 2010-present Facebook.
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +13,11 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <gradient
-      android:startColor="#5774B5"
-      android:endColor="#2C4988"
-      android:gradientRadius="495"
-      android:type="radial"/>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+	android:shape="rectangle">
+	<gradient
+		android:startColor="#5774B5"
+		android:endColor="#2C4988"
+		android:gradientRadius="495"
+		android:type="radial" />
 </shape>    

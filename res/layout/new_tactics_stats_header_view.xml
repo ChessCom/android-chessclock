@@ -23,8 +23,7 @@
 		android:textColor="@color/stats_label_grey"
 		android:padding="5dip"
 		android:textSize="23sp"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 
 </LinearLayout>

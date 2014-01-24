@@ -16,25 +16,25 @@
 
 <resources>
 
-    <style name="ActionBarTitle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/actionbar_title_color</item>
+	<style name="ActionBarTitle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+		<item name="android:textColor">@color/actionbar_title_color</item>
 		<item name="android:shadowColor">#000000</item>
 		<item name="android:shadowRadius">1.5</item>
 		<item name="android:shadowDx">0</item>
 		<item name="android:shadowDy">2</item>
-    </style>
+	</style>
 
 	<style name="ActionBar" parent="android:style/Widget.Holo.Light.ActionBar">
 		<item name="android:titleTextStyle">@style/ActionBarTitle</item>
 		<item name="android:icon">@drawable/ic_action_menu</item>
 		<item name="android:homeAsUpIndicator">@drawable/ic_action_menu</item>
-        <item name="android:height">@dimen/actionbar_compat_height</item>
-        <item name="android:itemPadding">@dimen/actionbar_compat_height</item>
+		<item name="android:height">@dimen/actionbar_compat_height</item>
+		<item name="android:itemPadding">@dimen/actionbar_compat_height</item>
 		<item name="android:background">@color/action_bar_overlay</item>
 	</style>
 
-    <style name="ActionButton" parent="android:style/Widget.ActionButton">
-        <item name="android:minWidth">@dimen/actionbar_compat_button_width</item>
-    </style>
+	<style name="ActionButton" parent="android:style/Widget.ActionButton">
+		<item name="android:minWidth">@dimen/actionbar_compat_button_width</item>
+	</style>
 
 </resources>

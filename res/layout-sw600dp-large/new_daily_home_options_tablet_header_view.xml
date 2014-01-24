@@ -14,8 +14,7 @@
 		android:gravity="center_vertical"
 		style="@style/ListItem.Header.Dark"
 		android:paddingLeft="8dip"
-		android:paddingRight="8dip"
-		>
+		android:paddingRight="8dip">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -24,8 +23,7 @@
 			android:text="@string/ic_add"
 			android:textColor="@color/new_light_grey_2"
 			style="@style/GlyphIcon.Big"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 		<com.chess.widgets.RoboTextView
 			android:layout_width="0dp"
@@ -34,8 +32,7 @@
 			android:layout_weight="1"
 			android:text="@string/new_game"
 			style="@style/HeaderTitle.Light"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -57,8 +54,7 @@
 			android:text="@string/ic_play_friend"
 			android:textColor="@color/new_light_grey_2"
 			style="@style/GlyphIcon.Big"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/friendsHeaderTxt"
@@ -68,8 +64,7 @@
 			android:paddingLeft="8dp"
 			android:text="@string/friends"
 			style="@style/HeaderTitle.Light"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -96,8 +91,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textColor="@color/semitransparent_white_75"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/friendRealName1Txt"
@@ -106,8 +100,7 @@
 			android:layout_weight="1"
 			android:paddingLeft="4dip"
 			android:textColor="@color/semitransparent_white_75"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -133,8 +126,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textColor="@color/semitransparent_white_75"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/friendRealName2Txt"
@@ -144,8 +136,7 @@
 			android:paddingLeft="4dip"
 			android:textColor="@color/semitransparent_white_75"
 			android:visibility="gone"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -166,8 +157,7 @@
 			android:text="@string/ic_stats"
 			android:textColor="@color/new_light_grey_2"
 			style="@style/GlyphIcon.Big"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/statsHeaderTxt"
@@ -177,8 +167,7 @@
 			android:paddingLeft="8dp"
 			android:text="@string/stats"
 			style="@style/HeaderTitle.Light"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -199,8 +188,7 @@
 			android:text="@string/ic_daily_game"
 			android:textColor="@color/new_light_grey_2"
 			style="@style/GlyphIcon.Big"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 
 		<com.chess.widgets.RoboTextView
@@ -209,8 +197,7 @@
 			android:layout_weight="1"
 			android:text="@string/daily"
 			android:textColor="@color/semitransparent_white_75"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 
 		<!--Rating-->
@@ -221,8 +208,7 @@
 			android:gravity="center_vertical"
 			android:textColor="@color/new_light_grey_2"
 			android:text="1200"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -243,8 +229,7 @@
 			android:text="@string/ic_daily960_game"
 			android:textColor="@color/new_light_grey_2"
 			style="@style/GlyphIcon.Big"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 
 		<com.chess.widgets.RoboTextView
@@ -253,8 +238,7 @@
 			android:layout_weight="1"
 			android:text="@string/chess_960"
 			android:textColor="@color/semitransparent_white_75"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 		<!--Rating-->
 		<com.chess.widgets.RoboTextView
@@ -264,8 +248,7 @@
 			android:gravity="center_vertical"
 			android:textColor="@color/new_light_grey_2"
 			android:text="1200"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -277,8 +260,7 @@
 		android:gravity="center_vertical"
 		style="@style/ListItem.Header.Dark"
 		android:paddingLeft="8dip"
-		android:paddingRight="8dip"
-		>
+		android:paddingRight="8dip">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -287,8 +269,7 @@
 			android:text="@string/ic_tournaments"
 			android:textColor="@color/new_light_grey_2"
 			style="@style/GlyphIcon.Big"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 		<com.chess.widgets.RoboTextView
 			android:layout_width="0dp"
@@ -297,8 +278,7 @@
 			android:layout_weight="1"
 			android:text="@string/tournaments"
 			style="@style/HeaderTitle.Light"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -309,8 +289,7 @@
 		android:gravity="center_vertical"
 		style="@style/ListItem.Header.Dark"
 		android:paddingLeft="8dip"
-		android:paddingRight="8dip"
-		>
+		android:paddingRight="8dip">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -319,8 +298,7 @@
 			android:text="@string/ic_binoculars"
 			android:textColor="@color/new_light_grey_2"
 			style="@style/GlyphIcon.Big"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 		<com.chess.widgets.RoboTextView
 			android:layout_width="0dp"
@@ -329,8 +307,7 @@
 			android:layout_weight="1"
 			android:text="@string/open_challenges"
 			style="@style/HeaderTitle.Light"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -342,8 +319,7 @@
 		android:gravity="center_vertical"
 		style="@style/ListItem.Header.Dark"
 		android:paddingLeft="8dip"
-		android:paddingRight="8dip"
-		>
+		android:paddingRight="8dip">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -352,8 +328,7 @@
 			android:text="@string/ic_board"
 			android:textColor="@color/new_light_grey_2"
 			style="@style/GlyphIcon.Big"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 		<com.chess.widgets.RoboTextView
 			android:layout_width="0dp"
@@ -362,8 +337,7 @@
 			android:layout_weight="1"
 			android:text="@string/archive"
 			style="@style/HeaderTitle.Light"
-			app:themeColor="true"
-			/>
+			app:themeColor="true" />
 
 	</com.chess.widgets.LinLayout>
 

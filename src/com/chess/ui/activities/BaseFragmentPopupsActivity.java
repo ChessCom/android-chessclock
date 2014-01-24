@@ -93,17 +93,15 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		}
 		super.onCreate(savedInstanceState);
 
-//		if (!BuildConfig.DEBUG) {
-			try {
-				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
-			} catch (Exception e) {
-				e.printStackTrace();
-				String stackTrace = Log.getStackTraceString(e).replaceAll("\n", " ");
-				Map<String, String> params = new HashMap<String, String>();
-				params.put(AppConstants.EXCEPTION, Build.MODEL + " " + stackTrace);
-				FlurryAgent.logEvent(FlurryData.BUGSENSE_INIT_EXCEPTION, params);
-			}
-//		}
+		try {
+			BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
+		} catch (Exception e) {
+			e.printStackTrace();
+			String stackTrace = Log.getStackTraceString(e).replaceAll("\n", " ");
+			Map<String, String> params = new HashMap<String, String>();
+			params.put(AppConstants.EXCEPTION, Build.MODEL + " " + stackTrace);
+			FlurryAgent.logEvent(FlurryData.BUGSENSE_INIT_EXCEPTION, params);
+		}
 
 		context = this;
 

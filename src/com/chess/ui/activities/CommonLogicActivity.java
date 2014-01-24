@@ -44,7 +44,7 @@ import java.util.Locale;
  */
 public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
-	private String currentLocale;
+	public static final String REGION_MARK = "-r";
 
 	protected Handler handler;
 	protected boolean isRestarted;
@@ -63,8 +63,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		appData = new AppData(this);
 		preferences = appData.getPreferences();
 		preferencesEditor = appData.getEditor();
-
-		currentLocale = preferences.getString(AppConstants.CURRENT_LOCALE, StaticData.LOCALE_EN);
 
 		handler = new Handler();
 		setLocale();
@@ -139,7 +137,15 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		String setLocale = languageCodes[appData.getLanguageCode()];
 
 		if (!prevLang.equals(setLocale)) {
-			Locale locale = new Locale(setLocale);
+			Locale locale;
+			if (setLocale.contains(REGION_MARK)) {
+				int regionIndex = setLocale.indexOf(REGION_MARK);
+				String name = setLocale.substring(0, regionIndex);
+				String region = setLocale.substring(regionIndex + 2);
+				locale = new Locale(name, region, region);
+			} else {
+				locale = new Locale(setLocale);
+			}
 			Locale.setDefault(locale);
 			Configuration config = new Configuration();
 			config.locale = locale;
@@ -147,8 +153,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 			preferencesEditor.putString(AppConstants.CURRENT_LOCALE, setLocale);
 			preferencesEditor.commit();
-
-			currentLocale = setLocale;
 		}
 	}
 

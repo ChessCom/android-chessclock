@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:dither="true"
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+	android:dither="true"
 	android:shape="oval">
 	<size
 		android:height="@dimen/view_pager_indicator_size"
-		android:width="@dimen/view_pager_indicator_size"
-		/>
-	<solid
-		android:color="@color/pager_indicator_selected"/>
+		android:width="@dimen/view_pager_indicator_size" />
+	<solid android:color="@color/pager_indicator_selected" />
 
 </shape>

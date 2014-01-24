@@ -8,24 +8,22 @@
 	android:gravity="center_vertical"
 	android:paddingLeft="@dimen/default_scr_side_padding">
 
-    <!--Icon-->
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/iconTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/semi_transparent_white"
-        android:textSize="26dip"
-        android:layout_marginRight="9dip"
-        style="@style/GlyphIcon"
-		app:themeColor="true"
-        />
+	<!--Icon-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/iconTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/semi_transparent_white"
+		android:textSize="26dip"
+		android:layout_marginRight="9dip"
+		style="@style/GlyphIcon"
+		app:themeColor="true" />
 
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/rowTitleTxt"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        style="@style/SettingsListText"
-        />
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/rowTitleTxt"
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:layout_weight="1"
+		style="@style/SettingsListText" />
 
 </com.chess.widgets.LinLayout>

@@ -1,41 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-    android:minHeight="@dimen/chat_icon_size"
-    android:paddingTop="13dip"
-    >
+	android:minHeight="@dimen/chat_icon_size"
+	android:paddingTop="13dip">
 
-    <com.chess.backend.image_load.AvatarView
-        android:id="@+id/opponentAvatarImg"
-        android:layout_width="@dimen/chat_icon_size"
-        android:layout_height="@dimen/chat_icon_size"
-        android:layout_marginRight="9dip"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/back_glassy_rounded"
-        />
+	<com.chess.backend.image_load.AvatarView
+		android:id="@+id/opponentAvatarImg"
+		android:layout_width="@dimen/chat_icon_size"
+		android:layout_height="@dimen/chat_icon_size"
+		android:layout_marginRight="9dip"
+		android:layout_alignParentBottom="true"
+		android:background="@drawable/back_glassy_rounded" />
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/messageTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-        android:textSize="17sp"
-        android:textColor="@color/new_subtitle_dark_grey"
-        android:text="teststtt"
-        android:background="@drawable/img_chat_buble_grey"
-        android:layout_toRightOf="@id/opponentAvatarImg"
-        android:layout_toLeftOf="@+id/myAvatarImg"
-		/>
+		android:textSize="17sp"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:text="teststtt"
+		android:background="@drawable/img_chat_buble_grey"
+		android:layout_toRightOf="@id/opponentAvatarImg"
+		android:layout_toLeftOf="@+id/myAvatarImg" />
 
-    <com.chess.backend.image_load.AvatarView
-        android:id="@id/myAvatarImg"
-        android:layout_width="@dimen/chat_icon_size"
-        android:layout_height="@dimen/chat_icon_size"
-        android:layout_marginLeft="9dip"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/back_glassy_rounded"
-        />
+	<com.chess.backend.image_load.AvatarView
+		android:id="@id/myAvatarImg"
+		android:layout_width="@dimen/chat_icon_size"
+		android:layout_height="@dimen/chat_icon_size"
+		android:layout_marginLeft="9dip"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentBottom="true"
+		android:background="@drawable/back_glassy_rounded" />
 
 </RelativeLayout>

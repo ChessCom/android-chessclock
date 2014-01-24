@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="@dimen/popup_dialog_width"
 	android:layout_height="wrap_content"
@@ -13,8 +12,7 @@
 	android:layout_marginLeft="@dimen/popup_side_margin"
 	android:paddingBottom="1dip"
 	android:paddingLeft="1dip"
-	android:paddingRight="1dip"
-	>
+	android:paddingRight="1dip">
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/popupTitle"
@@ -29,15 +27,13 @@
 		android:textColor="@color/new_normal_grey"
 		style="@style/ListItem"
 		custom:ttf="Bold"
-		android:text="@string/do_you_love_app"
-		/>
+		android:text="@string/do_you_love_app" />
 
 
 	<LinearLayout
 		android:orientation="vertical"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		>
+		android:layout_height="wrap_content">
 
 		<com.chess.widgets.RoboButton
 			android:id="@+id/positiveBtn"
@@ -46,8 +42,7 @@
 			style="@style/ListItem"
 			android:text="@string/yes"
 			android:textColor="@color/new_normal_grey"
-			android:textSize="17sp"
-			/>
+			android:textSize="17sp" />
 
 		<com.chess.widgets.RoboButton
 			android:id="@+id/negativeBtn"
@@ -56,8 +51,7 @@
 			style="@style/ListItem"
 			android:text="@string/no"
 			android:textColor="@color/new_normal_grey"
-			android:textSize="17sp"
-			/>
+			android:textSize="17sp" />
 
 		<com.chess.widgets.RoboButton
 			android:id="@+id/ignoreBtn"
@@ -66,8 +60,7 @@
 			style="@style/ListItem"
 			android:text="@string/ignore"
 			android:textColor="@color/new_normal_grey"
-			android:textSize="17sp"
-			/>
+			android:textSize="17sp" />
 
 	</LinearLayout>
 

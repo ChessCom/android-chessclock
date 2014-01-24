@@ -6,8 +6,7 @@
 	android:id="@+id/commentView"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@drawable/transparent_list_item_selector"
-	>
+	android:background="@drawable/transparent_list_item_selector">
 
 	<!--Divider-->
 	<View
@@ -15,8 +14,7 @@
 		android:layout_height="1dip"
 		android:background="@color/new_friends_list_divider"
 		android:layout_marginLeft="@dimen/common_tablet_side_padding"
-		android:layout_marginRight="@dimen/common_tablet_side_padding"
-		/>
+		android:layout_marginRight="@dimen/common_tablet_side_padding" />
 
 	<com.chess.backend.image_load.AvatarView
 		android:id="@+id/photoImg"
@@ -27,8 +25,7 @@
 		android:layout_marginLeft="@dimen/common_tablet_side_padding"
 		android:layout_below="@id/titleTxt"
 		android:contentDescription="@string/image"
-		android:layout_marginRight="11dip"
-		/>
+		android:layout_marginRight="11dip" />
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/authorTxt"
@@ -39,8 +36,7 @@
 		android:layout_marginTop="-4dip"
 		android:textColor="@color/new_text_blue"
 		android:textSize="14sp"
-		custom:ttf="Bold"
-		/>
+		custom:ttf="Bold" />
 
 	<ImageView
 		android:id="@+id/countryImg"
@@ -50,8 +46,7 @@
 		android:layout_toRightOf="@id/authorTxt"
 		android:layout_alignTop="@id/photoImg"
 		android:layout_marginTop="-4dip"
-		android:layout_marginLeft="7dip"
-		/>
+		android:layout_marginLeft="7dip" />
 
 	<ImageView
 		android:id="@+id/premiumImg"
@@ -63,8 +58,7 @@
 		android:layout_marginLeft="10dip"
 		android:layout_marginTop="-3dip"
 		android:adjustViewBounds="true"
-		android:scaleType="fitXY"
-		/>
+		android:scaleType="fitXY" />
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/dateTxt"
@@ -76,8 +70,7 @@
 		android:paddingRight="@dimen/default_scr_side_padding"
 		android:textColor="@color/stats_label_light_grey"
 		android:textSize="12sp"
-		custom:ttf="Bold"
-		/>
+		custom:ttf="Bold" />
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/bodyTxt"
@@ -87,7 +80,6 @@
 		android:layout_below="@id/authorTxt"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingTop="5dip"
-		android:paddingRight="@dimen/common_tablet_side_padding"
-		/>
+		android:paddingRight="@dimen/common_tablet_side_padding" />
 
 </RelativeLayout>

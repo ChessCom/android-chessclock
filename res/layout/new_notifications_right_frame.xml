@@ -18,14 +18,12 @@
 		android:paddingLeft="10dip"
 		custom:ttf="Bold"
 		style="@style/DarkShadowBottom"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 	<ListView
 		android:id="@+id/listView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@android:color/transparent"
-		/>
+		android:background="@android:color/transparent" />
 
 </LinearLayout>

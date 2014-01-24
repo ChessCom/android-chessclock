@@ -13,7 +13,8 @@
 
 	<dimen name="daily_game_list_item_width">204dp</dimen>
 	<dimen name="daily_board_preview_size">200dip</dimen>
-	<dimen name="daily_board_preview_overlay">160dip</dimen> <!--240 - (240/8 * 2) = 180 -->
+	<dimen name="daily_board_preview_overlay">160dip</dimen>
+	<!--240 - (240/8 * 2) = 180 -->
 
 	<dimen name="tablet_side_menu_width">300dp</dimen>
 	<dimen name="stats_padding_side">0dip</dimen>

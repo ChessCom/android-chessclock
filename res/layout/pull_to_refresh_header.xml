@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2013 Chris Banes
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,36 +15,33 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-	>
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@id/ptr_content"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/pull_to_refresh_header_height"
+	<FrameLayout
+		android:id="@id/ptr_content"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/pull_to_refresh_header_height"
 		android:background="@color/pull_refresh_header_overlay"
 		android:layout_gravity="bottom">
 
-        <com.chess.widgets.RoboTextView
-            android:id="@id/ptr_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
+		<com.chess.widgets.RoboTextView
+			android:id="@id/ptr_text"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
 			style="@style/DarkShadowBottom"
 			android:textColor="@color/semitransparent_white_75"
-			android:textSize="@dimen/actionbar_title_text_size"
-			/>
+			android:textSize="@dimen/actionbar_title_text_size" />
 
-    </FrameLayout>
+	</FrameLayout>
 
-    <ProgressBar
-        android:id="@id/ptr_progress"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        style="@style/Widget.PullToRefresh.ProgressBar.Horizontal.Center" />
+	<ProgressBar
+		android:id="@id/ptr_progress"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		style="@style/Widget.PullToRefresh.ProgressBar.Horizontal.Center" />
 
 </LinearLayout>
 

@@ -26,8 +26,7 @@
 		android:layout_alignParentRight="true"
 		android:layout_centerVertical="true">
 
-		<TableRow
-			>
+		<TableRow>
 			<!--Lessons Completed value-->
 			<com.chess.widgets.RoboTextView
 				android:id="@+id/lessonsCompletedValueTxt"

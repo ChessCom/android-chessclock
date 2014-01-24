@@ -10,24 +10,22 @@
 	style="@style/ListItem"
 	android:gravity="center_vertical">
 
-    <com.chess.backend.image_load.ProgressImageView
-        android:id="@+id/iconImg"
-        android:layout_width="@dimen/nav_item_image_size"
-        android:layout_height="@dimen/nav_item_image_size"
-        android:layout_marginLeft="@dimen/new_nav_menu_image_padding_left"
-        android:layout_marginRight="17dip"
-        android:contentDescription="@string/image"
-        />
+	<com.chess.backend.image_load.ProgressImageView
+		android:id="@+id/iconImg"
+		android:layout_width="@dimen/nav_item_image_size"
+		android:layout_height="@dimen/nav_item_image_size"
+		android:layout_marginLeft="@dimen/new_nav_menu_image_padding_left"
+		android:layout_marginRight="17dip"
+		android:contentDescription="@string/image" />
 
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/rowTitleTxt"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:textColor="@color/semitransparent_white_75"
-        android:textSize="17sp"
-        android:gravity="center_vertical"
-		app:themeColor="true"
-        />
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/rowTitleTxt"
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:layout_weight="1"
+		android:textColor="@color/semitransparent_white_75"
+		android:textSize="17sp"
+		android:gravity="center_vertical"
+		app:themeColor="true" />
 
 </com.chess.widgets.LinLayout>

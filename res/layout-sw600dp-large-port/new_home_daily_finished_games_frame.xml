@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	>
+	android:orientation="vertical">
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/emptyView"
@@ -20,8 +18,7 @@
 		android:paddingLeft="10dip"
 		custom:ttf="Bold"
 		style="@style/DarkShadowBottom"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 	<ListView
 		android:id="@+id/listView"
@@ -30,8 +27,7 @@
 		android:background="@color/white"
 		android:cacheColorHint="@color/white"
 		android:divider="@color/new_friends_list_divider"
-		android:dividerHeight="1dip"
-		/>
+		android:dividerHeight="1dip" />
 
 	<ProgressBar
 		android:id="@+id/loadingView"
@@ -40,7 +36,6 @@
 		android:layout_height="wrap_content"
 		android:layout_centerInParent="true"
 		style="?android:attr/progressBarStyle"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
 </RelativeLayout>

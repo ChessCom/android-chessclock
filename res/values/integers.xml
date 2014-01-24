@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="integer" name="home_text_weightSum">9</item>
-    <item type="integer" name="home_text_left_weight">3</item>
-    <item type="integer" name="home_text_right_weight">3</item>
-    
-    <item type="integer" name="fade_opacity">60</item>
+	<item type="integer" name="home_text_weightSum">9</item>
+	<item type="integer" name="home_text_left_weight">3</item>
+	<item type="integer" name="home_text_right_weight">3</item>
+
+	<item type="integer" name="fade_opacity">60</item>
 	<integer name="board_highlight_font">10</integer>
 
 	<integer name="left_edit_mode_one">0</integer>
@@ -12,7 +12,7 @@
 	<integer name="left_edit_mode_mid">2</integer>
 	<integer name="left_edit_mode_bot">3</integer>
 
-    <integer name="notations_per_page">6</integer>
+	<integer name="notations_per_page">6</integer>
 
 	<integer name="button_switch_default_handle_shift">-49</integer>
 	<integer name="screen_orientation">1</integer>

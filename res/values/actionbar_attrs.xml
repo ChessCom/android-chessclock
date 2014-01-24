@@ -16,19 +16,19 @@
 
 <resources>
 
-    <declare-styleable name="AppTheme">
-        <attr name="actionbarCompatTitleStyle" format="reference" />
-        <attr name="actionbarCompatItemStyle" format="reference" />
-        <attr name="actionbarCompatItemHomeStyle" format="reference" />
-        <attr name="actionbarCompatProgressIndicatorStyle" format="reference" />
-        <attr name="actionbarCompatSearchPanelStyle" format="reference" />
-        <attr name="actionbarCompatSearchEditTextStyle" format="reference" />
-        <attr name="actionbarCompatSearchButtonStyle" format="reference" />
-    </declare-styleable>
+	<declare-styleable name="AppTheme">
+		<attr name="actionbarCompatTitleStyle" format="reference" />
+		<attr name="actionbarCompatItemStyle" format="reference" />
+		<attr name="actionbarCompatItemHomeStyle" format="reference" />
+		<attr name="actionbarCompatProgressIndicatorStyle" format="reference" />
+		<attr name="actionbarCompatSearchPanelStyle" format="reference" />
+		<attr name="actionbarCompatSearchEditTextStyle" format="reference" />
+		<attr name="actionbarCompatSearchButtonStyle" format="reference" />
+	</declare-styleable>
 
-    <declare-styleable name="BezelImageView">
-        <attr name="maskDrawable" format="reference" />
-        <attr name="borderDrawable" format="reference" />
-    </declare-styleable>
+	<declare-styleable name="BezelImageView">
+		<attr name="maskDrawable" format="reference" />
+		<attr name="borderDrawable" format="reference" />
+	</declare-styleable>
 
 </resources>

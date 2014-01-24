@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright 2010-present Facebook.
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,34 +14,32 @@
     limitations under the License.
 -->
 
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        >
-    <ViewStub
-            android:id="@+id/com_facebook_picker_profile_pic_stub"
-            android:inflatedId="@+id/com_facebook_picker_image"
-            android:layout="@layout/com_facebook_picker_image"
-            android:layout_width="50dip"
-            android:layout_height="50dip" />
-    <TextView
-            android:id="@+id/com_facebook_picker_title"
-            android:layout_width="0dip"
-            android:layout_height="50dip"
-            android:layout_weight="1"
-            android:paddingLeft="5dip"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:textSize="18sp"
-            android:gravity="left|center_vertical"/>
-    <ViewStub
-            android:id="@+id/com_facebook_picker_checkbox_stub"
-            android:inflatedId="@+id/com_facebook_picker_checkbox"
-            android:layout="@layout/com_facebook_picker_checkbox"
-            android:layout_width="23dip"
-            android:layout_height="23dip"
-            android:layout_marginRight="10dip"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent">
+	<ViewStub
+		android:id="@+id/com_facebook_picker_profile_pic_stub"
+		android:inflatedId="@+id/com_facebook_picker_image"
+		android:layout="@layout/com_facebook_picker_image"
+		android:layout_width="50dip"
+		android:layout_height="50dip" />
+	<TextView
+		android:id="@+id/com_facebook_picker_title"
+		android:layout_width="0dip"
+		android:layout_height="50dip"
+		android:layout_weight="1"
+		android:paddingLeft="5dip"
+		android:textStyle="bold"
+		android:textColor="#000000"
+		android:singleLine="true"
+		android:ellipsize="end"
+		android:textSize="18sp"
+		android:gravity="left|center_vertical" />
+	<ViewStub
+		android:id="@+id/com_facebook_picker_checkbox_stub"
+		android:inflatedId="@+id/com_facebook_picker_checkbox"
+		android:layout="@layout/com_facebook_picker_checkbox"
+		android:layout_width="23dip"
+		android:layout_height="23dip"
+		android:layout_marginRight="10dip" />
 </LinearLayout>

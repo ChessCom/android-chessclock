@@ -15,5 +15,5 @@
   -->
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/transparent" />
+	<solid android:color="@color/transparent" />
 </shape>

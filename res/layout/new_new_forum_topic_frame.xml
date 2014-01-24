@@ -5,8 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:paddingTop="13dip"
-	android:background="@color/white"
-	>
+	android:background="@color/white">
 
 	<com.chess.widgets.RoboEditText
 		android:id="@+id/topicNameEdt"
@@ -22,8 +21,7 @@
 		android:paddingTop="8dip"
 		android:paddingLeft="15dip"
 		android:paddingRight="15dip"
-		android:paddingBottom="8dip"
-		/>
+		android:paddingBottom="8dip" />
 
 	<com.chess.widgets.RoboSpinner
 		android:id="@+id/categorySpinner"
@@ -31,8 +29,7 @@
 		android:layout_height="wrap_content"
 		android:layout_marginBottom="15dip"
 		android:layout_marginLeft="@dimen/default_scr_side_padding"
-		android:layout_marginRight="@dimen/default_scr_side_padding"
-		/>
+		android:layout_marginRight="@dimen/default_scr_side_padding" />
 
 	<com.chess.widgets.LinLayout
 		android:orientation="vertical"
@@ -41,8 +38,7 @@
 		style="@style/ListItem.Header_2"
 		android:paddingTop="15dip"
 		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
-		>
+		android:paddingRight="@dimen/default_scr_side_padding">
 		<com.chess.widgets.RoboEditText
 			android:id="@+id/newPostEdt"
 			android:inputType="textMultiLine"
@@ -58,8 +54,7 @@
 			android:paddingLeft="15dip"
 			android:paddingRight="15dip"
 			android:paddingBottom="8dip"
-			android:imeActionLabel="@string/post"
-			/>
+			android:imeActionLabel="@string/post" />
 
 	</com.chess.widgets.LinLayout>
 

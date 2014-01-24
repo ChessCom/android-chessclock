@@ -6,8 +6,7 @@
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:padding="8dp"
-	>
+	android:padding="8dp">
 
 	<com.chess.widgets.RoboButton
 		android:id="@+id/addNewLineBtn"
@@ -17,7 +16,6 @@
 		app:ttf="Icon"
 		android:text="@string/ic_add"
 		android:minWidth="48dp"
-		android:textSize="@dimen/glyph_icon_big2"
-		/>
+		android:textSize="@dimen/glyph_icon_big2" />
 
 </LinearLayout>

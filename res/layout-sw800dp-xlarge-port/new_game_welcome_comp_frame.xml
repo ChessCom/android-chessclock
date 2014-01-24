@@ -23,8 +23,7 @@
 			android:layout_marginLeft="12dp"
 			android:layout_marginTop="@dimen/default_scr_side_padding"
 			android:layout_marginRight="@dimen/default_scr_side_padding"
-			android:layout_marginBottom="@dimen/default_scr_side_padding"
-			/>
+			android:layout_marginBottom="@dimen/default_scr_side_padding" />
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/engineThinkingPath"
@@ -71,16 +70,14 @@
 				android:layout_marginLeft="12dp"
 				android:layout_marginRight="@dimen/default_scr_side_padding"
 				android:layout_marginTop="@dimen/default_scr_side_padding"
-				android:layout_toLeftOf="@+id/centerPoint"
-				/>
+				android:layout_toLeftOf="@+id/centerPoint" />
 
 			<!--Center point-->
 			<View
 				android:id="@id/centerPoint"
 				android:layout_width="1dp"
 				android:layout_height="1dp"
-				android:layout_centerInParent="true"
-				/>
+				android:layout_centerInParent="true" />
 
 			<!--What is Chess.com-->
 			<com.chess.widgets.RoboTextView
@@ -93,8 +90,7 @@
 				android:gravity="center_vertical|left"
 				android:layout_centerVertical="true"
 				android:layout_toRightOf="@id/centerPoint"
-				android:paddingLeft="@dimen/grid_view_spacing"
-				/>
+				android:paddingLeft="@dimen/grid_view_spacing" />
 
 		</RelativeLayout>
 

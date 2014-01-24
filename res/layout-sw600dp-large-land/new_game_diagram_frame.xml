@@ -42,8 +42,7 @@
 			android:minHeight="@dimen/new_nav_menu_item_height"
 			android:layout_marginLeft="2dp"
 			android:layout_marginRight="2dp"
-			style="@style/Rect.Top.Middle"
-			>
+			style="@style/Rect.Top.Middle">
 
 			<!--Move Results-->
 			<com.chess.widgets.RoboTextView
@@ -70,8 +69,7 @@
 				android:padding="2dip"
 				android:maxLines="3"
 				android:textColor="@color/controls_icon"
-				custom:ttf="Regular"
-				/>
+				custom:ttf="Regular" />
 
 		</com.chess.widgets.RelLayout>
 
@@ -89,8 +87,7 @@
 			android:padding="9dp"
 			android:layout_marginLeft="2dp"
 			android:layout_marginRight="2dp"
-			style="@style/Rect.Notations"
-			/>
+			style="@style/Rect.Notations" />
 
 		<!--Controls-->
 		<com.chess.ui.views.game_controls.ControlsDiagramView
@@ -101,8 +98,7 @@
 			custom:controls_style="rectDark"
 			android:layout_marginLeft="2dp"
 			android:layout_marginRight="2dp"
-			android:layout_marginBottom="2dp"
-			/>
+			android:layout_marginBottom="2dp" />
 
 	</com.chess.widgets.RelLayout>
 

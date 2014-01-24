@@ -110,8 +110,7 @@
 				android:layout_weight="1"
 				android:gravity="center"
 				android:textSize="@dimen/popup_title_text_size_medium"
-				android:textColor="@color/new_author_dark_grey"
-				/>
+				android:textColor="@color/new_author_dark_grey" />
 
 			<LinearLayout
 				android:layout_width="match_parent"
@@ -127,7 +126,7 @@
 					android:layout_marginRight="5dip"
 					style="@style/Button.Glassy.Small"
 					android:textSize="@dimen/big_button_text_size"
-					android:textColor="@color/text_controls_icons_white"/>
+					android:textColor="@color/text_controls_icons_white" />
 
 				<!--Play! -->
 				<com.chess.widgets.RoboButton

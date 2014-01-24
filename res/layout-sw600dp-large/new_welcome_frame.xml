@@ -4,15 +4,13 @@
 	android:id="@+id/mainFrame"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@drawable/white_half_shadow_back"
-	>
+	android:background="@drawable/white_half_shadow_back">
 
 	<android.support.v4.view.ViewPager
 		android:id="@+id/viewPager"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_above="@+id/pagerIndicatorGroup"
-		/>
+		android:layout_above="@+id/pagerIndicatorGroup" />
 
 	<RadioGroup
 		android:id="@id/pagerIndicatorGroup"
@@ -21,7 +19,6 @@
 		android:layout_height="wrap_content"
 		android:layout_centerHorizontal="true"
 		android:layout_alignParentBottom="true"
-		android:padding="@dimen/welcome_pager_indicator_padding"
-		/>
+		android:padding="@dimen/welcome_pager_indicator_padding" />
 
 </RelativeLayout>

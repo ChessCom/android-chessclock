@@ -301,7 +301,7 @@
 	<string name="share_pgn">Share PGN</string>
 	<string name="share_via">Share via</string>
 	<string name="chess">Chess</string>
-	<string name="via_chesscom">via @Chesscom</string>
+	<string name="via_chesscom">"via @Chesscom"</string>
 
 	<!--Play Screen-->
 	<string name="vs_random_opponent">vs Random</string>

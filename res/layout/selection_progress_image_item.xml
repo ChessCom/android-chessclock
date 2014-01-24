@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.chess.widgets.LinLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chess.widgets.LinLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:minHeight="@dimen/list_item_height"
@@ -10,15 +9,13 @@
 	android:paddingTop="4dip"
 	android:paddingBottom="4dip"
 	android:paddingRight="8dip"
-	style="@style/ListItem"
-	>
+	style="@style/ListItem">
 
 	<com.chess.backend.image_load.ProgressImageView
 		android:id="@+id/image"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:contentDescription="@string/image"
-		/>
+		android:contentDescription="@string/image" />
 
 	<com.chess.widgets.RoboCheckedTextView
 		android:id="@+id/text"
@@ -30,8 +27,7 @@
 		android:paddingRight="5dip"
 		android:textColor="@color/white"
 		android:checkMark="?android:attr/listChoiceIndicatorSingle"
-		style="@style/SettingsListText"
-		/>
+		style="@style/SettingsListText" />
 
 
 </com.chess.widgets.LinLayout>

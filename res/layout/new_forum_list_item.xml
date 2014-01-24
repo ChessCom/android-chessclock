@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="@dimen/list_item_height"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:minHeight="@dimen/list_item_height"
 	android:paddingLeft="@dimen/default_scr_side_padding"
 	android:paddingRight="8dip"
 	android:paddingTop="6dip"
 	android:paddingBottom="6dip"
-	android:background="@drawable/transparent_list_item_selector"
-    >
+	android:background="@drawable/transparent_list_item_selector">
 
 	<!--New post icon-->
 	<ImageView
@@ -21,41 +20,37 @@
 		android:layout_centerVertical="true"
 		android:src="@drawable/ic_new_post_t"
 		android:layout_marginRight="15dip"
-		android:visibility="gone"
-		/>
+		android:visibility="gone" />
 
-    <!--Title-->
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/titleTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+	<!--Title-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/titleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/newPostImg"
-        android:textColor="@color/new_text_blue"
-        custom:ttf="Bold"
-        />
+		android:textColor="@color/new_text_blue"
+		custom:ttf="Bold" />
 
-    <!--Last comment ago-->
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/lastCommentAgoTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+	<!--Last comment ago-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/lastCommentAgoTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/newPostImg"
-        android:layout_below="@id/titleTxt"
-        android:paddingTop="2dip"
-        android:textColor="@color/stats_label_light_grey"
-        android:textSize="12sp"
-        />
+		android:layout_below="@id/titleTxt"
+		android:paddingTop="2dip"
+		android:textColor="@color/stats_label_light_grey"
+		android:textSize="12sp" />
 
-    <!--Last comment ago-->
-    <com.chess.widgets.RoboTextView
-        android:id="@+id/postsCountTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/titleTxt"
-        android:layout_toRightOf="@id/lastCommentAgoTxt"
-        android:paddingTop="2dip"
-        android:textColor="@color/stats_label_light_grey"
-        android:textSize="12sp"
-        />
+	<!--Last comment ago-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/postsCountTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/titleTxt"
+		android:layout_toRightOf="@id/lastCommentAgoTxt"
+		android:paddingTop="2dip"
+		android:textColor="@color/stats_label_light_grey"
+		android:textSize="12sp" />
 
 </RelativeLayout>

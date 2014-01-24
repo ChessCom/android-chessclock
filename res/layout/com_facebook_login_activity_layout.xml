@@ -12,6 +12,5 @@
 		android:layout_centerInParent="true"
 		android:visibility="gone"
 		android:indeterminateOnly="true"
-		style="@style/ChessProgressBar"
-		/>
+		style="@style/ChessProgressBar" />
 </RelativeLayout>

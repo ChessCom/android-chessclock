@@ -1,143 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/signin_scr_top_padding"
-        android:paddingLeft="@dimen/signin_scr_side_padding"
-        android:paddingRight="@dimen/signin_scr_side_padding"
-        android:layout_centerInParent="true"
-        >
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="@dimen/signin_scr_top_padding"
+		android:paddingLeft="@dimen/signin_scr_side_padding"
+		android:paddingRight="@dimen/signin_scr_side_padding"
+		android:layout_centerInParent="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            >
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:gravity="center_horizontal">
 
-            <!--Invisible to match space-->
-            <ImageView
-                android:id="@+id/logoImg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/img_new_logo"
-                android:contentDescription="@string/image"
-                android:visibility="gone"
-                />
+			<!--Invisible to match space-->
+			<ImageView
+				android:id="@+id/logoImg"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:adjustViewBounds="true"
+				android:scaleType="fitXY"
+				android:src="@drawable/img_new_logo"
+				android:contentDescription="@string/image"
+				android:visibility="gone" />
 
-            <com.chess.widgets.RoboTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_up_now_free"
-                style="@style/SetupSmallFont"
-                android:paddingBottom="@dimen/new_signup_title_padding_bottom"
-                />
+			<com.chess.widgets.RoboTextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/sign_up_now_free"
+				style="@style/SetupSmallFont"
+				android:paddingBottom="@dimen/new_signup_title_padding_bottom" />
 
-            <com.facebook.widget.LoginButton
-                android:id="@+id/fb_connect"
-                style="@style/Button.Facebook"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_up_with_facebook"
-                android:layout_marginBottom="@dimen/new_signup_facebook_margin_bottom"
-                android:paddingLeft="5dip"
-                custom:ttf="Regular"
-                />
+			<com.facebook.widget.LoginButton
+				android:id="@+id/fb_connect"
+				style="@style/Button.Facebook"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/sign_up_with_facebook"
+				android:layout_marginBottom="@dimen/new_signup_facebook_margin_bottom"
+				android:paddingLeft="5dip"
+				custom:ttf="Regular" />
 
-            <com.chess.widgets.RoboTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/or_use_your_email"
+			<com.chess.widgets.RoboTextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/or_use_your_email"
 				android:paddingTop="8dip"
 				android:paddingBottom="8dip"
+				style="@style/SetupSmallFont" />
+
+			<com.chess.widgets.LeftImageEditText
+				android:id="@+id/usernameEdt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/username"
+				android:inputType="textPersonName"
+				style="@style/WhiteGrayEditText.Top"
+				custom:leftImage="@string/ic_profile"
+				android:imeOptions="actionNext"
+				android:layout_marginTop="@dimen/new_signup_field_margin_top" />
+
+			<com.chess.widgets.LeftImageEditText
+				android:id="@+id/emailEdt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/email"
+				android:inputType="textEmailAddress"
+				style="@style/WhiteGrayEditText.Middle"
+				custom:leftImage="@string/ic_email_light"
+				android:imeOptions="actionNext" />
+
+			<com.chess.widgets.LeftImageEditText
+				android:id="@+id/passwordEdt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/password"
+				android:inputType="textPassword"
+				android:password="true"
+				style="@style/WhiteGrayEditText.Middle"
+				custom:leftImage="@string/ic_password"
+				android:imeOptions="actionNext" />
+
+			<com.chess.widgets.LeftImageEditText
+				android:id="@+id/passwordRetypeEdt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/retype_password"
+				android:inputType="textPassword"
+				android:password="true"
+				style="@style/WhiteGrayEditText.Bottom"
+				custom:leftImage="@string/ic_password"
+				android:imeOptions="actionDone" />
+
+			<com.chess.widgets.RoboButton
+				android:id="@+id/completeSignUpBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/complete_singup"
+				android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
+				style="@style/Button.OrangeNoBorder.Big" />
+
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/termsLinkTxt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
 				style="@style/SetupSmallFont"
-                />
+				android:paddingTop="10dip" />
 
-            <com.chess.widgets.LeftImageEditText
-                android:id="@+id/usernameEdt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/username"
-                android:inputType="textPersonName"
-                style="@style/WhiteGrayEditText.Top"
-                custom:leftImage="@string/ic_profile"
-                android:imeOptions="actionNext"
-                android:layout_marginTop="@dimen/new_signup_field_margin_top"
-                />
-
-            <com.chess.widgets.LeftImageEditText
-                android:id="@+id/emailEdt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                style="@style/WhiteGrayEditText.Middle"
-                custom:leftImage="@string/ic_email_light"
-                android:imeOptions="actionNext"
-                />
-
-            <com.chess.widgets.LeftImageEditText
-                android:id="@+id/passwordEdt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:password="true"
-                style="@style/WhiteGrayEditText.Middle"
-                custom:leftImage="@string/ic_password"
-                android:imeOptions="actionNext"
-                />
-
-            <com.chess.widgets.LeftImageEditText
-                android:id="@+id/passwordRetypeEdt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/retype_password"
-                android:inputType="textPassword"
-                android:password="true"
-                style="@style/WhiteGrayEditText.Bottom"
-                custom:leftImage="@string/ic_password"
-                android:imeOptions="actionDone"
-                />
-
-            <com.chess.widgets.RoboButton
-                android:id="@+id/completeSignUpBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/complete_singup"
-                android:layout_marginTop="@dimen/common_main_hit_button_margin_top"
-                style="@style/Button.OrangeNoBorder.Big"
-                />
-
-            <com.chess.widgets.RoboTextView
-                android:id="@+id/termsLinkTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/SetupSmallFont"
-                android:paddingTop="10dip"
-                />
-
-            <com.chess.widgets.RoboTextView
-                android:id="@+id/loginLinkTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/SetupSmallFont"
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/loginLinkTxt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				style="@style/SetupSmallFont"
 				android:text="@string/already_member_log_in"
-                android:paddingTop="10dip"
-                />
+				android:paddingTop="10dip" />
 
-        </LinearLayout>
-    </ScrollView>
+		</LinearLayout>
+	</ScrollView>
 
 </RelativeLayout>
 

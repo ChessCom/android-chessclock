@@ -11,28 +11,24 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
-		android:layout_marginTop="@dimen/notations_view_height"
-		>
+		android:layout_marginTop="@dimen/notations_view_height">
 
 		<RelativeLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			>
+			android:layout_height="wrap_content">
 			<!--Top Border-->
 			<FrameLayout
 				android:id="@+id/topBorder"
 				android:layout_width="match_parent"
 				android:layout_height="3px"
-				android:background="@drawable/game_board_divider"
-				/>
+				android:background="@drawable/game_board_divider" />
 
 			<com.chess.ui.views.chess_boards.ChessBoardLiveView
 				android:id="@+id/boardview"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/topBorder"
-				android:layout_marginTop="-1px"
-				/>
+				android:layout_marginTop="-1px" />
 
 			<!--Bottom Border-->
 			<FrameLayout
@@ -40,8 +36,7 @@
 				android:layout_height="wrap_content"
 				android:layout_below="@id/boardview"
 				android:background="@drawable/game_board_divider"
-				android:layout_marginTop="-1px"
-				/>
+				android:layout_marginTop="-1px" />
 
 		</RelativeLayout>
 
@@ -57,8 +52,7 @@
 			android:paddingRight="@dimen/start_new_game_overlay_padding_side"
 			android:paddingBottom="@dimen/start_new_game_overlay_padding_side"
 			android:orientation="vertical"
-			android:layout_centerInParent="true"
-			>
+			android:layout_centerInParent="true">
 
 			<!--New Game-->
 			<com.chess.widgets.RoboTextView
@@ -97,8 +91,7 @@
 					android:layout_weight="1"
 					android:text="@string/play"
 					style="@style/Button.OrangeNoBorder.Big"
-					android:layout_marginLeft="5dip"
-					/>
+					android:layout_marginLeft="5dip" />
 
 			</LinearLayout>
 
@@ -113,7 +106,7 @@
 		android:src="@drawable/defaultshadow"
 		android:contentDescription="@string/image"
 		android:layout_toLeftOf="@+id/optionsFragmentContainerView"
-		android:visibility="gone"/>
+		android:visibility="gone" />
 
 
 	<!--Right quick access side panel-->

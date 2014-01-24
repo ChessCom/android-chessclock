@@ -3,8 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@color/white"
-	>
+	android:background="@color/white">
 
 	<RelativeLayout
 		android:id="@+id/loadingView"
@@ -12,16 +11,14 @@
 		android:layout_height="match_parent"
 		android:minHeight="60dip"
 		android:visibility="gone"
-		android:layout_centerInParent="true"
-		>
+		android:layout_centerInParent="true">
 
 		<ProgressBar
 			android:layout_width="@dimen/pending_progress_bar_size"
 			android:layout_height="@dimen/pending_progress_bar_size"
 			android:layout_margin="5dip"
 			android:layout_centerInParent="true"
-			style="?android:attr/progressBarStyle"
-			/>
+			style="?android:attr/progressBarStyle" />
 
 	</RelativeLayout>
 
@@ -31,8 +28,7 @@
 		android:layout_height="match_parent"
 		android:divider="@color/new_friends_list_divider"
 		android:dividerHeight="1dip"
-		android:layout_above="@+id/pageIndicatorLay"
-		/>
+		android:layout_above="@+id/pageIndicatorLay" />
 
 	<com.chess.widgets.LinLayout
 		android:id="@id/pageIndicatorLay"
@@ -44,15 +40,13 @@
 		android:gravity="center"
 		android:paddingLeft="9dip"
 		android:paddingRight="9dip"
-		android:minHeight="51dip"
-		>
+		android:minHeight="51dip">
 
 		<com.chess.ui.views.PageIndicatorView
 			android:id="@+id/pageIndicatorView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			/>
+			android:layout_gravity="center" />
 
 	</com.chess.widgets.LinLayout>
 
@@ -68,8 +62,7 @@
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
 		android:layout_alignParentBottom="true"
-		android:visibility="gone"
-		>
+		android:visibility="gone">
 
 		<com.chess.widgets.RoboEditText
 			android:id="@+id/newPostEdt"
@@ -85,8 +78,7 @@
 			android:paddingBottom="8dip"
 			android:imeActionLabel="@string/post"
 			android:hint="@string/write_reply_"
-			android:textSize="14sp"
-			/>
+			android:textSize="14sp" />
 
 	</com.chess.widgets.LinLayout>
 

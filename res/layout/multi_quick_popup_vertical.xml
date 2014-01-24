@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout 
-	xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    >
-	    
-	<ScrollView 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content">
+
+	<ScrollView
 		android:id="@+id/scrollView"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:scrollbars="none"
-        android:minWidth="@dimen/quick_action_item_min_width"
-        android:padding="15dip"
-		android:background="@drawable/rounded_border_white_back"
-		>
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:scrollbars="none"
+		android:minWidth="@dimen/quick_action_item_min_width"
+		android:padding="15dip"
+		android:background="@drawable/rounded_border_white_back">
 
 		<LinearLayout
-	    	android:id="@+id/itemsContainerView"
-	    	android:orientation="vertical"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        />
-       
-	</ScrollView >
+			android:id="@+id/itemsContainerView"
+			android:orientation="vertical"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+	</ScrollView>
 
 
 </RelativeLayout>

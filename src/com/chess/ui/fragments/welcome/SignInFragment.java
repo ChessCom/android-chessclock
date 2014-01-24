@@ -88,6 +88,12 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 	}
 
 	@Override
+	protected void afterLogin() {
+		super.afterLogin();
+		backToHomeFragment();
+	}
+
+	@Override
 	public boolean onTouch(View view, MotionEvent motionEvent) {
 		if (view.getId() == R.id.usernameEdt) {
 			loginUsernameEdt.setError(null);

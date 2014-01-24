@@ -31,7 +31,6 @@
 		</com.chess.widgets.LinLayout>
 
 
-
 		<!--Prod Server Credentials-->
 		<com.chess.widgets.LinLayout
 			android:layout_width="match_parent"

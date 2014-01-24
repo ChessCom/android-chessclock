@@ -5,8 +5,7 @@
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:paddingTop="1dp"
-	android:paddingBottom="1dp"
-	>
+	android:paddingBottom="1dp">
 
 	<!--Icon-->
 	<com.chess.widgets.RoboTextView
@@ -15,15 +14,13 @@
 		android:layout_height="wrap_content"
 		android:contentDescription="@string/image"
 		style="@style/GlyphIcon"
-		android:padding="10dp"
-		/>
+		android:padding="10dp" />
 
 	<!--Items Container-->
 	<LinearLayout
 		android:id="@+id/optionsView"
 		android:orientation="horizontal"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		/>
+		android:layout_height="wrap_content" />
 
 </LinearLayout>

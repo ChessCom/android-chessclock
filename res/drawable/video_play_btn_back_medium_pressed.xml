@@ -2,35 +2,31 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--Border-->
-    <item
-        android:top="1dip"
-        android:left="1dip"
-        android:right="1dip"
-        android:bottom="1dip"
-        >
-        <shape android:shape="oval">
-            <solid android:color="@color/thumbnail_play_border_medium_p"/>
-            <size
-                android:width="@dimen/video_play_btn_back_ring_size_medium"
-                android:height="@dimen/video_play_btn_back_ring_size_medium"
-                />
+	<!--Border-->
+	<item
+		android:top="1dip"
+		android:left="1dip"
+		android:right="1dip"
+		android:bottom="1dip">
+		<shape android:shape="oval">
+			<solid android:color="@color/thumbnail_play_border_medium_p" />
+			<size
+				android:width="@dimen/video_play_btn_back_ring_size_medium"
+				android:height="@dimen/video_play_btn_back_ring_size_medium" />
 
-        </shape>
-    </item>
+		</shape>
+	</item>
 
-    <!--Inner Ring-->
-    <item
-        android:top="2dip"
-        android:left="2dip"
-        android:right="2dip"
-        android:bottom="2dip"
-        >
-        <shape android:shape="oval">
-            <solid android:color="@color/thumbnail_play_back_medium_p"/>
-        </shape>
-    </item>
-
+	<!--Inner Ring-->
+	<item
+		android:top="2dip"
+		android:left="2dip"
+		android:right="2dip"
+		android:bottom="2dip">
+		<shape android:shape="oval">
+			<solid android:color="@color/thumbnail_play_back_medium_p" />
+		</shape>
+	</item>
 
 
 </layer-list>

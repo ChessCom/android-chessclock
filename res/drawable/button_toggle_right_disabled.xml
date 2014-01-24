@@ -3,16 +3,14 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 	<!--Border-->
 	<item>
-		<shape >
+		<shape>
 			<corners
 				android:topRightRadius="@dimen/button_upgrade_toggle_radius"
-				android:bottomLeftRadius="@dimen/button_upgrade_toggle_radius"
-				/>
-			<solid android:color="@color/transparent"/>
+				android:bottomLeftRadius="@dimen/button_upgrade_toggle_radius" />
+			<solid android:color="@color/transparent" />
 			<stroke
 				android:color="@color/upgrade_toggle_button_border_d"
-				android:width="1dip"
-				/>
+				android:width="1dip" />
 		</shape>
 	</item>
 
@@ -21,13 +19,11 @@
 		android:left="1dip"
 		android:right="1dip"
 		android:bottom="1dip"
-		android:top="1dip"
-		>
-		<shape >
+		android:top="1dip">
+		<shape>
 			<corners
 				android:topRightRadius="@dimen/button_upgrade_toggle_radius"
-				android:bottomLeftRadius="@dimen/button_upgrade_toggle_radius"
-				/>
+				android:bottomLeftRadius="@dimen/button_upgrade_toggle_radius" />
 			<solid android:color="@color/upgrade_toggle_button_d" />
 		</shape>
 	</item>

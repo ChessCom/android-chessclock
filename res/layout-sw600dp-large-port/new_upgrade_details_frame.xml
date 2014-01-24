@@ -18,8 +18,7 @@
 			android:id="@+id/planDetailsView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:background="@drawable/button_upgrade_diamond_default"
-			>
+			android:background="@drawable/button_upgrade_diamond_default">
 
 
 			<!--Plan Title-->
@@ -30,8 +29,7 @@
 				android:paddingTop="13dp"
 				android:paddingBottom="7dp"
 				android:layout_centerHorizontal="true"
-				android:duplicateParentState="true"
-				>
+				android:duplicateParentState="true">
 
 				<ImageView
 					android:id="@+id/planImg"
@@ -42,7 +40,7 @@
 					android:src="@drawable/ic_upgrade_diamond"
 					android:contentDescription="@string/image"
 					android:layout_marginRight="9dip"
-					android:duplicateParentState="true"/>
+					android:duplicateParentState="true" />
 
 				<com.chess.widgets.RoboTextView
 					android:id="@+id/planTitleTxt"
@@ -52,7 +50,7 @@
 					android:textColor="@color/upgrade_diamond_title"
 					android:textSize="25sp"
 					custom:ttf="Bold"
-					android:duplicateParentState="true"/>
+					android:duplicateParentState="true" />
 
 			</LinearLayout>
 
@@ -68,7 +66,7 @@
 				android:paddingBottom="12dp"
 				android:minHeight="50dp"
 				custom:ttf="Italic"
-				android:duplicateParentState="true"/>
+				android:duplicateParentState="true" />
 
 			<!--Periods check boxes-->
 			<LinearLayout
@@ -101,7 +99,7 @@
 						android:textSize="22sp"
 						android:textColor="@color/upgrade_diamond_title"
 						custom:ttf="Bold"
-						android:duplicateParentState="true"/>
+						android:duplicateParentState="true" />
 
 					<View
 						android:id="@id/centerMonthView"
@@ -129,7 +127,7 @@
 						android:layout_centerHorizontal="true"
 						android:button="@drawable/button_checkmark_diamond_selector"
 						android:minHeight="35dip"
-						android:duplicateParentState="true"/>
+						android:duplicateParentState="true" />
 
 				</RelativeLayout>
 
@@ -182,7 +180,7 @@
 						android:layout_centerHorizontal="true"
 						android:button="@drawable/button_checkmark_diamond_selector"
 						android:checked="false"
-						android:minHeight="35dip"/>
+						android:minHeight="35dip" />
 
 					<com.chess.widgets.RoboTextView
 						android:id="@+id/yearDiscountTxt"
@@ -207,8 +205,7 @@
 				android:layout_marginTop="15dip"
 				android:layout_marginLeft="15dip"
 				android:layout_marginRight="15dip"
-				android:layout_marginBottom="15dip"
-				/>
+				android:layout_marginBottom="15dip" />
 
 			<!--Disable overlay-->
 			<View
@@ -218,8 +215,7 @@
 				android:background="@drawable/rounded_disable_overlay"
 				android:layout_alignParentTop="true"
 				android:layout_alignBottom="@id/setPlanBtn"
-				android:layout_marginBottom="-15dip"
-				/>
+				android:layout_marginBottom="-15dip" />
 
 		</RelativeLayout>
 

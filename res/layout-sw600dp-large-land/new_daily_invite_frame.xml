@@ -32,8 +32,7 @@
 			android:minHeight="160dip"
 			android:background="@drawable/rounded_border_white_back"
 			android:paddingTop="@dimen/invite_overlay_padding_top"
-			android:paddingBottom="@dimen/invite_overlay_padding_bottom"
-			>
+			android:paddingBottom="@dimen/invite_overlay_padding_bottom">
 
 			<!--Invite Title-->
 			<com.chess.widgets.RoboTextView
@@ -45,8 +44,7 @@
 				android:gravity="center"
 				android:textSize="22sp"
 				android:textColor="@color/new_subtitle_dark_grey"
-				custom:ttf="Bold"
-				/>
+				custom:ttf="Bold" />
 
 			<!--Invite Details-->
 			<com.chess.widgets.RoboTextView
@@ -58,8 +56,7 @@
 				android:gravity="center"
 				android:textSize="16sp"
 				android:textColor="@color/new_author_dark_grey"
-				android:lineSpacingExtra="6dip"
-				/>
+				android:lineSpacingExtra="6dip" />
 
 		</RelativeLayout>
 
@@ -135,7 +132,7 @@
 			android:layout_above="@+id/controlsView"
 			android:layout_marginLeft="2dp"
 			android:layout_marginRight="2dp"
-			style="@style/Rect.Notations" >
+			style="@style/Rect.Notations">
 
 			<!--NotationsView-->
 			<com.chess.ui.views.NotationsViewTablet
@@ -146,8 +143,7 @@
 				android:horizontalSpacing="5dip"
 				android:verticalSpacing="1dip"
 				android:stretchMode="columnWidth"
-				android:padding="9dp"
-				/>
+				android:padding="9dp" />
 
 			<FrameLayout
 				android:id="@+id/chatFragmentContainer"
@@ -165,8 +161,7 @@
 			custom:controls_style="rectDark"
 			android:layout_above="@+id/bottomPanelView"
 			android:layout_marginLeft="2dp"
-			android:layout_marginRight="2dp"
-			/>
+			android:layout_marginRight="2dp" />
 
 		<!--BottomPanelInfo-->
 		<com.chess.ui.views.PanelInfoGameView
@@ -176,8 +171,7 @@
 			custom:oneLine="@bool/one_line_for_board"
 			android:layout_alignParentBottom="true"
 			android:layout_marginTop="@dimen/tablet_panel_info_top_margin"
-			android:layout_marginBottom="5dp"
-			/>
+			android:layout_marginBottom="5dp" />
 
 	</com.chess.widgets.RelLayout>
 

@@ -1,324 +1,294 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.chess"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none"
-    >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:scrollbars="none">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusableInTouchMode="true"
-        >
-        <requestFocus />
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:focusableInTouchMode="true">
+		<requestFocus />
 
-        <!--First Name-->
-        <com.chess.widgets.LinLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/LinearListItem"
-            >
+		<!--First Name-->
+		<com.chess.widgets.LinLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem">
 
-            <!--Label-->
-            <com.chess.widgets.RoboTextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/first_name"
-                style="@style/SettingsListText"
-                />
+			<!--Label-->
+			<com.chess.widgets.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/first_name"
+				style="@style/SettingsListText" />
 
-            <!--First Name Edit-->
-            <com.chess.widgets.RoboEditText
-                android:id="@+id/firstNameValueEdt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:hint="@string/first_name"
-                android:singleLine="true"
-                android:imeOptions="actionDone"
-                style="@style/DefaultEdt.Empty"
-                android:ellipsize="end"
-                app:ttf="Bold"
-                app:themeColor="true"
-                />
-            <!---->
+			<!--First Name Edit-->
+			<com.chess.widgets.RoboEditText
+				android:id="@+id/firstNameValueEdt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/white"
+				android:textSize="15sp"
+				android:hint="@string/first_name"
+				android:singleLine="true"
+				android:imeOptions="actionDone"
+				style="@style/DefaultEdt.Empty"
+				android:ellipsize="end"
+				app:ttf="Bold"
+				app:themeColor="true" />
+			<!---->
 
-            <!--Clear Btn-->
-            <com.chess.widgets.RoboTextView
-                android:id="@+id/firstNameClearBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ic_clear"
-                android:textColor="@color/white"
-                style="@style/GlyphIcon"
-                android:paddingLeft="11dip"
-                />
+			<!--Clear Btn-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/firstNameClearBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/ic_clear"
+				android:textColor="@color/white"
+				style="@style/GlyphIcon"
+				android:paddingLeft="11dip" />
 
-        </com.chess.widgets.LinLayout>
+		</com.chess.widgets.LinLayout>
 
-        <!--Last Name-->
-        <com.chess.widgets.LinLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/LinearListItem"
-            >
+		<!--Last Name-->
+		<com.chess.widgets.LinLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem">
 
-            <!--Label-->
-            <com.chess.widgets.RoboTextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/last_name"
-                style="@style/SettingsListText"
-                />
+			<!--Label-->
+			<com.chess.widgets.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/last_name"
+				style="@style/SettingsListText" />
 
-            <!--Last Name Edit-->
-            <com.chess.widgets.RoboEditText
-                android:id="@+id/lastNameValueEdt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/last_name"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:singleLine="true"
-                android:imeOptions="actionDone"
-                style="@style/DefaultEdt.Empty"
-                android:ellipsize="end"
-                app:ttf="Bold"
-				app:themeColor="true"
-				/>
+			<!--Last Name Edit-->
+			<com.chess.widgets.RoboEditText
+				android:id="@+id/lastNameValueEdt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:hint="@string/last_name"
+				android:textColor="@color/white"
+				android:textSize="15sp"
+				android:singleLine="true"
+				android:imeOptions="actionDone"
+				style="@style/DefaultEdt.Empty"
+				android:ellipsize="end"
+				app:ttf="Bold"
+				app:themeColor="true" />
 
-            <!--Clear Btn-->
-            <com.chess.widgets.RoboTextView
-                android:id="@+id/lastNameClearBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ic_clear"
-                android:textColor="@color/white"
-                style="@style/GlyphIcon"
-                android:paddingLeft="11dip"
-                />
+			<!--Clear Btn-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/lastNameClearBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/ic_clear"
+				android:textColor="@color/white"
+				style="@style/GlyphIcon"
+				android:paddingLeft="11dip" />
 
-        </com.chess.widgets.LinLayout>
+		</com.chess.widgets.LinLayout>
 
-        <!--Location-->
-        <com.chess.widgets.LinLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/LinearListItem"
-            >
+		<!--Location-->
+		<com.chess.widgets.LinLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem">
 
-            <!--Label-->
-            <com.chess.widgets.RoboTextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/location"
-                style="@style/SettingsListText"
-                />
+			<!--Label-->
+			<com.chess.widgets.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/location"
+				style="@style/SettingsListText" />
 
-            <!--Location Edit-->
-            <com.chess.widgets.RoboEditText
-                android:id="@+id/locationValueEdt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/location"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:singleLine="true"
-                android:imeOptions="actionDone"
-                style="@style/DefaultEdt.Empty"
-                android:layout_gravity="center_vertical"
-                android:ellipsize="end"
-                app:ttf="Bold"
-				app:themeColor="true"
-                />
+			<!--Location Edit-->
+			<com.chess.widgets.RoboEditText
+				android:id="@+id/locationValueEdt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:hint="@string/location"
+				android:textColor="@color/white"
+				android:textSize="15sp"
+				android:singleLine="true"
+				android:imeOptions="actionDone"
+				style="@style/DefaultEdt.Empty"
+				android:layout_gravity="center_vertical"
+				android:ellipsize="end"
+				app:ttf="Bold"
+				app:themeColor="true" />
 
-            <!--Clear Btn-->
-            <com.chess.widgets.RoboTextView
-                android:id="@+id/locationClearBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ic_clear"
-                android:textColor="@color/white"
-                style="@style/GlyphIcon"
-                android:paddingLeft="11dip"
-                />
+			<!--Clear Btn-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/locationClearBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/ic_clear"
+				android:textColor="@color/white"
+				style="@style/GlyphIcon"
+				android:paddingLeft="11dip" />
 
-        </com.chess.widgets.LinLayout>
+		</com.chess.widgets.LinLayout>
 
-        <!--Country-->
-        <com.chess.widgets.LinLayout
-            android:id="@+id/countryLay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/LinearListItem"
-            android:background="@drawable/transparent_list_item_selector"
-            >
+		<!--Country-->
+		<com.chess.widgets.LinLayout
+			android:id="@+id/countryLay"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem"
+			android:background="@drawable/transparent_list_item_selector">
 
-            <!--Label-->
-            <com.chess.widgets.RoboTextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/country"
-                style="@style/SettingsListText"
-                />
+			<!--Label-->
+			<com.chess.widgets.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/country"
+				style="@style/SettingsListText" />
 
-            <!--Country-->
-            <com.chess.widgets.RoboTextView
-                android:id="@+id/countryValueTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Country"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:paddingRight="11dip"
-                app:ttf="Bold"
-				app:themeColor="true"
-                />
+			<!--Country-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/countryValueTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Country"
+				android:textColor="@color/white"
+				android:textSize="15sp"
+				android:paddingRight="11dip"
+				app:ttf="Bold"
+				app:themeColor="true" />
 
-            <!--Country Flag-->
-            <ImageView
-                android:id="@+id/flagImg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:contentDescription="@string/image"
-                />
+			<!--Country Flag-->
+			<ImageView
+				android:id="@+id/flagImg"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:adjustViewBounds="true"
+				android:scaleType="fitXY"
+				android:contentDescription="@string/image" />
 
-        </com.chess.widgets.LinLayout>
+		</com.chess.widgets.LinLayout>
 
-        <!--Profile Picture-->
-        <com.chess.widgets.LinLayout
-            android:id="@+id/userPhotoLay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/LinearListItem"
-            android:paddingLeft="@dimen/default_scr_side_padding"
-            android:paddingRight="@dimen/default_scr_side_padding"
-            android:background="@drawable/transparent_list_item_selector"
-            >
+		<!--Profile Picture-->
+		<com.chess.widgets.LinLayout
+			android:id="@+id/userPhotoLay"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem"
+			android:paddingLeft="@dimen/default_scr_side_padding"
+			android:paddingRight="@dimen/default_scr_side_padding"
+			android:background="@drawable/transparent_list_item_selector">
 
-            <!--Label-->
-            <com.chess.widgets.RoboTextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/profile_picture"
-                style="@style/SettingsListText"
-                />
+			<!--Label-->
+			<com.chess.widgets.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/profile_picture"
+				style="@style/SettingsListText" />
 
-            <!--Profile image-->
-            <FrameLayout
-                android:id="@+id/userPhotoImg"
-                android:layout_width="@dimen/img_profile_size_big"
-                android:layout_height="@dimen/img_profile_size_big"
-                android:layout_marginTop="8dip"
-                android:layout_marginBottom="8dip"
-                />
+			<!--Profile image-->
+			<FrameLayout
+				android:id="@+id/userPhotoImg"
+				android:layout_width="@dimen/img_profile_size_big"
+				android:layout_height="@dimen/img_profile_size_big"
+				android:layout_marginTop="8dip"
+				android:layout_marginBottom="8dip" />
 
-        </com.chess.widgets.LinLayout>
+		</com.chess.widgets.LinLayout>
 
-        <!--Membership renew-->
-        <com.chess.widgets.LinLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/LinearListItem"
-            android:padding="15dip"
-            >
+		<!--Membership renew-->
+		<com.chess.widgets.LinLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem"
+			android:padding="15dip">
 
-            <!--Label-->
-            <com.chess.widgets.RoboTextView
-                android:id="@+id/cancelMembershipTxt"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/profile_membership_renew_cancel"
-                style="@style/SettingsListText"
-                android:textColor="@color/semitransparent_white_65"
-                android:paddingRight="30dip"
-                app:ttf="Regular"
-                android:visibility="invisible"
-                />
+			<!--Label-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/cancelMembershipTxt"
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/profile_membership_renew_cancel"
+				style="@style/SettingsListText"
+				android:textColor="@color/semitransparent_white_65"
+				android:paddingRight="30dip"
+				app:ttf="Regular"
+				android:visibility="invisible" />
 
-            <!--Upgrade Button-->
-            <com.chess.widgets.RoboButton
-                android:id="@+id/upgradeBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Button.OrangeNoBorder"
-                android:minWidth="@dimen/wide_button_min_width"
-                android:minHeight="@dimen/small_orange_button_height"
-                android:text="@string/upgrade"
-                />
+			<!--Upgrade Button-->
+			<com.chess.widgets.RoboButton
+				android:id="@+id/upgradeBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				style="@style/Button.OrangeNoBorder"
+				android:minWidth="@dimen/wide_button_min_width"
+				android:minHeight="@dimen/small_orange_button_height"
+				android:text="@string/upgrade" />
 
-        </com.chess.widgets.LinLayout>
+		</com.chess.widgets.LinLayout>
 
-        <!--Invite Friends-->
-        <com.chess.widgets.LinLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/LinearListItem"
-            android:padding="15dip"
-            >
+		<!--Invite Friends-->
+		<com.chess.widgets.LinLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			style="@style/LinearListItem"
+			android:padding="15dip">
 
-            <!--Label-->
-            <com.chess.widgets.RoboTextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/invite_friends_profile_message"
-                android:paddingRight="30dip"
-                style="@style/SettingsListText"
-                />
+			<!--Label-->
+			<com.chess.widgets.RoboTextView
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="@string/invite_friends_profile_message"
+				android:paddingRight="30dip"
+				style="@style/SettingsListText" />
 
-            <!--Share Button-->
-            <com.chess.widgets.RoboButton
-                android:id="@+id/shareBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Button.Share.Small"
-                android:text="@string/share"
-                />
+			<!--Share Button-->
+			<com.chess.widgets.RoboButton
+				android:id="@+id/shareBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				style="@style/Button.Share.Small"
+				android:text="@string/share" />
 
-        </com.chess.widgets.LinLayout>
+		</com.chess.widgets.LinLayout>
 
-        <!--Top Border-->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:background="@color/transparent_button_border_left"
-            />
+		<!--Top Border-->
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1dip"
+			android:background="@color/transparent_button_border_left" />
 
-        <!--Terms-->
-        <com.chess.widgets.RelLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="15dip"
+		<!--Terms-->
+		<com.chess.widgets.RelLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="15dip"
 
-            >
-            <!--Label-->
-            <com.chess.widgets.RoboTextView
-                android:id="@+id/termsLinkTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                style="@style/SettingsListText"
-                android:textColor="@color/semitransparent_white_65"
-                app:ttf="Regular"
-                />
+			>
+			<!--Label-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/termsLinkTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:layout_centerInParent="true"
+				style="@style/SettingsListText"
+				android:textColor="@color/semitransparent_white_65"
+				app:ttf="Regular" />
 
-        </com.chess.widgets.RelLayout>
+		</com.chess.widgets.RelLayout>
 
-    </LinearLayout>
+	</LinearLayout>
 
 </ScrollView>

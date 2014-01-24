@@ -655,16 +655,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				}
 			}
 
-			// postpone start of task to avoid glitches
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					if (getActivity() == null) {
-						return;
-					}
-					getFinishedGames();
-				}
-			}, VIEW_UPDATE_DELAY);
+			getFinishedGames();
 		}
 
 		@Override

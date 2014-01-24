@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	>
+	android:layout_height="match_parent">
 
 	<!--Header with logo-->
 	<LinearLayout
 		android:id="@+id/topBarLay"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:animateLayoutChanges="true"
-		>
+		android:animateLayoutChanges="true">
 
 		<com.chess.widgets.RoboImageButton
 			android:id="@+id/centerTabBtn"
@@ -22,8 +19,7 @@
 			android:layout_weight="1"
 			style="@style/Rect.Top.Middle"
 			android:minHeight="48dip"
-			android:src="@drawable/img_new_logo_bar"
-			/>
+			android:src="@drawable/img_new_logo_bar" />
 
 	</LinearLayout>
 
@@ -32,8 +28,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/topBarLay"
-		android:layout_above="@+id/loginButtonsView"
-		/>
+		android:layout_above="@+id/loginButtonsView" />
 
 	<!--Bottom view-->
 	<com.chess.widgets.RelLayout
@@ -45,8 +40,7 @@
 		android:animateLayoutChanges="true"
 		android:paddingLeft="@dimen/common_tablet_side_padding"
 		android:paddingRight="@dimen/common_tablet_side_padding"
-		android:background="@drawable/defaultshadow_top"
-		>
+		android:background="@drawable/defaultshadow_top">
 
 		<!--Login-->
 		<com.chess.widgets.RoboButton
@@ -58,16 +52,14 @@
 			android:minHeight="@dimen/welcome_frame_login_btn_height"
 			android:layout_toLeftOf="@+id/centerPoint"
 			android:layout_marginRight="@dimen/grid_view_spacing"
-			android:layout_centerVertical="true"
-			/>
+			android:layout_centerVertical="true" />
 
 		<!--Center point-->
 		<View
 			android:id="@id/centerPoint"
 			android:layout_width="1dp"
 			android:layout_height="1dp"
-			android:layout_centerInParent="true"
-			/>
+			android:layout_centerInParent="true" />
 
 		<!--SignUp-->
 		<com.chess.widgets.RoboButton
@@ -79,8 +71,7 @@
 			android:minHeight="@dimen/welcome_frame_login_btn_height"
 			android:layout_toRightOf="@id/centerPoint"
 			android:layout_marginLeft="@dimen/grid_view_spacing"
-			android:layout_centerVertical="true"
-			/>
+			android:layout_centerVertical="true" />
 
 	</com.chess.widgets.RelLayout>
 

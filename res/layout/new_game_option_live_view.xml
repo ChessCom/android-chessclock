@@ -4,16 +4,14 @@
 	xmlns:app="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:id="@+id/liveGameOptionsMainView"
-	>
+	android:id="@+id/liveGameOptionsMainView">
 
 	<LinearLayout
 		android:id="@+id/gameOptionsLiveLinLay"
 		android:orientation="vertical"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:animateLayoutChanges="true"
-		>
+		android:animateLayoutChanges="true">
 
 		<!--Live Chess-->
 		<com.chess.widgets.LinLayout
@@ -75,8 +73,7 @@
 				android:paddingTop="8dip"
 				android:paddingBottom="8dip"
 				android:paddingLeft="@dimen/default_scr_side_padding"
-				android:paddingRight="@dimen/default_scr_side_padding"
-				/>
+				android:paddingRight="@dimen/default_scr_side_padding" />
 
 		</com.chess.widgets.RelLayout>
 
@@ -88,8 +85,7 @@
 			android:gravity="center_vertical"
 			style="@style/ListItem"
 			android:paddingLeft="@dimen/new_game_frame_padding_side"
-			android:paddingRight="@dimen/new_game_frame_padding_side"
-			>
+			android:paddingRight="@dimen/new_game_frame_padding_side">
 
 			<com.chess.widgets.RoboTextView
 				android:layout_width="0dip"
@@ -97,8 +93,7 @@
 				android:layout_weight="1"
 				android:text="@string/opponent_"
 				android:textColor="@color/semitransparent_white_65"
-				app:themeColor="true"
-				/>
+				app:themeColor="true" />
 
 			<!--Opponent Name-->
 			<com.chess.widgets.RoboTextView
@@ -110,8 +105,7 @@
 				android:gravity="right"
 				android:textColor="@color/semitransparent_white_65"
 				android:paddingRight="6dip"
-				app:themeColor="true"
-				/>
+				app:themeColor="true" />
 
 		</com.chess.widgets.LinLayout>
 
@@ -124,8 +118,7 @@
 			style="@style/ListItem"
 			android:paddingLeft="@dimen/new_game_frame_padding_side"
 			android:paddingRight="@dimen/new_game_frame_padding_side"
-			android:animateLayoutChanges="true"
-			>
+			android:animateLayoutChanges="true">
 
 			<com.chess.widgets.RoboTextView
 				android:layout_width="0dip"
@@ -133,8 +126,7 @@
 				android:layout_weight="1"
 				android:text="@string/i_play_as_"
 				android:textColor="@color/semitransparent_white_65"
-				app:themeColor="true"
-				/>
+				app:themeColor="true" />
 
 			<com.chess.widgets.RoboButton
 				android:id="@+id/myColorBtn"
@@ -144,8 +136,7 @@
 				style="@style/Button.Glassy.Small"
 				android:clickable="false"
 				android:paddingLeft="5dp"
-				android:paddingRight="5dp"
-				/>
+				android:paddingRight="5dp" />
 		</com.chess.widgets.LinLayout>
 
 		<!--Rated Game-->
@@ -164,8 +155,7 @@
 				android:layout_weight="1"
 				android:text="@string/rated_game_"
 				android:textColor="@color/semitransparent_white_65"
-				app:themeColor="true"
-				/>
+				app:themeColor="true" />
 
 			<com.chess.widgets.SwitchButton
 				android:id="@+id/ratedGameSwitch"
@@ -184,8 +174,7 @@
 			android:paddingRight="12dip"
 			android:paddingTop="12dip"
 			android:paddingBottom="7dip"
-			android:animateLayoutChanges="true"
-			>
+			android:animateLayoutChanges="true">
 
 			<com.chess.widgets.RoboTextView
 				android:id="@+id/minRatingTxt"
@@ -194,8 +183,7 @@
 				android:text="@string/rating_range"
 				android:layout_centerHorizontal="true"
 				android:textColor="@color/semitransparent_white_65"
-				app:themeColor="true"
-				/>
+				app:themeColor="true" />
 
 			<RelativeLayout
 				android:id="@+id/ratingButtonsLay"
@@ -205,8 +193,7 @@
 				android:gravity="center_vertical"
 				android:paddingTop="8dip"
 				android:paddingLeft="2dip"
-				android:paddingRight="2dip"
-				>
+				android:paddingRight="2dip">
 
 				<com.chess.widgets.RoboRadioButton
 					android:id="@+id/minRatingBtn"
@@ -214,8 +201,7 @@
 					android:layout_height="wrap_content"
 					style="@style/Button.Glassy.Small"
 					android:button="@null"
-					android:inputType="numberDecimal"
-					/>
+					android:inputType="numberDecimal" />
 
 				<com.chess.widgets.RoboTextView
 					android:id="@+id/currentRatingTxt"
@@ -225,8 +211,7 @@
 					style="@style/SettingsListText"
 					android:layout_centerInParent="true"
 					android:textSize="@dimen/big_button_text_size"
-					android:textColor="@color/semitransparent_white_65"
-					/>
+					android:textColor="@color/semitransparent_white_65" />
 
 				<com.chess.widgets.RoboRadioButton
 					android:id="@+id/maxRatingBtn"
@@ -235,8 +220,7 @@
 					android:layout_alignParentRight="true"
 					style="@style/Button.Glassy.Small"
 					android:button="@null"
-					android:inputType="numberDecimal"
-					/>
+					android:inputType="numberDecimal" />
 			</RelativeLayout>
 
 			<SeekBar
@@ -249,8 +233,7 @@
 				android:max="20"
 				android:progress="10"
 				android:layout_marginTop="11dip"
-				style="@style/RatingSeekBar"
-				/>
+				style="@style/RatingSeekBar" />
 
 		</com.chess.widgets.RelLayout>
 

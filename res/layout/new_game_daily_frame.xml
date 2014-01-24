@@ -1,71 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
 
-    <com.chess.ui.views.NotationsView
-        android:id="@+id/notationsView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/notations_view_height"
-        style="@style/NotationsStyle"
-        />
+	<com.chess.ui.views.NotationsView
+		android:id="@+id/notationsView"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/notations_view_height"
+		style="@style/NotationsStyle" />
 
-    <com.chess.ui.views.PanelInfoGameView
-        android:id="@+id/topPanelView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        custom:oneLine="@bool/one_line_for_board"
-        />
+	<com.chess.ui.views.PanelInfoGameView
+		android:id="@+id/topPanelView"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		custom:oneLine="@bool/one_line_for_board" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <!--Top Border-->
-        <FrameLayout
-            android:id="@+id/topBorder"
-            android:layout_width="match_parent"
-            android:layout_height="3px"
-            android:background="@drawable/game_board_divider"
-            />
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+		<!--Top Border-->
+		<FrameLayout
+			android:id="@+id/topBorder"
+			android:layout_width="match_parent"
+			android:layout_height="3px"
+			android:background="@drawable/game_board_divider" />
 
-        <com.chess.ui.views.chess_boards.ChessBoardDailyView
-            android:id="@+id/boardview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/topBorder"
-            android:layout_marginTop="-1px"
-            />
-        <!--Bottom Border-->
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/boardview"
-            android:background="@drawable/game_board_divider"
-            android:layout_marginTop="-1px"
-            />
+		<com.chess.ui.views.chess_boards.ChessBoardDailyView
+			android:id="@+id/boardview"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/topBorder"
+			android:layout_marginTop="-1px" />
+		<!--Bottom Border-->
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/boardview"
+			android:background="@drawable/game_board_divider"
+			android:layout_marginTop="-1px" />
 
-    </RelativeLayout>
+	</RelativeLayout>
 
-    <com.chess.ui.views.PanelInfoGameView
-        android:id="@+id/bottomPanelView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        custom:oneLine="@bool/one_line_for_board"
-        />
+	<com.chess.ui.views.PanelInfoGameView
+		android:id="@+id/bottomPanelView"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		custom:oneLine="@bool/one_line_for_board" />
 
-    <com.chess.ui.views.game_controls.ControlsDailyView
-        android:id="@+id/controlsView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+	<com.chess.ui.views.game_controls.ControlsDailyView
+		android:id="@+id/controlsView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" />
 
 </LinearLayout>

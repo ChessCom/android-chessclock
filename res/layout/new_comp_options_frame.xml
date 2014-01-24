@@ -55,8 +55,7 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:text="@string/white"
-				style="@style/SettingsListText"
-				/>
+				style="@style/SettingsListText" />
 
 			<RadioGroup
 				android:id="@+id/whiteRadioGroup"
@@ -78,8 +77,7 @@
 					android:minHeight="@dimen/big_button_height"
 					style="@style/Button.White.30"
 					custom:ttf="Icon"
-					android:button="@null"
-					/>
+					android:button="@null" />
 
 				<!--Comp-->
 				<com.chess.widgets.RoboRadioButton
@@ -115,8 +113,7 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:text="@string/black"
-				style="@style/SettingsListText"
-				/>
+				style="@style/SettingsListText" />
 
 			<RadioGroup
 				android:id="@+id/blackRadioGroup"
@@ -139,8 +136,7 @@
 					android:minHeight="@dimen/big_button_height"
 					android:gravity="center"
 					custom:ttf="Icon"
-					android:button="@null"
-					/>
+					android:button="@null" />
 
 				<!--Comp-->
 				<com.chess.widgets.RoboRadioButton
@@ -182,8 +178,7 @@
 					android:layout_height="wrap_content"
 					android:layout_centerVertical="true"
 					android:text="@string/difficulty"
-					style="@style/SettingsListText"
-					/>
+					style="@style/SettingsListText" />
 
 				<com.chess.widgets.RoboButton
 					android:id="@+id/compLevelValueBtn"
@@ -217,8 +212,7 @@
 			style="@style/LinearListItem"
 			android:paddingRight="10dip"
 			android:background="@drawable/transparent_list_item_selector"
-			android:visibility="gone"
-			>
+			android:visibility="gone">
 
 			<!--Label-->
 			<com.chess.widgets.RoboTextView
@@ -226,13 +220,11 @@
 				android:layout_height="wrap_content"
 				android:text="@string/auto_flip"
 				android:layout_weight="1"
-				style="@style/SettingsListText"
-				/>
+				style="@style/SettingsListText" />
 
 			<com.chess.widgets.SwitchButton
 				android:id="@+id/autoFlipSwitch"
-				style="@style/Switch.Default"
-				/>
+				style="@style/Switch.Default" />
 		</com.chess.widgets.LinLayout>
 
 		<!--Play Button-->

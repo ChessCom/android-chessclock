@@ -431,8 +431,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:background="@color/semitransparent_white_65"
-			android:visibility="gone"
-			>
+			android:visibility="gone">
 
 			<include layout="@layout/new_lessons_upgrade_view" />
 
@@ -443,8 +442,7 @@
 				android:textSize="33sp"
 				android:text="Demo"
 				app:ttf="Bold"
-				android:layout_centerInParent="true"
-				/>
+				android:layout_centerInParent="true" />
 		</RelativeLayout>
 
 	</FrameLayout>

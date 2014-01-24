@@ -61,8 +61,7 @@
 			android:padding="9dp"
 			android:layout_marginLeft="2dp"
 			android:layout_marginRight="2dp"
-			style="@style/Rect.Notations"
-			/>
+			style="@style/Rect.Notations" />
 
 		<!--Controls-->
 		<com.chess.ui.views.game_controls.ControlsCompView
@@ -72,8 +71,7 @@
 			android:layout_above="@+id/bottomPanelView"
 			custom:controls_style="rectDark"
 			android:layout_marginLeft="2dp"
-			android:layout_marginRight="2dp"
-			/>
+			android:layout_marginRight="2dp" />
 
 		<!--BottomPanelInfo-->
 		<com.chess.ui.views.PanelInfoGameView

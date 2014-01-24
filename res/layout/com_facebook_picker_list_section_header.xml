@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright 2010-present Facebook.
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,20 +14,19 @@
     limitations under the License.
 -->
 
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/com_facebook_picker_list_section_header"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:textStyle="bold"
-    android:background="@drawable/light_header_default"
-    android:orientation="horizontal"
-    android:gravity="left|center_vertical"
-    android:textColor="#68768a"
-    android:textSize="17sp"
-    android:paddingLeft="8dip"
-    android:paddingBottom="0px"
-    android:shadowDx="1"
-    android:shadowDy="1"
-    android:shadowRadius="1"
-    android:shadowColor="#BFFFFFFF" />
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/com_facebook_picker_list_section_header"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:textStyle="bold"
+	android:background="@drawable/light_header_default"
+	android:orientation="horizontal"
+	android:gravity="left|center_vertical"
+	android:textColor="#68768a"
+	android:textSize="17sp"
+	android:paddingLeft="8dip"
+	android:paddingBottom="0px"
+	android:shadowDx="1"
+	android:shadowDy="1"
+	android:shadowRadius="1"
+	android:shadowColor="#BFFFFFFF" />

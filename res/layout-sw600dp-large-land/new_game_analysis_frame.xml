@@ -51,8 +51,7 @@
 			android:orientation="horizontal"
 			android:layout_below="@id/topPanelView"
 			android:layout_marginLeft="2dp"
-			android:layout_marginRight="2dp"
-			>
+			android:layout_marginRight="2dp">
 
 			<!--Notations Button-->
 			<com.chess.widgets.RoboRadioButton
@@ -64,8 +63,7 @@
 				android:text="@string/ic_live"
 				android:textSize="@dimen/glyph_icon_big2"
 				style="@style/Rect.Tablet.Left"
-				android:checked="true"
-				/>
+				android:checked="true" />
 
 			<!--Chat Button-->
 			<com.chess.widgets.RoboRadioButton
@@ -76,8 +74,7 @@
 				custom:ttf="Icon"
 				android:text="@string/ic_chat"
 				android:textSize="@dimen/glyph_icon_big2"
-				style="@style/Rect.Tablet.Left"
-				/>
+				style="@style/Rect.Tablet.Left" />
 
 			<!--Notes Button-->
 			<com.chess.widgets.RoboRadioButton
@@ -89,8 +86,7 @@
 				android:text="@string/ic_edit"
 				android:textSize="@dimen/glyph_icon_big2"
 				style="@style/Rect.Tablet.Left"
-				android:visibility="gone"
-				/>
+				android:visibility="gone" />
 
 		</RadioGroup>
 
@@ -108,8 +104,7 @@
 			android:padding="9dp"
 			android:layout_marginLeft="2dp"
 			android:layout_marginRight="2dp"
-			style="@style/Rect.Notations"
-			/>
+			style="@style/Rect.Notations" />
 
 		<!--Controls-->
 		<com.chess.ui.views.game_controls.ControlsAnalysisView
@@ -119,8 +114,7 @@
 			android:layout_above="@+id/bottomPanelView"
 			custom:controls_style="rectDark"
 			android:layout_marginLeft="2dp"
-			android:layout_marginRight="2dp"
-			/>
+			android:layout_marginRight="2dp" />
 
 		<!--BottomPanelInfo-->
 		<com.chess.ui.views.PanelInfoGameView

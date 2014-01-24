@@ -8,8 +8,7 @@
 	android:paddingTop="@dimen/grid_view_spacing"
 	android:paddingLeft="22dp"
 	android:paddingRight="22dp"
-	android:paddingBottom="@dimen/grid_view_spacing"
-	>
+	android:paddingBottom="@dimen/grid_view_spacing">
 
 	<!--Board-->
 	<RelativeLayout
@@ -17,8 +16,7 @@
 		android:layout_width="@dimen/video_thumb_size"
 		android:layout_height="@dimen/video_thumb_size"
 		android:background="@drawable/img_tactics_board"
-		android:layout_marginRight="15dip"
-		>
+		android:layout_marginRight="15dip">
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/completedIconTxt"
@@ -26,8 +24,7 @@
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
 			android:text="@string/ic_lessons"
-			style="@style/GlyphIcon.RoundBack"
-			/>
+			style="@style/GlyphIcon.RoundBack" />
 
 	</RelativeLayout>
 
@@ -41,8 +38,7 @@
 		android:paddingBottom="12dp"
 		android:layout_marginTop="-3dp"
 		android:text="test"
-		custom:ttf="Bold"
-		/>
+		custom:ttf="Bold" />
 
 	<!-- Score: -->
 	<com.chess.widgets.RoboTextView
@@ -56,8 +52,7 @@
 		android:textSize="@dimen/default_text_size_small"
 		android:layout_marginRight="7dip"
 		android:layout_marginBottom="3dip"
-		android:layout_marginTop="-3dip"
-		/>
+		android:layout_marginTop="-3dip" />
 
 	<!-- Score value-->
 	<com.chess.widgets.RoboTextView
@@ -69,8 +64,7 @@
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:textSize="@dimen/default_text_size_small"
 		custom:ttf="Bold"
-		android:text="1200"
-		/>
+		android:text="1200" />
 
 	<!-- Attempts: -->
 	<com.chess.widgets.RoboTextView
@@ -84,8 +78,7 @@
 		android:textSize="@dimen/default_text_size_small"
 		android:layout_marginRight="7dip"
 		android:layout_marginBottom="3dip"
-		android:layout_marginTop="-3dip"
-		/>
+		android:layout_marginTop="-3dip" />
 
 	<!-- Attempts value-->
 	<com.chess.widgets.RoboTextView
@@ -97,8 +90,7 @@
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:textSize="@dimen/default_text_size_small"
 		custom:ttf="Bold"
-		android:text="1200"
-		/>
+		android:text="1200" />
 
 	<!-- Rating: -->
 	<com.chess.widgets.RoboTextView
@@ -112,8 +104,7 @@
 		android:textSize="@dimen/default_text_size_small"
 		android:layout_marginRight="7dip"
 		android:layout_marginBottom="3dip"
-		android:layout_marginTop="-3dip"
-		/>
+		android:layout_marginTop="-3dip" />
 
 	<!-- Rating value-->
 	<com.chess.widgets.RoboTextView
@@ -125,7 +116,6 @@
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:textSize="@dimen/default_text_size_small"
 		android:text="1200"
-		custom:ttf="Bold"
-		/>
+		custom:ttf="Bold" />
 
 </RelativeLayout>

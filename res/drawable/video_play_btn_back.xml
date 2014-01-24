@@ -1,54 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--Border-->
-    <item >
-        <shape android:shape="oval">
-            <solid android:color="@color/thumbnail_play_border_1"/>
-            <size
-                android:width="@dimen/video_play_btn_back_ring_size"
-                android:height="@dimen/video_play_btn_back_ring_size"
-                />
+	<!--Border-->
+	<item>
+		<shape android:shape="oval">
+			<solid android:color="@color/thumbnail_play_border_1" />
+			<size
+				android:width="@dimen/video_play_btn_back_ring_size"
+				android:height="@dimen/video_play_btn_back_ring_size" />
 
-        </shape>
-    </item>
+		</shape>
+	</item>
 
-    <!--Inner Ring-->
-    <item
-        android:top="1dip"
-        android:left="1dip"
-        android:right="1dip"
-        android:bottom="1dip"
-        >
-        <shape android:shape="oval">
-            <solid android:color="@color/thumbnail_play_border_2"/>
-        </shape>
-    </item>
+	<!--Inner Ring-->
+	<item
+		android:top="1dip"
+		android:left="1dip"
+		android:right="1dip"
+		android:bottom="1dip">
+		<shape android:shape="oval">
+			<solid android:color="@color/thumbnail_play_border_2" />
+		</shape>
+	</item>
 
-    <!--Border + 5px-->
-    <item
-        android:top="4dip"
-        android:left="4dip"
-        android:right="4dip"
-        android:bottom="4dip"
-        >
-        <shape android:shape="oval">
-            <solid android:color="@color/thumbnail_play_border_1"/>
+	<!--Border + 5px-->
+	<item
+		android:top="4dip"
+		android:left="4dip"
+		android:right="4dip"
+		android:bottom="4dip">
+		<shape android:shape="oval">
+			<solid android:color="@color/thumbnail_play_border_1" />
 
-        </shape>
-    </item>
+		</shape>
+	</item>
 
 
-    <!--Border + 2px-->
-    <item
-        android:top="5dip"
-        android:left="5dip"
-        android:right="5dip"
-        android:bottom="5dip"
-        >
-        <shape android:shape="oval">
-            <solid android:color="@color/thumbnail_play_border_inner"/>
-        </shape>
-    </item>
+	<!--Border + 2px-->
+	<item
+		android:top="5dip"
+		android:left="5dip"
+		android:right="5dip"
+		android:bottom="5dip">
+		<shape android:shape="oval">
+			<solid android:color="@color/thumbnail_play_border_inner" />
+		</shape>
+	</item>
 
 </layer-list>

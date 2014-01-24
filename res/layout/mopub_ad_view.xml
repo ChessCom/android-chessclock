@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/bannerUpgradeView"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal">
+	android:id="@+id/bannerUpgradeView"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal">
 
-    <com.chess.widgets.RoboButton
-            android:id="@+id/upgradeBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Button.Upgrade"
-            android:text="@string/upgrade_my_account"
-            android:layout_marginBottom="0dip"
-            android:visibility="gone"/>
+	<com.chess.widgets.RoboButton
+		android:id="@+id/upgradeBtn"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		style="@style/Button.Upgrade"
+		android:text="@string/upgrade_my_account"
+		android:layout_marginBottom="0dip"
+		android:visibility="gone" />
 
-    <LinearLayout
-            android:id="@+id/mopubAdLayout"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:visibility="gone"
-            android:orientation="horizontal"/>
+	<LinearLayout
+		android:id="@+id/mopubAdLayout"
+		android:layout_width="match_parent"
+		android:layout_height="50dp"
+		android:visibility="gone"
+		android:orientation="horizontal" />
 
 </LinearLayout>

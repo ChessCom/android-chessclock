@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res/com.chess"
 	android:orientation="vertical"
 	android:id="@+id/boardFrame"
 	android:layout_width="match_parent"
@@ -16,7 +15,7 @@
 		android:minHeight="48dip"
 		android:textColor="@color/semitransparent_white_65"
 		android:textSize="16sp"
-		android:paddingLeft="8dp"/>
+		android:paddingLeft="8dp" />
 
 	<RelativeLayout
 		android:layout_width="match_parent"
@@ -50,7 +49,6 @@
 	<com.chess.widgets.RoboListView
 		android:id="@+id/listView"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		/>
+		android:layout_height="wrap_content" />
 
 </LinearLayout>

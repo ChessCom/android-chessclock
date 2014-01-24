@@ -11,8 +11,7 @@
 	android:paddingBottom="1dip"
 	android:baselineAligned="false"
 	android:background="@drawable/transparent_list_item_selector"
-	android:gravity="center_vertical"
-	>
+	android:gravity="center_vertical">
 
 	<!--48 % of screen width-->
 	<LinearLayout

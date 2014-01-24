@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	>
+	android:layout_height="match_parent">
 
 	<!--Header with logo-->
 	<LinearLayout
 		android:id="@+id/topBarLay"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:animateLayoutChanges="true"
-		>
+		android:animateLayoutChanges="true">
 
 		<com.chess.widgets.RoboImageButton
 			android:id="@+id/centerTabBtn"
@@ -22,8 +19,7 @@
 			android:layout_weight="1"
 			style="@style/Rect.Top.Middle"
 			android:minHeight="48dip"
-			android:src="@drawable/img_new_logo_bar"
-			/>
+			android:src="@drawable/img_new_logo_bar" />
 
 	</LinearLayout>
 
@@ -33,14 +29,12 @@
 		android:layout_height="match_parent"
 		android:layout_below="@id/topBarLay"
 		android:animateLayoutChanges="true"
-		android:visibility="gone"
-		>
+		android:visibility="gone">
 
 		<FrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:background="@color/sliding_menu_overlay"
-			/>
+			android:background="@color/sliding_menu_overlay" />
 
 		<!--Shadow-->
 		<ImageView
@@ -48,8 +42,7 @@
 			android:layout_height="match_parent"
 			android:src="@drawable/defaultshadow"
 			android:layout_alignParentRight="true"
-			android:contentDescription="@string/image"
-			/>
+			android:contentDescription="@string/image" />
 
 		<!--Logo-->
 		<ImageView
@@ -72,8 +65,7 @@
 			android:minHeight="@dimen/big_orange_button_height"
 			android:layout_below="@id/tourLogoImg"
 			android:layout_marginLeft="@dimen/default_scr_side_padding"
-			android:layout_marginRight="@dimen/default_scr_side_padding"
-			/>
+			android:layout_marginRight="@dimen/default_scr_side_padding" />
 
 		<!--SignUp-->
 		<com.chess.widgets.RoboButton
@@ -86,8 +78,7 @@
 			android:layout_below="@id/loginBtn"
 			android:minHeight="@dimen/big_orange_button_height"
 			android:layout_marginLeft="@dimen/default_scr_side_padding"
-			android:layout_marginRight="@dimen/default_scr_side_padding"
-			/>
+			android:layout_marginRight="@dimen/default_scr_side_padding" />
 
 	</com.chess.widgets.RelLayout>
 
@@ -96,7 +87,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_toRightOf="@id/loginButtonsView"
-		android:layout_below="@id/topBarLay"
-		/>
+		android:layout_below="@id/topBarLay" />
 
 </RelativeLayout>

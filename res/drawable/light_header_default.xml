@@ -1,40 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--Top Border-->
-    <item>
-        <shape >
-            <solid android:color="@color/light_header_back_border_top"/>
-        </shape>
-    </item>
-    <!--Top Border-->
-    <item
-        android:top="1dip"
-        >
-        <shape >
-            <solid android:color="@color/light_header_back_border_top_1"/>
-        </shape>
-    </item>
+	<!--Top Border-->
+	<item>
+		<shape>
+			<solid android:color="@color/light_header_back_border_top" />
+		</shape>
+	</item>
+	<!--Top Border-->
+	<item android:top="1dip">
+		<shape>
+			<solid android:color="@color/light_header_back_border_top_1" />
+		</shape>
+	</item>
 
-    <!--Bottom Border-->
-    <item
-        android:top="2dip"
-        >
-        <shape >
-            <solid android:color="@color/light_header_back_border_bot"/>
-        </shape>
-    </item>
+	<!--Bottom Border-->
+	<item android:top="2dip">
+		<shape>
+			<solid android:color="@color/light_header_back_border_bot" />
+		</shape>
+	</item>
 
-    <!--Button-->
-    <item
-        android:bottom="1dip"
-        android:top="2dip"
-        >
-        <shape >
-            <solid android:color="@color/light_header_back" />
-            <size android:height="@dimen/default_header_height"/>
-        </shape>
-    </item>
+	<!--Button-->
+	<item
+		android:bottom="1dip"
+		android:top="2dip">
+		<shape>
+			<solid android:color="@color/light_header_back" />
+			<size android:height="@dimen/default_header_height" />
+		</shape>
+	</item>
 
 
 </layer-list>

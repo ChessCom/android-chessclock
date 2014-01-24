@@ -2,23 +2,21 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--Glow-->
-    <item>
-        <shape android:dither="true">
-            <gradient
-                android:centerX="0.5"
-                android:centerY="0.5"
-                android:startColor="@color/new_upgrade_menu_glow_1"
-                android:centerColor="@color/new_upgrade_menu_glow_2"
-                android:endColor="@color/new_upgrade_menu_glow_3"
-                android:gradientRadius="33"
-                android:type="radial" />
+	<!--Glow-->
+	<item>
+		<shape android:dither="true">
+			<gradient
+				android:centerX="0.5"
+				android:centerY="0.5"
+				android:startColor="@color/new_upgrade_menu_glow_1"
+				android:centerColor="@color/new_upgrade_menu_glow_2"
+				android:endColor="@color/new_upgrade_menu_glow_3"
+				android:gradientRadius="33"
+				android:type="radial" />
 
-        </shape>
-    </item>
+		</shape>
+	</item>
 
-    <!--Icon-->
-    <item
-        android:drawable="@drawable/ic_nav_upgrade"
-        />
+	<!--Icon-->
+	<item android:drawable="@drawable/ic_nav_upgrade" />
 </layer-list>

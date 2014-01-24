@@ -17,83 +17,84 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-	<item android:id="@+id/menu_search"
+	<item
+		android:id="@+id/menu_search"
 		android:title="@string/search"
 		android:icon="@drawable/ic_action_search"
 		android:orderInCategory="0"
 		android:showAsAction="always|collapseActionView"
-		android:actionViewClass="android.widget.SearchView"
-		/>
+		android:actionViewClass="android.widget.SearchView" />
 
-	<item android:id="@+id/menu_add"
+	<item
+		android:id="@+id/menu_add"
 		android:title="@string/add"
 		android:icon="@drawable/ic_action_add"
 		android:orderInCategory="1"
 		android:showAsAction="always" />
 
 
-	<item android:id="@+id/menu_notifications"
+	<item
+		android:id="@+id/menu_notifications"
 		android:title="@string/notifications"
 		android:icon="@drawable/ic_action_notifications"
 		android:orderInCategory="2"
 		android:showAsAction="always" />
 
-	<item android:id="@+id/menu_games"
+	<item
+		android:id="@+id/menu_games"
 		android:title="@string/games"
 		android:orderInCategory="3"
 		android:icon="@drawable/ic_action_games"
-		android:showAsAction="always"
-		/>
+		android:showAsAction="always" />
 
-	<item android:id="@+id/menu_share"
+	<item
+		android:id="@+id/menu_share"
 		android:title="@string/share"
 		android:orderInCategory="4"
 		android:icon="@drawable/ic_action_share"
-		android:showAsAction="always"
-		/>
+		android:showAsAction="always" />
 
-	<item android:id="@+id/menu_cancel"
+	<item
+		android:id="@+id/menu_cancel"
 		android:title="@string/cancel"
 		android:orderInCategory="5"
 		android:icon="@drawable/ic_action_cancel"
-		android:showAsAction="always"
-		/>
+		android:showAsAction="always" />
 
-	<item android:id="@+id/menu_accept"
+	<item
+		android:id="@+id/menu_accept"
 		android:title="@string/accept"
 		android:orderInCategory="6"
 		android:icon="@drawable/ic_action_accept"
-		android:showAsAction="always"
-		/>
+		android:showAsAction="always" />
 
-	<item android:id="@+id/menu_edit"
+	<item
+		android:id="@+id/menu_edit"
 		android:title="@string/edit"
 		android:orderInCategory="7"
 		android:icon="@drawable/ic_action_edit"
-		android:showAsAction="always"
-		/>
+		android:showAsAction="always" />
 
-	<item android:id="@+id/menu_message"
+	<item
+		android:id="@+id/menu_message"
 		android:title="@string/edit"
 		android:orderInCategory="8"
 		android:icon="@drawable/ic_action_message"
-		android:showAsAction="always"
-		/>
+		android:showAsAction="always" />
 
-	<item android:id="@+id/menu_challenge"
+	<item
+		android:id="@+id/menu_challenge"
 		android:title="@string/edit"
 		android:orderInCategory="9"
 		android:icon="@drawable/ic_action_challenge"
-		android:showAsAction="always"
-		/>
+		android:showAsAction="always" />
 
-	<item android:id="@+id/menu_search_btn"
+	<item
+		android:id="@+id/menu_search_btn"
 		android:title="@string/search"
 		android:icon="@drawable/ic_action_search"
 		android:orderInCategory="1"
-		android:showAsAction="always"
-		/>
-
+		android:showAsAction="always" />
 
 
 </menu>

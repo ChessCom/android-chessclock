@@ -15,12 +15,12 @@
   -->
 
 <resources>
-    <item type="id" name="actionbar_compat" />
-    <item type="id" name="actionbar_compat_title" />
-    <item type="id" name="actionbar_compat_item_search_panel" />
-    <item type="id" name="actionbar_compat_item_search_edit" />
-    <item type="id" name="actionbar_compat_item_search_button" />
-    <item type="id" name="actionbar_compat_item_refresh" />
-    <item type="id" name="menu_refresh" />
-    <item type="id" name="done" />
+	<item type="id" name="actionbar_compat" />
+	<item type="id" name="actionbar_compat_title" />
+	<item type="id" name="actionbar_compat_item_search_panel" />
+	<item type="id" name="actionbar_compat_item_search_edit" />
+	<item type="id" name="actionbar_compat_item_search_button" />
+	<item type="id" name="actionbar_compat_item_refresh" />
+	<item type="id" name="menu_refresh" />
+	<item type="id" name="done" />
 </resources>
