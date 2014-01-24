@@ -13,7 +13,6 @@ import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
 import com.chess.live.client.*;
-import com.chess.live.client.impl.LiveChessClientImpl;
 import com.chess.live.rules.GameResult;
 import com.chess.live.util.GameRatingClass;
 import com.chess.live.util.GameTimeConfig;
@@ -45,6 +44,7 @@ public class LccHelper {
 	public static final Object CLIENT_SYNC_LOCK = new Object();
 	public static final Object GAME_SYNC_LOCK = new Object();
 	public static final int FINISH_LCC_CONNECT_ATTEMPTS_DELAY = 20 * 1000;
+	public static final boolean RESET_LCC_LISTENERS = true;
 
 	private final LccChatListener chatListener;
 	private final LccConnectionListener connectionListener;
@@ -1060,7 +1060,7 @@ public class LccHelper {
 		protected Void doInBackground(Void... voids) {
 			synchronized (CLIENT_SYNC_LOCK) {
 				if (lccClient != null) {
-					lccClient.disconnect();
+					lccClient.disconnect(RESET_LCC_LISTENERS);
 					resetClient();
 				}
 			}
@@ -1075,7 +1075,7 @@ public class LccHelper {
 			synchronized (CLIENT_SYNC_LOCK) {
 				if (lccClient != null) {
 					LogMe.dl(TAG, "LEAVE: lccClient=" + getClientId());
-					((LiveChessClientImpl)lccClient).leave();
+					lccClient.leave(RESET_LCC_LISTENERS);
 					resetClient();
 				}
 			}
