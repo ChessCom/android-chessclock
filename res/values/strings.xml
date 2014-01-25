@@ -516,7 +516,7 @@
 	<string name="views_arg">%s views</string>
 
 	<string name="game_is_over">Game Over</string>
-	<string name="game_over_vs">Game Over vs. %@";</string>
+	<string name="game_over_vs">Game Over vs %s</string>
 	<string name="switch_sides">Switch Sides</string>
 
 	<!--Moves Explorer-->

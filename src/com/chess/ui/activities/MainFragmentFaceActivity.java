@@ -156,28 +156,28 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				showActionBar = true;
 
 			} else if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
-				long tokenSaveTime = getAppData().getUserTokenSaveTime();
-				long currentTime = System.currentTimeMillis();
-
-				if (currentTime - tokenSaveTime > AppConstants.USER_TOKEN_EXPIRE_TIME) {
-					String password = getAppData().getPassword(); // TODO create unified login method
-					if (!TextUtils.isEmpty(password)) {
-
-						LoadItem loadItem = new LoadItem();
-						loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
-						loadItem.setRequestMethod(RestHelper.POST);
-						loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-						loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getMeUsername());
-						loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
-						loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_USERNAME);
-						loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
-
-						new RequestJsonTask<LoginItem>(new CommonLogicActivity.LoginUpdateListener()).executeTask(loadItem);
-					} else if (!TextUtils.isEmpty(getAppData().getFacebookToken())) {
-						String accessToken = getAppData().getFacebookToken();
-						loginWithFacebook(accessToken, new CommonLogicActivity.LoginUpdateListener(accessToken));
-					}
-				}
+//				long tokenSaveTime = getAppData().getUserTokenSaveTime(); // don't re-login now because we handle invalid token inside of each request
+//				long currentTime = System.currentTimeMillis();
+//
+//				if (currentTime - tokenSaveTime > AppConstants.USER_TOKEN_EXPIRE_TIME) {
+//					String password = getAppData().getPassword();
+//					if (!TextUtils.isEmpty(password)) {
+//
+//						LoadItem loadItem = new LoadItem();
+//						loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
+//						loadItem.setRequestMethod(RestHelper.POST);
+//						loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
+//						loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getMeUsername());
+//						loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
+//						loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_USERNAME);
+//						loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
+//
+//						new RequestJsonTask<LoginItem>(new CommonLogicActivity.LoginUpdateListener()).executeTask(loadItem);
+//					} else if (!TextUtils.isEmpty(getAppData().getFacebookToken())) {
+//						String accessToken = getAppData().getFacebookToken();
+//						loginWithFacebook(accessToken, new CommonLogicActivity.LoginUpdateListener(accessToken));
+//					}
+//				}
 
 				// set the Above View
 				switchFragment(new HomeTabsFragment());

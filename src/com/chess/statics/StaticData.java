@@ -7,6 +7,10 @@ package com.chess.statics;
  * @created at: 20.03.12 5:36
  */
 public class StaticData {
+
+	public static final boolean USE_SWITCH_API = false;
+//	public static final boolean USE_SWITCH_API = com.chess.BuildConfig.DEBUG;
+
 	/*Result constants*/
 	public static final int NO_NETWORK = -4;
 	public static final int VALUE_NOT_EXIST = -3;
@@ -74,6 +78,4 @@ public class StaticData {
 	public static final String LOCALE_EN = "en";
 	public static final boolean USE_TABLETS = true;
 	public static final String GIF = ".gif";
-	public static final boolean USE_SWITCH_API = false;
-//	public static final boolean USE_SWITCH_API = com.chess.BuildConfig.DEBUG;
 }

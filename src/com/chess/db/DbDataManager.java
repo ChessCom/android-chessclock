@@ -17,6 +17,7 @@ import com.chess.backend.entity.api.stats.Tournaments;
 import com.chess.backend.entity.api.stats.UserStatsData;
 import com.chess.backend.entity.api.themes.*;
 import com.chess.backend.gcm.*;
+import com.chess.statics.AppConstants;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 
@@ -953,7 +954,7 @@ public class DbDataManager {
 			if (cursor != null) {
 				cursor.close();
 			}
-			return 0;
+			return AppConstants.DEFAULT_PLAYER_RATING;
 		}
 	}
 

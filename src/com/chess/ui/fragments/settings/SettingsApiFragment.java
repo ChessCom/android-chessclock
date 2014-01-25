@@ -137,4 +137,10 @@ public class SettingsApiFragment extends LiveBaseFragment implements SwitchButto
 
 		getAppData().setApiRoute(RestHelper.HOST);
 	}
+
+	@Override
+	protected void afterLogin() {
+		super.afterLogin();
+		backToHomeFragment();
+	}
 }

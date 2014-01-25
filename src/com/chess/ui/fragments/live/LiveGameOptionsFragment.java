@@ -1,11 +1,7 @@
 package com.chess.ui.fragments.live;
 
 import android.animation.LayoutTransition;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,12 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.GetAndSaveUserStats;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
-import com.chess.model.SelectionItem;
-import com.chess.statics.IntentConstants;
+import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -46,7 +39,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	private static final int MIN_RATING_MAX = 0;
 	private static final int MAX_RATING_MIN = 0;
 	private static final int MAX_RATING_MAX = 1000;
-	private static final long SEEK_BAR_HIDE_DELAY = 5 * 1000;
+	private static final long SEEK_BAR_HIDE_DELAY = 7 * 1000;
 	public static final int MAX_PROGRESS = 20;
 
 	private LiveGameConfig.Builder gameConfigBuilder;
@@ -54,7 +47,6 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	private RoboRadioButton maxRatingBtn;
 	private SwitchButton ratedGameSwitch;
 
-	private List<SelectionItem> friendsList;
 	private List<View> liveOptionsGroup;
 	private HashMap<Integer, Button> liveButtonsModeMap;
 	private boolean liveOptionsVisible;
@@ -66,9 +58,6 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	private int lightningRating;
 
 	private SeekBar ratingSeekBar;
-	private IntentFilter statsUpdateFilter;
-	private StatsSavedReceiver statsSavedReceiver;
-	private boolean statsLoaded;
 	private ViewGroup ratingView;
 	private TextView currentRatingTxt;
 	private TextView opponentNameTxt;
@@ -110,47 +99,13 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 		gameConfigBuilder = getAppData().getLiveGameConfigBuilder();
 
-		{ // load friends from DB
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(), DbScheme.Tables.FRIENDS));
-
-			friendsList = new ArrayList<SelectionItem>();
-			friendsList.add(new SelectionItem(null, getString(R.string.random)));
-			boolean opponentFound = false;
-			if (cursor != null && cursor.moveToFirst()) {
-				do {
-					String friendName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
-					friendsList.add(new SelectionItem(null, friendName));
-					if (friendName.equals(opponentName)) {
-						opponentFound = true;
-					}
-				} while (cursor.moveToNext());
-			}
-			if (cursor != null) {
-				cursor.close();
-			}
-
-			friendsList.get(0).setChecked(true);
-
-			if (!opponentFound) {// add manually opponent if it wasn't found
-				friendsList.add(new SelectionItem(null, opponentName));
-			}
-		}
-
 		standardRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
 		blitzRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), getUsername());
 		lightningRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), getUsername());
 
-		if (standardRating == 0 || blitzRating == 0 || lightningRating == 0 && !statsLoaded) { // if stats were not save
-			showLoadingProgress(true);
-
-			getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
-
-			statsUpdateFilter = new IntentFilter(IntentConstants.STATS_SAVED);
-
-			statsLoaded = false;
-		} else {
-			statsLoaded = true;
-		}
+		standardRating = standardRating == 0 ? AppConstants.DEFAULT_PLAYER_RATING : standardRating;
+		blitzRating = blitzRating == 0 ? AppConstants.DEFAULT_PLAYER_RATING : blitzRating;
+		lightningRating = lightningRating == 0 ? AppConstants.DEFAULT_PLAYER_RATING : lightningRating;
 	}
 
 	@Override
@@ -169,19 +124,12 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	public void onResume() {
 		super.onResume();
 
-		if (statsUpdateFilter != null) {
-			statsSavedReceiver = new StatsSavedReceiver();
-			registerReceiver(statsSavedReceiver, statsUpdateFilter);
-		}
+		updateRatingRange();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-
-		if (statsUpdateFilter != null) {
-			unRegisterMyReceiver(statsSavedReceiver);
-		}
 
 		// save config
 		getAppData().setLiveGameConfigBuilder(gameConfigBuilder);
@@ -191,21 +139,6 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(MODE, positionMode);
-	}
-
-	private class StatsSavedReceiver extends BroadcastReceiver {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			statsLoaded = true;
-			showLoadingProgress(false);
-
-			standardRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), getUsername());
-			blitzRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), getUsername());
-			lightningRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), getUsername());
-
-			updateRatingRange();
-		}
 	}
 
 	private String getLiveModeButtonLabel(String label) {
@@ -351,9 +284,24 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			ratedGameSwitch.toggle();
 		} else if (view.getId() == R.id.minRatingBtn) {
 			ratingSeekBar.setVisibility(View.VISIBLE);
+
+			// set progress bar to exact position
+			int value = gameConfigBuilder.getMinRatingOffset();
+			int factor = (MIN_RATING_MAX - MIN_RATING_MIN) / MAX_PROGRESS;
+			int progress = (value - 1000) / (-factor);
+
+			ratingSeekBar.setProgress(progress);
+
 			handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
 		} else if (view.getId() == R.id.maxRatingBtn) {
 			ratingSeekBar.setVisibility(View.VISIBLE);
+
+			// set progress bar to exact position
+			int value = gameConfigBuilder.getMaxRatingOffset();
+			int factor = (MIN_RATING_MAX - MIN_RATING_MIN) / MAX_PROGRESS;
+			int progress = value / factor;
+
+			ratingSeekBar.setProgress(progress);
 			handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
 		} else if (view.getId() == R.id.opponentView) {
 			getActivityFace().changeRightFragment(FriendsRightFragment.createInstance(FriendsRightFragment.LIVE_OPPONENT_REQUEST));
@@ -451,15 +399,6 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 					int minRatingOffset = gameConfigBuilder.getMinRatingOffset();
 					int maxRatingOffset = gameConfigBuilder.getMaxRatingOffset();
-
-					int rating = 0;
-					if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
-						rating = standardRating;
-					} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
-						rating = blitzRating;
-					} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
-						rating = lightningRating;
-					}
 
 					if (minRatingOffset == 0) { // first time
 						minRatingOffset = LiveGameConfig.RATING_STEP;

@@ -21,6 +21,7 @@ import com.chess.backend.entity.api.daily_games.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
@@ -56,7 +57,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 	private static final int ID_CHESS = 0;
 	private static final int ID_CHESS_960 = 1;
 	private static final String OPTION_SELECTION_TAG = "options selection popup";
-	private static final long SEEK_BAR_HIDE_DELAY = 5 * 1000;
+	private static final long SEEK_BAR_HIDE_DELAY = 7 * 1000;
 	public static final int MAX_PROGRESS = 20;
 
 	private DailyGamesButtonsAdapter dailyGamesButtonsAdapter;
@@ -119,6 +120,10 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 
 		chessRating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS.ordinal(), username);
 		chess960Rating = DbDataManager.getUserRatingFromUsersStats(getActivity(), DbScheme.Tables.USER_STATS_DAILY_CHESS960.ordinal(), username);
+
+		chessRating = chessRating == 0 ? AppConstants.DEFAULT_PLAYER_RATING : chessRating;
+		chess960Rating = chess960Rating == 0 ? AppConstants.DEFAULT_PLAYER_RATING : chess960Rating;
+
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 	}
 
@@ -240,11 +245,6 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-		int rating = chessRating;
-		if (gameConfigBuilder.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			rating = chess960Rating;
-		}
-
 		TextView checkedButton;
 
 		float factor;
@@ -287,8 +287,6 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 		handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
 	}
 
-
-
 	private class DailyGameButtonItem {
 		public boolean checked;
 		public int days;
@@ -319,9 +317,24 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 			ratedGameSwitch.toggle();
 		} else if (view.getId() == R.id.minRatingBtn) {
 			ratingSeekBar.setVisibility(View.VISIBLE);
+
+			// set progress bar to exact position
+			int value = gameConfigBuilder.getMinRatingOffset();
+			int factor = (MIN_RATING_MAX - MIN_RATING_MIN) / MAX_PROGRESS;
+			int progress = (value - 1000) / (-factor);
+
+			ratingSeekBar.setProgress(progress);
+
 			handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
 		} else if (view.getId() == R.id.maxRatingBtn) {
 			ratingSeekBar.setVisibility(View.VISIBLE);
+
+			// set progress bar to exact position
+			int value = gameConfigBuilder.getMaxRatingOffset();
+			int factor = (MIN_RATING_MAX - MIN_RATING_MIN) / MAX_PROGRESS;
+			int progress = value / factor;
+
+			ratingSeekBar.setProgress(progress);
 			handler.postDelayed(hideSeekBarRunnable, SEEK_BAR_HIDE_DELAY);
 		} else if (view.getId() == R.id.opponentView) {
 			getActivityFace().changeRightFragment(FriendsRightFragment.createInstance(FriendsRightFragment.DAILY_OPPONENT_REQUEST));

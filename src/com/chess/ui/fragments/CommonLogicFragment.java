@@ -892,7 +892,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		preferencesEditor.putString(PASSWORD, Symbol.EMPTY);
 		preferencesEditor.putString(USER_TOKEN, Symbol.EMPTY);
-		preferencesEditor.putLong(USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();
 
 		AppUtils.cancelNotifications(getActivity());

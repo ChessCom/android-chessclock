@@ -405,9 +405,12 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 			if (liveRatingTxt == null) { // if we have closed this view
 				return;
 			}
-
-			liveRatingTxt.setText(String.valueOf(returnedObj.getData().getLiveStandard().getRating()));
-			dailyRatingTxt.setText(String.valueOf(returnedObj.getData().getDailyChess().getRating()));
+			int liveRating = returnedObj.getData().getLiveStandard().getRating();
+			liveRating = liveRating == 0 ? AppConstants.DEFAULT_PLAYER_RATING : liveRating;
+			int dailyRating = returnedObj.getData().getDailyChess().getRating();
+			dailyRating = dailyRating == 0 ? AppConstants.DEFAULT_PLAYER_RATING : dailyRating;
+			liveRatingTxt.setText(String.valueOf(liveRating));
+			dailyRatingTxt.setText(String.valueOf(dailyRating));
 		}
 	}
 
