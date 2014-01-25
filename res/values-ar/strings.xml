@@ -19,7 +19,7 @@
 	<string name="computer">الكمبيوتر</string>
 	<string name="thinking_">يفكر…</string>
 	<string name="open_challenges">التحديات المفتوحة</string>
-	<string name="challenge_friend">تحدّى صديق</string>
+	<string name="challenge_friend">تحدي صديق</string>
 	<string name="challenge_created">تم انشاء التحدي</string>
 	<string name="you_will_notified_when_game_starts">سوف يتم تنبيهك عندما تبدأ المباراة</string>
 	<string name="challenge_sent">تم ارسال طلب التحدى</string>
@@ -98,6 +98,8 @@
 	<string name="you_are_offline">أنت الان فى وضعية غير متصل</string>
 	<string name="correct">صحيح</string>
 	<string name="incorrect">غير صحيح</string>
+	<string name="incorrect_move">خطوة غير صحيحية</string>
+	<string name="puzzle_solved">تم حل الغز!</string>
 	<string name="upgrade_for_unlimited_arg">الترقية الى الغير محدودة %s!</string>
 	<string name="hours">ساعات</string>
 	<string name="hour">ساعة</string>
@@ -129,26 +131,25 @@
 	<string name="unrated">غير مصنّفة</string>
 	<string name="you_play">أنت تلعب بـ:</string>
 	<string name="chess_com">شطرنج دوت كوم</string>
-	<string name="your_move">"إنه دورك"</string>
-	<string name="your_turn_in_game_with">فى مبأراة مع %1$s%2$s</string>
-	<string name="won_on_time">%s فاز بالوقت</string>
-	<string name="won_by_resignation">%s فاز بانسحاب الخصم</string>
-	<string name="won_by_checkmate">%s فاز بالـ \"كش مات\"</string>
+	<string name="your_move_vs">نقلتك أمام %1$s , %2$s</string>
+	<string name="won_on_time">%s فاز عن طريق الوقت</string>
+	<string name="won_by_resignation">%s فاز عن طريق انسحاب الخصم</string>
+	<string name="won_by_checkmate">%s يفوز بنقلة كش ميت</string>
 	<string name="game_over">انتهت المباراة</string>
 	<string name="reconnecting_">معاودة الاتصال…</string>
 	<string name="another_login_detected">عفوا! لقد سجلت دخولك في مكان آخر.</string>
-	<string name="game_end_title_draw">انتهت المباراة بالتعادل</string>
-	<string name="game_draw_by_repetition">المباراة تعادل بالتكرار</string>
-	<string name="game_drawn_by_agreement">المباراة تعادل بموافقة الطرفين</string>
-	<string name="game_drawn_by_stalemate">المباراة تعادل بالجمود</string>
-	<string name="game_drawn_insufficient_material">انتهت المباراة بالتعادل لعدم كفاية القطع</string>
-	<string name="game_drawn_by_fifty_move_rule">انتهت المباراة بالتعادل بقاعدة الـ 50نقلة</string>
-	<string name="won_game_abandoned">فاز - تخلى عن المباراة</string>
+	<string name="game_end_title_draw">تعادل (½–½)</string>
 	<string name="game_aborted">المباراة ألغيت</string>
 	<string name="new_game">مباراة جديدة</string>
+	<string name="new_game_arg">مباراة جديدة (%s)</string>
 	<string name="language">اللغة</string>
 	<string name="black_wins">الاسود يفوز(0-1)</string>
 	<string name="white_wins">الأبيض يفوز (1–0)</string>
+	<string name="game_draw_by_repetition">تعادل بالتكرار</string>
+	<string name="game_drawn_by_agreement">تعادل بالاتفاق</string>
+	<string name="game_drawn_by_stalemate">تعادل بالجمود</string>
+	<string name="game_drawn_insufficient_material">تعادل لعدم كفاية القطع</string>
+	<string name="game_drawn_by_fifty_move_rule">تعادل بقاعدة الـ 50 نقلة</string>
 	<string name="draw_by_stalemate">تعادل بالجمود (½–½)</string>
 	<string name="draw_by_3fold_repetition">التعادل عن طريق التكرار لثلاث مرات (½–½)</string>
 	<string name="rematch">إعادة المباراة</string>
@@ -168,7 +169,7 @@
 	<string name="or_use_your_email">أو استخدم عنوان بريدك الالكتروني:</string>
 	<string name="by_signing_up_accept_mobile">عن طريق التسجيل، أنا أوافق</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> شروط الخدمة</a>]]></string>
-	<string name="create_chess_profile">قم بانشاء ملف التعريف الخاص بك</string>
+	<string name="create_chess_profile">مرحبآ! قم بأنشاء ملف تعريف الشطرنج الخاص بك</string>
 	<string name="daily">يومي</string>
 	<string name="improve_game_with_lessons">قم بتحسين أداءك للمباريات مع \"دروس غير محدودة\"</string>
 	<string name="improve_game_with_videos">قم بتحسين أداءك للمباريات مع \"مقاطع فيديو غير محدودة\"</string>
@@ -180,8 +181,10 @@
 	<string name="download_complete">إكتمل التنزيل</string>
 	<string name="empty"></string>
 	<string name="difficulty">الصعوبة</string>
+	<string name="easiest">الأسهل</string>
+	<string name="hardest">الأصعب</string>
 	<string name="vs">ضد</string>
-	<string name="leave_vacation_q">إيقاف الأجازة؟</string>
+	<string name="leave_vacation_q">تعطيل الأجازة؟</string>
   <string name="sign_up_with_facebook"><b>قم بالتسجيل</b>عن طريق<b>فيسبوك</b>
 </string>
 	<string name="finished_games">مباريات منتهية</string>
@@ -194,9 +197,9 @@
 	<string name="photo">صورة</string>
 	<string name="vs_computer">ضد الكمبيوتر</string>
 	<string name="daily_chess">الشطرنج اليومي</string>
-	<string name="live_chess">الشطرنج الحي</string>
+	<string name="live_chess">الشطرنج المباشر</string>
 	<string name="avg_opp_rating_when_i">متوسط تصنيف الخصم عندما أكون:</string>
-	<string name="games_arg">s% مباريات</string>
+	<string name="games_arg">%s مباريات</string>
 	<string name="winning_streak">سلسلة الانتصارات</string>
 	<string name="losing_streak">سلسلة الهزائم</string>
 	<string name="most_frequent_opponent">الخصم الأكثر تكرارا</string>
@@ -211,7 +214,7 @@
 	<string name="of_arg">من %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">جيد بما يكفي للأساتذة</string>
-	<string name="upgrade_main_title_1_tablet">جيد بما يكفي للأساتذة. بسيط بما يكفي للمبتدئين. قم بالتجربة الآن!</string>
+	<string name="upgrade_main_title_1_tablet">جيد بما فيه الكفاية للأساتذه .بسيط بما فيه الكفاية للمبتدئين.</string>
 	<string name="upgrade_main_title_2">بسيطة بما فيه الكفاية للمبتدئين</string>
 	<string name="diamond">ماسيّة</string>
 	<string name="diamond_subtitle">تمتع كامل بجميع الخصائص والمزايا</string>
@@ -244,7 +247,7 @@
 	<string name="choose_photo">اختر صورة</string>
 	<string name="take_photo">التقاط صورة</string>
 	<string name="pick_photo">انتقاء صورة</string>
-	<string name="or_login_using_chesscom">أو، تسجيل الدخول باسم مستخدم Chess.com:</string>
+	<string name="or_login_using_chesscom">أو استخدم اسم مستخدم Chess.com الخاص بك:</string>
 	<string name="articles">المقالات</string>
 	<string name="forums">المنتديات</string>
 	<string name="notifications">الاشعارات</string>
@@ -255,7 +258,7 @@
 	<string name="share_pgn">مشاركة PGN</string>
 	<string name="share_via">المشاركة عبر</string>
 	<string name="chess">الشطرنج</string>
-	<string name="via_chesscom">عبر @Chesscom</string>
+	<string name="via_chesscom">"عبر @Chesscom"</string>
 	<string name="vs_random_opponent">مواجهة عشوائية</string>
 	<string name="feed">بث</string>
 	<string name="learn">تعلم</string>
@@ -264,7 +267,7 @@
 	<string name="start">ابدأ</string>
 	<string name="lessons">دروس</string>
 	<string name="analysis">التحليل</string>
-	<string name="profile">الملف التعريفي</string>
+	<string name="profile">حساب</string>
 	<string name="theme">المظهر</string>
 	<string name="privacy">الخصوصية</string>
 	<string name="blocking">حظر</string>
@@ -282,7 +285,7 @@
 	<string name="profile_account_message_3">إذا كنت ترغب في إغلاق حسابك</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">اضغط هنا.</a>]]></string>
 	<string name="basic">أساسي</string>
-	<string name="sign_up_now_free">قم بالتسجيل الآن - مجانا!</string>
+	<string name="sign_up_now_free">"قم بالتسجيل - مجاناً!"</string>
 	<string name="chess_com_username">اسم المستخدم في Chess.com</string>
 	<string name="coordinates">الاحداثيات</string>
 	<string name="highlight_last_move">تسليط الضوء على النقلة الأخيرة</string>
@@ -307,8 +310,8 @@
 	<string name="completed">مكتملة</string>
 	<string name="few_min">بضع دقائق</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 ثانية]]></string>
-	<string name="abort_game_">الغاء المباراة ؟</string>
-	<string name="resign_game_">الانسحاب من اللعبة؟</string>
+	<string name="abort_game_">إلغاء؟</string>
+	<string name="resign_game_">انسحاب؟</string>
 	<string name="days_move">أيام/نقلة</string>
 	<string name="password_cant_be_empty">لا يمكن أن تكون كلمة المرور فارغة</string>
 	<string name="invalid_username_or_password">اسم المستخدم أو كلمة المرور غير صالحة</string>
@@ -325,8 +328,10 @@
 	<string name="add_friend">إضافة صديق</string>
 	<string name="recent_opponents">المنافسين مؤخراً</string>
 	<string name="invite_by_email">دعوة عن طريق البريد الإلكتروني</string>
+	<string name="please_enter_valid_email">من فضلك ادخل بريد إلكتروني صالح</string>
 	<string name="invite_facebook_friend">قم بدعوة أصدقاءك على الفيسبوك</string>
 	<string name="invite_from_contacts">قم بالدعوة من جهات الاتصال</string>
+	<string name="no_contacts_found">لم يتم العثور على جهات اتصال</string>
 	<string name="facebook">فيس بوك</string>
 	<string name="contacts">جهات الاتصال</string>
 	<string name="facebook_invite_friend_to_play">هيا نلعب الشطرنج! بامكانك اللعب على الانترنت من خلال Chess.com, أو على الهاتف أندرويد أو آيفون/آيباد.</string>
@@ -345,8 +350,10 @@
 	<string name="username_not_found">اسم المستخدم غير موجود</string>
 	<string name="you_have_not_added_friends_yet">"لا تمتلك أي أصدقاء حتى الآن. قم باضافة البعض!"</string>
 	<string name="new_friend_request">طلب صداقة جديد</string>
+	<string name="friend_request_from_arg">طلب صداقة من %s</string>
 	<string name="new_chat_message">رسالة دردشة جديدة</string>
-	<string name="new_challenge">تحدّي جديد</string>
+	<string name="new_daily_challenge">تحدي يومى جديد</string>
+	<string name="arg_wants_to_play">%s يريد ان يلعب!</string>
 	<string name="unable_to_select_this_photo">غير قادر على استخدام هذه الصورة</string>
 	<string name="processing_">قيد المعالجة...</string>
 	<string name="about">حول</string>
@@ -375,6 +382,7 @@
 	<string name="your_course_rating">تقييمك للدورة التدريبية:</string>
 	<string name="score_">النقاط:</string>
 	<string name="rating_">التقييم:</string>
+	<string name="new_arg_rating_">تصنيف %s جديد:</string>
 	<string name="course">الدورة التدريبية</string>
 	<string name="lessons_completed">الدروس المنتهية</string>
 	<string name="courses_completed">الدورات التدريبية المنتهية</string>
@@ -386,6 +394,7 @@
 	<string name="lessons_limit_reached_message">لقد وصلت إلى أقصى حد للدروس اليوم. قم بالترقية لتحصل على دروس غير محدودة!</string>
 	<string name="resume_lesson">استئناف الدرس</string>
 	<string name="installing_theme">تثبيت المظهر</string>
+	<string name="waiting_to_download">في انتظار التنزيل...</string>
 	<string name="loading_background">تحميل الخلفية</string>
 	<string name="saving_background">حفظ الخلفية</string>
 	<string name="saving_board">حفظ الرقعة</string>
@@ -415,10 +424,11 @@
 	<string name="all_time">كل الوقت</string>
 	<string name="comments_arg">%s تعليقات</string>
 	<string name="views_arg">%s مشاهدات</string>
-	<string name="your_game_is_over">مباراتك انتهت</string>
+	<string name="game_is_over">انتهت المباراة</string>
+	<string name="game_over_vs">Game Over vs %s</string>
 	<string name="switch_sides">تبديل الجانبين</string>
 	<string name="no_results">لا توجد نتائج</string>
-	<string name="game_explorer">مستكشف المباراة</string>
+	<string name="game_explorer">المستكشف</string>
 	<string name="recent_problems">المشاكل الأخيرة</string>
 	<string name="recent_lessons">الدروس الأخيرة</string>
 	<string name="players_online_arg">%s لاعبين متصلين</string>
@@ -469,9 +479,13 @@
 	<string name="review_lesson">مراجعة الدرس</string>
 	<string name="full_screen">ملء الشاشة</string>
 	<string name="line">سلسة من النقلات</string>
-	<string name="predict_move_or_add_new_line">توقع نقلة أو  أضف سلسلة من النقلات...</string>
-	<string name="make_your_conditional_move">قم  بنقلتك الافتراضية ...</string>
-	<string name="predict_opponent_next_move">توقع  نقلة الخصم القادمة...</string>
+	<string name="predict_move_or_add_new_line">توقع نقلة أو أضف تسلسل جديد…</string>
+	<string name="make_your_conditional_move">قم بنقلتك الاشتراطية …</string>
+	<string name="predict_opponent_next_move">توقع نقلة الخصم القادمة…</string>
 	<string name="notes">ملاحظات</string>
 	<string name="private_note">ملاحظة خاصة</string>
+	<string name="upgrade_feedback_1">"\"التكتيكات والدروس ساعدت مهارات الشطرنج الخاصة بى حقآ\""</string>
+	<string name="upgrade_feedback_reporter_1">- peter , عضو منذ 2011</string>
+	<string name="upgrade_feedback_2">"\"تصنيفي العام تحسن كثيرا بعدما أصبحت بعضوية مميزة\""</string>
+	<string name="upgrade_feedback_reporter_2">-Lou, عضو NJ منذ 2009</string>
 </resources>

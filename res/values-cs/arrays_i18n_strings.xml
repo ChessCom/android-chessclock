@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Denní šachy</item>
-		<item>Živé šachy - Standardní</item>
-		<item>Živé šachy - Bleskovka</item>
-		<item>Živé šachy - Bullet</item>
+		<item>Live - Standard</item>
+		<item>Live - Blitz</item>
+		<item>Live - Bullet</item>
 		<item>Denní šach960</item>
 		<item>Taktika</item>
 		<item>Lekce</item>

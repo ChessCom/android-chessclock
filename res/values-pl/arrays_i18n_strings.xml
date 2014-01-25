@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Szachy Online</item>
-		<item>Szachy Live - Standard</item>
-		<item>Szachy Live - Blitz</item>
-		<item>Szachy Live - Bullet</item>
+		<item>Szachy na żywo - Standard</item>
+		<item>Szachy na żywo - Blitz</item>
+		<item>Szachy na żywo - Bullet</item>
 		<item>Szachy960 Online</item>
 		<item>Zadania</item>
 		<item>Lekcje</item>

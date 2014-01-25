@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>每日的國際象棋</item>
-		<item>實時國際象棋 - 標準</item>
-		<item>實時國際象棋 - 闪电</item>
-		<item>實時國際象棋 - 子彈</item>
+		<item>Live - Standard</item>
+		<item>Live - Blitz</item>
+		<item>Live - Bullet</item>
 		<item>每日的國際象棋960</item>
 		<item>戰術</item>
 		<item>經驗教訓</item>

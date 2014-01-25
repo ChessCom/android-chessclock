@@ -3,9 +3,9 @@
 	<string-array name="game_stats_categories">
 		<item>Штодзённыя Шахматы
 		</item>
-		<item>Шахматы ўжывую - Стандарт</item>
-		<item>Шахматы ўжывую - Бліц</item>
-		<item>Шахматы ўжывую - Куля</item>
+		<item>Стандартныя шахматы ўжывую</item>
+		<item>Бліц ужывую</item>
+		<item>Супербліц ужывую</item>
 		<item>Штодзённыя Шахматы960</item>
 		<item>Тактычныя практыкаванні</item>
 		<item>Урокі</item>

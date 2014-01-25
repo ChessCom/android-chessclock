@@ -19,7 +19,7 @@
 	<string name="computer">Комп\'ютер</string>
 	<string name="thinking_">Думає…</string>
 	<string name="open_challenges">Доступні виклики</string>
-	<string name="challenge_friend">Викликати друга</string>
+	<string name="challenge_friend">Кинути виклик другу</string>
 	<string name="challenge_created">Виклик створено</string>
 	<string name="you_will_notified_when_game_starts">Ви будете повідомлені, коли гра розпочнеться</string>
 	<string name="challenge_sent">Виклик відправлено</string>
@@ -98,6 +98,8 @@
 	<string name="you_are_offline">Ви зараз в режимі офлайн</string>
 	<string name="correct">Вірно</string>
 	<string name="incorrect">Невірно</string>
+	<string name="incorrect_move">Невірний хід</string>
+	<string name="puzzle_solved">Головоламка вирішена!</string>
 	<string name="upgrade_for_unlimited_arg">Оновити для необмеженого %s!</string>
 	<string name="hours">годин</string>
 	<string name="hour">година</string>
@@ -129,26 +131,25 @@
 	<string name="unrated">Без рейтингу</string>
 	<string name="you_play">Ви граєте як:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move">"Ваш хід"</string>
-	<string name="your_turn_in_game_with">У грі з %1$s, %2$s</string>
-	<string name="won_on_time">%s Переміг за часом</string>
-	<string name="won_by_resignation">%s Переміг, бо опонент здався</string>
-	<string name="won_by_checkmate">%s Переміг, поставивши мат</string>
+	<string name="your_move_vs">Ваш хід проти %1$ s, %2$ s</string>
+	<string name="won_on_time">%s переміг за часом</string>
+	<string name="won_by_resignation">%s виграв, бо суперник здався</string>
+	<string name="won_by_checkmate">%s переміг, поставивши мат</string>
 	<string name="game_over">Гру закінчено</string>
 	<string name="reconnecting_">Повторне підключення…</string>
 	<string name="another_login_detected">Ой! Ви увійшли з іншого місця.</string>
-	<string name="game_end_title_draw">Нічия</string>
-	<string name="game_draw_by_repetition">Нічия через повторення ходів</string>
-	<string name="game_drawn_by_agreement">Нічия за згодою</string>
-	<string name="game_drawn_by_stalemate">Нічия - пат</string>
-	<string name="game_drawn_insufficient_material">Нічия через нестачу матеріалу</string>
-	<string name="game_drawn_by_fifty_move_rule">Нічия за правилом 50-ти ходів</string>
-	<string name="won_game_abandoned">Перемога - опонент вийшов</string>
+	<string name="game_end_title_draw">Нічия (½–½)</string>
 	<string name="game_aborted">Гру відмінено</string>
 	<string name="new_game">Нова гра</string>
+	<string name="new_game_arg">Нова гра (%s)</string>
 	<string name="language">Мова</string>
 	<string name="black_wins">Чорні виграли (0–1)</string>
 	<string name="white_wins">Білі виграли (1-0)</string>
+	<string name="game_draw_by_repetition">Нічия через повторення ходів</string>
+	<string name="game_drawn_by_agreement">Нічия за згодою</string>
+	<string name="game_drawn_by_stalemate">Нічия - пат</string>
+	<string name="game_drawn_insufficient_material">Нічия через нестачу фігур</string>
+	<string name="game_drawn_by_fifty_move_rule">Нічия за правилом 50 ходів</string>
 	<string name="draw_by_stalemate">Нічия через пат (½–½)</string>
 	<string name="draw_by_3fold_repetition">Нічия через триразове повторення (½–½)</string>
 	<string name="rematch">Реванш</string>
@@ -167,8 +168,8 @@
 	<string name="profile_picture">Зображення профілю</string>
 	<string name="or_use_your_email">Або використайте Вашу адресу електронної пошти:</string>
 	<string name="by_signing_up_accept_mobile">Зареєструвавшись, я приймаю</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> умови обслуговування</a>]]></string>
-	<string name="create_chess_profile">Створить ваш шаховый профіль</string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> умови обслуговування</a>]]]></string>
+	<string name="create_chess_profile">Вітаємо! Створіть Ваш шаховий профіль</string>
 	<string name="daily">Щоденно</string>
 	<string name="improve_game_with_lessons">Поліпшіть Вашу гру завдяки необмеженій кількості уроків</string>
 	<string name="improve_game_with_videos">Поліпшiть Вашу гру завдяки необмеженiй кількості вiдео</string>
@@ -180,6 +181,8 @@
 	<string name="download_complete">Завантаження завершено</string>
 	<string name="empty"></string>
 	<string name="difficulty">Складність</string>
+	<string name="easiest">Легше</string>
+	<string name="hardest">Складніше</string>
 	<string name="vs">проти</string>
 	<string name="leave_vacation_q">Вимкнути відпустку?</string>
 	<string name="sign_up_with_facebook"><b>Зареєструватися</b> через <b>Facebook</b></string>
@@ -210,7 +213,7 @@
 	<string name="of_arg">з %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Досить добре для майстрів</string>
-	<string name="upgrade_main_title_1_tablet">Досить добре для майстрів. Досить просто для початківців. Спробуйте зараз!</string>
+	<string name="upgrade_main_title_1_tablet">Достатньо добре для майстрiв. Достатньо просто для початкiвцiв.</string>
 	<string name="upgrade_main_title_2">Досить просто для початківців</string>
 	<string name="diamond">Діамантовий</string>
 	<string name="diamond_subtitle">Необмежений доступ до всіх функцій</string>
@@ -243,7 +246,7 @@
 	<string name="choose_photo">Виберіть фото</string>
 	<string name="take_photo">Сфотографувати</string>
 	<string name="pick_photo">Обрати фото</string>
-	<string name="or_login_using_chesscom">Або увійдіть у систему, використовуючи ім\'я на Chess.com:</string>
+	<string name="or_login_using_chesscom">Або використайте Ваш Chess.com логін:</string>
 	<string name="articles">Статті</string>
 	<string name="forums">Форуми</string>
 	<string name="notifications">Сповіщення</string>
@@ -254,7 +257,7 @@
 	<string name="share_pgn">Поділитись PGN</string>
 	<string name="share_via">Поділитись через</string>
 	<string name="chess">Шахи</string>
-	<string name="via_chesscom">через @Chesscom</string>
+	<string name="via_chesscom">"через @Chesscom"</string>
 	<string name="vs_random_opponent">проти випадкового</string>
 	<string name="feed">Спільнота</string>
 	<string name="learn">Вчитися</string>
@@ -263,7 +266,7 @@
 	<string name="start">Старт</string>
 	<string name="lessons">Уроки</string>
 	<string name="analysis">Аналіз</string>
-	<string name="profile">Профіль</string>
+	<string name="profile">Акаунт</string>
 	<string name="theme">Тема</string>
 	<string name="privacy">Приватність</string>
 	<string name="blocking">Заблоковані</string>
@@ -281,7 +284,7 @@
 	<string name="profile_account_message_3">Якщо ви бажаєте закрити Ваш акаунт,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">натисніть тут.</a>]]></string>
 	<string name="basic">Базовий</string>
-	<string name="sign_up_now_free">Зареєструйтесь зараз - це БЕЗКОШТОВНО!</string>
+	<string name="sign_up_now_free">"Зареєструйтеся - це безкоштовно!"</string>
 	<string name="chess_com_username">ім\'я користувача Chess.com</string>
 	<string name="coordinates">Координати</string>
 	<string name="highlight_last_move">Виділити останній хід</string>
@@ -306,7 +309,7 @@
 	<string name="completed">Завершено</string>
 	<string name="few_min">кілька хв</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 сек]]></string>
-	<string name="abort_game_">Перервати гру?</string>
+	<string name="abort_game_">Відмінити?</string>
 	<string name="resign_game_">Здатися?</string>
 	<string name="days_move">днів/хід</string>
 	<string name="password_cant_be_empty">Пароль не може бути пустим</string>
@@ -324,8 +327,10 @@
 	<string name="add_friend">Додати друга</string>
 	<string name="recent_opponents">Недавні опоненти</string>
 	<string name="invite_by_email">Запросити по електронній пошті</string>
+	<string name="please_enter_valid_email">Будь ласка, введіть дійсну адресу електронної пошти</string>
 	<string name="invite_facebook_friend">Запросити друзів з Facebook</string>
 	<string name="invite_from_contacts">Запросити з контактів</string>
+	<string name="no_contacts_found">Контакти не знайдено</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Контакти</string>
 	<string name="facebook_invite_friend_to_play">Давайте грати в шахи! Ви можете грати онлайн на Chess.com або з мобільного через Android чи iPhone/iPad.</string>
@@ -344,8 +349,10 @@
 	<string name="username_not_found">Ім\'я користувача не знайдено</string>
 	<string name="you_have_not_added_friends_yet">"Ви ще не маєте друзів. Додайте їх!"</string>
 	<string name="new_friend_request">Новий запит у друзі</string>
+	<string name="friend_request_from_arg">Запит у друзі від %s</string>
 	<string name="new_chat_message">Нове повідомлення з чату</string>
-	<string name="new_challenge">Новий виклик</string>
+	<string name="new_daily_challenge">Новий щоденний виклик</string>
+	<string name="arg_wants_to_play">%s хоче грати!</string>
 	<string name="unable_to_select_this_photo">Неможливо використати це фото</string>
 	<string name="processing_">Обробка…</string>
 	<string name="about">Про</string>
@@ -374,6 +381,7 @@
 	<string name="your_course_rating">Ваша оцінка курсу:</string>
 	<string name="score_">Оцінка:</string>
 	<string name="rating_">Рейтинг:</string>
+	<string name="new_arg_rating_">Нова оцінка %s:</string>
 	<string name="course">Курс</string>
 	<string name="lessons_completed">Уроків завершено</string>
 	<string name="courses_completed">Курсів завершено</string>
@@ -385,6 +393,7 @@
 	<string name="lessons_limit_reached_message">Досягнуто ліміту уроків на сьогодні. Оновіть зараз, щоб вдосконалюватись з необмеженими уроками!</string>
 	<string name="resume_lesson">Продовжити урок</string>
 	<string name="installing_theme">Встановлення теми</string>
+	<string name="waiting_to_download">Чекає на завантаження…</string>
 	<string name="loading_background">Завантаження фону</string>
 	<string name="saving_background">Збереження фону</string>
 	<string name="saving_board">Збереження дошки</string>
@@ -414,10 +423,11 @@
 	<string name="all_time">за весь час</string>
 	<string name="comments_arg">%s коментарів</string>
 	<string name="views_arg">%s переглядів</string>
-	<string name="your_game_is_over">Вашу гру закінчено</string>
+	<string name="game_is_over">Гру закінчено</string>
+	<string name="game_over_vs">Game Over vs %s</string>
 	<string name="switch_sides">Змінити сторону</string>
 	<string name="no_results">Немає результатів</string>
-	<string name="game_explorer">Довідник по партіях</string>
+	<string name="game_explorer">Дослідник</string>
 	<string name="recent_problems">Попередні завдання</string>
 	<string name="recent_lessons">Попередні уроки</string>
 	<string name="players_online_arg">%s гравці(в) онлайн</string>
@@ -468,9 +478,13 @@
 	<string name="review_lesson">Передивитись урок</string>
 	<string name="full_screen">На весь екран</string>
 	<string name="line">Варіант</string>
-	<string name="predict_move_or_add_new_line">Передбачити хід або додати нову лінію...</string>
-	<string name="make_your_conditional_move">Зробити передбачуваний хід...</string>
-	<string name="predict_opponent_next_move">Передбачити наступний хід противника...</string>
+	<string name="predict_move_or_add_new_line">Передбачити хід або додати нову гілку…</string>
+	<string name="make_your_conditional_move">Зробіть свій умовний хід…</string>
+	<string name="predict_opponent_next_move">Предсказати наступний хід опонента...</string>
 	<string name="notes">Записи</string>
 	<string name="private_note">Приватний запис</string>
+	<string name="upgrade_feedback_1">"\"Задачі та уроки дійсно допомагають поліпшити мої шахові вміння\""</string>
+	<string name="upgrade_feedback_reporter_1">- Peter, користувач з 2011</string>
+	<string name="upgrade_feedback_2">"\"Мій загальний рейтинг набагато покращився після того як я став преміум користувачем\""</string>
+	<string name="upgrade_feedback_reporter_2">- Lou, NJ користувач з 2009</string>
 </resources>

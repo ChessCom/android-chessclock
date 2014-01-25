@@ -19,7 +19,7 @@
 	<string name="computer">Computer</string>
 	<string name="thinking_">Tænker…</string>
 	<string name="open_challenges">Åbne udfordringer</string>
-	<string name="challenge_friend">Udfordr ven</string>
+	<string name="challenge_friend">Spil mod en ven</string>
 	<string name="challenge_created">Udfordring lavet</string>
 	<string name="you_will_notified_when_game_starts">Du vil blive gjort opmærksom på når spillet starter</string>
 	<string name="challenge_sent">Udfordring sendt</string>
@@ -98,6 +98,8 @@
 	<string name="you_are_offline">Du er nu i Offline-Tilstand</string>
 	<string name="correct">Korrekt</string>
 	<string name="incorrect">Forkert</string>
+	<string name="incorrect_move">Forkert træk</string>
+	<string name="puzzle_solved">Puslespil løst!</string>
 	<string name="upgrade_for_unlimited_arg">Opgrader For Ubegrænset %s!</string>
 	<string name="hours">timer</string>
 	<string name="hour">time</string>
@@ -129,26 +131,25 @@
 	<string name="unrated">Ikke-rated</string>
 	<string name="you_play">Du spiller:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move">"Det er din tur"</string>
-	<string name="your_turn_in_game_with">I spil med %1$s , %2$s</string>
-	<string name="won_on_time">%s Vundet på tid</string>
-	<string name="won_by_resignation">%s Vundet ved opgivelse</string>
-	<string name="won_by_checkmate">%s Vundet ved skakmat</string>
+	<string name="your_move_vs">Dit træk vs %1$s , %2$s</string>
+	<string name="won_on_time">%s vinder på tid</string>
+	<string name="won_by_resignation">%s vinder ved opgivelse</string>
+	<string name="won_by_checkmate">%s vinder ved skakmat</string>
 	<string name="game_over">Spillet er færdigt</string>
 	<string name="reconnecting_">Forbinder igen…</string>
 	<string name="another_login_detected">Ups! Du er logget ind et andet sted.</string>
-	<string name="game_end_title_draw">Spil remis</string>
-	<string name="game_draw_by_repetition">Spil remis ved gentagelse</string>
-	<string name="game_drawn_by_agreement">Spil remis ved enighed</string>
-	<string name="game_drawn_by_stalemate">Spil remis ved stalemate</string>
-	<string name="game_drawn_insufficient_material">Spil remis på grund af manglende materiale</string>
-	<string name="game_drawn_by_fifty_move_rule">Spil remis grundet 50-træksreglen</string>
-	<string name="won_game_abandoned">Vundet - Spil opgivet</string>
+	<string name="game_end_title_draw">Remis (½–½)</string>
 	<string name="game_aborted">Spil afbrudt</string>
 	<string name="new_game">Nyt spil</string>
+	<string name="new_game_arg">Nyt spil (%s)</string>
 	<string name="language">Sprog</string>
 	<string name="black_wins">Sort vinder (0-1)</string>
 	<string name="white_wins">Hvid vinder (1-0)</string>
+	<string name="game_draw_by_repetition">Remis ved gentagelse</string>
+	<string name="game_drawn_by_agreement">Aftalt remis</string>
+	<string name="game_drawn_by_stalemate">Remis ved stalemate</string>
+	<string name="game_drawn_insufficient_material">Remis ved utilstrækkeligt materiale</string>
+	<string name="game_drawn_by_fifty_move_rule">Remis ved 50-træks regel</string>
 	<string name="draw_by_stalemate">Remis ved stalemate (½-½)</string>
 	<string name="draw_by_3fold_repetition">Uafgjort ved tre gentagelser (½–½)</string>
 	<string name="rematch">Omkamp</string>
@@ -168,7 +169,7 @@
 	<string name="or_use_your_email">Eller brug din mailadresse:</string>
 	<string name="by_signing_up_accept_mobile">Ved at tilmelde, accepterer jeg</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Servicevilkår</a>]]></string>
-	<string name="create_chess_profile">Opret din skak profil</string>
+	<string name="create_chess_profile">Velkommen! Lav din Chess profil</string>
 	<string name="daily">Daglig</string>
 	<string name="improve_game_with_lessons">Forbedre dit spil med ubegrænset lektioner</string>
 	<string name="improve_game_with_videos">Forbedre dit spil med ubegrænset videoer</string>
@@ -180,8 +181,10 @@
 	<string name="download_complete">Download komplet</string>
 	<string name="empty"></string>
 	<string name="difficulty">Vanskeligheder</string>
+	<string name="easiest">lettest</string>
+	<string name="hardest">sværest</string>
 	<string name="vs">vs</string>
-	<string name="leave_vacation_q">Sluk ferie?</string>
+	<string name="leave_vacation_q">Deaktiver ferie?</string>
 	<string name="sign_up_with_facebook"><b>Tilmeld dig</b> med <b>Facebook</b></string>
 	<string name="finished_games">Færdige spil</string>
 	<string name="feedback_mail_body">Undlad venligst at redigere eller fjerne oplysningerne nedenfor.</string>
@@ -210,7 +213,7 @@
 	<string name="of_arg">af %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">God nok til mestre</string>
-	<string name="upgrade_main_title_1_tablet">God nok til til mestre. Simpel nok til begyndere. Prøv den nu!</string>
+	<string name="upgrade_main_title_1_tablet">God nok til mestre. Simpel nok til begyndere.</string>
 	<string name="upgrade_main_title_2">Simpel nok til begyndere</string>
 	<string name="diamond">Diamant</string>
 	<string name="diamond_subtitle">Ubegrænset adgang til alle funktioner</string>
@@ -243,7 +246,7 @@
 	<string name="choose_photo">Vælg billede</string>
 	<string name="take_photo">Tag foto</string>
 	<string name="pick_photo">Vælg et foto</string>
-	<string name="or_login_using_chesscom">Eller log ind med Chess Brugernavn:</string>
+	<string name="or_login_using_chesscom">Eller brug dit Chess.com brugernavn:</string>
 	<string name="articles">Artikler</string>
 	<string name="forums">Fora</string>
 	<string name="notifications">Meddelelser</string>
@@ -254,7 +257,7 @@
 	<string name="share_pgn">Del PGN</string>
 	<string name="share_via">Del via</string>
 	<string name="chess">Skak</string>
-	<string name="via_chesscom">via @Chesscom</string>
+	<string name="via_chesscom">"via @Chesscom"</string>
 	<string name="vs_random_opponent">vs Tilfældig</string>
 	<string name="feed">Feed</string>
 	<string name="learn">Lær</string>
@@ -263,7 +266,7 @@
 	<string name="start">Start</string>
 	<string name="lessons">Lektioner</string>
 	<string name="analysis">Analyse</string>
-	<string name="profile">Profil</string>
+	<string name="profile">Konto</string>
 	<string name="theme">Tema</string>
 	<string name="privacy">Privacy</string>
 	<string name="blocking">Blokering</string>
@@ -281,7 +284,7 @@
 	<string name="profile_account_message_3">Hvis du gerne vil lukke din konto,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">tryk her.</a>]]></string>
 	<string name="basic">Basal</string>
-	<string name="sign_up_now_free">Tilmeld dig nu - det er GRATIS!</string>
+	<string name="sign_up_now_free">"Meld dig til - det er GRATIS!"</string>
 	<string name="chess_com_username">Chess.com brugernavn</string>
 	<string name="coordinates">Koordinater</string>
 	<string name="highlight_last_move">Fremhæv sidste træk</string>
@@ -306,8 +309,8 @@
 	<string name="completed">Fuldført</string>
 	<string name="few_min">et par min</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 sek]]></string>
-	<string name="abort_game_">Afbryde spillet?</string>
-	<string name="resign_game_">Fratræde spil?</string>
+	<string name="abort_game_">Afbryd?</string>
+	<string name="resign_game_">Giv op?</string>
 	<string name="days_move">dage/trekk</string>
 	<string name="password_cant_be_empty">Adgangskoden kan ikke være tom</string>
 	<string name="invalid_username_or_password">Ugyldigt Brugernavn eller Password</string>
@@ -324,8 +327,10 @@
 	<string name="add_friend">Tilføj ven</string>
 	<string name="recent_opponents">Seneste modstandere</string>
 	<string name="invite_by_email">Inviter via e-mail</string>
+	<string name="please_enter_valid_email">Angiv venligst en gyldig e-mail</string>
 	<string name="invite_facebook_friend">Inviter Facebook-venner</string>
 	<string name="invite_from_contacts">Inviter fra kontakter</string>
+	<string name="no_contacts_found">Ingen kontakter fundet</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontakter</string>
 	<string name="facebook_invite_friend_to_play">Lad os spille skak! Du kan spille online på Chess.com eller på mobil med Android eller iPhone/iPad.</string>
@@ -344,8 +349,10 @@
 	<string name="username_not_found">Brugernavn ikke fundet</string>
 	<string name="you_have_not_added_friends_yet">"Du har ikke nogen venner endnu. Tilføj nogle!"</string>
 	<string name="new_friend_request">Ny venneanmodning</string>
+	<string name="friend_request_from_arg">Venneanmodning fra %s</string>
 	<string name="new_chat_message">Ny chatbesked</string>
-	<string name="new_challenge">Ny udfordring</string>
+	<string name="new_daily_challenge">Ny daglig udfordring</string>
+	<string name="arg_wants_to_play">%s ønsker at spille!</string>
 	<string name="unable_to_select_this_photo">Kan ikke bruge dette billede</string>
 	<string name="processing_">Behandler…</string>
 	<string name="about">Om</string>
@@ -374,6 +381,7 @@
 	<string name="your_course_rating">Din kursus bedømmelse:</string>
 	<string name="score_">Score:</string>
 	<string name="rating_">Bedømmelse:</string>
+	<string name="new_arg_rating_">Ny %s rating:</string>
 	<string name="course">Kursus</string>
 	<string name="lessons_completed">Lektioner afsluttet</string>
 	<string name="courses_completed">Kurser afsluttet</string>
@@ -385,6 +393,7 @@
 	<string name="lessons_limit_reached_message">Erfaringer er nået til i dag. Opgradér nu for at forbedre med ubegrænset lektioner!</string>
 	<string name="resume_lesson">Genoptag lektion</string>
 	<string name="installing_theme">Installation af tema</string>
+	<string name="waiting_to_download">Venter på at downloade…</string>
 	<string name="loading_background">Loading baggrund</string>
 	<string name="saving_background">Gemme baggrund</string>
 	<string name="saving_board">Gemme brett</string>
@@ -414,10 +423,11 @@
 	<string name="all_time">Al tid</string>
 	<string name="comments_arg">%s kommentarer</string>
 	<string name="views_arg">%s visninger</string>
-	<string name="your_game_is_over">Dit spil er over</string>
+	<string name="game_is_over">Game over</string>
+	<string name="game_over_vs">Game Over vs %s</string>
 	<string name="switch_sides">Skift sider</string>
 	<string name="no_results">Ingen resultater</string>
-	<string name="game_explorer">Spil Explorer</string>
+	<string name="game_explorer">Browser</string>
 	<string name="recent_problems">Nylige problemer</string>
 	<string name="recent_lessons">Nylige leskjoner</string>
 	<string name="players_online_arg">%s Spillere Online</string>
@@ -468,9 +478,13 @@
 	<string name="review_lesson">Gennemgå lektion</string>
 	<string name="full_screen">Fuld skærm</string>
 	<string name="line">Linje</string>
-	<string name="predict_move_or_add_new_line">Forudsig træk eller tilføj ny linje...</string>
-	<string name="make_your_conditional_move">Gør ditt betingede træk...</string>
-	<string name="predict_opponent_next_move">Forudse modstanderens næste træk...</string>
+	<string name="predict_move_or_add_new_line">Forudsig træk eller tilføj ny linje…</string>
+	<string name="make_your_conditional_move">Foretag dit betingede træk…</string>
+	<string name="predict_opponent_next_move">Forudse modstanderens næste træk…</string>
 	<string name="notes">Noter</string>
 	<string name="private_note">Private noter</string>
+	<string name="upgrade_feedback_1">"\"Taktikker og lektioner hjælper virkelig på mine skakfærdigheder\""</string>
+	<string name="upgrade_feedback_reporter_1">- Peter, medlem siden 2011</string>
+	<string name="upgrade_feedback_2">"\"Min overall rating blev væsentlig bedre efter jeg blev premium medlem\""</string>
+	<string name="upgrade_feedback_reporter_2">- Lou, NJ medlem siden 2009</string>
 </resources>

@@ -19,7 +19,7 @@
 	<string name="computer">Компьютер</string>
 	<string name="thinking_">Думает...</string>
 	<string name="open_challenges">Открытые вызовы</string>
-	<string name="challenge_friend">Вызов другу</string>
+	<string name="challenge_friend">Бросить вызов другу</string>
 	<string name="challenge_created">Вызов Создан</string>
 	<string name="you_will_notified_when_game_starts">Вам сообщат когда игра начнется</string>
 	<string name="challenge_sent">Вызов брошен</string>
@@ -98,6 +98,8 @@
 	<string name="you_are_offline">Вы в автономном режиме</string>
 	<string name="correct">Правильно</string>
 	<string name="incorrect">Неправильно</string>
+	<string name="incorrect_move">Неверный ход</string>
+	<string name="puzzle_solved">Головоломка решена!</string>
 	<string name="upgrade_for_unlimited_arg">Улучшите для неограниченных %s!</string>
 	<string name="hours">часы</string>
 	<string name="hour">час</string>
@@ -129,26 +131,25 @@
 	<string name="unrated">Без рейтинга</string>
 	<string name="you_play">Вы играете:</string>
 	<string name="chess_com">Chess.Com</string>
-	<string name="your_move">"Ваш ход"</string>
-	<string name="your_turn_in_game_with">В игре с %1$ s, %2$ s</string>
-	<string name="won_on_time">%s выиграл, время вышло</string>
-	<string name="won_by_resignation">%s выйграл, соперник сдался</string>
-	<string name="won_by_checkmate">%s выиграл, шах и мат</string>
+	<string name="your_move_vs">Ваш ход против %1$s, %2$s</string>
+	<string name="won_on_time">%s выиграл по времени</string>
+	<string name="won_by_resignation">%s выиграл - противник сдался</string>
+	<string name="won_by_checkmate">%s выиграл - мат</string>
 	<string name="game_over">Игра окончена</string>
 	<string name="reconnecting_">Подключение...</string>
 	<string name="another_login_detected">Упс! Обнаружен вход с другово устройства.</string>
-	<string name="game_end_title_draw">Игра закончилась в ничью</string>
-	<string name="game_draw_by_repetition">Ничья по повторению</string>
-	<string name="game_drawn_by_agreement">Ничья по обоюдному согласию</string>
-	<string name="game_drawn_by_stalemate">Ничья, пат</string>
-	<string name="game_drawn_insufficient_material">Ничья, нехватка фигур</string>
-	<string name="game_drawn_by_fifty_move_rule">Ничья, по правилу 50 ходов</string>
-	<string name="won_game_abandoned">выйграл, игра отклонена</string>
+	<string name="game_end_title_draw">Ничья (½–½)</string>
 	<string name="game_aborted">Игра прервана</string>
 	<string name="new_game">Новая игра</string>
+	<string name="new_game_arg">Новая игра (%s)</string>
 	<string name="language">Язык</string>
 	<string name="black_wins">Черные выйграли (0–1)</string>
 	<string name="white_wins">Белые Выйграли (1-0)</string>
+	<string name="game_draw_by_repetition">Ничья из-за повторения ходов</string>
+	<string name="game_drawn_by_agreement">Ничья по соглашению</string>
+	<string name="game_drawn_by_stalemate">Ничья - невозможно сделать ход</string>
+	<string name="game_drawn_insufficient_material">Ничья - недостаточно фигур</string>
+	<string name="game_drawn_by_fifty_move_rule">Ничья по правилу 50 ходов</string>
 	<string name="draw_by_stalemate">Ничья, пат (½–½)</string>
 	<string name="draw_by_3fold_repetition">Ничья, три повторения (½–½)</string>
 	<string name="rematch">Реванш</string>
@@ -168,7 +169,7 @@
 	<string name="or_use_your_email">Или используйте ваш электронный адрес:</string>
 	<string name="by_signing_up_accept_mobile">Регистрируясь, я принимаю</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> условия обслуживания</a>]]></string>
-	<string name="create_chess_profile">Создайте свой профиль для Онлайн Шахмат</string>
+	<string name="create_chess_profile">Добро пожаловать! Создайте свой шахматный профиль</string>
 	<string name="daily">Дневные</string>
 	<string name="improve_game_with_lessons">Улучшите игру с неограниченными уроками</string>
 	<string name="improve_game_with_videos">Улучшите игру с неограниченными видео уроками</string>
@@ -180,8 +181,10 @@
 	<string name="download_complete">Загрузка завершена</string>
 	<string name="empty"></string>
 	<string name="difficulty">Сложность</string>
+	<string name="easiest">Легче</string>
+	<string name="hardest">Сложнее</string>
 	<string name="vs">против</string>
-	<string name="leave_vacation_q">Выйти с отпуска?</string>
+	<string name="leave_vacation_q">Отключить отпуск?</string>
 	<string name="sign_up_with_facebook"><b>Регистрация</b> через <b>Facebook</b></string>
 	<string name="finished_games">Завершенные партии</string>
 	<string name="feedback_mail_body">Пожалуйста, не редактируйте информацию ниже.</string>
@@ -210,7 +213,7 @@
 	<string name="of_arg">из %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Достаточно хорошо, для мастеров</string>
-	<string name="upgrade_main_title_1_tablet">Достаточно хорошо, для мастеров. Просто для начинающих. Попробуйте прямо сейчас!</string>
+	<string name="upgrade_main_title_1_tablet">Достаточно хорошо  для мастеров. Достаточно просто для начинающих.</string>
 	<string name="upgrade_main_title_2">Достаточно просто для начинающих</string>
 	<string name="diamond">Бриллиантовый</string>
 	<string name="diamond_subtitle">Неограниченный доступ ко всем функциям</string>
@@ -243,7 +246,7 @@
 	<string name="choose_photo">Выбрать фото</string>
 	<string name="take_photo">Сделать фото</string>
 	<string name="pick_photo">Выбрать фото</string>
-	<string name="or_login_using_chesscom">Или Войти используя Chess.com логин:</string>
+	<string name="or_login_using_chesscom">Или используйте Ваше имя пользователя Chess.com:</string>
 	<string name="articles">Статьи</string>
 	<string name="forums">форумы</string>
 	<string name="notifications">Оповещения</string>
@@ -254,7 +257,7 @@
 	<string name="share_pgn">Поделиться PGN</string>
 	<string name="share_via">Поделиться через</string>
 	<string name="chess">Шахматы</string>
-	<string name="via_chesscom">через @Chesscom</string>
+	<string name="via_chesscom">"через @Chesscom"</string>
 	<string name="vs_random_opponent">против случайного</string>
 	<string name="feed">Лента</string>
 	<string name="learn">Обучение</string>
@@ -263,7 +266,7 @@
 	<string name="start">Начать</string>
 	<string name="lessons">Уроки</string>
 	<string name="analysis">Анализ</string>
-	<string name="profile">Профиль</string>
+	<string name="profile">Учетная запись</string>
 	<string name="theme">Тема</string>
 	<string name="privacy">Приватность</string>
 	<string name="blocking">Блокировка</string>
@@ -274,14 +277,14 @@
 	<string name="location">Местоположение</string>
 	<string name="share">Поделиться</string>
 	<string name="profile_membership_renew_cancel">Ваше %1$s подписка будет продлена на %2$s.</string>
-  <string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> отменить</a>]]</string>
-  <string name="invite_friends_profile_message">Шахматы веселее с друзьями - предложите им присоединиться!</string>
-  <string name="profile_account_message_1">Ваша учетная запись принадлежит сайту</string>
-  <string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice"> Условия использования</a>]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> отменить</a>]]</string>
+	<string name="invite_friends_profile_message">Шахматы веселее с друзьями - предложите им присоединиться!</string>
+	<string name="profile_account_message_1">Ваша учетная запись принадлежит сайту</string>
+	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice"> Условия использования</a>]]></string>
 	<string name="profile_account_message_3">Если вы желаете закрыть вашу учётную запись,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy"> нажмите здесь.</a>]]></string>
 	<string name="basic">Базовый</string>
-	<string name="sign_up_now_free">Зарегистрируйтесь прямо сейчас, бесплатно!</string>
+	<string name="sign_up_now_free">"Зарегистрируйтесь - это бесплатно!"</string>
 	<string name="chess_com_username">Имя пользователя Chess.com</string>
 	<string name="coordinates">Координаты</string>
 	<string name="highlight_last_move">Подсветка последнего хода</string>
@@ -306,7 +309,7 @@
 	<string name="completed">Завершённые</string>
 	<string name="few_min">через несколько минут</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 сек]]></string>
-	<string name="abort_game_">Прервать игру?</string>
+	<string name="abort_game_">Прервать?</string>
 	<string name="resign_game_">Сдаться?</string>
 	<string name="days_move">дней/ход</string>
 	<string name="password_cant_be_empty">Пароль не может быть пустым</string>
@@ -324,8 +327,10 @@
 	<string name="add_friend">Добавить в друзья</string>
 	<string name="recent_opponents">Недавние соперники</string>
 	<string name="invite_by_email">Пригласить по почте</string>
+	<string name="please_enter_valid_email">Подалуйста, введите правильный адрес электронной почты</string>
 	<string name="invite_facebook_friend">Пригласить друзей из Facebook</string>
 	<string name="invite_from_contacts">Пригласить из контактов</string>
+	<string name="no_contacts_found">Контакты не найдены</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Контакты</string>
 	<string name="facebook_invite_friend_to_play">Давайте играть в шахматы! Вы можете играть онлайн на Chess.com, или на мобильном с Android или iPhone/iPad.</string>
@@ -344,8 +349,10 @@
 	<string name="username_not_found">Пользователь не найден</string>
 	<string name="you_have_not_added_friends_yet">"У вас еще нет друзей. Добавьте скорей!"</string>
 	<string name="new_friend_request">Новый запрос от друга</string>
+	<string name="friend_request_from_arg">Запрос дружбы от %s</string>
 	<string name="new_chat_message">Новое сообщение в чате</string>
-	<string name="new_challenge">Новый вызов</string>
+	<string name="new_daily_challenge">Новый вызов на день</string>
+	<string name="arg_wants_to_play">%s хочет играть!</string>
 	<string name="unable_to_select_this_photo">Не удается выбрать фото</string>
 	<string name="processing_">Обработка…</string>
 	<string name="about">О</string>
@@ -374,6 +381,7 @@
 	<string name="your_course_rating">Ваш рейтинг:</string>
 	<string name="score_">Результат:</string>
 	<string name="rating_">Рейтинг:</string>
+	<string name="new_arg_rating_">Новый рейтинг %s:</string>
 	<string name="course">Курс</string>
 	<string name="lessons_completed">Уроков завершено</string>
 	<string name="courses_completed">Курсов завершено</string>
@@ -385,6 +393,7 @@
 	<string name="lessons_limit_reached_message">Лимит уроков на день исчерпан. Обновите сейчас, чтобы улучшить вашу игры с неограниченными уроками!</string>
 	<string name="resume_lesson">Продолжить Урок</string>
 	<string name="installing_theme">Установка темы</string>
+	<string name="waiting_to_download">Ожидание закачки…</string>
 	<string name="loading_background">Загружаем фон</string>
 	<string name="saving_background">Сохраняем фон</string>
 	<string name="saving_board">Сохраняем доску</string>
@@ -414,10 +423,11 @@
 	<string name="all_time">Все время</string>
 	<string name="comments_arg">%s комментариев</string>
 	<string name="views_arg">%s просмотров</string>
-	<string name="your_game_is_over">Ваша Игра окончена</string>
+	<string name="game_is_over">Игра окончена</string>
+	<string name="game_over_vs">Game Over vs %s</string>
 	<string name="switch_sides">Поменяться сторонами</string>
 	<string name="no_results">Не найдено</string>
-	<string name="game_explorer">Обзор игр</string>
+	<string name="game_explorer">Исследователь</string>
 	<string name="recent_problems">Недавние проблемы</string>
 	<string name="recent_lessons">Недавние уроки</string>
 	<string name="players_online_arg">%s игроков онлайн</string>
@@ -468,9 +478,13 @@
 	<string name="review_lesson">Обзор урока</string>
 	<string name="full_screen">Во весь экран</string>
 	<string name="line">Линия</string>
-	<string name="predict_move_or_add_new_line">Предсказать ход или добавить новую линию...</string>
-	<string name="make_your_conditional_move">Сделайте Ваш предсказанный ход...</string>
-	<string name="predict_opponent_next_move">Предсказать следующий ход противника...</string>
+	<string name="predict_move_or_add_new_line">Предсказать ход или добавить новую ветку…</string>
+	<string name="make_your_conditional_move">Сделайте Ваш условный ход…</string>
+	<string name="predict_opponent_next_move">Предсказать следующий ход противника…</string>
 	<string name="notes">Заметки</string>
 	<string name="private_note">Личная заметка</string>
+	<string name="upgrade_feedback_1">"«Тактика и уроки действительно помогают моим шахматным навыкам стать лучше»"</string>
+	<string name="upgrade_feedback_reporter_1">-Питер, пользователь с 2011 г</string>
+	<string name="upgrade_feedback_2">"\"Мой средний рейтинг намного улучшился после того, как я стал премиум пользователем\""</string>
+	<string name="upgrade_feedback_reporter_2">-Лу, Нью-Джерси пользователь с 2009 г</string>
 </resources>

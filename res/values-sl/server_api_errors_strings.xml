@@ -47,7 +47,7 @@
 		<item>Preseženo maksimalno število iskanj.</item>
 		<item>Odigrajte poteze preden ustvarite nove partije.</item>
 		<item>Neveljavno uporabniško ime.</item>
-		<item>Neveljavni parameter - totalGames</item>
+		<item>Neveljavni parameter - Vse partije</item>
 		<item>Prosim zahtevajte 50 partij ali manj</item>
 		<item>Partija se je že začela!</item>
 		<item>Odstotek prekinitve je previsok.</item>
@@ -92,8 +92,8 @@
 			legitimen email ali se povežite preko Facebook-a. Hvala!
 		</item>
 		<item>Geslo mora vsebovati vsaj 6 znakov.</item>
-		<item>Ime lahko ima 20 znakov ali manj.</item>
-		<item>Priimek lahko ima 20 znakov ali manj.</item>
+		<item>Ime lahko vsebuje največ 20 znakov .</item>
+		<item>Priimek lahko vsebuje največ 20 znakov.</item>
 		<item>IP naslov je že bil prepovedan</item>
 		<item>Uporabniško ime ne sme biti prazno.</item>
 		<item>Neveljavni \"sku\"</item>
@@ -101,7 +101,7 @@
 		<item>Neveljavno ime paketa</item>
 		<item>Neveljaven \"niz dodatnih informacij\"</item>
 		<item>Neveljaven podpis podatkov</item>
-		<item>Neveljavno naročilo</item>
+		<item>Neveljaven vrstni red</item>
 		<item>Napačen vrstni red</item>
 	</string-array>
 </resources>

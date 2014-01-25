@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Ежедневен Шах</item>
-		<item>Шах на Живо - Стандартен</item>
-		<item>Шах на Живо - Блиц</item>
-		<item>Шах на Живо - Булит</item>
+		<item>На Живо - Стандарт</item>
+		<item>На Живо - Блиц</item>
+		<item>На Живо - Булит</item>
 		<item>Ежедневен шах960</item>
 		<item>Тактика</item>
 		<item>Уроци</item>

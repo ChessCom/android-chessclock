@@ -19,7 +19,7 @@
 	<string name="computer">Համակարգիչ</string>
 	<string name="thinking_">Մտածում է...</string>
 	<string name="open_challenges">Բաց Մարտահրավերներ</string>
-	<string name="challenge_friend">Նետել Մարտահրավեր Ընկերոջը</string>
+	<string name="challenge_friend">Մարտահրավեր Ընկերոջը</string>
 	<string name="challenge_created">Մարտահրավերը Բացված է</string>
   <string name="you_will_notified_when_game_starts">Դուք կտեղեկացվեք խաղը սկսվելու մասին
 </string>
@@ -99,6 +99,8 @@
 	<string name="you_are_offline">Դուք հիմա ասցանց չեք</string>
 	<string name="correct">Ճիշտ է</string>
 	<string name="incorrect">Սխալ է</string>
+	<string name="incorrect_move">Սխալ Քայլ</string>
+	<string name="puzzle_solved">Խնդիրը Լուծված է՜</string>
 	<string name="upgrade_for_unlimited_arg">% Անսահման Բարելավում</string>
 	<string name="hours">Ժամեր</string>
 	<string name="hour">ժամ</string>
@@ -130,26 +132,25 @@
 	<string name="unrated">Գնահատված չէ</string>
 	<string name="you_play">Ձեր Քայլն է</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move">"Ձեր Քայլն է"</string>
-	<string name="your_turn_in_game_with">Խաղի Մեջ %1$s , %2$s</string>
+	<string name="your_move_vs">Ձեր Քայլը ընդեմ %1$s , %2$s</string>
 	<string name="won_on_time">%s Հաղթանակ Ըստ Ժամանակի</string>
-	<string name="won_by_resignation">%s Հաղթանակ Ըստ Պարտության</string>
+	<string name="won_by_resignation">%s Հաղթանակ Ըստ Հրաժարման</string>
 	<string name="won_by_checkmate">%s Հաղթանակ Ըստ Մատի</string>
 	<string name="game_over">Խաղը ավարտված է</string>
 	<string name="reconnecting_">Կապը Վերականգնվում է...</string>
 	<string name="another_login_detected">Վայ՜ Դուք մուտկեք գործել այլ տեղ.</string>
-	<string name="game_end_title_draw">Ոչ-Ոգի</string>
-	<string name="game_draw_by_repetition">Ոչ-Ոգի ըստ կրկնության</string>
-	<string name="game_drawn_by_agreement">Ոչ-Ոգի Ըստ Համաձայնության</string>
-	<string name="game_drawn_by_stalemate">Ոչ-Ոգի Ըստ Պատի</string>
-	<string name="game_drawn_insufficient_material">Ոչ-Ոգի Ըստ Անբավարար Նյութերի</string>
-	<string name="game_drawn_by_fifty_move_rule">Ոչ-Ոգի Ըստ 50 Քայլի Օրենքի </string>
-	<string name="won_game_abandoned">Հաղթանակներ - Լքված Խաղեչ</string>
+	<string name="game_end_title_draw">Ոչ-Ոգի (½–½)</string>
 	<string name="game_aborted">Խաղը Կանգնեցրաց է</string>
 	<string name="new_game">Նոր Խաղ</string>
+	<string name="new_game_arg">Նոր Խաղ (%s)</string>
 	<string name="language">Լեզու</string>
 	<string name="black_wins">Սևերը Հաղթեցին (0–1)</string>
 	<string name="white_wins">Սպիտակները Հաղթեցին (1–0)</string>
+	<string name="game_draw_by_repetition">Ոչ-Ոգի Ըստ Կրկնության</string>
+	<string name="game_drawn_by_agreement">Ոչ-Ոգի Ըստ Հաշտության</string>
+	<string name="game_drawn_by_stalemate">Ոչ-Ոգի Ըստ Պատի</string>
+	<string name="game_drawn_insufficient_material">Ոչ-Ոգի Ըստ Նյութական Անբավարարության </string>
+	<string name="game_drawn_by_fifty_move_rule">Ոչ-Ոգի Ըստ 50 Քայլի Օրենքի</string>
 	<string name="draw_by_stalemate">Ոչ-Ոգի ըստ Պատի (½–½)</string>
 	<string name="draw_by_3fold_repetition">Ոչ-Ոգի Ըստ եռակի կրկնության (½–½)</string>
 	<string name="rematch">Ռեվանշ</string>
@@ -169,7 +170,7 @@
 	<string name="or_use_your_email">Կամ Օգտագործեք Ձեր Էլ.Փոստը:</string>
 	<string name="by_signing_up_accept_mobile">Գրանցվելով Ես Ընդունում եմ</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Պահանջներ եվ Ծառայություններ</a>]]></string>
-	<string name="create_chess_profile">Բացեք Ձեր Շախմատային Պրոֆիլը</string>
+	<string name="create_chess_profile">Բարի Գալուստ. Ստեղծեք Ձեր Շաղմատի Պռոֆիլը</string>
 	<string name="daily">Օրական</string>
 	<string name="improve_game_with_lessons">Բարելավեք Ձեր Խաղաոճը Անսահմանափակ Դասընթացներով</string>
 	<string name="improve_game_with_videos">Բարելավեք Ձեր Խաղաոճը Անսահմանափակ Տեսահոլովակներով</string>
@@ -181,8 +182,10 @@
 	<string name="download_complete">Ներբեռնումը Ավարտված է</string>
 	<string name="empty"></string>
 	<string name="difficulty">դժվարություն</string>
+	<string name="easiest">Հեշտ</string>
+	<string name="hardest">Դժվար</string>
 	<string name="vs">Ընդեմ</string>
-	<string name="leave_vacation_q">Ավարտե՞լ Արձակուրդը:</string>
+	<string name="leave_vacation_q">Կասեցնել Արձակուրդ՞ը</string>
 	<string name="sign_up_with_facebook"><b>Գրանցվել</b> Ֆեյսբուքի <b>միջոցով</b></string>
 	<string name="finished_games">Ավարտված Խաղեր</string>
 	<string name="feedback_mail_body">Խնդրում ենք չխմբագրել կամ հեռացնել ներքևի ինֆորմացիան:</string>
@@ -211,7 +214,7 @@
 	<string name="of_arg">ամբողջի %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Բավարար է Վարպետի Համար</string>
-	<string name="upgrade_main_title_1_tablet">Բավականին Բավարար է Վարպետի Համար: Իրական բավարար է Սկսնակի Համար:</string>
+	<string name="upgrade_main_title_1_tablet">Համարյա Բավարար Վարպետության Համար: Լրիվ Բավարար Սկսնակի Համար</string>
 	<string name="upgrade_main_title_2">Բավարար Մատչելի Սկսնակների համար</string>
 	<string name="diamond">Ադամանդ</string>
 	<string name="diamond_subtitle">Անսահման հասանոլություն բոլոր հնարավորություններին</string>
@@ -244,7 +247,7 @@
 	<string name="choose_photo">Ընտրել Նկարը</string>
 	<string name="take_photo">Նկարվել</string>
 	<string name="pick_photo">Ընտրել Նկար</string>
-	<string name="or_login_using_chesscom">Կամ Մուտք եղեք Ձեր Chess.com-ի գաղտնաբառով: </string>
+	<string name="or_login_using_chesscom">Կամ Օգտագործեք Ձեր Chess.com-ի Մաւտքաբառը:</string>
 	<string name="articles">Հոդվածներ</string>
 	<string name="forums">Ֆորումներ</string>
 	<string name="notifications">Ծանուցումներ</string>
@@ -264,7 +267,7 @@
 	<string name="start">Սկիզբ</string>
 	<string name="lessons">Դասընթացներ</string>
 	<string name="analysis">Վերլուծում</string>
-	<string name="profile">Պրոֆիլ</string>
+	<string name="profile">Հաշիվ</string>
 	<string name="theme">Թեմա</string>
 	<string name="privacy">Գաղտնի</string>
 	<string name="blocking">Արգելափակում</string>
@@ -282,7 +285,7 @@
 	<string name="profile_account_message_3">Եթե Դուք ցանկանում եք փակել Ձեր Հաշիվը</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">ներմուծեք այստեղ.</a>]]></string>
 	<string name="basic">Հիմնական</string>
-	<string name="sign_up_now_free">Գրանցվեք Հիմա -Անվճար է:</string>
+	<string name="sign_up_now_free">"Գրանցվե՜ք - Անվճար է"</string>
 	<string name="chess_com_username">Chess.com Մուտքաբառ</string>
 	<string name="coordinates">Կոորդինատներ</string>
 	<string name="highlight_last_move">Նշել վերջին Տեսահոլովակը</string>
@@ -307,8 +310,8 @@
 	<string name="completed">Ավարտված</string>
 	<string name="few_min">Մի քանի րոպե</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 վրկ]]></string>
-	<string name="abort_game_">Ձախողել Խաղը</string>
-	<string name="resign_game_">Ավարտել Խաղը</string>
+	<string name="abort_game_">Ձախողե՞լ</string>
+	<string name="resign_game_">Հրաժարվե՞լ</string>
 	<string name="days_move">օրեր/քայլեր</string>
 	<string name="password_cant_be_empty">Գաղտնաբառը չի կարող լինել Դատարկ</string>
 	<string name="invalid_username_or_password">Սխալ Մուտքաբառ և Գաղտնաբառ</string>
@@ -325,8 +328,10 @@
 	<string name="add_friend">Ավալացնել Ընկեր</string>
 	<string name="recent_opponents">Ներկա Հակառակորդ</string>
 	<string name="invite_by_email">Հրավիրել Էլ.Փոստով</string>
+	<string name="please_enter_valid_email">Խնդրում ենք ներմուծել Ճիշտ Էլ.փոստը</string>
 	<string name="invite_facebook_friend">Հրավիրել Facebook-ի Ընկերոջը</string>
 	<string name="invite_from_contacts">Հրավիրել Կոնտակներից</string>
+	<string name="no_contacts_found">Պայմանգիր Չի Գտնված</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Կոնտակներ</string>
 	<string name="facebook_invite_friend_to_play">Խաղանք Շախմատ: Դուք կարող եք խաղալ առցանց Chess.com -ում ինչպես Android այնպես էլ iPhone/iPad մոբիլով:</string>
@@ -345,8 +350,10 @@
 	<string name="username_not_found">Գաղտնաբառը Չի գնված</string>
 	<string name="you_have_not_added_friends_yet">"Դուք դեռ որևէ ընկեր չունեք: Ավելացրեք ոմանց:"</string>
 	<string name="new_friend_request">Նոր Ընկերոջ Հարցում</string>
+	<string name="friend_request_from_arg">Ընկերների Հարցում %s</string>
 	<string name="new_chat_message">Նոր Չատ Հաղորդագրություն</string>
-	<string name="new_challenge">Նոր Մարտահրավեր</string>
+	<string name="new_daily_challenge">Նոր Օրական Մարտահրավեր</string>
+	<string name="arg_wants_to_play">%s ցանկանում են խաղալ</string>
 	<string name="unable_to_select_this_photo">Անհնարին է Օգտագործել այս նկարը</string>
 	<string name="processing_">Մշակվում է...</string>
 	<string name="about">Մասին</string>
@@ -375,6 +382,7 @@
 	<string name="your_course_rating">Ձեր Կուրսի Կարգը:</string>
 	<string name="score_">Միավորներ:</string>
 	<string name="rating_">Վարկանիշ:</string>
+	<string name="new_arg_rating_">Նոր %s Վարկանիշ:</string>
 	<string name="course">Կուրս</string>
 	<string name="lessons_completed">Դասընթացները ավարտված են</string>
 	<string name="courses_completed">Կուրսերը Ավարտված են</string>
@@ -386,6 +394,7 @@
 	<string name="lessons_limit_reached_message">Դացընթացների լիմիտը վերջացել է այսօր. Թարմացրեք եվ կատարելագործվեք անլիմիտ դասընթացներով հիմա </string>
 	<string name="resume_lesson">Վերսկսել Դասը</string>
 	<string name="installing_theme">ՈՃերի Ինստայացիա</string>
+	<string name="waiting_to_download">Բեռնվում է...</string>
 	<string name="loading_background">Ֆոնը Բեռնվում է</string>
 	<string name="saving_background">Ֆոնը Պահպանվում է</string>
 	<string name="saving_board">Խաղատախտակը պահպահնվում է</string>
@@ -415,10 +424,11 @@
 	<string name="all_time">Անժամանակ</string>
 	<string name="comments_arg">%s մեկնաբանություններ</string>
 	<string name="views_arg">%s դիտում</string>
-	<string name="your_game_is_over">Ձեր Խաղը Ավարտված է</string>
+	<string name="game_is_over">Խաղը Ավարտված է</string>
+	<string name="game_over_vs">Ավարտված Խաղեր Ընդեմ %s</string>
 	<string name="switch_sides">Փողել Կողմերը</string>
 	<string name="no_results">Առանց Արդյունք</string>
-	<string name="game_explorer">Խաղերի Հետազոտող</string>
+	<string name="game_explorer">Էքսպլոռեր</string>
 	<string name="recent_problems">Ներկա պրոբլեմները</string>
 	<string name="recent_lessons">Ներկա Դասընթացները</string>
 	<string name="players_online_arg">%s Առցանց Խաղացողներ</string>
@@ -469,9 +479,13 @@
 	<string name="review_lesson">Վերանայել դասընթացը</string>
 	<string name="full_screen">Լրիվ Էկրան</string>
 	<string name="line">Գիծ</string>
-	<string name="predict_move_or_add_new_line">Գուշակել քայլը կամ ավելացնել նոր գիծ...</string>
-	<string name="make_your_conditional_move">Կատարեք Ձեր պայմանական քայլը...</string>
-	<string name="predict_opponent_next_move">Գուշակել Հակառակորդի Հաջորդ Քայլը...</string>
+	<string name="predict_move_or_add_new_line">Կանխատեսել քայլ կամ ավելացնել նոր գիծ ...</string>
+	<string name="make_your_conditional_move">Կատարեք Ձեր պայմանական քայլը ...</string>
+	<string name="predict_opponent_next_move">Կանխատեսեք մրցակցի հաջորդ քայլը ...</string>
 	<string name="notes">Նշումներ</string>
 	<string name="private_note">Գաղտնի Նշում</string>
+	<string name="upgrade_feedback_1">"«Մարտավարություն և Դասընթացները իսկապես օգնել են իմ շախմատային հմտություններին»"</string>
+	<string name="upgrade_feedback_reporter_1">- - Պետեռ, Անդամ է սկսած 2011թ.</string>
+	<string name="upgrade_feedback_2">"«Իմ ընդհանուր վարկանիշը բարելավվել է բավականին հետո երբ Ես դարձել եմ պրեմիում անդամ»"</string>
+	<string name="upgrade_feedback_reporter_2">- Lou, NJ Անդամ է սկսած 2009 թ.</string>
 </resources>

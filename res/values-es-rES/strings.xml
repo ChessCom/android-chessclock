@@ -19,7 +19,7 @@
 	<string name="computer">Computadora</string>
 	<string name="thinking_">Pensando…</string>
 	<string name="open_challenges">Retos Abiertos</string>
-	<string name="challenge_friend">Retar a un Amigo</string>
+	<string name="challenge_friend">Reta a un Amigo</string>
 	<string name="challenge_created">Reto Creado</string>
 	<string name="you_will_notified_when_game_starts">Serás notificado cuando la partida empiece</string>
 	<string name="challenge_sent">Reto Enviado</string>
@@ -98,6 +98,8 @@
 	<string name="you_are_offline">Ahora estás en Modo Desconectado</string>
 	<string name="correct">Correcto</string>
 	<string name="incorrect">Incorrecto</string>
+	<string name="incorrect_move">Movimiento Incorrecto</string>
+	<string name="puzzle_solved">¡Problema Resuelto!</string>
 	<string name="upgrade_for_unlimited_arg">¡Mejora tu Cuenta Para Acceder a %s Sin Límite!</string>
 	<string name="hours">horas</string>
 	<string name="hour">hora</string>
@@ -129,26 +131,25 @@
 	<string name="unrated">Sin clasificar</string>
 	<string name="you_play">Tú Juegas:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move">"Es Tu Turno"</string>
-	<string name="your_turn_in_game_with">En la Partida con %1$s , %2$s</string>
-	<string name="won_on_time">%s Ganó por Tiempo</string>
-	<string name="won_by_resignation">%s Ganó por Rendición</string>
-	<string name="won_by_checkmate">%s Ganó por Jaque Mate</string>
-	<string name="game_over">Juego Terminado</string>
+	<string name="your_move_vs">Tu movimiento vs %1$s , %2$s</string>
+	<string name="won_on_time">%s gana por Tiempo</string>
+	<string name="won_by_resignation">%s gana por Rendición</string>
+	<string name="won_by_checkmate">%s gana por Jaque Mate</string>
+	<string name="game_over">Partida Terminada</string>
 	<string name="reconnecting_">Reconectando…</string>
 	<string name="another_login_detected">¡Huy! Estás conectado desde otro lugar.</string>
-	<string name="game_end_title_draw">Juego en Tablas</string>
-	<string name="game_draw_by_repetition">Juego en Tablas por Repetición</string>
-	<string name="game_drawn_by_agreement">Juego en Tablas por Acuerdo</string>
-	<string name="game_drawn_by_stalemate">Juego en Tablas por Rey Ahogado</string>
-	<string name="game_drawn_insufficient_material">Juego en Tablas por Insuficiencia de Material</string>
-	<string name="game_drawn_by_fifty_move_rule">Juego en Tablas por la Regla de los 50 Movimientos</string>
-	<string name="won_game_abandoned">Ha ganado - Partida Abandonada</string>
+	<string name="game_end_title_draw">Tablas (½–½)</string>
 	<string name="game_aborted">Partida Abortada</string>
 	<string name="new_game">Nueva Partida</string>
+	<string name="new_game_arg">Nueva Partida (%s)</string>
 	<string name="language">Idioma</string>
 	<string name="black_wins">Negras Ganan (0–1)</string>
 	<string name="white_wins">Blancas Ganan (1–0)</string>
+	<string name="game_draw_by_repetition">Tablas por Repetición</string>
+	<string name="game_drawn_by_agreement">Tablas por Acuerdo</string>
+	<string name="game_drawn_by_stalemate">Tablas por Rey Ahogado</string>
+	<string name="game_drawn_insufficient_material">Tablas por Material Insuficiente</string>
+	<string name="game_drawn_by_fifty_move_rule">Tablas por la Regla de los 50 Movimientos</string>
 	<string name="draw_by_stalemate">Tablas por Rey Ahogado (½–½)</string>
 	<string name="draw_by_3fold_repetition">Tablas por Triple Repetición (½–½)</string>
 	<string name="rematch">Revancha</string>
@@ -168,7 +169,7 @@
 	<string name="or_use_your_email">O usa tu Dirección de Correo Electrónico:</string>
 	<string name="by_signing_up_accept_mobile">Al registrarme, acepto</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Términos de Servicio</a>]]></string>
-	<string name="create_chess_profile">Crea tu Perfil de Ajedrez</string>
+	<string name="create_chess_profile">¡Bienvenido! Crea tu Perfil de Ajedrez</string>
 	<string name="daily">Diarias</string>
 	<string name="improve_game_with_lessons">Mejora tu Juego con Lecciones Ilimitadas</string>
 	<string name="improve_game_with_videos">Mejora tu Juego con Vídeos Ilimitados</string>
@@ -180,6 +181,8 @@
 	<string name="download_complete">Descarga Completada</string>
 	<string name="empty"></string>
 	<string name="difficulty">Dificultad</string>
+	<string name="easiest">Más fácil</string>
+	<string name="hardest">Más difícil</string>
 	<string name="vs">vs</string>
 	<string name="leave_vacation_q">¿Desactivar Vacaciones?</string>
 	<string name="sign_up_with_facebook"><b>Regístrate</b> con <b>Facebook</b></string>
@@ -210,7 +213,7 @@
 	<string name="of_arg">de %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Suficientemente Bueno para Maestros</string>
-	<string name="upgrade_main_title_1_tablet">Suficientemente Bueno para Maestros. Suficientemente Simple para Principiantes. ¡Pruébalo Ahora!</string>
+	<string name="upgrade_main_title_1_tablet">Suficientemente Bueno para Maestros. Suficientemente Simple para Principiantes.</string>
 	<string name="upgrade_main_title_2">Suficientemente Simple para Principiantes</string>
 	<string name="diamond">Diamante</string>
 	<string name="diamond_subtitle">Acceso ilimitado a todas las características</string>
@@ -243,7 +246,7 @@
 	<string name="choose_photo">Elegir Foto</string>
 	<string name="take_photo">Tomar Foto</string>
 	<string name="pick_photo">Escoge una Foto</string>
-	<string name="or_login_using_chesscom">O Inicia sesión con tu Nombre de Usuario de Chess.com:</string>
+	<string name="or_login_using_chesscom">O Usa tu Nombre de Usuario de Chess.com:</string>
 	<string name="articles">Artículos</string>
 	<string name="forums">Foros</string>
 	<string name="notifications">Notificaciones</string>
@@ -254,7 +257,7 @@
 	<string name="share_pgn">Compartir PGN</string>
 	<string name="share_via">Compartir vía</string>
 	<string name="chess">Ajedrez</string>
-	<string name="via_chesscom">vía @Chesscom</string>
+	<string name="via_chesscom">"vía @Chesscom"</string>
 	<string name="vs_random_opponent">vs Aleatorio</string>
 	<string name="feed">Social</string>
 	<string name="learn">Aprender</string>
@@ -263,7 +266,7 @@
 	<string name="start">Empezar</string>
 	<string name="lessons">Lecciones</string>
 	<string name="analysis">Análisis</string>
-	<string name="profile">Perfil</string>
+	<string name="profile">Cuenta</string>
 	<string name="theme">Tema</string>
 	<string name="privacy">Privacidad</string>
 	<string name="blocking">Bloqueados</string>
@@ -281,7 +284,7 @@
 	<string name="profile_account_message_3">Si quieres cerrar tu cuenta,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">toca aquí.</a>]]></string>
 	<string name="basic">Básico</string>
-	<string name="sign_up_now_free">Regístrate Ahora - ¡es GRATIS!</string>
+	<string name="sign_up_now_free">"Regístrate Ahora - ¡es GRATIS!"</string>
 	<string name="chess_com_username">Nombre de Usuario de Chess.com</string>
 	<string name="coordinates">Coordenadas</string>
 	<string name="highlight_last_move">Resaltar el Último Movimiento</string>
@@ -306,7 +309,7 @@
 	<string name="completed">Terminadas</string>
 	<string name="few_min">unos pocos min</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 seg]]></string>
-	<string name="abort_game_">¿Abortar Partida?</string>
+	<string name="abort_game_">¿Abortar?</string>
 	<string name="resign_game_">¿Rendirse?</string>
 	<string name="days_move">días/movimiento</string>
 	<string name="password_cant_be_empty">La Contraseña No Puede estar Vacía</string>
@@ -324,8 +327,10 @@
 	<string name="add_friend">Añadir Amigo</string>
 	<string name="recent_opponents">Oponentes Recientes</string>
 	<string name="invite_by_email">Invitar por Correo Electrónico</string>
+	<string name="please_enter_valid_email">Por favor escriba un Correo electrónico válido</string>
 	<string name="invite_facebook_friend">Invitar a un Amigo de Facebook</string>
 	<string name="invite_from_contacts">Invitar desde tus Contactos</string>
+	<string name="no_contacts_found">No se han Encontrado Contactos</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Contactos</string>
 	<string name="facebook_invite_friend_to_play">¡Juguemos al ajedrez! Puedes jugar en línea en Chess.com o en tu móvil con Android o iPhone/iPad.</string>
@@ -344,8 +349,10 @@
 	<string name="username_not_found">Nombre de Usuario no Encontrado</string>
 	<string name="you_have_not_added_friends_yet">"Todavía no tienes ningún amigo. ¡Agrega algunos!"</string>
 	<string name="new_friend_request">Nueva Solicitud de Amistad</string>
+	<string name="friend_request_from_arg">Solicitud de amistad de %s</string>
 	<string name="new_chat_message">Nuevo Mensaje de Chat</string>
-	<string name="new_challenge">Nuevo Reto</string>
+	<string name="new_daily_challenge">Nuevo Reto Diario</string>
+	<string name="arg_wants_to_play">¡%s quiere jugar!</string>
 	<string name="unable_to_select_this_photo">No se Puede Usar esta Foto</string>
 	<string name="processing_">Procesando…</string>
 	<string name="about">Acerca de</string>
@@ -374,6 +381,7 @@
 	<string name="your_course_rating">Tu Puntuación del Curso:</string>
 	<string name="score_">Calificación:</string>
 	<string name="rating_">Puntuación:</string>
+	<string name="new_arg_rating_">Nueva Puntuación de %s:</string>
 	<string name="course">Curso</string>
 	<string name="lessons_completed">Lecciones Completadas</string>
 	<string name="courses_completed">Cursos Completados</string>
@@ -385,6 +393,7 @@
 	<string name="lessons_limit_reached_message">Límite de lecciones alcanzado por hoy. ¡Mejora tu cuenta ahora para aprender con lecciones ilimitadas!</string>
 	<string name="resume_lesson">Reanudar Lección</string>
 	<string name="installing_theme">Instalando Tema</string>
+	<string name="waiting_to_download">Esperando la descarga…</string>
 	<string name="loading_background">Cargando Fondo</string>
 	<string name="saving_background">Guardando Fondo</string>
 	<string name="saving_board">Guardando Tablero</string>
@@ -414,10 +423,11 @@
 	<string name="all_time">Todo el Tiempo</string>
 	<string name="comments_arg">%s comentarios</string>
 	<string name="views_arg">%s visitas</string>
-	<string name="your_game_is_over">Tu Partida ha Terminado</string>
+	<string name="game_is_over">Partida Terminada</string>
+	<string name="game_over_vs">Partida contra %s Terminada</string>
 	<string name="switch_sides">Cambiar de Lado</string>
 	<string name="no_results">Sin Resultados</string>
-	<string name="game_explorer">Explorador de Partidas</string>
+	<string name="game_explorer">Explorador</string>
 	<string name="recent_problems">Problemas Recientes</string>
 	<string name="recent_lessons">Lecciones Recientes</string>
 	<string name="players_online_arg">%s Jugadores en Línea</string>
@@ -468,9 +478,13 @@
 	<string name="review_lesson">Repasar Lección</string>
 	<string name="full_screen">Pantalla Completa</string>
 	<string name="line">Línea</string>
-	<string name="predict_move_or_add_new_line">Predecir movimiento o añadir nueva línea...</string>
-	<string name="make_your_conditional_move">Haz tu movimiento condicional...</string>
-	<string name="predict_opponent_next_move">Predecir el próximo movimiento del oponente...</string>
+	<string name="predict_move_or_add_new_line">Predecir movimiento o añadir nueva línea…</string>
+	<string name="make_your_conditional_move">Haz tu movimiento condicional…</string>
+	<string name="predict_opponent_next_move">Predecir el siguiente movimiento del oponente…</string>
 	<string name="notes">Notas</string>
 	<string name="private_note">Nota Privada</string>
+	<string name="upgrade_feedback_1">"\"Las Tácticas y Lecciones ayudan realmente a mejorar mis habilidades en el ajedrez\""</string>
+	<string name="upgrade_feedback_reporter_1">- Peter, Miembro Desde 2011</string>
+	<string name="upgrade_feedback_2">"\"Mi puntuación total mejoró un montón después de convertirme en miembro premium\""</string>
+	<string name="upgrade_feedback_reporter_2">- Lou, NJ Miembro Desde 2009</string>
 </resources>

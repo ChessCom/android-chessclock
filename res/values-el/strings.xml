@@ -19,7 +19,7 @@
 	<string name="computer">Υπολογιστής</string>
 	<string name="thinking_">Σκέφτομαι…</string>
 	<string name="open_challenges">Ανοιχτές προκλήσεις</string>
-	<string name="challenge_friend">Πρόκληση φίλου</string>
+	<string name="challenge_friend">Προκαλέστε έναν φίλο</string>
 	<string name="challenge_created">Η πρόκληση δημιουργήθηκε</string>
 	<string name="you_will_notified_when_game_starts">Θα ειδοποιηθείτε όταν το παιχνίδι ξεκινήσει</string>
 	<string name="challenge_sent">Η πρόκληση εστάλει</string>
@@ -98,6 +98,8 @@
 	<string name="you_are_offline">Τώρα είστε σε λειτουργία χωρίς σύνδεση</string>
 	<string name="correct">Σωστό</string>
 	<string name="incorrect">Εσφαλμένο</string>
+	<string name="incorrect_move">Λάθος κίνηση</string>
+	<string name="puzzle_solved">Ο γρίφος λύθηκε!</string>
 	<string name="upgrade_for_unlimited_arg">Αναβάθμιση για απεριόριστα %s!</string>
 	<string name="hours">ώρες</string>
 	<string name="hour">ώρα</string>
@@ -129,26 +131,25 @@
 	<string name="unrated">Μη βαθμολογιμένο</string>
 	<string name="you_play">Παίζεις:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move">"Είναι η σειρά σας"</string>
-	<string name="your_turn_in_game_with">Στο παιχνίδι με %1$ s, %2$ s.</string>
-	<string name="won_on_time">%s Νίκη λόγο χρόνου</string>
-	<string name="won_by_resignation">%s Νίκη λόγο παραίτησης</string>
-	<string name="won_by_checkmate">%s Νίκη με Ματ</string>
+	<string name="your_move_vs">Η κίνησή σου vs%1$s , %2$s</string>
+	<string name="won_on_time">%s κερδίζει από Χρόνο</string>
+	<string name="won_by_resignation">%s κερδίζει από Παραίτηση</string>
+	<string name="won_by_checkmate">%s κερδίζει με Ματ</string>
 	<string name="game_over">Τέλος παιχνιδιού</string>
 	<string name="reconnecting_">Επανασύνδεση...</string>
 	<string name="another_login_detected">Ώπα! Είστε συνδεδεμένοι κάπου αλλού.</string>
-	<string name="game_end_title_draw">Ισοπαλία</string>
-	<string name="game_draw_by_repetition">Ισοπαλία λόγο επανάληψης</string>
-	<string name="game_drawn_by_agreement">Σύμφωνη ισοπαλία</string>
-	<string name="game_drawn_by_stalemate">Ισοπαλία Πατ</string>
-	<string name="game_drawn_insufficient_material">Ισοπαλία λόγο ανεπαρκών πιονιών</string>
-	<string name="game_drawn_by_fifty_move_rule">Ισοπαλία λόγο του κανόνα των 50 κινήσεων</string>
-	<string name="won_game_abandoned">Νίκη - Εγκατάλειψη παιχνιδιού</string>
+	<string name="game_end_title_draw">Ισοπαλία (½–½)</string>
 	<string name="game_aborted">Αποχώριση από το παιχνίδι</string>
 	<string name="new_game">Νέο παιχνίδι</string>
+	<string name="new_game_arg">Νέα παρτίδα (%s)</string>
 	<string name="language">Γλώσσα</string>
 	<string name="black_wins">Τα μαύρα νικούν (0-1)</string>
 	<string name="white_wins">Τα λευκά νικούν (1-0)</string>
+	<string name="game_draw_by_repetition">Ισοπαλία λόγω επαναλαμβανόμενων κινήσεων</string>
+	<string name="game_drawn_by_agreement">Σύμφωνη Ισοπαλία</string>
+	<string name="game_drawn_by_stalemate">Ισοπαλία Πατ</string>
+	<string name="game_drawn_insufficient_material">Ισοπαλία λόγω ανεπαρκούς υλικού</string>
+	<string name="game_drawn_by_fifty_move_rule">Ισοπαλία λόγω του κανόνα των 50 κινήσεων</string>
 	<string name="draw_by_stalemate">Ισοπαλία Πατ (½–½)</string>
 	<string name="draw_by_3fold_repetition">Ισοπαλία από τριπλή επανάληψη (½–½)</string>
 	<string name="rematch">Ρεβάνς</string>
@@ -167,8 +168,8 @@
 	<string name="profile_picture">Εικόνα προφίλ</string>
 	<string name="or_use_your_email">Ή να χρησιμοποιήσετε το email σας:</string>
 	<string name="by_signing_up_accept_mobile">Υπογράφοντας, αποδέχομαι</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> ΟΡΟΙ ΧΡΗΣΗΣ</a>]]></string>
-	<string name="create_chess_profile">Δημιουργήστε το σκακιστικό προφίλ σας</string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> ΟΡΟΙ ΧΡΗΣΗΣ</a>]]]></string>
+	<string name="create_chess_profile">Καλώς όρισες! Δημιούργησε το σκακιστικό προφίλ σου</string>
 	<string name="daily">Ημερήσια</string>
 	<string name="improve_game_with_lessons">Βελτιώσετε το παιχνίδι σας με απεριόριστα μαθήματα</string>
 	<string name="improve_game_with_videos">Βελτιώσετε το παιχνίδι σας με απεριόριστα βίντεο</string>
@@ -180,8 +181,10 @@
 	<string name="download_complete">Η φόρτωση ολοκληρώθηκε</string>
 	<string name="empty"></string>
 	<string name="difficulty">Δυσκολία</string>
+	<string name="easiest">Πολύ εύκολο</string>
+	<string name="hardest">Πολύ δύσκολο</string>
 	<string name="vs">vs</string>
-	<string name="leave_vacation_q">Απενεργοποιήση διακοπών;</string>
+	<string name="leave_vacation_q">Απενεργοποίηση διακοπών;</string>
 	<string name="sign_up_with_facebook"><b>Εγγραφείτε</b> με το <b>Facebook</b></string>
 	<string name="finished_games">Ολοκληρωμένα παιχνίδια</string>
 	<string name="feedback_mail_body">Παρακαλώ μην επεξεργαστείτε ή καταργήσετε τις παρακάτω πληροφορίες.</string>
@@ -210,7 +213,7 @@
 	<string name="of_arg">του %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Αρκετά καλό για τους Masters</string>
-	<string name="upgrade_main_title_1_tablet">Αρκετά καλό για τους Masters. Αρκετά απλό για τους αρχαρίους. Δοκιμάστε το τώρα!</string>
+	<string name="upgrade_main_title_1_tablet">Αρκετά καλό για Μάστερς. Αρκετά απλό για αρχάριους.</string>
 	<string name="upgrade_main_title_2">Αρκετά απλό για τους αρχαρίους</string>
 	<string name="diamond">Διαμάντι</string>
 	<string name="diamond_subtitle">Απεριόριστη πρόσβαση σε όλες τις δυνατότητες</string>
@@ -243,7 +246,7 @@
 	<string name="choose_photo">Επιλογή φωτογραφίας</string>
 	<string name="take_photo">Τραβήξετε φωτογραφία</string>
 	<string name="pick_photo">Επιλέξετε μια φωτογραφία</string>
-	<string name="or_login_using_chesscom">ή, συνδεθείτε με το όνομα χρήστη του Chess.com:</string>
+	<string name="or_login_using_chesscom">ή χρησιμοποίησε το Chess.com όνομα χρήστη σου:</string>
 	<string name="articles">Άρθρα</string>
 	<string name="forums">Φόρουμ</string>
 	<string name="notifications">Ειδοποιήσεις</string>
@@ -254,7 +257,7 @@
 	<string name="share_pgn">Μοιραστείτε το PGN</string>
 	<string name="share_via">Μοιραστείτε μέσω</string>
 	<string name="chess">Σκάκι</string>
-	<string name="via_chesscom">μέσω @Chesscom</string>
+	<string name="via_chesscom">"μέσω @Chesscom"</string>
 	<string name="vs_random_opponent">vs Τυχαία</string>
 	<string name="feed">Τροφοδοσία</string>
 	<string name="learn">Εκμάθηνση</string>
@@ -263,7 +266,7 @@
 	<string name="start">Έναρξη</string>
 	<string name="lessons">Μαθήματα</string>
 	<string name="analysis">Ανάλυση</string>
-	<string name="profile">Προφίλ</string>
+	<string name="profile">Λογαριασμός</string>
 	<string name="theme">Θέμα</string>
 	<string name="privacy">Ιδιωτικότητα</string>
 	<string name="blocking">Κλείδωμα</string>
@@ -274,14 +277,14 @@
 	<string name="location">Τοποθεσία</string>
 	<string name="share">Μοιραστείτε</string>
 	<string name="profile_membership_renew_cancel">Η %1$s κάρτα μέλους θα ανανεωθεί στις %2$s.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Ακύρωση</a>]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Ακύρωση</a>]]]></string>
 	<string name="invite_friends_profile_message">Το σκάκι είναι πιο διασκεδαστικό με τους φίλους - καλέστε τους να συμμετάσχουν!</string>
 	<string name="profile_account_message_1">Ο λογαριασμός σας υπόκειται στο site </string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice">Terms and Conditions.</a>]]></string>
 	<string name="profile_account_message_3">Αν επιθυμείτε να κλείσετε το λογαριασμό σας,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy"> πατήστε εδώ.</a>]]></string>
 	<string name="basic">Βασικό</string>
-	<string name="sign_up_now_free">Εγγραφείτε τώρα - είναι ΔΩΡΕΑΝ!</string>
+	<string name="sign_up_now_free">"Εγγραφείτε - Είναι ΔΩΡΕΑΝ!"</string>
 	<string name="chess_com_username">Chess.com Όνομα Χρήστη</string>
 	<string name="coordinates">Συντεταγμένες</string>
 	<string name="highlight_last_move">Επισημάνετε την τελευταία κίνηση</string>
@@ -305,9 +308,9 @@
 	<string name="archive">Αρχειοθέτηση</string>
 	<string name="completed">Ολοκληρώθηκαν</string>
 	<string name="few_min">λίγα λεπτά</string>
-	<string name="less_than_60_sec"><![CDATA[< 60 sec]]></string>
-	<string name="abort_game_">Αποχώρηση από το παιχνίδι;</string>
-	<string name="resign_game_">Παραίτηση από το παιχνίδι;</string>
+	<string name="less_than_60_sec"><![CDATA[< 60 sec]]]></string>
+	<string name="abort_game_">Αποχώρηση;</string>
+	<string name="resign_game_">Παραίτηση;</string>
 	<string name="days_move">ημέρες/κίνηση</string>
 	<string name="password_cant_be_empty">Ο κωδικός πρόσβασης δεν μπορεί να είναι κενό</string>
 	<string name="invalid_username_or_password">Μη έγκυρο όνομα χρήστη ή κωδικός πρόσβασης</string>
@@ -319,13 +322,15 @@
 	<string name="use_lessons">χρησιμοποιήσετε τα Μαθήματα</string>
 	<string name="watch_videos">Παρακολουθήστε Βίντεο Μαθήματα</string>
 	<string name="interactive_lessons">Διαδραστικά Μαθήματα</string>
-	<string name="tactics_and_puzzles"><![CDATA[Τακτικές &amp; Παζλ]]></string>
+	<string name="tactics_and_puzzles"><![CDATA[Τακτικές &amp; Παζλ]]]></string>
 	<string name="friend_requests">Αιτήση Φιλίας</string>
 	<string name="add_friend">Προσθήκη Φίλου</string>
 	<string name="recent_opponents">Πρόσφατοι αντίπαλοι</string>
 	<string name="invite_by_email">Προσκαλέστε μέσω Email</string>
+	<string name="please_enter_valid_email">Παρακαλούμε εισάγετε μια έγκυρη διεύθυνση email</string>
 	<string name="invite_facebook_friend">Πρόσκληση φίλου Facebook</string>
 	<string name="invite_from_contacts">Προσκαλέστε από τις Επαφές</string>
+	<string name="no_contacts_found">Δεν βρέθηκαν επαφές</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Επαφές</string>
 	<string name="facebook_invite_friend_to_play">Ας παίξουμε σκάκι! Μπορείτε να παίξετε διαδικτυακά στο Chess.com ή στο κινητό με Android ή iPhone/iPad.</string>
@@ -344,8 +349,10 @@
 	<string name="username_not_found">Το όνομα χρήστη δεν βρέθηκε</string>
 	<string name="you_have_not_added_friends_yet">"Δεν έχετε ακόμα φίλους. Προσθέστε μερικούς!"</string>
 	<string name="new_friend_request">Νέο αίτημα φιλίας</string>
+	<string name="friend_request_from_arg">Αίτημα φιλίας από %s</string>
 	<string name="new_chat_message">Νέο μήνυμα κουβέντας</string>
-	<string name="new_challenge">Νέα πρόκληση</string>
+	<string name="new_daily_challenge">Νέα ημερίσια πρόκληση</string>
+	<string name="arg_wants_to_play">Ο/Η %s θέλει να παίξετε!</string>
 	<string name="unable_to_select_this_photo">Αδυναμία χρήσης αυτής της φωτογραφίας</string>
 	<string name="processing_">Επεξεργασία...</string>
 	<string name="about">Σχετικά με</string>
@@ -374,6 +381,7 @@
 	<string name="your_course_rating">Η βαθμολογία των σπουδών σου:</string>
 	<string name="score_">Σκορ:</string>
 	<string name="rating_">Βαθμολογία:</string>
+	<string name="new_arg_rating_">Νέα βαθμολογία για τον/την %s:</string>
 	<string name="course">Σπουδές</string>
 	<string name="lessons_completed">Ολοκληρωμένα μαθήματα</string>
 	<string name="courses_completed">Ολοκληρωμένες σπουδές</string>
@@ -385,6 +393,7 @@
 	<string name="lessons_limit_reached_message">Έχετε φτάσει το όριο μαθημάτων για σήμερα. Αναβαθμίστε τώρα το λογαριασμό σας για να βελτιωθείτε με απεριόριστα μαθήματα!</string>
 	<string name="resume_lesson">Συνέχιση μαθήματος</string>
 	<string name="installing_theme">Εγκατάσταση θέματος</string>
+	<string name="waiting_to_download">Αναμονή για κατέβασμα…</string>
 	<string name="loading_background">Φόρτωση φόντο</string>
 	<string name="saving_background">Αποθήκευση φόντο</string>
 	<string name="saving_board">Αποθήκευση Σκακιέρας</string>
@@ -414,10 +423,11 @@
 	<string name="all_time">Γενικά</string>
 	<string name="comments_arg">%s σχόλια</string>
 	<string name="views_arg">%s εμφανίσεις</string>
-	<string name="your_game_is_over">Το παιχνίδι σας είναι ολοκληρωμένο</string>
+	<string name="game_is_over">Τέλος παιχνιδιού</string>
+	<string name="game_over_vs">Τέλος παιχνιδιού vs %s</string>
 	<string name="switch_sides">Αλλαγή πλευράς</string>
 	<string name="no_results">Κανένα αποτέλεσμα</string>
-	<string name="game_explorer">Ερευνητής παιχνιδιού</string>
+	<string name="game_explorer">Εξερευνητής</string>
 	<string name="recent_problems">Πρόσφατα Προβλήματα</string>
 	<string name="recent_lessons">Πρόσφατα Μαθήματα</string>
 	<string name="players_online_arg">%s παίκτες συνδεδεμένοι</string>
@@ -468,9 +478,13 @@
 	<string name="review_lesson">Αξιολόγηση μαθήματος</string>
 	<string name="full_screen">Πλήρης Οθόνη</string>
 	<string name="line">Γραμμή</string>
-	<string name="predict_move_or_add_new_line">Προβλέψτε την κίνηση ή προσθέσετε νέα γραμμή...</string>
-	<string name="make_your_conditional_move">Κάνετε την υποθετική σας κίνησή...</string>
-	<string name="predict_opponent_next_move">Προβλέψτε την επόμενη κίνηση του αντιπάλου...</string>
+	<string name="predict_move_or_add_new_line">Πρόβλεψε την κίνηση ή πρόσθεσε νέα γραμμή…</string>
+	<string name="make_your_conditional_move">Κάνε τη δυνητική σου κίνηση…</string>
+	<string name="predict_opponent_next_move">Πρόβλεψε την επόμενη κίνηση του αντιπάλου…</string>
 	<string name="notes">Σημειώσεις</string>
 	<string name="private_note">Προσωπικές σημειώσεις</string>
+	<string name="upgrade_feedback_1">"\"Οι τακτικές και τα μαθήματα πράγματικά βελτιώνουν τις σκακιστικές μου ικανότητες\""</string>
+	<string name="upgrade_feedback_reporter_1">- Peter, μέλος από το 2011</string>
+	<string name="upgrade_feedback_2">"\"Η γενική μου βαθμολογία βελτίωθηκε κατακόρυφα όταν έγινα premium μέλος\""</string>
+	<string name="upgrade_feedback_reporter_2">- Λου, Νιου Τζέρσεϊ μέλος από το 2009</string>
 </resources>

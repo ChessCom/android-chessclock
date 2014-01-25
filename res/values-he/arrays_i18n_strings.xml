@@ -2,16 +2,16 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>שחמט יומיומי</item>
-		<item>שחמט בזמן אמת - קצב מלא</item>
-		<item>שחמט בזמן אמת - בזק</item>
-		<item>שחמט בזמן אמת - \'קליע\'</item>
+		<item>זמן אמת - קצב מלא</item>
+		<item>זמן אמת - בזק</item>
+		<item>זמן אמת - \'קליע\'</item>
 		<item>שחמט 960 יומיומי</item>
 		<item>טקטיקה</item>
 		<item>שיעורים</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
 		<item>סרטוני וידיאו ללא הגבלה</item>
-		<item>לימודי טקטיקה ללא הגבלה</item>
+		<item>טקטיקה ללא הגבלה</item>
 		<item>שיעורים ללא הגבלה</item>
 		<item>חוקר הפתיחות</item>
 		<item>סטטיסטיקות מלאות</item>
@@ -24,7 +24,7 @@
 		<item>5 שיעורים ליום</item>
 		<item>חוקר הפתיחות</item>
 		<item>סטטיסטיקות מלאות</item>
-		<item>פסק זמן יומי</item>
+		<item>הגנה יומיומית נגד אזילת הזמן</item>
 		<item>ללא פרסומות</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
@@ -32,13 +32,13 @@
 		<item>25 בעיות טקטיקה ליום</item>
 		<item>3 שיעורים ליום</item>
 		<item>חוקר הפתיחות</item>
-		<item>הסטטיסטיקה אישית</item>
+		<item>סטטיסטיקות אישיות</item>
 		<item>הגנה יומיומית נגד אזילת הזמן</item>
 		<item>ללא פרסומות</item>
 	</string-array>
 	<string-array name="afterMyMove">
 		<item>עבור למשחק המוכן הבא</item>
-		<item>הישאר באותו במשחק</item>
+		<item>הישאר באותו המשחק</item>
 		<item>חזור לרשימת המשחקים</item>
 	</string-array>
 </resources>

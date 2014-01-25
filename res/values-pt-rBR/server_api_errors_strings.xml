@@ -5,7 +5,7 @@
 		<item>Token de acesso ao Facebook inválido.</item>
 		<item>Conta do Chess.com não encontrada para usuário do Facebook.</item>
 		<item>Conta bloqueada. Acesse em Chess.com.</item>
-		<item>Usuário e/ou senha inválidos.</item>
+		<item>Usuário ou senha inválidos.</item>
 		<item>A conta ainda não foi ativada!</item>
 		<item>A conta foi desativada.</item>
 		<item>Deve configurar uma senha em Chess.com.</item>
@@ -34,7 +34,7 @@
 		<item>Número de dias por jogada inválido.</item>
 		<item>Rating mínimo muito baixo.</item>
 		<item>Rating mínimo muito alto.</item>
-		<item>Rating máx muito baixo.</item>
+		<item>Rating máximo muito baixo.</item>
 		<item>Rating máximo muito alto.</item>
 		<item>Intervalo de rating deve incluir o rating do usuário.</item>
 		<item>Intervalo de rating muito baixo.</item>
@@ -57,8 +57,8 @@
 		<item>Não pode aceitar seus próprios desafios.</item>
 		<item>Este desafio não é seu.</item>
 		<item>Identificação ou código de país inválido.</item>
-		<item>Este nome de usuário já existe.</item>
-		<item>Este email já foi utilizado.</item>
+		<item>Nome de usuário já existe.</item>
+		<item>Email já foi utilizado.</item>
 		<item>Email Chess.com inválido.</item>
 		<item>Nome de usuário inválido.</item>
 		<item>Nome de usuário proibido.</item>
@@ -72,7 +72,7 @@
 		<item>Deve especificar \"method\", \"url\" e \"requestId\".</item>
 		<item>Número de página inválido</item>
 		<item>Você já modificou seu nome de usuário. É permitida somente uma modificação.</item>
-		<item>Você não pode mudar seu nome de usuário enquanto estiver conectado ao Xadrez ao Vivo.</item>
+		<item>Você não pode mudar seu nome de usuário enquanto estiver conectado no Xadrez ao Vivo.</item>
 		<item>O ply indicado excede o limite permitido.</item>
 		<item>Parâmetro inválido.</item>
 		<item>Erro desconhecido</item>
@@ -82,7 +82,7 @@
 		<item>Não pode ser analisada pelo nosso computador.</item>
 		<item>Análise ainda em progresso.</item>
 		<item>Jogar contra si próprio.</item>
-		<item>Imagem de avatar inválida. 2MB é o tamanho máximo, e os MIME\'s permitidos são: \"image/jpeg, image/gif,
+		<item>Imagem de avatar inválida. 2 MB é o tamanho máximo, e os MIME\'s permitidos são: \"image/jpeg, image/gif,
 			image/png\".
 		</item>
 		<item>Nome de usuário deve ter 3 caracteres ou mais.</item>
@@ -98,7 +98,7 @@
 		<item>Nome de usuário não pode ficar vazio.</item>
 		<item>SKU do produto inválido</item>
 		<item>Dados da compra inválidos</item>
-		<item>Nome do pacote inválido</item>
+		<item>Nome da embalagem inválido</item>
 		<item>\"Developer payload\" inválido</item>
 		<item>Assinatura de dados inválida</item>
 		<item>Encomenda inválida</item>

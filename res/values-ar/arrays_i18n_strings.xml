@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>شطرنج يومى</item>
-		<item>شطرنج مباشر -قياسى</item>
-		<item>شطرنج مباشر - سريع</item>
-		<item>شطرنج مباشر- طلقة</item>
+		<item>مباشر - قياسى</item>
+		<item>مباشر - سريع</item>
+		<item>مباشر - طلقة</item>
 		<item>شطرنج 960 اليومي</item>
 		<item>تكتيكات</item>
 		<item>الدروس</item>

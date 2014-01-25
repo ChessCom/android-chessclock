@@ -21,81 +21,81 @@
 		<item>Invalid fen passed.</item>
 		<item>Cannot find user by loginToken or username.</item>
 		<item>Passed ply is greater than max allowed.</item>
-		<item>Please refresh the game.</item>
+		<item>Калі ласка, абнавіце гульню.</item>
 		<item>Гульня ўжо скончана.</item>
 		<item>Зараз не твой ход.</item>
 		<item>Няправільны ход.</item>
 		<item>No open draw offer.</item>
 		<item>От! Гэта не Ваша гульня.</item>
-		<item>Chat is disabled.</item>
-		<item>Already on vacation.</item>
+		<item>Чат адключаны.</item>
+		<item>Ужо на вакацыях.</item>
 		<item>Out of vacation time.</item>
-		<item>Complete all game moves.</item>
-		<item>User not on vacation.</item>
-		<item>You are on vacation.</item>
-		<item>Invalid days per move.</item>
+		<item>Зрабіце ўсе гульнявыя хады.</item>
+		<item>Гулец не ў адпачынку.</item>
+		<item>Вы ў адпачынку.</item>
+		<item>Непраўдзівая колькасць дзён на ход.</item>
 		<item>Мінімальны рэйтынг занадта нізкі.</item>
 		<item>Мінімальны рэйтынг занадта высокі.</item>
 		<item>Максімальны рэйтынг занадта нізкі.</item>
 		<item>Максімальны рэйтынг занадта высокі.</item>
-		<item>Rating range must include your own rating.</item>
+		<item>Дыяпазон рэйтынгу павінен уключаць Ваш уласны рэйтынг.</item>
 		<item>Дыяпазон рэйтынгу занадта вузкі.</item>
 		<item>Супернік на вакацыях.</item>
-		<item>Opponent unavailable.</item>
-		<item>Rating too low.</item>
-		<item>Rating too high.</item>
+		<item>Супернік недасягальны.</item>
+		<item>Рэйтынг занадта нізкі.</item>
+		<item>Рэйтынг занадта высокі.</item>
 		<item>Opponent mismatched time control.</item>
-		<item>You are blocked.</item>
+		<item>Вы заблакаваныя.</item>
 		<item>Max seeks exceeded.</item>
-		<item>Make moves before creating more games.</item>
+		<item>Зрабіце хады перш чым ствараць новыя гульні.</item>
 		<item>Invalid user id.</item>
 		<item>Invalid parameter - totalGames</item>
 		<item>Please request 50 or less games</item>
-		<item>Game already started!</item>
+		<item>Гульня ўжо пачалася!</item>
 		<item>Timeout percentage too high.</item>
-		<item>Too few games.</item>
+		<item>Занадта мала гульняў.</item>
 		<item>Мусіш мець прэміум-акаунт.</item>
-		<item>Move speed too slow.</item>
+		<item>Хуткасць хадоў занадта павольная.</item>
 		<item>Can\'t accept own seek.</item>
 		<item>Not your challenge.</item>
 		<item>Invalid country id or code passed.</item>
-		<item>Username already taken.</item>
-		<item>Email already taken.</item>
+		<item>Гэтае імя карыстальніка ўжо занятае.</item>
+		<item>Дадзены е-mail ужо заняты.</item>
 		<item>Invalid Chess.com email.</item>
-		<item>Invalid username.</item>
+		<item>Няправільнае імя карыстальніка.</item>
 		<item>Username not allowed.</item>
-		<item>Invalid email domain.</item>
+		<item>Няправільны адрас электроннай пошты.</item>
 		<item>Сістэмная памылка.</item>
 		<item>Слабы пароль.</item>
 		<item>Invalid login token supplied.</item>
-		<item>Please login to continue.</item>
+		<item>Калі ласка ўвайдзіце, каб працягнуць.</item>
 		<item>Empty Error</item>
 		<item>Unable to reset chess game.</item>
 		<item>You must specify \"method\", \"url\" and \"requestId\".</item>
 		<item>Invalid page number</item>
-		<item>You have already changed your username. Only one change is allowed.</item>
+		<item>Вы ўжо змянілі сваё імя карыстальніка. Дапускаецца толькі адно змяненне.</item>
 		<item>You can\'t change your username while you are logged in to Live Chess.</item>
 		<item>Passed ply is greater than max allowed.</item>
 		<item>Invalid parameter passed.</item>
 		<item>Empty Error</item>
-		<item>Games must be a minimum of 16 moves to be submitted for computer analysis.</item>
-		<item>This game has already been submitted for computer analysis.</item>
+		<item>Гульня павінна складацца як мінімум з 16 хадоў, каб камп\'ютар яе прааналізаваў.</item>
+		<item>Кампутарны аналіз гэтай гульні ўжо быў замоўлены.</item>
 		<item>Game limit reached.</item>
 		<item>Unable to be analyzed by our computer.</item>
-		<item>Analysis is still in progress.</item>
+		<item>Аналіз яшчэ не скончаны.</item>
 		<item>Self challenge.</item>
 		<item>Avatar image is invalid. Allowed file size is 2 MB and allowed mime types are: \"image/jpeg, image/gif,
 			image/png\".
 		</item>
-		<item>Username should have 3 characters or more.</item>
-		<item>Username should have 20 characters or less.</item>
-		<item>Username is not allowed. Please try again.</item>
-		<item>To prevent spam and abuse, Chess.com does not allow throw-away email addresses. Please use a legitimate
-			email address or connect with Facebook. Thanks!
+		<item>Імя карыстальніка павінна складацца не менш як з трох знакаў.</item>
+		<item>Імя карыстальніка павінна складацца не болей чым з 20 знакаў.</item>
+		<item>Дадзенае імя карыстальніка не дапускаецца. Калі ласка, паспрабуйце яшчэ раз!</item>
+		<item>Для прадухілення спаму і злоўжыванняў, chess.com не дазваляе выкарыстоўваць недакладныя адрасы электроннай
+			пошты. Калі ласка, выкарыстоўвайце сапраўдны e-mail, альбо заходзьце праз facebook. Дзякуй!
 		</item>
-		<item>Password should have at least 6 characters.</item>
-		<item>First name should have 20 characters or less.</item>
-		<item>Last name should have 20 characters or less.</item>
+		<item>Пароль павінен складацца не менш як з 6 знакаў.</item>
+		<item>Імя павінна складацца не больш як з 20 знакаў.</item>
+		<item>Прозвішча павінна складацца не больш чым з 20 знакаў.</item>
 		<item>The IP has been already banned</item>
 		<item>Username should not be blank.</item>
 		<item>Invalid product sku</item>

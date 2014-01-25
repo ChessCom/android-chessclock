@@ -19,7 +19,7 @@
 	<string name="computer">Kompiuteris</string>
 	<string name="thinking_">Mąstymas…</string>
 	<string name="open_challenges">Atidaryti iššūkius</string>
-	<string name="challenge_friend">Mesti iššūkį draugui</string>
+	<string name="challenge_friend">Meskite iššūkį draugui</string>
 	<string name="challenge_created">Iššūkis sukurtas</string>
 	<string name="you_will_notified_when_game_starts">Jums bus pranešta apie žaidimo pradžią</string>
 	<string name="challenge_sent">Iššūkis išsiųstas</string>
@@ -98,6 +98,8 @@
 	<string name="you_are_offline">Jūs dabar esate neprisijungę</string>
 	<string name="correct">Teisingai</string>
 	<string name="incorrect">Neteisingai</string>
+	<string name="incorrect_move">Neleistinas ėjimas</string>
+	<string name="puzzle_solved">Galvosūkis išspręstas!</string>
 	<string name="upgrade_for_unlimited_arg">Atnaujinti neribotam %s!</string>
 	<string name="hours">valandų</string>
 	<string name="hour">valanda</string>
@@ -129,26 +131,25 @@
 	<string name="unrated">Nevertinamas</string>
 	<string name="you_play">Jūs žaidžiate:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move">"Jūsų ėjimas"</string>
-	<string name="your_turn_in_game_with">Žaidime su %1$s,%2$s</string>
-	<string name="won_on_time">%s laimėjo per laiką</string>
-	<string name="won_by_resignation">%s laimėjo per varžovo pasitraukimą</string>
-	<string name="won_by_checkmate">%s laimėjo padarius matą</string>
+	<string name="your_move_vs">Jūsų ėjimas prieš %1$s , %2$s</string>
+	<string name="won_on_time">%s laimėjo laiko persvara</string>
+	<string name="won_by_resignation">%s laimėjo dėl atsistatydinimo</string>
+	<string name="won_by_checkmate">%s laimi dėl šachmato</string>
 	<string name="game_over">Žaidimas baigtas</string>
 	<string name="reconnecting_">Jungiamasi iš naujo…</string>
 	<string name="another_login_detected">Jūs prisijungėte kažkur kitur.</string>
-	<string name="game_end_title_draw">Žaidimas baigėsi lygiosiomis</string>
-	<string name="game_draw_by_repetition">Žaidimas baigėsi lygiosiomis dėl ėjimų pasikartojimo</string>
-	<string name="game_drawn_by_agreement">Žaidimas baigėsi lygiosiomis pagal susitarimą</string>
-	<string name="game_drawn_by_stalemate">Žaidimas baigėsi lygiosiomis pato</string>
-	<string name="game_drawn_insufficient_material">Žaidimas baigėsi lygiosiomis dėl nepakankamo figūrų kiekio</string>
-	<string name="game_drawn_by_fifty_move_rule">Žaidimas baigėsi lygiosiomis pagal 50 ėjimų taisyklę</string>
-	<string name="won_game_abandoned">Laimėjimas - Žaidimas buvo paliktas varžovu</string>
+	<string name="game_end_title_draw">Lygiosios (½–½)</string>
 	<string name="game_aborted">Žaidimas nutrauktas</string>
 	<string name="new_game">Naujas žaidimas</string>
+	<string name="new_game_arg">Naujas žaidimas (%s)</string>
 	<string name="language">Kalba</string>
 	<string name="black_wins">Juodieji laimi (0–1)</string>
 	<string name="white_wins">Baltieji laimi (1 - 0)</string>
+	<string name="game_draw_by_repetition">Lygiosios dėl pasikartojimo</string>
+	<string name="game_drawn_by_agreement">Lygiosios dėl susitarimo</string>
+	<string name="game_drawn_by_stalemate">Patas</string>
+	<string name="game_drawn_insufficient_material">Lygiosios dėl nepakankamo kiekio figūrų</string>
+	<string name="game_drawn_by_fifty_move_rule">Lygiosis dėl 50 ėjimų taisyklės</string>
 	<string name="draw_by_stalemate">Lygiosios dėl pato (½–½)</string>
 	<string name="draw_by_3fold_repetition">Lygiosios dėl tris kartus pasikartojusio ėjimo (½–½)</string>
 	<string name="rematch">Mesti iššūkį pakartotinai</string>
@@ -167,8 +168,8 @@
 	<string name="profile_picture">Profilio paveikslėlis</string>
 	<string name="or_use_your_email">Arba naudoti savo elektroninio pašto adresą:</string>
 	<string name="by_signing_up_accept_mobile">Registruojantis aš sutinku</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> Paslaugos sąlygos</a>]]></string>
-	<string name="create_chess_profile">Sukurkiti savo šachmatų profilį</string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> Paslaugos sąlygos</a>]]]></string>
+	<string name="create_chess_profile">Sveiki! Susikurkite savo šachmatų profilį</string>
 	<string name="daily">Kasdien</string>
 	<string name="improve_game_with_lessons">Pagerinkite savo žaidimą neribotų pamokų pagalba</string>
 	<string name="improve_game_with_videos">Pagerinkite savo žaidimą neribotų vaizdo įrašų pagalba</string>
@@ -180,8 +181,10 @@
 	<string name="download_complete">Atsisiuntimas baigtas</string>
 	<string name="empty"></string>
 	<string name="difficulty">Sunkumas</string>
+	<string name="easiest">Lengviausias</string>
+	<string name="hardest">Sunkiausias</string>
 	<string name="vs">prieš</string>
-	<string name="leave_vacation_q">Išjungti neveiklumo režimą?</string>
+	<string name="leave_vacation_q">Nutraukti atostogas?</string>
 	<string name="sign_up_with_facebook"><b>Prisijungti</b> per <b>Facebook</b></string>
 	<string name="finished_games">Baigti žaidimai</string>
 	<string name="feedback_mail_body">Prašome nekeisti ir nešalinti esančios žemiau informacijos.</string>
@@ -210,7 +213,7 @@
 	<string name="of_arg">%s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Pakankamai geras meistrų lygis</string>
-	<string name="upgrade_main_title_1_tablet">Pakankamai geras meistrams. Pakankamai paprastas pradedantiesiems. Išmėginkite dabar!</string>
+	<string name="upgrade_main_title_1_tablet">Pakankamai geras ekspertams. Užtektinai paprastas pradedantiesiems.</string>
 	<string name="upgrade_main_title_2">Gana paprasta pradedantiesiems</string>
 	<string name="diamond">Deimantas</string>
 	<string name="diamond_subtitle">Neribota prieiga prie visų funkcijų</string>
@@ -243,7 +246,7 @@
 	<string name="choose_photo">Pasirinkite nuotrauką</string>
 	<string name="take_photo">Nufotografuokite</string>
 	<string name="pick_photo">Pasirinkite nuotrauką</string>
-	<string name="or_login_using_chesscom">Arba prisijungti Chess.com vartotojo vardu:</string>
+	<string name="or_login_using_chesscom">Arba naudokite savo Chess.com vartotojo vardą:</string>
 	<string name="articles">Straipsniai</string>
 	<string name="forums">Forumai</string>
 	<string name="notifications">Pranešimai</string>
@@ -254,7 +257,7 @@
 	<string name="share_pgn">Pasidalinti PGN</string>
 	<string name="share_via">Pasidalinti per</string>
 	<string name="chess">Šachmatai</string>
-	<string name="via_chesscom">per @Chesscom</string>
+	<string name="via_chesscom">"per @Chesscom"</string>
 	<string name="vs_random_opponent">prieš atsitiktinį žaidėją</string>
 	<string name="feed">Padavimas</string>
 	<string name="learn">Sužinokite</string>
@@ -263,7 +266,7 @@
 	<string name="start">Pradėti</string>
 	<string name="lessons">Pamokos</string>
 	<string name="analysis">Nagrinėjimas</string>
-	<string name="profile">Profilis</string>
+	<string name="profile">Sąskaita</string>
 	<string name="theme">Tema</string>
 	<string name="privacy">Slaptumas</string>
 	<string name="blocking">Blokavimas</string>
@@ -274,14 +277,14 @@
 	<string name="location">Vieta</string>
 	<string name="share">Pasidalinti</string>
 	<string name="profile_membership_renew_cancel">Jūsų %1$s narystė bus pratęsta per %2$s.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Atšaukti</a>]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Atšaukti</a>]]]></string>
 	<string name="invite_friends_profile_message">Šachmatai yra smagesni su draugais - pakvieskite juos prisijungti!</string>
 	<string name="profile_account_message_1">Jūsų paskyra yra pavaldi tinklapiui</string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice"> Apibūdinimai ir sąlygos.</a>]]></string>
 	<string name="profile_account_message_3">Jei norėtumėte uždaryti savo paskyrą,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy"> bakstelėkite čia.</a>]]></string>
 	<string name="basic">Pagrindinis</string>
-	<string name="sign_up_now_free">Užsiregistruokite dabar - tai NEMOKAMA!</string>
+	<string name="sign_up_now_free">"Užsiregistruokite nemokamai!"</string>
 	<string name="chess_com_username">Chess.com vartotojo vardas</string>
 	<string name="coordinates">Koordinatės</string>
 	<string name="highlight_last_move">Pažymėkite paskutinį ėjimą</string>
@@ -305,9 +308,9 @@
 	<string name="archive">Archyvas</string>
 	<string name="completed">Baigtas</string>
 	<string name="few_min">keletą minučių</string>
-	<string name="less_than_60_sec"><![CDATA[< 60 sek]]></string>
-	<string name="abort_game_">Nutraukti žaidimą?</string>
-	<string name="resign_game_">Palikti žaidimą?</string>
+	<string name="less_than_60_sec"><![CDATA[< 60 sek]]]></string>
+	<string name="abort_game_">Nutraukti?</string>
+	<string name="resign_game_">Pasiduoti?</string>
 	<string name="days_move">dienų/ėjimas</string>
 	<string name="password_cant_be_empty">Slaptažodis negali būti tuščias</string>
 	<string name="invalid_username_or_password">Neteisingas vartotojo vardas arba slaptažodis</string>
@@ -319,13 +322,15 @@
 	<string name="use_lessons">naudoti pamokas</string>
 	<string name="watch_videos">Žiūrėti vaizdo pamokėles</string>
 	<string name="interactive_lessons">Interaktyvios pamokėlės</string>
-	<string name="tactics_and_puzzles"><![CDATA[Taktika &amp; Galvosūkiai]]></string>
+	<string name="tactics_and_puzzles"><![CDATA[Taktika &amp; Galvosūkiai]]]></string>
 	<string name="friend_requests">Užklausos draugauti</string>
 	<string name="add_friend">Priskirti prie draugų</string>
 	<string name="recent_opponents">Paskutinieji varžovai</string>
 	<string name="invite_by_email">Pakviesti el. paštu</string>
+	<string name="please_enter_valid_email">Prašome įvesti teisingą elektroninį paštą</string>
 	<string name="invite_facebook_friend">Pakviesti  draugą iš Facebook</string>
 	<string name="invite_from_contacts">Pakviesti iš turimų kontaktų</string>
+	<string name="no_contacts_found">Nerasta kontaktų</string>
 	<string name="facebook">\"Facebook\"</string>
 	<string name="contacts">Kontaktai</string>
 	<string name="facebook_invite_friend_to_play">Žaiskime šachmatais! Jūs galite žaisti tiesiogiai Chess.com tinklapyje, arba mobiliajame telefone su Android platforma ar su iPhone/iPad prietaisu.</string>
@@ -344,8 +349,10 @@
 	<string name="username_not_found">Vartotojo vardas nerastas</string>
 	<string name="you_have_not_added_friends_yet">"Dar neturite draugų. Įtraukite keletą!"</string>
 	<string name="new_friend_request">Užklausa naujajai draugystei</string>
+	<string name="friend_request_from_arg">Draugo užklausa iš %s</string>
 	<string name="new_chat_message">Naujas pokalbių pranešimas</string>
-	<string name="new_challenge">Naujas iššūkis</string>
+	<string name="new_daily_challenge">Naujas dienos iššūkis</string>
+	<string name="arg_wants_to_play">%s nori su jumis žaisti!</string>
 	<string name="unable_to_select_this_photo">Negalima pasinaudoti šia nuotrauka</string>
 	<string name="processing_">Apdorojama…</string>
 	<string name="about">Apie</string>
@@ -374,6 +381,7 @@
 	<string name="your_course_rating">Jūsų eigos vertinimas:</string>
 	<string name="score_">Rezultatas:</string>
 	<string name="rating_">Vertinimas:</string>
+	<string name="new_arg_rating_">Naujas %s reitingas:</string>
 	<string name="course">Eiga</string>
 	<string name="lessons_completed">Pamokos baigtos</string>
 	<string name="courses_completed">Išklausyti kursai</string>
@@ -385,6 +393,7 @@
 	<string name="lessons_limit_reached_message">Pasiektas šios dienos pamokų limitas. Atnaujinkite paskyrą dabar ir tobulėkite neribotų pamokų pagalba!</string>
 	<string name="resume_lesson">Grįžti prie pamokos</string>
 	<string name="installing_theme">Įdiegiama tema</string>
+	<string name="waiting_to_download">Laukiama atsisiųsti…</string>
 	<string name="loading_background">Fono įkrovimas</string>
 	<string name="saving_background">Fono išsaugojimas</string>
 	<string name="saving_board">Lentos išsaugojimas</string>
@@ -414,10 +423,11 @@
 	<string name="all_time">Visą laiką</string>
 	<string name="comments_arg">%s pastabos</string>
 	<string name="views_arg">%s nuomonės</string>
-	<string name="your_game_is_over">Jūsų žaidimas baigtas</string>
+	<string name="game_is_over">Žaidimas baigtas</string>
+	<string name="game_over_vs">Game Over vs %s</string>
 	<string name="switch_sides">Pakeisti šonus</string>
 	<string name="no_results">Jokių rezultatų</string>
-	<string name="game_explorer">Žaidimų naršyklė</string>
+	<string name="game_explorer">Tyrinėtojas</string>
 	<string name="recent_problems">Paskutinės problemos</string>
 	<string name="recent_lessons">Naujausios pamokos</string>
 	<string name="players_online_arg">%s prisijungusių žaidėjų</string>
@@ -468,9 +478,13 @@
 	<string name="review_lesson">Peržiūrėti pamoką</string>
 	<string name="full_screen">Per visą ekraną</string>
 	<string name="line">Linija</string>
-	<string name="predict_move_or_add_new_line">Spėkite perkelti arba pridėti naują eilutę...</string>
-	<string name="make_your_conditional_move">Padarykite savo sąlyginį žingsnį...</string>
-	<string name="predict_opponent_next_move">Spėkite varžovams kitą žingsnį...</string>
+	<string name="predict_move_or_add_new_line">Prognozuokite ėjimą arba pradėkitę naują eilutę…</string>
+	<string name="make_your_conditional_move">Atlikite savo sąlyginį ėjimą…</string>
+	<string name="predict_opponent_next_move">Prognozuokite sekantį priešininko ėjimą…</string>
 	<string name="notes">Pastabos</string>
 	<string name="private_note">Privati ​​pastaba</string>
+	<string name="upgrade_feedback_1">"\"Taktiniai užsiėmimai ir pamokėlės man gerokai padeda tobulinti savo šachmatų įgūdžius\""</string>
+	<string name="upgrade_feedback_reporter_1">- Petras, Narys nuo 2011</string>
+	<string name="upgrade_feedback_2">"\"Mano bendras reitingas labai pagerėjo, po to kai aš tapau premium nariu\""</string>
+	<string name="upgrade_feedback_reporter_2">- Lou, NJ narys nuo 2009</string>
 </resources>

@@ -26,25 +26,25 @@
 		<item>引き分け提案なし</item>
 		<item>おっと！あなたのゲームではありません。</item>
 		<item>チャット無効</item>
-		<item>Already on vacation.</item>
-		<item>Out of vacation time.</item>
-		<item>Complete all game moves.</item>
-		<item>User not on vacation.</item>
-		<item>You are on vacation.</item>
-		<item>Invalid days per move.</item>
+		<item>既に休暇中です</item>
+		<item>休暇時間はありません</item>
+		<item>全てのゲームの手番を完了させてください</item>
+		<item>ユーザーは休暇中ではありません</item>
+		<item>あなたは休暇中です</item>
+		<item>一手あたりの日数が無効です</item>
 		<item>レーティングの最小値が低すぎます。</item>
 		<item>レーティングの最小値が高すぎます。</item>
 		<item>レーティングの最大値が低すぎます。</item>
 		<item>レーティングの最大値が高すぎます。</item>
 		<item>レーティングの範囲はあなた自身の値を含む範囲である必要があります。</item>
 		<item>レーティングの範囲が小さすぎます。</item>
-		<item>Opponent on vacation.</item>
-		<item>Opponent unavailable.</item>
+		<item>対戦相手は休暇中です</item>
+		<item>相手はゲームを利用できません</item>
 		<item>レーティングが低すぎます。</item>
 		<item>レーティングが高すぎます。</item>
 		<item>対戦相手が選んだゲーム時間が一致しませんでした。</item>
 		<item>あなたはブロックされました。</item>
-		<item>Max seeks exceeded.</item>
+		<item>シークが最大値を超えました</item>
 		<item>ほかのゲームを始める前に、指してください。</item>
 		<item>ユーザーIDが無効です。</item>
 		<item>Invalid parameter - totalGames</item>
@@ -54,9 +54,9 @@
 		<item>ゲームが少なすぎます。</item>
 		<item>プレミアムである必要があります。</item>
 		<item>手番が遅すぎます。</item>
-		<item>Can\'t accept own seek.</item>
+		<item>自分と対戦することはできません。</item>
 		<item>あなたのチャレンジではありません。</item>
-		<item>Invalid country id or code passed.</item>
+		<item>国名IDまたはコードが無効です</item>
 		<item>ユーザー名が既に使用されています。</item>
 		<item>Eメールは既に使用されています。</item>
 		<item>無効な Chess.comのEメール。</item>
@@ -67,23 +67,23 @@
 		<item>脆弱なパスワードです。</item>
 		<item>Invalid login token supplied.</item>
 		<item>続けるためにはログインしてください。</item>
-		<item>Empty Error</item>
+		<item>Unknown Error</item>
 		<item>チェスのゲームをリセットすることができません。</item>
-		<item>You must specify \"method\", \"url\" and \"requestId\".</item>
+		<item>\"method\" と \"url\" と \"requestId\"を指定する必要があります</item>
 		<item>無効なページ番号</item>
 		<item>既にあなたはユーザー名を変更しています。変更は1度だけ許可されます。</item>
 		<item>ライブチェスにログインしている間は、ユーザー名を変更できません。</item>
 		<item>Passed ply is greater than max allowed.</item>
-		<item>Invalid parameter passed.</item>
-		<item>Empty Error</item>
+		<item>無効な範囲が指定されています</item>
+		<item>Unknown Error</item>
 		<item>ゲームのコンピューター分析には最低でも16手必要です。</item>
 		<item>このゲームはコンピューター分析のため既に送信されました。</item>
 		<item>ゲームの上限に達しました。</item>
 		<item>我々 のコンピューターによって分析することができません。</item>
 		<item>解析は進行中です。</item>
 		<item>Self challenge.</item>
-		<item>Avatar image is invalid. Allowed file size is 2 MB and allowed mime types are: \"image/jpeg, image/gif,
-			image/png\".
+		<item>アバターのイメージは無効です。可能なファイルサイズは2 MB、可能なMIMEの種類は\"image/jpeg, image/gif,
+			image/png\".です。
 		</item>
 		<item>ユーザー名は 3 文字以上が必要です。</item>
 		<item>ユーザー名は 20 文字以下にしてください。</item>

@@ -19,7 +19,7 @@
 	<string name="computer">Kompyuter</string>
 	<string name="thinking_">Nag-iisip…</string>
 	<string name="open_challenges">Mga Hamon na Pwedeng Tanggapin</string>
-	<string name="challenge_friend">Anyayahang maglaro ang Kaibigan</string>
+	<string name="challenge_friend">Anyayahang Maglaro ang Kaibigan</string>
 	<string name="challenge_created">Nagawa ang Paanyayang Maglaro</string>
 	<string name="you_will_notified_when_game_starts">Ipagbibigay-alam sa \'yo pag nagsimula ang laro</string>
 	<string name="challenge_sent">Naipadala na ang Hamon</string>
@@ -98,6 +98,8 @@
 	<string name="you_are_offline">Naka-offline mode ka na ngayon</string>
 	<string name="correct">Tama</string>
 	<string name="incorrect">Mali</string>
+	<string name="incorrect_move">Maling Tira</string>
+	<string name="puzzle_solved">Nalutas na ang Palaisipan!</string>
 	<string name="upgrade_for_unlimited_arg">Mag-upgrade para sa walang-limitasyong %s!</string>
 	<string name="hours">oras</string>
 	<string name="hour">oras</string>
@@ -129,26 +131,25 @@
 	<string name="unrated">Hindi Rated</string>
 	<string name="you_play">Nilalaro Mo:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move">"Ikaw ang Titira"</string>
-	<string name="your_turn_in_game_with">Sa Laro laban kay %1$s, %2$s</string>
-	<string name="won_on_time">%s Nanalo sa Oras</string>
-	<string name="won_by_resignation">%s Nanalo sa Pagsuko</string>
-	<string name="won_by_checkmate">%s Nanalo sa pamamagitan ng Checkmate</string>
+	<string name="your_move_vs">Ang tira mo kontra %1$s , %2$s</string>
+	<string name="won_on_time">%s nanalo dahil sa Oras</string>
+	<string name="won_by_resignation">%s nanalo dahil sa Pagsuko</string>
+	<string name="won_by_checkmate">%s nanalo dahil sa Checkmate</string>
 	<string name="game_over">Tapos na ang Laro</string>
 	<string name="reconnecting_">Kumukonektang muli…</string>
 	<string name="another_login_detected">Oops! Naka-login ka sa ibang lugar.</string>
-	<string name="game_end_title_draw">Nagtabla ang Laro</string>
-	<string name="game_draw_by_repetition">Nagtabla ang Laro dahil sa Pag-uulit</string>
-	<string name="game_drawn_by_agreement">Nagtabla ang Laro dahil sa Kasunduan</string>
-	<string name="game_drawn_by_stalemate">Nagtabla ang Laro dahil sa Stalemate</string>
-	<string name="game_drawn_insufficient_material">Nagtabla ang Laro dahil sa Kakulangan ng Materyal</string>
-	<string name="game_drawn_by_fifty_move_rule">Nagtabla ang Laro dahil sa Patakarang 50-tira</string>
-	<string name="won_game_abandoned">Panalo - Iniwanan ang Laro</string>
+	<string name="game_end_title_draw">Tabla (½–½)</string>
 	<string name="game_aborted">Hindi Itinuloy ang Laro</string>
 	<string name="new_game">Bagong Laro</string>
+	<string name="new_game_arg">Bagong Laro (%s)</string>
 	<string name="language">Wika</string>
 	<string name="black_wins">Panalo ang Itim (0-1)</string>
 	<string name="white_wins">Panalo ang Puti (1–0)</string>
+	<string name="game_draw_by_repetition">Tabla dahil sa Pag-uulit ng Tira</string>
+	<string name="game_drawn_by_agreement">Tabla dahil sa Kasunduan</string>
+	<string name="game_drawn_by_stalemate">Tabla dahil sa Stalemate</string>
+	<string name="game_drawn_insufficient_material">Tabla dahil sa Kakulangan ng Materyal</string>
+	<string name="game_drawn_by_fifty_move_rule">Tabla dahil sa Patakarang 50-tira</string>
 	<string name="draw_by_stalemate">Tabla dahil sa Stalemate (½–½)</string>
 	<string name="draw_by_3fold_repetition">Tabla dahil sa Tatlong Beses na Pag-ulit (½–½)</string>
 	<string name="rematch">Makipaglaro Ulit</string>
@@ -168,7 +169,7 @@
 	<string name="or_use_your_email">o gamitin ang \'yong Email Address:</string>
 	<string name="by_signing_up_accept_mobile">Sa aking pag-signup, tinatanggap ko</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Mga Termino ng Serbisyo</a>]]></string>
-	<string name="create_chess_profile">Gumawa ng Chess Profile mo</string>
+	<string name="create_chess_profile">Masayang Pagdating! Gumawa ng Chess Profile mo</string>
 	<string name="daily">Araw-araw</string>
 	<string name="improve_game_with_lessons">Pahusayin ang Laro mo gamit ng Walang-limitasyong mga Aralin</string>
 	<string name="improve_game_with_videos">Pahusayin ang Laro mo gamit ang Walang-limitasyong mga Video</string>
@@ -180,8 +181,10 @@
 	<string name="download_complete">Tapos na ang Download</string>
 	<string name="empty"></string>
 	<string name="difficulty">Antas ng Kahirapan</string>
+	<string name="easiest">Pinakamadali</string>
+	<string name="hardest">Pinakamahirap</string>
 	<string name="vs">kontra</string>
-	<string name="leave_vacation_q">Tapusin Ang Bakasyon?</string>
+	<string name="leave_vacation_q">I-disable ang Bakasyon?</string>
 	<string name="sign_up_with_facebook"><b>Mag-signup</b> sa pamamagitan ng <b>Facebook</b></string>
 	<string name="finished_games">Mga Natapos na Laro</string>
 	<string name="feedback_mail_body">Huwag po baguhin o tanggalin ang impormasyon sa ibaba.</string>
@@ -210,8 +213,8 @@
 	<string name="of_arg">sa %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Sapat Para sa mga Master</string>
-	<string name="upgrade_main_title_1_tablet">Sapat para sa mga Masters. Sapat ang kasimplehan para sa mga Baguhan. Subukan Ngayon!</string>
-	<string name="upgrade_main_title_2">Sapat ang kasimplehan para sa mga Baguhan</string>
+	<string name="upgrade_main_title_1_tablet">Sapat Para sa mga Masters. Simple Lang para sa mga Baguhan.</string>
+	<string name="upgrade_main_title_2">Simple Lang para sa mga Baguhan</string>
 	<string name="diamond">Diyamante</string>
 	<string name="diamond_subtitle">Walang-limitasyong access sa mga feature</string>
 	<string name="platinum">Platino</string>
@@ -243,7 +246,7 @@
 	<string name="choose_photo">Piliin ang Litrato</string>
 	<string name="take_photo">Kumuha ng Litrato</string>
 	<string name="pick_photo">Pumili ng Litrato</string>
-	<string name="or_login_using_chesscom">O, Mag-Login sa pamamagitan ng Chess.com Username:</string>
+	<string name="or_login_using_chesscom">O Gamitin ang Iyong Chess.com Username:</string>
 	<string name="articles">Mga Artikulo</string>
 	<string name="forums">Mga Forum</string>
 	<string name="notifications">Mga Notipikasyon</string>
@@ -254,7 +257,7 @@
 	<string name="share_pgn">Ipamahagi ang PGN</string>
 	<string name="share_via">Ipamahagi sa</string>
 	<string name="chess">Chess</string>
-	<string name="via_chesscom">sa @Chesscom</string>
+	<string name="via_chesscom">"sa @Chesscom"</string>
 	<string name="vs_random_opponent">kontra Random</string>
 	<string name="feed">Feed</string>
 	<string name="learn">Matuto</string>
@@ -263,7 +266,7 @@
 	<string name="start">Simula</string>
 	<string name="lessons">Mga Aralin</string>
 	<string name="analysis">Pagsusuri</string>
-	<string name="profile">Profile</string>
+	<string name="profile">Account</string>
 	<string name="theme">Tema</string>
 	<string name="privacy">Privacy</string>
 	<string name="blocking">Bina-block</string>
@@ -281,7 +284,7 @@
 	<string name="profile_account_message_3">Kung gusto mong isara ang iyong account,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">tumapik dito</a>]]></string>
 	<string name="basic">Basic</string>
-	<string name="sign_up_now_free">Mag-signup Ngayon - LIBRE \'to!</string>
+	<string name="sign_up_now_free">"Mag-signup - LIBRE Ito!"</string>
 	<string name="chess_com_username">Chess.com Username</string>
 	<string name="coordinates">Mga Koordina</string>
 	<string name="highlight_last_move">I-highlight ang Huling Tira</string>
@@ -306,8 +309,8 @@
 	<string name="completed">Tapos Na</string>
 	<string name="few_min">ilang minuto</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 segundo]]></string>
-	<string name="abort_game_">Huwag Ituloy ang Laro?</string>
-	<string name="resign_game_">Isuko ang Laro?</string>
+	<string name="abort_game_">Huwag Ituloy?</string>
+	<string name="resign_game_">Suko Ka Na Ba?</string>
 	<string name="days_move">araw/tira</string>
 	<string name="password_cant_be_empty">Hindi Pwedeng Walang Laman ang Password</string>
 	<string name="invalid_username_or_password">Hindi Tamang Username o Password</string>
@@ -324,8 +327,10 @@
 	<string name="add_friend">Idagdag na Kaibigan</string>
 	<string name="recent_opponents">Mga Nakalaban Kailan Lamang</string>
 	<string name="invite_by_email">Imbitahan sa pamamagitan ng Email</string>
+	<string name="please_enter_valid_email">Paki lagyan ng balidong Email</string>
 	<string name="invite_facebook_friend">Imbitahan ang Kaibigang mula sa Facebook</string>
 	<string name="invite_from_contacts">Imbitahan mula sa mga Contact</string>
+	<string name="no_contacts_found">Walang Mga Contact na Nahanap</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Mga Contact</string>
 	<string name="facebook_invite_friend_to_play">Maglaro tayo ng chess! Pwede ka maglaro online sa Chess.com, o sa mobile gamit ang Android o iPhone/iPad.</string>
@@ -344,8 +349,10 @@
 	<string name="username_not_found">Hindi Natagpuan ang Username</string>
 	<string name="you_have_not_added_friends_yet">"Wala ka pang kaibigan sa ngayon. Magdagdag ng ilan!"</string>
 	<string name="new_friend_request">Bagong Pakiusap na Makipagkaibigan</string>
+	<string name="friend_request_from_arg">Nakiusap na Makipag-kaibigan si %s</string>
 	<string name="new_chat_message">Bagong Mensaheng Chat</string>
-	<string name="new_challenge">Bagong Hamon</string>
+	<string name="new_daily_challenge">Bagong Pang Araw-Araw na Hamon</string>
+	<string name="arg_wants_to_play">%s ay gustong maglaro!</string>
 	<string name="unable_to_select_this_photo">Hindi Magamit ang Litratong ito</string>
 	<string name="processing_">Nagproproseso…</string>
 	<string name="about">Tungkol Kay</string>
@@ -355,7 +362,7 @@
 	<string name="challenge_to_play">Anyayahang Maglaro</string>
 	<string name="send_message">Ipadala ang Mensahe</string>
 	<string name="video_curriculum">Kurikulum na Video</string>
-	<string name="posts_arg">%s posts</string>
+	<string name="posts_arg">%s mga paskil</string>
 	<string name="quote">Banggitin</string>
 	<string name="new_topic">Bagong Paksa</string>
 	<string name="topic_created">Ginawa ang Paksa</string>
@@ -374,6 +381,7 @@
 	<string name="your_course_rating">Ang Rating Mo sa Kurso:</string>
 	<string name="score_">Puntos:</string>
 	<string name="rating_">Rating:</string>
+	<string name="new_arg_rating_">Bagong %s Rating:</string>
 	<string name="course">Kurso</string>
 	<string name="lessons_completed">Mga Araling Nakumpleto</string>
 	<string name="courses_completed">Mga Kursong Nakumpleto</string>
@@ -385,6 +393,7 @@
 	<string name="lessons_limit_reached_message">Umabot na sa limitasyon ng mga aralin para sa araw na \'to. Mag-upgrade ngayon para humusay gamit ang walang-limitasyong mga aralin!</string>
 	<string name="resume_lesson">Ipagpatuloy ang Aralin</string>
 	<string name="installing_theme">Nag-iinstall ng Tema</string>
+	<string name="waiting_to_download">Naghihintay na mag-download…</string>
 	<string name="loading_background">Inilalagay ang Background</string>
 	<string name="saving_background">Isini-save ang Background</string>
 	<string name="saving_board">Isini-save ang Board</string>
@@ -414,10 +423,11 @@
 	<string name="all_time">Buong Kasaysayan</string>
 	<string name="comments_arg">%s komento</string>
 	<string name="views_arg">%s ang tumingin</string>
-	<string name="your_game_is_over">Tapos na ang Laro Mo</string>
+	<string name="game_is_over">Tapos na ang Laro</string>
+	<string name="game_over_vs">Tapos na ang Laro kontra %s</string>
 	<string name="switch_sides">Magpalit ng Panig</string>
 	<string name="no_results">Walang Resulta</string>
-	<string name="game_explorer">Pang-explore ng Laro</string>
+	<string name="game_explorer">Pang-explore</string>
 	<string name="recent_problems">Kamakailang Problema</string>
 	<string name="recent_lessons">Mga Kamakailang Aralin</string>
 	<string name="players_online_arg">%s Naka-Online na Player</string>
@@ -468,9 +478,13 @@
 	<string name="review_lesson">Pag-aralan ang Aralin</string>
 	<string name="full_screen">Sakupin ang Buong Screen</string>
 	<string name="line">Linya</string>
-	<string name="predict_move_or_add_new_line">Hulaan ang tira o magdagdag ng bagong linya...</string>
-	<string name="make_your_conditional_move">Itira mo ang kondisyonal na tira...</string>
-	<string name="predict_opponent_next_move">Hulaan ang susunod na tira ng kalaban...</string>
+	<string name="predict_move_or_add_new_line">Hulaan ang tira o magdagdag ng bagong linya…</string>
+	<string name="make_your_conditional_move">Itira ang iyong conditional na tira…</string>
+	<string name="predict_opponent_next_move">Hulaan ang susunod na tira ng kalaban…</string>
 	<string name="notes">Mga Paalala</string>
 	<string name="private_note">Pansariling Paalala</string>
+	<string name="upgrade_feedback_1">"\"Nakatulong talaga ang mga Taktika at Aralin sa aking husay sa chess\""</string>
+	<string name="upgrade_feedback_reporter_1">- Peter, Miyembro Mula 2011</string>
+	<string name="upgrade_feedback_2">"\"Malaki ang inangat ng kabuuang rating ko pagkatapos ko maging premium na miyembro\""</string>
+	<string name="upgrade_feedback_reporter_2">Lou, NJ Miyembro Mula 2009</string>
 </resources>

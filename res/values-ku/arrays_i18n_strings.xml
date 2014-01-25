@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>شەترەنجی ڕۆژانە</item>
-		<item>شەترەنجی ڕاستەوخۆ - ستاندارد</item>
-		<item>شەترەنجی ڕاستەوخۆ - خێرا</item>
-		<item>شەترەنجی ڕاستەوخۆ - زۆر خێرا</item>
+		<item>ڕاستەوخۆ - ستاندارد</item>
+		<item>ڕاستەوخۆ - خێرا</item>
+		<item>ڕاستەوخۆ - زۆرخێرا</item>
 		<item>شەترەنجی ٩٦٠ ڕۆژانە</item>
 		<item>تەکتیکەکان</item>
 		<item>وانەکان</item>

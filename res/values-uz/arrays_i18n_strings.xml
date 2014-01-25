@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Kundalik shaxmat</item>
-		<item>Jonli shaxmat - Standart</item>
-		<item>Jonli shaxmat - Blits</item>
-		<item>Jonli shaxmat - Juda tez</item>
+		<item>Jonli - Standart</item>
+		<item>Jonli - Blitz</item>
+		<item>Jonli - 1 minutlik o\'yin</item>
 		<item>Kundalik 960 shaxmat o\'yini</item>
 		<item>Taktik mashqlar</item>
 		<item>Darslar</item>
@@ -21,7 +21,7 @@
 	<string-array name="upgrade_platinum_features">
 		<item></item>
 		<item>Cheksiz taktik mashqlar</item>
-		<item>Kuniga 5 ta dars</item>
+		<item>Kuniga 5 ta Dars</item>
 		<item>Debyut tadqiqotchisi</item>
 		<item>Mukammal Statistika</item>
 		<item>Kundalik taym-autdan himoya</item>

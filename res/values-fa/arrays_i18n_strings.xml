@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>شطرنج روزانه</item>
-		<item>شطرنج زنده - استاندارد</item>
-		<item>شطرنج زنده - سریع</item>
-		<item>شطرنج زنده - برق آسا</item>
+		<item>زنده - استاندارد</item>
+		<item>زنده - سریع</item>
+		<item>زنده - برق آسا</item>
 		<item>شطرنج ۹۶۰ روزانه</item>
 		<item>تاکتیک‌ها</item>
 		<item>دروس</item>

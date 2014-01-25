@@ -98,6 +98,8 @@
 	<string name="you_are_offline">Sad ste u offline načinu rada</string>
 	<string name="correct">Točno</string>
 	<string name="incorrect">Netočno</string>
+	<string name="incorrect_move">Netočan potez</string>
+	<string name="puzzle_solved">Problem rješen!</string>
 	<string name="upgrade_for_unlimited_arg">Nadogradite za neograničen %s!</string>
 	<string name="hours">sati</string>
 	<string name="hour">sat</string>
@@ -129,26 +131,25 @@
 	<string name="unrated">Ne bodovano</string>
 	<string name="you_play">Vi igrate:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move">"Vi ste na potezu"</string>
-	<string name="your_turn_in_game_with">U igri s %1$s , %2$s</string>
+	<string name="your_move_vs">Vaš potez protiv %1$s, %2$s</string>
 	<string name="won_on_time">%s je pobjedio na vrijeme</string>
-	<string name="won_by_resignation">%s je pobijedio predajom</string>
-	<string name="won_by_checkmate">%s je pobijedio šah matom</string>
+	<string name="won_by_resignation">%s je pobjedio predajom</string>
+	<string name="won_by_checkmate">%s je pobjedio šah matom</string>
 	<string name="game_over">Igra završena</string>
 	<string name="reconnecting_">Ponovno spajanje…</string>
 	<string name="another_login_detected">Ups! Prijavljeni ste negdje drugdje.</string>
-	<string name="game_end_title_draw">Remi</string>
-	<string name="game_draw_by_repetition">Remi zbog ponavljanja</string>
-	<string name="game_drawn_by_agreement">Remi po dogovoru</string>
-	<string name="game_drawn_by_stalemate">Pat</string>
-	<string name="game_drawn_insufficient_material">Remi zbog nedovoljno materijala</string>
-	<string name="game_drawn_by_fifty_move_rule">Remi zbog 50-poteznog pravila</string>
-	<string name="won_game_abandoned">Pobjeda - igra napuštena</string>
+	<string name="game_end_title_draw">Remi (½–½)</string>
 	<string name="game_aborted">Igra prekinuta</string>
 	<string name="new_game">Nova igra</string>
+	<string name="new_game_arg">Nova igra (%s)</string>
 	<string name="language">Jezik</string>
 	<string name="black_wins">Crni je pobijedio (0-1)</string>
 	<string name="white_wins">Bijeli je pobijedio (1-0)</string>
+	<string name="game_draw_by_repetition">Remi ponavljanjem poteza</string>
+	<string name="game_drawn_by_agreement">Remi dogovorom</string>
+	<string name="game_drawn_by_stalemate">Pat</string>
+	<string name="game_drawn_insufficient_material">Remi zbog nedovoljno materijala</string>
+	<string name="game_drawn_by_fifty_move_rule">Remi zbog 50-poteznog pravila</string>
 	<string name="draw_by_stalemate">Pat (½–½)</string>
 	<string name="draw_by_3fold_repetition">Remi zbog trostrukog ponavljanja (½–½)</string>
 	<string name="rematch">Revanš</string>
@@ -168,7 +169,7 @@
 	<string name="or_use_your_email">Ili upotrijebite vašu e-mail adresu:</string>
 	<string name="by_signing_up_accept_mobile">Registraciom prihvaćam</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Uvjeti korištenja</a>]]></string>
-	<string name="create_chess_profile">Stvorite vaš šahovski profil</string>
+	<string name="create_chess_profile">Dobrodošli! Napravite svoj šahovski profil</string>
 	<string name="daily">Dnevno</string>
 	<string name="improve_game_with_lessons">Usavršite vašu igru s neograničenim lekcijama</string>
 	<string name="improve_game_with_videos">Usavršite vašu igru s neograničenim video lekcijama</string>
@@ -180,6 +181,8 @@
 	<string name="download_complete">Skidanje završeno</string>
 	<string name="empty"></string>
 	<string name="difficulty">Teškoća</string>
+	<string name="easiest">Najlakše</string>
+	<string name="hardest">Najteže</string>
 	<string name="vs">protiv</string>
 	<string name="leave_vacation_q">Isključiti odmor?</string>
 	<string name="sign_up_with_facebook"><b>Registracija</b>preko<b>Facebook-a</b></string>
@@ -210,7 +213,7 @@
 	<string name="of_arg">od %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Dovoljno dobro za majstore</string>
-	<string name="upgrade_main_title_1_tablet">Dovoljno dobro za majstore. Dovoljno jednostavno za početnike. Isprobajte sada!</string>
+	<string name="upgrade_main_title_1_tablet">Dovoljno dobar za majstore. Dovoljno jednostavan za početnike.</string>
 	<string name="upgrade_main_title_2">Dovoljno jednostavno za početnike</string>
 	<string name="diamond">Dijamantno</string>
 	<string name="diamond_subtitle">Neograničen pristup svim svojstvima</string>
@@ -243,7 +246,7 @@
 	<string name="choose_photo">Odaberite fotografiju</string>
 	<string name="take_photo">Slikajte fotografiju</string>
 	<string name="pick_photo">Izaberite fotografiju</string>
-	<string name="or_login_using_chesscom">Ili, prijavite se sa Chess.com korisničkim imenom:</string>
+	<string name="or_login_using_chesscom">Ili koristite svoje Chess.com korisničko ime:</string>
 	<string name="articles">Članci</string>
 	<string name="forums">Forumi</string>
 	<string name="notifications">Obavijesti</string>
@@ -254,7 +257,7 @@
 	<string name="share_pgn">Podijeli PGN</string>
 	<string name="share_via">Podijeli preko</string>
 	<string name="chess">Šah</string>
-	<string name="via_chesscom">preko @Chesscom</string>
+	<string name="via_chesscom">"preko @Chesscom"</string>
 	<string name="vs_random_opponent">protiv nasumičnog</string>
 	<string name="feed">Tijek</string>
 	<string name="learn">Nauči</string>
@@ -263,7 +266,7 @@
 	<string name="start">Start</string>
 	<string name="lessons">Lekcije</string>
 	<string name="analysis">Analiza</string>
-	<string name="profile">Profil</string>
+	<string name="profile">Račun</string>
 	<string name="theme">Tema</string>
 	<string name="privacy">Privatnost</string>
 	<string name="blocking">Blokiranje</string>
@@ -281,7 +284,7 @@
 	<string name="profile_account_message_3">Ako želite zatvoriti račun,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">pritisnite ovdje.</a>]]></string>
 	<string name="basic">Osnovno</string>
-	<string name="sign_up_now_free">Učlanite se sada - BESPLATNO je!</string>
+	<string name="sign_up_now_free">"Registriraj se - BESPLATNO je!"</string>
 	<string name="chess_com_username">Chess.com korisničko ime</string>
 	<string name="coordinates">Koordinate</string>
 	<string name="highlight_last_move">Označi zadnji potez</string>
@@ -306,8 +309,8 @@
 	<string name="completed">Završene</string>
 	<string name="few_min">nekoliko minuta</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 sek]]></string>
-	<string name="abort_game_">Prekinuti igru?</string>
-	<string name="resign_game_">Predati igru?</string>
+	<string name="abort_game_">Prekini?</string>
+	<string name="resign_game_">Predaj?</string>
 	<string name="days_move">dana po potezu</string>
 	<string name="password_cant_be_empty">Lozinka ne smije biti prazna</string>
 	<string name="invalid_username_or_password">Neispravno korisničko ime ili lozinka</string>
@@ -324,8 +327,10 @@
 	<string name="add_friend">Dodaj prijatelja</string>
 	<string name="recent_opponents">Nedavni suparnici</string>
 	<string name="invite_by_email">Pozovi preko email-a</string>
+	<string name="please_enter_valid_email">Molimo unesite valjani email</string>
 	<string name="invite_facebook_friend">Pozovi prijatelja s Facebook-a</string>
 	<string name="invite_from_contacts">Pozovite iz kontakata</string>
+	<string name="no_contacts_found">Nisu pronađeni kontakti</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontakti</string>
 	<string name="facebook_invite_friend_to_play">Zaigrajmo šah! Možeš igrati online na Chess.com, ili na Android ili iPhone/iPad-u.</string>
@@ -344,8 +349,10 @@
 	<string name="username_not_found">Korisničko ime nije pronađeno</string>
 	<string name="you_have_not_added_friends_yet">"Još nemate prijatelja. Dodajte ih!"</string>
 	<string name="new_friend_request">Novi zahtjev za prijateljstvo</string>
+	<string name="friend_request_from_arg">Zahtjev za prijateljstvo od %s</string>
 	<string name="new_chat_message">Nova poruka u chatu</string>
-	<string name="new_challenge">Novi izazov</string>
+	<string name="new_daily_challenge">Novi dnevni izazov</string>
+	<string name="arg_wants_to_play">%s želi igrati!</string>
 	<string name="unable_to_select_this_photo">Nije moguće koristiti ovu fotografiju</string>
 	<string name="processing_">Obrada…</string>
 	<string name="about">O</string>
@@ -374,6 +381,7 @@
 	<string name="your_course_rating">Rejting vašeg tečaja:</string>
 	<string name="score_">Bodovi:</string>
 	<string name="rating_">Rejting:</string>
+	<string name="new_arg_rating_">Novi %s rejting:</string>
 	<string name="course">Tečaj</string>
 	<string name="lessons_completed">Završene lekcije</string>
 	<string name="courses_completed">Završeni tečajevi</string>
@@ -385,6 +393,7 @@
 	<string name="lessons_limit_reached_message">Dosegli ste ograničenje broja lekcija za danas. Nadogradite odmah za neograničene lekcije!</string>
 	<string name="resume_lesson">Nastavak lekcije</string>
 	<string name="installing_theme">Instaliranje teme</string>
+	<string name="waiting_to_download">Preuzimanje…</string>
 	<string name="loading_background">Obnavljanje pozadine</string>
 	<string name="saving_background">Spremanje pozadine</string>
 	<string name="saving_board">Spremanje ploče</string>
@@ -414,10 +423,11 @@
 	<string name="all_time">Cijela povijest</string>
 	<string name="comments_arg">%s komentara</string>
 	<string name="views_arg">%s pogleda</string>
-	<string name="your_game_is_over">Vaša igra je završena</string>
+	<string name="game_is_over">Igra završena</string>
+	<string name="game_over_vs">Igra završena protiv %s</string>
 	<string name="switch_sides">Promjena strane</string>
 	<string name="no_results">Nema rezultata</string>
-	<string name="game_explorer">Preglednik igara</string>
+	<string name="game_explorer">Pretraživač</string>
 	<string name="recent_problems">Nedavni problemi</string>
 	<string name="recent_lessons">Nedavne lekcije</string>
 	<string name="players_online_arg">%s igrača on-line</string>
@@ -468,9 +478,13 @@
 	<string name="review_lesson">Ponovi lekciju</string>
 	<string name="full_screen">Puni ekran</string>
 	<string name="line">Linija</string>
-	<string name="predict_move_or_add_new_line">Predvidi potez ili dodaj novu liniju...</string>
-	<string name="make_your_conditional_move">Odigraj uvjetovani potez...</string>
-	<string name="predict_opponent_next_move">Predvidi supernikov sljedeći potez...</string>
+	<string name="predict_move_or_add_new_line">Predvidi potez ili dodaj novu liniju…</string>
+	<string name="make_your_conditional_move">Odigraj svoj uvjetovani potez…</string>
+	<string name="predict_opponent_next_move">Predvidi suparnikov sljedeći potez…</string>
 	<string name="notes">Zabilješke</string>
 	<string name="private_note">Privatna zabilješka</string>
+	<string name="upgrade_feedback_1">"\"Taktike i lekcije puno pomažu mojim šahovskim vještinama\""</string>
+	<string name="upgrade_feedback_reporter_1">- Peter, član od 2011.</string>
+	<string name="upgrade_feedback_2">"\"Moj ukupni rejting se jako poboljšao nakon što sam prešao na premium članstvo\""</string>
+	<string name="upgrade_feedback_reporter_2">- Lou, NJ član od 2009.</string>
 </resources>

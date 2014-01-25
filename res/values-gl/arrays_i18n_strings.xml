@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Xadrez en Diferido</item>
-		<item>Xadrez en Vivo - Normal</item>
-		<item>Xadrez en Vivo - Lóstrego</item>
-		<item>Xadrez en Vivo - Bala</item>
+		<item>Live - Standard</item>
+		<item>Live - Blitz</item>
+		<item>Live - Bullet</item>
 		<item>Xadrez960 en Diferido</item>
 		<item>Problemas</item>
 		<item>Leccións</item>

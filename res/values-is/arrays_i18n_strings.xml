@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Skák dagsins</item>
-		<item>Telft á netinu - Venjulegt</item>
-		<item>Telft á netinu - Hraðskák</item>
-		<item>Telft á netinu - Örskák</item>
+		<item>Í beinni - Venjulegt</item>
+		<item>Í beinni - Hraðskák</item>
+		<item>Í beinni - Örskák</item>
 		<item>Dagleg slembiskák</item>
 		<item>Herkænska</item>
 		<item>kennsluefni</item>

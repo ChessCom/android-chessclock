@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Дневни шах</item>
-		<item>Шах уживо - Стандардни</item>
-		<item>Шах уживо - Блиц</item>
-		<item>Шах уживо - Муњевити</item>
+		<item>Уживо - Стандардни</item>
+		<item>Уживо - Блиц</item>
+		<item>Уживо - Муњевити</item>
 		<item>Дневни шах960</item>
 		<item>Тактике</item>
 		<item>Лекције</item>
@@ -19,7 +19,7 @@
 		<item>Нема реклама</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item> </item>
 		<item>Неограничен број тактика</item>
 		<item>5 лекција дневно</item>
 		<item>Истраживач отварања</item>
@@ -28,7 +28,7 @@
 		<item>Нема реклама</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item> </item>
 		<item>25 тактика дневно</item>
 		<item>3 лекције дневно</item>
 		<item>Истраживач отварања</item>

@@ -2,7 +2,7 @@
 <resources>
 	<string name="connect_with_facebook">CONNECT WIF FACEBOOK</string>
 	<string name="live_chess_server_unavailable">LIV CHES IZ CURRENTLY UNAVAILABLE.</string>
-	<string name="live_chess_server_upgrading">Chess.com IZ CURRENTLY UNAVAILABLE. IT WILL BE LIV AGAIN IN NO TIEM. PLZ TRY 2 LOGIN AGAIN SOON. THX!</string>
+	<string name="live_chess_server_upgrading">CHESS.COM IZ CURRENTLY UNAVAILABLE. IT WILL BE LIV AGAIN IN NO TIEM. PLZ TRY 2 LOGIN AGAIN SOON. THX!</string>
 	<string name="app_name">CHES</string>
 	<string name="game_expired">DIS GAME IZ NO LONGR AVAILABLE.</string>
 	<string name="leave_game">QUIT GAME?</string>
@@ -98,6 +98,8 @@
 	<string name="you_are_offline">U R NAO IN OFFLINE MODE</string>
 	<string name="correct">CORRECT</string>
 	<string name="incorrect">INCORRECT</string>
+	<string name="incorrect_move">INCORRECT MOOV</string>
+	<string name="puzzle_solved">PUZZLE SOLVD!</string>
 	<string name="upgrade_for_unlimited_arg">UPGRADE 4 UNLIMITD %s!</string>
 	<string name="hours">HOURS</string>
 	<string name="hour">HOUR</string>
@@ -129,26 +131,25 @@
 	<string name="unrated">UNRATD</string>
 	<string name="you_play">U PULAY:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move">"IZ UR TURN"</string>
-	<string name="your_turn_in_game_with">IN GAME WIF %1$s , %2$s</string>
-	<string name="won_on_time">%s WON ON TIEM</string>
-	<string name="won_by_resignation">%s WON BY RESIGNASHUN</string>
-	<string name="won_by_checkmate">%s WON BY CHECKMATE</string>
+	<string name="your_move_vs">UR MOOV VS %1$s , %2$s</string>
+	<string name="won_on_time">%s WINS ON TIEM</string>
+	<string name="won_by_resignation">%s WINS BY RESIGNASHUN</string>
+	<string name="won_by_checkmate">%s WINS BY CHECKMATE</string>
 	<string name="game_over">GAME OVAR</string>
 	<string name="reconnecting_">RECONNECTIN…</string>
 	<string name="another_login_detected">OOPS! U R LOGGD IN SOMEWHERE ELSE.</string>
-	<string name="game_end_title_draw">GAME DRAWN</string>
-	<string name="game_draw_by_repetition">GAME DRAWN BY REPETISHUN</string>
-	<string name="game_drawn_by_agreement">GAME DRAWN BY AGREEMENT</string>
-	<string name="game_drawn_by_stalemate">GAME DRAWN BY STALEMATE</string>
-	<string name="game_drawn_insufficient_material">GAME DRAWN BY INSUFFICIENT MATERIAL</string>
-	<string name="game_drawn_by_fifty_move_rule">GAME DRAWN BY 50-MOOV RULE</string>
-	<string name="won_game_abandoned">WON - GAME ABANDOND</string>
+	<string name="game_end_title_draw">DRAW (½–½)</string>
 	<string name="game_aborted">GAME ABORTD</string>
 	<string name="new_game">NEW GAME</string>
+	<string name="new_game_arg">NEW GAME (%s)</string>
 	<string name="language">LANGUAGE</string>
 	<string name="black_wins">BLACK WINS (0–1)</string>
 	<string name="white_wins">WITE WINS (1–0)</string>
+	<string name="game_draw_by_repetition">DRAWN BY REPETISHUN</string>
+	<string name="game_drawn_by_agreement">DRAWN BY AGREEMENT</string>
+	<string name="game_drawn_by_stalemate">DRAWN BY STALEMATE</string>
+	<string name="game_drawn_insufficient_material">DRAWN BY INSUFFICIENT MATERIAL</string>
+	<string name="game_drawn_by_fifty_move_rule">DRAWN BY 50-MOOV RULE</string>
 	<string name="draw_by_stalemate">DRAW BY STALEMATE (½–½)</string>
 	<string name="draw_by_3fold_repetition">DRAW BY THREEFOLD REPETISHUN (½–½)</string>
 	<string name="rematch">REMATCH</string>
@@ -168,7 +169,7 @@
 	<string name="or_use_your_email">OR USE UR EMAIL ADDRES:</string>
 	<string name="by_signing_up_accept_mobile">BY SIGNIN UP, I ACCEPT</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">TERMS OV SERVICE</a>]]></string>
-	<string name="create_chess_profile">CREATE UR CHES PROFILE</string>
+	<string name="create_chess_profile">WELCOM! CREATE UR CHES PROFILE</string>
 	<string name="daily">DAILY</string>
 	<string name="improve_game_with_lessons">IMPROOOV UR GAME WIF UNLIMITD LESONS</string>
 	<string name="improve_game_with_videos">IMPROOOV UR GAME WIF UNLIMITD VIDEOS</string>
@@ -180,8 +181,10 @@
 	<string name="download_complete">DOWNLOAD COMPLETE</string>
 	<string name="empty"></string>
 	<string name="difficulty">DIFFICULTY</string>
+	<string name="easiest">EASIEST</string>
+	<string name="hardest">HARDEST</string>
 	<string name="vs">VS</string>
-	<string name="leave_vacation_q">TURN OFF VACASHUN?</string>
+	<string name="leave_vacation_q">DISABLE VACASHUN?</string>
 	<string name="sign_up_with_facebook"><b>SIGN UP</b> WIF <b>FACEBOOK</b></string>
 	<string name="finished_games">FINISHD GAMEZ</string>
 	<string name="feedback_mail_body">PLZ DOAN EDIT OR REMOOV TEH INFORMASHUN BELOW.</string>
@@ -210,7 +213,7 @@
 	<string name="of_arg">OV %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">GUD ENOUGH 4 MASTERS</string>
-	<string name="upgrade_main_title_1_tablet">GUD ENOUGH 4 MASTERS. SIMPLE ENOUGH 4 BEGINNERS. TRY IT NAO!</string>
+	<string name="upgrade_main_title_1_tablet">GUD ENOUGH 4 MASTERS. SIMPLE ENOUGH 4 BEGINNERS.</string>
 	<string name="upgrade_main_title_2">SIMPLE ENOUGH 4 BEGINNERS</string>
 	<string name="diamond">DIAMOND</string>
 	<string name="diamond_subtitle">UNLIMITD ACCES 2 ALL FEATUREZ</string>
@@ -243,7 +246,7 @@
 	<string name="choose_photo">CHOOSE FOTO</string>
 	<string name="take_photo">TAEK FOTO</string>
 	<string name="pick_photo">PICK FOTO</string>
-	<string name="or_login_using_chesscom">OR, LOG IN WIF Chess.com USERNAME:</string>
+	<string name="or_login_using_chesscom">OR USE UR Chess.com USERNAME:</string>
 	<string name="articles">ARTICLEZ</string>
 	<string name="forums">FORUMS</string>
 	<string name="notifications">NOTIFICASHUNS</string>
@@ -254,7 +257,7 @@
 	<string name="share_pgn">SHARE PGN</string>
 	<string name="share_via">SHARE VIA</string>
 	<string name="chess">CHES</string>
-	<string name="via_chesscom">VIA @Chesscom</string>
+	<string name="via_chesscom">"VIA @Chesscom"</string>
 	<string name="vs_random_opponent">VS RANDOM</string>
 	<string name="feed">FED</string>
 	<string name="learn">LERN</string>
@@ -263,7 +266,7 @@
 	<string name="start">START</string>
 	<string name="lessons">LESONS</string>
 	<string name="analysis">ANALYSIS</string>
-	<string name="profile">PROFILE</string>
+	<string name="profile">AKOWNT</string>
 	<string name="theme">THEME</string>
 	<string name="privacy">PRIVACY</string>
 	<string name="blocking">BLOCKIN</string>
@@ -281,7 +284,7 @@
 	<string name="profile_account_message_3">IF U WUD LIEK 2 CLOSE UR AKOWNT,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">TAP HER.</a>]]></string>
 	<string name="basic">BASIC</string>
-	<string name="sign_up_now_free">SIGN UP NAO - IZ FREE!</string>
+	<string name="sign_up_now_free">"SIGN UP - IZ FREE!"</string>
 	<string name="chess_com_username">Chess.com USERNAME</string>
 	<string name="coordinates">COORDINATEZ</string>
 	<string name="highlight_last_move">HIGHLIGHT LAST MOOV</string>
@@ -306,8 +309,8 @@
 	<string name="completed">COMPLETD</string>
 	<string name="few_min">A FEW MIN</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 SEC]]></string>
-	<string name="abort_game_">ABORT GAME?</string>
-	<string name="resign_game_">RESIGN GAME?</string>
+	<string name="abort_game_">ABORT?</string>
+	<string name="resign_game_">RESIGN?</string>
 	<string name="days_move">DAIS/MOOV</string>
 	<string name="password_cant_be_empty">PASWORD CANT BE EMPTY</string>
 	<string name="invalid_username_or_password">INVALID USERNAME OR PASWORD</string>
@@ -324,8 +327,10 @@
 	<string name="add_friend">ADD FREND</string>
 	<string name="recent_opponents">RESENT OPPONENTS</string>
 	<string name="invite_by_email">INVITE BY EMAIL</string>
+	<string name="please_enter_valid_email">PLZ ENTR VALID EMAIL</string>
 	<string name="invite_facebook_friend">INVITE FACEBOOK FREND</string>
 	<string name="invite_from_contacts">INVITE FRUM CONTACTS</string>
+	<string name="no_contacts_found">NO CONTACTS FINDZ</string>
 	<string name="facebook">FACEBOOK</string>
 	<string name="contacts">CONTACTS</string>
 	<string name="facebook_invite_friend_to_play">LETS PULAY CHES! U CAN PULAY ONLINE AT Chess.com, OR ON MOBILE WIF ANDROID OR IFONE/IPAD.</string>
@@ -344,8 +349,10 @@
 	<string name="username_not_found">USERNAME NOT FINDZ</string>
 	<string name="you_have_not_added_friends_yet">"U DOAN HAS ANY FRENZ YET. ADD SUM!"</string>
 	<string name="new_friend_request">NEW FREND REQUEST</string>
+	<string name="friend_request_from_arg">FREND REQUEST FRUM %s</string>
 	<string name="new_chat_message">NEW CHAT MESAGE</string>
-	<string name="new_challenge">NEW CHALLENGE</string>
+	<string name="new_daily_challenge">NEW DAILY CHALLENGE</string>
+	<string name="arg_wants_to_play">%s WANTS 2 PULAY!</string>
 	<string name="unable_to_select_this_photo">UNABLE 2 USE DIS FOTO</string>
 	<string name="processing_">PROCESIN…</string>
 	<string name="about">BOUT</string>
@@ -374,6 +381,7 @@
 	<string name="your_course_rating">UR COURSE RATIN:</string>
 	<string name="score_">SKOR:</string>
 	<string name="rating_">RATIN:</string>
+	<string name="new_arg_rating_">NEW %s RATIN:</string>
 	<string name="course">COURSE</string>
 	<string name="lessons_completed">LESONS COMPLETD</string>
 	<string name="courses_completed">COURSEZ COMPLETD</string>
@@ -385,6 +393,7 @@
 	<string name="lessons_limit_reached_message">LESONS LIMIT REACHD 4 TODAI. UPGRADE NAO 2 IMPROOOV WIF UNLIMITD LESONS!</string>
 	<string name="resume_lesson">RESUME LESON</string>
 	<string name="installing_theme">INSTALLIN THEME</string>
+	<string name="waiting_to_download">WAITIN 2 DOWNLOAD…</string>
 	<string name="loading_background">LOADIN BAKGROUND</string>
 	<string name="saving_background">SAVIN BAKGROUND</string>
 	<string name="saving_board">SAVIN BORD</string>
@@ -414,10 +423,11 @@
 	<string name="all_time">ALL TIEM</string>
 	<string name="comments_arg">%s COMMENTS</string>
 	<string name="views_arg">%s VIEWS</string>
-	<string name="your_game_is_over">UR GAME IZ OVAR</string>
+	<string name="game_is_over">GAME OVAR</string>
+	<string name="game_over_vs">Game Over vs %s</string>
 	<string name="switch_sides">SWITCH SIDEZ</string>
 	<string name="no_results">NO RESULTS</string>
-	<string name="game_explorer">GAME EXPLORR</string>
+	<string name="game_explorer">EXPLORR</string>
 	<string name="recent_problems">RESENT PROBLEMS</string>
 	<string name="recent_lessons">RESENT LESONS</string>
 	<string name="players_online_arg">%s PLAYERS ONLINE</string>
@@ -468,9 +478,13 @@
 	<string name="review_lesson">REVIEW LESON</string>
 	<string name="full_screen">FULL SCREEN</string>
 	<string name="line">LINE</string>
-	<string name="predict_move_or_add_new_line">PREDICT MOOV OR ADD NEW LINE...</string>
-	<string name="make_your_conditional_move">MAK UR CONDISHUNAL MOOV...</string>
-	<string name="predict_opponent_next_move">PREDICT OPPONENTS NEXT MOOV...</string>
+	<string name="predict_move_or_add_new_line">PREDICT MOOV OR ADD NEW LINE…</string>
+	<string name="make_your_conditional_move">MAK UR CONDISHUNAL MOOV…</string>
+	<string name="predict_opponent_next_move">PREDICT OPPONENTS NEXT MOOV…</string>
 	<string name="notes">NOTEZ</string>
 	<string name="private_note">PRIVATE NOWT</string>
+	<string name="upgrade_feedback_1">"\"TACTICS AN LESONS RLY HALP MAH CHES SKILLS\""</string>
+	<string name="upgrade_feedback_reporter_1">- PETR, MEMBR SINCE 2011</string>
+	<string name="upgrade_feedback_2">"\"MAH OVERALL RATIN IMPROOVD TON AFTR I BECAME PREMIUM MEMBR\""</string>
+	<string name="upgrade_feedback_reporter_2">- LOU, NJ MEMBR SINCE 2009</string>
 </resources>

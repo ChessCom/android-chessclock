@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Catur Harian</item>
-		<item>Catur langsung - Standar</item>
-		<item>Catur Langsung - Kilat</item>
-		<item>Catur Langsung - Peluru</item>
+		<item>Live - Standard</item>
+		<item>Live - Blitz</item>
+		<item>Live - Bullet</item>
 		<item>Catur960 harian</item>
 		<item>Taktik</item>
 		<item>Pelajaran</item>

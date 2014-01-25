@@ -19,7 +19,7 @@
 	<string name="computer">رایانه</string>
 	<string name="thinking_">در حال اندیشه...</string>
 	<string name="open_challenges">رقابت‌های فعال</string>
-	<string name="challenge_friend">رقابت با دوست</string>
+	<string name="challenge_friend">رقابت با یک دوست</string>
 	<string name="challenge_created">رقابت ایجاد شد</string>
 	<string name="you_will_notified_when_game_starts">هنگامی که بازی آغاز شد شما را آگاه می‌کنیم</string>
 	<string name="challenge_sent">درخواست رقابت فرستاده شد</string>
@@ -98,6 +98,8 @@
 	<string name="you_are_offline">اکنون در حالت برون‌خط هستید</string>
 	<string name="correct">درست</string>
 	<string name="incorrect">نادرست</string>
+	<string name="incorrect_move">حرکت نادرست</string>
+	<string name="puzzle_solved">معما حل شد!</string>
 	<string name="upgrade_for_unlimited_arg">ارتقا برای %s نامحدود!</string>
 	<string name="hours">ساعت</string>
 	<string name="hour">ساعت</string>
@@ -129,26 +131,25 @@
 	<string name="unrated">بدون رتبه بندی</string>
 	<string name="you_play">شما بازی می‌کنید با:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move">"نوبت شماست"</string>
-	<string name="your_turn_in_game_with">در حال بازی با %1$s ، %2$s</string>
-	<string name="won_on_time">%s به علت پایان یافتن زمان حریف برنده شد</string>
-	<string name="won_by_resignation">%s برنده به علت کناره گیری رقیب</string>
+	<string name="your_move_vs">حرکت شما در برابر %1$s، %2$s</string>
+	<string name="won_on_time">%s با پایان یافتن زمان حریف برنده شد</string>
+	<string name="won_by_resignation">%s با اعلام باخت حریف برنده شد</string>
 	<string name="won_by_checkmate">%s با مات کردن برنده شد</string>
 	<string name="game_over">بازی به پایان رسید</string>
 	<string name="reconnecting_">اتصال دوباره...</string>
 	<string name="another_login_detected">اوه! شما پیش از این در جای دیگری وارد شده‌اید.</string>
-	<string name="game_end_title_draw">بازی مساوی شد</string>
-	<string name="game_draw_by_repetition">بازی به علت تکرار مساوی شد</string>
-	<string name="game_drawn_by_agreement">بازی با توافق طرفین مساوی شد</string>
-	<string name="game_drawn_by_stalemate">بازی با قانون پات مساوی شد</string>
-	<string name="game_drawn_insufficient_material">بازی به علت نبود مهره کافی مساوی شد</string>
-	<string name="game_drawn_by_fifty_move_rule">بازی بر اساس قانون ۵۰ حرکت مساوی شد</string>
-	<string name="won_game_abandoned">برنده شدید - ترک بازی از سوی حریف</string>
+	<string name="game_end_title_draw">مساوی (½–½)</string>
 	<string name="game_aborted">بازی لغو شد</string>
 	<string name="new_game">بازی تازه</string>
+	<string name="new_game_arg">بازی تازه (%s)</string>
 	<string name="language">زبان</string>
 	<string name="black_wins">بردهای سیاه (۰-۱)</string>
 	<string name="white_wins">بردهای سفید (۱-۰)</string>
+	<string name="game_draw_by_repetition">تساوی به واسطه تکرار</string>
+	<string name="game_drawn_by_agreement">تساوی با توافق طرفین</string>
+	<string name="game_drawn_by_stalemate">تساوی با به بن‌بست رسیدن بازی</string>
+	<string name="game_drawn_insufficient_material">تساوی به واسطه نبود مهره کافی</string>
+	<string name="game_drawn_by_fifty_move_rule">تساوی با قانون ۵۰ حرکت</string>
 	<string name="draw_by_stalemate">تساوی به واسطه پات شدن (½-½)</string>
 	<string name="draw_by_3fold_repetition">تساوی به واسطه سه بار حرکت تکراری (½-½)</string>
 	<string name="rematch">تکرار بازی</string>
@@ -167,8 +168,8 @@
 	<string name="profile_picture">تصویر نمایه</string>
 	<string name="or_use_your_email">یا از نشانی رایانامه خود استفاده کنید:</string>
 	<string name="by_signing_up_accept_mobile">با ثیت نام، من می پذیریم</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> شرایط استفاده از سرویس</a>]]></string>
-	<string name="create_chess_profile">نمایه شطرنج خود را ایجاد کنید</string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> شرایط استفاده از سرویس</a>]]]></string>
+	<string name="create_chess_profile">خوش آمدید! نمایه شطرنج خود را ایجاد کنید</string>
 	<string name="daily">روزانه</string>
 	<string name="improve_game_with_lessons">با دروس نامحدود بازیتان را بهتر کنید</string>
 	<string name="improve_game_with_videos">با ویدیوهای نامحدود بازیتان را بهتر کنید</string>
@@ -180,8 +181,10 @@
 	<string name="download_complete">دریافت کامل شد</string>
 	<string name="empty"></string>
 	<string name="difficulty">شدت سختی</string>
+	<string name="easiest">آسان‌تر</string>
+	<string name="hardest">سخت‌تر</string>
 	<string name="vs">در برابر</string>
-	<string name="leave_vacation_q">خاموش کردن مرخصی؟</string>
+	<string name="leave_vacation_q">غیرفعال نمودن مرخصی؟</string>
 	<string name="sign_up_with_facebook"><b>ثبت نام</b> با <b>فیس‌بوک</b></string>
 	<string name="finished_games">بازی‌های تمام شده</string>
 	<string name="feedback_mail_body">لطفاً اطلاعات زیر را ویرایش یا حذف نکنید.</string>
@@ -210,7 +213,7 @@
 	<string name="of_arg">از %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">به اندازه کافی برای اساتید خوب است</string>
-	<string name="upgrade_main_title_1_tablet">به اندازه کافی خوب برای اساتید و به همان اندازه ساده برای تازه کاران. هم‌اکنون امتحانش کنید!</string>
+	<string name="upgrade_main_title_1_tablet">به اندازه کافی خوب برای اساتید. به اندازه کافی ساده برای تازه کاران.</string>
 	<string name="upgrade_main_title_2">آسان برای تازه کاران</string>
 	<string name="diamond">الماسه</string>
 	<string name="diamond_subtitle">دسترسی نامحدود به همه امکانات</string>
@@ -243,7 +246,7 @@
 	<string name="choose_photo">انتخاب تصویر</string>
 	<string name="take_photo">گرفتن عکس</string>
 	<string name="pick_photo">گزینش عکس</string>
-	<string name="or_login_using_chesscom">یا، با نام کاربری Chess.com وارد شوید:</string>
+	<string name="or_login_using_chesscom">یا از نام کاربری Chess.com خود استفاده کنید:</string>
 	<string name="articles">مقالات</string>
 	<string name="forums">انجمن‌ها</string>
 	<string name="notifications">آگاه سازی‌ها</string>
@@ -254,7 +257,7 @@
 	<string name="share_pgn">اشتراک گذاری اطلاعات ضبط شده بازی PGN</string>
 	<string name="share_via">اشتراک گذاری به وسیله</string>
 	<string name="chess">شطرنج</string>
-	<string name="via_chesscom">به وسیله @chesscom</string>
+	<string name="via_chesscom">"به وسیله @chesscom"</string>
 	<string name="vs_random_opponent">در برابر حریف تصادفی</string>
 	<string name="feed">خوراک</string>
 	<string name="learn">یادگیری</string>
@@ -263,7 +266,7 @@
 	<string name="start">آغاز</string>
 	<string name="lessons">دروس</string>
 	<string name="analysis">تجزیه و تحلیل</string>
-	<string name="profile">نمایه</string>
+	<string name="profile">حساب کاربری</string>
 	<string name="theme">پوسته ظاهری</string>
 	<string name="privacy">حریم خصوصی</string>
 	<string name="blocking">مسدود نمودن</string>
@@ -274,14 +277,14 @@
 	<string name="location">مکان</string>
 	<string name="share">اشتراک گذاری</string>
 	<string name="profile_membership_renew_cancel">عضویت %1$s شما در %2$s تازه خواهد شد.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> انصراف</a>]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> انصراف</a>]]]></string>
 	<string name="invite_friends_profile_message">شطرنج بازی کردن با دوستان بیشتر خوش می گذرد - دعوتشان کنید!</string>
 	<string name="profile_account_message_1">حساب کاربری شما مرتبط است با سایت </string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice">.شرایط و ضوابط</a>]]></string>
 	<string name="profile_account_message_3">اگر می‌خواهید حساب کاربریتان را ببندید،</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy"> اینجا تقه کنید.</a>]]></string>
 	<string name="basic">پایه</string>
-	<string name="sign_up_now_free">ثبت نام کنید - رایگان است!</string>
+	<string name="sign_up_now_free">"ثبت نام کنید - رایگان است!"</string>
 	<string name="chess_com_username">نام کاربری Chess.com</string>
 	<string name="coordinates">مختصات</string>
 	<string name="highlight_last_move">برجسته نمودن آخرین حرکت</string>
@@ -306,7 +309,7 @@
 	<string name="completed">تکمیل شده</string>
 	<string name="few_min">چند دقیقه</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 ثانیه]]></string>
-	<string name="abort_game_">لغو بازی؟</string>
+	<string name="abort_game_">لغو؟</string>
 	<string name="resign_game_">اعلام باخت؟</string>
 	<string name="days_move">روز/حرکت</string>
 	<string name="password_cant_be_empty">گذرواژه نمی‌تواند خالی باشد</string>
@@ -324,8 +327,10 @@
 	<string name="add_friend">افزودن دوست</string>
 	<string name="recent_opponents">حریفان اخیر</string>
 	<string name="invite_by_email">دعوت با رایانامه</string>
+	<string name="please_enter_valid_email">لطفاً یک رایانامه معتبر را وارد نمایید</string>
 	<string name="invite_facebook_friend">دعوت از دوستان فیس‌بوک</string>
 	<string name="invite_from_contacts">دعوت از فهرست تماس</string>
+	<string name="no_contacts_found">هیچ مخاطبی پیدا نشد</string>
 	<string name="facebook">فیس‌بوک</string>
 	<string name="contacts">تماس‌ها</string>
 	<string name="facebook_invite_friend_to_play">بیایید شطرنج بازی کنید! شما می‌توانید به صورت برخط در سایت Chess.com، و یا با گوشی همراه اندروید، آی فون یا آی پد، بازی کنید.</string>
@@ -344,8 +349,10 @@
 	<string name="username_not_found">نام کاربری پیدا نشد</string>
 	<string name="you_have_not_added_friends_yet">"شما هنوز دوستی ندارید. تعدادی را اضافه کنید!"</string>
 	<string name="new_friend_request">درخواست دوستی تازه</string>
+	<string name="friend_request_from_arg">درخواست دوستی از طرف %s</string>
 	<string name="new_chat_message">پیام گپ تازه</string>
-	<string name="new_challenge">رقابت تازه</string>
+	<string name="new_daily_challenge">رقابت روزانه جدید</string>
+	<string name="arg_wants_to_play">%s مایل است با شما بازی کند!</string>
 	<string name="unable_to_select_this_photo">امکان استفاده از این تصویر نیست</string>
 	<string name="processing_">درحال پردازش...</string>
 	<string name="about">درباره</string>
@@ -374,6 +381,7 @@
 	<string name="your_course_rating">رتبه دوره شما:</string>
 	<string name="score_">امتیاز:</string>
 	<string name="rating_">رتبه:</string>
+	<string name="new_arg_rating_">رتبه %s تازه:</string>
 	<string name="course">دوره</string>
 	<string name="lessons_completed">دروس تکمیل شد</string>
 	<string name="courses_completed">دوره‌ها تکمیل شدند</string>
@@ -385,6 +393,7 @@
 	<string name="lessons_limit_reached_message">به حد مجاز دروس امروز خود رسیدید. هم اکنون حساب خود را ارتقا دهید تا به دروس نامحدود دسترسی داشته باشید!</string>
 	<string name="resume_lesson">ادامه درس</string>
 	<string name="installing_theme">نصب پوسته ظاهری</string>
+	<string name="waiting_to_download">منتظر برای دریافت…</string>
 	<string name="loading_background">در حال بارگذاری پس زمینه</string>
 	<string name="saving_background">در حال ذخیره پس‌زمینه</string>
 	<string name="saving_board">در حال ذخیره تخته شطرنج</string>
@@ -414,10 +423,11 @@
 	<string name="all_time">همه زمان‌ها</string>
 	<string name="comments_arg">%s دیدگاه</string>
 	<string name="views_arg">%s نمایش</string>
-	<string name="your_game_is_over">بازی شما به پایان رسید</string>
+	<string name="game_is_over">بازی به پایان رسید</string>
+	<string name="game_over_vs">بازی در برابر %s به پایان رسید</string>
 	<string name="switch_sides">جا به جایی سمت</string>
 	<string name="no_results">بی نتیجه</string>
-	<string name="game_explorer">جستجوگر بازی</string>
+	<string name="game_explorer">پویشگر</string>
 	<string name="recent_problems">مشکلات اخیر</string>
 	<string name="recent_lessons">دروس اخیر</string>
 	<string name="players_online_arg">%s کاربر برخط</string>
@@ -468,9 +478,13 @@
 	<string name="review_lesson">مرور درس</string>
 	<string name="full_screen">تمام صفحه</string>
 	<string name="line">خط</string>
-	<string name="predict_move_or_add_new_line">پیش‌بینی حرکت و یا افزودن خطی نو...</string>
-	<string name="make_your_conditional_move">حرکت شرطی خود را انجام دهید...</string>
-	<string name="predict_opponent_next_move">حرکت بعدی حریف خود را پیش‌بینی کنید...</string>
+	<string name="predict_move_or_add_new_line">حرکت را پیش‌بینی کنید یا خط تازه‌ای بیافزایید…</string>
+	<string name="make_your_conditional_move">حرکت شرطی خود را ایجاد کنید…</string>
+	<string name="predict_opponent_next_move">حرکت بعدی حریف خود را پیش‌بینی کنید…</string>
 	<string name="notes">یادداشت‌ها</string>
 	<string name="private_note">یادداشت خصوصی</string>
+	<string name="upgrade_feedback_1">"\"تاکتیک‌ها و دروس واقعاً به مهارت‌های شطرنج من کمک کرد\""</string>
+	<string name="upgrade_feedback_reporter_1">- Peter، تاریخ عضویت ۲۰۱۱</string>
+	<string name="upgrade_feedback_2">"\"بعد از اینکه کاربر ویژه شدم رتبه کلی من بسیار بهبود پیدا کرد\""</string>
+	<string name="upgrade_feedback_reporter_2">- Lou، از نیوجرسی تاریخ عضویت ۲۰۰۹</string>
 </resources>

@@ -3,17 +3,17 @@
 	<string-array name="new_site_api_error_messages">
 		<item>Multiple login methods found. Do not submit username or password with other credentials.</item>
 		<item>Invalid Facebook access token.</item>
-		<item>Facebook user has no Chess.com account.</item>
-		<item>Account locked. Login at Chess.com.</item>
+		<item>ফেইসবুক ব্যবহারকারীর কোনো Chess.com একাউন্ট নাই ।</item>
+		<item>একাউন্ট বন্ধ আছে। Chess.com এ সংযুক্ত হন ।</item>
 		<item>Invalid password or username.</item>
-		<item>Account not yet active!</item>
-		<item>Account has been disabled.</item>
+		<item>একাউন্ট এখনও সক্রিয় হয় নাই !</item>
+		<item>একাউন্ট অক্ষম করা হয়েছে ।</item>
 		<item>You must setup a password at Chess.com.</item>
 		<item>Resource not found.</item>
 		<item>Tactics daily limit reached.</item>
-		<item>You cannot add yourself as a friend.</item>
-		<item>You have already requested to add this member as your friend.</item>
-		<item>This member is already your friend.</item>
+		<item>আপনি নিজেকে বন্ধু হিসেবে যোগ করতে পারেন না ।</item>
+		<item>আপনি ইতিমধ্যে এই সদস্যকে আপনার বন্ধু হিসেবে যোগ করতে অনুরোধ করেছেন।</item>
+		<item>এই সদস্য ইতিমধ্যে আপনার বন্ধু ।</item>
 		<item>This user is not accepting friend requests.</item>
 		<item>This user has blocked you!</item>
 		<item>Invalid fen passed.</item>
@@ -49,8 +49,8 @@
 		<item>Invalid user id.</item>
 		<item>Invalid parameter - totalGames</item>
 		<item>Please request 50 or less games</item>
-		<item>Game already started!</item>
-		<item>Timeout percentage too high.</item>
+		<item>খেলা ইতিমধ্যেই শুরু হয়েছে !</item>
+		<item>সময় উত্তীর্ণ হার অত্যন্ত বেশী ।</item>
 		<item>Too few games.</item>
 		<item>Must be premium.</item>
 		<item>Move speed too slow.</item>
@@ -61,9 +61,9 @@
 		<item>Email already taken.</item>
 		<item>Invalid Chess.com email.</item>
 		<item>Invalid username.</item>
-		<item>Username not allowed.</item>
+		<item>ব্যবহারকারীর অননুমোদনযোগ্য নাম ।</item>
 		<item>Invalid email domain.</item>
-		<item>System error.</item>
+		<item>সিস্টেম ত্রুটি ।</item>
 		<item>Weak password.</item>
 		<item>Invalid login token supplied.</item>
 		<item>Please login to continue.</item>
@@ -76,32 +76,32 @@
 		<item>Passed ply is greater than max allowed.</item>
 		<item>Invalid parameter passed.</item>
 		<item>Empty Error</item>
-		<item>Games must be a minimum of 16 moves to be submitted for computer analysis.</item>
-		<item>This game has already been submitted for computer analysis.</item>
+		<item>খেলা কম্পিউটার বিশ্লেষণের জন্য দাখিল করতে কমপক্ষে ১৬ চাল হতে হবে ।</item>
+		<item>এই খেলাটি কম্পিউটার বিশ্লেষণের জন্য ইতিপূর্বে দাখিল করা হয়েছে ।</item>
 		<item>Game limit reached.</item>
-		<item>Unable to be analyzed by our computer.</item>
-		<item>Analysis is still in progress.</item>
-		<item>Self challenge.</item>
+		<item>আমাদের কম্পিউটার বিশ্লেষণ করতে অসমর্থ ।</item>
+		<item>বিশ্লেষণ এখনও চলছে ।</item>
+		<item>নিজেকে চ্যালেঞ্জ ।</item>
 		<item>Avatar image is invalid. Allowed file size is 2 MB and allowed mime types are: \"image/jpeg, image/gif,
 			image/png\".
 		</item>
 		<item>Username should have 3 characters or more.</item>
-		<item>Username should have 20 characters or less.</item>
-		<item>Username is not allowed. Please try again.</item>
+		<item>ব্যবহারকারীর নাম ২০ অক্ষর বা তার কম হতে হবে ।</item>
+		<item>ব্যবহারকারীর নাম অননুমোদনযোগ্য । অনুগ্রহ করে আবার চেষ্টা করুন ।</item>
 		<item>To prevent spam and abuse, Chess.com does not allow throw-away email addresses. Please use a legitimate
 			email address or connect with Facebook. Thanks!
 		</item>
 		<item>Password should have at least 6 characters.</item>
 		<item>First name should have 20 characters or less.</item>
 		<item>Last name should have 20 characters or less.</item>
-		<item>The IP has been already banned</item>
-		<item>Username should not be blank.</item>
+		<item>আইপিটি ইতিমধ্যে নিষিদ্ধ করা হয়েছে ।</item>
+		<item>ব্যবহারকারীর নাম শূন্য থাকবে না ।</item>
 		<item>Invalid product sku</item>
-		<item>Invalid purchase data</item>
-		<item>Invalid package name</item>
+		<item>অকার্যকর ক্রয় উপাত্ত</item>
+		<item>মোড়কের অকার্যকর নাম</item>
 		<item>Invalid developer payload</item>
-		<item>Invalid data signature</item>
-		<item>Invalid order</item>
-		<item>Wrong order</item>
+		<item>অকার্যকর ডাটা স্বাক্ষর</item>
+		<item>অকার্যকর আদেশ</item>
+		<item>ভুল ধারা</item>
 	</string-array>
 </resources>

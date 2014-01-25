@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>दैनिक शतरंज</item>
-		<item>लाइव शतरंज - सामान्य</item>
-		<item>लाइव शतरंज - ब्लिट्ज</item>
-		<item>लाइव शतरंज - बुलेट</item>
+		<item>Live - Standard</item>
+		<item>Live - Blitz</item>
+		<item>Live - Bullet</item>
 		<item>दैनिक Chess960</item>
 		<item>युक्तियाँ</item>
 		<item>अध्ययन सामग्री</item>

@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Daglig skak</item>
-		<item>Liveskak - Standard</item>
-		<item>Liveskak - Lynskak</item>
-		<item>Liveskak - Bullet</item>
+		<item>Live - Standard</item>
+		<item>Live - Lynskak</item>
+		<item>Live - Bullet</item>
 		<item>Daglig Skak960</item>
 		<item>Taktikker</item>
 		<item>Lektioner</item>

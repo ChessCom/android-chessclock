@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>หมากรุกรายวัน</item>
-		<item>หมากรุกสด - มาตรฐาน</item>
-		<item>หมากรุกสด - ฟ้าแลบ</item>
-		<item>สดหมากรุก - กระสุน</item>
+		<item>Live - Standard</item>
+		<item>Live - Blitz</item>
+		<item>Live - Bullet</item>
 		<item>Chess960 รายวัน</item>
 		<item>กลยุทธ์</item>
 		<item>บทเรียน</item>
