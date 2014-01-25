@@ -137,7 +137,7 @@
 	<string name="game_over">Fin de la partie</string>
 	<string name="reconnecting_">Reconnexion …</string>
 	<string name="another_login_detected">Oups ! Vous êtes connecté à un autre endroit.</string>
-	<string name="game_drawn">Partie nulle</string>
+	<string name="game_end_title_draw">Partie nulle</string>
 	<string name="game_draw_by_repetition">Partie nulle par répétition</string>
 	<string name="game_drawn_by_agreement">Partie nulle par accord mutuel</string>
 	<string name="game_drawn_by_stalemate">Partie nulle par Pat</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Performance moyenne:</string>
 	<string name="start">Commencer</string>
 	<string name="lessons">Leçons</string>
-	<string name="new_">Nouveau</string>
 	<string name="analysis">Analyse</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Thème</string>

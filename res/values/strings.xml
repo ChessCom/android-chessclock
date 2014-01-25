@@ -29,7 +29,7 @@
 
 	<!--Create Challenges-->
 	<string name="open_challenges">Open Challenges</string>
-	<string name="challenge_friend">Challenge Friend</string>
+	<string name="challenge_friend">Challenge a Friend</string>
 	<string name="challenge_created">Challenge Created</string>
 	<string name="you_will_notified_when_game_starts">You will be notified when the game starts</string>
 	<string name="challenge_sent">Challenge Sent</string>
@@ -123,6 +123,8 @@
 	<string name="you_are_offline">You are now in Offline Mode</string>
 	<string name="correct">Correct</string>
 	<string name="incorrect">Incorrect</string>
+	<string name="incorrect_move">Incorrect Move</string>
+	<string name="puzzle_solved">Puzzle Solved!</string>
 	<string name="upgrade_for_unlimited_arg">Upgrade For Unlimited %s!</string>
 
 	<!--Games List Screen-->
@@ -162,24 +164,24 @@
 	<!--Notifications-->
 	<string name="chess_com">Chess.com</string>
 	<string name="your_move_vs">Your move vs %1$s , %2$s</string>
-	<string name="won_on_time">%s Won on Time</string>
-	<string name="won_by_resignation">%s Won by Resignation</string>
-	<string name="won_by_checkmate">%s Won by Checkmate</string>
+	<string name="won_on_time">%s wins on Time</string>
+	<string name="won_by_resignation">%s wins by Resignation</string>
+	<string name="won_by_checkmate">%s wins by Checkmate</string>
 	<string name="game_over">Game Over</string>
 	<string name="reconnecting_">Reconnecting…</string>
 	<string name="another_login_detected">Oops! You are logged in somewhere else.</string>
-	<string name="game_drawn">Game Drawn</string>
-	<string name="game_draw_by_repetition">Game Drawn by Repetition</string>
-	<string name="game_drawn_by_agreement">Game Drawn by Agreement</string>
-	<string name="game_drawn_by_stalemate">Game Drawn by Stalemate</string>
-	<string name="game_drawn_insufficient_material">Game Drawn by Insufficient Material</string>
-	<string name="game_drawn_by_fifty_move_rule">Game Drawn by 50-move Rule</string>
-	<string name="won_game_abandoned">Won - Game Abandoned</string>
+	<string name="game_end_title_draw">Draw (½–½)</string>
 	<string name="game_aborted">Game Aborted</string>
 	<string name="new_game">New Game</string>
+	<string name="new_game_arg">New Game (%s)</string>
 	<string name="language">Language</string>
 	<string name="black_wins">Black Wins (0–1)</string>
 	<string name="white_wins">White Wins (1–0)</string>
+	<string name="game_draw_by_repetition">Drawn by Repetition</string>
+	<string name="game_drawn_by_agreement">Drawn by Agreement</string>
+	<string name="game_drawn_by_stalemate">Drawn by Stalemate</string>
+	<string name="game_drawn_insufficient_material">Drawn by Insufficient Material</string>
+	<string name="game_drawn_by_fifty_move_rule">Drawn by 50-move Rule</string>
 	<string name="draw_by_stalemate">Draw by Stalemate (½–½)</string>
 	<string name="draw_by_3fold_repetition">Draw by Threefold Repetition (½–½)</string>
 	<string name="rematch">Rematch</string>
@@ -201,7 +203,7 @@
 	<string name="or_use_your_email">Or use your Email Address:</string>
 	<string name="by_signing_up_accept_mobile">By signing up, I accept</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Terms of Service</a>]]></string>
-	<string name="create_chess_profile">Create your Chess Profile</string>
+	<string name="create_chess_profile">Welcome! Create your Chess Profile</string>
 	<string name="daily">Daily</string>
 	<string name="improve_game_with_lessons">Improve your Game with Unlimited Lessons</string>
 	<string name="improve_game_with_videos">Improve your Game with Unlimited Videos</string>
@@ -215,8 +217,10 @@
 
 	<!--New Game Menu-->
 	<string name="difficulty">Difficulty</string>
+	<string name="easiest">Easiest</string>
+	<string name="hardest">Hardest</string>
 	<string name="vs">vs</string>
-	<string name="leave_vacation_q">Turn Off Vacation?</string>
+	<string name="leave_vacation_q">Disable Vacation?</string>
 	<string name="sign_up_with_facebook"><b>Sign Up</b> with <b>Facebook</b></string>
 	<string name="finished_games">Finished Games</string>
 	<string name="feedback_mail_body">Please don\'t edit or remove the information below.</string>
@@ -252,7 +256,7 @@
 	<string name="not_available">--</string>
 	<!--Upgrade-->
 	<string name="upgrade_main_title_1">Good Enough for Masters</string>
-	<string name="upgrade_main_title_1_tablet">Good Enough for Masters. Simple Enough for Beginners. Try It Now!</string>
+	<string name="upgrade_main_title_1_tablet">Good Enough for Masters. Simple Enough for Beginners.</string>
 	<string name="upgrade_main_title_2">Simple Enough for Beginners</string>
 	<string name="diamond">Diamond</string>
 	<string name="diamond_subtitle">Unlimited access to all features</string>
@@ -289,7 +293,7 @@
 	<string name="choose_photo">Choose Photo</string>
 	<string name="take_photo">Take Photo</string>
 	<string name="pick_photo">Pick a photo</string>
-	<string name="or_login_using_chesscom">Or, Log in with Chess.com Username:</string>
+	<string name="or_login_using_chesscom">Or Use Your Chess.com Username:</string>
 	<string name="articles">Articles</string>
 	<string name="forums">Forums</string>
 	<string name="notifications">Notifications</string>
@@ -314,11 +318,10 @@
 	<string name="average_score">Average Score:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lessons</string>
-	<string name="new_">New</string>
 	<string name="analysis">Analysis</string>
 
 	<!--Settings-->
-	<string name="profile">Profile</string>
+	<string name="profile">Account</string>
 	<string name="theme">Theme</string>
 	<string name="privacy">Privacy</string>
 	<string name="blocking">Blocking</string>
@@ -338,7 +341,7 @@
 	<string name="profile_account_message_3">If you would like to close your account,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">tap here.</a>]]></string>
 	<string name="basic">Basic</string>
-	<string name="sign_up_now_free">Sign Up Now - it\'s FREE!</string>
+	<string name="sign_up_now_free">"Sign Up - It's FREE!"</string>
 	<string name="chess_com_username">Chess.com Username</string>
 
 	<!--Settings-->
@@ -372,8 +375,8 @@
 	<string name="completed">Completed</string>
 	<string name="few_min">a few min</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 sec]]></string>
-	<string name="abort_game_">Abort Game?</string>
-	<string name="resign_game_">Resign Game?</string>
+	<string name="abort_game_">Abort?</string>
+	<string name="resign_game_">Resign?</string>
 	<string name="days_move">days/move</string>
 
 	<!--Sign In-->
@@ -395,8 +398,10 @@
 	<string name="add_friend">Add Friend</string>
 	<string name="recent_opponents">Recent Opponents</string>
 	<string name="invite_by_email">Invite by Email</string>
+	<string name="please_enter_valid_email">Please enter a valid Email</string>
 	<string name="invite_facebook_friend">Invite Facebook Friend</string>
 	<string name="invite_from_contacts">Invite from Contacts</string>
+	<string name="no_contacts_found">No Contacts Found</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Contacts</string>
 	<string name="facebook_invite_friend_to_play">Let\'s play chess! You can play online at Chess.com, or on mobile with Android or iPhone/iPad.</string>
@@ -453,6 +458,7 @@
 	<string name="your_course_rating">Your Course Rating:</string>
 	<string name="score_">Score:</string>
 	<string name="rating_">Rating:</string>
+	<string name="new_arg_rating_">New %s Rating:</string>
 	<string name="course">Course</string>
 	<string name="lessons_completed">Lessons Completed</string>
 	<string name="courses_completed">Courses Completed</string>
@@ -466,6 +472,7 @@
 
 	<!--Themes-->
 	<string name="installing_theme">Installing Theme</string>
+	<string name="waiting_to_download">Waiting to download…</string>
 	<string name="loading_background">Loading Background</string>
 	<string name="saving_background">Saving Background</string>
 	<string name="saving_board">Saving Board</string>
@@ -514,7 +521,7 @@
 
 	<!--Moves Explorer-->
 	<string name="no_results">No Results</string>
-	<string name="game_explorer">Game Explorer</string>
+	<string name="game_explorer">Explorer</string>
 
 	<string name="recent_problems">Recent Problems</string>
 	<string name="recent_lessons">Recent Lessons</string>

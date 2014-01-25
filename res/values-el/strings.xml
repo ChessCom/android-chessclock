@@ -137,7 +137,7 @@
 	<string name="game_over">Τέλος παιχνιδιού</string>
 	<string name="reconnecting_">Επανασύνδεση...</string>
 	<string name="another_login_detected">Ώπα! Είστε συνδεδεμένοι κάπου αλλού.</string>
-	<string name="game_drawn">Ισοπαλία</string>
+	<string name="game_end_title_draw">Ισοπαλία</string>
 	<string name="game_draw_by_repetition">Ισοπαλία λόγο επανάληψης</string>
 	<string name="game_drawn_by_agreement">Σύμφωνη ισοπαλία</string>
 	<string name="game_drawn_by_stalemate">Ισοπαλία Πατ</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Μέση βαθμολογία:</string>
 	<string name="start">Έναρξη</string>
 	<string name="lessons">Μαθήματα</string>
-	<string name="new_">Νέο</string>
 	<string name="analysis">Ανάλυση</string>
 	<string name="profile">Προφίλ</string>
 	<string name="theme">Θέμα</string>

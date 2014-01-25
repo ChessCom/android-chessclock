@@ -1625,7 +1625,7 @@ public class DroidFish extends Activity implements GUIInterface {
 			String s = "";
 			if (!thinkingEmpty)
 				s += "<br>";
-			s += Util.boldStart + getString(R.string.book) + Util.boldStop + bookInfoStr;
+			s += Util.boldStart + getString(R.string.pieces_book) + Util.boldStop + bookInfoStr;
 			thinking.append(Html.fromHtml(s));
 			thinkingEmpty = false;
 		}

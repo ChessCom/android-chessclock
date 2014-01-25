@@ -137,7 +137,7 @@
 	<string name="game_over">Das Spiel ist aus</string>
 	<string name="reconnecting_">Verbindet wieder…</string>
 	<string name="another_login_detected">Ups! Sie sind bereits woanders eingeloggt.</string>
-	<string name="game_drawn">Remis</string>
+	<string name="game_end_title_draw">Remis</string>
 	<string name="game_draw_by_repetition">Remis nach Wiederholung</string>
 	<string name="game_drawn_by_agreement">Remis nach Vereinbarung</string>
 	<string name="game_drawn_by_stalemate">Remis nach Patt</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Average Score:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lektionen</string>
-	<string name="new_">Neu</string>
 	<string name="analysis">Analyse</string>
 	<string name="profile">Profile</string>
 	<string name="theme">Theme</string>

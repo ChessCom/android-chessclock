@@ -137,7 +137,7 @@
 	<string name="game_over">GAME OVAR</string>
 	<string name="reconnecting_">RECONNECTIN…</string>
 	<string name="another_login_detected">OOPS! U R LOGGD IN SOMEWHERE ELSE.</string>
-	<string name="game_drawn">GAME DRAWN</string>
+	<string name="game_end_title_draw">GAME DRAWN</string>
 	<string name="game_draw_by_repetition">GAME DRAWN BY REPETISHUN</string>
 	<string name="game_drawn_by_agreement">GAME DRAWN BY AGREEMENT</string>
 	<string name="game_drawn_by_stalemate">GAME DRAWN BY STALEMATE</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">AVERAGE SKOR:</string>
 	<string name="start">START</string>
 	<string name="lessons">LESONS</string>
-	<string name="new_">NEW</string>
 	<string name="analysis">ANALYSIS</string>
 	<string name="profile">PROFILE</string>
 	<string name="theme">THEME</string>

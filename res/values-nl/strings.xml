@@ -137,7 +137,7 @@
 	<string name="game_over">Partij Afgelopen</string>
 	<string name="reconnecting_">Opnieuw verbinden…</string>
 	<string name="another_login_detected">Oeps! Je bent elders aangemeld.</string>
-	<string name="game_drawn">Partij Remise</string>
+	<string name="game_end_title_draw">Partij Remise</string>
 	<string name="game_draw_by_repetition">Partij Remise door Zetherhaling</string>
 	<string name="game_drawn_by_agreement">Partij Remise Overeengekomen</string>
 	<string name="game_drawn_by_stalemate">Partij Remise door Pad</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Gemiddelde Score:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lessen</string>
-	<string name="new_">Nieuwe</string>
 	<string name="analysis">Analyse</string>
 	<string name="profile">Profiel</string>
 	<string name="theme">Thema</string>

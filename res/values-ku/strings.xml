@@ -137,7 +137,7 @@
 	<string name="game_over">یاری دوایی هات</string>
 	<string name="reconnecting_">پێوەندی دووبارە…</string>
 	<string name="another_login_detected">ئووپس! لە شوێنێ دی دا چوویتەسە ژوورەوە.</string>
-	<string name="game_drawn">یاری بەرابەر بوو</string>
+	<string name="game_end_title_draw">یاری بەرابەر بوو</string>
 	<string name="game_draw_by_repetition">یاری بە هۆی جوولەی چەنجارەوە بەرابەر بوو</string>
 	<string name="game_drawn_by_agreement">یاری بە ڕێکەوت بەرابەر بوو</string>
 	<string name="game_drawn_by_stalemate">یاری بە هۆی پات بوونەوە بەرابەر بوو</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Average Score:</string>
 	<string name="start">دەستپێک</string>
 	<string name="lessons">وانەکان</string>
-	<string name="new_">نوێ</string>
 	<string name="analysis">شی کردنەوە</string>
 	<string name="profile">پرۆفایل</string>
 	<string name="theme">ڕووکار</string>

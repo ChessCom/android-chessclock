@@ -1251,7 +1251,7 @@ public class LccHelper {
 				message = context.getString(R.string.game_drawn_by_fifty_move_rule);
 				break;
 			case ABANDONED:
-				message = winnerUsername + Symbol.SPACE + context.getString(R.string.won_game_abandoned);
+				message = context.getString(R.string.won_by_resignation, winnerUsername);
 				break;
 			case ABORTED:
 				message = context.getString(R.string.game_aborted);

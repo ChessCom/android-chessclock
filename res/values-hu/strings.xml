@@ -137,7 +137,7 @@
 	<string name="game_over">Vége a játszmának</string>
 	<string name="reconnecting_">Újracsatlakozás…</string>
 	<string name="another_login_detected">Hoppá! Máshol már be vagy jelentkezve.</string>
-	<string name="game_drawn">Döntetlen játszma</string>
+	<string name="game_end_title_draw">Döntetlen játszma</string>
 	<string name="game_draw_by_repetition">Döntetlen - lépésismétlés</string>
 	<string name="game_drawn_by_agreement">Döntetlen - közös megegyezés</string>
 	<string name="game_drawn_by_stalemate">Döntetlen - patt</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Átlagos pontszám:</string>
 	<string name="start">Indítás</string>
 	<string name="lessons">Leckék</string>
-	<string name="new_">Új</string>
 	<string name="analysis">Elemzés</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Téma</string>

@@ -137,7 +137,7 @@
 	<string name="game_over">Partida finalitzada.</string>
 	<string name="reconnecting_">Recuperant la connexió…</string>
 	<string name="another_login_detected">Ep! Esteu connectats des d\'un altre lloc.</string>
-	<string name="game_drawn">Partida finalitzada en taules</string>
+	<string name="game_end_title_draw">Partida finalitzada en taules</string>
 	<string name="game_draw_by_repetition">Partida declarada en taules per repetició</string>
 	<string name="game_drawn_by_agreement">Partida declarada en taules per acord</string>
 	<string name="game_drawn_by_stalemate">Taules per ofegament del rei</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Mitjana de puntuació:</string>
 	<string name="start">Començar</string>
 	<string name="lessons">Lliçons</string>
-	<string name="new_">Nou</string>
 	<string name="analysis">Anàlisi</string>
 	<string name="profile">Perfil</string>
 	<string name="theme">Tema</string>

@@ -137,7 +137,7 @@
 	<string name="game_over">بازی به پایان رسید</string>
 	<string name="reconnecting_">اتصال دوباره...</string>
 	<string name="another_login_detected">اوه! شما پیش از این در جای دیگری وارد شده‌اید.</string>
-	<string name="game_drawn">بازی مساوی شد</string>
+	<string name="game_end_title_draw">بازی مساوی شد</string>
 	<string name="game_draw_by_repetition">بازی به علت تکرار مساوی شد</string>
 	<string name="game_drawn_by_agreement">بازی با توافق طرفین مساوی شد</string>
 	<string name="game_drawn_by_stalemate">بازی با قانون پات مساوی شد</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">میانگین امتیازات:</string>
 	<string name="start">آغاز</string>
 	<string name="lessons">دروس</string>
-	<string name="new_">تازه</string>
 	<string name="analysis">تجزیه و تحلیل</string>
 	<string name="profile">نمایه</string>
 	<string name="theme">پوسته ظاهری</string>

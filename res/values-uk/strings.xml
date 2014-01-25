@@ -137,7 +137,7 @@
 	<string name="game_over">Гру закінчено</string>
 	<string name="reconnecting_">Повторне підключення…</string>
 	<string name="another_login_detected">Ой! Ви увійшли з іншого місця.</string>
-	<string name="game_drawn">Нічия</string>
+	<string name="game_end_title_draw">Нічия</string>
 	<string name="game_draw_by_repetition">Нічия через повторення ходів</string>
 	<string name="game_drawn_by_agreement">Нічия за згодою</string>
 	<string name="game_drawn_by_stalemate">Нічия - пат</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Середній результат:</string>
 	<string name="start">Старт</string>
 	<string name="lessons">Уроки</string>
-	<string name="new_">Новий</string>
 	<string name="analysis">Аналіз</string>
 	<string name="profile">Профіль</string>
 	<string name="theme">Тема</string>

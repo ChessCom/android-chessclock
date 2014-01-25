@@ -137,7 +137,7 @@
 	<string name="game_over">Mäng Läbi</string>
 	<string name="reconnecting_">Ühenduse taastamine…</string>
 	<string name="another_login_detected">Tohoh! Te olete kusagil mujal sisse loginud.</string>
-	<string name="game_drawn">Viik</string>
+	<string name="game_end_title_draw">Viik</string>
 	<string name="game_draw_by_repetition">Viik kordamise tagajärjel</string>
 	<string name="game_drawn_by_agreement">Viik kokkuleppel</string>
 	<string name="game_drawn_by_stalemate">Mäng on lõpetatud Patiga</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Keskmine skoor:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Õppetunnid</string>
-	<string name="new_">Uus</string>
 	<string name="analysis">Analüüs</string>
 	<string name="profile">Profiil</string>
 	<string name="theme">Teema</string>

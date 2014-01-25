@@ -856,7 +856,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(reason);
 
-		ratingTitleTxt.setText(getString(R.string.new_) + Symbol.SPACE + getString(R.string.rating_));
+		String gameType = getString(R.string.standard);
+		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
+			gameType = getString(R.string.chess_960);
+		}
+
+		ratingTitleTxt.setText(getString(R.string.new_arg_rating_, gameType));
 		resultRatingTxt.setText(String.valueOf(getCurrentPlayerRating()));
 
 //		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);

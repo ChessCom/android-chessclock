@@ -137,7 +137,7 @@
 	<string name="game_over">Igra završena</string>
 	<string name="reconnecting_">Ponovno spajanje…</string>
 	<string name="another_login_detected">Ups! Prijavljeni ste negdje drugdje.</string>
-	<string name="game_drawn">Remi</string>
+	<string name="game_end_title_draw">Remi</string>
 	<string name="game_draw_by_repetition">Remi zbog ponavljanja</string>
 	<string name="game_drawn_by_agreement">Remi po dogovoru</string>
 	<string name="game_drawn_by_stalemate">Pat</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Prosječni rezultat:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lekcije</string>
-	<string name="new_">Novi</string>
 	<string name="analysis">Analiza</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Tema</string>

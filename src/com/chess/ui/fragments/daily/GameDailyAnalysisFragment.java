@@ -462,8 +462,12 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		TextView ratingTitleTxt = (TextView) layout.findViewById(R.id.ratingTitleTxt);
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(reason);
+		String gameType = getString(R.string.standard);
+		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
+			gameType = getString(R.string.chess_960);
+		}
 
-		ratingTitleTxt.setText(getString(R.string.new_) + Symbol.SPACE + getString(R.string.rating_));
+		ratingTitleTxt.setText(getString(R.string.new_arg_rating_, gameType));
 		resultRatingTxt.setText(String.valueOf(getCurrentPlayerRating()));
 
 //		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);

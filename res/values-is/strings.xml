@@ -137,7 +137,7 @@
 	<string name="game_over">Leik lokið</string>
 	<string name="reconnecting_">Reyni að ná sambandi…</string>
 	<string name="another_login_detected">Úps! Þú ert skráð(ur) inn einhversstaðar annars staðar.</string>
-	<string name="game_drawn">Jafntefli</string>
+	<string name="game_end_title_draw">Jafntefli</string>
 	<string name="game_draw_by_repetition">Jafntefli eftir þrátefli</string>
 	<string name="game_drawn_by_agreement">Samið um jafntefli</string>
 	<string name="game_drawn_by_stalemate">Leik lokið með Pattstöðu</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Meðal stigaskor:</string>
 	<string name="start">Byrja</string>
 	<string name="lessons">Kennsluefni</string>
-	<string name="new_">Nýtt</string>
 	<string name="analysis">Greining</string>
 	<string name="profile">Prófíll</string>
 	<string name="theme">Þema</string>

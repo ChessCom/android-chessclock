@@ -213,7 +213,7 @@
 	<string name="reconnecting_">reconnecting_</string>
 	<!--Re-Connection process in progress-->
 	<string name="another_login_detected">another_login_detected</string>
-	<string name="game_drawn">game_drawn</string>
+	<string name="game_end_title_draw">game_drawn</string>
 	<!--Game results-->
 	<string name="game_draw_by_repetition">game_draw_by_repetition</string>
 	<!--Game results-->
@@ -384,7 +384,6 @@
 	<string name="average_score">average_score</string>
 	<string name="start">start</string>
 	<string name="lessons">lessons</string>
-	<string name="new_">new_</string>
 	<string name="analysis">analysis</string>
 
 	<!--Settings-->

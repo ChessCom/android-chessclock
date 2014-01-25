@@ -137,7 +137,7 @@
 	<string name="game_over">Fim do jogo</string>
 	<string name="reconnecting_">Reconectando…</string>
 	<string name="another_login_detected">Opa! Você está logado em outro lugar.</string>
-	<string name="game_drawn">Partida empatada</string>
+	<string name="game_end_title_draw">Partida empatada</string>
 	<string name="game_draw_by_repetition">Partida empatada por repetição</string>
 	<string name="game_drawn_by_agreement">Partida empatada por acordo</string>
 	<string name="game_drawn_by_stalemate">Partida empatada por afogamento</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Pontuação média:</string>
 	<string name="start">Iniciar</string>
 	<string name="lessons">Lições</string>
-	<string name="new_">Novo</string>
 	<string name="analysis">Análise</string>
 	<string name="profile">Perfil</string>
 	<string name="theme">Tema</string>

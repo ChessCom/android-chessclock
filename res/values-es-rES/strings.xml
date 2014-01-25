@@ -137,7 +137,7 @@
 	<string name="game_over">Juego Terminado</string>
 	<string name="reconnecting_">Reconectando…</string>
 	<string name="another_login_detected">¡Huy! Estás conectado desde otro lugar.</string>
-	<string name="game_drawn">Juego en Tablas</string>
+	<string name="game_end_title_draw">Juego en Tablas</string>
 	<string name="game_draw_by_repetition">Juego en Tablas por Repetición</string>
 	<string name="game_drawn_by_agreement">Juego en Tablas por Acuerdo</string>
 	<string name="game_drawn_by_stalemate">Juego en Tablas por Rey Ahogado</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Puntuación Media:</string>
 	<string name="start">Empezar</string>
 	<string name="lessons">Lecciones</string>
-	<string name="new_">Nueva</string>
 	<string name="analysis">Análisis</string>
 	<string name="profile">Perfil</string>
 	<string name="theme">Tema</string>

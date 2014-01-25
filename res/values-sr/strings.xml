@@ -137,7 +137,7 @@
 	<string name="game_over">Партија је завршена</string>
 	<string name="reconnecting_">Поновно повезивање…</string>
 	<string name="another_login_detected">Упс! Улоговани сте негде другде.</string>
-	<string name="game_drawn">Реми</string>
+	<string name="game_end_title_draw">Реми</string>
 	<string name="game_draw_by_repetition">Реми понављањем позиције</string>
 	<string name="game_drawn_by_agreement">Реми договором играча</string>
 	<string name="game_drawn_by_stalemate">Реми услед пата</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Просечан скор:</string>
 	<string name="start">Почни</string>
 	<string name="lessons">Лекције</string>
-	<string name="new_">Нови</string>
 	<string name="analysis">Анализа</string>
 	<string name="profile">Профил</string>
 	<string name="theme">Тема</string>

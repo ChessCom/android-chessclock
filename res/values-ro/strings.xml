@@ -137,7 +137,7 @@
 	<string name="game_over">Jocul s-a terminat</string>
 	<string name="reconnecting_">Reconectare…</string>
 	<string name="another_login_detected">Oops! Sunteţi logat în altă parte.</string>
-	<string name="game_drawn">Remiză</string>
+	<string name="game_end_title_draw">Remiză</string>
 	<string name="game_draw_by_repetition">Remiză prin repetiţie</string>
 	<string name="game_drawn_by_agreement">Remiză prin acord</string>
 	<string name="game_drawn_by_stalemate">Remiză prin pat</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Scor mediu:</string>
 	<string name="start">Începe</string>
 	<string name="lessons">Lecții</string>
-	<string name="new_">Nou</string>
 	<string name="analysis">Analiză</string>
 	<string name="profile">Profilul</string>
 	<string name="theme">Temă</string>

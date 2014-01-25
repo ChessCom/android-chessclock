@@ -51,23 +51,21 @@
 	<string name="ic_photo">H</string>
 	<string name="ic_round_right">÷</string>
 
-	<string name="ic_play_online">ˆ</string>
+	<!--<string name="ic_play_online">ˆ</string>-->
 	<string name="ic_challenge_friend">m</string>
 	<string name="ic_vs_random">-</string>
 	<string name="ic_key">¢</string>
-	<string name="ic_key_badge">a</string>
 
 
 	<string name="ic_options">r</string>
 	<string name="ic_home">w</string>
 	<string name="ic_restore">L</string>
 	<string name="ic_refresh">:</string>
-	<string name="ic_flip">N</string>
+	<string name="ic_flip">f</string>
 	<string name="ic_check">G</string>
 	<string name="ic_play">J</string>
 	<string name="ic_pause">K</string>
 	<string name="ic_chat">c</string>
-	<string name="ic_chat_nm">v</string>
 	<string name="ic_stats">;</string>
 	<string name="ic_search">–</string>
 	<string name="ic_book">\u006F</string>
@@ -75,7 +73,7 @@
 	<string name="ic_binoculars">—</string>
 	<string name="ic_handshake">\u002B</string>
 
-	<string name="ic_expand_above">M</string>
+	<!--<string name="ic_expand_above">M</string>-->
 	<string name="ic_expand">¿</string>
 	<string name="ic_collapse">¡</string>
 
@@ -107,7 +105,7 @@
 	<!-- >> -->
 	<string name="ic_rewind_back">"~"</string>
 	<!-- << -->
-	<string name="ic_dots">"%"</string>
+	<!--<string name="ic_dots">"%"</string>-->
 	<!-- *** -->
 
 	<string name="ic_number_one">W</string>
@@ -117,6 +115,7 @@
 
 	<string name="ic_round_help">(</string>
 	<string name="ic_extend">\u00BF</string>
+	<string name="ic_planet">\u004D</string>
 
 
 	<!--Dimens -->

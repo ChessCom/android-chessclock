@@ -137,7 +137,7 @@
 	<string name="game_over">Край на играта</string>
 	<string name="reconnecting_">Повторно свързване...</string>
 	<string name="another_login_detected">Опа! Логнали сте се другаде.</string>
-	<string name="game_drawn">Реми</string>
+	<string name="game_end_title_draw">Реми</string>
 	<string name="game_draw_by_repetition">Реми поради повторение</string>
 	<string name="game_drawn_by_agreement">Реми поради съгласие</string>
 	<string name="game_drawn_by_stalemate">Реми поради Пат</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Среден резултат:</string>
 	<string name="start">Старт</string>
 	<string name="lessons">Уроци</string>
-	<string name="new_">Нов</string>
 	<string name="analysis">Анализ</string>
 	<string name="profile">Профил</string>
 	<string name="theme">Тема</string>

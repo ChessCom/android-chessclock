@@ -137,7 +137,7 @@
 	<string name="game_over">खेल ख़त्म</string>
 	<string name="reconnecting_">पुनः कनेक्ट करने की प्रक्रिया में...</string>
 	<string name="another_login_detected">उफ़! आप कहीं और लॉग इन हैं.</string>
-	<string name="game_drawn">गेम ड्रा</string>
+	<string name="game_end_title_draw">गेम ड्रा</string>
 	<string name="game_draw_by_repetition">पुनरावृत्ति द्वारा गेम ड्रा</string>
 	<string name="game_drawn_by_agreement">समझौते द्वारा गेम ड्रा</string>
 	<string name="game_drawn_by_stalemate">स्टेलमेट के फलस्वरूप गेम ड्रा</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Average Score:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lessons</string>
-	<string name="new_">New</string>
 	<string name="analysis">Analysis</string>
 	<string name="profile">Profile</string>
 	<string name="theme">Theme</string>

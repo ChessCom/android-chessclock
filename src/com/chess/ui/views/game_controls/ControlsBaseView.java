@@ -97,7 +97,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		FWD_END,
 		REWIND_FWD,
 		REWIND_BACK,
-		DOTS_OPTIONS,
 
 		/* Default Game Controls*/
 		NOTES,
@@ -115,7 +114,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		FLIP,
 		CLOSE,
 		CHAT,
-		CHAT_NM,
 		HELP,
 		STATS,
 		HINT,
@@ -132,7 +130,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.string.ic_fwd_end,
 			R.string.ic_rewind_fwd,
 			R.string.ic_rewind_back,
-			R.string.ic_dots,
 			/* Default Game Controls*/
 			R.string.ic_edit,
 			R.string.ic_conditional,
@@ -149,7 +146,6 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.string.ic_flip,
 			R.string.ic_close,
 			R.string.ic_chat,
-			R.string.ic_chat_nm,
 			R.string.ic_help,
 			R.string.ic_stats,
 			R.string.ic_hint,

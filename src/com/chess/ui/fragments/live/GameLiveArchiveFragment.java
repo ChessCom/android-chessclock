@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.LiveArchiveGameData;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -519,11 +520,14 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameDa
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(reason);
 
-		String currentPlayerNewRating = Symbol.SPACE +  getCurrentPlayerRating();
+		String gameType = getString(R.string.standard);
+		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
+			gameType = getString(R.string.chess_960);
+		}
 
-		ratingTitleTxt.setText(getString(R.string.new_) + Symbol.SPACE + getString(R.string.rating_));
-		String rating = getString(R.string.rating_, currentPlayerNewRating);
-		resultRatingTxt.setText(rating);
+		ratingTitleTxt.setText(getString(R.string.new_arg_rating_, gameType));
+		resultRatingTxt.setText(String.valueOf(getCurrentPlayerRating()));
+
 
 //		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
 //		MopubHelper.showRectangleAd(adViewWrapper, getActivity());

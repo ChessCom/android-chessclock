@@ -137,7 +137,7 @@
 	<string name="game_over">Игра окончена</string>
 	<string name="reconnecting_">Подключение...</string>
 	<string name="another_login_detected">Упс! Обнаружен вход с другово устройства.</string>
-	<string name="game_drawn">Игра закончилась в ничью</string>
+	<string name="game_end_title_draw">Игра закончилась в ничью</string>
 	<string name="game_draw_by_repetition">Ничья по повторению</string>
 	<string name="game_drawn_by_agreement">Ничья по обоюдному согласию</string>
 	<string name="game_drawn_by_stalemate">Ничья, пат</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Средняя оценка:</string>
 	<string name="start">Начать</string>
 	<string name="lessons">Уроки</string>
-	<string name="new_">Новый</string>
 	<string name="analysis">Анализ</string>
 	<string name="profile">Профиль</string>
 	<string name="theme">Тема</string>

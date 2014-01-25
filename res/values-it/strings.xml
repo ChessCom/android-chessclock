@@ -137,7 +137,7 @@
 	<string name="game_over">Game Over</string>
 	<string name="reconnecting_">Riconnessione…</string>
 	<string name="another_login_detected">Ops! Hai effettuato il log-in da qualche altra parte.</string>
-	<string name="game_drawn">Partita Pareggiata</string>
+	<string name="game_end_title_draw">Partita Pareggiata</string>
 	<string name="game_draw_by_repetition">Partita Pareggiata per Ripetizione</string>
 	<string name="game_drawn_by_agreement">Partita Pareggiata per Accordo</string>
 	<string name="game_drawn_by_stalemate">Partita Pareggiata per Stallo</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Punteggio Medio:</string>
 	<string name="start">Inizia</string>
 	<string name="lessons">Lezioni</string>
-	<string name="new_">Nuovo</string>
 	<string name="analysis">Analisi</string>
 	<string name="profile">Profilo</string>
 	<string name="theme">Tema</string>

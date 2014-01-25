@@ -137,7 +137,7 @@
 	<string name="game_over">Koniec partii</string>
 	<string name="reconnecting_">Ponowne łączenie…</string>
 	<string name="another_login_detected">Oops! Jesteś zalogowany gdzieś indziej.</string>
-	<string name="game_drawn">Partia zremisowana</string>
+	<string name="game_end_title_draw">Partia zremisowana</string>
 	<string name="game_draw_by_repetition">Partia zremisowana przez powtórzenie</string>
 	<string name="game_drawn_by_agreement">Partia zremisowana za zgodą graczy</string>
 	<string name="game_drawn_by_stalemate">Partia zremisowana przez pata</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Średni wynik:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lekcje</string>
-	<string name="new_">Nowy</string>
 	<string name="analysis">Analiza</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Motyw</string>

@@ -137,7 +137,7 @@
 	<string name="game_over">Koniec partie</string>
 	<string name="reconnecting_">Prebieha opätovné pripojenie…</string>
 	<string name="another_login_detected">Oops! Už ste prihlásený niekde inde.</string>
-	<string name="game_drawn">Partia skončila remízou</string>
+	<string name="game_end_title_draw">Partia skončila remízou</string>
 	<string name="game_draw_by_repetition">Partia skončila remízou z dôvodu opakovania ťahov</string>
 	<string name="game_drawn_by_agreement">Súperi sa dohodli na remíze</string>
 	<string name="game_drawn_by_stalemate">Partia skončila remízou, pat.</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Priemerné skóre:</string>
 	<string name="start">Štart</string>
 	<string name="lessons">Lekcie</string>
-	<string name="new_">Nové</string>
 	<string name="analysis">Analýza</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Téma</string>

@@ -137,7 +137,7 @@
 	<string name="game_over">Konec hry</string>
 	<string name="reconnecting_">Připojuji se znovu…</string>
 	<string name="another_login_detected">Ale ne! Jste přihlášeni někde jinde.</string>
-	<string name="game_drawn">Remíza</string>
+	<string name="game_end_title_draw">Remíza</string>
 	<string name="game_draw_by_repetition">Remíza opakováním</string>
 	<string name="game_drawn_by_agreement">Remíza dohodou</string>
 	<string name="game_drawn_by_stalemate">Remíza patem</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Průměrné skóre:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lekce</string>
-	<string name="new_">Nové</string>
 	<string name="analysis">Analýza</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Motiv</string>

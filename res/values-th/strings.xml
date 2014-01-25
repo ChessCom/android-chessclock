@@ -137,7 +137,7 @@
 	<string name="game_over">จบเกม</string>
 	<string name="reconnecting_">กำลังเชื่อมต่อ...</string>
 	<string name="another_login_detected">โอ๊ะ คุณเข้าสู่ระบบจากที่อื่น</string>
-	<string name="game_drawn">เสมอ</string>
+	<string name="game_end_title_draw">เสมอ</string>
 	<string name="game_draw_by_repetition">เสมอโดยการเดินซ้ำ</string>
 	<string name="game_drawn_by_agreement">เสมอโดยตกลง</string>
 	<string name="game_drawn_by_stalemate">เสมอโดยการอับ</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">คะแนนเฉลี่ย:</string>
 	<string name="start">เริ่ม</string>
 	<string name="lessons">บทเรียน</string>
-	<string name="new_">ใหม่</string>
 	<string name="analysis">การวิเคราะห์</string>
 	<string name="profile">Profile</string>
 	<string name="theme">ชุดรูปแบบ</string>

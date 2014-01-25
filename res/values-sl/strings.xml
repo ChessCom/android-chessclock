@@ -137,7 +137,7 @@
 	<string name="game_over">Partija je končana.</string>
 	<string name="reconnecting_">Vnovično vzpostavljanje povezave…</string>
 	<string name="another_login_detected">Ups! Prijavljeni ste nekje drugje.</string>
-	<string name="game_drawn">Remi</string>
+	<string name="game_end_title_draw">Remi</string>
 	<string name="game_draw_by_repetition">Remi zaradi trikrat ponovljene pozicije</string>
 	<string name="game_drawn_by_agreement">Remi z dogovorom</string>
 	<string name="game_drawn_by_stalemate">Igra neodločena z remijem</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Povprečna ocena:</string>
 	<string name="start">začni</string>
 	<string name="lessons">Lekcije</string>
-	<string name="new_">Nov</string>
 	<string name="analysis">Analiza</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Tema</string>

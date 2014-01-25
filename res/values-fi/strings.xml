@@ -137,7 +137,7 @@
 	<string name="game_over">Peli ohi</string>
 	<string name="reconnecting_">Yhdistetään uudelleen…</string>
 	<string name="another_login_detected">Oho! Olet kirjautuneena jossain muualla.</string>
-	<string name="game_drawn">Tasapeli</string>
+	<string name="game_end_title_draw">Tasapeli</string>
 	<string name="game_draw_by_repetition">Tasapeli siirtojen toistolla</string>
 	<string name="game_drawn_by_agreement">Tasapeli sopimuksella</string>
 	<string name="game_drawn_by_stalemate">Tasapeli pattiaseman vuoksi</string>
@@ -263,7 +263,6 @@
 	<string name="average_score">Keskiarvo:</string>
 	<string name="start">Aloita</string>
 	<string name="lessons">Oppitunnit</string>
-	<string name="new_">Uusi</string>
 	<string name="analysis">Analyysi</string>
 	<string name="profile">Profiili</string>
 	<string name="theme">Teema</string>

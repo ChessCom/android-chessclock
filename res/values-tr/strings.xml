@@ -137,7 +137,7 @@
 	<string name="game_over">Oyun Bitti</string>
 	<string name="reconnecting_">Yeniden bağlanıyor...</string>
 	<string name="another_login_detected">Hoppala! Başka bir yerde oturum açık.</string>
-	<string name="game_drawn">Maç Berabere</string>
+	<string name="game_end_title_draw">Maç Berabere</string>
 	<string name="game_draw_by_repetition">Tekrarlama Sebebiyle Maç Berabere</string>
 	<string name="game_drawn_by_agreement">Anlaşma Sonucu Maç Berabere Sonuçlandı</string>
 	<string name="game_drawn_by_stalemate">Pat Oldu! Maç Berabere Sonuçlandı</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Ortalama puan:</string>
 	<string name="start">Başla</string>
 	<string name="lessons">Dersler</string>
-	<string name="new_">Yeni</string>
 	<string name="analysis">Analiz</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Tema</string>

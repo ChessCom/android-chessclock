@@ -137,7 +137,7 @@
 	<string name="game_over">Loja mbaroi</string>
 	<string name="reconnecting_">Duke u rilidhur...</string>
 	<string name="another_login_detected">Upss! ju jeni lidhur diku tjeter.</string>
-	<string name="game_drawn">Loje mbaroi barazim</string>
+	<string name="game_end_title_draw">Loje mbaroi barazim</string>
 	<string name="game_draw_by_repetition">Loja mbaroi barazim nga perseritjet</string>
 	<string name="game_drawn_by_agreement">Loja mbaroi barazim me marrveshje</string>
 	<string name="game_drawn_by_stalemate">Loja mbaroi barazim me Pat</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Mesatarja e pikeve</string>
 	<string name="start">Fillim</string>
 	<string name="lessons">Leksione</string>
-	<string name="new_">E re</string>
 	<string name="analysis">Analize</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Tema</string>

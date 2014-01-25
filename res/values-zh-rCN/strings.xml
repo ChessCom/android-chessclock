@@ -137,7 +137,7 @@
 	<string name="game_over">棋局结束</string>
 	<string name="reconnecting_">重新连接...</string>
 	<string name="another_login_detected">对不起！您已在其他地方登录。</string>
-	<string name="game_drawn">已和棋</string>
+	<string name="game_end_title_draw">已和棋</string>
 	<string name="game_draw_by_repetition">因重步而和棋</string>
 	<string name="game_drawn_by_agreement">双方同意和棋</string>
 	<string name="game_drawn_by_stalemate">Game Drawn by Stalemate</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Average Score:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lessons</string>
-	<string name="new_">New</string>
 	<string name="analysis">Analysis</string>
 	<string name="profile">Profile</string>
 	<string name="theme">Theme</string>

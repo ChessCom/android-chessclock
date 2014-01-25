@@ -137,7 +137,7 @@
 	<string name="game_over">ゲームは終わりました</string>
 	<string name="reconnecting_">再接続.</string>
 	<string name="another_login_detected">おっと！あなたは他のところでログインしています</string>
-	<string name="game_drawn">引き分け</string>
+	<string name="game_end_title_draw">引き分け</string>
 	<string name="game_draw_by_repetition">同形反復による引き分け</string>
 	<string name="game_drawn_by_agreement">合意による引き分け</string>
 	<string name="game_drawn_by_stalemate">ステールメイトによる引き分け</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">平均スコア：</string>
 	<string name="start">開始</string>
 	<string name="lessons">レッスン</string>
-	<string name="new_">New</string>
 	<string name="analysis">分析</string>
 	<string name="profile">プロフィール</string>
 	<string name="theme">テーマ</string>

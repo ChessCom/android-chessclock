@@ -59,7 +59,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 		}
 //		menuItems.add(new SettingsMenuItem(R.string.account_history, R.string.ic_history));
 		menuItems.add(new SettingsMenuItem(R.string.report_problem, R.string.ic_ticket));
-		menuItems.add(new SettingsMenuItem(R.string.language, R.string.ic_home));
+		menuItems.add(new SettingsMenuItem(R.string.language, R.string.ic_planet));
 		menuItems.add(new SettingsMenuItem(R.string.logout, R.string.ic_close));
 
 		adapter = new SettingsMenuAdapter(getActivity(), menuItems);
@@ -138,7 +138,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 			case R.string.ic_password:
 				getActivityFace().openFragment(new SettingsPasswordFragment());
 				break;
-			case R.string.ic_home:
+			case R.string.ic_planet:
 				getActivityFace().openFragment(new SettingsLanguageFragment());
 				break;
 			case R.string.ic_ticket:

@@ -57,9 +57,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	// Quick action ids
 	private static final int ID_NEW_GAME = 0;
-	private static final int ID_SHARE_PGN = 1;
-	private static final int ID_FLIP_BOARD = 2;
-	private static final int ID_SETTINGS = 3;
+	private static final int ID_NEW_GAME_WHITE = 1;
+	private static final int ID_NEW_GAME_BLACK = 2;
+	private static final int ID_SHARE_PGN = 3;
+	private static final int ID_FLIP_BOARD = 4;
+	private static final int ID_SETTINGS = 5;
 
 	private static final long AUTO_FLIP_DELAY = 500;
 
@@ -240,6 +242,13 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		if (optionsSelectFragment != null) {
 			return;
 		}
+
+		if (getBoardFace().getPly() > 0) {
+			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
+		} else {
+			optionsArray.remove(ID_SHARE_PGN);
+		}
+
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 	}
@@ -619,7 +628,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	private void computerMove() {
-		boardView.computerMove(/*getAppData().getCompThinkTime()*/);
+		boardView.computerMove();
 	}
 
 	@Override
@@ -649,7 +658,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			dismissEndGameDialog();
 
 			startNewGame();
-		}  else if (view.getId() == R.id.shareBtn) {
+		}  else if (view.getId() == R.id.sharePopupBtn) {
 			ShareItem shareItem = new ShareItem();
 
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -710,6 +719,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	public void onValueSelected(int code) {
 		if (code == ID_NEW_GAME) {
 			newGame();
+		} else if (code == ID_NEW_GAME_WHITE) {
+			compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
+			startNewGame();
+		} else if (code == ID_NEW_GAME_BLACK) {
+			compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK);
+			startNewGame();
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
 		} else if (code == ID_SHARE_PGN) {
@@ -835,6 +850,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		{// options list setup
 			optionsArray = new SparseArray<String>();
 			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
+			optionsArray.put(ID_NEW_GAME_WHITE, getString(R.string.new_game_arg, getString(R.string.white)));
+			optionsArray.put(ID_NEW_GAME_BLACK, getString(R.string.new_game_arg, getString(R.string.black)));
 			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsArray.put(ID_FLIP_BOARD, getString(R.string.switch_sides));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));

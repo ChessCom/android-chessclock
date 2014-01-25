@@ -137,7 +137,7 @@
 	<string name="game_over">Tapos na ang Laro</string>
 	<string name="reconnecting_">Kumukonektang muli…</string>
 	<string name="another_login_detected">Oops! Naka-login ka sa ibang lugar.</string>
-	<string name="game_drawn">Nagtabla ang Laro</string>
+	<string name="game_end_title_draw">Nagtabla ang Laro</string>
 	<string name="game_draw_by_repetition">Nagtabla ang Laro dahil sa Pag-uulit</string>
 	<string name="game_drawn_by_agreement">Nagtabla ang Laro dahil sa Kasunduan</string>
 	<string name="game_drawn_by_stalemate">Nagtabla ang Laro dahil sa Stalemate</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Average na Puntos:</string>
 	<string name="start">Simula</string>
 	<string name="lessons">Mga Aralin</string>
-	<string name="new_">Bago</string>
 	<string name="analysis">Pagsusuri</string>
 	<string name="profile">Profile</string>
 	<string name="theme">Tema</string>

@@ -137,7 +137,7 @@
 	<string name="game_over">Spillet er slutt</string>
 	<string name="reconnecting_">Kobler til på nytt…</string>
 	<string name="another_login_detected">Oops! Du er logget inn et annet sted.</string>
-	<string name="game_drawn">Spillet Uavgjort</string>
+	<string name="game_end_title_draw">Spillet Uavgjort</string>
 	<string name="game_draw_by_repetition">Spillet Uavgjort ved Repetisjon</string>
 	<string name="game_drawn_by_agreement">Spillet Uavgjort etter Avtale</string>
 	<string name="game_drawn_by_stalemate">Spillet Uavgjort ved Stillstand</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Gjennomsnittlig Poengsum:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Leksjoner</string>
-	<string name="new_">Ny</string>
 	<string name="analysis">Analyse</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Tema</string>

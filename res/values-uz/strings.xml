@@ -137,7 +137,7 @@
 	<string name="game_over">O\'yin tugadi</string>
 	<string name="reconnecting_">Qayta bog\'layapmiz…</string>
 	<string name="another_login_detected">Diqqat! Siz boshqa joyga kirdingiz.</string>
-	<string name="game_drawn">Durang</string>
+	<string name="game_end_title_draw">Durang</string>
 	<string name="game_draw_by_repetition">Durang takror yurishlar orqali</string>
 	<string name="game_drawn_by_agreement">Durang kelishuv asosida</string>
 	<string name="game_drawn_by_stalemate">Pat</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">O\'rtacha Natija:</string>
 	<string name="start">Boshlash</string>
 	<string name="lessons">Darslar</string>
-	<string name="new_">Yangi</string>
 	<string name="analysis">Tahlillar</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Theme</string>

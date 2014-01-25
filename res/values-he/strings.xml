@@ -137,7 +137,7 @@
 	<string name="game_over">המשחק נגמר</string>
 	<string name="reconnecting_">מתחבר מחדש…</string>
 	<string name="another_login_detected">אופס! אתה מחובר במקום אחר.</string>
-	<string name="game_drawn">תיקו</string>
+	<string name="game_end_title_draw">תיקו</string>
 	<string name="game_draw_by_repetition">תיקו בחזרה על העמדות</string>
 	<string name="game_drawn_by_agreement">תיקו בהסכמה</string>
 	<string name="game_drawn_by_stalemate">תיקו בשל פט</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">תוצאה ממוצעת:</string>
 	<string name="start">התחל</string>
 	<string name="lessons">שיעורים</string>
-	<string name="new_">חדש</string>
 	<string name="analysis">ניתוח</string>
 	<string name="profile">פרופיל</string>
 	<string name="theme">ערכת נושא</string>

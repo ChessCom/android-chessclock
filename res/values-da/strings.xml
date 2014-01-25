@@ -137,7 +137,7 @@
 	<string name="game_over">Spillet er færdigt</string>
 	<string name="reconnecting_">Forbinder igen…</string>
 	<string name="another_login_detected">Ups! Du er logget ind et andet sted.</string>
-	<string name="game_drawn">Spil remis</string>
+	<string name="game_end_title_draw">Spil remis</string>
 	<string name="game_draw_by_repetition">Spil remis ved gentagelse</string>
 	<string name="game_drawn_by_agreement">Spil remis ved enighed</string>
 	<string name="game_drawn_by_stalemate">Spil remis ved stalemate</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Gennemsnitlig Score:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lektioner</string>
-	<string name="new_">Ny</string>
 	<string name="analysis">Analyse</string>
 	<string name="profile">Profil</string>
 	<string name="theme">Tema</string>

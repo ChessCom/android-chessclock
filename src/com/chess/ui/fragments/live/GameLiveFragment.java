@@ -376,7 +376,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		if (whitePlayerResult == WIN) {
 			gameEndTitleId = R.string.white_wins;
 		} else if (blackPlayerResult != WIN) {
-			gameEndTitleId = R.string.game_drawn;
+			gameEndTitleId = R.string.game_end_title_draw;
 		}
 
 		activity.runOnUiThread(new Runnable() {
@@ -656,7 +656,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		resultRatingTxt.setText(String.valueOf(currentPlayerNewRating));
 		resultRatingChangeTxt.setText(ratingChangeString);
 
-		ratingTitleTxt.setText(newRatingStr + Symbol.SPACE + getString(R.string.rating_));
+		ratingTitleTxt.setText(getString(R.string.new_arg_rating_, newRatingStr));
 
 //		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
 //		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);

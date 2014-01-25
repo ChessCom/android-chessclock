@@ -137,7 +137,7 @@
 	<string name="game_over">Ойын бітті</string>
 	<string name="reconnecting_">Қайта қосылу…</string>
 	<string name="another_login_detected">Ой! Сіз басқа жерден кірдіңіз.</string>
-	<string name="game_drawn">Ойын теңдікпен бітті</string>
+	<string name="game_end_title_draw">Ойын теңдікпен бітті</string>
 	<string name="game_draw_by_repetition">Қайталану арқылы тепе-теңдік</string>
 	<string name="game_drawn_by_agreement">Келісіммен тепе-теңдік</string>
 	<string name="game_drawn_by_stalemate">Тепе-теңдік, пат</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Average Score:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lessons</string>
-	<string name="new_">New</string>
 	<string name="analysis">Analysis</string>
 	<string name="profile">Profile</string>
 	<string name="theme">Theme</string>

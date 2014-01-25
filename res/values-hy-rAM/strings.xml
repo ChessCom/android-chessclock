@@ -138,7 +138,7 @@
 	<string name="game_over">Խաղը ավարտված է</string>
 	<string name="reconnecting_">Կապը Վերականգնվում է...</string>
 	<string name="another_login_detected">Վայ՜ Դուք մուտկեք գործել այլ տեղ.</string>
-	<string name="game_drawn">Ոչ-Ոգի</string>
+	<string name="game_end_title_draw">Ոչ-Ոգի</string>
 	<string name="game_draw_by_repetition">Ոչ-Ոգի ըստ կրկնության</string>
 	<string name="game_drawn_by_agreement">Ոչ-Ոգի Ըստ Համաձայնության</string>
 	<string name="game_drawn_by_stalemate">Ոչ-Ոգի Ըստ Պատի</string>
@@ -263,7 +263,6 @@
 	<string name="average_score">Միջին Միավորը:</string>
 	<string name="start">Սկիզբ</string>
 	<string name="lessons">Դասընթացներ</string>
-	<string name="new_">Նոր</string>
 	<string name="analysis">Վերլուծում</string>
 	<string name="profile">Պրոֆիլ</string>
 	<string name="theme">Թեմա</string>

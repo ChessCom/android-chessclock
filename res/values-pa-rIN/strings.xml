@@ -137,7 +137,7 @@
 	<string name="game_over">ਖੇਡ ਖਤਮ</string>
 	<string name="reconnecting_">ਦੁਬਾਰਾ ਸੰਪਰਕ ਸਥਾਪਿਤ ਕਰਦੇਆਂ…</string>
 	<string name="another_login_detected">ਓਹ! ਤੁਸੀਂ ਕਿਤੋਂ ਹੋਰੋਂ ਲੌਗ-ਇਨ ਕੀਤਾ ਹੋਇਆ ਹੈ.</string>
-	<string name="game_drawn">ਖੇਡ ਬਰਾਬਰੀ ਵਿਚ ਖਤਮ</string>
+	<string name="game_end_title_draw">ਖੇਡ ਬਰਾਬਰੀ ਵਿਚ ਖਤਮ</string>
 	<string name="game_draw_by_repetition">ਖੇਡ ਦੁਹਰਾਉ ਨਾਲ ਬਰਾਬਰੀ ਵਿਚ ਖਤਮ</string>
 	<string name="game_drawn_by_agreement">ਖੇਡ ਰਜ਼ਾਮੰਦੀ ਨਾਲ ਬਰਾਬਰੀ ਵਿਚ ਖਤਮ</string>
 	<string name="game_drawn_by_stalemate">ਖੇਡ ਅੜਿੱਕੇ ਨਾਲ ਬਰਾਬਰੀ ਵਿਚ ਖਤਮ</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">ਔਸਤ ਸਕੋਰ:</string>
 	<string name="start">ਸ਼ੁਰੂ ਕਰੋ</string>
 	<string name="lessons">ਸਬਕ</string>
-	<string name="new_">ਨਵਾਂ</string>
 	<string name="analysis">ਵਿਸ਼ਲੇਸ਼ਣ</string>
 	<string name="profile">ਪ੍ਰੋਫ਼ਾਇਲ</string>
 	<string name="theme">ਥੀਮ</string>

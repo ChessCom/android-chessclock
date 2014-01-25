@@ -137,7 +137,7 @@
 	<string name="game_over">Partiet är slut</string>
 	<string name="reconnecting_">Återansluter…</string>
 	<string name="another_login_detected">Oj! Du är inloggad någon annanstans.</string>
-	<string name="game_drawn">Partiet är remi</string>
+	<string name="game_end_title_draw">Partiet är remi</string>
 	<string name="game_draw_by_repetition">Partiet är remi efter dragupprepning</string>
 	<string name="game_drawn_by_agreement">Partiet är remi efter överenskommelse</string>
 	<string name="game_drawn_by_stalemate">Partiet är remi efter patt</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Average Score:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lessons</string>
-	<string name="new_">New</string>
 	<string name="analysis">Analysis</string>
 	<string name="profile">Profile</string>
 	<string name="theme">Theme</string>

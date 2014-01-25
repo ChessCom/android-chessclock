@@ -37,7 +37,7 @@ public class StatsGameFragmentTablet extends StatsGameFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		String rating = getString(R.string.rating_);
+		String rating = getString(R.string.stats);
 		SelectionItem title = (SelectionItem) statsSpinner.getSelectedItem();
 		setTitle(rating + Symbol.SPACE + title.getText());
 

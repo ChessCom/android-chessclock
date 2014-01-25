@@ -137,7 +137,7 @@
 	<string name="game_over">Žaidimas baigtas</string>
 	<string name="reconnecting_">Jungiamasi iš naujo…</string>
 	<string name="another_login_detected">Jūs prisijungėte kažkur kitur.</string>
-	<string name="game_drawn">Žaidimas baigėsi lygiosiomis</string>
+	<string name="game_end_title_draw">Žaidimas baigėsi lygiosiomis</string>
 	<string name="game_draw_by_repetition">Žaidimas baigėsi lygiosiomis dėl ėjimų pasikartojimo</string>
 	<string name="game_drawn_by_agreement">Žaidimas baigėsi lygiosiomis pagal susitarimą</string>
 	<string name="game_drawn_by_stalemate">Žaidimas baigėsi lygiosiomis pato</string>
@@ -262,7 +262,6 @@
 	<string name="average_score">Vidutinis rezultatas:</string>
 	<string name="start">Pradėti</string>
 	<string name="lessons">Pamokos</string>
-	<string name="new_">Naujas</string>
 	<string name="analysis">Nagrinėjimas</string>
 	<string name="profile">Profilis</string>
 	<string name="theme">Tema</string>

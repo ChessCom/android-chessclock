@@ -137,7 +137,7 @@
 	<string name="game_over">انتهت المباراة</string>
 	<string name="reconnecting_">معاودة الاتصال…</string>
 	<string name="another_login_detected">عفوا! لقد سجلت دخولك في مكان آخر.</string>
-	<string name="game_drawn">انتهت المباراة بالتعادل</string>
+	<string name="game_end_title_draw">انتهت المباراة بالتعادل</string>
 	<string name="game_draw_by_repetition">المباراة تعادل بالتكرار</string>
 	<string name="game_drawn_by_agreement">المباراة تعادل بموافقة الطرفين</string>
 	<string name="game_drawn_by_stalemate">المباراة تعادل بالجمود</string>
@@ -263,7 +263,6 @@
 	<string name="average_score">متوسط التقييم:</string>
 	<string name="start">ابدأ</string>
 	<string name="lessons">دروس</string>
-	<string name="new_">جديد</string>
 	<string name="analysis">التحليل</string>
 	<string name="profile">الملف التعريفي</string>
 	<string name="theme">المظهر</string>
