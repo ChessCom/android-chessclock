@@ -17,7 +17,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.*;
 import com.chess.R;
 import com.chess.backend.GetAndSaveTheme;
@@ -56,7 +55,6 @@ import com.chess.ui.fragments.welcome.WelcomeTabsFragmentTablet;
 import com.chess.ui.fragments.welcome.WelcomeTourFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
-import com.flurry.android.FlurryAgent;
 import com.slidingmenu.lib.SlidingMenu;
 import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
 import uk.co.senab.actionbarpulltorefresh.extras.AbcPullToRefreshAttacher;
@@ -176,7 +174,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 						new RequestJsonTask<LoginItem>(new CommonLogicActivity.LoginUpdateListener()).executeTask(loadItem);
 					} else if (!TextUtils.isEmpty(getAppData().getFacebookToken())) {
-						loginWithFacebook(getAppData().getFacebookToken());
+						String accessToken = getAppData().getFacebookToken();
+						loginWithFacebook(accessToken, new CommonLogicActivity.LoginUpdateListener(accessToken));
 					}
 				}
 

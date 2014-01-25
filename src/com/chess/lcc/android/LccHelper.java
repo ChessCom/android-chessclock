@@ -43,7 +43,7 @@ public class LccHelper {
 	private static final int CONNECTION_FAILURE_DELAY = 2000;
 	public static final Object CLIENT_SYNC_LOCK = new Object();
 	public static final Object GAME_SYNC_LOCK = new Object();
-	public static final int FINISH_LCC_CONNECT_ATTEMPTS_DELAY = 20 * 1000;
+	//public static final int FINISH_LCC_CONNECT_ATTEMPTS_DELAY = 20 * 1000;
 	public static final boolean RESET_LCC_LISTENERS = true;
 
 	private final LccChatListener chatListener;
@@ -97,7 +97,6 @@ public class LccHelper {
 
 	private boolean connectionFailure;
 	//private int connectionFailureCounter;
-	private boolean allowLccConnecting;
 	private Handler handler;
 	private boolean liveConnecting;
 
@@ -276,7 +275,6 @@ public class LccHelper {
 //		LogMe.dl(TAG, "connectByCreds : user = " + username + " pass = " + pass); // do not post in prod
 		LogMe.dl(TAG, "connectByCreds : hidden"); // do not post in pod
 		setConnecting(true);
-		startConnectionTimer();
 		lccClient.connect(username, pass, connectionListener, subscriptionListener);
 		liveChessClientEventListener.onConnecting();
 	}
@@ -284,7 +282,6 @@ public class LccHelper {
 	public void connectBySessionId(String sessionId) {
 		LogMe.dl(TAG, "connectBySessionId : sessionId = " + sessionId);
 		setConnecting(true);
-		startConnectionTimer();
 		lccClient.connect(sessionId, connectionListener, subscriptionListener);
 		liveChessClientEventListener.onConnecting();
 	}
@@ -386,13 +383,7 @@ public class LccHelper {
 		} else { // when connect(authKey) and Live server in unreachable, details=null
 
 			setConnecting(true);
-			if (allowLccConnecting) {
-				return;
-			} else {
-				connectionFailure = true;
-				logout();
-			}
-			detailsMessage = context.getString(R.string.pleaseLoginAgain);
+			return;
 		}
 
 		liveChessClientEventListener.onConnectionFailure(detailsMessage);
@@ -866,7 +857,7 @@ public class LccHelper {
 		cleanupLiveInfo();
 		runDisconnectTask();
 		cancelServiceNotification();
-		stopConnectionTimer();
+		//stopConnectionTimer();
 	}
 
 	public void leave() {
@@ -874,7 +865,7 @@ public class LccHelper {
 		setConnecting(false);
 		cleanupLiveInfo();
 		runLeaveTask();
-		stopConnectionTimer();
+		//stopConnectionTimer();
 	}
 
 	public void resetClient() {
@@ -1303,29 +1294,6 @@ public class LccHelper {
 			unObserveGame(params[0]);
 			return null;
 		}
-	}
-
-	public void startConnectionTimer() {
-		stopConnectionTimer();
-		setAllowLccConnecting(true);
-		handler.postDelayed(connectionTimerRunnable, FINISH_LCC_CONNECT_ATTEMPTS_DELAY); // It is not limit! It is delay, to repeat this event you should use it in different way
-	}
-
-	private Runnable connectionTimerRunnable = new Runnable() {
-		@Override
-		public void run() {
-			stopConnectionTimer();
-		}
-	};
-
-	public void stopConnectionTimer() {
-		setAllowLccConnecting(false);
-		handler.removeCallbacks(connectionTimerRunnable);
-	}
-
-	private void setAllowLccConnecting(boolean allowLccConnecting) {
-		this.allowLccConnecting = allowLccConnecting;
-		liveChessClientEventListener.updateLccConnecting(allowLccConnecting);
 	}
 
 	public void setConnecting(boolean liveConnecting) {

@@ -316,11 +316,12 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected void onSessionStateChange(Session session, SessionState state, Exception exception) {
 		if (state != null && state.isOpened()) {
 			Log.d("TEST", "onSessionStateChange -> login with facebook");
-			loginWithFacebook(session.getAccessToken());
+			String accessToken = session.getAccessToken();
+			loginWithFacebook(accessToken, new LoginUpdateListener(accessToken));
 		}
 	}
 
-	protected void loginWithFacebook(String accessToken) {
+	protected void loginWithFacebook(String accessToken, LoginUpdateListener listener) {
 		Log.d("TEST", "loginWithFacebook");
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
@@ -330,7 +331,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_TACTICS_RATING);
 
-		new RequestJsonTask<LoginItem>(new LoginUpdateListener(accessToken)).executeTask(loadItem);
+		new RequestJsonTask<LoginItem>(listener).executeTask(loadItem);
 	}
 
 	protected void processLogin(RegisterItem.Data returnedObj) {

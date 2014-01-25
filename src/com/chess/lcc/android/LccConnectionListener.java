@@ -77,7 +77,7 @@ public class LccConnectionListener implements ConnectionListener {
 
 		lccHelper.clearPausedEvents();
 
-		lccHelper.stopConnectionTimer();
+		//lccHelper.stopConnectionTimer();
 	}
 
 	@Override

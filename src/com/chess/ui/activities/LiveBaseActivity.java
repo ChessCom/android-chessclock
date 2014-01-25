@@ -59,8 +59,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private static final String EXIT_GAME_TAG = "exit_game";
 	private static final long RETRY_DELAY = 100;
 	public static final int NEXT_CONNECTION_DELAY = 5000;
-	public static final int FINISH_CONNECT_ATTEMPTS_DELAY = 60 * 1000;
-	public static final int RECONNECT_BY_LCC_FAILURE_LIMIT = 2;
+	//public static final int FINISH_CONNECT_ATTEMPTS_DELAY = 60 * 1000;
+	//public static final int RECONNECT_BY_LCC_FAILURE_LIMIT = 2;
 
 	protected LiveOuterChallengeListener outerChallengeListener;
 	protected Challenge currentChallenge;
@@ -72,9 +72,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected LiveChessService liveService;
 	private List<PopupDialogFragment> popupChallengesList;
 	private boolean needReLoginToLive;
-	private boolean continueSessionIdCheck;
-	private boolean continueReloginForLive;
-	private int reconnectByLccFailureCounter;
 
 
 	@Override
@@ -94,8 +91,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.onResume();
 
 		LogMe.dl(TAG, "LiveBaseActivity onResume getAppData().isLiveChess()=" + getAppData().isLiveChess() + ", isLCSBound=" + isLCSBound);
-
-		reconnectByLccFailureCounter = 0;
 
 		if (getAppData().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
@@ -123,6 +118,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.onPause();
 
 		dismissFragmentDialog();
+
+		handler.removeCallbacks(sessionIdCheckRunnable);
+		handler.removeCallbacks(performReloginForLiveRunnable);
 
 		//Log.d(TAG, "LiveBaseActivity go pause, isLCSBound = " + isLCSBound);
 		if (isLCSBound) {
@@ -198,7 +196,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				// todo: we should exit Live even if isLCSBound=false
 				fragmentByTag = getLiveHomeFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					stopConnectTimer();
+					//stopConnectTimer();
 					liveService.logout();
 					getAppData().setLiveChessMode(false);
 					unBindAndStopLiveService();
@@ -319,62 +317,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			}
 
 			// first we check live sessionId
-			boolean isLccConnecting = liveService != null && liveService.isLccConnectedOrConnecting();
-
-			LogMe.dl("!!!!!!!!!!!!!!!!!!!!!!!! sessionid isLccConnecting " + isLccConnecting);
-			LogMe.dl("!!!!!!!!!!!!!!!!!!!!!!!! sessionid continueReloginForLive " + continueReloginForLive);
-			LogMe.dl("!!!!!!!!!!!!!!!!!!!!!!!! sessionid continueSessionIdCheck " + continueSessionIdCheck);
-
-			if (!continueReloginForLive && !continueSessionIdCheck && !isLccConnecting) {
-				startSessionIdCheck();
-				sessionIdCheck();
-			}
+			sessionIdCheck();
 		}
 	}
 
-	private void startSessionIdCheck() {
-		stopReloginForLive();
-		continueSessionIdCheck = true;
-		handler.postDelayed(connectTimerRunnable, FINISH_CONNECT_ATTEMPTS_DELAY);
-	}
-
-	private void startReloginForLive() {
-		stopSessionIdCheck();
-		continueReloginForLive = true;
-		handler.postDelayed(connectTimerRunnable, FINISH_CONNECT_ATTEMPTS_DELAY);
-	}
-
-	private Runnable connectTimerRunnable = new Runnable() {
-		@Override
-		public void run() {
-			stopConnectTimer();
-			showToast(R.string.pleaseLoginAgain);
-		}
-	};
-
-	public void stopConnectTimer() {
-		handler.removeCallbacks(connectTimerRunnable);
-		stopSessionIdCheck();
-		stopReloginForLive();
-	}
-
-	private void stopSessionIdCheck() {
-		continueSessionIdCheck = false;
-		handler.removeCallbacks(performSessionIdCheckRunnable);
-	}
-
-	private void stopReloginForLive() {
-		continueReloginForLive = false;
-		handler.removeCallbacks(performReloginForLiveRunnable);
-	}
-
-	private void performSessionIdCheckDelayed() {
-		if (continueSessionIdCheck) {
-			handler.postDelayed(performSessionIdCheckRunnable, NEXT_CONNECTION_DELAY);
-		}
-	}
-
-	private Runnable performSessionIdCheckRunnable = new Runnable() {
+	private Runnable sessionIdCheckRunnable = new Runnable() {
 		@Override
 		public void run() {
 			sessionIdCheck();
@@ -408,9 +355,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		@Override
 		public void updateData(UserItem returnedObj) {
 			super.updateData(returnedObj);
-			Log.d(TAG, "SessionIdUpdateListener -> updateData");
-
-			stopConnectTimer();
 
 			if (TextUtils.isEmpty(returnedObj.getData().getSessionId())) { // if API was not updated to get a single sessionId field
 				// we perform re-login
@@ -427,7 +371,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			//LogMe.dl(TAG, "SessionIdUpdateListener errorHandle resultCode=" + resultCode);
-			performSessionIdCheckDelayed();
+			handler.postDelayed(sessionIdCheckRunnable, NEXT_CONNECTION_DELAY);
 		}
 	}
 
@@ -695,15 +639,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		} else if (!TextUtils.isEmpty(getAppData().getFacebookToken())) {
 
 			String accessToken = getAppData().getFacebookToken();
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
-			loadItem.setRequestMethod(RestHelper.POST);
-			loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, accessToken);
-			loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_USERNAME);
-			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_TACTICS_RATING);
-
-			new RequestJsonTask<LoginItem>(new FacebookLoginUpdateListener(accessToken)).executeTask(loadItem);
+			loginWithFacebook(accessToken, new FacebookLoginUpdateListener(accessToken));
 		}
 
 		needReLoginToLive = true;
@@ -725,7 +661,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			checkAndPerformReloginForLiveDelayed();
+			performReloginForLiveDelayed();
 			super.errorHandle(resultCode);
 		}
 	}
@@ -747,28 +683,15 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	private void processConnectionFailure(String message) {
 		if (message.equals(getString(R.string.pleaseLoginAgain))) {
-
-			boolean moreAttempts = reconnectByLccFailureCounter < RECONNECT_BY_LCC_FAILURE_LIMIT;
-			boolean isLccConnecting = liveService != null && liveService.isLccConnectedOrConnecting();
-
-			if (!continueReloginForLive && !isLccConnecting && moreAttempts) {
-				reconnectByLccFailureCounter++;
-				startReloginForLive();
-				performReloginForLive();
-
-			} if (!moreAttempts) {
-				showToast(R.string.pleaseLoginAgain);
-			}
+			performReloginForLive();
 		} else {
 			showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
 			getLastPopupFragment().setCancelable(false);
 		}
 	}
 
-	private void checkAndPerformReloginForLiveDelayed() {
-		if (continueReloginForLive) {
-			handler.postDelayed(performReloginForLiveRunnable, NEXT_CONNECTION_DELAY);
-		}
+	private void performReloginForLiveDelayed() {
+		handler.postDelayed(performReloginForLiveRunnable, NEXT_CONNECTION_DELAY);
 	}
 
 	private Runnable performReloginForLiveRunnable = new Runnable() {
@@ -811,13 +734,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		showSinglePopupDialog(message);
 	}
 
-	@Override
-	public void updateLccConnecting(boolean lccConnecting) {
-		if (lccConnecting) {
-			stopConnectTimer();
-		}
-	}
-
 	// -----------------------------------------------------
 
 	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
@@ -840,8 +756,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void updateData(LoginItem returnedObj) {
-
-			stopConnectTimer();
 
 			LoginItem.Data loginData = returnedObj.getData();
 
@@ -866,7 +780,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		public void errorHandle(Integer resultCode) {
 
 			//LogMe.dl(TAG, "LoginUpdateListener resultCode=" + resultCode);
-			checkAndPerformReloginForLiveDelayed();
+			performReloginForLiveDelayed();
 
 			// show message only for re-login and app update
 			if (RestHelper.containsServerCode(resultCode)) {
