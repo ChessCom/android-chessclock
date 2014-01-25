@@ -653,7 +653,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void updateData(LoginItem returnedObj) {
-			stopConnectTimer();
 			super.updateData(returnedObj);
 			//getAppData().setLiveChessMode(true);
 			connectLcc();

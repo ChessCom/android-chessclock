@@ -34,7 +34,6 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
 		lccHelper.clearPausedEvents();
-		lccHelper.stopConnectionTimer();
 
 		LogMe.dl(TAG, "User has been connected: name=" + user.getUsername() + ", authKey=" + user.getAuthKey() + ", user=" + user);
 	}
