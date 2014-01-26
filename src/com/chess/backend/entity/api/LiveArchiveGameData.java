@@ -1,6 +1,6 @@
 package com.chess.backend.entity.api;
 
-import com.chess.backend.entity.api.daily_games.DailyGameBaseData;
+import com.chess.backend.entity.api.daily_games.DailyFinishedGameData;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,7 +8,7 @@ import com.chess.backend.entity.api.daily_games.DailyGameBaseData;
  * Date: 25.09.13
  * Time: 6:11
  */
-public class LiveArchiveGameData extends DailyGameBaseData {
+public class LiveArchiveGameData extends DailyFinishedGameData {
 /*
  	"id": 35000570,
 	"i_play_as": 1,
@@ -38,25 +38,7 @@ public class LiveArchiveGameData extends DailyGameBaseData {
 	"black_country_id": 2
 */
 
-	private int game_score;
-	private String result_message;
 	private String game_time_class;
-
-	public int getGameScore() {
-		return game_score;
-	}
-
-	public void setGameScore(int game_score) {
-		this.game_score = game_score;
-	}
-
-	public String getResultMessage() {
-		return result_message;
-	}
-
-	public void setResultMessage(String result_message) {
-		this.result_message = result_message;
-	}
 
 	public String getGameTimeClass() {
 		return game_time_class;

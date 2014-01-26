@@ -86,6 +86,7 @@ public class DbHelper {
 		queryParams.setProjection(DbDataManager.PROJECTION_LIVE_ARCHIVE_GAMES);
 		queryParams.setSelection(DbDataManager.SELECTION_USER);
 		queryParams.setArguments(new String[]{username});
+		queryParams.setOrder(DbScheme.V_TIMESTAMP + DbDataManager.DESCEND);
 		return queryParams;
 	}
 

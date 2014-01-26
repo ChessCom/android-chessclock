@@ -148,6 +148,7 @@ public class DailyGamesFinishedFragment extends CommonLogicFragment implements A
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_FINISHED);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_USERNAME, username);
+
 		paginationAdapter.updateLoadItem(loadItem);
 	}
 
@@ -155,6 +156,30 @@ public class DailyGamesFinishedFragment extends CommonLogicFragment implements A
 		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
 				DbHelper.getDailyFinishedListGames(username),
 				getContentResolver()).executeTask();
+	}
+
+	private class DailyFinishedGamesUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
+
+		public DailyFinishedGamesUpdateListener() {
+			super(DailyFinishedGameData.class);
+			useList = true;
+		}
+
+		@Override
+		public void updateListData(List<DailyFinishedGameData> itemsList) {
+			super.updateListData(itemsList);
+
+			new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, itemsList,
+					getContentResolver(), username).executeTask();
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			if (resultCode == StaticData.INTERNAL_ERROR) {
+				showToast("Internal error occurred");
+			}
+		}
 	}
 
 	private class SaveFinishedGamesListUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
@@ -186,30 +211,6 @@ public class DailyGamesFinishedFragment extends CommonLogicFragment implements A
 			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 				showEmptyView(true);
-			}
-		}
-	}
-
-	private class DailyFinishedGamesUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
-
-		public DailyFinishedGamesUpdateListener() {
-			super(DailyFinishedGameData.class);
-			useList = true;
-		}
-
-		@Override
-		public void updateListData(List<DailyFinishedGameData> itemsList) {
-			super.updateListData(itemsList);
-
-			new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, itemsList,
-					getContentResolver(), username).executeTask();
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			if (resultCode == StaticData.INTERNAL_ERROR) {
-				showToast("Internal error occurred"); // TODO adjust properly
 			}
 		}
 	}

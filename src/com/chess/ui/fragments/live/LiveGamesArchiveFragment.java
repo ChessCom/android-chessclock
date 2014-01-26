@@ -13,8 +13,6 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.LiveArchiveGameData;
-import com.chess.backend.entity.api.LiveArchiveGameItem;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
@@ -22,6 +20,7 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveLiveArchiveGamesTask;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.LiveArchiveGamesAdapter;
+import com.chess.ui.adapters.LiveArchiveGamesPaginationAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 
 import java.util.List;
@@ -39,10 +38,10 @@ public class LiveGamesArchiveFragment extends CommonLogicFragment implements Ada
 
 	private ListView listView;
 	private LiveArchiveGamesAdapter archiveGamesAdapter;
-	private ArchiveGamesUpdateListener archiveGamesUpdateListener;
 	private TextView emptyView;
 	private GamesCursorUpdateListener archiveGamesCursorUpdateListener;
 	private SaveArchiveGamesListUpdateListener saveArchiveGamesListUpdateListener;
+	private LiveArchiveGamesPaginationAdapter paginationAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -68,10 +67,7 @@ public class LiveGamesArchiveFragment extends CommonLogicFragment implements Ada
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
-		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setOnItemClickListener(this);
-		listView.setAdapter(archiveGamesAdapter);
-
+		widgetsInit(view);
 	}
 
 	@Override
@@ -83,13 +79,16 @@ public class LiveGamesArchiveFragment extends CommonLogicFragment implements Ada
 
 			if (isNetworkAvailable()) {
 				updateData();
+			} else if (!haveSavedData) {
+				emptyView.setText(R.string.no_network);
+				showEmptyView(true);
 			}
 
 			if (haveSavedData) {
 				loadDbGames();
 			}
 		} else {
-			loadDbGames();
+			listView.setAdapter(paginationAdapter);
 		}
 	}
 
@@ -101,24 +100,21 @@ public class LiveGamesArchiveFragment extends CommonLogicFragment implements Ada
 		}
 	}
 
-	private void init() {
-		archiveGamesAdapter = new LiveArchiveGamesAdapter(getActivity(), null, getImageFetcher());
-		archiveGamesUpdateListener = new ArchiveGamesUpdateListener();
-		archiveGamesCursorUpdateListener = new GamesCursorUpdateListener();
-		saveArchiveGamesListUpdateListener = new SaveArchiveGamesListUpdateListener();
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+
+		getActivityFace().openFragment(GameLiveArchiveFragment.createInstance(gameId));
 	}
 
 	protected void updateData() {
-		// First we check ids of games what we have. Challenges also will be stored in DB
-		// when we ask server about new ids of games and challenges
-		// if server have new ids we get those games with ids
-
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_LIVE_ARCHIVE);
 		loadItem.addRequestParams(P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(P_AVATAR_SIZE, RestHelper.V_AV_SIZE_TINY);
 
-		new RequestJsonTask<LiveArchiveGameItem>(archiveGamesUpdateListener).executeTask(loadItem);
+		paginationAdapter.updateLoadItem(loadItem);
 	}
 
 	private void loadDbGames() {
@@ -127,28 +123,27 @@ public class LiveGamesArchiveFragment extends CommonLogicFragment implements Ada
 				getContentResolver()).executeTask();
 	}
 
-	private class ArchiveGamesUpdateListener extends ChessUpdateListener<LiveArchiveGameItem> {
+	private class ArchiveGamesUpdateListener extends ChessUpdateListener<LiveArchiveGameData> {
 
 		public ArchiveGamesUpdateListener() {
-			super(LiveArchiveGameItem.class);
+			super(LiveArchiveGameData.class);
 		}
 
 		@Override
-		public void updateData(LiveArchiveGameItem returnedObj) {
-			super.updateData(returnedObj);
+		public void updateListData(List<LiveArchiveGameData> itemsList) {
+			super.updateListData(itemsList);
 
-			List<LiveArchiveGameData> liveArchiveGames = returnedObj.getData().getGames();
-			if (liveArchiveGames != null) {
-				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistLiveArchiveGames(getContext(), liveArchiveGames, getUsername());
-
-				if (gamesLeft) {
-					new SaveLiveArchiveGamesTask(saveArchiveGamesListUpdateListener, liveArchiveGames,
-							getContentResolver(), getUsername()).executeTask();
-				} else {
-					archiveGamesAdapter.changeCursor(null);
-					showEmptyView(true);
-				}
-			}
+//			if (itemsList != null) {
+//				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistLiveArchiveGames(getContext(), itemsList, getUsername());
+//
+//				if (gamesLeft) {
+			new SaveLiveArchiveGamesTask(saveArchiveGamesListUpdateListener, itemsList,
+					getContentResolver(), getUsername()).executeTask();
+//				} else {
+//					archiveGamesAdapter.changeCursor(null);
+//					showEmptyView(true);
+//				}
+//			}
 		}
 
 		@Override
@@ -158,7 +153,7 @@ public class LiveGamesArchiveFragment extends CommonLogicFragment implements Ada
 				showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
 				return;
 			} else if (resultCode == StaticData.INTERNAL_ERROR) {
-				showToast("Internal error occurred"); // TODO adjust properly
+				showToast("Internal error occurred");
 				return;
 			}
 			super.errorHandle(resultCode);
@@ -183,19 +178,23 @@ public class LiveGamesArchiveFragment extends CommonLogicFragment implements Ada
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
-			returnedObj.moveToFirst();
-
+			paginationAdapter.notifyDataSetChanged();
 			archiveGamesAdapter.changeCursor(returnedObj);
+			paginationAdapter.notifyDataSetChanged();
 			need2update = false;
 		}
-	}
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
-
-		getActivityFace().openFragment(GameLiveArchiveFragment.createInstance(gameId));
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			if (resultCode == StaticData.EMPTY_DATA) {
+				emptyView.setText(R.string.no_games);
+				showEmptyView(true);
+			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
+				emptyView.setText(R.string.no_network);
+				showEmptyView(true);
+			}
+		}
 	}
 
 	private void showEmptyView(boolean show) {
@@ -214,17 +213,19 @@ public class LiveGamesArchiveFragment extends CommonLogicFragment implements Ada
 		}
 	}
 
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			if (archiveGamesAdapter.getCount() == 0) {
-				listView.setVisibility(View.GONE);
+	private void init() {
+		archiveGamesAdapter = new LiveArchiveGamesAdapter(getActivity(), null, getImageFetcher());
+		archiveGamesCursorUpdateListener = new GamesCursorUpdateListener();
+		saveArchiveGamesListUpdateListener = new SaveArchiveGamesListUpdateListener();
 
-			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
-		}
+		paginationAdapter = new LiveArchiveGamesPaginationAdapter(getActivity(), archiveGamesAdapter,
+				new ArchiveGamesUpdateListener(), null);
 	}
+
+	private void widgetsInit(View view) {
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setOnItemClickListener(this);
+		listView.setAdapter(paginationAdapter);
+	}
+
 }

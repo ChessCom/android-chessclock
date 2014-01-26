@@ -946,6 +946,14 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		}
 	}
 
+	@Override
+	protected void afterLogin() {
+		super.afterLogin();
+
+		// after we were forced to re-login we should re-load game
+		loadGameAndUpdate();
+	}
+
 	private class GameDailyUpdatesListener extends ChessLoadUpdateListener<BaseResponseItem> {
 		private int listenerCode;
 

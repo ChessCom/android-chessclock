@@ -41,9 +41,11 @@ public class SettingsLanguageFragment extends CommonLogicFragment implements Ada
 		String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
 
 		String currentLocale = languageCodes[prevCode];
-		for (String language : array) {
+		for (int i = 0; i < array.length; i++) {
+			String language = array[i];
+			String code = languageCodes[i];
 			SelectionItem selectionItem = new SelectionItem(null, language);
-			if (currentLocale.equals(language)) {
+			if (currentLocale.equals(code)) {
 				selectionItem.setChecked(true);
 			}
 			itemsList.add(selectionItem);
