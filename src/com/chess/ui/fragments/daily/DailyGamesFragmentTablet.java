@@ -20,11 +20,11 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.*;
+import com.chess.backend.entity.api.BaseResponseItem;
+import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameItem;
-import com.chess.backend.entity.api.daily_games.DailyFinishedGameData;
-import com.chess.backend.entity.api.daily_games.DailyGamesAllItem;
+import com.chess.backend.entity.api.daily_games.DailyCurrentGamesItem;
 import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -33,12 +33,10 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
-import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.model.GameOnlineItem;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
-import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.WebViewFragment;
@@ -49,6 +47,8 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.ChallengeHelper;
 
 import java.util.List;
+
+import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
 
 /**
  * Created with IntelliJ IDEA.
@@ -74,19 +74,15 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	private IntentFilter moveUpdateFilter;
 	private GamesUpdateReceiver gamesUpdateReceiver;
 	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
-	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener currentGamesCursorUpdateListener;
-	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	protected DailyGamesUpdateListener dailyGamesUpdateListener;
 
 	private DailyCurrentGamesCursorAdapter currentGamesMyCursorAdapter;
-	private DailyFinishedGamesCursorAdapter finishedGamesCursorAdapter;
 	private DailyCurrentGameData gameListCurrentItem;
 
 	private TextView emptyView;
 	private GridView gridView;
 	private View loadingView;
-	private List<DailyFinishedGameData> finishedGameDataList;
 	private FragmentParentFace parentFace;
 	private int mode;
 	private boolean startDailyGame;
@@ -130,7 +126,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		}
 
 		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher(), boardImgFetcher);
-		finishedGamesCursorAdapter = new DailyFinishedGamesCursorAdapter(getContext(), null, getImageFetcher());
 
 		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 
@@ -220,6 +215,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 				handler.postDelayed(delayedLoadFromDb, FRAGMENT_VISIBILITY_DELAY);
 			}
 		} else {
+			updateData(); // TODO temporary force to update
 			loadDbGames();
 		}
 
@@ -275,6 +271,19 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		super.onRefreshStarted(view);
 		if (isNetworkAvailable()) {
 			updateData();
+		} else {
+			loadDbGames();
+		}
+	}
+
+	@Override
+	protected void afterLogin() {
+		super.afterLogin();
+
+		if (isNetworkAvailable()) {
+			updateData();
+		} else {
+			loadDbGames();
 		}
 	}
 
@@ -282,9 +291,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.INVITE);
 		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
 		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
-		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
 		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
-		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 
@@ -457,12 +464,11 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	}
 
 	protected void updateData() {
-		// First we check ids of games what we have. Challenges also will be stored in DB
-		// when we ask server about new ids of games and challenges
-		// if server have new ids we get those games with ids
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_CURRENT);
+		loadItem.addRequestParams(P_LOGIN_TOKEN, getUserToken());
 
-		LoadItem loadItem = LoadHelper.getAllGames(getUserToken());
-		new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
+		new RequestJsonTask<DailyCurrentGamesItem>(dailyGamesUpdateListener).executeTask(loadItem);
 	}
 
 	private void loadDbGames() {
@@ -532,19 +538,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		}
 	}
 
-	private class SaveFinishedGamesListUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
-
-		@Override
-		public void updateData(DailyFinishedGameData returnedObj) {
-			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getDailyFinishedListGames(getUsername()),
-					getContentResolver()).executeTask();
-		}
-	}
-
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 		public static final int CURRENT_MY = 0;
-		public static final int FINISHED = 2;
 
 		private int gameType;
 
@@ -610,28 +605,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 						currentGamesMyCursorAdapter.changeCursor(cursor);
 					}
 
-
 					// add first fake game to daily games
 					currentGamesMyCursorAdapter.showNewGameAtFirst(!myTurnInDailyGames);
-
-					if (finishedGameDataList != null) {
-						boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(),
-								finishedGameDataList, getUsername());
-
-						if (gamesLeft) {
-							new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-									getContentResolver(), getUsername()).executeTask();
-						} else {
-							finishedGamesCursorAdapter.changeCursor(null);
-						}
-					} else {
-						new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-								DbHelper.getDailyFinishedListGames(getUsername()),
-								getContentResolver()).executeTask();
-					}
-					break;
-				case FINISHED:
-					finishedGamesCursorAdapter.changeCursor(cursor);
 					need2update = false;
 					break;
 			}
@@ -641,14 +616,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.EMPTY_DATA) {
-				if (gameType == CURRENT_MY) {
-					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getDailyFinishedListGames(getUsername()),
-							getContentResolver()).executeTask();
-				} else {
-					emptyView.setText(R.string.no_games);
-					showEmptyView(true);
-				}
+				emptyView.setText(R.string.no_games);
+				showEmptyView(true);
 			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 				showEmptyView(true);
@@ -656,18 +625,18 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		}
 	}
 
-	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {
+	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyCurrentGamesItem> {
 
 		public DailyGamesUpdateListener() {
-			super(DailyGamesAllItem.class);
+			super(DailyCurrentGamesItem.class);
 		}
 
 		@Override
-		public void updateData(DailyGamesAllItem returnedObj) {
+		public void updateData(DailyCurrentGamesItem returnedObj) {
 			super.updateData(returnedObj);
 			boolean currentGamesLeft;
 			{ // current games
-				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
+				final List<DailyCurrentGameData> currentGamesList = returnedObj.getData();
 				currentGamesLeft = DbDataManager.checkAndDeleteNonExistCurrentGames(getContentResolver(), currentGamesList, getUsername());
 
 				if (currentGamesLeft) {
@@ -675,38 +644,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 							getContentResolver(), getUsername()).executeTask();
 				} else {
 					currentGamesMyCursorAdapter.changeCursor(null);
-
 				}
 			}
-
-			// finished
-			finishedGameDataList = returnedObj.getData().getFinished();
-			if (!currentGamesLeft) { // if SaveTask will not return to LoadFinishedGamesPoint
-				if (finishedGameDataList != null) {
-					boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, getUsername());
-
-					if (gamesLeft) {
-						new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-								getContentResolver(), getUsername()).executeTask();
-					} else {
-						finishedGamesCursorAdapter.changeCursor(null);
-					}
-				} else {
-					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getDailyFinishedListGames(getUsername()),
-							getContentResolver()).executeTask();
-				}
-			}
-
-//				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
-//
-//				if (gamesLeft) {
-//					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-//							getContentResolver()).executeTask();
-//				} else {
-//					finishedGamesCursorAdapter.changeCursor(null);
-//				}
-//			}
 		}
 
 		@Override

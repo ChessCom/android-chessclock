@@ -1,9 +1,7 @@
 package com.chess.ui.fragments.daily;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -51,8 +49,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private static final int FINISHED_GAMES_SECTION = 3;
 
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
-	//	private static final String CHALLENGE_ACCEPT_TAG = "challenge accept popup";
-	private static final String UNABLE_TO_MOVE_TAG = "unable to move popup";
 
 	private int successToastMsgId;
 
@@ -60,12 +56,12 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	private DailyUpdateListener challengeInviteUpdateListener;
 	private DailyUpdateListener acceptDrawUpdateListener;
 
-	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
-	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener currentGamesTheirCursorUpdateListener;
 	private GamesCursorUpdateListener currentGamesMyCursorUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
+	private GamesUpdateReceiver gamesUpdateReceiver;
+	private IntentFilter moveUpdateFilter;
 
 	private DailyCurrentGamesMyCursorRightAdapter currentGamesMyCursorAdapter;
 	private DailyCurrentGamesTheirCursorRightAdapter currentGamesTheirCursorAdapter;
@@ -83,18 +79,8 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// init adapters
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
 
-		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null, getImageFetcher(), this);
-		currentGamesMyCursorAdapter = new DailyCurrentGamesMyCursorRightAdapter(getContext(), null, getImageFetcher());
-		currentGamesTheirCursorAdapter = new DailyCurrentGamesTheirCursorRightAdapter(getContext(), null, getImageFetcher());
-		finishedGamesCursorAdapter = new DailyFinishedGamesCursorRightAdapter(getContext(), null, getImageFetcher());
-
-		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
-		sectionedAdapter.addSection(getString(R.string.my_move), currentGamesMyCursorAdapter);
-		sectionedAdapter.addSection(getString(R.string.their_move), currentGamesTheirCursorAdapter);
-		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
+		init();
 	}
 
 	@Override
@@ -125,9 +111,10 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	@Override
 	public void onResume() {
 		super.onResume();
-		init();
 		getActivityFace().addOnOpenMenuListener(this);
 
+		gamesUpdateReceiver = new GamesUpdateReceiver();
+		registerReceiver(gamesUpdateReceiver, moveUpdateFilter);
 	}
 
 	@Override
@@ -135,25 +122,14 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		super.onPause();
 
 		getActivityFace().removeOnOpenMenuListener(this);
+		unRegisterMyReceiver(gamesUpdateReceiver);
 	}
 
-	@Override
-	public void onStop() {
-		super.onStop();
-
-		releaseResources();
-	}
-
-	private void init() {
-		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.CHALLENGE);
-		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
-		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
-		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
-		currentGamesMyCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
-		currentGamesTheirCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.THEIR);
-		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
-
-		dailyGamesUpdateListener = new DailyGamesUpdateListener();
+	private class GamesUpdateReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			loadDbGames();
+		}
 	}
 
 	private DialogInterface.OnClickListener gameListItemDialogListener = new DialogInterface.OnClickListener() {
@@ -167,13 +143,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 				// update game state before accepting draw
 				LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameListCurrentItem.getGameId());
 				new RequestJsonTask<DailyCurrentGameItem>(new GameStateUpdatesListener()).executeTask(loadItem);
-//				String draw = RestHelper.V_OFFERDRAW;
-//				if (gameListCurrentItem.isDrawOffered() > 0)
-//					draw = RestHelper.V_ACCEPTDRAW;
-//
-//				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
-//						draw, gameListCurrentItem.getTimestamp());
-//				new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 			} else if (pos == 2) {
 
 				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
@@ -431,26 +400,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		new RequestJsonTask<BaseResponseItem>(challengeInviteUpdateListener).executeTask(loadItem);
 	}
 
-	private class SaveCurrentGamesListUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
-
-		@Override
-		public void updateData(DailyCurrentGameData returnedObj) {
-			super.updateData(returnedObj);
-
-			loadDbGames();
-		}
-	}
-
-	private class SaveFinishedGamesListUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
-
-		@Override
-		public void updateData(DailyFinishedGameData returnedObj) {
-			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-					DbHelper.getDailyFinishedListGames(getUsername()),
-					getContentResolver()).executeTask();
-		}
-	}
-
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 		public static final int CURRENT_MY = 0;
 		public static final int THEIR = 1;
@@ -537,31 +486,29 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 			}
 		}
 	}
+	private void init() {
+		// init adapters
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
 
-	private void releaseResources() {
-		if (challengeInviteUpdateListener != null) {
-			challengeInviteUpdateListener.releaseContext();
-			challengeInviteUpdateListener = null;
-		}
+		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null, getImageFetcher(), this);
+		currentGamesMyCursorAdapter = new DailyCurrentGamesMyCursorRightAdapter(getContext(), null, getImageFetcher());
+		currentGamesTheirCursorAdapter = new DailyCurrentGamesTheirCursorRightAdapter(getContext(), null, getImageFetcher());
+		finishedGamesCursorAdapter = new DailyFinishedGamesCursorRightAdapter(getContext(), null, getImageFetcher());
 
-		if (acceptDrawUpdateListener != null) {
-			acceptDrawUpdateListener.releaseContext();
-			acceptDrawUpdateListener = null;
-		}
+		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
+		sectionedAdapter.addSection(getString(R.string.my_move), currentGamesMyCursorAdapter);
+		sectionedAdapter.addSection(getString(R.string.their_move), currentGamesTheirCursorAdapter);
+		sectionedAdapter.addSection(getString(R.string.finished_games), finishedGamesCursorAdapter);
 
-		if (saveCurrentGamesListUpdateListener != null) {
-			saveCurrentGamesListUpdateListener.releaseContext();
-			saveCurrentGamesListUpdateListener = null;
-		}
-		if (currentGamesMyCursorUpdateListener != null) {
-			currentGamesMyCursorUpdateListener.releaseContext();
-			currentGamesMyCursorUpdateListener = null;
-		}
+		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.CHALLENGE);
+		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
+		currentGamesMyCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
+		currentGamesTheirCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.THEIR);
+		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
 
-		if (dailyGamesUpdateListener != null) {
-			dailyGamesUpdateListener.releaseContext();
-			dailyGamesUpdateListener = null;
-		}
+		dailyGamesUpdateListener = new DailyGamesUpdateListener();
+
+		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
 	}
 
 	private void showEmptyView(boolean show) {
@@ -577,19 +524,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		} else {
 			emptyView.setVisibility(View.GONE);
 			listView.setVisibility(View.VISIBLE);
-		}
-	}
-
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			if (sectionedAdapter.getCount() == 0) {
-				listView.setVisibility(View.GONE);
-			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
 		}
 	}
 

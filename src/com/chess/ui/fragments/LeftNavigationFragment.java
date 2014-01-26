@@ -56,7 +56,7 @@ import java.util.List;
  * Date: 02.01.13
  * Time: 11:04
  */
-public class NavigationMenuFragment extends LiveBaseFragment implements AdapterView.OnItemClickListener {
+public class LeftNavigationFragment extends LiveBaseFragment implements AdapterView.OnItemClickListener {
 
 	private static final int HOME_POS = 0;
 
@@ -298,7 +298,6 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 					} else {
 						fragmentByTag = (BasePopupsFragment) findFragmentByTag(StatsGameFragment.class.getSimpleName());
 					}
-
 				} else {
 					fragmentByTag = (BasePopupsFragment) findFragmentByTag(ProfileBaseFragmentTablet.class.getSimpleName());
 				}
@@ -310,13 +309,14 @@ public class NavigationMenuFragment extends LiveBaseFragment implements AdapterV
 						} else {
 							fragmentByTag = new StatsGameFragment();
 						}
-
 					} else {
-						fragmentByTag = ProfileBaseFragmentTablet.createInstance(ProfileBaseFragmentTablet.STATS_MODE, getUsername()); // TODO show stats by deafult
+						fragmentByTag = ProfileBaseFragmentTablet.createInstance(ProfileBaseFragmentTablet.STATS_MODE, getUsername());
 					}
 				} else {
 					if (!isTablet) {
 						((StatsGameFragment) fragmentByTag).updateUsername(getUsername());
+					} else {
+						fragmentByTag = ProfileBaseFragmentTablet.createInstance(ProfileBaseFragmentTablet.STATS_MODE, getUsername());
 					}
 				}
 				break;

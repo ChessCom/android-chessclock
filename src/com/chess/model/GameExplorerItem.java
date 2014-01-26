@@ -14,6 +14,7 @@ public class GameExplorerItem implements Parcelable {
 	private String fen;
 	private String movesList;
 	private int gameType;
+	private boolean userPlayWhite;
 
 	public GameExplorerItem() {}
 
@@ -41,10 +42,19 @@ public class GameExplorerItem implements Parcelable {
 		this.gameType = gameType;
 	}
 
+	public boolean isUserPlayWhite() {
+		return userPlayWhite;
+	}
+
+	public void setUserPlayWhite(boolean userPlayWhite) {
+		this.userPlayWhite = userPlayWhite;
+	}
+
 	public GameExplorerItem(Parcel in) {
 		fen = in.readString();
 		movesList = in.readString();
 		gameType = in.readInt();
+		userPlayWhite = in.readByte() != 0x00;
 	}
 
 	@Override
@@ -57,6 +67,7 @@ public class GameExplorerItem implements Parcelable {
 		dest.writeString(fen);
 		dest.writeString(movesList);
 		dest.writeInt(gameType);
+		dest.writeByte((byte) (userPlayWhite ? 0x01 : 0x00));
 	}
 
 	@SuppressWarnings("unused")

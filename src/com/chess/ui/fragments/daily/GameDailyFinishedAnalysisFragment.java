@@ -88,6 +88,7 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 		explorerItem.setFen(getBoardFace().generateFullFen());
 		explorerItem.setMovesList(getBoardFace().getMoveListSAN());
 		explorerItem.setGameType(currentGame.getGameType());
+		explorerItem.setUserPlayWhite(userPlayWhite);
 		getActivityFace().openFragment(GameExplorerFragment.createInstance(explorerItem));
 	}
 

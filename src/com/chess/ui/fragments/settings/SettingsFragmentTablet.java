@@ -83,7 +83,7 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 			case R.string.ic_password:
 				changeInternalFragment(new SettingsPasswordFragment());
 				break;
-			case R.string.ic_home:
+			case R.string.ic_planet:
 				changeInternalFragment(new SettingsLanguageFragment());
 				break;
 			case R.string.ic_ticket:

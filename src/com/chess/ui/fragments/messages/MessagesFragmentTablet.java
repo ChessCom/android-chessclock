@@ -17,7 +17,7 @@ import com.chess.model.SelectionItem;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.NavigationMenuFragment;
+import com.chess.ui.fragments.LeftNavigationFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 
@@ -183,9 +183,9 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 
 			Drawable background = convertView.getBackground();
 			if (item.isChecked()) {
-				background.mutate().setState(NavigationMenuFragment.SELECTED_STATE);
+				background.mutate().setState(LeftNavigationFragment.SELECTED_STATE);
 			} else {
-				background.mutate().setState(NavigationMenuFragment.ENABLED_STATE);
+				background.mutate().setState(LeftNavigationFragment.ENABLED_STATE);
 			}
 		}
 

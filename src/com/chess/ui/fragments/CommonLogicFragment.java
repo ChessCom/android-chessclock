@@ -798,7 +798,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected void afterLogin() {
 		FlurryAgent.logEvent(FlurryData.LOGGED_IN);
-//		backToHomeFragment(); // TODO why do we need to go home?
+//		backToHomeFragment(); // you should handle this in inherited fragment
 	}
 
 	protected void showLoadingProgress(boolean show) {
@@ -836,9 +836,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				return true;
 			}
 			case R.id.menu_notifications: {// bell icon
-				CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(NotificationsRightFragment.class.getSimpleName());
+				CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(RightNotificationsFragment.class.getSimpleName());
 				if (fragment == null) {
-					fragment = new NotificationsRightFragment();
+					fragment = new RightNotificationsFragment();
 				}
 
 				getActivityFace().changeRightFragment(fragment);

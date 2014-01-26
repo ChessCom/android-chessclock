@@ -92,7 +92,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	private GameDailyUpdatesListener drawOfferedUpdateListener;
 
 	private GameStateUpdateListener gameStateUpdateListener;
-	private GameDailyUpdatesListener sendMoveUpdateListener;
+	private GameDailyUpdatesListener submitMoveUpdateListener;
 	private GameDailyUpdatesListener createChallengeUpdateListener;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
 
@@ -598,7 +598,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		if (username.equals(getUsername())) { // allow only authenticated user to send move in his own games
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
 			loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());
-			new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<BaseResponseItem>(submitMoveUpdateListener).executeTask(loadItem);
 		}
 	}
 
@@ -610,6 +610,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		currentGame.setFen(getBoardFace().generateFullFen());
 		currentGame.setMoveList(getBoardFace().getMoveListSAN());
 		DbDataManager.saveDailyGame(getContentResolver(), currentGame, username);
+
+		// update right side fragment
+		getActivity().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 
 		if (getBoardFace().isFinished()) {
 			View endGamePopupView;
@@ -968,9 +971,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 				case SEND_MOVE_UPDATE:
 					moveWasSent();
 					break;
-//				case NEXT_GAME_UPDATE:
-//					switchToNextGame(returnedObj);
-//					break;
 				case CREATE_CHALLENGE_UPDATE:
 					showSinglePopupDialog(R.string.challenge_created, R.string.you_will_notified_when_game_starts);
 					break;
@@ -1020,7 +1020,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		public void updateData(VacationItem returnedObj) {
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
 			loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());
-			new RequestJsonTask<BaseResponseItem>(sendMoveUpdateListener).executeTask(loadItem);
+			new RequestJsonTask<BaseResponseItem>(submitMoveUpdateListener).executeTask(loadItem);
 		}
 	}
 
@@ -1053,7 +1053,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		drawOfferedUpdateListener = new GameDailyUpdatesListener(DRAW_OFFER_UPDATE);
 
 		gameStateUpdateListener = new GameStateUpdateListener();
-		sendMoveUpdateListener = new GameDailyUpdatesListener(SEND_MOVE_UPDATE);
+		submitMoveUpdateListener = new GameDailyUpdatesListener(SEND_MOVE_UPDATE);
 		createChallengeUpdateListener = new GameDailyUpdatesListener(CREATE_CHALLENGE_UPDATE);
 
 		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener();

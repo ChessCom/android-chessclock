@@ -133,6 +133,8 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	private void adjustBoardForGame() {
+		getBoardFace().setReside(!explorerItem.isUserPlayWhite());
+
 		if (explorerItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			getBoardFace().setChess960(true);
 		} else {
@@ -314,6 +316,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND || serverCode == ServerErrorCodes.NO_MOVES_FOUND) {
 					moveVariationTxt.setText(R.string.no_results);
+					explorerMovesCursorAdapter.changeCursor(null);
 					return;
 				}
 			}
@@ -359,6 +362,19 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 			if (cursor != null && cursor.moveToFirst()) {
 				moveVariationTxt.setText(DbDataManager.getString(cursor, DbScheme.V_NAME));
 			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND || serverCode == ServerErrorCodes.NO_MOVES_FOUND) {
+					moveVariationTxt.setText(R.string.no_results);
+					explorerMovesCursorAdapter.changeCursor(null);
+					return;
+				}
+			}
+			super.errorHandle(resultCode);
 		}
 	}
 

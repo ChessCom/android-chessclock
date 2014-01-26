@@ -37,10 +37,9 @@ import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsGeneralFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
-import com.chess.ui.interfaces.game_ui.GameNetworkFace;
+import com.chess.ui.interfaces.game_ui.GameDailyFace;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
-import com.chess.ui.views.chess_boards.ChessBoardNetworkView;
 import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
@@ -57,7 +56,7 @@ import java.util.Calendar;
  * Date: 08.05.13
  * Time: 18:52
  */
-public class GameDailyFinishedFragment extends GameBaseFragment implements GameNetworkFace, PopupListSelectionFace {
+public class GameDailyFinishedFragment extends GameBaseFragment implements GameDailyFace, PopupListSelectionFace {
 
 	private static final String ERROR_TAG = "send request failed popup";
 
@@ -73,7 +72,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 	private DailyGameUpdatesListener createChallengeUpdateListener;
 
-	private ChessBoardNetworkView boardView;
+	private ChessBoardDailyView boardView;
 
 	private DailyFinishedGameData currentGame;
 	protected String username;
@@ -202,6 +201,16 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameN
 
 			adjustBoardForGame();
 		}
+	}
+
+	@Override
+	public void openConditions() {
+		// not used here
+	}
+
+	@Override
+	public void showConditionsBtn(boolean show) {
+		// not used here
 	}
 
 	private class LoadFromDbUpdateListener extends AbstractUpdateListener<Cursor> {

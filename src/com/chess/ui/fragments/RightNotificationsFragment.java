@@ -43,7 +43,7 @@ import java.util.List;
  * Date: 11.08.13
  * Time: 20:21
  */
-public class NotificationsRightFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
+public class RightNotificationsFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
 		ItemClickListenerFace, SlidingMenu.OnOpenedListener {
 
 	private static final int FRIEND_REQUEST_SECTION = 0;

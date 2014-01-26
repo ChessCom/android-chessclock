@@ -18,7 +18,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.NavigationMenuFragment;
+import com.chess.ui.fragments.LeftNavigationFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
@@ -87,9 +87,9 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onActivityCreated(savedInstanceState);
 
 		// activate Left
-		CommonLogicFragment leftMenuFragment = (CommonLogicFragment) findFragmentByTag(NavigationMenuFragment.class.getSimpleName());
+		CommonLogicFragment leftMenuFragment = (CommonLogicFragment) findFragmentByTag(LeftNavigationFragment.class.getSimpleName());
 		if (leftMenuFragment == null) {
-			leftMenuFragment = new NavigationMenuFragment();
+			leftMenuFragment = new LeftNavigationFragment();
 		}
 		getActivityFace().changeLeftFragment(leftMenuFragment);
 

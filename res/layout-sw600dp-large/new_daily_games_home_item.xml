@@ -9,7 +9,8 @@
 	<RelativeLayout
 		android:id="@+id/boardPreviewContainer"
 		android:layout_width="@dimen/daily_board_preview_size"
-		android:layout_height="@dimen/daily_board_preview_size">
+		android:layout_height="@dimen/daily_board_preview_size"
+		android:layout_centerHorizontal="true">
 
 		<com.chess.backend.image_load.ProgressImageView
 			android:id="@+id/boardPreviewFrame"

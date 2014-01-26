@@ -709,7 +709,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		});
 	}
 
-	protected void sendMove() throws DataNotValidException {
+	protected void submitMove() throws DataNotValidException {
 		LiveChessService liveService = getLiveService();
 
 		String debugString = " no debug log";
@@ -770,7 +770,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			submitClicked = true;
 
 			try {
-				sendMove();
+				submitMove();
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
 			}
@@ -808,7 +808,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void updateAfterMove() {
 		if (!getBoardFace().isAnalysis()) {
 			try {
-				sendMove();
+				submitMove();
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
 			}

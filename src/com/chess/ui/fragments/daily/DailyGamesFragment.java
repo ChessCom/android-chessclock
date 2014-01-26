@@ -67,14 +67,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private static final String IMAGE_CACHE_DIR = "boards";
 	public static final int MIN_GAMES_TO_SHOW_BANNER = 5;
 
-	private DailyUpdateListener challengeInviteUpdateListener;
 	private DailyUpdateListener acceptDrawUpdateListener;
 
 	private IntentFilter moveUpdateFilter;
 	private GamesUpdateReceiver gamesUpdateReceiver;
-	private SaveCurrentGamesListUpdateListener saveCurrentGamesListUpdateListener;
 	private DailyFinishedGamesUpdateListener dailyFinishedGamesUpdateListener;
-	private GamesCursorUpdateListener currentGamesCursorUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	protected DailyGamesUpdateListener dailyGamesUpdateListener;
 	private SmartImageFetcher boardImgFetcher;
@@ -201,7 +198,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			}
 
 			if (haveSavedData) {
-				loadDbGames(); // we need delay here because when LoadFromDbTask is finished fragment is not visible yet
+				loadDbGames();
 			}
 		} else {
 			updateData(); // TODO temporary force to update
@@ -229,8 +226,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		boardImgFetcher.setPauseWork(false);
 		boardImgFetcher.setExitTasksEarly(true);
 		boardImgFetcher.flushCache();
-
-//		releaseResources();
 	}
 
 	@Override
@@ -252,6 +247,19 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		super.onRefreshStarted(view);
 		if (isNetworkAvailable()) {
 			updateData();
+		} else {
+			loadDbGames();
+		}
+	}
+
+	@Override
+	protected void afterLogin() {
+		super.afterLogin();
+
+		if (isNetworkAvailable()) {
+			updateData();
+		} else {
+			loadDbGames();
 		}
 	}
 
@@ -266,14 +274,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				// update game state before accepting draw
 				LoadItem loadItem = LoadHelper.getGameById(getUserToken(), gameListCurrentItem.getGameId());
 				new RequestJsonTask<DailyCurrentGameItem>(new GameStateUpdatesListener()).executeTask(loadItem);
-//				String draw = RestHelper.V_OFFERDRAW;
-//				if (gameListCurrentItem.isDrawOffered() > 0) {
-//					draw = RestHelper.V_ACCEPTDRAW;
-//				}
-//
-//				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
-//						draw, gameListCurrentItem.getTimestamp());
-//				new RequestJsonTask<BaseResponseItem>(acceptDrawUpdateListener).executeTask(loadItem);
 			} else if (pos == 2) {
 
 				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
@@ -394,7 +394,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	private class DailyUpdateListener extends ChessUpdateListener<BaseResponseItem> {
-		public static final int INVITE = 3;
 		public static final int DRAW = 4;
 
 		private int itemCode;
@@ -407,9 +406,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		@Override
 		public void updateData(BaseResponseItem returnedObj) {
 			switch (itemCode) {
-				case INVITE:
-					DailyGamesFragment.this.updateData();
-					break;
 				case DRAW:
 					DailyGamesFragment.this.updateData();
 					break;
@@ -438,7 +434,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	private void loadDbGames() {
-		// TODO let's try to load directly w/o async task to avoid delays. But we need to check performance here!!!
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getDailyCurrentListGames(getUsername()));
 
 		if (cursor != null && cursor.moveToFirst()) {
@@ -505,21 +500,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		@Override
 		public void updateData(VacationItem returnedObj) {
-		}
-	}
-
-	private class SaveCurrentGamesListUpdateListener extends ChessUpdateListener<DailyCurrentGameData> {
-
-		@Override
-		public void showProgress(boolean show) {
-			// don't show progress
-		}
-
-		@Override
-		public void updateData(DailyCurrentGameData returnedObj) {
-			super.updateData(returnedObj);
-
-			loadDbGames();
 		}
 	}
 
@@ -667,7 +647,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					return;
 				}
 			} else if (resultCode == StaticData.INTERNAL_ERROR) {
-				showToast("Internal error occurred"); // TODO adjust properly
+				showToast("Internal error occurred");
 			}
 			super.errorHandle(resultCode);
 		}
@@ -765,10 +745,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	private void init() {
-		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.INVITE);
 		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
-		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
-		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
 		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
 
 		dailyFinishedGamesUpdateListener = new DailyFinishedGamesUpdateListener();
@@ -864,20 +841,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		public boolean isAlive() {
 			return getActivity() != null;
 		}
-	}
-
-	private void releaseResources() {
-		challengeInviteUpdateListener.releaseContext();
-		challengeInviteUpdateListener = null;
-		acceptDrawUpdateListener.releaseContext();
-		acceptDrawUpdateListener = null;
-		saveCurrentGamesListUpdateListener.releaseContext();
-		saveCurrentGamesListUpdateListener = null;
-		currentGamesCursorUpdateListener.releaseContext();
-		currentGamesCursorUpdateListener = null;
-
-		dailyGamesUpdateListener.releaseContext();
-		dailyGamesUpdateListener = null;
 	}
 
 	private void showEmptyView(boolean show) {

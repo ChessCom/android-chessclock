@@ -20,12 +20,9 @@ import android.util.DisplayMetrics;
 import android.view.*;
 import com.chess.R;
 import com.chess.backend.GetAndSaveTheme;
-import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.entity.api.themes.ThemeItem;
 import com.chess.backend.image_load.bitmapfun.ImageCache;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
@@ -36,8 +33,8 @@ import com.chess.statics.*;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.NavigationMenuFragment;
-import com.chess.ui.fragments.NotificationsRightFragment;
+import com.chess.ui.fragments.LeftNavigationFragment;
+import com.chess.ui.fragments.RightNotificationsFragment;
 import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.fragments.daily.GameDailyFragmentTablet;
 import com.chess.ui.fragments.home.HomeTabsFragment;
@@ -89,7 +86,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private IntentFilter movesUpdateFilter;
 	private NotificationsUpdateReceiver notificationsUpdateReceiver;
 	private MovesUpdateReceiver movesUpdateReceiver;
-	private PullToRefreshAttacher mPullToRefreshAttacher;
+	private PullToRefreshAttacher pullToRefreshAttacher;
 	private Bitmap backgroundBitmap;
 	private PopupCustomViewFragment reviewPopupFragment;
 
@@ -156,38 +153,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				showActionBar = true;
 
 			} else if (!TextUtils.isEmpty(getAppData().getUserToken())) { // if user have login token already
-//				long tokenSaveTime = getAppData().getUserTokenSaveTime(); // don't re-login now because we handle invalid token inside of each request
-//				long currentTime = System.currentTimeMillis();
-//
-//				if (currentTime - tokenSaveTime > AppConstants.USER_TOKEN_EXPIRE_TIME) {
-//					String password = getAppData().getPassword();
-//					if (!TextUtils.isEmpty(password)) {
-//
-//						LoadItem loadItem = new LoadItem();
-//						loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
-//						loadItem.setRequestMethod(RestHelper.POST);
-//						loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-//						loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getMeUsername());
-//						loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
-//						loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_USERNAME);
-//						loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
-//
-//						new RequestJsonTask<LoginItem>(new CommonLogicActivity.LoginUpdateListener()).executeTask(loadItem);
-//					} else if (!TextUtils.isEmpty(getAppData().getFacebookToken())) {
-//						String accessToken = getAppData().getFacebookToken();
-//						loginWithFacebook(accessToken, new CommonLogicActivity.LoginUpdateListener(accessToken));
-//					}
-//				}
-
 				// set the Above View
 				switchFragment(new HomeTabsFragment());
 
 				// force create pullToRefreshAttacher bcz in some cases we skip home screen and it's not created, and we use chess spinner
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-					mPullToRefreshAttacher = PullToRefreshAttacher.get(this);
-				} else {
-					mPullToRefreshAttacher = AbcPullToRefreshAttacher.get(this);
-				}
+				createPullToRefreshAttacher();
 
 				showActionBar = true;
 			} else {
@@ -203,6 +173,14 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 
 		handleOpenDailyGames(intent);
+	}
+
+	private void createPullToRefreshAttacher() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			pullToRefreshAttacher = PullToRefreshAttacher.get(this);
+		} else {
+			pullToRefreshAttacher = AbcPullToRefreshAttacher.get(this);
+		}
 	}
 
 	private void handleOpenDailyGames(Intent intent) {
@@ -390,8 +368,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		showActionBar = show;
 		getActionBarHelper().showActionBar(show);
 
-		if (mPullToRefreshAttacher != null && !show) {
-			mPullToRefreshAttacher.removePaddingForHeader();
+		if (pullToRefreshAttacher != null && !show) {
+			pullToRefreshAttacher.removePaddingForHeader();
 		}
 	}
 
@@ -471,8 +449,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				}
 			} else {
 				for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-					if (fragment != null && fragment.isVisible() && fragment instanceof NavigationMenuFragment) {
-						((NavigationMenuFragment) fragment).onOpened();
+					if (fragment != null && fragment.isVisible() && fragment instanceof LeftNavigationFragment) {
+						((LeftNavigationFragment) fragment).onOpened();
 						break;
 					}
 				}
@@ -674,8 +652,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			updateNotificationsBadges();
 
 			for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-				if (fragment != null && fragment.isVisible() && fragment instanceof NotificationsRightFragment) {
-					((NotificationsRightFragment) fragment).onOpenedRight();
+				if (fragment != null && fragment.isVisible() && fragment instanceof RightNotificationsFragment) {
+					((RightNotificationsFragment) fragment).onOpenedRight();
 					break;
 				}
 			}
@@ -901,28 +879,27 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void setPullToRefreshView(View view, PullToRefreshAttacher.OnRefreshListener refreshListener) {
-		if (mPullToRefreshAttacher != null) {
-			mPullToRefreshAttacher.clearRefreshableViews();
+		if (pullToRefreshAttacher != null) {
+			pullToRefreshAttacher.clearRefreshableViews();
 		} else {
 
 			/**
 			 * Here we create a PullToRefreshAttacher manually without an Options instance.
 			 * PullToRefreshAttacher will manually create one using default values.
 			 */
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-				mPullToRefreshAttacher = PullToRefreshAttacher.get(this);
-			} else {
-				mPullToRefreshAttacher = AbcPullToRefreshAttacher.get(this);
-			}
+			createPullToRefreshAttacher();
 		}
 
 		// Set the Refreshable View to be the ListView and the refresh listener to be this.
-		mPullToRefreshAttacher.addRefreshableView(view, refreshListener);
+		pullToRefreshAttacher.addRefreshableView(view, refreshListener);
 	}
 
 	@Override
 	public PullToRefreshAttacher getPullToRefreshAttacher() {
-		return mPullToRefreshAttacher;
+		if (pullToRefreshAttacher == null) {
+			createPullToRefreshAttacher();
+		}
+		return pullToRefreshAttacher;
 	}
 
 	private void checkThemesToLoad() {

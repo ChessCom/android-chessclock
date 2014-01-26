@@ -74,11 +74,11 @@ public class BaseResponseItem<ItemType> {
 		return more_info;
 	}
 
-	protected static String getSafeValue(String value) {
+	public static String getSafeValue(String value) {
 		return value == null? Symbol.EMPTY : value;
 	}
 
-	protected static String getSafeValue(String value, String defaultValue) {
+	public static String getSafeValue(String value, String defaultValue) {
 		return value == null? defaultValue : value;
 	}
 }

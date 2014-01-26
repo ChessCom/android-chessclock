@@ -20,7 +20,7 @@ public class YourTurnItem {
 	}
 
 	public String getOpponent() {
-		return opponent;
+		return BaseResponseItem.getSafeValue(opponent);
 	}
 
 	public void setOpponent(String opponent) {
@@ -28,7 +28,7 @@ public class YourTurnItem {
 	}
 
 	public String getLastMove() {
-		return lastMove;
+		return BaseResponseItem.getSafeValue(lastMove);
 	}
 
 	public void setLastMove(String lastMove) {
@@ -36,7 +36,7 @@ public class YourTurnItem {
 	}
 
 	public String getUsername() {
-		return username;
+		return BaseResponseItem.getSafeValue(username);
 	}
 
 	public void setUsername(String username) {

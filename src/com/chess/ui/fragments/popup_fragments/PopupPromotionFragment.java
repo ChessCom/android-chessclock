@@ -86,7 +86,7 @@ public class PopupPromotionFragment extends SimplePopupDialogFragment implements
 		} else {
 			bitmap = blackPiecesMap.get(piece);
 		}
-		int size = (int) (48 * getResources().getDisplayMetrics().density);
+		int size = getResources().getDimensionPixelSize(R.dimen.pawn_promotion_item_size);
 
 		return Bitmap.createScaledBitmap(bitmap, size, size, true);
 	}

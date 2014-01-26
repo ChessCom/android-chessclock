@@ -4,9 +4,9 @@ import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.FontsHelper;
 
 /**
  * Created with IntelliJ IDEA.
@@ -65,7 +65,6 @@ public class BadgeDrawable extends Drawable {
 		rectangleMainPaint.setColor(main1);
 		rectangleMainPaint.setStrokeWidth(0.0f);
 		rectangleMainPaint.setStyle(Paint.Style.FILL);
-//		Shader mainShader = new LinearGradient(0, 0, rectangleSize, rectangleSize, Color.WHITE, Color.RED, Shader.TileMode.CLAMP);
 		rectangleMainPaint.setShader(mainShader);
 
 		rectangleBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -106,8 +105,8 @@ public class BadgeDrawable extends Drawable {
 
 	private boolean isBadDevice(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-		return (displayMetrics.density == 1.0f || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM)
-				/*&& (displayMetrics.heightPixels <= 480) */&& AppUtils.HONEYCOMB_PLUS_API;
+		return ((displayMetrics.density == 1.0f || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM) ||
+		(displayMetrics.densityDpi == DisplayMetrics.DENSITY_HIGH)) && AppUtils.ICS_PLUS_API;
 	}
 
 	@Override
