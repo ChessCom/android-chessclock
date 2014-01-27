@@ -324,17 +324,17 @@ public class LccHelper {
 
 		LogMe.dl(TAG, "processConnectionFailure: details=" + details);
 
+		setConnected(false);
+
 		String detailsMessage;
 
 		if (details != null) { // LCC stops client, create new one manually
 
 			connectionFailure = true;
 
-			logout();
-
-			/*cleanupLiveInfo();
+			setConnecting(false);
+			cleanupLiveInfo();
 			cancelServiceNotification();
-			stopConnectionTimer();*/
 
 			switch (details) {
 				case USER_KICKED: {
@@ -345,8 +345,6 @@ public class LccHelper {
 					/*AppData appData = new AppData(context);
 					if (appData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
 						appData.incrementLiveConnectAttempts(context);*/
-
-					//logout();
 
 					// first of all we need to invalidate sessionId key
 					new AppData(context).setLiveSessionId(null);
@@ -1051,7 +1049,12 @@ public class LccHelper {
 		protected Void doInBackground(Void... voids) {
 			synchronized (CLIENT_SYNC_LOCK) {
 				if (lccClient != null) {
-					lccClient.disconnect(RESET_LCC_LISTENERS);
+					LogMe.dl(TAG, "LOGOUT: lccClient=" + getClientId());
+					try {
+						lccClient.disconnect(RESET_LCC_LISTENERS);
+					} catch (LiveChessClientException e) {
+						LogMe.dl(TAG, "LiveChessClientException: " + e.getMessage());
+					}
 					resetClient();
 				}
 			}
@@ -1066,7 +1069,11 @@ public class LccHelper {
 			synchronized (CLIENT_SYNC_LOCK) {
 				if (lccClient != null) {
 					LogMe.dl(TAG, "LEAVE: lccClient=" + getClientId());
-					lccClient.leave(RESET_LCC_LISTENERS);
+					try {
+						lccClient.leave(RESET_LCC_LISTENERS);
+					} catch (LiveChessClientException e) {
+						LogMe.dl(TAG, "LiveChessClientException: " + e.getMessage());
+					}
 					resetClient();
 				}
 			}
@@ -1268,8 +1275,8 @@ public class LccHelper {
 		}
 	}
 
-	public String getClientId() {
-		return lccClient == null ? null : String.valueOf(lccClient.hashCode());
+	public Long getClientId() {
+		return lccClient == null ? null : lccClient.getId();
 	}
 
 	public boolean isConnectionFailure() {
