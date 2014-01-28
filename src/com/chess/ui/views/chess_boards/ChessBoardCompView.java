@@ -66,19 +66,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			return;
 		}
 
-		postMoveToEngine(getBoardFace().getLastMove());
+		postMoveToEngine(getBoardFace().getLastMove()); // TODO on slow device we can touch piece while comp is loading, prevent in future
     }
-
-//	@Override
-//	protected boolean isUserColor(int color) {
-//		if (appData.isHumanVsHumanGameMode(getBoardFace())) {
-//			return getBoardFace().isWhiteToMove() ? color == ChessBoard.WHITE_SIDE : color == ChessBoard.BLACK_SIDE;
-//		} else if (isUserWhite()) {
-//			return color == ChessBoard.WHITE_SIDE;
-//		} else {
-//			return color == ChessBoard.BLACK_SIDE;
-//		}
-//	}
 
     @Override
 	public boolean isGameOver() {

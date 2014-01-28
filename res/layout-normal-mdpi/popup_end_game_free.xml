@@ -3,7 +3,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
-	android:paddingTop="30dip"
+	android:paddingTop="4dip"
 	android:minWidth="@dimen/popup_end_game_width"
 	android:background="@drawable/popup_white_back"
 	>
@@ -28,8 +28,8 @@
 		android:gravity="center_horizontal"
 		android:textSize="@dimen/popup_title_text_size_medium"
 		android:textColor="@color/new_author_dark_grey"
-		android:paddingTop="6dip"
-		android:paddingBottom="6dip"
+		android:paddingTop="3dip"
+		android:paddingBottom="3dip"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
 		android:text="Reason" />
@@ -47,14 +47,14 @@
 		android:paddingBottom="6dip"
 		android:text="New Rating" />
 
-	<!--Result-->
+	<!--Rating-->
 	<LinearLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
-		android:paddingTop="10dip"
-		android:paddingBottom="17dip">
-		<!--Result rating value-->
+		android:paddingTop="5dip"
+		android:paddingBottom="5dip">
+		<!--New rating value-->
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/resultRatingTxt"
 			android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
 			android:textColor="@color/new_subtitle_dark_grey"
 			custom:ttf="Bold" />
 
-		<!--Rating change-->
+		<!--New Rating-->
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/resultRatingChangeTxt"
 			android:layout_width="wrap_content"
@@ -78,13 +78,14 @@
 
 	</LinearLayout>
 
+	<!--Rematch | New Game-->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
-		android:paddingTop="20dip"
-		android:paddingBottom="5dip">
+		android:paddingTop="5dip"
+		android:paddingBottom="1dip">
 
 		<!--Rematch -->
 		<com.chess.widgets.RoboButton
@@ -108,13 +109,15 @@
 
 	</LinearLayout>
 
+	<!--Analysis | Share-->
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
-		android:paddingTop="5dip"
-		android:paddingBottom="@dimen/default_scr_side_padding">
+		android:paddingTop="2dp"
+		android:paddingBottom="2dp"
+		>
 
 		<!--Analyze -->
 		<com.chess.widgets.RoboButton
@@ -139,5 +142,16 @@
 			android:layout_marginLeft="5dip" />
 
 	</LinearLayout>
+
+	<!--Ads-->
+	<com.mopub.mobileads.MoPubView
+		android:id="@+id/mopubRectangleAd"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:minWidth="@dimen/ad_popup_width"
+		android:minHeight="@dimen/ad_popup_height"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginBottom="2dp"
+		/>
 
 </LinearLayout>

@@ -219,7 +219,8 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 					fragmentByTag = new GameLiveObserveFragmentTablet();
 				}
 			}
-			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag, true);
+//			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag, true);
+			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
 		} else if (id == R.id.currentGameHeaderView) {
 			Fragment fragmentByTag;
 				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveFragmentTablet.class.getSimpleName());

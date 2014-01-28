@@ -81,7 +81,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
+		return inflater.inflate(R.layout.new_white_list_ads_view_frame, container, false);
 	}
 
 	@Override
@@ -95,6 +95,8 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
+
+		initUpgradeAndAdWidgets(view);
 
 		// adjust actionBar icons
 		getActivityFace().showActionMenu(R.id.menu_search_btn, true);

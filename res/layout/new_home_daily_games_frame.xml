@@ -46,7 +46,7 @@
 		android:id="@id/startNewGameBtn"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
+		android:layout_above="@+id/bannerUpgradeView"
 		android:minHeight="@dimen/big_button_height"
 		android:text="@string/new_game"
 		android:textSize="@dimen/game_controls_text_size"
@@ -54,5 +54,14 @@
 		style="@style/Rect.Bottom.Right.Orange"
 		android:shadowColor="@color/transparent"
 		android:visibility="gone" />
+
+	<!--Ads-->
+	<include
+		android:id="@id/bannerUpgradeView"
+		layout="@layout/mopub_ad_view"
+		android:layout_gravity="center_horizontal"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		/>
 
 </RelativeLayout>

@@ -25,40 +25,46 @@
 		android:gravity="center"
 		android:textSize="@dimen/popup_title_text_size"
 		android:textColor="@color/new_normal_grey"
-		style="@style/ListItem"
 		custom:ttf="Bold"
 		android:text="@string/do_you_love_app" />
 
 
 	<LinearLayout
-		android:orientation="vertical"
+		android:orientation="horizontal"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
-		<com.chess.widgets.RoboButton
-			android:id="@+id/positiveBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			style="@style/ListItem"
-			android:text="@string/yes"
-			android:textColor="@color/new_normal_grey"
-			android:textSize="17sp" />
 
 		<com.chess.widgets.RoboButton
 			android:id="@+id/negativeBtn"
-			android:layout_width="match_parent"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			style="@style/ListItem"
+			android:layout_weight="1"
+			style="@style/Rect.Bottom.Left"
+			android:minHeight="48dp"
 			android:text="@string/no"
 			android:textColor="@color/new_normal_grey"
 			android:textSize="17sp" />
 
 		<com.chess.widgets.RoboButton
 			android:id="@+id/ignoreBtn"
-			android:layout_width="match_parent"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			style="@style/ListItem"
+			android:layout_weight="1"
+			style="@style/Rect.Bottom.Middle"
+			android:minHeight="48dp"
 			android:text="@string/ignore"
+			android:textColor="@color/new_normal_grey"
+			android:textSize="17sp" />
+
+		<com.chess.widgets.RoboButton
+			android:id="@+id/positiveBtn"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			style="@style/Rect.Bottom.Right"
+			android:minHeight="48dp"
+			android:text="@string/yes"
 			android:textColor="@color/new_normal_grey"
 			android:textSize="17sp" />
 

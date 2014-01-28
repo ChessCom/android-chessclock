@@ -19,6 +19,7 @@ import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.daily.DailyGameOptionsFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
@@ -50,7 +51,7 @@ public class HomePlayFragmentTablet extends CommonLogicFragment implements ViewT
 
 		if (inLandscape()) {
 			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-			transaction.add(R.id.optionsFragmentContainer, HomePlayFragment.createInstance(RIGHT_MENU_MODE))
+			transaction.add(R.id.optionsFragmentContainer, RightPlayFragment.createInstance(RIGHT_MENU_MODE))
 					.commitAllowingStateLoss();
 		}
 	}

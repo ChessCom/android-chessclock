@@ -11,8 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
@@ -37,7 +35,6 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.utilities.AppUtils;
-import com.chess.utilities.MopubHelper;
 import com.chess.widgets.ProfileImageView;
 import com.mopub.mobileads.MoPubView;
 import com.slidingmenu.lib.SlidingMenu;
@@ -86,13 +83,12 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	protected PanelInfoGameView bottomPanelView;
 	protected boolean userPlayWhite;
 
-	protected LinearLayout mopubAdLayout;
-	private MoPubView moPubBannerView;
 	protected LayoutInflater inflater;
 	private PopupPromotionFragment promotionFragment;
 	private PromotionSelectedListener promotionSelectedListener;
 	private int promotionFile;
 	private int promotionRank;
+	private MoPubView mopubRectangleAd;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -102,7 +98,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 				savedInstanceState = new Bundle();
 			}
 			savedInstanceState.putBoolean(AppConstants.SMALL_SCREEN, true);
-		} else if (AppUtils.noNeedTitleBar(getActivity())) {
+		} else if (AppUtils.isSmallScreen(getActivity())) {
 			if (savedInstanceState == null) {
 				savedInstanceState = new Bundle();
 			}
@@ -129,42 +125,16 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		enableSlideMenus(false);
 	}
 
-	protected void initUpgradeAndAdWidgets(View view) {
-		if (!AppUtils.isNeedToUpgrade(getActivity())) {
-			view.findViewById(R.id.bannerUpgradeView).setVisibility(View.GONE);
-		} else {
-			view.findViewById(R.id.bannerUpgradeView).setVisibility(View.VISIBLE);
-
-			Button upgradeBtn = (Button) view.findViewById(R.id.upgradeBtn);
-			upgradeBtn.setOnClickListener(this);
-
-			mopubAdLayout = (LinearLayout) view.findViewById(R.id.mopubAdLayout);
-			moPubBannerView = MopubHelper.showBannerAd(upgradeBtn, mopubAdLayout, getActivity());
-		}
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-
-		if (moPubBannerView != null) {
-			moPubBannerView.destroy();
-		}
-	}
-
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-//		if (AppUtils.isNeedToUpgrade(getActivity())) {
-//			MopubHelper.createRectangleAd(getActivity());
-//		}
+
 		Log.d("LccLog-GameLiveFragment", " BASE FRAGMENT invalidateGameScreen gameId = " + gameId);
 
 		if (gameId != 0) {
 			invalidateGameScreen();
 		}
 	}
-
 
 	protected void setBoardView(ChessBoardBaseView boardView) {
 		this.boardView = boardView;
@@ -206,12 +176,17 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		boardView.releaseRunnable();
 		boardView.releaseBitmaps();
 
-		/*if (AppUtils.isNeedToUpgrade(getActivity())) {
-			MopubHelper.destroyRectangleAd();
-		}*/
-
 		getActivityFace().removeOnCloseMenuListener(this);
 		releaseScreenLockFlag();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+
+		if (isNeedToUpgrade() && getMopubRectangleAd() != null) {
+			getMopubRectangleAd().destroy();
+		}
 	}
 
 	@Override
@@ -522,6 +497,14 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	protected View getBottomPanelView() {
 		return bottomPanelView;
+	}
+
+	protected void initPopupAdWidget(View layout) {
+		mopubRectangleAd = (MoPubView) layout.findViewById(R.id.mopubRectangleAd);
+	}
+
+	public MoPubView getMopubRectangleAd() {
+		return mopubRectangleAd;
 	}
 
 	public static class LabelsConfig {

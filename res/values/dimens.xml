@@ -145,7 +145,7 @@
 
 	<!--Popup-->
 	<dimen name="ad_popup_width">300dip</dimen>
-	<dimen name="ad_popup_height">220dip</dimen>
+	<dimen name="ad_popup_height">250dip</dimen>
 	<dimen name="game_end_popup_text_size">21sp</dimen>
 
 	<!--Pending load-->
@@ -385,5 +385,6 @@
 	<dimen name="welcome_tab_button_text_size">16sp</dimen>
 	<dimen name="theme_back_preview_aspect">4.0dp</dimen>
 	<dimen name="pawn_promotion_item_size">56dp</dimen>
+	<dimen name="ad_banner_height">50dp</dimen>
 
 </resources>

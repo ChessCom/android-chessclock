@@ -109,9 +109,7 @@
 	<dimen name="player_indicator_size1">9dip</dimen>
 
 	<!--Popup-->
-	<dimen name="ad_popup_width">300dip</dimen>
-	<dimen name="ad_popup_height">190dip</dimen>
-	<dimen name="popup_dialog_width">300dip</dimen>
+	<dimen name="popup_dialog_width">350dip</dimen>
 	<dimen name="popup_dialog_text_max_width">250dip</dimen>
 
 	<!--Pending load-->

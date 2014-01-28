@@ -305,19 +305,16 @@ public class EnhancedImageDownloader {
 		protected void onPostExecute(Bitmap bitmap) {
 			Log.d(LOG_TAG, "onPostExecute bitmap " + bitmap + " for url = " + url);
 			if (holderReference == null || holderReference.get() == null) {
-//				Log.d(LOG_TAG, "holderReference == null || holderReference.get() == null bitmap " + bitmap +  " for url = " + url);
 				return;
 			} else {
 				holderReference.get().progress.setVisibility(View.GONE);
 			}
 
 			if (isCancelled()) {
-//				Log.d(LOG_TAG, "isCancelled bitmap " + bitmap +  " for url = " + url);
 				bitmap = null;
 			}
 
 			if (context == null) { // if activity dead, escape
-//				Log.d(LOG_TAG, "context == null bitmap " + bitmap +  " for url = " + url);
 				return;
 			}
 			ProgressImageView holder = holderReference.get();
@@ -338,7 +335,6 @@ public class EnhancedImageDownloader {
 
 		public AsyncTask<String, Void, Bitmap> executeTask(String... input) {
 			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-//				executeOnExecutor(THREAD_POOL_EXECUTOR, input);
 				executeOnExecutor(DUAL_THREAD_EXECUTOR, input);
 			} else {
 				executeOnExecutor(SERIAL_EXECUTOR, input);

@@ -1,4 +1,4 @@
-package com.chess.ui.fragments.home;
+package com.chess.ui.fragments;
 
 import android.animation.LayoutTransition;
 import android.os.Bundle;
@@ -24,7 +24,6 @@ import com.chess.statics.Symbol;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.engine.configs.LiveGameConfig;
-import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.comp.GameCompFragmentTablet;
 import com.chess.ui.fragments.daily.DailyGameOptionsFragment;
@@ -46,7 +45,7 @@ import java.util.Map;
  * Date: 11.04.13
  * Time: 18:29
  */
-public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu.OnOpenedListener {
+public class RightPlayFragment extends CommonLogicFragment implements SlidingMenu.OnOpenedListener {
 
 	public static final int DAILY_CHALLENGE_MODE = 11;
 	public static final int LIVE_CHALLENGE_MODE = 22;
@@ -73,23 +72,23 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	private RatingUpdateListener ratingUpdateListener;
 	private String opponentName;
 
-	public HomePlayFragment() {
+	public RightPlayFragment() {
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, CENTER_MODE);
 		bundle.putString(OPPONENT_NAME, Symbol.EMPTY);
 		setArguments(bundle);
 	}
 
-	public static HomePlayFragment createInstance(int mode) {
-		HomePlayFragment fragment = new HomePlayFragment();
+	public static RightPlayFragment createInstance(int mode) {
+		RightPlayFragment fragment = new RightPlayFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, mode);
 		fragment.setArguments(bundle);
 		return fragment;
 	}
 
-	public static HomePlayFragment createInstance(int mode, String opponentName) {
-		HomePlayFragment fragment = new HomePlayFragment();
+	public static RightPlayFragment createInstance(int mode, String opponentName) {
+		RightPlayFragment fragment = new RightPlayFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, mode);
 		bundle.putString(OPPONENT_NAME, opponentName);
@@ -154,8 +153,10 @@ public class HomePlayFragment extends CommonLogicFragment implements SlidingMenu
 	public void onResume() {
 		super.onResume();
 
-		loadRatings();
-		loadRecentOpponents();
+		if (isVisible()) {
+			loadRatings();
+			loadRecentOpponents();
+		}
 
 		if (mode == DAILY_CHALLENGE_MODE) {
 			toggleDailyOptionsMode();

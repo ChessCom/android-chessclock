@@ -10,8 +10,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.home.HomeFeedFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,7 +39,7 @@ public class DailyChatNotesTabFragment extends CommonLogicFragment implements Ra
 
 		showActionBar(true);
 
-		Fragment homeGamesFragment = new HomePlayFragment();
+		Fragment homeGamesFragment = new RightPlayFragment();
 		changeInternalFragment(homeGamesFragment);
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
@@ -64,10 +64,9 @@ public class DailyChatNotesTabFragment extends CommonLogicFragment implements Ra
 			previousCheckedId = checkedButtonId;
 			switch (checkedButtonId) {
 				case R.id.leftTabBtn: {
-					Fragment fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
+					Fragment fragment = findFragmentByTag(RightPlayFragment.class.getSimpleName());
 					if (fragment == null) {
-						fragment = new HomePlayFragment();
-//						fragment = HomePlayFragment.createInstance(CENTER_MODE);
+						fragment = new RightPlayFragment();
 					}
 					changeInternalFragment(fragment);
 					break;

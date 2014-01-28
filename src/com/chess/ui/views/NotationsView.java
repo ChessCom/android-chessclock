@@ -109,7 +109,7 @@ public class NotationsView extends LinearLayout implements NotationFace,
 		notationsAdapter = new NotationsPagerAdapter();
 		viewPager.setAdapter(notationsAdapter);
 		viewPager.setOnPageChangeListener(this);
-		boolean smallScreen = AppUtils.noNeedTitleBar(context);
+		boolean smallScreen = AppUtils.isSmallScreen(context);
 
 		textPadding = resources.getDimensionPixelSize(R.dimen.notations_text_padding);
 		textSidePadding = resources.getDimensionPixelSize(R.dimen.notations_text_side_padding);
@@ -126,7 +126,7 @@ public class NotationsView extends LinearLayout implements NotationFace,
 			ButtonDrawableBuilder.setBackgroundToView(this, attrs);
 		}
 
-		smallScreen = AppUtils.noNeedTitleBar(context);
+		smallScreen = AppUtils.isSmallScreen(context);
 		if (smallScreen) {
 			setVisibility(GONE);
 		}

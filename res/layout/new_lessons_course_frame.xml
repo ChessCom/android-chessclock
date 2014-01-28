@@ -56,7 +56,6 @@
 		android:minHeight="@dimen/big_button_height"
 		android:text="@string/upgrade"
 		android:textSize="@dimen/game_controls_text_size"
-		android:textColor="@color/white"
 		style="@style/Rect.Bottom.Right.Blue"
 		android:visibility="gone"
 		android:shadowColor="@color/transparent" />

@@ -66,7 +66,7 @@
 			android:layout_height="wrap_content"
 			style="@style/ListItem.Header_2.Light"
 			android:gravity="center_vertical"
-			android:layout_alignParentBottom="true"
+			android:layout_above="@+id/bannerUpgradeView"
 			android:paddingLeft="7dip"
 			android:paddingRight="15dip">
 
@@ -91,6 +91,14 @@
 
 		</com.chess.widgets.LinLayout>
 
+		<!--Ads-->
+		<include
+			android:id="@id/bannerUpgradeView"
+			layout="@layout/mopub_ad_view"
+			android:layout_gravity="center_horizontal"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			/>
 
 	</RelativeLayout>
 

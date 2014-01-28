@@ -126,7 +126,6 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 						liveService = getLiveService();
 					} catch (DataNotValidException e) {
 						logTest(e.getMessage());
-						showToast(e.getMessage() + " go back");
 						getActivityFace().showPreviousFragment();   // TODO handle correctly
 						return;
 					}
@@ -144,7 +143,8 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 							liveFragment = GameLiveFragmentTablet.createInstance(gameId);
 						}
 					}
-					getActivityFace().openFragment(liveFragment, true);
+//					getActivityFace().openFragment(liveFragment, true);
+					getActivityFace().openFragment(liveFragment);
 
 					closeOnResume = true;
 				}

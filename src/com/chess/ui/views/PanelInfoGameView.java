@@ -124,7 +124,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_medium_size);
 		}
 
-		smallScreen = AppUtils.noNeedTitleBar(context);
+		smallScreen = AppUtils.isSmallScreen(context);
 
 		int capturedPiecesViewHeight = (int) resources.getDimension(R.dimen.panel_info_captured_pieces_height);
 		int capturedPiecesViewWidth = (int) resources.getDimension(R.dimen.panel_info_captured_pieces_width);

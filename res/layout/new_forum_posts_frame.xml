@@ -5,23 +5,6 @@
 	android:layout_height="match_parent"
 	android:background="@color/white">
 
-	<RelativeLayout
-		android:id="@+id/loadingView"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:minHeight="60dip"
-		android:visibility="gone"
-		android:layout_centerInParent="true">
-
-		<ProgressBar
-			android:layout_width="@dimen/pending_progress_bar_size"
-			android:layout_height="@dimen/pending_progress_bar_size"
-			android:layout_margin="5dip"
-			android:layout_centerInParent="true"
-			style="?android:attr/progressBarStyle" />
-
-	</RelativeLayout>
-
 	<ListView
 		android:id="@+id/listView"
 		android:layout_width="match_parent"
@@ -36,7 +19,7 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
 		style="@style/ListItem.Header_2.Light"
-		android:layout_alignParentBottom="true"
+		android:layout_above="@+id/bannerUpgradeView"
 		android:gravity="center"
 		android:paddingLeft="9dip"
 		android:paddingRight="9dip"
@@ -61,7 +44,7 @@
 		android:paddingBottom="15dip"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
-		android:layout_alignParentBottom="true"
+		android:layout_above="@id/bannerUpgradeView"
 		android:visibility="gone">
 
 		<com.chess.widgets.RoboEditText
@@ -81,5 +64,14 @@
 			android:textSize="14sp" />
 
 	</com.chess.widgets.LinLayout>
+
+	<!--Ads-->
+	<include
+		android:id="@id/bannerUpgradeView"
+		layout="@layout/mopub_ad_view"
+		android:layout_gravity="center_horizontal"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		/>
 
 </RelativeLayout>

@@ -16,7 +16,7 @@ import com.chess.db.DbScheme;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.FriendsPaginationAdapter;
 import com.chess.ui.adapters.FriendsSimpleCursorAdapter;
-import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 
@@ -90,11 +90,11 @@ public class FriendsRightFragment extends FriendsFragment implements AdapterView
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position + offset);
 			opponentName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 
-			HomePlayFragment gameOptionsFragment;
+			RightPlayFragment gameOptionsFragment;
 			if (code == DAILY_OPPONENT_REQUEST) {
-				gameOptionsFragment = HomePlayFragment.createInstance(HomePlayFragment.DAILY_CHALLENGE_MODE, opponentName);
+				gameOptionsFragment = RightPlayFragment.createInstance(RightPlayFragment.DAILY_CHALLENGE_MODE, opponentName);
 			} else {
-				gameOptionsFragment = HomePlayFragment.createInstance(HomePlayFragment.LIVE_CHALLENGE_MODE, opponentName);
+				gameOptionsFragment = RightPlayFragment.createInstance(RightPlayFragment.LIVE_CHALLENGE_MODE, opponentName);
 			}
 
 			getActivityFace().changeRightFragment(gameOptionsFragment);
@@ -130,11 +130,11 @@ public class FriendsRightFragment extends FriendsFragment implements AdapterView
 		boolean headerAdded = ((ListView) listView).getHeaderViewsCount() > 0; // used to check if header added
 
 		if (headerAdded && position == 0) {
-			HomePlayFragment gameOptionsFragment;
+			RightPlayFragment gameOptionsFragment;
 			if (code == DAILY_OPPONENT_REQUEST) {
-				gameOptionsFragment = HomePlayFragment.createInstance(HomePlayFragment.DAILY_CHALLENGE_MODE, Symbol.EMPTY);
+				gameOptionsFragment = RightPlayFragment.createInstance(RightPlayFragment.DAILY_CHALLENGE_MODE, Symbol.EMPTY);
 			} else {
-				gameOptionsFragment = HomePlayFragment.createInstance(HomePlayFragment.LIVE_CHALLENGE_MODE, Symbol.EMPTY);
+				gameOptionsFragment = RightPlayFragment.createInstance(RightPlayFragment.LIVE_CHALLENGE_MODE, Symbol.EMPTY);
 			}
 
 			getActivityFace().changeRightFragment(gameOptionsFragment);

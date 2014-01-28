@@ -22,6 +22,7 @@ import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.chess.db.DbScheme.*;
@@ -470,7 +471,7 @@ public class DbDataManager {
 	/**
 	 * @return true if still have current games
 	 */
-	public static boolean checkAndDeleteNonExistCurrentGames(ContentResolver contentResolver, List<DailyCurrentGameData> gamesList, String username) {
+	public static boolean checkAndDeleteNonExistCurrentGames(ContentResolver contentResolver, List<DailyCurrentGameData> serverGamesList, String username) {
 		// compare to current list games
 
 		final String[] arguments1 = sArguments1;
@@ -478,16 +479,25 @@ public class DbDataManager {
 
 		Uri uri = uriArray[Tables.DAILY_CURRENT_GAMES.ordinal()];
 		long[] gamesIds;
+		HashMap<Long, Long> removeIdMap = new HashMap<Long, Long>();
 		// get Current games ids
 		Cursor cursor = contentResolver.query(uri, PROJECTION_GAME_ID, SELECTION_USER, arguments1, null);
 		if (cursor != null && cursor.moveToFirst()) {
 			gamesIds = new long[cursor.getCount()];
 			int i = 0;
 			do {
-				gamesIds[i++] = getLong(cursor, V_ID);
+				long gameId = getLong(cursor, V_ID);
+				for (long localGameId : gamesIds) {
+					if (localGameId == gameId && !removeIdMap.containsKey(gameId)) {
+						long tableRecordId = getId(cursor);
+						removeIdMap.put(gameId, tableRecordId);
+					}
+				}
+
+				gamesIds[i++] = gameId;
 			} while (cursor.moveToNext());
 			cursor.close();
-		} else if (gamesList.size() == 0) { // means no current games for that user
+		} else if (serverGamesList.size() == 0) { // means no current games for that user
 			arguments1[0] = username;
 			contentResolver.delete(uri, SELECTION_USER, arguments1);
 
@@ -502,20 +512,24 @@ public class DbDataManager {
 			return true;
 		}
 
+		for (Long gameId : removeIdMap.keySet()) {
+			contentResolver.delete(ContentUris.withAppendedId(uri, removeIdMap.get(gameId)), null, null);
+		}
+
 		// collect ids that need to remove from DB
 		List<Long> idsToRemove = new ArrayList<Long>();
-		for (long gamesId : gamesIds) {
+		for (long localGameId : gamesIds) {
 			boolean found = false;
 			// if that gameId exist in list that we received from server, then skip
-			for (DailyCurrentGameData listCurrentItem : gamesList) {
-				if (listCurrentItem.getGameId() == gamesId) {
+			for (DailyCurrentGameData listCurrentItem : serverGamesList) {
+				if (listCurrentItem.getGameId() == localGameId) {
 					found = true;
 					break;
 				}
 			}
 			// if that game doesn't exist on server anymore, then remove it from DB
 			if (!found) {
-				idsToRemove.add(gamesId);
+				idsToRemove.add(localGameId);
 			}
 		}
 

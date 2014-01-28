@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
 import com.chess.statics.Symbol;
-import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,7 +38,7 @@ public class DailyGamesFinishedFragmentTablet extends DailyGamesFinishedFragment
 
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-			transaction.add(R.id.optionsFragmentContainer, HomePlayFragment.createInstance(RIGHT_MENU_MODE))
+			transaction.add(R.id.optionsFragmentContainer, RightPlayFragment.createInstance(RIGHT_MENU_MODE))
 					.commitAllowingStateLoss();
 		}
 	}

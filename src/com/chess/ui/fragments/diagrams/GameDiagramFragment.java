@@ -704,7 +704,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	private void init() {
 		labelsConfig = new LabelsConfig();
 
-		isSmallScreen = AppUtils.noNeedTitleBar(getActivity());
+		isSmallScreen = AppUtils.isSmallScreen(getActivity());
 		nexus4Kind = AppUtils.isNexus4Kind(getActivity());
 		isPuzzle = diagramItem.getDiagramType().equals(GameDiagramItem.CHESS_PROBLEM);
 	}

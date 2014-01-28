@@ -26,6 +26,7 @@ import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.LogMe;
+import com.chess.utilities.MopubHelper;
 import com.chess.widgets.ProfileImageView;
 import com.chess.widgets.RoboButton;
 
@@ -296,9 +297,10 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
 
-		/*if (AppUtils.isNeedToUpgrade(getActivity())) {
-			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-		}*/
+		if (isNeedToUpgrade()) {
+			initPopupAdWidget(layout);
+			MopubHelper.showRectangleAd(getMopubRectangleAd(), getActivity());
+		}
 	}
 
 	private void runNewObserverGame() throws DataNotValidException {

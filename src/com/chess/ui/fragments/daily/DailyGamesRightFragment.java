@@ -31,7 +31,7 @@ import com.chess.statics.StaticData;
 import com.chess.ui.adapters.*;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -156,8 +156,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.startNewGameBtn) {
-			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
-
+			getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
 		} else if (view.getId() == R.id.acceptBtn) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 			selectedChallengeItem = challengesGamesAdapter.getItem(position);

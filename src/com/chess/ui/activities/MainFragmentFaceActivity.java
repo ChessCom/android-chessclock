@@ -250,7 +250,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				}
 			}
 
-			openFragment(fragmentByTag, true);
+//			openFragment(fragmentByTag, true);
+			openFragment(fragmentByTag);
 		}
 
 		handleOpenDailyGames(intent);
@@ -309,6 +310,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			reviewPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
 			reviewPopupFragment.show(getSupportFragmentManager(), ASK_FOR_REVIEW_TAG);
 			reviewPopupFragment.setCancelable(false);
+			reviewPopupFragment.setCancelableOnTouch(false);
 		}
 	}
 
@@ -535,30 +537,31 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		sm.setTouchModeAbove(touchMode);
 	}
 
-	public void openFragment(BasePopupsFragment fragment, boolean rewind) {
-
-		if (rewind) {
-
-			// rewind to latest backstack position of fragment
-
-			FragmentManager fragmentManager = getSupportFragmentManager();
-			String simpleName = fragment.getClass().getSimpleName();
-
-			int count = fragmentManager.getBackStackEntryCount();
-
-			for (int i = count - 1; i >= 0; i--) {
-				if (fragmentManager.getBackStackEntryAt(i).getName().equals(simpleName)) {
-					for (int j = 0; j < count - i; j++) {
-						fragmentManager.popBackStackImmediate();
-					}
-					break;
-				}
-			}
-
-		}
-
-		openFragment(fragment);
-	}
+//	@Override
+//	public void openFragment(BasePopupsFragment fragment, boolean rewind) {
+//
+//		if (rewind) {
+//
+//			// rewind to latest backstack position of fragment
+//
+//			FragmentManager fragmentManager = getSupportFragmentManager();
+//			String simpleName = fragment.getClass().getSimpleName();
+//
+//			int count = fragmentManager.getBackStackEntryCount();
+//
+//			for (int i = count - 1; i >= 0; i--) {
+//				if (fragmentManager.getBackStackEntryAt(i).getName().equals(simpleName)) {
+//					for (int j = 0; j < count - i; j++) {
+//						fragmentManager.popBackStackImmediate();
+//					}
+//					break;
+//				}
+//			}
+//
+//		}
+//
+//		openFragment(fragment);
+//	}
 
 	@Override
 	public void openFragment(BasePopupsFragment fragment) {

@@ -104,6 +104,8 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		pageIndicatorView = (PageIndicatorView) view.findViewById(R.id.pageIndicatorView);
 		pageIndicatorView.setPagerFace(this);
 
+		initUpgradeAndAdWidgets(view);
+
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
 		getActivityFace().showActionMenu(R.id.menu_add, true);

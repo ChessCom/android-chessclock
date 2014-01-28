@@ -25,7 +25,7 @@ import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.daily.DailyChatFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
@@ -565,7 +565,7 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameDa
 		super.onClick(view);
 		if (view.getId() == R.id.newGamePopupBtn) {
 			dismissEndGameDialog();
-			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
+			getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
 		} else if (view.getId() == R.id.rematchPopupBtn) { // TODO fix, shouldn't be here
 			sendRematch();
 			dismissEndGameDialog();

@@ -112,20 +112,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 		setTitle(R.string.forums);
 
-		// add headerView
-		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_forum_header_view, null, false);
-		forumHeaderTxt = (TextView) headerView.findViewById(R.id.forumHeaderTxt);
-
-		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.addHeaderView(headerView);
-		listView.setAdapter(postsCursorAdapter);
-		listView.setOnItemClickListener(this);
-
-		pageIndicatorView = (PageIndicatorView) view.findViewById(R.id.pageIndicatorView);
-		pageIndicatorView.setPagerFace(this);
-
-		replyView = view.findViewById(R.id.replyView);
-		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
+		widgetsInit(view);
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_share, true);
@@ -411,5 +398,24 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 			requestPage(currentPage);
 		}
+	}
+
+	private void widgetsInit(View view) {
+		// add headerView
+		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_forum_header_view, null, false);
+		forumHeaderTxt = (TextView) headerView.findViewById(R.id.forumHeaderTxt);
+
+		ListView listView = (ListView) view.findViewById(R.id.listView);
+		listView.addHeaderView(headerView);
+		listView.setAdapter(postsCursorAdapter);
+		listView.setOnItemClickListener(this);
+
+		pageIndicatorView = (PageIndicatorView) view.findViewById(R.id.pageIndicatorView);
+		pageIndicatorView.setPagerFace(this);
+
+		replyView = view.findViewById(R.id.replyView);
+		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
+
+		initUpgradeAndAdWidgets(view);
 	}
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import com.chess.R;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -25,8 +26,6 @@ import com.chess.ui.interfaces.FragmentParentFace;
  */
 public class ForumCategoriesFragmentTablet extends ForumCategoriesFragment implements FragmentParentFace{
 
-	private boolean noCategoriesFragmentsAdded;
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.new_common_tablet_content_frame, container, false);
@@ -37,12 +36,7 @@ public class ForumCategoriesFragmentTablet extends ForumCategoriesFragment imple
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		int categoryId = DbDataManager.getInt(cursor, DbScheme.V_ID);
 
-//		if (noCategoriesFragmentsAdded) {
-			changeInternalFragment(ForumTopicsFragmentTablet.createInstance(categoryId, this));
-//			noCategoriesFragmentsAdded = false;
-//		} else {
-//			changeInternalFragment(ForumTopicsFragmentTablet.createInstance(categoryId, this));
-//		}
+		changeInternalFragment(ForumTopicsFragmentTablet.createInstance(categoryId, this));
 	}
 
 	@Override
@@ -54,10 +48,8 @@ public class ForumCategoriesFragmentTablet extends ForumCategoriesFragment imple
 			need2update = false;
 
 			// open first category by default
-
 			int categoryId = DbDataManager.getInt(cursor, DbScheme.V_ID);
 			changeInternalFragment(ForumTopicsFragmentTablet.createInstance(categoryId, this));
-			noCategoriesFragmentsAdded = true;
 
 			return true;
 		}
@@ -70,6 +62,13 @@ public class ForumCategoriesFragmentTablet extends ForumCategoriesFragment imple
 		super.init();
 		categoriesCursorAdapter.setLayoutId(R.layout.new_common_titled_list_item_thin_white);
 
+	}
+
+	@Override
+	protected void widgetsInit(View view) {
+		ListView listView = (ListView) view.findViewById(R.id.listView);
+		listView.setAdapter(categoriesCursorAdapter);
+		listView.setOnItemClickListener(this);
 	}
 
 	@Override
@@ -100,7 +99,6 @@ public class ForumCategoriesFragmentTablet extends ForumCategoriesFragment imple
 			int last = entryCount - 1;
 			FragmentManager.BackStackEntry stackEntry = getChildFragmentManager().getBackStackEntryAt(last);
 			if (stackEntry != null && stackEntry.getName().equals(SettingsThemeCustomizeFragment.class.getSimpleName())) {
-				noCategoriesFragmentsAdded = true;
 			}
 
 			return getChildFragmentManager().popBackStackImmediate();

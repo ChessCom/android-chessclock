@@ -96,8 +96,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		if (getAppData().getFirstTimeStart() == 0) {
 			getAppData().setFirstTimeStart(System.currentTimeMillis());
-			preferencesEditor.putInt(AppConstants.ADS_SHOW_COUNTER, 0);
-			preferencesEditor.commit();
 		}
 	}
 
@@ -246,20 +244,9 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			this.facebookToken = facebookToken;
 		}
 
-		public LoginUpdateListener() {
-			super(getContext(), LoginItem.class);
-		}
-
 		@Override
 		public void showProgress(boolean show) {
-//			if (show) {    // let's try to not show overlay
-//				showPopupHardProgressDialog();
-//			} else {
-//				if (isPaused)
-//					return;
-//
-//				dismissProgressDialog();
-//			}
+			// don't show overlay
 		}
 
 		@Override
@@ -315,14 +302,12 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected void onSessionStateChange(Session session, SessionState state, Exception exception) {
 		if (state != null && state.isOpened()) {
-			Log.d("TEST", "onSessionStateChange -> login with facebook");
 			String accessToken = session.getAccessToken();
 			loginWithFacebook(accessToken, new LoginUpdateListener(accessToken));
 		}
 	}
 
 	protected void loginWithFacebook(String accessToken, LoginUpdateListener listener) {
-		Log.d("TEST", "loginWithFacebook");
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);

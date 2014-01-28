@@ -962,6 +962,14 @@ public class AppData {
 		return getStringValue(DEVICE_ID, Symbol.EMPTY);
 	}
 
+	public void setAdsShowCounter(int value) {
+		setIntValue(ADS_SHOW_COUNTER, value);
+	}
+
+	public int getAdsShowCounter() {
+		return getIntValue(ADS_SHOW_COUNTER, 0);
+	}
+
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {

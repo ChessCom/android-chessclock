@@ -82,9 +82,11 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	// game op action ids
 	private static final int ID_NEW_GAME = 0;
-	private static final int ID_SHARE_PGN = 1;
-	private static final int ID_FLIP_BOARD = 2;
-	private static final int ID_SETTINGS = 3;
+	private static final int ID_NEW_GAME_WHITE = 1;
+	private static final int ID_NEW_GAME_BLACK = 2;
+	private static final int ID_SHARE_PGN = 3;
+	private static final int ID_FLIP_BOARD = 4;
+	private static final int ID_SETTINGS = 5;
 
 	private static final long AUTO_FLIP_DELAY = 500;
 	private static final int FADE_ANIM_DURATION = 300;
@@ -106,7 +108,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	protected NotationsView notationsView;
 	private boolean humanBlack;
-	private SparseArray<String> optionsList;
+	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private PromotesAdapter resultsAdapter;
 	protected MultiDirectionSlidingDrawer slidingDrawer;
@@ -291,8 +293,35 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		if (optionsSelectFragment != null) {
 			return;
 		}
-		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsList);
+		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION);
+	}
+
+	@Override
+	public void onValueSelected(int code) {
+		if (code == ID_NEW_GAME) {
+			newGame();
+		} else if (code == ID_NEW_GAME_WHITE) {
+			compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
+			startNewGame();
+		} else if (code == ID_NEW_GAME_BLACK) {
+			compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK);
+			startNewGame();
+		} else if (code == ID_FLIP_BOARD) {
+			boardView.flipBoard();
+		} else if (code == ID_SHARE_PGN) {
+			sendPGN();
+		} else if (code == ID_SETTINGS) {
+			getActivityFace().openFragment(SettingsGeneralFragment.createInstance(SettingsGeneralFragment.WELCOME_MODE));
+		}
+
+		optionsSelectFragment.dismiss();
+		optionsSelectFragment = null;
+	}
+
+	@Override
+	public void onDialogCanceled() {
+		optionsSelectFragment = null;
 	}
 
 	@Override
@@ -685,28 +714,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
-	public void onValueSelected(int code) {
-		if (code == ID_NEW_GAME) {
-			newGame();
-		} else if (code == ID_FLIP_BOARD) {
-			//resideBoardIfCompWhite();
-			boardView.flipBoard();
-		} else if (code == ID_SHARE_PGN) {
-			sendPGN();
-		} else if (code == ID_SETTINGS) {
-			getActivityFace().openFragment(new SettingsGeneralFragment());
-		}
-
-		optionsSelectFragment.dismiss();
-		optionsSelectFragment = null;
-	}
-
-	@Override
-	public void onDialogCanceled() {
-		optionsSelectFragment = null;
-	}
-
-	@Override
 	public void onClick(View view) {
 		super.onClick(view);
 
@@ -833,7 +840,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 		ArrayList<PromoteItem> menuItems = new ArrayList<PromoteItem>();
 		menuItems.add(new PromoteItem(R.string.what_is_chess_com, R.string.ic_pawn));
-		menuItems.add(new PromoteItem(R.string.play_online, R.string.ic_planet));
+		menuItems.add(new PromoteItem(R.string.play_online, R.string.ic_vs_random));
 		menuItems.add(new PromoteItem(R.string.challenge_friend, R.string.ic_challenge_friend));
 		menuItems.add(new PromoteItem(R.string.rematch, R.string.ic_comp_game));
 		menuItems.add(new PromoteItem(R.string.tactics_and_puzzles, R.string.ic_help));
@@ -894,11 +901,13 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		notationsView.resetNotations();
 
 		{// options list setup
-			optionsList = new SparseArray<String>();
-			optionsList.put(ID_NEW_GAME, getString(R.string.new_game));
-			optionsList.put(ID_FLIP_BOARD, getString(R.string.flip_board));
-			optionsList.put(ID_SHARE_PGN, getString(R.string.share_pgn));
-			optionsList.put(ID_SETTINGS, getString(R.string.settings));
+			optionsArray = new SparseArray<String>();
+			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
+			optionsArray.put(ID_NEW_GAME_WHITE, getString(R.string.new_game_arg, getString(R.string.white)));
+			optionsArray.put(ID_NEW_GAME_BLACK, getString(R.string.new_game_arg, getString(R.string.black)));
+			optionsArray.put(ID_FLIP_BOARD, getString(R.string.flip_board));
+			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
+			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 		}
 
 		{ // Results part

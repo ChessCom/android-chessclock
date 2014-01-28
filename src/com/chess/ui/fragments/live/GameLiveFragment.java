@@ -35,7 +35,7 @@ import com.chess.ui.engine.Move;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
@@ -51,6 +51,7 @@ import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsLiveView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
+import com.chess.utilities.MopubHelper;
 import com.chess.widgets.ProfileImageView;
 
 import java.util.List;
@@ -672,10 +673,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
 
-
-//		if (AppUtils.isNeedToUpgrade(getActivity())) {
-//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-//		}
+		if (isNeedToUpgrade()) {
+			initPopupAdWidget(layout);
+			MopubHelper.showRectangleAd(getMopubRectangleAd(), getActivity());
+		}
 	}
 
 	@Override
@@ -801,7 +802,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void newGame() {
-		getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
+		getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
 	}
 
 	@Override

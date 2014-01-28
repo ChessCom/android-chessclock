@@ -43,7 +43,7 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
+		return inflater.inflate(R.layout.new_white_list_ads_view_frame, container, false);
 	}
 
 	@Override
@@ -52,9 +52,7 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 
 		setTitle(R.string.forums);
 
-		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(categoriesCursorAdapter);
-		listView.setOnItemClickListener(this);
+		widgetsInit(view);
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
@@ -151,5 +149,13 @@ public class ForumCategoriesFragment extends CommonLogicFragment implements Adap
 		categoriesCursorAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
 		categoriesUpdateListener = new CategoriesUpdateListener();
 		saveForumCategoriesListener = new SaveForumCategoriesListener();
+	}
+
+	protected void widgetsInit(View view) {
+		ListView listView = (ListView) view.findViewById(R.id.listView);
+		listView.setAdapter(categoriesCursorAdapter);
+		listView.setOnItemClickListener(this);
+
+		initUpgradeAndAdWidgets(view);
 	}
 }

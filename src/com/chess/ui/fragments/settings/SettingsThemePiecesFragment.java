@@ -36,7 +36,6 @@ import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +106,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
+
 		themePiecesAdapter = new ThemePiecesAdapter(getContext(), null);
 		defaultPiecesAdapter = new DefaultPiecesAdapter(getActivity(), defaultPiecesSelectionList);
 	}
@@ -126,8 +126,10 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 				} while (cursor.moveToNext());
 
 				updateUiData();
-			} else {
+			} else if (isNetworkAvailable()) {
 				getPieces();
+			} else {
+				listView.setAdapter(defaultPiecesAdapter);
 			}
 		} else {
 			listView.setAdapter(defaultPiecesAdapter);
@@ -283,7 +285,6 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		progressUpdateListener = new ProgressUpdateListener();
 
 		Resources resources = getResources();
-
 		themePiecesSelectionList = new ArrayList<SelectionItem>();
 		themePiecesItemsList = new ArrayList<PieceSingleItem.Data>();
 
@@ -390,7 +391,6 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 		private final int previewWidth;
 		private final Bitmap placeHolderBitmap;
-		//			private final float aspectRatio;
 		private final RelativeLayout.LayoutParams imageParams;
 		private final LinearLayout.LayoutParams linearLayoutParams;
 		private final RelativeLayout.LayoutParams progressParams;
@@ -464,7 +464,6 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 		private final int previewWidth;
 		private final Bitmap placeHolderBitmap;
-		//			private final float aspectRatio;
 		private final RelativeLayout.LayoutParams imageParams;
 		private final LinearLayout.LayoutParams linearLayoutParams;
 		private final RelativeLayout.LayoutParams progressParams;
@@ -489,22 +488,11 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 		@Override
 		protected View createView(ViewGroup parent) { // View to display in layout
-			View view = inflater.inflate(R.layout.selection_progress_image_item, parent, false);
+			View view = inflater.inflate(R.layout.selection_image_item, parent, false);
 			ViewHolder holder = new ViewHolder();
-			holder.image = (ProgressImageView) view.findViewById(R.id.image);
+			holder.image = (ImageView) view.findViewById(R.id.image);
 
 			holder.image.setLayoutParams(linearLayoutParams);
-
-			// Change Placeholder
-			holder.image.placeholder = placeHolderBitmap;
-
-			// Change Image params
-			holder.image.getImageView().setLayoutParams(imageParams);
-			holder.image.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
-
-			// Change ProgressBar params
-			holder.image.getProgressBar().setLayoutParams(progressParams);
-
 			holder.text = (CheckedTextView) view.findViewById(R.id.text);
 
 			view.setTag(holder);
@@ -524,7 +512,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 		private class ViewHolder {
 			public CheckedTextView text;
-			public ProgressImageView image;
+			public ImageView image;
 		}
 
 		public Context getContext() {

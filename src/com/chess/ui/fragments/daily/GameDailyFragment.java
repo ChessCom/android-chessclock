@@ -40,8 +40,8 @@ import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.configs.LiveGameConfig;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsDailyChessFragment;
@@ -56,6 +56,7 @@ import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsDailyView;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.MopubHelper;
 import com.chess.widgets.ProfileImageView;
 
 import java.util.Calendar;
@@ -867,8 +868,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		ratingTitleTxt.setText(getString(R.string.new_arg_rating_, gameType));
 		resultRatingTxt.setText(String.valueOf(getCurrentPlayerRating()));
 
-//		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-//		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(layout);
 
@@ -878,9 +877,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 
-//		if (AppUtils.isNeedToUpgrade(getActivity())) {
-//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-//		}
+		if (isNeedToUpgrade()) {
+			initPopupAdWidget(layout);
+			MopubHelper.showRectangleAd(getMopubRectangleAd(), getActivity());
+		}
 	}
 
 	private int getCurrentPlayerRating() {
@@ -905,7 +905,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		super.onClick(view);
 		if (view.getId() == R.id.newGamePopupBtn) {
 			dismissEndGameDialog();
-			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
+			getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
 			dismissEndGameDialog();

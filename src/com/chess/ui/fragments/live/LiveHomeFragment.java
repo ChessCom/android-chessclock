@@ -199,7 +199,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 					fragmentByTag = new GameLiveObserveFragmentTablet();
 				}
 			}
-			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag, true);
+//			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag, true);
+			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
 		} else if (liveItem.iconId == R.string.ic_live_standard) { // Current game
 			Fragment fragmentByTag;
 			fragmentByTag = ((LiveBaseActivity)getActivity()).getGameLiveFragment();
@@ -210,7 +211,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 					fragmentByTag = new GameLiveFragmentTablet();
 				}
 			}
-			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag, true);
+//			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag, true);
+			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
 		} else if (liveItem.iconId == R.string.ic_stats) { // Stats
 			getActivityFace().openFragment(StatsGameDetailsFragment.createInstance(
 					StatsGameFragment.LIVE_STANDARD, true, getUsername()));
@@ -364,7 +366,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 						}
 					}
 					if (gameLiveFragment != null) {
-						getActivityFace().openFragment(gameLiveFragment, true);
+//						getActivityFace().openFragment(gameLiveFragment, true);
+						getActivityFace().openFragment(gameLiveFragment);
 					}
 				}
 			});

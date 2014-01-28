@@ -75,29 +75,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		}
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-
-	    /* // try to destroy ad here as MoPub team suggested
-		if (moPubView != null) {
-		moPubView.destroy();
-    	}*/
-		/*preferencesEditor.putLong(AppConstants.LAST_ACTIVITY_PAUSED_TIME, System.currentTimeMillis());
-		preferencesEditor.commit();*/
-	}
-
-	@Override
-	protected void onDestroy() {
-//		if (inneractiveBannerAd != null) {
-//			inneractiveBannerAd.cleanUp();
-//		}
-//		if (inneractiveRectangleAd != null) {
-//			inneractiveRectangleAd.cleanUp();
-//		}
-		super.onDestroy();
-	}
-
 	private void provideActionBar() {
 		if (actionBar == null) {
 			actionBar = getActionBar();

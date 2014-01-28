@@ -112,7 +112,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		super.onResume();
 
 		// Don't load custom board if we are not logged in
-		if (isAuthenticatedUser) {
+		if (isAuthenticatedUser && isNetworkAvailable()) {
 			loadThemedPieces = true;
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BOARDS));
 
@@ -144,17 +144,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 	@Override
 	public Context getMeContext() {
 		return getActivity();
-	}
-
-	@Override
-	public void onClick(View view) {
-		super.onClick(view);
-
-		if (view.getId() == R.id.text) {
-			showToast("test");
-		}
-
-		// TODO -> File | Settings | File Templates.
 	}
 
 	@Override
@@ -254,6 +243,30 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		listView.setAdapter(themeBoardsAdapter);
 	}
 
+	private class LoadServiceConnectionListener implements ServiceConnection {
+
+		@Override
+		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+			serviceBounded = true;
+
+			serviceBinder = (GetAndSaveBoard.ServiceBinder) iBinder;
+			serviceBinder.getService().setProgressUpdateListener(progressUpdateListener);
+
+			if (serviceBinder.getService().isInstallingBoard()) {
+				isBoardLoading = true;
+			}
+			if (needToLoadThemeAfterConnected) {
+				serviceBinder.getService().loadBoard(selectedBoardId, screenWidth);
+			}
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName componentName) {
+			serviceBounded = false;
+			isBoardLoading = false;
+		}
+	}
+
 	private void init() {
 		isAuthenticatedUser = !TextUtils.isEmpty(getUserToken());
 
@@ -296,30 +309,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			if (TextUtils.isEmpty(themeBoardName)) {
 				themeBoardName = AppConstants.DEFAULT_THEME_BOARD_NAME;
 			}
-		}
-	}
-
-	private class LoadServiceConnectionListener implements ServiceConnection {
-
-		@Override
-		public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-			serviceBounded = true;
-
-			serviceBinder = (GetAndSaveBoard.ServiceBinder) iBinder;
-			serviceBinder.getService().setProgressUpdateListener(progressUpdateListener);
-
-			if (serviceBinder.getService().isInstallingBoard()) {
-				isBoardLoading = true;
-			}
-			if (needToLoadThemeAfterConnected) {
-				serviceBinder.getService().loadBoard(selectedBoardId, screenWidth);
-			}
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName componentName) {
-			serviceBounded = false;
-			isBoardLoading = false;
 		}
 	}
 
@@ -438,7 +427,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			holder.image.getProgressBar().setLayoutParams(progressParams);
 
 			holder.text = (CheckedTextView) view.findViewById(R.id.text);
-//			holder.text.setOnClickListener(SettingsThemeBoardsFragment.this);
 
 			view.setTag(holder);
 
@@ -511,7 +499,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			holder.image.getProgressBar().setLayoutParams(progressParams);
 
 			holder.text = (CheckedTextView) view.findViewById(R.id.text);
-//			holder.text.setOnClickListener(SettingsThemeBoardsFragment.this);
 
 			view.setTag(holder);
 
@@ -537,7 +524,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			return context;
 		}
 	}
-
 
 
 }

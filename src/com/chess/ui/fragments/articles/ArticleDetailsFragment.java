@@ -1115,6 +1115,8 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		});
 		replyView = view.findViewById(R.id.replyView);
 		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
+
+		initUpgradeAndAdWidgets(view);
 	}
 
 }

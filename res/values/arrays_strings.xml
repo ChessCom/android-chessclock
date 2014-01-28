@@ -111,71 +111,70 @@
 	<string-array name="languages">
 		<item>English</item>
 		<item>Afrikaans</item>
-		<item>gjuha shqipe</item>
+		<item>Gjuha shqipe</item>
 		<item>العربية</item>
 		<item>Հայերեն</item>
-		<item>euskara</item>
-		<item>беларуская мова</item>
+		<item>Euskara</item>
+		<item>Беларуская мова</item>
 		<item>বাংলা</item>
-		<item>bosanski jezik</item>
-		<item>български език</item>
-		<item>català</item>
+		<item>Bosanski jezik</item>
+		<item>Български език</item>
+		<item>Català</item>
 		<item>中文</item>
 		<item>汉语</item>
-		<item>hrvatski jezik</item>
+		<item>Hrvatski jezik</item>
 		<item>čeština</item>
-		<item>dansk</item>
+		<item>Dansk</item>
 		<item>Nederlands</item>
-		<item>eesti</item>
+		<item>Eesti</item>
 		<item>Wikang Tagalog</item>
-		<item>suomi</item>
-		<item>français</item>
-		<item>galego</item>
+		<item>Suomi</item>
+		<item>Français</item>
+		<item>Galego</item>
 		<item>ქართული</item>
 		<item>Deutsch</item>
 		<item>ελληνικά</item>
 		<item>עברית</item>
 		<item>हिन्दी</item>
 		<item>中文</item>
-		<item>magyar</item>
+		<item>Magyar</item>
 		<item>Íslenska</item>
 		<item>Bahasa Indonesia</item>
 		<item>Gaeilge</item>
-		<item>italiano</item>
+		<item>Italiano</item>
 		<item>日本語</item>
-		<item>қазақ тілі</item>
+		<item>Казақ тілі</item>
 		<item>한국어</item>
 		<item>كوردی‎</item>
 		<item>Кыргызча</item>
 		<item>ພາສາລາວ</item>
-		<item>latine</item>
-		<item>lietuvių kalba</item>
-		<item>македонски јазик</item>
+		<item>Latine</item>
+		<item>Lietuvių kalba</item>
+		<item>Македонски јазик</item>
 		<item>بهاس ملايو‎</item>
 		<item>नेपाली</item>
 		<item>Norsk</item>
 		<item>پښتو</item>
 		<item>فارسی</item>
-		<item>Pirate English</item>
-		<item>język polski</item>
-		<item>português</item>
-		<item>português BR</item>
+		<item>Język polski</item>
+		<item>Português</item>
+		<item>Português BR</item>
 		<item>ਪੰਜਾਬੀ</item>
 		<item>rumantsch grischun</item>
 		<item>Русский</item>
-		<item>српски језик</item>
-		<item>slovenčina</item>
-		<item>slovenski jezik</item>
+		<item>Српски језик</item>
+		<item>Slovenčina</item>
+		<item>Slovenski jezik</item>
 		<item>Soomaaliga</item>
-		<item>español</item>
+		<item>Español</item>
 		<item>Kiswahili</item>
 		<item>Svenska</item>
 		<item>Wikang Tagalog</item>
-		<item>тоҷикӣ</item>
+		<item>Тоҷикӣ</item>
 		<item>தமிழ்</item>
 		<item>ไทย</item>
 		<item>Türkçe</item>
-		<item>українська мова</item>
+		<item>Українська мова</item>
 		<item>اردو</item>
 		<item>O‘zbek</item>
 		<item>Tiếng Việt</item>

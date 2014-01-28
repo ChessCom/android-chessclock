@@ -9,8 +9,9 @@
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/emptyView"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
 		android:gravity="center"
 		android:layout_gravity="center"
 		android:textSize="20sp"
@@ -24,8 +25,20 @@
 		android:id="@+id/listView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
 		android:background="@color/transparent"
 		android:divider="@color/new_friends_list_divider"
-		android:dividerHeight="1dip" />
+		android:dividerHeight="1dip"
+		android:layout_above="@+id/bannerUpgradeView"
+		/>
+
+	<!--Ads-->
+	<include
+		android:id="@id/bannerUpgradeView"
+		layout="@layout/mopub_ad_view"
+		android:layout_gravity="center_horizontal"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		/>
 
 </RelativeLayout>

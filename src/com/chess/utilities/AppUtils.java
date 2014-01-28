@@ -221,7 +221,7 @@ public class AppUtils {
 	 * @param context
 	 * @return
 	 */
-	public static boolean noNeedTitleBar(Context context) {
+	public static boolean isSmallScreen(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 		Configuration config = context.getResources().getConfiguration();
 		return (displayMetrics.density <= MDPI || displayMetrics.densityDpi <= DisplayMetrics.DENSITY_MEDIUM)
@@ -759,7 +759,7 @@ public class AppUtils {
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public static void printTableContent(Cursor cursor, String tableName) {
+	public static void printCursorContent(Cursor cursor, String tableName) {
 		if (cursor.moveToFirst()) {
 			Log.d("TABLE", "____________" + tableName + "_______________");
 			do {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:orientation="vertical"
 	android:layout_width="match_parent"
@@ -11,13 +11,15 @@
 		android:id="@+id/categoriesSpinner"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
 		android:minHeight="@dimen/list_item_height"
 		style="@style/ListItem" />
 
 	<ListView
 		android:id="@+id/listView"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/categoriesSpinner"
 		android:background="@color/semitransparent_white_90"
 		android:cacheColorHint="@color/semitransparent_white_90"
 		android:divider="@color/new_friends_list_divider"
@@ -36,4 +38,13 @@
 		style="@style/DarkShadowBottom"
 		android:visibility="gone" />
 
-</LinearLayout>
+	<!--Ads-->
+	<include
+		android:id="@+id/bannerUpgradeView"
+		layout="@layout/mopub_ad_view"
+		android:layout_gravity="center_horizontal"
+		android:layout_centerHorizontal="true"
+		android:layout_alignParentBottom="true"
+
+		/>
+</RelativeLayout>

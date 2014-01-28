@@ -1,6 +1,5 @@
 package com.chess.ui.fragments.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,13 +10,16 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.*;
+import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
 import com.chess.backend.entity.api.daily_games.DailyGamesAllItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.LeftNavigationFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragmentTablet;
@@ -33,8 +35,6 @@ import java.util.List;
  */
 public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener, FragmentParentFace {
 
-	private static final long FIRST_INIT_DELAY = 5 * 1000;
-
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId = NON_INIT;
 	private DailyGamesUpdateListener dailyGamesUpdateListener;
@@ -47,12 +47,6 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onCreate(savedInstanceState);
 
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
-
-		if (!getAppData().isFirstInitFinished()) {
-			handler.postDelayed(firstInitRunnable, FIRST_INIT_DELAY);
-		}
-		// always update stats in async intent service and save in Db there
-		getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
 	}
 
 	@Override
@@ -94,15 +88,15 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		getActivityFace().changeLeftFragment(leftMenuFragment);
 
 		// and right menu fragments
-		getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
+		getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
-//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.LESSONS_LESSONS_LIST.name()),
-//				DbHelper.getAll(DbScheme.Tables.LESSONS_LESSONS_LIST),
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.DAILY_CURRENT_GAMES.name()),
+//				DbHelper.getAll(DbScheme.Tables.DAILY_CURRENT_GAMES),
 //				getContentResolver()).executeTask();
 
 		// check if user have daily games in progress or completed. May check in DB
@@ -145,7 +139,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 //			super.updateData(cursor);
 //
 //			if (HONEYCOMB_PLUS_API) {
-//				AppUtils.printTableContent(cursor, tableName);
+//				AppUtils.printCursorContent(cursor, tableName);
 //			}
 //		}
 //	}
@@ -252,17 +246,4 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			updateTabs();
 		}
 	}
-
-	private Runnable firstInitRunnable =  new Runnable() {
-		@Override
-		public void run() {
-			if (getActivity() == null) {
-				return;
-			}
-
-			if (!DbDataManager.haveSavedFriends(getActivity(), getUsername()) && isNetworkAvailable()) {
-				getActivity().startService(new Intent(getActivity(), GetAndSaveFriends.class));
-			}
-		}
-	};
 }

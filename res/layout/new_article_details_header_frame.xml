@@ -81,7 +81,7 @@
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
 		android:layout_below="@id/thumbnailAuthorImg"
-		style="@style/Content"
+		style="@style/Content.Selectable"
 		android:paddingBottom="2dip" />
 
 	<ProgressBar

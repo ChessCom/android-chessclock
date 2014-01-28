@@ -130,9 +130,9 @@
 		android:layout_height="wrap_content"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
-		android:layout_below="@id/thumbnailAuthorImg"
 		android:paddingBottom="10dip"
-		style="@style/Content" />
+		android:layout_below="@id/thumbnailAuthorImg"
+		style="@style/Content.Selectable" />
 
 	<ProgressBar
 		android:id="@+id/loadingCommentsView"

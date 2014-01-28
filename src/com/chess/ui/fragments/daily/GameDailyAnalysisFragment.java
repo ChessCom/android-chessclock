@@ -22,10 +22,10 @@ import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.configs.CompGameConfig;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.explorer.GameExplorerFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
@@ -508,7 +508,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		super.onClick(view);
 		if (view.getId() == R.id.newGamePopupBtn) {
 			dismissEndGameDialog();
-			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
+			getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
 		}
 	}
 

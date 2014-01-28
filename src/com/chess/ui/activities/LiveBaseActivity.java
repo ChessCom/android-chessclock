@@ -475,7 +475,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void showDelayedDialogImmediately(Challenge challenge) {
-			LogMe.dl(TAG, "CHALLENGE showDelayedDialogImmediately -> popupDialogFragment.show ");
 			currentChallenge = challenge;
 
 			popupItem.setPositiveBtnId(R.string.accept);
@@ -486,7 +485,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		@Override
 		public void showDialogImmediately(Challenge challenge) {
 			if (popupChallengesList.size() > 0) {
-				LogMe.dl("LCCLOG", "show challenge dialog: popupManager.size() " + popupManager.size());
 				return;
 			}
 
@@ -498,13 +496,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 			PopupDialogFragment popupDialogFragment = PopupDialogFragment.createInstance(popupItem);
 			popupDialogFragment.show(getSupportFragmentManager(), CHALLENGE_TAG);
-			LogMe.dl(TAG, "CHALLENGE showDialogImmediately -> popupDialogFragment.show ");
 			popupChallengesList.add(popupDialogFragment);
 		}
 
 		@Override
 		public void showDialog(Challenge challenge) {
-			LogMe.dl(TAG, "CHALLENGE showDialog -> isPaused = " + isPaused);
 			if (isPaused) {
 				LiveEvent liveEvent = new LiveEvent();
 				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);

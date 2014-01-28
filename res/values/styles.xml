@@ -108,10 +108,12 @@
 
 	<style name="Content">
 		<item name="android:textColor">@color/new_subtitle_dark_grey</item>
-		<item name="android:textIsSelectable">true</item>
 		<item name="android:textSize">@dimen/content_text_size</item>
 		<item name="android:lineSpacingExtra">5sp</item>
-		<!--<item name="android:lineSpacingExtra">@dimen/text_line_spacing</item>-->
+	</style>
+
+	<style name="Content.Selectable">
+		<item name="android:textIsSelectable">true</item>
 	</style>
 
 	<style name="list_text">

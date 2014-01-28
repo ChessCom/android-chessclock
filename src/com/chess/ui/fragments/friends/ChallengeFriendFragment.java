@@ -22,7 +22,7 @@ import com.chess.statics.AppConstants;
 import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.widgets.EditButton;
@@ -133,7 +133,7 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 			if (getArguments().getInt(MODE) == CENTER_MODE) {
 				getActivityFace().toggleRightMenu();
 			} else {
-				getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
+				getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
 			}
 		} else if (id == R.id.chesscomFriendsView) {
 

@@ -553,6 +553,7 @@
 		<item name="btn_rect_pos">bottomRight</item>
 
 		<item name="btn_solid">@color/blue_button</item>
+		<item name="android:textColor">@color/white</item>
 	</style>
 
 	<style name="Rect.Bottom.Left.Grey">

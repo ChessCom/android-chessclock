@@ -28,6 +28,9 @@ import com.chess.utilities.AppUtils;
  */
 public class SettingsGeneralFragment extends CommonLogicFragment implements SwitchButton.SwitchChangeListener {
 
+	public final static int WELCOME_MODE = 0;
+	public final static int AUTHORIZED_MODE = 1;
+
 	private SwitchButton coordinatesSwitch;
 	private SwitchButton highlightLastMoveSwitch;
 	//	private SwitchButton alwaysShowWhiteBottomSwitch;
@@ -45,10 +48,32 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 	private SwitchButton notificationsSwitch;
 	private SwitchButton miniBoardsSwitch;
 	private SwitchButton fullScreenSwitch;
+	private int mode;
+
+	public SettingsGeneralFragment(){
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, AUTHORIZED_MODE);
+		setArguments(bundle);
+	}
+
+	public static SettingsGeneralFragment createInstance(int mode){
+		SettingsGeneralFragment fragment = new SettingsGeneralFragment();
+		Bundle bundle = new Bundle();
+		bundle.putInt(MODE, mode);
+		fragment.setArguments(bundle);
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			mode = getArguments().getInt(MODE);
+		} else {
+			mode = savedInstanceState.getInt(MODE);
+		}
+
 
 		imageLoader = new EnhancedImageDownloader(getActivity());
 	}
@@ -279,7 +304,13 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 			strengthBar.setProgressDrawable(new RatingProgressDrawable(getContext(), strengthBar));
 			strengthBar.setProgress(selectedCompLevel);
 			strengthValueBtn.setText(String.valueOf(selectedCompLevel + 1));
+		}
 
+		if (mode == WELCOME_MODE) {
+			view.findViewById(R.id.piecesView).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.boardView).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.miniBoardsView).setVisibility(View.GONE);
+			view.findViewById(R.id.notificationsView).setVisibility(View.GONE);
 		}
 	}
 

@@ -54,7 +54,7 @@
 		android:paddingBottom="15dip"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
-		android:layout_alignParentBottom="true"
+		android:layout_above="@+id/bannerUpgradeView"
 		android:visibility="gone">
 
 		<com.chess.widgets.RoboEditText
@@ -74,5 +74,14 @@
 			android:textSize="14sp" />
 
 	</com.chess.widgets.LinLayout>
+
+	<!--Ads-->
+	<include
+		android:id="@id/bannerUpgradeView"
+		layout="@layout/mopub_ad_view"
+		android:layout_gravity="center_horizontal"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		/>
 
 </RelativeLayout>

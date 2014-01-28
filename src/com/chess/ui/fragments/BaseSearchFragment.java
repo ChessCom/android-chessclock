@@ -70,31 +70,8 @@ public abstract class BaseSearchFragment extends CommonLogicFragment implements 
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		keywordsEdt = (EditText) view.findViewById(R.id.keywordsEdt);
-
-		categorySpinner = (Spinner) view.findViewById(R.id.categorySpinner);
-		categorySpinner.setAdapter(spinnerAdapter);
-
-		view.findViewById(R.id.searchBtn).setOnClickListener(this);
-
-		slidingDrawer = (MultiDirectionSlidingDrawer) view.findViewById(R.id.slidingDrawer);
-		slidingDrawer.setOnDrawerOpenListener(this);
-		slidingDrawer.setOnDrawerCloseListener(this);
-		fadeDrawerAnimator = ObjectAnimator.ofFloat(slidingDrawer, "alpha", 1, 0);
-		fadeDrawerAnimator.setDuration(FADE_ANIM_DURATION);
-		slidingDrawer.setVisibility(View.GONE);
-		fadeDrawerAnimator.start();
-
-		View searchFieldsView = view.findViewById(R.id.searchFieldsView);
-		fadeSearchAnimator = ObjectAnimator.ofFloat(searchFieldsView, "alpha", 1, 0);
-		fadeSearchAnimator.setDuration(FADE_ANIM_DURATION);
-
-		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(getAdapter());
-		listView.setOnItemClickListener(this);
+		widgetsInit(view);
 	}
-
-	protected abstract ListAdapter getAdapter();
 
 	@Override
 	public void onResume() {
@@ -121,6 +98,8 @@ public abstract class BaseSearchFragment extends CommonLogicFragment implements 
 	protected abstract QueryParams getQueryParams();
 
 	protected abstract void getCategories();
+
+	protected abstract ListAdapter getAdapter();
 
 	protected void fillCategoriesList(Cursor cursor) {
 		do {
@@ -216,5 +195,32 @@ public abstract class BaseSearchFragment extends CommonLogicFragment implements 
 		}
 
 		return super.showPreviousFragment();
+	}
+
+	private void widgetsInit(View view) {
+		keywordsEdt = (EditText) view.findViewById(R.id.keywordsEdt);
+
+		categorySpinner = (Spinner) view.findViewById(R.id.categorySpinner);
+		categorySpinner.setAdapter(spinnerAdapter);
+
+		view.findViewById(R.id.searchBtn).setOnClickListener(this);
+
+		slidingDrawer = (MultiDirectionSlidingDrawer) view.findViewById(R.id.slidingDrawer);
+		slidingDrawer.setOnDrawerOpenListener(this);
+		slidingDrawer.setOnDrawerCloseListener(this);
+		fadeDrawerAnimator = ObjectAnimator.ofFloat(slidingDrawer, "alpha", 1, 0);
+		fadeDrawerAnimator.setDuration(FADE_ANIM_DURATION);
+		slidingDrawer.setVisibility(View.GONE);
+		fadeDrawerAnimator.start();
+
+		View searchFieldsView = view.findViewById(R.id.searchFieldsView);
+		fadeSearchAnimator = ObjectAnimator.ofFloat(searchFieldsView, "alpha", 1, 0);
+		fadeSearchAnimator.setDuration(FADE_ANIM_DURATION);
+
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setAdapter(getAdapter());
+		listView.setOnItemClickListener(this);
+
+		initUpgradeAndAdWidgets(view);
 	}
 }

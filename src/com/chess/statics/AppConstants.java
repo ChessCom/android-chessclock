@@ -139,7 +139,7 @@ public class AppConstants {
 	public static final String FULLSCREEN_AD_ALREADY_SHOWED = "fullscreen_ad_showed";
 	public static final String FIRST_TIME_START = "first_time_start";
 	public static final String START_DAY = "start_day";
-//	public static final String LAST_ACTIVITY_PAUSED_TIME = "last_activity_aause_time";
+
 	public static final String ADS_SHOW_COUNTER = "ads_show_counter";
 	public static final String MATOMY_AD = "matomy";
 	public static final String RESPONSE = "response";

@@ -11,10 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
@@ -39,8 +36,8 @@ import com.chess.statics.StaticData;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.WebViewFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
 import com.chess.ui.interfaces.FragmentParentFace;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -82,7 +79,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 	private TextView emptyView;
 	private GridView gridView;
-	private View loadingView;
 	private FragmentParentFace parentFace;
 	private int mode;
 	private boolean startDailyGame;
@@ -114,34 +110,9 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 			mode = savedInstanceState.getInt(MODE);
 		}
 
-		challengeHelper = new ChallengeHelper(this, true);
+		init();
 
-		{// initialize boardsFetcher
-			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
-			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
-
-			boardImgFetcher = new SmartImageFetcher(getActivity());
-			boardImgFetcher.setLoadingImage(R.drawable.board_green_default);
-			boardImgFetcher.addImageCache(getFragmentManager(), cacheParams);
-		}
-
-		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher(), boardImgFetcher);
-
-		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
-
-		if (inLandscape()) {
-			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-			transaction.add(R.id.optionsFragmentContainer, HomePlayFragment.createInstance(RIGHT_MENU_MODE))
-					.commitAllowingStateLoss();
-		}
 		pullToRefresh(true);
-
-		if (!getAppData().isUserSawHelpForPullToUpdate()) {
-			showToastLong(R.string.help_toast_for_daily_games);
-			getAppData().setUserSawHelpForPullToUpdate(true);
-		}
-
-		showMiniBoards = getAppData().isMiniBoardsEnabled();
 	}
 
 	@Override
@@ -153,36 +124,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		loadingView = view.findViewById(R.id.loadingView);
-		emptyView = (TextView) view.findViewById(R.id.emptyView);
-
-		gridView = (GridView) view.findViewById(R.id.gridView);
-		gridView.setOnItemClickListener(this);
-		gridView.setOnItemLongClickListener(this);
-		gridView.setAdapter(currentGamesMyCursorAdapter);
-
-		view.findViewById(R.id.completedGamesHeaderView).setOnClickListener(this);
-
-		if (gridView != null) {
-			gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
-				@Override
-				public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-					// Pause fetcher to ensure smoother scrolling when flinging
-					if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-						boardImgFetcher.setPauseWork(true);
-						getImageFetcher().setPauseWork(true);
-					} else {
-						boardImgFetcher.setPauseWork(false);
-						getImageFetcher().setPauseWork(false);
-					}
-				}
-
-				@Override
-				public void onScroll(AbsListView absListView, int firstVisibleItem,
-									 int visibleItemCount, int totalItemCount) {
-				}
-			});
-		}
+		widgetsInit(view);
 	}
 
 	@Override
@@ -195,8 +137,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		init();
 
 		gamesUpdateReceiver = new GamesUpdateReceiver();
 		registerReceiver(gamesUpdateReceiver, moveUpdateFilter);
@@ -235,7 +175,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		unRegisterMyReceiver(gamesUpdateReceiver);
 
 		handler.removeCallbacks(delayedLoadFromDb);
-		releaseResources();
 
 		boardImgFetcher.setPauseWork(false);
 		boardImgFetcher.setExitTasksEarly(true);
@@ -287,23 +226,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		}
 	}
 
-	private void init() {
-		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.INVITE);
-		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
-		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
-		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
 
-		dailyGamesUpdateListener = new DailyGamesUpdateListener();
-
-		boolean dailyMode = getAppData().isLastUsedDailyMode();
-		if (dailyMode) {
-			int timeMode = getAppData().getDefaultDailyMode();
-			setDefaultLiveTimeMode(timeMode);
-		} else {
-			int timeMode = getAppData().getDefaultLiveMode();
-			setDefaultLiveTimeMode(timeMode);
-		}
-	}
 
 	private DialogInterface.OnClickListener gameListItemDialogListener = new DialogInterface.OnClickListener() {
 
@@ -338,7 +261,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		super.onClick(view);
 		if (view.getId() == R.id.startNewGameBtn) {
 			if (parentFace != null) {
-				parentFace.changeFragment(new HomePlayFragment());
+				parentFace.changeFragment(new RightPlayFragment());
 			} else {
 				getActivityFace().showPreviousFragment();
 			}
@@ -690,19 +613,90 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		startDailyGame = false;
 	}
 
+	private void init() {
+		challengeHelper = new ChallengeHelper(this, true);
 
-	private void releaseResources() {
-		challengeInviteUpdateListener.releaseContext();
-		challengeInviteUpdateListener = null;
-		acceptDrawUpdateListener.releaseContext();
-		acceptDrawUpdateListener = null;
-		saveCurrentGamesListUpdateListener.releaseContext();
-		saveCurrentGamesListUpdateListener = null;
-		currentGamesCursorUpdateListener.releaseContext();
-		currentGamesCursorUpdateListener = null;
+		{// initialize boardsFetcher
+			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
+			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
 
-		dailyGamesUpdateListener.releaseContext();
-		dailyGamesUpdateListener = null;
+			boardImgFetcher = new SmartImageFetcher(getActivity());
+			boardImgFetcher.setLoadingImage(R.drawable.board_green_default);
+			boardImgFetcher.addImageCache(getFragmentManager(), cacheParams);
+		}
+
+		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher(), boardImgFetcher);
+
+		moveUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
+
+		if (inLandscape()) {
+			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+			transaction.add(R.id.optionsFragmentContainer, RightPlayFragment.createInstance(RIGHT_MENU_MODE))
+					.commitAllowingStateLoss();
+		}
+
+		if (!getAppData().isUserSawHelpForPullToUpdate()) {
+			showToastLong(R.string.help_toast_for_daily_games);
+			getAppData().setUserSawHelpForPullToUpdate(true);
+		}
+
+		showMiniBoards = getAppData().isMiniBoardsEnabled();
+
+		challengeInviteUpdateListener = new DailyUpdateListener(DailyUpdateListener.INVITE);
+		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
+		saveCurrentGamesListUpdateListener = new SaveCurrentGamesListUpdateListener();
+		currentGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.CURRENT_MY);
+
+		dailyGamesUpdateListener = new DailyGamesUpdateListener();
+
+		boolean dailyMode = getAppData().isLastUsedDailyMode();
+		if (dailyMode) {
+			int timeMode = getAppData().getDefaultDailyMode();
+			setDefaultLiveTimeMode(timeMode);
+		} else {
+			int timeMode = getAppData().getDefaultLiveMode();
+			setDefaultLiveTimeMode(timeMode);
+		}
+	}
+
+	private void widgetsInit(View view) {
+		emptyView = (TextView) view.findViewById(R.id.emptyView);
+
+		gridView = (GridView) view.findViewById(R.id.gridView);
+		gridView.setOnItemClickListener(this);
+		gridView.setOnItemLongClickListener(this);
+		gridView.setAdapter(currentGamesMyCursorAdapter);
+
+		View completedGamesHeaderView = view.findViewById(R.id.completedGamesHeaderView);
+		completedGamesHeaderView.setOnClickListener(this);
+
+		if (gridView != null) {
+			gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
+				@Override
+				public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+					// Pause fetcher to ensure smoother scrolling when flinging
+					if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+						boardImgFetcher.setPauseWork(true);
+						getImageFetcher().setPauseWork(true);
+					} else {
+						boardImgFetcher.setPauseWork(false);
+						getImageFetcher().setPauseWork(false);
+					}
+				}
+
+				@Override
+				public void onScroll(AbsListView absListView, int firstVisibleItem,
+									 int visibleItemCount, int totalItemCount) {
+				}
+			});
+		}
+
+		initUpgradeAndAdWidgets(view);
+
+		if (!isNeedToUpgrade()) {// we need to bind to bottom if there is no ad banner
+			((RelativeLayout.LayoutParams) completedGamesHeaderView.getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		}
+
 	}
 
 	private void showEmptyView(boolean show) {
@@ -718,21 +712,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		} else {
 			emptyView.setVisibility(View.GONE);
 			gridView.setVisibility(View.VISIBLE);
-		}
-	}
-
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-//			if (sectionedAdapter.getCount() == 0) {
-			if (currentGamesMyCursorAdapter.getCount() == 0) {
-				gridView.setVisibility(View.GONE);
-
-			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			gridView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
 		}
 	}
 }

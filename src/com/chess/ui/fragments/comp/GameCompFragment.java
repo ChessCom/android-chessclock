@@ -41,6 +41,7 @@ import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.ui.views.game_controls.ControlsBaseView;
 import com.chess.ui.views.game_controls.ControlsCompView;
+import com.chess.utilities.MopubHelper;
 import com.chess.widgets.ProfileImageView;
 import org.petero.droidfish.GameMode;
 
@@ -599,8 +600,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		layout.findViewById(R.id.resultRatingTxt).setVisibility(View.GONE);
 		layout.findViewById(R.id.resultRatingChangeTxt).setVisibility(View.GONE);
 
-//		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-//		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(layout);
 
@@ -614,10 +613,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		getAppData().clearSavedCompGame();
 
-//		getControlsView().enableHintButton(false); // why do we block it here? logic moved to ChessBoardCompView
-//		if (AppUtils.isNeedToUpgrade(getActivity())) {
-//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-//		}
+		if (isNeedToUpgrade()) {
+			initPopupAdWidget(layout);
+			MopubHelper.showRectangleAd(getMopubRectangleAd(), getActivity());
+		}
 	}
 
 	private void resideBoardIfCompWhite() {

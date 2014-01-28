@@ -46,7 +46,7 @@ public class CapturedPiecesDrawable extends Drawable {
 
 	public CapturedPiecesDrawable(Context context) {
 
-		boolean smallScreen = AppUtils.noNeedTitleBar(context);
+		boolean smallScreen = AppUtils.isSmallScreen(context);
 
 		float density = context.getResources().getDisplayMetrics().density;
 

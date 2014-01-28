@@ -350,7 +350,7 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 				break;
 		}
 		if (fragmentByTag != null) {
-			getActivityFace().openFragment(fragmentByTag, true);
+			getActivityFace().openFragment(fragmentByTag);
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {

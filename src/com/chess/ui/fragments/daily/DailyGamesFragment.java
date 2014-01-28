@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,8 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.*;
+import com.chess.backend.entity.api.BaseResponseItem;
+import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.entity.api.daily_games.*;
 import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
@@ -34,7 +36,7 @@ import com.chess.ui.engine.ChessBoardDiagram;
 import com.chess.ui.engine.ChessBoardOnline;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.home.HomePlayFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
 import com.chess.ui.interfaces.FragmentParentFace;
@@ -84,7 +86,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private TextView emptyView;
 	private ListView listView;
 	private View loadingView;
-	private List<DailyFinishedGameData> finishedGameDataList;
 	private FragmentParentFace parentFace;
 	private int mode;
 	private GameFaceHelper gameFaceHelper;
@@ -297,7 +298,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				challengeHelper.createLiveChallenge();
 			}
 		} else if (view.getId() == R.id.startNewGameBtn) {
-			getActivityFace().changeRightFragment(HomePlayFragment.createInstance(RIGHT_MENU_MODE));
+			getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
 			getActivityFace().toggleRightMenu();
 		}
 	}
@@ -425,6 +426,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	protected void updateData() {
+		if (TextUtils.isEmpty(getUserToken())) {
+			return;
+		}
 		// get Current games first
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_CURRENT);
@@ -559,6 +563,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				break;
 			}
 		} while (cursor.moveToNext());
+		// restore position
+		cursor.moveToFirst();
 
 		// if user have more than 5 active games, do not show 1/2 size board, only new game button at bottom
 		if (cursor.getCount() < MIN_GAMES_TO_SHOW_BANNER) {
@@ -588,26 +594,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		listView.invalidate();
 
-		// restore position
-		cursor.moveToFirst();
-
 		currentGamesMyCursorAdapter.changeCursor(cursor);
 
-		if (finishedGameDataList != null) {
-			boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(),
-					finishedGameDataList, getUsername());
-
-			if (gamesLeft) {
-				for (DailyFinishedGameData finishedGameData : finishedGameDataList) {
-					DbDataManager.saveDailyFinishedGameItemToDb(getContentResolver(), finishedGameData, getUsername());
-				}
-				loadFromDbFinishedGames();
-			} else {
-				finishedGamesCursorAdapter.changeCursor(null);
-			}
-		} else {
-			loadFromDbFinishedGames();
-		}
+		loadFromDbFinishedGames();
 	}
 
 
@@ -672,8 +661,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		public void updateData(DailyFinishedGamesItem returnedObj) {
 			super.updateData(returnedObj);
 
-			// finished
-			finishedGameDataList = returnedObj.getData().getGames();
+			List<DailyFinishedGameData> finishedGameDataList = returnedObj.getData().getGames();
 			if (finishedGameDataList != null) {
 				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, getUsername());
 
@@ -687,8 +675,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				}
 			} else {
 				loadFromDbFinishedGames();
-
-				need2update = false;
 			}
 		}
 
@@ -711,6 +697,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getDailyFinishedListGames(getUsername()));
 		if (cursor != null && cursor.moveToFirst()) {
 			finishedGamesCursorAdapter.changeCursor(cursor);
+			need2update = false;
 		} else if (cursor != null) {
 			cursor.close();
 		}
@@ -814,15 +801,12 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			}
 		}
 
-		// add Tournaments link
-//		ViewGroup tournamentsHeaderView = (ViewGroup) inflater.inflate(R.layout.new_tournaments_header_view, null, false);
-//		tournamentsHeaderView.setOnClickListener(this);
-
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 		listView.setOnItemLongClickListener(this);
-//		listView.addFooterView(tournamentsHeaderView);
 		listView.setAdapter(sectionedAdapter);
+
+		initUpgradeAndAdWidgets(view);
 	}
 
 	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {

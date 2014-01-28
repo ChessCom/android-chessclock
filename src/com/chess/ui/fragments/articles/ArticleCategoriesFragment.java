@@ -82,20 +82,9 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		init();
 	}
 
-	protected void init() {
-		categoriesNames = new ArrayList<String>();
-		categoriesMap = new HashMap<String, Integer>();
-
-		viewedArticlesMap = new SparseBooleanArray();
-
-		setAdapter(new ArticlesCursorAdapter(getActivity(), null, getImageFetcher()));
-		getAdapter().addViewedMap(viewedArticlesMap);
-		paginationAdapter = new ArticlesPaginationAdapter(getActivity(), getAdapter(), new ArticleUpdateListener(), null);
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_common_categories_frame, container, false);
+		return inflater.inflate(R.layout.new_common_categories_ads_frame, container, false);
 	}
 
 	@Override
@@ -260,6 +249,17 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 		articlesAdapter = adapter;
 	}
 
+	protected void init() {
+		categoriesNames = new ArrayList<String>();
+		categoriesMap = new HashMap<String, Integer>();
+
+		viewedArticlesMap = new SparseBooleanArray();
+
+		setAdapter(new ArticlesCursorAdapter(getActivity(), null, getImageFetcher()));
+		getAdapter().addViewedMap(viewedArticlesMap);
+		paginationAdapter = new ArticlesPaginationAdapter(getActivity(), getAdapter(), new ArticleUpdateListener(), null);
+	}
+
 	protected void widgetsInit(View view) {
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setAdapter(paginationAdapter);
@@ -298,6 +298,8 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 			categorySpinner.setOnItemSelectedListener(this);
 			categorySpinner.setSelection(position);  // TODO remember last selection.
 		}
+
+		initUpgradeAndAdWidgets(view);
 	}
 
 

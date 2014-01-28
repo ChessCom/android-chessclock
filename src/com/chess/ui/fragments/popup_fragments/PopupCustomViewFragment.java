@@ -21,6 +21,7 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
     protected Button leftBtn;
     protected Button rightBtn;
     protected FrameLayout customView;
+	protected boolean cancelableOnTouch = true;
 
 	public static PopupCustomViewFragment createInstance(PopupItem popupItem) {
 		PopupCustomViewFragment frag = new PopupCustomViewFragment();
@@ -61,7 +62,7 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 		super.onResume();
 
 		if (getDialog() != null) {
-			getDialog().setCanceledOnTouchOutside(true); // always cancel on touchOutside
+			getDialog().setCanceledOnTouchOutside(cancelableOnTouch); // always cancel on touchOutside
 		}
 
 		buttonsNumber = popupItem.getButtons();
@@ -108,5 +109,9 @@ public class PopupCustomViewFragment extends BasePopupDialogFragment {
 		}
 		customView.removeAllViews();
 		customView.removeView(view);
+	}
+
+	public void setCancelableOnTouch(boolean cancelableOnTouch) {
+		this.cancelableOnTouch = cancelableOnTouch;
 	}
 }

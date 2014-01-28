@@ -20,9 +20,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.AbsListView;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
@@ -57,6 +55,7 @@ import com.chess.ui.fragments.welcome.WelcomeTabsFragmentTablet;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
+import com.chess.utilities.MopubHelper;
 import com.chess.widgets.ProfileImageView;
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -64,6 +63,7 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.flurry.android.FlurryAgent;
+import com.mopub.mobileads.MoPubView;
 import com.slidingmenu.lib.SlidingMenu;
 import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
 
@@ -156,6 +156,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected String secondFriendUserName;
 
 	protected AppUtils.DeviceInfo deviceInfo;
+	private MoPubView moPubBannerView;
 
 
 	@Override
@@ -319,6 +320,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		dismissProgressDialog();
 
 		unRegisterMyReceiver(startLiveGameReceiver);
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+
+		if (isNeedToUpgrade() && moPubBannerView != null) {
+			moPubBannerView.destroy();
+		}
 	}
 
 	@Override
@@ -956,11 +966,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	public boolean isNeedToUpgrade() {
-		return getAppData().getUserPremiumStatus() < StaticData.GOLD_USER;
+		return AppUtils.isNeedToUpgrade(getActivity());
 	}
 
 	public boolean isNeedToUpgradePremium() {
-		return getAppData().getUserPremiumStatus() < StaticData.DIAMOND_USER;
+		return AppUtils.isNeedToUpgradePremium(getActivity());
 	}
 
 	protected String upCaseFirst(String string) {
@@ -1206,5 +1216,19 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	@Override
 	public void openProfile(String username) {
 		getActivityFace().openFragment(ProfileTabsFragment.createInstance(username));
+	}
+
+	protected void initUpgradeAndAdWidgets(View view) {
+		if (isNeedToUpgrade()) {
+			view.findViewById(R.id.bannerUpgradeView).setVisibility(View.VISIBLE);
+
+			Button upgradeBtn = (Button) view.findViewById(R.id.upgradeBtn);
+			upgradeBtn.setOnClickListener(this);
+
+			LinearLayout mopubAdLayout = (LinearLayout) view.findViewById(R.id.mopubAdLayout);
+			moPubBannerView = MopubHelper.showBannerAd(upgradeBtn, mopubAdLayout, getActivity());
+		} else {
+			view.findViewById(R.id.bannerUpgradeView).setVisibility(View.GONE);
+		}
 	}
 }
