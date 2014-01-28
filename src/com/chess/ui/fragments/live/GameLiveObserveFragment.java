@@ -3,6 +3,7 @@ package com.chess.ui.fragments.live;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
@@ -351,5 +352,45 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		optionsMap = new SparseArray<String>();
 		optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
 		optionsMap.put(ID_SETTINGS, getString(R.string.settings));
+	}
+
+	@Override
+	public void onResume() {
+
+		if (isLCSBound && !isValid()) {
+			showPreviousFragment();
+		}
+
+		super.onResume();
+	}
+
+	public boolean isValid() {
+		// todo: add more checks
+
+		LiveChessService liveService;
+		try {
+			liveService = getLiveService();
+		} catch (DataNotValidException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		boolean isGameValid = liveService.getCurrentObservedGameId() != null;
+		return isGameValid;
+	}
+
+	@Override
+	public boolean showPreviousFragment() { // move
+		if (getActivity() == null) {
+			return false;
+		}
+		int entryCount = getChildFragmentManager().getBackStackEntryCount();
+		if (entryCount > 0) {
+			int last = entryCount - 1;
+			FragmentManager.BackStackEntry stackEntry = getChildFragmentManager().getBackStackEntryAt(last);
+			return getChildFragmentManager().popBackStackImmediate();
+		} else {
+			return super.showPreviousFragment();
+		}
 	}
 }

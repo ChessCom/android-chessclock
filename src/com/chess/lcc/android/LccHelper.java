@@ -2,7 +2,6 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.text.TextUtils;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
@@ -96,8 +95,6 @@ public class LccHelper {
 	private String networkTypeName;
 
 	private boolean connectionFailure;
-	//private int connectionFailureCounter;
-	private Handler handler;
 	private boolean liveConnecting;
 
 	public LccHelper(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
@@ -117,7 +114,6 @@ public class LccHelper {
 		subscriptionListener = new LccSubscriptionListener();
 
 		pendingWarnings = new ArrayList<String>();
-		handler = new Handler();
 	}
 
 	public void checkGameEvents() {
@@ -274,14 +270,12 @@ public class LccHelper {
 	public void connectByCreds(String username, String pass) {
 //		LogMe.dl(TAG, "connectByCreds : user = " + username + " pass = " + pass); // do not post in prod
 		LogMe.dl(TAG, "connectByCreds : hidden"); // do not post in pod
-		setConnecting(true);
 		lccClient.connect(username, pass, connectionListener, subscriptionListener);
 		liveChessClientEventListener.onConnecting();
 	}
 
 	public void connectBySessionId(String sessionId) {
 		LogMe.dl(TAG, "connectBySessionId : sessionId = " + sessionId);
-		setConnecting(true);
 		lccClient.connect(sessionId, connectionListener, subscriptionListener);
 		liveChessClientEventListener.onConnecting();
 	}
@@ -1024,6 +1018,7 @@ public class LccHelper {
 	}
 
 	public void runConnectTask() {
+		setConnecting(true);
 		new ConnectLiveChessTask(lccConnectUpdateListener, this).executeTask();
 	}
 
@@ -1046,11 +1041,7 @@ public class LccHelper {
 			synchronized (CLIENT_SYNC_LOCK) {
 				if (lccClient != null) {
 					LogMe.dl(TAG, "LOGOUT: lccClient=" + getClientId());
-					try {
-						lccClient.disconnect(RESET_LCC_LISTENERS);
-					} catch (LiveChessClientException e) {
-						LogMe.dl(TAG, "LiveChessClientException: " + e.getMessage());
-					}
+					lccClient.disconnect(RESET_LCC_LISTENERS);
 					resetClient();
 				}
 			}
@@ -1065,11 +1056,7 @@ public class LccHelper {
 			synchronized (CLIENT_SYNC_LOCK) {
 				if (lccClient != null) {
 					LogMe.dl(TAG, "LEAVE: lccClient=" + getClientId());
-					try {
-						lccClient.leave(RESET_LCC_LISTENERS);
-					} catch (LiveChessClientException e) {
-						LogMe.dl(TAG, "LiveChessClientException: " + e.getMessage());
-					}
+					lccClient.leave(RESET_LCC_LISTENERS);
 					resetClient();
 				}
 			}
@@ -1304,10 +1291,6 @@ public class LccHelper {
 	}
 
 	public boolean isLccConnecting() {
-		return lccClient != null && liveConnecting; // check for lccClient != null because sometimes LCC sends few Connection Lost messages after logout
-	}
-
-	public boolean isLccConnectedOrConnecting() {
-		return liveConnected || isLccConnecting();
+		return /*lccClient != null && */liveConnecting;
 	}
 }

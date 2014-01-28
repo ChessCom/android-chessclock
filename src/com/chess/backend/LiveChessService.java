@@ -397,14 +397,6 @@ public class LiveChessService extends Service {
 		return lccHelper.getCurrentGameId();
 	}
 
-	/*public void processFullGame() {
-		lccHelper.processFullGame();
-	}
-
-	public int getOwnSeeksCount() {
-		return lccHelper.getOwnSeeksCount();
-	}*/
-
 	public String[] getOnlineFriends() {
 		return lccHelper.getOnlineFriends();
 	}
@@ -542,5 +534,9 @@ public class LiveChessService extends Service {
 		boolean isCurrentGameObserved = currentGame != null && lccHelper.isObservedGame(currentGame);
 
 		return isCurrentGameObserved;
+	}
+
+	public Long getCurrentObservedGameId() {
+		return lccHelper.getCurrentObservedGameId();
 	}
 }

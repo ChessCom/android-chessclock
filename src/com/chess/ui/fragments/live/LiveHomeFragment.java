@@ -19,10 +19,9 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ServersStatsItem;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.lcc.android.DataNotValidException;
-import com.chess.statics.AppConstants;
+import com.chess.live.client.Game;
+import com.chess.live.util.GameRatingClass;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.ItemsAdapter;
@@ -65,6 +64,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	private ServerStatsUpdateListener serverStatsUpdateListener;
 	private OptionsAdapter optionsAdapter;
 	private LiveItem currentGameItem;
+	private LiveItem topGameItem;
 	protected PopupOptionsMenuFragment friendSelectFragment;
 	protected FriendSelectedListener friendSelectedListener;
 	protected String[] liveFriends;
@@ -74,8 +74,9 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		super.onCreate(savedInstanceState);
 
 		currentGameItem = new LiveItem(R.string.ic_live_standard, R.string.current_game);
+		topGameItem = new LiveItem(R.string.ic_binoculars, R.string.top_game);
 		featuresList = new ArrayList<LiveItem>();
-		featuresList.add(new LiveItem(R.string.ic_binoculars, R.string.top_game));
+		featuresList.add(topGameItem);
 		featuresList.add(new LiveItem(R.string.ic_stats, R.string.stats));
 		featuresList.add(new LiveItem(R.string.ic_challenge_friend, R.string.friends));
 		featuresList.add(new LiveItem(R.string.ic_board, R.string.archive));
@@ -121,7 +122,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 				liveBaseActivity.connectLcc();
 				showPopupProgressDialog();
 			} else {
-				addCurrentGameItem(getLiveService());
+				adjustFeaturesList(getLiveService());
 			}
 
 		} catch (DataNotValidException e) {
@@ -144,13 +145,18 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	}
 	*/
 
-	protected void addCurrentGameItem(LiveChessService liveService) {
+	protected void adjustFeaturesList(LiveChessService liveService) {
 		if (liveService.isActiveGamePresent() && !liveService.isCurrentGameObserved()) {
 			if (!featuresList.contains(currentGameItem)) {
 				featuresList.add(0, currentGameItem);
 				optionsAdapter.notifyDataSetChanged();
 			}
+			featuresList.remove(topGameItem);
 		} else {
+			if (!featuresList.contains(topGameItem)) {
+				featuresList.add(0, topGameItem);
+				optionsAdapter.notifyDataSetChanged();
+			}
 			featuresList.remove(currentGameItem);
 		}
 	}
@@ -281,35 +287,39 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 	private void createLiveChallenge() {
 		LiveGameConfig.Builder gameConfigBuilder = getAppData().getLiveGameConfigBuilder();
-
 		int minRatingOffset = gameConfigBuilder.getMinRatingOffset();
 		int maxRatingOffset = gameConfigBuilder.getMaxRatingOffset();
 		if (minRatingOffset == 0 || maxRatingOffset == 0) {
-			minRatingOffset = LiveGameConfig.RATING_STEP;
-			maxRatingOffset = LiveGameConfig.RATING_STEP;
-			gameConfigBuilder.setMinRatingOffset(minRatingOffset);
-			gameConfigBuilder.setMaxRatingOffset(maxRatingOffset);
+			try {
+				LiveChessService liveService = getLiveService();
+				Integer standardRating = liveService.getUser().getRatingFor(GameRatingClass.Standard);
+				Integer blitzRating = liveService.getUser().getRatingFor(GameRatingClass.Blitz);
+				Integer lightningRating = liveService.getUser().getRatingFor(GameRatingClass.Lightning);
+
+				if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
+					gameConfigBuilder.setRating(standardRating);
+					minRatingOffset = standardRating - LiveGameConfig.RATING_STEP;
+					maxRatingOffset = standardRating + LiveGameConfig.RATING_STEP;
+				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
+					gameConfigBuilder.setRating(blitzRating);
+					minRatingOffset = blitzRating - LiveGameConfig.RATING_STEP;
+					maxRatingOffset = blitzRating + LiveGameConfig.RATING_STEP;
+				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
+					gameConfigBuilder.setRating(lightningRating);
+					minRatingOffset = lightningRating - LiveGameConfig.RATING_STEP;
+					maxRatingOffset = lightningRating + LiveGameConfig.RATING_STEP;
+				}
+
+				gameConfigBuilder.setMinRatingOffset(minRatingOffset);
+				gameConfigBuilder.setMaxRatingOffset(maxRatingOffset);
+
+				// save config
+				getAppData().setLiveGameConfigBuilder(gameConfigBuilder);
+			} catch (DataNotValidException e) {
+				e.printStackTrace();
+				return;
+			}
 		}
-
-		String username = getAppData().getUsername();
-
-		int rating = AppConstants.DEFAULT_PLAYER_RATING;
-		if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
-			rating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
-					DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), username);
-		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
-			rating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
-					DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), username);
-		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BULLET) {
-			rating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
-					DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), username);
-		}
-
-		gameConfigBuilder.setTimeFromMode(getAppData().getDefaultLiveMode());
-		gameConfigBuilder.setRating(rating);
-
-		// save config
-		getAppData().setLiveGameConfigBuilder(gameConfigBuilder);
 
 		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(gameConfigBuilder.build()));
 	}
@@ -555,5 +565,14 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 	private void dismissNetworkCheckDialog() {
 		dismissFragmentDialogByTag(NETWORK_CHECK_TAG);
+	}
+
+	@Override
+	public void onGameEnd(Game game, String gameEndMessage) {
+		try {
+			adjustFeaturesList(getLiveService());
+		} catch (DataNotValidException e) {
+			e.printStackTrace();
+		}
 	}
 }
