@@ -22,6 +22,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.live.util.GameRatingClass;
 import com.chess.statics.Symbol;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.LiveGameConfig;
@@ -190,25 +191,18 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			}
 
 			Fragment fragmentByTag;
-			if (!isTablet) {
-				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
-				if (fragmentByTag == null) {
+			fragmentByTag = ((LiveBaseActivity)getActivity()).getGameLiveObserverFragment();
+			if (fragmentByTag == null) {
+				if (!isTablet) {
 					fragmentByTag = new GameLiveObserveFragment();
-				}
-			} else {
-				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragmentTablet.class.getSimpleName());
-				if (fragmentByTag == null) {
+				} else {
 					fragmentByTag = new GameLiveObserveFragmentTablet();
 				}
 			}
-			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
+			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag, true);
 		} else if (liveItem.iconId == R.string.ic_live_standard) { // Current game
 			Fragment fragmentByTag;
-			if (!isTablet) {
-				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveFragment.class.getSimpleName());
-			} else {
-				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveFragmentTablet.class.getSimpleName());
-			}
+			fragmentByTag = ((LiveBaseActivity)getActivity()).getGameLiveFragment();
 			if (fragmentByTag == null) {
 				if (!isTablet) {
 					fragmentByTag = new GameLiveFragment();
@@ -216,7 +210,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 					fragmentByTag = new GameLiveFragmentTablet();
 				}
 			}
-			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
+			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag, true);
 		} else if (liveItem.iconId == R.string.ic_stats) { // Stats
 			getActivityFace().openFragment(StatsGameDetailsFragment.createInstance(
 					StatsGameFragment.LIVE_STANDARD, true, getUsername()));
@@ -349,18 +343,28 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 					Long gameId = liveService.getCurrentGameId();
 					logTest("gameId = " + gameId);
 
+					GameLiveFragment gameLiveFragment;
 					if (liveService.isCurrentGameObserved()) {
-						if (isTablet) {
-							getActivityFace().openFragment(GameLiveObserveFragmentTablet.createInstance(gameId));
-						} else {
-							getActivityFace().openFragment(GameLiveObserveFragment.createInstance(gameId));
+						gameLiveFragment = ((LiveBaseActivity) getActivity()).getGameLiveObserverFragment();
+						if (gameLiveFragment == null) {
+							if (isTablet) {
+								gameLiveFragment = GameLiveObserveFragmentTablet.createInstance(gameId);
+							} else {
+								gameLiveFragment = GameLiveObserveFragment.createInstance(gameId);
+							}
 						}
 					} else {
-						if (isTablet) {
-							getActivityFace().openFragment(GameLiveFragmentTablet.createInstance(gameId));
-						} else {
-							getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
+						gameLiveFragment = ((LiveBaseActivity) getActivity()).getGameLiveFragment();
+						if (gameLiveFragment == null) {
+							if (isTablet) {
+								gameLiveFragment = GameLiveFragmentTablet.createInstance(gameId);
+							} else {
+								gameLiveFragment = GameLiveFragment.createInstance(gameId);
+							}
 						}
+					}
+					if (gameLiveFragment != null) {
+						getActivityFace().openFragment(gameLiveFragment, true);
 					}
 				}
 			});

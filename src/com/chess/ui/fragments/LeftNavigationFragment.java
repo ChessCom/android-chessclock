@@ -18,6 +18,7 @@ import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.statics.AppConstants;
 import com.chess.statics.IntentConstants;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.articles.ArticlesFragment;
@@ -195,11 +196,8 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 				}
 				break;
 			case R.drawable.ic_nav_play_live:
-				if (!isTablet) {
-					fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
-				} else {
-					fragmentByTag = (BasePopupsFragment) findFragmentByTag(LiveHomeFragmentTablet.class.getSimpleName());
-				}
+
+				fragmentByTag = ((LiveBaseActivity) getActivity()).getLiveHomeFragment();
 				if (fragmentByTag == null) {
 					if (!isTablet) {
 						fragmentByTag = new LiveHomeFragment();
@@ -352,7 +350,7 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 				break;
 		}
 		if (fragmentByTag != null) {
-			getActivityFace().openFragment(fragmentByTag);
+			getActivityFace().openFragment(fragmentByTag, true);
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {

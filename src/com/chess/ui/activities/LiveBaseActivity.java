@@ -833,7 +833,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 	}
 
-	protected GameLiveFragment getGameLiveFragment() {
+	public GameLiveFragment getGameLiveFragment() {
 		GameLiveFragment gameLiveFragment;
 		if (!isTablet) {
 			gameLiveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
@@ -843,7 +843,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		return gameLiveFragment;
 	}
 
-	protected GameLiveObserveFragment getGameLiveObserverFragment() {
+	public GameLiveObserveFragment getGameLiveObserverFragment() {
 		GameLiveObserveFragment gameLiveFragment;
 		if (!isTablet) {
 			gameLiveFragment = (GameLiveObserveFragment) findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
@@ -853,7 +853,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		return gameLiveFragment;
 	}
 
-	protected LiveHomeFragment getLiveHomeFragment() {
+	public LiveHomeFragment getLiveHomeFragment() {
 		LiveHomeFragment liveHomeFragment;
 		if (!isTablet) {
 			liveHomeFragment = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());

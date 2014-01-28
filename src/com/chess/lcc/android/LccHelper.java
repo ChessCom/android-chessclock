@@ -910,10 +910,6 @@ public class LccHelper {
 		return latestMoveNumber;
 	}
 
-	public void setLatestMoveNumber(Integer latestMoveNumber) {
-		this.latestMoveNumber = latestMoveNumber;
-	}
-
 	public void doReplayMoves(Game game) {
 		LogMe.dl(TAG, "GAME LISTENER: replay moves, gameId " + game.getId());
 

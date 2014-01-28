@@ -469,10 +469,6 @@ public class LiveChessService extends Service {
 		lccHelper.updatePlayersClock();
 	}
 
-	public void requestTimeForPlayers() {
-		lccHelper.requestTimeForPlayers();
-	}
-
 	public void rematch() {
 		lccHelper.rematch();
 	}
@@ -539,10 +535,6 @@ public class LiveChessService extends Service {
 
 	public void stopClocks() {
 		lccHelper.stopClocks();
-	}
-
-	public boolean isLccConnectedOrConnecting() {
-		return lccHelper != null && lccHelper.isLccConnectedOrConnecting();
 	}
 
 	public boolean isCurrentGameObserved() {

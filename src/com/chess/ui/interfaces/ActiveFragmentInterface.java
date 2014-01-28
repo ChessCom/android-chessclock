@@ -19,6 +19,8 @@ public interface ActiveFragmentInterface {
 
 	void openFragment(BasePopupsFragment fragment);
 
+	void openFragment(BasePopupsFragment fragment, boolean rewind);
+
 	void switchFragment(BasePopupsFragment fragment);
 
     void showPreviousFragment();

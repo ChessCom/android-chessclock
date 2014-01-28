@@ -136,8 +136,15 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 					Long gameId = liveService.getCurrentGameId();
 					logTest("gameId = " + gameId);
 
-					// todo: should we handle tablet mode here?
-					getActivityFace().openFragment(GameLiveFragment.createInstance(gameId));
+					GameLiveFragment liveFragment = liveBaseActivity.getGameLiveFragment();
+					if (liveFragment == null) {
+						if (!isTablet) {
+							liveFragment = GameLiveFragment.createInstance(gameId);
+						} else {
+							liveFragment = GameLiveFragmentTablet.createInstance(gameId);
+						}
+					}
+					getActivityFace().openFragment(liveFragment, true);
 
 					closeOnResume = true;
 				}

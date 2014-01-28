@@ -241,12 +241,16 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				return;
 			}
 
-			LiveHomeFragment fragmentByTag = (LiveHomeFragment) findFragmentByTag(LiveHomeFragment.class.getSimpleName());
+			LiveHomeFragment fragmentByTag = getLiveHomeFragment();
 			if (fragmentByTag == null) {
-				fragmentByTag = new LiveHomeFragment();
+				if (isTablet) {
+					fragmentByTag = new LiveHomeFragmentTablet();
+				} else {
+					fragmentByTag = new LiveHomeFragment();
+				}
 			}
 
-			openFragment(fragmentByTag);
+			openFragment(fragmentByTag, true);
 		}
 
 		handleOpenDailyGames(intent);
@@ -529,6 +533,31 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void setTouchModeToSlidingMenu(int touchMode) {
 		SlidingMenu sm = getSlidingMenu();
 		sm.setTouchModeAbove(touchMode);
+	}
+
+	public void openFragment(BasePopupsFragment fragment, boolean rewind) {
+
+		if (rewind) {
+
+			// rewind to latest backstack position of fragment
+
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			String simpleName = fragment.getClass().getSimpleName();
+
+			int count = fragmentManager.getBackStackEntryCount();
+
+			for (int i = count - 1; i >= 0; i--) {
+				if (fragmentManager.getBackStackEntryAt(i).getName().equals(simpleName)) {
+					for (int j = 0; j < count - i; j++) {
+						fragmentManager.popBackStackImmediate();
+					}
+					break;
+				}
+			}
+
+		}
+
+		openFragment(fragment);
 	}
 
 	@Override

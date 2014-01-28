@@ -12,6 +12,7 @@ import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.fragments.live.GameLiveFragment;
+import com.chess.ui.fragments.live.GameLiveFragmentTablet;
 import com.chess.utilities.LogMe;
 
 /**
@@ -183,14 +184,17 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 			synchronized(LccHelper.GAME_SYNC_LOCK) {
 				Long gameId = liveService.getCurrentGameId();
 
-				// todo: should we handle tablet mode here?
-				GameLiveFragment liveFragment = (GameLiveFragment) findFragmentByTag(GameLiveFragment.class.getSimpleName());
+				GameLiveFragment liveFragment = liveBaseActivity.getGameLiveFragment();
 				if (liveFragment == null) {
-					liveFragment = GameLiveFragment.createInstance(gameId);
+					if (!isTablet) {
+						liveFragment = GameLiveFragment.createInstance(gameId);
+					} else {
+						liveFragment = GameLiveFragmentTablet.createInstance(gameId);
+					}
 				} else {
 					liveFragment.invalidateGameScreen();
 				}
-				getActivityFace().openFragment(liveFragment);
+				getActivityFace().openFragment(liveFragment, true);
 			}
 		} else {
 			createSeek();

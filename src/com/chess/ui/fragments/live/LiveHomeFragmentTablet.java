@@ -26,6 +26,7 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveLiveArchiveGamesTask;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.statics.StaticData;
+import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.LiveArchiveGamesAdapterTablet;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
@@ -210,18 +211,15 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 				return;
 			}
 			Fragment fragmentByTag;
-			if (!isTablet) {
-				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragment.class.getSimpleName());
-				if (fragmentByTag == null) {
+			fragmentByTag = ((LiveBaseActivity)getActivity()).getGameLiveObserverFragment();
+			if (fragmentByTag == null) {
+				if (!isTablet) {
 					fragmentByTag = new GameLiveObserveFragment();
-				}
-			} else {
-				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveObserveFragmentTablet.class.getSimpleName());
-				if (fragmentByTag == null) {
+				} else {
 					fragmentByTag = new GameLiveObserveFragmentTablet();
 				}
 			}
-			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
+			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag, true);
 		} else if (id == R.id.currentGameHeaderView) {
 			Fragment fragmentByTag;
 				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveFragmentTablet.class.getSimpleName());
