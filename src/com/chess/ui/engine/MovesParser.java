@@ -37,21 +37,17 @@ public class MovesParser {
 
 
 	public static final char fileLetters[] = new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-	public static final int rankNumbers[] = new int[]{1, 2, 3, 4, 5, 6, 7, 8};
 	public static final String CAPTURE_MARK = "x";
 
 	public static final String REGEXP_CHARS = "[a,b,c,d,e,f,g,h]";
 	public static final String REGEXP_NUMBERS = "[0-9]";
 
 
-	public static final String B_KINGSIDE_MOVE_CASTLING = "kg8";
-	public static final String B_QUEENSIDE_MOVE_CASTLING = "kc8";
 	public static final String KINGSIDE_CASTLING = "O-O";
 	public static final String KINGSIDE_CASTLING_AND_CHECK = "O-O+";
 	public static final String QUEENSIDE_CASTLING = "O-O-O";
 	public static final String QUEENSIDE_CASTLING_AND_CHECK = "O-O-O+";
 	public static final String MOVE_NUMBERS_PATTERN = "[0-9]{1,4}[.]";
-	public static final String SECOND_MOVE_NUMBERS_PATTERN = "[0-9]{1,2}\\.\\.\\.";
 
 	private static final int PAWN = 0;
 	private static final int KNIGHT = 1;

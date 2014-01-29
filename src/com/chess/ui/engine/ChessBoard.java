@@ -1657,39 +1657,46 @@ public class ChessBoard implements BoardFace {
 	private String convertMove() {
 		Move move = histDat[ply - 1].move;
 
-		String output;
+		String output = Symbol.EMPTY;
 		String to = movesParser.positionToString(move.to);
 		if (move.isCastling()) {
 
 			int castleMaskPosition = histDat[ply - 1].castleMaskPosition;
 
 			if (castleMaskPosition == BLACK_KINGSIDE_CASTLE) {
+//				output = MovesParser.KINGSIDE_CASTLING;    // TODO uncomment when server fix IllegalMove even for O-O
 				if (chess960) {
 					to = movesParser.positionToString(blackRook2);
 				} else {
 					to = Board.G8.name();
 				}
 			} else if (castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
+//				output = MovesParser.QUEENSIDE_CASTLING;
 				if (chess960) {
 					to = movesParser.positionToString(blackRook1);
 				} else {
 					to = Board.C8.name();
 				}
 			} else if (castleMaskPosition == WHITE_KINGSIDE_CASTLE) {
+//				output = MovesParser.KINGSIDE_CASTLING;
 				if (chess960) {
 					to = movesParser.positionToString(whiteRook2);
 				} else {
 					to = Board.G1.name();
 				}
 			} else if (castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
+//				output = MovesParser.QUEENSIDE_CASTLING;
 				if (chess960) {
 					to = movesParser.positionToString(whiteRook1);
 				} else {
 					to = Board.C1.name();
 				}
 			}
+			output = movesParser.positionToString(move.from) + to;
+		} else {
+			output = movesParser.positionToString(move.from) + to;
 		}
-		output = movesParser.positionToString(move.from) + to;
+
 		Log.d(MOVE_TAG, output);
 		return output;
 	}
@@ -1714,7 +1721,12 @@ public class ChessBoard implements BoardFace {
 			default:
 				break;
 		}
-		return output.toLowerCase(); // need to be lowercase
+
+//		if (move.isCastling()) { // O-O and O-O-O  // TODO uncomment when server fix IllegalMove even for O-O
+//			return output;
+//		} else {
+			return output.toLowerCase(); // need to be lowercase
+//		}
 	}
 
 	@Override
