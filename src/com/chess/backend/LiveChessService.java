@@ -10,31 +10,10 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import com.chess.R;
-import com.chess.backend.entity.api.ChatItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.lcc.android.*;
-import com.chess.lcc.android.interfaces.LccChatMessageListener;
-import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
-import com.chess.lcc.android.interfaces.LccEventListener;
-import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
-import com.chess.live.client.Challenge;
-import com.chess.live.client.Game;
-import com.chess.live.client.LiveChessClient;
-import com.chess.live.client.User;
-import com.chess.model.GameLiveItem;
+import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.statics.IntentConstants;
-import com.chess.statics.StaticData;
 import com.chess.ui.activities.MainFragmentFaceActivity;
-import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.utilities.LogMe;
-import com.google.gson.Gson;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class LiveChessService extends Service {
 
@@ -42,10 +21,7 @@ public class LiveChessService extends Service {
 	private static final int GO_TO_LIVE = 11;
 
 	private ServiceBinder serviceBinder = new ServiceBinder();
-
-	private LccChallengeTaskRunner challengeTaskRunner;
-	private LccGameTaskRunner gameTaskRunner;
-	LiveConnectionHelper liveConnectionHelper;
+	private LiveConnectionHelper liveConnectionHelper;
 
 	public class ServiceBinder extends Binder {
 		public LiveChessService getService() {
@@ -87,7 +63,7 @@ public class LiveChessService extends Service {
 	public void onDestroy() {
 		LogMe.dl(TAG, "SERVICE: onDestroy");
 		if (liveConnectionHelper != null) {
-			logout();
+			liveConnectionHelper.logout();
 			liveConnectionHelper = null;
 		}
 		stopForeground(true);
@@ -97,15 +73,6 @@ public class LiveChessService extends Service {
 	public void stop() {
 		stopSelf();
 		stopForeground(true);
-	}
-
-	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
-//		LogMe.dl(TAG, "appData.isLiveChess(getContext()) " + appData.isLiveChess());
-		LogMe.dl(TAG, "liveConnectionHelper instance in checkAndConnect = " + liveConnectionHelper);
-		LogMe.dl(TAG, "lccClient instance in checkAndConnect = " + liveConnectionHelper.getClient());
-
-		liveConnectionHelper.setConnectionUpdateFace(connectionUpdateFace);
-		liveConnectionHelper.checkAndConnectLiveClient();
 	}
 
 	public void onLiveConnected() {
@@ -138,6 +105,10 @@ public class LiveChessService extends Service {
 
 	private Context getContext() {
 		return this;
+	}
+
+	public LiveConnectionHelper getLiveConnectionHelper() {
+		return liveConnectionHelper;
 	}
 
 //	private BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
@@ -194,285 +165,4 @@ public class LiveChessService extends Service {
 //
 //			}
 //		}
-
-	// ------------------- Task runners wrapping ------------------------
-
-	public void setChallengeTaskListener(AbstractUpdateListener<Challenge> challengeTaskListener) {
-		challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, getLccHelper());
-	}
-
-	public void declineAllChallenges(Challenge currentChallenge) {
-		challengeTaskRunner.declineAllChallenges(currentChallenge, getLccHelper().getChallenges());
-	}
-
-	public void runAcceptChallengeTask(Challenge currentChallenge) {
-		challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
-	}
-
-	public void declineCurrentChallenge(Challenge currentChallenge) {
-		challengeTaskRunner.declineCurrentChallenge(currentChallenge, getLccHelper().getChallenges());
-	}
-
-	public void cancelAllOwnChallenges() {
-		challengeTaskRunner.cancelAllOwnChallenges(getLccHelper().getOwnChallenges());
-	}
-
-	public void runSendChallengeTask(Challenge challenge) {
-		challengeTaskRunner.runSendChallengeTask(challenge);
-	}
-
-	public void setGameTaskListener(ActionBarUpdateListener<Game> gameTaskListener) {
-		gameTaskRunner = new LccGameTaskRunner(gameTaskListener, getLccHelper());
-	}
-
-
-	public void runMakeDrawTask() {
-		gameTaskRunner.runMakeDrawTask();
-	}
-
-	public void runMakeResignTask() {
-		gameTaskRunner.runMakeResignTask();
-	}
-
-	public void runMakeResignAndExitTask() {
-		// todo: gameTaskRunner sets in onLiveClientConnected and onResume. Investigate why it is null here
-		if (gameTaskRunner != null) {
-			gameTaskRunner.runMakeResignAndExitTask();
-		}
-	}
-
-	public void runRejectDrawTask() {
-		gameTaskRunner.runRejectDrawTask();
-	}
-
-
-	// ------------------- Helpers wrapping --------------------------
-	public LccHelper getLccHelper() {
-		return liveConnectionHelper != null ? liveConnectionHelper.getLccHelper() : null;
-	}
-
-	public boolean isUserConnected() {
-		return getLccHelper() != null && getLccHelper() != null && isConnected();
-	}
-
-	public boolean isActiveGamePresent() {
-		return getLccHelper() != null && getLccHelper().isActiveGamePresent();
-	}
-
-	/*public boolean isValidToMakeMove() {
-		return lccHelper != null && lccHelper.getUser() != null && isConnected() && lccHelper.isActiveGamePresent();
-	}*/
-
-	public User getUser() {
-		return getLccHelper().getUser();
-	}
-
-	public void logout() {
-		if (liveConnectionHelper != null) {
-			liveConnectionHelper.logout();
-		}
-	}
-
-	public void checkTestMove() {
-		getLccHelper().checkTestMove();
-	}
-
-	public Map<LiveEvent.Event, LiveEvent> getPausedActivityLiveEvents() {
-		return liveConnectionHelper.getPausedActivityLiveEvents();
-	}
-
-	public void setConnected(boolean connected) {
-		liveConnectionHelper.setConnected(connected);
-	}
-
-	public HashMap<Long, Challenge> getChallenges() {
-		return getLccHelper().getChallenges();
-	}
-
-	public boolean isConnected() {
-		return liveConnectionHelper.isConnected();
-	}
-
-	public LiveChessClient getClient() {
-		return getLccHelper().getClient();
-	}
-
-	public void setLiveChessClientEventListener(LiveChessClientEventListener clientEventListener) {
-		liveConnectionHelper.setLiveChessClientEventListener(clientEventListener);
-	}
-
-	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {
-		getLccHelper().setOuterChallengeListener(outerChallengeListener);
-	}
-
-	public void setLccChatMessageListener(LccChatMessageListener chatMessageListener) {
-		getLccHelper().setLccChatMessageListener(chatMessageListener);
-	}
-
-	public void setLccEventListener(LccEventListener eventListener) {
-		getLccHelper().setLccEventListener(eventListener);
-	}
-
-	public void setLccObserveEventListener(LccEventListener eventListener) {
-		getLccHelper().setLccObserveEventListener(eventListener);
-	}
-
-	public List<ChatItem> getMessagesList() {
-		return getLccHelper().getMessagesList();
-	}
-
-	public Long getCurrentGameId() {
-		return getLccHelper().getCurrentGameId();
-	}
-
-	public String[] getOnlineFriends() {
-		return getLccHelper().getOnlineFriends();
-	}
-
-	public GameLiveItem getGameItem() {
-		return getLccHelper().getGameItem();
-	}
-
-	public int getResignTitle() {
-		return getLccHelper().getResignTitle();
-	}
-
-	public List<String> getPendingWarnings() {
-		return getLccHelper().getPendingWarnings();
-	}
-
-	public String getLastWarningMessage() {
-		return getLccHelper().getLastWarningMessage();
-	}
-
-	public void setGameActivityPausedMode(boolean gameActivityPausedMode) {
-		getLccHelper().setGameActivityPausedMode(gameActivityPausedMode);
-	}
-
-	public void checkAndReplayMoves() {
-		getLccHelper().checkAndReplayMoves();
-	}
-
-	public void checkFirstTestMove() {
-		getLccHelper().checkFirstTestMove();
-	}
-
-	public String getUsername() {
-		return getLccHelper().getUsername();
-	}
-
-	public Game getCurrentGame() {
-		return getLccHelper().getCurrentGame();
-	}
-
-	public Integer getGamesCount() {
-		return getLccHelper().getGamesCount();
-	}
-
-	public Integer getLatestMoveNumber() {
-		return getLccHelper().getLatestMoveNumber();
-	}
-
-	public Boolean isUserColorWhite() {
-		return getLccHelper().isUserColorWhite();
-	}
-
-	public boolean isFairPlayRestriction() {
-		return getLccHelper().isFairPlayRestriction();
-	}
-
-	public void makeMove(String move, String temporaryDebugInfo) {
-		getLccHelper().makeMove(move, gameTaskRunner, temporaryDebugInfo);
-	}
-
-	public void updatePlayersClock() {
-		getLccHelper().updatePlayersClock();
-	}
-
-	public void rematch() {
-		getLccHelper().rematch();
-	}
-
-	public void checkGameEvents() {
-		getLccHelper().checkGameEvents();
-	}
-
-	public void createChallenge(LiveGameConfig config) {
-		Gson gson = new Gson();
-		LogMe.dl("TEST", "live config = " + gson.toJson(config));
-		getLccHelper().createChallenge(config);
-	}
-
-	public void sendMessage(String message, TaskUpdateInterface<String> taskFace) {
-		new SendLiveMessageTask(taskFace, message).executeTask(getLccHelper().getCurrentGameId());
-	}
-
-private class SendLiveMessageTask extends AbstractUpdateTask<String, Long> {
-
-	private String message;
-
-	public SendLiveMessageTask(TaskUpdateInterface<String> taskFace, String message) {
-		super(taskFace);
-		this.message = message;
-	}
-
-	@Override
-	protected Integer doTheTask(Long... params) {
-		getLccHelper().sendChatMessage(params[0], message);
-		return StaticData.RESULT_OK;
-	}
-}
-
-	public void runObserveTopGameTask(TaskUpdateInterface<Void> taskFace) {
-		new ObserveTopGameTask(taskFace).execute();
-	}
-
-private class ObserveTopGameTask extends AbstractUpdateTask<Void, Void> {
-
-	public ObserveTopGameTask(TaskUpdateInterface<Void> taskFace) {
-		super(taskFace);
-	}
-
-	@Override
-	protected Integer doTheTask(Void... params) {
-		getLccHelper().observeTopGame();
-		return StaticData.RESULT_OK;
-	}
-}
-	public void exitGameObserving() {
-		LogMe.dl(TAG, "exitGameObserving");
-		setLccObserveEventListener(null);
-		getLccHelper().setCurrentGameId(null);
-		getLccHelper().stopClocks();
-		getLccHelper().unObserveCurrentObservingGame();
-		getLccHelper().setCurrentObservedGameId(null);
-	}
-
-	public void initClocks() {
-		getLccHelper().initClocks();
-	}
-
-	public void stopClocks() {
-		getLccHelper().stopClocks();
-	}
-
-	public boolean isCurrentGameObserved() {
-		Game currentGame = getLccHelper().getCurrentGame();
-		boolean isCurrentGameObserved = currentGame != null && getLccHelper().isObservedGame(currentGame);
-
-		return isCurrentGameObserved;
-	}
-
-	public Long getCurrentObservedGameId() {
-		return getLccHelper().getCurrentObservedGameId();
-	}
-
-	public void startIdleTimeOutCounter() {
-		liveConnectionHelper.startIdleTimeOutCounter();
-	}
-
-	public void stopIdleTimeOutCounter() {
-		liveConnectionHelper.stopIdleTimeOutCounter();
-	}
-
 }

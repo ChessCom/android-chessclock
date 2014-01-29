@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
@@ -25,6 +24,7 @@ import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveLiveArchiveGamesTask;
 import com.chess.lcc.android.DataNotValidException;
+import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.statics.StaticData;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.LiveArchiveGamesAdapterTablet;
@@ -108,12 +108,12 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 	}
 
 	@Override
-	protected void adjustFeaturesList(LiveChessService liveService) {
+	protected void adjustFeaturesList(LiveConnectionHelper liveHelper) {
 		if (inPortrait()) {
-			super.adjustFeaturesList(liveService);
+			super.adjustFeaturesList(liveHelper);
 			return;
 		}
-		if (liveService.isActiveGamePresent() && !liveService.isCurrentGameObserved()) {
+		if (liveHelper.isActiveGamePresent() && !liveHelper.isCurrentGameObserved()) {
 			currentGameHeaderView.setVisibility(View.VISIBLE);
 		} else {
 			currentGameHeaderView.setVisibility(View.GONE);
@@ -190,8 +190,8 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 		if (id == R.id.friendsHeaderView) {
 			if (isLCSBound) {
 				try {
-					LiveChessService liveService = getLiveService();
-					liveFriends = liveService.getOnlineFriends();
+					LiveConnectionHelper liveHelper = getLiveHelper();
+					liveFriends = liveHelper.getOnlineFriends();
 
 					SparseArray<String> optionsMap = new SparseArray<String>();
 					for (int i = 0; i < liveFriends.length; i++) {

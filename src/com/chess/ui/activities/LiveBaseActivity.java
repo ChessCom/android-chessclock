@@ -19,6 +19,7 @@ import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
@@ -50,7 +51,7 @@ import java.util.Map;
  */
 public abstract class LiveBaseActivity extends CoreActivityActionBar implements LiveChessClientEventListener {
 
-	// todo: extract connection logic to LiveConnectionHelper
+	// todo: @lcc - extract connection logic to LiveConnectionHelper
 
 	private static final String TAG = "LccLog-LiveBaseActivity";
 
@@ -70,7 +71,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected GameTaskListener gameTaskListener;
 	private LiveServiceConnectionListener liveServiceConnectionListener;
 	protected boolean isLCSBound;
-	protected LiveChessService liveService;
+	protected LiveConnectionHelper liveHelper;
 	private List<PopupDialogFragment> popupChallengesList;
 	private boolean needReLoginToLive;
 
@@ -108,9 +109,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			}
 		}
 
-		if (liveService != null) { // if we return after shutdown procedure as started
-			Log.d("TEST", "liveService.stopIdleTimeOutCounter() ");
-			liveService.stopIdleTimeOutCounter();
+		if (liveHelper != null) { // if we return after shutdown procedure as started
+			Log.d("TEST", "liveHelper.stopIdleTimeOutCounter() ");
+			liveHelper.stopIdleTimeOutCounter();
 		}
 	}
 
@@ -125,7 +126,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		//Log.d(TAG, "LiveBaseActivity go pause, isLCSBound = " + isLCSBound);
 		if (isLCSBound) {
-			liveService.startIdleTimeOutCounter();
+			liveHelper.startIdleTimeOutCounter();
 			isLCSBound = false;  // we drop here flag because we can't drop it after shutdown, as Activity will not exist and only service will be alive
 		}
 	}
@@ -153,9 +154,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected boolean checkIfLiveUserAlive() {
 		boolean alive = false;
 		if (isLCSBound) {
-			if (liveService.getUser() == null) {
+			if (liveHelper.getUser() == null) {
 				if (getAppData().isLiveChess()) {
-					liveService.logout();
+					liveHelper.logout();
 				}
 				unBindAndStopLiveService();
 				alive = false;
@@ -174,7 +175,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 				Fragment fragmentByTag = getGameLiveFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					if (liveService.getCurrentGame() != null && !liveService.getCurrentGame().isGameOver()) {
+					if (liveHelper.getCurrentGame() != null && !liveHelper.getCurrentGame().isGameOver()) {
 						showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
 						return true;
 					}
@@ -190,7 +191,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 				fragmentByTag = getGameLiveObserverFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					liveService.exitGameObserving();
+					liveHelper.exitGameObserving();
 					return super.onKeyUp(keyCode, event);
 				}
 
@@ -198,7 +199,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				fragmentByTag = getLiveHomeFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					//stopConnectTimer();
-					liveService.logout();
+					liveHelper.logout();
 					getAppData().setLiveChessMode(false);
 					unBindAndStopLiveService();
 					return super.onKeyUp(keyCode, event);
@@ -210,7 +211,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	public void executePausedActivityLiveEvents() {
 
-		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = liveService.getPausedActivityLiveEvents();
+		Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = liveHelper.getPausedActivityLiveEvents();
 //		LogMe.dl(TAG, "executePausedActivityLiveEvents size=" + pausedActivityLiveEvents.size() + ", events=" + pausedActivityLiveEvents);
 
 		if (pausedActivityLiveEvents.size() > 0) {
@@ -244,7 +245,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		if (tag.equals(CONNECT_FAILED_TAG)) {
 			if (getAppData().isLiveChess()) {
-				liveService.logout();
+				liveHelper.logout();
 			}
 			unBindAndStopLiveService();
 		} else if (tag.equals(OBSOLETE_VERSION_TAG)) {
@@ -253,7 +254,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				@Override
 				public void run() {
 					getAppData().setLiveChessMode(false);
-					liveService.setConnected(false);
+					liveHelper.setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.getInstance().PLAY_ANDROID_HTML)));
 				}
 			});
@@ -262,8 +263,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		} else if (tag.contains(CHALLENGE_TAG)) { // Challenge accepted!
 			Log.d(TAG, "Accept challenge: " + currentChallenge);
-			liveService.declineAllChallenges(currentChallenge);
-			liveService.runAcceptChallengeTask(currentChallenge);
+			liveHelper.declineAllChallenges(currentChallenge);
+			liveHelper.runAcceptChallengeTask(currentChallenge);
 
 			popupChallengesList.remove(fragment);
 
@@ -273,7 +274,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), NETWORK_REQUEST);
 
 		} else if (tag.equals(EXIT_GAME_TAG)) {
-			liveService.runMakeResignAndExitTask();
+			liveHelper.runMakeResignAndExitTask();
 			onBackPressed();
 		}
 		super.onPositiveBtnClick(fragment);
@@ -293,14 +294,14 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			if (isLCSBound) {
 
 				// todo: refactor with new LCC
-				if (!liveService.isConnected() || liveService.getClient() == null) { // TODO should leave that screen on connection lost or when LCC is become null
-					liveService.logout();
+				if (!liveHelper.isConnected() || liveHelper.getClient() == null) { // TODO should leave that screen on connection lost or when LCC is become null
+					liveHelper.logout();
 					unBindAndStopLiveService();
 					return;
 				}
 
 				Log.d(TAG, "Decline challenge: " + currentChallenge);
-				liveService.declineCurrentChallenge(currentChallenge);
+				liveHelper.declineCurrentChallenge(currentChallenge);
 			}
 		}
 		super.onNegativeBtnClick(fragment);
@@ -378,7 +379,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	private void performServiceConnection() {
 		if (isLCSBound) {
-			if (liveService.getLccHelper() != null && liveService.isConnected()) {
+			if (liveHelper.getLccHelper() != null && liveHelper.isConnected()) {
 				onLiveClientConnected();
 			} else { // lccHelper here null, so we need to start again connection logic and create all instances
 //				Log.d(TAG, "performServiceConnection is LCSBound, lcc helper null or !connected-> bindAndStartLiveService " + getClass());
@@ -397,10 +398,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 //			LogMe.dl(TAG, "onServiceConnected");
 
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
-			liveService = serviceBinder.getService();
+			liveHelper = serviceBinder.getService().getLiveConnectionHelper();
 			isLCSBound = true;
-			liveService.setLiveChessClientEventListener(LiveBaseActivity.this);
+			liveHelper.setLiveChessClientEventListener(LiveBaseActivity.this);
 
+			/*
 			if (getSupportFragmentManager() == null) {
 				return;
 			}
@@ -412,15 +414,17 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					}
 				}
 			}
+			*/
 
 			onLiveServiceConnected();
-			liveService.checkAndConnect(this);
+			liveHelper.checkAndConnect(this);
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
 //			LogMe.dl(TAG, "SERVICE: onServiceDisconnected");
 			isLCSBound = false;
+			/*
 			if (getSupportFragmentManager() == null) {
 				return;
 			}
@@ -432,6 +436,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					}
 				}
 			}
+			*/
 		}
 
 		@Override
@@ -468,7 +473,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);
 				liveEvent.setChallenge(challenge);
 				liveEvent.setChallengeDelayed(true);
-				liveService.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
+				liveHelper.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
 			} else {
 				showDelayedDialogImmediately(challenge);
 			}
@@ -507,7 +512,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				liveEvent.setEvent(LiveEvent.Event.CHALLENGE);
 				liveEvent.setChallenge(challenge);
 				liveEvent.setChallengeDelayed(false);
-				liveService.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
+				liveHelper.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
 			} else {
 				SoundPlayer.getInstance(getContext()).playNotify();
 				showDialogImmediately(challenge);
@@ -608,7 +613,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		// Logout first to make clear connect
 		if (isLCSBound) {
-			liveService.logout();
+			liveHelper.logout();
 			unBindAndStopLiveService();
 		}
 
@@ -661,10 +666,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			LiveEvent connectionFailureEvent = new LiveEvent();
 			connectionFailureEvent.setEvent(LiveEvent.Event.CONNECTION_FAILURE);
 			connectionFailureEvent.setMessage(message);
-			if (liveService.getLccHelper() == null) {
+			if (liveHelper.getLccHelper() == null) {
 				throw new IllegalStateException(" LccHelper became NULL");
 			}
-			liveService.getPausedActivityLiveEvents().put(connectionFailureEvent.getEvent(), connectionFailureEvent);
+			liveHelper.getPausedActivityLiveEvents().put(connectionFailureEvent.getEvent(), connectionFailureEvent);
 		} else {
 			processConnectionFailure(message);
 		}
@@ -801,16 +806,17 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	protected void onLiveServiceConnected() {
-		LogMe.dl(TAG, "onLiveServiceConnected: liveService.getLccHelper() = " + liveService.getLccHelper());
-		if (liveService.getLccHelper() == null) {
+		LogMe.dl(TAG, "onLiveServiceConnected: liveHelper.getLccHelper() = " + liveHelper.getLccHelper());
+		if (liveHelper.getLccHelper() == null) {
 			return;
 		}
 
-		liveService.stopIdleTimeOutCounter(); // screen rotated case
+		liveHelper.stopIdleTimeOutCounter(); // screen rotated case
 
-		liveService.setOuterChallengeListener(outerChallengeListener);
-		liveService.setChallengeTaskListener(challengeTaskListener);
+		liveHelper.setOuterChallengeListener(outerChallengeListener);
+		liveHelper.setChallengeTaskListener(challengeTaskListener);
 
+		/*
 		if (getSupportFragmentManager() == null) {
 			return;
 		}
@@ -821,6 +827,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				}
 			}
 		}
+		*/
 	}
 
 	public GameLiveFragment getGameLiveFragment() {
@@ -853,8 +860,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		return liveHomeFragment;
 	}
 
-	public LiveChessService getLiveService() {
-		return liveService;
+	public LiveConnectionHelper getLiveHelper() {
+		return liveHelper;
 	}
 
 	private void dismissNetworkCheckDialog() {

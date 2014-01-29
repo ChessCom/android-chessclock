@@ -7,12 +7,12 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
+import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
 import com.chess.model.PopupItem;
@@ -89,8 +89,8 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	@Override
 	protected void init() throws DataNotValidException {
 
-		LiveChessService liveService = getLiveService();
-		GameLiveItem currentGame = liveService.getGameItem();
+		LiveConnectionHelper liveHelper = getLiveHelper();
+		GameLiveItem currentGame = liveHelper.getGameItem();
 		if (currentGame == null) {
 			return;
 		}
@@ -99,11 +99,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		boardView.updateBoardAndPiecesImgs();
 		//notationsView.resetNotations();
 		enableScreenLockTimer();
-		if (!liveService.isActiveGamePresent()) {
+		if (!liveHelper.isActiveGamePresent()) {
 			controlsView.enableAnalysisMode(true);
 			getBoardFace().setFinished(true);
 		}
-		liveService.setLccChatMessageListener(this);
+		liveHelper.setLccChatMessageListener(this);
 
 		{// fill labels
 			labelsConfig = new LabelsConfig();
@@ -118,9 +118,9 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-			String topAvatarUrl = liveService.getCurrentGame()
+			String topAvatarUrl = liveHelper.getCurrentGame()
 					.getOpponentForPlayer(currentGame.getWhiteUsername()).getAvatarUrl();
-			String bottomAvatarUrl = liveService.getCurrentGame()
+			String bottomAvatarUrl = liveHelper.getCurrentGame()
 					.getOpponentForPlayer(currentGame.getBlackUsername()).getAvatarUrl();
 
 			if (topAvatarUrl != null && !topAvatarUrl.contains(StaticData.GIF)) {
@@ -231,7 +231,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		} else if (view.getId() == R.id.rematchPopupBtn) { // New Game Self
 			dismissEndGameDialog();
 			try {
-				getLiveService().exitGameObserving();
+				getLiveHelper().exitGameObserving();
 			} catch (DataNotValidException e) {
 				e.printStackTrace();
 				getActivityFace().showPreviousFragment();
@@ -304,12 +304,12 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	}
 
 	private void runNewObserverGame() throws DataNotValidException {
-		LiveChessService liveService = getLiveService();
+		LiveConnectionHelper liveHelper = getLiveHelper();
 		// exit previous game
-		liveService.exitGameObserving();
-		liveService.setLccObserveEventListener(this);
+		liveHelper.exitGameObserving();
+		liveHelper.setLccObserveEventListener(this);
 
-		liveService.runObserveTopGameTask(observeTaskListener);
+		liveHelper.runObserveTopGameTask(observeTaskListener);
 	}
 
 	@Override
@@ -323,7 +323,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	public void goHome() {
 		logTest("goHome");
 		try {
-			getLiveService().exitGameObserving();
+			getLiveHelper().exitGameObserving();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
 		}
@@ -366,15 +366,15 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	public boolean isValid() {
 		// todo: add more checks
 
-		LiveChessService liveService;
+		LiveConnectionHelper liveHelper;
 		try {
-			liveService = getLiveService();
+			liveHelper = getLiveHelper();
 		} catch (DataNotValidException e) {
 			e.printStackTrace();
 			return false;
 		}
 
-		boolean isGameValid = liveService.getCurrentObservedGameId() != null;
+		boolean isGameValid = liveHelper.getCurrentObservedGameId() != null;
 		return isGameValid;
 	}
 

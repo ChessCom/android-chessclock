@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
 import com.chess.lcc.android.DataNotValidException;
+import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.utilities.AppUtils;
@@ -97,16 +97,16 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 
 		if (view.getId() == R.id.cancelLiveBtn) {
 
-			LiveChessService liveService;
+			LiveConnectionHelper liveHelper;
 			try {
-				liveService = getLiveService();
+				liveHelper = getLiveHelper();
 			} catch (DataNotValidException e) {
 				logTest(e.getMessage());
 				getActivityFace().showPreviousFragment();
 				return;
 			}
 			// todo: check - probably cancel only latest issued challenge
-			liveService.cancelAllOwnChallenges();
+			liveHelper.cancelAllOwnChallenges();
 
 			getActivityFace().showPreviousFragment();
 		}
@@ -121,9 +121,9 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 			activity.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					LiveChessService liveService;
+					LiveConnectionHelper liveHelper;
 					try {
-						liveService = getLiveService();
+						liveHelper = getLiveHelper();
 					} catch (DataNotValidException e) {
 						logTest(e.getMessage());
 						getActivityFace().showPreviousFragment();   // TODO handle correctly
@@ -132,7 +132,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 					loadingView.setVisibility(View.GONE);
 					logTest("challenge created, ready to start");
 
-					Long gameId = liveService.getCurrentGameId();
+					Long gameId = liveHelper.getCurrentGameId();
 					logTest("gameId = " + gameId);
 
 					GameLiveFragment liveFragment = liveBaseActivity.getGameLiveFragment();
@@ -155,15 +155,15 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 	@Override
 	public void createSeek() {
 		if (liveGameConfig != null) {
-			LiveChessService liveService;
+			LiveConnectionHelper liveHelper;
 			try {
-				liveService = getLiveService();
+				liveHelper = getLiveHelper();
 			} catch (DataNotValidException e) {
 				logTest(e.getMessage());
 				getActivityFace().showPreviousFragment();
 				return;
 			}
-			liveService.createChallenge(liveGameConfig);
+			liveHelper.createChallenge(liveGameConfig);
 		}
 	}
 

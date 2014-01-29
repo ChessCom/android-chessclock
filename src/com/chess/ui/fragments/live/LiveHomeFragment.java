@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ServersStatsItem;
@@ -22,6 +21,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.lcc.android.DataNotValidException;
+import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.live.client.Game;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
@@ -123,7 +123,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 				liveBaseActivity.connectLcc();
 				showPopupProgressDialog();
 			} else {
-				adjustFeaturesList(getLiveService());
+				adjustFeaturesList(getLiveHelper());
 			}
 
 		} catch (DataNotValidException e) {
@@ -146,8 +146,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	}
 	*/
 
-	protected void adjustFeaturesList(LiveChessService liveService) {
-		if (liveService.isActiveGamePresent() && !liveService.isCurrentGameObserved()) {
+	protected void adjustFeaturesList(LiveConnectionHelper liveHelper) {
+		if (liveHelper.isActiveGamePresent() && !liveHelper.isCurrentGameObserved()) {
 			if (!featuresList.contains(currentGameItem)) {
 				featuresList.add(0, currentGameItem);
 				optionsAdapter.notifyDataSetChanged();
@@ -192,7 +192,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 				return;
 			}
 			try { // check for valid data
-				 getLiveService();
+				 getLiveHelper();
 			} catch (DataNotValidException e) {
 				e.printStackTrace();
 				showToast(R.string.still_connecting);
@@ -228,8 +228,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		} else if (liveItem.iconId == R.string.ic_challenge_friend) { // Friends
 			if (isLCSBound) {
 				try {
-					LiveChessService liveService = getLiveService();
-					liveFriends = liveService.getOnlineFriends();
+					LiveConnectionHelper liveHelper = getLiveHelper();
+					liveFriends = liveHelper.getOnlineFriends();
 
 					if (liveFriends == null || liveFriends.length == 0) {
 						showToast(R.string.no_friends_online);
@@ -333,9 +333,9 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			activity.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					LiveChessService liveService;
+					LiveConnectionHelper liveHelper;
 					try {
-						liveService = getLiveService();
+						liveHelper = getLiveHelper();
 					} catch (DataNotValidException e) {
 						logTest(e.getMessage());
 						showToast(e.getMessage());
@@ -343,11 +343,11 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 					}
 					logTest("challenge created, ready to start");
 
-					Long gameId = liveService.getCurrentGameId();
+					Long gameId = liveHelper.getCurrentGameId();
 					logTest("gameId = " + gameId);
 
 					GameLiveFragment gameLiveFragment;
-					if (liveService.isCurrentGameObserved()) {
+					if (liveHelper.isCurrentGameObserved()) {
 						gameLiveFragment = ((LiveBaseActivity) getActivity()).getGameLiveObserverFragment();
 						if (gameLiveFragment == null) {
 							if (isTablet) {
@@ -550,7 +550,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	@Override
 	public void onGameEnd(Game game, String gameEndMessage) {
 		try {
-			adjustFeaturesList(getLiveService());
+			adjustFeaturesList(getLiveHelper());
 		} catch (DataNotValidException e) {
 			e.printStackTrace();
 		}

@@ -7,18 +7,28 @@ import android.util.Log;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
+import com.chess.backend.interfaces.TaskUpdateInterface;
+import com.chess.backend.tasks.AbstractUpdateTask;
+import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
+import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
-import com.chess.live.client.FailureDetails;
-import com.chess.live.client.LiveChessClient;
+import com.chess.live.client.*;
+import com.chess.model.GameLiveItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
+import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.utilities.LogMe;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LiveConnectionHelper {
@@ -29,26 +39,34 @@ public class LiveConnectionHelper {
 	private static final int CONNECTION_FAILURE_DELAY = 2000;
 	public static final Object CLIENT_SYNC_LOCK = new Object();
 	public static final boolean RESET_LCC_LISTENERS = true;
-	private final LiveChessService liveService;
 
-	boolean liveConnected;
+	private AppData appData;
+	private Handler handler;
+	private final Context context;
+
+	private final LiveChessService liveService;
+	private LiveChessClient lccClient;
+	private final LccHelper lccHelper;
+
+	private boolean liveConnected;
 	private boolean connectionFailure;
 	private boolean liveConnecting;
-	private final LccHelper lccHelper;
-	private final Context context;
-	private AppData appData;
-	private LiveChessClient lccClient;
+
+	private LccConnectionListener connectionListener;
+	private LccSubscriptionListener subscriptionListener;
+
 	private LiveChessClientEventListener liveChessClientEventListener;
-	private final LccConnectionListener connectionListener;
-	private final LccSubscriptionListener subscriptionListener;
-	private Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = new HashMap<LiveEvent.Event, LiveEvent>();
 	private LccConnectionUpdateFace connectionUpdateFace;
-	private Handler handler;
+
+	private Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = new HashMap<LiveEvent.Event, LiveEvent>();
+
+	private LccChallengeTaskRunner challengeTaskRunner;
+	private LccGameTaskRunner gameTaskRunner;
 
 
 	public LiveConnectionHelper(LiveChessService liveService) {
 
-		this.lccHelper = new LccHelper(liveService);
+		this.lccHelper = new LccHelper(this);
 
 		this.context = liveService;
 		this.liveService = liveService;
@@ -58,6 +76,15 @@ public class LiveConnectionHelper {
 		connectionListener = new LccConnectionListener(this);
 		subscriptionListener = new LccSubscriptionListener();
 		handler = new Handler();
+	}
+
+	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
+//		LogMe.dl(TAG, "appData.isLiveChess(getContext()) " + appData.isLiveChess());
+		LogMe.dl(TAG, "liveConnectionHelper instance in checkAndConnect = " + this);
+		LogMe.dl(TAG, "lccClient instance in checkAndConnect = " + lccClient);
+
+		setConnectionUpdateFace(connectionUpdateFace);
+		checkAndConnectLiveClient();
 	}
 
 	public void checkAndConnectLiveClient() {
@@ -456,4 +483,249 @@ public class LiveConnectionHelper {
 			liveService.stop();
 		}
 	};
+
+	// ------------------- Task runners wrapping ------------------------
+
+	public void setChallengeTaskListener(AbstractUpdateListener<Challenge> challengeTaskListener) {
+		challengeTaskRunner = new LccChallengeTaskRunner(challengeTaskListener, lccHelper);
+	}
+
+	public void declineAllChallenges(Challenge currentChallenge) {
+		challengeTaskRunner.declineAllChallenges(currentChallenge, lccHelper.getChallenges());
+	}
+
+	public void runAcceptChallengeTask(Challenge currentChallenge) {
+		challengeTaskRunner.runAcceptChallengeTask(currentChallenge);
+	}
+
+	public void declineCurrentChallenge(Challenge currentChallenge) {
+		challengeTaskRunner.declineCurrentChallenge(currentChallenge, lccHelper.getChallenges());
+	}
+
+	public void cancelAllOwnChallenges() {
+		challengeTaskRunner.cancelAllOwnChallenges(lccHelper.getOwnChallenges());
+	}
+
+	public void runSendChallengeTask(Challenge challenge) {
+		challengeTaskRunner.runSendChallengeTask(challenge);
+	}
+
+	public void setGameTaskListener(ActionBarUpdateListener<Game> gameTaskListener) {
+		gameTaskRunner = new LccGameTaskRunner(gameTaskListener, lccHelper);
+	}
+
+	public void runMakeDrawTask() {
+		gameTaskRunner.runMakeDrawTask();
+	}
+
+	public void runMakeResignTask() {
+		gameTaskRunner.runMakeResignTask();
+	}
+
+	public void runMakeResignAndExitTask() {
+		// todo: gameTaskRunner sets in onLiveClientConnected and onResume. Investigate why it is null here
+		if (gameTaskRunner != null) {
+			gameTaskRunner.runMakeResignAndExitTask();
+		}
+	}
+
+	public void runRejectDrawTask() {
+		gameTaskRunner.runRejectDrawTask();
+	}
+
+	// ------------------- LccHelper wrapping --------------------------
+
+	public boolean isUserConnected() {
+		return lccHelper != null && lccHelper != null && isConnected();
+	}
+
+	public boolean isActiveGamePresent() {
+		return lccHelper != null && lccHelper.isActiveGamePresent();
+	}
+
+	/*public boolean isValidToMakeMove() {
+		return lccHelper != null && lccHelper.getUser() != null && isConnected() && lccHelper.isActiveGamePresent();
+	}*/
+
+	public User getUser() {
+		return lccHelper.getUser();
+	}
+
+	public void checkTestMove() {
+		lccHelper.checkTestMove();
+	}
+
+	public HashMap<Long, Challenge> getChallenges() {
+		return lccHelper.getChallenges();
+	}
+
+	public void setOuterChallengeListener(OuterChallengeListener outerChallengeListener) {
+		lccHelper.setOuterChallengeListener(outerChallengeListener);
+	}
+
+	public void setLccChatMessageListener(LccChatMessageListener chatMessageListener) {
+		lccHelper.setLccChatMessageListener(chatMessageListener);
+	}
+
+	public void setLccEventListener(LccEventListener eventListener) {
+		lccHelper.setLccEventListener(eventListener);
+	}
+
+	public void setLccObserveEventListener(LccEventListener eventListener) {
+		lccHelper.setLccObserveEventListener(eventListener);
+	}
+
+	public List<ChatItem> getMessagesList() {
+		return lccHelper.getMessagesList();
+	}
+
+	public Long getCurrentGameId() {
+		return lccHelper.getCurrentGameId();
+	}
+
+	public String[] getOnlineFriends() {
+		return lccHelper.getOnlineFriends();
+	}
+
+	public GameLiveItem getGameItem() {
+		return lccHelper.getGameItem();
+	}
+
+	public int getResignTitle() {
+		return lccHelper.getResignTitle();
+	}
+
+	public List<String> getPendingWarnings() {
+		return lccHelper.getPendingWarnings();
+	}
+
+	public String getLastWarningMessage() {
+		return lccHelper.getLastWarningMessage();
+	}
+
+	public void setGameActivityPausedMode(boolean gameActivityPausedMode) {
+		lccHelper.setGameActivityPausedMode(gameActivityPausedMode);
+	}
+
+	public void checkAndReplayMoves() {
+		lccHelper.checkAndReplayMoves();
+	}
+
+	public void checkFirstTestMove() {
+		lccHelper.checkFirstTestMove();
+	}
+
+	public String getUsername() {
+		return lccHelper.getUsername();
+	}
+
+	public Game getCurrentGame() {
+		return lccHelper.getCurrentGame();
+	}
+
+	public Integer getGamesCount() {
+		return lccHelper.getGamesCount();
+	}
+
+	public Integer getLatestMoveNumber() {
+		return lccHelper.getLatestMoveNumber();
+	}
+
+	public Boolean isUserColorWhite() {
+		return lccHelper.isUserColorWhite();
+	}
+
+	public boolean isFairPlayRestriction() {
+		return lccHelper.isFairPlayRestriction();
+	}
+
+	public void makeMove(String move, String temporaryDebugInfo) {
+		lccHelper.makeMove(move, gameTaskRunner, temporaryDebugInfo);
+	}
+
+	public void updatePlayersClock() {
+		lccHelper.updatePlayersClock();
+	}
+
+	public void rematch() {
+		lccHelper.rematch();
+	}
+
+	public void checkGameEvents() {
+		lccHelper.checkGameEvents();
+	}
+
+	public void createChallenge(LiveGameConfig config) {
+		Gson gson = new Gson();
+		LogMe.dl("TEST", "live config = " + gson.toJson(config));
+		lccHelper.createChallenge(config);
+	}
+
+	public void sendMessage(String message, TaskUpdateInterface<String> taskFace) {
+		new SendLiveMessageTask(taskFace, message).executeTask(lccHelper.getCurrentGameId());
+	}
+
+	private class SendLiveMessageTask extends AbstractUpdateTask<String, Long> {
+
+		private String message;
+
+		public SendLiveMessageTask(TaskUpdateInterface<String> taskFace, String message) {
+			super(taskFace);
+			this.message = message;
+		}
+
+		@Override
+		protected Integer doTheTask(Long... params) {
+			lccHelper.sendChatMessage(params[0], message);
+			return StaticData.RESULT_OK;
+		}
+	}
+
+	public void runObserveTopGameTask(TaskUpdateInterface<Void> taskFace) {
+		new ObserveTopGameTask(taskFace).execute();
+	}
+
+	private class ObserveTopGameTask extends AbstractUpdateTask<Void, Void> {
+
+		public ObserveTopGameTask(TaskUpdateInterface<Void> taskFace) {
+			super(taskFace);
+		}
+
+		@Override
+		protected Integer doTheTask(Void... params) {
+			lccHelper.observeTopGame();
+			return StaticData.RESULT_OK;
+		}
+	}
+	public void exitGameObserving() {
+		LogMe.dl(TAG, "exitGameObserving");
+		setLccObserveEventListener(null);
+		lccHelper.setCurrentGameId(null);
+		lccHelper.stopClocks();
+		lccHelper.unObserveCurrentObservingGame();
+		lccHelper.setCurrentObservedGameId(null);
+	}
+
+	public void initClocks() {
+		lccHelper.initClocks();
+	}
+
+	public void stopClocks() {
+		lccHelper.stopClocks();
+	}
+
+	public boolean isCurrentGameObserved() {
+		Game currentGame = lccHelper.getCurrentGame();
+		boolean isCurrentGameObserved = currentGame != null && lccHelper.isObservedGame(currentGame);
+
+		return isCurrentGameObserved;
+	}
+
+	public Long getCurrentObservedGameId() {
+		return lccHelper.getCurrentObservedGameId();
+	}
+
+	public Context getContext() {
+		return context;
+	}
 }

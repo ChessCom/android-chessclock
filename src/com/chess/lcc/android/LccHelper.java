@@ -3,7 +3,6 @@ package com.chess.lcc.android;
 import android.content.Context;
 import android.content.Intent;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
@@ -14,7 +13,10 @@ import com.chess.live.util.GameRatingClass;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.GameType;
 import com.chess.model.GameLiveItem;
-import com.chess.statics.*;
+import com.chess.statics.AppConstants;
+import com.chess.statics.FlurryData;
+import com.chess.statics.IntentConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
@@ -46,7 +48,7 @@ public class LccHelper {
 	private final LccUserListListener userListListener;
 	private final LccAnnouncementListener announcementListener;
 	private final LccAdminEventListener adminEventListener;
-	private final LiveChessService liveService;
+	private final LiveConnectionHelper liveConnectionHelper;
 	private LiveChessClient lccClient;
 	private User user;
 
@@ -77,9 +79,10 @@ public class LccHelper {
 	private LccEventListener lccObserveEventListener;
 	private LccChatMessageListener lccChatMessageListener;
 
-	public LccHelper(LiveChessService liveService) { // todo: try to avoid liveService here, actually now used here only for runSendChallengeTask()
-		this.context = liveService;
-		this.liveService = liveService;
+
+	public LccHelper(LiveConnectionHelper liveConnectionHelper) {
+		this.context = liveConnectionHelper.getContext();
+		this.liveConnectionHelper = liveConnectionHelper;
 		chatListener = new LccChatListener(this);
 		gameListener = new LccGameListener(this);
 		challengeListener = new LccChallengeListener(this);
@@ -541,7 +544,7 @@ public class LccHelper {
 
 		challenge.setRematchGameId(lastGame.getId());
 
-		liveService.runSendChallengeTask(challenge);
+		liveConnectionHelper.runSendChallengeTask(challenge);
 	}
 
 	public void initClocks() {
@@ -803,7 +806,7 @@ public class LccHelper {
 				minMembershipLevel, minRating, maxRating);
 
 		FlurryAgent.logEvent(FlurryData.CHALLENGE_CREATED);
-		liveService.runSendChallengeTask(challenge);
+		liveConnectionHelper.runSendChallengeTask(challenge);
 	}
 
 	public void checkAndProcessDrawOffer(Game game) {

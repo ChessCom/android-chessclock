@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
-import com.chess.backend.LiveChessService;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.statics.Symbol;
 import com.chess.lcc.android.DataNotValidException;
+import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
+import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ChatMessagesAdapter;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.utilities.AppUtils;
@@ -55,11 +55,11 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 		showKeyBoard(sendEdt);
 
 		if (isLCSBound) {
-			LiveChessService liveService;
+			LiveConnectionHelper liveHelper;
 			try {
-				liveService = getLiveService();
-				liveService.setLccChatMessageListener(this);
-				messagesAdapter = new ChatMessagesAdapter(getActivity(), liveService.getMessagesList(), getImageFetcher());
+				liveHelper = getLiveHelper();
+				liveHelper.setLccChatMessageListener(this);
+				messagesAdapter = new ChatMessagesAdapter(getActivity(), liveHelper.getMessagesList(), getImageFetcher());
 				listView.setAdapter(messagesAdapter);
 
 				showKeyBoard(sendEdt);
@@ -71,8 +71,8 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 	}
 
 	private void updateList() throws DataNotValidException {
-		LiveChessService liveService = getLiveService();
-		List<ChatItem> chatItems = liveService.getMessagesList();
+		LiveConnectionHelper liveHelper = getLiveHelper();
+		List<ChatItem> chatItems = liveHelper.getMessagesList();
 		messagesAdapter.setItemsList(chatItems);
 		listView.post(new AppUtils.ListSelector((chatItems.size() - 1), listView));
 	}
@@ -96,15 +96,15 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 		if (view.getId() == R.id.sendBtn) {
 			if (isLCSBound) {
 
-				LiveChessService liveService;
+				LiveConnectionHelper liveHelper;
 				try {
-					liveService = getLiveService();
+					liveHelper = getLiveHelper();
 				} catch (DataNotValidException e) {
 					logTest(e.getMessage());
 					getActivityFace().showPreviousFragment();
 					return;
 				}
-				liveService.sendMessage(getTextFromField(sendEdt), messageUpdateListener);
+				liveHelper.sendMessage(getTextFromField(sendEdt), messageUpdateListener);
 
 				sendEdt.setText(Symbol.EMPTY);
 			}
@@ -119,14 +119,14 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 
 		@Override
 		public void updateData(String returnedObj) {
-			LiveChessService liveService;
+			LiveConnectionHelper liveHelper;
 			try {
-				liveService = getLiveService();
+				liveHelper = getLiveHelper();
 			} catch (DataNotValidException e) {
 				logTest(e.getMessage());
 				return;
 			}
-			messagesAdapter.setItemsList(liveService.getMessagesList());
+			messagesAdapter.setItemsList(liveHelper.getMessagesList());
 		}
 	}
 }

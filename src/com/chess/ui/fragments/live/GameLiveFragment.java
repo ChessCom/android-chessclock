@@ -18,6 +18,7 @@ import com.chess.backend.*;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
+import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.live.client.Game;
 import com.chess.live.rules.GameResult;
@@ -154,7 +155,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		super.onResume();
 
 		try {
-			Long currentGameId = getLiveService().getCurrentGameId();
+			Long currentGameId = getLiveHelper().getCurrentGameId();
 			if (isLCSBound && currentGameId != null && currentGameId != 0) {
 				onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronized
 			}
@@ -171,7 +172,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		dismissEndGameDialog();
 		if (isLCSBound) {
 			try {
-				getLiveService().setGameActivityPausedMode(true);
+				getLiveHelper().setGameActivityPausedMode(true);
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
 				isLCSBound = false;
@@ -184,8 +185,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	protected void onGameStarted() throws DataNotValidException {
 		logLiveTest("onGameStarted");
 
-		LiveChessService liveService = getLiveService();
-		GameLiveItem currentGame = liveService.getGameItem();
+		LiveConnectionHelper liveHelper = getLiveHelper();
+		GameLiveItem currentGame = liveHelper.getGameItem();
 		if (currentGame == null) { // this happens when we resume to fragment via back navigation
 			throw new DataNotValidException(DataNotValidException.GAME_NOT_EXIST);
 		}
@@ -196,7 +197,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		ChessBoardLive.resetInstance();
 		BoardFace boardFace = getBoardFace();
 
-		Boolean isUserColorWhite = liveService.isUserColorWhite(); // should throw exception if null
+		Boolean isUserColorWhite = liveHelper.isUserColorWhite(); // should throw exception if null
 		userPlayWhite = isUserColorWhite;
 
 		boardFace.setReside(isUserColorWhite != null && !isUserColorWhite);
@@ -204,8 +205,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		getNotationsFace().resetNotations();
 		boardView.resetValidMoves();
 
-		if (liveService.getPendingWarnings().size() > 0) {
-			warningMessage = liveService.getLastWarningMessage();
+		if (liveHelper.getPendingWarnings().size() > 0) {
+			warningMessage = liveHelper.getLastWarningMessage();
 			popupItem.setNegativeBtnId(R.string.fair_play_policy);
 			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG);
 		}
@@ -226,15 +227,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		// vm: actually we have to invoke checkAndReplayMoves() here, because we reset a board on pause/resume everytime.
 		// As for doUpdateGame() - that method updates moves only if gameLivePaused=false, so should be safe.
 		// Lets see how synchronized approach is suitable here
-		liveService.checkAndReplayMoves();
+		liveHelper.checkAndReplayMoves();
 
-		liveService.checkFirstTestMove();
+		liveHelper.checkFirstTestMove();
 
-		liveService.setGameActivityPausedMode(false);
-		liveService.checkGameEvents();
+		liveHelper.setGameActivityPausedMode(false);
+		liveHelper.checkGameEvents();
 
 		{// fill labels
-			userPlayWhite = liveService.isUserColorWhite();
+			userPlayWhite = liveHelper.isUserColorWhite();
 			if (userPlayWhite) {
 				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 				labelsConfig.topPlayerName = currentGame.getBlackUsername();
@@ -249,7 +250,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
 			}
 		}
-		liveService.initClocks();
+		liveHelper.initClocks();
 
 		invalidateGameScreen();
 
@@ -257,13 +258,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		{// set avatars
 
-			labelsConfig.topPlayerAvatar = liveService.getCurrentGame().
+			labelsConfig.topPlayerAvatar = liveHelper.getCurrentGame().
 					getOpponentForPlayer(labelsConfig.bottomPlayerName).getAvatarUrl();
 			if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
 				imageDownloader.download(labelsConfig.topPlayerAvatar, topImageUpdateListener, AVATAR_SIZE);
 			}
 
-			labelsConfig.bottomPlayerAvatar = liveService.getCurrentGame().
+			labelsConfig.bottomPlayerAvatar = liveHelper.getCurrentGame().
 					getOpponentForPlayer(labelsConfig.topPlayerName).getAvatarUrl();
 			if (labelsConfig.bottomPlayerAvatar != null && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
 				imageDownloader.download(labelsConfig.bottomPlayerAvatar, bottomImageUpdateListener, AVATAR_SIZE);
@@ -291,9 +292,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			logLiveTest("activity = null, quit");
 			return;
 		}
-		LiveChessService liveService;
+		LiveConnectionHelper liveHelper;
 		try {
-			liveService = getLiveService();
+			liveHelper = getLiveHelper();
 		} catch (final DataNotValidException e) {
 			logLiveTest(e.getMessage());
 			return;
@@ -349,7 +350,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 		});
 
-		liveService.checkTestMove();
+		liveHelper.checkTestMove();
 	}
 
 	@Override
@@ -366,7 +367,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		userSawGameEndPopup = true;
 
 		try {
-			getLiveService().stopClocks();
+			getLiveHelper().stopClocks();
 		} catch (DataNotValidException e) {
 			e.printStackTrace();
 		}
@@ -582,7 +583,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				getControlsView().showAfterMatch();
 
 				try {
-					getLiveService().stopClocks(); // wait for LCC fix
+					getLiveHelper().stopClocks(); // wait for LCC fix
 				} catch (DataNotValidException e) {
 					logLiveTest(e.getMessage());
 				}
@@ -717,7 +718,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	protected void submitMove() throws DataNotValidException {
-		LiveChessService liveService = getLiveService();
+		LiveConnectionHelper liveHelper = getLiveHelper();
 
 		String debugString = " no debug log";
 		showSubmitButtonsLay(false);
@@ -733,26 +734,26 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 
 		String temporaryDebugInfo =
-				"username=" + liveService.getUsername() +
+				"username=" + liveHelper.getUsername() +
 						" lccInitiated=" + lccInitiated +
 //						", " + boardDebug +
-						", gameSeq=" + liveService.getCurrentGame().getMoves().size() +
+						", gameSeq=" + liveHelper.getCurrentGame().getMoves().size() +
 						", boardHply=" + getBoardFace().getPly() +
 						", moveLive=" + getBoardFace().convertMoveLive() +
-						", gamesC=" + liveService.getGamesCount() +
+						", gamesC=" + liveHelper.getGamesCount() +
 						", gameId=" + getGameId() +
 //						", analysisPanel=" + gamePanelView.isAnalysisEnabled() +
 						", analysisBoard=" + getBoardFace().isAnalysis() +
-						", latestMoveNumber=" + liveService.getLatestMoveNumber() +
+						", latestMoveNumber=" + liveHelper.getLatestMoveNumber() +
 						", debugString=" + debugString +
 						", submit=" + preferences.getBoolean(getAppData().getUsername() + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false) +
-						", movesLive=" + liveService.getCurrentGame().getMoves() +
+						", movesLive=" + liveHelper.getCurrentGame().getMoves() +
 						", moves=" + getBoardFace().getMoveListSAN() +
 						", trace=" + stackTrace;
 		temporaryDebugInfo = temporaryDebugInfo.replaceAll("\n", " ");
 		//LogMe.dl("TESTTEST", temporaryDebugInfo);
 
-		liveService.makeMove(move, temporaryDebugInfo);
+		liveHelper.makeMove(move, temporaryDebugInfo);
 	}
 
 	@Override
@@ -855,7 +856,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			topPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
 			bottomPanelView.setLabelsTextColor(themeFontColorStateList.getDefaultColor());
 			try {
-				getLiveService().updatePlayersClock();
+				getLiveHelper().updatePlayersClock();
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
 			}
@@ -871,15 +872,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			return;
 		}
 
-		LiveChessService liveService;
+		LiveConnectionHelper liveHelper;
 		try {
-			liveService = getLiveService();
+			liveHelper = getLiveHelper();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
 			return;
 		}
 
-		boolean isGameOver = !liveService.isActiveGamePresent();
+		boolean isGameOver = !liveHelper.isActiveGamePresent();
 
 		if (isGameOver) {
 			optionsMap.put(ID_REMATCH, getString(R.string.rematch));
@@ -922,7 +923,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
 		} else if (code == ID_REMATCH) {
 			try {
-				getLiveService().rematch();
+				getLiveHelper().rematch();
 			} catch (DataNotValidException e) {
 				e.printStackTrace();
 			}
@@ -966,9 +967,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			super.onPositiveBtnClick(fragment);
 			return;
 		}
-		LiveChessService liveService;
+		LiveConnectionHelper liveHelper;
 		try {
-			liveService = getLiveService();
+			liveHelper = getLiveHelper();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
 			return;
@@ -976,25 +977,25 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			if (isLCSBound) {
-				Log.i(TAG, "Request draw: " + liveService.getCurrentGame());
-				liveService.runMakeDrawTask();
+				Log.i(TAG, "Request draw: " + liveHelper.getCurrentGame());
+				liveHelper.runMakeDrawTask();
 			}
 		} else if (tag.equals(WARNING_TAG)) {
 			if (isLCSBound) {
-				liveService.getPendingWarnings().remove(warningMessage);
+				liveHelper.getPendingWarnings().remove(warningMessage);
 			}
 
 		} else if (tag.equals(ABORT_GAME_TAG)) {
 			if (isLCSBound) {
 
-				Game game = liveService.getCurrentGame();
+				Game game = liveHelper.getCurrentGame();
 
-				if (liveService.isFairPlayRestriction()) {
+				if (liveHelper.isFairPlayRestriction()) {
 					Log.i(TAG, "resign game by fair play restriction: " + game);
 				} else {
 					Log.i(TAG, "resign game: " + game);
 				}
-				liveService.runMakeResignTask();
+				liveHelper.runMakeResignTask();
 			}
 		}
 		super.onPositiveBtnClick(fragment);
@@ -1009,21 +1010,21 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			super.onNegativeBtnClick(fragment);
 			return;
 		}
-		LiveChessService liveService;
+		LiveConnectionHelper liveHelper;
 		try {
-			liveService = getLiveService();
+			liveHelper = getLiveHelper();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
 			return;
 		}
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			if (isLCSBound) {
-				Log.i(TAG, "Decline draw: " + liveService.getCurrentGame());
-				liveService.runRejectDrawTask();
+				Log.i(TAG, "Decline draw: " + liveHelper.getCurrentGame());
+				liveHelper.runRejectDrawTask();
 			}
 		} else if (tag.equals(WARNING_TAG)) {
 			if (isLCSBound) {
-				liveService.getPendingWarnings().remove(warningMessage);
+				liveHelper.getPendingWarnings().remove(warningMessage);
 			}
 			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.FAIR_POLICY_LINK)));
 		}
@@ -1034,14 +1035,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public String getWhitePlayerName() {
-		LiveChessService liveService;
+		LiveConnectionHelper liveHelper;
 		try {
-			liveService = getLiveService();
+			liveHelper = getLiveHelper();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
 			return Symbol.EMPTY;
 		}
-		GameLiveItem currentGame = liveService.getGameItem();
+		GameLiveItem currentGame = liveHelper.getGameItem();
 		if (currentGame == null)
 			return Symbol.EMPTY;
 		else
@@ -1050,14 +1051,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public String getBlackPlayerName() {
-		LiveChessService liveService;
+		LiveConnectionHelper liveHelper;
 		try {
-			liveService = getLiveService();
+			liveHelper = getLiveHelper();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
 			return Symbol.EMPTY;
 		}
-		GameLiveItem currentGame = liveService.getGameItem();
+		GameLiveItem currentGame = liveHelper.getGameItem();
 		if (currentGame == null)
 			return Symbol.EMPTY;
 		else
@@ -1066,14 +1067,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public boolean currentGameExist() {
-		LiveChessService liveService;
+		LiveConnectionHelper liveHelper;
 		try {
-			liveService = getLiveService();
+			liveHelper = getLiveHelper();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
 			return false;
 		}
-		return liveService.getCurrentGame() != null;
+		return liveHelper.getCurrentGame() != null;
 	}
 
 	@Override
@@ -1120,14 +1121,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			dismissEndGameDialog();
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			if (isLCSBound) {
-				LiveChessService liveService;
+				LiveConnectionHelper liveHelper;
 				try {
-					liveService = getLiveService();
+					liveHelper = getLiveHelper();
 				} catch (DataNotValidException e) {
 					logLiveTest(e.getMessage());
 					return;
 				}
-				liveService.rematch();
+				liveHelper.rematch();
 			}
 			dismissEndGameDialog();
 
@@ -1144,15 +1145,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			dismissEndGameDialog();
 
 		} else if (view.getId() == R.id.sharePopupBtn) {
-			LiveChessService liveService;
+			LiveConnectionHelper liveHelper;
 			try {
-				liveService = getLiveService();
+				liveHelper = getLiveHelper();
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
 				return;
 			}
 
-			GameLiveItem currentGame = liveService.getGameItem();
+			GameLiveItem currentGame = liveHelper.getGameItem();
 			ShareItem shareItem = new ShareItem(currentGame, currentGame.getGameId(), getString(R.string.live));
 
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -1163,9 +1164,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		} else if (view.getId() == PanelInfoLiveView.DRAW_ACCEPT_ID) { // TODO restore logic from controlsView
 			if (isLCSBound) {
 				try {
-					LiveChessService liveService = getLiveService();
-					Log.i(TAG, "Request draw: " + liveService.getCurrentGame());
-					liveService.runMakeDrawTask();
+					LiveConnectionHelper liveHelper = getLiveHelper();
+					Log.i(TAG, "Request draw: " + liveHelper.getCurrentGame());
+					liveHelper.runMakeDrawTask();
 					topPanelView.showDrawOfferedView(false);
 				} catch (DataNotValidException e) {
 					logLiveTest(e.getMessage());
@@ -1174,9 +1175,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		} else if (view.getId() == PanelInfoLiveView.DRAW_DECLINE_ID) {
 			if (isLCSBound) {
 				try {
-					LiveChessService liveService = getLiveService();
-					Log.i(TAG, "Decline draw: " + liveService.getCurrentGame());
-					liveService.runRejectDrawTask();
+					LiveConnectionHelper liveHelper = getLiveHelper();
+					Log.i(TAG, "Decline draw: " + liveHelper.getCurrentGame());
+					liveHelper.runRejectDrawTask();
 					topPanelView.showDrawOfferedView(false);
 				} catch (DataNotValidException e) {
 					logLiveTest(e.getMessage());
@@ -1186,14 +1187,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	protected void init() throws DataNotValidException {
-		LiveChessService liveService = getLiveService();
+		LiveConnectionHelper liveHelper = getLiveHelper();
 
-		if (!liveService.isActiveGamePresent()) {
+		if (!liveHelper.isActiveGamePresent()) {
 			getControlsView().enableAnalysisMode(true);
 			getBoardFace().setFinished(true);
 		}
 
-		liveService.setLccChatMessageListener(this);
+		liveHelper.setLccChatMessageListener(this);
 
 		lccInitiated = true;
 	}
@@ -1319,7 +1320,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		super.onLiveClientConnected();
 		try {
 			init();
-			Long currentGameId = getLiveService().getCurrentGameId();
+			Long currentGameId = getLiveHelper().getCurrentGameId();
 			if (isLCSBound && currentGameId != null && currentGameId != 0) {
 				// screen rotated case
 				onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronized
@@ -1336,8 +1337,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	protected void optionsMapInit() throws DataNotValidException {
-		LiveChessService liveService = getLiveService();
-		int resignTitleId = liveService.getResignTitle();
+		LiveConnectionHelper liveHelper = getLiveHelper();
+		int resignTitleId = liveHelper.getResignTitle();
 
 		optionsMap = new SparseArray<String>();
 		optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
