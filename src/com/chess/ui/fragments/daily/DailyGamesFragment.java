@@ -26,6 +26,7 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
+import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
 import com.chess.model.GameOnlineItem;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
@@ -74,6 +75,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private IntentFilter moveUpdateFilter;
 	private GamesUpdateReceiver gamesUpdateReceiver;
 	private DailyFinishedGamesUpdateListener dailyFinishedGamesUpdateListener;
+	private SaveFinishedGamesListUpdateListener saveFinishedGamesListUpdateListener;
 	private GamesCursorUpdateListener finishedGamesCursorUpdateListener;
 	protected DailyGamesUpdateListener dailyGamesUpdateListener;
 	private SmartImageFetcher boardImgFetcher;
@@ -507,6 +509,16 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
+	private class SaveFinishedGamesListUpdateListener extends ChessUpdateListener<DailyFinishedGameData> {
+
+		@Override
+		public void updateData(DailyFinishedGameData returnedObj) {
+			new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+					DbHelper.getDailyFinishedListGames(getUsername()),
+					getContentResolver()).executeTask();
+		}
+	}
+
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
 		public static final int CURRENT_MY = 0;
 		public static final int FINISHED = 2;
@@ -666,11 +678,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContentResolver(), finishedGameDataList, getUsername());
 
 				if (gamesLeft) {
-					for (DailyFinishedGameData finishedGameData : finishedGameDataList) {
-						DbDataManager.saveDailyFinishedGameItemToDb(getContentResolver(), finishedGameData, getUsername());
-					}
-					loadFromDbFinishedGames();
-				} else {
+					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
+							getContentResolver(), getUsername()).executeTask();
+				}  else {
 					finishedGamesCursorAdapter.changeCursor(null);
 				}
 			} else {
@@ -694,13 +704,9 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	private void loadFromDbFinishedGames() {
-		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getDailyFinishedListGames(getUsername()));
-		if (cursor != null && cursor.moveToFirst()) {
-			finishedGamesCursorAdapter.changeCursor(cursor);
-			need2update = false;
-		} else if (cursor != null) {
-			cursor.close();
-		}
+		new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
+				DbHelper.getDailyFinishedListGames(getUsername()),
+				getContentResolver()).executeTask();
 	}
 
 
@@ -734,7 +740,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private void init() {
 		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
 		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
-
+		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
 		dailyFinishedGamesUpdateListener = new DailyFinishedGamesUpdateListener();
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 	}

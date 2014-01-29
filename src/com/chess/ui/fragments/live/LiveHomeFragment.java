@@ -19,8 +19,10 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.ServersStatsItem;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
+import com.chess.db.DbScheme;
 import com.chess.lcc.android.DataNotValidException;
-import com.chess.live.util.GameRatingClass;
+import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.ItemsAdapter;
@@ -279,39 +281,35 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 	private void createLiveChallenge() {
 		LiveGameConfig.Builder gameConfigBuilder = getAppData().getLiveGameConfigBuilder();
+
 		int minRatingOffset = gameConfigBuilder.getMinRatingOffset();
 		int maxRatingOffset = gameConfigBuilder.getMaxRatingOffset();
 		if (minRatingOffset == 0 || maxRatingOffset == 0) {
-			try {
-				LiveChessService liveService = getLiveService();
-				Integer standardRating = liveService.getUser().getRatingFor(GameRatingClass.Standard);
-				Integer blitzRating = liveService.getUser().getRatingFor(GameRatingClass.Blitz);
-				Integer lightningRating = liveService.getUser().getRatingFor(GameRatingClass.Lightning);
-
-				if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
-					gameConfigBuilder.setRating(standardRating);
-					minRatingOffset = standardRating - LiveGameConfig.RATING_STEP;
-					maxRatingOffset = standardRating + LiveGameConfig.RATING_STEP;
-				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
-					gameConfigBuilder.setRating(blitzRating);
-					minRatingOffset = blitzRating - LiveGameConfig.RATING_STEP;
-					maxRatingOffset = blitzRating + LiveGameConfig.RATING_STEP;
-				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
-					gameConfigBuilder.setRating(lightningRating);
-					minRatingOffset = lightningRating - LiveGameConfig.RATING_STEP;
-					maxRatingOffset = lightningRating + LiveGameConfig.RATING_STEP;
-				}
-
-				gameConfigBuilder.setMinRatingOffset(minRatingOffset);
-				gameConfigBuilder.setMaxRatingOffset(maxRatingOffset);
-
-				// save config
-				getAppData().setLiveGameConfigBuilder(gameConfigBuilder);
-			} catch (DataNotValidException e) {
-				e.printStackTrace();
-				return;
-			}
+			minRatingOffset = LiveGameConfig.RATING_STEP;
+			maxRatingOffset = LiveGameConfig.RATING_STEP;
+			gameConfigBuilder.setMinRatingOffset(minRatingOffset);
+			gameConfigBuilder.setMaxRatingOffset(maxRatingOffset);
 		}
+
+		String username = getAppData().getUsername();
+
+		int rating = AppConstants.DEFAULT_PLAYER_RATING;
+		if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
+			rating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
+					DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), username);
+		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
+			rating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
+					DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), username);
+		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BULLET) {
+			rating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
+					DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), username);
+		}
+
+		gameConfigBuilder.setTimeFromMode(getAppData().getDefaultLiveMode());
+		gameConfigBuilder.setRating(rating);
+
+		// save config
+		getAppData().setLiveGameConfigBuilder(gameConfigBuilder);
 
 		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(gameConfigBuilder.build()));
 	}

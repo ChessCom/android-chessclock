@@ -275,9 +275,9 @@ public class ImageCache {
             memValue = mMemoryCache.get(data);
         }
 
-        if (BuildConfig.DEBUG && memValue != null) {
-            Log.d(TAG, "Memory cache hit");
-        }
+//        if (BuildConfig.DEBUG && memValue != null) {
+//            Log.d(TAG, "Memory cache hit");
+//        }
 
         return memValue;
     }

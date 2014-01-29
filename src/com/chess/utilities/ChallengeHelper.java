@@ -14,6 +14,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
+import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.CoreActivityActionBar;
@@ -241,37 +242,32 @@ public class ChallengeHelper {
 		int minRatingOffset = liveGameConfigBuilder.getMinRatingOffset();
 		int maxRatingOffset = liveGameConfigBuilder.getMaxRatingOffset();
 		if (minRatingOffset == 0 || maxRatingOffset == 0) {
-			String username = getAppData().getUsername();
-
-			int liveStandardRating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
-					DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), username);
-			int liveBlitzRating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
-					DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), username);
-			int liveLightningRating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
-					DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), username);
-
-			if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
-				liveGameConfigBuilder.setRating(liveStandardRating);
-				minRatingOffset = liveStandardRating - LiveGameConfig.RATING_STEP;
-				maxRatingOffset = liveStandardRating + LiveGameConfig.RATING_STEP;
-			} else if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
-				liveGameConfigBuilder.setRating(liveBlitzRating);
-				minRatingOffset = liveBlitzRating - LiveGameConfig.RATING_STEP;
-				maxRatingOffset = liveBlitzRating + LiveGameConfig.RATING_STEP;
-			} else if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
-				liveGameConfigBuilder.setRating(liveLightningRating);
-				minRatingOffset = liveLightningRating - LiveGameConfig.RATING_STEP;
-				maxRatingOffset = liveLightningRating + LiveGameConfig.RATING_STEP;
-			}
-
+			minRatingOffset = LiveGameConfig.RATING_STEP;
+			maxRatingOffset = LiveGameConfig.RATING_STEP;
 			liveGameConfigBuilder.setMinRatingOffset(minRatingOffset);
 			liveGameConfigBuilder.setMaxRatingOffset(maxRatingOffset);
+		}
 
-			// save config
-			getAppData().setLiveGameConfigBuilder(liveGameConfigBuilder);
+		String username = getAppData().getUsername();
+
+		int rating = AppConstants.DEFAULT_PLAYER_RATING;
+		if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
+			rating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
+					DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal(), username);
+		} else if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
+			rating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
+					DbScheme.Tables.USER_STATS_LIVE_BLITZ.ordinal(), username);
+		} else if (liveGameConfigBuilder.getTimeMode() == LiveGameConfig.BULLET) {
+			rating = DbDataManager.getUserRatingFromUsersStats(getActivity(),
+					DbScheme.Tables.USER_STATS_LIVE_LIGHTNING.ordinal(), username);
 		}
 
 		liveGameConfigBuilder.setTimeFromMode(getAppData().getDefaultLiveMode());
+		liveGameConfigBuilder.setRating(rating);
+
+		// save config
+		getAppData().setLiveGameConfigBuilder(liveGameConfigBuilder);
+
 		LiveGameWaitFragment waitFragment = LiveGameWaitFragment.createInstance(liveGameConfigBuilder.build());
 		((CommonLogicFragment) fragment).getActivityFace().openFragment(waitFragment);
 	}

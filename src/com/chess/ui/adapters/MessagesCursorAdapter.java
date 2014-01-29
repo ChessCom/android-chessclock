@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.widgets.RoboTextView;
 import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.db.DbScheme;
 import com.chess.utilities.AppUtils;
+import com.chess.widgets.RoboTextView;
 
 import java.util.HashMap;
 
@@ -64,7 +64,10 @@ public class MessagesCursorAdapter extends ItemsCursorAdapter {
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_OTHER_USER_USERNAME));
 		String message = getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT);
-
+		if (message.contains(ORIGINAL_MESSAGE_BY)) {
+			int quoteStart = message.indexOf(MESSAGE_SEPARATOR);
+			message = message.substring(0, quoteStart);
+		}
 		loadTextWithImage(holder.messageTxt, message, imageSize);
 
 		long timeAgo = getLong(cursor, DbScheme.V_CREATE_DATE);

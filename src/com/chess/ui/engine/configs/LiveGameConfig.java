@@ -2,6 +2,7 @@ package com.chess.ui.engine.configs;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.chess.statics.AppConstants;
 
 import java.util.HashMap;
 
@@ -15,7 +16,7 @@ public class LiveGameConfig implements Parcelable {
 
 	public static final int STANDARD = 0;
 	public static final int BLITZ = 1;
-	public static final int LIGHTNING = 2;
+	public static final int BULLET = 2;
 
 	public static final int RATING_STEP = 100;
 
@@ -44,15 +45,30 @@ public class LiveGameConfig implements Parcelable {
 			rated = true;
 			initialTime = 30;
 
+			/*
+
+			http://support.chess.com/Knowledgebase/Article/View/94/13/why-are-there-three-different-ratings-in-live-chess
+
+				5 | 0     5 minutes Blitz
+				10 | 0    10 minutes Blitz
+				2 | 12    10 minutes Blitz
+				3 | 0     3 minutes Blitz
+				4 | 4     6.5 minutes Blitz
+				15 | 10   22 minutes Standard
+				1 | 5     4.5 minutes Blitz
+				1 | 0     1 minute Bullet
+
+			*/
+
 			timeModesMap = new HashMap<Integer, Integer>();
 			timeModesMap.put(0, STANDARD);    // 30		 = 0
-			timeModesMap.put(4, STANDARD);    // 10		 = 1
+			timeModesMap.put(5, STANDARD);    // 15 | 10 = 4
+			timeModesMap.put(4, BLITZ);       // 10		 = 1
 			timeModesMap.put(1, BLITZ);       // 5 | 2	 = 2
-			timeModesMap.put(2, BLITZ);       // 2 | 1	 = 3
-			timeModesMap.put(5, BLITZ);       // 15 | 10 = 4
 			timeModesMap.put(6, BLITZ);       // 5		 = 5
-			timeModesMap.put(3, LIGHTNING);      // 3		 = 6
-			timeModesMap.put(7, LIGHTNING);      // 1		 = 7
+			timeModesMap.put(3, BLITZ);       // 3		 = 6
+			timeModesMap.put(2, BULLET);      // 2 | 1	 = 3
+			timeModesMap.put(7, BULLET);      // 1		 = 7
 		}
 
 		public Builder setRated(boolean rated) {
@@ -75,26 +91,43 @@ public class LiveGameConfig implements Parcelable {
 		 * 5		 = 5
 		 * 3		 = 6
 		 * 1		 = 7
-		 *
 		 */
-		public Builder setTimeFromMode(int mode){
-			if (timeModesMap.get(mode) == STANDARD) {
-				timeMode = STANDARD;
-			} else if (timeModesMap.get(mode) == BLITZ) {
-				timeMode = BLITZ;
-			} else if (timeModesMap.get(mode) == LIGHTNING) {
-				timeMode = LIGHTNING;
-			}
+		public Builder setTimeFromMode(int mode) {
+			timeMode = timeModesMap.get(mode);
 
-			switch (mode){
-				case 0:	initialTime = 30;	bonusTime = 0;	break;
-				case 1:	initialTime = 10;	bonusTime = 0;	break;
-				case 2:	initialTime = 5;	bonusTime = 2;	break;
-				case 3:	initialTime = 2;	bonusTime = 1;	break;
-				case 4:	initialTime = 15;	bonusTime = 10;	break;
-				case 5:	initialTime = 5;	bonusTime = 0;	break;
-				case 6:	initialTime = 3;	bonusTime = 0;	break;
-				case 7:	initialTime = 1;	bonusTime = 0;	break;
+			switch (mode) {
+				case 0:
+					initialTime = 30;
+					bonusTime = 0;
+					break;
+				case 1:
+					initialTime = 10;
+					bonusTime = 0;
+					break;
+				case 2:
+					initialTime = 5;
+					bonusTime = 2;
+					break;
+				case 3:
+					initialTime = 2;
+					bonusTime = 1;
+					break;
+				case 4:
+					initialTime = 15;
+					bonusTime = 10;
+					break;
+				case 5:
+					initialTime = 5;
+					bonusTime = 0;
+					break;
+				case 6:
+					initialTime = 3;
+					bonusTime = 0;
+					break;
+				case 7:
+					initialTime = 1;
+					bonusTime = 0;
+					break;
 			}
 			return this;
 		}
@@ -108,7 +141,7 @@ public class LiveGameConfig implements Parcelable {
 		}
 
 		public Builder setRating(int rating) {
-			this.rating = rating;
+			this.rating = rating == 0 ? AppConstants.DEFAULT_PLAYER_RATING : rating;
 			return this;
 		}
 

@@ -218,13 +218,6 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-		int rating = standardRating;
-		if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
-			rating = blitzRating;
-		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
-			rating = lightningRating;
-		}
-
 		TextView checkedButton;
 
 		float factor;
@@ -318,7 +311,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			currentRatingTxt.setText(String.valueOf(standardRating));
 		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
 			currentRatingTxt.setText(String.valueOf(blitzRating));
-		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
+		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BULLET) {
 			currentRatingTxt.setText(String.valueOf(lightningRating));
 		}
 	}
@@ -333,12 +326,12 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		Integer minRatingValue = Integer.valueOf(minRatingBtnText.replace(Symbol.PLUS,Symbol.EMPTY).replace(Symbol.MINUS, Symbol.EMPTY));
 		Integer maxRatingValue = Integer.valueOf(maxRatingBtnText.replace(Symbol.PLUS,Symbol.EMPTY).replace(Symbol.MINUS, Symbol.EMPTY));
 
-		int rating = 0;
+		int rating = AppConstants.DEFAULT_PLAYER_RATING;
 		if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
 			rating = standardRating;
 		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
 			rating = blitzRating;
-		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
+		} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BULLET) {
 			rating = lightningRating;
 		}
 
@@ -466,7 +459,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 				currentRatingTxt.setText(String.valueOf(standardRating));
 				if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BLITZ) {
 					currentRatingTxt.setText(String.valueOf(blitzRating));
-				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.LIGHTNING) {
+				} else if (gameConfigBuilder.getTimeMode() == LiveGameConfig.BULLET) {
 					currentRatingTxt.setText(String.valueOf(lightningRating));
 				}
 

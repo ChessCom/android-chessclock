@@ -24,6 +24,9 @@ import java.util.HashMap;
  */
 public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 
+	public static final String ORIGINAL_MESSAGE_BY = "Original Message by";
+	public static final String MESSAGE_SEPARATOR = "----------------------------------------------------------------------";
+
 	private final int paddingTop;
 	private final int paddingSide;
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
@@ -80,6 +83,11 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_OTHER_USER_USERNAME));
 		String message = getString(cursor, DbScheme.V_LAST_MESSAGE_CONTENT); // already saved in DB as plain text
+		if (message.contains(ORIGINAL_MESSAGE_BY)) {
+			int quoteStart = message.indexOf(MESSAGE_SEPARATOR);
+			message = message.substring(0, quoteStart);
+		}
+
 		holder.lastMessageTxt.setText(message);
 		long timeAgo = getLong(cursor, DbScheme.V_LAST_MESSAGE_CREATED_AT);
 		String lastDate = AppUtils.getMomentsAgoFromSeconds(timeAgo, context);
