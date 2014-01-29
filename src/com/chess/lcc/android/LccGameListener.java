@@ -99,11 +99,6 @@ public class LccGameListener implements GameListener {
 	public void onGameUpdated(Game game) {
 //		LogMe.dl(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
 
-		if (!lccHelper.isConnected()) {
-//			LogMe.dl(TAG, "ignore onGameUpdated before onConnectionRestored"); // remove after cometd/lcc fix
-			return;
-		}
-
 		if (isActualMyGame(game)) {
 			lccHelper.unObserveCurrentObservingGame();
 

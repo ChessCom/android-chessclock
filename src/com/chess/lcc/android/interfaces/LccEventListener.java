@@ -32,4 +32,8 @@ public interface LccEventListener {
 	void updateOpponentOnlineStatus(boolean online);
 
 	void onChallengeRejected(String by);
+
+	void onClockFinishing();
+
+	void onFriendsStatusChanged();
 }

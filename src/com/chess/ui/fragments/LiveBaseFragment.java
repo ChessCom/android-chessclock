@@ -123,6 +123,14 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	}
 
 	@Override
+	public void onClockFinishing() {
+	}
+
+	@Override
+	public void onFriendsStatusChanged() {
+	}
+
+	@Override
 	public void onChallengeRejected(final String by) {
 		getActivity().runOnUiThread(new Runnable() {
 			@Override

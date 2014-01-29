@@ -50,6 +50,8 @@ import java.util.Map;
  */
 public abstract class LiveBaseActivity extends CoreActivityActionBar implements LiveChessClientEventListener {
 
+	// todo: extract connection logic to LiveConnectionHelper
+
 	private static final String TAG = "LccLog-LiveBaseActivity";
 
 	protected static final String CHALLENGE_TAG = "challenge_tag";
@@ -57,7 +59,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
 	private static final String OBSOLETE_VERSION_TAG = "obsolete version";
 	private static final String EXIT_GAME_TAG = "exit_game";
-	private static final long RETRY_DELAY = 100;
 	public static final int NEXT_CONNECTION_DELAY = 5000;
 	//public static final int FINISH_CONNECT_ATTEMPTS_DELAY = 60 * 1000;
 	//public static final int RECONNECT_BY_LCC_FAILURE_LIMIT = 2;
@@ -377,7 +378,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	private void performServiceConnection() {
 		if (isLCSBound) {
-			if (liveService.getLccHelper() != null && liveService.getLccHelper().isConnected()) {
+			if (liveService.getLccHelper() != null && liveService.isConnected()) {
 				onLiveClientConnected();
 			} else { // lccHelper here null, so we need to start again connection logic and create all instances
 //				Log.d(TAG, "performServiceConnection is LCSBound, lcc helper null or !connected-> bindAndStartLiveService " + getClass());
@@ -589,13 +590,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	// ---------- LiveChessClientEventListener ----------------
-	@Override
-	public void onConnecting() {
-	}
-
-	@Override
-	public void onConnectionEstablished() {
-	}
 
 	@Override
 	public void onSessionExpired() {

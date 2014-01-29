@@ -32,6 +32,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -349,6 +350,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		});
 
 		liveService.checkTestMove();
+	}
+
+	@Override
+	public void onClockFinishing() {
+		SoundPlayer.getInstance(getContext()).playTenSeconds();
 	}
 
 	@Override

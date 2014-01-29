@@ -3,7 +3,6 @@ package com.chess.ui.fragments.live;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.TextView;
@@ -386,8 +385,6 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		}
 		int entryCount = getChildFragmentManager().getBackStackEntryCount();
 		if (entryCount > 0) {
-			int last = entryCount - 1;
-			FragmentManager.BackStackEntry stackEntry = getChildFragmentManager().getBackStackEntryAt(last);
 			return getChildFragmentManager().popBackStackImmediate();
 		} else {
 			return super.showPreviousFragment();

@@ -2,15 +2,12 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
-import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
-import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
 import com.chess.live.client.*;
 import com.chess.live.rules.GameResult;
 import com.chess.live.util.GameRatingClass;
@@ -39,14 +36,9 @@ public class LccHelper {
 
 	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
-	private static final int CONNECTION_FAILURE_DELAY = 2000;
-	public static final Object CLIENT_SYNC_LOCK = new Object();
 	public static final Object GAME_SYNC_LOCK = new Object();
-	//public static final int FINISH_LCC_CONNECT_ATTEMPTS_DELAY = 20 * 1000;
-	public static final boolean RESET_LCC_LISTENERS = true;
 
 	private final LccChatListener chatListener;
-	private final LccConnectionListener connectionListener;
 	private final LccGameListener gameListener;
 	private final LccChallengeListener challengeListener;
 	//private final LccSeekListListener seekListListener;
@@ -54,8 +46,7 @@ public class LccHelper {
 	private final LccUserListListener userListListener;
 	private final LccAnnouncementListener announcementListener;
 	private final LccAdminEventListener adminEventListener;
-	private final LccSubscriptionListener subscriptionListener;
-	private final AppData appData;
+	private final LiveChessService liveService;
 	private LiveChessClient lccClient;
 	private User user;
 
@@ -67,8 +58,6 @@ public class LccHelper {
 	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
 	private final HashSet<Game> gamesToUnObserve = new HashSet<Game>();
 	private final Map<String, User> onlineFriends = new HashMap<String, User>();
-	// todo: clear pausedActivityLiveEvents
-	private Map<LiveEvent.Event, LiveEvent> pausedActivityLiveEvents = new HashMap<LiveEvent.Event, LiveEvent>();
 	private final HashMap<Long, Chat> gameChats = new HashMap<Long, Chat>();
 	private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
 			new LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>>();
@@ -84,26 +73,14 @@ public class LccHelper {
 	private Context context;
 	private List<String> pendingWarnings;
 
-	private LiveChessClientEventListener liveChessClientEventListener;
 	private LccEventListener lccEventListener;
 	private LccEventListener lccObserveEventListener;
 	private LccChatMessageListener lccChatMessageListener;
 
-	boolean liveConnected; // it is better to keep this state inside lccholder/service instead of preferences appdata
-	private LiveChessService.LccConnectUpdateListener lccConnectUpdateListener;
-	private final LiveChessService liveService;
-	private String networkTypeName;
-
-	private boolean connectionFailure;
-	private boolean liveConnecting;
-
-	public LccHelper(Context context, LiveChessService liveService, LiveChessService.LccConnectUpdateListener lccConnectUpdateListener) {
+	public LccHelper(LiveChessService liveService) { // todo: try to avoid liveService here, actually now used here only for runSendChallengeTask()
+		this.context = liveService;
 		this.liveService = liveService;
-		this.context = context;
-		this.lccConnectUpdateListener = lccConnectUpdateListener;
-		appData = new AppData(context);
 		chatListener = new LccChatListener(this);
-		connectionListener = new LccConnectionListener(this);
 		gameListener = new LccGameListener(this);
 		challengeListener = new LccChallengeListener(this);
 		//seekListListener = new LccSeekListListener(this);
@@ -111,7 +88,6 @@ public class LccHelper {
 		userListListener = new LccUserListListener(this);
 		announcementListener = new LccAnnouncementListener(this);
 		adminEventListener = new LccAdminEventListener();
-		subscriptionListener = new LccSubscriptionListener();
 
 		pendingWarnings = new ArrayList<String>();
 	}
@@ -230,184 +206,6 @@ public class LccHelper {
 		return pendingWarnings.get(pendingWarnings.size() - 1);
 	}
 
-	/**
-	 * Connect live chess client
-	 */
-	public void performConnect() {
-		AppData appData = new AppData(context);
-		String username = appData.getUsername();
-		String pass = appData.getPassword();
-
-		// here we check if sessionId is not expired(ttl = 60min)
-		long sessionIdSaveTime = appData.getLiveSessionIdSaveTime();
-		long currentTime = System.currentTimeMillis();
-		String sessionId = appData.getLiveSessionId();
-		LogMe.dl(TAG, "sessionIdSaveTime = " + sessionIdSaveTime + ", currentTime = " + currentTime + ", sessionId = " + sessionId);
-
-		boolean useSessionId = currentTime - sessionIdSaveTime <= AppConstants.LIVE_SESSION_EXPIRE_TIME
-				&& !TextUtils.isEmpty(sessionId);
-
-		boolean emptyPassword = pass.equals(Symbol.EMPTY);
-
-		if (useSessionId) {
-			if (emptyPassword || RestHelper.getInstance().IS_TEST_SERVER_MODE) {
-				connectBySessionId(sessionId);
-			} else {
-				connectByCreds(username, pass);
-			}
-		} else {
-			if (!emptyPassword && !RestHelper.getInstance().IS_TEST_SERVER_MODE) {
-				connectByCreds(username, pass);
-			} else {
-				connectionFailure = true; // we need this flag to able to re-connect from live chess
-				liveChessClientEventListener.onSessionExpired();
-				//String message = context.getString(R.string.account_error);
-				//liveChessClientEventListener.onConnectionFailure(message);
-			}
-		}
-	}
-
-	public void connectByCreds(String username, String pass) {
-//		LogMe.dl(TAG, "connectByCreds : user = " + username + " pass = " + pass); // do not post in prod
-		LogMe.dl(TAG, "connectByCreds : hidden"); // do not post in pod
-		lccClient.connect(username, pass, connectionListener, subscriptionListener);
-		liveChessClientEventListener.onConnecting();
-	}
-
-	public void connectBySessionId(String sessionId) {
-		LogMe.dl(TAG, "connectBySessionId : sessionId = " + sessionId);
-		lccClient.connect(sessionId, connectionListener, subscriptionListener);
-		liveChessClientEventListener.onConnecting();
-	}
-
-	/**
-	 * This method should be invoked only when live chess service bounded to activity.
-	 * Thus we can use it to check if activity is bounded
-	 * @param liveChessClientEventListener listener for events
-	 */
-	public void setLiveChessClientEventListener(LiveChessClientEventListener liveChessClientEventListener) {
-		this.liveChessClientEventListener = liveChessClientEventListener;
-	}
-
-	public boolean isLiveChessEventListenerSet() {
-		return liveChessClientEventListener != null;
-	}
-
-	public void onOtherClientEntered(String message) {
-		connectionFailure = true;
-		logout();
-		liveChessClientEventListener.onConnectionFailure(message);
-	}
-
-	public void processKicked() {
-
-		connectionFailure = true;
-		logout();
-
-		String kickMessage = context.getString(R.string.live_chess_server_upgrading);
-		liveChessClientEventListener.onConnectionFailure(kickMessage);
-	}
-
-	public void processConnectionFailure(FailureDetails details) {
-
-		/*if (details == null && !AppUtils.isNetworkAvailable(context)) {
-			// handle null-case when user tries to connect when device connection is off, just ignore
-			LogMe.dl(TAG, "processConnectionFailure: no active connection, wait for LCC reconnect");
-			return;
-		}*/
-
-		LogMe.dl(TAG, "processConnectionFailure: details=" + details);
-
-		setConnected(false);
-
-		String detailsMessage;
-
-		if (details != null) { // LCC stops client, create new one manually
-
-			connectionFailure = true;
-
-			setConnecting(false);
-			cleanupLiveInfo();
-			cancelServiceNotification();
-
-			switch (details) {
-				case USER_KICKED: {
-					detailsMessage = context.getString(R.string.live_chess_server_upgrading);
-					break;
-				}
-				case ACCOUNT_FAILED: { // wrong authKey  // TODO we should use check for correct login BEFORE connection
-					/*AppData appData = new AppData(context);
-					if (appData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
-						appData.incrementLiveConnectAttempts(context);*/
-
-					// first of all we need to invalidate sessionId key
-					new AppData(context).setLiveSessionId(null);
-
-					if (isPossibleToReconnect()) {
-						try {
-							Thread.sleep(CONNECTION_FAILURE_DELAY);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						runConnectTask();
-					} else {
-						liveChessClientEventListener.onConnectionFailure(context.getString(R.string.pleaseLoginAgain));
-					}
-					return;
-				}
-				case SERVER_STOPPED: {
-					detailsMessage = context.getString(R.string.server_stopped)
-							+ context.getString(R.string.live_chess_server_unavailable);
-					break;
-				}
-				// when connect(login, pswd) and auth_url is unreachable, details="Authentication service failed"
-				/*
-				case AUTH_URL_FAILED: {
-					return;
-				}
-				*/
-				default:
-					// todo: show login/password popup instead
-					detailsMessage = context.getString(R.string.pleaseLoginAgain);
-					break;
-			}
-
-		} else { // when connect(authKey) and Live server in unreachable, details=null
-
-			setConnecting(true);
-			return;
-		}
-
-		liveChessClientEventListener.onConnectionFailure(detailsMessage);
-	}
-
-	private boolean isPossibleToReconnect() {
-		AppData appData = new AppData(context);
-		String pass = appData.getPassword();
-
-		// here we check if sessionId is not expired(ttl = 60min)
-		long sessionIdSaveTime = appData.getLiveSessionIdSaveTime();
-		long currentTime = System.currentTimeMillis();
-
-		boolean useSessionId = currentTime - sessionIdSaveTime <= AppConstants.LIVE_SESSION_EXPIRE_TIME;
-
-		boolean emptyPassword = pass.equals(Symbol.EMPTY);
-
-		if (useSessionId) {
-			if (emptyPassword || RestHelper.getInstance().IS_TEST_SERVER_MODE) {
-				return true;
-			} else {
-				return true;
-			}
-		} else {
-			return !emptyPassword && !RestHelper.getInstance().IS_TEST_SERVER_MODE;
-		}
-	}
-
-	public void onObsoleteProtocolVersion() {
-		liveChessClientEventListener.onObsoleteProtocolVersion();
-	}
-
 	public LccEventListener getLccEventListener() {
 		return lccEventListener;
 	}
@@ -436,78 +234,12 @@ public class LccHelper {
 		return lastGame;
 	}
 
-	/*public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
-		public LccConnectUpdateListener() {
-			super(getContext());
-		}
-
-		@Override
-		public void updateData(LiveChessClient returnedObj) {
-			LogMe.dl(TAG, "LiveChessClient initialized");
-			lccClient = returnedObj;    // duplicate of setter
-		}
-	}*/
-
-	/*public LccGameListener getGameListener() {
-		return gameListener;
-	}
-
-	public LccChatListener getChatListener() {
-		return chatListener;
-	}
-
-	public LccConnectionListener getConnectionListener() {
-		return connectionListener;
-	}*/
-
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public LiveChessClient getClient() {
-		return lccClient;
-	}
-
-	public boolean isConnected() {
-		return lccClient != null && liveConnected;
-	}
-
-	public void setConnected(boolean connected) {
-		liveConnected = connected;
-
-		if (connected) {
-
-			appData.resetLiveConnectAttempts();
-
-			connectionFailure = false;
-			//connectionFailureCounter = 0;
-
-			liveChessClientEventListener.onConnectionEstablished();
-			liveService.onLiveConnected();
-
-			//lccClient.subscribeToDebugGameEvents(new StandardDebugGameListener(getUser()));
-
-			lccClient.subscribeToChallengeEvents(challengeListener);
-			lccClient.subscribeToGameEvents(gameListener);
-			lccClient.subscribeToChatEvents(chatListener);
-			lccClient.subscribeToFriendStatusEvents(friendStatusListener);
-			lccClient.subscribeToUserList(LiveChessClient.UserListOrderBy.Username, 1, userListListener);
-			lccClient.subscribeToAdminEvents(adminEventListener);
-			lccClient.subscribeToAnnounces(announcementListener);
-
-//			ConnectivityManager connectivityManager = (ConnectivityManager)
-//					context.getSystemService(Context.CONNECTIVITY_SERVICE);
-//			NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-//			updateNetworkType(activeNetworkInfo.getTypeName());
-		}
-		// when onDestroy of service invoked, we don't have listeners anymore
-		if (liveChessClientEventListener != null) {
-			liveChessClientEventListener.onConnectionBlocked(!connected);
-		}
 	}
 
 	public void clearChallenges() {
@@ -647,7 +379,7 @@ public class LccHelper {
 		} else {
 			onlineFriends.remove(friend.getUsername());
 		}
-		liveChessClientEventListener.onFriendsStatusChanged();
+		lccEventListener.onFriendsStatusChanged();
 	}
 
 	public void removeFriend(User friend) {
@@ -828,43 +560,6 @@ public class LccHelper {
 		}
 	}
 
-	public void cleanupLiveInfo() {
-		LogMe.dl(TAG, "cleanupLiveInfo");
-		//new AppData(context).setLiveChessMode(false); // let UI set it
-		setCurrentGameId(null);
-		setCurrentObservedGameId(null);
-		setUser(null);
-		clearGames();
-		clearChallenges();
-		clearOwnChallenges();
-		clearSeeks();
-		clearOnlineFriends();
-		clearPausedEvents();
-	}
-
-	public void logout() {
-		LogMe.dl(TAG, "USER LOGOUT");
-		setConnected(false);
-		setConnecting(false);
-		cleanupLiveInfo();
-		runDisconnectTask();
-		cancelServiceNotification();
-		//stopConnectionTimer();
-	}
-
-	public void leave() {
-		setConnected(false);
-		setConnecting(false);
-		cleanupLiveInfo();
-		runLeaveTask();
-		//stopConnectionTimer();
-	}
-
-	public void resetClient() {
-		LogMe.dl(TAG, "reset LCC instance");
-		lccClient = null;
-	}
-
 	public boolean isSeekContains(Long id) {
 		return seeks.containsKey(id);
 	}
@@ -883,10 +578,6 @@ public class LccHelper {
 	public void setGameActivityPausedMode(boolean gameActivityPausedMode) { // TODO Unsafe -> replace with save server data holder logic
 		this.gameActivityPausedMode = gameActivityPausedMode;
 //		pausedActivityGameEvents.clear();
-	}
-
-	public Map<LiveEvent.Event, LiveEvent> getPausedActivityLiveEvents() {
-		return pausedActivityLiveEvents;
 	}
 
 	public void processFullGame() {
@@ -1017,51 +708,8 @@ public class LccHelper {
 		challengeListener.setOuterChallengeListener(outerChallengeListener);
 	}
 
-	public void runConnectTask() {
-		setConnecting(true);
-		new ConnectLiveChessTask(lccConnectUpdateListener, this).executeTask();
-	}
-
-	public void runDisconnectTask() {
-		new LiveDisconnectTask().execute();
-	}
-
 	public void onChallengeRejected(String by) {
 		lccEventListener.onChallengeRejected(by);
-	}
-
-	public void runLeaveTask() {
-		new LiveLeaveTask().execute();
-	}
-
-	private class LiveDisconnectTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... voids) {
-			synchronized (CLIENT_SYNC_LOCK) {
-				if (lccClient != null) {
-					LogMe.dl(TAG, "LOGOUT: lccClient=" + getClientId());
-					lccClient.disconnect(RESET_LCC_LISTENERS);
-					resetClient();
-				}
-			}
-			return null;
-		}
-	}
-
-	private class LiveLeaveTask extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... voids) {
-			synchronized (CLIENT_SYNC_LOCK) {
-				if (lccClient != null) {
-					LogMe.dl(TAG, "LEAVE: lccClient=" + getClientId());
-					lccClient.leave(RESET_LCC_LISTENERS);
-					resetClient();
-				}
-			}
-			return null;
-		}
 	}
 
 	public void observeTopGame() {
@@ -1115,14 +763,6 @@ public class LccHelper {
 		} else {
 			return isUserColorWhite ? game.getBlackPlayer().getUsername() : game.getWhitePlayer().getUsername();
 		}
-	}
-
-	public void clearPausedEvents() {
-		pausedActivityLiveEvents.clear();
-	}
-
-	private void cancelServiceNotification() {
-		liveService.stopForeground(true); // exit Foreground mode and remove Notification icon
 	}
 
 	public void createChallenge(LiveGameConfig config) {
@@ -1258,14 +898,6 @@ public class LccHelper {
 		}
 	}
 
-	public Long getClientId() {
-		return lccClient == null ? null : lccClient.getId();
-	}
-
-	public boolean isConnectionFailure() {
-		return connectionFailure;
-	}
-
 	public void unObserveCurrentObservingGame() {
 //		LogMe.dl(TAG, "unObserveCurrentObservingGame: gameId=" + getCurrentObservedGameId());
 		if (getCurrentObservedGameId() != null) {
@@ -1286,11 +918,18 @@ public class LccHelper {
 		}
 	}
 
-	public void setConnecting(boolean liveConnecting) {
-		this.liveConnecting = liveConnecting;
+	public void subscribeToLccListeners() {
+		lccClient.subscribeToChallengeEvents(challengeListener);
+		lccClient.subscribeToGameEvents(gameListener);
+		lccClient.subscribeToChatEvents(chatListener);
+		lccClient.subscribeToFriendStatusEvents(friendStatusListener);
+		lccClient.subscribeToUserList(LiveChessClient.UserListOrderBy.Username, 1, userListListener);
+		lccClient.subscribeToAdminEvents(adminEventListener);
+		lccClient.subscribeToAnnounces(announcementListener);
 	}
 
-	public boolean isLccConnecting() {
-		return /*lccClient != null && */liveConnecting;
+	public LiveChessClient getClient() {
+		return lccClient;
 	}
+
 }

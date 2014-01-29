@@ -3,7 +3,6 @@ package com.chess.lcc.android;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.statics.Symbol;
-import com.chess.ui.engine.SoundPlayer;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,6 +30,7 @@ public class ChessClock {
 	private boolean isRunning;
 	private int previousTime = -999;
 	private String previousTimeString;
+	private LccEventListener eventListener;
 
 	public ChessClock(LccHelper lccHelper, boolean isWhite, boolean isRunning) {
 		this.lccHelper = lccHelper;
@@ -73,7 +73,7 @@ public class ChessClock {
 	}
 
 	public void updatePlayerTimer() {
-		LccEventListener eventListener = lccHelper.getLccEventListener();
+		eventListener = lccHelper.getLccEventListener();
 		if (eventListener == null) {
 			return;
 		}
@@ -168,7 +168,9 @@ public class ChessClock {
 
 				if (time <= SECOND_TENTHS_THRESHOLD && !tenSecondsPlayed) {
 					tenSecondsPlayed = true;
-					SoundPlayer.getInstance(lccHelper.getContext()).playTenSeconds();
+					if (eventListener != null) {
+						eventListener.onClockFinishing();
+					}
 				}
 			}
 		}, 0, TENTH_MS);
