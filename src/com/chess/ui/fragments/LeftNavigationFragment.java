@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,17 +69,21 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 
 	private ListView listView;
 	private List<NavigationMenuItem> menuItems;
-	private NavigationMenuAdapter adapter;
+	private NavigationMenuAdapter navigationAdapter;
 	private int imageSize;
 	private IntentFilter fontsUpdateFilter;
 	private FontsUpdateReceiver fontsUpdateReceiver;
 	private boolean updateFonts;
+	private int previousPosition;
+	private SparseArray<String> selectedPositionsMap;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		imageSize = getResources().getDimensionPixelSize(R.dimen.nav_item_image_size);
+
+		selectedPositionsMap = new SparseArray<String>();
 
 		menuItems = new ArrayList<NavigationMenuItem>();
 		menuItems.add(new NavigationMenuItem(getString(R.string.home), R.drawable.ic_nav_home));
@@ -103,7 +109,7 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 
 		menuItems.get(0).selected = true;
 		getImageFetcher().setLoadingImage(R.drawable.empty);
-		adapter = new NavigationMenuAdapter(getActivity(), menuItems, getImageFetcher());
+		navigationAdapter = new NavigationMenuAdapter(getActivity(), menuItems, getImageFetcher());
 		fontsUpdateFilter = new IntentFilter(IntentConstants.BACKGROUND_LOADED);
 	}
 
@@ -118,12 +124,14 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
-		listView.setAdapter(adapter);
+		listView.setAdapter(navigationAdapter);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		updateSelectedMenuItem(previousPosition);
 
 		fontsUpdateReceiver = new FontsUpdateReceiver();
 		registerReceiver(fontsUpdateReceiver, fontsUpdateFilter);
@@ -138,17 +146,17 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		for (NavigationMenuItem menuItem : menuItems) {
-			menuItem.selected = false;
+		if (position == previousPosition) { // don't add the same fragment
+			getActivityFace().toggleLeftMenu();
+			return;
 		}
+		previousPosition = position;
 
-		menuItems.get(position).selected = true;
-		NavigationMenuItem menuItem = (NavigationMenuItem) listView.getItemAtPosition(position);
-		menuItem.selected = true;
-		((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
+		// update selected state flag
+		NavigationMenuItem menuItem = updateSelectedMenuItem(position);
 
 		BasePopupsFragment fragmentByTag = null;
-		// TODO adjust switch/closeBoard when the same fragment opened
+		
 		switch (menuItem.iconRes) {
 			case R.drawable.ic_nav_home:
 				getActivityFace().clearFragmentStack();
@@ -350,6 +358,9 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 				break;
 		}
 		if (fragmentByTag != null) {
+			// save fragmentName and position to proper highlight row when navigating back
+			selectedPositionsMap.put(position, fragmentByTag.getClass().getSimpleName());
+			
 			getActivityFace().openFragment(fragmentByTag);
 			handler.postDelayed(new Runnable() {
 				@Override
@@ -360,7 +371,36 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 		}
 	}
 
+	private NavigationMenuItem updateSelectedMenuItem(int position) {
+		for (NavigationMenuItem menuItem : menuItems) {
+			menuItem.selected = false;
+		}
+
+		menuItems.get(position).selected = true;
+		NavigationMenuItem menuItem = (NavigationMenuItem) listView.getItemAtPosition(position);
+		menuItem.selected = true;
+		navigationAdapter.notifyDataSetChanged();
+		return menuItem;
+	}
+
 	public void onOpened() {
+		Fragment fragment = getActivityFace().getCurrentActiveFragment();
+		if (fragment != null) {
+			String fragmentName = fragment.getClass().getSimpleName();
+			int positionToSelect = previousPosition;
+			for (int i=0; i< selectedPositionsMap.size(); i++) {
+				String selectedFragmentName = selectedPositionsMap.valueAt(i);
+				if (fragmentName.equals(selectedFragmentName) ){
+					positionToSelect = selectedPositionsMap.keyAt(i);
+				}
+			}
+
+			if (positionToSelect != previousPosition) {
+				previousPosition = positionToSelect;
+				updateSelectedMenuItem(previousPosition);
+			}
+		}
+
 	}
 
 	private GameCompFragment prepareGameCompFragmentInstance() {
@@ -430,12 +470,8 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 
 			Drawable background = view.getBackground();
 			if (item.selected) {
-//				int colorForState = themeFontColorStateList.getColorForState(SELECTED_TITLE_STATE, Color.WHITE);
-//				holder.title.setTextColor(colorForState);
 				background.mutate().setState(SELECTED_STATE);
 			} else {
-//				int colorForState = themeFontColorStateList.getColorForState(ENABLED_STATE, Color.WHITE);
-//				holder.title.setTextColor(colorForState);
 				background.mutate().setState(ENABLED_STATE);
 			}
 
@@ -457,7 +493,7 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 	private class FontsUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			adapter.notifyDataSetChanged();
+			navigationAdapter.notifyDataSetChanged();
 			updateFonts = true;
 		}
 	}

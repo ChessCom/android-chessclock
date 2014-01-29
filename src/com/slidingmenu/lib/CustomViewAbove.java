@@ -16,8 +16,7 @@ import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 
 import java.util.ArrayList;
 import java.util.List;
-//import com.slidingmenu.lib.SlidingMenu.OnCloseListener;
-//import com.slidingmenu.lib.SlidingMenu.OnOpenListener;
+
 
 public class CustomViewAbove extends ViewGroup {
 
@@ -26,8 +25,8 @@ public class CustomViewAbove extends ViewGroup {
 
 	private static final boolean USE_CACHE = false;
 
-	private static final int MAX_SETTLE_DURATION = 600; // ms
-	private static final int MIN_DISTANCE_FOR_FLING = 25; // dips
+	private static final int MAX_SETTLE_DURATION = 350; // ms
+	private static final int MIN_DISTANCE_FOR_FLING = 48; // dips
 
 	private static final Interpolator sInterpolator = new Interpolator() {
 		@Override

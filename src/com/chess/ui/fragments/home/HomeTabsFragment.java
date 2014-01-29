@@ -10,22 +10,20 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
-import com.chess.backend.entity.api.daily_games.DailyGamesAllItem;
+import com.chess.backend.entity.api.daily_games.MyMoveItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.LeftNavigationFragment;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
 
-import java.util.List;
+import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,7 +35,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId = NON_INIT;
-	private DailyGamesUpdateListener dailyGamesUpdateListener;
+	private MyMoveUpdateListener myMoveUpdateListener;
 	private Boolean showDailyGamesFragment;
 	private View tabsLoadProgressBar;
 	private boolean haveSavedData;
@@ -46,7 +44,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		dailyGamesUpdateListener = new DailyGamesUpdateListener();
+		myMoveUpdateListener = new MyMoveUpdateListener();
 	}
 
 	@Override
@@ -111,8 +109,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			}
 			updateTabs();
 		} else if (isNetworkAvailable() && !TextUtils.isEmpty(getUserToken())) { // this check is for logout quick process
-			LoadItem loadItem = LoadHelper.getAllGamesFiltered(getUserToken(), RestHelper.V_ID);
-			new RequestJsonTask<DailyGamesAllItem>(dailyGamesUpdateListener).executeTask(loadItem);
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_GAME_MOVES);
+			loadItem.addRequestParams(P_LOGIN_TOKEN, getUserToken());
+
+			new RequestJsonTask<MyMoveItem>(myMoveUpdateListener).executeTask(loadItem);
 		} else {
 			if (!isNetworkAvailable()) {
 				showDailyGamesFragment = false;
@@ -161,15 +162,15 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 					Fragment fragment;
 					if (showDailyGamesFragment) {
 						if (!isTablet) {
-							fragment = DailyGamesFragment.createInstance(HomeTabsFragment.this, DailyGamesFragment.HOME_MODE);
+							fragment = DailyGamesFragment.createInstance(DailyGamesFragment.HOME_MODE);
 						} else {
 							fragment = DailyGamesFragmentTablet.createInstance(HomeTabsFragment.this, DailyGamesFragment.HOME_MODE);
 						}
 					} else {
 						if (!isTablet) {
-							fragment = findFragmentByTag(HomePlayFragmentNew.class.getSimpleName());
+							fragment = findFragmentByTag(HomePlayFragment.class.getSimpleName());
 							if (fragment == null) {
-								fragment = new HomePlayFragmentNew();
+								fragment = new HomePlayFragment();
 							}
 						} else {
 							fragment = findFragmentByTag(HomePlayFragmentTablet.class.getSimpleName());
@@ -212,10 +213,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		changeInternalFragment(fragment);
 	}
 
-	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {
+	private class MyMoveUpdateListener extends ChessUpdateListener<MyMoveItem> {
 
-		public DailyGamesUpdateListener() {
-			super(DailyGamesAllItem.class);
+		public MyMoveUpdateListener() {
+			super(MyMoveItem.class);
 		}
 
 		@Override
@@ -224,13 +225,10 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		}
 
 		@Override
-		public void updateData(DailyGamesAllItem returnedObj) {
+		public void updateData(MyMoveItem returnedObj) {
 			super.updateData(returnedObj);
 
-			// current games
-			List<DailyCurrentGameData> currentGamesList = returnedObj.getData().getCurrent();
-
-			showDailyGamesFragment = DbDataManager.checkAndDeleteNonExistCurrentGames(getContentResolver(), currentGamesList, getUsername());
+			showDailyGamesFragment = returnedObj.getData().isIsMyTurn();
 
 			if (previousCheckedId == NON_INIT) {
 				tabRadioGroup.check(R.id.leftTabBtn);

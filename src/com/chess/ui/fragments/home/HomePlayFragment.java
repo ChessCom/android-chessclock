@@ -25,7 +25,7 @@ import com.chess.utilities.ChallengeHelper;
  * Date: 15.12.13
  * Time: 5:36
  */
-public class HomePlayFragmentNew extends CommonLogicFragment implements ViewTreeObserver.OnGlobalLayoutListener, ChallengeModeSetListener {
+public class HomePlayFragment extends CommonLogicFragment implements ViewTreeObserver.OnGlobalLayoutListener, ChallengeModeSetListener {
 
 	private Button timeSelectBtn;
 	private GameFaceHelper gameFaceHelper;

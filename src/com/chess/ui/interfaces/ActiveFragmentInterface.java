@@ -1,6 +1,7 @@
 package com.chess.ui.interfaces;
 
 
+import android.support.v4.app.Fragment;
 import android.view.View;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.CoreActivityActionBar;
@@ -10,6 +11,8 @@ import com.slidingmenu.lib.SlidingMenu;
 import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
 
 public interface ActiveFragmentInterface {
+
+	Fragment getCurrentActiveFragment();
 
 	void setCustomActionBarViewId(int viewId);
 
@@ -58,8 +61,6 @@ public interface ActiveFragmentInterface {
 	void updateMainBackground();
 
 	void setMainBackground(int drawableThemeId);
-
-//	void setMainBackground(String drawableThemeId);
 
 	void showActionMenu(int menuId, boolean show);
 

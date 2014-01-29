@@ -60,7 +60,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		AdapterView.OnItemLongClickListener, ItemClickListenerFace, ChallengeModeSetListener {
 
 	public static final int HOME_MODE = 0;
-	public static final int DAILY_MODE = 1;
 
 	private static final int CURRENT_GAMES_SECTION = 0;
 	private static final int FINISHED_GAMES_SECTION = 1;
@@ -88,7 +87,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private TextView emptyView;
 	private ListView listView;
 	private View loadingView;
-	private FragmentParentFace parentFace;
 	private int mode;
 	private GameFaceHelper gameFaceHelper;
 	private Button timeSelectBtn;
@@ -105,12 +103,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		setArguments(bundle);
 	}
 
-	public static DailyGamesFragment createInstance(FragmentParentFace parentFace, int mode) {
+	public static DailyGamesFragment createInstance(int mode) {
 		DailyGamesFragment fragment = new DailyGamesFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, mode);
 		fragment.setArguments(bundle);
-		fragment.parentFace = parentFace;
 		return fragment;
 	}
 
@@ -520,45 +517,21 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	private class GamesCursorUpdateListener extends ChessUpdateListener<Cursor> {
-		public static final int CURRENT_MY = 0;
-		public static final int FINISHED = 2;
-
-		private int gameType;
-
-		public GamesCursorUpdateListener(int gameType) {
-			super();
-			this.gameType = gameType;
-		}
 
 		@Override
 		public void updateData(Cursor cursor) {
 			super.updateData(cursor);
 
-			switch (gameType) {
-				case CURRENT_MY:
-					cursor.moveToFirst();
-					updateUiData(cursor);
-
-					break;
-				case FINISHED:
-					finishedGamesCursorAdapter.changeCursor(cursor);
-					need2update = false;
-					break;
-			}
+			finishedGamesCursorAdapter.changeCursor(cursor);
+			need2update = false;
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			if (resultCode == StaticData.EMPTY_DATA) {
-				if (gameType == CURRENT_MY) {
-					new LoadDataFromDbTask(finishedGamesCursorUpdateListener,
-							DbHelper.getDailyFinishedListGames(getUsername()),
-							getContentResolver()).executeTask();
-				} else {
-					emptyView.setText(R.string.no_games);
-					showEmptyView(true);
-				}
+				emptyView.setText(R.string.no_games);
+				showEmptyView(true);
 			} else if (resultCode == StaticData.UNKNOWN_ERROR) {
 				emptyView.setText(R.string.no_network);
 				showEmptyView(true);
@@ -739,7 +712,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private void init() {
 		acceptDrawUpdateListener = new DailyUpdateListener(DailyUpdateListener.DRAW);
-		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener(GamesCursorUpdateListener.FINISHED);
+		finishedGamesCursorUpdateListener = new GamesCursorUpdateListener();
 		saveFinishedGamesListUpdateListener = new SaveFinishedGamesListUpdateListener();
 		dailyFinishedGamesUpdateListener = new DailyFinishedGamesUpdateListener();
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();

@@ -102,6 +102,7 @@ public class RestHelper {
 	public String CMD_VACATIONS = CMD_GAMES + "vacations";
 	public String CMD_SEEKS = CMD_GAMES + "seeks";
 	public String CMD_GAME_STATS = CMD_GAMES + "stats";
+	public String CMD_GAME_MOVES = CMD_GAMES + "moves";
 
 	public String CMD_GAME_BY_ID(long id) {
 		return CMD_GAMES + id;

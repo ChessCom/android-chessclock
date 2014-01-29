@@ -277,41 +277,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			SoundPlayer.setThemePath(soundThemePath);
 		}
 
-		// check if it's 7th day after install, then ask for feedback
-		if (!getAppData().isUserAskedForFeedback() && !getMeUsername().equals(Symbol.EMPTY)
-				&& !getMeUsername().equals(AppConstants.GUEST_NAME)) {
-
-			// first we check if 7 days has passed
-			long timeNow = System.currentTimeMillis();
-			long firstTimeStart = getAppData().getFirstTimeStart();
-			boolean askForReviewNow = timeNow - firstTimeStart > AppConstants.TIME_FOR_APP_REVIEW;
-			if (!askForReviewNow) {
-				return;
-			}
-
-			// if 2 weeks passed, then ask again
-			long lastTimeAskedForFeedback = getAppData().getLastTimeAskedForFeedback();
-			boolean reAskForReviewNow = timeNow - lastTimeAskedForFeedback > AppConstants.TIME_FOR_APP_REVIEW * 2;// two times longer
-			if (!reAskForReviewNow) {
-				return;
-			}
-
-			// avoid multiple popup appears
-			getAppData().setLastTimeAskedForFeedback(System.currentTimeMillis());
-
-			View layout = LayoutInflater.from(this).inflate(R.layout.new_review_app_popup, null, false);
-			layout.findViewById(R.id.positiveBtn).setOnClickListener(this);
-			layout.findViewById(R.id.negativeBtn).setOnClickListener(this);
-			layout.findViewById(R.id.ignoreBtn).setOnClickListener(this);
-
-			PopupItem popupItem = new PopupItem();
-			popupItem.setCustomView(layout);
-
-			reviewPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-			reviewPopupFragment.show(getSupportFragmentManager(), ASK_FOR_REVIEW_TAG);
-			reviewPopupFragment.setCancelable(false);
-			reviewPopupFragment.setCancelableOnTouch(false);
-		}
+		checkAndShowAppReviewPopup();
 	}
 
 	@Override
@@ -537,7 +503,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		sm.setTouchModeAbove(touchMode);
 	}
 
-//	@Override
+	@Override
+	public Fragment getCurrentActiveFragment() {
+		return currentActiveFragment;
+	}
+
+	//	@Override
 //	public void openFragment(BasePopupsFragment fragment, boolean rewind) {
 //
 //		if (rewind) {
@@ -984,6 +955,44 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	public void updateLocale() {
 		setLocale();
 		restartActivity();
+	}
+
+	private void checkAndShowAppReviewPopup() {
+		// check if it's 7th day after install, then ask for feedback
+		if (!getAppData().isUserAskedForFeedback() && !getMeUsername().equals(Symbol.EMPTY)
+				&& !getMeUsername().equals(AppConstants.GUEST_NAME)) {
+
+			// first we check if 7 days has passed
+			long timeNow = System.currentTimeMillis();
+			long firstTimeStart = getAppData().getFirstTimeStart();
+			boolean askForReviewNow = timeNow - firstTimeStart > AppConstants.TIME_FOR_APP_REVIEW;
+			if (!askForReviewNow) {
+				return;
+			}
+
+			// if 2 weeks passed, then ask again
+			long lastTimeAskedForFeedback = getAppData().getLastTimeAskedForFeedback();
+			boolean reAskForReviewNow = timeNow - lastTimeAskedForFeedback > AppConstants.TIME_FOR_APP_REVIEW * 2;// two times longer
+			if (!reAskForReviewNow) {
+				return;
+			}
+
+			// avoid multiple popup appears
+			getAppData().setLastTimeAskedForFeedback(System.currentTimeMillis());
+
+			View layout = LayoutInflater.from(this).inflate(R.layout.new_review_app_popup, null, false);
+			layout.findViewById(R.id.positiveBtn).setOnClickListener(this);
+			layout.findViewById(R.id.negativeBtn).setOnClickListener(this);
+			layout.findViewById(R.id.ignoreBtn).setOnClickListener(this);
+
+			PopupItem popupItem = new PopupItem();
+			popupItem.setCustomView(layout);
+
+			reviewPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
+			reviewPopupFragment.show(getSupportFragmentManager(), ASK_FOR_REVIEW_TAG);
+			reviewPopupFragment.setCancelable(false);
+			reviewPopupFragment.setCancelableOnTouch(false);
+		}
 	}
 
 	protected String feedbackBodyCompose(String username) {

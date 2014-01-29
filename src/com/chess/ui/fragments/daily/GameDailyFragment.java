@@ -684,8 +684,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 
 		boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 		boardView.resetValidMoves();
+
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
+
+		boardView.updateNotations(getBoardFace().getNotationArray());
 		boardView.invalidate();
 	}
 
