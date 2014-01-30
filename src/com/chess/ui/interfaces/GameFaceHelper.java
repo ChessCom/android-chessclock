@@ -1,6 +1,8 @@
 package com.chess.ui.interfaces;
 
+import android.content.Context;
 import com.chess.ui.engine.ChessBoardLive;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
 
@@ -10,8 +12,13 @@ import com.chess.ui.interfaces.game_ui.GameNetworkFace;
  * Date: 04.10.13
  * Time: 11:46
  */
-public abstract class AbstractGameNetworkFaceHelper implements GameNetworkFace {
+public class GameFaceHelper implements GameNetworkFace {
 
+	private Context context;
+
+	public GameFaceHelper(Context context) {
+		this.context = context;
+	}
 
 	@Override
 	public void showSubmitButtonsLay(boolean show) {
@@ -36,6 +43,11 @@ public abstract class AbstractGameNetworkFaceHelper implements GameNetworkFace {
 	@Override
 	public void goHome() {
 
+	}
+
+	@Override
+	public SoundPlayer getSoundPlayer() {
+		return SoundPlayer.getInstance(context);
 	}
 
 	@Override
@@ -134,5 +146,10 @@ public abstract class AbstractGameNetworkFaceHelper implements GameNetworkFace {
 	@Override
 	public boolean isObservingMode() {
 		return false;
+	}
+
+	@Override
+	public boolean isAlive() {
+		return context != null;
 	}
 }

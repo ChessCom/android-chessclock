@@ -50,16 +50,6 @@ public class ForumTopicsCursorAdapter extends ItemsCursorAdapter {
 
 		int postCount = getInt(cursor, DbScheme.V_POST_COUNT);
 		holder.postsCountTxt.setText(context.getString(R.string.posts_arg, postCount));
-
-//		if (haveNewPosts()) {
-//			holder.newPostImg.setImageResource(R.drawable.ic_new_post_t);
-//		} else {
-//			holder.newPostImg.setImageResource(R.drawable.ic_new_post_f);
-//		}
-	}
-
-	private boolean haveNewPosts() {
-		return true;
 	}
 
 	protected class ViewHolder {

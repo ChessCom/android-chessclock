@@ -9,20 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ForumTopicItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbScheme;
 import com.chess.db.DbHelper;
+import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveForumTopicsTask;
 import com.chess.ui.adapters.ForumTopicsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.PageIndicatorView;
+import com.chess.widgets.LinLayout;
 
 import java.util.List;
 
@@ -91,20 +93,8 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.forums);
+		widgetsInit(view);
 
-		// add headerView
-		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_forum_header_view, null, false);
-		forumHeaderTxt = (TextView) headerView.findViewById(R.id.forumHeaderTxt);
-
-		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.addHeaderView(headerView);
-		listView.setAdapter(topicsCursorAdapter);
-		listView.setOnItemClickListener(this);
-
-		pageIndicatorView = (PageIndicatorView) view.findViewById(R.id.pageIndicatorView);
-		pageIndicatorView.setPagerFace(this);
-
-		initUpgradeAndAdWidgets(view);
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
@@ -112,6 +102,8 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
 	}
+
+
 
 	@Override
 	public void onResume() {
@@ -238,6 +230,27 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 
 			// unlock page changing
 			pageIndicatorView.setEnabled(true);
+		}
+	}
+
+	private void widgetsInit(View view) {
+		// add headerView
+		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_forum_header_view, null, false);
+		forumHeaderTxt = (TextView) headerView.findViewById(R.id.forumHeaderTxt);
+
+		ListView listView = (ListView) view.findViewById(R.id.listView);
+		listView.addHeaderView(headerView);
+		listView.setAdapter(topicsCursorAdapter);
+		listView.setOnItemClickListener(this);
+
+		LinLayout pageIndicatorLay = (LinLayout) view.findViewById(R.id.pageIndicatorLay);
+		pageIndicatorView = (PageIndicatorView) view.findViewById(R.id.pageIndicatorView);
+		pageIndicatorView.setPagerFace(this);
+
+		initUpgradeAndAdWidgets(view);
+
+		if (!isNeedToUpgrade()) {// we need to bind to bottom if there is no ad banner
+			((RelativeLayout.LayoutParams) pageIndicatorLay.getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		}
 	}
 }

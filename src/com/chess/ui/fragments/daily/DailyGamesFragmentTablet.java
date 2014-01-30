@@ -487,6 +487,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 		// add first fake game to daily games
 		currentGamesMyCursorAdapter.showNewGameAtFirst(!myTurnInDailyGames);
+
+		getActivityFace().updateNotificationsBadges();
 		need2update = false;
 	}
 
@@ -637,7 +639,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		if (!isNeedToUpgrade()) {// we need to bind to bottom if there is no ad banner
 			((RelativeLayout.LayoutParams) completedGamesHeaderView.getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		}
-
 	}
 
 	private void showEmptyView(boolean show) {

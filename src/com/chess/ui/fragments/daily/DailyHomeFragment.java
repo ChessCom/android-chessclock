@@ -18,7 +18,6 @@ import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.entity.api.daily_games.DailySeekItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.WebViewFragment;
@@ -26,7 +25,7 @@ import com.chess.ui.fragments.friends.FriendsRightFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDailyTimeOptionsFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
-import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
+import com.chess.ui.interfaces.GameFaceHelper;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
@@ -65,7 +64,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 
 		gameConfigBuilder = new DailyGameConfig.Builder();
 
-		gameFaceHelper = new GameFaceHelper();
+		gameFaceHelper = new GameFaceHelper(getActivity());
 
 		createChallengeUpdateListener = new CreateChallengeUpdateListener();
 		timeOptionSelectedListener = new TimeOptionSelectedListener();
@@ -352,16 +351,4 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		}
 	}
 
-	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {
-
-		@Override
-		public SoundPlayer getSoundPlayer() {
-			return SoundPlayer.getInstance(getActivity());
-		}
-
-		@Override
-		public boolean isAlive() {
-			return getActivity() != null;
-		}
-	}
 }

@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
+import android.util.SparseBooleanArray;
 import android.view.*;
 import android.widget.*;
 import com.chess.R;
@@ -33,18 +34,11 @@ import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommentsCursorAdapter;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.engine.ChessBoardDiagram;
-import com.chess.ui.engine.FenHelper;
-import com.chess.ui.engine.Move;
-import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.diagrams.GameDiagramFragment;
 import com.chess.ui.fragments.diagrams.GameDiagramFragmentTablet;
-import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.views.ControlledListView;
-import com.chess.ui.views.chess_boards.ChessBoardDiagramView;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
 import com.chess.widgets.RoboTextView;
@@ -72,7 +66,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	public static final String P_TAG_OPEN = "<p>";
 	public static final String P_TAG_CLOSE = "</p>";
 	private static final long KEYBOARD_DELAY = 100;
-	public static final int DIAGRAM_PREFIX = 0x00009000;
 	public static final int IMAGE_PREFIX = 0x0000A000;
 	public static final int TEXT_PREFIX = 0x0000B000;
 	public static final int ICON_PREFIX = 0x0000C000;
@@ -87,8 +80,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private static final int ID_POSITION = 1;
 	public static final String CHESS_COM_DIAGRAM = "chess_com_diagram";
 	public static float IMAGE_WIDTH_PERCENT = 0.80f;
-
-	private GameFaceHelper gameFaceHelper;
 
 	private TextView authorTxt;
 	private TextView titleTxt;
@@ -116,7 +107,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	private String commentForEditStr;
 	private View loadingCommentsView;
 	private List<ArticleDetailsItem.Diagram> diagramsList;
-	private SparseArray<Boolean> simpleIdsMap;
+	private SparseBooleanArray simpleIdsMap;
 	private int iconOverlaySize;
 	private int iconOverlayColor;
 	private int textColor;
@@ -562,59 +553,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		}
 	}
 
-	private View createBoardView(GameDiagramItem diagramItem) {
-		ChessBoardDiagramView boardView = new ChessBoardDiagramView(getActivity());
-		boardView.setGameFace(gameFaceHelper);
-		boardView.setCustomPiecesName(getString(R.string.pieces_alpha));
-		boardView.setCustomBoard(R.drawable.board_green);
-		int highlightColor = getResources().getColor(R.color.highlight_green_default);
-
-		boardView.setCustomHighlight(highlightColor);
-
-		int coordinateColorLight = getResources().getColor(R.color.coordinate_green_default_light);
-		int coordinateColorDark = getResources().getColor(R.color.coordinate_green_default_dark);
-		boardView.setCustomCoordinatesColors(new int[]{coordinateColorLight, coordinateColorDark});
-
-		ChessBoardDiagram.resetInstance();
-		BoardFace boardFace = gameFaceHelper.getBoardFace();
-
-		if (diagramItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			boardFace.setChess960(true);
-		} else {
-			boardFace.setChess960(false);
-		}
-
-		String fen = diagramItem.getFen();
-		boardFace.setupBoard(fen);
-
-		// revert reside back, because for diagrams white is always at bottom
-		if (!TextUtils.isEmpty(fen) && !fen.contains(FenHelper.WHITE_TO_MOVE)) {
-			boardFace.setReside(!boardFace.isReside());
-		}
-
-		boardFace.setReside(diagramItem.isFlip());
-
-		// remove comments from movesList
-		String movesList = diagramItem.getMovesList();
-		if (movesList != null) {
-			movesList = boardFace.removeCommentsAndAlternatesFromMovesList(movesList);
-			boardFace.checkAndParseMovesList(movesList);
-			while(boardFace.takeBack()) {
-
-			}
-			if (diagramItem.getFocusMove() != 0) {
-				for (int i = 0; i < diagramItem.getFocusMove(); i++) {
-					Move move = boardFace.getNextMove();
-					if (move != null) {
-						boardFace.makeMove(move, false);
-					}
-				}
-			}
-		}
-
-		return boardView;
-	}
-
 	private class DiagramListItem {
 		String textStr;
 		int diagramId;
@@ -813,8 +751,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 				DiagramViewHolder holder = (DiagramViewHolder) convertView.getTag();
 
-				holder.fragmentContainer.setId(DIAGRAM_PREFIX + item.diagramId);
-
 				// use diagram data to create board image
 				ArticleDetailsItem.Diagram diagramToShow = item.diagram;
 				final GameDiagramItem diagramItem = new GameDiagramItem();
@@ -829,7 +765,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				diagramItem.setFocusMove(diagramToShow.getFocusNode());
 
 				// create board with pieces based on diagram
-				View boardView = createBoardView(diagramItem);
+				View boardView = DiagramImageProcessor.createBoardView(diagramItem, getActivity());
 
 				// get bitmap from fragmentView
 				int bitmapWidth = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
@@ -898,24 +834,6 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		private class ContentViewHolder {
 			TextView contentTxt;
-		}
-	}
-
-	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {
-
-		@Override
-		public SoundPlayer getSoundPlayer() {
-			return SoundPlayer.getInstance(getActivity());
-		}
-
-		@Override
-		public BoardFace getBoardFace() {
-			return ChessBoardDiagram.getInstance(this);
-		}
-
-		@Override
-		public boolean isAlive() {
-			return getActivity() != null;
 		}
 	}
 
@@ -1019,14 +937,12 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			screenWidth -= getResources().getDimensionPixelSize(R.dimen.tablet_side_menu_width) * 2;
 		}
 
-		int deviceSizeCode = DiagramImageProcessor.DEFAULT;
-
 		{// set imageCache params for diagramProcessor
 			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
 
 			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
 
-			diagramImageProcessor = new DiagramImageProcessor(getActivity(), deviceSizeCode);
+			diagramImageProcessor = new DiagramImageProcessor(getActivity(), DiagramImageProcessor.DEFAULT);
 			diagramImageProcessor.setLoadingImage(R.drawable.board_green_default);
 			diagramImageProcessor.setNeedLoadingImage(false);
 			diagramImageProcessor.setChangingDrawable(resources.getDrawable(R.drawable.board_green_default));
@@ -1042,12 +958,14 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 			articleImageFetcher.addImageCache(getFragmentManager(), cacheParams);
 		}
 
-		simpleIdsMap = new SparseArray<Boolean>();
+		simpleIdsMap = new SparseBooleanArray();
 
 		textColor = resources.getColor(R.color.new_subtitle_dark_grey);
 		textSize = (int) (resources.getDimensionPixelSize(R.dimen.content_text_size) / density);
 		infoTextSize = (int) (resources.getDimensionPixelSize(R.dimen.content_info_text_size) / density);
 		paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
+		iconOverlaySize = (int) (resources.getDimension(R.dimen.diagram_icon_overlay_size) / density);
+		iconOverlayColor = resources.getColor(R.color.semitransparent_white_75);
 
 		// for tablets make diagram wider
 		if (isTablet) {
@@ -1065,12 +983,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 		commentsUpdateListener = new CommentsUpdateListener();
 		commentsCursorAdapter = new CommentsCursorAdapter(this, null, getImageFetcher());
 
-		paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
-		iconOverlaySize = (int) (resources.getDimension(R.dimen.diagram_icon_overlay_size) / density);
-		iconOverlayColor = resources.getColor(R.color.semitransparent_white_75);
 		commentPostListener = new CommentPostListener();
-
-		gameFaceHelper = new GameFaceHelper();
 
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_arrow_section_header,
 				new int[]{CONTENT_SECTION, COMMENTS_SECTION});

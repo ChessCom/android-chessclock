@@ -27,7 +27,6 @@ import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.ItemsAdapter;
-import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.LiveBaseFragment;
@@ -35,7 +34,7 @@ import com.chess.ui.fragments.popup_fragments.PopupLiveTimeOptionsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
-import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
+import com.chess.ui.interfaces.GameFaceHelper;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
@@ -84,7 +83,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		featuresList.add(new LiveItem(R.string.ic_board, R.string.archive));
 		optionsAdapter = new OptionsAdapter(getActivity(), featuresList);
 
-		gameFaceHelper = new GameFaceHelper();
+		gameFaceHelper = new GameFaceHelper(getActivity());
 		timeOptionSelectedListener = new TimeOptionSelectedListener();
 		friendSelectedListener = new FriendSelectedListener();
 		serverStatsUpdateListener = new ServerStatsUpdateListener();
@@ -479,19 +478,6 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			TextView iconTxt;
 			TextView nameTxt;
 			TextView spinnerIcon;
-		}
-	}
-
-	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {
-
-		@Override
-		public SoundPlayer getSoundPlayer() {
-			return SoundPlayer.getInstance(getActivity());
-		}
-
-		@Override
-		public boolean isAlive() {
-			return getActivity() != null;
 		}
 	}
 

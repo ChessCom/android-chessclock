@@ -24,10 +24,21 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import com.chess.BuildConfig;
+import com.chess.R;
+import com.chess.backend.RestHelper;
+import com.chess.model.GameDiagramItem;
+import com.chess.ui.engine.ChessBoardDiagram;
+import com.chess.ui.engine.FenHelper;
+import com.chess.ui.engine.Move;
+import com.chess.ui.interfaces.GameFaceHelper;
+import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
+import com.chess.ui.views.chess_boards.ChessBoardDiagramView;
 import com.chess.utilities.AppUtils;
 
 import java.io.FileDescriptor;
@@ -324,5 +335,62 @@ public class DiagramImageProcessor extends ImageResizer {
 			return "diagram_" + String.valueOf(id);
 
 		}
+	}
+
+	public static View createBoardView(GameDiagramItem diagramItem, Context context) {
+
+		Resources resources = context.getResources();
+		GameFace gameFaceHelper = new GameFaceHelper(context);
+		ChessBoardDiagramView boardView = new ChessBoardDiagramView(context);
+
+		boardView.setGameFace(gameFaceHelper);
+		boardView.setCustomPiecesName(context.getString(R.string.pieces_alpha));
+		boardView.setCustomBoard(R.drawable.board_green);
+		int highlightColor = resources.getColor(R.color.highlight_green_default);
+
+		boardView.setCustomHighlight(highlightColor);
+
+		int coordinateColorLight = resources.getColor(R.color.coordinate_green_default_light);
+		int coordinateColorDark = resources.getColor(R.color.coordinate_green_default_dark);
+		boardView.setCustomCoordinatesColors(new int[]{coordinateColorLight, coordinateColorDark});
+
+		ChessBoardDiagram.resetInstance();
+		BoardFace boardFace = gameFaceHelper.getBoardFace();
+
+		if (diagramItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
+			boardFace.setChess960(true);
+		} else {
+			boardFace.setChess960(false);
+		}
+
+		String fen = diagramItem.getFen();
+		boardFace.setupBoard(fen);
+
+		// revert reside back, because for diagrams white is always at bottom
+		if (!TextUtils.isEmpty(fen) && !fen.contains(FenHelper.WHITE_TO_MOVE)) {
+			boardFace.setReside(!boardFace.isReside());
+		}
+
+		boardFace.setReside(diagramItem.isFlip());
+
+		// remove comments from movesList
+		String movesList = diagramItem.getMovesList();
+		if (movesList != null) {
+			movesList = boardFace.removeCommentsAndAlternatesFromMovesList(movesList);
+			boardFace.checkAndParseMovesList(movesList);
+			while(boardFace.takeBack()) {
+
+			}
+			if (diagramItem.getFocusMove() != 0) {
+				for (int i = 0; i < diagramItem.getFocusMove(); i++) {
+					Move move = boardFace.getNextMove();
+					if (move != null) {
+						boardFace.makeMove(move, false);
+					}
+				}
+			}
+		}
+
+		return boardView;
 	}
 }

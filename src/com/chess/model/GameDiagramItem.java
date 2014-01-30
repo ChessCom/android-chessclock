@@ -11,11 +11,11 @@ import android.os.Parcelable;
  */
 public class GameDiagramItem extends GameAnalysisItem {
 
-	public static final String TYPE = "&-diagramtype:";
-	public static final String FEN_CODE = "[FEN \"";
-	public static final String END_PART = "\"]";
 	public static final String CHESS_PROBLEM = "chessProblem";
 
+	/**
+	 * GameDiagramItem.CHESS_PROBLEM or PUZZLE
+	 */
 	private String diagramType;
 	private String moves;
 	private String whitePlayerName;

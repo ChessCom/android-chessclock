@@ -160,7 +160,7 @@ public class MraidView extends BaseWebView implements UserClickListener {
             }
         });
         
-//        getSettings().setJavaScriptEnabled(true);
+        getSettings().setJavaScriptEnabled(true);
         
         mBrowserController = new MraidBrowserController(this);
         mDisplayController = new MraidDisplayController(this, expStyle, buttonStyle);

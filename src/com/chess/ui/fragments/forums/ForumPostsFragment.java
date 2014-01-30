@@ -10,26 +10,31 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.ArticleDetailsItem;
 import com.chess.backend.entity.api.ForumPostItem;
 import com.chess.backend.entity.api.VacationItem;
+import com.chess.backend.image_load.bitmapfun.DiagramImageProcessor;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveForumPostsTask;
+import com.chess.model.GameDiagramItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ForumPostsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.articles.ArticleDetailsFragment;
+import com.chess.ui.fragments.diagrams.GameDiagramFragment;
+import com.chess.ui.fragments.diagrams.GameDiagramFragmentTablet;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.PageIndicatorView;
+import com.chess.widgets.LinLayout;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,6 +50,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	public static final String P_TAG_CLOSE = "</p>";
 	private static final long KEYBOARD_DELAY = 100;
 	private static final long NON_EXIST = -1;
+	private static final String IMAGE_CACHE_DIR = "diagrams";
 	private int topicId;
 
 	private ForumPostsCursorAdapter postsCursorAdapter;
@@ -53,6 +59,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	private TextView forumHeaderTxt;
 	private String topicTitle;
 	private PageIndicatorView pageIndicatorView;
+	private DiagramImageProcessor diagramImageProcessor;
 	private int currentPage;
 	private int pagesToShow;
 	private View replyView;
@@ -85,21 +92,12 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			topicId = savedInstanceState.getInt(TOPIC_ID);
 		}
 
-		postsCursorAdapter = new ForumPostsCursorAdapter(this, null, getImageFetcher());
-		savePostsListener = new SavePostsListener();
-		postsUpdateListener = new PostsUpdateListener();
-		topicCreateListener = new TopicCreateListener();
-
-		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
-
-		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getForumTopicById(topicId));
-		cursor.moveToFirst();
-		topicTitle = DbDataManager.getString(cursor, DbScheme.V_TITLE);
-		topicUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
-		cursor.close();
+		init();
 
 		pullToRefresh(true);
 	}
+
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -128,6 +126,17 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		forumHeaderTxt.setText(Html.fromHtml(topicTitle));
 
 		requestPage(currentPage);
+
+		diagramImageProcessor.setExitTasksEarly(false);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		diagramImageProcessor.setPauseWork(false);
+		diagramImageProcessor.setExitTasksEarly(true);
+		diagramImageProcessor.flushCache();
 	}
 
 	@Override
@@ -169,7 +178,8 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	public void onClick(View view) {
 		super.onClick(view);
 
-		if (view.getId() == R.id.quoteTxt) {
+		int id = view.getId();
+		if (id == R.id.quoteTxt) {
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
 
 			Cursor cursor = (Cursor) postsCursorAdapter.getItem(position);
@@ -198,6 +208,13 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 				}
 			}, KEYBOARD_DELAY);
+		} else if (id == ArticleDetailsFragment.IMAGE_PREFIX || id == ArticleDetailsFragment.ICON_PREFIX) {
+			//get diagram from view tag
+			Object tag = view.getTag(R.id.list_item_id);
+			if (tag instanceof GameDiagramItem) {
+				final GameDiagramItem diagramItem = (GameDiagramItem) tag;
+				showDiagramAnimated(diagramItem);
+			}
 		}
 	}
 
@@ -217,6 +234,21 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			inEditMode = true;
 			showEditView(true);
 		}
+	}
+
+	private boolean showDiagramAnimated(final GameDiagramItem diagramItem) {
+		// don't handle clicks on simple diagrams
+		if (diagramItem.getDiagramType().equals(ArticleDetailsItem.Diagram.SIMPLE)) {
+			return false;
+		}
+
+		if (!isTablet) {
+			getActivityFace().openFragment(GameDiagramFragment.createInstance(diagramItem));
+		} else {
+			getActivityFace().openFragment(GameDiagramFragmentTablet.createInstance(diagramItem));
+		}
+
+		return true;
 	}
 
 	@Override
@@ -329,7 +361,8 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 				pageIndicatorView.enableRightBtn(true);
 			}
 
-			new SaveForumPostsTask(savePostsListener, returnedObj.getData().getPosts(), getContentResolver(), topicId, currentPage).executeTask();
+			new SaveForumPostsTask(savePostsListener, returnedObj.getData().getPosts(),
+					getContentResolver(), topicId, currentPage).executeTask();
 		}
 	}
 
@@ -342,7 +375,6 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getForumPostsById(topicId, currentPage));
 			if (cursor.moveToFirst()) {
 				postsCursorAdapter.changeCursor(cursor);
-				postsCursorAdapter.notifyDataSetChanged();
 			} else {
 				showToast("Internal error");
 			}
@@ -400,6 +432,35 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		}
 	}
 
+	private void init() {
+		{// set imageCache params for diagramProcessor
+			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
+
+			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
+
+			diagramImageProcessor = new DiagramImageProcessor(getActivity(), DiagramImageProcessor.DEFAULT);
+			diagramImageProcessor.setLoadingImage(R.drawable.board_green_default);
+			diagramImageProcessor.setNeedLoadingImage(false);
+			diagramImageProcessor.setChangingDrawable(getResources().getDrawable(R.drawable.board_green_default));
+			diagramImageProcessor.addImageCache(getFragmentManager(), cacheParams);
+		}
+
+		postsCursorAdapter = new ForumPostsCursorAdapter(this, null, getImageFetcher(), diagramImageProcessor);
+		savePostsListener = new SavePostsListener();
+		postsUpdateListener = new PostsUpdateListener();
+		topicCreateListener = new TopicCreateListener();
+
+		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
+
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getForumTopicById(topicId));
+		cursor.moveToFirst();
+		topicTitle = DbDataManager.getString(cursor, DbScheme.V_TITLE);
+		topicUrl = DbDataManager.getString(cursor, DbScheme.V_URL);
+		cursor.close();
+
+
+	}
+
 	private void widgetsInit(View view) {
 		// add headerView
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_forum_header_view, null, false);
@@ -409,7 +470,23 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		listView.addHeaderView(headerView);
 		listView.setAdapter(postsCursorAdapter);
 		listView.setOnItemClickListener(this);
+		listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+			@Override
+			public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+				// Pause fetcher to ensure smoother scrolling when flinging
+				if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+					diagramImageProcessor.setPauseWork(true);
+				} else {
+					diagramImageProcessor.setPauseWork(false);
+				}
+			}
 
+			@Override
+			public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+			}
+		});
+
+		LinLayout pageIndicatorLay = (LinLayout) view.findViewById(R.id.pageIndicatorLay);
 		pageIndicatorView = (PageIndicatorView) view.findViewById(R.id.pageIndicatorView);
 		pageIndicatorView.setPagerFace(this);
 
@@ -417,5 +494,9 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
 
 		initUpgradeAndAdWidgets(view);
+
+		if (!isNeedToUpgrade()) {// we need to bind to bottom if there is no ad banner
+			((RelativeLayout.LayoutParams) pageIndicatorLay.getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		}
 	}
 }

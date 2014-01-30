@@ -118,7 +118,10 @@ public class DbDataManager {
 			V_USER
 	);
 
-	public static String SELECTION_CREATE_DATE = concatArguments(V_CREATE_DATE);
+	public static String SELECTION_CREATE_DATE_AND_USER = concatArguments(
+			V_CREATE_DATE,
+			V_USERNAME
+	);
 
 	public static String SELECTION_ID_USER_CONVERSATION_ID = concatArguments(
 			V_ID,
@@ -288,7 +291,7 @@ public class DbDataManager {
 
 	public static final String[] PROJECTION_ITEM_ID = new String[]{_ID, V_ID};
 
-	public static final String[] PROJECTION_CREATE_DATE = new String[]{_ID, V_CREATE_DATE};
+	public static final String[] PROJECTION_CREATE_DATE_AND_USER = new String[]{_ID, V_CREATE_DATE, V_USERNAME};
 
 	public static final String[] PROJECTION_USER_CURRENT_RATING = new String[]{_ID, V_USER, V_CURRENT};
 
@@ -1459,20 +1462,6 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static void saveForumPostItem(ContentResolver contentResolver, ForumPostItem.Post currentItem) {
-		final String[] arguments1 = sArguments1;
-		arguments1[0] = String.valueOf(currentItem.getCreateDate());
-
-		Uri uri = uriArray[Tables.FORUM_POSTS.ordinal()];
-
-		Cursor cursor = contentResolver.query(uri, PROJECTION_CREATE_DATE,
-				SELECTION_CREATE_DATE, arguments1, null);
-
-		ContentValues values = putForumPostItemToValues(currentItem);
-
-		updateOrInsertValues(contentResolver, cursor, uri, values);
-	}
-
 	/**
 	 * Check if we have saved videos for any user
 	 *
@@ -1704,23 +1693,6 @@ public class DbDataManager {
 		values.put(V_LAST_POST_USERNAME, dataObj.getLastPostUsername());
 		values.put(V_POST_COUNT, dataObj.getPostCount());
 		values.put(V_LAST_POST_DATE, dataObj.getLastPostDate());
-		values.put(V_PAGE, dataObj.getPage());
-
-		return values;
-	}
-
-	public static ContentValues putForumPostItemToValues(ForumPostItem.Post dataObj) {
-		ContentValues values = new ContentValues();
-
-		values.put(V_DESCRIPTION, dataObj.getBody());
-		values.put(V_ID, dataObj.getTopicId());
-		values.put(V_CREATE_DATE, dataObj.getCreateDate());
-		values.put(V_USERNAME, dataObj.getUsername());
-		values.put(V_COMMENT_ID, dataObj.getCommentId());
-		values.put(V_COUNTRY_ID, dataObj.getCountryId());
-		values.put(V_PREMIUM_STATUS, dataObj.isPremiumStatus());
-		values.put(V_PHOTO_URL, dataObj.getAvatarUrl());
-		values.put(V_NUMBER, dataObj.getCommentNumber());
 		values.put(V_PAGE, dataObj.getPage());
 
 		return values;

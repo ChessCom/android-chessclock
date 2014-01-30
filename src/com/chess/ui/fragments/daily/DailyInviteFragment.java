@@ -1,6 +1,7 @@
 package com.chess.ui.fragments.daily;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -23,12 +24,9 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardOnline;
-import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
-import com.chess.ui.interfaces.boards.BoardFace;
+import com.chess.ui.interfaces.GameFaceHelper;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -63,7 +61,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 	protected TextView inviteTitleTxt;
 	private int successToastMsgId;
 	private DailyUpdateListener challengeInviteUpdateListener;
-	protected GameFaceHelper gameFaceHelper;
+	protected InviteGameFaceHelper gameFaceHelper;
 
 	public DailyInviteFragment() { }
 
@@ -123,7 +121,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 
 	public void init() {
 		Resources resources = getResources();
-		gameFaceHelper = new GameFaceHelper();
+		gameFaceHelper = new InviteGameFaceHelper(getActivity());
 
 		labelsConfig = new GameBaseFragment.LabelsConfig();
 		challengeInviteUpdateListener = new DailyUpdateListener();
@@ -365,11 +363,11 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		}
 	}
 
-	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {
+	private class InviteGameFaceHelper extends GameFaceHelper {
 
-		@Override
-		public SoundPlayer getSoundPlayer() {
-			return SoundPlayer.getInstance(getActivity());
+
+		public InviteGameFaceHelper(Context context) {
+			super(context);
 		}
 
 		@Override
@@ -380,16 +378,6 @@ public class DailyInviteFragment extends CommonLogicFragment {
 		@Override
 		public void cancelMove() {
 			declineChallenge();
-		}
-
-		@Override
-		public BoardFace getBoardFace() {
-			return ChessBoardOnline.getInstance(this);
-		}
-
-		@Override
-		public boolean isAlive() {
-			return getActivity() != null;
 		}
 	}
 }

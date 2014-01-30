@@ -76,12 +76,13 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 		private static final String DATE = "Date";
 		private static final String RESULT = "Result";
 		private static final String ECO = "ECO";
-		private static final String PLYCOUNT = "Plycount";
+		private static final String PLY_COUNT = "Plycount";
 		private static final String DELIMITER = " | ";
 
 		private long diagram_id;
 		private String diagram_code;
 		private int type = -1;
+		private String moveList;
 
 		public long getDiagramId() {
 			return diagram_id;
@@ -115,12 +116,19 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 			}
 		}
 
-		public String getMoveList() {
-			// get [Event ] end
-			int startIndex = diagram_code.indexOf("]\n\n");
-			String movesPart = diagram_code.substring(startIndex + "]\n\n".length());
+		public void setMoveList(String moveList) {
+			this.moveList = moveList;
+		}
 
-			return movesPart.substring(0, movesPart.lastIndexOf(Symbol.NEW_STR));
+		public String getMoveList() {
+			if (TextUtils.isEmpty(moveList)){
+				// get [Event ] end
+				int startIndex = diagram_code.indexOf("]\n\n");
+				String movesPart = diagram_code.substring(startIndex + "]\n\n".length());
+
+				moveList = movesPart.substring(0, movesPart.lastIndexOf(Symbol.NEW_STR));
+			}
+			return moveList;
 		}
 
 		public void setType(int type) {
@@ -158,7 +166,7 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 		}
 
 		public String getUserToMove() {
-			String plyStr = getTagData(PLYCOUNT);
+			String plyStr = getTagData(PLY_COUNT);
 			if (TextUtils.isEmpty(plyStr)) {
 				return Symbol.EMPTY;
 			}

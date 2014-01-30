@@ -33,16 +33,12 @@ import com.chess.statics.StaticData;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
-import com.chess.ui.engine.ChessBoardDiagram;
 import com.chess.ui.engine.ChessBoardOnline;
-import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.RightPlayFragment;
-import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
-import com.chess.ui.interfaces.FragmentParentFace;
+import com.chess.ui.interfaces.GameFaceHelper;
 import com.chess.ui.interfaces.ItemClickListenerFace;
-import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.views.chess_boards.ChessBoardDailyView;
 import com.chess.utilities.ChallengeHelper;
 
@@ -123,7 +119,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		init();
 
 		challengeHelper = new ChallengeHelper(this);
-		gameFaceHelper = new GameFaceHelper();
+		gameFaceHelper = new GameFaceHelper(getActivity());
 
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
@@ -551,8 +547,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		// restore position
 		cursor.moveToFirst();
 
+		int currentGamesCnt = cursor.getCount();
+
 		// if user have more than 5 active games, do not show 1/2 size board, only new game button at bottom
-		if (cursor.getCount() < MIN_GAMES_TO_SHOW_BANNER) {
+		if (currentGamesCnt < MIN_GAMES_TO_SHOW_BANNER) {
 			if (HONEYCOMB_PLUS_API) {
 				if (myTurnInDailyGames) {
 					listView.removeHeaderView(newGameHeaderView);
@@ -581,6 +579,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		currentGamesMyCursorAdapter.changeCursor(cursor);
 
+		getActivityFace().updateNotificationsBadges();
 		loadFromDbFinishedGames();
 	}
 
@@ -786,24 +785,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		listView.setAdapter(sectionedAdapter);
 
 		initUpgradeAndAdWidgets(view);
-	}
-
-	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {
-
-		@Override
-		public SoundPlayer getSoundPlayer() {
-			return SoundPlayer.getInstance(getActivity());
-		}
-
-		@Override
-		public BoardFace getBoardFace() {
-			return ChessBoardDiagram.getInstance(this);
-		}
-
-		@Override
-		public boolean isAlive() {
-			return getActivity() != null;
-		}
 	}
 
 	private void showEmptyView(boolean show) {

@@ -11,11 +11,10 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import com.chess.R;
-import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.daily.DailyGameOptionsFragment;
-import com.chess.ui.interfaces.AbstractGameNetworkFaceHelper;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
+import com.chess.ui.interfaces.GameFaceHelper;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.utilities.ChallengeHelper;
 
@@ -36,7 +35,7 @@ public class HomePlayFragment extends CommonLogicFragment implements ViewTreeObs
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		gameFaceHelper = new GameFaceHelper();
+		gameFaceHelper = new GameFaceHelper(getActivity());
 		challengeHelper = new ChallengeHelper(this);
 	}
 
@@ -155,17 +154,4 @@ public class HomePlayFragment extends CommonLogicFragment implements ViewTreeObs
 		boardView.setGameFace(gameFaceHelper);
 	}
 
-
-	private class GameFaceHelper extends AbstractGameNetworkFaceHelper {
-
-		@Override
-		public SoundPlayer getSoundPlayer() {
-			return SoundPlayer.getInstance(getActivity());
-		}
-
-		@Override
-		public boolean isAlive() {
-			return getActivity() != null;
-		}
-	}
 }

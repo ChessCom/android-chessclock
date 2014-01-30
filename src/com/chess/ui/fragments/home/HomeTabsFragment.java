@@ -93,8 +93,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onResume() {
 		super.onResume();
 
-//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.DAILY_CURRENT_GAMES.name()),
-//				DbHelper.getAll(DbScheme.Tables.DAILY_CURRENT_GAMES),
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.FORUM_POSTS.name()),
+//				DbHelper.getAll(DbScheme.Tables.FORUM_POSTS),
 //				getContentResolver()).executeTask();
 
 		// check if user have daily games in progress or completed. May check in DB
@@ -127,7 +127,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		}
 	}
 
-//	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> { // use to show Db table content
+//	private class DbCursorUpdateListener extends ChessUpdateListener<Cursor> { // use to show Db table content, do not remove
 //
 //		private String tableName;
 //

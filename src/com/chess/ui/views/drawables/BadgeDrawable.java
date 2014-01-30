@@ -23,15 +23,12 @@ public class BadgeDrawable extends Drawable {
 	private Paint rectangleMainPaint;
 	private Paint rectangleBorderPaint;
 	private Paint textPaint;
-	private final int bottom;
-	private final int right;
 	private final float density;
 	private final RectF badgeRect;
 	private final float cornerRadius;
 	private final Paint rectangleBorderBottomPaint;
 	private final RectF badgeBorderRect;
 	private final int rectangleSize;
-	private final float textSize;
 	private final float textWidth;
 	private final float textHeight;
 	private final float viewHeight;
@@ -80,7 +77,7 @@ public class BadgeDrawable extends Drawable {
 		rectangleBorderBottomPaint.setStyle(Paint.Style.STROKE);
 		rectangleBorderBottomPaint.setShader(borderShader);
 
-		textSize = 11 * density;
+		float textSize = 11 * density;
 		textWidth = 3 * density;
 		textHeight = 5 * density;
 
@@ -88,10 +85,6 @@ public class BadgeDrawable extends Drawable {
 		textPaint.setColor(Color.WHITE);
 		textPaint.setTextSize(textSize);
 		textPaint.setTypeface(FontsHelper.getInstance().getTypeFace(context, FontsHelper.BOLD_FONT));
-
-		Rect bounds = icon.getBounds();
-		bottom = (int) (bounds.bottom * density);
-		right = (int) (bounds.right * density);
 
 		badgeRect = new RectF();
 		badgeBorderRect = new RectF();
@@ -117,7 +110,7 @@ public class BadgeDrawable extends Drawable {
 		float x1;
 		float y1;
 
-		if (AppUtils.HONEYCOMB_PLUS_API) { // TODO set initialized flag
+		if (AppUtils.HONEYCOMB_PLUS_API) {
 			x0 = 0;
 			y0 = 0;
 			x1 = rectangleSize * density;
@@ -177,8 +170,12 @@ public class BadgeDrawable extends Drawable {
 			canvas.drawRoundRect(badgeRect, cornerRadius, cornerRadius, rectangleBorderPaint);
 
 			// Draw text
-			canvas.drawText(String.valueOf(value), badgeRect.centerX() - textWidth - density,
-					badgeRect.centerY() + textHeight - density, textPaint);
+			float textX = badgeRect.centerX() - textWidth - density;
+			float textY = badgeRect.centerY() + textHeight - density;
+			if (value > 9) {
+				textX = badgeRect.centerX() - textWidth - density * 4;
+			}
+			canvas.drawText(String.valueOf(value), textX, textY, textPaint);
 		}
 	}
 
