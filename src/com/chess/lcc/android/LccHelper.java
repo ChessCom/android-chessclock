@@ -830,6 +830,8 @@ public class LccHelper {
 
 	public void checkAndProcessEndGame(Game game) {
 		List<GameResult> gameResults = game.getResults();
+		LogMe.dl(TAG, "DEBUG: checkAndProcessEndGame game.getResults().size()" + game.getResults().size());
+
 		final GameResult whitePlayerResult = gameResults.get(0);
 		final GameResult blackPlayerResult = gameResults.get(1);
 		final String whiteUsername = game.getWhitePlayer().getUsername();

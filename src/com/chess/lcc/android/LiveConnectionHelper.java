@@ -67,10 +67,9 @@ public class LiveConnectionHelper {
 
 	public LiveConnectionHelper(LiveChessService liveService) {
 
-		this.lccHelper = new LccHelper(this);
-
 		this.context = liveService;
 		this.liveService = liveService;
+		this.lccHelper = new LccHelper(this);
 
 		appData = new AppData(context);
 
@@ -114,7 +113,6 @@ public class LiveConnectionHelper {
 	 * Connect live chess client
 	 */
 	public void performConnect() {
-		AppData appData = new AppData(context);
 		String username = appData.getUsername();
 		String pass = appData.getPassword();
 
@@ -216,7 +214,7 @@ public class LiveConnectionHelper {
 						appData.incrementLiveConnectAttempts(context);*/
 
 					// first of all we need to invalidate sessionId key
-					new AppData(context).setLiveSessionId(null);
+					appData.setLiveSessionId(null);
 
 					if (isPossibleToReconnect()) {
 						try {
@@ -258,7 +256,6 @@ public class LiveConnectionHelper {
 	}
 
 	private boolean isPossibleToReconnect() {
-		AppData appData = new AppData(context);
 		String pass = appData.getPassword();
 
 		// here we check if sessionId is not expired(ttl = 60min)

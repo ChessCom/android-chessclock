@@ -362,7 +362,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 							if (isTablet) {
 								gameLiveFragment = GameLiveFragmentTablet.createInstance(gameId);
 							} else {
-								gameLiveFragment = GameLiveFragment.createInstance(gameId);
+								gameLiveFragment = GameLiveFragment.createInstance(gameId); // check why null
 							}
 						}
 					}
