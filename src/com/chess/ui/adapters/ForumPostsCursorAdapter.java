@@ -37,11 +37,12 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 	public static final String DIAGRAM_TAG = "<!-- \n&-diagramtype:";
 	public static final String END_TAG = "-->";
 	private static final int NON_INIT = -1;
+	private static final int CONTAINER_ID = 0x00009843;
 	public static final String WHITE_WON = "1-0";
 	public static final String BLACK_WON = "0-1";
 	public static final String DRAW = "1/2-1/2";
 	public static final String ONGOING = "*";
-	public static final String FEN_START_TAG = "[FEN \"";
+	public static final String PAIR_START_TAG = "[";
 	public static final String PAIR_END_TAG = "\"]";
 
 	private final int imageSize;
@@ -56,7 +57,6 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 	private final int paddingSide;
 	private final int iconOverlaySize;
 	private final int iconOverlayColor;
-	private int screenWidth;
 	public static float IMAGE_WIDTH_PERCENT = 0.80f;
 
 	private static final int DIAGRAM = 0;
@@ -97,7 +97,6 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		if (isTablet) {
 			IMAGE_WIDTH_PERCENT = 0.85f;
 		}
-
 	}
 
 	@Override
@@ -134,7 +133,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 			view = convertView;
 			if (isForDiagram && !(view.getTag() instanceof DiagramViewHolder)) {
 				view = createDiagramView(parent);
-			} else if (!isForDiagram && !(view.getTag() instanceof ViewHolder)){
+			} else if (!isForDiagram && !(view.getTag() instanceof ViewHolder)) {
 				view = newView(mContext, mCursor, parent);
 			}
 		}
@@ -173,6 +172,10 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 	public void bindView(View view, Context context, Cursor cursor) {
 		ViewHolder holder = (ViewHolder) view.getTag();
 
+		bindPostData(context, cursor, holder);
+	}
+
+	private void bindPostData(Context context, Cursor cursor, ViewHolder holder) {
 		holder.quoteTxt.setTag(R.id.list_item_id, cursor.getPosition());
 
 		holder.authorTxt.setText(getString(cursor, DbScheme.V_USERNAME));
@@ -217,8 +220,9 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		DiagramViewHolder holder = (DiagramViewHolder) convertView.getTag();
 		int pos = cursor.getPosition();
 
+		String bodyStr = getString(cursor, DbScheme.V_DESCRIPTION);
 		// use diagram data to create board image
-		ArticleDetailsItem.Diagram diagramToShow = getDiagramItem(getString(cursor, DbScheme.V_DESCRIPTION));
+		ArticleDetailsItem.Diagram diagramToShow = getDiagramItem(bodyStr);
 		final GameDiagramItem diagramItem = new GameDiagramItem();
 		diagramItem.setShowAnimation(false);
 		if (diagramToShow.getType() == ArticleDetailsItem.Diagram.PUZZLE) {
@@ -231,7 +235,8 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 			diagramItem.setDiagramType(ArticleDetailsItem.SIMPLE_DIAGRAM);
 		}
 
-		diagramItem.setFen(diagramToShow.getFen());
+		String fen = diagramToShow.getFen();
+		diagramItem.setFen(fen);
 		diagramItem.setFlip(diagramToShow.getFlip());
 		diagramItem.setFocusMove(diagramToShow.getFocusNode());
 
@@ -246,7 +251,8 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		int bitmapWidth = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
 		int bitmapHeight = (int) (screenWidth * IMAGE_WIDTH_PERCENT);
 		// fill data for load image
-		DiagramImageProcessor.Data data = new DiagramImageProcessor.Data(0, boardView);
+		int diagramId = fen.hashCode();
+		DiagramImageProcessor.Data data = new DiagramImageProcessor.Data(diagramId, boardView);
 
 		// load image out off UI thread
 		diagramImageProcessor.setImageSize(bitmapWidth, bitmapHeight);
@@ -279,20 +285,27 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 			holder.infoTxt.setVisibility(View.VISIBLE);
 			holder.infoTxt.setText(gameInfo);
 		}
+
+		holder.contentTxt.setVisibility(View.GONE);
+
+		bindPostData(context, cursor, holder.postHolder);
 	}
 
 	private View createDiagramView(ViewGroup parent) {
+		RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.new_forum_post_list_item, parent, false);
+
 		DiagramViewHolder holder = new DiagramViewHolder();
 
 		// create container for
 		LinearLayout container = new LinearLayout(context);
-		AbsListView.LayoutParams containerParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+		RelativeLayout.LayoutParams containerParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
 		LinearLayout.LayoutParams textLayoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		textLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
 
 		container.setOrientation(LinearLayout.VERTICAL);
 		container.setLayoutParams(containerParams);
+		container.setId(CONTAINER_ID);
 
 		{// add text info above diagram "Serper vs. Dorfman"
 			RoboTextView textView = new RoboTextView(context);
@@ -396,9 +409,32 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 			container.addView(textView);
 			holder.contentTxt = textView;
 		}
-		container.setTag(holder);
 
-		return container;
+		{ // posts view
+			holder.postHolder = new ViewHolder();
+			holder.postHolder.photoImg = (ProgressImageView) view.findViewById(R.id.photoImg);
+			holder.postHolder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
+			holder.postHolder.countryImg = (ImageView) view.findViewById(R.id.countryImg);
+			holder.postHolder.premiumImg = (ImageView) view.findViewById(R.id.premiumImg);
+			holder.postHolder.dateTxt = (TextView) view.findViewById(R.id.dateTxt);
+			holder.postHolder.quoteTxt = (TextView) view.findViewById(R.id.quoteTxt);
+			holder.postHolder.bodyTxt = (TextView) view.findViewById(R.id.bodyTxt);
+			holder.postHolder.commentNumberTxt = (TextView) view.findViewById(R.id.commentNumberTxt);
+
+			holder.postHolder.quoteTxt.setOnClickListener(clickFace);
+			holder.postHolder.bodyTxt.setMovementMethod(LinkMovementMethod.getInstance());
+
+			// change layout params
+			((RelativeLayout.LayoutParams) holder.postHolder.bodyTxt.getLayoutParams())
+					.addRule(RelativeLayout.BELOW, CONTAINER_ID);
+		}
+
+		containerParams.setMargins(0, (int) (5 * density), 0, 0);
+		containerParams.addRule(RelativeLayout.BELOW, R.id.dateTxt);
+
+		view.addView(container);
+		view.setTag(holder);
+		return view;
 	}
 
 	protected class ViewHolder {
@@ -420,6 +456,8 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		TextView playersTxt;
 		TextView infoTxt;
 		TextView userToMoveTxt;
+
+		ViewHolder postHolder;
 	}
 
 	private ArticleDetailsItem.Diagram getDiagramItem(String bodyStr) {
@@ -432,12 +470,11 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 		diagram.setDiagramCode(diagramCode);
 		{ // extract moveList
 			// get [Event ] end
-			int startIndex = diagramCode.indexOf(FEN_START_TAG);
+			int startIndex = diagramCode.lastIndexOf(PAIR_START_TAG);
 
 			// truncate text to more close state, because "\r\n\r\n doesn't work for some diagrams
-			// we know that FEN is last tag
-
-			String movesPart = diagramCode.substring(startIndex + FEN_START_TAG.length());
+			// we count from last [ ]
+			String movesPart = diagramCode.substring(startIndex + PAIR_START_TAG.length());
 			startIndex = movesPart.indexOf(PAIR_END_TAG);
 			movesPart = movesPart.substring(startIndex + PAIR_END_TAG.length());
 
@@ -453,7 +490,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 				endIndex = movesPart.lastIndexOf(ONGOING);
 			}
 
-			String moveList = movesPart.substring(0, endIndex).replaceAll("\r\n", Symbol.EMPTY);
+			String moveList = movesPart.substring(0, endIndex).replaceAll("\n", Symbol.EMPTY).replaceAll("\r", Symbol.EMPTY);
 			diagram.setMoveList(moveList);
 		}
 		return diagram;

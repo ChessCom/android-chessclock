@@ -21,7 +21,6 @@ public abstract class BaseGameItem implements Parcelable {
 	protected long gameId;
 	protected int color;
 
-
 	protected String whiteUsername;
 	protected String blackUsername;
 	protected int userNameStrLength;
@@ -31,7 +30,6 @@ public abstract class BaseGameItem implements Parcelable {
 	protected boolean isDrawOfferPending;
 	protected boolean isOpponentOnline;
 	protected int fenStrLength;
-//	protected String fen;
 	protected long timestamp;
 	protected String moveList;
 	protected int whiteRating;
@@ -65,26 +63,9 @@ public abstract class BaseGameItem implements Parcelable {
 		return color;
 	}
 
-	/*public String getFen() {
-		return fen;
-	}
-
-	public String getFenStrLength() {
-		return fenStrLength;
-	}*/
-
 	public long getGameId() {
 		return gameId;
 	}
-
-	/*public boolean isDrawOffered() {
-		return isDrawOffered;
-	}
-
-	public boolean isOpponentOnline() {
-		return isOpponentOnline;
-	}*/
-
 
 	public void setGameId(long gameId) {
 		this.gameId = gameId;
@@ -102,72 +83,16 @@ public abstract class BaseGameItem implements Parcelable {
 		this.blackUsername = blackUsername;
 	}
 
-	public void setUserNameStrLength(int userNameStrLength) {
-		this.userNameStrLength = userNameStrLength;
-	}
-
-	public void setTimeRemainingAmount(int timeRemainingAmount) {
-		this.timeRemainingAmount = timeRemainingAmount;
-	}
-
-	public void setTimeRemainingUnits(String timeRemainingUnits) {
-		this.timeRemainingUnits = timeRemainingUnits;
-	}
-
-	public void setDrawOfferPending(boolean drawOfferPending) {
-		isDrawOfferPending = drawOfferPending;
-	}
-
-	public void setOpponentOnline(boolean opponentOnline) {
-		isOpponentOnline = opponentOnline;
-	}
-
-	public void setFenStrLength(int fenStrLength) {
-		this.fenStrLength = fenStrLength;
-	}
-
 	public void setTimestamp(long timestamp) {
 		this.timestamp = timestamp;
-	}
-
-	public void setMoveList(String moveList) {
-		this.moveList = moveList;
-	}
-
-	public void setWhiteRating(int whiteRating) {
-		this.whiteRating = whiteRating;
-	}
-
-	public void setBlackRating(int blackRating) {
-		this.blackRating = blackRating;
-	}
-
-	public void setSecondsRemain(long secondsRemain) {
-		this.secondsRemain = secondsRemain;
 	}
 
 	public String getMoveList() {
 		return moveList;
 	}
 
-	public long getSecondsRemain() {
-		return secondsRemain;
-	}
-
-	public int getTimeRemainingAmount() {
-		return timeRemainingAmount;
-	}
-
-	public String getTimeRemainingUnits() {
-		return timeRemainingUnits;
-	}
-
 	public long getTimestamp() {
 		return timestamp;
-	}
-
-	public int getUserNameStrLength() {
-		return userNameStrLength;
 	}
 
 	public int getWhiteRating() {
@@ -181,11 +106,6 @@ public abstract class BaseGameItem implements Parcelable {
 	public boolean hasNewMessage() {
 		return hasNewMessage;
 	}
-
-	public void setHasNewMessage(boolean hasNewMessage) {
-		this.hasNewMessage = hasNewMessage;
-	}
-
 
 	@Override
 	public int describeContents() {
@@ -212,7 +132,6 @@ public abstract class BaseGameItem implements Parcelable {
         out.writeByte((byte) (hasNewMessage ? 1 : 0));
 
 		out.writeInt(fenStrLength);
-//		parcel.writeString(fen);
 		out.writeLong(timestamp);
 		out.writeString(moveList);
 		out.writeInt(whiteRating);
@@ -240,7 +159,6 @@ public abstract class BaseGameItem implements Parcelable {
         hasNewMessage = in.readByte() == 1;
 
 		fenStrLength = in.readInt();
-//		fen = in.readString();
 		timestamp = in.readLong();
 		moveList = in.readString();
 		whiteRating = in.readInt();

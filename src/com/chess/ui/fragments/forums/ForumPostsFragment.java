@@ -242,6 +242,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			return false;
 		}
 
+		diagramItem.setShowAnimation(true);
 		if (!isTablet) {
 			getActivityFace().openFragment(GameDiagramFragment.createInstance(diagramItem));
 		} else {
@@ -364,6 +365,13 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			new SaveForumPostsTask(savePostsListener, returnedObj.getData().getPosts(),
 					getContentResolver(), topicId, currentPage).executeTask();
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			updateUiData();
+		}
 	}
 
 	private class SavePostsListener extends ChessUpdateListener<ForumPostItem.Post> {
@@ -372,16 +380,20 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		public void updateData(ForumPostItem.Post returnedObj) {
 			super.updateData(returnedObj);
 
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getForumPostsById(topicId, currentPage));
-			if (cursor.moveToFirst()) {
-				postsCursorAdapter.changeCursor(cursor);
-			} else {
-				showToast("Internal error");
-			}
-
-			// unlock page changing
-			pageIndicatorView.setEnabled(true);
+			updateUiData();
 		}
+	}
+
+	private void updateUiData() {
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getForumPostsById(topicId, currentPage));
+		if (cursor != null && cursor.moveToFirst()) {
+			postsCursorAdapter.changeCursor(cursor);
+		} else {
+			showToast("Internal error");
+		}
+
+		// unlock page changing
+		pageIndicatorView.setEnabled(true);
 	}
 
 	private void createPost() {

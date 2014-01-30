@@ -125,6 +125,7 @@
 			android:padding="1dip"
 			android:text="@string/analyze"
 			style="@style/Button.Glassy"
+			android:textColor="@color/new_author_dark_grey"
 			android:layout_marginRight="5dip" />
 
 		<!--Share-->

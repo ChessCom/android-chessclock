@@ -17,7 +17,6 @@ import com.chess.db.DbDataManager;
  */
 public class GameDailyFragmentTablet extends GameDailyFragment implements RadioGroup.OnCheckedChangeListener {
 
-
 	private RadioGroup topButtonsGroup;
 	private int previousCheckedId;
 	private View chatFragmentContainer;

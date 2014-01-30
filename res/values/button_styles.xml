@@ -85,14 +85,8 @@
 		<item name="btn_right">@color/grey_no_border_right_1</item>
 		<item name="btn_bottom">@color/grey_no_border_bottom_1</item>
 
-		<!--        <item name="btn_top_2">@color/grey_no_border_top_2</item>
-				<item name="btn_left_2">@color/grey_no_border_left_2</item>
-				<item name="btn_right_2">@color/grey_no_border_right_2</item>
-				<item name="btn_bottom_2">@color/grey_no_border_bottom_2</item>-->
-
 		<item name="btn_solid">@color/grey_no_border</item>
 
-		<!--<item name="android:minHeight">@dimen/grey_button_height</item>-->
 		<item name="android:minHeight">@dimen/main_button_height</item>
 	</style>
 

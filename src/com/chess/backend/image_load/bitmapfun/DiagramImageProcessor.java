@@ -100,13 +100,8 @@ public class DiagramImageProcessor extends ImageResizer {
 			Log.d(TAG, "processBitmap - " + data.getId());
 		}
 		Bitmap bitmapFromView;
-//		if (deviceCode == NEXUS_7) {
-//			// use inset to correct shadow shift
-//			bitmapFromView = getBitmapFromView(data.sourceView, mImageWidth, mImageHeight);
-//		} else {
-			// get bitmap from fragmentView
-			bitmapFromView = AppUtils.getBitmapFromView(data.sourceView, mImageWidth, mImageHeight);
-//		}
+		// get bitmap from fragmentView
+		bitmapFromView = AppUtils.getBitmapFromView(data.sourceView, mImageWidth, mImageHeight);
 
 		if (data.sourceView instanceof ChessBoardBaseView) {
 			((ChessBoardBaseView)data.sourceView).releaseBitmaps();

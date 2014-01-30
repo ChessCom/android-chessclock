@@ -89,6 +89,7 @@ public class ArticleCategoriesFragmentTablet extends ArticleCategoriesFragment {
 		} else {
 			if (parentFace == null) {
 				getActivityFace().showPreviousFragment();
+				return;
 			}
 			parentFace.changeFragment(ArticleDetailsFragment.createInstance(articleId));
 		}

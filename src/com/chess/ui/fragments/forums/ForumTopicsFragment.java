@@ -47,6 +47,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 	private PageIndicatorView pageIndicatorView;
 	private int pagesToShow;
 	private int currentPage;
+	protected ListView listView;
 
 	public ForumTopicsFragment() { }
 
@@ -93,8 +94,8 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.forums);
-		widgetsInit(view);
 
+		widgetsInit(view);
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_search_btn, true);
@@ -213,6 +214,13 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 
 			new SaveForumTopicsTask(saveForumTopicsListener, topics, getContentResolver(), categoriesMap, currentPage).executeTask();
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			updateUiData();
+		}
 	}
 
 	private class SaveForumTopicsListener extends ChessUpdateListener<ForumTopicItem.Topic> {
@@ -221,16 +229,20 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		public void updateData(ForumTopicItem.Topic returnedObj) {
 			super.updateData(returnedObj);
 
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getForumTopicByCategory(categoryId, currentPage));
-			if (cursor.moveToFirst()) {
-				topicsCursorAdapter.changeCursor(cursor);
-			} else {
-				showToast("Internal error");
-			}
-
-			// unlock page changing
-			pageIndicatorView.setEnabled(true);
+			updateUiData();
 		}
+	}
+
+	private void updateUiData() {
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getForumTopicByCategory(categoryId, currentPage));
+		if (cursor.moveToFirst()) {
+			topicsCursorAdapter.changeCursor(cursor);
+		} else {
+			showToast("Internal error");
+		}
+
+		// unlock page changing
+		pageIndicatorView.setEnabled(true);
 	}
 
 	private void widgetsInit(View view) {
@@ -238,7 +250,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_forum_header_view, null, false);
 		forumHeaderTxt = (TextView) headerView.findViewById(R.id.forumHeaderTxt);
 
-		ListView listView = (ListView) view.findViewById(R.id.listView);
+		listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
 		listView.setAdapter(topicsCursorAdapter);
 		listView.setOnItemClickListener(this);

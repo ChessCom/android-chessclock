@@ -32,18 +32,24 @@ public class ForumTopicsFragmentTablet extends ForumTopicsFragment {
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//		boolean headerAdded = listView.getHeaderViewsCount() > 0;
+		boolean headerAdded = listView.getHeaderViewsCount() > 0;
 //		int offset = headerAdded ? -1 : 0;
 
-		if (parentFace == null) {
-			getActivityFace().showPreviousFragment();
+		if (headerAdded && position == 0) {
+			return;
 		}
 
-		if (position != 0) { // if NOT listView header
-			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			int topicId = DbDataManager.getInt(cursor, DbScheme.V_ID);
 
-			parentFace.changeFragment(ForumPostsFragment.createInstance(topicId));
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		int topicId = DbDataManager.getInt(cursor, DbScheme.V_ID);
+		if (inPortrait()) {
+			getActivityFace().openFragment(ForumPostsFragment.createInstance(topicId));
+		} else {
+			if (parentFace == null) {
+				getActivityFace().showPreviousFragment();
+			} else {
+				parentFace.changeFragment(ForumPostsFragment.createInstance(topicId));
+			}
 		}
 	}
 

@@ -28,7 +28,6 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
-import com.chess.model.GameOnlineItem;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
@@ -358,11 +357,8 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
-			if (itemCode == GameOnlineItem.CURRENT_TYPE || itemCode == GameOnlineItem.CHALLENGES_TYPE
-					|| itemCode == GameOnlineItem.FINISHED_TYPE) {
-				if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
-					loadDbGames();
-				}
+			if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
+				loadDbGames();
 			}
 		}
 	}

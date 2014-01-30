@@ -24,7 +24,6 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.backend.tasks.SaveImageToSdTask;
 import com.chess.db.DbDataManager;
 import com.chess.statics.AppData;
-import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.ChessBoard;
@@ -108,9 +107,7 @@ public class GetAndSaveTheme extends Service {
 	public void onCreate() {
 		super.onCreate();
 
-		if (StaticData.USE_TABLETS) {
-			isTablet = AppUtils.is7InchTablet(this) || AppUtils.is10InchTablet(this);
-		}
+		isTablet = AppUtils.isTablet(this);
 
 		themesQueue = new HashMap<ThemeItem.Data, ThemeState>();
 		appData = new AppData(this);

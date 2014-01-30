@@ -274,11 +274,7 @@ public class AppUtils {
 	}
 
 	public static boolean isTablet(Context context) {
-		boolean isTablet;
-		if (StaticData.USE_TABLETS) {
-			isTablet = AppUtils.is7InchTablet(context) || AppUtils.is10InchTablet(context);
-		}
-		return isTablet;
+		return is7InchTablet(context) || is10InchTablet(context);
 	}
 
 	public static boolean is7InchTablet(Context context) {

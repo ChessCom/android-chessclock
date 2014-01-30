@@ -29,11 +29,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
-import com.chess.db.tasks.LoadDataFromDbTask;
-import com.chess.model.BaseGameItem;
-import com.chess.model.DataHolder;
-import com.chess.model.PgnItem;
-import com.chess.model.PopupItem;
+import com.chess.model.*;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
@@ -59,7 +55,9 @@ import com.chess.utilities.AppUtils;
 import com.chess.utilities.MopubHelper;
 import com.chess.widgets.ProfileImageView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -95,8 +93,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	private GameStateUpdateListener gameStateUpdateListener;
 	private GameDailyUpdatesListener submitMoveUpdateListener;
 	private GameDailyUpdatesListener createChallengeUpdateListener;
-	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
 
+	private ArrayList<Long> loadedNextGameIds;
+	private HashMap<Long, Boolean> viewedGamesMap;
 	protected DailyCurrentGameData currentGame;
 
 	private IntentFilter boardUpdateFilter;
@@ -114,6 +113,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	private NotationFace notationsFace;
 	private boolean forceUpdate;
 	private int dailyRating;
+	private boolean skipPreviousGames;
 
 	public GameDailyFragment() {
 	}
@@ -163,6 +163,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		if (TextUtils.isEmpty(username)) {
 			username = getUsername();
 		}
+
 		init();
 	}
 
@@ -299,44 +300,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		// clear badge
 		DbDataManager.deletePlayMoveNotification(getContentResolver(), username, gameId);
 		updateNotificationBadges();
-	}
-
-	private class LoadFromDbUpdateListener extends ChessUpdateListener<Cursor> {
-
-		@Override
-		public void updateData(Cursor cursor) {
-			super.updateData(cursor);
-
-			// iterate through all loaded items in cursor
-			do {
-				// check if it's user's move in this game
-				long localDbGameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
-				boolean isMyTurn = DbDataManager.getInt(cursor, DbScheme.V_IS_MY_TURN) > 0;
-				if (localDbGameId != gameId && isMyTurn) {
-					gameId = localDbGameId;
-
-					showSubmitButtonsLay(false);
-					boardView.setGameFace(GameDailyFragment.this);
-
-					getBoardFace().setAnalysis(false);
-
-					loadGameAndUpdate();
-
-					cursor.close();
-					return;
-				}
-			} while (cursor.moveToNext());
-			cursor.close();
-
-			getActivityFace().showPreviousFragment();
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-
-			getActivityFace().showPreviousFragment();
-		}
 	}
 
 	protected void updateGameState(long gameId) {
@@ -636,8 +599,47 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	}
 
 	private void loadNextMyTurnGame() {
-		new LoadDataFromDbTask(currentGamesCursorUpdateListener, DbHelper.getDailyCurrentMyListGames(username),
-				getContentResolver()).executeTask();
+		if (loadedNextGameIds.size() == 0) {
+			// if we didn't load yet, then load from DB
+
+			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getDailyCurrentMyListGames(username));
+			if (cursor.moveToFirst()) {
+				// iterate through all loaded items in cursor, but load after current game if it wasn't loaded
+				do {
+					long localDbGameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+					loadedNextGameIds.add(localDbGameId);
+				} while (cursor.moveToNext());
+				cursor.close();
+			}
+		}
+
+		for (Long nextGameId : loadedNextGameIds) {
+			// iterate until we find current game
+			if (nextGameId != gameId && skipPreviousGames) {
+				continue;
+			} else {
+				skipPreviousGames = false;
+			}
+
+			if (nextGameId != gameId) {
+				if (viewedGamesMap.containsKey(nextGameId)) {
+					continue;
+				}
+				// mark this one as viewed
+				viewedGamesMap.put(nextGameId, true);
+
+				gameId = nextGameId;
+
+				showSubmitButtonsLay(false);
+				boardView.setGameFace(GameDailyFragment.this);
+
+				getBoardFace().setAnalysis(false);
+
+				loadGameAndUpdate();
+				return;
+			}
+		}
+		getActivityFace().showPreviousFragment();
 	}
 
 	@Override
@@ -896,7 +898,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 
 	@Override
 	protected void restoreGame() {
-//		ChessBoardOnline.resetInstance();
 		boardView.setGameFace(this);
 
 		adjustBoardForGame();
@@ -909,6 +910,17 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		if (view.getId() == R.id.newGamePopupBtn) {
 			dismissEndGameDialog();
 			getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
+		} else if (view.getId() == R.id.sharePopupBtn) {
+			GameDailyItem gameDailyItem = new GameDailyItem();
+			gameDailyItem.setWhiteUsername(getWhitePlayerName());
+			gameDailyItem.setBlackUsername(getBlackPlayerName());
+			ShareItem shareItem = new ShareItem(gameDailyItem, gameId, getString(R.string.chess));
+
+			Intent shareIntent = new Intent(Intent.ACTION_SEND);
+			shareIntent.setType("text/plain");
+			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
+			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
+			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
 			dismissEndGameDialog();
@@ -1045,6 +1057,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 
 
 	public void init() {
+		viewedGamesMap = new HashMap<Long, Boolean>();
+		loadedNextGameIds = new ArrayList<Long>();
+		skipPreviousGames = true;
+
 		gameId = getArguments().getLong(BaseGameItem.GAME_ID, 0);
 
 		boardUpdateFilter = new IntentFilter(IntentConstants.BOARD_UPDATE);
@@ -1058,8 +1074,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		gameStateUpdateListener = new GameStateUpdateListener();
 		submitMoveUpdateListener = new GameDailyUpdatesListener(SEND_MOVE_UPDATE);
 		createChallengeUpdateListener = new GameDailyUpdatesListener(CREATE_CHALLENGE_UPDATE);
-
-		currentGamesCursorUpdateListener = new LoadFromDbUpdateListener();
 
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);

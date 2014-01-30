@@ -19,9 +19,12 @@ import com.chess.utilities.AppUtils;
  */
 public class VideoActivity extends Activity implements View.OnFocusChangeListener, View.OnTouchListener {
 
-	public static final String SEEK_POSITION = "pos";
+	public static final String SEEK_POSITION = "seek_position";
+
 	private VideoView videoView;
 	private MediaController mediaController;
+	private boolean stopPlay;
+	private int seekPosition;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,24 +46,17 @@ public class VideoActivity extends Activity implements View.OnFocusChangeListene
 		videoView.setOnFocusChangeListener(this);
 		videoView.setOnTouchListener(this);
 
-		int pos = 0;
 		if (savedInstanceState != null) {
-			pos = savedInstanceState.getInt(SEEK_POSITION);
+			seekPosition = savedInstanceState.getInt(SEEK_POSITION);
 		}
-
-		playVideoFromPos(pos);
-	}
-
-	private void playVideoFromPos(int pos) {
-		videoView.seekTo(pos);
-		videoView.start();
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if (videoView.isPlaying()) {
-			outState.putInt(SEEK_POSITION, videoView.getCurrentPosition());
+	protected void onResume() {
+		super.onResume();
+
+		if (!stopPlay) {
+			playVideoFromPos(seekPosition);
 		}
 	}
 
@@ -68,8 +64,24 @@ public class VideoActivity extends Activity implements View.OnFocusChangeListene
 	protected void onPause() {
 		super.onPause();
 
-		videoView.getCurrentPosition();
+		seekPosition = videoView.getCurrentPosition();
 
+		videoView.pause();
+		stopPlay = true;
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(SEEK_POSITION, seekPosition);
+	}
+
+	private void playVideoFromPos(int pos) {
+		if (pos != 0) {
+			pos -= 200; // we rewind a little back (2sec)
+		}
+		videoView.seekTo(pos);
+		videoView.start();
 	}
 
 	private void hideStatusBar() {
@@ -81,7 +93,6 @@ public class VideoActivity extends Activity implements View.OnFocusChangeListene
 			videoView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 		}
 	}
-
 
 	@Override
 	public void onFocusChange(View v, boolean hasFocus) {

@@ -619,6 +619,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 				textView.setTextColor(textColor);
 				textView.setPadding(paddingSide, 0, paddingSide, 0);
 				textView.setFont(FontsHelper.BOLD_FONT);
+				textView.setGravity(Gravity.CENTER);
 
 				container.addView(textView, textLayoutParams);
 				holder.playersTxt = textView;

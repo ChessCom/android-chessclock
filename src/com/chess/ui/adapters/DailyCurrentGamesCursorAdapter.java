@@ -52,7 +52,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		greyColor = resources.getColor(R.color.grey_button_flat);
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 
-		sevenInchTablet = AppUtils.is7InchTablet(context);
+		sevenInchTablet = AppUtils.isTablet(context);
 
 		showMiniBoards = new AppData(context).isMiniBoardsEnabled();
 	}

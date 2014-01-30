@@ -178,9 +178,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		handler = new Handler();
 		setHasOptionsMenu(true);
-		if (StaticData.USE_TABLETS) {
-			isTablet = AppUtils.is7InchTablet(activity) || AppUtils.is10InchTablet(activity);
-		}
+		isTablet = AppUtils.isTablet(activity);
 
 		density = getResources().getDisplayMetrics().density;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;

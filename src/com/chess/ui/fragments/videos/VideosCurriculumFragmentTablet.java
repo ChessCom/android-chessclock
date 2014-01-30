@@ -98,6 +98,13 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 		setTitlePadding(ONE_ICON);
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		verifyAndSaveViewedState();
+	}
+
 	private void showLibrary() {
 		// get viewed marks here after we return to this from details fragment
 		Cursor cursor = DbDataManager.getVideoViewedCursor(getActivity(), getUsername());
@@ -196,15 +203,6 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 			getActivityFace().openFragment(VideoDetailsFragment.createInstance(videoId));
 		} else {
 			parentFace.changeFragment(VideoDetailsFragment.createInstance(videoId));
-		}
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == WATCH_VIDEO_REQUEST) {
-
-			verifyAndSaveViewedState();
 		}
 	}
 

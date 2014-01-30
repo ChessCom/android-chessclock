@@ -422,12 +422,10 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 		private final String gameLink;
 		private BaseGameItem currentGame;
-		private long gameId;
 		private String gameType;
 
 		public ShareItem(BaseGameItem currentGame, long gameId, String gameType) {
 			this.currentGame = currentGame;
-			this.gameId = gameId;
 			this.gameType = gameType;
 			if (gameType.equals(getString(R.string.live))) {
 				gameLink = RestHelper.getInstance().getLiveGameLink(gameId);

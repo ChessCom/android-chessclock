@@ -92,7 +92,7 @@
 		android:id="@+id/bodyTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/photoImg"
+		android:layout_below="@id/dateTxt"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingTop="15dip"
 		style="@style/Content" />

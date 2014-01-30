@@ -153,6 +153,13 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		setTitlePadding(ONE_ICON);
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		verifyAndSaveViewedState();
+	}
+
 	private void showLibrary() {
 		boolean show = !curriculumMode;
 		listView.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -302,15 +309,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 			getAppData().setUserChooseVideoLibrary(false);
 			curriculumMode = true;
 			showLibrary();
-		}
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == WATCH_VIDEO_REQUEST) {
-
-			verifyAndSaveViewedState();
 		}
 	}
 

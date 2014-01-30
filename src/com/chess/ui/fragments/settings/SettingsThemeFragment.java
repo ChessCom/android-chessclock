@@ -392,9 +392,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			serviceBounded = true;
 
 			serviceBinder = (GetAndSaveTheme.ServiceBinder) iBinder;
-//			if (serviceBinder.getService().isInstallingTheme()) {
-//				isInstallingTheme = true;
-//			}
 
 			serviceBinder.getService().setProgressUpdateListener(progressUpdateListener);
 			if (needToLoadThemeAfterConnected) {

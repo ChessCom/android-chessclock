@@ -184,9 +184,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 			boardFace.setChess960(false);
 		}
 
-//		if (TextUtils.isEmpty(analysisItem.getMovesList())) {  // don't parse FEN if we have movesList
-			boardFace.setupBoard(analysisItem.getFen()); // we better don't parse move than load incorrect fen
-//		}
+		boardFace.setupBoard(analysisItem.getFen()); // we better don't parse move than load incorrect fen
 
 		boardFace.setReside(!userPlayWhite);
 

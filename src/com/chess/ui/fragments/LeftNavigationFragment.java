@@ -146,10 +146,15 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		if (position == previousPosition) { // don't add the same fragment
-			getActivityFace().toggleLeftMenu();
-			return;
-		}
+		// Comment out until invent correct logic of collapsing fragments by category.
+		// For example Articles -> ArticlesCategories -> ArticlesDetails.
+		// Tapping on Articles should open home articles fragment(ArticlesFragment)
+
+//		if (position == previousPosition) { // don't add the same fragment
+//			getActivityFace().toggleLeftMenu();
+//			return;
+//		}
+
 		previousPosition = position;
 
 		// update selected state flag

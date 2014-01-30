@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 import com.chess.backend.entity.api.ForumPostItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.AbstractUpdateTask;
@@ -57,10 +56,6 @@ public class SaveForumPostsTask extends AbstractUpdateTask<ForumPostItem.Post, L
 
 			ContentValues values = new ContentValues();
 
-			Log.d("TEST", "__________________________________________________________________________");
-			Log.d("TEST", "DESCRIPTION = " +  currentItem.getBody());
-			Log.d("TEST", "save currentPage = " + currentPage + " topicId = " + topicId
-					+ " getCreateDate = " + currentItem.getCreateDate() + " user = " + currentItem.getUsername());
 			values.put(V_DESCRIPTION, currentItem.getBody());
 			values.put(V_ID, currentItem.getTopicId());
 			values.put(V_CREATE_DATE, currentItem.getCreateDate());

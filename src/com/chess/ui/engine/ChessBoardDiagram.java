@@ -49,9 +49,22 @@ public class ChessBoardDiagram extends ChessBoard implements PuzzlesBoardFace {
 	@Override
 	public boolean isLastPuzzleMoveCorrect() {
 		int lastIndex = ply - 1;
+		String lastUserMove = getLastMoveSAN();
+		if (lastUserMove == null) {
+			return false;
+		}
 
-		Move lastUsersMove = convertMoveAlgebraic(getLastMoveSAN());
-		Move tacticMove = convertMoveAlgebraic(puzzleMoves[lastIndex]);
-		return lastUsersMove != null && tacticMove != null && lastUsersMove.equals(tacticMove);
+		// take back so the board parsing logic will understand that we converting previous move
+		takeBack();
+		Move userLastMove = convertMoveAlgebraic(lastUserMove);
+		Move validMove = convertMoveAlgebraic(puzzleMoves[lastIndex]);
+
+		if (userLastMove == null || validMove == null) {
+			return false;
+		}
+		// step forward to the normal, current state
+		takeNext(false);
+
+		return userLastMove.equals(validMove);
 	}
 }

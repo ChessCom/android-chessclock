@@ -79,7 +79,6 @@ public class ChessBoard implements BoardFace {
 	protected final MovesParser movesParser;
 
 
-
 	static final int CAPTURE_PIECE_SCORE = 1000000;
 
 	public final static int HIST_STACK = 2000;
@@ -113,8 +112,8 @@ public class ChessBoard implements BoardFace {
 	protected HistoryData[] histDat = new HistoryData[HIST_STACK];
 	private HistoryData hintHistoryData;
 
-	public static final String[] whitePieceImageCodes = new String[]{"wp","wn","wb","wr","wq","wk"};
-	public static final String[] blackPieceImageCodes = new String[]{"bp","bn","bb","br","bq","bk"};
+	public static final String[] whitePieceImageCodes = new String[]{"wp", "wn", "wb", "wr", "wq", "wk"};
+	public static final String[] blackPieceImageCodes = new String[]{"bp", "bn", "bb", "br", "bq", "bk"};
 
 	public static enum Board {
 		A8, B8, C8, D8, E8, F8, G8, H8,
@@ -162,18 +161,18 @@ public class ChessBoard implements BoardFace {
 	};
 
 	final char pieceChars[] = {'P', 'N', 'B', 'R', 'Q', 'K'};
-									 // PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING
+	// PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING
 	private boolean possibleToSlide[] = {false, false, true, true, true, false};
-	                      // PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING
+	// PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING
 	private int piecesMovesWays[] = {0, 8, 4, 4, 8, 8}; // 8 means all around(8 ways to move), 4 is only four ways to move
 
 	private int piecesOffsets[][] = {
-			{ 0,   0,   0,   0,  0,  0,  0,  0}, // PAWN
-			{-21, -19, -12, -8,  8, 12, 19, 21}, // KNIGHT
-			{-11, -9,   9,  11,  0,  0,  0,  0}, // BISHOP
-			{-10, -1,   1,  10,  0,  0,  0,  0}, // ROOK
-			{-11, -10, -9,  -1,  1,  9, 10, 11}, // QUEEN
-			{-11, -10, -9,  -1,  1,  9, 10, 11}  // KING
+			{0, 0, 0, 0, 0, 0, 0, 0}, // PAWN
+			{-21, -19, -12, -8, 8, 12, 19, 21}, // KNIGHT
+			{-11, -9, 9, 11, 0, 0, 0, 0}, // BISHOP
+			{-10, -1, 1, 10, 0, 0, 0, 0}, // ROOK
+			{-11, -10, -9, -1, 1, 9, 10, 11}, // QUEEN
+			{-11, -10, -9, -1, 1, 9, 10, 11}  // KING
 	};
 
 	int extendedBoard[] = {
@@ -726,7 +725,7 @@ public class ChessBoard implements BoardFace {
 
 		Move newMove = new Move(from, to, 0, bits);
 
-		if (colors[to] != EMPTY) {
+		if (colors[to] != EMPTY) { // TODO investigate it... for castling we can't add score
 			newMove.setScore(CAPTURE_PIECE_SCORE + (pieces[to] * 10) - pieces[from]);
 		} else {
 			newMove.setScore(history[from][to]);
@@ -750,6 +749,7 @@ public class ChessBoard implements BoardFace {
 	/**
 	 * Sometimes we have FEN that already contains made move,
 	 * and that move can not be parsed, so we return null here
+	 *
 	 * @param move to make
 	 * @return either move that was made, or null if move wasn't recognized
 	 */
@@ -971,9 +971,8 @@ public class ChessBoard implements BoardFace {
 			minMove = move.from;
 		}
 
-		int i = 0;
-		while (i < blackKingMoveOO.length) { // check black King moves
-			if (blackKingMoveOO[i] == move.to) {
+		for (int kingMove : blackKingMoveOO) { // check black King moves
+			if (kingMove == move.to) {
 				castleMaskPosition = BLACK_KINGSIDE_CASTLE;
 				kingToRookDistance = Math.abs(move.from - blackRook2);
 				minMove = blackRook2;
@@ -982,11 +981,10 @@ public class ChessBoard implements BoardFace {
 				}
 				break;
 			}
-			i++;
 		}
-		i = 0;
-		while (i < blackKingMoveOOO.length) {
-			if (blackKingMoveOOO[i] == move.to) {
+
+		for (int kingMove : blackKingMoveOOO) {
+			if (kingMove == move.to) {
 				castleMaskPosition = BLACK_QUEENSIDE_CASTLE;
 				kingToRookDistance = Math.abs(move.from - blackRook1);
 				minMove = blackRook1;
@@ -995,59 +993,72 @@ public class ChessBoard implements BoardFace {
 				}
 				break;
 			}
-			i++;
 		}
-		i = 0;
-		while (i < whiteKingMoveOO.length) {
-			if (whiteKingMoveOO[i] == move.to) {
+
+		for (int kingMove : whiteKingMoveOO) {
+			if (kingMove == move.to) {
 				castleMaskPosition = WHITE_KINGSIDE_CASTLE;
 				kingToRookDistance = Math.abs(move.from - whiteRook2);
 				minMove = whiteRook2;
-				if (move.from < whiteRook2)
+				if (move.from < whiteRook2) {
 					minMove = move.from;
+				}
 				break;
 			}
-			i++;
 		}
-		i = 0;
-		while (i < whiteKingMoveOOO.length) {
-			if (whiteKingMoveOOO[i] == move.to) {
+
+		for (int kingMove : whiteKingMoveOOO) {
+			if (kingMove == move.to) {
 				castleMaskPosition = WHITE_QUEENSIDE_CASTLE;
 				kingToRookDistance = Math.abs(move.from - whiteRook1);
 				minMove = whiteRook1;
-				if (move.from < whiteRook1)
+				if (move.from < whiteRook1) {
 					minMove = move.from;
+				}
 				break;
 			}
-			i++;
 		}
 
 		if (castleMaskPosition != NOT_SET && castlingWasMadeForPosition[castleMaskPosition]) {
 			return false;
 		}
 
+		/*
+			Requirements for castling :
+			1. The king and the chosen rook are on the player's first rank.[3]
+			2. Neither the king nor the chosen rook have previously moved.
+			3. There are no pieces between the king and the chosen rook.
+			4. The king is not currently in check.
+			5. The king does not pass through a square that is attacked by an enemy piece.[4]
+			6. The king does not end up in check. (True of any legal move.)
+		 */
+
+		// this are final positions that pieces should have after castling:  g1f1, c1d1, g8f8, c8d8
+		int kingTo;
+		int rookTo;
+
 		int kingDistance;
+		int minimalSquare;
 		if (castleMaskPosition == WHITE_KINGSIDE_CASTLE) {
-			kingDistance = Math.abs(whiteKing - Board.G1.ordinal());
-			int minimalSquare = Math.min(whiteKing, Board.G1.ordinal());
-			for (int j = 0; j <= kingDistance; j++) {
-				if (isUnderAttack(minimalSquare + j, oppositeSide)) {
-					return false;
-				}
+			kingTo = Board.G1.ordinal();
+			rookTo = Board.F1.ordinal();
+
+			kingDistance = Math.abs(whiteKing - kingTo);
+			minimalSquare = Math.min(whiteKing, kingTo);
+			if (checkIfGoesThroughAttackedSquare(kingDistance, minimalSquare)) {
+				return false;
 			}
 
-			if (colors[Board.F1.ordinal()] != EMPTY && pieces[Board.F1.ordinal()] != KING
-					&& pieces[Board.F1.ordinal()] != ROOK) {
+			if (colors[rookTo] != EMPTY && pieces[rookTo] != KING && pieces[rookTo] != ROOK) {
 				return false;
 			}
-			if (colors[Board.G1.ordinal()] != EMPTY && pieces[Board.G1.ordinal()] != KING
-					&& pieces[Board.G1.ordinal()] != ROOK) {
+			if (colors[kingTo] != EMPTY && pieces[kingTo] != KING && pieces[kingTo] != ROOK) {
 				return false;
 			}
-			if (pieces[Board.F1.ordinal()] == ROOK && Board.F1.ordinal() != whiteRook2) {
+			if (pieces[rookTo] == ROOK && rookTo != whiteRook2) {
 				return false;
 			}
-			if (pieces[Board.G1.ordinal()] == ROOK && Board.G1.ordinal() != whiteRook2) {
+			if (pieces[kingTo] == ROOK && kingTo != whiteRook2) {
 				return false;
 			}
 
@@ -1062,29 +1073,27 @@ public class ChessBoard implements BoardFace {
 			}
 
 			from = whiteRook2;
-			to = Board.F1.ordinal();
+			to = rookTo;
 		} else if (castleMaskPosition == WHITE_QUEENSIDE_CASTLE) {
+			kingTo = Board.C1.ordinal();
+			rookTo = Board.D1.ordinal();
 
-			kingDistance = Math.abs(whiteKing - Board.C1.ordinal());
-			int minimalSquare = Math.min(whiteKing, Board.C1.ordinal());
-			for (int j = 0; j <= kingDistance; j++) {
-				if (isUnderAttack(minimalSquare + j, oppositeSide)) {
-					return false;
-				}
+			kingDistance = Math.abs(whiteKing - kingTo);
+			minimalSquare = Math.min(whiteKing, kingTo);
+			if (checkIfGoesThroughAttackedSquare(kingDistance, minimalSquare)) {
+				return false;
 			}
 
-			if (colors[Board.C1.ordinal()] != EMPTY && pieces[Board.C1.ordinal()] != KING
-					&& pieces[Board.C1.ordinal()] != ROOK) {
+			if (colors[kingTo] != EMPTY && pieces[kingTo] != KING && pieces[kingTo] != ROOK) {
 				return false;
 			}
-			if (colors[Board.D1.ordinal()] != EMPTY && pieces[Board.D1.ordinal()] != KING
-					&& pieces[Board.D1.ordinal()] != ROOK) {
+			if (colors[rookTo] != EMPTY && pieces[rookTo] != KING && pieces[rookTo] != ROOK) {
 				return false;
 			}
-			if (pieces[Board.C1.ordinal()] == ROOK && Board.C1.ordinal() != whiteRook1) {
+			if (pieces[kingTo] == ROOK && kingTo != whiteRook1) {
 				return false;
 			}
-			if (pieces[Board.D1.ordinal()] == ROOK && Board.D1.ordinal() != whiteRook1) {
+			if (pieces[rookTo] == ROOK && rookTo != whiteRook1) {
 				return false;
 			}
 
@@ -1099,29 +1108,27 @@ public class ChessBoard implements BoardFace {
 			}
 
 			from = whiteRook1;
-			to = Board.D1.ordinal();
+			to = rookTo;
 		} else if (castleMaskPosition == BLACK_QUEENSIDE_CASTLE) {
+			kingTo = Board.C8.ordinal();
+			rookTo = Board.D8.ordinal();
 
-			kingDistance = Math.abs(blackKing - Board.C8.ordinal());
-			int minimalSquare = Math.min(blackKing, Board.C8.ordinal());
-			for (int j = 0; j <= kingDistance; j++) {
-				if (isUnderAttack(minimalSquare + j, oppositeSide)) {
-					return false;
-				}
+			kingDistance = Math.abs(blackKing - kingTo);
+			minimalSquare = Math.min(blackKing, kingTo);
+			if (checkIfGoesThroughAttackedSquare(kingDistance, minimalSquare)) {
+				return false;
 			}
 
-			if (colors[Board.C8.ordinal()] != EMPTY && pieces[Board.C8.ordinal()] != KING
-					&& pieces[Board.C8.ordinal()] != ROOK) {
+			if (colors[kingTo] != EMPTY && pieces[kingTo] != KING && pieces[kingTo] != ROOK) {
 				return false;
 			}
-			if (colors[Board.D8.ordinal()] != EMPTY && pieces[Board.D8.ordinal()] != KING
-					&& pieces[Board.D8.ordinal()] != ROOK) {
+			if (colors[rookTo] != EMPTY && pieces[rookTo] != KING && pieces[rookTo] != ROOK) {
 				return false;
 			}
-			if (pieces[Board.C8.ordinal()] == ROOK && Board.C8.ordinal() != blackRook1) {
+			if (pieces[kingTo] == ROOK && kingTo != blackRook1) {
 				return false;
 			}
-			if (pieces[Board.D8.ordinal()] == ROOK && Board.D8.ordinal() != blackRook1) {
+			if (pieces[rookTo] == ROOK && rookTo != blackRook1) {
 				return false;
 			}
 
@@ -1136,27 +1143,27 @@ public class ChessBoard implements BoardFace {
 			}
 
 			from = blackRook1;
-			to = Board.D8.ordinal();
+			to = rookTo;
 		} else if (castleMaskPosition == BLACK_KINGSIDE_CASTLE) {
+			kingTo = Board.G8.ordinal();
+			rookTo = Board.F8.ordinal();
 
-			kingDistance = Math.abs(blackKing - Board.G8.ordinal());
-			int minimalSquare = Math.min(blackKing, Board.G8.ordinal());
-			for (int j = 0; j <= kingDistance; j++) {
-				if (isUnderAttack(minimalSquare + j, oppositeSide)) {
-					return false;
-				}
+			kingDistance = Math.abs(blackKing - kingTo);
+			minimalSquare = Math.min(blackKing, kingTo);
+			if (checkIfGoesThroughAttackedSquare(kingDistance, minimalSquare)) {
+				return false;
 			}
 
-			if (colors[Board.F8.ordinal()] != EMPTY && pieces[Board.F8.ordinal()] != KING && pieces[Board.F8.ordinal()] != ROOK) {
+			if (colors[rookTo] != EMPTY && pieces[rookTo] != KING && pieces[rookTo] != ROOK) {
 				return false;
 			}
-			if (colors[Board.G8.ordinal()] != EMPTY && pieces[Board.G8.ordinal()] != KING && pieces[Board.G8.ordinal()] != ROOK) {
+			if (colors[kingTo] != EMPTY && pieces[kingTo] != KING && pieces[kingTo] != ROOK) {
 				return false;
 			}
-			if (pieces[Board.F8.ordinal()] == ROOK && blackRook2 != Board.F8.ordinal()) {
+			if (pieces[rookTo] == ROOK && blackRook2 != rookTo) {
 				return false;
 			}
-			if (pieces[Board.G8.ordinal()] == ROOK && blackRook2 != Board.G8.ordinal()) {
+			if (pieces[kingTo] == ROOK && blackRook2 != kingTo) {
 				return false;
 			}
 
@@ -1171,7 +1178,7 @@ public class ChessBoard implements BoardFace {
 			}
 
 			from = blackRook2;
-			to = Board.F8.ordinal();
+			to = rookTo;
 		}
 
 		if (to == NOT_SET || from == NOT_SET) { // TODO investigate real problem
@@ -1249,6 +1256,15 @@ public class ChessBoard implements BoardFace {
 		}
 
 		return true;
+	}
+
+	private boolean checkIfGoesThroughAttackedSquare(int kingDistance, int minimalSquare) {
+		for (int j = 0; j <= kingDistance; j++) {
+			if (isUnderAttack(minimalSquare + j, oppositeSide)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -1339,7 +1355,7 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public void restoreBoardAfterHint() {
-        histDat[ply] = hintHistoryData;
+		histDat[ply] = hintHistoryData;
 	}
 
 	/**
@@ -1725,7 +1741,7 @@ public class ChessBoard implements BoardFace {
 //		if (move.isCastling()) { // O-O and O-O-O  // TODO uncomment when server fix IllegalMove even for O-O
 //			return output;
 //		} else {
-			return output.toLowerCase(); // need to be lowercase
+		return output.toLowerCase(); // need to be lowercase
 //		}
 	}
 
@@ -2155,7 +2171,7 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public HashMap<String, String> getCommentsFromMovesList(String movesList){
+	public HashMap<String, String> getCommentsFromMovesList(String movesList) {
 		return movesParser.getCommentsFromMovesList(movesList);
 	}
 

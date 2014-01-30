@@ -1032,8 +1032,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			boolean found = false;
 			Move move = null;
 			List<Move> moves = boardFace.generateLegalMoves();
-			for (Move move1 : moves) { // search for move that was made
-				move = move1;
+			for (Move possibleMove : moves) { // search for move that was made
+				move = possibleMove;
 				if (move.from == from && move.to == to) {
 					found = true;
 					break;
@@ -1319,9 +1319,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 
 		// update squareSize to match board properties and draw highlights correctly
-//		if (!AppUtils.is10InchTablet(context)) {
 		squareSize = bitmapSize / 2f;
-//		}
 
 //		Log.d("TEST", " squareSize = " + squareSize);
 

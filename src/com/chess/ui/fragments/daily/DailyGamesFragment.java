@@ -27,7 +27,6 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyFinishedGamesListTask;
-import com.chess.model.GameOnlineItem;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.CustomSectionedAdapter;
@@ -411,11 +410,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
-			if (itemCode == GameOnlineItem.CURRENT_TYPE || itemCode == GameOnlineItem.CHALLENGES_TYPE
-					|| itemCode == GameOnlineItem.FINISHED_TYPE) {
-				if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
-					loadDbGames();
-				}
+			if (resultCode == StaticData.NO_NETWORK || resultCode == StaticData.UNKNOWN_ERROR) {
+				loadDbGames();
 			}
 		}
 	}
@@ -547,35 +543,35 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		// restore position
 		cursor.moveToFirst();
 
-		int currentGamesCnt = cursor.getCount();
-
+//		int currentGamesCnt = cursor.getCount();
+		// TODO reuse for "What's New?" message . We decided to not use new game banner
 		// if user have more than 5 active games, do not show 1/2 size board, only new game button at bottom
-		if (currentGamesCnt < MIN_GAMES_TO_SHOW_BANNER) {
-			if (HONEYCOMB_PLUS_API) {
-				if (myTurnInDailyGames) {
-					listView.removeHeaderView(newGameHeaderView);
-				} else {
-					listView.removeHeaderView(newGameHeaderView);
-					listView.setAdapter(null);
-					listView.addHeaderView(newGameHeaderView);
-					listView.setAdapter(sectionedAdapter);
-				}
-			} else {  // for preHC we can't fix bug when we need to add header after setAdapter was called.
-				if (myTurnInDailyGames) {
-					startNewGameBtn.setVisibility(View.GONE);
-				} else {
-					startNewGameBtn.setVisibility(View.VISIBLE);
-				}
-			}
-		} else {
+//		if (currentGamesCnt < MIN_GAMES_TO_SHOW_BANNER) {
+//			if (HONEYCOMB_PLUS_API) {
+//				if (myTurnInDailyGames) {
+//					listView.removeHeaderView(newGameHeaderView);
+//				} else {
+//					listView.removeHeaderView(newGameHeaderView);
+//					listView.setAdapter(null);
+//					listView.addHeaderView(newGameHeaderView);
+//					listView.setAdapter(sectionedAdapter);
+//				}
+//			} else {  // for preHC we can't fix bug when we need to add header after setAdapter was called.
+//				if (myTurnInDailyGames) {
+//					startNewGameBtn.setVisibility(View.GONE);
+//				} else {
+//					startNewGameBtn.setVisibility(View.VISIBLE);
+//				}
+//			}
+//		} else {
 			if (myTurnInDailyGames) {
 				startNewGameBtn.setVisibility(View.GONE);
 			} else {
 				startNewGameBtn.setVisibility(View.VISIBLE);
 			}
-		}
+//		}
 
-		listView.invalidate();
+//		listView.invalidate();
 
 		currentGamesMyCursorAdapter.changeCursor(cursor);
 
@@ -785,6 +781,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		listView.setAdapter(sectionedAdapter);
 
 		initUpgradeAndAdWidgets(view);
+
+		if (!isNeedToUpgrade()) {// we need to bind to bottom if there is no ad banner
+			((RelativeLayout.LayoutParams) startNewGameBtn.getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		}
 	}
 
 	private void showEmptyView(boolean show) {

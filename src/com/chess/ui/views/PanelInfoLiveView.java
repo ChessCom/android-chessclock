@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.chess.R;
-import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -128,10 +127,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		int paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
 		int paddingRight = (int) (8 * density);
 
-		boolean isTablet;
-		if (StaticData.USE_TABLETS) {
-			isTablet = AppUtils.is7InchTablet(getContext()) || AppUtils.is10InchTablet(getContext());
-		}
+		boolean isTablet = AppUtils.isTablet(getContext()) ;
 		if (!isTablet) {
 			setPadding(0, 0, paddingRight, 0);
 		}

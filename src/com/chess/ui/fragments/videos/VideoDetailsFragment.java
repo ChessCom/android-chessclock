@@ -214,16 +214,6 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == WATCH_VIDEO_REQUEST) {
-
-			CommonViewedItem item = new CommonViewedItem(currentPlayingId, getUsername());
-			DbDataManager.saveVideoViewedState(getContentResolver(), item);
-		}
-	}
-
-	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
@@ -362,6 +352,10 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 			fullScrBtn.setVisibility(View.VISIBLE);
 			videoView.setVisibility(View.VISIBLE);
 			videoView.start();
+
+			// mark as watched
+			CommonViewedItem item = new CommonViewedItem(currentPlayingId, getUsername());
+			DbDataManager.saveVideoViewedState(getContentResolver(), item);
 		}
 	}
 

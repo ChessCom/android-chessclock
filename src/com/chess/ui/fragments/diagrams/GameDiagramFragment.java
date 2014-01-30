@@ -493,14 +493,13 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 				getControlsView().showPuzzle();
 				getNotationsView().setVisibility(View.GONE);
 				boardFace.setPuzzleMoves(movesList);
-
-
 			} else {
 				moveResultTxt.setVisibility(View.INVISIBLE);
 				getNotationsView().setVisibility(View.VISIBLE);
 				getControlsView().showDefault();
+
+				boardFace.checkAndParseMovesList(movesList);
 			}
-			boardFace.checkAndParseMovesList(movesList);
 		}
 
 		invalidateGameScreen();

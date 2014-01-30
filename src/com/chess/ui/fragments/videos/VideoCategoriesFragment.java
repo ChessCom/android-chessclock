@@ -131,21 +131,19 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+
+		verifyAndSaveViewedState();
+	}
+
+	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
 		outState.putString(SECTION_NAME, sectionName);
 		outState.putLong(VideosFragment.CLICK_TIME, playButtonClickTime);
 		outState.putInt(VideosFragment.CURRENT_PLAYING_ID, currentPlayingId);
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == WATCH_VIDEO_REQUEST) {
-
-			verifyAndSaveViewedState();
-		}
 	}
 
 	protected boolean fillCategories() {

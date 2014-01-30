@@ -10,10 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.chess.statics.StaticData;
+import com.chess.R;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
-import com.chess.R;
 import com.chess.widgets.RoboButton;
 
 /**
@@ -78,14 +77,10 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 		buttonMargin = 3 * density;
 		buttonParams.setMargins((int) buttonMargin, 0, (int) buttonMargin, 0);
 
-
-
 		initialized = false;
-		if (StaticData.USE_TABLETS) {
-			boolean isTablet = AppUtils.is7InchTablet(getContext()) || AppUtils.is10InchTablet(getContext());
-			if (!isTablet) {
-				initButtons(getContext(), width);
-			}
+		boolean isTablet = AppUtils.isTablet(getContext());
+		if (!isTablet) {
+			initButtons(getContext(), width);
 		}
 	}
 

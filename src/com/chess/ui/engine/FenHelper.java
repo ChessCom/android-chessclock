@@ -21,6 +21,7 @@ public class FenHelper {
 	public static final int BOTH_CASTLING = 3;
 	private static final String EMPTY_SQUARE = "1";
 
+	public static final String DEFAULT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	public static final String WHITE_TO_MOVE = "w";
 
 

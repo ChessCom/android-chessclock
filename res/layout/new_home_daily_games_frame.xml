@@ -32,15 +32,6 @@
 		android:dividerHeight="0px"
 		android:divider="@null" />
 
-	<ProgressBar
-		android:id="@+id/loadingView"
-		android:layout_width="@dimen/pending_progress_bar_size"
-		android:layout_height="@dimen/pending_progress_bar_size"
-		android:layout_margin="5dip"
-		android:layout_centerInParent="true"
-		style="?android:attr/progressBarStyle"
-		android:visibility="gone" />
-
 	<!--Start New Game-->
 	<com.chess.widgets.RoboButton
 		android:id="@id/startNewGameBtn"

@@ -2,6 +2,7 @@ package com.chess.backend.entity.api;
 
 import android.text.TextUtils;
 import com.chess.statics.Symbol;
+import com.chess.ui.engine.FenHelper;
 
 import java.util.List;
 
@@ -141,7 +142,7 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 				fenStr = fenStr.substring(0, fenStr.indexOf("\"]"));
 				return fenStr;
 			} else {
-				return null;
+				return FenHelper.DEFAULT_FEN;
 			}
 		}
 
