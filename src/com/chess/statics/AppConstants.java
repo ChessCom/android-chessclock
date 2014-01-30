@@ -14,7 +14,7 @@ public class AppConstants {
 
 	public static final String USER_TOKEN = "user_token_v3";
 	public static final String USER_TOKEN_SAVE_TIME = "user_token_v3_save_time";
-	public static final String IS_LIVE_CHESS_ON = "is_live_chess_mode_on";
+	//public static final String IS_LIVE_CHESS_ON = "is_live_chess_mode_on";
 	public static final String IS_LIVE_CONNECTED = "is_live_connected";
 	public static final String CHALLENGE_INITIAL_TIME = "initial_time";
 	public static final String CHALLENGE_BONUS_TIME = "bonus_time";

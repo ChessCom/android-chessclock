@@ -18,6 +18,7 @@ import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
 import com.chess.live.client.*;
+import com.chess.model.DataHolder;
 import com.chess.model.GameLiveItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
@@ -89,7 +90,7 @@ public class LiveConnectionHelper {
 
 	public void checkAndConnectLiveClient() {
 
-		if (appData.isLiveChess() && !isConnected()) {
+		if (DataHolder.getInstance().isLiveChess() && !isConnected()) {
 			if (!isLccConnecting() && (lccClient == null || isConnectionFailure())) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
 				LogMe.dl(TAG, "start Connection Task");
 				runConnectTask();
@@ -193,6 +194,7 @@ public class LiveConnectionHelper {
 
 		String detailsMessage;
 
+		//cancelServiceNotification();
 		setConnected(false);
 
 		if (details != null) { // LCC stops client, create new one manually
@@ -201,7 +203,7 @@ public class LiveConnectionHelper {
 
 			setConnecting(false);
 			cleanupLiveInfo();
-			cancelServiceNotification();
+			//cancelServiceNotification();
 
 			switch (details) {
 				case USER_KICKED: {
@@ -244,6 +246,7 @@ public class LiveConnectionHelper {
 					detailsMessage = context.getString(R.string.pleaseLoginAgain);
 					break;
 			}
+			liveService.stop();
 
 		} else { // when connect(authKey) and Live server in unreachable, details=null
 
@@ -328,24 +331,24 @@ public class LiveConnectionHelper {
 		setConnecting(false);
 		cleanupLiveInfo();
 		runDisconnectTask();
-		cancelServiceNotification();
-		//stopConnectionTimer();
+		liveService.stop();
+		//cancelServiceNotification();
 	}
 
-	private void leave() {
+	public void leave() {
 		setConnected(false);
 		setConnecting(false);
 		cleanupLiveInfo();
 		runLeaveTask();
-		//stopConnectionTimer();
+		liveService.stop();
 	}
 
-	public void runConnectTask() {
+	private void runConnectTask() {
 		setConnecting(true);
 		new ConnectLiveChessTask(new LccConnectUpdateListener(), this).executeTask();
 	}
 
-	public class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
+	private class LccConnectUpdateListener extends AbstractUpdateListener<LiveChessClient> {
 		public LccConnectUpdateListener() {
 			super(context);
 		}
@@ -356,8 +359,7 @@ public class LiveConnectionHelper {
 		}
 	}
 
-
-	public void runDisconnectTask() {
+	private void runDisconnectTask() {
 		new LiveDisconnectTask().execute();
 	}
 
@@ -376,7 +378,7 @@ public class LiveConnectionHelper {
 		}
 	}
 
-	public void runLeaveTask() {
+	private void runLeaveTask() {
 		new LiveLeaveTask().execute();
 	}
 
@@ -477,10 +479,8 @@ public class LiveConnectionHelper {
 	private final Runnable shutDownRunnable = new Runnable() {
 		@Override
 		public void run() {
-			leave();
 			Log.d("TEST", "shutDownRunnable, performing leave, and stopping service, hide notification");
-
-			liveService.stop();
+			leave();
 		}
 	};
 

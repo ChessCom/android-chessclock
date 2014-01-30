@@ -35,7 +35,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		super.onAttach(activity);
 
 		liveBaseActivity = (LiveBaseActivity) activity;
-		if (getAppData().isLiveChess()) {
+		if (getDataHolder().isLiveChess()) {
 			setLCSBound(liveBaseActivity.isLCSBound());
 		}
 	}
@@ -51,7 +51,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	public void onResume() {
 		super.onResume();
 
-		if (getAppData().isLiveChess()) {
+		if (getDataHolder().isLiveChess()) {
 			setLCSBound(liveBaseActivity.isLCSBound());
 		}
 		// update state of inherited fragments re-registering services
@@ -176,7 +176,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 
 		// onAttach
 		liveBaseActivity = (LiveBaseActivity) getActivity();
-		if (getAppData().isLiveChess()) {
+		if (getDataHolder().isLiveChess()) {
 			setLCSBound(liveBaseActivity.isLCSBound());
 		}//
 

@@ -36,6 +36,7 @@ public class DataHolder {
 	private boolean isMainActivityVisible;
 	private boolean liveGameOpened;
 	private boolean performingRelogin;
+	private boolean live;
 
 
 	private DataHolder() {
@@ -133,5 +134,13 @@ public class DataHolder {
 
 	public void setPerformingRelogin(boolean performingRelogin) {
 		this.performingRelogin = performingRelogin;
+	}
+
+	public void setLiveChessMode(boolean live) {
+		this.live = live;
+	}
+
+	public boolean isLiveChess() {
+		return live;
 	}
 }

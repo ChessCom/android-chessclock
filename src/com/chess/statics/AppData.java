@@ -286,6 +286,7 @@ public class AppData {
 		editor.commit();
 	}
 
+	/*
 	public boolean isLiveChess() {
 		return getBooleanValue(IS_LIVE_CHESS_ON, false);
 	}
@@ -293,6 +294,7 @@ public class AppData {
 	public void setLiveChessMode(boolean enabled) {
 		setBooleanValue(IS_LIVE_CHESS_ON, enabled);
 	}
+	*/
 
 	public void incrementLiveConnectAttempts() {
 		int attempts = getLiveConnectAttempts();

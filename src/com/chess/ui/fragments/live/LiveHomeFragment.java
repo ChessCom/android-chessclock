@@ -100,7 +100,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 		setTitle(R.string.live);
 
-		getAppData().setLiveChessMode(true); // we should set it before parent call to update isLCSBound flag
+		getDataHolder().setLiveChessMode(true); // we should set it before parent call to update isLCSBound flag
 
 		widgetsInit(view);
 	}

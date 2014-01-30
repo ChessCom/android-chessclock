@@ -8,7 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
-import com.chess.statics.AppData;
+import com.chess.model.DataHolder;
 
 public class NetworkChangeService extends Service {
 
@@ -35,7 +35,7 @@ public class NetworkChangeService extends Service {
 		public void onReceive(final Context context, final Intent intent) {
 
 //			if (!DataHolder.getInstance().isLiveChess()) {
-			if (!new AppData(context).isLiveChess()) {
+			if (!DataHolder.getInstance().isLiveChess()) {
 				return;
 			}
 

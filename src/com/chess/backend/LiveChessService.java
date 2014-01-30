@@ -63,10 +63,10 @@ public class LiveChessService extends Service {
 	public void onDestroy() {
 		LogMe.dl(TAG, "SERVICE: onDestroy");
 		if (liveConnectionHelper != null) {
-			liveConnectionHelper.logout();
+			liveConnectionHelper.leave();
 			liveConnectionHelper = null;
 		}
-		stopForeground(true);
+		//stopForeground(true);
 		//unregisterReceiver(networkChangeReceiver);
 	}
 

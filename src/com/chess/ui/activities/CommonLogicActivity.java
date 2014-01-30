@@ -74,6 +74,10 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		return appData == null ? new AppData(this) : appData;
 	}
 
+	protected DataHolder getDataHolder() {
+		return DataHolder.getInstance();
+	}
+
 	protected String getCurrentUsername() {
 		return getAppData().getUsername();
 	}
@@ -324,7 +328,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		preferencesEditor.putLong(AppConstants.USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();
 
-		getAppData().setLiveChessMode(false);
+		getDataHolder().setLiveChessMode(false);
 		DataHolder.reset();
 		TacticsDataHolder.reset();
 

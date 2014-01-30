@@ -92,9 +92,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected void onResume() {
 		super.onResume();
 
-		LogMe.dl(TAG, "LiveBaseActivity onResume getAppData().isLiveChess()=" + getAppData().isLiveChess() + ", isLCSBound=" + isLCSBound);
+		LogMe.dl(TAG, "LiveBaseActivity onResume isLiveChess()=" + getDataHolder().isLiveChess() + ", isLCSBound=" + isLCSBound);
 
-		if (getAppData().isLiveChess()) {
+		if (getDataHolder().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				dismissNetworkCheckDialog();
 				popupItem.setPositiveBtnId(R.string.check_connection);
@@ -171,7 +171,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {   // TODO refactor with showPreviousFragment logic
 		if (keyCode == KeyEvent.KEYCODE_BACK && !getSlidingMenu().isMenuShowing()) {
-			if (getAppData().isLiveChess() && isLCSBound) {
+			if (getDataHolder().isLiveChess() && isLCSBound) {
 
 				Fragment fragmentByTag = getGameLiveFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
@@ -200,7 +200,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					//stopConnectTimer();
 					liveHelper.logout();
-					getAppData().setLiveChessMode(false);
+					getDataHolder().setLiveChessMode(false);
 					unBindAndStopLiveService();
 					return super.onKeyUp(keyCode, event);
 				}
@@ -244,7 +244,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 
 		if (tag.equals(CONNECT_FAILED_TAG)) {
-			if (getAppData().isLiveChess()) {
+			if (getDataHolder().isLiveChess()) {
 				liveHelper.logout();
 			}
 			unBindAndStopLiveService();
@@ -253,7 +253,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					getAppData().setLiveChessMode(false);
+					getDataHolder().setLiveChessMode(false);
 					liveHelper.setConnected(false);
 					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(RestHelper.getInstance().PLAY_ANDROID_HTML)));
 				}
@@ -310,7 +310,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	public void connectLcc() {
 //		LogMe.dl(TAG, "connectLcc: getAppData().isLiveChess() = " + getAppData().isLiveChess());
 //		LogMe.dl(TAG, "connectLcc: isLCSBound = " + isLCSBound);
-		if (getAppData().isLiveChess()) {
+		if (getDataHolder().isLiveChess()) {
 			if (!AppUtils.isNetworkAvailable(this)) {
 				dismissNetworkCheckDialog();
 				popupItem.setPositiveBtnId(R.string.check_connection);
@@ -765,7 +765,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 			registerGcmService();
 
-			getAppData().setLiveChessMode(true);
+			getDataHolder().setLiveChessMode(true);
 			Log.d(TAG, "LBA LoginUpdateListener -> updateData");
 			connectLcc();
 		}
@@ -799,7 +799,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.afterLogin();
 
 		if (needReLoginToLive) {
-			getAppData().setLiveChessMode(true);
+			getDataHolder().setLiveChessMode(true);
 			Log.d(TAG, "LBA afterLogin");
 			connectLcc();
 		}

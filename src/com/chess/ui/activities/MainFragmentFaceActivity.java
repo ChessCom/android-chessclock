@@ -41,8 +41,7 @@ import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.*;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
-import com.chess.ui.fragments.settings.SettingsFragmentTablet;
-import com.chess.ui.fragments.settings.SettingsProfileFragment;
+import com.chess.ui.fragments.settings.*;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.fragments.videos.VideoDetailsFragment;
@@ -546,16 +545,21 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 //		FlurryAgent.logEvent(FlurryData.OPEN_FRAME + simpleName);
 
-//		if (isNotLiveFragment(simpleName)) {
-//			if (isLCSBound) {
-//				getAppData().setLiveChessMode(false);
-//				unBindAndStopLiveService();
-//				isLCSBound = false;
-//			}
-//		}
+		checkNoLiveFragment(simpleName);
 	}
 
-	private boolean isNotLiveFragment(String fragmentName) {
+	private void checkNoLiveFragment(String fragmentName) {
+		if (isNoLiveFragment(fragmentName)) {
+			if (isLCSBound) {
+				getDataHolder().setLiveChessMode(false);
+				unBindAndStopLiveService();
+				isLCSBound = false;
+			}
+		}
+	}
+
+	private boolean isNoLiveFragment(String fragmentName) {
+		// check settings, stats, archive fragments as well
 		String liveFragment1 = LiveHomeFragment.class.getSimpleName();
 		String liveFragment2 = LiveHomeFragmentTablet.class.getSimpleName();
 		String liveFragment3 = GameLiveFragment.class.getSimpleName();
@@ -563,13 +567,26 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		String liveFragment5 = GameLiveObserveFragmentTablet.class.getSimpleName();
 		String liveFragment6 = LiveChatFragment.class.getSimpleName();
 		String liveFragment7 = LiveGameWaitFragment.class.getSimpleName();
+		String liveFragment8 = SettingsLiveChessFragment.class.getSimpleName();
+		String liveFragment9 = SettingsGeneralFragment.class.getSimpleName();
+		String liveFragment10 = SettingsGeneralFragmentTablet.class.getSimpleName();
+		String liveFragment11 = LiveGamesArchiveFragment.class.getSimpleName();
+		String liveFragment12 = GameLiveArchiveFragment.class.getSimpleName();
+		String liveFragment13 = GameLiveArchiveAnalysisFragment.class.getSimpleName();
+
 		return !fragmentName.equals(liveFragment1)
 				&& !fragmentName.equals(liveFragment2)
 				&& !fragmentName.equals(liveFragment3)
 				&& !fragmentName.equals(liveFragment4)
 				&& !fragmentName.equals(liveFragment5)
 				&& !fragmentName.equals(liveFragment6)
-				&& !fragmentName.equals(liveFragment7);
+				&& !fragmentName.equals(liveFragment7)
+				&& !fragmentName.equals(liveFragment8)
+				&& !fragmentName.equals(liveFragment9)
+				&& !fragmentName.equals(liveFragment10)
+				&& !fragmentName.equals(liveFragment11)
+				&& !fragmentName.equals(liveFragment12)
+				&& !fragmentName.equals(liveFragment13);
 	}
 
 	@Override
@@ -577,8 +594,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		currentActiveFragment = fragment;
 
-		ft.replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName());
+		String simpleName = fragment.getClass().getSimpleName();
+		ft.replace(R.id.content_frame, fragment, simpleName);
 		ft.commitAllowingStateLoss();
+
+		checkNoLiveFragment(simpleName);
 	}
 
 	@Override

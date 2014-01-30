@@ -795,7 +795,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		preferencesEditor.putLong(USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();
 
-		getAppData().setLiveChessMode(false);
+		getDataHolder().setLiveChessMode(false);
 		DataHolder.reset();
 		TacticsDataHolder.reset();
 
@@ -870,6 +870,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected AppData getAppData() {
 		return getActivityFace().getMeAppData();
+	}
+
+	protected DataHolder getDataHolder() {
+		return DataHolder.getInstance();
 	}
 
 	protected String getUsername() {
