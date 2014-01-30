@@ -53,7 +53,6 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 	public static final int FIRST = 0;
 	public static final int LAST = 1;
 
-	private static final String TAG = "StatsGameFragment";
 	public static final String GREY_COLOR_DIVIDER = "##";
 
 	public static final int HIGHEST_ID = 0x00002000;
@@ -272,7 +271,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		if (previousCheckedId == checkedId) {
+		if (previousCheckedId == checkedId || getActivity() == null) {
 			return;
 		}
 

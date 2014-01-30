@@ -81,7 +81,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private TextView emptyView;
 	private ListView listView;
-	private View loadingView;
 	private int mode;
 	private GameFaceHelper gameFaceHelper;
 	private Button timeSelectBtn;
@@ -714,7 +713,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	}
 
 	private void widgetsInit(View view) {
-		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		startNewGameBtn = (Button) view.findViewById(R.id.startNewGameBtn);
@@ -789,10 +787,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	private void showEmptyView(boolean show) {
 		if (show) {
-			// don't hide loadingView if it's loading
-			if (loadingView.getVisibility() != View.VISIBLE) {
-				loadingView.setVisibility(View.GONE);
-			}
 			if (listView.getAdapter().getCount() == 0) { // TODO check
 				emptyView.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);
