@@ -356,8 +356,9 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	@Override
 	public void onResume() {
 
+		// todo: handle correctly - move to onServiceConnected
 		if (isLCSBound && !isValid()) {
-			showPreviousFragment();
+			//goHome();
 		}
 
 		super.onResume();
@@ -376,18 +377,5 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 		boolean isGameValid = liveHelper.getCurrentObservedGameId() != null;
 		return isGameValid;
-	}
-
-	@Override
-	public boolean showPreviousFragment() { // move
-		if (getActivity() == null) {
-			return false;
-		}
-		int entryCount = getChildFragmentManager().getBackStackEntryCount();
-		if (entryCount > 0) {
-			return getChildFragmentManager().popBackStackImmediate();
-		} else {
-			return super.showPreviousFragment();
-		}
 	}
 }

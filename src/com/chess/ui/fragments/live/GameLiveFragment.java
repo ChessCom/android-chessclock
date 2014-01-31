@@ -14,7 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.backend.*;
+import com.chess.backend.LoadHelper;
+import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
@@ -35,9 +38,9 @@ import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.LiveGameConfig;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
@@ -153,6 +156,17 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		if (!DataHolder.getInstance().isLiveChess()) {
+
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					goHome();
+					return;
+				}
+			});
+		}
 
 		try {
 			Long currentGameId = getLiveHelper().getCurrentGameId();

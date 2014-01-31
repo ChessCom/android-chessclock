@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import com.chess.R;
 import com.chess.lcc.android.LiveConnectionHelper;
+import com.chess.model.DataHolder;
 import com.chess.statics.IntentConstants;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.utilities.LogMe;
@@ -49,13 +50,24 @@ public class LiveChessService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		LogMe.dl(TAG, "SERVICE: onStartCommand");
 
-		if (liveConnectionHelper == null) {
-			liveConnectionHelper = new LiveConnectionHelper(this);
-		}
-		if (liveConnectionHelper.isLiveChessEventListenerSet()) {
-			liveConnectionHelper.checkAndConnectLiveClient();
+		if (DataHolder.getInstance().isLiveChess()) {
+
+			if (liveConnectionHelper == null) {
+				liveConnectionHelper = new LiveConnectionHelper(this);
+			}
+			if (liveConnectionHelper.isLiveChessEventListenerSet()) {
+				liveConnectionHelper.checkAndConnectLiveClient();
+			}
+		} else {
+
+			// lets try this way
+			stop();
+			return START_NOT_STICKY;
 		}
 
+		// try to use START_NOT_STICKY as main mode,
+		// because system will keep service started when app is foregroud,
+		// and we anyway kill service in 30sec in background
 		return START_STICKY_COMPATIBILITY;
 	}
 

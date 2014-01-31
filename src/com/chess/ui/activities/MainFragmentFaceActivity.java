@@ -42,6 +42,7 @@ import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.live.*;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.settings.*;
+import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeDetailsFragment;
 import com.chess.ui.fragments.videos.VideoDetailsFragment;
@@ -559,7 +560,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	private boolean isNoLiveFragment(String fragmentName) {
-		// check settings, stats, archive fragments as well
 		String liveFragment1 = LiveHomeFragment.class.getSimpleName();
 		String liveFragment2 = LiveHomeFragmentTablet.class.getSimpleName();
 		String liveFragment3 = GameLiveFragment.class.getSimpleName();
@@ -573,6 +573,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		String liveFragment11 = LiveGamesArchiveFragment.class.getSimpleName();
 		String liveFragment12 = GameLiveArchiveFragment.class.getSimpleName();
 		String liveFragment13 = GameLiveArchiveAnalysisFragment.class.getSimpleName();
+		String liveFragment14 = StatsGameDetailsFragment.class.getSimpleName();
 
 		return !fragmentName.equals(liveFragment1)
 				&& !fragmentName.equals(liveFragment2)
@@ -586,7 +587,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				&& !fragmentName.equals(liveFragment10)
 				&& !fragmentName.equals(liveFragment11)
 				&& !fragmentName.equals(liveFragment12)
-				&& !fragmentName.equals(liveFragment13);
+				&& !fragmentName.equals(liveFragment13)
+				&& !fragmentName.equals(liveFragment14);
 	}
 
 	@Override
