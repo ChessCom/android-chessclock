@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>デイリーチェス</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>ライブチェス‐スタンダード</item>
+		<item>ライブチェス‐ブリッツ</item>
+		<item>ライブチェス‐ブレット</item>
 		<item>デイリーチェス‐チェス960</item>
 		<item>タクティクス‐戦術</item>
 		<item>レッスン</item>

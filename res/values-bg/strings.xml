@@ -168,7 +168,7 @@
 	<string name="profile_picture">Профилна снимка</string>
 	<string name="or_use_your_email">Или използвате вашия Имейл Адрес:</string>
 	<string name="by_signing_up_accept_mobile">Регистрирайки се, аз приемам</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Условия за ползване</a>]]]></string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Условия за ползване</a>]]></string>
 	<string name="create_chess_profile">Добре дошли! Създайте своя Шах Профил</string>
 	<string name="daily">Ежедневен</string>
 	<string name="improve_game_with_lessons">Подобрете играта си с Неограничени Уроци</string>
@@ -277,7 +277,7 @@
 	<string name="location">Местоположение</string>
 	<string name="share">Сподели</string>
 	<string name="profile_membership_renew_cancel">Вашето %1$s членство ще се поднови на %2$s.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Отмени</a>]]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Отмени</a>]]></string>
 	<string name="invite_friends_profile_message">Шахът е по-забавен с приятели - покани ги да се присъединят!</string>
 	<string name="profile_account_message_1">Вашият акаунт е обвързан с *Теrms and conditions phrase here* на сайта</string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice">Правилата и Условията.</a>]]></string>
@@ -308,7 +308,7 @@
 	<string name="archive">Архив</string>
 	<string name="completed">Завършен</string>
 	<string name="few_min">няколко минути</string>
-	<string name="less_than_60_sec"><![CDATA[< 60 сек]]]></string>
+	<string name="less_than_60_sec"><![CDATA[< 60 сек]]></string>
 	<string name="abort_game_">Прекъсни?</string>
 	<string name="resign_game_">Напусни?</string>
 	<string name="days_move">дни/ход</string>
@@ -322,7 +322,7 @@
 	<string name="use_lessons">Използвайте Уроци</string>
 	<string name="watch_videos">Гледайте Видео Уроци</string>
 	<string name="interactive_lessons">Интерактивни Уроци</string>
-	<string name="tactics_and_puzzles"><![CDATA[Тактика &amp; Пъзели]]]></string>
+	<string name="tactics_and_puzzles"><![CDATA[Тактика &amp; Пъзели]]></string>
 	<string name="friend_requests">Молби за Приятелство</string>
 	<string name="add_friend">Добавяне на Приятел</string>
 	<string name="recent_opponents">Скорошни Противници</string>

@@ -2,19 +2,19 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Xadrez diário</item>
-		<item>Ao Vivo - Normal</item>
-		<item>Ao Vivo - Rápidas</item>
-		<item>Ao Vivo - Ultra-Rápidas</item>
+		<item>Xadrez Ao Vivo - Normal</item>
+		<item>Xadrez ao Vivo - Blitz</item>
+		<item>Xadrez ao Vivo - Ultra-rápida</item>
 		<item>Xadrez960 Diário</item>
 		<item>Táticas</item>
 		<item>Lições</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
 		<item>Vídeos Ilimitados</item>
-		<item>Táticas ilimitadas</item>
+		<item>Táticas Ilimitadas</item>
 		<item>Lições Ilimitadas</item>
 		<item>Explorador de Aberturas</item>
-		<item>Estatísticas completas</item>
+		<item>Estatísticas Completas</item>
 		<item>Timeout Diário de Proteção</item>
 		<item>Sem publicidade</item>
 	</string-array>
@@ -23,21 +23,21 @@
 		<item>Táticas Ilimitadas</item>
 		<item>5 Lições por dia</item>
 		<item>Explorador de Aberturas</item>
-		<item>Estatísticas completas</item>
+		<item>Todas as Estatísticas</item>
 		<item>Timeout Diário de Proteção</item>
 		<item>Sem publicidade</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
 		<item></item>
-		<item>25 táticas por dia</item>
+		<item>25 Táticas por dia</item>
 		<item>3 Lições por dia</item>
 		<item>Explorador de Aberturas</item>
 		<item>Estatísticas pessoais</item>
 		<item>Timeout Diário de Proteção</item>
-		<item>Sem publicidade</item>
+		<item>Sem Publicidade</item>
 	</string-array>
 	<string-array name="afterMyMove">
-		<item>Ir para a próxima partida disponível</item>
+		<item>Ir para o Próximo Jogo Disponível</item>
 		<item>Ficar no mesmo jogo</item>
 		<item>Voltar à Lista de Jogos</item>
 	</string-array>

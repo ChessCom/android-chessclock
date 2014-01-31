@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Առօրյա Շախմատ</item>
-		<item>Կենդանի Խաղ - Ստանդարտ</item>
-		<item>Կենդանի Խաղ - Բլիտց</item>
-		<item>Կենդանի Խաղ - Բուլետ</item>
+		<item>Կենդանի Շախմատ - Ստանդարտ</item>
+		<item>Կենդանի Շախմատ - Բլիտց</item>
+		<item>Կենդանի Շախմատ -Բուլետ</item>
 		<item>Առօրյա Շախմատ960</item>
 		<item>Մարտավարություն</item>
 		<item>Դացընթացներ</item>

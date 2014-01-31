@@ -16,7 +16,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:contentDescription="@string/image"
-		android:clickable="false"/>
+		android:clickable="false" />
 
 	<com.chess.widgets.RoboCheckedTextView
 		android:id="@+id/text"
@@ -29,7 +29,7 @@
 		android:textColor="@color/white"
 		android:checkMark="?android:attr/listChoiceIndicatorSingle"
 		style="@style/SettingsListText"
-		android:clickable="false"/>
+		android:clickable="false" />
 
 
 </com.chess.widgets.LinLayout>

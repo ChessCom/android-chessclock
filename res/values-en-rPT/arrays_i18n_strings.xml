@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>DAILY CHES</item>
-		<item>LIV - STANDARD</item>
-		<item>LIV - BLITZ</item>
-		<item>LIV - BULLET</item>
+		<item>LIV CHES - STANDARD</item>
+		<item>LIV CHES - BLITZ</item>
+		<item>LIV CHES - BULLET</item>
 		<item>DAILY CHES960</item>
 		<item>TACTICS</item>
 		<item>LESONS</item>

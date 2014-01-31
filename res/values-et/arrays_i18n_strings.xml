@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Igapäevane Male</item>
-		<item>Live - Standart</item>
-		<item>Live - Välkmale</item>
-		<item>Live - Minutimale</item>
+		<item>Reaalajas – Klassikaline</item>
+		<item>Reaalajas - Välkmale</item>
+		<item>Reaalajas - Supervälkmale</item>
 		<item>Igapäevane Male960</item>
 		<item>Taktika</item>
 		<item>Õppetunnid</item>

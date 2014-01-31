@@ -19,7 +19,7 @@
 	<string name="computer">Számítógép</string>
 	<string name="thinking_">Számítás…</string>
 	<string name="open_challenges">Nyílt kihívások</string>
-	<string name="challenge_friend">Challenge a Friend</string>
+	<string name="challenge_friend">Ismerős kihívása</string>
 	<string name="challenge_created">Kihívás létrehozva</string>
 	<string name="you_will_notified_when_game_starts">Értesítünk amint a játszma elindult</string>
 	<string name="challenge_sent">Kihívás elküldve</string>
@@ -98,8 +98,6 @@
 	<string name="you_are_offline">Jelenleg offline módban vagy</string>
 	<string name="correct">Helyes lépés</string>
 	<string name="incorrect">Hibás lépés</string>
-	<string name="incorrect_move">Incorrect Move</string>
-	<string name="puzzle_solved">Puzzle Solved!</string>
 	<string name="upgrade_for_unlimited_arg">Bővítsd hozzáférésed: korlátlan %s!</string>
 	<string name="hours">óra</string>
 	<string name="hour">óra</string>
@@ -131,25 +129,26 @@
 	<string name="unrated">Nem jegyzett</string>
 	<string name="you_play">Saját oldal:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move_vs">Your move vs %1$s , %2$s</string>
-	<string name="won_on_time">%s wins on Time</string>
-	<string name="won_by_resignation">%s wins by Resignation</string>
-	<string name="won_by_checkmate">%s wins by Checkmate</string>
+	<string name="your_move">"Te vagy lépésen"</string>
+	<string name="your_turn_in_game_with">%1$s elleni játszma, %2$s</string>
+	<string name="won_on_time">%s nyert időtúllépéssel</string>
+	<string name="won_by_resignation">%s nyert, az ellenfél feladta</string>
+	<string name="won_by_checkmate">%s mattadással nyert</string>
 	<string name="game_over">Vége a játszmának</string>
 	<string name="reconnecting_">Újracsatlakozás…</string>
 	<string name="another_login_detected">Hoppá! Máshol már be vagy jelentkezve.</string>
-	<string name="game_end_title_draw">Draw (½–½)</string>
+	<string name="game_drawn">Döntetlen játszma</string>
+	<string name="game_draw_by_repetition">Döntetlen - lépésismétlés</string>
+	<string name="game_drawn_by_agreement">Döntetlen - közös megegyezés</string>
+	<string name="game_drawn_by_stalemate">Döntetlen - patt</string>
+	<string name="game_drawn_insufficient_material">Döntetlen - nincs a mattadáshoz elegendő báb</string>
+	<string name="game_drawn_by_fifty_move_rule">Döntetlen az 50 lépéses szabály okán</string>
+	<string name="won_game_abandoned">Győzelem - elhagyott játszma</string>
 	<string name="game_aborted">A játszma megszakadt</string>
 	<string name="new_game">Új játszma</string>
-	<string name="new_game_arg">New Game (%s)</string>
 	<string name="language">Nyelv</string>
 	<string name="black_wins">Sötét nyert (0-1)</string>
 	<string name="white_wins">Világos nyert (1-0)</string>
-	<string name="game_draw_by_repetition">Drawn by Repetition</string>
-	<string name="game_drawn_by_agreement">Drawn by Agreement</string>
-	<string name="game_drawn_by_stalemate">Drawn by Stalemate</string>
-	<string name="game_drawn_insufficient_material">Drawn by Insufficient Material</string>
-	<string name="game_drawn_by_fifty_move_rule">Drawn by 50-move Rule</string>
 	<string name="draw_by_stalemate">Döntetlen - patt (½–½)</string>
 	<string name="draw_by_3fold_repetition">Döntetlen - lépésismétlés (½–½)</string>
 	<string name="rematch">Visszavágó</string>
@@ -169,7 +168,7 @@
 	<string name="or_use_your_email">Vagy használd az email címed:</string>
 	<string name="by_signing_up_accept_mobile">A regisztrációval elfogadom a</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">felhasználási feltételeket</a>]]></string>
-	<string name="create_chess_profile">Welcome! Create your Chess Profile</string>
+	<string name="create_chess_profile">Saját sakk-profil létrehozása</string>
 	<string name="daily">Levelező</string>
 	<string name="improve_game_with_lessons">Fejleszd játékerődet korlátlan számú feladvánnyal</string>
 	<string name="improve_game_with_videos">Fejleszd játékerődet korlátlan számú videóval</string>
@@ -181,10 +180,8 @@
 	<string name="download_complete">Letöltés kész</string>
 	<string name="empty"></string>
 	<string name="difficulty">Nehézségi szint</string>
-	<string name="easiest">Easiest</string>
-	<string name="hardest">Hardest</string>
 	<string name="vs">vs</string>
-	<string name="leave_vacation_q">Disable Vacation?</string>
+	<string name="leave_vacation_q">Kikapcsolod a vakációt?</string>
 	<string name="sign_up_with_facebook"><b>Bejelentkezés</b>a<b>Facebook-ról</b></string>
 	<string name="finished_games">Befejezett játszmák</string>
 	<string name="feedback_mail_body">Kérlek ne szerkeszd vagy töröld az alábbi információt!</string>
@@ -213,7 +210,7 @@
 	<string name="of_arg">%s-ból/ből</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Mester szintű</string>
-	<string name="upgrade_main_title_1_tablet">Good Enough for Masters. Simple Enough for Beginners.</string>
+	<string name="upgrade_main_title_1_tablet">Mester szintű, de akár a kezdőknek is egyszerű. Próbáld ki!</string>
 	<string name="upgrade_main_title_2">Kezdőknek is egyszerű</string>
 	<string name="diamond">Gyémánt</string>
 	<string name="diamond_subtitle">Korlátlan hozzáférés az összes funkcióhoz</string>
@@ -246,7 +243,7 @@
 	<string name="choose_photo">Válassz képet</string>
 	<string name="take_photo">Kép készítése</string>
 	<string name="pick_photo">Kép kiválasztása</string>
-	<string name="or_login_using_chesscom">Or Use Your Chess.com Username:</string>
+	<string name="or_login_using_chesscom">Vagy, bejelentkezés Chess.com felhasználónévvel:</string>
 	<string name="articles">Cikkek</string>
 	<string name="forums">Fórumok</string>
 	<string name="notifications">Értesítések</string>
@@ -257,7 +254,7 @@
 	<string name="share_pgn">PGN megosztás</string>
 	<string name="share_via">Megosztás</string>
 	<string name="chess">Sakk</string>
-	<string name="via_chesscom">"@Chesscom"</string>
+	<string name="via_chesscom">via @Chesscom</string>
 	<string name="vs_random_opponent">vs véletlen</string>
 	<string name="feed">Kapcsolat</string>
 	<string name="learn">Tanulás</string>
@@ -265,8 +262,9 @@
 	<string name="average_score">Átlagos pontszám:</string>
 	<string name="start">Indítás</string>
 	<string name="lessons">Leckék</string>
+	<string name="new_">Új</string>
 	<string name="analysis">Elemzés</string>
-	<string name="profile">Account</string>
+	<string name="profile">Profil</string>
 	<string name="theme">Téma</string>
 	<string name="privacy">Adatvédelem</string>
 	<string name="blocking">Letiltva</string>
@@ -284,7 +282,7 @@
 	<string name="profile_account_message_3">A fiókod megszűntetéséhez</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">kattints ide!</a>]]></string>
 	<string name="basic">Alap</string>
-	<string name="sign_up_now_free">"Sign Up - It's FREE!"</string>
+	<string name="sign_up_now_free">Regisztrálj INGYENESEN!</string>
 	<string name="chess_com_username">Chess.com felhasználónév</string>
 	<string name="coordinates">Koordináták</string>
 	<string name="highlight_last_move">Utolsó lépés kiemelése</string>
@@ -309,8 +307,8 @@
 	<string name="completed">Befejezve</string>
 	<string name="few_min">néhány perce</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 mp]]></string>
-	<string name="abort_game_">Abort?</string>
-	<string name="resign_game_">Resign?</string>
+	<string name="abort_game_">Megszakítod a játszmát?</string>
+	<string name="resign_game_">Feladod a játszmát?</string>
 	<string name="days_move">nap/lépés</string>
 	<string name="password_cant_be_empty">A jelszó nem lehet üres</string>
 	<string name="invalid_username_or_password">Érvénytelen felhasználónév vagy jelszó</string>
@@ -327,10 +325,8 @@
 	<string name="add_friend">Ismerős jelölés</string>
 	<string name="recent_opponents">Legutóbbi ellenfelek</string>
 	<string name="invite_by_email">Meghívás email-ben</string>
-	<string name="please_enter_valid_email">Please enter a valid Email</string>
 	<string name="invite_facebook_friend">Facebook ismerős meghívása</string>
 	<string name="invite_from_contacts">Meghívás meglévő kapcsolatból</string>
-	<string name="no_contacts_found">No Contacts Found</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kapcsolatok</string>
 	<string name="facebook_invite_friend_to_play">Sakkozzunk! Játszhatsz a Chess.com-on, vagy mobilról Android vagy iPhone/iPad alkalmazáson keresztül.</string>
@@ -349,10 +345,8 @@
 	<string name="username_not_found">A felhasználónév nem található</string>
 	<string name="you_have_not_added_friends_yet">"Még nincsenek ismerőseid. Jelöld meg őket!"</string>
 	<string name="new_friend_request">Új ismerős jelölés</string>
-	<string name="friend_request_from_arg">Friend request from %s</string>
 	<string name="new_chat_message">Új cset üzenet</string>
-	<string name="new_daily_challenge">New Daily Challenge</string>
-	<string name="arg_wants_to_play">%s wants to play!</string>
+	<string name="new_challenge">Új kihívás</string>
 	<string name="unable_to_select_this_photo">A kép nem használható</string>
 	<string name="processing_">Feldolgozás…</string>
 	<string name="about">Rólam</string>
@@ -381,7 +375,6 @@
 	<string name="your_course_rating">A tanfolyam értékelése:</string>
 	<string name="score_">Pontszám:</string>
 	<string name="rating_">Értékszám:</string>
-	<string name="new_arg_rating_">New %s Rating:</string>
 	<string name="course">Tanfolyam</string>
 	<string name="lessons_completed">Befejezett leckék</string>
 	<string name="courses_completed">Befejezett tanfolyamok</string>
@@ -393,7 +386,6 @@
 	<string name="lessons_limit_reached_message">Elérted a ma tanulható leckéid számát. Bővítsd hozzáférésed a korlátlan használathoz!</string>
 	<string name="resume_lesson">Vissza a leckéhez</string>
 	<string name="installing_theme">Téma beállítása</string>
-	<string name="waiting_to_download">Waiting to download…</string>
 	<string name="loading_background">Háttér betöltése</string>
 	<string name="saving_background">Háttér mentése</string>
 	<string name="saving_board">Tábla mentése</string>
@@ -423,11 +415,10 @@
 	<string name="all_time">Kezdettől</string>
 	<string name="comments_arg">%s hozzászólás</string>
 	<string name="views_arg">%s megtekintés</string>
-	<string name="game_is_over">Game Over</string>
-	<string name="game_over_vs">Game Over vs %s</string>
+	<string name="your_game_is_over">A játszmának vége</string>
 	<string name="switch_sides">Oldalcsere</string>
 	<string name="no_results">Nincs eredmény</string>
-	<string name="game_explorer">Explorer</string>
+	<string name="game_explorer">Játszmakereső</string>
 	<string name="recent_problems">Korábbi feladványok</string>
 	<string name="recent_lessons">Új leckék</string>
 	<string name="players_online_arg">%s játékos online</string>
@@ -478,13 +469,9 @@
 	<string name="review_lesson">Lecke újranézése</string>
 	<string name="full_screen">Teljes képernyő</string>
 	<string name="line">Vonal</string>
-	<string name="predict_move_or_add_new_line">Predict move or add new line…</string>
-	<string name="make_your_conditional_move">Make your conditional move…</string>
-	<string name="predict_opponent_next_move">Predict opponent\'s next move…</string>
+	<string name="predict_move_or_add_new_line">Add meg a következő lépést, vagy kezdj új vonalat...</string>
+	<string name="make_your_conditional_move">Add meg a feltételes lépésed...</string>
+	<string name="predict_opponent_next_move">Add meg az ellenfeled várt lépését...</string>
 	<string name="notes">Megjegyzések</string>
 	<string name="private_note">Privát jegyzet</string>
-	<string name="upgrade_feedback_1">"\"Tactics and Lessons really help my chess skills\""</string>
-	<string name="upgrade_feedback_reporter_1">- Peter, Member Since 2011</string>
-	<string name="upgrade_feedback_2">"\"My overall rating improved a ton after i became a premium member\""</string>
-	<string name="upgrade_feedback_reporter_2">- Lou, NJ Member Since 2009</string>
 </resources>

@@ -19,7 +19,7 @@
 	<string name="computer">Arvuti</string>
 	<string name="thinking_">Teeb arvutust...</string>
 	<string name="open_challenges">Avatud väljakutsed</string>
-	<string name="challenge_friend">Kutsu Sõbra Välja</string>
+	<string name="challenge_friend">Esita väljakutse sõbrale</string>
 	<string name="challenge_created">Väljakutse loodud</string>
 	<string name="you_will_notified_when_game_starts">Sind teavitatakse mängu algusest</string>
 	<string name="challenge_sent">Väljakutse esitatud</string>
@@ -98,8 +98,6 @@
 	<string name="you_are_offline">Olete praegu ühenduseta režiimis</string>
 	<string name="correct">Õige</string>
 	<string name="incorrect">Vale</string>
-	<string name="incorrect_move">Vale Käik</string>
-	<string name="puzzle_solved">Probleem Lahendatud!</string>
 	<string name="upgrade_for_unlimited_arg">Uuendage, selleks, et saada piiramatult %s!</string>
 	<string name="hours">tundid</string>
 	<string name="hour">tund</string>
@@ -131,25 +129,26 @@
 	<string name="unrated">Reitinguta</string>
 	<string name="you_play">Sina mängid:</string>
 	<string name="chess_com">Male.com</string>
-	<string name="your_move_vs">Sinu käik vs</string>
-	<string name="won_on_time">võitis Ajaga</string>
-	<string name="won_by_resignation">võitis Resigneerumisega</string>
-	<string name="won_by_checkmate">%s pani mati</string>
+	<string name="your_move">"Teie Käik"</string>
+	<string name="your_turn_in_game_with">Mängus %1$s, %2$s</string>
+	<string name="won_on_time">%s võitis ajaga</string>
+	<string name="won_by_resignation">%s võitis alistumisel</string>
+	<string name="won_by_checkmate">%s võitis matiga</string>
 	<string name="game_over">Mäng Läbi</string>
 	<string name="reconnecting_">Ühenduse taastamine…</string>
 	<string name="another_login_detected">Tohoh! Te olete kusagil mujal sisse loginud.</string>
-	<string name="game_end_title_draw">Viik (½–½)</string>
+	<string name="game_drawn">Viik</string>
+	<string name="game_draw_by_repetition">Viik kordamise tagajärjel</string>
+	<string name="game_drawn_by_agreement">Viik kokkuleppel</string>
+	<string name="game_drawn_by_stalemate">Mäng on lõpetatud Patiga</string>
+	<string name="game_drawn_insufficient_material">Mäng jäi viiki materjali puuduse tõttu</string>
+	<string name="game_drawn_by_fifty_move_rule">Mäng jäi viiki 50 käigu reegli põhjal</string>
+	<string name="won_game_abandoned">Võit - mäng mahajäetud</string>
 	<string name="game_aborted">Mäng on Katkestatud</string>
 	<string name="new_game">Uus Mäng</string>
-	<string name="new_game_arg">Uus Mäng (%s)</string>
 	<string name="language">Keel</string>
 	<string name="black_wins">Mustad Võidavad (0-1)</string>
 	<string name="white_wins">Valge Võidab (1-0)</string>
-	<string name="game_draw_by_repetition">viik kordamisega</string>
-	<string name="game_drawn_by_agreement">Viik Sõlmitud</string>
-	<string name="game_drawn_by_stalemate">Patiseis</string>
-	<string name="game_drawn_insufficient_material">Viik - ei ole piisavalt materjali, et võita</string>
-	<string name="game_drawn_by_fifty_move_rule">Viik - Reegel 50 käigust</string>
 	<string name="draw_by_stalemate">Viik patiseisus (½–½)</string>
 	<string name="draw_by_3fold_repetition">Viik - kolmekordne kordus (½–½)</string>
 	<string name="rematch">Revanš</string>
@@ -168,8 +167,8 @@
 	<string name="profile_picture">Profiilipilt</string>
 	<string name="or_use_your_email">Või kasutage oma meiliaadressi:</string>
 	<string name="by_signing_up_accept_mobile">Liitumisel, nõustun</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> teenusetingimused</a>]]]></string>
-	<string name="create_chess_profile">Tere Tulemast! Loo oma Male konto!</string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> teenusetingimused</a>]]></string>
+	<string name="create_chess_profile">Loo oma Maleprofiil</string>
 	<string name="daily">Päevased</string>
 	<string name="improve_game_with_lessons">Paranda oma mängu piiramatute õppetundidega</string>
 	<string name="improve_game_with_videos">Paranda oma mängu piiramatute videode abil</string>
@@ -181,10 +180,8 @@
 	<string name="download_complete">Allalaadimine lõpetatud</string>
 	<string name="empty"></string>
 	<string name="difficulty">Raskustase</string>
-	<string name="easiest">Väga kerge</string>
-	<string name="hardest">Väga raske</string>
 	<string name="vs">vs</string>
-	<string name="leave_vacation_q">Lahku puhkusest?</string>
+	<string name="leave_vacation_q">Lülitan Puhkuserežiimi välja?</string>
 	<string name="sign_up_with_facebook"><b>Registreeru</b> <b>Facebookiga</b></string>
 	<string name="finished_games">Lõppenud mängud</string>
 	<string name="feedback_mail_body">Palun ära muuda ega eemalda alljärgnevaid andmeid.</string>
@@ -213,7 +210,7 @@
 	<string name="of_arg"> %s -st</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Piisavalt hea meistritele</string>
-	<string name="upgrade_main_title_1_tablet">Piisavalt Hea Meistritele. Liiga Kerge Algajatele.</string>
+	<string name="upgrade_main_title_1_tablet">Piisavalt Hea Meistritele. Piisavalt Lihtne Algajatele. Proovi nüüd!</string>
 	<string name="upgrade_main_title_2">Piisavalt lihtne algajatele</string>
 	<string name="diamond">Teemant</string>
 	<string name="diamond_subtitle">Piiramatu juurdepääs kõikidele funktsioonidele</string>
@@ -246,7 +243,7 @@
 	<string name="choose_photo">Vali Foto</string>
 	<string name="take_photo">Tee foto</string>
 	<string name="pick_photo">Vali foto</string>
-	<string name="or_login_using_chesscom">Või Kasuta Oma Chess.com\'i Kasutajatunnus:</string>
+	<string name="or_login_using_chesscom">Või sisene Chess.com kasutajanimega:</string>
 	<string name="articles">Artiklid</string>
 	<string name="forums">Foorumid</string>
 	<string name="notifications">Teated</string>
@@ -265,8 +262,9 @@
 	<string name="average_score">Keskmine skoor:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Õppetunnid</string>
+	<string name="new_">Uus</string>
 	<string name="analysis">Analüüs</string>
-	<string name="profile">Konto</string>
+	<string name="profile">Profiil</string>
 	<string name="theme">Teema</string>
 	<string name="privacy">Privaatsus</string>
 	<string name="blocking">Blokeerimine</string>
@@ -284,7 +282,7 @@
 	<string name="profile_account_message_3">Kui soovid oma konto sulgeda,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">vajuta siia.</a>]]></string>
 	<string name="basic">Tavaline</string>
-	<string name="sign_up_now_free">"Liitu - TASUTA!"</string>
+	<string name="sign_up_now_free">Liitu nüüd - See on tasuta!</string>
 	<string name="chess_com_username">Chess.com kasutajanimi</string>
 	<string name="coordinates">Koordinaadid</string>
 	<string name="highlight_last_move">Näita viimast käiku</string>
@@ -308,9 +306,9 @@
 	<string name="archive">Arhiiv</string>
 	<string name="completed">Lõppenud</string>
 	<string name="few_min">mõni minut</string>
-	<string name="less_than_60_sec"><![CDATA[< 60 sekundit]]]></string>
-	<string name="abort_game_">Katkesta?</string>
-	<string name="resign_game_">Alistu?</string>
+	<string name="less_than_60_sec"><![CDATA[< 60 sekundit]]></string>
+	<string name="abort_game_">Katkesta Mäng?</string>
+	<string name="resign_game_">Alistuda?</string>
 	<string name="days_move">päeva käigu kohta</string>
 	<string name="password_cant_be_empty">Parool ei saa olla tühi</string>
 	<string name="invalid_username_or_password">Sobimatu kasutajanimi või parool</string>
@@ -327,10 +325,8 @@
 	<string name="add_friend">Lisa Sõber</string>
 	<string name="recent_opponents">Hiljutised Vastased</string>
 	<string name="invite_by_email">Kutsu e-meiliga</string>
-	<string name="please_enter_valid_email">Palun sisestage valiidse e-maili</string>
 	<string name="invite_facebook_friend">Kutsu Facebooki Sõber</string>
 	<string name="invite_from_contacts">Kutsu Kontaktide Hulgast</string>
-	<string name="no_contacts_found">Kontakti ei Leidu</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontaktid</string>
 	<string name="facebook_invite_friend_to_play">Mängime malet! Chess.com-is võid sa mängida nii internetis, Android-telefonil või oma iPhone\'is/ iPadis.</string>
@@ -349,10 +345,8 @@
 	<string name="username_not_found">Kasutajanime ei leitud</string>
 	<string name="you_have_not_added_friends_yet">"Sõpru ei ole veel. Lisa mõned!"</string>
 	<string name="new_friend_request">Uus sõbrakutse</string>
-	<string name="friend_request_from_arg">Friend request from %s</string>
 	<string name="new_chat_message">Uus sõnum</string>
-	<string name="new_daily_challenge">New Daily Challenge</string>
-	<string name="arg_wants_to_play">%s wants to play!</string>
+	<string name="new_challenge">Uus väljakutse</string>
 	<string name="unable_to_select_this_photo">Seda fotot ei saa kasutada</string>
 	<string name="processing_">Töötlemine...</string>
 	<string name="about">Minust</string>
@@ -381,7 +375,6 @@
 	<string name="your_course_rating">Sinu kursuse reiting:</string>
 	<string name="score_">Punktid:</string>
 	<string name="rating_">Reiting:</string>
-	<string name="new_arg_rating_">New %s Rating:</string>
 	<string name="course">Kursus</string>
 	<string name="lessons_completed">Läbitud õppetunnid</string>
 	<string name="courses_completed">Läbitud kursused</string>
@@ -393,13 +386,13 @@
 	<string name="lessons_limit_reached_message">Õppetundide päevalimiit on täis. Uuendage oma kontot, et saada iga päev piiramatult õppetunde!</string>
 	<string name="resume_lesson">Jätkake Õppetundi</string>
 	<string name="installing_theme">Installeerin Teemat</string>
-	<string name="waiting_to_download">Waiting to download…</string>
 	<string name="loading_background">Laen Taustapilti</string>
 	<string name="saving_background">Salvestan Tasutapilti</string>
 	<string name="saving_board">Salvestan Seisu</string>
 	<string name="loading_board">Laen Seisu</string>
 	<string name="loading_sounds">Laen Helisid</string>
-	<string name="custom">Kohanda</string>
+  <string name="custom">\'Loo oma teema!\' - \'Create own theme!\'
+\'Loo uus teema!\' - \'Create a new theme!\'</string>
 	<string name="background">Taustapilt</string>
 	<string name="select_background">Vali Taustapilt</string>
 	<string name="edit">Redigeeri</string>
@@ -423,11 +416,10 @@
 	<string name="all_time">Alati</string>
 	<string name="comments_arg">%s kommentaari</string>
 	<string name="views_arg">nähtud %s korda</string>
-	<string name="game_is_over">Game Over</string>
-	<string name="game_over_vs">Game Over vs %s</string>
+	<string name="your_game_is_over">Mäng Sai Läbi</string>
 	<string name="switch_sides">Vaheta Pooled</string>
 	<string name="no_results">Tulemused puuduvad</string>
-	<string name="game_explorer">Explorer</string>
+	<string name="game_explorer">Mängude Arhiiv</string>
 	<string name="recent_problems">Hiljutised Probleemid</string>
 	<string name="recent_lessons">Hiljutised Õppetunnid</string>
 	<string name="players_online_arg">Hetkel on sisse logitud %s Mängijat</string>
@@ -478,13 +470,9 @@
 	<string name="review_lesson">Tunni ülevaade</string>
 	<string name="full_screen">Täisekraan</string>
 	<string name="line">variatsioon</string>
-	<string name="predict_move_or_add_new_line">Predict move or add new line…</string>
-	<string name="make_your_conditional_move">Make your conditional move…</string>
-	<string name="predict_opponent_next_move">Predict opponent\'s next move…</string>
+	<string name="predict_move_or_add_new_line">Arvuta käike või lisa uus liin...</string>
+	<string name="make_your_conditional_move">Tee oma tingiva käigu</string>
+	<string name="predict_opponent_next_move">Ennusta vastase järgmist käiku...</string>
 	<string name="notes">Märkmed</string>
 	<string name="private_note">Isiklik Märkmik</string>
-	<string name="upgrade_feedback_1">"\"Tactics and Lessons really help my chess skills\""</string>
-	<string name="upgrade_feedback_reporter_1">- Peter, Member Since 2011</string>
-	<string name="upgrade_feedback_2">"\"My overall rating improved a ton after i became a premium member\""</string>
-	<string name="upgrade_feedback_reporter_2">- Lou, NJ Member Since 2009</string>
 </resources>

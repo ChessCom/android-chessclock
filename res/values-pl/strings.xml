@@ -19,7 +19,7 @@
 	<string name="computer">Komputer</string>
 	<string name="thinking_">Myślę…</string>
 	<string name="open_challenges">Otwarte wyzwania</string>
-	<string name="challenge_friend">Zagraj ze znajomym</string>
+	<string name="challenge_friend">Wyzwij znajomego</string>
 	<string name="challenge_created">Wyzwanie utworzone</string>
 	<string name="you_will_notified_when_game_starts">Zostaniesz powiadomiony gdy partia się rozpocznie</string>
 	<string name="challenge_sent">Wyzwanie wysłane</string>
@@ -98,8 +98,6 @@
 	<string name="you_are_offline">Jesteś teraz w trybie Offline</string>
 	<string name="correct">Prawidłowo</string>
 	<string name="incorrect">Nieprawidłowo</string>
-	<string name="incorrect_move">Niewłaściwy ruch</string>
-	<string name="puzzle_solved">Łamigłówka rozwiązana!</string>
 	<string name="upgrade_for_unlimited_arg">Ulepsz dla nieograniczonych %s!</string>
 	<string name="hours">godz.</string>
 	<string name="hour">godz.</string>
@@ -131,25 +129,26 @@
 	<string name="unrated">Nierankingowa</string>
 	<string name="you_play">Grasz:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move_vs">Twój ruch vs %1$s , %2$s</string>
-	<string name="won_on_time">%s wygranych na czas</string>
-	<string name="won_by_resignation">%s wygranych przez poddanie</string>
+	<string name="your_move">"Twój ruch"</string>
+	<string name="your_turn_in_game_with">W Partii z %1$s, %2$s</string>
+	<string name="won_on_time">%s wygranych przez czas</string>
+	<string name="won_by_resignation">%s wygranych przez rezygnację</string>
 	<string name="won_by_checkmate">%s wygranych przez mat</string>
 	<string name="game_over">Koniec partii</string>
 	<string name="reconnecting_">Ponowne łączenie…</string>
 	<string name="another_login_detected">Oops! Jesteś zalogowany gdzieś indziej.</string>
-	<string name="game_end_title_draw">Remis (½–½)</string>
+	<string name="game_drawn">Partia zremisowana</string>
+	<string name="game_draw_by_repetition">Partia zremisowana przez powtórzenie</string>
+	<string name="game_drawn_by_agreement">Partia zremisowana za zgodą graczy</string>
+	<string name="game_drawn_by_stalemate">Partia zremisowana przez pata</string>
+	<string name="game_drawn_insufficient_material">Partia zremisowana przez niewystarczający materiał</string>
+	<string name="game_drawn_by_fifty_move_rule">Partia zremisowane przez regułę \"50 ruchów\"</string>
+	<string name="won_game_abandoned">Zwycięstwo - partia opuszczona</string>
 	<string name="game_aborted">Partia porzucona</string>
 	<string name="new_game">Nowa gra</string>
-	<string name="new_game_arg">Nowa partia (%s)</string>
 	<string name="language">Język</string>
 	<string name="black_wins">Czarne wygrały (0-1)</string>
 	<string name="white_wins">Białe wygrały (1-0)</string>
-	<string name="game_draw_by_repetition">Remis przez powtórzenie</string>
-	<string name="game_drawn_by_agreement">Remis przez uzgodnienie</string>
-	<string name="game_drawn_by_stalemate">Zremisowane przez pata</string>
-	<string name="game_drawn_insufficient_material">Remis przez martwą pozycję</string>
-	<string name="game_drawn_by_fifty_move_rule">Remis przez regułę 50 ruchów</string>
 	<string name="draw_by_stalemate">Remis przez pata (½–½)</string>
 	<string name="draw_by_3fold_repetition">Remis przez powtórzenie pozycji (½–½)</string>
 	<string name="rematch">Rewanż</string>
@@ -169,7 +168,7 @@
 	<string name="or_use_your_email">Lub użyj adresu email:</string>
 	<string name="by_signing_up_accept_mobile">Rejestrując się, akceptuję</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Warunki korzystania z usługi</a>]]></string>
-	<string name="create_chess_profile">Witamy! Stwórz swój profil szachowy</string>
+	<string name="create_chess_profile">Stwórz swój profil</string>
 	<string name="daily">Codzienne</string>
 	<string name="improve_game_with_lessons">Udoskonal swoją grę dzięki nielimitowanym lekcjom</string>
 	<string name="improve_game_with_videos">Popraw swoją grę dzięki filmom bez limitu</string>
@@ -181,10 +180,8 @@
 	<string name="download_complete">Pobieranie ukończone</string>
 	<string name="empty"></string>
 	<string name="difficulty">Poziom trudności</string>
-	<string name="easiest">Najłatwiejszy</string>
-	<string name="hardest">Najtrudniejszy</string>
 	<string name="vs">vs</string>
-	<string name="leave_vacation_q">Wyłączyć urlop?</string>
+	<string name="leave_vacation_q">Wyłączyć Urlop?</string>
 	<string name="sign_up_with_facebook"><b>Zaloguj się</b> przez <b>Facebook</b></string>
 	<string name="finished_games">Ukończone Partie</string>
 	<string name="feedback_mail_body">Proszę nie edytuj i nie usuwaj informacji poniżej.</string>
@@ -213,7 +210,7 @@
 	<string name="of_arg">z %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Wystarczająco dobre dla mistrzów</string>
-	<string name="upgrade_main_title_1_tablet">Wystarczająco dobre dla mistrzów.Wystarczająco proste dla początkujących.</string>
+	<string name="upgrade_main_title_1_tablet">Wystarczająco dobre dla Mistrzów. Wystarczająco łatwe dla Początkujących. Wypróbuj już teraz!</string>
 	<string name="upgrade_main_title_2">Wystarczająco proste dla początkujących</string>
 	<string name="diamond">Diamentowy</string>
 	<string name="diamond_subtitle">Nieograniczony dostęp do wszystkich funkcji</string>
@@ -246,7 +243,7 @@
 	<string name="choose_photo">Wybierz zdjęcie</string>
 	<string name="take_photo">Zrób zdjęcie</string>
 	<string name="pick_photo">Wybierz zdjęcie</string>
-	<string name="or_login_using_chesscom">Lub użyj swojej nazwy użytkownika Chess.com:</string>
+	<string name="or_login_using_chesscom">Albo zaloguj się przy użyciu nazwy użytkownika Chess.com:</string>
 	<string name="articles">Artykuły</string>
 	<string name="forums">Fora</string>
 	<string name="notifications">Powiadomienia</string>
@@ -257,7 +254,7 @@
 	<string name="share_pgn">Udostępnij PGN</string>
 	<string name="share_via">Udostępnij poprzez</string>
 	<string name="chess">Szachy</string>
-	<string name="via_chesscom">"poprzez @Chesscom"</string>
+	<string name="via_chesscom">poprzez @Chesscom</string>
 	<string name="vs_random_opponent">vs Losowy</string>
 	<string name="feed">Feed</string>
 	<string name="learn">Ucz się</string>
@@ -265,8 +262,9 @@
 	<string name="average_score">Średni wynik:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lekcje</string>
+	<string name="new_">Nowy</string>
 	<string name="analysis">Analiza</string>
-	<string name="profile">Konto</string>
+	<string name="profile">Profil</string>
 	<string name="theme">Motyw</string>
 	<string name="privacy">Prywatność</string>
 	<string name="blocking">Blokowanie</string>
@@ -284,7 +282,7 @@
 	<string name="profile_account_message_3">Jeśli chcesz zamknąć konto,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">dotknij tu.</a>]]></string>
 	<string name="basic">Podstawy</string>
-	<string name="sign_up_now_free">"Zarejestruj się ZA DARMO!"</string>
+	<string name="sign_up_now_free">Zarejestruj się teraz - to jest DARMOWE!</string>
 	<string name="chess_com_username">Nazwa użytkownika Chess.com</string>
 	<string name="coordinates">Współrzędne</string>
 	<string name="highlight_last_move">Podświetl ostatni ruch</string>
@@ -309,7 +307,7 @@
 	<string name="completed">Zakończone</string>
 	<string name="few_min">kilka minut</string>
 	<string name="less_than_60_sec"><![CDATA[< 60 s]]></string>
-	<string name="abort_game_">Porzucić partię?</string>
+	<string name="abort_game_">Przerwać partię?</string>
 	<string name="resign_game_">Poddać partię?</string>
 	<string name="days_move">dni/ruch</string>
 	<string name="password_cant_be_empty">Hasło nie może być puste</string>
@@ -327,10 +325,8 @@
 	<string name="add_friend">Dodaj znajomego</string>
 	<string name="recent_opponents">Niedawni przeciwnicy</string>
 	<string name="invite_by_email">Zaproś przez email</string>
-	<string name="please_enter_valid_email">Wprowadź prawidłowy adres e-mail</string>
 	<string name="invite_facebook_friend">Zaproś znajomego z Facebook\'a</string>
 	<string name="invite_from_contacts">Zaproś z kontaktów</string>
-	<string name="no_contacts_found">Brak kontaktów</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontakty</string>
 	<string name="facebook_invite_friend_to_play">Zagrajmy w szachy! Możesz grać online na Chess.com lub na telefonie z Androidem oraz iPhonie/iPadzie.</string>
@@ -349,10 +345,8 @@
 	<string name="username_not_found">Nazwa użytkownika nie znaleziona</string>
 	<string name="you_have_not_added_friends_yet">"Nie masz jeszcze znajomych. Dodaj kilku!"</string>
 	<string name="new_friend_request">Nowe zaproszenie do znajomych</string>
-	<string name="friend_request_from_arg">Zaproszenie do znajomych od %s</string>
 	<string name="new_chat_message">Nowa wiadomość czatu</string>
-	<string name="new_daily_challenge">Nowe wyzwanie - szachy korespondencyjne</string>
-	<string name="arg_wants_to_play">%s chce zagrać!</string>
+	<string name="new_challenge">Nowe wyzwanie</string>
 	<string name="unable_to_select_this_photo">Nie można użyć tego zdjęcia</string>
 	<string name="processing_">Przetwarzanie…</string>
 	<string name="about">O mnie</string>
@@ -381,7 +375,6 @@
 	<string name="your_course_rating">Twój ranking kursów:</string>
 	<string name="score_">Wynik:</string>
 	<string name="rating_">Ranking:</string>
-	<string name="new_arg_rating_">Nowy %s ranking:</string>
 	<string name="course">Kurs</string>
 	<string name="lessons_completed">Ukończone lekcje</string>
 	<string name="courses_completed">Ukończone kursy</string>
@@ -393,7 +386,6 @@
 	<string name="lessons_limit_reached_message">Osiągnięto limit lekcji na dziś. Rozszerz swoje konto już teraz, by doskonalić się dzięki nieograniczonym lekcjom!</string>
 	<string name="resume_lesson">Wznów lekcję</string>
 	<string name="installing_theme">Instalowanie motywu</string>
-	<string name="waiting_to_download">Czekaj na pobranie…</string>
 	<string name="loading_background">Wczytywanie tła</string>
 	<string name="saving_background">Zapisywanie tła</string>
 	<string name="saving_board">Zapisywanie szachownicy</string>
@@ -423,11 +415,10 @@
 	<string name="all_time">Wszystkie</string>
 	<string name="comments_arg">%s komentarze</string>
 	<string name="views_arg">%s wyświetlenia</string>
-	<string name="game_is_over">Partia zakończona</string>
-	<string name="game_over_vs">Partia zakończona vs %s</string>
+	<string name="your_game_is_over">Twoja partia jest zakończona</string>
 	<string name="switch_sides">Zamień strony</string>
 	<string name="no_results">Brak wyników</string>
-	<string name="game_explorer">Przeglądarka</string>
+	<string name="game_explorer">Eksplorator partii</string>
 	<string name="recent_problems">Ostanie problemy</string>
 	<string name="recent_lessons">Ostatnie lekcje</string>
 	<string name="players_online_arg">%s gracze online</string>
@@ -478,13 +469,9 @@
 	<string name="review_lesson">Przeglądaj lekcję</string>
 	<string name="full_screen">Pełny ekran</string>
 	<string name="line">Linia</string>
-	<string name="predict_move_or_add_new_line">Przewiduj ruch lub dodaj nową sekwencję…</string>
-	<string name="make_your_conditional_move">Wybierz swój ruch warunkowy…</string>
-	<string name="predict_opponent_next_move">Znajdź następny ruch przeciwnika…</string>
+	<string name="predict_move_or_add_new_line">Znajdź ruch lub dodaj nową linię...</string>
+	<string name="make_your_conditional_move">Wykonaj ruch warunkowy...</string>
+	<string name="predict_opponent_next_move">Znajdź następny ruch przeciwnika...</string>
 	<string name="notes">Notatki</string>
 	<string name="private_note">Notatka osobista</string>
-	<string name="upgrade_feedback_1">"\"Trener taktyki i lekcje bardzo poprawiły moją grę w szachy\""</string>
-	<string name="upgrade_feedback_reporter_1">Piotr, Członek od 2011</string>
-	<string name="upgrade_feedback_2">"\"Mój ogólny ranking bardzo się podniósł, po tym jak zostałem Członkiem Premium\""</string>
-	<string name="upgrade_feedback_reporter_2">- Lou, NJ Członek od 2009</string>
 </resources>

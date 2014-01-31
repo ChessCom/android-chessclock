@@ -19,7 +19,7 @@
 	<string name="computer">Kompjuter</string>
 	<string name="thinking_">Duke u menduar ...</string>
 	<string name="open_challenges">Hapje e sfidave.</string>
-	<string name="challenge_friend">Challenge a Friend</string>
+	<string name="challenge_friend">Sfidoni nje mik.</string>
 	<string name="challenge_created">Kerkesa eshte krijuar</string>
 	<string name="you_will_notified_when_game_starts">Ju do te njoftoheni kur loja do te filloje</string>
 	<string name="challenge_sent">Sfida eshte derguar</string>
@@ -98,8 +98,6 @@
 	<string name="you_are_offline">Tani jeni jashte line</string>
 	<string name="correct">korrekt</string>
 	<string name="incorrect">jo korrekt</string>
-	<string name="incorrect_move">Incorrect Move</string>
-	<string name="puzzle_solved">Puzzle Solved!</string>
 	<string name="upgrade_for_unlimited_arg">Upgrade per unlimit%s</string>
 	<string name="hours">oret</string>
 	<string name="hour">ore</string>
@@ -131,25 +129,26 @@
 	<string name="unrated">I pavleresuar</string>
 	<string name="you_play">Levizja juaj:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move_vs">Your move vs %1$s , %2$s</string>
-	<string name="won_on_time">%s wins on Time</string>
-	<string name="won_by_resignation">%s wins by Resignation</string>
-	<string name="won_by_checkmate">%s wins by Checkmate</string>
+	<string name="your_move">"Radha e jote"</string>
+	<string name="your_turn_in_game_with">Ne loje me %1$s , %2$s</string>
+	<string name="won_on_time">%s Fitoi me kohe</string>
+	<string name="won_by_resignation">%s fitoi me dorheqje</string>
+	<string name="won_by_checkmate">%s Fitoi me Shah Mat</string>
 	<string name="game_over">Loja mbaroi</string>
 	<string name="reconnecting_">Duke u rilidhur...</string>
 	<string name="another_login_detected">Upss! ju jeni lidhur diku tjeter.</string>
-	<string name="game_end_title_draw">Draw (½–½)</string>
+	<string name="game_drawn">Loje mbaroi barazim</string>
+	<string name="game_draw_by_repetition">Loja mbaroi barazim nga perseritjet</string>
+	<string name="game_drawn_by_agreement">Loja mbaroi barazim me marrveshje</string>
+	<string name="game_drawn_by_stalemate">Loja mbaroi barazim me Pat</string>
+	<string name="game_drawn_insufficient_material">Loja barazim per mungesa guresh</string>
+	<string name="game_drawn_by_fifty_move_rule">Barazim nga rregullorja e 50 levizjeve</string>
+	<string name="won_game_abandoned">Fitore - Loja eshte braktisur</string>
 	<string name="game_aborted">Loja eshte braktisur</string>
 	<string name="new_game">Loje e re</string>
-	<string name="new_game_arg">New Game (%s)</string>
 	<string name="language">Gjuha</string>
 	<string name="black_wins">I ziu fiton (0-1)</string>
 	<string name="white_wins">I bardhi fiton (1-0)</string>
-	<string name="game_draw_by_repetition">Drawn by Repetition</string>
-	<string name="game_drawn_by_agreement">Drawn by Agreement</string>
-	<string name="game_drawn_by_stalemate">Drawn by Stalemate</string>
-	<string name="game_drawn_insufficient_material">Drawn by Insufficient Material</string>
-	<string name="game_drawn_by_fifty_move_rule">Drawn by 50-move Rule</string>
 	<string name="draw_by_stalemate">Barazim (½–½)</string>
 	<string name="draw_by_3fold_repetition">Mbaj   ose     ...per leviszje te shpejta</string>
 	<string name="rematch">Loje e re</string>
@@ -169,7 +168,7 @@
 	<string name="or_use_your_email">Ose perdorni adresen e Emailt</string>
 	<string name="by_signing_up_accept_mobile">Duke firmosur ju e pranoni</string>
 	<string name="by_signing_up_accept_mobile1">Te dhena qe i referohen =htp..</string>
-	<string name="create_chess_profile">Welcome! Create your Chess Profile</string>
+	<string name="create_chess_profile">Krijoni nje profiln e shahut</string>
 	<string name="daily">Ditore</string>
 	<string name="improve_game_with_lessons">Permireso lojrat me leksione te pafundme</string>
 	<string name="improve_game_with_videos">Permireso lorat e tua me vidjo te pafundme</string>
@@ -181,10 +180,8 @@
 	<string name="download_complete">Donlodimi eshte kompletuar</string>
 	<string name="empty"></string>
 	<string name="difficulty">Veshtiresi</string>
-	<string name="easiest">Easiest</string>
-	<string name="hardest">Hardest</string>
 	<string name="vs">ndeshtet me</string>
-	<string name="leave_vacation_q">Disable Vacation?</string>
+	<string name="leave_vacation_q">Perfundo pushimet?</string>
 	<string name="sign_up_with_facebook">Hyre me ane te facebookut</string>
 	<string name="finished_games">Lojra te perfunduara</string>
 	<string name="feedback_mail_body">Ju lutemi mos redaktoni ose fshini informacionet e meposhtme</string>
@@ -213,7 +210,7 @@
 	<string name="of_arg">e%s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">E mjaftueshme per nje mjeshter</string>
-	<string name="upgrade_main_title_1_tablet">Good Enough for Masters. Simple Enough for Beginners.</string>
+	<string name="upgrade_main_title_1_tablet">Shume e mjaftushme per mjeshtrat. Thjesht e mjaftueshme per fillestaret. Provojeni tani!</string>
 	<string name="upgrade_main_title_2">Thjesht e mjaftueshme per fillestaret</string>
 	<string name="diamond">Diamond</string>
 	<string name="diamond_subtitle">Lidhje te pafundme per te ngjithe te variantet.</string>
@@ -246,7 +243,7 @@
 	<string name="choose_photo">Zgjedh nje fotografi</string>
 	<string name="take_photo">Bej fotografi</string>
 	<string name="pick_photo">Zgjidh nje fotografi</string>
-	<string name="or_login_using_chesscom">Or Use Your Chess.com Username:</string>
+	<string name="or_login_using_chesscom">Hyr me Chess.com me username</string>
 	<string name="articles">Artikuj</string>
 	<string name="forums">Forume</string>
 	<string name="notifications">Njoftime</string>
@@ -257,7 +254,7 @@
 	<string name="share_pgn">Shperndaje PGN</string>
 	<string name="share_via">Shperndaje nepermjet</string>
 	<string name="chess">Shah</string>
-	<string name="via_chesscom">"Nepermjet Chess.com"</string>
+	<string name="via_chesscom">Nepermjet Chess.com</string>
 	<string name="vs_random_opponent">ndeshesh me nje te rastesishem</string>
 	<string name="feed">Ushqe</string>
 	<string name="learn">Meso</string>
@@ -265,8 +262,9 @@
 	<string name="average_score">Mesatarja e pikeve</string>
 	<string name="start">Fillim</string>
 	<string name="lessons">Leksione</string>
+	<string name="new_">E re</string>
 	<string name="analysis">Analize</string>
-	<string name="profile">Account</string>
+	<string name="profile">Profil</string>
 	<string name="theme">Tema</string>
 	<string name="privacy">Privatesi</string>
 	<string name="blocking">Bllokim</string>
@@ -284,7 +282,7 @@
 	<string name="profile_account_message_3">Ne qofte se desheroni te mbyllni llogarine tuaj</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">Te dhena.</a>]]></string>
 	<string name="basic">bazike</string>
-	<string name="sign_up_now_free">"Sign Up - It's FREE!"</string>
+	<string name="sign_up_now_free">Hap nje llogari tashti Eshte e lire</string>
 	<string name="chess_com_username">Chess.com emri i perdorur</string>
 	<string name="coordinates">koordinatat</string>
 	<string name="highlight_last_move">Ve ne dukje levizjen e kaluar</string>
@@ -308,9 +306,9 @@
 	<string name="archive">arkiva</string>
 	<string name="completed">Perfunduar</string>
 	<string name="few_min">disa minuta</string>
-	<string name="less_than_60_sec"><![CDATA[< 60 sec]]></string>
-	<string name="abort_game_">Abort?</string>
-	<string name="resign_game_">Resign?</string>
+	<string name="less_than_60_sec"><![CDATA[< 60 sek]]></string>
+	<string name="abort_game_">Aborto lojen</string>
+	<string name="resign_game_">Terhiqu nga loja</string>
 	<string name="days_move">dite/levizje</string>
 	<string name="password_cant_be_empty">Fjalekalimi nuk mund te jete bosh</string>
 	<string name="invalid_username_or_password">Username ose fjalekalim i gabuar</string>
@@ -327,10 +325,8 @@
 	<string name="add_friend">shto nje mik</string>
 	<string name="recent_opponents">Kundershtari i zakonshem</string>
 	<string name="invite_by_email">Ftoje me ane te Emailit</string>
-	<string name="please_enter_valid_email">Please enter a valid Email</string>
 	<string name="invite_facebook_friend">Fto nje mik nga Facebooku</string>
 	<string name="invite_from_contacts">Ftoje nga kontaktet</string>
-	<string name="no_contacts_found">No Contacts Found</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontakt</string>
 	<string name="facebook_invite_friend_to_play">Le te luajme shah! Ju mund te luani online ne faqen Chess.com ose nga celulari me Android ose Iphone/Iphad</string>
@@ -349,10 +345,8 @@
 	<string name="username_not_found">Emri i perdorur nuk eshte Gjetur</string>
 	<string name="you_have_not_added_friends_yet">"Ju nuk keni ndonje mik akoma. Shtoni dike"</string>
 	<string name="new_friend_request">Kerkese e re per miqesi</string>
-	<string name="friend_request_from_arg">Friend request from %s</string>
 	<string name="new_chat_message">Nje mesazh i re ne chat</string>
-	<string name="new_daily_challenge">New Daily Challenge</string>
-	<string name="arg_wants_to_play">%s wants to play!</string>
+	<string name="new_challenge">Kerkese e re per te luajtur</string>
 	<string name="unable_to_select_this_photo">E pamundur te perdoret kjo fotografi</string>
 	<string name="processing_">Po procesohet</string>
 	<string name="about">Perreth</string>
@@ -381,7 +375,6 @@
 	<string name="your_course_rating">Piket tuaja te kursit</string>
 	<string name="score_">Pike</string>
 	<string name="rating_">Rrangu</string>
-	<string name="new_arg_rating_">New %s Rating:</string>
 	<string name="course">Kurse</string>
 	<string name="lessons_completed">Leksione te kompletuara</string>
 	<string name="courses_completed">Kurse te kompletuara</string>
@@ -393,7 +386,6 @@
 	<string name="lessons_limit_reached_message">Ju kemi arritur limitin e leksioneve per sot. Upgrade tani dhe permiresohuni me leksione te panumerta</string>
 	<string name="resume_lesson">Ruaj leksionet</string>
 	<string name="installing_theme">Shkarkim i temes</string>
-	<string name="waiting_to_download">Waiting to download…</string>
 	<string name="loading_background">Shkarkim i sfondit</string>
 	<string name="saving_background">Ruajtja e sfondit</string>
 	<string name="saving_board">Ruaj fushen</string>
@@ -423,11 +415,10 @@
 	<string name="all_time">Githmone</string>
 	<string name="comments_arg">% komente</string>
 	<string name="views_arg">shikues</string>
-	<string name="game_is_over">Game Over</string>
-	<string name="game_over_vs">Game Over vs %s</string>
+	<string name="your_game_is_over">Loje e perfunduar</string>
 	<string name="switch_sides">Shkembe anet</string>
 	<string name="no_results">Asnje rezultat</string>
-	<string name="game_explorer">Explorer</string>
+	<string name="game_explorer">Loje ekploruese</string>
 	<string name="recent_problems">Probleme me te shpeshta</string>
 	<string name="recent_lessons">Leksioni i fundit</string>
 	<string name="players_online_arg">%s i lojtareve jane ne line</string>
@@ -478,13 +469,9 @@
 	<string name="review_lesson">Rishikim leksionesh</string>
 	<string name="full_screen">Komplet figura</string>
 	<string name="line">Linja</string>
-	<string name="predict_move_or_add_new_line">Predict move or add new line…</string>
-	<string name="make_your_conditional_move">Make your conditional move…</string>
-	<string name="predict_opponent_next_move">Predict opponent\'s next move…</string>
+	<string name="predict_move_or_add_new_line">Parashiko levizje ose shto nje linje te re</string>
+	<string name="make_your_conditional_move">Bej levizjen tuaj te kushtezuar</string>
+	<string name="predict_opponent_next_move">Parashiko levizjen e kundershtarit</string>
 	<string name="notes">Shenime</string>
 	<string name="private_note">Shenim privat</string>
-	<string name="upgrade_feedback_1">"\"Tactics and Lessons really help my chess skills\""</string>
-	<string name="upgrade_feedback_reporter_1">- Peter, Member Since 2011</string>
-	<string name="upgrade_feedback_2">"\"My overall rating improved a ton after i became a premium member\""</string>
-	<string name="upgrade_feedback_reporter_2">- Lou, NJ Member Since 2009</string>
 </resources>

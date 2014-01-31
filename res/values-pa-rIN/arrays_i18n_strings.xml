@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>ਰੋਜਾਨਾ ਸ਼ਤਰੰਜ</item>
-		<item>ਜੀਵੰਤ ਖੇਡ - ਆਦਰਸ਼</item>
-		<item>ਜੀਵੰਤ ਖੇਡ - ਤੂਫਾਨੀ</item>
-		<item>ਜੀਵੰਤ ਖੇਡ - ਗੋਲੀ</item>
+		<item>ਜੀਵੰਤ ਸ਼ਤਰੰਜ - ਮਿਆਰੀ</item>
+		<item>ਜੀਵੰਤ ਸ਼ਤਰੰਜ - ਤੂਫਾਨੀ</item>
+		<item>ਜੀਵੰਤ ਸ਼ਤਰੰਜ - ਗੋਲੀ</item>
 		<item>ਰੋਜਾਨਾ ਸ਼ਤਰੰਜ960</item>
 		<item>ਯੁਕ੍ਤਿਯਾਂ</item>
 		<item>ਸਬਕ</item>

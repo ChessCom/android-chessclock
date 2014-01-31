@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Scacchi giornaliero</item>
-		<item>Live - Standard</item>
-		<item>Live - Lampo</item>
-		<item>Live - Bullet</item>
+		<item>Scacchi dal Vivo - Standard</item>
+		<item>Scacchi dal Vivo - Lampo</item>
+		<item>Scacchi dal Vivo - Bullet</item>
 		<item>Scacchi Giornaliero960</item>
 		<item>Tattiche</item>
 		<item>Lezioni</item>
@@ -16,11 +16,11 @@
 		<item>Esploratore delle Aperture</item>
 		<item>Statistiche Complete</item>
 		<item>Protezione Giornaliera dal Timeout</item>
-		<item>Senza Pubblicità</item>
+		<item>Nessun Annuncio Pubblicitario</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
 		<item></item>
-		<item>Esercizi di tattica senza limiti</item>
+		<item>Tattiche Illimitate</item>
 		<item>5 Lezioni al Giorno</item>
 		<item>Esploratore delle Aperture</item>
 		<item>Statistiche Complete</item>
@@ -39,6 +39,6 @@
 	<string-array name="afterMyMove">
 		<item>Vai alla Prossima Partita Pronta</item>
 		<item>Rimani Nella Stessa Partita</item>
-		<item>Torna all\'Elenco delle Partite</item>
+		<item>Torna alla Lista delle Partite</item>
 	</string-array>
 </resources>

@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Šachmatai kasdien</item>
-		<item>Šachmatai tiesiogiai - Standartas</item>
-		<item>Šachmatai tiesiogiai - Žaibas</item>
-		<item>Šachmatai tiesiogiai - Kulka</item>
+		<item>Šachmatai gyvai - Standartas</item>
+		<item>Šachmatai gyvai - Žaibas</item>
+		<item>Šachmatai gyvai - Kulka</item>
 		<item>Šachmatai 960 kasdien</item>
 		<item>Taktikos</item>
 		<item>Pamokos</item>

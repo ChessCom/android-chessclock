@@ -29,8 +29,7 @@
 		android:background="@color/transparent"
 		android:divider="@color/new_friends_list_divider"
 		android:dividerHeight="1dip"
-		android:layout_above="@+id/bannerUpgradeView"
-		/>
+		android:layout_above="@+id/bannerUpgradeView" />
 
 	<!--Ads-->
 	<include
@@ -38,7 +37,6 @@
 		layout="@layout/mopub_ad_view"
 		android:layout_gravity="center_horizontal"
 		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true"
-		/>
+		android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

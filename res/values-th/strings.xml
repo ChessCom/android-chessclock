@@ -19,7 +19,7 @@
 	<string name="computer">คอมพิวเตอร์</string>
 	<string name="thinking_">กำลังคิด...</string>
 	<string name="open_challenges">ท้าเล่นที่เปิดอยู่</string>
-	<string name="challenge_friend">Challenge a Friend</string>
+	<string name="challenge_friend">ท้าเล่นกับเพื่อน</string>
 	<string name="challenge_created">ท้าแล้ว</string>
 	<string name="you_will_notified_when_game_starts">คุณจะได้รับแจ้งเมื่อเกมเริ่มต้น</string>
 	<string name="challenge_sent">ส่งคำท้าแล้ว</string>
@@ -98,8 +98,6 @@
 	<string name="you_are_offline">ขณะนี้คุณอยู่ในโหมดออฟไลน์</string>
 	<string name="correct">ถูกต้อง</string>
 	<string name="incorrect">ไม่ถูกต้อง</string>
-	<string name="incorrect_move">Incorrect Move</string>
-	<string name="puzzle_solved">Puzzle Solved!</string>
 	<string name="upgrade_for_unlimited_arg">การอัพเกรดสำหรับ %s ไม่จำกัด</string>
 	<string name="hours">ชั่วโมง</string>
 	<string name="hour">ชั่วโมง</string>
@@ -131,25 +129,26 @@
 	<string name="unrated">ไม่คิดเรทติ้ง</string>
 	<string name="you_play">เล่น:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move_vs">Your move vs %1$s , %2$s</string>
-	<string name="won_on_time">%s wins on Time</string>
-	<string name="won_by_resignation">%s wins by Resignation</string>
-	<string name="won_by_checkmate">%s wins by Checkmate</string>
+	<string name="your_move">"ตาคุณ"</string>
+	<string name="your_turn_in_game_with">ในเกมกับ %1$s , %2$s</string>
+	<string name="won_on_time">%s ชนะด้วยเวลา</string>
+	<string name="won_by_resignation">%s ชนะโดยการยอมแพ้</string>
+	<string name="won_by_checkmate">%s ชนะด้วยรุกฆาต</string>
 	<string name="game_over">จบเกม</string>
 	<string name="reconnecting_">กำลังเชื่อมต่อ...</string>
 	<string name="another_login_detected">โอ๊ะ คุณเข้าสู่ระบบจากที่อื่น</string>
-	<string name="game_end_title_draw">Draw (½–½)</string>
+	<string name="game_drawn">เสมอ</string>
+	<string name="game_draw_by_repetition">เสมอโดยการเดินซ้ำ</string>
+	<string name="game_drawn_by_agreement">เสมอโดยตกลง</string>
+	<string name="game_drawn_by_stalemate">เสมอโดยการอับ</string>
+	<string name="game_drawn_insufficient_material">เสมอโดยตัวเล่นไม่เพียงพอ</string>
+	<string name="game_drawn_by_fifty_move_rule">เสมอโดยกฎเดิน 50 ตา</string>
+	<string name="won_game_abandoned">ชนะ - ทิ้งเกม</string>
 	<string name="game_aborted">เกมถูกยกเลิก</string>
 	<string name="new_game">เกมใหม่</string>
-	<string name="new_game_arg">New Game (%s)</string>
 	<string name="language">ภาษา</string>
 	<string name="black_wins">สีดำชนะ (0–1)</string>
 	<string name="white_wins">สีขาวชนะ (1–0)</string>
-	<string name="game_draw_by_repetition">Drawn by Repetition</string>
-	<string name="game_drawn_by_agreement">Drawn by Agreement</string>
-	<string name="game_drawn_by_stalemate">Drawn by Stalemate</string>
-	<string name="game_drawn_insufficient_material">Drawn by Insufficient Material</string>
-	<string name="game_drawn_by_fifty_move_rule">Drawn by 50-move Rule</string>
 	<string name="draw_by_stalemate">โดยอับ (½–½)</string>
 	<string name="draw_by_3fold_repetition">เสมอโดยเดินซ้ำ 3 ที (½–½)</string>
 	<string name="rematch">เล่นอีกเกม</string>
@@ -168,8 +167,8 @@
 	<string name="profile_picture">รูปภาพในโปรไฟล์</string>
 	<string name="or_use_your_email">หรือใช้อีเมล์ของคุณ:</string>
 	<string name="by_signing_up_accept_mobile">โดยนาม ฉันยอมรับ</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">เงื่อนไขการใช้บริการ</a>]]]></string>
-	<string name="create_chess_profile">Welcome! Create your Chess Profile</string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">เงื่อนไขการใช้บริการ</a>]]></string>
+	<string name="create_chess_profile">สร้างโปรไฟล์หมากรุกของคุณ</string>
 	<string name="daily">รายวัน</string>
 	<string name="improve_game_with_lessons">พัฒนาเกมของคุณได้ โดยเข้าบทเรียนได้ไม่จำกัด</string>
 	<string name="improve_game_with_videos">พัฒนาเกมของคุณได้ โดยเข้าดูวิดีโอได้ไม่จำกัด</string>
@@ -181,10 +180,8 @@
 	<string name="download_complete">ดาวน์โหลดเสร็จสมบูรณ์</string>
 	<string name="empty"></string>
 	<string name="difficulty">ความยาก</string>
-	<string name="easiest">Easiest</string>
-	<string name="hardest">Hardest</string>
 	<string name="vs">สู้กับ</string>
-	<string name="leave_vacation_q">Disable Vacation?</string>
+	<string name="leave_vacation_q">ปิดวันหยุดไหม</string>
 	<string name="sign_up_with_facebook"><b>ลงทะเบียน</b>ด้วย <b>Facebook</b></string>
 	<string name="finished_games">เกมที่เสร็จแล้ว</string>
 	<string name="feedback_mail_body">กรุณาอย่าแก้ไข หรือลบข้อมูลด้านล่าง</string>
@@ -213,7 +210,7 @@
 	<string name="of_arg">ของ %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">ดีพอสำหรับ masters</string>
-	<string name="upgrade_main_title_1_tablet">Good Enough for Masters. Simple Enough for Beginners.</string>
+	<string name="upgrade_main_title_1_tablet">ดีพอสำหรับ masters ง่ายพอสำหรับผู้เริ่มต้น ลองเลย</string>
 	<string name="upgrade_main_title_2">ง่ายพอสำหรับผู้เริ่มต้น</string>
 	<string name="diamond">เพชร</string>
 	<string name="diamond_subtitle">Unlimited access to all features</string>
@@ -246,7 +243,7 @@
 	<string name="choose_photo">เลือกรูปภาพ</string>
 	<string name="take_photo">ถ่ายภาพ</string>
 	<string name="pick_photo">เลือกภาพ</string>
-	<string name="or_login_using_chesscom">Or Use Your Chess.com Username:</string>
+	<string name="or_login_using_chesscom">Or, Log in with Chess.com Username:</string>
 	<string name="articles">บทความ</string>
 	<string name="forums">Forums</string>
 	<string name="notifications">แจ้งให้ทราบ</string>
@@ -257,7 +254,7 @@
 	<string name="share_pgn">แบ่งปัน PGN</string>
 	<string name="share_via">ใช้ร่วมกันผ่าน</string>
 	<string name="chess">หมากรุก</string>
-	<string name="via_chesscom">"ผ่าน @Chesscom"</string>
+	<string name="via_chesscom">ผ่าน @Chesscom</string>
 	<string name="vs_random_opponent">vs Random</string>
 	<string name="feed">ดึงข้อมูล</string>
 	<string name="learn">เรียนรู้</string>
@@ -265,8 +262,9 @@
 	<string name="average_score">คะแนนเฉลี่ย:</string>
 	<string name="start">เริ่ม</string>
 	<string name="lessons">บทเรียน</string>
+	<string name="new_">ใหม่</string>
 	<string name="analysis">การวิเคราะห์</string>
-	<string name="profile">Account</string>
+	<string name="profile">Profile</string>
 	<string name="theme">ชุดรูปแบบ</string>
 	<string name="privacy">ความเป็นส่วนตัว</string>
 	<string name="blocking">บล็อก</string>
@@ -284,7 +282,7 @@
 	<string name="profile_account_message_3">If you would like to close your account,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">tap here.</a>]]></string>
 	<string name="basic">พื้นฐาน</string>
-	<string name="sign_up_now_free">"Sign Up - It's FREE!"</string>
+	<string name="sign_up_now_free">สมัครสมาชิก-ฟรี</string>
 	<string name="chess_com_username">ชื่อผู้ใช้ใน Chess.com</string>
 	<string name="coordinates">พิกัด</string>
 	<string name="highlight_last_move">Highlight การเดินครั้งสุดท้าย</string>
@@ -308,9 +306,9 @@
 	<string name="archive">Archive</string>
 	<string name="completed">เสร็จสมบูรณ์</string>
 	<string name="few_min">ไม่กี่นาที</string>
-	<string name="less_than_60_sec"><![CDATA[< 60 วินาที]]]></string>
-	<string name="abort_game_">Abort?</string>
-	<string name="resign_game_">Resign?</string>
+	<string name="less_than_60_sec"><![CDATA[< 60 วินาที]]></string>
+	<string name="abort_game_">ยกเลิกเกมหรือไม่</string>
+	<string name="resign_game_">ยอมแพ้หรือไม่</string>
 	<string name="days_move">days/move</string>
 	<string name="password_cant_be_empty">Password Cannot be Empty</string>
 	<string name="invalid_username_or_password">Invalid Username or Password</string>
@@ -322,15 +320,13 @@
 	<string name="use_lessons">ใช้บทเรียน</string>
 	<string name="watch_videos">ชมวิดีโอบทเรียน</string>
 	<string name="interactive_lessons">บทเรียนแบบโต้ตอบ</string>
-	<string name="tactics_and_puzzles"><![CDATA[กลยุทธ์ และ ปัญหา]]]></string>
+	<string name="tactics_and_puzzles"><![CDATA[กลยุทธ์ และ ปัญหา]]></string>
 	<string name="friend_requests">ขอเป็นเพื่อน</string>
 	<string name="add_friend">เพิ่มเพื่อน</string>
 	<string name="recent_opponents">ฝ่ายตรงข้ามล่าสุด</string>
 	<string name="invite_by_email">เชิญทางอีเมล</string>
-	<string name="please_enter_valid_email">Please enter a valid Email</string>
 	<string name="invite_facebook_friend">เชิญเพื่อน Facebook</string>
 	<string name="invite_from_contacts">เชิญจากรายชื่อติดต่อ</string>
-	<string name="no_contacts_found">No Contacts Found</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Contacts</string>
 	<string name="facebook_invite_friend_to_play">Let\'s play chess! You can play online at Chess.com, or on mobile with Android or iPhone/iPad.</string>
@@ -349,10 +345,8 @@
 	<string name="username_not_found">ไม่พบชื่อผู้ใช้</string>
 	<string name="you_have_not_added_friends_yet">"คุณยังไม่มีเพื่อน เพิ่มเพื่อน!"</string>
 	<string name="new_friend_request">คำขอเพื่อนใหม่</string>
-	<string name="friend_request_from_arg">Friend request from %s</string>
 	<string name="new_chat_message">ข้อความสนทนาใหม่</string>
-	<string name="new_daily_challenge">New Daily Challenge</string>
-	<string name="arg_wants_to_play">%s wants to play!</string>
+	<string name="new_challenge">New Challenge</string>
 	<string name="unable_to_select_this_photo">Unable to Use this Photo</string>
 	<string name="processing_">Processing…</string>
 	<string name="about">About</string>
@@ -381,7 +375,6 @@
 	<string name="your_course_rating">เรทติ้งหลักสูตรของคุณ:</string>
 	<string name="score_">คะแนน:</string>
 	<string name="rating_">เรทติ้ง:</string>
-	<string name="new_arg_rating_">New %s Rating:</string>
 	<string name="course">หลักสูตร</string>
 	<string name="lessons_completed">บทเรียนที่เรียนเสร็จแล้ว</string>
 	<string name="courses_completed">หลักสูตรที่เรียนเสร็จแล้ว</string>
@@ -393,7 +386,6 @@
 	<string name="lessons_limit_reached_message">Lessons limit reached for today. Upgrade now to improve with unlimited lessons!</string>
 	<string name="resume_lesson">Resume Lesson</string>
 	<string name="installing_theme">Installing Theme</string>
-	<string name="waiting_to_download">Waiting to download…</string>
 	<string name="loading_background">โหลดพื้นหลัง</string>
 	<string name="saving_background">บันทึกพื้นหลัง</string>
 	<string name="saving_board">บันทึกกระดาน</string>
@@ -423,11 +415,10 @@
 	<string name="all_time">เวลาทั้งหมด</string>
 	<string name="comments_arg">ความคิดเห็นของ %s</string>
 	<string name="views_arg">มุมมองของ %s</string>
-	<string name="game_is_over">Game Over</string>
-	<string name="game_over_vs">Game Over vs %s</string>
+	<string name="your_game_is_over">เกมของคุณจบแล้ว</string>
 	<string name="switch_sides">สลับด้าน</string>
 	<string name="no_results">ไม่มีผลลัพธ์</string>
-	<string name="game_explorer">Explorer</string>
+	<string name="game_explorer">เกม Explorer</string>
 	<string name="recent_problems">ปัญหาล่าสุด</string>
 	<string name="recent_lessons">บทเรียนล่าสุด</string>
 	<string name="players_online_arg">%s ผู้เล่นออนไลน์</string>
@@ -478,13 +469,9 @@
 	<string name="review_lesson">ทบทวนบทเรียน</string>
 	<string name="full_screen">เต็มหน้าจอ</string>
 	<string name="line">บรรทัด</string>
-	<string name="predict_move_or_add_new_line">Predict move or add new line…</string>
-	<string name="make_your_conditional_move">Make your conditional move…</string>
-	<string name="predict_opponent_next_move">Predict opponent\'s next move…</string>
+	<string name="predict_move_or_add_new_line">ทำนายตาเดินหรือเพิ่มแนวการเดินใหม่...</string>
+	<string name="make_your_conditional_move">เดินตาของคุณตามเงื่อนไข...</string>
+	<string name="predict_opponent_next_move">ทำนายตาถัดไปของฝ่ายตรงข้าม...</string>
 	<string name="notes">หมายเหตุ</string>
 	<string name="private_note">หมายเหตุส่วนตัว</string>
-	<string name="upgrade_feedback_1">"\"Tactics and Lessons really help my chess skills\""</string>
-	<string name="upgrade_feedback_reporter_1">- Peter, Member Since 2011</string>
-	<string name="upgrade_feedback_2">"\"My overall rating improved a ton after i became a premium member\""</string>
-	<string name="upgrade_feedback_reporter_2">- Lou, NJ Member Since 2009</string>
 </resources>

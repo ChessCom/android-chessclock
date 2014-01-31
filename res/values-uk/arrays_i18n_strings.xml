@@ -3,8 +3,8 @@
 	<string-array name="game_stats_categories">
 		<item>Щоденні шахи</item>
 		<item>Шахи наживо - Стандарт</item>
-		<item>Наживо - Бліц</item>
-		<item>Наживо - Куля</item>
+		<item>Шахи наживо - бліц</item>
+		<item>Шахи наживо - куля</item>
 		<item>Щоденні шахи Фішера</item>
 		<item>Задачі</item>
 		<item>Уроки</item>

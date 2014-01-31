@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Daglig Sjakk</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>Live Sjakk - Standard</item>
+		<item>Live Sjakk - Blitz</item>
+		<item>Live Sjakk - Bullet</item>
 		<item>Daglig Sjakk960</item>
 		<item>Taktikk</item>
 		<item>Leksjoner</item>

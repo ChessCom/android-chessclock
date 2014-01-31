@@ -36,76 +36,75 @@
 		<item>Вие сте на одмор.</item>
 		<item>Погрешен број денови за потез.</item>
 		<item>Минималниот рејтинг е пренизок.</item>
-		<item>Минималниот рејтинг е превисок.</item>
-		<item>Максималниот рејтинг е пренизок.</item>
-		<item>Максималниот рејтинг е превисок.</item>
-		<item>Распонот на рејтингот мора да го вклучува вашиот рејтинг.</item>
-		<item>Распонот на рејтингот е премал.</item>
-		<item>Противникот е на одмор.</item>
-		<item>Противникот е недостапен.</item>
-		<item>Пренизок рејтинг.</item>
-		<item>Превисок рејтинг.</item>
-		<item>Противничкиот саат е неприлагоден.</item>
-		<item>Блокирани сте.</item>
-		<item>Прекорачен е бројот на максимални пребарувања.</item>
-		<item>Пред започнување на нови игри, одиграјте ги потезите.</item>
-		<item>Неисправни кориснички податоци.</item>
-		<item>Неисправен податок - totalGames</item>
-		<item>Ве молиме побарајте 50 или помалку игри.</item>
-		<item>Играта е во тек !</item>
-		<item>Процентот на прекини е превисок.</item>
-		<item>Недоволно игри.</item>
-		<item>Мора да сте премиум.</item>
-		<item>Пребавно играње на потези.</item>
-		<item>Не мозете да прифатите сопствена игра.</item>
-		<item>Предизвикот не е ваш.</item>
-		<item>Внесовте погрешен код на државата.</item>
-		<item>Корисничкото име е веќе зафатено.</item>
-		<item>Емаил веќе зафатен.</item>
-		<item>Невалиден Chess.com Емаил.</item>
-		<item>Погрешно корисничко име.</item>
-		<item>Ова корисничко име не е дозволено.</item>
-		<item>Неисправен email домејн.</item>
-		<item>Системска грешка.</item>
-		<item>Слаба лозинка.</item>
-		<item>Доставена е неточна пристапна дознака.</item>
-		<item>Ве молам пријавете се за да продолжите.</item>
-		<item>Празна грешка.</item>
-		<item>Не е можно да се ресетира играта.</item>
-		<item>Мора да наведете ‘’method’’, ‘’URL’’ i ‘’requestId’’.</item>
-		<item>Погрешен број на страница.</item>
-		<item>Веќе го променивте своето корисничко име. Дозволена е само една промена.</item>
-		<item>Не можете да го промените своето корисничко име додека сте пријавени во Шах во живо.</item>
-		<item>Внесениот ply е поголем од дозволениот.</item>
-		<item>Внесениот параметар е погрешен.</item>
-		<item>Празна грешка.</item>
-		<item>Игрите мора да имаат најмалку 16 потези за да можат да се достават на компјутерска анализа.</item>
-		<item>Играта е веќе доставена на компјутерска анализа.</item>
-		<item>Достигнат е лимитот на дозволени игри.</item>
-		<item>Не е можно да се анализира со нашиот компјутер.</item>
-		<item>Анализата е во тек.</item>
-		<item>Предизвикајте се самиот себе .</item>
-		<item>Сликата на профилот е неисправна. Дозволената големина на датотеката е 2 MB a, дозволени датотеки се jpg,
-			jpeg, gif i png.
+		<item>Min rating too high.</item>
+		<item>Max rating too low.</item>
+		<item>Max rating too high.</item>
+		<item>Rating range must include your own rating.</item>
+		<item>Rating range too small.</item>
+		<item>Opponent on vacation.</item>
+		<item>Opponent unavailable.</item>
+		<item>Rating too low.</item>
+		<item>Rating too high.</item>
+		<item>Opponent mismatched time control.</item>
+		<item>You are blocked.</item>
+		<item>Max seeks exceeded.</item>
+		<item>Make moves before creating more games.</item>
+		<item>Invalid user id.</item>
+		<item>Invalid parameter - totalGames</item>
+		<item>Please request 50 or less games</item>
+		<item>Game already started!</item>
+		<item>Timeout percentage too high.</item>
+		<item>Too few games.</item>
+		<item>Must be premium.</item>
+		<item>Move speed too slow.</item>
+		<item>Can\'t accept own seek.</item>
+		<item>Not your challenge.</item>
+		<item>Invalid country id or code passed.</item>
+		<item>Username already taken.</item>
+		<item>Email already taken.</item>
+		<item>Invalid Chess.com email.</item>
+		<item>Invalid username.</item>
+		<item>Username not allowed.</item>
+		<item>Invalid email domain.</item>
+		<item>System error.</item>
+		<item>Weak password.</item>
+		<item>Invalid login token supplied.</item>
+		<item>Please login to continue.</item>
+		<item>Empty Error</item>
+		<item>Unable to reset chess game.</item>
+		<item>You must specify \"method\", \"url\" and \"requestId\".</item>
+		<item>Invalid page number</item>
+		<item>You have already changed your username. Only one change is allowed.</item>
+		<item>You can\'t change your username while you are logged in to Live Chess.</item>
+		<item>Passed ply is greater than max allowed.</item>
+		<item>Invalid parameter passed.</item>
+		<item>Empty Error</item>
+		<item>Games must be a minimum of 16 moves to be submitted for computer analysis.</item>
+		<item>This game has already been submitted for computer analysis.</item>
+		<item>Game limit reached.</item>
+		<item>Unable to be analyzed by our computer.</item>
+		<item>Analysis is still in progress.</item>
+		<item>Self challenge.</item>
+		<item>Avatar image is invalid. Allowed file size is 2 MB and allowed mime types are: \"image/jpeg, image/gif,
+			image/png\".
 		</item>
-		<item>Корисничкото име мора да има 3 или повеке ознаки.</item>
-		<item>Корисничкото име не смее да има повеќе од 20 ознаки.</item>
-		<item>Корисничкото име не е дозволено. Обидете се повторно.</item>
-		<item>За да спречи спамување и злоупотреба Chess.com не дозволува throw-away email адреси. Ве молиме внесете
-			вистинска email адреса или поврзете се преку Facebook.Ви благодариме!
+		<item>Username should have 3 characters or more.</item>
+		<item>Username should have 20 characters or less.</item>
+		<item>Username is not allowed. Please try again.</item>
+		<item>To prevent spam and abuse, Chess.com does not allow throw-away email addresses. Please use a legitimate
+			email address or connect with Facebook. Thanks!
 		</item>
-		<item>Лозинката треба да има најмалку 6 ознаки.</item>
-		<item>Името не смее да има повеке од 20 ознаки.</item>
-		<item>Презимето не смее да има повеќе од 20 ознаки.</item>
-		<item>Оваа IP адреса е веќе забранета.</item>
-		<item>Корисничкото име не смее да биде празно.</item>
-		<item>Погрешна шифра на производот.</item>
-		<item>Неточни податоци за купувањето.</item>
-		<item>Неточно име на пакетот.
-		</item>
-		<item>Неточни податоци за производителот.</item>
-		<item>Неточен потпис на податоците.</item>
-		<item>Неточна порачка.</item>
-		<item>Погрешна нарачка.</item>
+		<item>Password should have at least 6 characters.</item>
+		<item>First name should have 20 characters or less.</item>
+		<item>Last name should have 20 characters or less.</item>
+		<item>The IP has been already banned</item>
+		<item>Username should not be blank.</item>
+		<item>Invalid product sku</item>
+		<item>Invalid purchase data</item>
+		<item>Invalid package name</item>
+		<item>Invalid developer payload</item>
+		<item>Invalid data signature</item>
+		<item>Invalid order</item>
+		<item>Wrong order</item>
 	</string-array>
 </resources>

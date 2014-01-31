@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Levelező sakk</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>Élő sakk - Normál</item>
+		<item>Élő sakk - Villám</item>
+		<item>Élő sakk - Hirtelen halál</item>
 		<item>Levelező sakk960</item>
 		<item>Feladványok</item>
 		<item>Leckék</item>

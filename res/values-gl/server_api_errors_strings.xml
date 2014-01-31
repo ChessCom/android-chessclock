@@ -30,60 +30,60 @@
 		<item>Parola desactivada.</item>
 		<item>Xa estás de vacacións.</item>
 		<item>Tempo de vacacións esgotado.</item>
-		<item>Fai a túa xogada en todas as partidas.</item>
-		<item>O usuario non está de vacacións.</item>
-		<item>Estás de vacacións.</item>
-		<item>Número de días por xogada non válido.</item>
-		<item>Puntuación mínima baixa de máis.</item>
-		<item>Puntuación mínima alta de máis.</item>
-		<item>Puntuación máxima baixa de máis.</item>
-		<item>Puntuación máxima alta de máis.</item>
-		<item>O intervalo debe conter a túa propia puntuación.</item>
-		<item>Intervalo de puntuacións curto de máis.</item>
-		<item>Adversario de vacacións.</item>
-		<item>Adversario non dispoñible.</item>
-		<item>Puntuación baixa de máis.</item>
-		<item>Puntuación alta de máis.</item>
-		<item>O tempo escollido polo adversario non coincide.</item>
-		<item>O teu usuario está bloqueado.</item>
-		<item>Límite de retos excedido.</item>
-		<item>Move antes de crear máis partidas.</item>
-		<item>Identificador de usuario non válido.</item>
-		<item>Parámetro non válido - totalGames</item>
-		<item>Por favor, solicita 50 partidas ou menos</item>
-		<item>A partida xa comezou!</item>
-		<item>Porcentaxe de perdas por tempo alto de máis.</item>
-		<item>Número de partidas insuficiente.</item>
-		<item>Debes ser Premium.</item>
-		<item>Ritmo de xogo lento de máis.</item>
-		<item>Non podes aceptar o teu propio reto.</item>
-		<item>Este desafío non é teu.</item>
-		<item>Identificador ou código de país non válido.</item>
-		<item>Nome de usuario non dispoñible.</item>
-		<item>Enderezo electrónico non dispoñible.</item>
-		<item>Enderezo electrónico de Chess.com non válido.</item>
-		<item>Nome de usuario non válido.</item>
-		<item>Nome de usuario non permitido.</item>
-		<item>Dominio de correo electrónico non válido.</item>
-		<item>Erro de sistema.</item>
-		<item>Contrasinal feble.</item>
-		<item>Identificador de acceso non válido.</item>
-		<item>Por favor, inicia sesión para continuar.</item>
-		<item>Erro descoñecido.</item>
-		<item>Non foi posible recuperar a partida.</item>
-		<item>Debe determinar os campos \"method\", \"url\" e \"requestId\".</item>
-		<item>Número de páxina non válido.</item>
-		<item>Xa mudaches o teu nome de usuario. Só se permite un cambio.</item>
-		<item>Non podes mudar o teu nome de usuario coa sesión de Xadrez en Vivo aberta.</item>
-		<item>O valor de ply introducido excede o límite permitido.</item>
-		<item>Parámetro non válido.</item>
-		<item>Erro descoñecido</item>
-		<item>As partidas deben ter un mínimo de 16 xogadas para seren analizadas por computadora.</item>
-		<item>Esta partida xa foi analizada pola computadora.</item>
-		<item>Límite de partidas alcanzado.</item>
-		<item>A nosa computadora non pode analizala.</item>
-		<item>A análise aínda non rematou.</item>
-		<item>Xoga contra ti mesmo.</item>
+		<item>Complete all game moves.</item>
+		<item>User not on vacation.</item>
+		<item>You are on vacation.</item>
+		<item>Invalid days per move.</item>
+		<item>Min rating too low.</item>
+		<item>Min rating too high.</item>
+		<item>Max rating too low.</item>
+		<item>Max rating too high.</item>
+		<item>Rating range must include your own rating.</item>
+		<item>Rating range too small.</item>
+		<item>Opponent on vacation.</item>
+		<item>Opponent unavailable.</item>
+		<item>Rating too low.</item>
+		<item>Rating too high.</item>
+		<item>Opponent mismatched time control.</item>
+		<item>You are blocked.</item>
+		<item>Max seeks exceeded.</item>
+		<item>Make moves before creating more games.</item>
+		<item>Invalid user id.</item>
+		<item>Invalid parameter - totalGames</item>
+		<item>Please request 50 or less games</item>
+		<item>Game already started!</item>
+		<item>Timeout percentage too high.</item>
+		<item>Too few games.</item>
+		<item>Must be premium.</item>
+		<item>Move speed too slow.</item>
+		<item>Can\'t accept own seek.</item>
+		<item>Not your challenge.</item>
+		<item>Invalid country id or code passed.</item>
+		<item>Username already taken.</item>
+		<item>Email already taken.</item>
+		<item>Invalid Chess.com email.</item>
+		<item>Invalid username.</item>
+		<item>Username not allowed.</item>
+		<item>Invalid email domain.</item>
+		<item>System error.</item>
+		<item>Weak password.</item>
+		<item>Invalid login token supplied.</item>
+		<item>Please login to continue.</item>
+		<item>Empty Error</item>
+		<item>Unable to reset chess game.</item>
+		<item>You must specify \"method\", \"url\" and \"requestId\".</item>
+		<item>Invalid page number</item>
+		<item>You have already changed your username. Only one change is allowed.</item>
+		<item>You can\'t change your username while you are logged in to Live Chess.</item>
+		<item>Passed ply is greater than max allowed.</item>
+		<item>Invalid parameter passed.</item>
+		<item>Empty Error</item>
+		<item>Games must be a minimum of 16 moves to be submitted for computer analysis.</item>
+		<item>This game has already been submitted for computer analysis.</item>
+		<item>Game limit reached.</item>
+		<item>Unable to be analyzed by our computer.</item>
+		<item>Analysis is still in progress.</item>
+		<item>Self challenge.</item>
 		<item>Avatar image is invalid. Allowed file size is 2 MB and allowed mime types are: \"image/jpeg, image/gif,
 			image/png\".
 		</item>

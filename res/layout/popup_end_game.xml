@@ -5,8 +5,7 @@
 	android:orientation="vertical"
 	android:paddingTop="30dip"
 	android:minWidth="@dimen/popup_end_game_width"
-	android:background="@drawable/popup_white_back"
-	>
+	android:background="@drawable/popup_white_back">
 
 	<!--End game title-->
 	<com.chess.widgets.RoboTextView

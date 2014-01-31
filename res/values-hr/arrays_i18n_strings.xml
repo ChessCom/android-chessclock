@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Dnevni šah</item>
-		<item>Uživo - ubrzani</item>
-		<item>Uživo - Brzopotezni</item>
-		<item>Uživo - Munjeviti</item>
+		<item>Šah uživo - Ubrzani</item>
+		<item>Šah uživo - Brzopotezni</item>
+		<item>Šah uživo - Munjeviti</item>
 		<item>Dnevni šah960</item>
 		<item>Taktike</item>
 		<item>Lekcije</item>
@@ -19,7 +19,7 @@
 		<item>Bez oglasa</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item> </item>
+		<item></item>
 		<item>Neograničene taktike</item>
 		<item>5 lekcija dnevno</item>
 		<item>Pretraživač otvaranja</item>
@@ -28,7 +28,7 @@
 		<item>Bez oglasa</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item> </item>
+		<item></item>
 		<item>25 taktika dnevno</item>
 		<item>3 lekcije dnevno</item>
 		<item>Pretraživač otvaranja</item>

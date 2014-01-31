@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>每日国际象棋</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>在线下棋</item>
+		<item>在线快棋</item>
+		<item>在线超快棋</item>
 		<item>每日 Chess960</item>
 		<item>战术</item>
 		<item>在线课程</item>

@@ -5,8 +5,7 @@
 	android:orientation="vertical"
 	android:paddingTop="4dip"
 	android:minWidth="@dimen/popup_end_game_width"
-	android:background="@drawable/popup_white_back"
-	>
+	android:background="@drawable/popup_white_back">
 
 	<!--End game title-->
 	<com.chess.widgets.RoboTextView
@@ -116,8 +115,7 @@
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
 		android:paddingTop="2dp"
-		android:paddingBottom="2dp"
-		>
+		android:paddingBottom="2dp">
 
 		<!--Analyze -->
 		<com.chess.widgets.RoboButton
@@ -152,7 +150,6 @@
 		android:minWidth="@dimen/ad_popup_width"
 		android:minHeight="@dimen/ad_popup_height"
 		android:layout_gravity="center_horizontal"
-		android:layout_marginBottom="2dp"
-		/>
+		android:layout_marginBottom="2dp" />
 
 </LinearLayout>

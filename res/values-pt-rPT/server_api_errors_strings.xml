@@ -12,16 +12,16 @@
 		<item>A conta foi desactivada.</item>
 		<item>Deve configurar uma senha em Chess.com.</item>
 		<item>Recurso não encontrado.</item>
-		<item>Limite diário de táticas atingido.</item>
+		<item>Limite diário de Táticas atingido.</item>
 		<item>Não pode adicionar-se como amigo.</item>
-		<item>Já solicitou que este membro seja adicionado como seu amigo.</item>
+		<item>Já solicitou que este membro seja adicionado aos amigos.</item>
 		<item>Este membro já é seu amigo.</item>
 		<item>Este utilizador não aceita pedidos de amizade.</item>
 		<item>Este utilizador bloqueou-o!</item>
 		<item>FEN inválido detectado.</item>
 		<item>Não foi possível localizar o utilizador pelo nome ou pelo loginToken.</item>
 		<item>O ply fornecido excede o limite permitido.</item>
-		<item>Por favor, atualize o jogo.</item>
+		<item>Por favor atualize o jogo.</item>
 		<item>Jogo já terminado.</item>
 		<item>Não é a sua vez de jogar.</item>
 		<item>Jogada ilegal.</item>
@@ -49,9 +49,9 @@
 		<item>O limite de reptos foi excedido.</item>
 		<item>Executar jogadas antes de criar mais jogos.</item>
 		<item>Identidade do utilizador inválida.</item>
-		<item>Parâmetro inválido: totalGames</item>
-		<item>Por favor, solicite 50 jogos ou menos</item>
-		<item>Partida já iniciada!</item>
+		<item>Parâmetro inválido - totalGames</item>
+		<item>Por favor solicite 50 jogos ou menos</item>
+		<item>Jogo já iniciado!</item>
 		<item>Percentagem do timeout muito elevada.</item>
 		<item>Muito poucos jogos.</item>
 		<item>Deve ter uma conta premium.</item>
@@ -96,7 +96,7 @@
 		<item>A senha deve ter pelo menos 6 caracteres.</item>
 		<item>O nome deve ter 20 caracteres ou menos.</item>
 		<item>O apelido deve ter 20 caracteres ou menos.</item>
-		<item>Este IP já se encontra banido</item>
+		<item>O IP já se encontra banido</item>
 		<item>O nome de utilizador não pode ficar em branco.</item>
 		<item>SKU do produto inválido</item>
 		<item>Dados de compra inválidos</item>

@@ -98,8 +98,6 @@
 	<string name="you_are_offline">Je bent nu in Offline modus</string>
 	<string name="correct">Juist</string>
 	<string name="incorrect">Onjuist</string>
-	<string name="incorrect_move">Foute zet</string>
-	<string name="puzzle_solved">Puzzel opgelost!</string>
 	<string name="upgrade_for_unlimited_arg">Upgrade voor onbeperkte %s!</string>
 	<string name="hours">uren</string>
 	<string name="hour">uur</string>
@@ -131,25 +129,26 @@
 	<string name="unrated">Niet-officieel</string>
 	<string name="you_play">Jij Speelt als:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move_vs">Jouw zet vs %1$s , %2$s</string>
-	<string name="won_on_time">%s wint op tijd</string>
-	<string name="won_by_resignation">%s wint door opgave</string>
-	<string name="won_by_checkmate">%s wint door schaakmat</string>
+	<string name="your_move">"Jij bent aan zet"</string>
+	<string name="your_turn_in_game_with">In de partij met %1$s, %2$s</string>
+	<string name="won_on_time">%s heeft op tijd gewonnen</string>
+	<string name="won_by_resignation">%s heeft gewonnen door opgave</string>
+	<string name="won_by_checkmate">%s heeft gewonnen door schaakmat</string>
 	<string name="game_over">Partij Afgelopen</string>
 	<string name="reconnecting_">Opnieuw verbinden…</string>
 	<string name="another_login_detected">Oeps! Je bent elders aangemeld.</string>
-	<string name="game_end_title_draw">Remise (1/2 - 1/2)</string>
+	<string name="game_drawn">Partij Remise</string>
+	<string name="game_draw_by_repetition">Partij Remise door Zetherhaling</string>
+	<string name="game_drawn_by_agreement">Partij Remise Overeengekomen</string>
+	<string name="game_drawn_by_stalemate">Partij Remise door Pad</string>
+	<string name="game_drawn_insufficient_material">Partij Remise door Onvoldoende Materiaal</string>
+	<string name="game_drawn_by_fifty_move_rule">Partij Remise door 50-zetten Regel</string>
+	<string name="won_game_abandoned">Heeft gewonnen - Partij Verlaten</string>
 	<string name="game_aborted">Partij Afgebroken</string>
 	<string name="new_game">Nieuwe Partij</string>
-	<string name="new_game_arg">Nieuw spel (%s)</string>
 	<string name="language">Taal</string>
 	<string name="black_wins">Zwart Wint (0-1)</string>
 	<string name="white_wins">Wit Wint (1-0)</string>
-	<string name="game_draw_by_repetition">Remise door zetherhaling</string>
-	<string name="game_drawn_by_agreement">Remise overeengekomen</string>
-	<string name="game_drawn_by_stalemate">Remise door pat</string>
-	<string name="game_drawn_insufficient_material">Remise door onvoldoende materiaal</string>
-	<string name="game_drawn_by_fifty_move_rule">Remise door 50-zettenregel</string>
 	<string name="draw_by_stalemate">Remise door Pad (1/2-1/2)</string>
 	<string name="draw_by_3fold_repetition">Remise door Zetherhaling (1/2-1/2)</string>
 	<string name="rematch">Speel Opnieuw</string>
@@ -168,8 +167,8 @@
 	<string name="profile_picture">Profielfoto</string>
 	<string name="or_use_your_email">Of gebruik je e-mailadres:</string>
 	<string name="by_signing_up_accept_mobile">Door te Registeren, Ga ik Akkoord met</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> Servicevoorwaarden</a>]]]></string>
-	<string name="create_chess_profile">Welkom! Maak uw schaak-profiel aan</string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> Servicevoorwaarden</a>]]></string>
+	<string name="create_chess_profile">Maak uw Schaakprofiel aan</string>
 	<string name="daily">Dagelijks</string>
 	<string name="improve_game_with_lessons">Verbeter uw Spel met Onbeperkte Lessen</string>
 	<string name="improve_game_with_videos">Verbeter je spel met onbeperkte video\'s</string>
@@ -181,8 +180,6 @@
 	<string name="download_complete">Download voltooid</string>
 	<string name="empty"></string>
 	<string name="difficulty">Moeilijkheidsgraad</string>
-	<string name="easiest">Gemakkelijkste</string>
-	<string name="hardest">Moeilijkste</string>
 	<string name="vs">VS</string>
 	<string name="leave_vacation_q">Vakantie uitschakelen?</string>
 	<string name="sign_up_with_facebook"><b>Aanmelden</b> met <b>Facebook</b></string>
@@ -213,7 +210,7 @@
 	<string name="of_arg">van %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Goed genoeg voor Masters</string>
-	<string name="upgrade_main_title_1_tablet">Goed genoeg voor gevorderden. Eenvoudig genoeg voor beginners.</string>
+	<string name="upgrade_main_title_1_tablet">Goed genoeg voor Masters. Eenvoudig genoeg voor Beginners. Probeer het nu!</string>
 	<string name="upgrade_main_title_2">Eenvoudig genoeg voor Beginners</string>
 	<string name="diamond">Diamant</string>
 	<string name="diamond_subtitle">Onbeperkte toegang tot alle functies</string>
@@ -246,7 +243,7 @@
 	<string name="choose_photo">Kies een foto</string>
 	<string name="take_photo">Foto nemen</string>
 	<string name="pick_photo">Kies een foto</string>
-	<string name="or_login_using_chesscom">Of gebruik uw Chess.com gebruikersnaam:</string>
+	<string name="or_login_using_chesscom">Of, Aanmelden met Chess.com gebruikersnaam:</string>
 	<string name="articles">Artikels</string>
 	<string name="forums">Fora</string>
 	<string name="notifications">Meldingen</string>
@@ -257,7 +254,7 @@
 	<string name="share_pgn">Deel PGN</string>
 	<string name="share_via">Delen via</string>
 	<string name="chess">Schaken</string>
-	<string name="via_chesscom">"via @Chesscom"</string>
+	<string name="via_chesscom">via @Chesscom</string>
 	<string name="vs_random_opponent">vs Willekeurig</string>
 	<string name="feed">Feed</string>
 	<string name="learn">Leren</string>
@@ -265,6 +262,7 @@
 	<string name="average_score">Gemiddelde Score:</string>
 	<string name="start">Start</string>
 	<string name="lessons">Lessen</string>
+	<string name="new_">Nieuwe</string>
 	<string name="analysis">Analyse</string>
 	<string name="profile">Profiel</string>
 	<string name="theme">Thema</string>
@@ -277,14 +275,14 @@
 	<string name="location">Locatie</string>
 	<string name="share">Delen</string>
 	<string name="profile_membership_renew_cancel">Je %1$s lidmaatschap zal worden vernieuwd op %2$s.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Annuleren</a>]]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Annuleren</a>]]></string>
 	<string name="invite_friends_profile_message">Schaken is leuker met vrienden - nodig hen uit om deel te nemen!</string>
 	<string name="profile_account_message_1">Jouw profiel is onderdeel van de website </string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice"> Gebruiksvoorwaarden.</a>]]></string>
 	<string name="profile_account_message_3">Als je jouw account wil sluiten,</string>
 	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy"> klik hier.</a>]]></string>
 	<string name="basic">Basis</string>
-	<string name="sign_up_now_free">"Aanmelden - het is gratis!"</string>
+	<string name="sign_up_now_free">Registreer nu - het is GRATIS!</string>
 	<string name="chess_com_username">Chess.com gebruikersnaam</string>
 	<string name="coordinates">Coördinaten</string>
 	<string name="highlight_last_move">Markeer Laatste Zet</string>
@@ -308,9 +306,9 @@
 	<string name="archive">Archief</string>
 	<string name="completed">Voltooid</string>
 	<string name="few_min">een paar minuten</string>
-	<string name="less_than_60_sec"><![CDATA[< 60 sec]]]></string>
-	<string name="abort_game_">Afbreken?</string>
-	<string name="resign_game_">Opgeven?</string>
+	<string name="less_than_60_sec"><![CDATA[< 60 sec]]></string>
+	<string name="abort_game_">Partij Afbreken?</string>
+	<string name="resign_game_">Partij Opgeven?</string>
 	<string name="days_move">dagen/zet</string>
 	<string name="password_cant_be_empty">Wachtwoord mag niet leeg zijn</string>
 	<string name="invalid_username_or_password">Ongeldig wachtwoord of gebruikersnaam</string>
@@ -322,15 +320,13 @@
 	<string name="use_lessons">gebruik Lessen</string>
 	<string name="watch_videos">bekijk Videolessen</string>
 	<string name="interactive_lessons">Interactieve lessen</string>
-	<string name="tactics_and_puzzles"><![CDATA[Tactiek &amp; Puzzels]]]></string>
+	<string name="tactics_and_puzzles"><![CDATA[Tactiek &amp; Puzzels]]></string>
 	<string name="friend_requests">Vriendschapsverzoeken</string>
 	<string name="add_friend">Voeg vriend toe</string>
 	<string name="recent_opponents">Recente tegenstanders</string>
 	<string name="invite_by_email">Nodig uit per E-mail</string>
-	<string name="please_enter_valid_email">Geef een geldig e-mailadres op</string>
 	<string name="invite_facebook_friend">Facebook vriend uitnodigen</string>
 	<string name="invite_from_contacts">Contactpersoon uitnodigen</string>
-	<string name="no_contacts_found">Geen contacten gevonden</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Contactpersonen</string>
 	<string name="facebook_invite_friend_to_play">Laten we schaken! Je kan online spelen op Chess.com, of mobiel met Android of iPhone/iPad.</string>
@@ -349,10 +345,8 @@
 	<string name="username_not_found">Gebruikersnaam niet gevonden</string>
 	<string name="you_have_not_added_friends_yet">"Je hebt nog geen vrienden. Voeg er enkele toe!"</string>
 	<string name="new_friend_request">Nieuw vriendschapsverzoek</string>
-	<string name="friend_request_from_arg">Vriend verzoek van %s</string>
 	<string name="new_chat_message">Nieuw bericht</string>
-	<string name="new_daily_challenge">Nieuwe dagelijkse uitdaging</string>
-	<string name="arg_wants_to_play">%s wil spelen!</string>
+	<string name="new_challenge">Nieuwe uitdaging</string>
 	<string name="unable_to_select_this_photo">Deze foto is niet bruikbaar</string>
 	<string name="processing_">Wordt verwerkt…</string>
 	<string name="about">Over</string>
@@ -381,7 +375,6 @@
 	<string name="your_course_rating">Jouw Cursus niveau:</string>
 	<string name="score_">Score:</string>
 	<string name="rating_">Rating:</string>
-	<string name="new_arg_rating_">Nieuwe %s Rating:</string>
 	<string name="course">Cursus</string>
 	<string name="lessons_completed">Lessen voltooid</string>
 	<string name="courses_completed">Voltooide Cursussen</string>
@@ -393,7 +386,6 @@
 	<string name="lessons_limit_reached_message">Lessen limiet bereikt voor vandaag. Upgrade nu om te verbeteren met onbeperkte lessen!</string>
 	<string name="resume_lesson">Herneem Les</string>
 	<string name="installing_theme">Thema installeren</string>
-	<string name="waiting_to_download">Waiting to download…</string>
 	<string name="loading_background">Achtergrond laden</string>
 	<string name="saving_background">Achtergrond opslaan</string>
 	<string name="saving_board">Bord bewaren</string>
@@ -423,11 +415,10 @@
 	<string name="all_time">Alles</string>
 	<string name="comments_arg">%s opmerkingen</string>
 	<string name="views_arg">%s x bekeken</string>
-	<string name="game_is_over">Partij Afgelopen</string>
-	<string name="game_over_vs">Partij afgelopen vs %s</string>
+	<string name="your_game_is_over">Jouw partij is gedaan</string>
 	<string name="switch_sides">Wissel kleuren</string>
 	<string name="no_results">Geen resultaten</string>
-	<string name="game_explorer">Verkenner</string>
+	<string name="game_explorer">Spel Verkenner</string>
 	<string name="recent_problems">Recente problemen</string>
 	<string name="recent_lessons">Recente lessen</string>
 	<string name="players_online_arg">%s spelers Online</string>
@@ -478,13 +469,9 @@
 	<string name="review_lesson">Beoordeel Les</string>
 	<string name="full_screen">Volledig Scherm</string>
 	<string name="line">Variatie</string>
-	<string name="predict_move_or_add_new_line">Voorspel zet of voeg nieuwe lijn toe…</string>
-	<string name="make_your_conditional_move">Uw voorwaardelijke zet doen…</string>
-	<string name="predict_opponent_next_move">Volgende zet tegenstander voorspellen…</string>
+	<string name="predict_move_or_add_new_line">Voorspel zet of voeg variatie toe...</string>
+	<string name="make_your_conditional_move">Doe je voorwaardelijke zet...</string>
+	<string name="predict_opponent_next_move">Voorspel tegenstanders volgende zet...</string>
 	<string name="notes">Notities</string>
 	<string name="private_note">Persoonlijke notitie</string>
-	<string name="upgrade_feedback_1">"\"Tactische puzzels en lessen helpen echt om mijn schaakniveau te verbeteren\""</string>
-	<string name="upgrade_feedback_reporter_1">- Peter, lid sinds 2011</string>
-	<string name="upgrade_feedback_2">"\"Mijn niveau steeg aanzienlijk nadat ik premium lid werd\""</string>
-	<string name="upgrade_feedback_reporter_2">- Lou, NJ lid sinds 2009</string>
 </resources>

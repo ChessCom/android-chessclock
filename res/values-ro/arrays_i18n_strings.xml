@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Șah prin corespondență</item>
-		<item>În direct - standart</item>
-		<item>În direct - rapid</item>
-		<item>În direct - foarte rapid</item>
+		<item>Șah în direct - standard</item>
+		<item>Șah în direct - rapid</item>
+		<item>Șah în direct - foarte rapid</item>
 		<item>Șah960 prin corespondență</item>
 		<item>Combinații</item>
 		<item>Lecții</item>

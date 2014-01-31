@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Ajedrez Diario</item>
-		<item>En Vivo - Estándar</item>
-		<item>En Vivo - Rápido</item>
-		<item>En Vivo - Bala</item>
+		<item>Ajedrez en Vivo - Estándar</item>
+		<item>Ajedrez en Vivo - Rápido</item>
+		<item>Ajedrez en Vivo - Bala</item>
 		<item>Ajedrez960 Diario</item>
 		<item>Tácticas</item>
 		<item>Lecciones</item>

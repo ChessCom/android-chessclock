@@ -98,8 +98,6 @@
 	<string name="you_are_offline">Acum sunteţi în modul offline</string>
 	<string name="correct">Corect</string>
 	<string name="incorrect">Incorect</string>
-	<string name="incorrect_move">Mutare incorectă</string>
-	<string name="puzzle_solved">Puzzle rezolvat</string>
 	<string name="upgrade_for_unlimited_arg">Upgrade pentru %s nelimitate!</string>
 	<string name="hours">ore</string>
 	<string name="hour">oră</string>
@@ -131,25 +129,26 @@
 	<string name="unrated">Neevaluat</string>
 	<string name="you_play">Tu joci:</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move_vs">Mișcarea dvs. vs  %1$s , %2$s</string>
-	<string name="won_on_time">%s a câştigat la timp</string>
-	<string name="won_by_resignation">%s a câştigat prin cedare</string>
-	<string name="won_by_checkmate">%s a câştigat prin şah-mat</string>
+	<string name="your_move">"Este rândul tău"</string>
+	<string name="your_turn_in_game_with">În joc cu  %1$s , %2$s</string>
+	<string name="won_on_time">Victorie pentru %s, timpul s-a terminat</string>
+	<string name="won_by_resignation">Victorie pentru %s, adversarul a cedat</string>
+	<string name="won_by_checkmate">%s a caștigat, șah și mat</string>
 	<string name="game_over">Jocul s-a terminat</string>
 	<string name="reconnecting_">Reconectare…</string>
 	<string name="another_login_detected">Oops! Sunteţi logat în altă parte.</string>
-	<string name="game_end_title_draw">Remiză  (½–½)</string>
-	<string name="game_aborted">Joc abandonat</string>
-	<string name="new_game">Joc nou</string>
-	<string name="new_game_arg">Joc nou (%s)</string>
-	<string name="language">Limba</string>
-	<string name="black_wins">Negrul a câştigat (0-1)</string>
-	<string name="white_wins">Albul a câştigat (1-0)</string>
-	<string name="game_draw_by_repetition">Remiză prin repetiție</string>
+	<string name="game_drawn">Remiză</string>
+	<string name="game_draw_by_repetition">Remiză prin repetiţie</string>
 	<string name="game_drawn_by_agreement">Remiză prin acord</string>
 	<string name="game_drawn_by_stalemate">Remiză prin pat</string>
 	<string name="game_drawn_insufficient_material">Remiză prin material insuficient</string>
 	<string name="game_drawn_by_fifty_move_rule">Remiză prin regula celor 50 de mutări</string>
+	<string name="won_game_abandoned">Victorie - joc abandonat</string>
+	<string name="game_aborted">Joc abandonat</string>
+	<string name="new_game">Joc nou</string>
+	<string name="language">Limba</string>
+	<string name="black_wins">Negrul a câştigat (0-1)</string>
+	<string name="white_wins">Albul a câştigat (1-0)</string>
 	<string name="draw_by_stalemate">Remiză prin pat (½–½)</string>
 	<string name="draw_by_3fold_repetition">Remiză prin repetiţie (½–½)</string>
 	<string name="rematch">Revanşă</string>
@@ -168,8 +167,8 @@
 	<string name="profile_picture">Poza de profil</string>
 	<string name="or_use_your_email">Sau utilizați adresa dvs. de e-mail:</string>
 	<string name="by_signing_up_accept_mobile">Prin semnare, accept</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> condiții de utilizare</a>]]]></string>
-	<string name="create_chess_profile">Bun venit! Crează-ţi profilul de şah</string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> condiții de utilizare</a>]]></string>
+	<string name="create_chess_profile">Crează-ți profilul de șah</string>
 	<string name="daily">Zilnic</string>
 	<string name="improve_game_with_lessons">Îmbunătăţeşte-ţi jocul cu lecţii nelimitate</string>
 	<string name="improve_game_with_videos">Îmbunătăţeşte-ţi jocul cu clipuri video nelimitate</string>
@@ -181,10 +180,8 @@
 	<string name="download_complete">Descărcare terminată</string>
 	<string name="empty"></string>
 	<string name="difficulty">Dificultate</string>
-	<string name="easiest">Cel mai simplu</string>
-	<string name="hardest">Cel mai greu</string>
 	<string name="vs">vs</string>
-	<string name="leave_vacation_q">Dezactivați vacanța?</string>
+	<string name="leave_vacation_q">Dezactivează vacanța?</string>
 	<string name="sign_up_with_facebook"><b>Înregistrare</b> cu <b>Facebook</b></string>
 	<string name="finished_games">Jocuri terminate</string>
 	<string name="feedback_mail_body">Vă rugăm să nu editaţi sau să eliminaţi informaţiile de mai jos.</string>
@@ -213,7 +210,7 @@
 	<string name="of_arg">de %s</string>
 	<string name="not_available">--</string>
 	<string name="upgrade_main_title_1">Destul de bun pentru maeştri</string>
-	<string name="upgrade_main_title_1_tablet">Destul de bun pentru maeștri. Destul de simplu pentru începători.</string>
+	<string name="upgrade_main_title_1_tablet">Destul de bun pentru maeştri. Destul de simplu pentru începători. Încearcă acum!</string>
 	<string name="upgrade_main_title_2">Destul de simplu pentru începători</string>
 	<string name="diamond">Diamant</string>
 	<string name="diamond_subtitle">Acces nelimitat la toate secțiunile</string>
@@ -246,7 +243,7 @@
 	<string name="choose_photo">Alege poza</string>
 	<string name="take_photo">Fă poză</string>
 	<string name="pick_photo">Alegeţi o poză</string>
-	<string name="or_login_using_chesscom">Sau utilizați numele dumneavoastră de utilizator Chess.com:</string>
+	<string name="or_login_using_chesscom">Sau autentificaţi-vă cu numele de utilizator Chess.com:</string>
 	<string name="articles">Articole</string>
 	<string name="forums">Forumuri</string>
 	<string name="notifications">Notificări</string>
@@ -257,7 +254,7 @@
 	<string name="share_pgn">Partajare PGN</string>
 	<string name="share_via">Partajare prin</string>
 	<string name="chess">Șah</string>
-	<string name="via_chesscom">"prin @Chesscom"</string>
+	<string name="via_chesscom">prin @Chesscom</string>
 	<string name="vs_random_opponent">vs aleator</string>
 	<string name="feed">Social</string>
 	<string name="learn">Studiază</string>
@@ -265,8 +262,9 @@
 	<string name="average_score">Scor mediu:</string>
 	<string name="start">Începe</string>
 	<string name="lessons">Lecții</string>
+	<string name="new_">Nou</string>
 	<string name="analysis">Analiză</string>
-	<string name="profile">Cont</string>
+	<string name="profile">Profilul</string>
 	<string name="theme">Temă</string>
 	<string name="privacy">Confidențialitate</string>
 	<string name="blocking">Blocarea</string>
@@ -285,7 +283,7 @@
   <string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy">
 apăsați aici.</a>]]></string>
 	<string name="basic">Bază</string>
-	<string name="sign_up_now_free">"Înscrieţi-vă - este gratuit!"</string>
+	<string name="sign_up_now_free">Înscrie-te acum - este gratuit!</string>
 	<string name="chess_com_username">Nume utilizator Chess.com</string>
 	<string name="coordinates">Coordonate</string>
 	<string name="highlight_last_move">Evidențiază ultima mișcare</string>
@@ -309,9 +307,9 @@ apăsați aici.</a>]]></string>
 	<string name="archive">Arhivă</string>
 	<string name="completed">Finalizat</string>
 	<string name="few_min">câteva minute</string>
-	<string name="less_than_60_sec"><![CDATA[< 60 sec]]]></string>
-	<string name="abort_game_">Abandonați?</string>
-	<string name="resign_game_">Cedați?</string>
+	<string name="less_than_60_sec"><![CDATA[< 60 sec]]></string>
+	<string name="abort_game_">Abandonați jocul?</string>
+	<string name="resign_game_">Cedaţi partida?</string>
 	<string name="days_move">zile/mutare</string>
 	<string name="password_cant_be_empty">Parola nu poate fi nulă</string>
 	<string name="invalid_username_or_password">Utilizator sau parolă invalide</string>
@@ -323,15 +321,13 @@ apăsați aici.</a>]]></string>
 	<string name="use_lessons">utilizaţi lecţii</string>
 	<string name="watch_videos">vizionați lecții video</string>
 	<string name="interactive_lessons">Lecţii interactive</string>
-	<string name="tactics_and_puzzles"><![CDATA[combinații &amp; puzzle-uri]]]></string>
+	<string name="tactics_and_puzzles"><![CDATA[combinații &amp; puzzle-uri]]></string>
 	<string name="friend_requests">Cereri de prietenie</string>
 	<string name="add_friend">Adaugă prieten</string>
 	<string name="recent_opponents">Adversarii recenți</string>
 	<string name="invite_by_email">Invită prin E-mail</string>
-	<string name="please_enter_valid_email">Vă rugăm introduceţi o adresă de e-mail validă</string>
 	<string name="invite_facebook_friend">Invită un prieten de pe Facebook</string>
 	<string name="invite_from_contacts">Invită din contacte</string>
-	<string name="no_contacts_found">Nici un contact găsit</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Persoane de contact</string>
 	<string name="facebook_invite_friend_to_play">Să jucăm şah! Poți juca online la Chess.com sau pe mobil cu Android sau iPhone/iPad.</string>
@@ -350,10 +346,8 @@ apăsați aici.</a>]]></string>
 	<string name="username_not_found">Utilizator negăsit</string>
 	<string name="you_have_not_added_friends_yet">"Încă nu aveţi prieteni. Adaugă pe cineva!"</string>
 	<string name="new_friend_request">Cerere nouă de prietenie</string>
-	<string name="friend_request_from_arg">Cerere de prietenie de la %s</string>
 	<string name="new_chat_message">Mesaj nou pe chat</string>
-	<string name="new_daily_challenge">Noua provocare zilnică</string>
-	<string name="arg_wants_to_play">%s vrea să joace!</string>
+	<string name="new_challenge">Provocare nouă</string>
 	<string name="unable_to_select_this_photo">Imposibil de utilizat această fotografie</string>
 	<string name="processing_">Procesare…</string>
 	<string name="about">Despre</string>
@@ -382,7 +376,6 @@ apăsați aici.</a>]]></string>
 	<string name="your_course_rating">Rating-ul tău pentru cursuri:</string>
 	<string name="score_">Scor:</string>
 	<string name="rating_">Rating:</string>
-	<string name="new_arg_rating_">Rating-ul nou - %s :</string>
 	<string name="course">Curs</string>
 	<string name="lessons_completed">Lecții complete</string>
 	<string name="courses_completed">Cursuri completate</string>
@@ -394,7 +387,6 @@ apăsați aici.</a>]]></string>
 	<string name="lessons_limit_reached_message">Limita lecţiilor pentru ziua de azi a fost atinsă. Upgrade acum pentru a-ţi îmbunătăţi jocul cu lecţii nelimitate!</string>
 	<string name="resume_lesson">Reluare lecție</string>
 	<string name="installing_theme">Instalare temă</string>
-	<string name="waiting_to_download">Aşteptați. Se descarcă…</string>
 	<string name="loading_background">Se încarcă fundalul</string>
 	<string name="saving_background">Se salvează fundalul</string>
 	<string name="saving_board">Se salvează tabla</string>
@@ -424,11 +416,10 @@ apăsați aici.</a>]]></string>
 	<string name="all_time">Tot timpul</string>
 	<string name="comments_arg">%s comentarii</string>
 	<string name="views_arg">%s vizualizări</string>
-	<string name="game_is_over">Jocul s-a terminat</string>
-	<string name="game_over_vs">Partida vs %s terminată</string>
+	<string name="your_game_is_over">Jocul s-a terminat</string>
 	<string name="switch_sides">Întoarce tabla</string>
 	<string name="no_results">Nici un rezultat</string>
-	<string name="game_explorer">Explorator</string>
+	<string name="game_explorer">Explorator de partide</string>
 	<string name="recent_problems">Probleme recente</string>
 	<string name="recent_lessons">Lecţii recente</string>
 	<string name="players_online_arg">%s jucatori online</string>
@@ -479,13 +470,9 @@ apăsați aici.</a>]]></string>
 	<string name="review_lesson">Revezi lecţia</string>
 	<string name="full_screen">Pe tot ecranul</string>
 	<string name="line">Linie</string>
-	<string name="predict_move_or_add_new_line">Prezice mutarea sau adaugă o linie nouă…</string>
-	<string name="make_your_conditional_move">Faceți mutarea dvs. condițională…</string>
-	<string name="predict_opponent_next_move">Prezice următoarea mutare a adversarului…</string>
+	<string name="predict_move_or_add_new_line">Prezice mutarea sau adaugă o nouă linie...</string>
+	<string name="make_your_conditional_move">Faceți mutarea dvs. condiţionată...</string>
+	<string name="predict_opponent_next_move">Prezice mutarea viitoare a adversarului...</string>
 	<string name="notes">Indicii</string>
 	<string name="private_note">Indiciu privat</string>
-	<string name="upgrade_feedback_1">"\"Combinațiile şi lecţiile într-adevăr îmbunătățesc abilităţile mele de şah\""</string>
-	<string name="upgrade_feedback_reporter_1">- Peter, membru din 2011</string>
-	<string name="upgrade_feedback_2">"\"Rating-ul meu s-a îmbunătaţit substanţial după ce am devenit membru premium\""</string>
-	<string name="upgrade_feedback_reporter_2">- Lou, NJ membru din anul 2009</string>
 </resources>
