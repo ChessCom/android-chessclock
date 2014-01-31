@@ -131,45 +131,20 @@
 		<item>268</item>
 	</integer-array>
 
-	<!--
-		<string-array name="languages_codes">
-			<item>en</item>
-			<item>ar</item>
-			<item>zh</item>
-			<item>da</item>
-			<item>nl</item>
-			<item>fr</item>
-			<item>de</item>
-			<item>iw</item>
-			<item>hi</item>
-			<item>it</item>
-			<item>ja</item>
-			<item>ko</item>
-			<item>nb</item>
-			<item>fa</item>
-			<item>pl</item>
-			<item>pt</item>
-			<item>ru</item>
-			<item>es</item>
-			<item>sv</item>
-			<item>tr</item>
-			<item>zu</item>
-		</string-array>
-	-->
 	<string-array name="languages_codes">
 		<item>en</item>
 		<item>af</item>
 		<item>sq</item>
 		<item>ar</item>
-		<item>hy</item>
+		<item>hy-rAM</item>
 		<item>eu</item>
 		<item>be</item>
 		<item>bn</item>
 		<item>bs</item>
 		<item>bg</item>
 		<item>ca</item>
-		<item>zh</item>
-		<item>zh</item>
+		<item>zh-rCN</item>
+		<item>zh-rTW</item>
 		<item>hr</item>
 		<item>cs</item>
 		<item>da</item>
@@ -188,7 +163,7 @@
 		<item>hu</item>
 		<item>is</item>
 		<item>id</item>
-		<item>ga</item>
+		<item>ga-rIE</item>
 		<item>it</item>
 		<item>ja</item>
 		<item>kk</item>
@@ -200,30 +175,30 @@
 		<item>lt</item>
 		<item>mk</item>
 		<item>ms</item>
-		<item>ne</item>
+		<item>ne-rMP</item>
 		<item>no</item>
 		<item>ps</item>
 		<item>fa</item>
 		<item>pl</item>
-		<item>pt</item>
+		<item>pt-rPT</item>
 		<item>pt-rBR</item>
-		<item>pa</item>
+		<item>pa-rIN</item>
 		<item>ro</item>
 		<item>ru</item>
 		<item>sr</item>
 		<item>sk</item>
 		<item>sl</item>
 		<item>so</item>
-		<item>es</item>
+		<item>es-rES</item>
 		<item>sw</item>
-		<item>sv</item>
+		<item>sv-rSE</item>
 		<item>tl</item>
 		<item>tg</item>
 		<item>ta</item>
 		<item>th</item>
 		<item>tr</item>
 		<item>uk</item>
-		<item>ur</item>
+		<item>ur-rPK</item>
 		<item>uz</item>
 		<item>vi</item>
 		<item>en-rPT</item>
