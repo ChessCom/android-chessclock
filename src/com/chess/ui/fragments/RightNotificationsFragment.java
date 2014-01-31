@@ -16,8 +16,10 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.BaseResponseItem;
+import com.chess.backend.entity.api.FriendRequestItem;
 import com.chess.backend.entity.api.FriendRequestResultItem;
 import com.chess.backend.entity.api.daily_games.DailyChallengeItem;
+import com.chess.backend.gcm.NewFriendNotificationItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -59,6 +61,7 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 	private NewChatMessagesCursorAdapter chatMessagesAdapter;
 	private DailyGamesOverCursorAdapter gamesOverAdapter;
 	private NewChallengesUpdateListener newChallengesUpdateListener;
+	private FriendRequestsUpdateListener friendRequestsUpdateListener;
 	private List<Long> newChallengeIds;
 	private int successToastMsgId;
 	private DailyChallengeItem.Data selectedChallengeItem;
@@ -71,23 +74,7 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		emptyData = true;
-
-		challengeInviteUpdateListener = new ChallengeUpdateListener(ChallengeUpdateListener.INVITE);
-		newChallengesUpdateListener = new NewChallengesUpdateListener();
-		// init adapters
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
-		friendRequestsAdapter = new CommonAcceptDeclineCursorAdapter(new FriendAcceptDeclineFace(), null, getImageFetcher());
-		challengesGamesAdapter = new DailyChallengesGamesAdapter(new ChallengeAcceptDeclineFace(), null, getImageFetcher(), this);
-		messagesAdapter = new NewChatMessagesCursorAdapter(new NewMessageClearFace(), null, getImageFetcher());
-		chatMessagesAdapter = new NewChatMessagesCursorAdapter(new NewChatClearFace(), null, getImageFetcher());
-		gamesOverAdapter = new DailyGamesOverCursorAdapter(new GameOverClearFace(), null, getImageFetcher());
-
-		sectionedAdapter.addSection(getString(R.string.friend_requests), friendRequestsAdapter);
-		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
-		sectionedAdapter.addSection(getString(R.string.new_message), messagesAdapter);
-		sectionedAdapter.addSection(getString(R.string.new_chat_message), chatMessagesAdapter);
-		sectionedAdapter.addSection(upCaseFirst(getString(R.string.game_over)), gamesOverAdapter);
+		init();
 	}
 
 	@Override
@@ -100,6 +87,7 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 		super.onViewCreated(view, savedInstanceState);
 
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
+
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
 		listView.setAdapter(sectionedAdapter);
@@ -109,11 +97,6 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 	public void onResume() {
 		super.onResume();
 		getActivityFace().addOnOpenMenuListener(this);
-	}
-
-	@Override
-	public Context getMeContext() {
-		return getActivity();
 	}
 
 	@Override
@@ -223,6 +206,8 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 			if (cursor.moveToFirst()) {
 				friendRequestsAdapter.changeCursor(cursor);
 				emptyData = false;
+			} else {
+				friendRequestsAdapter.changeCursor(null);
 			}
 		}
 		{ // get new challenge notifications
@@ -246,6 +231,8 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 			if (cursor.moveToFirst()) {
 				emptyData = false;
 				messagesAdapter.changeCursor(cursor);
+			} else {
+				messagesAdapter.changeCursor(null);
 			}
 		}
 		{ // get new chat notifications
@@ -254,6 +241,8 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 			if (cursor.moveToFirst()) {
 				emptyData = false;
 				chatMessagesAdapter.changeCursor(cursor);
+			} else {
+				chatMessagesAdapter.changeCursor(null);
 			}
 		}
 		{ // get game over notifications
@@ -262,6 +251,8 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 			if (cursor.moveToFirst()) {
 				emptyData = false;
 				gamesOverAdapter.changeCursor(cursor);
+			} else {
+				gamesOverAdapter.changeCursor(null);
 			}
 		}
 
@@ -282,17 +273,24 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			loadingView.setVisibility(show ? View.VISIBLE : View.GONE);
+		}
+
+		@Override
 		public void updateData(DailyChallengeItem returnedObj) {
 			super.updateData(returnedObj);
 
-			if (returnedObj.getData().size() == 0 && emptyData) {
-				emptyView.setText(R.string.no_alerts);
-				emptyView.setVisibility(View.VISIBLE);
-				listView.setVisibility(View.GONE);
-			} else {
+			if (returnedObj.getData().size() != 0) {
+				emptyView.setVisibility(View.GONE);
+				listView.setVisibility(View.VISIBLE);
+
+				emptyData = false;
 				challengesGamesAdapter.setItemsList(returnedObj.getData());
 				sectionedAdapter.notifyDataSetChanged();
 			}
+
+			getFriendsRequests();
 		}
 
 		@Override
@@ -304,10 +302,80 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 					return;
 				}
 			} else if (resultCode == StaticData.INTERNAL_ERROR) {
-				showToast("Internal error occurred"); // TODO adjust properly
+				showToast("Internal error occurred");
+				getFriendsRequests();
 			}
 			super.errorHandle(resultCode);
 		}
+	}
+
+	private class FriendRequestsUpdateListener extends ChessUpdateListener<FriendRequestItem> {
+
+		public FriendRequestsUpdateListener() {
+			super(FriendRequestItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			loadingView.setVisibility(show ? View.VISIBLE : View.GONE);
+		}
+
+		@Override
+		public void updateData(FriendRequestItem returnedObj) {
+			super.updateData(returnedObj);
+
+			if (returnedObj.getData().size() == 0 && emptyData) {
+				emptyView.setText(R.string.no_alerts);
+				emptyView.setVisibility(View.VISIBLE);
+				listView.setVisibility(View.GONE);
+
+				loadNotifications();
+			} else {
+				emptyView.setVisibility(View.GONE);
+				listView.setVisibility(View.VISIBLE);
+
+				for (FriendRequestItem.Data friendData : returnedObj.getData()) {
+					NewFriendNotificationItem newFriendNotificationItem = new NewFriendNotificationItem();
+
+					newFriendNotificationItem.setMessage(friendData.getMessage());
+					newFriendNotificationItem.setUsername(friendData.getUsername());
+					newFriendNotificationItem.setCreatedAt(System.currentTimeMillis());
+					newFriendNotificationItem.setAvatar(friendData.getAvatarUrl());
+					newFriendNotificationItem.setRequestId(friendData.getRequestId());
+
+					DbDataManager.saveNewFriendRequest(getContentResolver(), newFriendNotificationItem, getUsername());
+				}
+
+				Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
+						DbScheme.Tables.NOTIFICATION_FRIEND_REQUEST));
+				friendRequestsAdapter.changeCursor(cursor);
+				sectionedAdapter.notifyDataSetChanged();
+
+			}
+
+			updateNotificationBadges();
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) {
+					showToast(ServerErrorCodes.getUserFriendlyMessage(getActivity(), serverCode));
+					return;
+				}
+			} else if (resultCode == StaticData.INTERNAL_ERROR) {
+				showToast("Internal error occurred");
+			}
+			super.errorHandle(resultCode);
+		}
+	}
+
+	private void getFriendsRequests() {
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_FRIENDS_REQUEST);
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		new RequestJsonTask<FriendRequestItem>(friendRequestsUpdateListener).executeTask(loadItem);
 	}
 
 	private class FriendAcceptDeclineFace implements ItemClickListenerFace {
@@ -446,14 +514,14 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 	}
 
 	private class ChallengeUpdateListener extends ChessLoadUpdateListener<BaseResponseItem> {
-		public static final int INVITE = 3;
-		public static final int DRAW = 4;
 
-		private int itemCode;
-
-		public ChallengeUpdateListener(int itemCode) {
+		public ChallengeUpdateListener() {
 			super(BaseResponseItem.class);
-			this.itemCode = itemCode;
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			loadingView.setVisibility(show ? View.VISIBLE : View.GONE);
 		}
 
 		@Override
@@ -483,6 +551,11 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			loadingView.setVisibility(show ? View.VISIBLE : View.GONE);
+		}
+
+		@Override
 		public void updateData(FriendRequestResultItem returnedObj) {
 			showToast(successToastMsgId);
 
@@ -505,5 +578,31 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 
 			loadNotifications();
 		}
+	}
+
+	@Override
+	public Context getMeContext() {
+		return getActivity();
+	}
+
+	private void init() {
+		emptyData = true;
+
+		challengeInviteUpdateListener = new ChallengeUpdateListener();
+		newChallengesUpdateListener = new NewChallengesUpdateListener();
+		friendRequestsUpdateListener = new FriendRequestsUpdateListener();
+		// init adapters
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
+		friendRequestsAdapter = new CommonAcceptDeclineCursorAdapter(new FriendAcceptDeclineFace(), null, getImageFetcher());
+		challengesGamesAdapter = new DailyChallengesGamesAdapter(new ChallengeAcceptDeclineFace(), null, getImageFetcher(), this);
+		messagesAdapter = new NewChatMessagesCursorAdapter(new NewMessageClearFace(), null, getImageFetcher());
+		chatMessagesAdapter = new NewChatMessagesCursorAdapter(new NewChatClearFace(), null, getImageFetcher());
+		gamesOverAdapter = new DailyGamesOverCursorAdapter(new GameOverClearFace(), null, getImageFetcher());
+
+		sectionedAdapter.addSection(getString(R.string.friend_requests), friendRequestsAdapter);
+		sectionedAdapter.addSection(getString(R.string.challenges), challengesGamesAdapter);
+		sectionedAdapter.addSection(getString(R.string.new_message), messagesAdapter);
+		sectionedAdapter.addSection(getString(R.string.new_chat_message), chatMessagesAdapter);
+		sectionedAdapter.addSection(upCaseFirst(getString(R.string.game_over)), gamesOverAdapter);
 	}
 }

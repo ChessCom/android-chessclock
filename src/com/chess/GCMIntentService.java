@@ -186,7 +186,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			showNewFriendRequest(intent, context);
 			sendNotificationBroadcast(context, type);
 
-			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
+			if (appData.isNotificationsEnabled()) {
 				String title = context.getString(R.string.new_friend_request);
 				String body = context.getString(R.string.friend_request_from_arg, intent.getStringExtra(SENDER));
 				AppUtils.showStatusBarNotification(context, title, body);
@@ -216,7 +216,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			showGameOver(intent, context);
 			sendNotificationBroadcast(context, type);
 
-			if (!DataHolder.getInstance().isMainActivityVisible() && appData.isNotificationsEnabled()) {
+			if (appData.isNotificationsEnabled()) {
 				String title = context.getString(R.string.game_is_over);
 				String body = intent.getStringExtra(MESSAGE);
 				AppUtils.showStatusBarNotification(context, title, body);
@@ -254,20 +254,20 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 
 	private synchronized void showNewFriendRequest(Intent intent, Context context) {
-		FriendRequestItem friendRequestItem = new FriendRequestItem();
+		NewFriendNotificationItem newFriendNotificationItem = new NewFriendNotificationItem();
 
-		friendRequestItem.setMessage(intent.getStringExtra(MESSAGE));
-		friendRequestItem.setUsername(intent.getStringExtra(SENDER));
-		friendRequestItem.setCreatedAt(Long.parseLong(intent.getStringExtra(CREATED_AT)));
-		friendRequestItem.setAvatar(intent.getStringExtra(AVATAR_URL));
-		friendRequestItem.setRequestId(Long.parseLong(intent.getStringExtra(REQUEST_ID)));
+		newFriendNotificationItem.setMessage(intent.getStringExtra(MESSAGE));
+		newFriendNotificationItem.setUsername(intent.getStringExtra(SENDER));
+		newFriendNotificationItem.setCreatedAt(Long.parseLong(intent.getStringExtra(CREATED_AT)));
+		newFriendNotificationItem.setAvatar(intent.getStringExtra(AVATAR_URL));
+		newFriendNotificationItem.setRequestId(Long.parseLong(intent.getStringExtra(REQUEST_ID)));
 		LogMe.dl(TAG, " _________________________________");
-		LogMe.dl(TAG, " FriendRequestItem = " + new Gson().toJson(friendRequestItem));
+		LogMe.dl(TAG, " NewFriendNotificationItem = " + new Gson().toJson(newFriendNotificationItem));
 
 		ContentResolver contentResolver = context.getContentResolver();
 		String username = new AppData(context).getUsername();
 
-		DbDataManager.saveNewFriendRequest(contentResolver, friendRequestItem, username);
+		DbDataManager.saveNewFriendRequest(contentResolver, newFriendNotificationItem, username);
 	}
 
 	private synchronized void showNewChatMessage(Intent intent, Context context) {

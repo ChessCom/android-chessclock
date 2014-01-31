@@ -8,7 +8,7 @@ import com.chess.statics.Symbol;
  * Date: 12.08.13
  * Time: 5:53
  */
-public class FriendRequestItem {
+public class NewFriendNotificationItem {
 /*
         'sender' => $params['sender'],
         'message' => $params['message'],

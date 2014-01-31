@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
+import com.chess.backend.entity.api.daily_games.DailyCurrentGamesItem;
 import com.chess.backend.entity.api.daily_games.MyMoveItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -23,7 +25,9 @@ import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
 
-import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
+import java.util.List;
+
+import static com.chess.backend.RestHelper.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,6 +40,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId = NON_INIT;
 	private MyMoveUpdateListener myMoveUpdateListener;
+	private DailyGamesUpdateListener dailyGamesUpdateListener;
 	private Boolean showDailyGamesFragment;
 	private View tabsLoadProgressBar;
 	private boolean haveSavedData;
@@ -45,6 +50,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		super.onCreate(savedInstanceState);
 
 		myMoveUpdateListener = new MyMoveUpdateListener();
+		dailyGamesUpdateListener = new DailyGamesUpdateListener();
 	}
 
 	@Override
@@ -228,7 +234,54 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		public void updateData(MyMoveItem returnedObj) {
 			super.updateData(returnedObj);
 
-			showDailyGamesFragment = returnedObj.getData().isIsMyTurn();
+			boolean isMyTurn = returnedObj.getData().isIsMyTurn();
+			if (isMyTurn) {
+				showDailyGamesFragment = true;
+
+				if (previousCheckedId == NON_INIT) {
+					tabRadioGroup.check(R.id.leftTabBtn);
+				} else {
+					updateTabs();
+				}
+			} else { // we might have games in progress, but it's not my turn
+				LoadItem loadItem = new LoadItem();
+				loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_CURRENT);
+				loadItem.addRequestParams(P_LOGIN_TOKEN, getUserToken());
+				loadItem.addRequestParams(P_FIELDS_, RestHelper.V_ID);
+
+				new RequestJsonTask<DailyCurrentGamesItem>(dailyGamesUpdateListener).executeTask(loadItem);
+			}
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+			showDailyGamesFragment = haveSavedData;
+			updateTabs();
+		}
+	}
+
+	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyCurrentGamesItem> {
+
+		public DailyGamesUpdateListener() {
+			super(DailyCurrentGamesItem.class);
+		}
+
+		@Override
+		public void showProgress(boolean show) {
+			tabsLoadProgressBar.setVisibility(show? View.VISIBLE : View.GONE);
+		}
+
+		@Override
+		public void updateData(DailyCurrentGamesItem returnedObj) {
+			super.updateData(returnedObj);
+
+			// current games
+			List<DailyCurrentGameData> currentGamesList = returnedObj.getData();
+			if (currentGamesList.size() > 0) {
+				showDailyGamesFragment = true;
+			}
+			DbDataManager.checkAndDeleteNonExistCurrentGames(getContentResolver(), currentGamesList, getUsername());
 
 			if (previousCheckedId == NON_INIT) {
 				tabRadioGroup.check(R.id.leftTabBtn);

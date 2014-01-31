@@ -2214,7 +2214,7 @@ public class DbDataManager {
 
 	// ============================ GCM notifications ===========================================================
 
-	public static void saveNewFriendRequest(ContentResolver contentResolver, FriendRequestItem item, String username) {
+	public static void saveNewFriendRequest(ContentResolver contentResolver, NewFriendNotificationItem item, String username) {
 		final String[] arguments1 = sArguments2;
 		arguments1[0] = username; // current auth username
 		arguments1[1] = item.getUsername();

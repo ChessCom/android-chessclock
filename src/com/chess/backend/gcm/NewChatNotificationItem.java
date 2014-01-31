@@ -6,7 +6,7 @@ package com.chess.backend.gcm;
  * Date: 12.08.13
  * Time: 5:55
  */
-public class NewChatNotificationItem extends FriendRequestItem{
+public class NewChatNotificationItem extends NewFriendNotificationItem {
 /*
 
         'game_id' => $params['gameId'],

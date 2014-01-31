@@ -24,7 +24,6 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.utilities.FontsHelper;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboTextView;
@@ -59,7 +58,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	public static final String DIAMOND_YEARLY = "diamond_yearly";
 	private static final int HASH_LENGTH = 88;
 	public static final String PARAMS_DIVIDER = "||";
-	private static final String LOAD_TAG = "progress popup";
 
 	protected boolean isGoldMonthPayed;
 	protected boolean isGoldYearPayed;
@@ -92,9 +90,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private String username;
 	protected TextView yearDiscountTxt;
 	protected int planCode;
-	private TextView loadProgressTxt;
-	private TextView taskTitleTxt;
-	private PopupCustomViewFragment loadProgressPopupFragment;
 	private View goldBtn;
 	private View platinumBtn;
 	protected int premiumStatus;
@@ -188,8 +183,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			// perform any handling of activity results not related to in-app
 			// billing...
 			super.onActivityResult(requestCode, resultCode, data);
-		} else {
-//			Log.d(TAG, "onActivityResult handled by IABUtil.");
 		}
 	}
 
@@ -536,7 +529,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 
 			// query our server for membership bought from non Google Play( Apple, Web)
 			LoadItem loadItem = LoadHelper.getMembershipDetails(getUserToken());
-			new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
+			new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem);
 		}
 	}
 
@@ -605,7 +598,7 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.INVALID_ORDER) {
 					LoadItem loadItem = LoadHelper.getMembershipDetails(getUserToken());
-					new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem); // TODO set proper item
+					new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem);
 				} else {
 					super.errorHandle(resultCode);
 				}
@@ -876,7 +869,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		int checkBoxDrawableId;
 		int descriptionBackId;
 		int buttonStyleId;
-//		int unlockFeaturesTitleId;
 		String[] features;
 		private boolean yearPayed;
 		private boolean monthPayed;
@@ -934,7 +926,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			platinumConfig.checkBoxDrawableId = R.drawable.button_checkmark_platinum_selector;
 			platinumConfig.buttonStyleId = R.style.Button_Grey2Solid_NoBorder;
 			platinumConfig.descriptionBackId = R.drawable.button_upgrade_platinum_flat;
-//			platinumConfig.unlockFeaturesTitleId = R.string.upgrade_platinum_unlock_features_title;
 			platinumConfig.features = resources.getStringArray(R.array.upgrade_platinum_features);
 			return platinumConfig;
 		}
@@ -955,7 +946,6 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 			goldConfig.checkBoxDrawableId = R.drawable.button_checkmark_gold_selector;
 			goldConfig.buttonStyleId = R.style.Button_Brown;
 			goldConfig.descriptionBackId = R.drawable.button_upgrade_gold_flat;
-//			goldConfig.unlockFeaturesTitleId = R.string.upgrade_gold_unlock_features_title;
 			goldConfig.features = resources.getStringArray(R.array.upgrade_gold_features);
 			return goldConfig;
 		}
