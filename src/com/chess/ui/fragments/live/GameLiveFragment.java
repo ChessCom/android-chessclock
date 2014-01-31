@@ -139,6 +139,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+
+		getDataHolder().setLiveChessMode(true);
 		super.onViewCreated(view, savedInstanceState);
 
 		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
@@ -157,6 +159,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onResume() {
 		super.onResume();
 
+		connectLive();
+
+		/*
 		if (!DataHolder.getInstance().isLiveChess()) {
 
 			handler.post(new Runnable() {
@@ -166,15 +171,18 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				}
 			});
 		}
+		*/
 
-		try {
-			Long currentGameId = getLiveHelper().getCurrentGameId();
-			if (isLCSBound && currentGameId != null && currentGameId != 0) {
-				onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronized
+		if (isLCSBound) {
+			try {
+				Long currentGameId = getLiveHelper().getCurrentGameId();
+				if (currentGameId != null && currentGameId != 0) {
+					onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronized
+				}
+			} catch (DataNotValidException e) {
+				logLiveTest(e.getMessage());
+				isLCSBound = false;
 			}
-		} catch (DataNotValidException e) {
-			logLiveTest(e.getMessage());
-			isLCSBound = false;
 		}
 	}
 

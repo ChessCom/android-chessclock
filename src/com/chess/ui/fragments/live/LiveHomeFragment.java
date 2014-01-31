@@ -96,11 +96,11 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+
+		getDataHolder().setLiveChessMode(true);
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.live);
-
-		getDataHolder().setLiveChessMode(true); // we should set it before parent call to update isLCSBound flag
 
 		widgetsInit(view);
 	}
@@ -110,24 +110,16 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		super.onResume();
 
 		//LogMe.dl("LCCLOG", "LiveHomeFragment onResume isNetworkAvailable() " + isNetworkAvailable());
+		connectLive();
 
-		try {
+		if (isLCSBound) {
+			try {
 
-			if (!isNetworkAvailable()) {
-				dismissNetworkCheckDialog();
-				popupItem.setPositiveBtnId(R.string.check_connection);
-				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
-			}
-
-			if (!isLCSBound) {
-				liveBaseActivity.connectLcc();
-				showPopupProgressDialog();
-			} else {
 				adjustFeaturesList(getLiveHelper());
-			}
 
-		} catch (DataNotValidException e) {
-			e.printStackTrace();
+			} catch (DataNotValidException e) {
+				e.printStackTrace();
+			}
 		}
 
 		if (isNetworkAvailable()) {
@@ -136,15 +128,6 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			new RequestJsonTask<ServersStatsItem>(serverStatsUpdateListener).executeTask(loadItem);
 		}
 	}
-
-	/*
-	@Override
-	public void onPause() {
-		super.onPause();
-
-		liveBaseActivity.stopConnectTimer();
-	}
-	*/
 
 	protected void adjustFeaturesList(LiveConnectionHelper liveHelper) {
 		if (liveHelper.isActiveGamePresent() && !liveHelper.isCurrentGameObserved()) {
@@ -315,13 +298,6 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		gameConfigBuilder.setRating(rating);
 
 		getActivityFace().openFragment(LiveGameWaitFragment.createInstance(gameConfigBuilder.build()));
-	}
-
-	@Override
-	public void onLiveClientConnected() {
-		super.onLiveClientConnected();
-		dismissProgressDialog();
-		dismissNetworkCheckDialog();
 	}
 
 	@Override
@@ -533,10 +509,6 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
 		}
 		super.onPositiveBtnClick(fragment);
-	}
-
-	private void dismissNetworkCheckDialog() {
-		dismissFragmentDialogByTag(NETWORK_CHECK_TAG);
 	}
 
 	@Override

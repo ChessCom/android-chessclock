@@ -357,9 +357,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	public void onResume() {
 
 		// todo: handle correctly - move to onServiceConnected
+		/*
 		if (isLCSBound && !isValid()) {
-			//goHome();
+			goHome();
 		}
+		*/
 
 		super.onResume();
 	}

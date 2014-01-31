@@ -43,7 +43,7 @@ public class LccGameListener implements GameListener {
 
 //		LogMe.dl(TAG, "latestGameId=" + latestGameId);
 
-		if (!latestGameId.equals(previousGameId)) {
+		if (previousGameId != 0 && !latestGameId.equals(previousGameId)) {
 
 			Game currentGame = lccHelper.getCurrentGame();
 			if (currentGame != null) {

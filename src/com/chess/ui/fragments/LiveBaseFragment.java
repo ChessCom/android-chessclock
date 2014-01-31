@@ -2,6 +2,7 @@ package com.chess.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import com.chess.R;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.DataNotValidException;
@@ -35,9 +36,6 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		super.onAttach(activity);
 
 		liveBaseActivity = (LiveBaseActivity) activity;
-		if (getDataHolder().isLiveChess()) {
-			setLCSBound(liveBaseActivity.isLCSBound());
-		}
 	}
 
 	@Override
@@ -45,6 +43,15 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		super.onCreate(savedInstanceState);
 
 		gameTaskListener = new GameTaskListener();
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		if (getDataHolder().isLiveChess()) {
+			setLCSBound(liveBaseActivity.isLCSBound()); // it also updated when fragment returns from back stack
+		}
 	}
 
 	@Override
@@ -209,6 +216,27 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 			}
 		} else {
 			createSeek();
+		}
+
+		dismissProgressDialog();
+		dismissNetworkCheckDialog();
+	}
+
+	protected void dismissNetworkCheckDialog() {
+		dismissFragmentDialogByTag(NETWORK_CHECK_TAG);
+	}
+
+	protected void connectLive() {
+
+		if (!isNetworkAvailable()) {
+			dismissNetworkCheckDialog();
+			popupItem.setPositiveBtnId(R.string.check_connection);
+			showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
+		}
+
+		if (!isLCSBound) {
+			liveBaseActivity.connectLcc();
+			showPopupProgressDialog();
 		}
 	}
 }
