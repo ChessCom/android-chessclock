@@ -16,7 +16,6 @@ import com.chess.db.DbScheme;
 import com.chess.model.SelectionItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
-import com.chess.statics.Symbol;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.engine.configs.LiveGameConfig;
@@ -123,34 +122,34 @@ public class ChallengeHelper {
 
 		{// daily row
 			List<SelectionItem> actionItems = new ArrayList<SelectionItem>();
-			actionItems.add(new SelectionItem(ID_DAILY_1_1, getString(R.string.day_arg, 1))); // 1 day
-			actionItems.add(new SelectionItem(ID_DAILY_1_2, getString(R.string.days_arg, 3))); // 3 days
-			actionItems.add(new SelectionItem(ID_DAILY_1_3, getString(R.string.days_arg, 7))); // 7 days
+			actionItems.add(new SelectionItem(ID_DAILY_1_1, getString(R.string.arg_day, 1))); // 1 day
+			actionItems.add(new SelectionItem(ID_DAILY_1_2, getString(R.string.arg_days, 3))); // 3 days
+			actionItems.add(new SelectionItem(ID_DAILY_1_3, getString(R.string.arg_days, 7))); // 7 days
 
 			quickAction.addActionItem(new MultiActionItem(R.string.ic_daily_game, actionItems));
 		}
 
 		{ // live standart row
 			List<SelectionItem> actionItems = new ArrayList<SelectionItem>();
-			actionItems.add(new SelectionItem(ID_LIVE_1_1, getLiveModeButtonLabel("15 | 10"))); // 15 | 10
-			actionItems.add(new SelectionItem(ID_LIVE_1_2, getLiveModeButtonLabel("30"))); // 30 min
+			actionItems.add(new SelectionItem(ID_LIVE_1_1,  AppUtils.getLiveModeButtonLabel("15 | 10", context))); // 15 | 10
+			actionItems.add(new SelectionItem(ID_LIVE_1_2,  AppUtils.getLiveModeButtonLabel("30", context))); // 30 min
 
 			quickAction.addActionItem(new MultiActionItem(R.string.ic_live_standard, actionItems));
 		}
 
 		{ // live blitz row
 			List<SelectionItem> actionItems = new ArrayList<SelectionItem>();
-			actionItems.add(new SelectionItem(ID_LIVE_2_1, getLiveModeButtonLabel("10"))); // 10
-			actionItems.add(new SelectionItem(ID_LIVE_2_2, getLiveModeButtonLabel("5 | 2"))); // 5 | 2
-			actionItems.add(new SelectionItem(ID_LIVE_2_3, getLiveModeButtonLabel("3"))); // 3 min
+			actionItems.add(new SelectionItem(ID_LIVE_2_1, AppUtils.getLiveModeButtonLabel("10", context))); // 10
+			actionItems.add(new SelectionItem(ID_LIVE_2_2, AppUtils.getLiveModeButtonLabel("5 | 2", context))); // 5 | 2
+			actionItems.add(new SelectionItem(ID_LIVE_2_3, AppUtils.getLiveModeButtonLabel("3", context))); // 3 min
 
 			quickAction.addActionItem(new MultiActionItem(R.string.ic_live_blitz, actionItems));
 		}
 
 		{ // live bullet row
 			List<SelectionItem> actionItems = new ArrayList<SelectionItem>();
-			actionItems.add(new SelectionItem(ID_LIVE_3_1, getLiveModeButtonLabel("2 | 1"))); // 2 | 1
-			actionItems.add(new SelectionItem(ID_LIVE_3_2, getLiveModeButtonLabel("1"))); // 1 min
+			actionItems.add(new SelectionItem(ID_LIVE_3_1, AppUtils.getLiveModeButtonLabel("2 | 1", context))); // 2 | 1
+			actionItems.add(new SelectionItem(ID_LIVE_3_2, AppUtils.getLiveModeButtonLabel("1", context))); // 1 min
 
 			quickAction.addActionItem(new MultiActionItem(R.string.ic_live_bullet, actionItems));
 		}
@@ -223,15 +222,7 @@ public class ChallengeHelper {
 	}
 
 	public String getLiveModeButtonLabel(int mode) {
-		return getLiveModeButtonLabel(newLiveGameButtonsArray[mode]);
-	}
-
-	protected String getLiveModeButtonLabel(String label) {
-		if (label.contains(Symbol.SLASH)) { // "5 | 2"
-			return label;
-		} else { // "10 min"
-			return getString(R.string.min_arg, label);
-		}
+		return AppUtils.getLiveModeButtonLabel(newLiveGameButtonsArray[mode], context);
 	}
 
 	private String getString(int stringId, Object... args) {
@@ -301,16 +292,7 @@ public class ChallengeHelper {
 	}
 
 	public String getDailyModeButtonLabel(int mode) {
-		return getDaysString(newDailyGameButtonsArray[mode]);
-	}
-
-
-	protected String getDaysString(int cnt) {
-		if (cnt > 1) {
-			return getString(R.string.days_arg, cnt);
-		} else {
-			return getString(R.string.day_arg, cnt);
-		}
+		return AppUtils.getDaysString(newDailyGameButtonsArray[mode], context);
 	}
 
 	private class CreateChallengeUpdateListener extends ActionBarUpdateListener<DailySeekItem> {

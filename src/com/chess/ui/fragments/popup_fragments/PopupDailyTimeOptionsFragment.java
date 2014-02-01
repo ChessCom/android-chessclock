@@ -69,9 +69,9 @@ public class PopupDailyTimeOptionsFragment extends SimplePopupDialogFragment imp
 			Button button = buttonEntry.getValue();
 			button.setVisibility(View.VISIBLE);
 			if (newGameButtonsArray[key] > 1) {
-				button.setText(getString(R.string.days_arg, newGameButtonsArray[key]));
+				button.setText(getString(R.string.arg_days, newGameButtonsArray[key]));
 			} else {
-				button.setText(getString(R.string.day_arg, newGameButtonsArray[key]));
+				button.setText(getString(R.string.arg_day, newGameButtonsArray[key]));
 			}
 			button.setOnClickListener(this);
 

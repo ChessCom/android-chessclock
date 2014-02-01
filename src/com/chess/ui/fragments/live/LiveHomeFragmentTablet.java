@@ -32,6 +32,7 @@ import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
+import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -325,11 +326,10 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 			int mode = getAppData().getDefaultLiveMode();
 			// set texts to buttons
 			newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
-			// TODO add sliding from outside animation for time modes in popup
+
 			timeSelectBtn = (Button) view.findViewById(R.id.timeSelectBtn);
 			timeSelectBtn.setOnClickListener(this);
-
-			timeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
+			timeSelectBtn.setText(AppUtils.getLiveModeButtonLabel(newGameButtonsArray[mode], getActivity()));
 		}
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_live_home_options_tablet_header_view, null, false);
 		initHeaderViews(headerView);

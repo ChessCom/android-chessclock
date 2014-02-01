@@ -73,12 +73,12 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 			case PLAY_ONLINE_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.play_online)), PLAY_ONLINE_TAG);
+				showPopupDialogTouch(getString(R.string.please_sign_up_for_play_online), PLAY_ONLINE_TAG);
 				break;
 			case CHALLENGE_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.challenge_friend)), CHALLENGE_TAG);
+				showPopupDialogTouch(getString(R.string.please_sign_up_for_friends, getString(R.string.challenge_friend)), CHALLENGE_TAG);
 				break;
 			case REMATCH_ITEM:
 				int mode = compGameConfig.getMode();
@@ -93,17 +93,17 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 			case TACTICS_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.solve_tactics_puzzles)), TACTICS_TAG);
+				showPopupDialogTouch(getString(R.string.please_sign_up_for_tactics), TACTICS_TAG);
 				break;
 			case LESSONS_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.use_lessons)), LESSONS_TAG);
+				showPopupDialogTouch(getString(R.string.please_sign_up_for_lessons), LESSONS_TAG);
 				break;
 			case VIDEOS_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.watch_videos)), VIDEOS_TAG);
+				showPopupDialogTouch(getString(R.string.please_sign_up_for_videos), VIDEOS_TAG);
 				break;
 		}
 	}
@@ -212,13 +212,7 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 
 	@Override
 	public void newGame() {
-		getActivityFace().changeRightFragment(WelcomeCompGameOptionsFragment.createInstance(parentFace));
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				getActivityFace().toggleRightMenu();
-			}
-		}, 100);
+		startNewGame();
 	}
 
 }

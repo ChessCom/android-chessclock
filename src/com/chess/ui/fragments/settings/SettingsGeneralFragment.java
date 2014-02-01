@@ -38,7 +38,6 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 	private SwitchButton showLegalMovesSwitch;
 	private TextView strengthValueBtn;
 	private int selectedCompLevel;
-	private SwitchButton autoFlipSwitch;
 	private ProgressImageView piecesLineImage;
 	private ProgressImageView boardLineImage;
 	private SparseArray<String> defaultPiecesNamesMap;
@@ -164,8 +163,6 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 			miniBoardsSwitch.toggle();
 		} else if (id == R.id.fullScreenView) {
 			fullScreenSwitch.toggle();
-		} else if (view.getId() == R.id.autoFlipView) {
-			autoFlipSwitch.toggle();
 		}
 	}
 
@@ -192,8 +189,6 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 			getAppData().setMiniBoardsEnabled(checked);
 		} else if (switchButton.getId() == R.id.fullScreenSwitch) {
 			getAppData().setFullScreen(checked);
-		} else if (switchButton.getId() == R.id.autoFlipSwitch) {
-			getAppData().setAutoFlipFor2Players(autoFlipSwitch.isChecked());
 		}
 	}
 
@@ -207,14 +202,6 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 		notificationsSwitch = (SwitchButton) view.findViewById(R.id.notificationsSwitch);
 		miniBoardsSwitch = (SwitchButton) view.findViewById(R.id.miniBoardsSwitch);
 		fullScreenSwitch = (SwitchButton) view.findViewById(R.id.fullScreenSwitch);
-		View autoFlipView = view.findViewById(R.id.autoFlipView);
-		autoFlipSwitch = (SwitchButton) view.findViewById(R.id.autoFlipSwitch);
-
-		if (getAppData().getCompGameMode() == AppConstants.GAME_MODE_2_PLAYERS) {
-			autoFlipView.setVisibility(View.VISIBLE);
-		} else {
-			autoFlipView.setVisibility(View.GONE);
-		}
 
 		coordinatesSwitch.setSwitchChangeListener(this);
 		highlightLastMoveSwitch.setSwitchChangeListener(this);
@@ -224,8 +211,6 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 		notificationsSwitch.setSwitchChangeListener(this);
 		miniBoardsSwitch.setSwitchChangeListener(this);
 		fullScreenSwitch.setSwitchChangeListener(this);
-		autoFlipView.setOnClickListener(this);
-		autoFlipSwitch.setSwitchChangeListener(this);
 
 		view.findViewById(R.id.coordinatesView).setOnClickListener(this);
 		view.findViewById(R.id.highlightLastMoveView).setOnClickListener(this);
@@ -243,7 +228,6 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 		highlightLastMoveSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_HIGHLIGHT_LAST_MOVE, true));
 		showLegalMovesSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_SHOW_LEGAL_MOVES, true));
 //		alwaysShowWhiteBottomSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_BOARD_SHOW_ANSWER_BOTTOM, true));
-		autoFlipSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_AUTO_FLIP, true));
 		notificationsSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_DAILY_NOTIFICATIONS, true));
 		miniBoardsSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_DAILY_MINI_BOARDS, true));
 		fullScreenSwitch.setChecked(preferences.getBoolean(username + AppConstants.PREF_FULL_SCREEN, false));

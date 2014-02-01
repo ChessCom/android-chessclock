@@ -42,6 +42,8 @@ public class GetAndSavePieces extends Service {
 	public static final int INDETERMINATE = -1;
 	public static final int DONE = -2;
 	private static final long SHUTDOWN_DELAY = 4 * 1000;
+	public static final String SLASH = "/";
+	public static final String PNG = ".png";
 
 	private ServiceBinder serviceBinder = new ServiceBinder();
 
@@ -92,10 +94,11 @@ public class GetAndSavePieces extends Service {
 				PendingIntent.FLAG_UPDATE_CURRENT
 		);
 
+		String downloadingPiecesStr = getString(R.string.downloading_arg, getString(R.string.pieces));
 		notificationBuilder = new NotificationCompat.Builder(this);
-		notificationBuilder.setContentTitle(getString(R.string.loading_pieces))
-				.setTicker(getString(R.string.loading_pieces))
-				.setContentText(getString(R.string.loading_pieces))
+		notificationBuilder.setContentTitle(downloadingPiecesStr)
+				.setTicker(downloadingPiecesStr)
+				.setContentText(downloadingPiecesStr)
 				.setSmallIcon(R.drawable.ic_stat_download)
 				.setAutoCancel(true);
 		// Puts the PendingIntent into the notification builder
@@ -174,7 +177,7 @@ public class GetAndSavePieces extends Service {
 		@Override
 		public void showProgress(boolean show) {
 			if (show) {
-				showIndeterminateNotification(getString(R.string.loading_pieces));
+				showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.pieces)));
 			}
 		}
 
@@ -190,17 +193,17 @@ public class GetAndSavePieces extends Service {
 			String[] whitePieceImageCodes = ChessBoard.whitePieceImageCodes;
 			for (int i = 0; i < whitePieceImageCodes.length; i++) {
 				String imageCode = whitePieceImageCodes[i];
-				imagesToLoad[i] = PieceSingleItem.PATH + selectedPieceDir + "/" + pieceWidth + "/" + imageCode + ".png";
+				imagesToLoad[i] = PieceSingleItem.PATH + selectedPieceDir + SLASH + pieceWidth + SLASH + imageCode + PNG;
 			}
 
 			String[] blackPieceImageCodes = ChessBoard.blackPieceImageCodes;
 
 			for (int i = 0; i < blackPieceImageCodes.length; i++) {
 				String imageCode = blackPieceImageCodes[i];
-				imagesToLoad[6 + i] = PieceSingleItem.PATH + selectedPieceDir + "/" + pieceWidth + "/" + imageCode + ".png";
+				imagesToLoad[6 + i] = PieceSingleItem.PATH + selectedPieceDir + SLASH + pieceWidth + SLASH + imageCode + PNG;
 			}
 
-			showIndeterminateNotification(getString(R.string.loading_pieces));
+			showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.pieces)));
 
 			// Start loading pieces image
 			new GetAndSaveFileToSdTask(piecesPackSaveListener, AppUtils.getLocalDirForPieces(getContext(), selectedPieceDir))

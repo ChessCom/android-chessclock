@@ -180,8 +180,8 @@ public class DailyInviteFragment extends CommonLogicFragment {
 
 		controlsView.enableGameControls(true);
 
-		topPanelView.setTimeRemain(getDaysString(daysPerMove));
-		bottomPanelView.setTimeRemain(getDaysString(daysPerMove));
+		topPanelView.setTimeRemain(AppUtils.getDaysString(daysPerMove, getActivity()));
+		bottomPanelView.setTimeRemain(AppUtils.getDaysString(daysPerMove, getActivity()));
 		topPanelView.showTimeLeftIcon(false);
 		bottomPanelView.showTimeLeftIcon(false);
 

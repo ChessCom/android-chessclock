@@ -18,6 +18,7 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.friends.FriendsRightFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
+import com.chess.utilities.AppUtils;
 import com.chess.widgets.RoboRadioButton;
 import com.chess.widgets.SwitchButton;
 
@@ -139,14 +140,6 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(MODE, positionMode);
-	}
-
-	private String getLiveModeButtonLabel(String label) {
-		if (label.contains(Symbol.SLASH)) { // "5 | 2"
-			return label;
-		} else { // "10 min"
-			return getString(R.string.min_arg, label);
-		}
 	}
 
 	@Override
@@ -467,7 +460,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 				String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
 				for (Map.Entry<Integer, Button> buttonEntry : liveButtonsModeMap.entrySet()) {
 					int key = buttonEntry.getKey();
-					buttonEntry.getValue().setText(getLiveModeButtonLabel(newGameButtonsArray[key]));
+					buttonEntry.getValue().setText(AppUtils.getLiveModeButtonLabel(newGameButtonsArray[key], getContext()));
 					buttonEntry.getValue().setOnClickListener(this);
 
 					if (key == mode) {

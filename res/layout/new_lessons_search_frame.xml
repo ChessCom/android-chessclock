@@ -148,5 +148,11 @@
 			android:visibility="gone" />
 	</com.chess.widgets.MultiDirectionSlidingDrawer>
 
-
+	<!--Ads-->
+	<include
+		android:id="@+id/bannerUpgradeView"
+		layout="@layout/mopub_ad_view"
+		android:layout_gravity="center_horizontal"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true" />
 </RelativeLayout>

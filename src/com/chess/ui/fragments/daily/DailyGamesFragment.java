@@ -62,7 +62,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private static final String END_VACATION_TAG = "end vacation popup";
 	private static final String DRAW_OFFER_PENDING_TAG = "DRAW_OFFER_PENDING_TAG";
 	private static final String IMAGE_CACHE_DIR = "boards";
-	public static final int MIN_GAMES_TO_SHOW_BANNER = 5;
 
 	private DailyUpdateListener acceptDrawUpdateListener;
 

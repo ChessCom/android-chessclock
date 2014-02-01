@@ -703,15 +703,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 
 		@Override
-		public void showProgress(boolean show) {
-			if (show) {
-				showPopupProgressDialog();
-			} else {
-				dismissProgressDialog();
-			}
-		}
-
-		@Override
 		public void updateData(LoginItem returnedObj) {
 			DataHolder.getInstance().setPerformingRelogin(false);
 
@@ -1027,14 +1018,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected ImageGetter getImageGetter(TextView textView, String sourceText, int imageSize) {
 		return new ImageGetter(getActivity(), textViewsImageCache, textView, sourceText, imageSize);
-	}
-
-	protected String getDaysString(int cnt) {
-		if (cnt > 1) {
-			return getString(R.string.days_arg, cnt);
-		} else {
-			return getString(R.string.day_arg, cnt);
-		}
 	}
 
 	public void pullToRefresh(boolean usePullToRefresh) {

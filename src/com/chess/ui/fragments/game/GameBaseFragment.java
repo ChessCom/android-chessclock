@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListenerLight;
 import com.chess.backend.tasks.SaveTextFileToSDTask;
@@ -419,35 +418,37 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	public class ShareItem {
+		public static final int LIVE = 0;
+		public static final int DAILY = 1;
 
-		private final String gameLink;
 		private BaseGameItem currentGame;
-		private String gameType;
+		private int gameType;
+		private long gameId;
 
-		public ShareItem(BaseGameItem currentGame, long gameId, String gameType) {
+		public ShareItem(BaseGameItem currentGame, long gameId, int gameType) {
 			this.currentGame = currentGame;
 			this.gameType = gameType;
-			if (gameType.equals(getString(R.string.live))) {
-				gameLink = RestHelper.getInstance().getLiveGameLink(gameId);
-			} else {
-				gameLink = RestHelper.getInstance().getOnlineGameLink(gameId);
-			}
+			this.gameId = gameId;
 		}
 
 
 		public String composeMessage() {
-			String vsStr = getString(R.string.vs);
-			String space = Symbol.SPACE;
-			return currentGame.getWhiteUsername() + space + vsStr + space + currentGame.getBlackUsername()
-					+ " - " + gameType + space + getString(R.string.chess) + space
-					+ getString(R.string.via_chesscom) + space
-					+ gameLink;
+			String white = currentGame.getWhiteUsername();
+			String black = currentGame.getBlackUsername();
+			String shareStr;
+			if (gameType == LIVE) {
+				shareStr = getString(R.string.live_game_share_str, white, black, gameId);
+			} else {
+				shareStr = getString(R.string.daily_game_share_str, white, black, gameId);
+			}
+
+			return shareStr;
 		}
 
 		public String getTitle() {
 			String vsStr = getString(R.string.vs);
-			return "Chess: " + currentGame.getWhiteUsername() + Symbol.SPACE
-					+ vsStr + Symbol.SPACE + currentGame.getBlackUsername(); // TODO adjust i18n
+			return currentGame.getWhiteUsername() + Symbol.SPACE
+					+ vsStr + Symbol.SPACE + currentGame.getBlackUsername();
 		}
 	}
 

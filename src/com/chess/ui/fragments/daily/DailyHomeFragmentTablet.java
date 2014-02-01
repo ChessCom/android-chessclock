@@ -22,6 +22,7 @@ import com.chess.ui.fragments.friends.FriendsRightFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
+import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -175,7 +176,7 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 			timeSelectBtn = (Button) view.findViewById(R.id.timeSelectBtn);
 			timeSelectBtn.setOnClickListener(this);
 
-			timeSelectBtn.setText(getDaysString(newGameButtonsArray[mode]));
+			timeSelectBtn.setText(AppUtils.getDaysString(newGameButtonsArray[mode], getActivity()));
 		}
 
 		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_daily_home_options_tablet_header_view, null, false);

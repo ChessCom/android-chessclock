@@ -117,7 +117,7 @@ public class GameLiveArchiveAnalysisFragment extends GameDailyAnalysisFragment {
 			timeRemains = AppUtils.getTimeLeftFromSeconds(secondsRemain, getActivity());
 		}
 
-		String defaultTime = getDaysString(currentGame.getDaysPerMove());
+		String defaultTime = AppUtils.getDaysString(currentGame.getDaysPerMove(), getActivity());
 //		boolean userMove = isUserMove();
 		boolean userMove = true;
 		if (userMove) {

@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import com.chess.R;
 import com.chess.statics.AppData;
-import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.PopupListSelectionFace;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,21 +84,13 @@ public class PopupLiveTimeOptionsFragment extends SimplePopupDialogFragment impl
 			int key = buttonEntry.getKey();
 			Button button = buttonEntry.getValue();
 			button.setVisibility(View.VISIBLE);
-			button.setText(getLiveModeButtonLabel(newGameButtonsArray[key]));
+			button.setText(AppUtils.getLiveModeButtonLabel(newGameButtonsArray[key], getActivity()));
 			button.setOnClickListener(this);
 			button.setTextColor(darkBtnColor);
 
 			if (key == mode) {
 				setDefaultTimeMode(button, buttonEntry.getKey());
 			}
-		}
-	}
-
-	private String getLiveModeButtonLabel(String label) {
-		if (label.contains(Symbol.SLASH)) { // "5 | 2"
-			return label;
-		} else { // "10 min"
-			return getString(R.string.min_arg, label);
 		}
 	}
 

@@ -471,24 +471,24 @@ public class AppUtils {
 
 		if (days > 0) {
 			if (days > 1) {
-				sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.days)).append(Symbol.SPACE);
+				sb.append(context.getString(R.string.arg_days, days));
 			} else {
-				sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.day)).append(Symbol.SPACE);
+				sb.append(context.getString(R.string.arg_day, days));
 			}
 		} else if (hours > 0) {
 			if (!sb.toString().trim().equals(Symbol.EMPTY)) {
 				sb.append(Symbol.SPACE);
 			}
 			if (hours > 1) {
-				sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hours)).append(Symbol.SPACE);
+				sb.append(context.getString(R.string.arg_hours, hours));
 			} else {
-				sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hour)).append(Symbol.SPACE);
+				sb.append(context.getString(R.string.arg_hour, hours));
 			}
 		} else if (minutes > 0) {
 			if (!sb.toString().trim().equals(Symbol.EMPTY)) {
 				sb.append(Symbol.SPACE);
 			}
-			sb.append(context.getString(R.string.min_arg, minutes));
+			sb.append(context.getString(R.string.arg_min, minutes));
 		}
 
 		return sb.toString();
@@ -506,42 +506,42 @@ public class AppUtils {
 
 		if (years > 0) {
 			if (years > 1) {
-				sb.append(years).append(Symbol.SPACE).append(context.getString(R.string.years));
+				sb.append(context.getString(R.string.arg_years_ago, years));
 			} else {
-				sb.append(years).append(Symbol.SPACE).append(context.getString(R.string.year));
+				sb.append(context.getString(R.string.arg_year_ago, years));
 			}
 		} else if (months > 0) {
 			if (months > 1) {
-				sb.append(months).append(Symbol.SPACE).append(context.getString(R.string.months));
+				sb.append(context.getString(R.string.arg_months_ago, months));
 			} else {
-				sb.append(months).append(Symbol.SPACE).append(context.getString(R.string.month));
+				sb.append(context.getString(R.string.arg_month_ago, months));
 			}
 		} else if (days > 0) {
 			if (days > 1) {
-				sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.days));
+				sb.append(context.getString(R.string.arg_days_ago, days));
 			} else {
-				sb.append(days).append(Symbol.SPACE).append(context.getString(R.string.day));
+				sb.append(context.getString(R.string.arg_day_ago, days));
 			}
 		} else if (hours > 0) {
 			if (!sb.toString().trim().equals(Symbol.EMPTY)) {
 				sb.append(Symbol.SPACE);
 			}
 			if (hours > 1) {
-				sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hours));
+				sb.append(context.getString(R.string.arg_hours_ago, hours));
 			} else {
-				sb.append(hours).append(Symbol.SPACE).append(context.getString(R.string.hour));
+				sb.append(context.getString(R.string.arg_hour_ago, hours));
 			}
 		} else if (minutes > 0) {
 			if (!sb.toString().trim().equals(Symbol.EMPTY)) {
 				sb.append(Symbol.SPACE);
 			}
-			sb.append(context.getString(R.string.min_arg, minutes));
+			sb.append(context.getString(R.string.arg_min_ago, minutes));
 		} else {
 			sb.append(context.getString(R.string.just_now));
 			return sb.toString();
 		}
 
-		return context.getString(R.string.ago_arg, sb.toString());
+		return sb.toString();
 	}
 
 	public static String getSecondsTimeFromSecondsStr(long duration) {
@@ -570,6 +570,34 @@ public class AppUtils {
 		sb.append(seconds);
 
 		return sb.toString();
+	}
+
+	public static String getDaysString(int cnt, Context context) {
+		if (cnt > 1) {
+			return context.getString(R.string.arg_days, cnt);
+		} else {
+			return context.getString(R.string.arg_day, cnt);
+		}
+	}
+
+	public static String getLiveModeButtonLabel(String label, Context context) {
+		int initialTime;
+		int bonusTime = 0;
+		if(label.contains(Symbol.SLASH)){
+			// "5 | 2",
+			String[] params = label.split(Symbol.DIVIDER);
+			initialTime = Integer.valueOf(params[0].trim());
+			bonusTime = Integer.valueOf(params[2].trim());
+		} else {
+			// "10 min",
+			initialTime = Integer.valueOf(label);
+		}
+
+		if (bonusTime == 0) { // "10 min"
+			return context.getString(R.string.arg_min, initialTime);
+		} else { // "5 | 2"
+			return context.getString(R.string.live_chess_time_mode_arg, initialTime, bonusTime);
+		}
 	}
 
 	public static boolean isNetworkAvailable(Context context) {

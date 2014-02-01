@@ -75,7 +75,7 @@ public class VideosItemAdapter extends ItemsAdapter<VideoSingleItem.Data> {
 				+ firstName + Symbol.SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 		holder.authorTxt.setText(authorStr);
-		String durationStr = SLASH_DIVIDER + context.getString(R.string.min_arg, item.getMinutes());
+		String durationStr = SLASH_DIVIDER + context.getString(R.string.arg_min, item.getMinutes());
 		String viewsCntStr = SLASH_DIVIDER + context.getString(R.string.views_arg, item.getViewCount());
 		holder.durationTxt.setText(durationStr + viewsCntStr);
 		holder.titleTxt.setText(item.getTitle());

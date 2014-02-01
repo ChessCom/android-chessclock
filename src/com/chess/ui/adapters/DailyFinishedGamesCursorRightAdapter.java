@@ -63,10 +63,10 @@ public class DailyFinishedGamesCursorRightAdapter extends ItemsCursorAdapter {
 		String opponentName;
 		if (getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
 			avatarUrl = getString(cursor, DbScheme.V_WHITE_AVATAR);
-			opponentName = getString(cursor, DbScheme.V_WHITE_USERNAME) + gameType;
+			opponentName = getString(cursor, DbScheme.V_WHITE_USERNAME);
 		} else {
 			avatarUrl = getString(cursor, DbScheme.V_BLACK_AVATAR);
-			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME) + gameType;
+			opponentName = getString(cursor, DbScheme.V_BLACK_USERNAME);
 		}
 
 		holder.playerTxt.setText(opponentName + gameType);

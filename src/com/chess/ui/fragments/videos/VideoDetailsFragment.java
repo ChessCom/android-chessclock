@@ -309,7 +309,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		Drawable drawable = AppUtils.getCountryFlagScaled(getActivity(), countryMap.get(videoData.getCountryId()));
 		countryImg.setImageDrawable(drawable);
 
-		String durationStr = SLASH_DIVIDER + getString(R.string.min_arg, videoData.getMinutes());
+		String durationStr = SLASH_DIVIDER + getString(R.string.arg_min, videoData.getMinutes());
 		String viewsCntStr  = SLASH_DIVIDER + getString(R.string.views_arg, videoData.getViewCount());
 		dateTxt.setText(dateFormatter.format(new Date(videoData.getCreateDate())) + durationStr  + viewsCntStr);
 

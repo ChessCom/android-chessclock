@@ -211,13 +211,7 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 		this.showNewGameAtFirst = showNewGameAtFirst;
 	}
 
-	protected String getDaysString(int cnt) {
-		if (cnt > 1) {
-			return context.getString(R.string.days_arg, cnt);
-		} else {
-			return context.getString(R.string.day_arg, cnt);
-		}
-	}
+
 
 	public void setTimeLabel(String timeLabel) {
 		this.timeLabel = timeLabel;

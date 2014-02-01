@@ -355,7 +355,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			timeRemains = AppUtils.getTimeLeftFromSeconds(secondsRemain, getActivity());
 		}
 
-		String defaultTime = getDaysString(currentGame.getDaysPerMove());
+		String defaultTime = AppUtils.getDaysString(currentGame.getDaysPerMove(), getActivity());
 		boolean userMove = isUserMove();
 		if (userMove) {
 			labelsConfig.topPlayerTime = defaultTime;
@@ -914,7 +914,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			GameDailyItem gameDailyItem = new GameDailyItem();
 			gameDailyItem.setWhiteUsername(getWhitePlayerName());
 			gameDailyItem.setBlackUsername(getBlackPlayerName());
-			ShareItem shareItem = new ShareItem(gameDailyItem, gameId, getString(R.string.chess));
+			ShareItem shareItem = new ShareItem(gameDailyItem, gameId, ShareItem.DAILY);
 
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
 			shareIntent.setType("text/plain");

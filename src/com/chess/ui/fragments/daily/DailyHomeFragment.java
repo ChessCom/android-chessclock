@@ -29,6 +29,7 @@ import com.chess.ui.interfaces.GameFaceHelper;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.utilities.AppUtils;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -272,10 +273,10 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 			int mode = getAppData().getDefaultDailyMode();
 			// set texts to buttons
 			newGameButtonsArray = getResources().getIntArray(R.array.days_per_move_array);
+
 			timeSelectBtn = (Button) headerView.findViewById(R.id.timeSelectBtn);
 			timeSelectBtn.setOnClickListener(this);
-
-			timeSelectBtn.setText(getDaysString(newGameButtonsArray[mode]));
+			timeSelectBtn.setText(AppUtils.getDaysString(newGameButtonsArray[mode], getActivity()));
 		}
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
@@ -289,7 +290,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 
 	private void setDefaultTimeMode(View view, int mode) {
 		view.setSelected(true);
-		timeSelectBtn.setText(getDaysString(newGameButtonsArray[mode]));
+		timeSelectBtn.setText(AppUtils.getDaysString(newGameButtonsArray[mode], getActivity()));
 		gameConfigBuilder.setDaysPerMove(newGameButtonsArray[mode]);
 		getAppData().setDefaultDailyMode(mode);
 	}

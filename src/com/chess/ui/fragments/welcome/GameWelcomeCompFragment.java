@@ -81,14 +81,13 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private static final String OPTION_SELECTION = "option select popup";
 
 	// game op action ids
-	private static final int ID_NEW_GAME = 0;
-	private static final int ID_NEW_GAME_WHITE = 1;
-	private static final int ID_NEW_GAME_BLACK = 2;
+	private static final int ID_NEW_GAME_WHITE = 0;
+	private static final int ID_NEW_GAME_BLACK = 1;
+	private static final int ID_ENTER_MOVES = 2;
 	private static final int ID_SHARE_PGN = 3;
 	private static final int ID_FLIP_BOARD = 4;
 	private static final int ID_SETTINGS = 5;
 
-	private static final long AUTO_FLIP_DELAY = 500;
 	private static final int FADE_ANIM_DURATION = 300;
 	protected static final long DRAWER_APPEAR_DELAY = 100;
 	protected static final long END_GAME_DELAY = 1000L;
@@ -123,8 +122,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 //	private TextView engineThinkingPath;
 
 	protected CompGameConfig compGameConfig;
-	private boolean isAutoFlip;
-	private TextView whatIsChessComTxt;
 
 	public GameWelcomeCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -195,8 +192,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		}, 1000);
 
 		ChessBoardComp.resetInstance();
-
-		isAutoFlip = getAppData().isAutoFlipFor2Players();
 
 		if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
@@ -299,13 +294,14 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void onValueSelected(int code) {
-		if (code == ID_NEW_GAME) {
-			newGame();
-		} else if (code == ID_NEW_GAME_WHITE) {
+		if (code == ID_NEW_GAME_WHITE) {
 			compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
 			startNewGame();
 		} else if (code == ID_NEW_GAME_BLACK) {
 			compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK);
+			startNewGame();
+		} else if (code == ID_ENTER_MOVES) {
+			compGameConfig.setMode(AppConstants.GAME_MODE_2_PLAYERS);
 			startNewGame();
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
@@ -326,14 +322,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void updateAfterMove() {
-		if (getBoardFace().getMode() == AppConstants.GAME_MODE_2_PLAYERS && isAutoFlip) {
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					boardView.flipBoard();
-				}
-			}, AUTO_FLIP_DELAY);
-		}
 	}
 
 	@Override
@@ -572,13 +560,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void newGame() {
-		getActivityFace().changeRightFragment(WelcomeCompGameOptionsFragment.createInstance(parentFace));
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				getActivityFace().toggleRightMenu();
-			}
-		}, 100);
+		startNewGame();
 	}
 
 	@Override
@@ -731,12 +713,12 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			case PLAY_ONLINE_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.play_online)), PLAY_ONLINE_TAG);
+				showPopupDialogTouch(getString(R.string.please_sign_up_for_play_online), PLAY_ONLINE_TAG);
 				break;
 			case CHALLENGE_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.challenge_friend)), CHALLENGE_TAG);
+				showPopupDialogTouch(getString(R.string.please_sign_up_for_friends), CHALLENGE_TAG);
 				break;
 			case REMATCH_ITEM:
 				int mode = compGameConfig.getMode();
@@ -751,17 +733,17 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			case TACTICS_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.solve_tactics_puzzles)), TACTICS_TAG);
+				showPopupDialogTouch(getString(R.string.please_sign_up_for_tactics), TACTICS_TAG);
 				break;
 			case LESSONS_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.use_lessons)), LESSONS_TAG);
+				showPopupDialogTouch(getString(R.string.please_sign_up_for_lessons), LESSONS_TAG);
 				break;
 			case VIDEOS_ITEM:
 				popupItem.setPositiveBtnId(R.string.log_in);
 				popupItem.setNegativeBtnId(R.string.sign_up);
-				showPopupDialogTouch(getString(R.string.you_must_have_account_to, getString(R.string.watch_videos)), VIDEOS_TAG);
+				showPopupDialogTouch(getString(R.string.please_sign_up_for_videos), VIDEOS_TAG);
 				break;
 		}
 	}
@@ -853,7 +835,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	protected void widgetsInit(View view) {
 		Activity activity = getActivity();
 
-		whatIsChessComTxt = (TextView) view.findViewById(R.id.whatIsChessComTxt);
+		TextView whatIsChessComTxt = (TextView) view.findViewById(R.id.whatIsChessComTxt);
 		Drawable icon = new IconDrawable(getActivity(), R.string.ic_round_right, R.color.semitransparent_white_75,
 				R.dimen.glyph_icon_big);
 
@@ -902,9 +884,9 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 		{// options list setup
 			optionsArray = new SparseArray<String>();
-			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
 			optionsArray.put(ID_NEW_GAME_WHITE, getString(R.string.new_game_arg, getString(R.string.white)));
 			optionsArray.put(ID_NEW_GAME_BLACK, getString(R.string.new_game_arg, getString(R.string.black)));
+			optionsArray.put(ID_ENTER_MOVES, getString(R.string.enter_moves));
 			optionsArray.put(ID_FLIP_BOARD, getString(R.string.flip_board));
 			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));

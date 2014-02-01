@@ -140,7 +140,7 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 			timeRemains = AppUtils.getTimeLeftFromSeconds(secondsRemain, getActivity());
 		}
 
-		String defaultTime = getDaysString(currentGame.getDaysPerMove());
+		String defaultTime = AppUtils.getDaysString(currentGame.getDaysPerMove(), getActivity());
 		boolean userMove = true;
 		if (userMove) {
 			labelsConfig.topPlayerTime = defaultTime;

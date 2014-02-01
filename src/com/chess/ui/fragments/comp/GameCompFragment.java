@@ -57,14 +57,12 @@ import java.util.Calendar;
 public class GameCompFragment extends GameBaseFragment implements GameCompFace, PopupListSelectionFace {
 
 	// Quick action ids
-	private static final int ID_NEW_GAME = 0;
-	private static final int ID_NEW_GAME_WHITE = 1;
-	private static final int ID_NEW_GAME_BLACK = 2;
+	private static final int ID_NEW_GAME_WHITE = 0;
+	private static final int ID_NEW_GAME_BLACK = 1;
+	private static final int ID_ENTER_MOVES = 2;
 	private static final int ID_SHARE_PGN = 3;
 	private static final int ID_FLIP_BOARD = 4;
 	private static final int ID_SETTINGS = 5;
-
-	private static final long AUTO_FLIP_DELAY = 500;
 
 	private ChessBoardCompView boardView;
 	private ControlsCompView controlsView;
@@ -80,10 +78,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private int[] compStrengthArray;
 	private String[] compTimeLimitArray;
 	private String[] compDepth;
-//	private TextView engineThinkingPath;
+	private TextView engineThinkingPath;
 
 	private CompGameConfig compGameConfig;
-	private boolean isAutoFlip;
+	private GameCompFragment.InitComputerEngineUpdateListener engineUpdateListener;
 
 	public GameCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -127,7 +125,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		widgetsInit(view);
 
 		{ // Engine init
-//			engineThinkingPath = (TextView) view.findViewById(R.id.engineThinkingPath);
+			engineThinkingPath = (TextView) view.findViewById(R.id.engineThinkingPath);
 			compStrengthArray = getResources().getIntArray(R.array.comp_strength);
 			compTimeLimitArray = getResources().getStringArray(R.array.comp_time_limit);
 			compDepth = getResources().getStringArray(R.array.comp_book_depth);
@@ -144,8 +142,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private void updateData() {
 		getNotationsFace().resetNotations();
 		ChessBoardComp.resetInstance();
-
-		isAutoFlip = getAppData().isAutoFlipFor2Players();
 
 		if (compGameConfig.getFen() != null) {
 			getBoardFace().setupBoard(compGameConfig.getFen());
@@ -215,7 +211,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		compEngineItem.setStrength(strength);
 		compEngineItem.setTime(time);
 
-		new StartEngineTask(compEngineItem, this, new InitComputerEngineUpdateListener()).executeTask();
+		new StartEngineTask(compEngineItem, this, engineUpdateListener).executeTask();
 	}
 
 	@Override
@@ -256,14 +252,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public void updateAfterMove() {
-		if (getBoardFace().getMode() == AppConstants.GAME_MODE_2_PLAYERS && isAutoFlip) {
-			handler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					boardView.flipBoard();
-				}
-			}, AUTO_FLIP_DELAY);
-		}
 	}
 
 	@Override
@@ -523,14 +511,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public void newGame() {
-		getActivityFace().changeRightFragment(new CompGameOptionsFragment());
-		getActivityFace().toggleRightMenu();
+		startNewGame();
 	}
 
 	@Override
 	public void switch2Analysis() {
 		ChessBoardComp.resetInstance();
-
 	}
 
 	@Override
@@ -658,20 +644,21 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 			startNewGame();
 		}  else if (view.getId() == R.id.sharePopupBtn) {
-			ShareItem shareItem = new ShareItem();
-
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
 			shareIntent.setType("text/plain");
-			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
-			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
+			shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.vs_computer));
 			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
 			dismissEndGameDialog();
 		}
 	}
 
 	private void startNewGame() {
+		boardView.stopComputerMove();
 		getNotationsFace().resetNotations();
 		ChessBoardComp.resetInstance();
+		labelsSet = false;
+		getAppData().clearSavedCompGame();
+
 		getBoardFace().setMode(compGameConfig.getMode());
 		resideBoardIfCompWhite();
 		invalidateGameScreen();
@@ -716,13 +703,14 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public void onValueSelected(int code) {
-		if (code == ID_NEW_GAME) {
-			newGame();
-		} else if (code == ID_NEW_GAME_WHITE) {
+		if (code == ID_NEW_GAME_WHITE) {
 			compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
 			startNewGame();
 		} else if (code == ID_NEW_GAME_BLACK) {
 			compGameConfig.setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK);
+			startNewGame();
+		} else if (code == ID_ENTER_MOVES) {
+			compGameConfig.setMode(AppConstants.GAME_MODE_2_PLAYERS);
 			startNewGame();
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
@@ -739,34 +727,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	@Override
 	public void onDialogCanceled() {
 		optionsSelectFragment = null;
-	}
-
-//	private class LabelsConfig {
-//		BoardAvatarDrawable topAvatar;
-//		BoardAvatarDrawable bottomAvatar;
-//		String topPlayerName;
-//		String bottomPlayerName;
-//		int userSide;
-//
-//		int getOpponentSide() {
-//			return userSide == ChessBoard.WHITE_SIDE ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
-//		}
-//	}
-
-	public class ShareItem {
-
-		public String composeMessage() {
-			String vsStr = getString(R.string.vs);
-			String space = Symbol.SPACE;
-			return getAppData().getUsername()+ space + vsStr + space + getString(R.string.vs_computer)
-					+ " - " + getString(R.string.chess) + space	+ getString(R.string.via_chesscom);
-		}
-
-		public String getTitle() {
-			String vsStr = getString(R.string.vs);
-			String space = Symbol.SPACE;
-			return "Chess: " + getAppData().getUsername()+ space + vsStr + space + getString(R.string.vs_computer); // TODO adjust i18n
-		}
 	}
 
 	protected ControlsCompView getControlsView() {
@@ -787,6 +747,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	private void init() {
 		labelsConfig = new LabelsConfig();
+		engineUpdateListener = new InitComputerEngineUpdateListener();
 		getBoardFace().setMode(compGameConfig.getMode());
 	}
 
@@ -848,9 +809,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		{// options list setup
 			optionsArray = new SparseArray<String>();
-			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
 			optionsArray.put(ID_NEW_GAME_WHITE, getString(R.string.new_game_arg, getString(R.string.white)));
 			optionsArray.put(ID_NEW_GAME_BLACK, getString(R.string.new_game_arg, getString(R.string.black)));
+			optionsArray.put(ID_ENTER_MOVES, getString(R.string.enter_moves));
 			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsArray.put(ID_FLIP_BOARD, getString(R.string.switch_sides));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));

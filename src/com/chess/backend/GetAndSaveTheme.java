@@ -133,7 +133,7 @@ public class GetAndSaveTheme extends Service {
 		notificationBuilder = new NotificationCompat.Builder(this);
 		notificationBuilder.setContentTitle(getString(R.string.installing_theme))
 				.setTicker(getString(R.string.installing_theme))
-				.setContentText(getString(R.string.loading_background))
+				.setContentText(getString(R.string.downloading_arg, getString(R.string.background)))
 				.setSmallIcon(R.drawable.ic_stat_download)
 				.setAutoCancel(true);
 		// Puts the PendingIntent into the notification builder
@@ -193,7 +193,7 @@ public class GetAndSaveTheme extends Service {
 			return;
 		}
 
-		showIndeterminateNotification(getString(R.string.loading_background));
+		showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.background)));
 
 		LoadItem loadItem;
 		if (!isTablet) {
@@ -235,7 +235,7 @@ public class GetAndSaveTheme extends Service {
 
 			backgroundData = returnedObj.getData();
 
-			showIndeterminateNotification(getString(R.string.loading_background));
+			showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.background)));
 
 			// Start loading background image
 			if (code == BACKGROUND_PORT) {
@@ -308,7 +308,7 @@ public class GetAndSaveTheme extends Service {
 
 			boardUrl = BoardSingleItem.PATH + boardDir + "/" + name + ".png";
 
-			showIndeterminateNotification(getString(R.string.loading_board));
+			showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.background)));
 
 			// Start loading board image
 			imageDownloader.download(boardUrl, boardUpdateListener, screenWidth);
@@ -348,17 +348,17 @@ public class GetAndSaveTheme extends Service {
 			}
 
 			if (listenerCode == BACKGROUND_PORT) {
-				showIndeterminateNotification(getString(R.string.saving_background));
+				showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.background)));
 
 				String filename = String.valueOf(backgroundUrlPort.hashCode()); // TODO rename to MD5
 				new SaveImageToSdTask(mainBackgroundImgSaveListener, bitmap).executeTask(filename);
 			} else if (listenerCode == BACKGROUND_LAND) {
-				showIndeterminateNotification(getString(R.string.saving_background));
+				showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.background)));
 
 				String filename = String.valueOf(backgroundUrlLand.hashCode()); // TODO rename to MD5
 				new SaveImageToSdTask(mainBackgroundLandImgSaveListener, bitmap).executeTask(filename);
 			} else if (listenerCode == BOARD) {
-				showIndeterminateNotification(getString(R.string.saving_board));
+				showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.board)));
 
 				String filename = String.valueOf(boardUrl.hashCode()); // TODO rename to MD5
 				new SaveImageToSdTask(boardImgSaveListener, bitmap).executeTask(filename);
@@ -405,7 +405,7 @@ public class GetAndSaveTheme extends Service {
 				LoadItem loadItem = LoadHelper.getBoardById(getUserToken(), selectedThemeItem.getBoardId());
 				new RequestJsonTask<BoardSingleItem>(boardSingleItemUpdateListener).executeTask(loadItem);
 
-				notificationBuilder.setContentText(getString(R.string.loading_board));
+				notificationBuilder.setContentText(getString(R.string.downloading_arg, getString(R.string.background)));
 				updateProgressToNotification(0);
 
 			} else if (listenerCode == BACKGROUND_LAND) {
@@ -477,7 +477,7 @@ public class GetAndSaveTheme extends Service {
 				imagesToLoad[6 + i] = PieceSingleItem.PATH + selectedPieceDir + "/" + pieceWidth + "/" + imageCode + ".png";
 			}
 
-			showIndeterminateNotification(getString(R.string.loading_pieces));
+			showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.pieces)));
 
 			// Start loading pieces image
 			new GetAndSaveFileToSdTask(piecesPackSaveListener, AppUtils.getLocalDirForPieces(getContext(), selectedPieceDir))

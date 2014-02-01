@@ -17,7 +17,7 @@ public interface BoardFace {
 
 	int getMode();
 
-	void setMode(int mode);
+	void setMode(int mode);  // TODO remove from ChessBoard
 
 	List<Move> generateLegalMoves();
 

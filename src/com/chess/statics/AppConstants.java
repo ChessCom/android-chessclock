@@ -37,10 +37,8 @@ public class AppConstants {
 	public static final String GUEST_NAME = "guest user";
 	public static final String LIVE_SESSION_ID = "live_session_id";
 	public static final String LIVE_SESSION_ID_SAVE_TIME = "live_session_id_save_time"; // used to detect if it is expired
-//	public static final String API_VERSION = "api_version";
 	public static final String PREF_COMPUTER_DELAY = "computer think delay";
 	public static final String PREF_COMPUTER_MODE = "vs computer game mode";
-	public static final String PREF_AUTO_FLIP = "auto flip for 2 players mode";
 	public static final String PREF_ACTION_AFTER_MY_MOVE = "aim";
 	public static final String USER_PREMIUM_STATUS = "premium_status";
 	public static final String USER_PREMIUM_SKU = "premium_sku";

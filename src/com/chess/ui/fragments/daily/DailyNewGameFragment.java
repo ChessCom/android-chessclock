@@ -16,6 +16,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.friends.ChallengeFriendFragment;
+import com.chess.utilities.AppUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -236,7 +237,7 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 			newGameButtonsArray = getResources().getIntArray(R.array.days_per_move_array);
 			for (Map.Entry<Integer, Button> buttonEntry : timeButtonsModeMap.entrySet()) {
 				int key = buttonEntry.getKey();
-				buttonEntry.getValue().setText(getDaysString(newGameButtonsArray[key]));
+				buttonEntry.getValue().setText(AppUtils.getDaysString(newGameButtonsArray[key], getActivity()));
 				buttonEntry.getValue().setOnClickListener(this);
 
 				if (positionMode == CENTER_MODE) {
@@ -273,7 +274,7 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 
 	private void setDefaultTimeMode(View view, int mode) {
 		view.setSelected(true);
-		dailyTimeSelectBtn.setText(getDaysString(newGameButtonsArray[mode]));
+		dailyTimeSelectBtn.setText(AppUtils.getDaysString(newGameButtonsArray[mode], getActivity()));
 		gameConfigBuilder.setDaysPerMove(newGameButtonsArray[mode]);
 		getAppData().setDefaultDailyMode(mode);
 	}

@@ -94,10 +94,11 @@ public class GetAndSaveBoard extends Service {
 		);
 
 
+		String downloadingBoardStr = getString(R.string.downloading_arg, getString(R.string.board));
 		notificationBuilder = new NotificationCompat.Builder(this);
-		notificationBuilder.setContentTitle(getString(R.string.loading_board))
-				.setTicker(getString(R.string.loading_board))
-				.setContentText(getString(R.string.loading_board))
+		notificationBuilder.setContentTitle(downloadingBoardStr)
+				.setTicker(downloadingBoardStr)
+				.setContentText(downloadingBoardStr)
 				.setSmallIcon(R.drawable.ic_stat_download)
 				.setAutoCancel(true);
 		// Puts the PendingIntent into the notification builder
@@ -123,7 +124,7 @@ public class GetAndSaveBoard extends Service {
 	}
 
 	public class ServiceBinder extends Binder {
-		public GetAndSaveBoard getService(){
+		public GetAndSaveBoard getService() {
 			return GetAndSaveBoard.this;
 		}
 	}
@@ -136,10 +137,10 @@ public class GetAndSaveBoard extends Service {
 	public void loadBoard(int selectedBoardId, int screenWidth) {
 		installingBoard = true;
 
-		this.screenWidth = screenWidth ;
+		this.screenWidth = screenWidth;
 
 		// check if we have saved board for that id
-		QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_BOARDS,	selectedBoardId);
+		QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_BOARDS, selectedBoardId);
 		Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
 
 		if (cursor != null && cursor.moveToFirst()) {
@@ -180,7 +181,7 @@ public class GetAndSaveBoard extends Service {
 		@Override
 		public void showProgress(boolean show) {
 			if (show) {
-				showIndeterminateNotification(getString(R.string.loading_board));
+				showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.board)));
 			}
 		}
 
@@ -199,7 +200,7 @@ public class GetAndSaveBoard extends Service {
 			// get boards dir in s3
 			String boardDir = boardData.getThemeDir();
 
-			showIndeterminateNotification(getString(R.string.loading_board));
+			showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.board)));
 
 			// we start to count pixels until we reach needed size for board
 			int boardSize = BOARD_START_SIZE;
@@ -236,7 +237,7 @@ public class GetAndSaveBoard extends Service {
 				return;
 			}
 
-			notificationBuilder.setContentText(getString(R.string.saving_board));
+			notificationBuilder.setContentText(getString(R.string.downloading_arg, getString(R.string.board)));
 			updateProgressToNotification(0);
 
 			String filename = String.valueOf(boardUrl.hashCode()); // TODO rename to MD5

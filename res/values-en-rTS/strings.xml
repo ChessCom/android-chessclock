@@ -11,7 +11,6 @@
 
 	<!--Navigation labels-->
 	<string name="play_live">play_live</string>
-	<string name="play_online">play_online</string>
 
 	<!--Settings-->
 	<string name="settings">settings</string>
@@ -150,15 +149,7 @@
 
 	<string name="upgrade_for_unlimited_arg">upgrade_for_unlimited_arg</string>
 
-	<!--Games List Screen-->
-	<string name="hours">hours</string>
-	<!--Units-->
-	<string name="hour">hour</string>
-	<!--Units-->
-	<string name="days">days</string>
-	<!--Units-->
-	<string name="day">day</string>
-	<!--Units-->
+
 
 	<string name="random">random</string>
 	<!--Player Color pick selector-->
@@ -244,7 +235,6 @@
 	<string name="rematch">rematch</string>
 	<!--Action-->
 
-	<string name="min_arg">min_arg</string>
 	<string name="fair_play_policy">fair_play_policy</string>
 
 	<string name="home">home</string>
@@ -291,8 +281,7 @@
 	<string name="my_move">new_my_move</string>
 	<string name="their_move">new_their_move</string>
 
-	<string name="days_arg">days_arg</string>
-	<string name="day_arg">day_arg</string>
+
 	<string name="photo">photo</string>
 	<string name="vs_computer">vs_computer</string>
 	<string name="daily_chess">daily_chess</string>
@@ -371,7 +360,6 @@
 	<string name="share_pgn">share_pgn</string>
 	<string name="share_via">share_via</string>
 	<string name="chess">chess</string>
-	<string name="via_chesscom">via_chesscom</string>
 
 	<!--Play Screen-->
 	<string name="vs_random_opponent">vs_random</string>
@@ -455,10 +443,7 @@
 	<!--Welcome screen-->
 	<string name="you_won">you_won</string>
 	<string name="you_lose">you_lose</string>
-	<string name="you_must_have_account_to">you_must_have_account_to</string>
-	<string name="solve_tactics_puzzles">solve_tactics_puzzles</string>
-	<string name="use_lessons">use_lessons</string>
-	<string name="watch_videos">watch_videos</string>
+
 	<string name="interactive_lessons">interactive_lessons</string>
 	<string name="tactics_and_puzzles">tactics_and_puzzles</string>
 
@@ -474,13 +459,10 @@
 	<string name="facebook_invite_friend_to_play">facebook_invite_friend_to_play</string>
 	<string name="add_friend_request_message">add_friend_request_message</string>
 	<string name="online_today">online_today</string>
-	<string name="last_played">last_played</string>
-	<string name="x_days_ago">x_days_ago</string>
+	<string name="last_was_online">last_played</string>
 	<string name="today">today</string>
-	<string name="months">months</string>
-	<string name="month">month</string>
+
 	<string name="just_now">just_now</string>
-	<string name="ago_arg">ago_arg</string>
 	<string name="request_sent">request_sent</string>
 	<string name="username_not_found">username_not_found</string>
 	<string name="you_have_not_added_friends_yet">you_have_not_added_friends_yet</string>
@@ -533,16 +515,10 @@
 
 	<!--Themes-->
 	<string name="installing_theme">installing_theme</string>
-	<string name="loading_background">loading_background</string>
-	<string name="saving_background">saving_background</string>
-	<string name="saving_board">saving_board</string>
-	<string name="loading_board">loading_board</string>
-	<string name="loading_sounds">loading_sounds</string>
 	<string name="custom">custom</string>
 	<string name="background">background</string>
 	<string name="select_background">select_background</string>
 	<string name="edit">edit</string>
-	<string name="installing_sound_pack">installing_sound_pack</string>
 	<string name="waiting_to_load">waiting_to_load</string>
 
 	<!--Messages-->
@@ -587,7 +563,6 @@
 	<string name="players_online_arg">players_online_arg</string>
 	<string name="improve_your_chess">improve_your_chess</string>
 
-	<string name="loading_pieces">loading_pieces</string>
 	<string name="white_to_move">white_to_move</string>
 	<string name="black_to_move">black_to_move</string>
 	<string name="puzzle">зuzzle</string>

@@ -24,7 +24,6 @@ import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.live.client.Game;
 import com.chess.statics.AppConstants;
-import com.chess.statics.Symbol;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.configs.LiveGameConfig;
@@ -38,6 +37,7 @@ import com.chess.ui.interfaces.GameFaceHelper;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.utilities.AppUtils;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -390,10 +390,10 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			int mode = getAppData().getDefaultLiveMode();
 			// set texts to buttons
 			newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
-			// TODO add sliding from outside animation for time modes in popup
+
 			timeSelectBtn = (Button) headerView.findViewById(R.id.timeSelectBtn);
 			timeSelectBtn.setOnClickListener(this);
-			timeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
+			timeSelectBtn.setText(AppUtils.getLiveModeButtonLabel(newGameButtonsArray[mode], getContext()));
 		}
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
@@ -516,16 +516,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		}
 	}
 
-	protected String getLiveModeButtonLabel(String label) {
-		if (label.contains(Symbol.SLASH)) { // like "5 | 2"
-			return label;
-		} else { // "10 min"
-			return getString(R.string.min_arg, label);
-		}
-	}
-
 	private void setDefaultTimeMode(int mode) {
-		timeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
+		timeSelectBtn.setText(AppUtils.getLiveModeButtonLabel(newGameButtonsArray[mode], getContext()));
 		getAppData().setDefaultLiveMode(mode);
 	}
 

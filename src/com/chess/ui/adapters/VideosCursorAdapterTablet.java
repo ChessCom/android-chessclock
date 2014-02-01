@@ -60,7 +60,7 @@ public class VideosCursorAdapterTablet extends VideosCursorAdapter {
 		}
 		holder.titleTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_TITLE)));
 		holder.authorTxt.setText(authorStr);
-		String durationStr = context.getString(R.string.min_arg, getString(cursor, DbScheme.V_MINUTES));
+		String durationStr = context.getString(R.string.arg_min, getString(cursor, DbScheme.V_MINUTES));
 		holder.durationTxt.setText(durationStr);
 
 		if (viewedMap.get(getInt(cursor, DbScheme.V_ID), false)) {

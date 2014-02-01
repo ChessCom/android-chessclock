@@ -355,8 +355,8 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 				loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
 				taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
 
-				loadTitleTxt.setText(R.string.installing_sound_pack);
-				taskTitleTxt.setText(R.string.loading_sounds);
+				loadTitleTxt.setText(getString(R.string.downloading_arg, getString(R.string.sounds)));
+				taskTitleTxt.setText(Symbol.EMPTY);
 				loadProgressTxt.setVisibility(View.GONE);
 				loadProgressBar.setVisibility(View.VISIBLE);
 
@@ -449,7 +449,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 				return;
 			}
 
-			taskTitleTxt.setText(R.string.saving_background);
+			taskTitleTxt.setText(getString(R.string.downloading_arg, getString(R.string.background)));
 			loadProgressTxt.setText(String.valueOf(0));
 			loadProgressTxt.setVisibility(View.GONE);
 
@@ -669,7 +669,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 				loadProgressTxt = (TextView) layout.findViewById(R.id.loadProgressTxt);
 				taskTitleTxt = (TextView) layout.findViewById(R.id.taskTitleTxt);
 
-				taskTitleTxt.setText(R.string.loading_background);
+				taskTitleTxt.setText(getString(R.string.downloading_arg, getString(R.string.background)));
 
 				PopupItem popupItem = new PopupItem();
 				popupItem.setCustomView(layout);

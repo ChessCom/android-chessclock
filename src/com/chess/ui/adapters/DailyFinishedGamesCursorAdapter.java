@@ -19,7 +19,6 @@ import java.util.HashMap;
 
 public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 
-	protected static final String CHESS_960 = " (960)";
 	protected final int imageSize;
 	protected final String drawStr;
 	protected final String lostStr;

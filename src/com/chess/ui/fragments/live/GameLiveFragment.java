@@ -163,7 +163,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				@Override
 				public void run() {
 					goHome();
-					return;
 				}
 			});
 		}
@@ -1168,14 +1167,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 
 			GameLiveItem currentGame = liveHelper.getGameItem();
-			ShareItem shareItem = new ShareItem(currentGame, currentGame.getGameId(), getString(R.string.live));
+			ShareItem shareItem = new ShareItem(currentGame, currentGame.getGameId(), ShareItem.LIVE);
 
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
 			shareIntent.setType("text/plain");
 			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
 			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
 			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
-		} else if (view.getId() == PanelInfoLiveView.DRAW_ACCEPT_ID) { // TODO restore logic from controlsView
+		} else if (view.getId() == PanelInfoLiveView.DRAW_ACCEPT_ID) {
 			if (isLCSBound) {
 				try {
 					LiveConnectionHelper liveHelper = getLiveHelper();

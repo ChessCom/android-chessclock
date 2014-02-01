@@ -129,8 +129,9 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	}
 
 	public void computerMove() {
-		if (isHint())
+		if (isHint()) {
 			return;
+		}
 
 		setComputerMoving(true);
 

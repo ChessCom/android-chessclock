@@ -23,9 +23,9 @@ import com.chess.model.PopupItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.daily.DailyChatFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
@@ -48,7 +48,7 @@ import java.util.Calendar;
  * Date: 25.09.13
  * Time: 8:27
  */
-public class GameLiveArchiveFragment  extends GameBaseFragment implements GameDailyFace, PopupListSelectionFace {
+public class GameLiveArchiveFragment extends GameBaseFragment implements GameDailyFace, PopupListSelectionFace {
 
 	private static final String ERROR_TAG = "send request failed popup";
 
@@ -68,7 +68,6 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameDa
 	protected boolean userPlayWhite = true;
 	private LoadFromDbUpdateListener currentGamesCursorUpdateListener;
 	private ControlsDailyView controlsView;
-	private LabelsConfig labelsConfig;
 	private SparseArray<String> optionsArray;
 	private PopupOptionsMenuFragment optionsSelectFragment;
 	private ImageDownloaderToListener imageDownloader;
@@ -76,7 +75,8 @@ public class GameLiveArchiveFragment  extends GameBaseFragment implements GameDa
 	private int[] countryCodes;
 	private NotationFace notationsFace;
 
-	public GameLiveArchiveFragment() { }
+	public GameLiveArchiveFragment() {
+	}
 
 	public static GameLiveArchiveFragment createInstance(long gameId) {
 		GameLiveArchiveFragment fragment = new GameLiveArchiveFragment();

@@ -31,6 +31,7 @@ import com.chess.ui.fragments.friends.ChallengeFriendFragment;
 import com.chess.ui.fragments.live.LiveGameOptionsFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.utilities.AppUtils;
 import com.chess.widgets.RelLayout;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -323,7 +324,7 @@ public class RightPlayFragment extends CommonLogicFragment implements SlidingMen
 
 	private void setDefaultQuickLiveMode(View view, int mode) {
 		view.setSelected(true);
-		liveTimeSelectBtn.setText(getLiveModeButtonLabel(newGameButtonsArray[mode]));
+		liveTimeSelectBtn.setText(AppUtils.getLiveModeButtonLabel(newGameButtonsArray[mode], getActivity()));
 		getAppData().setDefaultLiveMode(mode);
 	}
 
@@ -502,7 +503,7 @@ public class RightPlayFragment extends CommonLogicFragment implements SlidingMen
 			newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
 			for (Map.Entry<Integer, Button> buttonEntry : liveButtonsModeMap.entrySet()) {
 				int key = buttonEntry.getKey();
-				buttonEntry.getValue().setText(getLiveModeButtonLabel(newGameButtonsArray[key]));
+				buttonEntry.getValue().setText(AppUtils.getLiveModeButtonLabel(newGameButtonsArray[key], getActivity()));
 				buttonEntry.getValue().setOnClickListener(this);
 
 				if (this.mode == CENTER_MODE) {
@@ -516,39 +517,4 @@ public class RightPlayFragment extends CommonLogicFragment implements SlidingMen
 		}
 	}
 
-	private String getLiveModeButtonLabel(String label) {
-		if (label.contains(Symbol.SLASH)) { // "5 | 2"
-			return label;
-		} else { // "10 min"
-			return getString(R.string.min_arg, label);
-		}
-	}
 }
-/*
-page 9 is the "New Game" screen. that should show if they have NO games (in progress, or completed).
-it should also show if they click on the NEW GAME button http://i.imgur.com/QOz3DQB.png  HomePlaySetupFragment
-
-if they have games where it is their turn to move, show screen 10 - hide the NEW GAME button and just show the games.
-
-if they have no moves to make, show the NEW GAME button as in screen 11.
-
-screen 12 shows the completed games. those are ALWAYS there, at the bottom of games in progress.
-	 */
-
-/*
-those are to challenge your friend to play. it just creates a challenge.
-
-those should be random friends who have been online in the last 30 days. (new api! :D)
-
-never display more than 2. but if only 1, or none, show only 1, or none :)
-
-(Friend Name) means their real name. so, for dallin, i would see:
-
-ignoble (Dallin)    [invite]
-
-invite button will just automatically create a challenge, and then show a success message!
-
-play a friend i think is supposed to open friends screen, yes.
-
-Auto-Match should be just a random, open, rated, 3-day seek.
-	 */
