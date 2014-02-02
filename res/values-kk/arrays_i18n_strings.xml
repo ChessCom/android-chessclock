@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Күндік шахмат</item>
-		<item>Онлайн шахмат - стандарт</item>
-		<item>Онлайн шахмат - блиц</item>
-		<item>Онлайн шахмат - өте жылдам</item>
+		<item>Онлайн - Стандарт</item>
+		<item>Онлайн - Блиц</item>
+		<item>Онлайн - Жылдам</item>
 		<item>Күндік шахмат960</item>
 		<item>Тактикалар</item>
 		<item>Сабақтар</item>

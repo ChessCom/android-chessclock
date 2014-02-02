@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Korrschack</item>
-		<item>Liveschack - Långparti</item>
-		<item>Liveschack - Blixt</item>
-		<item>Liveschack - Bullet</item>
+		<item>Live - Standard</item>
+		<item>Live - Blitz</item>
+		<item>Live - Bullet</item>
 		<item>Korrschack960</item>
 		<item>Problem</item>
 		<item>Lektioner</item>

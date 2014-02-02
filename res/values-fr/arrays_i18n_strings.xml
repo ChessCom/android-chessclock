@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Échecs Différés</item>
-		<item>Échecs en direct - Standard</item>
-		<item>Échecs en direct - Blitz</item>
-		<item>Échecs en direct - Bullet</item>
+		<item>En Direct - Standard</item>
+		<item>En Direct - Blitz</item>
+		<item>En Direct - Bullet</item>
 		<item>Échecs 960 Différés</item>
 		<item>Tactiques</item>
 		<item>Leçons</item>

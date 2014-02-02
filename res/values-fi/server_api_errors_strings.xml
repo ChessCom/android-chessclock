@@ -8,12 +8,12 @@
 		<item>Facebook-käyttäjällä ei ole Chess.com-tiliä.</item>
 		<item>Tili lukittu. Kirjaudu Chess.com-sivustolla.</item>
 		<item>Virheellinen salasana tai käyttäjätunnus.</item>
-		<item>Tili ei vielä toiminnallinen!</item>
+		<item>Tili ei vielä toiminnassa!</item>
 		<item>Tili on poistettu käytöstä.</item>
 		<item>Sinun on määritettävä salasana Chess.com-sivustolla.</item>
 		<item>Resurssia ei löydy.</item>
 		<item>Päivittäisten taktiikkaharjoitusten raja saavutettu.</item>
-		<item>Et voi lisätä ystäväksi itseäsi.</item>
+		<item>Et voi lisätä itseäsi ystäväksi.</item>
 		<item>Olet jo lähettänyt ystäväpyynnön tälle henkilölle.</item>
 		<item>Tämä henkilö on jo ystäväsi.</item>
 		<item>Tämä käyttäjä ei ota vastaan ystäväpyyntöjä.</item>
@@ -48,7 +48,7 @@
 		<item>Sinut on estetty.</item>
 		<item>Suurin hakujen määrä ylitetty.</item>
 		<item>Tee siirtoja ennen uusien pelien luomista.</item>
-		<item>Invalid user id.</item>
+		<item>Virheellinen käyttäjätunnus.</item>
 		<item>Virheellinen parametri - totalGames</item>
 		<item>Aseta korkeintaan 50 pelihaastetta</item>
 		<item>Peli on jo alkanut!</item>
@@ -64,10 +64,10 @@
 		<item>Virheellinen Chess.com-sähköpostiosoite.</item>
 		<item>Virheellinen käyttäjätunnus.</item>
 		<item>Käyttäjätunnusta ei sallita.</item>
-		<item>Virheellinen sähköpostin verkkoaluetunnus.</item>
+		<item>Virheellinen sähköpostin verkkotunnus.</item>
 		<item>Järjestelmävirhe.</item>
 		<item>Heikko salasana.</item>
-		<item>Invalid login token supplied.</item>
+		<item>Kirjautumistunnussanoma ei kelpaa.</item>
 		<item>Kirjaudu sisään jatkaaksesi.</item>
 		<item>Tuntematon virhe</item>
 		<item>Peliä ei voida palauttaa alkutilaan.</item>
@@ -83,9 +83,9 @@
 		<item>Pelien enimmäismäärä saavutettu.</item>
 		<item>Ei voida analysoida tietokoneellamme.</item>
 		<item>Analysointi on vielä kesken.</item>
-		<item>Self challenge.</item>
-		<item>Avatar image is invalid. Allowed file size is 2 MB and allowed mime types are: \"image/jpeg, image/gif,
-			image/png\".
+		<item>Itsensä haastaminen.</item>
+		<item>Kuva ei kelpaa. Kuvatiedoston sallittu enimmäiskoko on 2 MB ja sallitut mime-tyypit ovat: \"image/jpeg,
+			image/gif, image/png\".
 		</item>
 		<item>Käyttäjätunnuksen on oltava vähintään 3 merkkiä pitkä.</item>
 		<item>Käyttäjätunnuksessa ei saa olla yli 20 merkkiä.</item>
@@ -99,41 +99,11 @@
 		<item>Tämä IP on jo asetettu käyttökieltoon</item>
 		<item>Käyttäjätunnus ei saa olla tyhjä.</item>
 		<item>Virheellinen tuote-sku</item>
-		<item>Invalid purchase data</item>
-		<item>Invalid package name</item>
-		<item>Invalid developer payload</item>
+		<item>Virheellinen ostotieto</item>
+		<item>Virheellinen pakettinimi</item>
+		<item>Virheellinen \'developer payload\'</item>
 		<item>Datan allekirjoitus ei kelpaa</item>
 		<item>Virheellinen tilaus</item>
 		<item>Väärä tilaus</item>
-		<item>Non existing game seek</item>
-		<item>You are not allowed to edit that seek</item>
-		<item>Invalid product name</item>
-		<item>Invalid developer payload length</item>
-		<item>User has reached the daily limit of lessons</item>
-		<item>Incomplete lesson</item>
-		<item>Invalid lesson</item>
-		<item>No game seek update parameters passed</item>
-		<item>The selected game seek is not open, and the parameters passed are only for an open game seek</item>
-		<item>Invalid parameter: newMode</item>
-		<item>You must pass a username or an email</item>
-		<item>Invalid email address</item>
-		<item>User submitted spam content</item>
-		<item>Unable to remove user friend</item>
-		<item>The forum topic does not exist</item>
-		<item>No update permission for the selected forum topic</item>
-		<item>The selected forum category does not exist</item>
-		<item>The parent forum topic does not exist</item>
-		<item>User has no access for the selected forum category</item>
-		<item>Non existing course</item>
-		<item>Missing parameters</item>
-		<item>Error creating background theme</item>
-		<item>You must pass the parent topic id when adding a new comment</item>
-		<item>Invalid value for items per page</item>
-		<item>No moves found</item>
-		<item>You provided invalid password.</item>
-		<item>Your registration ID is already registered!</item>
-		<item>The selected user must be enabled.</item>
-		<item>Gold members cannot view other member\'s stats.</item>
-		<item>Forum topic already exists!</item>
 	</string-array>
 </resources>

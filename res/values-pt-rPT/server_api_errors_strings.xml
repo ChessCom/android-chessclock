@@ -12,16 +12,16 @@
 		<item>A conta foi desactivada.</item>
 		<item>Deve configurar uma senha em Chess.com.</item>
 		<item>Recurso não encontrado.</item>
-		<item>Limite diário de Táticas atingido.</item>
+		<item>Limite diário de táticas atingido.</item>
 		<item>Não pode adicionar-se como amigo.</item>
-		<item>Já solicitou que este membro seja adicionado aos amigos.</item>
+		<item>Já solicitou que este membro seja adicionado como seu amigo.</item>
 		<item>Este membro já é seu amigo.</item>
 		<item>Este utilizador não aceita pedidos de amizade.</item>
 		<item>Este utilizador bloqueou-o!</item>
 		<item>FEN inválido detectado.</item>
 		<item>Não foi possível localizar o utilizador pelo nome ou pelo loginToken.</item>
 		<item>O ply fornecido excede o limite permitido.</item>
-		<item>Por favor atualize o jogo.</item>
+		<item>Por favor, atualize o jogo.</item>
 		<item>Jogo já terminado.</item>
 		<item>Não é a sua vez de jogar.</item>
 		<item>Jogada ilegal.</item>
@@ -49,9 +49,9 @@
 		<item>O limite de reptos foi excedido.</item>
 		<item>Executar jogadas antes de criar mais jogos.</item>
 		<item>Identidade do utilizador inválida.</item>
-		<item>Parâmetro inválido - totalGames</item>
-		<item>Por favor solicite 50 jogos ou menos</item>
-		<item>Jogo já iniciado!</item>
+		<item>Parâmetro inválido: totalGames</item>
+		<item>Por favor, solicite 50 jogos ou menos</item>
+		<item>Partida já iniciada!</item>
 		<item>Percentagem do timeout muito elevada.</item>
 		<item>Muito poucos jogos.</item>
 		<item>Deve ter uma conta premium.</item>
@@ -96,7 +96,7 @@
 		<item>A senha deve ter pelo menos 6 caracteres.</item>
 		<item>O nome deve ter 20 caracteres ou menos.</item>
 		<item>O apelido deve ter 20 caracteres ou menos.</item>
-		<item>O IP já se encontra banido</item>
+		<item>Este IP já se encontra banido</item>
 		<item>O nome de utilizador não pode ficar em branco.</item>
 		<item>SKU do produto inválido</item>
 		<item>Dados de compra inválidos</item>
@@ -105,35 +105,5 @@
 		<item>Assinatura de dados inválida</item>
 		<item>Encomenda inválida</item>
 		<item>Encomenda errada</item>
-		<item>Non existing game seek</item>
-		<item>You are not allowed to edit that seek</item>
-		<item>Invalid product name</item>
-		<item>Invalid developer payload length</item>
-		<item>User has reached the daily limit of lessons</item>
-		<item>Incomplete lesson</item>
-		<item>Invalid lesson</item>
-		<item>No game seek update parameters passed</item>
-		<item>The selected game seek is not open, and the parameters passed are only for an open game seek</item>
-		<item>Invalid parameter: newMode</item>
-		<item>You must pass a username or an email</item>
-		<item>Invalid email address</item>
-		<item>User submitted spam content</item>
-		<item>Unable to remove user friend</item>
-		<item>The forum topic does not exist</item>
-		<item>No update permission for the selected forum topic</item>
-		<item>The selected forum category does not exist</item>
-		<item>The parent forum topic does not exist</item>
-		<item>User has no access for the selected forum category</item>
-		<item>Non existing course</item>
-		<item>Missing parameters</item>
-		<item>Error creating background theme</item>
-		<item>You must pass the parent topic id when adding a new comment</item>
-		<item>Invalid value for items per page</item>
-		<item>No moves found</item>
-		<item>You provided invalid password.</item>
-		<item>Your registration ID is already registered!</item>
-		<item>The selected user must be enabled.</item>
-		<item>Gold members cannot view other member\'s stats.</item>
-		<item>Forum topic already exists!</item>
 	</string-array>
 </resources>

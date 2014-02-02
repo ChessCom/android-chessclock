@@ -29,7 +29,7 @@
 			android:layout_weight="0.7"
 			android:gravity="left|center_vertical"
 			android:text="1. e4"
-			app:themeColor="true"/>
+			app:themeColor="true" />
 
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/numGamesTxt"
@@ -40,7 +40,7 @@
 			android:paddingRight="8dip"
 			android:gravity="right"
 			android:text="111 111"
-			app:themeColor="true"/>
+			app:themeColor="true" />
 
 	</LinearLayout>
 

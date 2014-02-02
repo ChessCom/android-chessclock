@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Dagelijks schaak</item>
-		<item>Live Schaken - Standaard</item>
-		<item>Live Schaken - Blitz</item>
-		<item>Live Schaken - Bullet</item>
+		<item>Live - standaard</item>
+		<item>Live - Blitz</item>
+		<item>Live - Bullet</item>
 		<item>Dagelijks schaak960</item>
 		<item>Tactiek</item>
 		<item>Lessen</item>
