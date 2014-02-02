@@ -17,6 +17,7 @@ import com.chess.backend.entity.api.daily_games.DailyChatItem;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameItem;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ChatMessagesAdapter;
@@ -114,6 +115,9 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 
 		newChatUpdateReceiver = new NewChatUpdateReceiver();
 		registerReceiver(newChatUpdateReceiver, newChatUpdateFilter);
+
+		DbDataManager.deleteNewChatMessageNotification(getContentResolver(), getUsername(), gameId);
+		updateNotificationBadges();
 	}
 
 	@Override
@@ -146,6 +150,9 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 	private class NewChatUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			DbDataManager.deleteNewChatMessageNotification(getContentResolver(), getUsername(), gameId);
+			updateNotificationBadges();
+
 			updateList();
 		}
 	}
@@ -203,8 +210,6 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 				messagesAdapter.setItemsList(chatItems);
 			}
 			sendEdt.setText(Symbol.EMPTY);
-
-			listView.setSelection(chatItems.size() - 1);
 		}
 	}
 
@@ -245,9 +250,6 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 			} else {
 				messagesAdapter.setItemsList(chatItems);
 			}
-			sendEdt.setText(Symbol.EMPTY);
-
-			listView.setSelection(chatItems.size() - 1);
 		}
 	}
 

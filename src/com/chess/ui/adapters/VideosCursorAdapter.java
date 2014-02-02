@@ -11,9 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.Symbol;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
@@ -84,7 +84,7 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 		}
 		holder.titleTxt.setText(Html.fromHtml(DbDataManager.getString(cursor, DbScheme.V_TITLE)));
 		holder.authorTxt.setText(authorStr);
-		String durationStr = SLASH_DIVIDER + context.getString(R.string.arg_min, getString(cursor, DbScheme.V_MINUTES));
+		String durationStr = SLASH_DIVIDER + context.getString(R.string.arg_min, Integer.parseInt(getString(cursor, DbScheme.V_MINUTES)));
 		holder.durationTxt.setText(durationStr);
 
 		if (viewedMap.get(getInt(cursor, DbScheme.V_ID), false)) {

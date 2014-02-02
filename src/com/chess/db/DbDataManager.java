@@ -2459,13 +2459,13 @@ public class DbDataManager {
 		return notificationsCnt;
 	}
 
-	public static void deleteNewChatMessageNotification(ContentResolver contentResolver, String authUser, String username) {
+	public static void deleteNewChatMessageNotification(ContentResolver contentResolver, String authUser, long gameId) {
 		final String[] arguments = sArguments2;
 		arguments[0] = authUser;
-		arguments[1] = username;
+		arguments[1] = String.valueOf(gameId);
 
 		Uri uri = uriArray[Tables.NOTIFICATION_NEW_CHAT_MESSAGES.ordinal()];
-		contentResolver.delete(uri, SELECTION_USER_AND_USERNAME, arguments);
+		contentResolver.delete(uri, SELECTION_USER_AND_ID, arguments);
 	}
 
 	public static void deleteNewMessageNotification(ContentResolver contentResolver, String authUser, String username) {

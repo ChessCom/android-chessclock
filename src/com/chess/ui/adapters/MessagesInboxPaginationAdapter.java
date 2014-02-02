@@ -36,7 +36,7 @@ public class MessagesInboxPaginationAdapter extends PaginationCursorAdapter<Conv
 			} catch (InternalErrorException e) {
 				e.logMe();
 			}
-			setKeepOnAppending(false);
+			Log.d("TEST", " item = " + item);
 
 			if (item != null && item.getData() != null && item.getData().size() > 0) {
 				result = StaticData.RESULT_OK;

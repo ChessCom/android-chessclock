@@ -157,14 +157,14 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 			getActivityFace().toggleRightMenu();
 		} else if (section == NEW_CHATS_SECTION) {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-			String opponentName = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+			String opponentAvatar = DbDataManager.getString(cursor, DbScheme.V_USER_AVATAR);
 			long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
-			DbDataManager.deleteNewChatMessageNotification(getContentResolver(), getUsername(), opponentName);
+			DbDataManager.deleteNewChatMessageNotification(getContentResolver(), getUsername(), gameId);
 
 			updateNotificationBadges();
 
-			getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, opponentName));
+			getActivityFace().openFragment(DailyChatFragment.createInstance(gameId, opponentAvatar));
 			getActivityFace().toggleRightMenu();
 		} else if (section == GAME_OVER_SECTION) {
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
@@ -453,9 +453,9 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 		public void onClick(View view) {
 			if (view.getId() == R.id.clearBtn) {
 				Cursor cursor = (Cursor) view.getTag(R.id.list_item_id);
-				String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
+				long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
-				DbDataManager.deleteNewChatMessageNotification(getContentResolver(), getUsername(), username);
+				DbDataManager.deleteNewChatMessageNotification(getContentResolver(), getUsername(), gameId);
 
 				updateNotificationBadges();
 

@@ -16,6 +16,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ConversationSingleItem;
 import com.chess.backend.entity.api.MessagesItem;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveMessagesForConversationTask;
@@ -114,6 +115,9 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 		} else {
 			listView.setAdapter(messagesCursorAdapter);
 		}
+
+		DbDataManager.deleteNewMessageNotification(getContentResolver(), getUsername(), otherUsername);
+		updateNotificationBadges();
 	}
 
 	private void loadFromDb() {

@@ -46,7 +46,6 @@ import java.util.List;
 public class VideoCategoriesFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
 	public static final String SECTION_NAME = "section_name";
-	public static final int WATCH_VIDEO_REQUEST = 9896;
 
 	private VideosCursorUpdateListener videosCursorUpdateListener;
 	private SaveVideosUpdateListener saveVideosUpdateListener;
@@ -288,8 +287,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 
 		@Override
 		public void updateListData(List<VideoSingleItem.Data> itemsList) {
-			logTest("VideosUpdateListener updateListData itemsList count = " + itemsList.size());
-
 
 			new SaveVideosListTask(saveVideosUpdateListener, itemsList, getContentResolver()).executeTask();
 		}
@@ -301,19 +298,12 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 		public void updateData(VideoSingleItem.Data returnedObj) {
 			super.updateData(returnedObj);
 
-			logTest("SaveVideosUpdateListener updateData returnedObj= " + returnedObj);
-
 			loadFromDb();
 		}
 	}
 
 	protected void showEmptyView(boolean show) {
 		if (show) {
-			// don't hide loadingView if it's loading
-			if (loadingView.getVisibility() != View.VISIBLE) {
-				loadingView.setVisibility(View.GONE);
-			}
-
 			emptyView.setVisibility(View.VISIBLE);
 			listView.setVisibility(View.GONE);
 		} else {
@@ -336,7 +326,6 @@ public class VideoCategoriesFragment extends CommonLogicFragment implements Item
 	}
 
 	protected void widgetsInit(View view) {
-		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		listView = (ListView) view.findViewById(R.id.listView);

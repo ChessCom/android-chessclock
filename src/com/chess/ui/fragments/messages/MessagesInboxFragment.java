@@ -78,14 +78,9 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 	public void onResume() {
 		super.onResume();
 
-		if (need2update){
-			if (isNetworkAvailable()) {
-				updateData();
-			} else {
-				loadFromDb();
-			}
+		if (isNetworkAvailable()) {
+			updateData();
 		} else {
-			listView.setAdapter(paginationAdapter);
 			loadFromDb();
 		}
 	}
@@ -217,7 +212,6 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
-//			paginationAdapter.notifyDataSetChanged(); // this makes it crash
 			conversationsAdapter.changeCursor(returnedObj);
 			paginationAdapter.notifyDataSetChanged();
 			need2update = false;
