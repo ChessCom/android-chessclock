@@ -48,7 +48,6 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 
 	private TextView emptyView;
 	private GridView gridView;
-	private View loadingView;
 	private FragmentParentFace parentFace;
 
 	public ProfileGamesFragmentTablet() {
@@ -83,12 +82,14 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		gridView = (GridView) view.findViewById(R.id.gridView);
 		gridView.setOnItemClickListener(this);
 		gridView.setAdapter(currentGamesMyCursorAdapter);
+		if (inPortrait()) {
+			gridView.setNumColumns(1);
+		}
 
 		view.findViewById(R.id.completedGamesHeaderView).setOnClickListener(this);
 
@@ -261,7 +262,7 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 					return;
 				}
 			} else if (resultCode == StaticData.INTERNAL_ERROR) {
-				showToast("Internal error occurred"); // TODO adjust properly
+				showToast("Internal error occurred");
 			}
 			super.errorHandle(resultCode);
 		}
@@ -279,10 +280,6 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 
 	private void showEmptyView(boolean show) {
 		if (show) {
-			// don't hide loadingView if it's loading
-			if (loadingView.getVisibility() != View.VISIBLE) {
-				loadingView.setVisibility(View.GONE);
-			}
 			if (gridView.getAdapter().getCount() == 0) { // TODO check
 				emptyView.setVisibility(View.VISIBLE);
 				gridView.setVisibility(View.GONE);
@@ -290,20 +287,6 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 		} else {
 			emptyView.setVisibility(View.GONE);
 			gridView.setVisibility(View.VISIBLE);
-		}
-	}
-
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			if (currentGamesMyCursorAdapter.getCount() == 0) {
-				gridView.setVisibility(View.GONE);
-
-			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			gridView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
 		}
 	}
 }

@@ -119,7 +119,8 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private int[] compStrengthArray;
 	private String[] compTimeLimitArray;
 	private String[] compDepth;
-//	private TextView engineThinkingPath;
+	private TextView engineThinkingPath;
+	private boolean engineThinkingPathVisible;
 
 	protected CompGameConfig compGameConfig;
 
@@ -163,7 +164,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 		enableSlideMenus(false);
 
-		setTitle(R.string.vs_computer);
+		setTitle(R.string.computer);
 
 		showActionBar(false);
 
@@ -172,7 +173,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		widgetsInit(view);
 
 		{ // Engine init
-//			engineThinkingPath = (TextView) view.findViewById(R.id.engineThinkingPath);
+			engineThinkingPath = (TextView) view.findViewById(R.id.engineThinkingPath);
 			compStrengthArray = getResources().getIntArray(R.array.comp_strength);
 			compTimeLimitArray = getResources().getStringArray(R.array.comp_time_limit);
 			compDepth = getResources().getStringArray(R.array.comp_book_depth);
@@ -410,6 +411,12 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
+	public void computer() {
+		engineThinkingPathVisible = !engineThinkingPathVisible;
+		engineThinkingPath.setVisibility(engineThinkingPathVisible ? View.VISIBLE : View.GONE);
+	}
+
+	@Override
 	public void onCompMove() {
 		topPanelView.showThinkingView(true);
 		notationsView.setClickable(false);
@@ -546,10 +553,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			}
 		}
 
-		/*Log.d("debugengine", "getAppData().getCompSavedGame() " + getAppData().getCompSavedGame());
-		Log.d("debugengine", "getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH) " + getAppData().getCompSavedGame().split(RestHelper.SYMBOL_PARAMS_SPLIT_SLASH));
-		Log.d("debugengine", "getBoardFace().getPly() " + getBoardFace().getPly());*/
-
 		int gameMode = Integer.valueOf(savedGame[0].substring(0, 1));
 		getBoardFace().setMode(gameMode);
 
@@ -595,7 +598,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		String date = datePgnFormat.format(Calendar.getInstance().getTime());
 
 		StringBuilder builder = new StringBuilder();
-		builder.append("[Event \"").append(getString(R.string.vs_computer)).append("\"]")
+		builder.append("[Event \"").append(getString(R.string.computer)).append("\"]")
 				.append("\n [Site \" Chess.com\"]")
 				.append("\n [Date \"").append(date).append("\"]")
 				.append("\n [White \"").append(whitePlayerName).append("\"]")
@@ -664,7 +667,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	private void computerMove() {
-		boardView.computerMove(/*getAppData().getCompThinkTime()*/);
+		boardView.computerMove();
 	}
 
 	private class InitComputerEngineUpdateListener extends ChessLoadUpdateListener<CompEngineHelper> {
@@ -971,7 +974,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 					//}
 					// use later
 					// engineThinkingPath is invisible, always
-//					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
+					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
 					log = s;
 				}
 				// todo @compengine: show book hints for human player
@@ -1036,11 +1039,11 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	private void setThinkingVisibility(boolean visible) {     // TODO adjust properly in notations view
-//		if (visible) {
-//			engineThinkingPath.setVisibility(View.VISIBLE);
-//		} else {
-//			engineThinkingPath.setVisibility(View.GONE);
-//		}
+		if (visible) {
+			engineThinkingPath.setVisibility(View.VISIBLE);
+		} else {
+			engineThinkingPath.setVisibility(View.GONE);
+		}
 	}
 
 	@Override

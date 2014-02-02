@@ -4,11 +4,12 @@
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:background="@color/semitransparent_white_90"
 	android:orientation="vertical">
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/emptyView"
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:text="@string/no_games"
 		android:gravity="center"
@@ -29,15 +30,6 @@
 		android:divider="@color/new_friends_list_divider"
 		android:dividerHeight="1dip"
 		android:layout_toLeftOf="@+id/optionsFragmentContainerView" />
-
-	<ProgressBar
-		android:id="@+id/loadingView"
-		android:layout_margin="5dip"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_centerInParent="true"
-		style="?android:attr/progressBarStyle"
-		android:visibility="gone" />
 
 	<!--Right quick access side panel-->
 	<FrameLayout

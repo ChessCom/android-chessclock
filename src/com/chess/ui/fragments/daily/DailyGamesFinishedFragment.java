@@ -94,7 +94,6 @@ public class DailyGamesFinishedFragment extends CommonLogicFragment implements A
 
 		setTitle(R.string.finished_games);
 
-		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		widgetsInit(view);
@@ -166,6 +165,15 @@ public class DailyGamesFinishedFragment extends CommonLogicFragment implements A
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			super.showProgress(show);
+
+			if (show) {
+				showEmptyView(false);
+			}
+		}
+
+		@Override
 		public void updateListData(List<DailyFinishedGameData> itemsList) {
 			super.updateListData(itemsList);
 
@@ -196,6 +204,8 @@ public class DailyGamesFinishedFragment extends CommonLogicFragment implements A
 		public void updateData(Cursor returnedObj) {
 			super.updateData(returnedObj);
 
+			showEmptyView(false);
+
 			paginationAdapter.notifyDataSetChanged();
 			finishedGamesCursorAdapter.changeCursor(returnedObj);
 			paginationAdapter.notifyDataSetChanged();
@@ -217,14 +227,7 @@ public class DailyGamesFinishedFragment extends CommonLogicFragment implements A
 
 	private void showEmptyView(boolean show) {
 		if (show) {
-			// don't hide loadingView if it's loading
-			if (loadingView.getVisibility() != View.VISIBLE) {
-				loadingView.setVisibility(View.GONE);
-			}
-			if (finishedGamesCursorAdapter.getCount() == 0) { // TODO check
-				emptyView.setVisibility(View.VISIBLE);
-				listView.setVisibility(View.GONE);
-			}
+			emptyView.setVisibility(View.VISIBLE);
 		} else {
 			emptyView.setVisibility(View.GONE);
 			listView.setVisibility(View.VISIBLE);

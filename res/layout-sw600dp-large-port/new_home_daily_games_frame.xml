@@ -42,15 +42,6 @@
 		android:layout_centerHorizontal="true"
 		android:gravity="center_horizontal" />
 
-	<ProgressBar
-		android:id="@+id/loadingView"
-		android:layout_width="@dimen/pending_progress_bar_size"
-		android:layout_height="@dimen/pending_progress_bar_size"
-		android:layout_margin="5dip"
-		android:layout_centerInParent="true"
-		style="?android:attr/progressBarStyle"
-		android:visibility="gone" />
-
 	<!--Complete Button(Header)-->
 	<com.chess.widgets.LinLayout
 		android:id="@id/completedGamesHeaderView"

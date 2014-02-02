@@ -23,7 +23,6 @@
 	<!--Computer Game settings-->
 	<string name="white">White</string>
 	<string name="black">Black</string>
-	<string name="computer">Computer</string>
 	<string name="thinking_">Thinking…</string>
 	<!--Computer player is thinking during his turn-->
 
@@ -246,7 +245,7 @@
 	<string name="arg_years_ago">%d years ago</string>
 
 	<string name="photo">Photo</string>
-	<string name="vs_computer">vs Computer</string>
+	<string name="computer">Computer</string>
 	<string name="daily_chess">Daily Chess</string>
 	<string name="live_chess">Live Chess</string>
 
@@ -592,9 +591,9 @@
 	<string name="notes">Notes</string>
 	<string name="private_note">Private Note</string>
 	<string name="upgrade_feedback_1">"&quot;Tactics and Lessons really help my chess skills&quot;"</string>
-	<string name="upgrade_feedback_reporter_1">- Peter, Member Since 2011</string>
+	<string name="upgrade_feedback_reporter_1">- Peter, member Since 2011</string>
 	<string name="upgrade_feedback_2">"&quot;My overall rating improved a ton after i became a premium member&quot;"</string>
-	<string name="upgrade_feedback_reporter_2">- Lou, NJ Member Since 2009</string>
+	<string name="upgrade_feedback_reporter_2">- Lou, member Since 2009</string>
 	<string name="live_game_share_str">%1$s vs %2$s - Online Chess http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
 	<string name="daily_game_share_str">%1$s vs %2$s - Online Chess http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
 	<string name="daily_game_share_str">%1$s vs %2$s - Online Chess http://www.chess.com/echess/game?id=%3$s via @chesscom</string>

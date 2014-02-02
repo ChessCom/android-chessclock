@@ -55,16 +55,6 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 		}
 
         track = false;
-        if (!getBoardFace().isAnalysis()) {
-//            if (getBoardFace().isFinished()) // TODO probably never happens
-//                return true;
-
-//            if (gameTacticsFace.isLastMoveMadeUser()) {
-////            if (((ChessBoardTactics)getBoardFace()).isLatestMoveMadeUser()) {
-//                return true;
-//            }
-        }
-
         return super.onTouchEvent(event);
     }
 
@@ -116,8 +106,8 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 	}
 
 	@Override
-	public void vsComputer() {
-		gameTacticsFace.vsComputer();
+	public void computer() {
+		gameTacticsFace.computer();
 	}
 
 	@Override

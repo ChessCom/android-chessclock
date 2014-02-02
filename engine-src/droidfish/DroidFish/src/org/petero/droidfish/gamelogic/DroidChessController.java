@@ -721,11 +721,14 @@ public class DroidChessController {
             StringBuilder buf = new StringBuilder();
             for (int i = 0; i < pvInfoV.size(); i++) {
                 PvInfo pvi = pvInfoV.get(i);
-                if (pvi.depth <= 0)
-                    continue;
-                if (i > 0)
-                    buf.append('\n');
-                /*buf.append(String.format(Locale.US, "[%d] ", pvi.depth));
+                if (pvi.depth <= 0) {
+					continue;
+				}
+                if (i > 0) {
+					buf.append('\n');
+				}
+				// why it was commented out?
+                buf.append(String.format(Locale.US, "[%d] ", pvi.depth));
                 boolean negateScore = !whiteMove && gui.whiteBasedScores();
                 if (pvi.upperBound || pvi.lowerBound) {
                     boolean upper = pvi.upperBound ^ negateScore;
@@ -736,7 +739,7 @@ public class DroidChessController {
                     buf.append(String.format(Locale.US, "m%d", score));
                 } else {
                     buf.append(String.format(Locale.US, "%.2f", score / 100.0));
-                }*/
+                }
 
                 buf.append(pvi.pvStr);
             }

@@ -46,6 +46,7 @@ import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.live.LiveGameWaitFragment;
 import com.chess.ui.fragments.profiles.ProfileTabsFragment;
+import com.chess.ui.fragments.profiles.ProfileTabsFragmentTablet;
 import com.chess.ui.fragments.stats.StatsBasicFragment;
 import com.chess.ui.fragments.stats.StatsGameFragment;
 import com.chess.ui.fragments.welcome.SignInFragment;
@@ -1200,7 +1201,12 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	@Override
 	public void openProfile(String username) {
-		getActivityFace().openFragment(ProfileTabsFragment.createInstance(username));
+		if (!isTablet) {
+			getActivityFace().openFragment(ProfileTabsFragment.createInstance(username));
+		} else {
+			getActivityFace().openFragment(ProfileTabsFragmentTablet.createInstance(username));
+		}
+
 	}
 
 	protected void initUpgradeAndAdWidgets(View view) {

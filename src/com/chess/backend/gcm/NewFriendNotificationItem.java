@@ -1,6 +1,6 @@
 package com.chess.backend.gcm;
 
-import com.chess.statics.Symbol;
+import com.chess.backend.entity.api.BaseResponseItem;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +23,7 @@ public class NewFriendNotificationItem {
 	private boolean seen;
 
 	public String getUsername() {
-		return username;
+		return BaseResponseItem.getSafeValue(username);
 	}
 
 	public void setUsername(String username) {
@@ -31,7 +31,7 @@ public class NewFriendNotificationItem {
 	}
 
 	public String getMessage() {
-		return message;
+		return BaseResponseItem.getSafeValue(message);
 	}
 
 	public void setMessage(String message) {
@@ -47,7 +47,7 @@ public class NewFriendNotificationItem {
 	}
 
 	public String getAvatar() {
-		return avatar_url == null ? Symbol.EMPTY : avatar_url;
+		return BaseResponseItem.getSafeValue(avatar_url);
 	}
 
 	public void setAvatar(String avatar_url) {

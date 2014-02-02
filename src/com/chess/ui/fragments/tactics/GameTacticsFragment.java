@@ -608,7 +608,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	@Override
-	public void vsComputer() {
+	public void computer() {
 		int compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 		getAppData().setCompGameMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
 

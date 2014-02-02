@@ -329,8 +329,7 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			getActivityFace().openFragment(ProfileTabsFragmentTablet.createInstance(ProfileBaseFragmentTablet.this, username));
-//			changeInternalFragment(FriendsFragmentTablet.createInstance(ProfileBaseFragmentTablet.this, username));
+			getActivityFace().openFragment(ProfileTabsFragmentTablet.createInstance(username));
 		}
 	}
 

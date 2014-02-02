@@ -21,7 +21,8 @@
 			android:id="@+id/engineThinkingPath"
 			android:layout_width="match_parent"
 			android:layout_height="@dimen/notations_view_height"
-			android:visibility="gone" />
+			android:visibility="gone"
+			style="@style/NotationsStyle"/>
 
 		<!--BoardView-->
 		<com.chess.ui.views.chess_boards.ChessBoardCompView

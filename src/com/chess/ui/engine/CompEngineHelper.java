@@ -66,8 +66,8 @@ public class CompEngineHelper implements GUIInterface {
 	private TimeControlData timeControlData;
 	private String variantStr = "";
 	private ArrayList<Move> variantMoves;
-//	private ArrayList<Move> bookMoves;
-//	private ArrayList<ArrayList<Move>> pvMoves;
+	private ArrayList<Move> bookMoves;
+	private ArrayList<ArrayList<Move>> pvMoves;
 
 	private CompEngineHelper() {
 		bookOptions = new BookOptions();
@@ -372,7 +372,8 @@ public class CompEngineHelper implements GUIInterface {
 
 	@Override
 	public void setThinkingInfo(String pvStr, String statStr, String bookInfo,
-								ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMoves, ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
+								ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMoves,
+								ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
 
 		log("setThinkingInfo - pvStr =" + pvStr);
 		log("setThinkingInfo - statStr =" + statStr);
@@ -381,10 +382,10 @@ public class CompEngineHelper implements GUIInterface {
 		log("setThinkingInfo - bookMoves =" + bookMoves);
 
         String thinkingStr1 = pvStr;
-		//String thinkingStr2 = statStr;
-//		this.pvMoves = pvMoves;
-//		String bookInfoStr = bookInfo;
-//		this.bookMoves = bookMoves;
+		String thinkingStr2 = statStr;
+		this.pvMoves = pvMoves;
+		String bookInfoStr = bookInfo;
+		this.bookMoves = bookMoves;
 
  		gameCompActivityFace.onEngineThinkingInfo(thinkingStr1, variantStr, pvMoves, variantMoves, bookMoves);
 

@@ -380,6 +380,18 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 		String tempScore = labelsConfig.topPlayerRating;
 		labelsConfig.topPlayerRating = labelsConfig.bottomPlayerRating;
 		labelsConfig.bottomPlayerRating = tempScore;
+
+		String playerTime = labelsConfig.topPlayerTime;
+		labelsConfig.topPlayerTime = labelsConfig.bottomPlayerTime;
+		labelsConfig.bottomPlayerTime = playerTime;
+
+		int playerPremiumStatus = labelsConfig.topPlayerPremiumStatus;
+		labelsConfig.topPlayerPremiumStatus = labelsConfig.bottomPlayerPremiumStatus;
+		labelsConfig.bottomPlayerPremiumStatus = playerPremiumStatus;
+
+		String playerCountry = labelsConfig.topPlayerCountry;
+		labelsConfig.topPlayerCountry = labelsConfig.bottomPlayerCountry;
+		labelsConfig.bottomPlayerCountry = playerCountry;
 	}
 
 	@Override

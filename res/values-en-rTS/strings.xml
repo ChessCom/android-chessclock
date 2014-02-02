@@ -283,7 +283,7 @@
 
 
 	<string name="photo">photo</string>
-	<string name="vs_computer">vs_computer</string>
+	<string name="computer">vs_computer</string>
 	<string name="daily_chess">daily_chess</string>
 	<string name="live_chess">live_chess</string>
 
@@ -460,7 +460,6 @@
 	<string name="add_friend_request_message">add_friend_request_message</string>
 	<string name="online_today">online_today</string>
 	<string name="last_was_online">last_played</string>
-	<string name="today">today</string>
 
 	<string name="just_now">just_now</string>
 	<string name="request_sent">request_sent</string>

@@ -4,7 +4,6 @@ import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Log;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ThemeState;
 import com.chess.backend.entity.api.*;
@@ -2234,7 +2233,6 @@ public class DbDataManager {
 		values.put(V_USER_AVATAR, item.getAvatar());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
-		Log.d("TEST", "friend request saved = " + values);
 	}
 
 	public static void saveNewChatNotification(ContentResolver contentResolver, NewChatNotificationItem item, String username) {

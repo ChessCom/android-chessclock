@@ -131,7 +131,7 @@ public class ControlsTacticsView extends ControlsBaseView {
 		} else if (view.getId() == getButtonId(HINT)) {
 			boardViewFace.showHint();
 		} else if (view.getId() == getButtonId(COMP)) {
-			boardViewFace.vsComputer();
+			boardViewFace.computer();
 		} else if (view.getId() == getButtonId(EXIT)) {
 			boardViewFace.switchAnalysis();
 		} else if (view.getId() == getButtonId(SOLUTION)) {

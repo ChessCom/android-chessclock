@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Html;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ import com.chess.ui.views.game_controls.ControlsCompView;
 import com.chess.utilities.MopubHelper;
 import com.chess.widgets.ProfileImageView;
 import org.petero.droidfish.GameMode;
+import org.petero.droidfish.Util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,6 +84,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	private CompGameConfig compGameConfig;
 	private GameCompFragment.InitComputerEngineUpdateListener engineUpdateListener;
+	private boolean engineThinkingPathVisible;
+	private boolean showVariationLine = true;
+	private boolean mShowBookHints = true;
+	private boolean mShowStats = true;
 
 	public GameCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -120,7 +126,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.vs_computer);
+		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
 
 		widgetsInit(view);
 
@@ -248,6 +254,13 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsArray);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
+	}
+
+	@Override
+	public void computer() {
+		engineThinkingPathVisible = !engineThinkingPathVisible;
+		engineThinkingPath.setVisibility(engineThinkingPathVisible ? View.VISIBLE : View.GONE);
+		((View)notationsFace).setVisibility(engineThinkingPathVisible ? View.GONE : View.VISIBLE);
 	}
 
 	@Override
@@ -556,7 +569,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		String date = datePgnFormat.format(Calendar.getInstance().getTime());
 
 		StringBuilder builder = new StringBuilder();
-		builder.append("[Event \"").append(getString(R.string.vs_computer)).append("\"]")
+		builder.append("[Event \"").append(getString(R.string.computer)).append("\"]")
 				.append("\n [Site \" Chess.com\"]")
 				.append("\n [Date \"").append(date).append("\"]")
 				.append("\n [White \"").append(whitePlayerName).append("\"]")
@@ -646,7 +659,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		}  else if (view.getId() == R.id.sharePopupBtn) {
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
 			shareIntent.setType("text/plain");
-			shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.vs_computer));
+			shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.computer));
 			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
 			dismissEndGameDialog();
 		}
@@ -663,16 +676,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		resideBoardIfCompWhite();
 		invalidateGameScreen();
 		startGame();
-	}
-
-	public void updateConfig(CompGameConfig config) {
-		compGameConfig = config;
-		getBoardFace().setMode(compGameConfig.getMode());
-
-		labelsSet = false;
-		invalidateGameScreen();
-		boardView.invalidate();
-		updateData();
 	}
 
 	private class InitComputerEngineUpdateListener extends ChessLoadUpdateListener<CompEngineHelper> {
@@ -830,10 +833,16 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	@Override
-	public final void onEngineThinkingInfo(final String thinkingStr1, final String variantStr, final ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMoves, final ArrayList<org.petero.droidfish.gamelogic.Move> variantMoves, final ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
+	public final void onEngineThinkingInfo(final String thinkingStr1, final String variantStr,
+										   final ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMoves,
+										   final ArrayList<org.petero.droidfish.gamelogic.Move> variantMoves,
+										   final ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
 
 //		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
 //		CompEngineHelper.log("variantStr " + variantStr);
+
+		logTest(" variantStr = " + variantStr + " thinkingStr1 = " + thinkingStr1
+				+ " pvMoves = "+ pvMoves.size() + " variantMoves = " + variantMoves.size());
 
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
@@ -848,30 +857,30 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					s = thinkingStr1;
 					if (s.length() > 0) {
 						thinkingEmpty = false;
-						/*if (mShowStats) {
+						if (mShowStats) {
 							if (!thinkingEmpty)
 								s += "\n";
-							s += thinkingStr2;
+							s += variantStr;
 							if (s.length() > 0) thinkingEmpty = false;
-						}*/
+						}
 					}
 					//}
-					// TODO reuse when someone will need to need that enhancements. For example in computer analysis
+					//
 					// engineThinkingPath is always invisible
-//					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
+					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
 					log = s;
 				}
 				// todo @compengine: show book hints for human player
-				/*if (mShowBookHints && (bookInfoStr.length() > 0)) {
-					String s = "";
-					if (!thinkingEmpty)
-						s += "<br>";
-					s += Util.boldStart + getString(R.string.book) + Util.boldStop + bookInfoStr;
-					engineThinkingPath.append(Html.fromHtml(s));
-					log += s;
-					thinkingEmpty = false;
-				}*/
-				/*if (showVariationLine && (variantStr.indexOf(' ') >= 0)) { // showVariationLine
+//				if (mShowBookHints && (bookInfoStr.length() > 0)) {
+//					String s = "";
+//					if (!thinkingEmpty)
+//						s += "<br>";
+//					s += Util.boldStart + "Book" + Util.boldStop + bookInfoStr;
+//					engineThinkingPath.append(Html.fromHtml(s));
+//					log += s;
+//					thinkingEmpty = false;
+//				}
+				if (showVariationLine && (variantStr.indexOf(' ') >= 0)) { // showVariationLine
 					String s = "";
 					if (!thinkingEmpty)
 						s += "<br>";
@@ -879,7 +888,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 					engineThinkingPath.append(Html.fromHtml(s));
 					log += s;
 					thinkingEmpty = false;
-				}*/
+				}
 				setThinkingVisibility(!thinkingEmpty);
 
 				// hints arrow
@@ -922,12 +931,12 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		});
 	}
 
-	private void setThinkingVisibility(boolean visible) { // TODO adjust properly in notations view
-//		if (visible) {
-//			engineThinkingPath.setVisibility(View.VISIBLE);
-//		} else {
-//			engineThinkingPath.setVisibility(View.GONE);
-//		}
+	private void setThinkingVisibility(boolean visible) {
+		if (visible) {
+			engineThinkingPath.setVisibility(View.VISIBLE);
+		} else {
+			engineThinkingPath.setVisibility(View.GONE);
+		}
 	}
 
 	@Override

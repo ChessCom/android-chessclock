@@ -58,7 +58,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 
 	private TextView emptyView;
 	private ListView listView;
-	private View loadingView;
 	private List<DailyFinishedGameData> finishedGameDataList;
 
 	public ProfileGamesFragment() {
@@ -99,7 +98,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		listView = (ListView) view.findViewById(R.id.listView);
@@ -261,8 +259,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 		}
 	}
 
-	// TODO http://www.chess.com/diagram?fen=rnbqkbnr%2Fpppppppp%2F8%2F8%2F3P4%2F8%2FPPP1PPPP%2FRNBQKBNR&size=1
-
 	private class DailyGamesUpdateListener extends ChessUpdateListener<DailyGamesAllItem> {
 
 		public DailyGamesUpdateListener() {
@@ -285,7 +281,7 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 				}
 			}
 
-//			{ // finished
+			// finished
 			finishedGameDataList = returnedObj.getData().getFinished();
 			if (!currentGamesLeft) { // if SaveTask will not return to LoadFinishedGamesPoint
 				if (finishedGameDataList != null) {
@@ -303,16 +299,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 							getContentResolver()).executeTask();
 				}
 			}
-
-//				boolean gamesLeft = DbDataManager.checkAndDeleteNonExistFinishedGames(getContext(), finishedGameDataList);
-//
-//				if (gamesLeft) {
-//					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
-//							getContentResolver()).executeTask();
-//				} else {
-//					finishedGamesCursorAdapter.changeCursor(null);
-//				}
-//			}
 		}
 
 		@Override
@@ -342,10 +328,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 
 	private void showEmptyView(boolean show) {
 		if (show) {
-			// don't hide loadingView if it's loading
-			if (loadingView.getVisibility() != View.VISIBLE) {
-				loadingView.setVisibility(View.GONE);
-			}
 			if (listView.getAdapter().getCount() == 0) { // TODO check
 				emptyView.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);
@@ -353,20 +335,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 		} else {
 			emptyView.setVisibility(View.GONE);
 			listView.setVisibility(View.VISIBLE);
-		}
-	}
-
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			if (sectionedAdapter.getCount() == 0) {
-				listView.setVisibility(View.GONE);
-
-			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
 		}
 	}
 }

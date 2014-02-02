@@ -91,16 +91,14 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private ArrayList<SelectionItem> menuItems;
 	private OptionsAdapter optionsAdapter;
-	private FragmentParentFace parentFace;
 	private FriendsUpdateListener friendsUpdateListener;
 	private ProfileBaseFragmentTablet.OpponentsAdapter friendsAdapter;
 
-	public static ProfileTabsFragmentTablet createInstance(FragmentParentFace parentFace, String username) {
+	public static ProfileTabsFragmentTablet createInstance(String username) {
 		ProfileTabsFragmentTablet fragment = new ProfileTabsFragmentTablet();
 		Bundle bundle = new Bundle();
 		bundle.putString(USERNAME, username);
 		fragment.setArguments(bundle);
-		fragment.parentFace = parentFace;
 		return fragment;
 	}
 

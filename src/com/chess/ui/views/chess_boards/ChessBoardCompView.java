@@ -28,7 +28,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	private PostMoveToCompTask computeMoveTask;
 
-	private GameCompFace gameCompActivityFace;
+	private GameCompFace gameCompFace;
 	private ControlsCompView controlsCompView;
 
 
@@ -38,7 +38,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	public void setGameUiFace(GameCompFace gameActivityFace) {
 		super.setGameFace(gameActivityFace);
-        gameCompActivityFace = gameActivityFace;
+        gameCompFace = gameActivityFace;
     }
 
 	public void setControlsView(ControlsCompView controlsView) {
@@ -48,7 +48,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	}
 
 	private ChessBoardComp getBoardComp(){
-		return ChessBoardComp.getInstance(gameCompActivityFace);
+		return ChessBoardComp.getInstance(gameCompFace);
 	}
 
 	@Override
@@ -56,8 +56,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		super.afterUserMove();
 
 		getBoardFace().setMovesCount(getBoardFace().getPly());
-		gameCompActivityFace.invalidateGameScreen();
-		gameCompActivityFace.updateAfterMove();
+		gameCompFace.invalidateGameScreen();
+		gameCompFace.updateAfterMove();
 
 		boolean gameOver = isGameOver(); // do not show popup twice
 		Log.d(CompEngineHelper.TAG, "DEBUGBOARD isGameOver() " + gameOver);
@@ -115,7 +115,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 		if (!ChessBoard.isHumanVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
 			setComputerMoving(true);
-			gameCompActivityFace.onCompMove();
+			gameCompFace.onCompMove();
 		}
 
 		ComputeMoveItem computeMoveItem = new ComputeMoveItem();
@@ -124,7 +124,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 		Log.d(CompEngineHelper.TAG, "make move lastMove " + lastMove);
 
-		computeMoveTask = new PostMoveToCompTask(computeMoveItem, CompEngineHelper.getInstance(), gameCompActivityFace);
+		computeMoveTask = new PostMoveToCompTask(computeMoveItem, CompEngineHelper.getInstance(), gameCompFace);
 		computeMoveTask.execute();
 	}
 
@@ -146,7 +146,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 		Log.d(CompEngineHelper.TAG, "ask for move hint");
 
-		gameCompActivityFace.onCompMove();
+		gameCompFace.onCompMove();
 		CompEngineHelper.getInstance().makeHint();
 	}
 
@@ -236,7 +236,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
                 }
 				getBoardFace().setMovesCount(getBoardFace().getPly()); // supports Flip when user navigated moves Back
 				setComputerMoving(true);
-				gameCompActivityFace.onCompMove();
+				gameCompFace.onCompMove();
 				engineMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
 				CompEngineHelper.getInstance().updateEngineGameMode(engineMode);
 				CompEngineHelper.getInstance().setGameMode(engineMode);
@@ -245,8 +245,8 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
             invalidate();
         }
 
-		gameCompActivityFace.toggleSides();
-		gameCompActivityFace.invalidateGameScreen();
+		gameCompFace.toggleSides();
+		gameCompFace.invalidateGameScreen();
 	}
 
 	@Override
@@ -271,7 +271,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 				setSecondMoveAnimator(new MoveAnimator(move, false));
 			}
             invalidate();
-			gameCompActivityFace.invalidateGameScreen();
+			gameCompFace.invalidateGameScreen();
 			return true;
 		} else {
 			return false;
@@ -301,7 +301,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 				}
 			}
             invalidate();
-			gameCompActivityFace.invalidateGameScreen();
+			gameCompFace.invalidateGameScreen();
 
 			return true;
         } else {
@@ -336,6 +336,11 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	}
 
 	@Override
+	public void computer() {
+		gameCompFace.computer();
+	}
+
+	@Override
     public void showHint() {
 		if (getBoardFace().isFinished()) { // don't show hints for finished games
 			return;
@@ -364,7 +369,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 	@Override
 	protected void onSecondMoveAnimated() {
-		gameCompActivityFace.invalidateGameScreen();
+		gameCompFace.invalidateGameScreen();
 	}
 
 	public boolean isComputerToMove() {

@@ -471,6 +471,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		int playerPremiumStatus = labelsConfig.topPlayerPremiumStatus;
 		labelsConfig.topPlayerPremiumStatus = labelsConfig.bottomPlayerPremiumStatus;
 		labelsConfig.bottomPlayerPremiumStatus = playerPremiumStatus;
+
+		String playerCountry = labelsConfig.topPlayerCountry;
+		labelsConfig.topPlayerCountry = labelsConfig.bottomPlayerCountry;
+		labelsConfig.bottomPlayerCountry = playerCountry;
 	}
 
 	@Override
@@ -559,6 +563,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	}
 
 	private void submitMove() {
+		logTest(" last move = " +  getBoardFace().getLastMoveForDaily());
 		if (username.equals(getUsername())) { // allow only authenticated user to send move in his own games
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
 			loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());
@@ -611,6 +616,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 				} while (cursor.moveToNext());
 				cursor.close();
 			}
+		}
+
+		if (!loadedNextGameIds.contains(gameId)) {
+			skipPreviousGames = false;
 		}
 
 		for (Long nextGameId : loadedNextGameIds) {

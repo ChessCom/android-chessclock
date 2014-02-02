@@ -8,6 +8,8 @@ package com.chess.ui.interfaces.boards;
  */
 public interface BoardViewCompFace extends BoardViewFace {
 
+	void computer();
+
 	void showHint();
 
 	void flipBoard();

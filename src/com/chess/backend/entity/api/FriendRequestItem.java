@@ -40,11 +40,11 @@ public class FriendRequestItem extends BaseResponseItem<List<FriendRequestItem.D
 		}
 
 		public String getUsername() {
-			return username;
+			return getSafeValue(username);
 		}
 
 		public String getMessage() {
-			return message;
+			return getSafeValue(message);
 		}
 
 		public boolean isIsonline() {
@@ -52,7 +52,7 @@ public class FriendRequestItem extends BaseResponseItem<List<FriendRequestItem.D
 		}
 
 		public String getAvatarUrl() {
-			return avatar_url;
+			return getSafeValue(avatar_url);
 		}
 	}
 }

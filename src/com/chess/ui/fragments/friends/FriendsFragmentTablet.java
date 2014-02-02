@@ -70,7 +70,7 @@ public class FriendsFragmentTablet extends FriendsFragment {
 			Cursor cursor = (Cursor) listView.getItemAtPosition(position);
 			String username = DbDataManager.getString(cursor, DbScheme.V_USERNAME);
 
-			getActivityFace().openFragment(ProfileTabsFragmentTablet.createInstance(parentFace, username));
+			getActivityFace().openFragment(ProfileTabsFragmentTablet.createInstance(username));
 		} else {
 			super.onClick(view);
 		}

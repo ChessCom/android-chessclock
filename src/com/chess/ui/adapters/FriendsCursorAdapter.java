@@ -104,7 +104,7 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 		if (isOnline) {
 			holder.onlineTxt.setText(R.string.online_today);
 		} else {
-			holder.onlineTxt.setText(context.getString(R.string.last_was_online, getLastLoginLabel(cursor)));
+			holder.onlineTxt.setText(getLastLoginLabel(cursor));
 		}
 		holder.usernameTxt.setText(getString(cursor, DbScheme.V_USERNAME));
 
@@ -132,11 +132,11 @@ public class FriendsCursorAdapter extends ItemsCursorAdapter {
 			cnt++;
 		}
 		if (cnt > 1) {
-			return context.getString(R.string.arg_days_ago, cnt);
+			return context.getString(R.string.last_was_online, context.getString(R.string.arg_days_ago, cnt));
 			// last played X days ago
 		} else {
 			// last played today
-			return context.getString(R.string.today);
+			return context.getString(R.string.online_today);
 		}
 	}
 
