@@ -138,12 +138,13 @@ public class ServerErrorCodes {
 	public static final int YOUR_GCM_ID_ALREADY_REGISTERED = 125;			//	"Your registration ID is already registered!
 	public static final int ERROR_USER_NOT_ENABLED  = 126;					//	"The selected user must be enabled.
 	public static final int ERROR_INSUFFICIENT_MEMBERSHIP_LEVEL  = 127;		//	"Gold members cannot view other member\'s stats.
+	public static final int FORUM_TOPIC_ALREADY_EXIST  = 128;				//	"Forum topic already exists!
 
 	public static final String ACCESS_DENIED = "Access denied.";
 
 	public static final int ACCESS_DENIED_CODE = 999;                		// Please update app
 
-	public static String getUserFriendlyMessage(Context context, int code) {    // TODO convert to strings for i18n
+	public static String getUserFriendlyMessage(Context context, int code) {
 		String[] codesArray = context.getResources().getStringArray(R.array.new_site_api_error_messages);
 		if (code < codesArray.length) {
 			return codesArray[code - 1];
