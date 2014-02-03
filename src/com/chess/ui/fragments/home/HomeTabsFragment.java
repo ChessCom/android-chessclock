@@ -27,7 +27,8 @@ import com.chess.ui.interfaces.FragmentParentFace;
 
 import java.util.List;
 
-import static com.chess.backend.RestHelper.*;
+import static com.chess.backend.RestHelper.P_FIELDS_;
+import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
 
 /**
  * Created with IntelliJ IDEA.
@@ -227,7 +228,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		@Override
 		public void showProgress(boolean show) {
-			tabsLoadProgressBar.setVisibility(show? View.VISIBLE : View.GONE);
+			tabsLoadProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
 		}
 
 		@Override
@@ -269,7 +270,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		@Override
 		public void showProgress(boolean show) {
-			tabsLoadProgressBar.setVisibility(show? View.VISIBLE : View.GONE);
+			tabsLoadProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
 		}
 
 		@Override
@@ -278,9 +279,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 			// current games
 			List<DailyCurrentGameData> currentGamesList = returnedObj.getData();
-			if (currentGamesList.size() > 0) {
-				showDailyGamesFragment = true;
-			}
+			showDailyGamesFragment = currentGamesList.size() > 0;
 			DbDataManager.checkAndDeleteNonExistCurrentGames(getContentResolver(), currentGamesList, getUsername());
 
 			if (previousCheckedId == NON_INIT) {

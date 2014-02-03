@@ -17,8 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.chess.widgets.LeftImageEditText;
-import com.chess.widgets.LeftRightImageEditText;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
@@ -26,13 +24,14 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCountriesFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSelectPhotoFragment;
 import com.chess.ui.fragments.popup_fragments.PopupSkillsFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.drawables.IconDrawable;
 import com.chess.utilities.AppUtils;
+import com.chess.widgets.LeftImageEditText;
+import com.chess.widgets.LeftRightImageEditText;
 
 import java.io.File;
 import java.io.IOException;
@@ -152,6 +151,8 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 				} else {
 					userCountry = DEFAULT_COUNTRY;
 				}
+			} else {
+				userCountry = DEFAULT_COUNTRY;
 			}
 		}
 
@@ -161,9 +162,9 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.skipBtn) {
-			getActivityFace().switchFragment(new HomeTabsFragment());
+			backToHomeFragment();
 		} else if (v.getId() == R.id.skipLay) {
-			getActivityFace().switchFragment(new HomeTabsFragment());
+			backToHomeFragment();
 		} else if (v.getId() == R.id.countryEdt) {
 			showCountriesFragment();
 		} else if (v.getId() == R.id.skillEdt) {
@@ -276,7 +277,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		public void updateData(UserItem returnedObj) {
 			getAppData().setUserAvatar(returnedObj.getData().getAvatar());
 
-			getActivityFace().switchFragment(new HomeTabsFragment());
+			backToHomeFragment();
 		}
 	}
 

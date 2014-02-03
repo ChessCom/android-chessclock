@@ -163,8 +163,7 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 		
 		switch (menuItem.iconRes) {
 			case R.drawable.ic_nav_home:
-				getActivityFace().clearFragmentStack();
-				getActivityFace().switchFragment(new HomeTabsFragment());
+				backToHomeFragment();
 				handler.postDelayed(new Runnable() {
 					@Override
 					public void run() {
