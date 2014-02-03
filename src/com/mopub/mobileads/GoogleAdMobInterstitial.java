@@ -42,7 +42,7 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.InterstitialAd;
 
-import java.util.*;
+import java.util.Map;
 
 import static com.mopub.mobileads.MoPubErrorCode.ADAPTER_CONFIGURATION_ERROR;
 import static com.mopub.mobileads.MoPubErrorCode.NETWORK_NO_FILL;
@@ -52,112 +52,113 @@ import static com.mopub.mobileads.MoPubErrorCode.NETWORK_NO_FILL;
  */
 
 class GoogleAdMobInterstitial extends CustomEventInterstitial implements AdListener {
+	/*
+	 * These keys are intended for MoPub internal use. Do not modify.
+	 */
+	public static final String AD_UNIT_ID_KEY = "adUnitID";
+	public static final String LOCATION_KEY = "location";
+
+	private InterstitialAd mInterstitialAd;
+	private boolean mHasAlreadyRegisteredClick;
+	private CustomEventInterstitialListener mInterstitialListener;
+
+	@Override
+	protected void loadInterstitial(Context context,
+									CustomEventInterstitialListener customEventInterstitialListener,
+									Map<String, Object> localExtras,
+									Map<String, String> serverExtras) {
+		mInterstitialListener = customEventInterstitialListener;
+
+		if (!(context instanceof Activity)) {
+			mInterstitialListener.onInterstitialFailed(ADAPTER_CONFIGURATION_ERROR);
+			return;
+		}
+
+		String pubId;
+		if (extrasAreValid(serverExtras)) {
+			pubId = serverExtras.get(AD_UNIT_ID_KEY);
+		} else {
+			mInterstitialListener.onInterstitialFailed(ADAPTER_CONFIGURATION_ERROR);
+			return;
+		}
+
+		mInterstitialAd = new InterstitialAd((Activity) context, pubId);
+		mInterstitialAd.setAdListener(this);
+
+		AdRequest adRequest = new AdRequest();
+		Location location = extractLocation(localExtras);
+		if (location != null) adRequest.setLocation(location);
+		mInterstitialAd.loadAd(adRequest);
+	}
+
+	@Override
+	protected void showInterstitial() {
+		if (mInterstitialAd.isReady()) {
+			mInterstitialAd.show();
+		} else {
+			Log.d("MoPub", "Tried to show a Google AdMob interstitial ad before it finished loading. Please try again.");
+		}
+	}
+
+	@Override
+	protected void onInvalidate() {
+		if (mInterstitialAd != null) {
+			mInterstitialAd.setAdListener(null);
+		}
+	}
+
+	private Location extractLocation(Map<String, Object> localExtras) {
+		Object location = localExtras.get(LOCATION_KEY);
+		if (location instanceof Location) {
+			return (Location) location;
+		}
+		return null;
+	}
+
+	private boolean extrasAreValid(Map<String, String> serverExtras) {
+		return serverExtras.containsKey(AD_UNIT_ID_KEY);
+	}
+
+	@Deprecated
+		// for testing
+	InterstitialAd getAdMobInterstitial() {
+		return mInterstitialAd;
+	}
+
     /*
-     * These keys are intended for MoPub internal use. Do not modify.
-     */
-    public static final String AD_UNIT_ID_KEY = "adUnitID";
-    public static final String LOCATION_KEY = "location";
-
-    private InterstitialAd mInterstitialAd;
-    private boolean mHasAlreadyRegisteredClick;
-    private CustomEventInterstitialListener mInterstitialListener;
-
-    @Override
-    protected void loadInterstitial(Context context,
-                                    CustomEventInterstitialListener customEventInterstitialListener,
-                                    Map<String, Object> localExtras,
-                                    Map<String, String> serverExtras) {
-        mInterstitialListener = customEventInterstitialListener;
-
-        if (!(context instanceof Activity)) {
-            mInterstitialListener.onInterstitialFailed(ADAPTER_CONFIGURATION_ERROR);
-            return;
-        }
-
-        String pubId;
-        if (extrasAreValid(serverExtras)) {
-            pubId = serverExtras.get(AD_UNIT_ID_KEY);
-        } else {
-            mInterstitialListener.onInterstitialFailed(ADAPTER_CONFIGURATION_ERROR);
-            return;
-        }
-
-        mInterstitialAd = new InterstitialAd((Activity) context, pubId);
-        mInterstitialAd.setAdListener(this);
-
-        AdRequest adRequest = new AdRequest();
-        Location location = extractLocation(localExtras);
-        if (location != null) adRequest.setLocation(location);
-        mInterstitialAd.loadAd(adRequest);
-    }
-
-    @Override
-    protected void showInterstitial() {
-        if (mInterstitialAd.isReady()) {
-            mInterstitialAd.show();
-        } else {
-            Log.d("MoPub", "Tried to show a Google AdMob interstitial ad before it finished loading. Please try again.");
-        }
-    }
-
-    @Override
-    protected void onInvalidate() {
-        if (mInterstitialAd != null) {
-            mInterstitialAd.setAdListener(null);
-        }
-    }
-
-    private Location extractLocation(Map<String, Object> localExtras) {
-        Object location = localExtras.get(LOCATION_KEY);
-        if (location instanceof Location) {
-            return (Location) location;
-        }
-        return null;
-    }
-
-    private boolean extrasAreValid(Map<String, String> serverExtras) {
-        return serverExtras.containsKey(AD_UNIT_ID_KEY);
-    }
-
-    @Deprecated // for testing
-    InterstitialAd getAdMobInterstitial() {
-        return mInterstitialAd;
-    }
-
-    /*
-     * AdMob AdListener implementation
+	 * AdMob AdListener implementation
      */
 
-    @Override
-    public void onDismissScreen(Ad ad) {
-        Log.d("MoPub", "Google AdMob interstitial ad dismissed.");
-        mInterstitialListener.onInterstitialDismissed();
-    }
+	@Override
+	public void onDismissScreen(Ad ad) {
+		Log.d("MoPub", "Google AdMob interstitial ad dismissed.");
+		mInterstitialListener.onInterstitialDismissed();
+	}
 
-    @Override
-    public void onFailedToReceiveAd(Ad ad, ErrorCode error) {
-        Log.d("MoPub", "Google AdMob interstitial ad failed to load.");
-        mInterstitialListener.onInterstitialFailed(NETWORK_NO_FILL);
-    }
+	@Override
+	public void onFailedToReceiveAd(Ad ad, ErrorCode error) {
+		Log.d("MoPub", "Google AdMob interstitial ad failed to load.");
+		mInterstitialListener.onInterstitialFailed(NETWORK_NO_FILL);
+	}
 
-    @Override
-    public void onLeaveApplication(Ad ad) {
-        if (!mHasAlreadyRegisteredClick) {
-            Log.d("MoPub", "Google AdMob interstitial ad clicked.");
-            mHasAlreadyRegisteredClick = true;
-            mInterstitialListener.onInterstitialClicked();
-        }
-    }
+	@Override
+	public void onLeaveApplication(Ad ad) {
+		if (!mHasAlreadyRegisteredClick) {
+			Log.d("MoPub", "Google AdMob interstitial ad clicked.");
+			mHasAlreadyRegisteredClick = true;
+			mInterstitialListener.onInterstitialClicked();
+		}
+	}
 
-    @Override
-    public void onPresentScreen(Ad ad) {
-        Log.d("MoPub", "Showing Google AdMob interstitial ad.");
-        mInterstitialListener.onInterstitialShown();
-    }
+	@Override
+	public void onPresentScreen(Ad ad) {
+		Log.d("MoPub", "Showing Google AdMob interstitial ad.");
+		mInterstitialListener.onInterstitialShown();
+	}
 
-    @Override
-    public void onReceiveAd(Ad ad) {
-        Log.d("MoPub", "Google AdMob interstitial ad loaded successfully.");
-        mInterstitialListener.onInterstitialLoaded();
-    }
+	@Override
+	public void onReceiveAd(Ad ad) {
+		Log.d("MoPub", "Google AdMob interstitial ad loaded successfully.");
+		mInterstitialListener.onInterstitialLoaded();
+	}
 }

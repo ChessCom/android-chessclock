@@ -56,6 +56,7 @@ import java.util.List;
  */
 public class AppUtils {
 
+	public static final String DEFAULT_COUNTRY = "United States";
 	public static final String UNZIPPED = "/unzipped/";
 
 	public static final float MDPI = 1.0f;
@@ -63,9 +64,7 @@ public class AppUtils {
 	public static final float XHDPI = 2.0f;
 	private static final String VERSION_CODE = "3_2";
 	private static boolean ENABLE_LOG = true;
-	private static final String DAYS = "d";
-	private static final String H = "h";
-	private static final String M = "m";
+
 	public static final long SECONDS_IN_DAY = 86400;
 
 	public static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
@@ -814,7 +813,6 @@ public class AppUtils {
 		}
 	}
 
-	public static final String DEFAULT_COUNTRY = "United States";
 
 	public static String getCountryIdByName(String[] countryNames, int[] countryCodes, int userCountryId) {
 		for (int i = 0; i < countryCodes.length; i++) {

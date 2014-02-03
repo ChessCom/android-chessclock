@@ -33,69 +33,82 @@
 package com.mopub.mobileads.util;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Reflection {
-    public static class MethodBuilder {
-        private final Object mInstance;
-        private final String mMethodName;
-        private final Class<?> mClass;
+	public static class MethodBuilder {
+		private final Object mInstance;
+		private final String mMethodName;
+		private Class<?> mClass;
 
-        private List<Class<?>> mParameterClasses;
-        private List<Object> mParameters;
-        private boolean mIsAccessible;
+		private List<Class<?>> mParameterClasses;
+		private List<Object> mParameters;
+		private boolean mIsAccessible;
+		private boolean mIsStatic;
 
-        public MethodBuilder(final Object instance, final String methodName) {
-            mInstance = instance;
-            mMethodName = methodName;
+		public MethodBuilder(final Object instance, final String methodName) {
+			mInstance = instance;
+			mMethodName = methodName;
 
-            mParameterClasses = new ArrayList<Class<?>>();
-            mParameters = new ArrayList<Object>();
+			mParameterClasses = new ArrayList<Class<?>>();
+			mParameters = new ArrayList<Object>();
 
-            mClass = (instance != null) ? instance.getClass() : null;
-        }
+			mClass = (instance != null) ? instance.getClass() : null;
+		}
 
-        public <T> MethodBuilder addParam(Class<T> clazz, T parameter) {
-            mParameterClasses.add(clazz);
-            mParameters.add(parameter);
+		public <T> MethodBuilder addParam(Class<T> clazz, T parameter) {
+			mParameterClasses.add(clazz);
+			mParameters.add(parameter);
 
-            return this;
-        }
+			return this;
+		}
 
-        public MethodBuilder setAccessible() {
-            mIsAccessible = true;
+		public MethodBuilder setAccessible() {
+			mIsAccessible = true;
 
-            return this;
-        }
+			return this;
+		}
 
-        public Object execute() throws Exception {
-            Class<?>[] classArray = new Class<?>[mParameterClasses.size()];
-            Class<?>[] parameterTypes = mParameterClasses.toArray(classArray);
+		public MethodBuilder setStatic(Class<?> clazz) {
+			mIsStatic = true;
+			mClass = clazz;
 
-            Method method = getDeclaredMethodWithTraversal(mClass, mMethodName, parameterTypes);
+			return this;
+		}
 
-            if (mIsAccessible) {
-                method.setAccessible(true);
-            }
+		public Object execute() throws Exception {
+			Class<?>[] classArray = new Class<?>[mParameterClasses.size()];
+			Class<?>[] parameterTypes = mParameterClasses.toArray(classArray);
 
-            Object[] parameters = mParameters.toArray();
-            return method.invoke(mInstance, parameters);
-        }
-    }
+			Method method = getDeclaredMethodWithTraversal(mClass, mMethodName, parameterTypes);
 
-    public static Method getDeclaredMethodWithTraversal(Class<?> clazz, String methodName, Class<?>... parameterTypes)
-            throws NoSuchMethodException {
-        Class<?> currentClass = clazz;
+			if (mIsAccessible) {
+				method.setAccessible(true);
+			}
 
-        while (currentClass != null) {
-            try {
-                Method method = currentClass.getDeclaredMethod(methodName, parameterTypes);
-                return method;
-            } catch (NoSuchMethodException e) {
-                currentClass = currentClass.getSuperclass();
-            }
-        }
+			Object[] parameters = mParameters.toArray();
 
-        throw new NoSuchMethodException();
-    }
+			if (mIsStatic) {
+				return method.invoke(null, parameters);
+			} else {
+				return method.invoke(mInstance, parameters);
+			}
+		}
+	}
+
+	public static Method getDeclaredMethodWithTraversal(Class<?> clazz, String methodName, Class<?>... parameterTypes)
+			throws NoSuchMethodException {
+		Class<?> currentClass = clazz;
+
+		while (currentClass != null) {
+			try {
+				return currentClass.getDeclaredMethod(methodName, parameterTypes);
+			} catch (NoSuchMethodException e) {
+				currentClass = currentClass.getSuperclass();
+			}
+		}
+
+		throw new NoSuchMethodException();
+	}
 }

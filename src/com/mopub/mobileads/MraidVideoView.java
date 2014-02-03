@@ -40,28 +40,28 @@ import static com.mopub.mobileads.MraidVideoPlayerActivity.VIDEO_URL;
 
 class MraidVideoView extends BaseVideoView {
 
-    public MraidVideoView(Context context, Intent intent, final BaseVideoViewListener baseVideoViewListener) {
-        super(context);
+	public MraidVideoView(Context context, Intent intent, final BaseVideoViewListener baseVideoViewListener) {
+		super(context);
 
-        setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                if (baseVideoViewListener != null) {
-                    baseVideoViewListener.videoCompleted(true);
-                }
-            }
-        });
+		setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				if (baseVideoViewListener != null) {
+					baseVideoViewListener.videoCompleted(true);
+				}
+			}
+		});
 
-        setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
-                if (baseVideoViewListener != null) {
-                    baseVideoViewListener.videoError(false);
-                }
-                return false;
-            }
-        });
+		setOnErrorListener(new MediaPlayer.OnErrorListener() {
+			@Override
+			public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
+				if (baseVideoViewListener != null) {
+					baseVideoViewListener.videoError(false);
+				}
+				return false;
+			}
+		});
 
-        setVideoPath(intent.getStringExtra(VIDEO_URL));
-    }
+		setVideoPath(intent.getStringExtra(VIDEO_URL));
+	}
 }

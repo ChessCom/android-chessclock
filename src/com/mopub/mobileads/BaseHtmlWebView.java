@@ -43,73 +43,73 @@ import static com.mopub.mobileads.util.VersionCode.ICE_CREAM_SANDWICH;
 import static com.mopub.mobileads.util.VersionCode.currentApiLevel;
 
 public class BaseHtmlWebView extends BaseWebView implements UserClickListener {
-    private final ViewGestureDetector mViewGestureDetector;
-    private boolean mClicked;
+	private final ViewGestureDetector mViewGestureDetector;
+	private boolean mClicked;
 
-    public BaseHtmlWebView(Context context, AdConfiguration adConfiguration) {
-        super(context);
+	public BaseHtmlWebView(Context context, AdConfiguration adConfiguration) {
+		super(context);
 
-        disableScrollingAndZoom();
-        getSettings().setJavaScriptEnabled(true);
+		disableScrollingAndZoom();
+		getSettings().setJavaScriptEnabled(true);
 
-        mViewGestureDetector = new ViewGestureDetector(context, this, adConfiguration);
-        mViewGestureDetector.setUserClickListener(this);
+		mViewGestureDetector = new ViewGestureDetector(context, this, adConfiguration);
+		mViewGestureDetector.setUserClickListener(this);
 
-        if (currentApiLevel().isAtLeast(ICE_CREAM_SANDWICH)) {
-            enablePlugins(true);
-        }
-        setBackgroundColor(Color.TRANSPARENT);
-    }
+		if (currentApiLevel().isAtLeast(ICE_CREAM_SANDWICH)) {
+			enablePlugins(true);
+		}
+		setBackgroundColor(Color.TRANSPARENT);
+	}
 
-    public void init(boolean isScrollable) {
-        initializeOnTouchListener(isScrollable);
-    }
+	public void init(boolean isScrollable) {
+		initializeOnTouchListener(isScrollable);
+	}
 
-    @Override
-    public void loadUrl(String url) {
-        if (url == null) return;
+	@Override
+	public void loadUrl(String url) {
+		if (url == null) return;
 
-        Log.d("MoPub", "Loading url: " + url);
-        if (url.startsWith("javascript:")) {
-            super.loadUrl(url);
-        }
-    }
+		Log.d("MoPub", "Loading url: " + url);
+		if (url.startsWith("javascript:")) {
+			super.loadUrl(url);
+		}
+	}
 
-    private void disableScrollingAndZoom() {
-        setHorizontalScrollBarEnabled(false);
-        setHorizontalScrollbarOverlay(false);
-        setVerticalScrollBarEnabled(false);
-        setVerticalScrollbarOverlay(false);
-        getSettings().setSupportZoom(false);
-    }
+	private void disableScrollingAndZoom() {
+		setHorizontalScrollBarEnabled(false);
+		setHorizontalScrollbarOverlay(false);
+		setVerticalScrollBarEnabled(false);
+		setVerticalScrollbarOverlay(false);
+		getSettings().setSupportZoom(false);
+	}
 
-    void loadHtmlResponse(String htmlResponse) {
-        loadDataWithBaseURL("http://ads.mopub.com/", htmlResponse, "text/html", "utf-8", null);
-    }
+	void loadHtmlResponse(String htmlResponse) {
+		loadDataWithBaseURL("http://ads.mopub.com/", htmlResponse, "text/html", "utf-8", null);
+	}
 
-    void initializeOnTouchListener(final boolean isScrollable) {
-        setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-                mViewGestureDetector.sendTouchEvent(event);
+	void initializeOnTouchListener(final boolean isScrollable) {
+		setOnTouchListener(new OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				mViewGestureDetector.sendTouchEvent(event);
 
-                // We're not handling events if the current action is ACTION_MOVE
-                return (event.getAction() == MotionEvent.ACTION_MOVE) && !isScrollable;
-            }
-        });
-    }
+				// We're not handling events if the current action is ACTION_MOVE
+				return (event.getAction() == MotionEvent.ACTION_MOVE) && !isScrollable;
+			}
+		});
+	}
 
-    @Override
-    public void onUserClick() {
-        mClicked = true;
-    }
+	@Override
+	public void onUserClick() {
+		mClicked = true;
+	}
 
-    @Override
-    public void onResetUserClick() {
-        mClicked = false;
-    }
+	@Override
+	public void onResetUserClick() {
+		mClicked = false;
+	}
 
-    @Override
-    public boolean wasClicked() {
-        return mClicked;
-    }
+	@Override
+	public boolean wasClicked() {
+		return mClicked;
+	}
 }

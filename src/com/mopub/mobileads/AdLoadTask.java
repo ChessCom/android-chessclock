@@ -41,231 +41,224 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 
-import java.io.*;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-import static com.mopub.mobileads.AdFetcher.CLICKTHROUGH_URL_KEY;
-import static com.mopub.mobileads.AdFetcher.HTML_RESPONSE_BODY_KEY;
-import static com.mopub.mobileads.AdFetcher.REDIRECT_URL_KEY;
-import static com.mopub.mobileads.AdFetcher.SCROLLABLE_KEY;
+import static com.mopub.mobileads.AdFetcher.*;
 import static com.mopub.mobileads.util.HttpResponses.extractBooleanHeader;
 import static com.mopub.mobileads.util.HttpResponses.extractHeader;
-import static com.mopub.mobileads.util.ResponseHeader.AD_TYPE;
-import static com.mopub.mobileads.util.ResponseHeader.CLICKTHROUGH_URL;
-import static com.mopub.mobileads.util.ResponseHeader.CUSTOM_EVENT_DATA;
-import static com.mopub.mobileads.util.ResponseHeader.CUSTOM_EVENT_NAME;
-import static com.mopub.mobileads.util.ResponseHeader.CUSTOM_SELECTOR;
-import static com.mopub.mobileads.util.ResponseHeader.FULL_AD_TYPE;
-import static com.mopub.mobileads.util.ResponseHeader.NATIVE_PARAMS;
-import static com.mopub.mobileads.util.ResponseHeader.REDIRECT_URL;
-import static com.mopub.mobileads.util.ResponseHeader.SCROLLABLE;
+import static com.mopub.mobileads.util.ResponseHeader.*;
 
 abstract class AdLoadTask {
-    WeakReference<AdViewController> mWeakAdViewController;
-    AdLoadTask(AdViewController adViewController) {
-        mWeakAdViewController = new WeakReference<AdViewController>(adViewController);
-    }
+	WeakReference<AdViewController> mWeakAdViewController;
 
-    abstract void execute();
+	AdLoadTask(AdViewController adViewController) {
+		mWeakAdViewController = new WeakReference<AdViewController>(adViewController);
+	}
 
-    /*
-     * The AsyncTask thread pool often appears to keep references to these
-     * objects, preventing GC. This method should be used to release
-     * resources to mitigate the GC issue.
-     */
-    abstract void cleanup();
+	abstract void execute();
 
-    static AdLoadTask fromHttpResponse(HttpResponse response, AdViewController adViewController) throws IOException {
-        return new TaskExtractor(response, adViewController).extract();
-    }
+	/*
+	 * The AsyncTask thread pool often appears to keep references to these
+	 * objects, preventing GC. This method should be used to release
+	 * resources to mitigate the GC issue.
+	 */
+	abstract void cleanup();
 
-    private static class TaskExtractor {
-        private final HttpResponse response;
-        private final AdViewController adViewController;
-        private String adType;
-        private String adTypeCustomEventName;
-        private String fullAdType;
+	static AdLoadTask fromHttpResponse(HttpResponse response, AdViewController adViewController) throws IOException {
+		return new TaskExtractor(response, adViewController).extract();
+	}
 
-        TaskExtractor(HttpResponse response, AdViewController adViewController){
-            this.response = response;
-            this.adViewController = adViewController;
-        }
+	private static class TaskExtractor {
+		private final HttpResponse response;
+		private final AdViewController adViewController;
+		private String adType;
+		private String adTypeCustomEventName;
+		private String fullAdType;
 
-        AdLoadTask extract() throws IOException {
-            adType = extractHeader(response, AD_TYPE);
-            fullAdType = extractHeader(response, FULL_AD_TYPE);
+		TaskExtractor(HttpResponse response, AdViewController adViewController) {
+			this.response = response;
+			this.adViewController = adViewController;
+		}
 
-            Log.d("MoPub", "Loading ad type: " + AdTypeTranslator.getAdNetworkType(adType, fullAdType));
+		AdLoadTask extract() throws IOException {
+			adType = extractHeader(response, AD_TYPE);
+			fullAdType = extractHeader(response, FULL_AD_TYPE);
 
-            adTypeCustomEventName = AdTypeTranslator.getCustomEventNameForAdType(
-                    adViewController.getMoPubView(), adType, fullAdType);
+			Log.d("MoPub", "Loading ad type: " + AdTypeTranslator.getAdNetworkType(adType, fullAdType));
 
-            if ("custom".equals(adType)) {
-                return extractCustomEventAdLoadTask();
-            } else if (eventDataIsInResponseBody(adType)) {
-                return extractCustomEventAdLoadTaskFromResponseBody();
-            } else {
-                return extractCustomEventAdLoadTaskFromNativeParams();
-            }
-        }
+			adTypeCustomEventName = AdTypeTranslator.getCustomEventNameForAdType(
+					adViewController.getMoPubView(), adType, fullAdType);
 
-        private AdLoadTask extractCustomEventAdLoadTask() {
-            Log.i("MoPub", "Performing custom event.");
+			if ("custom".equals(adType)) {
+				return extractCustomEventAdLoadTask();
+			} else if (eventDataIsInResponseBody(adType)) {
+				return extractCustomEventAdLoadTaskFromResponseBody();
+			} else {
+				return extractCustomEventAdLoadTaskFromNativeParams();
+			}
+		}
 
-            // If applicable, try to invoke the new custom event system (which uses custom classes)
-            adTypeCustomEventName = extractHeader(response, CUSTOM_EVENT_NAME);
-            if (adTypeCustomEventName != null) {
-                String customEventData = extractHeader(response, CUSTOM_EVENT_DATA);
-                return createCustomEventAdLoadTask(customEventData);
-            }
+		private AdLoadTask extractCustomEventAdLoadTask() {
+			Log.i("MoPub", "Performing custom event.");
 
-            // Otherwise, use the (deprecated) legacy custom event system for older clients
-            Header oldCustomEventHeader = response.getFirstHeader(CUSTOM_SELECTOR.getKey());
-            return new AdLoadTask.LegacyCustomEventAdLoadTask(adViewController, oldCustomEventHeader);
-        }
+			// If applicable, try to invoke the new custom event system (which uses custom classes)
+			adTypeCustomEventName = extractHeader(response, CUSTOM_EVENT_NAME);
+			if (adTypeCustomEventName != null) {
+				String customEventData = extractHeader(response, CUSTOM_EVENT_DATA);
+				return createCustomEventAdLoadTask(customEventData);
+			}
 
-        private AdLoadTask extractCustomEventAdLoadTaskFromResponseBody() throws IOException {
-            HttpEntity entity = response.getEntity();
-            String htmlData = entity != null ? Strings.fromStream(entity.getContent()) : "";
+			// Otherwise, use the (deprecated) legacy custom event system for older clients
+			Header oldCustomEventHeader = response.getFirstHeader(CUSTOM_SELECTOR.getKey());
+			return new AdLoadTask.LegacyCustomEventAdLoadTask(adViewController, oldCustomEventHeader);
+		}
 
-            adViewController.getAdConfiguration().setResponseString(htmlData);
+		private AdLoadTask extractCustomEventAdLoadTaskFromResponseBody() throws IOException {
+			HttpEntity entity = response.getEntity();
+			String htmlData = entity != null ? Strings.fromStream(entity.getContent()) : "";
 
-            String redirectUrl = extractHeader(response, REDIRECT_URL);
-            String clickthroughUrl = extractHeader(response, CLICKTHROUGH_URL);
-            boolean scrollingEnabled = extractBooleanHeader(response, SCROLLABLE, false);
+			adViewController.getAdConfiguration().setResponseString(htmlData);
 
-            Map<String, String> eventDataMap = new HashMap<String, String>();
-            eventDataMap.put(HTML_RESPONSE_BODY_KEY, Uri.encode(htmlData));
-            eventDataMap.put(SCROLLABLE_KEY, Boolean.toString(scrollingEnabled));
-            if (redirectUrl != null) {
-                eventDataMap.put(REDIRECT_URL_KEY, redirectUrl);
-            }
-            if (clickthroughUrl != null) {
-                eventDataMap.put(CLICKTHROUGH_URL_KEY, clickthroughUrl);
-            }
+			String redirectUrl = extractHeader(response, REDIRECT_URL);
+			String clickthroughUrl = extractHeader(response, CLICKTHROUGH_URL);
+			boolean scrollingEnabled = extractBooleanHeader(response, SCROLLABLE, false);
 
-            String eventData = Json.mapToJsonString(eventDataMap);
-            return createCustomEventAdLoadTask(eventData);
-        }
+			Map<String, String> eventDataMap = new HashMap<String, String>();
+			eventDataMap.put(HTML_RESPONSE_BODY_KEY, Uri.encode(htmlData));
+			eventDataMap.put(SCROLLABLE_KEY, Boolean.toString(scrollingEnabled));
+			if (redirectUrl != null) {
+				eventDataMap.put(REDIRECT_URL_KEY, redirectUrl);
+			}
+			if (clickthroughUrl != null) {
+				eventDataMap.put(CLICKTHROUGH_URL_KEY, clickthroughUrl);
+			}
 
-        private AdLoadTask extractCustomEventAdLoadTaskFromNativeParams() throws IOException {
-            String eventData = extractHeader(response, NATIVE_PARAMS);
+			String eventData = Json.mapToJsonString(eventDataMap);
+			return createCustomEventAdLoadTask(eventData);
+		}
 
-            return createCustomEventAdLoadTask(eventData);
-        }
+		private AdLoadTask extractCustomEventAdLoadTaskFromNativeParams() throws IOException {
+			String eventData = extractHeader(response, NATIVE_PARAMS);
 
-        private AdLoadTask createCustomEventAdLoadTask(String customEventData) {
-            Map<String, String> paramsMap = new HashMap<String, String>();
-            paramsMap.put(CUSTOM_EVENT_NAME.getKey(), adTypeCustomEventName);
+			return createCustomEventAdLoadTask(eventData);
+		}
 
-            if (customEventData != null) {
-                paramsMap.put(CUSTOM_EVENT_DATA.getKey(), customEventData);
-            }
+		private AdLoadTask createCustomEventAdLoadTask(String customEventData) {
+			Map<String, String> paramsMap = new HashMap<String, String>();
+			paramsMap.put(CUSTOM_EVENT_NAME.getKey(), adTypeCustomEventName);
 
-            return new AdLoadTask.CustomEventAdLoadTask(adViewController, paramsMap);
-        }
+			if (customEventData != null) {
+				paramsMap.put(CUSTOM_EVENT_DATA.getKey(), customEventData);
+			}
 
-        private boolean eventDataIsInResponseBody(String adType) {
-            // XXX Hack
-            return "mraid".equals(adType) || "html".equals(adType) || ("interstitial".equals(adType) && "vast".equals(fullAdType));
-        }
-    }
+			return new AdLoadTask.CustomEventAdLoadTask(adViewController, paramsMap);
+		}
 
-    /*
-     * This is the new way of performing Custom Events. This will be invoked on new clients when
-     * X-Adtype is "custom" and the X-Custom-Event-Class-Name header is specified.
-     */
-    static class CustomEventAdLoadTask extends AdLoadTask {
-        private Map<String,String> mParamsMap;
+		private boolean eventDataIsInResponseBody(String adType) {
+			// XXX Hack
+			return "mraid".equals(adType) || "html".equals(adType) || ("interstitial".equals(adType) && "vast".equals(fullAdType));
+		}
+	}
 
-        public CustomEventAdLoadTask(AdViewController adViewController, Map<String, String> paramsMap) {
-            super(adViewController);
-            mParamsMap = paramsMap;
-        }
+	/*
+	 * This is the new way of performing Custom Events. This will be invoked on new clients when
+	 * X-Adtype is "custom" and the X-Custom-Event-Class-Name header is specified.
+	 */
+	static class CustomEventAdLoadTask extends AdLoadTask {
+		private Map<String, String> mParamsMap;
 
-        @Override
-        void execute() {
-            AdViewController adViewController = mWeakAdViewController.get();
+		public CustomEventAdLoadTask(AdViewController adViewController, Map<String, String> paramsMap) {
+			super(adViewController);
+			mParamsMap = paramsMap;
+		}
 
-            if (adViewController == null || adViewController.isDestroyed()) {
-                return;
-            }
+		@Override
+		void execute() {
+			AdViewController adViewController = mWeakAdViewController.get();
 
-            adViewController.setNotLoading();
-            adViewController.getMoPubView().loadCustomEvent(mParamsMap);
-        }
+			if (adViewController == null || adViewController.isDestroyed()) {
+				return;
+			}
 
-        @Override
-        void cleanup() {
-            mParamsMap = null;
-        }
+			adViewController.setNotLoading();
+			adViewController.getMoPubView().loadCustomEvent(mParamsMap);
+		}
 
-        @Deprecated // for testing
-        Map<String, String> getParamsMap() {
-            return mParamsMap;
-        }
-    }
+		@Override
+		void cleanup() {
+			mParamsMap = null;
+		}
 
-    /*
-     * This is the old way of performing Custom Events, and is now deprecated. This will still be
-     * invoked on old clients when X-Adtype is "custom" and the new X-Custom-Event-Class-Name header
-     * is not specified (legacy custom events parse the X-Customselector header instead).
-     */
-    @Deprecated
-    static class LegacyCustomEventAdLoadTask extends AdLoadTask {
-        private Header mHeader;
+		@Deprecated
+			// for testing
+		Map<String, String> getParamsMap() {
+			return mParamsMap;
+		}
+	}
 
-        public LegacyCustomEventAdLoadTask(AdViewController adViewController, Header header) {
-            super(adViewController);
-            mHeader = header;
-        }
+	/*
+	 * This is the old way of performing Custom Events, and is now deprecated. This will still be
+	 * invoked on old clients when X-Adtype is "custom" and the new X-Custom-Event-Class-Name header
+	 * is not specified (legacy custom events parse the X-Customselector header instead).
+	 */
+	@Deprecated
+	static class LegacyCustomEventAdLoadTask extends AdLoadTask {
+		private Header mHeader;
 
-        @Override
-        void execute() {
-            AdViewController adViewController = mWeakAdViewController.get();
-            if (adViewController == null || adViewController.isDestroyed()) {
-                return;
-            }
+		public LegacyCustomEventAdLoadTask(AdViewController adViewController, Header header) {
+			super(adViewController);
+			mHeader = header;
+		}
 
-            adViewController.setNotLoading();
-            MoPubView mpv = adViewController.getMoPubView();
+		@Override
+		void execute() {
+			AdViewController adViewController = mWeakAdViewController.get();
+			if (adViewController == null || adViewController.isDestroyed()) {
+				return;
+			}
 
-            if (mHeader == null) {
-                Log.i("MoPub", "Couldn't call custom method because the server did not specify one.");
-                mpv.loadFailUrl(MoPubErrorCode.ADAPTER_NOT_FOUND);
-                return;
-            }
+			adViewController.setNotLoading();
+			MoPubView mpv = adViewController.getMoPubView();
 
-            String methodName = mHeader.getValue();
-            Log.i("MoPub", "Trying to call method named " + methodName);
+			if (mHeader == null) {
+				Log.i("MoPub", "Couldn't call custom method because the server did not specify one.");
+				mpv.loadFailUrl(MoPubErrorCode.ADAPTER_NOT_FOUND);
+				return;
+			}
 
-            Class<? extends Activity> c;
-            Method method;
-            Activity userActivity = mpv.getActivity();
-            try {
-                c = userActivity.getClass();
-                method = c.getMethod(methodName, MoPubView.class);
-                method.invoke(userActivity, mpv);
-            } catch (NoSuchMethodException e) {
-                Log.d("MoPub", "Couldn't perform custom method named " + methodName +
-                        "(MoPubView view) because your activity class has no such method");
-                mpv.loadFailUrl(MoPubErrorCode.ADAPTER_NOT_FOUND);
-            } catch (Exception e) {
-                Log.d("MoPub", "Couldn't perform custom method named " + methodName);
-                mpv.loadFailUrl(MoPubErrorCode.ADAPTER_NOT_FOUND);
-            }
-        }
+			String methodName = mHeader.getValue();
+			Log.i("MoPub", "Trying to call method named " + methodName);
 
-        @Override
-        void cleanup() {
-            mHeader = null;
-        }
+			Class<? extends Activity> c;
+			Method method;
+			Activity userActivity = mpv.getActivity();
+			try {
+				c = userActivity.getClass();
+				method = c.getMethod(methodName, MoPubView.class);
+				method.invoke(userActivity, mpv);
+			} catch (NoSuchMethodException e) {
+				Log.d("MoPub", "Couldn't perform custom method named " + methodName +
+						"(MoPubView view) because your activity class has no such method");
+				mpv.loadFailUrl(MoPubErrorCode.ADAPTER_NOT_FOUND);
+			} catch (Exception e) {
+				Log.d("MoPub", "Couldn't perform custom method named " + methodName);
+				mpv.loadFailUrl(MoPubErrorCode.ADAPTER_NOT_FOUND);
+			}
+		}
 
-        @Deprecated // for testing
-        Header getHeader() {
-            return mHeader;
-        }
-    }
+		@Override
+		void cleanup() {
+			mHeader = null;
+		}
+
+		@Deprecated
+			// for testing
+		Header getHeader() {
+			return mHeader;
+		}
+	}
 }

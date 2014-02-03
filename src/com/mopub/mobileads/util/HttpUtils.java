@@ -37,17 +37,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.io.*;
+import java.io.IOException;
 
 public class HttpUtils {
 
-    public static HttpResponse ping(String url) throws IOException, IllegalArgumentException {
-        if (url == null) {
-            throw new IllegalArgumentException("Url must not be null.");
-        }
+	public static HttpResponse ping(String url) throws IOException, IllegalArgumentException {
+		if (url == null) {
+			throw new IllegalArgumentException("Url must not be null.");
+		}
 
-        HttpGet request = new HttpGet(url);
-        DefaultHttpClient defaultHttpClient = HttpClientFactory.create();
-        return defaultHttpClient.execute(request);
-    }
+		HttpGet request = new HttpGet(url);
+		DefaultHttpClient defaultHttpClient = HttpClientFactory.create();
+		return defaultHttpClient.execute(request);
+	}
 }

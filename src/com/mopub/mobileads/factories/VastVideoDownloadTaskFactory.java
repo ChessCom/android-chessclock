@@ -38,18 +38,18 @@ import com.mopub.mobileads.VastVideoDownloadTask;
 import static com.mopub.mobileads.VastVideoDownloadTask.OnDownloadCompleteListener;
 
 public class VastVideoDownloadTaskFactory {
-    private static VastVideoDownloadTaskFactory instance = new VastVideoDownloadTaskFactory();
+	private static VastVideoDownloadTaskFactory instance = new VastVideoDownloadTaskFactory();
 
-    @Deprecated // for testing
-    public static void setInstance(VastVideoDownloadTaskFactory factory){
-        instance = factory;
-    }
+	@Deprecated // for testing
+	public static void setInstance(VastVideoDownloadTaskFactory factory) {
+		instance = factory;
+	}
 
-    public static VastVideoDownloadTask create(OnDownloadCompleteListener onDownloadCompleteListener, DiskLruCache diskLruCache) {
-        return instance.internalCreate(onDownloadCompleteListener, diskLruCache);
-    }
+	public static VastVideoDownloadTask create(OnDownloadCompleteListener onDownloadCompleteListener, DiskLruCache diskLruCache) {
+		return instance.internalCreate(onDownloadCompleteListener, diskLruCache);
+	}
 
-    protected VastVideoDownloadTask internalCreate(OnDownloadCompleteListener onDownloadCompleteListener, DiskLruCache diskLruCache) {
-        return new VastVideoDownloadTask(onDownloadCompleteListener, diskLruCache);
-    }
+	protected VastVideoDownloadTask internalCreate(OnDownloadCompleteListener onDownloadCompleteListener, DiskLruCache diskLruCache) {
+		return new VastVideoDownloadTask(onDownloadCompleteListener, diskLruCache);
+	}
 }

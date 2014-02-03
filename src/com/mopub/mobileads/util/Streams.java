@@ -32,51 +32,54 @@
 
 package com.mopub.mobileads.util;
 
-import java.io.*;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class Streams {
-    public static void copyContent(InputStream in, OutputStream out) throws IOException {
-        if (in == null || out == null) {
-            throw new IOException("Unable to copy from or to a null stream.");
-        }
+	public static void copyContent(InputStream in, OutputStream out) throws IOException {
+		if (in == null || out == null) {
+			throw new IOException("Unable to copy from or to a null stream.");
+		}
 
-        byte[] buffer = new byte[65536];
-        int length;
+		byte[] buffer = new byte[65536];
+		int length;
 
-        while ((length = in.read(buffer)) != -1) {
-            out.write(buffer, 0, length);
-        }
-    }
+		while ((length = in.read(buffer)) != -1) {
+			out.write(buffer, 0, length);
+		}
+	}
 
-    public static void copyContent(InputStream in, OutputStream out, long maxBytes) throws IOException {
-        if (in == null || out == null) {
-            throw new IOException("Unable to copy from or to a null stream.");
-        }
+	public static void copyContent(InputStream in, OutputStream out, long maxBytes) throws IOException {
+		if (in == null || out == null) {
+			throw new IOException("Unable to copy from or to a null stream.");
+		}
 
-        byte[] buffer = new byte[65536];
-        int length;
-        long totalRead = 0;
+		byte[] buffer = new byte[65536];
+		int length;
+		long totalRead = 0;
 
-        while ((length = in.read(buffer)) != -1) {
-            totalRead += length;
-            if (totalRead >= maxBytes) {
-                throw new IOException("Error copying content: attempted to copy " +
-                        totalRead + " bytes, with " + maxBytes + " maximum.");
-            }
+		while ((length = in.read(buffer)) != -1) {
+			totalRead += length;
+			if (totalRead >= maxBytes) {
+				throw new IOException("Error copying content: attempted to copy " +
+						totalRead + " bytes, with " + maxBytes + " maximum.");
+			}
 
-            out.write(buffer, 0, length);
-        }
-    }
+			out.write(buffer, 0, length);
+		}
+	}
 
-    public static void closeStream(Closeable stream) {
-        if (stream == null) {
-            return;
-        }
+	public static void closeStream(Closeable stream) {
+		if (stream == null) {
+			return;
+		}
 
-        try {
-            stream.close();
-        } catch (IOException e) {
-            // Unable to close the stream
-        }
-    }
+		try {
+			stream.close();
+		} catch (IOException e) {
+			// Unable to close the stream
+		}
+	}
 }

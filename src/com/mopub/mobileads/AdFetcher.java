@@ -45,70 +45,70 @@ import com.mopub.mobileads.util.AsyncTasks;
  * the last completed task to prevent out-of-order execution.
  */
 public class AdFetcher {
-    public static final String HTML_RESPONSE_BODY_KEY = "Html-Response-Body";
-    public static final String REDIRECT_URL_KEY = "Redirect-Url";
-    public static final String CLICKTHROUGH_URL_KEY = "Clickthrough-Url";
-    public static final String SCROLLABLE_KEY = "Scrollable";
-    public static final String AD_CONFIGURATION_KEY = "Ad-Configuration";
+	public static final String HTML_RESPONSE_BODY_KEY = "Html-Response-Body";
+	public static final String REDIRECT_URL_KEY = "Redirect-Url";
+	public static final String CLICKTHROUGH_URL_KEY = "Clickthrough-Url";
+	public static final String SCROLLABLE_KEY = "Scrollable";
+	public static final String AD_CONFIGURATION_KEY = "Ad-Configuration";
 
-    private int mTimeoutMilliseconds = 10000;
-    private AdViewController mAdViewController;
+	private int mTimeoutMilliseconds = 10000;
+	private AdViewController mAdViewController;
 
-    private AdFetchTask mCurrentTask;
-    private String mUserAgent;
-    private final TaskTracker mTaskTracker;
+	private AdFetchTask mCurrentTask;
+	private String mUserAgent;
+	private final TaskTracker mTaskTracker;
 
-    enum FetchStatus {
-        NOT_SET,
-        FETCH_CANCELLED,
-        INVALID_SERVER_RESPONSE_BACKOFF,
-        INVALID_SERVER_RESPONSE_NOBACKOFF,
-        CLEAR_AD_TYPE,
-        AD_WARMING_UP
+	enum FetchStatus {
+		NOT_SET,
+		FETCH_CANCELLED,
+		INVALID_SERVER_RESPONSE_BACKOFF,
+		INVALID_SERVER_RESPONSE_NOBACKOFF,
+		CLEAR_AD_TYPE,
+		AD_WARMING_UP;
 	}
 
-    public AdFetcher(AdViewController adview, String userAgent) {
-        mAdViewController = adview;
-        mUserAgent = userAgent;
-        mTaskTracker = new TaskTracker();
-    }
+	public AdFetcher(AdViewController adview, String userAgent) {
+		mAdViewController = adview;
+		mUserAgent = userAgent;
+		mTaskTracker = new TaskTracker();
+	}
 
-    public void fetchAdForUrl(String url) {
-        mTaskTracker.newTaskStarted();
-        Log.i("MoPub", "Fetching ad for task #" + getCurrentTaskId());
+	public void fetchAdForUrl(String url) {
+		mTaskTracker.newTaskStarted();
+		Log.i("MoPub", "Fetching ad for task #" + getCurrentTaskId());
 
-        if (mCurrentTask != null) {
-            mCurrentTask.cancel(true);
-        }
+		if (mCurrentTask != null) {
+			mCurrentTask.cancel(true);
+		}
 
-        mCurrentTask = AdFetchTaskFactory.create(mTaskTracker, mAdViewController, mUserAgent, mTimeoutMilliseconds);
+		mCurrentTask = AdFetchTaskFactory.create(mTaskTracker, mAdViewController, mUserAgent, mTimeoutMilliseconds);
 
-        try {
-            AsyncTasks.safeExecuteOnExecutor(mCurrentTask, url);
-        } catch (Exception exception) {
-            Log.d("MoPub", "Error executing AdFetchTask", exception);
-        }
-    }
+		try {
+			AsyncTasks.safeExecuteOnExecutor(mCurrentTask, url);
+		} catch (Exception exception) {
+			Log.d("MoPub", "Error executing AdFetchTask", exception);
+		}
+	}
 
-    public void cancelFetch() {
-        if (mCurrentTask != null) {
-            Log.i("MoPub", "Canceling fetch ad for task #" + getCurrentTaskId());
-            mCurrentTask.cancel(true);
-        }
-    }
+	public void cancelFetch() {
+		if (mCurrentTask != null) {
+			Log.i("MoPub", "Canceling fetch ad for task #" + getCurrentTaskId());
+			mCurrentTask.cancel(true);
+		}
+	}
 
-    void cleanup() {
-        cancelFetch();
+	void cleanup() {
+		cancelFetch();
 
-        mAdViewController = null;
-        mUserAgent = "";
-    }
+		mAdViewController = null;
+		mUserAgent = "";
+	}
 
-    protected void setTimeout(int milliseconds) {
-        mTimeoutMilliseconds = milliseconds;
-    }
+	protected void setTimeout(int milliseconds) {
+		mTimeoutMilliseconds = milliseconds;
+	}
 
-    private long getCurrentTaskId() {
-        return mTaskTracker.getCurrentTaskId();
-    }
+	private long getCurrentTaskId() {
+		return mTaskTracker.getCurrentTaskId();
+	}
 }

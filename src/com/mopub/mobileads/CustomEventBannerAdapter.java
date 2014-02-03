@@ -40,160 +40,163 @@ import com.mopub.mobileads.CustomEventBanner.CustomEventBannerListener;
 import com.mopub.mobileads.factories.CustomEventBannerFactory;
 import com.mopub.mobileads.util.Json;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.mopub.mobileads.AdFetcher.AD_CONFIGURATION_KEY;
-import static com.mopub.mobileads.MoPubErrorCode.ADAPTER_NOT_FOUND;
-import static com.mopub.mobileads.MoPubErrorCode.NETWORK_TIMEOUT;
-import static com.mopub.mobileads.MoPubErrorCode.UNSPECIFIED;
+import static com.mopub.mobileads.MoPubErrorCode.*;
 
 public class CustomEventBannerAdapter implements CustomEventBannerListener {
-    public static final int DEFAULT_BANNER_TIMEOUT_DELAY = 10000;
-    private boolean mInvalidated;
-    private MoPubView mMoPubView;
-    private Context mContext;
-    private CustomEventBanner mCustomEventBanner;
-    private Map<String, Object> mLocalExtras;
-    private Map<String, String> mServerExtras;
+	public static final int DEFAULT_BANNER_TIMEOUT_DELAY = 10000;
+	private boolean mInvalidated;
+	private MoPubView mMoPubView;
+	private Context mContext;
+	private CustomEventBanner mCustomEventBanner;
+	private Map<String, Object> mLocalExtras;
+	private Map<String, String> mServerExtras;
 
-    private final Handler mHandler;
-    private final Runnable mTimeout;
-    private boolean mStoredAutorefresh;
+	private final Handler mHandler;
+	private final Runnable mTimeout;
+	private boolean mStoredAutorefresh;
 
-    public CustomEventBannerAdapter(MoPubView moPubView, String className, String classData) {
-        mHandler = new Handler();
-        mMoPubView = moPubView;
-        mContext = moPubView.getContext();
-        mLocalExtras = new HashMap<String, Object>();
-        mServerExtras = new HashMap<String, String>();
-        mTimeout = new Runnable() {
-            @Override
-            public void run() {
-                Log.d("MoPub", "Third-party network timed out.");
-                onBannerFailed(NETWORK_TIMEOUT);
-                invalidate();
-            }
-        };
+	public CustomEventBannerAdapter(MoPubView moPubView, String className, String classData) {
+		mHandler = new Handler();
+		mMoPubView = moPubView;
+		mContext = moPubView.getContext();
+		mLocalExtras = new HashMap<String, Object>();
+		mServerExtras = new HashMap<String, String>();
+		mTimeout = new Runnable() {
+			@Override
+			public void run() {
+				Log.d("MoPub", "Third-party network timed out.");
+				onBannerFailed(NETWORK_TIMEOUT);
+				invalidate();
+			}
+		};
 
-        Log.d("MoPub", "Attempting to invoke custom event: " + className);
-        try {
-            mCustomEventBanner = CustomEventBannerFactory.create(className);
-        } catch (Exception exception) {
-            Log.d("MoPub", "Couldn't locate or instantiate custom event: " + className + ".");
-            mMoPubView.loadFailUrl(ADAPTER_NOT_FOUND);
-            return;
-        }
+		Log.d("MoPub", "Attempting to invoke custom event: " + className);
+		try {
+			mCustomEventBanner = CustomEventBannerFactory.create(className);
+		} catch (Exception exception) {
+			Log.d("MoPub", "Couldn't locate or instantiate custom event: " + className + ".");
+			mMoPubView.loadFailUrl(ADAPTER_NOT_FOUND);
+			return;
+		}
 
-        // Attempt to load the JSON extras into mServerExtras.
-        try {
-            mServerExtras = Json.jsonStringToMap(classData);
-        } catch (Exception exception) {
-            Log.d("MoPub", "Failed to create Map from JSON: " + classData + exception.toString());
-        }
+		// Attempt to load the JSON extras into mServerExtras.
+		try {
+			mServerExtras = Json.jsonStringToMap(classData);
+		} catch (Exception exception) {
+			Log.d("MoPub", "Failed to create Map from JSON: " + classData + exception.toString());
+		}
 
-        mLocalExtras = mMoPubView.getLocalExtras();
-        if (mMoPubView.getLocation() != null) {
-            mLocalExtras.put("location", mMoPubView.getLocation());
-        }
-        if (mMoPubView.getAdViewController() != null) {
-            mLocalExtras.put(AD_CONFIGURATION_KEY, mMoPubView.getAdViewController().getAdConfiguration());
-        }
-    }
+		mLocalExtras = mMoPubView.getLocalExtras();
+		if (mMoPubView.getLocation() != null) {
+			mLocalExtras.put("location", mMoPubView.getLocation());
+		}
+		if (mMoPubView.getAdViewController() != null) {
+			mLocalExtras.put(AD_CONFIGURATION_KEY, mMoPubView.getAdViewController().getAdConfiguration());
+		}
+	}
 
-    void loadAd() {
-        if (isInvalidated() || mCustomEventBanner == null) {
-            return;
-        }
-        mCustomEventBanner.loadBanner(mContext, this, mLocalExtras, mServerExtras);
+	void loadAd() {
+		if (isInvalidated() || mCustomEventBanner == null) {
+			return;
+		}
 
-        if (getTimeoutDelayMilliseconds() > 0) {
-            mHandler.postDelayed(mTimeout, getTimeoutDelayMilliseconds());
-        }
-    }
+		if (getTimeoutDelayMilliseconds() > 0) {
+			mHandler.postDelayed(mTimeout, getTimeoutDelayMilliseconds());
+		}
 
-    void invalidate() {
-        if (mCustomEventBanner != null) mCustomEventBanner.onInvalidate();
-        mContext = null;
-        mCustomEventBanner = null;
-        mLocalExtras = null;
-        mServerExtras = null;
-        mInvalidated = true;
-    }
+		mCustomEventBanner.loadBanner(mContext, this, mLocalExtras, mServerExtras);
+	}
 
-    boolean isInvalidated() {
-        return mInvalidated;
-    }
+	void invalidate() {
+		if (mCustomEventBanner != null) mCustomEventBanner.onInvalidate();
+		mContext = null;
+		mCustomEventBanner = null;
+		mLocalExtras = null;
+		mServerExtras = null;
+		mInvalidated = true;
+	}
 
-    private void cancelTimeout() {
-        mHandler.removeCallbacks(mTimeout);
-    }
+	boolean isInvalidated() {
+		return mInvalidated;
+	}
 
-    private int getTimeoutDelayMilliseconds() {
-        if (mMoPubView == null
-                || mMoPubView.getAdTimeoutDelay() == null
-                || mMoPubView.getAdTimeoutDelay() < 0) {
-            return DEFAULT_BANNER_TIMEOUT_DELAY;
-        }
+	private void cancelTimeout() {
+		mHandler.removeCallbacks(mTimeout);
+	}
 
-        return mMoPubView.getAdTimeoutDelay() * 1000;
-    }
+	private int getTimeoutDelayMilliseconds() {
+		if (mMoPubView == null
+				|| mMoPubView.getAdTimeoutDelay() == null
+				|| mMoPubView.getAdTimeoutDelay() < 0) {
+			return DEFAULT_BANNER_TIMEOUT_DELAY;
+		}
 
-    /*
-     * CustomEventBanner.Listener implementation
-     */
-    @Override
-    public void onBannerLoaded(View bannerView) {
-        if (isInvalidated()) return;
-        
-        if (mMoPubView != null) {
-            cancelTimeout();
-            mMoPubView.nativeAdLoaded();
-            mMoPubView.setAdContentView(bannerView);
-            if (!(bannerView instanceof HtmlBannerWebView)) {
-                mMoPubView.trackNativeImpression();
-            }
-        }
-    }
+		return mMoPubView.getAdTimeoutDelay() * 1000;
+	}
 
-    @Override
-    public void onBannerFailed(MoPubErrorCode errorCode) {
-        if (isInvalidated()) return;
-        
-        if (mMoPubView != null) {
-            if (errorCode == null) {
-                errorCode = UNSPECIFIED;
-            }
-            cancelTimeout();
-            mMoPubView.loadFailUrl(errorCode);
-        }
-    }
+	/*
+	 * CustomEventBanner.Listener implementation
+	 */
+	@Override
+	public void onBannerLoaded(View bannerView) {
+		if (isInvalidated()) {
+			return;
+		}
 
-    @Override
-    public void onBannerExpanded() {
-        if (isInvalidated()) return;
+		cancelTimeout();
 
-        mStoredAutorefresh = mMoPubView.getAutorefreshEnabled();
-        mMoPubView.setAutorefreshEnabled(false);
-        mMoPubView.adPresentedOverlay();
-    }
+		if (mMoPubView != null) {
+			mMoPubView.nativeAdLoaded();
+			mMoPubView.setAdContentView(bannerView);
+			if (!(bannerView instanceof HtmlBannerWebView)) {
+				mMoPubView.trackNativeImpression();
+			}
+		}
+	}
 
-    @Override
-    public void onBannerCollapsed() {
-        if (isInvalidated()) return;
+	@Override
+	public void onBannerFailed(MoPubErrorCode errorCode) {
+		if (isInvalidated()) return;
 
-        mMoPubView.setAutorefreshEnabled(mStoredAutorefresh);
-        mMoPubView.adClosed();
-    }
+		if (mMoPubView != null) {
+			if (errorCode == null) {
+				errorCode = UNSPECIFIED;
+			}
+			cancelTimeout();
+			mMoPubView.loadFailUrl(errorCode);
+		}
+	}
 
-    @Override
-    public void onBannerClicked() {
-        if (isInvalidated()) return;
-        
-        if (mMoPubView != null) mMoPubView.registerClick();
-    }
-    
-    @Override
-    public void onLeaveApplication() {
-        onBannerClicked();
-    }
+	@Override
+	public void onBannerExpanded() {
+		if (isInvalidated()) return;
+
+		mStoredAutorefresh = mMoPubView.getAutorefreshEnabled();
+		mMoPubView.setAutorefreshEnabled(false);
+		mMoPubView.adPresentedOverlay();
+	}
+
+	@Override
+	public void onBannerCollapsed() {
+		if (isInvalidated()) return;
+
+		mMoPubView.setAutorefreshEnabled(mStoredAutorefresh);
+		mMoPubView.adClosed();
+	}
+
+	@Override
+	public void onBannerClicked() {
+		if (isInvalidated()) return;
+
+		if (mMoPubView != null) mMoPubView.registerClick();
+	}
+
+	@Override
+	public void onLeaveApplication() {
+		onBannerClicked();
+	}
 }

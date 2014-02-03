@@ -56,124 +56,122 @@ import static com.mopub.mobileads.util.VersionCode.ICE_CREAM_SANDWICH;
 import static com.mopub.mobileads.util.VersionCode.currentApiLevel;
 
 public class MraidActivity extends BaseInterstitialActivity {
-    private MraidView mMraidView;
+	private MraidView mMraidView;
 
-    static void preRenderHtml(final Context context, final CustomEventInterstitial.CustomEventInterstitialListener customEventInterstitialListener, final String htmlData) {
-        MraidView dummyMraidView = MraidViewFactory.create(context, null, ExpansionStyle.DISABLED, NativeCloseButtonStyle.ALWAYS_VISIBLE, PlacementType.INTERSTITIAL);
+	static void preRenderHtml(final Context context, final CustomEventInterstitial.CustomEventInterstitialListener customEventInterstitialListener, final String htmlData) {
+		MraidView dummyMraidView = MraidViewFactory.create(context, null, ExpansionStyle.DISABLED, NativeCloseButtonStyle.ALWAYS_VISIBLE, PlacementType.INTERSTITIAL);
 
-        dummyMraidView.enablePlugins(false);
-        dummyMraidView.setMraidListener(new MraidView.MraidListener() {
-            @Override
-            public void onReady(MraidView view) {
-                customEventInterstitialListener.onInterstitialLoaded();
-            }
-
-            @Override
-            public void onFailure(MraidView view) {
-                customEventInterstitialListener.onInterstitialFailed(null);
-            }
-
-            @Override
-            public void onExpand(MraidView view) {
-            }
-
-            @Override
-            public void onClose(MraidView view, MraidView.ViewState newViewState) {
-            }
-        });
-        dummyMraidView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return true;
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                customEventInterstitialListener.onInterstitialLoaded();
-            }
-        });
-        dummyMraidView.loadHtmlData(htmlData);
-    }
-
-    public static void start(Context context, String htmlData, AdConfiguration adConfiguration) {
-        Intent intent = createIntent(context, htmlData, adConfiguration);
-        try {
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException anfe) {
-            Log.d("MraidInterstitial", "MraidActivity.class not found. Did you declare MraidActivity in your manifest?");
-        }
-    }
-
-    private static Intent createIntent(Context context, String htmlData, AdConfiguration adConfiguration) {
-        Intent intent = new Intent(context, MraidActivity.class);
-        intent.putExtra(HTML_RESPONSE_BODY_KEY, htmlData);
-        intent.putExtra(AD_CONFIGURATION_KEY, adConfiguration);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return intent;
-    }
-
-    @Override
-    public View getAdView() {
-        mMraidView = MraidViewFactory.create(this, getAdConfiguration(), ExpansionStyle.DISABLED, NativeCloseButtonStyle.AD_CONTROLLED, PlacementType.INTERSTITIAL);
-
-        mMraidView.setMraidListener(new MraidView.BaseMraidListener(){
-            @Override
+		dummyMraidView.enablePlugins(false);
+		dummyMraidView.setMraidListener(new MraidView.MraidListener() {
+			@Override
 			public void onReady(MraidView view) {
-                mMraidView.loadUrl(WEB_VIEW_DID_APPEAR.getUrl());
-                showInterstitialCloseButton();
-            }
-            @Override
+				customEventInterstitialListener.onInterstitialLoaded();
+			}
+
+			@Override
+			public void onFailure(MraidView view) {
+				customEventInterstitialListener.onInterstitialFailed(null);
+			}
+
+			@Override
+			public void onExpand(MraidView view) {
+			}
+
+			@Override
+			public void onClose(MraidView view, MraidView.ViewState newViewState) {
+			}
+		});
+		dummyMraidView.setWebViewClient(new WebViewClient() {
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				return true;
+			}
+
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				customEventInterstitialListener.onInterstitialLoaded();
+			}
+		});
+		dummyMraidView.loadHtmlData(htmlData);
+	}
+
+	public static void start(Context context, String htmlData, AdConfiguration adConfiguration) {
+		Intent intent = createIntent(context, htmlData, adConfiguration);
+		try {
+			context.startActivity(intent);
+		} catch (ActivityNotFoundException anfe) {
+			Log.d("MraidInterstitial", "MraidActivity.class not found. Did you declare MraidActivity in your manifest?");
+		}
+	}
+
+	private static Intent createIntent(Context context, String htmlData, AdConfiguration adConfiguration) {
+		Intent intent = new Intent(context, MraidActivity.class);
+		intent.putExtra(HTML_RESPONSE_BODY_KEY, htmlData);
+		intent.putExtra(AD_CONFIGURATION_KEY, adConfiguration);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		return intent;
+	}
+
+	@Override
+	public View getAdView() {
+		mMraidView = MraidViewFactory.create(this, getAdConfiguration(), ExpansionStyle.DISABLED, NativeCloseButtonStyle.AD_CONTROLLED, PlacementType.INTERSTITIAL);
+
+		mMraidView.setMraidListener(new MraidView.BaseMraidListener() {
+			public void onReady(MraidView view) {
+				mMraidView.loadUrl(WEB_VIEW_DID_APPEAR.getUrl());
+				showInterstitialCloseButton();
+			}
+
 			public void onClose(MraidView view, ViewState newViewState) {
-                mMraidView.loadUrl(WEB_VIEW_DID_CLOSE.getUrl());
-                finish();
-            }
-        });
+				mMraidView.loadUrl(WEB_VIEW_DID_CLOSE.getUrl());
+				finish();
+			}
+		});
 
-        mMraidView.setOnCloseButtonStateChange(new MraidView.OnCloseButtonStateChangeListener() {
-            @Override
+		mMraidView.setOnCloseButtonStateChange(new MraidView.OnCloseButtonStateChangeListener() {
 			public void onCloseButtonStateChange(MraidView view, boolean enabled) {
-                if (enabled) {
-                    showInterstitialCloseButton();
-                } else {
-                    hideInterstitialCloseButton();
-                }
-            }
-        });
+				if (enabled) {
+					showInterstitialCloseButton();
+				} else {
+					hideInterstitialCloseButton();
+				}
+			}
+		});
 
-        String source = getIntent().getStringExtra(HTML_RESPONSE_BODY_KEY);
-        mMraidView.loadHtmlData(source);
+		String source = getIntent().getStringExtra(HTML_RESPONSE_BODY_KEY);
+		mMraidView.loadHtmlData(source);
 
-        return mMraidView;
-    }
+		return mMraidView;
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        broadcastInterstitialAction(ACTION_INTERSTITIAL_SHOW);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		broadcastInterstitialAction(ACTION_INTERSTITIAL_SHOW);
 
-        if (currentApiLevel().isAtLeast(ICE_CREAM_SANDWICH)) {
-            getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                    WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-        }
-    }
+		if (currentApiLevel().isAtLeast(ICE_CREAM_SANDWICH)) {
+			getWindow().setFlags(
+					WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+					WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+		}
+	}
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        WebViews.onPause(mMraidView);
-    }
+	@Override
+	protected void onPause() {
+		super.onPause();
+		WebViews.onPause(mMraidView);
+	}
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        WebViews.onResume(mMraidView);
-    }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		WebViews.onResume(mMraidView);
+	}
 
-    @Override
-    protected void onDestroy() {
-        mMraidView.destroy();
-        broadcastInterstitialAction(ACTION_INTERSTITIAL_DISMISS);
-        super.onDestroy();
-    }
+	@Override
+	protected void onDestroy() {
+		mMraidView.destroy();
+		broadcastInterstitialAction(ACTION_INTERSTITIAL_DISMISS);
+		super.onDestroy();
+	}
 }

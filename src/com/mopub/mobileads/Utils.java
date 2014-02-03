@@ -39,34 +39,33 @@ import android.content.pm.ResolveInfo;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.List;
 
 public class Utils {
-    private Utils() {
-    }
+	private Utils() {
+	}
 
-    public static String sha1(String s) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-1");
-            digest.update(s.getBytes());
-            byte messageDigest[] = digest.digest();
+	public static String sha1(String s) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("SHA-1");
+			digest.update(s.getBytes());
+			byte messageDigest[] = digest.digest();
 
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < messageDigest.length; i++) {
-                hexString.append(Integer.toHexString((0xFF & messageDigest[i]) | 0x100).substring(1));
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            return "";
-        }
-        catch (NullPointerException e) {
-            return "";
-        }
-    }
+			StringBuffer hexString = new StringBuffer();
+			for (int i = 0; i < messageDigest.length; i++) {
+				hexString.append(Integer.toHexString((0xFF & messageDigest[i]) | 0x100).substring(1));
+			}
+			return hexString.toString();
+		} catch (NoSuchAlgorithmException e) {
+			return "";
+		} catch (NullPointerException e) {
+			return "";
+		}
+	}
 
-    public static boolean deviceCanHandleIntent(Context context, Intent intent) {
-        PackageManager packageManager = context.getPackageManager();
-        List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
-        return (activities.size() > 0);
-    }
+	public static boolean deviceCanHandleIntent(Context context, Intent intent) {
+		PackageManager packageManager = context.getPackageManager();
+		List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, 0);
+		return (activities.size() > 0);
+	}
 }

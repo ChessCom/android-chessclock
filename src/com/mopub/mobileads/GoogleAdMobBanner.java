@@ -36,20 +36,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
-import com.google.ads.Ad;
-import com.google.ads.AdListener;
-import com.google.ads.AdRequest;
+import com.google.ads.*;
 import com.google.ads.AdRequest.ErrorCode;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
 import com.mopub.mobileads.util.Views;
 
-import java.util.*;
+import java.util.Map;
 
-import static com.google.ads.AdSize.BANNER;
-import static com.google.ads.AdSize.IAB_BANNER;
-import static com.google.ads.AdSize.IAB_LEADERBOARD;
-import static com.google.ads.AdSize.IAB_MRECT;
+import static com.google.ads.AdSize.*;
 import static com.mopub.mobileads.MoPubErrorCode.ADAPTER_CONFIGURATION_ERROR;
 import static com.mopub.mobileads.MoPubErrorCode.NETWORK_NO_FILL;
 
@@ -58,131 +51,132 @@ import static com.mopub.mobileads.MoPubErrorCode.NETWORK_NO_FILL;
  */
 
 class GoogleAdMobBanner extends CustomEventBanner implements AdListener {
-    /*
-     * These keys are intended for MoPub internal use. Do not modify.
-     */
-    public static final String AD_UNIT_ID_KEY = "adUnitID";
-    public static final String AD_WIDTH_KEY = "adWidth";
-    public static final String AD_HEIGHT_KEY = "adHeight";
-    public static final String LOCATION_KEY = "location";
+	/*
+	 * These keys are intended for MoPub internal use. Do not modify.
+	 */
+	public static final String AD_UNIT_ID_KEY = "adUnitID";
+	public static final String AD_WIDTH_KEY = "adWidth";
+	public static final String AD_HEIGHT_KEY = "adHeight";
+	public static final String LOCATION_KEY = "location";
 
-    private AdView mAdMobView;
-    private CustomEventBannerListener mBannerListener;
+	private AdView mAdMobView;
+	private CustomEventBannerListener mBannerListener;
 
-    @Override
-    protected void loadBanner(Context context,
-                              CustomEventBannerListener customEventBannerListener,
-                              Map<String, Object> localExtras,
-                              Map<String, String> serverExtras) {
-        mBannerListener = customEventBannerListener;
+	@Override
+	protected void loadBanner(Context context,
+							  CustomEventBannerListener customEventBannerListener,
+							  Map<String, Object> localExtras,
+							  Map<String, String> serverExtras) {
+		mBannerListener = customEventBannerListener;
 
-        String adUnitId;
-        int adWidth;
-        int adHeight;
+		String adUnitId;
+		int adWidth;
+		int adHeight;
 
-        if (!(context instanceof Activity)) {
-            mBannerListener.onBannerFailed(ADAPTER_CONFIGURATION_ERROR);
-            return;
-        }
+		if (!(context instanceof Activity)) {
+			mBannerListener.onBannerFailed(ADAPTER_CONFIGURATION_ERROR);
+			return;
+		}
 
-        if (extrasAreValid(serverExtras)) {
-            adUnitId = serverExtras.get(AD_UNIT_ID_KEY);
-            adWidth = Integer.parseInt(serverExtras.get(AD_WIDTH_KEY));
-            adHeight = Integer.parseInt(serverExtras.get(AD_HEIGHT_KEY));
-        } else {
-            mBannerListener.onBannerFailed(ADAPTER_CONFIGURATION_ERROR);
-            return;
-        }
+		if (extrasAreValid(serverExtras)) {
+			adUnitId = serverExtras.get(AD_UNIT_ID_KEY);
+			adWidth = Integer.parseInt(serverExtras.get(AD_WIDTH_KEY));
+			adHeight = Integer.parseInt(serverExtras.get(AD_HEIGHT_KEY));
+		} else {
+			mBannerListener.onBannerFailed(ADAPTER_CONFIGURATION_ERROR);
+			return;
+		}
 
-        AdSize adSize = calculateAdSize(adWidth, adHeight);
-        if (adSize == null) {
-            Log.d("MoPub", "Unsupported AdMob ad size: " + adWidth + "x" + adHeight);
-            mBannerListener.onBannerFailed(ADAPTER_CONFIGURATION_ERROR);
-            return;
-        }
+		AdSize adSize = calculateAdSize(adWidth, adHeight);
+		if (adSize == null) {
+			Log.d("MoPub", "Unsupported AdMob ad size: " + adWidth + "x" + adHeight);
+			mBannerListener.onBannerFailed(ADAPTER_CONFIGURATION_ERROR);
+			return;
+		}
 
-        mAdMobView = new AdView((Activity) context, adSize, adUnitId);
-        mAdMobView.setAdListener(this);
+		mAdMobView = new AdView((Activity) context, adSize, adUnitId);
+		mAdMobView.setAdListener(this);
 
-        AdRequest request = new AdRequest();
-        Location location = extractLocation(localExtras);
-        if (location != null) request.setLocation(location);
+		AdRequest request = new AdRequest();
+		Location location = extractLocation(localExtras);
+		if (location != null) request.setLocation(location);
 
-        mAdMobView.loadAd(request);
-    }
+		mAdMobView.loadAd(request);
+	}
 
-    @Override
-    protected void onInvalidate() {
-        mAdMobView.setAdListener(null);
-        Views.removeFromParent(mAdMobView);
-        mAdMobView.destroy();
-    }
+	@Override
+	protected void onInvalidate() {
+		mAdMobView.setAdListener(null);
+		Views.removeFromParent(mAdMobView);
+		mAdMobView.destroy();
+	}
 
-    private Location extractLocation(Map<String, Object> localExtras) {
-        Object location = localExtras.get(LOCATION_KEY);
-        if (location instanceof Location) {
-            return (Location) location;
-        }
-        return null;
-    }
+	private Location extractLocation(Map<String, Object> localExtras) {
+		Object location = localExtras.get(LOCATION_KEY);
+		if (location instanceof Location) {
+			return (Location) location;
+		}
+		return null;
+	}
 
-    private AdSize calculateAdSize(int width, int height) {
-        // Use the smallest AdMob AdSize that will properly contain the adView
-        if (width <= BANNER.getWidth() && height <= BANNER.getHeight()) {
-            return BANNER;
-        } else if (width <= IAB_MRECT.getWidth() && height <= IAB_MRECT.getHeight()) {
-            return IAB_MRECT;
-        } else if (width <= IAB_BANNER.getWidth() && height <= IAB_BANNER.getHeight()) {
-            return IAB_BANNER;
-        } else if (width <= IAB_LEADERBOARD.getWidth() && height <= IAB_LEADERBOARD.getHeight()) {
-            return IAB_LEADERBOARD;
-        } else {
-            return null;
-        }
-    }
+	private AdSize calculateAdSize(int width, int height) {
+		// Use the smallest AdMob AdSize that will properly contain the adView
+		if (width <= BANNER.getWidth() && height <= BANNER.getHeight()) {
+			return BANNER;
+		} else if (width <= IAB_MRECT.getWidth() && height <= IAB_MRECT.getHeight()) {
+			return IAB_MRECT;
+		} else if (width <= IAB_BANNER.getWidth() && height <= IAB_BANNER.getHeight()) {
+			return IAB_BANNER;
+		} else if (width <= IAB_LEADERBOARD.getWidth() && height <= IAB_LEADERBOARD.getHeight()) {
+			return IAB_LEADERBOARD;
+		} else {
+			return null;
+		}
+	}
 
-    private boolean extrasAreValid(Map<String, String> serverExtras) {
-        try {
-            Integer.parseInt(serverExtras.get(AD_WIDTH_KEY));
-            Integer.parseInt(serverExtras.get(AD_HEIGHT_KEY));
-        } catch (NumberFormatException e) {
-            return false;
-        }
+	private boolean extrasAreValid(Map<String, String> serverExtras) {
+		try {
+			Integer.parseInt(serverExtras.get(AD_WIDTH_KEY));
+			Integer.parseInt(serverExtras.get(AD_HEIGHT_KEY));
+		} catch (NumberFormatException e) {
+			return false;
+		}
 
-        return serverExtras.containsKey(AD_UNIT_ID_KEY);
-    }
+		return serverExtras.containsKey(AD_UNIT_ID_KEY);
+	}
 
-    @Deprecated // for testing
-    AdView getAdMobView() {
-        return mAdMobView;
-    }
+	@Deprecated
+		// for testing
+	AdView getAdMobView() {
+		return mAdMobView;
+	}
 
-    /**
-     * AdMob AdListener implementation
-     */
-    @Override
-    public void onFailedToReceiveAd(Ad ad, ErrorCode error) {
-        Log.d("MoPub", "Google AdMob banner ad failed to load.");
-        mBannerListener.onBannerFailed(NETWORK_NO_FILL);
-    }
+	/**
+	 * AdMob AdListener implementation
+	 */
+	@Override
+	public void onFailedToReceiveAd(Ad ad, ErrorCode error) {
+		Log.d("MoPub", "Google AdMob banner ad failed to load.");
+		mBannerListener.onBannerFailed(NETWORK_NO_FILL);
+	}
 
-    @Override
-    public void onPresentScreen(Ad ad) {
-        Log.d("MoPub", "Google AdMob banner ad clicked.");
-        mBannerListener.onBannerClicked();
-    }
+	@Override
+	public void onPresentScreen(Ad ad) {
+		Log.d("MoPub", "Google AdMob banner ad clicked.");
+		mBannerListener.onBannerClicked();
+	}
 
-    @Override
-    public void onReceiveAd(Ad ad) {
-        Log.d("MoPub", "Google AdMob banner ad loaded successfully. Showing ad...");
-        mBannerListener.onBannerLoaded(mAdMobView);
-    }
+	@Override
+	public void onReceiveAd(Ad ad) {
+		Log.d("MoPub", "Google AdMob banner ad loaded successfully. Showing ad...");
+		mBannerListener.onBannerLoaded(mAdMobView);
+	}
 
-    @Override
-    public void onLeaveApplication(Ad ad) {
-    }
+	@Override
+	public void onLeaveApplication(Ad ad) {
+	}
 
-    @Override
-    public void onDismissScreen(Ad ad) {
-    }
+	@Override
+	public void onDismissScreen(Ad ad) {
+	}
 }

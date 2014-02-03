@@ -41,210 +41,247 @@ import android.view.MotionEvent;
 import android.view.View;
 import com.mopub.mobileads.util.HttpUtils;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static com.mopub.mobileads.MraidVideoPlayerActivity.VIDEO_URL;
 
 class VastVideoView extends BaseVideoView {
-    static final String VIDEO_START_TRACKERS = "video_start_trackers";
-    static final String VIDEO_FIRST_QUARTER_TRACKERS = "video_first_quarter_trackers";
-    static final String VIDEO_MID_POINT_TRACKERS = "video_mid_point_trackers";
-    static final String VIDEO_THIRD_QUARTER_TRACKERS = "video_third_quarter_trackers";
-    static final String VIDEO_COMPLETE_TRACKERS = "video_complete_trackers";
-    static final String VIDEO_IMPRESSION_TRACKERS = "video_impression_trackers";
-    static final String VIDEO_CLICK_THROUGH_URL = "video_click_through_url";
-    static final String VIDEO_CLICK_THROUGH_TRACKERS = "video_click_through_trackers";
+	static final String VIDEO_START_TRACKERS = "video_start_trackers";
+	static final String VIDEO_FIRST_QUARTER_TRACKERS = "video_first_quarter_trackers";
+	static final String VIDEO_MID_POINT_TRACKERS = "video_mid_point_trackers";
+	static final String VIDEO_THIRD_QUARTER_TRACKERS = "video_third_quarter_trackers";
+	static final String VIDEO_COMPLETE_TRACKERS = "video_complete_trackers";
+	static final String VIDEO_IMPRESSION_TRACKERS = "video_impression_trackers";
+	static final String VIDEO_CLICK_THROUGH_URL = "video_click_through_url";
+	static final String VIDEO_CLICK_THROUGH_TRACKERS = "video_click_through_trackers";
 
-    private static final float FIRST_QUARTER_MARKER = 0.25f;
-    private static final float MID_POINT_MARKER = 0.50f;
-    private static final float THIRD_QUARTER_MARKER = 0.75f;
-    private static final long VIDEO_PROGRESS_TIMER_CHECKER_DELAY = 50;
+	private static final float FIRST_QUARTER_MARKER = 0.25f;
+	private static final float MID_POINT_MARKER = 0.50f;
+	private static final float THIRD_QUARTER_MARKER = 0.75f;
+	private static final long VIDEO_PROGRESS_TIMER_CHECKER_DELAY = 50;
 
-    private static final ThreadPoolExecutor sThreadPoolExecutor = new ThreadPoolExecutor(10, 50, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
-    public static final int MAX_VIDEO_DURATION_FOR_CLOSE_BUTTON = 15 * 1000;
-    public static final int DEFAULT_VIDEO_DURATION_FOR_CLOSE_BUTTON = 5 * 1000;
-    private final BaseVideoViewListener mBaseVideoViewListener;
+	private static final ThreadPoolExecutor sThreadPoolExecutor = new ThreadPoolExecutor(10, 50, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+	public static final int MAX_VIDEO_DURATION_FOR_CLOSE_BUTTON = 16 * 1000;
+	public static final int DEFAULT_VIDEO_DURATION_FOR_CLOSE_BUTTON = 5 * 1000;
+	private final BaseVideoViewListener mBaseVideoViewListener;
 
-    private String mVideoUrl;
-    private ArrayList<String> mVideoStartTrackers;
-    private ArrayList<String> mFirstQuarterTrackers;
-    private ArrayList<String> mMidPointTrackers;
-    private ArrayList<String> mThirdQuarterTrackers;
-    private ArrayList<String> mCompletionTrackers;
-    private ArrayList<String> mImpressionTrackers;
-    private String mClickThroughUrl;
-    private ArrayList<String> mClickThroughTrackers;
-    private Handler mHandler;
-    private Runnable mVideoProgressCheckerRunnable;
-    private boolean mIsVideoProgressShouldBeChecked;
-    private int mShowCloseButtonDelay = DEFAULT_VIDEO_DURATION_FOR_CLOSE_BUTTON;
+	private String mVideoUrl;
+	private ArrayList<String> mVideoStartTrackers;
+	private ArrayList<String> mFirstQuarterTrackers;
+	private ArrayList<String> mMidPointTrackers;
+	private ArrayList<String> mThirdQuarterTrackers;
+	private ArrayList<String> mCompletionTrackers;
+	private ArrayList<String> mImpressionTrackers;
+	private String mClickThroughUrl;
+	private ArrayList<String> mClickThroughTrackers;
+	private Handler mHandler;
+	private Runnable mVideoProgressCheckerRunnable;
+	private boolean mIsVideoProgressShouldBeChecked;
+	private int mShowCloseButtonDelay = DEFAULT_VIDEO_DURATION_FOR_CLOSE_BUTTON;
 
-    private boolean mIsFirstMarkHit;
-    private boolean mIsSecondMarkHit;
-    private boolean mIsThirdMarkHit;
-    private int mSeekerPositionOnPause;
-    private boolean mIsVideoFinishedPlaying;
+	private boolean mShowCloseButtonEventFired;
+	private boolean mIsFirstMarkHit;
+	private boolean mIsSecondMarkHit;
+	private boolean mIsThirdMarkHit;
+	private int mSeekerPositionOnPause;
+	private boolean mIsVideoFinishedPlaying;
 
-    public VastVideoView(final Context context, final Intent intent, final BaseVideoViewListener baseVideoViewListener) {
-        super(context);
+	public VastVideoView(final Context context, final Intent intent, final BaseVideoViewListener baseVideoViewListener) {
+		super(context);
 
-        mBaseVideoViewListener = baseVideoViewListener;
-        mHandler = new Handler();
-        mIsVideoProgressShouldBeChecked = true;
-        mSeekerPositionOnPause = -1;
+		mBaseVideoViewListener = baseVideoViewListener;
+		mHandler = new Handler();
+		mIsVideoProgressShouldBeChecked = true;
+		mSeekerPositionOnPause = -1;
 
-        mVideoUrl = intent.getStringExtra(VIDEO_URL);
-        mVideoStartTrackers = intent.getStringArrayListExtra(VIDEO_START_TRACKERS);
-        mFirstQuarterTrackers = intent.getStringArrayListExtra(VIDEO_FIRST_QUARTER_TRACKERS);
-        mMidPointTrackers = intent.getStringArrayListExtra(VIDEO_MID_POINT_TRACKERS);
-        mThirdQuarterTrackers = intent.getStringArrayListExtra(VIDEO_THIRD_QUARTER_TRACKERS);
-        mCompletionTrackers = intent.getStringArrayListExtra(VIDEO_COMPLETE_TRACKERS);
-        mImpressionTrackers = intent.getStringArrayListExtra(VIDEO_IMPRESSION_TRACKERS);
-        mClickThroughUrl = intent.getStringExtra(VIDEO_CLICK_THROUGH_URL);
-        mClickThroughTrackers = intent.getStringArrayListExtra(VIDEO_CLICK_THROUGH_TRACKERS);
+		mVideoUrl = intent.getStringExtra(VIDEO_URL);
+		mVideoStartTrackers = intent.getStringArrayListExtra(VIDEO_START_TRACKERS);
+		mFirstQuarterTrackers = intent.getStringArrayListExtra(VIDEO_FIRST_QUARTER_TRACKERS);
+		mMidPointTrackers = intent.getStringArrayListExtra(VIDEO_MID_POINT_TRACKERS);
+		mThirdQuarterTrackers = intent.getStringArrayListExtra(VIDEO_THIRD_QUARTER_TRACKERS);
+		mCompletionTrackers = intent.getStringArrayListExtra(VIDEO_COMPLETE_TRACKERS);
+		mImpressionTrackers = intent.getStringArrayListExtra(VIDEO_IMPRESSION_TRACKERS);
+		mClickThroughUrl = intent.getStringExtra(VIDEO_CLICK_THROUGH_URL);
+		mClickThroughTrackers = intent.getStringArrayListExtra(VIDEO_CLICK_THROUGH_TRACKERS);
 
-        setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                stopProgressChecker();
-                if (mBaseVideoViewListener != null) {
-                    mBaseVideoViewListener.videoCompleted(false);
-                }
-                pingOnBackgroundThread(mCompletionTrackers);
+		setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+			@Override
+			public void onPrepared(MediaPlayer mp) {
+				if (getDuration() < MAX_VIDEO_DURATION_FOR_CLOSE_BUTTON) {
+					mShowCloseButtonDelay = getDuration();
+				}
+			}
+		});
 
-                mIsVideoFinishedPlaying = true;
-            }
-        });
+		setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View view, MotionEvent motionEvent) {
+				if (motionEvent.getAction() == MotionEvent.ACTION_UP && shouldAllowClickThrough()) {
+					pingOnBackgroundThread(mClickThroughTrackers);
 
-        setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
-                stopProgressChecker();
+					if (mBaseVideoViewListener != null) {
+						mBaseVideoViewListener.videoClicked();
+					}
 
-                if (baseVideoViewListener != null) {
-                    baseVideoViewListener.videoError(false);
-                }
+					Intent mraidBrowserIntent = new Intent(context, MraidBrowser.class);
+					mraidBrowserIntent.putExtra(MraidBrowser.URL_EXTRA, mClickThroughUrl);
+					context.startActivity(mraidBrowserIntent);
+				}
 
-                return false;
-            }
-        });
+				return true;
+			}
+		});
 
-        setVideoPath(mVideoUrl);
-        requestFocus();
+		setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				stopProgressChecker();
+				fireShowCloseButtonEvent();
+				if (mBaseVideoViewListener != null) {
+					mBaseVideoViewListener.videoCompleted(false);
+				}
+				pingOnBackgroundThread(mCompletionTrackers);
 
-        setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    pingOnBackgroundThread(mClickThroughTrackers);
+				mIsVideoFinishedPlaying = true;
+			}
+		});
 
-                    if (mBaseVideoViewListener != null) {
-                        mBaseVideoViewListener.videoClicked();
-                    }
+		setOnErrorListener(new MediaPlayer.OnErrorListener() {
+			@Override
+			public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
+				stopProgressChecker();
 
-                    Intent mraidBrowserIntent = new Intent(context, MraidBrowser.class);
-                    mraidBrowserIntent.putExtra(MraidBrowser.URL_EXTRA, mClickThroughUrl);
-                    context.startActivity(mraidBrowserIntent);
-                }
+				if (baseVideoViewListener != null) {
+					baseVideoViewListener.videoError(false);
+				}
 
-                return true;
-            }
-        });
+				return false;
+			}
+		});
 
-        mVideoProgressCheckerRunnable = new Runnable() {
-            @Override
-            public void run() {
-                float videoLength = getDuration();
-                if (videoLength > 0) {
-                    float progressPercentage = getCurrentPosition() / videoLength;
+		mVideoProgressCheckerRunnable = new Runnable() {
+			@Override
+			public void run() {
+				float videoLength = getDuration();
+				if (videoLength > 0) {
+					float progressPercentage = getCurrentPosition() / videoLength;
 
-                    if (progressPercentage > FIRST_QUARTER_MARKER && !mIsFirstMarkHit) {
-                        mIsFirstMarkHit = true;
-                        pingOnBackgroundThread(mFirstQuarterTrackers);
-                    }
+					if (progressPercentage > FIRST_QUARTER_MARKER && !mIsFirstMarkHit) {
+						mIsFirstMarkHit = true;
+						pingOnBackgroundThread(mFirstQuarterTrackers);
+					}
 
-                    if (progressPercentage > MID_POINT_MARKER && !mIsSecondMarkHit) {
-                        mIsSecondMarkHit = true;
-                        pingOnBackgroundThread(mMidPointTrackers);
-                    }
+					if (progressPercentage > MID_POINT_MARKER && !mIsSecondMarkHit) {
+						mIsSecondMarkHit = true;
+						pingOnBackgroundThread(mMidPointTrackers);
+					}
 
-                    if (progressPercentage > THIRD_QUARTER_MARKER && !mIsThirdMarkHit) {
-                        mIsThirdMarkHit = true;
-                        pingOnBackgroundThread(mThirdQuarterTrackers);
-                    }
+					if (progressPercentage > THIRD_QUARTER_MARKER && !mIsThirdMarkHit) {
+						mIsThirdMarkHit = true;
+						pingOnBackgroundThread(mThirdQuarterTrackers);
+					}
 
-                    if (getCurrentPosition() > mShowCloseButtonDelay) {
-                        if (mBaseVideoViewListener != null) {
-                            mBaseVideoViewListener.showCloseButton();
-                        }
-                    }
-                }
+					if (shouldShowCloseButton()) {
+						fireShowCloseButtonEvent();
+					}
+				}
 
-                if (mIsVideoProgressShouldBeChecked) {
-                    mHandler.postDelayed(mVideoProgressCheckerRunnable, VIDEO_PROGRESS_TIMER_CHECKER_DELAY);
-                }
-            }
-        };
+				if (mIsVideoProgressShouldBeChecked) {
+					mHandler.postDelayed(mVideoProgressCheckerRunnable, VIDEO_PROGRESS_TIMER_CHECKER_DELAY);
+				}
+			}
+		};
 
-        setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                if(getDuration() < MAX_VIDEO_DURATION_FOR_CLOSE_BUTTON) {
-                    mShowCloseButtonDelay = getDuration();
-                }
-            }
-        });
+		setVideoPath(mVideoUrl);
+		requestFocus();
 
-        pingOnBackgroundThread(mVideoStartTrackers);
-        pingOnBackgroundThread(mImpressionTrackers);
+		pingOnBackgroundThread(mVideoStartTrackers);
+		pingOnBackgroundThread(mImpressionTrackers);
 
-        mHandler.post(mVideoProgressCheckerRunnable);
-    }
+		mHandler.post(mVideoProgressCheckerRunnable);
+	}
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        stopProgressChecker();
+	private void fireShowCloseButtonEvent() {
+		mShowCloseButtonEventFired = true;
 
-        mSeekerPositionOnPause = getCurrentPosition();
-    }
+		if (mBaseVideoViewListener != null) {
+			mBaseVideoViewListener.showCloseButton();
+		}
+	}
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+	private boolean shouldShowCloseButton() {
+		return !mShowCloseButtonEventFired && getCurrentPosition() > mShowCloseButtonDelay;
+	}
 
-        mIsVideoProgressShouldBeChecked = true;
-        mHandler.post(mVideoProgressCheckerRunnable);
+	private boolean shouldAllowClickThrough() {
+		return mShowCloseButtonEventFired;
+	}
 
-        seekTo(mSeekerPositionOnPause);
+	@Override
+	protected void onPause() {
+		super.onPause();
+		stopProgressChecker();
 
-        if (!mIsVideoFinishedPlaying) {
-            start();
-        }
-    }
+		mSeekerPositionOnPause = getCurrentPosition();
+	}
 
-    private void pingOnBackgroundThread(List<String> urls) {
-        if (urls == null) {
-            return;
-        }
+	@Override
+	protected void onResume() {
+		super.onResume();
 
-        for (final String url : urls) {
-            sThreadPoolExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        HttpUtils.ping(url);
-                    } catch (Exception e) {
-                        Log.d("MoPub", "Unable to track video impression url: " + url);
-                    }
-                }
-            });
-        }
-    }
+		mIsVideoProgressShouldBeChecked = true;
+		mHandler.post(mVideoProgressCheckerRunnable);
 
-    private void stopProgressChecker() {
-        mIsVideoProgressShouldBeChecked = false;
-        mHandler.removeCallbacks(mVideoProgressCheckerRunnable);
-    }
+		seekTo(mSeekerPositionOnPause);
+
+		if (!mIsVideoFinishedPlaying) {
+			start();
+		}
+	}
+
+	private void pingOnBackgroundThread(List<String> urls) {
+		if (urls == null) {
+			return;
+		}
+
+		for (final String url : urls) {
+			sThreadPoolExecutor.execute(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						HttpUtils.ping(url);
+					} catch (Exception e) {
+						Log.d("MoPub", "Unable to track video impression url: " + url);
+					}
+				}
+			});
+		}
+	}
+
+	private void stopProgressChecker() {
+		mIsVideoProgressShouldBeChecked = false;
+		mHandler.removeCallbacks(mVideoProgressCheckerRunnable);
+	}
+
+	@Deprecated
+		// for testing
+	void setIsVideoProgressShouldBeChecked(boolean value) {
+		mIsVideoProgressShouldBeChecked = value;
+	}
+
+	@Deprecated
+		// for testing
+	int getShowCloseButtonDelay() {
+		return mShowCloseButtonDelay;
+	}
+
+	@Deprecated
+		// for testing
+	void setCloseButtonVisible(boolean visible) {
+		mShowCloseButtonEventFired = visible;
+	}
 }

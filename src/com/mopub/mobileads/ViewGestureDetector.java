@@ -39,80 +39,83 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class ViewGestureDetector extends GestureDetector {
-    private final View mView;
+	private final View mView;
 
-    interface UserClickListener {
-        void onUserClick();
-        void onResetUserClick();
-        boolean wasClicked();
-    }
+	interface UserClickListener {
+		void onUserClick();
 
-    private AdAlertGestureListener mAdAlertGestureListener;
-    private UserClickListener mUserClickListener;
+		void onResetUserClick();
 
-    public ViewGestureDetector(Context context, View view, AdConfiguration adConfiguration)  {
-        this(context, view, new AdAlertGestureListener(view, adConfiguration));
-    }
+		boolean wasClicked();
+	}
 
-    private ViewGestureDetector(Context context, View view, AdAlertGestureListener adAlertGestureListener) {
-        super(context, adAlertGestureListener);
+	private AdAlertGestureListener mAdAlertGestureListener;
+	private UserClickListener mUserClickListener;
 
-        mAdAlertGestureListener = adAlertGestureListener;
-        mView = view;
+	public ViewGestureDetector(Context context, View view, AdConfiguration adConfiguration) {
+		this(context, view, new AdAlertGestureListener(view, adConfiguration));
+	}
 
-        setIsLongpressEnabled(false);
-    }
+	private ViewGestureDetector(Context context, View view, AdAlertGestureListener adAlertGestureListener) {
+		super(context, adAlertGestureListener);
 
-    void sendTouchEvent(MotionEvent motionEvent) {
-        switch (motionEvent.getAction()) {
-            case MotionEvent.ACTION_UP:
-                if (mUserClickListener != null) {
-                    mUserClickListener.onUserClick();
-                } else {
-                    Log.d("MoPub", "View's onUserClick() is not registered.");
-                }
-                mAdAlertGestureListener.finishGestureDetection();
-                break;
+		mAdAlertGestureListener = adAlertGestureListener;
+		mView = view;
 
-            case MotionEvent.ACTION_DOWN:
-                onTouchEvent(motionEvent);
-                break;
+		setIsLongpressEnabled(false);
+	}
 
-            case MotionEvent.ACTION_MOVE:
-                if (isMotionEventInView(motionEvent, mView)) {
-                    onTouchEvent(motionEvent);
-                } else {
-                    resetAdFlaggingGesture();
-                }
-                break;
+	void sendTouchEvent(MotionEvent motionEvent) {
+		switch (motionEvent.getAction()) {
+			case MotionEvent.ACTION_UP:
+				if (mUserClickListener != null) {
+					mUserClickListener.onUserClick();
+				} else {
+					Log.d("MoPub", "View's onUserClick() is not registered.");
+				}
+				mAdAlertGestureListener.finishGestureDetection();
+				break;
 
-            default:
-                break;
-        }
-    }
+			case MotionEvent.ACTION_DOWN:
+				onTouchEvent(motionEvent);
+				break;
 
-    void setUserClickListener(UserClickListener listener) {
-        mUserClickListener = listener;
-    }
+			case MotionEvent.ACTION_MOVE:
+				if (isMotionEventInView(motionEvent, mView)) {
+					onTouchEvent(motionEvent);
+				} else {
+					resetAdFlaggingGesture();
+				}
+				break;
 
-    void resetAdFlaggingGesture() {
-        mAdAlertGestureListener.reset();
-    }
+			default:
+				break;
+		}
+	}
 
-    private boolean isMotionEventInView(MotionEvent motionEvent, View view) {
-        if (motionEvent == null || view == null) {
-            return false;
-        }
+	void setUserClickListener(UserClickListener listener) {
+		mUserClickListener = listener;
+	}
 
-        float x = motionEvent.getX();
-        float y = motionEvent.getY();
+	void resetAdFlaggingGesture() {
+		mAdAlertGestureListener.reset();
+	}
 
-        return (x >= 0 && x <= view.getWidth())
-                && (y >= 0 && y <= view.getHeight());
-    }
+	private boolean isMotionEventInView(MotionEvent motionEvent, View view) {
+		if (motionEvent == null || view == null) {
+			return false;
+		}
 
-    @Deprecated // for testing
-    void setAdAlertGestureListener(AdAlertGestureListener adAlertGestureListener) {
-        mAdAlertGestureListener = adAlertGestureListener;
-    }
+		float x = motionEvent.getX();
+		float y = motionEvent.getY();
+
+		return (x >= 0 && x <= view.getWidth())
+				&& (y >= 0 && y <= view.getHeight());
+	}
+
+	@Deprecated
+		// for testing
+	void setAdAlertGestureListener(AdAlertGestureListener adAlertGestureListener) {
+		mAdAlertGestureListener = adAlertGestureListener;
+	}
 }

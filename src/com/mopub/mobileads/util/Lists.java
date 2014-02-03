@@ -32,21 +32,23 @@
 
 package com.mopub.mobileads.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Lists {
-    public static ArrayList<String> asStringArrayList(final List<String> list) {
-        ArrayList<String> result = new ArrayList<String>();
+	public static ArrayList<String> asStringArrayList(final List<String> list) {
+		ArrayList<String> result = new ArrayList<String>();
 
-        if (list == null) {
-            return result;
-        }
+		if (list == null) {
+			return result;
+		}
 
-        if (list instanceof ArrayList) {
-            return (ArrayList<String>) list;
-        }
+		if (list instanceof ArrayList) {
+			return (ArrayList<String>) list;
+		}
 
-        Collections.copy(list, result);
-        return result;
-    }
+		Collections.copy(list, result);
+		return result;
+	}
 }

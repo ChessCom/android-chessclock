@@ -36,22 +36,25 @@ import android.content.Context;
 import android.widget.VideoView;
 
 abstract class BaseVideoView extends VideoView {
-    public interface BaseVideoViewListener {
-        void showCloseButton();
-        void videoError(boolean shouldFinish);
-        void videoCompleted(boolean shouldFinish);
-        void videoClicked();
-    }
+	public interface BaseVideoViewListener {
+		void showCloseButton();
 
-    public BaseVideoView(Context context) {
-        super(context);
-    }
+		void videoError(boolean shouldFinish);
 
-    void onResume() {
+		void videoCompleted(boolean shouldFinish);
 
-    }
+		void videoClicked();
+	}
 
-    void onPause() {
+	public BaseVideoView(Context context) {
+		super(context);
+	}
 
-    }
+	void onResume() {
+
+	}
+
+	void onPause() {
+
+	}
 }

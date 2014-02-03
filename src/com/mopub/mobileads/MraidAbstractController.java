@@ -34,14 +34,14 @@ package com.mopub.mobileads;
 
 
 class MraidAbstractController {
-    private final MraidView mMraidView;
+	private final MraidView mMraidView;
 
-    MraidAbstractController(MraidView view) {
-        super();
-        mMraidView = view;
-    }
-    
-    public MraidView getMraidView() {
-        return mMraidView;
-    }
+	MraidAbstractController(MraidView view) {
+		super();
+		mMraidView = view;
+	}
+
+	public MraidView getMraidView() {
+		return mMraidView;
+	}
 }

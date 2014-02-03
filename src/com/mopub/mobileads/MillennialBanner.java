@@ -44,109 +44,109 @@ import java.util.Map;
  */
 
 class MillennialBanner extends CustomEventBanner {
-    private MMAdView mMillennialAdView;
-    private CustomEventBannerListener mBannerListener;
-    public static final String APID_KEY = "adUnitID";
-    public static final String AD_WIDTH_KEY = "adWidth";
-    public static final String AD_HEIGHT_KEY = "adHeight";
-    private MillennialBroadcastReceiver mBroadcastReceiver;
+	private MMAdView mMillennialAdView;
+	private CustomEventBannerListener mBannerListener;
+	public static final String APID_KEY = "adUnitID";
+	public static final String AD_WIDTH_KEY = "adWidth";
+	public static final String AD_HEIGHT_KEY = "adHeight";
+	private MillennialBroadcastReceiver mBroadcastReceiver;
 
-    @Override
-    protected void loadBanner(Context context, CustomEventBannerListener customEventBannerListener,
-                              Map<String, Object> localExtras, Map<String, String> serverExtras) {
-        mBannerListener = customEventBannerListener;
+	@Override
+	protected void loadBanner(Context context, CustomEventBannerListener customEventBannerListener,
+							  Map<String, Object> localExtras, Map<String, String> serverExtras) {
+		mBannerListener = customEventBannerListener;
 
-        String apid;
-        int width;
-        int height;
-        if (extrasAreValid(serverExtras)) {
-            apid = serverExtras.get(APID_KEY);
-            width = Integer.parseInt(serverExtras.get(AD_WIDTH_KEY));
-            height = Integer.parseInt(serverExtras.get(AD_HEIGHT_KEY));
-        } else {
-            mBannerListener.onBannerFailed(MoPubErrorCode.ADAPTER_CONFIGURATION_ERROR);
-            return;
-        }
+		String apid;
+		int width;
+		int height;
+		if (extrasAreValid(serverExtras)) {
+			apid = serverExtras.get(APID_KEY);
+			width = Integer.parseInt(serverExtras.get(AD_WIDTH_KEY));
+			height = Integer.parseInt(serverExtras.get(AD_HEIGHT_KEY));
+		} else {
+			mBannerListener.onBannerFailed(MoPubErrorCode.ADAPTER_CONFIGURATION_ERROR);
+			return;
+		}
 
-        MMSDK.initialize(context);
-        MMSDK.setBroadcastEvents(true);
+		MMSDK.initialize(context);
+		MMSDK.setBroadcastEvents(true);
 
-        mBroadcastReceiver = new MillennialBroadcastReceiver();
-        mBroadcastReceiver.register(context);
+		mBroadcastReceiver = new MillennialBroadcastReceiver();
+		mBroadcastReceiver.register(context);
 
-        mMillennialAdView = new MMAdView(context);
-        mMillennialAdView.setApid(apid);
-        mMillennialAdView.setWidth(width);
-        mMillennialAdView.setHeight(height);
+		mMillennialAdView = new MMAdView(context);
+		mMillennialAdView.setApid(apid);
+		mMillennialAdView.setWidth(width);
+		mMillennialAdView.setHeight(height);
 
-        Location location = (Location) localExtras.get("location");
-        if (location != null) MMRequest.setUserLocation(location);
+		Location location = (Location) localExtras.get("location");
+		if (location != null) MMRequest.setUserLocation(location);
 
-        mMillennialAdView.setMMRequest(new MMRequest());
-        mMillennialAdView.setId(MMSDK.getDefaultAdId());
-        AdViewController.setShouldHonorServerDimensions(mMillennialAdView);
-        mMillennialAdView.getAd();
-    }
+		mMillennialAdView.setMMRequest(new MMRequest());
+		mMillennialAdView.setId(MMSDK.getDefaultAdId());
+		AdViewController.setShouldHonorServerDimensions(mMillennialAdView);
+		mMillennialAdView.getAd();
+	}
 
-    private boolean extrasAreValid(Map<String, String> serverExtras) {
-        try {
-            Integer.parseInt(serverExtras.get(AD_WIDTH_KEY));
-            Integer.parseInt(serverExtras.get(AD_HEIGHT_KEY));
-        } catch (NumberFormatException e) {
-            return false;
-        }
+	private boolean extrasAreValid(Map<String, String> serverExtras) {
+		try {
+			Integer.parseInt(serverExtras.get(AD_WIDTH_KEY));
+			Integer.parseInt(serverExtras.get(AD_HEIGHT_KEY));
+		} catch (NumberFormatException e) {
+			return false;
+		}
 
-        return serverExtras.containsKey(APID_KEY);
-    }
+		return serverExtras.containsKey(APID_KEY);
+	}
 
-    @Override
-    protected void onInvalidate() {
-        mMillennialAdView.setListener(null);
-        mBroadcastReceiver.unregister();
-    }
+	@Override
+	protected void onInvalidate() {
+		mMillennialAdView.setListener(null);
+		mBroadcastReceiver.unregister();
+	}
 
-    class MillennialBroadcastReceiver extends MMBroadcastReceiver {
-        private Context mContext;
+	class MillennialBroadcastReceiver extends MMBroadcastReceiver {
+		private Context mContext;
 
-        @Override
-        public void getAdSuccess(MMAd ad) {
-            super.getAdSuccess(ad);
-            Log.d("MoPub", "Millennial banner ad loaded successfully. Showing ad...");
-            mBannerListener.onBannerLoaded(mMillennialAdView);
-        }
+		@Override
+		public void getAdSuccess(MMAd ad) {
+			super.getAdSuccess(ad);
+			Log.d("MoPub", "Millennial banner ad loaded successfully. Showing ad...");
+			mBannerListener.onBannerLoaded(mMillennialAdView);
+		}
 
-        @Override
-        public void getAdFailure(MMAd ad) {
-            super.getAdFailure(ad);
-            Log.d("MoPub", "Millennial banner ad failed to load.");
-            mBannerListener.onBannerFailed(MoPubErrorCode.NETWORK_NO_FILL);
-        }
+		@Override
+		public void getAdFailure(MMAd ad) {
+			super.getAdFailure(ad);
+			Log.d("MoPub", "Millennial banner ad failed to load.");
+			mBannerListener.onBannerFailed(MoPubErrorCode.NETWORK_NO_FILL);
+		}
 
-        @Override
-        public void intentStarted(MMAd ad, String intent) {
-            super.intentStarted(ad, intent);
-            Log.d("MoPub", "Millennial banner ad clicked.");
-            mBannerListener.onBannerClicked();
-        }
+		@Override
+		public void intentStarted(MMAd ad, String intent) {
+			super.intentStarted(ad, intent);
+			Log.d("MoPub", "Millennial banner ad clicked.");
+			mBannerListener.onBannerClicked();
+		}
 
-        void register(Context context) {
-            mContext = context;
-            context.registerReceiver(this, MMBroadcastReceiver.createIntentFilter());
-        }
+		void register(Context context) {
+			mContext = context;
+			context.registerReceiver(this, MMBroadcastReceiver.createIntentFilter());
+		}
 
-        void unregister() {
-            try {
-                mContext.unregisterReceiver(this);
-            } catch (Exception exception) {
-                Log.d("MoPub", "Unable to unregister MMBroadcastReceiver", exception);
-            } finally {
-                mContext = null;
-            }
-        }
-    }
+		void unregister() {
+			try {
+				mContext.unregisterReceiver(this);
+			} catch (Exception exception) {
+				Log.d("MoPub", "Unable to unregister MMBroadcastReceiver", exception);
+			} finally {
+				mContext = null;
+			}
+		}
+	}
 
-    @Deprecated
-    MMAdView getMMAdView() {
-        return mMillennialAdView;
-    }
+	@Deprecated
+	MMAdView getMMAdView() {
+		return mMillennialAdView;
+	}
 }

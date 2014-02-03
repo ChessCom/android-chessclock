@@ -45,86 +45,85 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import static android.content.Context.MODE_PRIVATE;
 
 public class MoPubConversionTracker {
-    private static final String TRACK_HOST = "ads.mopub.com";
-    private static final String TRACK_HANDLER = "/m/open";
-    private static final String PREFERENCE_NAME = "mopubSettings";
+	private static final String TRACK_HOST = "ads.mopub.com";
+	private static final String TRACK_HANDLER = "/m/open";
+	private static final String PREFERENCE_NAME = "mopubSettings";
 
-    private Context mContext;
-    private String mIsTrackedKey;
-    private SharedPreferences mSharedPreferences;
-    private String mPackageName;
+	private Context mContext;
+	private String mIsTrackedKey;
+	private SharedPreferences mSharedPreferences;
+	private String mPackageName;
 
-    public void reportAppOpen(Context context) {
-        if (context == null) {
-            return;
-        }
+	public void reportAppOpen(Context context) {
+		if (context == null) {
+			return;
+		}
 
-        mContext = context;
-        mPackageName = mContext.getPackageName();
-        mIsTrackedKey = mPackageName + " tracked";
-        mSharedPreferences = mContext.getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
+		mContext = context;
+		mPackageName = mContext.getPackageName();
+		mIsTrackedKey = mPackageName + " tracked";
+		mSharedPreferences = mContext.getSharedPreferences(PREFERENCE_NAME, MODE_PRIVATE);
 
-        if (!isAlreadyTracked()) {
-            new Thread(new TrackOpen()).start();
-        } else {
-            Log.d("MoPub", "Conversion already tracked");
-        }
-    }
+		if (!isAlreadyTracked()) {
+			new Thread(new TrackOpen()).start();
+		} else {
+			Log.d("MoPub", "Conversion already tracked");
+		}
+	}
 
-    private boolean isAlreadyTracked() {
-        return mSharedPreferences.getBoolean(mIsTrackedKey, false);
-    }
+	private boolean isAlreadyTracked() {
+		return mSharedPreferences.getBoolean(mIsTrackedKey, false);
+	}
 
-    private class ConversionUrlGenerator extends BaseUrlGenerator {
-        @Override
-        public String generateUrlString(String serverHostname) {
-            initUrlString(serverHostname, TRACK_HANDLER);
+	private class ConversionUrlGenerator extends BaseUrlGenerator {
+		@Override
+		public String generateUrlString(String serverHostname) {
+			initUrlString(serverHostname, TRACK_HANDLER);
 
-            setApiVersion("6");
-            setPackageId(mPackageName);
-            setUdid(getUdidFromContext(mContext));
-            setAppVersion(getAppVersionFromContext(mContext));
-            return getFinalUrlString();
-        }
+			setApiVersion("6");
+			setPackageId(mPackageName);
+			setUdid(getUdidFromContext(mContext));
+			setAppVersion(getAppVersionFromContext(mContext));
+			return getFinalUrlString();
+		}
 
-        private void setPackageId(String packageName) {
-            addParam("id", packageName);
-        }
-    }
+		private void setPackageId(String packageName) {
+			addParam("id", packageName);
+		}
+	}
 
-    private class TrackOpen implements Runnable {
-        @Override
+	private class TrackOpen implements Runnable {
 		public void run() {
-            String url = new ConversionUrlGenerator().generateUrlString(TRACK_HOST);
-            Log.d("MoPub", "Conversion track: " + url);
+			String url = new ConversionUrlGenerator().generateUrlString(TRACK_HOST);
+			Log.d("MoPub", "Conversion track: " + url);
 
-            DefaultHttpClient httpClient = HttpClientFactory.create();
-            HttpResponse response;
-            try {
-                HttpGet httpget = new HttpGet(url);
-                response = httpClient.execute(httpget);
-            } catch (Exception e) {
-                Log.d("MoPub", "Conversion track failed [" + e.getClass().getSimpleName() + "]: " + url);
-                return;
-            }
+			DefaultHttpClient httpClient = HttpClientFactory.create();
+			HttpResponse response;
+			try {
+				HttpGet httpget = new HttpGet(url);
+				response = httpClient.execute(httpget);
+			} catch (Exception e) {
+				Log.d("MoPub", "Conversion track failed [" + e.getClass().getSimpleName() + "]: " + url);
+				return;
+			}
 
-            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                Log.d("MoPub", "Conversion track failed: Status code != 200.");
-                return;
-            }
+			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+				Log.d("MoPub", "Conversion track failed: Status code != 200.");
+				return;
+			}
 
-            HttpEntity entity = response.getEntity();
-            if (entity == null || entity.getContentLength() == 0) {
-                Log.d("MoPub", "Conversion track failed: Response was empty.");
-                return;
-            }
+			HttpEntity entity = response.getEntity();
+			if (entity == null || entity.getContentLength() == 0) {
+				Log.d("MoPub", "Conversion track failed: Response was empty.");
+				return;
+			}
 
-            // If we made it here, the request has been tracked
-            Log.d("MoPub", "Conversion track successful.");
-            mSharedPreferences
-                    .edit()
-                    .putBoolean(mIsTrackedKey, true)
-                    .commit();
-        }
-    }
+			// If we made it here, the request has been tracked
+			Log.d("MoPub", "Conversion track successful.");
+			mSharedPreferences
+					.edit()
+					.putBoolean(mIsTrackedKey, true)
+					.commit();
+		}
+	}
 }
