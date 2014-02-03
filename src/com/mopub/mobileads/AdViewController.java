@@ -467,7 +467,7 @@ public class AdViewController {
 			int scaledWidth = Dips.asIntPixels(width, mContext);
 			int scaledHeight = Dips.asIntPixels(height, mContext);
 
-			return new FrameLayout.LayoutParams(scaledWidth, scaledHeight, Gravity.FILL);
+			return new FrameLayout.LayoutParams(scaledWidth, scaledHeight, Gravity.CENTER);
 		} else {
 			return WRAP_AND_CENTER_LAYOUT_PARAMS;
 		}
