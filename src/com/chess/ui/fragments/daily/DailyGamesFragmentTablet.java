@@ -147,8 +147,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 				loadDbGames();
 			}
 		} else {
-			updateData(); // TODO temporary force to update
-			loadDbGames();
+			updateData();
 		}
 
 		if (showMiniBoards != getAppData().isMiniBoardsEnabled()) {

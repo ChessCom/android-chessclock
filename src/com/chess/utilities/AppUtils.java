@@ -755,9 +755,15 @@ public class AppUtils {
 
 		try {
 			return Drawable.createFromStream(context.getResources().getAssets().open("flags/" + userCountry + ".png"), null);
-		} catch (IOException e) {
+		} catch (IOException e) { // there might be countries that have different names, like Trinidad/Tobago
 			e.printStackTrace();
-			throw new IllegalArgumentException("No such Country flag: " + userCountry);
+			try {
+				Log.e("getCountryFlag", " userCountry == NULL");
+				return Drawable.createFromStream(context.getResources().getAssets().open("flags/" + "International" + ".png"), null);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				return null;
+			}
 		}
 	}
 

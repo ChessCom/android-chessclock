@@ -1,4 +1,10 @@
 <resources>
-
+	<string name="whats_new">What\'s New!?</string>
+	<string name="whats_new_features">- Interactive Lessons\n
+		- New Modern Interface\n
+		- 20+ Beautiful Themes\n
+		- Improved Live Chess\n
+		- Articles, Messages, &amp; Forums
+</string>
 
 </resources>

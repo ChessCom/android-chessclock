@@ -47,6 +47,7 @@ public class AppConstants {
 	public static final String USER_SAW_HELP_FOR_PULL_TO_UPDATE = "user_saw_help_for_pull_to_update";
 	public static final String USER_SAW_HELP_FOR_QUICK_SCROLL = "user_saw_help_for_quick_scroll_notations";
 	public static final String USER_SAW_COURSE_COMPLETED_POPUP = "user_saw_course_completed_popup";
+	public static final String USER_SAW_WHATS_NEW_FEATURE = "user_saw_whats_new_feature";
 	public static final String FIRST_INIT_FINISHED = "first_init_finished";
 	public static final String DEVICE_ID = "device_id"; // sometimes getDeviceId gives empty string
 

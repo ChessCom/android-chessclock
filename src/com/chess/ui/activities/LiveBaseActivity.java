@@ -56,13 +56,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private static final String TAG = "LccLog-LiveBaseActivity";
 
 	protected static final String CHALLENGE_TAG = "challenge_tag";
-	protected static final String LOGOUT_TAG = "logout_tag";
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
 	private static final String OBSOLETE_VERSION_TAG = "obsolete version";
 	private static final String EXIT_GAME_TAG = "exit_game";
 	public static final int NEXT_CONNECTION_DELAY = 5000;
-	//public static final int FINISH_CONNECT_ATTEMPTS_DELAY = 60 * 1000;
-	//public static final int RECONNECT_BY_LCC_FAILURE_LIMIT = 2;
+
 
 	protected LiveOuterChallengeListener outerChallengeListener;
 	protected Challenge currentChallenge;

@@ -38,6 +38,8 @@ import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
  */
 public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.OnCheckedChangeListener, FragmentParentFace {
 
+	private static final String WHATS_NEW_TAG = "whats new popup";
+
 	private RadioGroup tabRadioGroup;
 	private int previousCheckedId = NON_INIT;
 	private MyMoveUpdateListener myMoveUpdateListener;
@@ -52,6 +54,16 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 
 		myMoveUpdateListener = new MyMoveUpdateListener();
 		dailyGamesUpdateListener = new DailyGamesUpdateListener();
+
+		if (!getAppData().isUserSawWhatsNewFeature()) {
+			String title = getString(R.string.whats_new);
+			String message = getString(R.string.whats_new_features);
+			popupItem.setButtons(1);
+			showPopupDialog(title, message, WHATS_NEW_TAG);
+
+			getAppData().setUserSawWhatsNewFeature(true);
+		}
+
 	}
 
 	@Override

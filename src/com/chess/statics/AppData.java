@@ -956,6 +956,14 @@ public class AppData {
 		return getIntValue(ADS_SHOW_COUNTER, 0);
 	}
 
+	public boolean isUserSawWhatsNewFeature() {
+		return getBooleanValue(USER_SAW_WHATS_NEW_FEATURE, false);
+	}
+
+	public void setUserSawWhatsNewFeature(boolean value) {
+		setBooleanValue(USER_SAW_WHATS_NEW_FEATURE, value);
+	}
+
 	/*--------------------------- Common Shared logic ------------------------*/
 
 	private void setBooleanValue(String field, boolean checked) {

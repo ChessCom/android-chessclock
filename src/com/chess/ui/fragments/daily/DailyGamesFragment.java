@@ -82,10 +82,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 	private ListView listView;
 	private int mode;
 	private GameFaceHelper gameFaceHelper;
-	private Button timeSelectBtn;
 	private ViewGroup newGameHeaderView;
 
-	private boolean startDailyGame;
 	private ChallengeHelper challengeHelper;
 	private Button startNewGameBtn;
 	private boolean showMiniBoards;
@@ -194,8 +192,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				loadDbGames();
 			}
 		} else {
-			updateData(); // TODO temporary force to update
-			loadDbGames();
+			updateData();
 		}
 
 		if (showMiniBoards != getAppData().isMiniBoardsEnabled()) {
@@ -282,13 +279,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		if (view.getId() == R.id.timeSelectBtn) {
 			View parent = (View) view.getParent();
 			challengeHelper.show((View) parent.getParent());
-
-		} else if (view.getId() == R.id.gamePlayBtn) {
-			if (startDailyGame) {
-				challengeHelper.createDailyChallenge();
-			} else {
-				challengeHelper.createLiveChallenge();
-			}
 		} else if (view.getId() == R.id.startNewGameBtn) {
 			getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
 			getActivityFace().toggleRightMenu();
@@ -541,35 +531,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		// restore position
 		cursor.moveToFirst();
 
-//		int currentGamesCnt = cursor.getCount();
-		// TODO reuse for "What's New?" message . We decided to not use new game banner
-		// if user have more than 5 active games, do not show 1/2 size board, only new game button at bottom
-//		if (currentGamesCnt < MIN_GAMES_TO_SHOW_BANNER) {
-//			if (HONEYCOMB_PLUS_API) {
-//				if (myTurnInDailyGames) {
-//					listView.removeHeaderView(newGameHeaderView);
-//				} else {
-//					listView.removeHeaderView(newGameHeaderView);
-//					listView.setAdapter(null);
-//					listView.addHeaderView(newGameHeaderView);
-//					listView.setAdapter(sectionedAdapter);
-//				}
-//			} else {  // for preHC we can't fix bug when we need to add header after setAdapter was called.
-//				if (myTurnInDailyGames) {
-//					startNewGameBtn.setVisibility(View.GONE);
-//				} else {
-//					startNewGameBtn.setVisibility(View.VISIBLE);
-//				}
-//			}
-//		} else {
-			if (myTurnInDailyGames) {
-				startNewGameBtn.setVisibility(View.GONE);
-			} else {
-				startNewGameBtn.setVisibility(View.VISIBLE);
-			}
-//		}
-
-//		listView.invalidate();
+		if (myTurnInDailyGames) {
+			startNewGameBtn.setVisibility(View.GONE);
+		} else {
+			startNewGameBtn.setVisibility(View.VISIBLE);
+		}
 
 		currentGamesMyCursorAdapter.changeCursor(cursor);
 
@@ -678,18 +644,10 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public void setDefaultDailyTimeMode(int mode) {
-		String daysString = challengeHelper.getDailyModeButtonLabel(mode);
-		timeSelectBtn.setText(daysString);
-
-		startDailyGame = true;
 	}
 
 	@Override
 	public void setDefaultLiveTimeMode(int mode) {
-		String liveLabel = challengeHelper.getLiveModeButtonLabel(mode);
-		timeSelectBtn.setText(liveLabel);
-
-		startDailyGame = false;
 	}
 
 	private View createBoardView(ChessBoardDailyView boardView) {
@@ -758,8 +716,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		{ // Time mode adjustments
-			timeSelectBtn = (Button) newGameHeaderView.findViewById(R.id.timeSelectBtn);
-			timeSelectBtn.setOnClickListener(this);
+
 
 			// set texts to buttons
 			boolean dailyMode = getAppData().isLastUsedDailyMode();
