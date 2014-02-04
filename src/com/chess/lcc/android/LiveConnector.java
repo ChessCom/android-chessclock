@@ -170,7 +170,7 @@ public class LiveConnector {
 			preferencesEditor.putLong(AppConstants.USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.commit();
 
-			registerGcmService(); // TODO: @lcc - Alex, do we really need it here?
+			//registerGcmService(); // TODO: @lcc - Alex, do we really need it here?
 
 			DataHolder.getInstance().setLiveChessMode(true);
 			Log.d(TAG, "LBA LoginUpdateListener -> updateData");
