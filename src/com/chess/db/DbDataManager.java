@@ -1636,6 +1636,7 @@ public class DbDataManager {
 		values.put(V_CREATE_DATE, dataObj.getCreateDate());
 		values.put(V_URL, dataObj.getUrl());
 		values.put(V_KEY_FEN, dataObj.getKeyFen());
+		values.put(V_WEB_URL, dataObj.getWebUrl());
 		values.put(V_USERNAME, dataObj.getUsername());
 		values.put(V_FIRST_NAME, dataObj.getFirstName());
 		values.put(V_LAST_NAME, dataObj.getLastName());
@@ -1657,6 +1658,7 @@ public class DbDataManager {
 		videoItem.setCreateDate(getLong(cursor, V_CREATE_DATE));
 		videoItem.setDescription(getString(cursor, V_DESCRIPTION));
 		videoItem.setUrl(getString(cursor, V_URL));
+		videoItem.setWebUrl(getString(cursor, V_WEB_URL));
 		videoItem.setVideoId(getInt(cursor, V_ID));
 		videoItem.setAvatarUrl(getString(cursor, V_USER_AVATAR));
 		videoItem.setCommentCount(getInt(cursor, V_COMMENT_COUNT));

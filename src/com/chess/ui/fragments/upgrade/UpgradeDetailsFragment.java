@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -21,14 +22,18 @@ import com.chess.backend.entity.api.MembershipItem;
 import com.chess.backend.entity.api.MembershipKeyItem;
 import com.chess.backend.entity.api.PayloadItem;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.FontsHelper;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboTextView;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -58,6 +63,20 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	public static final String DIAMOND_YEARLY = "diamond_yearly";
 	private static final int HASH_LENGTH = 88;
 	public static final String PARAMS_DIVIDER = "||";
+
+	public static final String UPGRADE_FROM_BASIC = "upgrade from basic";
+	public static final String UPGRADE_FROM_GOLD = "upgrade from gold";
+	public static final String UPGRADE_FROM_PLATINUM = "upgrade from platinum";
+	public static final String UPGRADE_FROM_DIAMOND = "upgrade from diamond";
+
+	public static final String UPGRADE_FROM_GOLD_MONTH = "upgrade from gold month";
+	public static final String UPGRADE_FROM_GOLD_YEAR = "upgrade from gold year";
+	public static final String UPGRADE_FROM_PLATINUM_MONTH = "upgrade from platinum month";
+	public static final String UPGRADE_FROM_PLATINUM_YEAR = "upgrade from platinum year";
+	public static final String UPGRADE_FROM_DIAMOND_MONTH = "upgrade from diamond month";
+	public static final String AFFILIATION = "Android In-App Purchase";
+	public static final String USD = "USD";
+	public static final String PRODUCT_CATEGORY = "Membership upgrade";
 
 	protected boolean isGoldMonthPayed;
 	protected boolean isGoldYearPayed;
@@ -607,8 +626,102 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	}
 
 	private void updateMembershipOnServer(Purchase purchase) {
+		if (purchase == null) {
+			return;
+		}
+
+		trackPurchaseToGA(purchase);
+
 		LoadItem loadItem = LoadHelper.postMembershipUpdate(getUserToken(), purchase.getOriginalJson(), purchase.getSignature());
 		new RequestJsonTask<MembershipItem>(detailsListener).executeTask(loadItem);
+	}
+
+	private void trackPurchaseToGA(Purchase purchase) {
+		EasyTracker easyTracker = getActivityFace().getGATracker();
+
+		if (easyTracker == null) {
+			return;
+		}
+		String sku = purchase.getSku();
+
+
+		AppData appData = getAppData();
+		String userPreviousSku = appData.getUserPremiumSku();
+		int userPremiumStatus = appData.getUserPremiumStatus();
+		String productName = Symbol.EMPTY;
+
+		if (TextUtils.isEmpty(userPreviousSku)) {
+			if (userPremiumStatus == StaticData.BASIC_USER) {
+				productName = UPGRADE_FROM_BASIC;
+			} else if (userPremiumStatus == StaticData.GOLD_USER) {
+				productName = UPGRADE_FROM_GOLD;
+			} else if (userPremiumStatus == StaticData.PLATINUM_USER) {
+				productName = UPGRADE_FROM_PLATINUM;
+			} else if (userPremiumStatus == StaticData.DIAMOND_USER) {
+				productName = UPGRADE_FROM_DIAMOND;
+			}
+		} else {
+			if (userPreviousSku.equals(IabHelper.SKU_GOLD_MONTH)) {
+				productName = UPGRADE_FROM_GOLD_MONTH;
+			} else if (userPreviousSku.equals(IabHelper.SKU_GOLD_YEAR)) {
+				productName = UPGRADE_FROM_GOLD_YEAR;
+			} else if (userPreviousSku.equals(IabHelper.SKU_PLATINUM_MONTH)) {
+				productName = UPGRADE_FROM_PLATINUM_MONTH;
+			} else if (userPreviousSku.equals(IabHelper.SKU_PLATINUM_YEAR)) {
+				productName = UPGRADE_FROM_PLATINUM_YEAR;
+			} else if (userPreviousSku.equals(IabHelper.SKU_DIAMOND_MONTH)) {
+				productName = UPGRADE_FROM_DIAMOND_MONTH;
+			} else if (userPreviousSku.equals(IabHelper.SKU_DIAMOND_YEAR)) {
+				productName = UPGRADE_FROM_GOLD_MONTH;
+			}
+		}
+
+		double revenue = 0;
+		if (sku.equals(GOLD_MONTHLY)) {
+			revenue = Integer.parseInt(PlanConfig.GOLD_MONTH_PAY.substring(1));
+		} else if (sku.equals(GOLD_YEARLY)) {
+			revenue = Integer.parseInt(PlanConfig.GOLD_YEAR_PAY.substring(1));
+		} else if (sku.equals(PLATINUM_MONTHLY)) {
+			revenue = Integer.parseInt(PlanConfig.PLATINUM_MONTH_PAY.substring(1));
+		} else if (sku.equals(PLATINUM_YEARLY)) {
+			revenue = Integer.parseInt(PlanConfig.PLATINUM_YEAR_PAY.substring(1));
+		} else if (sku.equals(DIAMOND_MONTHLY)) {
+			revenue = Integer.parseInt(PlanConfig.DIAMOND_MONTH_PAY.substring(1));
+		} else if (sku.equals(DIAMOND_YEARLY)) {
+			revenue = Integer.parseInt(PlanConfig.DIAMOND_YEAR_PAY.substring(1));
+		}
+
+		String transactionId = purchase.getOrderId();
+		String affiliation = AFFILIATION;
+		String productCategory = PRODUCT_CATEGORY;
+
+		double tax = 0.0d;
+		double shipping = 0.0d;
+		String currencyCode = USD;
+
+		Map<String, String> gaTransaction = MapBuilder
+				.createTransaction(
+						transactionId,  // (String) Transaction ID
+						affiliation,    // (String) Affiliation
+						revenue,        // (Double) Order revenue
+						tax,            // (Double) Tax
+						shipping,       // (Double) Shipping
+						currencyCode)   // (String) Currency code
+				.build();
+		easyTracker.send(gaTransaction);
+
+		Map<String, String> gaItem = MapBuilder
+				.createItem(
+						transactionId,   // (String) Transaction ID
+						productName,     // (String) Product name
+						sku,             // (String) Product SKU
+						productCategory, // (String) Product category
+						revenue,         // (Double) Product price
+						1L,              // (Long) Product quantity
+						currencyCode)    // (String) Currency code
+				.build();
+
+		easyTracker.send(gaItem);
 	}
 
 	private class GetPayloadListener extends ChessUpdateListener<PayloadItem> {

@@ -735,15 +735,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void showProgress(boolean show) { // DO not show progress as we already showing it while making first attempt to connect
-//			if (show) {
-//				showPopupHardProgressDialog(R.string.signing_in_);
-//			} else {
-//				if (isPaused) {
-//					return;
-//				}
-//
-//				dismissProgressDialog();
-//			}
 		}
 
 		@Override
@@ -751,10 +742,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 			LoginItem.Data loginData = returnedObj.getData();
 
-			if (!TextUtils.isEmpty(loginData.getUsername())) {
-				preferencesEditor.putString(AppConstants.USERNAME, loginData.getUsername().trim().toLowerCase());
+			String username = loginData.getUsername();
+			if (!TextUtils.isEmpty(username)) {
+				preferencesEditor.putString(AppConstants.USERNAME, username);
 			}
-			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
+			preferencesEditor.putInt(username + AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
 			preferencesEditor.putString(AppConstants.LIVE_SESSION_ID, loginData.getSessionId());
 			preferencesEditor.putLong(AppConstants.LIVE_SESSION_ID_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.putString(AppConstants.USER_TOKEN, loginData.getLoginToken());

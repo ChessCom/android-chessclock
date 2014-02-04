@@ -335,7 +335,9 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAME_STATS);
 		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 		loadItem.addRequestParams(RestHelper.P_GAME_TYPE, gameTypeStr);
-		loadItem.addRequestParams(RestHelper.P_VIEW_USERNAME, username);
+		if (getAppData().getUserPremiumStatus() != StaticData.GOLD_USER || !username.equals(getUsername())) {
+			loadItem.addRequestParams(RestHelper.P_VIEW_USERNAME, username);
+		}
 		loadItem.addRequestParams(RestHelper.P_LAST_GRAPH_TIMESTAMP, lastTimestamp);
 
 		new RequestJsonTask<GameStatsItem>(statsItemUpdateListener).executeTask(loadItem);

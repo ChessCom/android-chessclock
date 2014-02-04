@@ -94,7 +94,6 @@ public abstract class PaginationCursorAdapter<T> extends EndlessAdapter {
 			return;
 		}
 		if (result == StaticData.RESULT_OK && !taskCanceled) {
-			Log.d("TEST", "appendCachedData updateListData(itemList);");
 			taskFace.updateListData(itemList);
 		} else {
 			taskFace.errorHandle(result);

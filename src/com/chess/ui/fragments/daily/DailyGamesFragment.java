@@ -193,6 +193,8 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			}
 		} else {
 			updateData();
+			// load games to quickly update state after move was made
+			loadDbGames();
 		}
 
 		if (showMiniBoards != getAppData().isMiniBoardsEnabled()) {

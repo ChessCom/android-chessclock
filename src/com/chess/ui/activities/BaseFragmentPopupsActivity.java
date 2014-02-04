@@ -434,4 +434,9 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	protected Context getContext() {
 		return context;
 	}
+
+	protected EasyTracker provideGATracker(){
+		return EasyTracker.getInstance(this);
+	}
+
 }

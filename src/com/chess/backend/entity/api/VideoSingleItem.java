@@ -28,6 +28,7 @@ public class VideoSingleItem extends BaseResponseItem<VideoSingleItem.Data> {
 	"create_date": 1334265564,
 	"url": "http://d1qwhygwfa4r9i.cloudfront.net/videos/origin/everything-you-need-to-know-start-playing-chess.mp4",
 	"key_fen": "8/4k3/8/2R5/6P1/3K4/8/6N1 w - - 0 1"
+    "web_url": "/video/player/amazing-too"
 */
 
 	public static class Data {
@@ -50,6 +51,7 @@ public class VideoSingleItem extends BaseResponseItem<VideoSingleItem.Data> {
 		private long create_date;
 		private String url;
 		private String key_fen;
+		private String web_url;
 
 		public String getTitle() {
 			return getSafeValue(title);
@@ -113,6 +115,14 @@ public class VideoSingleItem extends BaseResponseItem<VideoSingleItem.Data> {
 
 		public String getUserAvatar() {
 			return getSafeValue(avatar_url);
+		}
+
+		public String getWebUrl() {
+			return getSafeValue(web_url);
+		}
+
+		public void setWebUrl(String web_url) {
+			this.web_url = web_url;
 		}
 
 		public long getViewCount() {

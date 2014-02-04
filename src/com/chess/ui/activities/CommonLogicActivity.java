@@ -260,7 +260,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			if (!TextUtils.isEmpty(username)) {
 				preferencesEditor.putString(AppConstants.USERNAME, username);
 			}
-			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
+			preferencesEditor.putInt(username + AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
 			preferencesEditor.putString(AppConstants.LIVE_SESSION_ID, loginData.getSessionId());
 			preferencesEditor.putLong(AppConstants.LIVE_SESSION_ID_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.commit();

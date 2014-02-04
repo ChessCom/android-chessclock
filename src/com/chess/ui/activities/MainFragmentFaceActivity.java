@@ -52,6 +52,7 @@ import com.chess.ui.fragments.welcome.WelcomeTabsFragmentTablet;
 import com.chess.ui.fragments.welcome.WelcomeTourFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.slidingmenu.lib.SlidingMenu;
 import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
 import uk.co.senab.actionbarpulltorefresh.extras.AbcPullToRefreshAttacher;
@@ -1027,4 +1028,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				+ AppConstants.USERNAME_ + username;
 	}
 
+	@Override
+	public EasyTracker getGATracker() {
+		return provideGATracker();
+	}
 }

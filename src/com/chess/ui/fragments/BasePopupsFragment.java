@@ -196,6 +196,9 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	protected void showPopupDialogTouch(String title, String tag) {
+		if (getFragmentManager() == null) {
+			return;
+		}
 		popupItem.setTitle(title);
 		popupItem.setMessage(Symbol.EMPTY);
 		PopupDialogFragment dialogFragment = PopupDialogFragment.createInstance(popupItem, this);
@@ -205,6 +208,9 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	private synchronized void updatePopupAndShow(String tag) {
+		if (getFragmentManager() == null) {
+			return;
+		}
 		popupManager.add(PopupDialogFragment.createInstance(popupItem, this));
 		getLastPopupFragment().show(getFragmentManager(), tag);
 	}
@@ -223,14 +229,13 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	private void updateProgressAndShow(PopupProgressFragment popupProgressDialogFragment) {
+		if (getFragmentManager() == null) {
+			return;
+		}
 		popupProgressDialogFragment.updatePopupItem(popupProgressItem);
 
 		if (popupProgressManager.size() > 0) { // if we already showing, then just add but not show
 			popupProgressManager.add(popupProgressDialogFragment);
-			return;
-		}
-
-		if (getFragmentManager() == null) {
 			return;
 		}
 
@@ -239,6 +244,9 @@ public abstract class BasePopupsFragment extends Fragment implements PopupDialog
 	}
 
 	protected void dismissProgressDialog() {
+		if (getFragmentManager() == null) {
+			return;
+		}
 		if (popupProgressManager.size() == 0) {
 			return;
 		}

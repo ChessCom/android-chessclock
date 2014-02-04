@@ -91,6 +91,8 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	private long commentId;
 	private boolean inEditMode;
 	private String bodyStr;
+	private String webUrl;
+	private String titleStr;
 	private String commentForEditStr;
 	protected int widthPixels;
 	private View loadingCommentsView;
@@ -303,7 +305,8 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 
 		backImageFetcher.loadImage(new SmartImageFetcher.Data(BACK_IMG_LINK, widthPixels), videoBackImg.getImageView());
 
-		titleTxt.setText(videoData.getTitle());
+		titleStr = videoData.getTitle();
+		titleTxt.setText(titleStr);
 		getImageFetcher().loadImage(new SmartImageFetcher.Data(videoData.getUserAvatar(), imageSize), authorImg.getImageView());
 
 		Drawable drawable = AppUtils.getCountryFlagScaled(getActivity(), countryMap.get(videoData.getCountryId()));
@@ -316,6 +319,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		bodyStr = videoData.getDescription();
 		contentTxt.setText(Html.fromHtml(bodyStr));
 		videoUrl = videoData.getUrl();
+		webUrl = videoData.getWebUrl();
 
 		// Save to DB
 		DbDataManager.saveVideoItem(getContentResolver(), videoData);
@@ -377,12 +381,12 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 				showEditView(true);
 				return true;
 			case R.id.menu_share:
-				String shareStr = String.valueOf(Html.fromHtml(bodyStr));
+				String shareStr = String.valueOf(Html.fromHtml(titleStr));
 
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
 				shareIntent.setType("text/plain");
-				shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out this video - "
-						+ Symbol.NEW_STR + shareStr);
+				shareIntent.putExtra(Intent.EXTRA_TEXT, shareStr + Symbol.NEW_STR
+						+ RestHelper.getInstance().BASE_WEB_URL + webUrl);
 				startActivity(Intent.createChooser(shareIntent, getString(R.string.share_via)));
 				return true;
 		}
