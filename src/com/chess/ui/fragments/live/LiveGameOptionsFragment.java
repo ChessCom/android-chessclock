@@ -34,7 +34,7 @@ import java.util.Map;
  * Time: 10:00
  */
 public class LiveGameOptionsFragment extends CommonLogicFragment implements ItemClickListenerFace,
-												SeekBar.OnSeekBarChangeListener {
+		SeekBar.OnSeekBarChangeListener {
 
 	private static final int MIN_RATING_MIN = -1000;
 	private static final int MIN_RATING_MAX = 0;
@@ -220,7 +220,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			checkedButton = minRatingBtn;
 
 			factor = (MIN_RATING_MAX - MIN_RATING_MIN) / MAX_PROGRESS; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
-			value =  1000 - (int) (factor * progress);
+			value = 1000 - (int) (factor * progress);
 			if (value != 0) {
 				symbol = Symbol.MINUS;
 			}
@@ -231,7 +231,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			checkedButton = maxRatingBtn;
 
 			factor = (MAX_RATING_MAX - MAX_RATING_MIN) / MAX_PROGRESS; // (maxRatingDiff - minRatingDiff) / maxSeekProgress
-			value =  (int) (factor * progress);
+			value = (int) (factor * progress);
 			if (value != 0) {
 				symbol = Symbol.PLUS;
 			}
@@ -316,8 +316,8 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 		String minRatingBtnText = minRatingBtn.getText().toString();
 		String maxRatingBtnText = maxRatingBtn.getText().toString();
 
-		Integer minRatingValue = Integer.valueOf(minRatingBtnText.replace(Symbol.PLUS,Symbol.EMPTY).replace(Symbol.MINUS, Symbol.EMPTY));
-		Integer maxRatingValue = Integer.valueOf(maxRatingBtnText.replace(Symbol.PLUS,Symbol.EMPTY).replace(Symbol.MINUS, Symbol.EMPTY));
+		Integer minRatingValue = Integer.valueOf(minRatingBtnText.replace(Symbol.PLUS, Symbol.EMPTY).replace(Symbol.MINUS, Symbol.EMPTY));
+		Integer maxRatingValue = Integer.valueOf(maxRatingBtnText.replace(Symbol.PLUS, Symbol.EMPTY).replace(Symbol.MINUS, Symbol.EMPTY));
 
 		int rating = AppConstants.DEFAULT_PLAYER_RATING;
 		if (gameConfigBuilder.getTimeMode() == LiveGameConfig.STANDARD) {
@@ -364,14 +364,14 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			liveOptionsGroup.add(view.findViewById(R.id.liveLabelBulletTxt));
 
 			liveButtonsModeMap = new HashMap<Integer, Button>();
-			liveButtonsModeMap.put(0, (Button) view.findViewById(R.id.standard1SelectBtn));
-			liveButtonsModeMap.put(1, (Button) view.findViewById(R.id.blitz1SelectBtn));
-			liveButtonsModeMap.put(2, (Button) view.findViewById(R.id.blitz2SelectBtn));
-			liveButtonsModeMap.put(3, (Button) view.findViewById(R.id.bullet1SelectBtn));
-			liveButtonsModeMap.put(4, (Button) view.findViewById(R.id.standard2SelectBtn));
-			liveButtonsModeMap.put(5, (Button) view.findViewById(R.id.blitz3SelectBtn));
-			liveButtonsModeMap.put(6, (Button) view.findViewById(R.id.blitz4SelectBtn));
-			liveButtonsModeMap.put(7, (Button) view.findViewById(R.id.bullet2SelectBtn));
+			liveButtonsModeMap.put(0, (Button) view.findViewById(R.id.standard1SelectBtn));  // 30
+			liveButtonsModeMap.put(4, (Button) view.findViewById(R.id.standard2SelectBtn));  // 15 | 10
+			liveButtonsModeMap.put(1, (Button) view.findViewById(R.id.blitz1SelectBtn));     // 10
+			liveButtonsModeMap.put(2, (Button) view.findViewById(R.id.blitz2SelectBtn));     // 5 | 2
+			liveButtonsModeMap.put(5, (Button) view.findViewById(R.id.blitz3SelectBtn));     // 5
+			liveButtonsModeMap.put(6, (Button) view.findViewById(R.id.blitz4SelectBtn));     // 3
+			liveButtonsModeMap.put(3, (Button) view.findViewById(R.id.bullet1SelectBtn));    // 2 | 1
+			liveButtonsModeMap.put(7, (Button) view.findViewById(R.id.bullet2SelectBtn));    // 1
 
 			{// options setup
 				// rated games switch

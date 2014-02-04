@@ -2,9 +2,8 @@ package com.chess.ui.engine.configs;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.SparseIntArray;
 import com.chess.statics.AppConstants;
-
-import java.util.HashMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,6 +27,10 @@ public class LiveGameConfig implements Parcelable {
 	private String opponentName;
 
 	public static class Builder {
+		public static final int STANDARD = 0;
+		public static final int BLITZ = 1;
+		public static final int BULLET = 2;
+
 		private boolean rated;
 		private int initialTime;
 		private int bonusTime;
@@ -35,7 +38,7 @@ public class LiveGameConfig implements Parcelable {
 		private int minRatingOffset;
 		private int maxRatingOffset;
 		private String opponentName;
-		private HashMap<Integer, Integer> timeModesMap;
+		private SparseIntArray timeModesMap;
 		private int timeMode;
 
 		/**
@@ -60,14 +63,14 @@ public class LiveGameConfig implements Parcelable {
 
 			*/
 
-			timeModesMap = new HashMap<Integer, Integer>();
+			timeModesMap = new SparseIntArray();
 			timeModesMap.put(0, STANDARD);    // 30		 = 0
-			timeModesMap.put(5, STANDARD);    // 15 | 10 = 4
-			timeModesMap.put(4, BLITZ);       // 10		 = 1
-			timeModesMap.put(1, BLITZ);       // 5 | 2	 = 2
-			timeModesMap.put(6, BLITZ);       // 5		 = 5
-			timeModesMap.put(3, BLITZ);       // 3		 = 6
-			timeModesMap.put(2, BULLET);      // 2 | 1	 = 3
+			timeModesMap.put(4, STANDARD);    // 15 | 10 = 4
+			timeModesMap.put(1, BLITZ);       // 10		 = 1
+			timeModesMap.put(2, BLITZ);       // 5 | 2	 = 2
+			timeModesMap.put(5, BLITZ);       // 5		 = 5
+			timeModesMap.put(6, BLITZ);       // 3		 = 6
+			timeModesMap.put(3, BULLET);      // 2 | 1	 = 3
 			timeModesMap.put(7, BULLET);      // 1		 = 7
 		}
 
