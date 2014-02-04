@@ -17,14 +17,15 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.GcmItem;
 import com.chess.backend.entity.api.LoginItem;
-import com.chess.backend.entity.api.RegisterItem;
 import com.chess.backend.gcm.GcmHelper;
-import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
-import com.chess.model.TacticsDataHolder;
-import com.chess.statics.*;
+import com.chess.statics.AppConstants;
+import com.chess.statics.AppData;
+import com.chess.statics.FlurryData;
+import com.chess.statics.Symbol;
+import com.chess.ui.interfaces.LoginErrorUpdateListener;
 import com.chess.utilities.AppUtils;
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -42,7 +43,7 @@ import java.util.Locale;
  * @author alien_roger
  * @created at: 23.09.12 8:10
  */
-public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
+public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity implements LoginErrorUpdateListener {
 
 	public static final String REGION_MARK = "-r";
 
@@ -226,77 +227,6 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 	}
 
-	protected String getDeviceId() {
-		String deviceId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-		if (TextUtils.isEmpty(deviceId)) {
-			deviceId = getAppData().getDeviceId();
-			if (TextUtils.isEmpty(deviceId)) { // generate a new one
-				deviceId = "Hello" + (Math.random() * 100) + "There" + System.currentTimeMillis();
-				getAppData().setDeviceId(deviceId);
-			}
-		}
-
-		deviceId = ImageCache.hashKeyForDisk(deviceId);
-		return deviceId.substring(0, 32);
-	}
-
-	protected class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
-		private String facebookToken;
-
-		public LoginUpdateListener(String facebookToken) {
-			super(getContext(), LoginItem.class);
-			this.facebookToken = facebookToken;
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			// don't show overlay
-		}
-
-		@Override
-		public void updateData(LoginItem returnedObj) {
-			LoginItem.Data loginData = returnedObj.getData();
-			String username = loginData.getUsername();
-			if (!TextUtils.isEmpty(username)) {
-				preferencesEditor.putString(AppConstants.USERNAME, username);
-			}
-			preferencesEditor.putInt(username + AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
-			preferencesEditor.putString(AppConstants.LIVE_SESSION_ID, loginData.getSessionId());
-			preferencesEditor.putLong(AppConstants.LIVE_SESSION_ID_SAVE_TIME, System.currentTimeMillis());
-			preferencesEditor.commit();
-
-			if (!TextUtils.isEmpty(facebookToken)) {
-				FlurryAgent.logEvent(FlurryData.FB_LOGIN);
-				// save facebook access token to appData for future re-login
-				getAppData().setFacebookToken(facebookToken);
-			}
-
-			processLogin(loginData);
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			if (RestHelper.containsServerCode(resultCode)) {
-				// get server code
-				int serverCode = RestHelper.decodeServerCode(resultCode);
-				switch (serverCode) {
-					case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
-						showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
-						getAppData().setPassword(Symbol.EMPTY);
-						return;
-					case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
-						popupItem.setPositiveBtnId(R.string.sign_up);
-						showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
-						return;
-					default:
-						super.errorHandle(resultCode);
-						return;
-				}
-			}
-			super.errorHandle(resultCode);
-		}
-	}
-
 	protected Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state, Exception exception) {
@@ -307,35 +237,20 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	protected void onSessionStateChange(Session session, SessionState state, Exception exception) {
 		if (state != null && state.isOpened()) {
 			String accessToken = session.getAccessToken();
-			loginWithFacebook(accessToken, new LoginUpdateListener(accessToken));
+			loginWithFacebook(accessToken);
 		}
 	}
 
-	protected void loginWithFacebook(String accessToken, LoginUpdateListener listener) {
+	protected void loginWithFacebook(String accessToken) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
 		loadItem.setRequestMethod(RestHelper.POST);
 		loadItem.addRequestParams(RestHelper.P_FACEBOOK_ACCESS_TOKEN, accessToken);
-		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
+		loadItem.addRequestParams(RestHelper.P_DEVICE_ID, AppUtils.getDeviceId(getContext()));
 		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_USERNAME);
 		loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.V_TACTICS_RATING);
 
-		new RequestJsonTask<LoginItem>(listener).executeTask(loadItem);
-	}
-
-	protected void processLogin(RegisterItem.Data returnedObj) {
-		preferencesEditor.putString(AppConstants.USER_TOKEN, returnedObj.getLoginToken());
-		preferencesEditor.putLong(AppConstants.USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
-		preferencesEditor.commit();
-
-		getDataHolder().setLiveChessMode(false);
-		DataHolder.reset();
-		TacticsDataHolder.reset();
-
-		afterLogin();
-	}
-
-	protected void afterLogin() {
+		new RequestJsonTask<LoginItem>(new LoginUpdateListener(getContext(), accessToken, this)).executeTask(loadItem);
 	}
 
 	@Override
@@ -362,4 +277,15 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
 	}
 
+	@Override
+	public void onInvalidLoginCredentials() {
+		showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
+		appData.setPassword(Symbol.EMPTY);
+	}
+
+	@Override
+	public void onFacebookUserNoAccount() {
+		popupItem.setPositiveBtnId(R.string.sign_up);
+		showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
+	}
 }

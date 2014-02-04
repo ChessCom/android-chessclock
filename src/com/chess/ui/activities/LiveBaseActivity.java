@@ -9,26 +9,23 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import com.chess.R;
-import com.chess.backend.*;
-import com.chess.backend.entity.api.LoginItem;
-import com.chess.backend.entity.api.UserItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.LiveChessService;
+import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.lcc.android.LiveConnector;
 import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
+import com.chess.lcc.android.interfaces.LiveUiUpdateListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
-import com.chess.statics.AppConstants;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.SoundPlayer;
@@ -49,9 +46,7 @@ import java.util.Map;
  * @author alien_roger
  * @created at: 11.04.12 9:00
  */
-public abstract class LiveBaseActivity extends CoreActivityActionBar implements LiveChessClientEventListener {
-
-	// todo: @lcc - extract connection logic to LiveConnectionHelper
+public abstract class LiveBaseActivity extends CoreActivityActionBar implements LiveChessClientEventListener, LiveUiUpdateListener {
 
 	private static final String TAG = "LccLog-LiveBaseActivity";
 
@@ -59,8 +54,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private static final String CONNECT_FAILED_TAG = "connect_failed";
 	private static final String OBSOLETE_VERSION_TAG = "obsolete version";
 	private static final String EXIT_GAME_TAG = "exit_game";
-	public static final int NEXT_CONNECTION_DELAY = 5000;
-
 
 	protected LiveOuterChallengeListener outerChallengeListener;
 	protected Challenge currentChallenge;
@@ -71,7 +64,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected boolean isLCSBound;
 	protected LiveConnectionHelper liveHelper;
 	private List<PopupDialogFragment> popupChallengesList;
-	private boolean needReLoginToLive;
+	private LiveConnector liveConnector;
 
 
 	@Override
@@ -84,6 +77,8 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		liveServiceConnectionListener = new LiveServiceConnectionListener();
 
 		popupChallengesList = new ArrayList<PopupDialogFragment>();
+
+		liveConnector = new LiveConnector(getContext(), LiveBaseActivity.this, LiveBaseActivity.this);
 	}
 
 	@Override
@@ -119,8 +114,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		dismissFragmentDialog();
 
-		handler.removeCallbacks(sessionIdCheckRunnable);
-		handler.removeCallbacks(performReloginForLiveRunnable);
+		liveConnector.removeCallbacks();
 
 		//Log.d(TAG, "LiveBaseActivity go pause, isLCSBound = " + isLCSBound);
 		if (isLCSBound) {
@@ -305,36 +299,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		super.onNegativeBtnClick(fragment);
 	}
 
-	public void connectLcc() {
-//		LogMe.dl(TAG, "connectLcc: getAppData().isLiveChess() = " + getAppData().isLiveChess());
-//		LogMe.dl(TAG, "connectLcc: isLCSBound = " + isLCSBound);
-		if (getDataHolder().isLiveChess()) {
-			if (!AppUtils.isNetworkAvailable(this)) {
-				dismissNetworkCheckDialog();
-				popupItem.setPositiveBtnId(R.string.check_connection);
-				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
-				//return;
-			}
-
-			// first we check live sessionId
-			sessionIdCheck();
-		}
-	}
-
-	private Runnable sessionIdCheckRunnable = new Runnable() {
-		@Override
-		public void run() {
-			sessionIdCheck();
-		}
-	};
-
-	private void sessionIdCheck() {
-		LoadItem loadItem = LoadHelper.getUserInfo(getCurrentUserToken());
-		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_SESSION_ID);
-
-		new RequestJsonTask<UserItem>(new SessionIdUpdateListener()).executeTask(loadItem);
-	}
-
 	private void bindAndStartLiveService() {
 //		Log.d(TAG, "bindAndStartLiveService " + getClass());
 
@@ -346,36 +310,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		return isLCSBound;
 	}
 
-	private class SessionIdUpdateListener extends AbstractUpdateListener<UserItem> {
 
-		public SessionIdUpdateListener() {
-			super(getContext(), UserItem.class);
-		}
-
-		@Override
-		public void updateData(UserItem returnedObj) {
-			super.updateData(returnedObj);
-
-			if (TextUtils.isEmpty(returnedObj.getData().getSessionId())) { // if API was not updated to get a single sessionId field
-				// we perform re-login
-				performReloginForLive();
-				needReLoginToLive = true;
-				return;
-			} else {
-				getAppData().setLiveSessionId(returnedObj.getData().getSessionId());
-			}
-			performServiceConnection();
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-			//LogMe.dl(TAG, "SessionIdUpdateListener errorHandle resultCode=" + resultCode);
-			handler.postDelayed(sessionIdCheckRunnable, NEXT_CONNECTION_DELAY);
-		}
-	}
-
-	private void performServiceConnection() {
+	@Override
+	public void performServiceConnection() {
 		if (isLCSBound) {
 			if (liveHelper.getLccHelper() != null && liveHelper.isConnected()) {
 				onLiveClientConnected();
@@ -389,6 +326,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		}
 	}
 
+	public void connectLcc() {
+		liveConnector.connectLcc();
+	}
+
 	private class LiveServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
 
 		@Override
@@ -399,6 +340,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			liveHelper = serviceBinder.getService().getLiveConnectionHelper();
 			isLCSBound = true;
 			liveHelper.setLiveChessClientEventListener(LiveBaseActivity.this);
+
+			liveHelper.setLiveUiUpdateListener(LiveBaseActivity.this);
+			liveHelper.setLoginErrorUpdateListener(LiveBaseActivity.this);
 
 			/*
 			if (getSupportFragmentManager() == null) {
@@ -595,70 +539,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	// ---------- LiveChessClientEventListener ----------------
 
 	@Override
-	public void onSessionExpired() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				Log.d("lcc", "onSessionExpired");
-
-				performReloginForLive();
-			}
-		});
-	}
-
-	private void performReloginForLive() {
-		Log.d(TAG, "performReloginForLive isLCSBound=" + isLCSBound);
-
-		// Logout first to make clear connect
-		if (isLCSBound) {
-			liveHelper.logout();
-			unBindAndStopLiveService();
-		}
-
-		String password = getAppData().getPassword();
-		if (!TextUtils.isEmpty(password)) {
-
-			LoadItem loadItem = new LoadItem();
-			loadItem.setLoadPath(RestHelper.getInstance().CMD_LOGIN);
-			loadItem.setRequestMethod(RestHelper.POST);
-			loadItem.addRequestParams(RestHelper.P_DEVICE_ID, getDeviceId());
-			loadItem.addRequestParams(RestHelper.P_USER_NAME_OR_MAIL, getAppData().getUsername());
-			loadItem.addRequestParams(RestHelper.P_PASSWORD, password);
-			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_USERNAME);
-			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
-
-			new RequestJsonTask<LoginItem>(new LoginUpdateListener()).executeTask(loadItem);
-
-		} else if (!TextUtils.isEmpty(getAppData().getFacebookToken())) {
-
-			String accessToken = getAppData().getFacebookToken();
-			loginWithFacebook(accessToken, new FacebookLoginUpdateListener(accessToken));
-		}
-
-		needReLoginToLive = true;
-	}
-
-	protected class FacebookLoginUpdateListener extends CommonLogicActivity.LoginUpdateListener {
-
-		public FacebookLoginUpdateListener(String facebookToken) {
-			super(facebookToken);
-		}
-
-		@Override
-		public void updateData(LoginItem returnedObj) {
-			super.updateData(returnedObj);
-			//getAppData().setLiveChessMode(true);
-			connectLcc();
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			performReloginForLiveDelayed();
-			super.errorHandle(resultCode);
-		}
-	}
-
-	@Override
 	public void onConnectionFailure(String message) {
 		if (isPaused) {
 			LiveEvent connectionFailureEvent = new LiveEvent();
@@ -675,23 +555,18 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	private void processConnectionFailure(String message) {
 		if (message.equals(getString(R.string.pleaseLoginAgain))) {
-			performReloginForLive();
+
+			if (isLCSBound) {
+				liveHelper.logout();
+				unBindAndStopLiveService();
+			}
+
+			liveConnector.performReloginForLive();
 		} else {
 			showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
 			getLastPopupFragment().setCancelable(false);
 		}
 	}
-
-	private void performReloginForLiveDelayed() {
-		handler.postDelayed(performReloginForLiveRunnable, NEXT_CONNECTION_DELAY);
-	}
-
-	private Runnable performReloginForLiveRunnable = new Runnable() {
-		@Override
-		public void run() {
-			performReloginForLive();
-		}
-	};
 
 	@Override
 	public void onConnectionBlocked(final boolean blocked) {
@@ -717,83 +592,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	@Override
-	public void onFriendsStatusChanged() {
-
-	}
-
-	@Override
 	public void onAdminAnnounce(String message) {
 		showSinglePopupDialog(message);
 	}
 
 	// -----------------------------------------------------
-
-	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
-		public LoginUpdateListener() {
-			super(getContext(), LoginItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) { // DO not show progress as we already showing it while making first attempt to connect
-		}
-
-		@Override
-		public void updateData(LoginItem returnedObj) {
-
-			LoginItem.Data loginData = returnedObj.getData();
-
-			String username = loginData.getUsername();
-			if (!TextUtils.isEmpty(username)) {
-				preferencesEditor.putString(AppConstants.USERNAME, username);
-			}
-			preferencesEditor.putInt(username + AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
-			preferencesEditor.putString(AppConstants.LIVE_SESSION_ID, loginData.getSessionId());
-			preferencesEditor.putLong(AppConstants.LIVE_SESSION_ID_SAVE_TIME, System.currentTimeMillis());
-			preferencesEditor.putString(AppConstants.USER_TOKEN, loginData.getLoginToken());
-			preferencesEditor.putLong(AppConstants.USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
-			preferencesEditor.commit();
-
-			registerGcmService();
-
-			getDataHolder().setLiveChessMode(true);
-			Log.d(TAG, "LBA LoginUpdateListener -> updateData");
-			connectLcc();
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-
-			//LogMe.dl(TAG, "LoginUpdateListener resultCode=" + resultCode);
-			performReloginForLiveDelayed();
-
-			// show message only for re-login and app update
-			if (RestHelper.containsServerCode(resultCode)) {
-				int serverCode = RestHelper.decodeServerCode(resultCode);
-				if (serverCode == ServerErrorCodes.ACCESS_DENIED_CODE) { // handled in CommonLogicFragment
-					String message = getString(R.string.version_is_obsolete_update);
-					safeShowSinglePopupDialog(R.string.error, message);
-					return;
-				} else if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) { // handled in CommonLogicFragment
-					String serverMessage = ServerErrorCodes.getUserFriendlyMessage(LiveBaseActivity.this, serverCode); // TODO restore
-
-					safeShowSinglePopupDialog(R.string.error, serverMessage);
-					return;
-				}
-			}
-			super.errorHandle(resultCode);
-		}
-	}
-
-	@Override
-	protected void afterLogin() {
-		super.afterLogin();
-
-		if (needReLoginToLive) {
-			getDataHolder().setLiveChessMode(true);
-			Log.d(TAG, "LBA afterLogin");
-			connectLcc();
-		}
-	}
 
 	protected void onLiveServiceConnected() {
 		LogMe.dl(TAG, "onLiveServiceConnected: liveHelper.getLccHelper() = " + liveHelper.getLccHelper());
@@ -856,5 +659,14 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	private void dismissNetworkCheckDialog() {
 		dismissFragmentDialogByTag(NETWORK_CHECK_TAG);
+	}
+
+	@Override
+	public void checkNetwork() {
+		if (!AppUtils.isNetworkAvailable(this)) {
+			dismissNetworkCheckDialog();
+			popupItem.setPositiveBtnId(R.string.check_connection);
+			showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
+		}
 	}
 }

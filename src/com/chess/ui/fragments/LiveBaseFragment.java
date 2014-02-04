@@ -27,7 +27,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	private static final String TAG = "LccLog-LiveBaseFragment";
 
 	protected LiveBaseActivity liveBaseActivity;
-	private LiveConnectionHelper liveHelper;
+	protected LiveConnectionHelper liveHelper;
 	protected boolean isLCSBound;
 	protected GameTaskListener gameTaskListener;
 

@@ -189,9 +189,4 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 	protected CoreActivityActionBar getInstance() {
 		return this;
 	}
-
-	@Override
-	protected void afterLogin() {
-
-	}
 }

@@ -24,6 +24,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -34,6 +35,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.entity.api.YourTurnItem;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.db.DbDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
@@ -893,5 +895,20 @@ public class AppUtils {
 
 	public static String upCaseFirst(String string) {
 		return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+	}
+
+	public static String getDeviceId(Context context) {
+		AppData appData = new AppData(context);
+		String deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+		if (TextUtils.isEmpty(deviceId)) {
+			deviceId = appData.getDeviceId();
+			if (TextUtils.isEmpty(deviceId)) { // generate a new one
+				deviceId = "Hello" + (Math.random() * 100) + "There" + System.currentTimeMillis();
+				appData.setDeviceId(deviceId);
+			}
+		}
+
+		deviceId = ImageCache.hashKeyForDisk(deviceId);
+		return deviceId.substring(0, 32);
 	}
 }

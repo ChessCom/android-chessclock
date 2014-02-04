@@ -13,10 +13,7 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.AbstractUpdateTask;
-import com.chess.lcc.android.interfaces.LccChatMessageListener;
-import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
-import com.chess.lcc.android.interfaces.LccEventListener;
-import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
+import com.chess.lcc.android.interfaces.*;
 import com.chess.live.client.*;
 import com.chess.model.DataHolder;
 import com.chess.model.GameLiveItem;
@@ -25,6 +22,7 @@ import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.configs.LiveGameConfig;
+import com.chess.ui.interfaces.LoginErrorUpdateListener;
 import com.chess.utilities.LogMe;
 import com.google.gson.Gson;
 
@@ -56,6 +54,8 @@ public class LiveConnectionHelper {
 	private LccConnectionListener connectionListener;
 	private LccSubscriptionListener subscriptionListener;
 
+	private LiveUiUpdateListener liveUiUpdateListener;
+	private LoginErrorUpdateListener loginErrorUpdateListener;
 	private LiveChessClientEventListener liveChessClientEventListener;
 	private LccConnectionUpdateFace connectionUpdateFace;
 
@@ -72,7 +72,6 @@ public class LiveConnectionHelper {
 		this.lccHelper = new LccHelper(this);
 
 		appData = new AppData(context);
-
 		connectionListener = new LccConnectionListener(this);
 		subscriptionListener = new LccSubscriptionListener();
 		handler = new Handler();
@@ -138,11 +137,15 @@ public class LiveConnectionHelper {
 				connectByCreds(username, pass);
 			} else {
 				connectionFailure = true; // we need this flag to able to re-connect from live chess
-				liveChessClientEventListener.onSessionExpired();
-				//String message = context.getString(R.string.account_error);
-				//liveChessClientEventListener.onConnectionFailure(message);
+
+				onSessionExpired();
 			}
 		}
+	}
+
+	private void onSessionExpired() {
+		LiveConnector liveConnector = new LiveConnector(context, liveUiUpdateListener, loginErrorUpdateListener);
+		liveConnector.performReloginForLive();
 	}
 
 	public void connectByCreds(String username, String pass) {
@@ -533,11 +536,11 @@ public class LiveConnectionHelper {
 	// ------------------- LccHelper wrapping --------------------------
 
 	public boolean isUserConnected() {
-		return lccHelper != null && lccHelper != null && isConnected();
+		return isConnected();
 	}
 
 	public boolean isActiveGamePresent() {
-		return lccHelper != null && lccHelper.isActiveGamePresent();
+		return lccHelper.isActiveGamePresent();
 	}
 
 	/*public boolean isValidToMakeMove() {
@@ -724,5 +727,13 @@ public class LiveConnectionHelper {
 
 	public Context getContext() {
 		return context;
+	}
+
+	public void setLiveUiUpdateListener(LiveUiUpdateListener liveUiUpdateListener) {
+		this.liveUiUpdateListener = liveUiUpdateListener;
+	}
+
+	public void setLoginErrorUpdateListener(LoginErrorUpdateListener loginErrorUpdateListener) {
+		this.loginErrorUpdateListener = loginErrorUpdateListener;
 	}
 }
