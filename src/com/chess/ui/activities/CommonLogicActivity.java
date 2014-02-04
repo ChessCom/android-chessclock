@@ -19,6 +19,7 @@ import com.chess.backend.entity.api.GcmItem;
 import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.gcm.GcmHelper;
 import com.chess.backend.interfaces.AbstractUpdateListener;
+import com.chess.backend.interfaces.LoginUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppConstants;

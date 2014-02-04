@@ -1,4 +1,4 @@
-package com.chess.ui.activities;
+package com.chess.backend.interfaces;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.LoginItem;
-import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.model.DataHolder;
 import com.chess.model.TacticsDataHolder;
 import com.chess.statics.AppConstants;
@@ -18,8 +17,6 @@ import com.flurry.android.FlurryAgent;
 /**
  * Created by vm on 03.02.14.
  */
-
-// todo: move to appropriate package
 
 public class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
 	private String facebookToken;

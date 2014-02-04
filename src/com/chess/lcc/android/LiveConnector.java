@@ -170,8 +170,7 @@ public class LiveConnector {
 			preferencesEditor.putLong(AppConstants.USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.commit();
 
-			//registerGcmService(); // TODO: @lcc - Alex, do we really need it here?
-
+			liveUiUpdateListener.registerGcm();
 			DataHolder.getInstance().setLiveChessMode(true);
 			Log.d(TAG, "LBA LoginUpdateListener -> updateData");
 			connectLcc();
@@ -201,7 +200,7 @@ public class LiveConnector {
 		}
 	}
 
-	private class FacebookLoginUpdateListener extends com.chess.ui.activities.LoginUpdateListener {
+	private class FacebookLoginUpdateListener extends com.chess.backend.interfaces.LoginUpdateListener {
 
 		public FacebookLoginUpdateListener(Context context, String facebookToken, LoginErrorUpdateListener loginErrorUpdateListener) {
 			super(context, facebookToken, loginErrorUpdateListener);

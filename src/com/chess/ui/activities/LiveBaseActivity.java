@@ -310,7 +310,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		return isLCSBound;
 	}
 
-
 	@Override
 	public void performServiceConnection() {
 		if (isLCSBound) {
@@ -668,5 +667,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			popupItem.setPositiveBtnId(R.string.check_connection);
 			showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 		}
+	}
+
+	@Override
+	public void registerGcm() {
+		super.registerGcmService();
 	}
 }
