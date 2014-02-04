@@ -10,7 +10,6 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -569,22 +568,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected String getDeviceId() {
-		FragmentActivity activity = getActivity();
-		if (activity != null) {
-			String deviceId = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
-			if (TextUtils.isEmpty(deviceId)) {
-				deviceId = getAppData().getDeviceId();
-				if (TextUtils.isEmpty(deviceId)) { // generate a new one
-					deviceId = "Hello" + (Math.random() * 100) + "There" + System.currentTimeMillis();
-					getAppData().setDeviceId(deviceId);
-				}
-			}
-
-			deviceId = ImageCache.hashKeyForDisk(deviceId);
-			return deviceId.substring(0, 32);
-		} else {
-			return ImageCache.hashKeyForDisk("Hello" + (Math.random() * 100) + "There" + System.currentTimeMillis());
-		}
+		return AppUtils.getDeviceId(getActivity());
 	}
 
 	public void onSearchQuery(String query) {

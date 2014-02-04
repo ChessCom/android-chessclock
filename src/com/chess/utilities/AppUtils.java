@@ -39,7 +39,10 @@ import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.db.DbDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
-import com.chess.statics.*;
+import com.chess.statics.AppData;
+import com.chess.statics.IntentConstants;
+import com.chess.statics.StaticData;
+import com.chess.statics.Symbol;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 
 import java.io.File;
@@ -898,17 +901,21 @@ public class AppUtils {
 	}
 
 	public static String getDeviceId(Context context) {
-		AppData appData = new AppData(context);
-		String deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-		if (TextUtils.isEmpty(deviceId)) {
-			deviceId = appData.getDeviceId();
-			if (TextUtils.isEmpty(deviceId)) { // generate a new one
-				deviceId = "Hello" + (Math.random() * 100) + "There" + System.currentTimeMillis();
-				appData.setDeviceId(deviceId);
+		if (context != null) {
+			AppData appData = new AppData(context);
+			String deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+			if (TextUtils.isEmpty(deviceId)) {
+				deviceId = appData.getDeviceId();
+				if (TextUtils.isEmpty(deviceId)) { // generate a new one
+					deviceId = "Hello" + (Math.random() * 100) + "There" + System.currentTimeMillis();
+					appData.setDeviceId(deviceId);
+				}
 			}
-		}
 
-		deviceId = ImageCache.hashKeyForDisk(deviceId);
-		return deviceId.substring(0, 32);
+			deviceId = ImageCache.hashKeyForDisk(deviceId);
+			return deviceId.substring(0, 32);
+		} else {
+			return ImageCache.hashKeyForDisk("Hello" + (Math.random() * 100) + "There" + System.currentTimeMillis());
+		}
 	}
 }
