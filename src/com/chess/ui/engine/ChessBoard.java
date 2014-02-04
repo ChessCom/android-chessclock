@@ -407,7 +407,7 @@ public class ChessBoard implements BoardFace {
 			}
 		}
 		// white QueenSide castling O-O-O
-		if (whiteKing > 59) {
+		if (whiteKing > 59) {       // TODO remove all this hardcode and invent a easy logic to parse possible moves for castling
 			whiteKingMoveOOO = new int[]{56, 57, 58};
 		} else {
 			if (whiteKing == 59) {
@@ -423,7 +423,7 @@ public class ChessBoard implements BoardFace {
 					whiteKingMoveOOO = new int[]{56};
 				}
 			} else {
-				whiteKingMoveOOO = new int[]{56};
+				whiteKingMoveOOO = new int[]{56, 58}; // this should be legal, because we parse O-O-O and king can be moved to 58(C1)
 			}
 		}
 	}
