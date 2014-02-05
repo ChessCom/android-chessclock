@@ -34,6 +34,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	private static final int BACKOFF_INCREMENT = 500;
 	private static final int MAX_BACKOFF_INTERVAL = 2000;
+	public static final int MAX_NETWORK_DELAY = 4000;
 	private static final long WS_CONNECT_TIMEOUT = 10000L;
 	private static final int WS_MAX_MESSAGE_SIZE = 1024 * 1024;
 
@@ -139,17 +140,18 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	}
 
 	private SimpleHttpConnectionConfiguration createHttpConnectionConfig(HttpClient httpClient) {
-		return new SimpleHttpConnectionConfiguration(httpClient, ClientTransport.HTTP, getHttpConnectionUrl());
+		return new SimpleHttpConnectionConfiguration(httpClient, ClientTransport.HTTP, getHttpConnectionUrl(),
+				MAX_NETWORK_DELAY);
 	}
 
 	private SimpleWebSocketConnectionConfiguration createWSConnectionConfig() {
-		return new SimpleWebSocketConnectionConfiguration(ClientTransport.WS, getWSConnectionUrl(), WS_CONNECT_TIMEOUT,
-				WS_MAX_MESSAGE_SIZE, false);
+		return new SimpleWebSocketConnectionConfiguration(ClientTransport.WS, getWSConnectionUrl(), MAX_NETWORK_DELAY,
+				WS_CONNECT_TIMEOUT, WS_MAX_MESSAGE_SIZE, false);
 	}
 
 	private SimpleWebSocketConnectionConfiguration createWSSConnectionConfig() {
-		return new SimpleWebSocketConnectionConfiguration(ClientTransport.WSS, getWSSConnectionUrl(), WS_CONNECT_TIMEOUT,
-				WS_MAX_MESSAGE_SIZE, false);
+		return new SimpleWebSocketConnectionConfiguration(ClientTransport.WSS, getWSSConnectionUrl(), MAX_NETWORK_DELAY,
+				WS_CONNECT_TIMEOUT, WS_MAX_MESSAGE_SIZE, false);
 	}
 
 	/*private SimpleHttpConnectionConfiguration createHttpsConnectionConfig(HttpClient httpClient) {
@@ -173,7 +175,6 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	private String getWSSConnectionUrl() {
 		return "wss://" + getConfigBayeuxHost() + ":443/cometd";
-		//return "wss://" + getConfigBayeuxHost() + ":443/cometd-test";
 	}
 
 	private String getHttpConnectionUrl() {
