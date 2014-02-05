@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.text.Html;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -45,7 +44,6 @@ import com.chess.ui.views.game_controls.ControlsCompView;
 import com.chess.utilities.MopubHelper;
 import com.chess.widgets.ProfileImageView;
 import org.petero.droidfish.GameMode;
-import org.petero.droidfish.Util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -85,9 +83,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private CompGameConfig compGameConfig;
 	private GameCompFragment.InitComputerEngineUpdateListener engineUpdateListener;
 	private boolean engineThinkingPathVisible;
-	private boolean showVariationLine = true;
+	private boolean showVariationLine = false;
 	private boolean mShowBookHints = true;
-	private boolean mShowStats = true;
+	private boolean mShowStats = false;
 
 	public GameCompFragment() {
 		CompGameConfig config = new CompGameConfig.Builder().build();
@@ -833,16 +831,18 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	@Override
-	public final void onEngineThinkingInfo(final String thinkingStr1, final String variantStr,
+	public final void onEngineThinkingInfo(final String thinkingStr1, final String statStr, final String variantStr,
 										   final ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMoves,
 										   final ArrayList<org.petero.droidfish.gamelogic.Move> variantMoves,
 										   final ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
 
+		// todo: move to CompEngineHelper and refactor
+
 //		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
 //		CompEngineHelper.log("variantStr " + variantStr);
 
-		logTest(" variantStr = " + variantStr + " thinkingStr1 = " + thinkingStr1
-				+ " pvMoves = "+ pvMoves.size() + " variantMoves = " + variantMoves.size());
+		logTest(" variantStr = " + statStr + " thinkingStr1 = " + thinkingStr1
+				+ " pvMoves = " + pvMoves.size() + " variantMoves = " + variantMoves.size());
 
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
@@ -860,7 +860,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 						if (mShowStats) {
 							if (!thinkingEmpty)
 								s += "\n";
-							s += variantStr;
+							s += statStr;
 							if (s.length() > 0) thinkingEmpty = false;
 						}
 					}
@@ -883,9 +883,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				if (showVariationLine && (variantStr.indexOf(' ') >= 0)) { // showVariationLine
 					String s = "";
 					if (!thinkingEmpty)
-						s += "<br>";
-					s += Util.boldStart + "Var:" + Util.boldStop + variantStr;
-					engineThinkingPath.append(Html.fromHtml(s));
+						s += ". ";
+					s += "Var: " + variantStr;
+					engineThinkingPath.append(s);
 					log += s;
 					thinkingEmpty = false;
 				}
@@ -932,11 +932,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	private void setThinkingVisibility(boolean visible) {
-//		if (visible) {
-//			engineThinkingPath.setVisibility(View.VISIBLE);
-//		} else {
-//			engineThinkingPath.setVisibility(View.GONE);
-//		}
+		if (visible) {
+			engineThinkingPath.setVisibility(View.VISIBLE);
+		} else {
+			engineThinkingPath.setVisibility(View.GONE);
+		}
 	}
 
 	@Override

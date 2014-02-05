@@ -22,7 +22,7 @@ public interface GameCompFace extends GameFace {
 
 	void updateEngineMove(Move engineMove);
 
-	void onEngineThinkingInfo(String engineThinkingInfo, String variantStr, ArrayList<ArrayList<Move>> pvMoves,
+	void onEngineThinkingInfo(String engineThinkingInfo, String statStr, String variantStr, ArrayList<ArrayList<Move>> pvMoves,
 							  ArrayList<Move> variantMoves, ArrayList<Move> bookMoves);
 
 	void run(Runnable runnable);

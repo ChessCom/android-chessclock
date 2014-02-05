@@ -235,7 +235,7 @@ public class CompEngineHelper implements GUIInterface {
 		pgnOptions.view.comments    = true;
 		pgnOptions.view.nag         = true;
 		pgnOptions.view.headers     = false;
-		pgnOptions.view.pieceType   = PGNOptions.PT_LOCAL;
+		pgnOptions.view.pieceType   = PGNOptions.PT_ENGLISH; // adjust and enable localized piece signs when necessary
 		pgnOptions.imp.variations   = true;
 		pgnOptions.imp.comments     = true;
 		pgnOptions.imp.nag          = true;
@@ -387,7 +387,7 @@ public class CompEngineHelper implements GUIInterface {
 		String bookInfoStr = bookInfo;
 		this.bookMoves = bookMoves;
 
- 		gameCompActivityFace.onEngineThinkingInfo(thinkingStr1, variantStr, pvMoves, variantMoves, bookMoves);
+ 		gameCompActivityFace.onEngineThinkingInfo(thinkingStr1, statStr, variantStr, pvMoves, variantMoves, bookMoves);
 
         /*if (engineCtrl.computerBusy()) {
             lastComputationMillis = System.currentTimeMillis();

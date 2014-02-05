@@ -121,6 +121,9 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	private String[] compDepth;
 	private TextView engineThinkingPath;
 	private boolean engineThinkingPathVisible;
+	private boolean showVariationLine = false;
+	private boolean mShowBookHints = true;
+	private boolean mShowStats = false;
 
 	protected CompGameConfig compGameConfig;
 
@@ -942,16 +945,20 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
-	public final void onEngineThinkingInfo(final String thinkingStr1, final String variantStr, final ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMoves, final ArrayList<org.petero.droidfish.gamelogic.Move> variantMoves, final ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
+	public final void onEngineThinkingInfo(final String thinkingStr1, final String statStr, final String variantStr,
+										   final ArrayList<ArrayList<org.petero.droidfish.gamelogic.Move>> pvMoves,
+										   final ArrayList<org.petero.droidfish.gamelogic.Move> variantMoves,
+										   final ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
 
-		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
-		CompEngineHelper.log("variantStr " + variantStr);
+		// todo: move to CompEngineHelper and refactor
 
-		FragmentActivity activity = getActivity();
-		if (activity == null) {
-			return;
-		}
-		activity.runOnUiThread(new Runnable() {
+//		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
+//		CompEngineHelper.log("variantStr " + variantStr);
+
+		logTest(" variantStr = " + statStr + " thinkingStr1 = " + thinkingStr1
+				+ " pvMoves = " + pvMoves.size() + " variantMoves = " + variantMoves.size());
+
+		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 
@@ -964,38 +971,38 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 					s = thinkingStr1;
 					if (s.length() > 0) {
 						thinkingEmpty = false;
-						/*if (mShowStats) {
+						if (mShowStats) {
 							if (!thinkingEmpty)
 								s += "\n";
-							s += thinkingStr2;
+							s += statStr;
 							if (s.length() > 0) thinkingEmpty = false;
-						}*/
+						}
 					}
 					//}
-					// use later
-					// engineThinkingPath is invisible, always
+					//
+					// engineThinkingPath is always invisible
 					engineThinkingPath.setText(s, TextView.BufferType.SPANNABLE);
 					log = s;
 				}
 				// todo @compengine: show book hints for human player
-				/*if (mShowBookHints && (bookInfoStr.length() > 0)) {
+//				if (mShowBookHints && (bookInfoStr.length() > 0)) {
+//					String s = "";
+//					if (!thinkingEmpty)
+//						s += "<br>";
+//					s += Util.boldStart + "Book" + Util.boldStop + bookInfoStr;
+//					engineThinkingPath.append(Html.fromHtml(s));
+//					log += s;
+//					thinkingEmpty = false;
+//				}
+				if (showVariationLine && (variantStr.indexOf(' ') >= 0)) { // showVariationLine
 					String s = "";
 					if (!thinkingEmpty)
-						s += "<br>";
-					s += Util.boldStart + getString(R.string.book) + Util.boldStop + bookInfoStr;
-					engineThinkingPath.append(Html.fromHtml(s));
+						s += ". ";
+					s += "Var: " + variantStr;
+					engineThinkingPath.append(s);
 					log += s;
 					thinkingEmpty = false;
-				}*/
-				/*if (showVariationLine && (variantStr.indexOf(' ') >= 0)) { // showVariationLine
-					String s = "";
-					if (!thinkingEmpty)
-						s += "<br>";
-					s += Util.boldStart + "Var:" + Util.boldStop + variantStr;
-					engineThinkingPath.append(Html.fromHtml(s));
-					log += s;
-					thinkingEmpty = false;
-				}*/
+				}
 				setThinkingVisibility(!thinkingEmpty);
 
 				// hints arrow
@@ -1013,14 +1020,14 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 //				}
 //				/*if ((hints == null) && mShowBookHints)
 //					hints = bookMoves;*/
-//				if (((hints == null) || hints.isEmpty()) &&
+//				/*if (((hints == null) || hints.isEmpty()) &&
 //						(variantMoves != null) && variantMoves.size() > 1) {
 //					hints = variantMoves;
 //				}
 //				if ((hints != null) && (hints.size() > CompEngineHelper.MAX_NUM_HINT_ARROWS)) {
 //					hints = hints.subList(0, CompEngineHelper.MAX_NUM_HINT_ARROWS);
-//				}
-
+//				}*/
+//
 //				HashMap<org.petero.droidfish.gamelogic.Move, PieceColor> hintsMap =
 //						new HashMap<org.petero.droidfish.gamelogic.Move, PieceColor>();
 //				if (hints != null) {
@@ -1030,10 +1037,10 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 //						hintsMap.put(move, pieceColor);
 //					}
 //				}
-
+//
 //				boardView.setMoveHints(hintsMap);
-
-				CompEngineHelper.log("Thinking info:\n" + log);
+//
+//				CompEngineHelper.log("Thinking info:\n" + log);
 			}
 		});
 	}
