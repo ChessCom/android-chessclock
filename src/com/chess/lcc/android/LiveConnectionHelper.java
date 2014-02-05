@@ -35,6 +35,7 @@ public class LiveConnectionHelper {
 	private static final String TAG = "LCCLOG-LiveConnectionHelper";
 
 	private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec, shutdown after user leave app
+	private static final long PLAYING_SHUTDOWN_TIMEOUT_DELAY = 2 * 60 * 1000;
 	private static final int CONNECTION_FAILURE_DELAY = 2000;
 	public static final Object CLIENT_SYNC_LOCK = new Object();
 	public static final boolean RESET_LCC_LISTENERS = true;
@@ -289,8 +290,6 @@ public class LiveConnectionHelper {
 
 		if (connected) {
 
-			appData.resetLiveConnectAttempts();
-
 			connectionFailure = false;
 			//connectionFailureCounter = 0;
 
@@ -469,7 +468,7 @@ public class LiveConnectionHelper {
 	}
 
 	public void startIdleTimeOutCounter() {
-		handler.postDelayed(shutDownRunnable, SHUTDOWN_TIMEOUT_DELAY);
+		handler.postDelayed(shutDownRunnable, getShutDownDelay());
 	}
 
 	public void stopIdleTimeOutCounter() {
@@ -483,6 +482,10 @@ public class LiveConnectionHelper {
 			leave();
 		}
 	};
+
+	private long getShutDownDelay() {
+		return lccHelper.isUserPlaying() ? PLAYING_SHUTDOWN_TIMEOUT_DELAY : SHUTDOWN_TIMEOUT_DELAY;
+	}
 
 	// ------------------- Task runners wrapping ------------------------
 

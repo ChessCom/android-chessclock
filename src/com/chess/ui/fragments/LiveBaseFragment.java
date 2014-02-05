@@ -2,7 +2,6 @@ package com.chess.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import com.chess.R;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.DataNotValidException;
@@ -10,6 +9,7 @@ import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
+import com.chess.model.DataHolder;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.fragments.live.GameLiveFragment;
@@ -30,12 +30,15 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	protected LiveConnectionHelper liveHelper;
 	protected boolean isLCSBound;
 	protected GameTaskListener gameTaskListener;
+	private boolean isLiveFragment;
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 
 		liveBaseActivity = (LiveBaseActivity) activity;
+
+		isLiveFragment = liveBaseActivity.isLiveFragment(getClass().getSimpleName());
 	}
 
 	@Override
@@ -46,21 +49,20 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		if (getDataHolder().isLiveChess()) {
-			setLCSBound(liveBaseActivity.isLCSBound()); // it also updated when fragment returns from back stack
-		}
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 
-		if (getDataHolder().isLiveChess()) {
+		if (isLiveFragment) {
 			setLCSBound(liveBaseActivity.isLCSBound());
+			DataHolder.getInstance().setLiveChessMode(true);
+
+			if (liveHelper != null) { // if we return after shutdown procedure as started
+				liveHelper.stopIdleTimeOutCounter();
+			}
+
+			connectLive();
 		}
+
 		// update state of inherited fragments re-registering services
 		if (isLCSBound) {
 			LiveConnectionHelper liveHelper;

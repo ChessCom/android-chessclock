@@ -32,6 +32,10 @@ import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.live.*;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
+import com.chess.ui.fragments.settings.SettingsGeneralFragment;
+import com.chess.ui.fragments.settings.SettingsGeneralFragmentTablet;
+import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
+import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 
@@ -101,11 +105,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				bindAndStartLiveService();
 			}
 		}
-
-		if (liveHelper != null) { // if we return after shutdown procedure as started
-			Log.d("TEST", "liveHelper.stopIdleTimeOutCounter() ");
-			liveHelper.stopIdleTimeOutCounter();
-		}
 	}
 
 	@Override
@@ -118,6 +117,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		//Log.d(TAG, "LiveBaseActivity go pause, isLCSBound = " + isLCSBound);
 		if (isLCSBound) {
+			getDataHolder().setLiveChessMode(false);
 			liveHelper.startIdleTimeOutCounter();
 			isLCSBound = false;  // we drop here flag because we can't drop it after shutdown, as Activity will not exist and only service will be alive
 		}
@@ -672,5 +672,37 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public void registerGcm() {
 		super.registerGcmService();
+	}
+
+	public boolean isLiveFragment(String fragmentName) {
+		String liveFragment1 = LiveHomeFragment.class.getSimpleName();
+		String liveFragment2 = LiveHomeFragmentTablet.class.getSimpleName();
+		String liveFragment3 = GameLiveFragment.class.getSimpleName();
+		String liveFragment4 = GameLiveObserveFragment.class.getSimpleName();
+		String liveFragment5 = GameLiveObserveFragmentTablet.class.getSimpleName();
+		String liveFragment6 = LiveChatFragment.class.getSimpleName();
+		String liveFragment7 = LiveGameWaitFragment.class.getSimpleName();
+		String liveFragment8 = SettingsLiveChessFragment.class.getSimpleName();
+		String liveFragment9 = SettingsGeneralFragment.class.getSimpleName();
+		String liveFragment10 = SettingsGeneralFragmentTablet.class.getSimpleName();
+		String liveFragment11 = LiveGamesArchiveFragment.class.getSimpleName();
+		String liveFragment12 = GameLiveArchiveFragment.class.getSimpleName();
+		String liveFragment13 = GameLiveArchiveAnalysisFragment.class.getSimpleName();
+		String liveFragment14 = StatsGameDetailsFragment.class.getSimpleName();
+
+		return fragmentName.equals(liveFragment1)
+				|| fragmentName.equals(liveFragment2)
+				|| fragmentName.equals(liveFragment3)
+				|| fragmentName.equals(liveFragment4)
+				|| fragmentName.equals(liveFragment5)
+				|| fragmentName.equals(liveFragment6)
+				|| fragmentName.equals(liveFragment7)
+				|| fragmentName.equals(liveFragment8)
+				|| fragmentName.equals(liveFragment9)
+				|| fragmentName.equals(liveFragment10)
+				|| fragmentName.equals(liveFragment11)
+				|| fragmentName.equals(liveFragment12)
+				|| fragmentName.equals(liveFragment13)
+				|| fragmentName.equals(liveFragment14);
 	}
 }

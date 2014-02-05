@@ -286,29 +286,6 @@ public class AppData {
 		editor.commit();
 	}
 
-	/*
-	public boolean isLiveChess() {
-		return getBooleanValue(IS_LIVE_CHESS_ON, false);
-	}
-
-	public void setLiveChessMode(boolean enabled) {
-		setBooleanValue(IS_LIVE_CHESS_ON, enabled);
-	}
-	*/
-
-	public void incrementLiveConnectAttempts() {
-		int attempts = getLiveConnectAttempts();
-		setIntValue(AppConstants.LIVE_CONNECT_ATTEMPTS, ++attempts);
-	}
-
-	public int getLiveConnectAttempts() {
-		return getIntValue(LIVE_CONNECT_ATTEMPTS, 0);
-	}
-
-	public void resetLiveConnectAttempts() {
-		setIntValue(LIVE_CONNECT_ATTEMPTS, 0);
-	}
-
 	public boolean isLastUsedDailyMode() {
 		return getBooleanValue(PREF_LAST_USED_DAILY_MODE, true);
 	}

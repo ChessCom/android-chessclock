@@ -97,7 +97,6 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 
-		getDataHolder().setLiveChessMode(true);
 		super.onViewCreated(view, savedInstanceState);
 
 		setTitle(R.string.live);
@@ -108,9 +107,6 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		//LogMe.dl("LCCLOG", "LiveHomeFragment onResume isNetworkAvailable() " + isNetworkAvailable());
-		connectLive();
 
 		if (isLCSBound) {
 			try {

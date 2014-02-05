@@ -140,7 +140,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 
-		getDataHolder().setLiveChessMode(true);
 		super.onViewCreated(view, savedInstanceState);
 
 		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
@@ -158,20 +157,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		connectLive();
-
-		/*
-		if (!DataHolder.getInstance().isLiveChess()) {
-
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					goHome();
-				}
-			});
-		}
-		*/
 
 		if (isLCSBound) {
 			try {
