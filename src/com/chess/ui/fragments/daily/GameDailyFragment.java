@@ -761,11 +761,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.resign));
 		}
 
-		// user able to offer draw only when it's his turn
-		if (!isUserMove()) {
-			optionsMap.remove(ID_OFFER_DRAW);
-		}
-
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);
 		optionsSelectFragment.show(getFragmentManager(), OPTION_SELECTION_TAG);
 	}

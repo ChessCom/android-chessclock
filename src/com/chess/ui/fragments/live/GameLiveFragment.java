@@ -900,7 +900,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
 			}
 
-			if (!isUserMove()) {
+			if (!isUserMove()) { // user able to offer draw only when it's his turn
 				optionsMap.remove(ID_OFFER_DRAW);
 			}
 

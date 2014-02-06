@@ -270,10 +270,20 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
 
 		if (gameListCurrentItem.isDrawOffered() > 0) {
-			popupItem.setNeutralBtnId(R.string.ic_play);
-			popupItem.setButtons(3);
+			// draw_offered - 0 = no draw offered, 1 = white offered draw, 2 = black offered draw
+			boolean iPlayWhite = gameListCurrentItem.getIPlayAs() == RestHelper.P_WHITE;
+			boolean whiteOfferedDraw = gameListCurrentItem.isDrawOffered() == RestHelper.P_WHITE;
+			if (iPlayWhite && whiteOfferedDraw || !iPlayWhite && !whiteOfferedDraw) {
+				ChessBoardOnline.resetInstance();
+				long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
-			showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
+				getActivityFace().openFragment(GameDailyFragmentTablet.createInstance(gameId));
+			} else {
+				popupItem.setNeutralBtnId(R.string.ic_play);
+				popupItem.setButtons(3);
+
+				showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
+			}
 		} else {
 			ChessBoardOnline.resetInstance();
 			long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
@@ -319,7 +329,12 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		public void updateData(DailyCurrentGameItem returnedObj) {
 			String draw = RestHelper.V_OFFERDRAW;
 			if (returnedObj.getData().isDrawOffered() > 0) {
-				draw = RestHelper.V_ACCEPTDRAW;
+				// draw_offered - 0 = no draw offered, 1 = white offered draw, 2 = black offered draw
+				boolean iPlayWhite = returnedObj.getData().getIPlayAs() == RestHelper.P_WHITE;
+				boolean whiteOfferedDraw = returnedObj.getData().isDrawOffered() == RestHelper.P_WHITE;
+				if ((!iPlayWhite || !whiteOfferedDraw) && (iPlayWhite || whiteOfferedDraw)) {
+					draw = RestHelper.V_ACCEPTDRAW;
+				}
 			}
 
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),

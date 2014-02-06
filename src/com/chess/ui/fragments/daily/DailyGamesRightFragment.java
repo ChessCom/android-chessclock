@@ -16,7 +16,7 @@ import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
-import com.chess.backend.entity.api.*;
+import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.daily_games.DailyChallengeItem;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameItem;
@@ -188,10 +188,19 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 			gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
 
 			if (gameListCurrentItem.isDrawOffered() > 0) {
-				popupItem.setNeutralBtnId(R.string.ic_play);
-				popupItem.setButtons(3);
+				// draw_offered - 0 = no draw offered, 1 = white offered draw, 2 = black offered draw
+				boolean iPlayWhite = gameListCurrentItem.getIPlayAs() == RestHelper.P_WHITE;
+				boolean whiteOfferedDraw = gameListCurrentItem.isDrawOffered() == RestHelper.P_WHITE;
+				if (iPlayWhite && whiteOfferedDraw || !iPlayWhite && !whiteOfferedDraw) {
+					ChessBoardOnline.resetInstance();
+					getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
+					getActivityFace().toggleRightMenu();
+				} else {
+					popupItem.setNeutralBtnId(R.string.ic_play);
+					popupItem.setButtons(3);
 
-				showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
+					showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
+				}
 			} else {
 				ChessBoardOnline.resetInstance();
 				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
@@ -269,7 +278,12 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		public void updateData(DailyCurrentGameItem returnedObj) {
 			String draw = RestHelper.V_OFFERDRAW;
 			if (returnedObj.getData().isDrawOffered() > 0) {
-				draw = RestHelper.V_ACCEPTDRAW;
+				// draw_offered - 0 = no draw offered, 1 = white offered draw, 2 = black offered draw
+				boolean iPlayWhite = returnedObj.getData().getIPlayAs() == RestHelper.P_WHITE;
+				boolean whiteOfferedDraw = returnedObj.getData().isDrawOffered() == RestHelper.P_WHITE;
+				if ((!iPlayWhite || !whiteOfferedDraw) && (iPlayWhite || whiteOfferedDraw)) {
+					draw = RestHelper.V_ACCEPTDRAW;
+				}
 			}
 
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameListCurrentItem.getGameId(),
