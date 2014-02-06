@@ -52,7 +52,7 @@ public class GameLessonsFragmentTablet extends GameLessonFragment {
 		defaultDescriptionPadding = (int) (20 * getResources().getDisplayMetrics().density);
 		descriptionView = (ScrollView) view.findViewById(R.id.descriptionView);
 		lessonTitleTxt = (TextView) view.findViewById(R.id.lessonTitleTxt);
-		commentTxt = (TextView) view.findViewById(R.id.commentTxt);
+		goalCommentTxt = (TextView) view.findViewById(R.id.goalCommentTxt);
 		descriptionTxt = (TextView) view.findViewById(R.id.descriptionTxt);
 		lessonDescriptionDivider = view.findViewById(R.id.lessonDescriptionDivider);
 		positionDescriptionTxt = (TextView) view.findViewById(R.id.positionDescriptionTxt);

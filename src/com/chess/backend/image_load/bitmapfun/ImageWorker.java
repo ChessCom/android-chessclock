@@ -26,9 +26,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.widget.ImageView;
-import com.chess.BuildConfig;
 import com.chess.utilities.AppUtils;
 
 import java.io.IOException;
@@ -195,10 +193,10 @@ public abstract class ImageWorker {
 		final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
 		if (bitmapWorkerTask != null) {
 			bitmapWorkerTask.cancel(true);
-			if (BuildConfig.DEBUG) {
-				final Object bitmapData = bitmapWorkerTask.data;
-				Log.d(TAG, "cancelWork - cancelled work for " + bitmapData);
-			}
+//			if (BuildConfig.DEBUG) {
+//				final Object bitmapData = bitmapWorkerTask.data;
+//				Log.d(TAG, "cancelWork - cancelled work for " + bitmapData);
+//			}
 		}
 	}
 
@@ -215,9 +213,9 @@ public abstract class ImageWorker {
 			final Object bitmapData = bitmapWorkerTask.data;
 			if (bitmapData == null || !bitmapData.equals(data)) {
 				bitmapWorkerTask.cancel(true);
-				if (BuildConfig.DEBUG) {
-					Log.d(TAG, "cancelPotentialWork - cancelled work for " + data);
-				}
+//				if (BuildConfig.DEBUG) {
+//					Log.d(TAG, "cancelPotentialWork - cancelled work for " + data);
+//				}
 			} else {
 				// The same work is already in progress.
 				return false;
@@ -258,9 +256,9 @@ public abstract class ImageWorker {
 		 */
 		@Override
 		protected BitmapDrawable doInBackground(Object... params) {
-			if (BuildConfig.DEBUG) {
-				Log.d(TAG, "doInBackground - starting work");
-			}
+//			if (BuildConfig.DEBUG) {
+//				Log.d(TAG, "doInBackground - starting work");
+//			}
 
 			data = params[0];
 			final String dataString = String.valueOf(data);
@@ -314,9 +312,9 @@ public abstract class ImageWorker {
 				}
 			}
 
-			if (BuildConfig.DEBUG) {
-				Log.d(TAG, "doInBackground - finished work");
-			}
+//			if (BuildConfig.DEBUG) {
+//				Log.d(TAG, "doInBackground - finished work");
+//			}
 
 			return drawable;
 		}
@@ -333,9 +331,9 @@ public abstract class ImageWorker {
 
 			final ImageView imageView = getAttachedImageView();
 			if (value != null && imageView != null) {
-				if (BuildConfig.DEBUG) {
-					Log.d(TAG, "onPostExecute - setting bitmap");
-				}
+//				if (BuildConfig.DEBUG) {
+//					Log.d(TAG, "onPostExecute - setting bitmap");
+//				}
 				setImageDrawable(imageView, value);
 			}
 		}

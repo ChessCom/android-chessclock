@@ -227,6 +227,10 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 
 		@Override
 		public void updateData(LessonCourseListItem.Data returnedObj) {
+			if (getActivity() == null) {
+				return;
+			}
+
 			// get saved courses
 
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonCoursesForUser(getUsername()));

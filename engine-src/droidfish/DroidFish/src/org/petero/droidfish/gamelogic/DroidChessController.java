@@ -290,11 +290,11 @@ public class DroidChessController {
         if (humansTurn()) {
             Position oldPos = new Position(game.currPos());
 
-			boolean r = doMove(m);
+			boolean isLegal = doMove(m);
 
-			Log.d(MyFish.TAG, "DO MOVE LEGAL: " + r);
+			Log.d(MyFish.TAG, "DO MOVE LEGAL: " + isLegal);
 
-            if (r) {
+            if (isLegal) {
                 if (m.equals(ponderMove) && !gameMode.analysisMode() &&
                     (computerPlayer.getSearchType() == SearchType.PONDER)) {
                     computerPlayer.ponderHit(searchId);

@@ -88,21 +88,6 @@ public class LessonsCategoriesFragmentTablet extends LessonsCategoriesFragment {
 	}
 
 	@Override
-	protected void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			if (getAdapter().getCount() == 0) {
-				listView.setVisibility(View.GONE);
-
-			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
-		}
-	}
-
-	@Override
 	protected void widgetsInit(View view) {
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);

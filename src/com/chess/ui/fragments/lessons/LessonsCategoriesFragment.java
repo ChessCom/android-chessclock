@@ -49,7 +49,6 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	private List<String> categoriesNames;
 	private List<Integer> categoriesIds;
 	private SaveLessonsUpdateListener saveLessonsUpdateListener;
-	private LessonsUpdateListener lessonsUpdateListener;
 
 	private int previousCategoryId;
 	protected String sectionName;
@@ -76,14 +75,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 			sectionName = savedInstanceState.getString(SECTION_NAME);
 		}
 
-		setAdapter(new LessonsCursorAdapter(getActivity(), null));
-		paginationAdapter = new LessonsPaginationAdapter(getActivity(), getAdapter(), new LessonsUpdateListener(), null);
-
-		lessonsUpdateListener = new LessonsUpdateListener();
-		saveLessonsUpdateListener = new SaveLessonsUpdateListener();
-		lessonsCursorUpdateListener = new LessonsCursorUpdateListener();
-		categoriesNames = new ArrayList<String>();
-		categoriesIds = new ArrayList<Integer>();
+		init();
 	}
 
 	@Override
@@ -106,21 +98,11 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		setTitlePadding(ONE_ICON);
 	}
 
-	protected void widgetsInit(View view) {
-		loadingView = view.findViewById(R.id.loadingView);
-		emptyView = (TextView) view.findViewById(R.id.emptyView);
-
-		categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
-
-		listView = (ListView) view.findViewById(R.id.listView);
-		listView.setAdapter(paginationAdapter);
-		listView.setOnItemClickListener(this);
-	}
-
 	@Override
 	public void onResume() {
 		super.onResume();
 
+		// we need to set spinner here because of inheritance
 		boolean loaded = categoriesNames.size() != 0 || fillCategories();
 
 		if (loaded) {
@@ -137,6 +119,7 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 			categorySpinner.setOnItemSelectedListener(this);
 			categorySpinner.setSelection(position);
 		}
+
 	}
 
 	@Override
@@ -296,18 +279,25 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 		}
 	}
 
-	protected void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			if (getAdapter().getCount() == 0) {
-				listView.setVisibility(View.GONE);
+	private void init() {
+		categoriesNames = new ArrayList<String>();
+		categoriesIds = new ArrayList<Integer>();
+		saveLessonsUpdateListener = new SaveLessonsUpdateListener();
+		lessonsCursorUpdateListener = new LessonsCursorUpdateListener();
 
-			}
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
-		}
+		setAdapter(new LessonsCursorAdapter(getActivity(), null));
+		paginationAdapter = new LessonsPaginationAdapter(getActivity(), getAdapter(), new LessonsUpdateListener(), null);
+	}
+
+	protected void widgetsInit(View view) {
+		loadingView = view.findViewById(R.id.loadingView);
+		emptyView = (TextView) view.findViewById(R.id.emptyView);
+
+		listView = (ListView) view.findViewById(R.id.listView);
+		listView.setAdapter(paginationAdapter);
+		listView.setOnItemClickListener(this);
+
+		categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
 	}
 
 	@Override

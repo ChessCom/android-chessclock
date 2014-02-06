@@ -95,6 +95,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	private boolean noNetwork;
 	private boolean firstRun = true;
+	private boolean viewOnly = true;
 
 	private GetTacticsUpdateListener getTacticsUpdateListener;
 	private TacticsTrainerUpdateListener tacticCorrectUpdateListener;
@@ -122,10 +123,32 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private int correctMovesBeforeHint;
 	private int startCount;
 	private int resultIconPadding;
+	private TacticProblemItem.Data givenTacticProblem;
+
+	public GameTacticsFragment(){
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(MODE, false);
+		setArguments(bundle);
+	}
+
+	public static GameTacticsFragment createInstance(boolean viewOnly, TacticProblemItem.Data givenTacticProblem) {
+		GameTacticsFragment fragment = new GameTacticsFragment();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(MODE, viewOnly);
+		fragment.setArguments(bundle);
+		fragment.givenTacticProblem = givenTacticProblem;
+		return fragment;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (getArguments() != null) {
+			viewOnly = getArguments().getBoolean(MODE);
+		} else {
+			viewOnly = savedInstanceState.getBoolean(MODE);
+		}
 
 		init();
 	}
@@ -155,6 +178,18 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	public void onResume() {
 		super.onResume();
 		startCount = COUNT_BACK;
+
+		if (viewOnly && givenTacticProblem != null) {// after killed state we can't restore givenProblem
+			trainerData = new TacticTrainerItem.Data();
+			trainerData.setTacticsProblem(givenTacticProblem);
+			trainerData.setCompleted(true);
+
+			adjustBoardForGame();
+			switch2Analysis();
+			return;
+		} else {
+			viewOnly = false;
+		}
 
 		if (firstRun) {
 
@@ -204,6 +239,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		handler.removeCallbacks(showTacticMoveTask);
 		handler.removeCallbacks(resumeLoadedTacticRunnable);
 		handler.removeCallbacks(resumeContinueTacticRunnable);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		outState.putBoolean(MODE, viewOnly);
 	}
 
 	private Runnable resumeLoadedTacticRunnable = new Runnable() {
@@ -283,7 +325,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private boolean needToSaveTactic() {
 		return !getBoardFace().isTacticCanceled()
 				&& !TacticsDataHolder.getInstance().isTacticLimitReached()
-				&& currentGameExist();
+				&& currentGameExist() && !viewOnly;
 	}
 
 	private void playLastMoveAnimationAndCheck() {
@@ -756,6 +798,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		@Override
 		public void updateData(TacticTrainerItem returnedObj) {
 			noNetwork = false;
+			viewOnly = false;
 
 			DbDataManager.saveTacticTrainerToDb(getContentResolver(), returnedObj.getData(), getUsername());
 			getNextTactic();
@@ -943,6 +986,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			if (trainerData.isRetry()) {
 				getControlsView().showPractice();
+			} else if (viewOnly) {
+				getControlsView().showCorrect();
 			} else {
 				getControlsView().showDefault();
 			}
@@ -1084,10 +1129,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void adjustBoardForGame() {
-		if (!currentGameExist()) { // TODO verify if we need it
-			return;
-		}
-
 		ChessBoardTactics.resetInstance();
 
 		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
@@ -1105,6 +1146,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			labelsConfig.userSide = boardForWhite ? ChessBoard.WHITE_SIDE : ChessBoard.BLACK_SIDE;
 		} else {
 			labelsConfig.userSide = boardForWhite ? ChessBoard.BLACK_SIDE : ChessBoard.WHITE_SIDE;
+
+			// flip board
+			boardFace.setReside(!boardFace.isReside());
 		}
 
 		String cleanMoveString = trainerData.getCleanMoveString();
@@ -1123,8 +1167,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			startTacticsTimer(trainerData);
 
 			if (!userMoveFirst) {
-				boardFace.setReside(!boardFace.isReside()); // flip board
-
 				boardFace.setMovesCount(1);
 				boardFace.makeMove(boardFace.getTacticMoves()[0], false);
 

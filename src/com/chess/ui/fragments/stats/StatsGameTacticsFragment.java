@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.entity.api.TacticProblemSingleItem;
 import com.chess.backend.entity.api.stats.TacticsHistoryItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -25,13 +26,12 @@ import com.chess.db.tasks.SaveTacticsStatsTask;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ItemsCursorAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.views.RatingGraphView;
 import com.chess.utilities.AppUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -131,7 +131,28 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		// TODO load selected tactic from DB
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		long tacticId = DbDataManager.getLong(cursor, DbScheme.V_ID);
+		// Get tactic by id
+		LoadItem loadItem = new LoadItem();
+		loadItem.setLoadPath(RestHelper.getInstance().CMD_TACTIC_BY_ID(tacticId));
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+
+		new RequestJsonTask<TacticProblemSingleItem>(new TacticProblemUpdateListener()).execute(loadItem);
+	}
+
+	private class TacticProblemUpdateListener extends ChessLoadUpdateListener<TacticProblemSingleItem> {
+
+		public TacticProblemUpdateListener() {
+			super(TacticProblemSingleItem.class);
+		}
+
+		@Override
+		public void updateData(TacticProblemSingleItem returnedObj) {
+			super.updateData(returnedObj);
+
+			getActivityFace().openFragment(GameTacticsFragment.createInstance(true, returnedObj.getData()));
+		}
 	}
 
 	@Override
@@ -167,16 +188,19 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 			return;
 		}
 
-		long[] edgeTimestamps = DbDataManager.getEdgeTimestampForTacticsGraph(getContentResolver(), username);
+//		long[] edgeTimestamps = DbDataManager.getEdgeTimestampForTacticsGraph(getContentResolver(), username);
 
-		long today = System.currentTimeMillis() / 1000;
-		long oneDay = AppUtils.SECONDS_IN_DAY;
+//		long today = System.currentTimeMillis() / 1000;
+//		long oneDay = AppUtils.SECONDS_IN_DAY;
 		// if we have saved data from last timestamp(30 days ago) until today, we don't load it from server
-		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimestamp - oneDay) {
-			updateUiData();
-		} else { // else we only load difference since last saved point
+//		if ((edgeTimestamps[LAST] >= today - oneDay) && edgeTimestamps[FIRST] <= lastTimestamp - oneDay) { // TODO improve with server request
+//			updateUiData();
+//		} else { // else we only load difference since last saved point
+
+		// we do load from server because we must represent data right after user made move
+		// TODO enhance API to load recent problems also only after a certain timestamp
 			getFullStats(lastTimestamp);
-		}
+//		}
 	}
 
 	private void getFullStats(long lastTimestamp) {
@@ -270,6 +294,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 		if (!isNeedToUpgrade()) {
 			// load recent problems stats
 			QueryParams params = DbHelper.getTableForUser(username, DbScheme.Tables.TACTICS_RECENT_STATS);
+			params.setOrder(DbScheme.V_CREATE_DATE + DbDataManager.DESCEND);
 			Cursor cursor = DbDataManager.query(getContentResolver(), params);
 
 			cursor.moveToFirst();
@@ -282,15 +307,12 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 	public static class RecentStatsAdapter extends ItemsCursorAdapter {
 
-		private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM' 'HH:mm");
 		public static final String PASSED = "passed";
-		private final Date passedDate;
 		private final int failColor;
 		private final int passedColor;
 
 		public RecentStatsAdapter(Context context, Cursor cursor) {
 			super(context, cursor);
-			passedDate = new Date();
 
 			passedColor = resources.getColor(R.color.new_dark_green);
 			failColor = resources.getColor(R.color.red_button);
@@ -301,13 +323,9 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 			View view = inflater.inflate(R.layout.new_tactic_recent_stat_item, parent, false);
 
 			ViewHolder holder = new ViewHolder();
-			holder.dateTxt = (TextView) view.findViewById(R.id.dateTxt);
 			holder.idTxt = (TextView) view.findViewById(R.id.idTxt);
 			holder.ratingTxt = (TextView) view.findViewById(R.id.ratingTxt);
-			holder.userRatingTxt = (TextView) view.findViewById(R.id.userRatingTxt);
-			holder.avgTimeTxt = (TextView) view.findViewById(R.id.avgTimeTxt);
 			holder.userTimeTxt = (TextView) view.findViewById(R.id.userTimeTxt);
-			holder.scoreTxt = (TextView) view.findViewById(R.id.scoreTxt);
 			holder.ratingChangeTxt = (TextView) view.findViewById(R.id.ratingChangeTxt);
 
 			view.setTag(holder);
@@ -319,22 +337,10 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 		public void bindView(View view, Context context, Cursor cursor) {
 			ViewHolder holder = (ViewHolder) view.getTag();
 
-			passedDate.setTime(getLong(cursor, DbScheme.V_CREATE_DATE));
-			String dateStr = dateFormatter.format(passedDate);
-			holder.dateTxt.setText(dateStr);
 			holder.idTxt.setText(NUMBER + String.valueOf(getLong(cursor, DbScheme.V_ID)));
 
 			String tacticRating = String.valueOf(getInt(cursor, DbScheme.V_RATING));
 			holder.ratingTxt.setText(tacticRating);
-
-
-			String userRating = String.valueOf(getInt(cursor, DbScheme.V_USER_RATING));
-			holder.userRatingTxt.setText(userRating);
-
-			int avgSeconds = getInt(cursor, DbScheme.V_AVG_SECONDS);
-
-			String avgSecondsStr = AppUtils.getSecondsTimeFromSecondsStr(avgSeconds);
-			holder.avgTimeTxt.setText(avgSecondsStr);
 
 			int userSeconds = getInt(cursor, DbScheme.V_SECONDS_SPENT);
 
@@ -347,19 +353,13 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 			} else {
 				holder.ratingChangeTxt.setTextColor(failColor);
 			}
-			String scoreStr = String.valueOf(getInt(cursor, DbScheme.V_OUTCOME_SCORE)) + Symbol.PERCENT;
-			holder.scoreTxt.setText(scoreStr);
 			holder.ratingChangeTxt.setText(String.valueOf(getLong(cursor, DbScheme.V_OUTCOME_RATING_CHANGE)));
 		}
 
 		public static class ViewHolder {
-			TextView dateTxt;
 			TextView idTxt;
 			TextView ratingTxt;
-			TextView userRatingTxt;
-			TextView avgTimeTxt;
 			TextView userTimeTxt;
-			TextView scoreTxt;
 			TextView ratingChangeTxt;
 		}
 	}

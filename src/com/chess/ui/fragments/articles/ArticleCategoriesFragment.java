@@ -44,7 +44,6 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 	private ArticlesCursorAdapter articlesAdapter;
 
-	protected View loadingView;
 	protected TextView emptyView;
 	private ListView listView;
 	protected HashMap<String, Integer> categoriesMap;
@@ -93,7 +92,6 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 
 		setTitle(R.string.articles);
 
-		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		widgetsInit(view);
@@ -296,7 +294,7 @@ public class ArticleCategoriesFragment extends CommonLogicFragment implements It
 			Spinner categorySpinner = (Spinner) view.findViewById(R.id.categoriesSpinner);
 			categorySpinner.setAdapter(new DarkSpinnerAdapter(getActivity(), categoriesNames));
 			categorySpinner.setOnItemSelectedListener(this);
-			categorySpinner.setSelection(position);  // TODO remember last selection.
+			categorySpinner.setSelection(position);
 		}
 
 		initUpgradeAndAdWidgets(view);

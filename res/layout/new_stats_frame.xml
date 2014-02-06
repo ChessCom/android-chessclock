@@ -25,7 +25,7 @@
 		android:id="@+id/listView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@color/transparent"
+		android:background="@color/semitransparent_white_90"
 		android:divider="@color/new_friends_list_divider"
 		android:dividerHeight="1dip" />
 

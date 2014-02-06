@@ -186,6 +186,10 @@ public class RestHelper {
 	public String CMD_TACTICS_STATS = CMD_TACTICS + "stats";
 	public String CMD_TACTIC_TRAINER = CMD_TACTICS + "trainer";
 
+	public String CMD_TACTIC_BY_ID(long id) {
+		return CMD_TACTICS + id;
+	}
+
 	/* Lessons */
 	public String CMD_LESSONS = BASE_URL + V1 + "/lessons/";
 	public String CMD_LESSONS_CATEGORIES = CMD_LESSONS + "categories";
@@ -347,6 +351,7 @@ public class RestHelper {
 	public static final String P_TYPE = "type";
 	public static final String P_PRODUCT_SKU = "productSku";
 	public static final String P_RELOAD = "reload";
+	public static final String P_RESTART = "restart";
 	public static final String P_PURCHASE_DATA = "purchaseData";
 	public static final String P_DATA_SIGNATURE = "dataSignature";
 

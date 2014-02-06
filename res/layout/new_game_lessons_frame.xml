@@ -25,7 +25,7 @@
 			<!--Title-->
 			<com.chess.widgets.RoboTextView
 				android:id="@+id/lessonTitleTxt"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:textSize="21sp"
 				android:textColor="@color/new_subtitle_dark_grey"
@@ -37,8 +37,8 @@
 
 			<!--Goal Commentary-->
 			<com.chess.widgets.RoboTextView
-				android:id="@+id/commentTxt"
-				android:layout_width="wrap_content"
+				android:id="@+id/goalCommentTxt"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				style="@style/Content"
 				android:padding="15dip"
@@ -53,7 +53,7 @@
 			<!--Lesson Description-->
 			<com.chess.widgets.RoboTextView
 				android:id="@+id/descriptionTxt"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				style="@style/Content"
 				android:padding="15dip"
@@ -70,7 +70,7 @@
 			<!--Position Description-->
 			<com.chess.widgets.RoboTextView
 				android:id="@+id/positionDescriptionTxt"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				style="@style/Content"
 				android:padding="15dip" />

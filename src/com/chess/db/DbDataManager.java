@@ -2003,7 +2003,7 @@ public class DbDataManager {
 
 		dataObj.setLessonId(getLong(cursor, V_ID));
 		dataObj.setCurrentPosition(getInt(cursor, V_CURRENT_POSITION));
-		dataObj.setCurrentPoints(getInt(cursor, V_CURRENT_POINTS));
+		dataObj.setCurrentPoints(Float.parseFloat(getString(cursor, V_CURRENT_POINTS)));
 		dataObj.setCurrentPositionPoints(Float.valueOf(getString(cursor, V_CURRENT_POSITION_POINTS)));
 		dataObj.setUsername(getString(cursor, V_USER));
 		dataObj.setInitialScore(getString(cursor, V_INITIAL_SCORE));

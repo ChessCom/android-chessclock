@@ -109,7 +109,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private List<LessonProblemItem.MentorPosition> positionsToLearn;
 
 	protected TextView lessonTitleTxt;
-	protected TextView commentTxt;
+	protected TextView goalCommentTxt;
 	protected TextView descriptionTxt;
 	protected TextView positionDescriptionTxt;
 	protected View lessonDescriptionDivider;
@@ -150,6 +150,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	protected TextView lessonRatingTxt;
 	protected TextView lessonRatingChangeTxt;
 	protected boolean showLessonsResult;
+	private String initialLessonTextStr;
 
 	public GameLessonFragment() {
 	}
@@ -236,7 +237,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 			LoadItem loadItem = new LoadItem();
 			loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSON_BY_ID(lessonId));
-			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken()); // looks like restart parameter is useless here, because we load from DB
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 			new RequestJsonTask<LessonProblemItem>(lessonUpdateListener).executeTask(loadItem);
 		}
@@ -451,7 +452,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				if (possibleMove.getMoveType().equals(LessonProblemItem.MOVE_DEFAULT)) { // Correct move
 					showCorrectState();
 					correctMove = true;
-					if (!TextUtils.isEmpty(possibleMove.getShortResponseMove())) {
+
+					// Set move comment
+					setGoalCommentText(possibleMove.getMoveCommentary());
+
+					if (!TextUtils.isEmpty(possibleMove.getShortResponseMove())) { // if computer need to make move
 						final Move move = boardFace.convertMoveCoordinate(possibleMove.getShortResponseMove());
 						// play move animation
 						boardView.setMoveAnimator(move, true);
@@ -459,17 +464,29 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 						// make actual move
 						boardFace.makeMove(move, true);
 						invalidateGameScreen();
+
+						setDescriptionText(possibleMove.getResponseMoveCommentary());
+
+						// get next position's about
+						if (currentLearningPosition + 1 < positionsToLearn.size()) {
+							String nextLessonAbout = positionsToLearn.get(currentLearningPosition + 1).getAbout();
+							setPositionDescriptionText(nextLessonAbout);
+						}
+						descriptionTxt.post(scrollDescriptionUp);
 					}
 				} else if (possibleMove.getMoveType().equals(LessonProblemItem.MOVE_ALTERNATE)) { // Alternate Correct Move
 					// Correct move, try again!
+					setDescriptionText(possibleMove.getMoveCommentary());
 					showCorrectState();
 					correctMove = true;
 				} else if (possibleMove.getMoveType().equals(LessonProblemItem.MOVE_WRONG)) {
+					if (!TextUtils.isEmpty(possibleMove.getMoveCommentary())) {
+						setDescriptionText(possibleMove.getMoveCommentary());
+					} else {
+						setDescriptionText(getMentorPosition().getStandardWrongMoveCommentary());
+					}
 					showWrongState();
 				}
-				setDescriptionText(possibleMove.getMoveCommentary());
-				commentTxt.setVisibility(View.GONE);
-				descriptionView.post(scrollDescriptionUp);
 
 				moveRecognized = true;
 				break;
@@ -478,9 +495,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		if (!moveRecognized) {
 			setDescriptionText(getMentorPosition().getStandardWrongMoveCommentary());
-			commentTxt.setVisibility(View.GONE);
+			goalCommentTxt.setVisibility(View.GONE);
 
-			descriptionView.post(scrollDescriptionUp);
+			scrollToCurrentText();
 			showWrongState();
 		}
 
@@ -580,6 +597,8 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	}
 
 	private void showWrongState() {
+		positionDescriptionTxt.setText(Symbol.EMPTY);
+		lessonDescriptionDivider.setVisibility(View.GONE);
 		getControlsView().showWrong();
 		getCurrentCompleteItem().wrongMovesCnt++;
 		wrongState = true;
@@ -633,6 +652,43 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		} else {
 			getControlsView().showDefault();
 		}
+
+		if (currentLearningPosition > 1) { // get previous move correct comment
+			LessonProblemItem.MentorPosition mentorPosition = positionsToLearn.get(currentLearningPosition - 1);
+			LessonProblemItem.MentorPosition.PossibleMove correctMove = mentorPosition.getCorrectMove();
+			if (correctMove != null) {
+				setDescriptionText(correctMove.getMoveCommentary());
+			}
+		} else {
+			setDescriptionText(initialLessonTextStr);
+			scrollToCurrentText();
+
+		}
+
+
+		/*
+ 		case "thinking":
+            if ($this->intPositionNumber > 0) {
+                $this->intPositionNumber--;
+                $objMove = CmMove::GetCorrectMoveByPositionId(
+                $this->objPositionList[$this->intPositionNumber]->PositionId);
+
+                $this->lblLessonText->Text = $objMove->MoveCommentary;
+            }
+        case "just_moved":
+            if ($this->intPositionNumber == 0) {
+                $this->lblLessonText->Text = $this->strInitialLessonText;
+            } else {
+                $objMove = CmMove::GetCorrectMoveByPositionId($this->objPositionList[$this->intPositionNumber - 1]->PositionId);
+                $this->lblLessonText->Text = $objMove->ResponseMoveCommentary;
+
+                if ($this->objPositionList[$this->intPositionNumber]->About) {
+                    $this->lblLessonText->Text
+                    .= '<br />---------------------------------------------------------<br />' .
+                     $this->objPositionList[$this->intPositionNumber]->About;
+                }
+            }
+		*/
 	}
 
 	@Override
@@ -717,21 +773,30 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 			showAnswer();
 		} else if (code == ID_REVIEW_LESSON) {
-			showDefaultState();
+			// drop position
 			currentLearningPosition = 0;
 			userLesson.setCurrentPosition(0);
-			restart();
 
-//		} else if (code == ID_KEY_SQUARES) {
+			// hide scores
+			lessonCompleteView.setVisibility(View.GONE);
+
+			// request restart lesson from server
+			LoadItem loadItem = new LoadItem();
+			loadItem.setLoadPath(RestHelper.getInstance().CMD_LESSON_BY_ID(lessonId));
+			loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+			loadItem.addRequestParams(RestHelper.P_RESTART, RestHelper.V_TRUE);
+
+			new RequestJsonTask<LessonProblemItem>(lessonUpdateListener).executeTask(loadItem);
+//		} else if (code == ID_KEY_SQUARES) {  // TBD
 //			showToast("key squares");
 
-//		} else if (code == ID_CORRECT_SQUARE) {
+//		} else if (code == ID_CORRECT_SQUARE) { // TBD
 //			showToast("correct square");
 
-//		} else if (code == ID_KEY_PIECES) {
+//		} else if (code == ID_KEY_PIECES) { // TBD
 //			showToast("key pieces");
 
-//		} else if (code == ID_CORRECT_PIECE) {
+//		} else if (code == ID_CORRECT_PIECE) { // TBD
 //			showToast("correct piece");
 
 //		} else if (code == ID_VS_COMPUTER) {
@@ -822,7 +887,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			@Override
 			public void run() {
 				lessonTitleTxt.setVisibility(View.GONE);
-				commentTxt.setVisibility(View.GONE);
+				if (!TextUtils.isEmpty(goalCommentTxt.getText())) {
+					goalCommentTxt.setVisibility(View.VISIBLE);
+				} else {
+					goalCommentTxt.setVisibility(View.GONE);
+				}
 			}
 		}, 25);
 
@@ -835,7 +904,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 
 		descriptionView.setPadding(0, 0, 0, openDescriptionPadding);
-		descriptionView.postDelayed(scrollDescriptionDown, 50);
+		scrollToCurrentText();
 
 		// mark this lesson as incomplete. There can be few incomplete lessons
 		LessonSingleItem lessonSingleItem = new LessonSingleItem();
@@ -852,10 +921,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	@Override
 	public void onDrawerClosed() {
 		lessonTitleTxt.setVisibility(View.VISIBLE);
-		if (!TextUtils.isEmpty(commentTxt.getText())) {
-			commentTxt.setVisibility(View.VISIBLE);
+		if (!TextUtils.isEmpty(goalCommentTxt.getText())) {
+			goalCommentTxt.setVisibility(View.VISIBLE);
 		} else {
-			commentTxt.setVisibility(View.GONE);
+			goalCommentTxt.setVisibility(View.GONE);
 		}
 
 		descriptionView.setPadding(0, 0, 0, defaultDescriptionPadding);
@@ -870,6 +939,14 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	@Override
 	public void onScrollEnded() {
 
+	}
+
+	private void scrollToCurrentText() {
+		if (!TextUtils.isEmpty(positionDescriptionTxt.getText())) {
+			descriptionTxt.post(scrollDescriptionDown);
+		} else {
+			descriptionTxt.post(scrollDescriptionUp);
+		}
 	}
 
 	private Runnable scrollDescriptionDown = new Runnable() {
@@ -950,16 +1027,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		getControlsView().enableGameControls(true);
 
 		lessonTitleTxt.setText(mentorLesson.getName());
-		if (!TextUtils.isEmpty(mentorLesson.getGoalCommentary())) {
-			commentTxt.setText(mentorLesson.getGoalCommentary());
-			commentTxt.setVisibility(View.VISIBLE);
-		} else {
-			commentTxt.setVisibility(View.GONE);
-		}
-
-		setDescriptionText(mentorLesson.getAbout());
-		positionDescriptionTxt.setText(Html.fromHtml(positionToSolve.getAbout()));
-		descriptionView.post(scrollDescriptionUp);
 
 		// add currentLearningPosition in case we load from DB
 		solvedPositionsList.add(currentLearningPosition);
@@ -993,6 +1060,28 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 	}
 
+	private void setPositionDescriptionText(String descriptionStr) {
+		Spanned description = Html.fromHtml(descriptionStr);
+		if (!TextUtils.isEmpty(description)) {
+			positionDescriptionTxt.setText(description);
+			positionDescriptionTxt.setVisibility(View.VISIBLE);
+			lessonDescriptionDivider.setVisibility(View.VISIBLE);
+		} else {
+			positionDescriptionTxt.setVisibility(View.GONE);
+			lessonDescriptionDivider.setVisibility(View.GONE);
+		}
+	}
+
+	private void setGoalCommentText(String descriptionStr) {
+		Spanned description = Html.fromHtml(descriptionStr);
+		if (!TextUtils.isEmpty(description)) {
+			goalCommentTxt.setText(description);
+			goalCommentTxt.setVisibility(View.VISIBLE);
+		} else {
+			goalCommentTxt.setVisibility(View.GONE);
+		}
+	}
+
 	private class LessonDataUpdateListener extends ChessLoadUpdateListener<LessonProblemItem.Data> {
 
 		static final int SAVE = 0;
@@ -1014,6 +1103,41 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			}
 			adjustBoardForGame();
 
+			if (currentLearningPosition == 0) {
+				setGoalCommentText(mentorLesson.getGoalCommentary());
+
+				String aboutLessonStr = mentorLesson.getAbout();
+				String aboutPositionStr = getMentorPosition().getAbout();
+				if (!TextUtils.isEmpty(aboutLessonStr)) {
+					initialLessonTextStr = aboutLessonStr;
+					setDescriptionText(initialLessonTextStr);
+
+					if (!TextUtils.isEmpty(aboutPositionStr)) {
+						setPositionDescriptionText(aboutPositionStr);
+						scrollToCurrentText();
+					}
+				} else {
+					initialLessonTextStr = aboutPositionStr;
+					setDescriptionText(initialLessonTextStr);
+				}
+			} else {
+				// hide comment
+				goalCommentTxt.setVisibility(View.GONE);
+
+				// set last move response comment
+				LessonProblemItem.MentorPosition previousLearnPosition = positionsToLearn.get(currentLearningPosition - 1);
+				LessonProblemItem.MentorPosition.PossibleMove correctMove = previousLearnPosition.getCorrectMove();
+
+				setDescriptionText(correctMove.getResponseMoveCommentary());
+
+				// set next position's about
+				String positionAboutStr = positionsToLearn.get(currentLearningPosition).getAbout();
+				if (!TextUtils.isEmpty(positionAboutStr)) {
+					setPositionDescriptionText(positionAboutStr);
+				}
+				scrollToCurrentText();
+
+			}
 			need2update = false;
 		}
 	}
@@ -1028,7 +1152,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		userLesson.setLegalMoveCheck(lessonItem.getLegalMoveCheck());
 		userLesson.setLegalPositionCheck(lessonItem.getLegalPositionCheck());
 		userLesson.setLessonCompleted(lessonItem.isLessonCompleted());
-//		userLesson.setCurrentPosition(0);
+
 		startLearningPosition = userLesson.getCurrentPosition();
 		currentLearningPosition = userLesson.getCurrentPosition();
 
@@ -1037,7 +1161,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		}
 
 		movesCompleteMap.clear();
-//		currentPoints = userLesson.getCurrentPoints();  // TODO check if needed
 	}
 
 	private class SubmitLessonListener extends ChessLoadUpdateListener<LessonRatingChangeItem> {
@@ -1143,7 +1266,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		defaultDescriptionPadding = (int) (20 * density);
 		descriptionView = (ScrollView) view.findViewById(R.id.descriptionView);
 		lessonTitleTxt = (TextView) view.findViewById(R.id.lessonTitleTxt);
-		commentTxt = (TextView) view.findViewById(R.id.commentTxt);
+		goalCommentTxt = (TextView) view.findViewById(R.id.goalCommentTxt);
 		descriptionTxt = (TextView) view.findViewById(R.id.descriptionTxt);
 		lessonDescriptionDivider = view.findViewById(R.id.lessonDescriptionDivider);
 		positionDescriptionTxt = (TextView) view.findViewById(R.id.positionDescriptionTxt);
@@ -1188,4 +1311,188 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		boolean answerWasShown;
 	}
 
+
+/*
+<?php
+//
+2 states:
+    - thinking      => player need to make move
+    - just moved    => computer need to make move
+----------------------
+//
+
+//Initial text setup:
+
+	if ($this->objLesson->About) {
+		$this->strInitialLessonText .= $this->objLesson->About;
+	}
+
+	if ($this->objLesson->About && $this->objPositionList[0]->About) {
+		$this->strInitialLessonText .= '<br />---------------------------------------------------------<br />';
+	}
+
+	$this->strInitialLessonText .= $this->objPositionList[0]->About;
+
+// Back text setup
+	$this->strBackText = "<br /><br /><strong>" . p('Chessmentor View Lesson Controller: Try Again, button label', 'Click \'TRY AGAIN\' to go back and make a different move.')->x() . "</strong>";
+
+// ==========================================================
+
+// Create label for comments
+
+	protected function lblLessonText_Create() {
+		if ($this->blnLessonComplete) {
+			$this->lblLessonText->Text = '';
+			$this->lblLessonText->Text .= '
+			' . p('Chessmentor View Lesson Controller: Initial Score')->x() . ' <strong>' . $this->objUserCmLesson->InitialScore . '%</strong><br />
+					' . p('Chessmentor View Lesson Controller: Last Score')->x() . ' <strong>' . $this->objUserCmLesson->LastScore . '%</strong> on
+			' . ($this->objUserCmLesson->LastCompleteDate ? I18n::Date($this->objUserCmLesson->LastCompleteDate, 'column') : p('Chessmentor View Lesson Controller: N/A', 'N/A')->x()) . ' <br />
+					' . p('Chessmentor View Lesson Controller: Number Of Attempts')->x() . ' <strong>' . $this->objUserCmLesson->NumAttempts . '</strong><br /><br />
+
+			<strong><a href="' . $strRetryLessonUrl . '">' . p('Chessmentor View Lesson Controller: Click To Review This Lesson')->x() . ' &raquo;</a></strong><br />';
+			//' . p('Chessmentor View Lesson Controller: Feel Free To Explore This Lesson And All Its Hints As Your Rating Will Not Be Affected')->x();
+		} elseif ($this->intPositionNumber == 0) {
+			$this->lblLessonText->Text = $this->strInitialLessonText;
+		} else {
+			$objMove = CmMove::GetCorrectMoveByPositionId($this->objPositionList[$this->intPositionNumber - 1]->PositionId);
+			$this->lblLessonText->Text = $objMove->ResponseMoveCommentary;
+
+			if ($this->objPositionList[$this->intPositionNumber]->About) {
+				$this->lblLessonText->Text .= '<br />---------------------------------------------------------<br />' . $this->objPositionList[$this->intPositionNumber]->About;
+			}
+		}
+	}
+
+
+// ===========================================================
+
+// Actions
+
+// 1. Submit move
+
+	protected function btnSubmit_Click($strFormId, $strControlId, $strParameter) {
+		$this->strBackText = "<br /><br /><strong>" . p('Chessmentor View Lesson Controller: Try Again, button label', 'Click \'TRY AGAIN\' to go back and make a different move.')->x() . "</strong>";
+
+		$objMove = CmMove::LoadByPositionIdMove($this->objPositionList[$this->intPositionNumber]->PositionId, $strCmMove);
+
+		if (!$objMove) {
+			$this->lblLessonText->Text = $this->objPositionList[$this->intPositionNumber]->StandardWrongMoveCommentary;
+			$this->lblLessonText->Text .= $this->strBackText;
+		} else {
+			switch ($objMove->MoveType) {
+				case "wrong":
+					if ($objMove->MoveCommentary) {
+						$this->lblLessonText->Text = $objMove->MoveCommentary;
+					} else {
+						$this->lblLessonText->Text = $this->objPositionList[$this->intPositionNumber]->StandardWrongMoveCommentary;
+					}
+
+					$this->lblLessonText->Text .= $this->strBackText;
+				case "alternate":
+					$this->lblLessonText->Text = $objMove->MoveCommentary;
+					$this->lblLessonText->Text .= $this->strBackText;
+				case "default":
+					$this->lblLessonText->Text = $objMove->MoveCommentary;
+
+			}
+		}
+	}
+
+// 2. Back btn click (also Try again click)
+
+	protected function btnBack_Click($strFormId, $strControlId, $strParameter) {
+		switch ($this->strUserLessonState) {
+			case "thinking":
+				if ($this->intPositionNumber > 0) {
+					$this->intPositionNumber--;
+					$objMove = CmMove::GetCorrectMoveByPositionId($this->objPositionList[$this->intPositionNumber]->PositionId);
+
+					$this->lblLessonText->Text = $objMove->MoveCommentary;
+				}
+			case "just_moved":
+				if ($this->intPositionNumber == 0) {
+					$this->lblLessonText->Text = $this->strInitialLessonText;
+				} else {
+					$objMove = CmMove::GetCorrectMoveByPositionId($this->objPositionList[$this->intPositionNumber - 1]->PositionId);
+					$this->lblLessonText->Text = $objMove->ResponseMoveCommentary;
+
+					if ($this->objPositionList[$this->intPositionNumber]->About) {
+						$this->lblLessonText->Text .= '<br />---------------------------------------------------------<br />' . $this->objPositionList[$this->intPositionNumber]->About;
+					}
+				}
+		}
+	}
+
+// 3. Continue btn click
+
+	protected function btnContinue_Click($strFormId, $strControlId, $strParameter) {
+		switch ($this->strUserLessonState) {
+			case "just_moved":
+				$objMove = CmMove::GetCorrectMoveByPositionId($this->objPositionList[$this->intPositionNumber]->PositionId);
+
+				if ($objMove->ShortResponseMove) {
+					$this->lblLessonText->Text = $objMove->ResponseMoveCommentary;
+
+					if ($this->objPositionList[$this->intPositionNumber + 1]->About) {
+						$this->lblLessonText->Text .= '<br />---------------------------------------------------------<br />' . $this->objPositionList[$this->intPositionNumber + 1]->About;
+					}
+				}
+			case "thinking":
+				$objMove = CmMove::GetCorrectMoveByPositionId($this->objPositionList[$this->intPositionNumber]->PositionId);
+
+				if ($objMove) {
+					$this->lblLessonText->Text = $objMove->MoveCommentary;
+				}
+		}
+	}
+
+// 4. Show answer link
+
+	protected function lnkShowAnswer_Click($strFormId, $strControlId, $strParameter) {
+		if ($this->strUserLessonState != 'thinking') {
+		} elseif ($this->intPositionNumber == count($this->objPositionList)) {
+		} else {
+			$objMove = CmMove::GetCorrectMoveByPositionId($this->objPositionList[$this->intPositionNumber]->PositionId);
+			$this->lblLessonText->Text = $objMove->MoveCommentary;
+		}
+	}
+
+// 5. lesson finished
+
+	protected function UpdateDisplayLessonFinished() {
+		$this->lblLessonText-> Text.= '<br /><br /><strong style="color: #4c7637;">Your result:</strong><br />';
+		$this->lblLessonText->Text .= p('Chessmentor View Lesson Controller: Score')->x() . ' <strong>' . $this->objUserCmLesson->LastScore . '%</strong><br />';
+
+		$strRatingChange = "";
+		if ($this->objUserCmSettings && $this->objAuthUser) {
+			if ($this->objNewRatingInfo != null) {
+				$intRatingChange = $this->objNewRatingInfo['change'];
+				$strRatingChange .= " (";
+
+				if ($intRatingChange > 0) {
+					$strRatingChange .= "+";
+				}
+
+				$strRatingChange .= $intRatingChange;
+				$strRatingChange .= ")";
+			}
+
+			$strDisplayRating = $this->objUserCmSettings->DisplayRating();
+		} else {
+			$strDisplayRating = I18n::RatingPhrase(ChessRating::Unrated)->x();
+		}
+
+		$this->lblLessonText->Text .= I18n::RatingPhrase(ChessRating::Rating)->x() . ' <strong>' . $strDisplayRating . $strRatingChange . '</strong><br /><br />';
+
+		$strRetryLessonUrl = '/chessmentor/view_lesson?id=' . $this->objLesson->LessonId . '&restart=1';
+
+		if ($this->blnIsCustomTrainingSession) {
+			$strRetryLessonUrl .= '&c=1';
+		} elseif ($this->blnIsStudyingCourseSequentially) {
+			$strRetryLessonUrl .= '&c_id=' . $this->objLesson->CourseId;
+		}
+
+		$this->lblLessonText->Text .= '<strong><a href="' . $strRetryLessonUrl . '">' . p('Chessmentor View Lesson Controller: Click To Review This Lesson')->x() . ' &raquo;</a></strong><br />';
+	}
+*/
 }
