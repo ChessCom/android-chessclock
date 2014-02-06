@@ -432,12 +432,12 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 				{ // Opponent View
 					view.findViewById(R.id.opponentView).setOnClickListener(this);
 					opponentNameTxt = (TextView) view.findViewById(R.id.opponentNameTxt);
-					if (!TextUtils.isEmpty(opponentName)) {
+					if (!TextUtils.isEmpty(opponentName)) { // todo: why opponentName = "" here sometimes (not null but empty string)?
 						opponentNameTxt.setText(opponentName);
 						gameConfigBuilder.setOpponentName(opponentName);
 						ratingView.setVisibility(View.GONE);
 					} else {
-						gameConfigBuilder.setOpponentName(Symbol.EMPTY);
+						gameConfigBuilder.setOpponentName(null);
 						ratingView.setVisibility(View.VISIBLE);
 					}
 				}

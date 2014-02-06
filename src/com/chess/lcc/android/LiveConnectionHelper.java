@@ -89,6 +89,11 @@ public class LiveConnectionHelper {
 
 	public void checkAndConnectLiveClient() {
 
+		if (lccClient != null) {
+			LogMe.dl(TAG, "DEBUG: lccClient.isInvalid()=" + lccClient.isInvalid());
+			LogMe.dl(TAG, "DEBUG: lccClient.isConnected()=" + lccClient.isConnected());
+		}
+
 		if (DataHolder.getInstance().isLiveChess() && !isConnected()) {
 			if (!isLccConnecting() && (lccClient == null || isConnectionFailure())) { // prevent creating several instances when user navigates between activities in "reconnecting" mode
 				LogMe.dl(TAG, "start Connection Task");
