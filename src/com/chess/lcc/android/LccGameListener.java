@@ -92,12 +92,11 @@ public class LccGameListener implements GameListener {
 		lccHelper.putGame(game);
 
 		doResetGame(game);
-		doUpdateGame(false, game);
 	}
 
 	@Override
 	public void onGameUpdated(Game game) {
-//		LogMe.dl(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
+		//LogMe.dl(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
 
 		if (isActualMyGame(game)) {
 			lccHelper.unObserveCurrentObservingGame();
@@ -118,7 +117,7 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onGameOver(Game game) {
-//		LogMe.dl(TAG, "GAME LISTENER: onGameOver " + game);
+		//LogMe.dl(TAG, "GAME LISTENER: onGameOver " + game);
 		lccHelper.putGame(game);
 
 		Long gameId = game.getId();
@@ -183,14 +182,12 @@ public class LccGameListener implements GameListener {
 	}
 
 	private void doResetGame(Game game) {
-		synchronized (LccHelper.GAME_SYNC_LOCK) {
-			lccHelper.setCurrentGameId(game.getId());
-			if (game.isGameOver()) {
-				lccHelper.putGame(game);
-				return;
-			}
-			lccHelper.processFullGame();
+		lccHelper.setCurrentGameId(game.getId());
+		if (game.isGameOver()) {
+			lccHelper.putGame(game);
+			return;
 		}
+		lccHelper.processFullGame();
 	}
 
 	private void doUpdateGame(boolean checkMoves, Game game) {
@@ -200,9 +197,7 @@ public class LccGameListener implements GameListener {
 			String move = game.getLastMove();
 			LogMe.dl(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHelper.getUser().getUsername() +
 					", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
-			synchronized (LccHelper.GAME_SYNC_LOCK) {
-				lccHelper.doMoveMade(game, game.getMoveCount() - 1);
-			}
+			lccHelper.doMoveMade(game, game.getMoveCount() - 1);
 		}
 
 		lccHelper.checkAndProcessDrawOffer(game);

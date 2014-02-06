@@ -5,7 +5,6 @@ import android.os.Bundle;
 import com.chess.R;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.DataNotValidException;
-import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
@@ -200,22 +199,20 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		liveHelper.setGameTaskListener(gameTaskListener);
 
 		if (liveHelper.isActiveGamePresent() && !liveHelper.isCurrentGameObserved()) {
-			synchronized(LccHelper.GAME_SYNC_LOCK) {
-				Long gameId = liveHelper.getCurrentGameId();
+			Long gameId = liveHelper.getCurrentGameId();
 
-				GameLiveFragment liveFragment = liveBaseActivity.getGameLiveFragment();
-				if (liveFragment == null) {
-					if (!isTablet) {
-						liveFragment = GameLiveFragment.createInstance(gameId);
-					} else {
-						liveFragment = GameLiveFragmentTablet.createInstance(gameId);
-					}
+			GameLiveFragment liveFragment = liveBaseActivity.getGameLiveFragment();
+			if (liveFragment == null) {
+				if (!isTablet) {
+					liveFragment = GameLiveFragment.createInstance(gameId);
 				} else {
-					liveFragment.invalidateGameScreen();
+					liveFragment = GameLiveFragmentTablet.createInstance(gameId);
 				}
-//				getActivityFace().openFragment(liveFragment, true);
-				getActivityFace().openFragment(liveFragment);
+			} else {
+				liveFragment.invalidateGameScreen();
 			}
+//				getActivityFace().openFragment(liveFragment, true);
+			getActivityFace().openFragment(liveFragment);
 		} else {
 			createSeek();
 		}

@@ -22,6 +22,7 @@ import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
+import com.chess.lcc.android.LccHelper;
 import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.live.client.Game;
@@ -190,105 +191,113 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	// ----------------------Lcc Events ---------------------------------------------
 
 	protected void onGameStarted() throws DataNotValidException {
-		logLiveTest("onGameStarted");
 
-		LiveConnectionHelper liveHelper = getLiveHelper();
-		GameLiveItem currentGame = liveHelper.getGameItem();
-		if (currentGame == null) { // this happens when we resume to fragment via back navigation
-			throw new DataNotValidException(DataNotValidException.GAME_NOT_EXIST);
-		}
-		gameId = currentGame.getGameId();
+		synchronized (LccHelper.GAME_SYNC_LOCK) {
 
-		optionsMapInit();
+			logLiveTest("onGameStarted");
 
-		ChessBoardLive.resetInstance();
-		BoardFace boardFace = getBoardFace();
-
-		Boolean isUserColorWhite = liveHelper.isUserColorWhite(); // should throw exception if null
-		userPlayWhite = isUserColorWhite;
-
-		boardFace.setReside(isUserColorWhite != null && !isUserColorWhite);
-
-		getNotationsFace().resetNotations();
-		boardView.resetValidMoves();
-
-		if (liveHelper.getPendingWarnings().size() > 0) {
-			warningMessage = liveHelper.getLastWarningMessage();
-			popupItem.setNegativeBtnId(R.string.fair_play_policy);
-			showPopupDialog(R.string.warning, warningMessage, WARNING_TAG);
-		}
-
-		showSubmitButtonsLay(false);
-		getControlsView().enableAnalysisMode(false);
-		getControlsView().showDefault();
-		getControlsView().showHome(false);
-
-		boardFace.setFinished(false);
-		if (need2update) {
-			getSoundPlayer().playGameStart();
-		}
-
-		getControlsView().haveNewMessage(currentGame.hasNewMessage());
-
-		// avoid races on update moves logic for active game, doUpdateGame updates moves, avoid peaces disappearing and invalidmovie exception
-		// vm: actually we have to invoke checkAndReplayMoves() here, because we reset a board on pause/resume everytime.
-		// As for doUpdateGame() - that method updates moves only if gameLivePaused=false, so should be safe.
-		// Lets see how synchronized approach is suitable here
-		liveHelper.checkAndReplayMoves();
-
-		liveHelper.checkFirstTestMove();
-
-		liveHelper.setGameActivityPausedMode(false);
-		liveHelper.checkGameEvents();
-
-		{// fill labels
-			userPlayWhite = liveHelper.isUserColorWhite();
-			if (userPlayWhite) {
-				labelsConfig.userSide = ChessBoard.WHITE_SIDE;
-				labelsConfig.topPlayerName = currentGame.getBlackUsername();
-				labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
-				labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
-				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
-			} else {
-				labelsConfig.userSide = ChessBoard.BLACK_SIDE;
-				labelsConfig.topPlayerName = currentGame.getWhiteUsername();
-				labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
-				labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
-				labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
+			LiveConnectionHelper liveHelper = getLiveHelper();
+			GameLiveItem currentGame = liveHelper.getGameItem();
+			if (currentGame == null) { // this happens when we resume to fragment via back navigation
+				throw new DataNotValidException(DataNotValidException.GAME_NOT_EXIST);
 			}
-		}
-		liveHelper.initClocks();
+			gameId = currentGame.getGameId();
 
-		invalidateGameScreen();
+			optionsMapInit();
 
-		boardView.updatePlayerNames(currentGame.getWhiteUsername(), currentGame.getBlackUsername());
+			ChessBoardLive.resetInstance();
+			BoardFace boardFace = getBoardFace();
 
-		{// set avatars
+			Boolean isUserColorWhite = liveHelper.isUserColorWhite(); // should throw exception if null
+			userPlayWhite = isUserColorWhite;
 
-			labelsConfig.topPlayerAvatar = liveHelper.getCurrentGame().
-					getOpponentForPlayer(labelsConfig.bottomPlayerName).getAvatarUrl();
-			if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
-				imageDownloader.download(labelsConfig.topPlayerAvatar, topImageUpdateListener, AVATAR_SIZE);
+			boardFace.setReside(isUserColorWhite != null && !isUserColorWhite);
+
+			getNotationsFace().resetNotations();
+
+			if (liveHelper.getPendingWarnings().size() > 0) {
+				warningMessage = liveHelper.getLastWarningMessage();
+				popupItem.setNegativeBtnId(R.string.fair_play_policy);
+				showPopupDialog(R.string.warning, warningMessage, WARNING_TAG);
 			}
 
-			labelsConfig.bottomPlayerAvatar = liveHelper.getCurrentGame().
-					getOpponentForPlayer(labelsConfig.topPlayerName).getAvatarUrl();
-			if (labelsConfig.bottomPlayerAvatar != null && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
-				imageDownloader.download(labelsConfig.bottomPlayerAvatar, bottomImageUpdateListener, AVATAR_SIZE);
+			showSubmitButtonsLay(false);
+			getControlsView().enableAnalysisMode(false);
+			getControlsView().showDefault();
+			getControlsView().showHome(false);
+
+			boardFace.setFinished(false);
+			if (need2update) {
+				getSoundPlayer().playGameStart();
 			}
 
-			{ // get opponent info
-				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
-				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
+			getControlsView().haveNewMessage(currentGame.hasNewMessage());
+
+			// avoid races on update moves logic for active game, doUpdateGame updates moves, avoid peaces disappearing and invalidmovie exception
+			// vm: actually we have to invoke checkAndReplayMoves() here, because we reset a board on pause/resume everytime.
+			// As for doUpdateGame() - that method updates moves only if gameLivePaused=false, so should be safe.
+			// Lets see how synchronized approach is suitable here
+			liveHelper.checkAndReplayMoves();
+
+			liveHelper.checkFirstTestMove();
+
+			liveHelper.setGameActivityPausedMode(false);
+			liveHelper.checkGameEvents();
+
+			{// fill labels
+				userPlayWhite = liveHelper.isUserColorWhite();
+				if (userPlayWhite) {
+					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
+					labelsConfig.topPlayerName = currentGame.getBlackUsername();
+					labelsConfig.topPlayerRating = String.valueOf(currentGame.getBlackRating());
+					labelsConfig.bottomPlayerName = currentGame.getWhiteUsername();
+					labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getWhiteRating());
+				} else {
+					labelsConfig.userSide = ChessBoard.BLACK_SIDE;
+					labelsConfig.topPlayerName = currentGame.getWhiteUsername();
+					labelsConfig.topPlayerRating = String.valueOf(currentGame.getWhiteRating());
+					labelsConfig.bottomPlayerName = currentGame.getBlackUsername();
+					labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
+				}
 			}
-			{ // get users info
-				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.bottomPlayerName);
-				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
+			liveHelper.initClocks();
+
+			if (currentGame.getMoveList().length() == 0) {
+				// we do it in onGameRefresh if there is move to update
+				boardView.resetValidMoves();
+				invalidateGameScreen();
 			}
+
+			boardView.updatePlayerNames(currentGame.getWhiteUsername(), currentGame.getBlackUsername());
+
+			{// set avatars
+
+				labelsConfig.topPlayerAvatar = liveHelper.getCurrentGame().
+						getOpponentForPlayer(labelsConfig.bottomPlayerName).getAvatarUrl();
+				if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
+					imageDownloader.download(labelsConfig.topPlayerAvatar, topImageUpdateListener, AVATAR_SIZE);
+				}
+
+				labelsConfig.bottomPlayerAvatar = liveHelper.getCurrentGame().
+						getOpponentForPlayer(labelsConfig.topPlayerName).getAvatarUrl();
+				if (labelsConfig.bottomPlayerAvatar != null && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
+					imageDownloader.download(labelsConfig.bottomPlayerAvatar, bottomImageUpdateListener, AVATAR_SIZE);
+				}
+
+				{ // get opponent info
+					LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
+					new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
+				}
+				{ // get users info
+					LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.bottomPlayerName);
+					new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
+				}
+			}
+
+			need2update = false;
+			userSawGameEndPopup = false;
+
 		}
-
-		need2update = false;
-		userSawGameEndPopup = false;
 	}
 
 	@Override
@@ -315,39 +324,33 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			gameId = gameItem.getGameId();
 		}
 
-
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+
 				boardView.resetValidMoves();
-			}
-		});
+				boardView.goToLatestMove();
 
-		boardView.goToLatestMove();
+				String[] actualMoves = gameItem.getMoveList().trim().split(Symbol.SPACE);
+				int actualMovesSize = actualMoves.length;
 
-		String[] actualMoves = gameItem.getMoveList().trim().split(Symbol.SPACE);
-		int actualMovesSize = actualMoves.length;
+				for (int i = boardFace.getMovesCount(); i < actualMovesSize; i++) {
+					int[] moveFT = boardFace.parseCoordinate(actualMoves[i]);
+					Move move = boardFace.convertMove(moveFT);
+					// we play sound and animate only for the last move
+					boolean playSound;
+					if (i == actualMovesSize - 1) {
+						playSound = true;
+						boardView.setMoveAnimator(move, true);
+					} else {
+						playSound = false;
+					}
 
-		for (int i = boardFace.getMovesCount(); i < actualMovesSize; i++) {
-			int[] moveFT = boardFace.parseCoordinate(actualMoves[i]);
-			Move move = boardFace.convertMove(moveFT);
-			// we play sound and animate only for the last move
-			boolean playSound;
-			if (i == actualMovesSize - 1) {
-				playSound = true;
-				boardView.setMoveAnimator(move, true);
-			} else {
-				playSound = false;
-			}
+					boardFace.makeMove(move, playSound);
+				}
 
-			boardFace.makeMove(move, playSound);
-		}
+				boardFace.setMovesCount(actualMovesSize);
 
-		boardFace.setMovesCount(actualMovesSize);
-
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
 				if (getActivity() == null) {
 					return;
 				}

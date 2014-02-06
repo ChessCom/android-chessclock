@@ -584,8 +584,7 @@ public class LccHelper {
 	}
 
 	public void processFullGame() {
-		latestMoveNumber = 0; // it was null before
-//		initClocks(); // init after widgets set
+		latestMoveNumber = 0;
 
 		if (lccEventListener == null) { // if we restart app and connected to service, but no live game screens opened
 			context.sendBroadcast(new Intent(IntentConstants.START_LIVE_GAME));
@@ -610,7 +609,10 @@ public class LccHelper {
 
 		if (!isGameActivityPausedMode()) {
 			// todo: possible optimization - keep gameLiveItem between moves and just add new move when it comes
-			lccEventListener.onGameRefresh(new GameLiveItem(game, moveIndex));
+
+			synchronized (LccHelper.GAME_SYNC_LOCK) {
+				lccEventListener.onGameRefresh(new GameLiveItem(game, moveIndex));
+			}
 		}
 	}
 
