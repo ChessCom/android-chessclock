@@ -469,6 +469,7 @@
 	<string name="score_">Score:</string>
 	<string name="rating_">Rating:</string>
 	<string name="new_arg_rating_">New %s Rating:</string>
+	<string name="new_arg">New %s</string>
 	<string name="course">Course</string>
 	<string name="lessons_completed">Lessons Completed</string>
 	<string name="courses_completed">Courses Completed</string>

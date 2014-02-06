@@ -12,6 +12,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
@@ -305,7 +306,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			logLiveTest(e.getMessage());
 			return;
 		}
-		BoardFace boardFace = getBoardFace();
+		final BoardFace boardFace = getBoardFace();
 		if (boardFace.isAnalysis() && gameItem.getGameId() == gameId) {
 			return;
 		} else {
@@ -353,6 +354,20 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 				invalidateGameScreen();
 				getControlsView().haveNewMessage(gameItem.hasNewMessage());
+
+				if (boardFace.isWhiteToMove()) {
+					if (boardFace.isReside()) { // white on top
+						bumpTopTimer();
+					} else { // white on bottom
+						bumpBottomTimer();
+					}
+				} else { // if black to move
+					if (boardFace.isReside()) { // black on bottom
+						bumpBottomTimer();
+					} else { // black on top
+						bumpTopTimer();
+					}
+				}
 			}
 		});
 
@@ -441,8 +456,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 				boolean whiteToMove = getBoardFace().isWhiteToMove();
 
-				int newSide;
-
 				if (getBoardFace().isReside()) { // if white at top
 
 					if (!getBoardFace().isSubmit()) {
@@ -451,12 +464,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					}
 
 					topPanelView.setTimeRemain(timeString);
-
-					newSide = ChessBoard.WHITE_SIDE;
-					if (previousSide != newSide) {
-						previousSide = newSide;
-						bumpTopTimer();
-					}
 				} else {
 
 					if (!getBoardFace().isSubmit()) {
@@ -465,13 +472,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					}
 
 					bottomPanelView.setTimeRemain(timeString);
-
-					newSide = ChessBoard.BLACK_SIDE;
-
-					if (previousSide != newSide) {
-						previousSide = newSide;
-						bumpBottomTimer();
-					}
 				}
 			}
 		});
@@ -493,7 +493,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 				boolean blackToMove = !getBoardFace().isWhiteToMove();
 
-				int newSide;
 				if (getBoardFace().isReside()) {
 
 					if (!getBoardFace().isSubmit()) {
@@ -502,12 +501,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					}
 
 					bottomPanelView.setTimeRemain(timeString);
-
-					newSide = ChessBoard.BLACK_SIDE;
-					if (previousSide != newSide) {
-						previousSide = newSide;
-						bumpBottomTimer();
-					}
 				} else {
 
 					if (!getBoardFace().isSubmit()) {
@@ -516,12 +509,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					}
 
 					topPanelView.setTimeRemain(timeString);
-
-					newSide = ChessBoard.WHITE_SIDE;
-					if (previousSide != newSide) {
-						previousSide = newSide;
-						bumpTopTimer();
-					}
 				}
 			}
 		});
@@ -681,7 +668,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		PopupGameEndFragment endPopupFragment = PopupGameEndFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
 
-		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
+		int mode = getAppData().getDefaultLiveMode();
+		// set texts to buttons
+		String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
+		String newGameStr = getString(R.string.new_arg, AppUtils.getLiveModeButtonLabel(newGameButtonsArray[mode], getContext()));
+		Button newGameButton = (Button) layout.findViewById(R.id.newGamePopupBtn);
+		newGameButton.setText(newGameStr);
+		newGameButton.setOnClickListener(this);
+
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);

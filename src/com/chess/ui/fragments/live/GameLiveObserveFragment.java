@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.SparseArray;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadHelper;
@@ -25,6 +26,7 @@ import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
 import com.chess.ui.views.drawables.IconDrawable;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 import com.chess.utilities.MopubHelper;
 import com.chess.widgets.ProfileImageView;
@@ -284,9 +286,13 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		ratingTitleTxt.setVisibility(View.GONE);
 
 		// New Game (Self)
-		TextView rematchPopupBtn = (TextView) layout.findViewById(R.id.rematchPopupBtn);
-		rematchPopupBtn.setText(R.string.new_game);
-		rematchPopupBtn.setOnClickListener(this);
+		int mode = getAppData().getDefaultLiveMode();
+		// set texts to buttons
+		String[] newGameButtonsArray = getResources().getStringArray(R.array.new_live_game_button_values);
+		String newGameStr = getString(R.string.new_arg, AppUtils.getLiveModeButtonLabel(newGameButtonsArray[mode], getContext()));
+		Button newGameButton = (Button) layout.findViewById(R.id.rematchPopupBtn);
+		newGameButton.setText(newGameStr);
+		newGameButton.setOnClickListener(this);
 
 		// Next Game (Top)
 		RoboButton newGamePopupBtn = (RoboButton) layout.findViewById(R.id.newGamePopupBtn);
