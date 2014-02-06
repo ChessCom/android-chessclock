@@ -174,11 +174,11 @@
 	<string name="language">Language</string>
 	<string name="black_wins">Black Wins</string>
 	<string name="white_wins">White Wins</string>
-	<string name="game_draw_by_repetition">Drawn by Repetition</string>
-	<string name="game_drawn_by_agreement">Drawn by Agreement</string>
-	<string name="game_drawn_by_stalemate">Drawn by Stalemate</string>
-	<string name="game_drawn_insufficient_material">Drawn by Insufficient Material</string>
-	<string name="game_drawn_by_fifty_move_rule">Drawn by 50-move Rule</string>
+	<string name="game_draw_by_repetition">Draw by Repetition</string>
+	<string name="game_drawn_by_agreement">Draw by Agreement</string>
+	<string name="game_drawn_by_stalemate">Draw by Stalemate</string>
+	<string name="game_drawn_insufficient_material">Draw by Insufficient Material</string>
+	<string name="game_drawn_by_fifty_move_rule">Draw by 50-move Rule</string>
 	<string name="draw_by_stalemate">Draw by Stalemate</string>
 	<string name="draw_by_3fold_repetition">Draw by Threefold Repetition</string>
 	<string name="rematch">Rematch</string>
@@ -186,6 +186,7 @@
 	<string name="home">Home</string>
 	<string name="live">Live</string>
 	<string name="follow">Follow</string>
+	<string name="following_arg">Following %s</string>
 	<string name="comp">Comp</string>
 	<string name="tactics">Tactics</string>
 	<string name="practice">Practice</string>
