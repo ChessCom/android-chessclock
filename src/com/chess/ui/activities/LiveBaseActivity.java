@@ -113,7 +113,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		dismissFragmentDialog();
 
-		liveConnector.removeCallbacks();
+//		liveConnector.removeCallbacks();
 
 		//Log.d(TAG, "LiveBaseActivity go pause, isLCSBound = " + isLCSBound);
 		if (isLCSBound) {
@@ -671,7 +671,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void registerGcm() {
-		super.registerGcmService();
+		registerGcmService();
 	}
 
 	public boolean isLiveFragment(String fragmentName) {

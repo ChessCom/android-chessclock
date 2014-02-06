@@ -472,11 +472,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	@Override
-	public void registerGcm() {
-		registerGcmService();
-	}
-
-	@Override
 	public void changeRightFragment(CommonLogicFragment fragment) {
 		// set right menu. Left Menu is already set in BaseActivity
 		SlidingMenu sm = getSlidingMenu();

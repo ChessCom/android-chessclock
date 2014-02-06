@@ -61,13 +61,15 @@ public class LiveChessService extends Service {
 		} else {
 
 			// lets try this way
-			stop();
+			stop(); // todo: to vm: What does that mean?
 			return START_NOT_STICKY;
 		}
 
 		// try to use START_NOT_STICKY as main mode,
-		// because system will keep service started when app is foregroud,
-		// and we anyway kill service in 30sec in background
+		// because system will keep service started when app is in foreground,
+		// and we anyway kill service in 30sec if it's in the background
+		// todo: to vm: system shouldn't re-create service which has no binders. So when we shutdown service that mean means that activity is no longer exist.
+		// todo: to vm: if we do leave when app is in foreground, we only do leave for live chess client, and do not shutdown service itself. Please review this logic as it might be incorrect.
 		return START_STICKY_COMPATIBILITY;
 	}
 

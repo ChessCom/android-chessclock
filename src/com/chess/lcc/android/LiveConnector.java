@@ -2,7 +2,6 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import com.chess.backend.LoadHelper;
@@ -22,12 +21,12 @@ import com.chess.utilities.AppUtils;
 /**
  * Created by vm on 04.02.14.
  */
-public class LiveConnector {
+public class LiveConnector { // todo: to vm: i don't see a reason why this class exist??? We should have only ConnectionHelper that must perform this logic and have access to Activity(context)
 
 	private static final String TAG = "LCCLOG-LiveConnector";
 	private static final int NEXT_CONNECTION_DELAY = 5000;
 
-	private Handler handler;
+	//	private Handler handler;
 	private Context context;
 	private AppData appData;
 	private LiveUiUpdateListener liveUiUpdateListener;
@@ -40,7 +39,7 @@ public class LiveConnector {
 		this.loginErrorUpdateListener = loginErrorUpdateListener;
 
 		appData = new AppData(context);
-		handler = new Handler();
+//		handler = new Handler();
 	}
 
 	private Runnable sessionIdCheckRunnable = new Runnable() {
@@ -85,7 +84,7 @@ public class LiveConnector {
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			//LogMe.dl(TAG, "SessionIdUpdateListener errorHandle resultCode=" + resultCode);
-			handler.postDelayed(sessionIdCheckRunnable, NEXT_CONNECTION_DELAY);
+//			handler.postDelayed(sessionIdCheckRunnable, NEXT_CONNECTION_DELAY);  // todo: to vm: why is that here???
 		}
 	}
 
@@ -133,7 +132,7 @@ public class LiveConnector {
 	}
 
 	private void performReloginForLiveDelayed() {
-		handler.postDelayed(performReloginForLiveRunnable, NEXT_CONNECTION_DELAY);
+//		handler.postDelayed(performReloginForLiveRunnable, NEXT_CONNECTION_DELAY);
 	}
 
 	private Runnable performReloginForLiveRunnable = new Runnable() {
@@ -180,9 +179,9 @@ public class LiveConnector {
 		public void errorHandle(Integer resultCode) {
 
 			//LogMe.dl(TAG, "LoginUpdateListener resultCode=" + resultCode);
-			performReloginForLiveDelayed();
+//			performReloginForLiveDelayed(); // todo: to vm: this is incorrect logic you already tried to re-login, but failed, and you even don't know why, but you still try to do this. this will end up with blocked account.
 
-			// show message only for re-login and app update
+			// show message only for re-login and app update     // todo: to vm: why this code is commented and there is no handle for provided error codes???
 			/*if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.ACCESS_DENIED_CODE) { // handled in CommonLogicFragment
@@ -212,21 +211,22 @@ public class LiveConnector {
 
 			//if (needReLoginToLive) {
 			DataHolder.getInstance().setLiveChessMode(true);
-			connectLcc();
+//			connectLcc(); // todo: to vm: after successful re-login you already have a valid sessionId, so you shouldn't call this method here, you must call liveUiUpdateListener.performServiceConnection();
+			liveUiUpdateListener.performServiceConnection();
 			//}
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			performReloginForLiveDelayed();
+			// performReloginForLiveDelayed();   // todo: to vm: this is incorrect logic you already tried to re-login, but failed, and you even don't know why, but you still try to do this. this will end up with blocked account.
 			super.errorHandle(resultCode);
 		}
 	}
 
-	public void removeCallbacks() {
-		handler.removeCallbacks(sessionIdCheckRunnable);
-		handler.removeCallbacks(performReloginForLiveRunnable);
-	}
+//	public void removeCallbacks() {
+//		handler.removeCallbacks(sessionIdCheckRunnable);
+//		handler.removeCallbacks(performReloginForLiveRunnable);
+//	}
 
 	public void connectLcc() {
 		//LogMe.dl(TAG, "connectLcc: getAppData().isLiveChess() = " + getAppData().isLiveChess());
@@ -235,7 +235,7 @@ public class LiveConnector {
 		if (DataHolder.getInstance().isLiveChess()) {
 
 			if (liveUiUpdateListener != null) {
-				liveUiUpdateListener.checkNetwork();
+				liveUiUpdateListener.checkNetwork(); // todo: to vm: and what it should do with that call? the idea to check network state is to prevent a invocation of request, rather then just show popup about network failure
 			}
 
 			// first we check live sessionId
