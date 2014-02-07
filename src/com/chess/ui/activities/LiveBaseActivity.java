@@ -25,6 +25,7 @@ import com.chess.lcc.android.interfaces.LiveUiUpdateListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
+import com.chess.model.DataHolder;
 import com.chess.model.PopupItem;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
@@ -187,10 +188,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					return super.onKeyUp(keyCode, event);
 				}
 
-				// todo: we should exit Live even if isLCSBound=false
+				// todo: @lcc - we should exit Live even if isLCSBound=false
 				fragmentByTag = getLiveHomeFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					//stopConnectTimer();
 					liveHelper.logout();
 					getDataHolder().setLiveChessMode(false);
 					unBindAndStopLiveService();
@@ -326,7 +326,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	}
 
 	public void connectLcc() {
-		liveConnector.connectLcc();
+		if (DataHolder.getInstance().isLiveChess()) {
+			checkNetwork(); // todo: to vm: and what it should do with that call? the idea to check network state is to prevent a invocation of request, rather then just show popup about network failure
+			performServiceConnection();
+		}
 	}
 
 	private class LiveServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
@@ -560,7 +563,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				unBindAndStopLiveService();
 			}
 
-			liveConnector.performReloginForLive();
+			liveConnector.performReloginForLive(); // @lcc remove liveConnector, should be invoked from LCH
 		} else {
 			showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
 			getLastPopupFragment().setCancelable(false);
@@ -660,7 +663,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		dismissFragmentDialogByTag(NETWORK_CHECK_TAG);
 	}
 
-	@Override
 	public void checkNetwork() {
 		if (!AppUtils.isNetworkAvailable(this)) {
 			dismissNetworkCheckDialog();

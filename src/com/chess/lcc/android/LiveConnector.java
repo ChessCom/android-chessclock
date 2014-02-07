@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
-import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.LoginItem;
-import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.interfaces.LiveUiUpdateListener;
@@ -42,7 +40,7 @@ public class LiveConnector { // todo: to vm: i don't see a reason why this class
 //		handler = new Handler();
 	}
 
-	private Runnable sessionIdCheckRunnable = new Runnable() {
+	/*private Runnable sessionIdCheckRunnable = new Runnable() {
 		@Override
 		public void run() {
 			sessionIdCheck();
@@ -86,7 +84,7 @@ public class LiveConnector { // todo: to vm: i don't see a reason why this class
 			//LogMe.dl(TAG, "SessionIdUpdateListener errorHandle resultCode=" + resultCode);
 //			handler.postDelayed(sessionIdCheckRunnable, NEXT_CONNECTION_DELAY);  // todo: to vm: why is that here???
 		}
-	}
+	}*/
 
 	public void performReloginForLive() {
 		Log.d(TAG, "performReloginForLive");
@@ -131,7 +129,7 @@ public class LiveConnector { // todo: to vm: i don't see a reason why this class
 		//needReLoginToLive = true;
 	}
 
-	private void performReloginForLiveDelayed() {
+	/*private void performReloginForLiveDelayed() {
 //		handler.postDelayed(performReloginForLiveRunnable, NEXT_CONNECTION_DELAY);
 	}
 
@@ -140,7 +138,7 @@ public class LiveConnector { // todo: to vm: i don't see a reason why this class
 		public void run() {
 			performReloginForLive();
 		}
-	};
+	};*/
 
 	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
 		public LoginUpdateListener() {
@@ -172,7 +170,8 @@ public class LiveConnector { // todo: to vm: i don't see a reason why this class
 			liveUiUpdateListener.registerGcm();
 			DataHolder.getInstance().setLiveChessMode(true);
 			Log.d(TAG, "LBA LoginUpdateListener -> updateData");
-			connectLcc();
+
+			liveUiUpdateListener.performServiceConnection();
 		}
 
 		@Override
@@ -227,19 +226,4 @@ public class LiveConnector { // todo: to vm: i don't see a reason why this class
 //		handler.removeCallbacks(sessionIdCheckRunnable);
 //		handler.removeCallbacks(performReloginForLiveRunnable);
 //	}
-
-	public void connectLcc() {
-		//LogMe.dl(TAG, "connectLcc: getAppData().isLiveChess() = " + getAppData().isLiveChess());
-		//LogMe.dl(TAG, "connectLcc: isLCSBound = " + isLCSBound);
-
-		if (DataHolder.getInstance().isLiveChess()) {
-
-			if (liveUiUpdateListener != null) {
-				liveUiUpdateListener.checkNetwork(); // todo: to vm: and what it should do with that call? the idea to check network state is to prevent a invocation of request, rather then just show popup about network failure
-			}
-
-			// first we check live sessionId
-			sessionIdCheck();
-		}
-	}
 }

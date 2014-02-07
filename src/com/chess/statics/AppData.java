@@ -130,13 +130,13 @@ public class AppData {
 		return preferences.getString(LIVE_SESSION_ID, Symbol.EMPTY);
 	}
 
-	public void setLiveSessionIdSaveTime(long value) {
+	/*public void setLiveSessionIdSaveTime(long value) {
 		preferences.edit().putLong(LIVE_SESSION_ID_SAVE_TIME, value).commit();
 	}
 
 	public long getLiveSessionIdSaveTime() {
 		return preferences.getLong(LIVE_SESSION_ID_SAVE_TIME, 0);
-	}
+	}*/
 
 	public void setShowSubmitButtonsDaily(boolean show) {
 		setBooleanValue(PREF_SHOW_SUBMIT_MOVE_DAILY, show);

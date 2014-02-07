@@ -9,7 +9,7 @@ public interface LiveUiUpdateListener {
 
 	void performServiceConnection();
 
-	void checkNetwork();
+	//void checkNetwork();
 
 	void registerGcm();
 }

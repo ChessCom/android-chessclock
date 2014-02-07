@@ -2,11 +2,9 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
-import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -17,10 +15,8 @@ import com.chess.lcc.android.interfaces.*;
 import com.chess.live.client.*;
 import com.chess.model.DataHolder;
 import com.chess.model.GameLiveItem;
-import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
-import com.chess.statics.Symbol;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.interfaces.LoginErrorUpdateListener;
 import com.chess.utilities.LogMe;
@@ -118,6 +114,7 @@ public class LiveConnectionHelper {
 	 * Connect live chess client
 	 */
 	public void performConnect() {
+		/*
 		String username = appData.getUsername();
 		String pass = appData.getPassword();
 
@@ -147,6 +144,11 @@ public class LiveConnectionHelper {
 				onSessionExpired();
 			}
 		}
+		*/
+
+		// todo: @lcc - check SessionId for null or empty string?
+		String sessionId = appData.getLiveSessionId();
+		connectBySessionId(sessionId);
 	}
 
 	private void onSessionExpired() {
@@ -154,11 +156,11 @@ public class LiveConnectionHelper {
 		liveConnector.performReloginForLive();
 	}
 
-	public void connectByCreds(String username, String pass) {
+	/*public void connectByCreds(String username, String pass) {
 //		LogMe.dl(TAG, "connectByCreds : user = " + username + " pass = " + pass); // do not post in prod
 		LogMe.dl(TAG, "connectByCreds : hidden"); // do not post in pod
 		lccClient.connect(username, pass, connectionListener, subscriptionListener);
-	}
+	}*/
 
 	public void connectBySessionId(String sessionId) {
 		LogMe.dl(TAG, "connectBySessionId : sessionId = " + sessionId);
@@ -222,6 +224,7 @@ public class LiveConnectionHelper {
 					if (appData.getLiveConnectAttempts(context) < LIVE_CONNECTION_ATTEMPTS_LIMIT) {
 						appData.incrementLiveConnectAttempts(context);*/
 
+					/*
 					// first of all we need to invalidate sessionId key
 					appData.setLiveSessionId(null);
 
@@ -233,8 +236,10 @@ public class LiveConnectionHelper {
 						}
 						runConnectTask();
 					} else {
-						liveChessClientEventListener.onConnectionFailure(context.getString(R.string.pleaseLoginAgain));
-					}
+					*/
+					    onSessionExpired();
+						//liveChessClientEventListener.onConnectionFailure(context.getString(R.string.pleaseLoginAgain));
+					//}
 					return;
 				}
 				case SERVER_STOPPED: {
@@ -264,6 +269,7 @@ public class LiveConnectionHelper {
 		liveChessClientEventListener.onConnectionFailure(detailsMessage);
 	}
 
+	/*
 	private boolean isPossibleToReconnect() {
 		String pass = appData.getPassword();
 
@@ -285,6 +291,7 @@ public class LiveConnectionHelper {
 			return !emptyPassword && !RestHelper.getInstance().IS_TEST_SERVER_MODE;
 		}
 	}
+	*/
 
 	public boolean isConnected() {
 		return lccClient != null && liveConnected;
