@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Günlük Satranç</item>
-		<item>Canlı Satranç - Standart</item>
-		<item>Canlı Satranç - Yıldırım</item>
-		<item>Canlı Satranç - Kurşun</item>
+		<item>Canlı - Standart</item>
+		<item>Canlı - Yıldırım</item>
+		<item>Canlı - Kurşun</item>
 		<item>Günlük Satranç960</item>
 		<item>Taktikler</item>
 		<item>Dersler</item>

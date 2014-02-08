@@ -168,7 +168,7 @@
 	<string name="profile_picture">Εικόνα προφίλ</string>
 	<string name="or_use_your_email">Ή να χρησιμοποιήσετε το email σας:</string>
 	<string name="by_signing_up_accept_mobile">Υπογράφοντας, αποδέχομαι</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> ΟΡΟΙ ΧΡΗΣΗΣ</a>]]]></string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> ΟΡΟΙ ΧΡΗΣΗΣ</a>]]></string>
 	<string name="create_chess_profile">Καλώς όρισες! Δημιούργησε το σκακιστικό προφίλ σου</string>
 	<string name="daily">Ημερήσια</string>
 	<string name="improve_game_with_lessons">Βελτιώσετε το παιχνίδι σας με απεριόριστα μαθήματα</string>
@@ -277,7 +277,7 @@
 	<string name="location">Τοποθεσία</string>
 	<string name="share">Μοιραστείτε</string>
 	<string name="profile_membership_renew_cancel">Η %1$s κάρτα μέλους θα ανανεωθεί στις %2$s.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Ακύρωση</a>]]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Ακύρωση</a>]]></string>
 	<string name="invite_friends_profile_message">Το σκάκι είναι πιο διασκεδαστικό με τους φίλους - καλέστε τους να συμμετάσχουν!</string>
 	<string name="profile_account_message_1">Ο λογαριασμός σας υπόκειται στο site </string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice">Terms and Conditions.</a>]]></string>

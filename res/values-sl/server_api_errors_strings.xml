@@ -47,7 +47,7 @@
 		<item>Preseženo maksimalno število iskanj.</item>
 		<item>Odigrajte poteze preden ustvarite nove partije.</item>
 		<item>Neveljavno uporabniško ime.</item>
-		<item>Neveljavni parameter - totalGames</item>
+		<item>Neveljavni parameter - Vse partije</item>
 		<item>Prosim zahtevajte 50 partij ali manj</item>
 		<item>Partija se je že začela!</item>
 		<item>Odstotek prekinitve je previsok.</item>
@@ -92,8 +92,8 @@
 			legitimen email ali se povežite preko Facebook-a. Hvala!
 		</item>
 		<item>Geslo mora vsebovati vsaj 6 znakov.</item>
-		<item>Ime lahko ima 20 znakov ali manj.</item>
-		<item>Priimek lahko ima 20 znakov ali manj.</item>
+		<item>Ime lahko vsebuje največ 20 znakov .</item>
+		<item>Priimek lahko vsebuje največ 20 znakov.</item>
 		<item>IP naslov je že bil prepovedan</item>
 		<item>Uporabniško ime ne sme biti prazno.</item>
 		<item>Neveljavni \"sku\"</item>
@@ -101,37 +101,7 @@
 		<item>Neveljavno ime paketa</item>
 		<item>Neveljaven \"niz dodatnih informacij\"</item>
 		<item>Neveljaven podpis podatkov</item>
-		<item>Neveljavno naročilo</item>
+		<item>Neveljaven vrstni red</item>
 		<item>Napačen vrstni red</item>
-		<item>Non existing game seek</item>
-		<item>You are not allowed to edit that seek</item>
-		<item>Invalid product name</item>
-		<item>Invalid developer payload length</item>
-		<item>User has reached the daily limit of lessons</item>
-		<item>Incomplete lesson</item>
-		<item>Invalid lesson</item>
-		<item>No game seek update parameters passed</item>
-		<item>The selected game seek is not open, and the parameters passed are only for an open game seek</item>
-		<item>Invalid parameter: newMode</item>
-		<item>You must pass a username or an email</item>
-		<item>Invalid email address</item>
-		<item>User submitted spam content</item>
-		<item>Unable to remove user friend</item>
-		<item>The forum topic does not exist</item>
-		<item>No update permission for the selected forum topic</item>
-		<item>The selected forum category does not exist</item>
-		<item>The parent forum topic does not exist</item>
-		<item>User has no access for the selected forum category</item>
-		<item>Non existing course</item>
-		<item>Missing parameters</item>
-		<item>Error creating background theme</item>
-		<item>You must pass the parent topic id when adding a new comment</item>
-		<item>Invalid value for items per page</item>
-		<item>No moves found</item>
-		<item>You provided invalid password.</item>
-		<item>Your registration ID is already registered!</item>
-		<item>The selected user must be enabled.</item>
-		<item>Gold members cannot view other member\'s stats.</item>
-		<item>Forum topic already exists!</item>
 	</string-array>
 </resources>

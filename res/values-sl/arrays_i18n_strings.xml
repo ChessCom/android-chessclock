@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Dnevni šah</item>
-		<item>Šah v živo - standardni</item>
-		<item>Šah v živo - hitropotezni</item>
-		<item>Šah v živo - bullet</item>
+		<item>V živo - Standardni</item>
+		<item>V živo - Blitz</item>
+		<item>V živo - Bullet</item>
 		<item>Dnevni šah960</item>
 		<item>Taktike</item>
 		<item>Lekcije</item>

@@ -3,9 +3,9 @@
 	<string-array name="new_site_api_error_messages">
 		<item>התגלו ניסיונות התחברות מרובים, אין להזין שם משתמש או סיסמא עם הרשאות אחרות.</item>
 		<item>אסימון גישה לא חוקי של פייסבוק.</item>
-		<item>למשתמש פייסבוק זה אין חשבון ב Chess.com</item>
+		<item>למשתמש פייסבוק זה אין חשבון ב-Chess.com.</item>
 		<item>החשבון נעול. התחבר דרך Chess.com.</item>
-		<item>הסיסמא או שם משתמשים אינם נכונים</item>
+		<item>סיסמא או שם משתמש לא חוקיים.</item>
 		<item>החשבון אינו פעיל עדיין!</item>
 		<item>החשבון הושבת.</item>
 		<item>עליך להגדיר סיסמה ב- Chess.com.</item>
@@ -32,107 +32,77 @@
 		<item>המשתמש אינו בחופשה.</item>
 		<item>אתה בחופשה.</item>
 		<item>מספר לא חוקי של ימים לכל מסע.</item>
-		<item>דירוג מינימלי נמוך מדי.</item>
-		<item>דירוג מינימלי גבוה מדי.</item>
-		<item>דירוג מקסימלי נמוך מדי.</item>
-		<item>דירוג מקסימלי גבוה מדי.</item>
-		<item>טווח הדירוג חייב לכלול את הדירוג שלך.</item>
-		<item>טווח הדירוג קטן מדי.</item>
+		<item>מד כושר מזערי נמוך מדי.</item>
+		<item>מד כושר מזערי גבוה מדי.</item>
+		<item>מד כושר מירבי נמוך מדי.</item>
+		<item>מד כושר מירבי גבוה מדי.</item>
+		<item>טווח מד הכושר חייב לכלול את מד הכושר שלך.</item>
+		<item>טווח מד הכושר קטן מדי.</item>
 		<item>היריב בחופשה.</item>
 		<item>היריב לא זמין.</item>
-		<item>דירוג נמוך מדי.</item>
-		<item>דירוג גבוה מדי.</item>
+		<item>מד כושר נמוך מדי.</item>
+		<item>מד כושר גבוה מדי.</item>
 		<item>זמן המשחק של היריב אינו תואם את שלך.</item>
 		<item>אתה חסום.</item>
 		<item>עברת את מספר בקשות המשחק המותר.</item>
-		<item>תבצע מהלך לפני יצירת משחקים נוספים.</item>
+		<item>בצע מסעים לפני יצירת משחקים נוספים.</item>
 		<item>שם משתמש לא חוקי.</item>
 		<item>פרמטר לא חוקי - totalGames</item>
 		<item>יש לבקש 50 משחקים או פחות.</item>
 		<item>המשחק כבר התחיל!</item>
 		<item>אחוז החריגות בזמן גבוה מדי.</item>
 		<item>מעט מדי משחקים.</item>
-		<item>חייב להיות בעל חשבון פרימיום.</item>
-		<item>זמן ממוצע למהלך שלך איטי מדי.</item>
-		<item>אין אפשרות לקבל בקשה מעצמי.</item>
-		<item>בקשת המשחק הזו לא מיועדת לך.</item>
+		<item>עליך להיות בעל חשבון עילית.</item>
+		<item>קצב המסעים איטי מדי.</item>
+		<item>אינך יכול לקבל את בקשת המשחק שאתה שלחת.</item>
+		<item>ההזמנה הזאת למשחק אינה מיועדת אליך.</item>
 		<item>מזהה המדינה או קוד מדינה לא חוקי.</item>
 		<item>שם המשתמש כבר תפוס.</item>
-		<item>דוא\"ל כבר תפוס.</item>
-		<item>כתובת דוא\"ל לא חוקית.</item>
+		<item>כתובת הדוא\"ל כבר בשימוש.</item>
+		<item>כתובת דוא\"ל בלתי חוקית של chess.com.</item>
 		<item>שם משתמש לא חוקי.</item>
-		<item>לא ניתן להשתמש בשם המשתמש.</item>
-		<item>כתובת דוא\"ל לא חוקית.</item>
+		<item>שם המשתמש אסור.</item>
+		<item>דומיין דוא\"ל לא חוקי.</item>
 		<item>שגיאת מערכת.</item>
 		<item>סיסמה חלשה.</item>
-		<item>אסימון כניסה לא חוקיים.</item>
+		<item>נמסר אסימון כניסה לא חוקי.</item>
 		<item>אנא התחבר כדי להמשיך.</item>
-		<item>שגיאה ריקה</item>
-		<item>אין אפשרות לאפס את משחק השחמט.</item>
-		<item>אתה חייב לציין \"method\", \"url\" , \"requestId\".</item>
+		<item>שגיאה לא ידועה</item>
+		<item>אין אפשרות לאתחל מחדש את משחק השחמט.</item>
+		<item>עליך לציין \"method\", \"url\" , \"requestId\".</item>
 		<item>מספר עמוד לא חוקי</item>
-		<item>כבר שינית את שם המשתמש שלך. שינוי אחד בלבד מותר.</item>
+		<item>כבר שינית את שם המשתמש שלך. מותר שינוי אחד בלבד.</item>
 		<item>אינך יכול לשנות את שם המשתמש שלך כאשר אתה מחובר למשחק בזמן אמת.</item>
-		<item>מספר המהלכים שהעוברו גדול מהמותר.</item>
+		<item>מספר חצאי-המסעים שהעוברו גדול מהמותר.</item>
 		<item>פרמטר לא חוקי.</item>
-		<item>שגיאה ריקה</item>
-		<item>המשחק חייב להכיל לפחות 16 מהלכים כדי לשלוח אותו לניתוח ממוחשב.</item>
-		<item>המשחק הזה כבר נשלח לניתוח המחשב.</item>
-		<item>מגבלת המשחקים הושגה.</item>
-		<item>לא ניתן לעשות ניתוח ממוחשב למשחק.</item>
-		<item>ניתוח ממוחשב של המשחק שלך עדיין בתהליך.</item>
-		<item>אתגר עצמי.</item>
-		<item>תמונה אישית אינו תקינה.הגודל המותר לקובץ הוא 2 מ\"ב, ,תמונות בפורמטים הבאים בלבד מותרים והם: \"image/jpeg,
+		<item>שגיאה לא ידועה</item>
+		<item>משחק הנשלח לניתוח במחשב חייב לכלול 16 מסעים לפחות.</item>
+		<item>המשחק הזה כבר נשלח לניתוח במחשב.</item>
+		<item>הגעת לגבול מספר המשחקים.</item>
+		<item>לא ניתן לנתח משחק זה במחשב שלנו.</item>
+		<item>הניתוח עדיין בעיצומו.</item>
+		<item>הזמנה עצמית למשחק.</item>
+		<item>התמונה האישית אינה תקינה. הגודל המותר לקובץ הוא 2 מ\"ב. מותרות תמונות בפורמטים הבאים בלבד: \"image/jpeg,
 			image/gif,
 			image/png\".
 		</item>
 		<item>שם המשתמש חייב לכלול 3 תווים או יותר.</item>
-		<item>שם המשתמש צריך להכיל 20 תווים או פחות.</item>
-		<item>שם משתמש אינו חוקי. אנא נסה שוב.</item>
-		<item>כדי למנוע דואר זבל ופגיעה בתנאי שימוש. האתר אינו מאפשר קבלת כתובות דואר אלקטרוני חד פעמי. אנא השתמש בכתובת
-			דואר אלקטרוני חוקית או תקשור את החשבון שלך עם חשבון פייסבוק. תודה!
+		<item>שם המשתמש חייב לכלול 20 תווים או פחות.</item>
+		<item>שם המשתמש אינו חוקי. אנא נסה שוב.</item>
+		<item>כדי למנוע דואר זבל ופגיעה בתנאי השימוש, האתר אינו מאפשר קבלת כתובות דואר אלקטרוני חד פעמיות. אנא השתמש
+			בכתובת דואר אלקטרוני לגיטימית או התחבר באמצעות פייסבוק. תודה!
 		</item>
 		<item>הסיסמה צריכה להכיל לפחות 6 תווים.</item>
-		<item>שם פרטי צריך להכיל 20 תווים או פחות.</item>
-		<item>שם משפחה צריך להכיל 20 תווים או פחות.</item>
-		<item>כתובת IP כבר נחסמה.</item>
-		<item>שם משתמש אינו יכול להיות ריק.</item>
-		<item>מספר מוצר לא חוקי</item>
-		<item>תאריך רכישה לא חוקי</item>
+		<item>השם הפרטי חייב לכלול 20 תווים או פחות.</item>
+		<item>שם המשפחה חייב לכלול 20 תווים או פחות.</item>
+		<item>כתובת ה-IP כבר נחסמה</item>
+		<item>שם המשתמש אינו יכול להיות ריק.</item>
+		<item>קוד מוצר (sku) לא חוקי</item>
+		<item>נתוני רכישה לא חוקיים</item>
 		<item>שם החבילה לא חוקי</item>
-		<item>מפתח לא חוקי</item>
-		<item>חתימת זמן לא חוקית.</item>
-		<item>סדר לא חוקי</item>
-		<item>סדר שגוי.</item>
-		<item>Non existing game seek</item>
-		<item>You are not allowed to edit that seek</item>
-		<item>Invalid product name</item>
-		<item>Invalid developer payload length</item>
-		<item>User has reached the daily limit of lessons</item>
-		<item>Incomplete lesson</item>
-		<item>Invalid lesson</item>
-		<item>No game seek update parameters passed</item>
-		<item>The selected game seek is not open, and the parameters passed are only for an open game seek</item>
-		<item>Invalid parameter: newMode</item>
-		<item>You must pass a username or an email</item>
-		<item>Invalid email address</item>
-		<item>User submitted spam content</item>
-		<item>Unable to remove user friend</item>
-		<item>The forum topic does not exist</item>
-		<item>No update permission for the selected forum topic</item>
-		<item>The selected forum category does not exist</item>
-		<item>The parent forum topic does not exist</item>
-		<item>User has no access for the selected forum category</item>
-		<item>Non existing course</item>
-		<item>Missing parameters</item>
-		<item>Error creating background theme</item>
-		<item>You must pass the parent topic id when adding a new comment</item>
-		<item>Invalid value for items per page</item>
-		<item>No moves found</item>
-		<item>You provided invalid password.</item>
-		<item>Your registration ID is already registered!</item>
-		<item>The selected user must be enabled.</item>
-		<item>Gold members cannot view other member\'s stats.</item>
-		<item>Forum topic already exists!</item>
+		<item>מטען המפתח אינו חוקי</item>
+		<item>חתימה דיגיטלית בלתי חוקית</item>
+		<item>הזמנה בלתי חוקית</item>
+		<item>הזמנה שגוייה</item>
 	</string-array>
 </resources>

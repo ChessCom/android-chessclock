@@ -65,8 +65,7 @@
 	<com.chess.widgets.RoboButton
 		android:id="@+id/standard2SelectBtn"
 		style="@style/RightLiveOptionsButton"
-		android:layout_below="@id/standard1SelectBtn"
-		/>
+		android:layout_below="@id/standard1SelectBtn" />
 
 	<!--5|2 min-->
 	<com.chess.widgets.RoboButton

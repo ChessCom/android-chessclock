@@ -280,35 +280,35 @@
 	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> キャンセル</a>]]></string>
 	<string name="invite_friends_profile_message">チェスは友達と一緒にプレーするともっと楽しめます‐友達を招待しましょう。</string>
 	<string name="profile_account_message_1">お使いのアカウントは当サイトの管理対象となっています</string>
-  <string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice"> 規約</a>]]。></string>
-  <string name="profile_account_message_3">アカウントを閉じる場合</string>
-  <string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy"> ここをタップします</a>]]。></string>
-  <string name="basic">基本</string>
-  <string name="sign_up_now_free">"Sign Up - It's FREE!"</string>
-  <string name="chess_com_username"> Chess.com ユーザー名</string>
-  <string name="coordinates">座標</string>
-  <string name="highlight_last_move">最後の一手をハイライト</string>
-  <string name="on">on</string>
-  <string name="off">off</string>
-  <string name="sounds">サウンド</string>
-  <string name="pieces_style">駒のスタイル</string>
-  <string name="show_legal_moves">有効な移動先を表示します。</string>
-  <string name="flip_board">フリップ ボード</string>
-  <string name="waiting_for_opponent">相手を待っています</string>
-  <string name="lightning">ライトニング</string>
-  <string name="blitz">ブリッツ</string>
-  <string name="standard">標準</string>
-  <string name="top_game">トップゲーム</string>
-  <string name="current_game">現在のゲーム</string>
-  <string name="bullet">ブレット</string>
-  <string name="computer_level">コンピューター レベル</string>
-  <string name="auto_flip">自動反転</string>
-  <string name="analyze">分析</string>
-  <string name="select_player">プレーヤーを選択します。</string>
-  <string name="archive">アーカイブ</string>
-  <string name="completed">終了</string>
-  <string name="few_min">数分</string>
-  <string name="less_than_60_sec"><![CDATA[< 60 秒]]></string>
+	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice"> 規約</a>]]></string>
+	<string name="profile_account_message_3">アカウントを閉じる場合</string>
+	<string name="profile_account_message_4"><![CDATA[<a href="http://www.chess.com/home/privacy"> ここをタップします</a>]]></string>
+	<string name="basic">基本</string>
+	<string name="sign_up_now_free">"Sign Up - It's FREE!"</string>
+	<string name="chess_com_username"> Chess.com ユーザー名</string>
+	<string name="coordinates">座標</string>
+	<string name="highlight_last_move">最後の一手をハイライト</string>
+	<string name="on">on</string>
+	<string name="off">off</string>
+	<string name="sounds">サウンド</string>
+	<string name="pieces_style">駒のスタイル</string>
+	<string name="show_legal_moves">有効な移動先を表示します。</string>
+	<string name="flip_board">フリップ ボード</string>
+	<string name="waiting_for_opponent">相手を待っています</string>
+	<string name="lightning">ライトニング</string>
+	<string name="blitz">ブリッツ</string>
+	<string name="standard">標準</string>
+	<string name="top_game">トップゲーム</string>
+	<string name="current_game">現在のゲーム</string>
+	<string name="bullet">ブレット</string>
+	<string name="computer_level">コンピューター レベル</string>
+	<string name="auto_flip">自動反転</string>
+	<string name="analyze">分析</string>
+	<string name="select_player">プレーヤーを選択します。</string>
+	<string name="archive">アーカイブ</string>
+	<string name="completed">終了</string>
+	<string name="few_min">数分</string>
+	<string name="less_than_60_sec"><![CDATA[<60 秒]]></string>
 	<string name="abort_game_">Abort?</string>
 	<string name="resign_game_">Resign?</string>
 	<string name="days_move">日/手</string>

@@ -277,7 +277,7 @@
 	<string name="location">Местоположение</string>
 	<string name="share">Поделиться</string>
 	<string name="profile_membership_renew_cancel">Ваше %1$s подписка будет продлена на %2$s.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> отменить</a>]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> отменить</a>]]</string>
 	<string name="invite_friends_profile_message">Шахматы веселее с друзьями - предложите им присоединиться!</string>
 	<string name="profile_account_message_1">Ваша учетная запись принадлежит сайту</string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice"> Условия использования</a>]]></string>
@@ -319,10 +319,10 @@
 	<string name="you_lose">Вы проиграли</string>
 	<string name="you_must_have_account_to">Вы должны иметь учетную запись для %s</string>
 	<string name="solve_tactics_puzzles">решать тактики и пазлы</string>
-	<string name="use_lessons">Выполняется подключение...</string>
+	<string name="use_lessons">Выполняется подключение…</string>
 	<string name="watch_videos">Смотреть видео уроки</string>
 	<string name="interactive_lessons">Интерактивные уроки</string>
-	<string name="tactics_and_puzzles"><![CDATA[тактики &amp; головоломки]]></string>
+	<string name="tactics_and_puzzles"><![CDATA[тактики и головоломки]]></string>
 	<string name="friend_requests">Запрос от друга</string>
 	<string name="add_friend">Добавить в друзья</string>
 	<string name="recent_opponents">Недавние соперники</string>

@@ -168,7 +168,7 @@
 	<string name="profile_picture">Profielfoto</string>
 	<string name="or_use_your_email">Of gebruik je e-mailadres:</string>
 	<string name="by_signing_up_accept_mobile">Door te Registeren, Ga ik Akkoord met</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> Servicevoorwaarden</a>]]]></string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> Servicevoorwaarden</a>]]></string>
 	<string name="create_chess_profile">Welkom! Maak uw schaak-profiel aan</string>
 	<string name="daily">Dagelijks</string>
 	<string name="improve_game_with_lessons">Verbeter uw Spel met Onbeperkte Lessen</string>
@@ -277,7 +277,7 @@
 	<string name="location">Locatie</string>
 	<string name="share">Delen</string>
 	<string name="profile_membership_renew_cancel">Je %1$s lidmaatschap zal worden vernieuwd op %2$s.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Annuleren</a>]]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Annuleren</a>]]></string>
 	<string name="invite_friends_profile_message">Schaken is leuker met vrienden - nodig hen uit om deel te nemen!</string>
 	<string name="profile_account_message_1">Jouw profiel is onderdeel van de website </string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice"> Gebruiksvoorwaarden.</a>]]></string>

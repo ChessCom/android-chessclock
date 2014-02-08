@@ -168,7 +168,7 @@
 	<string name="profile_picture">تصویر نمایه</string>
 	<string name="or_use_your_email">یا از نشانی رایانامه خود استفاده کنید:</string>
 	<string name="by_signing_up_accept_mobile">با ثیت نام، من می پذیریم</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> شرایط استفاده از سرویس</a>]]]></string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> شرایط استفاده از سرویس</a>]]></string>
 	<string name="create_chess_profile">خوش آمدید! نمایه شطرنج خود را ایجاد کنید</string>
 	<string name="daily">روزانه</string>
 	<string name="improve_game_with_lessons">با دروس نامحدود بازیتان را بهتر کنید</string>
@@ -277,7 +277,7 @@
 	<string name="location">مکان</string>
 	<string name="share">اشتراک گذاری</string>
 	<string name="profile_membership_renew_cancel">عضویت %1$s شما در %2$s تازه خواهد شد.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> انصراف</a>]]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> انصراف</a>]]></string>
 	<string name="invite_friends_profile_message">شطرنج بازی کردن با دوستان بیشتر خوش می گذرد - دعوتشان کنید!</string>
 	<string name="profile_account_message_1">حساب کاربری شما مرتبط است با سایت </string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice">.شرایط و ضوابط</a>]]></string>

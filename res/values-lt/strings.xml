@@ -168,7 +168,7 @@
 	<string name="profile_picture">Profilio paveikslėlis</string>
 	<string name="or_use_your_email">Arba naudoti savo elektroninio pašto adresą:</string>
 	<string name="by_signing_up_accept_mobile">Registruojantis aš sutinku</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> Paslaugos sąlygos</a>]]]></string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> Paslaugos sąlygos</a>]]></string>
 	<string name="create_chess_profile">Sveiki! Susikurkite savo šachmatų profilį</string>
 	<string name="daily">Kasdien</string>
 	<string name="improve_game_with_lessons">Pagerinkite savo žaidimą neribotų pamokų pagalba</string>
@@ -277,7 +277,7 @@
 	<string name="location">Vieta</string>
 	<string name="share">Pasidalinti</string>
 	<string name="profile_membership_renew_cancel">Jūsų %1$s narystė bus pratęsta per %2$s.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Atšaukti</a>]]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Atšaukti</a>]]></string>
 	<string name="invite_friends_profile_message">Šachmatai yra smagesni su draugais - pakvieskite juos prisijungti!</string>
 	<string name="profile_account_message_1">Jūsų paskyra yra pavaldi tinklapiui</string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice"> Apibūdinimai ir sąlygos.</a>]]></string>

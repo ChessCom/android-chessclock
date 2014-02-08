@@ -168,7 +168,7 @@
 	<string name="profile_picture">Profiilipilt</string>
 	<string name="or_use_your_email">Või kasutage oma meiliaadressi:</string>
 	<string name="by_signing_up_accept_mobile">Liitumisel, nõustun</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> teenusetingimused</a>]]]></string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> teenusetingimused</a>]]></string>
 	<string name="create_chess_profile">Tere Tulemast! Loo oma Male konto!</string>
 	<string name="daily">Päevased</string>
 	<string name="improve_game_with_lessons">Paranda oma mängu piiramatute õppetundidega</string>
