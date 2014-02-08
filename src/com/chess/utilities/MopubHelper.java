@@ -19,6 +19,8 @@ public class MopubHelper {
 	// production ad ids
 	private static final String MOPUB_AD_BANNER_ID = "agltb3B1Yi1pbmNyDQsSBFNpdGUYlvOBEww";
 	private static final String MOPUB_AD_RECTANGLE_ID = "agltb3B1Yi1pbmNyDQsSBFNpdGUYtfH_Egw";
+//	private static final String MOPUB_AD_300x250_ID = "agltb3B1Yi1pbmNyDQsSBFNpdGUY6Y2BEww";
+//	private static final String MOPUB_AD_728x90_ID = "agltb3B1Yi1pbmNyDQsSBFNpdGUYt8eAEww";
 	//public static final String MOPUB_AD_INTERSTITIAL_ID = "agltb3B1Yi1pbmNyDQsSBFNpdGUYwLyBEww";
 
 
@@ -36,7 +38,12 @@ public class MopubHelper {
 			upgradeBtn.setVisibility(View.GONE);
 			setListener(moPubAdView, new MopubListener());
 			mopubAdLayout.setVisibility(View.VISIBLE);
-			moPubAdView.setAdUnitId(MOPUB_AD_BANNER_ID);
+//			if (AppUtils.isTablet(context)) {
+//				moPubAdView.setAdUnitId(MOPUB_AD_728x90_ID);
+//			} else {
+				moPubAdView.setAdUnitId(MOPUB_AD_BANNER_ID);
+//			}
+
 			moPubAdView.loadAd();
 
 			appData.setAdsShowCounter(adsShowCounter + 1);
@@ -54,7 +61,7 @@ public class MopubHelper {
 
 		setListener(moPubView, new MopubListener());
 //		if (AppUtils.isSmallScreen(context)) { // doesn't work because of  Not enough space to show ad! Wants: <320, 50>, Has: <304, 50>. Let's try with next SDK, maybe will be solved
-//			moPubView.setAdUnitId(MOPUB_AD_BANNER_ID);
+//			moPubView.setAdUnitId(MOPUB_AD_300x250_ID);
 //		} else {
 			moPubView.setAdUnitId(MOPUB_AD_RECTANGLE_ID);
 //		}

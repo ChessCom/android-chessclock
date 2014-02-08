@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -34,12 +35,12 @@ import java.util.regex.Pattern;
  * Date: 30.12.12
  * Time: 20:07
  */
-public class SignUpFragment extends CommonLogicFragment implements View.OnClickListener{
+public class SignUpFragment extends CommonLogicFragment implements View.OnClickListener, View.OnTouchListener {
 
 	protected Pattern emailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-Z]{2,4}");
 //	protected Pattern gMailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[g]");   // TODO use for autoComplete
 
-	private EditText userNameEdt;
+	private EditText usernameEdt;
 	private EditText emailEdt;
 	private EditText passwordEdt;
 	private EditText passwordRetypeEdt;
@@ -60,19 +61,24 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 
 		enableSlideMenus(false);
 
-		userNameEdt = (EditText) view.findViewById(R.id.usernameEdt);
+		usernameEdt = (EditText) view.findViewById(R.id.usernameEdt);
 		emailEdt = (EditText) view.findViewById(R.id.emailEdt);
 		passwordEdt = (EditText) view.findViewById(R.id.passwordEdt);
 		passwordRetypeEdt = (EditText) view.findViewById(R.id.passwordRetypeEdt);
 		view.findViewById(R.id.completeSignUpBtn).setOnClickListener(this);
 		view.findViewById(R.id.loginLinkTxt).setOnClickListener(this);
 
-		userNameEdt.addTextChangedListener(new FieldChangeWatcher(userNameEdt));
+		usernameEdt.addTextChangedListener(new FieldChangeWatcher(usernameEdt));
 		emailEdt.addTextChangedListener(new FieldChangeWatcher(emailEdt));
 		passwordEdt.addTextChangedListener(new FieldChangeWatcher(passwordEdt));
 		passwordRetypeEdt.addTextChangedListener(new FieldChangeWatcher(passwordRetypeEdt));
 
-		setLoginFields(userNameEdt, passwordEdt);
+		usernameEdt.setOnTouchListener(this);
+		passwordEdt.setOnTouchListener(this);
+		emailEdt.setOnTouchListener(this);
+		passwordRetypeEdt.setOnTouchListener(this);
+
+		setLoginFields(usernameEdt, passwordEdt);
 
 		{ // Terms link handle
 			TextView termsLinkTxt = (TextView) view.findViewById(R.id.termsLinkTxt);
@@ -109,13 +115,13 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 	}
 
 	private boolean checkRegisterInfo() {
-		username = getTextFromField(userNameEdt);
+		username = getTextFromField(usernameEdt);
 		email = getTextFromField(emailEdt);
 		password = getTextFromField(passwordEdt);
 
 		if (username.length() < 3) {
-			userNameEdt.setError(getString(R.string.too_short));
-			userNameEdt.requestFocus();
+			usernameEdt.setError(getString(R.string.too_short));
+			usernameEdt.requestFocus();
 			return false;
 		}
 
@@ -194,6 +200,24 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 				submitRegisterInfo();
 			}
 		}
+	}
+
+	@Override
+	public boolean onTouch(View view, MotionEvent motionEvent) {
+		if (view.getId() == R.id.usernameEdt) {
+			usernameEdt.setError(null);
+			usernameEdt.setSelection(usernameEdt.getText().length());
+		} else if (view.getId() == R.id.passwordEdt) {
+			passwordEdt.setError(null);
+			passwordEdt.setSelection(passwordEdt.getText().length());
+		} else if (view.getId() == R.id.emailEdt) {
+			emailEdt.setError(null);
+			emailEdt.setSelection(emailEdt.getText().length());
+		} else if (view.getId() == R.id.passwordRetypeEdt) {
+			passwordRetypeEdt.setError(null);
+			passwordRetypeEdt.setSelection(passwordRetypeEdt.getText().length());
+		}
+		return false;
 	}
 
 	private class FieldChangeWatcher implements TextWatcher {

@@ -932,11 +932,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	}
 
 	private void setThinkingVisibility(boolean visible) {
-		if (visible) {
-			engineThinkingPath.setVisibility(View.VISIBLE);
-		} else {
-			engineThinkingPath.setVisibility(View.GONE);
-		}
+//		if (visible) {
+//			engineThinkingPath.setVisibility(View.VISIBLE);
+//		} else {
+//			engineThinkingPath.setVisibility(View.GONE);
+//		}
 	}
 
 	@Override

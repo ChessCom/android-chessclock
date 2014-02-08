@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.chess.R;
+import com.chess.backend.GetAndSaveUserStats;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
@@ -62,6 +64,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			showPopupDialog(title, message, WHATS_NEW_TAG);
 
 			getAppData().setUserSawWhatsNewFeature(true);
+
+			if (!getAppData().isFirstInitFinished()) {
+				// update user stats
+				getActivity().startService(new Intent(getActivity(), GetAndSaveUserStats.class));
+			}
 		}
 
 	}

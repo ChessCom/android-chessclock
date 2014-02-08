@@ -201,6 +201,10 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 
 			adjustBoardForGame();
 		}
+
+		// clear badge
+		DbDataManager.deletePlayMoveNotification(getContentResolver(), username, gameId);
+		updateNotificationBadges();
 	}
 
 	@Override

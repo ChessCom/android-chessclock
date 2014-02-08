@@ -26,7 +26,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	private static final String TAG = "LccLog-LiveBaseFragment";
 
 	protected LiveBaseActivity liveBaseActivity;
-	protected LiveConnectionHelper liveHelper;
+	protected LiveConnectionHelper liveHelper; // todo: to vm: why do we have an instance here? This object should be accessed only via try/catch clause.
 	protected boolean isLCSBound;
 	protected GameTaskListener gameTaskListener;
 	private boolean isLiveFragment;

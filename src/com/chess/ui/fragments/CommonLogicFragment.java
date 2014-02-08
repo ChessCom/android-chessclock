@@ -1190,11 +1190,15 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		} else {
 			getActivityFace().openFragment(ProfileTabsFragmentTablet.createInstance(username));
 		}
-
 	}
 
 	protected void initUpgradeAndAdWidgets(View view) {
-		if (isNeedToUpgrade()) {
+		boolean firstInitFinished = getAppData().isFirstInitFinished();
+		long now = System.currentTimeMillis();
+		long userCreateDate = getAppData().getUserCreateDate() * 1000;
+		long waitTimeToShowAds = AppUtils.SECONDS_IN_DAY * 8;
+		boolean showAdsForNewMembers = now - userCreateDate > waitTimeToShowAds && firstInitFinished;
+		if (isNeedToUpgrade() && showAdsForNewMembers) {
 			view.findViewById(R.id.bannerUpgradeView).setVisibility(View.VISIBLE);
 
 			Button upgradeBtn = (Button) view.findViewById(R.id.upgradeBtn);

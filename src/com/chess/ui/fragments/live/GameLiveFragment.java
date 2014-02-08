@@ -871,7 +871,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void showOptions() {
-		if (optionsSelectFragment != null || optionsMap == null) {
+		if (optionsMap == null) {
+			optionsSelectFragment.dismiss();
+			return;
+		}
+
+		// hide if we press it again
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment.dismiss();
 			return;
 		}
 
@@ -887,24 +894,22 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		if (isGameOver) {
 			optionsMap.put(ID_REMATCH, getString(R.string.rematch));
-			optionsMap.remove(ID_OFFER_DRAW);
-			optionsMap.remove(ID_ABORT_RESIGN);
-
+//			optionsMap.remove(ID_OFFER_DRAW); // re move it from here, but will add a logic to handle it in onClick to see if it help with problem that player are unable to claim draw
+//			optionsMap.remove(ID_ABORT_RESIGN);
 		} else {
-
-			if (getBoardFace().getPly() < 1 && isUserMove()) {
-				optionsMap.put(ID_ABORT_RESIGN, getString(R.string.abort));
-				optionsMap.remove(ID_OFFER_DRAW);
-			} else {
-				optionsMap.put(ID_ABORT_RESIGN, getString(R.string.resign));
-				optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
-			}
-
-			if (!isUserMove()) { // user able to offer draw only when it's his turn
-				optionsMap.remove(ID_OFFER_DRAW);
-			}
-
 			optionsMap.remove(ID_REMATCH);
+		}
+
+		if (getBoardFace().getPly() < 1 && isUserMove()) {
+			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.abort));
+			optionsMap.remove(ID_OFFER_DRAW);
+		} else {
+			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.resign));
+			optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
+		}
+
+		if (!isUserMove()) { // user able to offer draw only when it's his turn
+			optionsMap.remove(ID_OFFER_DRAW);
 		}
 
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);
@@ -917,12 +922,33 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			getActivityFace().changeRightFragment(new LiveGameOptionsFragment());
 			getActivityFace().toggleRightMenu();
 		} else if (code == ID_ABORT_RESIGN) {
+			try {
+				boolean isGameExist = getLiveHelper().isActiveGamePresent();
+				if (!isGameExist) {
+					optionsSelectFragment.dismiss();
+					optionsSelectFragment = null;
+					return;
+				}
+			} catch (DataNotValidException e) {
+				e.printStackTrace();
+			}
+
 			if (getBoardFace().getPly() < 1 && isUserMove()) {
 				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
 			} else {
 				showPopupDialog(R.string.resign_game_, ABORT_GAME_TAG);
 			}
 		} else if (code == ID_OFFER_DRAW) {
+			try {
+				boolean isGameExist = getLiveHelper().isActiveGamePresent();
+				if (!isGameExist) {
+					optionsSelectFragment.dismiss();
+					optionsSelectFragment = null;
+					return;
+				}
+			} catch (DataNotValidException e) {
+				e.printStackTrace();
+			}
 			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
 		} else if (code == ID_REMATCH) {
 			try {

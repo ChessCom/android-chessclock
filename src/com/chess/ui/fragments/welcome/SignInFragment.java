@@ -22,9 +22,8 @@ import com.chess.ui.fragments.CommonLogicFragment;
  */
 public class SignInFragment extends CommonLogicFragment implements TextView.OnEditorActionListener, View.OnTouchListener {
 
-	private boolean forceFlag;
-	private EditText loginUsernameEdt;
-	private EditText loginPasswordEdt;
+	private EditText usernameEdt;
+	private EditText passwordEdt;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,13 +36,13 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 
 		enableSlideMenus(false);
 
-		loginUsernameEdt = (EditText) view.findViewById(R.id.usernameEdt);
-		loginPasswordEdt = (EditText) view.findViewById(R.id.passwordEdt);
-		loginPasswordEdt.setOnEditorActionListener(this);
-		loginUsernameEdt.setOnTouchListener(this);
-		loginPasswordEdt.setOnTouchListener(this);
+		usernameEdt = (EditText) view.findViewById(R.id.usernameEdt);
+		passwordEdt = (EditText) view.findViewById(R.id.passwordEdt);
+		passwordEdt.setOnEditorActionListener(this);
+		usernameEdt.setOnTouchListener(this);
+		passwordEdt.setOnTouchListener(this);
 
-		setLoginFields(loginUsernameEdt, loginPasswordEdt);
+		setLoginFields(usernameEdt, passwordEdt);
 
 		view.findViewById(R.id.signinBtn).setOnClickListener(this);
 	}
@@ -53,8 +52,8 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 		super.onResume();
 		String username = getAppData().getUsername();
 		if (!username.equals(AppConstants.GUEST_NAME)) {
-			loginUsernameEdt.setText(username);
-			loginPasswordEdt.setText(getAppData().getPassword());
+			usernameEdt.setText(username);
+			passwordEdt.setText(getAppData().getPassword());
 		}
 	}
 
@@ -96,10 +95,11 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 	@Override
 	public boolean onTouch(View view, MotionEvent motionEvent) {
 		if (view.getId() == R.id.usernameEdt) {
-			loginUsernameEdt.setError(null);
-			loginUsernameEdt.setSelection(loginUsernameEdt.getText().length());
+			usernameEdt.setError(null);
+			usernameEdt.setSelection(usernameEdt.getText().length());
 		} else if (view.getId() == R.id.passwordEdt) {
-			loginPasswordEdt.setError(null);
+			passwordEdt.setError(null);
+			passwordEdt.setSelection(passwordEdt.getText().length());
 		}
 		return false;
 	}

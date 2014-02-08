@@ -301,8 +301,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private synchronized void showGameOver(Intent intent, Context context) {
 		GameOverNotificationItem gameOverNotificationItem = new GameOverNotificationItem();
 
+		long gameId = Long.parseLong(intent.getStringExtra(GAME_ID));
 		gameOverNotificationItem.setMessage(intent.getStringExtra(MESSAGE));
-		gameOverNotificationItem.setGameId(Long.parseLong(intent.getStringExtra(GAME_ID)));
+		gameOverNotificationItem.setGameId(gameId);
 		gameOverNotificationItem.setAvatar(intent.getStringExtra(AVATAR_URL));
 		LogMe.dl(TAG, " _________________________________");
 		LogMe.dl(TAG, " GameOverNotificationItem = " + new Gson().toJson(gameOverNotificationItem));
@@ -310,6 +311,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String username = new AppData(context).getUsername();
 
 		DbDataManager.saveGameOverNotification(contentResolver, gameOverNotificationItem, username);
+		// clear badge
+		DbDataManager.deletePlayMoveNotification(getContentResolver(), username, gameId);
 	}
 
 	private synchronized void showNewChallenge(Intent intent, Context context) {

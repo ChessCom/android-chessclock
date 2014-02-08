@@ -62,6 +62,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 	private ViewGroup ratingView;
 	private TextView currentRatingTxt;
 	private TextView opponentNameTxt;
+	private ViewGroup ratedGameView;
 
 	public LiveGameOptionsFragment() {
 		Bundle bundle = new Bundle();
@@ -339,7 +340,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 	private void widgetsInit(View view) {
 		view.findViewById(R.id.liveOptionsView).setOnClickListener(this);
-		view.findViewById(R.id.ratedGameView).setOnClickListener(this);
+
 
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		RelativeLayout liveHomeOptionsFrame = (RelativeLayout) view.findViewById(R.id.liveHomeOptionsFrame);
@@ -376,6 +377,8 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			{// options setup
 				// rated games switch
 				ratedGameSwitch = (SwitchButton) view.findViewById(R.id.ratedGameSwitch);
+				ratedGameView = (ViewGroup) view.findViewById(R.id.ratedGameView);
+				ratedGameView.setOnClickListener(this);
 
 				{// Rating part
 					ratingView = (ViewGroup) view.findViewById(R.id.ratingView);
@@ -403,8 +406,13 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 					minRatingStr = Symbol.MINUS + String.valueOf(minRatingDefault);
 					maxRatingStr = Symbol.PLUS + String.valueOf(Math.abs(maxRatingDefault));
 
-					if (JELLY_BEAN_PLUS_API) {
+					if (JELLY_BEAN_PLUS_API) {// make nice animation for view state changing
 						LayoutTransition layoutTransition = ratingView.getLayoutTransition();
+						layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+					}
+
+					if (JELLY_BEAN_PLUS_API) {
+						LayoutTransition layoutTransition = ratedGameView.getLayoutTransition();
 						layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
 					}
 
@@ -436,9 +444,14 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 						opponentNameTxt.setText(opponentName);
 						gameConfigBuilder.setOpponentName(opponentName);
 						ratingView.setVisibility(View.GONE);
+						ratedGameView.setVisibility(View.VISIBLE);
 					} else {
 						gameConfigBuilder.setOpponentName(null);
 						ratingView.setVisibility(View.VISIBLE);
+						ratedGameView.setVisibility(View.GONE);
+
+						// for indirect challenges we use only rated games
+						ratedGameSwitch.setChecked(true);
 					}
 				}
 

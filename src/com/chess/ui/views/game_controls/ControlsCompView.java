@@ -29,7 +29,7 @@ public class ControlsCompView extends ControlsBaseView {
 	@Override
 	protected void addButtons() {
 		addControlButton(OPTIONS, styles[LEFT]);
-		addControlButton(COMP, styles[MIDDLE]);
+//		addControlButton(COMP, styles[MIDDLE]);
 		addControlButton(HINT, styles[MIDDLE]);
 		addControlButton(BACK, styles[MIDDLE]);
 		addControlButton(FORWARD, styles[RIGHT]);
@@ -44,8 +44,8 @@ public class ControlsCompView extends ControlsBaseView {
 
 		if (view.getId() == getButtonId(HINT)) {
 			boardViewFace.showHint();
-		} else if (view.getId() == getButtonId(COMP)) {
-			boardViewFace.computer();
+//		} else if (view.getId() == getButtonId(COMP)) {
+//			boardViewFace.computer();
 		} else if (view.getId() == getButtonId(HELP)) {
 			boardViewFace.switchAnalysis();
 		}
@@ -58,14 +58,14 @@ public class ControlsCompView extends ControlsBaseView {
 
 	public void enableGameControls(boolean enable) {
 		enableGameButton(OPTIONS, enable);
-		enableGameButton(COMP, enable);
+//		enableGameButton(COMP, enable);
 		enableGameButton(HINT, enable);
 		enableGameButton(FORWARD, enable);
 		enableGameButton(BACK, enable);
 	}
 
 	public void enableHintButton(boolean enable) {
-		enableGameButton(COMP, enable);
+//		enableGameButton(COMP, enable);
 		enableGameButton(HINT, enable);
 	}
 

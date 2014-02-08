@@ -43,9 +43,5 @@ public class GetAndSaveFriends extends IntentService {
 				DbDataManager.saveFriendToDB(username, contentResolver, currentItem);
 			}
 		}
-
-		appData.setFirstInitFinished(true);
 	}
-
-
 }

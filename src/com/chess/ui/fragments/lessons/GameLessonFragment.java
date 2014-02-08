@@ -657,7 +657,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			LessonProblemItem.MentorPosition mentorPosition = positionsToLearn.get(currentLearningPosition - 1);
 			LessonProblemItem.MentorPosition.PossibleMove correctMove = mentorPosition.getCorrectMove();
 			if (correctMove != null) {
-				setDescriptionText(correctMove.getMoveCommentary());
+				if (!TextUtils.isEmpty(correctMove.getMoveCommentary())) {
+					setDescriptionText(correctMove.getMoveCommentary());
+				} else {
+					setDescriptionText(correctMove.getResponseMoveCommentary());
+				}
 			}
 		} else {
 			setDescriptionText(initialLessonTextStr);

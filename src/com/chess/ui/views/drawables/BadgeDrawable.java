@@ -3,6 +3,7 @@ package com.chess.ui.views.drawables;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import com.chess.R;
 import com.chess.utilities.AppUtils;
@@ -98,8 +99,10 @@ public class BadgeDrawable extends Drawable {
 
 	private boolean isBadDevice(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-		return ((displayMetrics.density == 1.0f || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM) ||
-		(displayMetrics.densityDpi == DisplayMetrics.DENSITY_HIGH)) && AppUtils.ICS_PLUS_API;
+		boolean badDevice1 = ((displayMetrics.density == 1.0f || displayMetrics.densityDpi == DisplayMetrics.DENSITY_MEDIUM) ||
+				(displayMetrics.densityDpi == DisplayMetrics.DENSITY_HIGH)) && AppUtils.ICS_PLUS_API;
+		boolean badDevice2 = Build.VERSION.SDK_INT == Build.VERSION_CODES.HONEYCOMB_MR2;
+		return badDevice1 || badDevice2;
 	}
 
 	@Override
