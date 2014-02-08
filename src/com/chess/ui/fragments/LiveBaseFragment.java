@@ -26,7 +26,6 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	private static final String TAG = "LccLog-LiveBaseFragment";
 
 	protected LiveBaseActivity liveBaseActivity;
-	protected LiveConnectionHelper liveHelper; // todo: to vm: why do we have an instance here? This object should be accessed only via try/catch clause.
 	protected boolean isLCSBound;
 	protected GameTaskListener gameTaskListener;
 	private boolean isLiveFragment;
@@ -55,29 +54,46 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 			setLCSBound(liveBaseActivity.isLCSBound());
 			DataHolder.getInstance().setLiveChessMode(true);
 
-			if (liveHelper != null) { // if we return after shutdown procedure as started
-				liveHelper.stopIdleTimeOutCounter();
-			}
-
-			connectLive();
-		}
-
-		// update state of inherited fragments re-registering services
-		if (isLCSBound) {
 			LiveConnectionHelper liveHelper;
 			try {
 				liveHelper = getLiveHelper();
-				liveHelper.setLccEventListener(this);
-				liveHelper.setGameTaskListener(gameTaskListener);
+				liveHelper.stopIdleTimeOutCounter();
+
+				if (isLCSBound) {
+					// update state of inherited fragments re-registering services
+					liveHelper.setLccEventListener(this);
+					liveHelper.setGameTaskListener(gameTaskListener);
+				}
 			} catch (DataNotValidException e) {
-				e.printStackTrace();
+				LogMe.dl(TAG, e.getMessage());
+			}
+
+			if (!isLCSBound) {
+
+				if (!isNetworkAvailable()) {
+					dismissNetworkCheckDialog();
+					popupItem.setPositiveBtnId(R.string.check_connection);
+					showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
+				}
+
+				liveBaseActivity.performServiceConnection();
+				showPopupProgressDialog();
 			}
 		}
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+		dismissNetworkCheckDialog();
+	}
+
 	protected LiveConnectionHelper getLiveHelper() throws DataNotValidException {
 		LiveConnectionHelper liveHelper = liveBaseActivity.getLiveHelper();
-		if (liveHelper == null || !liveHelper.isUserConnected()) {
+		// I think we should not check for "isConnected" case here, because Live can be in "reconnecting" state
+		// and isConnected=false; for example we still should be able to call getLiveHelper().stopIdleTimer() when
+		// user returns to fragment even if lcc is in reconnecting state that time
+		if (liveHelper == null || liveHelper.getUser() == null /*|| !liveHelper.isUserConnected()*/) {
 			if (liveHelper == null) {
 				throw new DataNotValidException(DataNotValidException.SERVICE_NULL);
 			} else if (liveHelper.getLccHelper() == null) {
@@ -160,16 +176,18 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 
 	public void setLCSBound(boolean LCSBound) {
 		isLCSBound = LCSBound;
-		if (isLCSBound) {
-			liveHelper = liveBaseActivity.getLiveHelper();
-		} else {
-			//onLiveServiceDisconnected();
-		}
 	}
 
 	protected void logoutFromLive() {
 		if (isLCSBound) {
-			liveHelper.logout();
+
+			try {
+				LiveConnectionHelper liveHelper = getLiveHelper();
+				liveHelper.logout();
+			} catch (DataNotValidException e) {
+				LogMe.dl(TAG, e.getMessage());
+			}
+
 			liveBaseActivity.unBindAndStopLiveService();
 		}
 	}
@@ -223,19 +241,5 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 
 	protected void dismissNetworkCheckDialog() {
 		dismissFragmentDialogByTag(NETWORK_CHECK_TAG);
-	}
-
-	protected void connectLive() {
-
-		if (!isNetworkAvailable()) {
-			dismissNetworkCheckDialog();
-			popupItem.setPositiveBtnId(R.string.check_connection);
-			showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
-		}
-
-		if (!isLCSBound) {
-			liveBaseActivity.connectLcc();
-			showPopupProgressDialog();
-		}
 	}
 }

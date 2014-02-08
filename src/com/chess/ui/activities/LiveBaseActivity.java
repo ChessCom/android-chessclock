@@ -6,7 +6,6 @@ import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.Settings;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,8 +14,8 @@ import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
-import com.chess.lcc.android.LiveConnector;
 import com.chess.lcc.android.LiveConnectionHelper;
+import com.chess.lcc.android.LiveConnector;
 import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
@@ -25,7 +24,6 @@ import com.chess.lcc.android.interfaces.LiveUiUpdateListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
-import com.chess.model.DataHolder;
 import com.chess.model.PopupItem;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
@@ -37,7 +35,6 @@ import com.chess.ui.fragments.settings.SettingsGeneralFragment;
 import com.chess.ui.fragments.settings.SettingsGeneralFragmentTablet;
 import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
 import com.chess.ui.fragments.stats.StatsGameDetailsFragment;
-import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 
 import java.util.ArrayList;
@@ -93,11 +90,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		LogMe.dl(TAG, "LiveBaseActivity onResume isLiveChess()=" + getDataHolder().isLiveChess() + ", isLCSBound=" + isLCSBound);
 
 		if (getDataHolder().isLiveChess()) {
-			if (!AppUtils.isNetworkAvailable(this)) {
-				dismissNetworkCheckDialog();
-				popupItem.setPositiveBtnId(R.string.check_connection);
-				showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
-			}
 			if (isLCSBound) {
 				onLiveServiceConnected();
 				executePausedActivityLiveEvents();
@@ -262,9 +254,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 			// open game wait fragment from here. If user close it it means he declined challenge
 			sendBroadcast(new Intent(IntentConstants.START_LIVE_GAME));
-		} else if (tag.equals(NETWORK_CHECK_TAG)) {
-			startActivityForResult(new Intent(Settings.ACTION_WIFI_SETTINGS), NETWORK_REQUEST);
-
 		} else if (tag.equals(EXIT_GAME_TAG)) {
 			liveHelper.runMakeResignAndExitTask();
 			onBackPressed();
@@ -322,13 +311,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		} else {
 //			Log.d(TAG, "performServiceConnection, !isLCSBound -> bindAndStartLiveService " + getClass());
 			bindAndStartLiveService();
-		}
-	}
-
-	public void connectLcc() {
-		if (DataHolder.getInstance().isLiveChess()) {
-			checkNetwork(); // todo: to vm: and what it should do with that call? the idea to check network state is to prevent a invocation of request, rather then just show popup about network failure
-			performServiceConnection();
 		}
 	}
 
@@ -661,14 +643,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	private void dismissNetworkCheckDialog() {
 		dismissFragmentDialogByTag(NETWORK_CHECK_TAG);
-	}
-
-	public void checkNetwork() {
-		if (!AppUtils.isNetworkAvailable(this)) {
-			dismissNetworkCheckDialog();
-			popupItem.setPositiveBtnId(R.string.check_connection);
-			showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
-		}
 	}
 
 	@Override

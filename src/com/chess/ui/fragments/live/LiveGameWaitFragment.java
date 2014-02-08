@@ -73,7 +73,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 
 		if (!closeOnResume) {
 			getDataHolder().setLiveChessMode(true);
-			liveBaseActivity.connectLcc();
+			liveBaseActivity.performServiceConnection();
 			loadingView.setVisibility(View.VISIBLE);
 		} else {
 			handler.postDelayed(new Runnable() {

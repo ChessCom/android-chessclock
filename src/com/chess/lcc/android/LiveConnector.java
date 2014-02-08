@@ -19,7 +19,7 @@ import com.chess.utilities.AppUtils;
 /**
  * Created by vm on 04.02.14.
  */
-public class LiveConnector { // todo: to vm: i don't see a reason why this class exist??? We should have only ConnectionHelper that must perform this logic and have access to Activity(context)
+public class LiveConnector { // todo: move code to LCH
 
 	private static final String TAG = "LCCLOG-LiveConnector";
 	private static final int NEXT_CONNECTION_DELAY = 5000;
@@ -82,7 +82,6 @@ public class LiveConnector { // todo: to vm: i don't see a reason why this class
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
 			//LogMe.dl(TAG, "SessionIdUpdateListener errorHandle resultCode=" + resultCode);
-//			handler.postDelayed(sessionIdCheckRunnable, NEXT_CONNECTION_DELAY);  // todo: to vm: why is that here???
 		}
 	}*/
 
@@ -210,14 +209,12 @@ public class LiveConnector { // todo: to vm: i don't see a reason why this class
 
 			//if (needReLoginToLive) {
 			DataHolder.getInstance().setLiveChessMode(true);
-//			connectLcc(); // todo: to vm: after successful re-login you already have a valid sessionId, so you shouldn't call this method here, you must call liveUiUpdateListener.performServiceConnection();
 			liveUiUpdateListener.performServiceConnection();
 			//}
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
-			// performReloginForLiveDelayed();   // todo: to vm: this is incorrect logic you already tried to re-login, but failed, and you even don't know why, but you still try to do this. this will end up with blocked account.
 			super.errorHandle(resultCode);
 		}
 	}
