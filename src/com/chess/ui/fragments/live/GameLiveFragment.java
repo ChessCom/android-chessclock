@@ -872,7 +872,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void showOptions() {
 		if (optionsMap == null) {
-			optionsSelectFragment.dismiss();
 			return;
 		}
 
