@@ -88,10 +88,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private IntentFilter notificationsUpdateFilter;
 	private IntentFilter movesUpdateFilter;
 	private NotificationsUpdateReceiver notificationsUpdateReceiver;
+	private BackgroundUpdateReceiver backgroundUpdateReceiver;
 	private MovesUpdateReceiver movesUpdateReceiver;
 	private PullToRefreshAttacher pullToRefreshAttacher;
 	private Bitmap backgroundBitmap;
 	private PopupCustomViewFragment reviewPopupFragment;
+	private IntentFilter updateBackgroundFilter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		notificationsUpdateFilter = new IntentFilter(IntentConstants.NOTIFICATIONS_UPDATE);
 		movesUpdateFilter = new IntentFilter(IntentConstants.USER_MOVE_UPDATE);
+		updateBackgroundFilter = new IntentFilter(IntentConstants.UPDATE_BACKGROUND);
 
 		// restoring correct host
 		///////////////////////////////////////////////////
@@ -270,8 +273,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		notificationsUpdateReceiver = new NotificationsUpdateReceiver();
 		movesUpdateReceiver = new MovesUpdateReceiver();
+		backgroundUpdateReceiver = new BackgroundUpdateReceiver();
 		registerReceiver(notificationsUpdateReceiver, notificationsUpdateFilter);
 		registerReceiver(movesUpdateReceiver, movesUpdateFilter);
+		registerReceiver(backgroundUpdateReceiver, updateBackgroundFilter);
 
 		// apply sound theme
 		String soundThemePath = getAppData().getThemeSoundsPath();
@@ -291,6 +296,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		unRegisterMyReceiver(notificationsUpdateReceiver);
 		unRegisterMyReceiver(movesUpdateReceiver);
+		unRegisterMyReceiver(backgroundUpdateReceiver);
 	}
 
 	@Override
@@ -603,6 +609,13 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			updateNotificationsBadges();
+		}
+	}
+
+	private class BackgroundUpdateReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			updateMainBackground();
 		}
 	}
 

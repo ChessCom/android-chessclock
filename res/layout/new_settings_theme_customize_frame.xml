@@ -143,6 +143,7 @@
 				android:paddingLeft="@dimen/default_scr_side_padding" />
 
 			<LinearLayout
+				android:id="@+id/rowSampleView"
 				android:orientation="horizontal"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -170,6 +171,20 @@
 
 			</LinearLayout>
 
+			<ProgressBar
+				android:id="@+id/themeLoadProgressBar"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:indeterminate="true"
+				style="@style/ChessProgressBar.Horizontal"
+				android:layout_below="@id/rowSampleView"
+				android:layout_toLeftOf="@+id/piecesPreviewImg"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginTop="5dip"
+				android:layout_marginLeft="@dimen/default_scr_side_padding"
+				android:layout_marginRight="@dimen/default_scr_side_padding"
+				android:visibility="gone" />
+
 			<com.chess.backend.image_load.ProgressImageView
 				android:id="@+id/boardPreviewImg"
 				android:layout_width="@dimen/theme_board_preview_size"
@@ -181,7 +196,7 @@
 				android:layout_margin="14dip" />
 
 			<com.chess.backend.image_load.ProgressImageView
-				android:id="@+id/piecesPreviewImg"
+				android:id="@id/piecesPreviewImg"
 				android:layout_width="@dimen/theme_board_preview_size"
 				android:layout_height="@dimen/theme_board_preview_size"
 				android:adjustViewBounds="true"

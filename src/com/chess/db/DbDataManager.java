@@ -4,6 +4,7 @@ import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.text.TextUtils;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ThemeState;
 import com.chess.backend.entity.api.*;
@@ -1345,26 +1346,6 @@ public class DbDataManager {
 		values.put(V_THUMB_CONTENT, currentItem.isIsThumbInContent());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);
-
-//		boolean articleExist = cursor != null && cursor.moveToFirst();
-//		// we don't update while filling the list
-//		if (!articleExist && !fullBody) {
-////			Log.d("TEST", " insert getCategoryId = " + currentItem.getCategoryId());
-//			contentResolver.insert(uri, values);
-//		} else {
-////			Log.d("TEST", "NOT insert getCategoryId = " + currentItem.getCategoryId());
-//		}
-//		// update only when full body requested
-//		if (articleExist && fullBody) {
-////			Log.d("TEST", " update getCategoryId = " + currentItem.getCategoryId());
-//			contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
-//		} else {
-////			Log.d("TEST", "NOT update getCategoryId = " + currentItem.getCategoryId());
-//		}
-//
-//		if (cursor != null) {
-//			cursor.close();
-//		}
 	}
 
 	public static List<ArticleDetailsItem.Diagram> getArticleDiagramItemFromDb(ContentResolver contentResolver, String username) {
@@ -2593,7 +2574,17 @@ public class DbDataManager {
 		values.put(V_PATH, currentItem.getLocalPathPort());
 		values.put(V_PATH_LAND, currentItem.getLocalPathLand());
 
-		updateOrInsertValues(contentResolver, cursor, uri, values);
+		if (cursor != null && cursor.moveToFirst()) {
+			if (!TextUtils.isEmpty(currentItem.getLocalPathPort())) { // update only if we have localPath
+				contentResolver.update(ContentUris.withAppendedId(uri, getId(cursor)), values, null, null);
+			}
+		} else {
+			contentResolver.insert(uri, values);
+		}
+
+		if (cursor != null) {
+			cursor.close();
+		}
 	}
 
 	public static BackgroundSingleItem.Data getThemeBackgroundItemFromCursor(Cursor cursor) {

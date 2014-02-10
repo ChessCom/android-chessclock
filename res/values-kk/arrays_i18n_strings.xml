@@ -15,26 +15,26 @@
 		<item>Шексіз сабақтар</item>
 		<item>Дебюттар шолу</item>
 		<item>Толық статистика</item>
-		<item>Күндік таймаутқа қорғаныс</item>
-		<item>Рекламаға шектеу</item>
+		<item>Күндік таймаутқа шектеу</item>
+		<item>Жарнамаларға шектеу</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item> </item>
 		<item>Шексіз тактикалар</item>
 		<item>Әр күнге 5 сабақ</item>
 		<item>Дебюттар шолу</item>
 		<item>Толық статистика</item>
-		<item>Күндік таймаутқа қорғаныс</item>
-		<item>Рекламаға шектеу</item>
+		<item>Күндік таймаутқа шектеу</item>
+		<item>Жарнамаларға шектеу</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item> </item>
 		<item>Әр күнге 25 тактика</item>
 		<item>Әр күнге 3 сабақ</item>
 		<item>Дебюттар шолу</item>
 		<item>Жеке статистика</item>
-		<item>Күндік таймаутқа қорғаныс</item>
-		<item>Рекламаға шектеу</item>
+		<item>Күндік таймаутқа шектеу</item>
+		<item>Жарнамаларға шектеу</item>
 	</string-array>
 	<string-array name="afterMyMove">
 		<item>Келесі дайын ойынға өту</item>

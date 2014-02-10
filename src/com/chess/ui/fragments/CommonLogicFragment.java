@@ -688,6 +688,19 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 
 		@Override
+		public void showProgress(boolean show) {
+			if (TextUtils.isEmpty(getUserToken())) { // show progress only for signIn/signUp screens
+				if (show) {
+					showPopupProgressDialog();
+				} else {
+					dismissProgressDialog();
+				}
+			} else {
+				super.showProgress(show);
+			}
+		}
+
+		@Override
 		public void updateData(LoginItem returnedObj) {
 			DataHolder.getInstance().setPerformingRelogin(false);
 

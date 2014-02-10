@@ -119,8 +119,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 	public void onResume() {
 		super.onResume();
 
-//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.FORUM_POSTS.name()),
-//				DbHelper.getAll(DbScheme.Tables.FORUM_POSTS),
+//		new LoadDataFromDbTask(new DbCursorUpdateListener(DbScheme.Tables.THEME_BACKGROUNDS.name()),
+//				DbHelper.getAll(DbScheme.Tables.THEME_BACKGROUNDS),
 //				getContentResolver()).executeTask();
 
 		// check if user have daily games in progress or completed. May check in DB

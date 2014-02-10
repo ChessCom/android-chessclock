@@ -180,7 +180,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 				getActivity().bindService(new Intent(getActivity(), GetAndSaveBoard.class), loadServiceConnectionListener,
 						Activity.BIND_AUTO_CREATE);
 			}
-
 		} else {
 			SelectionItem defaultBoardItem = (SelectionItem) parent.getItemAtPosition(position);
 			for (SelectionItem selectionItem : defaultBoardSelectionList) {
@@ -193,13 +192,13 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 					selectionItem.setChecked(false);
 				}
 			}
+		}
 
-			if (!isTablet) {// go back
-				getActivityFace().showPreviousFragment();
-			} else {
-				if (parentFace != null) {
-					parentFace.showPreviousFragment();
-				}
+		if (!isTablet) {// go back
+			getActivityFace().showPreviousFragment();
+		} else {
+			if (parentFace != null) {
+				parentFace.showPreviousFragment();
 			}
 		}
 	}
@@ -352,13 +351,6 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 							getActivity().unbindService(loadServiceConnectionListener);
 						}
 						serviceBounded = false;
-						if (!isTablet) {// go back
-							getActivityFace().showPreviousFragment();
-						} else {
-							if (parentFace != null) {
-								parentFace.showPreviousFragment();
-							}
-						}
 					} else {
 						if (isBoardLoading) {
 							headerView.setVisibility(View.VISIBLE);

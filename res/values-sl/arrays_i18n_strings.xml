@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Dnevni šah</item>
-		<item>V živo - Standardni</item>
-		<item>V živo - Blitz</item>
-		<item>V živo - Bullet</item>
+		<item>V živo - Standardni šah</item>
+		<item>V živo - Hitropotezni šah</item>
+		<item>V živo - Hitri šah</item>
 		<item>Dnevni šah960</item>
 		<item>Taktike</item>
 		<item>Lekcije</item>
@@ -14,8 +14,8 @@
 		<item>Neomejene taktike</item>
 		<item>Neomejene lekcije</item>
 		<item>Raziskovalec otvoritev</item>
-		<item>Popolna statistika</item>
-		<item>Zaščita pred dnevnim iztekom časa</item>
+		<item>Polna statistika</item>
+		<item>Dnevna zaščita pred iztekom časa</item>
 		<item>Brez oglasov</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
@@ -23,8 +23,8 @@
 		<item>Neomejene taktike</item>
 		<item>5 lekcij na dan</item>
 		<item>Raziskovalec otvoritev</item>
-		<item>Popolna statistika</item>
-		<item>Zaščita pred dnevnim iztekom časa</item>
+		<item>Polna statistika</item>
+		<item>Dnevna zaščita pred iztekom časa</item>
 		<item>Brez oglasov</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
@@ -33,12 +33,12 @@
 		<item>3 lekcije na dan</item>
 		<item>Raziskovalec otvoritev</item>
 		<item>Osebna statistika</item>
-		<item>Zaščita pred dnevnim iztekom časa</item>
+		<item>Dnevna zaščita pred iztekom časa</item>
 		<item>Brez oglasov</item>
 	</string-array>
 	<string-array name="afterMyMove">
-		<item>pojdi na naslednjo igro</item>
-		<item>Ostani pri tej igri</item>
+		<item>Pojdi na naslednjo pripravljeno partijo</item>
+		<item>Ostani pri tej partiji</item>
 		<item>Nazaj na seznam partij</item>
 	</string-array>
 </resources>

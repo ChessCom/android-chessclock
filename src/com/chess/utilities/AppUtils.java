@@ -36,7 +36,6 @@ import android.widget.ListView;
 import com.chess.R;
 import com.chess.backend.entity.api.YourTurnItem;
 import com.chess.backend.image_load.bitmapfun.ImageCache;
-import com.chess.db.DbDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppData;
@@ -796,25 +795,30 @@ public class AppUtils {
 	public static void printCursorContent(Cursor cursor, String tableName) {
 		if (cursor.moveToFirst()) {
 			Log.d("TABLE", "____________" + tableName + "_______________");
+			Log.d("TABLE","[");
+
 			do {
 				int columnCount = cursor.getColumnCount();
 				StringBuilder builder = new StringBuilder();
 
+				builder.append("{");
 				for (int i = 0; i <= columnCount; i++) {
 					switch (cursor.getType(i)) {
 						case Cursor.FIELD_TYPE_INTEGER: {
-							builder.append(cursor.getColumnName(i)).append(DbDataManager.EQUALS_).append(cursor.getInt(i)).append(Symbol.SPACE);
+							builder.append("\"").append(cursor.getColumnName(i)).append("\": ").append(cursor.getInt(i)).append(", ");
 						}
 						break;
 						case Cursor.FIELD_TYPE_STRING: {
-							builder.append(cursor.getColumnName(i)).append(DbDataManager.EQUALS_).append(cursor.getString(i)).append(Symbol.SPACE);
+							builder.append("\"").append(cursor.getColumnName(i)).append("\": \"").append(cursor.getString(i)).append("\",");
 						}
 						break;
 					}
 				}
+				builder.append(" \"end\": \"end\" }, \n");
 				Log.d("TABLE", builder.toString());
 
 			} while (cursor.moveToNext());
+			Log.d("TABLE","]");
 		}
 	}
 

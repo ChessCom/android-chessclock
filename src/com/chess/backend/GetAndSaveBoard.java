@@ -99,7 +99,7 @@ public class GetAndSaveBoard extends Service {
 		notificationBuilder.setContentTitle(downloadingBoardStr)
 				.setTicker(downloadingBoardStr)
 				.setContentText(downloadingBoardStr)
-				.setSmallIcon(R.drawable.ic_stat_download)
+				.setSmallIcon(android.R.drawable.stat_sys_download)
 				.setAutoCancel(true);
 		// Puts the PendingIntent into the notification builder
 		notificationBuilder.setContentIntent(pendingIntent);

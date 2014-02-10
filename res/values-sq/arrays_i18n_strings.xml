@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Shahu i Perditshem</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>Live - Standart</item>
+		<item>Live - Flash</item>
+		<item>Live - Plumb</item>
 		<item>Shah i perditshem</item>
 		<item>Taktikat</item>
 		<item>Leksionet</item>

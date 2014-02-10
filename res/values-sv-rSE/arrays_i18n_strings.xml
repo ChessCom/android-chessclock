@@ -2,29 +2,29 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Korrschack</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
+		<item>Live - Långparti</item>
+		<item>Liveschack - Blixt</item>
 		<item>Live - Bullet</item>
 		<item>Korrschack960</item>
-		<item>Problem</item>
+		<item>Schackproblem</item>
 		<item>Lektioner</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
-		<item>Obegränsade videoklipp</item>
-		<item>Obegränsade taktikproblem</item>
+		<item>Obegränsade videor</item>
+		<item>Obegränsade schackproblem</item>
 		<item>Obegränsade lektioner</item>
-		<item>Öppningsdatabas</item>
+		<item>Öppningsutforskare</item>
 		<item>Fullständig statistik</item>
-		<item>Daglig Timeout Skydd</item>
+		<item>Skydd om du glömmer att spela</item>
 		<item>Ingen reklam</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
 		<item></item>
-		<item>Obegränsade taktikproblem</item>
+		<item>Obegränsade schackproblem</item>
 		<item>5 lektioner per dag</item>
 		<item>Öppningsutforskare</item>
 		<item>Fullständig statistik</item>
-		<item>Daglig Timeout Skydd</item>
+		<item>Skydd om du glömmer att spela</item>
 		<item>Inga annonser</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
@@ -33,7 +33,7 @@
 		<item>3 lektioner per dag</item>
 		<item>Öppningsutforskare</item>
 		<item>Personlig statistik</item>
-		<item>Daglig Timeout Skydd</item>
+		<item>Skydd om du glömmer att spela</item>
 		<item>Inga annonser</item>
 	</string-array>
 	<string-array name="afterMyMove">

@@ -104,6 +104,7 @@ public class BackgroundSingleItem extends BaseResponseItem<BackgroundSingleItem.
 		public void setLocalPathLand(String localPath) {
 			this.localPathLand = localPath;
 		}
+
 		public void setLocalPathPort(String localPath) {
 			this.localPathPort = localPath;
 		}

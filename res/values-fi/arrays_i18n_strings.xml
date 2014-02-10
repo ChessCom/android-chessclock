@@ -2,18 +2,18 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Päivittäinen shakki</item>
-		<item>Live - Standard</item>
+		<item>Live - Tavallinen</item>
 		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>Live - Luoti</item>
 		<item>Päivittäinen Shakki960</item>
-		<item>Taktiikka</item>
+		<item>Taktiikat</item>
 		<item>Oppitunnit</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
 		<item>Rajattomasti videoita</item>
 		<item>Rajattomasti taktiikkaharjoituksia</item>
 		<item>Rajattomasti oppitunteja</item>
-		<item>Avausten tutkimusohjelma</item>
+		<item>Avausten tutkiskeluohjelma</item>
 		<item>Täydelliset tilastot</item>
 		<item>Päivittäinen aikatappiosuoja</item>
 		<item>Ei mainoksia</item>
@@ -22,7 +22,7 @@
 		<item></item>
 		<item>Rajattomasti taktiikkaharjoituksia</item>
 		<item>5 oppituntia päivässä</item>
-		<item>Avausten tutkimusohjelma</item>
+		<item>Avausten tutkiskeluohjelma</item>
 		<item>Täydelliset tilastot</item>
 		<item>Päivittäinen aikatappiosuoja</item>
 		<item>Ei mainoksia</item>
@@ -31,7 +31,7 @@
 		<item></item>
 		<item>25 taktiikkaharjoitusta päivässä</item>
 		<item>3 oppituntia päivässä</item>
-		<item>Avausten tutkimusohjelma</item>
+		<item>Avausten tutkiskeluohjelma</item>
 		<item>Henkilökohtaiset tilastot</item>
 		<item>Päivittäinen aikatappiosuoja</item>
 		<item>Ei mainoksia</item>

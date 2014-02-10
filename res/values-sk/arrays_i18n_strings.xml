@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Šach denne</item>
-		<item>Naživo - Štandard</item>
-		<item>Naživo - blesk</item>
-		<item>Naživo - guľka</item>
+		<item>Live - Štandard</item>
+		<item>Live- Blitz</item>
+		<item>Live - Bleskovka</item>
 		<item>Šach960 denne</item>
 		<item>Taktika</item>
 		<item>Lekcie</item>

@@ -199,13 +199,13 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 					selectionItem.setChecked(false);
 				}
 			}
+		}
 
-			if (!isTablet) {// go back
-				getActivityFace().showPreviousFragment();
-			} else {
-				if (parentFace != null) {
-					parentFace.showPreviousFragment();
-				}
+		if (!isTablet) {// go back
+			getActivityFace().showPreviousFragment();
+		} else {
+			if (parentFace != null) {
+				parentFace.showPreviousFragment();
 			}
 		}
 	}
@@ -359,13 +359,6 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 							getActivity().unbindService(loadServiceConnectionListener);
 						}
 						serviceBounded = false;
-						if (!isTablet) {// go back
-							getActivityFace().showPreviousFragment();
-						} else {
-							if (parentFace != null) {
-								parentFace.showPreviousFragment();
-							}
-						}
 					} else {
 						if (isPiecesLoading) {
 							headerView.setVisibility(View.VISIBLE);

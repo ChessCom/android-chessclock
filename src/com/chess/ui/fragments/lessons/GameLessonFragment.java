@@ -212,6 +212,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		} else {
 			startLesson();
 			adjustBoardForGame();
+			adjustTextForLessonStartView();
 		}
 	}
 
@@ -1107,42 +1108,46 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			}
 			adjustBoardForGame();
 
-			if (currentLearningPosition == 0) {
-				setGoalCommentText(mentorLesson.getGoalCommentary());
+			adjustTextForLessonStartView();
+			need2update = false;
+		}
+	}
 
-				String aboutLessonStr = mentorLesson.getAbout();
-				String aboutPositionStr = getMentorPosition().getAbout();
-				if (!TextUtils.isEmpty(aboutLessonStr)) {
-					initialLessonTextStr = aboutLessonStr;
-					setDescriptionText(initialLessonTextStr);
+	private void adjustTextForLessonStartView() {
+		if (currentLearningPosition == 0) {
+			setGoalCommentText(mentorLesson.getGoalCommentary());
 
-					if (!TextUtils.isEmpty(aboutPositionStr)) {
-						setPositionDescriptionText(aboutPositionStr);
-						scrollToCurrentText();
-					}
-				} else {
-					initialLessonTextStr = aboutPositionStr;
-					setDescriptionText(initialLessonTextStr);
+			String aboutLessonStr = mentorLesson.getAbout();
+			String aboutPositionStr = getMentorPosition().getAbout();
+			if (!TextUtils.isEmpty(aboutLessonStr)) {
+				initialLessonTextStr = aboutLessonStr;
+				setDescriptionText(initialLessonTextStr);
+
+				if (!TextUtils.isEmpty(aboutPositionStr)) {
+					setPositionDescriptionText(aboutPositionStr);
+					scrollToCurrentText();
 				}
 			} else {
-				// hide comment
-				goalCommentTxt.setVisibility(View.GONE);
-
-				// set last move response comment
-				LessonProblemItem.MentorPosition previousLearnPosition = positionsToLearn.get(currentLearningPosition - 1);
-				LessonProblemItem.MentorPosition.PossibleMove correctMove = previousLearnPosition.getCorrectMove();
-
-				setDescriptionText(correctMove.getResponseMoveCommentary());
-
-				// set next position's about
-				String positionAboutStr = positionsToLearn.get(currentLearningPosition).getAbout();
-				if (!TextUtils.isEmpty(positionAboutStr)) {
-					setPositionDescriptionText(positionAboutStr);
-				}
-				scrollToCurrentText();
-
+				initialLessonTextStr = aboutPositionStr;
+				setDescriptionText(initialLessonTextStr);
 			}
-			need2update = false;
+		} else {
+			// hide comment
+			goalCommentTxt.setVisibility(View.GONE);
+
+			// set last move response comment
+			LessonProblemItem.MentorPosition previousLearnPosition = positionsToLearn.get(currentLearningPosition - 1);
+			LessonProblemItem.MentorPosition.PossibleMove correctMove = previousLearnPosition.getCorrectMove();
+
+			setDescriptionText(correctMove.getResponseMoveCommentary());
+
+			// set next position's about
+			String positionAboutStr = positionsToLearn.get(currentLearningPosition).getAbout();
+			if (!TextUtils.isEmpty(positionAboutStr)) {
+				setPositionDescriptionText(positionAboutStr);
+			}
+			scrollToCurrentText();
+
 		}
 	}
 

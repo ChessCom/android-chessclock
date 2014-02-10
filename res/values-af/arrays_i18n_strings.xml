@@ -2,43 +2,43 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Daaglikse Skaak</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>Regstreeks - Standaard</item>
+		<item>Regstreeks - Blitz</item>
+		<item>Regstreeks - Weerlig</item>
 		<item>Daaglikse Skaak960</item>
 		<item>Taktiek</item>
 		<item>Lesse</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
 		<item>Onbeperkte Videos</item>
-		<item>Onbeperkte Taktiek Probleme</item>
+		<item>Onbeperkte Taktiese Probleme</item>
 		<item>Onbeperkte Lesse</item>
 		<item>Openings Verkenner</item>
-		<item>Voledige Statistiek</item>
-		<item>Daily Timeout Protection</item>
+		<item>Volledige Statistieke</item>
+		<item>Daaglikse Tyd-Verstreke Beskerming</item>
 		<item>Geen Advertensies</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
 		<item></item>
-		<item>Onbeperkte Taktiek Probleme</item>
+		<item>Onbeperkte Taktiese Probleme</item>
 		<item>5 Lesse per Dag</item>
 		<item>Openings Verkenner</item>
-		<item>Voledige Statistiek</item>
-		<item>Daily Timeout Protection</item>
+		<item>Volledige Statistieke</item>
+		<item>Daaglikse Tyd-Verstreke Beskerming</item>
 		<item>Geen Advertensies</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
 		<item></item>
-		<item>25 Taktiek Probleme per Dag</item>
+		<item>25 Taktiese Probleme per Dag</item>
 		<item>3 Lesse per Dag</item>
 		<item>Openings Verkenner</item>
-		<item>Persoonlike Statistiek</item>
-		<item>Daily Timeout Protection</item>
+		<item>Persoonlike Statistieke</item>
+		<item>Daaglikse Tyd Verstreke Beskerming</item>
 		<item>Geen Advertensies</item>
 	</string-array>
 	<string-array name="afterMyMove">
-		<item>Gaan na Volgende Spel</item>
-		<item>Bly op Huidige Spel</item>
-		<item>Keer Terug na Spelle Lys</item>
+		<item>Gaan na volgende spel wat gereed is</item>
+		<item>Bly by Huidige Spel</item>
+		<item>Keer Terug na Spel Lys</item>
 	</string-array>
 </resources>

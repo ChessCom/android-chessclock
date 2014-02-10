@@ -2,17 +2,17 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>दैनिक शतरंज</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>लाइव - सामान्य</item>
+		<item>लाइव - ब्लिट्ज</item>
+		<item>लाइव - बुलेट</item>
 		<item>दैनिक Chess960</item>
 		<item>युक्तियाँ</item>
-		<item>अध्ययन सामग्री</item>
+		<item>सीखने हेतु सबक</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
 		<item>असीमित वीडियो</item>
 		<item>असीमित युक्तियाँ</item>
-		<item>असीमित अध्ययन सामग्री</item>
+		<item>असीमित सबक</item>
 		<item>प्रारम्भ(ओपनिंग) अन्वेषक</item>
 		<item>पूर्ण आँकड़े</item>
 		<item>दैनिक टाइमआउट संरक्षण</item>

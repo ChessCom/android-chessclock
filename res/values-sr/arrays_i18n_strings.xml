@@ -14,7 +14,7 @@
 		<item>Неограничен број тактика</item>
 		<item>Неограничен број лекција</item>
 		<item>Истраживач отварања</item>
-		<item>Комплетна Статистика</item>
+		<item>Комплетна статистика</item>
 		<item>Дневна заштита истека времена</item>
 		<item>Нема реклама</item>
 	</string-array>
@@ -37,7 +37,7 @@
 		<item>Нема реклама</item>
 	</string-array>
 	<string-array name="afterMyMove">
-		<item>Следећа спремна игра</item>
+		<item>Иди на следећу спремну партију</item>
 		<item>Остани на истој партији</item>
 		<item>Врати се на листу партија</item>
 	</string-array>

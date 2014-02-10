@@ -2,39 +2,39 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>デイリーチェス</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
-		<item>デイリーチェス‐チェス960</item>
-		<item>タクティクス‐戦術</item>
+		<item>ライブ ‐ スタンダード</item>
+		<item>ライブ ‐ ブリッツ</item>
+		<item>ライブ ‐ ブレット</item>
+		<item>デイリーチェス960</item>
+		<item>タクティクス</item>
 		<item>レッスン</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
-		<item>動画‐無制限</item>
-		<item>タクティクス‐無制限</item>
-		<item>レッスン‐無制限</item>
+		<item>無制限動画</item>
+		<item>無制限の戦術</item>
+		<item>無制限のレッスン</item>
 		<item>オープニング・エクスプローラー</item>
-		<item>総合成績</item>
-		<item>デイリータイムアウトプロテクション</item>
-		<item>広告が表示されません。</item>
+		<item>総合成績統計</item>
+		<item>デイリーチェス　自動休暇</item>
+		<item>広告なし</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
 		<item></item>
-		<item>タクティクス‐無制限</item>
-		<item>1 日 あたり5 レッスン</item>
+		<item>無制限の戦術</item>
+		<item>1 日 5 レッスンまで</item>
 		<item>オープニング・エクスプローラー</item>
 		<item>総合成績</item>
-		<item>デイリータイムアウトプロテクション</item>
-		<item>広告が表示されません。</item>
+		<item>デイリーチェス　自動休暇</item>
+		<item>広告なし</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
 		<item></item>
-		<item>1 日あたり 25 タクティクス</item>
-		<item>1 日 あたり3レッスン</item>
+		<item>1 日25 タクティクスまで</item>
+		<item>1 日 3 レッスンまで</item>
 		<item>オープニング・エクスプローラー</item>
 		<item>個人成績</item>
-		<item>デイリータイムアウトプロテクション</item>
-		<item>広告が表示されません。</item>
+		<item>デイリーチェス　自動休暇</item>
+		<item>広告なし</item>
 	</string-array>
 	<string-array name="afterMyMove">
 		<item>次のゲームへ</item>

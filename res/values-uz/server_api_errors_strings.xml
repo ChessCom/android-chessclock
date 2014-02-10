@@ -90,20 +90,20 @@
 		<item>A\'zolik nomi 3 va undan ortiq belgidan iborat bo\'lishi kerak.</item>
 		<item>A\'zolik nomi 20 yoki undan kam bo\'lgan belgidan iborat bo\'lishi kerak.</item>
 		<item>Bu a\'zolik nomini qo\'llash mumkin emas. Iltimos boshqa nom tanlang.</item>
-		<item>To prevent spam and abuse, Chess.com does not allow throw-away email addresses. Please use a legitimate
-			email address or connect with Facebook. Thanks!
+		<item>Spam va noto\'g\'ri foydalanishni oldini olish maqsadida, Chess.com email adreslarni tashlab yuborishga
+			ruxsat bermaydi. Iltimos to\'g\'ri email adresiz yoki Facebook orqali saytga kiring. Rahmat!
 		</item>
 		<item>Parol kamida 6 belgidan iborat bo\'lishi kerak.</item>
 		<item>Ism 20 va undan kam bo\'lgan belgidan iborat bo\'lishi kerak.</item>
 		<item>Familiya 20 yoki undan kam bo\'lgan belgidan iborat bo\'lishi kerak.</item>
-		<item>The IP has been already banned</item>
+		<item>Bu IP dan foydalanish allaqachon man etilgan</item>
 		<item>A\'zolik nomi ochiq qoldirilishi mumkin emas.</item>
-		<item>Invalid product sku</item>
-		<item>Invalid purchase data</item>
-		<item>Invalid package name</item>
-		<item>Invalid developer payload</item>
-		<item>Invalid data signature</item>
-		<item>Invalid order</item>
-		<item>Wrong order</item>
+		<item>Notög\'ri tovar raqami</item>
+		<item>Noto\'g\'ri sotib olish ma\'lumoti</item>
+		<item>Noto\'g\'ri paket nomi</item>
+		<item>Noto\'g\'ri Android Kodi</item>
+		<item>Noto\'g\'ri ma\'lumot imzosi</item>
+		<item>Noto\'g\'ri buyruq</item>
+		<item>Noto\'g\'ri buyruq</item>
 	</string-array>
 </resources>

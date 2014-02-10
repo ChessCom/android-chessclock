@@ -10,9 +10,9 @@
 		<item>وانەکان</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
-		<item>ویدیۆ بێ کۆتاییەکان</item>
-		<item>تاکتیکە بێ کۆتاییەکان</item>
-		<item>وانە بێ کۆتاییەکان</item>
+		<item>ویدیۆ سنووردار نەکراوەکان</item>
+		<item>تاکتیکە سنووردار نەکراوەکان</item>
+		<item>وانە سنووردار نەکراوەکان</item>
 		<item>لێگەڕی سەرەتایی</item>
 		<item>ئاماری تەواو</item>
 		<item>پاراستنی ماوە بەسەرچوونی ڕۆژانە</item>
@@ -20,7 +20,7 @@
 	</string-array>
 	<string-array name="upgrade_platinum_features">
 		<item></item>
-		<item>تاکتیکە بێ کۆتاییەکان</item>
+		<item>تاکتیکە سنووردار نەکراوەکان</item>
 		<item>هەر ڕۆژ ٥ وانە</item>
 		<item>لێگەڕی سەرەتایی</item>
 		<item>ئاماری تەواو</item>

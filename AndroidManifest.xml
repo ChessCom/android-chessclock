@@ -140,6 +140,7 @@
 		<service android:name=".backend.GetAndSaveTheme" />
 		<service android:name=".backend.GetAndSaveBoard" />
 		<service android:name=".backend.GetAndSavePieces" />
+		<service android:name=".backend.GetAndSaveBackground" />
 
 		<provider
 			android:name=".db.DbDataProvider"

@@ -10,20 +10,20 @@
 		<item>Účet byl zablokován.</item>
 		<item>Musíte nastavit heslo na Chess.com.</item>
 		<item>Zdroj nenalezen.</item>
-		<item>Dosažen denní limit taktiky.</item>
-		<item>Nemůžete přidat sebe jako přítele.</item>
+		<item>Dosažen denní limit taktických úloh.</item>
+		<item>Nemůžete si přidat sama sebe za přítele.</item>
 		<item>Již jste zažádali o přidání tohoto hráče jako vašeho přítele.</item>
-		<item>Tento hráč je již váš přítel.</item>
+		<item>Tento hráč již je váš přítel.</item>
 		<item>Tento uživatel nepřijímá žádosti o přátelství.</item>
 		<item>Tento uživatel Vás zablokoval!</item>
 		<item>Neplatný FEN.</item>
 		<item>Nelze najít uživatele.</item>
 		<item>PLY je větší než povolené maximum.</item>
 		<item>Prosím aktualizujte hru.</item>
-		<item>Hra je již skončena.</item>
+		<item>Partie již skončila.</item>
 		<item>Nejste na tahu.</item>
 		<item>Nepovolený tah.</item>
-		<item>Žádná nabídka remízy.</item>
+		<item>Žádná přímá nabídka remízy.</item>
 		<item>Oops! Toto není vaše partie.</item>
 		<item>Chat je vypnutý.</item>
 		<item>Již jste na dovolené.</item>
@@ -36,20 +36,20 @@
 		<item>Minimální rating příliš vysoký.</item>
 		<item>Maximální rating příliš nízký.</item>
 		<item>Maximální rating příliš vysoký.</item>
-		<item>Rozsah ratingu musí obsahovat váš vlastní rating.</item>
+		<item>Rozsah ratingu musí zahrnovat váš vlastní rating.</item>
 		<item>Rozsah ratingu je příliš malý.</item>
 		<item>Soupeř je na dovolené.</item>
-		<item>Protihráč je nedostupný.</item>
+		<item>Soupeř je nedostupný.</item>
 		<item>Příliš nízký rating.</item>
 		<item>Příliš vysoký rating.</item>
-		<item>Protihráč nesouhlasí s časovým omezením.</item>
+		<item>Soupeř nesouhlasí s časovým omezením.</item>
 		<item>Jste zablokován.</item>
 		<item>Dosažen maximální počet žádostí.</item>
 		<item>Udělejte tahy před vytvořením dalších her.</item>
-		<item>Neplatné id uživatele.</item>
+		<item>Neplatné ID uživatele.</item>
 		<item>Neplatný parametr - totalGames</item>
-		<item>Žádejte o 50 nebo méně her</item>
-		<item>Hra již začala!</item>
+		<item>Prosím žádejte o 50 nebo méně her</item>
+		<item>Partie již začala!</item>
 		<item>Příliš vysoké procento timeoutů.</item>
 		<item>Příliš málo her.</item>
 		<item>Musíte mít prémiový účet.</item>
@@ -59,13 +59,13 @@
 		<item>Neplatné ID nebo kód země.</item>
 		<item>Uživatelské jméno je již obsazeno.</item>
 		<item>E-mail již obsazen.</item>
-		<item>Neplatný e-mail Chess.com.</item>
+		<item>Neplatný Chess.com E-mail.</item>
 		<item>Neplatné uživatelské jméno.</item>
 		<item>Toto uživatelské jméno není povoleno.</item>
-		<item>Neplatná e-mailová doména.</item>
+		<item>Neplatná E-mailová doména.</item>
 		<item>Systémová chyba.</item>
 		<item>Slabé heslo.</item>
-		<item>Neplatné přihlášení tokenu dodává.</item>
+		<item>Neplatný přihlašovací token.</item>
 		<item>Pro pokračování se prosím přihlaste.</item>
 		<item>Prázdná chyba</item>
 		<item>Nelze obnovit šachovou partii.</item>
@@ -78,7 +78,7 @@
 		<item>Prázdná chyba</item>
 		<item>Pro počítačovou analýzu musí mít partie alespoň 16 tahů.</item>
 		<item>Tato hra již byla odeslána na počítačovou analýzu.</item>
-		<item>Byl dosáhnut herní limit.</item>
+		<item>Byl dosáhnut limit partií.</item>
 		<item>Nemožné analyzovat naším počítačem.</item>
 		<item>Analýza stále probíhá.</item>
 		<item>Nelze vyzvat sama sebe.</item>
@@ -99,7 +99,7 @@
 		<item>Neplatné SKU produktu</item>
 		<item>Neplatné údaje o nákupu</item>
 		<item>Neplatný název balíčku</item>
-		<item>Neplatný developer užitečné zatížení</item>
+		<item>Neplatný developer payload</item>
 		<item>Neplatný podpis dat</item>
 		<item>Neplatná objednávka</item>
 		<item>Špatné pořadí</item>

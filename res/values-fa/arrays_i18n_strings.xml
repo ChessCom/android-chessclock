@@ -2,7 +2,7 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>شطرنج روزانه</item>
-		<item>زنده - استاندارد</item>
+		<item>زنده - نیمه سریع</item>
 		<item>زنده - سریع</item>
 		<item>زنده - برق آسا</item>
 		<item>شطرنج ۹۶۰ روزانه</item>
@@ -15,7 +15,7 @@
 		<item>دروس نامحدود</item>
 		<item>کاوشگر گشایش</item>
 		<item>آمار کامل</item>
-		<item>حفاظت از وقفه روزانه</item>
+		<item>پشتیبانی در مقابل وقفه زمانی روزانه</item>
 		<item>بدون تبلیغات</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
@@ -24,7 +24,7 @@
 		<item>۵ درس در هر روز</item>
 		<item>کاوشگر گشایش</item>
 		<item>آمار کامل</item>
-		<item>حفاظت از وقفه روزانه</item>
+		<item>پشتیبانی در مقابل وقفه زمانی روزانه</item>
 		<item>بدون تبلیغات</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
@@ -32,8 +32,8 @@
 		<item>۲۵ تاکتیک در هر روز</item>
 		<item>۳ درس در هر روز</item>
 		<item>کاوشگر گشایش</item>
-		<item>آمارهای شخصی</item>
-		<item>حفاظت از وقفه روزانه</item>
+		<item>آمار شخصی</item>
+		<item>پشتیبانی در مقابل وقفه زمانی روزانه</item>
 		<item>بدون تبلیغات</item>
 	</string-array>
 	<string-array name="afterMyMove">

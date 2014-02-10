@@ -134,7 +134,7 @@ public class GetAndSaveTheme extends Service {
 		notificationBuilder.setContentTitle(getString(R.string.installing_theme))
 				.setTicker(getString(R.string.installing_theme))
 				.setContentText(getString(R.string.downloading_arg, getString(R.string.background)))
-				.setSmallIcon(R.drawable.ic_stat_download)
+				.setSmallIcon(android.R.drawable.stat_sys_download)
 				.setAutoCancel(true);
 		// Puts the PendingIntent into the notification builder
 		notificationBuilder.setContentIntent(pendingIntent);
@@ -168,7 +168,7 @@ public class GetAndSaveTheme extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		return START_STICKY_COMPATIBILITY; // TODO add logic to stop service once it's not needed
+		return START_NOT_STICKY;
 	}
 
 	public void loadTheme(ThemeItem.Data selectedThemeItem, int screenWidth, int screenHeight) {
@@ -185,7 +185,6 @@ public class GetAndSaveTheme extends Service {
 
 		this.selectedThemeItem = selectedThemeItem;
 
-		Log.d("TEST", "screenWidth = " + screenWidth);
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 
@@ -308,7 +307,7 @@ public class GetAndSaveTheme extends Service {
 
 			boardUrl = BoardSingleItem.PATH + boardDir + "/" + name + ".png";
 
-			showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.background)));
+			showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.board)));
 
 			// Start loading board image
 			imageDownloader.download(boardUrl, boardUpdateListener, screenWidth);
@@ -405,7 +404,7 @@ public class GetAndSaveTheme extends Service {
 				LoadItem loadItem = LoadHelper.getBoardById(getUserToken(), selectedThemeItem.getBoardId());
 				new RequestJsonTask<BoardSingleItem>(boardSingleItemUpdateListener).executeTask(loadItem);
 
-				notificationBuilder.setContentText(getString(R.string.downloading_arg, getString(R.string.background)));
+				notificationBuilder.setContentText(getString(R.string.downloading_arg, getString(R.string.board)));
 				updateProgressToNotification(0);
 
 			} else if (listenerCode == BACKGROUND_LAND) {

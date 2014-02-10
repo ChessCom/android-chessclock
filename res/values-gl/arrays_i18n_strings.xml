@@ -2,16 +2,16 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Xadrez en Diferido</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>En Vivo - Normal</item>
+		<item>En Vivo - Rápidas</item>
+		<item>En Vivo - Ultrarrápidas</item>
 		<item>Xadrez960 en Diferido</item>
-		<item>Problemas</item>
+		<item>Tácticas</item>
 		<item>Leccións</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
 		<item>Vídeos Ilimitados</item>
-		<item>Problemas Ilimitados</item>
+		<item>Tácticas Ilimitadas</item>
 		<item>Leccións Ilimitadas</item>
 		<item>Explorador de Aperturas</item>
 		<item>Estatísticas Completas</item>
@@ -20,7 +20,7 @@
 	</string-array>
 	<string-array name="upgrade_platinum_features">
 		<item></item>
-		<item>Problemas Ilimitados</item>
+		<item>Tácticas Ilimitadas</item>
 		<item>5 Leccións ao Día</item>
 		<item>Explorador de Aperturas</item>
 		<item>Estatísticas Completas</item>
@@ -29,7 +29,7 @@
 	</string-array>
 	<string-array name="upgrade_gold_features">
 		<item></item>
-		<item>25 Problemas ao Día</item>
+		<item>25 Tácticas ao día</item>
 		<item>3 Leccións ao Día</item>
 		<item>Explorador de Aperturas</item>
 		<item>Estatísticas Persoais</item>

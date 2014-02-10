@@ -4,7 +4,7 @@
 		<item>Avastati sisselogimine mitme erineva meetodiga. Ärge logige erinevatest kohtadest üheaegselt sisse.</item>
 		<item>Sobimatu Facebook juurdepääsuluba.</item>
 		<item>Facebooki kasutajal ei ole Chess.com kasutajat registreeritud.</item>
-		<item>Konto on lukustatud. Logi sisse Chess.com.</item>
+		<item>Konto on lukustatud. Logi sisse Chess.com-is.</item>
 		<item>Vale parool või kasutajanimi.</item>
 		<item>Konto ei ole veel aktiivne!</item>
 		<item>Konto on blokeeritud.</item>
@@ -26,7 +26,7 @@
 		<item>Viiki pole pakutud.</item>
 		<item>Oih! See ei ole teie mäng.</item>
 		<item>Vestlus on välja lülitatud.</item>
-		<item>Oled juba puhkusel.</item>
+		<item>Olete juba puhkusel.</item>
 		<item>Puhkuse aeg on otsa saanud.</item>
 		<item>Lõpetage kõik mängu käigud.</item>
 		<item>Kasutaja ei ole puhkusel.</item>
@@ -46,7 +46,7 @@
 		<item>Olete blokeeritud.</item>
 		<item>Max otsingute arv on ületatud.</item>
 		<item>Tehke mõni käik enne uute mängude loomist.</item>
-		<item>Lubamatu kasutaja ID.</item>
+		<item>Vale kasutaja id.</item>
 		<item>Kehtetu parameeter - totalGames</item>
 		<item>Palun taotlege 50 või vähem mängu</item>
 		<item>Mäng on juba alanud!</item>
@@ -68,10 +68,10 @@
 		<item>Sobimatu kasutajanimi.</item>
 		<item>Jätkamiseks palun logige sisse.</item>
 		<item>Tühi tõrge</item>
-		<item>Ei saa malemängu uuesti lähtestada.</item>
+		<item>Ei saa malemängu lähtestada.</item>
 		<item>Määrake kindel \"method\", \"url\" ja \"requestId\".</item>
 		<item>Sobimatu leheküljenumber</item>
-		<item>Olete juba muutnud oma kasutajanime. Ainult üks muutmine on lubatud.</item>
+		<item>Olete oma kasutajanime juba muutnud. Lubatud on ainult üks muutmine.</item>
 		<item>Te ei saa oma kasutajanime muuta, kui olete Reaalaja Malesse sisse loginud.</item>
 		<item>Sügavus on lubatust suurem.</item>
 		<item>Lubamatu parameeter.</item>
@@ -85,15 +85,15 @@
 		<item>Avatari pilt ei sobi. Lubatud faili maht on 2 MB ja lubatud mime tüübid on: \"image/jpeg, image/gif,
 			image/png\".
 		</item>
-		<item>Kasutajanimi peaks olema 3 tähemärki või rohkem.</item>
-		<item>Kasutajanimi peab olema 20 märki või vähem.</item>
+		<item>Kasutajanimes peaks olema 3 tähemärki või rohkem.</item>
+		<item>Kasutajanimes peaks olema 20 märki või vähem.</item>
 		<item>Kasutajanimi pole lubatud. Palun proovige uuesti.</item>
-		<item>Rämpsposti ja kuritarvitamise vältimiseks ei võimalda Chess.com minemavisatavaid meiliaadresse. Palun
-			kasuta oma e-posti aadressi või ühendu Facebooki kaudu. Täname!
+		<item>Rämpsposti ja kuritarvitamise vältimiseks ei luba Chess.com rämpsaadresse. Palun kasuta oma e-posti
+			aadressi või ühendu Facebooki kaudu. Täname!
 		</item>
-		<item>Parool peaks olema vähemalt 6 tähemärki.</item>
-		<item>Eesnimi peaks olema 20 märki või vähem.</item>
-		<item>Perekonnanimi peaks olema 20 märki või vähem.</item>
+		<item>Paroolis peaks olema vähemalt 6 tähemärki.</item>
+		<item>Eesnimes peaks olema 20 märki või vähem.</item>
+		<item>Perekonnanimes peaks olema 20 märki või vähem.</item>
 		<item>IP on juba keelatud</item>
 		<item>Kasutajanimi ei tohi olla tühi.</item>
 		<item>Sobimatu toote SKU</item>

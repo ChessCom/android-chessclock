@@ -18,7 +18,7 @@
 		<item>Dieser Nutzer ist bereits mit Ihnen befreundet.</item>
 		<item>Dieser Nutzer akzeptiert keine Freundschaftsanfragen.</item>
 		<item>Dieser Nutzer blockiert Sie!</item>
-		<item>Invalid fen passed.</item>
+		<item>FEN ungültig</item>
 		<item>Nutzer kann nicht über den Nutzernamen oder das Loginsymbol gefunden werden.</item>
 		<item>Der vollzogene Halbzug ist größer als maximal erlaubt.</item>
 		<item>Bitte erneuern Sie das Spiel.</item>
@@ -46,7 +46,7 @@
 		<item>Das Rating ist zu hoch.</item>
 		<item>Der Gegner hat die Zeit nicht eingehalten.</item>
 		<item>Sie werden blockiert.</item>
-		<item>Max seeks exceeded.</item>
+		<item>Maximale Suchanfrage überschritten.</item>
 		<item>Ziehen Sie erst bevor Sie weitere Spiele beginnen.</item>
 		<item>Ungültige Nutzerkennung.</item>
 		<item>Ungültiger Parameter - gesamteSpiele</item>
@@ -56,9 +56,9 @@
 		<item>Zu wenige Spiele.</item>
 		<item>Sie müssen Premium-Mitglied sein.</item>
 		<item>Die Zuggeschwindigkeit ist zu gering.</item>
-		<item>Can\'t accept own seek.</item>
+		<item>Eigensuchanfrage ist nicht möglich.</item>
 		<item>Das ist nicht Ihre Herausforderung.</item>
-		<item>Invalid country id or code passed.</item>
+		<item>Landes-ID oder Code ungültig.</item>
 		<item>Der Nutzername wird bereits genutzt.</item>
 		<item>Die E-Mail-Adresse wird bereits genutzt.</item>
 		<item>Ungültige Chess.com-E-Mail.</item>
@@ -67,19 +67,19 @@
 		<item>Ungültige E-Mail-Domäne.</item>
 		<item>Systemfehler.</item>
 		<item>Schwaches Passwort.</item>
-		<item>Invalid login token supplied.</item>
+		<item>Ungültie Anmeldeanzeige geliefert.</item>
 		<item>Loggen Sie sich bitte ein um fortzufahren.</item>
-		<item>Empty Error</item>
-		<item>Unable to reset chess game.</item>
+		<item>Leerer Fehler.</item>
+		<item>Das Spiel kann nicht zurückgesetzt werden.</item>
 		<item>Sie müssen \"Methode\", \"Url\" und \"RequestId\" präzisieren.</item>
 		<item>Ungültige Seitenzahl</item>
 		<item>Sie haben Ihren Nutzernamen bereits einmal geändert. Die Änderung des Nutzernamens kann nur einmal
 			geschehen.
 		</item>
-		<item>Sie können Ihren Nutzernamen nicht ändern solange Sie bei Live Chess eingeloggt sind.</item>
+		<item>Sie können Ihren Nutzernamen nicht ändern solange Sie bei Live Schach eingeloggt sind.</item>
 		<item>Der vollzogene Halbzug ist größer als maximal erlaubt.</item>
-		<item>Invalid parameter passed.</item>
-		<item>Empty Error</item>
+		<item>Ungültiger Parameter</item>
+		<item>Leerer Fehler.</item>
 		<item>Spiele müssen mindestens 16 Züge beinhalten um für eine Computeranalyse vorgelegt werden zu können.</item>
 		<item>Dieses Spiel ist bereits für die Computeranalyse vorgesehen.</item>
 		<item>Die Spiele-Begrenzung ist erreicht.</item>
@@ -100,11 +100,11 @@
 		<item>Der Nachname darf nur aus 20 oder weniger Zeichen bestehen.</item>
 		<item>Diese IP-Adresse ist bereits verboten worden</item>
 		<item>Der Nutzername darf nicht leer sein.</item>
-		<item>Invalid product sku</item>
-		<item>Invalid purchase data</item>
-		<item>Invalid package name</item>
-		<item>Invalid developer payload</item>
-		<item>Invalid data signature</item>
+		<item>Ungültige Produktsorte</item>
+		<item>Ungültige Erwerbsdaten</item>
+		<item>Ungültiger Paketname</item>
+		<item>Ungültige Entwickler-Gutschrift</item>
+		<item>Ungültige Datensignatur</item>
 		<item>Ungültige Reihenfolge</item>
 		<item>Falsche Reihenfolge</item>
 	</string-array>

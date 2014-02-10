@@ -4,14 +4,14 @@
 		<item>Dnevni Šah</item>
 		<item>Uživo - Standardni</item>
 		<item>Uživo - Blic</item>
-		<item>Munjeviti</item>
+		<item>Uživo - Brzi</item>
 		<item>Dnevni Šah960</item>
 		<item>Taktike</item>
 		<item>Lekcije</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
-		<item>Neograničeni Video Klipovi</item>
-		<item>Neograničen broj Taktika</item>
+		<item>Neograničeni Video Zapisi</item>
+		<item>Neograničen Broj Taktika</item>
 		<item>Neograničene Lekcije</item>
 		<item>Pretraživač Otvaranja</item>
 		<item>Kompletna Statistika</item>

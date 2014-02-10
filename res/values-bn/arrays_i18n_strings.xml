@@ -2,9 +2,9 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>দৈনিক দাবা</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>লাইভ - নিয়মিত দাবা</item>
+		<item>লাইভ - বিদ্যুৎ গতি দাবা</item>
+		<item>লাইভ - বুলেট দাবা</item>
 		<item>দৈনিক দাবা৯৬০</item>
 		<item>কৌশল</item>
 		<item>পাঠ্যক্রম</item>
@@ -13,31 +13,31 @@
 		<item>অসংখ্য ভিডিও</item>
 		<item>অসংখ্য কৌশল</item>
 		<item>অসংখ্য পাঠ্যক্রম</item>
-		<item>Opening Explorer</item>
+		<item>ওপেনিং বিশ্লেষণকারী</item>
 		<item>পূর্ণ পরিসংখ্যান</item>
-		<item>Daily Timeout Protection</item>
-		<item>No Ads</item>
+		<item>দৈনিক সময়োত্তীর্ণের প্রতিরক্ষা</item>
+		<item>কোন বিজ্ঞাপন নয়</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
 		<item></item>
 		<item>অসংখ্য কৌশল</item>
 		<item>দৈনিক ৫টি পাঠ্যক্রম</item>
-		<item>Opening Explorer</item>
+		<item>ওপেনিং বিশ্লেষণকারী</item>
 		<item>পূর্ণ পরিসংখ্যান</item>
-		<item>Daily Timeout Protection</item>
-		<item>No Ads</item>
+		<item>দৈনিক সময়োত্তীর্ণের প্রতিরক্ষা</item>
+		<item>কোন বিজ্ঞাপন নয়</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
 		<item></item>
-		<item>25 Tactics per Day</item>
-		<item>3 Lessons per Day</item>
-		<item>Opening Explorer</item>
+		<item>প্রতি দিন ২৫টি কৌশল</item>
+		<item>দৈনিক ৩টি পাঠ্যক্রম</item>
+		<item>ওপেনিং বিশ্লেষণকারী</item>
 		<item>ব্যক্তিগত পরিসংখ্যান</item>
-		<item>Daily Timeout Protection</item>
-		<item>No Ads</item>
+		<item>দৈনিক সময়োত্তীর্ণের প্রতিরক্ষা</item>
+		<item>কোন বিজ্ঞাপন নয়</item>
 	</string-array>
 	<string-array name="afterMyMove">
-		<item>Go To Next Ready Game</item>
+		<item>পরবর্তী তৈরী খেলায় যান</item>
 		<item>একই খেলায় থাকুন</item>
 		<item>খেলার তালিকায় ফিরে যান</item>
 	</string-array>

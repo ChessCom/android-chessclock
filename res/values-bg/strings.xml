@@ -16,7 +16,6 @@
 	<string name="complete_singup">Завършете Регистрацията</string>
 	<string name="white">Бели</string>
 	<string name="black">Черни</string>
-	<string name="computer">Компютър</string>
 	<string name="thinking_">Мислене...</string>
 	<string name="open_challenges">Отворени Предизвикателства</string>
 	<string name="challenge_friend">Предизвикай Приятел</string>
@@ -31,11 +30,11 @@
 	<string name="request_accepted">Заявката Приета</string>
 	<string name="request_declined">Заявката Отказана</string>
 	<string name="decline">Откажи</string>
-	<string name="type_">Тип:</string>
+	<string name="type_">Тип</string>
 	<string name="chess_960">Шах 960</string>
-	<string name="rated_game_">Оценявана Игра:</string>
-	<string name="i_play_as_">Играя като:</string>
-	<string name="days_per_move_">Дни за всеки ход:</string>
+	<string name="rated_game_">Оценявана Игра</string>
+	<string name="i_play_as_">Аз играя като</string>
+	<string name="days_per_move_">Дни за всеки ход</string>
 	<string name="email">Имейл</string>
 	<string name="retype_password">Повтори парола</string>
 	<string name="country">Държава</string>
@@ -101,10 +100,6 @@
 	<string name="incorrect_move">Неправилен ход</string>
 	<string name="puzzle_solved">Пъзелът е решен!</string>
 	<string name="upgrade_for_unlimited_arg">Ъпгрейд за Неограничени %s!</string>
-	<string name="hours">часа</string>
-	<string name="hour">час</string>
-	<string name="days">дни</string>
-	<string name="day">ден</string>
 	<string name="random">Случайни</string>
 	<string name="won">Победа</string>
 	<string name="lost">Загуба</string>
@@ -125,11 +120,11 @@
 	<string name="tournaments">Турнири</string>
 	<string name="stats">Статистика</string>
 	<string name="you_been_challenged">"Вие сте Предизвикан"</string>
-	<string name="opponent_">Противник:</string>
-	<string name="time_">Време:</string>
+	<string name="opponent_">Противник</string>
+	<string name="time_">Време</string>
 	<string name="rated">Оценявана</string>
 	<string name="unrated">Неоценявана</string>
-	<string name="you_play">Играете:</string>
+	<string name="you_play">Вие Играете</string>
 	<string name="chess_com">Chess.com</string>
 	<string name="your_move_vs">Вашият ход срещу %1$s , %2$s</string>
 	<string name="won_on_time">%s победи с време</string>
@@ -138,25 +133,27 @@
 	<string name="game_over">Край на играта</string>
 	<string name="reconnecting_">Повторно свързване...</string>
 	<string name="another_login_detected">Опа! Логнали сте се другаде.</string>
-	<string name="game_end_title_draw">Реми (½–½)</string>
+	<string name="game_end_title_draw">Реми</string>
 	<string name="game_aborted">Играта е прекратена</string>
 	<string name="new_game">Нова Игра</string>
 	<string name="new_game_arg">Нова Игра (%s)</string>
+	<string name="enter_moves">Въведете Ходове</string>
 	<string name="language">Език</string>
-	<string name="black_wins">Черните Печелят (0-1)</string>
-	<string name="white_wins">Белите печелят (1-0)</string>
+	<string name="black_wins">Черните Печелят</string>
+	<string name="white_wins">Белите Печелят</string>
 	<string name="game_draw_by_repetition">Реми от Повторение</string>
 	<string name="game_drawn_by_agreement">Реми по Съгласие</string>
 	<string name="game_drawn_by_stalemate">Реми от Пат</string>
 	<string name="game_drawn_insufficient_material">Реми поради Недостиг на Материал</string>
 	<string name="game_drawn_by_fifty_move_rule">Реми от 50-ходовото Правило</string>
-	<string name="draw_by_stalemate">Равни с Пат (½–½)</string>
-	<string name="draw_by_3fold_repetition">Равни с трикратно повторение (½–½)</string>
+	<string name="draw_by_stalemate">Реми от Пат</string>
+	<string name="draw_by_3fold_repetition">Реми от Трикратно Повторение</string>
 	<string name="rematch">Реванш</string>
-	<string name="min_arg">%s минути</string>
 	<string name="fair_play_policy">Политика за честна игра</string>
 	<string name="home">Начало</string>
 	<string name="live">На Живо</string>
+	<string name="follow">Следвайте</string>
+	<string name="following_arg">Следя %s</string>
 	<string name="comp">Компютър</string>
 	<string name="tactics">Тактики</string>
 	<string name="practice">Упражняване</string>
@@ -166,9 +163,9 @@
 	<string name="last_name">Фамилно име</string>
 	<string name="first_name">Собствено име</string>
 	<string name="profile_picture">Профилна снимка</string>
-	<string name="or_use_your_email">Или използвате вашия Имейл Адрес:</string>
+	<string name="or_use_your_email">Или използвайте вашия Имейл Адрес</string>
 	<string name="by_signing_up_accept_mobile">Регистрирайки се, аз приемам</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Условия за ползване</a>]]></string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Условия за ползване</a>]]]></string>
 	<string name="create_chess_profile">Добре дошли! Създайте своя Шах Профил</string>
 	<string name="daily">Ежедневен</string>
 	<string name="improve_game_with_lessons">Подобрете играта си с Неограничени Уроци</string>
@@ -191,10 +188,23 @@
 	<string name="no_games">Няма Игри</string>
 	<string name="my_move">Мой Ход</string>
 	<string name="their_move">Техен Ход</string>
-	<string name="days_arg">%d дни</string>
-	<string name="day_arg">%d ден</string>
+	<string name="live_chess_time_mode_arg">%1$d | %2$d</string>
+	<string name="arg_min">%d минути</string>
+	<string name="arg_hour">%d час</string>
+	<string name="arg_hours">%d часа</string>
+	<string name="arg_day">%d ден</string>
+	<string name="arg_days">%d дни</string>
+	<string name="arg_min_ago">преди %d минути</string>
+	<string name="arg_hour_ago">преди %d час</string>
+	<string name="arg_hours_ago">преди %d часа</string>
+	<string name="arg_day_ago">преди %d ден</string>
+	<string name="arg_days_ago">Преди %d дни</string>
+	<string name="arg_month_ago">преди %d месец</string>
+	<string name="arg_months_ago">преди %d месеца</string>
+	<string name="arg_year_ago">преди %d година</string>
+	<string name="arg_years_ago">преди %d години</string>
 	<string name="photo">Снимка</string>
-	<string name="vs_computer">срещу Компютър</string>
+	<string name="computer">Компютър</string>
 	<string name="daily_chess">Ежедневен Шах</string>
 	<string name="live_chess">Шах на Живо</string>
 	<string name="avg_opp_rating_when_i">Среден рейтинг на опонента, при моя :</string>
@@ -246,7 +256,7 @@
 	<string name="choose_photo">Изберете снимка</string>
 	<string name="take_photo">Направете снимка</string>
 	<string name="pick_photo">Изберете снимка</string>
-	<string name="or_login_using_chesscom">Или Използвайте Потребителското си име в Chess.com:</string>
+	<string name="or_login_using_chesscom">Или Използвайте Потребителското си име в Chess.com</string>
 	<string name="articles">Статии</string>
 	<string name="forums">Форуми</string>
 	<string name="notifications">Известия</string>
@@ -257,7 +267,6 @@
 	<string name="share_pgn">Сподели PGN запис</string>
 	<string name="share_via">Сподели чрез</string>
 	<string name="chess">Шах</string>
-	<string name="via_chesscom">"чрез @Chesscom"</string>
 	<string name="vs_random_opponent">срещу Случайни</string>
 	<string name="feed">фийд</string>
 	<string name="learn">Научете</string>
@@ -277,7 +286,7 @@
 	<string name="location">Местоположение</string>
 	<string name="share">Сподели</string>
 	<string name="profile_membership_renew_cancel">Вашето %1$s членство ще се поднови на %2$s.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Отмени</a>]]></string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> Отмени</a>]]]></string>
 	<string name="invite_friends_profile_message">Шахът е по-забавен с приятели - покани ги да се присъединят!</string>
 	<string name="profile_account_message_1">Вашият акаунт е обвързан с *Теrms and conditions phrase here* на сайта</string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice">Правилата и Условията.</a>]]></string>
@@ -317,12 +326,14 @@
 	<string name="already_member_log_in">Вече сте потребител? Влезте</string>
 	<string name="you_won">Вие спечелихте!</string>
 	<string name="you_lose">Вие Загубихте</string>
-	<string name="you_must_have_account_to">Трябва да имате акаунт, за да %s</string>
-	<string name="solve_tactics_puzzles">да може да решавате тактики &amp; пъзели</string>
-	<string name="use_lessons">Използвайте Уроци</string>
-	<string name="watch_videos">Гледайте Видео Уроци</string>
+	<string name="please_sign_up_for_lessons">Моля регистрирайте си акаунт, за да учите уроци.</string>
+	<string name="please_sign_up_for_play_online">Моля регистрирайте си акаунт, за да играете онлайн.</string>
+	<string name="please_sign_up_for_tactics">Моля регистрирайте си акаунт, за да решавате тактики &amp; пъзели.</string>
+	<string name="please_sign_up_for_videos">Моля регистрирайте си акаунт, за да гледате видеота.</string>
+	<string name="please_sign_up_for_lessons">Моля регистрирайте си акаунт, за да учите уроци.</string>
+	<string name="please_sign_up_for_friends">Моля регистрирайте си акаунт, за да предизвиквате приятели.</string>
 	<string name="interactive_lessons">Интерактивни Уроци</string>
-	<string name="tactics_and_puzzles"><![CDATA[Тактика и Пъзели]]]></string>
+	<string name="tactics_and_puzzles">Тактики &amp; Пъзели</string>
 	<string name="friend_requests">Молби за Приятелство</string>
 	<string name="add_friend">Добавяне на Приятел</string>
 	<string name="recent_opponents">Скорошни Противници</string>
@@ -331,20 +342,14 @@
 	<string name="invite_facebook_friend">Покани приятел от Facebook</string>
 	<string name="invite_from_contacts">Покани от контакти</string>
 	<string name="no_contacts_found">Няма Намерени Контакти</string>
+	<string name="please_add_valid_username">Моля въведете валидно потребителско име</string>
 	<string name="facebook">Фейсбук</string>
 	<string name="contacts">Контакти</string>
 	<string name="facebook_invite_friend_to_play">Нека да играем шах! Можете да играете онлайн на Chess.com или на мобилен телефон с Android OS или iPhone/iPad.</string>
 	<string name="add_friend_request_message">Нека Играем!</string>
 	<string name="online_today">Онлайн днес</string>
-	<string name="last_played">Онлайн %s</string>
-	<string name="x_days_ago">Преди %s дни</string>
-	<string name="today">днес</string>
-	<string name="months">месеца</string>
-	<string name="month">месец</string>
-	<string name="years">години</string>
-	<string name="year">година</string>
+	<string name="last_was_online">Онлайн %s</string>
 	<string name="just_now">току що</string>
-	<string name="ago_arg">преди %s</string>
 	<string name="request_sent">Заявката е  Изпратена</string>
 	<string name="username_not_found">Потребителското име не е намерено</string>
 	<string name="you_have_not_added_friends_yet">"Все още нямате никакви приятели. Добавете някого!"</string>
@@ -382,6 +387,7 @@
 	<string name="score_">Резултат:</string>
 	<string name="rating_">Рейтинг:</string>
 	<string name="new_arg_rating_">Нов %s Рейтинг:</string>
+	<string name="new_arg">Нова %s</string>
 	<string name="course">Курс</string>
 	<string name="lessons_completed">Уроците Завършени</string>
 	<string name="courses_completed">Курсовете Завършени</string>
@@ -393,17 +399,12 @@
 	<string name="lessons_limit_reached_message">Достигнат е максимумът на уроците за днес. Ъпгрейднете сега, за да подобрите играта си с неограничен брой уроци!</string>
 	<string name="resume_lesson">Възобнови Урок</string>
 	<string name="installing_theme">Инсталиране на Тема</string>
-	<string name="waiting_to_download">Изчакване за изтегляне…</string>
-	<string name="loading_background">Зареждане на Фон</string>
-	<string name="saving_background">Записване на Фон</string>
-	<string name="saving_board">Записване на Дъската</string>
-	<string name="loading_board">Зареждане на дъската</string>
-	<string name="loading_sounds">Зареждане на звуците</string>
+	<string name="waiting_to_download">Изчакване за изтегляне&#8230;</string>
+	<string name="downloading_arg">Изтегляне на %s</string>
 	<string name="custom">По Избор</string>
 	<string name="background">Фон</string>
 	<string name="select_background">Изберете Фон</string>
 	<string name="edit">Редактиране</string>
-	<string name="installing_sound_pack">Инсталиране на звуци</string>
 	<string name="waiting_to_load">Изчакване за зареждане</string>
 	<string name="message_sent">Съобщението е изпратено</string>
 	<string name="message">Съобщение</string>
@@ -424,7 +425,7 @@
 	<string name="comments_arg">%s коментари</string>
 	<string name="views_arg">%s преглеждания</string>
 	<string name="game_is_over">Край на Играта</string>
-	<string name="game_over_vs">Game Over vs %s</string>
+	<string name="game_over_vs">Играта свърши срещу %s</string>
 	<string name="switch_sides">Смени страните</string>
 	<string name="no_results">Няма резултати</string>
 	<string name="game_explorer">Анализатор</string>
@@ -432,7 +433,6 @@
 	<string name="recent_lessons">Последни уроци</string>
 	<string name="players_online_arg">%s играчи онлайн</string>
 	<string name="improve_your_chess">Подобри своята шах игра!</string>
-	<string name="loading_pieces">Зареждане на фигурите</string>
 	<string name="white_to_move">Белите на Ход</string>
 	<string name="black_to_move">Черните на Ход</string>
 	<string name="puzzle">Пъзел</string>
@@ -464,7 +464,7 @@
 	<string name="help_toast_for_quick_in_game_navigation">Задръжте \u003c или \u003e за Бързо Движение</string>
 	<string name="still_connecting">Все още се свързва...</string>
 	<string name="unable_to_send_challenge">Неуспешен опит да бъде изпратено Предизвикателство</string>
-	<string name="rating_range">Обхват на рейтинга:</string>
+	<string name="rating_range">Обхват на Рейтинга</string>
 	<string name="show_mini_boards">Покажи мини дъски</string>
 	<string name="show_timer">Покажи таймер</string>
 	<string name="file_saved_to_download">Файлът записан в \"Изтеглени\"</string>
@@ -478,13 +478,17 @@
 	<string name="review_lesson">Прегледай урока</string>
 	<string name="full_screen">Пълен Екран</string>
 	<string name="line">Линия</string>
-	<string name="predict_move_or_add_new_line">Предвидете хода или добавете нова линия…</string>
-	<string name="make_your_conditional_move">Направете вашия условен ход…</string>
-	<string name="predict_opponent_next_move">Предвидете следващия ход на опонента…</string>
+	<string name="predict_move_or_add_new_line">Предвидете хода или добавете нова линия&#8230;</string>
+	<string name="make_your_conditional_move">Направете вашия условен ход&#8230;</string>
+	<string name="predict_opponent_next_move">Предвидете следващия ход на опонента&#8230;</string>
 	<string name="notes">Бележки</string>
 	<string name="private_note">Частна Бележка</string>
 	<string name="upgrade_feedback_1">"\"Тактиките и Уроците наистина помагат на уменията ми по шах\""</string>
 	<string name="upgrade_feedback_reporter_1">- Питър,  Член от 2011 г.</string>
 	<string name="upgrade_feedback_2">"\"Рейтингът ми като цяло се подобри много, след като станах премиум член\""</string>
 	<string name="upgrade_feedback_reporter_2">- Лу от Ню Джърси, Член от 2009 г.</string>
+	<string name="live_game_share_str">%1$s срещу %2$s - Онлайн Шах http://www.chess.com/livechess/game?id=%3$s чрез @chesscom</string>
+	<string name="daily_game_share_str">%1$s срещу %2$s - Онлайн Шах http://www.chess.com/echess/game?id=%3$s чрез @chesscom</string>
+	<string name="daily_game_share_str">%1$s срещу %2$s - Онлайн Шах http://www.chess.com/echess/game?id=%3$s чрез @chesscom</string>
+	<string name="pieces">Фигури</string>
 </resources>

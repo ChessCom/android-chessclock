@@ -7,31 +7,31 @@
 		<item>Í beinni - Örskák</item>
 		<item>Dagleg slembiskák</item>
 		<item>Herkænska</item>
-		<item>kennsluefni</item>
+		<item>Kennsluefni</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
 		<item>Ótakmarkaður aðgangur að myndböndum</item>
 		<item>Ótakmarkaður aðgangur að herkænsku</item>
 		<item>Ótakmarkaður aðgangur að kennsluefni</item>
-		<item>Byrjanir kannaðar</item>
+		<item>Byrjanaskoðari</item>
 		<item>Öll tölfræði</item>
 		<item>Dagleg tímavörn</item>
 		<item>Engar auglýsingar</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
 		<item></item>
-		<item>Ótakmarkaður aðgangur að herkænsku</item>
+		<item>Ótakmarkaður aðgangur að herkænskuþrautum</item>
 		<item>5 kennslustundir á dag</item>
-		<item>Byrjanir kannaðar</item>
+		<item>Byrjanaskoðari</item>
 		<item>Öll tölfræði</item>
 		<item>Dagleg tímavörn</item>
 		<item>Engar auglýsingar</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
 		<item></item>
-		<item>25 hernaðarkúnstir á dag</item>
+		<item>25 herkænskuþrautir á dag</item>
 		<item>Þrjár kennslustundir á dag</item>
-		<item>Byrjanir kannaðar</item>
+		<item>Byrjanaskoðari</item>
 		<item>Persónuleg tölfræði</item>
 		<item>Dagleg tímavörn</item>
 		<item>Engar auglýsingar</item>

@@ -2,18 +2,18 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Catur Harian</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>Secara langsung - \'Standard\'</item>
+		<item>Secara langsung - \'Blitz\'</item>
+		<item>Langsung - Peluru</item>
 		<item>Chess960 Harian</item>
-		<item>Taktik</item>
+		<item>Taktik-taktik</item>
 		<item>Pengajaran</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
-		<item>Video tidak terhad</item>
-		<item>Taktik yang tidak terhingga</item>
-		<item>Pengajaran yang tidak terhad</item>
-		<item>Penerokaan Permulaan</item>
+		<item>Video-video tanpa had</item>
+		<item>Taktik-taktik tanpa had</item>
+		<item>Pembelajaran tanpa had</item>
+		<item>Mulakan penerokaan</item>
 		<item>Statistik penuh</item>
 		<item>Perlindungan tempoh tamat harian</item>
 		<item>Tiada iklan</item>

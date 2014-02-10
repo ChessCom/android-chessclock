@@ -2,17 +2,17 @@
 <resources>
 	<string-array name="game_stats_categories">
 		<item>Catur Harian</item>
-		<item>Live - Standard</item>
-		<item>Live - Blitz</item>
-		<item>Live - Bullet</item>
+		<item>Langsung - Standar</item>
+		<item>Langsung - Kilat</item>
+		<item>Langsung - Peluru</item>
 		<item>Catur960 harian</item>
 		<item>Taktik</item>
 		<item>Pelajaran</item>
 	</string-array>
 	<string-array name="upgrade_diamond_features">
-		<item>Video tak terbatas</item>
-		<item>Taktik tak terbatas</item>
-		<item>Pelajaran tak terbatas</item>
+		<item>Video yang tak terbatas</item>
+		<item>Taktik yang tak terbatas</item>
+		<item>Pelajaran yang tak terbatas</item>
 		<item>menelusuri pembukaan</item>
 		<item>Statistik Penuh</item>
 		<item>Perlindungan jeda harian</item>
@@ -20,7 +20,7 @@
 	</string-array>
 	<string-array name="upgrade_platinum_features">
 		<item></item>
-		<item>taktik tak terbatas</item>
+		<item>taktik yang tak terbatas</item>
 		<item>5 pelajaran per hari</item>
 		<item>menelusuri pembukaan</item>
 		<item>statistik penuh</item>
@@ -37,8 +37,8 @@
 		<item>Tanpa iklan</item>
 	</string-array>
 	<string-array name="afterMyMove">
-		<item>Pergi ke Permainan siap berikutmya</item>
-		<item>Tinggal di permainan sama</item>
+		<item>Pergi ke Permainan selanjutnya yang tersedia</item>
+		<item>Tetap di permainan yang sama</item>
 		<item>kembali ke daftar permainan</item>
 	</string-array>
 </resources>

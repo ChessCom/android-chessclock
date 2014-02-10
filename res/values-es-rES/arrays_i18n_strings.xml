@@ -38,7 +38,7 @@
 	</string-array>
 	<string-array name="afterMyMove">
 		<item>Ir A La Siguiente Partida Lista</item>
-		<item>Quedarse En La Misma Partida</item>
-		<item>Volver A La Lista de Partidas</item>
+		<item>Permanecer en la Partida</item>
+		<item>Volver Al Listado de Partidas</item>
 	</string-array>
 </resources>
