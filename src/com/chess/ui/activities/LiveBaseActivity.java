@@ -15,7 +15,6 @@ import com.chess.backend.LiveChessService;
 import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.LiveConnectionHelper;
-import com.chess.lcc.android.LiveConnector;
 import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
@@ -66,7 +65,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected boolean isLCSBound;
 	protected LiveConnectionHelper liveHelper;
 	private List<PopupDialogFragment> popupChallengesList;
-	private LiveConnector liveConnector;
 
 
 	@Override
@@ -79,8 +77,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		liveServiceConnectionListener = new LiveServiceConnectionListener();
 
 		popupChallengesList = new ArrayList<PopupDialogFragment>();
-
-		liveConnector = new LiveConnector(getContext(), LiveBaseActivity.this, LiveBaseActivity.this);
 	}
 
 	@Override
@@ -550,7 +546,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				unBindAndStopLiveService();
 			}
 
-			liveConnector.performReloginForLive(); // @lcc remove liveConnector, should be invoked from LCH
+			liveHelper.performReloginForLive();
 		} else {
 			showPopupDialog(R.string.error, message, CONNECT_FAILED_TAG, 1);
 			getLastPopupFragment().setCancelable(false);
