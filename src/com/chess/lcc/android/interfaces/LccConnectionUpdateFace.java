@@ -9,4 +9,6 @@ package com.chess.lcc.android.interfaces;
 public interface LccConnectionUpdateFace {
 
 	void onConnected();
+
+	void onShutdown();
 }

@@ -22,7 +22,6 @@ import com.chess.utilities.AppUtils;
 public class LiveConnector { // todo: move code to LCH
 
 	private static final String TAG = "LCCLOG-LiveConnector";
-	private static final int NEXT_CONNECTION_DELAY = 5000;
 
 	//	private Handler handler;
 	private Context context;
@@ -37,16 +36,9 @@ public class LiveConnector { // todo: move code to LCH
 		this.loginErrorUpdateListener = loginErrorUpdateListener;
 
 		appData = new AppData(context);
-//		handler = new Handler();
 	}
 
-	/*private Runnable sessionIdCheckRunnable = new Runnable() {
-		@Override
-		public void run() {
-			sessionIdCheck();
-		}
-	};
-
+	/*
 	private void sessionIdCheck() {
 		LoadItem loadItem = LoadHelper.getUserInfo(appData.getUserToken());
 		loadItem.addRequestParams(RestHelper.P_FIELDS, RestHelper.V_SESSION_ID);
@@ -128,17 +120,6 @@ public class LiveConnector { // todo: move code to LCH
 		//needReLoginToLive = true;
 	}
 
-	/*private void performReloginForLiveDelayed() {
-//		handler.postDelayed(performReloginForLiveRunnable, NEXT_CONNECTION_DELAY);
-	}
-
-	private Runnable performReloginForLiveRunnable = new Runnable() {
-		@Override
-		public void run() {
-			performReloginForLive();
-		}
-	};*/
-
 	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
 		public LoginUpdateListener() {
 			super(context, LoginItem.class);
@@ -177,7 +158,6 @@ public class LiveConnector { // todo: move code to LCH
 		public void errorHandle(Integer resultCode) {
 
 			//LogMe.dl(TAG, "LoginUpdateListener resultCode=" + resultCode);
-//			performReloginForLiveDelayed(); // todo: to vm: this is incorrect logic you already tried to re-login, but failed, and you even don't know why, but you still try to do this. this will end up with blocked account.
 
 			// show message only for re-login and app update     // todo: to vm: why this code is commented and there is no handle for provided error codes???
 			/*if (RestHelper.containsServerCode(resultCode)) {
@@ -218,9 +198,4 @@ public class LiveConnector { // todo: move code to LCH
 			super.errorHandle(resultCode);
 		}
 	}
-
-//	public void removeCallbacks() {
-//		handler.removeCallbacks(sessionIdCheckRunnable);
-//		handler.removeCallbacks(performReloginForLiveRunnable);
-//	}
 }

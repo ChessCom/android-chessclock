@@ -32,7 +32,6 @@ public class LiveConnectionHelper {
 
 	private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec, shutdown after user leave app
 	private static final long PLAYING_SHUTDOWN_TIMEOUT_DELAY = 2 * 60 * 1000;
-	private static final int CONNECTION_FAILURE_DELAY = 2000;
 	public static final Object CLIENT_SYNC_LOCK = new Object();
 	public static final boolean RESET_LCC_LISTENERS = true;
 
@@ -490,6 +489,9 @@ public class LiveConnectionHelper {
 	private final Runnable shutDownRunnable = new Runnable() {
 		@Override
 		public void run() {
+			if (connectionUpdateFace != null) {
+				connectionUpdateFace.onShutdown();
+			}
 			Log.d("TEST", "shutDownRunnable, performing leave, and stopping service, hide notification");
 			leave();
 		}

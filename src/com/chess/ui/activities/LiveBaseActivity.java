@@ -375,6 +375,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				}
 			});
 		}
+
+		@Override
+		public void onShutdown() {
+			isLCSBound = false;
+		}
 	}
 
 	protected void onLiveClientConnected() {
