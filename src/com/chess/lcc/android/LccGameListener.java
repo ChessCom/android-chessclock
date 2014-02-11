@@ -96,7 +96,7 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onGameUpdated(Game game) {
-		//LogMe.dl(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
+		LogMe.dl(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
 
 		if (isActualMyGame(game)) {
 			lccHelper.unObserveCurrentObservingGame();
@@ -117,7 +117,7 @@ public class LccGameListener implements GameListener {
 
 	@Override
 	public void onGameOver(Game game) {
-		//LogMe.dl(TAG, "GAME LISTENER: onGameOver " + game);
+		LogMe.dl(TAG, "GAME LISTENER: onGameOver " + game);
 		lccHelper.putGame(game);
 
 		Long gameId = game.getId();

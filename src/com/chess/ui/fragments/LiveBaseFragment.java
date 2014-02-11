@@ -13,6 +13,7 @@ import com.chess.model.GameLiveItem;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.fragments.live.GameLiveFragment;
 import com.chess.ui.fragments.live.GameLiveFragmentTablet;
+import com.chess.ui.fragments.live.LiveChatFragment;
 import com.chess.utilities.LogMe;
 
 /**
@@ -28,7 +29,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	protected LiveBaseActivity liveBaseActivity;
 	protected boolean isLCSBound;
 	protected GameTaskListener gameTaskListener;
-	private boolean isLiveFragment;
+	protected boolean isLiveFragment;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -49,6 +50,13 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		// probably we have to create some common way how to determine "embedded" fragments
+		// (for example LiveChat fragment embedded into Live Game and Observed fragments for tablets,
+		// and we should not setLccEventListener(this) for such embedded fragment)
+		if (this instanceof LiveChatFragment && isTablet && !inPortrait()) {
+			return;
+		}
 
 		if (isLiveFragment) {
 			setLCSBound(liveBaseActivity.isLCSBound());
@@ -175,6 +183,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	}
 
 	public void setLCSBound(boolean LCSBound) {
+		//LogMe.dl(TAG, "fragment setLCSBound=" + LCSBound);
 		isLCSBound = LCSBound;
 	}
 

@@ -168,7 +168,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				}
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
-				isLCSBound = false;
+				setLCSBound(false);
 			}
 		}
 	}
@@ -183,7 +183,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				getLiveHelper().setGameActivityPausedMode(true);
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
-				isLCSBound = false;
+				setLCSBound(false);
 			}
 		}
 	}
@@ -191,13 +191,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	// ----------------------Lcc Events ---------------------------------------------
 
 	protected void onGameStarted() throws DataNotValidException {
+		logLiveTest("onGameStarted");
+		LiveConnectionHelper liveHelper = getLiveHelper();
+		liveHelper.setGameActivityPausedMode(false);
 
 		synchronized (LccHelper.GAME_SYNC_LOCK) {
 
-			logLiveTest("onGameStarted");
-
-			LiveConnectionHelper liveHelper = getLiveHelper();
 			GameLiveItem currentGame = liveHelper.getGameItem();
+
+			logLiveTest("onGameStarted currentGame=" + currentGame);
+
 			if (currentGame == null) { // this happens when we resume to fragment via back navigation
 				throw new DataNotValidException(DataNotValidException.GAME_NOT_EXIST);
 			}
@@ -241,7 +244,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 			liveHelper.checkFirstTestMove();
 
-			liveHelper.setGameActivityPausedMode(false);
 			liveHelper.checkGameEvents();
 
 			{// fill labels
@@ -1134,7 +1136,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				onGameStarted();
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
-				isLCSBound = false;
+				setLCSBound(false);
 			}
 		}
 	}
@@ -1351,12 +1353,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			Long currentGameId = getLiveHelper().getCurrentGameId();
 			if (isLCSBound && currentGameId != null && currentGameId != 0) {
 				// screen rotated case
-				onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronized
+				 onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronized
 			}
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
 			logTest(e.getMessage());
-			isLCSBound = false;
+			setLCSBound(false);
 		}
 	}
 

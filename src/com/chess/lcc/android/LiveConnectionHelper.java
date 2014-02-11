@@ -500,7 +500,7 @@ public class LiveConnectionHelper {
 			if (connectionUpdateFace != null) {
 				connectionUpdateFace.onShutdown();
 			}
-			Log.d("TEST", "shutDownRunnable, performing leave, and stopping service, hide notification");
+			Log.d(TAG, "shutDownRunnable, performing leave, and stopping service, hide notification");
 			leave();
 		}
 	};

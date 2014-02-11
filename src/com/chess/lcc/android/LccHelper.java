@@ -586,6 +586,8 @@ public class LccHelper {
 	public void processFullGame() {
 		latestMoveNumber = 0;
 
+		LogMe.dl(TAG, "processFullGame lccEventListener=" + lccEventListener);
+
 		if (lccEventListener == null) { // if we restart app and connected to service, but no live game screens opened
 			context.sendBroadcast(new Intent(IntentConstants.START_LIVE_GAME));
 		} else {
@@ -606,6 +608,8 @@ public class LccHelper {
 
 	public void doMoveMade(final Game game, int moveIndex) {
 		latestMoveNumber = moveIndex;
+
+		LogMe.dl(TAG, "doMoveMade isGameActivityPausedMode()=" + isGameActivityPausedMode());
 
 		if (!isGameActivityPausedMode()) {
 			// todo: possible optimization - keep gameLiveItem between moves and just add new move when it comes

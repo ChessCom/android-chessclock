@@ -21,6 +21,8 @@ import com.chess.utilities.LogMe;
  */
 public class LiveGameWaitFragment extends LiveBaseFragment {
 
+	private static final String TAG = "LccLog-LiveGameWaitFragment";
+
 	private static final long FINISH_FRAGMENT_DELAY = 200;
 
 	private View loadingView;
@@ -114,7 +116,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 
 	@Override
 	public void startGameFromService() {
-		LogMe.dl("lcc", "startGameFromService");
+		LogMe.dl(TAG, "startGameFromService");
 
 		final Activity activity = getActivity();
 		if (activity != null) {

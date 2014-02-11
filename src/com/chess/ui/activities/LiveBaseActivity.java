@@ -108,7 +108,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		if (isLCSBound) {
 			getDataHolder().setLiveChessMode(false);
 			liveHelper.startIdleTimeOutCounter();
-			isLCSBound = false;  // we drop here flag because we can't drop it after shutdown, as Activity will not exist and only service will be alive
+			setLCSBound(false);  // we drop here flag because we can't drop it after shutdown, as Activity will not exist and only service will be alive
 		}
 	}
 
@@ -127,7 +127,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	private void unbindLiveService() {
 		if (isLCSBound) {
 			unbindService(liveServiceConnectionListener);
-			isLCSBound = false;
+			setLCSBound(false);
 		}
 	}
 
@@ -295,6 +295,11 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		return isLCSBound;
 	}
 
+	public void setLCSBound(boolean isLCSBound) {
+		//LogMe.dl(TAG, "activity setLCSBound=" + isLCSBound);
+		this.isLCSBound = isLCSBound;
+	}
+
 	@Override
 	public void performServiceConnection() {
 		if (isLCSBound) {
@@ -318,25 +323,23 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 			LiveChessService.ServiceBinder serviceBinder = (LiveChessService.ServiceBinder) iBinder;
 			liveHelper = serviceBinder.getService().getLiveConnectionHelper();
-			isLCSBound = true;
+			setLCSBound(true);
 			liveHelper.setLiveChessClientEventListener(LiveBaseActivity.this);
 
 			liveHelper.setLiveUiUpdateListener(LiveBaseActivity.this);
 			liveHelper.setLoginErrorUpdateListener(LiveBaseActivity.this);
 
-			/*
 			if (getSupportFragmentManager() == null) {
 				return;
 			}
 			for (Fragment fragment : getSupportFragmentManager().getFragments()) {
 				if (fragment != null && fragment.isVisible()) {
 					if (fragment instanceof LiveBaseFragment) {
-						((LiveBaseFragment) fragment).onLiveServiceConnected();
-						((LiveBaseFragment) fragment).setLCSBound(isLCSBound);
+						//((LiveBaseFragment) fragment).onLiveServiceConnected();
+						((LiveBaseFragment) fragment).setLCSBound(isLCSBound); //enable
 					}
 				}
 			}
-			*/
 
 			onLiveServiceConnected();
 			liveHelper.checkAndConnect(this);
@@ -345,20 +348,19 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		@Override
 		public void onServiceDisconnected(ComponentName componentName) {
 //			LogMe.dl(TAG, "SERVICE: onServiceDisconnected");
-			isLCSBound = false;
-			/*
+			setLCSBound(false);
+
 			if (getSupportFragmentManager() == null) {
 				return;
 			}
 			for (Fragment fragment : getSupportFragmentManager().getFragments()) {
 				if (fragment != null && fragment.isVisible()) {
 					if (fragment instanceof LiveBaseFragment) {
-						((LiveBaseFragment) fragment).onLiveServiceDisconnected();
-						((LiveBaseFragment) fragment).setLCSBound(isLCSBound);
+						//((LiveBaseFragment) fragment).onLiveServiceDisconnected();
+						((LiveBaseFragment) fragment).setLCSBound(isLCSBound);  //enable
 					}
 				}
 			}
-			*/
 		}
 
 		@Override
@@ -366,7 +368,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					isLCSBound = true;
+					setLCSBound(true);
 					onLiveClientConnected();
 				}
 			});
@@ -374,7 +376,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 		@Override
 		public void onShutdown() {
-			isLCSBound = false;
+			setLCSBound(false);
 		}
 	}
 
@@ -604,7 +606,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 					((LiveBaseFragment) fragment).onLiveServiceConnected();
 				}
 			}
-		}
+	}
 		*/
 	}
 
@@ -655,17 +657,18 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		String liveFragment1 = LiveHomeFragment.class.getSimpleName();
 		String liveFragment2 = LiveHomeFragmentTablet.class.getSimpleName();
 		String liveFragment3 = GameLiveFragment.class.getSimpleName();
-		String liveFragment4 = GameLiveObserveFragment.class.getSimpleName();
-		String liveFragment5 = GameLiveObserveFragmentTablet.class.getSimpleName();
-		String liveFragment6 = LiveChatFragment.class.getSimpleName();
-		String liveFragment7 = LiveGameWaitFragment.class.getSimpleName();
-		String liveFragment8 = SettingsLiveChessFragment.class.getSimpleName();
-		String liveFragment9 = SettingsGeneralFragment.class.getSimpleName();
-		String liveFragment10 = SettingsGeneralFragmentTablet.class.getSimpleName();
-		String liveFragment11 = LiveGamesArchiveFragment.class.getSimpleName();
-		String liveFragment12 = GameLiveArchiveFragment.class.getSimpleName();
-		String liveFragment13 = GameLiveArchiveAnalysisFragment.class.getSimpleName();
-		String liveFragment14 = StatsGameDetailsFragment.class.getSimpleName();
+		String liveFragment4 = GameLiveFragmentTablet.class.getSimpleName();
+		String liveFragment5 = GameLiveObserveFragment.class.getSimpleName();
+		String liveFragment6 = GameLiveObserveFragmentTablet.class.getSimpleName();
+		String liveFragment7 = LiveChatFragment.class.getSimpleName();
+		String liveFragment8 = LiveGameWaitFragment.class.getSimpleName();
+		String liveFragment9 = SettingsLiveChessFragment.class.getSimpleName();
+		String liveFragment10 = SettingsGeneralFragment.class.getSimpleName();
+		String liveFragment11 = SettingsGeneralFragmentTablet.class.getSimpleName();
+		String liveFragment12 = LiveGamesArchiveFragment.class.getSimpleName();
+		String liveFragment13 = GameLiveArchiveFragment.class.getSimpleName();
+		String liveFragment14 = GameLiveArchiveAnalysisFragment.class.getSimpleName();
+		String liveFragment15 = StatsGameDetailsFragment.class.getSimpleName();
 
 		return fragmentName.equals(liveFragment1)
 				|| fragmentName.equals(liveFragment2)
@@ -680,6 +683,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				|| fragmentName.equals(liveFragment11)
 				|| fragmentName.equals(liveFragment12)
 				|| fragmentName.equals(liveFragment13)
-				|| fragmentName.equals(liveFragment14);
+				|| fragmentName.equals(liveFragment14)
+				|| fragmentName.equals(liveFragment15);
 	}
 }

@@ -558,7 +558,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			if (isLCSBound) {
 				getDataHolder().setLiveChessMode(false);
 				liveHelper.startIdleTimeOutCounter();
-				isLCSBound = false;
+				setLCSBound(false);
 			}
 		}
 	}
