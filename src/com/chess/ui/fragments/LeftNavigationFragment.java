@@ -323,7 +323,9 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 					}
 				} else {
 					if (!isTablet) {
-						((StatsGameFragment) fragmentByTag).updateUsername(getUsername());
+						if (!isNeedToUpgrade()) {
+							((StatsGameFragment) fragmentByTag).updateUsername(getUsername());
+						}
 					} else {
 						fragmentByTag = ProfileBaseFragmentTablet.createInstance(ProfileBaseFragmentTablet.STATS_MODE, getUsername());
 					}

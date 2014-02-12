@@ -667,9 +667,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		} else {
 			setDescriptionText(initialLessonTextStr);
 			scrollToCurrentText();
-
 		}
-
 
 		/*
  		case "thinking":
@@ -1139,6 +1137,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 			LessonProblemItem.MentorPosition previousLearnPosition = positionsToLearn.get(currentLearningPosition - 1);
 			LessonProblemItem.MentorPosition.PossibleMove correctMove = previousLearnPosition.getCorrectMove();
 
+			initialLessonTextStr = correctMove.getResponseMoveCommentary(); // used for restart case if not on first position
 			setDescriptionText(correctMove.getResponseMoveCommentary());
 
 			// set next position's about
@@ -1147,7 +1146,6 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 				setPositionDescriptionText(positionAboutStr);
 			}
 			scrollToCurrentText();
-
 		}
 	}
 

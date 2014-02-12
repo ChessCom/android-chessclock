@@ -58,18 +58,45 @@ public class NotationsView extends LinearLayout implements NotationFace,
 
 	public NotationsView(Context context) {
 		super(context);
-		onCreate(null);
+		onCreate(context, null);
 	}
 
 	public NotationsView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		onCreate(attrs);
+		onCreate(context, attrs);
 	}
 
-	public void onCreate(AttributeSet attrs) {
-		Context context = getContext();
+	public void onCreate(Context context, AttributeSet attrs) {
+		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.NotationsView);
+		if (array == null) {
+			return;
+		}
+		try {
+			if (array.hasValue(R.styleable.NotationsView_textColorBack)) {
+				textColor = array.getColor(R.styleable.NotationsView_textColorBack, 0xFF00FF00);
+			}
+			if (array.hasValue(R.styleable.NotationsView_textColorSelected)) {
+				textColorSelected = array.getColor(R.styleable.NotationsView_textColorSelected, 0xFF00FF00);
+			}
+		} finally {
+			array.recycle();
+		}
 
+		if (attrs != null) {
+			ButtonDrawableBuilder.setBackgroundToView(this, attrs);
+		}
+
+		initResources();
+	}
+
+	public void initResources() {
+		Context context = getContext();
 		AppData appData = new AppData(context);
+
+		if (context == null) {
+			return;
+		}
+
 		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 
@@ -85,20 +112,6 @@ public class NotationsView extends LinearLayout implements NotationFace,
 
 		textColor = resources.getColor(R.color.notations_text_color);
 		textColorSelected = resources.getColor(R.color.notations_text_color_selected);
-		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.NotationsView);
-		if (array == null) {
-			return;
-		}
-		try {
-			if (array.hasValue(R.styleable.NotationsView_textColorBack)) {
-				textColor = array.getColor(R.styleable.NotationsView_textColorBack, 0xFF00FF00);
-			}
-			if (array.hasValue(R.styleable.NotationsView_textColorSelected)) {
-				textColorSelected = array.getColor(R.styleable.NotationsView_textColorSelected, 0xFF00FF00);
-			}
-		} finally {
-			array.recycle();
-		}
 
 		LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -122,10 +135,6 @@ public class NotationsView extends LinearLayout implements NotationFace,
 		notationTextParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		notationTextParams.gravity = Gravity.CENTER_VERTICAL;
 
-		if (attrs != null) {
-			ButtonDrawableBuilder.setBackgroundToView(this, attrs);
-		}
-
 		smallScreen = AppUtils.isSmallScreen(context);
 		if (smallScreen) {
 			setVisibility(GONE);
@@ -141,6 +150,23 @@ public class NotationsView extends LinearLayout implements NotationFace,
 
 		clickable = true;
 	}
+
+//	@Override        // TODO adjust properly later
+//	protected void onAttachedToWindow() {
+//		super.onAttachedToWindow();
+//
+//		initResources();
+//	}
+
+//	@Override
+//	protected void onDetachedFromWindow() {
+//		super.onDetachedFromWindow();
+//
+//		viewPerPageMap = null;
+////		notationsAdapter = null;
+////		originalNotations = null;
+////		viewPager = null;
+//	}
 
 	@Override
 	protected void onSizeChanged(int xNew, int yNew, int xOld, int yOld) {

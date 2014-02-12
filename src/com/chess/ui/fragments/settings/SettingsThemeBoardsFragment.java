@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -30,8 +31,10 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
 import com.chess.model.SelectionItem;
 import com.chess.statics.AppConstants;
+import com.chess.statics.AppData;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
@@ -148,6 +151,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		AppData appData = getAppData();
 		if (loadThemedPieces) {
 			if (isBoardLoading) {
 				return;
@@ -172,13 +176,26 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 					break;
 				}
 			}
+			// check if we have saved board for that id
+			QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_BOARDS, selectedBoardId);
+			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
 
-			if (serviceBounded) {
-				serviceBinder.getService().loadBoard(selectedBoardId, screenWidth);
+			if (cursor != null && cursor.moveToFirst()) {
+				BoardSingleItem.Data boardData = DbDataManager.getThemeBoardItemFromCursor(cursor);
+				if (TextUtils.isEmpty(boardData.getLocalPath())) {
+					loadBoard();
+				} else {
+					appData.setUseThemeBoard(true);
+					appData.setThemeBoardId(boardData.getThemeBoardId());
+					appData.setThemeBoardName(boardData.getName());
+					appData.setThemeBoardPreviewUrl(boardData.getLineBoardPreviewUrl());
+					appData.setThemeBoardCoordinateLight(Color.parseColor(boardData.getCoordinateColorLight()));
+					appData.setThemeBoardCoordinateDark(Color.parseColor(boardData.getCoordinateColorDark()));
+					appData.setThemeBoardHighlight(Color.parseColor(boardData.getHighlightColor()));
+					appData.setThemeBoardPath(boardData.getLocalPath());
+				}
 			} else {
-				needToLoadThemeAfterConnected = true;
-				getActivity().bindService(new Intent(getActivity(), GetAndSaveBoard.class), loadServiceConnectionListener,
-						Activity.BIND_AUTO_CREATE);
+				loadBoard();
 			}
 		} else {
 			SelectionItem defaultBoardItem = (SelectionItem) parent.getItemAtPosition(position);
@@ -186,8 +203,8 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 				if (defaultBoardItem.getText().equals(selectionItem.getText())) {
 					selectionItem.setChecked(true);
 					// save board theme name to appData
-					getAppData().setUseThemeBoard(false);
-					getAppData().setThemeBoardName(selectionItem.getText());
+					appData.setUseThemeBoard(false);
+					appData.setThemeBoardName(selectionItem.getText());
 				} else {
 					selectionItem.setChecked(false);
 				}
@@ -200,6 +217,16 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			if (parentFace != null) {
 				parentFace.showPreviousFragment();
 			}
+		}
+	}
+
+	private void loadBoard() {
+		if (serviceBounded) {
+			serviceBinder.getService().loadBoard(selectedBoardId, screenWidth);
+		} else {
+			needToLoadThemeAfterConnected = true;
+			getActivity().bindService(new Intent(getActivity(), GetAndSaveBoard.class), loadServiceConnectionListener,
+					Activity.BIND_AUTO_CREATE);
 		}
 	}
 

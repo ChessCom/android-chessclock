@@ -172,9 +172,6 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	public void onPause() {
 		super.onPause();
 
-		boardView.releaseRunnable();
-		boardView.releaseBitmaps();
-
 		getActivityFace().removeOnCloseMenuListener(this);
 		releaseScreenLockFlag();
 	}

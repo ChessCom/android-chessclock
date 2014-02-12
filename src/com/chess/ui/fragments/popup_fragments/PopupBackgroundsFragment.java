@@ -7,11 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.*;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
@@ -230,7 +226,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 		private final int previewWidth;
 		private final Bitmap placeHolderBitmap;
 		private final RelativeLayout.LayoutParams imageParams;
-		private final RelativeLayout.LayoutParams linearLayoutParams;
+		private final FrameLayout.LayoutParams linearLayoutParams;
 		private final RelativeLayout.LayoutParams progressParams;
 		private final EnhancedImageDownloader imageLoader;
 
@@ -251,7 +247,7 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 			placeHolderBitmap = Bitmap.createBitmap(new int[]{backIMgColor}, 1, 1, Bitmap.Config.ARGB_8888);
 
 			imageParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
-			linearLayoutParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
+			linearLayoutParams = new FrameLayout.LayoutParams(previewWidth, imageHeight);
 			progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		}

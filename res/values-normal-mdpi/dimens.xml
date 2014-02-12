@@ -189,5 +189,6 @@
 	<dimen name="premium_icon_list_size">20dip</dimen>
 	<dimen name="country_icon_list_size">27dip</dimen>
 	<dimen name="welcome_tab_button_text_size">16sp</dimen>
+	<dimen name="board_border_width">1dp</dimen>
 
 </resources>

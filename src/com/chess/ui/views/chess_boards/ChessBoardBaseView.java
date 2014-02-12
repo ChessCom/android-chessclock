@@ -101,7 +101,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	protected boolean useTouchTimer;
 	protected Handler handler;
 	protected boolean userActive;
-	protected Resources resources;
 	private GameFace gameFace;
 	protected boolean locked;
 	protected PaintFlagsDrawFilter drawFilter;
@@ -140,9 +139,12 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	private boolean isChessKid = true;
 	private boolean isTablet;
 	private Bitmap boardBitmap;
-	private int originalParentWidth;
-	private int originalParentHeight;
-	private boolean borderSubtracted;
+	private Paint borderLinePaint;
+	private int borderShadowColor;
+	private int borderBevelColor;
+	private int borderMergeColor;
+	private boolean initialized;
+
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -155,13 +157,16 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	private void init(Context context) {
-		resources = context.getResources();
+		appData = new AppData(context);
+	}
+
+	private void initResources(Context context) {
+		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 
 		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
 		boardBackPaint = new Paint();
 
-		appData = new AppData(context);
 		clipBoundsRect = new Rect();
 		isTablet = AppUtils.isTablet(context);
 
@@ -233,10 +238,21 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 		pieceXDelta = -1;
 		pieceYDelta = -1;
+
+		// adjust borderColors
+		borderShadowColor = resources.getColor(R.color.semitransparent_black_30);
+		borderMergeColor = resources.getColor(R.color.semitransparent_black_65);
+		borderBevelColor = resources.getColor(R.color.semitransparent_white_50);
+
+		borderLinePaint = new Paint();
+		borderLinePaint.setStrokeWidth(1.5f);
+//		borderWidth = resources.getDimensionPixelSize(R.dimen.board_border_width); // TODO adjust properly
+
+		initialized = true;
 	}
 
 	/**
-	 * Set gameFace to boardview. It will automatically call getBoardFace() which will init it.
+	 * Set gameFace to boardview. It will automatically call getBoardFace() which will initResources it.
 	 */
 	public void setGameFace(GameFace gameFace) {
 		this.gameFace = gameFace;
@@ -303,11 +319,28 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	@Override
+	protected void onAttachedToWindow() {
+		super.onAttachedToWindow();
+
+		initResources(getContext());
+	}
+
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+
+		releaseBitmaps();
+		releaseRunnable();
+	}
+
+	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.setDrawFilter(drawFilter);
 		super.onDraw(canvas);
 
 		drawBoard(canvas);
+
+		drawBorders(canvas);
 
 		if (gameFace != null && getBoardFace() != null) {
 			drawCoordinates(canvas);
@@ -503,7 +536,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		}
 
 		drawCapturedPieces();
-		invalidate();
+		invalidate(0, 0, getWidth(), getHeight()); // let's try to update only dirty region
 	}
 
 	public void enableTouchTimer() {
@@ -532,6 +565,34 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 	protected void drawBoard(Canvas canvas) {
 		canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), boardBackPaint);
+	}
+
+	protected void drawBorders(Canvas canvas) {
+		if (!isTablet) {
+			int offset = (int) (1 * density);
+			int borderWidth = 2;
+			getDrawingRect(clipBoundsRect);
+			int saveCount = canvas.save(Canvas.CLIP_SAVE_FLAG);
+			clipBoundsRect.set(clipBoundsRect.left, clipBoundsRect.top - offset * 2, clipBoundsRect.right,
+					clipBoundsRect.bottom + offset * 2);
+			canvas.clipRect(clipBoundsRect, Region.Op.REPLACE);
+
+			// draw top shadow line
+			borderLinePaint.setColor(borderShadowColor);
+			canvas.drawLine(0, -borderWidth, getWidth(), -borderWidth, borderLinePaint);
+			borderLinePaint.setColor(borderMergeColor);
+			canvas.drawLine(0, 0, getWidth(), 0, borderLinePaint);
+			borderLinePaint.setColor(borderBevelColor);
+			canvas.drawLine(0, borderWidth, getWidth(), borderWidth, borderLinePaint);
+
+			// draw bottom lines
+			borderLinePaint.setColor(borderMergeColor);
+			canvas.drawLine(0, getHeight(), getWidth(), getHeight(), borderLinePaint);
+			borderLinePaint.setColor(borderShadowColor);
+			canvas.drawLine(0, getHeight() + borderWidth, getWidth(), getHeight() + borderWidth, borderLinePaint);
+
+			canvas.restoreToCount(saveCount);
+		}
 	}
 
 	protected void drawPiecesAndAnimation(Canvas canvas) {
@@ -1240,37 +1301,38 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	protected void loadBoard() {
-		if (viewWidth > 0 ) {
-			previousWidth = viewWidth;
+		if (getContext() == null || viewWidth <= 0) {
+			return;
+		}
+		previousWidth = viewWidth;
 
-			BitmapShader shader;
+		BitmapShader shader;
 
-			if (customBoardId != NO_ID) {
-				shader = setBoardFromResource();
-			} else if (appData.isUseThemeBoard()) {
-				// perform recycle
-				recycleBoardBitmap();
+		if (customBoardId != NO_ID) {
+			shader = setBoardFromResource();
+		} else if (appData.isUseThemeBoard()) {
+			// perform recycle
+			recycleBoardBitmap();
 
-				try {
-					boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
-				} catch (OutOfMemoryError ignore) {
+			try {
+				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
+			} catch (OutOfMemoryError ignore) {
 
-				}
-				if (boardBitmap == null) {
-					getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme
-					boardBackPaint.setShader(setBoardFromResource());
-					return;
-				}
-
-				boardBitmap = Bitmap.createScaledBitmap(boardBitmap, (int) viewWidth, (int) viewWidth, true);
-
-				shader = new BitmapShader(boardBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-			} else {
-				shader = setBoardFromResource();
+			}
+			if (boardBitmap == null) {
+				getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme
+				boardBackPaint.setShader(setBoardFromResource());
+				return;
 			}
 
-			boardBackPaint.setShader(shader);
+			boardBitmap = Bitmap.createScaledBitmap(boardBitmap, (int) viewWidth, (int) viewWidth, true);
+
+			shader = new BitmapShader(boardBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+		} else {
+			shader = setBoardFromResource();
 		}
+
+		boardBackPaint.setShader(shader);
 	}
 
 	private BitmapShader setBoardFromResource() {
@@ -1308,7 +1370,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		recycleBoardBitmap();
 
 		BitmapShader shader;
-		BitmapDrawable drawable = (BitmapDrawable) resources.getDrawable(resourceId);
+		BitmapDrawable drawable = (BitmapDrawable) getContext().getResources().getDrawable(resourceId);
 		boardBitmap = drawable.getBitmap();
 
 
@@ -1335,6 +1397,10 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 	public void setCustomBoard(int resourceId) {
 		customBoardId = resourceId;
+
+		if (!initialized) {
+			initResources(getContext());
+		}
 	}
 
 	private void setPieceBitmapFromArray(int[] drawableArray) {

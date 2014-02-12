@@ -159,9 +159,14 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 			if (event.equals(Symbol.EMPTY)) {
 				return Symbol.EMPTY;
 			}
+			String dateTag = getTagData(DATE);
+			if (dateTag.length() > 4) {
+				dateTag = dateTag.substring(0, 4);
+			}
+
 			return event + DELIMITER
 					+ getTagData(SITE) + DELIMITER
-					+ getTagData(DATE).substring(0, 4) + DELIMITER
+					+ dateTag + DELIMITER
 					+ "ECO :" + getTagData(ECO) + DELIMITER
 					+ getTagData(RESULT);
 		}

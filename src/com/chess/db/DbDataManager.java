@@ -1184,6 +1184,7 @@ public class DbDataManager {
 		dataObj.setBlackUsername(getString(cursor, V_BLACK_USERNAME));
 		dataObj.setWhiteAvatar(getString(cursor, V_WHITE_AVATAR));
 		dataObj.setBlackAvatar(getString(cursor, V_BLACK_AVATAR));
+		dataObj.setIPlayAs(getInt(cursor, V_I_PLAY_AS));
 		dataObj.setGameType(getInt(cursor, V_GAME_TYPE));
 		dataObj.setMyTurn(getInt(cursor, V_IS_MY_TURN) > 0);
 		dataObj.setTimestamp(getLong(cursor, V_TIMESTAMP));
@@ -1206,6 +1207,7 @@ public class DbDataManager {
 		dataObj.setGameId(getLong(cursor, V_ID));
 		dataObj.setGameType(getInt(cursor, V_GAME_TYPE));
 		dataObj.setGameScore(getInt(cursor, V_GAME_SCORE));
+		dataObj.setIPlayAs(getInt(cursor, V_I_PLAY_AS));
 		dataObj.setWhiteUsername(getString(cursor, V_WHITE_USERNAME));
 		dataObj.setBlackUsername(getString(cursor, V_BLACK_USERNAME));
 		dataObj.setWhiteAvatar(getString(cursor, V_WHITE_AVATAR));

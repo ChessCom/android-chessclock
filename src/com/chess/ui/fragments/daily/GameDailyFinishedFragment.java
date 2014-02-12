@@ -34,7 +34,9 @@ import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
+import com.chess.ui.fragments.settings.SettingsFragmentTablet;
 import com.chess.ui.fragments.settings.SettingsGeneralFragment;
+import com.chess.ui.fragments.settings.SettingsThemeFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameDailyFace;
@@ -69,6 +71,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 	private static final int ID_FLIP_BOARD = 1;
 	private static final int ID_SHARE_PGN = 2;
 	private static final int ID_SETTINGS = 3;
+	private static final int ID_THEME = 4;
 
 	private DailyGameUpdatesListener createChallengeUpdateListener;
 
@@ -177,6 +180,12 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsGeneralFragment());
+		} else if (code == ID_THEME) {
+			if (!isTablet) {
+				getActivityFace().openFragment(new SettingsThemeFragment());
+			} else {
+				getActivityFace().openFragment(new SettingsFragmentTablet());
+			}
 		}
 
 		optionsSelectFragment.dismiss();
@@ -767,6 +776,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 			optionsArray.put(ID_FLIP_BOARD, getString(R.string.flip_board));
 			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
+			optionsArray.put(ID_THEME, getString(R.string.theme));
 		}
 
 		getControlsView().enableGameControls(false);

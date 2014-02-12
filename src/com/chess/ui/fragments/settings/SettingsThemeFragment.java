@@ -58,8 +58,6 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	private ThemesAdapter themesAdapter;
 	private ThemesUpdateListener themesUpdateListener;
 
-	private int screenWidth;
-	private int screenHeight;
 	private ThemeItem.Data selectedThemeItem;
 	protected ThemeItem.Data currentThemeItem;
 	private List<ThemeItem.Data> themesList;
@@ -76,34 +74,9 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		screenWidth = getResources().getDisplayMetrics().widthPixels;
-		screenHeight = getResources().getDisplayMetrics().heightPixels;
-
-		themesList = new ArrayList<ThemeItem.Data>();
-		themesUpdateListener = new ThemesUpdateListener();
-
-		loadServiceConnectionListener = new LoadServiceConnectionListener();
-		progressUpdateListener = new ProgressUpdateListener();
-		themeLoadStateMap = new SparseArray<ThemeState>();
-
-		themeApplied = true;
+		init();
 
 		pullToRefresh(true);
-
-		boolean needToLoadThemes = DbDataManager.haveSavedThemesToLoad(getActivity());
-		if (needToLoadThemes) { // connect to service to get state updates
-			getActivity().bindService(new Intent(getActivity(), GetAndSaveTheme.class), loadServiceConnectionListener,
-					Activity.BIND_AUTO_CREATE);
-		}
-		// fill theme loading state map
-		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEMES_LOAD_STATE));
-		if (cursor != null && cursor.moveToFirst()) {
-			do {
-				int id = DbDataManager.getInt(cursor, DbScheme.V_ID);
-				String state = DbDataManager.getString(cursor, DbScheme.V_STATE);
-				themeLoadStateMap.put(id, ThemeState.valueOf(state));
-			} while (cursor.moveToNext());
-		}
 	}
 
 	@Override
@@ -150,8 +123,9 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 			}
 		}
 
-		getActivity().bindService(new Intent(getActivity(), GetAndSaveTheme.class), loadServiceConnectionListener,
-				Activity.BIND_AUTO_CREATE);
+		// don't call explicit bind, should be only upon request
+//		getActivity().bindService(new Intent(getActivity(), GetAndSaveTheme.class), loadServiceConnectionListener,
+//				Activity.BIND_AUTO_CREATE);
 	}
 
 	private void updateData() {
@@ -344,7 +318,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		}
 
 		if (!themeLoaded) {
-			DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.ENQUIRED);
+//			DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.ENQUIRED);
 			themesAdapter.updateThemeLoadingStatus(id, ThemeState.ENQUIRED);
 			installSelectedTheme();
 		} else {
@@ -432,10 +406,10 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 					ThemeItem.Data loadingTheme = serviceBinder.getService().getLoadingTheme();
 					if (progress == GetAndSaveTheme.DONE) {
 						needToLoadThemeAfterConnected = false;
-						if (serviceBounded) {
-							getActivity().unbindService(loadServiceConnectionListener);
-						}
-						serviceBounded = false;
+//						if (serviceBounded) { // don't perform unbind because we might have another themes to load
+//							getActivity().unbindService(loadServiceConnectionListener);
+//						}
+//						serviceBounded = false;
 						themeLoadStateMap.put(loadingTheme.getId(), ThemeState.LOADED);
 						selectedThemeItem = loadingTheme;
 						applyLoadedTheme(loadingTheme.getId());
@@ -545,27 +519,33 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 				holder.progressTitleTxt.setText(titleForLoadingItem);
 				holder.progressTitleTxt.setVisibility(View.VISIBLE);
+				// mark as loaded
 				holder.rowOverlayView.setDrawableStyle(R.style.ListItem);
+				holder.rowOverlayView.setBackgroundColor(getResources().getColor(R.color.transparent));
 			} else if (status.equals(ThemeState.LOADED)) {
 				holder.themeLoadProgressBar.setVisibility(View.GONE);
 				holder.progressTitleTxt.setVisibility(View.GONE);
-				holder.rowOverlayView.setDrawableStyle(R.style.ListItem);
 
 				if (item.isSelected()) {
 					holder.check.setText(R.string.ic_check);
 				} else {
 					holder.check.setText(Symbol.EMPTY);
 				}
+				// mark as loaded
+				holder.rowOverlayView.setDrawableStyle(R.style.ListItem);
+				holder.rowOverlayView.setBackgroundColor(getResources().getColor(R.color.transparent));
 			} else if (status.equals(ThemeState.DEFAULT)) {
 				holder.themeLoadProgressBar.setVisibility(View.GONE);
 				holder.progressTitleTxt.setVisibility(View.GONE);
-				holder.rowOverlayView.setBackgroundColor(getResources().getColor(R.color.semitransparent_white));
 
 				if (item.isSelected()) {
 					holder.check.setText(R.string.ic_check);
 				} else {
 					holder.check.setText(Symbol.EMPTY);
 				}
+				// mark as NOT loaded
+				holder.rowOverlayView.setDrawableStyle(R.style.ListItem);
+				holder.rowOverlayView.setBackgroundColor(getResources().getColor(R.color.semitransparent_white));
 			} else if (status.equals(ThemeState.ENQUIRED)) {
 				holder.themeLoadProgressBar.setVisibility(View.GONE);
 				holder.progressTitleTxt.setVisibility(View.VISIBLE);
@@ -653,5 +633,32 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 		}
 	}
 
+	private void init() {
+		themesList = new ArrayList<ThemeItem.Data>();
+		themesUpdateListener = new ThemesUpdateListener();
+
+		loadServiceConnectionListener = new LoadServiceConnectionListener();
+		progressUpdateListener = new ProgressUpdateListener();
+		themeLoadStateMap = new SparseArray<ThemeState>();
+
+		themeApplied = true;
+
+
+		boolean needToLoadThemes = DbDataManager.haveSavedThemesToLoad(getActivity());
+		if (needToLoadThemes) { // connect to service to get state updates
+			getActivity().bindService(new Intent(getActivity(), GetAndSaveTheme.class), loadServiceConnectionListener,
+					Activity.BIND_AUTO_CREATE);
+		}
+		// fill theme loading state map
+		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEMES_LOAD_STATE));
+		if (cursor != null && cursor.moveToFirst()) {
+			do {
+				int id = DbDataManager.getInt(cursor, DbScheme.V_ID);
+				String state = DbDataManager.getString(cursor, DbScheme.V_STATE);
+
+				themeLoadStateMap.put(id, ThemeState.valueOf(state));
+			} while (cursor.moveToNext());
+		}
+	}
 
 }

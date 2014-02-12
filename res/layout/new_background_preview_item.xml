@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
@@ -17,11 +17,11 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingLeft="8dip"
-		android:gravity="left"
-		android:layout_centerVertical="true"
+		android:gravity="start"
+		android:layout_gravity="center_vertical"
 		android:textColor="@color/white"
 		android:checkMark="?android:attr/listChoiceIndicatorSingle"
 		android:textSize="23sp"
 		custom:ttf="Bold" />
 
-</RelativeLayout>
+</FrameLayout>

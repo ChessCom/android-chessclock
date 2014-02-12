@@ -6,13 +6,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.text.TextUtils;
 import com.chess.R;
 import com.chess.backend.entity.api.themes.PieceSingleItem;
 import com.chess.backend.interfaces.AbstractUpdateListener;
@@ -20,9 +18,6 @@ import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.GetAndSaveFileToSdTask;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
-import com.chess.db.DbScheme;
-import com.chess.db.QueryParams;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.ChessBoard;
@@ -128,45 +123,9 @@ public class GetAndSavePieces extends Service {
 		this.screenWidth = screenWidth;
 		piecesPackSaveListener = new PiecesPackSaveListener();
 
-		QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_PIECES,
-				selectedPieceId);
-		Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
-
-		if (cursor != null && cursor.moveToFirst()) {
-			PieceSingleItem.Data piecesData = DbDataManager.getThemePieceItemFromCursor(cursor);
-
-			if (TextUtils.isEmpty(piecesData.getLocalPath())) {
-				loadPieces(selectedPieceId);
-				return;
-			}
-
-			appData.setThemePiecesId(piecesData.getThemePieceId());
-			appData.setThemePiecesName(piecesData.getName());
-			appData.setThemePiecesPreviewUrl(piecesData.getPreviewUrl());
-
-			appData.setUseThemePieces(true);
-			appData.setThemePiecesPath(piecesData.getLocalPath());
-
-			if (piecesData.getLocalPath().contains(SettingsThemeFragment._3D_PART)) {
-				appData.setThemePieces3d(true);
-			} else {
-				appData.setThemePieces3d(false);
-			}
-
-			// update listener
-			showCompleteToNotification();
-		} else {
-			// start loading pieces
-			loadPieces(selectedPieceId);
-		}
-
-	}
-
-	private void loadPieces(int selectedPieceId) {
 		LoadItem loadItem = LoadHelper.getPiecesById(userToken, selectedPieceId);
 		new RequestJsonTask<PieceSingleItem>(piecesSingleItemUpdateListener).executeTask(loadItem);
 	}
-
 
 	private class PiecesSingleItemUpdateListener extends AbstractUpdateListener<PieceSingleItem> {
 

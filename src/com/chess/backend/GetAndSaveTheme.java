@@ -98,7 +98,7 @@ public class GetAndSaveTheme extends Service {
 	private String userToken;
 
 	public class ServiceBinder extends Binder {
-		public GetAndSaveTheme getService(){
+		public GetAndSaveTheme getService() {
 			return GetAndSaveTheme.this;
 		}
 	}
@@ -124,11 +124,11 @@ public class GetAndSaveTheme extends Service {
 		}
 		// Creates the PendingIntent
 		PendingIntent pendingIntent = PendingIntent.getActivity(
-						this,
-						0,
-						notifyIntent,
-						PendingIntent.FLAG_UPDATE_CURRENT
-				);
+				this,
+				0,
+				notifyIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT
+		);
 
 		notificationBuilder = new NotificationCompat.Builder(this);
 		notificationBuilder.setContentTitle(getString(R.string.installing_theme))
@@ -171,26 +171,26 @@ public class GetAndSaveTheme extends Service {
 		return START_NOT_STICKY;
 	}
 
-	public void loadTheme(ThemeItem.Data selectedThemeItem, int screenWidth, int screenHeight) {
-		if (installingTheme) { // Enqueue load if we already loading theme
-			themesQueue.put(selectedThemeItem, ThemeState.ENQUIRED);
-			DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem,	ThemeState.ENQUIRED);
+	public synchronized void loadTheme(ThemeItem.Data selectedThemeItem, int screenWidth, int screenHeight) {
+		if (selectedThemeItem == null) {
 			return;
 		}
 
+		if (installingTheme) { // Enqueue load if we already loading theme
+			themesQueue.put(selectedThemeItem, ThemeState.ENQUIRED);
+
+			DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.ENQUIRED);
+			return;
+		}
+		installingTheme = true;
+
 		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.LOADING);
 		themesQueue.put(selectedThemeItem, ThemeState.LOADING);
-
-		installingTheme = true;
 
 		this.selectedThemeItem = selectedThemeItem;
 
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
-
-		if (selectedThemeItem == null) {
-			return;
-		}
 
 		showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.background)));
 
@@ -666,6 +666,10 @@ public class GetAndSaveTheme extends Service {
 		// load next theme from queue
 		for (Map.Entry<ThemeItem.Data, ThemeState> entry : themesQueue.entrySet()) {
 			ThemeState status = entry.getValue();
+			if (selectedThemeItem.getThemeName().equals(entry.getKey().getThemeName())) {
+				continue;
+			}
+
 			if (status.equals(ThemeState.ENQUIRED)) {
 				loadTheme(entry.getKey(), screenWidth, screenHeight);
 				return;
@@ -701,7 +705,6 @@ public class GetAndSaveTheme extends Service {
 			@Override
 			public void run() {
 				notifyManager.cancel(R.id.notification_id);
-
 			}
 		}, SHUTDOWN_DELAY);
 	}

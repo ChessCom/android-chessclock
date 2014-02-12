@@ -20,39 +20,18 @@
 		android:textColor="@color/white"
 		custom:ttf="Bold" />
 
-	<RelativeLayout
-		android:id="@+id/boardContainerView"
+	<com.chess.ui.views.chess_boards.ChessBoardDiagramView
+		android:id="@+id/boardview"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/moveResultTxt">
-		<!--Top Border-->
-		<FrameLayout
-			android:id="@+id/topBorder"
-			android:layout_width="match_parent"
-			android:layout_height="3px"
-			android:background="@drawable/game_board_divider" />
-
-		<com.chess.ui.views.chess_boards.ChessBoardDiagramView
-			android:id="@+id/boardview"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/topBorder"
-			android:layout_marginTop="-1px" />
-		<!--Bottom Border-->
-		<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/boardview"
-			android:background="@drawable/game_board_divider"
-			android:layout_marginTop="-1px" />
-
-	</RelativeLayout>
+		android:layout_below="@id/moveResultTxt"
+		android:layout_marginTop="-1px" />
 
 	<com.chess.ui.views.NotationsView
 		android:id="@+id/notationsView"
 		android:layout_width="match_parent"
 		android:layout_height="@dimen/notations_view_height"
-		android:layout_below="@id/boardContainerView"
+		android:layout_below="@id/boardView"
 		style="@style/NotationsDiagramStyle"
 		android:visibility="gone" />
 

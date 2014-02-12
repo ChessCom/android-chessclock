@@ -13,32 +13,11 @@
 		android:orientation="vertical"
 		android:layout_marginTop="@dimen/notations_view_height">
 
-		<RelativeLayout
+		<com.chess.ui.views.chess_boards.ChessBoardLiveView
+			android:id="@+id/boardview"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-			<!--Top Border-->
-			<FrameLayout
-				android:id="@+id/topBorder"
-				android:layout_width="match_parent"
-				android:layout_height="3px"
-				android:background="@drawable/game_board_divider" />
-
-			<com.chess.ui.views.chess_boards.ChessBoardLiveView
-				android:id="@+id/boardview"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_below="@id/topBorder"
-				android:layout_marginTop="-1px" />
-
-			<!--Bottom Border-->
-			<FrameLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_below="@id/boardview"
-				android:background="@drawable/game_board_divider"
-				android:layout_marginTop="-1px" />
-
-		</RelativeLayout>
+			android:layout_height="wrap_content"
+			 />
 
 		<!--New Game overlay-->
 		<LinearLayout

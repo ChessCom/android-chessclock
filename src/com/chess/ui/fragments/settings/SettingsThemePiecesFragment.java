@@ -30,8 +30,10 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
 import com.chess.model.SelectionItem;
 import com.chess.statics.AppConstants;
+import com.chess.statics.AppData;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
@@ -152,6 +154,7 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		AppData appData = getAppData();
 		if (loadThemedPieces) {
 			if (isPiecesLoading) {
 				return;
@@ -179,22 +182,37 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 				}
 			}
 
-			if (serviceBounded) {
-				serviceBinder.getService().loadPieces(selectedPiecesId, screenWidth);
-			} else {
-				needToLoadThemeAfterConnected = true;
-				getActivity().bindService(new Intent(getActivity(), GetAndSavePieces.class), loadServiceConnectionListener,
-						Activity.BIND_AUTO_CREATE);
-			}
+			QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_PIECES,
+					selectedPiecesId);
+			Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
 
+			if (cursor != null && cursor.moveToFirst()) {
+				PieceSingleItem.Data piecesData = DbDataManager.getThemePieceItemFromCursor(cursor);
+
+				if (TextUtils.isEmpty(piecesData.getLocalPath())) {
+					loadPieces();
+				} else {
+					appData.setThemePiecesId(piecesData.getThemePieceId());
+					appData.setThemePiecesName(piecesData.getName());
+					appData.setThemePiecesPreviewUrl(piecesData.getPreviewUrl());
+
+					appData.setUseThemePieces(true);
+					appData.setThemePiecesPath(piecesData.getLocalPath());
+
+					boolean is3DPieces = piecesData.getLocalPath().contains(SettingsThemeFragment._3D_PART);
+					appData.setThemePieces3d(is3DPieces);
+				}
+			} else {
+				loadPieces();
+			}
 		} else {
 			SelectionItem defaultPieceItem = (SelectionItem) parent.getItemAtPosition(position);
 			for (SelectionItem selectionItem : defaultPiecesSelectionList) {
 				if (defaultPieceItem.getText().equals(selectionItem.getText())) {
 					selectionItem.setChecked(true);
 					// save pieces theme name to appData
-					getAppData().setUseThemePieces(false);
-					getAppData().setThemePiecesName(selectionItem.getText());
+					appData.setUseThemePieces(false);
+					appData.setThemePiecesName(selectionItem.getText());
 				} else {
 					selectionItem.setChecked(false);
 				}
@@ -207,6 +225,16 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 			if (parentFace != null) {
 				parentFace.showPreviousFragment();
 			}
+		}
+	}
+
+	private void loadPieces() {
+		if (serviceBounded) {
+			serviceBinder.getService().loadPieces(selectedPiecesId, screenWidth);
+		} else {
+			needToLoadThemeAfterConnected = true;
+			getActivity().bindService(new Intent(getActivity(), GetAndSavePieces.class), loadServiceConnectionListener,
+					Activity.BIND_AUTO_CREATE);
 		}
 	}
 

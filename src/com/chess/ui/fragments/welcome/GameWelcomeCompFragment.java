@@ -802,7 +802,12 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	protected void startNewGame() {
-		//ChessBoardComp.resetInstance();
+		boardView.stopComputerMove();
+		notationsView.resetNotations();
+		ChessBoardComp.resetInstance();
+		labelsSet = false;
+		getAppData().clearSavedCompGame();
+
 		getBoardFace().setMode(compGameConfig.getMode());
 		resideBoardIfCompWhite();
 		invalidateGameScreen();
@@ -886,7 +891,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		boardView.lockBoard(true);
 
 		controlsView.enableHintButton(true);
-		notationsView.resetNotations();
+//		notationsView.resetNotations(); // don't call explicit view updates
 
 		{// options list setup
 			optionsArray = new SparseArray<String>();
@@ -955,8 +960,8 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 //		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
 //		CompEngineHelper.log("variantStr " + variantStr);
 
-		logTest(" variantStr = " + statStr + " thinkingStr1 = " + thinkingStr1
-				+ " pvMoves = " + pvMoves.size() + " variantMoves = " + variantMoves.size());
+//		logTest(" variantStr = " + statStr + " thinkingStr1 = " + thinkingStr1
+//				+ " pvMoves = " + pvMoves.size() + " variantMoves = " + variantMoves.size());
 
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
@@ -1046,11 +1051,11 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	private void setThinkingVisibility(boolean visible) {     // TODO adjust properly in notations view
-		if (visible) {
-			engineThinkingPath.setVisibility(View.VISIBLE);
-		} else {
-			engineThinkingPath.setVisibility(View.GONE);
-		}
+//		if (visible) {
+//			engineThinkingPath.setVisibility(View.VISIBLE);
+//		} else {
+//			engineThinkingPath.setVisibility(View.GONE);
+//		}
 	}
 
 	@Override

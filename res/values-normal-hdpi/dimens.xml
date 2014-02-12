@@ -90,5 +90,6 @@
 	<dimen name="panel_info_avatar_left_margin">11dp</dimen>
 	<dimen name="panel_info_welcome_player_top_margin">3dp</dimen>
 	<dimen name="welcome_tab_button_text_size">16sp</dimen>
+	<dimen name="board_border_width">1dp</dimen>
 
 </resources>

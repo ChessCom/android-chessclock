@@ -44,7 +44,7 @@
 		android:layout_centerInParent="true" />
 
 	<!--Tab content frame-->
-	<RelativeLayout
+	<FrameLayout
 		android:id="@+id/tab_content_frame"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"

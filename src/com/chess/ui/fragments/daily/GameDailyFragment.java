@@ -41,6 +41,8 @@ import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsDailyChessFragment;
+import com.chess.ui.fragments.settings.SettingsFragmentTablet;
+import com.chess.ui.fragments.settings.SettingsThemeFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameDailyFace;
@@ -86,6 +88,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	private static final int ID_FLIP_BOARD = 4;
 	private static final int ID_SHARE_PGN = 5;
 	private static final int ID_SETTINGS = 6;
+	private static final int ID_THEME = 7;
 
 	private GameDailyUpdatesListener abortGameUpdateListener;
 	private GameDailyUpdatesListener drawOfferedUpdateListener;
@@ -243,6 +246,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(SettingsDailyChessFragment.createInstance(true));
+		} else if (code == ID_THEME) {
+			if (!isTablet) {
+				getActivityFace().openFragment(new SettingsThemeFragment());
+			} else {
+				getActivityFace().openFragment(new SettingsFragmentTablet());
+			}
 		}
 
 		optionsSelectFragment.dismiss();
@@ -700,7 +709,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		getBoardFace().decreaseMovesCount();
 
 		boardView.updateNotations(getBoardFace().getNotationArray());
-		boardView.invalidate();
 	}
 
 	@Override
@@ -1123,6 +1131,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			optionsMap.put(ID_FLIP_BOARD, getString(R.string.flip_board));
 			optionsMap.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
+			optionsMap.put(ID_THEME, getString(R.string.theme));
 		}
 	}
 

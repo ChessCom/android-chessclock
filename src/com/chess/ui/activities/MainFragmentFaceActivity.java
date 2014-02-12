@@ -387,7 +387,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		try {
 			backgroundBitmap = BitmapFactory.decodeFile(drawablePath, bitmapOptions);
 		} catch (OutOfMemoryError ignore) {
-			showToast("Oops! Out of memory :(");
+			showToast("Can't apply Theme: Out of memory");
+			return; // don't clear folders
 		}
 
 		if (backgroundBitmap != null) {

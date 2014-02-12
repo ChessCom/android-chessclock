@@ -310,7 +310,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			logLiveTest("activity = null, quit");
 			return;
 		}
-		LiveConnectionHelper liveHelper;
+		final LiveConnectionHelper liveHelper;
 		try {
 			liveHelper = getLiveHelper();
 		} catch (final DataNotValidException e) {
@@ -366,17 +366,24 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					} else { // white on bottom
 						bumpBottomTimer();
 					}
+					if (!getBoardFace().isSubmit()) {
+						topPanelView.showTimeLeftIcon(true);
+						bottomPanelView.showTimeLeftIcon(false);
+					}
 				} else { // if black to move
 					if (boardFace.isReside()) { // black on bottom
 						bumpBottomTimer();
 					} else { // black on top
 						bumpTopTimer();
 					}
+					if (!getBoardFace().isSubmit()) {
+						topPanelView.showTimeLeftIcon(true);
+						bottomPanelView.showTimeLeftIcon(false);
+					}
 				}
+				liveHelper.checkTestMove();
 			}
 		});
-
-		liveHelper.checkTestMove();
 	}
 
 	@Override
@@ -867,7 +874,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 
 			boardView.updateNotations(getBoardFace().getNotationArray());
-			boardView.invalidate();
 		}
 	}
 

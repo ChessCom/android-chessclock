@@ -841,8 +841,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 //		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
 //		CompEngineHelper.log("variantStr " + variantStr);
 
-		logTest(" variantStr = " + statStr + " thinkingStr1 = " + thinkingStr1
-				+ " pvMoves = " + pvMoves.size() + " variantMoves = " + variantMoves.size());
+//		logTest(" variantStr = " + statStr + " thinkingStr1 = " + thinkingStr1
+//				+ " pvMoves = " + pvMoves.size() + " variantMoves = " + variantMoves.size());
 
 		getActivity().runOnUiThread(new Runnable() {
 			@Override

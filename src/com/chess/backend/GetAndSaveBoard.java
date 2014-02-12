@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Binder;
@@ -14,7 +13,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.text.TextUtils;
 import android.util.Log;
 import com.chess.R;
 import com.chess.backend.entity.api.themes.BoardSingleItem;
@@ -25,9 +23,6 @@ import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.backend.tasks.SaveImageToSdTask;
 import com.chess.db.DbDataManager;
-import com.chess.db.DbHelper;
-import com.chess.db.DbScheme;
-import com.chess.db.QueryParams;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.utilities.AppUtils;
@@ -139,35 +134,6 @@ public class GetAndSaveBoard extends Service {
 
 		this.screenWidth = screenWidth;
 
-		// check if we have saved board for that id
-		QueryParams queryParams = DbHelper.getTableRecordById(DbScheme.Tables.THEME_BOARDS, selectedBoardId);
-		Cursor cursor = DbDataManager.query(getContentResolver(), queryParams);
-
-		if (cursor != null && cursor.moveToFirst()) {
-			BoardSingleItem.Data boardData = DbDataManager.getThemeBoardItemFromCursor(cursor);
-			if (TextUtils.isEmpty(boardData.getLocalPath())) {
-				loadBoard(selectedBoardId);
-				return;
-			}
-
-			appData.setUseThemeBoard(true);
-			appData.setThemeBoardId(boardData.getThemeBoardId());
-			appData.setThemeBoardName(boardData.getName());
-			appData.setThemeBoardPreviewUrl(boardData.getLineBoardPreviewUrl());
-			appData.setThemeBoardCoordinateLight(Color.parseColor(boardData.getCoordinateColorLight()));
-			appData.setThemeBoardCoordinateDark(Color.parseColor(boardData.getCoordinateColorDark()));
-			appData.setThemeBoardHighlight(Color.parseColor(boardData.getHighlightColor()));
-			appData.setThemeBoardPath(boardData.getLocalPath());
-
-			// update listener
-			showCompleteToNotification();
-		} else {
-			// start loading board
-			loadBoard(selectedBoardId);
-		}
-	}
-
-	private void loadBoard(int selectedBoardId) {
 		LoadItem loadItem = LoadHelper.getBoardById(getUserToken(), selectedBoardId);
 		new RequestJsonTask<BoardSingleItem>(boardSingleItemUpdateListener).executeTask(loadItem);
 	}

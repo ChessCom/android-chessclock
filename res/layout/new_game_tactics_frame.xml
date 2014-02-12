@@ -13,7 +13,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
-		android:layout_above="@+id/boardLayout"
+		android:layout_above="@+id/boardview"
 		android:layout_centerHorizontal="true"
 		android:gravity="center"
 		android:textSize="23sp"
@@ -22,35 +22,11 @@
 		android:visibility="gone"
 		app:themeColor="true" />
 
-	<RelativeLayout
-		android:id="@id/boardLayout"
+	<com.chess.ui.views.chess_boards.ChessBoardTacticsView
+		android:id="@id/boardview"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_above="@+id/topPanelView">
-
-		<!--Top Border-->
-		<FrameLayout
-			android:id="@+id/topBorder"
-			android:layout_width="match_parent"
-			android:layout_height="3px"
-			android:background="@drawable/game_board_divider" />
-
-		<com.chess.ui.views.chess_boards.ChessBoardTacticsView
-			android:id="@+id/boardview"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/topBorder"
-			android:layout_marginTop="-1px" />
-
-		<!--Bottom Border-->
-		<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/boardview"
-			android:background="@drawable/game_board_divider"
-			android:layout_marginTop="-1px" />
-
-	</RelativeLayout>
+		android:layout_above="@+id/topPanelView" />
 
 	<com.chess.ui.views.PanelInfoTacticsView
 		android:id="@id/topPanelView"
