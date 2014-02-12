@@ -29,8 +29,8 @@ public class LccConnectionListener implements ConnectionListener {
 
 	@Override
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
-		lccHelper.setUser(user);
 		LogMe.dl(TAG, "onConnectionEstablished: client=" + liveConnectionHelper.getClientId());
+		lccHelper.setUser(user);
 		liveConnectionHelper.setConnected(true);
 		liveConnectionHelper.setConnecting(false);
 		liveConnectionHelper.clearPausedEvents();
@@ -65,6 +65,7 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onConnectionReestablished(User user, UserSettings userSettings, ServerStats serverStats) {
 		LogMe.dl(TAG, "onConnectionReestablished:" + " lccClient=" + liveConnectionHelper.getClientId());
+		lccHelper.setUser(user);
 		lccHelper.clearChallenges();
 		lccHelper.clearOwnChallenges();
 		lccHelper.clearSeeks();
@@ -77,8 +78,6 @@ public class LccConnectionListener implements ConnectionListener {
 		lccHelper.storeBlockedUsers(userSettings.getBlockedUsers(), userSettings.getBlockingUsers());
 
 		liveConnectionHelper.clearPausedEvents();
-
-		//lccHelper.stopConnectionTimer();
 	}
 
 	@Override
