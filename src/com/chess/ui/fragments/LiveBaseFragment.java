@@ -116,13 +116,13 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		}
 	}
 
-	/*
 	public void onLiveServiceConnected() {
+		setLCSBound(true);
 	}
 
 	public void onLiveServiceDisconnected() {
+		setLCSBound(false);
 	}
-	*/
 
 	@Override
 	public void setWhitePlayerTimer(String timer) {

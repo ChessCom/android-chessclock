@@ -335,8 +335,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			for (Fragment fragment : getSupportFragmentManager().getFragments()) {
 				if (fragment != null && fragment.isVisible()) {
 					if (fragment instanceof LiveBaseFragment) {
-						//((LiveBaseFragment) fragment).onLiveServiceConnected();
-						((LiveBaseFragment) fragment).setLCSBound(isLCSBound); //enable
+						((LiveBaseFragment) fragment).onLiveServiceConnected();
 					}
 				}
 			}
@@ -356,8 +355,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			for (Fragment fragment : getSupportFragmentManager().getFragments()) {
 				if (fragment != null && fragment.isVisible()) {
 					if (fragment instanceof LiveBaseFragment) {
-						//((LiveBaseFragment) fragment).onLiveServiceDisconnected();
-						((LiveBaseFragment) fragment).setLCSBound(isLCSBound);  //enable
+						((LiveBaseFragment) fragment).onLiveServiceDisconnected();
 					}
 				}
 			}
