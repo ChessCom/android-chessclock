@@ -7,6 +7,7 @@ import com.chess.backend.RestHelper;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.*;
+import com.chess.live.client.impl.HttpClientConfigurationImpl;
 import com.chess.live.client.impl.HttpClientProvider;
 import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
@@ -38,6 +39,13 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	private static final long WS_CONNECT_TIMEOUT = 10000L;
 	private static final int WS_MAX_MESSAGE_SIZE = 1024 * 1024;
 
+	public static final boolean SHARED = false;
+	public static final int MAX_CONNECTIONS_PER_ADDRESS = 2;
+	public static final long IDLE_TIMEOUT = 5000L;
+	public static final boolean THREAD_POOL_SHARED = true;
+	public static final int THREAD_POOL_MAX_THREADS = 5000;
+	public static final boolean THREAD_POOL_DAEMON = true;
+
 	private LiveConnectionHelper liveConnectionHelper;
 
 
@@ -66,15 +74,27 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 				String message = "Live connecting to " + getConfigBayeuxHost() + ", user=" + appData.getUsername() + ", " + versionName;
 				LogMe.forceLog(TAG, message, context);
 
-				HttpClient httpClient = HttpClientProvider.getHttpClient(HttpClientProvider.DEFAULT_CONFIGURATION, false);
-
+				// todo: try to use static init
+				HttpClientConfiguration.ConnectorType connectorType;
 				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
-					httpClient.setConnectorType(HttpClient.CONNECTOR_SELECT_CHANNEL);
+					connectorType = HttpClientConfiguration.ConnectorType.CONNECTOR_SELECT_CHANNEL;
 				} else {
-					httpClient.setConnectorType(HttpClient.CONNECTOR_SOCKET); // Android 2.2
+					connectorType = HttpClientConfiguration.ConnectorType.CONNECTOR_SOCKET; // Android 2.2
 				}
 
-				httpClient.setMaxConnectionsPerAddress(2); //
+				HttpClientConfiguration httpClientConfiguration =
+						new HttpClientConfigurationImpl(
+								SHARED,
+								connectorType,
+								MAX_CONNECTIONS_PER_ADDRESS,
+								IDLE_TIMEOUT,
+								THREAD_POOL_SHARED,
+								THREAD_POOL_MAX_THREADS,
+								THREAD_POOL_DAEMON
+				);
+
+				HttpClient httpClient = HttpClientProvider.getHttpClient(httpClientConfiguration, false);
+
 				//httpClient.setSoTimeout(11000);
 				httpClient.setConnectTimeout(10000); // 75000 is default
 				httpClient.setTimeout(10000); // 320000 is default
