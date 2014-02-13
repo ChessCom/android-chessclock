@@ -1372,6 +1372,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onLiveClientConnected() {
 		super.onLiveClientConnected();
+
+		if (!isValid()) {
+			goHome();
+		}
+
 		try {
 			init();
 			Long currentGameId = getLiveHelper().getCurrentGameId();

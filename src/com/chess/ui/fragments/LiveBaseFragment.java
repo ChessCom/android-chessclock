@@ -253,7 +253,11 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	protected void openLiveFragment(LiveConnectionHelper liveHelper) {
 
 		Long gameId = liveHelper.getCurrentGameId();
-		logTest("gameId = " + gameId);
+
+		if (gameId == null) { // check
+			LogMe.dl("DEBUG: gameId=null !");
+			return;
+		}
 
 		GameLiveFragment gameLiveFragment;
 		if (liveHelper.isCurrentGameObserved()) {
@@ -271,7 +275,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 				if (isTablet) {
 					gameLiveFragment = GameLiveFragmentTablet.createInstance(gameId);
 				} else {
-					gameLiveFragment = GameLiveFragment.createInstance(gameId); // check why null
+					gameLiveFragment = GameLiveFragment.createInstance(gameId);
 				}
 			}
 		}

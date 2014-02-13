@@ -43,6 +43,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	private static final long HIDE_POPUP_DELAY = 4000;
 	private ObserveTaskListener observeTaskListener;
 	private PopupOptionsMenuFragment optionsSelectFragment;
+	private Runnable newObserverGameRunnable;
 
 	public static GameLiveFragment createInstance(long id) {
 		GameLiveFragment fragment = new GameLiveObserveFragment();
@@ -240,6 +241,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 			LiveGameConfig liveGameConfig = getAppData().getLiveGameConfigBuilder().build();
 			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfig));
+
+		} if (view.getId() == R.id.analyzePopupBtn) {
+			handler.removeCallbacks(newObserverGameRunnable);
+			super.onClick(view);
+
 		} else {
 			super.onClick(view);
 		}
@@ -259,8 +265,16 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		PopupGameEndFragment endPopupFragment = PopupGameEndFragment.createInstance(popupItem);
 		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
 
-		// hide popup after 2 seconds and go to next game!
-		handler.postDelayed(new Runnable() {
+		LiveConnectionHelper liveHelper;
+		try {
+			liveHelper = getLiveHelper();
+			liveHelper.exitGameObserving();
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+		}
+
+		// hide popup after delay and go to next game!
+		newObserverGameRunnable = new Runnable() {
 			@Override
 			public void run() {
 				if (getActivity() == null) {
@@ -276,8 +290,8 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 					getActivityFace().showPreviousFragment();
 				}
 			}
-		}, HIDE_POPUP_DELAY);
-
+		};
+		handler.postDelayed(newObserverGameRunnable, HIDE_POPUP_DELAY);
 
 		// New Rating
 		View ratingTitleTxt = layout.findViewById(R.id.ratingTitleTxt);
