@@ -35,7 +35,6 @@ import com.chess.widgets.RoboButton;
 
 public class GameLiveObserveFragment extends GameLiveFragment {
 
-	// todo: adjust GameLiveObserveFragment and GameLiveFragment, lock board, load avatars, game end, chat, options dialog etc
 	// Options ids
 	private static final int ID_NEW_GAME = 0;
 	private static final int ID_SETTINGS = 1;
@@ -62,7 +61,6 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			runNewObserverGame();
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());
-			showToast(e.getMessage());
 		}
 	}
 
@@ -311,11 +309,31 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 	private void runNewObserverGame() throws DataNotValidException {
 		LiveConnectionHelper liveHelper = getLiveHelper();
-		// exit previous game
-		liveHelper.exitGameObserving();
-		liveHelper.setLccObserveEventListener(this);
 
-		liveHelper.runObserveTopGameTask(observeTaskListener);
+		if (!liveHelper.isUserPlaying()) {
+
+			liveHelper.exitGameObserving();
+			liveHelper.setLccObserveEventListener(this);
+
+			liveHelper.runObserveTopGameTask(observeTaskListener);
+		}
+	}
+
+	@Override
+	public void startGameFromService() {
+		logLiveTest("startGameFromService");
+
+		final LiveConnectionHelper liveHelper;
+		try {
+			liveHelper = getLiveHelper();
+		} catch (DataNotValidException e) {
+			logTest(e.getMessage());
+			showToast(e.getMessage());
+			return;
+		}
+
+		boolean needToChangeFragment = !liveHelper.isCurrentGameObserved();
+		checkFragmentAndStartGame(needToChangeFragment, liveHelper);
 	}
 
 	@Override

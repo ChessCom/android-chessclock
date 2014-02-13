@@ -129,15 +129,19 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		if (liveHelper.isActiveGamePresent() && !liveHelper.isCurrentGameObserved()) {
 			if (!featuresList.contains(currentGameItem)) {
 				featuresList.add(0, currentGameItem);
-				optionsAdapter.notifyDataSetChanged();
 			}
-			featuresList.remove(topGameItem);
+			if (featuresList.contains(topGameItem)) {
+				featuresList.remove(topGameItem);
+			}
+			optionsAdapter.notifyDataSetChanged();
 		} else {
 			if (!featuresList.contains(topGameItem)) {
 				featuresList.add(0, topGameItem);
-				optionsAdapter.notifyDataSetChanged();
 			}
-			featuresList.remove(currentGameItem);
+			if (featuresList.contains(currentGameItem)) {
+				featuresList.remove(currentGameItem);
+			}
+			optionsAdapter.notifyDataSetChanged();
 		}
 	}
 
@@ -305,7 +309,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			activity.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					LiveConnectionHelper liveHelper;
+				    LiveConnectionHelper liveHelper;
 					try {
 						liveHelper = getLiveHelper();
 					} catch (DataNotValidException e) {
@@ -313,35 +317,8 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 						showToast(e.getMessage());
 						return;
 					}
-					logTest("challenge created, ready to start");
 
-					Long gameId = liveHelper.getCurrentGameId();
-					logTest("gameId = " + gameId);
-
-					GameLiveFragment gameLiveFragment;
-					if (liveHelper.isCurrentGameObserved()) {
-						gameLiveFragment = ((LiveBaseActivity) getActivity()).getGameLiveObserverFragment();
-						if (gameLiveFragment == null) {
-							if (isTablet) {
-								gameLiveFragment = GameLiveObserveFragmentTablet.createInstance(gameId);
-							} else {
-								gameLiveFragment = GameLiveObserveFragment.createInstance(gameId);
-							}
-						}
-					} else {
-						gameLiveFragment = ((LiveBaseActivity) getActivity()).getGameLiveFragment();
-						if (gameLiveFragment == null) {
-							if (isTablet) {
-								gameLiveFragment = GameLiveFragmentTablet.createInstance(gameId);
-							} else {
-								gameLiveFragment = GameLiveFragment.createInstance(gameId); // check why null
-							}
-						}
-					}
-					if (gameLiveFragment != null) {
-//						getActivityFace().openFragment(gameLiveFragment, true);
-						getActivityFace().openFragment(gameLiveFragment);
-					}
+					openLiveFragment(liveHelper);
 				}
 			});
 		}
@@ -440,7 +417,6 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		@Override
 		protected void bindView(LiveItem item, int pos, View convertView) {
 			ViewHolder holder = (ViewHolder) convertView.getTag();
-
 
 			holder.nameTxt.setText(item.labelId);
 			holder.iconTxt.setText(item.iconId);

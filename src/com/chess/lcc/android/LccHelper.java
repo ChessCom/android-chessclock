@@ -58,7 +58,6 @@ public class LccHelper {
 	private Collection<? extends User> blockedUsers = new HashSet<User>();
 	private Collection<? extends User> blockingUsers = new HashSet<User>();
 	private final Hashtable<Long, Game> lccGames = new Hashtable<Long, Game>();
-	private final HashSet<Game> gamesToUnObserve = new HashSet<Game>();
 	private final Map<String, User> onlineFriends = new HashMap<String, User>();
 	private final HashMap<Long, Chat> gameChats = new HashMap<Long, Chat>();
 	private LinkedHashMap<Chat, LinkedHashMap<Long, ChatMessage>> receivedChatMessages =
@@ -657,18 +656,6 @@ public class LccHelper {
 	public Long getCurrentObservedGameId() {
 		return currentObservedGameId;
 	}
-
-	public boolean isGameToUnObserve(Game game) {
-		return gamesToUnObserve.contains(game);
-	}
-
-	public boolean addGameToUnObserve(Game game) {
-		return gamesToUnObserve.add(game);
-	}
-
-	/*public boolean removeGameToUnObserve(Game game) {
-		return gamesToUnObserve.remove(game);
-	}*/
 
 	public void putGameChat(Long gameId, Chat chat) {
 		gameChats.put(gameId, chat);

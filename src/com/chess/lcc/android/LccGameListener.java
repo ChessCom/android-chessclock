@@ -28,20 +28,36 @@ public class LccGameListener implements GameListener {
 		latestGameId = 0L;
 
 		Long gameId;
+		Long latestMyGameId = 0L;
+		Long latestTopGameId = 0L;
+
 		for (Game game : games) {
 			gameId = game.getId();
-			if (lccHelper.isObservedGame(game)) { // TODO to vm: why we should ignore ? In this case after restoring app we force to exit from observe mode right after it's loaded
-//				lccHelper.addGameToUnObserve(game); // ignore previously subscribed observed games
-				/*LogMe.dl(TAG, "unObserve game " + gameId);
-				games.remove(game);*/
-				//lccHelper.getClient().unObserveGame(gameId);
 
-			} else if (gameId > latestGameId) {
-				latestGameId = gameId;
+			if (lccHelper.isMyGame(game)) {
+				if (gameId > latestMyGameId) {
+					latestMyGameId = gameId;
+				}
+
+			} else if (gameId > latestTopGameId) {
+				latestTopGameId = gameId;
 			}
 		}
 
-//		LogMe.dl(TAG, "latestGameId=" + latestGameId);
+		if (latestMyGameId != 0) {
+			latestGameId = latestMyGameId;
+
+		} else if (latestTopGameId != 0) {
+			latestGameId = latestTopGameId;
+		}
+
+		for (Game game : games) {
+			gameId = game.getId();
+			if (!gameId.equals(latestGameId)) {
+				LogMe.dl(TAG, "onGameListReceived: ignore game, id=" + gameId);
+				games.remove(game);
+			}
+		}
 
 		if (previousGameId != 0 && !latestGameId.equals(previousGameId)) {
 
@@ -73,7 +89,7 @@ public class LccGameListener implements GameListener {
 
 		} else if (lccHelper.isObservedGame(game)) {
 
-			if (lccHelper.isGameToUnObserve(game)) {
+			/*if (lccHelper.isGameToUnObserve(game)) {
 				LogMe.dl(TAG, "GAME LISTENER: isGameToUnObserve true");
 
 				lccHelper.unObserveGame(game.getId());
@@ -81,9 +97,9 @@ public class LccGameListener implements GameListener {
 					lccHelper.getLccObserveEventListener().expireGame();
 				}
 				return;
-			} else {
+			} else {*/
 				lccHelper.setCurrentObservedGameId(game.getId());
-			}
+			//}
 
 		} else {
 			return; // ignore old game
@@ -103,9 +119,9 @@ public class LccGameListener implements GameListener {
 
 		} else if (lccHelper.isObservedGame(game)) {
 
-			if (lccHelper.isGameToUnObserve(game)) {
+			/*if (lccHelper.isGameToUnObserve(game)) {
 				return;
-			}
+			}*/
 
 		} else {
 			return; // ignore old game

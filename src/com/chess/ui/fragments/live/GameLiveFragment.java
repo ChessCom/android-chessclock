@@ -540,8 +540,22 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void startGameFromService() {
-
 		logLiveTest("startGameFromService");
+
+		final LiveConnectionHelper liveHelper;
+		try {
+			liveHelper = getLiveHelper();
+		} catch (DataNotValidException e) {
+			logTest(e.getMessage());
+			showToast(e.getMessage());
+			return;
+		}
+
+		boolean needToChangeFragment = liveHelper.isCurrentGameObserved();
+		checkFragmentAndStartGame(needToChangeFragment, liveHelper);
+	}
+
+	protected void checkFragmentAndStartGame(final boolean needToChangeFragment, final LiveConnectionHelper liveHelper) {
 
 		Activity activity = getActivity();
 		if (activity != null) {
@@ -551,10 +565,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					dismissProgressDialog();
 					dismissEndGameDialog(); // hide game end popup
 
-					try {
-						onGameStarted();
-					} catch (DataNotValidException e) {
-						logTest(e.getMessage());
+					if (needToChangeFragment) {
+						openLiveFragment(liveHelper);
+					} else {
+						try {
+							onGameStarted();
+						} catch (DataNotValidException e) {
+							logTest(e.getMessage());
+						}
 					}
 				}
 			});

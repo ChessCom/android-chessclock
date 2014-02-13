@@ -11,9 +11,7 @@ import com.chess.live.client.Game;
 import com.chess.model.DataHolder;
 import com.chess.model.GameLiveItem;
 import com.chess.ui.activities.LiveBaseActivity;
-import com.chess.ui.fragments.live.GameLiveFragment;
-import com.chess.ui.fragments.live.GameLiveFragmentTablet;
-import com.chess.ui.fragments.live.LiveChatFragment;
+import com.chess.ui.fragments.live.*;
 import com.chess.utilities.LogMe;
 
 /**
@@ -250,5 +248,35 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 
 	protected void dismissNetworkCheckDialog() {
 		dismissFragmentDialogByTag(NETWORK_CHECK_TAG);
+	}
+
+	protected void openLiveFragment(LiveConnectionHelper liveHelper) {
+
+		Long gameId = liveHelper.getCurrentGameId();
+		logTest("gameId = " + gameId);
+
+		GameLiveFragment gameLiveFragment;
+		if (liveHelper.isCurrentGameObserved()) {
+			gameLiveFragment = ((LiveBaseActivity) getActivity()).getGameLiveObserverFragment();
+			if (gameLiveFragment == null) {
+				if (isTablet) {
+					gameLiveFragment = GameLiveObserveFragmentTablet.createInstance(gameId);
+				} else {
+					gameLiveFragment = GameLiveObserveFragment.createInstance(gameId);
+				}
+			}
+		} else {
+			gameLiveFragment = ((LiveBaseActivity) getActivity()).getGameLiveFragment();
+			if (gameLiveFragment == null) {
+				if (isTablet) {
+					gameLiveFragment = GameLiveFragmentTablet.createInstance(gameId);
+				} else {
+					gameLiveFragment = GameLiveFragment.createInstance(gameId); // check why null
+				}
+			}
+		}
+		if (gameLiveFragment != null) {
+			getActivityFace().openFragment(gameLiveFragment);
+		}
 	}
 }

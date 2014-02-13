@@ -53,6 +53,7 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 	private SaveArchiveGamesListUpdateListener saveArchiveGamesListUpdateListener;
 
 	private View currentGameHeaderView;
+	private View topGameHeaderView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -112,12 +113,16 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 	protected void adjustFeaturesList(LiveConnectionHelper liveHelper) {
 		if (inPortrait()) {
 			super.adjustFeaturesList(liveHelper);
-			return;
-		}
-		if (liveHelper.isActiveGamePresent() && !liveHelper.isCurrentGameObserved()) {
-			currentGameHeaderView.setVisibility(View.VISIBLE);
+
 		} else {
-			currentGameHeaderView.setVisibility(View.GONE);
+
+			if (liveHelper.isActiveGamePresent() && !liveHelper.isCurrentGameObserved()) {
+				currentGameHeaderView.setVisibility(View.VISIBLE);
+				topGameHeaderView.setVisibility(View.GONE);
+			} else {
+				currentGameHeaderView.setVisibility(View.GONE);
+				topGameHeaderView.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 
@@ -345,7 +350,6 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 
 	private void initHeaderViews(View view) {
 		view.findViewById(R.id.newGameHeaderView).setOnClickListener(this);
-		view.findViewById(R.id.topGameHeaderView).setOnClickListener(this);
 		view.findViewById(R.id.friendsHeaderView).setOnClickListener(this);
 		view.findViewById(R.id.statsHeaderView).setOnClickListener(this);
 		view.findViewById(R.id.statsView1).setOnClickListener(this);
@@ -354,6 +358,8 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 
 		currentGameHeaderView = view.findViewById(R.id.currentGameHeaderView);
 		currentGameHeaderView.setOnClickListener(this);
+		topGameHeaderView = view.findViewById(R.id.topGameHeaderView);
+		topGameHeaderView.setOnClickListener(this);
 
 		inviteFriendView1 = view.findViewById(R.id.inviteFriendView1);
 		inviteFriendView2 = view.findViewById(R.id.inviteFriendView2);

@@ -560,12 +560,12 @@ public class LiveConnectionHelper {
 
 	// ------------------- LccHelper wrapping --------------------------
 
-	public boolean isUserConnected() {
-		return isConnected();
-	}
-
 	public boolean isActiveGamePresent() {
 		return lccHelper.isActiveGamePresent();
+	}
+
+	public boolean isUserPlaying() {
+		return lccHelper.isUserPlaying();
 	}
 
 	/*public boolean isValidToMakeMove() {
