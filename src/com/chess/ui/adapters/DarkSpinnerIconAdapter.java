@@ -23,7 +23,7 @@ public class DarkSpinnerIconAdapter extends ItemsAdapter<SelectionItem> {
 
 	@Override
 	protected View createView(ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_dark_spinner_item, parent, false);
+		View view = inflater.inflate(R.layout.dark_spinner_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.categoryNameTxt = (TextView) view.findViewById(R.id.categoryNameTxt);
 

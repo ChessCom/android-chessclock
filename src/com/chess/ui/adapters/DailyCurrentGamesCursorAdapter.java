@@ -70,9 +70,9 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
 		View view;
 		if (showMiniBoards) {
-			view = inflater.inflate(R.layout.new_daily_games_home_item, parent, false);
+			view = inflater.inflate(R.layout.daily_games_home_item, parent, false);
 		} else {
-			view = inflater.inflate(R.layout.new_daily_games_home_item_no_thumbs, parent, false);
+			view = inflater.inflate(R.layout.daily_games_home_item_no_thumbs, parent, false);
 		}
 
 		ViewHolder holder = new ViewHolder();

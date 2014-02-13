@@ -418,7 +418,7 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			HeaderViewHolder holder;
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.new_common_titled_list_item, parent, false);
+				convertView = inflater.inflate(R.layout.common_titled_list_item, parent, false);
 				holder = new HeaderViewHolder();
 
 				holder.text = (TextView) convertView.findViewById(R.id.headerTitleTxt);

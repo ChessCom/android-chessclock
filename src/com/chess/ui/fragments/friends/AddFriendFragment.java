@@ -84,8 +84,8 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		headerView = inflater.inflate(R.layout.new_add_friend_header_view, null, false);
-		return inflater.inflate(R.layout.new_add_friend_frame, container, false);
+		headerView = inflater.inflate(R.layout.add_friend_header_view, null, false);
+		return inflater.inflate(R.layout.add_friend_frame, container, false);
 	}
 
 	@Override

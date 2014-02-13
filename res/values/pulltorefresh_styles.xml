@@ -4,8 +4,8 @@
 	<style name="Widget.PullToRefresh.ProgressBar.Horizontal.Center" parent="android:Widget.ProgressBar.Horizontal">
 		<item name="android:progressDrawable">@drawable/ptr_progress_horizontal_holo_center</item>
 		<item name="android:indeterminateDrawable">@drawable/ptr_progress_indeterminate_horizontal_holo</item>
-		<item name="android:minHeight">3dip</item>
-		<item name="android:maxHeight">3dip</item>
+		<item name="android:minHeight">3dp</item>
+		<item name="android:maxHeight">3dp</item>
 	</style>
 
 	<!--	<style name="Widget.Custom.PtrHeader" parent="android:Widget">

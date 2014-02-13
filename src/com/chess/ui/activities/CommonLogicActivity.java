@@ -22,7 +22,6 @@ import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.LoginUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
-import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
 import com.chess.statics.Symbol;
@@ -53,21 +52,29 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity imp
 	private AppData appData;
 	protected SharedPreferences preferences;
 	protected SharedPreferences.Editor preferencesEditor;
+	/**
+	 * Indicating that this device should use layouts & logic for tablets
+	 */
 	protected boolean isTablet;
+	/**
+	 * Flag that indicates that current locale is Left-To-Right, false - means Right-To-Left
+	 */
+	protected boolean useLtr;
 	private GcmRegisterUpdateListener gcmRegisterUpdateListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		isTablet = AppUtils.isTablet(this);
-
 		appData = new AppData(this);
 		preferences = appData.getPreferences();
 		preferencesEditor = appData.getEditor();
-
 		handler = new Handler();
+
 		setLocale();
+
+		isTablet = AppUtils.isTablet(this);
+		useLtr = AppUtils.useLtr(this);
 
 		gcmRegisterUpdateListener = new GcmRegisterUpdateListener();
 	}
@@ -135,10 +142,13 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity imp
 	}
 
 	protected void setLocale() {
-		String prevLang = getResources().getConfiguration().locale.getLanguage();
+		String prevLang = appData.getLanguageCode();
+		if (getResources().getConfiguration().locale != null) {
+			prevLang = getResources().getConfiguration().locale.getLanguage();
+		}
 		String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
 
-		String setLocale = languageCodes[appData.getLanguageCode()];
+		String setLocale = languageCodes[appData.getLanguageIndex()];
 
 		if (!prevLang.equals(setLocale)) {
 			Locale locale;
@@ -155,8 +165,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity imp
 			config.locale = locale;
 			getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 
-			preferencesEditor.putString(AppConstants.CURRENT_LOCALE, setLocale);
-			preferencesEditor.commit();
+			appData.setLanguageCode(setLocale);
 		}
 	}
 

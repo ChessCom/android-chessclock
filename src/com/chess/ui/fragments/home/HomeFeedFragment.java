@@ -17,6 +17,6 @@ public class HomeFeedFragment extends CommonLogicFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_home_feed_frame, container, false);
+		return inflater.inflate(R.layout.home_feed_frame, container, false);
 	}
 }

@@ -20,7 +20,7 @@
 		<item>Pengguna ini telah memblokir anda!</item>
 		<item>FEN tidak sah diluluskan.</item>
 		<item>Tidak dapat menemukan pengguna dengan token log masuk atau nama pengguna.</item>
-		<item>Ply yang diluluskan lebih besar dari maksimum yang diperbolehkan.</item>
+		<item>Ply yang diluluskan lebih besar dari maksimum yang dperbolehkan.</item>
 		<item>silakan menyegarkan kembali permainan ini.</item>
 		<item>permainan sudah selesai.</item>
 		<item>Ini bukan langkahmu.</item>
@@ -60,11 +60,11 @@
 		<item>bukan tantangan Anda.
 		</item>
 		<item>Id atau kode negara tidak sah.</item>
-		<item>username sudah dipakai.</item>
-		<item>Email sudah dipakai.</item>
+		<item>username sudah dpakai.</item>
+		<item>Email sudah dpakai.</item>
 		<item>Email Chess.com tidak sah.</item>
 		<item>nama pengguna tidak sah.</item>
-		<item>nama pengguna tidak diperbolehkan.</item>
+		<item>nama pengguna tidak dperbolehkan.</item>
 		<item>domain email tidak sah.</item>
 		<item>kesalahan sistem.</item>
 		<item>Password lemah.</item>
@@ -74,9 +74,9 @@
 		<item>Tidak dapat mengulang permainan catur.</item>
 		<item>Anda harus menentukan \"\'metod\", \"url\" dan \"requestid\".</item>
 		<item>nomor halaman tidak sah</item>
-		<item>Anda telah mengubah nama pengguna anda. Hanya satu perubahan diperbolehkan.</item>
+		<item>Anda telah mengubah nama pengguna anda. Hanya satu perubahan dperbolehkan.</item>
 		<item>Anda tidak dapat mengubah nama pengguna anda saat masuk ke Catur Langung.</item>
-		<item>Ply yang diluluskan lebih besar dari maksimum yang diperbolehkan.</item>
+		<item>Ply yang diluluskan lebih besar dari maksimum yang dperbolehkan.</item>
 		<item>Parameter tidak sah diluluskan.</item>
 		<item>Kesalahan Kosong</item>
 		<item>Permainan harus setidaknya 16 langkah untuk diajukan untuk dianalisis komputer.</item>
@@ -90,7 +90,7 @@
 		</item>
 		<item>Nama Pengguna harus memiliki 3 karakter atau lebih.</item>
 		<item>Nama Pengguna harus memiliki 20 karakter atau kurang.</item>
-		<item>Nama pengguna tidak diperbolehkan. Silahkan coba lagi.</item>
+		<item>Nama pengguna tidak dperbolehkan. Silahkan coba lagi.</item>
 		<item>Untuk mencegah spam dan penyalahgunaan. Chess.com tidak mengijinkan alamat email yang sembarangan. Silakan
 			gunakan sebuah alamat email yang sah atau hubungkan dengan Facebook. Terima kasih!
 		</item>

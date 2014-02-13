@@ -482,7 +482,7 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		userUpdateListener = new UserUpdateListener();
 		FriendsClickListener friendsClickListener = new FriendsClickListener();
 
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.text_section_header_dark);
 
 		{ // load friends from DB
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(),
@@ -523,7 +523,7 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 
 	private void widgetsInit(View view) {
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		View headerView = inflater.inflate(R.layout.new_profiles_header_view, null, false);
+		View headerView = inflater.inflate(R.layout.profiles_header_view, null, false);
 
 		{// Header init
 			photoImg = (ProgressImageView) headerView.findViewById(R.id.photoImg);

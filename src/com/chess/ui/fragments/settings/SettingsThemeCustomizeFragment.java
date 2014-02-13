@@ -140,7 +140,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_settings_theme_customize_frame, container, false);
+		return inflater.inflate(R.layout.settings_theme_customize_frame, container, false);
 	}
 
 	@Override

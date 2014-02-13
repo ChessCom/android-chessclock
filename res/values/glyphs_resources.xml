@@ -119,14 +119,14 @@
 
 
 	<!--Dimens -->
-	<dimen name="glyph_icon_padding">8dip</dimen>
-	<dimen name="glyph_icon_big">30dip</dimen>
-	<dimen name="glyph_icon_big2">37dip</dimen>
-	<dimen name="glyph_icon_round_back">30dip</dimen>
-	<dimen name="glyph_icon_round_back_medium">65dip</dimen>
-	<dimen name="glyph_icon_round_back_big">85dip</dimen>
-	<dimen name="glyph_icon_default">28dip</dimen>
-	<dimen name="glyph_icon_small">18dip</dimen>
+	<dimen name="glyph_icon_padding">8dp</dimen>
+	<dimen name="glyph_icon_big">30dp</dimen>
+	<dimen name="glyph_icon_big2">37dp</dimen>
+	<dimen name="glyph_icon_round_back">30dp</dimen>
+	<dimen name="glyph_icon_round_back_medium">65dp</dimen>
+	<dimen name="glyph_icon_round_back_big">85dp</dimen>
+	<dimen name="glyph_icon_default">28dp</dimen>
+	<dimen name="glyph_icon_small">18dp</dimen>
 
 
 </resources>

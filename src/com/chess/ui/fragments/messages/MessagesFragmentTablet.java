@@ -155,7 +155,7 @@ public class MessagesFragmentTablet extends CommonLogicFragment implements Fragm
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_dark_spinner_item, parent, false);
+			View view = inflater.inflate(R.layout.dark_spinner_item, parent, false);
 
 			ButtonDrawableBuilder.setBackgroundToView(view, R.style.ListItem_Tablet);
 			view.setPadding(sidePadding, 0, sidePadding, 0);

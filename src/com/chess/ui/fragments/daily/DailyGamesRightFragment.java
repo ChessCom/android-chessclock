@@ -84,14 +84,14 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_daily_games_right_frame, container, false);
+		return inflater.inflate(R.layout.daily_games_right_frame, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_start_new_game_button_view, null, false);
+		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.start_new_game_button_view, null, false);
 
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
@@ -497,7 +497,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 	}
 	private void init() {
 		// init adapters
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.text_section_header_dark);
 
 		challengesGamesAdapter = new DailyChallengesGamesAdapter(this, null, getImageFetcher(), this);
 		currentGamesMyCursorAdapter = new DailyCurrentGamesMyCursorRightAdapter(getContext(), null, getImageFetcher());

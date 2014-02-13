@@ -14,7 +14,6 @@ import java.util.List;
  * @author alien_roger
  * @created at: 24.02.12 5:22
  */
-// Do not remove until release!
 public class WhiteSpinnerAdapter extends ItemsAdapter<String> {
 
 	public WhiteSpinnerAdapter(Context context, List<String> items) {
@@ -23,7 +22,7 @@ public class WhiteSpinnerAdapter extends ItemsAdapter<String> {
 
 	@Override
 	protected View createView(ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_white_spinner_item, parent, false);
+		View view = inflater.inflate(R.layout.white_spinner_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.textTxt = (TextView) view.findViewById(android.R.id.text1);
 

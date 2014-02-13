@@ -88,10 +88,10 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 			View headerView;
 			LayoutInflater inflater = LayoutInflater.from(getActivity());
 			if (isNeedToUpgradePremium()) {
-				headerView = inflater.inflate(R.layout.new_lessons_upgrade_view, null, false);
+				headerView = inflater.inflate(R.layout.lessons_upgrade_view, null, false);
 				headerView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 			} else {
-				headerView = inflater.inflate(R.layout.new_lesson_stats_view, null, false);
+				headerView = inflater.inflate(R.layout.lesson_stats_view, null, false);
 				ratingTxt = (TextView) headerView.findViewById(R.id.lessonsRatingTxt);
 				lessonsCntTxt = (TextView) headerView.findViewById(R.id.lessonsCompletedValueTxt);
 				coursesCntTxt = (TextView) headerView.findViewById(R.id.coursesCompletedValueTxt);
@@ -310,7 +310,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 
 	private void init() {
 		categoriesCursorAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
-		categoriesCursorAdapter.setLayoutId(R.layout.new_common_titled_list_item_thin_white);
+		categoriesCursorAdapter.setLayoutId(R.layout.common_titled_list_item_thin_white);
 
 		lessonsCategoriesUpdateListener = new LessonsCategoriesUpdateListener();
 		saveLessonsCategoriesUpdateListener = new SaveLessonsCategoriesUpdateListener();

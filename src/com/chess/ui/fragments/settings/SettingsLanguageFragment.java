@@ -24,7 +24,7 @@ public class SettingsLanguageFragment extends CommonLogicFragment implements Ada
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_list_view_frame, container, false);
+		return inflater.inflate(R.layout.list_view_frame, container, false);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class SettingsLanguageFragment extends CommonLogicFragment implements Ada
 
 		String[] array = getResources().getStringArray(R.array.languages);
 		List<SelectionItem> itemsList = new ArrayList<SelectionItem>();
-		int prevCode = getAppData().getLanguageCode();
+		int prevCode = getAppData().getLanguageIndex();
 		String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
 
 		String currentLocale = languageCodes[prevCode];
@@ -57,9 +57,9 @@ public class SettingsLanguageFragment extends CommonLogicFragment implements Ada
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		int prevCode = getAppData().getLanguageCode();
+		int prevCode = getAppData().getLanguageIndex();
 		if (prevCode != position) {
-			getAppData().setLanguageCode(position);
+			getAppData().setLanguageIndex(position);
 
 			getActivityFace().updateLocale();
 		}

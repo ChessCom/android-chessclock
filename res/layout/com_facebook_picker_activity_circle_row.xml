@@ -15,12 +15,12 @@
 -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_height="50dip"
+	android:layout_height="50dp"
 	android:layout_width="fill_parent">
 	<ProgressBar
 		android:indeterminate="true"
 		android:layout_width="wrap_content"
-		android:layout_height="50dip"
+		android:layout_height="50dp"
 		android:id="@+id/com_facebook_picker_row_activity_circle"
 		style="@style/ChessProgressBar"
 		android:layout_gravity="center"

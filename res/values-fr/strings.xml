@@ -468,7 +468,6 @@
 	<string name="show_mini_boards">Afficher les mini échiquiers</string>
 	<string name="show_timer">Afficher la pendule</string>
 	<string name="file_saved_to_download">Fichier enregistré dans \"Téléchargement\"</string>
-	<string name="with">avec</string>
 	<string name="basic_members_allowed_3_per_day">Les membres de base ont droit à 3 par jour</string>
 	<string name="get_detailed_stats">Obtenir les statistiques détaillées</string>
 	<string name="select_plan">Choisir une offre</string>

@@ -116,7 +116,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		challengeHelper = new ChallengeHelper(this);
 		gameFaceHelper = new GameFaceHelper(getActivity());
 
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
 
 		{// initialize boardsFetcher
@@ -147,7 +147,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_home_daily_games_frame, container, false);
+		return inflater.inflate(R.layout.home_daily_games_frame, container, false);
 	}
 
 	@Override
@@ -694,7 +694,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		Resources resources = getResources();
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		newGameHeaderView = (ViewGroup) inflater.inflate(R.layout.new_daily_games_header_view, null, false);
+		newGameHeaderView = (ViewGroup) inflater.inflate(R.layout.daily_games_header_view, null, false);
 
 		int squareSize;
 		{ // new game overlay setup

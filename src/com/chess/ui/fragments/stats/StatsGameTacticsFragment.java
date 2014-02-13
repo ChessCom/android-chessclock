@@ -92,7 +92,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_stats_frame, container, false);
+		return inflater.inflate(R.layout.stats_frame, container, false);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 			setTitle(R.string.stats);
 		}
 
-		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_tactics_stats_header_view, null, false);
+		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.tactics_stats_header_view, null, false);
 		recentProblemsTitleTxt = (TextView) headerView.findViewById(R.id.recentProblemsTitleTxt);
 		ratingGraphView = (RatingGraphView) headerView.findViewById(R.id.ratingGraphView);
 		ratingGraphView.setOnCheckChangeListener(this);
@@ -320,7 +320,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_tactic_recent_stat_item, parent, false);
+			View view = inflater.inflate(R.layout.tactic_recent_stat_item, parent, false);
 
 			ViewHolder holder = new ViewHolder();
 			holder.idTxt = (TextView) view.findViewById(R.id.idTxt);

@@ -10,16 +10,16 @@
 			<solid android:color="@color/transparent" />
 			<stroke
 				android:color="@color/upgrade_toggle_button_border"
-				android:width="1dip" />
+				android:width="1dp" />
 		</shape>
 	</item>
 
 	<!--Button-->
 	<item
-		android:left="1dip"
+		android:left="1dp"
 		android:right="1dp"
-		android:bottom="1dip"
-		android:top="1dip">
+		android:bottom="1dp"
+		android:top="1dp">
 		<shape>
 			<corners
 				android:topLeftRadius="@dimen/button_upgrade_toggle_radius"

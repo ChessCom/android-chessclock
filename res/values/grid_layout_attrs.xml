@@ -93,7 +93,7 @@
 			  Specifies extra space on the left side of this view.
 			  This space is outside this view's bounds.
 		-->
-		<attr name="android:layout_marginLeft" />
+		<attr name="android:layout_marginStart" />
 		<!--
 			  Specifies extra space on the top side of this view.
 			  This space is outside this view's bounds.
@@ -103,7 +103,7 @@
 			  Specifies extra space on the right side of this view.
 			  This space is outside this view's bounds.
 		-->
-		<attr name="android:layout_marginRight" />
+		<attr name="android:layout_marginEnd" />
 		<!--
 			  Specifies extra space on the bottom side of this view.
 			  This space is outside this view's bounds.

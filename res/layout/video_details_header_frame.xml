@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<!--Video Thumbnail-->
+	<RelativeLayout
+		android:id="@+id/thumbnailImg"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:layout_marginBottom="10dp">
+
+		<com.chess.backend.image_load.ProgressImageView
+			android:id="@+id/videoBackImg"
+			android:layout_width="match_parent"
+			android:layout_height="240dp"
+			android:layout_centerInParent="true"
+			android:adjustViewBounds="true"
+			android:scaleType="fitXY"
+			android:contentDescription="@string/image"
+			android:background="@drawable/video_thumb_back" />
+
+		<VideoView
+			android:id="@+id/videoView"
+			android:layout_width="wrap_content"
+			android:layout_height="240dp"
+			android:layout_centerHorizontal="true"
+			android:visibility="invisible" />
+
+		<!--Back round for icon-->
+		<RelativeLayout
+			android:id="@+id/playBtnBackView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:gravity="fill"
+			android:background="@drawable/video_play_btn_back_big_selector">
+
+			<!--Icon-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/playBtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:text="@string/ic_play"
+				style="@style/GlyphIcon.RoundBack.Play"
+				android:textSize="@dimen/glyph_icon_round_back_big"
+				android:layout_marginStart="30dp"
+				android:gravity="fill" />
+
+
+		</RelativeLayout>
+
+		<!--FullScrBtn-->
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/fullScrBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/ic_extend"
+			style="@style/GlyphIcon.Big"
+			android:layout_alignParentEnd="true"
+			android:layout_margin="8dp" />
+
+	</RelativeLayout>
+
+	<!--Title-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/titleTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/thumbnailImg"
+		android:paddingStart="@dimen/default_scr_side_padding"
+		android:paddingEnd="@dimen/default_scr_side_padding"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:paddingBottom="9dp"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:textSize="18sp"
+		custom:ttf="Bold" />
+
+	<com.chess.backend.image_load.ProgressImageView
+		android:id="@+id/thumbnailAuthorImg"
+		android:layout_width="35dp"
+		android:layout_height="35dp"
+		android:background="@color/new_common_list_thumb_grey"
+		android:layout_marginStart="@dimen/default_scr_side_padding"
+		android:layout_marginLeft="@dimen/default_scr_side_padding"
+		android:layout_below="@id/titleTxt"
+		android:contentDescription="@string/image"
+		android:layout_marginBottom="13dp" />
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/authorTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toEndOf="@id/thumbnailAuthorImg"
+		android:layout_toRightOf="@id/thumbnailAuthorImg"
+		android:layout_below="@id/titleTxt"
+		android:paddingStart="11dp"
+		android:paddingLeft="11dp"
+		android:paddingBottom="2dp"
+		android:layout_marginTop="-4dp"
+		android:textColor="@color/new_author_dark_grey"
+		android:textSize="14sp"
+		custom:ttf="Bold" />
+	<!--android:text="GM Gregory Kaidanov"-->
+
+	<ImageView
+		android:id="@+id/countryImg"
+		android:layout_width="20dp"
+		android:layout_height="20dp"
+		android:contentDescription="@string/country"
+		android:layout_toEndOf="@id/authorTxt"
+		android:layout_toRightOf="@id/authorTxt"
+		android:layout_below="@id/titleTxt"
+		android:layout_marginTop="-6dp"
+		android:layout_marginStart="7dp"
+		android:layout_marginLeft="7dp" />
+
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/dateTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toEndOf="@id/thumbnailAuthorImg"
+		android:layout_toRightOf="@id/thumbnailAuthorImg"
+		android:layout_below="@id/authorTxt"
+		android:paddingStart="11dp"
+		android:paddingLeft="11dp"
+		android:textColor="@color/new_subtitle_light_grey"
+		android:textSize="@dimen/default_text_size_small" />
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/contentTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingStart="@dimen/default_scr_side_padding"
+		android:paddingEnd="@dimen/default_scr_side_padding"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
+		android:paddingBottom="10dp"
+		android:layout_below="@id/thumbnailAuthorImg"
+		style="@style/Content.Selectable" />
+
+	<ProgressBar
+		android:id="@+id/loadingCommentsView"
+		android:layout_width="@dimen/pending_progress_bar_size"
+		android:layout_height="@dimen/pending_progress_bar_size"
+		android:layout_below="@id/contentTxt"
+		android:layout_margin="10dp"
+		android:layout_centerInParent="true"
+		style="?android:attr/progressBarStyle"
+		android:visibility="gone" />
+
+</RelativeLayout>

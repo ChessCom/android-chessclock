@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:id="@+id/mainFrame"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<com.chess.widgets.LinLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		style="@style/Rect.Top.Middle">
+
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/img_new_logo_bar"
+			android:contentDescription="@string/image" />
+
+	</com.chess.widgets.LinLayout>
+
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingTop="@dimen/signin_scr_top_padding"
+		android:paddingStart="@dimen/signin_scr_side_padding"
+		android:paddingEnd="@dimen/signin_scr_side_padding"
+		android:paddingLeft="@dimen/signin_scr_side_padding"
+		android:paddingRight="@dimen/signin_scr_side_padding"
+		android:layout_centerInParent="true">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:gravity="center_horizontal">
+
+			<com.chess.widgets.RoboTextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/create_chess_profile"
+				style="@style/SetupSmallFont" />
+
+			<com.chess.widgets.LeftImageEditText
+				android:id="@+id/firstNameEdt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/first_name"
+				android:inputType="textPersonName"
+				style="@style/WhiteGrayEditText.Top"
+				custom:leftImage="@string/ic_first_name"
+				android:layout_marginTop="@dimen/create_profile_field_margin_top" />
+
+			<com.chess.widgets.LeftImageEditText
+				android:id="@+id/lastNameEdt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/last_name"
+				android:inputType="textPersonName"
+				style="@style/WhiteGrayEditText.Middle"
+				custom:leftImage="@string/ic_first_name" />
+
+			<com.chess.widgets.LeftRightImageEditText
+				android:id="@+id/countryEdt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/country"
+				style="@style/WhiteGrayEditText.Middle"
+				custom:leftImage="@string/ic_country"
+				custom:rightImage="@string/ic_country"
+				android:editable="false"
+				android:clickable="true"
+				android:focusable="false"
+				android:focusableInTouchMode="false" />
+
+			<com.chess.widgets.LeftRightImageEditText
+				android:id="@+id/skillEdt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/skill_level"
+				style="@style/WhiteGrayEditText.Middle"
+				custom:leftImage="@string/ic_skills"
+				custom:rightImage="@string/ic_right"
+				android:editable="false"
+				android:clickable="true"
+				android:focusable="false"
+				android:focusableInTouchMode="false" />
+
+			<com.chess.widgets.LeftRightImageEditText
+				android:id="@+id/profilePhotoEdt"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/profile_picture"
+				android:inputType="textPersonName"
+				style="@style/WhiteGrayEditText.Bottom"
+				custom:rightImageDrawable="@drawable/img_profile_picture_stub"
+				custom:leftImage="@string/ic_photo"
+				android:editable="false"
+				android:clickable="true"
+				android:focusable="false"
+				android:focusableInTouchMode="false" />
+
+			<com.chess.widgets.RoboButton
+				android:id="@+id/createProfileBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/create_profile"
+				style="@style/Button.OrangeNoBorder.Big"
+				android:layout_marginTop="@dimen/common_main_hit_button_margin_top" />
+
+			<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/skipLay">
+
+				<com.chess.widgets.RoboTextView
+					android:id="@+id/skipBtn"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/skip_this_step"
+					style="@style/SetupSmallFont"
+					android:textSize="16sp"
+					android:paddingTop="@dimen/create_profile_skip_padding_top"
+					android:layout_gravity="center_horizontal" />
+
+			</FrameLayout>
+		</LinearLayout>
+
+	</ScrollView>
+</RelativeLayout>
+
+

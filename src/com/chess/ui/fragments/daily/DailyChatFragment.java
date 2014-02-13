@@ -88,7 +88,7 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_chat_frame, container, false);
+		return inflater.inflate(R.layout.chat_frame, container, false);
 	}
 
 	@Override

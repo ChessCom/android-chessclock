@@ -23,10 +23,10 @@
 			<solid android:color="@color/white" />
 			<corners android:radius="@dimen/new_edit_field_internal_radius" />
 			<padding
-				android:left="2dip"
-				android:right="2dip"
-				android:top="2dip"
-				android:bottom="4dip" />
+				android:left="2dp"
+				android:right="2dp"
+				android:top="2dp"
+				android:bottom="4dp" />
 		</shape>
 	</item>
 

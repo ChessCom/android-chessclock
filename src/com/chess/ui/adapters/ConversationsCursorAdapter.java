@@ -44,7 +44,7 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_conversation_list_item, parent, false);
+		View view = inflater.inflate(R.layout.conversation_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.photoImg = (AvatarView) view.findViewById(R.id.photoImg);
 		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);
@@ -66,11 +66,11 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 		boolean haveNewMessages = getInt(cursor, DbScheme.V_NEW_MESSAGES_COUNT) > 0;
 		if (haveNewMessages) {
 			holder.lastMessageTxt.setFont(FontsHelper.BOLD_FONT);
-			view.setBackgroundResource(R.drawable.transparent_list_item_selector);
+			ButtonDrawableBuilder.setBackgroundToView(view, R.style.ListItem_Header_2_Light);
 
 		} else {
 			holder.lastMessageTxt.setFont(FontsHelper.DEFAULT_FONT);
-			ButtonDrawableBuilder.setBackgroundToView(view, R.style.ListItem_Header_2_Light);
+			view.setBackgroundResource(R.drawable.transparent_list_item_selector);
 		}
 		view.setPadding(paddingSide, paddingTop, paddingSide, paddingTop);
 

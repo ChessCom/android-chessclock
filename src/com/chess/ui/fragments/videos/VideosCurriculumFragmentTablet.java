@@ -73,7 +73,7 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_videos_frame, container, false);
+		return inflater.inflate(R.layout.videos_frame, container, false);
 	}
 
 	@Override
@@ -327,7 +327,7 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			ViewHolder holder;
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.new_common_titled_list_item, parent, false);
+				convertView = inflater.inflate(R.layout.common_titled_list_item, parent, false);
 				holder = new ViewHolder();
 
 				holder.text = (TextView) convertView.findViewById(R.id.headerTitleTxt);

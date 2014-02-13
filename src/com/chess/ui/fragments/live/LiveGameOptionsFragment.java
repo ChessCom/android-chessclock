@@ -112,7 +112,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_game_option_live_view, container, false);
+		return inflater.inflate(R.layout.game_option_live_view, container, false);
 	}
 
 	@Override
@@ -344,7 +344,7 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		RelativeLayout liveHomeOptionsFrame = (RelativeLayout) view.findViewById(R.id.liveHomeOptionsFrame);
-		inflater.inflate(R.layout.new_right_live_options_view, liveHomeOptionsFrame, true);
+		inflater.inflate(R.layout.right_live_options_view, liveHomeOptionsFrame, true);
 
 		if (getArguments().getInt(MODE) == CENTER_MODE) { // we use white background and dark titles for centered mode
 			View liveHeaderView = view.findViewById(R.id.liveHeaderView);

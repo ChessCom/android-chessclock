@@ -468,7 +468,6 @@
 	<string name="show_mini_boards">显示迷你棋盘</string>
 	<string name="show_timer">显示计时器</string>
 	<string name="file_saved_to_download">文件保存到\"下载\"</string>
-	<string name="with">与</string>
 	<string name="basic_members_allowed_3_per_day">基本成员是每天允许 3次</string>
 	<string name="get_detailed_stats">获取详细的统计信息</string>
 	<string name="select_plan">选择计划</string>

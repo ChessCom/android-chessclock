@@ -22,7 +22,7 @@ public class CommonCategoriesCursorAdapter extends ItemsCursorAdapter {
 
 	public CommonCategoriesCursorAdapter(Context context, Cursor cursor) {
 		super(context, cursor);
-		layoutId = R.layout.new_common_titled_list_item;
+		layoutId = R.layout.common_titled_list_item;
 	}
 
 	@Override

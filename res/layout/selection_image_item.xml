@@ -5,10 +5,12 @@
 	android:layout_height="wrap_content"
 	android:minHeight="@dimen/list_item_height"
 	android:gravity="center_vertical"
+	android:paddingTop="4dp"
+	android:paddingStart="@dimen/default_scr_side_padding"
+	android:paddingEnd="@dimen/smaller_scr_side_padding"
 	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingTop="4dip"
-	android:paddingBottom="4dip"
-	android:paddingRight="8dip"
+	android:paddingRight="@dimen/smaller_scr_side_padding"
+	android:paddingBottom="4dp"
 	style="@style/ListItem">
 
 	<ImageView
@@ -20,12 +22,14 @@
 
 	<com.chess.widgets.RoboCheckedTextView
 		android:id="@+id/text"
-		android:layout_width="0dip"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
 		android:gravity="left|center_vertical"
-		android:paddingLeft="5dip"
-		android:paddingRight="5dip"
+		android:paddingStart="5dp"
+		android:paddingEnd="5dp"
+		android:paddingLeft="5dp"
+		android:paddingRight="5dp"
 		android:textColor="@color/white"
 		android:checkMark="?android:attr/listChoiceIndicatorSingle"
 		style="@style/SettingsListText"

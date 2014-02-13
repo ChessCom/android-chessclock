@@ -88,7 +88,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_daily_invite_frame, container, false);
+		return inflater.inflate(R.layout.daily_invite_frame, container, false);
 	}
 
 	@Override

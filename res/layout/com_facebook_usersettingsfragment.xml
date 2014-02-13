@@ -61,7 +61,7 @@
 			android:text="@string/ic_close"
 			style="@style/GlyphIcon.Big"
 			android:visibility="visible"
-			android:padding="2dip" />
+			android:padding="2dp" />
 
 	</LinearLayout>
 </ScrollView>

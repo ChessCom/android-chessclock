@@ -469,7 +469,6 @@
 	<string name="show_mini_boards">छोटे बोर्ड दिखाएं </string>
 	<string name="show_timer">घड़ी दिखाएँ</string>
 	<string name="file_saved_to_download">फ़ाइल \"डाउनलोड करने के लिए\" सेव कर लिया गया है </string>
-	<string name="with">के साथ</string>
 	<string name="basic_members_allowed_3_per_day">बेसिक सदस्यों को प्रति दिन 3 की अनुमति है</string>
 	<string name="get_detailed_stats">विस्तृत आँकड़े प्राप्त करें</string>
 	<string name="select_plan">प्लान का चयन करें </string>

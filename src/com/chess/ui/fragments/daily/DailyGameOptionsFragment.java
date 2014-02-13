@@ -129,7 +129,7 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_game_option_daily_view, container, false);
+		return inflater.inflate(R.layout.game_option_daily_view, container, false);
 	}
 
 	@Override

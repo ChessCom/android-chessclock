@@ -469,7 +469,6 @@
 	<string name="show_mini_boards">Ցույց Տալ Մինի Խաղատախտակները</string>
 	<string name="show_timer">Ցուցադրել ժամաչափը</string>
 	<string name="file_saved_to_download">Ֆայլը հիշվել է \"Download\" -ում</string>
-	<string name="with">հետ</string>
 	<string name="basic_members_allowed_3_per_day">Հիմնական Անդամներին Թույլատրելի է 3 անգամ Օրական</string>
 	<string name="get_detailed_stats">Ստանալ Ամբողջական Վիճակագրություն</string>
 	<string name="select_plan">Ընտրել գնային պլանը</string>

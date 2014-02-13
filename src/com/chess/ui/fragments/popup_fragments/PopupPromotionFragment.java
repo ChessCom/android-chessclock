@@ -51,7 +51,7 @@ public class PopupPromotionFragment extends SimplePopupDialogFragment implements
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_promotion_popup, container, false);
+		return inflater.inflate(R.layout.promotion_popup, container, false);
 	}
 
 	@Override

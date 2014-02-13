@@ -92,7 +92,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_create_profile_frame, container, false);
+		return inflater.inflate(R.layout.create_profile_frame, container, false);
 	}
 
 	@Override

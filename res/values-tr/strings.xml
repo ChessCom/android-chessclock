@@ -468,7 +468,6 @@
 	<string name="show_mini_boards">Mini Tahtaları Göster</string>
 	<string name="show_timer">Zamanı Göster</string>
 	<string name="file_saved_to_download">Dosya, \"İndirilenler\" Kısmına Kaydedildi</string>
-	<string name="with">ile</string>
 	<string name="basic_members_allowed_3_per_day">Temel Üyelere 3 günde bir İzin Verilir</string>
 	<string name="get_detailed_stats">Detaylı İstatistikleri Göster</string>
 	<string name="select_plan">Plan Seçin</string>

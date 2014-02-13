@@ -106,7 +106,7 @@
 	<string name="draw">Remis</string>
 	<string name="login">Log Masuk</string>
 	<string name="error">Kesalahan</string>
-	<string name="validateUsername">Panjang Nama Pengguna Anda harus diantara 3 dan 20 karakter dan hanya memuat huruf, angka, garis bawah, dan tanda pisah. Spasi tidak diperbolehkan.</string>
+	<string name="validateUsername">Panjang Nama Pengguna Anda harus diantara 3 dan 20 karakter dan hanya memuat huruf, angka, garis bawah, dan tanda pisah. Spasi tidak dperbolehkan.</string>
 	<string name="validatePassword">Panjang kata sandi Anda harus diantara 3 dan 20 karakter.</string>
 	<string name="image">Gambar</string>
 	<string name="no_network">Tidak Ada Jaringan</string>
@@ -116,7 +116,7 @@
 	<string name="no_chess_account_signup_please">Anda tidak memiliki akun Chess.com. Silakan mendaftar - gratis!</string>
 	<string name="pass_dont_match">Kata Sandi Tidak Cocok</string>
 	<string name="version_check">Periksa Versi</string>
-	<string name="version_is_obsolete_update">Aplikasi versi yang ini sudah tidak lagi ditunjang. Silakan diperbarui. </string>
+	<string name="version_is_obsolete_update">Aplikasi versi yang ini sudah tidak lagi ditunjang. Silakan dperbarui. </string>
 	<string name="tournaments">Turnamen-turnamen</string>
 	<string name="stats">Statistik</string>
 	<string name="you_been_challenged">"Anda Telah Ditantang"</string>
@@ -285,7 +285,7 @@
 	<string name="account_history">Sejarah Akun</string>
 	<string name="location">Lokasi</string>
 	<string name="share">Berbagi</string>
-	<string name="profile_membership_renew_cancel">Keanggotaan %1$s Anda akan diperbarui pada %2$s.</string>
+	<string name="profile_membership_renew_cancel">Keanggotaan %1$s Anda akan dperbarui pada %2$s.</string>
 	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account">Batal</a>]]></string>
 	<string name="invite_friends_profile_message">Catur lebih menyenangkan dengan teman-teman - undang mereka untuk bergabung!</string>
 	<string name="profile_account_message_1">Akun Anda diatur ke situs </string>
@@ -468,8 +468,7 @@
 	<string name="show_mini_boards">Tampilkan Papan Kecil</string>
 	<string name="show_timer">Tampilkan Penunjuk Waktu</string>
 	<string name="file_saved_to_download">FIle Telah Disimpan di \"Unduh\"</string>
-	<string name="with">dengan</string>
-	<string name="basic_members_allowed_3_per_day">Anggota Biasa Diperbolehkan 3 Taktik Per Hari</string>
+	<string name="basic_members_allowed_3_per_day">Anggota Biasa dperbolehkan 3 Taktik Per Hari</string>
 	<string name="get_detailed_stats">Dapatkan Rincian Statistik</string>
 	<string name="select_plan">Pilih Paket Pembelian</string>
 	<string name="ignore">Abaikan</string>

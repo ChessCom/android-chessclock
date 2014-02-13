@@ -67,7 +67,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_settings_frame, container, false);
+		return inflater.inflate(R.layout.settings_frame, container, false);
 	}
 
 	@Override
@@ -176,7 +176,7 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_settings_menu_item, parent, false);
+			View view = inflater.inflate(R.layout.settings_menu_item, parent, false);
 			ViewHolder holder = new ViewHolder();
 			holder.icon = (TextView) view.findViewById(R.id.iconTxt);
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);

@@ -140,7 +140,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_stats_game_details_frame, container, false);
+		return inflater.inflate(R.layout.stats_game_details_frame, container, false);
 	}
 
 	@Override
@@ -548,7 +548,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 		// set id's to view for further set data to them
 		{// Highest Rating
-			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.new_stats_rating_item_view, null, false);
+			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.stats_rating_item_view, null, false);
 			((TextView) highestRatingView.findViewById(R.id.ratingLabelTxt)).setText(R.string.highest_rating);
 			highestRatingView.findViewById(R.id.subtitleTxt).setId(HIGHEST_ID + RATING_SUBTITLE_ID);
 			highestRatingView.findViewById(R.id.ratingValueTxt).setId(HIGHEST_ID + RATING_VALUE_ID);
@@ -557,7 +557,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		}
 
 		{// Lowest Rating
-			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.new_stats_rating_item_view, null, false);
+			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.stats_rating_item_view, null, false);
 			((TextView) highestRatingView.findViewById(R.id.ratingLabelTxt)).setText(R.string.lowest_rating);
 			highestRatingView.findViewById(R.id.subtitleTxt).setId(LOWEST_ID + RATING_SUBTITLE_ID);
 			highestRatingView.findViewById(R.id.ratingValueTxt).setId(LOWEST_ID + RATING_VALUE_ID);
@@ -566,7 +566,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		}
 
 		{// Average Opponent Rating
-			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.new_stats_rating_item_view, null, false);
+			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.stats_rating_item_view, null, false);
 			((TextView) highestRatingView.findViewById(R.id.ratingLabelTxt)).setText(R.string.avg_opponent_rating);
 			highestRatingView.findViewById(R.id.ratingValueTxt).setId(AVERAGE_ID + RATING_VALUE_ID);
 			((TextView) highestRatingView.findViewById(R.id.subtitleTxt)).setText(R.string.three_months);
@@ -575,7 +575,7 @@ public class StatsGameDetailsFragment extends CommonLogicFragment implements Rad
 		}
 
 		{// Best Win Rating
-			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.new_stats_rating_item_view, null, false);
+			RelativeLayout highestRatingView = (RelativeLayout) inflater.inflate(R.layout.stats_rating_item_view, null, false);
 			((TextView) highestRatingView.findViewById(R.id.ratingLabelTxt)).setText(R.string.best_win_rating);
 			highestRatingView.findViewById(R.id.subtitleTxt).setId(BEST_WIN_ID + RATING_SUBTITLE_ID);
 			highestRatingView.findViewById(R.id.ratingValueTxt).setId(BEST_WIN_ID + RATING_VALUE_ID);

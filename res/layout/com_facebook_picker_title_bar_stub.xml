@@ -19,7 +19,7 @@
 		android:id="@+id/com_facebook_picker_title_bar_stub"
 		android:inflatedId="@+id/com_facebook_picker_title_bar"
 		android:layout="@layout/com_facebook_picker_title_bar"
-		android:layout_height="48dip"
+		android:layout_height="48dp"
 		android:layout_width="fill_parent" />
 
 </merge>

@@ -44,7 +44,7 @@ public class PopupSelectPhotoFragment extends DialogFragment implements AdapterV
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
-		return inflater.inflate(R.layout.new_popup_list_selection_frame, container, false);
+		return inflater.inflate(R.layout.popup_list_selection_frame, container, false);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class PopupSelectPhotoFragment extends DialogFragment implements AdapterV
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_select_list_item, parent, false);
+			View view = inflater.inflate(R.layout.select_list_item, parent, false);
 			ViewHolder holder = new ViewHolder();
 
 			holder.name = (TextView) view.findViewById(R.id.nameTxt);

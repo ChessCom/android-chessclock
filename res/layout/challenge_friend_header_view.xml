@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.chess"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<!--Chess.com Username Play!-->
+	<com.chess.widgets.LinLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingStart="10dp"
+		android:paddingEnd="10dp"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		style="@style/ListItem"
+		android:gravity="center_vertical">
+
+		<com.chess.widgets.EditButton
+			android:id="@+id/usernameEditBtn"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:hint="@string/username"
+			style="@style/EditButton"
+			android:layout_marginEnd="10dp"
+			android:layout_marginRight="10dp" />
+
+		<com.chess.widgets.RoboButton
+			android:id="@+id/dailyPlayBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/play"
+			style="@style/Button.OrangeNoBorder.Small" />
+
+	</com.chess.widgets.LinLayout>
+
+	<!--Chess.com Friends-->
+	<com.chess.widgets.LinLayout
+		android:id="@+id/chesscomFriendsView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingStart="14dp"
+		android:paddingEnd="10dp"
+		android:paddingLeft="14dp"
+		android:paddingRight="10dp"
+		style="@style/ListItem"
+		android:gravity="center_vertical">
+
+		<!--Icon-->
+		<com.chess.widgets.RoboTextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/ic_pawn"
+			android:textColor="@color/new_light_grey_2"
+			style="@style/GlyphIcon.Big" />
+
+		<com.chess.widgets.RoboTextView
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/chess_com"
+			android:textColor="@color/new_light_grey"
+			app:themeColor="true" />
+
+	</com.chess.widgets.LinLayout>
+
+
+	<!--Facebook Friends-->
+	<com.chess.widgets.LinLayout
+		android:id="@+id/facebookFriendsView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingStart="14dp"
+		android:paddingEnd="10dp"
+		android:paddingLeft="14dp"
+		android:paddingRight="10dp"
+		style="@style/ListItem"
+		android:gravity="center_vertical">
+
+		<!--Icon-->
+		<com.chess.widgets.RoboTextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/ic_facebook"
+			android:textColor="@color/new_light_grey_2"
+			style="@style/GlyphIcon.Big" />
+
+		<com.chess.widgets.RoboTextView
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/facebook"
+			android:textColor="@color/new_light_grey"
+			app:themeColor="true" />
+
+	</com.chess.widgets.LinLayout>
+
+	<!--Your Contacts-->
+	<com.chess.widgets.LinLayout
+		android:id="@+id/yourContactsView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingStart="14dp"
+		android:paddingEnd="10dp"
+		android:paddingLeft="14dp"
+		android:paddingRight="10dp"
+		style="@style/ListItem"
+		android:gravity="center_vertical">
+
+		<!--Icon-->
+		<com.chess.widgets.RoboTextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/ic_contacts"
+			android:textColor="@color/new_light_grey_2"
+			style="@style/GlyphIcon.Big" />
+
+		<com.chess.widgets.RoboTextView
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/contacts"
+			android:textColor="@color/new_light_grey"
+			app:themeColor="true" />
+
+	</com.chess.widgets.LinLayout>
+
+	<!--Email -->
+	<com.chess.widgets.LinLayout
+		android:id="@+id/yourEmailView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:paddingStart="14dp"
+		android:paddingEnd="10dp"
+		android:paddingLeft="14dp"
+		android:paddingRight="10dp"
+		style="@style/ListItem"
+		android:gravity="center_vertical">
+
+		<!--Icon-->
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/emailIconTxt"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/ic_email_dark"
+			android:textColor="@color/new_light_grey_2"
+			style="@style/GlyphIcon.Big" />
+
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/emailTxt"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/email"
+			android:textColor="@color/new_light_grey"
+			app:themeColor="true" />
+
+		<com.chess.widgets.EditButton
+			android:id="@+id/emailEditBtn"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:hint="@string/email"
+			style="@style/EditButton"
+			android:layout_marginEnd="10dp"
+			android:layout_marginRight="10dp"
+			android:visibility="gone" />
+
+		<com.chess.widgets.RoboButton
+			android:id="@+id/addEmailBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/play"
+			style="@style/Button.OrangeNoBorder.Small"
+			android:visibility="gone" />
+
+
+	</com.chess.widgets.LinLayout>
+
+	<!--Recent Opponents Header-->
+	<com.chess.widgets.LinLayout
+		android:id="@+id/tacticsHeaderView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_vertical"
+		style="@style/ListItem.Header.Dark"
+		android:paddingStart="13dp"
+		android:paddingEnd="@dimen/smaller_scr_side_padding"
+		android:paddingLeft="13dp"
+		android:paddingRight="@dimen/smaller_scr_side_padding">
+
+		<!--Recent Icon-->
+		<com.chess.widgets.RoboTextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/ic_recent"
+			android:textColor="@color/new_light_grey_2"
+			android:textSize="26dp"
+			style="@style/GlyphIcon" />
+
+		<com.chess.widgets.RoboTextView
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/recent_opponents"
+			style="@style/HeaderTitle.Light" />
+
+	</com.chess.widgets.LinLayout>
+
+
+</LinearLayout>

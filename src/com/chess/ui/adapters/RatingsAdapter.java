@@ -24,7 +24,7 @@ public class RatingsAdapter extends ItemsAdapter<RatingListItem> {
 
 	@Override
 	protected View createView(ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_rating_list_item, parent, false);
+		View view = inflater.inflate(R.layout.rating_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.labelTxt = (TextView) view.findViewById(R.id.ratingLabelTxt);
 		holder.valueTxt = (TextView) view.findViewById(R.id.ratingValueTxt);

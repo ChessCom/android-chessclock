@@ -30,7 +30,6 @@ import com.chess.ui.fragments.daily.DailyHomeFragmentTablet;
 import com.chess.ui.fragments.forums.ForumCategoriesFragment;
 import com.chess.ui.fragments.forums.ForumCategoriesFragmentTablet;
 import com.chess.ui.fragments.friends.FriendsFragment;
-import com.chess.ui.fragments.home.HomeTabsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragment;
 import com.chess.ui.fragments.lessons.LessonsFragmentTablet;
 import com.chess.ui.fragments.live.LiveHomeFragment;
@@ -114,7 +113,7 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_list_view_frame, container, false);
+		return inflater.inflate(R.layout.list_view_frame, container, false);
 	}
 
 	@Override
@@ -445,7 +444,7 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_navigation_menu_item, parent, false);
+			View view = inflater.inflate(R.layout.navigation_menu_item, parent, false);
 			ViewHolder holder = new ViewHolder();
 			holder.icon = (ProgressImageView) view.findViewById(R.id.iconImg);
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);

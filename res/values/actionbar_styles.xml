@@ -80,6 +80,8 @@
 		<!-- layout_width/height/weight must be set in code -->
 		<item name="android:gravity">center</item>
 		<item name="android:textSize">20sp</item>
+		<item name="android:paddingStart">48dp</item>
+		<item name="android:paddingEnd">2dp</item>
 		<item name="android:paddingLeft">48dp</item>
 		<item name="android:paddingRight">2dp</item>
 		<item name="android:singleLine">true</item>

@@ -101,7 +101,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_forum_posts_frame, container, false);
+		return inflater.inflate(R.layout.forum_posts_frame, container, false);
 	}
 
 	@Override
@@ -475,7 +475,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 	private void widgetsInit(View view) {
 		// add headerView
-		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_forum_header_view, null, false);
+		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.forum_header_view, null, false);
 		forumHeaderTxt = (TextView) headerView.findViewById(R.id.forumHeaderTxt);
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);

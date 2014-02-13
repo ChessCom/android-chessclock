@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.chess"
+	android:orientation="vertical"
+	android:id="@+id/boardFrame"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/moveVariationTxt"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		style="@style/ListItem.Header.Dark"
+		android:gravity="center"
+		android:minHeight="42dp"
+		android:textColor="@color/semitransparent_white_65"
+		android:textSize="15sp"
+		app:themeColor="true" />
+
+	<com.chess.ui.views.chess_boards.ChessBoardExplorerView
+		android:id="@+id/boardview"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" />
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<com.chess.widgets.RoboButton
+			android:id="@+id/leftBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			style="@style/Rect.Bottom.Left"
+			android:text="@string/ic_left"
+			android:textSize="@dimen/game_controls_icon_size"
+			android:textColor="@color/text_controls_icons"
+			android:minWidth="@dimen/game_controls_button_height"
+			app:ttf="Icon" />
+
+		<com.chess.widgets.RoboListView
+			android:id="@+id/listView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_toEndOf="@id/leftBtn"
+			android:layout_toStartOf="@+id/rightBtn"
+			style="@style/Rect.Bottom.Middle"
+			app:btn_is_clickable="false" />
+
+		<com.chess.widgets.RoboButton
+			android:id="@id/rightBtn"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			style="@style/Rect.Bottom.Right"
+			android:text="@string/ic_right"
+			android:layout_alignParentEnd="true"
+			android:textSize="@dimen/game_controls_icon_size"
+			android:textColor="@color/text_controls_icons"
+			android:minWidth="@dimen/game_controls_button_height"
+			app:ttf="Icon" />
+
+	</RelativeLayout>
+
+</LinearLayout>

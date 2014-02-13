@@ -468,7 +468,6 @@
 	<string name="show_mini_boards">Mostrar taulers en miniatura</string>
 	<string name="show_timer">Mostrar el rellotge</string>
 	<string name="file_saved_to_download">L\'arxiu s\'ha desat a la carpeta \"Baixades\"</string>
-	<string name="with">amb</string>
 	<string name="basic_members_allowed_3_per_day">Als membres bàsics se\'ls permeten 3 per dia</string>
 	<string name="get_detailed_stats">Obtenir estadístiques detallades</string>
 	<string name="select_plan">Escollir el pla</string>

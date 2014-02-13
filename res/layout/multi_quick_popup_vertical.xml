@@ -9,7 +9,7 @@
 		android:layout_height="wrap_content"
 		android:scrollbars="none"
 		android:minWidth="@dimen/quick_action_item_min_width"
-		android:padding="15dip"
+		android:padding="15dp"
 		android:background="@drawable/rounded_border_white_back">
 
 		<LinearLayout

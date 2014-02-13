@@ -57,7 +57,7 @@ public class HomePlayFragmentTablet extends CommonLogicFragment implements ViewT
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_home_no_games_frame, container, false);
+		return inflater.inflate(R.layout.home_no_games_frame, container, false);
 	}
 
 	@Override

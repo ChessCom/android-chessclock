@@ -4,12 +4,12 @@
 	android:dither="true"
 	android:shape="ring"
 	android:thicknessRatio="16"
-	android:thickness="33dip"
+	android:thickness="33dp"
 	android:innerRadiusRatio="5"
 	android:useLevel="false">
 	<size
-		android:width="8dip"
-		android:height="28dip" />
+		android:width="8dp"
+		android:height="28dp" />
 	<gradient
 		android:angle="270"
 		android:startColor="@color/white"

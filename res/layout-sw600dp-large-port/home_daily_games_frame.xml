@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/semitransparent_white_90">
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/emptyView"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:text="@string/no_network"
+		android:gravity="center"
+		android:layout_gravity="center"
+		android:textSize="20sp"
+		android:textColor="@color/grey_button_1"
+		android:paddingStart="10dp"
+		android:paddingLeft="10dp"
+		custom:ttf="Bold"
+		style="@style/DarkShadowBottom"
+		android:visibility="gone"
+		android:layout_centerInParent="true" />
+
+	<GridView
+		android:id="@+id/gridView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_above="@+id/completedGamesHeaderView"
+		android:background="@color/transparent"
+		android:dividerHeight="0px"
+		android:divider="@null"
+		android:columnWidth="@dimen/daily_game_list_item_width"
+		android:numColumns="@integer/home_daily_columns"
+		android:stretchMode="columnWidth"
+		android:paddingTop="@dimen/common_tablet_side_padding"
+		android:paddingStart="@dimen/common_tablet_side_padding"
+		android:paddingEnd="@dimen/common_tablet_side_padding"
+		android:paddingLeft="@dimen/common_tablet_side_padding"
+		android:paddingRight="@dimen/common_tablet_side_padding"
+		android:verticalSpacing="@dimen/grid_view_spacing"
+		android:fadingEdge="none"
+		android:requiresFadingEdge="none"
+		android:layout_centerHorizontal="true"
+		android:gravity="center_horizontal" />
+
+	<!--Complete Button(Header)-->
+	<com.chess.widgets.LinLayout
+		android:id="@id/completedGamesHeaderView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		style="@style/ListItem.Header_2.Light"
+		android:gravity="center_vertical"
+		android:layout_above="@+id/bannerUpgradeView"
+		android:paddingStart="7dp"
+		android:paddingEnd="15dp"
+		android:paddingLeft="7dp"
+		android:paddingRight="15dp">
+
+		<!--Icon-->
+		<com.chess.widgets.RoboTextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/ic_board"
+			android:textColor="@color/new_light_grey_2"
+			style="@style/GlyphIcon.Big" />
+
+		<!--Title-->
+		<com.chess.widgets.RoboTextView
+			android:id="@+id/headerTitle"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="@string/completed"
+			android:paddingStart="@dimen/smaller_scr_side_padding"
+			android:paddingLeft="@dimen/smaller_scr_side_padding"
+			style="@style/HeaderTitle.Dark"
+			custom:ttf="Regular" />
+
+	</com.chess.widgets.LinLayout>
+
+	<!--Ads-->
+	<include
+		android:id="@id/bannerUpgradeView"
+		layout="@layout/mopub_ad_view"
+		android:layout_gravity="center_horizontal"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

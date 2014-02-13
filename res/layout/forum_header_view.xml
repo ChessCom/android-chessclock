@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:minHeight="@dimen/default_list_item_height">
+
+	<!--HeaderTitle-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/forumHeaderTxt"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:textSize="19sp"
+		android:layout_centerVertical="true"
+		android:paddingStart="@dimen/default_scr_side_padding"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		custom:ttf="Bold" />
+
+	<!--Bottom line-->
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:background="@color/new_friends_list_divider" />
+
+</RelativeLayout>

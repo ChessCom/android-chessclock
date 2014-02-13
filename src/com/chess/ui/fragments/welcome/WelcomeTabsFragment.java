@@ -2,7 +2,6 @@ package com.chess.ui.fragments.welcome;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import com.chess.R;
 import com.chess.statics.WelcomeHolder;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.articles.ArticleCategoriesFragmentTablet;
 import com.chess.ui.interfaces.FragmentTabsFace;
 
 /**
@@ -45,7 +43,7 @@ public class WelcomeTabsFragment extends CommonLogicFragment implements Fragment
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_welcome_tabs_frame, container, false);
+		return inflater.inflate(R.layout.welcome_tabs_frame, container, false);
 	}
 
 	@Override

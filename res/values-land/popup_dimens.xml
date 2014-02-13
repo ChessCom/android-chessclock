@@ -1,6 +1,6 @@
 <resources>
 	<!--Popup internal dimens -->
-	<dimen name="popup_dialog_width_land">450dip</dimen>
+	<dimen name="popup_dialog_width_land">450dp</dimen>
 
 
 </resources>

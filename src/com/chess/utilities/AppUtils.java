@@ -74,7 +74,7 @@ public class AppUtils {
 	public static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 	public static final boolean ICS_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 	public static final boolean JELLYBEAN_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
-	public static final boolean JELLYBEAN_1_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+	public static final boolean JELLYBEAN_MR1_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 	public static int sizeOfBitmap(Bitmap data) {
@@ -255,7 +255,7 @@ public class AppUtils {
 	 * @return {@code true} if device has software keys like Nexus 4 or Galaxy Nexus
 	 */
 	public static boolean hasSoftKeys(Context context) {
-		if (JELLYBEAN_1_PLUS_API) {
+		if (JELLYBEAN_MR1_PLUS_API) {
 			Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
 
 			DisplayMetrics realDisplayMetrics = new DisplayMetrics();
@@ -274,6 +274,16 @@ public class AppUtils {
 		} else {
 			return false;
 		}
+	}
+
+	public static boolean useLtr(Context context) {
+		boolean useLtr = true;
+		if (AppUtils.JELLYBEAN_MR1_PLUS_API) {
+			int layoutDirection = context.getResources().getConfiguration().getLayoutDirection();
+			useLtr = layoutDirection == View.LAYOUT_DIRECTION_LTR;
+		}
+
+		return useLtr;
 	}
 
 	public static boolean isTablet(Context context) {

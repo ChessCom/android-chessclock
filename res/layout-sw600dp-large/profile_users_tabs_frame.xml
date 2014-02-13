@@ -12,7 +12,7 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
 		android:background="@color/white"
-		android:gravity="left">
+		android:gravity="start">
 
 		<!--Activity-->
 		<com.chess.widgets.RoboRadioButton

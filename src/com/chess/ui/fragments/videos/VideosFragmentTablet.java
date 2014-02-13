@@ -29,7 +29,6 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
-import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -77,7 +76,7 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 
 			if (isNeedToUpgrade()) {
 				LayoutInflater inflater = LayoutInflater.from(getActivity());
-				View headerView = inflater.inflate(R.layout.new_lessons_upgrade_view, null, false);
+				View headerView = inflater.inflate(R.layout.lessons_upgrade_view, null, false);
 				headerView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 				TextView textView = (TextView) headerView.findViewById(R.id.lessonsUpgradeMessageTxt);
 				textView.setText(R.string.improve_game_with_videos);
@@ -232,7 +231,7 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 
 	private void init() {
 		categoriesAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
-		categoriesAdapter.setLayoutId(R.layout.new_common_titled_list_item_thin_white);
+		categoriesAdapter.setLayoutId(R.layout.common_titled_list_item_thin_white);
 
 		videoCategoriesUpdateListener = new VideoCategoriesUpdateListener();
 		saveVideoCategoriesUpdateListener = new SaveVideoCategoriesUpdateListener();

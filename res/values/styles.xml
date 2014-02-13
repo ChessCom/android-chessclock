@@ -17,12 +17,14 @@
 		<item name="android:clickable">true</item>
 		<item name="android:textSize">@dimen/default_button_text_size</item>
 		<item name="android:gravity">center</item>
-		<item name="android:paddingLeft">2dip</item>
-		<item name="android:paddingRight">2dip</item>
-		<item name="android:paddingTop">1dip</item>
-		<item name="android:paddingBottom">1dip</item>
-		<item name="android:layout_marginTop">2dip</item>
-		<item name="android:layout_marginBottom">2dip</item>
+		<item name="android:paddingStart">2dp</item>
+		<item name="android:paddingEnd">2dp</item>
+		<item name="android:paddingLeft">2dp</item>
+		<item name="android:paddingRight">2dp</item>
+		<item name="android:paddingTop">1dp</item>
+		<item name="android:paddingBottom">1dp</item>
+		<item name="android:layout_marginTop">2dp</item>
+		<item name="android:layout_marginBottom">2dp</item>
 		<item name="android:minWidth">@dimen/button_min_width</item>
 		<item name="android:minHeight">@dimen/main_button_height</item>
 		<item name="android:textColor">@color/white</item>
@@ -64,16 +66,16 @@
 	</style>
 
 	<style name="GlyphIcon.Square">
-		<item name="android:padding">3dip</item>
+		<item name="android:padding">3dp</item>
 		<item name="android:textSize">@dimen/glyph_icon_big</item>
 	</style>
 
 	<style name="GlyphIcon.RoundBack">
-		<item name="android:padding">0dip</item>
+		<item name="android:padding">0dp</item>
 		<item name="android:textColor">@color/new_light_grey_2</item>
 		<item name="android:textSize">@dimen/glyph_icon_round_back</item>
 		<item name="android:background">@drawable/video_play_btn_back_small_selector</item>
-		<item name="android:minWidth">0dip</item>
+		<item name="android:minWidth">0dp</item>
 	</style>
 
 	<style name="GlyphIcon.RoundBack.Play">
@@ -123,20 +125,20 @@
 	</style>
 
 	<style name="HomeLiveOptionsButton" parent="Button.Glassy.Small">
-		<item name="android:layout_width">0dip</item>
+		<item name="android:layout_width">0dp</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_weight">1</item>
-		<item name="android:padding">2dip</item>
+		<item name="android:padding">2dp</item>
 		<item name="android:layout_margin">1px</item>
 		<item name="android:visibility">gone</item>
 	</style>
 
 	<style name="HomeDailyOptionsButton" parent="Button.Glassy">
-		<item name="android:layout_width">0dip</item>
+		<item name="android:layout_width">0dp</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_weight">1</item>
-		<item name="android:padding">2dip</item>
-		<item name="android:layout_margin">5dip</item>
+		<item name="android:padding">2dp</item>
+		<item name="android:layout_margin">5dp</item>
 		<item name="android:visibility">gone</item>
 	</style>
 
@@ -144,7 +146,7 @@
 		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:minWidth">@dimen/new_right_live_option_button_width</item>
-		<item name="android:padding">2dip</item>
+		<item name="android:padding">2dp</item>
 		<item name="android:layout_margin">1px</item>
 		<item name="android:visibility">gone</item>
 	</style>
@@ -172,18 +174,18 @@
 		<item name="android:textSize">17sp</item>
 		<item name="android:textColor">@color/black</item>
 		<item name="android:minHeight">@dimen/default_field_height</item>
-		<item name="android:paddingBottom">7dip</item>
+		<item name="android:paddingBottom">7dp</item>
 		<item name="android:gravity">bottom</item>
 		<item name="android:textColorHint">@color/hint_text</item>
-		<item name="android:layout_marginTop">2dip</item>
-		<item name="android:layout_marginBottom">2dip</item>
+		<item name="android:layout_marginTop">2dp</item>
+		<item name="android:layout_marginBottom">2dp</item>
 	</style>
 
 	<style name="DefaultEdt.Empty">
 		<!--<item name="android:background">@drawable/textfield_selector</item>-->
 		<item name="android:background">@color/transparent</item>
 		<item name="android:gravity">center</item>
-		<item name="android:minHeight">20dip</item>
+		<item name="android:minHeight">20dp</item>
 	</style>
 
 	<style name="EditButton" parent="Button.Glassy.Small">
@@ -211,8 +213,8 @@
 		<item name="android:completionThreshold">2</item>
 		<item name="android:dropDownSelector">@android:drawable/list_selector_background</item>
 		<item name="android:popupBackground">@android:drawable/spinner_dropdown_background</item>
-		<item name="android:dropDownVerticalOffset">-6dip</item>
-		<item name="android:dropDownHorizontalOffset">0dip</item>
+		<item name="android:dropDownVerticalOffset">-6dp</item>
+		<item name="android:dropDownHorizontalOffset">0dp</item>
 		<item name="android:dropDownWidth">wrap_content</item>
 	</style>
 
@@ -261,8 +263,8 @@
 		<item name="android:textSize">17sp</item>
 		<item name="android:textColor">@color/white</item>
 		<item name="android:textStyle">normal</item>
-		<item name="android:layout_marginTop">2dip</item>
-		<item name="android:layout_marginBottom">2dip</item>
+		<item name="android:layout_marginTop">2dp</item>
+		<item name="android:layout_marginBottom">2dp</item>
 		<item name="android:gravity">center_vertical</item>
 	</style>
 
@@ -270,21 +272,23 @@
 		<!--<item name="android:progressDrawable">@drawable/progress_horizontal</item>-->
 		<!--<item name="android:indeterminateDrawable">@drawable/progress_horizontal</item>-->
 		<!--<item name="android:thumb">@drawable/seek_thumb_selector</item>-->
-		<item name="android:thumbOffset">8dip</item>
-		<item name="android:paddingLeft">7dip</item>
-		<item name="android:paddingRight">7dip</item>
-		<item name="android:minHeight">14dip</item>
-		<item name="android:maxHeight">14dip</item>
+		<item name="android:thumbOffset">8dp</item>
+		<item name="android:paddingStart">7dp</item>
+		<item name="android:paddingEnd">7dp</item>
+		<item name="android:minHeight">14dp</item>
+		<item name="android:maxHeight">14dp</item>
 	</style>
 
 	<style name="RatingSeekBar" parent="android:style/Widget.SeekBar">
 		<item name="android:indeterminateDrawable">@drawable/empty</item>
 		<item name="android:thumb">@drawable/seek_thumb_selector</item>
-		<item name="android:thumbOffset">8dip</item>
-		<item name="android:paddingLeft">7dip</item>
-		<item name="android:paddingRight">7dip</item>
-		<item name="android:minHeight">20dip</item>
-		<item name="android:maxHeight">20dip</item>
+		<item name="android:thumbOffset">8dp</item>
+		<item name="android:paddingStart">7dp</item>
+		<item name="android:paddingEnd">7dp</item>
+		<item name="android:paddingLeft">7dp</item>
+		<item name="android:paddingRight">7dp</item>
+		<item name="android:minHeight">20dp</item>
+		<item name="android:maxHeight">20dp</item>
 	</style>
 
 	<!--Home Tabs-->
@@ -319,7 +323,7 @@
 		<item name="android:textSize">11sp</item>
 		<item name="android:textColor">@color/text_blue</item>
 		<item name="android:gravity">center</item>
-		<item name="android:minHeight">32dip</item>
+		<item name="android:minHeight">32dp</item>
 		<item name="ttf">Bold</item>
 	</style>
 
@@ -336,20 +340,21 @@
 	</style>
 
 	<style name="SettingsDividerText" parent="Text">
-		<item name="android:paddingTop">10dip</item>
-		<item name="android:paddingLeft">10dip</item>
+		<item name="android:paddingTop">10dp</item>
+		<item name="android:paddingStart">10dp</item>
+		<item name="android:paddingLeft">10dp</item>
 		<item name="android:textStyle">bold</item>
 	</style>
 
 	<style name="lineDivider">
-		<item name="android:layout_marginBottom">5dip</item>
+		<item name="android:layout_marginBottom">5dp</item>
 	</style>
 
 	<style name="PageRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
 		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:button">@drawable/empty</item>
-		<item name="android:layout_margin">5dip</item>
+		<item name="android:layout_margin">5dp</item>
 		<item name="android:clickable">false</item>
 		<item name="android:textSize">1sp</item>
 		<item name="android:background">@drawable/pager_indicator_selector</item>
@@ -359,14 +364,18 @@
 		<item name="android:weightSum">10</item>
 		<item name="android:paddingBottom">@dimen/default_linear_bottom_padding</item>
 		<item name="android:paddingTop">@dimen/default_linear_top_padding</item>
+		<item name="android:paddingStart">@dimen/default_linear_left_padding</item>
+		<item name="android:paddingEnd">@dimen/default_linear_right_padding</item>
 		<item name="android:paddingLeft">@dimen/default_linear_left_padding</item>
 		<item name="android:paddingRight">@dimen/default_linear_right_padding</item>
 		<item name="android:gravity">center_vertical</item>
 	</style>
 
 	<style name="LinearListItem" parent="ListItem">
-		<item name="android:paddingLeft">15dip</item>
-		<item name="android:paddingRight">15dip</item>
+		<item name="android:paddingStart">15dp</item>
+		<item name="android:paddingEnd">15dp</item>
+		<item name="android:paddingLeft">15dp</item>
+		<item name="android:paddingRight">15dp</item>
 		<item name="android:minHeight">@dimen/default_list_item_height</item>
 		<item name="android:gravity">center_vertical</item>
 	</style>
@@ -396,12 +405,12 @@
 	</style>
 
 	<style name="GameLabel.Timer">
-		<item name="android:drawablePadding">5dip</item>
+		<item name="android:drawablePadding">5dp</item>
 		<item name="android:maxWidth">@dimen/player_name_max_width</item>
 	</style>
 
 	<style name="GameLabel.Player">
-		<item name="android:drawablePadding">5dip</item>
+		<item name="android:drawablePadding">5dp</item>
 		<item name="android:maxWidth">@dimen/player_name_max_width</item>
 		<item name="android:ellipsize">marquee</item>
 		<item name="android:marqueeRepeatLimit">marquee_forever</item>
@@ -548,20 +557,21 @@
 	</style>
 
 	<style name="welcomeCloseBtn" parent="@style/Button.Glassy.Small">
+		<item name="android:layout_alignParentEnd">true</item>
 		<item name="android:layout_alignParentRight">true</item>
 		<item name="android:textColor">@color/text_controls_icons</item>
 		<item name="ttf">Icon</item>
 		<item name="android:text">@string/ic_close</item>
-		<item name="android:textSize">40dip</item>
-		<item name="android:minWidth">48dip</item>
+		<item name="android:textSize">40dp</item>
+		<item name="android:minWidth">48dp</item>
 		<item name="android:visibility">gone</item>
 	</style>
 
 	<style name="ExplorerWeightItem">
 		<item name="android:textSize">9sp</item>
 		<item name="android:gravity">center</item>
-		<item name="android:paddingTop">4dip</item>
-		<item name="android:paddingBottom">4dip</item>
+		<item name="android:paddingTop">4dp</item>
+		<item name="android:paddingBottom">4dp</item>
 	</style>
 
 </resources>

@@ -81,7 +81,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_list_view_frame, container, false);
+		return inflater.inflate(R.layout.list_view_frame, container, false);
 	}
 
 	@Override
@@ -472,7 +472,7 @@ public class SettingsThemeFragment extends CommonLogicFragment implements Adapte
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_settings_theme_item, parent, false);
+			View view = inflater.inflate(R.layout.settings_theme_item, parent, false);
 			ViewHolder holder = new ViewHolder();
 
 			holder.check = (TextView) view.findViewById(R.id.iconTxt);

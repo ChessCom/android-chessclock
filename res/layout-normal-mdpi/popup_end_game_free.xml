@@ -3,7 +3,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical"
-	android:paddingTop="4dip"
+	android:paddingTop="4dp"
 	android:minWidth="@dimen/popup_end_game_width"
 	android:background="@drawable/popup_white_back">
 
@@ -27,8 +27,10 @@
 		android:gravity="center_horizontal"
 		android:textSize="@dimen/popup_title_text_size_medium"
 		android:textColor="@color/new_author_dark_grey"
-		android:paddingTop="3dip"
-		android:paddingBottom="3dip"
+		android:paddingTop="3dp"
+		android:paddingBottom="3dp"
+		android:paddingStart="@dimen/default_scr_side_padding"
+		android:paddingEnd="@dimen/default_scr_side_padding"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
 		android:text="Reason" />
@@ -42,8 +44,8 @@
 		android:gravity="center_horizontal"
 		android:textSize="@dimen/popup_title_text_size_medium"
 		android:textColor="@color/new_author_dark_grey"
-		android:paddingTop="6dip"
-		android:paddingBottom="6dip"
+		android:paddingTop="6dp"
+		android:paddingBottom="6dp"
 		android:text="New Rating" />
 
 	<!--Rating-->
@@ -51,8 +53,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_horizontal"
-		android:paddingTop="5dip"
-		android:paddingBottom="5dip">
+		android:paddingTop="5dp"
+		android:paddingBottom="5dp">
 		<!--New rating value-->
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/resultRatingTxt"
@@ -72,7 +74,8 @@
 			android:layout_gravity="center"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:textSize="@dimen/game_end_popup_text_size"
-			android:paddingLeft="10dip"
+			android:paddingStart="10dp"
+			android:paddingLeft="10dp"
 			custom:ttf="Bold" />
 
 	</LinearLayout>
@@ -81,10 +84,12 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:paddingStart="@dimen/default_scr_side_padding"
+		android:paddingEnd="@dimen/default_scr_side_padding"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
-		android:paddingTop="5dip"
-		android:paddingBottom="1dip">
+		android:paddingTop="5dp"
+		android:paddingBottom="1dp">
 
 		<!--Rematch -->
 		<com.chess.widgets.RoboButton
@@ -94,7 +99,8 @@
 			android:layout_weight="1"
 			android:text="@string/rematch"
 			style="@style/Button.OrangeNoBorder"
-			android:layout_marginRight="5dip" />
+			android:layout_marginEnd="5dp"
+			android:layout_marginRight="5dp" />
 
 		<!--New Game -->
 		<com.chess.widgets.RoboButton
@@ -104,7 +110,8 @@
 			android:layout_weight="1"
 			android:text="@string/new_game"
 			style="@style/Button.OrangeNoBorder"
-			android:layout_marginLeft="5dip" />
+			android:layout_marginStart="5dp"
+			android:layout_marginLeft="5dp" />
 
 	</LinearLayout>
 
@@ -112,6 +119,8 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:paddingStart="@dimen/default_scr_side_padding"
+		android:paddingEnd="@dimen/default_scr_side_padding"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
 		android:paddingTop="2dp"
@@ -120,25 +129,27 @@
 		<!--Analyze -->
 		<com.chess.widgets.RoboButton
 			android:id="@+id/analyzePopupBtn"
-			android:layout_width="0dip"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:padding="1dip"
+			android:padding="1dp"
 			android:text="@string/analyze"
 			style="@style/Button.Glassy"
 			android:textColor="@color/new_author_dark_grey"
-			android:layout_marginRight="5dip" />
+			android:layout_marginEnd="5dp"
+			android:layout_marginRight="5dp" />
 
 		<!--Share-->
 		<com.chess.widgets.RoboButton
 			android:id="@+id/sharePopupBtn"
-			android:layout_width="0dip"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			style="@style/Button.Share"
 			android:text="@string/share"
 			android:drawableLeft="@null"
-			android:layout_marginLeft="5dip" />
+			android:layout_marginStart="5dp"
+			android:layout_marginLeft="5dp" />
 
 	</LinearLayout>
 

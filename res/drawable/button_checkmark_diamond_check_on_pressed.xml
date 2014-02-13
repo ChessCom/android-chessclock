@@ -10,15 +10,15 @@
 				android:height="@dimen/button_checkmark_size" />
 			<stroke
 				android:color="@color/upgrade_diamond_title"
-				android:width="1dip" />
+				android:width="1dp" />
 		</shape>
 	</item>
 
 	<item
-		android:top="1dip"
-		android:left="1dip"
-		android:right="1dip"
-		android:bottom="1dip"
+		android:top="1dp"
+		android:left="1dp"
+		android:right="1dp"
+		android:bottom="1dp"
 		android:drawable="@drawable/ic_diamond_checkmark_pressed">
 
 	</item>

@@ -96,8 +96,8 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		headerView = inflater.inflate(R.layout.new_challenge_friend_header_view, null, false);
-		return inflater.inflate(R.layout.new_challenge_friend_frame, container, false);
+		headerView = inflater.inflate(R.layout.challenge_friend_header_view, null, false);
+		return inflater.inflate(R.layout.challenge_friend_frame, container, false);
 	}
 
 	@Override

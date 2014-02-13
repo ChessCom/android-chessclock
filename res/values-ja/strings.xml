@@ -468,7 +468,6 @@
 	<string name="show_mini_boards">ミニボードを表示します。</string>
 	<string name="show_timer">タイマーを表示する</string>
 	<string name="file_saved_to_download">ファイルが「ダウンロード」に保存されました</string>
-	<string name="with">対</string>
 	<string name="basic_members_allowed_3_per_day">ベーシック・メンバーは1日3つまで</string>
 	<string name="get_detailed_stats">統計情報の詳細を見る</string>
 	<string name="select_plan">プランを選択</string>

@@ -156,7 +156,7 @@
 	<string name="follow">Хадзіць</string>
 	<string name="following_arg">Сачыць %s</string>
 	<string name="comp">Камп\'ютар</string>
-	<string name="tactics">Тактычныя практыкаванні</string>
+	<string name="tactics">Тактыкі</string>
 	<string name="practice">Практыка</string>
 	<string name="performance">Эфектыўнасць</string>
 	<string name="create_profile">Стварыць профіль</string>
@@ -168,7 +168,7 @@
 	<string name="by_signing_up_accept_mobile">Зарэгістраваўшыся, я прымаю</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Умовы выдзялення паслугаў</a>]]></string>
 	<string name="create_chess_profile">Сардэчна запрашаем! Ствары свой шахматны профіль</string>
-	<string name="daily">штодзенны</string>
+	<string name="daily">Штодзенны</string>
 	<string name="improve_game_with_lessons">Палепшыць вашу Гульню з Неабмежаванымі Ўрокамі</string>
 	<string name="improve_game_with_videos">Палепшыць вашу Гульню з Неабмежаваным Відэа</string>
 	<string name="old_password">Стары пароль</string>
@@ -206,7 +206,7 @@
 	<string name="arg_years_ago">%d гадоў таму</string>
 	<string name="photo">Фота</string>
 	<string name="computer">Кампутар</string>
-	<string name="daily_chess">Штодзённыя шахматы</string>
+	<string name="daily_chess">Дзённыя шахматы</string>
 	<string name="live_chess">Шахматы ўжывую</string>
 	<string name="avg_opp_rating_when_i">Сярэдні Рэйтынг Апанента супраць мяне:</string>
 	<string name="games_arg">%s гульняў</string>
@@ -469,7 +469,6 @@
 	<string name="show_mini_boards">Паказаць міні-дашку</string>
 	<string name="show_timer">Паказаць таймер</string>
 	<string name="file_saved_to_download">Файл захаваны ў \"Запампоўках\"</string>
-	<string name="with">з</string>
 	<string name="basic_members_allowed_3_per_day">У асноўным гульцы маюць 3 дні на ход</string>
 	<string name="get_detailed_stats">Атрымаць падрабязную статыстыку</string>
 	<string name="select_plan">Выбраць план</string>

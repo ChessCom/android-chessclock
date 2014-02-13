@@ -184,7 +184,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_game_lessons_frame, container, false);
+		return inflater.inflate(R.layout.game_lessons_frame, container, false);
 	}
 
 	@Override

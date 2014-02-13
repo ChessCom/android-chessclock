@@ -30,7 +30,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 	protected View createView(ViewGroup parent) {
 		ViewHolder holder = new ViewHolder();
 
-		View view = inflater.inflate(R.layout.new_chat_list_item, null, false);
+		View view = inflater.inflate(R.layout.chat_list_item, null, false);
 		holder.text = (TextView) view.findViewById(R.id.messageTxt);
 		holder.myImg = (AvatarView) view.findViewById(R.id.myAvatarImg);
 		holder.opponentImg = (AvatarView) view.findViewById(R.id.opponentAvatarImg);

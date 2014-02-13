@@ -136,7 +136,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_game_live_frame, container, false);
+		return inflater.inflate(R.layout.game_live_frame, container, false);
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		super.onViewCreated(view, savedInstanceState);
 
-		getActivityFace().setCustomActionBarViewId(R.layout.new_home_actionbar);
+		getActivityFace().setCustomActionBarViewId(R.layout.home_actionbar);
 
 		widgetsInit(view);
 		try {

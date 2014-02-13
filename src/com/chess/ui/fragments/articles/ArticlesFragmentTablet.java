@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.ArticleItem;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
@@ -187,7 +185,7 @@ public class ArticlesFragmentTablet extends CommonLogicFragment  implements Item
 
 	private void init() {
 		categoriesAdapter = new CommonCategoriesCursorAdapter(getActivity(), null);
-		categoriesAdapter.setLayoutId(R.layout.new_common_titled_list_item_thin_white);
+		categoriesAdapter.setLayoutId(R.layout.common_titled_list_item_thin_white);
 
 		categoriesUpdateListener = new CategoriesUpdateListener();
 		saveCategoriesUpdateListener = new SaveCategoriesUpdateListener();

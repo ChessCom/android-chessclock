@@ -158,7 +158,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_game_welcome_comp_frame, container, false);
+		return inflater.inflate(R.layout.game_welcome_comp_frame, container, false);
 	}
 
 	@Override
@@ -1085,7 +1085,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_results_menu_item, parent, false);
+			View view = inflater.inflate(R.layout.results_menu_item, parent, false);
 			ViewHolder holder = new ViewHolder();
 			holder.icon = (TextView) view.findViewById(R.id.iconTxt);
 			holder.title = (TextView) view.findViewById(R.id.rowTitleTxt);

@@ -288,7 +288,7 @@
 	<string name="account_history">Sejarah akaun</string>
 	<string name="location">Lokasi</string>
 	<string name="share">Kongsi</string>
-	<string name="profile_membership_renew_cancel">Keahlian %1$s anda akan diperbaharui pada %2$s.</string>
+	<string name="profile_membership_renew_cancel">Keahlian %1$s anda akan dperbaharui pada %2$s.</string>
 	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account">Batal</a>]]></string>
 	<string name="invite_friends_profile_message">Catur lebih seronok dengan rakan - ajak mereka untuk menyertai!</string>
 	<string name="profile_account_message_1">Akaun anda adalah tertakluk kepada laman </string>
@@ -455,7 +455,7 @@
 	<string name="no_messages">Tiada Mesej</string>
 	<string name="select_style">Pilih Gaya</string>
 	<string name="password_changed">Kata Laluan Telah Ditukar</string>
-	<string name="required">Diperlukan</string>
+	<string name="required">dperlukan</string>
 	<string name="you">Anda</string>
 	<string name="add">Tambah</string>
 	<string name="no_hint">Tiada Petunjuk</string>
@@ -471,7 +471,6 @@
 	<string name="show_mini_boards">Papar Papan Mini</string>
 	<string name="show_timer">Tunjukkan Masa</string>
 	<string name="file_saved_to_download">Fail Disimpan ke \"Download\"</string>
-	<string name="with">Dengan</string>
 	<string name="basic_members_allowed_3_per_day">Ahli-ahli biasa dibenarkan 3 kali sehari</string>
 	<string name="get_detailed_stats">Dapatkan Statistik Terperinci</string>
 	<string name="select_plan">Pilih Pelan</string>

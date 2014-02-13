@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chess.widgets.RelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	style="@style/ListItem"
+	android:gravity="center_vertical"
+	android:paddingTop="8dp"
+	android:paddingBottom="8dp"
+	android:paddingEnd="10dp"
+	android:minHeight="@dimen/new_nav_menu_item_height">
+
+	<com.chess.backend.image_load.AvatarView
+		android:id="@+id/playerImg"
+		android:layout_width="@dimen/daily_list_item_image_size"
+		android:layout_height="@dimen/daily_list_item_image_size"
+		android:layout_marginStart="15dp"
+		android:layout_marginEnd="10dp"
+		android:contentDescription="@string/image"
+		android:layout_centerVertical="true" />
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/playerNameTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/new_light_grey"
+		android:layout_toEndOf="@id/playerImg"
+		android:layout_centerVertical="true"
+		app:themeColor="true" />
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/cancelBtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/ic_close"
+		android:layout_toStartOf="@+id/acceptBtn"
+		android:layout_centerVertical="true"
+		android:layout_marginEnd="10dp"
+		style="@style/GlyphIcon.Big"
+		android:textColor="@color/text_controls_icons"
+		app:themeColor="true" />
+
+	<com.chess.widgets.RoboTextView
+		android:id="@id/acceptBtn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="@string/ic_check"
+		android:layout_alignParentEnd="true"
+		android:layout_centerVertical="true"
+		style="@style/GlyphIcon.Big"
+		android:textColor="@color/text_controls_icons"
+		app:themeColor="true" />
+
+</com.chess.widgets.RelLayout>

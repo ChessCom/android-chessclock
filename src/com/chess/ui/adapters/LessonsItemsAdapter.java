@@ -33,7 +33,7 @@ public class LessonsItemsAdapter extends ItemsAdapter<LessonSingleItem> {
 
 	@Override
 	protected View createView(ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_completed_list_item, parent, false);
+		View view = inflater.inflate(R.layout.completed_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.text = (TextView) view.findViewById(R.id.titleTxt);
 		holder.icon = (TextView) view.findViewById(R.id.completedIconTxt);

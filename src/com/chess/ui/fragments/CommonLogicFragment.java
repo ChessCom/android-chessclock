@@ -142,6 +142,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	private AbsListView listView;
 	private boolean usePullToRefresh;
 	protected boolean isTablet;
+	protected boolean useLtr;
 	private IntentFilter startLiveGameFilter;
 	private StartLiveGameReceiver startLiveGameReceiver;
 	protected ColorStateList themeFontColorStateList;
@@ -179,6 +180,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		handler = new Handler();
 		setHasOptionsMenu(true);
 		isTablet = AppUtils.isTablet(activity);
+		useLtr = AppUtils.useLtr(activity);
 
 		density = getResources().getDisplayMetrics().density;
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
@@ -819,17 +821,22 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_games: {
+
 				CommonLogicFragment fragment = (CommonLogicFragment) findFragmentByTag(DailyGamesRightFragment.class.getSimpleName());
 				if (fragment == null) {
 					fragment = new DailyGamesRightFragment();
 				}
 				getActivityFace().changeRightFragment(fragment);
-				handler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						getActivityFace().toggleRightMenu();
-					}
-				}, SIDE_MENU_DELAY);
+//				handler.postDelayed(new Runnable() {
+//					@Override
+//					public void run() {
+						if (useLtr) {
+							getActivityFace().toggleRightMenu();
+						} else {
+							getActivityFace().toggleLeftMenu();
+						}
+//					}
+//				}, SIDE_MENU_DELAY);
 				return true;
 			}
 			case R.id.menu_notifications: {// bell icon
@@ -839,12 +846,16 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				}
 
 				getActivityFace().changeRightFragment(fragment);
-				handler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						getActivityFace().toggleRightMenu();
-					}
-				}, SIDE_MENU_DELAY);
+//				handler.postDelayed(new Runnable() {
+//					@Override
+//					public void run() {
+						if (useLtr) {
+							getActivityFace().toggleRightMenu();
+						} else {
+							getActivityFace().toggleLeftMenu();
+						}
+//					}
+//				}, SIDE_MENU_DELAY);
 				return true;
 			}
 		}

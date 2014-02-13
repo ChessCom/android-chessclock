@@ -83,7 +83,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_list_view_frame, container, false);
+		return inflater.inflate(R.layout.list_view_frame, container, false);
 	}
 
 	@Override
@@ -241,7 +241,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 	protected void widgetsInit(View view) {
 		Resources resources = getResources();
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		ViewGroup headerView = (ViewGroup) inflater.inflate(R.layout.new_play_home_header_frame, null, false);
+		ViewGroup headerView = (ViewGroup) inflater.inflate(R.layout.play_home_header_frame, null, false);
 
 		{ // invite overlay setup
 			View startOverlayView = headerView.findViewById(R.id.startOverlayView);
@@ -318,7 +318,7 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_dark_spinner_item, parent, false);
+			View view = inflater.inflate(R.layout.dark_spinner_item, parent, false);
 
 			ButtonDrawableBuilder.setBackgroundToView(view, R.style.ListItem_Header_Dark);
 			view.setPadding(sidePadding, 0, sidePadding, 0);

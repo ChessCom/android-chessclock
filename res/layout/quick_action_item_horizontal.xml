@@ -20,8 +20,10 @@
 		android:layout_height="wrap_content"
 		android:layout_centerHorizontal="true"
 		android:gravity="center_horizontal"
-		android:paddingLeft="5dip"
-		android:paddingRight="5dip"
+		android:paddingStart="5dp"
+		android:paddingEnd="5dp"
+		android:paddingLeft="5dp"
+		android:paddingRight="5dp"
 		android:text="Chart"
 		android:textColor="#fff" />
 

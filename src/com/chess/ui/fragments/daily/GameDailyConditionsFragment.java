@@ -57,7 +57,7 @@ public class GameDailyConditionsFragment extends GameDailyAnalysisFragment imple
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_game_conditions_frame, container, false);
+		return inflater.inflate(R.layout.game_conditions_frame, container, false);
 	}
 
 	@Override
@@ -163,7 +163,7 @@ public class GameDailyConditionsFragment extends GameDailyAnalysisFragment imple
 		predictOpponentsMoveTxt.setText(R.string.predict_move_or_add_new_line);
 
 		{ // list of predictions
-			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_add_new_line_view, null, false);
+			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.add_new_line_view, null, false);
 			footerView.findViewById(R.id.addNewLineBtn).setOnClickListener(this);
 			conditionsAdapter = new ConditionsAdapter(this, null);
 			listView = (ListView) view.findViewById(R.id.listView);
@@ -193,7 +193,7 @@ public class GameDailyConditionsFragment extends GameDailyAnalysisFragment imple
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_condition_list_item, null, false);
+			View view = inflater.inflate(R.layout.condition_list_item, null, false);
 			ViewHolder holder = new ViewHolder();
 
 			holder.lineBtn = (Button) view.findViewById(R.id.lineBtn);

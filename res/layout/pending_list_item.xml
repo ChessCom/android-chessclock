@@ -2,8 +2,8 @@
 
 <com.chess.widgets.RelLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="80dip"
-	android:minHeight="60dip"
+	android:layout_height="80dp"
+	android:minHeight="60dp"
 	style="@style/ListItem">
 
 	<ProgressBar
@@ -11,7 +11,7 @@
 		android:layout_width="@dimen/pending_progress_bar_size"
 		android:layout_height="@dimen/pending_progress_bar_size"
 		android:layout_centerInParent="true"
-		android:layout_margin="5dip"
+		android:layout_margin="5dp"
 		android:layout_centerVertical="true"
 		style="?android:attr/progressBarStyle" />
 

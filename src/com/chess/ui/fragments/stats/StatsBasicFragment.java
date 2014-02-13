@@ -97,7 +97,7 @@ public class StatsBasicFragment extends CommonLogicFragment implements AdapterVi
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
+		return inflater.inflate(R.layout.white_list_view_frame, container, false);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class StatsBasicFragment extends CommonLogicFragment implements AdapterVi
 
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 
-		View headerView = inflater.inflate(R.layout.new_lessons_upgrade_view, null, false);
+		View headerView = inflater.inflate(R.layout.lessons_upgrade_view, null, false);
 		headerView.findViewById(R.id.upgradeBtn).setOnClickListener(this);
 
 		((TextView) headerView.findViewById(R.id.lessonsUpgradeMessageTxt)).setText(R.string.get_detailed_stats);

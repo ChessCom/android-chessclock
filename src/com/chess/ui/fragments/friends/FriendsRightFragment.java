@@ -59,7 +59,7 @@ public class FriendsRightFragment extends FriendsFragment implements AdapterView
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_list_view_frame, container, false);
+		return inflater.inflate(R.layout.list_view_frame, container, false);
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class FriendsRightFragment extends FriendsFragment implements AdapterView
 		listView.setOnItemClickListener(this);
 		{ // add header for Random Opponent
 			LayoutInflater inflater = LayoutInflater.from(getActivity());
-			View headerView = inflater.inflate(R.layout.new_recent_opponent_item, null, false);
+			View headerView = inflater.inflate(R.layout.recent_opponent_item, null, false);
 			AvatarView playerImg = (AvatarView) headerView.findViewById(R.id.playerImg);
 			TextView playerNameTxt = (TextView) headerView.findViewById(R.id.playerNameTxt);
 

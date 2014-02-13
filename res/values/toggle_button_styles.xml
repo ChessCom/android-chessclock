@@ -13,7 +13,7 @@
 
 
 		<style name="tap_button" parent="android:Widget.Button">
-			<item name="android:minWidth">10dip</item>
+			<item name="android:minWidth">10dp</item>
 		</style>
 
 		<style name="image_button_blue" parent="button_blue">

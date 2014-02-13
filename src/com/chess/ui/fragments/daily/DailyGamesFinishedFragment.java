@@ -85,7 +85,7 @@ public class DailyGamesFinishedFragment extends CommonLogicFragment implements A
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_white_list_view_frame, container, false);
+		return inflater.inflate(R.layout.white_list_view_frame, container, false);
 	}
 
 	@Override

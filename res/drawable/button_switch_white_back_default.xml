@@ -63,7 +63,7 @@
 
 	<!--White round overlay-->
 	<item
-		android:top="13dip"
+		android:top="13dp"
 		android:left="8px"
 		android:right="8px"
 		android:bottom="2px">

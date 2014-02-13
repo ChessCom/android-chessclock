@@ -79,7 +79,7 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_notifications_right_frame, container, false);
+		return inflater.inflate(R.layout.notifications_right_frame, container, false);
 	}
 
 	@Override
@@ -180,7 +180,9 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 
 	@Override
 	public void onOpened() {
-
+		if (!useLtr) {
+			onOpenedRight();
+		}
 	}
 
 	@Override
@@ -596,7 +598,7 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 		newChallengesUpdateListener = new NewChallengesUpdateListener();
 		friendRequestsUpdateListener = new FriendRequestsUpdateListener();
 		// init adapters
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark);
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.text_section_header_dark);
 		friendRequestsAdapter = new CommonAcceptDeclineCursorAdapter(new FriendAcceptDeclineFace(), null, getImageFetcher());
 		challengesGamesAdapter = new DailyChallengesGamesAdapter(new ChallengeAcceptDeclineFace(), null, getImageFetcher(), this);
 		messagesAdapter = new NewChatMessagesCursorAdapter(new NewMessageClearFace(), null, getImageFetcher());

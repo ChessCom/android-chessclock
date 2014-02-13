@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+
+	<!--Header-->
+	<com.chess.widgets.LinLayout
+		android:id="@+id/challengeFriendHeaderView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_vertical"
+		style="@style/ListItem.Header.Dark"
+		android:paddingStart="14dp"
+		android:paddingEnd="10dp"
+		android:paddingLeft="14dp"
+		android:paddingRight="10dp">
+		<!--Icon-->
+		<com.chess.widgets.RoboTextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/ic_play_friend"
+			android:textColor="@color/new_light_grey_2"
+			style="@style/GlyphIcon.Big" />
+
+		<com.chess.widgets.RoboTextView
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:drawablePadding="8dp"
+			android:text="@string/challenge_friend"
+			android:textColor="@color/new_list_header_text"
+			android:gravity="center_vertical" />
+
+	</com.chess.widgets.LinLayout>
+
+	<!--Recent opponents list-->
+	<ListView
+		android:id="@+id/listView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" />
+
+</LinearLayout>

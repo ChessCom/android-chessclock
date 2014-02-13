@@ -104,7 +104,7 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_welcome_frame, container, false);
+		return inflater.inflate(R.layout.welcome_frame, container, false);
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 
 		homePageRadioGroup = (RadioGroup) view.findViewById(R.id.pagerIndicatorGroup);
 		for (int i = 0; i < PAGE_CNT; ++i) {
-			inflater.inflate(R.layout.new_page_indicator_view, homePageRadioGroup, true);
+			inflater.inflate(R.layout.page_indicator_view, homePageRadioGroup, true);
 		}
 
 		((RadioButton) homePageRadioGroup.getChildAt(0)).setChecked(true);
@@ -373,7 +373,7 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 			switch (position) {
 				case 0:
 					if (firstView == null) {
-						firstView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_frame_1, container, false);
+						firstView = (RelativeLayout) inflater.inflate(R.layout.welcome_frame_1, container, false);
 
 					}
 					view = firstView;
@@ -418,7 +418,7 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 				break;
 				case 1:
 					if (secondView == null) {
-						secondView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_frame_2, container, false);
+						secondView = (RelativeLayout) inflater.inflate(R.layout.welcome_frame_2, container, false);
 					}
 					view = secondView;
 
@@ -460,7 +460,7 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 				break;
 				case 2:
 					if (thirdView == null) {
-						thirdView = (RelativeLayout) inflater.inflate(R.layout.new_welcome_frame_3, container, false);
+						thirdView = (RelativeLayout) inflater.inflate(R.layout.welcome_frame_3, container, false);
 					}
 					view = thirdView;
 

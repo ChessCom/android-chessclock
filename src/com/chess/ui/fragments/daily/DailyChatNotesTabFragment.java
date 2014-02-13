@@ -26,7 +26,7 @@ public class DailyChatNotesTabFragment extends CommonLogicFragment implements Ra
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_chat_notes_frame, container, false);
+		return inflater.inflate(R.layout.chat_notes_frame, container, false);
 	}
 
 	@Override

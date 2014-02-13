@@ -60,7 +60,7 @@ public class ForumCategoriesFragmentTablet extends ForumCategoriesFragment imple
 	@Override
 	protected void init() {
 		super.init();
-		categoriesCursorAdapter.setLayoutId(R.layout.new_common_titled_list_item_thin_white);
+		categoriesCursorAdapter.setLayoutId(R.layout.common_titled_list_item_thin_white);
 
 	}
 

@@ -59,7 +59,7 @@ public class ArticlesCursorAdapter extends ItemsCursorAdapter {
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_article_thumb_list_item, parent, false);
+		View view = inflater.inflate(R.layout.article_thumb_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.thumbnailImg = (ProgressImageView) view.findViewById(R.id.thumbnailImg);
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);

@@ -106,7 +106,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_videos_frame, container, false);
+		return inflater.inflate(R.layout.videos_frame, container, false);
 	}
 
 	@Override
@@ -121,9 +121,9 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		{ // Library mode init
 			listView = (ListView) view.findViewById(R.id.listView);
 			// add header
-			headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_thumb_list_item, null, false);
+			headerView = LayoutInflater.from(getActivity()).inflate(R.layout.videos_thumb_list_item, null, false);
 			headerView.setOnClickListener(this);
-			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
+			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.videos_curriculum_footer, null, false);
 			footerView.setOnClickListener(this);
 			listView.addHeaderView(headerView);
 			listView.addFooterView(footerView);
@@ -559,7 +559,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			ViewHolder holder;
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.new_common_titled_list_item, parent, false);
+				convertView = inflater.inflate(R.layout.common_titled_list_item, parent, false);
 				holder = new ViewHolder();
 
 				holder.text = (TextView) convertView.findViewById(R.id.headerTitleTxt);
@@ -587,7 +587,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 			ViewHolder holder;
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.new_completed_list_item, parent, false);
+				convertView = inflater.inflate(R.layout.completed_list_item, parent, false);
 				holder = new ViewHolder();
 
 				holder.text = (TextView) convertView.findViewById(R.id.titleTxt);

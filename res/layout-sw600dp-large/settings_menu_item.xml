@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chess.widgets.LinLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="48dp"
+	android:orientation="horizontal"
+	style="@style/ListItem.Header"
+	app:btn_solid="@color/action_bar_overlay"
+	android:gravity="center_vertical"
+	android:paddingStart="@dimen/default_scr_side_padding"
+	android:paddingLeft="@dimen/default_scr_side_padding">
+
+	<!--Icon-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/iconTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/semi_transparent_white"
+		android:textSize="26dp"
+		android:layout_marginEnd="9dp"
+		android:layout_marginRight="9dp"
+		style="@style/GlyphIcon"
+		app:themeColor="true" />
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/rowTitleTxt"
+		android:layout_width="0dp"
+		android:layout_height="match_parent"
+		android:layout_weight="1"
+		style="@style/SettingsListText"
+		app:ttf="Regular"
+		android:textColor="@color/semitransparent_white_75" />
+
+</com.chess.widgets.LinLayout>

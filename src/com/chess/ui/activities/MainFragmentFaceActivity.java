@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.*;
 import com.chess.R;
 import com.chess.backend.GetAndSaveTheme;
@@ -101,8 +102,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		setSlidingActionBarEnabled(true);
 
-		setContentView(R.layout.new_main_active_screen);
-		customActionBarViewId = R.layout.new_custom_actionbar;
+		setContentView(R.layout.main_active_screen);
+		customActionBarViewId = R.layout.custom_actionbar;
 
 		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();
 		closeMenuListeners = new ArrayList<SlidingMenu.OnClosedListener>();
@@ -329,7 +330,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		if (!HONEYCOMB_PLUS_API) { // set title before custom view for pre-HC
 			getActionBarHelper().setTitle(title);
 		}
-		getActionBarHelper().setCustomView(R.layout.new_custom_actionbar);
+		getActionBarHelper().setCustomView(R.layout.custom_actionbar);
 		getActionBarHelper().setTitle(title);
 
 		if (!HONEYCOMB_PLUS_API) {
@@ -424,23 +425,40 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	private SlidingMenu.OnOpenedListener onOpenMenuListener = new SlidingMenu.OnOpenedListener() {
 		@Override
-		public void onOpened() { // Don't remove reuse later
-			if (slidingMenu.isSecondaryMenuShowing()) {
-				for (SlidingMenu.OnOpenedListener openedListener : openMenuListeners) { // Inform listeners inside fragments
-					openedListener.onOpenedRight();
+		public void onOpened() {
+			if (useLtr) {
+				if (slidingMenu.isSecondaryMenuShowing()) {
+					for (SlidingMenu.OnOpenedListener openedListener : openMenuListeners) { // Inform listeners inside fragments
+						openedListener.onOpenedRight();
+					}
+				} else {
+					for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+						if (fragment != null && fragment.isVisible() && fragment instanceof LeftNavigationFragment) {
+							((LeftNavigationFragment) fragment).onOpened();
+							break;
+						}
+					}
 				}
 			} else {
-				for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-					if (fragment != null && fragment.isVisible() && fragment instanceof LeftNavigationFragment) {
-						((LeftNavigationFragment) fragment).onOpened();
-						break;
+				if (slidingMenu.isMenuShowing()) {
+					for (SlidingMenu.OnOpenedListener openedListener : openMenuListeners) { // Inform listeners inside fragments
+						openedListener.onOpenedRight();
+					}
+				} else {
+					for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+						if (fragment != null && fragment.isVisible() && fragment instanceof LeftNavigationFragment) {
+							((LeftNavigationFragment) fragment).onOpened();
+							break;
+						}
 					}
 				}
 			}
+
 		}
 
 		@Override
 		public void onOpenedRight() {
+			Log.d("TEST", "opened right");
 		}
 	};
 
@@ -480,26 +498,47 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 	@Override
 	public void changeRightFragment(CommonLogicFragment fragment) {
-		// set right menu. Left Menu is already set in BaseActivity
-		SlidingMenu sm = getSlidingMenu();
-		sm.setMode(SlidingMenu.LEFT_RIGHT);
-		sm.setBehindRightOffsetRes(R.dimen.slidingmenu_offset_right);
-		sm.setSecondaryMenu(R.layout.slide_menu_right_frame);
-		getSupportFragmentManager()
-				.beginTransaction()
-				.replace(R.id.menu_frame_right, fragment)
-				.commitAllowingStateLoss();
-		sm.setSecondaryShadowDrawable(R.drawable.defaultshadow_right);
-		sm.setShadowDrawable(R.drawable.defaultshadow);
+		if (useLtr) {
+			// set right menu. Left Menu is already set in BaseActivity
+			SlidingMenu sm = getSlidingMenu();
+			sm.setMode(SlidingMenu.LEFT_RIGHT);
+			sm.setBehindRightOffsetRes(R.dimen.slidingmenu_offset_right);
+			sm.setSecondaryMenu(R.layout.slide_menu_right_frame);
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.menu_frame_right, fragment)
+					.commitAllowingStateLoss();
+			sm.setSecondaryShadowDrawable(R.drawable.defaultshadow_right);
+			sm.setShadowDrawable(R.drawable.defaultshadow);
+		} else {
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			leftMenuFragment = fragment;
+			transaction.replace(R.id.menu_frame_left, leftMenuFragment);
+			transaction.commitAllowingStateLoss();
+		}
 	}
 
 	@Override
 	public void changeLeftFragment(CommonLogicFragment fragment) {
-		// change left menu fragment
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		leftMenuFragment = fragment;
-		transaction.replace(R.id.menu_frame_left, leftMenuFragment);
-		transaction.commitAllowingStateLoss();
+		if (useLtr) {
+			// change left menu fragment
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+			leftMenuFragment = fragment;
+			transaction.replace(R.id.menu_frame_left, leftMenuFragment);
+			transaction.commitAllowingStateLoss();
+		} else {
+			// set right menu. Left Menu is already set in BaseActivity
+			SlidingMenu sm = getSlidingMenu();
+			sm.setMode(SlidingMenu.LEFT_RIGHT);
+			sm.setBehindLeftOffsetRes(R.dimen.slidingmenu_offset_right);
+			sm.setSecondaryMenu(R.layout.slide_menu_right_frame);
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.menu_frame_right, fragment)
+					.commitAllowingStateLoss();
+			sm.setSecondaryShadowDrawable(R.drawable.defaultshadow_right);
+			sm.setShadowDrawable(R.drawable.defaultshadow);
+		}
 	}
 
 	@Override
@@ -574,6 +613,22 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		ft.commitAllowingStateLoss();
 
 		checkNoLiveFragment(simpleName);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				if (useLtr) {
+					toggleMenu(SlidingMenu.LEFT);
+				} else {
+					toggleMenu(SlidingMenu.RIGHT);
+				}
+
+				hideKeyBoard();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -982,7 +1037,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			// avoid multiple popup appears
 			getAppData().setLastTimeAskedForFeedback(System.currentTimeMillis());
 
-			View layout = LayoutInflater.from(this).inflate(R.layout.new_review_app_popup, null, false);
+			View layout = LayoutInflater.from(this).inflate(R.layout.review_app_popup, null, false);
 			layout.findViewById(R.id.positiveBtn).setOnClickListener(this);
 			layout.findViewById(R.id.negativeBtn).setOnClickListener(this);
 			layout.findViewById(R.id.ignoreBtn).setOnClickListener(this);

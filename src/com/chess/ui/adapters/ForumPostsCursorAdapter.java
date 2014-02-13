@@ -148,7 +148,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_forum_post_list_item, parent, false);
+		View view = inflater.inflate(R.layout.forum_post_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 
 		holder.photoImg = (ProgressImageView) view.findViewById(R.id.photoImg);
@@ -292,7 +292,7 @@ public class ForumPostsCursorAdapter extends ItemsCursorAdapter {
 	}
 
 	private View createDiagramView(ViewGroup parent) {
-		RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.new_forum_post_list_item, parent, false);
+		RelativeLayout view = (RelativeLayout) inflater.inflate(R.layout.forum_post_list_item, parent, false);
 
 		DiagramViewHolder holder = new DiagramViewHolder();
 

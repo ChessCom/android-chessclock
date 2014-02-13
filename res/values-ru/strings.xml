@@ -468,7 +468,6 @@
 	<string name="show_mini_boards">Показать мини-доски</string>
 	<string name="show_timer">Показывать таймер</string>
 	<string name="file_saved_to_download">Файл сохранен в «Загрузки»</string>
-	<string name="with">с</string>
 	<string name="basic_members_allowed_3_per_day">Базовому пользователю доступно только 3 в день</string>
 	<string name="get_detailed_stats">Получи подробную статистику</string>
 	<string name="select_plan">Выбрать план</string>

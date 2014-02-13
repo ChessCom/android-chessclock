@@ -79,7 +79,7 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 		super.onCreate(savedInstanceState);
 
 		// init adapters
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_comp_archive_header,
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.comp_archive_header,
 				new int[]{CURRENT_GAMES_SECTION});
 
 		currentGamesMyCursorAdapter = new DailyCurrentGamesCursorAdapter(this, null, getImageFetcher(), getImageFetcher());
@@ -91,7 +91,7 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_home_daily_games_frame, container, false);
+		return inflater.inflate(R.layout.home_daily_games_frame, container, false);
 	}
 
 	@Override

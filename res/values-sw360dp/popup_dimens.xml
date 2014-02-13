@@ -1,13 +1,13 @@
 <resources>
 	<!--Popup internal dimens -->
-	<dimen name="popup_dialog_width">300dip</dimen>
-	<dimen name="popup_dialog_text_max_width">250dip</dimen>
-	<dimen name="popup_top_padding">16dip</dimen>
-	<dimen name="popup_side_padding">16dip</dimen>
-	<dimen name="popup_side_margin">0dip</dimen>
-	<dimen name="popup__bottom_padding">10dip</dimen>
-	<dimen name="popup_custom_top_padding">16dip</dimen>
-	<dimen name="popup_custom_bottom_padding">10dip</dimen>
-	<dimen name="popup_custom_side_padding">16dip</dimen>
+	<dimen name="popup_dialog_width">300dp</dimen>
+	<dimen name="popup_dialog_text_max_width">250dp</dimen>
+	<dimen name="popup_top_padding">16dp</dimen>
+	<dimen name="popup_side_padding">16dp</dimen>
+	<dimen name="popup_side_margin">0dp</dimen>
+	<dimen name="popup__bottom_padding">10dp</dimen>
+	<dimen name="popup_custom_top_padding">16dp</dimen>
+	<dimen name="popup_custom_bottom_padding">10dp</dimen>
+	<dimen name="popup_custom_side_padding">16dp</dimen>
 
 </resources>

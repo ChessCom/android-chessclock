@@ -51,7 +51,7 @@ public class PopupCountriesFragment extends DialogFragment implements AdapterVie
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
-		return inflater.inflate(R.layout.new_popup_list_selection_frame, container, false);
+		return inflater.inflate(R.layout.popup_list_selection_frame, container, false);
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class PopupCountriesFragment extends DialogFragment implements AdapterVie
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_country_list_item, parent, false);
+			View view = inflater.inflate(R.layout.country_list_item, parent, false);
 			ViewHolder holder = new ViewHolder();
 
 			holder.name = (TextView) view.findViewById(R.id.nameTxt);

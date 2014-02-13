@@ -79,7 +79,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_lessons_frame, container, false);
+		return inflater.inflate(R.layout.lessons_frame, container, false);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 				coursesCntTxt.setText(String.valueOf(getAppData().getUserCourseCompleteCnt()));
 			}
 
-			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
+			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.videos_curriculum_footer, null, false);
 			((TextView) footerView.findViewById(R.id.headerTitleTxt)).setText(R.string.curriculum);
 			footerView.setOnClickListener(this);
 			listView.addFooterView(footerView);
@@ -118,7 +118,7 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 		{ // Curriculum mode
 			expListView = (ExpandableListView) view.findViewById(R.id.expListView);
-			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_videos_curriculum_footer, null, false);
+			View footerView = LayoutInflater.from(getActivity()).inflate(R.layout.videos_curriculum_footer, null, false);
 			((TextView) footerView.findViewById(R.id.headerTitleTxt)).setText(R.string.full_lesson_library);
 			footerView.setOnClickListener(this);
 			expListView.addFooterView(footerView);
@@ -584,7 +584,7 @@ id: 1,name: "Misc"
 		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			ViewHolder holder;
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.new_common_titled_list_item, parent, false);
+				convertView = inflater.inflate(R.layout.common_titled_list_item, parent, false);
 				holder = new ViewHolder();
 
 				holder.text = (TextView) convertView.findViewById(R.id.headerTitleTxt);
@@ -609,7 +609,7 @@ id: 1,name: "Misc"
 		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 			ViewHolder holder;
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.new_completed_list_item, parent, false);
+				convertView = inflater.inflate(R.layout.completed_list_item, parent, false);
 				holder = new ViewHolder();
 
 				holder.text = (TextView) convertView.findViewById(R.id.titleTxt);

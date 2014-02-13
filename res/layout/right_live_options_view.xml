@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+
+	<!--Mode labels-->
+	<!--Standard-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/liveLabelStandardTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		style="@style/GlyphIcon.Big"
+		android:textColor="@color/new_light_grey_4"
+		android:text="@string/ic_live_standard"
+		android:layout_marginStart="@dimen/home_play_live_labels_padding_side"
+		android:visibility="gone" />
+
+	<!--Blitz-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/liveLabelBlitzTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		style="@style/GlyphIcon.Big"
+		android:textColor="@color/new_light_grey_4"
+		android:text="@string/ic_live_blitz"
+		android:layout_centerHorizontal="true"
+		android:visibility="gone" />
+
+	<!--Bullet-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/liveLabelBulletTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		style="@style/GlyphIcon.Big"
+		android:textColor="@color/new_light_grey_4"
+		android:text="@string/ic_live_bullet"
+		android:layout_alignParentEnd="true"
+		android:layout_marginEnd="@dimen/home_play_live_labels_padding_side"
+		android:visibility="gone" />
+
+
+	<!--Time selections-->
+	<!--30 min-->
+	<com.chess.widgets.RoboButton
+		android:id="@+id/standard1SelectBtn"
+		style="@style/RightLiveOptionsButton"
+		android:layout_below="@id/liveLabelStandardTxt" />
+
+	<!--10 min-->
+	<com.chess.widgets.RoboButton
+		android:id="@+id/blitz1SelectBtn"
+		style="@style/RightLiveOptionsButton"
+		android:layout_below="@id/liveLabelStandardTxt"
+		android:layout_centerHorizontal="true" />
+
+	<!--2|1 min-->
+	<com.chess.widgets.RoboButton
+		android:id="@+id/bullet1SelectBtn"
+		style="@style/RightLiveOptionsButton"
+		android:layout_below="@id/liveLabelStandardTxt"
+		android:layout_alignParentEnd="true" />
+
+	<!--15|5 min-->
+	<com.chess.widgets.RoboButton
+		android:id="@+id/standard2SelectBtn"
+		style="@style/RightLiveOptionsButton"
+		android:layout_below="@id/standard1SelectBtn" />
+
+	<!--5|2 min-->
+	<com.chess.widgets.RoboButton
+		android:id="@+id/blitz2SelectBtn"
+		style="@style/RightLiveOptionsButton"
+		android:layout_below="@id/standard1SelectBtn"
+		android:layout_centerHorizontal="true" />
+
+	<!--1 min-->
+	<com.chess.widgets.RoboButton
+		android:id="@+id/bullet2SelectBtn"
+		style="@style/RightLiveOptionsButton"
+		android:layout_below="@id/standard1SelectBtn"
+		android:layout_alignParentEnd="true" />
+
+	<!--5 min-->
+	<com.chess.widgets.RoboButton
+		android:id="@+id/blitz3SelectBtn"
+		style="@style/RightLiveOptionsButton"
+		android:layout_below="@id/blitz2SelectBtn"
+		android:layout_centerHorizontal="true" />
+
+	<!--3 min-->
+	<com.chess.widgets.RoboButton
+		android:id="@+id/blitz4SelectBtn"
+		style="@style/RightLiveOptionsButton"
+		android:layout_below="@id/blitz3SelectBtn"
+		android:layout_centerHorizontal="true" />
+</RelativeLayout>

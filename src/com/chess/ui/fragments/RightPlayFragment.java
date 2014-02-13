@@ -118,7 +118,7 @@ public class RightPlayFragment extends CommonLogicFragment implements SlidingMen
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_home_play_frame, container, false);
+		return inflater.inflate(R.layout.home_play_frame, container, false);
 	}
 
 	@Override
@@ -134,11 +134,11 @@ public class RightPlayFragment extends CommonLogicFragment implements SlidingMen
 		dailyGameQuickOptions = (LinearLayout) view.findViewById(R.id.dailyGameQuickOptions);
 
 		if (mode == CENTER_MODE) {
-			inflater.inflate(R.layout.new_home_live_options_view, liveHomeOptionsFrame, true);
+			inflater.inflate(R.layout.home_live_options_view, liveHomeOptionsFrame, true);
 			liveExpandIconTxt.setText(R.string.ic_right);
 			dailyExpandIconTxt.setText(R.string.ic_right);
 		} else {
-			inflater.inflate(R.layout.new_right_live_options_view, liveHomeOptionsFrame, true);
+			inflater.inflate(R.layout.right_live_options_view, liveHomeOptionsFrame, true);
 			View liveHeaderView = view.findViewById(R.id.liveHeaderView);
 			View dailyHeaderView = view.findViewById(R.id.dailyHeaderView);
 			View vsCompHeaderView = view.findViewById(R.id.vsCompHeaderView);
@@ -368,7 +368,9 @@ public class RightPlayFragment extends CommonLogicFragment implements SlidingMen
 
 	@Override
 	public void onOpened() {
-
+		if (!useLtr) {
+			onOpenedRight();
+		}
 	}
 
 	@Override

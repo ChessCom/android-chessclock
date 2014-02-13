@@ -89,7 +89,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_common_header_list_frame, container, false);
+		return inflater.inflate(R.layout.common_header_list_frame, container, false);
 	}
 
 	@Override

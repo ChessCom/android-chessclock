@@ -4,10 +4,10 @@
 
 	<!--Border-->
 	<item
-		android:top="1dip"
-		android:left="1dip"
-		android:right="1dip"
-		android:bottom="1dip">
+		android:top="1dp"
+		android:left="1dp"
+		android:right="1dp"
+		android:bottom="1dp">
 		<shape android:shape="oval">
 			<solid android:color="@color/thumbnail_play_border_medium_p" />
 			<size
@@ -19,10 +19,10 @@
 
 	<!--Inner Ring-->
 	<item
-		android:top="2dip"
-		android:left="2dip"
-		android:right="2dip"
-		android:bottom="2dip">
+		android:top="2dp"
+		android:left="2dp"
+		android:right="2dp"
+		android:bottom="2dp">
 		<shape android:shape="oval">
 			<solid android:color="@color/thumbnail_play_back_medium_p" />
 		</shape>

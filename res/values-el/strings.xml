@@ -468,7 +468,6 @@
 	<string name="show_mini_boards">Εμφάνιση μίνι σκακιέρας</string>
 	<string name="show_timer">Εμφάνιση χρονόμετρο</string>
 	<string name="file_saved_to_download">Αποθήκευση αρχείο για \"Κατέβασμα\"</string>
-	<string name="with">με</string>
 	<string name="basic_members_allowed_3_per_day">Στα βασικά μέλη επιτρέπεται 3 ανά ημέρα</string>
 	<string name="get_detailed_stats">Αναλυτικά στατιστικά</string>
 	<string name="select_plan">Επιλογή σχεδίου</string>

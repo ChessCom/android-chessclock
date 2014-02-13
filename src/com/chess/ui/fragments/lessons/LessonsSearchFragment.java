@@ -61,7 +61,7 @@ public class LessonsSearchFragment extends BaseSearchFragment implements Adapter
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_lessons_search_frame, container, false);
+		return inflater.inflate(R.layout.lessons_search_frame, container, false);
 	}
 
 	@Override

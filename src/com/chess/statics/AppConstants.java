@@ -71,7 +71,8 @@ public class AppConstants {
 	public static final String PREF_SOUNDS_SET = "sounds set";
 	public static final String PREF_COLORS_SET = "colors set";
 	public static final String PREF_COORDINATES_SET = "colors set";
-	public static final String PREF_LANGUAGE = "application language";
+	public static final String PREF_LANGUAGE_CODE = "application language code";
+	public static final String PREF_LANGUAGE_INDEX = "application language index";
 
 	public static final String PREF_USER_SKILL_LEVEL = "user_skill_level";
 	public static final String PREF_USER_SKILL_LEVEL_SET = "user_skill_level_was_set";
@@ -176,8 +177,6 @@ public class AppConstants {
 	public static final String FEEDBACK_EMAIL = "feedback@chess.com";
 	public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
 	public static final String MIME_TYPE_MESSAGE_RFC822 = "message/rfc822";
-
-    public static final String CURRENT_LOCALE = "current locale of screen";
 
 	public static final String BUGSENSE_DEBUG_APP_API_REQUEST = "APP_API_REQUEST";
 	public static final String BUGSENSE_DEBUG_APP_API_RESPONSE = "APP_API_RESPONSE";

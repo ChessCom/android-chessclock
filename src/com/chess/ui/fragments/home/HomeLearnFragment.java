@@ -81,7 +81,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_home_learn_frame, container, false);
+		return inflater.inflate(R.layout.home_learn_frame, container, false);
 	}
 
 	@Override

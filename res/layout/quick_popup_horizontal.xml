@@ -5,10 +5,10 @@
 
 	<ScrollView
 		android:id="@+id/scroller"
-		android:layout_marginTop="16dip"
+		android:layout_marginTop="16dp"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:fadingEdgeLength="5dip"
+		android:fadingEdgeLength="5dp"
 		android:scrollbars="none">
 		<!--android:background="@drawable/button_emboss_one_back"-->
 
@@ -17,7 +17,7 @@
 			android:orientation="horizontal"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:padding="10dip" />
+			android:padding="10dp" />
 
 	</ScrollView>
 
@@ -32,7 +32,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/scroller"
-			android:layout_marginTop="-4dip"
+			android:layout_marginTop="-4dp"
 			android:src="@drawable/quick_arrow_down" />-->
 
 </RelativeLayout>

@@ -70,7 +70,7 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_daily_new_game_frame, container, false);
+		return inflater.inflate(R.layout.daily_new_game_frame, container, false);
 	}
 
 	@Override
@@ -82,10 +82,10 @@ public class DailyNewGameFragment extends CommonLogicFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		RelativeLayout dailyHomeOptionsFrame = (RelativeLayout) view.findViewById(R.id.dailyHomeOptionsFrame);
 		if (positionMode == CENTER_MODE) {
-			inflater.inflate(R.layout.new_daily_home_time_options_view, dailyHomeOptionsFrame, true);
+			inflater.inflate(R.layout.daily_home_time_options_view, dailyHomeOptionsFrame, true);
 //			liveExpandIconTxt.setText(R.string.ic_right);
 		} else {
-			inflater.inflate(R.layout.new_daily_home_time_options_view, dailyHomeOptionsFrame, true);
+			inflater.inflate(R.layout.daily_home_time_options_view, dailyHomeOptionsFrame, true);
 //			View liveHeaderView = view.findViewById(R.id.liveHeaderView);
 //			View friendsHeaderView = view.findViewById(R.id.friendsHeaderView);
 //			ButtonDrawableBuilder.setBackgroundToView(friendsHeaderView, R.style.ListItem_Header_2_Dark);

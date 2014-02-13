@@ -77,7 +77,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_game_analysis_frame, container, false);
+		return inflater.inflate(R.layout.game_analysis_frame, container, false);
 	}
 
 	@Override

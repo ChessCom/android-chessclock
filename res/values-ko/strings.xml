@@ -468,7 +468,6 @@
 	<string name="show_mini_boards">소형판 표시</string>
 	<string name="show_timer">타이머 표시</string>
 	<string name="file_saved_to_download">\"다운로드\"에 파일이 저장되었습니다</string>
-	<string name="with">와 함께</string>
 	<string name="basic_members_allowed_3_per_day">기본 회원들은 하루에 3개 허용</string>
 	<string name="get_detailed_stats">상세한 통계 보기</string>
 	<string name="select_plan">계획 선택</string>

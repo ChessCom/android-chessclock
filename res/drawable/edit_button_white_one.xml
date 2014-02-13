@@ -5,7 +5,7 @@
 	<!--Outer border-->
 	<item>
 		<shape>
-			<corners android:radius="2dip" />
+			<corners android:radius="2dp" />
 			<solid android:color="@android:color/transparent" />
 			<stroke
 				android:width="@dimen/default_stroke_width"
@@ -21,7 +21,7 @@
 		android:right="2px">
 		<shape>
 			<solid android:color="@color/new_soft_white" />
-			<corners android:radius="2dip" />
+			<corners android:radius="2dp" />
 			<!--<padding
 				android:left="@dimen/new_edit_field_padding_left"
 				android:right="@dimen/new_edit_field_padding_right"

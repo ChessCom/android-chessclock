@@ -119,38 +119,14 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 			videoId = savedInstanceState.getLong(ITEM_ID);
 		}
 
-		Resources resources = getResources();
-		widthPixels = resources.getDisplayMetrics().widthPixels;
-		imageSize = (int) (40 * resources.getDisplayMetrics().density);
-
-		String[] countryNames = resources.getStringArray(R.array.new_countries);
-		int[] countryCodes = resources.getIntArray(R.array.new_country_ids);
-		countryMap = new SparseArray<String>();
-		for (int i = 0; i < countryNames.length; i++) {
-			countryMap.put(countryCodes[i], countryNames[i]);
-		}
-		{// set imageCache params for articleImageFetcher
-			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), THUMBS_CACHE_DIR);
-
-			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
-
-			backImageFetcher = new SmartImageFetcher(getActivity());
-			backImageFetcher.setLoadingImage(R.drawable.board_green_default);
-			backImageFetcher.addImageCache(getFragmentManager(), cacheParams);
-		}
-
-		commentsUpdateListener = new CommentsUpdateListener();
-		commentsCursorAdapter = new CommentsCursorAdapter(this, null, getImageFetcher());
-
-		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
-		commentPostListener = new CommentPostListener();
+		init();
 
 		pullToRefresh(true);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_common_details_comments_frame, container, false);
+		return inflater.inflate(R.layout.common_details_comments_frame, container, false);
 	}
 
 	@Override
@@ -159,45 +135,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 
 		setTitle(R.string.videos);
 
-		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_video_details_header_frame, null, false);
-
-		loadingView = view.findViewById(R.id.loadingView);
-		loadingCommentsView = headerView.findViewById(R.id.loadingCommentsView);
-		emptyView = (TextView) view.findViewById(R.id.emptyView);
-
-		ListView listView = (ListView) view.findViewById(R.id.listView);
-		listView.addHeaderView(headerView);
-		listView.setAdapter(commentsCursorAdapter);
-
-		replyView = view.findViewById(R.id.replyView);
-		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
-
-		videoBackImg = (ProgressImageView) view.findViewById(R.id.videoBackImg);
-		titleTxt = (TextView) view.findViewById(R.id.titleTxt);
-		authorImg = (ProgressImageView) view.findViewById(R.id.thumbnailAuthorImg);
-		countryImg = (ImageView) view.findViewById(R.id.countryImg);
-		dateTxt = (TextView) view.findViewById(R.id.dateTxt);
-		contentTxt = (TextView) view.findViewById(R.id.contentTxt);
-		contentTxt.setMovementMethod(LinkMovementMethod.getInstance());
-		authorTxt = (TextView) view.findViewById(R.id.authorTxt);
-
-		playBtnTxt = (TextView) view.findViewById(R.id.playBtn);
-		playBtnTxt.setOnClickListener(this);
-		playBtnTxt.setEnabled(false);
-
-		playBtnBackView = view.findViewById(R.id.playBtnBackView);
-
-		fullScrBtn = (TextView) view.findViewById(R.id.fullScrBtn);
-		fullScrBtn.setOnClickListener(this);
-		fullScrBtn.setVisibility(View.INVISIBLE);
-
-		videoView = (VideoView) view.findViewById(R.id.videoView);
-		MediaController mediaController = new MediaController(getActivity());
-		mediaController.show(1);
-
-		videoView.setMediaController(mediaController);
-		videoView.requestFocus();
-
+		widgetsInit(view);
 
 		// adjust action bar icons
 		getActivityFace().showActionMenu(R.id.menu_edit, true);
@@ -213,6 +151,8 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		updateData();
 
 		updateComments();
+
+		videoView.setVideoURI(Uri.parse(videoUrl));
 	}
 
 	@Override
@@ -344,23 +284,25 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 				showEditView(true);
 			}
 		} else if (view.getId() == R.id.fullScrBtn) {
-			Intent intent = new Intent(getActivity(), VideoActivity.class);
-			intent.putExtra(AppConstants.VIDEO_LINK, videoUrl);
-			startActivity(intent);
-
+			playFullScreenVideo();
 		} else if (view.getId() == R.id.playBtn) {
-
-			videoView.setVideoURI(Uri.parse(videoUrl));
 			playBtnBackView.setVisibility(View.INVISIBLE);
 			videoBackImg.setVisibility(View.INVISIBLE);
 			fullScrBtn.setVisibility(View.VISIBLE);
 			videoView.setVisibility(View.VISIBLE);
-			videoView.start();
+			playFullScreenVideo();
 
 			// mark as watched
 			CommonViewedItem item = new CommonViewedItem(currentPlayingId, getUsername());
 			DbDataManager.saveVideoViewedState(getContentResolver(), item);
 		}
+	}
+
+	private void playFullScreenVideo() {
+		Intent intent = new Intent(getActivity(), VideoActivity.class);
+		intent.putExtra(AppConstants.VIDEO_LINK, videoUrl);
+		intent.putExtra(VideoActivity.SEEK_POSITION, videoView.getCurrentPosition());
+		startActivity(intent);
 	}
 
 	@Override
@@ -524,5 +466,74 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 
 	private void showCommentsLoadingView(boolean show) {
 		loadingCommentsView.setVisibility(show ? View.VISIBLE : View.GONE);
+	}
+
+	private void init() {
+		Resources resources = getResources();
+		widthPixels = resources.getDisplayMetrics().widthPixels;
+		imageSize = (int) (40 * resources.getDisplayMetrics().density);
+
+		String[] countryNames = resources.getStringArray(R.array.new_countries);
+		int[] countryCodes = resources.getIntArray(R.array.new_country_ids);
+		countryMap = new SparseArray<String>();
+		for (int i = 0; i < countryNames.length; i++) {
+			countryMap.put(countryCodes[i], countryNames[i]);
+		}
+		{// set imageCache params for articleImageFetcher
+			ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), THUMBS_CACHE_DIR);
+
+			cacheParams.setMemCacheSizePercent(0.15f); // Set memory cache to 25% of app memory
+
+			backImageFetcher = new SmartImageFetcher(getActivity());
+			backImageFetcher.setLoadingImage(R.drawable.board_green_default);
+			backImageFetcher.addImageCache(getFragmentManager(), cacheParams);
+		}
+
+		commentsUpdateListener = new CommentsUpdateListener();
+		commentsCursorAdapter = new CommentsCursorAdapter(this, null, getImageFetcher());
+
+		paddingSide = getResources().getDimensionPixelSize(R.dimen.default_scr_side_padding);
+		commentPostListener = new CommentPostListener();
+	}
+
+	private void widgetsInit(View view) {
+		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.video_details_header_frame, null, false);
+
+		loadingView = view.findViewById(R.id.loadingView);
+		loadingCommentsView = headerView.findViewById(R.id.loadingCommentsView);
+		emptyView = (TextView) view.findViewById(R.id.emptyView);
+
+		ListView listView = (ListView) view.findViewById(R.id.listView);
+		listView.addHeaderView(headerView);
+		listView.setAdapter(commentsCursorAdapter);
+
+		replyView = view.findViewById(R.id.replyView);
+		newPostEdt = (EditText) view.findViewById(R.id.newPostEdt);
+
+		videoBackImg = (ProgressImageView) view.findViewById(R.id.videoBackImg);
+		titleTxt = (TextView) view.findViewById(R.id.titleTxt);
+		authorImg = (ProgressImageView) view.findViewById(R.id.thumbnailAuthorImg);
+		countryImg = (ImageView) view.findViewById(R.id.countryImg);
+		dateTxt = (TextView) view.findViewById(R.id.dateTxt);
+		contentTxt = (TextView) view.findViewById(R.id.contentTxt);
+		contentTxt.setMovementMethod(LinkMovementMethod.getInstance());
+		authorTxt = (TextView) view.findViewById(R.id.authorTxt);
+
+		playBtnTxt = (TextView) view.findViewById(R.id.playBtn);
+		playBtnTxt.setOnClickListener(this);
+		playBtnTxt.setEnabled(false);
+
+		playBtnBackView = view.findViewById(R.id.playBtnBackView);
+
+		fullScrBtn = (TextView) view.findViewById(R.id.fullScrBtn);
+		fullScrBtn.setOnClickListener(this);
+		fullScrBtn.setVisibility(View.INVISIBLE);
+
+		videoView = (VideoView) view.findViewById(R.id.videoView);
+		MediaController mediaController = new MediaController(getActivity());
+		mediaController.show(1);
+
+		videoView.setMediaController(mediaController);
+		videoView.requestFocus();
 	}
 }

@@ -52,7 +52,7 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_video_lib_list_item, parent, false);
+		View view = inflater.inflate(R.layout.video_lib_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.titleTxt = (TextView) view.findViewById(R.id.titleTxt);
 		holder.authorTxt = (TextView) view.findViewById(R.id.authorTxt);

@@ -42,7 +42,7 @@ public class PopupLiveTimeOptionsFragment extends SimplePopupDialogFragment impl
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_right_live_options_view, container, false);
+		return inflater.inflate(R.layout.right_live_options_view, container, false);
 	}
 
 	@Override

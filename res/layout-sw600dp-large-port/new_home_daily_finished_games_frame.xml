@@ -16,7 +16,8 @@
 		android:layout_gravity="center"
 		android:textSize="20sp"
 		android:textColor="@color/grey_button_1"
-		android:paddingLeft="10dip"
+		android:paddingStart="10dp"
+		android:paddingLeft="10dp"
 		custom:ttf="Bold"
 		style="@style/DarkShadowBottom"
 		android:visibility="gone" />
@@ -28,6 +29,6 @@
 		android:background="@color/white"
 		android:cacheColorHint="@color/white"
 		android:divider="@color/new_friends_list_divider"
-		android:dividerHeight="1dip" />
+		android:dividerHeight="1dp" />
 
 </RelativeLayout>

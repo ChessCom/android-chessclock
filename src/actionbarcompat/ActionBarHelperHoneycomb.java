@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
 import com.chess.ui.views.drawables.BadgeDrawable;
+import com.chess.utilities.AppUtils;
 import com.chess.widgets.RoboTextView;
 
 /**
@@ -207,7 +208,12 @@ public class ActionBarHelperHoneycomb extends ActionBarHelper {
 		}
 		RoboTextView titleTxt = (RoboTextView) actionBar.getCustomView().findViewById(R.id.actionbar_compat_title);
 		if (titleTxt != null) {
-			titleTxt.setPadding(padding, 0, 0, 0);
+			if (AppUtils.useLtr(mActivity)) {
+				titleTxt.setPadding(padding, 0, 0, 0);
+			} else {
+				titleTxt.setPadding(0, 0, padding, 0);
+			}
+
 		}
 	}
 

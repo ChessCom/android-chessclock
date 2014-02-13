@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:id="@+id/lessonsStatsView"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="@dimen/new_nav_menu_item_height">
+
+	<!--Lessons Rating-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/lessonsRatingTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/new_subtitle_dark_grey"
+		android:textSize="33sp"
+		android:paddingStart="@dimen/default_scr_side_padding"
+		android:paddingLeft="@dimen/default_scr_side_padding"
+		android:layout_centerVertical="true"
+		custom:ttf="Bold"
+		android:text="-" />
+
+	<!--android:layout_alignTop="@id/lessonsRatingTxt"-->
+	<TableLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true">
+
+		<TableRow>
+			<!--Lessons Completed value-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/lessonsCompletedValueTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/new_subtitle_dark_grey"
+				android:paddingEnd="@dimen/smaller_scr_side_padding"
+				android:paddingRight="@dimen/smaller_scr_side_padding"
+				android:gravity="end|right|center_vertical"
+				android:textSize="14sp"
+				custom:ttf="Bold"
+				android:text="-" />
+
+			<!--Lessons Completed label-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/lessonsCompletedLabelTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingTop="2dp"
+				android:paddingEnd="15dp"
+				android:paddingRight="15dp"
+				android:textColor="@color/stats_label_grey"
+				android:text="@string/lessons_completed"
+				android:textSize="@dimen/default_text_size_small" />
+		</TableRow>
+
+		<TableRow>
+
+			<!--Courses Completed value-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/coursesCompletedValueTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/new_subtitle_dark_grey"
+				android:paddingEnd="@dimen/smaller_scr_side_padding"
+				android:paddingRight="@dimen/smaller_scr_side_padding"
+				android:gravity="end|right|center_vertical"
+				android:textSize="14sp"
+				custom:ttf="Bold"
+				android:text="-" />
+
+			<!--Courses Completed label-->
+			<com.chess.widgets.RoboTextView
+				android:id="@+id/coursesCompletedLabelTxt"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/stats_label_grey"
+				android:paddingTop="2dp"
+				android:text="@string/courses_completed"
+				android:textSize="@dimen/default_text_size_small"
+				android:paddingEnd="@dimen/default_scr_side_padding"
+				android:paddingRight="@dimen/default_scr_side_padding" />
+
+		</TableRow>
+
+	</TableLayout>
+
+	<!--Divider-->
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1dp"
+		android:layout_alignParentBottom="true"
+		android:background="@color/new_friends_list_divider" />
+
+</RelativeLayout>

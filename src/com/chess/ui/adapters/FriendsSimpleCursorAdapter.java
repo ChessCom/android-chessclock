@@ -39,7 +39,7 @@ public class FriendsSimpleCursorAdapter extends FriendsCursorAdapter {
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_recent_opponent_item, parent, false);
+		View view = inflater.inflate(R.layout.recent_opponent_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.playerImg = (AvatarView) view.findViewById(R.id.playerImg);
 		holder.playerNameTxt = (TextView) view.findViewById(R.id.playerNameTxt);

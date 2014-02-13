@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import com.chess.R;
+import com.chess.utilities.AppUtils;
 import com.slidingmenu.lib.SlidingMenu;
 
 public abstract class BaseActivity extends SlidingFragmentActivity {
@@ -28,8 +29,13 @@ public abstract class BaseActivity extends SlidingFragmentActivity {
 		SlidingMenu sm = getSlidingMenu();
 		sm.setShadowWidthRes(R.dimen.shadow_width);
 		sm.setShadowDrawable(R.drawable.defaultshadow);
-		sm.setBehindLeftOffsetRes(R.dimen.slidingmenu_offset_left);
-		sm.setBehindRightOffsetRes(R.dimen.slidingmenu_offset_right);
+		if (AppUtils.useLtr(this)) {
+			sm.setBehindLeftOffsetRes(R.dimen.slidingmenu_offset_left);
+			sm.setBehindRightOffsetRes(R.dimen.slidingmenu_offset_right);
+		} else {// because ldrtl doesn't work
+			sm.setBehindRightOffsetRes(R.dimen.slidingmenu_offset_left);
+			sm.setBehindLeftOffsetRes(R.dimen.slidingmenu_offset_right);
+		}
 		sm.setFadeDegree(0.35f);
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}

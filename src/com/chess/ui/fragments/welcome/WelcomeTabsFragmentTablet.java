@@ -48,7 +48,7 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_welcome_tabs_frame, container, false);
+		return inflater.inflate(R.layout.welcome_tabs_frame, container, false);
 	}
 
 	@Override

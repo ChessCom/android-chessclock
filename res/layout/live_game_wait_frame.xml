@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:gravity="center_horizontal">
+
+	<!--Stub view to make the same height-->
+	<FrameLayout
+		android:id="@+id/stubView"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/notations_view_height" />
+
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/centerTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:gravity="center"
+		android:text="@string/waiting_for_opponent"
+		android:textSize="19sp"
+		android:padding="5dp"
+		android:textColor="@color/white"
+		custom:ttf="Bold" />
+
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+
+		<com.chess.ui.views.chess_boards.ChessBoardLiveView
+			android:id="@+id/boardview"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+
+		<ProgressBar
+			android:id="@+id/loadingView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			style="?android:attr/progressBarStyle"
+			android:visibility="gone" />
+
+	</FrameLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1">
+
+		<com.chess.widgets.RoboButton
+			android:id="@+id/cancelLiveBtn"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/cancel"
+			style="@style/Button.Glassy"
+			android:layout_marginStart="15dp"
+			android:layout_marginEnd="15dp"
+			android:layout_marginBottom="15dp"
+			android:layout_centerInParent="true" />
+
+	</RelativeLayout>
+
+	<FrameLayout
+		android:id="@+id/stubControls"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:minHeight="@dimen/game_controls_button_height" />
+
+</LinearLayout>
+

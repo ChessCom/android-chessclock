@@ -468,7 +468,6 @@
 	<string name="show_mini_boards">پیشاندانی تەختە بچووکەکان</string>
 	<string name="show_timer">پیشاندانی کات‌پێو</string>
 	<string name="file_saved_to_download">فایل خەزن کرا لە \"Download\"</string>
-	<string name="with">لە گەڵ</string>
 	<string name="basic_members_allowed_3_per_day">ئەندامانی بنەڕەتی ٣ جار لە ڕۆژ دا ڕێ پێ دراون</string>
 	<string name="get_detailed_stats">وەرگرتنی ئاماری ورد</string>
 	<string name="select_plan">هەڵبژارتنی پلان</string>

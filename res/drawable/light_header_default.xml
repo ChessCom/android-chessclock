@@ -8,14 +8,14 @@
 		</shape>
 	</item>
 	<!--Top Border-->
-	<item android:top="1dip">
+	<item android:top="1dp">
 		<shape>
 			<solid android:color="@color/light_header_back_border_top_1" />
 		</shape>
 	</item>
 
 	<!--Bottom Border-->
-	<item android:top="2dip">
+	<item android:top="2dp">
 		<shape>
 			<solid android:color="@color/light_header_back_border_bot" />
 		</shape>
@@ -23,8 +23,8 @@
 
 	<!--Button-->
 	<item
-		android:bottom="1dip"
-		android:top="2dip">
+		android:bottom="1dp"
+		android:top="2dp">
 		<shape>
 			<solid android:color="@color/light_header_back" />
 			<size android:height="@dimen/default_header_height" />

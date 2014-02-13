@@ -12,31 +12,31 @@
 	<dimen name="shadow_width">15dp</dimen>
 
 	<dimen name="tablet_side_menu_width">220dp</dimen>
-	<dimen name="new_tactics_panel_info_height">60dip</dimen>
-	<dimen name="stats_padding_side">8dip</dimen>
+	<dimen name="new_tactics_panel_info_height">60dp</dimen>
+	<dimen name="stats_padding_side">8dp</dimen>
 
 
 	<dimen name="daily_game_list_item_width">250dp</dimen>
 	<dimen name="panel_info_avatar_left_margin">2dp</dimen>
 	<dimen name="notations_text_view_height">30dp</dimen>
-	<dimen name="daily_board_preview_size">240dip</dimen>
-	<dimen name="daily_board_preview_overlay">190dip</dimen>
+	<dimen name="daily_board_preview_size">240dp</dimen>
+	<dimen name="daily_board_preview_overlay">190dp</dimen>
 	<!--240 - (240/8 * 2) = 180 -->
 	<dimen name="welcome_frame_login_btn_height">51dp</dimen>
-	<dimen name="tablet_board_margin_left">17dip</dimen>
+	<dimen name="tablet_board_margin_left">17dp</dimen>
 	<dimen name="welcome_port_bottom_view_height">106dp</dimen>
 
 	<dimen name="welcome_title_text_size">37sp</dimen>
-	<dimen name="welcome_features_padding_top">35dip</dimen>
+	<dimen name="welcome_features_padding_top">35dp</dimen>
 	<dimen name="welcome_feature_text_size">21sp</dimen>
-	<dimen name="welcome_features_padding_between_top">5dip</dimen>
+	<dimen name="welcome_features_padding_between_top">5dp</dimen>
 	<dimen name="stats_padding_side_main">8dp</dimen>
 
-	<dimen name="article_detail_image_width">286dip</dimen>
-	<dimen name="article_detail_image_height">286dip</dimen>
+	<dimen name="article_detail_image_width">286dp</dimen>
+	<dimen name="article_detail_image_height">286dp</dimen>
 	<dimen name="all_premium_plans_features_title_size">23sp</dimen>
 	<dimen name="upgrade_options_text_size">13sp</dimen>
-	<dimen name="theme_back_preview_height">134dip</dimen>
+	<dimen name="theme_back_preview_height">134dp</dimen>
 	<dimen name="theme_back_preview_aspect">2.6dp</dimen>
 
 </resources>

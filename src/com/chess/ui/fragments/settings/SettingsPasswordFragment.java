@@ -39,7 +39,7 @@ public class SettingsPasswordFragment extends CommonLogicFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_password_frame, container, false);
+		return inflater.inflate(R.layout.password_frame, container, false);
 	}
 
 	@Override

@@ -51,7 +51,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_live_game_wait_frame, container, false);
+		return inflater.inflate(R.layout.live_game_wait_frame, container, false);
 	}
 
 	@Override

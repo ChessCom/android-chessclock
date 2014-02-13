@@ -5,18 +5,14 @@
 	android:clickable="true"
 	android:focusable="true"
 	android:minHeight="@dimen/game_controls_button_height">
-	<!--android:background="@drawable/button_emboss_one_selector"-->
-
-	<!--	<ImageView
-			android:id="@+id/iv_icon"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"/>-->
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/actionItemTxt"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:gravity="center"
+		android:paddingStart="@dimen/default_scr_side_padding"
+		android:paddingEnd="@dimen/default_scr_side_padding"
 		android:paddingLeft="@dimen/default_scr_side_padding"
 		android:paddingRight="@dimen/default_scr_side_padding"
 		style="@style/QuickActionItemText" />

@@ -23,6 +23,8 @@
 				android:layout_gravity="center"
 				android:gravity="center"
 				android:layout_marginTop="@dimen/tablet_board_margin_bottom"
+				android:layout_marginStart="@dimen/tablet_board_margin_left"
+				android:layout_marginEnd="@dimen/tablet_board_margin"
 				android:layout_marginLeft="@dimen/tablet_board_margin_left"
 				android:layout_marginRight="@dimen/tablet_board_margin"
 				android:layout_marginBottom="@dimen/tablet_board_margin_bottom"
@@ -42,9 +44,11 @@
 				android:id="@+id/startOverlayView"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:minHeight="160dip"
+				android:minHeight="160dp"
 				android:background="@drawable/rounded_border_white_back"
 				android:paddingTop="@dimen/start_new_game_overlay_padding_top"
+				android:paddingStart="@dimen/start_new_game_overlay_padding_side"
+				android:paddingEnd="@dimen/start_new_game_overlay_padding_side"
 				android:paddingLeft="@dimen/start_new_game_overlay_padding_side"
 				android:paddingRight="@dimen/start_new_game_overlay_padding_side"
 				android:paddingBottom="@dimen/start_new_game_overlay_padding_side"
@@ -65,7 +69,7 @@
 				<com.chess.widgets.RoboTextView
 					android:id="@+id/onlinePlayersCntTxt"
 					android:layout_width="match_parent"
-					android:layout_height="0dip"
+					android:layout_height="0dp"
 					android:layout_weight="1"
 					android:gravity="center"
 					android:textSize="@dimen/popup_title_text_size_medium"
@@ -78,11 +82,12 @@
 					<!--10|5-->
 					<com.chess.widgets.RoboButton
 						android:id="@+id/timeSelectBtn"
-						android:layout_width="0dip"
+						android:layout_width="0dp"
 						android:layout_height="wrap_content"
 						android:layout_weight="0.8"
 						android:minHeight="@dimen/big_orange_button_height"
-						android:layout_marginRight="5dip"
+						android:layout_marginEnd="5dp"
+						android:layout_marginRight="5dp"
 						style="@style/Button.Glassy.Small"
 						android:textSize="@dimen/big_button_text_size"
 						android:textColor="@color/text_controls_icons_white" />
@@ -90,11 +95,12 @@
 					<!--Play! -->
 					<com.chess.widgets.RoboButton
 						android:id="@+id/gamePlayBtn"
-						android:layout_width="0dip"
+						android:layout_width="0dp"
 						android:layout_height="wrap_content"
 						android:text="@string/play"
 						style="@style/Button.OrangeNoBorder.Big"
-						android:layout_marginLeft="5dip"
+						android:layout_marginStart="5dp"
+						android:layout_marginLeft="5dp"
 						android:layout_weight="1.2" />
 
 				</LinearLayout>

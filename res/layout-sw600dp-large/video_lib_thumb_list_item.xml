@@ -6,9 +6,11 @@
 	android:id="@+id/commonDescriptionListView"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:minHeight="61dip"
+	android:minHeight="61dp"
 	android:paddingTop="@dimen/grid_view_spacing"
 	android:paddingBottom="@dimen/grid_view_spacing"
+	android:paddingStart="22dp"
+	android:paddingEnd="22dp"
 	android:paddingLeft="22dp"
 	android:paddingRight="22dp"
 	android:background="@drawable/transparent_list_item_selector">
@@ -18,7 +20,8 @@
 		android:layout_width="@dimen/video_thumb_size"
 		android:layout_height="@dimen/video_thumb_size"
 		android:background="@drawable/img_tactics_board"
-		android:layout_marginRight="15dip">
+		android:layout_marginEnd="15dp"
+		android:layout_marginRight="15dp">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -36,9 +39,10 @@
 		android:id="@+id/titleTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_toEndOf="@id/boardBackView"
 		android:layout_toRightOf="@id/boardBackView"
 		android:layout_marginTop="-4dp"
-		android:paddingBottom="2dip"
+		android:paddingBottom="2dp"
 		android:text="Test title"
 		android:textColor="@color/new_text_blue"
 		android:textSize="16sp"
@@ -53,6 +57,7 @@
 		android:text="Test author"
 		android:textColor="@color/new_author_dark_grey"
 		android:textSize="@dimen/default_text_size_small"
+		android:layout_toEndOf="@id/boardBackView"
 		android:layout_toRightOf="@id/boardBackView"
 		custom:ttf="Bold" />
 
@@ -61,10 +66,11 @@
 		android:id="@+id/durationTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_toEndOf="@id/boardBackView"
 		android:layout_toRightOf="@id/boardBackView"
 		android:layout_below="@id/authorTxt"
 		android:text="| 27 min"
-		android:paddingTop="2dip"
+		android:paddingTop="2dp"
 		android:textColor="@color/stats_label_light_grey"
 		android:textSize="12sp" />
 

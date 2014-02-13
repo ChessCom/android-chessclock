@@ -34,7 +34,7 @@ public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup parent) {
-		View view = inflater.inflate(R.layout.new_chat_message_update_list_item, parent, false);
+		View view = inflater.inflate(R.layout.chat_message_update_list_item, parent, false);
 		ViewHolder holder = new ViewHolder();
 		holder.playerImg = (ProgressImageView) view.findViewById(R.id.playerImg);
 		holder.messageTxt = (TextView) view.findViewById(R.id.messageTxt);

@@ -27,7 +27,7 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_sign_in_frame, container, false);
+		return inflater.inflate(R.layout.sign_in_frame, container, false);
 	}
 
 	@Override

@@ -22,6 +22,7 @@
 			android:layout_weight="1"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:text="@string/member_since_"
+			android:paddingStart="@dimen/common_tablet_side_padding"
 			android:paddingLeft="@dimen/common_tablet_side_padding" />
 
 		<!--Last Login-->
@@ -32,6 +33,7 @@
 			android:layout_weight="1"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:text="@string/last_login_"
+			android:paddingStart="@dimen/common_tablet_side_padding"
 			android:paddingLeft="@dimen/common_tablet_side_padding" />
 
 		<!--Birthday-->
@@ -42,6 +44,7 @@
 			android:layout_weight="1"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:text="@string/birthday_"
+			android:paddingStart="@dimen/common_tablet_side_padding"
 			android:paddingLeft="@dimen/common_tablet_side_padding" />
 
 	</LinearLayout>

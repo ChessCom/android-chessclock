@@ -37,7 +37,7 @@ public class UpgradeFragment extends CommonLogicFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_upgrade_frame, container, false);
+		return inflater.inflate(R.layout.upgrade_frame, container, false);
 	}
 
 	@Override

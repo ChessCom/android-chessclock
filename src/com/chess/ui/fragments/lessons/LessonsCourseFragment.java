@@ -89,7 +89,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_lessons_course_frame, container, false);
+		return inflater.inflate(R.layout.lessons_course_frame, container, false);
 	}
 
 	@Override
@@ -290,7 +290,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 			}
 
 			// show Course Completed Popup
-			View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lesson_course_complete_popup, null, false);
+			View popupView = LayoutInflater.from(getActivity()).inflate(R.layout.lesson_course_complete_popup, null, false);
 			popupView.findViewById(R.id.shareBtn).setOnClickListener(this);
 
 			TextView completeTitleTxt = (TextView) popupView.findViewById(R.id.completeTitleTxt);
@@ -345,7 +345,7 @@ public class LessonsCourseFragment extends CommonLogicFragment implements Adapte
 	protected void widgetsInit(View view) {
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		// Set header
-		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.new_lessons_course_header_view, null, false);
+		View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.lessons_course_header_view, null, false);
 		upgradeBtn = headerView.findViewById(R.id.upgradeBtn);
 		if (isNeedToUpgradePremium()) {
 			upgradeBtn.setOnClickListener(this);

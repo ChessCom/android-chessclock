@@ -66,7 +66,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 		articlesViewedMap = new SparseBooleanArray();
 
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_light,
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.text_section_header_light,
 				new int[]{RECENT_TOP_3_SECTION, CATEGORIES_SECTION});
 
 		articlesCursorAdapter = new ArticlesCursorAdapter(getActivity(), null, getImageFetcher());
@@ -81,7 +81,7 @@ public class ArticlesFragment extends CommonLogicFragment implements ItemClickLi
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_white_list_ads_view_frame, container, false);
+		return inflater.inflate(R.layout.white_list_ads_view_frame, container, false);
 	}
 
 	@Override

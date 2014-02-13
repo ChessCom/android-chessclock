@@ -468,7 +468,6 @@
 	<string name="show_mini_boards">Mini táblák mutatása</string>
 	<string name="show_timer">Idő mutatása</string>
 	<string name="file_saved_to_download">Fájl mentve a \"Letöltések\" közé</string>
-	<string name="with">-</string>
 	<string name="basic_members_allowed_3_per_day">Az alap tagok napi feladvány limitje 3</string>
 	<string name="get_detailed_stats">Részletesebb statisztika</string>
 	<string name="select_plan">Válassz ütemtervet</string>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+	android:id="@+id/friendListItemView"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:paddingBottom="10dp"
+	android:background="@drawable/transparent_list_item_selector">
+
+	<!--Avatar-->
+	<com.chess.backend.image_load.AvatarView
+		android:id="@+id/photoImg"
+		android:layout_width="@dimen/friend_list_photo_size"
+		android:layout_height="@dimen/friend_list_photo_size"
+		android:contentDescription="@string/photo"
+		android:src="@drawable/img_profile_picture_stub"
+		android:layout_centerVertical="true"
+		android:layout_marginStart="10dp"
+		android:layout_marginEnd="10dp"
+		android:layout_marginTop="8dp"
+		android:adjustViewBounds="true"
+		android:scaleType="fitXY" />
+
+	<!--Username-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/usernameTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toEndOf="@id/photoImg"
+		android:layout_alignTop="@id/photoImg"
+		android:textColor="@color/new_text_blue"
+		custom:ttf="Bold"
+		android:textSize="17sp" />
+
+	<!--Country-->
+	<ImageView
+		android:id="@+id/countryImg"
+		android:layout_width="@dimen/country_icon_list_size"
+		android:layout_height="@dimen/country_icon_list_size"
+		android:contentDescription="@string/country"
+		android:layout_toEndOf="@id/usernameTxt"
+		android:layout_marginTop="5dp"
+		android:layout_marginStart="7dp" />
+
+	<!--Premium img-->
+	<ImageView
+		android:id="@+id/premiumImg"
+		android:layout_width="@dimen/premium_icon_list_size"
+		android:layout_height="@dimen/premium_icon_list_size"
+		android:contentDescription="@string/image"
+		android:layout_toEndOf="@id/countryImg"
+		android:src="@drawable/ic_nav_upgrade"
+		android:layout_alignTop="@id/photoImg"
+		android:layout_marginStart="10dp"
+		android:adjustViewBounds="true"
+		android:scaleType="fitXY" />
+
+	<!--Location-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/locationTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toEndOf="@id/photoImg"
+		android:layout_below="@id/usernameTxt"
+		android:textColor="@color/new_friends_grey_text"
+		android:paddingTop="2dp" />
+
+	<!--Online status-->
+	<com.chess.widgets.RoboTextView
+		android:id="@+id/onlineTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toEndOf="@id/photoImg"
+		android:layout_below="@id/locationTxt"
+		android:paddingTop="3dp"
+		android:textColor="@color/new_friends_grey_text"
+		custom:ttf="Italic"
+		android:textSize="@dimen/default_text_size_small" />
+
+	<!--Challenge Btn-->
+	<com.chess.widgets.RoboButton
+		android:id="@+id/challengeImgBtn"
+		android:layout_width="@dimen/new_button_square_size"
+		android:layout_height="@dimen/new_button_square_size"
+		android:layout_alignParentEnd="true"
+		android:background="@drawable/button_square_grey_selector"
+		android:text="@string/ic_board"
+		android:textColor="@color/hint_text"
+		android:layout_marginTop="9dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginEnd="8dp"
+		style="@style/GlyphIcon.Square" />
+
+	<!--Message Btn-->
+	<com.chess.widgets.RoboButton
+		android:id="@+id/messageImgBtn"
+		android:layout_width="@dimen/new_button_square_size"
+		android:layout_height="@dimen/new_button_square_size"
+		android:layout_alignParentEnd="true"
+		android:background="@drawable/button_square_grey_selector"
+		android:text="@string/ic_email_dark"
+		android:textColor="@color/hint_text"
+		android:layout_alignBottom="@id/photoImg"
+		android:layout_marginStart="8dp"
+		android:layout_marginEnd="8dp"
+		style="@style/GlyphIcon.Square" />
+
+
+</RelativeLayout>

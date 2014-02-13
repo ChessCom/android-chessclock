@@ -147,7 +147,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_article_details_frame, container, false);
+		return inflater.inflate(R.layout.article_details_frame, container, false);
 	}
 
 	@Override
@@ -986,7 +986,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 
 		commentPostListener = new CommentPostListener();
 
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_arrow_section_header,
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.arrow_section_header,
 				new int[]{CONTENT_SECTION, COMMENTS_SECTION});
 
 		diagramsAdapter = new DiagramsAdapter(getActivity(), null);
@@ -995,7 +995,7 @@ public class ArticleDetailsFragment extends CommonLogicFragment implements ItemC
 	}
 
 	private void widgetsInit(View view) {
-		ViewGroup headerView = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.new_article_details_header_frame, null, false);
+		ViewGroup headerView = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.article_details_header_frame, null, false);
 
 		loadingView = view.findViewById(R.id.loadingView);
 		loadingCommentsView = headerView.findViewById(R.id.loadingCommentsView);

@@ -114,12 +114,20 @@ public class AppData {
 		return getStringValue(FACEBOOK_TOKEN, Symbol.EMPTY);
 	}
 
-	public void setLanguageCode(int value) {
-		setIntValue(PREF_LANGUAGE, value);
+	public void setLanguageCode(String value) {
+		setStringValue(PREF_LANGUAGE_CODE, value);
 	}
 
-	public int getLanguageCode() {
-		return getIntValue(PREF_LANGUAGE, 0);
+	public String getLanguageCode() {
+		return getStringValue(PREF_LANGUAGE_CODE, "en");
+	}
+
+	public void setLanguageIndex(int value) {
+		setIntValue(PREF_LANGUAGE_INDEX, value);
+	}
+
+	public int getLanguageIndex() {
+		return getIntValue(PREF_LANGUAGE_INDEX, 0);
 	}
 
 	public void setLiveSessionId(String value) {

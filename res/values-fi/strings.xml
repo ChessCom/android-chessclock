@@ -469,7 +469,6 @@
 	<string name="show_mini_boards">Näytä pikkulaudat</string>
 	<string name="show_timer">Näytä ajastin</string>
 	<string name="file_saved_to_download">Tiedosto tallennettu kansioon \"Download\"</string>
-	<string name="with">–</string>
 	<string name="basic_members_allowed_3_per_day">Perusjäsenille 3 päivässä</string>
 	<string name="get_detailed_stats">Hanki yksityiskohtaiset tilastot</string>
 	<string name="select_plan">Valitse kokonaisuus</string>

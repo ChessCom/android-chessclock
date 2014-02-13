@@ -48,6 +48,8 @@ public class VideoActivity extends Activity implements View.OnFocusChangeListene
 
 		if (savedInstanceState != null) {
 			seekPosition = savedInstanceState.getInt(SEEK_POSITION);
+		} else {
+			seekPosition = getIntent().getIntExtra(SEEK_POSITION, 0);
 		}
 	}
 

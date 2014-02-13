@@ -14,10 +14,10 @@
 
 	<!--Inner Ring-->
 	<item
-		android:top="1dip"
-		android:left="1dip"
-		android:right="1dip"
-		android:bottom="1dip">
+		android:top="1dp"
+		android:left="1dp"
+		android:right="1dp"
+		android:bottom="1dp">
 		<shape android:shape="oval">
 			<solid android:color="@color/thumbnail_play_border_2" />
 		</shape>
@@ -25,10 +25,10 @@
 
 	<!--Border + 5px-->
 	<item
-		android:top="4dip"
-		android:left="4dip"
-		android:right="4dip"
-		android:bottom="4dip">
+		android:top="4dp"
+		android:left="4dp"
+		android:right="4dp"
+		android:bottom="4dp">
 		<shape android:shape="oval">
 			<solid android:color="@color/thumbnail_play_border_1" />
 
@@ -38,10 +38,10 @@
 
 	<!--Border + 2px-->
 	<item
-		android:top="5dip"
-		android:left="5dip"
-		android:right="5dip"
-		android:bottom="5dip">
+		android:top="5dp"
+		android:left="5dp"
+		android:right="5dp"
+		android:bottom="5dp">
 		<shape android:shape="oval">
 			<solid android:color="@color/thumbnail_play_border_inner" />
 		</shape>

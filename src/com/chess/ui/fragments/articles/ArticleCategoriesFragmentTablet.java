@@ -59,7 +59,7 @@ public class ArticleCategoriesFragmentTablet extends ArticleCategoriesFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_white_list_ads_view_frame, container, false);
+		return inflater.inflate(R.layout.white_list_ads_view_frame, container, false);
 	}
 
 	@Override

@@ -66,7 +66,7 @@ public class SettingsDailyChessFragment extends CommonLogicFragment implements S
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_settings_daily_chess_frame, container, false);
+		return inflater.inflate(R.layout.settings_daily_chess_frame, container, false);
 	}
 
 	@Override

@@ -63,7 +63,7 @@ public abstract class BaseSearchFragment extends CommonLogicFragment implements 
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.new_base_search_frame, container, false);
+		return inflater.inflate(R.layout.base_search_frame, container, false);
 	}
 
 	@Override

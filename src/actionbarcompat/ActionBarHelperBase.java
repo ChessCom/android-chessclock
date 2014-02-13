@@ -26,6 +26,7 @@ import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import com.chess.R;
+import com.chess.utilities.AppUtils;
 import com.chess.widgets.RoboTextView;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
@@ -337,7 +338,11 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		if (compatView != null) {
 			View titleTxt = compatView.findViewById(R.id.actionbar_compat_title);
 			if (titleTxt != null) {
-				titleTxt.setPadding(padding, 0, 0, 0);
+				if (AppUtils.useLtr(mActivity)) {
+					titleTxt.setPadding(padding, 0, 0, 0);
+				} else {
+					titleTxt.setPadding(0, 0, padding, 0);
+				}
 			}
 		}
 	}
@@ -345,7 +350,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	@Override
 	public void setCustomView(int layoutId) {
 		customView = mActivity.getLayoutInflater().inflate(layoutId, null, false);
-		customViewSet = layoutId != R.layout.new_custom_actionbar;
+		customViewSet = layoutId != R.layout.custom_actionbar;
 		// restore title and update actionBar view
 		final ViewGroup actionBarCompat = getActionBarCompat();
 		if (actionBarCompat == null) {

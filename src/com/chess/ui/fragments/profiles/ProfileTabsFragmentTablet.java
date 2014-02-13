@@ -526,7 +526,7 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 		imageLoader = new EnhancedImageDownloader(context);
 		statsItemUpdateListener = new StatsItemUpdateListener();
 		saveStatsUpdateListener = new SaveStatsUpdateListener();
-		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.new_text_section_header_dark,
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.text_section_header_dark,
 				new int[]{FRIEND_OPTIONS_SECTION});
 
 		ratingList = createStatsList(context);
@@ -574,7 +574,7 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 
 	private void widgetsInit(View view) {
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		View headerView = inflater.inflate(R.layout.new_profiles_header_view, null, false);
+		View headerView = inflater.inflate(R.layout.profiles_header_view, null, false);
 
 		{// Header init
 			photoImg = (ProgressImageView) headerView.findViewById(R.id.photoImg);
@@ -603,7 +603,7 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 
 		@Override
 		protected View createView(ViewGroup parent) {
-			View view = inflater.inflate(R.layout.new_rating_list_item, parent, false);
+			View view = inflater.inflate(R.layout.rating_list_item, parent, false);
 			ViewHolder holder = new ViewHolder();
 			holder.labelTxt = (TextView) view.findViewById(R.id.ratingLabelTxt);
 			holder.valueTxt = (TextView) view.findViewById(R.id.ratingValueTxt);
