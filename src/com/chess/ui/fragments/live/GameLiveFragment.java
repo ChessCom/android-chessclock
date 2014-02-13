@@ -1386,6 +1386,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 	}
 
+	@Override
+	public void onLiveServiceConnected() {
+		super.onLiveServiceConnected();
+
+		if (!isValid()) {
+			goHome();
+		}
+	}
+
 	protected void logLiveTest(String messageToLog) {
 		LogMe.dl(TAG, "LIVE GAME FRAGMENT: " + messageToLog);
 	}
@@ -1400,5 +1409,20 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		optionsMap.put(ID_ABORT_RESIGN, getString(resignTitleId));
 		optionsMap.put(ID_REMATCH, getString(R.string.rematch));
 		optionsMap.put(ID_SETTINGS, getString(R.string.settings));
+	}
+
+	public boolean isValid() {
+
+		LiveConnectionHelper liveHelper;
+		try {
+			liveHelper = getLiveHelper();
+		} catch (DataNotValidException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		boolean isGameValid = liveHelper.getCurrentGameId() != null;
+
+		return isGameValid;
 	}
 }

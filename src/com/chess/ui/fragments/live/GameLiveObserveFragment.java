@@ -376,32 +376,4 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
 		optionsMap.put(ID_SETTINGS, getString(R.string.settings));
 	}
-
-	@Override
-	public void onResume() {
-
-		// todo: handle correctly - move to onServiceConnected
-		/*
-		if (isLCSBound && !isValid()) {
-			goHome();
-		}
-		*/
-
-		super.onResume();
-	}
-
-	public boolean isValid() {
-		// todo: add more checks
-
-		LiveConnectionHelper liveHelper;
-		try {
-			liveHelper = getLiveHelper();
-		} catch (DataNotValidException e) {
-			e.printStackTrace();
-			return false;
-		}
-
-		boolean isGameValid = liveHelper.getCurrentObservedGameId() != null;
-		return isGameValid;
-	}
 }
