@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.chess.R;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
 import com.chess.widgets.ProfileImageView;
 import com.chess.widgets.RoboTextView;
@@ -60,10 +61,17 @@ public class PanelInfoTacticsView extends RelativeLayout {
 		Resources resources = context.getResources();
 		float density = resources.getDisplayMetrics().density;
 
+		boolean useLtr = AppUtils.useLtr(context);
+		boolean API_17 = AppUtils.JELLYBEAN_MR1_PLUS_API;
+
 		int padding = (int) resources.getDimension(R.dimen.panel_info_tactic_padding_top);
 		int paddingLeft = resources.getDimensionPixelSize(R.dimen.panel_info_tactic_padding_side);
 		int paddingRight = (int) (12 * density);
-		setPadding(paddingLeft, padding, paddingRight, padding);
+		if (useLtr) {
+			setPadding(paddingLeft, padding, paddingRight, padding);
+		} else {
+			setPadding(paddingRight, padding, paddingLeft, padding);
+		}
 
 		float infoTextSize = resources.getDimension(R.dimen.new_tactics_info_text_size) / density;
 		int avatarSize = (int) resources.getDimension(R.dimen.panel_info_avatar_tactic_size);
@@ -93,6 +101,9 @@ public class PanelInfoTacticsView extends RelativeLayout {
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			ratingParams.addRule(CENTER_VERTICAL);
 			ratingParams.addRule(RIGHT_OF, AVATAR_ID);
+			if (API_17) {
+				ratingParams.addRule(END_OF, AVATAR_ID);
+			}
 
 			ratingTxt.setTextSize(infoTextSize);
 			ratingTxt.setTextColor(defaultColorStateList);
@@ -108,6 +119,9 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			layoutParams.addRule(RIGHT_OF, RATING_ID);
+			if (API_17) {
+				layoutParams.addRule(END_OF, RATING_ID);
+			}
 			layoutParams.addRule(CENTER_VERTICAL);
 
 			ratingChangeTxt.setTextSize(infoTextSize);
@@ -131,6 +145,9 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			LinearLayout.LayoutParams clockIconParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 			clockLayoutParams.addRule(ALIGN_PARENT_RIGHT);
+			if (API_17) {
+				clockLayoutParams.addRule(ALIGN_PARENT_END);
+			}
 			clockLayoutParams.addRule(CENTER_VERTICAL);
 			timePassedParams.gravity = CENTER_VERTICAL;
 			clockIconParams.gravity = CENTER_VERTICAL;
@@ -142,7 +159,11 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			clockIconTxt.setTextColor(defaultColorStateList);
 			int paddingIcon = (int) (7 * density);
 			int paddingIconTop = (int) (3 * density);
-			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
+			if (useLtr) {
+				clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
+			} else {
+				clockIconTxt.setPadding(paddingIcon, paddingIconTop, 0, 0);
+			}
 
 			clockLayout.addView(clockIconTxt, clockIconParams);
 

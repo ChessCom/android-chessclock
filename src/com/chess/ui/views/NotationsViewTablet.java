@@ -97,7 +97,6 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 			ButtonDrawableBuilder.setBackgroundToView(this, attrs);
 		}
 
-//		ButtonDrawableBuilder.setBackgroundToView(this, R.style.Rect_Tab_Middle);
 		setPadding(screenPaddingSide, screenPadding, screenPaddingSide, 0);
 
 		clickable = true;

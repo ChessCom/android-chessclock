@@ -7,6 +7,7 @@
 	android:minHeight="@dimen/new_nav_menu_item_height"
 	android:orientation="horizontal"
 	android:paddingEnd="@dimen/smaller_scr_side_padding"
+	android:paddingRight="@dimen/smaller_scr_side_padding"
 	style="@style/ListItem"
 	android:gravity="center_vertical">
 
@@ -16,6 +17,8 @@
 		android:layout_height="@dimen/nav_item_image_size"
 		android:layout_marginStart="@dimen/new_nav_menu_image_padding_left"
 		android:layout_marginEnd="17dp"
+		android:layout_marginLeft="@dimen/new_nav_menu_image_padding_left"
+		android:layout_marginRight="17dp"
 		android:contentDescription="@string/image" />
 
 	<com.chess.widgets.RoboTextView

@@ -17,6 +17,7 @@ import com.chess.ui.interfaces.boards.BoardViewFace;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.ui.views.drawables.smart_button.RectButtonDrawable;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
 import com.chess.widgets.RoboButton;
 
@@ -40,9 +41,9 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	public static final int BUTTON_PREFIX = 0x00002000;
 	public static final String NEW_MESSAGE_MARK = "!";
 
-	static final int LEFT = 0;
+	static int LEFT = 0;
 	static final int MIDDLE = 1;
-	static final int RIGHT = 2;
+	static int RIGHT = 2;
 	static final int ORANGE = 3;
 	static final int RED = 4;
 	static final int GREEN = 5;
@@ -52,6 +53,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 	static final int STYLE_ROUNDED = 1;
 	static final int STYLE_RECT_DARK = 2;
 
+	private boolean useLtr;
 	int controlIconSize;
 	protected ColorStateList controlIconColor;
 	protected float density;
@@ -179,6 +181,12 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			return;
 		}
 
+		useLtr = AppUtils.useLtr(getContext());
+		if (!useLtr) { // change borders for RTL
+			LEFT = 2;
+			RIGHT = 0;
+		}
+
 		handler = new Handler();
 
 		density = resources.getDisplayMetrics().density;
@@ -246,7 +254,18 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 
 	View createControlButton(ButtonIds buttonId, int styleId) {
 		RoboButton button = getDefaultButton();
-		button.setText(buttonGlyphsMap.get(buttonId));
+		if (useLtr) {
+			button.setText(buttonGlyphsMap.get(buttonId));
+		} else {
+			if (buttonId == ButtonIds.FORWARD) {
+				button.setText(buttonGlyphsMap.get(ButtonIds.BACK));
+			} else if (buttonId == ButtonIds.BACK) {
+				button.setText(buttonGlyphsMap.get(ButtonIds.FORWARD));
+			} else {
+				button.setText(buttonGlyphsMap.get(buttonId));
+			}
+		}
+
 		ButtonDrawableBuilder.setBackgroundToView(button, styleId);
 		button.setId(getButtonId(buttonId));
 

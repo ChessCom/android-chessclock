@@ -14,7 +14,10 @@
 		android:layout_height="1dp"
 		android:background="@color/new_friends_list_divider"
 		android:layout_marginStart="@dimen/common_tablet_side_padding"
-		android:layout_marginEnd="@dimen/common_tablet_side_padding" />
+		android:layout_marginEnd="@dimen/common_tablet_side_padding"
+		android:layout_marginLeft="@dimen/common_tablet_side_padding"
+		android:layout_marginRight="@dimen/common_tablet_side_padding"
+		/>
 
 	<com.chess.backend.image_load.AvatarView
 		android:id="@+id/photoImg"
@@ -23,15 +26,19 @@
 		android:background="@color/new_common_list_thumb_grey"
 		android:layout_marginTop="@dimen/common_tablet_side_padding"
 		android:layout_marginStart="@dimen/common_tablet_side_padding"
+		android:layout_marginLeft="@dimen/common_tablet_side_padding"
 		android:layout_below="@id/titleTxt"
 		android:contentDescription="@string/image"
-		android:layout_marginEnd="11dp" />
+		android:layout_marginEnd="11dp"
+		android:layout_marginRight="11dp"
+		/>
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/authorTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/photoImg"
+		android:layout_toRightOf="@id/photoImg"
 		android:layout_alignTop="@id/photoImg"
 		android:layout_marginTop="-4dp"
 		android:textColor="@color/new_text_blue"
@@ -44,9 +51,12 @@
 		android:layout_height="20dp"
 		android:contentDescription="@string/country"
 		android:layout_toEndOf="@id/authorTxt"
+		android:layout_toRightOf="@id/authorTxt"
 		android:layout_alignTop="@id/photoImg"
 		android:layout_marginTop="-4dp"
-		android:layout_marginStart="7dp" />
+		android:layout_marginStart="7dp"
+		android:layout_marginLeft="7dp"
+		/>
 
 	<ImageView
 		android:id="@+id/premiumImg"
@@ -56,6 +66,7 @@
 		android:layout_toEndOf="@id/countryImg"
 		android:layout_alignTop="@id/photoImg"
 		android:layout_marginStart="10dp"
+		android:layout_marginLeft="10dp"
 		android:layout_marginTop="-3dp"
 		android:adjustViewBounds="true"
 		android:scaleType="fitXY" />
@@ -65,9 +76,11 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
 		android:layout_alignTop="@id/photoImg"
 		android:layout_marginTop="-4dp"
 		android:paddingEnd="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
 		android:textColor="@color/stats_label_light_grey"
 		android:textSize="12sp"
 		custom:ttf="Bold" />
@@ -77,9 +90,12 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/photoImg"
+		android:layout_toRightOf="@id/photoImg"
 		android:layout_below="@id/authorTxt"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingTop="5dp"
-		android:paddingEnd="@dimen/common_tablet_side_padding" />
+		android:paddingEnd="@dimen/common_tablet_side_padding"
+		android:paddingRight="@dimen/common_tablet_side_padding"
+		/>
 
 </RelativeLayout>

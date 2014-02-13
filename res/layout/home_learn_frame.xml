@@ -127,6 +127,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_toEndOf="@id/avgScoreLabelTxt"
+				android:layout_toRightOf="@id/avgScoreLabelTxt"
 				android:layout_below="@id/todaysAttemptsLabelTxt"
 				android:textColor="@color/new_subtitle_dark_grey"
 				android:textSize="@dimen/default_text_size_small"

@@ -15,6 +15,8 @@
 		android:background="@color/new_friends_list_divider"
 		android:layout_marginStart="11dp"
 		android:layout_marginEnd="11dp"
+		android:layout_marginLeft="11dp"
+		android:layout_marginRight="11dp"
 		android:layout_marginBottom="11dp" />
 
 
@@ -28,6 +30,8 @@
 		android:layout_below="@id/topDivideView"
 		android:layout_marginStart="10dp"
 		android:layout_marginEnd="10dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
 		android:adjustViewBounds="true"
 		android:scaleType="fitXY" />
 
@@ -37,6 +41,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/photoImg"
+		android:layout_toRightOf="@id/photoImg"
 		android:layout_alignTop="@id/photoImg"
 		android:layout_marginTop="-4dp"
 		android:layout_below="@id/topDivideView"
@@ -51,8 +56,11 @@
 		android:layout_height="27dp"
 		android:contentDescription="@string/country"
 		android:layout_toEndOf="@id/usernameTxt"
+		android:layout_toRightOf="@id/usernameTxt"
 		android:layout_below="@id/topDivideView"
-		android:layout_marginStart="7dp" />
+		android:layout_marginStart="7dp"
+		android:layout_marginLeft="7dp"
+		/>
 
 	<!--Premium icon-->
 	<ImageView
@@ -61,10 +69,12 @@
 		android:layout_height="20dp"
 		android:contentDescription="@string/image"
 		android:layout_toEndOf="@id/countryImg"
+		android:layout_toRightOf="@id/countryImg"
 		android:src="@drawable/ic_nav_upgrade"
 		android:layout_alignTop="@id/photoImg"
 		android:layout_below="@id/topDivideView"
 		android:layout_marginStart="10dp"
+		android:layout_marginLeft="10dp"
 		android:adjustViewBounds="true"
 		android:scaleType="fitXY" />
 
@@ -74,6 +84,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/photoImg"
+		android:layout_toRightOf="@id/photoImg"
 		android:layout_below="@id/usernameTxt"
 		android:textColor="@color/new_friends_grey_text"
 		android:paddingTop="2dp" />
@@ -84,6 +95,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/photoImg"
+		android:layout_toRightOf="@id/photoImg"
 		android:layout_below="@id/locationTxt"
 		android:paddingTop="3dp"
 		android:textColor="@color/new_friends_grey_text"
@@ -97,11 +109,14 @@
 		android:layout_height="@dimen/new_button_square_size"
 		android:background="@drawable/button_square_grey_selector"
 		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
 		android:layout_below="@id/topDivideView"
 		android:text="@string/ic_board"
 		android:textColor="@color/hint_text"
 		android:layout_marginStart="8dp"
 		android:layout_marginEnd="8dp"
+		android:layout_marginLeft="8dp"
+		android:layout_marginRight="8dp"
 		style="@style/GlyphIcon.Square" />
 
 	<!--Message Btn-->
@@ -111,11 +126,14 @@
 		android:layout_height="@dimen/new_button_square_size"
 		android:background="@drawable/button_square_grey_selector"
 		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
 		android:text="@string/ic_email_dark"
 		android:textColor="@color/hint_text"
 		android:layout_alignBottom="@id/photoImg"
 		android:layout_marginStart="8dp"
 		android:layout_marginEnd="8dp"
+		android:layout_marginLeft="8dp"
+		android:layout_marginRight="8dp"
 		style="@style/GlyphIcon.Square" />
 
 </RelativeLayout>

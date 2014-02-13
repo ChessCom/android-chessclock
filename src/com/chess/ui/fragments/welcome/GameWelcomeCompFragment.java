@@ -955,6 +955,10 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 										   final ArrayList<org.petero.droidfish.gamelogic.Move> variantMoves,
 										   final ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
 
+		Activity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
 		// todo: move to CompEngineHelper and refactor
 
 //		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
@@ -963,7 +967,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 //		logTest(" variantStr = " + statStr + " thinkingStr1 = " + thinkingStr1
 //				+ " pvMoves = " + pvMoves.size() + " variantMoves = " + variantMoves.size());
 
-		getActivity().runOnUiThread(new Runnable() {
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 

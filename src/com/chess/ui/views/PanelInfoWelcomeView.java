@@ -44,6 +44,8 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		float density = resources.getDisplayMetrics().density;
 
 		handler = new Handler();
+		boolean useLtr = AppUtils.useLtr(context);
+		boolean API_17 = AppUtils.JELLYBEAN_MR1_PLUS_API;
 
 		if (AppUtils.HONEYCOMB_PLUS_API) {
 			useSingleLine = true;
@@ -86,7 +88,11 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		{// add avatar view
 			avatarImg = new ProfileImageView(context);
 			LayoutParams avatarParams = new LayoutParams(avatarSize, avatarSize);
-			avatarParams.setMargins(paddingLeft, paddingTop, avatarMarginRight, paddingTop);
+			if (useLtr) {
+				avatarParams.setMargins(paddingLeft, paddingTop, avatarMarginRight, paddingTop);
+			} else {
+				avatarParams.setMargins(avatarMarginRight, paddingTop, paddingLeft, paddingTop);
+			}
 
 			avatarParams.addRule(CENTER_VERTICAL);
 
@@ -106,6 +112,9 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			LayoutParams playerParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
 					ViewGroup.LayoutParams.WRAP_CONTENT);
 			playerParams.addRule(RIGHT_OF, AVATAR_ID);
+			if (API_17) {
+				playerParams.addRule(END_OF, AVATAR_ID);
+			}
 			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
 			int playerTopMargin = resources.getDimensionPixelSize(R.dimen.panel_info_welcome_player_top_margin);
 			playerParams.setMargins(0, -playerTopMargin, 0, 0);
@@ -114,7 +123,11 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			playerTxt.setTextColor(playerTextColor);
 			playerTxt.setFont(FontsHelper.BOLD_FONT);
 			playerTxt.setId(PLAYER_ID);
-			playerTxt.setPadding((int) (4 * density), 0, 0, 0);
+			if (useLtr) {
+				playerTxt.setPadding((int) (4 * density), 0, 0, 0);
+			} else {
+				playerTxt.setPadding(0, 0, (int) (4 * density), 0);
+			}
 			playerTxt.setMarqueeRepeatLimit(2);
 			playerTxt.setEllipsize(TextUtils.TruncateAt.MARQUEE);
 
@@ -129,8 +142,14 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			if (useSingleLine) {
 				capturedParams.addRule(CENTER_VERTICAL);
 				capturedParams.addRule(RIGHT_OF, PLAYER_ID);
+				if (API_17) {
+					capturedParams.addRule(END_OF, PLAYER_ID);
+				}
 			} else {
 				capturedParams.addRule(RIGHT_OF, AVATAR_ID);
+				if (API_17) {
+					capturedParams.addRule(END_OF, AVATAR_ID);
+				}
 				capturedParams.addRule(BELOW, PLAYER_ID);
 				capturedParams.addRule(ALIGN_BOTTOM, AVATAR_ID);
 			}

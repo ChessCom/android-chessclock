@@ -15,6 +15,7 @@
 		android:layout_height="@dimen/article_thumb_height"
 		android:background="@color/new_common_list_thumb_grey"
 		android:layout_marginEnd="12dp"
+		android:layout_marginRight="12dp"
 		android:contentDescription="@string/image" />
 
 	<com.chess.widgets.RoboTextView
@@ -24,6 +25,7 @@
 		android:text="Test Title"
 		android:textColor="@color/new_text_blue"
 		android:layout_toEndOf="@id/thumbnailImg"
+		android:layout_toRightOf="@id/thumbnailImg"
 		android:paddingBottom="4dp"
 		android:layout_marginTop="-5dp"
 		android:textSize="15sp"
@@ -35,6 +37,7 @@
 		android:layout_height="wrap_content"
 		android:text="Test author"
 		android:layout_toEndOf="@id/thumbnailImg"
+		android:layout_toRightOf="@id/thumbnailImg"
 		android:layout_below="@id/titleTxt"
 		android:paddingBottom="2dp"
 		android:textColor="@color/new_subtitle_dark_grey"
@@ -47,9 +50,11 @@
 		android:layout_height="20dp"
 		android:contentDescription="@string/country"
 		android:layout_toEndOf="@id/authorTxt"
+		android:layout_toRightOf="@id/authorTxt"
 		android:layout_below="@id/titleTxt"
 		android:layout_marginTop="-6dp"
 		android:layout_marginStart="7dp"
+		android:layout_marginLeft="7dp"
 		android:visibility="gone" />
 
 	<com.chess.widgets.RoboTextView
@@ -58,6 +63,7 @@
 		android:layout_height="wrap_content"
 		android:text="test date"
 		android:layout_toEndOf="@id/countryImg"
+		android:layout_toRightOf="@id/countryImg"
 		android:layout_below="@id/titleTxt"
 		android:textColor="@color/stats_label_light_grey"
 		android:textSize="@dimen/default_text_size_small" />

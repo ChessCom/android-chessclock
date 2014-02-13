@@ -83,7 +83,8 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
 		int widthPixels = resources.getDisplayMetrics().widthPixels;
-
+		boolean useLtr = AppUtils.useLtr(context);
+		boolean API_17 = AppUtils.JELLYBEAN_MR1_PLUS_API;
 		if (AppUtils.HONEYCOMB_PLUS_API) {
 			useSingleLine = true;
 		}
@@ -129,7 +130,11 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 		boolean isTablet = AppUtils.isTablet(getContext()) ;
 		if (!isTablet) {
-			setPadding(0, 0, paddingRight, 0);
+			if (useLtr) {
+				setPadding(0, 0, paddingRight, 0);
+			} else {
+				setPadding(paddingRight, 0, 0, 0);
+			}
 		}
 
 		int paddingLeft = resources.getDimensionPixelSize(R.dimen.panel_info_avatar_left_margin);
@@ -164,7 +169,13 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			if (useSingleLine) {
 				playerParams.addRule(CENTER_VERTICAL);
 				playerParams.addRule(ALIGN_PARENT_LEFT);
+				if (API_17) {
+					playerParams.addRule(ALIGN_PARENT_START);
+				}
 			} else {
+				if (API_17) {
+					playerParams.addRule(END_OF, AVATAR_ID);
+				}
 				playerParams.addRule(RIGHT_OF, AVATAR_ID);
 				playerParams.addRule(ALIGN_TOP, AVATAR_ID);
 			}
@@ -191,6 +202,9 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_rating_margin_top);
 			playerParams.setMargins(0, -marginTop, 0, 0);
 			playerParams.addRule(RIGHT_OF, PLAYER_ID);
+			if (API_17) {
+				playerParams.addRule(END_OF, PLAYER_ID);
+			}
 			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
 
 			playerRatingTxt.setTextSize(playerRatingTextSize);
@@ -213,6 +227,9 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_flag_margin_top);
 			flagParams.setMargins(flagMargin, -marginTop, flagMargin, flagMargin);
 			flagParams.addRule(RIGHT_OF, RATING_ID);
+			if (API_17) {
+				flagParams.addRule(END_OF, RATING_ID);
+			}
 			if (useSingleLine) {
 				flagParams.addRule(CENTER_VERTICAL);
 			} else {
@@ -233,6 +250,9 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			LayoutParams premiumParams = new LayoutParams(flagSize, flagSize);
 			premiumParams.setMargins(flagMargin, -marginTop, flagMargin, flagMargin);
 			premiumParams.addRule(RIGHT_OF, FLAG_ID);
+			if (API_17) {
+				premiumParams.addRule(END_OF, FLAG_ID);
+			}
 			if (useSingleLine) {
 				premiumParams.addRule(CENTER_VERTICAL);
 			} else {
@@ -256,12 +276,15 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			LinearLayout.LayoutParams clockIconParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 			clockLayoutParams.addRule(ALIGN_PARENT_RIGHT);
+			if (API_17) {
+				clockLayoutParams.addRule(ALIGN_PARENT_END);
+			}
 			clockLayoutParams.addRule(CENTER_VERTICAL);
 
 			timeRemainParams.gravity = Gravity.CENTER_VERTICAL;
 			clockIconParams.gravity = Gravity.CENTER_VERTICAL;
 
-			clockLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+			clockLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT | Gravity.END);
 			clockLayout.setMinimumWidth((int) (70 * density));
 			clockLayout.setMinimumHeight((int) (35 * density));
 
@@ -271,15 +294,27 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 			clockIconTxt.setText(R.string.ic_clock);
 			int paddingIcon = resources.getDimensionPixelSize(R.dimen.new_tactics_clock_icon_padding);
 			int paddingIconTop = resources.getDimensionPixelSize(R.dimen.new_tactics_clock_icon_padding_top);
-			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
+			if (useLtr) {
+				clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
+			} else {
+				clockIconTxt.setPadding(paddingIcon, paddingIconTop, 0, 0);
+			}
+
 			clockIconTxt.setVisibility(GONE);
 
 			clockLayout.addView(clockIconTxt, clockIconParams);
 
 			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, timeLeftSize);
 			timeLeftParams.addRule(ALIGN_PARENT_RIGHT);
+			if (API_17) {
+				timeLeftParams.addRule(ALIGN_PARENT_END);
+			}
 			timeLeftParams.addRule(CENTER_VERTICAL);
-			timeLeftParams.setMargins((int) (4 * density), paddingTop, paddingRight, paddingTop);
+			if (useLtr) {
+				timeLeftParams.setMargins((int) (4 * density), paddingTop, paddingRight, paddingTop);
+			} else {
+				timeLeftParams.setMargins(paddingRight, paddingTop, (int) (4 * density), paddingTop);
+			}
 
 			timeRemainTxt.setTextSize(playerTextSize);
 			timeRemainTxt.setTextColor(resources.getColor(R.color.light_grey));
@@ -303,10 +338,17 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 				capturedParams.addRule(LEFT_OF, TIME_LEFT_ID);
 				capturedParams.addRule(CENTER_VERTICAL);
 				capturedParams.addRule(RIGHT_OF, PREMIUM_ID);
+				if (API_17) {
+					capturedParams.addRule(START_OF, TIME_LEFT_ID);
+					capturedParams.addRule(END_OF, PREMIUM_ID);
+				}
 			} else {
 				capturedParams.addRule(RIGHT_OF, AVATAR_ID);
 				capturedParams.addRule(BELOW, PLAYER_ID);
 				capturedParams.addRule(ALIGN_BOTTOM, AVATAR_ID);
+				if (API_17) {
+					capturedParams.addRule(END_OF, AVATAR_ID);
+				}
 			}
 
 			if (AppUtils.JELLYBEAN_PLUS_API) {
@@ -341,8 +383,15 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 				params.addRule(ALIGN_PARENT_RIGHT);
+				if (API_17) {
+					params.addRule(ALIGN_PARENT_END);
+				}
 				params.addRule(CENTER_VERTICAL);
-				params.setMargins((int) (5 * density), 0, 0, 0);
+				if (useLtr) {
+					params.setMargins((int) (5 * density), 0, 0, 0);
+				} else {
+					params.setMargins(0, 0, (int) (5 * density), 0);
+				}
 
 				drawOfferedRelLay.addView(acceptDrawBtn, params);
 			}
@@ -362,8 +411,15 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 
 				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 				params.addRule(CENTER_VERTICAL);
+				if (API_17) {
+					params.addRule(START_OF, DRAW_ACCEPT_ID);
+				}
 				params.addRule(LEFT_OF, DRAW_ACCEPT_ID);
-				params.setMargins((int) (5 * density), 0, 0, 0);
+				if (useLtr) {
+					params.setMargins((int) (5 * density), 0, 0, 0);
+				} else {
+					params.setMargins(0, 0, (int) (5 * density), 0);
+				}
 
 				drawOfferedRelLay.addView(declineDrawBtn, params);
 			}
@@ -383,13 +439,23 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 				LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 				params.addRule(CENTER_VERTICAL);
 				params.addRule(LEFT_OF, DRAW_DECLINE_ID);
-				params.setMargins((int) (5 * density), 0, 0, 0);
+				if (API_17) {
+					params.addRule(START_OF, DRAW_DECLINE_ID);
+				}
+				if (useLtr) {
+					params.setMargins((int) (5 * density), 0, 0, 0);
+				} else {
+					params.setMargins(0, 0, (int) (5 * density), 0);
+				}
 
 				drawOfferedRelLay.addView(drawOfferedTxt, params);
 			}
 
 			LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 			params.addRule(ALIGN_PARENT_RIGHT);
+			if (API_17) {
+				params.addRule(ALIGN_PARENT_END);
+			}
 			addView(drawOfferedRelLay, params);
 		}
 

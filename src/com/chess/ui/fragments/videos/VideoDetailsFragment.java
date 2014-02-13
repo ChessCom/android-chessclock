@@ -152,7 +152,9 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 
 		updateComments();
 
-		videoView.setVideoURI(Uri.parse(videoUrl));
+		if (videoUrl != null ) {
+			videoView.setVideoURI(Uri.parse(videoUrl));
+		}
 	}
 
 	@Override
@@ -286,6 +288,8 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		} else if (view.getId() == R.id.fullScrBtn) {
 			playFullScreenVideo();
 		} else if (view.getId() == R.id.playBtn) {
+			videoView.setVideoURI(Uri.parse(videoUrl));
+
 			playBtnBackView.setVisibility(View.INVISIBLE);
 			videoBackImg.setVisibility(View.INVISIBLE);
 			fullScrBtn.setVisibility(View.VISIBLE);

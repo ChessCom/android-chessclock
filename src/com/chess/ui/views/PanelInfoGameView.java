@@ -88,6 +88,9 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 
 		handler = new Handler();
 
+		boolean useLtr = AppUtils.useLtr(context);
+		boolean API_17 = AppUtils.JELLYBEAN_MR1_PLUS_API;
+
 		if (AppUtils.HONEYCOMB_PLUS_API) {
 			useSingleLine = true;
 		}
@@ -149,7 +152,12 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			avatarImg = new ProfileImageView(context);
 
 			LayoutParams avatarParams = new LayoutParams(avatarSize, avatarSize);
-			avatarParams.setMargins(paddingLeft, paddingTop, avatarMarginRight, paddingTop);
+			if (useLtr) {
+				avatarParams.setMargins(paddingLeft, paddingTop, avatarMarginRight, paddingTop);
+			} else {
+				avatarParams.setMargins(avatarMarginRight, paddingTop, paddingLeft, paddingTop);
+			}
+
 			avatarParams.addRule(CENTER_VERTICAL);
 
 			avatarImg.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -171,9 +179,15 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			if (useSingleLine) {
 				playerParams.addRule(CENTER_VERTICAL);
 				playerParams.addRule(ALIGN_PARENT_LEFT);
+				if (API_17) {
+					playerParams.addRule(ALIGN_PARENT_START);
+				}
 			} else {
-				playerParams.addRule(RIGHT_OF, AVATAR_ID);
 				playerParams.addRule(ALIGN_TOP, AVATAR_ID);
+				playerParams.addRule(RIGHT_OF, AVATAR_ID);
+				if (API_17) {
+					playerParams.addRule(END_OF, AVATAR_ID);
+				}
 			}
 
 			playerTxt.setTextSize(playerTextSize);
@@ -198,12 +212,20 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_rating_margin_top);
 			playerParams.setMargins(0, -marginTop, 0, 0);
 			playerParams.addRule(RIGHT_OF, PLAYER_ID);
+			if (API_17) {
+				playerParams.addRule(END_OF, PLAYER_ID);
+			}
 			playerParams.addRule(ALIGN_TOP, AVATAR_ID);
 
 			playerRatingTxt.setTextSize(playerRatingTextSize);
 			playerRatingTxt.setTextColor(playerTextColor);
 			playerRatingTxt.setId(RATING_ID);
-			playerRatingTxt.setPadding((int) (4 * density), 0, 0, 0);
+			if (useLtr) {
+				playerRatingTxt.setPadding((int) (4 * density), 0, 0, 0);
+			} else {
+				playerRatingTxt.setPadding(0, 0, (int) (4 * density), 0);
+			}
+
 			playerRatingTxt.setFont(FontsHelper.BOLD_FONT);
 
 			if (useSingleLine && smallScreen) {
@@ -220,6 +242,9 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			int marginTop = resources.getDimensionPixelSize(R.dimen.panel_info_flag_margin_top);
 			flagParams.setMargins(flagMargin, -marginTop, flagMargin, flagMargin);
 			flagParams.addRule(RIGHT_OF, RATING_ID);
+			if (API_17) {
+				flagParams.addRule(END_OF, RATING_ID);
+			}
 			if (useSingleLine) {
 				flagParams.addRule(CENTER_VERTICAL);
 			} else {
@@ -240,6 +265,9 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			LayoutParams premiumParams = new LayoutParams(flagSize, flagSize);
 			premiumParams.setMargins(flagMargin, -marginTop, flagMargin, flagMargin);
 			premiumParams.addRule(RIGHT_OF, FLAG_ID);
+			if (API_17) {
+				premiumParams.addRule(END_OF, FLAG_ID);
+			}
 			if (useSingleLine) {
 				premiumParams.addRule(CENTER_VERTICAL);
 			} else {
@@ -263,6 +291,9 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			LinearLayout.LayoutParams clockIconParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
 			clockLayoutParams.addRule(ALIGN_PARENT_RIGHT);
+			if (API_17) {
+				clockLayoutParams.addRule(ALIGN_PARENT_END);
+			}
 			clockLayoutParams.addRule(ALIGN_TOP, AVATAR_ID);
 			clockLayoutParams.setMargins(0, (int) (-5 * density), 0, 0);
 
@@ -276,15 +307,27 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			clockIconTxt.setTextColor(playerTextColor);
 			int paddingIcon = resources.getDimensionPixelSize(R.dimen.new_tactics_clock_icon_padding);
 			int paddingIconTop = resources.getDimensionPixelSize(R.dimen.new_tactics_clock_icon_padding_top);
-			clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
+			if (useLtr) {
+				clockIconTxt.setPadding(0, paddingIconTop, paddingIcon, 0);
+			} else {
+				clockIconTxt.setPadding(paddingIcon, paddingIconTop, 0, 0);
+			}
+
 			clockIconTxt.setVisibility(GONE);
 
 			clockLayout.addView(clockIconTxt, clockIconParams);
 
 			LayoutParams timeLeftParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, timeLeftSize);
 			timeLeftParams.addRule(ALIGN_PARENT_RIGHT);
+			if (API_17) {
+				timeLeftParams.addRule(ALIGN_PARENT_END);
+			}
 			timeLeftParams.addRule(CENTER_VERTICAL);
-			timeLeftParams.setMargins((int) (7 * density), paddingTop, paddingRight, paddingTop); // use to set space between captured pieces in single line mode
+			if (useLtr) {
+				timeLeftParams.setMargins((int) (7 * density), paddingTop, paddingRight, paddingTop); // use to set space between captured pieces in single line mode
+			} else {
+				timeLeftParams.setMargins(paddingRight, paddingTop, (int) (7 * density), paddingTop); // use to set space between captured pieces in single line mode
+			}
 
 			timeRemainTxt.setTextSize(playerTextSize);
 			timeRemainTxt.setTextColor(playerTextColor);
@@ -311,8 +354,14 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 				capturedParams.addRule(LEFT_OF, TIME_LEFT_ID);
 				capturedParams.addRule(CENTER_VERTICAL);
 				capturedParams.addRule(RIGHT_OF, PREMIUM_ID);
+				if (API_17) {
+					capturedParams.addRule(END_OF, PREMIUM_ID);
+				}
 			} else {
 				capturedParams.addRule(RIGHT_OF, AVATAR_ID);
+				if (API_17) {
+					capturedParams.addRule(END_OF, AVATAR_ID);
+				}
 				capturedParams.addRule(BELOW, PLAYER_ID);
 				capturedParams.addRule(ALIGN_BOTTOM, AVATAR_ID);
 			}

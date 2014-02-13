@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.model.RatingListItem;
+import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -18,8 +19,12 @@ import java.util.List;
  */
 public class RatingsAdapter extends ItemsAdapter<RatingListItem> {
 
+	private final boolean useLtr;
+
 	public RatingsAdapter(Context context, List<RatingListItem> itemList) {
 		super(context, itemList);
+
+		useLtr = AppUtils.useLtr(context);
 	}
 
 	@Override
@@ -46,7 +51,11 @@ public class RatingsAdapter extends ItemsAdapter<RatingListItem> {
 
 		Drawable drawable = item.getImage();
 		drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-		holder.labelTxt.setCompoundDrawables(drawable, null, null, null);
+		if (useLtr) {
+			holder.labelTxt.setCompoundDrawables(drawable, null, null, null);
+		} else {
+			holder.labelTxt.setCompoundDrawables(null, null, drawable, null);
+		}
 	}
 
 	private static class ViewHolder {

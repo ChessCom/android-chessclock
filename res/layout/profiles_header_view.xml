@@ -14,7 +14,11 @@
 		android:id="@+id/photoImg"
 		android:layout_width="@dimen/profile_frame_photo_size"
 		android:layout_height="@dimen/profile_frame_photo_size"
-		android:layout_marginEnd="10dp" />
+		android:layout_marginEnd="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_alignParentStart="true"
+		android:layout_alignParentLeft="true"
+		/>
 
 	<!--Username -->
 	<com.chess.widgets.RoboTextView
@@ -22,6 +26,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/photoImg"
+		android:layout_toRightOf="@id/photoImg"
 		android:layout_marginTop="-4dp"
 		android:textSize="18sp"
 		android:textColor="@color/white"
@@ -36,6 +41,7 @@
 		android:paddingTop="2dp"
 		android:paddingBottom="2dp"
 		android:layout_toEndOf="@id/photoImg"
+		android:layout_toRightOf="@id/photoImg"
 		android:textSize="14sp"
 		android:textColor="@color/semitransparent_white_65" />
 
@@ -47,7 +53,9 @@
 		android:adjustViewBounds="true"
 		android:layout_below="@id/locationTxt"
 		android:layout_toEndOf="@id/photoImg"
+		android:layout_toRightOf="@id/photoImg"
 		android:layout_marginEnd="4dp"
+		android:layout_marginRight="4dp"
 		android:scaleType="fitXY"
 		android:contentDescription="@string/image" />
 
@@ -59,6 +67,7 @@
 		android:adjustViewBounds="true"
 		android:layout_below="@id/locationTxt"
 		android:layout_toEndOf="@id/countryImg"
+		android:layout_toRightOf="@id/countryImg"
 		android:layout_marginTop="2dp"
 		android:scaleType="fitXY"
 		android:contentDescription="@string/image" />
