@@ -129,20 +129,20 @@ public class ServerErrorCodes {
 	public static final int THE_PARENT_FORUM_TOPIC_DOES_NOT_EXIST = 116;//	"The parent forum topic does not exist
 	public static final int USER_HAS_NO_ACCESS_FOR_THE_SELECTED_FORUM_CATEGORY = 117;//	"User has no access for the selected forum category
 	public static final int NON_EXISTING_COURSE = 118;//	"Non existing course
-	public static final int MISSING_PARAMETERS = 119;						//	"Missing parameters
-	public static final int ERROR_CREATING_BACKGROUND_THEME = 120;			//	"Error creating background theme
-	public static final int MUST_PASS_PARENT_TOPIC_ID = 121;				//	"You must pass the parent topic id when adding a new comment
-	public static final int INVALID_VALUE_FOR_ITEMS_PERPAGE = 122;			//	"Invalid value for items per page
-	public static final int NO_MOVES_FOUND = 123;							//	"No moves found
-	public static final int YOU_PROVIDED_INVALID_PASSWORD = 124;			//	"You provided invalid password.
-	public static final int YOUR_GCM_ID_ALREADY_REGISTERED = 125;			//	"Your registration ID is already registered!
-	public static final int ERROR_USER_NOT_ENABLED  = 126;					//	"The selected user must be enabled.
-	public static final int ERROR_INSUFFICIENT_MEMBERSHIP_LEVEL  = 127;		//	"Gold members cannot view other member\'s stats.
-	public static final int FORUM_TOPIC_ALREADY_EXIST  = 128;				//	"Forum topic already exists!
+	public static final int MISSING_PARAMETERS = 119;                        //	"Missing parameters
+	public static final int ERROR_CREATING_BACKGROUND_THEME = 120;            //	"Error creating background theme
+	public static final int MUST_PASS_PARENT_TOPIC_ID = 121;                //	"You must pass the parent topic id when adding a new comment
+	public static final int INVALID_VALUE_FOR_ITEMS_PERPAGE = 122;            //	"Invalid value for items per page
+	public static final int NO_MOVES_FOUND = 123;                            //	"No moves found
+	public static final int YOU_PROVIDED_INVALID_PASSWORD = 124;            //	"You provided invalid password.
+	public static final int YOUR_GCM_ID_ALREADY_REGISTERED = 125;            //	"Your registration ID is already registered!
+	public static final int ERROR_USER_NOT_ENABLED = 126;                    //	"The selected user must be enabled.
+	public static final int ERROR_INSUFFICIENT_MEMBERSHIP_LEVEL = 127;        //	"Gold members cannot view other member\'s stats.
+	public static final int FORUM_TOPIC_ALREADY_EXIST = 128;                //	"Forum topic already exists!
 
 	public static final String ACCESS_DENIED = "Access denied.";
 
-	public static final int ACCESS_DENIED_CODE = 999;                		// Please update app
+	public static final int ACCESS_DENIED_CODE = 999;                        // Please update app
 
 	public static String getUserFriendlyMessage(Context context, int code) {
 		String[] codesArray = context.getResources().getStringArray(R.array.new_site_api_error_messages);

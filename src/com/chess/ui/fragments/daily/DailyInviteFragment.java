@@ -63,7 +63,8 @@ public class DailyInviteFragment extends CommonLogicFragment {
 	private DailyUpdateListener challengeInviteUpdateListener;
 	protected InviteGameFaceHelper gameFaceHelper;
 
-	public DailyInviteFragment() { }
+	public DailyInviteFragment() {
+	}
 
 	public static DailyInviteFragment createInstance(DailyChallengeItem.Data challengeItem) {
 		DailyInviteFragment fragment = new DailyInviteFragment();
@@ -95,7 +96,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		if(challengeItem.getGameTypeId() == RestHelper.V_GAME_CHESS_960) {
+		if (challengeItem.getGameTypeId() == RestHelper.V_GAME_CHESS_960) {
 			setTitle(R.string.chess_960);
 		} else {
 			setTitle(R.string.daily);

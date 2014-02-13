@@ -70,7 +70,7 @@ public class VideosItemAdapter extends ItemsAdapter<VideoSingleItem.Data> {
 
 		String firstName = item.getFirstName();
 		CharSequence chessTitle = item.getChessTitle();
-		String lastName =  item.getLastName();
+		String lastName = item.getLastName();
 		CharSequence authorStr = GREY_COLOR_DIVIDER + chessTitle + GREY_COLOR_DIVIDER + Symbol.SPACE
 				+ firstName + Symbol.SPACE + lastName;
 		authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);

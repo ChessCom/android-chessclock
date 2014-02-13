@@ -73,15 +73,15 @@ public class FacebookButton extends RoboButton {
 			float top = 0;
 			float right = height + i * LINE_WIDTH - 1;
 			float bottom = 0;
-			switch (i){
+			switch (i) {
 				case 0:
 					top = BORDER_OFFSET;
-					bottom = height - BORDER_OFFSET - 1 ;
+					bottom = height - BORDER_OFFSET - 1;
 					break;
 				case 1:
 				case 3:
 					top = BORDER_OFFSET;
-					bottom = height- BORDER_OFFSET;
+					bottom = height - BORDER_OFFSET;
 					break;
 				case 2:
 					top = BORDER_OFFSET - LINE_WIDTH;
@@ -95,8 +95,8 @@ public class FacebookButton extends RoboButton {
 
 		// place image
 		canvas.save();
-		float imgCenterX = BORDER_OFFSET/2 + (height - imageWidth)/2;
-		float imgCenterY = (height - imageWidth)/2;
+		float imgCenterX = BORDER_OFFSET / 2 + (height - imageWidth) / 2;
+		float imgCenterY = (height - imageWidth) / 2;
 		canvas.translate(imgCenterX, imgCenterY);
 		icon.draw(canvas);
 		canvas.restore();

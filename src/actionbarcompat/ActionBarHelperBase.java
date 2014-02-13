@@ -26,14 +26,14 @@ import android.view.*;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import com.chess.R;
-import com.chess.utilities.AppUtils;
-import com.chess.widgets.RoboTextView;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.views.drawables.ActionBarBackgroundDrawable;
 import com.chess.ui.views.drawables.BadgeDrawable;
+import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
+import com.chess.widgets.RoboTextView;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -154,7 +154,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 	}
 
 	@Override
-	public void updateActionBarBackground(){
+	public void updateActionBarBackground() {
 		View actionBar = getActionBarCompat(); // could be null for small screens
 		if (actionBar != null) {
 			if (actionBarBackgroundDrawable == null) {
@@ -222,7 +222,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 		onPostCreate(null);
 		if (!show) {
 			// restore state and title
-			((CoreActivityActionBar)mActivity).adjustActionBar();
+			((CoreActivityActionBar) mActivity).adjustActionBar();
 		}
 	}
 
@@ -252,7 +252,7 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 
 	@Override
 	public void setBadgeValueForId(int menuId, int value) {
-		if (noActionBar){
+		if (noActionBar) {
 			return;
 		}
 		View view = getActionBarCompat();
@@ -393,7 +393,8 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 
 			refreshButtonLay.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
 					R.dimen.actionbar_compat_button_width),
-					ViewGroup.LayoutParams.MATCH_PARENT));
+					ViewGroup.LayoutParams.MATCH_PARENT
+			));
 
 			if (refreshIndicator == null) {
 				refreshIndicator = new ProgressBar(mActivity, null, R.attr.actionbarCompatProgressIndicatorStyle);
@@ -420,7 +421,8 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 				refreshButton = new ImageButton(mActivity, null, R.attr.actionbarCompatItemStyle);
 				refreshButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
 						R.dimen.actionbar_compat_button_width),
-						ViewGroup.LayoutParams.MATCH_PARENT));
+						ViewGroup.LayoutParams.MATCH_PARENT
+				));
 
 
 				refreshButton.setImageDrawable(item.getIcon());
@@ -464,7 +466,8 @@ public class ActionBarHelperBase extends ActionBarHelper implements View.OnClick
 					itemId == android.R.id.home ? R.attr.actionbarCompatItemHomeStyle : R.attr.actionbarCompatItemStyle);
 			actionButton.setLayoutParams(new ViewGroup.LayoutParams((int) mActivity.getResources().getDimension(
 					itemId == android.R.id.home ? R.dimen.actionbar_compat_button_home_width
-							: R.dimen.actionbar_compat_button_width), ViewGroup.LayoutParams.MATCH_PARENT));
+							: R.dimen.actionbar_compat_button_width
+			), ViewGroup.LayoutParams.MATCH_PARENT));
 			actionButton.setImageDrawable(item.getIcon());
 			actionButton.setScaleType(ImageView.ScaleType.CENTER);
 			actionButton.setContentDescription(item.getTitle());

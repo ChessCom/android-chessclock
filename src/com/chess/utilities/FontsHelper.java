@@ -43,10 +43,10 @@ public class FontsHelper {
 	}
 
 	public Typeface getTypeFace(Resources resources, String ttfName) {
-		ttfName = ttfName == null? DEFAULT_FONT: ttfName;
+		ttfName = ttfName == null ? DEFAULT_FONT : ttfName;
 
 		if (fontsMap.containsKey(ttfName)) {
-		    return fontsMap.get(ttfName);
+			return fontsMap.get(ttfName);
 		} else {
 			Typeface font = Typeface.createFromAsset(resources.getAssets(), MAIN_PATH + ttfName + TTF);
 			fontsMap.put(ttfName, font);
@@ -65,7 +65,7 @@ public class FontsHelper {
 			String alpha = themeFontColor.substring(6);
 			themeFontColor = themeFontColor.substring(0, 6);
 			int defaultFontColor = Color.parseColor("#" + alpha + themeFontColor); // add 75% opacity
-			int pressedFontColor = Color.parseColor("#" + alpha + themeFontColor) ;
+			int pressedFontColor = Color.parseColor("#" + alpha + themeFontColor);
 
 			themeColorStateList = new ColorStateList(
 					new int[][]{
@@ -80,7 +80,8 @@ public class FontsHelper {
 							pressedFontColor,
 							pressedFontColor,
 							Color.GREEN,
-							Color.RED});
+							Color.RED}
+			);
 		}
 		return themeColorStateList;
 

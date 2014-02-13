@@ -3,13 +3,13 @@ package com.chess.db.tasks;
 import android.content.ContentResolver;
 import com.chess.backend.entity.api.daily_games.DailyGameBaseData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.AppData;
 import com.chess.backend.tasks.AbstractUpdateTask;
+import com.chess.statics.AppData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends AbstractUpdateTask<T , Long> {
+public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends AbstractUpdateTask<T, Long> {
 
 	protected String username;
 	protected String userToken;
@@ -23,7 +23,7 @@ public abstract class SaveDailyGamesTask<T extends DailyGameBaseData> extends Ab
 
 		this.contentResolver = resolver;
 
-		if (taskFace == null || taskFace.getMeContext() == null){
+		if (taskFace == null || taskFace.getMeContext() == null) {
 			cancel(true);
 			return;
 		}

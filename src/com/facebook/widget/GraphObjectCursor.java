@@ -19,37 +19,37 @@ package com.facebook.widget;
 import com.facebook.model.GraphObject;
 
 interface GraphObjectCursor<T extends GraphObject> {
-    boolean isFromCache();
+	boolean isFromCache();
 
-    boolean areMoreObjectsAvailable();
+	boolean areMoreObjectsAvailable();
 
-    int getCount();
+	int getCount();
 
-    int getPosition();
+	int getPosition();
 
-    boolean move(int offset);
+	boolean move(int offset);
 
-    boolean moveToPosition(int position);
+	boolean moveToPosition(int position);
 
-    boolean moveToFirst();
+	boolean moveToFirst();
 
-    boolean moveToLast();
+	boolean moveToLast();
 
-    boolean moveToNext();
+	boolean moveToNext();
 
-    boolean moveToPrevious();
+	boolean moveToPrevious();
 
-    boolean isFirst();
+	boolean isFirst();
 
-    boolean isLast();
+	boolean isLast();
 
-    boolean isBeforeFirst();
+	boolean isBeforeFirst();
 
-    boolean isAfterLast();
+	boolean isAfterLast();
 
-    T getGraphObject();
+	T getGraphObject();
 
-    void close();
+	void close();
 
-    boolean isClosed();
+	boolean isClosed();
 }

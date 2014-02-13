@@ -98,7 +98,7 @@ public class LccGameListener implements GameListener {
 				}
 				return;
 			} else {*/
-				lccHelper.setCurrentObservedGameId(game.getId());
+			lccHelper.setCurrentObservedGameId(game.getId());
 			//}
 
 		} else {
@@ -144,7 +144,7 @@ public class LccGameListener implements GameListener {
 		}
 
         /*lccHelper.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
-                                                        lccHelper.getSeekListListener());*/
+														lccHelper.getSeekListListener());*/
 
 		// Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId; // vm: looks redundant
 		lccHelper.setLastGame(game);

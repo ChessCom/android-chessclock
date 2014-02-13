@@ -22,7 +22,8 @@ public class UpgradeDetailsFragmentTablet extends UpgradeDetailsFragment {
 
 	private View disabledOverlayView;
 
-	public UpgradeDetailsFragmentTablet() {}
+	public UpgradeDetailsFragmentTablet() {
+	}
 
 	public static UpgradeDetailsFragmentTablet createInstance(int code) {
 		UpgradeDetailsFragmentTablet fragment = new UpgradeDetailsFragmentTablet();

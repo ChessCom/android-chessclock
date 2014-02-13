@@ -152,7 +152,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 
 		updateComments();
 
-		if (videoUrl != null ) {
+		if (videoUrl != null) {
 			videoView.setVideoURI(Uri.parse(videoUrl));
 		}
 	}
@@ -168,7 +168,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	public void onRefreshStarted(View view) {
 		super.onRefreshStarted(view);
 		if (isNetworkAvailable()) {
-			 updateComments();
+			updateComments();
 		}
 	}
 
@@ -255,8 +255,8 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		countryImg.setImageDrawable(drawable);
 
 		String durationStr = SLASH_DIVIDER + getString(R.string.arg_min, videoData.getMinutes());
-		String viewsCntStr  = SLASH_DIVIDER + getString(R.string.views_arg, videoData.getViewCount());
-		dateTxt.setText(dateFormatter.format(new Date(videoData.getCreateDate())) + durationStr  + viewsCntStr);
+		String viewsCntStr = SLASH_DIVIDER + getString(R.string.views_arg, videoData.getViewCount());
+		dateTxt.setText(dateFormatter.format(new Date(videoData.getCreateDate())) + durationStr + viewsCntStr);
 
 		bodyStr = videoData.getDescription();
 		contentTxt.setText(Html.fromHtml(bodyStr));

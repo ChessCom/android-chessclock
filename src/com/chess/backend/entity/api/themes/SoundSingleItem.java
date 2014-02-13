@@ -8,7 +8,7 @@ import com.chess.backend.entity.api.BaseResponseItem;
  * Date: 17.10.13
  * Time: 9:11
  */
-public class SoundSingleItem extends  BaseResponseItem<SoundSingleItem.Data> {
+public class SoundSingleItem extends BaseResponseItem<SoundSingleItem.Data> {
 /*
 	 "data": {
 		"user_theme_sound_id": 3,

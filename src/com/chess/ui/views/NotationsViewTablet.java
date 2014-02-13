@@ -135,7 +135,7 @@ public class NotationsViewTablet extends GridView implements NotationFace, Adapt
 			notationsAdapter.setItemsList(originalNotations);
 		}
 
-		selectNotation(ply -1);
+		selectNotation(ply - 1);
 	}
 
 	private void selectNotation(int pos) {

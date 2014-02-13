@@ -14,7 +14,7 @@ import java.util.List;
  * Date: 29.07.13
  * Time: 20:26
  */
-public class StringSpinnerAdapter  extends ItemsAdapter<String> {
+public class StringSpinnerAdapter extends ItemsAdapter<String> {
 
 	public StringSpinnerAdapter(Context context, List<String> items) {
 		super(context, items);

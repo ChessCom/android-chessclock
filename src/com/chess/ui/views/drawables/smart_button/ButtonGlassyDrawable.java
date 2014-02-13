@@ -3,7 +3,10 @@ package com.chess.ui.views.drawables.smart_button;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.*;
+import android.graphics.Canvas;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -47,7 +50,7 @@ public class ButtonGlassyDrawable extends ButtonDrawable {
 
 		parseAttributes(context, attrs);
 
-	    init(resources);
+		init(resources);
 	}
 
 	private void setDefaults() {
@@ -104,7 +107,7 @@ public class ButtonGlassyDrawable extends ButtonDrawable {
 //		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.OVERLAY); // bad edges
 //		pressedFilter = new PorterDuffColorFilter(PRESSED_OVERLAY, PorterDuff.Mode.XOR);  // bad edges
 
-		List <LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
+		List<LayerInfo> enabledLayers = new ArrayList<LayerInfo>();
 		List<LayerInfo> pressedLayers = new ArrayList<LayerInfo>();
 
 		if (useBorder) { // outer border
@@ -133,7 +136,7 @@ public class ButtonGlassyDrawable extends ButtonDrawable {
 	@Override
 	public void draw(Canvas canvas) {
 //		if (!initialized) {
-			iniLayers(canvas);
+		iniLayers(canvas);
 //		}
 		super.draw(canvas);
 	}
@@ -188,7 +191,7 @@ public class ButtonGlassyDrawable extends ButtonDrawable {
 
 		// add button
 		int[] button = bevelLvl == 1 ? insetOne.button : insetTwo.button;
-		int	color = isSolid ? colorSolidS : TRANSPARENT;
+		int color = isSolid ? colorSolidS : TRANSPARENT;
 		createLayer(color, button, selectedLayers, true);
 
 		int levelCnt = selectedLayers.size();
@@ -209,6 +212,7 @@ public class ButtonGlassyDrawable extends ButtonDrawable {
 
 	/**
 	 * Set padding to internal cover only shape of LayerDrawables
+	 *
 	 * @param drawable to which we set padding must be ShapeDrawable
 	 */
 	@Override

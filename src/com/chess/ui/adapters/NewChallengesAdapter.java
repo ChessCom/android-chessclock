@@ -49,7 +49,7 @@ public class NewChallengesAdapter extends ItemsAdapter<NewChallengeNotificationI
 
 		String imageUrl = item.getAvatar();
 		if (!imageDataMap.containsKey(imageUrl)) {
-			imageDataMap.put(imageUrl,  new SmartImageFetcher.Data(item.getAvatar(), imageSize));
+			imageDataMap.put(imageUrl, new SmartImageFetcher.Data(item.getAvatar(), imageSize));
 		}
 
 		imageFetcher.loadImage(imageUrl, holder.playerImg.getImageView());

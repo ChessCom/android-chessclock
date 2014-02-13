@@ -20,7 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ImageDownloaderToListener {
-    private static final String LOG_TAG = "EnhancedImageDownloader";
+	private static final String LOG_TAG = "EnhancedImageDownloader";
 	private final Context context;
 	private int imageSize;
 	private int imgWidth;
@@ -28,12 +28,12 @@ public class ImageDownloaderToListener {
 	private boolean useScale;
 
 	public enum Mode {
-        NO_ASYNC_TASK, NO_DOWNLOADED_DRAWABLE, CORRECT
-    }
+		NO_ASYNC_TASK, NO_DOWNLOADED_DRAWABLE, CORRECT
+	}
 
-    private File cacheDir;
+	private File cacheDir;
 
-    public ImageDownloaderToListener(Context context) {
+	public ImageDownloaderToListener(Context context) {
 		this.context = context;
 		try {
 			cacheDir = AppUtils.getCacheDir(context);
@@ -42,17 +42,17 @@ public class ImageDownloaderToListener {
 		}
 	}
 
-    /**
-     * Download the specified image from the Internet and binds it to the
-     * provided ImageView. The binding is immediate if the image is found in the
-     * cache and will be done asynchronously otherwise. A null bitmap will be
-     * associated to the ImageView if an error occurs.
-     *
-	 * @param url    The URL of the image to download.
-	 * @param holder The ImageView to bind the downloaded image to.
+	/**
+	 * Download the specified image from the Internet and binds it to the
+	 * provided ImageView. The binding is immediate if the image is found in the
+	 * cache and will be done asynchronously otherwise. A null bitmap will be
+	 * associated to the ImageView if an error occurs.
+	 *
+	 * @param url       The URL of the image to download.
+	 * @param holder    The ImageView to bind the downloaded image to.
 	 * @param imageSize size of image to be scaled
 	 */
-    public void download(String url, ImageReadyListener holder, int imageSize) {
+	public void download(String url, ImageReadyListener holder, int imageSize) {
 		this.imageSize = imageSize;
 		useScale = true;
 		if (TextUtils.isEmpty(url)) {
@@ -63,10 +63,10 @@ public class ImageDownloaderToListener {
 		Log.d(LOG_TAG, "^ _________________________________ ^");
 		Log.d(LOG_TAG, " download url = " + url);
 
-        if (bitmap == null) {
-            forceDownload(url, holder);
-        }
-    }
+		if (bitmap == null) {
+			forceDownload(url, holder);
+		}
+	}
 
 	/**
 	 * Download the specified image from the Internet and binds it to the
@@ -74,9 +74,9 @@ public class ImageDownloaderToListener {
 	 * cache and will be done asynchronously otherwise. A null bitmap will be
 	 * associated to the ImageView if an error occurs.
 	 *
-	 * @param url    The URL of the image to download.
-	 * @param holder The ImageView to bind the downloaded image to.
-	 * @param imgWidth width of scaled image
+	 * @param url       The URL of the image to download.
+	 * @param holder    The ImageView to bind the downloaded image to.
+	 * @param imgWidth  width of scaled image
 	 * @param imgHeight height of scaled image
 	 */
 	public void download(String url, ImageReadyListener holder, int imgWidth, int imgHeight) {
@@ -96,72 +96,72 @@ public class ImageDownloaderToListener {
 		}
 	}
 
-    /**
-     * @param url The URL of the image that will be retrieved from the cache.
-     * @return The cached bitmap or null if it was not found.
-     */
-    private Bitmap getBitmapFromCache(String url, ImageReadyListener readyListener) {
-        // I identify images by hashcode. Not a perfect solution, good for the
-        // demo.
-        String filename = String.valueOf(url.hashCode());
-        File f = new File(cacheDir, filename);
+	/**
+	 * @param url The URL of the image that will be retrieved from the cache.
+	 * @return The cached bitmap or null if it was not found.
+	 */
+	private Bitmap getBitmapFromCache(String url, ImageReadyListener readyListener) {
+		// I identify images by hashcode. Not a perfect solution, good for the
+		// demo.
+		String filename = String.valueOf(url.hashCode());
+		File f = new File(cacheDir, filename);
 
-        // from SD cache
-        // if file is stored so simply read it, do not resize
+		// from SD cache
+		// if file is stored so simply read it, do not resize
 		Bitmap bmp = readFile(f);
-		if(bmp != null){
+		if (bmp != null) {
 			readyListener.onImageReady(bmp);
 			addBitmapToCache(url, bmp);
 		}
 
-        // First try the hard reference cache
-        synchronized (sHardBitmapCache) {
-            final Bitmap holder = sHardBitmapCache.get(url);
-            if (holder != null) {
-                // Bitmap found in hard cache
-                // Move element to first position, so that it is removed last
-                sHardBitmapCache.remove(url);
-                sHardBitmapCache.put(url, holder);
-                return holder;
-            }
-        }
+		// First try the hard reference cache
+		synchronized (sHardBitmapCache) {
+			final Bitmap holder = sHardBitmapCache.get(url);
+			if (holder != null) {
+				// Bitmap found in hard cache
+				// Move element to first position, so that it is removed last
+				sHardBitmapCache.remove(url);
+				sHardBitmapCache.put(url, holder);
+				return holder;
+			}
+		}
 
-        // Then try the soft reference cache
-        SoftReference<Bitmap> bitmapReference = sSoftBitmapCache.get(url);
-        if (bitmapReference != null) {
-            final Bitmap holder = bitmapReference.get();
-            if (holder != null) {
-                // Bitmap found in soft cache
-                return holder;
-            } else {
-                // Soft reference has been Garbage Collected
-                sSoftBitmapCache.remove(url);
-            }
-        }
+		// Then try the soft reference cache
+		SoftReference<Bitmap> bitmapReference = sSoftBitmapCache.get(url);
+		if (bitmapReference != null) {
+			final Bitmap holder = bitmapReference.get();
+			if (holder != null) {
+				// Bitmap found in soft cache
+				return holder;
+			} else {
+				// Soft reference has been Garbage Collected
+				sSoftBitmapCache.remove(url);
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
     /*
-      * Same as download but the image is always downloaded and the cache is not
+	  * Same as download but the image is always downloaded and the cache is not
       * used. Kept private at the moment as its interest is not clear. private
       * void forceDownload(String url, ImageView view) { forceDownload(url, view,
       * null); }
       */
 
-    /**
-     * Same as download but the image is always downloaded and the cache is not
-     * used. Kept private at the moment as its interest is not clear.
-     */
-    private void forceDownload(String url, ImageReadyListener holder) {
-        // State sanity: url is guaranteed to never be null in
-        // DownloadedDrawable and cache keys.
-        if (url == null) {
-            return;
-        }
+	/**
+	 * Same as download but the image is always downloaded and the cache is not
+	 * used. Kept private at the moment as its interest is not clear.
+	 */
+	private void forceDownload(String url, ImageReadyListener holder) {
+		// State sanity: url is guaranteed to never be null in
+		// DownloadedDrawable and cache keys.
+		if (url == null) {
+			return;
+		}
 
 		new BitmapDownloaderTask(holder).executeTask(url);
-    }
+	}
 
 	/**
 	 * Read file from stored hashLink on SD
@@ -182,61 +182,61 @@ public class ImageDownloaderToListener {
 		return null;
 	}
 
-    /**
-     * The actual AsyncTask that will asynchronously download the image.
-     */
-    class BitmapDownloaderTask extends AsyncTask<String, Void, Bitmap> {
-        private String url;
-        ImageReadyListener holderReference;
+	/**
+	 * The actual AsyncTask that will asynchronously download the image.
+	 */
+	class BitmapDownloaderTask extends AsyncTask<String, Void, Bitmap> {
+		private String url;
+		ImageReadyListener holderReference;
 
-        public BitmapDownloaderTask(ImageReadyListener holder) {
-            holderReference = holder;
-        }
+		public BitmapDownloaderTask(ImageReadyListener holder) {
+			holderReference = holder;
+		}
 
-        /**
-         * Actual download method.
-         */
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            url = params[0];
+		/**
+		 * Actual download method.
+		 */
+		@Override
+		protected Bitmap doInBackground(String... params) {
+			url = params[0];
 
 			return downloadBitmap(url, holderReference);
-        }
+		}
 
-        /**
-         * Once the image is downloaded, associates it to the imageView
-         */
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-			Log.d(LOG_TAG, "onPostExecute bitmap " + bitmap +  " for url = " + url);
+		/**
+		 * Once the image is downloaded, associates it to the imageView
+		 */
+		@Override
+		protected void onPostExecute(Bitmap bitmap) {
+			Log.d(LOG_TAG, "onPostExecute bitmap " + bitmap + " for url = " + url);
 
 			if (holderReference == null /*|| holderReference.get() == null*/) {
-				Log.d(LOG_TAG, "holderReference == null || holderReference.get() == null bitmap " + bitmap +  " for url = " + url);
-                return;
-            }
-
-			if (isCancelled() || context == null) { // if activity dead, escape
-				Log.d(LOG_TAG, "isCancelled() || context == null bitmap " + bitmap +  " for url = " + url);
+				Log.d(LOG_TAG, "holderReference == null || holderReference.get() == null bitmap " + bitmap + " for url = " + url);
 				return;
 			}
 
-            addBitmapToCache(url, bitmap);
+			if (isCancelled() || context == null) { // if activity dead, escape
+				Log.d(LOG_TAG, "isCancelled() || context == null bitmap " + bitmap + " for url = " + url);
+				return;
+			}
+
+			addBitmapToCache(url, bitmap);
 
 			holderReference.onImageReady(bitmap);
-			Log.d(LOG_TAG, "onImageReady bitmap " + bitmap +  " for url = " + url);
-        }
+			Log.d(LOG_TAG, "onImageReady bitmap " + bitmap + " for url = " + url);
+		}
 
-        public AsyncTask<String, Void, Bitmap> executeTask(String... input){
-			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB){
+		public AsyncTask<String, Void, Bitmap> executeTask(String... input) {
+			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
 				executeOnExecutor(THREAD_POOL_EXECUTOR, input);
 			} else {
 				execute(input);
 			}
-            return this;
-        }
-    }
+			return this;
+		}
+	}
 
-    private Bitmap downloadBitmap(String url, ImageReadyListener holderReference) {
+	private Bitmap downloadBitmap(String url, ImageReadyListener holderReference) {
 		Log.d(LOG_TAG, "downloadBitmap start url = " + url);
 
 		String filename = String.valueOf(url.hashCode());
@@ -266,7 +266,7 @@ public class ImageDownloaderToListener {
 				int totalRead = 0;
 				try {
 					byte[] bytes = new byte[buffer_size];
-					for (;;) {
+					for (; ; ) {
 						int count = is.read(bytes, 0, buffer_size);
 						totalRead += count;
 						int progress = (int) ((totalRead / (float) totalSize) * 100);
@@ -322,8 +322,8 @@ public class ImageDownloaderToListener {
 		} catch (OutOfMemoryError e) {
 			e.printStackTrace();
 		}
-        return null;
-    }
+		return null;
+	}
 
     /*
       * Cache-related fields and methods.
@@ -332,39 +332,39 @@ public class ImageDownloaderToListener {
       * aggressively cleared by the Garbage Collector.
       */
 
-    private static final int HARD_CACHE_CAPACITY = 30;
-    private static final int DELAY_BEFORE_PURGE = 120 * 1000; // in milliseconds
+	private static final int HARD_CACHE_CAPACITY = 30;
+	private static final int DELAY_BEFORE_PURGE = 120 * 1000; // in milliseconds
 
-    // Hard cache, with a fixed maximum capacity and a life duration
-    private final HashMap<String, Bitmap> sHardBitmapCache = new LinkedHashMap<String, Bitmap>(HARD_CACHE_CAPACITY / 2, 0.75f, true) {
+	// Hard cache, with a fixed maximum capacity and a life duration
+	private final HashMap<String, Bitmap> sHardBitmapCache = new LinkedHashMap<String, Bitmap>(HARD_CACHE_CAPACITY / 2, 0.75f, true) {
 
 
-        @Override
-        protected boolean removeEldestEntry(Entry<String, Bitmap> eldest) {
-            if (size() > HARD_CACHE_CAPACITY) {
-                // Entries push-out of hard reference cache are transferred to
-                // soft reference cache
-                sSoftBitmapCache.put(eldest.getKey(), new SoftReference<Bitmap>(eldest.getValue()));
-                return true;
-            } else
-                return false;
-        }
-    };
+		@Override
+		protected boolean removeEldestEntry(Entry<String, Bitmap> eldest) {
+			if (size() > HARD_CACHE_CAPACITY) {
+				// Entries push-out of hard reference cache are transferred to
+				// soft reference cache
+				sSoftBitmapCache.put(eldest.getKey(), new SoftReference<Bitmap>(eldest.getValue()));
+				return true;
+			} else
+				return false;
+		}
+	};
 
-    // Soft cache for bitmaps kicked out of hard cache
-    private final static ConcurrentHashMap<String, SoftReference<Bitmap>> sSoftBitmapCache = new ConcurrentHashMap<String, SoftReference<Bitmap>>(HARD_CACHE_CAPACITY / 2);
+	// Soft cache for bitmaps kicked out of hard cache
+	private final static ConcurrentHashMap<String, SoftReference<Bitmap>> sSoftBitmapCache = new ConcurrentHashMap<String, SoftReference<Bitmap>>(HARD_CACHE_CAPACITY / 2);
 
-    /**
-     * Adds this bitmap to the cache.
-     *
-     * @param holder The newly downloaded bitmap.
-     */
-    private void addBitmapToCache(String url, Bitmap holder) {
-        if (holder != null) {
-            synchronized (sHardBitmapCache) {
-                sHardBitmapCache.put(url, holder);
-            }
-        }
-    }
+	/**
+	 * Adds this bitmap to the cache.
+	 *
+	 * @param holder The newly downloaded bitmap.
+	 */
+	private void addBitmapToCache(String url, Bitmap holder) {
+		if (holder != null) {
+			synchronized (sHardBitmapCache) {
+				sHardBitmapCache.put(url, holder);
+			}
+		}
+	}
 
 }

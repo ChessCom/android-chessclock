@@ -7,35 +7,35 @@ package com.chess.backend.entity.api.stats;
  * Time: 15:31
  */
 public class UserLessonsStatsData {
-/*
- "lessons": {
-            "rating": {
-                "current": 1222,
-                "highest": {
-                    "rating": 1473,
-                    "timestamp": 1375933728
-                },
-                "lowest": {
-                    "rating": 841,
-                    "timestamp": 1376097981
-                }
-            },
-			"stats": {
-				"lessons_tried": 101,
-				"total_lesson_count": 2499,
-				"lesson_complete_percentage": 4,
-				"total_training_seconds": 0,
-				"score": {
-					"p_90_100": 44,
-					"p_80_89": 1,
-					"p_70_79": 0,
-					"p_60_69": 1,
-					"p_50_59": 0,
-					"p_50": 55
+	/*
+	 "lessons": {
+				"rating": {
+					"current": 1222,
+					"highest": {
+						"rating": 1473,
+						"timestamp": 1375933728
+					},
+					"lowest": {
+						"rating": 841,
+						"timestamp": 1376097981
+					}
+				},
+				"stats": {
+					"lessons_tried": 101,
+					"total_lesson_count": 2499,
+					"lesson_complete_percentage": 4,
+					"total_training_seconds": 0,
+					"score": {
+						"p_90_100": 44,
+						"p_80_89": 1,
+						"p_70_79": 0,
+						"p_60_69": 1,
+						"p_50_59": 0,
+						"p_50": 55
+					}
 				}
-            }
-        },
-*/
+			},
+	*/
 	private Ratings rating;
 	private Stats stats;
 

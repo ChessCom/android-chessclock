@@ -116,7 +116,8 @@ public class GameFaceHelper implements GameNetworkFace {
 	}
 
 	@Override
-	public void onNotationClicked(int pos) {}
+	public void onNotationClicked(int pos) {
+	}
 
 	@Override
 	public boolean currentGameExist() {

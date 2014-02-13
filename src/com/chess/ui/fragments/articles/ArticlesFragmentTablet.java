@@ -36,7 +36,7 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
  * Date: 10.11.13
  * Time: 17:33
  */
-public class ArticlesFragmentTablet extends CommonLogicFragment  implements ItemClickListenerFace, AdapterView.OnItemClickListener, FragmentParentFace {
+public class ArticlesFragmentTablet extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener, FragmentParentFace {
 
 	private ListView listView;
 	private TextView emptyView;

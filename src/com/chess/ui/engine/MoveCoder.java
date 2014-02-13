@@ -15,7 +15,7 @@ public class MoveCoder {
 	private static final String PROMOTE_LEFT = "( [ @ {";
 	private static final String PROMOTE_RIGHT = ") ] $ }";
 	private static final String PROMOTE_STRAIGHT = "^ _ # ~";
-	private static final String[] PROMOTION_PIECES = new String[] {
+	private static final String[] PROMOTION_PIECES = new String[]{
 			"(",
 			"^",
 			")",
@@ -30,7 +30,7 @@ public class MoveCoder {
 			"}"
 	};
 
-	private static final String[] PROMOTION_PIECES_NAMES = new String[] {
+	private static final String[] PROMOTION_PIECES_NAMES = new String[]{
 			"N",
 			"N",
 			"N",
@@ -199,8 +199,8 @@ public class MoveCoder {
 	public String decodeMoveList(String moveList) {
 		int length = moveList.length();
 		StringBuilder builder = new StringBuilder();
-		for(int i=0; i<length; i++) {
-			if (i%2 == 0) {
+		for (int i = 0; i < length; i++) {
+			if (i % 2 == 0) {
 				int number = (i) / 2 + 1;
 				builder.append(number).append(Symbol.DOT);
 			}

@@ -81,7 +81,6 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 	}
 
 
-
 	@Override
 	public void showExplorer() {
 		GameExplorerItem explorerItem = new GameExplorerItem();

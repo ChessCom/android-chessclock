@@ -22,9 +22,9 @@ import android.view.View;
 
 public class SDK11 {
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static void setAlpha(View view, float alpha) {
-        view.setAlpha(alpha);
-    }
+		view.setAlpha(alpha);
+	}
 
 }

@@ -48,7 +48,6 @@ abstract class ResponseBodyInterstitial extends CustomEventInterstitial {
 
 	abstract protected void preRenderHtml(CustomEventInterstitialListener customEventInterstitialListener);
 
-	@Override
 	abstract protected void showInterstitial();
 
 	@Override

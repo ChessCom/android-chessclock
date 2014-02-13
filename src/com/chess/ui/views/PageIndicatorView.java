@@ -359,7 +359,8 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 				if (!pageFound) { // we came from middle position or hit last button
 					prevBtnPos = selectedPage + 1;
 				}
-			} else*/ if (buttonsMode == ButtonsMode.LEFT) {
+			} else*/
+			if (buttonsMode == ButtonsMode.LEFT) {
 				if (!pageFound) { // we came from middle position or hit last button
 					prevBtnPos = selectedPage + 1;
 				}
@@ -384,6 +385,7 @@ public class PageIndicatorView extends LinearLayout implements View.OnClickListe
 			roboButton.setTextColor(selectedColor);
 		}
 	}
+
 	/**
 	 * Left arrow. Means previous page button
 	 */

@@ -274,7 +274,8 @@ public class IabHelper {
 			if (listener != null) {
 				listener.onIabSetupFinished(
 						new IabResult(BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE,
-								"Billing service unavailable on device."));
+								"Billing service unavailable on device.")
+				);
 			}
 		}
 	}

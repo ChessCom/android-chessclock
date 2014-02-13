@@ -17,206 +17,207 @@
 package com.facebook.widget;
 
 import com.facebook.Settings;
-import com.facebook.Settings;
 
 import java.util.concurrent.Executor;
 
 class WorkQueue {
-    public static final int DEFAULT_MAX_CONCURRENT = 8;
+	public static final int DEFAULT_MAX_CONCURRENT = 8;
 
-    private final Object workLock = new Object();
-    private WorkNode pendingJobs;
+	private final Object workLock = new Object();
+	private WorkNode pendingJobs;
 
-    private final int maxConcurrent;
-    private final Executor executor;
+	private final int maxConcurrent;
+	private final Executor executor;
 
-    private WorkNode runningJobs = null;
-    private int runningCount = 0;
+	private WorkNode runningJobs = null;
+	private int runningCount = 0;
 
-    WorkQueue() {
-        this(DEFAULT_MAX_CONCURRENT);
-    }
+	WorkQueue() {
+		this(DEFAULT_MAX_CONCURRENT);
+	}
 
-    WorkQueue(int maxConcurrent) {
-        this(maxConcurrent, Settings.getExecutor());
-    }
+	WorkQueue(int maxConcurrent) {
+		this(maxConcurrent, Settings.getExecutor());
+	}
 
-    WorkQueue(int maxConcurrent, Executor executor) {
-        this.maxConcurrent = maxConcurrent;
-        this.executor = executor;
-    }
+	WorkQueue(int maxConcurrent, Executor executor) {
+		this.maxConcurrent = maxConcurrent;
+		this.executor = executor;
+	}
 
-    WorkItem addActiveWorkItem(Runnable callback) {
-        return addActiveWorkItem(callback, true);
-    }
+	WorkItem addActiveWorkItem(Runnable callback) {
+		return addActiveWorkItem(callback, true);
+	}
 
-    WorkItem addActiveWorkItem(Runnable callback, boolean addToFront) {
-        WorkNode node = new WorkNode(callback);
-        synchronized (workLock) {
-            pendingJobs = node.addToList(pendingJobs, addToFront);
-        }
+	WorkItem addActiveWorkItem(Runnable callback, boolean addToFront) {
+		WorkNode node = new WorkNode(callback);
+		synchronized (workLock) {
+			pendingJobs = node.addToList(pendingJobs, addToFront);
+		}
 
-        startItem();
-        return node;
-    }
+		startItem();
+		return node;
+	}
 
-    void validate() {
-        synchronized (workLock) {
-            // Verify that all running items know they are running, and counts match
-            int count = 0;
+	void validate() {
+		synchronized (workLock) {
+			// Verify that all running items know they are running, and counts match
+			int count = 0;
 
-            if (runningJobs != null) {
-                WorkNode walk = runningJobs;
-                do {
-                    walk.verify(true);
-                    count++;
-                    walk = walk.getNext();
-                } while (walk != runningJobs);
-            }
+			if (runningJobs != null) {
+				WorkNode walk = runningJobs;
+				do {
+					walk.verify(true);
+					count++;
+					walk = walk.getNext();
+				} while (walk != runningJobs);
+			}
 
-            assert runningCount == count;
-        }
-    }
+			assert runningCount == count;
+		}
+	}
 
-    private void startItem() {
-        finishItemAndStartNew(null);
-    }
+	private void startItem() {
+		finishItemAndStartNew(null);
+	}
 
-    private void finishItemAndStartNew(WorkNode finished) {
-        WorkNode ready = null;
+	private void finishItemAndStartNew(WorkNode finished) {
+		WorkNode ready = null;
 
-        synchronized (workLock) {
-            if (finished != null) {
-                runningJobs = finished.removeFromList(runningJobs);
-                runningCount--;
-            }
+		synchronized (workLock) {
+			if (finished != null) {
+				runningJobs = finished.removeFromList(runningJobs);
+				runningCount--;
+			}
 
-            if (runningCount < maxConcurrent) {
-                ready = pendingJobs; // Head of the pendingJobs queue
-                if (ready != null) {
-                    // The Queue reassignments are necessary since 'ready' might have been
-                    // added / removed from the front of either queue, which changes its
-                    // respective head.
-                    pendingJobs = ready.removeFromList(pendingJobs);
-                    runningJobs = ready.addToList(runningJobs, false);
-                    runningCount++;
+			if (runningCount < maxConcurrent) {
+				ready = pendingJobs; // Head of the pendingJobs queue
+				if (ready != null) {
+					// The Queue reassignments are necessary since 'ready' might have been
+					// added / removed from the front of either queue, which changes its
+					// respective head.
+					pendingJobs = ready.removeFromList(pendingJobs);
+					runningJobs = ready.addToList(runningJobs, false);
+					runningCount++;
 
-                    ready.setIsRunning(true);
-                }
-            }
-        }
+					ready.setIsRunning(true);
+				}
+			}
+		}
 
-        if (ready != null) {
-            execute(ready);
-        }
-    }
+		if (ready != null) {
+			execute(ready);
+		}
+	}
 
-    private void execute(final WorkNode node) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    node.getCallback().run();
-                } finally {
-                    finishItemAndStartNew(node);
-                }
-            }
-        });
-    }
+	private void execute(final WorkNode node) {
+		executor.execute(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					node.getCallback().run();
+				} finally {
+					finishItemAndStartNew(node);
+				}
+			}
+		});
+	}
 
-    private class WorkNode implements WorkItem {
-        private final Runnable callback;
-        private WorkNode next;
-        private WorkNode prev;
-        private boolean isRunning;
+	private class WorkNode implements WorkItem {
+		private final Runnable callback;
+		private WorkNode next;
+		private WorkNode prev;
+		private boolean isRunning;
 
-        WorkNode(Runnable callback) {
-            this.callback = callback;
-        }
+		WorkNode(Runnable callback) {
+			this.callback = callback;
+		}
 
-        @Override
-        public boolean cancel() {
-            synchronized (workLock) {
-                if (!isRunning()) {
-                    pendingJobs = removeFromList(pendingJobs);
-                    return true;
-                }
-            }
+		@Override
+		public boolean cancel() {
+			synchronized (workLock) {
+				if (!isRunning()) {
+					pendingJobs = removeFromList(pendingJobs);
+					return true;
+				}
+			}
 
-            return false;
-        }
+			return false;
+		}
 
-        @Override
-        public void moveToFront() {
-            synchronized (workLock) {
-                if (!isRunning()) {
-                    pendingJobs = removeFromList(pendingJobs);
-                    pendingJobs = addToList(pendingJobs, true);
-                }
-            }
-        }
+		@Override
+		public void moveToFront() {
+			synchronized (workLock) {
+				if (!isRunning()) {
+					pendingJobs = removeFromList(pendingJobs);
+					pendingJobs = addToList(pendingJobs, true);
+				}
+			}
+		}
 
-        @Override
-        public boolean isRunning() {
-            return isRunning;
-        }
+		@Override
+		public boolean isRunning() {
+			return isRunning;
+		}
 
-        Runnable getCallback() {
-            return callback;
-        }
+		Runnable getCallback() {
+			return callback;
+		}
 
-        WorkNode getNext() {
-            return next;
-        }
+		WorkNode getNext() {
+			return next;
+		}
 
-        void setIsRunning(boolean isRunning) {
-            this.isRunning = isRunning;
-        }
+		void setIsRunning(boolean isRunning) {
+			this.isRunning = isRunning;
+		}
 
-        WorkNode addToList(WorkNode list, boolean addToFront) {
-            assert next == null;
-            assert prev == null;
+		WorkNode addToList(WorkNode list, boolean addToFront) {
+			assert next == null;
+			assert prev == null;
 
-            if (list == null) {
-                list = next = prev = this;
-            } else {
-                next = list;
-                prev = list.prev;
-                next.prev = prev.next = this;
-            }
+			if (list == null) {
+				list = next = prev = this;
+			} else {
+				next = list;
+				prev = list.prev;
+				next.prev = prev.next = this;
+			}
 
-            return addToFront ? this : list;
-        }
+			return addToFront ? this : list;
+		}
 
-        WorkNode removeFromList(WorkNode list) {
-            assert next != null;
-            assert prev != null;
+		WorkNode removeFromList(WorkNode list) {
+			assert next != null;
+			assert prev != null;
 
-            if (list == this) {
-                if (next == this) {
-                    list = null;
-                } else {
-                    list = next;
-                }
-            }
+			if (list == this) {
+				if (next == this) {
+					list = null;
+				} else {
+					list = next;
+				}
+			}
 
-            next.prev = prev;
-            prev.next = next;
-            next = prev = null;
+			next.prev = prev;
+			prev.next = next;
+			next = prev = null;
 
-            return list;
-        }
+			return list;
+		}
 
-        void verify(boolean shouldBeRunning) {
-            assert prev.next == this;
-            assert next.prev == this;
-            assert isRunning() == shouldBeRunning;
-        }
-    }
+		void verify(boolean shouldBeRunning) {
+			assert prev.next == this;
+			assert next.prev == this;
+			assert isRunning() == shouldBeRunning;
+		}
+	}
 
-    interface WorkItem {
-        boolean cancel();
-        boolean isRunning();
-        void moveToFront();
-    }
+	interface WorkItem {
+		boolean cancel();
+
+		boolean isRunning();
+
+		void moveToFront();
+	}
 }

@@ -54,10 +54,9 @@ public class DbDataProvider extends ContentProvider {
 	}
 
 
-
 	@Override
 	public String getType(Uri uri) {
-		for (int i=0; i < Tables.values().length; i++) {
+		for (int i = 0; i < Tables.values().length; i++) {
 			if (uriMatcher.match(uri) == i) {
 				return VND_ANDROID_CURSOR_DIR + DbScheme.PROVIDER_NAME;
 			} else if (uriMatcherIds.match(uri) == i) {
@@ -106,7 +105,8 @@ public class DbDataProvider extends ContentProvider {
 				count = appDataBase.update(Tables.values()[i].name(), values,
 						DbScheme._ID + EQUALS + uri.getPathSegments().get(1) +
 								(!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
-						selectionArgs);
+						selectionArgs
+				);
 				found = true;
 			}
 
@@ -181,9 +181,10 @@ public class DbDataProvider extends ContentProvider {
 		return dbHelper;
 	}
 
-//	private static class DatabaseHelper extends SQLiteOpenHelper {
+	//	private static class DatabaseHelper extends SQLiteOpenHelper {
 	public static class DatabaseHelper extends SQLiteOpenHelper { // TODO restore
 		private Context context;
+
 		DatabaseHelper(Context context) {
 			super(context, DbScheme.DATABASE_NAME, null, DbScheme.DATABASE_VERSION);
 			this.context = context;
@@ -211,7 +212,8 @@ public class DbDataProvider extends ContentProvider {
 			Log.w("Content provider database",
 					"Upgrading database from version " +
 							oldVersion + " to " + newVersion +
-							", which will destroy all old data");
+							", which will destroy all old data"
+			);
 			// TODO handle backup data
 			for (int i = 0; i < Tables.values().length; i++) {
 				db.execSQL("DROP TABLE IF EXISTS " + Tables.values()[i]);

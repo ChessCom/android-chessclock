@@ -14,11 +14,11 @@ public class GCMServerResponseItem {
 	private int code;
 	private String message;
 
-    public static GCMServerResponseItem createFailResponse(){
-        GCMServerResponseItem responseItem = new GCMServerResponseItem();
-        responseItem.code = 404;
-        return responseItem;
-    }
+	public static GCMServerResponseItem createFailResponse() {
+		GCMServerResponseItem responseItem = new GCMServerResponseItem();
+		responseItem.code = 404;
+		return responseItem;
+	}
 
 	public int getCode() {
 		return code;

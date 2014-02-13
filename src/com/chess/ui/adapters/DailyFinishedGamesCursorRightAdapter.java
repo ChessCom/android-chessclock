@@ -9,9 +9,9 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.image_load.AvatarView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
-import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
 import com.chess.model.BaseGameItem;
+import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 
 import java.util.HashMap;

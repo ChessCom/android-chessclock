@@ -248,12 +248,12 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		};
 		MatrixCursor extras = new MatrixCursor(projection);
 		extras.addRow(new String[]{
-				"-1",     		// _ID,
-				CURRICULUM,   // V_NAME,
-				"0",     		// V_CATEGORY_ID,
-				"0",     		// V_IS_CURRICULUM,
-				"0",     		// V_DISPLAY_ORDER
-		}
+						"-1",            // _ID,
+						CURRICULUM,   // V_NAME,
+						"0",            // V_CATEGORY_ID,
+						"0",            // V_IS_CURRICULUM,
+						"0",            // V_DISPLAY_ORDER
+				}
 		);
 
 		Cursor[] cursors = {extras, categoriesCursor};

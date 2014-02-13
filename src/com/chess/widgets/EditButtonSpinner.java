@@ -49,7 +49,6 @@ public class EditButtonSpinner extends RoboAutoCompleteTextView {
 	}
 
 
-
 	private void onCreate(Context context) {
 		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
@@ -73,7 +72,7 @@ public class EditButtonSpinner extends RoboAutoCompleteTextView {
 		defaultMinWidth = (int) resources.getDimension(R.dimen.button_min_width);
 	}
 
-	private static final String[] COUNTRIES = new String[] {
+	private static final String[] COUNTRIES = new String[]{
 			"Belgium",
 			"Belgium",
 			"Belgium",
@@ -156,8 +155,8 @@ public class EditButtonSpinner extends RoboAutoCompleteTextView {
 //			setBackgroundResource(R.drawable.button_grey_solid_selector);
 			setTextColor(Color.WHITE);
 			float shadowRadius = 0.5f;
-			float shadowDx = 0 ;
-			float shadowDy = -1 ;
+			float shadowDx = 0;
+			float shadowDy = -1;
 			setShadowLayer(shadowRadius, shadowDx, shadowDy, Color.BLACK);
 
 			clearFocus();

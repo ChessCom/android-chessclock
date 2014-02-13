@@ -32,30 +32,36 @@ public class SlidingMenu extends RelativeLayout {
 	public static final int SLIDING_CONTENT = 1;
 	private boolean mActionbarOverlay = false;
 
-	/** Constant value for use with setTouchModeAbove(). Allows the SlidingMenu to be opened with a swipe
+	/**
+	 * Constant value for use with setTouchModeAbove(). Allows the SlidingMenu to be opened with a swipe
 	 * gesture on the screen's margin
 	 */
 	public static final int TOUCHMODE_MARGIN = 0;
 
-	/** Constant value for use with setTouchModeAbove(). Allows the SlidingMenu to be opened with a swipe
+	/**
+	 * Constant value for use with setTouchModeAbove(). Allows the SlidingMenu to be opened with a swipe
 	 * gesture anywhere on the screen
 	 */
 	public static final int TOUCHMODE_FULLSCREEN = 1;
 
-	/** Constant value for use with setTouchModeAbove(). Denies the SlidingMenu to be opened with a swipe
+	/**
+	 * Constant value for use with setTouchModeAbove(). Denies the SlidingMenu to be opened with a swipe
 	 * gesture
 	 */
 	public static final int TOUCHMODE_NONE = 2;
 
-	/** Constant value for use with setMode(). Puts the menu to the left of the content.
+	/**
+	 * Constant value for use with setMode(). Puts the menu to the left of the content.
 	 */
 	public static final int LEFT = 0;
 
-	/** Constant value for use with setMode(). Puts the menu to the right of the content.
+	/**
+	 * Constant value for use with setMode(). Puts the menu to the right of the content.
 	 */
 	public static final int RIGHT = 1;
 
-	/** Constant value for use with setMode(). Puts menus to the left and right of the content.
+	/**
+	 * Constant value for use with setMode(). Puts menus to the left and right of the content.
 	 */
 	public static final int LEFT_RIGHT = 2;
 
@@ -157,7 +163,7 @@ public class SlidingMenu extends RelativeLayout {
 		/**
 		 * Transform canvas.
 		 *
-		 * @param canvas the canvas
+		 * @param canvas      the canvas
 		 * @param percentOpen the percent open
 		 */
 		public void transformCanvas(Canvas canvas, float percentOpen);
@@ -175,7 +181,7 @@ public class SlidingMenu extends RelativeLayout {
 	/**
 	 * Instantiates a new SlidingMenu and attach to Activity.
 	 *
-	 * @param activity the activity to attach slidingmenu
+	 * @param activity   the activity to attach slidingmenu
 	 * @param slideStyle the slidingmenu style
 	 */
 	public SlidingMenu(Activity activity, int slideStyle) {
@@ -187,7 +193,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * Instantiates a new SlidingMenu.
 	 *
 	 * @param context the associated Context
-	 * @param attrs the attrs
+	 * @param attrs   the attrs
 	 */
 	public SlidingMenu(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
@@ -196,8 +202,8 @@ public class SlidingMenu extends RelativeLayout {
 	/**
 	 * Instantiates a new SlidingMenu.
 	 *
-	 * @param context the associated Context
-	 * @param attrs the attrs
+	 * @param context  the associated Context
+	 * @param attrs    the attrs
 	 * @param defStyle the def style
 	 */
 	public SlidingMenu(Context context, AttributeSet attrs, int defStyle) {
@@ -218,7 +224,8 @@ public class SlidingMenu extends RelativeLayout {
 
 			@Override
 			public void onPageScrolled(int position, float positionOffset,
-									   int positionOffsetPixels) { }
+									   int positionOffsetPixels) {
+			}
 
 			@Override
 			public void onPageSelected(int position) {
@@ -285,7 +292,7 @@ public class SlidingMenu extends RelativeLayout {
 	/**
 	 * Attaches the SlidingMenu to an entire Activity
 	 *
-	 * @param activity the Activity
+	 * @param activity   the Activity
 	 * @param slideStyle either SLIDING_CONTENT or SLIDING_WINDOW
 	 */
 	public void attachToActivity(Activity activity, int slideStyle) {
@@ -295,8 +302,8 @@ public class SlidingMenu extends RelativeLayout {
 	/**
 	 * Attaches the SlidingMenu to an entire Activity
 	 *
-	 * @param activity the Activity
-	 * @param slideStyle either SLIDING_CONTENT or SLIDING_WINDOW
+	 * @param activity         the Activity
+	 * @param slideStyle       either SLIDING_CONTENT or SLIDING_WINDOW
 	 * @param actionbarOverlay whether or not the ActionBar is overlaid
 	 */
 	public void attachToActivity(Activity activity, int slideStyle, boolean actionbarOverlay) {
@@ -325,7 +332,7 @@ public class SlidingMenu extends RelativeLayout {
 			case SLIDING_CONTENT:
 				mActionbarOverlay = actionbarOverlay;
 				// take the above view out of
-				ViewGroup contentParent = (ViewGroup)activity.findViewById(android.R.id.content);
+				ViewGroup contentParent = (ViewGroup) activity.findViewById(android.R.id.content);
 				View content = contentParent.getChildAt(0);
 				contentParent.removeView(content);
 				contentParent.addView(this);
@@ -359,6 +366,7 @@ public class SlidingMenu extends RelativeLayout {
 
 	/**
 	 * Retrieves the current content.
+	 *
 	 * @return the current content
 	 */
 	public View getContent() {
@@ -386,6 +394,7 @@ public class SlidingMenu extends RelativeLayout {
 
 	/**
 	 * Retrieves the main menu.
+	 *
 	 * @return the main menu
 	 */
 	public View getMenu() {
@@ -417,6 +426,7 @@ public class SlidingMenu extends RelativeLayout {
 
 	/**
 	 * Retrieves the current secondary menu (right).
+	 *
 	 * @return the current menu
 	 */
 	public View getSecondaryMenu() {
@@ -444,6 +454,7 @@ public class SlidingMenu extends RelativeLayout {
 
 	/**
 	 * Sets which side the SlidingMenu should appear on.
+	 *
 	 * @param mode must be either SlidingMenu.LEFT or SlidingMenu.RIGHT
 	 */
 	public void setMode(int mode) {
@@ -455,6 +466,7 @@ public class SlidingMenu extends RelativeLayout {
 
 	/**
 	 * Returns the current side that the SlidingMenu is on.
+	 *
 	 * @return the current mode, either SlidingMenu.LEFT or SlidingMenu.RIGHT
 	 */
 	public int getMode() {
@@ -574,7 +586,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return The margin on the right of the screen that the behind view scrolls to
 	 */
 	public int getBehindOffset() {
-		return ((RelativeLayout.LayoutParams)mViewBehind.getLayoutParams()).rightMargin;
+		return ((RelativeLayout.LayoutParams) mViewBehind.getLayoutParams()).rightMargin;
 	}
 
 	/**
@@ -609,7 +621,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * Sets the behind offset for left view.
 	 *
 	 * @param resID The dimension resource id to be set as the behind offset.
-	 * The menu, when open, will leave this width margin on the right of the screen.
+	 *              The menu, when open, will leave this width margin on the right of the screen.
 	 */
 	public void setBehindLeftOffsetRes(int resID) {
 		int width = (int) getContext().getResources().getDimension(resID);
@@ -623,7 +635,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * Sets the behind offset for right view.
 	 *
 	 * @param resID The dimension resource id to be set as the behind offset.
-	 * The menu, when open, will leave this width margin on the right of the screen.
+	 *              The menu, when open, will leave this width margin on the right of the screen.
 	 */
 	public void setBehindRightOffsetRes(int resID) {
 
@@ -701,7 +713,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * Sets the behind scroll scale.
 	 *
 	 * @param f The scale of the parallax scroll (i.e. 1.0f scrolls 1 pixel for every
-	 * 1 pixel that the above view scrolls and 0.0f scrolls 0 pixels)
+	 *          1 pixel that the above view scrolls and 0.0f scrolls 0 pixels)
 	 */
 	public void setBehindScrollScale(float f) {
 		if (f < 0 && f > 1)
@@ -801,7 +813,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @param resId The dimension resource id to be set as the shadow width.
 	 */
 	public void setShadowWidthRes(int resId) {
-		setShadowWidth((int)getResources().getDimension(resId));
+		setShadowWidth((int) getResources().getDimension(resId));
 	}
 
 	/**
@@ -988,7 +1000,7 @@ public class SlidingMenu extends RelativeLayout {
 	 */
 	@Override
 	protected void onRestoreInstanceState(Parcelable state) {
-		SavedState ss = (SavedState)state;
+		SavedState ss = (SavedState) state;
 		super.onRestoreInstanceState(ss.getSuperState());
 		mViewAbove.setCurrentItem(ss.getItem());
 	}

@@ -13,7 +13,7 @@ import com.chess.R;
  * Date: 01.01.14
  * Time: 11:56
  */
-public class GameLiveObserveFragmentTablet extends GameLiveObserveFragment implements RadioGroup.OnCheckedChangeListener{
+public class GameLiveObserveFragmentTablet extends GameLiveObserveFragment implements RadioGroup.OnCheckedChangeListener {
 
 	private RadioGroup topButtonsGroup;
 	private int previousCheckedId;

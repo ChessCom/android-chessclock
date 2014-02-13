@@ -49,8 +49,8 @@ public class AdTypeTranslator {
 		MILLENNIAL_INTERSTITIAL("millennial_full_interstitial", "com.mopub.mobileads.MillennialInterstitial"),
 		MRAID_BANNER("mraid_banner", "com.mopub.mobileads.MraidBanner"),
 		MRAID_INTERSTITIAL("mraid_interstitial", "com.mopub.mobileads.MraidInterstitial"),
-		HTML_BANNER("html_banner", "com.mopub.mobileads.MraidBanner"),
-		HTML_INTERSTITIAL("html_interstitial", "com.mopub.mobileads.MraidInterstitial"),
+		HTML_BANNER("html_banner", "com.mopub.mobileads.HtmlBanner"),
+		HTML_INTERSTITIAL("html_interstitial", "com.mopub.mobileads.HtmlInterstitial"),
 		VAST_VIDEO_INTERSTITIAL("vast_interstitial", "com.mopub.mobileads.VastVideoInterstitial"),
 
 		UNSPECIFIED("", null);

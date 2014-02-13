@@ -72,7 +72,7 @@ public class PieChartView extends View {
 		donutWidthSize = resources.getDimensionPixelSize(R.dimen.pie_chart_donut_width_size);
 		insideTopTextOffset = (int) (8 * density);
 		textWidth = (int) (20 * density);
-		rightTextWidth =  resources.getDimensionPixelSize(R.dimen.pie_chart_right_text_width);
+		rightTextWidth = resources.getDimensionPixelSize(R.dimen.pie_chart_right_text_width);
 		topOffset = (int) (20 * density);
 		lineLeftOffset = (int) (10 * density);
 

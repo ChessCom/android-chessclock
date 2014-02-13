@@ -124,7 +124,7 @@ public class TacticsHistoryItem extends BaseResponseItem<TacticsHistoryItem.Data
 				this.day_close_rating = day_close_rating;
 			}
 
-			public DailyStats copy(){
+			public DailyStats copy() {
 				DailyStats newStats = new DailyStats();
 				newStats.timestamp = timestamp;
 				newStats.day_open_rating = day_open_rating;
@@ -136,26 +136,26 @@ public class TacticsHistoryItem extends BaseResponseItem<TacticsHistoryItem.Data
 		}
 
 		public static class RecentProblem {
-/*
-      {
-        "id": 758,
-        "rating": 1335,
-        "average_seconds": 9,
-        "date": 1361317851,
-        "my_rating": 1383,
-        "moves": {
-          "correct_move_count": 1,
-          "move_count": 1
-        },
-        "user_seconds": 9,
-        "outcome": {
-          "status": "passed",
-          "score": 40,
-          "user_rating_change": -11
-        }
-      }, ...
+			/*
+				  {
+					"id": 758,
+					"rating": 1335,
+					"average_seconds": 9,
+					"date": 1361317851,
+					"my_rating": 1383,
+					"moves": {
+					  "correct_move_count": 1,
+					  "move_count": 1
+					},
+					"user_seconds": 9,
+					"outcome": {
+					  "status": "passed",
+					  "score": 40,
+					  "user_rating_change": -11
+					}
+				  }, ...
 
-*/
+			*/
 			private int id;
 			private int rating;
 			private int average_seconds;

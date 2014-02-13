@@ -11,7 +11,7 @@ import com.chess.utilities.AppUtils;
  */
 public class TacticTrainerItem extends BaseResponseItem<TacticTrainerItem.Data> {
 	/*
-    "status": "success",
+	"status": "success",
     "data": {
         "rating_info": {
             "score": 50,

@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class ForumCategoryItem extends BaseResponseItem<List<ForumCategoryItem.Data>> {
 /*
-      "category_id": 10,
+	  "category_id": 10,
       "create_date": 1166293176,
       "last_date": 1166293176,
       "category": "General Chess Discussion",

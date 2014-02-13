@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import com.chess.R;
-import com.chess.widgets.SwitchButton;
 import com.chess.backend.RestHelper;
 import com.chess.ui.fragments.LiveBaseFragment;
+import com.chess.widgets.SwitchButton;
 
 /**
  * Created with IntelliJ IDEA.

@@ -71,9 +71,10 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 	private boolean inEditMode;
 	private String commentForEditStr;
 
-	public ForumPostsFragment() { }
+	public ForumPostsFragment() {
+	}
 
-	public static ForumPostsFragment createInstance(int topicId){
+	public static ForumPostsFragment createInstance(int topicId) {
 		ForumPostsFragment fragment = new ForumPostsFragment();
 		fragment.topicId = topicId;
 		Bundle bundle = new Bundle();
@@ -96,7 +97,6 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 		pullToRefresh(true);
 	}
-
 
 
 	@Override
@@ -152,7 +152,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		requestPage(currentPage);
 	}
 
-	private void requestPage(int page){
+	private void requestPage(int page) {
 		currentPage = page;
 
 		if (currentPage == 0) {
@@ -191,7 +191,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 			replyView.setPadding(paddingSide, paddingSide, paddingSide, paddingSide);
 
 			// add quote text
-			String quote = "<div class=\"fquote\"><span class=\"quoted-user\">" + getString(R.string.username_wrote, username) +"</span>" +
+			String quote = "<div class=\"fquote\"><span class=\"quoted-user\">" + getString(R.string.username_wrote, username) + "</span>" +
 					"<div class=\"quoted-text\">\n" +
 					"<p>" + body + "</p>\n" +
 					"</div></div>";
@@ -346,7 +346,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 		return getActivity();
 	}
 
-	private class PostsUpdateListener extends ChessUpdateListener<ForumPostItem>{
+	private class PostsUpdateListener extends ChessUpdateListener<ForumPostItem> {
 
 		private PostsUpdateListener() {
 			super(ForumPostItem.class);
@@ -433,7 +433,7 @@ public class ForumPostsFragment extends CommonLogicFragment implements AdapterVi
 
 		@Override
 		public void updateData(VacationItem returnedObj) {
-			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 				showToast(R.string.posted);
 			} else {
 				showToast(R.string.error);

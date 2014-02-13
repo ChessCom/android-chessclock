@@ -794,7 +794,8 @@ class MraidDisplayController extends MraidAbstractController {
 						.withSms(isSmsAvailable(context))
 						.withCalendar(isCalendarAvailable(context))
 						.withInlineVideo(isInlineVideoAvailable(context))
-						.withStorePicture(isStorePictureSupported(context)));
+						.withStorePicture(isStorePictureSupported(context))
+		);
 	}
 
 	private File getPictureStoragePath() {

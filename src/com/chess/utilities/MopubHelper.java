@@ -41,7 +41,7 @@ public class MopubHelper {
 //			if (AppUtils.isTablet(context)) {
 //				moPubAdView.setAdUnitId(MOPUB_AD_728x90_ID);
 //			} else {
-				moPubAdView.setAdUnitId(MOPUB_AD_BANNER_ID);
+			moPubAdView.setAdUnitId(MOPUB_AD_BANNER_ID);
 //			}
 
 			moPubAdView.loadAd();
@@ -63,7 +63,7 @@ public class MopubHelper {
 //		if (AppUtils.isSmallScreen(context)) { // doesn't work because of  Not enough space to show ad! Wants: <320, 50>, Has: <304, 50>. Let's try with next SDK, maybe will be solved
 //			moPubView.setAdUnitId(MOPUB_AD_300x250_ID);
 //		} else {
-			moPubView.setAdUnitId(MOPUB_AD_RECTANGLE_ID);
+		moPubView.setAdUnitId(MOPUB_AD_RECTANGLE_ID);
 //		}
 
 		moPubView.loadAd();

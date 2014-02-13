@@ -26,7 +26,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
   ]
 */
 
-	public static class Data implements Parcelable{
+	public static class Data implements Parcelable {
 		private int theme_id;
 		private int background_id;
 		private int board_id;
@@ -42,7 +42,8 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 		private boolean isSelected;
 		private boolean local;
 
-		public Data() {}
+		public Data() {
+		}
 
 		public int getId() {
 			return theme_id;
@@ -137,7 +138,7 @@ public class ThemeItem extends BaseResponseItem<List<ThemeItem.Data>> {
 		}
 
 		public String getFontColor() {
-			return getSafeValue(font_color, "FFFFFF").replaceAll("[#]","");
+			return getSafeValue(font_color, "FFFFFF").replaceAll("[#]", "");
 		}
 
 		protected Data(Parcel in) {

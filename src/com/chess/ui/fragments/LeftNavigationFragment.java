@@ -159,7 +159,7 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 		NavigationMenuItem menuItem = updateSelectedMenuItem(position);
 
 		BasePopupsFragment fragmentByTag = null;
-		
+
 		switch (menuItem.iconRes) {
 			case R.drawable.ic_nav_home:
 				backToHomeFragment();
@@ -364,7 +364,7 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 		if (fragmentByTag != null) {
 			// save fragmentName and position to proper highlight row when navigating back
 			selectedPositionsMap.put(position, fragmentByTag.getClass().getSimpleName());
-			
+
 			getActivityFace().openFragment(fragmentByTag);
 			handler.postDelayed(new Runnable() {
 				@Override
@@ -392,9 +392,9 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 		if (fragment != null) {
 			String fragmentName = fragment.getClass().getSimpleName();
 			int positionToSelect = previousPosition;
-			for (int i=0; i< selectedPositionsMap.size(); i++) {
+			for (int i = 0; i < selectedPositionsMap.size(); i++) {
 				String selectedFragmentName = selectedPositionsMap.valueAt(i);
-				if (fragmentName.equals(selectedFragmentName) ){
+				if (fragmentName.equals(selectedFragmentName)) {
 					positionToSelect = selectedPositionsMap.keyAt(i);
 				}
 			}

@@ -392,7 +392,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 
 	private List<YourTurnItem> updateDailyGames(AppData appData, String username, ContentResolver contentResolver,
-								  List<YourTurnItem> moveNotifications) {
+												List<YourTurnItem> moveNotifications) {
 
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_GAMES_CURRENT);

@@ -7,13 +7,13 @@ package com.chess.backend.entity.api.stats;
  * Time: 10:56
  */
 public class AvgOpponentRating {
-/*
-  "average_opponent_rating_when_i": {
-	"win": 0,
-	"lose": 0,
-	"draw": 0
-  }
-*/
+	/*
+	  "average_opponent_rating_when_i": {
+		"win": 0,
+		"lose": 0,
+		"draw": 0
+	  }
+	*/
 	private int win;
 	private int lose;
 	private int draw;

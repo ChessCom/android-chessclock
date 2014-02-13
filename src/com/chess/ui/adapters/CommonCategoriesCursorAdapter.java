@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.statics.Symbol;
 import com.chess.db.DbScheme;
+import com.chess.statics.Symbol;
 
 /**
  * Created with IntelliJ IDEA.

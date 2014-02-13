@@ -22,7 +22,6 @@ public interface BoardFace {
 	List<Move> generateLegalMoves();
 
 	/**
-	 *
 	 * @return {@code 0} if == ChessBoard.WHITE_SIDE, else {@code 1} if == ChessBoard.BLACK_SIDE
 	 */
 	int getSide();

@@ -94,7 +94,7 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 			textShift = array.getFloat(R.styleable.SwitchButton_switchTextShift, TEXT_SHIFT);
 			textLeftPadding = array.getInteger(R.styleable.SwitchButton_switchTextLeftPadding, TEXT_LEFT_PADDING);
 
-			textSize = array.getDimension(R.styleable.SwitchButton_switchTextSize, TEXT_SIZE)/ density;
+			textSize = array.getDimension(R.styleable.SwitchButton_switchTextSize, TEXT_SIZE) / density;
 			textColorOn = array.getInteger(R.styleable.SwitchButton_switchTextColorOn, TEXT_COLOR);
 			textColorOff = array.getInteger(R.styleable.SwitchButton_switchTextColorOff, TEXT_COLOR);
 			textOnStr = array.getString(R.styleable.SwitchButton_switchTextOn);
@@ -123,7 +123,7 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 			RelativeLayout.LayoutParams buttonParams = new LayoutParams(handleWidth, handleHeight);
 			buttonParams.addRule(RelativeLayout.CENTER_VERTICAL);
 			buttonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			buttonParams.setMargins((int) handleMargin, 0 ,(int) handleMargin, 0);
+			buttonParams.setMargins((int) handleMargin, 0, (int) handleMargin, 0);
 
 			if (AppUtils.JELLYBEAN_PLUS_API) {
 				handleButton.setBackground(handleDrawable);
@@ -250,7 +250,7 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 		}
 
 		if (textUseShadow) {
-			float shadowRadius = 0.5f ;
+			float shadowRadius = 0.5f;
 			float shadowDx = 0;
 			if (on) {
 				float shadowDy = -1;

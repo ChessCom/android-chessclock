@@ -22,7 +22,7 @@ public class ChessBoardComp extends ChessBoard {
 		return instance;
 	}
 
-	public static void resetInstance(){
+	public static void resetInstance() {
 		instance = null;
 	}
 

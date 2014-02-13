@@ -22,7 +22,10 @@ import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.protocol.HTTP;
 
-import javax.net.ssl.*;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import java.io.*;
 import java.net.*;
 import java.security.GeneralSecurityException;
@@ -593,7 +596,7 @@ public class RestHelper {
 				String resultString = convertStreamToString(inputStream);
 
 				if (BuildConfig.DEBUG && USE_HEADERS_FOR_LOG) {
-					Map<String,List<String>> headerFields = connection.getHeaderFields();
+					Map<String, List<String>> headerFields = connection.getHeaderFields();
 					for (Map.Entry<String, List<String>> entry : headerFields.entrySet()) {
 						if (entry != null) {
 							for (String header : entry.getValue()) {
@@ -621,7 +624,7 @@ public class RestHelper {
 				resultString = convertStreamToString(inputStream);
 
 				if (BuildConfig.DEBUG && USE_HEADERS_FOR_LOG) {
-					Map<String,List<String>> headerFields = connection.getHeaderFields();
+					Map<String, List<String>> headerFields = connection.getHeaderFields();
 					for (Map.Entry<String, List<String>> entry : headerFields.entrySet()) {
 						if (entry != null) {
 							for (String header : entry.getValue()) {

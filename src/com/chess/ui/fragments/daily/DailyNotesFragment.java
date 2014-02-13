@@ -30,7 +30,7 @@ public class DailyNotesFragment extends CommonLogicFragment implements View.OnTo
 	private RoboButton sendBtn;
 	private NotesItemUpdateListener notesItemUpdateListener;
 
-	public DailyNotesFragment(){
+	public DailyNotesFragment() {
 
 	}
 

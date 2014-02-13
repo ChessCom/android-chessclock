@@ -7,7 +7,7 @@ package actionbarcompat;
  * Time: 7:02
  */
 
-public class ActionModeBase extends ActionModeHelper{
+public class ActionModeBase extends ActionModeHelper {
 
 	private ActionBarActivity activity;
 

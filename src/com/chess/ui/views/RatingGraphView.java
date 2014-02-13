@@ -3,6 +3,7 @@ package com.chess.ui.views;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
+import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.chess.utilities.FontsHelper;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboRadioButton;
 
-import android.text.format.DateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;

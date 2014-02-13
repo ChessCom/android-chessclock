@@ -141,7 +141,7 @@ public class ButtonDrawableBuilder {
 				} else {
 					view.setBackgroundDrawable(background);
 				}
-			} else if (isGlassy){
+			} else if (isGlassy) {
 				ButtonGlassyDrawable background = new ButtonGlassyDrawable(context, attrs);
 				if (AppUtils.JELLYBEAN_PLUS_API) {
 					view.setBackground(background);
@@ -616,8 +616,8 @@ public class ButtonDrawableBuilder {
 		buttonDrawable.colorSolid = resources.getColor(R.color.red_button);
 		// init layers
 		buttonDrawable.init(resources);
-	}	
-	
+	}
+
 	private static void createBlue(ButtonDrawable buttonDrawable, Resources resources) {
 		buttonDrawable.useBorder = false;
 		// Colors for bevel

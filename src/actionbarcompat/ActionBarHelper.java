@@ -39,6 +39,7 @@ public abstract class ActionBarHelper {
 	 * Factory method for creating {@link ActionBarHelper} objects for a given
 	 * activity. Depending on which device the app is running, either a basic
 	 * helper or Honeycomb-specific helper will be returned.
+	 *
 	 * @param activity
 	 * @return
 	 */
@@ -97,19 +98,22 @@ public abstract class ActionBarHelper {
 	/**
 	 * Show searchPanel instead of view collapsing the item with ID
 	 * {@link R.id.menu_search}. (where the item ID was menu_search).
+	 *
 	 * @param show
 	 */
 	public abstract void showSearchPanel(boolean show);
 
 	/**
 	 * Show/Hide actionbar item at specified id
-	 * @param id of item to show/hide
+	 *
+	 * @param id   of item to show/hide
 	 * @param show
 	 */
 	public abstract void showMenuItemById(int id, boolean show);
 
 	/**
 	 * Show/Hide actionbar item at specified id. Used for HomeyComb+ API
+	 *
 	 * @param itemId
 	 * @param show
 	 * @param menu
@@ -118,15 +122,17 @@ public abstract class ActionBarHelper {
 
 	/**
 	 * Set badge with specified value for itemId element in actionBar
+	 *
 	 * @param menuId contains id of menu Item
-	 * @param value value to be changed
+	 * @param value  value to be changed
 	 */
 	public abstract void setBadgeValueForId(int menuId, int value);
 
 	/**
 	 * Set badge with specified value for itemId element in actionBar. Used for HomeyComb+ API
+	 *
 	 * @param menuId contains id of menu Item
-	 * @param value value to be changed
+	 * @param value  value to be changed
 	 */
 	public abstract void setBadgeValueForId(int menuId, int value, Menu menu);
 

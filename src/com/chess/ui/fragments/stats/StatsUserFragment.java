@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import com.chess.R;
-import com.chess.backend.RestHelper;
 import com.chess.backend.LoadItem;
+import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.tasks.SaveUserStatsTask;
@@ -64,7 +64,7 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 
 		statsSpinner = (Spinner) view.findViewById(R.id.statsSpinner);
 
-		
+
 		List<SelectionItem> sortList = createSpinnerList(getActivity());
 		statsSpinner.setAdapter(new DarkSpinnerIconAdapter(getActivity(), sortList));
 		statsSpinner.setOnItemSelectedListener(this);
@@ -111,7 +111,7 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 			// get selected position of spinner
 			int position = statsSpinner.getSelectedItemPosition();
 
-			switch (position){
+			switch (position) {
 				case LIVE_STANDARD:
 					changeInternalFragment(StatsGameDetailsFragment.createInstance(LIVE_STANDARD, getUsername()));
 					break;
@@ -160,16 +160,16 @@ public class StatsUserFragment extends CommonLogicFragment implements AdapterVie
 	}
 
 
-
 	/**
-	 *  Fill list according :
-	 *	Live - Standard
-	 *	Live - Blitz
-	 *	Live - Bullet
-	 *	Daily - Chess
-	 *	Daily - Chess960
-	 *	Tactics
-	 *	Coach Manager
+	 * Fill list according :
+	 * Live - Standard
+	 * Live - Blitz
+	 * Live - Bullet
+	 * Daily - Chess
+	 * Daily - Chess960
+	 * Tactics
+	 * Coach Manager
+	 *
 	 * @param index
 	 * @return Drawable icon for index
 	 */

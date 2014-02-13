@@ -49,7 +49,7 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	private EditButton emailEditBtn;
 	private Button addEmailBtn;
 	private RecentOpponentsCursorAdapter adapter;
-//	private List<SelectionItem> friendsList;
+	//	private List<SelectionItem> friendsList;
 	private PopupOptionsMenuFragment friendSelectFragment;
 	private FriendSelectedListener friendSelectedListener;
 
@@ -59,7 +59,7 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 		setArguments(bundle);
 	}
 
-	public static ChallengeFriendFragment createInstance(int mode){
+	public static ChallengeFriendFragment createInstance(int mode) {
 		ChallengeFriendFragment fragment = new ChallengeFriendFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, mode);
@@ -219,7 +219,7 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 		String opponentName;
-		if(DbDataManager.getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
+		if (DbDataManager.getInt(cursor, DbScheme.V_I_PLAY_AS) == RestHelper.P_BLACK) {
 			opponentName = DbDataManager.getString(cursor, DbScheme.V_WHITE_USERNAME);
 		} else {
 			opponentName = DbDataManager.getString(cursor, DbScheme.V_BLACK_USERNAME);

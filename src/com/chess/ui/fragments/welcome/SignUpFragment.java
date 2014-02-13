@@ -84,7 +84,7 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 			TextView termsLinkTxt = (TextView) view.findViewById(R.id.termsLinkTxt);
 			termsLinkTxt.setClickable(true);
 			String termsText = getString(R.string.by_signing_up_accept_mobile) + Symbol.NEW_STR + Symbol.NEW_STR
-					+ getString(R.string.by_signing_up_accept_mobile1) ;
+					+ getString(R.string.by_signing_up_accept_mobile1);
 			termsLinkTxt.setText(Html.fromHtml(termsText));
 			Linkify.addLinks(termsLinkTxt, Linkify.WEB_URLS);
 			termsLinkTxt.setMovementMethod(LinkMovementMethod.getInstance());
@@ -98,11 +98,11 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.completeSignUpBtn) {
-			if (!checkRegisterInfo()){
+			if (!checkRegisterInfo()) {
 				return;
 			}
 
-			if (!isNetworkAvailable()){ // check only if live
+			if (!isNetworkAvailable()) { // check only if live
 				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 				return;
@@ -195,8 +195,8 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if(resultCode == Activity.RESULT_OK ){
-			if(requestCode == NETWORK_REQUEST){
+		if (resultCode == Activity.RESULT_OK) {
+			if (requestCode == NETWORK_REQUEST) {
 				submitRegisterInfo();
 			}
 		}

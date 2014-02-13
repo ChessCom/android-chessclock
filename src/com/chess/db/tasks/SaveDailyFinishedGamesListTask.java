@@ -12,7 +12,7 @@ import java.util.List;
 public class SaveDailyFinishedGamesListTask extends SaveDailyGamesTask<DailyFinishedGameData> {
 
 	public SaveDailyFinishedGamesListTask(TaskUpdateInterface<DailyFinishedGameData> taskFace,
-							List<DailyFinishedGameData> finishedItems, ContentResolver resolver, String username) {
+										  List<DailyFinishedGameData> finishedItems, ContentResolver resolver, String username) {
 		super(taskFace, finishedItems, resolver, username);
 	}
 

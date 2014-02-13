@@ -230,10 +230,11 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{
-							getString(R.string.chat),
-							getString(R.string.offer_draw),
-							getString(R.string.resign_or_abort)},
-							gameListItemDialogListener)
+									getString(R.string.chat),
+									getString(R.string.offer_draw),
+									getString(R.string.resign_or_abort)},
+							gameListItemDialogListener
+					)
 					.create().show();
 		}
 		return true;
@@ -495,6 +496,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 			}
 		}
 	}
+
 	private void init() {
 		// init adapters
 		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.text_section_header_dark);

@@ -86,7 +86,7 @@ public class SettingsLiveChessFragment extends CommonLogicFragment implements Sw
 	public void onSwitchChanged(SwitchButton switchButton, boolean checked) {
 		if (switchButton.getId() == R.id.showSubmitSwitch) {
 			getAppData().setShowSubmitButtonsLive(checked);
-		} else 	if (switchButton.getId() == R.id.autoQueenSwitch) {
+		} else if (switchButton.getId() == R.id.autoQueenSwitch) {
 			getAppData().setAutoQueenForLive(checked);
 		}
 	}

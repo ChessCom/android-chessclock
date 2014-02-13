@@ -33,11 +33,11 @@ public class Tournaments {
 	private Games games;
 
 	public All getAll() {
-		return all == null? new All() : all;
+		return all == null ? new All() : all;
 	}
 
 	public Games getGames() {
-		return games == null? new Games() : games;
+		return games == null ? new Games() : games;
 	}
 
 	public class All {
@@ -83,7 +83,7 @@ public class Tournaments {
 		}
 	}
 
-	public class Games  extends GamesInfoByResult{
+	public class Games extends GamesInfoByResult {
 		private int in_progress;
 
 		public int getInProgress() {

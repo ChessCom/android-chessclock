@@ -41,7 +41,7 @@ public class SettingsDailyChessFragment extends CommonLogicFragment implements S
 		setArguments(bundle);
 	}
 
-	public static SettingsDailyChessFragment createInstance(boolean showGeneralSettings){
+	public static SettingsDailyChessFragment createInstance(boolean showGeneralSettings) {
 		SettingsDailyChessFragment fragment = new SettingsDailyChessFragment();
 		Bundle bundle = new Bundle();
 		bundle.putBoolean(SHOW_GENERAL, showGeneralSettings);
@@ -155,7 +155,7 @@ public class SettingsDailyChessFragment extends CommonLogicFragment implements S
 			if (checked && !getAppData().isOnVacation()) {
 				loadItem = LoadHelper.postOnVacation(getUserToken());
 				new RequestJsonTask<VacationItem>(postVacationUpdateListener).executeTask(loadItem);
-			} else if (!checked && getAppData().isOnVacation()){
+			} else if (!checked && getAppData().isOnVacation()) {
 				loadItem = LoadHelper.deleteOnVacation(getUserToken());
 				new RequestJsonTask<VacationItem>(deleteVacationUpdateListener).executeTask(loadItem);
 			}

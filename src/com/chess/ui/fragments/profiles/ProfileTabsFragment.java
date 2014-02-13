@@ -16,8 +16,8 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
-import com.chess.statics.Symbol;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
 
@@ -42,7 +42,8 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 	private EnhancedImageDownloader imageLoader;
 	private UserItem.Data userInfo;
 
-	public ProfileTabsFragment() {}
+	public ProfileTabsFragment() {
+	}
 
 	public static ProfileTabsFragment createInstance(String username) {
 		ProfileTabsFragment fragment = new ProfileTabsFragment();
@@ -85,8 +86,8 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 		premiumIconImg = (ImageView) view.findViewById(R.id.premiumIconImg);
 
 //		((TextView)view.findViewById(R.id.leftTabBtn)).setText(R.string.activity);
-		((TextView)view.findViewById(R.id.centerTabBtn)).setText(R.string.ratings);
-		((TextView)view.findViewById(R.id.rightTabBtn)).setText(R.string.games);
+		((TextView) view.findViewById(R.id.centerTabBtn)).setText(R.string.ratings);
+		((TextView) view.findViewById(R.id.rightTabBtn)).setText(R.string.games);
 
 		tabRadioGroup = (RadioGroup) view.findViewById(R.id.tabRadioGroup);
 		tabRadioGroup.setOnCheckedChangeListener(this);

@@ -10,7 +10,7 @@ import java.util.List;
  * Date: 11.07.13
  * Time: 16:26
  */
-public class ForumTopicItem extends BaseResponseItem<ForumTopicItem.Data>{
+public class ForumTopicItem extends BaseResponseItem<ForumTopicItem.Data> {
 /*
 "data": [
         {

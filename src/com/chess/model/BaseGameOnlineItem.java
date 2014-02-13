@@ -8,7 +8,7 @@ import com.chess.statics.Symbol;
  * @created 31.07.12
  * @modified 31.07.12
  */
-public abstract class BaseGameOnlineItem extends BaseGameItem{
+public abstract class BaseGameOnlineItem extends BaseGameItem {
 
 	protected String opponentName;
 	protected int opponentRating;
@@ -25,7 +25,7 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 		lastMoveToSquare = Symbol.EMPTY;
 	}
 
-	protected BaseGameOnlineItem(String[] values){
+	protected BaseGameOnlineItem(String[] values) {
 		gameId = Long.parseLong(values[0]);
 		color = Integer.parseInt(values[1]);
 		gameType = Integer.parseInt(values[2]);
@@ -37,7 +37,7 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 		fenStrLength = Integer.parseInt(values[8]);
 //		fen = values[9];
 		timestamp = Long.parseLong(values[10]);
-		lastMoveFromSquare =  values[11];
+		lastMoveFromSquare = values[11];
 		lastMoveToSquare = values[12];
 		isDrawOfferPending = values[13].equals("p");
 		isOpponentOnline = values[14].equals("1");
@@ -49,8 +49,8 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 		out.writeInt(gameType);
 		out.writeString(lastMoveFromSquare);
 		out.writeString(lastMoveToSquare);
-        out.writeByte((byte) (isMyTurn ? 1 : 0));
-        out.writeByte((byte) (hasNewMessage ? 1 : 0));
+		out.writeByte((byte) (isMyTurn ? 1 : 0));
+		out.writeByte((byte) (hasNewMessage ? 1 : 0));
 	}
 
 	protected void readBaseGameOnlineParcel(Parcel in) {
@@ -59,8 +59,8 @@ public abstract class BaseGameOnlineItem extends BaseGameItem{
 		gameType = in.readInt();
 		lastMoveFromSquare = in.readString();
 		lastMoveToSquare = in.readString();
-        isMyTurn = in.readByte() == 1;
-        hasNewMessage = in.readByte() == 1;
+		isMyTurn = in.readByte() == 1;
+		hasNewMessage = in.readByte() == 1;
 	}
 
 	public void setOpponentName(String opponentName) {

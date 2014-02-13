@@ -115,7 +115,7 @@ public class ProfileAboutFragmentTablet extends CommonLogicFragment {
 		Date loginDate = new Date(userInfo.getLastLoginDate() * 1000);
 		lastLoginTxt.setText(getString(R.string.last_login_, dateFormatter.format(loginDate)));
 
-		Date birthDate = new Date(userInfo.getDateOfBirth()* 1000);
+		Date birthDate = new Date(userInfo.getDateOfBirth() * 1000);
 		birthdayTxt.setText(getString(R.string.birthday_, dateFormatter.format(birthDate)));
 
 		aboutTxt.setText(Html.fromHtml(userInfo.getAbout()));

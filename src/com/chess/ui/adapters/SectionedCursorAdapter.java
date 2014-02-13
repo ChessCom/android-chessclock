@@ -17,7 +17,6 @@ package com.chess.ui.adapters;
  */
 
 
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
@@ -29,6 +28,7 @@ import com.chess.R;
 import com.chess.statics.Symbol;
 
 import java.util.LinkedHashMap;
+
 // Do not remove until release!
 public abstract class SectionedCursorAdapter extends ItemsCursorAdapter {
 

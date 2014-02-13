@@ -6,7 +6,7 @@ package com.chess.backend.entity.api;
  * Date: 30.05.13
  * Time: 20:52
  */
-public class MembershipItem extends BaseResponseItem<MembershipItem.Data>{
+public class MembershipItem extends BaseResponseItem<MembershipItem.Data> {
 /*
   	"date": {
             "expires": 1555570800,

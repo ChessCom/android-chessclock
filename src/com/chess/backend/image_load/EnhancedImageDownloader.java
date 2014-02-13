@@ -436,7 +436,7 @@ public class EnhancedImageDownloader {
 	}
 
     /*
-      * Cache-related fields and methods.
+	  * Cache-related fields and methods.
       *
       * We use a hard and a soft cache. A soft reference cache is too
       * aggressively cleared by the Garbage Collector.

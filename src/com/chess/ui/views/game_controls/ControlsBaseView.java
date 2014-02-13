@@ -23,9 +23,7 @@ import com.chess.widgets.RoboButton;
 
 import java.util.HashMap;
 
-import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.BACK;
-import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.FORWARD;
-import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.OPTIONS;
+import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 
 /**
  * GamePanelTestActivity class
@@ -73,7 +71,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 			R.style.Button_Glassy_Badge
 	};
 
-	protected static final int[] rectStyles = new int[] {
+	protected static final int[] rectStyles = new int[]{
 			R.style.Rect_Bottom_Left,
 			R.style.Rect_Bottom_Middle,
 			R.style.Rect_Bottom_Right,
@@ -269,7 +267,7 @@ public abstract class ControlsBaseView extends LinearLayout implements View.OnCl
 		ButtonDrawableBuilder.setBackgroundToView(button, styleId);
 		button.setId(getButtonId(buttonId));
 
-		if (buttonId == ButtonIds.FORWARD || buttonId == ButtonIds.BACK ) {
+		if (buttonId == ButtonIds.FORWARD || buttonId == ButtonIds.BACK) {
 			button.setOnLongClickListener(this);
 			button.setOnTouchListener(this);
 		}

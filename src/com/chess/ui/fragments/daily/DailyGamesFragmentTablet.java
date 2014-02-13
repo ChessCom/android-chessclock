@@ -208,7 +208,6 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 	}
 
 
-
 	private DialogInterface.OnClickListener gameListItemDialogListener = new DialogInterface.OnClickListener() {
 
 		@Override
@@ -299,10 +298,11 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 		new AlertDialog.Builder(getContext())
 				.setItems(new String[]{
-						getString(R.string.chat),
-						getString(R.string.offer_draw),
-						getString(R.string.resign_or_abort)},
-						gameListItemDialogListener)
+								getString(R.string.chat),
+								getString(R.string.offer_draw),
+								getString(R.string.resign_or_abort)},
+						gameListItemDialogListener
+				)
 				.create().show();
 		return true;
 	}
@@ -460,27 +460,27 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		if (!myTurnInDailyGames) {
 			MatrixCursor extras = new MatrixCursor(DbDataManager.PROJECTION_DAILY_CURRENT_GAMES);
 			extras.addRow(new String[]{
-					"-1",     // _ID,
-					"",     // V_USER,
-					"0",     // V_ID,
-					"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",     // V_FEN,
-					"1",     // V_I_PLAY_AS,
-					"New Game",     // V_WHITE_USERNAME,
-					"New Game",     // V_BLACK_USERNAME,
-					"",     // V_WHITE_AVATAR,
-					"",     // V_BLACK_AVATAR,
-					"0",     // V_WHITE_PREMIUM_STATUS,
-					"0",     // V_BLACK_PREMIUM_STATUS,
-					"0",     // V_GAME_TYPE,
-					"0",     // V_IS_MY_TURN,
-					"0",     // V_TIMESTAMP,
-					"0",     // V_OPPONENT_OFFERED_DRAW,
-					"0",     // V_IS_OPPONENT_ONLINE,
-					"0",     // V_IS_OPPONENT_ON_VACATION,
-					"0",     // V_IS_TOURNAMENT_GAME,
-					"0",     // V_HAS_NEW_MESSAGE,
-					"99999"     // V_TIME_REMAINING
-			}
+							"-1",     // _ID,
+							"",     // V_USER,
+							"0",     // V_ID,
+							"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",     // V_FEN,
+							"1",     // V_I_PLAY_AS,
+							"New Game",     // V_WHITE_USERNAME,
+							"New Game",     // V_BLACK_USERNAME,
+							"",     // V_WHITE_AVATAR,
+							"",     // V_BLACK_AVATAR,
+							"0",     // V_WHITE_PREMIUM_STATUS,
+							"0",     // V_BLACK_PREMIUM_STATUS,
+							"0",     // V_GAME_TYPE,
+							"0",     // V_IS_MY_TURN,
+							"0",     // V_TIMESTAMP,
+							"0",     // V_OPPONENT_OFFERED_DRAW,
+							"0",     // V_IS_OPPONENT_ONLINE,
+							"0",     // V_IS_OPPONENT_ON_VACATION,
+							"0",     // V_IS_TOURNAMENT_GAME,
+							"0",     // V_HAS_NEW_MESSAGE,
+							"99999"     // V_TIME_REMAINING
+					}
 			);
 
 			Cursor[] cursors = {extras, cursor};

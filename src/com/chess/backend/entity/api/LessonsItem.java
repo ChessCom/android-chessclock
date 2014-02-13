@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class LessonsItem extends BaseResponseItem<LessonsItem.Data> {
 /*
-        "lessons_total_count": 2,
+		"lessons_total_count": 2,
         "lessons": [
             {
                 "completed": true,

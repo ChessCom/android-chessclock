@@ -433,7 +433,6 @@ public class MovesParser {
 		movesList = removeAlternateMoves(movesList);
 
 
-
 		return movesList.trim();
 	}
 

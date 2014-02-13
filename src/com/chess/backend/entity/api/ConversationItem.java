@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class ConversationItem extends BaseResponseItem<List<ConversationItem.Data>> {
 /*
-      "id": 2,
+	  "id": 2,
       "other_user_id": 11436,
       "other_user_username": "rest",
       "other_user_is_online": false,

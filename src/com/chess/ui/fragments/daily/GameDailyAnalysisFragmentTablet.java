@@ -10,7 +10,8 @@ import android.os.Bundle;
  */
 public class GameDailyAnalysisFragmentTablet extends GameDailyAnalysisFragment {
 
-	public GameDailyAnalysisFragmentTablet(){}
+	public GameDailyAnalysisFragmentTablet() {
+	}
 
 	public static GameDailyAnalysisFragmentTablet createInstance(long gameId, String username) {
 		GameDailyAnalysisFragmentTablet fragment = new GameDailyAnalysisFragmentTablet();

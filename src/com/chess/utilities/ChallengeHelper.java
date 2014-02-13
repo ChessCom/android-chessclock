@@ -131,8 +131,8 @@ public class ChallengeHelper {
 
 		{ // live standart row
 			List<SelectionItem> actionItems = new ArrayList<SelectionItem>();
-			actionItems.add(new SelectionItem(ID_LIVE_1_1,  AppUtils.getLiveModeButtonLabel("15 | 10", context))); // 15 | 10
-			actionItems.add(new SelectionItem(ID_LIVE_1_2,  AppUtils.getLiveModeButtonLabel("30", context))); // 30 min
+			actionItems.add(new SelectionItem(ID_LIVE_1_1, AppUtils.getLiveModeButtonLabel("15 | 10", context))); // 15 | 10
+			actionItems.add(new SelectionItem(ID_LIVE_1_2, AppUtils.getLiveModeButtonLabel("30", context))); // 30 min
 
 			quickAction.addActionItem(new MultiActionItem(R.string.ic_live_standard, actionItems));
 		}

@@ -6,18 +6,16 @@ import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.api.MessagesItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.AppData;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.AppData;
+import com.chess.statics.StaticData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.chess.db.DbScheme.*;
-import static com.chess.db.DbScheme.V_LAST_MESSAGE_CONTENT;
-import static com.chess.db.DbScheme.V_OTHER_USER_AVATAR_URL;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,7 +35,7 @@ public class SaveMessagesForConversationTask extends AbstractUpdateTask<Messages
 	private long conversationId;
 
 	public SaveMessagesForConversationTask(TaskUpdateInterface<MessagesItem.Data> taskFace, List<MessagesItem.Data> currentItems,
-									  ContentResolver resolver, long conversationId) {
+										   ContentResolver resolver, long conversationId) {
 		super(taskFace, new ArrayList<MessagesItem.Data>());
 		this.conversationId = conversationId;
 		this.itemList.addAll(currentItems);

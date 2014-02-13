@@ -17,7 +17,8 @@ import com.chess.ui.views.chess_boards.ChessBoardLessonsView;
  */
 public class GameLessonsFragmentTablet extends GameLessonFragment {
 
-	public GameLessonsFragmentTablet() {}
+	public GameLessonsFragmentTablet() {
+	}
 
 	public static GameLessonsFragmentTablet createInstance(int lessonId, long courseId) {
 		GameLessonsFragmentTablet fragment = new GameLessonsFragmentTablet();

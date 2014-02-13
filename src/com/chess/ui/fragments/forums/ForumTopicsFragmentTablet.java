@@ -18,7 +18,8 @@ public class ForumTopicsFragmentTablet extends ForumTopicsFragment {
 
 	private FragmentParentFace parentFace;
 
-	public ForumTopicsFragmentTablet() { }
+	public ForumTopicsFragmentTablet() {
+	}
 
 	public static ForumTopicsFragmentTablet createInstance(int categoryId, FragmentParentFace parentFace) {
 		ForumTopicsFragmentTablet fragment = new ForumTopicsFragmentTablet();

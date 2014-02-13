@@ -94,7 +94,7 @@ public class DailyFinishedGamesCursorAdapter extends ItemsCursorAdapter {
 		boolean isOpponentOnline = getInt(cursor, DbScheme.V_IS_OPPONENT_ONLINE) > 0;
 		holder.playerImg.setOnline(isOpponentOnline);
 
-		if(getInt(cursor, DbScheme.V_GAME_TYPE) == RestHelper.V_GAME_CHESS) {
+		if (getInt(cursor, DbScheme.V_GAME_TYPE) == RestHelper.V_GAME_CHESS) {
 			holder.gameTypeTxt.setText(R.string.ic_daily_game);
 		} else {
 			holder.gameTypeTxt.setText(R.string.ic_daily960_game);

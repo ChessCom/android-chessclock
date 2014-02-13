@@ -162,6 +162,7 @@ public class TacticProblemItem extends BaseResponseItem<List<TacticProblemItem.D
 		public void setHintWasUsed(boolean hintWasUsed) {
 			this.hintWasUsed = hintWasUsed;
 		}
+
 		public boolean hintWasUsed() {
 			return hintWasUsed;
 		}

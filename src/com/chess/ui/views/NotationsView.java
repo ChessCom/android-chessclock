@@ -16,11 +16,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.statics.AppData;
-import com.chess.widgets.RoboTextView;
 import com.chess.statics.Symbol;
 import com.chess.ui.views.chess_boards.NotationFace;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
 import com.chess.utilities.AppUtils;
+import com.chess.widgets.RoboTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -310,7 +310,8 @@ public class NotationsView extends LinearLayout implements NotationFace,
 	}
 
 	@Override
-	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+	}
 
 	@Override
 	public void onPageSelected(int position) {
@@ -318,7 +319,8 @@ public class NotationsView extends LinearLayout implements NotationFace,
 	}
 
 	@Override
-	public void onPageScrollStateChanged(int state) {}
+	public void onPageScrollStateChanged(int state) {
+	}
 
 	private class NotationsPagerAdapter extends PagerAdapter {
 		private int selectedPosition;
@@ -519,7 +521,7 @@ public class NotationsView extends LinearLayout implements NotationFace,
 		for (int i = 0; i < viewPerPageMap.size(); i++) {
 
 			viewsPerPage += viewPerPageMap.get(i);
-			if (pos  < viewsPerPage) {
+			if (pos < viewsPerPage) {
 				break;
 			}
 			pageToSelect++;

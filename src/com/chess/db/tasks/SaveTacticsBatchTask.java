@@ -4,10 +4,10 @@ import android.content.ContentResolver;
 import com.chess.backend.entity.api.TacticProblemItem;
 import com.chess.backend.entity.api.TacticTrainerItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.AppData;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
+import com.chess.statics.AppData;
+import com.chess.statics.StaticData;
 
 import java.util.ArrayList;
 import java.util.List;

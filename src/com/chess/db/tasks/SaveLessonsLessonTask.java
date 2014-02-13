@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.api.LessonProblemItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.StaticData;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class SaveLessonsLessonTask extends AbstractUpdateTask<LessonProblemItem.
 	private String username;
 
 	public SaveLessonsLessonTask(TaskUpdateInterface<LessonProblemItem.Data> taskFace, LessonProblemItem.Data currentItem,
-								  ContentResolver resolver, String username) {
+								 ContentResolver resolver, String username) {
 		super(taskFace);
 		this.username = username;
 		this.item = currentItem;

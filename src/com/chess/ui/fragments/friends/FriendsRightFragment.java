@@ -83,7 +83,7 @@ public class FriendsRightFragment extends FriendsFragment implements AdapterView
 	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.friendListItemView) {
-			boolean headerAdded = ((ListView)listView).getHeaderViewsCount() > 0; // used to check if header added
+			boolean headerAdded = ((ListView) listView).getHeaderViewsCount() > 0; // used to check if header added
 			int offset = headerAdded ? 1 : 0;
 
 			Integer position = (Integer) view.getTag(R.id.list_item_id);

@@ -69,7 +69,7 @@ public abstract class ActionBarActivity extends CommonLogicActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if(HONEYCOMB_PLUS_API) {
+		if (HONEYCOMB_PLUS_API) {
 			invalidateOptionsMenu();
 		}
 	}
@@ -90,17 +90,19 @@ public abstract class ActionBarActivity extends CommonLogicActivity {
 
 	/**
 	 * This method invoked from CustomSearchView textChanged or SearchButton hit
+	 *
 	 * @param query that was filled in search field
 	 */
-	protected void onSearchAutoCompleteQuery(String query){
+	protected void onSearchAutoCompleteQuery(String query) {
 
 	}
 
 	/**
 	 * This method invoked from CustomSearchView on Enter/Search Button hit
+	 *
 	 * @param query that was filled in search field
 	 */
-	protected void onSearchQuery(String query){
+	protected void onSearchQuery(String query) {
 
 	}
 

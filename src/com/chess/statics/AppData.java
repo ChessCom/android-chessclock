@@ -763,6 +763,7 @@ public class AppData {
 
 	/**
 	 * We should use this as the only one method to get build to keep it always synced with data that we save
+	 *
 	 * @return {@code LiveGameConfig.Builder}
 	 */
 	public LiveGameConfig.Builder getLiveGameConfigBuilder() {
@@ -799,6 +800,7 @@ public class AppData {
 
 	/**
 	 * We should use this as the only one method to get build to keep it always synced with data that we save
+	 *
 	 * @return {@code LiveGameConfig.Builder}
 	 */
 	public DailyGameConfig.Builder getDailyGameConfigBuilder() {

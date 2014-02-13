@@ -26,8 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.statics.Symbol;
 import com.chess.db.DbDataManager;
+import com.chess.statics.Symbol;
 
 import java.util.LinkedHashMap;
 

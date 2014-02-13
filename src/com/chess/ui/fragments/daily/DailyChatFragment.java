@@ -12,7 +12,8 @@ import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.*;
+import com.chess.backend.entity.api.ChatItem;
+import com.chess.backend.entity.api.GamesChatItem;
 import com.chess.backend.entity.api.daily_games.DailyChatItem;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameItem;
@@ -157,7 +158,7 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 		}
 	}
 
-	protected void widgetsInit(View view){
+	protected void widgetsInit(View view) {
 		sendEdt = (EditText) view.findViewById(R.id.sendEdt);
 		sendEdt.setOnTouchListener(this);
 		listView = (ListView) view.findViewById(R.id.listView);
@@ -185,7 +186,7 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			progressBar.setVisibility(show? View.VISIBLE: View.INVISIBLE);
+			progressBar.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 			sendBtn.setEnabled(!show);
 		}
 
@@ -222,7 +223,7 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 		@Override
 		public void showProgress(boolean show) {
 			super.showProgress(show);
-			progressBar.setVisibility(show? View.VISIBLE: View.INVISIBLE);
+			progressBar.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 			sendBtn.setEnabled(!show);
 		}
 

@@ -8,11 +8,11 @@ import com.chess.statics.Symbol;
  * Date: 12.08.13
  * Time: 5:39
  */
-public class GameOverNotificationItem  {
-/*
-        'game_id' => $params['gameId'],
-        'message' => $params['message'],
-*/
+public class GameOverNotificationItem {
+	/*
+			'game_id' => $params['gameId'],
+			'message' => $params['message'],
+	*/
 	private long gameId;
 	private String message;
 	private String avatar_url;

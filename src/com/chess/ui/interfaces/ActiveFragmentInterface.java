@@ -27,9 +27,9 @@ public interface ActiveFragmentInterface {
 
 	void switchFragment(BasePopupsFragment fragment);
 
-    void showPreviousFragment();
+	void showPreviousFragment();
 
-    void updateNotificationsBadges();
+	void updateNotificationsBadges();
 
 	CoreActivityActionBar getActionBarActivity();
 

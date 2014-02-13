@@ -10,7 +10,7 @@ import com.chess.backend.entity.api.BaseResponseItem;
  */
 public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 /*
-        "rating": {
+		"rating": {
             "current": 1073,
             "todays_rank": {
                 "rank": null,
@@ -138,15 +138,15 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 		private GraphData graph_data;
 
 		public GameRating getRating() {
-			return rating == null? new GameRating() : rating;
+			return rating == null ? new GameRating() : rating;
 		}
 
 		public Games getGames() {
-			return games == null? new Games() : games;
+			return games == null ? new Games() : games;
 		}
 
 		public Tournaments getTournaments() {
-			return tournaments == null? new Tournaments() : tournaments;
+			return tournaments == null ? new Tournaments() : tournaments;
 		}
 
 		public GraphData getGraphData() {
@@ -170,7 +170,7 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 		}
 
 		public StatsTodaysRank getTodaysRank() {
-			return todays_rank == null? new StatsTodaysRank() : todays_rank;
+			return todays_rank == null ? new StatsTodaysRank() : todays_rank;
 		}
 
 		public float getPercentile() {
@@ -182,11 +182,11 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 		}
 
 		public BaseRating getHighest() {
-			return highest == null? new BaseRating() : highest;
+			return highest == null ? new BaseRating() : highest;
 		}
 
 		public BaseRating getLowest() {
-			return lowest == null? new BaseRating() : lowest;
+			return lowest == null ? new BaseRating() : lowest;
 		}
 
 		public int getAverageOpponent() {
@@ -194,11 +194,11 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 		}
 
 		public BestWin getBestWin() {
-			return best_win == null? new BestWin() : best_win;
+			return best_win == null ? new BestWin() : best_win;
 		}
 
 		public AvgOpponentRating getAverageOpponentRating() {
-			return average_opponent_rating_when_i == null? new AvgOpponentRating() : average_opponent_rating_when_i;
+			return average_opponent_rating_when_i == null ? new AvgOpponentRating() : average_opponent_rating_when_i;
 		}
 	}
 
@@ -227,15 +227,15 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 		}
 
 		public GamesInfoByColor getWins() {
-			return wins == null? new GamesInfoByColor() : wins;
+			return wins == null ? new GamesInfoByColor() : wins;
 		}
 
 		public GamesInfoByColor getLosses() {
-			return losses == null? new GamesInfoByColor() : losses;
+			return losses == null ? new GamesInfoByColor() : losses;
 		}
 
 		public GamesInfoByColor getDraws() {
-			return draws == null? new GamesInfoByColor() : draws;
+			return draws == null ? new GamesInfoByColor() : draws;
 		}
 
 		public int getWinningStreak() {
@@ -247,7 +247,7 @@ public class GameStatsItem extends BaseResponseItem<GameStatsItem.Data> {
 		}
 
 		public MostFrequentOpponent getMostFrequentOpponent() {
-			return most_frequent_opponent == null? new MostFrequentOpponent() : most_frequent_opponent;
+			return most_frequent_opponent == null ? new MostFrequentOpponent() : most_frequent_opponent;
 		}
 	}
 

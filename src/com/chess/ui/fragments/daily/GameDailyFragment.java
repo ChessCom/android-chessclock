@@ -572,7 +572,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	}
 
 	private void submitMove() {
-		logTest(" last move = " +  getBoardFace().getLastMoveForDaily());
+		logTest(" last move = " + getBoardFace().getLastMoveForDaily());
 		if (username.equals(getUsername())) { // allow only authenticated user to send move in his own games
 			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
 			loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());

@@ -14,7 +14,7 @@ public class RoboCheckBox extends CheckBox {
 
 	public RoboCheckBox(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-        setupFont(context, attrs);
+		setupFont(context, attrs);
 	}
 
 	public RoboCheckBox(Context context) {
@@ -23,7 +23,7 @@ public class RoboCheckBox extends CheckBox {
 
 	public RoboCheckBox(Context context, AttributeSet attrs) {
 		super(context, attrs);
-        setupFont(context, attrs);
+		setupFont(context, attrs);
 	}
 
 	private void setupFont(Context context, AttributeSet attrs) {

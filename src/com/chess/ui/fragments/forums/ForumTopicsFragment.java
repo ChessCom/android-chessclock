@@ -49,7 +49,8 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 	private int currentPage;
 	protected ListView listView;
 
-	public ForumTopicsFragment() { }
+	public ForumTopicsFragment() {
+	}
 
 	public static ForumTopicsFragment createInstance(int categoryId) {
 		ForumTopicsFragment fragment = new ForumTopicsFragment();
@@ -103,7 +104,6 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
 	}
-
 
 
 	@Override
@@ -168,7 +168,7 @@ public class ForumTopicsFragment extends CommonLogicFragment implements PageIndi
 		requestPage(page);
 	}
 
-	private void requestPage(int page){
+	private void requestPage(int page) {
 		currentPage = page;
 
 		if (currentPage == 0) {

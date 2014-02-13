@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import com.chess.R;
-import com.chess.widgets.RoboButton;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.interfaces.PopupListSelectionFace;
+import com.chess.widgets.RoboButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,7 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 		if (optionsList == null) {
 			optionsList = new ArrayList<String>();
 
-			for (int i=0; i < itemsArray.size(); i++){
+			for (int i = 0; i < itemsArray.size(); i++) {
 				optionsList.add(itemsArray.valueAt(i));
 			}
 		}

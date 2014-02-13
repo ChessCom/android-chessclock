@@ -13,9 +13,9 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
-import com.chess.statics.Symbol;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 
 import java.text.SimpleDateFormat;

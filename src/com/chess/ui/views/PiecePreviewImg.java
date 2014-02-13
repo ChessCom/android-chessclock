@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
+import com.chess.utilities.FontsHelper;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,8 +24,8 @@ public class PiecePreviewImg extends ImageView {
 	private int viewHeight;
 	private int square;
 	private Rect rect;
-	private int[] pieces = new int[]{0,1,0,1};
-	private int[] colors = new int[]{0,0,1,1};
+	private int[] pieces = new int[]{0, 1, 0, 1};
+	private int[] colors = new int[]{0, 0, 1, 1};
 	protected String[] signs = {"a", "b"};
 	protected String[] nums = {"1", "2"};
 
@@ -71,7 +71,7 @@ public class PiecePreviewImg extends ImageView {
 //		piecesBitmaps = new Bitmap[2][2];
 	}
 
-	public void setPiecesBitmaps(Bitmap[][] bitmaps){
+	public void setPiecesBitmaps(Bitmap[][] bitmaps) {
 		piecesBitmaps = bitmaps;
 	}
 
@@ -104,7 +104,7 @@ public class PiecePreviewImg extends ImageView {
 			float xInset = (square / 8) * 7;
 			for (int i = 0; i < SQUARES_IN_ROW_CNT; i++) {
 				canvas.drawText(nums[1 - i], 2, i * square + numYOffset, coordinatesPaint);
-				canvas.drawText(signs[i], i * square + xInset , SQUARES_IN_ROW_CNT * square - text_y_offset, coordinatesPaint);
+				canvas.drawText(signs[i], i * square + xInset, SQUARES_IN_ROW_CNT * square - text_y_offset, coordinatesPaint);
 			}
 		}
 	}

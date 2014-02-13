@@ -24,8 +24,8 @@ import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
  */
 public class ScrollYDelegate extends PullToRefreshAttacher.ViewDelegate {
 
-    @Override
-    public boolean isReadyForPull(View view, float x, float y) {
-        return view.getScrollY() <= 0;
-    }
+	@Override
+	public boolean isReadyForPull(View view, float x, float y) {
+		return view.getScrollY() <= 0;
+	}
 }

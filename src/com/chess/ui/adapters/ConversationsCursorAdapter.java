@@ -32,6 +32,7 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 
 	private int imageSize;
+
 	public ConversationsCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 		float density = resources.getDisplayMetrics().density;

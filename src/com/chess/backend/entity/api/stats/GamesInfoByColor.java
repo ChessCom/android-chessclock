@@ -7,13 +7,13 @@ package com.chess.backend.entity.api.stats;
  * Time: 11:10
  */
 public class GamesInfoByColor {
-/*
-  "draws": {
-	"total": 0,
-	"white": 0,
-	"black": 0
-  },
-*/
+	/*
+	  "draws": {
+		"total": 0,
+		"white": 0,
+		"black": 0
+	  },
+	*/
 	private int total;
 	private int white;
 	private int black;

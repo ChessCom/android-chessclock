@@ -21,7 +21,8 @@ public class ButtonGlassyBadgeDrawable extends ButtonGlassyDrawable implements B
 	private int badgeOffset;
 	private String badgeValue;
 
-	public ButtonGlassyBadgeDrawable() { }
+	public ButtonGlassyBadgeDrawable() {
+	}
 
 	@Override
 	void init(Resources resources) {

@@ -30,7 +30,7 @@ public class GetAndSaveFriends extends IntentService {
 
 		FriendsItem item = null;
 		try {
-			item  = RestHelper.getInstance().requestData(loadItem, FriendsItem.class, getApplicationContext());
+			item = RestHelper.getInstance().requestData(loadItem, FriendsItem.class, getApplicationContext());
 		} catch (InternalErrorException e) {
 			e.logMe();
 		}

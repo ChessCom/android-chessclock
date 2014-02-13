@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
 /*
-    "status": "success",
+	"status": "success",
     "count": 4,
     "data": [
         {
@@ -67,7 +67,7 @@ public class FriendsItem extends BaseResponseItem<List<FriendsItem.Data>> {
 		}
 
 		public String getLocation() {
-			return location == null? Symbol.EMPTY : location;
+			return location == null ? Symbol.EMPTY : location;
 		}
 
 		public String getAvatarUrl() {

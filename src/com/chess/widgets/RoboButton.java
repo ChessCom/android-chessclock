@@ -53,7 +53,7 @@ public class RoboButton extends Button implements Serializable {
 		init(context, attrs);
 	}
 
-    private void init(Context context, AttributeSet attrs) {
+	private void init(Context context, AttributeSet attrs) {
 		setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		ButtonDrawableBuilder.setBackgroundToView(this, attrs);
 	}

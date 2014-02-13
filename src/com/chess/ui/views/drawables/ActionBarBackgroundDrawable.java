@@ -60,7 +60,7 @@ public class ActionBarBackgroundDrawable extends Drawable {
 		return PixelFormat.OPAQUE;
 	}
 
-	public void updateDrawable(){
+	public void updateDrawable() {
 		String themeName = appData.getThemeBackgroundName();
 		// if we have staunton theme, then set custom image
 		if (!TextUtils.isEmpty(themeName) && themeName.contains(STAUNTON)) {

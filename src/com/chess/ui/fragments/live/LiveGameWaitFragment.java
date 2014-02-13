@@ -29,7 +29,8 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 	private LiveGameConfig liveGameConfig;
 	public boolean closeOnResume;
 
-	public LiveGameWaitFragment() { }
+	public LiveGameWaitFragment() {
+	}
 
 	public static LiveGameWaitFragment createInstance(LiveGameConfig config) {
 		LiveGameWaitFragment fragment = new LiveGameWaitFragment();

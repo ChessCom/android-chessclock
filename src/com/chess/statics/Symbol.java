@@ -25,6 +25,11 @@ public class Symbol {
 	public static final String QUESTION = "?";
 	public static final String DIVIDER = " | ";
 
-	public static String wrapInPars(String string) {return LEFT_PAR + string + RIGHT_PAR;}
-	public static String wrapInPars(int value) {return LEFT_PAR + String.valueOf(value) + RIGHT_PAR;}
+	public static String wrapInPars(String string) {
+		return LEFT_PAR + string + RIGHT_PAR;
+	}
+
+	public static String wrapInPars(int value) {
+		return LEFT_PAR + String.valueOf(value) + RIGHT_PAR;
+	}
 }

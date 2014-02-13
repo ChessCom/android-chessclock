@@ -86,14 +86,14 @@ public class AppConstants {
 	public static final String PREF_USER_LESSONS_COMPLETE = "user_lessons_complete";
 	public static final String PREF_USER_COURSE_COMPLETE = "user_course_complete";
 
-    public static final String PREF_THEME_BACK_ID = "theme_background_id";
-    public static final String PREF_THEME_BACKGROUND_PATH_PORT = "theme_background_path_port";
-    public static final String PREF_THEME_BACKGROUND_PATH_LAND = "theme_background_path_land";
-    public static final String PREF_THEME_FONT_COLOR = "theme_font_color";
-    public static final String PREF_THEME_BOARD_PATH = "theme_board_path";
-    public static final String PREF_THEME_BOARD_COORDINATE_LIGHT = "theme_board_coordinate_light";
-    public static final String PREF_THEME_BOARD_COORDINATE_DARK = "theme_board_coordinate_dark";
-    public static final String PREF_THEME_BOARD_HIGHLIGHT = "theme_board_highlight";
+	public static final String PREF_THEME_BACK_ID = "theme_background_id";
+	public static final String PREF_THEME_BACKGROUND_PATH_PORT = "theme_background_path_port";
+	public static final String PREF_THEME_BACKGROUND_PATH_LAND = "theme_background_path_land";
+	public static final String PREF_THEME_FONT_COLOR = "theme_font_color";
+	public static final String PREF_THEME_BOARD_PATH = "theme_board_path";
+	public static final String PREF_THEME_BOARD_COORDINATE_LIGHT = "theme_board_coordinate_light";
+	public static final String PREF_THEME_BOARD_COORDINATE_DARK = "theme_board_coordinate_dark";
+	public static final String PREF_THEME_BOARD_HIGHLIGHT = "theme_board_highlight";
 	public static final String PREF_THEME_PIECES_PATH = "theme_pieces_path";
 	public static final String PREF_THEME_PIECES_NAME = "theme_pieces_name";
 	public static final String PREF_THEME_BOARD_NAME = "theme_board_name";
@@ -112,8 +112,8 @@ public class AppConstants {
 	public static final String PREF_THEME_BOARDS_LOADED = "theme_boards_loaded";
 	public static final String PREF_THEME_PIECES_LOADED = "theme_pieces_loaded";
 	public static final String PREF_THEME_SOUNDS_LOADED = "theme_sounds_loaded";
-    public static final String PREF_THEME_NAME = "theme_name";
-    public static final String PREF_THEME_BACKGROUND_NAME = "theme_background_name";
+	public static final String PREF_THEME_NAME = "theme_name";
+	public static final String PREF_THEME_BACKGROUND_NAME = "theme_background_name";
 	public static final String CUSTOM_THEME_NAME = "Custom";
 	public static final String DEFAULT_THEME_NAME = "Game Room";
 	public static final String DEFAULT_THEME_PIECES_NAME = "game_room";
@@ -121,10 +121,10 @@ public class AppConstants {
 
 	public static final String PREF_DEMO_TACTICS_LOADED = "demo tactics loaded";
 	public static final String PREF_TEMP_TOKEN_GCM = "temporary token for gcm";
-    public static final String PREF_USER_CHOOSE_VIDEO_LIBRARY = "user choose video library mode";
-    public static final String PREF_USER_CHOOSE_LESSONS_LIBRARY = "user choose lesson library mode";
-    public static final String USER_ASKED_FOR_FEEDBACK = "user was asked for feedback";
-    public static final String LAST_TIME_ASKED_FOR_FEEDBACK = "last time user was asked for feedback";
+	public static final String PREF_USER_CHOOSE_VIDEO_LIBRARY = "user choose video library mode";
+	public static final String PREF_USER_CHOOSE_LESSONS_LIBRARY = "user choose lesson library mode";
+	public static final String USER_ASKED_FOR_FEEDBACK = "user was asked for feedback";
+	public static final String LAST_TIME_ASKED_FOR_FEEDBACK = "last time user was asked for feedback";
 
 	public static final String PULL_TO_REFRESH_HEADER_TOP_INSET = "pull_to_refresh_header_top_inset";
 
@@ -200,7 +200,7 @@ public class AppConstants {
 
 	public static final String NOTIFICATION = "notification";
 
-    public static final String NEED_TO_RESTART = "needToRestart";
+	public static final String NEED_TO_RESTART = "needToRestart";
 
 	/**
 	 * 4 hrs the same as login token, but it might be changed if there was a login from another device

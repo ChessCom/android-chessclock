@@ -5,12 +5,12 @@ import android.view.ViewGroup.LayoutParams;
 import com.slidingmenu.lib.SlidingMenu;
 
 public interface SlidingActivityBase {
-	
+
 	/**
 	 * Set the behind view content to an explicit view. This view is placed directly into the behind view 's view hierarchy.
 	 * It can itself be a complex view hierarchy.
 	 *
-	 * @param view The desired content to display.
+	 * @param view         The desired content to display.
 	 * @param layoutParams Layout parameters for the view.
 	 */
 	public void setBehindContentView(View view, LayoutParams layoutParams);
@@ -39,17 +39,17 @@ public interface SlidingActivityBase {
 	 * @return the SlidingMenu associated with this activity.
 	 */
 	public SlidingMenu getSlidingMenu();
-		
+
 	/**
 	 * Toggle the SlidingMenu. If it is open, it will be closed, and vice versa.
 	 */
 	public void toggle();
-	
+
 	/**
 	 * Close the SlidingMenu and show the content view.
 	 */
 	public void showContent();
-	
+
 	/**
 	 * Open the SlidingMenu and show the menu view.
 	 */
@@ -60,14 +60,14 @@ public interface SlidingActivityBase {
 	 * if there is only one.
 	 */
 	public void showSecondaryMenu();
-	
+
 	/**
 	 * Controls whether the ActionBar slides along with the above view when the menu is opened,
 	 * or if it stays in place.
 	 *
 	 * @param slidingActionBarEnabled True if you want the ActionBar to slide along with the SlidingMenu,
-	 * false if you want the ActionBar to stay in place
+	 *                                false if you want the ActionBar to stay in place
 	 */
 	public void setSlidingActionBarEnabled(boolean slidingActionBarEnabled);
-	
+
 }

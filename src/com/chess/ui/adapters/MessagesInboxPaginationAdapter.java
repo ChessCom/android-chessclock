@@ -20,7 +20,7 @@ import java.util.List;
 public class MessagesInboxPaginationAdapter extends PaginationCursorAdapter<ConversationItem.Data> {
 
 	public MessagesInboxPaginationAdapter(Context context, ItemsCursorAdapter adapter,
-									TaskUpdateInterface<ConversationItem.Data> taskFace, LoadItem loadItem) {
+										  TaskUpdateInterface<ConversationItem.Data> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
 		this.loadItem = loadItem;
 		setFirstPage(0);

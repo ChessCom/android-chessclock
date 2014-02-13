@@ -346,10 +346,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 			new AlertDialog.Builder(getContext())
 					.setItems(new String[]{
-							getString(R.string.chat),
-							getString(R.string.offer_draw),
-							getString(R.string.resign_or_abort)},
-							gameListItemDialogListener)
+									getString(R.string.chat),
+									getString(R.string.offer_draw),
+									getString(R.string.resign_or_abort)},
+							gameListItemDialogListener
+					)
 					.create().show();
 		}
 		return true;
@@ -629,7 +630,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				if (gamesLeft) {
 					new SaveDailyFinishedGamesListTask(saveFinishedGamesListUpdateListener, finishedGameDataList,
 							getContentResolver(), getUsername()).executeTask();
-				}  else {
+				} else {
 					finishedGamesCursorAdapter.changeCursor(null);
 				}
 			} else {

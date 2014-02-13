@@ -114,6 +114,7 @@ public abstract class BaseGameItem implements Parcelable {
 
 	/**
 	 * Write BaseGameItem fields to parcel
+	 *
 	 * @param out
 	 */
 	protected void writeBaseGameParcel(Parcel out) {
@@ -127,9 +128,9 @@ public abstract class BaseGameItem implements Parcelable {
 		out.writeInt(timeRemainingAmount);
 		out.writeString(timeRemainingUnits);
 
-        out.writeByte((byte) (isDrawOfferPending ? 1 : 0));
-        out.writeByte((byte) (isOpponentOnline ? 1 : 0));
-        out.writeByte((byte) (hasNewMessage ? 1 : 0));
+		out.writeByte((byte) (isDrawOfferPending ? 1 : 0));
+		out.writeByte((byte) (isOpponentOnline ? 1 : 0));
+		out.writeByte((byte) (hasNewMessage ? 1 : 0));
 
 		out.writeInt(fenStrLength);
 		out.writeLong(timestamp);
@@ -141,6 +142,7 @@ public abstract class BaseGameItem implements Parcelable {
 
 	/**
 	 * Fill values in abstract class
+	 *
 	 * @param in parcelable as input
 	 */
 	protected void readBaseGameParcel(Parcel in) {
@@ -154,9 +156,9 @@ public abstract class BaseGameItem implements Parcelable {
 		timeRemainingAmount = in.readInt();
 		timeRemainingUnits = in.readString();
 
-        isDrawOfferPending = in.readByte() == 1;
-        isOpponentOnline = in.readByte() == 1;
-        hasNewMessage = in.readByte() == 1;
+		isDrawOfferPending = in.readByte() == 1;
+		isOpponentOnline = in.readByte() == 1;
+		hasNewMessage = in.readByte() == 1;
 
 		fenStrLength = in.readInt();
 		timestamp = in.readLong();

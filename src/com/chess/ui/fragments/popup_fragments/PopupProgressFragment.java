@@ -14,7 +14,7 @@ import com.chess.model.PopupItem;
  */
 public class PopupProgressFragment extends BasePopupDialogFragment {
 
-    private boolean cancelable = true;
+	private boolean cancelable = true;
 
 	public static PopupProgressFragment createInstance(PopupItem popupItem) {
 		PopupProgressFragment frag = new PopupProgressFragment();
@@ -27,7 +27,7 @@ public class PopupProgressFragment extends BasePopupDialogFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NORMAL,  R.style.NoTitle);
+		setStyle(STYLE_NORMAL, R.style.NoTitle);
 	}
 
 	@Override
@@ -35,24 +35,23 @@ public class PopupProgressFragment extends BasePopupDialogFragment {
 		return inflater.inflate(R.layout.popup_progress, container, false);
 	}
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if(!cancelable) {
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		if (!cancelable) {
 			setCancelable(false);
 		}
-    }
+	}
 
-	public void setNotCancelable(){
-        cancelable = false;
-    }
+	public void setNotCancelable() {
+		cancelable = false;
+	}
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        cancelable = true;
-    }
-
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		cancelable = true;
+	}
 
 
 }

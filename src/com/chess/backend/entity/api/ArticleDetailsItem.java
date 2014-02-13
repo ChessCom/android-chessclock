@@ -62,7 +62,6 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 	}
 
 
-
 	public static class Diagram {
 		public static final String FOCUS_NODE = "&-focusnode:\n";
 		public static final String FLIP = "&-flip:";
@@ -122,7 +121,7 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 		}
 
 		public String getMoveList() {
-			if (TextUtils.isEmpty(moveList)){
+			if (TextUtils.isEmpty(moveList)) {
 				// get [Event ] end
 				int startIndex = diagram_code.indexOf("]\n\n");
 				String movesPart = diagram_code.substring(startIndex + "]\n\n".length());

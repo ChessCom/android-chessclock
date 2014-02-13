@@ -8,7 +8,7 @@ package com.chess.backend.entity.api;
  */
 public class ConversationSingleItem extends BaseResponseItem<ConversationSingleItem.Data> {
 /*
-    "data": {
+	"data": {
         "id": 1,
         "other_user_id": 41,
         "other_user_username": "erik",
@@ -22,5 +22,6 @@ public class ConversationSingleItem extends BaseResponseItem<ConversationSingleI
     }
 */
 
-	public class Data extends ConversationItem.Data { }
+	public class Data extends ConversationItem.Data {
+	}
 }

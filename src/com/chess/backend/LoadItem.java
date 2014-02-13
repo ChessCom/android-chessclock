@@ -15,7 +15,7 @@ import java.util.List;
 public class LoadItem { // TODO refactor with builder
 
 	public static final String CODE = "";
-    private String loadPath;
+	private String loadPath;
 	private List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	private String requestMethod;
 	private String filePath;
@@ -48,7 +48,7 @@ public class LoadItem { // TODO refactor with builder
 		ArrayList<NameValuePair> removedItems = new ArrayList<NameValuePair>();
 
 		for (NameValuePair nameValuePair : nameValuePairs) {
-			if(nameValuePair.getName().equals(key)) {
+			if (nameValuePair.getName().equals(key)) {
 				removedItems.add(nameValuePair);
 			}
 		}
@@ -57,7 +57,7 @@ public class LoadItem { // TODO refactor with builder
 		nameValuePairs.add(pairNew);
 	}
 
-	public List<NameValuePair> getRequestParams(){
+	public List<NameValuePair> getRequestParams() {
 		return nameValuePairs;
 	}
 

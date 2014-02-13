@@ -4,11 +4,11 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import com.chess.backend.entity.api.LessonProblemItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.QueryParams;
+import com.chess.statics.StaticData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +84,7 @@ public class LoadLessonItemTask extends AbstractUpdateTask<LessonProblemItem.Dat
 					List<LessonProblemItem.MentorPosition.PossibleMove> possibleMoves = new ArrayList<LessonProblemItem.MentorPosition.PossibleMove>();
 					do {
 						possibleMoves.add(DbDataManager.getLessonsPositionMoveFromCursor(cursor));
-					} while(cursor.moveToNext());
+					} while (cursor.moveToNext());
 					position.setPossibleMoves(possibleMoves);
 				}
 			}

@@ -21,7 +21,7 @@ import java.util.List;
 public class SaveLiveArchiveGamesTask extends SaveDailyGamesTask<LiveArchiveGameData> {
 
 	public SaveLiveArchiveGamesTask(TaskUpdateInterface<LiveArchiveGameData> taskFace,
-										  List<LiveArchiveGameData> finishedItems, ContentResolver resolver, String username) {
+									List<LiveArchiveGameData> finishedItems, ContentResolver resolver, String username) {
 		super(taskFace, finishedItems, resolver, username);
 	}
 

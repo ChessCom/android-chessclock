@@ -83,11 +83,11 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 		if (id == R.id.friendsHeaderView) {
 			getActivityFace().changeRightFragment(FriendsRightFragment.createInstance(FriendsRightFragment.DAILY_OPPONENT_REQUEST));
 			getActivityFace().toggleRightMenu();
-		} else if (id == R.id.statsHeaderView){
+		} else if (id == R.id.statsHeaderView) {
 			getActivityFace().openFragment(new StatsGameFragment());
-		} else if (id == R.id.statsView1){
+		} else if (id == R.id.statsView1) {
 			openStatsForUser(StatsGameFragment.DAILY_CHESS, getUsername());
-		} else if (id == R.id.statsView2){
+		} else if (id == R.id.statsView2) {
 			openStatsForUser(StatsGameFragment.DAILY_CHESS960, getUsername());
 		} else if (view.getId() == R.id.inviteFriendView1) {
 			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE, firstFriendUserName));
@@ -190,7 +190,6 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 		ChessBoardBaseView boardView = (ChessBoardBaseView) view.findViewById(R.id.boardview);
 		boardView.setGameFace(gameFaceHelper);
 	}
-
 
 
 	private void initHeaderViews(View view) {

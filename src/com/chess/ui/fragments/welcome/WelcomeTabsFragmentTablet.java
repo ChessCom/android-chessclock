@@ -171,7 +171,7 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 			signUpBtn.setVisibility(View.GONE);
 			loginBtn.setVisibility(View.GONE);
 		} else {
-		    loginButtonsView.setVisibility(View.GONE);
+			loginButtonsView.setVisibility(View.GONE);
 		}
 	}
 
@@ -198,9 +198,9 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 			// if last fragment is WelcomeTour then hide left side view
 			FragmentManager.BackStackEntry entry = getChildFragmentManager().getBackStackEntryAt(entryCount - 1);
 
-			if (entry!= null && (entry.getName().equals(SignUpFragment.class.getSimpleName())
-								|| entry.getName().equals(SignInFragment.class.getSimpleName()))
-								&& openWelcomeFragment) {
+			if (entry != null && (entry.getName().equals(SignUpFragment.class.getSimpleName())
+					|| entry.getName().equals(SignInFragment.class.getSimpleName()))
+					&& openWelcomeFragment) {
 				getChildFragmentManager().popBackStackImmediate();
 				loginBtn.setVisibility(View.VISIBLE);
 				signUpBtn.setVisibility(View.VISIBLE);
@@ -208,14 +208,14 @@ public class WelcomeTabsFragmentTablet extends CommonLogicFragment implements Fr
 
 				openWelcomeFragment = false;
 				return true;
-			} else if (entry!= null && (entry.getName().equals(SignUpFragment.class.getSimpleName())
-								|| entry.getName().equals(SignInFragment.class.getSimpleName()))
-								&& !openWelcomeFragment) {
+			} else if (entry != null && (entry.getName().equals(SignUpFragment.class.getSimpleName())
+					|| entry.getName().equals(SignInFragment.class.getSimpleName()))
+					&& !openWelcomeFragment) {
 				getChildFragmentManager().popBackStackImmediate();
 				loginButtonsView.setVisibility(View.GONE);
 
 				return true;
-			} else if (entry!= null && entry.getName().equals(WelcomeTourFragmentTablet.class.getSimpleName())) {
+			} else if (entry != null && entry.getName().equals(WelcomeTourFragmentTablet.class.getSimpleName())) {
 				if (loginButtonsView != null) { // can be null if user turned from port to land
 					loginButtonsView.setVisibility(View.GONE);
 				}

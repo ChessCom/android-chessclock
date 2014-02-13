@@ -42,7 +42,7 @@ public class CustomSectionedAdapter extends SectionedListAdapter {
 			convertView = LayoutInflater.from(getContext()).inflate(layoutResource, parent, false);
 			createViewHolder(convertView);
 		}
-		if (hideHeadersArray != null ) {
+		if (hideHeadersArray != null) {
 			for (int index : hideHeadersArray) {
 				if (position == index) {
 					convertView.setLayoutParams(hideLayoutParams);

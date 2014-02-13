@@ -24,7 +24,7 @@ import com.chess.ui.interfaces.FragmentParentFace;
  * Date: 12.11.13
  * Time: 15:27
  */
-public class ForumCategoriesFragmentTablet extends ForumCategoriesFragment implements FragmentParentFace{
+public class ForumCategoriesFragmentTablet extends ForumCategoriesFragment implements FragmentParentFace {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -9,10 +9,10 @@ import com.chess.statics.Symbol;
  * Time: 5:57
  */
 public class NewChallengeNotificationItem {
-/*
-	'sender' => $params['fromUsername'],
-	'challenge_id' => $params['challengeId'],
-*/
+	/*
+		'sender' => $params['fromUsername'],
+		'challenge_id' => $params['challengeId'],
+	*/
 	private String username;
 	private long challengeId;
 	private String avatar_url;

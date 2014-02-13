@@ -177,6 +177,7 @@ public class LiveConnectionHelper {
 	/**
 	 * This method should be invoked only when live chess service bounded to activity.
 	 * Thus we can use it to check if activity is bounded
+	 *
 	 * @param liveChessClientEventListener listener for events
 	 */
 	public void setLiveChessClientEventListener(LiveChessClientEventListener liveChessClientEventListener) {
@@ -244,8 +245,8 @@ public class LiveConnectionHelper {
 						runConnectTask();
 					} else {
 					*/
-					    onSessionExpired();
-						//liveChessClientEventListener.onConnectionFailure(context.getString(R.string.pleaseLoginAgain));
+					onSessionExpired();
+					//liveChessClientEventListener.onConnectionFailure(context.getString(R.string.pleaseLoginAgain));
 					//}
 					return;
 				}
@@ -722,6 +723,7 @@ public class LiveConnectionHelper {
 			return StaticData.RESULT_OK;
 		}
 	}
+
 	public void exitGameObserving() {
 		LogMe.dl(TAG, "exitGameObserving");
 		setLccObserveEventListener(null);

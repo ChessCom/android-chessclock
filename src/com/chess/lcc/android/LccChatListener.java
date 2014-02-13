@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class LccChatListener implements ChatListener {
 
-    private static final String TAG = "LCCLOG-CHAT";
+	private static final String TAG = "LCCLOG-CHAT";
 	private final LccHelper lccHelper;
 
-    public LccChatListener(LccHelper lccHelper) {
+	public LccChatListener(LccHelper lccHelper) {
 		this.lccHelper = lccHelper;
 	}
 
@@ -111,7 +111,7 @@ public class LccChatListener implements ChatListener {
 				return;
 			}
 
-            lccHelper.getLccChatMessageListener().onMessageReceived();
+			lccHelper.getLccChatMessageListener().onMessageReceived();
 		}
 	}
 

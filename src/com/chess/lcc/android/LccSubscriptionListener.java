@@ -18,8 +18,7 @@ public class LccSubscriptionListener implements SubscriptionListener {
 	}
 
 	@Override
-	public void onSubscriptionFailure(final SubscriptionId subscriptionId, final String failureDetails, final AtomicBoolean mustBeRetried)
-	{
+	public void onSubscriptionFailure(final SubscriptionId subscriptionId, final String failureDetails, final AtomicBoolean mustBeRetried) {
 		/*
 		LogMe.dl(TAG, "Subscription Failure: subscriptionId=" + subscriptionId + ", failureDetails=" + failureDetails +
 				", mustBeRetried=" + mustBeRetried);

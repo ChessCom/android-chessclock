@@ -24,7 +24,7 @@ import com.chess.ui.interfaces.FragmentParentFace;
  * Date: 12.11.13
  * Time: 10:02
  */
-public class SettingsFragmentTablet extends SettingsFragment implements FragmentParentFace{
+public class SettingsFragmentTablet extends SettingsFragment implements FragmentParentFace {
 
 	private boolean noCategoriesFragmentsAdded;
 
@@ -56,7 +56,7 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 		menuItems.get(position).selected = true;
 		SettingsMenuItem menuItem = (SettingsMenuItem) listView.getItemAtPosition(position);
 		menuItem.selected = true;
-		((BaseAdapter)adapter).notifyDataSetChanged();
+		((BaseAdapter) adapter).notifyDataSetChanged();
 
 		// TODO adjust switch/closeBoard when the same fragment opened
 		switch (menuItem.iconRes) {
@@ -144,7 +144,7 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (resultCode == Activity.RESULT_OK ) {
+		if (resultCode == Activity.RESULT_OK) {
 			for (Fragment fragment : getChildFragmentManager().getFragments()) {
 				if (fragment != null) {
 					fragment.onActivityResult(requestCode, resultCode, data);

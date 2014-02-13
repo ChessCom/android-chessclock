@@ -17,7 +17,7 @@ public class RoboTextView extends TextView implements Serializable {
 
 	public RoboTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-        setupFont(context, attrs);
+		setupFont(context, attrs);
 	}
 
 	public RoboTextView(Context context) {
@@ -26,11 +26,11 @@ public class RoboTextView extends TextView implements Serializable {
 
 	public RoboTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-        setupFont(context, attrs);
-    }
+		setupFont(context, attrs);
+	}
 
-    private void setupFont(Context context, AttributeSet attrs) {
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RoboTextView);
+	private void setupFont(Context context, AttributeSet attrs) {
+		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RoboTextView);
 		if (array == null) {
 			return;
 		}
@@ -49,12 +49,12 @@ public class RoboTextView extends TextView implements Serializable {
 		}
 
 		ButtonDrawableBuilder.setBackgroundToView(this, attrs);
-        init(context, ttfName);
-    }
+		init(context, ttfName);
+	}
 
-    private void init(Context context, String ttfName) {
+	private void init(Context context, String ttfName) {
 		setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
-    }
+	}
 
 	public void setFont(String font) {
 		init(getContext(), font);

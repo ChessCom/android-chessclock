@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import com.chess.R;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
+import com.chess.statics.StaticData;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class LoadCountryFlagsTask extends AbstractUpdateTask<CountryItem, Void> {
 
-	public LoadCountryFlagsTask(TaskUpdateInterface<CountryItem> taskUpdateInterface){
+	public LoadCountryFlagsTask(TaskUpdateInterface<CountryItem> taskUpdateInterface) {
 		super(taskUpdateInterface, new ArrayList<CountryItem>());
 	}
 

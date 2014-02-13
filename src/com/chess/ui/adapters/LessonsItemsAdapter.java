@@ -59,7 +59,7 @@ public class LessonsItemsAdapter extends ItemsAdapter<LessonSingleItem> {
 
 	public boolean isAllLessonsCompleted() {
 		for (LessonSingleItem item : itemsList) {
-			if(!item.isCompleted()) {
+			if (!item.isCompleted()) {
 				return false;
 			}
 		}

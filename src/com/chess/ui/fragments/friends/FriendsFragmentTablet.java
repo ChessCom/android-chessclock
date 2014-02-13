@@ -25,7 +25,8 @@ public class FriendsFragmentTablet extends FriendsFragment {
 
 	private FragmentParentFace parentFace;
 
-	public FriendsFragmentTablet() {}
+	public FriendsFragmentTablet() {
+	}
 
 	public static FriendsFragmentTablet createInstance(FragmentParentFace parentFace, String username) {
 		FriendsFragmentTablet fragment = new FriendsFragmentTablet();
@@ -77,7 +78,7 @@ public class FriendsFragmentTablet extends FriendsFragment {
 	}
 
 	@Override
-	protected void setAdapter(ListAdapter adapter){
+	protected void setAdapter(ListAdapter adapter) {
 		((GridView) listView).setAdapter(adapter);
 	}
 

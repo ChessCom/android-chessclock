@@ -78,7 +78,7 @@ public class GetAndSaveBackground extends Service {
 	private boolean installingBackground;
 
 	public class ServiceBinder extends Binder {
-		public GetAndSaveBackground getService(){
+		public GetAndSaveBackground getService() {
 			return GetAndSaveBackground.this;
 		}
 	}

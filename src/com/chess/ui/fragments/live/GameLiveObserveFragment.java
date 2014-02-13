@@ -242,7 +242,8 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			LiveGameConfig liveGameConfig = getAppData().getLiveGameConfigBuilder().build();
 			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfig));
 
-		} if (view.getId() == R.id.analyzePopupBtn) {
+		}
+		if (view.getId() == R.id.analyzePopupBtn) {
 			handler.removeCallbacks(newObserverGameRunnable);
 			super.onClick(view);
 

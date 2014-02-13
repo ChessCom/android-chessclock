@@ -68,7 +68,7 @@ public class LeftImageEditText extends RoboEditText {
 
 			color = array.getInteger(R.styleable.EnhancedField_color, Color.WHITE);
 			String iconStr = array.getString(R.styleable.EnhancedField_leftImage);
-			icon = new IconDrawable(context, iconStr, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size) ;
+			icon = new IconDrawable(context, iconStr, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size);
 		} finally {
 			array.recycle();
 		}
@@ -119,8 +119,8 @@ public class LeftImageEditText extends RoboEditText {
 
 		// place image
 		canvas.save();
-		float imgCenterX = (height - imageWidth)/2;
-		float imgCenterY = (height - imageWidth)/2;
+		float imgCenterX = (height - imageWidth) / 2;
+		float imgCenterY = (height - imageWidth) / 2;
 		canvas.translate(imgCenterX, imgCenterY);
 		icon.draw(canvas);
 		canvas.restore();
@@ -146,7 +146,7 @@ public class LeftImageEditText extends RoboEditText {
 		lineYStart = height - 1;
 		lineYStop = height - 1;
 
-		int x0 = (int)BORDER_OFFSET;
+		int x0 = (int) BORDER_OFFSET;
 		int y0 = 0;
 		int x1 = height;
 		int y1 = 0;
@@ -154,24 +154,24 @@ public class LeftImageEditText extends RoboEditText {
 		switch (roundMode) {
 			case ONE:
 				y0 = (int) BORDER_OFFSET;
-				y1 = (int) (height - BORDER_OFFSET );
+				y1 = (int) (height - BORDER_OFFSET);
 
 				break;
 			case TOP:
-				y0 = (int)BORDER_OFFSET;
+				y0 = (int) BORDER_OFFSET;
 				y1 = (int) (height - BORDER_OFFSET + 1);
 
 				break;
 			case MID:
-				y0 = (int)BORDER_OFFSET - 1;
-				y1 = (int) (height - BORDER_OFFSET) +1;
+				y0 = (int) BORDER_OFFSET - 1;
+				y1 = (int) (height - BORDER_OFFSET) + 1;
 				break;
 			case BOT:
 				lineYStart = 0;
 				lineYStop = 0;
 
-				y0 = (int)BORDER_OFFSET - 1;
-				y1 =  (int) (height - BORDER_OFFSET);
+				y0 = (int) BORDER_OFFSET - 1;
+				y1 = (int) (height - BORDER_OFFSET);
 				break;
 		}
 		backForImage.setBounds(x0, y0, x1, y1);

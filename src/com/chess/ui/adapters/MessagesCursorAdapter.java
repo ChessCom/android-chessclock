@@ -27,6 +27,7 @@ public class MessagesCursorAdapter extends ItemsCursorAdapter {
 
 	private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
 	private int imageSize;
+
 	public MessagesCursorAdapter(Context context, Cursor cursor, SmartImageFetcher imageFetcher) {
 		super(context, cursor, imageFetcher);
 		imageSize = resources.getDimensionPixelSize(R.dimen.daily_list_item_image_size);

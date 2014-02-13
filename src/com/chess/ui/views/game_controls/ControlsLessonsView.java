@@ -4,13 +4,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
-import com.chess.widgets.RoboButton;
-import com.chess.widgets.RoboImageButton;
 import com.chess.ui.interfaces.boards.BoardViewLessonsFace;
 import com.chess.ui.views.drawables.YourMoveDrawable;
 import com.chess.ui.views.drawables.smart_button.ButtonDrawableBuilder;
+import com.chess.utilities.FontsHelper;
+import com.chess.widgets.RoboButton;
+import com.chess.widgets.RoboImageButton;
 
 import static com.chess.ui.views.game_controls.ControlsBaseView.ButtonIds.*;
 
@@ -125,7 +125,7 @@ public class ControlsLessonsView extends ControlsBaseView {
 		} else if (view.getId() == getButtonId(HINT)) {
 			yourMoveDrawable.updateUsedHints(++usedHints);
 			boardViewFace.showHint();
-		} else if (view.getId() == getButtonId(NEXT) ) {
+		} else if (view.getId() == getButtonId(NEXT)) {
 			boardViewFace.nextPosition();
 		} else if (view.getId() == getButtonId(SKIP)) {
 			boardViewFace.newGame();

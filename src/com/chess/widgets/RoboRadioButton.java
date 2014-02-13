@@ -17,7 +17,7 @@ public class RoboRadioButton extends RadioButton {
 
 	public RoboRadioButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-        setupFont(context, attrs);
+		setupFont(context, attrs);
 	}
 
 	public RoboRadioButton(Context context) {
@@ -27,7 +27,7 @@ public class RoboRadioButton extends RadioButton {
 	public RoboRadioButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setupFont(context, attrs);
-    }
+	}
 
 	private void setupFont(Context context, AttributeSet attrs) {
 		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RoboTextView);

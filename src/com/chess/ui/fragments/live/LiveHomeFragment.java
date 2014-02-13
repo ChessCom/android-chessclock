@@ -175,7 +175,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 				return;
 			}
 			try { // check for valid data
-				 getLiveHelper();
+				getLiveHelper();
 			} catch (DataNotValidException e) {
 				e.printStackTrace();
 				showToast(R.string.still_connecting);
@@ -183,7 +183,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			}
 
 			Fragment fragmentByTag;
-			fragmentByTag = ((LiveBaseActivity)getActivity()).getGameLiveObserverFragment();
+			fragmentByTag = ((LiveBaseActivity) getActivity()).getGameLiveObserverFragment();
 			if (fragmentByTag == null) {
 				if (!isTablet) {
 					fragmentByTag = new GameLiveObserveFragment();
@@ -195,7 +195,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
 		} else if (liveItem.iconId == R.string.ic_live_standard) { // Current game
 			Fragment fragmentByTag;
-			fragmentByTag = ((LiveBaseActivity)getActivity()).getGameLiveFragment();
+			fragmentByTag = ((LiveBaseActivity) getActivity()).getGameLiveFragment();
 			if (fragmentByTag == null) {
 				if (!isTablet) {
 					fragmentByTag = new GameLiveFragment();
@@ -309,7 +309,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 			activity.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-				    LiveConnectionHelper liveHelper;
+					LiveConnectionHelper liveHelper;
 					try {
 						liveHelper = getLiveHelper();
 					} catch (DataNotValidException e) {
@@ -329,7 +329,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
 		ViewGroup headerView = (ViewGroup) inflater.inflate(R.layout.play_home_header_frame, null, false);
 
-		inviteOverlaySetup(resources,  headerView.findViewById(R.id.startOverlayView), resources.getDisplayMetrics().widthPixels / 8); // one square size);
+		inviteOverlaySetup(resources, headerView.findViewById(R.id.startOverlayView), resources.getDisplayMetrics().widthPixels / 8); // one square size);
 		onlinePlayersCntTxt = (TextView) headerView.findViewById(R.id.onlinePlayersCntTxt);
 
 		headerView.findViewById(R.id.newGameHeaderView).setOnClickListener(this);

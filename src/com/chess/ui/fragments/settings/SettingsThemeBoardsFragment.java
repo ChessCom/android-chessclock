@@ -74,7 +74,8 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 	private ListView listView;
 	private FragmentParentFace parentFace;
 
-	public SettingsThemeBoardsFragment(){}
+	public SettingsThemeBoardsFragment() {
+	}
 
 	public SettingsThemeBoardsFragment(FragmentParentFace parentFace) {
 		this.parentFace = parentFace;

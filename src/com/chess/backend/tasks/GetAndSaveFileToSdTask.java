@@ -33,6 +33,7 @@ public class GetAndSaveFileToSdTask extends AbstractUpdateTask<String, String> {
 	/**
 	 * AsyncTask that receive Url as {@code String} in executeTask argument
 	 * and return {@code String} object as path, where file was saved
+	 *
 	 * @param taskFace to get resources and progressUpdate listener
 	 * @param filePath for folder to save
 	 */
@@ -43,9 +44,8 @@ public class GetAndSaveFileToSdTask extends AbstractUpdateTask<String, String> {
 	}
 
 	/**
-	 *
 	 * @param taskFace to get resources and progressUpdate listener
-	 * @param doUnzip if we need to unzip received file
+	 * @param doUnzip  if we need to unzip received file
 	 * @param filePath for folder to save
 	 */
 	public GetAndSaveFileToSdTask(TaskUpdateInterface<String> taskFace, boolean doUnzip, File filePath) {

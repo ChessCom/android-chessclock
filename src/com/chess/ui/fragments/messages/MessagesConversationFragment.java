@@ -49,7 +49,8 @@ public class MessagesConversationFragment extends CommonLogicFragment implements
 	private int paddingSide;
 	private boolean inEditMode;
 
-	public MessagesConversationFragment() {}
+	public MessagesConversationFragment() {
+	}
 
 	public static MessagesConversationFragment createInstance(long conversationId, String otherUserName) {
 		MessagesConversationFragment fragment = new MessagesConversationFragment();

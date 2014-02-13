@@ -258,7 +258,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	public void computer() {
 		engineThinkingPathVisible = !engineThinkingPathVisible;
 		engineThinkingPath.setVisibility(engineThinkingPathVisible ? View.VISIBLE : View.GONE);
-		((View)notationsFace).setVisibility(engineThinkingPathVisible ? View.GONE : View.VISIBLE);
+		((View) notationsFace).setVisibility(engineThinkingPathVisible ? View.GONE : View.VISIBLE);
 	}
 
 	@Override
@@ -291,7 +291,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				case AppConstants.GAME_MODE_2_PLAYERS: {    //w - human; b - human
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 
-					if(getBoardFace().isReside()) {
+					if (getBoardFace().isReside()) {
 						labelsConfig.topPlayerName = whiteStr;
 						labelsConfig.bottomPlayerName = blackStr;
 					} else {
@@ -472,7 +472,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		if (getBoardFace().getMode() == AppConstants.GAME_MODE_2_PLAYERS) {
 			String blackStr = getString(R.string.black);
 			String whiteStr = getString(R.string.white);
-			if(getBoardFace().isReside()) {
+			if (getBoardFace().isReside()) {
 				labelsConfig.topPlayerName = whiteStr;
 				labelsConfig.bottomPlayerName = blackStr;
 			} else {
@@ -544,15 +544,15 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	public boolean isUserAbleToMove(int color) {
 		if (ChessBoard.isHumanVsHumanGameMode(getBoardFace())) {
 			return getBoardFace().isWhiteToMove() ? color == ChessBoard.WHITE_SIDE : color == ChessBoard.BLACK_SIDE;
-		}  else {
+		} else {
 			return super.isUserAbleToMove(color);
 		}
 	}
 
 	private void sendPGN() {
 		String moves = getBoardFace().getMoveListSAN();
-		String whitePlayerName = userPlayWhite? getUsername() : getString(R.string.comp);
-		String blackPlayerName = userPlayWhite? getString(R.string.comp) : getUsername();
+		String whitePlayerName = userPlayWhite ? getUsername() : getString(R.string.comp);
+		String blackPlayerName = userPlayWhite ? getString(R.string.comp) : getUsername();
 		String result = GAME_GOES;
 
 		boolean finished = getBoardFace().isFinished();
@@ -654,7 +654,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			dismissEndGameDialog();
 
 			startNewGame();
-		}  else if (view.getId() == R.id.sharePopupBtn) {
+		} else if (view.getId() == R.id.sharePopupBtn) {
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
 			shareIntent.setType("text/plain");
 			shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.computer));
@@ -782,7 +782,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-			if (mode != AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER	&& mode != AppConstants.GAME_MODE_2_PLAYERS) {
+			if (mode != AppConstants.GAME_MODE_COMPUTER_VS_COMPUTER && mode != AppConstants.GAME_MODE_2_PLAYERS) {
 				ImageDownloaderToListener imageDownloader = new ImageDownloaderToListener(getContext());
 
 				String userAvatarUrl = getAppData().getUserAvatar();

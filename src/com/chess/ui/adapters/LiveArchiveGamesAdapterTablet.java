@@ -76,7 +76,7 @@ public class LiveArchiveGamesAdapterTablet extends LiveArchiveGamesAdapter {
 		holder.playerImg.setOnline(isOpponentOnline);
 
 		String gameType = getString(cursor, DbScheme.V_GAME_TIME_CLASS);
-		if(gameType.equals(STANDARD)) {
+		if (gameType.equals(STANDARD)) {
 			holder.gameTypeTxt.setText(R.string.ic_live_standard);
 		} else if (gameType.equals(LIGHTNING)) {
 			holder.gameTypeTxt.setText(R.string.ic_live_bullet);

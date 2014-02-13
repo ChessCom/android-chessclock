@@ -7,7 +7,7 @@ package com.chess.backend.entity.api;
  * Date: 07.08.13
  * Time: 16:47
  */
-public class SuccessItem  extends BaseResponseItem<SuccessItem.Data> {
+public class SuccessItem extends BaseResponseItem<SuccessItem.Data> {
 
 	public class Data {
 

@@ -22,7 +22,8 @@ public class LessonsCategoriesFragmentTablet extends LessonsCategoriesFragment {
 	private LessonsCursorAdapterTablet lessonsAdapter;
 	private GridView listView;
 
-	public LessonsCategoriesFragmentTablet() {}
+	public LessonsCategoriesFragmentTablet() {
+	}
 
 	public static LessonsCategoriesFragmentTablet createInstance(String sectionName) {
 		LessonsCategoriesFragmentTablet fragment = new LessonsCategoriesFragmentTablet();

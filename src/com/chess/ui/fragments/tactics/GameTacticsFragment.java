@@ -125,7 +125,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private int resultIconPadding;
 	private TacticProblemItem.Data givenTacticProblem;
 
-	public GameTacticsFragment(){
+	public GameTacticsFragment() {
 		Bundle bundle = new Bundle();
 		bundle.putBoolean(MODE, false);
 		setArguments(bundle);
@@ -1209,7 +1209,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		getBoardFace().setAnalysis(isAnalysis);
 		bottomPanelView.showClock(!isAnalysis);
 
-		if (!getAppData().getShowTimerInTactics()){
+		if (!getAppData().getShowTimerInTactics()) {
 			bottomPanelView.showClock(false);
 		}
 	}

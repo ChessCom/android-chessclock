@@ -11,16 +11,16 @@ import com.chess.model.GameLiveItem;
  */
 public interface LccEventListener {
 
-    void setWhitePlayerTimer(String timer);
+	void setWhitePlayerTimer(String timer);
 
-    void setBlackPlayerTimer(String timer);
+	void setBlackPlayerTimer(String timer);
 
 	void onGameRefresh(GameLiveItem gameItem);
 
-    void onDrawOffered(String drawOfferUsername);
+	void onDrawOffered(String drawOfferUsername);
 
-    void onGameEnd(Game game, String gameEndMessage);
-	
+	void onGameEnd(Game game, String gameEndMessage);
+
 	void onInform(String title, String message);
 
 	void startGameFromService();

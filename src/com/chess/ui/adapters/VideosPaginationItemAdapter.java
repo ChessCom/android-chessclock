@@ -21,7 +21,7 @@ public class VideosPaginationItemAdapter extends PaginationAdapter<VideoSingleIt
 
 
 	public VideosPaginationItemAdapter(Context context, ItemsAdapter<VideoSingleItem.Data> adapter,
-								   TaskUpdateInterface<VideoSingleItem.Data> taskFace, LoadItem loadItem) {
+									   TaskUpdateInterface<VideoSingleItem.Data> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
 		this.loadItem = loadItem;
 		setFirstPage(0);

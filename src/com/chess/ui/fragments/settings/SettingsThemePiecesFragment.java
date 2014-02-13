@@ -77,7 +77,8 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 	private int selectedPiecesId;
 	private FragmentParentFace parentFace;
 
-	public SettingsThemePiecesFragment() {}
+	public SettingsThemePiecesFragment() {
+	}
 
 	public SettingsThemePiecesFragment(FragmentParentFace parentFace) {
 		this.parentFace = parentFace;

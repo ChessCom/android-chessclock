@@ -50,7 +50,7 @@ public class DailyGamesFinishedFragment extends CommonLogicFragment implements A
 	protected String username;
 	protected DailyFinishedGamesPaginationAdapter paginationAdapter;
 
-	public DailyGamesFinishedFragment(){
+	public DailyGamesFinishedFragment() {
 		Bundle bundle = new Bundle();
 		bundle.putString(USERNAME, Symbol.EMPTY);
 		setArguments(bundle);

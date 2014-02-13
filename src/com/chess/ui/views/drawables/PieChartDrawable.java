@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.shapes.OvalShape;
-import android.graphics.drawable.shapes.Shape;
 import com.chess.R;
 
 /**
@@ -43,7 +41,7 @@ public class PieChartDrawable extends Drawable {
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint.setColor(Color.GREEN);
 
-		canvas.translate(width/2, height/2);
+		canvas.translate(width / 2, height / 2);
 //		canvas.drawCircle(width/2, height/2, width/2, paint);
 		gradientDrawable.draw(canvas);
 	}

@@ -92,36 +92,36 @@ public class LccChallengeTaskRunner {
 		}
 	}
 
-    public void declineAllChallenges(Challenge acceptedChallenge, HashMap<Long, Challenge> challenges) {
-        // TODO decline all challenges except acceptedChallenge
+	public void declineAllChallenges(Challenge acceptedChallenge, HashMap<Long, Challenge> challenges) {
+		// TODO decline all challenges except acceptedChallenge
 
-        List<Challenge> removeMe = new ArrayList<Challenge>();
-        for (Challenge challenge : challenges.values()) {
-            if(!challenge.equals(acceptedChallenge))
-                removeMe.add(challenge);
-        }
-        Challenge[] declinedChallenges = new Challenge[removeMe.size()];
-        for (int i = 0, removeMeSize = removeMe.size(); i < removeMeSize; i++) {
-            Challenge challenge = removeMe.get(i);
-            declinedChallenges[i] = challenge;
-        }
+		List<Challenge> removeMe = new ArrayList<Challenge>();
+		for (Challenge challenge : challenges.values()) {
+			if (!challenge.equals(acceptedChallenge))
+				removeMe.add(challenge);
+		}
+		Challenge[] declinedChallenges = new Challenge[removeMe.size()];
+		for (int i = 0, removeMeSize = removeMe.size(); i < removeMeSize; i++) {
+			Challenge challenge = removeMe.get(i);
+			declinedChallenges[i] = challenge;
+		}
 
-        runRejectBatchChallengeTask(declinedChallenges);
-        challengeListener.getOuterChallengeListener().hidePopups();
-    }
+		runRejectBatchChallengeTask(declinedChallenges);
+		challengeListener.getOuterChallengeListener().hidePopups();
+	}
 
-    public void declineCurrentChallenge(Challenge currentChallenge, HashMap<Long, Challenge> challenges) {
-        runRejectChallengeTask(currentChallenge);
-        final List<Challenge> retainMe = new ArrayList<Challenge>();
-        for (Challenge challenge : challenges.values()) {
-            if (!challenge.equals(currentChallenge))
-                retainMe.add(challenge);
-        }
+	public void declineCurrentChallenge(Challenge currentChallenge, HashMap<Long, Challenge> challenges) {
+		runRejectChallengeTask(currentChallenge);
+		final List<Challenge> retainMe = new ArrayList<Challenge>();
+		for (Challenge challenge : challenges.values()) {
+			if (!challenge.equals(currentChallenge))
+				retainMe.add(challenge);
+		}
 
-        if (retainMe.size() > 0) {
+		if (retainMe.size() > 0) {
 			challengeListener.getOuterChallengeListener().showDelayedDialog(retainMe.get(retainMe.size() - 1));
 		}
-    }
+	}
 
 	public void runAcceptChallengeTask(Challenge challenge) {
 		new LiveAcceptChallengeTask().executeTask(challenge);

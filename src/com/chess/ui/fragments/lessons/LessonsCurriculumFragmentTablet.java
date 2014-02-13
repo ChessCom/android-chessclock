@@ -447,7 +447,7 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 
 			SparseArray<String> child = (SparseArray<String>) getChild(groupPosition, childPosition);
 
-			gridView.setAdapter(new CurriculumTitlesAdapter(getActivity(),  groupPosition)); // TODO improve
+			gridView.setAdapter(new CurriculumTitlesAdapter(getActivity(), groupPosition)); // TODO improve
 			gridView.setOnItemClickListener(LessonsCurriculumFragmentTablet.this);
 
 			// calculate the column and row counts based on your display

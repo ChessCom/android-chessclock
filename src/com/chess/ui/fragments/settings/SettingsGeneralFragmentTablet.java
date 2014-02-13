@@ -13,7 +13,8 @@ public class SettingsGeneralFragmentTablet extends SettingsGeneralFragment {
 
 	private FragmentParentFace parentFace;
 
-	public SettingsGeneralFragmentTablet() {}
+	public SettingsGeneralFragmentTablet() {
+	}
 
 	public SettingsGeneralFragmentTablet(FragmentParentFace parentFace) {
 		this.parentFace = parentFace;

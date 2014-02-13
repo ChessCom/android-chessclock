@@ -17,9 +17,9 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
 
 	public ChessBoardTacticsView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+		super(context, attrs);
 
-    }
+	}
 
 	public void setGameFace(GameTacticsFace gameActivityFace) {
 		super.setGameFace(gameActivityFace);
@@ -27,7 +27,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 		gameTacticsFace = gameActivityFace;
 	}
 
-    @Override
+	@Override
 	public void afterUserMove() {
 		super.afterUserMove();
 
@@ -36,31 +36,31 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 
 		if (!getBoardFace().isAnalysis()) {
 			gameTacticsFace.verifyMove();
-        }
-    }
+		}
+	}
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (useTouchTimer) { // start count before next touch
-            handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
-            userActive = true;
-        }
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (useTouchTimer) { // start count before next touch
+			handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
+			userActive = true;
+		}
 
-        if (squareSize == 0) {
-            return super.onTouchEvent(event);
-        }
+		if (squareSize == 0) {
+			return super.onTouchEvent(event);
+		}
 
 		if (isLocked()) {
 			return processTouchEvent(event);
 		}
 
-        track = false;
-        return super.onTouchEvent(event);
-    }
+		track = false;
+		return super.onTouchEvent(event);
+	}
 
-    @Override
+	@Override
 	public void promote(int promote, int file, int rank) {
-        boolean found = false;
+		boolean found = false;
 		Move move = null;
 		List<Move> moves = getBoardFace().generateLegalMoves();
 		for (Move move1 : moves) {
@@ -87,12 +87,12 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 			from = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
 		}
 		invalidate();
-    }
+	}
 
-    @Override
-    public void showHint() {
+	@Override
+	public void showHint() {
 		gameTacticsFace.showHint();
-    }
+	}
 
 	@Override
 	public void flipBoard() {

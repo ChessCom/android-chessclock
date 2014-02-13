@@ -20,7 +20,8 @@ public class GameLiveFragmentTablet extends GameLiveFragment implements RadioGro
 	private int previousCheckedId;
 	private View chatFragmentContainer;
 
-	public GameLiveFragmentTablet() { }
+	public GameLiveFragmentTablet() {
+	}
 
 	public static GameLiveFragmentTablet createInstance(long id) {
 		GameLiveFragmentTablet fragment = new GameLiveFragmentTablet();

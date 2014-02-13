@@ -20,7 +20,8 @@ public class RectButtonBadgeDrawable extends RectButtonDrawable implements Badge
 	private int badgeOffset;
 	private String badgeValue;
 
-	public RectButtonBadgeDrawable() { }
+	public RectButtonBadgeDrawable() {
+	}
 
 	@Override
 	void init(Resources resources) {

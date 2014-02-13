@@ -93,7 +93,7 @@ public class LessonsStatsItem extends BaseResponseItem<LessonsStatsItem.Data> {
 		}
 	}
 
-	public static class RecentLessonData{
+	public static class RecentLessonData {
 		private String code;
 		private long lesson_id;
 		private String name;

@@ -22,6 +22,6 @@ package com.facebook.internal;
  * any time.
  */
 public enum SessionAuthorizationType {
-    READ,
-    PUBLISH
+	READ,
+	PUBLISH
 }

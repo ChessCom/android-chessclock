@@ -199,7 +199,7 @@ public class StatsGameTacticsFragment extends CommonLogicFragment implements Ada
 
 		// we do load from server because we must represent data right after user made move
 		// TODO enhance API to load recent problems also only after a certain timestamp
-			getFullStats(lastTimestamp);
+		getFullStats(lastTimestamp);
 //		}
 	}
 

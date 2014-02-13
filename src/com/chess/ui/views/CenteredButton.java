@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -73,7 +72,7 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 		}
 
 		button = new RoboButton(getContext());
-        button.setFont("Bold");
+		button.setFont("Bold");
 		LayoutParams buttonParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		button.setLayoutParams(buttonParams);
 		button.setText(buttonText);
@@ -216,11 +215,11 @@ public class CenteredButton extends FrameLayout implements View.OnTouchListener 
 	private void initFlipAnimation() {
 		final View animationView = this;
 
-		flipFirstHalf = ObjectAnimator.ofFloat(animationView,"rotationY", 0f, 90f);
+		flipFirstHalf = ObjectAnimator.ofFloat(animationView, "rotationY", 0f, 90f);
 		flipFirstHalf.setDuration(DURATION);
 		flipFirstHalf.setInterpolator(accelerator);
 
-		final ObjectAnimator flipSecondHalf = ObjectAnimator.ofFloat(animationView,"rotationY", -90f, 0f);
+		final ObjectAnimator flipSecondHalf = ObjectAnimator.ofFloat(animationView, "rotationY", -90f, 0f);
 		flipSecondHalf.setDuration(DURATION);
 		flipSecondHalf.setInterpolator(decelerator);
 

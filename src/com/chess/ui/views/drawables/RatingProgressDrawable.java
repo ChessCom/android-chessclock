@@ -43,7 +43,7 @@ public class RatingProgressDrawable extends Drawable {
 		float density = resources.getDisplayMetrics().density;
 
 		BORDER_THICK *= density;
-		RIGHT_OFFSET  *= density;
+		RIGHT_OFFSET *= density;
 		CORNER_RADIUS *= density;
 		CENTER_OFFSET *= density;
 
@@ -58,10 +58,10 @@ public class RatingProgressDrawable extends Drawable {
 		int colorTopBorder2 = resources.getColor(R.color.switch_dark_back_border_bot_2);
 
 		gradientStrokeDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-				new int[] {colorTopBorder1, colorTopBorder2});
+				new int[]{colorTopBorder1, colorTopBorder2});
 
 		gradientDrawable = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
-				new int[] {colorTopBorder1, colorTopBorder2});
+				new int[]{colorTopBorder1, colorTopBorder2});
 
 		ratingBarHeight *= resources.getDisplayMetrics().density;
 	}
@@ -69,7 +69,7 @@ public class RatingProgressDrawable extends Drawable {
 	@Override
 	public void draw(Canvas canvas) {
 		int width = seekBar.getWidth();
-		int height = seekBar.getHeight()/2;
+		int height = seekBar.getHeight() / 2;
 
 		gradientStrokeDrawable.setBounds(0, 0, width - RIGHT_OFFSET, (int) (height + BORDER_THICK * 2 + BORDER_STROKE_THICK * 2));
 		gradientDrawable.setBounds(BORDER_STROKE_THICK, 0, width - RIGHT_OFFSET - BORDER_STROKE_THICK * 2, (int) (height + BORDER_THICK * 2));
@@ -95,9 +95,9 @@ public class RatingProgressDrawable extends Drawable {
 		// gradient rounded background
 		canvas.save();
 		if (AppUtils.HONEYCOMB_PLUS_API) {
-			canvas.translate(BORDER_STROKE_THICK, canvas.getHeight() / 4 - BORDER_THICK );
+			canvas.translate(BORDER_STROKE_THICK, canvas.getHeight() / 4 - BORDER_THICK);
 		} else {
-			canvas.translate(BORDER_STROKE_THICK, height / 3  - BORDER_THICK + CENTER_OFFSET);
+			canvas.translate(BORDER_STROKE_THICK, height / 3 - BORDER_THICK + CENTER_OFFSET);
 		}
 		setCornerRadii(gradientDrawable, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS, CORNER_RADIUS);
 		gradientDrawable.draw(canvas);
@@ -108,15 +108,15 @@ public class RatingProgressDrawable extends Drawable {
 		if (AppUtils.HONEYCOMB_PLUS_API) {
 			canvas.translate(BORDER_THICK + BORDER_STROKE_THICK, canvas.getHeight() / 4);
 		} else {
-			canvas.translate(BORDER_THICK + BORDER_STROKE_THICK, height / 3 + CENTER_OFFSET );
+			canvas.translate(BORDER_THICK + BORDER_STROKE_THICK, height / 3 + CENTER_OFFSET);
 		}
 		canvas.drawBitmap(roundedBitmap, null, patternImageRect, null);
 		canvas.restore();
 	}
 
 	static void setCornerRadii(GradientDrawable drawable, float r0, float r1, float r2, float r3) {
-		drawable.setCornerRadii(new float[] { r0, r0, r1, r1,
-				r2, r2, r3, r3 });
+		drawable.setCornerRadii(new float[]{r0, r0, r1, r1,
+				r2, r2, r3, r3});
 	}
 
 	private Bitmap createRoundedBitmap(int width, int height) {

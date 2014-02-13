@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
-import android.widget.LinearLayout;
 import com.chess.R;
 import com.chess.statics.Symbol;
 
@@ -22,93 +21,93 @@ public class PopupItem implements Parcelable {
 	public static final int NEGATIVE_GREEN = 4;
 
 	private int titleId;
-    private int messageId;
-    private String title;
-    private String message;
-    private int positiveBtnId;
-    private int neutralBtnId;
-    private int negativeBtnId;
-    private View customView;
+	private int messageId;
+	private String title;
+	private String message;
+	private int positiveBtnId;
+	private int neutralBtnId;
+	private int negativeBtnId;
+	private View customView;
 	private int buttons;
 	/**
 	 * It can be 0 - NEGATIVE, 1 - NEUTRAL, 2 - POSITIVE, by default 0
 	 */
 	private int buttonToShow;
 
-    public PopupItem() {
-        this.positiveBtnId = R.string.ic_check;
-        this.negativeBtnId = R.string.ic_close;
-        title = Symbol.EMPTY;
-        message = Symbol.EMPTY;
-    }
+	public PopupItem() {
+		this.positiveBtnId = R.string.ic_check;
+		this.negativeBtnId = R.string.ic_close;
+		title = Symbol.EMPTY;
+		message = Symbol.EMPTY;
+	}
 
-    public int getPositiveBtnId() {
-        return positiveBtnId;
-    }
+	public int getPositiveBtnId() {
+		return positiveBtnId;
+	}
 
-    public void setPositiveBtnId(int leftBtnId) {
-        this.positiveBtnId = leftBtnId;
-    }
+	public void setPositiveBtnId(int leftBtnId) {
+		this.positiveBtnId = leftBtnId;
+	}
 
 	public void setNeutralBtnId(int neutralBtnId) {
-        this.neutralBtnId = neutralBtnId;
-    }
+		this.neutralBtnId = neutralBtnId;
+	}
 
 	public int getNeutralBtnId() {
 		return neutralBtnId;
 	}
 
-    public String getMessage(Context context) {
-        if(message.equals(Symbol.EMPTY) && messageId != 0){
-            return context.getString(messageId);
-        }else{
-            return message;
-        }
-    }
+	public String getMessage(Context context) {
+		if (message.equals(Symbol.EMPTY) && messageId != 0) {
+			return context.getString(messageId);
+		} else {
+			return message;
+		}
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
+	public void setMessage(String message) {
+		this.message = message;
 		messageId = 0;
-    }
+	}
 
-    public int getNegativeBtnId() {
-        return negativeBtnId;
-    }
+	public int getNegativeBtnId() {
+		return negativeBtnId;
+	}
 
-    public void setNegativeBtnId(int rightBtnId) {
-        this.negativeBtnId = rightBtnId;
-    }
+	public void setNegativeBtnId(int rightBtnId) {
+		this.negativeBtnId = rightBtnId;
+	}
 
-    public String getTitle(Context context) {
-        if(title.equals(Symbol.EMPTY) && titleId != 0){
-            return context.getString(titleId);
-        }else{
-            return title;
-        }
-    }
+	public String getTitle(Context context) {
+		if (title.equals(Symbol.EMPTY) && titleId != 0) {
+			return context.getString(titleId);
+		} else {
+			return title;
+		}
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
+	public void setTitle(String title) {
+		this.title = title;
 		titleId = 0;
-    }
+	}
 
-    public void setTitle(int titleId) {
-        this.titleId = titleId;
+	public void setTitle(int titleId) {
+		this.titleId = titleId;
 		title = Symbol.EMPTY;
-    }
+	}
 
-    public void setMessage(int messageId) {
-        this.messageId = messageId;
+	public void setMessage(int messageId) {
+		this.messageId = messageId;
 		message = Symbol.EMPTY;
-    }
+	}
 
-    public View getCustomView() {
-        return customView;
-    }
+	public View getCustomView() {
+		return customView;
+	}
 
-    public void setCustomView(View customView) {
-        this.customView = customView;
-    }
+	public void setCustomView(View customView) {
+		this.customView = customView;
+	}
 
 	public int getButtons() {
 		return buttons;

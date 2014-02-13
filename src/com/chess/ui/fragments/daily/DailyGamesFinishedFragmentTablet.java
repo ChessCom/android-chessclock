@@ -18,7 +18,7 @@ import com.chess.ui.fragments.RightPlayFragment;
  */
 public class DailyGamesFinishedFragmentTablet extends DailyGamesFinishedFragment {
 
-	public DailyGamesFinishedFragmentTablet(){
+	public DailyGamesFinishedFragmentTablet() {
 		Bundle bundle = new Bundle();
 		bundle.putString(USERNAME, Symbol.EMPTY);
 		setArguments(bundle);

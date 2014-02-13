@@ -9,10 +9,10 @@ import com.chess.backend.entity.api.stats.UserLessonsStatsData;
 import com.chess.backend.entity.api.stats.UserStatsItem;
 import com.chess.backend.entity.api.stats.UserTacticsStatsData;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.StaticData;
 
 import static com.chess.db.DbScheme.*;
 

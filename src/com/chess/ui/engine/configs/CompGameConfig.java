@@ -19,12 +19,11 @@ public class CompGameConfig implements Parcelable {
 	 * GAME_MODE_COMPUTER_VS_PLAYER_BLACK = 1;
 	 * GAME_MODE_2_PLAYERS = 2;
 	 * GAME_MODE_COMPUTER_VS_COMPUTER = 3;
-	 *
 	 */
 	private int mode;
 	private String fen;
 
-	public static class Builder{
+	public static class Builder {
 		private int strength;
 		private int mode;
 		private String fen;
@@ -32,7 +31,7 @@ public class CompGameConfig implements Parcelable {
 		/**
 		 * Create new Seek game with default values
 		 */
-		public Builder(){
+		public Builder() {
 			mode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 			strength = 5;
 			fen = null; // rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
@@ -53,7 +52,7 @@ public class CompGameConfig implements Parcelable {
 			return this;
 		}
 
-		public CompGameConfig build(){
+		public CompGameConfig build() {
 			return new CompGameConfig(this);
 		}
 	}

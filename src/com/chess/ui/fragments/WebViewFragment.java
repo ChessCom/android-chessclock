@@ -29,7 +29,8 @@ public class WebViewFragment extends CommonLogicFragment {
 	private String title;
 	private WebView webView;
 
-	public WebViewFragment() {}
+	public WebViewFragment() {
+	}
 
 	public static WebViewFragment createInstance(String url, String title) {
 		WebViewFragment fragment = new WebViewFragment();

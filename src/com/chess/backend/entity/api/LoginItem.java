@@ -6,7 +6,7 @@ package com.chess.backend.entity.api;
  * Date: 21.12.12
  * Time: 6:30
  */
-public class LoginItem extends BaseResponseItem<LoginItem.Data>{
+public class LoginItem extends BaseResponseItem<LoginItem.Data> {
 	/*
 	{
 		"status": "success",
@@ -43,9 +43,10 @@ public class LoginItem extends BaseResponseItem<LoginItem.Data>{
 
 		/**
 		 * As it might expire after 60 minutes we should check when it was received and perform re-login before using it again
+		 *
 		 * @return key to connect to live chess chess server
 		 */
-		public String getSessionId(){
+		public String getSessionId() {
 			return session_id;
 		}
 

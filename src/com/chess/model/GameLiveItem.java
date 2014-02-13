@@ -25,7 +25,7 @@ public class GameLiveItem extends BaseGameItem {
 
 		final Iterator movesIterator = lccGame.getMoves().iterator();
 		for (int i = 0; i <= moveIndex; i++) {
-            moveList += movesIterator.next() + Symbol.SPACE;
+			moveList += movesIterator.next() + Symbol.SPACE;
 		}
 
 		Integer whiteRating = 0;

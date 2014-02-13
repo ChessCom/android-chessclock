@@ -36,7 +36,7 @@ public final class GcmHelper {
 	public static final String NOTIFICATION_MOVE_MADE = "NOTIFICATION_MOVE_MADE";
 
 /*
-    $payload = array(
+	$payload = array(
         'type' => 'NOTIFICATION_NEW_CHAT_MESSAGE',
         'game_id' => $params['gameId'],
         'message' => $params['message'],

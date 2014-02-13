@@ -73,7 +73,7 @@ public class HomePlayFragmentTablet extends CommonLogicFragment implements ViewT
 
 		if (view.getId() == R.id.timeSelectBtn) {
 			View parent = (View) view.getParent();
-			challengeHelper.show((View)parent.getParent());
+			challengeHelper.show((View) parent.getParent());
 		} else if (view.getId() == R.id.gamePlayBtn) {
 			if (startDailyGame) {
 				challengeHelper.createDailyChallenge();

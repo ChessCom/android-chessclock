@@ -6,10 +6,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import com.chess.backend.entity.api.ExplorerMovesItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.StaticData;
 
 import java.util.ArrayList;
 import java.util.List;

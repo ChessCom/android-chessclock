@@ -128,7 +128,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		int paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
 		int paddingRight = (int) (8 * density);
 
-		boolean isTablet = AppUtils.isTablet(getContext()) ;
+		boolean isTablet = AppUtils.isTablet(getContext());
 		if (!isTablet) {
 			if (useLtr) {
 				setPadding(0, 0, paddingRight, 0);

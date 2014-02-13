@@ -16,8 +16,10 @@ import com.chess.ui.activities.CoreActivityActionBar;
 public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateListener<ItemType> {
 	private ActionBarHelper actionBarHelper;
 	private CoreActivityActionBar coreActivityActionBar;
+
 	/**
 	 * Use this constructor if you need it for fragment. It will handle getActivity() on updateData callback
+	 *
 	 * @param coreActivityActionBar
 	 * @param clazz
 	 * @param startedFragment
@@ -29,6 +31,7 @@ public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateLi
 
 	/**
 	 * Use this constructor if you need it for fragment. It will handle getActivity() on updateData callback
+	 *
 	 * @param coreActivityActionBar
 	 * @param startedFragment
 	 */
@@ -47,7 +50,7 @@ public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateLi
 		init(coreActivityActionBar);
 	}
 
-	private void init(CoreActivityActionBar coreActivityActionBar){
+	private void init(CoreActivityActionBar coreActivityActionBar) {
 		this.coreActivityActionBar = coreActivityActionBar;
 		actionBarHelper = coreActivityActionBar.provideActionBarHelper();
 
@@ -55,7 +58,7 @@ public abstract class ActionBarUpdateListener<ItemType> extends AbstractUpdateLi
 
 	@Override
 	public void showProgress(boolean show) {
-		if(actionBarHelper != null) {
+		if (actionBarHelper != null) {
 			actionBarHelper.setRefreshActionItemState(show);
 		}
 	}

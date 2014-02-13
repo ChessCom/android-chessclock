@@ -596,7 +596,7 @@ public class AppUtils {
 	public static String getLiveModeButtonLabel(String label, Context context) {
 		int initialTime;
 		int bonusTime = 0;
-		if(label.contains(Symbol.SLASH)){
+		if (label.contains(Symbol.SLASH)) {
 			// "5 | 2",
 			String[] params = label.split(Symbol.DIVIDER);
 			initialTime = Integer.valueOf(params[0].trim());
@@ -805,7 +805,7 @@ public class AppUtils {
 	public static void printCursorContent(Cursor cursor, String tableName) {
 		if (cursor.moveToFirst()) {
 			Log.d("TABLE", "____________" + tableName + "_______________");
-			Log.d("TABLE","[");
+			Log.d("TABLE", "[");
 
 			do {
 				int columnCount = cursor.getColumnCount();
@@ -828,7 +828,7 @@ public class AppUtils {
 				Log.d("TABLE", builder.toString());
 
 			} while (cursor.moveToNext());
-			Log.d("TABLE","]");
+			Log.d("TABLE", "]");
 		}
 	}
 

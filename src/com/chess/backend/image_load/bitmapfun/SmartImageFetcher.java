@@ -168,7 +168,8 @@ public class SmartImageFetcher extends ImageFetcher {
 			while (mHttpDiskCacheStarting) {
 				try {
 					mHttpDiskCacheLock.wait();
-				} catch (InterruptedException ignored) {}
+				} catch (InterruptedException ignored) {
+				}
 			}
 
 			if (mHttpDiskCache != null) {
@@ -200,7 +201,8 @@ public class SmartImageFetcher extends ImageFetcher {
 					if (fileDescriptor == null && fileInputStream != null) {
 						try {
 							fileInputStream.close();
-						} catch (IOException ignored) {}
+						} catch (IOException ignored) {
+						}
 					}
 				}
 			}
@@ -214,14 +216,15 @@ public class SmartImageFetcher extends ImageFetcher {
 		if (fileInputStream != null) {
 			try {
 				fileInputStream.close();
-			} catch (IOException ignored) {}
+			} catch (IOException ignored) {
+			}
 		}
 		return bitmap;
 	}
 
 	@Override
 	protected Bitmap processBitmap(Object data) {
-		return processBitmap((Data)data);
+		return processBitmap((Data) data);
 	}
 
 	/**
@@ -268,7 +271,8 @@ public class SmartImageFetcher extends ImageFetcher {
 				if (in != null) {
 					in.close();
 				}
-			} catch (final IOException ignored) {}
+			} catch (final IOException ignored) {
+			}
 		}
 		return false;
 	}
@@ -284,7 +288,7 @@ public class SmartImageFetcher extends ImageFetcher {
 		}
 	}
 
-	public static class Data{
+	public static class Data {
 		String url;
 		int imageWidth;
 		int imageHeight;

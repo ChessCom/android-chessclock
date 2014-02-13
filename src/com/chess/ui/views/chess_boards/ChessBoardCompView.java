@@ -33,13 +33,13 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 
 	public ChessBoardCompView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+		super(context, attrs);
+	}
 
 	public void setGameUiFace(GameCompFace gameActivityFace) {
 		super.setGameFace(gameActivityFace);
-        gameCompFace = gameActivityFace;
-    }
+		gameCompFace = gameActivityFace;
+	}
 
 	public void setControlsView(ControlsCompView controlsView) {
 		super.setControlsView(controlsView);
@@ -47,7 +47,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		controlsCompView.setBoardViewFace(this);
 	}
 
-	private ChessBoardComp getBoardComp(){
+	private ChessBoardComp getBoardComp() {
 		return ChessBoardComp.getInstance(gameCompFace);
 	}
 
@@ -62,20 +62,20 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		boolean gameOver = isGameOver(); // do not show popup twice
 		Log.d(CompEngineHelper.TAG, "DEBUGBOARD isGameOver() " + gameOver);
 
-        if (gameOver) {
+		if (gameOver) {
 			return;
 		}
 
 		postMoveToEngine(getBoardFace().getLastMove()); // TODO on slow device we can touch piece while comp is loading, prevent in future
-    }
+	}
 
-    @Override
+	@Override
 	public boolean isGameOver() {
 		if (!isHint()) {
 			saveCompGame();
 		}
 		return super.isGameOver();
-    }
+	}
 
 	private void saveCompGame() {
 		//saving game for comp game mode if human is playing
@@ -165,21 +165,21 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 ////		drawMoveHints(canvas); // todo @compengine: move to base class for all game modes
 //    }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (useTouchTimer) { // start count before next touch
-            handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
-            userActive = true;
-        }
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (useTouchTimer) { // start count before next touch
+			handler.postDelayed(checkUserIsActive, StaticData.WAKE_SCREEN_TIMEOUT);
+			userActive = true;
+		}
 
-        if (squareSize == 0) {
-            return super.processTouchEvent(event);
-        }
+		if (squareSize == 0) {
+			return super.processTouchEvent(event);
+		}
 
-        track = false;
-        if (!getBoardFace().isAnalysis()) {
-            if (/*isComputerMoving() ||*/ getBoardFace().isFinished())
-                return true;
+		track = false;
+		if (!getBoardFace().isAnalysis()) {
+			if (/*isComputerMoving() ||*/ getBoardFace().isFinished())
+				return true;
 
 			/*if ((getAppData().isComputerVsHumanWhiteGameMode(getBoardFace()) && !getBoardFace().isWhiteToMove())
 					|| (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().isWhiteToMove())) {
@@ -187,14 +187,14 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			}*/
 		}
 
-        return super.onTouchEvent(event);
-    }
+		return super.onTouchEvent(event);
+	}
 
-    @Override
+	@Override
 	public void promote(int promote, int file, int rank) {
-        boolean found = false;
+		boolean found = false;
 		Move move = null;
-        List<Move> moves = getBoardFace().generateLegalMoves();
+		List<Move> moves = getBoardFace().generateLegalMoves();
 		for (Move move1 : moves) {
 			move = move1;
 			if (move.from == from && move.to == to && move.promote == promote) {
@@ -220,47 +220,47 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			from = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
 		}
 		invalidate();
-    }
+	}
 
-    @Override
-    public void flipBoard() {
-        if (!isComputerMoving()) {
-            getBoardFace().setReside(!getBoardFace().isReside());
-            if (ChessBoard.isComputerVsHumanGameMode(getBoardFace())) {
+	@Override
+	public void flipBoard() {
+		if (!isComputerMoving()) {
+			getBoardFace().setReside(!getBoardFace().isReside());
+			if (ChessBoard.isComputerVsHumanGameMode(getBoardFace())) {
 				int engineMode;
 				//if (getAppData().isComputerVsHumanWhiteGameMode(getBoardFace())) {
 				if (getBoardFace().isWhiteToMove()) { // supports Flip when user navigated moves Back
-                    getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK);
-                } else /*if (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()))*/ {
-                    getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
-                }
+					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK);
+				} else /*if (getAppData().isComputerVsHumanBlackGameMode(getBoardFace()))*/ {
+					getBoardFace().setMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
+				}
 				getBoardFace().setMovesCount(getBoardFace().getPly()); // supports Flip when user navigated moves Back
 				setComputerMoving(true);
 				gameCompFace.onCompMove();
 				engineMode = CompEngineHelper.mapGameMode(getBoardFace().getMode());
 				CompEngineHelper.getInstance().updateEngineGameMode(engineMode);
 				CompEngineHelper.getInstance().setGameMode(engineMode);
-                //postMoveToEngine(getBoardFace().getLastMove(), false, compStrength);
-            }
-            invalidate();
-        }
+				//postMoveToEngine(getBoardFace().getLastMove(), false, compStrength);
+			}
+			invalidate();
+		}
 
 		gameCompFace.toggleSides();
 		gameCompFace.invalidateGameScreen();
 	}
 
 	@Override
-    public boolean moveBack() {
+	public boolean moveBack() {
 		boolean blackCompFirstMove =
 				ChessBoard.isComputerVsHumanBlackGameMode(getBoardFace()) && getBoardFace().getPly() == 1;
 
-        if (!isComputerMoving() && noMovesToAnimate() /*&& !navigating*/ && getBoardFace().getPly() > 0 && !blackCompFirstMove) {
+		if (!isComputerMoving() && noMovesToAnimate() /*&& !navigating*/ && getBoardFace().getPly() > 0 && !blackCompFirstMove) {
 
 			//navigating = true;
 			CompEngineHelper.getInstance().moveBack();
 
 			getBoardFace().setFinished(false);
-            pieceSelected = false;
+			pieceSelected = false;
 
 			setMoveAnimator(getBoardFace().getLastMove(), false);
 			resetValidMoves();
@@ -270,17 +270,17 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			if (move != null && ChessBoard.isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
 				setSecondMoveAnimator(new MoveAnimator(move, false));
 			}
-            invalidate();
+			invalidate();
 			gameCompFace.invalidateGameScreen();
 			return true;
 		} else {
 			return false;
 		}
-    }
+	}
 
-    @Override
-    public boolean moveForward() {
-        if (!isComputerMoving() && noMovesToAnimate() /*&& !navigating*/) {
+	@Override
+	public boolean moveForward() {
+		if (!isComputerMoving() && noMovesToAnimate() /*&& !navigating*/) {
 
 			pieceSelected = false;
 
@@ -300,14 +300,14 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 					setSecondMoveAnimator(new MoveAnimator(move, true));
 				}
 			}
-            invalidate();
+			invalidate();
 			gameCompFace.invalidateGameScreen();
 
 			return true;
-        } else {
+		} else {
 			return false;
 		}
-    }
+	}
 
 	@Override
 	public void goToMove(Integer pos) {
@@ -328,7 +328,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 				CompEngineHelper.getInstance().moveBackHalf();
 			}
 		}
-        CompEngineHelper.getInstance().updateEngineAfterHalfMove();
+		CompEngineHelper.getInstance().updateEngineAfterHalfMove();
 	}
 
 	public void updateBoardPosition(Integer pos) {
@@ -341,15 +341,15 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	}
 
 	@Override
-    public void showHint() {
+	public void showHint() {
 		if (getBoardFace().isFinished()) { // don't show hints for finished games
 			return;
 		}
 
-        if (!isComputerMoving() && !isComputerToMove() && noMovesToAnimate()) {
+		if (!isComputerMoving() && !isComputerToMove() && noMovesToAnimate()) {
 			makeHint();
-        }
-    }
+		}
+	}
 
 	public boolean isHint() {
 		return getBoardComp().isHint();

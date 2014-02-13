@@ -1382,7 +1382,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			Long currentGameId = getLiveHelper().getCurrentGameId();
 			if (isLCSBound && currentGameId != null && currentGameId != 0) {
 				// screen rotated case
-				 onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronized
+				onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronized
 			}
 		} catch (DataNotValidException e) {
 			logLiveTest(e.getMessage());

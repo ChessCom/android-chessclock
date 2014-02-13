@@ -28,7 +28,7 @@ import java.util.List;
  * Date: 07.09.13
  * Time: 11:18
  */
-public class ArticlesSearchFragment extends BaseSearchFragment  {
+public class ArticlesSearchFragment extends BaseSearchFragment {
 
 	private ArticleItemAdapter articleItemAdapter;
 	private SparseBooleanArray articlesViewedMap;

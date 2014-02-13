@@ -77,7 +77,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 		int capturedPiecesViewWidth = (int) resources.getDimension(R.dimen.panel_info_captured_pieces_width);
 		int avatarMarginRight = (int) resources.getDimension(R.dimen.panel_info_avatar_margin_right);
 
-		 // set padding
+		// set padding
 		int paddingTop = (int) resources.getDimension(R.dimen.panel_info_padding_top);
 		int paddingLeft = (int) (11 * density);
 

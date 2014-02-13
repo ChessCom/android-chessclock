@@ -6,7 +6,7 @@ package com.chess.backend.entity.api;
  * Date: 21.12.12
  * Time: 6:30
  */
-public class RegisterItem extends BaseResponseItem<RegisterItem.Data>{
+public class RegisterItem extends BaseResponseItem<RegisterItem.Data> {
 /*
 	{
 		"status": "success",

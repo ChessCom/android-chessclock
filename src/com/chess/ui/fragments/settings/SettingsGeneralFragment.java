@@ -7,18 +7,21 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import com.chess.R;
-import com.chess.ui.fragments.BasePopupsFragment;
-import com.chess.widgets.SwitchButton;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
 import com.chess.statics.Symbol;
+import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.views.drawables.RatingProgressDrawable;
 import com.chess.utilities.AppUtils;
+import com.chess.widgets.SwitchButton;
 
 /**
  * Created with IntelliJ IDEA.
@@ -49,13 +52,13 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 	private SwitchButton fullScreenSwitch;
 	private int mode;
 
-	public SettingsGeneralFragment(){
+	public SettingsGeneralFragment() {
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, AUTHORIZED_MODE);
 		setArguments(bundle);
 	}
 
-	public static SettingsGeneralFragment createInstance(int mode){
+	public static SettingsGeneralFragment createInstance(int mode) {
 		SettingsGeneralFragment fragment = new SettingsGeneralFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt(MODE, mode);

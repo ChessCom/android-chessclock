@@ -45,7 +45,7 @@ public class LeftImageButton extends RoboButton {
 		TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.EnhancedField);
 		try {
 			String iconStr = array.getString(R.styleable.EnhancedField_leftImage);
-			icon = new IconDrawable(context, iconStr, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size) ;
+			icon = new IconDrawable(context, iconStr, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size);
 		} finally {
 			array.recycle();
 		}
@@ -74,7 +74,7 @@ public class LeftImageButton extends RoboButton {
 			float top = 0;
 			float right = height + i * LINE_WIDTH;
 			float bottom = 0;
-			switch (i){
+			switch (i) {
 				case 0:
 					top = BORDER_OFFSET - LINE_WIDTH;
 					bottom = height - BORDER_OFFSET + LINE_WIDTH;
@@ -91,14 +91,14 @@ public class LeftImageButton extends RoboButton {
 
 		// place image
 		canvas.save();
-		float imgCenterX = BORDER_OFFSET/2 + (height - imageWidth)/2;
-		float imgCenterY = (height - imageWidth)/2;
+		float imgCenterX = BORDER_OFFSET / 2 + (height - imageWidth) / 2;
+		float imgCenterY = (height - imageWidth) / 2;
 		canvas.translate(imgCenterX, imgCenterY);
 		icon.draw(canvas);
 		canvas.restore();
 
 		// place additional clickable element
-		canvas.translate(BORDER_OFFSET *4, 0);
+		canvas.translate(BORDER_OFFSET * 4, 0);
 		super.onDraw(canvas);
 	}
 

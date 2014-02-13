@@ -16,7 +16,7 @@ public class ProfileImageView extends ImageView implements View.OnClickListener 
 	private String username;
 	private ProfileOpenFace profileOpenFace;
 
-	public interface ProfileOpenFace{
+	public interface ProfileOpenFace {
 
 		void openProfile(String username);
 	}

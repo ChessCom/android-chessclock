@@ -20,7 +20,7 @@ import java.util.List;
 public class LessonsPaginationItemAdapter extends PaginationAdapter<LessonSingleItem> {
 
 	public LessonsPaginationItemAdapter(Context context, ItemsAdapter<LessonSingleItem> adapter,
-									TaskUpdateInterface<LessonSingleItem> taskFace, LoadItem loadItem) {
+										TaskUpdateInterface<LessonSingleItem> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
 		this.loadItem = loadItem;
 		setFirstPage(0);

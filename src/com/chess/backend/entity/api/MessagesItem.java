@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class MessagesItem extends BaseResponseItem<List<MessagesItem.Data>> {
 /*
-      "id": 5,
+	  "id": 5,
       "created_at": 1375361796,
       "content": "test from sandboxsdasd",
       "sender_id": 11438,

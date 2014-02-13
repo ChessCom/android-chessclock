@@ -98,9 +98,9 @@ public class CustomViewAbove extends ViewGroup {
 		 * This method will be invoked when the current page is scrolled, either as part
 		 * of a programmatically initiated smooth scroll or a user initiated touch scroll.
 		 *
-		 * @param position Position index of the first page currently being displayed.
-		 *                 Page position+1 will be visible if positionOffset is nonzero.
-		 * @param positionOffset Value from [0, 1) indicating the offset from the page at position.
+		 * @param position             Position index of the first page currently being displayed.
+		 *                             Page position+1 will be visible if positionOffset is nonzero.
+		 * @param positionOffset       Value from [0, 1) indicating the offset from the page at position.
 		 * @param positionOffsetPixels Value in pixels indicating the offset from position.
 		 */
 		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels);
@@ -192,7 +192,7 @@ public class CustomViewAbove extends ViewGroup {
 	/**
 	 * Set the currently selected page.
 	 *
-	 * @param item Item index to select
+	 * @param item         Item index to select
 	 * @param smoothScroll True to smoothly scroll to the new item, false to transition immediately
 	 */
 	public void setCurrentItem(int item, boolean smoothScroll) {
@@ -248,6 +248,7 @@ public class CustomViewAbove extends ViewGroup {
 	public void setOnPageChangeListener(OnPageChangeListener listener) {
 		mOnPageChangeListener = listener;
 	}
+
 	/*
 	public void setOnOpenListener(OnOpenListener l) {
 		mOpenListener = l;
@@ -332,7 +333,7 @@ public class CustomViewAbove extends ViewGroup {
 		Rect rect = new Rect();
 		for (View v : mIgnoredViews) {
 			v.getHitRect(rect);
-			if (rect.contains((int)ev.getX(), (int)ev.getY())) return true;
+			if (rect.contains((int) ev.getX(), (int) ev.getY())) return true;
 		}
 		return false;
 	}
@@ -377,8 +378,8 @@ public class CustomViewAbove extends ViewGroup {
 	/**
 	 * Like {@link View#scrollBy}, but scroll smoothly instead of immediately.
 	 *
-	 * @param x the number of pixels to scroll by on the X axis
-	 * @param y the number of pixels to scroll by on the Y axis
+	 * @param x        the number of pixels to scroll by on the X axis
+	 * @param y        the number of pixels to scroll by on the Y axis
 	 * @param velocity the velocity associated with a fling, if applicable. (0 otherwise)
 	 */
 	void smoothScrollTo(int x, int y, int velocity) {
@@ -522,9 +523,9 @@ public class CustomViewAbove extends ViewGroup {
 	 * (e.g. super.onPageScrolled(position, offset, offsetPixels)) before onPageScrolled
 	 * returns.
 	 *
-	 * @param position Position index of the first page currently being displayed.
-	 *                 Page position+1 will be visible if positionOffset is nonzero.
-	 * @param offset Value from [0, 1) indicating the offset from the page at position.
+	 * @param position     Position index of the first page currently being displayed.
+	 *                     Page position+1 will be visible if positionOffset is nonzero.
+	 * @param offset       Value from [0, 1) indicating the offset from the page at position.
 	 * @param offsetPixels Value in pixels indicating the offset from position.
 	 */
 	protected void onPageScrolled(int position, float offset, int offsetPixels) {
@@ -786,7 +787,7 @@ public class CustomViewAbove extends ViewGroup {
 		final float y = MotionEventCompat.getY(ev, pointerIndex);
 		final float dy = y - mLastMotionY;
 		final float yDiff = Math.abs(dy);
-		if (xDiff > (isMenuOpen()?mTouchSlop/2:mTouchSlop) && xDiff > yDiff && thisSlideAllowed(dx)) {
+		if (xDiff > (isMenuOpen() ? mTouchSlop / 2 : mTouchSlop) && xDiff > yDiff && thisSlideAllowed(dx)) {
 			startDrag();
 			mLastMotionX = x;
 			mLastMotionY = y;
@@ -803,7 +804,7 @@ public class CustomViewAbove extends ViewGroup {
 		mScrollX = x;
 		if (mEnabled)
 			mViewBehind.scrollBehindTo(mContent, x, y);
-		((SlidingMenu)getParent()).manageLayers(getPercentOpen());
+		((SlidingMenu) getParent()).manageLayers(getPercentOpen());
 	}
 
 	private int determineTargetPage(float pageOffset, int velocity, int deltaX) {
@@ -811,7 +812,7 @@ public class CustomViewAbove extends ViewGroup {
 		if (Math.abs(deltaX) > mFlingDistance && Math.abs(velocity) > mMinimumVelocity) {
 			if (velocity > 0 && deltaX > 0) {
 				targetPage -= 1;
-			} else if (velocity < 0 && deltaX < 0){
+			} else if (velocity < 0 && deltaX < 0) {
 				targetPage += 1;
 			}
 		} else {
@@ -821,7 +822,7 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	protected float getPercentOpen() {
-		return Math.abs(mScrollX-mContent.getLeft()) / getBehindWidth();
+		return Math.abs(mScrollX - mContent.getLeft()) / getBehindWidth();
 	}
 
 	@Override
@@ -887,12 +888,12 @@ public class CustomViewAbove extends ViewGroup {
 	/**
 	 * Tests scrollability within child views of v given a delta of dx.
 	 *
-	 * @param v View to test for horizontal scrollability
+	 * @param v      View to test for horizontal scrollability
 	 * @param checkV Whether the view v passed should itself be checked for scrollability (true),
 	 *               or just its children (false).
-	 * @param dx Delta scrolled in pixels
-	 * @param x X coordinate of the active touch point
-	 * @param y Y coordinate of the active touch point
+	 * @param dx     Delta scrolled in pixels
+	 * @param x      X coordinate of the active touch point
+	 * @param y      Y coordinate of the active touch point
 	 * @return true if child views of v can be scrolled by delta of dx.
 	 */
 	protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
@@ -992,7 +993,7 @@ public class CustomViewAbove extends ViewGroup {
 
 	boolean pageLeft() {
 		if (mCurItem > 0) {
-			setCurrentItem(mCurItem-1, true);
+			setCurrentItem(mCurItem - 1, true);
 			return true;
 		}
 		return false;
@@ -1000,7 +1001,7 @@ public class CustomViewAbove extends ViewGroup {
 
 	boolean pageRight() {
 		if (mCurItem < 1) {
-			setCurrentItem(mCurItem+1, true);
+			setCurrentItem(mCurItem + 1, true);
 			return true;
 		}
 		return false;

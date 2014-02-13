@@ -309,6 +309,6 @@ public class DailyGameBaseData {
 	}
 
 	protected static String getSafeValue(String value) {
-		return value == null? Symbol.EMPTY : value;
+		return value == null ? Symbol.EMPTY : value;
 	}
 }

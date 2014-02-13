@@ -148,7 +148,7 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 			}
 
 			String query = (String) constraint;
-			String[] selectionArgs = new String[] {DbScheme.V_OTHER_USER_USERNAME, DbScheme.V_LAST_MESSAGE_CONTENT};
+			String[] selectionArgs = new String[]{DbScheme.V_OTHER_USER_USERNAME, DbScheme.V_LAST_MESSAGE_CONTENT};
 			String selection = DbDataManager.concatLikeArguments(selectionArgs);
 			selection += DbDataManager.AND_ + DbScheme.V_USER + DbDataManager.EQUALS_ARG_;
 

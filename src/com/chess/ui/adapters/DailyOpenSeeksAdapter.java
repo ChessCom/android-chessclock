@@ -82,7 +82,7 @@ public class DailyOpenSeeksAdapter extends ItemsAdapter<DailyChallengeItem.Data>
 
 		holder.playerImg.setOnline(item.isOpponentOnline());
 
-		if(item.getGameTypeId() == RestHelper.V_GAME_CHESS) {
+		if (item.getGameTypeId() == RestHelper.V_GAME_CHESS) {
 			holder.gameTypeTxt.setText(R.string.ic_daily_game);
 		} else {
 			holder.gameTypeTxt.setText(R.string.ic_daily960_game);

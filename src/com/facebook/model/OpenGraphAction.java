@@ -24,190 +24,220 @@ import java.util.List;
 /**
  * Provides a strongly-typed representation of an Open Graph Action.
  * For more documentation of OG Actions, see: https://developers.facebook.com/docs/opengraph/actions/
- *
+ * <p/>
  * Note that this interface is intended to be used with GraphObject.Factory
  * and not implemented directly.
  */
 public interface OpenGraphAction extends GraphObject {
-    /**
-     * Gets the ID of the action.
-     * @return the ID
-     */
-    public String getId();
+	/**
+	 * Gets the ID of the action.
+	 *
+	 * @return the ID
+	 */
+	public String getId();
 
-    /**
-     * Sets the ID of the action.
-     * @param id the ID
-     */
-    public void setId(String id);
+	/**
+	 * Sets the ID of the action.
+	 *
+	 * @param id the ID
+	 */
+	public void setId(String id);
 
-    /**
-     * Gets the start time of the action.
-     * @return the start time
-     */
-    public Date getStartTime();
+	/**
+	 * Gets the start time of the action.
+	 *
+	 * @return the start time
+	 */
+	public Date getStartTime();
 
-    /**
-     * Sets the start time of the action.
-     * @param startTime the start time
-     */
-    public void setStartTime(Date startTime);
+	/**
+	 * Sets the start time of the action.
+	 *
+	 * @param startTime the start time
+	 */
+	public void setStartTime(Date startTime);
 
-    /**
-     * Gets the end time of the action.
-     * @return the end time
-     */
-    public Date getEndTime();
+	/**
+	 * Gets the end time of the action.
+	 *
+	 * @return the end time
+	 */
+	public Date getEndTime();
 
-    /**
-     * Sets the end time of the action.
-     * @param endTime the end time
-     */
-    public void setEndTime(Date endTime);
+	/**
+	 * Sets the end time of the action.
+	 *
+	 * @param endTime the end time
+	 */
+	public void setEndTime(Date endTime);
 
-    /**
-     * Gets the time the action was published, if any.
-     * @return the publish time
-     */
-    public Date getPublishTime();
+	/**
+	 * Gets the time the action was published, if any.
+	 *
+	 * @return the publish time
+	 */
+	public Date getPublishTime();
 
-    /**
-     * Sets the time the action was published.
-     * @param publishTime the publish time
-     */
-    public void setPublishTime(Date publishTime);
+	/**
+	 * Sets the time the action was published.
+	 *
+	 * @param publishTime the publish time
+	 */
+	public void setPublishTime(Date publishTime);
 
-    /**
-     * Gets the time the action was created.
-     * @return the creation time
-     */
-    public Date getCreatedTime();
+	/**
+	 * Gets the time the action was created.
+	 *
+	 * @return the creation time
+	 */
+	public Date getCreatedTime();
 
-    /**
-     * Sets the time the action was created.
-     * @param createdTime the creation time
-     */
-    public void setCreatedTime(Date createdTime);
+	/**
+	 * Sets the time the action was created.
+	 *
+	 * @param createdTime the creation time
+	 */
+	public void setCreatedTime(Date createdTime);
 
-    /**
-     * Gets the time the action expires at.
-     * @return the expiration time
-     */
-    public Date getExpiresTime();
+	/**
+	 * Gets the time the action expires at.
+	 *
+	 * @return the expiration time
+	 */
+	public Date getExpiresTime();
 
-    /**
-     * Sets the time the action expires at.
-     * @param expiresTime the expiration time
-     */
-    public void setExpiresTime(Date expiresTime);
+	/**
+	 * Sets the time the action expires at.
+	 *
+	 * @param expiresTime the expiration time
+	 */
+	public void setExpiresTime(Date expiresTime);
 
-    /**
-     * Gets the unique string which will be passed to the OG Action owner's website
-     * when a user clicks through this action on Facebook.
-     * @return the ref string
-     */
-    public String getRef();
+	/**
+	 * Gets the unique string which will be passed to the OG Action owner's website
+	 * when a user clicks through this action on Facebook.
+	 *
+	 * @return the ref string
+	 */
+	public String getRef();
 
-    /**
-     * Sets the unique string which will be passed to the OG Action owner's website
-     * when a user clicks through this action on Facebook.
-     * @param ref the ref string
-     */
-    public void setRef(String ref);
+	/**
+	 * Sets the unique string which will be passed to the OG Action owner's website
+	 * when a user clicks through this action on Facebook.
+	 *
+	 * @param ref the ref string
+	 */
+	public void setRef(String ref);
 
-    /**
-     * Gets the message assoicated with the action.
-     * @return the message
-     */
-    public String getMessage();
+	/**
+	 * Gets the message assoicated with the action.
+	 *
+	 * @return the message
+	 */
+	public String getMessage();
 
-    /**
-     * Sets the message associated with the action.
-     * @param message the message
-     */
-    public void setMessage(String message);
+	/**
+	 * Sets the message associated with the action.
+	 *
+	 * @param message the message
+	 */
+	public void setMessage(String message);
 
-    /**
-     * Gets the place where the action took place.
-     * @return the place
-     */
-    public GraphPlace getPlace();
+	/**
+	 * Gets the place where the action took place.
+	 *
+	 * @return the place
+	 */
+	public GraphPlace getPlace();
 
-    /**
-     * Sets the place where the action took place.
-     * @param place the place
-     */
-    public void setPlace(GraphPlace place);
+	/**
+	 * Sets the place where the action took place.
+	 *
+	 * @param place the place
+	 */
+	public void setPlace(GraphPlace place);
 
-    /**
-     * Gets the list of profiles that were tagged in the action.
-     * @return the profiles that were tagged in the action
-     */
-    public List<GraphObject> getTags();
+	/**
+	 * Gets the list of profiles that were tagged in the action.
+	 *
+	 * @return the profiles that were tagged in the action
+	 */
+	public List<GraphObject> getTags();
 
-    /**
-     * Sets the list of profiles that were tagged in the action.
-     * @param tags the profiles that were tagged in the action
-     */
-    public void setTags(List<? extends GraphObject> tags);
+	/**
+	 * Sets the list of profiles that were tagged in the action.
+	 *
+	 * @param tags the profiles that were tagged in the action
+	 */
+	public void setTags(List<? extends GraphObject> tags);
 
-    /**
-     * Gets the images that were associated with the action.
-     * @return the images
-     */
-    public List<JSONObject> getImage();
+	/**
+	 * Gets the images that were associated with the action.
+	 *
+	 * @return the images
+	 */
+	public List<JSONObject> getImage();
 
-    /**
-     * Sets the images that were associated with the action.
-     * @param image the images
-     */
-    public void setImage(List<JSONObject> image);
+	/**
+	 * Sets the images that were associated with the action.
+	 *
+	 * @param image the images
+	 */
+	public void setImage(List<JSONObject> image);
 
-    /**
-     * Gets the from-user associated with the action.
-     * @return the user
-     */
-    public GraphUser getFrom();
+	/**
+	 * Gets the from-user associated with the action.
+	 *
+	 * @return the user
+	 */
+	public GraphUser getFrom();
 
-    /**
-     * Sets the from-user associated with the action.
-     * @param from the from-user
-     */
-    public void setFrom(GraphUser from);
+	/**
+	 * Sets the from-user associated with the action.
+	 *
+	 * @param from the from-user
+	 */
+	public void setFrom(GraphUser from);
 
-    /**
-     * Gets the 'likes' that have been performed on this action.
-     * @return the likes
-     */
-    public JSONObject getLikes();
+	/**
+	 * Gets the 'likes' that have been performed on this action.
+	 *
+	 * @return the likes
+	 */
+	public JSONObject getLikes();
 
-    /**
-     * Sets the 'likes' that have been performed on this action.
-     * @param likes the likes
-     */
-    public void setLikes(JSONObject likes);
+	/**
+	 * Sets the 'likes' that have been performed on this action.
+	 *
+	 * @param likes the likes
+	 */
+	public void setLikes(JSONObject likes);
 
-    /**
-     * Gets the application that created this action.
-     * @return the application
-     */
-    public GraphObject getApplication();
+	/**
+	 * Gets the application that created this action.
+	 *
+	 * @return the application
+	 */
+	public GraphObject getApplication();
 
-    /**
-     * Sets the application that created this action.
-     * @param application the application
-     */
-    public void setApplication(GraphObject application);
+	/**
+	 * Sets the application that created this action.
+	 *
+	 * @param application the application
+	 */
+	public void setApplication(GraphObject application);
 
-    /**
-     * Gets the comments that have been made on this action.
-     * @return the comments
-     */
-    public JSONObject getComments();
+	/**
+	 * Gets the comments that have been made on this action.
+	 *
+	 * @return the comments
+	 */
+	public JSONObject getComments();
 
-    /**
-     * Sets the comments that have been made on this action.
-     * @param comments the comments
-     */
-    public void setComments(JSONObject comments);
+	/**
+	 * Sets the comments that have been made on this action.
+	 *
+	 * @param comments the comments
+	 */
+	public void setComments(JSONObject comments);
 }

@@ -100,7 +100,7 @@ public class ChessClock {
 		}
 	}
 
-	public void requestTimeForPlayers(){
+	public void requestTimeForPlayers() {
 		time = -999;
 		previousTimeString = Symbol.EMPTY;
 		updatePlayerTimer();

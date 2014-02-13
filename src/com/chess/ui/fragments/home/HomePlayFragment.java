@@ -57,7 +57,7 @@ public class HomePlayFragment extends CommonLogicFragment implements ViewTreeObs
 
 		if (view.getId() == R.id.timeSelectBtn) {
 			View parent = (View) view.getParent();
-			challengeHelper.show((View)parent.getParent());
+			challengeHelper.show((View) parent.getParent());
 
 		} else if (view.getId() == R.id.gamePlayBtn) {
 			if (startDailyGame) {

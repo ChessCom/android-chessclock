@@ -26,13 +26,14 @@ import com.chess.ui.interfaces.FragmentParentFace;
  * Date: 10.11.13
  * Time: 10:47
  */
-public class VideoCategoriesFragmentTablet extends VideoCategoriesFragment{
+public class VideoCategoriesFragmentTablet extends VideoCategoriesFragment {
 
 	private VideosCursorAdapterTablet videosAdapter;
 	private GridView listView;
 	private FragmentParentFace parentFace;
 
-	public VideoCategoriesFragmentTablet() {}
+	public VideoCategoriesFragmentTablet() {
+	}
 
 	public static VideoCategoriesFragmentTablet createInstance(String sectionName, FragmentParentFace parentFace) {
 		VideoCategoriesFragmentTablet fragment = new VideoCategoriesFragmentTablet();

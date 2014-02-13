@@ -56,7 +56,7 @@ public class GetAndSavePieces extends Service {
 	private String userToken;
 
 	public class ServiceBinder extends Binder {
-		public GetAndSavePieces getService(){
+		public GetAndSavePieces getService() {
 			return GetAndSavePieces.this;
 		}
 	}
@@ -65,6 +65,7 @@ public class GetAndSavePieces extends Service {
 	public IBinder onBind(Intent intent) {
 		return serviceBinder;
 	}
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -117,7 +118,7 @@ public class GetAndSavePieces extends Service {
 		return installingPieces;
 	}
 
-	public void loadPieces(int selectedPieceId, int screenWidth){
+	public void loadPieces(int selectedPieceId, int screenWidth) {
 		installingPieces = true;
 
 		this.screenWidth = screenWidth;

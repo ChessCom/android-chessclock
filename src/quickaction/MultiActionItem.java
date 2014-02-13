@@ -17,12 +17,12 @@ public class MultiActionItem {
 	private int iconId;
 	private List<SelectionItem> items;
 
-	public MultiActionItem(){
+	public MultiActionItem() {
 		iconId = R.string.ic_blocking;
 		items = new ArrayList<SelectionItem>();
 	}
 
-	public MultiActionItem(int iconId, List<SelectionItem> items){
+	public MultiActionItem(int iconId, List<SelectionItem> items) {
 		this.iconId = iconId;
 		this.items = items;
 	}

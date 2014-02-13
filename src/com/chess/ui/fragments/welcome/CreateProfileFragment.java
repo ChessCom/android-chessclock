@@ -107,7 +107,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		skipBtn.setOnClickListener(this);
 		IconDrawable rightIconDrawable = new IconDrawable(getActivity(), R.string.ic_right);
 
-		if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
 			skipBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, rightIconDrawable, null);
 		}
 
@@ -232,9 +232,9 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		bmOptions.inSampleSize = scaleFactor;
 		bmOptions.inPurgeable = true;
 		Bitmap bitmap;
-		try{
+		try {
 			bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-		}catch (OutOfMemoryError ignore) {
+		} catch (OutOfMemoryError ignore) {
 			Log.d("TEST", ignore.toString());
 			showToast(R.string.unable_to_select_this_photo);
 			return;

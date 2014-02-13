@@ -24,39 +24,39 @@ import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
 public class AbcPullToRefreshAttacher extends
 		PullToRefreshAttacher {
 
-    public static AbcPullToRefreshAttacher get(Activity activity) {
-        return get(activity, new Options());
-    }
+	public static AbcPullToRefreshAttacher get(Activity activity) {
+		return get(activity, new Options());
+	}
 
-    public static AbcPullToRefreshAttacher get(Activity activity, Options options) {
-        return new AbcPullToRefreshAttacher(activity, options);
-    }
+	public static AbcPullToRefreshAttacher get(Activity activity, Options options) {
+		return new AbcPullToRefreshAttacher(activity, options);
+	}
 
-    protected AbcPullToRefreshAttacher(Activity activity, Options options) {
-        super(activity, options);
-    }
+	protected AbcPullToRefreshAttacher(Activity activity, Options options) {
+		super(activity, options);
+	}
 
-    @Override
-    protected EnvironmentDelegate createDefaultEnvironmentDelegate() {
-        return new AbcEnvironmentDelegate();
-    }
+	@Override
+	protected EnvironmentDelegate createDefaultEnvironmentDelegate() {
+		return new AbcEnvironmentDelegate();
+	}
 
-    @Override
-    protected HeaderTransformer createDefaultHeaderTransformer() {
-        return new AbcDefaultHeaderTransformer();
-    }
+	@Override
+	protected HeaderTransformer createDefaultHeaderTransformer() {
+		return new AbcDefaultHeaderTransformer();
+	}
 
-    public static class AbcEnvironmentDelegate extends EnvironmentDelegate {
-        /**
-         * @return Context which should be used for inflating the header layout
-         */
-        @Override
+	public static class AbcEnvironmentDelegate extends EnvironmentDelegate {
+		/**
+		 * @return Context which should be used for inflating the header layout
+		 */
+		@Override
 		public Context getContextForInflater(Activity activity) {
-            if (activity instanceof ActionBarActivity) {
-                return ((ActionBarActivity) activity);
+			if (activity instanceof ActionBarActivity) {
+				return ((ActionBarActivity) activity);
 //                return ((ActionBarActivity) activity).getSupportActionBar().getThemedContext();
-            }
-            return super.getContextForInflater(activity);
-        }
-    }
+			}
+			return super.getContextForInflater(activity);
+		}
+	}
 }

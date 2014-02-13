@@ -217,7 +217,7 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 				return;
 			}
 			Fragment fragmentByTag;
-			fragmentByTag = ((LiveBaseActivity)getActivity()).getGameLiveObserverFragment();
+			fragmentByTag = ((LiveBaseActivity) getActivity()).getGameLiveObserverFragment();
 			if (fragmentByTag == null) {
 				if (!isTablet) {
 					fragmentByTag = new GameLiveObserveFragment();
@@ -229,7 +229,7 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 			getActivityFace().openFragment((BasePopupsFragment) fragmentByTag);
 		} else if (id == R.id.currentGameHeaderView) {
 			Fragment fragmentByTag;
-				fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveFragmentTablet.class.getSimpleName());
+			fragmentByTag = getFragmentManager().findFragmentByTag(GameLiveFragmentTablet.class.getSimpleName());
 			if (fragmentByTag == null) {
 				fragmentByTag = new GameLiveFragmentTablet();
 			}

@@ -7,13 +7,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
+import com.chess.model.PopupItem;
+import com.chess.statics.Symbol;
+import com.chess.ui.interfaces.PopupDialogFace;
+import com.chess.utilities.FontsHelper;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboTextView;
-import com.chess.statics.Symbol;
-import com.chess.model.PopupItem;
-import com.chess.ui.interfaces.PopupDialogFace;
 
 /**
  * PopupDialogFragment class

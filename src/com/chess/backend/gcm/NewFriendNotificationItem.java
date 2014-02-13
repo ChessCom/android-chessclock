@@ -9,11 +9,11 @@ import com.chess.backend.entity.api.BaseResponseItem;
  * Time: 5:53
  */
 public class NewFriendNotificationItem {
-/*
-        'sender' => $params['sender'],
-        'message' => $params['message'],
-        'created_at' => $params['createdAt'],
-*/
+	/*
+			'sender' => $params['sender'],
+			'message' => $params['message'],
+			'created_at' => $params['createdAt'],
+	*/
 	private String username;
 	private String message;
 	private long createdAt;

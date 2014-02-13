@@ -35,7 +35,7 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 		return instance;
 	}
 
-	public static void resetInstance(){
+	public static void resetInstance() {
 		instance = null;
 	}
 
@@ -97,11 +97,11 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 
 	@Override
 	public boolean isLastMoveMadeWhitePlayer() {
-		return ply >= 0 && ply %2 == 1;
+		return ply >= 0 && ply % 2 == 1;
 	}
 
 	@Override
 	public boolean isLastMoveMadeBlackPlayer() {
-		return ply > 0 && ply %2 == 0; // side == WHITE_SIDE
+		return ply > 0 && ply % 2 == 0; // side == WHITE_SIDE
 	}
 }

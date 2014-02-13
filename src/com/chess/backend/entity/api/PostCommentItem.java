@@ -6,7 +6,7 @@ package com.chess.backend.entity.api;
  * Date: 24.08.13
  * Time: 16:55
  */
-public class PostCommentItem extends BaseResponseItem<PostCommentItem.Data>{
+public class PostCommentItem extends BaseResponseItem<PostCommentItem.Data> {
 /*
  "status": "success",
     "data": {

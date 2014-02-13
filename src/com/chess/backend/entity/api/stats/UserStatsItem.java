@@ -1,6 +1,6 @@
 package com.chess.backend.entity.api.stats;
 
-import com.chess.backend.entity.api.*;
+import com.chess.backend.entity.api.BaseResponseItem;
 
 /**
  * Created with IntelliJ IDEA.

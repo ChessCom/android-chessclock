@@ -830,11 +830,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 //				handler.postDelayed(new Runnable() {
 //					@Override
 //					public void run() {
-						if (useLtr) {
-							getActivityFace().toggleRightMenu();
-						} else {
-							getActivityFace().toggleLeftMenu();
-						}
+				if (useLtr) {
+					getActivityFace().toggleRightMenu();
+				} else {
+					getActivityFace().toggleLeftMenu();
+				}
 //					}
 //				}, SIDE_MENU_DELAY);
 				return true;
@@ -849,11 +849,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 //				handler.postDelayed(new Runnable() {
 //					@Override
 //					public void run() {
-						if (useLtr) {
-							getActivityFace().toggleRightMenu();
-						} else {
-							getActivityFace().toggleLeftMenu();
-						}
+				if (useLtr) {
+					getActivityFace().toggleRightMenu();
+				} else {
+					getActivityFace().toggleLeftMenu();
+				}
 //					}
 //				}, SIDE_MENU_DELAY);
 				return true;

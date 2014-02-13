@@ -44,7 +44,7 @@ public class BaseResponseItem<ItemType> {
 
 	/**
 	 * TODO remove, for test purpose only
- 	 */
+	 */
 	@Deprecated
 	public void setData(ItemType data) {
 		this.data = data;
@@ -63,7 +63,6 @@ public class BaseResponseItem<ItemType> {
 	}
 
 	/**
-	 *
 	 * @return error code received from server. See more_info field for details
 	 */
 	public int getCode() {
@@ -75,10 +74,10 @@ public class BaseResponseItem<ItemType> {
 	}
 
 	public static String getSafeValue(String value) {
-		return value == null? Symbol.EMPTY : value;
+		return value == null ? Symbol.EMPTY : value;
 	}
 
 	public static String getSafeValue(String value, String defaultValue) {
-		return value == null? defaultValue : value;
+		return value == null ? defaultValue : value;
 	}
 }

@@ -23,33 +23,33 @@ package com.facebook;
  * audience to ask the user to grant publish permission for.
  */
 public enum SessionDefaultAudience {
-    /**
-     * Represents an invalid default audience value, can be used when only reading.
-     */
-    NONE(null),
+	/**
+	 * Represents an invalid default audience value, can be used when only reading.
+	 */
+	NONE(null),
 
-    /**
-     * Indicates only the user is able to see posts made by the application.
-     */
-    ONLY_ME(NativeProtocol.AUDIENCE_ME),
+	/**
+	 * Indicates only the user is able to see posts made by the application.
+	 */
+	ONLY_ME(NativeProtocol.AUDIENCE_ME),
 
-    /**
-     * Indicates that the user's friends are able to see posts made by the application.
-     */
-    FRIENDS(NativeProtocol.AUDIENCE_FRIENDS),
+	/**
+	 * Indicates that the user's friends are able to see posts made by the application.
+	 */
+	FRIENDS(NativeProtocol.AUDIENCE_FRIENDS),
 
-    /**
-     * Indicates that all Facebook users are able to see posts made by the application.
-     */
-    EVERYONE(NativeProtocol.AUDIENCE_EVERYONE);
+	/**
+	 * Indicates that all Facebook users are able to see posts made by the application.
+	 */
+	EVERYONE(NativeProtocol.AUDIENCE_EVERYONE);
 
-    private final String nativeProtocolAudience;
+	private final String nativeProtocolAudience;
 
-    private SessionDefaultAudience(String protocol) {
-        nativeProtocolAudience = protocol;
-    }
+	private SessionDefaultAudience(String protocol) {
+		nativeProtocolAudience = protocol;
+	}
 
-    String getNativeProtocolAudience() {
-        return nativeProtocolAudience;
-    }
+	String getNativeProtocolAudience() {
+		return nativeProtocolAudience;
+	}
 }

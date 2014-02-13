@@ -140,11 +140,11 @@ public class CompEngineHelper implements GUIInterface {
 				data = savedInstanceState.getByteArray(CompEngineHelper.GAME_STATE);
 				version = savedInstanceState.getInt(GAME_STATE_VERSION_NAME, version);
 			} else {*/
-				String dataStr = sharedPreferences.getString(CompEngineHelper.GAME_STATE, null);
-				version = sharedPreferences.getInt(GAME_STATE_VERSION_NAME, version);
-				log("debug: start restore dataStr=" + dataStr);
-				if (dataStr != null)
-					data = strToByteArr(dataStr);
+			String dataStr = sharedPreferences.getString(CompEngineHelper.GAME_STATE, null);
+			version = sharedPreferences.getInt(GAME_STATE_VERSION_NAME, version);
+			log("debug: start restore dataStr=" + dataStr);
+			if (dataStr != null)
+				data = strToByteArr(dataStr);
 			//}
 			log("debug: start restore data=" + data);
 			if (data != null) {
@@ -231,19 +231,19 @@ public class CompEngineHelper implements GUIInterface {
 		bookOptions.random = (500 - 500) * (3.0 / 500); // check
 		setBookOptions();
 
-		pgnOptions.view.variations  = true;
-		pgnOptions.view.comments    = true;
-		pgnOptions.view.nag         = true;
-		pgnOptions.view.headers     = false;
-		pgnOptions.view.pieceType   = PGNOptions.PT_ENGLISH; // adjust and enable localized piece signs when necessary
-		pgnOptions.imp.variations   = true;
-		pgnOptions.imp.comments     = true;
-		pgnOptions.imp.nag          = true;
-		pgnOptions.exp.variations   = true;
-		pgnOptions.exp.comments     = true;
-		pgnOptions.exp.nag          = true;
+		pgnOptions.view.variations = true;
+		pgnOptions.view.comments = true;
+		pgnOptions.view.nag = true;
+		pgnOptions.view.headers = false;
+		pgnOptions.view.pieceType = PGNOptions.PT_ENGLISH; // adjust and enable localized piece signs when necessary
+		pgnOptions.imp.variations = true;
+		pgnOptions.imp.comments = true;
+		pgnOptions.imp.nag = true;
+		pgnOptions.exp.variations = true;
+		pgnOptions.exp.comments = true;
+		pgnOptions.exp.nag = true;
 		pgnOptions.exp.playerAction = false;
-		pgnOptions.exp.clockInfo    = false;
+		pgnOptions.exp.clockInfo = false;
 
 		engineOptions.hashMB = 16;
 		engineOptions.hints = false;
@@ -381,16 +381,16 @@ public class CompEngineHelper implements GUIInterface {
 		log("setThinkingInfo - pvMoves =" + pvMoves);
 		log("setThinkingInfo - bookMoves =" + bookMoves);
 
-        String thinkingStr1 = pvStr;
+		String thinkingStr1 = pvStr;
 		String thinkingStr2 = statStr;
 		this.pvMoves = pvMoves;
 		String bookInfoStr = bookInfo;
 		this.bookMoves = bookMoves;
 
- 		gameCompActivityFace.onEngineThinkingInfo(thinkingStr1, statStr, variantStr, pvMoves, variantMoves, bookMoves);
+		gameCompActivityFace.onEngineThinkingInfo(thinkingStr1, statStr, variantStr, pvMoves, variantMoves, bookMoves);
 
         /*if (engineCtrl.computerBusy()) {
-            lastComputationMillis = System.currentTimeMillis();
+			lastComputationMillis = System.currentTimeMillis();
         } else {
             lastComputationMillis = 0;
         }
@@ -497,7 +497,7 @@ public class CompEngineHelper implements GUIInterface {
 		for (int i = 0; i < nBytes; i++) {
 			int c1 = str.charAt(i * 2) - 'A';
 			int c2 = str.charAt(i * 2 + 1) - 'A';
-			ret[i] = (byte)(c1 * 16 + c2);
+			ret[i] = (byte) (c1 * 16 + c2);
 		}
 		return ret;
 	}
@@ -539,7 +539,7 @@ public class CompEngineHelper implements GUIInterface {
 
 	private TimeControlData initTimeControlData(int engineMaxTime) {
 		//int timeControl = 5 * 60 * 1000;
-	    int timeControl = Integer.MAX_VALUE;
+		int timeControl = Integer.MAX_VALUE;
 		int movesPerSession = 60; // check
 		int timeIncrement = 0;
 

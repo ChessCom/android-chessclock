@@ -13,7 +13,6 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.ui.adapters.LessonsItemsAdapter;
 import com.chess.ui.adapters.LessonsItemsAdapterTablet;
-import com.chess.utilities.AppUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,7 +24,8 @@ public class LessonsCourseFragmentTablet extends LessonsCourseFragment {
 
 	private LessonsItemsAdapterTablet lessonsItemAdapter;
 
-	public LessonsCourseFragmentTablet() {}
+	public LessonsCourseFragmentTablet() {
+	}
 
 	public static LessonsCourseFragmentTablet createInstance(int courseId, int categoryId) {
 		LessonsCourseFragmentTablet fragment = new LessonsCourseFragmentTablet();

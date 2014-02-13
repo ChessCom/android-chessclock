@@ -30,7 +30,8 @@ public class PopupSkillsFragment extends DialogFragment implements AdapterView.O
 
 	private PopupListSelectionFace listener;
 
-	public PopupSkillsFragment() { }
+	public PopupSkillsFragment() {
+	}
 
 	public static PopupSkillsFragment createInstance(PopupListSelectionFace listener) {
 		PopupSkillsFragment frag = new PopupSkillsFragment();

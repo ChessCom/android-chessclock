@@ -17,7 +17,8 @@ public class SettingsThemeCustomizeFragmentTablet extends SettingsThemeCustomize
 
 	private FragmentParentFace parentFace;
 
-	public SettingsThemeCustomizeFragmentTablet() {	}
+	public SettingsThemeCustomizeFragmentTablet() {
+	}
 
 	public static SettingsThemeCustomizeFragmentTablet createInstance(FragmentParentFace parentFace, ThemeItem.Data themeItem) {
 		SettingsThemeCustomizeFragmentTablet fragment = new SettingsThemeCustomizeFragmentTablet();

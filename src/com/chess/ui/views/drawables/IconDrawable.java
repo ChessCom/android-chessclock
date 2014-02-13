@@ -26,10 +26,11 @@ public class IconDrawable extends Drawable {
 
 	/**
 	 * Draw image from glyphIcon font resource
+	 *
 	 * @param context for resources
 	 * @param iconStr to be used as an image, must be get from glyph_resources
 	 * @param colorId color to be paint
-	 * @param sizeId font size
+	 * @param sizeId  font size
 	 */
 	public IconDrawable(Context context, String iconStr, int colorId, int sizeId) {
 		this.iconStr = iconStr;
@@ -38,10 +39,11 @@ public class IconDrawable extends Drawable {
 
 	/**
 	 * Draw image from glyphIcon font resource
+	 *
 	 * @param context for resources
-	 * @param iconId to be used as an image, must be get from glyph_resources
+	 * @param iconId  to be used as an image, must be get from glyph_resources
 	 * @param colorId color to be paint
-	 * @param sizeId font size
+	 * @param sizeId  font size
 	 */
 	public IconDrawable(Context context, int iconId, int colorId, int sizeId) {
 		iconStr = context.getString(iconId);
@@ -50,8 +52,9 @@ public class IconDrawable extends Drawable {
 
 	/**
 	 * Draw image from glyphIcon font resource with default parameters
+	 *
 	 * @param context for resources
-	 * @param iconId to be used as an image, must be get from glyph_resources
+	 * @param iconId  to be used as an image, must be get from glyph_resources
 	 */
 	public IconDrawable(Context context, int iconId) {
 		iconStr = context.getString(iconId);
@@ -60,8 +63,9 @@ public class IconDrawable extends Drawable {
 
 	/**
 	 * Draw image from glyphIcon font resource with default parameters
+	 *
 	 * @param context for resources
-	 * @param iconId to be used as an image, must be get from glyph_resources
+	 * @param iconId  to be used as an image, must be get from glyph_resources
 	 */
 	public IconDrawable(Context context, int iconId, ColorStateList colorStateList, int sizeId) {
 		iconStr = context.getString(iconId);
@@ -135,7 +139,7 @@ public class IconDrawable extends Drawable {
 		return iconSize;
 	}
 
-	public void setShadowParams(float radius,int dx,int  dy, int color) {
+	public void setShadowParams(float radius, int dx, int dy, int color) {
 		iconPaint.setShadowLayer(radius, dx, dy, color);
 	}
 

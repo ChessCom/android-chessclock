@@ -13,7 +13,7 @@ public class StatsTodaysRank {
 	private int total_player_count;
 
 	public String getRank() {
-		return rank == null? Symbol.EMPTY : rank;
+		return rank == null ? Symbol.EMPTY : rank;
 	}
 
 	public int getTotalPlayerCount() {

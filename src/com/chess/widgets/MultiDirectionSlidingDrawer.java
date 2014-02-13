@@ -954,7 +954,7 @@ public class MultiDirectionSlidingDrawer extends ViewGroup {
 	 * Returns the handle of the drawer.
 	 *
 	 * @return The View reprenseting the handle of the drawer, identified by the
-	 *         "handle" id in XML.
+	 * "handle" id in XML.
 	 */
 	public View getHandle() {
 		return mHandle;
@@ -964,7 +964,7 @@ public class MultiDirectionSlidingDrawer extends ViewGroup {
 	 * Returns the content of the drawer.
 	 *
 	 * @return The View reprenseting the content of the drawer, identified by the
-	 *         "content" id in XML.
+	 * "content" id in XML.
 	 */
 	public View getContent() {
 		return mContent;
@@ -1037,7 +1037,7 @@ public class MultiDirectionSlidingDrawer extends ViewGroup {
 		}
 	}
 
-	public void setTopOffset(int topOffset){
+	public void setTopOffset(int topOffset) {
 		mTopOffset = topOffset;
 	}
 }

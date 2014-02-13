@@ -83,8 +83,8 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 	private void createTopic() {
 		String category = (String) categorySpinner.getSelectedItem();
 		int categoryId = 0;
-		for (int i= 0; i < categoriesMap.size(); i++){
-			if (categoriesMap.valueAt(i).equals(category)){
+		for (int i = 0; i < categoriesMap.size(); i++) {
+			if (categoriesMap.valueAt(i).equals(category)) {
 				categoryId = categoriesMap.keyAt(i);
 				break;
 			}
@@ -153,7 +153,7 @@ public class ForumNewTopicFragment extends CommonLogicFragment implements TextVi
 
 		@Override
 		public void updateData(SuccessItem returnedObj) {
-			if(returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+			if (returnedObj.getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
 				showToast(R.string.topic_created);
 
 				getActivityFace().showPreviousFragment();

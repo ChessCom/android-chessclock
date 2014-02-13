@@ -12,7 +12,7 @@ public interface PopupDialogFace {
 
 	void onPositiveBtnClick(DialogFragment fragment);
 
-    void onNeutralBtnCLick(DialogFragment fragment);
+	void onNeutralBtnCLick(DialogFragment fragment);
 
 	void onNegativeBtnClick(DialogFragment fragment);
 }

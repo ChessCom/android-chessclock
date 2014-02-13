@@ -8,7 +8,7 @@ package com.chess.backend.entity.api;
  */
 public class LessonRatingChangeItem extends BaseResponseItem<LessonRatingChangeItem.Data> {
 /*
-    "data": {
+	"data": {
         "change": 8,
         "new": 1032
     }

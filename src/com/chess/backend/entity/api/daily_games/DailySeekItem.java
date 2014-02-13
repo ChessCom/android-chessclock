@@ -10,7 +10,7 @@ import com.chess.backend.entity.api.BaseResponseItem;
  */
 public class DailySeekItem extends BaseResponseItem<DailySeekItem.Data> {
 /*
-    "status": "success",
+	"status": "success",
     "data": {
         "type": "game_seek",
         "game_seek": {

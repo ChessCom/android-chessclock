@@ -585,8 +585,8 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	private void sendPGN() {
 		String moves = getBoardFace().getMoveListSAN();
-		String whitePlayerName = userPlayWhite? getUsername() : getString(R.string.comp);
-		String blackPlayerName = userPlayWhite? getString(R.string.comp) : getUsername();
+		String whitePlayerName = userPlayWhite ? getUsername() : getString(R.string.comp);
+		String blackPlayerName = userPlayWhite ? getString(R.string.comp) : getUsername();
 		String result = GAME_GOES;
 
 		boolean finished = getBoardFace().isFinished();
@@ -649,7 +649,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				} else {
 					resultTxt.setText(R.string.you_lose);
 				}
-	}
+			}
 		}, END_GAME_DELAY);
 	}
 
@@ -657,7 +657,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	public boolean isUserAbleToMove(int color) {
 		if (ChessBoard.isHumanVsHumanGameMode(getBoardFace())) {
 			return getBoardFace().isWhiteToMove() ? color == ChessBoard.WHITE_SIDE : color == ChessBoard.BLACK_SIDE;
-		}  else {
+		} else {
 			return super.isUserAbleToMove(color);
 		}
 	}

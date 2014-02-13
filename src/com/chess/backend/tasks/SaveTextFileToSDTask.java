@@ -67,7 +67,7 @@ public class SaveTextFileToSDTask extends AbstractUpdateTask<String, String> {
 			return result;
 		}
 
-		result  = StaticData.RESULT_OK;
+		result = StaticData.RESULT_OK;
 		// save stream to SD
 		try {
 			OutputStream os = new FileOutputStream(fileToSave);

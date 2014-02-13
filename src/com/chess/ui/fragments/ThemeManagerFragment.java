@@ -398,26 +398,26 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 
 	// theme name, board, piece,          backgroundId,boardId,pieceId, soundId
 	private static final String[][] resourceIdMap = new String[][]{
-			{"game_room", 	"dark_wood", 	"game_room", "5", "6",   "8", "-1"},
-			{"dark", 		"green", 		"dark", 	 "6", "2",   "11", "-1"},
-			{"light", 		"light", 		"light", 	 "7", "21",  "10", "-1"},
-			{"wood", 		"dark_wood", 	"game_room", "8", "6",   "8", "-1"},
-			{"glass", 		"glass", 		"glass", 	 "9", "14",  "9", "-1"},
-			{"tournament", 	"tournament", 	"tournament","10", "8",  "7", "-1"},
-			{"staunton", 	"burled_wood", 	"3d_staunton","11", "5",  "12", "-1"},
-			{"newspaper", 	"newspaper", 	"newspaper", "12", "13", "15", "10"},
-			{"tigers", 		"parchment", 	"tigers", 	 "13", "9",  "16", "10"},
-			{"nature", 		"translucent", 	"nature", 	 "14", "10", "17", "2"},
-			{"sky", 		"sky", 			"sky", 		 "15", "11", "19", "-1"},
-			{"space", 		"translucent", 	"space", 	 "16", "10", "20", "5"},
-			{"ocean", 		"sand", 		"ocean", 	 "17", "12", "22", "-1"},
-			{"metal", 		"metal", 		"metal", 	 "18", "16", "24", "3"},
-			{"gothic", 		"stone", 		"gothic", 	 "19", "17", "26", "-1"},
-			{"marble", 		"marble", 		"marble", 	 "20", "7",  "28", "4"},
-			{"neon", 		"neon", 		"neon", 	 "21", "15", "30", "-1"},
-			{"graffiti", 	"graffiti", 	"graffiti",  "22", "18", "32", "6"},
-			{"bubblegum", 	"bubblegum", 	"bubblegum", "23", "19", "34", "-1"},
-			{"lolz", 		"lolz", 		"lolz", 	 "24", "20", "36", "8"}
+			{"game_room", "dark_wood", "game_room", "5", "6", "8", "-1"},
+			{"dark", "green", "dark", "6", "2", "11", "-1"},
+			{"light", "light", "light", "7", "21", "10", "-1"},
+			{"wood", "dark_wood", "game_room", "8", "6", "8", "-1"},
+			{"glass", "glass", "glass", "9", "14", "9", "-1"},
+			{"tournament", "tournament", "tournament", "10", "8", "7", "-1"},
+			{"staunton", "burled_wood", "3d_staunton", "11", "5", "12", "-1"},
+			{"newspaper", "newspaper", "newspaper", "12", "13", "15", "10"},
+			{"tigers", "parchment", "tigers", "13", "9", "16", "10"},
+			{"nature", "translucent", "nature", "14", "10", "17", "2"},
+			{"sky", "sky", "sky", "15", "11", "19", "-1"},
+			{"space", "translucent", "space", "16", "10", "20", "5"},
+			{"ocean", "sand", "ocean", "17", "12", "22", "-1"},
+			{"metal", "metal", "metal", "18", "16", "24", "3"},
+			{"gothic", "stone", "gothic", "19", "17", "26", "-1"},
+			{"marble", "marble", "marble", "20", "7", "28", "4"},
+			{"neon", "neon", "neon", "21", "15", "30", "-1"},
+			{"graffiti", "graffiti", "graffiti", "22", "18", "32", "6"},
+			{"bubblegum", "bubblegum", "bubblegum", "23", "19", "34", "-1"},
+			{"lolz", "lolz", "lolz", "24", "20", "36", "8"}
 	};
 
 

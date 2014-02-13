@@ -91,7 +91,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 	private NotationFace notationsFace;
 	private int dailyRating;
 
-	public GameDailyFinishedFragment() { }
+	public GameDailyFinishedFragment() {
+	}
 
 	public static GameDailyFinishedFragment createInstance(long gameId, String username) {
 		GameDailyFinishedFragment fragment = new GameDailyFinishedFragment();
@@ -684,7 +685,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 		int minRating = dailyRating - LiveGameConfig.RATING_STEP;
 		int maxRating = dailyRating + LiveGameConfig.RATING_STEP;
 		LoadItem loadItem = LoadHelper.postGameSeek(getUserToken(), currentGame.getDaysPerMove(),
-				currentGame.isRated() ? 1 : 0,  currentGame.getGameType(), opponent, minRating, maxRating);
+				currentGame.isRated() ? 1 : 0, currentGame.getGameType(), opponent, minRating, maxRating);
 		new RequestJsonTask<BaseResponseItem>(createChallengeUpdateListener).executeTask(loadItem);
 	}
 
@@ -790,7 +791,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}
-
 
 
 }

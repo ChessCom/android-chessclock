@@ -59,12 +59,12 @@ public class LessonsItemsAdapterTablet extends LessonsItemsAdapter {
 			holder.completedIconTxt.setTextColor(incompleteIconColor);
 		}
 
-		holder.scoreLabelTxt.setVisibility(completed? View.VISIBLE : View.GONE);
-		holder.attemptsLabelTxt.setVisibility(completed? View.VISIBLE : View.GONE);
-		holder.ratingLabelTxt.setVisibility(completed? View.VISIBLE : View.GONE);
-		holder.scoreValueTxt.setVisibility(completed? View.VISIBLE : View.GONE);
-		holder.attemptsValueTxt.setVisibility(completed? View.VISIBLE : View.GONE);
-		holder.ratingValueTxt.setVisibility(completed? View.VISIBLE : View.GONE);
+		holder.scoreLabelTxt.setVisibility(completed ? View.VISIBLE : View.GONE);
+		holder.attemptsLabelTxt.setVisibility(completed ? View.VISIBLE : View.GONE);
+		holder.ratingLabelTxt.setVisibility(completed ? View.VISIBLE : View.GONE);
+		holder.scoreValueTxt.setVisibility(completed ? View.VISIBLE : View.GONE);
+		holder.attemptsValueTxt.setVisibility(completed ? View.VISIBLE : View.GONE);
+		holder.ratingValueTxt.setVisibility(completed ? View.VISIBLE : View.GONE);
 	}
 
 	private class ViewHolder {

@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
  * Date: 25.02.13
  * Time: 19:54
  */
-public class WelcomeTourFragment extends CommonLogicFragment implements YouTubePlayer.OnFullscreenListener{
+public class WelcomeTourFragment extends CommonLogicFragment implements YouTubePlayer.OnFullscreenListener {
 
 	private static final int PAGE_CNT = 4;
 	public static final int SIGN_UP_PAGE = 3;
@@ -187,7 +187,7 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 			youTubePlayerFragment3 = initYoutubeFragment(R.id.youTubeFrameContainer3);
 			youTubeFrameContainer3.setVisibility(View.VISIBLE);
 		} else if (view.getId() == R.id.loginLinkTxt) {
-			((WelcomeTabsFragment)parentFace).openSignInFragment();
+			((WelcomeTabsFragment) parentFace).openSignInFragment();
 		} else if (view.getId() == R.id.completeSignUpBtn) {
 			if (!checkRegisterInfo()) {
 				return;
@@ -331,7 +331,7 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 
 		private void showCloseButton(FrameLayout youTubeFrameContainer, Button closeYouTubeBtn, boolean show) {
 			if (youTubeFrameContainer != null && youTubeFrameContainer.getVisibility() == View.VISIBLE) {
-				closeYouTubeBtn.setVisibility(show? View.VISIBLE: View.GONE);
+				closeYouTubeBtn.setVisibility(show ? View.VISIBLE : View.GONE);
 			}
 		}
 	}
@@ -549,13 +549,13 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 					TextView termsLinkTxt = (TextView) view.findViewById(R.id.termsLinkTxt);
 					termsLinkTxt.setClickable(true);
 					String termsText = getString(R.string.by_signing_up_accept_mobile) + Symbol.NEW_STR + Symbol.NEW_STR
-							+ getString(R.string.by_signing_up_accept_mobile1) ;
+							+ getString(R.string.by_signing_up_accept_mobile1);
 					termsLinkTxt.setText(Html.fromHtml(termsText));
 					Linkify.addLinks(termsLinkTxt, Linkify.WEB_URLS);
 					termsLinkTxt.setMovementMethod(LinkMovementMethod.getInstance());
 					termsLinkTxt.setLinkTextColor(Color.WHITE);
 				}
-					break;
+				break;
 
 				default:
 					break;

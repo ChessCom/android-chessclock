@@ -91,7 +91,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 								THREAD_POOL_SHARED,
 								THREAD_POOL_MAX_THREADS,
 								THREAD_POOL_DAEMON
-				);
+						);
 
 				HttpClient httpClient = HttpClientProvider.getHttpClient(httpClientConfiguration, false);
 
@@ -189,6 +189,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	private String getConfigBayeuxHost() {
 		return "live." + getLiveHost();
 	}
+
 	private String getWSConnectionUrl() {
 		return "ws://" + getConfigBayeuxHost() + ":80/cometd";
 	}

@@ -35,9 +35,10 @@ public class GameDailyConditionsFragment extends GameDailyAnalysisFragment imple
 	private ConditionsAdapter conditionsAdapter;
 	private List<String> conditionsList;
 
-	public GameDailyConditionsFragment() {}
+	public GameDailyConditionsFragment() {
+	}
 
-	public static GameDailyConditionsFragment  createInstance(long gameId, String username, boolean isFinished) {
+	public static GameDailyConditionsFragment createInstance(long gameId, String username, boolean isFinished) {
 		GameDailyConditionsFragment fragment = new GameDailyConditionsFragment();
 		Bundle arguments = new Bundle();
 		arguments.putLong(GAME_ID, gameId);

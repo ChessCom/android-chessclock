@@ -212,7 +212,6 @@ public class DailyCurrentGamesCursorAdapter extends ItemsCursorAdapter {
 	}
 
 
-
 	public void setTimeLabel(String timeLabel) {
 		this.timeLabel = timeLabel;
 		notifyDataSetChanged();

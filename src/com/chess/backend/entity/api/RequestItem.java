@@ -8,7 +8,7 @@ package com.chess.backend.entity.api;
  */
 public class RequestItem extends BaseResponseItem<RequestItem.Data> {
 /*
-    "status": "success",
+	"status": "success",
     "data": {
         "request_id": 2077
     }

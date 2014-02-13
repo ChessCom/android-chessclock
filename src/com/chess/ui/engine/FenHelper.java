@@ -255,7 +255,7 @@ public class FenHelper {
 
 	private void fillTheFenLine(StringBuilder sb, String[] line, boolean lastLine) {
 		String previousPiece = EMPTY_SQUARE;
-		String lineResult =Symbol.EMPTY;
+		String lineResult = Symbol.EMPTY;
 		int replacedCnt = 1;
 		int stringAddedCnt = 0;
 		for (int i = 0; i < line.length; i++) {

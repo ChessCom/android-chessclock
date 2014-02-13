@@ -55,7 +55,8 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	protected LessonsPaginationAdapter paginationAdapter;
 	private Integer selectedCategoryId;
 
-	public LessonsCategoriesFragment() {}
+	public LessonsCategoriesFragment() {
+	}
 
 	public static LessonsCategoriesFragment createInstance(String sectionName) {
 		LessonsCategoriesFragment fragment = new LessonsCategoriesFragment();
@@ -132,11 +133,11 @@ public class LessonsCategoriesFragment extends CommonLogicFragment implements It
 	private boolean fillCategories() {
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
 
-		if (cursor != null && cursor.moveToFirst()){
+		if (cursor != null && cursor.moveToFirst()) {
 			do {
 				categoriesNames.add(DbDataManager.getString(cursor, DbScheme.V_NAME));
 				categoriesIds.add(Integer.valueOf(DbDataManager.getString(cursor, DbScheme.V_CATEGORY_ID)));
-			} while(cursor.moveToNext());
+			} while (cursor.moveToNext());
 			cursor.close();
 			return true;
 		} else {

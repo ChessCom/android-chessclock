@@ -92,6 +92,7 @@ public abstract class SectionedListAdapter extends BaseAdapter {
 
 	/**
 	 * Section means adapter with it's own items
+	 *
 	 * @param pos selected position
 	 * @return section(adapter) number which is responsible for providing data for selected position
 	 */

@@ -22,7 +22,7 @@ public class UnZipper {
 
 	public static List<String> unzip(String zipFile, String filePath, FileReadyListener progressFace) {
 		List<String> filesList = new ArrayList<String>();
-		try  {
+		try {
 			FileInputStream inputStream = new FileInputStream(zipFile);
 			ZipInputStream zipInputStream = new ZipInputStream(inputStream);
 			ZipEntry zipEntry;
@@ -31,7 +31,7 @@ public class UnZipper {
 				Log.v(TAG, "Unzipping " + zipEntry.getName());
 				filesList.add(zipEntry.getName());
 
-				if(zipEntry.isDirectory()) {
+				if (zipEntry.isDirectory()) {
 					dirChecker(filePath, zipEntry.getName());
 				} else {
 					FileOutputStream outputStream = new FileOutputStream(filePath + zipEntry.getName());
@@ -42,8 +42,8 @@ public class UnZipper {
 					final int buffer_size = 1024;
 
 					byte[] buffer = new byte[buffer_size];
-					for (;;) {
-						int count = zipInputStream. read(buffer, 0, buffer_size);
+					for (; ; ) {
+						int count = zipInputStream.read(buffer, 0, buffer_size);
 						totalRead += count;
 						int progress = (int) ((totalRead / (float) totalSize) * 100);
 
@@ -51,7 +51,7 @@ public class UnZipper {
 						if (count == -1) {
 							break;
 						}
-						outputStream.write(buffer,0,count);
+						outputStream.write(buffer, 0, count);
 					}
 
 					zipInputStream.closeEntry();
@@ -60,7 +60,7 @@ public class UnZipper {
 
 			}
 			zipInputStream.close();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			Log.e(TAG, e.toString());
 		}
 		return filesList;
@@ -69,7 +69,7 @@ public class UnZipper {
 	private static void dirChecker(String filePath, String dir) {
 		File file = new File(filePath + dir);
 
-		if(!file.isDirectory()) {
+		if (!file.isDirectory()) {
 			boolean dirCreated = file.mkdirs();
 			Log.d(TAG, "dir created = " + dirCreated);
 		}

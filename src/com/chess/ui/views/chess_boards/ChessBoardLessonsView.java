@@ -61,7 +61,7 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 
 		track = false;
 		if (!getBoardFace().isAnalysis()) {
-			if (((LessonsBoardFace)getBoardFace()).isLatestMoveMadeUser()) {
+			if (((LessonsBoardFace) getBoardFace()).isLatestMoveMadeUser()) {
 				return true;
 			}
 		}

@@ -155,14 +155,15 @@ public class StatsGameFragment extends CommonLogicFragment implements AdapterVie
 	}
 
 	/**
-	 *  Fill list according :
-	 *	Daily - Chess
-	 *	Live - Standard
-	 *	Live - Blitz
-	 *	Live - Bullet
-	 *	Daily - Chess960
-	 *	Tactics
-	 *	Coach Manager
+	 * Fill list according :
+	 * Daily - Chess
+	 * Live - Standard
+	 * Live - Blitz
+	 * Live - Bullet
+	 * Daily - Chess960
+	 * Tactics
+	 * Coach Manager
+	 *
 	 * @return Drawable icon for index
 	 */
 	private Drawable getIconByCategory(int index) {

@@ -17,13 +17,13 @@ public class ChessBoardAnalysis extends ChessBoard {
 	}
 
 	public static ChessBoardAnalysis getInstance(GameFace gameFace) {
-		if (instance == null ) {
+		if (instance == null) {
 			instance = new ChessBoardAnalysis(gameFace);
 		}
 		return instance;
 	}
 
-	public static void resetInstance(){
+	public static void resetInstance() {
 		instance = null;
 	}
 }

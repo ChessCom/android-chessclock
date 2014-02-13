@@ -7,14 +7,12 @@ import android.net.Uri;
 import com.chess.backend.entity.api.LessonCourseItem;
 import com.chess.backend.entity.api.LessonSingleItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
+import com.chess.statics.StaticData;
 
-import static com.chess.db.DbScheme.V_DESCRIPTION;
-import static com.chess.db.DbScheme.V_ID;
-import static com.chess.db.DbScheme.V_NAME;
+import static com.chess.db.DbScheme.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,14 +20,14 @@ import static com.chess.db.DbScheme.V_NAME;
  * Date: 25.07.13
  * Time: 19:23
  */
-public class SaveLessonsCourseTask  extends AbstractUpdateTask<LessonCourseItem.Data, Long> {
+public class SaveLessonsCourseTask extends AbstractUpdateTask<LessonCourseItem.Data, Long> {
 
 	private ContentResolver contentResolver;
 	protected static String[] arguments1 = new String[1];
 	private String username;
 
 	public SaveLessonsCourseTask(TaskUpdateInterface<LessonCourseItem.Data> taskFace, LessonCourseItem.Data currentItem,
-									  ContentResolver resolver, String username) {
+								 ContentResolver resolver, String username) {
 		super(taskFace);
 		this.username = username;
 		this.item = currentItem;
@@ -61,7 +59,7 @@ public class SaveLessonsCourseTask  extends AbstractUpdateTask<LessonCourseItem.
 		for (LessonSingleItem lesson : item.getLessons()) {
 			lesson.setCourseId(item.getId());
 			lesson.setUser(username);
-		  	DbDataManager.saveLessonListItemToDb(contentResolver, lesson);
+			DbDataManager.saveLessonListItemToDb(contentResolver, lesson);
 		}
 
 		result = StaticData.RESULT_OK;

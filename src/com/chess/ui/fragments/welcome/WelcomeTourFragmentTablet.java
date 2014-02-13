@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * Date: 04.11.13
  * Time: 17:12
  */
-public class WelcomeTourFragmentTablet extends CommonLogicFragment implements YouTubePlayer.OnFullscreenListener{
+public class WelcomeTourFragmentTablet extends CommonLogicFragment implements YouTubePlayer.OnFullscreenListener {
 
 	private static final int PAGE_CNT = 3;
 
@@ -143,8 +143,8 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 
 		@Override
 		public void onPageSelected(int position) {
-				homePageRadioGroup.setVisibility(View.VISIBLE);
-				((RadioButton) homePageRadioGroup.getChildAt(position)).setChecked(true);
+			homePageRadioGroup.setVisibility(View.VISIBLE);
+			((RadioButton) homePageRadioGroup.getChildAt(position)).setChecked(true);
 
 			if (parentFace != null) { // can be null after onSavedInstance
 				parentFace.onPageSelected(position);
@@ -175,7 +175,7 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 			youTubeFrameContainer3.setVisibility(View.VISIBLE);
 			closeYouTubeBtn3.setVisibility(View.VISIBLE);
 		} else if (view.getId() == R.id.loginLinkTxt) {
-			((WelcomeTabsFragment)parentFace).openSignInFragment();
+			((WelcomeTabsFragment) parentFace).openSignInFragment();
 		} else if (view.getId() == R.id.completeSignUpBtn) {
 			if (!checkRegisterInfo()) {
 				return;
@@ -315,7 +315,7 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 
 		private void showCloseButton(FrameLayout youTubeFrameContainer, Button closeYouTubeBtn, boolean show) {
 			if (youTubeFrameContainer != null && youTubeFrameContainer.getVisibility() == View.VISIBLE) {
-				closeYouTubeBtn.setVisibility(show? View.VISIBLE: View.GONE);
+				closeYouTubeBtn.setVisibility(show ? View.VISIBLE : View.GONE);
 			}
 		}
 	}

@@ -65,7 +65,7 @@ public class PopupCountriesFragment extends DialogFragment implements AdapterVie
 			popupTitleLay.setBackgroundDrawable(new ActionBarBackgroundDrawable(getActivity()));
 		}
 
-		((TextView)view.findViewById(R.id.popupTitleTxt)).setText(R.string.select_country);
+		((TextView) view.findViewById(R.id.popupTitleTxt)).setText(R.string.select_country);
 
 		getDialog().setCancelable(false);
 

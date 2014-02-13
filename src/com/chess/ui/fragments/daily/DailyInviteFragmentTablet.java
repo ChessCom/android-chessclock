@@ -23,7 +23,8 @@ import com.chess.widgets.ProfileImageView;
 public class DailyInviteFragmentTablet extends DailyInviteFragment implements ViewTreeObserver.OnGlobalLayoutListener {
 
 
-	public DailyInviteFragmentTablet() { }
+	public DailyInviteFragmentTablet() {
+	}
 
 	public static DailyInviteFragmentTablet createInstance(DailyChallengeItem.Data challengeItem) {
 		DailyInviteFragmentTablet fragment = new DailyInviteFragmentTablet();

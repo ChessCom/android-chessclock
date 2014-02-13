@@ -128,7 +128,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			ratingChangeTxt.setTextColor(defaultColorStateList);
 			ratingChangeTxt.setId(RATING_CHANGE_ID);
 			ratingChangeTxt.setGravity(Gravity.CENTER_VERTICAL);
-			ratingChangeTxt.setPadding((int)(4 * density), 0, 0, 0);
+			ratingChangeTxt.setPadding((int) (4 * density), 0, 0, 0);
 			ratingChangeTxt.setFont(FontsHelper.BOLD_FONT);
 
 			addView(ratingChangeTxt, layoutParams);
@@ -153,7 +153,7 @@ public class PanelInfoTacticsView extends RelativeLayout {
 			clockIconParams.gravity = CENTER_VERTICAL;
 
 			clockIconTxt.setFont(FontsHelper.ICON_FONT);
-			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size)/ density; // 21;
+			float clockIconSize = resources.getDimension(R.dimen.new_tactics_clock_icon_size) / density; // 21;
 			clockIconTxt.setTextSize(clockIconSize);
 			clockIconTxt.setText(R.string.ic_clock);
 			clockIconTxt.setTextColor(defaultColorStateList);

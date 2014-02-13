@@ -10,7 +10,7 @@ import com.chess.ui.fragments.ThemeManagerFragment;
  * Date: 26.10.13
  * Time: 16:34
  */
-public class BoardSingleItem extends BaseResponseItem<BoardSingleItem.Data>{
+public class BoardSingleItem extends BaseResponseItem<BoardSingleItem.Data> {
 	public static final String PATH = ThemeManagerFragment.CLOUD_FRONT + ThemeManagerFragment.BOARDS;
 	public static final String COLOR_DIVIDER = "#";
 

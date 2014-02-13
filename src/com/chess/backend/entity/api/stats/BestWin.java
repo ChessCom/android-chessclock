@@ -19,7 +19,7 @@ public class BestWin {
 	}
 
 	public String getUsername() {
-		return username == null? Symbol.EMPTY : username;
+		return username == null ? Symbol.EMPTY : username;
 	}
 
 	public long getGameId() {

@@ -17,7 +17,8 @@ public class MessagesInboxFragmentTablet extends MessagesInboxFragment {
 
 	private FragmentParentFace parentFace;
 
-	public MessagesInboxFragmentTablet() {}
+	public MessagesInboxFragmentTablet() {
+	}
 
 	public static MessagesInboxFragmentTablet createInstance(FragmentParentFace parentFace) {
 		MessagesInboxFragmentTablet fragment = new MessagesInboxFragmentTablet();

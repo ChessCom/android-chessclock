@@ -11,8 +11,6 @@ import android.widget.RadioGroup;
 import com.chess.R;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.chess.ui.fragments.daily.DailyGamesFragmentTablet;
-import com.chess.ui.fragments.friends.FriendsFragmentTablet;
 import com.chess.ui.interfaces.FragmentParentFace;
 
 /**

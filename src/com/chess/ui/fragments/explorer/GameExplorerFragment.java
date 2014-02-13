@@ -200,7 +200,8 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 			boardView.setFastMovesMode(false);
 			boardView.moveForward();
 			loadCurrentBoard();
-		} if (view.getId() == R.id.upgradeBtn) {
+		}
+		if (view.getId() == R.id.upgradeBtn) {
 
 			if (findFragmentByTag(LIMIT_REACHED_TAG) != null) {
 				((BasePopupDialogFragment) findFragmentByTag(LIMIT_REACHED_TAG)).dismiss();
@@ -349,7 +350,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 			int ply = getBoardFace().getPly();
 			String moveNumber = String.valueOf(ply + 1);
 
-			if (ply %2 == 0) { // if second move, than add dots
+			if (ply % 2 == 0) { // if second move, than add dots
 				moveNumber += ".";
 			} else {
 				moveNumber += "...";

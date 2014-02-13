@@ -24,16 +24,16 @@ import android.os.Bundle;
  * cached for future use (for instance, when handling a deep link).
  */
 public class NonCachingTokenCachingStrategy extends TokenCachingStrategy {
-    @Override
-    public Bundle load() {
-        return null;
-    }
+	@Override
+	public Bundle load() {
+		return null;
+	}
 
-    @Override
-    public void save(Bundle bundle) {
-    }
+	@Override
+	public void save(Bundle bundle) {
+	}
 
-    @Override
-    public void clear() {
-    }
+	@Override
+	public void clear() {
+	}
 }

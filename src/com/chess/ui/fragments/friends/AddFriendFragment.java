@@ -72,7 +72,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 					opponentNames.add(opponentName);
 					opponentItems.add(new OpponentItem(opponentName, avatarUrl));
 				}
-			} while(cursor.moveToNext());
+			} while (cursor.moveToNext());
 		}
 
 		if (cursor != null) {

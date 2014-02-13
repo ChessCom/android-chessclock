@@ -11,7 +11,8 @@ import com.chess.model.GameDiagramItem;
  */
 public class GameDiagramFragmentTablet extends GameDiagramFragment {
 
-	public GameDiagramFragmentTablet() {}
+	public GameDiagramFragmentTablet() {
+	}
 
 	public static GameDiagramFragmentTablet createInstance(GameDiagramItem analysisItem) {
 		GameDiagramFragmentTablet fragment = new GameDiagramFragmentTablet();

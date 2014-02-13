@@ -75,7 +75,7 @@ public class ChatMessagesAdapter extends ItemsAdapter<ChatItem> {
 		}
 	}
 
-	private static class ViewHolder{
+	private static class ViewHolder {
 		TextView text;
 		AvatarView myImg;
 		AvatarView opponentImg;

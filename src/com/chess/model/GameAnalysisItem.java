@@ -154,7 +154,7 @@ public class GameAnalysisItem implements Parcelable {
 		labelsConfig.topPlayerName = topPlayerName;
 		labelsConfig.bottomPlayerName = bottomPlayerName;
 		labelsConfig.topPlayerRating = topPlayerRating;
-		labelsConfig.bottomPlayerRating =bottomPlayerRating;
+		labelsConfig.bottomPlayerRating = bottomPlayerRating;
 		labelsConfig.topPlayerAvatar = topPlayerAvatar;
 		labelsConfig.bottomPlayerAvatar = bottomPlayerAvatar;
 		labelsConfig.topPlayerCountry = topPlayerCountry;

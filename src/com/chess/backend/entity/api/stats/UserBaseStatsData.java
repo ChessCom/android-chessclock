@@ -47,18 +47,18 @@ public class UserBaseStatsData {
 	}
 
 	public class Rating {
-/*
-	  "current": 1324,
-	  "highest": {
-		"rating": 1324,
-		"timestamp": 1315586067
-	  },
-	  "best_win": {
-		"rating": 1573,
-		"username": "Computer1-EASY"
-	  },
-	  "average_opponent": 1373
-*/
+		/*
+			  "current": 1324,
+			  "highest": {
+				"rating": 1324,
+				"timestamp": 1315586067
+			  },
+			  "best_win": {
+				"rating": 1573,
+				"username": "Computer1-EASY"
+			  },
+			  "average_opponent": 1373
+		*/
 		private int current;
 		private BaseRating highest;
 		private BestWin best_win;

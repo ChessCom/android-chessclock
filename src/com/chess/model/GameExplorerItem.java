@@ -16,7 +16,8 @@ public class GameExplorerItem implements Parcelable {
 	private int gameType;
 	private boolean userPlayWhite;
 
-	public GameExplorerItem() {}
+	public GameExplorerItem() {
+	}
 
 	public String getFen() {
 		return fen;

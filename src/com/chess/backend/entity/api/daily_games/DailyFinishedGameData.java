@@ -8,7 +8,7 @@ package com.chess.backend.entity.api.daily_games;
  */
 public class DailyFinishedGameData extends DailyGameBaseData {
 	/*
-    "id": 35000778,
+	"id": 35000778,
 	"i_play_as": 1,
 	"game_type_id": 1,
 	"fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",

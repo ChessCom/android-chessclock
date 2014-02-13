@@ -19,7 +19,7 @@ import java.util.List;
 public class ForumTopicsPaginationAdapter extends PaginationAdapter<ForumTopicItem.Topic> {
 
 	public ForumTopicsPaginationAdapter(Context context, ItemsAdapter<ForumTopicItem.Topic> adapter,
-										 TaskUpdateInterface<ForumTopicItem.Topic> taskFace, LoadItem loadItem) {
+										TaskUpdateInterface<ForumTopicItem.Topic> taskFace, LoadItem loadItem) {
 		super(context, adapter, taskFace);
 		this.loadItem = loadItem;
 		setFirstPage(0);

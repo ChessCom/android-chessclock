@@ -59,11 +59,11 @@ public class SettingsPasswordFragment extends CommonLogicFragment {
 	public void onClick(View view) {
 		super.onClick(view);
 		if (view.getId() == R.id.changePasswordBtn) {
-			if (!checkPasswords()){
+			if (!checkPasswords()) {
 				return;
 			}
 
-			if (!isNetworkAvailable()){ // check only if live
+			if (!isNetworkAvailable()) { // check only if live
 				popupItem.setPositiveBtnId(R.string.check_connection);
 				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
 				return;

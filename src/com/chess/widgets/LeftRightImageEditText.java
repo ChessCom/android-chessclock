@@ -72,14 +72,14 @@ public class LeftRightImageEditText extends RoboEditText {
 			color = array.getInteger(R.styleable.EnhancedField_color, Color.WHITE);
 			// Left image
 			String iconStr = array.getString(R.styleable.EnhancedField_leftImage);
-			icon = new IconDrawable(context, iconStr, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size) ;
+			icon = new IconDrawable(context, iconStr, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size);
 
 			// right image
 			String rightIconStr = array.getString(R.styleable.EnhancedField_rightImage);
 			if (array.hasValue(R.styleable.EnhancedField_rightImageDrawable)) {
 				rightIcon = array.getDrawable(R.styleable.EnhancedField_rightImageDrawable);
 			} else {
-				rightIcon = new IconDrawable(context, rightIconStr, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size) ;
+				rightIcon = new IconDrawable(context, rightIconStr, R.color.new_normal_grey_3, R.dimen.edit_field_icon_size);
 			}
 
 			roundMode = array.getInteger(R.styleable.EnhancedField_round_mode, ONE);
@@ -147,8 +147,8 @@ public class LeftRightImageEditText extends RoboEditText {
 
 		// place image
 		canvas.save();
-		float imgCenterX = (backImageWidth - imageWidth)/2;
-		float imgCenterY = (height - imageWidth)/2;
+		float imgCenterX = (backImageWidth - imageWidth) / 2;
+		float imgCenterY = (height - imageWidth) / 2;
 		canvas.translate(imgCenterX, imgCenterY);
 		icon.draw(canvas);
 		canvas.restore();
@@ -156,8 +156,8 @@ public class LeftRightImageEditText extends RoboEditText {
 		if (rightIcon != null) {
 			// place second image
 			canvas.save();
-			imgCenterX = width - rightImageOffset/2 - rightImageWidth;
-			imgCenterY = (height - rightImageWidth)/2;
+			imgCenterX = width - rightImageOffset / 2 - rightImageWidth;
+			imgCenterY = (height - rightImageWidth) / 2;
 			canvas.translate(imgCenterX, imgCenterY);
 			rightIcon.draw(canvas);
 			canvas.restore();
@@ -172,7 +172,7 @@ public class LeftRightImageEditText extends RoboEditText {
 
 		// set padding to make text selection work correct
 		if (enlargeHeight) {
-			setPadding((int) (backImageWidth + bottomPadding), 0, 0, (int) (currentViewHeight/2 - getTextSize()/2));
+			setPadding((int) (backImageWidth + bottomPadding), 0, 0, (int) (currentViewHeight / 2 - getTextSize() / 2));
 		} else {
 			setPadding((int) (backImageWidth + bottomPadding), 0, 0, bottomPadding);
 		}
@@ -198,7 +198,7 @@ public class LeftRightImageEditText extends RoboEditText {
 		lineYStart = height - 1;
 		lineYStop = height - 1;
 
-		int x0 = (int)BORDER_OFFSET;
+		int x0 = (int) BORDER_OFFSET;
 		int y0 = 0;
 		int x1 = (int) backImageWidth;
 		int y1 = 0;
@@ -210,20 +210,20 @@ public class LeftRightImageEditText extends RoboEditText {
 
 				break;
 			case TOP:
-				y0 = (int)BORDER_OFFSET;
+				y0 = (int) BORDER_OFFSET;
 				y1 = (int) (height - BORDER_OFFSET + 1);
 
 				break;
 			case MID:
-				y0 = (int)BORDER_OFFSET - 1;
-				y1 = (int) (height - BORDER_OFFSET) +1;
+				y0 = (int) BORDER_OFFSET - 1;
+				y1 = (int) (height - BORDER_OFFSET) + 1;
 				break;
 			case BOT:
 				lineYStart = 0;
 				lineYStop = 0;
 
-				y0 = (int)BORDER_OFFSET - 1;
-				y1 =  (int) (height - BORDER_OFFSET);
+				y0 = (int) BORDER_OFFSET - 1;
+				y1 = (int) (height - BORDER_OFFSET);
 				break;
 		}
 		backForImage.setBounds(x0, y0, x1, y1);
@@ -238,7 +238,7 @@ public class LeftRightImageEditText extends RoboEditText {
 
 			currentViewHeight = rightImageHeight + rightImageOffset;
 			setMeasuredDimension(parentWidth, currentViewHeight);
-		}else {
+		} else {
 			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		}
 	}

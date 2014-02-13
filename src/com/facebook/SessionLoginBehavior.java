@@ -24,36 +24,36 @@ package com.facebook;
  * {@link Session#requestNewPublishPermissions(com.facebook.Session.NewPermissionsRequest) requestNewPublishPermissions}.
  */
 public enum SessionLoginBehavior {
-    /**
-     * Specifies that Session should attempt Single Sign On (SSO), and if that
-     * does not work fall back to dialog auth. This is the default behavior.
-     */
-    SSO_WITH_FALLBACK(true, true),
+	/**
+	 * Specifies that Session should attempt Single Sign On (SSO), and if that
+	 * does not work fall back to dialog auth. This is the default behavior.
+	 */
+	SSO_WITH_FALLBACK(true, true),
 
-    /**
-     * Specifies that Session should only attempt SSO. If SSO fails, then the
-     * open or new permissions call fails.
-     */
-    SSO_ONLY(true, false),
+	/**
+	 * Specifies that Session should only attempt SSO. If SSO fails, then the
+	 * open or new permissions call fails.
+	 */
+	SSO_ONLY(true, false),
 
-    /**
-     * Specifies that SSO should not be attempted, and to only use dialog auth.
-     */
-    SUPPRESS_SSO(false, true);
+	/**
+	 * Specifies that SSO should not be attempted, and to only use dialog auth.
+	 */
+	SUPPRESS_SSO(false, true);
 
-    private final boolean allowsKatanaAuth;
-    private final boolean allowsWebViewAuth;
+	private final boolean allowsKatanaAuth;
+	private final boolean allowsWebViewAuth;
 
-    private SessionLoginBehavior(boolean allowsKatanaAuth, boolean allowsWebViewAuth) {
-        this.allowsKatanaAuth = allowsKatanaAuth;
-        this.allowsWebViewAuth = allowsWebViewAuth;
-    }
+	private SessionLoginBehavior(boolean allowsKatanaAuth, boolean allowsWebViewAuth) {
+		this.allowsKatanaAuth = allowsKatanaAuth;
+		this.allowsWebViewAuth = allowsWebViewAuth;
+	}
 
-    boolean allowsKatanaAuth() {
-        return allowsKatanaAuth;
-    }
+	boolean allowsKatanaAuth() {
+		return allowsKatanaAuth;
+	}
 
-    boolean allowsWebViewAuth() {
-        return allowsWebViewAuth;
-    }
+	boolean allowsWebViewAuth() {
+		return allowsWebViewAuth;
+	}
 }

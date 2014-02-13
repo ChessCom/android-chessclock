@@ -182,7 +182,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		dismissFragmentDialog(fragment);
 	}
 
-	private void dismissFragmentDialog(DialogFragment fragment){
+	private void dismissFragmentDialog(DialogFragment fragment) {
 		popupItem.setPositiveBtnId(R.string.ic_check);
 		popupItem.setNegativeBtnId(R.string.ic_close);
 		fragment.setCancelable(true);
@@ -194,21 +194,21 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		return getSupportFragmentManager().findFragmentByTag(tag);
 	}
 
-	protected Fragment findFragmentById (int id) {
-		 return getSupportFragmentManager().findFragmentById(id);
+	protected Fragment findFragmentById(int id) {
+		return getSupportFragmentManager().findFragmentById(id);
 	}
 
-	public void showKeyBoard(EditText editText){
+	public void showKeyBoard(EditText editText) {
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
 	}
 
-	public void hideKeyBoard(View editText){
+	public void hideKeyBoard(View editText) {
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
 	}
 
-	public void hideKeyBoard(){
+	public void hideKeyBoard() {
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(findViewById(R.id.content_frame).getWindowToken(), 0);
 	}
@@ -294,7 +294,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		updatePopupAndShow(tag);
 	}
 
-	private synchronized void updatePopupAndShow(String tag){
+	private synchronized void updatePopupAndShow(String tag) {
 		popupManager.add(PopupDialogFragment.createInstance(popupItem));
 		getLastPopupFragment().show(getSupportFragmentManager(), tag);
 	}
@@ -336,7 +336,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		updateProgressAndShow(popupProgressDialogFragment);
 	}
 
-	private void updateProgressAndShow(PopupProgressFragment popupProgressDialogFragment){
+	private void updateProgressAndShow(PopupProgressFragment popupProgressDialogFragment) {
 		popupProgressDialogFragment.updatePopupItem(popupProgressItem);
 
 		if (getSupportFragmentManager() == null) {
@@ -405,7 +405,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 			}
 		}
 
-		if(popupProgressManager.size() == 0) {
+		if (popupProgressManager.size() == 0) {
 			return;
 		}
 
@@ -424,7 +424,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	}
 
 	protected String getTextFromField(EditText editText) {
-		if (editText!= null && editText.getText() != null) {
+		if (editText != null && editText.getText() != null) {
 			return editText.getText().toString().trim();
 		} else {
 			return Symbol.EMPTY;
@@ -435,7 +435,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		return context;
 	}
 
-	protected EasyTracker provideGATracker(){
+	protected EasyTracker provideGATracker() {
 		return EasyTracker.getInstance(this);
 	}
 

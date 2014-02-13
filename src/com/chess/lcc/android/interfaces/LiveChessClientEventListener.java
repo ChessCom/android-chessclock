@@ -10,13 +10,14 @@ public interface LiveChessClientEventListener {
 
 	/**
 	 * This method invoked in non UI thread so be wise using screen updates here.
+	 *
 	 * @param message
 	 */
-    void onConnectionFailure(String message);
+	void onConnectionFailure(String message);
 
 	void onObsoleteProtocolVersion();
 
-    void onConnectionBlocked(boolean blocked);
+	void onConnectionBlocked(boolean blocked);
 
 	void onAdminAnnounce(String message);
 }

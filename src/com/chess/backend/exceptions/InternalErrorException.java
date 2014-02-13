@@ -28,7 +28,7 @@ public class InternalErrorException extends IOException {
 		return code;
 	}
 
-	public void logMe(){
+	public void logMe() {
 		Log.e(TAG, " requestData return code " + getCode() + " trace:" + getMessage());
 	}
 }

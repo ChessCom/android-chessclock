@@ -333,7 +333,7 @@ public class SettingsProfileFragment extends CommonLogicFragment implements Text
 
 			String membershipExpireDate;
 			if (membershipData.getDate().getExpires() != 0) {
-				Date time = new Date(membershipData.getDate().getExpires()* 1000L);
+				Date time = new Date(membershipData.getDate().getExpires() * 1000L);
 				membershipExpireDate = dateFormatter.format(time);
 			} else {
 				membershipExpireDate = "--/--/--";

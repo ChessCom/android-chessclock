@@ -73,7 +73,7 @@ public class VideosCursorAdapter extends ItemsCursorAdapter {
 
 		String firstName = DbDataManager.getString(cursor, DbScheme.V_FIRST_NAME);
 		CharSequence chessTitle = DbDataManager.getString(cursor, DbScheme.V_CHESS_TITLE);
-		String lastName =  DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
+		String lastName = DbDataManager.getString(cursor, DbScheme.V_LAST_NAME);
 		CharSequence authorStr;
 		if (TextUtils.isEmpty(chessTitle)) {
 			authorStr = firstName + Symbol.SPACE + lastName;

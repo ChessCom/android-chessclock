@@ -4,9 +4,9 @@ import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
-import com.chess.utilities.FontsHelper;
 import com.chess.R;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.FontsHelper;
 
 /**
  * Created with IntelliJ IDEA.

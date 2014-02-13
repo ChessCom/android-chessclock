@@ -15,6 +15,7 @@ public abstract class AbstractUpdateListener<ItemType> implements TaskUpdateInte
 
 	/**
 	 * Use this contructor if you need it for fragment. It will handle getActivity() on updateData callback
+	 *
 	 * @param context
 	 * @param clazz
 	 * @param startedFragment
@@ -33,6 +34,7 @@ public abstract class AbstractUpdateListener<ItemType> implements TaskUpdateInte
 
 	/**
 	 * Use this contructor if you need it for fragment. It will handle getActivity() on updateData callback
+	 *
 	 * @param context
 	 * @param startedFragment
 	 */
@@ -71,7 +73,7 @@ public abstract class AbstractUpdateListener<ItemType> implements TaskUpdateInte
 	}
 
 	@Override
-	public Context getMeContext() throws IllegalStateException{
+	public Context getMeContext() throws IllegalStateException {
 		if (context == null) {
 			throw new IllegalStateException("Context is already dead");
 		} else {

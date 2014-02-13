@@ -4,9 +4,9 @@ import android.content.ContentResolver;
 import android.util.SparseArray;
 import com.chess.backend.entity.api.ForumTopicItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
-import com.chess.statics.StaticData;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.db.DbDataManager;
+import com.chess.statics.StaticData;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -21,7 +21,7 @@ public class GetOfflineTacticsBatchTask extends AbstractUpdateTask<TacticProblem
 
 	private Resources resources;
 
-	public GetOfflineTacticsBatchTask(TaskUpdateInterface<TacticProblemItem.Data> taskUpdateInterface, Resources resources){
+	public GetOfflineTacticsBatchTask(TaskUpdateInterface<TacticProblemItem.Data> taskUpdateInterface, Resources resources) {
 		super(taskUpdateInterface, new ArrayList<TacticProblemItem.Data>());
 		this.resources = resources;
 	}

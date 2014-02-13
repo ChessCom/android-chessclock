@@ -40,7 +40,7 @@ public class DailyFinishedGameItem extends BaseResponseItem<DailyCurrentGameItem
   },
 */
 
-	public class Data  extends DailyFinishedGameData{
+	public class Data extends DailyFinishedGameData {
 
 	}
 }

@@ -17,7 +17,7 @@ public class DailyGameConfig {
 	private int gameType;
 	private String opponentName;
 
-	public static class Builder{
+	public static class Builder {
 		private int daysPerMove;
 		private boolean rated;
 		private int rating;
@@ -29,10 +29,10 @@ public class DailyGameConfig {
 		/**
 		 * Create new Seek game with default values
 		 */
-		public Builder(){
+		public Builder() {
 			daysPerMove = 3;
 			rated = true;
-			gameType =  RestHelper.V_GAME_CHESS;
+			gameType = RestHelper.V_GAME_CHESS;
 		}
 
 		/**
@@ -43,16 +43,27 @@ public class DailyGameConfig {
 		 * 5  = 3
 		 * 7  = 4
 		 * 10 = 5
-		 *
 		 */
-		public Builder setTimeFromMode(int mode){
+		public Builder setTimeFromMode(int mode) {
 			switch (mode) {
-				case 0: daysPerMove = 1; break;
-				case 1: daysPerMove = 2; break;
-				case 2: daysPerMove = 3; break;
-				case 3: daysPerMove = 5; break;
-				case 4: daysPerMove = 7; break;
-				case 5: daysPerMove = 10; break;
+				case 0:
+					daysPerMove = 1;
+					break;
+				case 1:
+					daysPerMove = 2;
+					break;
+				case 2:
+					daysPerMove = 3;
+					break;
+				case 3:
+					daysPerMove = 5;
+					break;
+				case 4:
+					daysPerMove = 7;
+					break;
+				case 5:
+					daysPerMove = 10;
+					break;
 			}
 			return this;
 		}
@@ -80,6 +91,7 @@ public class DailyGameConfig {
 		public int getGameType() {
 			return gameType;
 		}
+
 		public int getRating() {
 			return rating;
 		}
@@ -107,7 +119,7 @@ public class DailyGameConfig {
 			return this;
 		}
 
-		public DailyGameConfig build(){
+		public DailyGameConfig build() {
 			return new DailyGameConfig(this);
 		}
 	}
