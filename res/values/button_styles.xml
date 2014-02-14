@@ -5,7 +5,6 @@
 	<style name="Button" parent="Text.Button">
 		<item name="btn_radius">@dimen/rounded_button_radius</item>
 		<item name="btn_is_solid">true</item>
-		<item name="btn_padding">@dimen/rounded_button_padding_left</item>
 		<item name="btn_bevel_lvl">1</item>
 		<item name="btn_bevel_inset">1dp</item>
 		<!--2px-->

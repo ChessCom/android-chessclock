@@ -32,8 +32,8 @@
 
 package com.mopub.mobileads;
 
-import android.os.AsyncTask;
 import android.util.Log;
+import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.mopub.mobileads.factories.HttpClientFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
