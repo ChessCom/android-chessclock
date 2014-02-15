@@ -1,8 +1,5 @@
 package com.chess.lcc.android;
 
-import android.util.Log;
-import com.chess.utilities.LogMe;
-
 import java.io.IOException;
 
 /**
@@ -22,12 +19,5 @@ public class DataNotValidException extends IOException {
 	public DataNotValidException(String message) {
 		super(message);
 
-		String stackTrace;
-		try {
-			throw new Exception();
-		} catch (Exception e) {
-			stackTrace = Log.getStackTraceString(e);
-			LogMe.dl("!!!!!!! EXCEPTION stackTrace=" + stackTrace);
-		}
 	}
 }

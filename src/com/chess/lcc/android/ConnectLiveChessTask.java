@@ -112,7 +112,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 				} else { // 4.1+
 					LogMe.dl(TAG, "Support WSS and HTTP Live transports");
-					//conConfs.add(createWSSConnectionConfig());
+					conConfs.add(createWSSConnectionConfig());
 					conConfs.add(createHttpConnectionConfig(httpClient));
 				}
 

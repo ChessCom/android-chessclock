@@ -78,7 +78,7 @@ public abstract class ItemsAdapter<T> extends BaseAdapter {
 		if (view == null) {
 			view = createView(parent);
 		}
-		bindView(itemsList.get(pos), pos, view); //
+		bindView(itemsList.get(pos), pos, view);
 		return view;
 	}
 

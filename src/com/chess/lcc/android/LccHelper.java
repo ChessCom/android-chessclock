@@ -710,10 +710,11 @@ public class LccHelper {
 
 	public void observeTopGame() {
 		LogMe.dl(TAG, "observe top game: listener=" + gameListener);
-		lccClient.observeTopGame(GameRatingClass.Lightning, gameListener);
+		lccClient.observeTopGame(GameRatingClass.Blitz, gameListener);
 	}
 
 	public void unObserveGame(Long gameId) {
+		LogMe.dl(TAG, "unObserve game=" + gameId);
 		lccClient.unobserveGame(gameId);
 	}
 
@@ -896,6 +897,7 @@ public class LccHelper {
 	}
 
 	public void unObserveCurrentObservingGame() {
+//		LogMe.dl(TAG, "unObserveCurrentObservingGame: gameId=" + getCurrentObservedGameId());
 		if (getCurrentObservedGameId() != null) {
 			runUnObserveGameTask(getCurrentObservedGameId());
 		}

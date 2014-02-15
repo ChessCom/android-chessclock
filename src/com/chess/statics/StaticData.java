@@ -8,7 +8,7 @@ package com.chess.statics;
  */
 public class StaticData {
 
-	public static final boolean USE_SWITCH_API = true;
+	public static final boolean USE_SWITCH_API = false;
 //	public static final boolean USE_SWITCH_API = com.chess.BuildConfig.DEBUG;
 
 	/*Result constants*/
