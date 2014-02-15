@@ -48,7 +48,7 @@ public class LiveChessService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		LogMe.dl(TAG, "SERVICE: onStartCommand");
+		LogMe.dl(TAG, "SERVICE: onStartCommand, intent=" + intent);
 
 		if (DataHolder.getInstance().isLiveChess()) {
 
@@ -58,11 +58,10 @@ public class LiveChessService extends Service {
 			if (liveConnectionHelper.isLiveChessEventListenerSet()) {
 				liveConnectionHelper.checkAndConnectLiveClient();
 			}
-		} else {
+		} else if (intent == null) {
 
 			// lets try this way
 			stop(); // todo: to vm: What does that mean?
-			return START_NOT_STICKY;
 		}
 
 		// try to use START_NOT_STICKY as main mode,
