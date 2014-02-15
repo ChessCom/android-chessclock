@@ -29,6 +29,7 @@ import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.interfaces.LoginErrorUpdateListener;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
+import com.chess.utilities.Ping;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -38,6 +39,7 @@ import java.util.Map;
 public class LiveConnectionHelper {
 
 	private static final String TAG = "LCCLOG-LiveConnectionHelper";
+	private static final boolean PING_ENABLED = false;
 
 	private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec, shutdown after user leave app
 	private static final long PLAYING_SHUTDOWN_TIMEOUT_DELAY = 2 * 60 * 1000;
@@ -68,6 +70,7 @@ public class LiveConnectionHelper {
 
 	private LccChallengeTaskRunner challengeTaskRunner;
 	private LccGameTaskRunner gameTaskRunner;
+	private Ping testPing;
 
 
 	public LiveConnectionHelper(LiveChessService liveService) {
@@ -80,6 +83,7 @@ public class LiveConnectionHelper {
 		connectionListener = new LccConnectionListener(this);
 		subscriptionListener = new LccSubscriptionListener();
 		handler = new Handler();
+		testPing = new Ping(context);
 	}
 
 	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
@@ -332,16 +336,18 @@ public class LiveConnectionHelper {
 
 	public void cleanupLiveInfo() {
 		LogMe.dl(TAG, "cleanupLiveInfo");
-		//new AppData(context).setLiveChessMode(false); // let UI set it
-		lccHelper.setCurrentGameId(null);
-		lccHelper.setCurrentObservedGameId(null);
-		lccHelper.setUser(null);
-		lccHelper.clearGames();
-		lccHelper.clearChallenges();
-		lccHelper.clearOwnChallenges();
-		lccHelper.clearSeeks();
-		lccHelper.clearOnlineFriends();
-		clearPausedEvents();
+
+		synchronized (LccHelper.GAME_SYNC_LOCK) {
+			lccHelper.setCurrentGameId(null);
+			lccHelper.setCurrentObservedGameId(null);
+			lccHelper.setUser(null);
+			lccHelper.clearGames();
+			lccHelper.clearChallenges();
+			lccHelper.clearOwnChallenges();
+			lccHelper.clearSeeks();
+			lccHelper.clearOnlineFriends();
+			clearPausedEvents();
+		}
 	}
 
 	public void logout() {
@@ -508,6 +514,25 @@ public class LiveConnectionHelper {
 
 	private long getShutDownDelay() {
 		return lccHelper.isUserPlaying() ? PLAYING_SHUTDOWN_TIMEOUT_DELAY : SHUTDOWN_TIMEOUT_DELAY;
+	}
+
+	public void pingLive() {
+		if (PING_ENABLED) {
+			testPing.runPingLiveTask();
+			testPing.runTestRequestLiveServerTask();
+		}
+	}
+
+	public void runPingLiveTimer() {
+		testPing.runPingLiveTimer();
+		testPing.runTestRequestsTimer();
+	}
+
+	public void stopPingLiveTimer() {
+		if (PING_ENABLED) {
+			testPing.stopPingLiveTimer();
+			testPing.stopTestRequestsTimer();
+		}
 	}
 
 	// ------------------- Task runners wrapping ------------------------
@@ -727,7 +752,7 @@ public class LiveConnectionHelper {
 	public void exitGameObserving() {
 		LogMe.dl(TAG, "exitGameObserving");
 		setLccObserveEventListener(null);
-		lccHelper.setCurrentGameId(null);
+		//lccHelper.setCurrentGameId(null); // looks redundant here, lets try to avoid this
 		lccHelper.stopClocks();
 		lccHelper.unObserveCurrentObservingGame();
 		lccHelper.setCurrentObservedGameId(null);
@@ -746,10 +771,6 @@ public class LiveConnectionHelper {
 		boolean isCurrentGameObserved = currentGame != null && lccHelper.isObservedGame(currentGame);
 
 		return isCurrentGameObserved;
-	}
-
-	public Long getCurrentObservedGameId() {
-		return lccHelper.getCurrentObservedGameId();
 	}
 
 	public Context getContext() {

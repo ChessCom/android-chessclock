@@ -235,19 +235,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 
 			getControlsView().haveNewMessage(currentGame.hasNewMessage());
-
-			// avoid races on update moves logic for active game, doUpdateGame updates moves, avoid peaces disappearing and invalidmovie exception
-			// vm: actually we have to invoke checkAndReplayMoves() here, because we reset a board on pause/resume everytime.
-			// As for doUpdateGame() - that method updates moves only if gameLivePaused=false, so should be safe.
-			// Lets see how synchronized approach is suitable here
 			liveHelper.checkAndReplayMoves();
-
 			liveHelper.checkFirstTestMove();
-
 			liveHelper.checkGameEvents();
 
 			{// fill labels
-				userPlayWhite = liveHelper.isUserColorWhite();
+					userPlayWhite = liveHelper.isUserColorWhite();
 				if (userPlayWhite) {
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 					labelsConfig.topPlayerName = currentGame.getBlackUsername();

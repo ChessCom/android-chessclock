@@ -20,7 +20,7 @@ public class LccConnectionListener implements ConnectionListener {
 
 	@Override
 	public void onOtherClientEntered(User user) {
-		LogMe.dl(TAG, "Another client entered: user=" + user.getUsername());
+		LogMe.dl(TAG, "Another client entered: user=" + user.getUsername() + " client=" + liveConnectionHelper.getClientId());
 		String message = lccHelper.getContext().getString(R.string.account_error) + " " +
 				lccHelper.getContext().getString(R.string.another_login_detected);
 
@@ -31,6 +31,7 @@ public class LccConnectionListener implements ConnectionListener {
 	public void onConnectionEstablished(User user, UserSettings settings, ServerStats stats) {
 		LogMe.dl(TAG, "onConnectionEstablished: client=" + liveConnectionHelper.getClientId());
 		lccHelper.setUser(user);
+		liveConnectionHelper.stopPingLiveTimer();
 		liveConnectionHelper.setConnected(true);
 		liveConnectionHelper.setConnecting(false);
 		liveConnectionHelper.clearPausedEvents();
@@ -51,6 +52,9 @@ public class LccConnectionListener implements ConnectionListener {
 	public void onConnectionFailure(User user, String message, FailureDetails details, Throwable throwable) {
 		LogMe.dl(TAG, "User connection failure: " + message + ", details=" + details + ", client=" + liveConnectionHelper.getClientId());
 
+		liveConnectionHelper.pingLive();
+		//lccHelper.stopPingLiveTimer();
+
 		liveConnectionHelper.processConnectionFailure(details);
 	}
 
@@ -58,6 +62,10 @@ public class LccConnectionListener implements ConnectionListener {
 	public void onConnectionLost(User user, String message, Throwable throwable) {
 		LogMe.dl(TAG, "Connection Lost, with message = " + message + ", client=" + liveConnectionHelper.getClientId());
 		//LogMe.dl(TAG, "Connection Lost: isNetworkAvailable=" + AppUtils.isNetworkAvailable(lccHelper.getContext()));
+
+		liveConnectionHelper.pingLive();
+		//lccHelper.stopPingLiveTimer();
+
 		liveConnectionHelper.setConnected(false);
 		liveConnectionHelper.setConnecting(true);
 	}
@@ -65,19 +73,23 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onConnectionReestablished(User user, UserSettings userSettings, ServerStats serverStats) {
 		LogMe.dl(TAG, "onConnectionReestablished:" + " lccClient=" + liveConnectionHelper.getClientId());
-		lccHelper.setUser(user);
-		lccHelper.clearChallenges();
-		lccHelper.clearOwnChallenges();
-		lccHelper.clearSeeks();
-		lccHelper.clearGames();
-		lccHelper.setCurrentGameId(null);
-		liveConnectionHelper.setConnected(true);
-		liveConnectionHelper.setConnecting(false);
 
-		lccHelper.setFriends(userSettings.getFriends());
-		lccHelper.storeBlockedUsers(userSettings.getBlockedUsers(), userSettings.getBlockingUsers());
+		synchronized (LccHelper.GAME_SYNC_LOCK) {
+			lccHelper.setUser(user);
+			lccHelper.clearChallenges();
+			lccHelper.clearOwnChallenges();
+			lccHelper.clearSeeks();
+			lccHelper.clearGames();
+			lccHelper.setCurrentGameId(null);
+			liveConnectionHelper.stopPingLiveTimer();
+			liveConnectionHelper.setConnected(true);
+			liveConnectionHelper.setConnecting(false);
 
-		liveConnectionHelper.clearPausedEvents();
+			lccHelper.setFriends(userSettings.getFriends());
+			lccHelper.storeBlockedUsers(userSettings.getBlockedUsers(), userSettings.getBlockingUsers());
+
+			liveConnectionHelper.clearPausedEvents();
+		}
 	}
 
 	@Override
@@ -88,6 +100,7 @@ public class LccConnectionListener implements ConnectionListener {
 	@Override
 	public void onConnectionRestored(User arg0) {
 		LogMe.dl(TAG, "Connection Restored:" + " lccClient=" + liveConnectionHelper.getClientId());
+		liveConnectionHelper.stopPingLiveTimer();
 		liveConnectionHelper.setConnected(true);
 		liveConnectionHelper.setConnecting(false);
 	}
@@ -108,6 +121,7 @@ public class LccConnectionListener implements ConnectionListener {
 	public void onKicked(User user, String reason, String message, Long period) {
 		LogMe.dl(TAG, "The client kicked: " + user.getUsername() + ", reason=" + reason +
 				", message=" + message + ", period=" + period);
+		liveConnectionHelper.stopPingLiveTimer();
 
 		liveConnectionHelper.processKicked();
 	}

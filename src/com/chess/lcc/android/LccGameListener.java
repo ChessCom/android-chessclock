@@ -24,54 +24,57 @@ public class LccGameListener implements GameListener {
 	public void onGameListReceived(Collection<? extends Game> games) {
 		LogMe.dl(TAG, "Game list received, total size = " + games.size());
 
-		Long previousGameId = latestGameId;
-		latestGameId = 0L;
+		synchronized (LccHelper.GAME_SYNC_LOCK) {
 
-		Long gameId;
-		Long latestMyGameId = 0L;
-		Long latestTopGameId = 0L;
+			Long previousGameId = latestGameId;
+			latestGameId = 0L;
 
-		for (Game game : games) {
-			gameId = game.getId();
+			Long gameId;
+			Long latestMyGameId = 0L;
+			Long latestTopGameId = 0L;
 
-			if (lccHelper.isMyGame(game)) {
-				if (gameId > latestMyGameId) {
-					latestMyGameId = gameId;
+			for (Game game : games) {
+				gameId = game.getId();
+
+				if (lccHelper.isMyGame(game)) {
+					if (gameId > latestMyGameId) {
+						latestMyGameId = gameId;
+					}
+
+				} else if (gameId > latestTopGameId) {
+					latestTopGameId = gameId;
 				}
-
-			} else if (gameId > latestTopGameId) {
-				latestTopGameId = gameId;
 			}
-		}
 
-		if (latestMyGameId != 0) {
-			latestGameId = latestMyGameId;
+			if (latestMyGameId != 0) {
+				latestGameId = latestMyGameId;
 
-		} else if (latestTopGameId != 0) {
-			latestGameId = latestTopGameId;
-		}
-
-		for (Game game : games) {
-			gameId = game.getId();
-			if (!gameId.equals(latestGameId)) {
-				LogMe.dl(TAG, "onGameListReceived: ignore game, id=" + gameId);
-				games.remove(game);
+			} else if (latestTopGameId != 0) {
+				latestGameId = latestTopGameId;
 			}
-		}
 
-		if (previousGameId != 0 && !latestGameId.equals(previousGameId)) {
-
-			Game currentGame = lccHelper.getCurrentGame();
-			if (currentGame != null) {
-				lccHelper.setLastGame(currentGame);
+			for (Game game : games) {
+				gameId = game.getId();
+				if (!gameId.equals(latestGameId)) {
+					LogMe.dl(TAG, "onGameListReceived: ignore game, id=" + gameId);
+					games.remove(game);
+				}
 			}
-			lccHelper.clearGames();
-			lccHelper.setCurrentGameId(null);
-			lccHelper.setCurrentObservedGameId(null);
 
-			if (lccHelper.getLccEventListener() != null) {
-				LogMe.dl(TAG, "onGameListReceived: game is expired");
-				lccHelper.getLccEventListener().expireGame();
+			if (previousGameId != 0 && !latestGameId.equals(previousGameId)) {
+
+				Game currentGame = lccHelper.getCurrentGame();
+				if (currentGame != null) {
+					lccHelper.setLastGame(currentGame);
+				}
+				lccHelper.clearGames();
+				lccHelper.setCurrentGameId(null);
+				lccHelper.setCurrentObservedGameId(null);
+
+				if (lccHelper.getLccEventListener() != null) {
+					LogMe.dl(TAG, "onGameListReceived: game is expired");
+					lccHelper.getLccEventListener().expireGame();
+				}
 			}
 		}
 	}
