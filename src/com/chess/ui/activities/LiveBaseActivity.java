@@ -152,6 +152,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {   // TODO refactor with showPreviousFragment logic
 		if (keyCode == KeyEvent.KEYCODE_BACK && !getSlidingMenu().isMenuShowing()) {
+
+			LogMe.dl(TAG, "LBA back button pressed isLiveChess()=" + getDataHolder().isLiveChess());
+			LogMe.dl(TAG, "LBA back button pressed isLCSBound=" + isLCSBound);
+
 			if (getDataHolder().isLiveChess() && isLCSBound) {
 
 				Fragment fragmentByTag = getGameLiveFragment();

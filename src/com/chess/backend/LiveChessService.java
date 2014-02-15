@@ -33,6 +33,7 @@ public class LiveChessService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
+		LogMe.dl(TAG, "SERVICE: onBind @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		if (liveConnectionHelper == null) {
 			liveConnectionHelper = new LiveConnectionHelper(this);
 		}
@@ -62,15 +63,15 @@ public class LiveChessService extends Service {
 
 			// lets try this way
 			stop(); // todo: to vm: What does that mean?
-			return START_NOT_STICKY;
 		}
 
 		// try to use START_NOT_STICKY as main mode,
 		// because system will keep service started when app is in foreground,
 		// and we anyway kill service in 30sec if it's in the background
-		// todo: to vm: system shouldn't re-create service which has no binders. So when we shutdown service that mean means that activity is no longer exist.
+
+		// todo: to vm: system shouldn't re-create service which has no binders. So when we shutdown service that means that activity is no longer exist.
 		// todo: to vm: if we do leave when app is in foreground, we only do leave for live chess client, and do not shutdown service itself. Please review this logic as it might be incorrect.
-		return START_STICKY_COMPATIBILITY;
+		return START_STICKY;
 	}
 
 	@Override
@@ -82,6 +83,19 @@ public class LiveChessService extends Service {
 		}
 		//stopForeground(true);
 		//unregisterReceiver(networkChangeReceiver);
+	}
+
+
+	@Override
+	public void onRebind(Intent intent) {
+		super.onRebind(intent);
+		LogMe.dl(TAG, "SERVICE: onRebind @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	}
+
+	@Override
+	public void onStart(Intent intent, int startId) {
+		super.onStart(intent, startId);
+		LogMe.dl(TAG, "SERVICE: onStart @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 	}
 
 	public void stop() {

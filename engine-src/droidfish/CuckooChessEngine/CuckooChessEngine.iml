@@ -8,16 +8,16 @@
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="Android 4.4 Platform" jdkType="Android SDK" />
     <orderEntry type="module-library">
-      <library>
+      <library name="junit4">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../../../../maven/junit/junit/4.8.2/junit-4.8.2.jar!/" />
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.10.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="inheritedJdk" />
   </component>
 </module>
 
