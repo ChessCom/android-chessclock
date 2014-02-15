@@ -626,7 +626,9 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 					resetValidMoves();
 					onSecondMoveAnimated();
 				} else {
-					gameFace.updateParentView();
+					if (use3dPieces) {
+						gameFace.updateParentView();
+					}
 					//navigating = false;
 				}
 			}

@@ -359,7 +359,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			topPanelView.showTimeLeftIcon(!userMove);
 			bottomPanelView.showTimeLeftIcon(userMove);
 		}
-		boardView.updateNotations(getBoardFace().getNotationArray());
+		boardView.updateNotations(getBoardFace().getNotationsArray());
 	}
 
 	@Override

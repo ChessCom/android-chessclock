@@ -12,11 +12,17 @@ import java.util.ArrayList;
  */
 public interface GameCompFace extends GameFace {
 
+	/**
+	 * Called when comp made move and it's player's turn to move
+	 */
 	void onPlayerMove();
 
-	void computer();
-
+	/**
+	 * Called when player made move and it's comp turn to move
+	 */
 	void onCompMove();
+
+	void computer();
 
 	void onGameStarted(int currentMovePosition);
 

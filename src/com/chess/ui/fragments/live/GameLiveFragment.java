@@ -891,7 +891,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				logLiveTest(e.getMessage());
 			}
 
-			boardView.updateNotations(getBoardFace().getNotationArray());
+			boardView.updateNotations(getBoardFace().getNotationsArray());
 		}
 	}
 

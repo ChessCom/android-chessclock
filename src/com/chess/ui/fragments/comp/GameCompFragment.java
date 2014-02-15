@@ -357,7 +357,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			bottomPanelView.showFlags(false);
 		}
 
-		boardView.updateNotations(getBoardFace().getFullNotationsArray());
+		boardView.updateNotations(getBoardFace().getNotationsArray());
 	}
 
 	@Override
@@ -387,7 +387,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				}
 				invalidateGameScreen();
 				controlsView.enableHintButton(true);
-				boardView.invalidate();
 			}
 		});
 	}
@@ -424,22 +423,18 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				if (boardView.isHint()) {
 					boardFace.makeHintMove(move);
 
-					//if (/*AppData.isComputerVsComputerGameMode(getBoardFace()) || */(!AppData.isHumanVsHumanGameMode(getBoardFace()))) {
 					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
-					//}
-
 				} else {
 					boardFace.makeMove(move);
 
 					boardView.setComputerMoving(false);
-					invalidateGameScreen();
+					invalidateGameScreen(); // we do update screen here
 					onPlayerMove();
 
 					boardFace.setMovesCount(boardFace.getPly());
-					if (boardView.isGameOver())
-						return;
+					// check if game is over. Then show end game popup
+					boardView.isGameOver();
 				}
-				boardView.invalidate();
 			}
 		});
 	}
@@ -453,11 +448,11 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 			getBoardFace().restoreBoardAfterHint();
 
-			boardView.invalidate();
-
 			boardView.setHint(false);
 			getControlsView().enableGameControls(true);
 			onPlayerMove();
+
+			boardView.invalidate();
 		}
 	};
 

@@ -345,7 +345,7 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 		topPanelView.setPlayerPremiumIcon(labelsConfig.topPlayerPremiumStatus);
 		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
 
-		boardView.updateNotations(getBoardFace().getNotationArray());
+		boardView.updateNotations(getBoardFace().getNotationsArray());
 	}
 
 	@Override

@@ -107,7 +107,7 @@ public class GameDailyConditionsFragment extends GameDailyAnalysisFragment imple
 	@Override
 	public void invalidateGameScreen() {
 
-//		boardView.updateNotations(getBoardFace().getNotationArray());
+//		boardView.updateNotations(getBoardFace().getNotationsArray());
 	}
 
 	private boolean isUserMove() {

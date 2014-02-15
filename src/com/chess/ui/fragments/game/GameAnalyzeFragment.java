@@ -296,7 +296,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		topPanelView.setPlayerPremiumIcon(labelsConfig.topPlayerPremiumStatus);
 		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
 
-		boardView.updateNotations(getBoardFace().getNotationArray());
+		boardView.updateNotations(getBoardFace().getNotationsArray());
 	}
 
 	@Override

@@ -88,7 +88,7 @@ public interface BoardFace {
 
 	String[] getFullNotationsArray();
 
-	String[] getNotationArray();
+	String[] getNotationsArray();
 
 	String convertMoveLive();
 

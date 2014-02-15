@@ -436,7 +436,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 		topPanelView.setPlayerPremiumIcon(labelsConfig.topPlayerPremiumStatus);
 		bottomPanelView.setPlayerPremiumIcon(labelsConfig.bottomPlayerPremiumStatus);
 
-		boardView.updateNotations(getBoardFace().getNotationArray());
+		boardView.updateNotations(getBoardFace().getNotationsArray());
 	}
 
 	@Override

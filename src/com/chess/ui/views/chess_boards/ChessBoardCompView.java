@@ -57,7 +57,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 
 		getBoardFace().setMovesCount(getBoardFace().getPly());
 		gameCompFace.invalidateGameScreen();
-		gameCompFace.updateAfterMove();
+//		gameCompFace.updateAfterMove(); // do nothing
 
 		boolean gameOver = isGameOver(); // do not show popup twice
 		Log.d(CompEngineHelper.TAG, "DEBUGBOARD isGameOver() " + gameOver);

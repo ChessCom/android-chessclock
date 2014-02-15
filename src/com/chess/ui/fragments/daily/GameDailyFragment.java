@@ -523,7 +523,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			bottomPanelView.showTimeLeftIcon(userMove);
 		}
 
-		boardView.updateNotations(getBoardFace().getNotationArray());
+		boardView.updateNotations(getBoardFace().getNotationsArray());
 	}
 
 	@Override
@@ -708,7 +708,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
 
-		boardView.updateNotations(getBoardFace().getNotationArray());
+		boardView.updateNotations(getBoardFace().getNotationsArray());
 	}
 
 	@Override

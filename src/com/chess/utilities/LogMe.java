@@ -2,6 +2,7 @@ package com.chess.utilities;
 
 import android.content.Context;
 import android.util.Log;
+import com.chess.BuildConfig;
 import com.chess.statics.Symbol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ import org.slf4j.MarkerFactory;
  */
 public class LogMe {
 
-	public static final boolean ENABLED = false; // use it only for builds that need it
+	public static final boolean ENABLED = BuildConfig.DEBUG; // use it only for builds that need it
 
 	private static final Logger LOG = LoggerFactory.getLogger(LogMe.class); // todo: check class
 

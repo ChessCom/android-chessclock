@@ -404,7 +404,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		topPanelView.setPlayerName(labelsConfig.topPlayerLabel);
 		bottomPanelView.setPlayerName(labelsConfig.bottomPlayerLabel);
 
-		boardView.updateNotations(getBoardFace().getNotationArray());
+		boardView.updateNotations(getBoardFace().getNotationsArray());
 	}
 
 	@Override

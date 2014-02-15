@@ -1542,7 +1542,7 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public String[] getNotationArray() {
+	public String[] getNotationsArray() {
 		String[] output = new String[ply];
 		for (int i = 0; i < ply; i++) {
 			output[i] = histDat[i].notation;

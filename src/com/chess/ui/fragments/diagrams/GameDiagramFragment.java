@@ -580,7 +580,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	@Override
 	public void invalidateGameScreen() {
 		if (!isSmallScreen) {
-			boardView.updateNotations(getBoardFace().getNotationArray());
+			boardView.updateNotations(getBoardFace().getNotationsArray());
 		}
 	}
 
