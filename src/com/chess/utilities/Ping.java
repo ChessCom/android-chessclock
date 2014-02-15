@@ -72,7 +72,7 @@ public class Ping {
 			//LogMe.dl(TAG, NO_NETWORK);
 			return NO_NETWORK;
 		} else {
-			LogMe.dl(TAG, "start PING (id=" + marker + ")...");
+			LogMe.dl(TAG, "PING " + host + " START, id=" + marker);
 		}
 
 		PingArguments arguments =
@@ -127,7 +127,7 @@ public class Ping {
 	public void pingLive() {
 		String marker = String.valueOf(System.currentTimeMillis());
 		String ping = ping(HOST_LIVE_CHESS, COUNT, marker);
-		LogMe.dl(TAG, "(id=" + marker + ") " + ping);
+		LogMe.dl(TAG, "ping result: " + ping + ", id=" + marker);
 	}
 
 	public void runPingLiveTimer() {
@@ -264,18 +264,23 @@ public class Ping {
 
 	public void testRequestServer(String url) {
 		long marker = System.currentTimeMillis();
-		LogMe.dl(TAG, "testRequestServer " + url + " (id=" + marker + ")...");
-		boolean serverReachable = isServerReachable(url);
-		LogMe.dl(TAG, "testRequestServer=" + serverReachable + " (id=" + marker + ")");
+		LogMe.dl(TAG, "REQUEST " + url + ", id=" + marker);
+		String response = requestUrl(url);
+
+		if (response != null) {
+			LogMe.dl(TAG, "     OK " + url + ", id=" + marker + ", response=" + response.substring(0, 10)); // do not flood logs, just print first 10 symbols
+		} else {
+			LogMe.dl(TAG, "     ERROR " + url + ", id=" + marker);
+		}
 	}
 
-	public boolean isServerReachable(String url) {
+	public String requestUrl(String url) {
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(url);
 		return request(loadItem);
 	}
 
-	private boolean request(LoadItem loadItem) {
+	private String request(LoadItem loadItem) {
 		String url = loadItem.getLoadPath();
 
 		String resultString;
@@ -317,19 +322,19 @@ public class Ping {
 			statusCode = connection.getResponseCode();
 
 			if (statusCode != HttpStatus.SC_OK) {
-				LogMe.dl(TAG, "Error " + statusCode + " while retrieving data from " + url);
+				LogMe.dl(TAG, "ERROR " + statusCode + " while retrieving data from " + url);
 				InputStream inputStream = connection.getErrorStream();
 				resultString = convertStreamToString(inputStream);
-				LogMe.dl(TAG, "SERVER ERROR RESPONSE: " + resultString);
-				return false;
+				LogMe.dl(TAG, "server ERROR response: " + resultString);
+				return null;
 			}
 
 			InputStream inputStream = null;
 			try {
 				inputStream = connection.getInputStream();
-
 				resultString = convertStreamToString(inputStream);
-				LogMe.dl(TAG, "SERVER RESPONDED OK: " + resultString.substring(0, 10)); // do not flood logs, just print first 10 symbols
+
+				return resultString;
 
 			} finally {
 				if (inputStream != null) {
@@ -339,13 +344,13 @@ public class Ping {
 
 		} catch (Exception e) {
 			LogMe.dl(TAG, e.getMessage());
-			return false;
+			return null;
 		} finally {
 			if (connection != null) {
 				connection.disconnect();
 			}
 		}
-		return true;
+		//return true;
 	}
 
 	private static String convertStreamToString(InputStream is) {
@@ -398,7 +403,7 @@ public class Ping {
 	class NullHostNameVerifier implements HostnameVerifier {
 
 		public boolean verify(String hostname, SSLSession session) {
-			LogMe.dl(TAG, "Approving certificate for " + hostname);
+			//LogMe.dl(TAG, "Approving certificate for " + hostname);
 			return true;
 		}
 	}
