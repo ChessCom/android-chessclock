@@ -39,15 +39,23 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	private static final long WS_CONNECT_TIMEOUT = 10000L;
 	private static final int WS_MAX_MESSAGE_SIZE = 1024 * 1024;
 
-	public static final boolean SHARED = false;
-	public static final int MAX_CONNECTIONS_PER_ADDRESS = 2;
-	public static final long IDLE_TIMEOUT = 5000L;
-	public static final boolean THREAD_POOL_SHARED = true;
-	public static final int THREAD_POOL_MAX_THREADS = 5000;
-	public static final boolean THREAD_POOL_DAEMON = true;
+	private static final HttpClientConfiguration.ConnectorType CONNECTOR_TYPE;
+	private static final boolean SHARED = false;
+	private static final int MAX_CONNECTIONS_PER_ADDRESS = 2;
+	private static final long IDLE_TIMEOUT = 5000L;
+	private static final boolean THREAD_POOL_SHARED = true;
+	private static final int THREAD_POOL_MAX_THREADS = 5000;
+	private static final boolean THREAD_POOL_DAEMON = true;
 
 	private LiveConnectionHelper liveConnectionHelper;
 
+	static {
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
+			CONNECTOR_TYPE = HttpClientConfiguration.ConnectorType.CONNECTOR_SELECT_CHANNEL;
+		} else {
+			CONNECTOR_TYPE = HttpClientConfiguration.ConnectorType.CONNECTOR_SOCKET; // Android 2.2
+		}
+	}
 
 	public ConnectLiveChessTask(TaskUpdateInterface<LiveChessClient> taskFace, LiveConnectionHelper liveConnectionHelper) {
 		super(taskFace);
@@ -74,18 +82,10 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 				String message = "Live connecting to " + getConfigBayeuxHost() + ", user=" + appData.getUsername() + ", " + versionName;
 				LogMe.forceLog(TAG, message, context);
 
-				// todo: try to use static init
-				HttpClientConfiguration.ConnectorType connectorType;
-				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.FROYO) {
-					connectorType = HttpClientConfiguration.ConnectorType.CONNECTOR_SELECT_CHANNEL;
-				} else {
-					connectorType = HttpClientConfiguration.ConnectorType.CONNECTOR_SOCKET; // Android 2.2
-				}
-
 				HttpClientConfiguration httpClientConfiguration =
 						new HttpClientConfigurationImpl(
 								SHARED,
-								connectorType,
+								CONNECTOR_TYPE,
 								MAX_CONNECTIONS_PER_ADDRESS,
 								IDLE_TIMEOUT,
 								THREAD_POOL_SHARED,

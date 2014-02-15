@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import com.chess.BuildConfig;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.LoadItem;
@@ -39,7 +40,7 @@ import java.util.Map;
 public class LiveConnectionHelper {
 
 	private static final String TAG = "LCCLOG-LiveConnectionHelper";
-	private static final boolean PING_ENABLED = false;
+	private static final boolean PING_ENABLED = BuildConfig.DEBUG;
 
 	private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec, shutdown after user leave app
 	private static final long PLAYING_SHUTDOWN_TIMEOUT_DELAY = 2 * 60 * 1000;
