@@ -20,7 +20,7 @@ import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.comp.GameCompFragment;
@@ -240,7 +240,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		topPanelView.showTimeLeftIcon(!userMove);
 		bottomPanelView.showTimeLeftIcon(userMove);
 
-		ChessBoardOnline.resetInstance();
+		ChessBoardDaily.resetInstance();
 		BoardFace boardFace = getBoardFace();
 //		currentGame.setGameType(RestHelper.V_GAME_CHESS_960);  // used for test
 		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
@@ -385,7 +385,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardOnline.getInstance(this);
+		return ChessBoardDaily.getInstance(this);
 	}
 
 	@Override
@@ -496,7 +496,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	protected void restoreGame() {
-//		ChessBoardOnline.resetInstance();
+//		ChessBoardDaily.resetInstance();
 		boardView.setGameActivityFace(this);
 
 		adjustBoardForGame();

@@ -32,7 +32,7 @@ import com.chess.statics.StaticData;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
-import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
@@ -309,7 +309,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				boolean iPlayWhite = gameListCurrentItem.getIPlayAs() == RestHelper.P_WHITE;
 				boolean whiteOfferedDraw = gameListCurrentItem.isDrawOffered() == RestHelper.P_WHITE;
 				if (iPlayWhite && whiteOfferedDraw || !iPlayWhite && !whiteOfferedDraw) {
-					ChessBoardOnline.resetInstance();
+					ChessBoardDaily.resetInstance();
 					long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
 					getActivityFace().openFragment(GameDailyFragment.createInstance(gameId));
@@ -320,7 +320,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
 				}
 			} else {
-				ChessBoardOnline.resetInstance();
+				ChessBoardDaily.resetInstance();
 				long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
 				getActivityFace().openFragment(GameDailyFragment.createInstance(gameId));
@@ -470,7 +470,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-			ChessBoardOnline.resetInstance();
+			ChessBoardDaily.resetInstance();
 			getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 		}
 		super.onNeutralBtnCLick(fragment);
@@ -674,7 +674,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		int coordinateColorDark = getResources().getColor(R.color.transparent);
 		boardView.setCustomCoordinatesColors(new int[]{coordinateColorLight, coordinateColorDark});
 
-		ChessBoardOnline.resetInstance();
+		ChessBoardDaily.resetInstance();
 
 		return boardView;
 	}
@@ -704,9 +704,11 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 			// let's make it to match board properties
 			// it should be 2 squares inset from top of border and 4 squares tall + 1 squares from sides
 			squareSize = resources.getDisplayMetrics().widthPixels / 8; // one square size
-			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
+//			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
+			int borderOffset = 0;
 			// now we add few pixel to compensate shadow addition
-			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
+//			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
+			int shadowOffset = 0;
 			borderOffset += shadowOffset;
 
 			int overlayHeight = squareSize * 3 + borderOffset + shadowOffset;

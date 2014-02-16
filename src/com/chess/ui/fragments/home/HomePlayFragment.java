@@ -114,9 +114,9 @@ public class HomePlayFragment extends CommonLogicFragment implements ViewTreeObs
 			View boardview = getView().findViewById(R.id.boardview);
 			int boardWidth = boardview.getWidth();
 			int squareSize = boardWidth / 8; // one square size
-			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
+			int borderOffset = 0;
 			// now we add few pixel to compensate shadow addition
-			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
+			int shadowOffset = 0;
 			borderOffset += shadowOffset;
 			int overlayHeight = squareSize * 4 + borderOffset + shadowOffset;
 

@@ -258,7 +258,7 @@
 	<string name="pick_photo">Выбрать фото</string>
 	<string name="or_login_using_chesscom">Или используйте Ваше имя пользователя Chess.com</string>
 	<string name="articles">Статьи</string>
-	<string name="forums">форумы</string>
+	<string name="forums">Форумы</string>
 	<string name="notifications">Оповещения</string>
 	<string name="games">Игры</string>
 	<string name="live_chess_connection">Сервис Живых Шахмат</string>
@@ -286,7 +286,7 @@
 	<string name="location">Местоположение</string>
 	<string name="share">Поделиться</string>
 	<string name="profile_membership_renew_cancel">Ваше %1$s подписка будет продлена на %2$s.</string>
-	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> отменить</a>]]</string>
+	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> отменить</a>]]></string>
 	<string name="invite_friends_profile_message">Шахматы веселее с друзьями - предложите им присоединиться!</string>
 	<string name="profile_account_message_1">Ваша учетная запись принадлежит сайту</string>
 	<string name="profile_account_message_2"><![CDATA[<br/> <a href="http://www.chess.com/legal#termsofservice"> Условия использования</a>]]></string>

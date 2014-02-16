@@ -15,6 +15,7 @@ import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
+import com.chess.backend.interfaces.LoginUpdateListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -845,7 +846,7 @@ public class LiveConnectionHelper {
 			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_USERNAME);
 			loadItem.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_TACTICS_RATING);
 
-			new RequestJsonTask<LoginItem>(new LoginUpdateListener()).executeTask(loadItem);
+			new RequestJsonTask<LoginItem>(new CredentialsLoginUpdateListener()).executeTask(loadItem);
 
 		} else if (!TextUtils.isEmpty(appData.getFacebookToken())) {
 
@@ -868,8 +869,8 @@ public class LiveConnectionHelper {
 		//needReLoginToLive = true;
 	}
 
-	private class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
-		public LoginUpdateListener() {
+	private class CredentialsLoginUpdateListener extends AbstractUpdateListener<LoginItem> {
+		public CredentialsLoginUpdateListener() {
 			super(context, LoginItem.class);
 		}
 
@@ -891,13 +892,14 @@ public class LiveConnectionHelper {
 			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
 			preferencesEditor.putString(AppConstants.LIVE_SESSION_ID, loginData.getSessionId());
 			preferencesEditor.putLong(AppConstants.LIVE_SESSION_ID_SAVE_TIME, System.currentTimeMillis());
+			preferencesEditor.putLong(username + AppConstants.PREF_USER_ID, loginData.getUserId());
 			preferencesEditor.putString(AppConstants.USER_TOKEN, loginData.getLoginToken());
 			preferencesEditor.putLong(AppConstants.USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.commit();
 
 			liveUiUpdateListener.registerGcm();
 			DataHolder.getInstance().setLiveChessMode(true);
-			Log.d(TAG, "LBA LoginUpdateListener -> updateData");
+			Log.d(TAG, "LBA CredentialsLoginUpdateListener -> updateData");
 
 			liveUiUpdateListener.performServiceConnection();
 		}
@@ -905,7 +907,7 @@ public class LiveConnectionHelper {
 		@Override
 		public void errorHandle(Integer resultCode) {
 
-			//LogMe.dl(TAG, "LoginUpdateListener resultCode=" + resultCode);
+			//LogMe.dl(TAG, "CredentialsLoginUpdateListener resultCode=" + resultCode);
 
 			// show message only for re-login and app update     // todo: to vm: why this code is commented and there is no handle for provided error codes???
 			/*if (RestHelper.containsServerCode(resultCode)) {
@@ -925,7 +927,7 @@ public class LiveConnectionHelper {
 		}
 	}
 
-	private class FacebookLoginUpdateListener extends com.chess.backend.interfaces.LoginUpdateListener {
+	private class FacebookLoginUpdateListener extends LoginUpdateListener {
 
 		public FacebookLoginUpdateListener(Context context, String facebookToken) {
 			super(context, facebookToken, loginErrorUpdateListener);

@@ -22,6 +22,7 @@ import android.view.*;
 import com.chess.R;
 import com.chess.backend.GetAndSaveTheme;
 import com.chess.backend.RestHelper;
+import com.chess.backend.ThemeState;
 import com.chess.backend.entity.api.themes.ThemeItem;
 import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.db.DbDataManager;
@@ -990,16 +991,23 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEMES_LOAD_STATE));
 			if (cursor != null && cursor.moveToFirst()) {
 				do {
-					int id = DbDataManager.getInt(cursor, DbScheme.V_ID);
-					Cursor themeCursor = DbDataManager.query(getContentResolver(), DbHelper.getThemeById(id));
+					String state = DbDataManager.getString(cursor, DbScheme.V_STATE);
+					if (state.equals(ThemeState.ENQUIRED.name()) || state.equals(ThemeState.LOADING.name())) {
+						int id = DbDataManager.getInt(cursor, DbScheme.V_ID);
 
-					if (themeCursor != null && themeCursor.moveToFirst()) {
-						do {
-							ThemeItem.Data themeItem = DbDataManager.getThemeItemFromCursor(themeCursor);
-							serviceBinder.getService().loadTheme(themeItem, screenWidth, screenHeight);
-						} while (themeCursor.moveToNext());
+						Cursor themeCursor = DbDataManager.query(getContentResolver(), DbHelper.getThemeById(id));
+
+						if (themeCursor != null && themeCursor.moveToFirst()) {
+							do {
+								ThemeItem.Data themeItem = DbDataManager.getThemeItemFromCursor(themeCursor);
+								serviceBinder.getService().loadTheme(themeItem, screenWidth, screenHeight);
+							} while (themeCursor.moveToNext());
+						}
 					}
 				} while (cursor.moveToNext());
+			}
+			if (cursor != null) {
+				cursor.close();
 			}
 		}
 

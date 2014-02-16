@@ -70,7 +70,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:minHeight="160dp"
-			android:background="@drawable/rounded_border_white_back"
+			android:background="@drawable/square_flat_border_white_back"
 			android:paddingTop="@dimen/start_new_game_overlay_padding_top"
 			android:paddingStart="@dimen/start_new_game_overlay_padding_side"
 			android:paddingEnd="@dimen/start_new_game_overlay_padding_side"

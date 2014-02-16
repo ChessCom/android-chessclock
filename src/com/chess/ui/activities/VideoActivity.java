@@ -1,6 +1,7 @@
 package com.chess.ui.activities;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -17,7 +18,7 @@ import com.chess.utilities.AppUtils;
  * Date: 15.01.14
  * Time: 11:55
  */
-public class VideoActivity extends Activity implements View.OnFocusChangeListener, View.OnTouchListener {
+public class VideoActivity extends Activity implements View.OnFocusChangeListener, View.OnTouchListener, MediaPlayer.OnPreparedListener {
 
 	public static final String SEEK_POSITION = "seek_position";
 
@@ -25,6 +26,7 @@ public class VideoActivity extends Activity implements View.OnFocusChangeListene
 	private MediaController mediaController;
 	private boolean stopPlay;
 	private int seekPosition;
+	private View videoProgress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class VideoActivity extends Activity implements View.OnFocusChangeListene
 		mediaController = new MediaController(this);
 		mediaController.show(1);
 
+		videoProgress = findViewById(R.id.videoProgress);
 		videoView = (VideoView) findViewById(R.id.videoView);
 
 		videoView.setVideoURI(Uri.parse(getIntent().getStringExtra(AppConstants.VIDEO_LINK)));
@@ -45,6 +48,7 @@ public class VideoActivity extends Activity implements View.OnFocusChangeListene
 		videoView.start();
 		videoView.setOnFocusChangeListener(this);
 		videoView.setOnTouchListener(this);
+		videoView.setOnPreparedListener(this);
 
 		if (savedInstanceState != null) {
 			seekPosition = savedInstanceState.getInt(SEEK_POSITION);
@@ -111,5 +115,10 @@ public class VideoActivity extends Activity implements View.OnFocusChangeListene
 			hideStatusBar();
 		}
 		return false;
+	}
+
+	@Override
+	public void onPrepared(MediaPlayer mp) {
+		videoProgress.setVisibility(View.GONE);
 	}
 }

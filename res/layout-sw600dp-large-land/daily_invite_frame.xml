@@ -30,7 +30,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:minHeight="160dp"
-			android:background="@drawable/rounded_border_white_back"
+			android:background="@drawable/square_flat_border_white_back"
 			android:paddingTop="@dimen/invite_overlay_padding_top"
 			android:paddingBottom="@dimen/invite_overlay_padding_bottom">
 

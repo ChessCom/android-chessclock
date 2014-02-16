@@ -34,9 +34,6 @@ import com.google.android.gcm.GCMRegistrar;
 
 import java.util.Locale;
 
-
-//import com.facebook.android.Facebook;
-
 /**
  * CommonLogicActivity class
  *

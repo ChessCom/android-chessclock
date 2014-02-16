@@ -48,6 +48,7 @@ public class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
 			preferencesEditor.putString(AppConstants.USERNAME, username);
 		}
 		preferencesEditor.putInt(username + AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
+		preferencesEditor.putLong(username + AppConstants.PREF_USER_ID, loginData.getUserId());
 		preferencesEditor.putString(AppConstants.LIVE_SESSION_ID, loginData.getSessionId());
 		preferencesEditor.putLong(AppConstants.LIVE_SESSION_ID_SAVE_TIME, System.currentTimeMillis());
 		preferencesEditor.commit();

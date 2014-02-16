@@ -23,8 +23,6 @@ import com.chess.ui.adapters.RecentOpponentsCursorAdapter;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.RightPlayFragment;
-import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
-import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.widgets.EditButton;
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
@@ -40,8 +38,6 @@ import com.facebook.widget.WebDialog;
  */
 public class ChallengeFriendFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
-	protected static final String FRIEND_SELECTION_TAG = "friend select popup";
-
 	private EditButton usernameEditBtn;
 	private View headerView;
 	private View emailIconTxt;
@@ -49,9 +45,6 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	private EditButton emailEditBtn;
 	private Button addEmailBtn;
 	private RecentOpponentsCursorAdapter adapter;
-	//	private List<SelectionItem> friendsList;
-	private PopupOptionsMenuFragment friendSelectFragment;
-	private FriendSelectedListener friendSelectedListener;
 
 	public ChallengeFriendFragment() {
 		Bundle bundle = new Bundle();
@@ -70,25 +63,6 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-//		{ // load friends from DB
-//			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getTableForUser(getUsername(), DbScheme.Tables.FRIENDS));
-//
-//			friendsList = new ArrayList<SelectionItem>();
-//			friendsList.add(new SelectionItem(null, getString(R.string.random)));
-//			if (cursor != null && cursor.moveToFirst()) {
-//				do {
-//					friendsList.add(new SelectionItem(null, DbDataManager.getString(cursor, DbScheme.V_USERNAME)));
-//				} while (cursor.moveToNext());
-//			}
-//			if (cursor != null) {
-//				cursor.close();
-//			}
-//
-//			friendsList.get(0).setChecked(true);
-//		}
-
-		friendSelectedListener = new FriendSelectedListener();
 
 		Cursor cursor = DbDataManager.getRecentOpponentsCursor(getActivity(), getUsername());
 		adapter = new RecentOpponentsCursorAdapter(getActivity(), cursor, getImageFetcher());
@@ -138,15 +112,6 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 		} else if (id == R.id.chesscomFriendsView) {
 
 			getActivityFace().changeRightFragment(new FriendsRightFragment());
-
-//			SparseArray<String> optionsMap = new SparseArray<String>();
-//			for (int i = 0; i < friendsList.size(); i++) {
-//				String friend = friendsList.get(i).getText();
-//				optionsMap.put(i, friend);
-//			}
-//
-//			friendSelectFragment = PopupOptionsMenuFragment.createInstance(friendSelectedListener, optionsMap);
-//			friendSelectFragment.show(getFragmentManager(), FRIEND_SELECTION_TAG);
 		} else if (id == R.id.dailyPlayBtn) {
 			createDailyChallenge(getTextFromField(usernameEditBtn));
 		} else if (id == R.id.facebookFriendsView) {
@@ -256,24 +221,6 @@ public class ChallengeFriendFragment extends CommonLogicFragment implements Adap
 				}
 			}
 			super.errorHandle(resultCode);
-		}
-	}
-
-	private class FriendSelectedListener implements PopupListSelectionFace {
-
-		@Override
-		public void onValueSelected(int code) {
-			friendSelectFragment.dismiss();
-			friendSelectFragment = null;
-
-//			String friend = friendsList.get(code).getText();
-
-//			getActivityFace().changeRightFragment(DailyGameOptionsFragment.createInstance(RIGHT_MENU_MODE, friend));
-		}
-
-		@Override
-		public void onDialogCanceled() {
-			friendSelectFragment = null;
 		}
 	}
 }

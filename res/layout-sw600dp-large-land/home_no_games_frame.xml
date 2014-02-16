@@ -36,7 +36,7 @@
 				android:id="@+id/startOverlayView"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:background="@drawable/rounded_border_white_back"
+				android:background="@drawable/square_flat_border_white_back"
 				android:padding="@dimen/start_new_game_overlay_padding_top"
 				android:paddingStart="@dimen/start_new_game_overlay_padding_side"
 				android:paddingEnd="@dimen/start_new_game_overlay_padding_side"

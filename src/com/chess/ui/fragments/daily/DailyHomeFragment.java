@@ -72,15 +72,6 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		serverStatsUpdateListener = new ServerStatsUpdateListener();
 	}
 
-	protected void createFeaturesList() {
-		featuresList = new ArrayList<DailyItem>();
-		featuresList.add(new DailyItem(R.string.ic_stats, R.string.stats));
-		featuresList.add(new DailyItem(R.string.ic_challenge_friend, R.string.friends));
-		featuresList.add(new DailyItem(R.string.ic_board, R.string.archive));
-		featuresList.add(new DailyItem(R.string.ic_tournaments, R.string.tournaments));
-		featuresList.add(new DailyItem(R.string.ic_binoculars, R.string.open_challenges));
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.list_view_frame, container, false);
@@ -238,6 +229,27 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		}
 	}
 
+	protected void inviteOverlaySetup(Resources resources, View startOverlayView, int squareSize) {
+		// let's make it to match board properties
+		// it should be 2 squares inset from top of border and 4 squares tall + 1 squares from sides
+
+//			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
+		int borderOffset = 0;
+		// now we add few pixel to compensate shadow addition
+//			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
+		int shadowOffset = 0;
+		borderOffset += shadowOffset;
+		int overlayHeight = squareSize * 4 + borderOffset + shadowOffset;
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+				overlayHeight);
+		int topMargin = squareSize * 2 + borderOffset - shadowOffset * 2;
+
+		params.setMargins(squareSize - borderOffset, topMargin, squareSize - borderOffset, 0);
+		params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
+		startOverlayView.setLayoutParams(params);
+		startOverlayView.setVisibility(View.VISIBLE);
+	}
+
 	protected void widgetsInit(View view) {
 		Resources resources = getResources();
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -246,22 +258,8 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		{ // invite overlay setup
 			View startOverlayView = headerView.findViewById(R.id.startOverlayView);
 
-			// let's make it to match board properties
-			// it should be 2 squares inset from top of border and 4 squares tall + 1 squares from sides
 			int squareSize = resources.getDisplayMetrics().widthPixels / 8; // one square size
-			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
-			// now we add few pixel to compensate shadow addition
-			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
-			borderOffset += shadowOffset;
-			int overlayHeight = squareSize * 4 + borderOffset + shadowOffset;
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-					overlayHeight);
-			int topMargin = squareSize * 2 + borderOffset - shadowOffset * 2;
-
-			params.setMargins(squareSize - borderOffset, topMargin, squareSize - borderOffset, 0);
-			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardView);
-			startOverlayView.setLayoutParams(params);
-			startOverlayView.setVisibility(View.VISIBLE);
+			inviteOverlaySetup(resources, startOverlayView, squareSize);
 
 			onlinePlayersCntTxt = (TextView) headerView.findViewById(R.id.onlinePlayersCntTxt);
 		}
@@ -293,6 +291,15 @@ public class DailyHomeFragment extends CommonLogicFragment implements AdapterVie
 		timeSelectBtn.setText(AppUtils.getDaysString(newGameButtonsArray[mode], getActivity()));
 		gameConfigBuilder.setDaysPerMove(newGameButtonsArray[mode]);
 		getAppData().setDefaultDailyMode(mode);
+	}
+
+	protected void createFeaturesList() {
+		featuresList = new ArrayList<DailyItem>();
+		featuresList.add(new DailyItem(R.string.ic_stats, R.string.stats));
+		featuresList.add(new DailyItem(R.string.ic_challenge_friend, R.string.friends));
+		featuresList.add(new DailyItem(R.string.ic_board, R.string.archive));
+		featuresList.add(new DailyItem(R.string.ic_tournaments, R.string.tournaments));
+		featuresList.add(new DailyItem(R.string.ic_binoculars, R.string.open_challenges));
 	}
 
 	protected static class DailyItem {

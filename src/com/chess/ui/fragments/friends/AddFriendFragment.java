@@ -162,28 +162,23 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		}
 
 		Bundle params = new Bundle();
-		params.putString("message", getString(R.string.facebook_invite_friend_to_play));
+		params.putString("message", getString(R.string.invite_friend_to_play, getUsername(), getAppData().getUserId()));
 
-		WebDialog requestsDialog = (
-				new WebDialog.RequestsDialogBuilder(getActivity(),
-						facebookSession,
-						params))
+		WebDialog requestsDialog = new WebDialog.RequestsDialogBuilder(getActivity(),
+				facebookSession,
+				params)
 				.setOnCompleteListener(new WebDialog.OnCompleteListener() {
 
 					@Override
 					public void onComplete(Bundle values, FacebookException error) {
 						if (error != null) {
-							if (error instanceof FacebookOperationCanceledException) {
-								showToast("Request cancelled");
-							} else {
-								showToast("Network Error");
+							if (!(error instanceof FacebookOperationCanceledException)) {
+								showToast(R.string.error);
 							}
 						} else {
 							final String requestId = values.getString("request");
 							if (requestId != null) {
-								showToast("Request sent");
-							} else {
-								showToast("Request cancelled");
+								showToast(R.string.request_sent);
 							}
 						}
 					}

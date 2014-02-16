@@ -22,7 +22,7 @@ import com.chess.model.PgnItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.daily.DailyChatFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -263,7 +263,7 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
-		ChessBoardOnline.resetInstance();
+		ChessBoardDaily.resetInstance();
 		BoardFace boardFace = getBoardFace();
 
 		boardFace.setReside(!userPlayWhite);
@@ -377,7 +377,7 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardOnline.getInstance(this);
+		return ChessBoardDaily.getInstance(this);
 	}
 
 	@Override

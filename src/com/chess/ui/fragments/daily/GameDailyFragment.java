@@ -34,7 +34,7 @@ import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -381,8 +381,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		topPanelView.showTimeLeftIcon(!userMove);
 		bottomPanelView.showTimeLeftIcon(userMove);
 
-		ChessBoardOnline.resetInstance();
+		ChessBoardDaily.resetInstance();
 		BoardFace boardFace = getBoardFace();
+		getNotationsFace().resetNotations();
+
 		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
 		} else {
@@ -555,7 +557,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardOnline.getInstance(this);
+		return ChessBoardDaily.getInstance(this);
 	}
 
 	@Override

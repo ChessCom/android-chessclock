@@ -25,7 +25,7 @@
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
 			android:padding="23dp"
-			android:background="@drawable/rounded_border_white_back"
+			android:background="@drawable/square_flat_border_white_back"
 			android:gravity="fill"
 			android:visibility="gone">
 

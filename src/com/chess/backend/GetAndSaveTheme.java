@@ -616,6 +616,7 @@ public class GetAndSaveTheme extends Service {
 	}
 
 	private void showIndeterminateNotification(String title) {
+		notificationBuilder.setContentTitle(getString(R.string.downloading_arg, selectedThemeItem.getThemeName()));
 		notificationBuilder.setContentText(title);
 		notificationBuilder.setProgress(0, 0, true);
 		// Displays the progress bar for the first time.

@@ -28,7 +28,7 @@ import com.chess.model.PgnItem;
 import com.chess.model.PopupItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -315,7 +315,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
-		ChessBoardOnline.resetInstance();
+		ChessBoardDaily.resetInstance();
 		BoardFace boardFace = getBoardFace();
 		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
@@ -468,7 +468,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardOnline.getInstance(this);
+		return ChessBoardDaily.getInstance(this);
 	}
 
 	@Override

@@ -288,9 +288,9 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 		// let's make it to match board properties
 		// it should be 2.5 squares inset from top of border and 3 squares tall + 1.5 squares from sides
 
-		int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
+		int borderOffset = 0;
 		// now we add few pixel to compensate shadow addition
-		int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
+		int shadowOffset = 0;
 		borderOffset += shadowOffset;
 		int overlayHeight = squareSize * 3 + borderOffset + shadowOffset;
 

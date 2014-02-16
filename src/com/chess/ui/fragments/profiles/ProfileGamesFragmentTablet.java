@@ -24,7 +24,7 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.db.tasks.SaveDailyCurrentGamesListTask;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
-import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.fragments.daily.DailyGamesFinishedFragmentTablet;
 import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
@@ -179,7 +179,7 @@ public class ProfileGamesFragmentTablet extends ProfileBaseFragment implements I
 		Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 		DailyCurrentGameData gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
 
-		ChessBoardOnline.resetInstance();
+		ChessBoardDaily.resetInstance();
 		getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId(), username));
 	}
 

@@ -402,7 +402,6 @@
 	<string name="please_sign_up_for_play_online">Please sign up for an account to play online.</string>
 	<string name="please_sign_up_for_tactics">Please sign up for an account to solve tactics &amp; puzzles.</string>
 	<string name="please_sign_up_for_videos">Please sign up for an account to watch videos.</string>
-	<string name="please_sign_up_for_lessons">Please sign up for an account to learn lessons.</string>
 	<string name="please_sign_up_for_friends">Please sign up for an account to challenge friends.</string>
 
 	<string name="interactive_lessons">Interactive Lessons</string>
@@ -420,7 +419,7 @@
 	<string name="please_add_valid_username">Please enter a valid username</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Contacts</string>
-	<string name="facebook_invite_friend_to_play">Let\'s play chess! You can play online at Chess.com, or on mobile with Android or iPhone/iPad.</string>
+	<string name="invite_friend_to_play">Play chess with me? I play on Chess.com as \"%1$s\". Sign up for free! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Let\'s Play!</string>
 	<string name="online_today">Online today</string>
 	<string name="last_was_online">Online %s</string>

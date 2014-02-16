@@ -4,7 +4,7 @@ import android.util.SparseIntArray;
 import com.chess.backend.gcm.LastMoveInfoItem;
 import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.ChessBoardLive;
-import com.chess.ui.engine.ChessBoardOnline;
+import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.engine.ChessBoardTactics;
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class DataHolder {
 		ourInstance = new DataHolder();
 		ChessBoardTactics.resetInstance();
 		ChessBoardLive.resetInstance();
-		ChessBoardOnline.resetInstance();
+		ChessBoardDaily.resetInstance();
 		ChessBoardComp.resetInstance();
 	}
 

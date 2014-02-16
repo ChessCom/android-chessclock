@@ -31,22 +31,6 @@
 		style="@style/DarkShadowBottom"
 		android:visibility="gone" />
 
-	<RelativeLayout
-		android:id="@+id/loadingView"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:minHeight="60dp"
-		android:visibility="gone">
-
-		<ProgressBar
-			android:layout_width="@dimen/pending_progress_bar_size"
-			android:layout_height="@dimen/pending_progress_bar_size"
-			android:layout_margin="5dp"
-			android:layout_centerInParent="true"
-			style="?android:attr/progressBarStyle" />
-
-	</RelativeLayout>
-
 	<ListView
 		android:id="@+id/listView"
 		android:layout_width="match_parent"

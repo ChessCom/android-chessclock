@@ -129,34 +129,40 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 			getView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
 		}
 
-		Resources resources = getResources();
+		View boardview = getView().findViewById(R.id.boardview);
+		int boardWidth = boardview.getWidth();
+		int squareSize = boardWidth / 8; // one square size
+		inviteOverlaySetup(getResources(), getView().findViewById(R.id.startOverlayView), squareSize);
+		onlinePlayersCntTxt = (TextView) getView().findViewById(R.id.onlinePlayersCntTxt);
+	}
 
-		{ // new game overlay setup
-			View startOverlayView = getView().findViewById(R.id.startOverlayView);
+	@Override
+	protected void inviteOverlaySetup(Resources resources, View startOverlayView, int squareSize) {
+		// let's make it to match board properties
+		// it should be 2.5 squares inset from top of border and 3 squares tall + 1.5 squares from sides
 
-			// let's make it to match board properties
-			// it should be 2.5 squares inset from top of border and 3 squares tall + 1.5 squares from sides
+//		int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
+		int borderOffset = 0;
+		// now we add few pixel to compensate shadow addition
+//		int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
+		int shadowOffset = 0;
+		borderOffset += shadowOffset;
+		int overlayHeight = squareSize * 3 + borderOffset + shadowOffset;
 
-			View boardview = getView().findViewById(R.id.boardview);
-			int boardWidth = boardview.getWidth();
-			int squareSize = boardWidth / 8; // one square size
-			int borderOffset = resources.getDimensionPixelSize(R.dimen.invite_overlay_top_offset);
-			// now we add few pixel to compensate shadow addition
-			int shadowOffset = resources.getDimensionPixelSize(R.dimen.overlay_shadow_offset);
-			borderOffset += shadowOffset;
-			int overlayHeight = squareSize * 3 + borderOffset + shadowOffset;
+		int popupWidth = squareSize * 5 + shadowOffset * 2 + borderOffset;  // for tablets we need more width
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(popupWidth, overlayHeight);
+		int topMargin = (int) (squareSize * 2.5f + borderOffset - shadowOffset * 2);
 
-			int popupWidth = squareSize * 5 + shadowOffset * 2 + borderOffset;  // for tablets we need more width
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(popupWidth, overlayHeight);
-			int topMargin = (int) (squareSize * 2.5f + borderOffset - shadowOffset * 2);
-
-			params.setMargins((int) (squareSize * 2.2f - shadowOffset), topMargin, squareSize - borderOffset, 0);
-			params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardLinLay);
-			startOverlayView.setLayoutParams(params);
-			startOverlayView.setVisibility(View.VISIBLE);
-
-			onlinePlayersCntTxt = (TextView) getView().findViewById(R.id.onlinePlayersCntTxt);
+		float leftOffset = 2.2f;
+		if (inPortrait()) {
+			leftOffset = 1.5f;
 		}
+		params.setMargins((int) (squareSize * leftOffset - shadowOffset), topMargin, squareSize - borderOffset, 0);
+		params.addRule(RelativeLayout.ALIGN_TOP, R.id.boardLinLay);
+		startOverlayView.setLayoutParams(params);
+		startOverlayView.setVisibility(View.VISIBLE);
+		// set min width
+		startOverlayView.setMinimumWidth(squareSize * 6);
 	}
 
 	@Override

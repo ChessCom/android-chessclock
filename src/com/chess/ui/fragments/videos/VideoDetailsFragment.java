@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -13,10 +14,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
@@ -49,7 +47,7 @@ import java.util.Date;
  * Date: 27.01.13
  * Time: 19:12
  */
-public class VideoDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace {
+public class VideoDetailsFragment extends CommonLogicFragment implements ItemClickListenerFace, MediaPlayer.OnPreparedListener {
 
 	private static final String BACK_IMG_LINK = "https://dl.dropboxusercontent.com/u/24444064/video_back.png";
 	public static final String ITEM_ID = "item_id";
@@ -100,6 +98,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	private VideoView videoView;
 	private TextView fullScrBtn;
 	private View playBtnBackView;
+	private View videoProgress;
 
 	public static VideoDetailsFragment createInstance(long videoId) {
 		VideoDetailsFragment frag = new VideoDetailsFragment();
@@ -231,8 +230,10 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		if (!isTablet) {
 			// Change main article Image params
 			int imageHeight = (int) (widthPixels * 0.6671f);
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(widthPixels, imageHeight);
+			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(widthPixels, imageHeight);
+			params.gravity = Gravity.CENTER;
 			videoBackImg.setLayoutParams(params);
+			videoView.setLayoutParams(params);
 		}
 
 		// change layout params for image and progress bar
@@ -424,6 +425,12 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		}
 	}
 
+	@Override
+	public void onPrepared(MediaPlayer mp) {
+		videoProgress.setVisibility(View.GONE);
+		videoBackImg.setVisibility(View.GONE);
+	}
+
 	private void createPost() {
 		createPost(NON_EXIST);
 	}
@@ -533,11 +540,12 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		fullScrBtn.setOnClickListener(this);
 		fullScrBtn.setVisibility(View.INVISIBLE);
 
+		videoProgress = view.findViewById(R.id.videoProgress);
 		videoView = (VideoView) view.findViewById(R.id.videoView);
 		MediaController mediaController = new MediaController(getActivity());
 		mediaController.show(1);
 
 		videoView.setMediaController(mediaController);
-		videoView.requestFocus();
+		videoView.setOnPreparedListener(this);
 	}
 }

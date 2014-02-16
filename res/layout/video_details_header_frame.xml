@@ -6,36 +6,42 @@
 	android:layout_height="match_parent">
 
 	<!--Video Thumbnail-->
-	<RelativeLayout
+	<FrameLayout
 		android:id="@+id/thumbnailImg"
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="vertical"
 		android:layout_marginBottom="10dp">
+
+		<VideoView
+			android:id="@+id/videoView"
+			android:layout_width="match_parent"
+			android:layout_height="240dp"
+			android:layout_gravity="center"
+			android:visibility="invisible" />
 
 		<com.chess.backend.image_load.ProgressImageView
 			android:id="@+id/videoBackImg"
 			android:layout_width="match_parent"
 			android:layout_height="240dp"
-			android:layout_centerInParent="true"
+			android:layout_gravity="center"
 			android:adjustViewBounds="true"
 			android:scaleType="fitXY"
 			android:contentDescription="@string/image"
 			android:background="@drawable/video_thumb_back" />
 
-		<VideoView
-			android:id="@+id/videoView"
+		<ProgressBar
+			android:id="@+id/videoProgress"
 			android:layout_width="wrap_content"
-			android:layout_height="240dp"
-			android:layout_centerHorizontal="true"
-			android:visibility="invisible" />
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			/>
 
 		<!--Back round for icon-->
-		<RelativeLayout
+		<FrameLayout
 			android:id="@+id/playBtnBackView"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"
+			android:layout_gravity="center"
 			android:gravity="fill"
 			android:background="@drawable/video_play_btn_back_big_selector">
 
@@ -44,16 +50,15 @@
 				android:id="@+id/playBtn"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_centerInParent="true"
+				android:layout_gravity="center"
 				android:text="@string/ic_play"
 				style="@style/GlyphIcon.RoundBack.Play"
 				android:textSize="@dimen/glyph_icon_round_back_big"
-				android:layout_marginStart="30dp"
-				android:layout_marginLeft="30dp"
+				android:layout_marginStart="5dp"
+				android:layout_marginLeft="5dp"
 				android:gravity="fill" />
 
-
-		</RelativeLayout>
+		</FrameLayout>
 
 		<!--FullScrBtn-->
 		<com.chess.widgets.RoboTextView
@@ -62,10 +67,10 @@
 			android:layout_height="wrap_content"
 			android:text="@string/ic_extend"
 			style="@style/GlyphIcon.Big"
-			android:layout_alignParentEnd="true"
+			android:layout_gravity="right"
 			android:layout_margin="8dp" />
 
-	</RelativeLayout>
+	</FrameLayout>
 
 	<!--Title-->
 	<com.chess.widgets.RoboTextView

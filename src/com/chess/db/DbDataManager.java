@@ -2794,6 +2794,7 @@ public class DbDataManager {
 				String state = getString(cursor, V_STATE);
 				if (state.equals(ThemeState.ENQUIRED.name()) || state.equals(ThemeState.LOADING.name())) {
 					exist = true;
+					break;
 				}
 			} while (cursor.moveToNext());
 		}
