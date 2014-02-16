@@ -48,6 +48,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	private EditButton emailEditBtn;
 	private Button addEmailBtn;
 	private RecentOpponentsItemsAdapter opponentsItemsAdapter;
+	private String shareMessage;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,8 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		List<OpponentItem> opponentItems = new ArrayList<OpponentItem>();
 		List<String> opponentNames = new ArrayList<String>();
 		String username = getUsername();
+
+		shareMessage = getString(R.string.invite_friend_to_play, getUsername(), getAppData().getUserId());
 
 		if (cursor != null && cursor.moveToFirst()) {
 			do {
@@ -128,7 +131,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 
 		int id = view.getId();
 		if (id == R.id.addFriendBtn) {
-			createFriendRequest(getTextFromField(usernameEditBtn), getString(R.string.add_friend_request_message));
+			createFriendRequest(getTextFromField(usernameEditBtn), shareMessage);
 		} else if (id == R.id.facebookFriendsView) {
 			sendRequestDialog();
 		} else if (id == R.id.yourContactsView) {
@@ -141,7 +144,8 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	}
 
 	private void createFriendRequestByEmail(String email) {
-		LoadItem loadItem = LoadHelper.postFriendByEmail(getUserToken(), email, getString(R.string.add_friend_request_message));
+
+		LoadItem loadItem = LoadHelper.postFriendByEmail(getUserToken(), email, shareMessage);
 
 		new RequestJsonTask<RequestItem>(new RequestFriendListener()).executeTask(loadItem);
 		showEmailEdit(false);
@@ -162,7 +166,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 		}
 
 		Bundle params = new Bundle();
-		params.putString("message", getString(R.string.invite_friend_to_play, getUsername(), getAppData().getUserId()));
+		params.putString("message", shareMessage);
 
 		WebDialog requestsDialog = new WebDialog.RequestsDialogBuilder(getActivity(),
 				facebookSession,
@@ -191,8 +195,8 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	public void sendEmailInvite() {
 		Intent emailIntent = new Intent(Intent.ACTION_SEND);
 		emailIntent.setType(AppConstants.MIME_TYPE_MESSAGE_RFC822);
-		emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Let's Play on Chess.com!");
-		emailIntent.putExtra(Intent.EXTRA_TEXT, "Hey let's Play on Chess.com!");
+		emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.add_friend_request_message));
+		emailIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
 		startActivity(Intent.createChooser(emailIntent, getString(R.string.send_mail)));
 	}
 
@@ -200,7 +204,7 @@ public class AddFriendFragment extends CommonLogicFragment implements AdapterVie
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		OpponentItem opponentItem = (OpponentItem) parent.getItemAtPosition(position);
 
-		createFriendRequest(opponentItem.getName(), getString(R.string.add_friend_request_message));
+		createFriendRequest(opponentItem.getName(), shareMessage);
 	}
 
 	private void createFriendRequest(String username, String message) {

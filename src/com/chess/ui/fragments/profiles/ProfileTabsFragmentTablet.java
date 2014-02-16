@@ -182,7 +182,7 @@ public class ProfileTabsFragmentTablet extends CommonLogicFragment implements Fr
 		if (section == FRIEND_OPTIONS_SECTION) {
 			SelectionItem optionItem = (SelectionItem) parent.getItemAtPosition(position);
 			if (optionItem.getText().equals(getString(R.string.add_friend))) {
-				createFriendRequest(username, getString(R.string.add_friend_request_message));
+				createFriendRequest(username, getString(R.string.invite_friend_to_play, getUsername(), getAppData().getUserId()));
 
 			} else if (optionItem.getText().equals(getString(R.string.send_message))) {
 				changeInternalFragment(NewMessageFragment.createInstance(username));
