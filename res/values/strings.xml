@@ -594,9 +594,8 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, member Since 2011</string>
 	<string name="upgrade_feedback_2">"&quot;My overall rating improved a ton after i became a premium member&quot;"</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, member Since 2009</string>
-	<string name="live_game_share_str">%1$s vs %2$s - Online Chess http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online Chess http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online Chess http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Live Chess http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - Daily Chess http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">Pieces</string>
 
 </resources>
