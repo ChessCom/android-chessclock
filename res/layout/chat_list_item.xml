@@ -22,7 +22,10 @@
 		android:text="teststtt"
 		android:background="@drawable/img_chat_buble_grey"
 		android:layout_toEndOf="@id/opponentAvatarImg"
-		android:layout_toStartOf="@+id/myAvatarImg" />
+		android:layout_toStartOf="@+id/myAvatarImg"
+		android:layout_toRightOf="@id/opponentAvatarImg"
+		android:layout_toLeftOf="@+id/myAvatarImg"
+		/>
 
 	<com.chess.backend.image_load.AvatarView
 		android:id="@id/myAvatarImg"

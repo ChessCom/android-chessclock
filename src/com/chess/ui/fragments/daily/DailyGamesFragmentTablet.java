@@ -648,7 +648,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 		initUpgradeAndAdWidgets(view);
 
-		if (!isNeedToUpgrade()) {// we need to bind to bottom if there is no ad banner
+		if (!isNeedToUpgrade() || !showAdsForNewMembers) {// we need to bind to bottom if there is no ad banner
 			((RelativeLayout.LayoutParams) completedGamesHeaderView.getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		}
 	}

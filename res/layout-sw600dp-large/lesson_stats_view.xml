@@ -38,6 +38,7 @@
 		android:layout_below="@id/divider1"
 		android:textColor="@color/white"
 		android:paddingEnd="9dp"
+		android:paddingRight="9dp"
 		android:textSize="14sp"
 		custom:ttf="Bold"
 		android:text="-" />
@@ -51,7 +52,9 @@
 		android:layout_below="@id/divider1"
 		android:text="@string/lessons_completed"
 		android:textSize="@dimen/default_text_size_small"
-		android:layout_toEndOf="@id/lessonsCompletedValueTxt" />
+		android:layout_toEndOf="@id/lessonsCompletedValueTxt"
+		android:layout_toRightOf="@id/lessonsCompletedValueTxt"
+		/>
 
 	<!--Courses Completed value-->
 	<com.chess.widgets.RoboTextView
@@ -61,6 +64,7 @@
 		android:layout_below="@id/lessonsCompletedValueTxt"
 		android:textColor="@color/white"
 		android:paddingEnd="@dimen/smaller_scr_side_padding"
+		android:paddingRight="@dimen/smaller_scr_side_padding"
 		android:paddingBottom="8dp"
 		android:textSize="14sp"
 		custom:ttf="Bold"
@@ -75,6 +79,7 @@
 		android:textColor="@color/semitransparent_white_75"
 		android:layout_below="@id/lessonsCompletedValueTxt"
 		android:layout_toEndOf="@id/coursesCompletedValueTxt"
+		android:layout_toRightOf="@id/coursesCompletedValueTxt"
 		android:text="@string/courses_completed"
 		android:textSize="@dimen/default_text_size_small" />
 

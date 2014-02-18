@@ -144,6 +144,10 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		String[] languageCodes = getResources().getStringArray(R.array.languages_codes);
 
 		String setLocale = languageCodes[appData.getLanguageIndex()];
+		// for guest user set locale to the system one
+		if (TextUtils.isEmpty(getCurrentUserToken())) {
+			setLocale = prevLang;
+		}
 
 //		if (!prevLang.equals(setLocale)) {  // the saved/default app locale can be incorrect
 			Locale locale;

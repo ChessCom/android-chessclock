@@ -61,6 +61,7 @@
 				android:textColor="@color/upgrade_diamond_title"
 				android:textSize="21sp"
 				android:layout_toEndOf="@id/diamondImg"
+				android:layout_toRightOf="@id/diamondImg"
 				android:layout_alignTop="@id/diamondImg"
 				android:layout_marginTop="-7dp"
 				custom:ttf="Bold" />
@@ -72,6 +73,7 @@
 				android:textColor="@color/upgrade_diamond_sub_title"
 				android:textSize="12sp"
 				android:layout_toEndOf="@id/diamondImg"
+				android:layout_toRightOf="@id/diamondImg"
 				android:layout_below="@id/diamondTitleTxt"
 				android:layout_marginTop="-2dp"
 				custom:ttf="Italic" />
@@ -118,6 +120,7 @@
 				android:textColor="@color/upgrade_platinum_title"
 				android:textSize="21sp"
 				android:layout_toEndOf="@id/platinumImg"
+				android:layout_toRightOf="@id/platinumImg"
 				android:layout_alignTop="@id/platinumImg"
 				android:layout_marginTop="-7dp"
 				custom:ttf="Bold" />
@@ -129,6 +132,7 @@
 				android:textColor="@color/upgrade_platinum_sub_title"
 				android:textSize="12sp"
 				android:layout_toEndOf="@id/platinumImg"
+				android:layout_toRightOf="@id/platinumImg"
 				android:layout_below="@id/platinumTitleTxt"
 				android:layout_marginTop="-2dp"
 				custom:ttf="Italic" />
@@ -184,6 +188,7 @@
 				android:textColor="@color/upgrade_gold_title"
 				android:textSize="21sp"
 				android:layout_toEndOf="@id/goldImg"
+				android:layout_toRightOf="@id/goldImg"
 				android:layout_alignTop="@id/goldImg"
 				android:layout_marginTop="-7dp"
 				custom:ttf="Bold" />
@@ -195,6 +200,7 @@
 				android:textColor="@color/upgrade_gold_sub_title"
 				android:textSize="12sp"
 				android:layout_toEndOf="@id/goldImg"
+				android:layout_toRightOf="@id/goldImg"
 				android:layout_below="@id/goldTitleTxt"
 				android:layout_marginTop="-2dp"
 				custom:ttf="Italic" />
@@ -245,6 +251,7 @@
 				android:textSize="12sp"
 				android:paddingBottom="4dp"
 				android:layout_toEndOf="@id/quoteImg"
+				android:layout_toRightOf="@id/quoteImg"
 				custom:ttf="Bold" />
 
 			<com.chess.widgets.RoboTextView
@@ -254,7 +261,7 @@
 				android:text="@string/upgrade_feedback_reporter_1"
 				android:textColor="@color/upgrade_grey_sub_title"
 				android:textSize="12sp"
-				android:layout_toEndOf="@id/quoteImg"
+				android:layout_toRightOf="@id/quoteImg"
 				android:layout_below="@id/quoteTxt"
 				custom:ttf="Bold" />
 

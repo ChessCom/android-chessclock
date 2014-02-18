@@ -72,7 +72,9 @@
 				android:textColor="@color/text_controls_icons"
 				android:gravity="center_vertical|left"
 				android:layout_centerVertical="true"
-				android:layout_toEndOf="@id/centerPoint" />
+				android:layout_toEndOf="@id/centerPoint"
+				android:layout_toRightOf="@id/centerPoint"
+				/>
 
 		</RelativeLayout>
 

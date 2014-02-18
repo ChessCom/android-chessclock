@@ -32,8 +32,10 @@
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
 		android:layout_toEndOf="@id/boardLinLay"
+		android:layout_toRightOf="@id/boardLinLay"
 		android:paddingTop="13dp"
 		android:paddingEnd="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
 		android:paddingBottom="@dimen/default_scr_bottom_padding">
 
 		<!--Moves variations name-->

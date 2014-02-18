@@ -756,7 +756,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		initUpgradeAndAdWidgets(view);
 
-		if (!isNeedToUpgrade()) {// we need to bind to bottom if there is no ad banner
+		if (!isNeedToUpgrade() || !showAdsForNewMembers) {// we need to bind to bottom if there is no ad banner
 			((RelativeLayout.LayoutParams) startNewGameBtn.getLayoutParams()).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		}
 	}

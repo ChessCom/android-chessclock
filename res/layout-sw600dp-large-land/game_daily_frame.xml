@@ -34,6 +34,7 @@
 		android:layout_toEndOf="@id/boardLinLay"
 		android:paddingTop="13dp"
 		android:paddingEnd="@dimen/default_scr_side_padding"
+		android:paddingRight="@dimen/default_scr_side_padding"
 		android:paddingBottom="@dimen/default_scr_bottom_padding">
 
 		<!--TopPanelInfo-->
@@ -52,7 +53,10 @@
 			android:orientation="horizontal"
 			android:layout_below="@id/topPanelView"
 			android:layout_marginStart="2dp"
-			android:layout_marginEnd="2dp">
+			android:layout_marginEnd="2dp"
+			android:layout_marginLeft="2dp"
+			android:layout_marginRight="2dp"
+			>
 
 			<!--Notations Button-->
 			<com.chess.widgets.RoboRadioButton
@@ -97,6 +101,8 @@
 			android:layout_above="@+id/controlsView"
 			android:layout_marginStart="2dp"
 			android:layout_marginEnd="2dp"
+			android:layout_marginLeft="2dp"
+			android:layout_marginRight="2dp"
 			style="@style/Rect.Notations">
 
 			<!--NotationsView-->
@@ -125,7 +131,10 @@
 			custom:controls_style="rectDark"
 			android:layout_above="@+id/bottomPanelView"
 			android:layout_marginStart="2dp"
-			android:layout_marginEnd="2dp" />
+			android:layout_marginEnd="2dp"
+			android:layout_marginLeft="2dp"
+			android:layout_marginRight="2dp"
+			/>
 
 		<!--BottomPanelInfo-->
 		<com.chess.ui.views.PanelInfoGameView

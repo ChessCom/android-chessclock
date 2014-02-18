@@ -80,6 +80,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/thumbnailImg"
+		android:layout_toRightOf="@id/thumbnailImg"
 		android:paddingEnd="@dimen/default_scr_side_padding"
 		android:paddingTop="@dimen/common_tablet_side_padding"
 		android:paddingBottom="9dp"
@@ -95,6 +96,7 @@
 		android:background="@color/new_common_list_thumb_grey"
 		android:layout_below="@id/titleTxt"
 		android:layout_toEndOf="@id/thumbnailImg"
+		android:layout_toRightOf="@id/thumbnailImg"
 		android:contentDescription="@string/image"
 		android:layout_marginBottom="13dp" />
 

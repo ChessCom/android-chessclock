@@ -25,6 +25,8 @@
 		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/upgradeIconImg"
 		android:layout_toStartOf="@+id/upgradeBtn"
+		android:layout_toRightOf="@id/upgradeIconImg"
+		android:layout_toLeftOf="@+id/upgradeBtn"
 		android:layout_centerVertical="true"
 		android:text="@string/improve_game_with_lessons"
 		android:paddingEnd="10dp"

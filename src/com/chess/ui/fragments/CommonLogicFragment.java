@@ -158,6 +158,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected AppUtils.DeviceInfo deviceInfo;
 	private MoPubView moPubBannerView;
+	protected boolean showAdsForNewMembers;
 
 
 	@Override
@@ -1220,10 +1221,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 	protected void initUpgradeAndAdWidgets(View view) {
 		boolean firstInitFinished = getAppData().isFirstInitFinished();
-		long now = System.currentTimeMillis();
-		long userCreateDate = getAppData().getUserCreateDate() * 1000;
-		long waitTimeToShowAds = AppUtils.SECONDS_IN_DAY * 8;
-		boolean showAdsForNewMembers = now - userCreateDate > waitTimeToShowAds && firstInitFinished;
+		long now = System.currentTimeMillis() / 1000;
+		long userCreateDate = getAppData().getUserCreateDate();
+		long waitTimeToShowAds = AppUtils.SECONDS_IN_DAY * 7;
+		showAdsForNewMembers = now - userCreateDate > waitTimeToShowAds && firstInitFinished;
 		if (isNeedToUpgrade() && showAdsForNewMembers) {
 			view.findViewById(R.id.bannerUpgradeView).setVisibility(View.VISIBLE);
 
