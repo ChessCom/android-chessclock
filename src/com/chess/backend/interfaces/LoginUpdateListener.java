@@ -3,6 +3,7 @@ package com.chess.backend.interfaces;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.LoginItem;
@@ -11,7 +12,9 @@ import com.chess.model.TacticsDataHolder;
 import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
-import com.chess.ui.interfaces.LoginErrorUpdateListener;
+import com.chess.statics.Symbol;
+import com.chess.ui.activities.BaseFragmentPopupsActivity;
+import com.chess.ui.interfaces.PopupShowListener;
 import com.flurry.android.FlurryAgent;
 
 /**
@@ -20,15 +23,15 @@ import com.flurry.android.FlurryAgent;
 
 public class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
 	private String facebookToken;
-	private final LoginErrorUpdateListener loginErrorUpdateListener;
+	private final PopupShowListener popupShowListener;
 
 	private AppData appData;
 
-	public LoginUpdateListener(Context context, String facebookToken, LoginErrorUpdateListener loginErrorUpdateListener) {
+	public LoginUpdateListener(Context context, String facebookToken, PopupShowListener popupShowListener) {
 		super(context, LoginItem.class);
 
 		this.facebookToken = facebookToken;
-		this.loginErrorUpdateListener = loginErrorUpdateListener;
+		this.popupShowListener = popupShowListener;
 
 		appData = new AppData(context);
 	}
@@ -75,13 +78,15 @@ public class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
 			int serverCode = RestHelper.decodeServerCode(resultCode);
 			switch (serverCode) {
 				case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
-					if (loginErrorUpdateListener != null) {
-						loginErrorUpdateListener.onInvalidLoginCredentials();
+					if (popupShowListener != null) {
+						popupShowListener.showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
+						appData.setPassword(Symbol.EMPTY);
 					}
 					return;
 				case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
-					if (loginErrorUpdateListener != null) {
-						loginErrorUpdateListener.onFacebookUserNoAccount();
+					if (popupShowListener != null) {
+						popupShowListener.setPositiveBtnId(R.string.sign_up);
+						popupShowListener.showPopupDialog(R.string.no_chess_account_signup_please, BaseFragmentPopupsActivity.CHESS_NO_ACCOUNT_TAG);
 					}
 					return;
 				default:

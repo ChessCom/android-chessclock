@@ -20,4 +20,8 @@ public interface LiveChessClientEventListener {
 	void onConnectionBlocked(boolean blocked);
 
 	void onAdminAnnounce(String message);
+
+	void performServiceConnection();
+
+	void registerGcm();
 }

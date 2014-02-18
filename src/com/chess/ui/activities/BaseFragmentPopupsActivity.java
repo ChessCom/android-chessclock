@@ -24,6 +24,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
+import com.chess.ui.interfaces.PopupShowListener;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
@@ -42,7 +43,7 @@ import java.util.Map;
  * @created at: 07.07.12 6:42
  */
 //public abstract class BaseFragmentPopupsActivity extends FragmentActivity implements PopupDialogFace {
-public abstract class BaseFragmentPopupsActivity extends BaseActivity implements PopupDialogFace {
+public abstract class BaseFragmentPopupsActivity extends BaseActivity implements PopupDialogFace, PopupShowListener {
 
 	protected static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 	public static final boolean JELLYBEAN_1_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
@@ -52,7 +53,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	protected static final String NETWORK_CHECK_TAG = "network check popup";
 	protected static final int NETWORK_REQUEST = 3456;
 	protected static final String RE_LOGIN_TAG = "re-login popup";
-	protected static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
+	public static final String CHESS_NO_ACCOUNT_TAG = "chess no account popup";
 	protected static final String CHECK_UPDATE_TAG = "check update";
 	private static final boolean DEVELOPER_MODE = false;
 
@@ -222,7 +223,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	}
 
 	// Single button no callback dialogs
-	protected void showSinglePopupDialog(int titleId, int messageId) {
+	public void showSinglePopupDialog(int titleId, int messageId) {
 		popupItem.setButtons(1);
 		showPopupDialog(titleId, messageId, INFO_POPUP_TAG);
 	}
@@ -282,7 +283,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		updatePopupAndShow(tag);
 	}
 
-	protected void showPopupDialog(int titleId, String tag) {
+	public void showPopupDialog(int titleId, String tag) {
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(Symbol.EMPTY);
 		updatePopupAndShow(tag);
@@ -439,4 +440,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		return EasyTracker.getInstance(this);
 	}
 
+	public void setPositiveBtnId(int leftBtnId) {
+		popupItem.setPositiveBtnId(R.string.ic_check);
+	}
 }

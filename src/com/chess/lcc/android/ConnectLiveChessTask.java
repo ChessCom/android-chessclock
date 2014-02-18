@@ -35,8 +35,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	private static final int BACKOFF_INCREMENT = 500;
 	private static final int MAX_BACKOFF_INTERVAL = 2000;
-	public static final int MAX_NETWORK_DELAY = 4000;
-	private static final long WS_CONNECT_TIMEOUT = 10000L;
+	private static final long MAX_NETWORK_DELAY = 4000;
+	private static final long WS_CONNECT_TIMEOUT = 10000;
 	private static final int WS_MAX_MESSAGE_SIZE = 1024 * 1024;
 
 	private static final HttpClientConfiguration.ConnectorType CONNECTOR_TYPE;
@@ -66,6 +66,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 	protected Integer doTheTask(Void... params) {
 		Context context = getTaskFace().getMeContext();
 
+		LogMe.dl(TAG, "DEBUG: ConnectLiveChessTask doTheTask()");
+
 		synchronized (LiveConnectionHelper.CLIENT_SYNC_LOCK) {
 
 			try {
@@ -80,7 +82,8 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 				AppData appData = new AppData(context);
 				String message = "Live connecting to " + getConfigBayeuxHost() + ", user=" + appData.getUsername() + ", " + versionName;
-				LogMe.forceLog(TAG, message, context);
+				//LogMe.forceLog(TAG, message, context);
+				LogMe.dl(TAG, message);
 
 				HttpClientConfiguration httpClientConfiguration =
 						new HttpClientConfigurationImpl(

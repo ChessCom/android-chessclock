@@ -19,7 +19,6 @@ import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
-import com.chess.lcc.android.interfaces.LiveUiUpdateListener;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
@@ -47,7 +46,7 @@ import java.util.Map;
  * @author alien_roger
  * @created at: 11.04.12 9:00
  */
-public abstract class LiveBaseActivity extends CoreActivityActionBar implements LiveChessClientEventListener, LiveUiUpdateListener {
+public abstract class LiveBaseActivity extends CoreActivityActionBar implements LiveChessClientEventListener {
 
 	private static final String TAG = "LccLog-LiveBaseActivity";
 
@@ -152,6 +151,10 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {   // TODO refactor with showPreviousFragment logic
 		if (keyCode == KeyEvent.KEYCODE_BACK && !getSlidingMenu().isMenuShowing()) {
+
+			LogMe.dl(TAG, "LBA back button pressed isLiveChess()=" + getDataHolder().isLiveChess());
+			LogMe.dl(TAG, "LBA back button pressed isLCSBound=" + isLCSBound);
+
 			if (getDataHolder().isLiveChess() && isLCSBound) {
 
 				Fragment fragmentByTag = getGameLiveFragment();
@@ -325,9 +328,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			liveHelper = serviceBinder.getService().getLiveConnectionHelper();
 			setLCSBound(true);
 			liveHelper.setLiveChessClientEventListener(LiveBaseActivity.this);
-
-			liveHelper.setLiveUiUpdateListener(LiveBaseActivity.this);
-			liveHelper.setLoginErrorUpdateListener(LiveBaseActivity.this);
+			liveHelper.popupShowListener(LiveBaseActivity.this);
 
 			if (getSupportFragmentManager() == null) {
 				return;

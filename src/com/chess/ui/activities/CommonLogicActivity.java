@@ -24,8 +24,6 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
-import com.chess.statics.Symbol;
-import com.chess.ui.interfaces.LoginErrorUpdateListener;
 import com.chess.utilities.AppUtils;
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -40,7 +38,7 @@ import java.util.Locale;
  * @author alien_roger
  * @created at: 23.09.12 8:10
  */
-public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity implements LoginErrorUpdateListener {
+public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	public static final String REGION_MARK = "-r";
 
@@ -282,17 +280,5 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity imp
 
 	protected boolean inPortrait() {
 		return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
-	}
-
-	@Override
-	public void onInvalidLoginCredentials() {
-		showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
-		appData.setPassword(Symbol.EMPTY);
-	}
-
-	@Override
-	public void onFacebookUserNoAccount() {
-		popupItem.setPositiveBtnId(R.string.sign_up);
-		showPopupDialog(R.string.no_chess_account_signup_please, CHESS_NO_ACCOUNT_TAG);
 	}
 }

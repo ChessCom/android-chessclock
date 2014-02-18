@@ -10,6 +10,7 @@ import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.entity.api.LoginItem;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
@@ -19,16 +20,18 @@ import com.chess.backend.interfaces.LoginUpdateListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.backend.tasks.RequestJsonTask;
-import com.chess.lcc.android.interfaces.*;
+import com.chess.lcc.android.interfaces.LccChatMessageListener;
+import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
+import com.chess.lcc.android.interfaces.LccEventListener;
+import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
 import com.chess.live.client.*;
 import com.chess.model.DataHolder;
 import com.chess.model.GameLiveItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
-import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.engine.configs.LiveGameConfig;
-import com.chess.ui.interfaces.LoginErrorUpdateListener;
+import com.chess.ui.interfaces.PopupShowListener;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 import com.chess.utilities.Ping;
@@ -63,8 +66,6 @@ public class LiveConnectionHelper {
 	private LccConnectionListener connectionListener;
 	private LccSubscriptionListener subscriptionListener;
 
-	private LiveUiUpdateListener liveUiUpdateListener;
-	private LoginErrorUpdateListener loginErrorUpdateListener;
 	private LiveChessClientEventListener liveChessClientEventListener;
 	private LccConnectionUpdateFace connectionUpdateFace;
 
@@ -73,6 +74,7 @@ public class LiveConnectionHelper {
 	private LccChallengeTaskRunner challengeTaskRunner;
 	private LccGameTaskRunner gameTaskRunner;
 	private Ping testPing;
+	private PopupShowListener popupShowListener;
 
 
 	public LiveConnectionHelper(LiveChessService liveService) {
@@ -188,6 +190,10 @@ public class LiveConnectionHelper {
 	 */
 	public void setLiveChessClientEventListener(LiveChessClientEventListener liveChessClientEventListener) {
 		this.liveChessClientEventListener = liveChessClientEventListener;
+	}
+
+	public void popupShowListener(PopupShowListener popupShowListener) {
+		this.popupShowListener = popupShowListener;
 	}
 
 	public void onOtherClientEntered(String message) {
@@ -779,14 +785,6 @@ public class LiveConnectionHelper {
 		return context;
 	}
 
-	public void setLiveUiUpdateListener(LiveUiUpdateListener liveUiUpdateListener) {
-		this.liveUiUpdateListener = liveUiUpdateListener;
-	}
-
-	public void setLoginErrorUpdateListener(LiveBaseActivity loginErrorUpdateListener) {
-		this.loginErrorUpdateListener = loginErrorUpdateListener;
-	}
-
 	/*
 	private void sessionIdCheck() {
 		LoadItem loadItem = LoadHelper.getUserInfo(appData.getUserToken());
@@ -897,32 +895,33 @@ public class LiveConnectionHelper {
 			preferencesEditor.putLong(AppConstants.USER_TOKEN_SAVE_TIME, System.currentTimeMillis());
 			preferencesEditor.commit();
 
-			liveUiUpdateListener.registerGcm();
+			liveChessClientEventListener.registerGcm();
 			DataHolder.getInstance().setLiveChessMode(true);
 			Log.d(TAG, "LBA CredentialsLoginUpdateListener -> updateData");
 
-			liveUiUpdateListener.performServiceConnection();
+			liveChessClientEventListener.performServiceConnection();
 		}
 
 		@Override
 		public void errorHandle(Integer resultCode) {
 
-			//LogMe.dl(TAG, "CredentialsLoginUpdateListener resultCode=" + resultCode);
-
-			// show message only for re-login and app update     // todo: to vm: why this code is commented and there is no handle for provided error codes???
-			/*if (RestHelper.containsServerCode(resultCode)) {
+			// show message only for re-login and app update
+			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.ACCESS_DENIED_CODE) { // handled in CommonLogicFragment
-					String message = getString(R.string.version_is_obsolete_update);
-					safeShowSinglePopupDialog(R.string.error, message);
+					if (popupShowListener == null) {
+						String message = context.getString(R.string.version_is_obsolete_update);
+						popupShowListener.safeShowSinglePopupDialog(R.string.error, message);
+					}
 					return;
 				} else if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) { // handled in CommonLogicFragment
-					String serverMessage = ServerErrorCodes.getUserFriendlyMessage(LiveBaseActivity.this, serverCode); // TODO restore
-
-					safeShowSinglePopupDialog(R.string.error, serverMessage);
+					if (popupShowListener == null) {
+						String serverMessage = ServerErrorCodes.getUserFriendlyMessage(context, serverCode); // TODO restore
+						popupShowListener.safeShowSinglePopupDialog(R.string.error, serverMessage);
+					}
 					return;
 				}
-			}*/
+			}
 			super.errorHandle(resultCode);
 		}
 	}
@@ -930,7 +929,7 @@ public class LiveConnectionHelper {
 	private class FacebookLoginUpdateListener extends LoginUpdateListener {
 
 		public FacebookLoginUpdateListener(Context context, String facebookToken) {
-			super(context, facebookToken, loginErrorUpdateListener);
+			super(context, facebookToken, popupShowListener);
 		}
 
 		@Override
@@ -939,7 +938,7 @@ public class LiveConnectionHelper {
 
 			//if (needReLoginToLive) {
 			DataHolder.getInstance().setLiveChessMode(true);
-			liveUiUpdateListener.performServiceConnection();
+			liveChessClientEventListener.performServiceConnection();
 			//}
 		}
 
