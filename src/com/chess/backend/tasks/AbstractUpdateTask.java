@@ -154,8 +154,8 @@ public abstract class AbstractUpdateTask<ItemType, Input> extends AsyncTask<Inpu
 
 	public AbstractUpdateTask<ItemType, Input> executeTask(Input... input) {
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-//			executeOnExecutor(THREAD_POOL_EXECUTOR, input);
-			executeOnExecutor(DUAL_THREAD_EXECUTOR, input);
+			executeOnExecutor(THREAD_POOL_EXECUTOR, input);
+//			executeOnExecutor(DUAL_THREAD_EXECUTOR, input);
 		} else {
 			execute(input);
 		}
