@@ -24,7 +24,7 @@ import com.chess.statics.Symbol;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
-import com.chess.ui.interfaces.PopupShowListener;
+import com.chess.ui.interfaces.PopupShowFace;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
@@ -42,8 +42,7 @@ import java.util.Map;
  * @author alien_roger
  * @created at: 07.07.12 6:42
  */
-//public abstract class BaseFragmentPopupsActivity extends FragmentActivity implements PopupDialogFace {
-public abstract class BaseFragmentPopupsActivity extends BaseActivity implements PopupDialogFace, PopupShowListener {
+public abstract class BaseFragmentPopupsActivity extends BaseActivity implements PopupDialogFace, PopupShowFace {
 
 	protected static final boolean HONEYCOMB_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 	public static final boolean JELLYBEAN_1_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
@@ -144,14 +143,6 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		//first saving my state, so the bundle wont be empty.
-		//http://code.google.com/p/android/issues/detail?id=19917
-		outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE");
-		super.onSaveInstanceState(outState);
-	}
-
-	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 
@@ -223,6 +214,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	}
 
 	// Single button no callback dialogs
+	@Override
 	public void showSinglePopupDialog(int titleId, int messageId) {
 		popupItem.setButtons(1);
 		showPopupDialog(titleId, messageId, INFO_POPUP_TAG);
@@ -233,6 +225,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		showPopupDialog(title, message, INFO_POPUP_TAG);
 	}
 
+	@Override
 	public void safeShowSinglePopupDialog(int titleId, String message) {
 		if (isPaused)
 			return;
@@ -283,6 +276,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		updatePopupAndShow(tag);
 	}
 
+	@Override
 	public void showPopupDialog(int titleId, String tag) {
 		popupItem.setTitle(titleId);
 		popupItem.setMessage(Symbol.EMPTY);
@@ -440,6 +434,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		return EasyTracker.getInstance(this);
 	}
 
+	@Override
 	public void setPositiveBtnId(int leftBtnId) {
 		popupItem.setPositiveBtnId(R.string.ic_check);
 	}

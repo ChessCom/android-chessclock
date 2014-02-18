@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -225,6 +226,8 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 		} else {
 			if (parentFace != null) {
 				parentFace.showPreviousFragment();
+			} else {
+				getActivityFace().showPreviousFragment();
 			}
 		}
 	}
@@ -413,9 +416,9 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 
 		private final int previewWidth;
 		private final Bitmap placeHolderBitmap;
-		private final RelativeLayout.LayoutParams imageParams;
+		private final FrameLayout.LayoutParams imageParams;
 		private final LinearLayout.LayoutParams linearLayoutParams;
-		private final RelativeLayout.LayoutParams progressParams;
+		private final FrameLayout.LayoutParams progressParams;
 		private final EnhancedImageDownloader imageLoader;
 
 		public ThemePiecesAdapter(Context context, List<SelectionItem> menuItems) {
@@ -430,11 +433,11 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 			previewWidth = piecesDrawableExample.getIntrinsicWidth();
 			int imageHeight = piecesDrawableExample.getIntrinsicHeight();
 
-			imageParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
+			imageParams = new FrameLayout.LayoutParams(previewWidth, imageHeight);
 			linearLayoutParams = new LinearLayout.LayoutParams(previewWidth, imageHeight);
 
-			progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+			progressParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			progressParams.gravity = Gravity.CENTER;
 		}
 
 		@Override
@@ -485,23 +488,16 @@ public class SettingsThemePiecesFragment extends CommonLogicFragment implements 
 	private class DefaultPiecesAdapter extends ItemsAdapter<SelectionItem> {
 
 		private final int previewWidth;
-		private final Bitmap placeHolderBitmap;
-		private final RelativeLayout.LayoutParams imageParams;
 		private final LinearLayout.LayoutParams linearLayoutParams;
 		private final RelativeLayout.LayoutParams progressParams;
 
 		public DefaultPiecesAdapter(Context context, List<SelectionItem> menuItems) {
 			super(context, menuItems);
 
-			int backIMgColor = getResources().getColor(R.color.upgrade_toggle_button_p);
-			placeHolderBitmap = Bitmap.createBitmap(new int[]{backIMgColor}, 1, 1, Bitmap.Config.ARGB_8888);
-
 			Drawable piecesDrawableExample = resources.getDrawable(R.drawable.pieces_alpha);
 			previewWidth = piecesDrawableExample.getIntrinsicWidth();
 			int imageHeight = piecesDrawableExample.getIntrinsicHeight();
 
-
-			imageParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
 			linearLayoutParams = new LinearLayout.LayoutParams(previewWidth, imageHeight);
 
 			progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

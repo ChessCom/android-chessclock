@@ -34,10 +34,6 @@ public class EnhancedImageDownloader {
 	private boolean useScale;
 	private BitmapFactory.Options bitmapOptions;
 
-	public enum Mode {
-		NO_ASYNC_TASK, NO_DOWNLOADED_DRAWABLE, CORRECT
-	}
-
 	private File cacheDir;
 
 	public EnhancedImageDownloader(Context context) {
@@ -235,31 +231,35 @@ public class EnhancedImageDownloader {
 				int targetH = imageSizeMap.get(url);
 
 				// Get the dimensions of the bitmap
-				BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-				bmOptions.inJustDecodeBounds = true;
-				BitmapFactory.decodeFile(file.getAbsolutePath(), bmOptions);
-				int photoW = bmOptions.outWidth;
-				int photoH = bmOptions.outHeight;
+				bitmapOptions.inJustDecodeBounds = true;
+				BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
+				int photoW = bitmapOptions.outWidth;
+				int photoH = bitmapOptions.outHeight;
 
 				// Determine how much to scale down the image
 				int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
 				// Decode the image imgFile into a Bitmap sized to fill the View
-				bmOptions.inJustDecodeBounds = false;
-				bmOptions.inSampleSize = scaleFactor;
-				bmOptions.inPurgeable = true;
+				bitmapOptions.inJustDecodeBounds = false;
+				bitmapOptions.inSampleSize = scaleFactor;
+				bitmapOptions.inPurgeable = true;
 
-				Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), bmOptions);
-				Log.d(LOG_TAG, "bmp = " + bmp);
-				return bmp;
+//				Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
+//				Log.d(LOG_TAG, "bmp = " + bmp);
+				return BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
+			}else {
+				// don't scale but use same inBitmap // should work better that way
+//				bitmapOptions.inSampleSize = 1;
+//				return BitmapFactory.decodeStream(new FileInputStream(file), null, bitmapOptions);
+				return BitmapFactory.decodeStream(new FileInputStream(file));
 			}
 
-			return BitmapFactory.decodeStream(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} catch (OutOfMemoryError ex) {
+			AppUtils.logMemData();
 			ex.printStackTrace();
 		}
 		return null;
@@ -311,12 +311,17 @@ public class EnhancedImageDownloader {
 			}
 
 			if (isCancelled()) {
+				bitmap.recycle();
 				bitmap = null;
+				return;
 			}
 
 			if (context == null) { // if activity dead, escape
+				bitmap.recycle();
+				bitmap = null;
 				return;
 			}
+
 			ProgressImageView holder = holderReference.get();
 
 			holder.setBitmap(bitmap);
@@ -400,6 +405,8 @@ public class EnhancedImageDownloader {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (OutOfMemoryError e) {
 			e.printStackTrace();
 		}
 

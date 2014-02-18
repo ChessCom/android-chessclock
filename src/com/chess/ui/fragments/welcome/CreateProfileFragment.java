@@ -157,14 +157,23 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		}
 
 		updateUserCountry(userCountry);
+
+		AppUtils.changeSoftInputToPan(getActivity());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		AppUtils.changeSoftInputToResize(getActivity());
 	}
 
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.skipBtn) {
-			backToHomeFragment();
+			welcomeHome();
 		} else if (v.getId() == R.id.skipLay) {
-			backToHomeFragment();
+			welcomeHome();
 		} else if (v.getId() == R.id.countryEdt) {
 			showCountriesFragment();
 		} else if (v.getId() == R.id.skillEdt) {
@@ -174,6 +183,14 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		} else if (v.getId() == R.id.createProfileBtn) {
 			createProfile();
 		}
+	}
+
+	private void welcomeHome() {
+		getAppData().setUserFirstName(getTextFromField(firstNameEdt));
+		getAppData().setUserLastName(getTextFromField(lastNameEdt));
+		getAppData().setUserCountry(getTextFromField(countryEdt));
+
+		backToHomeFragment();
 	}
 
 	@Override
@@ -277,7 +294,7 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		public void updateData(UserItem returnedObj) {
 			getAppData().setUserAvatar(returnedObj.getData().getAvatar());
 
-			backToHomeFragment();
+			welcomeHome();
 		}
 	}
 

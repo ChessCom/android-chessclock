@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -96,6 +97,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private Bitmap backgroundBitmap;
 	private PopupCustomViewFragment reviewPopupFragment;
 	private IntentFilter updateBackgroundFilter;
+	private BitmapFactory.Options bitmapOptions;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -105,6 +107,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		setContentView(R.layout.main_active_screen);
 		customActionBarViewId = R.layout.custom_actionbar;
+
+		bitmapOptions = new BitmapFactory.Options();
 
 		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();
 		closeMenuListeners = new ArrayList<SlidingMenu.OnClosedListener>();
@@ -291,6 +295,12 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	@Override
+	protected void onResumeFragments() {
+		super.onResumeFragments();
+		// TODO -> File | Settings | File Templates.
+	}
+
+	@Override
 	protected void onPause() {
 		super.onPause();
 
@@ -362,7 +372,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	private void setMainBackground(String drawablePath) {
-		BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
 
 		bitmapOptions.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(drawablePath, bitmapOptions);
@@ -386,6 +395,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			Runtime.getRuntime().gc();
 		}
 
+		if (AppUtils.HONEYCOMB_PLUS_API) {
+			bitmapOptions.inBitmap = backgroundBitmap;
+		}
+
 		try {
 			backgroundBitmap = BitmapFactory.decodeFile(drawablePath, bitmapOptions);
 		} catch (OutOfMemoryError ignore) {
@@ -393,24 +406,37 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			return; // don't clear folders
 		}
 
+		Drawable drawable;
 		if (backgroundBitmap != null) {
-			BitmapDrawable drawable = new BitmapDrawable(getResources(), backgroundBitmap);
+			drawable = new BitmapDrawable(getResources(), backgroundBitmap);
 			drawable.setBounds(0, 0, backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
 			getWindow().setBackgroundDrawable(drawable);
-		} else { // If user removed SD card or clear folder
-			getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
+		} else { // If user removed SD card or clear folder, or path file is corrupted
+
+			DbDataManager.deleteThemeRecord(getContentResolver(), getAppData().getThemeBackgroundName());
+
+			drawable = getResources().getDrawable(getAppData().getThemeBackId());
+
+			if (drawable != null) {
+				drawable.setBounds(0, 0, displayWidth, displayHeight);
+			}
 
 			// clear DB entity to refill it
-			getContentResolver().delete(uriArray[DbScheme.Tables.THEMES_LOAD_STATE.ordinal()], null, null);
+			final String[] arguments = new String[]{String.valueOf(getAppData().getThemeId())};
+			getContentResolver().delete(uriArray[DbScheme.Tables.THEMES_LOAD_STATE.ordinal()],
+					DbDataManager.SELECTION_ID, arguments);
 
-			AppData appData = getAppData();
-			// clear themed settings
-			appData.resetThemeToDefault();
-
-			appData.setThemeName(AppConstants.DEFAULT_THEME_NAME);
-			appData.setThemeBackgroundName(AppConstants.DEFAULT_THEME_NAME);
-			updateActionBarBackImage();
+			// don't clear all settings
+//			AppData appData = getAppData();
+//			// clear themed settings
+//			appData.resetThemeToDefault();
+//
+//			appData.setThemeName(AppConstants.DEFAULT_THEME_NAME);
+//			appData.setThemeBackgroundName(AppConstants.DEFAULT_THEME_NAME);
+//			updateActionBarBackImage();
 		}
+
+		getWindow().setBackgroundDrawable(drawable);
 	}
 
 	@Override
@@ -685,14 +711,16 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			themeBackPath = getAppData().getThemeBackPathLand();
 		}
 
+		Log.d("TEST", " updateMainBackground");
+		AppUtils.logMemData();
 		if (!TextUtils.isEmpty(themeBackPath)) {
 			setMainBackground(themeBackPath);
 		} else {
-			try {
+//			try {
 				getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
-			} catch (OutOfMemoryError ignore) {
-				return;
-			}
+//			} catch (OutOfMemoryError ignore) {
+//				return;
+//			}
 		}
 
 		updateActionBarBackImage();
@@ -703,7 +731,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		}
 
 		// force update all views with fonts
-		findViewById(R.id.content_frame).invalidate();
 		sendBroadcast(new Intent(IntentConstants.BACKGROUND_LOADED));
 	}
 

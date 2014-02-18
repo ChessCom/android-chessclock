@@ -219,7 +219,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			firstClick = false;
 			from = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
 		}
-		invalidate();
+		invalidateMe();
 	}
 
 	@Override
@@ -242,7 +242,6 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 				CompEngineHelper.getInstance().setGameMode(engineMode);
 				//postMoveToEngine(getBoardFace().getLastMove(), false, compStrength);
 			}
-			invalidate();
 		}
 
 		gameCompFace.toggleSides();
@@ -270,7 +269,6 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 			if (move != null && ChessBoard.isComputerVsHumanGameMode(getBoardFace()) && !getBoardFace().isAnalysis()) {
 				setSecondMoveAnimator(new MoveAnimator(move, false));
 			}
-			invalidate();
 			gameCompFace.invalidateGameScreen();
 			return true;
 		} else {
@@ -300,7 +298,6 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 					setSecondMoveAnimator(new MoveAnimator(move, true));
 				}
 			}
-			invalidate();
 			gameCompFace.invalidateGameScreen();
 
 			return true;

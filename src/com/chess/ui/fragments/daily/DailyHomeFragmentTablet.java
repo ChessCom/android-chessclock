@@ -101,6 +101,8 @@ public class DailyHomeFragmentTablet extends DailyHomeFragment implements ItemCl
 			getActivityFace().openFragment(webViewFragment);
 		} else if (view.getId() == R.id.challengesView) {
 			getActivityFace().openFragment(new DailyOpenChallengesFragment());
+		} else if (view.getId() == R.id.archiveHeaderView) {
+			getActivityFace().openFragment(new DailyGamesFinishedFragmentTablet());
 		}
 	}
 

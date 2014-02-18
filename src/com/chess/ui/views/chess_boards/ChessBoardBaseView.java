@@ -90,7 +90,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 	protected float viewWidth;
 	protected float viewHeight;
-	private float previousWidth;
 
 	protected Rect rect;
 
@@ -133,7 +132,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	private int[] customCoordinatesColors;
 	private String customPiecesName;
 	private boolean fastMode;
-	private int _3dPieceMaxHeight;
 	private Paint piecesPaint;
 	private int _3dPiecesOffsetSmall;
 	private boolean isChessKid = true;
@@ -144,7 +142,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	private int borderBevelColor;
 	private int borderMergeColor;
 	private boolean initialized;
-
+	private Rect screenRect;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -163,6 +161,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	private void initResources(Context context) {
 		Resources resources = context.getResources();
 		density = resources.getDisplayMetrics().density;
+
+		screenRect = new Rect();
 
 		drawFilter = new PaintFlagsDrawFilter(0, Paint.FILTER_BITMAP_FLAG | Paint.ANTI_ALIAS_FLAG);
 		boardBackPaint = new Paint();
@@ -295,6 +295,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		squareSize = viewWidth / 8f;
 //		logTest("onSizeChanged width = " + viewWidth + " height = " + viewHeight + ", squareSize = " + squareSize);
 
+		screenRect.set(0, 0, (int) viewWidth, (int) viewHeight);
 		loadBoard();
 		loadPieces();
 		updateCustomColors();
@@ -433,7 +434,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			resetValidMoves();
 			boardFace.takeBack();
 
-			invalidate();
 			gameFace.invalidateGameScreen();
 
 			if (notationsFace != null) { // we might don't have notations  so probably should be moved to fragment level
@@ -463,7 +463,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			resetValidMoves();
 			getBoardFace().takeNext();
 
-			invalidate();
 			gameFace.invalidateGameScreen();
 
 			if (notationsFace != null) {
@@ -571,11 +570,14 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		if (!isTablet) {
 			int offset = (int) (1 * density);
 			int borderWidth = 2;
-			getDrawingRect(clipBoundsRect);
-			int saveCount = canvas.save(Canvas.CLIP_SAVE_FLAG);
-			clipBoundsRect.set(clipBoundsRect.left, clipBoundsRect.top - offset * 2, clipBoundsRect.right,
-					clipBoundsRect.bottom + offset * 2);
-			canvas.clipRect(clipBoundsRect, Region.Op.REPLACE);
+			int saveCount = 0;
+			if (AppUtils.JELLYBEAN_MR1_PLUS_API) {
+				getDrawingRect(clipBoundsRect);
+				saveCount = canvas.save(Canvas.CLIP_SAVE_FLAG);
+				clipBoundsRect.set(clipBoundsRect.left, clipBoundsRect.top - offset * 2, clipBoundsRect.right,
+						clipBoundsRect.bottom + offset * 2);
+				canvas.clipRect(clipBoundsRect, Region.Op.REPLACE);
+			}
 
 			// draw top shadow line
 			borderLinePaint.setColor(borderShadowColor);
@@ -591,7 +593,9 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			borderLinePaint.setColor(borderShadowColor);
 			canvas.drawLine(0, getHeight() + borderWidth, getWidth(), getHeight() + borderWidth, borderLinePaint);
 
-			canvas.restoreToCount(saveCount);
+			if (AppUtils.JELLYBEAN_MR1_PLUS_API) {
+				canvas.restoreToCount(saveCount);
+			}
 		}
 	}
 
@@ -1007,7 +1011,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		int file = (int) ((event.getX() - event.getX() % squareSize) / squareSize);
 		int rank = (int) ((event.getY() - event.getY() % squareSize) / squareSize);
 		if (file > 7 || file < 0 || rank > 7 || rank < 0) {
-			invalidate();
+			invalidateMe();
 			return false;
 		}
 		BoardFace boardFace = getBoardFace();
@@ -1019,7 +1023,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			if (userAbleToMove) {
 				pieceSelected = true;
 				firstClick = false;
-				invalidate();
+				invalidateMe();
 			}
 		} else {
 			// don't touch not our piece or don't make empty square as fromSquare
@@ -1027,7 +1031,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				from = fromSquare;
 				pieceSelected = true;
 				firstClick = false;
-				invalidate();
+				invalidateMe();
 			}
 		}
 		return true;
@@ -1041,7 +1045,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		int rank = (int) ((dragY - dragY % squareSize) / squareSize);
 
 		if (file > 7 || file < 0 || rank > 7 || rank < 0) {
-			invalidate();
+			invalidateMe();
 			return false;
 		}
 
@@ -1055,7 +1059,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			// do not drag captured piece // ??
 			dragging = isUserAbleToMove(boardFace.getColor(draggingFrom)); // we do check in GameBaseFragment if boardFace is in Analysis mode
 			to = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
-			invalidate();
+			invalidateMe();
 		}
 		return true;
 	}
@@ -1072,7 +1076,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		draggingFrom = -1;
 		// if outside of the boardBitmap - return
 		if (file > 7 || file < 0 || rank > 7 || rank < 0) { // if touched out of board
-			invalidate();
+			invalidateMe();
 			return false;
 		}
 
@@ -1085,7 +1089,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			if (isUserAbleToMove || (boardFace.isAnalysis() && boardFace.getPiece(to) != ChessBoard.EMPTY)) {
 				pieceSelected = true;
 				firstClick = false;
-				invalidate();
+				invalidateMe();
 			}
 		} else {
 			to = selectedSquare;
@@ -1130,7 +1134,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				firstClick = false;
 				from = selectedSquare;
 			}
-			invalidate();
+			invalidateMe();
 		}
 		return true;
 	}
@@ -1169,7 +1173,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			firstClick = false;
 			from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 		}
-		invalidate();
+		invalidateMe();
 	}
 
 	/**
@@ -1268,7 +1272,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 			// TODO @comp: check, show animation for notation scroll
 //			checkControlsButtons();
-			invalidate();
+			invalidateMe();
 		}
 	}
 
@@ -1306,7 +1310,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		if (getContext() == null || viewWidth <= 0) {
 			return;
 		}
-		previousWidth = viewWidth;
 
 		BitmapShader shader;
 
@@ -1321,6 +1324,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			} catch (OutOfMemoryError ignore) {
 
 			}
+			AppUtils.logMemData();
+
 			if (boardBitmap == null) {
 				getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme
 				boardBackPaint.setShader(setBoardFromResource());
@@ -1491,7 +1496,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			}
 
 			if (blackPiecesMap == null) {
-				blackPiecesMap = new WeakHashMap<Integer, Bitmap>(); // TODO probably we don't need weak or soft referemces
+				blackPiecesMap = new WeakHashMap<Integer, Bitmap>();
 			} else {
 				for (Bitmap bitmap : blackPiecesMap.values()) {
 					bitmap.recycle();
@@ -1506,7 +1511,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			bitmapOptions.inJustDecodeBounds = true;
 			BitmapFactory.decodeFile(testPath, bitmapOptions);
 
-			_3dPieceMaxHeight = 0;
 			// create white pieces
 			String[] whitePieceImageCodes = ChessBoard.whitePieceImageCodes;
 			for (int i = 0; i < whitePieceImageCodes.length; i++) {
@@ -1525,11 +1529,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				}
 
 				whitePiecesMap.put(i, pieceBitmap);
-
-				// get max height for 3d pieces
-				if (use3dPieces) {
-					_3dPieceMaxHeight = Math.max(pieceBitmap.getHeight(), _3dPieceMaxHeight);
-				}
 			}
 
 			// create black pieces
@@ -1737,7 +1736,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	public void updateBoardAndPiecesImgs() {
 		loadPieces();
 		loadBoard();
-		invalidate();
+		invalidateMe();
 	}
 
 //	private Paint initMoveArrowPaint(int arrowColor) {
@@ -1842,7 +1841,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			boardBitmap = null;
 		}
 
-		Runtime.getRuntime().gc(); // TODO remove that when find solution
+		System.gc(); // TODO remove that when find solution
+		AppUtils.logMemData();
 	}
 
 	public void setCustomHighlight(int customHighlight) {
@@ -1855,6 +1855,10 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 	public void setCustomPiecesName(String customPiecesName) {
 		this.customPiecesName = customPiecesName;
+	}
+
+	public void invalidateMe() {
+		invalidate(screenRect);
 	}
 
 // TODO: refactor! Use ObjectAnimator for better drawing and performance
@@ -2034,7 +2038,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			double animationTimeFactor = (now - startTime) / (double) (stopTime - startTime);
 			drawAnimatedPiece(canvas, pieceBitmap, from1, to1, animationTimeFactor);
 			drawAnimatedPiece(canvas, rookCastlingBitmap, from2, to2, animationTimeFactor);
-			invalidate();
+			invalidateMe();
 		}
 
 		private void drawAnimatedPiece(Canvas canvas, Bitmap pieceBitmap, int from, int to, double animationTimeFactor) {
@@ -2119,7 +2123,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		if (dragging) {
 			dragging = false;
 			pieceSelected = false;
-			invalidate();
+			invalidateMe();
 		}
 	}
 }

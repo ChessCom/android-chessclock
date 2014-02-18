@@ -16,20 +16,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ImageDownloaderToListener {
 	private static final String LOG_TAG = "EnhancedImageDownloader";
 	private final Context context;
+	private final BitmapFactory.Options bitmapOptions;
 	private int imageSize;
-	private int imgWidth;
-	private int imgHeight;
-	private boolean useScale;
+	private HashMap<String, Integer> widthsMap;
+	private HashMap<String, Integer> heightsMap;
 
-	public enum Mode {
-		NO_ASYNC_TASK, NO_DOWNLOADED_DRAWABLE, CORRECT
-	}
+	private boolean useScale;
 
 	private File cacheDir;
 
@@ -40,6 +37,11 @@ public class ImageDownloaderToListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		widthsMap = new HashMap<String, Integer>();
+		heightsMap = new HashMap<String, Integer>();
+
+		bitmapOptions = new BitmapFactory.Options();
 	}
 
 	/**
@@ -80,8 +82,11 @@ public class ImageDownloaderToListener {
 	 * @param imgHeight height of scaled image
 	 */
 	public void download(String url, ImageReadyListener holder, int imgWidth, int imgHeight) {
-		this.imgWidth = imgWidth;
-		this.imgHeight = imgHeight;
+//		this.imgWidth = imgWidth;
+//		this.imgHeight = imgHeight;
+//		Log.d("TEST", "dl = " + url + ", width = " + imgWidth + ", height = " + imgHeight);
+		widthsMap.put(url, imgWidth);
+		heightsMap.put(url, imgHeight);
 		useScale = false;
 		if (TextUtils.isEmpty(url)) {
 			Log.e(LOG_TAG, " passed url is null. Don't start loading");
@@ -115,16 +120,16 @@ public class ImageDownloaderToListener {
 		}
 
 		// First try the hard reference cache
-		synchronized (sHardBitmapCache) {
-			final Bitmap holder = sHardBitmapCache.get(url);
-			if (holder != null) {
-				// Bitmap found in hard cache
-				// Move element to first position, so that it is removed last
-				sHardBitmapCache.remove(url);
-				sHardBitmapCache.put(url, holder);
-				return holder;
-			}
-		}
+//		synchronized (sHardBitmapCache) {
+//			final Bitmap holder = sHardBitmapCache.get(url);
+//			if (holder != null) {
+//				// Bitmap found in hard cache
+//				// Move element to first position, so that it is removed last
+//				sHardBitmapCache.remove(url);
+//				sHardBitmapCache.put(url, holder);
+//				return holder;
+//			}
+//		}
 
 		// Then try the soft reference cache
 		SoftReference<Bitmap> bitmapReference = sSoftBitmapCache.get(url);
@@ -177,6 +182,8 @@ public class ImageDownloaderToListener {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} catch (OutOfMemoryError ex) {
+			AppUtils.logMemData();
+
 			ex.printStackTrace();
 		}
 		return null;
@@ -210,13 +217,19 @@ public class ImageDownloaderToListener {
 		protected void onPostExecute(Bitmap bitmap) {
 			Log.d(LOG_TAG, "onPostExecute bitmap " + bitmap + " for url = " + url);
 
+			AppUtils.logMemData();
+
 			if (holderReference == null /*|| holderReference.get() == null*/) {
 				Log.d(LOG_TAG, "holderReference == null || holderReference.get() == null bitmap " + bitmap + " for url = " + url);
+				bitmap.recycle();
+				bitmap = null;
 				return;
 			}
 
 			if (isCancelled() || context == null) { // if activity dead, escape
 				Log.d(LOG_TAG, "isCancelled() || context == null bitmap " + bitmap + " for url = " + url);
+				bitmap.recycle();
+				bitmap = null;
 				return;
 			}
 
@@ -237,6 +250,7 @@ public class ImageDownloaderToListener {
 	}
 
 	private Bitmap downloadBitmap(String url, ImageReadyListener holderReference) {
+		String originalUrl = url;
 		Log.d(LOG_TAG, "downloadBitmap start url = " + url);
 
 		String filename = String.valueOf(url.hashCode());
@@ -290,32 +304,70 @@ public class ImageDownloaderToListener {
 					int targetH = imageSize;
 
 					// Get the dimensions of the bitmap
-					BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-					bmOptions.inJustDecodeBounds = true;
-					BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
-					int photoW = bmOptions.outWidth;
-					int photoH = bmOptions.outHeight;
+					bitmapOptions.inJustDecodeBounds = true;
+					BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
+					int photoW = bitmapOptions.outWidth;
+					int photoH = bitmapOptions.outHeight;
 
 					// Determine how much to scale down the image
 					int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
 					// Decode the image imgFile into a Bitmap sized to fill the View
-					bmOptions.inJustDecodeBounds = false;
-					bmOptions.inSampleSize = scaleFactor;
-					bmOptions.inPurgeable = true;
+					bitmapOptions.inJustDecodeBounds = false;
+					bitmapOptions.inSampleSize = scaleFactor;
+					bitmapOptions.inPurgeable = true;
 
-					return BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bmOptions);
+					return BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
+				} else {
+					if (widthsMap.get(originalUrl) != null && heightsMap.get(originalUrl) != null) {
+						Integer desiredWidth = widthsMap.get(originalUrl);
+						Integer desiredHeight = heightsMap.get(originalUrl);
+						bitmapOptions.inJustDecodeBounds = true;
+						BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
+
+						int photoW = bitmapOptions.outWidth;
+						int photoH = bitmapOptions.outHeight;
+
+						// Determine how much to scale down the image
+						int scaleFactor = Math.min(photoW / desiredWidth, photoH / desiredHeight);
+
+						// Decode the image imgFile into a Bitmap sized to fill the View
+						bitmapOptions.inJustDecodeBounds = false;
+						bitmapOptions.inSampleSize = scaleFactor;
+						bitmapOptions.inPurgeable = true;
+
+						return BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
+					} else {
+						return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+					}
 				}
-				// TODO adjust usage for width and height
+			} else { // if file not restored from SD cache
+				if (widthsMap.get(originalUrl) != null && heightsMap.get(originalUrl) != null) {
+					Integer desiredWidth = widthsMap.get(originalUrl);
+					Integer desiredHeight = heightsMap.get(originalUrl);
+					bitmapOptions.inJustDecodeBounds = true;
+					BitmapFactory.decodeStream(is, null, bitmapOptions);
 
-				return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-			} else {
-				return BitmapFactory.decodeStream(is);
+					int photoW = bitmapOptions.outWidth;
+					int photoH = bitmapOptions.outHeight;
+
+					// Determine how much to scale down the image
+					int scaleFactor = Math.min(photoW / desiredWidth, photoH / desiredHeight);
+
+					// Decode the image imgFile into a Bitmap sized to fill the View
+					bitmapOptions.inJustDecodeBounds = false;
+					bitmapOptions.inSampleSize = scaleFactor;
+					bitmapOptions.inPurgeable = true;
+
+					return BitmapFactory.decodeStream(is, null, bitmapOptions);
+				} else {
+					return BitmapFactory.decodeStream(is);
+				}
 			}
-
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
+			Log.d("TEST", " file not found " + e.toString());
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -326,7 +378,7 @@ public class ImageDownloaderToListener {
 	}
 
     /*
-      * Cache-related fields and methods.
+	  * Cache-related fields and methods.
       *
       * We use a hard and a soft cache. A soft reference cache is too
       * aggressively cleared by the Garbage Collector.
@@ -336,20 +388,18 @@ public class ImageDownloaderToListener {
 	private static final int DELAY_BEFORE_PURGE = 120 * 1000; // in milliseconds
 
 	// Hard cache, with a fixed maximum capacity and a life duration
-	private final HashMap<String, Bitmap> sHardBitmapCache = new LinkedHashMap<String, Bitmap>(HARD_CACHE_CAPACITY / 2, 0.75f, true) {
-
-
-		@Override
-		protected boolean removeEldestEntry(Entry<String, Bitmap> eldest) {
-			if (size() > HARD_CACHE_CAPACITY) {
-				// Entries push-out of hard reference cache are transferred to
-				// soft reference cache
-				sSoftBitmapCache.put(eldest.getKey(), new SoftReference<Bitmap>(eldest.getValue()));
-				return true;
-			} else
-				return false;
-		}
-	};
+//	private final HashMap<String, Bitmap> sHardBitmapCache = new LinkedHashMap<String, Bitmap>(HARD_CACHE_CAPACITY / 2, 0.75f, true) {
+//		@Override
+//		protected boolean removeEldestEntry(Entry<String, Bitmap> eldest) {
+//			if (size() > HARD_CACHE_CAPACITY) {
+//				// Entries push-out of hard reference cache are transferred to
+//				// soft reference cache
+//				sSoftBitmapCache.put(eldest.getKey(), new SoftReference<Bitmap>(eldest.getValue()));
+//				return true;
+//			} else
+//				return false;
+//		}
+//	};
 
 	// Soft cache for bitmaps kicked out of hard cache
 	private final static ConcurrentHashMap<String, SoftReference<Bitmap>> sSoftBitmapCache = new ConcurrentHashMap<String, SoftReference<Bitmap>>(HARD_CACHE_CAPACITY / 2);
@@ -361,9 +411,9 @@ public class ImageDownloaderToListener {
 	 */
 	private void addBitmapToCache(String url, Bitmap holder) {
 		if (holder != null) {
-			synchronized (sHardBitmapCache) {
-				sHardBitmapCache.put(url, holder);
-			}
+//			synchronized (sHardBitmapCache) { // don't use cache for this downloader, as it's never get cleaned
+//				sHardBitmapCache.put(url, holder);
+//			}
 		}
 	}
 

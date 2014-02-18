@@ -295,6 +295,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 			videoBackImg.setVisibility(View.INVISIBLE);
 			fullScrBtn.setVisibility(View.VISIBLE);
 			videoView.setVisibility(View.VISIBLE);
+			videoProgress.setVisibility(View.VISIBLE);
 			playFullScreenVideo();
 
 			// mark as watched

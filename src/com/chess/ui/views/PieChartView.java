@@ -304,7 +304,7 @@ public class PieChartView extends View {
 	public void setGames(GamesInfoByResult games) {
 		this.games = games;
 		init(getContext());
-		invalidate();
+		invalidate(0, 0, getWidth(), getHeight());
 	}
 
 

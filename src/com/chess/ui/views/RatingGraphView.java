@@ -235,7 +235,7 @@ public class RatingGraphView extends LinearLayout {
 		}
 
 		chartView.setGraphData(series, width);
-		invalidate();
+		invalidate(0, 0, getWidth(), getHeight());
 	}
 
 	private CharSequence getLabel(boolean useYearLabels, Calendar calendar) {

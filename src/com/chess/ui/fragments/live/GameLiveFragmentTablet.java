@@ -41,17 +41,6 @@ public class GameLiveFragmentTablet extends GameLiveFragment implements RadioGro
 	}
 
 	@Override
-	protected void widgetsInit(View view) {
-		super.widgetsInit(view);
-
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			topButtonsGroup = (RadioGroup) view.findViewById(R.id.topButtonsGroup);
-			topButtonsGroup.setOnCheckedChangeListener(this);
-			chatFragmentContainer = view.findViewById(R.id.chatFragmentContainer);
-		}
-	}
-
-	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
 		updateRightView();
 	}
@@ -79,10 +68,23 @@ public class GameLiveFragmentTablet extends GameLiveFragment implements RadioGro
 						FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 						transaction.replace(R.id.chatFragmentContainer, fragmentByTag, fragmentTag);
 						transaction.commit();
+					} else {
+						((LiveChatFragment)fragmentByTag).updateData();
 					}
 
 					break;
 			}
+		}
+	}
+
+	@Override
+	protected void widgetsInit(View view) {
+		super.widgetsInit(view);
+
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			topButtonsGroup = (RadioGroup) view.findViewById(R.id.topButtonsGroup);
+			topButtonsGroup.setOnCheckedChangeListener(this);
+			chatFragmentContainer = view.findViewById(R.id.chatFragmentContainer);
 		}
 	}
 }

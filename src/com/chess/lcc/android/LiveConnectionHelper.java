@@ -31,7 +31,7 @@ import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.configs.LiveGameConfig;
-import com.chess.ui.interfaces.PopupShowListener;
+import com.chess.ui.interfaces.PopupShowFace;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 import com.chess.utilities.Ping;
@@ -74,7 +74,7 @@ public class LiveConnectionHelper {
 	private LccChallengeTaskRunner challengeTaskRunner;
 	private LccGameTaskRunner gameTaskRunner;
 	private Ping testPing;
-	private PopupShowListener popupShowListener;
+	private PopupShowFace popupShowFace;
 
 
 	public LiveConnectionHelper(LiveChessService liveService) {
@@ -192,8 +192,8 @@ public class LiveConnectionHelper {
 		this.liveChessClientEventListener = liveChessClientEventListener;
 	}
 
-	public void popupShowListener(PopupShowListener popupShowListener) {
-		this.popupShowListener = popupShowListener;
+	public void popupShowListener(PopupShowFace popupShowFace) {
+		this.popupShowFace = popupShowFace;
 	}
 
 	public void onOtherClientEntered(String message) {
@@ -909,15 +909,15 @@ public class LiveConnectionHelper {
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);
 				if (serverCode == ServerErrorCodes.ACCESS_DENIED_CODE) { // handled in CommonLogicFragment
-					if (popupShowListener == null) {
+					if (popupShowFace == null) {
 						String message = context.getString(R.string.version_is_obsolete_update);
-						popupShowListener.safeShowSinglePopupDialog(R.string.error, message);
+						popupShowFace.safeShowSinglePopupDialog(R.string.error, message);
 					}
 					return;
 				} else if (serverCode != ServerErrorCodes.INVALID_LOGIN_TOKEN_SUPPLIED) { // handled in CommonLogicFragment
-					if (popupShowListener == null) {
+					if (popupShowFace == null) {
 						String serverMessage = ServerErrorCodes.getUserFriendlyMessage(context, serverCode); // TODO restore
-						popupShowListener.safeShowSinglePopupDialog(R.string.error, serverMessage);
+						popupShowFace.safeShowSinglePopupDialog(R.string.error, serverMessage);
 					}
 					return;
 				}
@@ -929,7 +929,7 @@ public class LiveConnectionHelper {
 	private class FacebookLoginUpdateListener extends LoginUpdateListener {
 
 		public FacebookLoginUpdateListener(Context context, String facebookToken) {
-			super(context, facebookToken, popupShowListener);
+			super(context, facebookToken, popupShowFace);
 		}
 
 		@Override

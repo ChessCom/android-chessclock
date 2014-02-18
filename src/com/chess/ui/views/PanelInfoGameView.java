@@ -421,7 +421,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			}
 		}
 
-		invalidate();
+		invalidate(0, 0, getWidth(), getHeight());
 	}
 
 	public int getSide() {
@@ -531,5 +531,9 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 		playerRatingTxt.setTextColor(playerTextColor);
 		clockIconTxt.setTextColor(playerTextColor);
 		invalidate();
+	}
+
+	public void invalidateMe() { // TODO update only needed part of view, like avatarView
+		invalidate(0, 0, getWidth(), getHeight());
 	}
 }

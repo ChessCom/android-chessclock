@@ -208,14 +208,13 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 			firstClick = false;
 			from = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
 		}
-		invalidate();
+		invalidateMe();
 	}
 
 	@Override
 	public void flipBoard() {
 		getBoardFace().setReside(!getBoardFace().isReside());
-		invalidate();
-		gameAnalysisFace.invalidateGameScreen();
+		invalidateMe();
 	}
 
 	@Override

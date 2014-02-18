@@ -5,14 +5,15 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import com.chess.R;
 import com.chess.widgets.ProfileImageView;
 import com.nineoldandroids.animation.Animator;
@@ -29,13 +30,13 @@ import com.nineoldandroids.animation.ObjectAnimator;
  * @created 27.07.2011
  * @modified 28.02.13
  */
-public class ProgressImageView extends RelativeLayout implements View.OnTouchListener {
+public class ProgressImageView extends FrameLayout implements View.OnTouchListener {
 
 	public static final int DEFAULT_IMG_SIZE = 80;
 	public Bitmap placeholder;
 	private ProfileImageView imageView;
 	private Bitmap bitmap;
-	public ProgressBar progress;
+	public View progress;
 	public Bitmap noImage;
 
 	protected int size;
@@ -91,7 +92,7 @@ public class ProgressImageView extends RelativeLayout implements View.OnTouchLis
 		{// image
 			imageView = new ProfileImageView(getContext());
 			LayoutParams photoParams = new LayoutParams(size, size);
-			photoParams.addRule(CENTER_IN_PARENT);
+			photoParams.gravity = Gravity.CENTER;
 
 			imageView.setAdjustViewBounds(true);
 			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -100,9 +101,11 @@ public class ProgressImageView extends RelativeLayout implements View.OnTouchLis
 		}
 
 		{// progress
-			progress = new ProgressBar(getContext());
-			LayoutParams progressParams = new LayoutParams(size / 2, size / 2);
-			progressParams.addRule(CENTER_IN_PARENT);
+			progress = new ImageView(getContext());
+			LayoutParams progressParams = new LayoutParams(size, size);
+			progressParams.gravity = Gravity.CENTER;
+			ColorDrawable colorDrawable = new ColorDrawable(0x80FFFFFF);
+			((ImageView)progress).setImageDrawable(colorDrawable);
 
 			progress.setVisibility(GONE);
 
@@ -114,7 +117,7 @@ public class ProgressImageView extends RelativeLayout implements View.OnTouchLis
 		initClickAnimation();
 	}
 
-	public ProgressBar getProgressBar() {
+	public View getProgressBar() {
 		return progress;
 	}
 

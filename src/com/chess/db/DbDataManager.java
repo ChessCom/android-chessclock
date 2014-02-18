@@ -172,6 +172,7 @@ public class DbDataManager {
 	public static String SELECTION_FEN_AND_NUMBER = concatArguments(V_FEN, V_NUMBER);
 	public static String SELECTION_URL = concatArguments(V_URL);
 	public static String SELECTION_IS_CURRICULUM = concatArguments(V_IS_CURRICULUM);
+	public static String SELECTION_NAME = concatArguments(V_NAME);
 
 
 	// -------------- PROJECTIONS DEFINITIONS ---------------------------
@@ -2589,6 +2590,24 @@ public class DbDataManager {
 		}
 	}
 
+	/**
+	 * Can be used to clear theme settings to be able to reload it again if data or images were corrupted
+	 */
+	public static void deleteThemeRecord(ContentResolver contentResolver, String name) {
+		final String[] arguments = sArguments1;
+		arguments[0] = name;
+
+//		{ // clear theme record
+//			Uri uri = uriArray[Tables.THEMES.ordinal()];
+//			contentResolver.delete(uri, SELECTION_NAME, arguments);
+//		}
+
+		{ // clear background record
+			Uri uri = uriArray[Tables.THEME_BACKGROUNDS.ordinal()];
+			contentResolver.delete(uri, SELECTION_NAME, arguments);
+		}
+	}
+
 	public static BackgroundSingleItem.Data getThemeBackgroundItemFromCursor(Cursor cursor) {
 		BackgroundSingleItem.Data data = new BackgroundSingleItem.Data();
 
@@ -2806,10 +2825,9 @@ public class DbDataManager {
 		return exist;
 	}
 
-	public static void updateThemeLoadingStatus(ContentResolver contentResolver, ThemeItem.Data currentItem,
-												ThemeState status) {
+	public static void updateThemeLoadingStatus(ContentResolver contentResolver, long themeId, ThemeState status) {
 		final String[] arguments = sArguments1;
-		arguments[0] = String.valueOf(currentItem.getId());
+		arguments[0] = String.valueOf(themeId);
 
 		Uri uri = uriArray[Tables.THEMES_LOAD_STATE.ordinal()];
 
@@ -2818,7 +2836,7 @@ public class DbDataManager {
 
 		ContentValues values = new ContentValues();
 
-		values.put(V_ID, currentItem.getId());
+		values.put(V_ID, themeId);
 		values.put(V_STATE, status.name());
 
 		updateOrInsertValues(contentResolver, cursor, uri, values);

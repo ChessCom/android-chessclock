@@ -195,7 +195,7 @@ public class SwitchButton extends RelativeLayout implements View.OnClickListener
 	@Override
 	public void setChecked(boolean checked) {
 		switchEnabled = checked;
-		invalidate();
+		invalidate(0, 0, getWidth(), getHeight());
 		invalidateView();
 	}
 

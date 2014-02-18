@@ -411,7 +411,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 
 	@Override
 	public void invalidateGameScreen() {
-		boardView.invalidate();
+		boardView.invalidateMe();
 	}
 
 	@Override

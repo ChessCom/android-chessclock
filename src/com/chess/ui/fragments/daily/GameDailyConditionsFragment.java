@@ -150,7 +150,6 @@ public class GameDailyConditionsFragment extends GameDailyAnalysisFragment imple
 
 		invalidateGameScreen();
 		boardFace.takeBack();
-		boardView.invalidate();
 
 		playLastMoveAnimation();
 

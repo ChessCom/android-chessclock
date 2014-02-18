@@ -145,7 +145,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 		String setLocale = languageCodes[appData.getLanguageIndex()];
 
-		if (!prevLang.equals(setLocale)) {
+//		if (!prevLang.equals(setLocale)) {  // the saved/default app locale can be incorrect
 			Locale locale;
 			if (setLocale.contains(REGION_MARK)) {
 				int regionIndex = setLocale.indexOf(REGION_MARK);
@@ -161,7 +161,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 			getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 
 			appData.setLanguageCode(setLocale);
-		}
+//		}
 	}
 
 	protected void restartActivity() {

@@ -365,7 +365,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		@Override
 		public void onDialogCanceled() {
 			promotionFragment = null;
-			boardView.invalidate();
+			boardView.invalidateMe();
 		}
 	}
 
@@ -472,7 +472,9 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
 					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
 					topAvatarImg.setUsername(labelsConfig.topPlayerName, GameBaseFragment.this);
-					getTopPanelView().invalidate();
+					int width = getTopPanelView().getWidth();
+					int height = getTopPanelView().getHeight();
+					getTopPanelView().invalidate(0, 0, width, height);
 
 					break;
 				case BOTTOM_AVATAR:
@@ -481,7 +483,10 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
 					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
 					bottomAvatarImg.setUsername(labelsConfig.bottomPlayerName, GameBaseFragment.this);
-					getBottomPanelView().invalidate();
+
+					width = getBottomPanelView().getWidth();
+					height = getBottomPanelView().getHeight();
+					getBottomPanelView().invalidate(0, 0, width, height);
 					break;
 			}
 		}

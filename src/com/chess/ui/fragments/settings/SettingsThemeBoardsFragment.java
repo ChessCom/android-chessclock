@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -217,6 +218,8 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		} else {
 			if (parentFace != null) {
 				parentFace.showPreviousFragment();
+			} else {
+				getActivityFace().showPreviousFragment();
 			}
 		}
 	}
@@ -404,9 +407,9 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 		private final int previewWidth;
 		private final Bitmap placeHolderBitmap;
-		private final RelativeLayout.LayoutParams imageParams;
+		private final FrameLayout.LayoutParams imageParams;
 		private final LinearLayout.LayoutParams linearLayoutParams;
-		private final RelativeLayout.LayoutParams progressParams;
+		private final FrameLayout.LayoutParams progressParams;
 		private final EnhancedImageDownloader imageLoader;
 
 		public ThemeBoardsAdapter(Context context, List<SelectionItem> menuItems) {
@@ -421,11 +424,11 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			previewWidth = boardDrawableExample.getIntrinsicWidth();
 			int imageHeight = boardDrawableExample.getIntrinsicHeight();
 
-			imageParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
+			imageParams = new FrameLayout.LayoutParams(previewWidth, imageHeight);
 			linearLayoutParams = new LinearLayout.LayoutParams(previewWidth, imageHeight);
 
-			progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+			progressParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			progressParams.gravity = Gravity.CENTER;
 		}
 
 		@Override
@@ -477,8 +480,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 
 		private final int previewWidth;
 		private final Bitmap placeHolderBitmap;
-		//			private final float aspectRatio;
-		private final RelativeLayout.LayoutParams imageParams;
+		private final FrameLayout.LayoutParams imageParams;
 		private final LinearLayout.LayoutParams linearLayoutParams;
 		private final RelativeLayout.LayoutParams progressParams;
 
@@ -493,7 +495,7 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 			int imageHeight = boardDrawableExample.getIntrinsicHeight();
 
 
-			imageParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
+			imageParams = new FrameLayout.LayoutParams(previewWidth, imageHeight);
 			linearLayoutParams = new LinearLayout.LayoutParams(previewWidth, imageHeight);
 
 			progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

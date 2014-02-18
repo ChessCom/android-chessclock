@@ -443,7 +443,6 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				}
 
 				invalidateGameScreen();
-				boardView.invalidate();
 			}
 		});
 	}
@@ -789,7 +788,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 		ChessBoardComp.resetInstance();
 		getAppData().clearSavedCompGame();
 		notationsView.resetNotations();
-		boardView.invalidate();
+		boardView.invalidateMe();
 	}
 
 	@Override

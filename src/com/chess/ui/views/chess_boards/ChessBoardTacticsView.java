@@ -86,7 +86,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 			firstClick = false;
 			from = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
 		}
-		invalidate();
+		invalidateMe();
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class ChessBoardTacticsView extends ChessBoardBaseView implements BoardVi
 	@Override
 	public void flipBoard() {
 		getBoardFace().setReside(!getBoardFace().isReside());
-		invalidate();
+		invalidateMe();
 	}
 
 	@Override

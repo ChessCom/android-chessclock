@@ -273,9 +273,7 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 		boardView.resetValidMoves();
 
 		invalidateGameScreen();
-
 		boardFace.takeBack();
-		boardView.invalidate();
 
 		playLastMoveAnimation();
 
@@ -422,7 +420,7 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 		boardView.resetValidMoves();
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
-		boardView.invalidate();
+		boardView.invalidateMe();
 	}
 
 	@Override

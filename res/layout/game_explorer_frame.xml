@@ -44,6 +44,8 @@
 			android:layout_height="wrap_content"
 			android:layout_toEndOf="@id/leftBtn"
 			android:layout_toStartOf="@+id/rightBtn"
+			android:layout_toRightOf="@id/leftBtn"
+			android:layout_toLeftOf="@+id/rightBtn"
 			style="@style/Rect.Bottom.Middle"
 			app:btn_is_clickable="false" />
 
@@ -54,6 +56,7 @@
 			style="@style/Rect.Bottom.Right"
 			android:text="@string/ic_right"
 			android:layout_alignParentEnd="true"
+			android:layout_alignParentRight="true"
 			android:textSize="@dimen/game_controls_icon_size"
 			android:textColor="@color/text_controls_icons"
 			android:minWidth="@dimen/game_controls_button_height"

@@ -74,7 +74,6 @@ public class GetAndSaveBackground extends Service {
 	private boolean isTablet;
 	private BackgroundSingleItem.Data backgroundData;
 
-	private String userToken;
 	private boolean installingBackground;
 
 	public class ServiceBinder extends Binder {
@@ -124,8 +123,6 @@ public class GetAndSaveBackground extends Service {
 		mainBackgroundLandImgSaveListener = new ImageSaveListener(BACKGROUND_LAND);
 
 		imageDownloader = new ImageDownloaderToListener(this);
-
-		userToken = appData.getUserToken();
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -189,21 +186,21 @@ public class GetAndSaveBackground extends Service {
 
 		showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.background)));
 
+		backgroundWidth = screenWidth;
+		backgroundHeight = screenHeight;
+
 		LoadItem loadItem;
 		if (!isTablet) {
-			loadItem = LoadHelper.getBackgroundById(userToken, backgroundData.getBackgroundId(),
+			loadItem = LoadHelper.getBackgroundById(getUserToken(), backgroundData.getBackgroundId(),
 					screenWidth, screenHeight, RestHelper.V_HANDSET);
 		} else {
 			if (screenWidth > screenHeight) {
 				backgroundWidth = screenHeight;
 				backgroundHeight = screenWidth;
-			} else {
-				backgroundWidth = screenWidth;
-				backgroundHeight = screenHeight;
 			}
 
 			// we need to download port and landscape backgrounds for tablets
-			loadItem = LoadHelper.getBackgroundById(userToken, backgroundData.getBackgroundId(),
+			loadItem = LoadHelper.getBackgroundById(getUserToken(), backgroundData.getBackgroundId(),
 					backgroundWidth, backgroundHeight, RestHelper.V_HANDSET);
 		}
 
@@ -261,7 +258,7 @@ public class GetAndSaveBackground extends Service {
 					backgroundWidth = screenHeight;
 				}
 
-				LoadItem loadItem = LoadHelper.getBackgroundById(userToken, backgroundId,
+				LoadItem loadItem = LoadHelper.getBackgroundById(getUserToken(), backgroundId,
 						backgroundWidth, backgroundHeight, RestHelper.V_TABLET);
 				new RequestJsonTask<BackgroundSingleItem>(new BackgroundItemUpdateListener(BACKGROUND_LAND)).executeTask(loadItem);
 			}
@@ -460,6 +457,10 @@ public class GetAndSaveBackground extends Service {
 			appData = new AppData(this);
 		}
 		return appData;
+	}
+
+	private String getUserToken() {
+		return getAppData().getUserToken();
 	}
 
 	private Context getContext() {

@@ -4,7 +4,7 @@ package com.chess.ui.interfaces;
  * Created by vm on 04.02.14.
  */
 
-public interface PopupShowListener {
+public interface PopupShowFace {
 
 	void showPopupDialog(int titleId, String tag);
 

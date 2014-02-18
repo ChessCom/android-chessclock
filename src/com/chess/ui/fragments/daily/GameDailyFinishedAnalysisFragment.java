@@ -173,7 +173,6 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 
 		invalidateGameScreen();
 		boardFace.takeBack();
-		boardView.invalidate();
 
 		playLastMoveAnimation();
 

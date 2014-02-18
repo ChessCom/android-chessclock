@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.chess.R;
 import com.chess.statics.AppConstants;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.utilities.AppUtils;
 
 
 /**
@@ -55,12 +56,16 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 			usernameEdt.setText(username);
 			passwordEdt.setText(getAppData().getPassword());
 		}
+
+		AppUtils.changeSoftInputToPan(getActivity());
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		dismissProgressDialog();
+
+		AppUtils.changeSoftInputToResize(getActivity());
 	}
 
 	@Override

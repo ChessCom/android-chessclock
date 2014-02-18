@@ -485,7 +485,7 @@ public class PanelInfoLiveView extends PanelInfoGameView {
 		}
 		setTimeRemainPadding();
 
-		invalidate();
+		invalidate(0, 0, getWidth(), getHeight());
 	}
 
 	@Override

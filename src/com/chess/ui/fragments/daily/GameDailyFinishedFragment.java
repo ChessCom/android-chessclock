@@ -335,7 +335,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 
 		invalidateGameScreen();
 		boardFace.takeBack();
-		boardView.invalidate();
 
 		playLastMoveAnimation();
 
@@ -359,13 +358,13 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 
 			labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
 			topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-			topPanelView.invalidate();
+			topPanelView.invalidateMe();
 
 			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
 
 			labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
 			bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-			bottomPanelView.invalidate();
+			bottomPanelView.invalidateMe();
 		}
 
 		// load avatars for players
@@ -513,7 +512,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 		boardView.resetValidMoves();
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
-		boardView.invalidate();
+		boardView.invalidateMe();
 	}
 
 	@Override

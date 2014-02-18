@@ -590,6 +590,7 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 
 			preferencesEditor.putString(AppConstants.USERNAME, username);
 			preferencesEditor.putInt(username + AppConstants.USER_PREMIUM_STATUS, RestHelper.V_BASIC_MEMBER);
+			preferencesEditor.commit();
 			processLogin(returnedObj.getData());
 		}
 	}

@@ -132,7 +132,8 @@ public class SettingsPasswordFragment extends CommonLogicFragment {
 		@Override
 		public void updateData(RegisterItem returnedObj) {
 			showToast(R.string.password_changed);
-			preferencesEditor.putString(PASSWORD, newPassword).commit();
+			preferencesEditor.putString(PASSWORD, newPassword);
+			preferencesEditor.commit();
 		}
 	}
 }

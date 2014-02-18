@@ -71,7 +71,7 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 
 		} else {
 			holder.lastMessageTxt.setFont(FontsHelper.DEFAULT_FONT);
-			view.setBackgroundResource(R.drawable.transparent_list_item_selector);
+			ButtonDrawableBuilder.setBackgroundToView(view, R.style.ListItem_Header_2);
 		}
 		view.setPadding(paddingSide, paddingTop, paddingSide, paddingTop);
 

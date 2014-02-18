@@ -139,7 +139,7 @@ public class ChartView extends View {
 
 	public void setGraphData(List<long[]> series, int width) {
 		setPoints(series, width);
-		invalidate();
+		invalidate(0, 0, getWidth(), getHeight());
 	}
 
 	private void setPoints(List<long[]> dataArray, int widthPixels) {

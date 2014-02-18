@@ -19,6 +19,7 @@ import com.chess.backend.tasks.GetAndSaveFileToSdTask;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.statics.AppData;
+import com.chess.statics.IntentConstants;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.fragments.settings.SettingsThemeFragment;
@@ -53,7 +54,6 @@ public class GetAndSavePieces extends Service {
 	private int screenWidth;
 	private PieceSingleItem.Data piecesData;
 	private PiecesSingleItemUpdateListener piecesSingleItemUpdateListener;
-	private String userToken;
 
 	public class ServiceBinder extends Binder {
 		public GetAndSavePieces getService() {
@@ -100,8 +100,6 @@ public class GetAndSavePieces extends Service {
 		// Puts the PendingIntent into the notification builder
 		notificationBuilder.setContentIntent(pendingIntent);
 
-		userToken = appData.getUserToken();
-
 		piecesSingleItemUpdateListener = new PiecesSingleItemUpdateListener();
 	}
 
@@ -124,7 +122,7 @@ public class GetAndSavePieces extends Service {
 		this.screenWidth = screenWidth;
 		piecesPackSaveListener = new PiecesPackSaveListener();
 
-		LoadItem loadItem = LoadHelper.getPiecesById(userToken, selectedPieceId);
+		LoadItem loadItem = LoadHelper.getPiecesById(appData.getUserToken(), selectedPieceId);
 		new RequestJsonTask<PieceSingleItem>(piecesSingleItemUpdateListener).executeTask(loadItem);
 	}
 
@@ -272,6 +270,8 @@ public class GetAndSavePieces extends Service {
 				stopSelf();
 			}
 		}, SHUTDOWN_DELAY);
+
+		sendBroadcast(new Intent(IntentConstants.UPDATE_PIECES_BOARD));
 	}
 
 	private Context getContext() {

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import com.chess.R;
 import com.chess.backend.image_load.ProgressImageView;
 import com.chess.backend.image_load.bitmapfun.SmartImageFetcher;
 import com.chess.statics.AppConstants;
+import com.chess.statics.AppData;
 import com.chess.statics.IntentConstants;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.adapters.ItemsAdapter;
@@ -68,18 +70,14 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 	private ListView listView;
 	private List<NavigationMenuItem> menuItems;
 	private NavigationMenuAdapter navigationAdapter;
-	private int imageSize;
 	private IntentFilter fontsUpdateFilter;
 	private FontsUpdateReceiver fontsUpdateReceiver;
-	private boolean updateFonts;
 	private int previousPosition;
 	private SparseArray<String> selectedPositionsMap;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		imageSize = getResources().getDimensionPixelSize(R.dimen.nav_item_image_size);
 
 		selectedPositionsMap = new SparseArray<String>();
 
@@ -107,7 +105,9 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 
 		menuItems.get(0).selected = true;
 		getImageFetcher().setLoadingImage(R.drawable.empty);
+
 		navigationAdapter = new NavigationMenuAdapter(getActivity(), menuItems, getImageFetcher());
+		navigationAdapter.setThemeFontColorStateList(themeFontColorStateList);
 		fontsUpdateFilter = new IntentFilter(IntentConstants.BACKGROUND_LOADED);
 	}
 
@@ -431,14 +431,20 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 		}
 	}
 
-	private class NavigationMenuAdapter extends ItemsAdapter<NavigationMenuItem> {
+	private static class NavigationMenuAdapter extends ItemsAdapter<NavigationMenuItem> {
 
 		private final String userAvatarUrl;
 		private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
+		private ColorStateList themeFontColorStateList;
+		private int imageSize;
+		private boolean updateFonts;
+
 
 		public NavigationMenuAdapter(Context context, List<NavigationMenuItem> menuItems, SmartImageFetcher imageFetcher) {
 			super(context, menuItems, imageFetcher);
-			userAvatarUrl = getAppData().getUserAvatar();
+			imageSize = context.getResources().getDimensionPixelSize(R.dimen.nav_item_image_size);
+
+			userAvatarUrl = new AppData(context).getUserAvatar();
 			imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 		}
 
@@ -488,6 +494,14 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 			return context;
 		}
 
+		public void setThemeFontColorStateList(ColorStateList themeFontColorStateList) {
+			this.themeFontColorStateList = themeFontColorStateList;
+		}
+
+		public void setUpdateFonts(boolean updateFonts) {
+			this.updateFonts = updateFonts;
+		}
+
 		public class ViewHolder {
 			ProgressImageView icon;
 			TextView title;
@@ -497,8 +511,8 @@ public class LeftNavigationFragment extends LiveBaseFragment implements AdapterV
 	private class FontsUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			navigationAdapter.setUpdateFonts(true);
 			navigationAdapter.notifyDataSetChanged();
-			updateFonts = true;
 		}
 	}
 }

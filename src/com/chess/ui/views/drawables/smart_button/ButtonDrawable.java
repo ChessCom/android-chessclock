@@ -458,26 +458,26 @@ public class ButtonDrawable extends StateListDrawable {
 			}
 		}
 
-		Drawable drawable = mutate();
+		Drawable drawable = this;
 		if (enabled && pressed) {
-			drawable.setColorFilter(pressedFilter);
-			drawable.setAlpha(enabledAlpha);
+			drawable.mutate().setColorFilter(pressedFilter);
+			drawable.mutate().setAlpha(enabledAlpha);
 		} else if (enabled && selected) {
-			drawable.setColorFilter(selectedFilter);
-			drawable.setAlpha(enabledAlpha);
+			drawable.mutate().setColorFilter(selectedFilter);
+			drawable.mutate().setAlpha(enabledAlpha);
 		} else if (enabled && checked) {
-			drawable.setColorFilter(checkedFilter);
-			drawable.setAlpha(enabledAlpha);
+			drawable.mutate().setColorFilter(checkedFilter);
+			drawable.mutate().setAlpha(enabledAlpha);
 		} else if (!enabled) {
-			drawable.setAlpha(disabledAlpha);
+			drawable.mutate().setAlpha(disabledAlpha);
 		} else {
-			drawable.setColorFilter(enabledFilter);
-			drawable.setAlpha(enabledAlpha);
+			drawable.mutate().setColorFilter(enabledFilter);
+			drawable.mutate().setAlpha(enabledAlpha);
 		}
 
 		if (!isClickable) { // override all states to default
-			drawable.setColorFilter(enabledFilter);
-			drawable.setAlpha(enabledAlpha);
+			drawable.mutate().setColorFilter(enabledFilter);
+			drawable.mutate().setAlpha(enabledAlpha);
 		}
 
 		invalidateSelf();// need to update for pre-HC

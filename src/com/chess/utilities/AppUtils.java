@@ -20,6 +20,7 @@ import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Debug;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
@@ -30,9 +31,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
+import com.chess.BuildConfig;
 import com.chess.R;
 import com.chess.backend.entity.api.YourTurnItem;
 import com.chess.backend.image_load.bitmapfun.ImageCache;
@@ -75,6 +78,7 @@ public class AppUtils {
 	public static final boolean ICS_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 	public static final boolean JELLYBEAN_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
 	public static final boolean JELLYBEAN_MR1_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+	public static final boolean KIT_KAT_PLUS_API = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
 	public static int sizeOfBitmap(Bitmap data) {
@@ -188,6 +192,22 @@ public class AppUtils {
 
 	public static String getGooglePlayLinkForApp(Context context) {
 		return "market://details?id=" + context.getPackageName();
+	}
+
+	public static void logMemData() {
+		if (BuildConfig.DEBUG) {
+			Log.d("TEST", "heap alloc size = " + Debug.getNativeHeapAllocatedSize()
+					+ " native free = " + Debug.getNativeHeapFreeSize()
+					+ " heap = " + Debug.getNativeHeapSize());
+		}
+	}
+
+	public static void changeSoftInputToPan(Activity activity) {
+		activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+	}
+
+	public static void changeSoftInputToResize(Activity activity) {
+		activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 	}
 
 	public static class ListSelector implements Runnable {

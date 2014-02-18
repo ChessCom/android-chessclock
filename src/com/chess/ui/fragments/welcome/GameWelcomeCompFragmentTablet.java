@@ -156,7 +156,7 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 			ChessBoardComp.resetInstance();
 			getAppData().clearSavedCompGame();
 			notationsView.resetNotations();
-			boardView.invalidate();
+			boardView.invalidateMe();
 
 			getView().findViewById(R.id.bottomView).setVisibility(View.GONE);
 		}

@@ -98,7 +98,7 @@ public class ChessBoardLessonsView extends ChessBoardBaseView implements BoardVi
 			firstClick = false;
 			from = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
 		}
-		invalidate();
+		invalidateMe();
 	}
 
 	@Override

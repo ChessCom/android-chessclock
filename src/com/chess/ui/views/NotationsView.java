@@ -465,7 +465,7 @@ public class NotationsView extends LinearLayout implements NotationFace,
 					textView.setOnClickListener(NotationsView.this);
 
 				}
-				invalidate();
+				invalidate(0, 0, getWidth(), getHeight());
 			}
 		}
 	}
@@ -537,7 +537,7 @@ public class NotationsView extends LinearLayout implements NotationFace,
 		notationsAdapter.notifyDataSetChanged();
 		newNotations = true;
 		notationsAdapter.selectItem(-1);
-		viewPager.invalidate();
+		viewPager.invalidate(0, 0, getWidth(), getHeight());
 	}
 
 	@Override

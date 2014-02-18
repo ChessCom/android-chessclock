@@ -211,7 +211,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		liveBaseActivity = (LiveBaseActivity) getActivity();
 		if (getDataHolder().isLiveChess()) {
 			setLCSBound(liveBaseActivity.isLCSBound());
-		}//
+		}
 
 		LiveConnectionHelper liveHelper;
 		try {
@@ -254,7 +254,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 
 		Long gameId = liveHelper.getCurrentGameId();
 
-		if (gameId == null) { // check
+		if (gameId == null || getActivity() == null) { // check, getActivity() == null when side fragment is open and we return from background
 			LogMe.dl("DEBUG: gameId=null !");
 			return;
 		}

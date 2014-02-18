@@ -330,7 +330,7 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 		public void updateData(FriendRequestItem returnedObj) {
 			super.updateData(returnedObj);
 
-			if (returnedObj.getData().size() == 0 || emptyData) {
+			if (returnedObj.getData().size() == 0 && emptyData) {
 				emptyView.setText(R.string.no_alerts);
 				emptyView.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);

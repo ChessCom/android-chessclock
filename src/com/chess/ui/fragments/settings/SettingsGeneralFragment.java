@@ -7,10 +7,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.*;
 import com.chess.R;
 import com.chess.backend.image_load.EnhancedImageDownloader;
 import com.chess.backend.image_load.ProgressImageView;
@@ -275,7 +272,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 		piecesLineImage = (ProgressImageView) view.findViewById(R.id.piecesLineImage);
 
 		// Change Image params
-		RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(previewLineWidth, imageHeight);
+		FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(previewLineWidth, imageHeight);
 		piecesLineImage.getImageView().setLayoutParams(imageParams);
 		piecesLineImage.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
 

@@ -54,20 +54,7 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 
 		showKeyBoard(sendEdt);
 
-		if (isLCSBound) {
-			LiveConnectionHelper liveHelper;
-			try {
-				liveHelper = getLiveHelper();
-				liveHelper.setLccChatMessageListener(this);
-				messagesAdapter = new ChatMessagesAdapter(getActivity(), liveHelper.getMessagesList(), getImageFetcher());
-				listView.setAdapter(messagesAdapter);
-
-				showKeyBoard(sendEdt);
-				updateList();
-			} catch (DataNotValidException e) {
-				logTest(e.getMessage());
-			}
-		}
+		updateData();
 	}
 
 	private void updateList() throws DataNotValidException {
@@ -107,6 +94,23 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 				liveHelper.sendMessage(getTextFromField(sendEdt), messageUpdateListener);
 
 				sendEdt.setText(Symbol.EMPTY);
+			}
+		}
+	}
+
+	public void updateData() {
+		if (isLCSBound) {
+			LiveConnectionHelper liveHelper;
+			try {
+				liveHelper = getLiveHelper();
+				liveHelper.setLccChatMessageListener(this);
+				messagesAdapter = new ChatMessagesAdapter(getActivity(), liveHelper.getMessagesList(), getImageFetcher());
+				listView.setAdapter(messagesAdapter);
+
+				showKeyBoard(sendEdt);
+				updateList();
+			} catch (DataNotValidException e) {
+				logTest(e.getMessage());
 			}
 		}
 	}

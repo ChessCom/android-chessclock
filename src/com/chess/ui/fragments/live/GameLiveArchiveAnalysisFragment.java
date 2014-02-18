@@ -142,7 +142,6 @@ public class GameLiveArchiveAnalysisFragment extends GameDailyAnalysisFragment {
 
 		invalidateGameScreen();
 		boardFace.takeBack();
-		boardView.invalidate();
 
 		playLastMoveAnimation();
 

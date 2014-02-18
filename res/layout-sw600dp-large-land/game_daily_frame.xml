@@ -11,7 +11,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
-		android:layout_centerVertical="true"
+		android:layout_gravity="center_vertical"
 		android:gravity="center"
 		android:layout_marginTop="@dimen/tablet_board_margin_bottom"
 		android:layout_marginStart="@dimen/tablet_board_margin_left"
@@ -30,6 +30,7 @@
 	<com.chess.widgets.RelLayout
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
+		android:layout_toRightOf="@id/boardLinLay"
 		android:layout_toEndOf="@id/boardLinLay"
 		android:paddingTop="13dp"
 		android:paddingEnd="@dimen/default_scr_side_padding"
@@ -89,7 +90,7 @@
 
 		</RadioGroup>
 
-		<com.chess.widgets.RelLayout
+		<com.chess.widgets.MyFrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/topButtonsGroup"
@@ -114,8 +115,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="match_parent" />
 
-
-		</com.chess.widgets.RelLayout>
+		</com.chess.widgets.MyFrameLayout>
 
 		<!--Controls-->
 		<com.chess.ui.views.game_controls.ControlsDailyView

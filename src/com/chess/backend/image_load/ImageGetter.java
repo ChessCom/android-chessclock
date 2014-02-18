@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.widget.TextView;
+import com.chess.utilities.AppUtils;
 
 import java.util.HashMap;
 
@@ -59,11 +60,13 @@ public class ImageGetter implements Html.ImageGetter {
 
 						int newHeight = (int) (imageWidth / scale);
 
-						try {
+//						try {
 							bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, newHeight, true);
-						} catch (OutOfMemoryError ignore) {
-							return;
-						}
+//						} catch (OutOfMemoryError ignore) {
+//							return;
+//						}
+
+						AppUtils.logMemData();
 
 						BitmapDrawable loadedDrawable = new BitmapDrawable(context.getResources(), bitmap);
 						loadedDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());

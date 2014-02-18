@@ -371,7 +371,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public void invalidateGameScreen() {
-		boardView.invalidate();
+		boardView.invalidateMe();
 	}
 
 	@Override

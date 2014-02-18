@@ -26,7 +26,7 @@
 		custom:ttf="Bold" />
 
 
-	<com.chess.widgets.RelLayout
+	<FrameLayout
 		android:id="@+id/boardLinLay"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -48,14 +48,13 @@
 			android:id="@+id/loadingView"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_centerInParent="true"
+			android:layout_gravity="center"
 			style="?android:attr/progressBarStyle"
 			android:visibility="gone" />
 
+	</FrameLayout>
 
-	</com.chess.widgets.RelLayout>
-
-	<RelativeLayout
+	<FrameLayout
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1">
@@ -69,7 +68,7 @@
 			android:layout_marginStart="15dp"
 			android:layout_marginEnd="15dp"
 			android:layout_marginBottom="15dp"
-			android:layout_centerInParent="true" />
+			android:layout_gravity="center"/>
 
-	</RelativeLayout>
+	</FrameLayout>
 </LinearLayout>

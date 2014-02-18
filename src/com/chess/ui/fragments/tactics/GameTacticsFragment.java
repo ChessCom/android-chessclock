@@ -290,7 +290,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 			invalidateGameScreen();
 			getBoardFace().takeBack();
-			boardView.invalidate();
+
 			playLastMoveAnimationAndCheck();
 		} else if (trainerData.isStop() && !getBoardFace().isFinished()) {
 			startTacticsTimer(trainerData);
@@ -615,7 +615,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			while (boardFace.takeBack()) {
 				currentTacticAnswerCnt--;
 			}
-			boardView.invalidate();
+			boardView.invalidateMe();
 		}
 
 		currentTacticAnswerCnt = boardFace.getPly();
@@ -628,7 +628,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			while (boardFace.takeBack()) {
 				currentTacticAnswerCnt--;
 			}
-			boardView.invalidate();
+			boardView.invalidateMe();
 		}
 		// get next valid move
 		final Move move = boardFace.convertMoveAlgebraic(boardFace.getTacticMoves()[currentTacticAnswerCnt]);
@@ -659,7 +659,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		while (boardFace.takeBack()) {
 			// loop while we can move back
 		}
-		boardView.invalidate();
+		boardView.invalidateMe();
 		if (!trainerData.isUserMoveFirst()) {
 			boardFace.setMovesCount(1);
 			boardFace.makeMove(boardFace.getTacticMoves()[0], false);
@@ -1013,7 +1013,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void invalidateGameScreen() {
-		boardView.invalidate();
+		boardView.invalidateMe();
 	}
 
 	@Override
@@ -1113,7 +1113,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			while (boardFace.takeBack()) {
 				// loop while we can move back
 			}
-			boardView.invalidate();
+			boardView.invalidateMe();
 		} else {
 			trainerData.setRetry(true);
 			adjustBoardForGame();
@@ -1173,7 +1173,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 				// animate last move
 				boardView.resetValidMoves();
 				boardFace.takeBack();
-				boardView.invalidate();
+				boardView.invalidateMe();
 
 				handler.postDelayed(new Runnable() {
 					@Override
@@ -1182,7 +1182,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 					}
 				}, START_DELAY);
 			} else {
-				boardView.invalidate();
+				boardView.invalidateMe();
 			}
 		}
 

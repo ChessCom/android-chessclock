@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:id="@+id/boardFrame"
 	android:layout_width="match_parent"
@@ -47,13 +47,13 @@
 	</LinearLayout>
 
 	<!--Loading view-->
-	<RelativeLayout
+	<FrameLayout
 		android:id="@+id/fadeLay"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:background="@color/disabled"
 		android:visibility="invisible">
 
-	</RelativeLayout>
+	</FrameLayout>
 
-</RelativeLayout>
+</FrameLayout>

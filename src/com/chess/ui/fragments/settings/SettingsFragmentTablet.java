@@ -77,6 +77,9 @@ public class SettingsFragmentTablet extends SettingsFragment implements Fragment
 			case R.string.ic_live_standard:
 				changeInternalFragment(new SettingsLiveChessFragment());
 				break;
+			case R.string.ic_help:
+				changeInternalFragment(new SettingsTacticsFragment());
+				break;
 			case R.string.ic_theme:
 				changeInternalFragment(SettingsThemeFragmentTablet.createInstance(this));
 				break;

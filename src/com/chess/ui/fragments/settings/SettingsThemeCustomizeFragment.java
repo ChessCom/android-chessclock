@@ -1,9 +1,7 @@
 package com.chess.ui.fragments.settings;
 
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.*;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,6 +13,7 @@ import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.SparseArray;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +37,13 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
+import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.StringSpinnerAdapter;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.popup_fragments.PopupBackgroundsFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.views.PiecePreviewImg;
 import com.chess.utilities.AppUtils;
@@ -64,7 +63,6 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 	public static final int PREVIEW_IMG_SIZE = 180;
 
-	private static final String THEME_LOAD_TAG = "theme load popup";
 	private static final String BACKGROUND_SELECTION = "background selection popup";
 	protected static final String THEME_ITEM = "theme_item";
 
@@ -81,15 +79,11 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private ProgressImageView boardPreviewImg;
 	private ProgressImageView piecePreviewImg;
 	private ProgressImageView backgroundPreviewImg;
-	private TextView loadProgressTxt;
-	private TextView taskTitleTxt;
 
 	private PopupBackgroundsFragment backgroundsFragment;
-	private PopupCustomViewFragment loadProgressPopupFragment;
 
 	private SparseArray<String> soundsUrlsMap;
 	private String selectedSoundPackUrl;
-	private View loadProgressBar;
 	private BackgroundSingleItem.Data selectedBackgroundItem;
 
 	private int previewLineWidth;
@@ -106,6 +100,8 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 	private LoadServiceConnectionListener loadBackgroundServiceConnectionListener;
 	private ProgressUpdateListener backgroundProgressUpdateListener;
 	private ProgressBar themeLoadProgressBar;
+	private IntentFilter updateFilter;
+	private StylesUpdateReceiver updateReceiver;
 
 	public SettingsThemeCustomizeFragment() {
 		ThemeItem.Data customizeItem = new ThemeItem.Data();
@@ -162,115 +158,18 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			getSounds();
 		}
 
-		// show selected pieces line preview
-		if (getAppData().isUseThemePieces()) {
-
-			// Load line preview image
-			String piecesPreviewUrl = getAppData().getThemePiecesPreviewUrl();
-			imageLoader.download(piecesPreviewUrl, piecesLineImage, previewLineWidth);
-
-			// load square preview image
-			String squarePreviewUrl = piecesPreviewUrl.replace("/line/", "/square/");
-			imageLoader.download(squarePreviewUrl, piecePreviewImg, PREVIEW_IMG_SIZE);
-		} else {
-			String themePiecesName = getAppData().getThemePiecesName();
-			String pieceDefaultName = AppConstants.DEFAULT_THEME_PIECES_NAME;
-			if (themePiecesName.equals(Symbol.EMPTY)) {
-				piecesLineImage.setImageDrawable(getResources().getDrawable(R.drawable.pieces_game));
-
-				String packageName = getActivity().getPackageName();
-				int bnResourceId = getResources().getIdentifier(pieceDefaultName + "_bn", "drawable", packageName);
-				int bpResourceId = getResources().getIdentifier(pieceDefaultName + "_bp", "drawable", packageName);
-				int wnResourceId = getResources().getIdentifier(pieceDefaultName + "_wn", "drawable", packageName);
-				int wpResourceId = getResources().getIdentifier(pieceDefaultName + "_wp", "drawable", packageName);
-				// show default pieces preview
-				Bitmap[][] previewBitmaps = new Bitmap[2][2];
-				previewBitmaps[0][0] = ((BitmapDrawable) getResources().getDrawable(bnResourceId)).getBitmap();
-				previewBitmaps[0][1] = ((BitmapDrawable) getResources().getDrawable(wnResourceId)).getBitmap();
-				previewBitmaps[1][0] = ((BitmapDrawable) getResources().getDrawable(bpResourceId)).getBitmap();
-				previewBitmaps[1][1] = ((BitmapDrawable) getResources().getDrawable(wpResourceId)).getBitmap();
-
-				piecesSquarePreviewImg.setPiecesBitmaps(previewBitmaps);
-				piecesSquarePreviewImg.setVisibility(View.VISIBLE);
-			} else {
-				for (int i = 0; i < defaultPiecesNamesMap.size(); i++) {
-					int key = defaultPiecesNamesMap.keyAt(i);
-					String value = defaultPiecesNamesMap.valueAt(i);
-					if (value.equals(themePiecesName)) {
-						piecesLineImage.setImageDrawable(getResources().getDrawable(key));
-					}
-				}
-
-				for (Map.Entry<String, String> entry : defaultPiecesResourceNamesMap.entrySet()) {
-					if (themePiecesName.equals(entry.getValue())) {
-						pieceDefaultName = entry.getKey();
-						break;
-					}
-				}
-
-				String packageName = getActivity().getPackageName();
-				int bnResourceId = getResources().getIdentifier(pieceDefaultName + "_bn", "drawable", packageName);
-				int bpResourceId = getResources().getIdentifier(pieceDefaultName + "_bp", "drawable", packageName);
-				int wnResourceId = getResources().getIdentifier(pieceDefaultName + "_wn", "drawable", packageName);
-				int wpResourceId = getResources().getIdentifier(pieceDefaultName + "_wp", "drawable", packageName);
-				// show default pieces preview
-				Bitmap[][] previewBitmaps = new Bitmap[2][2];
-				previewBitmaps[0][0] = ((BitmapDrawable) getResources().getDrawable(bnResourceId)).getBitmap();
-				previewBitmaps[0][1] = ((BitmapDrawable) getResources().getDrawable(wnResourceId)).getBitmap();
-				previewBitmaps[1][0] = ((BitmapDrawable) getResources().getDrawable(bpResourceId)).getBitmap();
-				previewBitmaps[1][1] = ((BitmapDrawable) getResources().getDrawable(wpResourceId)).getBitmap();
-
-				piecesSquarePreviewImg.setPiecesBitmaps(previewBitmaps);
-				piecesSquarePreviewImg.setVisibility(View.VISIBLE);
-			}
-		}
-
-		// show selected board line preview
-		if (getAppData().isUseThemeBoard()) {
-
-			// Load line preview image
-			String boardPreviewUrl = getAppData().getThemeBoardPreviewUrl();
-			imageLoader.download(boardPreviewUrl, boardLineImage, previewLineWidth);
-
-			// load square preview image
-			String squarePreviewUrl = boardPreviewUrl.replace("/line/", "/square/");
-			imageLoader.download(squarePreviewUrl, boardPreviewImg, PREVIEW_IMG_SIZE);
-		} else {
-			String themeBoardsName = getAppData().getThemeBoardName();
-			if (themeBoardsName.equals(Symbol.EMPTY)) {
-				boardLineImage.setImageDrawable(getResources().getDrawable(R.drawable.board_sample_wood_dark));
-
-				// load square preview image
-				boardPreviewImg.setImageDrawable(getResources().getDrawable(R.drawable.board_wood_dark));
-			} else {
-				for (int i = 0; i < defaultBoardNamesMap.size(); i++) {
-					int key = defaultBoardNamesMap.keyAt(i);
-					String value = defaultBoardNamesMap.valueAt(i);
-					if (value.equals(themeBoardsName)) {
-						boardLineImage.setImageDrawable(getResources().getDrawable(key));
-					}
-				}
-
-				// load square preview image
-				for (int i = 0; i < defaultSquareBoardNamesMap.size(); i++) {
-					int key = defaultSquareBoardNamesMap.keyAt(i);
-					String value = defaultSquareBoardNamesMap.valueAt(i);
-					if (value.equals(themeBoardsName)) {
-						boardPreviewImg.setImageDrawable(getResources().getDrawable(key));
-					}
-				}
-			}
-		}
-
-		// set background preview
-		String themeName = getAppData().getThemeBackgroundName();
-		if (themeName.equals(AppConstants.DEFAULT_THEME_NAME)) {
-			backgroundPreviewImg.setImageDrawable(getResources().getDrawable(R.drawable.img_theme_green_felt_sample));
-		} else {
-			imageLoader.download(getAppData().getThemeBackgroundPreviewUrl(), backgroundPreviewImg, screenWidth);
-		}
+	    updateStyles();
 
 		updateThemeName();
+		updateReceiver = new StylesUpdateReceiver();
+		registerReceiver(updateReceiver, updateFilter);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		unRegisterMyReceiver(updateReceiver);
 	}
 
 	@Override
@@ -358,7 +257,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		@Override
 		public void setProgress(final int progress) {
 			FragmentActivity activity = getActivity();
-			if (activity == null || progress == GetAndSaveTheme.INDETERMINATE || loadProgressBar == null) {
+			if (activity == null || progress == GetAndSaveTheme.INDETERMINATE) {
 				return;
 			}
 			activity.runOnUiThread(new Runnable() {
@@ -540,6 +439,124 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		}
 	}
 
+	private class StylesUpdateReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			updateStyles();
+		}
+	}
+
+	private void updateStyles() {
+		// show selected pieces line preview
+		if (getAppData().isUseThemePieces()) {
+
+			// Load line preview image
+			String piecesPreviewUrl = getAppData().getThemePiecesPreviewUrl();
+			imageLoader.download(piecesPreviewUrl, piecesLineImage, previewLineWidth);
+
+			// load square preview image
+			String squarePreviewUrl = piecesPreviewUrl.replace("/line/", "/square/");
+			imageLoader.download(squarePreviewUrl, piecePreviewImg, PREVIEW_IMG_SIZE);
+		} else {
+			String themePiecesName = getAppData().getThemePiecesName();
+			String pieceDefaultName = AppConstants.DEFAULT_THEME_PIECES_NAME;
+			if (themePiecesName.equals(Symbol.EMPTY)) {
+				piecesLineImage.setImageDrawable(getResources().getDrawable(R.drawable.pieces_game));
+
+				String packageName = getActivity().getPackageName();
+				int bnResourceId = getResources().getIdentifier(pieceDefaultName + "_bn", "drawable", packageName);
+				int bpResourceId = getResources().getIdentifier(pieceDefaultName + "_bp", "drawable", packageName);
+				int wnResourceId = getResources().getIdentifier(pieceDefaultName + "_wn", "drawable", packageName);
+				int wpResourceId = getResources().getIdentifier(pieceDefaultName + "_wp", "drawable", packageName);
+				// show default pieces preview
+				Bitmap[][] previewBitmaps = new Bitmap[2][2];
+				previewBitmaps[0][0] = ((BitmapDrawable) getResources().getDrawable(bnResourceId)).getBitmap();
+				previewBitmaps[0][1] = ((BitmapDrawable) getResources().getDrawable(wnResourceId)).getBitmap();
+				previewBitmaps[1][0] = ((BitmapDrawable) getResources().getDrawable(bpResourceId)).getBitmap();
+				previewBitmaps[1][1] = ((BitmapDrawable) getResources().getDrawable(wpResourceId)).getBitmap();
+
+				piecesSquarePreviewImg.setPiecesBitmaps(previewBitmaps);
+				piecesSquarePreviewImg.setVisibility(View.VISIBLE);
+			} else {
+				for (int i = 0; i < defaultPiecesNamesMap.size(); i++) {
+					int key = defaultPiecesNamesMap.keyAt(i);
+					String value = defaultPiecesNamesMap.valueAt(i);
+					if (value.equals(themePiecesName)) {
+						piecesLineImage.setImageDrawable(getResources().getDrawable(key));
+					}
+				}
+
+				for (Map.Entry<String, String> entry : defaultPiecesResourceNamesMap.entrySet()) {
+					if (themePiecesName.equals(entry.getValue())) {
+						pieceDefaultName = entry.getKey();
+						break;
+					}
+				}
+
+				String packageName = getActivity().getPackageName();
+				int bnResourceId = getResources().getIdentifier(pieceDefaultName + "_bn", "drawable", packageName);
+				int bpResourceId = getResources().getIdentifier(pieceDefaultName + "_bp", "drawable", packageName);
+				int wnResourceId = getResources().getIdentifier(pieceDefaultName + "_wn", "drawable", packageName);
+				int wpResourceId = getResources().getIdentifier(pieceDefaultName + "_wp", "drawable", packageName);
+				// show default pieces preview
+				Bitmap[][] previewBitmaps = new Bitmap[2][2];
+				previewBitmaps[0][0] = ((BitmapDrawable) getResources().getDrawable(bnResourceId)).getBitmap();
+				previewBitmaps[0][1] = ((BitmapDrawable) getResources().getDrawable(wnResourceId)).getBitmap();
+				previewBitmaps[1][0] = ((BitmapDrawable) getResources().getDrawable(bpResourceId)).getBitmap();
+				previewBitmaps[1][1] = ((BitmapDrawable) getResources().getDrawable(wpResourceId)).getBitmap();
+
+				piecesSquarePreviewImg.setPiecesBitmaps(previewBitmaps);
+				piecesSquarePreviewImg.setVisibility(View.VISIBLE);
+			}
+		}
+
+		// show selected board line preview
+		if (getAppData().isUseThemeBoard()) {
+
+			// Load line preview image
+			String boardPreviewUrl = getAppData().getThemeBoardPreviewUrl();
+			imageLoader.download(boardPreviewUrl, boardLineImage, previewLineWidth);
+
+			// load square preview image
+			String squarePreviewUrl = boardPreviewUrl.replace("/line/", "/square/");
+			imageLoader.download(squarePreviewUrl, boardPreviewImg, PREVIEW_IMG_SIZE);
+		} else {
+			String themeBoardsName = getAppData().getThemeBoardName();
+			if (themeBoardsName.equals(Symbol.EMPTY)) {
+				boardLineImage.setImageDrawable(getResources().getDrawable(R.drawable.board_sample_wood_dark));
+
+				// load square preview image
+				boardPreviewImg.setImageDrawable(getResources().getDrawable(R.drawable.board_wood_dark));
+			} else {
+				for (int i = 0; i < defaultBoardNamesMap.size(); i++) {
+					int key = defaultBoardNamesMap.keyAt(i);
+					String value = defaultBoardNamesMap.valueAt(i);
+					if (value.equals(themeBoardsName)) {
+						boardLineImage.setImageDrawable(getResources().getDrawable(key));
+					}
+				}
+
+				// load square preview image
+				for (int i = 0; i < defaultSquareBoardNamesMap.size(); i++) {
+					int key = defaultSquareBoardNamesMap.keyAt(i);
+					String value = defaultSquareBoardNamesMap.valueAt(i);
+					if (value.equals(themeBoardsName)) {
+						boardPreviewImg.setImageDrawable(getResources().getDrawable(key));
+					}
+				}
+			}
+		}
+
+		// set background preview
+		String themeName = getAppData().getThemeBackgroundName();
+		if (themeName.equals(AppConstants.DEFAULT_THEME_NAME)) {
+			backgroundPreviewImg.setImageDrawable(getResources().getDrawable(R.drawable.img_theme_green_felt_sample));
+		} else {
+			imageLoader.download(getAppData().getThemeBackgroundPreviewUrl(), backgroundPreviewImg, screenWidth);
+		}
+
+	}
+
 	private void init() {
 		soundsUrlsMap = new SparseArray<String>();
 
@@ -604,6 +621,8 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 
 		soundsItemUpdateListener = new SoundsItemUpdateListener();
 		soundPackSaveListener = new SoundPackSaveListener();
+
+		updateFilter = new IntentFilter(IntentConstants.UPDATE_PIECES_BOARD);
 	}
 
 	private void widgetsInit(View view) {
@@ -643,13 +662,13 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			backgroundPreviewImg.placeholder = Bitmap.createBitmap(new int[]{backIMgColor}, 1, 1, Bitmap.Config.ARGB_8888);
 
 			// Change Image params
-			RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(screenWidth, imageHeight);
+			FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(screenWidth, imageHeight);
 			backgroundPreviewImg.getImageView().setLayoutParams(imageParams);
 			backgroundPreviewImg.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
 
 			// Change ProgressBar params
-			RelativeLayout.LayoutParams progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+			FrameLayout.LayoutParams progressParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			progressParams.gravity = Gravity.CENTER;
 			backgroundPreviewImg.getProgressBar().setLayoutParams(progressParams);
 		}
 
@@ -666,7 +685,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 		int imageHeight = piecesDrawableExample.getIntrinsicHeight();
 
 		// Change Image params
-		RelativeLayout.LayoutParams imageParams = new RelativeLayout.LayoutParams(previewLineWidth, imageHeight);
+		FrameLayout.LayoutParams imageParams = new FrameLayout.LayoutParams(previewLineWidth, imageHeight);
 		piecesLineImage.getImageView().setLayoutParams(imageParams);
 		piecesLineImage.getImageView().setScaleType(ImageView.ScaleType.FIT_XY);
 

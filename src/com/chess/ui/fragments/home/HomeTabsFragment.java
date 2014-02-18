@@ -315,4 +315,11 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			updateTabs();
 		}
 	}
+
+	@Override
+	protected void afterLogin() {
+		super.afterLogin();
+
+		backToHomeFragment();
+	}
 }

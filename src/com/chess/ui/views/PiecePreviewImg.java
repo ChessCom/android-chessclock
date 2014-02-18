@@ -67,8 +67,6 @@ public class PiecePreviewImg extends ImageView {
 		coordinatesPaint.setColor(coordinateColor);
 		coordinatesPaint.setTextSize(coordinateFont * density);
 		coordinatesPaint.setTypeface(FontsHelper.getInstance().getTypeFace(getContext(), FontsHelper.BOLD_FONT));
-
-//		piecesBitmaps = new Bitmap[2][2];
 	}
 
 	public void setPiecesBitmaps(Bitmap[][] bitmaps) {
@@ -77,8 +75,6 @@ public class PiecePreviewImg extends ImageView {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-//		drawHighlights(canvas);
-//		drawCoordinates(canvas);
 		if (piecesBitmaps != null) {
 			drawPieces(canvas);
 		}

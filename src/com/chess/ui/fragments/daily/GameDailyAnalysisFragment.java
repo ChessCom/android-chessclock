@@ -242,14 +242,12 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 		ChessBoardDaily.resetInstance();
 		BoardFace boardFace = getBoardFace();
-//		currentGame.setGameType(RestHelper.V_GAME_CHESS_960);  // used for test
 		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
 		} else {
 			boardFace.setChess960(false);
 		}
 
-//		currentGame.setStartingFenPosition("rkbbnrqn/pppppppp/8/8/8/8/PPPPPPPP/RKBBNRQN w KQkq - 0 1");   // used for test
 		if (boardFace.isChess960()) {// we need to setup only position not made moves.
 			// Daily games tournaments already include those moves in movesList
 			boardFace.setupBoard(currentGame.getStartingFenPosition());
@@ -257,16 +255,12 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 		boardFace.setReside(!userPlayWhite);
 
-		// used for test
-//		currentGame.setMoveList("1.e4 e5 2.f4 d6 3.fxe5 dxe5 4.Nf3 f5 5.Nf2 Ng6 6.b3 Bf6 7.Ba3 Nd6 8.d3 Bd7 9.g3 f4 10.g4 Nh4\n" +
-//				" 11.g5 Nxf3 12.Bxf3 Be7");
 		boardFace.checkAndParseMovesList(currentGame.getMoveList());
 
 		boardView.resetValidMoves();
 
 		invalidateGameScreen();
 		boardFace.takeBack();
-		boardView.invalidate();
 
 		playLastMoveAnimation();
 

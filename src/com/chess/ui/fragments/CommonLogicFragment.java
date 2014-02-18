@@ -902,6 +902,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			facebookSession.closeAndClearTokenInformation();
 		}
 
+		preferencesEditor.putString(LIVE_SESSION_ID, Symbol.EMPTY);
+		preferencesEditor.putString(getUsername() + FACEBOOK_TOKEN, Symbol.EMPTY);
 		preferencesEditor.putString(PASSWORD, Symbol.EMPTY);
 		preferencesEditor.putString(USER_TOKEN, Symbol.EMPTY);
 		preferencesEditor.commit();

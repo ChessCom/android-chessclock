@@ -165,7 +165,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		}
 		getNotationsFace().rewindBack();
 		showCommentForMove(boardFace);
-		boardView.invalidate();
+		boardView.invalidateMe();
 	}
 
 	@Override
@@ -188,7 +188,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		}
 		getNotationsFace().rewindForward();
 		showCommentForMove(boardFace);
-		boardView.invalidate();
+		boardView.invalidateMe();
 	}
 
 	/**

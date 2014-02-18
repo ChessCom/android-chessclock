@@ -54,7 +54,6 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 	public void flipBoard() {
 		getBoardFace().setReside(!getBoardFace().isReside());
 
-		invalidate();
 		gameNetworkFace.toggleSides();
 		gameNetworkFace.invalidateGameScreen();
 	}

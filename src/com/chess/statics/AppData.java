@@ -604,6 +604,14 @@ public class AppData {
 		return getStringValue(PREF_THEME_BOARD_NAME, Symbol.EMPTY);
 	}
 
+	public void setThemeId(int value) {
+		setIntValue(PREF_THEME_ID, value);
+	}
+
+	public int getThemeId() {
+		return getIntValue(PREF_THEME_ID, UNDEFINED);
+	}
+
 	public void setThemeBoardId(int value) {
 		setIntValue(PREF_THEME_BOARD_ID, value);
 	}

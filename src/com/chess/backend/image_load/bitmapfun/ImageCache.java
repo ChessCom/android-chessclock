@@ -50,14 +50,14 @@ public class ImageCache {
 	private static final String TAG = "ImageCache";
 
 	// Default memory cache size in kilobytes
-	private static final int DEFAULT_MEM_CACHE_SIZE = 1024 * 2; // 2MB
+	private static final int DEFAULT_MEM_CACHE_SIZE = 1024 * 1; // 2MB
 
 	// Default disk cache size in bytes
-	private static final int DEFAULT_DISK_CACHE_SIZE = 1024 * 1024 * 20; // 10MB
+	private static final int DEFAULT_DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
 
 	// Compression settings when writing images to disk cache
 	private static final CompressFormat DEFAULT_COMPRESS_FORMAT = CompressFormat.JPEG;
-	private static final int DEFAULT_COMPRESS_QUALITY = 70;
+	private static final int DEFAULT_COMPRESS_QUALITY = 80;
 	private static final int DISK_CACHE_INDEX = 0;
 
 	// Constants to easily toggle various caches
@@ -504,8 +504,7 @@ public class ImageCache {
 	 * @return true if <code>candidate</code> can be used for inBitmap re-use with
 	 * <code>targetOptions</code>
 	 */
-	private static boolean canUseForInBitmap(
-			Bitmap candidate, BitmapFactory.Options targetOptions) {
+	private static boolean canUseForInBitmap(Bitmap candidate, BitmapFactory.Options targetOptions) {
 		int width = targetOptions.outWidth / targetOptions.inSampleSize;
 		int height = targetOptions.outHeight / targetOptions.inSampleSize;
 

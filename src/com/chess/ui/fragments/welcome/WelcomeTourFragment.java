@@ -645,6 +645,7 @@ public class WelcomeTourFragment extends CommonLogicFragment implements YouTubeP
 
 			preferencesEditor.putString(AppConstants.USERNAME, username);
 			preferencesEditor.putInt(username + AppConstants.USER_PREMIUM_STATUS, RestHelper.V_BASIC_MEMBER);
+			preferencesEditor.commit();
 			processLogin(returnedObj.getData());
 		}
 	}

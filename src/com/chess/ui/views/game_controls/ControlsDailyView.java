@@ -90,7 +90,7 @@ public class ControlsDailyView extends ControlsBaseView {
 			ButtonDrawableBuilder.setBackgroundToView(chatButton, styles[MIDDLE]);
 		}
 
-		invalidate();
+		invalidate(0, 0, getWidth(), getHeight());
 	}
 
 	public void enableGameControls(boolean enable) {

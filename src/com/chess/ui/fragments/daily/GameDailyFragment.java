@@ -404,7 +404,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 
 		invalidateGameScreen();
 		boardFace.takeBack();
-		boardView.invalidate();
 
 		playLastMoveAnimation();
 
@@ -440,13 +439,13 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 
 			labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
 			topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-			topPanelView.invalidate();
+			topPanelView.invalidateMe();
 
 			labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
 
 			labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
 			bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-			bottomPanelView.invalidate();
+			bottomPanelView.invalidateMe();
 		}
 
 		// load avatars for players

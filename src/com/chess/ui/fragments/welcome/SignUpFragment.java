@@ -25,6 +25,7 @@ import com.chess.statics.AppConstants;
 import com.chess.statics.FlurryData;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 
 import java.util.regex.Pattern;
@@ -92,6 +93,20 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 		}
 
 		registerUpdateListener = new RegisterUpdateListener();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		AppUtils.changeSoftInputToPan(getActivity());
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		AppUtils.changeSoftInputToResize(getActivity());
 	}
 
 	@Override
@@ -181,10 +196,11 @@ public class SignUpFragment extends CommonLogicFragment implements View.OnClickL
 
 			preferencesEditor.putString(AppConstants.USERNAME, username);
 			preferencesEditor.putInt(username + AppConstants.USER_PREMIUM_STATUS, RestHelper.V_BASIC_MEMBER);
+			preferencesEditor.commit();
+
 			processLogin(returnedObj.getData());
 		}
 	}
-
 
 	@Override
 	protected void afterLogin() {

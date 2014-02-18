@@ -7,10 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.*;
 import android.widget.*;
 import com.chess.R;
 import com.chess.backend.LoadItem;
@@ -144,7 +141,8 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 			adapterSet = true;
 			Cursor cursor = DbDataManager.query(getActivity().getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BACKGROUNDS));
 
-			if (cursor != null && cursor.moveToFirst() && appData.isThemeBackgroundsLoaded()) {
+			if (cursor != null && cursor.getCount() >= 20 && appData.isThemeBackgroundsLoaded()) {
+				cursor.moveToFirst();
 				backgroundsThemeList = new ArrayList<BackgroundSingleItem.Data>();
 				do {
 					backgroundsThemeList.add(DbDataManager.getThemeBackgroundItemFromCursor(cursor));
@@ -153,6 +151,8 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 				updateUiData();
 			} else {
+				appData.setThemeBackgroundsLoaded(false);
+
 				LoadItem loadItem = new LoadItem();
 				loadItem.setLoadPath(RestHelper.getInstance().CMD_BACKGROUNDS);
 				loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, appData.getUserToken());
@@ -228,9 +228,9 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 
 		private final int previewWidth;
 		private final Bitmap placeHolderBitmap;
-		private final RelativeLayout.LayoutParams imageParams;
+		private final FrameLayout.LayoutParams imageParams;
 		private final FrameLayout.LayoutParams linearLayoutParams;
-		private final RelativeLayout.LayoutParams progressParams;
+		private final FrameLayout.LayoutParams progressParams;
 		private final EnhancedImageDownloader imageLoader;
 
 		public BackgroundsAdapter(Context context, List<SelectionItem> menuItems) {
@@ -243,16 +243,16 @@ public class PopupBackgroundsFragment extends DialogFragment implements AdapterV
 			if (!isTablet) {
 				imageHeight = (int) (previewWidth / 2.9f);
 			} else {
-				imageHeight = (int) (previewWidth / 4.0f); // TODO move to resources
+				imageHeight = (int) (previewWidth / 4.0f);
 			}
 
 			int backIMgColor = getResources().getColor(R.color.upgrade_toggle_button_p);
 			placeHolderBitmap = Bitmap.createBitmap(new int[]{backIMgColor}, 1, 1, Bitmap.Config.ARGB_8888);
 
-			imageParams = new RelativeLayout.LayoutParams(previewWidth, imageHeight);
+			imageParams = new FrameLayout.LayoutParams(previewWidth, imageHeight);
 			linearLayoutParams = new FrameLayout.LayoutParams(previewWidth, imageHeight);
-			progressParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			progressParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+			progressParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			progressParams.gravity = Gravity.CENTER;
 		}
 
 		@Override

@@ -24,6 +24,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.backend.tasks.SaveImageToSdTask;
 import com.chess.db.DbDataManager;
 import com.chess.statics.AppData;
+import com.chess.statics.IntentConstants;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.utilities.AppUtils;
 
@@ -293,6 +294,8 @@ public class GetAndSaveBoard extends Service {
 				stopSelf();
 			}
 		}, SHUTDOWN_DELAY);
+
+		sendBroadcast(new Intent(IntentConstants.UPDATE_PIECES_BOARD));
 	}
 
 	private AppData getAppData() {

@@ -37,7 +37,7 @@ public class ControlsLiveView extends ControlsBaseView {
 	@Override
 	protected void addButtons() {
 		addControlButton(OPTIONS, styles[LEFT]);
-		addControlButton(HOME, styles[LEFT]);
+		addControlButton(HOME, styles[MIDDLE]);
 		addControlButton(CHAT, styles[MIDDLE]);
 		addControlButton(BACK, styles[MIDDLE]);
 		addControlButton(FORWARD, styles[RIGHT]);
@@ -87,7 +87,7 @@ public class ControlsLiveView extends ControlsBaseView {
 		} else {
 			ButtonDrawableBuilder.setBackgroundToView(chatButton, styles[MIDDLE]);
 		}
-		invalidate();
+		invalidate(0, 0, getWidth(), getHeight());
 	}
 
 	public void enableAnalysisMode(boolean enable) {

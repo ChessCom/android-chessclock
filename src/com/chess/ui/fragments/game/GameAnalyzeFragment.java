@@ -194,7 +194,6 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 		invalidateGameScreen();
 		boardFace.takeBack();
-		boardView.invalidate();
 
 		playLastMoveAnimation();
 
@@ -213,13 +212,13 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
 				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-				topPanelView.invalidate();
+				topPanelView.invalidateMe();
 
 				labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
 
 				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
 				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-				bottomPanelView.invalidate();
+				bottomPanelView.invalidateMe();
 			}
 
 			if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {

@@ -38,6 +38,9 @@ public class LogMe {
 	}
 
 	public static void dl(String tag, String message) {
+		if (message == null) { // sometimes it happens...
+			return;
+		}
 		if (ENABLED) {
 			LOG.debug(tag + TAG_MESSAGE_SEPARATOR + message);
 		} else {
@@ -46,6 +49,9 @@ public class LogMe {
 	}
 
 	public static void dl(String message) {
+		if (message == null) { // sometimes it happens...
+			return;
+		}
 		if (ENABLED) {
 			LOG.debug(DEBUG_LIVE_TAG + TAG_MESSAGE_SEPARATOR + message);
 		} else {

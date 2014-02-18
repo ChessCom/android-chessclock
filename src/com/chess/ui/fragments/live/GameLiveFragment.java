@@ -624,7 +624,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			@Override
 			public void run() {
 				getControlsView().haveNewMessage(true);
-				boardView.invalidate();
+				boardView.invalidateMe();
 			}
 		});
 	}
@@ -817,7 +817,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		boardView.resetValidMoves();
 		getBoardFace().takeBack();
 		getBoardFace().decreaseMovesCount();
-		boardView.invalidate();
+		boardView.invalidateMe();
 	}
 
 	@Override
@@ -1351,13 +1351,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
 				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-				topPanelView.invalidate();
+				topPanelView.invalidateMe();
 
 				labelsConfig.bottomAvatar = new BoardAvatarDrawable(getActivity(), src);
 
 				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
 				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-				bottomPanelView.invalidate();
+				bottomPanelView.invalidateMe();
 			}
 		}
 	}

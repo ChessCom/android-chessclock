@@ -92,7 +92,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 		LiveConnectionHelper liveHelper = getLiveHelper();
 		GameLiveItem currentGame = liveHelper.getGameItem();
-		if (currentGame == null) {
+		if (currentGame == null || getActivity() == null) {
 			return;
 		}
 
@@ -133,7 +133,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 				labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
 				topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
-				topPanelView.invalidate();
+				topPanelView.invalidateMe();
 			}
 
 			if (bottomAvatarUrl != null && !bottomAvatarUrl.contains(StaticData.GIF)) {
@@ -145,7 +145,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 				labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
 				bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
-				bottomPanelView.invalidate();
+				bottomPanelView.invalidateMe();
 			}
 		}
 

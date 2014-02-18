@@ -95,7 +95,6 @@ public class GetAndSaveTheme extends Service {
 	private BoardSingleItem.Data boardData;
 	private PieceSingleItem.Data piecesData;
 	private SoundSingleItem.Data soundsData;
-	private String userToken;
 
 	public class ServiceBinder extends Binder {
 		public GetAndSaveTheme getService() {
@@ -152,8 +151,6 @@ public class GetAndSaveTheme extends Service {
 		piecesPackSaveListener = new PiecesPackSaveListener();
 
 		imageDownloader = new ImageDownloaderToListener(this);
-
-		userToken = appData.getUserToken();
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -179,12 +176,12 @@ public class GetAndSaveTheme extends Service {
 		if (installingTheme) { // Enqueue load if we already loading theme
 			themesQueue.put(selectedThemeItem, ThemeState.ENQUIRED);
 
-			DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.ENQUIRED);
+			DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem.getId(), ThemeState.ENQUIRED);
 			return;
 		}
 		installingTheme = true;
 
-		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.LOADING);
+		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem.getId(), ThemeState.LOADING);
 		themesQueue.put(selectedThemeItem, ThemeState.LOADING);
 
 		this.selectedThemeItem = selectedThemeItem;
@@ -192,23 +189,23 @@ public class GetAndSaveTheme extends Service {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 
+		backgroundWidth = screenWidth;
+		backgroundHeight = screenHeight;
+
 		showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.background)));
 
 		LoadItem loadItem;
 		if (!isTablet) {
-			loadItem = LoadHelper.getBackgroundById(userToken, selectedThemeItem.getBackgroundId(),
+			loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedThemeItem.getBackgroundId(),
 					screenWidth, screenHeight, RestHelper.V_HANDSET);
 		} else {
 			if (screenWidth > screenHeight) {
 				backgroundWidth = screenHeight;
 				backgroundHeight = screenWidth;
-			} else {
-				backgroundWidth = screenWidth;
-				backgroundHeight = screenHeight;
 			}
 
 			// we need to download port and landscape backgrounds for tablets
-			loadItem = LoadHelper.getBackgroundById(userToken, selectedThemeItem.getBackgroundId(),
+			loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedThemeItem.getBackgroundId(),
 					backgroundWidth, backgroundHeight, RestHelper.V_HANDSET);
 		}
 
@@ -264,7 +261,7 @@ public class GetAndSaveTheme extends Service {
 					backgroundWidth = screenHeight;
 				}
 
-				LoadItem loadItem = LoadHelper.getBackgroundById(userToken, selectedThemeItem.getBackgroundId(),
+				LoadItem loadItem = LoadHelper.getBackgroundById(getUserToken(), selectedThemeItem.getBackgroundId(),
 						backgroundWidth, backgroundHeight, RestHelper.V_TABLET);
 				new RequestJsonTask<BackgroundSingleItem>(new BackgroundItemUpdateListener(BACKGROUND_LAND)).executeTask(loadItem);
 			}
@@ -656,7 +653,8 @@ public class GetAndSaveTheme extends Service {
 
 		// mark item as loaded
 		themesQueue.put(selectedThemeItem, ThemeState.LOADED);
-		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.LOADED);
+		getAppData().setThemeId(selectedThemeItem.getId());
+		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem.getId(), ThemeState.LOADED);
 
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(DONE);
@@ -694,7 +692,7 @@ public class GetAndSaveTheme extends Service {
 
 		// mark item as loaded
 		themesQueue.put(selectedThemeItem, ThemeState.DEFAULT);
-		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem, ThemeState.DEFAULT);
+		DbDataManager.updateThemeLoadingStatus(getContentResolver(), selectedThemeItem.getId(), ThemeState.DEFAULT);
 
 		if (progressUpdateListener != null) {
 			progressUpdateListener.setProgress(DONE);

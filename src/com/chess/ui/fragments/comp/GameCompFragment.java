@@ -452,7 +452,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			getControlsView().enableGameControls(true);
 			onPlayerMove();
 
-			boardView.invalidate();
+			boardView.invalidateMe();
 		}
 	};
 
@@ -486,6 +486,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 		loadSavedGame();
 
 		resideBoardIfCompWhite();
+		boardView.invalidateMe();
 	}
 
 	private void loadSavedGame() {
@@ -614,7 +615,6 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private void resideBoardIfCompWhite() {
 		if (ChessBoard.isComputerVsHumanBlackGameMode(getBoardFace())) {
 			getBoardFace().setReside(true);
-			boardView.invalidate();
 		}
 	}
 

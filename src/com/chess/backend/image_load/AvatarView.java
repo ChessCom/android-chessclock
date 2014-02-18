@@ -3,6 +3,7 @@ package com.chess.backend.image_load;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.ImageView;
 import com.chess.R;
 
@@ -39,8 +40,7 @@ public class AvatarView extends ProgressImageView {
 		{// image
 			onlineBadge = new ImageView(getContext());
 			LayoutParams indicatorParams = new LayoutParams(indicatorSize, indicatorSize);
-			indicatorParams.addRule(ALIGN_PARENT_RIGHT);
-			indicatorParams.addRule(ALIGN_PARENT_BOTTOM);
+			indicatorParams.gravity = Gravity.BOTTOM | Gravity.RIGHT;
 
 			onlineBadge.setVisibility(GONE);
 			onlineBadge.setAdjustViewBounds(true);

@@ -7,5 +7,5 @@
 			android:fromDegrees="0"
 			android:toDegrees="450" />
 	</item>
-	<item android:drawable="@drawable/ic_chess_progress_center"></item>
+	<item android:drawable="@drawable/ic_chess_progress_center"/>
 </layer-list>

@@ -75,7 +75,7 @@ public class ChessBoardExplorerView extends ChessBoardBaseView {
 			firstClick = false;
 			from = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
 		}
-		invalidate();
+		invalidateMe();
 	}
 
 	@Override

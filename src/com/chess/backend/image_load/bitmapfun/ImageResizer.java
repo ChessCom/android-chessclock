@@ -24,6 +24,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Log;
 import com.chess.BuildConfig;
+import com.chess.utilities.AppUtils;
 
 import java.io.FileDescriptor;
 
@@ -198,6 +199,9 @@ public class ImageResizer extends ImageWorker {
 		} catch (OutOfMemoryError ignore) {
 
 		}
+
+		AppUtils.logMemData();
+
 		return bitmap;
 	}
 

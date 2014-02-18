@@ -14,7 +14,7 @@ import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
 import com.chess.statics.Symbol;
 import com.chess.ui.activities.BaseFragmentPopupsActivity;
-import com.chess.ui.interfaces.PopupShowListener;
+import com.chess.ui.interfaces.PopupShowFace;
 import com.flurry.android.FlurryAgent;
 
 /**
@@ -23,15 +23,15 @@ import com.flurry.android.FlurryAgent;
 
 public class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
 	private String facebookToken;
-	private final PopupShowListener popupShowListener;
+	private final PopupShowFace popupShowFace;
 
 	private AppData appData;
 
-	public LoginUpdateListener(Context context, String facebookToken, PopupShowListener popupShowListener) {
+	public LoginUpdateListener(Context context, String facebookToken, PopupShowFace popupShowFace) {
 		super(context, LoginItem.class);
 
 		this.facebookToken = facebookToken;
-		this.popupShowListener = popupShowListener;
+		this.popupShowFace = popupShowFace;
 
 		appData = new AppData(context);
 	}
@@ -78,15 +78,15 @@ public class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
 			int serverCode = RestHelper.decodeServerCode(resultCode);
 			switch (serverCode) {
 				case ServerErrorCodes.INVALID_USERNAME_PASSWORD:
-					if (popupShowListener != null) {
-						popupShowListener.showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
+					if (popupShowFace != null) {
+						popupShowFace.showSinglePopupDialog(R.string.login, R.string.invalid_username_or_password);
 						appData.setPassword(Symbol.EMPTY);
 					}
 					return;
 				case ServerErrorCodes.FACEBOOK_USER_NO_ACCOUNT:
-					if (popupShowListener != null) {
-						popupShowListener.setPositiveBtnId(R.string.sign_up);
-						popupShowListener.showPopupDialog(R.string.no_chess_account_signup_please, BaseFragmentPopupsActivity.CHESS_NO_ACCOUNT_TAG);
+					if (popupShowFace != null) {
+						popupShowFace.setPositiveBtnId(R.string.sign_up);
+						popupShowFace.showPopupDialog(R.string.no_chess_account_signup_please, BaseFragmentPopupsActivity.CHESS_NO_ACCOUNT_TAG);
 					}
 					return;
 				default:

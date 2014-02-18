@@ -23,6 +23,7 @@ import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.ChatMessagesAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
+import com.chess.utilities.AppUtils;
 import com.chess.widgets.RoboButton;
 
 import java.util.ArrayList;
@@ -129,7 +130,7 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 
 		// change softInputMode back
 		if (isTablet) {
-			getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+			AppUtils.changeSoftInputToResize(getActivity());
 		}
 	}
 
@@ -143,7 +144,7 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		if (isTablet) {
-			getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+			AppUtils.changeSoftInputToPan(getActivity());
 		}
 		return false;
 	}

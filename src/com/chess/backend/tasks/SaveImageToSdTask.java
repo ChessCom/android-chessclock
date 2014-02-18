@@ -49,9 +49,14 @@ public class SaveImageToSdTask extends AbstractUpdateTask<Bitmap, String> {
 			os.flush();
 			os.close();
 
+//			Log.d("TEST", "save img before recycle ");
+			AppUtils.logMemData();
 			// release bitmap
 			item.recycle();
 			item = null;
+
+			System.gc();
+//			Log.d("TEST", "save img after recycle & GC");
 
 		} catch (FileNotFoundException e) {
 			result = StaticData.VALUE_NOT_EXIST;

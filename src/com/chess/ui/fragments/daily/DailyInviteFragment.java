@@ -352,7 +352,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 					labelsConfig.topAvatar.setSide(labelsConfig.getOpponentSide());
 					topAvatarImg.setImageDrawable(labelsConfig.topAvatar);
 					topAvatarImg.setUsername(labelsConfig.topPlayerName, DailyInviteFragment.this);
-					topPanelView.invalidate();
+					topPanelView.invalidateMe();
 					break;
 				case BOTTOM_AVATAR:
 					labelsConfig.bottomAvatar = new BoardAvatarDrawable(activity, bitmap);
@@ -360,7 +360,7 @@ public class DailyInviteFragment extends CommonLogicFragment {
 					labelsConfig.bottomAvatar.setSide(labelsConfig.userSide);
 					bottomAvatarImg.setImageDrawable(labelsConfig.bottomAvatar);
 					bottomAvatarImg.setUsername(labelsConfig.bottomPlayerName, DailyInviteFragment.this);
-					bottomPanelView.invalidate();
+					bottomPanelView.invalidateMe();
 					break;
 			}
 		}
