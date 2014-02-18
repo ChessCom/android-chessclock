@@ -650,6 +650,14 @@ public class LiveConnectionHelper {
 		return lccHelper.getGameItem();
 	}
 
+	public GameLiveItem getObservedGameItem() {
+		return lccHelper.getObservedGameItem();
+	}
+
+	public Game getCurrentObservedGame() {
+		return lccHelper.getCurrentObservedGame();
+	}
+
 	public int getResignTitle() {
 		return lccHelper.getResignTitle();
 	}

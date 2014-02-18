@@ -128,13 +128,21 @@ public class LccHelper {
 		this.lccObserveEventListener = lccObserveEventListener;
 	}
 
-	public GameLiveItem getGameItem() {
-		if (currentGameId == null) {
+	private GameLiveItem getGameItem(Long gameId) {
+		if (gameId == null) {
 			return null;
 		} else {
-			Game game = getGame(currentGameId);
+			Game game = getGame(gameId);
 			return new GameLiveItem(game, game.getMoveCount() - 1);
 		}
+	}
+
+	public GameLiveItem getGameItem() {
+		return getGameItem(currentGameId);
+	}
+
+	public GameLiveItem getObservedGameItem() {
+		return getGameItem(currentObservedGameId);
 	}
 
 	public int getResignTitle() {
@@ -230,6 +238,10 @@ public class LccHelper {
 
 	public Game getCurrentGame() {
 		return currentGameId == null ? null : lccGames.get(currentGameId);
+	}
+
+	public Game getCurrentObservedGame() {
+		return currentObservedGameId == null ? null : lccGames.get(currentObservedGameId);
 	}
 
 	public Game getLastGame() {
@@ -714,7 +726,6 @@ public class LccHelper {
 	}
 
 	public void unObserveGame(Long gameId) {
-		LogMe.dl(TAG, "unObserve game=" + gameId);
 		lccClient.unobserveGame(gameId);
 	}
 
@@ -897,7 +908,6 @@ public class LccHelper {
 	}
 
 	public void unObserveCurrentObservingGame() {
-//		LogMe.dl(TAG, "unObserveCurrentObservingGame: gameId=" + getCurrentObservedGameId());
 		if (getCurrentObservedGameId() != null) {
 			runUnObserveGameTask(getCurrentObservedGameId());
 		}

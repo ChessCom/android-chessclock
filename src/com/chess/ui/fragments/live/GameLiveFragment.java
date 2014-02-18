@@ -162,9 +162,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		if (isLCSBound) {
 			try {
-				Long currentGameId = getLiveHelper().getCurrentGameId();
-				if (currentGameId != null && currentGameId != 0) {
-					onGameStarted(); // we don't need synchronized block here because it's UI thread, all calls are synchronized
+				LiveConnectionHelper liveHelper = getLiveHelper();
+				if (getCurrentGame(liveHelper) != null) {
+					onGameStarted();
 				}
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
@@ -197,7 +197,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		synchronized (LccHelper.GAME_SYNC_LOCK) {
 
-			GameLiveItem currentGame = liveHelper.getGameItem();
+			GameLiveItem currentGame = getGameItem(liveHelper);
 
 			logLiveTest("onGameStarted currentGame=" + currentGame);
 
@@ -240,7 +240,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			liveHelper.checkGameEvents();
 
 			{// fill labels
-					userPlayWhite = liveHelper.isUserColorWhite();
+				userPlayWhite = liveHelper.isUserColorWhite();
 				if (userPlayWhite) {
 					labelsConfig.userSide = ChessBoard.WHITE_SIDE;
 					labelsConfig.topPlayerName = currentGame.getBlackUsername();
@@ -266,15 +266,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			boardView.updatePlayerNames(currentGame.getWhiteUsername(), currentGame.getBlackUsername());
 
 			{// set avatars
-
-				labelsConfig.topPlayerAvatar = liveHelper.getCurrentGame().
-						getOpponentForPlayer(labelsConfig.bottomPlayerName).getAvatarUrl();
+				labelsConfig.topPlayerAvatar = getTopPlayerAvatar(liveHelper);
 				if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
 					imageDownloader.download(labelsConfig.topPlayerAvatar, topImageUpdateListener, AVATAR_SIZE);
 				}
 
-				labelsConfig.bottomPlayerAvatar = liveHelper.getCurrentGame().
-						getOpponentForPlayer(labelsConfig.topPlayerName).getAvatarUrl();
+				labelsConfig.bottomPlayerAvatar = getBottomPlayerAvatar(liveHelper);
 				if (labelsConfig.bottomPlayerAvatar != null && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
 					imageDownloader.download(labelsConfig.bottomPlayerAvatar, bottomImageUpdateListener, AVATAR_SIZE);
 				}
@@ -392,8 +389,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 		userSawGameEndPopup = true;
 
+		LiveConnectionHelper liveHelper;
 		try {
-			getLiveHelper().stopClocks();
+			liveHelper = getLiveHelper();
+			liveHelper.stopClocks();
+
+			if (getCurrentGame(liveHelper) == null) {
+				return;
+			}
+
 		} catch (DataNotValidException e) {
 			e.printStackTrace();
 		}
@@ -764,7 +768,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				"username=" + liveHelper.getUsername() +
 						" lccInitiated=" + lccInitiated +
 //						", " + boardDebug +
-						", gameSeq=" + liveHelper.getCurrentGame().getMoves().size() +
+						", gameSeq=" + getCurrentGame(liveHelper).getMoves().size() +
 						", boardHply=" + getBoardFace().getPly() +
 						", moveLive=" + getBoardFace().convertMoveLive() +
 						", gamesC=" + liveHelper.getGamesCount() +
@@ -774,7 +778,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 						", latestMoveNumber=" + liveHelper.getLatestMoveNumber() +
 						", debugString=" + debugString +
 						", submit=" + preferences.getBoolean(getAppData().getUsername() + AppConstants.PREF_SHOW_SUBMIT_MOVE_LIVE, false) +
-						", movesLive=" + liveHelper.getCurrentGame().getMoves() +
+						", movesLive=" + getCurrentGame(liveHelper).getMoves() +
 						", moves=" + getBoardFace().getMoveListSAN() +
 						", trace=" + stackTrace;
 		temporaryDebugInfo = temporaryDebugInfo.replaceAll("\n", " ");
@@ -1028,7 +1032,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			if (isLCSBound) {
-				Log.i(TAG, "Request draw: " + liveHelper.getCurrentGame());
+				Log.i(TAG, "Request draw: " + getCurrentGame(liveHelper));
 				liveHelper.runMakeDrawTask();
 			}
 		} else if (tag.equals(WARNING_TAG)) {
@@ -1039,7 +1043,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		} else if (tag.equals(ABORT_GAME_TAG)) {
 			if (isLCSBound) {
 
-				Game game = liveHelper.getCurrentGame();
+				Game game = getCurrentGame(liveHelper);
 
 				if (liveHelper.isFairPlayRestriction()) {
 					Log.i(TAG, "resign game by fair play restriction: " + game);
@@ -1070,7 +1074,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 		if (tag.equals(DRAW_OFFER_RECEIVED_TAG)) {
 			if (isLCSBound) {
-				Log.i(TAG, "Decline draw: " + liveHelper.getCurrentGame());
+				Log.i(TAG, "Decline draw: " + getCurrentGame(liveHelper));
 				liveHelper.runRejectDrawTask();
 			}
 		} else if (tag.equals(WARNING_TAG)) {
@@ -1093,7 +1097,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			logLiveTest(e.getMessage());
 			return Symbol.EMPTY;
 		}
-		GameLiveItem currentGame = liveHelper.getGameItem();
+		GameLiveItem currentGame = getGameItem(liveHelper);
 		if (currentGame == null)
 			return Symbol.EMPTY;
 		else
@@ -1109,7 +1113,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			logLiveTest(e.getMessage());
 			return Symbol.EMPTY;
 		}
-		GameLiveItem currentGame = liveHelper.getGameItem();
+		GameLiveItem currentGame = getGameItem(liveHelper);
 		if (currentGame == null)
 			return Symbol.EMPTY;
 		else
@@ -1125,7 +1129,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			logLiveTest(e.getMessage());
 			return false;
 		}
-		return liveHelper.getCurrentGame() != null;
+		return getCurrentGame(liveHelper) != null;
 	}
 
 	@Override
@@ -1204,7 +1208,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				return;
 			}
 
-			GameLiveItem currentGame = liveHelper.getGameItem();
+			GameLiveItem currentGame = getGameItem(liveHelper);
 			ShareItem shareItem = new ShareItem(currentGame, currentGame.getGameId(), ShareItem.LIVE);
 
 			Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -1376,8 +1380,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		try {
 			init();
-			Long currentGameId = getLiveHelper().getCurrentGameId();
-			if (isLCSBound && currentGameId != null && currentGameId != 0) {
+			LiveConnectionHelper liveHelper = getLiveHelper();
+			if (isLCSBound && getCurrentGame(liveHelper) != null) {
 				// screen rotated case
 				onGameStarted();
 			}
@@ -1423,8 +1427,24 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			return false;
 		}
 
-		boolean isGameValid = liveHelper.getCurrentGameId() != null;
+		boolean isGameValid = getCurrentGame(liveHelper) != null;
 
 		return isGameValid;
+	}
+
+	protected GameLiveItem getGameItem(LiveConnectionHelper liveHelper) {
+		return liveHelper.getGameItem();
+	}
+
+	protected Game getCurrentGame(LiveConnectionHelper liveHelper) {
+		return liveHelper.getCurrentGame();
+	}
+
+	protected String getTopPlayerAvatar(LiveConnectionHelper liveHelper) {
+		return getCurrentGame(liveHelper).getOpponentForPlayer(labelsConfig.bottomPlayerName).getAvatarUrl();
+	}
+
+	protected String getBottomPlayerAvatar(LiveConnectionHelper liveHelper) {
+		return getCurrentGame(liveHelper).getOpponentForPlayer(labelsConfig.topPlayerName).getAvatarUrl();
 	}
 }

@@ -91,7 +91,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	protected void init() throws DataNotValidException {
 
 		LiveConnectionHelper liveHelper = getLiveHelper();
-		GameLiveItem currentGame = liveHelper.getGameItem();
+		GameLiveItem currentGame = getGameItem(liveHelper);
 		if (currentGame == null || getActivity() == null) {
 			return;
 		}
@@ -119,10 +119,8 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-			String topAvatarUrl = liveHelper.getCurrentGame()
-					.getOpponentForPlayer(currentGame.getWhiteUsername()).getAvatarUrl();
-			String bottomAvatarUrl = liveHelper.getCurrentGame()
-					.getOpponentForPlayer(currentGame.getBlackUsername()).getAvatarUrl();
+			String topAvatarUrl = getTopPlayerAvatar(liveHelper);
+			String bottomAvatarUrl = getBottomPlayerAvatar(liveHelper);
 
 			if (topAvatarUrl != null && !topAvatarUrl.contains(StaticData.GIF)) {
 				imageDownloader.download(topAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
@@ -390,5 +388,21 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		optionsMap = new SparseArray<String>();
 		optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
 		optionsMap.put(ID_SETTINGS, getString(R.string.settings));
+	}
+
+	protected GameLiveItem getGameItem(LiveConnectionHelper liveHelper) {
+		return liveHelper.getObservedGameItem();
+	}
+
+	protected Game getCurrentGame(LiveConnectionHelper liveHelper) {
+		return liveHelper.getCurrentObservedGame();
+	}
+
+	protected String getTopPlayerAvatar(LiveConnectionHelper liveHelper) {
+		return getCurrentGame(liveHelper).getBlackPlayer().getAvatarUrl();
+	}
+
+	protected String getBottomPlayerAvatar(LiveConnectionHelper liveHelper) {
+		return getCurrentGame(liveHelper).getWhitePlayer().getAvatarUrl();
 	}
 }
