@@ -131,7 +131,7 @@ public class LccGameListener implements GameListener {
 		}
 
 		lccHelper.putGame(game);
-		doUpdateGame(true, game);
+		doUpdateGame(game);
 	}
 
 	@Override
@@ -152,6 +152,7 @@ public class LccGameListener implements GameListener {
 		// Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId; // vm: looks redundant
 		lccHelper.setLastGame(game);
 
+		doUpdateGame(game);
 		lccHelper.checkAndProcessEndGame(game);
 	}
 
@@ -209,9 +210,11 @@ public class LccGameListener implements GameListener {
 		lccHelper.processFullGame();
 	}
 
-	private void doUpdateGame(boolean checkMoves, Game game) {
+	private void doUpdateGame(Game game) {
 
-		if (checkMoves && (game.getMoveCount() == 1 || game.getMoveCount() - 1 > lccHelper.getLatestMoveNumber())) { // do not check moves if it was
+		Integer latestMoveNumber = lccHelper.getLatestMoveNumber();
+
+		if (game.getMoveCount() == 1 || (latestMoveNumber != null && game.getMoveCount() - 1 > latestMoveNumber)) { // do not check moves if it was
 			User moveMaker = game.getLastMoveMaker();
 			String move = game.getLastMove();
 			LogMe.dl(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHelper.getUser().getUsername() +
