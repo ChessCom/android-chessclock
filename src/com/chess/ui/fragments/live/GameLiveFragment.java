@@ -378,7 +378,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void onClockFinishing() {
-		SoundPlayer.getInstance(getContext()).playTenSeconds();
+			SoundPlayer.getInstance(getContext()).playTenSeconds();
 	}
 
 	@Override
@@ -1373,6 +1373,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onLiveClientConnected() {
 		super.onLiveClientConnected();
+
+		if (!isAdded()) {
+			return;
+		}
 
 		if (!isValid()) {
 			goHome();

@@ -393,7 +393,9 @@ public class LccHelper {
 		} else {
 			onlineFriends.remove(friend.getUsername());
 		}
-		lccEventListener.onFriendsStatusChanged();
+		if (lccEventListener != null) {
+			lccEventListener.onFriendsStatusChanged();
+		}
 	}
 
 	public void removeFriend(User friend) {
