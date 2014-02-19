@@ -44,7 +44,9 @@
 				android:layout_height="wrap_content"
 				custom:oneLine="@bool/one_line_for_board"
 				android:layout_above="@+id/centerPoint"
-				android:layout_toStartOf="@id/centerPoint" />
+				android:layout_toStartOf="@id/centerPoint"
+				android:layout_toLeftOf="@id/centerPoint"
+				/>
 
 			<!--BottomPanelInfo-->
 			<com.chess.ui.views.PanelInfoWelcomeView
@@ -53,7 +55,9 @@
 				android:layout_height="wrap_content"
 				custom:oneLine="@bool/one_line_for_board"
 				android:layout_below="@id/centerPoint"
-				android:layout_toStartOf="@id/centerPoint" />
+				android:layout_toStartOf="@id/centerPoint"
+				android:layout_toLeftOf="@id/centerPoint"
+				/>
 
 			<!--Center point-->
 			<View

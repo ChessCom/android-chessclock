@@ -520,6 +520,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 		PopupCustomViewFragment customViewFragment = PopupCustomViewFragment.createInstance(popupItem);
 		customViewFragment.show(getFragmentManager(), TACTIC_SOLVED_TAG);
+
+		lockBoard(false);
 	}
 
 	@Override

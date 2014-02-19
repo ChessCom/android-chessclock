@@ -28,6 +28,8 @@
 		android:orientation="vertical"
 		android:layout_marginStart="@dimen/tablet_board_margin_left"
 		android:layout_marginEnd="@dimen/tablet_board_margin_left"
+		android:layout_marginLeft="@dimen/tablet_board_margin_left"
+		android:layout_marginRight="@dimen/tablet_board_margin_left"
 		android:background="@drawable/shadow_back_square">
 
 		<!--BoardView-->
@@ -46,7 +48,10 @@
 		android:layout_weight="1"
 		android:minHeight="@dimen/new_tactics_panel_info_height"
 		android:layout_marginStart="@dimen/common_tablet_side_padding"
-		android:layout_marginEnd="@dimen/common_tablet_side_padding" />
+		android:layout_marginEnd="@dimen/common_tablet_side_padding"
+		android:layout_marginLeft="@dimen/common_tablet_side_padding"
+		android:layout_marginRight="@dimen/common_tablet_side_padding"
+		/>
 
 	<com.chess.ui.views.game_controls.ControlsTacticsView
 		android:id="@+id/controlsView"
@@ -55,6 +60,8 @@
 		app:controls_style="rounded"
 		android:layout_marginStart="@dimen/common_tablet_side_padding"
 		android:layout_marginEnd="@dimen/common_tablet_side_padding"
+		android:layout_marginLeft="@dimen/common_tablet_side_padding"
+		android:layout_marginRight="@dimen/common_tablet_side_padding"
 		android:layout_marginBottom="@dimen/default_scr_side_padding" />
 
 </LinearLayout>

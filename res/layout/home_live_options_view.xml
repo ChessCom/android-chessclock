@@ -11,6 +11,7 @@
 		android:textColor="@color/new_light_grey_4"
 		android:text="@string/ic_live_standard"
 		android:layout_marginStart="@dimen/home_play_live_labels_padding_side"
+		android:layout_marginLeft="@dimen/home_play_live_labels_padding_side"
 		android:visibility="gone" />
 
 	<!--Blitz-->

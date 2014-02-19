@@ -21,7 +21,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.os.SystemClock;
 import android.util.Log;
 import com.chess.backend.GetAndSaveUserStats;
@@ -38,6 +37,7 @@ import com.chess.db.DbDataManager;
 import com.chess.model.BaseGameItem;
 import com.chess.model.DataHolder;
 import com.chess.statics.*;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 import com.google.android.gcm.GCMBaseIntentService;
@@ -375,17 +375,18 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 				boolean playSoundsFlag = AppUtils.getSoundsPlayFlag(context);
 				if (playSoundsFlag) {
-					final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
-					if (player != null) {
-						player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-							@Override
-							public void onCompletion(MediaPlayer mediaPlayer) {
-								player.stop();
-								player.release();
-							}
-						});
-						player.start();
-					}
+					SoundPlayer.getInstance(context).playMoveOpponent();
+//					final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
+//					if (player != null) {
+//						player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//							@Override
+//							public void onCompletion(MediaPlayer mediaPlayer) {
+//								player.stop();
+//								player.release();
+//							}
+//						});
+//						player.start();
+//					}
 				}
 			}
 		}

@@ -1,37 +1,23 @@
 package com.chess.ui.fragments.welcome;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.chess.R;
-import com.chess.backend.LoadHelper;
-import com.chess.backend.LoadItem;
-import com.chess.backend.RestHelper;
-import com.chess.backend.entity.api.RegisterItem;
-import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.statics.AppConstants;
-import com.chess.statics.FlurryData;
-import com.chess.statics.Symbol;
 import com.chess.statics.WelcomeHolder;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.widgets.RoboButton;
-import com.flurry.android.FlurryAgent;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-
-import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,19 +47,6 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 	private FrameLayout youTubeFrameContainer3;
 	private boolean youtubeFragmentGoFullScreen;
 
-	// SignUp Part
-	protected Pattern emailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[a-zA-Z0-9\\.\\-]+\\.[a-zA-Z]{2,4}");
-	protected Pattern gMailPattern = Pattern.compile("[a-zA-Z0-9\\._%\\+\\-]+@[g]");   // TODO use for autoComplete
-
-	private EditText userNameEdt;
-	private EditText emailEdt;
-	private EditText passwordEdt;
-	private EditText passwordRetypeEdt;
-
-	private String username;
-	private String email;
-	private String password;
-	private RegisterUpdateListener registerUpdateListener;
 	private YouTubePlayer youTubePlayer1;
 	private YouTubePlayer youTubePlayer2;
 	private YouTubePlayer youTubePlayer3;
@@ -96,10 +69,6 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 		super.onCreate(savedInstanceState);
 
 		mainPageAdapter = new WelcomePagerAdapter();
-
-		{// SignUp part
-			registerUpdateListener = new RegisterUpdateListener();
-		}
 	}
 
 	@Override
@@ -131,7 +100,6 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 	public void onPause() {
 		super.onPause();
 
-//		logTest(" WelcomeTourFragment - onPause youtubeFragmentGoFullScreen = " + youtubeFragmentGoFullScreen);
 		if (!youtubeFragmentGoFullScreen) {
 			releaseYouTubeFragment(youTubeFrameContainer1, youTubePlayerFragment1);
 			releaseYouTubeFragment(youTubeFrameContainer2, youTubePlayerFragment2);
@@ -176,18 +144,6 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 			closeYouTubeBtn3.setVisibility(View.VISIBLE);
 		} else if (view.getId() == R.id.loginLinkTxt) {
 			((WelcomeTabsFragment) parentFace).openSignInFragment();
-		} else if (view.getId() == R.id.completeSignUpBtn) {
-			if (!checkRegisterInfo()) {
-				return;
-			}
-
-			if (!isNetworkAvailable()) {
-				popupItem.setPositiveBtnId(R.string.check_connection);
-				showPopupDialog(R.string.warning, R.string.no_network, NETWORK_CHECK_TAG);
-				return;
-			}
-
-			submitRegisterInfo();
 		} else if (view.getId() == R.id.closeBtn1) { // TODO adjust properly
 			youTubePlayer1.pause();
 			releaseYouTubeFragment(youTubeFrameContainer1, youTubePlayerFragment1);
@@ -352,7 +308,6 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 		private RelativeLayout firstView;
 		private RelativeLayout secondView;
 		private RelativeLayout thirdView;
-		private RelativeLayout signUpView;
 		private boolean initiatedFirst;
 		private boolean initiatedSecond;
 		private boolean initiatedThird;
@@ -501,9 +456,6 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 					initiatedThird = true;
 				}
 				break;
-
-				default:
-					break;
 			}
 
 			container.addView(view);
@@ -522,115 +474,4 @@ public class WelcomeTourFragmentTablet extends CommonLogicFragment implements Yo
 		}
 	}
 
-	private boolean checkRegisterInfo() {
-		username = getTextFromField(userNameEdt);
-		email = getTextFromField(emailEdt);
-		password = getTextFromField(passwordEdt);
-
-		if (username.length() < 3) {
-			userNameEdt.setError(getString(R.string.too_short));
-			userNameEdt.requestFocus();
-			return false;
-		}
-
-		if (!emailPattern.matcher(getTextFromField(emailEdt)).matches()) {
-			emailEdt.setError(getString(R.string.invalidEmail));
-			emailEdt.requestFocus();
-			return true;
-		}
-
-		if (email.equals(Symbol.EMPTY)) {
-			emailEdt.setError(getString(R.string.can_not_be_empty));
-			emailEdt.requestFocus();
-			return false;
-		}
-
-		if (password.length() < 6) {
-			passwordEdt.setError(getString(R.string.too_short));
-			passwordEdt.requestFocus();
-			return false;
-		}
-
-		if (!password.equals(passwordRetypeEdt.getText().toString())) {
-			passwordRetypeEdt.setError(getString(R.string.pass_dont_match));
-			passwordRetypeEdt.requestFocus();
-			return false;
-		}
-
-
-		return true;
-	}
-
-	private void submitRegisterInfo() {
-		LoadItem loadItem = LoadHelper.postUsers(username, password, email, getDeviceId());
-		new RequestJsonTask<RegisterItem>(registerUpdateListener).executeTask(loadItem);
-	}
-
-	private class RegisterUpdateListener extends CommonLogicFragment.ChessUpdateListener<RegisterItem> {
-
-		public RegisterUpdateListener() {
-			super(RegisterItem.class);
-		}
-
-		@Override
-		public void showProgress(boolean show) {
-			if (show) {
-				showPopupHardProgressDialog();
-			} else {
-				if (isPaused)
-					return;
-
-				dismissProgressDialog();
-			}
-		}
-
-		@Override
-		public void updateData(RegisterItem returnedObj) {
-			FlurryAgent.logEvent(FlurryData.NEW_ACCOUNT_CREATED);
-
-			preferencesEditor.putString(AppConstants.USERNAME, username);
-			preferencesEditor.putInt(username + AppConstants.USER_PREMIUM_STATUS, RestHelper.V_BASIC_MEMBER);
-			preferencesEditor.commit();
-			processLogin(returnedObj.getData());
-		}
-	}
-
-	@Override
-	protected void afterLogin() {
-		super.afterLogin();
-		backToHomeFragment();
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {  // TODO restore
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == Activity.RESULT_OK) {
-			if (requestCode == NETWORK_REQUEST) {
-				submitRegisterInfo();
-			}
-		}
-	}
-
-	private class FieldChangeWatcher implements TextWatcher {
-		private EditText editText;
-
-		public FieldChangeWatcher(EditText editText) {
-			this.editText = editText;
-		}
-
-		@Override
-		public void onTextChanged(CharSequence str, int start, int before, int count) {
-			if (str.length() > 1) {
-				editText.setError(null);
-			}
-		}
-
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-		}
-
-		@Override
-		public void afterTextChanged(Editable s) {
-		}
-	}
 }

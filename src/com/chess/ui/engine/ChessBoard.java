@@ -906,33 +906,42 @@ public class ChessBoard implements BoardFace {
 		// and we need to take the move back)
 		switchSides();
 
+		if (playSound && gameFace != null && gameFace.currentGameExist()) {
 
-		if (playSound && gameFace != null) {
+//			boolean userAbleToMove = gameFace.isUserAbleToMove(side); // i think the only reason that we need to check here is valid state of gameFace
 
 			if (gameFace.isObservingMode()) {
 				if (isPerformCheck(side)) {
-					soundPlayer.playMoveOpponentCheck();
+					soundPlayer.playMoveCheck();
 				} else if (pieceTo != EMPTY) {
 					soundPlayer.playCapture();
+				} else if (isPromote(move.from, move.to)) {
+					soundPlayer.playMovePromote();
 				} else {
 					soundPlayer.playMoveOpponent();
 				}
 
-			} else if (gameFace.isUserAbleToMove(side)) {
+			} else {
 				boolean userColorWhite = gameFace.isUserColorWhite();
-				if ((userColorWhite && colorFrom == 1) || (!userColorWhite && colorFrom == 0)) {
+				if ((userColorWhite && colorFrom == BLACK_SIDE)
+						|| (!userColorWhite && colorFrom == WHITE_SIDE)) {
 					if (isPerformCheck(side)) {
-						soundPlayer.playMoveOpponentCheck();
+						soundPlayer.playMoveCheck();
 					} else if (pieceTo != EMPTY) {
 						soundPlayer.playCapture();
+					} else if (isPromote(move.from, move.to)) {
+						soundPlayer.playMovePromote();
 					} else {
 						soundPlayer.playMoveOpponent();
 					}
-				} else if ((userColorWhite && colorFrom == 0) || (!userColorWhite && colorFrom == 1)) {
+				} else if ((userColorWhite && colorFrom == WHITE_SIDE)
+						|| (!userColorWhite && colorFrom == BLACK_SIDE)) {
 					if (isPerformCheck(side)) {
-						soundPlayer.playMoveSelfCheck();
+						soundPlayer.playMoveCheck();
 					} else if (pieceTo != EMPTY) {
 						soundPlayer.playCapture();
+					} else if (isPromote(move.from, move.to)) {
+						soundPlayer.playMovePromote();
 					} else {
 						soundPlayer.playMoveSelf();
 					}

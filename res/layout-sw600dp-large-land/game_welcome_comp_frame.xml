@@ -72,7 +72,9 @@
 			style="@style/Button.OrangeNoBorder.Big"
 			android:minHeight="@dimen/big_orange_button_height"
 			android:layout_below="@id/topPanelView"
-			android:layout_marginStart="9dp" />
+			android:layout_marginStart="9dp"
+			android:layout_marginLeft="9dp"
+			/>
 
 		<!--SignUp-->
 		<com.chess.widgets.RoboButton
@@ -84,7 +86,9 @@
 			style="@style/Button.OrangeNoBorder.Big"
 			android:layout_below="@id/loginBtn"
 			android:minHeight="@dimen/big_orange_button_height"
-			android:layout_marginStart="9dp" />
+			android:layout_marginStart="9dp"
+			android:layout_marginLeft="9dp"
+			/>
 
 		<!--What is Chess.com-->
 		<com.chess.widgets.RoboTextView
@@ -107,7 +111,9 @@
 			android:layout_height="wrap_content"
 			custom:controls_style="rounded"
 			android:layout_above="@+id/bottomPanelView"
-			android:layout_marginStart="7dp" />
+			android:layout_marginStart="7dp"
+			android:layout_marginLeft="7dp"
+			/>
 
 		<!--BottomPanelInfo-->
 		<com.chess.ui.views.PanelInfoWelcomeView

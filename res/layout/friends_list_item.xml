@@ -45,7 +45,9 @@
 		android:layout_toEndOf="@id/usernameTxt"
 		android:layout_toRightOf="@id/usernameTxt"
 		android:layout_marginTop="5dp"
-		android:layout_marginStart="7dp" />
+		android:layout_marginStart="7dp"
+		android:layout_marginLeft="7dp"
+		/>
 
 	<!--Premium img-->
 	<ImageView

@@ -64,7 +64,9 @@
 		android:layout_toRightOf="@id/authorTxt"
 		android:layout_below="@id/titleTxt"
 		android:layout_marginTop="-6dp"
-		android:layout_marginStart="7dp" />
+		android:layout_marginStart="7dp"
+		android:layout_marginLeft="7dp"
+		/>
 
 	<!--Date-->
 	<com.chess.widgets.RoboTextView

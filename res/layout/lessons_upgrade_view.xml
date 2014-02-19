@@ -17,7 +17,10 @@
 		android:adjustViewBounds="true"
 		android:scaleType="fitXY"
 		android:layout_marginStart="10dp"
-		android:layout_marginEnd="10dp" />
+		android:layout_marginEnd="10dp"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		/>
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/lessonsUpgradeMessageTxt"

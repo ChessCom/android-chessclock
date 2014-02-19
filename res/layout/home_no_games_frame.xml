@@ -72,7 +72,9 @@
 					android:layout_weight="1"
 					android:text="@string/play"
 					style="@style/Button.OrangeNoBorder.Big"
-					android:layout_marginStart="5dp" />
+					android:layout_marginStart="5dp"
+					android:layout_marginLeft="5dp"
+					/>
 
 			</LinearLayout>
 

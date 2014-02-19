@@ -29,7 +29,9 @@
 			android:text="@string/ic_play"
 			style="@style/GlyphIcon.RoundBack.Play"
 			android:textSize="@dimen/glyph_icon_round_back_medium"
-			android:layout_marginStart="@dimen/play_button_left_offset" />
+			android:layout_marginStart="@dimen/play_button_left_offset"
+			android:layout_marginLeft="@dimen/play_button_left_offset"
+			/>
 
 	</RelativeLayout>
 

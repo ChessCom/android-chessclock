@@ -275,6 +275,8 @@
 		<item name="android:thumbOffset">8dp</item>
 		<item name="android:paddingStart">7dp</item>
 		<item name="android:paddingEnd">7dp</item>
+		<item name="android:paddingLeft">7dp</item>
+		<item name="android:paddingRight">7dp</item>
 		<item name="android:minHeight">14dp</item>
 		<item name="android:maxHeight">14dp</item>
 	</style>

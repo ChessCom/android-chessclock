@@ -1,8 +1,8 @@
 package com.chess.ui.engine;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
-import com.chess.R;
 import com.chess.utilities.AppUtils;
 
 import java.io.IOException;
@@ -26,6 +26,10 @@ public class SoundPlayer {
 	public static final String MOVE_SELF = "move-self";
 	public static final String PREMOVE = "premove";
 	public static final String PROMOTE = "promote";
+	public static final String NOTIFY = "notify";
+	public static final String TENSECONDS = "tenseconds";
+	public static final String SOUNDS = "sounds/";
+	public static final String MP3 = ".mp3";
 
 
 	private static SoundPlayer ourInstance;
@@ -69,7 +73,7 @@ public class SoundPlayer {
 		if (useThemePack) {
 			playSound(CAPTURE);
 		} else {
-			playSound(R.raw.capture);
+			playDefaultSound(CAPTURE);
 		}
 	}
 
@@ -77,7 +81,7 @@ public class SoundPlayer {
 		if (useThemePack) {
 			playSound(CASTLE);
 		} else {
-			playSound(R.raw.castle);
+			playDefaultSound(CASTLE);
 		}
 	}
 
@@ -85,7 +89,7 @@ public class SoundPlayer {
 		if (useThemePack) {
 			playSound(GAME_END);
 		} else {
-			playSound(R.raw.game_end);
+			playDefaultSound(GAME_END);
 		}
 	}
 
@@ -93,7 +97,7 @@ public class SoundPlayer {
 		if (useThemePack) {
 			playSound(GAME_START);
 		} else {
-			playSound(R.raw.game_start);
+			playDefaultSound(GAME_START);
 		}
 	}
 
@@ -101,7 +105,7 @@ public class SoundPlayer {
 		if (useThemePack) {
 			playSound(MOVE_OPPONENT);
 		} else {
-			playSound(R.raw.move_opponent);
+			playDefaultSound(MOVE_OPPONENT);
 		}
 	}
 
@@ -109,52 +113,55 @@ public class SoundPlayer {
 		if (useThemePack) {
 			playSound(MOVE_SELF);
 		} else {
-			playSound(R.raw.move_self);
+			playDefaultSound(MOVE_SELF);
 		}
 	}
 
-	public void playMoveOpponentCheck() {
+	public void playMoveCheck() {
 		if (useThemePack) {
 			playSound(MOVE_CHECK);
 		} else {
-			playSound(R.raw.move_opponent_check);
+			playDefaultSound(MOVE_CHECK);
 		}
 	}
 
-	public void playMoveSelfCheck() {
+	public void playMovePromote() {
 		if (useThemePack) {
-			playSound(MOVE_CHECK);
+			playSound(PROMOTE);
 		} else {
-			playSound(R.raw.move_self_check);
+			playDefaultSound(PROMOTE);
 		}
 	}
 
 	public void playNotify() {
-		playSound(R.raw.notify);
+		playDefaultSound(NOTIFY);
 	}
 
 	public void playTenSeconds() {
-		playSound(R.raw.tenseconds);
+		playDefaultSound(TENSECONDS);
 	}
 
-	private void playSound(int soundResource) {
+	private void playDefaultSound(String filePath) {
 		if (playSounds) {
-			MediaPlayer mediaPlayer = MediaPlayer.create(context, soundResource);
-
-			if (mediaPlayer == null) {
-				return;
+			try {
+				AssetFileDescriptor afd = context.getAssets().openFd(SOUNDS + filePath + MP3);
+				MediaPlayer player = new MediaPlayer();
+				player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+				player.prepare();
+				player.start();
+				player.setOnCompletionListener(completionListener);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-
-			mediaPlayer.start();
-			mediaPlayer.setOnCompletionListener(completionListener);
 		}
 	}
 
 	private void playSound(String filePath) {
 		if (playSounds) {
-			MediaPlayer mediaPlayer = new MediaPlayer();
 			try {
-				mediaPlayer.setDataSource(AppUtils.getSoundsThemeDir(context) + "/" + filePath + ".mp3");
+				MediaPlayer mediaPlayer = new MediaPlayer();
+
+				mediaPlayer.setDataSource(AppUtils.getSoundsThemeDir(context) + "/" + filePath + MP3);
 				mediaPlayer.prepare();
 				mediaPlayer.start();
 				mediaPlayer.setOnCompletionListener(completionListener);
@@ -164,11 +171,11 @@ public class SoundPlayer {
 		}
 	}
 
-	private static MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
+	private MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
 		@Override
 		public void onCompletion(MediaPlayer mediaPlayer) {
 			mediaPlayer.stop();
-			mediaPlayer.release();
+//			mediaPlayer.release();
 		}
 	};
 }
