@@ -82,7 +82,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					getActivityFace().showPreviousFragment();
+					showPreviousFragmentSafe();
 				}
 			}, FINISH_FRAGMENT_DELAY);
 		}
@@ -176,7 +176,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				getActivityFace().showPreviousFragment();
+				showPreviousFragmentSafe();
 			}
 		});
 	}
