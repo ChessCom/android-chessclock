@@ -155,31 +155,34 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 			LogMe.dl(TAG, "LBA back button pressed isLiveChess()=" + getDataHolder().isLiveChess());
 			LogMe.dl(TAG, "LBA back button pressed isLCSBound=" + isLCSBound);
 
-			if (getDataHolder().isLiveChess() && isLCSBound) {
+			if (getDataHolder().isLiveChess()) {
 
-				Fragment fragmentByTag = getGameLiveFragment();
-				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					if (liveHelper.getCurrentGame() != null && !liveHelper.getCurrentGame().isGameOver()) {
+				Fragment fragmentByTag;
+
+				if (isLCSBound) {
+					fragmentByTag = getGameLiveFragment();
+					if (fragmentByTag != null && fragmentByTag.isVisible()) {
+						if (liveHelper.getCurrentGame() != null && !liveHelper.getCurrentGame().isGameOver()) {
+							showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
+							return true;
+						}
+					}
+
+					// Why we should try to resign current game by clicking back on Wait fragment?
+					// Can we avoid this?
+					/*fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
+					if (fragmentByTag != null && fragmentByTag.isVisible()) {
 						showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
 						return true;
+					}*/
+
+					fragmentByTag = getGameLiveObserverFragment();
+					if (fragmentByTag != null && fragmentByTag.isVisible()) {
+						liveHelper.exitGameObserving();
+						return super.onKeyUp(keyCode, event);
 					}
 				}
 
-				// Why we should try to resign current game by clicking back on Wait fragment?
-				// Can we avoid this?
-				/*fragmentByTag = getSupportFragmentManager().findFragmentByTag(LiveGameWaitFragment.class.getSimpleName());
-				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					showPopupDialog(R.string.leave_game, EXIT_GAME_TAG);
-					return true;
-				}*/
-
-				fragmentByTag = getGameLiveObserverFragment();
-				if (fragmentByTag != null && fragmentByTag.isVisible()) {
-					liveHelper.exitGameObserving();
-					return super.onKeyUp(keyCode, event);
-				}
-
-				// todo: @lcc - we should exit Live even if isLCSBound=false
 				fragmentByTag = getLiveHomeFragment();
 				if (fragmentByTag != null && fragmentByTag.isVisible()) {
 					liveHelper.logout();
