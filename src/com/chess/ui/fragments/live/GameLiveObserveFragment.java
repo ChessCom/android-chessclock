@@ -251,6 +251,13 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	}
 
 	@Override
+	public void onGameEnd(final Game game, final String gameEndMessage) {
+		if (game.isTopObserved()) {
+			super.onGameEnd(game, gameEndMessage);
+		}
+	}
+
+	@Override
 	protected void showGameEndPopup(View layout, String title, String message, Game game) {
 		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
@@ -399,10 +406,18 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	}
 
 	protected String getTopPlayerAvatar(LiveConnectionHelper liveHelper) {
-		return getCurrentGame(liveHelper).getBlackPlayer().getAvatarUrl();
+		Game currentGame = getCurrentGame(liveHelper);
+		if (currentGame == null) {
+			return null;
+		}
+		return currentGame.getBlackPlayer().getAvatarUrl();
 	}
 
 	protected String getBottomPlayerAvatar(LiveConnectionHelper liveHelper) {
-		return getCurrentGame(liveHelper).getWhitePlayer().getAvatarUrl();
+		Game currentGame = getCurrentGame(liveHelper);
+		if (currentGame == null) {
+			return null;
+		}
+		return currentGame.getWhitePlayer().getAvatarUrl();
 	}
 }
