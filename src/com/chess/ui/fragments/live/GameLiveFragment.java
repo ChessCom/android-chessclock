@@ -377,11 +377,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	@Override
-	public void onClockFinishing() {
-			SoundPlayer.getInstance(getContext()).playTenSeconds();
-	}
-
-	@Override
 	public void onGameEnd(final Game game, final String gameEndMessage) {
 		final Activity activity = getActivity();
 		if (activity == null || userSawGameEndPopup) {
@@ -420,12 +415,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				final View layout;
+				final View endGamePopupView;
+
+				initShowAdsFlag();
 
 				if (!isNeedToUpgrade()) {
-					layout = inflater.inflate(R.layout.popup_end_game, null, false);
+					endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
+				} else if (isNeedToUpgrade() && !showAdsForNewMembers) {
+					endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
 				} else {
-					layout = inflater.inflate(R.layout.popup_end_game_free, null, false);
+					endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);
 				}
 
 				int newWhiteRating = ratings.get(0);
@@ -440,13 +439,18 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				}
 
 				updatePlayerLabels(game, newWhiteRating, newBlackRating);
-				showGameEndPopup(layout, getString(gameEndTitleId), gameEndMessage, game);
+				showGameEndPopup(endGamePopupView, getString(gameEndTitleId), gameEndMessage, game);
 
 				setBoardToFinishedState();
 
 				getControlsView().showAfterMatch();
 			}
 		});
+	}
+
+	@Override
+	public void onClockFinishing() {
+		SoundPlayer.getInstance(getContext()).playTenSeconds();
 	}
 
 	@Override
@@ -597,7 +601,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-
 				if (!isAdded()) {
 					return;
 				}
@@ -711,7 +714,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
 
-		if (isNeedToUpgrade()) {
+		if (isNeedToUpgrade() && showAdsForNewMembers) {
 			initPopupAdWidget(layout);
 			MopubHelper.showRectangleAd(getMopubRectangleAd(), getActivity());
 		}

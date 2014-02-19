@@ -1491,7 +1491,9 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				whitePiecesMap = new WeakHashMap<Integer, Bitmap>();
 			} else {
 				for (Bitmap bitmap : whitePiecesMap.values()) {
-					bitmap.recycle();
+					if (bitmap != null) {
+						bitmap.recycle();
+					}
 				}
 			}
 
@@ -1499,7 +1501,9 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				blackPiecesMap = new WeakHashMap<Integer, Bitmap>();
 			} else {
 				for (Bitmap bitmap : blackPiecesMap.values()) {
-					bitmap.recycle();
+					if (bitmap != null) {
+						bitmap.recycle();
+					}
 				}
 			}
 

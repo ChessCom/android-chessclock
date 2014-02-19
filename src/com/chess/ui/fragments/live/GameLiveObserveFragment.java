@@ -328,7 +328,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.sharePopupBtn).setOnClickListener(this);
 
-		if (isNeedToUpgrade()) {
+		if (isNeedToUpgrade() && showAdsForNewMembers) {
 			initPopupAdWidget(layout);
 			MopubHelper.showRectangleAd(getMopubRectangleAd(), getActivity());
 		}

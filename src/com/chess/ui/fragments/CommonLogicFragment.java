@@ -1220,11 +1220,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void initUpgradeAndAdWidgets(View view) {
-		boolean firstInitFinished = getAppData().isFirstInitFinished();
-		long now = System.currentTimeMillis() / 1000;
-		long userCreateDate = getAppData().getUserCreateDate();
-		long waitTimeToShowAds = AppUtils.SECONDS_IN_DAY * 7;
-		showAdsForNewMembers = now - userCreateDate > waitTimeToShowAds && firstInitFinished;
+		initShowAdsFlag();
+
 		if (isNeedToUpgrade() && showAdsForNewMembers) {
 			view.findViewById(R.id.bannerUpgradeView).setVisibility(View.VISIBLE);
 
@@ -1237,4 +1234,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 			view.findViewById(R.id.bannerUpgradeView).setVisibility(View.GONE);
 		}
 	}
+
+	protected void initShowAdsFlag() {
+		boolean firstInitFinished = getAppData().isFirstInitFinished();
+		long now = System.currentTimeMillis() / 1000;
+		long userCreateDate = getAppData().getUserCreateDate();
+		long waitTimeToShowAds = AppUtils.SECONDS_IN_DAY * 7;
+		showAdsForNewMembers = now - userCreateDate > waitTimeToShowAds && firstInitFinished;
+	}
+
 }

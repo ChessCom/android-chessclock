@@ -422,6 +422,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 				if (boardView.isHint()) {
 					boardFace.makeHintMove(move);
+					boardView.invalidate();
 
 					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
 				} else {
@@ -606,7 +607,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 		getAppData().clearSavedCompGame();
 
-		if (isNeedToUpgrade()) {
+		if (isNeedToUpgrade() && showAdsForNewMembers) {
 			initPopupAdWidget(layout);
 			MopubHelper.showRectangleAd(getMopubRectangleAd(), getActivity());
 		}

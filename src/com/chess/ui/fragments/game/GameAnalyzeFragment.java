@@ -10,6 +10,7 @@ import com.chess.R;
 import com.chess.backend.LoadHelper;
 import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
+import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.UserItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.GameAnalysisItem;
@@ -19,6 +20,7 @@ import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardAnalysis;
+import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.explorer.GameExplorerFragment;
@@ -188,7 +190,11 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 		boardFace.setReside(!userPlayWhite);
 
-		boardFace.checkAndParseMovesList(analysisItem.getMovesList());
+		boolean allMovesWereMade = boardFace.checkAndParseMovesList(analysisItem.getMovesList());
+		if (!allMovesWereMade) { // in case when we pass finished game from Comp we can't do anything here
+			boardFace.setupBoard(FenHelper.DEFAULT_FEN);
+			boardFace.checkAndParseMovesList(analysisItem.getMovesList());
+		}
 
 		boardView.resetValidMoves();
 
@@ -363,11 +369,6 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	}
 
 	@Override
-	protected void showGameEndPopup(View layout, String title, String reason) {
-
-	}
-
-	@Override
 	protected void restoreGame() {
 		boardView.setGameActivityFace(this);
 
@@ -455,6 +456,16 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 			}
 		}
 
+		@Override
+		public void errorHandle(Integer resultCode) {
+			if (RestHelper.containsServerCode(resultCode)) {
+				int serverCode = RestHelper.decodeServerCode(resultCode);
+				if (serverCode == ServerErrorCodes.RESOURCE_NOT_FOUND) {
+					return;
+				}
+			}
+			super.errorHandle(resultCode);
+		}
 	}
 
 }

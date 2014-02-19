@@ -895,7 +895,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
 		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
 
-		if (isNeedToUpgrade()) {
+		if (isNeedToUpgrade() && showAdsForNewMembers) {
 			initPopupAdWidget(layout);
 			MopubHelper.showRectangleAd(getMopubRectangleAd(), getActivity());
 		}

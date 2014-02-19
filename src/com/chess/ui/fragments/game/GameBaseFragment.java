@@ -248,9 +248,12 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		endGameReason = reason;
 
 		if (!getBoardFace().isSubmit()) {
+			initShowAdsFlag();
 
 			View endGamePopupView;
 			if (!isNeedToUpgrade()) {
+				endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
+			} else if (isNeedToUpgrade() && !showAdsForNewMembers) {
 				endGamePopupView = inflater.inflate(R.layout.popup_end_game, null, false);
 			} else {
 				endGamePopupView = inflater.inflate(R.layout.popup_end_game_free, null, false);

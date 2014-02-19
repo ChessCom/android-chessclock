@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
@@ -16,7 +15,6 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.model.DataHolder;
 import com.chess.model.GameExplorerItem;
-import com.chess.model.PopupItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
@@ -26,7 +24,6 @@ import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.explorer.GameExplorerFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
-import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameAnalysisFace;
 import com.chess.ui.views.PanelInfoGameView;
@@ -443,49 +440,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			backToLoginFragment();
 		}
 		super.onPositiveBtnClick(fragment);
-	}
-
-	@Override
-	protected void showGameEndPopup(View layout, String title, String reason) {
-		if (currentGame == null) {
-			throw new IllegalStateException("showGameEndPopup starts with currentGame = null");
-		}
-
-		TextView endGameTitleTxt = (TextView) layout.findViewById(R.id.endGameTitleTxt);
-		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
-		TextView resultRatingTxt = (TextView) layout.findViewById(R.id.resultRatingTxt);
-		TextView ratingTitleTxt = (TextView) layout.findViewById(R.id.ratingTitleTxt);
-		endGameTitleTxt.setText(title);
-		endGameReasonTxt.setText(reason);
-		String gameType = getString(R.string.standard);
-		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			gameType = getString(R.string.chess_960);
-		}
-
-		ratingTitleTxt.setText(getString(R.string.new_arg_rating_, gameType));
-		resultRatingTxt.setText(String.valueOf(getCurrentPlayerRating()));
-
-//		LinearLayout adViewWrapper = (LinearLayout) layout.findViewById(R.id.adview_wrapper);
-//		MopubHelper.showRectangleAd(adViewWrapper, getActivity());
-		PopupItem popupItem = new PopupItem();
-		popupItem.setCustomView(layout);
-
-		PopupCustomViewFragment endPopupFragment = PopupCustomViewFragment.createInstance(popupItem);
-		endPopupFragment.show(getFragmentManager(), END_GAME_TAG);
-
-		layout.findViewById(R.id.newGamePopupBtn).setOnClickListener(this);
-		layout.findViewById(R.id.rematchPopupBtn).setOnClickListener(this);
-//		if (AppUtils.isNeedToUpgrade(getActivity())) {
-//			layout.findViewById(R.id.upgradeBtn).setOnClickListener(this);
-//		}
-	}
-
-	private int getCurrentPlayerRating() {
-		if (userPlayWhite) {
-			return currentGame.getWhiteRating();
-		} else {
-			return currentGame.getBlackRating();
-		}
 	}
 
 	@Override

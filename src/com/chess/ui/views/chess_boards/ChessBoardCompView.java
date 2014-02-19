@@ -143,8 +143,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 		setHint(true);
 		setComputerMoving(true);
 
-
-		Log.d(CompEngineHelper.TAG, "ask for move hint");
+//		Log.d(CompEngineHelper.TAG, "ask for move hint");
 
 		gameCompFace.onCompMove();
 		CompEngineHelper.getInstance().makeHint();

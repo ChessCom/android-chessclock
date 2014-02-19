@@ -663,11 +663,6 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	}
 
 	@Override
-	protected void showGameEndPopup(View layout, String title, String reason) {
-
-	}
-
-	@Override
 	protected void restoreGame() {
 		boardView.setGameActivityFace(this);
 

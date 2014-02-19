@@ -483,6 +483,8 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 				if (boardView.isHint()) {
 					boardFace.makeHintMove(move);
+					boardView.invalidate();
+
 					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
 				} else {
 					boardFace.makeMove(move);
@@ -491,10 +493,9 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 					onPlayerMove();
 
 					boardFace.setMovesCount(boardFace.getPly());
-					if (boardView.isGameOver())
-						return;
+					// check if game is over. Then show end game popup
+					boardView.isGameOver();
 				}
-				boardView.invalidate();
 			}
 		});
 	}
