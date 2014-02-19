@@ -252,8 +252,15 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 	@Override
 	public void onGameEnd(final Game game, final String gameEndMessage) {
-		if (game.isTopObserved()) {
-			super.onGameEnd(game, gameEndMessage);
+		try {
+			LiveConnectionHelper liveHelper = getLiveHelper();
+
+			if (liveHelper.isObservedGame(game)) {
+				super.onGameEnd(game, gameEndMessage);
+			}
+
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
 		}
 	}
 

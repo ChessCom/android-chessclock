@@ -834,7 +834,14 @@ public class LccHelper {
 
 	public void checkAndProcessEndGame(Game game) {
 		List<GameResult> gameResults = game.getResults();
-		LogMe.dl(TAG, "DEBUG: checkAndProcessEndGame game.getResults().size()" + game.getResults().size());
+		LogMe.dl(TAG, "DEBUG: checkAndProcessEndGame game.getResults().size()=" + game.getResults().size() + ", game.isGameOver()=" + game.isGameOver());
+
+		if (gameResults == null || gameResults.isEmpty()) {
+			if (lccEventListener != null) {
+				lccEventListener.expireGame();
+			}
+			return;
+		}
 
 		final GameResult whitePlayerResult = gameResults.get(0);
 		final GameResult blackPlayerResult = gameResults.get(1);

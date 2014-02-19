@@ -789,6 +789,10 @@ public class LiveConnectionHelper {
 		return isCurrentGameObserved;
 	}
 
+	public boolean isObservedGame(Game game) {
+		return lccHelper.isObservedGame(game);
+	}
+
 	public Context getContext() {
 		return context;
 	}
