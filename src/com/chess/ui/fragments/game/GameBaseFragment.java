@@ -402,7 +402,11 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	protected BasePopupDialogFragment getEndPopupDialogFragment() {
-		return (BasePopupDialogFragment) getFragmentManager().findFragmentByTag(END_GAME_TAG);
+		if (getFragmentManager() == null) {
+			return null;
+		} else {
+			return (BasePopupDialogFragment) getFragmentManager().findFragmentByTag(END_GAME_TAG);
+		}
 	}
 
 	@Override

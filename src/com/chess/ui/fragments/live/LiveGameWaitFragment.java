@@ -163,7 +163,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 				liveHelper = getLiveHelper();
 			} catch (DataNotValidException e) {
 				logTest(e.getMessage());
-				getActivityFace().showPreviousFragment();
+				showPreviousFragmentSafe();
 				return;
 			}
 			liveHelper.createChallenge(liveGameConfig);

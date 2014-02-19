@@ -833,10 +833,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void goHome() {
+		if (getActivity() == null) {
+			return;
+		}
 		getActivity().runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				getActivityFace().showPreviousFragment();
+				showPreviousFragmentSafe();
 			}
 		});
 	}
@@ -1383,6 +1386,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		if (!isValid()) {
 			goHome();
+			return;
 		}
 
 		try {

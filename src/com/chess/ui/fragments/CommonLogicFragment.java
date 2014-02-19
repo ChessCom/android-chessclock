@@ -1243,4 +1243,10 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		showAdsForNewMembers = now - userCreateDate > waitTimeToShowAds && firstInitFinished;
 	}
 
+	protected void showPreviousFragmentSafe() {
+		if (isResumed() && getActivity() != null) {
+			getActivityFace().showPreviousFragment();
+		}
+	}
+
 }

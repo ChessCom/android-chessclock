@@ -80,6 +80,11 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 	@Override
 	protected void onGameStarted() throws DataNotValidException {
+
+		if (!isAdded()) {
+			return;
+		}
+
 		init();
 		super.onGameStarted();
 
@@ -300,7 +305,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 				} catch (DataNotValidException e) {
 					logLiveTest(e.getMessage());
 					showToast(e.getMessage());
-					getActivityFace().showPreviousFragment();
+					showPreviousFragmentSafe();
 				}
 			}
 		};
