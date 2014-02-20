@@ -182,7 +182,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			try {
 				LiveConnectionHelper liveHelper = getLiveHelper();
 				liveHelper.setGameActivityPausedMode(true);
-				liveHelper.stopClocks();
+				// I think we have to still tick clock even when fragment is in background, because we still have to show
+				// actual clock values when user returns to fragment back but it is impossible to get time values from
+				// liveHelper that moment
+				//liveHelper.stopClocks();
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
 				setLCSBound(false);
@@ -453,7 +456,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onClockFinishing() {
 		Activity activity = getActivity();
-		if (activity != null) {
+		if (activity != null && isResumed()) {
 			SoundPlayer.getInstance(activity).playTenSeconds();
 		}
 	}
@@ -473,7 +476,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			@Override
 			public void run() {
 
-				if (getActivity() == null) {
+				if (getActivity() == null || !isResumed()) {
 					return;
 				}
 
@@ -510,7 +513,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			@Override
 			public void run() {
 
-				if (getActivity() == null) {
+				if (getActivity() == null || !isResumed()) {
 					return;
 				}
 

@@ -268,7 +268,8 @@ public class Ping {
 		String response = requestUrl(url);
 
 		if (response != null) {
-			LogMe.dl(TAG, "     OK " + url + ", id=" + marker + ", response=" + response.substring(0, 10)); // do not flood logs, just print first 10 symbols
+			String truncatedResponse = response.length() > 0 ? response.substring(0, 10) : response;
+			LogMe.dl(TAG, "     OK " + url + ", id=" + marker + ", response=" + truncatedResponse); // do not flood logs, just print first 10 symbols
 		} else {
 			LogMe.dl(TAG, "     ERROR " + url + ", id=" + marker);
 		}
@@ -359,8 +360,8 @@ public class Ping {
 	}
 
 	public void runPingLiveTask() {
-		new PingLiveTask().execute();
-	}
+			new PingLiveTask().execute();
+		}
 
 	private class PingLiveTask extends AsyncTask<Void, Void, Void> {
 
@@ -372,7 +373,7 @@ public class Ping {
 	}
 
 	public void runTestRequestLiveServerTask() {
-		new TestRequestLiveServerTask().execute();
+			new TestRequestLiveServerTask().execute();
 	}
 
 	private class TestRequestLiveServerTask extends AsyncTask<Void, Void, Void> {
