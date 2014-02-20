@@ -73,7 +73,6 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 			mode = savedInstanceState.getInt(MODE);
 		}
 
-
 		imageLoader = new EnhancedImageDownloader(getActivity());
 	}
 

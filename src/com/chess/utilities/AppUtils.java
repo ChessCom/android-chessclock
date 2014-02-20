@@ -16,7 +16,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -340,17 +339,17 @@ public class AppUtils {
 
 	public static boolean getSoundsPlayFlag(Context context) {
 		int appSoundMode = new AppData(context).isPlaySounds();
-		boolean playSoundsFlag = false;
-		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-		switch (audio.getRingerMode()) {
-			case AudioManager.RINGER_MODE_NORMAL:
-				playSoundsFlag = appSoundMode == AppData.UNDEFINED || appSoundMode == AppData.TRUE;
-				break;
-			case AudioManager.RINGER_MODE_VIBRATE:
-			case AudioManager.RINGER_MODE_SILENT:
-				playSoundsFlag = appSoundMode != AppData.UNDEFINED && appSoundMode == AppData.TRUE;
-				break;
-		}
+		boolean playSoundsFlag = appSoundMode == AppData.TRUE;
+//		AudioManager audio = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+//		switch (audio.getRingerMode()) {
+//			case AudioManager.RINGER_MODE_NORMAL:
+//				playSoundsFlag = appSoundMode == AppData.UNDEFINED || appSoundMode == AppData.TRUE;
+//				break;
+//			case AudioManager.RINGER_MODE_VIBRATE:
+//			case AudioManager.RINGER_MODE_SILENT:
+//				playSoundsFlag = appSoundMode != AppData.UNDEFINED && appSoundMode == AppData.TRUE;
+//				break;
+//		}
 		return playSoundsFlag;
 	}
 

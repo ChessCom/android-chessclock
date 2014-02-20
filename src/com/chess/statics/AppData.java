@@ -403,7 +403,7 @@ public class AppData {
 	}
 
 	public int isPlaySounds() {
-		return getIntValue(PREF_SOUNDS, UNDEFINED);
+		return getIntValue(PREF_SOUNDS, TRUE);
 	}
 
 	public void setShowLegalMoves(boolean checked) {
