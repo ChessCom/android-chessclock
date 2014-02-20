@@ -111,8 +111,6 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 	public void onResume() {
 		super.onResume();
 
-		showKeyBoard(sendEdt);
-
 		updateList();
 
 		newChatUpdateReceiver = new NewChatUpdateReceiver();

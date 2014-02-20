@@ -175,7 +175,7 @@ public class SoundPlayer {
 		@Override
 		public void onCompletion(MediaPlayer mediaPlayer) {
 			mediaPlayer.stop();
-//			mediaPlayer.release();
+			mediaPlayer.release();
 		}
 	};
 }

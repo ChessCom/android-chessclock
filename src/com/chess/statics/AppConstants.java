@@ -114,7 +114,7 @@ public class AppConstants {
 	public static final String PREF_THEME_SOUNDS_LOADED = "theme_sounds_loaded";
 	public static final String PREF_THEME_NAME = "theme_name";
 	public static final String PREF_THEME_BACKGROUND_NAME = "theme_background_name";
-	public static final String CUSTOM_THEME_NAME = "Custom";
+	public static final String CUSTOM_THEME_NAME = "Customize";
 	public static final String DEFAULT_THEME_NAME = "Game Room";
 	public static final String DEFAULT_THEME_PIECES_NAME = "game_room";
 	public static final String DEFAULT_THEME_BOARD_NAME = "Dark Wood";

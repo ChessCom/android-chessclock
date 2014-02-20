@@ -2,6 +2,7 @@ package com.chess.ui.fragments.live;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -25,7 +26,7 @@ import java.util.List;
  * Date: 06.05.13
  * Time: 5:04
  */
-public class LiveChatFragment extends LiveBaseFragment implements LccChatMessageListener {
+public class LiveChatFragment extends LiveBaseFragment implements LccChatMessageListener, View.OnTouchListener {
 
 	private EditText sendEdt;
 	private ListView listView;
@@ -42,6 +43,8 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 		super.onViewCreated(view, savedInstanceState);
 
 		sendEdt = (EditText) view.findViewById(R.id.sendEdt);
+		sendEdt.setOnTouchListener(this);
+
 		listView = (ListView) view.findViewById(R.id.listView);
 		view.findViewById(R.id.sendBtn).setOnClickListener(this);
 
@@ -52,9 +55,17 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 	public void onResume() {
 		super.onResume();
 
-		showKeyBoard(sendEdt);
-
 		updateData();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		// change softInputMode back
+		if (isTablet) {
+			AppUtils.changeSoftInputToResize(getActivity());
+		}
 	}
 
 	private void updateList() throws DataNotValidException {
@@ -79,6 +90,14 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 	}
 
 	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		if (isTablet) {
+			AppUtils.changeSoftInputToPan(getActivity());
+		}
+		return false;
+	}
+
+	@Override
 	public void onClick(View view) {
 		if (view.getId() == R.id.sendBtn) {
 			if (isLCSBound) {
@@ -99,6 +118,7 @@ public class LiveChatFragment extends LiveBaseFragment implements LccChatMessage
 	}
 
 	public void updateData() {
+		updateLCSBoundState();
 		if (isLCSBound) {
 			LiveConnectionHelper liveHelper;
 			try {

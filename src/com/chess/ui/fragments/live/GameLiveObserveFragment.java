@@ -244,12 +244,8 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 			LiveGameConfig liveGameConfig = getAppData().getLiveGameConfigBuilder().build();
 			getActivityFace().openFragment(LiveGameWaitFragment.createInstance(liveGameConfig));
-
-		}
-		if (view.getId() == R.id.analyzePopupBtn) {
+		} else if (view.getId() == R.id.analyzePopupBtn) {
 			handler.removeCallbacks(newObserverGameRunnable);
-			super.onClick(view);
-
 		} else {
 			super.onClick(view);
 		}
@@ -326,8 +322,9 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 		// Next Game (Top)
 		RoboButton newGamePopupBtn = (RoboButton) layout.findViewById(R.id.newGamePopupBtn);
-		newGamePopupBtn.setDrawableStyle(R.style.Button_Green);
+		newGamePopupBtn.setDrawableStyle(R.style.Button_Glassy);
 		newGamePopupBtn.setText(R.string.next_game);
+		newGamePopupBtn.setTextColor(getResources().getColor(R.color.new_author_dark_grey));
 		newGamePopupBtn.setOnClickListener(this);
 
 		layout.findViewById(R.id.analyzePopupBtn).setOnClickListener(this);

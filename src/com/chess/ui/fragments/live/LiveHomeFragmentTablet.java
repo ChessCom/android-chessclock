@@ -199,6 +199,11 @@ public class LiveHomeFragmentTablet extends LiveHomeFragment implements ViewTree
 					LiveConnectionHelper liveHelper = getLiveHelper();
 					liveFriends = liveHelper.getOnlineFriends();
 
+					if (liveFriends == null || liveFriends.length == 0) {
+						showToast(R.string.no_friends_online);
+						return;
+					}
+
 					SparseArray<String> optionsMap = new SparseArray<String>();
 					for (int i = 0; i < liveFriends.length; i++) {
 						String friend = liveFriends[i];

@@ -49,6 +49,8 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	public void onResume() {
 		super.onResume();
 
+		updateLCSBoundState();
+
 		// probably we have to create some common way how to determine "embedded" fragments
 		// (for example LiveChat fragment embedded into Live Game and Observed fragments for tablets,
 		// and we should not setLccEventListener(this) for such embedded fragment)
@@ -178,6 +180,10 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 
 	@Override
 	public void updateOpponentOnlineStatus(boolean online) {
+	}
+
+	protected void updateLCSBoundState() {
+		isLCSBound = liveBaseActivity.isLCSBound();
 	}
 
 	public void setLCSBound(boolean LCSBound) {

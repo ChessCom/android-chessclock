@@ -485,7 +485,7 @@
 	<string name="waiting_to_download">Waiting to download…</string>
 	<string name="downloading_arg">Downloading %s</string>
 
-	<string name="custom">Custom</string>
+	<string name="custom">Customize</string>
 	<string name="background">Background</string>
 	<string name="select_background">Select Background</string>
 	<string name="edit">Edit</string>

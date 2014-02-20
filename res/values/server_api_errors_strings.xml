@@ -21,7 +21,7 @@
 		<item>Opponent unavailable.</item>
 		<item>Rating too low.</item>
 		<item>Rating too high.</item>
-		<item>Opponent mismatched time control.</item>
+		<item>Your opponent doesn't accept challenges with that time control.</item>
 		<item>You are blocked.</item>
 		<item>Invalid ratings.</item>
 		<item>Min rating too low.</item>
