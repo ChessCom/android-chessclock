@@ -124,9 +124,15 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 			topAvatarImg = (ProfileImageView) topPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 			bottomAvatarImg = (ProfileImageView) bottomPanelView.findViewById(PanelInfoGameView.AVATAR_ID);
 
-			String topAvatarUrl = getTopPlayerAvatar(liveHelper);
-			String bottomAvatarUrl = getBottomPlayerAvatar(liveHelper);
+			String topAvatarUrl = null;
+			String bottomAvatarUrl = null;
+			Game game = getCurrentGame(liveHelper);
+			if (game != null) {
+				bottomAvatarUrl = game.getWhitePlayer().getAvatarUrl();
+				topAvatarUrl = game.getBlackPlayer().getAvatarUrl();
+			}
 
+			// todo: why check !contains(StaticData.GIF)
 			if (topAvatarUrl != null && !topAvatarUrl.contains(StaticData.GIF)) {
 				imageDownloader.download(topAvatarUrl, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 			} else {
@@ -412,21 +418,5 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 	protected Game getCurrentGame(LiveConnectionHelper liveHelper) {
 		return liveHelper.getCurrentObservedGame();
-	}
-
-	protected String getTopPlayerAvatar(LiveConnectionHelper liveHelper) {
-		Game currentGame = getCurrentGame(liveHelper);
-		if (currentGame == null) {
-			return null;
-		}
-		return currentGame.getBlackPlayer().getAvatarUrl();
-	}
-
-	protected String getBottomPlayerAvatar(LiveConnectionHelper liveHelper) {
-		Game currentGame = getCurrentGame(liveHelper);
-		if (currentGame == null) {
-			return null;
-		}
-		return currentGame.getWhitePlayer().getAvatarUrl();
 	}
 }

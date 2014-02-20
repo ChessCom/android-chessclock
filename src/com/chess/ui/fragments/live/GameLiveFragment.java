@@ -262,22 +262,29 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 			liveHelper.initClocks();
 
-			if (currentGame.getMoveList().length() == 0) {
-				// we do it in onGameRefresh if there is move to update
-				boardView.resetValidMoves();
-				invalidateGameScreen();
-			}
+
+			boardView.resetValidMoves();
+			invalidateGameScreen();
 
 			boardView.updatePlayerNames(currentGame.getWhiteUsername(), currentGame.getBlackUsername());
 
 			{// set avatars
-				labelsConfig.topPlayerAvatar = getTopPlayerAvatar(liveHelper);
-				if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
+				Game game = getCurrentGame(liveHelper);
+				if (game != null) {
+					if (getBoardFace().isReside()) {
+						labelsConfig.bottomPlayerAvatar = game.getBlackPlayer().getAvatarUrl();
+						labelsConfig.topPlayerAvatar = game.getWhitePlayer().getAvatarUrl();
+					} else {
+						labelsConfig.bottomPlayerAvatar = game.getWhitePlayer().getAvatarUrl();
+						labelsConfig.topPlayerAvatar = game.getBlackPlayer().getAvatarUrl();
+					}
+				}
+
+				if (labelsConfig.topPlayerAvatar != null && labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
 					imageDownloader.download(labelsConfig.topPlayerAvatar, topImageUpdateListener, AVATAR_SIZE);
 				}
 
-				labelsConfig.bottomPlayerAvatar = getBottomPlayerAvatar(liveHelper);
-				if (labelsConfig.bottomPlayerAvatar != null && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
+				if (labelsConfig.bottomPlayerAvatar != null && labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
 					imageDownloader.download(labelsConfig.bottomPlayerAvatar, bottomImageUpdateListener, AVATAR_SIZE);
 				}
 
@@ -1462,13 +1469,5 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	protected Game getCurrentGame(LiveConnectionHelper liveHelper) {
 		return liveHelper.getCurrentGame();
-	}
-
-	protected String getTopPlayerAvatar(LiveConnectionHelper liveHelper) {
-		return getCurrentGame(liveHelper).getOpponentForPlayer(labelsConfig.bottomPlayerName).getAvatarUrl();
-	}
-
-	protected String getBottomPlayerAvatar(LiveConnectionHelper liveHelper) {
-		return getCurrentGame(liveHelper).getOpponentForPlayer(labelsConfig.topPlayerName).getAvatarUrl();
 	}
 }

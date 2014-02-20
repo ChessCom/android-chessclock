@@ -87,73 +87,83 @@ public class LccGameListener implements GameListener {
 	public void onGameReset(Game game) {
 		LogMe.dl(TAG, "GAME LISTENER: onGameReset id=" + game.getId() + ", game=" + game);
 
-		if (isActualMyGame(game)) {
-			lccHelper.unObserveCurrentObservingGame();
+		synchronized (LccHelper.GAME_SYNC_LOCK) {
 
-		} else if (lccHelper.isObservedGame(game)) {
+			if (isActualMyGame(game)) {
+				lccHelper.unObserveCurrentObservingGame();
 
-			/*if (lccHelper.isGameToUnObserve(game)) {
-				LogMe.dl(TAG, "GAME LISTENER: isGameToUnObserve true");
+			} else if (lccHelper.isObservedGame(game)) {
 
-				lccHelper.unObserveGame(game.getId());
-				if (lccHelper.getLccObserveEventListener() != null) {
-					lccHelper.getLccObserveEventListener().expireGame();
-				}
-				return;
-			} else {*/
-			lccHelper.setCurrentObservedGameId(game.getId());
-			//}
+				/*if (lccHelper.isGameToUnObserve(game)) {
+					LogMe.dl(TAG, "GAME LISTENER: isGameToUnObserve true");
 
-		} else {
-			return; // ignore old game
+					lccHelper.unObserveGame(game.getId());
+					if (lccHelper.getLccObserveEventListener() != null) {
+						lccHelper.getLccObserveEventListener().expireGame();
+					}
+					return;
+				} else {*/
+				lccHelper.setCurrentObservedGameId(game.getId());
+				//}
+
+			} else {
+				return; // ignore old game
+			}
+
+			lccHelper.putGame(game);
+
+			doResetGame(game);
 		}
-
-		lccHelper.putGame(game);
-
-		doResetGame(game);
 	}
 
 	@Override
 	public void onGameUpdated(Game game) {
 		LogMe.dl(TAG, "GAME LISTENER: onGameUpdated id=" + game.getId() + ", game=" + game);
 
-		if (isActualMyGame(game)) {
-			lccHelper.unObserveCurrentObservingGame();
+		synchronized (LccHelper.GAME_SYNC_LOCK) {
 
-		} else if (lccHelper.isObservedGame(game)) {
+			if (isActualMyGame(game)) {
+				lccHelper.unObserveCurrentObservingGame();
 
-			/*if (lccHelper.isGameToUnObserve(game)) {
-				return;
-			}*/
+			} else if (lccHelper.isObservedGame(game)) {
 
-		} else {
-			return; // ignore old game
+				/*if (lccHelper.isGameToUnObserve(game)) {
+					return;
+				}*/
+
+			} else {
+				return; // ignore old game
+			}
+
+			lccHelper.putGame(game);
+			doUpdateGame(game);
 		}
-
-		lccHelper.putGame(game);
-		doUpdateGame(game);
 	}
 
 	@Override
 	public void onGameOver(Game game) {
 		LogMe.dl(TAG, "GAME LISTENER: onGameOver " + game);
-		lccHelper.putGame(game);
 
-		Long gameId = game.getId();
+		synchronized (LccHelper.GAME_SYNC_LOCK) {
 
-		if (isOldGame(gameId)) {
-			LogMe.dl(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
-			return;
+			lccHelper.putGame(game);
+
+			Long gameId = game.getId();
+
+			if (isOldGame(gameId)) {
+				LogMe.dl(TAG, AppConstants.GAME_LISTENER_IGNORE_OLD_GAME_ID + gameId);
+				return;
+			}
+
+			/*lccHelper.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
+															lccHelper.getSeekListListener());*/
+
+			// Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId; // vm: looks redundant
+			lccHelper.setLastGame(game);
+
+			doUpdateGame(game);
+			lccHelper.checkAndProcessEndGame(game);
 		}
-
-        /*lccHelper.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
-														lccHelper.getSeekListListener());*/
-
-		// Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId; // vm: looks redundant
-		lccHelper.setLastGame(game);
-
-		doUpdateGame(game);
-		lccHelper.checkAndProcessEndGame(game);
 	}
 
 	@Override

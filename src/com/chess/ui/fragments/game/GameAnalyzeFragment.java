@@ -227,10 +227,12 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 				bottomPanelView.invalidateMe();
 			}
 
+			// todo: why check !contains(StaticData.GIF)
 			if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
 				imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 			}
 
+			// todo: why check !contains(StaticData.GIF)
 			if (labelsConfig.bottomPlayerAvatar != null && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
 				imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 			}
