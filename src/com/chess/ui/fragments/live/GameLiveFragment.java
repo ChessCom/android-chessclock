@@ -180,7 +180,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		dismissEndGameDialog();
 		if (isLCSBound) {
 			try {
-				getLiveHelper().setGameActivityPausedMode(true);
+				LiveConnectionHelper liveHelper = getLiveHelper();
+				liveHelper.setGameActivityPausedMode(true);
+				liveHelper.stopClocks();
 			} catch (DataNotValidException e) {
 				logLiveTest(e.getMessage());
 				setLCSBound(false);
@@ -450,7 +452,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void onClockFinishing() {
-		SoundPlayer.getInstance(getActivity()).playTenSeconds();
+		Activity activity = getActivity();
+		if (activity != null) {
+			SoundPlayer.getInstance(activity).playTenSeconds();
+		}
 	}
 
 	@Override
