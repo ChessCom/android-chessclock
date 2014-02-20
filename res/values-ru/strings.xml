@@ -285,7 +285,7 @@
 	<string name="account_history">История счета</string>
 	<string name="location">Местоположение</string>
 	<string name="share">Поделиться</string>
-	<string name="profile_membership_renew_cancel">Ваше %1$s подписка будет продлена на %2$s.</string>
+	<string name="profile_membership_renew_cancel">Ваша %1$s подписка будет продлена на %2$s.</string>
 	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> отменить</a>]]></string>
 	<string name="invite_friends_profile_message">Шахматы веселее с друзьями - предложите им присоединиться!</string>
 	<string name="profile_account_message_1">Ваша учетная запись принадлежит сайту</string>
@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Пожалуйста, зарегистрируйтесь чтобы играть онлайн.</string>
 	<string name="please_sign_up_for_tactics">Пожалуйста, зарегистрируйтесь чтобы решать тактики и головоломки.</string>
 	<string name="please_sign_up_for_videos">Пожалуйста, зарегистрируйтесь чтобы смотреть видео.</string>
-	<string name="please_sign_up_for_lessons">Пожалуйста, зарегистрируйтесь чтобы изучать уроки.</string>
 	<string name="please_sign_up_for_friends">Пожалуйста, зарегистрируйтесь, чтобы состезаться с друзьями.</string>
 	<string name="interactive_lessons">Интерактивные уроки</string>
 	<string name="tactics_and_puzzles">Тактики и головоломки</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Пожалуйста, проверьте ник</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Контакты</string>
-	<string name="facebook_invite_friend_to_play">Давайте играть в шахматы! Вы можете играть онлайн на Chess.com, или на мобильном с Android или iPhone/iPad.</string>
+	<string name="invite_friend_to_play">Играть в шахматы со мной? Я играю на Chess.com как «%1$s». Зарегистрируйся бесплатно! http://www.сhess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Давай играть!</string>
 	<string name="online_today">Онлайн сегодня</string>
 	<string name="last_was_online">Онлайн %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">-Питер, пользователь с 2011 г</string>
 	<string name="upgrade_feedback_2">"\"Мой средний рейтинг намного улучшился после того, как я стал премиум пользователем\""</string>
 	<string name="upgrade_feedback_reporter_2">-Лу, Нью-Джерси пользователь с 2009 г</string>
-	<string name="live_game_share_str">%1$s vs %2$s - http://www.chess.com/livechess/game?id=%3$s шахматы онлайн через @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - http://www.chess.com/livechess/game?id=%3$s шахматы онлайн через @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - http://www.chess.com/livechess/game?id=%3$s шахматы онлайн через @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Шахматы вживую http://www.chess.com/livechess/game?id=%3$s через @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - Дневные шахматы http://www.chess.com/echess/game?id=%3$s через @chesscom</string>
 	<string name="pieces">Фигуры</string>
 </resources>

@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Por favor, abre unha conta para xogar en liña.</string>
 	<string name="please_sign_up_for_tactics">Por favor, abre unha conta para resolver tácticas &amp; problemas.</string>
 	<string name="please_sign_up_for_videos">Por favor, rexístrate para ver vídeos.</string>
-	<string name="please_sign_up_for_lessons">Por favor, rexístrate para aprender leccións.</string>
 	<string name="please_sign_up_for_friends">Por favor, rexístrate para retar amigos.</string>
 	<string name="interactive_lessons">Leccións Interactivas</string>
 	<string name="tactics_and_puzzles">Tácticas &amp; Problemas</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Por favor, introduce un nome de usuario válido</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Contactos</string>
-	<string name="facebook_invite_friend_to_play">Xoga ao xadrez! Podes xogar na rede en Chess.com ou no móbil con Android ou iPhone/iPad.</string>
+	<string name="invite_friend_to_play">Xogas ao xadrez comigo? Eu xogo en Chess.com coma \"%1$s\". Rexístrate gratis! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Imos xogar!</string>
 	<string name="online_today">Conectado hoxe</string>
 	<string name="last_was_online">Conectado %s</string>
@@ -487,7 +486,6 @@
 	<string name="upgrade_feedback_2">"\"A miña puntuación global mellorou unha barbaridade dende que son membro premium\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, New Jersey, membro dende 2009</string>
 	<string name="live_game_share_str">%1$s vs %2$s - Xadrez en Vivo http://www.chess.com/livechess/game?id=%3$s vía @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Xadrez en Diferido http://www.chess.com/echess/game?id=%3$s vía @chesscom</string>
 	<string name="daily_game_share_str">%1$s vs %2$s - Xadrez en Diferido http://www.chess.com/echess/game?id=%3$s vía @chesscom</string>
 	<string name="pieces">Pezas</string>
 </resources>

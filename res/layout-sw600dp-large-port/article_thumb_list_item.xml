@@ -54,8 +54,7 @@
 		android:layout_below="@id/titleTxt"
 		android:layout_marginTop="-6dp"
 		android:layout_marginStart="7dp"
-		android:layout_marginLeft="7dp"
-		/>
+		android:layout_marginLeft="7dp" />
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/dateTxt"

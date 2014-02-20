@@ -16,7 +16,7 @@
 	<string name="complete_singup">تەواو کردنی بە ئەندام بوون</string>
 	<string name="white">سپی</string>
 	<string name="black">ڕەش</string>
-	<string name="thinking_">بیر دەکاتەوە…</string>
+	<string name="thinking_">بیر دەکاتەوە...</string>
 	<string name="open_challenges">کێبڕکێ کراوەکان</string>
 	<string name="challenge_friend">دۆستێک بانگهێشت بکە بۆ کێبڕکێ</string>
 	<string name="challenge_created">کێبڕکێ درووست کرا</string>
@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">تکایە بۆ حیسابێک ببن بە ئەندام تا بتوانن یاری سەرهێڵ ئەنجام بدەن.</string>
 	<string name="please_sign_up_for_tactics">تکایە بۆ حیسابێک ببن بە ئەندام تا بتوانن تەکتیکەکان &amp; تشتانۆکەکان چارەسەر بکەن.</string>
 	<string name="please_sign_up_for_videos">تکایە بۆ حیسابێک ببن بە ئەندام تا بتوانن ویدیۆکان تەماشا بکەن.</string>
-	<string name="please_sign_up_for_lessons">تکایە بۆ حیسابێک ببن بە ئەندام تا بتوانن وانەکان فێر بن.</string>
 	<string name="please_sign_up_for_friends">تکایە بۆ حیسابێک ببن بە ئەندام تا بتوانن دۆست بانگهێشتی کێبڕکێ بکەن.</string>
 	<string name="interactive_lessons">وانە دوولایەنەکان</string>
 	<string name="tactics_and_puzzles">تەکتیکەکان &amp; تشتانۆکەکان</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">تکایە پێناسەیێکی ڕەوای تێ بنووسە</string>
 	<string name="facebook">فەیسبووک</string>
 	<string name="contacts">ڕیزی پێوەنیەکان</string>
-	<string name="facebook_invite_friend_to_play">با یاری شەترەنج بکەین! ئێوە دەتوانن بە شێوەی سەرهێل لە سایتیChess.com، یان لە ڕێگەی مۆبایلی ئەندرۆییدی یان ئایفۆن/ئایپەد یاری بکەن.</string>
+	<string name="invite_friend_to_play">لە گەڵ من شەترەنج یاری دەکەی؟ من بە پێناسەی \"%1$s\" لە سەر Chess.com یاری دەکەەم. ببە بە ئەندام بە خۆڕایی! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">با یاری بکەین!</string>
 	<string name="online_today">ئەمڕۆ لە سەر هێل</string>
 	<string name="last_was_online">سەرهێڵ%s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- پیتەر، ٢٠١١ بوە بە ئەندام</string>
 	<string name="upgrade_feedback_2">"\"دوای ئەوەی بووم بە ئەندامی تایبەت پلەی گشتی من گەلێک باشتر بوو\""</string>
 	<string name="upgrade_feedback_reporter_2">- لوو، لە نیو جێرسی ٢٠٠٩ بوە بە ئەندام</string>
-	<string name="live_game_share_str">%1$s دژ بە %2$s - شەترەنجی سەرهێڵ http://www.chess.com/livechess/game?id=%3$s لە ڕێگەی @chesscom</string>
-	<string name="daily_game_share_str">%1$s دژ بە %2$s - شەترەنجی سەرهێڵ http://www.chess.com/echess/game?id=%3$s لە ڕێگەی @chesscom</string>
-	<string name="daily_game_share_str">%1$s دژ بە %2$s - شەترەنجی سەرهێڵ http://www.chess.com/echess/game?id=%3$s لە ڕێگەی @chesscom</string>
+	<string name="live_game_share_str">%1$s دژ بە %2$s - شەترەنجی ڕاستەوخۆ http://www.chess.com/livechess/game?id=%3$s لە ڕیگەی @chess.com</string>
+	<string name="daily_game_share_str">%1$s دژ بە %2$s - شەترەنجی ڕۆژانە http://www.chess.com/echess/game?id=%3$s لە ڕێگەی @chess.com</string>
 	<string name="pieces">مۆرەکان</string>
 </resources>

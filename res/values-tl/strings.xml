@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Paki sign-up para magka-account at makapaglaro online.</string>
 	<string name="please_sign_up_for_tactics">Paki sign-up para magka-account upang maglutas ng mga taktika at palaisipan.</string>
 	<string name="please_sign_up_for_videos">Paki sign-up para magka-account upang makapanood ng mga video.</string>
-	<string name="please_sign_up_for_lessons">Paki sign-up para magka-account upang mag-aral ng mga aralin.</string>
 	<string name="please_sign_up_for_friends">Paki sign-up para magka-account upang maanyayahang maglaro ang mga kaibigan.</string>
 	<string name="interactive_lessons">Mga Interaktibong Aralin</string>
 	<string name="tactics_and_puzzles">Mga Taktika at Palaisipan</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Maglagay po ng balidong username</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Mga Contact</string>
-	<string name="facebook_invite_friend_to_play">Maglaro tayo ng chess! Pwede ka maglaro online sa Chess.com, o sa mobile gamit ang Android o iPhone/iPad.</string>
+	<string name="invite_friend_to_play">Makipaglaro sa akin ng chess? Naglalaro ako sa Chess.com bilang \"%1$s\". Mag-signup ng libre! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Maglaro Tayo!</string>
 	<string name="online_today">Online ngayong araw</string>
 	<string name="last_was_online">Online %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, Miyembro Mula 2011</string>
 	<string name="upgrade_feedback_2">"\"Malaki ang inangat ng kabuuang rating ko pagkatapos ko maging premium na miyembro\""</string>
 	<string name="upgrade_feedback_reporter_2">Lou, NJ Miyembro Mula 2009</string>
-	<string name="live_game_share_str">%1$s kontra %2$s - Online Chess http://www.chess.com/livechess/game?id=%3$s mula @chesscom</string>
-	<string name="daily_game_share_str">%1$s kontra %2$s - Online Chess http://www.chess.com/echess/game?id=%3$s mula @chesscom</string>
-	<string name="daily_game_share_str">%1$s kontra %2$s - Online Chess http://www.chess.com/echess/game?id=%3$s mula @chesscom</string>
+	<string name="live_game_share_str">%1$s kontra %2$s - Live Chess http://www.chess.com/livechess/game?id=%3$s mula @chesscom</string>
+	<string name="daily_game_share_str">%1$s kontra %2$s - Araw-araw na Chess http://www.chess.com/echess/game?id=%3$s mula @chesscom</string>
 	<string name="pieces">Mga Piyesa</string>
 </resources>

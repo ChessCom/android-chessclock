@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Vinsamlegast skráðu þig til að geta teflt á netinu.</string>
 	<string name="please_sign_up_for_tactics">Vinsamlegast skráðu þig til að geta leyst herkænskuþrautir &amp; skákþrautir.</string>
 	<string name="please_sign_up_for_videos">Vinsamlegast skráðu þig til að geta horft á myndbönd.</string>
-	<string name="please_sign_up_for_lessons">Vinsamlegast skráðu þig til að geta notað kennsluefni.</string>
 	<string name="please_sign_up_for_friends">Vinsamlegast skráðu þig til að geta skorað á vin.</string>
 	<string name="interactive_lessons">Gegnvirk Kennsla</string>
 	<string name="tactics_and_puzzles">Hernkænskuþrautir &amp; Skákþrautir</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Vinsamlegast settu inn gilt notendanafn</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Tengiliðir</string>
-	<string name="facebook_invite_friend_to_play">Teflum skák! Þú getur teflt í beinni á Chess.com eða í símanum með Android eða iPhone/iPad.</string>
+	<string name="invite_friend_to_play">Viltu tefla við mig? Ég tefli á  Chess.com sem \"%1$s\". Skráðu þið ókeypis! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Teflum skák!</string>
 	<string name="online_today">Á netinu í dag</string>
 	<string name="last_was_online">Á netinu %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Pétur, meðlimur síðan 2011</string>
 	<string name="upgrade_feedback_2">"\"Staðan mín batnaði mjög mikið eftir að ég gerðist Premium áskrifandi\""</string>
 	<string name="upgrade_feedback_reporter_2">- Þorgeir, Akranesi meðlimur síðan 2009</string>
-	<string name="live_game_share_str">%1$s gegn %2$s - Skák á netinu http://www.chess.com/livechess/game?id=%3$s gegnum @chesscom</string>
-	<string name="daily_game_share_str">%1$s gegn %2$s - Skák á netinu http://www.chess.com/livechess/game?id=%3$s gegnum @chesscom</string>
-	<string name="daily_game_share_str">%1$s gegn %2$s - Skák á netinu http://www.chess.com/livechess/game?id=%3$s gegnum @chesscom</string>
+	<string name="live_game_share_str">%1$s gegn %2$s - Teflt í beinni http://www.chess.com/livechess/game?id=%3$s gegnum @chesscom</string>
+	<string name="daily_game_share_str">%1$s gegn %2$s - Skák dagsins http://www.chess.com/echess/game?id=%3$s gegnum @chesscom</string>
 	<string name="pieces">Taflmenn</string>
 </resources>

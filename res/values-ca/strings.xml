@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Si us plau, registra\'t per jugar en xarxa.</string>
 	<string name="please_sign_up_for_tactics">Si us plau, registra\'t per resoldre problemes tàctics i trencaclosques.</string>
 	<string name="please_sign_up_for_videos">Si us plau, registra\'t per poder veure vídeos.</string>
-	<string name="please_sign_up_for_lessons">Si us plau, inscriu-te per poder seguir les lliçons.</string>
 	<string name="please_sign_up_for_friends">Si us plau, registra\'t per poder desafiar els teus amics.</string>
 	<string name="interactive_lessons">Lliçons interactives</string>
 	<string name="tactics_and_puzzles">Problemes tàctics i trencaclosques</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Si us plau, escriu un nom d\'usuari vàlid</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Contactes</string>
-	<string name="facebook_invite_friend_to_play">Juguem a escacs! Pots jugar en línia a Chess.com o des d\'un dispositiu Android o iPhone/iPad.</string>
+	<string name="invite_friend_to_play">Vols jugar a escacs amb mi? Jugo a Chess.com com a \"%1$s\". Registra-t\'hi gratis! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Juguem!</string>
 	<string name="online_today">En línia avui</string>
 	<string name="last_was_online">En xarxa %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, membre des de 2011</string>
 	<string name="upgrade_feedback_2">"\"La meva puntuació ha millorat moltíssim en tots els aspectes després de fer-me membre premium\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, membre des de 2009</string>
-	<string name="live_game_share_str">%1$s contra %2$s - Escacs en línia http://www.chess.com/livechess/game?id=%3$s a través de @chesscom</string>
-	<string name="daily_game_share_str">%1$s contra %2$s - Escacs en línia http://www.chess.com/echess/game?id=%3$s a través de @chesscom</string>
-	<string name="daily_game_share_str">%1$s contra %2$s - Escacs en línia http://www.chess.com/echess/game?id=%3$s a través de @chesscom</string>
+	<string name="live_game_share_str">%1$s contra %2$s - Escacs en viu http://www.chess.com/livechess/game?id=%3$s a través de @chesscom</string>
+	<string name="daily_game_share_str">%1$s contra %2$s - Escacs diaris http://www.chess.com/echess/game?id=%3$s a través de @chesscom</string>
 	<string name="pieces">Peces</string>
 </resources>

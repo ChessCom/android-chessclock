@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Az online játékhoz regisztráció szükséges.</string>
 	<string name="please_sign_up_for_tactics">A feladványok eléréséhez regisztráció szükséges.</string>
 	<string name="please_sign_up_for_videos">A videók eléréséhez regisztráció szükséges.</string>
-	<string name="please_sign_up_for_lessons">Az oktató leckék eléréséhez regisztráció szükséges.</string>
 	<string name="please_sign_up_for_friends">Ismerőseid kihívásához előbb regisztrálnod kell!</string>
 	<string name="interactive_lessons">Interaktív tananyagok</string>
 	<string name="tactics_and_puzzles">Feladványok</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Adj meg egy érvényes felhasználónevet</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kapcsolatok</string>
-	<string name="facebook_invite_friend_to_play">Sakkozzunk! Játszhatsz a Chess.com-on, vagy mobilról Android vagy iPhone/iPad alkalmazáson keresztül.</string>
+	<string name="invite_friend_to_play">Van kedved sakkozni? Én a Chess.com-on játszok, mint \"%1$s\". Teljesen ingyenes! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Játsszunk!</string>
 	<string name="online_today">Online: ma</string>
 	<string name="last_was_online">Online: %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, tagság kezdete: 2011</string>
 	<string name="upgrade_feedback_2">"\"Az értékszámaim rengeteget javultak a prémium tagságom kezdete óta!\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, tagság kezdete: 2009</string>
-	<string name="live_game_share_str">%1$s vs %2$s - levelező játszma a @chess.com-on http://www.chess.com/livechess/game?id=%3$s</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - levelező játszma a @chess.com-on http://www.chess.com/echess/game?id=%3$s</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - levelező játszma a @chess.com-on http://www.chess.com/echess/game?id=%3$s</string>
+	<string name="live_game_share_str">%1$s vs %2$s - élő játszma a @chess.com-on!  http://www.chess.com/livechess/game?id=%3$s</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - levelező játszma a @chess.com-on! http://www.chess.com/echess/game?id=%3$s</string>
 	<string name="pieces">Bábuk</string>
 </resources>

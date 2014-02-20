@@ -168,7 +168,7 @@
 	<string name="by_signing_up_accept_mobile">Зарэгістраваўшыся, я прымаю</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">Умовы выдзялення паслугаў</a>]]></string>
 	<string name="create_chess_profile">Сардэчна запрашаем! Ствары свой шахматны профіль</string>
-	<string name="daily">Штодзенны</string>
+	<string name="daily">штодзенны</string>
 	<string name="improve_game_with_lessons">Палепшыць вашу Гульню з Неабмежаванымі Ўрокамі</string>
 	<string name="improve_game_with_videos">Палепшыць вашу Гульню з Неабмежаваным Відэа</string>
 	<string name="old_password">Стары пароль</string>
@@ -331,7 +331,6 @@
 	<string name="please_sign_up_for_play_online">Калі ласка, зарэгіструйце свой акаунт для гульні анлайн.</string>
 	<string name="please_sign_up_for_tactics">Калі ласка, зарэгіструйцеся каб вырашаць тактыкі і галаваломкі.</string>
 	<string name="please_sign_up_for_videos">Калі ласка, зарэгіструйце свой акаунт для прагляду відэа.</string>
-	<string name="please_sign_up_for_lessons">Калі ласка, зарэгіструйце свой акаунт для прахаджэння ўрокаў.</string>
 	<string name="please_sign_up_for_friends">Калі ласка, зарэгіструйце свой акаунт для выкліка сяброў.</string>
 	<string name="interactive_lessons">Інтэрактыўныя ўрокі</string>
 	<string name="tactics_and_puzzles">Тактыкі і галаваломкі</string>
@@ -346,7 +345,7 @@
 	<string name="please_add_valid_username">Калі ласка, увядзіце Імя карыстальніка</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Кантакты</string>
-	<string name="facebook_invite_friend_to_play">Гуляй у шахматы! Ты можаш гуляць у шахматы анлайн на сhess.com, альбо на мабільніку Android ці iPhone/iPad.</string>
+	<string name="invite_friend_to_play">Гуляць у шахматы са мной? Я гуляю на Chess.com як \"%1$s\". Бясплатна зарэгістравацца! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Давай гуляць!</string>
 	<string name="online_today">Сёння тут</string>
 	<string name="last_was_online">Тут %s</string>
@@ -487,8 +486,7 @@
 	<string name="upgrade_feedback_reporter_1">Петэр, чалец сайта з 2011 года</string>
 	<string name="upgrade_feedback_2">"\"Мой сумарны рэйтынг палепшыўся пасля таго, як я стаў прэміум-чальцом\""</string>
 	<string name="upgrade_feedback_reporter_2">-Лоў, чалей сайта з 2009 года</string>
-	<string name="live_game_share_str">%1$s vs %2$s - Анлайн шахматы http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Анлайн шахматы http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Анлайн шахматы http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Шахматы ўжывую http://www.chess.com/livechess/game?id=%3$s праз @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - Штодзённыя шахматы http://www.chess.com/echess/game?id=%3$s праз @chesscom</string>
 	<string name="pieces">штук</string>
 </resources>

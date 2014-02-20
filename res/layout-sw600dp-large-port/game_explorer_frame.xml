@@ -44,8 +44,7 @@
 		android:layout_marginStart="@dimen/tablet_board_margin_left"
 		android:layout_marginEnd="@dimen/tablet_board_margin_left"
 		android:layout_marginLeft="@dimen/tablet_board_margin_left"
-		android:layout_marginRight="@dimen/tablet_board_margin_left"
-		>
+		android:layout_marginRight="@dimen/tablet_board_margin_left">
 
 		<com.chess.widgets.RoboButton
 			android:id="@+id/leftBtn"

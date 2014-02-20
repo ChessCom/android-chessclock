@@ -2,5 +2,4 @@
 
 <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
 	android:src="@drawable/board_grey"
-	android:tileMode="repeat"
-	/>
+	android:tileMode="repeat" />

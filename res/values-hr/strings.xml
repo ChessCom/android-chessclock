@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Registrirajte se za on-line igru.</string>
 	<string name="please_sign_up_for_tactics">Registrirajte se kako bi rješavali taktike i probleme.</string>
 	<string name="please_sign_up_for_videos">Registrirajte se kako bi mogli gledati videe.</string>
-	<string name="please_sign_up_for_lessons">Registrirajte se kako bi mogli učiti lekcije.</string>
 	<string name="please_sign_up_for_friends">Registriajte se kako bi mogli igrati s prijateljima.</string>
 	<string name="interactive_lessons">Interaktivne lekcije</string>
 	<string name="tactics_and_puzzles">Taktike i problemi</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Molim upišite ispravno korisničko ime</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontakti</string>
-	<string name="facebook_invite_friend_to_play">Zaigrajmo šah! Možeš igrati online na Chess.com, ili na Android ili iPhone/iPad-u.</string>
+	<string name="invite_friend_to_play">Zaigraj šah samnom? Igram šah na Chess.com kao \"%1$s\". Registriraj se besplatno! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Zaigrajmo!</string>
 	<string name="online_today">Online danas</string>
 	<string name="last_was_online">On-line %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, član od 2011.</string>
 	<string name="upgrade_feedback_2">"\"Moj ukupni rejting se jako poboljšao nakon što sam prešao na premium članstvo\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, član od 2009.</string>
-	<string name="live_game_share_str">%1$s vs %2$s - Online Šah http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online Šah http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online Šah http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Šah uživo http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s protiv %2$s - Dopisni šah  http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">Figure</string>
 </resources>

@@ -165,7 +165,7 @@
 	<string name="profile_picture">প্রোফাইল ছবি</string>
 	<string name="or_use_your_email">অথবা আপনার ই-মেইল ঠিকানাটি ব্যবহার করুন</string>
 	<string name="by_signing_up_accept_mobile">সাইন আপ করে, আমি স্বীকার করছি</string>
-	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">সেবার শর্তাবলী</a>] ]]></string>
+	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal">সেবার শর্তাবলী</a>]]></string>
 	<string name="create_chess_profile">স্বাগতম! আপনার দাবা প্রোফাইল তৈরি করুন</string>
 	<string name="daily">দৈনিক</string>
 	<string name="improve_game_with_lessons">আপনার খেলার উন্নতি করুন অসংখ্য পাঠ গ্রহন করে</string>
@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">অনুগ্রহ করে অনলাইনে খেলার জন্য একাউন্টের জন্য সাইন আপ করুন।</string>
 	<string name="please_sign_up_for_tactics">অনুগ্রহ করে কৌশল &amp; এবং ধাঁধা সমাধানের জন্য একটি একাউন্টে সাইন আপ করুন।</string>
 	<string name="please_sign_up_for_videos">অনুগ্রহ করে ভিডিও দেখার জন্য একটি একাউন্টের জন্য সাইন আপ করুন।</string>
-	<string name="please_sign_up_for_lessons">অনুগ্রহ করে পাঠ্যক্রম শেখার জন্য একটি একাউন্টে সাইন আপ করুন।</string>
 	<string name="please_sign_up_for_friends">অনুগ্রহ করে বন্ধুদের চ্যালেঞ্জ করতে একটি একাউন্টে সাইন আপ করুন।</string>
 	<string name="interactive_lessons">প্রতিক্রিয়াশীল পাঠ্যক্রম</string>
 	<string name="tactics_and_puzzles">কৌশল &amp; ধাঁধা</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">অনুগ্রহ করে একটি বৈধ ইউজার নাম ব্যবহার করুন</string>
 	<string name="facebook">ফেইসবুক</string>
 	<string name="contacts">কনটাক্ট</string>
-	<string name="facebook_invite_friend_to_play">চলুন দাবা খেলি! আপনি Chess.com এ অথবা এন্ড্রয়ড সমৃদ্ধ মোবাইল ফোনে বা আই ফোন/আই প্যাড এ অন লাইন দাবা খেলতে পারবেন।</string>
+	<string name="invite_friend_to_play">আমার সঙ্গে দাবা খেলবেন? আমি Chess.com এ \"%1$s\" নামে খেলি। বিনামূল্যে সাইন আপ করুন! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">আসুন খেলি!</string>
 	<string name="online_today">অনলাইনে আজ</string>
 	<string name="last_was_online">অনলাইন %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">-পিটার, ২০১১ সাল থেকে সদস্য</string>
 	<string name="upgrade_feedback_2">"\"আমি প্রিমিয়াম সদস্য হওয়ার পর আমার সামগ্রিক রেটিং এ অনেক উন্নতি হয়েছে\""</string>
 	<string name="upgrade_feedback_reporter_2">- লউ, এনযে ২০০৯ সাল থেকে সদস্য</string>
-	<string name="live_game_share_str">%1$s বনাম %2$s - Online Chess http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s বনাম %2$s - Online Chess http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s বনাম %2$s - Online Chess http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s বনাম %2$s - Live Chess http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s বনাম %2$s - প্রতিদিন Chess http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">ঘুঁটিগুলি</string>
 </resources>

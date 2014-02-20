@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Zarejestruj się by grać online.</string>
 	<string name="please_sign_up_for_tactics">Zarejestruj się by rozwiązywać zadania taktyczne i puzzle.</string>
 	<string name="please_sign_up_for_videos">Zarejestruj się by oglądać filmy.</string>
-	<string name="please_sign_up_for_lessons">Zarejestruj się by odbywać lekcje.</string>
 	<string name="please_sign_up_for_friends">Zarejestruj się by wyzwać znajomego.</string>
 	<string name="interactive_lessons">Interaktywne lekcje</string>
 	<string name="tactics_and_puzzles">Zadania taktyczne i puzzle</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Wprowadź poprawną nazwę użytkownika</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontakty</string>
-	<string name="facebook_invite_friend_to_play">Zagrajmy w szachy! Możesz grać online na Chess.com lub na telefonie z Androidem oraz iPhonie/iPadzie.</string>
+	<string name="invite_friend_to_play">Zagrasz ze mną w szachy? Gram na Chess.com jako \"%1$s\". Zarejestruj się za darmo! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Zagrajmy!</string>
 	<string name="online_today">Dzisiaj online</string>
 	<string name="last_was_online">Online %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">Piotr, Członek od 2011</string>
 	<string name="upgrade_feedback_2">"\"Mój ogólny ranking bardzo się podniósł, po tym jak zostałem Członkiem Premium\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, NJ, użytkownik od 2009</string>
-	<string name="live_game_share_str">%1$s vs %2$s - Szachy Online http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Szachy Online http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Szachy Online http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Szachy Live http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - Szachy Online http://www.chess.com/echess/game?id=%3$s via @chess.com</string>
 	<string name="pieces">Figury</string>
 </resources>

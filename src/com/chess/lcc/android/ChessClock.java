@@ -21,6 +21,7 @@ public class ChessClock {
 	private int time;
 	private static final int SECOND_TENTHS_THRESHOLD = 20 * SECOND_MS;
 	private static final int MINUTES_SECONDS_THRESHOLD = 121 * 60 * SECOND_MS;
+	private static final int DISABLE_ANIMATION_TIME = 60 * SECOND_MS; // 1 minute
 	private LccHelper lccHelper;
 	private boolean isWhite;
 	private Timer timer;
@@ -170,6 +171,16 @@ public class ChessClock {
 					tenSecondsPlayed = true;
 					if (eventListener != null) {
 						eventListener.onClockFinishing();
+					}
+				}
+
+				if (time <= DISABLE_ANIMATION_TIME) {
+					if (eventListener != null) {
+						eventListener.showPiecesMovesAnimation(false);
+					}
+				} else {
+					if (eventListener != null) {
+						eventListener.showPiecesMovesAnimation(true);
 					}
 				}
 			}

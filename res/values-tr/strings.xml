@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Online oynamak için lütfen kaydolun.</string>
 	<string name="please_sign_up_for_tactics">Taktik &amp; problemleri çözmek için lütfen kaydolun.</string>
 	<string name="please_sign_up_for_videos">Videoları izlemek için lütfen kaydolun.</string>
-	<string name="please_sign_up_for_lessons">Dersleri öğrenmek için lütfen kaydolun.</string>
 	<string name="please_sign_up_for_friends">Arkadaşlarınıza maç teklifi yapmak için lütfen kaydolun.</string>
 	<string name="interactive_lessons">İnteraktif Dersler</string>
 	<string name="tactics_and_puzzles">Taktik &amp; Problemler</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Lütfen geçerli bir kullanıcı adı girin</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kişiler</string>
-	<string name="facebook_invite_friend_to_play">Satranç oynayalım! Chess.com ya da cep telefonu ile Android veya iPhone/iPad üzerinden online oynayabilirsiniz.</string>
+	<string name="invite_friend_to_play">Benimle satranç oynamak ister misin? Chess.com kullanıcı adım \"%%1$s\". Ücretsiz üye olun! $s http://www.Chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Hadi Oynayalım!</string>
 	<string name="online_today">Bugün Online</string>
 	<string name="last_was_online">Online %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, 2011\'den Beri Üye</string>
 	<string name="upgrade_feedback_2">"\"Premium üye olduktan sonra toplam puanım tonla arttı\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, 2009\'dan Beri Üye</string>
-	<string name="live_game_share_str">%1$s vs %2$s - @chesscom yoluyla Online Satranç http://www.chess.com/livechess/game?id=%3$s </string>
-	<string name="daily_game_share_str">%1$s vs %2$s - @chesscom yoluyla Online Satranç http://www.chess.com/livechess/game?id=%3$s</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - @chesscom yoluyla Online Satranç http://www.chess.com/livechess/game?id=%3$s</string>
+	<string name="live_game_share_str">%1$s vs %2$s - @chesscom yoluyla Online Satranç http://www.chess.com/livechess/game?id=%3$s</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - @chesscom üzerinden Günlük Satranç http://www.chess.com/echess/game?id=%3$s</string>
 	<string name="pieces">Taşlar</string>
 </resources>

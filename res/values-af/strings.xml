@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Teken asseblief aan vir \'n rekening om aanlyn te speel.</string>
 	<string name="please_sign_up_for_tactics">Teken asseblief aan vir \'n rekening om taktiese probleme &amp; raaisels op te los.</string>
 	<string name="please_sign_up_for_videos">Teken asseblief aan vir \'n rekening om videos te kyk.</string>
-	<string name="please_sign_up_for_lessons">Teken asseblief aan vir \'n rekening om lesse te leer.</string>
 	<string name="please_sign_up_for_friends">Teken asseblief aan vir \'n rekening om vriende uit te daag.</string>
 	<string name="interactive_lessons">Interaktiewe Lesse </string>
 	<string name="tactics_and_puzzles">Taktiese Probleme &amp; Raaisels</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Voorsien asseblief \'n geldige geruikersnaam</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontakte</string>
-	<string name="facebook_invite_friend_to_play">Kom ons speel skaak! U kan aanlyn speel by Chess.com, of op u Android aangedrewe selfoon of u iPhone/iPad.</string>
+	<string name="invite_friend_to_play">Speel skaak teen my? My Chess.com naam is \"%1$s\". Teken gratis aan! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Kom Ons Speel!</string>
 	<string name="online_today">Vandag Aanlyn</string>
 	<string name="last_was_online">Aanlyn %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, Lid Sedert 2011</string>
 	<string name="upgrade_feedback_2">"\"My algehele gradering het 'n ton verbeter nadat ek 'n premie lid geword het\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, NJ Lid Sedert 2009</string>
-	<string name="live_game_share_str">%1$s teen %2$s - Aanlyn Skaak http://www.chess.com/regstreekseskaak/spel?id=%3$s deur @chesscom</string>
-	<string name="daily_game_share_str">%1$s teen %2$s - Aanlyn Skaak http://www.chess.com/daaglikseskaak/spel?id=%3$s deur @chesscom</string>
-	<string name="daily_game_share_str">%1$s teen %2$s - Aanlyn Skaak http://www.chess.com/daaglikseskaak/spel?id=%3$s deur @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Regstreekse Skaak http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s teen %2$s - Daaglikse Skaak http://www.chess.com/echess/spel?id=%3$s via @chesscom</string>
 	<string name="pieces">Skaakstukke</string>
 </resources>

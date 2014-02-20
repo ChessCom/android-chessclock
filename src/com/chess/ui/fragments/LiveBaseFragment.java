@@ -161,6 +161,11 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	}
 
 	@Override
+	public void showPiecesMovesAnimation(boolean show) {
+
+	}
+
+	@Override
 	public void onFriendsStatusChanged() {
 	}
 

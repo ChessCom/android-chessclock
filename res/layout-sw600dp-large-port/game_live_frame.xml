@@ -29,8 +29,7 @@
 			android:layout_marginStart="@dimen/common_tablet_side_padding"
 			android:layout_marginEnd="@dimen/common_tablet_side_padding"
 			android:layout_marginLeft="@dimen/common_tablet_side_padding"
-			android:layout_marginRight="@dimen/common_tablet_side_padding"
-			/>
+			android:layout_marginRight="@dimen/common_tablet_side_padding" />
 
 		<com.chess.widgets.LinLayout
 			android:id="@+id/boardLinLay"
@@ -63,8 +62,7 @@
 			android:layout_marginStart="@dimen/common_tablet_side_padding"
 			android:layout_marginEnd="@dimen/common_tablet_side_padding"
 			android:layout_marginLeft="@dimen/common_tablet_side_padding"
-			android:layout_marginRight="@dimen/common_tablet_side_padding"
-			/>
+			android:layout_marginRight="@dimen/common_tablet_side_padding" />
 
 		<com.chess.ui.views.game_controls.ControlsLiveView
 			android:id="@+id/controlsView"
@@ -85,7 +83,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:background="@color/disabled"
-		android:visibility="invisible"
-		/>
+		android:visibility="invisible" />
 
 </FrameLayout>

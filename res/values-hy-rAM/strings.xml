@@ -331,7 +331,6 @@
 	<string name="please_sign_up_for_play_online">Խնդրում ենք գրանցվել առցանց խաղալու համար:</string>
 	<string name="please_sign_up_for_tactics">Խնդրում ենք գրանցվել մարտավարության խնդիրներ և հանելուկներ լուծելու համար:</string>
 	<string name="please_sign_up_for_videos">Խնդրում ենք գրանցվել տեսահոլովակներ դիտելու համար:</string>
-	<string name="please_sign_up_for_lessons">Խնդրում ենք գրանցվել դասընթացներ սովորելու համար:</string>
 	<string name="please_sign_up_for_friends">Խնդրում ենք գրանցվել ընկերներին մարտահրավեր ուղարկելու համար:</string>
 	<string name="interactive_lessons">Ինտերակտիվ Դասընթացներ</string>
 	<string name="tactics_and_puzzles">Մարտավարություններ և Գլուխկոտրուկներ</string>
@@ -346,7 +345,7 @@
 	<string name="please_add_valid_username">Խնդրում ենք մուտագրել ճիշտ մուտքաբառ:</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Կոնտակներ</string>
-	<string name="facebook_invite_friend_to_play">Խաղանք Շախմատ: Դուք կարող եք խաղալ առցանց Chess.com -ում ինչպես Android այնպես էլ iPhone/iPad մոբիլով:</string>
+	<string name="invite_friend_to_play">Կցանկանա՞ք խաղալ Շախմատ ինձ հետ. Ես խաղում եմ Chess.com որպես \"%1$s\": Գրանցվեք անվճար: http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Եկեք Խաղանք</string>
 	<string name="online_today">Առցանց այսօր</string>
 	<string name="last_was_online">Առցանց %s</string>
@@ -400,7 +399,7 @@
 	<string name="lessons_limit_reached_message">Դացընթացների լիմիտը վերջացել է այսօր. Թարմացրեք եվ կատարելագործվեք անլիմիտ դասընթացներով հիմա </string>
 	<string name="resume_lesson">Վերսկսել Դասը</string>
 	<string name="installing_theme">ՈՃերի Ինստայացիա</string>
-	<string name="waiting_to_download">Բեռնվում է...</string>
+	<string name="waiting_to_download">Բեռնվում է…</string>
 	<string name="downloading_arg">Ներբեռնում %s</string>
 	<string name="custom">Ընտրովի</string>
 	<string name="background">Ֆոն</string>
@@ -487,8 +486,7 @@
 	<string name="upgrade_feedback_reporter_1">- - Պետեռ, Անդամ է սկսած 2011թ.</string>
 	<string name="upgrade_feedback_2">"«Իմ ընդհանուր վարկանիշը բարելավվել է բավականին հետո երբ Ես դարձել եմ պրեմիում անդամ»"</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, NJ Անդամ է սկսած 2009 թ.</string>
-	<string name="live_game_share_str">%1$sընդդեմ %2$s - Online Chess http://www.chess.com/livechess/game?id=%3$s via @chesscom -ի միջոցով</string>
-	<string name="daily_game_share_str">%1$s ընդդեմ %2$s - Online Chess http://www.chess.com/echess/game?id=%3$s @chesscom -ի միջոցով</string>
-	<string name="daily_game_share_str">%1$s ընդդեմ %2$s - Online Chess http://www.chess.com/echess/game?id=%3$s @chesscom -ի միջոցով</string>
+	<string name="live_game_share_str">%1$sընդդեմ %2$s - Կենդանի Շախմատ http://www.chess.com/livechess/game?id=%3$s  @chesscom -ի միջոցով</string>
+	<string name="daily_game_share_str">%1$sընդդեմ %2$s - Առցանց Շախմատ http://www.chess.com/livechess/game?id=%3$s  @chesscom -ի միջոցով</string>
 	<string name="pieces">Կտորներ</string>
 </resources>

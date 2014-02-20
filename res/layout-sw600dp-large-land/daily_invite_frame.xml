@@ -92,8 +92,7 @@
 			android:layout_marginStart="2dp"
 			android:layout_marginEnd="2dp"
 			android:layout_marginLeft="2dp"
-			android:layout_marginRight="2dp"
-			>
+			android:layout_marginRight="2dp">
 
 			<!--Notations Button-->
 			<com.chess.widgets.RoboRadioButton
@@ -172,8 +171,7 @@
 			android:layout_marginStart="2dp"
 			android:layout_marginEnd="2dp"
 			android:layout_marginLeft="2dp"
-			android:layout_marginRight="2dp"
-			/>
+			android:layout_marginRight="2dp" />
 
 		<!--BottomPanelInfo-->
 		<com.chess.ui.views.PanelInfoGameView

@@ -2473,6 +2473,14 @@ public class DbDataManager {
 		contentResolver.delete(uri, SELECTION_USER_AND_ID, arguments);
 	}
 
+	public static void deleteNewFriendRequestsForUser(ContentResolver contentResolver, String authUser) {
+		final String[] arguments = sArguments1;
+		arguments[0] = authUser;
+
+		Uri uri = uriArray[Tables.NOTIFICATION_FRIEND_REQUEST.ordinal()];
+		contentResolver.delete(uri, SELECTION_USER, arguments);
+	}
+
 	public static void deleteNewChallengeNotification(ContentResolver contentResolver, String authUser, Long challengeId) {
 		final String[] arguments = sArguments2;
 		arguments[0] = String.valueOf(challengeId);

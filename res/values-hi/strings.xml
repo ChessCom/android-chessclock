@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">कृपया ऑनलाइन खेलने के लिए एक अकाउंट के लिए साइन अप करें </string>
 	<string name="please_sign_up_for_tactics">कृपया युक्तियों &amp; पहेलियों को हल करने के लिए एक अकाउंट के लिए साइन अप करें.</string>
 	<string name="please_sign_up_for_videos">कृपया वीडियो देखने के लिए एक अकाउंट के लिए साइन अप करें.</string>
-	<string name="please_sign_up_for_lessons">कृपया सबक सीखने के लिए एक अकाउंट  के लिए साइन अप करें.</string>
 	<string name="please_sign_up_for_friends">मित्रों को चुनौती देने  के लिए एक अकाउंट  के लिए साइन अप करें.</string>
 	<string name="interactive_lessons">संवादमूलक सबक </string>
 	<string name="tactics_and_puzzles">युक्तियाँ &amp; पहेलियाँ</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">कृपया एक मान्य उपयोगकर्ता नाम डालें</string>
 	<string name="facebook">फेसबुक</string>
 	<string name="contacts">संपर्क सूची</string>
-	<string name="facebook_invite_friend_to_play">चलो शतरंज खेलते हैं! आप Chess.com पर, या मोबाइल पर  Android या iPhone/iPad के जरिए ऑनलाइन खेल सकते हैं.</string>
+	<string name="invite_friend_to_play">मेरे साथ शतरंज खेलेंगे? मैं Chess.com पर \"%1$s\" के नाम से खेलता हूँ. मुफ्त में साइन अप करें! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">चलो खेलते हैं!</string>
 	<string name="online_today">आज ऑनलाइन</string>
 	<string name="last_was_online">ऑनलाइन %s</string>
@@ -370,9 +369,8 @@
 	<string name="posts_arg">%s पोस्ट</string>
 	<string name="quote">उद्धरण दें</string>
 	<string name="new_topic">नया विषय</string>
-	<string name="topic_created">विषय निर्मित</string><string name="posted">पोस्ट हो चुका है
-
-</string>
+	<string name="topic_created">विषय निर्मित</string>
+	<string name="posted">पोस्ट हो चुका है</string>
 	<string name="post">पोस्ट</string>
 	<string name="write_reply_">उत्तर लिखें</string>
 	<string name="write_comment_">एक टिप्पणी लिखें...</string>
@@ -487,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">-पीटर, 2011 से सदस्य</string>
 	<string name="upgrade_feedback_2">"\"प्रीमियम सदस्य बनने के बाद सामान्य रूप से मेरी रेटिंग में जबरदस्त सुधार हुआ\" "</string>
 	<string name="upgrade_feedback_reporter_2">- लू, न्यू जर्सी 2009 से सदस्य</string>
-	<string name="live_game_share_str">%1$s बनाम %2$s - ऑनलाइन शतरंज http://www.chess.com/livechess/game?id=%3$s @chesscom के जरिए</string>
-	<string name="daily_game_share_str">%1$s बनाम %2$s - ऑनलाइन शतरंज http://www.chess.com/livechess/game?id=%3$s @chesscom के जरिए</string>
-	<string name="daily_game_share_str">%1$s बनाम %2$s - ऑनलाइन शतरंज http://www.chess.com/livechess/game?id=%3$s @chesscom के जरिए</string>
+	<string name="live_game_share_str">%1$s vs %2$s - लाइव शतरंज  http://www.chess.com/livechess/game?id=%3$s  @chesscom के जरिए</string>
+	<string name="daily_game_share_str">%1$s बनाम %2$s - दैनिक शतरंज http://www.chess.com/livechess/game?id=%3$s @chesscom के जरिए</string>
 	<string name="pieces">मोहरे</string>
 </resources>

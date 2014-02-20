@@ -7,7 +7,7 @@
 	<string name="game_expired">هذه المبارأة لم تعد  متوفرة.</string>
 	<string name="leave_game">إنهاء المباراة؟</string>
 	<string name="play_live">لعب مباشر</string>
-	<string name="play_online">اللعب على الانترنت</string>
+	<string name="play_online">لعب على الخط</string>
 	<string name="settings">الإعدادات</string>
 	<string name="username">اسم المسنخدم</string>
 	<string name="password">كلمة المرور</string>
@@ -87,7 +87,7 @@
 	<string name="challenge">تحدّي</string>
 	<string name="category">الفئة</string>
 	<string name="search">بحث</string>
-	<string name="play">ألعب</string>
+	<string name="play">إلعب</string>
 	<string name="videos">مقاطع فيديو</string>
 	<string name="upgrade">ترقية</string>
 	<string name="upgrade_my_account">ترقية حسابي</string>
@@ -332,7 +332,6 @@
 	<string name="please_sign_up_for_play_online">من فضلك قم بتسجيل حساب لكى تلعب اون لاين .</string>
 	<string name="please_sign_up_for_tactics">من فضلك قم بتسجيل  حساب  لحل  التكتيكات و ألالغاز.</string>
 	<string name="please_sign_up_for_videos">من فضلك قم بتسجيل حساب لمشاهدة مقاطع الفديو.</string>
-	<string name="please_sign_up_for_lessons">من فضلك قم بالتسجيل فى حساب لتتعلم الدروس.</string>
 	<string name="please_sign_up_for_friends">من فضلك قم بتسجيل حساب لتتحدى الأصدقاء.</string>
 	<string name="interactive_lessons">الدروس التفاعلية</string>
 	<string name="tactics_and_puzzles">تكتيكات والغاز</string>
@@ -347,7 +346,7 @@
 	<string name="please_add_valid_username">الرجاء إدخال اسم مستخدم صالح</string>
 	<string name="facebook">فيس بوك</string>
 	<string name="contacts">جهات الاتصال</string>
-	<string name="facebook_invite_friend_to_play">هيا نلعب الشطرنج! بامكانك اللعب على الانترنت من خلال Chess.com, أو على الهاتف أندرويد أو آيفون/آيباد.</string>
+	<string name="invite_friend_to_play">إلعب الشطرنج معى ؟ انا العب  على  Chess.com كـ %1$s . قم بالتسجيل مجانآ! http://www.chess.com/register?ref_id = %2$s</string>
 	<string name="add_friend_request_message">هيا نلعب!</string>
 	<string name="online_today">متصل بالانترنت اليوم</string>
 	<string name="last_was_online">%s متصل بالانترنت</string>
@@ -488,8 +487,7 @@
 	<string name="upgrade_feedback_reporter_1">- peter , عضو منذ 2011</string>
 	<string name="upgrade_feedback_2">"\"تصنيفى الأجمالى تحسن كثيرآ بعد أن اصبحت عضوآ مميزآ\""</string>
 	<string name="upgrade_feedback_reporter_2">-Lou, عضو NJ منذ 2009</string>
-	<string name="live_game_share_str">%1$s ضد %2$s شطرنج اون لاين http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s ضد %2$s شطرنج اون لاين http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s ضد %2$s شطرنج اون لاين http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s ضد %2$s - شطرنج اون لاين http://www.chess.com/livechess/game?id=%3$s بواسطة @chesscom</string>
+	<string name="daily_game_share_str">%1$s ضد %2$s - شطرنج اون لاين http://www.chess.com/livechess/game?id=%3$s بواسطة @chesscom</string>
 	<string name="pieces">القطع</string>
 </resources>

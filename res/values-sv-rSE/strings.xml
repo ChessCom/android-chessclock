@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Registrera ett konto för att spela online.</string>
 	<string name="please_sign_up_for_tactics">Registrera ett konto för att lösa schackproblem och kluringar.</string>
 	<string name="please_sign_up_for_videos">Registrera ett konto om du vill titta på videoklipp.</string>
-	<string name="please_sign_up_for_lessons">Registrera ett konto om du vill ta lektioner.</string>
 	<string name="please_sign_up_for_friends">Registrera ett konto om du vill utmana dina vänner.</string>
 	<string name="interactive_lessons">Interaktiva lektioner</string>
 	<string name="tactics_and_puzzles">Schackproblem och kluringar</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Ange ett giltigt användarnamn</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontakter</string>
-	<string name="facebook_invite_friend_to_play">Vad sägs om ett parti schack? Du kan spela online på Chess.com eller på mobilen (Android eller iPhone/iPad).</string>
+	<string name="invite_friend_to_play">Play chess with me? I play on Chess.com as \"%1$s\". Sign up for free! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Låt oss spela!</string>
 	<string name="online_today">Onlnie idag</string>
 	<string name="last_was_online">Online %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">-Peter, medlem sedan 2011</string>
 	<string name="upgrade_feedback_2">"\"Min totalranking förbättrades enormt mycket efter att jag blev premium-medlem\""</string>
 	<string name="upgrade_feedback_reporter_2">-Lou, NJ-medlem sedan 2009</string>
-	<string name="live_game_share_str">%1$s vs %2$s - Online-schack http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online-schack http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online-schack http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Live Chess http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - Daily Chess http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">Pjäser</string>
 </resources>

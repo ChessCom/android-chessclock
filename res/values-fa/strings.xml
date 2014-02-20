@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">خواهشمندیم برای یک حساب کاربری نام‌نویسی کنید تا بتوانید به صورت برخط بازی کنید.</string>
 	<string name="please_sign_up_for_tactics">خواهشمندیم برای یک حساب کاربری نام‌نویسی کنید تا بتوانید تاکتیک‌ها و معماها را حل کنید.</string>
 	<string name="please_sign_up_for_videos">خواهشمندیم برای یک حساب کاربری نام‌نویسی کنید تا بتوانید ویدیوها را تماشا کنید.</string>
-	<string name="please_sign_up_for_lessons">خواهشمندیم برای یک حساب کاربری نام‌نویسی کنید تا بتوانید دروس را یاد بگیرید.</string>
 	<string name="please_sign_up_for_friends">خواهشمندیم برای یک حساب کاربری نام‌نویسی کنید تا بتوانید دوستانتان را به رقابت دعوت کنید.</string>
 	<string name="interactive_lessons">دروس تعاملی</string>
 	<string name="tactics_and_puzzles">تاکتیک‌ها و معما‌ها</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">خواهشمندیم یک نام کاربری معتبر وارد کنید</string>
 	<string name="facebook">فیسبوک</string>
 	<string name="contacts">تماس‌ها</string>
-	<string name="facebook_invite_friend_to_play">بیایید شطرنج بازی کنید! شما می‌توانید به صورت برخط در سایت Chess.com، و یا با گوشی همراه اندروید، آی فون یا آی پد، بازی کنید.</string>
+	<string name="invite_friend_to_play">با من شطرنج بازی می‌کنید؟ من در Chess.com با نام کاربری \"%1$s\" بازی می‌کنم. نام‌نویسی رایگان است! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">بیا بازی کنیم!</string>
 	<string name="online_today">برخط امروز</string>
 	<string name="last_was_online">برخط %s</string>
@@ -487,7 +486,6 @@
 	<string name="upgrade_feedback_2">"\"بعد از اینکه کاربر ویژه شدم امتیاز کلی من بسیار بهبود پیدا کرد\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou، از نیوجرسی تاریخ عضویت ۲۰۰۹</string>
 	<string name="live_game_share_str">%1$s در برابر %2$s - شطرنج برخط http://www.chess.com/echess/game?id=%3$s توسط @chesscom</string>
-	<string name="daily_game_share_str">%1$s در برابر %2$s - شطرنج برخط http://www.chess.com/echess/game?id=%3$s توسط @chesscom</string>
-	<string name="daily_game_share_str">%1$s در برابر %2$s - شطرنج برخط http://www.chess.com/echess/game?id=%3$s توسط @chesscom</string>
+	<string name="daily_game_share_str">%1$s در برابر %2$s - شطرنج روزانه http://www.chess.com/echess/game?id=%3$s توسط @chesscom</string>
 	<string name="pieces">مهره‌ها</string>
 </resources>

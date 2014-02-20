@@ -53,8 +53,7 @@
 		android:text="@string/lessons_completed"
 		android:textSize="@dimen/default_text_size_small"
 		android:layout_toEndOf="@id/lessonsCompletedValueTxt"
-		android:layout_toRightOf="@id/lessonsCompletedValueTxt"
-		/>
+		android:layout_toRightOf="@id/lessonsCompletedValueTxt" />
 
 	<!--Courses Completed value-->
 	<com.chess.widgets.RoboTextView

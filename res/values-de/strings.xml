@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Melden Sie sich bitte für ein Nutzerkonto an, um online zu spielen.</string>
 	<string name="please_sign_up_for_tactics">Melden Sie sich bitte für ein Nutzerkonto an, um Taktiken &amp; Rätsel zu lösen.</string>
 	<string name="please_sign_up_for_videos">Melden Sie sich bitte für ein Nutzerkonto an, um Videos anzuschauen.</string>
-	<string name="please_sign_up_for_lessons">Melden Sie sich bitte für ein Nutzerkonto an, um die Lektionen zu lernen.</string>
 	<string name="please_sign_up_for_friends">Bitte melden Sie sich für ein Nutzerkonto an, um Ihre Freunde herauszufordern.</string>
 	<string name="interactive_lessons">Interaktive Lektionen</string>
 	<string name="tactics_and_puzzles">Taktiken &amp; Rätsel</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Geben Sie bitte einen gültigen Nutzernamen ein</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontakte</string>
-	<string name="facebook_invite_friend_to_play">Spielen Sie Schach! Sie können online auf Chess.com oder mobil via Android oder iPhone/ iPad spielen.</string>
+	<string name="invite_friend_to_play">Wollen Sie gegen mich Schach spielen? Ich spiele auf Chess.com as \"%1$s\". Melden Sie sich kostenlos an! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Spielen Sie!</string>
 	<string name="online_today">Heute online</string>
 	<string name="last_was_online">Online %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">-Peter, Mitglied seit 2011</string>
 	<string name="upgrade_feedback_2">"\"Meine Spielniveau hat sich um ein Vielfaches verbessert seit ich Premium-Mitglied bin\""</string>
 	<string name="upgrade_feedback_reporter_2">-Lou, NJ Mitglied seit 2009</string>
-	<string name="live_game_share_str">%1$s vs %2$s - Online Schach http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online Schach http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online Schach http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s gegen %2$s - Live Schach http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s gegen %2$s - Schach täglich http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">Teile</string>
 </resources>

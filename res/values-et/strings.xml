@@ -11,7 +11,7 @@
 	<string name="settings">Seaded</string>
 	<string name="username">Kasutajanimi</string>
 	<string name="password">Parool</string>
-	<string name="log_in">Logi Sisse</string>
+	<string name="log_in">Logi sisse</string>
 	<string name="sign_up">Liitu</string>
 	<string name="complete_singup">Lõpeta liitumine</string>
 	<string name="white">Valged</string>
@@ -23,7 +23,7 @@
 	<string name="you_will_notified_when_game_starts">Sind teavitatakse mängu algusest</string>
 	<string name="challenge_sent">Väljakutse esitatud</string>
 	<string name="friends">Sõbrad</string>
-	<string name="no_friends_online">Sõbrad ei ole onlainis</string>
+	<string name="no_friends_online">Sõbrad ei ole onlain</string>
 	<string name="accept">Võta vastu</string>
 	<string name="challenge_accepted">Väljakutse vastu võetud</string>
 	<string name="challenge_declined">Väljakutse tagasi lükatud</string>
@@ -101,8 +101,8 @@
 	<string name="puzzle_solved">Ülesanne lahendatud!</string>
 	<string name="upgrade_for_unlimited_arg">Uuendage, selleks, et saada piiramatult %s!</string>
 	<string name="random">Juhuslik</string>
-	<string name="won">Võite</string>
-	<string name="lost">Kaotusi</string>
+	<string name="won">Võit</string>
+	<string name="lost">Kaotus</string>
 	<string name="draw">Viik</string>
 	<string name="login">Logi sisse</string>
 	<string name="error">Viga</string>
@@ -111,10 +111,10 @@
 	<string name="image">Pilt</string>
 	<string name="no_network">Võrguühendus puudub</string>
 	<string name="check_connection">Kontrolli ühendust</string>
-	<string name="too_short">Liiga Lühike</string>
+	<string name="too_short">Liiga lühike</string>
 	<string name="can_not_be_empty">Ei Tohi Olla Tühi</string>
 	<string name="no_chess_account_signup_please">Teil pole Chess.com kontot. Registreeruge - see on tasuta!</string>
-	<string name="pass_dont_match">Paroolid Ei Kattu</string>
+	<string name="pass_dont_match">Paroolid ei kattu</string>
 	<string name="version_check">Versioonikontroll</string>
 	<string name="version_is_obsolete_update">Seda rakenduse versiooni enam ei toetata. Palun uuendage. </string>
 	<string name="tournaments">Turniirid</string>
@@ -126,17 +126,17 @@
 	<string name="unrated">Reitinguta</string>
 	<string name="you_play">Sinu malendid</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move_vs">Sinu käik vs</string>
-	<string name="won_on_time">võitis Ajaga</string>
-	<string name="won_by_resignation">võitis Alistumisega</string>
-	<string name="won_by_checkmate">%s Matistas</string>
-	<string name="game_over">Mäng Läbi</string>
+	<string name="your_move_vs">Sinu käik vs %1$s , %2$s</string>
+	<string name="won_on_time">%s võitis ajaga</string>
+	<string name="won_by_resignation">%s võitis alistumisega</string>
+	<string name="won_by_checkmate">%s võitis matiga</string>
+	<string name="game_over">Mäng on läbi</string>
 	<string name="reconnecting_">Ühenduse taastamine&#8230;</string>
 	<string name="another_login_detected">Tohoh! Te olete kusagil mujal sisse loginud.</string>
 	<string name="game_end_title_draw">Viik</string>
-	<string name="game_aborted">Mäng on Katkestatud</string>
-	<string name="new_game">Uus Mäng</string>
-	<string name="new_game_arg">Uus Mäng (%s)</string>
+	<string name="game_aborted">Mäng katkestati</string>
+	<string name="new_game">Uus mäng</string>
+	<string name="new_game_arg">Uus mäng (%s)</string>
 	<string name="enter_moves">Sisestage käigud</string>
 	<string name="language">Keel</string>
 	<string name="black_wins">Must võidab</string>
@@ -151,11 +151,11 @@
 	<string name="rematch">Revanš</string>
 	<string name="fair_play_policy">Ausa mängu põhimõte</string>
 	<string name="home">Kodu</string>
-	<string name="live">Live</string>
-	<string name="follow">Järgi</string>
+	<string name="live">Kiirmale</string>
+	<string name="follow">Jälgi</string>
 	<string name="following_arg">Jälgi %s</string>
 	<string name="comp">Arvuti</string>
-	<string name="tactics">Taktikaülesanded</string>
+	<string name="tactics">Taktika</string>
 	<string name="practice">Harjutused</string>
 	<string name="performance">Tulemuslikkus</string>
 	<string name="create_profile">Profiili loomine</string>
@@ -166,8 +166,8 @@
 	<string name="or_use_your_email">Või kasutage oma meiliaadressi</string>
 	<string name="by_signing_up_accept_mobile">Liitumisel nõustun</string>
 	<string name="by_signing_up_accept_mobile1"><![CDATA[<a href="http://www.chess.com/legal"> teenusetingimustega</a>]]]></string>
-	<string name="create_chess_profile">Tere tulemast! Loo oma Male konto!</string>
-	<string name="daily">Päevased</string>
+	<string name="create_chess_profile">Tere tulemast! Loo oma Male konto</string>
+	<string name="daily">Kirimale</string>
 	<string name="improve_game_with_lessons">Paranda oma mängu piiramatute õppetundidega</string>
 	<string name="improve_game_with_videos">Paranda oma mängu piiramatute videode abil</string>
 	<string name="old_password">Vana salasõna</string>
@@ -185,8 +185,8 @@
 	<string name="sign_up_with_facebook"><b>Registreeru</b> <b>Facebookiga</b></string>
 	<string name="finished_games">Lõppenud mängud</string>
 	<string name="feedback_mail_body">Palun ära muuda ega eemalda alljärgnevaid andmeid.</string>
-	<string name="no_games">Mänge Ei Ole</string>
-	<string name="my_move">Minu Käik</string>
+	<string name="no_games">Mänge ei ole</string>
+	<string name="my_move">Minu käik</string>
 	<string name="their_move">Nende käik</string>
 	<string name="live_chess_time_mode_arg">%1$d | %2$d</string>
 	<string name="arg_min">%d min</string>
@@ -206,7 +206,7 @@
 	<string name="photo">Foto</string>
 	<string name="computer">Arvuti</string>
 	<string name="daily_chess">Kirimale</string>
-	<string name="live_chess">Male Reaalajas</string>
+	<string name="live_chess">Kiirmale</string>
 	<string name="avg_opp_rating_when_i">Keskmine vastase reiting kui mina:</string>
 	<string name="games_arg">%s mängu</string>
 	<string name="winning_streak">Võitude seeria</string>
@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Mängimiseks looge palun kasutajakonto.</string>
 	<string name="please_sign_up_for_tactics">Taktikaülesannete ja mõistatuste lahendamiseks looge palun kasutajakonto.</string>
 	<string name="please_sign_up_for_videos">Videote vaatamiseks looge palun kasutajakonto.</string>
-	<string name="please_sign_up_for_lessons">Õppetundideks looge palun kasutajakonto.</string>
 	<string name="please_sign_up_for_friends">Sõprade väljakutsumiseks looge palun kasutajakonto.</string>
 	<string name="interactive_lessons">Interaktiivsed õppetunnid</string>
 	<string name="tactics_and_puzzles">Taktika ja mõistatused</string>
@@ -345,10 +344,10 @@
 	<string name="please_add_valid_username">Palun sisestage kehtiv kasutajanimi</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontaktid</string>
-	<string name="facebook_invite_friend_to_play">Mängime malet! Chess.com-is võid sa mängida nii arvuti, Android-telefoni, kui ka iPhone/iPadiga.</string>
+	<string name="invite_friend_to_play">Tahad minuga malet mängida? Ma mängin leheküljel Chess.com kasutajanime \"%1$s\" all. Registreeru täiesti tasuta! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Mängime!</string>
-	<string name="online_today">Täna online</string>
-	<string name="last_was_online">Online %s</string>
+	<string name="online_today">Täna liinil</string>
+	<string name="last_was_online">Viimati liinil %s</string>
 	<string name="just_now">just nüüd</string>
 	<string name="request_sent">Taotlus saadetud</string>
 	<string name="username_not_found">Kasutajanime ei leitud</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, liige alates 2011</string>
 	<string name="upgrade_feedback_2">"\"Mu üldine reiting tõusis kõvasti pärast seda, kui ma täisliikmeks sain\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, New Jersey, liige alates 2009</string>
-	<string name="live_game_share_str">%1$s vs %2$s - Online male http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online male http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online male http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Male reaalajas http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - Päevane male http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">Malendid</string>
 </resources>

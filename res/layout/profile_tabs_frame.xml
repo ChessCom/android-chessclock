@@ -6,8 +6,9 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<include layout="@layout/profiles_header_view"
-		android:layout_gravity="left|start"/>
+	<include
+		layout="@layout/profiles_header_view"
+		android:layout_gravity="left|start" />
 
 	<!--Tabs-->
 	<RadioGroup

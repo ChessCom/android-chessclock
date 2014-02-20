@@ -35,5 +35,10 @@ public interface LccEventListener {
 
 	void onClockFinishing();
 
+	/**
+	 * We use it only in live chess when there is less than 60sec on clock
+	 */
+	void showPiecesMovesAnimation(boolean show);
+
 	void onFriendsStatusChanged();
 }

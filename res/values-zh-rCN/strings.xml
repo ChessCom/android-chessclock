@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">请注册一个帐户以在线下棋。</string>
 	<string name="please_sign_up_for_tactics">请注册帐户来解决战术和谜题。</string>
 	<string name="please_sign_up_for_videos">请注册一个帐户以观看视频。</string>
-	<string name="please_sign_up_for_lessons">请注册一个帐户以学习课程。</string>
 	<string name="please_sign_up_for_friends">请注册帐户对好友挑战。</string>
 	<string name="interactive_lessons">互动的课程</string>
 	<string name="tactics_and_puzzles">战术与谜题</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">请输入一个有效的用户名</string>
 	<string name="facebook">脸书</string>
 	<string name="contacts">联系人</string>
-	<string name="facebook_invite_friend_to_play">来下棋吧 ！在 Chess.com，或Android 或 iPhone/iPad 手机上在线下棋。</string>
+	<string name="invite_friend_to_play">跟我下棋吗？我的 Chess.com用户名是\"%1$s\"。免费注册！http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">让我们下 ！</string>
 	<string name="online_today">今日在线</string>
 	<string name="last_was_online">在线 %s</string>
@@ -487,7 +486,6 @@
 	<string name="upgrade_feedback_2">"\"我成了高级会员后等级分大大改进\""</string>
 	<string name="upgrade_feedback_reporter_2">Lou，NJ 自 2009 年以来成员</string>
 	<string name="live_game_share_str">%1$s vs %2$s-通过 @chesscom在线下国际象棋 http://www.chess.com/livechess/game?id=%3$s </string>
-	<string name="daily_game_share_str">%1$s vs %2$s-通过 @chesscom在线下国际象棋 http://www.chess.com/livechess/game?id=%3$s </string>
-	<string name="daily_game_share_str">%1$s vs %2$s-通过 @chesscom在线下国际象棋 http://www.chess.com/livechess/game?id=%3$s </string>
+	<string name="daily_game_share_str">%1$s vs %2$s-通过 @chesscom每天在线下国际象棋 http://www.chess.com/livechess/game?id=%3$s </string>
 	<string name="pieces">棋子</string>
 </resources>

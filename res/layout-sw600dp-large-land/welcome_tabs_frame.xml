@@ -68,8 +68,7 @@
 			android:layout_marginStart="@dimen/default_scr_side_padding"
 			android:layout_marginEnd="@dimen/default_scr_side_padding"
 			android:layout_marginLeft="@dimen/default_scr_side_padding"
-			android:layout_marginRight="@dimen/default_scr_side_padding"
-			/>
+			android:layout_marginRight="@dimen/default_scr_side_padding" />
 
 		<!--SignUp-->
 		<com.chess.widgets.RoboButton
@@ -84,8 +83,7 @@
 			android:layout_marginStart="@dimen/default_scr_side_padding"
 			android:layout_marginEnd="@dimen/default_scr_side_padding"
 			android:layout_marginLeft="@dimen/default_scr_side_padding"
-			android:layout_marginRight="@dimen/default_scr_side_padding"
-			/>
+			android:layout_marginRight="@dimen/default_scr_side_padding" />
 
 	</com.chess.widgets.RelLayout>
 

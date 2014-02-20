@@ -288,7 +288,7 @@
 	<string name="account_history">Sejarah akaun</string>
 	<string name="location">Lokasi</string>
 	<string name="share">Kongsi</string>
-	<string name="profile_membership_renew_cancel">Keahlian %1$s anda akan dperbaharui pada %2$s.</string>
+	<string name="profile_membership_renew_cancel">Keahlian %1$s anda akan diperbaharui pada %2$s.</string>
 	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account">Batal</a>]]></string>
 	<string name="invite_friends_profile_message">Catur lebih seronok dengan rakan - ajak mereka untuk menyertai!</string>
 	<string name="profile_account_message_1">Akaun anda adalah tertakluk kepada laman </string>
@@ -333,7 +333,6 @@
 	<string name="please_sign_up_for_play_online">Sila daftar akaun untuk bermain di atas talian.</string>
 	<string name="please_sign_up_for_tactics">Sila daftar akaun untuk menyelesaikan taktik &amp; teka-teki.</string>
 	<string name="please_sign_up_for_videos">Sila daftar akaun untuk menonton video.</string>
-	<string name="please_sign_up_for_lessons">Sila daftar akaun untuk pembelajaran.</string>
 	<string name="please_sign_up_for_friends">Pembelajaran Interaktif</string>
 	<string name="interactive_lessons">Pembelajaran Interaktif</string>
 	<string name="tactics_and_puzzles">Taktik &amp; Teka-teki</string>
@@ -348,7 +347,7 @@
 	<string name="please_add_valid_username">Sila masukkan nama pengguna yang sah</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kenalan</string>
-	<string name="facebook_invite_friend_to_play">Dalam talian hari ini</string>
+	<string name="invite_friend_to_play">Main catur dengan saya? Saya bermain di Chess.com sebagai \"%1$s\". Daftar secara percuma! http://www.Chess.com/Register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Jom Main!</string>
 	<string name="online_today">Hari ini dalam talian</string>
 	<string name="last_was_online">Dalam talian hari ini</string>
@@ -455,7 +454,7 @@
 	<string name="no_messages">Tiada Mesej</string>
 	<string name="select_style">Pilih Gaya</string>
 	<string name="password_changed">Kata Laluan Telah Ditukar</string>
-	<string name="required">dperlukan</string>
+	<string name="required">Diperlukan</string>
 	<string name="you">Anda</string>
 	<string name="add">Tambah</string>
 	<string name="no_hint">Tiada Petunjuk</string>
@@ -490,7 +489,6 @@
 	<string name="upgrade_feedback_2">"\"Penilaian keseluruhan saya meningkat dengan banyak selepas saya menjadi ahli premium\""</string>
 	<string name="upgrade_feedback_reporter_2">-Lou, NJ Ahli Sejak 2009</string>
 	<string name="live_game_share_str">%1$s vs %2$s - Catur Atas Talian http://www.chess.com/livechess/game?id=%3$s melalui @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Catur Atas Talian http://www.chess.com/echess/game?id=%3$s melalui @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Catur Atas Talian http://www.chess.com/echess/game?id=%3$s melalui @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - Catur Harian http://www.chess.com/echess/game?id=%3$s melalui @chesscom</string>
 	<string name="pieces">Buah</string>
 </resources>

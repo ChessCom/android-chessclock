@@ -45,8 +45,7 @@
 				custom:oneLine="@bool/one_line_for_board"
 				android:layout_above="@+id/centerPoint"
 				android:layout_toStartOf="@id/centerPoint"
-				android:layout_toLeftOf="@id/centerPoint"
-				/>
+				android:layout_toLeftOf="@id/centerPoint" />
 
 			<!--BottomPanelInfo-->
 			<com.chess.ui.views.PanelInfoWelcomeView
@@ -56,8 +55,7 @@
 				custom:oneLine="@bool/one_line_for_board"
 				android:layout_below="@id/centerPoint"
 				android:layout_toStartOf="@id/centerPoint"
-				android:layout_toLeftOf="@id/centerPoint"
-				/>
+				android:layout_toLeftOf="@id/centerPoint" />
 
 			<!--Center point-->
 			<View
@@ -77,8 +75,7 @@
 				android:gravity="center_vertical|left"
 				android:layout_centerVertical="true"
 				android:layout_toEndOf="@id/centerPoint"
-				android:layout_toRightOf="@id/centerPoint"
-				/>
+				android:layout_toRightOf="@id/centerPoint" />
 
 		</RelativeLayout>
 

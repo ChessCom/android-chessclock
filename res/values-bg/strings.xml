@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Моля регистрирайте си акаунт, за да играете онлайн.</string>
 	<string name="please_sign_up_for_tactics">Моля регистрирайте си акаунт, за да решавате тактики &amp; пъзели.</string>
 	<string name="please_sign_up_for_videos">Моля регистрирайте си акаунт, за да гледате видеота.</string>
-	<string name="please_sign_up_for_lessons">Моля регистрирайте си акаунт, за да учите уроци.</string>
 	<string name="please_sign_up_for_friends">Моля регистрирайте си акаунт, за да предизвиквате приятели.</string>
 	<string name="interactive_lessons">Интерактивни Уроци</string>
 	<string name="tactics_and_puzzles">Тактики &amp; Пъзели</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Моля въведете валидно потребителско име</string>
 	<string name="facebook">Фейсбук</string>
 	<string name="contacts">Контакти</string>
-	<string name="facebook_invite_friend_to_play">Нека да играем шах! Можете да играете онлайн на Chess.com или на мобилен телефон с Android OS или iPhone/iPad.</string>
+	<string name="invite_friend_to_play">Играй шах с мен? Аз играя на Chess.com като \"%1$s\". Регистрирайте се безплатно! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Нека Играем!</string>
 	<string name="online_today">Онлайн днес</string>
 	<string name="last_was_online">Онлайн %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Питър,  Член от 2011 г.</string>
 	<string name="upgrade_feedback_2">"\"Рейтингът ми като цяло се подобри много, след като станах премиум член\""</string>
 	<string name="upgrade_feedback_reporter_2">- Лу от Ню Джърси, Член от 2009 г.</string>
-	<string name="live_game_share_str">%1$s срещу %2$s - Онлайн Шах http://www.chess.com/livechess/game?id=%3$s чрез @chesscom</string>
-	<string name="daily_game_share_str">%1$s срещу %2$s - Онлайн Шах http://www.chess.com/echess/game?id=%3$s чрез @chesscom</string>
-	<string name="daily_game_share_str">%1$s срещу %2$s - Онлайн Шах http://www.chess.com/echess/game?id=%3$s чрез @chesscom</string>
+	<string name="live_game_share_str">%1$s срещу %2$s - Шах на Живо http://www.chess.com/livechess/game?id=%3$s чрез @chesscom</string>
+	<string name="daily_game_share_str">%1$s срещу %2$s - Ежедневен Шах http://www.chess.com/echess/game?id=%3$s чрез @chesscom</string>
 	<string name="pieces">Фигури</string>
 </resources>

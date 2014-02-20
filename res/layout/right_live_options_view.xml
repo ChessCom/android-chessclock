@@ -62,8 +62,7 @@
 		style="@style/RightLiveOptionsButton"
 		android:layout_below="@id/liveLabelStandardTxt"
 		android:layout_alignParentEnd="true"
-		android:layout_alignParentRight="true"
-		/>
+		android:layout_alignParentRight="true" />
 
 	<!--15|5 min-->
 	<com.chess.widgets.RoboButton
@@ -84,8 +83,7 @@
 		style="@style/RightLiveOptionsButton"
 		android:layout_below="@id/standard1SelectBtn"
 		android:layout_alignParentEnd="true"
-		android:layout_alignParentRight="true"
-		/>
+		android:layout_alignParentRight="true" />
 
 	<!--5 min-->
 	<com.chess.widgets.RoboButton

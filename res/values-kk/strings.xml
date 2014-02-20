@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Онлайн ойнау үшін тіркеліңіз.</string>
 	<string name="please_sign_up_for_tactics">Тактикаларды &amp; басқатырғыларды шешу үшін тіркеліңіз.</string>
 	<string name="please_sign_up_for_videos">Видеолар көру үшін тіркеліңіз.</string>
-	<string name="please_sign_up_for_lessons">Сабақтарды оқу үшін тіркеліңіз.</string>
 	<string name="please_sign_up_for_friends">Достарыңызға жекпе-жек шақыру үшін тіркеліңіз.</string>
 	<string name="interactive_lessons">Интерактивті сабақтар</string>
 	<string name="tactics_and_puzzles">Тактикалар және Басқатырғылар</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Қолданушы есіміңізді енгізіңіз</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Контакттар</string>
-	<string name="facebook_invite_friend_to_play">Шахмат ойнайық! Chess.com сайтында, немесе Android, IPhone/iPad мобильді құрылғыларда онлайн ойнай аласыз.</string>
+	<string name="invite_friend_to_play">Менімен шахмат ойнайсың ба? Мен Chess.com сайтында %1$s ойнаймын. Ақысыз тіркеліңіз! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Ойнайық!</string>
 	<string name="online_today">Онлайн бүгін</string>
 	<string name="last_was_online">Онлайн %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Питер, 2011 жылдан бері қолданушы</string>
 	<string name="upgrade_feedback_2">"\"Менің орташа рейтингім премиум қолданушы болғаннан кейін көтерілді\""</string>
 	<string name="upgrade_feedback_reporter_2">- Лу, Нью-Джерси 2009 жылдан бері қолданушы</string>
-	<string name="live_game_share_str">%1$s қарсы %2$s - онлайн шахмат http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s қарсы %2$s - онлайн шахмат http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s қарсы %2$s - онлайн шахмат http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s және %2$s - Тікелей эфир шахматы http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s және %2$s - Күндік шахматы http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">Фигуралар</string>
 </resources>

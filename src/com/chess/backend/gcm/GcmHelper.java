@@ -25,8 +25,6 @@ public final class GcmHelper {
 	 */
 	public static final String SENDER_ID = "27129061667";
 
-	public static final int REQUEST_REGISTER = 11;
-	public static final int REQUEST_UNREGISTER = 22;
 	public static final String NOTIFICATION_YOUR_MOVE = "NOTIFICATION_YOUR_MOVE";
 	public static final String NOTIFICATION_NEW_MESSAGE = "NOTIFICATION_NEW_MESSAGE";
 	public static final String NOTIFICATION_NEW_CHAT_MESSAGE = "NOTIFICATION_NEW_CHAT_MESSAGE";

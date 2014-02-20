@@ -59,8 +59,7 @@
 		android:layout_toRightOf="@id/usernameTxt"
 		android:layout_below="@id/topDivideView"
 		android:layout_marginStart="7dp"
-		android:layout_marginLeft="7dp"
-		/>
+		android:layout_marginLeft="7dp" />
 
 	<!--Premium icon-->
 	<ImageView

@@ -141,11 +141,11 @@
 	<string name="language">ਭਾਸ਼ਾ</string>
 	<string name="black_wins">ਕਾਲੇ ਦੀ ਜਿੱਤ</string>
 	<string name="white_wins">ਸਫੈਦ ਦੀ ਜਿੱਤ</string>
-	<string name="game_draw_by_repetition">Draw by Repetition</string>
-	<string name="game_drawn_by_agreement">Draw by Agreement</string>
-	<string name="game_drawn_by_stalemate">Draw by Stalemate</string>
-	<string name="game_drawn_insufficient_material">Draw by Insufficient Material</string>
-	<string name="game_drawn_by_fifty_move_rule">Draw by 50-move Rule</string>
+	<string name="game_draw_by_repetition">ਦੁਹਰਾਈ ਕਰਕੇ ਬਰਾਬਰੀ</string>
+	<string name="game_drawn_by_agreement">ਸਮਝੌਤੇ ਕਰਕੇ ਬਰਾਬਰੀ</string>
+	<string name="game_drawn_by_stalemate">ਬੇਨਤੀਜਾ ਕਰਕੇ ਬਰਾਬਰੀ</string>
+	<string name="game_drawn_insufficient_material">ਨਾਕਾਫ਼ੀ ਸਮੱਗਰੀ ਕਰਕੇ ਬਰਾਬਰੀ</string>
+	<string name="game_drawn_by_fifty_move_rule">50-ਚਾਲ ਨਿਯਮ ਕਰਕੇ ਬਰਾਬਰੀ</string>
 	<string name="draw_by_stalemate">ਬੇਨਤੀਜਾ ਕਰਕੇ ਬਰਾਬਰੀ</string>
 	<string name="draw_by_3fold_repetition">ਤਿਨ ਵਾਰ ਸਮਾਨ ਚਾਲਾਂ ਕਰਕੇ ਨਤੀਜਾ ਬਰਾਬਰੀ</string>
 	<string name="rematch">ਦੁਬਾਰਾ ਖੇਡੋ</string>
@@ -153,7 +153,7 @@
 	<string name="home">ਘਰ</string>
 	<string name="live">ਜੀਵੰਤ</string>
 	<string name="follow">ਦੋਸਤ ਨੂੰ ਖੇਡਦੇ ਵੇਖੋ</string>
-	<string name="following_arg">Following %s</string>
+	<string name="following_arg">ਬਾਜ਼ੀ ਵੇਖ ਰਿਹਾ ਹੈ %s</string>
 	<string name="comp">ਕੰਪਿਊਟਰ</string>
 	<string name="tactics">ਤਰਕੀਬਾਂ</string>
 	<string name="practice">ਅਭਿਆਸ</string>
@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">ਆਨਲਾਇਨ ਖੇਡਣ ਲਈ ਕ੍ਰਿਪਾ ਕਰਕੇ ਸ਼ਾਮਿਲ ਹੋਵੋ.</string>
 	<string name="please_sign_up_for_tactics">ਕ੍ਰਿਪਾ ਕਰਕੇ ਸ਼ਾਮਿਲ ਹੋਵੋ ਯੁਕ੍ਤਿਯਾਂ &amp; ਪਹੇਲੀ ਹਲ ਕਰਣ ਲਈ.</string>
 	<string name="please_sign_up_for_videos">ਕ੍ਰਿਪਾ ਕਰਕੇ ਸ਼ਾਮਿਲ ਹੋਵੋ ਵੀਡੀਓਜ ਵੇਖਨ ਲਈ.</string>
-	<string name="please_sign_up_for_lessons">ਕ੍ਰਿਪਾ ਕਰਕੇ ਸ਼ਾਮਿਲ ਹੋਵੋ ਸਬਕ ਸਿਖਆ ਲਈ.</string>
 	<string name="please_sign_up_for_friends">ਕ੍ਰਿਪਾ ਕਰਕੇ ਸ਼ਾਮਿਲ ਹੋਵੋ ਦੋਸਤਾ ਨੂੰ ਚੁਣੌਤੀ ਦੇਣ ਲਈ.</string>
 	<string name="interactive_lessons">ਸੰਵਾਦਾਤਮਕ ਸਬਕ</string>
 	<string name="tactics_and_puzzles">ਯੁਕ੍ਤਿਯਾਂ &amp; ਪਹੇਲੀਆਂ</string>
@@ -345,7 +344,8 @@
 	<string name="please_add_valid_username">ਕ੍ਰਿਪਾ ਕਰਕੇ ਜਾਇਜ ਕਰਤਾ ਨਾਮ ਭਰੋ</string>
 	<string name="facebook">ਫੇਸਬੁੱਕ</string>
 	<string name="contacts">ਸੰਪਰਕ</string>
-	<string name="facebook_invite_friend_to_play">ਆਓ ਸ਼ਤਰੰਜ ਖੇਡਿਅੇ! ਤੁਸੀ ਖੇਡ ਸਕਦੇ ਹੋ chess.com ਤੇ ਜਾਂ ਅਪਣੇ ਮੋਬਾਇਲ ਤੇ ਐੰਡਰੌਇਡ ਜਾਂ ਆਈ-ਫੋਨ/ਆਈ-ਪੈਡ  ਦੁਆਰਾ l</string>
+  <string name="invite_friend_to_play">ਖੇਲੋਗੇ ਸ਼ਤਰੰਜ ਮੇਰੇ ਨਾਲ? ਮੈ ਖੇਡਦਾ Chess.com ਤੇ ਇਸ ਨਾਮ ਨਾਲ \"%1$s\". ਸ਼ਾਮਿਲ ਹੋਵੋ - ਮੁਫਤ ਵਿਚ!
+http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">ਆਓ ਖੇਡੀਏ!</string>
 	<string name="online_today">ਅੱਜ ਆਨਲਾਇਨ</string>
 	<string name="last_was_online">ਆਨਲਾਇਨ %s</string>
@@ -387,7 +387,7 @@
 	<string name="score_">ਅੰਕ:</string>
 	<string name="rating_">ਆੰਕੜੇ:</string>
 	<string name="new_arg_rating_">ਨਵਾਂ %s ਮੁਲ੍ਯਾਂਕੰਨ:</string>
-	<string name="new_arg">New %s</string>
+	<string name="new_arg">ਨਵੀਂ %s</string>
 	<string name="course">ਪਾਠਕ੍ਰਮ</string>
 	<string name="lessons_completed">ਸਬਕ ਪੂਰਾ ਹੋਇਆ</string>
 	<string name="courses_completed">ਪਾਠਕ੍ਰਮ ਪੂਰਾ ਹੋਇਆ</string>
@@ -487,7 +487,6 @@
 	<string name="upgrade_feedback_2">"\"ਮੇਰੇ ਪ੍ਰੀਮਿਯਮ ਸਦਸ ਬਣਨ ਤੋ ਬਾਅਦ ਮੇਰੇ ਔਸਤ ਮੁਲ੍ਯਾਂਕੰਨ ਵਿਚ ਕਈ ਗੁਣਾ ਇਜਾਫ਼ਾ ਹੋਇਆ\""</string>
 	<string name="upgrade_feedback_reporter_2">-ਲੂ , ਏਨ ਜੇ 2009 ਤੋਂ ਸਦਸ</string>
 	<string name="live_game_share_str">%1$s ਬਨਾਮ %2$s - ਆਨਲਾਈਨ ਸ਼ਤਰੰਜ  http://www.chess.com/livechess/game?id=%3$s ਦੁਆਰਾ @chesscom</string>
-	<string name="daily_game_share_str">%1$s ਬਨਾਮ %2$s - ਆਨਲਾਈਨ ਸ਼ਤਰੰਜ  http://www.chess.com/echess/game?id=%3$s ਦੁਆਰਾ @chesscom</string>
 	<string name="daily_game_share_str">%1$s ਬਨਾਮ %2$s - ਆਨਲਾਈਨ ਸ਼ਤਰੰਜ  http://www.chess.com/echess/game?id=%3$s ਦੁਆਰਾ @chesscom</string>
 	<string name="pieces">ਮੋਹਰੇ</string>
 </resources>

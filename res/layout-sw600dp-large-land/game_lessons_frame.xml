@@ -49,8 +49,7 @@
 			android:layout_above="@+id/controlsView"
 			android:background="@drawable/rounded_white_back"
 			android:scrollbars="none"
-			android:paddingBottom="20dp"
-			>
+			android:paddingBottom="20dp">
 
 			<LinearLayout
 				android:orientation="vertical"

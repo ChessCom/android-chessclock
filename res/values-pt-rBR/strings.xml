@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Por favor, crie uma conta para jogar online.</string>
 	<string name="please_sign_up_for_tactics">Por favor, crie uma conta para resolver táticas e problemas.</string>
 	<string name="please_sign_up_for_videos">Por favor, crie uma conta para assistir vídeos.</string>
-	<string name="please_sign_up_for_lessons">Por favor, cadastre-se para aprender com as nossas lições.</string>
 	<string name="please_sign_up_for_friends">Por favor, crie uma conta para desafiar amigos.</string>
 	<string name="interactive_lessons">Lições interativas</string>
 	<string name="tactics_and_puzzles">Táticas &amp; Problemas</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Por favor, indique um nome de usuário válido</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Contatos</string>
-	<string name="facebook_invite_friend_to_play">Vamos jogar xadrez! Pode jogar online em Chess.com, ou num celular com Android ou iPhone/iPad.</string>
+	<string name="invite_friend_to_play">Quer jogar xadrez comigo? Eu jogo no Chess.com \"%1$s\". Cadastre-se gratuitamente! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Vamos jogar!</string>
 	<string name="online_today">Online hoje</string>
 	<string name="last_was_online">Online %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, membro desde 2011</string>
 	<string name="upgrade_feedback_2">"\"Meu rating global melhorou de forma incrível depois que me tornei membro premium\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, NJ, membro desde 2009</string>
-	<string name="live_game_share_str">%1$s vs %2$s - Xadrez Online http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Xadrez Online http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Xadrez Online http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Xadrez ao Vivo em http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - Xadrez Diário em http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">Peças</string>
 </resources>

@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Onlayn o\'ynash uchun saytga a\'zo bo\'ling.</string>
 	<string name="please_sign_up_for_tactics">Taktik mashqlar &amp; boshqotirmalar echish uchun saytga a\'zo bo\'ling.</string>
 	<string name="please_sign_up_for_videos">Videolar tamosha qilish uchun saytga a\'zo bo\'ling.</string>
-	<string name="please_sign_up_for_lessons">Darslarni o\'rganish uchun saytga a\'zo bo\'ling.</string>
 	<string name="please_sign_up_for_friends">Do\'stlarizni o\'yinga taklif qilish uchun saytga a\'zo bo\'ling.</string>
 	<string name="interactive_lessons">Interaktiv Darslar</string>
 	<string name="tactics_and_puzzles">Taktik mashqlar &amp; Boshqotirmalar</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Iltimos to\'g\'ri a\'zolik nomizni kiriting</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Tanish-bilishlar</string>
-	<string name="facebook_invite_friend_to_play">Birga shaxmat o\'ynaylik! Siz Chess.comda, yoki Android va iPhone/iPad orqali mobil telefonizda o\'ynashiz mumkin.</string>
+	<string name="invite_friend_to_play">Men bilan shaxmat o\'ynaysizmi? Men Chess.com da \"%1$s\" nomi bilan o\'ynayman.  Bepul a\'zo bo\'ling! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Birga shaxmat o\'ynaylik!</string>
 	<string name="online_today">Bugun online bo\'lganlar</string>
 	<string name="last_was_online">Onlayn %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, 2011 yildan beri a\'zo</string>
 	<string name="upgrade_feedback_2">"\"Mening reytingim a'zolik paketini yangilaganimdan so'ng juda ham yaxshilandi\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, NJ 2009 yildan beri a\'zo</string>
-	<string name="live_game_share_str">%1$s ga qarshi %2$s - Onlayn Shaxmat http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s ga qarshi %2$s - Onlayn Shaxmat http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s ga qarshi %2$s - Onlayn Shaxmat http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
+	<string name="live_game_share_str">%1$s ga qarshi %2$s - Jonli Shaxmat http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s ga qarshi %2$s - Kundalik Shaxmat http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">Donalar</string>
 </resources>

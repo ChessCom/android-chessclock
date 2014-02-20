@@ -285,7 +285,7 @@
 	<string name="account_history">계정 내역</string>
 	<string name="location">위치</string>
 	<string name="share">공유</string>
-	<string name="profile_membership_renew_cancel">귀하의 %1$s 의 멤버십은 %2$s 에 갱신 됩니다.</string>
+	<string name="profile_membership_renew_cancel">귀하의 %1$s 의 멤버십은 %2$s s에 갱신 됩니다.</string>
 	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> 취소</a>]]></string>
 	<string name="invite_friends_profile_message">체스는 친구와 함께 하면 훨씬 재밌습니다 - 즐길 수 있도록 초대하세요!</string>
 	<string name="profile_account_message_1">귀하의 계정은 </string>
@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">온라인으로 플레이 하시려면 계정을 생성해 주시기 바랍니다.</string>
 	<string name="please_sign_up_for_tactics">전술과 퍼즐들을 풀려면 계정을 생성해 주시기 바랍니다.</string>
 	<string name="please_sign_up_for_videos">영상을 시청하시려면 계정을 생성해 주시기 바랍니다.</string>
-	<string name="please_sign_up_for_lessons">강의를 배우시려면 계정을 생성해 주시기 바랍니다.</string>
 	<string name="please_sign_up_for_friends">친구와 대결하려면 계쩡을 생성해 주시기 바랍니다.</string>
 	<string name="interactive_lessons">상호 대화형 레슨</string>
 	<string name="tactics_and_puzzles">전술 및 퍼즐</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">유효한 아이디를 입력하세요</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">연락처</string>
-	<string name="facebook_invite_friend_to_play">체스를 플레이하자! </string>
+	<string name="invite_friend_to_play">Play chess with me? I play on Chess.com as \"%1$s\". Sign up for free! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">게임 합시다!</string>
 	<string name="online_today">오늘 온라인</string>
 	<string name="last_was_online">온라인 %s</string>
@@ -399,7 +398,7 @@
 	<string name="lessons_limit_reached_message">일일 레슨 한계에 도달하였습니다. 무제한 레슨을 듣고 실력을 향상시키려면 계정을 지금 업그레이드하세요!</string>
 	<string name="resume_lesson">레슨 계속하기</string>
 	<string name="installing_theme">테마 설치 중</string>
-	<string name="waiting_to_download">다운로드를 기다리는 중...</string>
+	<string name="waiting_to_download">다운로드를 기다리는 중…</string>
 	<string name="downloading_arg">다운로드 중</string>
 	<string name="custom">사용자 지정</string>
 	<string name="background">배경</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, 2011년부터 회원</string>
 	<string name="upgrade_feedback_2">"\"제가 프리미엄 회원이 되면서 제 전체적 레이팅이 크게 향상 되었습니다\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, 2009년부터 멤버</string>
-	<string name="live_game_share_str">%1$s vs %2$s -@chesscom을 통해 온라인 체스 http://www.chess.com/echess/game?id=%3$s</string>
-	<string name="daily_game_share_str">%1$s vs %2$s -@chesscom을 통해 온라인 체스 http://www.chess.com/echess/game?id=%3$s</string>
-	<string name="daily_game_share_str">%1$s vs %2$s -@chesscom을 통해 온라인 체스 http://www.chess.com/echess/game?id=%3$s</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Live Chess http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - Daily Chess http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">조각</string>
 </resources>

@@ -29,7 +29,7 @@
 	<string name="challenge_declined">Provocare refuzată</string>
 	<string name="request_accepted">Cerere acceptată</string>
 	<string name="request_declined">Cerere refuzată</string>
-	<string name="decline">Refuzaţi</string>
+	<string name="decline">Refuză</string>
 	<string name="type_">Tip</string>
 	<string name="chess_960">Șah 960</string>
 	<string name="rated_game_">Partidă evaluată</string>
@@ -48,7 +48,7 @@
 	<string name="board_wood_light">Lemn deschis</string>
 	<string name="board_wood_dark">Lemn închis</string>
 	<string name="pieces_game">Sală de joc</string>
-	<string name="pieces_alpha">Alfa</string>
+	<string name="pieces_alpha">Alpha</string>
 	<string name="pieces_book">Book</string>
 	<string name="pieces_cases">Cases</string>
 	<string name="pieces_classic">Clasic</string>
@@ -331,7 +331,6 @@ apăsați aici.</a>]]></string>
 	<string name="please_sign_up_for_play_online">Vă rugăm să vă înscrieți pentru un cont pentru a juca on-line.</string>
 	<string name="please_sign_up_for_tactics">Vă rugăm să vă înscrieți pentru un cont pentru a rezolva combinații &amp; puzzle-uri.</string>
 	<string name="please_sign_up_for_videos">Vă rugăm să vă înscrieți pentru un cont pentru a viziona clipurile video.</string>
-	<string name="please_sign_up_for_lessons">Vă rugăm să vă înscrieți pentru un cont pentru a învăţa lecţiile.</string>
 	<string name="please_sign_up_for_friends">Vă rugăm să vă înscrieți pentru un cont pentru a provoca prietenii.</string>
 	<string name="interactive_lessons">Lecţii interactive</string>
 	<string name="tactics_and_puzzles">Combinații &amp; puzzle-uri</string>
@@ -346,7 +345,7 @@ apăsați aici.</a>]]></string>
 	<string name="please_add_valid_username">Vă rugăm să tastați un nume de utilizator valid</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Persoane de contact</string>
-	<string name="facebook_invite_friend_to_play">Să jucăm şah! Poți juca online la Chess.com sau pe mobil cu Android sau iPhone/iPad.</string>
+	<string name="invite_friend_to_play">Joci şah cu mine? Eu joc pe Chess.com ca ”%1$s”. Înscrie-te gratuit! http://www.Chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Să jucăm!</string>
 	<string name="online_today">Online astăzi</string>
 	<string name="last_was_online">On-line %s</string>
@@ -487,8 +486,7 @@ apăsați aici.</a>]]></string>
 	<string name="upgrade_feedback_reporter_1">- Peter, membru din 2011</string>
 	<string name="upgrade_feedback_2">"\"Rating-ul meu s-a îmbunătaţit substanţial după ce am devenit membru premium\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, NJ membru din anul 2009</string>
-	<string name="live_game_share_str">%1$s vs %2$s- Şah online http://www.chess.com/livechess/game?id=%3$s prin @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s- Şah online http://www.chess.com/livechess/game?id=%3$s prin @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s- Şah online http://www.chess.com/livechess/game?id=%3$s prin @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s- Şah online http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s- Șah zilnic http://www.chess.com/livechess/game?id=%3$s prin @chesscom</string>
 	<string name="pieces">Piese</string>
 </resources>

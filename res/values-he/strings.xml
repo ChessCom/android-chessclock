@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">אנא הירשם לפתיחת חשבון. כך תוכל לשחק באופן מקוון.</string>
 	<string name="please_sign_up_for_tactics">אנא הירשם לפתיחת חשבון. כך תוכל לפתור בעיות &amp; טקטיקה.</string>
 	<string name="please_sign_up_for_videos">אנא הירשם לפתיחת חשבון. כך תוכל לצפות בסרטוני וידיאו.</string>
-	<string name="please_sign_up_for_lessons">אנא הירשם לפתיחת חשבון. כך תוכל ללמוד שיעורים.</string>
 	<string name="please_sign_up_for_friends">אנא הירשם לפתיחת חשבון. כך תוכל להזמין למשחק את חבריך.</string>
 	<string name="interactive_lessons">שיעורים אינטראקטיביים</string>
 	<string name="tactics_and_puzzles">בעיות &amp; טקטיקה</string>
@@ -345,7 +344,8 @@
 	<string name="please_add_valid_username">אנא הזן שם משתמש תקין</string>
 	<string name="facebook">פייסבוק</string>
 	<string name="contacts">אנשי קשר</string>
-	<string name="facebook_invite_friend_to_play">בואו נשחק שחמט! אתה יכול לשחק באופן מקוון ב-Chess.com או בטלפון הנייד עם אנדרואיד או אייפון/אייפד.</string>
+  <string name="invite_friend_to_play">רוצה לשחק איתי שחמט? אני משחק ב-chess.com כ-%1$s. הירשם בחינם!
+http:/www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">בואו נשחק!</string>
 	<string name="online_today">מקוונים היום</string>
 	<string name="last_was_online">%s מקוון</string>
@@ -486,8 +486,7 @@
 	<string name="upgrade_feedback_reporter_1">- פיטר, משתתף משנת 2011</string>
 	<string name="upgrade_feedback_2">"\"מד הכושר הכולל שלי השתפר בשנות אור אחרי שהפכתי למשתתף עילית\""</string>
 	<string name="upgrade_feedback_reporter_2">- לו, ניו ג\'רזי; משתתפת משנת 2009</string>
-	<string name="live_game_share_str">%1$s נגד %2$s - שחמט מקוון  http://www.chess.com/livechess/game?id=%3$s מ-@chesscom</string>
-	<string name="daily_game_share_str">%1$s נגד %2$s - שחמט מקוון http://www.chess.com/echess/game?id=%3$s מ-@chesscom</string>
-	<string name="daily_game_share_str">%1$s נגד %2$s - שחמט מקוון http://www.chess.com/echess/game?id=%3$s מ-@chesscom</string>
+	<string name="live_game_share_str">%1$s נגד %2$s - שחמט חי, http://www.chess.com/livechess/game?id=%3$s באמצעות @chesscom</string>
+	<string name="daily_game_share_str">%1$s נגד %2$s - שחמט מדי יום - http://www.chess.com/echess/game?id=%3$s באמצעות @chess.com</string>
 	<string name="pieces">כלים</string>
 </resources>

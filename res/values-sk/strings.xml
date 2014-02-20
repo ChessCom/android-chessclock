@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Prosím registrujte si účet pre hru online.</string>
 	<string name="please_sign_up_for_tactics">Prosím registrujte si účet pre riešenie taktických problémov &amp; hádaniek.</string>
 	<string name="please_sign_up_for_videos">Prosím registrujte si účet pre pozeranie videí.</string>
-	<string name="please_sign_up_for_lessons">Prosím registrujte si účet pre učenie pomocou lekcií.</string>
 	<string name="please_sign_up_for_friends">Prosím registrujte si účet pre vyzvanie priateľov.</string>
 	<string name="interactive_lessons">Interaktívne lekcie</string>
 	<string name="tactics_and_puzzles">Taktické problémy &amp; Hádanky</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Prosím zadajte platné meno užívateľa</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontakty</string>
-	<string name="facebook_invite_friend_to_play">Poďte si zahrať šach! Môžete hrať online na Chess.com, na smartfóne s Androidom alebo na iPhone/iPade.</string>
+	<string name="invite_friend_to_play">Chceš si zahrať šach? Hrám na Chess.com ako \"%1$s\". Prihlásiť sa môžeš zadarmo! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Poďte hrať!</string>
 	<string name="online_today">Dnes online</string>
 	<string name="last_was_online">Online %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, člen od roku 2011</string>
 	<string name="upgrade_feedback_2">"\"Moje celkové hodnotenie sa o dosť zlepšilo odkedy som sa stal prémiovým členom\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, NJ člen od roku 2009</string>
-	<string name="live_game_share_str">%1$s proti %2$s - Online Šach http://www.chess.com/livechess/game?id=%3$s cez @chesscom</string>
-	<string name="daily_game_share_str">%1$s proti %2$s - Online Šach http://www.chess.com/echess/game?id=%3$s cez @chesscom</string>
-	<string name="daily_game_share_str">%1$s proti %2$s - Online Šach http://www.chess.com/echess/game?id=%3$s cez @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Live Šach http://www.chess.com/livechess/game?id=%3$s cez @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s -  Šach denne na http://www.chess.com/echess/game?id=%3$s cez @chesscom</string>
 	<string name="pieces">Figúrky</string>
 </resources>

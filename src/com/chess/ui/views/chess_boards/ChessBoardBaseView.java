@@ -143,6 +143,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	private int borderMergeColor;
 	private boolean initialized;
 	private Rect screenRect;
+	private boolean showMovesAnimation;
 
 	public ChessBoardBaseView(Context context) {
 		super(context);
@@ -156,6 +157,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 	private void init(Context context) {
 		appData = new AppData(context);
+
+		showMovesAnimation = true;
 	}
 
 	private void initResources(Context context) {
@@ -602,6 +605,10 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	protected void drawPiecesAndAnimation(Canvas canvas) {
 		boolean animationActive;
 
+		if (!showMovesAnimation) {
+			moveAnimator = null;
+			secondMoveAnimator = null;
+		}
 		// draw just piece without animation
 		if (moveAnimator == null && secondMoveAnimator == null) {
 			drawPieces(canvas, false, null);
@@ -620,6 +627,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				}
 				moveAnimator = null;
 
+				// draw second move(castling) ad the same time
 				if (secondMoveAnimator != null) {
 					BoardFace boardFace = getBoardFace();
 					if (secondMoveAnimator.isForward()) {
@@ -854,7 +862,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 			float halfSquare = squareSize / 2;
 			int file = (int) ((dragX - dragX % squareSize) / squareSize);
-			int rank = (int) (((dragY + squareSize) - (dragY + squareSize) % squareSize) / squareSize);
+			int rank = (int) ((dragY - dragY % squareSize) / squareSize);
 			if (color != ChessBoard.EMPTY && piece != ChessBoard.EMPTY) {
 				Bitmap pieceBitmap = getPieceBitmap(color, piece);
 				if (pieceBitmap == null || pieceBitmap.isRecycled()) { // we closed the view, no need to show animation. // TODO find better way of using bitmaps
@@ -1039,7 +1047,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 	protected boolean onActionMove(MotionEvent event) {
 		dragX = (int) event.getX();
-		dragY = (int) event.getY() - squareSize;
+		dragY = (int) event.getY();
 
 		int file = (int) ((dragX - dragX % squareSize) / squareSize);
 		int rank = (int) ((dragY - dragY % squareSize) / squareSize);
@@ -1071,6 +1079,10 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		int rank = (int) ((event.getY() - event.getY() % squareSize) / squareSize);
 
 		boolean showAnimation = !dragging;
+
+		if (!showMovesAnimation) {
+			showAnimation = false;
+		}
 
 		dragging = false;
 		draggingFrom = -1;
@@ -1863,6 +1875,10 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 	public void invalidateMe() {
 		invalidate(screenRect);
+	}
+
+	public void setShowMovesAnimation(boolean show) {
+		showMovesAnimation = show;
 	}
 
 // TODO: refactor! Use ObjectAnimator for better drawing and performance

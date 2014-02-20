@@ -60,8 +60,7 @@
 			custom:oneLine="@bool/one_line_for_board"
 			android:layout_marginBottom="@dimen/tablet_panel_info_top_margin"
 			android:layout_marginStart="-2dp"
-			android:layout_marginLeft="-2dp"
-			/>
+			android:layout_marginLeft="-2dp" />
 
 		<!--Login-->
 		<com.chess.widgets.RoboButton
@@ -73,8 +72,7 @@
 			android:minHeight="@dimen/big_orange_button_height"
 			android:layout_below="@id/topPanelView"
 			android:layout_marginStart="9dp"
-			android:layout_marginLeft="9dp"
-			/>
+			android:layout_marginLeft="9dp" />
 
 		<!--SignUp-->
 		<com.chess.widgets.RoboButton
@@ -87,8 +85,7 @@
 			android:layout_below="@id/loginBtn"
 			android:minHeight="@dimen/big_orange_button_height"
 			android:layout_marginStart="9dp"
-			android:layout_marginLeft="9dp"
-			/>
+			android:layout_marginLeft="9dp" />
 
 		<!--What is Chess.com-->
 		<com.chess.widgets.RoboTextView
@@ -112,8 +109,7 @@
 			custom:controls_style="rounded"
 			android:layout_above="@+id/bottomPanelView"
 			android:layout_marginStart="7dp"
-			android:layout_marginLeft="7dp"
-			/>
+			android:layout_marginLeft="7dp" />
 
 		<!--BottomPanelInfo-->
 		<com.chess.ui.views.PanelInfoWelcomeView
@@ -124,8 +120,7 @@
 			android:layout_alignParentBottom="true"
 			android:layout_marginTop="@dimen/tablet_panel_info_top_margin"
 			android:layout_marginStart="-2dp"
-			android:layout_marginLeft="-2dp"
-			/>
+			android:layout_marginLeft="-2dp" />
 
 		<com.chess.widgets.MultiDirectionSlidingDrawer
 			android:id="@+id/slidingDrawer"

@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Por favor regístrate para jugar en línea.</string>
 	<string name="please_sign_up_for_tactics">Por favor regístrate para resolver tácticas y problemas.</string>
 	<string name="please_sign_up_for_videos">Por favor regístrate para ver vídeos.</string>
-	<string name="please_sign_up_for_lessons">Por favor regístrate para aprender lecciones.</string>
 	<string name="please_sign_up_for_friends">Por favor regístrate para retar a amigos.</string>
 	<string name="interactive_lessons">Lecciones Interactivas</string>
 	<string name="tactics_and_puzzles">Tácticas y Problemas</string>
@@ -345,7 +344,7 @@
 	<string name="please_add_valid_username">Por favor introduce un nombre de usuario válido</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Contactos</string>
-	<string name="facebook_invite_friend_to_play">¡Juguemos al ajedrez! Puedes jugar en línea en Chess.com o en tu móvil con Android o iPhone/iPad.</string>
+	<string name="invite_friend_to_play">¿Juegas al ajedrez conmigo? Yo juego en Chess.com como \"%1$s\". ¡Regístrate gratis! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">¡Juguemos!</string>
 	<string name="online_today">Conectado hoy</string>
 	<string name="last_was_online">En línea %s</string>
@@ -486,8 +485,7 @@
 	<string name="upgrade_feedback_reporter_1">- Peter, Miembro Desde 2011</string>
 	<string name="upgrade_feedback_2">"\"Mi puntuación total mejoró un montón después de convertirme en miembro premium\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, NJ Miembro Desde 2009</string>
-	<string name="live_game_share_str">%1$s vs %2$s - Ajedrez en Línea http://www.chess.com/livechess/game?id=%3$s vía @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Ajedrez en Línea http://www.chess.com/echess/game?id=%3$s vía @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Ajedrez en Línea http://www.chess.com/echess/game?id=%3$s vía @chesscom</string>
+	<string name="live_game_share_str">%1$s vs %2$s - Ajedrez En Línea http://www.chess.com/livechess/game?id=%3$s vía @chesscom</string>
+	<string name="daily_game_share_str">%1$s vs %2$s - Ajedrez Diario http://www.chess.com/echess/game?id=%3$s vía @chesscom</string>
 	<string name="pieces">Piezas</string>
 </resources>

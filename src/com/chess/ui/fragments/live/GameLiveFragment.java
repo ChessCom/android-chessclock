@@ -454,6 +454,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	@Override
+	public void showPiecesMovesAnimation(boolean show) {
+		boardView.setShowMovesAnimation(show);
+	}
+
+	@Override
 	public void setWhitePlayerTimer(final String timeString) {
 		final FragmentActivity activity = getActivity();
 		if (activity == null) {

@@ -331,7 +331,6 @@
 	<string name="please_sign_up_for_play_online">Avaa tili pelataksesi online-shakkia.</string>
 	<string name="please_sign_up_for_tactics">Avaa tili ratkaistaksesi taktiikkaharjoituksia ja pulmia.</string>
 	<string name="please_sign_up_for_videos">Avaa tili katsellaksesi videoita.</string>
-	<string name="please_sign_up_for_lessons">Avaa tili osallistuaksesi oppitunneille.</string>
 	<string name="please_sign_up_for_friends">Avaa tili haastaaksesi kavereitasi.</string>
 	<string name="interactive_lessons">Interaktiiviset oppitunnit</string>
 	<string name="tactics_and_puzzles">Taktiikat ja pulmat</string>
@@ -346,7 +345,7 @@
 	<string name="please_add_valid_username">Anna kelvollinen käyttäjätunnus</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Yhteystiedot</string>
-	<string name="facebook_invite_friend_to_play">Pelataan shakkia! Voit pelata verkossa Chess.com:issa tai mobiilisovelluksena Androidilla, iPhonella tai iPadilla.</string>
+	<string name="invite_friend_to_play">Pelaisitko shakkia kanssani? Pelaan Chess.comissa käyttäjänimellä \"%1$s\". Rekisteröidy käyttäjäksi ilmaiseksi! http://www.chess.com/register?ref_id=%2$s</string>
 	<string name="add_friend_request_message">Pelataan!</string>
 	<string name="online_today">Online-tilassa tänään</string>
 	<string name="last_was_online">Online-tilassa %s</string>
@@ -486,9 +485,8 @@
 	<string name="upgrade_feedback_1">"\"Taktiikkaharjoitukset ja oppitunnit ovat selvästi parantaneet shakkitaitojani\""</string>
 	<string name="upgrade_feedback_reporter_1">- Peter, jäsen vuodesta 2011</string>
 	<string name="upgrade_feedback_2">"\"Vahvuuslukuni parani selvästi liityttyäni premium-jäseneksi\""</string>
-	<string name="upgrade_feedback_reporter_2">- Lou, NJ, jäsen vuodesta 2009</string>
-	<string name="live_game_share_str">%1$s vs %2$s - Online-shakki http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online-shakki http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online-shakki http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
+	<string name="upgrade_feedback_reporter_2">- Lou, jäsen vuodesta 2009</string>
+	<string name="live_game_share_str">%1$s vastaan %2$s – Live-shakki http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
+	<string name="daily_game_share_str">%1$s vastaan %2$s – Päivittäinen shakki http://www.chess.com/echess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">Nappulat</string>
 </resources>

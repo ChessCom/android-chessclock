@@ -330,6 +330,13 @@ public class RightNotificationsFragment extends CommonLogicFragment implements A
 		public void updateData(FriendRequestItem returnedObj) {
 			super.updateData(returnedObj);
 
+			// remove all cached notifications from DB
+			if (returnedObj.getData().size() == 0) {
+				DbDataManager.deleteNewFriendRequestsForUser(getContentResolver(), getUsername());
+
+				loadNotifications();
+			}
+
 			if (returnedObj.getData().size() == 0 && emptyData) {
 				emptyView.setText(R.string.no_alerts);
 				emptyView.setVisibility(View.VISIBLE);
