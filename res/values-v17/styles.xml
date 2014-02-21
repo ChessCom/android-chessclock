@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+	<style name="Text.Button">
+		<item name="android:focusable">true</item>
+		<item name="android:clickable">true</item>
+		<item name="android:textSize">@dimen/default_button_text_size</item>
+		<item name="android:gravity">center</item>
+		<item name="android:paddingStart">4dp</item>
+		<item name="android:paddingEnd">4dp</item>
+		<item name="android:paddingLeft">4dp</item>
+		<item name="android:paddingRight">4dp</item>
+		<item name="android:paddingTop">1dp</item>
+		<item name="android:paddingBottom">1dp</item>
+		<item name="android:layout_marginTop">2dp</item>
+		<item name="android:layout_marginBottom">2dp</item>
+		<item name="android:minWidth">@dimen/button_min_width</item>
+		<item name="android:minHeight">@dimen/main_button_height</item>
+		<item name="android:textColor">@color/white</item>
+
+		<!--Add Shadow Top to text-->
+		<!--
+				<item name="android:shadowColor">@color/back_shadows_chess</item>
+				<item name="android:shadowRadius">0.5</item>
+				<item name="android:shadowDx">0</item>
+				<item name="android:shadowDy">-1.0</item>
+		-->
+
+	</style>
+
+	<style name="Content.Selectable">
+		<item name="android:textIsSelectable">true</item>
+	</style>
+
+
+	<style name="SeekBar" parent="android:style/Widget.SeekBar">
+		<!--<item name="android:progressDrawable">@drawable/progress_horizontal</item>-->
+		<!--<item name="android:indeterminateDrawable">@drawable/progress_horizontal</item>-->
+		<!--<item name="android:thumb">@drawable/seek_thumb_selector</item>-->
+		<item name="android:thumbOffset">8dp</item>
+		<item name="android:paddingStart">7dp</item>
+		<item name="android:paddingEnd">7dp</item>
+		<item name="android:paddingLeft">7dp</item>
+		<item name="android:paddingRight">7dp</item>
+		<item name="android:minHeight">14dp</item>
+		<item name="android:maxHeight">14dp</item>
+	</style>
+
+	<style name="RatingSeekBar" parent="android:style/Widget.SeekBar">
+		<item name="android:indeterminateDrawable">@drawable/empty</item>
+		<item name="android:thumb">@drawable/seek_thumb_selector</item>
+		<item name="android:thumbOffset">8dp</item>
+		<item name="android:paddingStart">7dp</item>
+		<item name="android:paddingEnd">7dp</item>
+		<item name="android:paddingLeft">7dp</item>
+		<item name="android:paddingRight">7dp</item>
+		<item name="android:minHeight">20dp</item>
+		<item name="android:maxHeight">20dp</item>
+	</style>
+
+	<style name="SettingsDividerText" parent="Text">
+		<item name="android:paddingTop">10dp</item>
+		<item name="android:paddingStart">10dp</item>
+		<item name="android:paddingLeft">10dp</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+
+	<style name="LinearDescription">
+		<item name="android:weightSum">10</item>
+		<item name="android:paddingBottom">@dimen/default_linear_bottom_padding</item>
+		<item name="android:paddingTop">@dimen/default_linear_top_padding</item>
+		<item name="android:paddingStart">@dimen/default_linear_left_padding</item>
+		<item name="android:paddingEnd">@dimen/default_linear_right_padding</item>
+		<item name="android:paddingLeft">@dimen/default_linear_left_padding</item>
+		<item name="android:paddingRight">@dimen/default_linear_right_padding</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
+
+	<style name="LinearListItem" parent="ListItem">
+		<item name="android:paddingStart">15dp</item>
+		<item name="android:paddingEnd">15dp</item>
+		<item name="android:paddingLeft">15dp</item>
+		<item name="android:paddingRight">15dp</item>
+		<item name="android:minHeight">@dimen/default_list_item_height</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
+
+	<style name="welcomeCloseBtn" parent="@style/Button.Glassy.Small">
+		<item name="android:layout_alignParentEnd">true</item>
+		<item name="android:layout_alignParentRight">true</item>
+		<item name="android:textColor">@color/text_controls_icons</item>
+		<item name="ttf">Icon</item>
+		<item name="android:text">@string/ic_close</item>
+		<item name="android:textSize">40dp</item>
+		<item name="android:minWidth">48dp</item>
+		<item name="android:visibility">gone</item>
+	</style>
+
+</resources>

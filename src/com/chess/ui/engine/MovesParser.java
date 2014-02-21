@@ -59,6 +59,7 @@ public class MovesParser {
 	private static final CharSequence ALTERNATE_MOVES_SYMBOL_START = Symbol.LEFT_PAR;
 	public static final String SPECIAL_SYMBOLS_PATTERN = "[+,!,?,#,x,=,‼,⁇,⁉,⁈,□,∞,⩲,⩱,±,∓,−]";
 	public static final String TAG = "MovesParser";
+	private static final int FIRST = 0;
 
 	private final HashMap<String, String> annotationsMapping;
 
@@ -168,32 +169,16 @@ public class MovesParser {
 
 		if (currentMove.contains(QUEENSIDE_CASTLING)) {
 			if (board.getSide() == ChessBoard.WHITE_SIDE) {
-				if (board.whiteKing == ChessBoard.WHITE_QUEENSIDE_KING_DEST) { // for chess960 king can be already on this position
-					return new int[]{board.whiteKing, ChessBoard.WHITE_QUEENSIDE_KING_DEST_B1, 0, Move.CASTLING_MASK};
-				} else {
-					return new int[]{board.whiteKing, ChessBoard.WHITE_QUEENSIDE_KING_DEST, 0, Move.CASTLING_MASK};
-				}
+				return new int[]{board.whiteKing, board.whiteKingMoveOOO[FIRST], 0, 2}; // TODO  use object constructor and get rid of int[]
 			} else if (board.getSide() == ChessBoard.BLACK_SIDE) {
-				if (board.blackKing == ChessBoard.BLACK_QUEENSIDE_KING_DEST) { // for chess960 king can be already on this position
-					return new int[]{board.blackKing, ChessBoard.BLACK_QUEENSIDE_KING_DEST_B8, 0, Move.CASTLING_MASK};
-				} else {
-					return new int[]{board.blackKing, ChessBoard.BLACK_QUEENSIDE_KING_DEST, 0, Move.CASTLING_MASK};
-				}
+				return new int[]{board.blackKing, board.blackKingMoveOOO[FIRST], 0, 2};
 			}
 		}
 		if (currentMove.contains(KINGSIDE_CASTLING)) {
 			if (board.getSide() == ChessBoard.WHITE_SIDE) {
-				if (board.whiteKing == ChessBoard.WHITE_KINGSIDE_KING_DEST) { // for chess960 king can be already on this position
-					return new int[]{board.whiteKing, ChessBoard.WHITE_KINGSIDE_KING_DEST_H1, 0, Move.CASTLING_MASK};
-				} else {
-					return new int[]{board.whiteKing, ChessBoard.WHITE_KINGSIDE_KING_DEST, 0, Move.CASTLING_MASK};
-				}
+				return new int[]{board.whiteKing, board.whiteKingMoveOO[FIRST], 0, 2};
 			} else if (board.getSide() == ChessBoard.BLACK_SIDE) {
-				if (board.blackKing == ChessBoard.BLACK_KINGSIDE_KING_DEST) { // for chess960 king can be already on this position
-					return new int[]{board.blackKing, ChessBoard.BLACK_KINGSIDE_KING_DEST_H8, 0, Move.CASTLING_MASK};
-				} else {
-					return new int[]{board.blackKing, ChessBoard.BLACK_KINGSIDE_KING_DEST, 0, Move.CASTLING_MASK};
-				}
+				return new int[]{board.blackKing, board.blackKingMoveOO[FIRST], 0, 2};
 			}
 		}
 

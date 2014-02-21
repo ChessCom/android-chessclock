@@ -428,16 +428,6 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 	}
 
-	private void showLoadingView(boolean show) {
-		if (show) {
-			emptyView.setVisibility(View.GONE);
-			loadingView.setVisibility(View.VISIBLE);
-		} else {
-			listView.setVisibility(View.VISIBLE);
-			loadingView.setVisibility(View.GONE);
-		}
-	}
-
 	@Override
 	public Context getMeContext() {
 		return getActivity();

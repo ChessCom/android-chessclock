@@ -67,22 +67,6 @@
 		<item>Expert</item>
 	</string-array>
 
-	<string-array name="skills_desc">
-		<item>"I'm just getting started"</item>
-		<item>I want to learn basic strategies</item>
-		<item>I play often and know some strategy</item>
-		<item>I know tactics, strategy, and openings</item>
-		<item>I am high-rated tournament player</item>
-	</string-array>
-
-	<string-array name="lesson_difficulty">
-		<item>Beginner</item>
-		<item>Intermediate</item>
-		<item>Advanced</item>
-		<item>Expert</item>
-		<item>Master</item>
-	</string-array>
-
 	<!--
 		<string-array name="languages">
 			<item>English</item>

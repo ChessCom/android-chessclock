@@ -25,9 +25,6 @@ public class AppConstants {
 	public static final int COMPUTER_THINK_TIME = 500;
 	static final String LIVE_CONNECT_ATTEMPTS = "live_connect_attempts";
 
-	/* Online games*/
-	public static final String USER_OFFERED_DRAW_FOR_GAME = "user offered draw for game";
-
 	public static final String FIRST_NAME = "first_name";
 	public static final String LAST_NAME = "last_name";
 	public static final String LOCATION = "location";

@@ -298,9 +298,9 @@ public class ChessBoard implements BoardFace {
 		{// parse first black line
 			int offset = 0;
 			boolean found = false;
-			String firstBlackLine = boardLines[0];
-			for (int i = 0; i < firstBlackLine.length(); i++) {
-				if (firstBlackLine.charAt(i) == BLACK_ROOK_CHAR) {
+			String firstBlackRank = boardLines[0];
+			for (int i = 0; i < firstBlackRank.length(); i++) {
+				if (firstBlackRank.charAt(i) == BLACK_ROOK_CHAR) {
 					if (!found) {
 						blackRook1 = i + offset;
 						BLACK_ROOK_1_INITIAL_POS = i + offset;
@@ -311,12 +311,12 @@ public class ChessBoard implements BoardFace {
 					found = true;
 				}
 
-				if (firstBlackLine.charAt(i) == BLACK_KING_CHAR) {
+				if (firstBlackRank.charAt(i) == BLACK_KING_CHAR) {
 					blackKing = i + offset;
 					found = true;
 				}
 
-				String symbol = firstBlackLine.substring(i, i + 1);
+				String symbol = firstBlackRank.substring(i, i + 1);
 				if (symbol.matches(NUMBERS_PATTERS)) {
 					offset += (Integer.parseInt(symbol) - 1);
 				}
@@ -324,11 +324,11 @@ public class ChessBoard implements BoardFace {
 		}
 
 		{// parse last white rank
-			int offset = 56;
+			int offset = Board.A1.ordinal();
 			boolean found = false;
-			String lastWhiteLine = boardLines[7];
-			for (int i = 0; i < lastWhiteLine.length(); i++) {
-				if (lastWhiteLine.charAt(i) == WHITE_ROOK_CHAR) {
+			String firstWhiteRank = boardLines[7];
+			for (int i = 0; i < firstWhiteRank.length(); i++) {
+				if (firstWhiteRank.charAt(i) == WHITE_ROOK_CHAR) {
 					if (!found) {
 						whiteRook1 = i + offset;
 						WHITE_ROOK_1_INITIAL_POS = i + offset;
@@ -338,19 +338,18 @@ public class ChessBoard implements BoardFace {
 					}
 					found = true;
 				}
-				if (lastWhiteLine.charAt(i) == WHITE_KING_CHAR) {
+				if (firstWhiteRank.charAt(i) == WHITE_KING_CHAR) {
 					whiteKing = i + offset;
 					found = true;
 				}
-				if (lastWhiteLine.substring(i, i + 1).matches(NUMBERS_PATTERS)) {
-					offset += (Integer.parseInt(lastWhiteLine.substring(i, i + 1)) - 1);
+				if (firstWhiteRank.substring(i, i + 1).matches(NUMBERS_PATTERS)) {
+					offset += (Integer.parseInt(firstWhiteRank.substring(i, i + 1)) - 1);
 				}
 			}
 		}
 
 		//black  KingSide castling O-O
 		if (blackKing < 5) { // if black king was not castled to kingside
-			//blackKingMoveOO = new int[]{6,7};
 			blackKingMoveOO = new int[8 - (blackKing + 2)];
 			for (int i = 0; i < blackKingMoveOO.length; i++) {
 				blackKingMoveOO[i] = blackKing + 2 + i;
@@ -389,15 +388,14 @@ public class ChessBoard implements BoardFace {
 		}
 
 		// white KingSide castling O-O
-		if (whiteKing < 61) {
-			//whiteKingMoveOO = new int[]{62,63};
+		if (whiteKing < Board.F1.ordinal()) {
 			whiteKingMoveOO = new int[64 - (whiteKing + 2)];
 			for (int i = 0; i < 64 - (whiteKing + 2); i++) {
 				whiteKingMoveOO[i] = whiteKing + 2 + i;
 			}
 		} else {
-			if (whiteKing == 61) {
-				if (whiteRook2 == 62) {
+			if (whiteKing == Board.F1.ordinal()) {
+				if (whiteRook2 == Board.G1.ordinal()) {
 					whiteKingMoveOO = new int[]{62, 63};
 				} else {
 					whiteKingMoveOO = new int[]{63};
@@ -423,7 +421,7 @@ public class ChessBoard implements BoardFace {
 					whiteKingMoveOOO = new int[]{56};
 				}
 			} else {
-				whiteKingMoveOOO = new int[]{56, 58}; // this should be legal, because we parse O-O-O and king can be moved to 58(C1)
+				whiteKingMoveOOO = new int[]{56};
 			}
 		}
 	}
