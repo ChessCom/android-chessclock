@@ -212,6 +212,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				handler.postDelayed(new Runnable() {
 					@Override
 					public void run() {
+						if (isPaused || isFinishing()) {
+							return;
+						}
 						clearFragmentStack();
 						switchFragment(new HomeTabsFragment());
 						setTouchModeToSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
