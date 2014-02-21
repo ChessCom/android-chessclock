@@ -59,6 +59,7 @@ import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.slidingmenu.lib.SlidingMenu;
+import org.w3c.dom.Text;
 import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
 import uk.co.senab.actionbarpulltorefresh.extras.AbcPullToRefreshAttacher;
 
@@ -226,6 +227,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		super.onPostCreate(savedInstanceState);
 
 		getActionBarHelper().showActionBar(showActionBar);
+
+		setDarkThemeForNewUser();
 
 		updateMainBackground();
 	}
@@ -698,6 +701,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private class BackgroundUpdateReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+
+
 			updateMainBackground();
 		}
 	}
@@ -711,16 +716,16 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			themeBackPath = getAppData().getThemeBackPathLand();
 		}
 
-		Log.d("TEST", " updateMainBackground");
 		AppUtils.logMemData();
 		if (!TextUtils.isEmpty(themeBackPath)) {
 			setMainBackground(themeBackPath);
 		} else {
-//			try {
+			setDarkThemeForNewUser();
+			try {
 				getWindow().setBackgroundDrawableResource(getAppData().getThemeBackId());
-//			} catch (OutOfMemoryError ignore) {
-//				return;
-//			}
+			} catch (OutOfMemoryError ignore) {
+				return;
+			}
 		}
 
 		updateActionBarBackImage();
@@ -1095,6 +1100,32 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 				+ AppConstants.DEVICE + deviceInfo.MODEL + Symbol.NEW_STR
 				+ AppConstants.APP_VERSION + deviceInfo.APP_VERSION_CODE + Symbol.SLASH + deviceInfo.APP_VERSION_NAME + Symbol.NEW_STR
 				+ AppConstants.USERNAME_ + username;
+	}
+
+	/**
+	 *
+	 * @return true if theme was applied for Dark
+	 */
+	private boolean setDarkThemeForNewUser() {
+		AppData appData = getAppData();
+		boolean isFirstInstall = !appData.isFirstInitFinished() && !TextUtils.isEmpty(getCurrentUserToken());
+		if (isFirstInstall) { // we change default Game Room theme to Dark
+
+			appData.setThemeName(AppConstants.DEFAULT_THEME_NAME_FOR_NEW_USERS);
+			appData.setThemeBackgroundName(AppConstants.DEFAULT_THEME_NAME_FOR_NEW_USERS);
+
+			// set dark background
+			appData.setThemeBackId(R.drawable.img_theme_dark);
+
+			// set green board
+			appData.setUseThemeBoard(false);
+			appData.setThemeBoardName(getString(R.string.board_green));
+
+			// set Club pieces
+			appData.setUseThemePieces(false);
+			appData.setThemePiecesName(getString(R.string.pieces_club));
+		}
+		return isFirstInstall;
 	}
 
 	@Override

@@ -181,9 +181,18 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		_3dPiecesOffsetDrag = resources.getDimensionPixelSize(R.dimen._3dPiece_offset_for_board_drag);
 		pieceInset = (int) (1 * density);
 
+		// we need to check if theme was set to dark by default for new user
+		String themeBoardName = appData.getThemeBoardName();
+
+
 		int highlightColor = appData.getThemeBoardHighlight();
 		if (highlightColor == AppData.UNDEFINED) {
-			highlightColor = resources.getColor(R.color.highlight_color);
+			if (themeBoardName.equals(context.getString(R.string.board_green))) {
+				highlightColor = resources.getColor(R.color.highlight_green_default);
+			} else {
+				highlightColor = resources.getColor(R.color.highlight_color);
+			}
+
 		}
 
 		piecesPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -201,11 +210,20 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		int coordinateFont = resources.getInteger(R.integer.board_highlight_font);
 		coordinateColorLight = appData.getThemeBoardCoordinateLight();
 		if (coordinateColorLight == AppData.UNDEFINED) {
-			coordinateColorLight = resources.getColor(R.color.coordinate_color_light);
+			if (themeBoardName.equals(context.getString(R.string.board_green))) {
+				coordinateColorLight = resources.getColor(R.color.coordinate_green_default_light);
+			} else {
+				coordinateColorLight = resources.getColor(R.color.coordinate_color_light);
+			}
+
 		}
 		coordinateColorDark = appData.getThemeBoardCoordinateDark();
 		if (coordinateColorDark == AppData.UNDEFINED) {
-			coordinateColorDark = resources.getColor(R.color.coordinate_color_dark);
+			if (themeBoardName.equals(context.getString(R.string.board_green))) {
+				coordinateColorDark = resources.getColor(R.color.coordinate_green_default_dark);
+			} else {
+				coordinateColorDark = resources.getColor(R.color.coordinate_color_dark);
+			}
 		}
 
 		numYOffset = coordinateFont * density;

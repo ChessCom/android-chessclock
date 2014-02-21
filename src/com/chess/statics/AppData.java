@@ -512,8 +512,12 @@ public class AppData {
 		return getIntValue(PREF_THEME_BOARD_HIGHLIGHT, UNDEFINED);
 	}
 
+	public void setThemeBackId(int value) {
+		setIntValue(PREF_THEME_BACK_ID, value);
+	}
+
 	public int getThemeBackId() {
-		return R.drawable.img_theme_green_felt; // won't be changed
+		return getIntValue(PREF_THEME_BACK_ID, R.drawable.img_theme_green_felt);
 	}
 
 	public void setThemeName(String themeName) {

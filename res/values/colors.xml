@@ -396,6 +396,7 @@
 	<color name="thumbnail_play_back_medium">#EEfdfdfc</color>
 	<color name="thumbnail_play_back_medium_p">#EEe9e9e8</color>
 
+	<color name="new_dark_theme_color">#FF312e2a</color>
 	<color name="new_dark_green">#FF4e763b</color>
 	<color name="new_author_dark_grey">#FF45413f</color>
 	<color name="new_subtitle_dark_grey">#FF312e2b</color>

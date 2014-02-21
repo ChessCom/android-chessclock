@@ -1,6 +1,5 @@
 package com.chess.ui.fragments.daily;
 
-import android.app.AlertDialog;
 import android.content.*;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -40,8 +39,7 @@ import com.slidingmenu.lib.SlidingMenu;
  * Date: 11.01.13
  * Time: 17:36
  */
-public class DailyGamesRightFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener,
-		AdapterView.OnItemLongClickListener, SlidingMenu.OnOpenedListener, ItemClickListenerFace {
+public class DailyGamesRightFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, SlidingMenu.OnOpenedListener, ItemClickListenerFace {
 
 	private static final int CHALLENGES_SECTION = 0;
 	private static final int CURRENT_GAMES_SECTION = 1;
@@ -101,7 +99,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
 		listView.setOnItemClickListener(this);
-		listView.setOnItemLongClickListener(this);
 		listView.setAdapter(sectionedAdapter);
 
 		headerView.findViewById(R.id.startNewGameBtn).setOnClickListener(this);
@@ -207,37 +204,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 				getActivityFace().toggleRightMenu();
 			}
 		}
-	}
-
-	@Override
-	public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
-		boolean headerAdded = listView.getHeaderViewsCount() > 0; // use to check if header added
-		int offset = headerAdded ? -1 : 0;
-
-		int section = sectionedAdapter.getCurrentSection(pos + offset);
-
-		if (section == CHALLENGES_SECTION) {
-			clickOnChallenge((DailyChallengeItem.Data) adapterView.getItemAtPosition(pos));
-		} else if (section == FINISHED_GAMES_SECTION) {
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			DailyFinishedGameData finishedItem = DbDataManager.getDailyFinishedGameFromCursor(cursor);
-
-			getActivityFace().openFragment(GameDailyFinishedFragment.createInstance(finishedItem.getGameId()));
-			getActivityFace().toggleRightMenu();
-		} else {
-			Cursor cursor = (Cursor) adapterView.getItemAtPosition(pos);
-			gameListCurrentItem = DbDataManager.getDailyCurrentGameFromCursor(cursor);
-
-			new AlertDialog.Builder(getContext())
-					.setItems(new String[]{
-									getString(R.string.chat),
-									getString(R.string.offer_draw),
-									getString(R.string.resign_or_abort)},
-							gameListItemDialogListener
-					)
-					.create().show();
-		}
-		return true;
 	}
 
 	@Override
