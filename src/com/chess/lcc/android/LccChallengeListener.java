@@ -20,13 +20,12 @@ public class LccChallengeListener implements ChallengeListener {
 	public void onChallengeListReceived(Collection<Challenge> challenges) {
 		String text = "CHALLENGE LISTENER. Private Seek/Challenge List received: user: "
 				+ lccHelper.getUser().getUsername() + ", size: " + challenges.size();
-		lccHelper.clearChallenges();
 		for (Challenge ch : challenges) {
 			text += "\n  Private Seek/Challenge: user: " + lccHelper.getUser().getUsername()
 					+ ", challengeId=" + ch.getId() + ", from=" + ch.getFrom().getUsername() + ", to=" + ch.getTo();
 		}
 		LogMe.dl(TAG, text);
-		lccHelper.clearOwnChallenges();
+		lccHelper.clearChallengesData();
 		for (Challenge challenge : challenges) {
 			if (isMy(challenge)) {
 				lccHelper.addOwnChallenge(challenge);

@@ -34,6 +34,7 @@ public class LccConnectionListener implements ConnectionListener {
 		liveConnectionHelper.stopPingLiveTimer();
 		liveConnectionHelper.setConnected(true);
 		liveConnectionHelper.setConnecting(false);
+		lccHelper.clearChallengesData();
 		liveConnectionHelper.clearPausedEvents();
 		lccHelper.setFriends(settings.getFriends());
 		lccHelper.storeBlockedUsers(settings.getBlockedUsers(), settings.getBlockingUsers());
@@ -76,9 +77,7 @@ public class LccConnectionListener implements ConnectionListener {
 
 		synchronized (LccHelper.GAME_SYNC_LOCK) {
 			lccHelper.setUser(user);
-			lccHelper.clearChallenges();
-			lccHelper.clearOwnChallenges();
-			lccHelper.clearSeeks();
+			lccHelper.clearChallengesData();
 			lccHelper.clearGames();
 			lccHelper.setCurrentGameId(null);
 			liveConnectionHelper.stopPingLiveTimer();

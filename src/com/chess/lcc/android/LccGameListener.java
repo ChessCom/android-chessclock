@@ -198,9 +198,7 @@ public class LccGameListener implements GameListener {
 			return false;
 
 		} else {
-			lccHelper.clearOwnChallenges();
-			lccHelper.clearChallenges();
-			lccHelper.clearSeeks();
+			lccHelper.clearChallengesData();
 			//lccHelper.getClient().unsubscribeFromSeekList(lccHelper.getSeekListSubscriptionId());
 			lccHelper.setCurrentGameId(gameId);
 			if (gameId > latestGameId) {

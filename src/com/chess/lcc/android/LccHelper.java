@@ -133,6 +133,9 @@ public class LccHelper {
 			return null;
 		} else {
 			Game game = getGame(gameId);
+			if (game == null) {
+				return null;
+			}
 			return new GameLiveItem(game, game.getMoveCount() - 1);
 		}
 	}
@@ -258,6 +261,12 @@ public class LccHelper {
 
 	public void clearChallenges() {
 		challenges.clear();
+	}
+
+	public void clearChallengesData() {
+		clearChallenges();
+		clearOwnChallenges();
+		clearSeeks();
 	}
 
 	public HashMap<Long, Challenge> getChallenges() {
@@ -632,24 +641,6 @@ public class LccHelper {
 			}
 		}
 	}
-
-	/*private void doUpdateClocks(Game game, User moveMaker, int moveIndex) {
-		// TODO: This method does NOT support the game observer mode. Redevelop it if necessary.
-
-		// UPDATELCC todo: probably could be simplified - update clock only for latest move/player in order to get rid of moveIndex/moveMaker params
-		if (game.getMoveCount() >= 2 && moveIndex == game.getMoveCount() - 1) {
-
-			final boolean isWhiteDone = game.getWhitePlayer().getUsername().equals(moveMaker.getUsername());
-			final boolean isBlackDone = game.getBlackPlayer().getUsername().equals(moveMaker.getUsername());
-
-			if (!game.isGameOver()) {
-				getWhiteClock().setRunning(isBlackDone);
-			}
-			if (!game.isGameOver()) {
-				getBlackClock().setRunning(isWhiteDone);
-			}
-		}
-	}*/
 
 	public void setLastGame(Game lastGame) {
 		this.lastGame = lastGame;
