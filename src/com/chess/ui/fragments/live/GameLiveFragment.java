@@ -146,6 +146,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		getActivityFace().setCustomActionBarViewId(R.layout.home_actionbar);
 
+		if (gameId != 0 && !isValid()) { // when user returns by back stack
+			goHome();
+			return;
+		}
+
 		widgetsInit(view);
 		try {
 			init();
