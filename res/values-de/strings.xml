@@ -16,7 +16,7 @@
 	<string name="complete_singup">Vervollständigen Sie die Registrierung</string>
 	<string name="white">Weiß</string>
 	<string name="black">Schwarz</string>
-	<string name="thinking_">Denkt nach...</string>
+	<string name="thinking_">Denkt nach…</string>
 	<string name="open_challenges">Offene Herausforderungen</string>
 	<string name="challenge_friend">Fordern Sie einen Freund heraus</string>
 	<string name="challenge_created">Herausforderung erstellt</string>
@@ -176,7 +176,7 @@
 	<string name="content">Inhalt</string>
 	<string name="comments">Kommentare</string>
 	<string name="download_complete">Download vollständig</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Schwierigkeitsgrad</string>
 	<string name="easiest">Einfachstes</string>
 	<string name="hardest">Schwerstes</string>
@@ -372,8 +372,8 @@
 	<string name="topic_created">Thema erstellt</string>
 	<string name="posted">Abgesendet</string>
 	<string name="post">Beitrag</string>
-	<string name="write_reply_">Schreiben Sie eine Antwort...</string>
-	<string name="write_comment_">Schreiben Sie einen Kommentar...</string>
+	<string name="write_reply_">Schreiben Sie eine Antwort…</string>
+	<string name="write_comment_">Schreiben Sie einen Kommentar…</string>
 	<string name="username_wrote">%s schrieb:</string>
 	<string name="full_lesson_library">Bibliothek der gesamten Lektionen</string>
 	<string name="curriculum">Lehrplan</string>
@@ -415,7 +415,7 @@
 	<string name="keywords">Schlüsselwörter</string>
 	<string name="all">Alle</string>
 	<string name="go_ex">Los!</string>
-	<string name="ready_q_">Bereit?...</string>
+	<string name="ready_q_">Bereit?…</string>
 	<string name="solved_with_hint">Mit Hinweis gelöst</string>
 	<string name="thirty_days">30 Tage</string>
 	<string name="ninety_days">90 Tage</string>
@@ -438,7 +438,7 @@
 	<string name="chess_game">Schachspiel</string>
 	<string name="pull_to_refresh_pull_label">Zum Aktualisieren ziehen&#8230;</string>
 	<string name="pull_to_refresh_release_label">Zum aktualisieren loslassen&#8230;</string>
-	<string name="pull_to_refresh_refreshing_label">Lädt...</string>
+	<string name="pull_to_refresh_refreshing_label">Lädt…</string>
 	<string name="upgrade_to_unlimited_access">Machen Sie ein Upgrade für unbegrenzten Zugang auf Chess.com!</string>
 	<string name="upgrade_now">Stufen Sie jetzt hoch</string>
 	<string name="nothing_to_share">Dieses Konto ist gesperrt. Loggen Sie sich bitte bei Chess.com ein.</string>
@@ -461,7 +461,7 @@
 	<string name="total_games">Gesamt-Spiele</string>
 	<string name="help_toast_for_daily_games">Herunterziehen um Spiele zu aktualisieren</string>
 	<string name="help_toast_for_quick_in_game_navigation">Drücken Sie \u003c oder \u003e für schnellere Züge</string>
-	<string name="still_connecting">Verbindet noch...</string>
+	<string name="still_connecting">Verbindet noch…</string>
 	<string name="unable_to_send_challenge">Die Herausforderung kann nicht verschickt werden</string>
 	<string name="rating_range">Bewertungs-Bereich</string>
 	<string name="show_mini_boards">Zeige kleine Bretter</string>

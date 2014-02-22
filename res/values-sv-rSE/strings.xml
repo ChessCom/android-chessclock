@@ -176,7 +176,7 @@
 	<string name="content">Innehåll</string>
 	<string name="comments">Kommentarer</string>
 	<string name="download_complete">Hämtning färdig</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Svårighetsgrad</string>
 	<string name="easiest">Enklaste</string>
 	<string name="hardest">Svåraste</string>
@@ -303,7 +303,7 @@
 	<string name="pieces_style">Pjästyp</string>
 	<string name="show_legal_moves">Visa giltiga drag</string>
 	<string name="flip_board">Vänd bräde</string>
-	<string name="waiting_for_opponent">Väntar på motståndare...</string>
+	<string name="waiting_for_opponent">Väntar på motståndare…</string>
 	<string name="lightning">Enminutsparti</string>
 	<string name="blitz">Blixt</string>
 	<string name="standard">Långparti</string>
@@ -373,7 +373,7 @@
 	<string name="posted">Skickats</string>
 	<string name="post">Inlägg</string>
 	<string name="write_reply_">Besvara&#8230;</string>
-	<string name="write_comment_">Skriv en kommentar...</string>
+	<string name="write_comment_">Skriv en kommentar…</string>
 	<string name="username_wrote">%s skrev:</string>
 	<string name="full_lesson_library">Bibliotek med fullständiga lektioner</string>
 	<string name="curriculum">Studieplan</string>
@@ -398,7 +398,7 @@
 	<string name="lessons_limit_reached_message">Du har inte möjlighet att ta fler lektioner i dag. Uppgradera nu och få tillgång till ett obegränsat antal lektioner!</string>
 	<string name="resume_lesson">Återuppta lektionen</string>
 	<string name="installing_theme">Installerar tema</string>
-	<string name="waiting_to_download">Väntar på att hämta...</string>
+	<string name="waiting_to_download">Väntar på att hämta…</string>
 	<string name="downloading_arg">Hämtar %s</string>
 	<string name="custom">Anpassad</string>
 	<string name="background">Bakgrund</string>
@@ -476,9 +476,9 @@
 	<string name="review_lesson">Gå igenom lektionen</string>
 	<string name="full_screen">Helskärm</string>
 	<string name="line">Linje</string>
-	<string name="predict_move_or_add_new_line">Förutsäg drag eller lägg till ny linje...</string>
+	<string name="predict_move_or_add_new_line">Förutsäg drag eller lägg till ny linje…</string>
 	<string name="make_your_conditional_move">Gör ett villkorat drag&#8230;</string>
-	<string name="predict_opponent_next_move">Förutse motståndarens nästa drag...</string>
+	<string name="predict_opponent_next_move">Förutse motståndarens nästa drag…</string>
 	<string name="notes">Anteckningar</string>
 	<string name="private_note">Personlig anteckning</string>
 	<string name="upgrade_feedback_1">"\"Jag blev mycket bättre tack vare schackproblemen och lektionerna.\""</string>

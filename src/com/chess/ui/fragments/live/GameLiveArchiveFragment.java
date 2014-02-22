@@ -70,6 +70,7 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 	private String[] countryNames;
 	private int[] countryCodes;
 	private NotationFace notationsFace;
+	private ChessBoardDaily chessBoardDaily;
 
 	public GameLiveArchiveFragment() {
 	}
@@ -259,7 +260,7 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
-		ChessBoardDaily.resetInstance();
+		resetInstance();
 		BoardFace boardFace = getBoardFace();
 
 		boardFace.setReside(!userPlayWhite);
@@ -273,7 +274,7 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 
 		playLastMoveAnimation();
 
-		boardFace.setJustInitialized(false);
+//		boardFace.setJustInitialized(false);
 
 		imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 		imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
@@ -371,7 +372,10 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardDaily.getInstance(this);
+		if (chessBoardDaily == null) {
+			chessBoardDaily = new ChessBoardDaily(this);
+		}
+		return chessBoardDaily;
 	}
 
 	@Override

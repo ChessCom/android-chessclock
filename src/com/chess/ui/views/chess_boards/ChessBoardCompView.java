@@ -48,7 +48,7 @@ public class ChessBoardCompView extends ChessBoardBaseView implements BoardViewC
 	}
 
 	private ChessBoardComp getBoardComp() {
-		return ChessBoardComp.getInstance(gameCompFace);
+		return (ChessBoardComp) getBoardFace();
 	}
 
 	@Override

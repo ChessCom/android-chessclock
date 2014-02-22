@@ -24,6 +24,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.model.DataHolder;
 import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.utilities.AppUtils;
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -56,6 +57,7 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 	 */
 	protected boolean useLtr;
 	private GcmRegisterUpdateListener gcmRegisterUpdateListener;
+	private SoundPlayer soundPlayer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -284,5 +286,12 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 
 	protected boolean inPortrait() {
 		return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+	}
+
+	public SoundPlayer provideSoundPlayer() {
+		if (soundPlayer == null) {
+			soundPlayer = new SoundPlayer(this);
+		}
+		return soundPlayer;
 	}
 }

@@ -19,7 +19,7 @@
 		<item>कोई विज्ञापन नहीं</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>असीमित युक्तियाँ</item>
 		<item>प्रति दिन 5 सबक</item>
 		<item>प्रारम्भ(ओपनिंग) अन्वेषक</item>
@@ -28,7 +28,7 @@
 		<item>कोई विज्ञापन नहीं</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>प्रति दिन 25 युक्तियाँ</item>
 		<item>प्रति दिन 3 सबक</item>
 		<item>प्रारम्भ(ओपनिंग) अन्वेषक</item>

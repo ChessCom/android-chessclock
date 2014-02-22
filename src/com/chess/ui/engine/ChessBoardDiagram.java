@@ -12,22 +12,10 @@ import com.chess.ui.interfaces.game_ui.GameFace;
  */
 public class ChessBoardDiagram extends ChessBoard implements PuzzlesBoardFace {
 
-	private static ChessBoardDiagram instance;
 	private String[] puzzleMoves;
 
-	private ChessBoardDiagram(GameFace gameFace) {
+	public ChessBoardDiagram(GameFace gameFace) {
 		super(gameFace);
-	}
-
-	public static ChessBoardDiagram getInstance(GameFace gameFace) {
-		if (instance == null) {
-			instance = new ChessBoardDiagram(gameFace);
-		}
-		return instance;
-	}
-
-	public static void resetInstance() {
-		instance = null;
 	}
 
 	@Override

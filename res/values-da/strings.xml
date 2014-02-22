@@ -176,7 +176,7 @@
 	<string name="content">Indhold</string>
 	<string name="comments">Kommentarer</string>
 	<string name="download_complete">Download komplet</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Vanskeligheder</string>
 	<string name="easiest">lettest</string>
 	<string name="hardest">sværest</string>

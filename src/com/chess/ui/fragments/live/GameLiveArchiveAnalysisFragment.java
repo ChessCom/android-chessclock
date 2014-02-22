@@ -11,7 +11,6 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.DataHolder;
 import com.chess.model.GameExplorerItem;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.fragments.daily.GameDailyAnalysisFragment;
 import com.chess.ui.fragments.explorer.GameExplorerFragment;
 import com.chess.ui.interfaces.boards.BoardFace;
@@ -131,7 +130,7 @@ public class GameLiveArchiveAnalysisFragment extends GameDailyAnalysisFragment {
 		topPanelView.showTimeLeftIcon(!userMove);
 		bottomPanelView.showTimeLeftIcon(userMove);
 
-		ChessBoardDaily.resetInstance();
+		resetInstance();
 		BoardFace boardFace = getBoardFace();
 
 		boardFace.setReside(!userPlayWhite);
@@ -145,7 +144,7 @@ public class GameLiveArchiveAnalysisFragment extends GameDailyAnalysisFragment {
 
 		playLastMoveAnimation();
 
-		boardFace.setJustInitialized(false);
+//		boardFace.setJustInitialized(false);
 	}
 
 	@Override

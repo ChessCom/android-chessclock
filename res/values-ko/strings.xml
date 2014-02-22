@@ -16,7 +16,7 @@
 	<string name="complete_singup">회원가입 완료</string>
 	<string name="white">백색</string>
 	<string name="black">흑색</string>
-	<string name="thinking_">생각 중...</string>
+	<string name="thinking_">생각 중…</string>
 	<string name="open_challenges">공개 대결</string>
 	<string name="challenge_friend">친구에게 대결 요청</string>
 	<string name="challenge_created">대결 생성 완료</string>
@@ -131,7 +131,7 @@
 	<string name="won_by_resignation">%s님이 기권으로 승리</string>
 	<string name="won_by_checkmate">%s님이 체크메이트로 승리</string>
 	<string name="game_over">게임 끝</string>
-	<string name="reconnecting_">다시 연결 중...</string>
+	<string name="reconnecting_">다시 연결 중…</string>
 	<string name="another_login_detected">다른 곳에 로그인 되어 있습니다!</string>
 	<string name="game_end_title_draw">무승부</string>
 	<string name="game_aborted">게임이 취소 되었습니다</string>
@@ -176,7 +176,7 @@
 	<string name="content">콘텐츠</string>
 	<string name="comments">댓글</string>
 	<string name="download_complete">다운로드 완료</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">난이도</string>
 	<string name="easiest">가장 쉬운</string>
 	<string name="hardest">가장 어려운</string>
@@ -303,7 +303,7 @@
 	<string name="pieces_style">조각 스타일</string>
 	<string name="show_legal_moves">가능한 무브 보이기</string>
 	<string name="flip_board">판 돌리기</string>
-	<string name="waiting_for_opponent">상대를 기다리는 중...</string>
+	<string name="waiting_for_opponent">상대를 기다리는 중…</string>
 	<string name="lightning">번개</string>
 	<string name="blitz">블리츠</string>
 	<string name="standard">표준</string>
@@ -358,7 +358,7 @@
 	<string name="new_daily_challenge">새로운 일일 챌린지</string>
 	<string name="arg_wants_to_play">%s님이 게임을 신청합니다!</string>
 	<string name="unable_to_select_this_photo">이 사진은 사용할 수 없습니다</string>
-	<string name="processing_">처리 중...</string>
+	<string name="processing_">처리 중…</string>
 	<string name="about">정보</string>
 	<string name="member_since_">가입일: %s</string>
 	<string name="birthday_">생일: %s</string>
@@ -372,8 +372,8 @@
 	<string name="topic_created">주제 생성 완료</string>
 	<string name="posted">게시 완료</string>
 	<string name="post">게시하기</string>
-	<string name="write_reply_">답글 작성...</string>
-	<string name="write_comment_">댓글을 작성하세요...</string>
+	<string name="write_reply_">답글 작성…</string>
+	<string name="write_comment_">댓글을 작성하세요…</string>
 	<string name="username_wrote">%s님이 작성:</string>
 	<string name="full_lesson_library">전체 레슨 모음</string>
 	<string name="curriculum">교육 과정</string>
@@ -409,13 +409,13 @@
 	<string name="message">메시지</string>
 	<string name="new_message">새 메시지</string>
 	<string name="to_">받는 사람:</string>
-	<string name="write_your_message">메시지 쓰기...</string>
+	<string name="write_your_message">메시지 쓰기…</string>
 	<string name="inbox">수신함</string>
 	<string name="activity">활동</string>
 	<string name="keywords">키워드</string>
 	<string name="all">모든</string>
 	<string name="go_ex">시작!</string>
-	<string name="ready_q_">준비되셨습니까?...</string>
+	<string name="ready_q_">준비되셨습니까?…</string>
 	<string name="solved_with_hint">힌트를 사용하고 해결</string>
 	<string name="thirty_days">30 일</string>
 	<string name="ninety_days">90 일</string>
@@ -436,9 +436,9 @@
 	<string name="black_to_move">흑색 무브</string>
 	<string name="puzzle">퍼즐</string>
 	<string name="chess_game">체스 게임</string>
-	<string name="pull_to_refresh_pull_label">당겨서 새로고침...</string>
-	<string name="pull_to_refresh_release_label">손을 떼서 새로고침...</string>
-	<string name="pull_to_refresh_refreshing_label">로드 중입니다...</string>
+	<string name="pull_to_refresh_pull_label">당겨서 새로고침…</string>
+	<string name="pull_to_refresh_release_label">손을 떼서 새로고침…</string>
+	<string name="pull_to_refresh_refreshing_label">로드 중입니다…</string>
 	<string name="upgrade_to_unlimited_access">Chess.com을 무제한 이용하려면 업그레이드 하세요!</string>
 	<string name="upgrade_now">지금 업그레이드</string>
 	<string name="nothing_to_share">이 계정은 잠겨 있습니다. Chess.com에서 로그인 하시기 바랍니다.</string>
@@ -461,7 +461,7 @@
 	<string name="total_games">총 게임</string>
 	<string name="help_toast_for_daily_games">밑으로 당겨서 게임 업데이트</string>
 	<string name="help_toast_for_quick_in_game_navigation">\U003c 또는 \u003e 눌러서 빠른 이동</string>
-	<string name="still_connecting">아직 연결 중...</string>
+	<string name="still_connecting">아직 연결 중…</string>
 	<string name="unable_to_send_challenge">대결 신청 할 수 없습니다</string>
 	<string name="rating_range">레이팅 범위</string>
 	<string name="show_mini_boards">소형판 표시</string>
@@ -476,9 +476,9 @@
 	<string name="review_lesson">레슨 복습</string>
 	<string name="full_screen">전체 화면</string>
 	<string name="line">라인</string>
-	<string name="predict_move_or_add_new_line">무브 예측하거나 새로운 라인 추가...</string>
-	<string name="make_your_conditional_move">조건별 무브 설정...</string>
-	<string name="predict_opponent_next_move">상대의 다음 무브 예측...</string>
+	<string name="predict_move_or_add_new_line">무브 예측하거나 새로운 라인 추가…</string>
+	<string name="make_your_conditional_move">조건별 무브 설정…</string>
+	<string name="predict_opponent_next_move">상대의 다음 무브 예측…</string>
 	<string name="notes">메모</string>
 	<string name="private_note">사적인 메모</string>
 	<string name="upgrade_feedback_1">"\"전술과 레슨들이 제 체스 스킬에 많은 도움이 됩니다\""</string>

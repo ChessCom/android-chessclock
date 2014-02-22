@@ -19,7 +19,7 @@
 		<item>بێ ڕێکلام</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>تاکتیکە سنووردار نەکراوەکان</item>
 		<item>هەر ڕۆژ ٥ وانە</item>
 		<item>لێگەڕی سەرەتایی</item>
@@ -28,7 +28,7 @@
 		<item>بێ ڕێکلام</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>هەر ڕۆژ ٢٥ وانە</item>
 		<item>هەر ڕۆژ ٣ وانە</item>
 		<item>لێگەڕی سەرەتایی</item>

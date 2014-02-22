@@ -176,7 +176,7 @@
 	<string name="content">Sadržaj</string>
 	<string name="comments">Komentari</string>
 	<string name="download_complete">Skidanje završeno</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Teškoća</string>
 	<string name="easiest">Najlakše</string>
 	<string name="hardest">Najteže</string>
@@ -398,7 +398,7 @@
 	<string name="lessons_limit_reached_message">Dosegli ste ograničenje broja lekcija za danas. Nadogradite odmah za neograničene lekcije!</string>
 	<string name="resume_lesson">Nastavak lekcije</string>
 	<string name="installing_theme">Instaliranje teme</string>
-	<string name="waiting_to_download">Čekanje za početak preuzimanja...</string>
+	<string name="waiting_to_download">Čekanje za početak preuzimanja…</string>
 	<string name="downloading_arg">Preuzimanje %s</string>
 	<string name="custom">Vlastito</string>
 	<string name="background">Pozadina</string>

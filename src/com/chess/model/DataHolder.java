@@ -2,10 +2,6 @@ package com.chess.model;
 
 import android.util.SparseIntArray;
 import com.chess.backend.gcm.LastMoveInfoItem;
-import com.chess.ui.engine.ChessBoardComp;
-import com.chess.ui.engine.ChessBoardLive;
-import com.chess.ui.engine.ChessBoardDaily;
-import com.chess.ui.engine.ChessBoardTactics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,10 +55,6 @@ public class DataHolder {
 
 	public static void reset() {
 		ourInstance = new DataHolder();
-		ChessBoardTactics.resetInstance();
-		ChessBoardLive.resetInstance();
-		ChessBoardDaily.resetInstance();
-		ChessBoardComp.resetInstance();
 	}
 
 	/**

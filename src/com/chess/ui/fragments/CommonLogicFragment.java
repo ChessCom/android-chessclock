@@ -39,7 +39,6 @@ import com.chess.model.DataHolder;
 import com.chess.model.TacticsDataHolder;
 import com.chess.statics.*;
 import com.chess.ui.activities.CoreActivityActionBar;
-import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.fragments.home.HomeTabsFragment;
@@ -484,7 +483,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	public SoundPlayer getSoundPlayer() {
-		return SoundPlayer.getInstance(getActivity());
+		return getActivityFace().getSoundPlayer();
 	}
 
 	protected void signInUser() {
@@ -828,16 +827,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 					fragment = new DailyGamesRightFragment();
 				}
 				getActivityFace().changeRightFragment(fragment);
-//				handler.postDelayed(new Runnable() {
-//					@Override
-//					public void run() {
 				if (useLtr) {
 					getActivityFace().toggleRightMenu();
 				} else {
 					getActivityFace().toggleLeftMenu();
 				}
-//					}
-//				}, SIDE_MENU_DELAY);
 				return true;
 			}
 			case R.id.menu_notifications: {// bell icon
@@ -847,16 +841,11 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 				}
 
 				getActivityFace().changeRightFragment(fragment);
-//				handler.postDelayed(new Runnable() {
-//					@Override
-//					public void run() {
 				if (useLtr) {
 					getActivityFace().toggleRightMenu();
 				} else {
 					getActivityFace().toggleLeftMenu();
 				}
-//					}
-//				}, SIDE_MENU_DELAY);
 				return true;
 			}
 		}
@@ -926,8 +915,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		// set default theme
 		getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
 
-		// clear comp game
-		ChessBoardComp.resetInstance();
 		getAppData().clearSavedCompGame();
 
 		// clear username
@@ -950,8 +937,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		// set default theme
 		getActivityFace().setMainBackground(R.drawable.img_theme_green_felt);
 
-		// clear comp game
-		ChessBoardComp.resetInstance();
 		getAppData().clearSavedCompGame();
 
 		RestHelper.resetInstance();

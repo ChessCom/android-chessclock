@@ -16,7 +16,7 @@
 	<string name="complete_singup">Рэгістрацыя завершана</string>
 	<string name="white">Белы</string>
 	<string name="black">Чорны</string>
-	<string name="thinking_">Роздум...</string>
+	<string name="thinking_">Роздум…</string>
 	<string name="open_challenges">Адкрытыя выклікі</string>
 	<string name="challenge_friend">Выклікаць сябра</string>
 	<string name="challenge_created">Створаныя выклікі</string>
@@ -107,8 +107,8 @@
 	<string name="draw">Нічыя</string>
 	<string name="login">Логін</string>
 	<string name="error">Памылка</string>
-	<string name="validateUsername">Ваша Імя карыстальніка павінна складацца з 3 - 20 знакаў і ўтрымліваць толькі літары, лічбы, падкрэсленне і працяжнік. Прабелы не дапускаюцца.</string>
-	<string name="validatePassword">Ваш пароль мусіць складацца з 6 - 20 знакаў.</string>
+	<string name="validateUsername">Ваша Імя карыстальніка павінна складацца з 3 – 20 знакаў і ўтрымліваць толькі літары, лічбы, падкрэсленне і працяжнік. Прабелы не дапускаюцца.</string>
+	<string name="validatePassword">Ваш пароль мусіць складацца з 6 – 20 знакаў.</string>
 	<string name="image">Выява</string>
 	<string name="no_network">Адсутнічае інтэрнэт-падлучэнне</string>
 	<string name="check_connection">Праверце інтэрнэт-падлучэнне</string>
@@ -132,7 +132,7 @@
 	<string name="won_by_resignation">%s перамог з прычыны адстаўкі</string>
 	<string name="won_by_checkmate">%s перамог праз мат</string>
 	<string name="game_over">гульня скончана</string>
-	<string name="reconnecting_">Перападлучэнне...</string>
+	<string name="reconnecting_">Перападлучэнне…</string>
 	<string name="another_login_detected">Опс! Вы ўвайшлі недзе ў іншым месцы.</string>
 	<string name="game_end_title_draw">Нічыя</string>
 	<string name="game_aborted">Гульня перарвана</string>
@@ -177,7 +177,7 @@
 	<string name="content">змест</string>
 	<string name="comments">Каменты</string>
 	<string name="download_complete">Спампаваць поўнасцю</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Складанасць</string>
 	<string name="easiest">найпросты</string>
 	<string name="hardest">найцяжэйшы</string>
@@ -304,7 +304,7 @@
 	<string name="pieces_style">стыль фігур</string>
 	<string name="show_legal_moves">Паказаць дазволеныя хады</string>
 	<string name="flip_board">перавярнуць дошку</string>
-	<string name="waiting_for_opponent">Чаканне суперніка...</string>
+	<string name="waiting_for_opponent">Чаканне суперніка…</string>
 	<string name="lightning">Маланка</string>
 	<string name="blitz">Бліц</string>
 	<string name="standard">Стандарт</string>
@@ -374,7 +374,7 @@
 	<string name="posted">Размешчана</string>
 	<string name="post">змясціць</string>
 	<string name="write_reply_">Напісаць адказ&#8230;</string>
-	<string name="write_comment_">Напісаць каментар...</string>
+	<string name="write_comment_">Напісаць каментар…</string>
 	<string name="username_wrote">%s піша:</string>
 	<string name="full_lesson_library">Поўная бібліятэка ўрокаў</string>
 	<string name="curriculum">навучальны план</string>
@@ -416,7 +416,7 @@
 	<string name="keywords">ключавыя словы</string>
 	<string name="all">Усе</string>
 	<string name="go_ex">Паехалі!</string>
-	<string name="ready_q_">Гатовы?...</string>
+	<string name="ready_q_">Гатовы?…</string>
 	<string name="solved_with_hint">Вырашана з падказкай</string>
 	<string name="thirty_days">30 дзён</string>
 	<string name="ninety_days">90 дзён</string>
@@ -462,7 +462,7 @@
 	<string name="total_games">Усяго гульняў</string>
 	<string name="help_toast_for_daily_games">Пацягніце ўніз для абнаўлення гульняў</string>
 	<string name="help_toast_for_quick_in_game_navigation">Трымаеце \u003c або \u003e для хуткага перамяшчэння</string>
-	<string name="still_connecting">Яшчэ падлучаецца...</string>
+	<string name="still_connecting">Яшчэ падлучаецца…</string>
 	<string name="unable_to_send_challenge">Немагчыма адправіць выклік</string>
 	<string name="rating_range">Рэйтынгавы ранжыр</string>
 	<string name="show_mini_boards">Паказаць міні-дашку</string>
@@ -477,9 +477,9 @@
 	<string name="review_lesson">Агляд урока</string>
 	<string name="full_screen">Поўны экран</string>
 	<string name="line">Лінія</string>
-	<string name="predict_move_or_add_new_line">Прадказаць ход, альбо дадаць новую лінію...</string>
-	<string name="make_your_conditional_move">Зрабіце свой умоўны ход...</string>
-	<string name="predict_opponent_next_move">Прадказаць наступны ход суперніка...</string>
+	<string name="predict_move_or_add_new_line">Прадказаць ход, альбо дадаць новую лінію…</string>
+	<string name="make_your_conditional_move">Зрабіце свой умоўны ход…</string>
+	<string name="predict_opponent_next_move">Прадказаць наступны ход суперніка…</string>
 	<string name="notes">Запісы</string>
 	<string name="private_note">Прыватны запіс</string>
 	<string name="upgrade_feedback_1">"\"Тактычныя практыкаванні і ўрокі рэальна дапамаглі палепшыць мае шахматныя навыкі\""</string>

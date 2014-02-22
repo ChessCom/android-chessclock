@@ -176,7 +176,7 @@
 	<string name="content">Obsah</string>
 	<string name="comments">Komentáře</string>
 	<string name="download_complete">Stahování dokončeno</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Obtížnost</string>
 	<string name="easiest">Nejjednodušší</string>
 	<string name="hardest">Nejtěžší</string>
@@ -436,8 +436,8 @@
 	<string name="black_to_move">Černý na tahu</string>
 	<string name="puzzle">Hlavolam</string>
 	<string name="chess_game">Šachová partie</string>
-	<string name="pull_to_refresh_pull_label">Pro obnovení zatáhněte...</string>
-	<string name="pull_to_refresh_release_label">Pro obnovení pusťte...</string>
+	<string name="pull_to_refresh_pull_label">Pro obnovení zatáhněte…</string>
+	<string name="pull_to_refresh_release_label">Pro obnovení pusťte…</string>
 	<string name="pull_to_refresh_refreshing_label">Načítání&#8230;</string>
 	<string name="upgrade_to_unlimited_access">Upgradujte pro neomezený přístup na Chess.com!</string>
 	<string name="upgrade_now">Upgradovat nyní</string>
@@ -476,7 +476,7 @@
 	<string name="review_lesson">Přehrát lekci znovu</string>
 	<string name="full_screen">Celá obrazovka</string>
 	<string name="line">Variace</string>
-	<string name="predict_move_or_add_new_line">Předpovědět pohyb nebo přidat novou variaci...</string>
+	<string name="predict_move_or_add_new_line">Předpovědět pohyb nebo přidat novou variaci…</string>
 	<string name="make_your_conditional_move">Udělejte váš podmíněný tah&#8230;</string>
 	<string name="predict_opponent_next_move">Předvídejte soupeřův příští tah&#8230;</string>
 	<string name="notes">Poznámky</string>

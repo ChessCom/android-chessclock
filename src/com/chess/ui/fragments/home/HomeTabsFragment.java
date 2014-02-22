@@ -22,9 +22,9 @@ import com.chess.db.DbDataManager;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.LeftNavigationFragment;
-import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragmentTablet;
+import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
 
 import java.util.List;
@@ -112,7 +112,7 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 		getActivityFace().changeLeftFragment(leftMenuFragment);
 
 		// and right menu fragments
-		getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
+		getActivityFace().changeRightFragment(new DailyGamesRightFragment());
 	}
 
 	@Override

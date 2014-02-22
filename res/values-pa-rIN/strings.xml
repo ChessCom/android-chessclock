@@ -176,7 +176,7 @@
 	<string name="content">ਸਮੱਗਰੀ</string>
 	<string name="comments">ਟਿੱਪਣੀਆਂ</string>
 	<string name="download_complete">ਡਾਉਨਲੋਡ ਪੂਰਾ ਹੋਇਆ</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">ਕਠਨਾਈ</string>
 	<string name="easiest">ਸਭ ਤੋਂ ਅਸਾਨ</string>
 	<string name="hardest">ਸਭ ਤੋਂ ਔਖਾ</string>

@@ -19,7 +19,7 @@
 		<item>Brak reklam</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Nieograniczone zadania taktyczne</item>
 		<item>5 lekcji dziennie</item>
 		<item>Księga otwarć</item>
@@ -28,7 +28,7 @@
 		<item>Brak reklam</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 zadań taktycznych dziennie</item>
 		<item>3 lekcje dziennie</item>
 		<item>Księga otwarć</item>

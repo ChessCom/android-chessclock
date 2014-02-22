@@ -60,6 +60,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	protected int[] countryCodes;
 	protected String username;
 	protected boolean isFinished;
+	private ChessBoardDaily chessBoardDaily;
 
 	public GameDailyAnalysisFragment() {
 	}
@@ -237,7 +238,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		topPanelView.showTimeLeftIcon(!userMove);
 		bottomPanelView.showTimeLeftIcon(userMove);
 
-		ChessBoardDaily.resetInstance();
+		resetInstance();
 		BoardFace boardFace = getBoardFace();
 		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
@@ -261,7 +262,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 		playLastMoveAnimation();
 
-		boardFace.setJustInitialized(false);
+//		boardFace.setJustInitialized(false);
 		boardFace.setAnalysis(true);
 
 		{ // set stubs while avatars are loading
@@ -376,7 +377,10 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardDaily.getInstance(this);
+		if (chessBoardDaily == null) {
+			chessBoardDaily = new ChessBoardDaily(this);
+		}
+		return chessBoardDaily;
 	}
 
 	@Override
@@ -444,11 +448,10 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 	@Override
 	protected void restoreGame() {
-//		ChessBoardDaily.resetInstance();
 		boardView.setGameActivityFace(this);
 
 		adjustBoardForGame();
-		getBoardFace().setJustInitialized(false);
+//		getBoardFace().setJustInitialized(false);
 	}
 
 	@Override

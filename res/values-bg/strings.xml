@@ -16,7 +16,7 @@
 	<string name="complete_singup">Завършете Регистрацията</string>
 	<string name="white">Бели</string>
 	<string name="black">Черни</string>
-	<string name="thinking_">Мислене...</string>
+	<string name="thinking_">Мислене…</string>
 	<string name="open_challenges">Отворени Предизвикателства</string>
 	<string name="challenge_friend">Предизвикай Приятел</string>
 	<string name="challenge_created">Предизвикателството Създадено</string>
@@ -131,7 +131,7 @@
 	<string name="won_by_resignation">%s спечели чрез Напускане</string>
 	<string name="won_by_checkmate">%s победи с Матиране</string>
 	<string name="game_over">Край на играта</string>
-	<string name="reconnecting_">Повторно свързване...</string>
+	<string name="reconnecting_">Повторно свързване…</string>
 	<string name="another_login_detected">Опа! Логнали сте се другаде.</string>
 	<string name="game_end_title_draw">Реми</string>
 	<string name="game_aborted">Играта е прекратена</string>
@@ -176,7 +176,7 @@
 	<string name="content">Съдържание</string>
 	<string name="comments">Коментари</string>
 	<string name="download_complete">Изтеглянето е Завършено</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Трудност</string>
 	<string name="easiest">Най-лесен</string>
 	<string name="hardest">Най-труден</string>
@@ -303,7 +303,7 @@
 	<string name="pieces_style">Стил на фигурите</string>
 	<string name="show_legal_moves">Покажи позволени ходове</string>
 	<string name="flip_board">Завърти дъската</string>
-	<string name="waiting_for_opponent">Изчакване на Противника...</string>
+	<string name="waiting_for_opponent">Изчакване на Противника…</string>
 	<string name="lightning">Осветление</string>
 	<string name="blitz">Блиц</string>
 	<string name="standard">Стандартна</string>
@@ -358,7 +358,7 @@
 	<string name="new_daily_challenge">Ново Ежедневно Предизвикателство</string>
 	<string name="arg_wants_to_play">%s иска да играе!</string>
 	<string name="unable_to_select_this_photo">Не може да се Използва тази Снимка</string>
-	<string name="processing_">Обработва се...</string>
+	<string name="processing_">Обработва се…</string>
 	<string name="about">Относно</string>
 	<string name="member_since_">Член от: %s</string>
 	<string name="birthday_">Рожден ден: %s</string>
@@ -409,13 +409,13 @@
 	<string name="message">Съобщение</string>
 	<string name="new_message">Ново съобщение</string>
 	<string name="to_">До:</string>
-	<string name="write_your_message">Напишете вашето съобщение...</string>
+	<string name="write_your_message">Напишете вашето съобщение…</string>
 	<string name="inbox">Входяща кутия</string>
 	<string name="activity">Дейност</string>
 	<string name="keywords">Ключови думи</string>
 	<string name="all">Всички</string>
 	<string name="go_ex">Напред!</string>
-	<string name="ready_q_">Готови?...</string>
+	<string name="ready_q_">Готови?…</string>
 	<string name="solved_with_hint">Решени с подсказване</string>
 	<string name="thirty_days">30 Дни</string>
 	<string name="ninety_days">90 Дни</string>
@@ -436,9 +436,9 @@
 	<string name="black_to_move">Черните на Ход</string>
 	<string name="puzzle">Пъзел</string>
 	<string name="chess_game">Игра на Шах</string>
-	<string name="pull_to_refresh_pull_label">Издърпайте за обновяване...</string>
-	<string name="pull_to_refresh_release_label">Пусни за обновяване...</string>
-	<string name="pull_to_refresh_refreshing_label">Зареждане...</string>
+	<string name="pull_to_refresh_pull_label">Издърпайте за обновяване…</string>
+	<string name="pull_to_refresh_release_label">Пусни за обновяване…</string>
+	<string name="pull_to_refresh_refreshing_label">Зареждане…</string>
 	<string name="upgrade_to_unlimited_access">Ъпгрейднете за Неограничен Достъп в Chess.com!</string>
 	<string name="upgrade_now">Ъпгрейднете Сега</string>
 	<string name="nothing_to_share">Този акаунт е заключен. Моля, влезте в Chess.com.</string>
@@ -461,7 +461,7 @@
 	<string name="total_games">Общ брой Игри</string>
 	<string name="help_toast_for_daily_games">Дръпнете надолу, за да актуализирате игрите</string>
 	<string name="help_toast_for_quick_in_game_navigation">Задръжте \u003c или \u003e за Бързо Движение</string>
-	<string name="still_connecting">Все още се свързва...</string>
+	<string name="still_connecting">Все още се свързва…</string>
 	<string name="unable_to_send_challenge">Неуспешен опит да бъде изпратено Предизвикателство</string>
 	<string name="rating_range">Обхват на Рейтинга</string>
 	<string name="show_mini_boards">Покажи мини дъски</string>

@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.chess.R;
-import com.chess.ui.engine.ChessBoardLessons;
 import com.chess.ui.views.chess_boards.ChessBoardLessonsView;
 
 /**
@@ -45,7 +44,7 @@ public class GameLessonsFragmentTablet extends GameLessonFragment {
 
 		setBoardView(boardView);
 
-		ChessBoardLessons.resetInstance();
+		resetInstance();
 		boardView.setGameUiFace(this);
 		getControlsView().enableGameControls(false);
 

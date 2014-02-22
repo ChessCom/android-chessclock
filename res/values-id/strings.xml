@@ -176,7 +176,7 @@
 	<string name="content">Isi</string>
 	<string name="comments">Komentar</string>
 	<string name="download_complete">Unduh Telah Rampung</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Kesulitan</string>
 	<string name="easiest">Paling Mudah</string>
 	<string name="hardest">Paling Sulit</string>

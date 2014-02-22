@@ -11,27 +11,9 @@ import com.chess.ui.interfaces.game_ui.GameFace;
  */
 public class ChessBoardLessons extends ChessBoard implements LessonsBoardFace {
 
-	private static ChessBoardLessons instance;
-
-	private ChessBoardLessons(GameFace gameFace) {
+	public ChessBoardLessons(GameFace gameFace) {
 		super(gameFace);
-	}
-
-	public static ChessBoardLessons getInstance(GameFace gameFace) {
-		final Long gameId = gameFace.getGameId();
-
-		if (instance == null || instance.gameId == null || !instance.gameId.equals(gameId)) {
-			instance = new ChessBoardLessons(gameFace);
-			instance.gameId = gameId;
-			instance.justInitialized = true;
-		} else {
-			instance.justInitialized = false;
-		}
-		return instance;
-	}
-
-	public static void resetInstance() {
-		instance = null;
+		gameId = gameFace.getGameId();
 	}
 
 	@Override

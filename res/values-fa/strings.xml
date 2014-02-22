@@ -16,7 +16,7 @@
 	<string name="complete_singup">تکمیل نام‌نویسی</string>
 	<string name="white">سفید</string>
 	<string name="black">سیاه</string>
-	<string name="thinking_">در حال اندیشه...</string>
+	<string name="thinking_">در حال اندیشه…</string>
 	<string name="open_challenges">رقابت‌های فعال</string>
 	<string name="challenge_friend">رقابت با یک دوست</string>
 	<string name="challenge_created">رقابت ایجاد شد</string>
@@ -131,7 +131,7 @@
 	<string name="won_by_resignation">%s با اعلام باخت حریف برنده شد</string>
 	<string name="won_by_checkmate">%s با مات کردن برنده شد</string>
 	<string name="game_over">بازی به پایان رسید</string>
-	<string name="reconnecting_">اتصال دوباره...</string>
+	<string name="reconnecting_">اتصال دوباره…</string>
 	<string name="another_login_detected">اوه! شما پیش از این در جای دیگری وارد شده‌اید.</string>
 	<string name="game_end_title_draw">مساوی</string>
 	<string name="game_aborted">بازی لغو شد</string>
@@ -176,7 +176,7 @@
 	<string name="content">محتوا</string>
 	<string name="comments">دیدگاه‌ها</string>
 	<string name="download_complete">دریافت کامل شد</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">شدت سختی</string>
 	<string name="easiest">آسان‌ترین</string>
 	<string name="hardest">سخت‌ترین</string>
@@ -303,7 +303,7 @@
 	<string name="pieces_style">سبک مهره‌ها</string>
 	<string name="show_legal_moves">نمایش حرکات ممکن</string>
 	<string name="flip_board">چرخاندن صفحه</string>
-	<string name="waiting_for_opponent">در حال انتظار برای حریف...</string>
+	<string name="waiting_for_opponent">در حال انتظار برای حریف…</string>
 	<string name="lightning">فوق برق آسا</string>
 	<string name="blitz">بازی سریع</string>
 	<string name="standard">نیمه سریع</string>
@@ -358,7 +358,7 @@
 	<string name="new_daily_challenge">رقابت روزانه جدید</string>
 	<string name="arg_wants_to_play">%s مایل است با شما بازی کند!</string>
 	<string name="unable_to_select_this_photo">امکان استفاده از این عکس نیست</string>
-	<string name="processing_">درحال پردازش...</string>
+	<string name="processing_">درحال پردازش…</string>
 	<string name="about">درباره</string>
 	<string name="member_since_">عضویت از: %s</string>
 	<string name="birthday_">زادروز: %s</string>
@@ -372,8 +372,8 @@
 	<string name="topic_created">موضوع ایجاد شد</string>
 	<string name="posted">فرستاده شد</string>
 	<string name="post">بفرست</string>
-	<string name="write_reply_">نوشتن پاسخ...</string>
-	<string name="write_comment_">یک دیدگاه بنویسید...</string>
+	<string name="write_reply_">نوشتن پاسخ…</string>
+	<string name="write_comment_">یک دیدگاه بنویسید…</string>
 	<string name="username_wrote">%s نوشته:</string>
 	<string name="full_lesson_library">کتابخانه کامل دروس</string>
 	<string name="curriculum">برنامه درسی</string>
@@ -409,13 +409,13 @@
 	<string name="message">پیام</string>
 	<string name="new_message">پیام تازه</string>
 	<string name="to_">به:</string>
-	<string name="write_your_message">پیام خود را بنویسید...</string>
+	<string name="write_your_message">پیام خود را بنویسید…</string>
 	<string name="inbox">صندوق دریافت‌ </string>
 	<string name="activity">فعالیت‌‌ها</string>
 	<string name="keywords">کلید واژه‌ها</string>
 	<string name="all">همه</string>
 	<string name="go_ex">برو!</string>
-	<string name="ready_q_">آماده‌ای؟...</string>
+	<string name="ready_q_">آماده‌ای؟…</string>
 	<string name="solved_with_hint">با راهنمایی حل شد</string>
 	<string name="thirty_days">۳۰ روز</string>
 	<string name="ninety_days">۹۰ روز</string>
@@ -436,9 +436,9 @@
 	<string name="black_to_move">سیاه باید حرکت کند</string>
 	<string name="puzzle">معما</string>
 	<string name="chess_game">بازی شطرنج</string>
-	<string name="pull_to_refresh_pull_label">برای بازآوری بکشید...</string>
-	<string name="pull_to_refresh_release_label">برای بازآوری رها کنید...</string>
-	<string name="pull_to_refresh_refreshing_label">در حال بارگذاری...</string>
+	<string name="pull_to_refresh_pull_label">برای بازآوری بکشید…</string>
+	<string name="pull_to_refresh_release_label">برای بازآوری رها کنید…</string>
+	<string name="pull_to_refresh_refreshing_label">در حال بارگذاری…</string>
 	<string name="upgrade_to_unlimited_access">برای دسترسی نامحدود به Chess.com حساب کاربری خود را ارتقا دهید!</string>
 	<string name="upgrade_now">هم‌اکنون ارتقا دهید</string>
 	<string name="nothing_to_share">این حساب کاربری قفل شده است. خواهشمندیم در Chess.com وارد شوید.</string>
@@ -461,7 +461,7 @@
 	<string name="total_games">تمام بازی‌ها</string>
 	<string name="help_toast_for_daily_games">برای به‌روزرسانی بازی‌ها به سمت پایین بکشید</string>
 	<string name="help_toast_for_quick_in_game_navigation">\U003c یا \u003e را برای حرکت سریع، نگه دارید</string>
-	<string name="still_connecting">هنوز در حال اتصال...</string>
+	<string name="still_connecting">هنوز در حال اتصال…</string>
 	<string name="unable_to_send_challenge">ناتوان از فرستادن درخواست رقابت</string>
 	<string name="rating_range">محدوده امتیاز</string>
 	<string name="show_mini_boards">نمایش تخته شطرنج کوچک</string>

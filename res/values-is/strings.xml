@@ -176,7 +176,7 @@
 	<string name="content">Innihald</string>
 	<string name="comments">Ummæli</string>
 	<string name="download_complete">Niðurhali lokið</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Erfiðleikastig</string>
 	<string name="easiest">Auðveldast</string>
 	<string name="hardest">Erfiðast</string>

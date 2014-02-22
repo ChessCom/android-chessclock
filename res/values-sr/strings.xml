@@ -176,7 +176,7 @@
 	<string name="content">Садржај</string>
 	<string name="comments">Коментари</string>
 	<string name="download_complete">Преузимање завршено</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Тежина</string>
 	<string name="easiest">Најлакши</string>
 	<string name="hardest">Најтежи</string>
@@ -462,7 +462,7 @@
 	<string name="total_games">Укупно партија</string>
 	<string name="help_toast_for_daily_games">Повуци на доле за ажурирање партија</string>
 	<string name="help_toast_for_quick_in_game_navigation">Држите \u003c или \u003e за брзо кретање</string>
-	<string name="still_connecting">Још увек се повезује...</string>
+	<string name="still_connecting">Још увек се повезује…</string>
 	<string name="unable_to_send_challenge">Слање изазова није могуће</string>
 	<string name="rating_range">Опсег рејтинга</string>
 	<string name="show_mini_boards">Прикажи мини табле</string>

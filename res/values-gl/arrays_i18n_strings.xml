@@ -19,7 +19,7 @@
 		<item>Sen Publicidade</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Tácticas Ilimitadas</item>
 		<item>5 Leccións ao Día</item>
 		<item>Explorador de Aperturas</item>
@@ -28,7 +28,7 @@
 		<item>Sen Publicidade</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 Tácticas ao día</item>
 		<item>3 Leccións ao Día</item>
 		<item>Explorador de Aperturas</item>

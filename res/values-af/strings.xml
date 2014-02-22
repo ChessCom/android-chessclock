@@ -176,7 +176,7 @@
 	<string name="content">Inhoud</string>
 	<string name="comments">Kommentaar</string>
 	<string name="download_complete">Aflaai Afgehandel</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Moeilikheidsgraad</string>
 	<string name="easiest">Maklikste</string>
 	<string name="hardest">Moeilikste</string>
@@ -436,9 +436,9 @@
 	<string name="black_to_move">Swart om te skuif</string>
 	<string name="puzzle">Probleem</string>
 	<string name="chess_game">Skaak Spel</string>
-	<string name="pull_to_refresh_pull_label">Trek om te verfris...</string>
-	<string name="pull_to_refresh_release_label">Laat gaan om te verfris...</string>
-	<string name="pull_to_refresh_refreshing_label">Besig om te Laai...</string>
+	<string name="pull_to_refresh_pull_label">Trek om te verfris…</string>
+	<string name="pull_to_refresh_release_label">Laat gaan om te verfris…</string>
+	<string name="pull_to_refresh_refreshing_label">Besig om te Laai…</string>
 	<string name="upgrade_to_unlimited_access">Gradeer Op vir Onbeperkte Toegang tot Chess.com!</string>
 	<string name="upgrade_now">Gradeer Nou Op</string>
 	<string name="nothing_to_share">Die rekening is gesluit. Teken asseblief in by Chess.com.</string>
@@ -461,7 +461,7 @@
 	<string name="total_games">Aantal Spelle</string>
 	<string name="help_toast_for_daily_games">Trek af of Spelle te Verfris</string>
 	<string name="help_toast_for_quick_in_game_navigation">Hou \u003c of \u003e vir Vinnige Beweging</string>
-	<string name="still_connecting">Verbind Steeds...</string>
+	<string name="still_connecting">Verbind Steeds…</string>
 	<string name="unable_to_send_challenge">Kan nie uitdaging stuur nie</string>
 	<string name="rating_range">Graderings Reeks</string>
 	<string name="show_mini_boards">Wys Klein Bordjies </string>
@@ -476,9 +476,9 @@
 	<string name="review_lesson">Hersien Les</string>
 	<string name="full_screen">Volle Skerm</string>
 	<string name="line">Variasie</string>
-	<string name="predict_move_or_add_new_line">Voorspel Skuif of lys \'n nuwe variasie...</string>
-	<string name="make_your_conditional_move">Maak jou voorwaardelike skuif...</string>
-	<string name="predict_opponent_next_move">Voorspel teenstander se volgende skuif...</string>
+	<string name="predict_move_or_add_new_line">Voorspel Skuif of lys \'n nuwe variasie…</string>
+	<string name="make_your_conditional_move">Maak jou voorwaardelike skuif…</string>
+	<string name="predict_opponent_next_move">Voorspel teenstander se volgende skuif…</string>
 	<string name="notes">Notas</string>
 	<string name="private_note">Private Nota</string>
 	<string name="upgrade_feedback_1">"\"Taktiese Probleme en Lesse help regtig my skaak vaardighede\""</string>

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import com.chess.R;
 import com.chess.backend.RestHelper;
-import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.DailyGameConfig;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.google.gson.Gson;
@@ -399,7 +398,6 @@ public class AppData {
 	 */
 	public void setPlaySounds(Context context, int play) {
 		setIntValue(PREF_SOUNDS, play);
-		SoundPlayer.getInstance(context);// update internal flag
 	}
 
 	public int isPlaySounds() {

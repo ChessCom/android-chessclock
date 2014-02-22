@@ -14,6 +14,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -862,42 +863,51 @@ public class AppUtils {
 		return DEFAULT_COUNTRY;
 	}
 
+	/**
+	 * this actually also provided by Romain Guy, but let's try another for performance improvements
+	 */
+//	public static Bitmap getBitmapFromView(View view, int width, int height) {
+//		view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+//				View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
+//		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+//
+//		// Build the Drawing Cache
+//		view.buildDrawingCache();
+//
+//		// Create Bitmap
+//		Bitmap drawingCache = view.getDrawingCache();
+//		if (drawingCache == null) {
+//			return null;
+//		}
+//
+//		Bitmap bitmap = Bitmap.createBitmap(drawingCache);
+//		drawingCache.recycle();
+//		view.setDrawingCacheEnabled(false);
+//		return bitmap;
+//	}
+
+	/**
+	 * This method provided by Romain Guy, so it should do the job better, especially it includes case for listViews
+	 */
 	public static Bitmap getBitmapFromView(View view, int width, int height) {
-		view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
-				View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
-		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
 
-		// Build the Drawing Cache
-		view.buildDrawingCache();
-
-		// Create Bitmap
-		Bitmap drawingCache = view.getDrawingCache();
-		if (drawingCache == null) {
-			return null;
-		}
-
-		Bitmap bitmap = Bitmap.createBitmap(drawingCache);
-		drawingCache.recycle();
-		view.setDrawingCacheEnabled(false);
-		return bitmap;
-	}
-
-/*	public static Bitmap getBitmapFromView(View view, int width, int height) {
-		// Create bitmap
-		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		//Pre-measure the view so that height and width don't remain null.
 		view.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
 		//Assign a size and position to the view and all of its descendants
-		view.layout(0, 0, width, height);
+		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+
+		// Create bitmap
+		Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.RGB_565);
 
 		//Create a canvas with the specified bitmap to draw into
 		Canvas canvas = new Canvas(bitmap);
-		canvas.drawColor(Color.WHITE);
 
+		// if it's scrollView we get gull size
+		canvas.translate(-view.getScrollX(), -view.getScrollY());
 		//Render this view (and all of its children) to the given Canvas
 		view.draw(canvas);
 		return bitmap;
-	}*/
+	}
 
 	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
 		// Raw height and width of image

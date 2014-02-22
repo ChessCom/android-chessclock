@@ -153,7 +153,7 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 	@Override
 	public void onDrawerOpened() {
 		if (inPortrait()) {
-			ChessBoardComp.resetInstance();
+			resetInstance();
 			getAppData().clearSavedCompGame();
 			notationsView.resetNotations();
 			boardView.invalidateMe();

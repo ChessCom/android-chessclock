@@ -176,7 +176,7 @@
 	<string name="content">Nilalaman</string>
 	<string name="comments">Mga Komento</string>
 	<string name="download_complete">Tapos na ang Download</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Antas ng Kahirapan</string>
 	<string name="easiest">Pinakamadali</string>
 	<string name="hardest">Pinakamahirap</string>

@@ -33,6 +33,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ProgressBar;
 import com.chess.R;
+import com.chess.statics.Symbol;
 import com.chess.utilities.AppUtils;
 import com.chess.widgets.RoboTextView;
 import com.nineoldandroids.animation.Animator;
@@ -80,8 +81,10 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 
 		// Default Labels to display
 		mPullRefreshLabel = activity.getString(R.string.pull_to_refresh_pull_label);
-		mRefreshingLabel = activity.getString(R.string.pull_to_refresh_refreshing_label);
-		mReleaseLabel = activity.getString(R.string.pull_to_refresh_release_label);
+//		mRefreshingLabel = activity.getString(R.string.pull_to_refresh_refreshing_label);
+		mRefreshingLabel = Symbol.EMPTY;
+//		mReleaseLabel = activity.getString(R.string.pull_to_refresh_release_label);
+		mReleaseLabel = Symbol.EMPTY;
 
 		mAnimationDuration = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
 

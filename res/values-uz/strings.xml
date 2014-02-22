@@ -188,7 +188,7 @@
 	<string name="no_games">O\'yinlar mavjud emas</string>
 	<string name="my_move">Mening yurishim</string>
 	<string name="their_move">Ularning yurishi</string>
-	<string name="live_chess_time_mode_arg">%1$d%2$d</string>
+	<string name="live_chess_time_mode_arg">%1$d | %2$d</string>
 	<string name="arg_min">%d minut</string>
 	<string name="arg_hour">%d soat</string>
 	<string name="arg_hours">%d soat</string>

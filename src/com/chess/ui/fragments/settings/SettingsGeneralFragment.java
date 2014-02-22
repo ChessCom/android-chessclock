@@ -182,6 +182,7 @@ public class SettingsGeneralFragment extends CommonLogicFragment implements Swit
 		} else if (switchButton.getId() == R.id.soundsSwitch) {
 			int appSoundMode = checked ? AppData.TRUE : AppData.FALSE;
 			getAppData().setPlaySounds(getActivity(), appSoundMode);
+			getActivityFace().getSoundPlayer().setPlaySounds(checked);
 		} else if (switchButton.getId() == R.id.notificationsSwitch) {
 			getAppData().setNotificationsEnabled(checked);
 		} else if (switchButton.getId() == R.id.miniBoardsSwitch) {

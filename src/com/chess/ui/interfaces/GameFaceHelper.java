@@ -14,10 +14,13 @@ import com.chess.ui.interfaces.game_ui.GameNetworkFace;
  */
 public class GameFaceHelper implements GameNetworkFace {
 
+	private final SoundPlayer soundPlayer;
 	private Context context;
+	private ChessBoardLive chessBoard;
 
 	public GameFaceHelper(Context context) {
 		this.context = context;
+		soundPlayer = new SoundPlayer(context);
 	}
 
 	@Override
@@ -47,7 +50,7 @@ public class GameFaceHelper implements GameNetworkFace {
 
 	@Override
 	public SoundPlayer getSoundPlayer() {
-		return SoundPlayer.getInstance(context);
+		return soundPlayer;
 	}
 
 	@Override
@@ -126,7 +129,10 @@ public class GameFaceHelper implements GameNetworkFace {
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardLive.getInstance(this);
+		if (chessBoard == null) {
+			chessBoard = new ChessBoardLive(this);
+		}
+		return chessBoard;
 	}
 
 	@Override

@@ -176,7 +176,7 @@
 	<string name="content">Tartalom</string>
 	<string name="comments">Hozzászólások</string>
 	<string name="download_complete">Letöltés kész</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Nehézségi szint</string>
 	<string name="easiest">Legkönnyebb</string>
 	<string name="hardest">Legnehezebb</string>

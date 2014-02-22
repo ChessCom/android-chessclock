@@ -176,7 +176,7 @@
 	<string name="content">Contingut</string>
 	<string name="comments">Comentaris</string>
 	<string name="download_complete">Descàrrega finalitzada</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Nivell</string>
 	<string name="easiest">El més senzill</string>
 	<string name="hardest">El més difícil</string>
@@ -409,7 +409,7 @@
 	<string name="message">Missatge</string>
 	<string name="new_message">Missatge nou</string>
 	<string name="to_">Per a:</string>
-	<string name="write_your_message">Escriu el teu missatge...</string>
+	<string name="write_your_message">Escriu el teu missatge…</string>
 	<string name="inbox">Safata d\'entrada</string>
 	<string name="activity">Activitat</string>
 	<string name="keywords">Paraules clau</string>

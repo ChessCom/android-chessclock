@@ -106,8 +106,8 @@
 	<string name="draw">Tasapeli</string>
 	<string name="login">Kirjaudu sisään</string>
 	<string name="error">Virhetoiminto</string>
-	<string name="validateUsername">Käyttäjänimesi on oltava 3-20 merkkiä pitkä. Se voi sisältää vain kirjaimia, numeroita ja ala- sekä väliviivoja. Välilyöntejä ei voi käyttää.</string>
-	<string name="validatePassword">Salasanasi on oltava 6-20 merkkiä pitkä.</string>
+	<string name="validateUsername">Käyttäjänimesi on oltava 3–20 merkkiä pitkä. Se voi sisältää vain kirjaimia, numeroita ja ala- sekä väliviivoja. Välilyöntejä ei voi käyttää.</string>
+	<string name="validatePassword">Salasanasi on oltava 6–20 merkkiä pitkä.</string>
 	<string name="image">Kuva</string>
 	<string name="no_network">Ei verkkoa</string>
 	<string name="check_connection">Tarkista yhteys</string>
@@ -176,7 +176,7 @@
 	<string name="content">Sisältö</string>
 	<string name="comments">Kommentit</string>
 	<string name="download_complete">Lataus valmis</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Vaikeustaso</string>
 	<string name="easiest">Helpoin</string>
 	<string name="hardest">Vaikein</string>

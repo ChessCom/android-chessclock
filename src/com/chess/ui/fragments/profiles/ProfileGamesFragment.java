@@ -28,7 +28,6 @@ import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
-import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.fragments.daily.GameDailyFinishedFragment;
 import com.chess.ui.fragments.daily.GameDailyFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -159,7 +158,7 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			DailyCurrentGameData gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
 
-			ChessBoardDaily.resetInstance();
+//			resetInstance();
 			getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId(), username));
 		}
 	}

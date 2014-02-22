@@ -211,7 +211,7 @@
 	<string name="content">Content</string>
 	<string name="comments">Comments</string>
 	<string name="download_complete">Download Complete</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 
 	<!--New Game Menu-->
 	<string name="difficulty">Difficulty</string>

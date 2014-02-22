@@ -16,7 +16,7 @@
 	<string name="complete_singup">Kaydı Tamamla</string>
 	<string name="white">Beyaz</string>
 	<string name="black">Siyah</string>
-	<string name="thinking_">Düşünüyor...</string>
+	<string name="thinking_">Düşünüyor…</string>
 	<string name="open_challenges">Açık Maç Teklifleri</string>
 	<string name="challenge_friend">Arkadaşına Maç Teklifi Yap</string>
 	<string name="challenge_created">Maç Teklifi Oluşturuldu</string>
@@ -106,8 +106,8 @@
 	<string name="draw">Beraberlik</string>
 	<string name="login">Giriş</string>
 	<string name="error">Hata</string>
-	<string name="validateUsername">Kullanıcı adınızı 3-20 karakter uzunluğunda olmalı ve yalnızca harfler, sayılar, alt çizgi ve çizgiden oluşmalıdır. Kullanıcı adında boşluk kullamazsınız.</string>
-	<string name="validatePassword">Şifreniz 6-20 karakter uzunluğunda olmalıdır.</string>
+	<string name="validateUsername">Kullanıcı adınızı 3–20 karakter uzunluğunda olmalı ve yalnızca harfler, sayılar, alt çizgi ve çizgiden oluşmalıdır. Kullanıcı adında boşluk kullamazsınız.</string>
+	<string name="validatePassword">Şifreniz 6–20 karakter uzunluğunda olmalıdır.</string>
 	<string name="image">Resim</string>
 	<string name="no_network">Ağ Yok</string>
 	<string name="check_connection">Bağlantıyı Kontrol Edin</string>
@@ -131,7 +131,7 @@
 	<string name="won_by_resignation">%s Rakibin Terk Etmesi ile Kazandı</string>
 	<string name="won_by_checkmate">%s Şahmat Yaparak Kazandı</string>
 	<string name="game_over">Oyun Bitti</string>
-	<string name="reconnecting_">Yeniden bağlanıyor...</string>
+	<string name="reconnecting_">Yeniden bağlanıyor…</string>
 	<string name="another_login_detected">Hoppala! Başka bir yerde oturum açmış durumdasın.</string>
 	<string name="game_end_title_draw">Berabere</string>
 	<string name="game_aborted">Maç İptal Edildi</string>
@@ -176,7 +176,7 @@
 	<string name="content">İçerik</string>
 	<string name="comments">Yorumlar</string>
 	<string name="download_complete">İndirme Tamamlandı</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Zorluk</string>
 	<string name="easiest">En kolay</string>
 	<string name="hardest">En zor</string>
@@ -285,7 +285,7 @@
 	<string name="account_history">Hesap Geçmişi</string>
 	<string name="location">Konum</string>
 	<string name="share">Paylaş</string>
-	<string name="profile_membership_renew_cancel">%1$ üyeliğiniz %2$ karşılığında yenilenir.</string>
+	<string name="profile_membership_renew_cancel">%1$s üyeliğiniz %2$s karşılığında yenilenir.</string>
 	<string name="profile_membership_renew_cancel_1"><![CDATA[<a href="http://www.chess.com/home/account"> İptal</a>]]]></string>
 	<string name="invite_friends_profile_message">Satranç arkadaşlarla daha eğlenceli - onları katılmaya davet et!</string>
 	<string name="profile_account_message_1">Hesabınız siteye bağlıdır </string>
@@ -358,7 +358,7 @@
 	<string name="new_daily_challenge">Yeni Günlük Maç Teklifi</string>
 	<string name="arg_wants_to_play">%s seninle maç yapmak istiyor!</string>
 	<string name="unable_to_select_this_photo">Bu Fotoğraf Kullanılamıyor</string>
-	<string name="processing_">İşleniyor...</string>
+	<string name="processing_">İşleniyor…</string>
 	<string name="about">Hakkında</string>
 	<string name="member_since_">Üyelik Tarihi: %s</string>
 	<string name="birthday_">Doğum Günü: %s</string>
@@ -398,7 +398,7 @@
 	<string name="lessons_limit_reached_message">Günlük ders sınırına ulaşıldı. Sınırsız dersler ile kendinizi geliştirmek için üye olun!</string>
 	<string name="resume_lesson">Derse Devam Et</string>
 	<string name="installing_theme">Tema Yükleniyor</string>
-	<string name="waiting_to_download">Karşıdan yükleme için bekleniyor...</string>
+	<string name="waiting_to_download">Karşıdan yükleme için bekleniyor…</string>
 	<string name="downloading_arg">%S Yükleniyor</string>
 	<string name="custom">Özel</string>
 	<string name="background">Arka Plan</string>
@@ -409,13 +409,13 @@
 	<string name="message">Mesaj</string>
 	<string name="new_message">Yeni Mesaj</string>
 	<string name="to_">Kime:</string>
-	<string name="write_your_message">Mesajınızı yazın...</string>
+	<string name="write_your_message">Mesajınızı yazın…</string>
 	<string name="inbox">Gelen Kutusu</string>
 	<string name="activity">Faaliyet</string>
 	<string name="keywords">Anahtar Kelimeler</string>
 	<string name="all">Tümü</string>
 	<string name="go_ex">Haydi!</string>
-	<string name="ready_q_">Hazır mısın?...</string>
+	<string name="ready_q_">Hazır mısın?…</string>
 	<string name="solved_with_hint">İpucu Kullanılarak Çözüldü</string>
 	<string name="thirty_days">30 Gün</string>
 	<string name="ninety_days">90 Gün</string>
@@ -461,7 +461,7 @@
 	<string name="total_games">Toplam Maç Sayısı</string>
 	<string name="help_toast_for_daily_games">Maçları Güncellemek için Aşağı Çekin</string>
 	<string name="help_toast_for_quick_in_game_navigation">Hızlı Hareket için \u003c or \u003e Basılı Tutun</string>
-	<string name="still_connecting">Hala Bağlanıyor...</string>
+	<string name="still_connecting">Hala Bağlanıyor…</string>
 	<string name="unable_to_send_challenge">Maç Teklifi Gönderilemedi</string>
 	<string name="rating_range">Puan Aralığı</string>
 	<string name="show_mini_boards">Mini Tahtaları Göster</string>
@@ -476,8 +476,8 @@
 	<string name="review_lesson">Dersi Değerlendir</string>
 	<string name="full_screen">Tam Ekran</string>
 	<string name="line">Gidiş yolu</string>
-	<string name="predict_move_or_add_new_line">Hamleyi tahmin et veya yeni bir gidiş yolu ekle...</string>
-	<string name="make_your_conditional_move">Koşullu hamleni yap...</string>
+	<string name="predict_move_or_add_new_line">Hamleyi tahmin et veya yeni bir gidiş yolu ekle…</string>
+	<string name="make_your_conditional_move">Koşullu hamleni yap…</string>
 	<string name="predict_opponent_next_move">Rakibinin sonraki hamlesini tahmin et&#8230;</string>
 	<string name="notes">Notlar</string>
 	<string name="private_note">Özel Bilgi Notu</string>

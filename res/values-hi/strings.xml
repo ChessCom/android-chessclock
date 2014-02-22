@@ -16,7 +16,7 @@
 	<string name="complete_singup">साइनअप  पूरा करें </string>
 	<string name="white">सफ़ेद</string>
 	<string name="black">काला</string>
-	<string name="thinking_">सोच रहा है...</string>
+	<string name="thinking_">सोच रहा है…</string>
 	<string name="open_challenges">खुली चुनौतियाँ </string>
 	<string name="challenge_friend">मित्र को चुनौती दें </string>
 	<string name="challenge_created">चुनौती निर्मित </string>
@@ -131,7 +131,7 @@
 	<string name="won_by_resignation">%s प्रतिद्वंदी द्वारा हार स्वीकारने के कारण विजयी</string>
 	<string name="won_by_checkmate">%s शह-मात द्वारा विजयी</string>
 	<string name="game_over">खेल ख़त्म</string>
-	<string name="reconnecting_">पुनः कनेक्ट करने की प्रक्रिया में...</string>
+	<string name="reconnecting_">पुनः कनेक्ट करने की प्रक्रिया में…</string>
 	<string name="another_login_detected">उफ़! आप कहीं और लॉग इन हैं.</string>
 	<string name="game_end_title_draw">ड्रा</string>
 	<string name="game_aborted">खेल निरस्त कर दिया गया </string>
@@ -176,7 +176,7 @@
 	<string name="content">विषय-सूची</string>
 	<string name="comments">टिप्पणियाँ</string>
 	<string name="download_complete">डाउनलोड संपन्न</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">कठिनाई</string>
 	<string name="easiest">सबसे आसान</string>
 	<string name="hardest">सबसे कठिन</string>
@@ -303,7 +303,7 @@
 	<string name="pieces_style">मोहरों की बनावटें</string>
 	<string name="show_legal_moves">वैध चालें दिखाएँ</string>
 	<string name="flip_board">बोर्ड पलटें</string>
-	<string name="waiting_for_opponent">प्रतिद्वंद्वी की  प्रतीक्षा में...</string>
+	<string name="waiting_for_opponent">प्रतिद्वंद्वी की  प्रतीक्षा में…</string>
 	<string name="lightning">लाइटनिंग</string>
 	<string name="blitz">ब्लिट्ज</string>
 	<string name="standard">सामान्य</string>
@@ -358,7 +358,7 @@
 	<string name="new_daily_challenge">नई दैनिक चुनौती</string>
 	<string name="arg_wants_to_play">%s खेल जारी रखना चाहता है!</string>
 	<string name="unable_to_select_this_photo">इस फोटो का उपयोग करने में असमर्थ</string>
-	<string name="processing_">प्रक्रिया चल रही है...</string>
+	<string name="processing_">प्रक्रिया चल रही है…</string>
 	<string name="about">सम्बंधित जानकारी</string>
 	<string name="member_since_">%s से सदस्य</string>
 	<string name="birthday_">जन्मदिन: %s</string>
@@ -373,7 +373,7 @@
 	<string name="posted">पोस्ट हो चुका है</string>
 	<string name="post">पोस्ट</string>
 	<string name="write_reply_">उत्तर लिखें</string>
-	<string name="write_comment_">एक टिप्पणी लिखें...</string>
+	<string name="write_comment_">एक टिप्पणी लिखें…</string>
 	<string name="username_wrote">%s ने लिखा है:</string>
 	<string name="full_lesson_library">पूर्ण सबक पुस्तकालय</string>
 	<string name="curriculum">पाठ्यचर्या</string>
@@ -398,7 +398,7 @@
 	<string name="lessons_limit_reached_message">सबकों की आज की सीमा पूरी. असीमित सबकों द्वारा अपना खेल निखारने हेतु अपग्रेड करें!</string>
 	<string name="resume_lesson">सबक फिर से आरम्भ करें</string>
 	<string name="installing_theme">थीम इनस्टॉल हो रहा है</string>
-	<string name="waiting_to_download">डाउनलोड करने हेतु प्रतीक्षारत...</string>
+	<string name="waiting_to_download">डाउनलोड करने हेतु प्रतीक्षारत…</string>
 	<string name="downloading_arg">%s डाउनलोड हो रहा है</string>
 	<string name="custom">कस्टम</string>
 	<string name="background">पृष्ठभूमि</string>
@@ -409,13 +409,13 @@
 	<string name="message">संदेश</string>
 	<string name="new_message">नया संदेश</string>
 	<string name="to_">को:</string>
-	<string name="write_your_message">अपना संदेश लिखें...</string>
+	<string name="write_your_message">अपना संदेश लिखें…</string>
 	<string name="inbox">इनबॉक्स</string>
 	<string name="activity">गतिविधि</string>
 	<string name="keywords">कीवर्ड्स (खोजशब्द)</string>
 	<string name="all">सभी</string>
 	<string name="go_ex">चलो!</string>
-	<string name="ready_q_">तैयार...?</string>
+	<string name="ready_q_">तैयार…?</string>
 	<string name="solved_with_hint">सुझाव की सहायता से हल</string>
 	<string name="thirty_days">30 दिन</string>
 	<string name="ninety_days">90 दिन</string>
@@ -436,9 +436,9 @@
 	<string name="black_to_move">काले की चाल</string>
 	<string name="puzzle">पहेली</string>
 	<string name="chess_game">शतरंज गेम</string>
-	<string name="pull_to_refresh_pull_label">रिफ्रेश करने के लिए खींचें...</string>
-	<string name="pull_to_refresh_release_label">रिफ्रेश करने के लिए छोड़ दें...</string>
-	<string name="pull_to_refresh_refreshing_label">लोड हो रहा है...</string>
+	<string name="pull_to_refresh_pull_label">रिफ्रेश करने के लिए खींचें…</string>
+	<string name="pull_to_refresh_release_label">रिफ्रेश करने के लिए छोड़ दें…</string>
+	<string name="pull_to_refresh_refreshing_label">लोड हो रहा है…</string>
 	<string name="upgrade_to_unlimited_access">chess.com पर असीमित सुविधाओं के लिए अपग्रेड करें!</string>
 	<string name="upgrade_now">अपग्रेड करें</string>
 	<string name="nothing_to_share">यह अकाउंट अवरोधित है. कृपया Chess.com पर लॉग इन करें.</string>
@@ -476,8 +476,8 @@
 	<string name="review_lesson">सबक फिर से शुरू करें </string>
 	<string name="full_screen">फ़ुलस्‍क्रीन</string>
 	<string name="line">लाइन </string>
-	<string name="predict_move_or_add_new_line">चाल का पूर्वानुमान लगाएँ या एक नई लाइन जोड़ें...</string>
-	<string name="make_your_conditional_move">अपनी पूर्वानुमानित चाल चलें...</string>
+	<string name="predict_move_or_add_new_line">चाल का पूर्वानुमान लगाएँ या एक नई लाइन जोड़ें…</string>
+	<string name="make_your_conditional_move">अपनी पूर्वानुमानित चाल चलें…</string>
 	<string name="predict_opponent_next_move">प्रतिद्वंदी की अगली चाल का पूर्वानुमान लगाएँ</string>
 	<string name="notes">नोट्स</string>
 	<string name="private_note">निजी नोट</string>

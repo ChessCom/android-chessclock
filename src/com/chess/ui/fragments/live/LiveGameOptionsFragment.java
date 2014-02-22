@@ -483,6 +483,8 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 			}
 		}
 
+		liveOptionsVisible = false; // should be false to make them visible when changing fragment above
+
 		toggleLiveOptionsView();
 	}
 }

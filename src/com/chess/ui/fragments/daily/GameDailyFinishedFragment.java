@@ -87,6 +87,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 	private int[] countryCodes;
 	private NotationFace notationsFace;
 	private int dailyRating;
+	private ChessBoardDaily chessBoardDaily;
 
 	public GameDailyFinishedFragment() {
 	}
@@ -312,7 +313,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
-		ChessBoardDaily.resetInstance();
+		resetInstance();
 		BoardFace boardFace = getBoardFace();
 		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
@@ -345,7 +346,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 			}
 		}, NOTATION_REWIND_DELAY);
 
-		boardFace.setJustInitialized(false);
+//		boardFace.setJustInitialized(false);
 
 		{ // set stubs while avatars are loading
 			Drawable src = new IconDrawable(getActivity(), R.string.ic_profile,
@@ -464,7 +465,10 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardDaily.getInstance(this);
+		if (chessBoardDaily == null) {
+			chessBoardDaily = new ChessBoardDaily(this);
+		}
+		return chessBoardDaily;
 	}
 
 	@Override

@@ -25,7 +25,6 @@ import com.chess.live.util.GameTimeConfig;
 import com.chess.model.PopupItem;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
-import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.LiveBaseFragment;
 import com.chess.ui.fragments.live.*;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
@@ -445,7 +444,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				liveEvent.setChallengeDelayed(false);
 				liveHelper.getPausedActivityLiveEvents().put(liveEvent.getEvent(), liveEvent);
 			} else {
-				SoundPlayer.getInstance(getContext()).playNotify();
+				provideSoundPlayer().playNotify();
 				showDialogImmediately(challenge);
 			}
 		}

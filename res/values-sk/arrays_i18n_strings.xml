@@ -19,7 +19,7 @@
 		<item>Bez reklamy</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Neobmedzená Taktika</item>
 		<item>5 lekcií denne</item>
 		<item>Prehliadač otvorení</item>
@@ -28,7 +28,7 @@
 		<item>Bez reklamy</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 Taktických pozícií denne</item>
 		<item>3 Lekcie denne</item>
 		<item>Prehliadač otvorení</item>

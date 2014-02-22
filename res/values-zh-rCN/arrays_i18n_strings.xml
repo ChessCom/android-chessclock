@@ -19,7 +19,7 @@
 		<item>去掉广告</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>无限次战术难题</item>
 		<item>每天 5 节课</item>
 		<item>开局分析</item>
@@ -28,7 +28,7 @@
 		<item>去掉广告</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>每日二十五个战术难题</item>
 		<item>每天 3 节课</item>
 		<item>开局分析</item>

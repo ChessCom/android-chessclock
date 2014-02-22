@@ -29,6 +29,7 @@ import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupPromotionFragment;
 import com.chess.ui.fragments.tactics.GameTacticsFragment;
 import com.chess.ui.interfaces.PopupListSelectionFace;
+import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameFace;
 import com.chess.ui.views.PanelInfoGameView;
 import com.chess.ui.views.chess_boards.ChessBoardBaseView;
@@ -88,6 +89,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	private int promotionFile;
 	private int promotionRank;
 	private MoPubView mopubRectangleAd;
+	protected BoardFace chessBoard;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -513,6 +515,10 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 	public MoPubView getMopubRectangleAd() {
 		return mopubRectangleAd;
+	}
+
+	protected void resetInstance() {
+		chessBoard = null;
 	}
 
 	public static class LabelsConfig {

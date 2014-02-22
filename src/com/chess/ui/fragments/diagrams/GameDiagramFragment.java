@@ -441,7 +441,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	};
 
 	private void adjustBoardForGame() {
-		ChessBoardDiagram.resetInstance();
+		resetInstance();
 		PuzzlesBoardFace boardFace = getBoardFace();
 
 		userPlayWhite = !diagramItem.isFlip();
@@ -609,7 +609,10 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 
 	@Override
 	public PuzzlesBoardFace getBoardFace() {
-		return ChessBoardDiagram.getInstance(this);
+		if (chessBoard == null) {
+			chessBoard = new ChessBoardDiagram(this);
+		}
+		return (PuzzlesBoardFace) chessBoard;
 	}
 
 	@Override
@@ -667,7 +670,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 		boardView.setGameActivityFace(this);
 
 		adjustBoardForGame();
-		getBoardFace().setJustInitialized(false);
+//		getBoardFace().setJustInitialized(false);
 	}
 
 	protected ControlsDiagramView getControlsView() {

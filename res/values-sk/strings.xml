@@ -176,7 +176,7 @@
 	<string name="content">Obsah</string>
 	<string name="comments">Komentáre</string>
 	<string name="download_complete">Preberanie dokončené</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Obtiažnosť</string>
 	<string name="easiest">Najľahšie</string>
 	<string name="hardest">Najťažšie</string>

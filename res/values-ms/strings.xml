@@ -179,7 +179,7 @@
 	<string name="content">Kandungan</string>
 	<string name="comments">Komen-komen</string>
 	<string name="download_complete">Muat Turun Selesai</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Tahap kesukaran</string>
 	<string name="easiest">Paling mudah</string>
 	<string name="hardest">Paling rumit</string>
@@ -376,7 +376,7 @@
 	<string name="posted">Telah Dihantar</string>
 	<string name="post">Hantar</string>
 	<string name="write_reply_">Tulis jawapan&#8230;</string>
-	<string name="write_comment_">Tulis komen...</string>
+	<string name="write_comment_">Tulis komen…</string>
 	<string name="username_wrote">%s menulis:</string>
 	<string name="full_lesson_library">Pengajaran Penuh Perpustakaan</string>
 	<string name="curriculum">Kurikulum</string>
@@ -401,7 +401,7 @@
 	<string name="lessons_limit_reached_message">Kelas had dicapai untuk hari ini. Menaik taraf sekarang untuk pelajaran tanpa had!</string>
 	<string name="resume_lesson">Sambung semula pelajaran</string>
 	<string name="installing_theme">Memasang tema</string>
-	<string name="waiting_to_download">Menunggu untuk memuat turun...</string>
+	<string name="waiting_to_download">Menunggu untuk memuat turun…</string>
 	<string name="downloading_arg">Memuat turun %s</string>
 	<string name="custom">Buat</string>
 	<string name="background">Latar belakang</string>
@@ -412,13 +412,13 @@
 	<string name="message">Mesej</string>
 	<string name="new_message">Mesej Baru</string>
 	<string name="to_">Kepada:</string>
-	<string name="write_your_message">Tulis mesej anda...</string>
+	<string name="write_your_message">Tulis mesej anda…</string>
 	<string name="inbox">Peti Masuk</string>
 	<string name="activity">Aktiviti</string>
 	<string name="keywords">Kata kunci</string>
 	<string name="all">Semua</string>
 	<string name="go_ex">Pergi!</string>
-	<string name="ready_q_">Bersedia?...</string>
+	<string name="ready_q_">Bersedia?…</string>
 	<string name="solved_with_hint">1 Tahun</string>
 	<string name="thirty_days">30 Hari</string>
 	<string name="ninety_days">90 Hari</string>
@@ -439,8 +439,8 @@
 	<string name="black_to_move">Hitam Untuk Bergerak</string>
 	<string name="puzzle">Teka-teki</string>
 	<string name="chess_game">Permainan Catur</string>
-	<string name="pull_to_refresh_pull_label">Tarik untuk segarkan semula...</string>
-	<string name="pull_to_refresh_release_label">Melepaskan untuk segarkan semula...</string>
+	<string name="pull_to_refresh_pull_label">Tarik untuk segarkan semula…</string>
+	<string name="pull_to_refresh_release_label">Melepaskan untuk segarkan semula…</string>
 	<string name="pull_to_refresh_refreshing_label">Sedang Memuat&#8230;</string>
 	<string name="upgrade_to_unlimited_access">Naik taraf untuk Akses Tanpa Had di Chess.com!</string>
 	<string name="upgrade_now">Naik Taraf Sekarang</string>

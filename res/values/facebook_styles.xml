@@ -42,7 +42,6 @@
 		<!--<item name="android:background">@drawable/button_facebook_selector</item>-->
 		<item name="android:textColor">@color/com_facebook_loginview_text_color</item>
 		<item name="android:textSize">@dimen/com_facebook_loginview_text_size</item>
-		<item name="android:paddingStart">@dimen/com_facebook_loginview_padding_left</item>
 		<item name="android:paddingLeft">@dimen/com_facebook_loginview_padding_left</item>
 		<item name="android:gravity">center</item>
 	</style>

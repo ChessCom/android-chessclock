@@ -31,7 +31,6 @@ import com.chess.BuildConfig;
 import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.model.GameDiagramItem;
-import com.chess.ui.engine.ChessBoardDiagram;
 import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.Move;
 import com.chess.ui.interfaces.GameFaceHelper;
@@ -348,7 +347,7 @@ public class DiagramImageProcessor extends ImageResizer {
 		int coordinateColorDark = resources.getColor(R.color.coordinate_green_default_dark);
 		boardView.setCustomCoordinatesColors(new int[]{coordinateColorLight, coordinateColorDark});
 
-		ChessBoardDiagram.resetInstance();
+//		ChessBoardDiagram.resetInstance();
 		BoardFace boardFace = gameFaceHelper.getBoardFace();
 
 		if (diagramItem.getGameType() == RestHelper.V_GAME_CHESS_960) {

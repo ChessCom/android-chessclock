@@ -176,7 +176,7 @@
 	<string name="content">Innhold</string>
 	<string name="comments">Kommentarer</string>
 	<string name="download_complete">Nedlasting Fullført</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Vanskelighetsgrad</string>
 	<string name="easiest">Enkleste</string>
 	<string name="hardest">Vanskeligste</string>

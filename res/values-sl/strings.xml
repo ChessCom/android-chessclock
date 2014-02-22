@@ -176,7 +176,7 @@
 	<string name="content">Vsebina</string>
 	<string name="comments">Komentarji</string>
 	<string name="download_complete">Prenos končan</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Težavnost</string>
 	<string name="easiest">Najlažje</string>
 	<string name="hardest">Najtežje</string>
@@ -358,7 +358,7 @@
 	<string name="new_daily_challenge">Nov dnevni izziv</string>
 	<string name="arg_wants_to_play">%s želi igrati!</string>
 	<string name="unable_to_select_this_photo">Ni mogoče uporabiti te fotografije</string>
-	<string name="processing_">v obdelavi...</string>
+	<string name="processing_">v obdelavi…</string>
 	<string name="about">O</string>
 	<string name="member_since_">Član od %s</string>
 	<string name="birthday_">Rojstni dan: %s</string>
@@ -373,7 +373,7 @@
 	<string name="posted">Objavljeno</string>
 	<string name="post">Objava</string>
 	<string name="write_reply_">Napiši odgovor</string>
-	<string name="write_comment_">Napiši komentar...</string>
+	<string name="write_comment_">Napiši komentar…</string>
 	<string name="username_wrote">%s je napisal</string>
 	<string name="full_lesson_library">Knjižnica celotnih lekcij</string>
 	<string name="curriculum">Kurikulum</string>
@@ -398,7 +398,7 @@
 	<string name="lessons_limit_reached_message">Limit za lekcije je bil za danes dosežen. Nadgradite zdaj, da napredujete z neomejenimi lekcijami.</string>
 	<string name="resume_lesson">Nadaljuj lekcijo</string>
 	<string name="installing_theme">Inštaliram temo</string>
-	<string name="waiting_to_download">Čakam na prenos...</string>
+	<string name="waiting_to_download">Čakam na prenos…</string>
 	<string name="downloading_arg">Prenašanje %s</string>
 	<string name="custom">Po meri</string>
 	<string name="background">Ozadje</string>
@@ -415,7 +415,7 @@
 	<string name="keywords">Ključne besede</string>
 	<string name="all">Vse</string>
 	<string name="go_ex">Pojdi!</string>
-	<string name="ready_q_">Pripravljeni?...</string>
+	<string name="ready_q_">Pripravljeni?…</string>
 	<string name="solved_with_hint">Rešeno z namigom</string>
 	<string name="thirty_days">30 dni</string>
 	<string name="ninety_days">90 dni</string>
@@ -438,7 +438,7 @@
 	<string name="chess_game">Šahovska partija</string>
 	<string name="pull_to_refresh_pull_label">Potegnite za osvežitev</string>
 	<string name="pull_to_refresh_release_label">Sprostite za osvežitev</string>
-	<string name="pull_to_refresh_refreshing_label">Nalaganje...</string>
+	<string name="pull_to_refresh_refreshing_label">Nalaganje…</string>
 	<string name="upgrade_to_unlimited_access">Nadgradite za neomejen dostop na Chess.com!</string>
 	<string name="upgrade_now">Nadgradite zdaj</string>
 	<string name="nothing_to_share">Ta račun je zaklenjen. Prosimo prijavite se na Chess.com.</string>
@@ -461,7 +461,7 @@
 	<string name="total_games">Vse igre</string>
 	<string name="help_toast_for_daily_games">Povlecite dol za posodobitev partij</string>
 	<string name="help_toast_for_quick_in_game_navigation">držite \u003c ali \u003e za hitro premikanje</string>
-	<string name="still_connecting">Še vedno povezujem...</string>
+	<string name="still_connecting">Še vedno povezujem…</string>
 	<string name="unable_to_send_challenge">Ni mogoče poslati izziva</string>
 	<string name="rating_range">Razpon ratinga</string>
 	<string name="show_mini_boards">Prikaži mini table</string>
@@ -476,9 +476,9 @@
 	<string name="review_lesson">Ponovi lekcijo</string>
 	<string name="full_screen">Celoten zaslon</string>
 	<string name="line">linija</string>
-	<string name="predict_move_or_add_new_line">Predvidite potezo ali dodajte novo linijo...</string>
-	<string name="make_your_conditional_move">Naredite svojo pred potezo...</string>
-	<string name="predict_opponent_next_move">Predvidite nasprotnikovo nasednjo potezo...</string>
+	<string name="predict_move_or_add_new_line">Predvidite potezo ali dodajte novo linijo…</string>
+	<string name="make_your_conditional_move">Naredite svojo pred potezo…</string>
+	<string name="predict_opponent_next_move">Predvidite nasprotnikovo nasednjo potezo…</string>
 	<string name="notes">Opombe</string>
 	<string name="private_note">Zasebna opomba</string>
 	<string name="upgrade_feedback_1">"\"Taktike in lekcije, resnično izboljšujejo mojo šahovsko igro \""</string>

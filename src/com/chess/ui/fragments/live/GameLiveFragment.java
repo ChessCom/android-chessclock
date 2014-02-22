@@ -38,7 +38,6 @@ import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardLive;
 import com.chess.ui.engine.Move;
-import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.game.GameAnalyzeFragment;
@@ -218,7 +217,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 			optionsMapInit();
 
-			ChessBoardLive.resetInstance();
+			resetInstance();
 			BoardFace boardFace = getBoardFace();
 
 			Boolean isUserColorWhite = liveHelper.isUserColorWhite(); // should throw exception if null
@@ -469,7 +468,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onClockFinishing() {
 		Activity activity = getActivity();
 		if (activity != null && isResumed()) {
-			SoundPlayer.getInstance(activity).playTenSeconds();
+			getActivityFace().getSoundPlayer().playTenSeconds();
 		}
 	}
 
@@ -1165,7 +1164,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardLive.getInstance(this);
+		if (chessBoard == null) {
+			chessBoard = new ChessBoardLive(this);
+		}
+		return chessBoard;
 	}
 
 	private void updatePlayerLabels(Game game, int newWhiteRating, int newBlackRating) {

@@ -19,7 +19,7 @@
 		<item>Без Огласи</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Неограничен број на тактики</item>
 		<item>5 Лекции на ден</item>
 		<item>Пребарувач за Отварања</item>
@@ -28,7 +28,7 @@
 		<item>Без Огласи</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 тактитки на Ден</item>
 		<item>3 Лекции на Ден</item>
 		<item>Пребарувач за Отварања</item>

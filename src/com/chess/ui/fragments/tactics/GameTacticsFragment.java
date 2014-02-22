@@ -33,10 +33,7 @@ import com.chess.statics.AppConstants;
 import com.chess.statics.FlurryData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
-import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardTactics;
-import com.chess.ui.engine.FenHelper;
-import com.chess.ui.engine.Move;
+import com.chess.ui.engine.*;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -94,7 +91,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private ChessBoardTacticsView boardView;
 
 	private boolean noNetwork;
-	private boolean firstRun = true;
+	private boolean firstRun;
 	private boolean viewOnly = true;
 
 	private GetTacticsUpdateListener getTacticsUpdateListener;
@@ -359,22 +356,11 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public TacticBoardFace getBoardFace() {
-		return ChessBoardTactics.getInstance(this);
+		if (chessBoard == null) {
+			chessBoard = new ChessBoardTactics(this);
+		}
+		return (TacticBoardFace) chessBoard;
 	}
-
-//	@Override
-//	public boolean isUserAbleToMove(int color) {
-//		if (!currentGameExist()) {
-//			return false;
-//		}
-//		boolean isUserColor;
-//		if (isUserColorWhite()) {
-//			isUserColor = color == ChessBoard.WHITE_SIDE;
-//		} else {
-//			isUserColor = color == ChessBoard.BLACK_SIDE;
-//		}
-//		return isUserColor || getBoardFace().isAnalysis();
-//	}
 
 	@Override
 	public void verifyMove() {
@@ -1131,9 +1117,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void adjustBoardForGame() {
-		ChessBoardTactics.resetInstance();
+		resetInstance();
 
-		final TacticBoardFace boardFace = ChessBoardTactics.getInstance(this);
+		final TacticBoardFace boardFace = getBoardFace();
 
 		int currentRating = getAppData().getUserTacticsRating();
 
@@ -1396,6 +1382,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		FlurryAgent.logEvent(FlurryData.TACTICS_SESSION_STARTED_FOR_REGISTERED);
 
 		labelsConfig = new LabelsConfig();
+		firstRun = true;
 
 		inflater = (LayoutInflater) getActivity().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
@@ -1426,8 +1413,8 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		setBoardView(boardView);
 		boardView.setGameFace(this);
 
-		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
-		firstRun = chessBoard.isJustInitialized();
+//		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
+		firstRun = true;  // TODO check
 
 		lockBoard(true);
 

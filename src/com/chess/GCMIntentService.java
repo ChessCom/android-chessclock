@@ -375,7 +375,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 				boolean playSoundsFlag = AppUtils.getSoundsPlayFlag(context);
 				if (playSoundsFlag) {
-					SoundPlayer.getInstance(context).playMoveOpponent();
+					new SoundPlayer(context).playMoveOpponent();
 //					final MediaPlayer player = MediaPlayer.create(context, R.raw.move_opponent);
 //					if (player != null) {
 //						player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

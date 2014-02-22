@@ -381,7 +381,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		topPanelView.showTimeLeftIcon(!userMove);
 		bottomPanelView.showTimeLeftIcon(userMove);
 
-		ChessBoardDaily.resetInstance();
+		resetInstance();
 		BoardFace boardFace = getBoardFace();
 		getNotationsFace().resetNotations();
 
@@ -556,7 +556,10 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardDaily.getInstance(this);
+		if (chessBoard == null) {
+			chessBoard = new ChessBoardDaily(this);
+		}
+		return chessBoard;
 	}
 
 	@Override
@@ -1067,7 +1070,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	protected NotationFace getNotationsFace() {
 		return notationsFace;
 	}
-
 
 	public void init() {
 		viewedGamesMap = new HashMap<Long, Boolean>();

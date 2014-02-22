@@ -16,7 +16,7 @@
 	<string name="complete_singup">Plotesoni Regjistrimin</string>
 	<string name="white">Te bardhe</string>
 	<string name="black">Te zinj</string>
-	<string name="thinking_">Duke u menduar ...</string>
+	<string name="thinking_">Duke u menduar …</string>
 	<string name="open_challenges">Hapje e sfidave.</string>
 	<string name="challenge_friend">Kerkoji loje shokut</string>
 	<string name="challenge_created">Kerkesa eshte krijuar</string>
@@ -53,7 +53,7 @@
 	<string name="pieces_cases">Rastet</string>
 	<string name="pieces_classic">Klasike</string>
 	<string name="pieces_club">Klub</string>
-	<string name="pieces_condal">Konik...</string>
+	<string name="pieces_condal">Konik…</string>
 	<string name="pieces_maya">MaJa</string>
 	<string name="pieces_modern">Moderne</string>
 	<string name="pieces_vintage">E vjeter</string>
@@ -131,7 +131,7 @@
 	<string name="won_by_resignation">%s fiton me dorzimin e kundershtarit</string>
 	<string name="won_by_checkmate">%s fiton me shahmat</string>
 	<string name="game_over">Loja mbaroi</string>
-	<string name="reconnecting_">Duke u rilidhur...</string>
+	<string name="reconnecting_">Duke u rilidhur…</string>
 	<string name="another_login_detected">Upss! ju jeni lidhur diku tjeter.</string>
 	<string name="game_end_title_draw">Barazim</string>
 	<string name="game_aborted">Loja eshte braktisur</string>
@@ -285,7 +285,7 @@
 	<string name="account_history">Historia e llogarise</string>
 	<string name="location">Venddodhje</string>
 	<string name="share">shperndarje</string>
-	<string name="profile_membership_renew_cancel">Membershipi juaj% do te rinovohet ne%</string>
+	<string name="profile_membership_renew_cancel">Membershipi juaj %1$s do te rinovohet ne %2$s</string>
 	<string name="profile_membership_renew_cancel_1">Te dhena qe i perkasin htp....</string>
 	<string name="invite_friends_profile_message">Shahu sjell me shume kenaqesi me miqte - ftojini tu bashkohen!</string>
 	<string name="profile_account_message_1">Llogaria juaj eshte paraqitur tek faqja</string>
@@ -344,7 +344,7 @@
 	<string name="please_add_valid_username">J\'u lutem vendosni nje username te vlefshem</string>
 	<string name="facebook">Facebook</string>
 	<string name="contacts">Kontakt</string>
-	<string name="invite_friend_to_play">Luaj shah me mua? Une luaj si...</string>
+	<string name="invite_friend_to_play">Luaj shah me mua? Une luaj si…</string>
 	<string name="add_friend_request_message">Le te luajme</string>
 	<string name="online_today">Sot online</string>
 	<string name="last_was_online">Online %s</string>
@@ -398,7 +398,7 @@
 	<string name="lessons_limit_reached_message">Ju kemi arritur limitin e leksioneve per sot. Upgrade tani dhe permiresohuni me leksione te panumerta</string>
 	<string name="resume_lesson">Ruajini leksionet</string>
 	<string name="installing_theme">Shkarkim i temes</string>
-	<string name="waiting_to_download">Duke prtur qe te shkarkohej ...</string>
+	<string name="waiting_to_download">Duke prtur qe te shkarkohej …</string>
 	<string name="downloading_arg">Duke u shkarkuar %s</string>
 	<string name="custom">me prorosi</string>
 	<string name="background">Fusha</string>
@@ -441,9 +441,9 @@
 	<string name="pull_to_refresh_refreshing_label">po shkarkohet</string>
 	<string name="upgrade_to_unlimited_access">Upgrade per lidhje te pafundme ne Chess.com</string>
 	<string name="upgrade_now">Upgrade tani</string>
-	<string name="nothing_to_share">Kjo llogari eshte e mbyllur. Ju lutem kycu te Chess...</string>
+	<string name="nothing_to_share">Kjo llogari eshte e mbyllur. Ju lutem kycu te Chess…</string>
 	<string name="attempts">Perpjekje</string>
-	<string name="your_account_locked">Llogaria juaj eshte e kycur. Ju lutemi kycu tek Chess...</string>
+	<string name="your_account_locked">Llogaria juaj eshte e kycur. Ju lutemi kycu tek Chess…</string>
 	<string name="general">Kryesore</string>
 	<string name="report_problem">Raporto nje problem</string>
 	<string name="send_mail">Dergo email</string>
@@ -476,9 +476,9 @@
 	<string name="review_lesson">Rishikim leksionesh</string>
 	<string name="full_screen">Komplet figura</string>
 	<string name="line">Linja</string>
-	<string name="predict_move_or_add_new_line">Parashiko levizjen dhe shtoni vije te re...</string>
-	<string name="make_your_conditional_move">Kryeni levizjen e detyruar...</string>
-	<string name="predict_opponent_next_move">Parashiko levizjen pasardhese te kundershtarit...</string>
+	<string name="predict_move_or_add_new_line">Parashiko levizjen dhe shtoni vije te re…</string>
+	<string name="make_your_conditional_move">Kryeni levizjen e detyruar…</string>
+	<string name="predict_opponent_next_move">Parashiko levizjen pasardhese te kundershtarit…</string>
 	<string name="notes">Shenime</string>
 	<string name="private_note">Shenim privat</string>
 	<string name="upgrade_feedback_1">"\"Taktikat dhe Leksionet me te vertete ndihmon aftesite e mia ne shah\""</string>

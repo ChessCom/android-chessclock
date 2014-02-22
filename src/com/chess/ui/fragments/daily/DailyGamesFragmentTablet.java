@@ -31,7 +31,6 @@ import com.chess.db.DbScheme;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
-import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.WebViewFragment;
@@ -273,7 +272,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 			boolean iPlayWhite = gameListCurrentItem.getIPlayAs() == RestHelper.P_WHITE;
 			boolean whiteOfferedDraw = gameListCurrentItem.isDrawOffered() == RestHelper.P_WHITE;
 			if (iPlayWhite && whiteOfferedDraw || !iPlayWhite && !whiteOfferedDraw) {
-				ChessBoardDaily.resetInstance();
+//				resetInstance();
 				long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
 				getActivityFace().openFragment(GameDailyFragmentTablet.createInstance(gameId));
@@ -284,7 +283,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 				showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
 			}
 		} else {
-			ChessBoardDaily.resetInstance();
+//			resetInstance();
 			long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
 			getActivityFace().openFragment(GameDailyFragmentTablet.createInstance(gameId));
@@ -423,7 +422,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-			ChessBoardDaily.resetInstance();
+//			resetInstance();
 			getActivityFace().openFragment(GameDailyFragmentTablet.createInstance(gameListCurrentItem.getGameId()));
 		}
 		super.onNeutralBtnCLick(fragment);
@@ -589,7 +588,7 @@ public class DailyGamesFragmentTablet extends CommonLogicFragment implements Ada
 
 		if (inLandscape()) {
 			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-			transaction.add(R.id.optionsFragmentContainer, RightPlayFragment.createInstance(RIGHT_MENU_MODE))
+			transaction.add(R.id.optionsFragmentContainer, RightPlayFragment.createInstance(CENTER_MODE))
 					.commitAllowingStateLoss();
 		}
 

@@ -30,26 +30,15 @@ public class SoundPlayer {
 	public static final String TENSECONDS = "tenseconds";
 	public static final String SOUNDS = "sounds/";
 	public static final String MP3 = ".mp3";
+	private final Context context;
 
 
-	private static SoundPlayer ourInstance;
-	private static boolean playSounds;
+	private boolean playSounds;
 	private static boolean useThemePack;
 	private static String themePath;
 
-	public static SoundPlayer getInstance(Context context) {
-		if (ourInstance == null) {
-			ourInstance = new SoundPlayer(context);
-		}
-
+	public SoundPlayer(Context context) {
 		playSounds = AppUtils.getSoundsPlayFlag(context);
-
-		return ourInstance;
-	}
-
-	private Context context;
-
-	private SoundPlayer(Context context) {
 		this.context = context;
 	}
 
@@ -178,4 +167,8 @@ public class SoundPlayer {
 			mediaPlayer.release();
 		}
 	};
+
+	public void setPlaySounds(boolean playSounds) {
+		this.playSounds = playSounds;
+	}
 }

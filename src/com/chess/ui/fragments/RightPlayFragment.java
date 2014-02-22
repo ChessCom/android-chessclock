@@ -139,13 +139,13 @@ public class RightPlayFragment extends CommonLogicFragment implements SlidingMen
 			dailyExpandIconTxt.setText(R.string.ic_right);
 		} else {
 			inflater.inflate(R.layout.right_live_options_view, liveHomeOptionsFrame, true);
-			View liveHeaderView = view.findViewById(R.id.liveHeaderView);
-			View dailyHeaderView = view.findViewById(R.id.dailyHeaderView);
-			View vsCompHeaderView = view.findViewById(R.id.vsCompHeaderView);
-			ButtonDrawableBuilder.setBackgroundToView(liveHeaderView, R.style.ListItem_Header_Dark);
-			ButtonDrawableBuilder.setBackgroundToView(dailyHeaderView, R.style.ListItem_Header_2_Dark);
-			ButtonDrawableBuilder.setBackgroundToView(vsCompHeaderView, R.style.ListItem_Header_Dark);
 		}
+		View liveHeaderView = view.findViewById(R.id.liveHeaderView);
+		View dailyHeaderView = view.findViewById(R.id.dailyHeaderView);
+		View vsCompHeaderView = view.findViewById(R.id.vsCompHeaderView);
+		ButtonDrawableBuilder.setBackgroundToView(liveHeaderView, R.style.ListItem_Header_Dark);
+		ButtonDrawableBuilder.setBackgroundToView(dailyHeaderView, R.style.ListItem_Header_2_Dark);
+		ButtonDrawableBuilder.setBackgroundToView(vsCompHeaderView, R.style.ListItem_Header_Dark);
 
 		widgetsInit(view);
 	}
@@ -435,35 +435,35 @@ public class RightPlayFragment extends CommonLogicFragment implements SlidingMen
 		TextView vsRandomTxt = (TextView) view.findViewById(R.id.vsRandomTxt);
 		TextView challengeFriendTxt = (TextView) view.findViewById(R.id.challengeFriendTxt);
 
-		if (mode == CENTER_MODE) { // we use white background and dark titles for centered mode
-			int darkTextColor = getResources().getColor(R.color.new_subtitle_dark_grey);
-
-			View homePlayScrollView = view.findViewById(R.id.homePlayScrollView);
-			homePlayScrollView.setBackgroundResource(R.color.white);
-
-			TextView liveChessHeaderTxt = (TextView) view.findViewById(R.id.liveChessHeaderTxt);
-			Button liveTimeSelectBtn = (Button) view.findViewById(R.id.liveTimeSelectBtn);
-			TextView dailyChessHeaderTxt = (TextView) view.findViewById(R.id.dailyChessHeaderTxt);
-			TextView vsComputerHeaderTxt = (TextView) view.findViewById(R.id.vsComputerHeaderTxt);
-
-			liveChessHeaderTxt.setTextColor(darkTextColor);
-			liveTimeSelectBtn.setTextColor(darkBtnColor);
-			dailyChessHeaderTxt.setTextColor(darkTextColor);
-			vsRandomTxt.setTextColor(darkTextColor);
-			friendUserName1Txt.setTextColor(darkTextColor);
-			friendRealName1Txt.setTextColor(darkTextColor);
-			friendUserName2Txt.setTextColor(darkTextColor);
-			friendRealName2Txt.setTextColor(darkTextColor);
-			challengeFriendTxt.setTextColor(darkTextColor);
-			vsComputerHeaderTxt.setTextColor(darkTextColor);
-		} else {
-//			vsRandomTxt.setTextColor(themeFontColorStateList);
-//			friendUserName1Txt.setTextColor(themeFontColorStateList);
-//			friendRealName1Txt.setTextColor(themeFontColorStateList);
-//			friendUserName2Txt.setTextColor(themeFontColorStateList);
-//			friendRealName2Txt.setTextColor(themeFontColorStateList);
-//			challengeFriendTxt.setTextColor(themeFontColorStateList);
-		}
+//		if (mode == CENTER_MODE) { // we use white background and dark titles for centered mode
+//			int darkTextColor = getResources().getColor(R.color.new_subtitle_dark_grey);
+//
+//			View homePlayScrollView = view.findViewById(R.id.homePlayScrollView);
+//			homePlayScrollView.setBackgroundResource(R.color.white);
+//
+//			TextView liveChessHeaderTxt = (TextView) view.findViewById(R.id.liveChessHeaderTxt);
+//			Button liveTimeSelectBtn = (Button) view.findViewById(R.id.liveTimeSelectBtn);
+//			TextView dailyChessHeaderTxt = (TextView) view.findViewById(R.id.dailyChessHeaderTxt);
+//			TextView vsComputerHeaderTxt = (TextView) view.findViewById(R.id.vsComputerHeaderTxt);
+//
+//			liveChessHeaderTxt.setTextColor(darkTextColor);
+//			liveTimeSelectBtn.setTextColor(darkBtnColor);
+//			dailyChessHeaderTxt.setTextColor(darkTextColor);
+//			vsRandomTxt.setTextColor(darkTextColor);
+//			friendUserName1Txt.setTextColor(darkTextColor);
+//			friendRealName1Txt.setTextColor(darkTextColor);
+//			friendUserName2Txt.setTextColor(darkTextColor);
+//			friendRealName2Txt.setTextColor(darkTextColor);
+//			challengeFriendTxt.setTextColor(darkTextColor);
+//			vsComputerHeaderTxt.setTextColor(darkTextColor);
+//		} else {
+////			vsRandomTxt.setTextColor(themeFontColorStateList);
+////			friendUserName1Txt.setTextColor(themeFontColorStateList);
+////			friendRealName1Txt.setTextColor(themeFontColorStateList);
+////			friendUserName2Txt.setTextColor(themeFontColorStateList);
+////			friendRealName2Txt.setTextColor(themeFontColorStateList);
+////			challengeFriendTxt.setTextColor(themeFontColorStateList);
+//		}
 
 		liveRatingTxt = (TextView) view.findViewById(R.id.liveRatingTxt);
 		dailyRatingTxt = (TextView) view.findViewById(R.id.dailyRatingTxt);

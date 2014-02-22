@@ -27,10 +27,7 @@ import com.chess.db.tasks.LoadLessonItemTask;
 import com.chess.db.tasks.SaveLessonsLessonTask;
 import com.chess.model.GameAnalysisItem;
 import com.chess.statics.Symbol;
-import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardLessons;
-import com.chess.ui.engine.FenHelper;
-import com.chess.ui.engine.Move;
+import com.chess.ui.engine.*;
 import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -391,7 +388,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public LessonsBoardFace getBoardFace() {
-		return ChessBoardLessons.getInstance(this);
+		if (chessBoard == null) {
+			chessBoard = new ChessBoardLessons(this);
+		}
+		return (LessonsBoardFace) chessBoard;
 	}
 
 	@Override
@@ -824,7 +824,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		moveToShow = correctMove.getMove();
 
-		ChessBoardLessons.resetInstance();
+		resetInstance();
 		boardView.setGameFace(this);
 		if (inPortrait()) {
 			slidingDrawer.open();
@@ -1001,7 +1001,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private void adjustBoardForGame() {
 		wrongState = false;
 
-		ChessBoardLessons.resetInstance();
+		resetInstance();
 		LessonsBoardFace boardFace = getBoardFace();
 		boardView.setGameUiFace(this);
 
@@ -1236,7 +1236,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		setBoardView(boardView);
 
-		ChessBoardLessons.resetInstance();
+		resetInstance();
 		boardView.setGameUiFace(this);
 		getControlsView().enableGameControls(false);
 

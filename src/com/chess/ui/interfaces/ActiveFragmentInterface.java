@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import com.chess.statics.AppData;
 import com.chess.ui.activities.CoreActivityActionBar;
+import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -83,4 +84,5 @@ public interface ActiveFragmentInterface {
 
 	EasyTracker getGATracker();
 
+	SoundPlayer getSoundPlayer();
 }

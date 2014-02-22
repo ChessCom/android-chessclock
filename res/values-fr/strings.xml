@@ -176,7 +176,7 @@
 	<string name="content">Contenu</string>
 	<string name="comments">Commentaires</string>
 	<string name="download_complete">Téléchargement terminé</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Difficulté</string>
 	<string name="easiest">Le plus facile</string>
 	<string name="hardest">Le plus difficile</string>
@@ -303,7 +303,7 @@
 	<string name="pieces_style">Style des pièces</string>
 	<string name="show_legal_moves">Afficher les coups légaux</string>
 	<string name="flip_board">Tourner l\'échiquier</string>
-	<string name="waiting_for_opponent">En attente d\'adversaire...</string>
+	<string name="waiting_for_opponent">En attente d\'adversaire…</string>
 	<string name="lightning">Éclair</string>
 	<string name="blitz">Blitz</string>
 	<string name="standard">Standard</string>
@@ -372,8 +372,8 @@
 	<string name="topic_created">Sujet créé</string>
 	<string name="posted">Publié</string>
 	<string name="post">Publier</string>
-	<string name="write_reply_">Rédiger une réponse...</string>
-	<string name="write_comment_">Écrire un commentaire...</string>
+	<string name="write_reply_">Rédiger une réponse…</string>
+	<string name="write_comment_">Écrire un commentaire…</string>
 	<string name="username_wrote">%s a écrit:</string>
 	<string name="full_lesson_library">Bibliothèque complète des leçons</string>
 	<string name="curriculum">Plan d\'étude</string>
@@ -409,13 +409,13 @@
 	<string name="message">Message</string>
 	<string name="new_message">Nouveau Message</string>
 	<string name="to_">À:</string>
-	<string name="write_your_message">Rédiger votre message...</string>
+	<string name="write_your_message">Rédiger votre message…</string>
 	<string name="inbox">Boîte de réception</string>
 	<string name="activity">Activité</string>
 	<string name="keywords">Mots-clés</string>
 	<string name="all">Tout</string>
 	<string name="go_ex">Go!</string>
-	<string name="ready_q_">Prêt?...</string>
+	<string name="ready_q_">Prêt?…</string>
 	<string name="solved_with_hint">Résolu avec une aide</string>
 	<string name="thirty_days">30 Jours</string>
 	<string name="ninety_days">90 Jours</string>
@@ -436,8 +436,8 @@
 	<string name="black_to_move">Traits aux noirs</string>
 	<string name="puzzle">Problème</string>
 	<string name="chess_game">Partie d\'Échecs</string>
-	<string name="pull_to_refresh_pull_label">Tirer pour actualiser...</string>
-	<string name="pull_to_refresh_release_label">Relâcher pour actualiser...</string>
+	<string name="pull_to_refresh_pull_label">Tirer pour actualiser…</string>
+	<string name="pull_to_refresh_release_label">Relâcher pour actualiser…</string>
 	<string name="pull_to_refresh_refreshing_label">Chargement en cours&#8230;</string>
 	<string name="upgrade_to_unlimited_access">Mettre à niveau pour un accès illimité à Chess.com!</string>
 	<string name="upgrade_now">Mettre à niveau maintenant</string>
@@ -461,7 +461,7 @@
 	<string name="total_games">Nombre total de parties</string>
 	<string name="help_toast_for_daily_games">Tirez vers le bas pour actualiser les parties</string>
 	<string name="help_toast_for_quick_in_game_navigation">Maintenir \u003c ou \u003e pour un déplacement rapide</string>
-	<string name="still_connecting">Toujours en cours de connexion...</string>
+	<string name="still_connecting">Toujours en cours de connexion…</string>
 	<string name="unable_to_send_challenge">Impossible d\'envoyer des défis</string>
 	<string name="rating_range">Intervalle de classement</string>
 	<string name="show_mini_boards">Afficher les mini échiquiers</string>
@@ -476,9 +476,9 @@
 	<string name="review_lesson">Revoir la leçon</string>
 	<string name="full_screen">Plein écran</string>
 	<string name="line">Variante</string>
-	<string name="predict_move_or_add_new_line">Coup prévu de l\'adversaire ou ajout d\'une nouvelle variation...</string>
-	<string name="make_your_conditional_move">Faites votre coup conditionnel...</string>
-	<string name="predict_opponent_next_move">Entrez le coup prévu de l\'adversaire...</string>
+	<string name="predict_move_or_add_new_line">Coup prévu de l\'adversaire ou ajout d\'une nouvelle variation…</string>
+	<string name="make_your_conditional_move">Faites votre coup conditionnel…</string>
+	<string name="predict_opponent_next_move">Entrez le coup prévu de l\'adversaire…</string>
 	<string name="notes">Notes</string>
 	<string name="private_note">Note privée</string>
 	<string name="upgrade_feedback_1">"\"Les exercices Tactiques et les Leçons améliorent véritablement mes aptitudes aux échecs\""</string>

@@ -19,7 +19,7 @@
 		<item>Bez reklam</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Neomezeně taktických úloh</item>
 		<item>5 lekcí denně</item>
 		<item>Průzkumník zahájení</item>
@@ -28,7 +28,7 @@
 		<item>Bez reklam</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 Taktických úloh denně</item>
 		<item>3 Taktické úlohy denně</item>
 		<item>Průzkumník zahájení</item>

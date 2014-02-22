@@ -176,7 +176,7 @@
 	<string name="content">コンテンツ</string>
 	<string name="comments">コメント</string>
 	<string name="download_complete">ダウンロードが完了しました</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">難易度</string>
 	<string name="easiest">もっとも弱い</string>
 	<string name="hardest">もっとも強い</string>

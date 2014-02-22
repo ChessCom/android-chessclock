@@ -19,7 +19,7 @@
 		<item>Ingen reklamer</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Ubegrænsede taktikker</item>
 		<item>5 lektioner per dag</item>
 		<item>Åbningsdatabase</item>
@@ -28,7 +28,7 @@
 		<item>Ingen reklamer</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 taktikker per dag</item>
 		<item>3 lektioner per dag</item>
 		<item>Åbningsdatabase</item>

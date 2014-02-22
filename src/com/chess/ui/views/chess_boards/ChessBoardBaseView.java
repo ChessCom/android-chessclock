@@ -29,6 +29,7 @@ import com.chess.utilities.AppUtils;
 import com.chess.utilities.FontsHelper;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.WeakHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -136,7 +137,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	private int _3dPiecesOffsetSmall;
 	private boolean isChessKid = true;
 	private boolean isTablet;
-	private Bitmap boardBitmap;
+	private WeakReference<Bitmap> boardBitmap;
 	private Paint borderLinePaint;
 	private int borderShadowColor;
 	private int borderBevelColor;
@@ -358,7 +359,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		canvas.setDrawFilter(drawFilter);
-		super.onDraw(canvas);
+//		super.onDraw(canvas);
 
 		drawBoard(canvas);
 
@@ -1350,21 +1351,21 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			recycleBoardBitmap();
 
 			try {
-				boardBitmap = BitmapFactory.decodeFile(appData.getThemeBoardPath());
+				boardBitmap = new WeakReference<Bitmap>(BitmapFactory.decodeFile(appData.getThemeBoardPath()));
 			} catch (OutOfMemoryError ignore) {
 
 			}
 			AppUtils.logMemData();
 
-			if (boardBitmap == null) {
+			if (boardBitmap == null || boardBitmap.get() == null) {
 				getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme
 				boardBackPaint.setShader(setBoardFromResource());
 				return;
 			}
 
-			boardBitmap = Bitmap.createScaledBitmap(boardBitmap, (int) viewWidth, (int) viewWidth, true);
+			boardBitmap = new WeakReference<Bitmap>(Bitmap.createScaledBitmap(boardBitmap.get(), (int) viewWidth, (int) viewWidth, true));
 
-			shader = new BitmapShader(boardBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+			shader = new BitmapShader(boardBitmap.get(), Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 		} else {
 			shader = setBoardFromResource();
 		}
@@ -1408,14 +1409,14 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 		BitmapShader shader;
 		BitmapDrawable drawable = (BitmapDrawable) getContext().getResources().getDrawable(resourceId);
-		boardBitmap = drawable.getBitmap();
+		boardBitmap = new WeakReference<Bitmap>(drawable.getBitmap());
 
 
 		int bitmapSize = (int) Math.ceil(viewWidth / 4);
 //		Log.d("TEST", " squareSize = " + squareSize);
 //		Log.d("TEST", " boardBitmap size = " + bitmapSize);
-		boardBitmap = Bitmap.createScaledBitmap(boardBitmap, bitmapSize, bitmapSize, true);
-		shader = new BitmapShader(boardBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+		boardBitmap = new WeakReference<Bitmap>(Bitmap.createScaledBitmap(boardBitmap.get(), bitmapSize, bitmapSize, true));
+		shader = new BitmapShader(boardBitmap.get(), Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 
 		// update squareSize to match board properties and draw highlights correctly
 		squareSize = bitmapSize / 2f;
@@ -1426,10 +1427,12 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	private void recycleBoardBitmap() {
-		if (boardBitmap != null) {
-			boardBitmap.recycle();
+		if (boardBitmap != null && boardBitmap.get() != null) {
+			boardBitmap.get().recycle();
 			boardBitmap = null;
 		}
+		System.gc(); // TODO remove that when find solution
+		AppUtils.logMemData();
 	}
 
 	public void setCustomBoard(int resourceId) {
@@ -1870,13 +1873,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		whitePiecesMap = null;
 		blackPiecesMap = null;
 
-		if (boardBitmap != null) {
-			boardBitmap.recycle();
-			boardBitmap = null;
-		}
-
-		System.gc(); // TODO remove that when find solution
-		AppUtils.logMemData();
+		recycleBoardBitmap();
 	}
 
 	public void setCustomHighlight(int customHighlight) {

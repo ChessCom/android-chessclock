@@ -19,7 +19,7 @@
 		<item>Reklam Yok</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Sınırsız Taktik Problem</item>
 		<item>Günlük 5 Ders</item>
 		<item>Açılış Gezgini</item>
@@ -28,7 +28,7 @@
 		<item>Reklam Yok</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>Günlük 25 Taktik Problem</item>
 		<item>Günlük 3 Ders</item>
 		<item>Açılış Gezgini</item>

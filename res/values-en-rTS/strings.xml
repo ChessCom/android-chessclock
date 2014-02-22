@@ -111,7 +111,7 @@
 	<!--Action-->
 	<string name="abort">abort</string>
 	<!--Action-->
-	<string name="cancel">cancel</string>
+	<string name="cancel">Cancel</string>
 	<!--Action-->
 	<string name="send">Send</string>
 	<!--Action-->
@@ -122,7 +122,7 @@
 	<string name="chat">chat</string>
 	<string name="draw_offered">draw_offered</string>
 	<string name="show_answer">show_answer</string>
-	<string name="ok">ok</string>
+	<string name="ok">OK</string>
 	<string name="accept_draw_q">accept_draw_q</string>
 	<string name="are_you_sure_q">are_you_sure_q</string>
 	<string name="challenges">challenges</string>
@@ -263,7 +263,7 @@
 	<string name="content">Content</string>
 	<string name="comments">comments</string>
 	<string name="download_complete">download_complete</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 
 	<!--New Game Menu-->
 	<string name="difficulty">difficulty</string>

@@ -19,7 +19,7 @@
 		<item>без реклами</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Необмежені задачі</item>
 		<item>5 уроків на добу</item>
 		<item>Дебютний довідник</item>
@@ -28,7 +28,7 @@
 		<item>Без реклами</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 задач на добу</item>
 		<item>3 уроки на добу</item>
 		<item>Дебютний довідник</item>

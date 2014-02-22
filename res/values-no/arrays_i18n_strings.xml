@@ -19,7 +19,7 @@
 		<item>Ingen Annonser</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Ubegrenset Taktikker</item>
 		<item>5 Leksjoner hver Dag</item>
 		<item>Åpning Utforsker</item>
@@ -28,7 +28,7 @@
 		<item>Ingen Annonser</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 Taktikker per Dag</item>
 		<item>3 Leksjoner hver Dag</item>
 		<item>Åpning Utforsker</item>

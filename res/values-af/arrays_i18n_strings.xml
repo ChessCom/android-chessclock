@@ -19,7 +19,7 @@
 		<item>Geen Advertensies</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Onbeperkte Taktiese Probleme</item>
 		<item>5 Lesse per Dag</item>
 		<item>Openings Verkenner</item>
@@ -28,7 +28,7 @@
 		<item>Geen Advertensies</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 Taktiese Probleme per Dag</item>
 		<item>3 Lesse per Dag</item>
 		<item>Openings Verkenner</item>

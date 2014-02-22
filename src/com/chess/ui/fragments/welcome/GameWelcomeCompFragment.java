@@ -195,7 +195,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			}
 		}, 1000);
 
-		ChessBoardComp.resetInstance();
+		resetInstance();
 
 		if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
@@ -223,7 +223,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				&& boardView.isComputerMoving()) { // probably isComputerMoving() is only necessary to check without extra check of game mode
 
 			boardView.stopComputerMove();
-			ChessBoardComp.resetInstance();
+			resetInstance();
 		}
 		labelsSet = false;
 	}
@@ -284,7 +284,10 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardComp.getInstance(this);
+		if (chessBoard == null) {
+			chessBoard = new ChessBoardComp(this);
+		}
+		return chessBoard;
 	}
 
 	@Override
@@ -528,8 +531,8 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	protected void restoreGame() {
-		ChessBoardComp.resetInstance();
-		ChessBoardComp.getInstance(this).setJustInitialized(false);
+		resetInstance();
+//		ChessBoardComp.getInstance(this).setJustInitialized(false);
 		topPanelView.resetPieces();
 		boardView.setGameUiFace(this);
 		loadSavedGame();
@@ -786,7 +789,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void onDrawerOpened() {
-		ChessBoardComp.resetInstance();
+		resetInstance();
 		getAppData().clearSavedCompGame();
 		notationsView.resetNotations();
 		boardView.invalidateMe();
@@ -804,7 +807,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	protected void startNewGame() {
 		boardView.stopComputerMove();
 		notationsView.resetNotations();
-		ChessBoardComp.resetInstance();
+		resetInstance();
 		labelsSet = false;
 		getAppData().clearSavedCompGame();
 
@@ -828,7 +831,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	private void init() {
 		labelsConfig = new LabelsConfig();
-		ChessBoardComp.resetInstance();
+		resetInstance();
 		getBoardFace().setMode(compGameConfig.getMode());
 
 		ArrayList<PromoteItem> menuItems = new ArrayList<PromoteItem>();

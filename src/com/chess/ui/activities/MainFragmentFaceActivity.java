@@ -1,5 +1,6 @@
 package com.chess.ui.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.*;
 import android.content.pm.ActivityInfo;
@@ -59,7 +60,6 @@ import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.slidingmenu.lib.SlidingMenu;
-import org.w3c.dom.Text;
 import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
 import uk.co.senab.actionbarpulltorefresh.extras.AbcPullToRefreshAttacher;
 
@@ -95,7 +95,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private BackgroundUpdateReceiver backgroundUpdateReceiver;
 	private MovesUpdateReceiver movesUpdateReceiver;
 	private PullToRefreshAttacher pullToRefreshAttacher;
-	private Bitmap backgroundBitmap;
 	private PopupCustomViewFragment reviewPopupFragment;
 	private IntentFilter updateBackgroundFilter;
 	private BitmapFactory.Options bitmapOptions;
@@ -377,6 +376,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		getWindow().setBackgroundDrawableResource(drawableThemeId);
 	}
 
+	@TargetApi(11)
 	private void setMainBackground(String drawablePath) {
 
 		bitmapOptions.inJustDecodeBounds = true;
@@ -395,16 +395,8 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		// Decode bitmap with inSampleSize set
 		bitmapOptions.inJustDecodeBounds = false;
-		if (backgroundBitmap != null) {
-			backgroundBitmap.recycle();
-			backgroundBitmap = null;
-			Runtime.getRuntime().gc();
-		}
 
-		if (AppUtils.HONEYCOMB_PLUS_API) {
-			bitmapOptions.inBitmap = backgroundBitmap;
-		}
-
+		Bitmap backgroundBitmap;
 		try {
 			backgroundBitmap = BitmapFactory.decodeFile(drawablePath, bitmapOptions);
 		} catch (OutOfMemoryError ignore) {
@@ -415,7 +407,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		Drawable drawable;
 		if (backgroundBitmap != null) {
 			drawable = new BitmapDrawable(getResources(), backgroundBitmap);
-			drawable.setBounds(0, 0, backgroundBitmap.getWidth(), backgroundBitmap.getHeight());
+			drawable.setBounds(0, 0, displayWidth, displayHeight);
 			getWindow().setBackgroundDrawable(drawable);
 		} else { // If user removed SD card or clear folder, or path file is corrupted
 
@@ -537,8 +529,11 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			sm.setMode(SlidingMenu.LEFT_RIGHT);
 			sm.setBehindRightOffsetRes(R.dimen.slidingmenu_offset_right);
 			sm.setSecondaryMenu(R.layout.slide_menu_right_frame);
+
+
 			getSupportFragmentManager()
 					.beginTransaction()
+					.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
 					.replace(R.id.menu_frame_right, fragment)
 					.commitAllowingStateLoss();
 			sm.setSecondaryShadowDrawable(R.drawable.defaultshadow_right);
@@ -546,6 +541,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		} else {
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			leftMenuFragment = fragment;
+			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
 			transaction.replace(R.id.menu_frame_left, leftMenuFragment);
 			transaction.commitAllowingStateLoss();
 		}
@@ -557,6 +553,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			// change left menu fragment
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 			leftMenuFragment = fragment;
+			transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
 			transaction.replace(R.id.menu_frame_left, leftMenuFragment);
 			transaction.commitAllowingStateLoss();
 		} else {
@@ -567,6 +564,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			sm.setSecondaryMenu(R.layout.slide_menu_right_frame);
 			getSupportFragmentManager()
 					.beginTransaction()
+					.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
 					.replace(R.id.menu_frame_right, fragment)
 					.commitAllowingStateLoss();
 			sm.setSecondaryShadowDrawable(R.drawable.defaultshadow_right);
@@ -617,6 +615,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		currentActiveFragment = fragment;
 
 		String simpleName = fragment.getClass().getSimpleName();
+		transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
 		transaction.replace(R.id.content_frame, fragment, simpleName);
 		transaction.addToBackStack(simpleName);
 		transaction.commitAllowingStateLoss();
@@ -642,6 +641,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		currentActiveFragment = fragment;
 
 		String simpleName = fragment.getClass().getSimpleName();
+		ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
 		ft.replace(R.id.content_frame, fragment, simpleName);
 		ft.commitAllowingStateLoss();
 
@@ -1106,7 +1106,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	}
 
 	/**
-	 *
 	 * @return true if theme was applied for Dark
 	 */
 	private boolean setDarkThemeForNewUser() {
@@ -1134,5 +1133,10 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@Override
 	public EasyTracker getGATracker() {
 		return provideGATracker();
+	}
+
+	@Override
+	public SoundPlayer getSoundPlayer() {
+		return provideSoundPlayer();
 	}
 }

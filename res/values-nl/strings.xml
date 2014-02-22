@@ -176,7 +176,7 @@
 	<string name="content">Inhoud</string>
 	<string name="comments">Reacties</string>
 	<string name="download_complete">Download voltooid</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Moeilijkheidsgraad</string>
 	<string name="easiest">Gemakkelijkste</string>
 	<string name="hardest">Moeilijkste</string>

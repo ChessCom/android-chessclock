@@ -145,7 +145,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	private void updateData() {
 		getNotationsFace().resetNotations();
-		ChessBoardComp.resetInstance();
+		resetInstance();
 
 		if (compGameConfig.getFen() != null) {
 			getBoardFace().setupBoard(compGameConfig.getFen());
@@ -174,7 +174,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				&& boardView.isComputerMoving()) { // probably isComputerMoving() is only necessary to check without extra check of game mode
 
 			boardView.stopComputerMove();
-			ChessBoardComp.resetInstance();
+			resetInstance();
 		}
 	}
 
@@ -235,7 +235,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardComp.getInstance(this);
+		if (chessBoard == null) {
+			chessBoard = new ChessBoardComp(this);
+		}
+		return chessBoard;
 	}
 
 	@Override
@@ -481,8 +484,8 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	@Override
 	protected void restoreGame() {
 		//notationsFace.resetNotations();
-		ChessBoardComp.resetInstance();
-		ChessBoardComp.getInstance(this).setJustInitialized(false);
+		resetInstance();
+//		ChessBoardComp.getInstance(this).setJustInitialized(false);
 		boardView.setGameUiFace(this);
 		loadSavedGame();
 
@@ -524,7 +527,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public void switch2Analysis() {
-		ChessBoardComp.resetInstance();
+		resetInstance();
 	}
 
 	@Override
@@ -662,7 +665,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private void startNewGame() {
 		boardView.stopComputerMove();
 		getNotationsFace().resetNotations();
-		ChessBoardComp.resetInstance();
+		resetInstance();
 		labelsSet = false;
 		getAppData().clearSavedCompGame();
 
@@ -832,6 +835,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 										   final ArrayList<org.petero.droidfish.gamelogic.Move> variantMoves,
 										   final ArrayList<org.petero.droidfish.gamelogic.Move> bookMoves) {
 
+		FragmentActivity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
 		// todo: move to CompEngineHelper and refactor
 
 //		CompEngineHelper.log("thinkingStr1 " + thinkingStr1);
@@ -840,7 +847,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 //		logTest(" variantStr = " + statStr + " thinkingStr1 = " + thinkingStr1
 //				+ " pvMoves = " + pvMoves.size() + " variantMoves = " + variantMoves.size());
 
-		getActivity().runOnUiThread(new Runnable() {
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 

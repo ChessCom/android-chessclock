@@ -12,31 +12,14 @@ import com.chess.ui.interfaces.game_ui.GameFace;
  */
 public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 
-	private static ChessBoardTactics instance;
 	private boolean tacticCanceled;
 
 	private int correctMovesCnt;
 	private String[] tacticMoves;
 
-	private ChessBoardTactics(GameFace gameFace) {
+	public ChessBoardTactics(GameFace gameFace) {
 		super(gameFace);
-	}
-
-	public static ChessBoardTactics getInstance(GameFace gameFace) {
-		final Long gameId = gameFace.getGameId();
-
-		if (instance == null || instance.gameId == null || !instance.gameId.equals(gameId)) {
-			instance = new ChessBoardTactics(gameFace);
-			instance.gameId = gameId;
-			instance.justInitialized = true;
-		} else {
-			instance.justInitialized = false;
-		}
-		return instance;
-	}
-
-	public static void resetInstance() {
-		instance = null;
+		gameId = gameFace.getGameId();
 	}
 
 	@Override
@@ -52,7 +35,7 @@ public class ChessBoardTactics extends ChessBoard implements TacticBoardFace {
 	@Override
 	public void setTacticMoves(String tacticMoves) {
 		tacticMoves = removeCommentsAndAlternatesFromMovesList(tacticMoves);
-		this.tacticMoves = movesParser.removeNumbers(tacticMoves)
+		this.tacticMoves = MovesParser.removeNumbers(tacticMoves)
 				.replaceAll("  ", Symbol.SPACE)
 				.substring(1).split(Symbol.SPACE);
 	}

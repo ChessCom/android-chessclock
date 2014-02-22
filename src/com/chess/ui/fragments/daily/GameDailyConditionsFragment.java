@@ -12,7 +12,6 @@ import com.chess.R;
 import com.chess.backend.RestHelper;
 import com.chess.ui.adapters.ItemsAdapter;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.views.NotationsView;
@@ -129,7 +128,7 @@ public class GameDailyConditionsFragment extends GameDailyAnalysisFragment imple
 		getBoardFace().setFinished(false);
 
 
-		ChessBoardDaily.resetInstance();
+		resetInstance();
 		BoardFace boardFace = getBoardFace();
 		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
@@ -153,7 +152,7 @@ public class GameDailyConditionsFragment extends GameDailyAnalysisFragment imple
 
 		playLastMoveAnimation();
 
-		boardFace.setJustInitialized(false);
+//		boardFace.setJustInitialized(false);
 		boardFace.setAnalysis(true);
 	}
 

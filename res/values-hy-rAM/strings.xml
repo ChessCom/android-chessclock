@@ -16,7 +16,7 @@
 	<string name="complete_singup">Ավարտել Գրանցումը</string>
 	<string name="white">Սպիտակ</string>
 	<string name="black">Սև</string>
-	<string name="thinking_">Մտածում է...</string>
+	<string name="thinking_">Մտածում է…</string>
 	<string name="open_challenges">Բաց Մարտահրավերներ</string>
 	<string name="challenge_friend">Մարտահրավեր Ընկերոջը</string>
 	<string name="challenge_created">Մարտահրավերը Բացված է</string>
@@ -132,7 +132,7 @@
 	<string name="won_by_resignation">%s Հաղթանակ Ըստ Հրաժարման</string>
 	<string name="won_by_checkmate">%s Հաղթանակ Ըստ Մատի</string>
 	<string name="game_over">Խաղը ավարտված է</string>
-	<string name="reconnecting_">Կապը Վերականգնվում է...</string>
+	<string name="reconnecting_">Կապը Վերականգնվում է…</string>
 	<string name="another_login_detected">Վայ՜ Դուք մուտկեք գործել այլ տեղ.</string>
 	<string name="game_end_title_draw">Ոչ ոքի</string>
 	<string name="game_aborted">Խաղը Կանգնեցրաց է</string>
@@ -177,7 +177,7 @@
 	<string name="content">Պարունակություն</string>
 	<string name="comments">Մեկնաբանություններ</string>
 	<string name="download_complete">Ներբեռնումը Ավարտված է</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">դժվարություն</string>
 	<string name="easiest">Հեշտ</string>
 	<string name="hardest">Դժվար</string>
@@ -304,7 +304,7 @@
 	<string name="pieces_style">Քարերի Ոճ</string>
 	<string name="show_legal_moves">Լեգալ Քայլերի Ցուցադրում</string>
 	<string name="flip_board">Շրջել Խաղատախտակը</string>
-	<string name="waiting_for_opponent">Սպասել Հակառակորդին...</string>
+	<string name="waiting_for_opponent">Սպասել Հակառակորդին…</string>
 	<string name="lightning">Կայծակային</string>
 	<string name="blitz">Բլիտց</string>
 	<string name="standard">Ստանդարտ</string>
@@ -359,7 +359,7 @@
 	<string name="new_daily_challenge">Նոր Օրական Մարտահրավեր</string>
 	<string name="arg_wants_to_play">%s ցանկանում են խաղալ</string>
 	<string name="unable_to_select_this_photo">Անհնարին է Օգտագործել այս նկարը</string>
-	<string name="processing_">Մշակվում է...</string>
+	<string name="processing_">Մշակվում է…</string>
 	<string name="about">Մասին</string>
 	<string name="member_since_">Ահդամությունը: %s </string>
 	<string name="birthday_">Ծննդյան օր %s</string>
@@ -373,8 +373,8 @@
 	<string name="topic_created">Ատվանումը բացված է</string>
 	<string name="posted">Գրարված</string>
 	<string name="post">Գրառում</string>
-	<string name="write_reply_">Գրել պատասխան...</string>
-	<string name="write_comment_">Գրել Մեկնաբանություն...</string>
+	<string name="write_reply_">Գրել պատասխան…</string>
+	<string name="write_comment_">Գրել Մեկնաբանություն…</string>
 	<string name="username_wrote">%s գրվել է:</string>
 	<string name="full_lesson_library">Դացըտացների Ամբողջական Գրադարան</string>
 	<string name="curriculum">Ուսումնական Պլան</string>
@@ -405,12 +405,12 @@
 	<string name="background">Ֆոն</string>
 	<string name="select_background">Ընտրել Ֆոն</string>
 	<string name="edit">Խմբագրել</string>
-	<string name="waiting_to_load">Սպասեոլ Բեռնմանը...</string>
+	<string name="waiting_to_load">Սպասեոլ Բեռնմանը…</string>
 	<string name="message_sent">Հազորդագրությունը ուղարկված է</string>
 	<string name="message">Հաղորդագրություն</string>
 	<string name="new_message">Նոր Հաղորդագրություն</string>
 	<string name="to_">Ում:</string>
-	<string name="write_your_message">Գրեք Ձեր Հաղորդագրությունը...</string>
+	<string name="write_your_message">Գրեք Ձեր Հաղորդագրությունը…</string>
 	<string name="inbox">Փոստարկղ</string>
 	<string name="activity">Ակտիվություն</string>
 	<string name="keywords">Հիմնաբառ</string>
@@ -438,8 +438,8 @@
 	<string name="puzzle">Խնդիր</string>
 	<string name="chess_game">Շախմատային Խաղ</string>
 	<string name="pull_to_refresh_pull_label">Միացում թորմացման համար</string>
-	<string name="pull_to_refresh_release_label">Անջատում թարմացման համար...</string>
-	<string name="pull_to_refresh_refreshing_label">Բեռնվում է...</string>
+	<string name="pull_to_refresh_release_label">Անջատում թարմացման համար…</string>
+	<string name="pull_to_refresh_refreshing_label">Բեռնվում է…</string>
 	<string name="upgrade_to_unlimited_access">Բարելավում Անսահման Chess.com Մուտքի համար:</string>
 	<string name="upgrade_now">Բարելավեք Հիմա</string>
 	<string name="nothing_to_share">Այս Հաշիվը արգելափակված է: Խնդրում ենք մտնել Chess.com</string>
@@ -462,7 +462,7 @@
 	<string name="total_games">Ընդհանուր Խաղեր</string>
 	<string name="help_toast_for_daily_games">Միացնել Բարելաված Խաղեր</string>
 	<string name="help_toast_for_quick_in_game_navigation">Պահպանել \u003c կամ \u003e արագ Քայլերի Համար</string>
-	<string name="still_connecting">Դեռ Կապնվում  է...</string>
+	<string name="still_connecting">Դեռ Կապնվում  է…</string>
 	<string name="unable_to_send_challenge">Ահնար է ուղարկել Մարտահրավեր</string>
 	<string name="rating_range">Վարկանիշի միջակայք</string>
 	<string name="show_mini_boards">Ցույց Տալ Մինի Խաղատախտակները</string>
@@ -477,9 +477,9 @@
 	<string name="review_lesson">Վերանայել դասընթացը</string>
 	<string name="full_screen">Լրիվ Էկրան</string>
 	<string name="line">Գիծ</string>
-	<string name="predict_move_or_add_new_line">Կանխատեսել քայլ կամ ավելացնել նոր գիծ ...</string>
-	<string name="make_your_conditional_move">Կատարեք Ձեր պայմանական քայլը ...</string>
-	<string name="predict_opponent_next_move">Կանխատեսեք մրցակցի հաջորդ քայլը ...</string>
+	<string name="predict_move_or_add_new_line">Կանխատեսել քայլ կամ ավելացնել նոր գիծ …</string>
+	<string name="make_your_conditional_move">Կատարեք Ձեր պայմանական քայլը …</string>
+	<string name="predict_opponent_next_move">Կանխատեսեք մրցակցի հաջորդ քայլը …</string>
 	<string name="notes">Նշումներ</string>
 	<string name="private_note">Գաղտնի Նշում</string>
 	<string name="upgrade_feedback_1">"«Մարտավարություն և Դասընթացները իսկապես օգնել են իմ շախմատային հմտություններին»"</string>

@@ -19,7 +19,7 @@
 		<item>Առանց Գովազդ</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Բազմազան Մարտավարություն</item>
 		<item>Օրական 5 Դասընթաց</item>
 		<item>Բացել Էքսպլորերը</item>
@@ -28,7 +28,7 @@
 		<item>Առանց Գովազդի</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>Օրական 25 Մարտավարություն</item>
 		<item>Օրական 3 Դասընթաց</item>
 		<item>Բացել Էքսպլորերը</item>

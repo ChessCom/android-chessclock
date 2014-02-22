@@ -131,7 +131,7 @@
 	<string name="won_by_resignation">%s 因认输赢棋</string>
 	<string name="won_by_checkmate">%s 因将死赢棋</string>
 	<string name="game_over">棋局结束</string>
-	<string name="reconnecting_">重新连接...</string>
+	<string name="reconnecting_">重新连接…</string>
 	<string name="another_login_detected">对不起！您已在其他地方登录。</string>
 	<string name="game_end_title_draw">和棋</string>
 	<string name="game_aborted">棋局已中止</string>
@@ -176,7 +176,7 @@
 	<string name="content">内容</string>
 	<string name="comments">评论</string>
 	<string name="download_complete">下载完毕。</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">难度</string>
 	<string name="easiest">最简单</string>
 	<string name="hardest">最难</string>
@@ -198,7 +198,7 @@
 	<string name="arg_hour_ago">%d 个小时前</string>
 	<string name="arg_hours_ago">%d 个小时前</string>
 	<string name="arg_day_ago">%d 天前</string>
-	<string name="arg_days_ago">%s 天前</string>
+	<string name="arg_days_ago">%d 天前</string>
 	<string name="arg_month_ago">%d 个月前</string>
 	<string name="arg_months_ago">%d 个月前</string>
 	<string name="arg_year_ago">%d 1 年前</string>
@@ -358,7 +358,7 @@
 	<string name="new_daily_challenge">每日的新挑战</string>
 	<string name="arg_wants_to_play">%s 想要下棋 ！</string>
 	<string name="unable_to_select_this_photo">无法使用这张照片</string>
-	<string name="processing_">处理...</string>
+	<string name="processing_">处理…</string>
 	<string name="about">关于</string>
 	<string name="member_since_">会员自： %s 起</string>
 	<string name="birthday_">生日： %s</string>
@@ -372,8 +372,8 @@
 	<string name="topic_created">创建主题</string>
 	<string name="posted">已发布</string>
 	<string name="post">发布</string>
-	<string name="write_reply_">答复...</string>
-	<string name="write_comment_">评论...</string>
+	<string name="write_reply_">答复…</string>
+	<string name="write_comment_">评论…</string>
 	<string name="username_wrote">%s 写：</string>
 	<string name="full_lesson_library">全部课程图书馆</string>
 	<string name="curriculum">课程</string>
@@ -436,8 +436,8 @@
 	<string name="black_to_move">该黑棋走</string>
 	<string name="puzzle">谜题</string>
 	<string name="chess_game">国际象棋棋局</string>
-	<string name="pull_to_refresh_pull_label">请往下拉更新屏幕...</string>
-	<string name="pull_to_refresh_release_label">放开屏幕以更新...</string>
+	<string name="pull_to_refresh_pull_label">请往下拉更新屏幕…</string>
+	<string name="pull_to_refresh_release_label">放开屏幕以更新…</string>
 	<string name="pull_to_refresh_refreshing_label">加载中&#8230;</string>
 	<string name="upgrade_to_unlimited_access">对于 Chess.com 升级至无限访问 ！</string>
 	<string name="upgrade_now">现在升级</string>
@@ -461,7 +461,7 @@
 	<string name="total_games">全部棋局</string>
 	<string name="help_toast_for_daily_games">拉下更新棋局</string>
 	<string name="help_toast_for_quick_in_game_navigation">按住 \u003c 或 \u003e 以快速移动</string>
-	<string name="still_connecting">仍正在连接...</string>
+	<string name="still_connecting">仍正在连接…</string>
 	<string name="unable_to_send_challenge">无法发送挑战</string>
 	<string name="rating_range">等级分范围：</string>
 	<string name="show_mini_boards">显示迷你棋盘</string>

@@ -16,7 +16,7 @@
 	<string name="complete_singup">تەواو کردنی بە ئەندام بوون</string>
 	<string name="white">سپی</string>
 	<string name="black">ڕەش</string>
-	<string name="thinking_">بیر دەکاتەوە...</string>
+	<string name="thinking_">بیر دەکاتەوە…</string>
 	<string name="open_challenges">کێبڕکێ کراوەکان</string>
 	<string name="challenge_friend">دۆستێک بانگهێشت بکە بۆ کێبڕکێ</string>
 	<string name="challenge_created">کێبڕکێ درووست کرا</string>
@@ -176,7 +176,7 @@
 	<string name="content">ناوەرۆک</string>
 	<string name="comments">لێدوانەکان</string>
 	<string name="download_complete">داگرتن تەواو بوو</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">دژواری</string>
 	<string name="easiest">ئاسانترین</string>
 	<string name="hardest">دژوارترین</string>

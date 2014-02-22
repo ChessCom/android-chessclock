@@ -176,7 +176,7 @@
 	<string name="content">Conţinut</string>
 	<string name="comments">Comentarii</string>
 	<string name="download_complete">Descărcare terminată</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Dificultate</string>
 	<string name="easiest">Cel mai simplu</string>
 	<string name="hardest">Cel mai greu</string>

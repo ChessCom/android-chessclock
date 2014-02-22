@@ -10,25 +10,8 @@ import com.chess.ui.interfaces.game_ui.GameFace;
  */
 public class ChessBoardExplorer extends ChessBoard {
 
-	private static ChessBoardExplorer instance;
-
-	private ChessBoardExplorer(GameFace gameFace) {
+	public ChessBoardExplorer(GameFace gameFace) {
 		super(gameFace);
 	}
-
-	public static ChessBoardExplorer getInstance(GameFace gameFace) {
-		final Long gameId = gameFace.getGameId();
-
-		if (instance == null) {
-			instance = new ChessBoardExplorer(gameFace);
-			instance.gameId = gameId;
-		}
-		return instance;
-	}
-
-	public static void resetInstance() {
-		instance = null;
-	}
-
 
 }

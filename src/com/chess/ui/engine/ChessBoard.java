@@ -87,7 +87,6 @@ public class ChessBoard implements BoardFace {
 	public static final String MOVE_TAG = "move:";
 
 	protected Long gameId;
-	protected boolean justInitialized;
 
 	private boolean chess960;
 	private boolean reside;
@@ -2089,16 +2088,6 @@ public class ChessBoard implements BoardFace {
 
 	public Long getGameId() {
 		return gameId;
-	}
-
-	@Override
-	public boolean isJustInitialized() {
-		return justInitialized;
-	}
-
-	@Override
-	public void setJustInitialized(boolean justInitialized) {
-		this.justInitialized = justInitialized;
 	}
 
 	@Override

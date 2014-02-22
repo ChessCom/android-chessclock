@@ -13,7 +13,6 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.DataHolder;
 import com.chess.model.GameExplorerItem;
 import com.chess.ui.engine.ChessBoard;
-import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.fragments.explorer.GameExplorerFragment;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.views.drawables.BoardAvatarDrawable;
@@ -152,7 +151,7 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 		topPanelView.showTimeLeftIcon(!userMove);
 		bottomPanelView.showTimeLeftIcon(userMove);
 
-		ChessBoardDaily.resetInstance();
+		resetInstance();
 		BoardFace boardFace = getBoardFace();
 		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
@@ -176,7 +175,7 @@ public class GameDailyFinishedAnalysisFragment extends GameDailyAnalysisFragment
 
 		playLastMoveAnimation();
 
-		boardFace.setJustInitialized(false);
+//		boardFace.setJustInitialized(false);
 		boardFace.setAnalysis(true);
 
 		{ // set stubs while avatars are loading

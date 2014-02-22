@@ -23,7 +23,7 @@
 		<item>Χωρίς διαφημίσεις</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Απεριόριστες τακτικές</item>
 		<item>5 Μαθήματα ανά ημέρα</item>
 		<item>Ανοίγματα</item>
@@ -32,7 +32,7 @@
 		<item>Χωρίς διαφημίσεις</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 Τακτικές ανά ημέρα</item>
 		<item>3 Μαθήματα ανά ημέρα</item>
 		<item>Ανοίγματα</item>

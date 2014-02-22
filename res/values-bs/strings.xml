@@ -176,7 +176,7 @@
 	<string name="content">Sadržaj</string>
 	<string name="comments">Komentari</string>
 	<string name="download_complete">Preuzimanje Završeno</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Teškoća</string>
 	<string name="easiest">Najlakši</string>
 	<string name="hardest">Najteži</string>

@@ -23,7 +23,7 @@
 		android:id="@id/ptr_content"
 		android:layout_width="match_parent"
 		android:layout_height="@dimen/pull_to_refresh_header_height"
-		android:background="@color/pull_refresh_header_overlay"
+		android:background="@color/transparent"
 		android:layout_gravity="bottom">
 
 		<com.chess.widgets.RoboTextView

@@ -1,5 +1,6 @@
 package com.chess.widgets;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -80,6 +81,7 @@ public class RelLayout extends RelativeLayout {
 		return super.verifyDrawable(who) || (who == mForegroundSelector);
 	}
 
+	@TargetApi(11)
 	@Override
 	public void jumpDrawablesToCurrentState() {
 		super.jumpDrawablesToCurrentState();

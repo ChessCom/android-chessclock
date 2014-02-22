@@ -17,7 +17,7 @@
 	<string name="complete_singup">Завршете ја регистрацијата</string>
 	<string name="white">Бели</string>
 	<string name="black">Црни</string>
-	<string name="thinking_">Размислува...</string>
+	<string name="thinking_">Размислува…</string>
 	<string name="open_challenges">Отворени Предизвици</string>
 	<string name="challenge_friend">Предизвикај Пријател</string>
 	<string name="challenge_created">Предизвикот е Креиран</string>
@@ -136,7 +136,7 @@
 	<string name="won_by_resignation">%s победи со Предавање</string>
 	<string name="won_by_checkmate">%s победи со Шах Мат</string>
 	<string name="game_over">Играта е завршена</string>
-	<string name="reconnecting_">Повторно спојување...</string>
+	<string name="reconnecting_">Повторно спојување…</string>
 	<string name="another_login_detected">Упс! Пријавени сте на друго место.</string>
 	<string name="game_end_title_draw">Реми</string>
 	<string name="game_aborted">Играта е прекината</string>
@@ -182,7 +182,7 @@
 </string>
 	<string name="comments">Коментари</string>
 	<string name="download_complete">Превземањето е завршено</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Тежина</string>
 	<string name="easiest">Најлесно</string>
 	<string name="hardest">Најтешко</string>
@@ -196,9 +196,7 @@
 	<string name="no_games">Нема Игри</string>
 	<string name="my_move">Мој потезг</string>
 	<string name="their_move">Нивен потег</string>
-  <string name="live_chess_time_mode_arg">
-%1$d | %2$d
-</string>
+  	<string name="live_chess_time_mode_arg">%1$d | %2$d</string>
 	<string name="arg_min">%d мин</string>
 	<string name="arg_hour">%d час</string>
 	<string name="arg_hours">%d часа</string>
@@ -317,7 +315,7 @@
 	<string name="pieces_style">Стил на Фигурите</string>
 	<string name="show_legal_moves">Прикажи Дозволени Потези</string>
 	<string name="flip_board">Заврти ја Таблата</string>
-	<string name="waiting_for_opponent">Се чека Противникот...</string>
+	<string name="waiting_for_opponent">Се чека Противникот…</string>
 	<string name="lightning">Молневито</string>
 	<string name="blitz">Брзопотезно</string>
 	<string name="standard">Стандарден</string>
@@ -375,7 +373,7 @@ Facebook
 	<string name="new_daily_challenge">Нов Дневен Предизвик</string>
 	<string name="arg_wants_to_play">%s сака да игра!</string>
 	<string name="unable_to_select_this_photo">Не  е можно да се искористи оваа фотографија</string>
-	<string name="processing_">Обработка...</string>
+	<string name="processing_">Обработка…</string>
 	<string name="about">За</string>
 	<string name="member_since_">Член од : %s</string>
 	<string name="birthday_">Роденден: %s</string>
@@ -389,8 +387,8 @@ Facebook
 	<string name="topic_created">темата  е Креирана</string>
 	<string name="posted">Објавено</string>
 	<string name="post">Објава</string>
-	<string name="write_reply_">напишете Одговор...</string>
-	<string name="write_comment_">Напишете Коментар...</string>
+	<string name="write_reply_">напишете Одговор…</string>
+	<string name="write_comment_">Напишете Коментар…</string>
 	<string name="username_wrote">%s напишал:</string>
 	<string name="full_lesson_library">Библиотека со Комплетни Лекции</string>
 	<string name="curriculum">Наставен План</string>
@@ -419,7 +417,7 @@ Facebook
 	<string name="lessons_limit_reached_message">Го достигнавте лимитот на денешните Лекции. Надоградете веднаш за неограничени лекции!</string>
 	<string name="resume_lesson">Продолжи со лекцијата</string>
 	<string name="installing_theme">Инсталирање Тема</string>
-	<string name="waiting_to_download">Превземање...</string>
+	<string name="waiting_to_download">Превземање…</string>
 	<string name="downloading_arg">Превземање %s</string>
 	<string name="custom">Сопствено</string>
 	<string name="background">Позадина</string>
@@ -430,13 +428,13 @@ Facebook
 	<string name="message">Порака</string>
 	<string name="new_message">Нова Порака</string>
 	<string name="to_">До :</string>
-	<string name="write_your_message">Напиши порака...</string>
+	<string name="write_your_message">Напиши порака…</string>
 	<string name="inbox">Примени Пораки</string>
 	<string name="activity">Активност</string>
 	<string name="keywords">Клучни зборови</string>
 	<string name="all">Се</string>
 	<string name="go_ex">Напред !</string>
-	<string name="ready_q_">Подготвени?...</string>
+	<string name="ready_q_">Подготвени?…</string>
 	<string name="solved_with_hint">Решено со Помош</string>
 	<string name="thirty_days">30 дена</string>
 	<string name="ninety_days">90 дена</string>
@@ -460,7 +458,7 @@ Facebook
 	<string name="pull_to_refresh_pull_label">Повлечете за освежување</string>
   <string name="pull_to_refresh_release_label">Отпуштете за Освежување
 </string>
-	<string name="pull_to_refresh_refreshing_label">Вчитување...</string>
+	<string name="pull_to_refresh_refreshing_label">Вчитување…</string>
 	<string name="upgrade_to_unlimited_access">Надоградете за Неограничен пристап на  Chess.com!</string>
 	<string name="upgrade_now">Надоградете Сега</string>
 	<string name="nothing_to_share">Оваа корисничка сметка  е затворена. Ве молам пријавете се на Chess.com.</string>
@@ -483,7 +481,7 @@ Facebook
 	<string name="total_games">Вкупно Игри</string>
 	<string name="help_toast_for_daily_games">Повлечето надолу за ажурирање на Игрите</string>
 	<string name="help_toast_for_quick_in_game_navigation">Држете \u003c или \u003e за Брзо Движење</string>
-	<string name="still_connecting">Се чека спојување...</string>
+	<string name="still_connecting">Се чека спојување…</string>
 	<string name="unable_to_send_challenge">Неуспешен обид за Испраќање Предизвик</string>
 	<string name="rating_range">Опсег на Рејтингот</string>
 	<string name="show_mini_boards">Прикажи мини табли</string>
@@ -498,9 +496,9 @@ Facebook
 	<string name="review_lesson">Повтори ја Лекцијата</string>
 	<string name="full_screen">На Цел Екран</string>
 	<string name="line">Линија</string>
-	<string name="predict_move_or_add_new_line">Предвиди потег или додади нова линија...</string>
-	<string name="make_your_conditional_move">Изиграј уловен потег...</string>
-	<string name="predict_opponent_next_move">Предвиди го следниот потег на противникот...</string>
+	<string name="predict_move_or_add_new_line">Предвиди потег или додади нова линија…</string>
+	<string name="make_your_conditional_move">Изиграј уловен потег…</string>
+	<string name="predict_opponent_next_move">Предвиди го следниот потег на противникот…</string>
 	<string name="notes">Забелешки</string>
 	<string name="private_note">Приватни Забелешки</string>
 	<string name="upgrade_feedback_1">"\" Проблемите и Лекциите, навистина ми помогнаа да ги подобрам моите шаховски вештини\""</string>

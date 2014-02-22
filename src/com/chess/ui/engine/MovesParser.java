@@ -195,7 +195,7 @@ public class MovesParser {
 
 		int i = fileToIntPosition(moveTo[0]);
 		int j = rankToIntPosition(moveTo[1]);
-//		int from = 0;
+
 		int squareTo = j * 8 - i;
 
 		int pieceType = PAWN;

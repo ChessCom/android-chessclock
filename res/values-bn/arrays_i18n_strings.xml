@@ -19,7 +19,7 @@
 		<item>কোন বিজ্ঞাপন নয়</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>অসংখ্য কৌশল</item>
 		<item>দৈনিক ৫টি পাঠ্যক্রম</item>
 		<item>ওপেনিং বিশ্লেষণকারী</item>
@@ -28,7 +28,7 @@
 		<item>কোন বিজ্ঞাপন নয়</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>প্রতি দিন ২৫টি কৌশল</item>
 		<item>দৈনিক ৩টি পাঠ্যক্রম</item>
 		<item>ওপেনিং বিশ্লেষণকারী</item>

@@ -10,20 +10,7 @@ import com.chess.ui.interfaces.game_ui.GameFace;
  */
 public class ChessBoardAnalysis extends ChessBoard {
 
-	private static ChessBoardAnalysis instance;
-
-	private ChessBoardAnalysis(GameFace gameFace) {
+	public ChessBoardAnalysis(GameFace gameFace) {
 		super(gameFace);
-	}
-
-	public static ChessBoardAnalysis getInstance(GameFace gameFace) {
-		if (instance == null) {
-			instance = new ChessBoardAnalysis(gameFace);
-		}
-		return instance;
-	}
-
-	public static void resetInstance() {
-		instance = null;
 	}
 }

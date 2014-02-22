@@ -106,8 +106,8 @@
 	<string name="draw">Viik</string>
 	<string name="login">Logi sisse</string>
 	<string name="error">Viga</string>
-	<string name="validateUsername">Sinu kasutajanimi peab olema 3-20 märgi pikkune ja tohib sisalda ainult tähti, numbreid, allkriipse ja kriipse. Tühikud pole lubatud.</string>
-	<string name="validatePassword">Teie parool peab olema 6-20 tähemärki pikk.</string>
+	<string name="validateUsername">Sinu kasutajanimi peab olema 3–20 märgi pikkune ja tohib sisalda ainult tähti, numbreid, allkriipse ja kriipse. Tühikud pole lubatud.</string>
+	<string name="validatePassword">Teie parool peab olema 6–20 tähemärki pikk.</string>
 	<string name="image">Pilt</string>
 	<string name="no_network">Võrguühendus puudub</string>
 	<string name="check_connection">Kontrolli ühendust</string>
@@ -176,7 +176,7 @@
 	<string name="content">Sisu</string>
 	<string name="comments">Kommentaarid</string>
 	<string name="download_complete">Allalaadimine lõpetatud</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Raskusaste</string>
 	<string name="easiest">Väga kerge</string>
 	<string name="hardest">Väga raske</string>
@@ -303,7 +303,7 @@
 	<string name="pieces_style">Malendite stiil</string>
 	<string name="show_legal_moves">Näita lubatud käike</string>
 	<string name="flip_board">Pööra lauda</string>
-	<string name="waiting_for_opponent">Ootan vastast...</string>
+	<string name="waiting_for_opponent">Ootan vastast…</string>
 	<string name="lightning">Supervälkmale</string>
 	<string name="blitz">Välkmale</string>
 	<string name="standard">Klassikaline</string>
@@ -358,7 +358,7 @@
 	<string name="new_daily_challenge">Uus kirimale väljakutse</string>
 	<string name="arg_wants_to_play">%s soovib mängida!</string>
 	<string name="unable_to_select_this_photo">Seda fotot ei saa kasutada</string>
-	<string name="processing_">Töötlemine...</string>
+	<string name="processing_">Töötlemine…</string>
 	<string name="about">Minust</string>
 	<string name="member_since_">Liige alates: %s</string>
 	<string name="birthday_">Sünnipäev: %s</string>
@@ -372,8 +372,8 @@
 	<string name="topic_created">Teema loodud</string>
 	<string name="posted">Postitatud</string>
 	<string name="post">Postita</string>
-	<string name="write_reply_">Kirjutage vastus...</string>
-	<string name="write_comment_">Kirjuta kommentaar...</string>
+	<string name="write_reply_">Kirjutage vastus…</string>
+	<string name="write_comment_">Kirjuta kommentaar…</string>
 	<string name="username_wrote">%s kirjutas:</string>
 	<string name="full_lesson_library">Täielik õppetundide raamatukogu</string>
 	<string name="curriculum">Õppekava</string>
@@ -438,7 +438,7 @@
 	<string name="chess_game">Malemäng</string>
 	<string name="pull_to_refresh_pull_label">Tõmba, et värskendada&#8230;</string>
 	<string name="pull_to_refresh_release_label">Lase lahti, et värskendada&#8230;</string>
-	<string name="pull_to_refresh_refreshing_label">Laadimine...</string>
+	<string name="pull_to_refresh_refreshing_label">Laadimine…</string>
 	<string name="upgrade_to_unlimited_access">Täienda, et Saada Chess.com-ile Piiramatu Ligipääs!</string>
 	<string name="upgrade_now">Täienda nüüd</string>
 	<string name="nothing_to_share">See kasutaja on lukustatud. Logige sisse Chess.com-is.</string>
@@ -461,7 +461,7 @@
 	<string name="total_games">Mänge kokku</string>
 	<string name="help_toast_for_daily_games">Tõmba alla, et mänge uuendada</string>
 	<string name="help_toast_for_quick_in_game_navigation">Hoia \u003c või \u003e et kiiremini liikuda</string>
-	<string name="still_connecting">Ühendumine...</string>
+	<string name="still_connecting">Ühendumine…</string>
 	<string name="unable_to_send_challenge">Ei õnnestunud väljakutset saata</string>
 	<string name="rating_range">Reitinguvahemik</string>
 	<string name="show_mini_boards">Näita väikeste laudadena</string>

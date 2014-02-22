@@ -176,7 +176,7 @@
 	<string name="content">المحتوى</string>
 	<string name="comments">التعليقات</string>
 	<string name="download_complete">إكتمل التنزيل</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">الصعوبة</string>
 	<string name="easiest">الأسهل</string>
 	<string name="hardest">الأصعب</string>
@@ -305,7 +305,7 @@
 	<string name="pieces_style">نمط القطع</string>
 	<string name="show_legal_moves">إظهار النقلات القانونية</string>
 	<string name="flip_board">قلب الرقعة</string>
-	<string name="waiting_for_opponent">في انتظار الخصم...</string>
+	<string name="waiting_for_opponent">في انتظار الخصم…</string>
 	<string name="lightning">شديد السرعة</string>
 	<string name="blitz">سريع</string>
 	<string name="standard">قياسى</string>
@@ -360,7 +360,7 @@
 	<string name="new_daily_challenge">تحدي يومى جديد</string>
 	<string name="arg_wants_to_play">%s يريد ان يلعب!</string>
 	<string name="unable_to_select_this_photo">غير قادر على استخدام هذه الصورة</string>
-	<string name="processing_">قيد المعالجة...</string>
+	<string name="processing_">قيد المعالجة…</string>
 	<string name="about">حول</string>
 	<string name="member_since_">عضو منذ  %s</string>
 	<string name="birthday_">عيد ميلاد:  %s</string>
@@ -374,7 +374,7 @@
 	<string name="topic_created">تم انشاء موضوع</string>
 	<string name="posted">تم النشر</string>
 	<string name="post">منشور</string>
-	<string name="write_reply_">اكتب رد...</string>
+	<string name="write_reply_">اكتب رد…</string>
 	<string name="write_comment_">اكتب تعليق</string>
 	<string name="username_wrote">%s كتب:</string>
 	<string name="full_lesson_library">مكتبة الدرس الكاملة</string>
@@ -400,7 +400,7 @@
 	<string name="lessons_limit_reached_message">لقد وصلت إلى أقصى حد للدروس اليوم. قم بالترقية لتحصل على دروس غير محدودة!</string>
 	<string name="resume_lesson">استئناف الدرس</string>
 	<string name="installing_theme">تثبيت المظهر</string>
-	<string name="waiting_to_download">في انتظار التنزيل...</string>
+	<string name="waiting_to_download">في انتظار التنزيل…</string>
 	<string name="downloading_arg">تنزيل %s</string>
 	<string name="custom">مخصص</string>
 	<string name="background">الخلفية</string>
@@ -438,8 +438,8 @@
 	<string name="black_to_move">النقلة للأسود</string>
 	<string name="puzzle">لغز</string>
 	<string name="chess_game">مباراة شطرنج</string>
-	<string name="pull_to_refresh_pull_label">اسحب للتحديث...</string>
-	<string name="pull_to_refresh_release_label">اترك للتحديث...</string>
+	<string name="pull_to_refresh_pull_label">اسحب للتحديث…</string>
+	<string name="pull_to_refresh_release_label">اترك للتحديث…</string>
 	<string name="pull_to_refresh_refreshing_label">جاري التحميل&#8230;</string>
 	<string name="upgrade_to_unlimited_access">قم بالترقية  للمميزات الغير محدودة على Chess.com !</string>
 	<string name="upgrade_now">قم بالترقية الآن</string>
@@ -463,7 +463,7 @@
 	<string name="total_games">إجمالي المباريات</string>
 	<string name="help_toast_for_daily_games">اسحب لأسفل لتحديث المباريات</string>
 	<string name="help_toast_for_quick_in_game_navigation">اضغط \u003c أو \u003e للنقل السريع</string>
-	<string name="still_connecting">لا يزال يتصل...</string>
+	<string name="still_connecting">لا يزال يتصل…</string>
 	<string name="unable_to_send_challenge">غير قادر على ارسال التحدي</string>
 	<string name="rating_range">نطاق التصنيف</string>
 	<string name="show_mini_boards">إظهار رقعات مصغرة</string>

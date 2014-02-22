@@ -19,7 +19,7 @@
 		<item>Bez Reklama</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Neograničen Broj Taktika</item>
 		<item>5 Lekcija Dnevno</item>
 		<item>Pretraživač Otvaranja</item>
@@ -28,7 +28,7 @@
 		<item>Bez Reklama</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 Taktika Dnevno</item>
 		<item>3 Lekcije Dnevno</item>
 		<item>Pretraživač Otvaranja</item>

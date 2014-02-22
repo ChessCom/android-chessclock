@@ -176,7 +176,7 @@
 	<string name="content">Conteúdo</string>
 	<string name="comments">Comentários</string>
 	<string name="download_complete">Transferência concluída</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Dificuldade</string>
 	<string name="easiest">Mais fácil</string>
 	<string name="hardest">Mais difícil</string>

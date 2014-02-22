@@ -431,7 +431,10 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 
 	@Override
 	public ChessBoardExplorer getBoardFace() {
-		return ChessBoardExplorer.getInstance(this);
+		if (chessBoard == null) {
+			chessBoard = new ChessBoardExplorer(this);
+		}
+		return (ChessBoardExplorer) chessBoard;
 	}
 
 	@Override
@@ -452,8 +455,8 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	private void widgetsInit(View view) {
-		ChessBoardExplorer.resetInstance();
-		ChessBoardExplorer.getInstance(this);
+		resetInstance();
+//		ChessBoardExplorer.getInstance(this);
 
 		moveVariationTxt = (TextView) view.findViewById(R.id.moveVariationTxt);
 		if (AppUtils.isNexus4Kind(getActivity())) {

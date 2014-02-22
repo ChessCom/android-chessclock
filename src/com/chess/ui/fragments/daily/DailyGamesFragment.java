@@ -32,7 +32,6 @@ import com.chess.statics.StaticData;
 import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyCurrentGamesCursorAdapter;
 import com.chess.ui.adapters.DailyFinishedGamesCursorAdapter;
-import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.interfaces.ChallengeModeSetListener;
@@ -309,7 +308,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				boolean iPlayWhite = gameListCurrentItem.getIPlayAs() == RestHelper.P_WHITE;
 				boolean whiteOfferedDraw = gameListCurrentItem.isDrawOffered() == RestHelper.P_WHITE;
 				if (iPlayWhite && whiteOfferedDraw || !iPlayWhite && !whiteOfferedDraw) {
-					ChessBoardDaily.resetInstance();
+//					resetInstance();
 					long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
 					getActivityFace().openFragment(GameDailyFragment.createInstance(gameId));
@@ -320,7 +319,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
 				}
 			} else {
-				ChessBoardDaily.resetInstance();
+//				resetInstance();
 				long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
 				getActivityFace().openFragment(GameDailyFragment.createInstance(gameId));
@@ -470,7 +469,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-			ChessBoardDaily.resetInstance();
+//			resetInstance();
 			getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 		}
 		super.onNeutralBtnCLick(fragment);
@@ -674,7 +673,7 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		int coordinateColorDark = getResources().getColor(R.color.transparent);
 		boardView.setCustomCoordinatesColors(new int[]{coordinateColorLight, coordinateColorDark});
 
-		ChessBoardDaily.resetInstance();
+//		resetInstance();
 
 		return boardView;
 	}

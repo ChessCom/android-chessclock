@@ -176,7 +176,7 @@
 	<string name="content">Мазмұны</string>
 	<string name="comments">Комментариялар</string>
 	<string name="download_complete">Жүктеу аяқталды</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Қиындық</string>
 	<string name="easiest">Оңайырақ</string>
 	<string name="hardest">Қиынырақ</string>

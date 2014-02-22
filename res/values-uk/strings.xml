@@ -176,7 +176,7 @@
 	<string name="content">Зміст</string>
 	<string name="comments">Коментарі</string>
 	<string name="download_complete">Завантаження завершено</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Складність</string>
 	<string name="easiest">Легше</string>
 	<string name="hardest">Складніше</string>
@@ -478,7 +478,7 @@
 	<string name="line">Варіант</string>
 	<string name="predict_move_or_add_new_line">Передбачити хід або додати нову гілку&#8230;</string>
 	<string name="make_your_conditional_move">Зробіть свій умовний хід&#8230;</string>
-	<string name="predict_opponent_next_move">Предсказати наступний хід опонента...</string>
+	<string name="predict_opponent_next_move">Предсказати наступний хід опонента…</string>
 	<string name="notes">Записи</string>
 	<string name="private_note">Приватний запис</string>
 	<string name="upgrade_feedback_1">"\"Задачі та уроки дійсно допомагають поліпшити мої шахові вміння\""</string>

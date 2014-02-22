@@ -161,7 +161,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	}
 
 	private void adjustBoardForGame() {
-		ChessBoardAnalysis.resetInstance();
+		resetInstance();
 		userPlayWhite = analysisItem.getUserSide() == ChessBoard.WHITE_SIDE;
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;
@@ -203,7 +203,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 		playLastMoveAnimation();
 
-		boardFace.setJustInitialized(false);
+//		boardFace.setJustInitialized(false);
 		boardFace.setAnalysis(true);
 
 		{// set avatars
@@ -331,7 +331,10 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 	@Override
 	public BoardFace getBoardFace() {
-		return ChessBoardAnalysis.getInstance(this);
+		if (chessBoard == null) {
+			chessBoard = new ChessBoardAnalysis(this);
+		}
+		return chessBoard;
 	}
 
 	@Override
@@ -375,7 +378,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		boardView.setGameActivityFace(this);
 
 		adjustBoardForGame();
-		getBoardFace().setJustInitialized(false);
+//		getBoardFace().setJustInitialized(false);
 	}
 
 	private NotationFace getNotationsFace() {

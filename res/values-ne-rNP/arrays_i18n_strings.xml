@@ -19,7 +19,7 @@
 		<item>No Ads</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Unlimited Tactics</item>
 		<item>5 Lessons per Day</item>
 		<item>Opening Explorer</item>
@@ -28,7 +28,7 @@
 		<item>No Ads</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 Tactics per Day</item>
 		<item>3 Lessons per Day</item>
 		<item>Opening Explorer</item>

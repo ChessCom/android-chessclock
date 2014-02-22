@@ -19,7 +19,7 @@
 		<item>Senza Pubblicità</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Tattiche Illimitate</item>
 		<item>5 Lezioni al Giorno</item>
 		<item>Esploratore delle Aperture</item>
@@ -28,7 +28,7 @@
 		<item>Senza Pubblicità</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 Tattiche al Giorno</item>
 		<item>3 Lezioni al Giorno</item>
 		<item>Esploratore delle Aperture</item>

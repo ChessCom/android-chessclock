@@ -19,7 +19,7 @@
 		<item>Reklámmentesség</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Korlátlan számú feladvány</item>
 		<item>5 lecke / nap</item>
 		<item>Megnyitás és játszmakereső</item>
@@ -28,7 +28,7 @@
 		<item>Reklámmentesség</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 feladvány / nap</item>
 		<item>3 lecke / nap</item>
 		<item>Megnyitás és játszmakereső</item>

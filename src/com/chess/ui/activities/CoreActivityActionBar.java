@@ -93,17 +93,6 @@ public abstract class CoreActivityActionBar extends ActionBarActivity implements
 		actionMenuMap.put(menuId, show);
 	}
 
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//			case android.R.id.home:
-//				getSlidingMenu().toggle();
-//				hideKeyBoard();
-//				break;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();

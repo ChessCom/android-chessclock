@@ -16,7 +16,7 @@
 	<string name="complete_singup">Завершить регистрацию</string>
 	<string name="white">Белый</string>
 	<string name="black">Черный</string>
-	<string name="thinking_">Думает...</string>
+	<string name="thinking_">Думает…</string>
 	<string name="open_challenges">Открытые вызовы</string>
 	<string name="challenge_friend">Бросить вызов другу</string>
 	<string name="challenge_created">Вызов Создан</string>
@@ -131,7 +131,7 @@
 	<string name="won_by_resignation">%s выиграл - противник сдался</string>
 	<string name="won_by_checkmate">%s выиграл - мат</string>
 	<string name="game_over">Игра окончена</string>
-	<string name="reconnecting_">Подключение...</string>
+	<string name="reconnecting_">Подключение…</string>
 	<string name="another_login_detected">Упс! Обнаружен вход с другово устройства.</string>
 	<string name="game_end_title_draw">Ничья</string>
 	<string name="game_aborted">Игра прервана</string>
@@ -176,7 +176,7 @@
 	<string name="content">Содержание</string>
 	<string name="comments">Комментарии</string>
 	<string name="download_complete">Загрузка завершена</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Сложность</string>
 	<string name="easiest">Легче</string>
 	<string name="hardest">Сложнее</string>
@@ -303,7 +303,7 @@
 	<string name="pieces_style">Стиль фигур</string>
 	<string name="show_legal_moves">Подсказки ходов</string>
 	<string name="flip_board">Перевернуть доску</string>
-	<string name="waiting_for_opponent">Ожидание оппонента...</string>
+	<string name="waiting_for_opponent">Ожидание оппонента…</string>
 	<string name="lightning">Молния</string>
 	<string name="blitz">Блиц</string>
 	<string name="standard">Стандартный</string>
@@ -372,8 +372,8 @@
 	<string name="topic_created">Тема Создана</string>
 	<string name="posted">Опубликовано</string>
 	<string name="post">Поместить</string>
-	<string name="write_reply_">Написать ответ...</string>
-	<string name="write_comment_">Написать комментарий...</string>
+	<string name="write_reply_">Написать ответ…</string>
+	<string name="write_comment_">Написать комментарий…</string>
 	<string name="username_wrote">%s пишет:</string>
 	<string name="full_lesson_library">Библиотека уроков</string>
 	<string name="curriculum">Учебный план</string>
@@ -409,13 +409,13 @@
 	<string name="message">Сообщение</string>
 	<string name="new_message">Новое сообщение</string>
 	<string name="to_">Кому:</string>
-	<string name="write_your_message">Напишите Ваше сообщение...</string>
+	<string name="write_your_message">Напишите Ваше сообщение…</string>
 	<string name="inbox">Входящие</string>
 	<string name="activity">Активность</string>
 	<string name="keywords">Ключевые слова</string>
 	<string name="all">Все</string>
 	<string name="go_ex">Поехали!</string>
-	<string name="ready_q_">Готовы?...</string>
+	<string name="ready_q_">Готовы?…</string>
 	<string name="solved_with_hint">Решено с подсказкой</string>
 	<string name="thirty_days">30 Дней</string>
 	<string name="ninety_days">90 Дней</string>

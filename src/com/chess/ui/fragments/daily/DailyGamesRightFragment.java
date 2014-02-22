@@ -27,7 +27,6 @@ import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.StaticData;
 import com.chess.ui.adapters.*;
-import com.chess.ui.engine.ChessBoardDaily;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
@@ -189,7 +188,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 				boolean iPlayWhite = gameListCurrentItem.getIPlayAs() == RestHelper.P_WHITE;
 				boolean whiteOfferedDraw = gameListCurrentItem.isDrawOffered() == RestHelper.P_WHITE;
 				if (iPlayWhite && whiteOfferedDraw || !iPlayWhite && !whiteOfferedDraw) {
-					ChessBoardDaily.resetInstance();
+//					resetInstance();
 					getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 					getActivityFace().toggleRightMenu();
 				} else {
@@ -199,7 +198,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 					showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
 				}
 			} else {
-				ChessBoardDaily.resetInstance();
+//				resetInstance();
 				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 				getActivityFace().toggleRightMenu();
 			}
@@ -345,7 +344,7 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-			ChessBoardDaily.resetInstance();
+//			resetInstance();
 			getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 			getActivityFace().toggleRightMenu();
 		}

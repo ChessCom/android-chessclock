@@ -19,7 +19,7 @@
 		<item>Rebutja publicitat</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>Tàctiques il·limitades</item>
 		<item>5 lliçons cada dia</item>
 		<item>Explorador d\'obertures</item>
@@ -28,7 +28,7 @@
 		<item>Rebutja publicitat</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>25 tàctiques cada dia</item>
 		<item>3 lliçons cada dia</item>
 		<item>Explorador d\'obertures</item>

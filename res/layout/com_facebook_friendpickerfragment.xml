@@ -37,6 +37,6 @@
 		android:layout_height="wrap_content"
 		android:id="@+id/com_facebook_picker_activity_circle"
 		style="@style/ChessProgressBar"
-		android:layout_centerInParent="true"
+		android:layout_gravity="center"
 		android:visibility="invisible" />
 </FrameLayout>

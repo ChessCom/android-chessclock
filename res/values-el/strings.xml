@@ -131,7 +131,7 @@
 	<string name="won_by_resignation">%s κερδίζει από Παραίτηση</string>
 	<string name="won_by_checkmate">%s κερδίζει με Ματ</string>
 	<string name="game_over">Τέλος παιχνιδιού</string>
-	<string name="reconnecting_">Επανασύνδεση...</string>
+	<string name="reconnecting_">Επανασύνδεση…</string>
 	<string name="another_login_detected">Ώπα! Είστε συνδεδεμένοι κάπου αλλού.</string>
 	<string name="game_end_title_draw">Ισοπαλία</string>
 	<string name="game_aborted">Αποχώριση από το παιχνίδι</string>
@@ -176,7 +176,7 @@
 	<string name="content">Περιεχόμενο</string>
 	<string name="comments">Σχόλια</string>
 	<string name="download_complete">Η φόρτωση ολοκληρώθηκε</string>
-	<string name="empty"></string>
+	<string name="empty"/>
 	<string name="difficulty">Δυσκολία</string>
 	<string name="easiest">Πολύ εύκολο</string>
 	<string name="hardest">Πολύ δύσκολο</string>
@@ -303,7 +303,7 @@
 	<string name="pieces_style">Στυλ πιονιών</string>
 	<string name="show_legal_moves">Εμφάνιση επιτρεπόμενων κινήσεων</string>
 	<string name="flip_board">Γύρισμα Σκακιέρας</string>
-	<string name="waiting_for_opponent">Αναμονή αντιπάλου...</string>
+	<string name="waiting_for_opponent">Αναμονή αντιπάλου…</string>
 	<string name="lightning">Αστραπή</string>
 	<string name="blitz">Blitz</string>
 	<string name="standard">Κανονικό</string>
@@ -358,7 +358,7 @@
 	<string name="new_daily_challenge">Νέα ημερίσια πρόκληση</string>
 	<string name="arg_wants_to_play">Ο/Η %s θέλει να παίξετε!</string>
 	<string name="unable_to_select_this_photo">Αδυναμία χρήσης αυτής της φωτογραφίας</string>
-	<string name="processing_">Επεξεργασία...</string>
+	<string name="processing_">Επεξεργασία…</string>
 	<string name="about">Σχετικά με</string>
 	<string name="member_since_">Μέλος από: %s</string>
 	<string name="birthday_">Γενέθλια: %s</string>
@@ -372,8 +372,8 @@
 	<string name="topic_created">Το θέμα δημιουργήθηκε</string>
 	<string name="posted">Καταχωρήθηκε</string>
 	<string name="post">Καταχώρηση</string>
-	<string name="write_reply_">Γράψτε μια απάντηση...</string>
-	<string name="write_comment_">Γράψτε ένα σχόλιο...</string>
+	<string name="write_reply_">Γράψτε μια απάντηση…</string>
+	<string name="write_comment_">Γράψτε ένα σχόλιο…</string>
 	<string name="username_wrote">%s έγραψε:</string>
 	<string name="full_lesson_library">Βιβλιοθήκη με πλήρες μαθήματα</string>
 	<string name="curriculum">Βιογραφικό</string>
@@ -409,13 +409,13 @@
 	<string name="message">Μήνυμα</string>
 	<string name="new_message">Νέο μήνυμα</string>
 	<string name="to_">Προς:</string>
-	<string name="write_your_message">Γράψτε το μήνυμά σας...</string>
+	<string name="write_your_message">Γράψτε το μήνυμά σας…</string>
 	<string name="inbox">Εισερχόμενα</string>
 	<string name="activity">Δραστηριότητες</string>
 	<string name="keywords">Λέξεις κλειδιά</string>
 	<string name="all">Όλα</string>
 	<string name="go_ex">Πάμε!</string>
-	<string name="ready_q_">Έτοιμοι;...</string>
+	<string name="ready_q_">Έτοιμοι;…</string>
 	<string name="solved_with_hint">Λύση με υπόδειξη</string>
 	<string name="thirty_days">30 Ημέρες</string>
 	<string name="ninety_days">90 Ημέρες</string>
@@ -461,7 +461,7 @@
 	<string name="total_games">Συνολικά παιχνίδια</string>
 	<string name="help_toast_for_daily_games">Τραβήξτε προς τα κάτω για ενημερώση παιχνιδιών</string>
 	<string name="help_toast_for_quick_in_game_navigation">Κρατήστε \u003c ή \u003e για γρήγορη κίνηση</string>
-	<string name="still_connecting">Ακόμα συνδέετε...</string>
+	<string name="still_connecting">Ακόμα συνδέετε…</string>
 	<string name="unable_to_send_challenge">Αδυναμία αποστολής πρόκλησης</string>
 	<string name="rating_range">Σειρά βαθμολόγησης</string>
 	<string name="show_mini_boards">Εμφάνιση μίνι σκακιέρας</string>

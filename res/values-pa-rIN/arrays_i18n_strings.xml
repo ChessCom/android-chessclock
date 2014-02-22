@@ -19,7 +19,7 @@
 		<item>ਬਿਨਾ ਮਸ਼ਹੂਰੀ</item>
 	</string-array>
 	<string-array name="upgrade_platinum_features">
-		<item></item>
+		<item/>
 		<item>ਅਪਾਰ ਯੁਕ੍ਤਿਯਾਂ</item>
 		<item>ਹਰ ਰੋਜ਼ 5 ਸਬਕ</item>
 		<item>ਸ਼ੁਰੁਆਤ ਖੋਜੀ</item>
@@ -28,7 +28,7 @@
 		<item>ਬਿਨਾ ਮਸ਼ਹੂਰੀ</item>
 	</string-array>
 	<string-array name="upgrade_gold_features">
-		<item></item>
+		<item/>
 		<item>ਹਰ ਰੋਜ਼ 25 ਯੁਕ੍ਤਿਯਾਂ</item>
 		<item>ਹਰ ਰੋਜ਼ 3 ਸਬਕ</item>
 		<item>ਸ਼ੁਰੁਆਤ ਖੋਜੀ</item>

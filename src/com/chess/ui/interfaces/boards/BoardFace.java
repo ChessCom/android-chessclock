@@ -104,10 +104,6 @@ public interface BoardFace {
 
 	void setupBoard(String fen);
 
-	boolean isJustInitialized();
-
-	void setJustInitialized(boolean justInitialized);
-
 	String getLastMoveSAN();
 
 	Move getLastMove();

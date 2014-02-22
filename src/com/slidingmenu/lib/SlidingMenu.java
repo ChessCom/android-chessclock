@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
 import com.chess.R;
 import com.slidingmenu.lib.CustomViewAbove.OnPageChangeListener;
 
-public class SlidingMenu extends RelativeLayout {
+public class SlidingMenu extends FrameLayout {
 
 	private static final String TAG = "SlidingMenu";
 
@@ -556,7 +556,7 @@ public class SlidingMenu extends RelativeLayout {
 	 */
 	public void toggle(boolean animate) {
 		if (isMenuShowing()) {
-			showContent(false);
+			showContent(animate);
 		} else {
 			showMenu(animate);
 		}
