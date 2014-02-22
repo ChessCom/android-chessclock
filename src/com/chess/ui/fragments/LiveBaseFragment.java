@@ -247,11 +247,10 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 			} else {
 				liveFragment.invalidateGameScreen();
 			}
-//				getActivityFace().openFragment(liveFragment, true);
 			getActivityFace().openFragment(liveFragment);
-		} else {
+		} /*else {
 			createSeek();
-		}
+		}*/
 
 		dismissProgressDialog();
 		dismissNetworkCheckDialog();

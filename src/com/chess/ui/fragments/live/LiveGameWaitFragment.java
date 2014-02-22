@@ -25,18 +25,21 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 
 	private static final long FINISH_FRAGMENT_DELAY = 200;
 
+	protected static final String CHALLENGE_CREATED = "challenge_created";
+	protected static final String CLOSE_ON_RESUME = "close_on_resume";
+
 	private View loadingView;
 	private LiveGameConfig liveGameConfig;
-	public boolean closeOnResume;
+	//public boolean closeOnResume; // it was not safe here, because device can be rotated and lost this state
 
 	public LiveGameWaitFragment() {
+		Bundle bundle = new Bundle();
+		setArguments(bundle);
 	}
 
 	public static LiveGameWaitFragment createInstance(LiveGameConfig config) {
 		LiveGameWaitFragment fragment = new LiveGameWaitFragment();
-		Bundle bundle = new Bundle();
-		bundle.putParcelable(CONFIG, config);
-		fragment.setArguments(bundle);
+		fragment.getArguments().putParcelable(CONFIG, config);
 		return fragment;
 	}
 
@@ -74,7 +77,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 	public void onResume() {
 		super.onResume();
 
-		if (!closeOnResume) {
+		if (!getArguments().getBoolean(CLOSE_ON_RESUME)) {
 			getDataHolder().setLiveChessMode(true);
 			liveBaseActivity.performServiceConnection();
 			loadingView.setVisibility(View.VISIBLE);
@@ -115,6 +118,24 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 		}
 	}
 
+	public void onLiveClientConnected() {
+
+		super.onLiveClientConnected();
+
+		LiveConnectionHelper liveHelper;
+		try {
+			liveHelper = getLiveHelper();
+		} catch (DataNotValidException e) {
+			LogMe.dl(TAG, e.getMessage());
+			return;
+		}
+
+		if (!getArguments().getBoolean(CHALLENGE_CREATED) && !liveHelper.isUserPlaying()) {
+			createSeek();
+			getArguments().putBoolean(CHALLENGE_CREATED, true);
+		}
+	}
+
 	@Override
 	public void startGameFromService() {
 		LogMe.dl(TAG, "startGameFromService");
@@ -149,7 +170,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 //					getActivityFace().openFragment(liveFragment, true);
 					getActivityFace().openFragment(liveFragment);
 
-					closeOnResume = true;
+					getArguments().putBoolean(CLOSE_ON_RESUME, true);
 				}
 			});
 		}
