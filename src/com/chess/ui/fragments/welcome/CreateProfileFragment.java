@@ -217,6 +217,10 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 					float density = getResources().getDisplayMetrics().density;
 					int size = (int) (58.5f * density); // TODO remove hardcode
 					Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+					if (bitmap == null) {
+						showToast(R.string.unable_to_select_this_photo);
+						return;
+					}
 					bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
 					photoFileSize = AppUtils.sizeOfBitmap(bitmap);
 					Drawable drawable = new BitmapDrawable(getResources(), bitmap);
@@ -255,6 +259,11 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 			bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
 		} catch (OutOfMemoryError ignore) {
 			Log.d("TEST", ignore.toString());
+			showToast(R.string.unable_to_select_this_photo);
+			return;
+		}
+
+		if (bitmap == null) {
 			showToast(R.string.unable_to_select_this_photo);
 			return;
 		}

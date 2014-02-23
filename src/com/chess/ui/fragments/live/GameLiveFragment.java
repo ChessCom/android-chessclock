@@ -144,10 +144,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		getActivityFace().setCustomActionBarViewId(R.layout.home_actionbar);
 
-		if (gameId != 0 && !isValid()) { // when user returns by back stack
-			goHome();
-			return;
-		}
+//		if (gameId != 0 && !isValid()) { // when user returns by back stack // TODO this method might not be called when returning from backstack because view was already initialized
+//			goHome();                    // there is nothing related to widgets, so they should be initialized anyway.
+//			return;
+//		}
 
 		widgetsInit(view);
 		try {
@@ -162,6 +162,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		if (gameId != 0 && !isValid()) { // when user returns by back stack
+			goHome();
+			return;
+		}
 
 //		LogMe.dl("lcc", "```````````````````````````````````````````" );
 //		LogMe.dl("lcc", " fragments to receive onLiveClientConnected " );

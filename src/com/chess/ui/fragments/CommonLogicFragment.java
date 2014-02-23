@@ -613,6 +613,8 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 
 		@Override
 		public void errorHandle(Integer resultCode) {
+			FlurryAgent.logEvent("CLF errorHandle, code = " + resultCode);
+
 			// perform auto re-login here
 			if (RestHelper.containsServerCode(resultCode)) {
 				int serverCode = RestHelper.decodeServerCode(resultCode);

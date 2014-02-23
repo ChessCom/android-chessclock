@@ -25,6 +25,7 @@ import com.chess.ui.adapters.ChatMessagesAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.AppUtils;
 import com.chess.widgets.RoboButton;
+import com.flurry.android.FlurryAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -210,6 +211,13 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 				messagesAdapter.setItemsList(chatItems);
 			}
 			sendEdt.setText(Symbol.EMPTY);
+		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			FlurryAgent.logEvent("chat message send failed, code = " + resultCode);
 		}
 	}
 
