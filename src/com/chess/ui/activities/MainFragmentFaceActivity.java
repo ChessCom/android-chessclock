@@ -1110,7 +1110,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	 */
 	private boolean setDarkThemeForNewUser() {
 		AppData appData = getAppData();
-		boolean isFirstInstall = !appData.isFirstInitFinished() && !TextUtils.isEmpty(getCurrentUserToken());
+		boolean isFirstInstall = !appData.isFirstInitFinished()
+				&& !TextUtils.isEmpty(getCurrentUserToken())
+				&& !appData.isNewUser();
 		if (isFirstInstall) { // we change default Game Room theme to Dark
 
 			appData.setThemeName(AppConstants.DEFAULT_THEME_NAME_FOR_NEW_USERS);

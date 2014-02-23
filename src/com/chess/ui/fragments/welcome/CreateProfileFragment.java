@@ -190,6 +190,8 @@ public class CreateProfileFragment extends CommonLogicFragment implements View.O
 		getAppData().setUserLastName(getTextFromField(lastNameEdt));
 		getAppData().setUserCountry(getTextFromField(countryEdt));
 
+		getAppData().setNewUser(true);
+
 		backToHomeFragment();
 	}
 

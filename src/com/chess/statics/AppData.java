@@ -333,6 +333,14 @@ public class AppData {
 		return getIntValue(PREF_USER_SKILL_LEVEL, 0);
 	}
 
+	public void setNewUser(boolean value) {
+		setBooleanValue(PREF_USER_JUST_REGISTERED, value);
+	}
+
+	public boolean isNewUser() {
+		return getBooleanValue(PREF_USER_JUST_REGISTERED, false);
+	}
+
 	public void setUserCountry(String countryName) {
 		setStringValue(PREF_USER_COUNTRY, countryName);
 	}

@@ -94,6 +94,10 @@ public class SignInFragment extends CommonLogicFragment implements TextView.OnEd
 	@Override
 	protected void afterLogin() {
 		super.afterLogin();
+
+		// restore theme for user
+		getActivityFace().updateMainBackground();
+
 		backToHomeFragment();
 	}
 

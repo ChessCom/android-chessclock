@@ -82,6 +82,7 @@ public class AppConstants {
 	public static final String PREF_USER_DAILY_RATING = "user_daily_rating";
 	public static final String PREF_USER_LESSONS_COMPLETE = "user_lessons_complete";
 	public static final String PREF_USER_COURSE_COMPLETE = "user_course_complete";
+	public static final String PREF_USER_JUST_REGISTERED = "user_just_registered";
 
 	public static final String PREF_THEME_BACK_ID = "theme_back_id";
 	public static final String PREF_THEME_ID = "theme_id";

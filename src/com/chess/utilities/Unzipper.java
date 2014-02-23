@@ -37,7 +37,7 @@ public class UnZipper {
 					FileOutputStream outputStream = new FileOutputStream(filePath + zipEntry.getName());
 					long totalSize = zipEntry.getSize();
 					int totalRead = 0;
-					progressFace.changeTitle("Unzipping - " + zipEntry.getName());
+					progressFace.changeTitle(zipEntry.getName());
 					progressFace.setProgress(0);
 					final int buffer_size = 1024;
 

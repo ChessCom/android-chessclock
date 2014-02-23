@@ -791,8 +791,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		getActivityFace().registerGcm();
 
 		afterLogin();
-
-		getActivityFace().updateMainBackground();
 	}
 
 	protected void afterLogin() {

@@ -66,6 +66,7 @@ public class GetAndSaveUserStats extends IntentService {
 			if (item != null) {
 				appData.setUserCreateDate(item.getData().getMemberSince());
 				appData.setUserInfoSaved(true);
+				appData.setNewUser(false);
 			}
 		}
 
