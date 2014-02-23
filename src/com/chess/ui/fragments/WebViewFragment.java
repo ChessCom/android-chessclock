@@ -82,14 +82,13 @@ public class WebViewFragment extends CommonLogicFragment {
 	private void widgetsInit(View view) {
 		webView = (WebView) view.findViewById(R.id.webView);
 
-//		webView.getSettings().setJavaScriptEnabled(true);
+		webView.getSettings().setJavaScriptEnabled(false);
 		webView.setWebViewClient(new MyWebViewClient());
 		webView.setWebChromeClient(new MyWebChromeClient());
 
 		horizontalProgress = (ProgressBar) view.findViewById(R.id.webProgressbar);
 
 		getActivityFace().setPullToRefreshView(webView, this);
-
 	}
 
 	@Override

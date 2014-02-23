@@ -79,7 +79,7 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 
 		if (!getArguments().getBoolean(CLOSE_ON_RESUME)) {
 			getDataHolder().setLiveChessMode(true);
-			liveBaseActivity.performServiceConnection();
+			isLCSBound = liveBaseActivity.connectToLiveChess(this);
 			loadingView.setVisibility(View.VISIBLE);
 		} else {
 			handler.postDelayed(new Runnable() {
@@ -118,8 +118,8 @@ public class LiveGameWaitFragment extends LiveBaseFragment {
 		}
 	}
 
+	@Override
 	public void onLiveClientConnected() {
-
 		super.onLiveClientConnected();
 
 		LiveConnectionHelper liveHelper;

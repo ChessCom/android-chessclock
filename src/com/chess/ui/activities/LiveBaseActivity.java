@@ -19,6 +19,7 @@ import com.chess.lcc.android.LiveEvent;
 import com.chess.lcc.android.OuterChallengeListener;
 import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
+import com.chess.lcc.android.interfaces.LiveFragmentFace;
 import com.chess.live.client.Challenge;
 import com.chess.live.client.Game;
 import com.chess.live.util.GameTimeConfig;
@@ -63,6 +64,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 	protected boolean isLCSBound;
 	protected LiveConnectionHelper liveHelper;
 	private List<PopupDialogFragment> popupChallengesList;
+	private LiveFragmentFace liveFragmentFace;
 
 
 	@Override
@@ -305,8 +307,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		this.isLCSBound = isLCSBound;
 	}
 
+	public boolean connectToLiveChess(LiveFragmentFace liveFragmentFace) {
+		this.liveFragmentFace = liveFragmentFace;
+		return performServiceConnection();
+	}
+
 	@Override
-	public void performServiceConnection() {
+	public boolean performServiceConnection() {
 		if (isLCSBound) {
 			if (liveHelper.getLccHelper() != null && liveHelper.isConnected()) {
 				onLiveClientConnected();
@@ -318,6 +325,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 //			Log.d(TAG, "performServiceConnection, !isLCSBound -> bindAndStartLiveService " + getClass());
 			bindAndStartLiveService();
 		}
+		return isLCSBound;
 	}
 
 	private class LiveServiceConnectionListener implements ServiceConnection, LccConnectionUpdateFace {
@@ -383,23 +391,9 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	protected void onLiveClientConnected() {
 		dismissNetworkCheckDialog();
-		if (getSupportFragmentManager() == null) {
-			return;
+		if (liveFragmentFace != null) {
+			liveFragmentFace.onLiveClientConnected();
 		}
-//		LogMe.dl("lcc", " _____________________________________________________" );
-//		LogMe.dl("lcc", " fragments to receive onLiveClientConnected " );
-		for (Fragment fragment : getSupportFragmentManager().getFragments()) {  // GameLiveObserverFragment might be not represented here
-//			if (fragment != null) {
-//				LogMe.dl("lcc", " fragment = " + fragment.getClass().getSimpleName() );
-//			}
-
-			if (fragment != null && fragment.isVisible()) {
-				if (fragment instanceof LiveBaseFragment) {
-					((LiveBaseFragment) fragment).onLiveClientConnected();
-				}
-			}
-		}
-//		LogMe.dl("lcc", " =====================================================" );
 	}
 
 	private class LiveOuterChallengeListener implements OuterChallengeListener {

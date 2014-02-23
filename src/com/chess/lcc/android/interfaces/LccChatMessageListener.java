@@ -6,5 +6,6 @@ package com.chess.lcc.android.interfaces;
  * @modified 02.07.12
  */
 public interface LccChatMessageListener {
+
 	void onMessageReceived();
 }

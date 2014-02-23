@@ -189,7 +189,7 @@
 	<string name="my_move">Mitt Trekk</string>
 	<string name="their_move">Deres Trekk</string>
 	<string name="live_chess_time_mode_arg">%1$d | %2$d</string>
-	<string name="arg_min">%d minutter</string>
+	<string name="arg_min">%d min</string>
 	<string name="arg_hour">%d timer</string>
 	<string name="arg_hours">%d timer</string>
 	<string name="arg_day">%d dag</string>

@@ -2,11 +2,13 @@ package com.chess.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import com.chess.R;
 import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.lcc.android.interfaces.LccEventListener;
+import com.chess.lcc.android.interfaces.LiveFragmentFace;
 import com.chess.live.client.Game;
 import com.chess.model.DataHolder;
 import com.chess.model.GameLiveItem;
@@ -20,7 +22,8 @@ import com.chess.utilities.LogMe;
  * Date: 11.04.13
  * Time: 13:06
  */
-public abstract class LiveBaseFragment extends CommonLogicFragment implements LccEventListener {
+public abstract class LiveBaseFragment extends CommonLogicFragment implements LccEventListener,
+		LiveFragmentFace {
 
 	private static final String TAG = "LccLog-LiveBaseFragment";
 
@@ -84,7 +87,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 					showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 				}
 
-				liveBaseActivity.performServiceConnection();
+				isLCSBound = liveBaseActivity.connectToLiveChess(this);
 				showPopupProgressDialog();
 			}
 		}
@@ -216,10 +219,13 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		}
 	}
 
+	@Override
 	public void onLiveClientConnected() {
-
-		// onAttach
-		liveBaseActivity = (LiveBaseActivity) getActivity();
+		FragmentActivity activity = getActivity();
+		if (activity == null || activity.isFinishing()) {
+			return;
+		}
+		liveBaseActivity = (LiveBaseActivity) activity;
 		if (getDataHolder().isLiveChess()) {
 			setLCSBound(liveBaseActivity.isLCSBound());
 		}
@@ -248,9 +254,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 				liveFragment.invalidateGameScreen();
 			}
 			getActivityFace().openFragment(liveFragment);
-		} /*else {
-			createSeek();
-		}*/
+		}
 
 		dismissProgressDialog();
 		dismissNetworkCheckDialog();

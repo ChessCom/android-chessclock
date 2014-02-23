@@ -21,7 +21,11 @@ public interface LiveChessClientEventListener {
 
 	void onAdminAnnounce(String message);
 
-	void performServiceConnection();
+	/**
+	 *
+	 * @return {@code true} if LiveChessService already bounded
+	 */
+	boolean performServiceConnection();
 
 	void registerGcm();
 }
