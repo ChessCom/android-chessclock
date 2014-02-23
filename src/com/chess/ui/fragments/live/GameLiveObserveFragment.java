@@ -106,7 +106,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		//notationsView.resetNotations();
 		enableScreenLockTimer();
 		if (!liveHelper.isActiveGamePresent()) {
-			controlsView.enableAnalysisMode(true);
+			controlsView.showAnalysis(true);
 			getBoardFace().setFinished(true);
 		}
 		liveHelper.setLccChatMessageListener(this);

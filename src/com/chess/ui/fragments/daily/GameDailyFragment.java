@@ -87,8 +87,9 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	private static final int ID_ABORT_RESIGN = 3;
 	private static final int ID_FLIP_BOARD = 4;
 	private static final int ID_SHARE_PGN = 5;
-	private static final int ID_SETTINGS = 6;
-	private static final int ID_THEME = 7;
+	private static final int ID_SHARE_GAME = 6;
+	private static final int ID_SETTINGS = 7;
+	private static final int ID_THEME = 8;
 
 	private GameDailyUpdatesListener abortGameUpdateListener;
 	private GameDailyUpdatesListener drawOfferedUpdateListener;
@@ -249,6 +250,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			boardView.flipBoard();
 		} else if (code == ID_SHARE_PGN) {
 			sendPGN();
+		} else if (code == ID_SHARE_GAME) {
+			shareGame();
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(SettingsDailyChessFragment.createInstance(true));
 		} else if (code == ID_THEME) {
@@ -938,20 +941,24 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			dismissEndGameDialog();
 			getActivityFace().changeRightFragment(RightPlayFragment.createInstance(RIGHT_MENU_MODE));
 		} else if (view.getId() == R.id.sharePopupBtn) {
-			GameDailyItem gameDailyItem = new GameDailyItem();
-			gameDailyItem.setWhiteUsername(getWhitePlayerName());
-			gameDailyItem.setBlackUsername(getBlackPlayerName());
-			ShareItem shareItem = new ShareItem(gameDailyItem, gameId, ShareItem.DAILY);
-
-			Intent shareIntent = new Intent(Intent.ACTION_SEND);
-			shareIntent.setType("text/plain");
-			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
-			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
-			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
+			shareGame();
 		} else if (view.getId() == R.id.rematchPopupBtn) {
 			sendRematch();
 			dismissEndGameDialog();
 		}
+	}
+
+	private void shareGame() {
+		GameDailyItem gameDailyItem = new GameDailyItem();
+		gameDailyItem.setWhiteUsername(getWhitePlayerName());
+		gameDailyItem.setBlackUsername(getBlackPlayerName());
+		ShareItem shareItem = new ShareItem(gameDailyItem, gameId, ShareItem.DAILY);
+
+		Intent shareIntent = new Intent(Intent.ACTION_SEND);
+		shareIntent.setType("text/plain");
+		shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
+		shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
+		startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
 	}
 
 	private void sendRematch() {
@@ -1144,6 +1151,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			optionsMap.put(ID_NEW_GAME, getString(R.string.new_game));
 			optionsMap.put(ID_FLIP_BOARD, getString(R.string.flip_board));
 			optionsMap.put(ID_SHARE_PGN, getString(R.string.share_pgn));
+			optionsMap.put(ID_SHARE_GAME, getString(R.string.share_game));
 			optionsMap.put(ID_SETTINGS, getString(R.string.settings));
 			optionsMap.put(ID_THEME, getString(R.string.theme));
 		}

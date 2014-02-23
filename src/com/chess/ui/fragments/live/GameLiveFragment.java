@@ -27,7 +27,6 @@ import com.chess.lcc.android.LiveConnectionHelper;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.live.client.Game;
 import com.chess.live.rules.GameResult;
-import com.chess.live.util.GameRatingClass;
 import com.chess.model.DataHolder;
 import com.chess.model.GameAnalysisItem;
 import com.chess.model.GameLiveItem;
@@ -81,7 +80,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private static final int ID_OFFER_DRAW = 1;
 	private static final int ID_ABORT_RESIGN = 2;
 	private static final int ID_REMATCH = 3;
-	private static final int ID_SETTINGS = 4;
+	private static final int ID_SHARE_GAME = 4;
+	private static final int ID_SETTINGS = 5;
 
 	protected ChessBoardLiveView boardView;
 
@@ -163,6 +163,15 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onResume() {
 		super.onResume();
 
+//		LogMe.dl("lcc", "```````````````````````````````````````````" );
+//		LogMe.dl("lcc", " fragments to receive onLiveClientConnected " );
+//		for (Fragment fragment : getActivity().getSupportFragmentManager().getFragments()) {
+//			if (fragment != null) {
+//				LogMe.dl("lcc", "onResume fragment = " + fragment.getClass().getSimpleName() );
+//			}
+//		}
+//		LogMe.dl("lcc", "```````````````````````````````````````````" );
+
 		if (isLCSBound) {
 			try {
 				LiveConnectionHelper liveHelper = getLiveHelper();
@@ -233,7 +242,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 
 			showSubmitButtonsLay(false);
-			getControlsView().enableAnalysisMode(false);
+			getControlsView().showAnalysis(false);
 			getControlsView().showDefault();
 			getControlsView().showHome(false);
 
@@ -699,25 +708,12 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			ratingChange = game.getRatingChangeForPlayer(game.getBlackPlayer().getUsername());
 		}
 
-		GameRatingClass gameRatingClass = game.getGameRatingClass();
-		String newRatingStr = getString(R.string.live);
-		if (gameRatingClass == GameRatingClass.Standard) {
-			newRatingStr += Symbol.SPACE + getString(R.string.standard);
-		} else if (gameRatingClass == GameRatingClass.Blitz) {
-			newRatingStr += Symbol.SPACE + getString(R.string.blitz);
-		} else /*if (gameRatingClass == GameRatingClass.Lightning)*/ {
-			newRatingStr += Symbol.SPACE + getString(R.string.lightning);
-		}
-
 		String ratingChangeString = Symbol.wrapInPars(ratingChange > 0 ? "+" + ratingChange : "" + ratingChange);
 
 		resultRatingTxt.setText(String.valueOf(currentPlayerNewRating));
 		resultRatingChangeTxt.setText(ratingChangeString);
 
-		ratingTitleTxt.setText(getString(R.string.new_arg_rating_, newRatingStr));
-
-//		inneractiveRectangleAd = (InneractiveAd) layout.findViewById(R.id.inneractiveRectangleAd);
-//		InneractiveAdHelper.showRectangleAd(inneractiveRectangleAd, this);
+		ratingTitleTxt.setVisibility(View.GONE);
 
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(layout);
@@ -815,6 +811,13 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void switch2Analysis() {
+		GameAnalysisItem analysisItem = new GameAnalysisItem();
+		analysisItem.setGameType(RestHelper.V_GAME_CHESS);
+		analysisItem.setFen(getBoardFace().generateFullFen());
+		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
+		analysisItem.copyLabelConfig(labelsConfig);
+
+		getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
 	}
 
 	@Override
@@ -1011,6 +1014,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			} catch (DataNotValidException e) {
 				e.printStackTrace();
 			}
+		} else if (code == ID_SHARE_GAME) {
+			shareGame();
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(SettingsLiveChessFragment.createInstance(true));
 		}
@@ -1222,32 +1227,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			getActivityFace().openFragment(new LiveGameWaitFragment());
 			DataHolder.getInstance().setLiveGameOpened(true);
 		} else if (view.getId() == R.id.analyzePopupBtn) {
-			GameAnalysisItem analysisItem = new GameAnalysisItem();
-			analysisItem.setGameType(RestHelper.V_GAME_CHESS);
-			analysisItem.setFen(getBoardFace().generateFullFen());
-			analysisItem.setMovesList(getBoardFace().getMoveListSAN());
-			analysisItem.copyLabelConfig(labelsConfig);
-
-			getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
+			switch2Analysis();
 			dismissEndGameDialog();
-
 		} else if (view.getId() == R.id.sharePopupBtn) {
-			LiveConnectionHelper liveHelper;
-			try {
-				liveHelper = getLiveHelper();
-			} catch (DataNotValidException e) {
-				logLiveTest(e.getMessage());
-				return;
-			}
-
-			GameLiveItem currentGame = getGameItem(liveHelper);
-			ShareItem shareItem = new ShareItem(currentGame, currentGame.getGameId(), ShareItem.LIVE);
-
-			Intent shareIntent = new Intent(Intent.ACTION_SEND);
-			shareIntent.setType("text/plain");
-			shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
-			shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
-			startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
+			shareGame();
 		} else if (view.getId() == PanelInfoLiveView.DRAW_ACCEPT_ID) {
 			if (isLCSBound) {
 				try {
@@ -1273,11 +1256,30 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 	}
 
+	private void shareGame() {
+		LiveConnectionHelper liveHelper;
+		try {
+			liveHelper = getLiveHelper();
+		} catch (DataNotValidException e) {
+			logLiveTest(e.getMessage());
+			return;
+		}
+
+		GameLiveItem currentGame = getGameItem(liveHelper);
+		ShareItem shareItem = new ShareItem(currentGame, currentGame.getGameId(), ShareItem.LIVE);
+
+		Intent shareIntent = new Intent(Intent.ACTION_SEND);
+		shareIntent.setType("text/plain");
+		shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
+		shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
+		startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
+	}
+
 	protected void init() throws DataNotValidException {
 		LiveConnectionHelper liveHelper = getLiveHelper();
 
 		if (!liveHelper.isActiveGamePresent()) {
-			getControlsView().enableAnalysisMode(true);
+			getControlsView().showAnalysis(true);
 			getBoardFace().setFinished(true);
 		}
 
@@ -1451,6 +1453,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
 		optionsMap.put(ID_ABORT_RESIGN, getString(resignTitleId));
 		optionsMap.put(ID_REMATCH, getString(R.string.rematch));
+		optionsMap.put(ID_SHARE_GAME, getString(R.string.share_game));
 		optionsMap.put(ID_SETTINGS, getString(R.string.settings));
 	}
 

@@ -1,5 +1,6 @@
 package com.chess.ui.fragments.daily;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.DataHolder;
+import com.chess.model.GameDailyItem;
 import com.chess.model.PgnItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
@@ -67,8 +69,9 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 	private static final int ID_NEW_GAME = 0;
 	private static final int ID_FLIP_BOARD = 1;
 	private static final int ID_SHARE_PGN = 2;
-	private static final int ID_SETTINGS = 3;
-	private static final int ID_THEME = 4;
+	private static final int ID_SHARE_GAME = 3;
+	private static final int ID_SETTINGS = 4;
+	private static final int ID_THEME = 5;
 
 	private DailyGameUpdatesListener createChallengeUpdateListener;
 
@@ -176,6 +179,8 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 			boardView.flipBoard();
 		} else if (code == ID_SHARE_PGN) {
 			sendPGN();
+		} else if (code == ID_SHARE_GAME) {
+			shareGame();
 		} else if (code == ID_SETTINGS) {
 			getActivityFace().openFragment(new SettingsGeneralFragment());
 		} else if (code == ID_THEME) {
@@ -629,6 +634,19 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 		}
 	}
 
+	private void shareGame() {
+		GameDailyItem gameDailyItem = new GameDailyItem();
+		gameDailyItem.setWhiteUsername(getWhitePlayerName());
+		gameDailyItem.setBlackUsername(getBlackPlayerName());
+		ShareItem shareItem = new ShareItem(gameDailyItem, gameId, ShareItem.DAILY);
+
+		Intent shareIntent = new Intent(Intent.ACTION_SEND);
+		shareIntent.setType("text/plain");
+		shareIntent.putExtra(Intent.EXTRA_TEXT, shareItem.composeMessage());
+		shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareItem.getTitle());
+		startActivity(Intent.createChooser(shareIntent, getString(R.string.share_game)));
+	}
+
 	private void sendRematch() {
 		String opponent;
 		if (userPlayWhite) {
@@ -731,6 +749,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 			optionsArray.put(ID_NEW_GAME, getString(R.string.new_game));
 			optionsArray.put(ID_FLIP_BOARD, getString(R.string.flip_board));
 			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
+			optionsArray.put(ID_SHARE_GAME, getString(R.string.share_game));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
 			optionsArray.put(ID_THEME, getString(R.string.theme));
 		}

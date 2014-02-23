@@ -25,6 +25,7 @@ public class ControlsLiveView extends ControlsBaseView {
 
 	private BoardViewNetworkFace boardViewFace;
 	private boolean showHome;
+	private boolean showAnalysis;
 
 	public ControlsLiveView(Context context) {
 		super(context);
@@ -38,6 +39,7 @@ public class ControlsLiveView extends ControlsBaseView {
 	protected void addButtons() {
 		addControlButton(OPTIONS, styles[LEFT]);
 		addControlButton(HOME, styles[MIDDLE]);
+		addControlButton(ANALYSIS, styles[MIDDLE]);
 		addControlButton(CHAT, styles[MIDDLE]);
 		addControlButton(BACK, styles[MIDDLE]);
 		addControlButton(FORWARD, styles[RIGHT]);
@@ -59,6 +61,8 @@ public class ControlsLiveView extends ControlsBaseView {
 			boardViewFace.goHome();
 		} else if (view.getId() == getButtonId(CHAT)) {
 			boardViewFace.showChat();
+		} else if (view.getId() == getButtonId(ANALYSIS)) {
+			boardViewFace.switchAnalysis();
 		} else if (view.getId() == getButtonId(BACK)) {
 			boardViewFace.moveBack();
 		} else if (view.getId() == getButtonId(FORWARD)) {
@@ -90,28 +94,13 @@ public class ControlsLiveView extends ControlsBaseView {
 		invalidate(0, 0, getWidth(), getHeight());
 	}
 
-	public void enableAnalysisMode(boolean enable) {
-//		enableGameButton(FORWARD, enable);
-//		enableGameButton(BACK, enable);
-	}
-
-	public void enableControlButtons(boolean enable) {
-//		enableGameButton(FORWARD, enable);
-//		enableGameButton(BACK, enable);
-	}
-
-//	public void enableGameControls(boolean enable) { // not used
-//		enableGameButton(OPTIONS, enable);
-//		enableGameButton(HOME, enable);
-//		enableGameButton(CHAT, enable);
-//		enableGameButton(FORWARD, enable);
-//		enableGameButton(BACK, enable);
-//	}
-
 	public void showSubmitButtons(boolean show) {
 		showGameButton(OPTIONS, !show);
 		if (showHome) {
 			showGameButton(HOME, !show);
+		}
+		if (showAnalysis) {
+			showGameButton(ANALYSIS, !show);
 		}
 		showGameButton(CHAT, !show);
 		showGameButton(FORWARD, !show);
@@ -127,6 +116,8 @@ public class ControlsLiveView extends ControlsBaseView {
 
 	public void showDefault() {
 		showGameButton(OPTIONS, true);
+		showGameButton(ANALYSIS, false);
+
 		if (showHome) {
 			showGameButton(HOME, false);
 		}
@@ -140,7 +131,8 @@ public class ControlsLiveView extends ControlsBaseView {
 
 	public void showAfterMatch() {
 		showGameButton(OPTIONS, true);
-		showGameButton(HOME, true);
+		showGameButton(HOME, false);
+		showGameButton(ANALYSIS, true);
 		showGameButton(CHAT, true);
 		showGameButton(FORWARD, true);
 		showGameButton(BACK, true);
@@ -152,6 +144,11 @@ public class ControlsLiveView extends ControlsBaseView {
 	public void showHome(boolean showHome) {
 		this.showHome = showHome;
 		showGameButton(HOME, showHome);
+	}
+
+	public void showAnalysis(boolean showAnalysis) {
+		this.showAnalysis = showAnalysis;
+		showGameButton(ANALYSIS, showAnalysis);
 	}
 
 	private void blinkSubmitBtn() {
