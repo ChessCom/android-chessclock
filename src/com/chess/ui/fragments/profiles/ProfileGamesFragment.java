@@ -158,7 +158,6 @@ public class ProfileGamesFragment extends ProfileBaseFragment implements ItemCli
 			Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 			DailyCurrentGameData gameListCurrentItem = DbDataManager.getDailyCurrentGameListFromCursor(cursor);
 
-//			resetInstance();
 			getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId(), username));
 		}
 	}

@@ -128,7 +128,7 @@ public class GameDailyConditionsFragment extends GameDailyAnalysisFragment imple
 		getBoardFace().setFinished(false);
 
 
-		resetInstance();
+		resetBoardInstance();
 		BoardFace boardFace = getBoardFace();
 		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);

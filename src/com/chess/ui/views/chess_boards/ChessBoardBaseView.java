@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import com.chess.R;
+import com.chess.db.DbDataManager;
 import com.chess.statics.AppData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
@@ -1359,6 +1360,10 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 			if (boardBitmap == null || boardBitmap.get() == null) {
 				getAppData().setThemeBoardPath(Symbol.EMPTY); // clear theme
+				getAppData().setUseThemeBoard(false);
+				// TODO move it to the activity interface, boardView shouldn't know about DBManager
+				DbDataManager.deleteBoardRecordById(getContext().getContentResolver(), getAppData().getThemeBoardId());
+
 				boardBackPaint.setShader(setBoardFromResource());
 				return;
 			}
@@ -1374,7 +1379,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	private BitmapShader setBoardFromResource() {
-
 		Context context = getContext();
 		int resourceId;
 		if (customBoardId != NO_ID) {

@@ -161,7 +161,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 	}
 
 	private void adjustBoardForGame() {
-		resetInstance();
+		resetBoardInstance();
 		userPlayWhite = analysisItem.getUserSide() == ChessBoard.WHITE_SIDE;
 		if (userPlayWhite) {
 			labelsConfig.userSide = ChessBoard.WHITE_SIDE;

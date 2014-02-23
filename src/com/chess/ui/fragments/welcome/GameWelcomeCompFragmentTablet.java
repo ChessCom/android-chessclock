@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import com.chess.R;
 import com.chess.statics.AppConstants;
-import com.chess.ui.engine.ChessBoardComp;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.interfaces.FragmentTabsFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
@@ -153,7 +152,7 @@ public class GameWelcomeCompFragmentTablet extends GameWelcomeCompFragment imple
 	@Override
 	public void onDrawerOpened() {
 		if (inPortrait()) {
-			resetInstance();
+			resetBoardInstance();
 			getAppData().clearSavedCompGame();
 			notationsView.resetNotations();
 			boardView.invalidateMe();

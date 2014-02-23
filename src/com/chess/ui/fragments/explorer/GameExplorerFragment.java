@@ -455,7 +455,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 	}
 
 	private void widgetsInit(View view) {
-		resetInstance();
+		resetBoardInstance();
 //		ChessBoardExplorer.getInstance(this);
 
 		moveVariationTxt = (TextView) view.findViewById(R.id.moveVariationTxt);

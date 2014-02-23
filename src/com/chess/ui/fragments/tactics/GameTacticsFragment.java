@@ -1117,7 +1117,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void adjustBoardForGame() {
-		resetInstance();
+		resetBoardInstance();
 
 		final TacticBoardFace boardFace = getBoardFace();
 

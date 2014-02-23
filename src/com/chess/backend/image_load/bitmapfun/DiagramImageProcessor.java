@@ -347,7 +347,6 @@ public class DiagramImageProcessor extends ImageResizer {
 		int coordinateColorDark = resources.getColor(R.color.coordinate_green_default_dark);
 		boardView.setCustomCoordinatesColors(new int[]{coordinateColorLight, coordinateColorDark});
 
-//		ChessBoardDiagram.resetInstance();
 		BoardFace boardFace = gameFaceHelper.getBoardFace();
 
 		if (diagramItem.getGameType() == RestHelper.V_GAME_CHESS_960) {

@@ -441,7 +441,7 @@ public class GameDiagramFragment extends GameBaseFragment implements GameDiagram
 	};
 
 	private void adjustBoardForGame() {
-		resetInstance();
+		resetBoardInstance();
 		PuzzlesBoardFace boardFace = getBoardFace();
 
 		userPlayWhite = !diagramItem.isFlip();

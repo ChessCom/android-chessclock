@@ -44,7 +44,7 @@ public class GameLessonsFragmentTablet extends GameLessonFragment {
 
 		setBoardView(boardView);
 
-		resetInstance();
+		resetBoardInstance();
 		boardView.setGameUiFace(this);
 		getControlsView().enableGameControls(false);
 

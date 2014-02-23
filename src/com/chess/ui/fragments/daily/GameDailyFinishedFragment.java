@@ -87,7 +87,6 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 	private int[] countryCodes;
 	private NotationFace notationsFace;
 	private int dailyRating;
-	private ChessBoardDaily chessBoardDaily;
 
 	public GameDailyFinishedFragment() {
 	}
@@ -313,7 +312,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
-		resetInstance();
+		resetBoardInstance();
 		BoardFace boardFace = getBoardFace();
 		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			boardFace.setChess960(true);
@@ -465,10 +464,10 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 
 	@Override
 	public BoardFace getBoardFace() {
-		if (chessBoardDaily == null) {
-			chessBoardDaily = new ChessBoardDaily(this);
+		if (chessBoard == null) {
+			chessBoard = new ChessBoardDaily(this);
 		}
-		return chessBoardDaily;
+		return chessBoard;
 	}
 
 	@Override

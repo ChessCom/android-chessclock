@@ -25,6 +25,7 @@ import com.chess.backend.tasks.SaveImageToSdTask;
 import com.chess.db.DbDataManager;
 import com.chess.statics.AppData;
 import com.chess.statics.IntentConstants;
+import com.chess.statics.Symbol;
 import com.chess.ui.activities.MainFragmentFaceActivity;
 import com.chess.utilities.AppUtils;
 
@@ -154,15 +155,7 @@ public class GetAndSaveBoard extends Service {
 
 		@Override
 		public void updateData(BoardSingleItem returnedObj) {
-
 			boardData = returnedObj.getData();
-			String coordinateColorLight = boardData.getCoordinateColorLight();
-			String coordinateColorDark = boardData.getCoordinateColorDark();
-			String highlightColor = boardData.getHighlightColor();
-
-			getAppData().setThemeBoardCoordinateLight(Color.parseColor(coordinateColorLight));
-			getAppData().setThemeBoardCoordinateDark(Color.parseColor(coordinateColorDark));
-			getAppData().setThemeBoardHighlight(Color.parseColor(highlightColor));
 
 			// get boards dir in s3
 			String boardDir = boardData.getThemeDir();
@@ -200,6 +193,14 @@ public class GetAndSaveBoard extends Service {
 		public void onImageReady(Bitmap bitmap) {
 			if (bitmap == null) {
 				logTest("error loading image. Internal error");
+				showIndeterminateNotification("Error loading image");
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						showCompleteToNotification();
+					}
+				}, SHUTDOWN_DELAY);
+				appData.setThemeBoardPath(Symbol.EMPTY);
 				installingBoard = false;
 				return;
 			}
@@ -239,12 +240,21 @@ public class GetAndSaveBoard extends Service {
 				boardData.setLocalPath(drawablePath);
 				DbDataManager.saveThemeBoardItemToDb(getContentResolver(), boardData);
 
+				String coordinateColorLight = boardData.getCoordinateColorLight();
+				String coordinateColorDark = boardData.getCoordinateColorDark();
+				String highlightColor = boardData.getHighlightColor();
+
+				AppData appData = getAppData();
+				appData.setThemeBoardCoordinateLight(Color.parseColor(coordinateColorLight));
+				appData.setThemeBoardCoordinateDark(Color.parseColor(coordinateColorDark));
+				appData.setThemeBoardHighlight(Color.parseColor(highlightColor));
+
 				// save board theme name to appData
-				getAppData().setUseThemeBoard(true);
-				getAppData().setThemeBoardPath(drawablePath);
-				getAppData().setThemeBoardId(boardData.getThemeBoardId());
-				getAppData().setThemeBoardName(boardData.getName());
-				getAppData().setThemeBoardPreviewUrl(boardData.getLineBoardPreviewUrl());
+				appData.setUseThemeBoard(true);
+				appData.setThemeBoardPath(drawablePath);
+				appData.setThemeBoardId(boardData.getThemeBoardId());
+				appData.setThemeBoardName(boardData.getName());
+				appData.setThemeBoardPreviewUrl(boardData.getLineBoardPreviewUrl());
 
 			} catch (IOException e) {
 				e.printStackTrace();

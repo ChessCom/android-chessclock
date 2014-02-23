@@ -195,7 +195,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			}
 		}, 1000);
 
-		resetInstance();
+		resetBoardInstance();
 
 		if (getAppData().haveSavedCompGame()) {
 			loadSavedGame();
@@ -223,7 +223,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 				&& boardView.isComputerMoving()) { // probably isComputerMoving() is only necessary to check without extra check of game mode
 
 			boardView.stopComputerMove();
-			resetInstance();
+			resetBoardInstance();
 		}
 		labelsSet = false;
 	}
@@ -531,7 +531,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	protected void restoreGame() {
-		resetInstance();
+		resetBoardInstance();
 //		ChessBoardComp.getInstance(this).setJustInitialized(false);
 		topPanelView.resetPieces();
 		boardView.setGameUiFace(this);
@@ -789,7 +789,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	@Override
 	public void onDrawerOpened() {
-		resetInstance();
+		resetBoardInstance();
 		getAppData().clearSavedCompGame();
 		notationsView.resetNotations();
 		boardView.invalidateMe();
@@ -807,7 +807,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	protected void startNewGame() {
 		boardView.stopComputerMove();
 		notationsView.resetNotations();
-		resetInstance();
+		resetBoardInstance();
 		labelsSet = false;
 		getAppData().clearSavedCompGame();
 
@@ -831,7 +831,7 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 
 	private void init() {
 		labelsConfig = new LabelsConfig();
-		resetInstance();
+		resetBoardInstance();
 		getBoardFace().setMode(compGameConfig.getMode());
 
 		ArrayList<PromoteItem> menuItems = new ArrayList<PromoteItem>();

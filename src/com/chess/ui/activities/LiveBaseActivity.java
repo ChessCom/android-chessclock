@@ -386,13 +386,20 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		if (getSupportFragmentManager() == null) {
 			return;
 		}
-		for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+//		LogMe.dl("lcc", " _____________________________________________________" );
+//		LogMe.dl("lcc", " fragments to receive onLiveClientConnected " );
+		for (Fragment fragment : getSupportFragmentManager().getFragments()) {  // GameLiveObserverFragment might be not represented here
+//			if (fragment != null) {
+//				LogMe.dl("lcc", " fragment = " + fragment.getClass().getSimpleName() );
+//			}
+
 			if (fragment != null && fragment.isVisible()) {
 				if (fragment instanceof LiveBaseFragment) {
 					((LiveBaseFragment) fragment).onLiveClientConnected();
 				}
 			}
 		}
+//		LogMe.dl("lcc", " =====================================================" );
 	}
 
 	private class LiveOuterChallengeListener implements OuterChallengeListener {

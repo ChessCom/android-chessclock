@@ -59,7 +59,7 @@ import java.util.List;
  * Date: 02.01.13
  * Time: 11:04
  */
-public class LeftNavigationFragment extends LiveBaseFragment implements AdapterView.OnItemClickListener {
+public class LeftNavigationFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener {
 
 	private static final int HOME_POS = 0;
 

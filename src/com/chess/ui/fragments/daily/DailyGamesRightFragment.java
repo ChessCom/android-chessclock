@@ -188,7 +188,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 				boolean iPlayWhite = gameListCurrentItem.getIPlayAs() == RestHelper.P_WHITE;
 				boolean whiteOfferedDraw = gameListCurrentItem.isDrawOffered() == RestHelper.P_WHITE;
 				if (iPlayWhite && whiteOfferedDraw || !iPlayWhite && !whiteOfferedDraw) {
-//					resetInstance();
 					getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 					getActivityFace().toggleRightMenu();
 				} else {
@@ -198,7 +197,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 					showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
 				}
 			} else {
-//				resetInstance();
 				getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 				getActivityFace().toggleRightMenu();
 			}
@@ -344,7 +342,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-//			resetInstance();
 			getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 			getActivityFace().toggleRightMenu();
 		}

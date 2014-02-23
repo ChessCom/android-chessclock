@@ -130,7 +130,7 @@ public class GameLiveArchiveAnalysisFragment extends GameDailyAnalysisFragment {
 		topPanelView.showTimeLeftIcon(!userMove);
 		bottomPanelView.showTimeLeftIcon(userMove);
 
-		resetInstance();
+		resetBoardInstance();
 		BoardFace boardFace = getBoardFace();
 
 		boardFace.setReside(!userPlayWhite);

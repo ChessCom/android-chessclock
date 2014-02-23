@@ -79,9 +79,9 @@ public class ChessBoard implements BoardFace {
 	protected final MovesParser movesParser;
 
 
-	static final int CAPTURE_PIECE_SCORE = 1000000;
+	public static final int CAPTURE_PIECE_SCORE = 1000000;
 
-	public final static int HIST_STACK = 2000;
+	public static final int HIST_STACK = 2000;
 
 	public static final String MOVE_NUMBER_DOT_SEPARATOR = ". ";
 	public static final String MOVE_TAG = "move:";

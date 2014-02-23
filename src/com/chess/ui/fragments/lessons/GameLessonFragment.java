@@ -824,7 +824,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		moveToShow = correctMove.getMove();
 
-		resetInstance();
+		resetBoardInstance();
 		boardView.setGameFace(this);
 		if (inPortrait()) {
 			slidingDrawer.open();
@@ -1001,7 +1001,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	private void adjustBoardForGame() {
 		wrongState = false;
 
-		resetInstance();
+		resetBoardInstance();
 		LessonsBoardFace boardFace = getBoardFace();
 		boardView.setGameUiFace(this);
 
@@ -1236,7 +1236,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		setBoardView(boardView);
 
-		resetInstance();
+		resetBoardInstance();
 		boardView.setGameUiFace(this);
 		getControlsView().enableGameControls(false);
 

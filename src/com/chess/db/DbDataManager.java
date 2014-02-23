@@ -2692,6 +2692,15 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
+	public static void deleteBoardRecordById(ContentResolver contentResolver, long boardId) {
+		final String[] arguments = sArguments1;
+		arguments[0] = String.valueOf(boardId);
+
+		// TODO implement beginTransaction logic for performance increase
+		Uri uri = uriArray[Tables.THEME_BOARDS.ordinal()];
+		contentResolver.delete(uri, SELECTION_ITEM_ID, arguments);
+	}
+
 	public static BoardSingleItem.Data getThemeBoardItemFromCursor(Cursor cursor) {
 		BoardSingleItem.Data data = new BoardSingleItem.Data();
 

@@ -19,9 +19,10 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ImageDownloaderToListener {
-	private static final String LOG_TAG = "EnhancedImageDownloader";
+
+	private static final String TAG = "ImageDownloaderToListener";
+
 	private final Context context;
-	private final BitmapFactory.Options bitmapOptions;
 	private int imageSize;
 	private HashMap<String, Integer> widthsMap;
 	private HashMap<String, Integer> heightsMap;
@@ -40,8 +41,6 @@ public class ImageDownloaderToListener {
 
 		widthsMap = new HashMap<String, Integer>();
 		heightsMap = new HashMap<String, Integer>();
-
-		bitmapOptions = new BitmapFactory.Options();
 	}
 
 	/**
@@ -58,12 +57,12 @@ public class ImageDownloaderToListener {
 		this.imageSize = imageSize;
 		useScale = true;
 		if (TextUtils.isEmpty(url)) {
-			Log.e(LOG_TAG, " passed url is null. Don't start loading");
+			Log.e(TAG, " passed url is null. Don't start loading");
 			return;
 		}
 		Bitmap bitmap = getBitmapFromCache(url, holder);
-		Log.d(LOG_TAG, "^ _________________________________ ^");
-		Log.d(LOG_TAG, " download url = " + url);
+		Log.d(TAG, "^ _________________________________ ^");
+		Log.d(TAG, " download url = " + url);
 
 		if (bitmap == null) {
 			forceDownload(url, holder);
@@ -89,12 +88,12 @@ public class ImageDownloaderToListener {
 		heightsMap.put(url, imgHeight);
 		useScale = false;
 		if (TextUtils.isEmpty(url)) {
-			Log.e(LOG_TAG, " passed url is null. Don't start loading");
+			Log.e(TAG, " passed url is null. Don't start loading");
 			return;
 		}
 		Bitmap bitmap = getBitmapFromCache(url, holder);
-		Log.d(LOG_TAG, "^ _________________________________ ^");
-		Log.d(LOG_TAG, " download url = " + url);
+		Log.d(TAG, "^ _________________________________ ^");
+		Log.d(TAG, " download url = " + url);
 
 		if (bitmap == null) {
 			forceDownload(url, holder);
@@ -215,28 +214,25 @@ public class ImageDownloaderToListener {
 		 */
 		@Override
 		protected void onPostExecute(Bitmap bitmap) {
-			Log.d(LOG_TAG, "onPostExecute bitmap " + bitmap + " for url = " + url);
+			Log.d(TAG, "onPostExecute bitmap " + bitmap + " for url = " + url);
 
 			AppUtils.logMemData();
 
 			if (holderReference == null /*|| holderReference.get() == null*/) {
-				Log.d(LOG_TAG, "holderReference == null || holderReference.get() == null bitmap " + bitmap + " for url = " + url);
+				Log.d(TAG, "holderReference == null || holderReference.get() == null bitmap " + bitmap + " for url = " + url);
 				bitmap.recycle();
-				bitmap = null;
 				return;
 			}
 
 			if (isCancelled() || context == null) { // if activity dead, escape
-				Log.d(LOG_TAG, "isCancelled() || context == null bitmap " + bitmap + " for url = " + url);
+				Log.d(TAG, "isCancelled() || context == null bitmap " + bitmap + " for url = " + url);
 				bitmap.recycle();
-				bitmap = null;
 				return;
 			}
 
 			addBitmapToCache(url, bitmap);
-
 			holderReference.onImageReady(bitmap);
-			Log.d(LOG_TAG, "onImageReady bitmap " + bitmap + " for url = " + url);
+			Log.d(TAG, "onImageReady bitmap " + bitmap + " for url = " + url);
 		}
 
 		public AsyncTask<String, Void, Bitmap> executeTask(String... input) {
@@ -251,7 +247,7 @@ public class ImageDownloaderToListener {
 
 	private Bitmap downloadBitmap(String url, ImageReadyListener holderReference) {
 		String originalUrl = url;
-		Log.d(LOG_TAG, "downloadBitmap start url = " + url);
+		Log.d(TAG, "downloadBitmap start url = " + url);
 
 		String filename = String.valueOf(url.hashCode());
 
@@ -259,6 +255,7 @@ public class ImageDownloaderToListener {
 		if (!url.startsWith(EnhancedImageDownloader.HTTP)) {
 			url = EnhancedImageDownloader.HTTP_PREFIX + url;
 		}
+		Bitmap bitmap = null;
 		try {
 			// Start loading
 			URLConnection urlConnection = new URL(url).openConnection();
@@ -304,6 +301,7 @@ public class ImageDownloaderToListener {
 					int targetH = imageSize;
 
 					// Get the dimensions of the bitmap
+					BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
 					bitmapOptions.inJustDecodeBounds = true;
 					BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
 					int photoW = bitmapOptions.outWidth;
@@ -317,64 +315,72 @@ public class ImageDownloaderToListener {
 					bitmapOptions.inSampleSize = scaleFactor;
 					bitmapOptions.inPurgeable = true;
 
-					return BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
+					bitmap =  BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
+					Log.d(TAG, " useScale, bmp = " + bitmap);
 				} else {
-					if (widthsMap.get(originalUrl) != null && heightsMap.get(originalUrl) != null) {
-						Integer desiredWidth = widthsMap.get(originalUrl);
-						Integer desiredHeight = heightsMap.get(originalUrl);
-						bitmapOptions.inJustDecodeBounds = true;
-						BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
-
-						int photoW = bitmapOptions.outWidth;
-						int photoH = bitmapOptions.outHeight;
-
-						// Determine how much to scale down the image
-						int scaleFactor = Math.min(photoW / desiredWidth, photoH / desiredHeight);
-
-						// Decode the image imgFile into a Bitmap sized to fill the View
-						bitmapOptions.inJustDecodeBounds = false;
-						bitmapOptions.inSampleSize = scaleFactor;
-						bitmapOptions.inPurgeable = true;
-
-						return BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
-					} else {
-						return BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-					}
+//					if (widthsMap.get(originalUrl) != null && heightsMap.get(originalUrl) != null) {
+//						Integer desiredWidth = widthsMap.get(originalUrl);
+//						Integer desiredHeight = heightsMap.get(originalUrl);
+//						bitmapOptions.inJustDecodeBounds = true;
+//						BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
+//
+//						int photoW = bitmapOptions.outWidth;
+//						int photoH = bitmapOptions.outHeight;
+//
+//						// Determine how much to scale down the image
+//						int scaleFactor = Math.min(photoW / desiredWidth, photoH / desiredHeight);
+//
+//						// Decode the image imgFile into a Bitmap sized to fill the View
+//						bitmapOptions.inJustDecodeBounds = false;
+//						bitmapOptions.inSampleSize = scaleFactor;
+//						bitmapOptions.inPurgeable = true;
+//
+//						bitmap =  BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
+//						Log.d(TAG, " from widthsMap, bmp = " + bitmap);
+//					} else {
+						bitmap =  BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+						Log.d(TAG, " not useScale, bmp = " + bitmap);
+//					}
 				}
 			} else { // if file not restored from SD cache
-				if (widthsMap.get(originalUrl) != null && heightsMap.get(originalUrl) != null) {
-					Integer desiredWidth = widthsMap.get(originalUrl);
-					Integer desiredHeight = heightsMap.get(originalUrl);
-					bitmapOptions.inJustDecodeBounds = true;
-					BitmapFactory.decodeStream(is, null, bitmapOptions);
-
-					int photoW = bitmapOptions.outWidth;
-					int photoH = bitmapOptions.outHeight;
-
-					// Determine how much to scale down the image
-					int scaleFactor = Math.min(photoW / desiredWidth, photoH / desiredHeight);
-
-					// Decode the image imgFile into a Bitmap sized to fill the View
-					bitmapOptions.inJustDecodeBounds = false;
-					bitmapOptions.inSampleSize = scaleFactor;
-					bitmapOptions.inPurgeable = true;
-
-					return BitmapFactory.decodeStream(is, null, bitmapOptions);
-				} else {
-					return BitmapFactory.decodeStream(is);
-				}
+//				if (widthsMap.get(originalUrl) != null && heightsMap.get(originalUrl) != null) {
+//					Integer desiredWidth = widthsMap.get(originalUrl);
+//					Integer desiredHeight = heightsMap.get(originalUrl);
+//					bitmapOptions.inJustDecodeBounds = true;
+//					BitmapFactory.decodeStream(is, null, bitmapOptions);
+//
+//					int photoW = bitmapOptions.outWidth;
+//					int photoH = bitmapOptions.outHeight;
+//
+//					// Determine how much to scale down the image
+//					int scaleFactor = Math.min(photoW / desiredWidth, photoH / desiredHeight);
+//
+//					// Decode the image imgFile into a Bitmap sized to fill the View
+//					bitmapOptions.inJustDecodeBounds = false;
+//					bitmapOptions.inSampleSize = scaleFactor;
+//					bitmapOptions.inPurgeable = true;
+//
+//					bitmap =  BitmapFactory.decodeStream(is, null, bitmapOptions);
+//					Log.d(TAG, "not from SD from widthsMap, bmp = " + bitmap);
+//				} else {
+					bitmap =  BitmapFactory.decodeStream(is);
+					Log.d(TAG, "not from SD not useScale, bmp = " + bitmap);
+//				}
 			}
 		} catch (MalformedURLException e) {
+			Log.d(TAG, "MalformedURLException  " + e.toString());
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			Log.d("TEST", " file not found " + e.toString());
+			Log.d(TAG, " file not found " + e.toString());
 			e.printStackTrace();
 		} catch (IOException e) {
+			Log.d(TAG, "IOExc  " + e.toString());
 			e.printStackTrace();
 		} catch (OutOfMemoryError e) {
+			Log.d(TAG, " OutOfMemoryError " + e.toString());
 			e.printStackTrace();
 		}
-		return null;
+		return bitmap;
 	}
 
     /*

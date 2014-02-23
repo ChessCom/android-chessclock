@@ -308,7 +308,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 				boolean iPlayWhite = gameListCurrentItem.getIPlayAs() == RestHelper.P_WHITE;
 				boolean whiteOfferedDraw = gameListCurrentItem.isDrawOffered() == RestHelper.P_WHITE;
 				if (iPlayWhite && whiteOfferedDraw || !iPlayWhite && !whiteOfferedDraw) {
-//					resetInstance();
 					long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
 					getActivityFace().openFragment(GameDailyFragment.createInstance(gameId));
@@ -319,7 +318,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 					showPopupDialog(R.string.accept_draw_q, DRAW_OFFER_PENDING_TAG);
 				}
 			} else {
-//				resetInstance();
 				long gameId = DbDataManager.getLong(cursor, DbScheme.V_ID);
 
 				getActivityFace().openFragment(GameDailyFragment.createInstance(gameId));
@@ -469,7 +467,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		}
 
 		if (tag.equals(DRAW_OFFER_PENDING_TAG)) {
-//			resetInstance();
 			getActivityFace().openFragment(GameDailyFragment.createInstance(gameListCurrentItem.getGameId()));
 		}
 		super.onNeutralBtnCLick(fragment);
@@ -672,8 +669,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 		int coordinateColorLight = getResources().getColor(R.color.transparent);
 		int coordinateColorDark = getResources().getColor(R.color.transparent);
 		boardView.setCustomCoordinatesColors(new int[]{coordinateColorLight, coordinateColorDark});
-
-//		resetInstance();
 
 		return boardView;
 	}

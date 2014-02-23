@@ -74,17 +74,17 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 		// Before usage uncomment needed parts!
 		// -------------------------------------
 //		updateBackgrounds(userToken);
-//		updateBoards(userToken);
+		updateBoards(userToken);
 //		updatePieces(userToken);
 //		updateSounds(userToken);
 //		updateThemes(userToken);
 
-//		handler.postDelayed(new Runnable() {
-//			@Override
-//			public void run() {
-//				changeNamesForResources(userToken);
-//			}
-//		}, RENAME_DELAY);
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				changeNamesForResources(userToken);
+			}
+		}, RENAME_DELAY);
 	}
 
 	private void changeNamesForResources(String userToken) {
@@ -605,25 +605,25 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			{"edeed1", "779952", "ffff33"},  // Brown         3
 			{"edeed1", "779952", "73bbee"},  // Blue          4
 			{"d9b088", "895132", "ee9016"},  // Burled Wood   5
-			{"ccb07a", "765331", "e7af4e"},  // Dark Wood     6
-			{"c7bdaa", "706b66", "f0db86"},  // Marble        7
-			{"ebece8", "316549", "a4c25b"},  // Tournament    8
-			{"e5e1cb", "b59d64", "d8cc66"},  // Parchment     9
-			{"282f3f", "667188", "5b91b3"},  // Translucent   10
-			{"efefef", "c2d7e2", "65daf7"},  // Sky           11
-			{"e5d3c4", "b8a590", "e2bc87"},  // Sand          12
-			{"5a5956", "5a5956", "99976e"},  // Newspaper     13
-			{"282f3f", "667188", "5b91b3"},  // Glass         14
-			{"b9b9b9", "636363", "6d90a6"},  // Neon          15
-			{"c9c9c9", "6e6e6e", "a3becd"},  // Metal         16
-			{"c8c3bd", "666463", "36525f"},  // Stone         17
+			{"ccb07a", "765331", "f8981d"},  // Dark Wood     6
+			{"c7bdaa", "706b66", "fde355"},  // Marble        7
+			{"ebece8", "316549", "fbf939"},  // Tournament    8
+			{"e5e1cb", "b59d64", "f2b047"},  // Parchment     9
+			{"282f3f", "667188", "b0d9f5"},  // Translucent   10
+			{"efefef", "c2d7e2", "2b93d5"},  // Sky           11
+			{"e5d3c4", "b8a590", "f8c855"},  // Sand          12
+			{"5a5956", "5a5956", "eff095"},  // Newspaper     13
+			{"282f3f", "667188", "3a83e7"},  // Glass         14
+			{"b9b9b9", "636363", "3499d8"},  // Neon          15
+			{"c9c9c9", "6e6e6e", "79b6e1"},  // Metal         16
+			{"c8c3bd", "666463", "073f59"},  // Stone         17
 			{"aeaeae", "b96f18", "f39011"},  // Graffiti      18
-			{"fff3f3", "f9cdd3", "de5d6f"},  // Bubblegum     19
-			{"e0e9e9", "909898", "a3becd"},  // Lolz          20
-			{"dcdcdc", "aaaaaa", "a4b8c4"},  // Light         21
-			{"edeed1", "779952", "f7d84a"},  // Tan           24
+			{"fff3f3", "f9cdd3", "e3509c"},  // Bubblegum     19
+			{"e0e9e9", "909898", "6abbe8"},  // Lolz          20
+			{"dcdcdc", "aaaaaa", "b0d9f5"},  // Light         21
+			{"edeed1", "779952", "ffff33"},  // Tan           24
 			{"edeed1", "779952", "a4b8c4"},  // Purple        25
-			{"edeed1", "779952", "f8f893"},  // Red           26
+			{"edeed1", "779952", "ffff33"},  // Red           26
 			{"edeed1", "779952", "ffff33"}   // Orange        27
 
 	};

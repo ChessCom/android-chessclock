@@ -140,7 +140,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-
 		super.onViewCreated(view, savedInstanceState);
 
 		getActivityFace().setCustomActionBarViewId(R.layout.home_actionbar);
@@ -217,7 +216,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 			optionsMapInit();
 
-			resetInstance();
+			resetBoardInstance();
 			BoardFace boardFace = getBoardFace();
 
 			Boolean isUserColorWhite = liveHelper.isUserColorWhite(); // should throw exception if null

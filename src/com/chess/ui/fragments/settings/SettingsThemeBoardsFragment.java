@@ -52,6 +52,8 @@ import java.util.List;
  */
 public class SettingsThemeBoardsFragment extends CommonLogicFragment implements ItemClickListenerFace, AdapterView.OnItemClickListener {
 
+	private static final int THEME_BOARDS_CNT = 24;
+
 	private BoardsItemUpdateListener boardsItemUpdateListener;
 	private ThemeBoardsAdapter themeBoardsAdapter;
 	private List<SelectionItem> defaultBoardSelectionList;
@@ -117,20 +119,19 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		super.onResume();
 
 		// Don't load custom board if we are not logged in
-		if (isAuthenticatedUser && isNetworkAvailable()) {
+		if (isAuthenticatedUser &&  isNetworkAvailable()) {
 			loadThemedPieces = true;
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BOARDS));
 
-			if (cursor != null && cursor.moveToFirst() && getAppData().isThemeBoardsLoaded()) {
+			if (cursor != null && cursor.getCount() >= THEME_BOARDS_CNT  && getAppData().isThemeBoardsLoaded()) {
+				cursor.moveToFirst();
 				do {
 					themeBoardItemsList.add(DbDataManager.getThemeBoardItemFromCursor(cursor));
 				} while (cursor.moveToNext());
 
 				updateUiData();
-			} else if (isNetworkAvailable()) {
+			} else {  // network always available here
 				getBoards();
-			} else {
-				listView.setAdapter(defaultBoardsAdapter);
 			}
 		} else {
 			listView.setAdapter(defaultBoardsAdapter);

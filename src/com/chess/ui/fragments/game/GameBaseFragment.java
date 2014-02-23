@@ -517,7 +517,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		return mopubRectangleAd;
 	}
 
-	protected void resetInstance() {
+	protected void resetBoardInstance() {
 		chessBoard = null;
 	}
 

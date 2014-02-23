@@ -260,7 +260,7 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 
 		boardView.updatePlayerNames(getWhitePlayerName(), getBlackPlayerName());
 
-		resetInstance();
+		resetBoardInstance();
 		BoardFace boardFace = getBoardFace();
 
 		boardFace.setReside(!userPlayWhite);

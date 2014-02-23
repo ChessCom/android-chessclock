@@ -131,6 +131,11 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		return fragment;
 	}
 
+	/**
+	 *
+	 * @param gameId of game
+	 * @param forceUpdate indicates that app was launched via notification and need to be closed once move is made
+	 */
 	public static GameDailyFragment createInstance(long gameId, boolean forceUpdate) {
 		GameDailyFragment fragment = new GameDailyFragment();
 		Bundle arguments = new Bundle();
@@ -381,7 +386,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		topPanelView.showTimeLeftIcon(!userMove);
 		bottomPanelView.showTimeLeftIcon(userMove);
 
-		resetInstance();
+		resetBoardInstance();
 		BoardFace boardFace = getBoardFace();
 		getNotationsFace().resetNotations();
 
@@ -596,6 +601,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		// update right side fragment
 		getActivity().sendBroadcast(new Intent(IntentConstants.USER_MOVE_UPDATE));
 
+		updateNotificationBadges();
+
 		if (getBoardFace().isFinished()) {
 			View endGamePopupView;
 			if (!isNeedToUpgrade()) {
@@ -605,6 +612,12 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			}
 			showGameEndPopup(endGamePopupView, endGameTitle, endGameReason);
 		} else {
+			// we need to close activity as it was opened from notification and user want to return to home screen
+			if (forceUpdate) {
+				getActivity().finish();
+				return;
+			}
+
 			int action = getAppData().getAfterMoveAction();
 			if (action == StaticData.AFTER_MOVE_RETURN_TO_GAME_LIST)
 				backToHomeFragment();
@@ -612,8 +625,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 				loadNextMyTurnGame();
 			}
 		}
-
-		updateNotificationBadges();
 	}
 
 	private void loadNextMyTurnGame() {

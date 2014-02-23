@@ -59,7 +59,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		}
 
 		if (isLiveFragment) {
-			setLCSBound(liveBaseActivity.isLCSBound());
+			updateLCSBoundState();
 			DataHolder.getInstance().setLiveChessMode(true);
 
 			LiveConnectionHelper liveHelper;

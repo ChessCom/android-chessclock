@@ -145,7 +145,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	private void updateData() {
 		getNotationsFace().resetNotations();
-		resetInstance();
+		resetBoardInstance();
 
 		if (compGameConfig.getFen() != null) {
 			getBoardFace().setupBoard(compGameConfig.getFen());
@@ -174,7 +174,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				&& boardView.isComputerMoving()) { // probably isComputerMoving() is only necessary to check without extra check of game mode
 
 			boardView.stopComputerMove();
-			resetInstance();
+			resetBoardInstance();
 		}
 	}
 
@@ -484,7 +484,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	@Override
 	protected void restoreGame() {
 		//notationsFace.resetNotations();
-		resetInstance();
+		resetBoardInstance();
 //		ChessBoardComp.getInstance(this).setJustInitialized(false);
 		boardView.setGameUiFace(this);
 		loadSavedGame();
@@ -527,7 +527,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public void switch2Analysis() {
-		resetInstance();
+		resetBoardInstance();
 	}
 
 	@Override
@@ -665,7 +665,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 	private void startNewGame() {
 		boardView.stopComputerMove();
 		getNotationsFace().resetNotations();
-		resetInstance();
+		resetBoardInstance();
 		labelsSet = false;
 		getAppData().clearSavedCompGame();
 
