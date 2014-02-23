@@ -1,6 +1,7 @@
 package com.chess.ui.engine.configs;
 
 import com.chess.backend.RestHelper;
+import com.chess.statics.AppConstants;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +21,7 @@ public class DailyGameConfig {
 	public static class Builder {
 		private int daysPerMove;
 		private boolean rated;
-		private int rating;
+		private int rating = AppConstants.DEFAULT_PLAYER_RATING;
 		private int minRatingOffset;
 		private int maxRatingOffset;
 		private int gameType;
@@ -97,7 +98,7 @@ public class DailyGameConfig {
 		}
 
 		public Builder setRating(int rating) {
-			this.rating = rating;
+			this.rating = rating == 0? AppConstants.DEFAULT_PLAYER_RATING : rating;
 			return this;
 		}
 

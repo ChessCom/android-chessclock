@@ -34,7 +34,7 @@ public class LiveGameConfig implements Parcelable {
 		private boolean rated;
 		private int initialTime;
 		private int bonusTime;
-		private int rating;
+		private int rating = AppConstants.DEFAULT_PLAYER_RATING;
 		private int minRatingOffset;
 		private int maxRatingOffset;
 		private String opponentName;
