@@ -163,10 +163,53 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	public void onResume() {
 		super.onResume();
 
-		if (gameId != 0 && !isValid()) { // when user returns by back stack
-			goHome();
-			return;
-		}
+//		if (gameId != 0 && !isValid()) { // when user returns by back stack
+//			goHome();
+//			return;
+//		}
+
+
+		/*
+
+ Caused by: java.lang.IllegalStateException: Recursive entry to executePendingTransactions
+            at android.support.v4.app.FragmentManagerImpl.execPendingActions(FragmentManager.java:1439)
+            at android.support.v4.app.FragmentManagerImpl.executePendingTransactions(FragmentManager.java:472)
+            at android.support.v4.app.FragmentManagerImpl.popBackStackImmediate(FragmentManager.java:487)
+            at com.chess.ui.activities.MainFragmentFaceActivity.showPreviousFragment(MainFragmentFaceActivity.java:848)
+            at com.chess.ui.fragments.CommonLogicFragment.showPreviousFragmentSafe(CommonLogicFragment.java:1231)
+            at com.chess.ui.fragments.live.GameLiveFragment.access$1300(GameLiveFragment.java:72)
+            at com.chess.ui.fragments.live.GameLiveFragment$11.run(GameLiveFragment.java:873)
+            at android.app.Activity.runOnUiThread(Activity.java:4735)
+            at com.chess.ui.fragments.live.GameLiveFragment.goHome(GameLiveFragment.java:870)
+            at com.chess.ui.fragments.live.GameLiveObserveFragment.goHome(GameLiveObserveFragment.java:389)
+            at com.chess.ui.fragments.live.GameLiveFragment.onResume(GameLiveFragment.java:167)
+            at android.support.v4.app.Fragment.performResume(Fragment.java:1543)
+            at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:963)
+            at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:1104)
+            at android.support.v4.app.BackStackRecord.run(BackStackRecord.java:682)
+            at android.support.v4.app.FragmentManagerImpl.execPendingActions(FragmentManager.java:1467)
+            at android.support.v4.app.FragmentManagerImpl.executePendingTransactions(FragmentManager.java:472)
+            at android.support.v4.app.FragmentManagerImpl.popBackStackImmediate(FragmentManager.java:487)
+            at com.chess.ui.activities.MainFragmentFaceActivity.showPreviousFragment(MainFragmentFaceActivity.java:848)
+            at com.chess.ui.fragments.CommonLogicFragment.showPreviousFragmentSafe(CommonLogicFragment.java:1231)
+            at com.chess.ui.fragments.live.GameLiveFragment.access$1300(GameLiveFragment.java:72)
+            at com.chess.ui.fragments.live.GameLiveFragment$11.run(GameLiveFragment.java:873)
+            at android.app.Activity.runOnUiThread(Activity.java:4735)
+            at com.chess.ui.fragments.live.GameLiveFragment.goHome(GameLiveFragment.java:870)
+            at com.chess.ui.fragments.live.GameLiveObserveFragment.goHome(GameLiveObserveFragment.java:389)
+            at com.chess.ui.fragments.live.GameLiveFragment.onResume(GameLiveFragment.java:167)
+            at android.support.v4.app.Fragment.performResume(Fragment.java:1543)
+            at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:963)
+            at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:1104)
+            at android.support.v4.app.FragmentManagerImpl.moveToState(FragmentManager.java:1086)
+            at android.support.v4.app.FragmentManagerImpl.dispatchResume(FragmentManager.java:1894)
+            at android.support.v4.app.FragmentActivity.onResumeFragments(FragmentActivity.java:466)
+            at com.chess.ui.activities.MainFragmentFaceActivity.onResumeFragments(MainFragmentFaceActivity.java:304)
+            at android.support.v4.app.FragmentActivity.onPostResume(FragmentActivity.java:455)
+            at android.app.Activity.performResume(Activity.java:
+02-23 18:49:27.237      601-676/? E/EmbeddedLogger﹕ App crashed! Process: com.chess
+
+		 */
 
 //		LogMe.dl("lcc", "```````````````````````````````````````````" );
 //		LogMe.dl("lcc", " fragments to receive onLiveClientConnected " );
