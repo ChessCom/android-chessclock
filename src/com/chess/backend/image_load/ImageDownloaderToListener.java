@@ -15,6 +15,8 @@ import java.lang.ref.SoftReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -105,14 +107,14 @@ public class ImageDownloaderToListener {
 	 * @return The cached bitmap or null if it was not found.
 	 */
 	private Bitmap getBitmapFromCache(String url, ImageReadyListener readyListener) {
-		// I identify images by hashcode. Not a perfect solution, good for the
-		// demo.
-		String filename = String.valueOf(url.hashCode());
+
+		String filename = hashKeyForDisk(url);
 		File f = new File(cacheDir, filename);
 
 		// from SD cache
 		// if file is stored so simply read it, do not resize
 		Bitmap bmp = readFile(f);
+		Log.d(TAG, "readFile, bmp = " + bmp);
 		if (bmp != null) {
 			readyListener.onImageReady(bmp);
 			addBitmapToCache(url, bmp);
@@ -249,7 +251,7 @@ public class ImageDownloaderToListener {
 		String originalUrl = url;
 		Log.d(TAG, "downloadBitmap start url = " + url);
 
-		String filename = String.valueOf(url.hashCode());
+		String filename = hashKeyForDisk(url);
 
 		url = url.replace(" ", "%20");
 		if (!url.startsWith(EnhancedImageDownloader.HTTP)) {
@@ -423,4 +425,34 @@ public class ImageDownloaderToListener {
 		}
 	}
 
+	/**
+	 * A hashing method that changes a string (like a URL) into a hash suitable for using as a
+	 * disk filename.
+	 */
+	public static String hashKeyForDisk(String key) {
+		String cacheKey;
+		try {
+			final MessageDigest mDigest = MessageDigest.getInstance("MD5");
+
+			byte[] bytes = key.getBytes();
+			mDigest.update(bytes);
+			cacheKey = bytesToHexString(mDigest.digest());
+		} catch (NoSuchAlgorithmException e) {
+			cacheKey = String.valueOf(key.hashCode());
+		}
+		return cacheKey;
+	}
+
+	private static String bytesToHexString(byte[] bytes) {
+		// http://stackoverflow.com/questions/332079
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < bytes.length; i++) {
+			String hex = Integer.toHexString(0xFF & bytes[i]);
+			if (hex.length() == 1) {
+				sb.append('0');
+			}
+			sb.append(hex);
+		}
+		return sb.toString();
+	}
 }

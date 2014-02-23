@@ -17,6 +17,7 @@ import com.chess.R;
 import com.chess.backend.entity.api.themes.*;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.GetAndSaveFileToSdTask;
@@ -346,17 +347,17 @@ public class GetAndSaveTheme extends Service {
 			if (listenerCode == BACKGROUND_PORT) {
 				showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.background)));
 
-				String filename = String.valueOf(backgroundUrlPort.hashCode()); // TODO rename to MD5
+				String filename = ImageCache.hashKeyForDisk(backgroundUrlPort);
 				new SaveImageToSdTask(mainBackgroundImgSaveListener, bitmap).executeTask(filename);
 			} else if (listenerCode == BACKGROUND_LAND) {
 				showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.background)));
 
-				String filename = String.valueOf(backgroundUrlLand.hashCode()); // TODO rename to MD5
+				String filename = ImageCache.hashKeyForDisk(backgroundUrlLand);
 				new SaveImageToSdTask(mainBackgroundLandImgSaveListener, bitmap).executeTask(filename);
 			} else if (listenerCode == BOARD) {
 				showIndeterminateNotification(getString(R.string.downloading_arg, getString(R.string.board)));
 
-				String filename = String.valueOf(boardUrl.hashCode()); // TODO rename to MD5
+				String filename = ImageCache.hashKeyForDisk(boardUrl);
 				new SaveImageToSdTask(boardImgSaveListener, bitmap).executeTask(filename);
 			}
 		}
@@ -385,7 +386,7 @@ public class GetAndSaveTheme extends Service {
 			if (listenerCode == BACKGROUND_PORT) {
 
 				// set main background image as theme
-				String filename = String.valueOf(backgroundUrlPort.hashCode());
+				String filename = ImageCache.hashKeyForDisk(backgroundUrlPort);
 				try {
 					File imgFile = AppUtils.openFileByName(getContext(), filename);
 
@@ -406,7 +407,7 @@ public class GetAndSaveTheme extends Service {
 
 			} else if (listenerCode == BACKGROUND_LAND) {
 				// set main background image as theme
-				String filename = String.valueOf(backgroundUrlLand.hashCode());
+				String filename = ImageCache.hashKeyForDisk(backgroundUrlLand);
 				try {
 					File imgFile = AppUtils.openFileByName(getContext(), filename);
 
@@ -419,7 +420,8 @@ public class GetAndSaveTheme extends Service {
 				}
 			} else if (listenerCode == BOARD) {
 				// set board image as theme
-				String filename = String.valueOf(boardUrl.hashCode());
+				String filename = ImageCache.hashKeyForDisk(boardUrl);
+
 				try {
 					File imgFile = AppUtils.openFileByName(getContext(), filename);
 					String drawablePath = imgFile.getAbsolutePath();

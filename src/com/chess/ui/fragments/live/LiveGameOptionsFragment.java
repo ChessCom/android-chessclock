@@ -444,14 +444,9 @@ public class LiveGameOptionsFragment extends CommonLogicFragment implements Item
 						opponentNameTxt.setText(opponentName);
 						gameConfigBuilder.setOpponentName(opponentName);
 						ratingView.setVisibility(View.GONE);
-						ratedGameView.setVisibility(View.VISIBLE);
 					} else {
 						gameConfigBuilder.setOpponentName(null);
 						ratingView.setVisibility(View.VISIBLE);
-						ratedGameView.setVisibility(View.GONE);
-
-						// for indirect challenges we use only rated games
-						ratedGameSwitch.setChecked(true);
 					}
 				}
 

@@ -18,6 +18,7 @@ import com.chess.R;
 import com.chess.backend.entity.api.themes.BoardSingleItem;
 import com.chess.backend.image_load.ImageDownloaderToListener;
 import com.chess.backend.image_load.ImageReadyListener;
+import com.chess.backend.image_load.bitmapfun.ImageCache;
 import com.chess.backend.interfaces.AbstractUpdateListener;
 import com.chess.backend.interfaces.FileReadyListener;
 import com.chess.backend.tasks.RequestJsonTask;
@@ -208,7 +209,7 @@ public class GetAndSaveBoard extends Service {
 			notificationBuilder.setContentText(getString(R.string.downloading_arg, getString(R.string.board)));
 			updateProgressToNotification(0);
 
-			String filename = String.valueOf(boardUrl.hashCode()); // TODO rename to MD5
+			String filename = ImageCache.hashKeyForDisk(boardUrl);
 			new SaveImageToSdTask(boardImgSaveListener, bitmap).executeTask(filename);
 		}
 
@@ -231,7 +232,7 @@ public class GetAndSaveBoard extends Service {
 		public void updateData(Bitmap returnedObj) {
 
 			// set board image as theme
-			String filename = String.valueOf(boardUrl.hashCode());
+			String filename = ImageCache.hashKeyForDisk(boardUrl);
 
 			try {
 				File imgFile = AppUtils.openFileByName(getContext(), filename);
