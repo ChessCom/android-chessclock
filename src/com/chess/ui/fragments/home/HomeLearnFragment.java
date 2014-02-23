@@ -293,7 +293,7 @@ public class HomeLearnFragment extends CommonLogicFragment {
 			authorStr = AppUtils.setSpanBetweenTokens(authorStr, GREY_COLOR_DIVIDER, foregroundSpan);
 			holder.authorTxt.setText(authorStr);
 			holder.titleTxt.setText(headerData.getTitle());
-			holder.dateTxt.setText(dateFormatter.format(new Date(headerData.getCreateDate())));
+			holder.dateTxt.setText(dateFormatter.format(new Date(headerData.getCreateDate() * 1000)));
 
 			headerView.invalidate();
 		}

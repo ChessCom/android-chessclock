@@ -90,7 +90,7 @@ public class VideoSingleItem extends BaseResponseItem<VideoSingleItem.Data> {
 		}
 
 		public long getCreateDate() {
-			return create_date * 1000L;
+			return create_date;
 		}
 
 		public String getUrl() {

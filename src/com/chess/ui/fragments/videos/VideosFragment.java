@@ -401,7 +401,7 @@ public class VideosFragment extends CommonLogicFragment implements ItemClickList
 		}
 		holder.authorTxt.setText(authorStr);
 		holder.titleTxt.setText(headerData.getTitle());
-		holder.dateTxt.setText(dateFormatter.format(new Date(headerData.getCreateDate()))
+		holder.dateTxt.setText(dateFormatter.format(new Date(headerData.getCreateDate() * 1000))
 				+ SLASH_DIVIDER + getString(R.string.arg_min, headerData.getMinutes()));
 
 		headerView.invalidate();

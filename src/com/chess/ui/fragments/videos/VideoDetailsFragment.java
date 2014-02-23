@@ -38,6 +38,7 @@ import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 import com.chess.utilities.AppUtils;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -61,7 +62,7 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 	private static final long NON_EXIST = -1;
 
 	// 11/15/12 | 27 min
-	protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy");
+	protected static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
 	private static final String SLASH_DIVIDER = " | ";
 
 	protected View loadingView;
@@ -255,9 +256,11 @@ public class VideoDetailsFragment extends CommonLogicFragment implements ItemCli
 		Drawable drawable = AppUtils.getCountryFlagScaled(getActivity(), countryMap.get(videoData.getCountryId()));
 		countryImg.setImageDrawable(drawable);
 
+		String viewsCntStr = NumberFormat.getInstance().format(videoData.getViewCount());
 		String durationStr = SLASH_DIVIDER + getString(R.string.arg_min, videoData.getMinutes());
-		String viewsCntStr = SLASH_DIVIDER + getString(R.string.views_arg, videoData.getViewCount());
-		dateTxt.setText(dateFormatter.format(new Date(videoData.getCreateDate())) + durationStr + viewsCntStr);
+		viewsCntStr = SLASH_DIVIDER + getString(R.string.views_arg, viewsCntStr);
+		long createDate = videoData.getCreateDate() * 1000;
+		dateTxt.setText(dateFormatter.format(new Date(createDate)) + durationStr + viewsCntStr);
 
 		bodyStr = videoData.getDescription();
 		contentTxt.setText(Html.fromHtml(bodyStr));
