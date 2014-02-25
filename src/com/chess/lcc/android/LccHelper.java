@@ -12,6 +12,7 @@ import com.chess.live.rules.GameResult;
 import com.chess.live.util.GameRatingClass;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.GameType;
+import com.chess.live.util.Utils;
 import com.chess.model.GameLiveItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.FlurryData;
@@ -29,12 +30,9 @@ import static com.chess.live.rules.GameResult.WIN;
 public class LccHelper {
 
 	public static final boolean TESTING_GAME = false;
-	public static final String[] TEST_MOVES_COORD = {"d2d4", "c7c6", "c2c4", "d7d5", "g1f3", "g8f6", "b1c3", "e7e6",
-			"c1g5", "f8e7", "e2e3", "b8d7", "f1d3", "d8b6", "d1c2", "h7h6", "g5h4", "g7g5", "h4g3", "f6h5", "c4d5",
-			"h5g3", "h2g3", "e6d5", "a2a3", "g5g4", "f3h4", "e7h4", "h1h4", "d7f6", "e1e2", "c8e6", "a1h1", "h6h5",
-			"c3a4", "b6c7", "a4c5", "e8c8", "d3f5", "h8e8", "f5e6", "f7e6", "c2g6", "c7e7", "b2b4", "b7b6", "c5d3",
-			"c8b7", "d3e5", "d8c8", "h1c1", "e8g8", "g6d3"
-			/*, "g8g5", "e5g6", "e7f7", "g6e5", "g5e5", "d4e5", "f6e4", "h4h1", "f7f2"*/};
+	public static final String[] TEST_MOVES_COORD = {"a2a3", "h7h6", "b2b3", "g7g6", "c2c3", "f7f6", "d2d4", "d7d6",
+			"e2e4", "c8h3", "f2f4", "b8a6", "d4d5", "e7e6", "d5e6", "d8d7", "e4e5", "d7h7", "a3a4", "e8c8", "c3c4",
+			"d8d7", "a1a2", "d7g7", "b1d2", "c8b8", "e6e7", "a6c5"};
 
 	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
@@ -281,7 +279,7 @@ public class LccHelper {
 					&& ((challenge.getTo() == null && oldChallenge.getTo() == null) ||
 					(challenge.getTo() != null && challenge.getTo().equals(oldChallenge.getTo())))) {
 				LogMe.dl(TAG, "Check for doubled challenges: cancel challenge: " + oldChallenge);
-				lccClient.cancelChallenge(oldChallenge);
+				lccClient.cancelChallenge(oldChallenge); // todo: use task
 			}
 		}
 		ownChallenges.put(challenge.getId(), challenge);
@@ -732,21 +730,25 @@ public class LccHelper {
 	}
 
 	public void checkFirstTestMove() {
-		if (TESTING_GAME) {
-			final Game game = getCurrentGame();
+
+		final Game game = getCurrentGame();
+
+		if (TESTING_GAME && isMyGame(game)) {
 			if (game.isMoveOf(getUsername()) && game.getMoveCount() == 0) {
-				//Utils.sleep(5000);
-				lccClient.makeMove(game, TEST_MOVES_COORD[game.getMoveCount()].trim());
+				if (game.isMoveOf(getUsername()) /*&& game.getState() == Game.State.Started*/ && game.getMoveCount() < TEST_MOVES_COORD.length) {
+					Utils.sleep(3000);
+					liveConnectionHelper.makeMove(TEST_MOVES_COORD[game.getMoveCount()].trim(), "");
+				}
 			}
 		}
 	}
 
 	public void checkTestMove() {
-		if (TESTING_GAME) {
-			final Game game = getCurrentGame();
+		final Game game = getCurrentGame();
+		if (TESTING_GAME && isMyGame(game)) {
 			if (game.isMoveOf(getUsername()) /*&& game.getState() == Game.State.Started*/ && game.getMoveCount() < TEST_MOVES_COORD.length) {
 				//Utils.sleep(0.5F);
-				lccClient.makeMove(game, TEST_MOVES_COORD[game.getMoveCount()].trim());
+				liveConnectionHelper.makeMove(TEST_MOVES_COORD[game.getMoveCount()].trim(), "");
 			}
 		}
 	}
@@ -926,6 +928,25 @@ public class LccHelper {
 		}
 	}
 
+	public void runUnObserveOldTopGamesTask(Long exceptGameId) {
+		new UnObserveOldTopGamesTask().execute(exceptGameId);
+	}
+
+	private class UnObserveOldTopGamesTask extends AsyncTask<Long, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Long... params) {
+			for (Game game : lccGames.values()) {
+			   if (isObservedGame(game) && !game.getId().equals(params[0])) {
+					LogMe.dl(TAG, "UnObserveOldTopGamesTask unobserve gameId=" + game.getId());
+					unObserveGame(game.getId());
+					lccClient.exitGame(game); // check, probably can avoid this
+			   }
+			}
+			return null;
+		}
+	}
+
 	public void subscribeToLccListeners() {
 		lccClient.subscribeToChallengeEvents(challengeListener);
 		lccClient.subscribeToGameEvents(gameListener);
@@ -938,6 +959,10 @@ public class LccHelper {
 
 	public LiveChessClient getClient() {
 		return lccClient;
+	}
+
+	public LiveConnectionHelper getLiveConnectionHelper() {
+		return liveConnectionHelper;
 	}
 
 }

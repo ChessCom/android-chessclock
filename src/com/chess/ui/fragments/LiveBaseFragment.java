@@ -65,6 +65,8 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 			updateLCSBoundState();
 			DataHolder.getInstance().setLiveChessMode(true);
 
+			liveBaseActivity.setLiveFragmentFace(this);
+
 			LiveConnectionHelper liveHelper;
 			try {
 				liveHelper = getLiveHelper();
@@ -87,7 +89,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 					showPopupDialog(R.string.no_network, NETWORK_CHECK_TAG);
 				}
 
-				isLCSBound = liveBaseActivity.connectToLiveChess(this);
+				isLCSBound = liveBaseActivity.connectToLiveChess(/*this*/);
 				showPopupProgressDialog();
 			}
 		}
@@ -121,6 +123,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 
 	public void onLiveServiceConnected() {
 		setLCSBound(true);
+		liveBaseActivity.setLiveFragmentFace(this);
 	}
 
 	public void onLiveServiceDisconnected() {
@@ -237,6 +240,7 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 			LogMe.dl(TAG, e.getMessage());
 			return;
 		}
+		liveBaseActivity.setLiveFragmentFace(this);
 		liveHelper.setLccEventListener(this);
 		liveHelper.setGameTaskListener(gameTaskListener);
 

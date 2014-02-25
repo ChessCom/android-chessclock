@@ -28,4 +28,7 @@ public interface LiveChessClientEventListener {
 	boolean performServiceConnection();
 
 	void registerGcm();
+
+	// todo: move to separate interface?
+	void runOnUiThread(Runnable action);
 }

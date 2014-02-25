@@ -48,7 +48,7 @@ public class LiveConnectionHelper {
 
 	private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec, shutdown after user leave app
 	private static final long PLAYING_SHUTDOWN_TIMEOUT_DELAY = 2 * 60 * 1000;
-	public static final Object CLIENT_SYNC_LOCK = new Object();
+	public static final Object CLIENT_SYNC_LOCK = new Object(); // todo: probably also move to UI thread
 	public static final boolean RESET_LCC_LISTENERS = true;
 
 	private AppData appData;
@@ -194,6 +194,10 @@ public class LiveConnectionHelper {
 		this.liveChessClientEventListener = liveChessClientEventListener;
 	}
 
+	public LiveChessClientEventListener getLiveChessClientEventListener() {
+		return liveChessClientEventListener;
+	}
+
 	public void popupShowListener(PopupShowFace popupShowFace) {
 		this.popupShowFace = popupShowFace;
 	}
@@ -329,7 +333,7 @@ public class LiveConnectionHelper {
 
 			onLiveConnected();
 			//liveChessClientEventListener.onConnectionEstablished();
-			lccHelper.subscribeToLccListeners();
+			lccHelper.subscribeToLccListeners(); // todo: move to task
 
 			//lccClient.subscribeToDebugGameEvents(new StandardDebugGameListener(getUser()));
 
@@ -364,7 +368,6 @@ public class LiveConnectionHelper {
 		setConnecting(false);
 		cleanupLiveInfo();
 		runDisconnectTask();
-		liveService.stop();
 		//cancelServiceNotification();
 	}
 
@@ -404,6 +407,7 @@ public class LiveConnectionHelper {
 				if (lccClient != null) {
 					LogMe.dl(TAG, "LOGOUT: lccClient=" + getClientId());
 					lccClient.disconnect(RESET_LCC_LISTENERS);
+					liveService.stop();
 					resetClient();
 				}
 			}

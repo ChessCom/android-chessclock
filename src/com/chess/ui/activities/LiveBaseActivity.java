@@ -307,9 +307,13 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		this.isLCSBound = isLCSBound;
 	}
 
-	public boolean connectToLiveChess(LiveFragmentFace liveFragmentFace) {
-		this.liveFragmentFace = liveFragmentFace;
+	public boolean connectToLiveChess(/*LiveFragmentFace liveFragmentFace*/) {
+		//this.liveFragmentFace = liveFragmentFace;
 		return performServiceConnection();
+	}
+
+	public void setLiveFragmentFace(LiveFragmentFace liveFragmentFace) {
+		this.liveFragmentFace = liveFragmentFace;
 	}
 
 	@Override
