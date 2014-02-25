@@ -1,7 +1,6 @@
 package com.chess.ui.fragments.popup_fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -101,15 +100,6 @@ public class PopupPromotionFragment extends SimplePopupDialogFragment implements
 			listener.onValueSelected(ChessBoard.BISHOP);
 		} else if (view.getId() == R.id.knightBtn) {
 			listener.onValueSelected(ChessBoard.KNIGHT);
-		}
-	}
-
-	@Override
-	public void onCancel(DialogInterface dialog) {
-		super.onCancel(dialog);
-
-		if (listener != null) {
-			listener.onDialogCanceled();
 		}
 	}
 
@@ -223,5 +213,14 @@ public class PopupPromotionFragment extends SimplePopupDialogFragment implements
 
 	public void setAppData(AppData appData) {
 		this.appData = appData;
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+
+		if (listener != null) {
+			listener.onDialogCanceled();
+		}
 	}
 }

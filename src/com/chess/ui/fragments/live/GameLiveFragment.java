@@ -404,6 +404,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void onGameEnd(final Game game, final String gameEndMessage) {
+		getBoardFace().setFinished(true);
+
 		final Activity activity = getActivity();
 		if (activity == null || userSawGameEndPopup) {
 			return;

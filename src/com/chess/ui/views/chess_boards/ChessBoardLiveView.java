@@ -22,7 +22,6 @@ public class ChessBoardLiveView extends ChessBoardNetworkView {
 				gameNetworkFace.invalidateGameScreen();
 			}
 
-			getBoardFace().setFinished(true); // todo: probably it is better to set Finished flag by lcc.onGameEnded event
 			return true;
 		}
 

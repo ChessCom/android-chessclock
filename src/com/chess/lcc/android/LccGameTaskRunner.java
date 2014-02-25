@@ -8,6 +8,7 @@ import com.chess.live.client.LiveChessClient;
 import com.chess.statics.FlurryData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
+import com.chess.utilities.LogMe;
 import com.flurry.android.FlurryAgent;
 
 import java.util.HashMap;
@@ -114,6 +115,7 @@ public class LccGameTaskRunner {
 		protected Integer doTheTask(Game... game) {
 
 			try {
+				LogMe.dl("DEBUG: MakeMoveTask doTheTask: move=" + move + ", game=" + game[0].getId());
 				liveChessClient.makeMove(game[0], move);
 			} catch (IllegalArgumentException e) {
 				BugSenseHandler.addCrashExtraData("APP_LCC_MAKE_MOVE", debugInfo);

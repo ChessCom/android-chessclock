@@ -361,8 +361,10 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 
 		@Override
 		public void onValueSelected(int code) {
-			promotionFragment.dismiss();
-			promotionFragment = null;
+			if (promotionFragment != null) {
+				promotionFragment.dismiss();
+				promotionFragment = null;
+			}
 
 			boardView.promote(code, promotionFile, promotionRank);
 		}
