@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+	<style name="ListItem.PaddingSmall">
+		<item name="android:paddingStart">@dimen/default_scr_side_padding</item>
+		<item name="android:paddingLeft">@dimen/default_scr_side_padding</item>
+		<item name="android:paddingEnd">@dimen/default_scr_side_padding</item>
+		<item name="android:paddingRight">@dimen/default_scr_side_padding</item>
+	</style>
+
+	<style name="ListItem.NoPadding">
+		<item name="android:paddingStart">0dp</item>
+		<item name="android:paddingLeft">0dp</item>
+		<item name="android:paddingEnd">0dp</item>
+		<item name="android:paddingRight">0dp</item>
+	</style>
+
+	<!-- Facebook -->
+	<style name="Button.Facebook">
+		<item name="btn_bevel_lvl">1</item>
+		<item name="btn_is_solid">false</item>
+		<item name="btn_use_border">false</item>
+
+		<item name="btn_top">@color/f_emboss_top_1</item>
+		<item name="btn_left">@color/f_emboss_left_1</item>
+		<item name="btn_right">@color/f_emboss_right_1</item>
+		<item name="btn_bottom">@color/f_emboss_bottom_1</item>
+
+		<item name="btn_top_2">@color/f_emboss_top_2</item>
+		<item name="btn_left_2">@color/f_emboss_left_2</item>
+		<item name="btn_right_2">@color/f_emboss_right_2</item>
+		<item name="btn_bottom_2">@color/f_emboss_bottom_2</item>
+
+		<item name="btn_gradient_start">@color/f_button_1</item>
+		<item name="btn_gradient_end">@color/f_button_2</item>
+
+		<item name="color">@color/f_button_1</item>
+		<item name="ttf">Bold</item>
+
+		<item name="android:paddingStart">@dimen/tiny_padding</item>
+		<item name="android:paddingLeft">@dimen/tiny_padding</item>
+	</style>
+
+</resources>

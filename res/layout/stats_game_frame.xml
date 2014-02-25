@@ -15,12 +15,15 @@
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:layout_weight="1"
-			style="@style/ListItem" />
+			style="@style/ListItem.NoPadding"
+			/>
+
 	</LinearLayout>
 
 	<!--Content for Fragments-->
 	<FrameLayout
 		android:id="@+id/stats_content_frame"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent" />
+		android:layout_height="match_parent"
+		/>
 </LinearLayout>

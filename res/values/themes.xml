@@ -12,6 +12,7 @@
 	<style name="OrangeButtonTheme" parent="MyAppTheme">
 		<item name="android:buttonStyle">@style/Text.Button</item>
 		<item name="android:textAppearanceSmall">@style/Text</item>
+		<item name="android:textAppearanceLarge">@style/Text</item>
 		<item name="android:textViewStyle">@style/Text</item>
 		<item name="android:scrollViewStyle">@android:style/Widget.ScrollView</item>
 		<item name="android:editTextStyle">@style/DefaultEdt</item>

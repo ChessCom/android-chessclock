@@ -30,9 +30,8 @@
 		android:id="@id/myAvatarImg"
 		android:layout_width="@dimen/chat_icon_size"
 		android:layout_height="@dimen/chat_icon_size"
-		android:layout_marginStart="9dp"
+		style="@style/MarginLeftSmall"
 		android:layout_alignParentEnd="true"
-		android:layout_marginLeft="9dp"
 		android:layout_alignParentRight="true"
 		android:layout_alignParentBottom="true"
 		android:background="@drawable/back_glassy_rounded" />

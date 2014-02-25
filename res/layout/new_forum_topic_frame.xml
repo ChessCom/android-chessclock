@@ -21,10 +21,6 @@
 		android:gravity="center_vertical"
 		android:background="@drawable/edit_grey_one_default"
 		android:paddingTop="8dp"
-		android:paddingStart="15dp"
-		android:paddingEnd="15dp"
-		android:paddingLeft="15dp"
-		android:paddingRight="15dp"
 		android:paddingBottom="8dp" />
 
 	<com.chess.widgets.RoboSpinner
@@ -43,10 +39,8 @@
 		android:layout_height="match_parent"
 		style="@style/ListItem.Header_2"
 		android:paddingTop="15dp"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding">
+		>
+
 		<com.chess.widgets.RoboEditText
 			android:id="@+id/newPostEdt"
 			android:inputType="textMultiLine"
@@ -59,10 +53,6 @@
 			android:singleLine="false"
 			android:background="@drawable/edit_grey_one_default"
 			android:paddingTop="8dp"
-			android:paddingStart="15dp"
-			android:paddingEnd="15dp"
-			android:paddingLeft="15dp"
-			android:paddingRight="15dp"
 			android:paddingBottom="8dp"
 			android:imeActionLabel="@string/post" />
 

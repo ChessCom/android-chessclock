@@ -28,10 +28,6 @@
 			style="@style/ChessProgressBar.Horizontal"
 			android:layout_gravity="center_horizontal"
 			android:layout_marginTop="5dp"
-			android:layout_marginStart="@dimen/default_scr_side_padding"
-			android:layout_marginEnd="@dimen/default_scr_side_padding"
-			android:layout_marginLeft="@dimen/default_scr_side_padding"
-			android:layout_marginRight="@dimen/default_scr_side_padding"
 			android:visibility="gone" />
 
 		<com.chess.widgets.RoboTextView
@@ -42,8 +38,8 @@
 			android:textColor="@color/white"
 			android:layout_below="@id/themeLoadProgressBar"
 			android:paddingTop="2dp"
-			android:paddingStart="@dimen/default_scr_side_padding"
-			android:paddingLeft="@dimen/default_scr_side_padding" />
+			style="@style/PaddingLeftDefault"
+			/>
 
 	</com.chess.widgets.RelLayout>
 </RelativeLayout>

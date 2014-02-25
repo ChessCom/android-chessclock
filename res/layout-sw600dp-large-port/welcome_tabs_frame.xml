@@ -38,8 +38,6 @@
 		android:minHeight="@dimen/welcome_port_bottom_view_height"
 		android:layout_alignParentBottom="true"
 		android:animateLayoutChanges="true"
-		android:paddingStart="@dimen/common_tablet_side_padding"
-		android:paddingEnd="@dimen/common_tablet_side_padding"
 		android:paddingLeft="@dimen/common_tablet_side_padding"
 		android:paddingRight="@dimen/common_tablet_side_padding"
 		android:background="@drawable/defaultshadow_top">

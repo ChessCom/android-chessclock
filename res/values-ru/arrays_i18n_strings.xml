@@ -37,8 +37,8 @@
 		<item>Без Рекламы</item>
 	</string-array>
 	<string-array name="afterMyMove">
-		<item>Перейти к следующей готовой игре</item>
-		<item>Остаться на этой же игре</item>
-		<item>Вернуться к списку игр</item>
+		<item>К следующей игре</item>
+		<item>Остаться в игре</item>
+		<item>Вернуться к списку</item>
 	</string-array>
 </resources>

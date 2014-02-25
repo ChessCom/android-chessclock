@@ -60,11 +60,11 @@ public class ImageGetter implements Html.ImageGetter {
 
 						int newHeight = (int) (imageWidth / scale);
 
-//						try {
+						try {
 							bitmap = Bitmap.createScaledBitmap(bitmap, imageWidth, newHeight, true);
-//						} catch (OutOfMemoryError ignore) {
-//							return;
-//						}
+						} catch (OutOfMemoryError ignore) { // TODO improve with bitmapOptions
+							return;
+						}
 
 						AppUtils.logMemData();
 

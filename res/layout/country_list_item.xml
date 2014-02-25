@@ -4,10 +4,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:paddingTop="23dp"
-	android:paddingStart="17dp"
-	android:paddingEnd="17dp"
-	android:paddingLeft="17dp"
-	android:paddingRight="17dp"
+	style="@style/PaddingSidesDefault"
 	android:paddingBottom="20dp"
 	android:background="@drawable/round_list_item_middle_selector"
 	android:gravity="center_vertical"
@@ -29,10 +26,8 @@
 		android:textSize="16sp"
 		android:textColor="@color/light_grey"
 		android:text="US"
-		android:paddingStart="20dp"
-		android:paddingEnd="20dp"
-		android:paddingLeft="20dp"
-		android:paddingRight="20dp" />
+		style="@style/PaddingSidesDefault"
+		/>
 
 	<!--Country Icon-->
 	<ImageView

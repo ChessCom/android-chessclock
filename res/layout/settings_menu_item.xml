@@ -6,8 +6,7 @@
 	android:orientation="horizontal"
 	style="@style/ListItem"
 	android:gravity="center_vertical"
-	android:paddingStart="@dimen/default_scr_side_padding"
-	android:paddingLeft="@dimen/default_scr_side_padding">
+	>
 
 	<!--Icon-->
 	<com.chess.widgets.RoboTextView

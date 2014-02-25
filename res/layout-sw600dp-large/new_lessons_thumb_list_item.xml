@@ -6,8 +6,6 @@
 	android:layout_height="match_parent"
 	android:background="@drawable/transparent_list_item_selector"
 	android:paddingTop="@dimen/grid_view_spacing"
-	android:paddingStart="22dp"
-	android:paddingEnd="22dp"
 	android:paddingLeft="22dp"
 	android:paddingRight="22dp"
 	android:paddingBottom="@dimen/grid_view_spacing">

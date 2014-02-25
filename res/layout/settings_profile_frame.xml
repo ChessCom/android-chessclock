@@ -10,7 +10,8 @@
 		android:orientation="vertical"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:focusableInTouchMode="true">
+		android:focusableInTouchMode="true"
+		>
 		<requestFocus />
 
 		<!--First Name-->
@@ -41,7 +42,6 @@
 				android:ellipsize="end"
 				app:ttf="Bold"
 				app:themeColor="true" />
-			<!---->
 
 			<!--Clear Btn-->
 			<com.chess.widgets.RoboTextView
@@ -51,8 +51,7 @@
 				android:text="@string/ic_clear"
 				android:textColor="@color/white"
 				style="@style/GlyphIcon"
-				android:paddingStart="11dp"
-				android:paddingLeft="11dp" />
+				/>
 
 		</com.chess.widgets.LinLayout>
 
@@ -93,8 +92,7 @@
 				android:text="@string/ic_clear"
 				android:textColor="@color/white"
 				style="@style/GlyphIcon"
-				android:paddingStart="11dp"
-				android:paddingLeft="11dp" />
+				/>
 
 		</com.chess.widgets.LinLayout>
 
@@ -136,8 +134,7 @@
 				android:text="@string/ic_clear"
 				android:textColor="@color/white"
 				style="@style/GlyphIcon"
-				android:paddingStart="11dp"
-				android:paddingLeft="11dp" />
+				/>
 
 		</com.chess.widgets.LinLayout>
 
@@ -165,8 +162,7 @@
 				android:text="Country"
 				android:textColor="@color/white"
 				android:textSize="15sp"
-				android:paddingEnd="11dp"
-				android:paddingRight="11dp"
+				style="@style/PaddingRightSmall"
 				app:ttf="Bold"
 				app:themeColor="true" />
 
@@ -187,10 +183,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingStart="@dimen/default_scr_side_padding"
-			android:paddingEnd="@dimen/default_scr_side_padding"
-			android:paddingLeft="@dimen/default_scr_side_padding"
-			android:paddingRight="@dimen/default_scr_side_padding"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
@@ -227,8 +219,6 @@
 				android:text="@string/profile_membership_renew_cancel"
 				style="@style/SettingsListText"
 				android:textColor="@color/semitransparent_white_65"
-				android:paddingEnd="30dp"
-				android:paddingRight="30dp"
 				app:ttf="Regular"
 				android:visibility="invisible" />
 
@@ -257,8 +247,6 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:text="@string/invite_friends_profile_message"
-				android:paddingEnd="30dp"
-				android:paddingRight="30dp"
 				style="@style/SettingsListText" />
 
 			<!--Share Button-->

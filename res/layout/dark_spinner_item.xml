@@ -5,10 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:minHeight="@dimen/default_list_item_height"
-	android:paddingStart="@dimen/smaller_scr_side_padding"
-	android:paddingEnd="@dimen/smaller_scr_side_padding"
-	android:paddingLeft="@dimen/smaller_scr_side_padding"
-	android:paddingRight="@dimen/smaller_scr_side_padding"
+	style="@style/PaddingLeftDefault"
 	android:gravity="center_vertical">
 
 	<!--Icon-->
@@ -29,8 +26,6 @@
 		android:textColor="@color/semitransparent_white_75"
 		android:textSize="16sp"
 		style="@style/DarkShadowBottom"
-		android:paddingStart="3dp"
-		android:paddingLeft="3dp"
 		android:gravity="center_vertical"
 		custom:ttf="Bold" />
 

@@ -119,6 +119,8 @@
 
 		<item name="color">@color/f_button_1</item>
 		<item name="ttf">Bold</item>
+
+		<item name="android:paddingLeft">@dimen/tiny_padding</item>
 	</style>
 
 	<style name="Button.Blue">
@@ -571,7 +573,7 @@
 
 	<!--====================================== List Items(can't be derived from Text or Button) =================== -->
 
-	<style name="ListItem">
+	<style name="ListItem" parent="PaddingSidesDefault">
 		<!--ButtonDrawable params-->
 		<item name="btn_radius">0dp</item>
 		<item name="btn_is_rect">true</item>
@@ -606,6 +608,9 @@
 		<item name="btn_rect_pos">listItemHeader</item>
 
 		<item name="android:minHeight">@dimen/default_header_height</item>
+
+		<item name="android:paddingLeft">@dimen/smaller_scr_side_padding</item>
+		<item name="android:paddingRight">@dimen/smaller_scr_side_padding</item>
 	</style>
 
 	<style name="ListItem.Header_2">
@@ -616,6 +621,9 @@
 		<item name="btn_left">@color/transparent_button_border_left</item>
 
 		<item name="android:minHeight">@dimen/default_header_height</item>
+
+		<item name="android:paddingLeft">@dimen/smaller_scr_side_padding</item>
+		<item name="android:paddingRight">@dimen/smaller_scr_side_padding</item>
 	</style>
 
 	<style name="ListItem.Header_2.Light">
@@ -642,6 +650,16 @@
 	<style name="ListItem.Header.Notations">
 		<item name="btn_rect_pos">listItemHeaderDark</item>
 		<item name="btn_solid">@color/notations_back</item>
+	</style>
+
+	<style name="ListItem.PaddingSmall">
+		<item name="android:paddingLeft">@dimen/default_scr_side_padding</item>
+		<item name="android:paddingRight">@dimen/default_scr_side_padding</item>
+	</style>
+
+	<style name="ListItem.NoPadding">
+		<item name="android:paddingLeft">0dp</item>
+		<item name="android:paddingRight">0dp</item>
 	</style>
 
 </resources>

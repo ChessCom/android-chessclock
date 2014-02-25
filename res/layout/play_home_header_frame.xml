@@ -21,10 +21,6 @@
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical"
 		style="@style/ListItem.Header_2.Dark"
-		android:paddingStart="@dimen/smaller_scr_side_padding"
-		android:paddingEnd="@dimen/smaller_scr_side_padding"
-		android:paddingLeft="@dimen/smaller_scr_side_padding"
-		android:paddingRight="@dimen/smaller_scr_side_padding"
 		android:layout_marginTop="2dp">
 
 		<!--Icon-->
@@ -39,8 +35,6 @@
 			android:id="@+id/liveChessHeaderTxt"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:paddingStart="@dimen/smaller_scr_side_padding"
-			android:paddingLeft="@dimen/smaller_scr_side_padding"
 			android:layout_weight="1"
 			android:text="@string/new_game"
 			style="@style/HeaderTitle.Light" />
@@ -72,8 +66,6 @@
 			android:minHeight="160dp"
 			android:background="@drawable/square_flat_border_white_back"
 			android:paddingTop="@dimen/start_new_game_overlay_padding_top"
-			android:paddingStart="@dimen/start_new_game_overlay_padding_side"
-			android:paddingEnd="@dimen/start_new_game_overlay_padding_side"
 			android:paddingLeft="@dimen/start_new_game_overlay_padding_side"
 			android:paddingRight="@dimen/start_new_game_overlay_padding_side"
 			android:paddingBottom="@dimen/start_new_game_overlay_padding_side"

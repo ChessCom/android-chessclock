@@ -15,8 +15,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:paddingRight="10dp"
 			android:background="@drawable/transparent_list_item_selector"
 			android:visibility="gone">
 			<!--Label-->
@@ -41,8 +39,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:paddingRight="10dp"
 			android:background="@drawable/transparent_list_item_selector"
 			android:visibility="gone">
 			<com.chess.widgets.RoboTextView
@@ -66,8 +62,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:paddingRight="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
@@ -89,8 +83,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:paddingRight="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
@@ -112,8 +104,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:paddingRight="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
@@ -162,8 +152,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:paddingRight="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
@@ -185,8 +173,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:paddingRight="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
@@ -211,10 +197,6 @@
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			style="@style/ListItem"
-			android:paddingStart="@dimen/new_game_frame_padding_side"
-			android:paddingEnd="@dimen/new_game_frame_padding_side"
-			android:paddingLeft="@dimen/new_game_frame_padding_side"
-			android:paddingRight="@dimen/new_game_frame_padding_side"
 			android:paddingTop="12dp"
 			android:paddingBottom="7dp"
 			android:animateLayoutChanges="true">
@@ -246,8 +228,6 @@
 				android:id="@+id/strengthBar"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:paddingStart="@dimen/seek_bar_side_padding"
-				android:paddingEnd="@dimen/seek_bar_side_padding"
 				android:paddingLeft="@dimen/seek_bar_side_padding"
 				android:paddingRight="@dimen/seek_bar_side_padding"
 				android:max="9"
@@ -263,8 +243,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:paddingRight="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
@@ -287,8 +265,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:paddingRight="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->

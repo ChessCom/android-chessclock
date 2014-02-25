@@ -4,11 +4,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="46dp"
 	android:gravity="center_vertical"
-	android:paddingStart="@dimen/default_scr_side_padding"
-	android:paddingEnd="@dimen/smaller_scr_side_padding"
-	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/smaller_scr_side_padding"
 	style="@style/ListItem.Header_2.Light">
+
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/headerTitle"
 		android:layout_width="0dp"

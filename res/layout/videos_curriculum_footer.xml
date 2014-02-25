@@ -7,10 +7,7 @@
 	android:layout_height="wrap_content"
 	style="@style/ListItem.Header"
 	android:gravity="center_vertical"
-	android:paddingStart="@dimen/default_scr_side_padding"
-	android:paddingEnd="@dimen/smaller_scr_side_padding"
-	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/smaller_scr_side_padding">
+	>
 
 	<!--Title-->
 	<com.chess.widgets.RoboTextView
@@ -19,7 +16,9 @@
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
 		android:text="@string/video_curriculum"
-		style="@style/HeaderTitle.Dark" />
+		style="@style/HeaderTitle.Dark"
+		android:paddingLeft="0dp"
+		android:paddingRight="0dp"/>
 
 	<!--Right Icon-->
 	<com.chess.widgets.RoboTextView

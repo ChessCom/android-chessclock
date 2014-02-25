@@ -613,7 +613,7 @@ public class ThemeManagerFragment extends CommonLogicFragment {
 			{"efefef", "c2d7e2", "2b93d5"},  // Sky           11
 			{"e5d3c4", "b8a590", "f8c855"},  // Sand          12
 			{"5a5956", "5a5956", "eff095"},  // Newspaper     13
-			{"282f3f", "667188", "3a83e7"},  // Glass         14
+			{"667188", "282f3f", "3a83e7"},  // Glass         14
 			{"b9b9b9", "636363", "3499d8"},  // Neon          15
 			{"c9c9c9", "6e6e6e", "79b6e1"},  // Metal         16
 			{"c8c3bd", "666463", "073f59"},  // Stone         17

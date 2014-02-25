@@ -23,11 +23,8 @@
 		android:layout_toRightOf="@id/articleImg"
 		android:paddingTop="15dp"
 		android:paddingBottom="9dp"
-		android:paddingEnd="@dimen/common_tablet_side_padding"
-		android:paddingRight="@dimen/common_tablet_side_padding"
-		android:textColor="@color/new_subtitle_dark_grey"
-		android:textSize="18sp"
-		custom:ttf="Bold" />
+		style="@style/Title.PaddingRightTablet"
+		/>
 
 	<com.chess.backend.image_load.ProgressImageView
 		android:id="@+id/thumbnailAuthorImg"
@@ -47,13 +44,7 @@
 		android:layout_toEndOf="@id/thumbnailAuthorImg"
 		android:layout_toRightOf="@id/thumbnailAuthorImg"
 		android:layout_below="@id/titleTxt"
-		android:layout_marginTop="-4dp"
-		android:paddingStart="11dp"
-		android:paddingLeft="11dp"
-		android:paddingBottom="2dp"
-		android:textColor="@color/new_subtitle_dark_grey"
-		android:textSize="14sp"
-		custom:ttf="Bold" />
+		style="@style/AuthorName" />
 
 	<ImageView
 		android:id="@+id/countryImg"
@@ -75,8 +66,7 @@
 		android:layout_toEndOf="@id/thumbnailAuthorImg"
 		android:layout_toRightOf="@id/thumbnailAuthorImg"
 		android:layout_below="@id/authorTxt"
-		android:paddingStart="11dp"
-		android:paddingLeft="11dp"
+		style="@style/PaddingLeftSmall"
 		android:textColor="@color/new_friends_grey_text"
 		android:textSize="@dimen/default_text_size_small" />
 
@@ -85,8 +75,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="fill_horizontal"
-		android:paddingStart="@dimen/common_tablet_side_padding"
-		android:paddingEnd="@dimen/common_tablet_side_padding"
 		android:paddingLeft="@dimen/common_tablet_side_padding"
 		android:paddingRight="@dimen/common_tablet_side_padding"
 		android:layout_below="@id/articleImg"

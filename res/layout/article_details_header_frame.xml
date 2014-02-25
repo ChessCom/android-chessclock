@@ -20,26 +20,17 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/articleImg"
-		android:paddingTop="15dp"
-		android:paddingBottom="9dp"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
-		android:textColor="@color/new_subtitle_dark_grey"
-		android:textSize="18sp"
-		custom:ttf="Bold" />
+		style="@style/Title"
+
+		/>
 
 	<com.chess.backend.image_load.ProgressImageView
 		android:id="@+id/thumbnailAuthorImg"
 		android:layout_width="35dp"
 		android:layout_height="35dp"
-		android:layout_marginStart="@dimen/default_scr_side_padding"
-		android:layout_marginLeft="@dimen/default_scr_side_padding"
-		android:background="@color/new_common_list_thumb_grey"
+		style="@style/AuthorImage"
 		android:layout_below="@id/titleTxt"
-		android:contentDescription="@string/image"
-		android:layout_marginBottom="13dp" />
+		/>
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/authorTxt"
@@ -49,8 +40,7 @@
 		android:layout_toRightOf="@id/thumbnailAuthorImg"
 		android:layout_below="@id/titleTxt"
 		android:layout_marginTop="-4dp"
-		android:paddingStart="11dp"
-		android:paddingLeft="11dp"
+		style="@style/PaddingLeftSmall"
 		android:paddingBottom="2dp"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:textSize="14sp"
@@ -65,8 +55,8 @@
 		android:layout_toRightOf="@id/authorTxt"
 		android:layout_below="@id/titleTxt"
 		android:layout_marginTop="-6dp"
-		android:layout_marginStart="7dp"
-		android:layout_marginLeft="7dp" />
+		style="@style/MarginLeftSmall"
+		/>
 
 	<!--Date-->
 	<com.chess.widgets.RoboTextView
@@ -76,8 +66,7 @@
 		android:layout_toEndOf="@id/thumbnailAuthorImg"
 		android:layout_toRightOf="@id/thumbnailAuthorImg"
 		android:layout_below="@id/authorTxt"
-		android:paddingStart="11dp"
-		android:paddingLeft="11dp"
+		style="@style/PaddingLeftSmall"
 		android:textColor="@color/new_friends_grey_text"
 		android:textSize="@dimen/default_text_size_small" />
 
@@ -87,10 +76,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="fill_horizontal"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
 		android:layout_below="@id/thumbnailAuthorImg"
 		style="@style/Content.Selectable"
 		android:paddingBottom="2dp" />

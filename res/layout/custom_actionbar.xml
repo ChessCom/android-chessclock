@@ -12,14 +12,12 @@
 		android:layout_height="match_parent"
 		android:layout_weight="1"
 		android:gravity="center"
-		android:paddingStart="48dp"
-		android:paddingLeft="48dp"
 		android:textSize="@dimen/actionbar_title_text_size"
 		android:textColor="@color/semitransparent_white_75"
 		android:singleLine="true"
 		android:ellipsize="marquee"
 		android:marqueeRepeatLimit="marquee_forever"
-		style="@style/DarkShadowBottom"
+		style="@style/ActionBarTitleTxt"
 		custom:ttf="Bold" />
 
 </LinearLayout>

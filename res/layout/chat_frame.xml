@@ -12,20 +12,12 @@
 		android:stackFromBottom="true"
 		android:transcriptMode="alwaysScroll"
 		android:layout_weight="1"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
 		style="@style/ListItem" />
 
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical"
-		android:paddingStart="@dimen/smaller_scr_side_padding"
-		android:paddingEnd="@dimen/smaller_scr_side_padding"
-		android:paddingLeft="@dimen/smaller_scr_side_padding"
-		android:paddingRight="@dimen/smaller_scr_side_padding"
 		android:paddingBottom="8dp"
 		style="@style/ListItem">
 
@@ -34,8 +26,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:layout_marginEnd="6dp"
-			android:layout_marginRight="6dp"
+			style="@style/MarginRightSmall"
 			android:minHeight="35dp"
 			android:layout_gravity="center_vertical"
 			android:background="@drawable/edit_white_one_selector" />

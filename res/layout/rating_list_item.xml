@@ -25,8 +25,7 @@
 		android:layout_height="wrap_content"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:textSize="14sp"
-		android:paddingEnd="3dp"
-		android:paddingRight="3dp"
+		style="@style/PaddingRightTiny"
 		android:gravity="center_vertical"
 		custom:ttf="Bold" />
 

@@ -83,6 +83,7 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 		private String diagram_code;
 		private int type = -1;
 		private String moveList;
+		private boolean moveListSet;
 
 		public long getDiagramId() {
 			return diagram_id;
@@ -118,10 +119,11 @@ public class ArticleDetailsItem extends BaseResponseItem<ArticleDetailsItem.Data
 
 		public void setMoveList(String moveList) {
 			this.moveList = moveList;
+			moveListSet = true;
 		}
 
 		public String getMoveList() {
-			if (TextUtils.isEmpty(moveList)) {
+			if (TextUtils.isEmpty(moveList) && !moveListSet) {
 				// get [Event ] end
 				int startIndex = diagram_code.indexOf("]\n\n");
 				String movesPart = diagram_code.substring(startIndex + "]\n\n".length());

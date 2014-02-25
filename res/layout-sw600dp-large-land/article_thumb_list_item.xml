@@ -64,8 +64,7 @@
 		android:layout_toEndOf="@id/authorTxt"
 		android:layout_toRightOf="@id/authorTxt"
 		android:layout_below="@id/titleTxt"
-		android:paddingStart="4dp"
-		android:paddingLeft="4dp"
+		style="@style/PaddingLeftTiny"
 		android:textColor="@color/new_friends_grey_text"
 		android:textSize="@dimen/default_text_size_small" />
 

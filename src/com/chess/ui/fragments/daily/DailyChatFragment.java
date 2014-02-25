@@ -291,6 +291,13 @@ public class DailyChatFragment extends CommonLogicFragment implements View.OnTou
 			loadItem.addRequestParams(RestHelper.P_MESSAGE, getTextFromField(sendEdt));
 			new RequestJsonTask<DailyChatItem>(sendUpdateListener).executeTask(loadItem);
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			FlurryAgent.logEvent("chat send err, timestamp err, code = " + resultCode);
+		}
 	}
 
 }

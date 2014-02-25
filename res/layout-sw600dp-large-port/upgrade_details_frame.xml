@@ -122,8 +122,7 @@
 						android:textSize="15sp"
 						custom:ttf="Bold"
 						android:text="@string/per_month"
-						android:paddingStart="4dp"
-						android:paddingLeft="4dp" />
+						style="@style/PaddingLeftSmall"/>
 
 					<CheckBox
 						android:id="@+id/monthCheckBox"
@@ -177,8 +176,7 @@
 						android:textColor="@color/upgrade_diamond_sub_title"
 						android:textSize="15sp"
 						android:layout_alignBaseline="@id/yearValueTxt"
-						android:paddingStart="4dp"
-						android:paddingLeft="4dp"
+						style="@style/PaddingLeftSmall"
 						android:text="@string/per_year"
 						custom:ttf="Bold" />
 

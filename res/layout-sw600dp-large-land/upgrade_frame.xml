@@ -4,11 +4,7 @@
 	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:paddingStart="15dp"
-	android:paddingEnd="15dp"
-	android:paddingLeft="15dp"
-	android:paddingRight="15dp"
-	android:paddingBottom="15dp"
+	style="@style/PaddingSidesDefault"
 	android:background="@color/white">
 
 	<LinearLayout
@@ -63,10 +59,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:baselineAligned="false"
-			android:paddingStart="15dp"
-			android:paddingEnd="15dp"
-			android:paddingLeft="15dp"
-			android:paddingRight="15dp">
+			style="@style/PaddingSidesDefault">
 			<!--Quote-->
 			<RelativeLayout
 				android:layout_width="0dp"

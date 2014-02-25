@@ -30,10 +30,7 @@
 				android:textSize="21sp"
 				android:textColor="@color/new_subtitle_dark_grey"
 				android:paddingTop="9dp"
-				android:paddingStart="15dp"
-				android:paddingEnd="15dp"
-				android:paddingLeft="15dp"
-				android:paddingRight="15dp"
+				style="@style/PaddingSidesDefault"
 				android:paddingBottom="8dp"
 				custom:ttf="Bold" />
 

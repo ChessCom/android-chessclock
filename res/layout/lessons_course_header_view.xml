@@ -16,10 +16,7 @@
 		android:textSize="21sp"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingTop="10dp"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
+		style="@style/PaddingSidesDefault"
 		android:paddingBottom="@dimen/smaller_scr_side_padding"
 		custom:ttf="Bold" />
 
@@ -29,10 +26,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:textColor="@color/new_subtitle_dark_grey"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
+		style="@style/PaddingSidesDefault"
 		android:paddingBottom="@dimen/default_scr_side_padding" />
 
 </LinearLayout>

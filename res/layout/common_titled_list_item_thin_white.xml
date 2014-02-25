@@ -5,11 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	style="@style/ListItem.Tablet"
-	android:gravity="center_vertical"
-	android:paddingStart="@dimen/default_scr_side_padding"
-	android:paddingEnd="@dimen/smaller_scr_side_padding"
-	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/smaller_scr_side_padding">
+	android:gravity="center_vertical">
 
 	<!--Title-->
 	<com.chess.widgets.RoboTextView
@@ -17,7 +13,8 @@
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
-		android:textColor="@color/semitransparent_white_75" />
+		android:textColor="@color/semitransparent_white_75"
+		/>
 
 	<!--Right Icon-->
 	<com.chess.widgets.RoboTextView

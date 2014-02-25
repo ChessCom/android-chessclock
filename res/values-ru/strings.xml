@@ -139,8 +139,8 @@
 	<string name="new_game_arg">Новая игра (%s)</string>
 	<string name="enter_moves">Ввод ходов</string>
 	<string name="language">Язык</string>
-	<string name="black_wins">Черные выйграли</string>
-	<string name="white_wins">Белые выйграли</string>
+	<string name="black_wins">Черные выиграли</string>
+	<string name="white_wins">Белые выиграли</string>
 	<string name="game_draw_by_repetition">Ничья - повторения ходов</string>
 	<string name="game_drawn_by_agreement">Ничья по соглашению</string>
 	<string name="game_drawn_by_stalemate">Ничья - пат</string>

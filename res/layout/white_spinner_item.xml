@@ -5,10 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:minHeight="29dp"
-	android:paddingStart="@dimen/smaller_scr_side_padding"
-	android:paddingEnd="@dimen/smaller_scr_side_padding"
-	android:paddingLeft="@dimen/smaller_scr_side_padding"
-	android:paddingRight="@dimen/smaller_scr_side_padding"
+	style="@style/PaddingSidesSmall"
 	android:background="@color/white"
 	android:gravity="center_vertical">
 

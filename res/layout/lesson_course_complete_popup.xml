@@ -53,8 +53,7 @@
 			android:gravity="center_horizontal"
 			android:textSize="32sp"
 			android:textColor="@color/new_subtitle_dark_grey"
-			android:paddingStart="7dp"
-			android:paddingLeft="7dp"
+			style="@style/PaddingLeftSmall"
 			custom:ttf="Bold" />
 
 	</LinearLayout>
@@ -94,8 +93,7 @@
 			android:layout_gravity="center"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:textSize="@dimen/game_end_popup_text_size"
-			android:paddingStart="10dp"
-			android:paddingLeft="10dp"
+			style="@style/PaddingLeftSmall"
 			custom:ttf="Bold" />
 
 	</LinearLayout>
@@ -106,8 +104,6 @@
 		android:background="@color/default_button_overlay_p"
 		android:orientation="horizontal"
 		android:paddingTop="20dp"
-		android:paddingStart="33dp"
-		android:paddingEnd="33dp"
 		android:paddingLeft="33dp"
 		android:paddingRight="33dp"
 		android:paddingBottom="20dp">

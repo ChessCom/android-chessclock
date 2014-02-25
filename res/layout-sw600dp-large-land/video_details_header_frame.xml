@@ -80,9 +80,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/thumbnailImg"
-		android:paddingEnd="@dimen/default_scr_side_padding"
 		android:layout_toRightOf="@id/thumbnailImg"
-		android:paddingRight="@dimen/default_scr_side_padding"
+		style="@style/PaddingRightTiny"
 		android:paddingTop="@dimen/common_tablet_side_padding"
 		android:paddingBottom="9dp"
 		android:textColor="@color/new_subtitle_dark_grey"
@@ -108,13 +107,7 @@
 		android:layout_toEndOf="@id/thumbnailAuthorImg"
 		android:layout_toRightOf="@id/thumbnailAuthorImg"
 		android:layout_below="@id/titleTxt"
-		android:paddingStart="11dp"
-		android:paddingLeft="11dp"
-		android:paddingBottom="2dp"
-		android:layout_marginTop="-4dp"
-		android:textColor="@color/new_author_dark_grey"
-		android:textSize="14sp"
-		custom:ttf="Bold" />
+		style="@style/AuthorName" />
 
 	<ImageView
 		android:id="@+id/countryImg"
@@ -136,8 +129,7 @@
 		android:layout_toEndOf="@id/thumbnailAuthorImg"
 		android:layout_toRightOf="@id/thumbnailAuthorImg"
 		android:layout_below="@id/authorTxt"
-		android:paddingStart="11dp"
-		android:paddingLeft="11dp"
+		style="@style/PaddingLeftDefault"
 		android:textColor="@color/new_subtitle_light_grey"
 		android:textSize="@dimen/default_text_size_small" />
 
@@ -145,8 +137,7 @@
 		android:id="@+id/contentTxt"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
+		style="@style/PaddingRightTiny"
 		android:layout_below="@id/thumbnailAuthorImg"
 		android:layout_toEndOf="@id/thumbnailImg"
 		android:layout_toRightOf="@id/thumbnailImg"

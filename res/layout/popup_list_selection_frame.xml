@@ -17,7 +17,6 @@
 			android:layout_height="wrap_content"
 			style="@style/ActionBarCompatTitle"
 			android:gravity="center"
-			android:paddingStart="0dp"
 			android:paddingLeft="0dp" />
 
 	</LinearLayout>

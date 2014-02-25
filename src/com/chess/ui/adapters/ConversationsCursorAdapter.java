@@ -37,8 +37,8 @@ public class ConversationsCursorAdapter extends ItemsCursorAdapter {
 		super(context, cursor, imageFetcher);
 		float density = resources.getDisplayMetrics().density;
 		imageSize = (int) (40 * density);
-		paddingTop = (int) (12 * density);
-		paddingSide = (int) (12 * density);
+		paddingTop = resources.getDimensionPixelSize(R.dimen.smaller_scr_side_padding);
+		paddingSide = resources.getDimensionPixelSize(R.dimen.default_scr_side_padding);
 
 		imageDataMap = new HashMap<String, SmartImageFetcher.Data>();
 	}

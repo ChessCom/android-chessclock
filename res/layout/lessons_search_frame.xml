@@ -34,12 +34,8 @@
 				android:minHeight="26dp"
 				android:gravity="center_vertical"
 				android:background="@drawable/edit_grey_one_default"
-				android:paddingTop="7dp"
-				android:paddingStart="15dp"
-				android:paddingEnd="15dp"
-				android:paddingLeft="15dp"
-				android:paddingRight="15dp"
-				android:paddingBottom="7dp" />
+				android:paddingTop="8dp"
+				android:paddingBottom="8dp" />
 
 		</com.chess.widgets.LinLayout>
 
@@ -94,14 +90,10 @@
 			android:id="@+id/searchView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:padding="@dimen/new_game_frame_padding_side"
 			style="@style/ListItem"
 			android:paddingTop="@dimen/default_scr_bottom_padding"
 			android:paddingBottom="@dimen/default_scr_bottom_padding"
-			android:paddingStart="@dimen/default_scr_side_padding"
-			android:paddingEnd="@dimen/default_scr_side_padding"
-			android:paddingLeft="@dimen/default_scr_side_padding"
-			android:paddingRight="@dimen/default_scr_side_padding">
+			>
 
 			<com.chess.widgets.RoboButton
 				android:id="@+id/searchBtn"

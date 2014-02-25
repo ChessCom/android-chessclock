@@ -8,7 +8,7 @@
 	android:orientation="horizontal"
 	style="@style/ListItem"
 	android:gravity="center_vertical"
-	android:paddingEnd="21dp">
+	>
 
 	<com.chess.backend.image_load.AvatarView
 		android:id="@+id/playerImg"

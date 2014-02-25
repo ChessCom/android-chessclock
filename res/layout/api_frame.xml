@@ -14,8 +14,9 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:background="@drawable/transparent_list_item_selector">
+
+			android:background="@drawable/transparent_list_item_selector"
+			>
 
 			<!--Label-->
 			<com.chess.widgets.RoboTextView
@@ -36,7 +37,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
@@ -54,7 +54,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<com.chess.widgets.RoboEditText
@@ -66,15 +65,11 @@
 				android:hint="username for autologin"
 				android:layout_marginTop="8dp"
 				android:layout_marginBottom="8dp"
-				android:layout_marginStart="@dimen/default_scr_side_padding"
-				android:layout_marginEnd="@dimen/default_scr_side_padding"
 				android:layout_marginLeft="@dimen/default_scr_side_padding"
 				android:layout_marginRight="@dimen/default_scr_side_padding"
 				android:gravity="center_vertical"
 				android:background="@drawable/edit_grey_one_default"
 				android:paddingTop="8dp"
-				android:paddingStart="15dp"
-				android:paddingEnd="15dp"
 				android:paddingLeft="15dp"
 				android:paddingRight="15dp"
 				android:paddingBottom="8dp" />
@@ -86,8 +81,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:paddingRight="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<com.chess.widgets.RoboEditText
@@ -99,15 +92,11 @@
 				android:hint="password for autologin"
 				android:layout_marginTop="8dp"
 				android:layout_marginBottom="8dp"
-				android:layout_marginStart="@dimen/default_scr_side_padding"
-				android:layout_marginEnd="@dimen/default_scr_side_padding"
 				android:layout_marginLeft="@dimen/default_scr_side_padding"
 				android:layout_marginRight="@dimen/default_scr_side_padding"
 				android:gravity="center_vertical"
 				android:background="@drawable/edit_grey_one_default"
 				android:paddingTop="8dp"
-				android:paddingStart="15dp"
-				android:paddingEnd="15dp"
 				android:paddingLeft="15dp"
 				android:paddingRight="15dp"
 				android:paddingBottom="8dp" />
@@ -119,8 +108,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
-			android:paddingRight="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
@@ -138,7 +125,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<com.chess.widgets.RoboEditText
@@ -150,15 +136,11 @@
 				android:hint="username for autologin"
 				android:layout_marginTop="8dp"
 				android:layout_marginBottom="8dp"
-				android:layout_marginStart="@dimen/default_scr_side_padding"
-				android:layout_marginEnd="@dimen/default_scr_side_padding"
 				android:layout_marginLeft="@dimen/default_scr_side_padding"
 				android:layout_marginRight="@dimen/default_scr_side_padding"
 				android:gravity="center_vertical"
 				android:background="@drawable/edit_grey_one_default"
 				android:paddingTop="8dp"
-				android:paddingStart="15dp"
-				android:paddingEnd="15dp"
 				android:paddingLeft="15dp"
 				android:paddingRight="15dp"
 				android:paddingBottom="8dp" />
@@ -170,7 +152,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="10dp"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<com.chess.widgets.RoboEditText
@@ -182,15 +163,11 @@
 				android:hint="password for autologin"
 				android:layout_marginTop="8dp"
 				android:layout_marginBottom="8dp"
-				android:layout_marginStart="@dimen/default_scr_side_padding"
-				android:layout_marginEnd="@dimen/default_scr_side_padding"
 				android:layout_marginLeft="@dimen/default_scr_side_padding"
 				android:layout_marginRight="@dimen/default_scr_side_padding"
 				android:gravity="center_vertical"
 				android:background="@drawable/edit_grey_one_default"
 				android:paddingTop="8dp"
-				android:paddingStart="15dp"
-				android:paddingEnd="15dp"
 				android:paddingLeft="15dp"
 				android:paddingRight="15dp"
 				android:paddingBottom="8dp" />
@@ -201,14 +178,10 @@
 		<com.chess.widgets.LinLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:padding="@dimen/new_game_frame_padding_side"
 			style="@style/ListItem"
 			android:paddingTop="9dp"
 			android:paddingBottom="9dp"
-			android:paddingStart="15dp"
-			android:paddingEnd="15dp"
-			android:paddingLeft="15dp"
-			android:paddingRight="15dp">
+			>
 
 			<com.chess.widgets.RoboButton
 				android:id="@+id/reloginBtn"

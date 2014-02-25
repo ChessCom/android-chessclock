@@ -31,7 +31,7 @@
 		android:layout_toLeftOf="@+id/upgradeBtn"
 		android:layout_centerVertical="true"
 		android:text="@string/improve_game_with_lessons"
-		android:paddingEnd="10dp"
+		style="@style/PaddingRightSmall"
 		android:textSize="@dimen/default_text_size_small"
 		android:textColor="@color/new_text_blue_dark"
 		custom:ttf="Bold" />

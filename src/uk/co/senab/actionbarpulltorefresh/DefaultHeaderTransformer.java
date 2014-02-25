@@ -86,7 +86,8 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 //		mReleaseLabel = activity.getString(R.string.pull_to_refresh_release_label);
 		mReleaseLabel = Symbol.EMPTY;
 
-		mAnimationDuration = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
+//		mAnimationDuration = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
+		mAnimationDuration = 100;
 
 		// Setup the View styles
 		setupViewsFromStyles(activity, headerView);
@@ -122,7 +123,7 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 		if (mContentLayout != null) {
 			mContentLayout.setVisibility(View.VISIBLE);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				SDK11.setAlpha(mContentLayout, 1f);
+				SDK11.setAlpha(mContentLayout, 0.5f);
 			}
 		}
 	}
@@ -179,8 +180,9 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 
 			ObjectAnimator transAnim = ObjectAnimator.ofFloat(mContentLayout, "translationY",
 					-mContentLayout.getHeight(), 0f);
-			ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHeaderView, "alpha", 0f, 1f);
+			ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHeaderView, "alpha", 0f, 0.5f);
 			animSet.playTogether(transAnim, alphaAnim);
+//			animSet.playTogether(transAnim);
 			animSet.setDuration(mAnimationDuration);
 			animSet.start();
 		}
@@ -198,7 +200,7 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 
 //            ObjectAnimator transAnim = ObjectAnimator.ofFloat(mContentLayout, "translationY",
 //                    -mContentLayout.getHeight(), 0f);
-			ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHeaderView, "alpha", 0f, 1f);
+			ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHeaderView, "alpha", 0f, 0.5f);
 			animSet.playTogether(alphaAnim);
 			animSet.setDuration(0);
 			animSet.start();
@@ -221,11 +223,11 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 					ObjectAnimator transAnim = ObjectAnimator.ofFloat(mContentLayout, "translationY",
 							0f, -mContentLayout.getHeight());
 
-					ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
+					ObjectAnimator alphaAnim = getHeaderFadeOutAnimator();
 					((AnimatorSet) animator).playTogether(transAnim, alphaAnim);
 				} else {
 					// If the content layout isn't showing (minimized), just fade out
-					animator = ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
+					animator = getHeaderFadeOutAnimator();
 				}
 			} else {
 				if (mContentLayout.getVisibility() == View.VISIBLE) {
@@ -234,11 +236,11 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 					ObjectAnimator transAnim = ObjectAnimator.ofFloat(mContentLayout, "translationY",
 							0f, -mContentLayout.getHeight());
 
-					ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
+					ObjectAnimator alphaAnim = getHeaderFadeOutAnimator();
 					((AnimatorSet) animator).playTogether(transAnim, alphaAnim);
 				} else {
 					// If the content layout isn't showing (minimized), just fade out
-					animator = ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
+					animator = getHeaderFadeOutAnimator();
 				}
 			}
 
@@ -248,6 +250,10 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 		}
 
 		return changeVis;
+	}
+
+	private ObjectAnimator getHeaderFadeOutAnimator() {
+		return ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -262,22 +268,22 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 					// If the content layout is showing, translate and fade out
 					animator = new AnimatorSet();
 
-					ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
+					ObjectAnimator alphaAnim = getHeaderFadeOutAnimator();
 					((AnimatorSet) animator).play(alphaAnim);
 				} else {
 					// If the content layout isn't showing (minimized), just fade out
-					animator = ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
+					animator = getHeaderFadeOutAnimator();
 				}
 			} else {
 				if (mContentLayout.getVisibility() == View.VISIBLE) {
 					// If the content layout is showing, translate and fade out
 					animator = new AnimatorSet();
 
-					ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
+					ObjectAnimator alphaAnim = getHeaderFadeOutAnimator();
 					((AnimatorSet) animator).play(alphaAnim);
 				} else {
 					// If the content layout isn't showing (minimized), just fade out
-					animator = ObjectAnimator.ofFloat(mHeaderView, "alpha", 1f, 0f);
+					animator = getHeaderFadeOutAnimator();
 				}
 
 			}

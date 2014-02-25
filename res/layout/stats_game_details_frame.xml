@@ -8,27 +8,24 @@
 
 	<FrameLayout
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+		android:layout_height="wrap_content">
 
 		<LinearLayout
 			android:id="@+id/statsLinLay"
 			android:orientation="vertical"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:paddingStart="@dimen/stats_padding_side_main"
-			android:paddingEnd="@dimen/stats_padding_side_main"
 			android:paddingLeft="@dimen/stats_padding_side_main"
-			android:paddingRight="@dimen/stats_padding_side_main">
+			android:paddingRight="@dimen/stats_padding_side_main"
+			>
 
 			<!--Top Info Lay-->
 			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="@dimen/graph_stats_top_info_height"
 				android:gravity="center_vertical"
-				android:paddingStart="@dimen/default_scr_side_padding"
-				android:paddingEnd="@dimen/default_scr_side_padding"
-				android:paddingLeft="@dimen/default_scr_side_padding"
-				android:paddingRight="@dimen/default_scr_side_padding">
+				style="@style/PaddingSidesDefault"
+				>
 
 				<!--Current Rating-->
 				<com.chess.widgets.RoboTextView
@@ -123,8 +120,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:textColor="@color/new_subtitle_dark_grey"
-					android:paddingEnd="3dp"
-					android:paddingRight="3dp"
+					style="@style/PaddingRightSmall"
 					android:textSize="23sp"
 					app:ttf="Bold" />
 
@@ -133,8 +129,7 @@
 					android:layout_height="wrap_content"
 					android:text="@string/games"
 					android:textColor="@color/stats_label_grey"
-					android:paddingStart="3dp"
-					android:paddingLeft="3dp"
+					style="@style/PaddingLeftTiny"
 					android:textSize="23sp" />
 
 			</LinearLayout>
@@ -168,8 +163,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:minHeight="@dimen/stats_rating_view_height"
-				android:paddingStart="@dimen/stats_padding_side"
-				android:paddingEnd="@dimen/stats_padding_side"
 				android:paddingLeft="@dimen/stats_padding_side"
 				android:paddingRight="@dimen/stats_padding_side"
 				android:paddingTop="13dp">
@@ -189,8 +182,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/won"
-					android:paddingEnd="3dp"
-					android:paddingRight="3dp"
+					style="@style/PaddingRightSmall"
 					android:layout_below="@id/avgOpponentRatingTitleTxt"
 					android:textColor="@color/stats_label_light_grey" />
 
@@ -211,8 +203,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/lost"
-					android:paddingEnd="3dp"
-					android:paddingRight="3dp"
+					style="@style/PaddingRightSmall"
 					android:layout_below="@id/avgOpponentRatingTitleTxt"
 					android:layout_toStartOf="@+id/winLossCenterView"
 					android:layout_toLeftOf="@+id/winLossCenterView"
@@ -242,8 +233,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:text="@string/draw"
-					android:paddingEnd="3dp"
-					android:paddingRight="3dp"
+					style="@style/PaddingRightSmall"
 					android:layout_below="@id/avgOpponentRatingTitleTxt"
 					android:layout_toStartOf="@+id/drawCntValueTxt"
 					android:layout_toLeftOf="@+id/drawCntValueTxt"
@@ -273,8 +263,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:minHeight="@dimen/stats_rating_view_height"
-				android:paddingStart="@dimen/stats_padding_side"
-				android:paddingEnd="@dimen/stats_padding_side"
 				android:paddingLeft="@dimen/stats_padding_side"
 				android:paddingRight="@dimen/stats_padding_side"
 				android:gravity="center_vertical">
@@ -307,8 +295,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:minHeight="@dimen/stats_rating_view_height"
-				android:paddingStart="@dimen/stats_padding_side"
-				android:paddingEnd="@dimen/stats_padding_side"
 				android:paddingLeft="@dimen/stats_padding_side"
 				android:paddingRight="@dimen/stats_padding_side"
 				android:gravity="center_vertical">
@@ -341,8 +327,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:minHeight="@dimen/stats_rating_view_height"
-				android:paddingStart="@dimen/stats_padding_side"
-				android:paddingEnd="@dimen/stats_padding_side"
 				android:paddingLeft="@dimen/stats_padding_side"
 				android:paddingRight="@dimen/stats_padding_side"
 				android:gravity="center_vertical">
@@ -377,8 +361,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:minHeight="@dimen/stats_rating_view_height"
-				android:paddingStart="@dimen/stats_padding_side"
-				android:paddingEnd="@dimen/stats_padding_side"
 				android:paddingLeft="@dimen/stats_padding_side"
 				android:paddingRight="@dimen/stats_padding_side"
 				android:gravity="center_vertical">
@@ -411,8 +393,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:minHeight="@dimen/stats_rating_view_height"
-				android:paddingStart="@dimen/stats_padding_side"
-				android:paddingEnd="@dimen/stats_padding_side"
 				android:paddingLeft="@dimen/stats_padding_side"
 				android:paddingRight="@dimen/stats_padding_side"
 				android:paddingTop="10dp"

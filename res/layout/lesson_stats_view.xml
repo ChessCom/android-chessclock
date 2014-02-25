@@ -14,8 +14,7 @@
 		android:layout_height="wrap_content"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:textSize="33sp"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
+		style="@style/PaddingLeftDefault"
 		android:layout_centerVertical="true"
 		custom:ttf="Bold"
 		android:text="-" />
@@ -35,8 +34,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textColor="@color/new_subtitle_dark_grey"
-				android:paddingEnd="@dimen/smaller_scr_side_padding"
-				android:paddingRight="@dimen/smaller_scr_side_padding"
+				style="@style/PaddingRightSmall"
 				android:gravity="end|right|center_vertical"
 				android:textSize="14sp"
 				custom:ttf="Bold"
@@ -48,8 +46,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:paddingTop="2dp"
-				android:paddingEnd="15dp"
-				android:paddingRight="15dp"
+				style="@style/PaddingRightSmall"
 				android:textColor="@color/stats_label_grey"
 				android:text="@string/lessons_completed"
 				android:textSize="@dimen/default_text_size_small" />
@@ -63,8 +60,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textColor="@color/new_subtitle_dark_grey"
-				android:paddingEnd="@dimen/smaller_scr_side_padding"
-				android:paddingRight="@dimen/smaller_scr_side_padding"
+				style="@style/PaddingRightSmall"
 				android:gravity="end|right|center_vertical"
 				android:textSize="14sp"
 				custom:ttf="Bold"
@@ -79,8 +75,8 @@
 				android:paddingTop="2dp"
 				android:text="@string/courses_completed"
 				android:textSize="@dimen/default_text_size_small"
-				android:paddingEnd="@dimen/default_scr_side_padding"
-				android:paddingRight="@dimen/default_scr_side_padding" />
+				style="@style/PaddingRightDefault"
+				/>
 
 		</TableRow>
 

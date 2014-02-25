@@ -20,10 +20,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center"
-		android:paddingStart="5dp"
-		android:paddingEnd="5dp"
-		android:paddingLeft="5dp"
-		android:paddingRight="5dp"
+		android:paddingLeft="@dimen/smaller_scr_side_padding"
+		android:paddingRight="@dimen/smaller_scr_side_padding"
 		android:textColor="@color/black"
 		android:checkMark="?android:attr/listChoiceIndicatorSingle" />
 

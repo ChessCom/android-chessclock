@@ -6,11 +6,7 @@
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
 	style="@style/ListItem"
-	android:gravity="center_vertical"
-	android:paddingStart="@dimen/default_scr_side_padding"
-	android:paddingEnd="@dimen/default_scr_side_padding"
-	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/default_scr_side_padding">
+	android:gravity="center_vertical">
 
 	<com.chess.backend.image_load.AvatarView
 		android:id="@+id/playerImg"

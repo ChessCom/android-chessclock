@@ -35,8 +35,6 @@
 			android:minHeight="160dp"
 			android:background="@drawable/square_flat_border_white_back"
 			android:padding="@dimen/start_new_game_overlay_padding_top"
-			android:paddingStart="@dimen/start_new_game_overlay_padding_side"
-			android:paddingEnd="@dimen/start_new_game_overlay_padding_side"
 			android:paddingLeft="@dimen/start_new_game_overlay_padding_side"
 			android:paddingRight="@dimen/start_new_game_overlay_padding_side"
 			android:paddingBottom="@dimen/start_new_game_overlay_padding_side"

@@ -5,11 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	style="@style/ListItem.Header_2.Light"
-	android:gravity="center_vertical"
-	android:paddingStart="@dimen/smaller_scr_side_padding"
-	android:paddingEnd="15dp"
-	android:paddingLeft="@dimen/smaller_scr_side_padding"
-	android:paddingRight="15dp">
+	android:gravity="center_vertical">
 
 	<!--Icon-->
 	<com.chess.widgets.RoboTextView
@@ -26,8 +22,6 @@
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
 		android:text="@string/completed"
-		android:paddingStart="@dimen/smaller_scr_side_padding"
-		android:paddingLeft="@dimen/smaller_scr_side_padding"
 		style="@style/HeaderTitle.Dark"
 		custom:ttf="Regular" />
 

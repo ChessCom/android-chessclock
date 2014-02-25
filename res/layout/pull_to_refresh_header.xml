@@ -23,9 +23,9 @@
 		android:id="@id/ptr_content"
 		android:layout_width="match_parent"
 		android:layout_height="@dimen/pull_to_refresh_header_height"
-		android:background="@color/transparent"
-		android:layout_gravity="bottom">
 
+		android:layout_gravity="bottom">
+		<!--android:background="@color/red"-->
 		<com.chess.widgets.RoboTextView
 			android:id="@id/ptr_text"
 			android:layout_width="match_parent"

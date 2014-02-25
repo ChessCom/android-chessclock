@@ -38,10 +38,6 @@
 		style="@style/ListItem.Header_2.Light"
 		android:layout_above="@+id/bannerUpgradeView"
 		android:gravity="center"
-		android:paddingStart="9dp"
-		android:paddingEnd="9dp"
-		android:paddingLeft="9dp"
-		android:paddingRight="9dp"
 		android:minHeight="51dp">
 
 		<com.chess.ui.views.PageIndicatorView

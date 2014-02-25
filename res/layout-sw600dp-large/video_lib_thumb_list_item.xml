@@ -9,8 +9,6 @@
 	android:minHeight="61dp"
 	android:paddingTop="@dimen/grid_view_spacing"
 	android:paddingBottom="@dimen/grid_view_spacing"
-	android:paddingStart="22dp"
-	android:paddingEnd="22dp"
 	android:paddingLeft="22dp"
 	android:paddingRight="22dp"
 	android:background="@drawable/transparent_list_item_selector">

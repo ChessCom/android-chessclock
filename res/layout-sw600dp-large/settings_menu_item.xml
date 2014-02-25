@@ -7,8 +7,7 @@
 	style="@style/ListItem.Header"
 	app:btn_solid="@color/action_bar_overlay"
 	android:gravity="center_vertical"
-	android:paddingStart="@dimen/default_scr_side_padding"
-	android:paddingLeft="@dimen/default_scr_side_padding">
+	>
 
 	<!--Icon-->
 	<com.chess.widgets.RoboTextView

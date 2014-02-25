@@ -9,10 +9,7 @@
 	android:minHeight="61dp"
 	android:paddingTop="10dp"
 	android:paddingBottom="10dp"
-	android:paddingStart="@dimen/default_scr_side_padding"
-	android:paddingEnd="@dimen/default_scr_side_padding"
-	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/default_scr_side_padding"
+	style="@style/PaddingSidesDefault"
 	android:background="@drawable/transparent_list_item_selector">
 
 	<!--Title-->

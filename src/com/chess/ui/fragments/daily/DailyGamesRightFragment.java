@@ -48,7 +48,6 @@ public class DailyGamesRightFragment extends CommonLogicFragment implements Adap
 
 	private int successToastMsgId;
 
-
 	private DailyUpdateListener challengeInviteUpdateListener;
 	private DailyUpdateListener acceptDrawUpdateListener;
 

@@ -18,10 +18,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
 			style="@style/ListItem.Header_2.Light"
-			android:paddingStart="@dimen/smaller_scr_side_padding"
-			android:paddingEnd="@dimen/smaller_scr_side_padding"
-			android:paddingLeft="@dimen/smaller_scr_side_padding"
-			android:paddingRight="@dimen/smaller_scr_side_padding">
+			>
 
 			<!--Tactics Icon-->
 			<com.chess.widgets.RoboTextView
@@ -155,10 +152,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
 			style="@style/ListItem.Header_2.Light"
-			android:paddingStart="@dimen/smaller_scr_side_padding"
-			android:paddingEnd="@dimen/smaller_scr_side_padding"
-			android:paddingLeft="@dimen/smaller_scr_side_padding"
-			android:paddingRight="@dimen/smaller_scr_side_padding">
+			>
 
 			<!--Lessons Icon-->
 			<com.chess.widgets.RoboTextView
@@ -254,10 +248,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
 			style="@style/ListItem.Header_2.Light"
-			android:paddingStart="@dimen/smaller_scr_side_padding"
-			android:paddingEnd="@dimen/smaller_scr_side_padding"
-			android:paddingLeft="@dimen/smaller_scr_side_padding"
-			android:paddingRight="@dimen/smaller_scr_side_padding">
+			>
 
 			<!--Video Icon-->
 			<com.chess.widgets.RoboTextView
@@ -283,6 +274,8 @@
 				style="@style/GlyphIcon.Small" />
 
 		</com.chess.widgets.LinLayout>
+
+		<!--Video Thumbs preview-->
 
 		<include layout="@layout/videos_thumb_list_item" />
 

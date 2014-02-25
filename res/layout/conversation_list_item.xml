@@ -6,19 +6,16 @@
 	android:layout_height="wrap_content"
 	android:minHeight="@dimen/new_daily_games_item_height"
 	android:paddingTop="10dp"
-	android:paddingStart="10dp"
-	android:paddingEnd="10dp"
-	android:paddingLeft="10dp"
-	android:paddingRight="10dp"
-	android:paddingBottom="10dp">
+	android:paddingBottom="10dp"
+	style="@style/PaddingSidesDefault"
+	>
 
 	<!--Thumbnail-->
 	<com.chess.backend.image_load.AvatarView
 		android:id="@+id/photoImg"
 		android:layout_width="@dimen/message_thumb_size"
 		android:layout_height="@dimen/message_thumb_size"
-		android:layout_marginEnd="10dp"
-		android:layout_marginRight="10dp" />
+		/>
 
 	<!--Author-->
 	<com.chess.widgets.RoboTextView
@@ -28,8 +25,7 @@
 		android:layout_toEndOf="@id/photoImg"
 		android:layout_toRightOf="@id/photoImg"
 		android:textColor="@color/new_text_blue"
-		android:layout_marginTop="-4dp"
-		custom:ttf="Bold" />
+		style="@style/AuthorName" />
 
 	<!--Long time ago-->
 	<com.chess.widgets.RoboTextView
@@ -50,6 +46,7 @@
 		android:layout_toRightOf="@id/photoImg"
 		android:layout_below="@id/authorTxt"
 		android:textColor="@color/new_author_dark_grey"
+		style="@style/PaddingLeftSmall"
 		android:singleLine="true"
 		android:ellipsize="end"
 		custom:ttf="Bold" />

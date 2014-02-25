@@ -16,8 +16,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="15dp"
-			android:paddingRight="15dp"
 			android:background="@drawable/transparent_list_item_selector"
 			android:animateLayoutChanges="true">
 			<com.chess.widgets.RoboTextView
@@ -43,8 +41,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="@dimen/smaller_scr_side_padding"
-			android:paddingRight="@dimen/smaller_scr_side_padding"
 			android:background="@drawable/transparent_list_item_selector">
 			<!--Label-->
 			<com.chess.widgets.RoboTextView
@@ -68,8 +64,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="@dimen/smaller_scr_side_padding"
-			android:paddingRight="@dimen/smaller_scr_side_padding"
 			android:background="@drawable/transparent_list_item_selector">
 			<com.chess.widgets.RoboTextView
 				android:layout_width="0dp"
@@ -92,8 +86,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			style="@style/LinearListItem"
-			android:paddingEnd="@dimen/smaller_scr_side_padding"
-			android:paddingRight="@dimen/smaller_scr_side_padding"
 			android:background="@drawable/transparent_list_item_selector">
 
 			<!--Label-->
@@ -144,8 +136,7 @@
 				android:text="Game"
 				android:paddingTop="14dp"
 				android:paddingBottom="8dp"
-				android:paddingStart="@dimen/default_scr_side_padding"
-				android:paddingLeft="@dimen/default_scr_side_padding" />
+				style="@style/PaddingLeftDefault"/>
 
 			<LinearLayout
 				android:id="@+id/rowSampleView"
@@ -189,10 +180,6 @@
 				android:layout_toLeftOf="@+id/piecesPreviewImg"
 				android:layout_gravity="center_horizontal"
 				android:layout_marginTop="5dp"
-				android:layout_marginStart="@dimen/default_scr_side_padding"
-				android:layout_marginEnd="@dimen/default_scr_side_padding"
-				android:layout_marginLeft="@dimen/default_scr_side_padding"
-				android:layout_marginRight="@dimen/default_scr_side_padding"
 				android:visibility="gone" />
 
 			<com.chess.backend.image_load.ProgressImageView

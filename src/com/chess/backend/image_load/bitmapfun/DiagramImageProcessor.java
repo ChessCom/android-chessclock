@@ -367,7 +367,7 @@ public class DiagramImageProcessor extends ImageResizer {
 
 		// remove comments from movesList
 		String movesList = diagramItem.getMovesList();
-		if (movesList != null) {
+		if (!TextUtils.isEmpty(movesList)) {
 			movesList = boardFace.removeCommentsAndAlternatesFromMovesList(movesList);
 			boardFace.checkAndParseMovesList(movesList);
 			while (boardFace.takeBack()) {

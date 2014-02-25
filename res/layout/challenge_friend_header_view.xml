@@ -10,10 +10,6 @@
 	<com.chess.widgets.LinLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingStart="10dp"
-		android:paddingEnd="10dp"
-		android:paddingLeft="10dp"
-		android:paddingRight="10dp"
 		style="@style/ListItem"
 		android:gravity="center_vertical">
 
@@ -41,10 +37,6 @@
 		android:id="@+id/chesscomFriendsView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingStart="14dp"
-		android:paddingEnd="10dp"
-		android:paddingLeft="14dp"
-		android:paddingRight="10dp"
 		style="@style/ListItem"
 		android:gravity="center_vertical">
 
@@ -72,10 +64,6 @@
 		android:id="@+id/facebookFriendsView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingStart="14dp"
-		android:paddingEnd="10dp"
-		android:paddingLeft="14dp"
-		android:paddingRight="10dp"
 		style="@style/ListItem"
 		android:gravity="center_vertical">
 
@@ -102,10 +90,6 @@
 		android:id="@+id/yourContactsView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingStart="14dp"
-		android:paddingEnd="10dp"
-		android:paddingLeft="14dp"
-		android:paddingRight="10dp"
 		style="@style/ListItem"
 		android:gravity="center_vertical">
 
@@ -132,10 +116,6 @@
 		android:id="@+id/yourEmailView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingStart="14dp"
-		android:paddingEnd="10dp"
-		android:paddingLeft="14dp"
-		android:paddingRight="10dp"
 		style="@style/ListItem"
 		android:gravity="center_vertical">
 
@@ -186,10 +166,7 @@
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical"
 		style="@style/ListItem.Header.Dark"
-		android:paddingStart="13dp"
-		android:paddingEnd="@dimen/smaller_scr_side_padding"
-		android:paddingLeft="13dp"
-		android:paddingRight="@dimen/smaller_scr_side_padding">
+		>
 
 		<!--Recent Icon-->
 		<com.chess.widgets.RoboTextView

@@ -15,8 +15,6 @@
 		android:layout_gravity="center"
 		android:textSize="20sp"
 		android:textColor="@color/semitransparent_white_75"
-		android:paddingStart="10dp"
-		android:paddingLeft="10dp"
 		custom:ttf="Bold"
 		style="@style/DarkShadowBottom"
 		android:visibility="gone" />

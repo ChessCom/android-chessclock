@@ -3,6 +3,8 @@ package com.chess.statics;
 public class AppConstants {
 	public static final String BUGSENSE_API_KEY = "189b9851";
 	public static final String YOUTUBE_DEVELOPER_KEY = "AIzaSyDunSUhieh0QurCov5Pl0nwJUpURTYiEsw";
+	public static final String NEW_RELIC_API_KEY = "AA694c8cf1636bd4cd212ead10a6d58ede230e64e9";
+
 	public static final int DEFAULT_COMP_LEVEL = 2;
 	public static final int DEFAULT_PLAYER_RATING = 1200;
 

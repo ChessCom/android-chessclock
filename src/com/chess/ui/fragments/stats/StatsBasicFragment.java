@@ -307,9 +307,7 @@ public class StatsBasicFragment extends CommonLogicFragment implements AdapterVi
 
 			fillUserStats();
 		}
-
 	}
-
 
 	private List<RatingListItem> createStatsList(Context context) {
 		ArrayList<RatingListItem> selectionItems = new ArrayList<RatingListItem>();

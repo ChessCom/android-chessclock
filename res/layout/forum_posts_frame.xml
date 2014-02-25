@@ -21,10 +21,6 @@
 		style="@style/ListItem.Header_2.Light"
 		android:layout_above="@+id/bannerUpgradeView"
 		android:gravity="center"
-		android:paddingStart="9dp"
-		android:paddingEnd="9dp"
-		android:paddingLeft="9dp"
-		android:paddingRight="9dp"
 		android:minHeight="51dp">
 
 		<com.chess.ui.views.PageIndicatorView
@@ -44,10 +40,6 @@
 		android:padding="0dp"
 		android:paddingTop="15dp"
 		android:paddingBottom="15dp"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
 		android:layout_above="@id/bannerUpgradeView"
 		android:visibility="gone">
 
@@ -59,15 +51,13 @@
 			android:minHeight="29dp"
 			android:gravity="top"
 			android:background="@drawable/edit_grey_one_default"
-			android:paddingTop="8dp"
-			android:paddingStart="15dp"
-			android:paddingEnd="15dp"
-			android:paddingLeft="15dp"
-			android:paddingRight="15dp"
-			android:paddingBottom="8dp"
 			android:imeActionLabel="@string/post"
 			android:hint="@string/write_reply_"
 			android:textSize="14sp" />
+<!--
+		android:paddingTop="8dp"
+		android:paddingBottom="8dp"
+-->
 
 	</com.chess.widgets.LinLayout>
 

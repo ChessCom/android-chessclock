@@ -75,10 +75,9 @@
 		android:layout_below="@id/boardPreviewContainer"
 		android:layout_toEndOf="@id/playerImg"
 		android:layout_toStartOf="@+id/timeLeftIcon"
-		android:paddingEnd="3dp"
+		style="@style/PaddingRightTiny"
 		android:layout_toRightOf="@id/playerImg"
 		android:layout_toLeftOf="@+id/timeLeftIcon"
-		android:paddingRight="3dp"
 		android:text="test"
 		custom:ttf="Bold"
 		android:layout_marginTop="-4dp"
@@ -97,10 +96,7 @@
 		custom:ttf="Icon"
 		android:layout_marginTop="-4dp"
 		android:paddingTop="3dp"
-		android:paddingStart="0dp"
-		android:paddingEnd="5dp"
-		android:paddingLeft="0dp"
-		android:paddingRight="5dp"
+		style="@style/PaddingRightTiny"
 		android:paddingBottom="3dp"
 		android:text="@string/ic_clock" />
 

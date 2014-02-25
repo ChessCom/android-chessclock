@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:minHeight="62dp"
 	android:paddingTop="10dp"
-	android:paddingStart="10dp"
-	android:paddingEnd="10dp"
-	android:paddingLeft="10dp"
-	android:paddingRight="10dp"
+	style="@style/PaddingSidesDefault"
 	android:paddingBottom="10dp"
 	android:background="@drawable/transparent_list_item_selector">
 
@@ -18,8 +14,7 @@
 		android:id="@+id/photoImg"
 		android:layout_width="@dimen/message_thumb_size"
 		android:layout_height="@dimen/message_thumb_size"
-		android:layout_marginEnd="10dp"
-		android:layout_marginRight="10dp" />
+		/>
 
 	<!--Author-->
 	<com.chess.widgets.RoboTextView
@@ -29,9 +24,7 @@
 		android:layout_toEndOf="@id/photoImg"
 		android:layout_toRightOf="@id/photoImg"
 		android:layout_alignTop="@id/photoImg"
-		android:layout_marginTop="-4dp"
-		android:textColor="@color/new_subtitle_dark_grey"
-		custom:ttf="Bold" />
+		style="@style/AuthorName" />
 
 	<!--Long time ago-->
 	<com.chess.widgets.RoboTextView
@@ -53,6 +46,7 @@
 		android:layout_toEndOf="@id/photoImg"
 		android:layout_toRightOf="@id/photoImg"
 		android:layout_below="@id/authorTxt"
+		style="@style/PaddingLeftSmall"
 		android:textColor="@color/new_subtitle_dark_grey" />
 
 </RelativeLayout>

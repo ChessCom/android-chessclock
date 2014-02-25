@@ -29,10 +29,7 @@
 		android:textColor="@color/new_author_dark_grey"
 		android:paddingTop="6dp"
 		android:paddingBottom="6dp"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
+		style="@style/PaddingSidesDefault"
 		android:text="Reason" />
 
 	<!--Rating title-->
@@ -74,8 +71,7 @@
 			android:layout_gravity="center"
 			android:textColor="@color/new_subtitle_dark_grey"
 			android:textSize="@dimen/game_end_popup_text_size"
-			android:paddingStart="10dp"
-			android:paddingLeft="10dp"
+			style="@style/PaddingLeftSmall"
 			custom:ttf="Bold" />
 
 	</LinearLayout>
@@ -83,10 +79,7 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
+		style="@style/PaddingSidesDefault"
 		android:paddingTop="20dp"
 		android:paddingBottom="5dp">
 
@@ -117,10 +110,7 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
+		style="@style/PaddingSidesDefault"
 		android:paddingTop="5dp"
 		android:paddingBottom="@dimen/default_scr_side_padding">
 

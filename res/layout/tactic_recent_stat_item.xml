@@ -6,10 +6,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
-	android:paddingStart="@dimen/default_scr_side_padding"
-	android:paddingEnd="@dimen/default_scr_side_padding"
-	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/default_scr_side_padding"
+	style="@style/PaddingSidesDefault"
 	android:minHeight="@dimen/list_item_height"
 	android:background="@drawable/transparent_list_item_selector"
 	android:baselineAligned="false">

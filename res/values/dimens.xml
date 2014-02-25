@@ -94,9 +94,10 @@
 
 
 	<!--Default screen-->
-	<dimen name="default_scr_top_padding">15dp</dimen>
-	<dimen name="default_scr_side_padding">15dp</dimen>
+	<dimen name="default_scr_top_padding">16dp</dimen>
+	<dimen name="default_scr_side_padding">16dp</dimen>
 	<dimen name="smaller_scr_side_padding">8dp</dimen>
+	<dimen name="tiny_padding">4dp</dimen>
 	<dimen name="default_scr_bottom_padding">10dp</dimen>
 
 	<!--Default margins between screen widgets-->
@@ -188,7 +189,6 @@
 
 	<!--Daily Games-->
 	<dimen name="home_games_bottom_button_height">40dp</dimen>
-	<dimen name="new_game_frame_padding_side">14dp</dimen>
 	<dimen name="new_daily_games_item_height">53dp</dimen>
 
 	<!--SeekBar-->

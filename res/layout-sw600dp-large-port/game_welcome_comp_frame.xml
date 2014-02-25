@@ -98,9 +98,9 @@
 				android:gravity="center_vertical|left"
 				android:layout_centerVertical="true"
 				android:layout_toEndOf="@id/centerPoint"
-				android:paddingStart="@dimen/grid_view_spacing"
 				android:layout_toRightOf="@id/centerPoint"
-				android:paddingLeft="@dimen/grid_view_spacing" />
+				style="@style/PaddingLeftDefault"
+				/>
 
 		</RelativeLayout>
 
@@ -116,8 +116,6 @@
 		android:layout_alignParentBottom="true"
 		android:weightSum="10"
 		android:gravity="center_vertical"
-		android:paddingStart="@dimen/common_tablet_side_padding"
-		android:paddingEnd="@dimen/common_tablet_side_padding"
 		android:paddingLeft="@dimen/common_tablet_side_padding"
 		android:paddingRight="@dimen/common_tablet_side_padding"
 		android:background="@drawable/defaultshadow_top">

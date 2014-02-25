@@ -6,8 +6,7 @@
 	android:orientation="horizontal"
 	style="@style/ListItem"
 	android:gravity="center_vertical"
-	android:paddingStart="@dimen/default_scr_side_padding"
-	android:paddingLeft="@dimen/default_scr_side_padding">
+	>
 
 	<!--Icon-->
 	<com.chess.widgets.RoboTextView
@@ -16,8 +15,8 @@
 		android:layout_height="wrap_content"
 		android:textColor="@color/white"
 		android:textSize="33dp"
-		android:layout_marginEnd="9dp"
-		android:layout_marginRight="9dp"
+		android:layout_marginEnd="8dp"
+		android:layout_marginRight="8dp"
 		style="@style/GlyphIcon"
 		android:shadowColor="@color/back_shadows_chess"
 		android:shadowRadius="1.0"
@@ -32,7 +31,8 @@
 		style="@style/SettingsListText"
 		custom:ttf="Bold"
 		android:textSize="20sp"
-		android:paddingStart="10dp"
-		android:paddingLeft="10dp" />
+		android:paddingRight="10dp"
+		android:paddingLeft="10dp"
+		/>
 
 </com.chess.widgets.LinLayout>

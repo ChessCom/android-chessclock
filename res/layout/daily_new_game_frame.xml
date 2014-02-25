@@ -20,10 +20,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
 			style="@style/ListItem.Header_2.Light"
-			android:paddingStart="@dimen/smaller_scr_side_padding"
-			android:paddingEnd="@dimen/smaller_scr_side_padding"
-			android:paddingLeft="@dimen/smaller_scr_side_padding"
-			android:paddingRight="@dimen/smaller_scr_side_padding">
+			>
 
 			<!--Icon-->
 			<com.chess.widgets.RoboTextView
@@ -59,10 +56,7 @@
 			android:layout_height="wrap_content"
 			android:paddingTop="8dp"
 			android:paddingBottom="8dp"
-			android:paddingStart="@dimen/default_scr_side_padding"
-			android:paddingEnd="@dimen/default_scr_side_padding"
-			android:paddingLeft="@dimen/default_scr_side_padding"
-			android:paddingRight="@dimen/default_scr_side_padding"
+			style="@style/PaddingSidesDefault"
 			android:animateLayoutChanges="true">
 
 			<LinearLayout
@@ -112,10 +106,7 @@
 			android:layout_height="wrap_content"
 			android:gravity="center_vertical"
 			style="@style/ListItem.Header_2.Light"
-			android:paddingStart="@dimen/smaller_scr_side_padding"
-			android:paddingEnd="@dimen/smaller_scr_side_padding"
-			android:paddingLeft="@dimen/smaller_scr_side_padding"
-			android:paddingRight="@dimen/smaller_scr_side_padding">
+			>
 
 			<!--Icon-->
 			<com.chess.widgets.RoboTextView
@@ -150,10 +141,6 @@
 			android:id="@+id/inviteFriendView1"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:paddingStart="@dimen/default_scr_side_padding"
-			android:paddingEnd="@dimen/default_scr_side_padding"
-			android:paddingLeft="@dimen/default_scr_side_padding"
-			android:paddingRight="@dimen/default_scr_side_padding"
 			style="@style/ListItem"
 			android:gravity="center_vertical"
 			android:visibility="gone">
@@ -162,8 +149,7 @@
 				android:layout_width="@dimen/list_item_image_size"
 				android:layout_height="@dimen/list_item_image_size"
 				android:src="@drawable/img_profile_picture_stub"
-				android:layout_marginEnd="12dp"
-				android:layout_marginRight="12dp"
+				style="@style/MarginRightDefault"
 				android:contentDescription="@string/profile" />
 
 			<com.chess.widgets.RoboTextView
@@ -178,8 +164,7 @@
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:paddingStart="4dp"
-				android:paddingLeft="4dp"
+				style="@style/PaddingLeftSmall"
 				android:text="(Friend Name)"
 				android:textColor="@color/new_subtitle_dark_grey" />
 
@@ -190,10 +175,6 @@
 			android:id="@+id/inviteFriendView2"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:paddingStart="@dimen/default_scr_side_padding"
-			android:paddingEnd="@dimen/default_scr_side_padding"
-			android:paddingLeft="@dimen/default_scr_side_padding"
-			android:paddingRight="@dimen/default_scr_side_padding"
 			style="@style/ListItem"
 			android:gravity="center_vertical">
 
@@ -217,8 +198,7 @@
 				android:layout_width="0dp"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:paddingStart="4dp"
-				android:paddingLeft="4dp"
+				style="@style/PaddingLeftSmall"
 				android:text="(Friend Name)"
 				android:textColor="@color/new_subtitle_dark_grey"
 				android:visibility="gone" />
@@ -230,10 +210,6 @@
 			android:id="@+id/playFriendView"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:paddingStart="@dimen/default_scr_side_padding"
-			android:paddingEnd="@dimen/smaller_scr_side_padding"
-			android:paddingLeft="@dimen/default_scr_side_padding"
-			android:paddingRight="@dimen/smaller_scr_side_padding"
 			style="@style/ListItem"
 			android:gravity="center_vertical">
 
@@ -253,8 +229,8 @@
 				android:layout_weight="1"
 				android:text="@string/challenge_friend"
 				android:textColor="@color/new_subtitle_dark_grey"
-				android:paddingStart="12dp"
-				android:paddingLeft="12dp" />
+				style="@style/PaddingLeftSmall"
+				/>
 
 		</com.chess.widgets.LinLayout>
 

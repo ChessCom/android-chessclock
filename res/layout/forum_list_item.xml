@@ -5,10 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:minHeight="@dimen/list_item_height"
-	android:paddingStart="@dimen/default_scr_side_padding"
-	android:paddingEnd="@dimen/smaller_scr_side_padding"
-	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/smaller_scr_side_padding"
+	style="@style/PaddingSidesDefault"
 	android:paddingTop="6dp"
 	android:paddingBottom="6dp"
 	android:background="@drawable/transparent_list_item_selector">

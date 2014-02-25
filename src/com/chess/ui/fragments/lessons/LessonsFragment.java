@@ -46,8 +46,6 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 
 	private ListView listView;
 	private ExpandableListView expListView;
-	private View loadingView;
-	private TextView emptyView;
 
 	private CommonCategoriesCursorAdapter categoriesCursorAdapter;
 
@@ -89,7 +87,6 @@ public class LessonsFragment extends CommonLogicFragment implements AdapterView.
 		setTitle(R.string.lessons);
 
 		loadingView = view.findViewById(R.id.loadingView);
-		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		{ // Library mode init
 			listView = (ListView) view.findViewById(R.id.listView);

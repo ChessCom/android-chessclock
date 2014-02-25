@@ -143,8 +143,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:textColor="@color/new_subtitle_dark_grey"
-						android:paddingEnd="3dp"
-						android:paddingRight="3dp"
+						style="@style/PaddingRightTiny"
 						android:textSize="27sp"
 						app:ttf="Bold" />
 
@@ -153,8 +152,7 @@
 						android:layout_height="wrap_content"
 						android:text="@string/games"
 						android:textColor="@color/stats_label_grey"
-						android:paddingStart="3dp"
-						android:paddingLeft="3dp"
+						style="@style/PaddingLeftTiny"
 						android:textSize="27sp" />
 
 				</LinearLayout>
@@ -196,8 +194,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="@string/won"
-						android:paddingEnd="3dp"
-						android:paddingRight="3dp"
+						style="@style/PaddingRightTiny"
 						android:layout_below="@id/avgOpponentRatingTitleTxt"
 						android:textColor="@color/stats_label_light_grey" />
 
@@ -219,8 +216,7 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:text="@string/lost"
-						android:paddingEnd="3dp"
-						android:paddingRight="3dp"
+						style="@style/PaddingRightTiny"
 						android:layout_below="@id/avgOpponentRatingTitleTxt"
 						android:layout_toStartOf="@+id/winLossCenterView"
 						android:layout_toLeftOf="@+id/winLossCenterView"
@@ -250,8 +246,7 @@
 						android:id="@+id/drawCntLabelTxt"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:paddingEnd="3dp"
-						android:paddingRight="3dp"
+						style="@style/PaddingRightTiny"
 						android:text="@string/draw"
 						android:layout_below="@id/avgOpponentRatingTitleTxt"
 						android:layout_toStartOf="@+id/drawCntValueTxt"

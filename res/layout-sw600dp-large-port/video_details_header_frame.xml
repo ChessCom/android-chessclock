@@ -80,13 +80,9 @@
 		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/thumbnailImg"
 		android:layout_toRightOf="@id/thumbnailImg"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingTop="@dimen/common_tablet_side_padding"
-		android:paddingBottom="9dp"
-		android:textColor="@color/new_subtitle_dark_grey"
 		android:layout_marginTop="-4dp"
-		android:textSize="18sp"
-		custom:ttf="Bold" />
+		android:paddingTop="@dimen/common_tablet_side_padding"
+		style="@style/Title" />
 
 	<com.chess.backend.image_load.ProgressImageView
 		android:id="@+id/thumbnailAuthorImg"
@@ -106,13 +102,7 @@
 		android:layout_toEndOf="@id/thumbnailAuthorImg"
 		android:layout_toRightOf="@id/thumbnailAuthorImg"
 		android:layout_below="@id/titleTxt"
-		android:paddingStart="11dp"
-		android:paddingLeft="11dp"
-		android:paddingBottom="2dp"
-		android:layout_marginTop="-4dp"
-		android:textColor="@color/new_author_dark_grey"
-		android:textSize="14sp"
-		custom:ttf="Bold" />
+		style="@style/AuthorName" />
 
 	<ImageView
 		android:id="@+id/countryImg"
@@ -144,12 +134,12 @@
 		android:layout_below="@id/thumbnailImg"
 		android:textColor="@color/new_subtitle_dark_grey"
 		android:paddingTop="10dp"
-		android:paddingStart="@dimen/common_tablet_side_padding"
-		android:paddingEnd="@dimen/common_tablet_side_padding"
 		android:paddingLeft="@dimen/common_tablet_side_padding"
 		android:paddingRight="@dimen/common_tablet_side_padding"
 		android:paddingBottom="10dp"
 		android:textSize="@dimen/content_text_size" />
+
+	<!--TODO add style-->
 
 	<ProgressBar
 		android:id="@+id/loadingCommentsView"

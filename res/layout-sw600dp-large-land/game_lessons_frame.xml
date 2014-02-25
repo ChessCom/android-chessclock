@@ -34,8 +34,7 @@
 		android:layout_toEndOf="@id/boardLinLay"
 		android:layout_toRightOf="@id/boardLinLay"
 		android:paddingTop="11dp"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
+		style="@style/PaddingRightDefault"
 		android:paddingBottom="@dimen/default_scr_bottom_padding"
 		android:animateLayoutChanges="true">
 
@@ -61,15 +60,10 @@
 					android:id="@+id/lessonTitleTxt"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:textSize="21sp"
-					android:textColor="@color/new_subtitle_dark_grey"
 					android:paddingTop="9dp"
-					android:paddingStart="15dp"
-					android:paddingEnd="15dp"
-					android:paddingLeft="15dp"
-					android:paddingRight="15dp"
+					style="@style/Title"
 					android:paddingBottom="8dp"
-					custom:ttf="Bold" />
+					/>
 
 				<!--Goal Commentary-->
 				<com.chess.widgets.RoboTextView

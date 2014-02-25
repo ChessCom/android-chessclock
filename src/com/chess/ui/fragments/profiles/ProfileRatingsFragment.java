@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,8 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 	private final static int TACTICS = 5;
 	private final static int LESSONS = 6;
 
-	private List<RatingListItem> ratingList;
+	private SparseArray<RatingListItem> ratingList;
+
 	private RatingsAdapter ratingsAdapter;
 	private SaveStatsUpdateListener saveStatsUpdateListener;
 	private StatsItemUpdateListener statsItemUpdateListener;
@@ -80,8 +82,10 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 		emptyView = (TextView) view.findViewById(R.id.emptyView);
 
 		listView = (ListView) view.findViewById(R.id.listView);
-		ratingList = createStatsList(getActivity());
-		ratingsAdapter = new RatingsAdapter(getActivity(), ratingList);
+		ratingList = new SparseArray<RatingListItem>();
+		List<RatingListItem> statsList = createStatsList(getActivity());
+
+		ratingsAdapter = new RatingsAdapter(getActivity(), statsList);
 		listView.setAdapter(ratingsAdapter);
 		listView.setOnItemClickListener(this);
 	}
@@ -105,24 +109,25 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		RatingListItem ratingListItem = ratingList.get(position);
+		RatingListItem ratingListItem = (RatingListItem) parent.getItemAtPosition(position);
 
-		int code = Integer.parseInt(ratingListItem.getCode());
-		openStatsForUser(code, username);
+		if (ratingListItem != null) {
+			int code = Integer.parseInt(ratingListItem.getCode());
+			openStatsForUser(code, username);
+		}
 	}
 
 	private void fillUserStats() {
 		// fill ratings
 		String[] argument = new String[]{username};
 
-		List<RatingListItem> itemsToRemove = new ArrayList<RatingListItem>();
 		{// standard
 			Cursor cursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.USER_STATS_LIVE_STANDARD.ordinal()],
 					DbDataManager.PROJECTION_USER_CURRENT_RATING, DbDataManager.SELECTION_USER, argument, null);
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				if (currentRating == 0) {
-					itemsToRemove.add(ratingList.get(LIVE_STANDARD));
+					ratingList.remove(LIVE_STANDARD);
 				} else {
 					ratingList.get(LIVE_STANDARD).setValue(currentRating);
 				}
@@ -134,7 +139,7 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				if (currentRating == 0) {
-					itemsToRemove.add(ratingList.get(LIVE_BLITZ));
+					ratingList.remove(LIVE_BLITZ);
 				} else {
 					ratingList.get(LIVE_BLITZ).setValue(currentRating);
 				}
@@ -146,7 +151,7 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				if (currentRating == 0) {
-					itemsToRemove.add(ratingList.get(LIVE_LIGHTNING));
+					ratingList.remove(LIVE_LIGHTNING);
 				} else {
 					ratingList.get(LIVE_LIGHTNING).setValue(currentRating);
 				}
@@ -158,7 +163,7 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				if (currentRating == 0) {
-					itemsToRemove.add(ratingList.get(DAILY_CHESS));
+					ratingList.remove(DAILY_CHESS);
 				} else {
 					ratingList.get(DAILY_CHESS).setValue(currentRating);
 				}
@@ -170,7 +175,7 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				if (currentRating == 0) {
-					itemsToRemove.add(ratingList.get(DAILY_CHESS960));
+					ratingList.remove(DAILY_CHESS960);
 				} else {
 					ratingList.get(DAILY_CHESS960).setValue(currentRating);
 				}
@@ -182,7 +187,7 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				if (currentRating == 0) {
-					itemsToRemove.add(ratingList.get(TACTICS));
+					ratingList.remove(TACTICS);
 				} else {
 					ratingList.get(TACTICS).setValue(currentRating);
 				}
@@ -194,14 +199,17 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 			if (cursor != null && cursor.moveToFirst()) {
 				int currentRating = DbDataManager.getInt(cursor, DbScheme.V_CURRENT);
 				if (currentRating == 0) {
-					itemsToRemove.add(ratingList.get(LESSONS));
+					ratingList.remove(LESSONS);
 				} else {
 					ratingList.get(LESSONS).setValue(currentRating);
 				}
 			}
 		}
 
-		ratingList.removeAll(itemsToRemove);
+		List<RatingListItem> statsList = new ArrayList<RatingListItem>();
+		for (int i = 0; i < ratingList.size(); i++) {
+			statsList.add(ratingList.valueAt(i));
+		}
 
 		if (ratingList.size() == 0) {
 			listView.setVisibility(View.GONE);
@@ -213,7 +221,7 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 			listView.setVisibility(View.VISIBLE);
 		}
 
-		ratingsAdapter.notifyDataSetInvalidated();
+		ratingsAdapter.setItemsList(statsList);
 		need2update = false;
 	}
 
@@ -244,9 +252,7 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 
 			fillUserStats();
 		}
-
 	}
-
 
 	private List<RatingListItem> createStatsList(Context context) {
 		ArrayList<RatingListItem> selectionItems = new ArrayList<RatingListItem>();
@@ -256,6 +262,7 @@ public class ProfileRatingsFragment extends ProfileBaseFragment implements Adapt
 			String category = categories[i];
 			RatingListItem ratingListItem = new RatingListItem(getIconByCategory(i), category);
 			ratingListItem.setCode(String.valueOf(i));
+			ratingList.put(i, ratingListItem);
 			selectionItems.add(ratingListItem);
 		}
 		return selectionItems;

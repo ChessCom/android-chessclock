@@ -7,11 +7,9 @@
 	android:background="@drawable/transparent_list_item_selector"
 	android:gravity="center_vertical"
 	android:paddingTop="8dp"
-	android:paddingStart="@dimen/default_scr_side_padding"
-	android:paddingEnd="@dimen/default_scr_side_padding"
-	android:paddingLeft="@dimen/default_scr_side_padding"
-	android:paddingRight="@dimen/default_scr_side_padding"
-	android:paddingBottom="8dp">
+	android:paddingBottom="8dp"
+	style="@style/PaddingSidesDefault"
+	>
 
 	<com.chess.backend.image_load.AvatarView
 		android:id="@+id/playerImg"
@@ -56,11 +54,8 @@
 		android:textSize="@dimen/glyph_icon_default"
 		custom:ttf="Icon"
 		android:paddingTop="3dp"
-		android:paddingStart="0dp"
-		android:paddingEnd="5dp"
-		android:paddingLeft="0dp"
-		android:paddingRight="5dp"
 		android:paddingBottom="3dp"
+		style="@style/PaddingRightTiny"
 		android:text="@string/ic_clock" />
 
 	<com.chess.widgets.RoboTextView

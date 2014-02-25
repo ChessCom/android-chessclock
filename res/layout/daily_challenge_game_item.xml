@@ -7,18 +7,13 @@
 	android:gravity="center_vertical"
 	android:paddingTop="8dp"
 	android:paddingBottom="8dp"
-	android:paddingEnd="10dp"
-	android:paddingRight="10dp"
 	android:minHeight="@dimen/new_nav_menu_item_height">
 
 	<com.chess.backend.image_load.AvatarView
 		android:id="@+id/playerImg"
 		android:layout_width="@dimen/daily_list_item_image_size"
 		android:layout_height="@dimen/daily_list_item_image_size"
-		android:layout_marginStart="10dp"
-		android:layout_marginEnd="10dp"
-		android:layout_marginLeft="10dp"
-		android:layout_marginRight="10dp"
+		style="@style/MarginRightDefault"
 		android:contentDescription="@string/photo"
 		android:layout_gravity="center_vertical" />
 
@@ -37,8 +32,6 @@
 		android:layout_height="wrap_content"
 		android:text="@string/ic_close"
 		android:layout_gravity="center_vertical"
-		android:layout_marginEnd="10dp"
-		android:layout_marginRight="10dp"
 		style="@style/GlyphIcon.Big"
 		android:textColor="@color/text_controls_icons"
 		app:themeColor="true" />

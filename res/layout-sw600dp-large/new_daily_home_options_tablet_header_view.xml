@@ -12,11 +12,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical"
-		style="@style/ListItem.Header.Dark"
-		android:paddingStart="@dimen/smaller_scr_side_padding"
-		android:paddingEnd="@dimen/smaller_scr_side_padding"
-		android:paddingLeft="@dimen/smaller_scr_side_padding"
-		android:paddingRight="@dimen/smaller_scr_side_padding">
+		style="@style/ListItem.Header_2.Dark"
+		>
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -30,8 +27,6 @@
 		<com.chess.widgets.RoboTextView
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:paddingStart="@dimen/smaller_scr_side_padding"
-			android:paddingLeft="@dimen/smaller_scr_side_padding"
 			android:layout_weight="1"
 			android:text="@string/new_game"
 			style="@style/HeaderTitle.Light"
@@ -46,11 +41,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical"
-		style="@style/ListItem.Header_2.Dark"
-		android:paddingStart="@dimen/smaller_scr_side_padding"
-		android:paddingEnd="@dimen/smaller_scr_side_padding"
-		android:paddingLeft="@dimen/smaller_scr_side_padding"
-		android:paddingRight="@dimen/smaller_scr_side_padding">
+		style="@style/ListItem.Header_2.Dark">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -66,8 +57,6 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:paddingStart="8dp"
-			android:paddingLeft="8dp"
 			android:text="@string/friends"
 			style="@style/HeaderTitle.Light"
 			app:themeColor="true" />
@@ -79,10 +68,6 @@
 		android:id="@+id/inviteFriendView1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
 		style="@style/ListItem"
 		android:gravity="center_vertical"
 		android:visibility="visible">
@@ -91,8 +76,7 @@
 			android:layout_width="@dimen/list_item_image_size"
 			android:layout_height="@dimen/list_item_image_size"
 			android:src="@drawable/img_profile_picture_stub"
-			android:layout_marginEnd="12dp"
-			android:layout_marginRight="12dp"
+			style="@style/MarginRightDefault"
 			android:contentDescription="@string/image" />
 
 		<com.chess.widgets.RoboTextView
@@ -107,8 +91,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:paddingStart="4dp"
-			android:paddingLeft="4dp"
+			style="@style/PaddingLeftSmall"
 			android:textColor="@color/semitransparent_white_75"
 			app:themeColor="true" />
 
@@ -119,10 +102,6 @@
 		android:id="@+id/inviteFriendView2"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
 		style="@style/ListItem"
 		android:gravity="center_vertical">
 
@@ -130,8 +109,7 @@
 			android:layout_width="@dimen/list_item_image_size"
 			android:layout_height="@dimen/list_item_image_size"
 			android:src="@drawable/img_profile_picture_stub"
-			android:layout_marginEnd="12dp"
-			android:layout_marginRight="12dp"
+			style="@style/MarginRightDefault"
 			android:contentDescription="@string/image" />
 
 		<com.chess.widgets.RoboTextView
@@ -146,8 +124,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:paddingStart="4dp"
-			android:paddingLeft="4dp"
+			style="@style/PaddingLeftTiny"
 			android:textColor="@color/semitransparent_white_75"
 			android:visibility="gone"
 			app:themeColor="true" />
@@ -161,10 +138,7 @@
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical"
 		style="@style/ListItem.Header_2.Dark"
-		android:paddingStart="@dimen/smaller_scr_side_padding"
-		android:paddingEnd="@dimen/smaller_scr_side_padding"
-		android:paddingLeft="@dimen/smaller_scr_side_padding"
-		android:paddingRight="@dimen/smaller_scr_side_padding">
+		>
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -180,8 +154,6 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:paddingStart="8dp"
-			android:paddingLeft="8dp"
 			android:text="@string/stats"
 			style="@style/HeaderTitle.Light"
 			app:themeColor="true" />
@@ -193,10 +165,6 @@
 		android:id="@+id/statsView1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingStart="8dp"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="8dp"
-		android:paddingRight="@dimen/default_scr_side_padding"
 		style="@style/ListItem"
 		android:gravity="center_vertical">
 
@@ -218,7 +186,6 @@
 			android:textColor="@color/semitransparent_white_75"
 			app:themeColor="true" />
 
-
 		<!--Rating-->
 		<com.chess.widgets.RoboTextView
 			android:id="@+id/dailyRatingTxt"
@@ -236,10 +203,6 @@
 		android:id="@+id/statsView2"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingStart="8dp"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="8dp"
-		android:paddingRight="@dimen/default_scr_side_padding"
 		style="@style/ListItem"
 		android:gravity="center_vertical">
 
@@ -251,7 +214,6 @@
 			android:textColor="@color/new_light_grey_2"
 			style="@style/GlyphIcon.Big"
 			app:themeColor="true" />
-
 
 		<com.chess.widgets.RoboTextView
 			android:layout_width="0dp"
@@ -279,11 +241,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical"
-		style="@style/ListItem.Header.Dark"
-		android:paddingStart="@dimen/smaller_scr_side_padding"
-		android:paddingEnd="@dimen/smaller_scr_side_padding"
-		android:paddingLeft="@dimen/smaller_scr_side_padding"
-		android:paddingRight="@dimen/smaller_scr_side_padding">
+		style="@style/ListItem.Header_2.Dark">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -297,8 +255,6 @@
 		<com.chess.widgets.RoboTextView
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:paddingStart="@dimen/smaller_scr_side_padding"
-			android:paddingLeft="@dimen/smaller_scr_side_padding"
 			android:layout_weight="1"
 			android:text="@string/tournaments"
 			style="@style/HeaderTitle.Light"
@@ -311,11 +267,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical"
-		style="@style/ListItem.Header.Dark"
-		android:paddingStart="@dimen/smaller_scr_side_padding"
-		android:paddingEnd="@dimen/smaller_scr_side_padding"
-		android:paddingLeft="@dimen/smaller_scr_side_padding"
-		android:paddingRight="@dimen/smaller_scr_side_padding">
+		style="@style/ListItem.Header_2.Dark">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -329,8 +281,6 @@
 		<com.chess.widgets.RoboTextView
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:paddingStart="@dimen/smaller_scr_side_padding"
-			android:paddingLeft="@dimen/smaller_scr_side_padding"
 			android:layout_weight="1"
 			android:text="@string/open_challenges"
 			style="@style/HeaderTitle.Light"
@@ -344,11 +294,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:gravity="center_vertical"
-		style="@style/ListItem.Header.Dark"
-		android:paddingStart="@dimen/smaller_scr_side_padding"
-		android:paddingEnd="@dimen/smaller_scr_side_padding"
-		android:paddingLeft="@dimen/smaller_scr_side_padding"
-		android:paddingRight="@dimen/smaller_scr_side_padding">
+		style="@style/ListItem.Header_2.Dark">
 
 		<!--Icon-->
 		<com.chess.widgets.RoboTextView
@@ -362,8 +308,6 @@
 		<com.chess.widgets.RoboTextView
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			android:paddingStart="@dimen/smaller_scr_side_padding"
-			android:paddingLeft="@dimen/smaller_scr_side_padding"
 			android:layout_weight="1"
 			android:text="@string/archive"
 			style="@style/HeaderTitle.Light"

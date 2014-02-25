@@ -115,7 +115,6 @@
 	<dimen name="daily_games_time_left_icon">28dp</dimen>
 	<dimen name="play_button_small_text_size">16sp</dimen>
 	<dimen name="panel_info_tactic_padding_side">15dp</dimen>
-	<dimen name="common_tablet_side_padding">23dp</dimen>
 	<dimen name="stats_left_part_width">232dp</dimen>
 	<dimen name="pie_chart_donut_size">174dp</dimen>
 	<dimen name="pie_chart_donut_width_size">112dp</dimen>

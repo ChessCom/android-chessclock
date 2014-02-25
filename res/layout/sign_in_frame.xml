@@ -26,8 +26,6 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingTop="@dimen/signin_scr_top_padding"
-		android:paddingStart="@dimen/signin_scr_side_padding"
-		android:paddingEnd="@dimen/signin_scr_side_padding"
 		android:paddingLeft="@dimen/signin_scr_side_padding"
 		android:paddingRight="@dimen/signin_scr_side_padding"
 		android:layout_centerInParent="true">

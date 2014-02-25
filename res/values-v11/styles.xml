@@ -42,7 +42,6 @@
 	</style>
 
 	<style name="ActionBarTitle">
-		<!--<item name="android:textColor">@color/actionbar_title_color</item>-->
 		<item name="android:textColor">@color/semitransparent_white_75</item>
 		<item name="android:shadowColor">#000000</item>
 		<item name="android:shadowRadius">1.5</item>

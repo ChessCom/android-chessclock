@@ -8,25 +8,19 @@
 	android:minWidth="@dimen/popup_dialog_width"
 	android:paddingTop="@dimen/popup_top_padding"
 	android:background="@drawable/popup_white_back"
-	android:layout_marginEnd="@dimen/popup_side_margin"
-	android:layout_marginStart="@dimen/popup_side_margin"
 	android:layout_marginRight="@dimen/popup_side_margin"
 	android:layout_marginLeft="@dimen/popup_side_margin"
 	android:paddingBottom="1dp"
-	android:paddingStart="1dp"
-	android:paddingEnd="1dp"
 	android:paddingLeft="1dp"
-	android:paddingRight="1dp">
+	android:paddingRight="1dp"
+	>
 
 	<com.chess.widgets.RoboTextView
 		android:id="@+id/popupTitle"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:maxWidth="@dimen/popup_dialog_text_max_width"
-		android:paddingStart="@dimen/default_scr_side_padding"
-		android:paddingEnd="@dimen/default_scr_side_padding"
-		android:paddingLeft="@dimen/default_scr_side_padding"
-		android:paddingRight="@dimen/default_scr_side_padding"
+		style="@style/PaddingSidesDefault"
 		android:paddingBottom="@dimen/default_scr_bottom_padding"
 		android:gravity="center"
 		android:textSize="@dimen/popup_title_text_size"
