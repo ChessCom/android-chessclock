@@ -276,7 +276,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 			liveHelper.initClocks();
 
-
 			boardView.resetValidMoves();
 			invalidateGameScreen();
 
@@ -313,8 +312,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 
 			need2update = false;
-			userSawGameEndPopup = false;
 
+			if (!getCurrentGame(liveHelper).isGameOver()) {
+				userSawGameEndPopup = false;
+			}
 		}
 	}
 
@@ -618,7 +619,11 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void updateOpponentOnlineStatus(final boolean online) {
-		getActivity().runOnUiThread(new Runnable() {
+		Activity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				topPanelView.setReconnecting(online);
