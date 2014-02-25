@@ -86,8 +86,7 @@ public class DefaultHeaderTransformer extends PullToRefreshAttacher.HeaderTransf
 //		mReleaseLabel = activity.getString(R.string.pull_to_refresh_release_label);
 		mReleaseLabel = Symbol.EMPTY;
 
-//		mAnimationDuration = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
-		mAnimationDuration = 100;
+		mAnimationDuration = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
 
 		// Setup the View styles
 		setupViewsFromStyles(activity, headerView);

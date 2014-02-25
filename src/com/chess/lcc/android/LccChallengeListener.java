@@ -24,7 +24,7 @@ public class LccChallengeListener implements ChallengeListener {
 			text += "\n  Private Seek/Challenge: user: " + lccHelper.getUser().getUsername()
 					+ ", challengeId=" + ch.getId() + ", from=" + ch.getFrom().getUsername() + ", to=" + ch.getTo();
 		}
-		LogMe.dl(TAG, text);
+//		LogMe.dl(TAG, text);
 		lccHelper.clearChallengesData();
 		for (Challenge challenge : challenges) {
 			if (isMy(challenge)) {
@@ -35,7 +35,7 @@ public class LccChallengeListener implements ChallengeListener {
 
 	@Override
 	public void onChallengeReceived(Challenge challenge) {
-		LogMe.dl(TAG, "CHALLENGE LISTENER. Challenge received: " + challenge);
+//		LogMe.dl(TAG, "CHALLENGE LISTENER. Challenge received: " + challenge);
 		if (challenge.getFrom().isComputer()) {
 			LogMe.dl(TAG, "Challenge received: ignore computer player");
 			return;

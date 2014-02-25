@@ -255,8 +255,6 @@ public class AppUtils {
 	/**
 	 * For mdpi normal screens we don't need a action bar only
 	 *
-	 * @param context
-	 * @return
 	 */
 	public static boolean isHdpi800(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -266,7 +264,7 @@ public class AppUtils {
 	}
 
 	public static boolean isNexus4Kind(Context context) {
-		return AppUtils.hasSoftKeys(context) && !is7InchTablet(context) && !is10InchTablet(context) && !isTallScreen(context);
+		return AppUtils.hasSoftKeys(context) && !isTablet(context) && !isTallScreen(context);
 	}
 
 	/**
@@ -307,15 +305,7 @@ public class AppUtils {
 	}
 
 	public static boolean isTablet(Context context) {
-		return is7InchTablet(context) || is10InchTablet(context);
-	}
-
-	public static boolean is7InchTablet(Context context) {
-		return context.getResources().getBoolean(R.bool.is_large_tablet);
-	}
-
-	public static boolean is10InchTablet(Context context) {
-		return context.getResources().getBoolean(R.bool.is_x_large_tablet);
+		return context.getResources().getBoolean(R.bool.is_tablet);
 	}
 
 	public static boolean isTallScreen(Context context) {

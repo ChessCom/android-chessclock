@@ -1,13 +1,17 @@
 <configuration>
 
-	<property name="lcc.log.level.info" value="OFF" />
-	<property name="lcc.log.level.debug" value="OFF" />
-	<property name="lcc.log.level.warn" value="OFF" />
+	<!--<property name="lcc.log.level.info" value="OFF" />-->
+	<!--<property name="lcc.log.level.debug" value="OFF" />-->
+	<!--<property name="lcc.log.level.warn" value="OFF" />-->
+
+	<property name="lcc.log.level.info" value="ON" />
+	<property name="lcc.log.level.debug" value="ON" />
+	<property name="lcc.log.level.warn" value="ON" />
 
 	<!-- Logging rules for LCC Debug mode (should be uncommented) -->
-	<!--<property name="lcc.log.level.info" value="INFO" />
+	<property name="lcc.log.level.info" value="INFO" />
 	<property name="lcc.log.level.debug" value="DEBUG" />
-	<property name="lcc.log.level.warn" value="WARN" />-->
+	<property name="lcc.log.level.warn" value="WARN" />
 
 	<property name="LOG_DIR" value="/sdcard/Android/data/com.chess/cache/logs" />
 

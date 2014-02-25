@@ -68,18 +68,19 @@ public class LccConnectionListener implements ConnectionListener {
 		//lccHelper.stopPingLiveTimer();
 
 		liveConnectionHelper.setConnected(false);
-		liveConnectionHelper.setConnecting(true);
+		liveConnectionHelper.setConnecting(true); // todo: to vm: why do you set it here? I think it should be set only after you have launched connection retry, no?
 	}
 
 	@Override
 	public void onConnectionReestablished(User user, UserSettings userSettings, ServerStats serverStats) {
-		LogMe.dl(TAG, "onConnectionReestablished:" + " lccClient=" + liveConnectionHelper.getClientId());
+		LogMe.dl(TAG, "onConnectionReestablished:" + " lccClient=" + liveConnectionHelper.getClientId() + " user = " + user);
 
 		synchronized (LccHelper.GAME_SYNC_LOCK) {
 			lccHelper.setUser(user);
 			lccHelper.clearChallengesData();
 			lccHelper.clearGames();
 			lccHelper.setCurrentGameId(null);
+
 			liveConnectionHelper.stopPingLiveTimer();
 			liveConnectionHelper.setConnected(true);
 			liveConnectionHelper.setConnecting(false);
