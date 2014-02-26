@@ -77,12 +77,4 @@
 
 	</LinearLayout>
 
-	<!--Loading view-->
-	<FrameLayout
-		android:id="@+id/fadeLay"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:background="@color/disabled"
-		android:visibility="invisible" />
-
 </FrameLayout>

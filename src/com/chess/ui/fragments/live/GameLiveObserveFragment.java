@@ -186,11 +186,10 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				if (getActivity() == null || fadeLay == null) {
+				if (getActivity() == null) {
 					return;
 				}
 				showLoadingProgress(block);
-				fadeLay.setVisibility(block ? View.VISIBLE : View.INVISIBLE);
 				boardView.lockBoard(true);
 			}
 		});

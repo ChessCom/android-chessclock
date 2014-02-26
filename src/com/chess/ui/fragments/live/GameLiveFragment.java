@@ -86,7 +86,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	protected ChessBoardLiveView boardView;
 
-	protected View fadeLay;
 	protected boolean lccInitiated;
 	private String warningMessage;
 
@@ -764,7 +763,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				if (getActivity() == null || fadeLay == null) {
+				if (getActivity() == null) {
 					return;
 				}
 
@@ -773,7 +772,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				}
 
 				showLoadingProgress(block);
-				fadeLay.setVisibility(block ? View.VISIBLE : View.INVISIBLE);
 				boardView.lockBoard(block);
 			}
 		});
@@ -992,8 +990,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			try {
 				boolean isGameExist = getLiveHelper().isActiveGamePresent();
 				if (!isGameExist) {
-					optionsSelectFragment.dismiss();
-					optionsSelectFragment = null;
+					dismissOptionsFragment();
 					return;
 				}
 			} catch (DataNotValidException e) {
@@ -1009,8 +1006,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			try {
 				boolean isGameExist = getLiveHelper().isActiveGamePresent();
 				if (!isGameExist) {
-					optionsSelectFragment.dismiss();
-					optionsSelectFragment = null;
+					dismissOptionsFragment();
 					return;
 				}
 			} catch (DataNotValidException e) {
@@ -1029,8 +1025,14 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			getActivityFace().openFragment(SettingsLiveChessFragment.createInstance(true));
 		}
 
-		optionsSelectFragment.dismiss();
-		optionsSelectFragment = null;
+		dismissOptionsFragment();
+	}
+
+	private void dismissOptionsFragment() {
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment.dismiss();
+			optionsSelectFragment = null;
+		}
 	}
 
 	@Override
@@ -1366,7 +1368,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	protected void widgetsInit(View view) {
-		fadeLay = view.findViewById(R.id.fadeLay);
 
 		setControlsView(view.findViewById(R.id.controlsView));
 		if (inPortrait()) {

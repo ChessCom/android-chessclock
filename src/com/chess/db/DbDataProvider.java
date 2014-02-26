@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.Map;
+
 import static com.chess.db.DbScheme.Tables;
 
 /**
@@ -132,8 +134,12 @@ public class DbDataProvider extends ContentProvider {
 			}
 		}
 //		throw new IllegalArgumentException("Unsupported URI: " + uri);
+		StringBuilder valuesStr = new StringBuilder();
+		for (Map.Entry<String, Object> entry : values.valueSet()) {
+			valuesStr.append(",key=").append(entry.getKey()).append(", value=").append(entry.getValue());
+		}
 
-		throw new SQLException("Failed to insert row into " + uri); // TODO investigate better exception handling
+		throw new SQLException("Failed to insert row into " + uri  + ", values = " + valuesStr.toString());
 	}
 
 	@Override
