@@ -850,6 +850,9 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 		for (int i = fragments.size() - 1; i > 0; i--) {
 			Fragment fragment = fragments.get(i);
 			if (fragment != null) {
+//				if (fragment.equals(currentActiveFragment)) { // this happens in GameLiveFragment, when popBackStack doesn't actually pop fragment. Let's try this way
+//					fragmentsLeft = getSupportFragmentManager().popBackStackImmediate();  // weird solution and i don't think it will work
+//				}
 				currentActiveFragment = fragment;
 				break;
 			}

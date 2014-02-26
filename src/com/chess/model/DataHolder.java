@@ -2,6 +2,7 @@ package com.chess.model;
 
 import android.util.SparseIntArray;
 import com.chess.backend.gcm.LastMoveInfoItem;
+import com.chess.statics.Symbol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,9 @@ public class DataHolder {
 	private boolean liveGameOpened;
 	private boolean performingRelogin;
 	private boolean live;
+	private long currentLiveGameId;
+	private String lastLiveMove = Symbol.EMPTY;
+	private int lastLiveMoveNumber;
 
 
 	private DataHolder() {
@@ -135,4 +139,29 @@ public class DataHolder {
 	public boolean isLiveChess() {
 		return live;
 	}
+
+	public boolean isCurrentLiveGameChanged(long gameId) {
+		if (currentLiveGameId != gameId) {
+			currentLiveGameId = gameId;
+
+			// drop last saw move
+			lastLiveMove = Symbol.EMPTY;
+			lastLiveMoveNumber = 0;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean isUserSawThatMove(String move, int number) {
+		if (move.equals(lastLiveMove) && lastLiveMoveNumber == number) {
+			return true;
+		} else {
+			lastLiveMove = move;
+			lastLiveMoveNumber = number;
+
+			return false;
+		}
+	}
+
 }

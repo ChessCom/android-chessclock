@@ -224,6 +224,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 			gameId = currentGame.getGameId();
 
+			if (DataHolder.getInstance().isCurrentLiveGameChanged(gameId)) {
+
+			}
+
 			optionsMapInit();
 
 			resetBoardInstance();
@@ -351,13 +355,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 				String[] actualMoves = gameItem.getMoveList().trim().split(Symbol.SPACE);
 				int actualMovesSize = actualMoves.length;
-
+				boolean userSawThatMove = true;
 				for (int i = boardFace.getMovesCount(); i < actualMovesSize; i++) {
-					int[] moveFT = boardFace.parseCoordinate(actualMoves[i]);
+					String actualMove = actualMoves[i];
+					int[] moveFT = boardFace.parseCoordinate(actualMove);
 					Move move = boardFace.convertMove(moveFT);
 					// we play sound and animate only for the last move
 					boolean playSound;
-					if (i == actualMovesSize - 1) {
+					boolean isLastMove = i == actualMovesSize - 1;
+					if (isLastMove && !DataHolder.getInstance().isUserSawThatMove(actualMove, i)) {
+						userSawThatMove = false;
 						playSound = true;
 						boardView.setMoveAnimator(move, true);
 					} else {
@@ -376,27 +383,31 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				invalidateGameScreen();
 				getControlsView().haveNewMessage(gameItem.hasNewMessage());
 
-				if (boardFace.isWhiteToMove()) {
-					if (boardFace.isReside()) { // white on top
-						bumpTopTimer();
-					} else { // white on bottom
-						bumpBottomTimer();
-					}
-					if (!getBoardFace().isSubmit()) {
-						topPanelView.showTimeLeftIcon(true);
-						bottomPanelView.showTimeLeftIcon(false);
-					}
-				} else { // if black to move
-					if (boardFace.isReside()) { // black on bottom
-						bumpBottomTimer();
-					} else { // black on top
-						bumpTopTimer();
-					}
-					if (!getBoardFace().isSubmit()) {
-						topPanelView.showTimeLeftIcon(true);
-						bottomPanelView.showTimeLeftIcon(false);
+				if (!userSawThatMove) {
+					// perform clock blink
+					if (boardFace.isWhiteToMove()) {
+						if (boardFace.isReside()) { // white on top
+							bumpTopTimer();
+						} else { // white on bottom
+							bumpBottomTimer();
+						}
+						if (!getBoardFace().isSubmit()) {
+							topPanelView.showTimeLeftIcon(true);
+							bottomPanelView.showTimeLeftIcon(false);
+						}
+					} else { // if black to move
+						if (boardFace.isReside()) { // black on bottom
+							bumpBottomTimer();
+						} else { // black on top
+							bumpTopTimer();
+						}
+						if (!getBoardFace().isSubmit()) {
+							topPanelView.showTimeLeftIcon(true);
+							bottomPanelView.showTimeLeftIcon(false);
+						}
 					}
 				}
+
 				liveHelper.checkTestMove();
 			}
 		});
