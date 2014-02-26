@@ -1864,13 +1864,17 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	public void releaseBitmaps() {
 		if (whitePiecesMap != null) {
 			for (Bitmap bitmap : whitePiecesMap.values()) {
-				bitmap.recycle();
+				if (bitmap != null) {
+					bitmap.recycle();
+				}
 			}
 		}
 
 		if (blackPiecesMap != null) {
 			for (Bitmap bitmap : blackPiecesMap.values()) {
-				bitmap.recycle();
+				if (bitmap != null) {
+					bitmap.recycle();
+				}
 			}
 		}
 
