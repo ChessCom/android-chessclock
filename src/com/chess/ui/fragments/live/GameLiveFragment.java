@@ -802,6 +802,10 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		String move = getBoardFace().convertMoveLive(); // todo: check does it always return latest move: histDat[ply]
 		Log.i(TAG, "LCC make move: " + move);
 
+		// hide draw offer view
+		topPanelView.showDrawOfferedView(false);
+
+		// remember last move to do not repeat animation
 		DataHolder.getInstance().isUserSawThatMove(move, getBoardFace().getMovesCount() - 1);
 		String stackTrace;
 		try {
@@ -992,7 +996,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		if (isGameOver) {
 			optionsMap.put(ID_REMATCH, getString(R.string.rematch));
-//			optionsMap.remove(ID_OFFER_DRAW); // re move it from here, but will add a logic to handle it in onClick to see if it help with problem that player are unable to claim draw
 //			optionsMap.remove(ID_ABORT_RESIGN);
 		} else {
 			optionsMap.remove(ID_REMATCH);
@@ -1000,14 +1003,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		if (getBoardFace().getPly() < 1 && isUserMove()) {
 			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.abort));
-			optionsMap.remove(ID_OFFER_DRAW);
 		} else {
 			optionsMap.put(ID_ABORT_RESIGN, getString(R.string.resign));
-			optionsMap.put(ID_OFFER_DRAW, getString(R.string.offer_draw));
-		}
-
-		if (!isUserMove()) { // user able to offer draw only when it's his turn
-			optionsMap.remove(ID_OFFER_DRAW);
 		}
 
 		optionsSelectFragment = PopupOptionsMenuFragment.createInstance(this, optionsMap);

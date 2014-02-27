@@ -510,7 +510,8 @@ public class LccHelper {
 //		return gameData;
 //	}
 
-	public void makeMove(String move, LccGameTaskRunner gameTaskRunner, String debugInfo, ActionBarUpdateListener<Game> makeMoveTaskListener) {
+	public void makeMove(String move, LccGameTaskRunner gameTaskRunner, String debugInfo,
+						 ActionBarUpdateListener<Game> makeMoveTaskListener) {
 		Game game = getCurrentGame();
 		/*if(chessMove.isCastling())
 			{

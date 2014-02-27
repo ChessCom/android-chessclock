@@ -1,6 +1,7 @@
 package com.chess.lcc.android;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.Game;
@@ -8,7 +9,6 @@ import com.chess.live.client.LiveChessClient;
 import com.chess.statics.FlurryData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
-import com.chess.ui.interfaces.MakeMoveFace;
 import com.chess.utilities.LogMe;
 import com.flurry.android.FlurryAgent;
 
@@ -97,45 +97,30 @@ public class LccGameTaskRunner {
 		}
 	}
 
-	public void runMakeMoveTask(Game game, String move, String debugInfo, MakeMoveFace makeMoveFace) {
-		new MakeMoveTask(move, debugInfo, makeMoveFace).executeTask(game);
+	public void runMakeMoveTask(Game game, String move, String debugInfo, ActionBarUpdateListener<Game> makeMoveTaskListener) {
+		new MakeMoveTask(move, debugInfo, makeMoveTaskListener).executeTask(game);
 	}
 
 	private class MakeMoveTask extends AbstractUpdateTask<Game, Game> {
 		private String move;
 		private String debugInfo;
-		private MakeMoveFace makeMoveFace;
 
-		public MakeMoveTask(String move, String debugInfo, MakeMoveFace makeMoveFace) {
-			super(gameTaskFace);
+		public MakeMoveTask(String move, String debugInfo, ActionBarUpdateListener<Game> makeMoveTaskListener) {
+			super(makeMoveTaskListener);
 			this.move = move;
 			this.debugInfo = debugInfo;
-			this.makeMoveFace = makeMoveFace;
 		}
 
 		@Override
 		protected Integer doTheTask(Game... game) {
-
 			try {
 
-				long threadId = Thread.currentThread().getId();
-
-				LogMe.dl("DEBUG: MakeMoveTask: move=" + move + ", game=" + game[0].getId() +
-						", threadId=" + threadId + ", threadName=" + Thread.currentThread().getName());
-
-				if (LiveConnectionHelper.THREAD_MONITORING_ENABLED) {
-					MoveInfo latestMoveInfo = lccHelper.getLatestMoveInfo();
+				MoveInfo latestMoveInfo = lccHelper.getLatestMoveInfo();
+				if (latestMoveInfo != null) {
 					latestMoveInfo.setMoveFirstThreadId(-1); // we do not interesting anymore on First thread if Second one is reached
 					latestMoveInfo.setMoveSecondThreadId(threadId);
 					lccHelper.setLatestMoveInfo(latestMoveInfo);
 				}
-
-				/*
-				// remove after debug move resending
-				if (game[0].getMoveCount() == 3) {
-					move = "test";
-				}
-				*/
 
 				liveChessClient.makeMove(game[0], move);
 
@@ -146,12 +131,8 @@ public class LccGameTaskRunner {
 
 				FlurryAgent.logEvent(FlurryData.ILLEGAL_MOVE_DEBUG, params);
 
-				if (makeMoveFace != null) {
-					BugSenseHandler.sendExceptionMap(params, e);
-					makeMoveFace.onIllegalMove();
-				} else {
-					throw new IllegalArgumentException(debugInfo, e); // TESTING_GAME case
-				}
+				BugSenseHandler.sendExceptionMap(params, e);
+				return StaticData.INTERNAL_ERROR;
 			}
 
 			return StaticData.RESULT_OK;
