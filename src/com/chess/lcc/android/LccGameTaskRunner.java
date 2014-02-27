@@ -115,6 +115,11 @@ public class LccGameTaskRunner {
 		protected Integer doTheTask(Game... game) {
 			try {
 
+				long threadId = Thread.currentThread().getId();
+
+				LogMe.dl("DEBUG: MakeMoveTask: move=" + move + ", game=" + game[0].getId() +
+						", threadId=" + threadId + ", threadName=" + Thread.currentThread().getName());
+
 				MoveInfo latestMoveInfo = lccHelper.getLatestMoveInfo();
 				if (latestMoveInfo != null) {
 					latestMoveInfo.setMoveFirstThreadId(-1); // we do not interesting anymore on First thread if Second one is reached
