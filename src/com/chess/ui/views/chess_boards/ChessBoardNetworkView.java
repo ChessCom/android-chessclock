@@ -74,7 +74,7 @@ public abstract class ChessBoardNetworkView extends ChessBoardBaseView implement
 			return processTouchEvent(event);
 		}
 
-		track = false;
+		trackTouchEvent = false;
 		if (!getBoardFace().isAnalysis()) {
 			if (ChessBoard.isFinishedEchessGameMode(getBoardFace()) || getBoardFace().isFinished() || getBoardFace().isSubmit() ||
 					(getBoardFace().getPly() < getBoardFace().getMovesCount())) {

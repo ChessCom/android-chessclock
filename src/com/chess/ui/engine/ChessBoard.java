@@ -905,7 +905,7 @@ public class ChessBoard implements BoardFace {
 
 		if (playSound && gameFace != null && gameFace.currentGameExist()) {
 
-//			boolean userAbleToMove = gameFace.isUserAbleToMove(side); // i think the only reason that we need to check here is valid state of gameFace
+//			boolean userAbleToMove = gameFace.userCanMovePieceByColor(side); // i think the only reason that we need to check here is valid state of gameFace
 
 			if (gameFace.isObservingMode()) {
 				if (isPerformCheck(side)) {

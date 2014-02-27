@@ -18,8 +18,6 @@ import com.chess.ui.adapters.DailyOpenSeeksAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
 
-import static com.chess.backend.RestHelper.P_LOGIN_TOKEN;
-
 /**
  * Created with IntelliJ IDEA.
  * User: roger sent2roger@gmail.com
@@ -80,9 +78,21 @@ public class DailyOpenChallengesFragment extends CommonLogicFragment implements 
 		// get Current games first
 		LoadItem loadItem = new LoadItem();
 		loadItem.setLoadPath(RestHelper.getInstance().CMD_SEEKS);
-		loadItem.addRequestParams(P_LOGIN_TOKEN, getUserToken());
+		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
 		new RequestJsonTask<DailyChallengeItem>(openSeeksUpdateListener).executeTask(loadItem);
+
+//		// get Current games first
+//		LoadItem loadItem1 = new LoadItem();
+//		loadItem1.setLoadPath(RestHelper.getInstance().CMD_SEEKS);
+//		loadItem1.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+//
+//		LoadItem loadItem2 = new LoadItem();
+//		loadItem2.setLoadPath(RestHelper.getInstance().CMD_SEEKS);
+//		loadItem2.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+//		loadItem2.addRequestParams(RestHelper.P_SHOW_ONLY_MINE, RestHelper.V_TRUE);
+//
+//		new RequestJsonTask<DailyChallengeItem>(openSeeksUpdateListener).executeTask(loadItem1, loadItem2);
 	}
 
 	@Override

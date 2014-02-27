@@ -49,7 +49,7 @@ public interface GameFace {
 
 	void updateParentView();
 
-	boolean isUserAbleToMove(int color);
+	boolean userCanMovePieceByColor(int color);
 
 	boolean isObservingMode();
 

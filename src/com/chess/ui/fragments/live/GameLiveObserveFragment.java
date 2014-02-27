@@ -395,7 +395,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	}
 
 	@Override
-	public boolean isUserAbleToMove(int color) {
+	public boolean userCanMovePieceByColor(int selectedPieceColor) {
 		return false;
 	}
 

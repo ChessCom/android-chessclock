@@ -61,15 +61,15 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 	protected boolean firstClick = true;
 	protected boolean pieceSelected;
-	protected boolean track;
+	protected boolean trackTouchEvent;
 	private boolean dragging;
 
 	protected int W;
 	protected int H;
 	protected int side;
 	protected float squareSize;
-	protected int from;
-	protected int to;
+	protected int fromSquare;
+	protected int toSquare;
 	private int previousFrom;
 
 	protected float dragX = 0;
@@ -686,7 +686,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		if (boardFace.isReside()) {
 			for (int pos = ChessBoard.SQUARES_CNT - 1; pos >= 0; pos--) {
 				// do not draw if in drag or animated
-				if ((dragging && pos == from) || (animationActive && moveAnimator.isSquareHidden(pos))) {
+				if ((dragging && pos == fromSquare) || (animationActive && moveAnimator.isSquareHidden(pos))) {
 					continue;
 				}
 
@@ -697,7 +697,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		} else {
 			for (int pos = 0; pos < ChessBoard.SQUARES_CNT; pos++) {
 				// do not draw if in drag or animated
-				if ((dragging && pos == from) || (animationActive && moveAnimator.isSquareHidden(pos))) {
+				if ((dragging && pos == fromSquare) || (animationActive && moveAnimator.isSquareHidden(pos))) {
 					continue;
 				}
 
@@ -940,8 +940,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 		BoardFace boardFace = getBoardFace();
 		if (pieceSelected) { // fill square for the start move piece position
-			float x = ChessBoard.getColumn(from, boardFace.isReside());
-			float y = ChessBoard.getRow(from, boardFace.isReside());
+			float x = ChessBoard.getColumn(fromSquare, boardFace.isReside());
+			float y = ChessBoard.getRow(fromSquare, boardFace.isReside());
 
 			float left = x * squareSize;
 			float top = y * squareSize;
@@ -986,16 +986,16 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 //			Log.d(VALID_MOVES, "draw isUsersTurn " + isUsersTurn);
 //			Log.d(VALID_MOVES, "draw isNewMove() " + isNewMove());
 			if (isNewMove()) {
-				if (isUserAbleToMove(boardFace.getColor(from)) && isUsersTurn) {
+				if (userCanMovePieceByColor(boardFace.getColor(fromSquare)) && isUsersTurn) {
 					validMoves = boardFace.generateValidMoves(!isUsersTurn);
 				} else if (boardFace.isAnalysis()) {
 					validMoves = boardFace.generateValidMoves(false);
 				}
-				previousFrom = from;
+				previousFrom = fromSquare;
 			}
 
 			for (Move move : validMoves) {
-				if (move.from == from || move.from == draggingFrom) {
+				if (move.from == fromSquare || move.from == draggingFrom) {
 					int x = ChessBoard.getColumn(move.to, boardFace.isReside());
 					int y = ChessBoard.getRow(move.to, boardFace.isReside()) + 1;
 					canvas.drawCircle(x * squareSize + squareSize / 2, y * squareSize - squareSize / 2, squareSize / 5, possibleMovePaint);
@@ -1012,8 +1012,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		return locked || gameFace == null || !gameFace.currentGameExist(); // fix NPE when user clicks on empty board, probably should be refactored
 	}
 
-	protected boolean isUserAbleToMove(int color) {
-		return gameFace.isUserAbleToMove(color);
+	protected boolean userCanMovePieceByColor(int color) {
+		return gameFace.userCanMovePieceByColor(color);
 	}
 
 	@Override
@@ -1028,40 +1028,65 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			case MotionEvent.ACTION_UP: {
 				return onActionUp(event);
 			}
+			case MotionEvent.ACTION_CANCEL: {
+				return onActionCancel(event);
+			}
 		}
 		return super.onTouchEvent(event);
 	}
 
+	/**
+	 * When piece selected(highlighted) and user touch another piece that can't be captured, we should select(highlight) last piece
+	 */
 	protected boolean onActionDown(MotionEvent event) {
 		if (squareSize == 0) {
 			return false;
 		}
 		int file = (int) ((event.getX() - event.getX() % squareSize) / squareSize);
 		int rank = (int) ((event.getY() - event.getY() % squareSize) / squareSize);
+
 		if (file > 7 || file < 0 || rank > 7 || rank < 0) {
 			invalidateMe();
 			return false;
 		}
-		BoardFace boardFace = getBoardFace();
-		int fromSquare = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
-		boolean userAbleToMove = isUserAbleToMove(boardFace.getColor(fromSquare));
-		if (firstClick) {
-			from = fromSquare;
 
-			if (userAbleToMove) {
+		BoardFace boardFace = getBoardFace();
+
+		int touchedSquare = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
+		boolean userCanMoveTouchedPiece = userCanMovePieceByColor(boardFace.getColor(touchedSquare));
+		// if we select another piece(not empty square), and it's not capture in analysis
+		if (!firstClick && boardFace.getPiece(touchedSquare) != ChessBoard.EMPTY && userCanMoveTouchedPiece) {
+			boolean userCanSelectThatPiece = userCanMovePieceByColor(boardFace.getColor(fromSquare));
+			if (userCanSelectThatPiece) {
+				firstClick = true;
+			}
+		}
+
+//		logTest("__________onActionDown_____________");
+//		logTest("touchedSquare = " + touchedSquare + " userCanMoveTouchedPiece = " + userCanMoveTouchedPiece
+//				+ " fromSquare = " + fromSquare + " firstClick = " + firstClick);
+
+		if (firstClick) {
+			fromSquare = touchedSquare;
+
+			if (userCanMoveTouchedPiece) {
 				pieceSelected = true;
 				firstClick = false;
 				invalidateMe();
 			}
 		} else {
-			// don't touch not our piece or don't make empty square as fromSquare
-			if (!boardFace.isAnalysis() && userAbleToMove && !pieceSelected) {
-				from = fromSquare;
+			// don't touch not our piece or don't make empty square as touchedSquare
+			if (!boardFace.isAnalysis() && userCanMoveTouchedPiece && !pieceSelected) {
+				fromSquare = touchedSquare;
 				pieceSelected = true;
 				firstClick = false;
 				invalidateMe();
 			}
 		}
+
+//		logTest("pieceSelected = " + pieceSelected + " firstClick = " + firstClick);
+//		logTest("``````````onActionDown```````````````````");
+
 		return true;
 	}
 
@@ -1079,14 +1104,14 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 		BoardFace boardFace = getBoardFace();
 		if (!dragging && !pieceSelected) {
-			from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
+			fromSquare = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 		}
 
 		if (!firstClick) {
-			draggingFrom = from;
+			draggingFrom = fromSquare;
 			// do not drag captured piece // ??
-			dragging = isUserAbleToMove(boardFace.getColor(draggingFrom)); // we do check in GameBaseFragment if boardFace is in Analysis mode
-			to = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
+			dragging = userCanMovePieceByColor(boardFace.getColor(draggingFrom)); // we do check in GameBaseFragment if boardFace is in Analysis mode
+			toSquare = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 			invalidateMe();
 		}
 		return true;
@@ -1115,16 +1140,16 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		BoardFace boardFace = getBoardFace();
 
 		int selectedSquare = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
-		boolean isUserAbleToMove = isUserAbleToMove(boardFace.getColor(selectedSquare));
+		boolean isUserAbleToMove = userCanMovePieceByColor(boardFace.getColor(selectedSquare));
 		if (firstClick) {
-			from = selectedSquare;
-			if (isUserAbleToMove || (boardFace.isAnalysis() && boardFace.getPiece(to) != ChessBoard.EMPTY)) {
+			fromSquare = selectedSquare;
+			if (isUserAbleToMove || (boardFace.isAnalysis() && boardFace.getPiece(toSquare) != ChessBoard.EMPTY)) {
 				pieceSelected = true;
 				firstClick = false;
 				invalidateMe();
 			}
 		} else {
-			to = selectedSquare;
+			toSquare = selectedSquare;
 			pieceSelected = false;
 			firstClick = true;
 
@@ -1133,14 +1158,14 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			List<Move> moves = boardFace.generateLegalMoves();
 			for (Move possibleMove : moves) { // search for move that was made
 				move = possibleMove;
-				if (move.from == from && move.to == to) {
+				if (move.from == fromSquare && move.to == toSquare) {
 					found = true;
 					break;
 				}
 			}
 
 			// if promote - show popup and return
-			if (found && boardFace.isPromote(from, to)) {
+			if (found && boardFace.isPromote(fromSquare, toSquare)) {
 				gameFace.showChoosePieceDialog(file, rank);
 				return true;
 			}
@@ -1161,13 +1186,27 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				} else {
 					afterUserMove();
 				}
-			} else if (boardFace.getPiece(to) != ChessBoard.EMPTY && isUserAbleToMove) { // capture
+			} else if (boardFace.getPiece(toSquare) != ChessBoard.EMPTY && isUserAbleToMove) { // capture
 				pieceSelected = true;
 				firstClick = false;
-				from = selectedSquare;
+				fromSquare = selectedSquare;
 			}
 			invalidateMe();
 		}
+		return true;
+	}
+
+	/**
+	 * Should deselect piece
+	 */
+	protected boolean onActionCancel(MotionEvent event) {
+		pieceSelected = false;
+		firstClick = true;
+
+		dragging = false;
+		gameFace.updateParentView();
+
+
 		return true;
 	}
 
@@ -1183,7 +1222,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 		List<Move> moves = boardFace.generateLegalMoves();
 		for (Move move1 : moves) {
 			move = move1;
-			if (move.from == from && move.to == to && move.promote == promote) {
+			if (move.from == fromSquare && move.to == toSquare && move.promote == promote) {
 				found = true;
 				break;
 			}
@@ -1199,11 +1238,11 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 			setMoveAnimator(moveAnimator);
 			//afterUserMove(); //
-		} else if (boardFace.getPiece(to) != ChessBoard.EMPTY
-				&& boardFace.getSide() == boardFace.getColor(to)) {
+		} else if (boardFace.getPiece(toSquare) != ChessBoard.EMPTY
+				&& boardFace.getSide() == boardFace.getColor(toSquare)) {
 			pieceSelected = true;
 			firstClick = false;
-			from = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
+			fromSquare = ChessBoard.getPositionIndex(file, rank, boardFace.isReside());
 		}
 		invalidateMe();
 	}
@@ -1274,7 +1313,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	protected void afterUserMove() {
 		if (showLegalMoves && isNewMove()) {
 			validMoves = getBoardFace().generateValidMoves(true);
-			previousFrom = from;
+			previousFrom = fromSquare;
 		}
 	}
 
@@ -1282,7 +1321,7 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	 * Used to detect if we need to generate new valid moves or not
 	 */
 	private boolean isNewMove() {
-		return from != previousFrom;
+		return fromSquare != previousFrom;
 	}
 
 	@Override

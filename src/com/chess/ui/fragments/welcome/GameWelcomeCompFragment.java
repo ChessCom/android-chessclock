@@ -657,11 +657,11 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 	}
 
 	@Override
-	public boolean isUserAbleToMove(int color) {
+	public boolean userCanMovePieceByColor(int selectedPieceColor) {
 		if (ChessBoard.isHumanVsHumanGameMode(getBoardFace())) {
-			return getBoardFace().isWhiteToMove() ? color == ChessBoard.WHITE_SIDE : color == ChessBoard.BLACK_SIDE;
+			return getBoardFace().isWhiteToMove() ? selectedPieceColor == ChessBoard.WHITE_SIDE : selectedPieceColor == ChessBoard.BLACK_SIDE;
 		} else {
-			return super.isUserAbleToMove(color);
+			return super.userCanMovePieceByColor(selectedPieceColor);
 		}
 	}
 

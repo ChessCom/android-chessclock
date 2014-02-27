@@ -146,7 +146,7 @@ public class GameFaceHelper implements GameNetworkFace {
 	}
 
 	@Override
-	public boolean isUserAbleToMove(int color) {
+	public boolean userCanMovePieceByColor(int color) {
 		return false;
 	}
 

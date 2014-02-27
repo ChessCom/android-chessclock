@@ -24,11 +24,12 @@ import com.chess.statics.Symbol;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
-import com.chess.ui.interfaces.PopupShowFace;
 import com.chess.ui.interfaces.PopupDialogFace;
+import com.chess.ui.interfaces.PopupShowFace;
 import com.chess.utilities.AppUtils;
 import com.flurry.android.FlurryAgent;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.newrelic.agent.android.NewRelic;
 import com.slidingmenu.lib.app.BaseActivity;
 
 import java.util.ArrayList;
@@ -91,6 +92,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 		}
 		super.onCreate(savedInstanceState);
 
+		// Bugsense integration
 		try {
 			BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
 		} catch (Exception e) {
@@ -100,6 +102,9 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 			params.put(AppConstants.EXCEPTION, Build.MODEL + " " + stackTrace);
 			FlurryAgent.logEvent(FlurryData.BUGSENSE_INIT_EXCEPTION, params);
 		}
+
+		// New Relic integration
+		NewRelic.withApplicationToken(AppConstants.NEW_RELIC_API_KEY).start(this.getApplication());
 
 		context = this;
 

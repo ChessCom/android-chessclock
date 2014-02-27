@@ -285,6 +285,9 @@ public class RestHelper {
 
 	public String CMD_STATS = BASE_URL + V1 + "/stats";
 
+	/* Bath */
+	public String CMD_BATCH = BASE_URL + V1 + "/batch/";
+
 	/* Parameters */
 	public static final String P_USER_NAME_OR_MAIL = "usernameOrEmail";
 	public static final String P_FIELDS_ = "fields[]";
@@ -294,6 +297,7 @@ public class RestHelper {
 	public static final String P_ITEMS_PER_PAGE = "itemsPerPage";
 	public static final String P_LIMIT = "limit";
 	public static final String GCM_P_REGISTER_ID = "registrationId";
+	public static final String P_SHOW_ONLY_MINE = "showOnlyMine";
 
 	public static final String P_USERNAME = "username";
 	public static final String P_VIEW_USERNAME = "viewUsername";
@@ -555,7 +559,7 @@ public class RestHelper {
 
 	public <CustomType> CustomType requestData(LoadItem loadItem, Class<CustomType> customTypeClass, Context context) throws InternalErrorException {
 		CustomType item = null;
-		String appId = AppUtils.getAppId(context);
+		String appId = AppUtils.getAppId();
 		userAgent = getUserAgent(context);
 		String requestMethod = loadItem.getRequestMethod();
 		String url = createSignature(loadItem, appId);
@@ -581,10 +585,226 @@ public class RestHelper {
 			if (!TextUtils.isEmpty(loadItem.getFilePath())) { // if multiPart
 				submitRawData(connection, loadItem);
 			} else if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
-				submitPostData(connection, loadItem);
+				submitPostData(connection, loadItem, formPostData(loadItem));
 			} else {
 				connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=" + HTTP.UTF_8);
 			}
+
+			int statusCode;
+			statusCode = connection.getResponseCode();
+
+			Gson gson = new Gson();
+			if (statusCode != HttpStatus.SC_OK) {
+				logE(TAG, "Error " + statusCode + " while retrieving data from " + url);
+				InputStream inputStream = connection.getErrorStream();
+				String resultString = convertStreamToString(inputStream);
+
+				if (BuildConfig.DEBUG && USE_HEADERS_FOR_LOG) {
+					Map<String, List<String>> headerFields = connection.getHeaderFields();
+					for (Map.Entry<String, List<String>> entry : headerFields.entrySet()) {
+						if (entry != null) {
+							for (String header : entry.getValue()) {
+								logD(TAG, "HEADER ERR SERVER RESPONSE HEADER: " + header);
+							}
+						}
+					}
+				}
+
+				logD(TAG, "SERVER RESPONSE: " + resultString);
+				if (resultString.equals(ServerErrorCodes.ACCESS_DENIED)) {
+					throw new InternalErrorException(encodeServerCode(ServerErrorCodes.ACCESS_DENIED_CODE));
+				}
+
+				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
+				logD(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
+				throw new InternalErrorException(encodeServerCode(baseResponse.getCode()));
+			}
+
+			InputStream inputStream = null;
+			String resultString;
+			try {
+				inputStream = new BufferedInputStream(connection.getInputStream());
+
+				resultString = convertStreamToString(inputStream);
+
+				if (BuildConfig.DEBUG && USE_HEADERS_FOR_LOG) {
+					Map<String, List<String>> headerFields = connection.getHeaderFields();
+					for (Map.Entry<String, List<String>> entry : headerFields.entrySet()) {
+						if (entry != null) {
+							for (String header : entry.getValue()) {
+								logD(TAG, "HEADER OK SERVER RESPONSE HEADER: " + header);
+							}
+						}
+					}
+				}
+
+				if (resultString.contains(OBJ_START)) {
+					int firstIndex = resultString.indexOf(OBJ_START);
+
+					int lastIndex = resultString.lastIndexOf(OBJ_END);
+
+					resultString = resultString.substring(firstIndex, lastIndex + 1);
+
+					logD(TAG, "SERVER RESPONSE: " + resultString);
+				} else {
+					logD(TAG, "ERROR -> SERVER RESPONSE: " + resultString);
+					throw new InternalErrorException(StaticData.INTERNAL_ERROR);
+				}
+				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
+				if (baseResponse.getStatus().equals(R_STATUS_SUCCESS)) {
+					item = gson.fromJson(resultString, customTypeClass);
+					if (item == null) {
+						throw new InternalErrorException(StaticData.EMPTY_DATA);
+					}
+				}
+			} finally {
+				if (inputStream != null) {
+					inputStream.close();
+				}
+			}
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			throw new InternalErrorException(e, StaticData.INTERNAL_ERROR);
+		} catch (JsonSyntaxException e) {
+			e.printStackTrace();
+			logE(TAG, "JsonSyntaxException Error while retrieving data from " + url, e);
+			throw new InternalErrorException(e, StaticData.INTERNAL_ERROR);
+		} catch (IOException e) {
+			if (e instanceof InternalErrorException) {
+				throw new InternalErrorException(e, ((InternalErrorException) e).getCode());
+			} else {
+				logE(TAG, "I/O error while retrieving data from " + url, e);
+				throw new InternalErrorException(e, StaticData.NO_NETWORK);
+			}
+		} catch (IllegalStateException e) {
+			logE(TAG, "Incorrect URL: " + url, e);
+			throw new InternalErrorException(e, StaticData.UNKNOWN_ERROR);
+		} catch (Exception e) {
+			logE(TAG, "Error while retrieving data from " + requestMethod + " " + url, e);
+			throw new InternalErrorException(e, StaticData.UNKNOWN_ERROR);
+		} finally {
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+		return item;
+	}
+
+/*
+
+/*
+		You need to POST a JSON array with requests to process. Requests will be processed in the order that they are requested in.
+		Every request must contain method, url and requestId fields and an optional body field (for non-GET requests).
+		 For GET requests you need to use query string parameters, and for non-GET requests, parameters are passed via
+		  the body field. Note that the method will collect body parameters, and requests are executed one by one,
+		   so you don't need to pass the same parameters in different requests.
+		    For example you need to pass loginToken once and the same loginToken will be used for other requests
+		    (of course for GET requests you still need to pass it via the query string). If you want to override some
+		     already collected parameters, simply include them in your body field for specific request.
+		In order to send JSON array simply send header Content-Type: application/json and actual requests.
+
+
+
+		Content-Type: application/json
+
+[
+    {
+        "method": "GET",
+        "url": "/v1/friends/requests?loginToken=0a5e997ed6fa26213d5db9c4fafe1072",
+        "requestId": 0
+    },
+    {
+        "method": "PUT",
+        "url": "/v1/games/35000574/actions",
+        "body": {
+            "command": "CHAT",
+            "timestamp": 1355687586,
+            "message": "Hellooooo",
+            "loginToken": "0a5e997ed6fa26213d5db9c4fafe1072"
+        },
+        "requestId": 1
+    },
+    {
+        "method": "POST",
+        "url": "/v1/games/35000574/notes",
+        "body": {
+            "content": "This works!"
+        },
+        "requestId": 2
+    },
+    {
+        "method": "GET",
+        "url": "/v1/games/35000579?loginToken=0a5e997ed6fa26213d5db9c4fafe1072",
+        "requestId": 3
+    }
+]
+*/
+
+
+	public <CustomType> CustomType requestBatchData(LoadItem[] loadItems, Class<CustomType> customTypeClass, Context context)
+			throws InternalErrorException {
+
+		LoadItem loadItem = new LoadItem();
+		// form POST body
+		String body = Symbol.NEW_STR + "[";
+		String delimiter = Symbol.EMPTY;
+		for (int i = 0; i < loadItems.length; i++) {
+			LoadItem item = loadItems[i];
+			String bb = delimiter + item.getJsonBody().replace("\"requestId\": 0", "\"requestId\": " + i);
+			delimiter = Symbol.COMMA;
+			body += bb;
+		}
+		body += Symbol.NEW_STR + "]";
+		loadItem.setLoadPath(CMD_BATCH);
+		loadItem.setRequestMethod(POST);
+
+/*
+	{
+        "method": "GET",
+        "url": "/v1/friends/requests?loginToken=0a5e997ed6fa26213d5db9c4fafe1072",
+        "requestId": 0
+    },
+    {
+        "method": "PUT",
+        "url": "/v1/games/35000574/actions",
+        "body": {
+            "command": "CHAT",
+            "timestamp": 1355687586,
+            "message": "Hellooooo",
+            "loginToken": "0a5e997ed6fa26213d5db9c4fafe1072"
+        },
+        "requestId": 1
+    },
+*/
+
+
+		CustomType item = null;
+		String appId = AppUtils.getAppId();
+		userAgent = getUserAgent(context);
+		String requestMethod = loadItem.getRequestMethod();
+		String url = createSignature(loadItem, appId);
+
+		logD(TAG, "method = " + loadItem.getRequestMethod() + ", request query = " + url);
+
+		HttpURLConnection connection = null;
+
+		try {
+			URL urlObj = new URL(url);
+
+			connection = (HttpURLConnection) urlObj.openConnection();
+			connection.setRequestMethod(requestMethod);
+			connection.setRequestProperty("User-Agent", userAgent);
+			connection.setRequestProperty("Content-Type", "application/json");
+
+			connection.setConnectTimeout(TIME_OUT); // default = 0
+			connection.setReadTimeout(TIME_OUT); // default = 0
+
+			if (IS_TEST_SERVER_MODE) {
+				connection.setRequestProperty("Authorization", getBasicAuth());
+			}
+
+			submitPostData(connection, loadItem, body);
 
 			int statusCode;
 			statusCode = connection.getResponseCode();
@@ -781,16 +1001,15 @@ public class RestHelper {
 		}
 	}
 
-	private static void submitPostData(HttpURLConnection connection, LoadItem loadItem) throws IOException {
-		String query = formPostData(loadItem);
-		logD(TAG, loadItem.getRequestMethod() + ": " + query);
+	private static void submitPostData(HttpURLConnection connection, LoadItem loadItem, String body) throws IOException {
+		logD(TAG, loadItem.getRequestMethod() + ": " + body);
 		String charset = HTTP.UTF_8;
 		connection.setDoOutput(true); // Triggers POST.
 
 		OutputStream output = null;
 		try {
 			output = new BufferedOutputStream(connection.getOutputStream());
-			output.write(query.getBytes(charset));
+			output.write(body.getBytes(charset));
 		} finally {
 			if (TextUtils.isEmpty(loadItem.getFilePath()) || !AppUtils.JELLYBEAN_PLUS_API) {  // don't close if we will continue to write. But close if we are on pre JB
 				if (output != null) {
@@ -804,7 +1023,7 @@ public class RestHelper {
 		}
 	}
 
-	private String createSignature(LoadItem loadItem, String appId) {
+	public String createSignature(LoadItem loadItem, String appId) {
 		String requestMethod = loadItem.getRequestMethod();
 		String appPart = getAppPartData(loadItem);
 		String requestPath = loadItem.getLoadPath().substring(BASE_URL.length());

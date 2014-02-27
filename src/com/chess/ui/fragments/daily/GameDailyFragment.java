@@ -757,8 +757,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	}
 
 	@Override
-	public boolean isUserAbleToMove(int color) {
-		return super.isUserAbleToMove(color) && username.equals(getUsername());
+	public boolean userCanMovePieceByColor(int selectedPieceColor) {
+		return super.userCanMovePieceByColor(selectedPieceColor) && username.equals(getUsername());
 	}
 
 	@Override

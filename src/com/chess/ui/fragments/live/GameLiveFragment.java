@@ -227,9 +227,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			}
 			gameId = currentGame.getGameId();
 
-			if (DataHolder.getInstance().isCurrentLiveGameChanged(gameId)) {
-
-			}
+			DataHolder.getInstance().isCurrentLiveGameChanged(gameId); // TODO add additional logic here to prevent unnecessary updates
 
 			optionsMapInit();
 
@@ -329,6 +327,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onGameRefresh(final GameLiveItem gameItem) {
 		logLiveTest("onGameRefresh");
+		logTest("onGameRefresh");
 		Activity activity = getActivity();
 		if (activity == null) {
 			logLiveTest("activity = null, quit");
@@ -787,7 +786,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 				}
 
 				showLoadingProgress(block);
-				boardView.lockBoard(block);
+				if (boardView != null) { // TODO investigate logic, that leads to this.
+					boardView.lockBoard(block);
+				}
 			}
 		});
 	}
@@ -801,6 +802,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		String move = getBoardFace().convertMoveLive(); // todo: check does it always return latest move: histDat[ply]
 		Log.i(TAG, "LCC make move: " + move);
 
+		DataHolder.getInstance().isUserSawThatMove(move, getBoardFace().getMovesCount() - 1);
 		String stackTrace;
 		try {
 			throw new Exception();
@@ -948,6 +950,22 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 			boardView.updateNotations(getBoardFace().getNotationsArray());
 		}
+	}
+
+	@Override
+	public boolean userCanMovePieceByColor(int selectedPieceColor) {
+		if (!currentGameExist()) {
+			return false;
+		}
+		boolean userAbleToMoveThatColorPiece;
+		boolean userColorWhite = isUserColorWhite();
+		if (userColorWhite) {
+			userAbleToMoveThatColorPiece = selectedPieceColor == ChessBoard.WHITE_SIDE;
+		} else {
+			userAbleToMoveThatColorPiece = selectedPieceColor == ChessBoard.BLACK_SIDE;
+		}
+
+		return userAbleToMoveThatColorPiece;
 	}
 
 	@Override

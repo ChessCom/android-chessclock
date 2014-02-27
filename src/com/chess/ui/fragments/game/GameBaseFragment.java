@@ -225,17 +225,30 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 	}
 
 	@Override
-	public boolean isUserAbleToMove(int color) {
+	public boolean userCanMovePieceByColor(int selectedPieceColor) {
 		if (!currentGameExist()) {
 			return false;
 		}
-		boolean isUserColor;
-		if (isUserColorWhite()) {
-			isUserColor = color == ChessBoard.WHITE_SIDE;
-		} else {
-			isUserColor = color == ChessBoard.BLACK_SIDE;
+		boolean userAbleToMoveThatColorPiece = false;
+		boolean userColorWhite = isUserColorWhite();
+		boolean whiteToMove = getBoardFace().isWhiteToMove();
+		if (userColorWhite && whiteToMove) {
+			userAbleToMoveThatColorPiece = selectedPieceColor == ChessBoard.WHITE_SIDE;
+		} else if (!userColorWhite && !whiteToMove){
+			userAbleToMoveThatColorPiece = selectedPieceColor == ChessBoard.BLACK_SIDE;
 		}
-		return isUserColor || getBoardFace().isAnalysis();
+
+		boolean opponentsTurn = false;
+		if (getBoardFace().isAnalysis()) {
+			if (whiteToMove && !userColorWhite && selectedPieceColor == ChessBoard.WHITE_SIDE) {
+				opponentsTurn = true;
+			} else if (!whiteToMove && userColorWhite && selectedPieceColor == ChessBoard.BLACK_SIDE) {
+				opponentsTurn = true;
+			}
+		}
+
+		// if it's user's color or it's opponent's turn in analysis
+		return userAbleToMoveThatColorPiece || opponentsTurn;
 	}
 
 	protected void enableScreenLockTimer() {

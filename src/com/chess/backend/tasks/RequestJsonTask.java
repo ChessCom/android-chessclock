@@ -15,14 +15,33 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 
 	@Override
 	protected Integer doTheTask(LoadItem... loadItems) {
-		try {
-			item = RestHelper.getInstance().requestData(loadItems[0], getTaskFace().getClassType(), getTaskFace().getMeContext());
-		} catch (IllegalStateException ex) {
-			Log.d("RequestJsonTask", "getTaskFace().getClassType() fails, due to killed state" + ex.toString());
-		} catch (InternalErrorException e) {
-			e.logMe();
-			result = e.getCode();
-		}
+
+//		if (loadItems.length == 1) {
+			try {
+				item = RestHelper.getInstance().requestData(loadItems[0], getTaskFace().getClassType(), getTaskFace().getMeContext());
+			} catch (IllegalStateException ex) {
+				Log.d("RequestJsonTask", "getTaskFace().getClassType() fails, due to killed state" + ex.toString());
+			} catch (InternalErrorException e) {
+				e.logMe();
+				result = e.getCode();
+			}
+//		} else {
+//
+//			try {
+//				item = RestHelper.getInstance().requestBatchData(loadItems, getTaskFace().getClassType(), getTaskFace().getMeContext());
+//			} catch (IllegalStateException ex) {
+//				Log.d("RequestJsonTask", "getTaskFace().getClassType() fails, due to killed state" + ex.toString());
+//			} catch (InternalErrorException e) {
+//				e.logMe();
+//				result = e.getCode();
+//			}
+//
+//			for (LoadItem loadItem : loadItems) {
+////				loadItem
+//			}
+//
+//		}
+
 
 		if (item != null) {
 			result = StaticData.RESULT_OK;

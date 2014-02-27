@@ -20,7 +20,6 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.os.Debug;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
@@ -196,9 +195,9 @@ public class AppUtils {
 
 	public static void logMemData() {
 		if (BuildConfig.DEBUG) {
-			Log.d("TEST", "heap alloc size = " + Debug.getNativeHeapAllocatedSize()
-					+ " native free = " + Debug.getNativeHeapFreeSize()
-					+ " heap = " + Debug.getNativeHeapSize());
+//			Log.d("TEST", "heap alloc size = " + Debug.getNativeHeapAllocatedSize()
+//					+ " native free = " + Debug.getNativeHeapFreeSize()
+//					+ " heap = " + Debug.getNativeHeapSize());
 		}
 	}
 
@@ -655,15 +654,7 @@ public class AppUtils {
 		return resources.getConfiguration().locale.getLanguage().equals(StaticData.LOCALE_EN);
 	}
 
-	public static String getAppId(Context context) {
-		PackageManager manager = context.getPackageManager();
-		PackageInfo info;
-		try {
-			info = manager.getPackageInfo(context.getPackageName(), 0);
-		} catch (PackageManager.NameNotFoundException e) {
-			e.printStackTrace();
-			return "Android0";
-		}
+	public static String getAppId() {
 		return "Android" + VERSION_CODE;
 	}
 

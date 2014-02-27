@@ -41,7 +41,7 @@ public class ChessBoardExplorerView extends ChessBoardBaseView {
 			return super.onTouchEvent(event);
 		}
 
-		track = false;
+		trackTouchEvent = false;
 
 		return super.onTouchEvent(event);
 	}
@@ -53,7 +53,7 @@ public class ChessBoardExplorerView extends ChessBoardBaseView {
 		List<Move> moves = getBoardFace().generateLegalMoves();
 		for (Move move1 : moves) {
 			move = move1;
-			if (move.from == from && move.to == to && move.promote == promote) {
+			if (move.from == fromSquare && move.to == toSquare && move.promote == promote) {
 				found = true;
 				break;
 			}
@@ -69,11 +69,11 @@ public class ChessBoardExplorerView extends ChessBoardBaseView {
 			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 			setMoveAnimator(moveAnimator);
 			//afterUserMove(); //
-		} else if (getBoardFace().getPiece(to) != ChessBoard.EMPTY
-				&& getBoardFace().getSide() == getBoardFace().getColor(to)) {
+		} else if (getBoardFace().getPiece(toSquare) != ChessBoard.EMPTY
+				&& getBoardFace().getSide() == getBoardFace().getColor(toSquare)) {
 			pieceSelected = true;
 			firstClick = false;
-			from = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
+			fromSquare = ChessBoard.getPositionIndex(file, rank, getBoardFace().isReside());
 		}
 		invalidateMe();
 	}

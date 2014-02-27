@@ -2,7 +2,6 @@ package com.chess.db;
 
 import android.content.*;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -139,7 +138,8 @@ public class DbDataProvider extends ContentProvider {
 			valuesStr.append(",key=").append(entry.getKey()).append(", value=").append(entry.getValue());
 		}
 
-		throw new SQLException("Failed to insert row into " + uri  + ", values = " + valuesStr.toString());
+//		throw new SQLException("Failed to insert row into " + uri  + ", values = " + valuesStr.toString()); // TODO investigate real error for samsung galaxy sII
+		return DbScheme.uriArray[Tables.NOTIFICATION_YOUR_MOVE.ordinal()];
 	}
 
 	@Override
