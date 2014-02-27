@@ -73,7 +73,11 @@ public class LccChallengeListener implements ChallengeListener {
 
 		if (challenge.getTo().equals(lccHelper.getUser().getUsername())) {
 			// show popup dialog with challenge invitation
-			outerChallengeListener.showDialog(challenge);
+			if (!lccHelper.TESTING_GAME) {
+				outerChallengeListener.showDialog(challenge);
+			} else {
+				lccHelper.getClient().acceptChallenge(challenge, this);
+			}
 		}
 		lccHelper.putChallenge(challenge.getId(), challenge);
 

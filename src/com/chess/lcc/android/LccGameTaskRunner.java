@@ -115,8 +115,22 @@ public class LccGameTaskRunner {
 		protected Integer doTheTask(Game... game) {
 
 			try {
-				LogMe.dl("DEBUG: MakeMoveTask doTheTask: move=" + move + ", game=" + game[0].getId());
+
+				long threadId = Thread.currentThread().getId();
+
+				LogMe.dl("DEBUG: MakeMoveTask: move=" + move + ", game=" + game[0].getId() +
+						", threadId=" + threadId + ", threadName=" + Thread.currentThread().getName());
+
+				if (LiveConnectionHelper.THREAD_MONITORING_ENABLED) {
+					MoveInfo latestMoveInfo = lccHelper.getLatestMoveInfo();
+					latestMoveInfo.setMoveFirstThreadId(-1); // we do not interesting anymore on First thread if Second one is reached
+					latestMoveInfo.setMoveSecondThreadId(threadId);
+					lccHelper.setLatestMoveInfo(latestMoveInfo);
+				}
+
+
 				liveChessClient.makeMove(game[0], move);
+
 			} catch (IllegalArgumentException e) {
 				BugSenseHandler.addCrashExtraData("APP_LCC_MAKE_MOVE", debugInfo);
 				Map<String, String> params = new HashMap<String, String>();

@@ -32,7 +32,7 @@ public class LccHelper {
 	public static final boolean TESTING_GAME = false;
 	public static final String[] TEST_MOVES_COORD = {"a2a3", "h7h6", "b2b3", "g7g6", "c2c3", "f7f6", "d2d4", "d7d6",
 			"e2e4", "c8h3", "f2f4", "b8a6", "d4d5", "e7e6", "d5e6", "d8d7", "e4e5", "d7h7", "a3a4", "e8c8", "c3c4",
-			"d8d7", "a1a2", "d7g7", "b1d2", "c8b8", "e6e7", "a6c5"};
+			"d8d7", "a1a2", "d7g7", "b1d2", "c8b8", "e6e7", "a6c5", "g2h3", "h6h5", "e7e8q"};
 
 	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
@@ -75,6 +75,7 @@ public class LccHelper {
 	private LccEventListener lccEventListener;
 	private LccEventListener lccObserveEventListener;
 	private LccChatMessageListener lccChatMessageListener;
+	private MoveInfo latestMoveInfo;
 
 
 	public LccHelper(LiveConnectionHelper liveConnectionHelper) {
@@ -516,6 +517,12 @@ public class LccHelper {
 			}*/
 
 		LogMe.dl(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move);
+
+		if (LiveConnectionHelper.THREAD_MONITORING_ENABLED) {
+			long threadId = Thread.currentThread().getId();
+			setLatestMoveInfo(new MoveInfo(game.getId(), move, threadId));
+		}
+
 		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
 	}
 
@@ -907,6 +914,10 @@ public class LccHelper {
 		if (!isGameActivityPausedMode()) {
 			getLccEventListener().onGameEnd(game, message);
 		}
+
+		if (TESTING_GAME && isMyGame(game)) {
+			rematch();
+		}
 	}
 
 	public void unObserveCurrentObservingGame() {
@@ -941,6 +952,7 @@ public class LccHelper {
 					LogMe.dl(TAG, "UnObserveOldTopGamesTask unobserve gameId=" + game.getId());
 					unObserveGame(game.getId());
 					lccClient.exitGame(game); // check, probably can avoid this
+					lccGames.remove(game);
 			   }
 			}
 			return null;
@@ -965,4 +977,49 @@ public class LccHelper {
 		return liveConnectionHelper;
 	}
 
+	public MoveInfo getLatestMoveInfo() {
+		return latestMoveInfo;
+	}
+
+	public void setLatestMoveInfo(MoveInfo setLatestMoveInfo) {
+		this.latestMoveInfo = setLatestMoveInfo;
+	}
+}
+
+class MoveInfo {
+	private Long gameId;
+	private String move;
+	private long moveFirstThreadId = -1;
+	private long moveSecondThreadId = -1;
+
+	MoveInfo(Long gameId, String move, long moveFirstThreadId) {
+		this.gameId = gameId;
+		this.move = move;
+		this.moveFirstThreadId = moveFirstThreadId;
+	}
+
+	public long getMoveFirstThreadId() {
+		return moveFirstThreadId;
+	}
+
+	public void setMoveFirstThreadId(long moveFirstThreadId) {
+		this.moveFirstThreadId = moveFirstThreadId;
+	}
+
+	public long getMoveSecondThreadId() {
+		return moveSecondThreadId;
+	}
+
+	public void setMoveSecondThreadId(long moveSecondThreadId) {
+		this.moveSecondThreadId = moveSecondThreadId;
+	}
+
+	public String getMove() {
+		return move;
+	}
+
+	@Override
+	public String toString() {
+		return "move: " + move + ", game: " + gameId + ", firstThreadId: " + moveFirstThreadId + ", secondThreadId: " + moveSecondThreadId;
+	}
 }

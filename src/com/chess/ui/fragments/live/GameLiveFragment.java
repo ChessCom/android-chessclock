@@ -164,7 +164,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		super.onResume();
 
 
-		LogMe.dl("lcc", "```````````````````````````````````````````" );
+		LogMe.dl("lcc", "```````````````````````````````````````````");
 		LogMe.dl("lcc", " fragments to receive onLiveClientConnected " );
 		for (Fragment fragment : getActivity().getSupportFragmentManager().getFragments()) {
 			if (fragment != null) {
@@ -794,7 +794,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		String debugString = " no debug log";
 		showSubmitButtonsLay(false);
 
-		String move = getBoardFace().convertMoveLive();
+		String move = getBoardFace().convertMoveLive(); // todo: check does it always return latest move: histDat[ply]
 		Log.i(TAG, "LCC make move: " + move);
 
 		String stackTrace;
@@ -810,7 +810,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 //						", " + boardDebug +
 						", gameSeq=" + getCurrentGame(liveHelper).getMoves().size() +
 						", boardHply=" + getBoardFace().getPly() +
-						", moveLive=" + getBoardFace().convertMoveLive() +
+						", moveLive=" + move +
 						", gamesC=" + liveHelper.getGamesCount() +
 						", gameId=" + getGameId() +
 //						", analysisPanel=" + gamePanelView.isAnalysisEnabled() +

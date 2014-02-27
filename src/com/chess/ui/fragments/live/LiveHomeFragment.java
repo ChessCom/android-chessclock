@@ -154,7 +154,7 @@ public class LiveHomeFragment extends LiveBaseFragment implements PopupListSelec
 		public void updateData(ServersStatsItem returnedObj) {
 			super.updateData(returnedObj);
 
-			long cnt = returnedObj.getData().getTotals().getLive();
+			long cnt = returnedObj.getData().getTotals().getLive(); // NPE
 			String playersOnlineStr = NumberFormat.getInstance().format(cnt);
 
 			onlinePlayersCntTxt.setText(getString(R.string.players_online_arg, playersOnlineStr));

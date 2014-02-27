@@ -265,6 +265,14 @@ public class LccGameListener implements GameListener {
 		if (game.getMoveCount() == 1 || (latestMoveNumber != null && game.getMoveCount() - 1 > latestMoveNumber)) { // do not check moves if it was
 			User moveMaker = game.getLastMoveMaker();
 			String move = game.getLastMove();
+
+			if (LiveConnectionHelper.THREAD_MONITORING_ENABLED) {
+				MoveInfo latestMoveInfo = lccHelper.getLatestMoveInfo();
+				if (latestMoveInfo != null && move.equals(latestMoveInfo.getMove())) {
+					lccHelper.setLatestMoveInfo(null);
+				}
+			}
+
 			LogMe.dl(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHelper.getUser().getUsername() +
 					", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());
 			lccHelper.doMoveMade(game, game.getMoveCount() - 1);

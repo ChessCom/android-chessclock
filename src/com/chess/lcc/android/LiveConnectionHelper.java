@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.backend.LiveChessService;
 import com.chess.backend.LoadItem;
@@ -24,16 +25,19 @@ import com.chess.lcc.android.interfaces.LccConnectionUpdateFace;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.lcc.android.interfaces.LiveChessClientEventListener;
 import com.chess.live.client.*;
+import com.chess.live.util.ThreadMonitor;
 import com.chess.model.DataHolder;
 import com.chess.model.GameLiveItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.AppData;
+import com.chess.statics.FlurryData;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.interfaces.PopupShowFace;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 import com.chess.utilities.Ping;
+import com.flurry.android.FlurryAgent;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -45,6 +49,11 @@ public class LiveConnectionHelper {
 	private static final String TAG = "LCCLOG-LiveConnectionHelper";
 	private static final boolean PING_ENABLED = false;
 //	private static final boolean PING_ENABLED = com.chess.BuildConfig.DEBUG;
+
+	public static final boolean THREAD_MONITORING_ENABLED = true;
+	private static ThreadMonitor TM;
+	private static float THREAD_MONITOR_POLLING_INTERVAL = 10.0f;
+	//private static CpuUsageLogger CPU_LOGGER;
 
 	private static final long SHUTDOWN_TIMEOUT_DELAY = 30 * 1000; // 30 sec, shutdown after user leave app
 	private static final long PLAYING_SHUTDOWN_TIMEOUT_DELAY = 2 * 60 * 1000;
@@ -88,6 +97,11 @@ public class LiveConnectionHelper {
 		subscriptionListener = new LccSubscriptionListener();
 		handler = new Handler();
 		testPing = new Ping(context);
+
+		if (THREAD_MONITORING_ENABLED) {
+			TM = new ThreadMonitor(THREAD_MONITOR_POLLING_INTERVAL, true, false, true, new ThreadMonitorListener());
+			//CPU_LOGGER = new CpuUsageLogger();
+		}
 	}
 
 	public void checkAndConnect(LccConnectionUpdateFace connectionUpdateFace) {
@@ -506,10 +520,12 @@ public class LiveConnectionHelper {
 	}
 
 	public void startIdleTimeOutCounter() {
+		LogMe.dl(TAG, "START shutdown timer");
 		handler.postDelayed(shutDownRunnable, getShutDownDelay());
 	}
 
 	public void stopIdleTimeOutCounter() {
+		LogMe.dl(TAG, "STOP shutdown timer");
 		handler.removeCallbacks(shutDownRunnable);
 	}
 
@@ -961,6 +977,53 @@ public class LiveConnectionHelper {
 		@Override
 		public void errorHandle(Integer resultCode) {
 			super.errorHandle(resultCode);
+		}
+	}
+
+	private class ThreadMonitorListener implements ThreadMonitor.ThreadMonitorListener {
+
+		private static final String TAG = "LCCLOG-ThreadMonitor";
+
+		public void onStarted(String info) {
+			LogMe.dl(TAG, "onStarted: " + info);
+		}
+
+		@Override
+		public void onTerminated(String info) {
+			LogMe.dl(TAG, "onTerminated: " + info);
+		}
+
+		@Override
+		public void onLogged(String info, java.util.Collection<java.lang.Thread> blockedThreads) {
+			LogMe.dl(TAG, "onLogged: " + info);
+
+			MoveInfo latestMoveInfo = lccHelper.getLatestMoveInfo();
+
+			if (blockedThreads != null && latestMoveInfo != null) {
+				for (Thread thread : blockedThreads) {
+					if (thread.getId() == latestMoveInfo.getMoveFirstThreadId() || thread.getId() == latestMoveInfo.getMoveSecondThreadId()) {
+
+						HashMap<String, String> params = new HashMap<String, String>();
+						params.put("ThreadMonitor", info);
+						params.put("Move", latestMoveInfo.toString());
+
+						FlurryAgent.logEvent(FlurryData.MOVE_BLOCKED_THREAD_DEBUG, params);
+
+						Exception e = new Exception(FlurryData.MOVE_BLOCKED_THREAD_DEBUG);
+						BugSenseHandler.sendExceptionMap(params, e);
+
+						//throw new RuntimeException(FlurryData.MOVE_BLOCKED_THREAD_DEBUG);
+					}
+				}
+			}
+		}
+
+		@Override
+		public void onError(String info, Exception e) {
+			LogMe.dl(TAG, "onError: " + info);
+			if (e != null) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
