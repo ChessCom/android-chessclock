@@ -12,6 +12,8 @@ public class LccGameListener implements GameListener {
 
 	private static final String TAG = "LccLog-GAME";
 
+	private static final String RESEND_MOVE = "resend move";
+
 	private LccHelper lccHelper;
 	private Long latestGameId = 0L;
 	private LiveConnectionHelper liveConnectionHelper;
@@ -32,56 +34,56 @@ public class LccGameListener implements GameListener {
 			@Override
 			public void run() {
 			*/
-				Long previousGameId = latestGameId;
-				latestGameId = 0L;
+			Long previousGameId = latestGameId;
+			latestGameId = 0L;
 
-				Long gameId;
-				Long latestMyGameId = 0L;
-				Long latestTopGameId = 0L;
+			Long gameId;
+			Long latestMyGameId = 0L;
+			Long latestTopGameId = 0L;
 
-				for (Game game : games) {
-					gameId = game.getId();
+			for (Game game : games) {
+				gameId = game.getId();
 
-					if (lccHelper.isMyGame(game)) {
-						if (gameId > latestMyGameId) {
-							latestMyGameId = gameId;
-						}
-
-					} else if (gameId > latestTopGameId) {
-						latestTopGameId = gameId;
+				if (lccHelper.isMyGame(game)) {
+					if (gameId > latestMyGameId) {
+						latestMyGameId = gameId;
 					}
+
+				} else if (gameId > latestTopGameId) {
+					latestTopGameId = gameId;
 				}
+			}
 
-				if (latestMyGameId != 0) {
-					latestGameId = latestMyGameId;
+			if (latestMyGameId != 0) {
+				latestGameId = latestMyGameId;
 
-				} else if (latestTopGameId != 0) {
-					latestGameId = latestTopGameId;
+			} else if (latestTopGameId != 0) {
+				latestGameId = latestTopGameId;
+			}
+
+			for (Game game : games) {
+				gameId = game.getId();
+				if (!gameId.equals(latestGameId)) {
+					LogMe.dl(TAG, "onGameListReceived: ignore game, id=" + gameId);
+					games.remove(game);
 				}
+			}
 
-				for (Game game : games) {
-					gameId = game.getId();
-					if (!gameId.equals(latestGameId)) {
-						LogMe.dl(TAG, "onGameListReceived: ignore game, id=" + gameId);
-						games.remove(game);
-					}
+			if (previousGameId != 0 && !latestGameId.equals(previousGameId)) {
+
+				Game currentGame = lccHelper.getCurrentGame();
+				if (currentGame != null) {
+					lccHelper.setLastGame(currentGame);
 				}
+				lccHelper.clearGames();
+				lccHelper.setCurrentGameId(null);
+				lccHelper.setCurrentObservedGameId(null);
 
-				if (previousGameId != 0 && !latestGameId.equals(previousGameId)) {
-
-					Game currentGame = lccHelper.getCurrentGame();
-					if (currentGame != null) {
-						lccHelper.setLastGame(currentGame);
-					}
-					lccHelper.clearGames();
-					lccHelper.setCurrentGameId(null);
-					lccHelper.setCurrentObservedGameId(null);
-
-					if (lccHelper.getLccEventListener() != null) {
-						LogMe.dl(TAG, "onGameListReceived: game is expired");
-						lccHelper.getLccEventListener().expireGame();
-					}
+				if (lccHelper.getLccEventListener() != null) {
+					LogMe.dl(TAG, "onGameListReceived: game is expired");
+					lccHelper.getLccEventListener().expireGame();
 				}
+			}
 			/*
 			}
 		});
@@ -105,14 +107,14 @@ public class LccGameListener implements GameListener {
 			@Override
 			public void run() {
 			*/
-				Long gameId = game.getId();
+			Long gameId = game.getId();
 
-				if (lccHelper.isMyGame(game) && isGameValid(game)) {
-					updateGameId(gameId);
-					lccHelper.runUnObserveOldTopGamesTask(game.getId());
+			if (lccHelper.isMyGame(game) && isGameValid(game)) {
+				updateGameId(gameId);
+				lccHelper.runUnObserveOldTopGamesTask(game.getId());
 
-				} else if (lccHelper.isObservedGame(game) && isGameValid(game)) {
-					updateGameId(gameId);
+			} else if (lccHelper.isObservedGame(game) && isGameValid(game)) {
+				updateGameId(gameId);
 				/*if (lccHelper.isGameToUnObserve(game)) {
 					LogMe.dl(TAG, "GAME LISTENER: isGameToUnObserve true");
 
@@ -122,16 +124,16 @@ public class LccGameListener implements GameListener {
 					}
 					return;
 				} else {*/
-					lccHelper.setCurrentObservedGameId(game.getId());
-					//}
+				lccHelper.setCurrentObservedGameId(game.getId());
+				//}
 
-				} else {
-					return; // ignore old game
-				}
+			} else {
+				return; // ignore old game
+			}
 
-				lccHelper.putGame(game);
+			lccHelper.putGame(game);
 
-				doResetGame(game);
+			doResetGame(game);
 			/*}
 		});*/
 
@@ -149,25 +151,25 @@ public class LccGameListener implements GameListener {
 			@Override
 			public void run() {
 			*/
-				Long gameId = game.getId();
+			Long gameId = game.getId();
 
-				if (lccHelper.isMyGame(game) && isGameValid(game)) {
-					updateGameId(gameId);
-					lccHelper.runUnObserveOldTopGamesTask(game.getId());
+			if (lccHelper.isMyGame(game) && isGameValid(game)) {
+				updateGameId(gameId);
+				lccHelper.runUnObserveOldTopGamesTask(game.getId());
 
-				} else if (lccHelper.isObservedGame(game) && isGameValid(game)) {
-					updateGameId(gameId);
+			} else if (lccHelper.isObservedGame(game) && isGameValid(game)) {
+				updateGameId(gameId);
 
 				/*if (lccHelper.isGameToUnObserve(game)) {
 					return;
 				}*/
 
-				} else {
-					return; // ignore old game
-				}
+			} else {
+				return; // ignore old game
+			}
 
-				lccHelper.putGame(game);
-				doUpdateGame(game);
+			lccHelper.putGame(game);
+			doUpdateGame(game);
 			/*}
 		});*/
 
@@ -185,20 +187,20 @@ public class LccGameListener implements GameListener {
 			@Override
 			public void run() {
 			*/
-				lccHelper.putGame(game);
+			lccHelper.putGame(game);
 
-				if (!isGameValid(game)) {
-					return;
-				}
+			if (!isGameValid(game)) {
+				return;
+			}
 
 			/*lccHelper.getClient().subscribeToSeekList(LiveChessClient.SeekListOrderBy.Default, 1,
 															lccHelper.getSeekListListener());*/
 
-				// Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId; // vm: looks redundant
-				lccHelper.setLastGame(game);
+			// Long lastGameId = lccHelper.getCurrentGameId() != null ? lccHelper.getCurrentGameId() : gameId; // vm: looks redundant
+			lccHelper.setLastGame(game);
 
-				doUpdateGame(game);
-				lccHelper.checkAndProcessEndGame(game);
+			doUpdateGame(game);
+			lccHelper.checkAndProcessEndGame(game);
 			/*
 			}
 		});
@@ -261,17 +263,20 @@ public class LccGameListener implements GameListener {
 	private void doUpdateGame(Game game) {
 
 		Integer latestMoveNumber = lccHelper.getLatestMoveNumber();
+		String move = game.getLastMove();
+
+		MoveInfo latestMoveInfo = lccHelper.getLatestMoveInfo();
+		if (latestMoveInfo != null && game.getId().equals(latestMoveInfo.getGameId())) {
+			if (move.equals(latestMoveInfo.getMove())) {
+				lccHelper.setLatestMoveInfo(null);
+			} else {
+				LogMe.dl(TAG, RESEND_MOVE + " " + latestMoveInfo.getMove());
+				lccHelper.getLiveConnectionHelper().makeMove(latestMoveInfo.getMove(), RESEND_MOVE, null);
+			}
+		}
 
 		if (game.getMoveCount() == 1 || (latestMoveNumber != null && game.getMoveCount() - 1 > latestMoveNumber)) { // do not check moves if it was
 			User moveMaker = game.getLastMoveMaker();
-			String move = game.getLastMove();
-
-			if (LiveConnectionHelper.THREAD_MONITORING_ENABLED) {
-				MoveInfo latestMoveInfo = lccHelper.getLatestMoveInfo();
-				if (latestMoveInfo != null && move.equals(latestMoveInfo.getMove())) {
-					lccHelper.setLatestMoveInfo(null);
-				}
-			}
 
 			LogMe.dl(TAG, "GAME LISTENER: The move #" + game.getMoveCount() + " received by user: " + lccHelper.getUser().getUsername() +
 					", game.id=" + game.getId() + ", mover=" + moveMaker.getUsername() + ", move=" + move + ", allMoves=" + game.getMoves());

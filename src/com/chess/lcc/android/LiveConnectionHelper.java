@@ -33,7 +33,6 @@ import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.configs.LiveGameConfig;
-import com.chess.ui.interfaces.MakeMoveFace;
 import com.chess.ui.interfaces.PopupShowFace;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
@@ -51,7 +50,7 @@ public class LiveConnectionHelper {
 	private static final boolean PING_ENABLED = false;
 //	private static final boolean PING_ENABLED = com.chess.BuildConfig.DEBUG;
 
-	public static final boolean THREAD_MONITORING_ENABLED = true;
+	private static final boolean THREAD_MONITORING_ENABLED = true;
 	private static ThreadMonitor TM;
 	private static float THREAD_MONITOR_POLLING_INTERVAL = 10.0f;
 	//private static CpuUsageLogger CPU_LOGGER;
@@ -729,8 +728,8 @@ public class LiveConnectionHelper {
 		return lccHelper.isFairPlayRestriction();
 	}
 
-	public void makeMove(String move, String temporaryDebugInfo, MakeMoveFace makeMoveFace) {
-		lccHelper.makeMove(move, gameTaskRunner, temporaryDebugInfo, makeMoveFace);
+	public void makeMove(String move, String temporaryDebugInfo, ActionBarUpdateListener<Game> makeMoveTaskListener) {
+		lccHelper.makeMove(move, gameTaskRunner, temporaryDebugInfo, makeMoveTaskListener);
 	}
 
 	public void updatePlayersClock() {

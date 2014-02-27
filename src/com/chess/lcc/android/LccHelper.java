@@ -6,6 +6,7 @@ import android.os.Handler;
 import com.chess.R;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
+import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.*;
@@ -19,7 +20,6 @@ import com.chess.statics.FlurryData;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.configs.LiveGameConfig;
-import com.chess.ui.interfaces.MakeMoveFace;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 import com.flurry.android.FlurryAgent;
@@ -510,7 +510,7 @@ public class LccHelper {
 //		return gameData;
 //	}
 
-	public void makeMove(String move, LccGameTaskRunner gameTaskRunner, String debugInfo, MakeMoveFace makeMoveFace) {
+	public void makeMove(String move, LccGameTaskRunner gameTaskRunner, String debugInfo, ActionBarUpdateListener<Game> makeMoveTaskListener) {
 		Game game = getCurrentGame();
 		/*if(chessMove.isCastling())
 			{
@@ -524,12 +524,10 @@ public class LccHelper {
 
 		LogMe.dl(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move);
 
-		if (LiveConnectionHelper.THREAD_MONITORING_ENABLED) {
-			long threadId = Thread.currentThread().getId();
-			setLatestMoveInfo(new MoveInfo(game.getId(), move, threadId));
-		}
+		long threadId = Thread.currentThread().getId();
+		setLatestMoveInfo(new MoveInfo(game.getId(), move, threadId));
 
-		gameTaskRunner.runMakeMoveTask(game, move, debugInfo, makeMoveFace);
+		gameTaskRunner.runMakeMoveTask(game, move, debugInfo, makeMoveTaskListener);
 	}
 
 	public void rematch() {
@@ -970,12 +968,12 @@ public class LccHelper {
 		@Override
 		protected Void doInBackground(Long... params) {
 			for (Game game : lccGames.values()) {
-			   if (isObservedGame(game) && !game.getId().equals(params[0])) {
+				if (isObservedGame(game) && !game.getId().equals(params[0])) {
 					LogMe.dl(TAG, "UnObserveOldTopGamesTask unobserve gameId=" + game.getId());
 					unObserveGame(game.getId());
 					lccClient.exitGame(game); // check, probably can avoid this
 					lccGames.remove(game);
-			   }
+				}
 			}
 			return null;
 		}
@@ -1038,6 +1036,10 @@ class MoveInfo {
 
 	public String getMove() {
 		return move;
+	}
+
+	public Long getGameId() {
+		return gameId;
 	}
 
 	@Override
