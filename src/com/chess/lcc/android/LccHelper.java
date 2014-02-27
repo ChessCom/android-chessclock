@@ -2,6 +2,7 @@ package com.chess.lcc.android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import com.chess.R;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
@@ -12,13 +13,13 @@ import com.chess.live.rules.GameResult;
 import com.chess.live.util.GameRatingClass;
 import com.chess.live.util.GameTimeConfig;
 import com.chess.live.util.GameType;
-import com.chess.live.util.Utils;
 import com.chess.model.GameLiveItem;
 import com.chess.statics.AppConstants;
 import com.chess.statics.FlurryData;
 import com.chess.statics.IntentConstants;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.configs.LiveGameConfig;
+import com.chess.ui.interfaces.MakeMoveFace;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
 import com.flurry.android.FlurryAgent;
@@ -29,12 +30,15 @@ import static com.chess.live.rules.GameResult.WIN;
 
 public class LccHelper {
 
+	private static final String TAG = "LccLog-LccHelper";
+
 	public static final boolean TESTING_GAME = false;
 	public static final String[] TEST_MOVES_COORD = {"a2a3", "h7h6", "b2b3", "g7g6", "c2c3", "f7f6", "d2d4", "d7d6",
 			"e2e4", "c8h3", "f2f4", "b8a6", "d4d5", "e7e6", "d5e6", "d8d7", "e4e5", "d7h7", "a3a4", "e8c8", "c3c4",
 			"d8d7", "a1a2", "d7g7", "b1d2", "c8b8", "e6e7", "a6c5", "g2h3", "h6h5", "e7e8q"};
+	public static final long TEST_MOVES_DELAY = 10 * 1000;
+	public static final long TEST_FIRST_MOVE_DELAY = 3 * 1000;
 
-	private static final String TAG = "LccLog-LccHelper";
 	public static final int OWN_SEEKS_LIMIT = 3;
 	public static final Object GAME_SYNC_LOCK = new Object();
 
@@ -47,6 +51,7 @@ public class LccHelper {
 	private final LccAnnouncementListener announcementListener;
 	private final LccAdminEventListener adminEventListener;
 	private final LiveConnectionHelper liveConnectionHelper;
+	private final Handler handler;
 	private LiveChessClient lccClient;
 	private User user;
 
@@ -91,6 +96,7 @@ public class LccHelper {
 		adminEventListener = new LccAdminEventListener();
 
 		pendingWarnings = new ArrayList<String>();
+		handler = new Handler();
 	}
 
 	public void checkGameEvents() {
@@ -504,7 +510,7 @@ public class LccHelper {
 //		return gameData;
 //	}
 
-	public void makeMove(String move, LccGameTaskRunner gameTaskRunner, String debugInfo) {
+	public void makeMove(String move, LccGameTaskRunner gameTaskRunner, String debugInfo, MakeMoveFace makeMoveFace) {
 		Game game = getCurrentGame();
 		/*if(chessMove.isCastling())
 			{
@@ -523,7 +529,7 @@ public class LccHelper {
 			setLatestMoveInfo(new MoveInfo(game.getId(), move, threadId));
 		}
 
-		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
+		gameTaskRunner.runMakeMoveTask(game, move, debugInfo, makeMoveFace);
 	}
 
 	public void rematch() {
@@ -741,22 +747,38 @@ public class LccHelper {
 		final Game game = getCurrentGame();
 
 		if (TESTING_GAME && isMyGame(game)) {
-			if (game.isMoveOf(getUsername()) && game.getMoveCount() == 0) {
-				if (game.isMoveOf(getUsername()) /*&& game.getState() == Game.State.Started*/ && game.getMoveCount() < TEST_MOVES_COORD.length) {
-					Utils.sleep(3000);
-					liveConnectionHelper.makeMove(TEST_MOVES_COORD[game.getMoveCount()].trim(), "");
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					if (game.isMoveOf(getUsername()) && game.getMoveCount() == 0) {
+						if (game.isMoveOf(getUsername()) /*&& game.getState() == Game.State.Started*/ && game.getMoveCount() < TEST_MOVES_COORD.length) {
+							liveConnectionHelper.makeMove(TEST_MOVES_COORD[game.getMoveCount()].trim(), "", null);
+						}
+					}
 				}
-			}
+			}, TEST_FIRST_MOVE_DELAY);
 		}
 	}
 
 	public void checkTestMove() {
 		final Game game = getCurrentGame();
 		if (TESTING_GAME && isMyGame(game)) {
-			if (game.isMoveOf(getUsername()) /*&& game.getState() == Game.State.Started*/ && game.getMoveCount() < TEST_MOVES_COORD.length) {
-				//Utils.sleep(0.5F);
-				liveConnectionHelper.makeMove(TEST_MOVES_COORD[game.getMoveCount()].trim(), "");
-			}
+
+			long delay = game.getMoveCount() > 2 ? TEST_MOVES_DELAY : 0;
+
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+
+					/*LogMe.dl("game.isMoveOf(getUsername()) " + game.isMoveOf(getUsername()));
+					LogMe.dl("game.getMoveCount() " + game.getMoveCount());
+					LogMe.dl("new move TEST_MOVES_COORD[latestMoveNumber] " + TEST_MOVES_COORD[latestMoveNumber]);*/
+
+					if (game.isMoveOf(getUsername()) /*&& game.getState() == Game.State.Started*/ && game.getMoveCount() < TEST_MOVES_COORD.length) {
+						liveConnectionHelper.makeMove(TEST_MOVES_COORD[game.getMoveCount()].trim(), "", null);
+					}
+				}
+			}, delay);
 		}
 	}
 

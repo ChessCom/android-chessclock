@@ -33,6 +33,7 @@ import com.chess.statics.AppData;
 import com.chess.statics.FlurryData;
 import com.chess.statics.StaticData;
 import com.chess.ui.engine.configs.LiveGameConfig;
+import com.chess.ui.interfaces.MakeMoveFace;
 import com.chess.ui.interfaces.PopupShowFace;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.LogMe;
@@ -546,8 +547,10 @@ public class LiveConnectionHelper {
 
 	public void pingLive() {
 		if (PING_ENABLED) {
-			testPing.runPingLiveTask();
-			testPing.runTestRequestLiveServerTask();
+			stopPingLiveTimer();
+			//testPing.runPingLiveTask();
+			//testPing.runTestRequestLiveServerTask();
+			runPingLiveTimer();
 		}
 	}
 
@@ -726,8 +729,8 @@ public class LiveConnectionHelper {
 		return lccHelper.isFairPlayRestriction();
 	}
 
-	public void makeMove(String move, String temporaryDebugInfo) {
-		lccHelper.makeMove(move, gameTaskRunner, temporaryDebugInfo);
+	public void makeMove(String move, String temporaryDebugInfo, MakeMoveFace makeMoveFace) {
+		lccHelper.makeMove(move, gameTaskRunner, temporaryDebugInfo, makeMoveFace);
 	}
 
 	public void updatePlayersClock() {

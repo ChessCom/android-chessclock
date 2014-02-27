@@ -8,11 +8,11 @@ import com.chess.live.client.LiveChessClient;
 import com.chess.statics.FlurryData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
+import com.chess.ui.interfaces.MakeMoveFace;
 import com.chess.utilities.LogMe;
 import com.flurry.android.FlurryAgent;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * LccGameTaskRunner class
@@ -97,18 +97,20 @@ public class LccGameTaskRunner {
 		}
 	}
 
-	public void runMakeMoveTask(Game game, String move, String debugInfo) {
-		new MakeMoveTask(move, debugInfo).executeTask(game);
+	public void runMakeMoveTask(Game game, String move, String debugInfo, MakeMoveFace makeMoveFace) {
+		new MakeMoveTask(move, debugInfo, makeMoveFace).executeTask(game);
 	}
 
 	private class MakeMoveTask extends AbstractUpdateTask<Game, Game> {
 		private String move;
 		private String debugInfo;
+		private MakeMoveFace makeMoveFace;
 
-		public MakeMoveTask(String move, String debugInfo) {
+		public MakeMoveTask(String move, String debugInfo, MakeMoveFace makeMoveFace) {
 			super(gameTaskFace);
 			this.move = move;
 			this.debugInfo = debugInfo;
+			this.makeMoveFace = makeMoveFace;
 		}
 
 		@Override
@@ -128,15 +130,28 @@ public class LccGameTaskRunner {
 					lccHelper.setLatestMoveInfo(latestMoveInfo);
 				}
 
+				/*
+				// remove after debug move resending
+				if (game[0].getMoveCount() == 3) {
+					move = "test";
+				}
+				*/
 
 				liveChessClient.makeMove(game[0], move);
 
 			} catch (IllegalArgumentException e) {
 				BugSenseHandler.addCrashExtraData("APP_LCC_MAKE_MOVE", debugInfo);
-				Map<String, String> params = new HashMap<String, String>();
+				HashMap<String, String> params = new HashMap<String, String>();
 				params.put("DEBUG", debugInfo);
+
 				FlurryAgent.logEvent(FlurryData.ILLEGAL_MOVE_DEBUG, params);
-				throw new IllegalArgumentException(debugInfo, e);
+
+				if (makeMoveFace != null) {
+					BugSenseHandler.sendExceptionMap(params, e);
+					makeMoveFace.onIllegalMove();
+				} else {
+					throw new IllegalArgumentException(debugInfo, e); // TESTING_GAME case
+				}
 			}
 
 			return StaticData.RESULT_OK;

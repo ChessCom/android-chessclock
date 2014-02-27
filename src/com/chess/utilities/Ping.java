@@ -168,21 +168,18 @@ public class Ping {
 			public void run() {
 
 				testRequestGoogleServer();
-				testRequestLiveServer();
-				//testRequestLiveSecuredServer();
-				testRequestChessServer();
+				//testRequestLiveServer();
+				testRequestLiveSecuredServer();
+				//testRequestChessServer();
 				//testRequestChessSecuredServer();
 				//testRequestChess3Server();
 
-				testRequestAkiba();
-				//testRequestAkibaSecured();
-				testRequestHammer();
-				//testRequestHammerSecured();
-				/*testRequestIvanchuk();
-				testRequestIvanchukSecured();*/
-				//testRequestLive8080();
+				//testRequestAkiba();
+				testRequestAkibaSecured();
+				//testRequestHammer();
+				testRequestHammerSecured();
+
 				testRequestLiveIp();
-				//testRequestLiveIp_8080();
 				//testRequestZerolag();
 
 			}
@@ -395,7 +392,6 @@ public class Ping {
 
 			testRequestLiveIp();
 			testRequestZerolag();
-
 
 			return null;
 		}

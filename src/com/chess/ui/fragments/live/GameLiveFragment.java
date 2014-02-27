@@ -45,6 +45,7 @@ import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupGameEndFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
+import com.chess.ui.interfaces.MakeMoveFace;
 import com.chess.ui.interfaces.PopupListSelectionFace;
 import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.game_ui.GameNetworkFace;
@@ -102,6 +103,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private boolean userSawGameEndPopup;
 	private ImageUpdateListener topImageUpdateListener;
 	private ImageUpdateListener bottomImageUpdateListener;
+	private MakeMoveListener makeMoveListener;
 	private boolean submitClicked;
 	private int previousSide;
 
@@ -128,6 +130,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		topImageUpdateListener = new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR);
 		bottomImageUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR);
+		makeMoveListener = new MakeMoveListener();
 
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
@@ -316,7 +319,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 			need2update = false;
 
-			if (!getCurrentGame(liveHelper).isGameOver()) {
+			Game game = getCurrentGame(liveHelper);
+			if (game != null && !game.isGameOver()) {
 				userSawGameEndPopup = false;
 			}
 		}
@@ -824,7 +828,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		temporaryDebugInfo = temporaryDebugInfo.replaceAll("\n", " ");
 		//LogMe.dl("TESTTEST", temporaryDebugInfo);
 
-		liveHelper.makeMove(move, temporaryDebugInfo);
+		liveHelper.makeMove(move, temporaryDebugInfo, makeMoveListener);
 	}
 
 	@Override
@@ -1499,5 +1503,24 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	protected Game getCurrentGame(LiveConnectionHelper liveHelper) {
 		return liveHelper.getCurrentGame();
+	}
+
+	class MakeMoveListener implements MakeMoveFace {
+		@Override
+		public void onIllegalMove() {
+
+			getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						LogMe.dl(TAG, "handle illegal move");
+						onGameStarted();
+
+					} catch (DataNotValidException e) {
+						logTest(e.getMessage());
+					}
+				}
+			});
+		}
 	}
 }
