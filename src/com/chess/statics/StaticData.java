@@ -21,6 +21,8 @@ public class StaticData {
 	public static final int DATA_EXIST = 2;
 	public static final int MAX_REACHED = 3;
 	public static final int INTERNAL_ERROR = 15; // used in combination with server int error codes
+	public static final int ILLEGAL_MOVE = 16;
+
 
 	public static final long WAKE_SCREEN_TIMEOUT = 2 * 60 * 1000;
 

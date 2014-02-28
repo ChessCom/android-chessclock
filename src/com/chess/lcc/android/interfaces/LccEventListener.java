@@ -1,5 +1,6 @@
 package com.chess.lcc.android.interfaces;
 
+import com.chess.lcc.android.DataNotValidException;
 import com.chess.live.client.Game;
 import com.chess.model.GameLiveItem;
 
@@ -16,6 +17,8 @@ public interface LccEventListener {
 	void setBlackPlayerTimer(String timer);
 
 	void onGameRefresh(GameLiveItem gameItem);
+
+	void onGameStarted() throws DataNotValidException;
 
 	void onDrawOffered(String drawOfferUsername);
 

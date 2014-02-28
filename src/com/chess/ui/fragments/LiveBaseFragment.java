@@ -12,6 +12,7 @@ import com.chess.lcc.android.interfaces.LiveFragmentFace;
 import com.chess.live.client.Game;
 import com.chess.model.DataHolder;
 import com.chess.model.GameLiveItem;
+import com.chess.statics.StaticData;
 import com.chess.ui.activities.LiveBaseActivity;
 import com.chess.ui.fragments.live.*;
 import com.chess.utilities.LogMe;
@@ -143,6 +144,10 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 	}
 
 	@Override
+	public void onGameStarted() throws DataNotValidException {
+	}
+
+	@Override
 	public void onDrawOffered(String drawOfferUsername) {
 	}
 
@@ -220,6 +225,22 @@ public abstract class LiveBaseFragment extends CommonLogicFragment implements Lc
 		public GameTaskListener() {
 			super(getInstance());
 		}
+
+		@Override
+		public void errorHandle(Integer resultCode) {
+			super.errorHandle(resultCode);
+
+			if (resultCode.equals(StaticData.ILLEGAL_MOVE)) {
+				try {
+					LogMe.dl(TAG, "handle illegal move");
+					onGameStarted();
+				} catch (DataNotValidException e) {
+					logTest(e.getMessage());
+				}
+			}
+		}
+
+
 	}
 
 	@Override

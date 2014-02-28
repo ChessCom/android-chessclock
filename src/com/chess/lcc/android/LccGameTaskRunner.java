@@ -1,7 +1,6 @@
 package com.chess.lcc.android;
 
 import com.bugsense.trace.BugSenseHandler;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.AbstractUpdateTask;
 import com.chess.live.client.Game;
@@ -97,16 +96,16 @@ public class LccGameTaskRunner {
 		}
 	}
 
-	public void runMakeMoveTask(Game game, String move, String debugInfo, ActionBarUpdateListener<Game> makeMoveTaskListener) {
-		new MakeMoveTask(move, debugInfo, makeMoveTaskListener).executeTask(game);
+	public void runMakeMoveTask(Game game, String move, String debugInfo/*, ActionBarUpdateListener<Game> makeMoveTaskListener*/) {
+		new MakeMoveTask(move, debugInfo/*, makeMoveTaskListener*/).executeTask(game);
 	}
 
 	private class MakeMoveTask extends AbstractUpdateTask<Game, Game> {
 		private String move;
 		private String debugInfo;
 
-		public MakeMoveTask(String move, String debugInfo, ActionBarUpdateListener<Game> makeMoveTaskListener) {
-			super(makeMoveTaskListener);
+		public MakeMoveTask(String move, String debugInfo/*, ActionBarUpdateListener<Game> makeMoveTaskListener*/) {
+			super(gameTaskFace);
 			this.move = move;
 			this.debugInfo = debugInfo;
 		}
@@ -137,7 +136,7 @@ public class LccGameTaskRunner {
 				FlurryAgent.logEvent(FlurryData.ILLEGAL_MOVE_DEBUG, params);
 
 				BugSenseHandler.sendExceptionMap(params, e);
-				return StaticData.INTERNAL_ERROR;
+				return StaticData.ILLEGAL_MOVE;
 			}
 
 			return StaticData.RESULT_OK;

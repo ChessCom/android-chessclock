@@ -21,7 +21,6 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.ServerErrorCodes;
 import com.chess.backend.entity.api.UserItem;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.lcc.android.DataNotValidException;
 import com.chess.lcc.android.LccHelper;
@@ -103,7 +102,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private boolean userSawGameEndPopup;
 	private ImageUpdateListener topImageUpdateListener;
 	private ImageUpdateListener bottomImageUpdateListener;
-	private MakeMoveTaskListener makeMoveTaskListener;
 	private boolean submitClicked;
 	private int previousSide;
 
@@ -130,7 +128,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 		topImageUpdateListener = new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR);
 		bottomImageUpdateListener = new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR);
-		makeMoveTaskListener = new MakeMoveTaskListener();
 
 		countryNames = getResources().getStringArray(R.array.new_countries);
 		countryCodes = getResources().getIntArray(R.array.new_country_ids);
@@ -211,7 +208,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	// ----------------------Lcc Events ---------------------------------------------
 
-	protected void onGameStarted() throws DataNotValidException {
+	@Override
+	public void onGameStarted() throws DataNotValidException {
 		logLiveTest("onGameStarted");
 		LiveConnectionHelper liveHelper = getLiveHelper();
 		liveHelper.setGameActivityPausedMode(false);
@@ -834,7 +832,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		temporaryDebugInfo = temporaryDebugInfo.replaceAll("\n", " ");
 		//LogMe.dl("TESTTEST", temporaryDebugInfo);
 
-		liveHelper.makeMove(move, temporaryDebugInfo, makeMoveTaskListener);
+		liveHelper.makeMove(move, temporaryDebugInfo/*, makeMoveTaskListener*/);
 	}
 
 	@Override
@@ -1519,24 +1517,5 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	protected Game getCurrentGame(LiveConnectionHelper liveHelper) {
 		return liveHelper.getCurrentGame();
-	}
-
-	protected class MakeMoveTaskListener extends ActionBarUpdateListener<Game> {
-		public MakeMoveTaskListener() {
-			super(getInstance());
-		}
-
-		@Override
-		public void errorHandle(Integer resultCode) {
-			super.errorHandle(resultCode);
-
-			try {
-				LogMe.dl(TAG, "handle illegal move");
-				onGameStarted();
-
-			} catch (DataNotValidException e) {
-				logTest(e.getMessage());
-			}
-		}
 	}
 }

@@ -728,8 +728,8 @@ public class LiveConnectionHelper {
 		return lccHelper.isFairPlayRestriction();
 	}
 
-	public void makeMove(String move, String temporaryDebugInfo, ActionBarUpdateListener<Game> makeMoveTaskListener) {
-		lccHelper.makeMove(move, gameTaskRunner, temporaryDebugInfo, makeMoveTaskListener);
+	public void makeMove(String move, String temporaryDebugInfo) {
+		lccHelper.makeMove(move, gameTaskRunner, temporaryDebugInfo);
 	}
 
 	public void updatePlayersClock() {

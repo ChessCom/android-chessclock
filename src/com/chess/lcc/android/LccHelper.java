@@ -6,7 +6,6 @@ import android.os.Handler;
 import com.chess.R;
 import com.chess.backend.entity.api.ChatItem;
 import com.chess.backend.image_load.bitmapfun.AsyncTask;
-import com.chess.backend.interfaces.ActionBarUpdateListener;
 import com.chess.lcc.android.interfaces.LccChatMessageListener;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.*;
@@ -510,8 +509,7 @@ public class LccHelper {
 //		return gameData;
 //	}
 
-	public void makeMove(String move, LccGameTaskRunner gameTaskRunner, String debugInfo,
-						 ActionBarUpdateListener<Game> makeMoveTaskListener) {
+	public void makeMove(String move, LccGameTaskRunner gameTaskRunner, String debugInfo) {
 		Game game = getCurrentGame();
 		/*if(chessMove.isCastling())
 			{
@@ -528,7 +526,7 @@ public class LccHelper {
 		long threadId = Thread.currentThread().getId();
 		setLatestMoveInfo(new MoveInfo(game.getId(), move, threadId));
 
-		gameTaskRunner.runMakeMoveTask(game, move, debugInfo, makeMoveTaskListener);
+		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
 	}
 
 	public void rematch() {
@@ -751,7 +749,7 @@ public class LccHelper {
 				public void run() {
 					if (game.isMoveOf(getUsername()) && game.getMoveCount() == 0) {
 						if (game.isMoveOf(getUsername()) /*&& game.getState() == Game.State.Started*/ && game.getMoveCount() < TEST_MOVES_COORD.length) {
-							liveConnectionHelper.makeMove(TEST_MOVES_COORD[game.getMoveCount()].trim(), "", null);
+							liveConnectionHelper.makeMove(TEST_MOVES_COORD[game.getMoveCount()].trim(), "");
 						}
 					}
 				}
@@ -774,7 +772,7 @@ public class LccHelper {
 					LogMe.dl("new move TEST_MOVES_COORD[latestMoveNumber] " + TEST_MOVES_COORD[latestMoveNumber]);*/
 
 					if (game.isMoveOf(getUsername()) /*&& game.getState() == Game.State.Started*/ && game.getMoveCount() < TEST_MOVES_COORD.length) {
-						liveConnectionHelper.makeMove(TEST_MOVES_COORD[game.getMoveCount()].trim(), "", null);
+						liveConnectionHelper.makeMove(TEST_MOVES_COORD[game.getMoveCount()].trim(), "");
 					}
 				}
 			}, delay);

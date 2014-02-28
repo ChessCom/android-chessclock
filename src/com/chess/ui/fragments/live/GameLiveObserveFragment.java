@@ -79,7 +79,7 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 	}
 
 	@Override
-	protected void onGameStarted() throws DataNotValidException {
+	public void onGameStarted() throws DataNotValidException {
 
 		if (!isAdded()) {
 			return;
