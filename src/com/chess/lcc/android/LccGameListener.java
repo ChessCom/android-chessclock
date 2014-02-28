@@ -268,13 +268,14 @@ public class LccGameListener implements GameListener {
 		boolean moveResending = false;
 
 		MoveInfo latestMoveInfo = lccHelper.getLatestMoveInfo();
-		if (latestMoveInfo != null && game.getId().equals(latestMoveInfo.getGameId())) {
-			if (move.equals(latestMoveInfo.getMove())) {
-				lccHelper.setLatestMoveInfo(null);
-			} else {
+		if (latestMoveInfo != null && game.getId().equals(latestMoveInfo.getGameId()) && lccHelper.isMyGame(game) && !game.isGameOver()) {
+
+			if (game.getMoveCount() == latestMoveInfo.getMoveNumber()) {
 				LogMe.dl(TAG, RESEND_MOVE + " " + latestMoveInfo.getMove());
 				lccHelper.getLiveConnectionHelper().makeMove(latestMoveInfo.getMove(), RESEND_MOVE/*, null*/);
 				moveResending = true;
+			} else {
+				lccHelper.setLatestMoveInfo(null);
 			}
 		}
 

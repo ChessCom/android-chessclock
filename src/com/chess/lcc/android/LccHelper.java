@@ -521,10 +521,10 @@ public class LccHelper {
 			  lccMove = chessMove.isPromotion() ? lccMove.replaceFirst("=", StaticData.EMPTY) : lccMove;
 			}*/
 
-		LogMe.dl(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move);
+		LogMe.dl(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", moveN=" + game.getMoveCount());
 
 		long threadId = Thread.currentThread().getId();
-		setLatestMoveInfo(new MoveInfo(game.getId(), move, threadId));
+		setLatestMoveInfo(new MoveInfo(game.getId(), move, game.getMoveCount(), threadId));
 
 		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
 	}
@@ -1008,12 +1008,14 @@ public class LccHelper {
 class MoveInfo {
 	private Long gameId;
 	private String move;
+	private int moveNumber;
 	private long moveFirstThreadId = -1;
 	private long moveSecondThreadId = -1;
 
-	MoveInfo(Long gameId, String move, long moveFirstThreadId) {
+	MoveInfo(Long gameId, String move, int moveNumber, long moveFirstThreadId) {
 		this.gameId = gameId;
 		this.move = move;
+		this.moveNumber = moveNumber;
 		this.moveFirstThreadId = moveFirstThreadId;
 	}
 
@@ -1033,12 +1035,16 @@ class MoveInfo {
 		this.moveSecondThreadId = moveSecondThreadId;
 	}
 
+	public Long getGameId() {
+		return gameId;
+	}
+
 	public String getMove() {
 		return move;
 	}
 
-	public Long getGameId() {
-		return gameId;
+	public int getMoveNumber() {
+		return moveNumber;
 	}
 
 	@Override

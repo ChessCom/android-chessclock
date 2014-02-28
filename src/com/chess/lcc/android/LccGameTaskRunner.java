@@ -111,6 +111,14 @@ public class LccGameTaskRunner {
 		}
 
 		@Override
+		protected void onPostExecute(Integer result) {
+			super.onPostExecute(result);
+
+			LogMe.dl("DEBUG: MakeMoveTask onPostExecute result: " + result);
+
+		}
+
+		@Override
 		protected Integer doTheTask(Game... game) {
 			try {
 
