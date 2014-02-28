@@ -16,6 +16,7 @@
 
 package com.facebook.widget;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -258,18 +259,18 @@ public class WebDialog extends Dialog {
 		crossImageView.setVisibility(View.INVISIBLE);
 	}
 
+	@SuppressLint("SetJavaScriptEnabled")
 	private void setUpWebView(int margin) {
 		LinearLayout webViewContainer = new LinearLayout(getContext());
 		webView = new WebView(getContext());
 		webView.setVerticalScrollBarEnabled(false);
 		webView.setHorizontalScrollBarEnabled(false);
 		webView.setWebViewClient(new DialogWebViewClient());
-		webView.getSettings().setJavaScriptEnabled(false);
+		webView.getSettings().setJavaScriptEnabled(true);
 		webView.loadUrl(url);
 		webView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT));
 		webView.setVisibility(View.INVISIBLE);
-		webView.getSettings().setSavePassword(false);
 
 		webViewContainer.setPadding(margin, margin, margin, margin);
 		webViewContainer.addView(webView);

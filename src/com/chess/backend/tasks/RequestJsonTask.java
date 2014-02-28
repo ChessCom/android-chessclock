@@ -35,11 +35,6 @@ public class RequestJsonTask<ItemType> extends AbstractUpdateTask<ItemType, Load
 //				e.logMe();
 //				result = e.getCode();
 //			}
-//
-//			for (LoadItem loadItem : loadItems) {
-////				loadItem
-//			}
-//
 //		}
 
 

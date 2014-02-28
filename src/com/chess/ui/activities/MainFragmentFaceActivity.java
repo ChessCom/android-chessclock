@@ -97,7 +97,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	private PullToRefreshAttacher pullToRefreshAttacher;
 	private PopupCustomViewFragment reviewPopupFragment;
 	private IntentFilter updateBackgroundFilter;
-	private BitmapFactory.Options bitmapOptions;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -107,8 +106,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 
 		setContentView(R.layout.main_active_screen);
 		customActionBarViewId = R.layout.custom_actionbar;
-
-		bitmapOptions = new BitmapFactory.Options();
 
 		openMenuListeners = new ArrayList<SlidingMenu.OnOpenedListener>();
 		closeMenuListeners = new ArrayList<SlidingMenu.OnClosedListener>();
@@ -379,6 +376,7 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 	@TargetApi(11)
 	private void setMainBackground(String drawablePath) {
 
+		BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
 		bitmapOptions.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(drawablePath, bitmapOptions);
 

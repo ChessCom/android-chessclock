@@ -628,9 +628,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	private void performReLogin() {
-		if (DataHolder.getInstance().isPerformingRelogin()) {
-			return;
-		}
+//		if (DataHolder.getInstance().isPerformingRelogin()) { // TODO find problem with hangs. This was made to prevent multiple overlays with progress bar appears.
+//			return;
+//		}
 
 		DataHolder.getInstance().setPerformingRelogin(true);
 
