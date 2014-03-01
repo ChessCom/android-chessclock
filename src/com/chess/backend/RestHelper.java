@@ -10,6 +10,7 @@ import android.util.Base64;
 import android.util.Log;
 import com.chess.BuildConfig;
 import com.chess.R;
+import com.chess.backend.entity.api.BaseResponseBatchItem;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.exceptions.InternalErrorException;
 import com.chess.statics.StaticData;
@@ -691,59 +692,7 @@ public class RestHelper {
 		return item;
 	}
 
-/*
-
-/*
-		You need to POST a JSON array with requests to process. Requests will be processed in the order that they are requested in.
-		Every request must contain method, url and requestId fields and an optional body field (for non-GET requests).
-		 For GET requests you need to use query string parameters, and for non-GET requests, parameters are passed via
-		  the body field. Note that the method will collect body parameters, and requests are executed one by one,
-		   so you don't need to pass the same parameters in different requests.
-		    For example you need to pass loginToken once and the same loginToken will be used for other requests
-		    (of course for GET requests you still need to pass it via the query string). If you want to override some
-		     already collected parameters, simply include them in your body field for specific request.
-		In order to send JSON array simply send header Content-Type: application/json and actual requests.
-
-
-
-		Content-Type: application/json
-
-[
-    {
-        "method": "GET",
-        "url": "/v1/friends/requests?loginToken=0a5e997ed6fa26213d5db9c4fafe1072",
-        "requestId": 0
-    },
-    {
-        "method": "PUT",
-        "url": "/v1/games/35000574/actions",
-        "body": {
-            "command": "CHAT",
-            "timestamp": 1355687586,
-            "message": "Hellooooo",
-            "loginToken": "0a5e997ed6fa26213d5db9c4fafe1072"
-        },
-        "requestId": 1
-    },
-    {
-        "method": "POST",
-        "url": "/v1/games/35000574/notes",
-        "body": {
-            "content": "This works!"
-        },
-        "requestId": 2
-    },
-    {
-        "method": "GET",
-        "url": "/v1/games/35000579?loginToken=0a5e997ed6fa26213d5db9c4fafe1072",
-        "requestId": 3
-    }
-]
-*/
-
-
-	public <CustomType> CustomType requestBatchData(LoadItem[] loadItems, Class<CustomType> customTypeClass, Context context)
-			throws InternalErrorException {
+	public List<Object> requestBatchData(LoadItem[] loadItems, Class[] desiredClasses, Context context) throws InternalErrorException {
 
 		LoadItem loadItem = new LoadItem();
 		// form POST body
@@ -758,28 +707,10 @@ public class RestHelper {
 		body += Symbol.NEW_STR + "]";
 		loadItem.setLoadPath(CMD_BATCH);
 		loadItem.setRequestMethod(POST);
+		loadItem.setBatchBody(body);
 
-/*
-	{
-        "method": "GET",
-        "url": "/v1/friends/requests?loginToken=0a5e997ed6fa26213d5db9c4fafe1072",
-        "requestId": 0
-    },
-    {
-        "method": "PUT",
-        "url": "/v1/games/35000574/actions",
-        "body": {
-            "command": "CHAT",
-            "timestamp": 1355687586,
-            "message": "Hellooooo",
-            "loginToken": "0a5e997ed6fa26213d5db9c4fafe1072"
-        },
-        "requestId": 1
-    },
-*/
+		ArrayList<Object> responseItems = null;
 
-
-		CustomType item = null;
 		String appId = AppUtils.getAppId();
 		userAgent = getUserAgent(context);
 		String requestMethod = loadItem.getRequestMethod();
@@ -831,7 +762,7 @@ public class RestHelper {
 					throw new InternalErrorException(encodeServerCode(ServerErrorCodes.ACCESS_DENIED_CODE));
 				}
 
-				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
+				BaseResponseBatchItem baseResponse = gson.fromJson(resultString, BaseResponseBatchItem.class);
 				logD(TAG, "Code: " + baseResponse.getCode() + " Message: " + baseResponse.getMessage());
 				throw new InternalErrorException(encodeServerCode(baseResponse.getCode()));
 			}
@@ -866,11 +797,16 @@ public class RestHelper {
 					logD(TAG, "ERROR -> SERVER RESPONSE: " + resultString);
 					throw new InternalErrorException(StaticData.INTERNAL_ERROR);
 				}
-				BaseResponseItem baseResponse = gson.fromJson(resultString, BaseResponseItem.class);
+				BaseResponseBatchItem baseResponse = gson.fromJson(resultString, BaseResponseBatchItem.class);
 				if (baseResponse.getStatus().equals(R_STATUS_SUCCESS)) {
-					item = gson.fromJson(resultString, customTypeClass);
-					if (item == null) {
-						throw new InternalErrorException(StaticData.EMPTY_DATA);
+
+					responseItems = new ArrayList<Object>();
+					for (int i = 0; i < desiredClasses.length; i++) {
+						Class desiredClass = desiredClasses[i];
+
+						String internalBatchObject = gson.toJson(baseResponse.getData().get(i));
+						Object desiredObject = gson.fromJson(internalBatchObject, desiredClass);
+						responseItems.add(desiredObject);
 					}
 				}
 			} finally {
@@ -904,7 +840,7 @@ public class RestHelper {
 				connection.disconnect();
 			}
 		}
-		return item;
+		return responseItems;
 	}
 
 	/**
@@ -1029,9 +965,14 @@ public class RestHelper {
 		String requestPath = loadItem.getLoadPath().substring(BASE_URL.length());
 
 		String data = Q_ + formPostData(loadItem);
-		if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
-			data = formPostData(loadItem);
+		if (loadItem.getLoadPath().equals(CMD_BATCH)) {
+			data = loadItem.getBatchBody();
+		} else {
+			if (requestMethod.equals(POST) || requestMethod.equals(PUT)) {
+				data = formPostData(loadItem);
+			}
 		}
+
 		if (!TextUtils.isEmpty(loadItem.getFilePath())) {
 			data = Symbol.EMPTY;
 		}

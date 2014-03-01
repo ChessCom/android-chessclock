@@ -60,6 +60,9 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
 		private boolean is_opponent_online;
 		private String initial_setup_fen;
 
+		/* Local Additions */
+		private boolean myChallenge;
+
 		public long getGameId() {
 			return id;
 		}
@@ -112,6 +115,14 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
 			return is_opponent_online;
 		}
 
+		public boolean isMyChallenge() {
+			return myChallenge;
+		}
+
+		public void setMyChallenge(boolean myChallenge) {
+			this.myChallenge = myChallenge;
+		}
+
 		protected Data(Parcel in) {
 			id = in.readLong();
 			opponent_username = in.readString();
@@ -126,6 +137,7 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
 			is_rated = in.readByte() != 0x00;
 			is_opponent_online = in.readByte() != 0x00;
 			initial_setup_fen = in.readString();
+			myChallenge = in.readByte() != 0x00;
 		}
 
 		@Override
@@ -148,6 +160,7 @@ public class DailyChallengeItem extends BaseResponseItem<List<DailyChallengeItem
 			dest.writeByte((byte) (is_rated ? 0x01 : 0x00));
 			dest.writeByte((byte) (is_opponent_online ? 0x01 : 0x00));
 			dest.writeString(initial_setup_fen);
+			dest.writeByte((byte) (myChallenge ? 0x01 : 0x00));
 		}
 
 		@SuppressWarnings("unused")

@@ -1305,6 +1305,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		}
 
 		GameLiveItem currentGame = getGameItem(liveHelper);
+		if (currentGame == null) {
+			return;
+		}
 		ShareItem shareItem = new ShareItem(currentGame, currentGame.getGameId(), ShareItem.LIVE);
 
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);

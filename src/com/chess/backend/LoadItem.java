@@ -1,7 +1,6 @@
 package com.chess.backend;
 
 import com.chess.statics.Symbol;
-import com.chess.utilities.AppUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -23,6 +22,7 @@ public class LoadItem { // TODO refactor with builder
 	private String filePath;
 	private String fileMark;
 	private int fileSize;
+	private String batchBody;
 
 	public LoadItem() {
 		nameValuePairs = new ArrayList<NameValuePair>();
@@ -145,12 +145,13 @@ public class LoadItem { // TODO refactor with builder
 */
 
 	public String getJsonBody() {
-//		String url = loadPath + "?" + RestHelper.formPostData(this);
-		String url = RestHelper.getInstance().createSignature(this, AppUtils.getAppId());
+		String url = loadPath + "?" + RestHelper.formPostData(this);
+		url = url.replace(RestHelper.getInstance().BASE_URL, "");
+//		url = url.replace("/","\\/");
 
 		String loadBody = Symbol.NEW_STR + "    {" + Symbol.NEW_STR
 			+ "        \"method\": \"" + requestMethod + "\"" + Symbol.COMMA + Symbol.NEW_STR
-			+ "        \"url\": \"" + url.replace(RestHelper.getInstance().BASE_URL, "") + "\"" + Symbol.COMMA + Symbol.NEW_STR;
+			+ "        \"url\": \"" + url + "\"" + Symbol.COMMA + Symbol.NEW_STR;
 		if (requestMethod.equals(RestHelper.PUT)) {
 			loadBody += "        \"body\": {";
 			for (NameValuePair pair : nameValuePairs) {
@@ -180,5 +181,13 @@ public class LoadItem { // TODO refactor with builder
 		loadBody += Symbol.NEW_STR + "    }";
 
 		return loadBody;
+	}
+
+	public void setBatchBody(String batchBody) {
+		this.batchBody = batchBody;
+	}
+
+	public String getBatchBody() {
+		return batchBody;
 	}
 }

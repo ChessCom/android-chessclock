@@ -13,10 +13,14 @@ import com.chess.backend.LoadItem;
 import com.chess.backend.RestHelper;
 import com.chess.backend.entity.api.BaseResponseItem;
 import com.chess.backend.entity.api.daily_games.DailyChallengeItem;
+import com.chess.backend.tasks.RequestBatchJsonTask;
 import com.chess.backend.tasks.RequestJsonTask;
+import com.chess.ui.adapters.CustomSectionedAdapter;
 import com.chess.ui.adapters.DailyOpenSeeksAdapter;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.ui.interfaces.ItemClickListenerFace;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,19 +30,19 @@ import com.chess.ui.interfaces.ItemClickListenerFace;
  */
 public class DailyOpenChallengesFragment extends CommonLogicFragment implements AdapterView.OnItemClickListener, ItemClickListenerFace {
 
-	private OpenSeeksUpdateListener openSeeksUpdateListener;
-	private DailyOpenSeeksAdapter challengesGamesAdapter;
+	private DailyOpenSeeksAdapter openChallengesAdapter;
 	private DailyChallengeItem.Data selectedChallengeItem;
 	private int successToastMsgId;
 	private DailyUpdateListener challengeInviteUpdateListener;
+	private CustomSectionedAdapter sectionedAdapter;
+	private DailyOpenSeeksAdapter myChallengesAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		init();
 
-		openSeeksUpdateListener = new OpenSeeksUpdateListener();
-		challengesGamesAdapter = new DailyOpenSeeksAdapter(this, null, getImageFetcher());
-		challengeInviteUpdateListener = new DailyUpdateListener();
+
 		pullToRefresh(true);
 	}
 
@@ -53,8 +57,7 @@ public class DailyOpenChallengesFragment extends CommonLogicFragment implements 
 
 		ListView listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
-		listView.setAdapter(challengesGamesAdapter);
-
+		listView.setAdapter(sectionedAdapter);
 	}
 
 	@Override
@@ -76,23 +79,17 @@ public class DailyOpenChallengesFragment extends CommonLogicFragment implements 
 
 	private void updateData() {
 		// get Current games first
-		LoadItem loadItem = new LoadItem();
-		loadItem.setLoadPath(RestHelper.getInstance().CMD_SEEKS);
-		loadItem.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		LoadItem loadItem1 = new LoadItem();
+		loadItem1.setLoadPath(RestHelper.getInstance().CMD_SEEKS);
+		loadItem1.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
 
-		new RequestJsonTask<DailyChallengeItem>(openSeeksUpdateListener).executeTask(loadItem);
+		LoadItem loadItem2 = new LoadItem();
+		loadItem2.setLoadPath(RestHelper.getInstance().CMD_SEEKS);
+		loadItem2.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
+		loadItem2.addRequestParams(RestHelper.P_SHOW_ONLY_MINE, RestHelper.V_TRUE);
 
-//		// get Current games first
-//		LoadItem loadItem1 = new LoadItem();
-//		loadItem1.setLoadPath(RestHelper.getInstance().CMD_SEEKS);
-//		loadItem1.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-//
-//		LoadItem loadItem2 = new LoadItem();
-//		loadItem2.setLoadPath(RestHelper.getInstance().CMD_SEEKS);
-//		loadItem2.addRequestParams(RestHelper.P_LOGIN_TOKEN, getUserToken());
-//		loadItem2.addRequestParams(RestHelper.P_SHOW_ONLY_MINE, RestHelper.V_TRUE);
-//
-//		new RequestJsonTask<DailyChallengeItem>(openSeeksUpdateListener).executeTask(loadItem1, loadItem2);
+		Class[] classes = {DailyChallengeItem.class, DailyChallengeItem.class};
+		new RequestBatchJsonTask(new BatchUpdateListener(), classes).executeTask(loadItem1, loadItem2);
 	}
 
 	@Override
@@ -100,7 +97,7 @@ public class DailyOpenChallengesFragment extends CommonLogicFragment implements 
 		super.onClick(view);
 		if (view.getId() == R.id.gameResultTxt) { // used as accept button
 			Integer position = (Integer) view.getTag(R.id.list_item_id);
-			selectedChallengeItem = challengesGamesAdapter.getItem(position);
+			selectedChallengeItem = openChallengesAdapter.getItem(position);
 			acceptChallenge();
 		}
 	}
@@ -143,18 +140,54 @@ public class DailyOpenChallengesFragment extends CommonLogicFragment implements 
 		}
 	}
 
-	private class OpenSeeksUpdateListener extends ChessLoadUpdateListener<DailyChallengeItem> {
+	private class BatchUpdateListener extends ChessLoadUpdateListener<List> {
 
-		private OpenSeeksUpdateListener() {
-			super(DailyChallengeItem.class);
+		private BatchUpdateListener() {
+			super(List.class);
 		}
 
 		@Override
-		public void updateData(DailyChallengeItem returnedObj) {
+		public void updateData(List returnedObj) {
 			super.updateData(returnedObj);
 
-			challengesGamesAdapter.setItemsList(returnedObj.getData());
+			List<? extends BaseResponseItem> responseItems = returnedObj;
+
+			// get Open challenges
+			if (responseItems.get(0).getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+				DailyChallengeItem dailyChallengeItem = (DailyChallengeItem) responseItems.get(0);
+				if (dailyChallengeItem != null) {
+					openChallengesAdapter.setItemsList(dailyChallengeItem.getData());
+				}
+			}
+
+			// get My Own Challenges
+			if (responseItems.get(1).getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+				DailyChallengeItem dailyMyChallengeItem = (DailyChallengeItem) responseItems.get(1);
+				if (dailyMyChallengeItem != null) {
+					List<DailyChallengeItem.Data> myChallenges = dailyMyChallengeItem.getData();
+					for (DailyChallengeItem.Data myChallenge : myChallenges) {
+						myChallenge.setMyChallenge(true);
+					}
+
+					myChallengesAdapter.setItemsList(myChallenges);
+				}
+			}
+
+			sectionedAdapter.notifyDataSetChanged();
 		}
+	}
+
+	private void init() {
+		// init adapters
+		sectionedAdapter = new CustomSectionedAdapter(this, R.layout.text_section_header_dark);
+
+		openChallengesAdapter = new DailyOpenSeeksAdapter(this, null, getImageFetcher());
+		myChallengesAdapter = new DailyOpenSeeksAdapter(this, null, getImageFetcher());
+
+		sectionedAdapter.addSection(getString(R.string.open_challenges), openChallengesAdapter);
+		sectionedAdapter.addSection(getString(R.string.my_challenges), myChallengesAdapter);
+
+		challengeInviteUpdateListener = new DailyUpdateListener();
 	}
 
 }

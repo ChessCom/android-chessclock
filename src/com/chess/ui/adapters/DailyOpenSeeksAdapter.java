@@ -44,16 +44,16 @@ public class DailyOpenSeeksAdapter extends ItemsAdapter<DailyChallengeItem.Data>
 		holder.playerTxt = (TextView) view.findViewById(R.id.playerNameTxt);
 		holder.premiumImg = (ImageView) view.findViewById(R.id.premiumImg);
 		holder.ratingTxt = (TextView) view.findViewById(R.id.ratingTxt);
-		holder.gameResultTxt = (RoboTextView) view.findViewById(R.id.gameResultTxt);
+		holder.acceptBtn = (RoboTextView) view.findViewById(R.id.gameResultTxt);
 		holder.gameTypeTxt = (TextView) view.findViewById(R.id.gameTypeTxt);
 
 		holder.premiumImg.setVisibility(View.GONE);
 
-		holder.gameResultTxt.setText(R.string.ic_check);
-		holder.gameResultTxt.setFont(FontsHelper.ICON_FONT);
-		holder.gameResultTxt.setTextSize(resources.getDimensionPixelSize(R.dimen.glyph_icon_big) / density);
-		holder.gameResultTxt.setTextColor(resources.getColor(R.color.new_light_grey_2));
-		holder.gameResultTxt.setOnClickListener(clickListenerFace);
+		holder.acceptBtn.setText(R.string.ic_check);
+		holder.acceptBtn.setFont(FontsHelper.ICON_FONT);
+		holder.acceptBtn.setTextSize(resources.getDimensionPixelSize(R.dimen.glyph_icon_big) / density);
+		holder.acceptBtn.setTextColor(resources.getColor(R.color.new_light_grey_2));
+		holder.acceptBtn.setOnClickListener(clickListenerFace);
 
 		view.setTag(holder);
 		return view;
@@ -63,7 +63,11 @@ public class DailyOpenSeeksAdapter extends ItemsAdapter<DailyChallengeItem.Data>
 	protected void bindView(DailyChallengeItem.Data item, int pos, View convertView) {
 		ViewHolder holder = (ViewHolder) convertView.getTag();
 
-		holder.gameResultTxt.setTag(itemListId, pos);
+		if (item.isMyChallenge()) {
+			holder.acceptBtn.setVisibility(View.GONE);
+		} else {
+			holder.acceptBtn.setTag(itemListId, pos);
+		}
 
 		// get player side, and choose opponent
 		String avatarUrl = item.getOpponentAvatar();
@@ -94,7 +98,7 @@ public class DailyOpenSeeksAdapter extends ItemsAdapter<DailyChallengeItem.Data>
 		public TextView playerTxt;
 		public ImageView premiumImg;
 		public TextView ratingTxt;
-		public RoboTextView gameResultTxt;
+		public RoboTextView acceptBtn;
 		public TextView gameTypeTxt;
 	}
 
