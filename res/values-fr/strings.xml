@@ -126,7 +126,7 @@
 	<string name="unrated">Non évalué</string>
 	<string name="you_play">Vous jouez</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move_vs">Votre coup vs %1$s , %2$s</string>
+	<string name="your_move_vs">Votre coup vs %1$s, %2$s</string>
 	<string name="won_on_time">%s gagne au Temps</string>
 	<string name="won_by_resignation">%s gagne par Abandon</string>
 	<string name="won_by_checkmate">%s gagne par Mat</string>

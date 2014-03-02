@@ -126,7 +126,7 @@
 	<string name="unrated">Без рейтингу</string>
 	<string name="you_play">Ви граєте як</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move_vs">Ваш хід проти %1$ s, %2$ s</string>
+	<string name="your_move_vs">Ваш хід проти %1$s, %2$s</string>
 	<string name="won_on_time">%s переміг за часом</string>
 	<string name="won_by_resignation">%s виграв, бо суперник здався</string>
 	<string name="won_by_checkmate">%s переміг, поставивши мат</string>

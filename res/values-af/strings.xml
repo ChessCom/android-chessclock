@@ -126,7 +126,7 @@
 	<string name="unrated">Ongegradeer</string>
 	<string name="you_play">Jy Speel</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move_vs">U skuif teen %1$s , %2$s</string>
+	<string name="your_move_vs">U skuif teen %1$s, %2$s</string>
 	<string name="won_on_time">%s wen op Tyd</string>
 	<string name="won_by_resignation">%s wen deur middel van Oorgawe</string>
 	<string name="won_by_checkmate">%s wen deur middel van Skaakmat</string>

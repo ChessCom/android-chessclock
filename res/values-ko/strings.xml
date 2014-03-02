@@ -126,7 +126,7 @@
 	<string name="unrated">비레이팅 게임</string>
 	<string name="you_play">내 진영</string>
 	<string name="chess_com">Chess.com</string>
-	<string name="your_move_vs">내 무브 vs %1$ s, %2$ s</string>
+	<string name="your_move_vs">내 무브 vs %1$s, %2$s</string>
 	<string name="won_on_time">%s님이 시간초과로 승리</string>
 	<string name="won_by_resignation">%s님이 기권으로 승리</string>
 	<string name="won_by_checkmate">%s님이 체크메이트로 승리</string>
