@@ -442,6 +442,10 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	 */
 	@Override
 	public void verifyMove() {
+		if (possibleMoves == null) { // TODO investigate why it might be null here.
+			return;
+		}
+
 		final LessonsBoardFace boardFace = getBoardFace();
 
 		// iterate through possible moves and perform deduction
