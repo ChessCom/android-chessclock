@@ -423,7 +423,6 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		if (state != null && state.isOpened()) {
 			loginWithFacebook(session.getAccessToken());
 		} else if (exception != null) {
-			logTest(exception.getMessage());
 			showToast(exception.getMessage());
 			session.close();
 		}
@@ -853,7 +852,9 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	}
 
 	protected void logTest(String messageToLog) {
-		Log.d("TEST", messageToLog);
+		if (messageToLog != null) {
+			Log.d("TEST", messageToLog);
+		}
 	}
 
 	protected AppData getAppData() {
