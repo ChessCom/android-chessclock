@@ -11,7 +11,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import com.chess.backend.exceptions.DbDataProviderException;
-import com.chess.utilities.Distribution;
+import com.chess.utilities.CrashHelper;
 
 import java.util.Map;
 
@@ -132,8 +132,8 @@ public class DbDataProvider extends ContentProvider {
 
 		// uri not found by default
 		Boolean uriFound = false;
-		Distribution.setFlagValue("uriFound", uriFound.toString());
-		Distribution.setFlagValue("uri", uri.toString());
+		CrashHelper.setFlagValue("uriFound", uriFound.toString());
+		CrashHelper.setFlagValue("uri", uri.toString());
 
 		// serializing values for debug
 		StringBuilder valuesStr = new StringBuilder();
@@ -149,7 +149,7 @@ public class DbDataProvider extends ContentProvider {
 					.append(entry.getValue()).append("\"]");
 		}
 		valuesStr.append("}");
-		Distribution.setFlagValue("insertedValues", valuesStr.toString());
+		CrashHelper.setFlagValue("insertedValues", valuesStr.toString());
 
 		// loop on tables
 		for (int i = 0; i < Tables.values().length; i++) {
@@ -157,7 +157,7 @@ public class DbDataProvider extends ContentProvider {
 
 				// table uri found
 				uriFound = true;
-				Distribution.setFlagValue("uriFound", uriFound.toString());
+				CrashHelper.setFlagValue("uriFound", uriFound.toString());
 
 				// inserting values
 				try {
@@ -173,8 +173,7 @@ public class DbDataProvider extends ContentProvider {
 					else {
 
 						// making and logging exception
-						Distribution.setFlagValue("rowID", String.valueOf(rowID));
-						Distribution.enableLogging();
+						CrashHelper.setFlagValue("rowID", String.valueOf(rowID));
 						DbDataProviderException dbDataProviderException = new DbDataProviderException(
 								"Adding of row failed");
 						dbDataProviderException.logHandled();

@@ -3,14 +3,14 @@ package com.chess.utilities;
 import com.bugsense.trace.BugSenseHandler;
 
 /**
- * Abstraction layer for distribution tools
+ * Abstraction layer for deploy tools
  * <p/>
  * Created by electrolobzik (electrolobzik@gmail.com) on 02/03/2014.
  */
-public class Distribution {
+public class CrashHelper {
 
 	// class is static
-	private Distribution() {
+	private CrashHelper() {
 	}
 
 	/**
@@ -32,13 +32,5 @@ public class Distribution {
 	public static void logException(Exception exception) {
 
 		BugSenseHandler.sendException(exception);
-	}
-
-	/**
-	 * Enables sending of logs
-	 */
-	public static void enableLogging() {
-
-		BugSenseHandler.setLogging(100);
 	}
 }
