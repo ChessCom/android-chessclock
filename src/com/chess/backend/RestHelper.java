@@ -8,6 +8,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import com.bugsense.trace.BugSenseHandler;
 import com.chess.BuildConfig;
 import com.chess.R;
 import com.chess.backend.entity.api.BaseResponseBatchItem;
@@ -536,6 +537,18 @@ public class RestHelper {
 				logE(TAG, "failed to encode url");
 				e.printStackTrace();
 				value = pair.getValue();
+
+			} catch (Exception ex) {
+				logE(TAG, "failed to encode pair, key = " + name);
+				ex.printStackTrace();
+
+				value = pair.getValue();
+
+				// send exception to bugsense
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("url", loadItem.getLoadPath());
+				map.put("key", name);
+				BugSenseHandler.sendExceptionMap(map, ex);
 			}
 			encodedParams.append(name).append(EQUALS).append(value);
 		}
