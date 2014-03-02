@@ -144,6 +144,10 @@ public class LoadItem { // TODO refactor with builder
     }
 */
 
+	/**
+	 *
+	 * @return loaded params as json for batch API processing
+	 */
 	public String getJsonBody() {
 		String url = loadPath + "?" + RestHelper.formPostData(this);
 		url = url.replace(RestHelper.getInstance().BASE_URL, "");
@@ -152,29 +156,17 @@ public class LoadItem { // TODO refactor with builder
 		String loadBody = Symbol.NEW_STR + "    {" + Symbol.NEW_STR
 			+ "        \"method\": \"" + requestMethod + "\"" + Symbol.COMMA + Symbol.NEW_STR
 			+ "        \"url\": \"" + url + "\"" + Symbol.COMMA + Symbol.NEW_STR;
-		if (requestMethod.equals(RestHelper.PUT)) {
-			loadBody += "        \"body\": {";
+		if (requestMethod.equals(RestHelper.PUT) || requestMethod.equals(RestHelper.POST)) {
+			loadBody += "        \"body\": \n     {";
+			String divider = Symbol.EMPTY;
 			for (NameValuePair pair : nameValuePairs) {
 				String name = pair.getName();
 				String value = pair.getValue();
-				loadBody += "\"" + name + "\": " + "\"" + value + "\"" + Symbol.COMMA + Symbol.NEW_STR;
+				loadBody += divider;
+				loadBody += "\"" + name + "\": " + "\"" + value + "\"";
+				divider = Symbol.COMMA + Symbol.NEW_STR;
 			}
 			loadBody += "    }" + Symbol.COMMA + Symbol.NEW_STR;
-
-
-/*
- 		"body": {
-            "command": "CHAT",
-            "timestamp": 1355687586,
-            "message": "Hellooooo",
-            "loginToken": "0a5e997ed6fa26213d5db9c4fafe1072"
-        },
-*/
-		} else if (requestMethod.equals(RestHelper.POST)) {
-			loadBody += "        \"body\": {";
-			String postBody = RestHelper.formPostData(this);
-				loadBody += "            \"" + "content" + "\": " + "\"" + postBody + "\"" + Symbol.COMMA + Symbol.NEW_STR;
-			loadBody += "        }" + Symbol.COMMA;
 		}
 		loadBody += "        \"requestId\": " + 0;
 

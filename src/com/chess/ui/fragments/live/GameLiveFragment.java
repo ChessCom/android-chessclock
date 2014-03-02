@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.SparseArray;
@@ -162,16 +161,6 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onResume() {
 		super.onResume();
-
-
-		LogMe.dl("lcc", "```````````````````````````````````````````");
-		LogMe.dl("lcc", " fragments to receive onLiveClientConnected " );
-		for (Fragment fragment : getActivity().getSupportFragmentManager().getFragments()) {
-			if (fragment != null) {
-				LogMe.dl("lcc", "onResume fragment = " + fragment.getClass().getSimpleName() );
-			}
-		}
-		LogMe.dl("lcc", "```````````````````````````````````````````" );
 
 		if (isLCSBound) {
 			try {

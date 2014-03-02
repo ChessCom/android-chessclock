@@ -25,6 +25,7 @@ import com.chess.backend.entity.api.VacationItem;
 import com.chess.backend.entity.api.YourTurnItem;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameData;
 import com.chess.backend.entity.api.daily_games.DailyCurrentGameItem;
+import com.chess.backend.tasks.RequestBatchJsonTask;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
@@ -118,6 +119,8 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	private boolean forceUpdate;
 	private int dailyRating;
 	private boolean skipPreviousGames;
+	private int newWhiteRating;
+	private int newBlackRating;
 
 	public GameDailyFragment() {
 	}
@@ -133,8 +136,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	}
 
 	/**
-	 *
-	 * @param gameId of game
+	 * @param gameId      of game
 	 * @param forceUpdate indicates that app was launched via notification and need to be closed once move is made
 	 */
 	public static GameDailyFragment createInstance(long gameId, boolean forceUpdate) {
@@ -574,21 +576,29 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 	public void updateAfterMove() {
 		showSubmitButtonsLay(false);
 
-		if (currentGame == null) { // TODO fix inappropriate state, current game can't be null here // if we don't have Game entity
-			// get game entity
-			throw new IllegalStateException("Current game became NULL");
-//			updateGameState(gameId);
-		} else {
-			submitMove();
-		}
+		submitMove();
 	}
 
 	private void submitMove() {
-		logTest(" last move = " + getBoardFace().getLastMoveForDaily());
 		if (username.equals(getUsername())) { // allow only authenticated user to send move in his own games
-			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
-			loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());
-			new RequestJsonTask<BaseResponseItem>(submitMoveUpdateListener).executeTask(loadItem);
+
+			if (getBoardFace().isFinished()) {
+				// submit move
+				LoadItem loadItem1 = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
+				loadItem1.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());
+
+				// and get rating change
+				LoadItem loadItem2 = LoadHelper.getGameById(getUserToken(), gameId);
+				loadItem2.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_WHITE_RATING);
+				loadItem2.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_BLACK_RATING);
+
+				Class[] classes = {BaseResponseItem.class, DailyCurrentGameItem.class};
+				new RequestBatchJsonTask(new BatchUpdateListener(BatchUpdateListener.SUBMIT_MOVE), classes).executeTask(loadItem1, loadItem2);
+			} else {
+				LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_SUBMIT, currentGame.getTimestamp());
+				loadItem.addRequestParams(RestHelper.P_NEW_MOVE, getBoardFace().getLastMoveForDaily());
+				new RequestJsonTask<BaseResponseItem>(submitMoveUpdateListener).executeTask(loadItem);
+			}
 		}
 	}
 
@@ -870,8 +880,17 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			new RequestJsonTask<BaseResponseItem>(drawOfferedUpdateListener).executeTask(loadItem);
 		} else if (tag.equals(ABORT_GAME_TAG)) {
 
-			LoadItem loadItem = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_RESIGN, currentGame.getTimestamp());
-			new RequestJsonTask<BaseResponseItem>(abortGameUpdateListener).executeTask(loadItem);
+			// submit resign command
+			LoadItem loadItem1 =  LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_RESIGN, currentGame.getTimestamp());
+
+			// and get rating change
+			LoadItem loadItem2 = LoadHelper.getGameById(getUserToken(), gameId);
+			loadItem2.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_WHITE_RATING);
+			loadItem2.addRequestParams(RestHelper.P_FIELDS_, RestHelper.P_BLACK_RATING);
+
+			Class[] classes = {BaseResponseItem.class, DailyCurrentGameItem.class};
+			new RequestBatchJsonTask(new BatchUpdateListener(BatchUpdateListener.ABORT_GAME), classes).executeTask(loadItem1, loadItem2);
+
 		} else if (tag.equals(END_VACATION_TAG)) {
 			LoadItem loadItem = LoadHelper.deleteOnVacation(getUserToken());
 			new RequestJsonTask<VacationItem>(new VacationUpdateListener()).executeTask(loadItem);
@@ -892,16 +911,26 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		TextView endGameReasonTxt = (TextView) layout.findViewById(R.id.endGameReasonTxt);
 		TextView resultRatingTxt = (TextView) layout.findViewById(R.id.resultRatingTxt);
 		TextView ratingTitleTxt = (TextView) layout.findViewById(R.id.ratingTitleTxt);
+		TextView resultRatingChangeTxt = (TextView) layout.findViewById(R.id.resultRatingChangeTxt);
 		endGameTitleTxt.setText(title);
 		endGameReasonTxt.setText(reason);
 
-		String gameType = getString(R.string.standard);
-		if (currentGame.getGameType() == RestHelper.V_GAME_CHESS_960) {
-			gameType = getString(R.string.chess_960);
+		int currentPlayerNewRating;
+		int ratingChange;
+		if (userPlayWhite) {
+			currentPlayerNewRating = currentGame.getWhiteRating();
+			ratingChange = newWhiteRating - currentPlayerNewRating;
+		} else {
+			currentPlayerNewRating = currentGame.getBlackRating();
+			ratingChange = newBlackRating - currentPlayerNewRating;
 		}
 
-		ratingTitleTxt.setText(getString(R.string.new_arg_rating_, gameType));
-		resultRatingTxt.setText(String.valueOf(getCurrentPlayerRating()));
+		String ratingChangeString = Symbol.wrapInPars(ratingChange > 0 ? "+" + ratingChange : "" + ratingChange);
+
+		resultRatingTxt.setText(String.valueOf(currentPlayerNewRating));
+		resultRatingChangeTxt.setText(ratingChangeString);
+
+		ratingTitleTxt.setVisibility(View.GONE);
 
 		PopupItem popupItem = new PopupItem();
 		popupItem.setCustomView(layout);
@@ -915,14 +944,6 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		if (isNeedToUpgrade() && showAdsForNewMembers) {
 			initPopupAdWidget(layout);
 			MopubHelper.showRectangleAd(getMopubRectangleAd(), getActivity());
-		}
-	}
-
-	private int getCurrentPlayerRating() {
-		if (userPlayWhite) {
-			return currentGame.getWhiteRating();
-		} else {
-			return currentGame.getBlackRating();
 		}
 	}
 
@@ -1027,18 +1048,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 					showToast(R.string.draw_offered);
 					break;
 				case ABORT_GAME_UPDATE:
-					String title;
-					String opponentName;
-					if (isUserColorWhite()) {
-						title = getString(R.string.black_wins);
-						opponentName = getBlackPlayerName();
-					} else {
-						title = getString(R.string.white_wins);
-						opponentName = getWhitePlayerName();
-					}
-
-					String reason = getString(R.string.won_by_resignation, opponentName);
-					onGameOver(title, reason);
+					updateAfterAbortGame();
 					break;
 			}
 		}
@@ -1056,6 +1066,55 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 				}
 			}
 			super.errorHandle(resultCode);
+		}
+	}
+
+	private void updateAfterAbortGame() {
+		String title;
+		String opponentName;
+		if (isUserColorWhite()) {
+			title = getString(R.string.black_wins);
+			opponentName = getBlackPlayerName();
+		} else {
+			title = getString(R.string.white_wins);
+			opponentName = getWhitePlayerName();
+		}
+
+		String reason = getString(R.string.won_by_resignation, opponentName);
+		onGameOver(title, reason);
+	}
+
+	private class BatchUpdateListener extends ChessLoadUpdateListener<List> {
+
+		final static int SUBMIT_MOVE = 0;
+		final static int ABORT_GAME = 1;
+		private int listenerCode;
+
+		private BatchUpdateListener(int listenerCode) {
+			super(List.class);
+			this.listenerCode = listenerCode;
+		}
+
+		@Override
+		public void updateData(List returnedObj) {
+			super.updateData(returnedObj);
+
+			List<? extends BaseResponseItem> responseItems = returnedObj;
+
+			if (responseItems.get(1).getStatus().equals(RestHelper.R_STATUS_SUCCESS)) {
+				DailyCurrentGameItem dailyMyChallengeItem = (DailyCurrentGameItem) responseItems.get(1);
+				if (dailyMyChallengeItem != null) {
+					DailyCurrentGameItem.Data data = dailyMyChallengeItem.getData();
+					newWhiteRating = data.getWhiteRating();
+					newBlackRating = data.getBlackRating();
+				}
+			}
+
+			if (listenerCode == SUBMIT_MOVE) {
+				moveWasSent();
+			} else if (listenerCode == ABORT_GAME) {
+				updateAfterAbortGame();
+			}
 		}
 	}
 

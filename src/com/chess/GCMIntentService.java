@@ -165,8 +165,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 			return;
 		}
 
+		LogMe.dl(TAG, "intent.hasExtra(\"owner\") = " + intent.hasExtra("owner"));
+
 		if (intent.hasExtra("owner")) {
 			String owner = intent.getStringExtra("owner");
+			LogMe.dl(TAG, "owner = " + owner);
 			if (owner != null && !owner.equals(username)) { // don't handle not our messages
 				return;
 			}

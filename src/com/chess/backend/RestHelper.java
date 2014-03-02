@@ -410,6 +410,8 @@ public class RestHelper {
 	public static final String P_COMMENT_BODY = "commentBody";
 	public static final String P_COMMENTS_PER_PAGE = "commentsPerPage";
 	public static final String P_AVATAR_SIZE = "avatarSize";
+	public static final String P_WHITE_RATING = "white_rating";
+	public static final String P_BLACK_RATING = "black_rating";
 
 	/* Returned Values */
 	public static final String R_ERROR_MESSAGE = "error_message";
