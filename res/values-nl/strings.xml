@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Maak een account aan om online te spelen.</string>
 	<string name="please_sign_up_for_tactics">Maak een account aan om tactische puzzels op te kunnen lossen.</string>
 	<string name="please_sign_up_for_videos">Maak een account aan om video\'s te kunnen bekijken.</string>
-	<string name="please_sign_up_for_lessons">Maak een account aan om lessen te kunnen nemen.</string>
 	<string name="please_sign_up_for_friends">Maak een account aan om vrienden uit te kunnen dagen.</string>
 	<string name="interactive_lessons">Interactieve lessen</string>
 	<string name="tactics_and_puzzles">Tactieken &amp; Puzzels</string>
@@ -487,7 +486,6 @@
 	<string name="upgrade_feedback_2">"\"Mijn niveau steeg aanzienlijk nadat ik premium lid werd\""</string>
 	<string name="upgrade_feedback_reporter_2">- Lou, NJ lid sinds 2009</string>
 	<string name="live_game_share_str">%1$s vs %2$s - Online Schaak http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online Schaak http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
 	<string name="daily_game_share_str">%1$s vs %2$s - Online Schaak http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">Stukken</string>
 </resources>

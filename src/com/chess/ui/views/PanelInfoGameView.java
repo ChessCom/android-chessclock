@@ -502,7 +502,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 	public void showThinkingView(boolean show) {
 		if (show) {
 			playerTxt.setText(getContext().getString(R.string.computer) + Symbol.SPACE +
-					getContext().getString(R.string.thinking));
+					getContext().getString(R.string.thinking_));
 			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
 		} else {
 			playerTxt.setText(R.string.computer);
@@ -518,7 +518,7 @@ public class PanelInfoGameView extends RelLayout implements View.OnClickListener
 			} else {
 				dotsAdded = 0;
 				playerTxt.setText(getContext().getString(R.string.computer) + Symbol.SPACE +
-						getContext().getString(R.string.thinking));
+						getContext().getString(R.string.thinking_));
 			}
 			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
 		}

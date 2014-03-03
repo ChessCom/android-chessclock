@@ -1,11 +1,5 @@
 <resources>
 
-	<string-array name="afterMyMove">
-		<item>अगले तैयार खेल</item>
-		<item>एक ही खेल रहो</item>
-		<item>खेल सूची</item>
-	</string-array>
-
 	<string-array name="countries">
 		<item>संयुक्त राज्य अमेरिका</item>
 		<item>कनाडा</item>

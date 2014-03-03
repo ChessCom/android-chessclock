@@ -1,11 +1,5 @@
 <resources>
 
-	<string-array name="afterMyMove">
-		<item>다음을 준비 게임 이동</item>
-		<item>같은 게임을 그대로</item>
-		<item>게임 목록으로 돌아갑니다</item>
-	</string-array>
-
 	<string-array name="countries">
 		<item>미국</item>
 		<item>캐나다</item>

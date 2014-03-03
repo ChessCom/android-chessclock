@@ -224,7 +224,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 	public void showThinkingView(boolean show) {
 		if (show) {
 			playerTxt.setText(getContext().getString(R.string.computer) + Symbol.SPACE +
-					getContext().getString(R.string.thinking));
+					getContext().getString(R.string.thinking_));
 			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
 		} else {
 			playerTxt.setText(R.string.computer);
@@ -241,7 +241,7 @@ public class PanelInfoWelcomeView extends PanelInfoGameView implements View.OnCl
 			} else {
 				dotsAdded = 0;
 				playerTxt.setText(getContext().getString(R.string.computer) + Symbol.SPACE +
-						getContext().getString(R.string.thinking));
+						getContext().getString(R.string.thinking_));
 			}
 			handler.postDelayed(thinkingDotTask, THINKING_DOT_DELAY);
 		}

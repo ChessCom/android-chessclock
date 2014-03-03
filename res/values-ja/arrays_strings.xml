@@ -1,11 +1,5 @@
 <resources>
 
-	<string-array name="afterMyMove">
-		<item>次の準備試合を見に行く</item>
-		<item>同じゲームにとどまる</item>
-		<item>ゲームリストに戻る</item>
-	</string-array>
-
 	<string-array name="countries">
 		<item>米国</item>
 		<item>カナダ</item>

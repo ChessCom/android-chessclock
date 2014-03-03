@@ -1279,11 +1279,11 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 					}
 				} else {
 					titleId = R.string.draw_by_stalemate;
-					reasonStr = getResources().getString(R.string.stalemate);
+					reasonStr = getResources().getString(R.string.draw_by_stalemate);
 				}
 			} else if (boardFace.getRepetitions() == 3) {
 				titleId = R.string.draw_by_3fold_repetition;
-				reasonStr = getResources().getString(R.string.draw_rep);
+				reasonStr = getResources().getString(R.string.game_draw_by_repetition);
 
 			}
 

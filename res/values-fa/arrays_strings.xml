@@ -1,11 +1,5 @@
 <resources>
 
-	<string-array name="afterMyMove">
-		<item>برو برای بازی بعدی آماده</item>
-		<item>اقامت در بازی همان</item>
-		<item>بازگشت به لیست بازی</item>
-	</string-array>
-
 	<string-array name="countries">
 		<item>ایالات متحده</item>
 		<item>کانادا</item>

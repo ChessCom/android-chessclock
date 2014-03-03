@@ -330,7 +330,6 @@
 	<string name="please_sign_up_for_play_online">Vennligst registrer deg for en konto for å spille online.</string>
 	<string name="please_sign_up_for_tactics">Vennligst registrer deg for en konto til å løse taktikker &amp; puslespill.</string>
 	<string name="please_sign_up_for_videos">Vennligst registrer deg for en konto til å se videoer.</string>
-	<string name="please_sign_up_for_lessons">Vennligst registrer deg for en konto for å lære leksjoner.</string>
 	<string name="please_sign_up_for_friends">Vennligst registrer deg for en konto for å utfordre venner.</string>
 	<string name="interactive_lessons">Interaktive Leksjoner</string>
 	<string name="tactics_and_puzzles">Taktikker &amp; Puslespill</string>
@@ -487,7 +486,6 @@
 	<string name="upgrade_feedback_2">"\"Min totale rating forbedret massevis etter at jeg ble premium medlem\""</string>
 	<string name="upgrade_feedback_reporter_2">-Lou, NJ medlem siden 2009</string>
 	<string name="live_game_share_str">%1$s vs %2$s - Online Sjakk http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
-	<string name="daily_game_share_str">%1$s vs %2$s - Online Sjakk http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
 	<string name="daily_game_share_str">%1$s vs %2$s - Online Sjakk http://www.chess.com/livechess/game?id=%3$s via @chesscom</string>
 	<string name="pieces">Brikker</string>
 </resources>
