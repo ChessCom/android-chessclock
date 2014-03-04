@@ -13,9 +13,8 @@
     </content>
     <orderEntry type="jdk" jdkName="Android 4.4 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="libs1" level="project" />
-    <orderEntry type="library" name="engine1" level="project" />
     <orderEntry type="module" module-name="DroidFish" />
+    <orderEntry type="library" name="libs" level="project" />
   </component>
 </module>
 
