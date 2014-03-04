@@ -966,13 +966,17 @@ public class LccHelper {
 
 		@Override
 		protected Void doInBackground(Long... params) {
+			List<Game> gamesToUnObserve = new ArrayList<Game>();
 			for (Game game : lccGames.values()) {
 				if (isObservedGame(game) && !game.getId().equals(params[0])) {
 					LogMe.dl(TAG, "UnObserveOldTopGamesTask unobserve gameId=" + game.getId());
 					unObserveGame(game.getId());
 					lccClient.exitGame(game); // check, probably can avoid this
-					lccGames.remove(game);
+					gamesToUnObserve.add(game);
 				}
+			}
+			for (Game game : gamesToUnObserve) {
+				lccGames.remove(game);
 			}
 			return null;
 		}

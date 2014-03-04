@@ -216,8 +216,8 @@ public class PopupPromotionFragment extends SimplePopupDialogFragment implements
 	}
 
 	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
+	public void onPause() {
+		super.onPause();
 
 		if (listener != null) {
 			listener.onDialogCanceled();

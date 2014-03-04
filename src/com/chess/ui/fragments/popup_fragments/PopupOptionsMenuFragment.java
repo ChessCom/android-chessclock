@@ -1,7 +1,6 @@
 package com.chess.ui.fragments.popup_fragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -81,8 +80,8 @@ public class PopupOptionsMenuFragment extends DialogFragment implements View.OnC
 	}
 
 	@Override
-	public void onCancel(DialogInterface dialog) {
-		super.onCancel(dialog);
+	public void onPause() {
+		super.onPause();
 
 		if (listener != null) {
 			listener.onDialogCanceled();
