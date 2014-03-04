@@ -40,6 +40,7 @@ import com.chess.utilities.Ping;
 import com.flurry.android.FlurryAgent;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -554,7 +555,7 @@ public class LiveConnectionHelper {
 	}
 
 	public void runPingLiveTimer() {
-		testPing.runPingLiveTimer();
+		//testPing.runPingLiveTimer();
 		testPing.runTestRequestsTimer();
 	}
 
@@ -1005,8 +1006,15 @@ public class LiveConnectionHelper {
 				for (Thread thread : blockedThreads) {
 					if (thread.getId() == latestMoveInfo.getMoveFirstThreadId() || thread.getId() == latestMoveInfo.getMoveSecondThreadId()) {
 
+						// let's divide thread info because of size restrictions of logged events
+						int position = info.indexOf("at:");
+						int length = info.length();
+						String threadInfo = info.substring(0, position - 1);
+						String stackTrace = info.substring(position + 4, length - 1);
+
 						HashMap<String, String> params = new HashMap<String, String>();
-						params.put("ThreadMonitor", info);
+						params.put("MoveThread", threadInfo);
+						params.put("Trace", stackTrace);
 						params.put("Move", latestMoveInfo.toString());
 
 						FlurryAgent.logEvent(FlurryData.MOVE_BLOCKED_THREAD_DEBUG, params);

@@ -26,14 +26,10 @@ public class LogMe {
 	private static final Marker markerNotify = MarkerFactory.getMarker("NOTIFY");
 
 	public static void forceLog(String tag, String message, Context context) {
-		if (ENABLED) {
-			if (context != null && AppUtils.isNetworkAvailable(context)) {
-				LOG.debug(markerNotify, tag + TAG_MESSAGE_SEPARATOR + message); // markerNotify sends mail buffer immediately
-			} else {
-				dl(tag, message);
-			}
+		if (context != null && AppUtils.isNetworkAvailable(context)) {
+			LOG.debug(markerNotify, tag + TAG_MESSAGE_SEPARATOR + message); // markerNotify sends mail buffer immediately
 		} else {
-			Log.d(tag, message);
+			dl(tag, message);
 		}
 	}
 

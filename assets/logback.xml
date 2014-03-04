@@ -5,9 +5,9 @@
 	<property name="lcc.log.level.warn" value="OFF" />
 
 	<!-- Logging rules for LCC Debug mode (should be uncommented) -->
-	<!--<property name="lcc.log.level.info" value="INFO" />
+	<property name="lcc.log.level.info" value="INFO" />
 	<property name="lcc.log.level.debug" value="DEBUG" />
-	<property name="lcc.log.level.warn" value="WARN" />-->
+	<property name="lcc.log.level.warn" value="WARN" />
 
 	<property name="LOG_DIR" value="/sdcard/Android/data/com.chess/cache/logs" />
 
@@ -36,51 +36,80 @@
 		</encoder>
 	</appender>
 
+	<appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+
+		<discriminator class="com.chess.utilities.MyDiscriminator"/>
+		<sift>
+
+			<appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
+
+				<evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+					<marker>NOTIFY</marker>
+				</evaluator>
+
+				<smtpHost>smtp.yandex.com</smtpHost>
+
+				<smtpPort>465</smtpPort>
+				<SSL>true</SSL>
+
+				<username>com.chess@yandex.ru</username>
+				<password>chesscom</password>
+				<from>com.chess@yandex.ru</from>
+
+				<to>com.chess@yandex.ru</to>
+
+				<subject>V3 ${subject}</subject>
+
+				<layout class="ch.qos.logback.classic.PatternLayout">
+					<pattern>%date %-5level %logger{35} - %message%n</pattern>
+				</layout>
+			</appender>
+		</sift>
+	</appender>
 
 	<logger name="com.chess.utilities.LogMe" level="DEBUG">
-		<appender-ref ref="LOGCAT" />
-		<appender-ref ref="FILE" />
+		<!--<appender-ref ref="LOGCAT" />
+		<appender-ref ref="FILE" />-->
 	</logger>
 
 	<logger name="com.chess.live.client" level="${lcc.log.level.info}">
-		<appender-ref ref="LOGCAT" />
-		<appender-ref ref="FILE" />
+		<!--<appender-ref ref="LOGCAT" />
+		<appender-ref ref="FILE" />-->
 	</logger>
 
 	<logger name="com.chess.live.util.LogDebug" level="${lcc.log.level.debug}">
-		<appender-ref ref="LOGCAT" />
-		<appender-ref ref="FILE" />
+		<!--<appender-ref ref="LOGCAT" />
+		<appender-ref ref="FILE" />-->
 	</logger>
 
 	<logger name="com.chess.live.util.LogInfo" level="${lcc.log.level.info}">
-		<appender-ref ref="LOGCAT" />
-		<appender-ref ref="FILE" />
+		<!--<appender-ref ref="LOGCAT" />
+		<appender-ref ref="FILE" />-->
 	</logger>
 
 	<logger name="com.chess.live.util.config.Config" level="${lcc.log.level.warn}">
-		<appender-ref ref="LOGCAT" />
-		<appender-ref ref="FILE" />
+		<!--<appender-ref ref="LOGCAT" />
+		<appender-ref ref="FILE" />-->
 	</logger>
 
 	<logger name="com.chess.live.util.Log4JJettyWrapper" level="${lcc.log.level.warn}">
-		<appender-ref ref="LOGCAT" />
-		<appender-ref ref="FILE" />
+		<!--<appender-ref ref="LOGCAT" />
+		<appender-ref ref="FILE" />-->
 	</logger>
 
 	<logger name="com.chess.live.util.Log4JOutputStreamWrapper" level="${lcc.log.level.warn}">
-		<appender-ref ref="LOGCAT" />
-		<appender-ref ref="FILE" />
+		<!--<appender-ref ref="LOGCAT" />
+		<appender-ref ref="FILE" />-->
 	</logger>
 
 	<logger name="org.eclipse.jetty" level="${lcc.log.level.debug}">
-		<appender-ref ref="LOGCAT" />
-		<appender-ref ref="FILE" />
+		<!--<appender-ref ref="LOGCAT" />
+		<appender-ref ref="FILE" />-->
 	</logger>
 
-	<!-- Enable CometD logging -->
 	<logger name="com.chess.live.client.impl.BayeuxClientImpl" level="${lcc.log.level.debug}">
-		<appender-ref ref="LOGCAT" />
-		<appender-ref ref="FILE" />
+		<!--<appender-ref ref="LOGCAT" />
+		<appender-ref ref="FILE" />-->
 	</logger>
 
 	<!--
@@ -90,8 +119,9 @@
 	</logger>
 	-->
 
-	<!--<root level="VERBOSE">
-		<appender-ref ref="FILE" />
-		<appender-ref ref="LOGCAT" />
-	</root>-->
+	<root level="VERBOSE">
+		<!--<appender-ref ref="FILE" />
+		<appender-ref ref="LOGCAT" />-->
+		<appender-ref ref="SIFT" />
+	</root>
 </configuration>

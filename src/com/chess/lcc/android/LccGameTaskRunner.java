@@ -142,8 +142,8 @@ public class LccGameTaskRunner {
 				params.put("DEBUG", debugInfo);
 
 				FlurryAgent.logEvent(FlurryData.ILLEGAL_MOVE_DEBUG, params);
-
 				BugSenseHandler.sendExceptionMap(params, e);
+
 				return StaticData.ILLEGAL_MOVE;
 			}
 
