@@ -18,6 +18,7 @@
     </orderEntry>
     <orderEntry type="module" module-name="CuckooChessEngine" />
     <orderEntry type="inheritedJdk" />
+    <orderEntry type="module" module-name="CuckooChessEngine" />
   </component>
 </module>
 
