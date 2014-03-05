@@ -361,6 +361,10 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 			boardView.promote(ChessBoard.QUEEN, promotionFile, promotionRank);
 			return;
 		}
+		// show popup
+		if (promotionFragment != null) {
+			return;
+		}
 
 		promotionFragment = PopupPromotionFragment.createInstance(promotionSelectedListener, getBoardFace().getSide());
 		promotionFragment.show(getFragmentManager(), PROMOTION_SELECTION_TAG);

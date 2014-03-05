@@ -1235,9 +1235,8 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			moveMade = boardFace.makeMove(move);
 		}
 		if (moveMade) {
-			moveAnimator.setForceCompEngine(true); // TODO @engine: probably postpone afterUserMove() only for vs comp mode
 			setMoveAnimator(moveAnimator);
-			//afterUserMove(); //
+			afterUserMove();
 		} else if (boardFace.getPiece(toSquare) != ChessBoard.EMPTY
 				&& boardFace.getSide() == boardFace.getColor(toSquare)) {
 			pieceSelected = true;

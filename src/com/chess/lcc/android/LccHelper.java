@@ -34,8 +34,11 @@ public class LccHelper {
 	public static final boolean TESTING_GAME = false;
 	public static final String[] TEST_MOVES_COORD = {"a2a3", "h7h6", "b2b3", "g7g6", "c2c3", "f7f6", "d2d4", "d7d6",
 			"e2e4", "c8h3", "f2f4", "b8a6", "d4d5", "e7e6", "d5e6", "d8d7", "e4e5", "d7h7", "a3a4", "e8c8", "c3c4",
-			"d8d7", "a1a2", "d7g7", "b1d2", "c8b8", "e6e7", "a6c5", "g2h3", "h6h5", "e7e8q"};
-	public static final long TEST_MOVES_DELAY = 10 * 1000;
+			"d8d7", "a1a2", "d7g7", "b1d2", "c8b8", "e6e7", "a6c5", "g2h3", "h6h5"/*, "e7e8q"*/};
+
+	//public static final String[] TEST_MOVES_COORD = {"e2e4", "e7e5", "g1f3", "b8c6", "b1c3", "g8f6", "f1b5", "f8c5", "b2b3", "f6g4", "d2d4", "c5d4", "f3d4", "e5d4", "c3d5", "c6e5", "d1d4", "e5c6", "d4g7", "h8f8", "c1g5", "c6e7", "g5e7", "d8e7", "d5e7", "e8e7", "g7g4", "d7d5", "g4g5", "f7f6", "g5h6", "d5e4", "e1c1", "c7c6", "b5c4", "b7b5", "c4e2", "c8f5", "h1e1", "f8f7", "h2h3", "f5g6", "g2g4", "a8g8", "f2f3", "g8g7", "f3e4", "e7f8", "e4e5", "f6e5", "e2f3", "f8g8", "e1e5", "f7f3", "d1d8", "f3f8", "d8f8", "g8f8", "h6f4", "f8g8", "e5e6", "g7f7", "f4d4", "f7f1", "c1b2", "f1f7", "e6e8", "f7f8", "e8e7", "f8f7", "d4d8", "f7f8", "e7e8", "g6e8", "d8g5", "e8g6", "g5h6", "g8f7", "h3h4", "c6c5", "h4h5", "g6e4", "h6f4", "f7e8", "f4e4", "e8f7", "e4h7", "f7e8", "g4g5", "f8f5", "g5g6", "f5f8", "g6g7", "f8f7", "h7h8", "e8e7"};
+
+	public static final long TEST_MOVES_DELAY = 10;
 	public static final long TEST_FIRST_MOVE_DELAY = 3 * 1000;
 
 	public static final int OWN_SEEKS_LIMIT = 3;

@@ -168,19 +168,19 @@ public class Ping {
 			public void run() {
 
 				testRequestGoogleServer();
-				//testRequestLiveServer();
+				testRequestLiveServer();
 				testRequestLiveSecuredServer();
-				//testRequestChessServer();
-				//testRequestChessSecuredServer();
-				//testRequestChess3Server();
+				testRequestChessServer();
+				testRequestChessSecuredServer();
+				testRequestChess3Server();
 
-				//testRequestAkiba();
+				testRequestAkiba();
 				testRequestAkibaSecured();
-				//testRequestHammer();
+				testRequestHammer();
 				testRequestHammerSecured();
 
 				testRequestLiveIp();
-				//testRequestZerolag();
+				testRequestZerolag();
 
 			}
 		}, 0, TIMER_UPDATE_PERIOD);
