@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-	android:versionCode="470"
-	android:versionName="3.0.170"
+	android:versionCode="471"
+	android:versionName="3.0.171"
 	package="com.chess"
 	android:installLocation="auto">
 
