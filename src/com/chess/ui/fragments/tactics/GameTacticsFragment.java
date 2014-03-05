@@ -86,10 +86,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private static final int HINTED_RESULT = 4;
 	// Menu Options ids
 	private static final int ID_SHOW_ANSWER = 1;
-	private static final int ID_PRACTICE = 2;
-	private static final int ID_SHARE_PGN = 3;
-	private static final int ID_PERFORMANCE = 4;
-	private static final int ID_SETTINGS = 5;
+	private static final int ID_SHARE_PGN = 2;
+	private static final int ID_PERFORMANCE = 3;
+	private static final int ID_SETTINGS = 4;
 
 	private ChessBoardTacticsView boardView;
 
@@ -732,8 +731,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 			showAnswer();
 		} else if (code == ID_PERFORMANCE) {
 			getActivityFace().openFragment(new StatsGameTacticsFragment());
-		} else if (code == ID_PRACTICE) {
-			switch2Analysis();
 		} else if (code == ID_SHARE_PGN) {
 			sendPGN();
 		} else if (code == ID_SETTINGS) {
@@ -1025,12 +1022,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	public void showOptions() {
 		if (optionsSelectFragment != null) {
 			return;
-		}
-
-		if (currentGameExist() && trainerData.isRetry()) { // don't show practice before first try
-			optionsArray.put(ID_PRACTICE, getString(R.string.practice));
-		} else {
-			optionsArray.remove(ID_PRACTICE);
 		}
 
 		if (trainerData.isAnswerWasShowed()) {
@@ -1425,8 +1416,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		setBoardView(boardView);
 		boardView.setGameFace(this);
 
-//		final ChessBoard chessBoard = ChessBoardTactics.getInstance(this);
-		firstRun = true;  // TODO check
+		firstRun = true;
 
 		lockBoard(true);
 
@@ -1440,7 +1430,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		{// options list setup
 			optionsArray = new SparseArray<String>();
 			optionsArray.put(ID_SHOW_ANSWER, getString(R.string.show_answer));
-			optionsArray.put(ID_PRACTICE, getString(R.string.practice));
 			optionsArray.put(ID_SHARE_PGN, getString(R.string.share_pgn));
 			optionsArray.put(ID_PERFORMANCE, getString(R.string.performance));
 			optionsArray.put(ID_SETTINGS, getString(R.string.settings));
