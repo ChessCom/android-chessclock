@@ -59,6 +59,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	private static final String TOKEN = Long.toBinaryString(new Random().nextLong());
 
 	public static final String SENDER = "sender";
+	public static final String USERNAME = "username";
 	public static final String MESSAGE = "message";
 	public static final String CREATED_AT = "created_at";
 	public static final String AVATAR_URL = "avatar_url";
@@ -306,6 +307,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		long gameId = Long.parseLong(intent.getStringExtra(GAME_ID));
 		gameOverNotificationItem.setMessage(intent.getStringExtra(MESSAGE));
+		gameOverNotificationItem.setUsername(intent.getStringExtra(USERNAME));
 		gameOverNotificationItem.setGameId(gameId);
 		gameOverNotificationItem.setAvatar(intent.getStringExtra(AVATAR_URL));
 		LogMe.dl(TAG, " _________________________________");

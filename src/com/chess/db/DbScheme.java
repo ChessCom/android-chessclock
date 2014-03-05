@@ -9,7 +9,7 @@ import android.net.Uri;
  */
 public class DbScheme {
 
-	static final int DATABASE_VERSION = 99;  // change version on every DB scheme changes
+	static final int DATABASE_VERSION = 100;  // change version on every DB scheme changes
 
 	public static final String PROVIDER_NAME = "com.chess.db_provider";
 
@@ -1194,6 +1194,7 @@ public class DbScheme {
 		createTablesArray[Tables.NOTIFICATION_GAMES_OVER.ordinal()] = createTableForName(Tables.NOTIFICATION_GAMES_OVER)
 				+ addField_Long(V_ID) // gameId
 				+ addField_Text(V_USER) // current auth user
+				+ addField_Text(V_USERNAME) // opponent name
 				+ addField_Text(V_MESSAGE)
 				+ addField_Text(V_USER_AVATAR, true);
 	}

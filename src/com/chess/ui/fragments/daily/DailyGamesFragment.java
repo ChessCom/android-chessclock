@@ -731,7 +731,6 @@ public class DailyGamesFragment extends CommonLogicFragment implements AdapterVi
 
 		{ // Time mode adjustments
 
-
 			// set texts to buttons
 			boolean dailyMode = getAppData().isLastUsedDailyMode();
 			if (dailyMode) {

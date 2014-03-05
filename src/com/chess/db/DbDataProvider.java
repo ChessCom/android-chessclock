@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
+import com.chess.BuildConfig;
 import com.chess.backend.exceptions.DbDataProviderException;
 import com.chess.utilities.MonitorDataHelper;
 
@@ -186,6 +187,9 @@ public class DbDataProvider extends ContentProvider {
 					// logging exception
 					DbDataProviderException dbDataProviderException = new DbDataProviderException(
 							"Adding of row failed", e);
+					if (BuildConfig.DEBUG) {
+						throw new SQLException("Failed to insert row into " + uri  + ", values = " + valuesStr.toString());
+					}
 					dbDataProviderException.logHandled();
 				}
 			}
@@ -198,8 +202,6 @@ public class DbDataProvider extends ContentProvider {
 			DbDataProviderException dbDataProviderException = new DbDataProviderException(
 					"Inserted uri not found");
 			dbDataProviderException.logHandled();
-			// throw new IllegalArgumentException("Unsupported URI: " + uri); //
-			// TODO: remove this line
 		}
 
 		// throw new SQLException("Failed to insert row into " + uri +

@@ -237,17 +237,25 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 				showToast("=)");
 				return;
 			}
+
+			hideOptionsDialog();
+
 			if (getBoardFace().getPly() < 1 && isUserMove()) {
 				showPopupDialog(R.string.abort_game_, ABORT_GAME_TAG);
 			} else {
 				showPopupDialog(R.string.resign_game_, ABORT_GAME_TAG);
 			}
+			return;
 		} else if (code == ID_OFFER_DRAW) {
 			if (!username.equals(getUsername())) { // don't let unAuth users to make action
 				showToast("=)");
 				return;
 			}
+
+			hideOptionsDialog();
+
 			showPopupDialog(R.string.offer_draw, R.string.are_you_sure_q, DRAW_OFFER_RECEIVED_TAG);
+			return;
 		} else if (code == ID_FLIP_BOARD) {
 			boardView.flipBoard();
 		} else if (code == ID_SHARE_PGN) {
@@ -264,14 +272,19 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			}
 		}
 
-		optionsSelectFragment.dismiss();
-		optionsSelectFragment = null;
+		hideOptionsDialog();
 	}
 
 	@Override
 	public void onDialogCanceled() {
-		optionsSelectFragment.dismiss();
-		optionsSelectFragment = null;
+		hideOptionsDialog();
+	}
+
+	private void hideOptionsDialog() {
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment.dismiss();
+			optionsSelectFragment = null;
+		}
 	}
 
 	private class MoveUpdateReceiver extends BroadcastReceiver {

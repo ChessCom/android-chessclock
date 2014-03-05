@@ -38,6 +38,7 @@ public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 		ViewHolder holder = new ViewHolder();
 		holder.playerImg = (ProgressImageView) view.findViewById(R.id.playerImg);
 		holder.messageTxt = (TextView) view.findViewById(R.id.messageTxt);
+		holder.usernameTxt = (TextView) view.findViewById(R.id.usernameTxt);
 		holder.clearBtn = (TextView) view.findViewById(R.id.clearBtn);
 		holder.clearBtn.setOnClickListener(clickListenerFace);
 
@@ -51,6 +52,7 @@ public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 
 		holder.clearBtn.setTag(itemListId, cursor);
 
+		holder.usernameTxt.setText(getString(cursor, DbScheme.V_USERNAME));
 		holder.messageTxt.setText(getString(cursor, DbScheme.V_MESSAGE));
 		String avatarUrl = getString(cursor, DbScheme.V_USER_AVATAR);
 		if (!imageDataMap.containsKey(avatarUrl)) {
@@ -63,6 +65,7 @@ public class DailyGamesOverCursorAdapter extends ItemsCursorAdapter {
 	protected class ViewHolder {
 		public ProgressImageView playerImg;
 		public TextView messageTxt;
+		public TextView usernameTxt;
 		public TextView clearBtn;
 
 	}

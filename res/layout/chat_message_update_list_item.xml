@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.chess.widgets.LinLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chess.widgets.RelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:orientation="horizontal"
@@ -18,20 +19,41 @@
 		android:layout_gravity="center_vertical" />
 
 	<com.chess.widgets.RoboTextView
+		android:id="@+id/usernameTxt"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textColor="@color/new_light_grey"
+		android:layout_gravity="center_vertical"
+		android:layout_toRightOf="@id/playerImg"
+		android:layout_toEndOf="@id/playerImg"
+		android:textSize="15sp"
+		custom:ttf="Bold"
+		/>
+
+	<com.chess.widgets.RoboTextView
 		android:id="@+id/messageTxt"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
+		android:layout_toRightOf="@id/playerImg"
+		android:layout_toEndOf="@id/playerImg"
+		android:layout_toLeftOf="@+id/clearBtn"
+		android:layout_toStartOf="@+id/clearBtn"
+		android:layout_below="@+id/usernameTxt"
 		android:textColor="@color/new_light_grey"
-		android:layout_gravity="center_vertical" />
+		android:layout_gravity="center_vertical"
+		/>
 
 	<com.chess.widgets.RoboTextView
-		android:id="@+id/clearBtn"
+		android:id="@id/clearBtn"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="@string/ic_close"
 		android:layout_gravity="center_vertical"
 		style="@style/GlyphIcon.Big"
-		android:textColor="@color/text_controls_icons" />
+		android:textColor="@color/text_controls_icons"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
+		/>
 
-</com.chess.widgets.LinLayout>
+</com.chess.widgets.RelLayout>

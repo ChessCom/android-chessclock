@@ -2221,9 +2221,9 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static void saveNewChatNotification(ContentResolver contentResolver, NewChatNotificationItem item, String username) {
+	public static void saveNewChatNotification(ContentResolver contentResolver, NewChatNotificationItem item, String currentUser) {
 		final String[] arguments1 = sArguments2;
-		arguments1[0] = username; // current auth username
+		arguments1[0] = currentUser; // current auth username
 		arguments1[1] = item.getUsername();
 
 		Uri uri = uriArray[Tables.NOTIFICATION_NEW_CHAT_MESSAGES.ordinal()];
@@ -2234,7 +2234,7 @@ public class DbDataManager {
 
 		values.put(V_ID, item.getGameId());
 		values.put(V_CREATE_DATE, item.getCreatedAt());
-		values.put(V_USER, username);
+		values.put(V_USER, currentUser);
 		values.put(V_MESSAGE, item.getMessage());
 		values.put(V_USERNAME, item.getUsername());
 		values.put(V_USER_AVATAR, item.getAvatar());
@@ -2282,11 +2282,11 @@ public class DbDataManager {
 		updateOrInsertValues(contentResolver, cursor, uri, values);
 	}
 
-	public static void saveGameOverNotification(ContentResolver contentResolver, GameOverNotificationItem item, String username) {
+	public static void saveGameOverNotification(ContentResolver contentResolver, GameOverNotificationItem item, String currentUser) {
 
 		final String[] arguments1 = sArguments2;
 		arguments1[0] = String.valueOf(item.getGameId());
-		arguments1[1] = username; // current auth username
+		arguments1[1] = currentUser; // current auth username
 
 		Uri uri = uriArray[Tables.NOTIFICATION_GAMES_OVER.ordinal()];
 		Cursor cursor = contentResolver.query(uri, PROJECTION_ITEM_ID_AND_USER,
@@ -2295,7 +2295,8 @@ public class DbDataManager {
 		ContentValues values = new ContentValues();
 
 		values.put(V_ID, item.getGameId());
-		values.put(V_USER, username);
+		values.put(V_USER, currentUser);
+		values.put(V_USERNAME, item.getUsername());
 		values.put(V_MESSAGE, item.getMessage());
 		values.put(V_USER_AVATAR, item.getAvatar());
 
