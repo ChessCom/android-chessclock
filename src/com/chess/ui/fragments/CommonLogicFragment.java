@@ -1208,7 +1208,7 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 	protected void initUpgradeAndAdWidgets(View view) {
 		initShowAdsFlag();
 
-		if (isNeedToUpgrade() && showAdsForNewMembers) {
+		if (needToShowAds()) {
 			view.findViewById(R.id.bannerUpgradeView).setVisibility(View.VISIBLE);
 
 			Button upgradeBtn = (Button) view.findViewById(R.id.upgradeBtn);
@@ -1235,4 +1235,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 	}
 
+    /**
+     * Determines if ads must be shown
+     * Result depends on ads for new members setting and user status
+     *
+     * @return  if ads must be shown
+     */
+    protected boolean needToShowAds() {
+        return 	isNeedToUpgrade() && showAdsForNewMembers;
+    }
 }
