@@ -1,6 +1,6 @@
 package com.chess.backend.exceptions;
 
-import com.chess.utilities.CrashHelper;
+import com.chess.utilities.MonitorDataHelper;
 
 /**
  * Base exception class for chess android application
@@ -30,6 +30,6 @@ public class ChessException extends Exception {
 	 */
 	public void logHandled() {
 
-		CrashHelper.logException(this);
+		MonitorDataHelper.logException(this);
 	}
 }

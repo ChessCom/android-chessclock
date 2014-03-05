@@ -31,4 +31,5 @@ public class FlurryData {
 	public static final String MOVE_BLOCKED_THREAD_DEBUG = "move-blocked-thread-debug";
 	/* New data */
 	public static final String OPEN_FRAME = "Open Frame ";
+	public static final String UPDATE_MEMBERSHIP = "updateMembershipOnServer invName= ";
 }

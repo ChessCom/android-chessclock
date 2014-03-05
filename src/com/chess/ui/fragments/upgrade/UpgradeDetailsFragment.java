@@ -23,12 +23,14 @@ import com.chess.backend.entity.api.MembershipKeyItem;
 import com.chess.backend.entity.api.PayloadItem;
 import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.statics.AppData;
+import com.chess.statics.FlurryData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.CommonLogicFragment;
 import com.chess.utilities.FontsHelper;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboTextView;
+import com.flurry.android.FlurryAgent;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.MapBuilder;
 
@@ -114,6 +116,8 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	protected int premiumStatus;
 	private View disabledOverlayView;
 	private int topPadding;
+	private String usernameForCompletePurchase;
+	private String usernameForGetInventory;
 
 	public UpgradeDetailsFragment() {
 	}
@@ -496,6 +500,9 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
              * the developer payload to see if it's correct! See verifyDeveloperPayload().
              */
 
+			// save username to compare it when updateMembershipOnServer called, to avoid simultaneous invocation
+			usernameForGetInventory = getUsername();
+
 			// Check every purchased plan!
 			{// gold month
 				Purchase purchase = inventory.getPurchase(IabHelper.SKU_GOLD_MONTH);
@@ -628,6 +635,11 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	private void updateMembershipOnServer(Purchase purchase) {
 		if (purchase == null) {
 			return;
+		}
+
+		if (!TextUtils.isEmpty(usernameForGetInventory) && !TextUtils.isEmpty(usernameForCompletePurchase)) {
+			FlurryAgent.logEvent(FlurryData.UPDATE_MEMBERSHIP + usernameForGetInventory
+					+ " purchaseName= " + usernameForCompletePurchase + "time " + System.currentTimeMillis() / 1000);
 		}
 
 		trackPurchaseToGA(purchase);
@@ -869,6 +881,9 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 						+ " real payload = " + payloadData.getPayload());
 				return;
 			}
+
+			// save username to compare it when updateMembershipOnServer called, to avoid simultaneous invocation
+			usernameForCompletePurchase = getUsername();
 
 			updateMembershipOnServer(purchase);
 		}

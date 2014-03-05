@@ -27,6 +27,7 @@ import com.chess.ui.fragments.popup_fragments.PopupProgressFragment;
 import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.interfaces.PopupShowFace;
 import com.chess.utilities.AppUtils;
+import com.chess.utilities.MonitorDataHelper;
 import com.flurry.android.FlurryAgent;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.slidingmenu.lib.app.BaseActivity;
@@ -90,22 +91,11 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 			}
 		}
 		super.onCreate(savedInstanceState);
-
-		// Bugsense integration
-			try {
-				BugSenseHandler.initAndStartSession(this, AppConstants.BUGSENSE_API_KEY);
-			} catch (Exception e) {
-				e.printStackTrace();
-				String stackTrace = Log.getStackTraceString(e).replaceAll("\n", " ");
-				Map<String, String> params = new HashMap<String, String>();
-				params.put(AppConstants.EXCEPTION, Build.MODEL + " " + stackTrace);
-				FlurryAgent.logEvent(FlurryData.BUGSENSE_INIT_EXCEPTION, params);
-			}
-
-		// New Relic integration
-		//NewRelic.withApplicationToken(AppConstants.NEW_RELIC_API_KEY).start(this.getApplication());
-
 		context = this;
+
+		// monitoring lib init
+		MonitorDataHelper.initMonitorLib(context);
+		
 
 		popupItem = new PopupItem();
 		popupProgressItem = new PopupItem();
