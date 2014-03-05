@@ -221,7 +221,7 @@
 	<string name="leave_vacation_q">Disable Vacation?</string>
 	<string name="sign_up_with_facebook"><b>Sign Up</b> with <b>Facebook</b></string>
 	<string name="finished_games">Finished Games</string>
-	<string name="feedback_mail_body">Please don\'t edit or remove the information below.</string>
+	<string name="feedback_mail_body">[ Please describe your issue here. ]\n\n\nPlease don\'t edit or remove the information below</string>
 	<string name="no_games">No Games</string>
 
 	<!--DailyGames-->
