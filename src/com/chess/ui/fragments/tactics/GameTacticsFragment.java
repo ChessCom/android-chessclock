@@ -33,7 +33,10 @@ import com.chess.statics.AppConstants;
 import com.chess.statics.FlurryData;
 import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
-import com.chess.ui.engine.*;
+import com.chess.ui.engine.ChessBoard;
+import com.chess.ui.engine.ChessBoardTactics;
+import com.chess.ui.engine.FenHelper;
+import com.chess.ui.engine.Move;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.comp.GameCompFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -639,20 +642,29 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void computer() {
-		int compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
-		getAppData().setCompGameMode(AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE);
-
 		// rewind one move back for appropriate analysis
 		TacticBoardFace boardFace = getBoardFace();
 		while (boardFace.takeBack()) {
 			// loop while we can move back
 		}
 		boardView.invalidateMe();
+
+		// if next move is not user's, making it
 		if (!trainerData.isUserMoveFirst()) {
 			boardFace.setMovesCount(1);
 			boardFace.makeMove(boardFace.getTacticMoves()[0], false);
 		}
 
+		// now next move is user's, so checking game mode
+		int compGameMode;
+		if (boardFace.isWhiteToMove()) {
+			compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
+		} else {
+			compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
+		}
+		getAppData().setCompGameMode(compGameMode);
+
+		// building config
 		CompGameConfig.Builder builder = new CompGameConfig.Builder()
 				.setMode(compGameMode)
 				.setStrength(getAppData().getCompLevel())
