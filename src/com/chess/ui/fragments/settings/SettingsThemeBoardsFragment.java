@@ -119,11 +119,11 @@ public class SettingsThemeBoardsFragment extends CommonLogicFragment implements 
 		super.onResume();
 
 		// Don't load custom board if we are not logged in
-		if (isAuthenticatedUser &&  isNetworkAvailable()) {
+		if (isAuthenticatedUser && isNetworkAvailable()) {
 			loadThemedPieces = true;
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.THEME_BOARDS));
 
-			if (cursor != null && cursor.getCount() >= THEME_BOARDS_CNT  && getAppData().isThemeBoardsLoaded()) {
+			if (cursor != null && cursor.getCount() >= THEME_BOARDS_CNT && getAppData().isThemeBoardsLoaded()) {
 				cursor.moveToFirst();
 				do {
 					themeBoardItemsList.add(DbDataManager.getThemeBoardItemFromCursor(cursor));

@@ -316,7 +316,7 @@ public class LccGameListener implements GameListener {
 	}
 
     /*public void onDrawRejected(Game game, User rejector) {
-        final String rejectorUsername = (rejector != null ? rejector.getUsername() : null);
+		final String rejectorUsername = (rejector != null ? rejector.getUsername() : null);
         LogMe.dl(TAG, "GAME LISTENER: Draw rejected at the move #" + game.getMoveCount() +
                         ", game.id=" + game.getId() + ", rejector=" + rejectorUsername + ", game=" + game);
         if (!rejectorUsername.equals(lccHelper.getUser().getUsername())) {

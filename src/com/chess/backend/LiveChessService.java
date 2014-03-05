@@ -48,13 +48,13 @@ public class LiveChessService extends Service {
 
 	/**
 	 * <a href="http://android-developers.blogspot.ru/2010/02/service-api-changes-starting-with.html">service blog post</a>
-	 *
+	 * <p/>
 	 * <p>START_STICKY is basically the same as the previous behavior, where the service is left "started" and will later be restarted by the system. The only difference from previous versions of the platform is that it if it gets restarted because its process is killed, onStartCommand() will be called on the next instance of the service with a null Intent instead of not being called at all. Services that use this mode should always check for this case and deal with it appropriately.</p>
 	 * <p>START_NOT_STICKY says that, after returning from onStartCreated(), if the process is killed with no remaining start commands to deliver, then the service will be stopped instead of restarted. This makes a lot more sense for services that are intended to only run while executing commands sent to them. For example, a service may be started every 15 minutes from an alarm to poll some network state. If it gets killed while doing that work, it would be best to just let it be stopped and get started the next time the alarm fires.</p>
 	 * <p>START_REDELIVER_INTENT is like START_NOT_STICKY, except if the service's process is killed before it calls stopSelf() for a given intent, that intent will be re-delivered to it until it completes (unless after some number of more tries it still can't complete, at which point the system gives up). This is useful for services that are receiving commands of work to do, and want to make sure they do eventually complete the work for each command sent.</p>
 	 */
 	@Override
- 	public int onStartCommand(Intent intent, int flags, int startId) {
+	public int onStartCommand(Intent intent, int flags, int startId) {
 		LogMe.dl(TAG, "SERVICE: onStartCommand, intent=" + intent);
 
 		if (DataHolder.getInstance().isLiveChess()) {

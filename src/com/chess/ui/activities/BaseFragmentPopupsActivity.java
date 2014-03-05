@@ -10,16 +10,12 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.bugsense.trace.BugSenseHandler;
 import com.chess.R;
 import com.chess.model.PopupItem;
-import com.chess.statics.AppConstants;
-import com.chess.statics.FlurryData;
 import com.chess.statics.Symbol;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.popup_fragments.PopupDialogFragment;
@@ -28,14 +24,11 @@ import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.interfaces.PopupShowFace;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MonitorDataHelper;
-import com.flurry.android.FlurryAgent;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.slidingmenu.lib.app.BaseActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * BaseFragmentPopupsActivity class
@@ -95,9 +88,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 
 		// monitoring lib init
 		MonitorDataHelper.initMonitorLib(context);
-		
-
-		popupItem = new PopupItem();
+				popupItem = new PopupItem();
 		popupProgressItem = new PopupItem();
 
 		popupManager = new ArrayList<PopupDialogFragment>();

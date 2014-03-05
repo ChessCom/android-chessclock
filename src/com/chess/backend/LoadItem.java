@@ -145,7 +145,6 @@ public class LoadItem { // TODO refactor with builder
 */
 
 	/**
-	 *
 	 * @return loaded params as json for batch API processing
 	 */
 	public String getJsonBody() {
@@ -154,8 +153,8 @@ public class LoadItem { // TODO refactor with builder
 //		url = url.replace("/","\\/");
 
 		String loadBody = Symbol.NEW_STR + "    {" + Symbol.NEW_STR
-			+ "        \"method\": \"" + requestMethod + "\"" + Symbol.COMMA + Symbol.NEW_STR
-			+ "        \"url\": \"" + url + "\"" + Symbol.COMMA + Symbol.NEW_STR;
+				+ "        \"method\": \"" + requestMethod + "\"" + Symbol.COMMA + Symbol.NEW_STR
+				+ "        \"url\": \"" + url + "\"" + Symbol.COMMA + Symbol.NEW_STR;
 		if (requestMethod.equals(RestHelper.PUT) || requestMethod.equals(RestHelper.POST)) {
 			loadBody += "        \"body\": \n     {";
 			String divider = Symbol.EMPTY;

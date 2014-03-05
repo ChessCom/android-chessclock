@@ -1235,13 +1235,13 @@ public abstract class CommonLogicFragment extends BasePopupsFragment implements 
 		}
 	}
 
-    /**
-     * Determines if ads must be shown
-     * Result depends on ads for new members setting and user status
-     *
-     * @return  if ads must be shown
-     */
-    protected boolean needToShowAds() {
-        return 	isNeedToUpgrade() && showAdsForNewMembers;
-    }
+	/**
+	 * Determines if ads must be shown
+	 * Result depends on ads for new members setting and user status
+	 *
+	 * @return if ads must be shown
+	 */
+	protected boolean needToShowAds() {
+		return isNeedToUpgrade() && showAdsForNewMembers;
+	}
 }

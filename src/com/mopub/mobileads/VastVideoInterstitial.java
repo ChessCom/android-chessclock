@@ -124,7 +124,7 @@ class VastVideoInterstitial extends ResponseBodyInterstitial implements VastMana
 	}
 
     /*
-     * VastVideoDownloadTask.OnDownloadCompleteListener implementation
+	 * VastVideoDownloadTask.OnDownloadCompleteListener implementation
      */
 
 	@Override

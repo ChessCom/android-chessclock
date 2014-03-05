@@ -158,7 +158,7 @@ public class SettingsThemeCustomizeFragment extends CommonLogicFragment implemen
 			getSounds();
 		}
 
-	    updateStyles();
+		updateStyles();
 
 		updateThemeName();
 		updateReceiver = new StylesUpdateReceiver();

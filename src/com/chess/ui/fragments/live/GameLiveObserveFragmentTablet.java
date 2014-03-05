@@ -57,7 +57,7 @@ public class GameLiveObserveFragmentTablet extends GameLiveObserveFragment imple
 						transaction.replace(R.id.chatFragmentContainer, fragmentByTag, fragmentTag);
 						transaction.commit();
 					} else {
-						((LiveChatFragment)fragmentByTag).updateData();
+						((LiveChatFragment) fragmentByTag).updateData();
 					}
 
 					break;

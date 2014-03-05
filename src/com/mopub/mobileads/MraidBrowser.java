@@ -86,7 +86,7 @@ public class MraidBrowser extends Activity {
 		webSettings.setJavaScriptEnabled(false);
 
         /* Pinch to zoom is apparently not enabled by default on all devices, so
-         * declare zoom support explicitly.
+		 * declare zoom support explicitly.
          * http://stackoverflow.com/questions/5125851/enable-disable-zoom-in-android-webview
          */
 		webSettings.setSupportZoom(true);

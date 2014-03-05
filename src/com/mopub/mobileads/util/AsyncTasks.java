@@ -17,7 +17,7 @@ public class AsyncTasks {
 //					.addParam(Object[].class, params)
 //					.execute();
 //		} else {
-			asyncTask.execute(params);
+		asyncTask.execute(params);
 //		}
 	}
 }

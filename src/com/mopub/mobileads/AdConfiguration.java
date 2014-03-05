@@ -176,7 +176,7 @@ public class AdConfiguration implements Serializable {
 	}
 
     /*
-     * HttpResponse
+	 * HttpResponse
      */
 
 	String getAdType() {

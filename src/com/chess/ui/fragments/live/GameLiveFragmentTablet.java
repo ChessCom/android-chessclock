@@ -69,7 +69,7 @@ public class GameLiveFragmentTablet extends GameLiveFragment implements RadioGro
 						transaction.replace(R.id.chatFragmentContainer, fragmentByTag, fragmentTag);
 						transaction.commit();
 					} else {
-						((LiveChatFragment)fragmentByTag).updateData();
+						((LiveChatFragment) fragmentByTag).updateData();
 					}
 
 					break;

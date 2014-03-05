@@ -533,7 +533,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 
 	@Override
 	public void onConnectionFailure(String message) {
-		LogMe.dl(TAG,"LBA onConnectionFailure, message = " + message);
+		LogMe.dl(TAG, "LBA onConnectionFailure, message = " + message);
 		if (isPaused) {
 			LiveEvent connectionFailureEvent = new LiveEvent();
 			connectionFailureEvent.setEvent(LiveEvent.Event.CONNECTION_FAILURE);

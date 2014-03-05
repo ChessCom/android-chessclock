@@ -253,7 +253,6 @@ public class AppUtils {
 
 	/**
 	 * For mdpi normal screens we don't need a action bar only
-	 *
 	 */
 	public static boolean isHdpi800(Context context) {
 		DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();

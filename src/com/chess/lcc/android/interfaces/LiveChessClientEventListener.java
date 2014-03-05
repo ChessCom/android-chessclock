@@ -22,7 +22,6 @@ public interface LiveChessClientEventListener {
 	void onAdminAnnounce(String message);
 
 	/**
-	 *
 	 * @return {@code true} if LiveChessService already bounded
 	 */
 	boolean performServiceConnection();

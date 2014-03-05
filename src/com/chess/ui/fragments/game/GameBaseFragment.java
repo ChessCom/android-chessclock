@@ -234,7 +234,7 @@ public abstract class GameBaseFragment extends LiveBaseFragment implements GameF
 		boolean whiteToMove = getBoardFace().isWhiteToMove();
 		if (userColorWhite && whiteToMove) {
 			userAbleToMoveThatColorPiece = selectedPieceColor == ChessBoard.WHITE_SIDE;
-		} else if (!userColorWhite && !whiteToMove){
+		} else if (!userColorWhite && !whiteToMove) {
 			userAbleToMoveThatColorPiece = selectedPieceColor == ChessBoard.BLACK_SIDE;
 		}
 

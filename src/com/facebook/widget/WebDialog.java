@@ -203,7 +203,7 @@ public class WebDialog extends Dialog {
 		createCrossImage();
 
         /* Now we know 'x' drawable width and height,
-        * layout the webivew and add it the contentFrameLayout layout
+		* layout the webivew and add it the contentFrameLayout layout
         */
 		int crossWidth = crossImageView.getDrawable().getIntrinsicWidth();
 		setUpWebView(crossWidth / 2);

@@ -40,7 +40,6 @@ import com.chess.utilities.Ping;
 import com.flurry.android.FlurryAgent;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

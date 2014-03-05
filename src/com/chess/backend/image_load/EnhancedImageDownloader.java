@@ -247,7 +247,7 @@ public class EnhancedImageDownloader {
 //				Bitmap bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
 //				Log.d(LOG_TAG, "bmp = " + bmp);
 				return BitmapFactory.decodeFile(file.getAbsolutePath(), bitmapOptions);
-			}else {
+			} else {
 				// don't scale but use same inBitmap // should work better that way
 //				bitmapOptions.inSampleSize = 1;
 //				return BitmapFactory.decodeStream(new FileInputStream(file), null, bitmapOptions);

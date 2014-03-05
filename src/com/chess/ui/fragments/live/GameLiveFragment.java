@@ -774,8 +774,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 				showLoadingProgress(block);
 				if (boardView != null) { // TODO investigate logic, that leads to this.
-				boardView.lockBoard(block);
-			}
+					boardView.lockBoard(block);
+				}
 			}
 		});
 	}

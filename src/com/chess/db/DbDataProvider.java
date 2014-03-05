@@ -1,4 +1,3 @@
-
 package com.chess.db;
 
 import android.content.*;
@@ -114,9 +113,10 @@ public class DbDataProvider extends ContentProvider {
 				found = true;
 			} else if (uriMatcherIds.match(uri) == i) {
 				count = appDataBase.update(Tables.values()[i].name(), values, DbScheme._ID + EQUALS
-						+ uri.getPathSegments().get(1)
-						+ (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
-						selectionArgs);
+								+ uri.getPathSegments().get(1)
+								+ (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
+						selectionArgs
+				);
 				found = true;
 			}
 
@@ -188,7 +188,7 @@ public class DbDataProvider extends ContentProvider {
 					DbDataProviderException dbDataProviderException = new DbDataProviderException(
 							"Adding of row failed", e);
 					if (BuildConfig.DEBUG) {
-						throw new SQLException("Failed to insert row into " + uri  + ", values = " + valuesStr.toString());
+						throw new SQLException("Failed to insert row into " + uri + ", values = " + valuesStr.toString());
 					}
 					dbDataProviderException.logHandled();
 				}
@@ -224,8 +224,9 @@ public class DbDataProvider extends ContentProvider {
 			} else if (uriMatcherIds.match(uri) == i) {
 				String id = uri.getPathSegments().get(1);
 				count = appDataBase.delete(Tables.values()[i].name(), DbScheme._ID + EQUALS + id
-						+ (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
-						selectionArgs);
+								+ (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""),
+						selectionArgs
+				);
 				found = true;
 			}
 

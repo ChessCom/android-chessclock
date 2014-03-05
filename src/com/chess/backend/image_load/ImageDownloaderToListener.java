@@ -317,7 +317,7 @@ public class ImageDownloaderToListener {
 					bitmapOptions.inSampleSize = scaleFactor;
 					bitmapOptions.inPurgeable = true;
 
-					bitmap =  BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
+					bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
 					Log.d(TAG, " useScale, bmp = " + bitmap);
 				} else {
 //					if (widthsMap.get(originalUrl) != null && heightsMap.get(originalUrl) != null) {
@@ -340,8 +340,8 @@ public class ImageDownloaderToListener {
 //						bitmap =  BitmapFactory.decodeFile(imgFile.getAbsolutePath(), bitmapOptions);
 //						Log.d(TAG, " from widthsMap, bmp = " + bitmap);
 //					} else {
-						bitmap =  BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-						Log.d(TAG, " not useScale, bmp = " + bitmap);
+					bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+					Log.d(TAG, " not useScale, bmp = " + bitmap);
 //					}
 				}
 			} else { // if file not restored from SD cache
@@ -365,8 +365,8 @@ public class ImageDownloaderToListener {
 //					bitmap =  BitmapFactory.decodeStream(is, null, bitmapOptions);
 //					Log.d(TAG, "not from SD from widthsMap, bmp = " + bitmap);
 //				} else {
-					bitmap =  BitmapFactory.decodeStream(is);
-					Log.d(TAG, "not from SD not useScale, bmp = " + bitmap);
+				bitmap = BitmapFactory.decodeStream(is);
+				Log.d(TAG, "not from SD not useScale, bmp = " + bitmap);
 //				}
 			}
 		} catch (MalformedURLException e) {

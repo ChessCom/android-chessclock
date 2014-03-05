@@ -357,8 +357,8 @@ public class Ping {
 	}
 
 	public void runPingLiveTask() {
-			new PingLiveTask().execute();
-		}
+		new PingLiveTask().execute();
+	}
 
 	private class PingLiveTask extends AsyncTask<Void, Void, Void> {
 
@@ -370,7 +370,7 @@ public class Ping {
 	}
 
 	public void runTestRequestLiveServerTask() {
-			new TestRequestLiveServerTask().execute();
+		new TestRequestLiveServerTask().execute();
 	}
 
 	private class TestRequestLiveServerTask extends AsyncTask<Void, Void, Void> {

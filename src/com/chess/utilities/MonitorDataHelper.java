@@ -50,6 +50,7 @@ public class MonitorDataHelper { // TODO could be renamed to something better
 	/**
 	 * Can be used to initialize any monitoring/crash-report library
 	 * Must be called in onCreate method of base/main activity of the application
+	 *
 	 * @param context for init
 	 */
 	public static void initMonitorLib(Context context) {
@@ -70,6 +71,7 @@ public class MonitorDataHelper { // TODO could be renamed to something better
 
 	/**
 	 * Add user information for tracking/monitoring system
+	 *
 	 * @param context to get appData
 	 */
 	public static void initUser(Context context) {

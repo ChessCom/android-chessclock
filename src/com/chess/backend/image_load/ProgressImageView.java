@@ -105,7 +105,7 @@ public class ProgressImageView extends FrameLayout implements View.OnTouchListen
 			LayoutParams progressParams = new LayoutParams(size, size);
 			progressParams.gravity = Gravity.CENTER;
 			ColorDrawable colorDrawable = new ColorDrawable(0x80FFFFFF);
-			((ImageView)progress).setImageDrawable(colorDrawable);
+			((ImageView) progress).setImageDrawable(colorDrawable);
 
 			progress.setVisibility(GONE);
 

@@ -152,21 +152,21 @@ public abstract class CommonLogicActivity extends BaseFragmentPopupsActivity {
 		}
 
 //		if (!prevLang.equals(setLocale)) {  // the saved/default app locale can be incorrect
-			Locale locale;
-			if (setLocale.contains(REGION_MARK)) {
-				int regionIndex = setLocale.indexOf(REGION_MARK);
-				String name = setLocale.substring(0, regionIndex);
-				String region = setLocale.substring(regionIndex + 2);
-				locale = new Locale(name, region, region);
-			} else {
-				locale = new Locale(setLocale);
-			}
-			Locale.setDefault(locale);
-			Configuration config = new Configuration();
-			config.locale = locale;
-			getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+		Locale locale;
+		if (setLocale.contains(REGION_MARK)) {
+			int regionIndex = setLocale.indexOf(REGION_MARK);
+			String name = setLocale.substring(0, regionIndex);
+			String region = setLocale.substring(regionIndex + 2);
+			locale = new Locale(name, region, region);
+		} else {
+			locale = new Locale(setLocale);
+		}
+		Locale.setDefault(locale);
+		Configuration config = new Configuration();
+		config.locale = locale;
+		getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 
-			appData.setLanguageCode(setLocale);
+		appData.setLanguageCode(setLocale);
 //		}
 	}
 

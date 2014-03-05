@@ -98,7 +98,7 @@ public class DailyGameConfig {
 		}
 
 		public Builder setRating(int rating) {
-			this.rating = rating == 0? AppConstants.DEFAULT_PLAYER_RATING : rating;
+			this.rating = rating == 0 ? AppConstants.DEFAULT_PLAYER_RATING : rating;
 			return this;
 		}
 

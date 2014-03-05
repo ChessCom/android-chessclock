@@ -894,7 +894,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		} else if (tag.equals(ABORT_GAME_TAG)) {
 
 			// submit resign command
-			LoadItem loadItem1 =  LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_RESIGN, currentGame.getTimestamp());
+			LoadItem loadItem1 = LoadHelper.putGameAction(getUserToken(), gameId, RestHelper.V_RESIGN, currentGame.getTimestamp());
 
 			// and get rating change
 			LoadItem loadItem2 = LoadHelper.getGameById(getUserToken(), gameId);
