@@ -306,9 +306,9 @@ public class ImageCache {
 				try {
 					final DiskLruCache.Snapshot snapshot = mDiskLruCache.get(key);
 					if (snapshot != null) {
-						if (BuildConfig.DEBUG) {
-							Log.d(TAG, "Disk cache hit");
-						}
+//						if (BuildConfig.DEBUG) {
+//							Log.d(TAG, "Disk cache hit");
+//						}
 						inputStream = snapshot.getInputStream(DISK_CACHE_INDEX);
 						if (inputStream != null) {
 							FileDescriptor fd = ((FileInputStream) inputStream).getFD();

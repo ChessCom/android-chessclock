@@ -32,4 +32,8 @@ public class LccAdminEventListener implements AdminEventListener {
 	public void onServerMaintenanceAlertReceived(User sender, String codeMessage) {
 //		LogMe.dl(TAG, "onServerMaintenanceAlertReceived: sender=" + (sender != null ? sender.getUsername() : null) + ", codeMessage=" + codeMessage);
 	}
+
+	@Override
+	public void onHotConfigPropertySet(User user, String s, String s2) {
+	}
 }

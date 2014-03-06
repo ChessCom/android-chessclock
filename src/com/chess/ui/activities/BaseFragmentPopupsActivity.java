@@ -88,6 +88,7 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 
 		// monitoring lib init
 		MonitorDataHelper.initMonitorLib(context);
+                popupItem = new PopupItem();
 		popupProgressItem = new PopupItem();
 
 		popupManager = new ArrayList<PopupDialogFragment>();
