@@ -41,12 +41,15 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
 		android:layout_centerVertical="true"
 		style="@style/Button.Upgrade"
 		android:text="@string/upgrade"
 		android:layout_marginTop="10dp"
 		android:layout_marginBottom="10dp"
-		android:layout_marginEnd="10dp" />
+		android:layout_marginEnd="10dp"
+		android:layout_marginRight="10dp"
+		/>
 
 	<!--Divider-->
 	<View
