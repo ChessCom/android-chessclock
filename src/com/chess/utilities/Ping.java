@@ -168,18 +168,20 @@ public class Ping {
 			public void run() {
 
 				testRequestGoogleServer();
-				testRequestLiveServer();
-				testRequestLiveSecuredServer();
-				testRequestChessServer();
-				testRequestChessSecuredServer();
-				testRequestChess3Server();
 
+				testRequestLiveServer();
 				testRequestAkiba();
+				testRequestLiveIp();
+
+				testRequestLiveSecuredServer();
 				testRequestAkibaSecured();
 				testRequestHammer();
 				testRequestHammerSecured();
 
-				testRequestLiveIp();
+				testRequestChessServer();
+				testRequestChessSecuredServer();
+				testRequestChess3Server();
+
 				testRequestZerolag();
 
 			}

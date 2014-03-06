@@ -527,7 +527,7 @@ public class LccHelper {
 		LogMe.dl(TAG, "MOVE: making move: gameId=" + game.getId() + ", move=" + move + ", moveN=" + game.getMoveCount());
 
 		long threadId = Thread.currentThread().getId();
-		setLatestMoveInfo(new MoveInfo(game.getId(), move, game.getMoveCount(), threadId));
+		setLatestMoveInfo(new MoveInfo(game.getId(), move, getUsername(), game.getMoveCount(), threadId));
 
 		gameTaskRunner.runMakeMoveTask(game, move, debugInfo);
 	}
@@ -1015,13 +1015,15 @@ public class LccHelper {
 class MoveInfo {
 	private Long gameId;
 	private String move;
+	private String username;
 	private int moveNumber;
 	private long moveFirstThreadId = -1;
 	private long moveSecondThreadId = -1;
 
-	MoveInfo(Long gameId, String move, int moveNumber, long moveFirstThreadId) {
+	MoveInfo(Long gameId, String move, String username, int moveNumber, long moveFirstThreadId) {
 		this.gameId = gameId;
 		this.move = move;
+		this.username = username;
 		this.moveNumber = moveNumber;
 		this.moveFirstThreadId = moveFirstThreadId;
 	}
@@ -1056,6 +1058,6 @@ class MoveInfo {
 
 	@Override
 	public String toString() {
-		return "move: " + move + ", game: " + gameId + ", firstThreadId: " + moveFirstThreadId + ", secondThreadId: " + moveSecondThreadId;
+		return "move: " + move + ", game: " + gameId + ", user: " + username + ", firstThreadId: " + moveFirstThreadId + ", secondThreadId: " + moveSecondThreadId;
 	}
 }
