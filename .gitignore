@@ -4,3 +4,6 @@
 /!_app_screens_!
 /libraries/DroidFish/bin
 /libraries/CuckooChessEngine/bin
+/libraries/DroidFish/gen
+/libraries/DroidFish/DroidFish.iml
+/libraries/CuckooChessEngine/*.iml
