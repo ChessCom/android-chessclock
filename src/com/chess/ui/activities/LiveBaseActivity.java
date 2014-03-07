@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import com.chess.R;
@@ -185,7 +186,7 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				}
 
 				fragmentByTag = getLiveHomeFragment();
-				if (fragmentByTag != null && fragmentByTag.isVisible()) {
+				if (fragmentByTag != null && fragmentByTag.isVisible() && !isBackToLiveFragment()) {
 					liveHelper.logout();
 					getDataHolder().setLiveChessMode(false);
 					unBindAndStopLiveService();
@@ -692,5 +693,26 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				|| fragmentName.equals(liveFragment13)
 				|| fragmentName.equals(liveFragment14)
 				|| fragmentName.equals(liveFragment15);
+	}
+
+	public boolean isBackToLiveFragment() {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+
+		if (fragmentManager == null) {
+			return false;
+		}
+
+		int count = fragmentManager.getBackStackEntryCount();
+
+		boolean isBackToLiveFragment = false;
+		if (count > 1) {
+			String backFragmentName = fragmentManager.getBackStackEntryAt(count - 2).getName();
+			isBackToLiveFragment = isLiveFragment(backFragmentName);
+		}
+
+		if (count < 2 || !isBackToLiveFragment) {
+			return false;
+		}
+		return true;
 	}
 }
