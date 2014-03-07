@@ -503,7 +503,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 		if (!moveRecognized) {
 			setDescriptionText(getMentorPosition().getStandardWrongMoveCommentary());
-			goalCommentTxt.setVisibility(View.GONE);
+			setGoalCommentText(Symbol.EMPTY);
 
 			scrollToCurrentText();
 			showWrongState();
@@ -1038,7 +1038,11 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		invalidateGameScreen();
 		getControlsView().enableGameControls(true);
 
+		// update title
 		lessonTitleTxt.setText(mentorLesson.getName());
+
+		// clear goal message from previous lesson
+		setGoalCommentText(Symbol.EMPTY);
 
 		// add currentLearningPosition in case we load from DB
 		solvedPositionsList.add(currentLearningPosition);
@@ -1061,35 +1065,38 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 	}
 
 	private void setDescriptionText(String descriptionStr) {
-		Spanned description = Html.fromHtml(descriptionStr);
-		if (!TextUtils.isEmpty(description)) {
+		if (!TextUtils.isEmpty(descriptionStr)) {
+			Spanned description = Html.fromHtml(descriptionStr);
 			descriptionTxt.setText(description);
 			descriptionTxt.setVisibility(View.VISIBLE);
 			lessonDescriptionDivider.setVisibility(View.VISIBLE);
 		} else {
+			descriptionTxt.setText(Symbol.EMPTY);
 			descriptionTxt.setVisibility(View.GONE);
 			lessonDescriptionDivider.setVisibility(View.GONE);
 		}
 	}
 
 	private void setPositionDescriptionText(String descriptionStr) {
-		Spanned description = Html.fromHtml(descriptionStr);
-		if (!TextUtils.isEmpty(description)) {
+		if (!TextUtils.isEmpty(descriptionStr)) {
+			Spanned description = Html.fromHtml(descriptionStr);
 			positionDescriptionTxt.setText(description);
 			positionDescriptionTxt.setVisibility(View.VISIBLE);
 			lessonDescriptionDivider.setVisibility(View.VISIBLE);
 		} else {
+			positionDescriptionTxt.setText(Symbol.EMPTY);
 			positionDescriptionTxt.setVisibility(View.GONE);
 			lessonDescriptionDivider.setVisibility(View.GONE);
 		}
 	}
 
 	private void setGoalCommentText(String descriptionStr) {
-		Spanned description = Html.fromHtml(descriptionStr);
-		if (!TextUtils.isEmpty(description)) {
+		if (!TextUtils.isEmpty(descriptionStr)) {
+			Spanned description = Html.fromHtml(descriptionStr);
 			goalCommentTxt.setText(description);
 			goalCommentTxt.setVisibility(View.VISIBLE);
 		} else {
+			goalCommentTxt.setText(Symbol.EMPTY);
 			goalCommentTxt.setVisibility(View.GONE);
 		}
 	}
