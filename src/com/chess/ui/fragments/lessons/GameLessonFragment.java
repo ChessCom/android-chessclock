@@ -884,7 +884,9 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 
 	@Override
 	public void onDialogCanceled() {
-		optionsSelectFragment = null;
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment = null;
+		}
 	}
 
 	@Override

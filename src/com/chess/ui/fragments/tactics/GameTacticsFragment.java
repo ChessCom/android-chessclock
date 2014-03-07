@@ -743,7 +743,9 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void onDialogCanceled() {
-		optionsSelectFragment = null;
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment = null;
+		}
 	}
 
 	private void sendPGN() {

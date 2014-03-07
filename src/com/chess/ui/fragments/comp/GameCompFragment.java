@@ -726,7 +726,9 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 
 	@Override
 	public void onDialogCanceled() {
-		optionsSelectFragment = null;
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment = null;
+		}
 	}
 
 	protected ControlsCompView getControlsView() {

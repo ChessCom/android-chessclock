@@ -35,7 +35,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 	private static final int BACKOFF_INCREMENT = 500;
 	private static final int MAX_BACKOFF_INTERVAL = 2000;
-	private static final long MAX_NETWORK_DELAY = 10 * 000;
+	private static final long MAX_NETWORK_DELAY = 10000;
 	private static final long WS_CONNECT_TIMEOUT = 10000;
 	private static final int WS_MAX_MESSAGE_SIZE = 1024 * 1024;
 

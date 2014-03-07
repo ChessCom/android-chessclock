@@ -214,7 +214,9 @@ public class DailyGameOptionsFragment extends CommonLogicFragment implements Ite
 
 	@Override
 	public void onDialogCanceled() {
-		optionsSelectFragment = null;
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment = null;
+		}
 	}
 
 	private class CreateChallengeUpdateListener extends ChessLoadUpdateListener<DailySeekItem> {

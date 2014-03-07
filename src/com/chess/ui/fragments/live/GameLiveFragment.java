@@ -1054,7 +1054,9 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 
 	@Override
 	public void onDialogCanceled() {
-		optionsSelectFragment = null;
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment = null;
+		}
 	}
 
 	private boolean isUserMove() {

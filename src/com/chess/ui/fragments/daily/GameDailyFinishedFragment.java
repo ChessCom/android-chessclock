@@ -197,8 +197,10 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 
 	@Override
 	public void onDialogCanceled() {
-		optionsSelectFragment.dismiss();
-		optionsSelectFragment = null;
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment.dismiss();
+			optionsSelectFragment = null;
+		}
 	}
 
 	private void loadGameAndUpdate() {

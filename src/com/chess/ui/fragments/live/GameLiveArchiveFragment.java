@@ -145,7 +145,9 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 
 	@Override
 	public void onDialogCanceled() {
-		optionsSelectFragment = null;
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment = null;
+		}
 	}
 
 	private void loadGameAndUpdate() {

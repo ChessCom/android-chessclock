@@ -224,7 +224,9 @@ public class GameLiveObserveFragment extends GameLiveFragment {
 
 	@Override
 	public void onDialogCanceled() {
-		optionsSelectFragment = null;
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment = null;
+		}
 	}
 
 	@Override
