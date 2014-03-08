@@ -8,7 +8,6 @@ import com.chess.ui.activities.CoreActivityActionBar;
 import com.chess.ui.engine.SoundPlayer;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
-import com.google.analytics.tracking.android.EasyTracker;
 import com.slidingmenu.lib.SlidingMenu;
 import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
 
@@ -81,8 +80,6 @@ public interface ActiveFragmentInterface {
 	PullToRefreshAttacher getPullToRefreshAttacher();
 
 	void updateLocale();
-
-	EasyTracker getGATracker();
 
 	SoundPlayer getSoundPlayer();
 }

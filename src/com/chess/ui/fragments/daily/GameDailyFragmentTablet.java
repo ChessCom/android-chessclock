@@ -63,13 +63,6 @@ public class GameDailyFragmentTablet extends GameDailyFragment implements RadioG
 	}
 
 	@Override
-	public void switch2Analysis() {
-		showSubmitButtonsLay(false);
-
-		getActivityFace().openFragment(GameDailyAnalysisFragment.createInstance(gameId, username, false));
-	}
-
-	@Override
 	public void switch2Chat() {
 		if (currentGame == null) {
 			return;

@@ -42,7 +42,7 @@ import com.chess.widgets.ProfileImageView;
  * Date: 22.02.13
  * Time: 7:26
  */
-public class GameDailyAnalysisFragment extends GameBaseFragment implements GameAnalysisFace {
+public class GameDailyAnalysisFragment extends GameBaseFragment implements GameAnalysisFace { // TODO remove
 
 	private static final String ERROR_TAG = "send request failed popup";
 	protected static final String IS_FINISHED = "is_finished";
@@ -121,19 +121,9 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	protected void updateControls() {
-		getControlsView().enableGameControls(true);
+		controlsView.enableGameControls(true);
 		boardView.lockBoard(false);
 		controlsView.showVsComp(isFinished);
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-
-		DataHolder.getInstance().setInDailyGame(gameId, false);
-		if (HONEYCOMB_PLUS_API) {
-			dismissEndGameDialog();
-		}
 	}
 
 	@Override
@@ -211,7 +201,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 
 		DataHolder.getInstance().setInDailyGame(currentGame.getGameId(), true);
 
-		getControlsView().enableGameControls(true);
+		controlsView.enableGameControls(true);
 		boardView.lockBoard(false);
 
 		getBoardFace().setFinished(false);
@@ -462,14 +452,6 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		}
 	}
 
-	protected ControlsAnalysisView getControlsView() {
-		return controlsView;
-	}
-
-	protected void setControlsView(View controlsView) {
-		this.controlsView = (ControlsAnalysisView) controlsView;
-	}
-
 	public void setNotationsFace(View notationsView) {
 		this.notationsFace = (NotationFace) notationsView;
 	}
@@ -486,7 +468,7 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 	}
 
 	protected void widgetsInit(View view) {
-		setControlsView(view.findViewById(R.id.controlsView));
+		controlsView = (ControlsAnalysisView) view.findViewById(R.id.controlsView);
 		if (inPortrait()) {
 			setNotationsFace(view.findViewById(R.id.notationsView));
 		} else {
@@ -509,13 +491,14 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 			labelsConfig.bottomAvatar = userAvatarDrawable;
 		}
 
-		getControlsView().enableGameControls(false);
+		controlsView.enableGameControls(false);
+		controlsView.showDailyControls(true);
 
 		boardView = (ChessBoardAnalysisView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(getControlsView());
+		boardView.setControlsAnalysisView(controlsView);
 		boardView.setNotationsFace(getNotationsFace());
 
 		setBoardView(boardView);
@@ -523,14 +506,14 @@ public class GameDailyAnalysisFragment extends GameBaseFragment implements GameA
 		boardView.setGameActivityFace(this);
 		boardView.lockBoard(true);
 
-		getControlsView().enableGameControls(false);
+		controlsView.enableGameControls(false);
 		handler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				if (getActivity() == null) {
 					return;
 				}
-				getControlsView().enableGameControls(true);
+				controlsView.enableGameControls(true);
 			}
 		}, ControlsBaseView.BUTTONS_RE_ENABLE_DELAY);
 	}

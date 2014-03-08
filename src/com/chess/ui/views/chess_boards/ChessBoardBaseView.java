@@ -1062,10 +1062,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 			}
 		}
 
-//		logTest("__________onActionDown_____________");
-//		logTest("touchedSquare = " + touchedSquare + " userCanMoveTouchedPiece = " + userCanMoveTouchedPiece
-//				+ " fromSquare = " + fromSquare + " firstClick = " + firstClick);
-
 		if (firstClick) {
 			fromSquare = touchedSquare;
 
@@ -1083,9 +1079,6 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				invalidateMe();
 			}
 		}
-
-//		logTest("pieceSelected = " + pieceSelected + " firstClick = " + firstClick);
-//		logTest("``````````onActionDown```````````````````");
 
 		return true;
 	}

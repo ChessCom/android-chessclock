@@ -675,7 +675,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 		String liveFragment11 = SettingsGeneralFragmentTablet.class.getSimpleName();
 		String liveFragment12 = LiveGamesArchiveFragment.class.getSimpleName();
 		String liveFragment13 = GameLiveArchiveFragment.class.getSimpleName();
-		String liveFragment14 = GameLiveArchiveAnalysisFragment.class.getSimpleName();
 		String liveFragment15 = StatsGameDetailsFragment.class.getSimpleName();
 
 		return fragmentName.equals(liveFragment1)
@@ -691,7 +690,6 @@ public abstract class LiveBaseActivity extends CoreActivityActionBar implements 
 				|| fragmentName.equals(liveFragment11)
 				|| fragmentName.equals(liveFragment12)
 				|| fragmentName.equals(liveFragment13)
-				|| fragmentName.equals(liveFragment14)
 				|| fragmentName.equals(liveFragment15);
 	}
 

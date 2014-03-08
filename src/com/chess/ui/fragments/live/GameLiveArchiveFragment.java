@@ -16,12 +16,15 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.DataHolder;
+import com.chess.model.GameAnalysisItem;
 import com.chess.model.PgnItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardDaily;
+import com.chess.ui.engine.FenHelper;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.daily.DailyChatFragment;
+import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.PopupOptionsMenuFragment;
 import com.chess.ui.fragments.settings.SettingsLiveChessFragment;
@@ -395,7 +398,14 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
-		getActivityFace().openFragment(GameLiveArchiveAnalysisFragment.createInstance(gameId));
+		GameAnalysisItem analysisItem = new GameAnalysisItem();
+		analysisItem.setGameType(currentGame.getGameType());
+		analysisItem.setFen(FenHelper.DEFAULT_FEN);
+		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
+		analysisItem.copyLabelConfig(labelsConfig);
+		analysisItem.setFinished(true);
+
+		getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 		gameAnalysisFace = gameActivityFace;
 	}
 
-	public void setControlsView(ControlsAnalysisView controlsView) {
+	public void setControlsAnalysisView(ControlsAnalysisView controlsView) {
 		super.setControlsView(controlsView);
 		controlsView.setBoardViewFace(this);
 	}
@@ -52,7 +52,6 @@ public class ChessBoardAnalysisView extends ChessBoardBaseView implements BoardV
 
 		isGameOver();
 	}
-
 
 	@Override
 	protected boolean isGameOver() {

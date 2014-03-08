@@ -3,6 +3,7 @@ package com.chess.ui.fragments.game;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,15 +46,19 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 	private static final String ERROR_TAG = "send request failed popup";
 
-	private static final String GAME_ITEM = "game_item";
+	protected static final String GAME_ITEM = "game_item";
 
 	private ChessBoardAnalysisView boardView;
-	private GameAnalysisItem analysisItem;
+	protected GameAnalysisItem analysisItem;
 	protected boolean userPlayWhite = true;
-	private ControlsAnalysisView controlsView;
+	protected ControlsAnalysisView controlsView;
 	private String[] countryNames;
 	private int[] countryCodes;
 	private NotationFace notationsFace;
+
+	public GameAnalyzeFragment() {
+
+	}
 
 	public static GameAnalyzeFragment createInstance(GameAnalysisItem analysisItem) {
 		GameAnalyzeFragment fragment = new GameAnalyzeFragment();
@@ -152,6 +157,13 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 			compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
 			getAppData().setCompGameMode(compGameMode);
 		}
+
+		if (isUserColorWhite()) {
+			compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_WHITE;
+		} else {
+			compGameMode = AppConstants.GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
+		}
+
 		CompGameConfig.Builder builder = new CompGameConfig.Builder()
 				.setMode(compGameMode)
 				.setStrength(getAppData().getCompLevel())
@@ -190,10 +202,12 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 		boardFace.setReside(!userPlayWhite);
 
-		boolean allMovesWereMade = boardFace.checkAndParseMovesList(analysisItem.getMovesList());
-		if (!allMovesWereMade) { // in case when we pass finished game from Comp we can't do anything here
+		String movesList = analysisItem.getMovesList();
+		boolean allMovesWereMade = boardFace.checkAndParseMovesList(movesList);
+		// if we open analysis from tactics we might have no movesList
+		if (!allMovesWereMade && !TextUtils.isEmpty(movesList)) { // in case when we pass finished game from Comp we can't do anything here
 			boardFace.setupBoard(FenHelper.DEFAULT_FEN);
-			boardFace.checkAndParseMovesList(analysisItem.getMovesList());
+			boardFace.checkAndParseMovesList(movesList);
 		}
 
 		boardView.resetValidMoves();
@@ -203,7 +217,6 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 		playLastMoveAnimation();
 
-//		boardFace.setJustInitialized(false);
 		boardFace.setAnalysis(true);
 
 		{// set avatars
@@ -228,20 +241,23 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 			}
 
 			// todo: why check !contains(StaticData.GIF)
-			if (labelsConfig.topPlayerAvatar != null && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
+			if (!TextUtils.isEmpty(labelsConfig.topPlayerAvatar) && !labelsConfig.topPlayerAvatar.contains(StaticData.GIF)) {
 				imageDownloader.download(labelsConfig.topPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.TOP_AVATAR), AVATAR_SIZE);
 			}
 
 			// todo: why check !contains(StaticData.GIF)
-			if (labelsConfig.bottomPlayerAvatar != null && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
+			if (!TextUtils.isEmpty(labelsConfig.bottomPlayerAvatar) && !labelsConfig.bottomPlayerAvatar.contains(StaticData.GIF)) {
 				imageDownloader.download(labelsConfig.bottomPlayerAvatar, new ImageUpdateListener(ImageUpdateListener.BOTTOM_AVATAR), AVATAR_SIZE);
 			}
 
-			{ // get opponent info
+			// get opponent info
+			if (!TextUtils.isEmpty(labelsConfig.topPlayerName)) {
 				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.topPlayerName);
 				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.TOP_PLAYER)).executeTask(loadItem);
 			}
-			{ // get users info
+
+			// get users info
+			if (!TextUtils.isEmpty(labelsConfig.bottomPlayerName)) {
 				LoadItem loadItem = LoadHelper.getUserInfo(getUserToken(), labelsConfig.bottomPlayerName);
 				new RequestJsonTask<UserItem>(new GetUserUpdateListener(GetUserUpdateListener.BOTTOM_PLAYER)).executeTask(loadItem);
 			}
@@ -396,7 +412,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 
 	}
 
-	private void widgetsInit(View view) {
+	protected void widgetsInit(View view) {
 		controlsView = (ControlsAnalysisView) view.findViewById(R.id.controlsView);
 		if (inPortrait()) {
 			setNotationsFace(view.findViewById(R.id.notationsView));
@@ -418,12 +434,13 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		}
 
 		controlsView.enableGameControls(false);
+		controlsView.showVsComp(analysisItem.isFinished());
 
 		boardView = (ChessBoardAnalysisView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);
 		boardView.setTopPanelView(topPanelView);
 		boardView.setBottomPanelView(bottomPanelView);
-		boardView.setControlsView(controlsView);
+		boardView.setControlsAnalysisView(controlsView);
 		boardView.setNotationsFace(getNotationsFace());
 
 		setBoardView(boardView);

@@ -134,6 +134,7 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 
 	private void adjustBoardForGame() {
 		getBoardFace().setReside(!explorerItem.isUserPlayWhite());
+		getBoardFace().setAnalysis(true);
 
 		if (explorerItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
 			getBoardFace().setChess960(true);
@@ -151,14 +152,18 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+		String moveStr = DbDataManager.getString(cursor, DbScheme.V_MOVE);
+
+		updatePercentageForMove(moveStr, true);
+	}
+
+	private void updatePercentageForMove(String moveStr, boolean animate) {
 		if (isNeedToUpgrade() && positionsLoaded == 3) {// 3 position for basic members
 			showLimitReachedPopup();
 			return;
 		}
 		positionsLoaded++;
-
-		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String moveStr = DbDataManager.getString(cursor, DbScheme.V_MOVE);
 
 		final BoardFace boardFace = getBoardFace();
 		{
@@ -169,11 +174,14 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 			}
 			boardFace.setMovesCount(boardFace.getMovesCount());
 
-			// play move animation
-			boardView.setMoveAnimator(move, true);
+			if (animate) {
+				// play move animation
+				boardView.setMoveAnimator(move, true);
+			}
 			boardView.resetValidMoves();
-			// make actual move
-			boardFace.makeMove(move, true);
+
+			// make actual move, use animate flag to play sounds
+			boardFace.makeMove(move, animate);
 			invalidateGameScreen();
 		}
 
@@ -406,7 +414,11 @@ public class GameExplorerFragment extends GameBaseFragment implements GameFace, 
 
 	@Override
 	public void updateAfterMove() {
-
+		String lastMove = getBoardFace().getLastMoveSAN();
+		// rewind back to make possible to convert move
+		getBoardFace().takeBack();
+		// get calculations from server
+		updatePercentageForMove(lastMove, false);
 	}
 
 	@Override

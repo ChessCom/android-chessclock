@@ -24,7 +24,6 @@ import com.chess.ui.interfaces.PopupDialogFace;
 import com.chess.ui.interfaces.PopupShowFace;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MonitorDataHelper;
-import com.google.analytics.tracking.android.EasyTracker;
 import com.slidingmenu.lib.app.BaseActivity;
 
 import java.util.ArrayList;
@@ -111,18 +110,6 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 	protected void onPause() {
 		super.onPause();
 		isPaused = true;
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this);
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		EasyTracker.getInstance(this).activityStop(this);
 	}
 
 	@Override
@@ -411,10 +398,6 @@ public abstract class BaseFragmentPopupsActivity extends BaseActivity implements
 
 	protected Context getContext() {
 		return context;
-	}
-
-	protected EasyTracker provideGATracker() {
-		return EasyTracker.getInstance(this);
 	}
 
 	@Override

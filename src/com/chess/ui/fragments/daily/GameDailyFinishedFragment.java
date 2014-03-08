@@ -24,11 +24,13 @@ import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.LoadDataFromDbTask;
 import com.chess.model.DataHolder;
+import com.chess.model.GameAnalysisItem;
 import com.chess.model.GameDailyItem;
 import com.chess.model.PgnItem;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardDaily;
+import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -492,7 +494,14 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 	public void switch2Analysis() {
 		showSubmitButtonsLay(false);
 
-		getActivityFace().openFragment(GameDailyFinishedAnalysisFragment.createInstance(gameId, username, true));
+		GameAnalysisItem analysisItem = new GameAnalysisItem();
+		analysisItem.setGameType(currentGame.getGameType());
+		analysisItem.setFen(FenHelper.DEFAULT_FEN);
+		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
+		analysisItem.copyLabelConfig(labelsConfig);
+		analysisItem.setFinished(true);
+
+		getActivityFace().openFragment(GameAnalyzeDailyFragment.createInstance(analysisItem, gameId));
 	}
 
 	@Override

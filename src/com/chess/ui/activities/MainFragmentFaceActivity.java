@@ -59,7 +59,6 @@ import com.chess.ui.fragments.welcome.WelcomeTourFragment;
 import com.chess.ui.interfaces.ActiveFragmentInterface;
 import com.chess.utilities.AppUtils;
 import com.chess.utilities.MonitorDataHelper;
-import com.google.analytics.tracking.android.EasyTracker;
 import com.slidingmenu.lib.SlidingMenu;
 import uk.co.senab.actionbarpulltorefresh.PullToRefreshAttacher;
 import uk.co.senab.actionbarpulltorefresh.extras.AbcPullToRefreshAttacher;
@@ -1135,11 +1134,6 @@ public class MainFragmentFaceActivity extends LiveBaseActivity implements Active
 			appData.setThemePiecesName(getString(R.string.pieces_club));
 		}
 		return isFirstInstall;
-	}
-
-	@Override
-	public EasyTracker getGATracker() {
-		return provideGATracker();
 	}
 
 	@Override

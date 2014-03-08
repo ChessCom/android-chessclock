@@ -31,11 +31,8 @@ import com.chess.utilities.FontsHelper;
 import com.chess.widgets.RoboButton;
 import com.chess.widgets.RoboTextView;
 import com.flurry.android.FlurryAgent;
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.MapBuilder;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -649,11 +646,11 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 	}
 
 	private void trackPurchaseToGA(Purchase purchase) {
-		EasyTracker easyTracker = getActivityFace().getGATracker();
+//		EasyTracker easyTracker = getActivityFace().getGATracker();
 
-		if (easyTracker == null) {
-			return;
-		}
+//		if (easyTracker == null) {
+//			return;
+//		}
 		String sku = purchase.getSku();
 
 
@@ -711,29 +708,29 @@ public class UpgradeDetailsFragment extends CommonLogicFragment implements Radio
 		double shipping = 0.0d;
 		String currencyCode = USD;
 
-		Map<String, String> gaTransaction = MapBuilder
-				.createTransaction(
-						transactionId,  // (String) Transaction ID
-						affiliation,    // (String) Affiliation
-						revenue,        // (Double) Order revenue
-						tax,            // (Double) Tax
-						shipping,       // (Double) Shipping
-						currencyCode)   // (String) Currency code
-				.build();
-		easyTracker.send(gaTransaction);
-
-		Map<String, String> gaItem = MapBuilder
-				.createItem(
-						transactionId,   // (String) Transaction ID
-						productName,     // (String) Product name
-						sku,             // (String) Product SKU
-						productCategory, // (String) Product category
-						revenue,         // (Double) Product price
-						1L,              // (Long) Product quantity
-						currencyCode)    // (String) Currency code
-				.build();
-
-		easyTracker.send(gaItem);
+//		Map<String, String> gaTransaction = MapBuilder
+//				.createTransaction(
+//						transactionId,  // (String) Transaction ID
+//						affiliation,    // (String) Affiliation
+//						revenue,        // (Double) Order revenue
+//						tax,            // (Double) Tax
+//						shipping,       // (Double) Shipping
+//						currencyCode)   // (String) Currency code
+//				.build();
+//		easyTracker.send(gaTransaction);
+//
+//		Map<String, String> gaItem = MapBuilder
+//				.createItem(
+//						transactionId,   // (String) Transaction ID
+//						productName,     // (String) Product name
+//						sku,             // (String) Product SKU
+//						productCategory, // (String) Product category
+//						revenue,         // (Double) Product price
+//						1L,              // (Long) Product quantity
+//						currencyCode)    // (String) Currency code
+//				.build();
+//
+//		easyTracker.send(gaItem);
 	}
 
 	private class GetPayloadListener extends ChessUpdateListener<PayloadItem> {

@@ -26,6 +26,7 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveTacticsBatchTask;
+import com.chess.model.GameAnalysisItem;
 import com.chess.model.PgnItem;
 import com.chess.model.PopupItem;
 import com.chess.model.TacticsDataHolder;
@@ -39,6 +40,7 @@ import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.Move;
 import com.chess.ui.engine.configs.CompGameConfig;
 import com.chess.ui.fragments.comp.GameCompFragment;
+import com.chess.ui.fragments.game.GameAnalyzeFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
 import com.chess.ui.fragments.popup_fragments.BasePopupDialogFragment;
 import com.chess.ui.fragments.popup_fragments.PopupCustomViewFragment;
@@ -48,7 +50,6 @@ import com.chess.ui.fragments.stats.StatsGameTacticsFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragment;
 import com.chess.ui.fragments.upgrade.UpgradeFragmentTablet;
 import com.chess.ui.interfaces.PopupListSelectionFace;
-import com.chess.ui.interfaces.boards.BoardFace;
 import com.chess.ui.interfaces.boards.TacticBoardFace;
 import com.chess.ui.interfaces.game_ui.GameTacticsFace;
 import com.chess.ui.views.PanelInfoGameView;
@@ -113,7 +114,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	private TacticTrainerItem.Data trainerData;
 	private PanelInfoTacticsView bottomPanelView;
 	private ControlsTacticsView controlsView;
-	private boolean isAnalysis;
 	private boolean serverError;
 	private boolean userSawOfflinePopup;
 	private SparseArray<String> optionsArray;
@@ -527,8 +527,6 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 	}
 
 	private void getNextTactic() {
-		isAnalysis = false;
-
 		handler.removeCallbacks(showTacticMoveTask);
 
 		if (currentGameExist()) {
@@ -979,27 +977,13 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void switch2Analysis() {
-		isAnalysis = !isAnalysis;
-		if (!isAnalysis) {
-			restoreGame();
+		GameAnalysisItem analysisItem = new GameAnalysisItem();
+		analysisItem.setGameType(RestHelper.V_GAME_CHESS);
+		analysisItem.setFen(trainerData.getInitialFen());
+		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
+		analysisItem.copyLabelConfig(labelsConfig);
 
-			if (trainerData.isRetry()) {
-				getControlsView().showPractice();
-			} else if (viewOnly) {
-				getControlsView().showCorrect();
-			} else {
-				getControlsView().showDefault();
-			}
-		} else {
-			getControlsView().showAnalysis();
-		}
-		bottomPanelView.showPractice(isAnalysis);
-		getBoardFace().setAnalysis(isAnalysis);
-		bottomPanelView.showClock(!isAnalysis);
-
-		moveResultTxt.setVisibility(isAnalysis ? View.VISIBLE : View.INVISIBLE);
-		moveResultTxt.setText(R.string.analysis);
-		setIconToResultView(R.string.ic_board);
+		getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
 	}
 
 	@Override
@@ -1101,24 +1085,16 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 
 	@Override
 	public void restart() {
-		if (isAnalysis) {
-			BoardFace boardFace = getBoardFace();
-			while (boardFace.takeBack()) {
-				// loop while we can move back
-			}
-			boardView.invalidateMe();
-		} else {
-			trainerData.setRetry(true);
-			adjustBoardForGame();
-			getControlsView().showPractice();
+		trainerData.setRetry(true);
+		adjustBoardForGame();
+		getControlsView().showPractice();
 
-			// show title at the top
-			moveResultTxt.setVisibility(View.VISIBLE);
-			moveResultTxt.setText(R.string.practice);
-			setIconToResultView(R.string.ic_board);
+		// show title at the top
+		moveResultTxt.setVisibility(View.VISIBLE);
+		moveResultTxt.setText(R.string.practice);
+		setIconToResultView(R.string.ic_board);
 
-			handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
-		}
+		handler.postDelayed(hideMoveResultTask, MOVE_RESULT_HIDE_DELAY);
 	}
 
 	private void adjustBoardForGame() {
@@ -1148,7 +1124,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		trainerData.getTacticsProblem().setMoveList(cleanMoveString);
 		boardFace.setTacticMoves(cleanMoveString);
 
-		if ((trainerData.isAnswerWasShowed() || trainerData.isCompleted()) && !isAnalysis) {
+		if ((trainerData.isAnswerWasShowed() || trainerData.isCompleted())) {
 			bottomPanelView.setPlayerTimeLeft(trainerData.getSecondsSpentStr());
 
 			String[] moves = boardFace.getTacticMoves();
@@ -1193,14 +1169,10 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		bottomPanelView.showDefault(); // TODO remove if unused
 		bottomPanelView.setSide(labelsConfig.userSide);
 
-		if (isAnalysis) {
-			getControlsView().showAnalysis();
-		} else {
-			moveResultTxt.setVisibility(View.INVISIBLE);
-		}
-		bottomPanelView.showPractice(isAnalysis);
-		getBoardFace().setAnalysis(isAnalysis);
-		bottomPanelView.showClock(!isAnalysis);
+		moveResultTxt.setVisibility(View.INVISIBLE);
+		bottomPanelView.showPractice(false);
+		getBoardFace().setAnalysis(false);
+		bottomPanelView.showClock(true);
 
 		if (!getAppData().getShowTimerInTactics()) {
 			bottomPanelView.showClock(false);

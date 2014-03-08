@@ -4,7 +4,8 @@ public class AppConstants {
 	public static final String BUGSENSE_API_KEY = "189b9851";
 	public static final String YOUTUBE_DEVELOPER_KEY = "AIzaSyDunSUhieh0QurCov5Pl0nwJUpURTYiEsw";
 	public static final String NEW_RELIC_API_KEY = "AA000ae660229db027f576edc7027035f9cb2eb90a"; // prod
-	public static final String CRITTERCISM_APP_ID = "5316b3f47c37641afa000001";
+//	public static final String CRITTERCISM_APP_ID = "5316b3f47c37641afa000001"; // roger's
+	public static final String CRITTERCISM_APP_ID = "531a55542e2e1f22fd000003"; // prod
 
 	public static final int DEFAULT_COMP_LEVEL = 2;
 	public static final int DEFAULT_PLAYER_RATING = 1200;
