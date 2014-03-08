@@ -206,7 +206,19 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		boolean allMovesWereMade = boardFace.checkAndParseMovesList(movesList);
 		// if we open analysis from tactics we might have no movesList
 		if (!allMovesWereMade && !TextUtils.isEmpty(movesList)) { // in case when we pass finished game from Comp we can't do anything here
+			// do full reset of board
+			resetBoardInstance();
+			boardFace = getBoardFace();
+			boardFace.setFinished(false);
+
+			if (analysisItem.getGameType() == RestHelper.V_GAME_CHESS_960) {
+				boardFace.setChess960(true);
+			} else {
+				boardFace.setChess960(false);
+			}
+
 			boardFace.setupBoard(FenHelper.DEFAULT_FEN);
+			boardFace.setReside(!userPlayWhite);
 			boardFace.checkAndParseMovesList(movesList);
 		}
 
