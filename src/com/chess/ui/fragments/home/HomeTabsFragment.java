@@ -26,6 +26,7 @@ import com.chess.ui.fragments.daily.DailyGamesFragment;
 import com.chess.ui.fragments.daily.DailyGamesFragmentTablet;
 import com.chess.ui.fragments.daily.DailyGamesRightFragment;
 import com.chess.ui.interfaces.FragmentParentFace;
+import com.chess.utilities.AppUtils;
 
 import java.util.List;
 
@@ -71,6 +72,8 @@ public class HomeTabsFragment extends CommonLogicFragment implements RadioGroup.
 			}
 		}
 
+		// update play sounds flag
+		getActivityFace().getSoundPlayer().setPlaySounds(AppUtils.getSoundsPlayFlag(getActivity()));
 	}
 
 	@Override
