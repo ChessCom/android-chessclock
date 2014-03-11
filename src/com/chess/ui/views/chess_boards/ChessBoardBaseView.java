@@ -1159,8 +1159,11 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 
 			// if promote - show popup and return
 			if (found && boardFace.isPromote(fromSquare, toSquare)) {
-				gameFace.showChoosePieceDialog(file, rank);
-				return true;
+				if (boardFace.makeMove(move)) {
+					boardFace.takeBack();
+					gameFace.showChoosePieceDialog(file, rank);
+					return true;
+				}
 			}
 
 			boolean moveMade = false;
