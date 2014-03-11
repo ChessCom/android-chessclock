@@ -419,7 +419,7 @@ public class LiveConnectionHelper {
 		protected Void doInBackground(Void... voids) {
 			synchronized (CLIENT_SYNC_LOCK) {
 				if (lccClient != null) {
-					LogMe.dl(TAG, "LOGOUT: lccClient=" + getClientId());
+					LogMe.debugAndMail(TAG, "LOGOUT: lccClient=" + getClientId(), context);
 					lccClient.disconnect(RESET_LCC_LISTENERS);
 					liveService.stop();
 					resetClient();
@@ -439,7 +439,7 @@ public class LiveConnectionHelper {
 		protected Void doInBackground(Void... voids) {
 			synchronized (CLIENT_SYNC_LOCK) {
 				if (lccClient != null) {
-					LogMe.dl(TAG, "LEAVE: lccClient=" + getClientId());
+					LogMe.debugAndMail(TAG, "LEAVE: lccClient=" + getClientId(), context);
 					lccClient.leave(RESET_LCC_LISTENERS);
 					resetClient();
 				}
@@ -1004,6 +1004,8 @@ public class LiveConnectionHelper {
 			if (blockedThreads != null && latestMoveInfo != null) {
 				for (Thread thread : blockedThreads) {
 					if (thread.getId() == latestMoveInfo.getMoveFirstThreadId() || thread.getId() == latestMoveInfo.getMoveSecondThreadId()) {
+
+						LogMe.forceMail(TAG, "Move: " + latestMoveInfo + ", MoveThread: " + info, context);
 
 						// let's divide thread info because of size restrictions of logged events
 						int position = info.indexOf("at:");
