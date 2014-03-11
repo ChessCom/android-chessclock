@@ -28,6 +28,8 @@ public class ChessClock {
 	private boolean tenSecondsPlayed;
 	private Game game;
 	private String playerName;
+	private String opponentName;
+
 	private boolean isRunning;
 	private int previousTime = -999;
 	private String previousTimeString;
@@ -38,6 +40,7 @@ public class ChessClock {
 		this.isWhite = isWhite;
 		game = lccHelper.getCurrentGame();
 		playerName = isWhite ? game.getWhitePlayer().getUsername() : game.getBlackPlayer().getUsername();
+		opponentName = isWhite ? game.getBlackPlayer().getUsername() : game.getWhitePlayer().getUsername();
 
 		setRunning(isRunning);
 	}
@@ -174,9 +177,7 @@ public class ChessClock {
 					}
 				}
 
-				String opponentName = lccHelper.getOpponentName();
-
-				if (eventListener != null && opponentName != null) {
+				if (eventListener != null) {
 					Long opponentTime = game.getActualClockForPlayerMs(opponentName);
 
 					if (time <= DISABLE_ANIMATION_TIME || opponentTime <= DISABLE_ANIMATION_TIME) {
