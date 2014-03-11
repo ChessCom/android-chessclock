@@ -7,4 +7,4 @@
 /libraries/DroidFish/gen
 /libraries/DroidFish/DroidFish.iml
 /libraries/CuckooChessEngine/CuckooChessEngine.iml
-
+*.iml
