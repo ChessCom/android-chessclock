@@ -78,6 +78,7 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 	private boolean noCategoriesFragmentsAdded;
 	private CustomSectionedAdapter sectionedAdapter;
 	private ListView listView;
+	private View headerView;
 	private ProgressImageView photoImg;
 	private TextView usernameTxt;
 	private TextView locationTxt;
@@ -333,6 +334,14 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		}
 	}
 
+	private class ProfileHeaderClickListener implements View.OnClickListener {
+
+		@Override
+		public void onClick(View view) {
+			changeInternalFragment(FriendsFragmentTablet.createInstance(ProfileBaseFragmentTablet.this, username));
+		}
+	}
+
 	public static class OpponentsAdapter extends ItemsAdapter<SelectionItem> {
 
 		private final HashMap<String, SmartImageFetcher.Data> imageDataMap;
@@ -523,7 +532,7 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 
 	private void widgetsInit(View view) {
 		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		View headerView = inflater.inflate(R.layout.profiles_header_view, null, false);
+		headerView = inflater.inflate(R.layout.profiles_header_view, null, false);
 
 		{// Header init
 			photoImg = (ProgressImageView) headerView.findViewById(R.id.photoImg);
@@ -531,6 +540,7 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 			locationTxt = (TextView) headerView.findViewById(R.id.locationTxt);
 			countryImg = (ImageView) headerView.findViewById(R.id.countryImg);
 			premiumIconImg = (ImageView) headerView.findViewById(R.id.premiumIconImg);
+			headerView.setOnClickListener(new ProfileHeaderClickListener());
 		}
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.addHeaderView(headerView);
