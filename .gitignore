@@ -6,5 +6,5 @@
 /libraries/CuckooChessEngine/bin
 /libraries/DroidFish/gen
 /libraries/DroidFish/DroidFish.iml
-/libraries/CuckooChessEngine/*.iml
+/libraries/CuckooChessEngine/CuckooChessEngine.iml
 *.iml

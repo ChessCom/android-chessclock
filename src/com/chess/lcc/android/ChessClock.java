@@ -174,12 +174,14 @@ public class ChessClock {
 					}
 				}
 
-				if (time <= DISABLE_ANIMATION_TIME) {
-					if (eventListener != null) {
+				String opponentName = lccHelper.getOpponentName();
+
+				if (eventListener != null && opponentName != null) {
+					Long opponentTime = game.getActualClockForPlayerMs(opponentName);
+
+					if (time <= DISABLE_ANIMATION_TIME || opponentTime <= DISABLE_ANIMATION_TIME) {
 						eventListener.showPiecesMovesAnimation(false);
-					}
-				} else {
-					if (eventListener != null) {
+					} else {
 						eventListener.showPiecesMovesAnimation(true);
 					}
 				}
