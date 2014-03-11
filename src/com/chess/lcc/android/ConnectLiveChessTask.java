@@ -82,8 +82,7 @@ public class ConnectLiveChessTask extends AbstractUpdateTask<LiveChessClient, Vo
 
 				AppData appData = new AppData(context);
 				String message = "Live connecting to " + getConfigBayeuxHost() + ", user=" + appData.getUsername() + ", " + versionName;
-				//LogMe.forceLog(TAG, message, context);
-				LogMe.dl(TAG, message);
+				LogMe.debugAndMail(TAG, message, context);
 
 				HttpClientConfiguration httpClientConfiguration =
 						new HttpClientConfigurationImpl(

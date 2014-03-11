@@ -6,7 +6,9 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -161,6 +163,18 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		if (isTablet && inPortrait()) {
+
+			String fragmentTag = LiveChatFragment.class.getSimpleName();
+			Fragment fragmentByTag = getChildFragmentManager().findFragmentByTag(fragmentTag);
+			if (fragmentByTag != null) {
+				FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+				transaction.remove(fragmentByTag);
+				transaction.commit();
+			}
+
+		}
 
 		if (isLCSBound) {
 			try {
@@ -787,7 +801,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 		showSubmitButtonsLay(false);
 
 		String move = getBoardFace().convertMoveLive(); // todo: check does it always return latest move: histDat[ply]
-		Log.i(TAG, "LCC make move: " + move);
+		LogMe.dl(TAG, "LCC make move: " + move);
 
 		// hide draw offer view
 		topPanelView.showDrawOfferedView(false);
