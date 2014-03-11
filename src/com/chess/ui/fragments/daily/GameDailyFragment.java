@@ -36,7 +36,6 @@ import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.engine.ChessBoard;
 import com.chess.ui.engine.ChessBoardDaily;
-import com.chess.ui.engine.FenHelper;
 import com.chess.ui.engine.configs.LiveGameConfig;
 import com.chess.ui.fragments.RightPlayFragment;
 import com.chess.ui.fragments.game.GameBaseFragment;
@@ -708,7 +707,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 
 		GameAnalysisItem analysisItem = new GameAnalysisItem();
 		analysisItem.setGameType(currentGame.getGameType());
-		analysisItem.setFen(FenHelper.DEFAULT_FEN);
+		analysisItem.setFen(currentGame.getStartingFenPosition());
 		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
 		analysisItem.copyLabelConfig(labelsConfig);
 
