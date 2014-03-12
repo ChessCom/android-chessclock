@@ -23,8 +23,18 @@
 		android:id="@+id/listView"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+        android:layout_above="@+id/bannerUpgradeView"
 		android:background="@color/transparent"
 		android:divider="@color/new_friends_list_divider"
 		android:dividerHeight="1dp" />
+
+    <!--Ads-->
+    <include
+            android:id="@id/bannerUpgradeView"
+            layout="@layout/mopub_ad_view"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            />
 
 </RelativeLayout>

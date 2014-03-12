@@ -76,20 +76,11 @@ public class SettingsFragment extends LiveBaseFragment implements AdapterView.On
 
 		setTitle(R.string.settings);
 
-		if (!isTablet) {
-			RoboTextView versionCodeTxt = (RoboTextView) view.findViewById(R.id.versionCodeTxt);
-			versionCodeTxt.setText("v" + deviceInfo.APP_VERSION_NAME);
-			versionCodeTxt.setTextColor(themeFontColorStateList.getDefaultColor());
-		} else {
-			RoboButton resumeLessonBtn = (RoboButton) view.findViewById(R.id.resumeLessonBtn); // used only for beta
-			resumeLessonBtn.setDrawableStyle(R.style.ListItem);
-			resumeLessonBtn.setText("v" + deviceInfo.APP_VERSION_NAME);
-			resumeLessonBtn.setTextColor(themeFontColorStateList.getDefaultColor());
-			resumeLessonBtn.setVisibility(View.VISIBLE);
-		}
-
 		listView = (ListView) view.findViewById(R.id.listView);
 		listView.setOnItemClickListener(this);
+
+		// showing ads if needed
+		initUpgradeAndAdWidgets(view);
 	}
 
 	@Override

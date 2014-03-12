@@ -547,5 +547,8 @@ public class ProfileBaseFragmentTablet extends CommonLogicFragment implements Fr
 		listView.addFooterView(footerView);
 		listView.setAdapter(sectionedAdapter);
 		listView.setOnItemClickListener(this);
+
+		// showing ads if needed
+		initUpgradeAndAdWidgets(view);
 	}
 }

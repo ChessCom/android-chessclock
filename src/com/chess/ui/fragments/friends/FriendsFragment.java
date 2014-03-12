@@ -412,6 +412,8 @@ public class FriendsFragment extends CommonLogicFragment implements ItemClickLis
 	protected void widgetsInit(View view) {
 		listView = (ListView) view.findViewById(R.id.listView);
 		setAdapter(paginationAdapter);
-	}
 
+		// showing ads if needed
+		initUpgradeAndAdWidgets(view);
+	}
 }

@@ -72,6 +72,9 @@ public class MessagesInboxFragment extends CommonLogicFragment implements Adapte
 		getActivityFace().showActionMenu(R.id.menu_edit, true);
 		getActivityFace().showActionMenu(R.id.menu_notifications, false);
 		getActivityFace().showActionMenu(R.id.menu_games, false);
+
+		// showing ads if needed
+		initUpgradeAndAdWidgets(view);
 	}
 
 	@Override

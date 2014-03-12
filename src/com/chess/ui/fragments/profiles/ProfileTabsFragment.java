@@ -94,6 +94,9 @@ public class ProfileTabsFragment extends CommonLogicFragment implements RadioGro
 		tabRadioGroup.check(R.id.centerTabBtn);
 
 		previousCheckedId = tabRadioGroup.getCheckedRadioButtonId();
+
+		// showing ads if needed
+		initUpgradeAndAdWidgets(view);
 	}
 
 	@Override
