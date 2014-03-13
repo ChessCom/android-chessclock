@@ -14,18 +14,31 @@ import java.io.Serializable;
 public class RoboTextView extends TextView implements Serializable {
 
 	private String ttfName = FontsHelper.DEFAULT_FONT;
+	// flag for ide integration
+	private boolean isInEditMode = false;
 
 	public RoboTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+
+		// setting ide mode flag
+		isInEditMode = isInEditMode();
+
 		setupFont(context, attrs);
 	}
 
 	public RoboTextView(Context context) {
 		super(context);
+
+		// setting ide mode flag
+		isInEditMode = isInEditMode();
 	}
 
 	public RoboTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+
+		// setting ide mode flag
+		isInEditMode = isInEditMode();
+
 		setupFont(context, attrs);
 	}
 
@@ -53,7 +66,9 @@ public class RoboTextView extends TextView implements Serializable {
 	}
 
 	private void init(Context context, String ttfName) {
-		setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
+		if (!isInEditMode) {
+			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
+		}
 	}
 
 	public void setFont(String font) {

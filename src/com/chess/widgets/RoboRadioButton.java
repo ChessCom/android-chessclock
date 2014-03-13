@@ -15,17 +15,31 @@ public class RoboRadioButton extends RadioButton {
 
 	private String ttfName = FontsHelper.DEFAULT_FONT;
 
+	// flag for ide integration
+	private boolean isInEditMode = false;
+
 	public RoboRadioButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+
+		// setting ide mode flag
+		isInEditMode = isInEditMode();
+
 		setupFont(context, attrs);
 	}
 
 	public RoboRadioButton(Context context) {
 		super(context);
+
+		// setting ide mode flag
+		isInEditMode = isInEditMode();
 	}
 
 	public RoboRadioButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
+
+		// setting ide mode flag
+		isInEditMode = isInEditMode();
+
 		setupFont(context, attrs);
 	}
 
@@ -52,7 +66,7 @@ public class RoboRadioButton extends RadioButton {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		if (!isInEditMode()) {
+		if (!isInEditMode) {
 			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
 		}
 		ButtonDrawableBuilder.setBackgroundToView(this, attrs);

@@ -17,17 +17,31 @@ public class RoboButton extends Button implements Serializable {
 
 	private String ttfName = FontsHelper.BOLD_FONT;
 
+	// flag for ide integration
+	private boolean isInEditMode = false;
+
 	public RoboButton(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+
+		// setting ide mode flag
+		isInEditMode = isInEditMode();
+
 		setupFont(context, attrs);
 	}
 
 	public RoboButton(Context context) {
 		super(context);
+
+		// setting ide mode flag
+		isInEditMode = isInEditMode();
 	}
 
 	public RoboButton(Context context, AttributeSet attrs) {
 		super(context, attrs);
+
+		// setting ide mode flag
+		isInEditMode = isInEditMode();
+
 		setupFont(context, attrs);
 	}
 
@@ -54,7 +68,9 @@ public class RoboButton extends Button implements Serializable {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
+		if (!isInEditMode) {
+			setTypeface(FontsHelper.getInstance().getTypeFace(context, ttfName));
+		}
 		ButtonDrawableBuilder.setBackgroundToView(this, attrs);
 	}
 

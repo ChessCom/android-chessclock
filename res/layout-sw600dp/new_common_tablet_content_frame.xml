@@ -1,94 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:custom="http://schemas.android.com/apk/res/com.chess"
-	android:orientation="vertical"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+				xmlns:custom="http://schemas.android.com/apk/res/com.chess"
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
 
 	<RelativeLayout
-		android:id="@+id/leftListView"
-		android:layout_width="@dimen/tablet_side_menu_width"
-		android:layout_height="match_parent">
+			android:id="@+id/leftListView"
+			android:layout_width="@dimen/tablet_side_menu_width"
+			android:layout_height="match_parent">
 
 		<ListView
-			android:id="@+id/listView"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:layout_above="@+id/resumeLessonBtn"
-			android:divider="@null"
-			android:dividerHeight="0dp"
-			android:background="@android:color/transparent" />
+				android:id="@+id/listView"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_above="@+id/resumeLessonBtn"
+				android:divider="@null"
+				android:dividerHeight="0dp"
+				android:background="@android:color/transparent"/>
 
 		<com.chess.widgets.RoboButton
-			android:id="@id/resumeLessonBtn"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:minHeight="@dimen/big_button_height"
-			android:text="@string/resume_lesson"
-			android:textSize="@dimen/game_controls_text_size"
-			android:textColor="@color/white"
-			style="@style/Rect.Bottom.Right.Orange"
-			android:shadowColor="@color/transparent"
-			android:visibility="gone" />
+				android:id="@id/resumeLessonBtn"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:minHeight="@dimen/big_button_height"
+				android:text="@string/resume_lesson"
+				android:textSize="@dimen/game_controls_text_size"
+				android:textColor="@color/white"
+				style="@style/Rect.Bottom.Right.Orange"
+				android:shadowColor="@color/transparent"
+				android:visibility="gone"/>
 
 		<RelativeLayout
-			android:id="@+id/loadingView"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:minHeight="60dp"
-			android:visibility="gone">
+				android:id="@+id/loadingView"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:minHeight="60dp"
+				android:visibility="gone">
 
 			<ProgressBar
-				android:layout_width="@dimen/pending_progress_bar_size"
-				android:layout_height="@dimen/pending_progress_bar_size"
-				android:layout_margin="5dp"
-				android:layout_centerInParent="true"
-				style="?android:attr/progressBarStyle" />
+					android:layout_width="@dimen/pending_progress_bar_size"
+					android:layout_height="@dimen/pending_progress_bar_size"
+					android:layout_margin="5dp"
+					android:layout_centerInParent="true"
+					style="?android:attr/progressBarStyle"/>
 
 		</RelativeLayout>
 
 		<com.chess.widgets.RoboTextView
-			android:id="@+id/emptyView"
-			android:layout_width="wrap_content"
-			android:layout_height="match_parent"
-			android:text="@string/no_network"
-			android:gravity="center"
-			android:layout_gravity="center"
-			android:textSize="20sp"
-			android:textColor="@color/grey_button_1"
-			custom:ttf="Bold"
-			style="@style/DarkShadowBottom"
-			android:visibility="gone" />
+				android:id="@+id/emptyView"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent"
+				android:text="@string/no_network"
+				android:gravity="center"
+				android:layout_gravity="center"
+				android:textSize="20sp"
+				android:textColor="@color/grey_button_1"
+				custom:ttf="Bold"
+				style="@style/DarkShadowBottom"
+				android:visibility="gone"/>
 
 		<!--Shadow-->
 		<ImageView
-			android:layout_width="10dp"
-			android:layout_height="match_parent"
-			android:src="@drawable/defaultshadow"
-			android:contentDescription="@string/image"
-			android:layout_alignParentEnd="true"
-			android:layout_alignParentRight="true" />
+				android:layout_width="10dp"
+				android:layout_height="match_parent"
+				android:src="@drawable/defaultshadow"
+				android:contentDescription="@string/image"
+				android:layout_alignParentEnd="true"
+				android:layout_alignParentRight="true"/>
 
 		<!--Background filler-->
 		<FrameLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="@color/action_bar_overlay"
-			android:layout_alignParentBottom="true"
-			android:layout_below="@id/listView">
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@color/action_bar_overlay"
+				android:layout_alignParentBottom="true"
+				android:layout_below="@id/listView">
 
 		</FrameLayout>
 
 	</RelativeLayout>
 
-	<!--Fragment Container-->
-	<FrameLayout
-		android:id="@+id/innerFragmentContainer"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_toEndOf="@id/leftListView"
-		android:layout_toRightOf="@id/leftListView" />
+	<RelativeLayout
+			android:id="@+id/rightView"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_toEndOf="@id/leftListView"
+			android:layout_toRightOf="@id/leftListView"
+			>
+
+		<!--Fragment Container-->
+		<FrameLayout
+				android:id="@+id/innerFragmentContainer"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_above="@+id/bannerUpgradeView"
+				/>
+
+		<!--Ads-->
+		<include
+				android:id="@id/bannerUpgradeView"
+				layout="@layout/mopub_ad_view"
+				android:layout_gravity="center_horizontal"
+				android:layout_alignParentBottom="true"
+				android:layout_centerHorizontal="true"
+				/>
+
+	</RelativeLayout>
 
 </RelativeLayout>
