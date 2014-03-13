@@ -1935,6 +1935,9 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 	}
 
 	public void setShowMovesAnimation(boolean show) {
+		if (!show && !noMovesToAnimate()) {
+			return;
+		}
 		showMovesAnimation = show;
 	}
 

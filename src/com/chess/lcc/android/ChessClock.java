@@ -3,6 +3,7 @@ package com.chess.lcc.android;
 import com.chess.lcc.android.interfaces.LccEventListener;
 import com.chess.live.client.Game;
 import com.chess.statics.Symbol;
+import com.chess.utilities.LogMe;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -95,6 +96,9 @@ public class ChessClock {
 		if (timeString.equals(previousTimeString)) { // don't update UI if it's really wasn't changed
 			return;
 		}
+
+		LogMe.dl("CLOCK isWhite=" + isWhite + ", time=" + timeString + ", " + timer + ", user=" + playerName);
+
 		previousTimeString = timeString;
 
 		if (isWhite) { // if white player move
@@ -157,6 +161,9 @@ public class ChessClock {
 
 	private void startTimer() {
 		timer = new Timer();
+
+		LogMe.dl("INIT START TIMER isWhite=" + isWhite + ", " + timer + ", user=" + playerName);
+
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -167,6 +174,22 @@ public class ChessClock {
 					stopTimer();
 					return;
 				}
+
+
+				// debug
+				StringBuilder rv = new StringBuilder("");
+				rv.append("clocks=").append(game.getClocks());
+				rv.append(", actualClocks=").append(game.getActualClocks());
+				rv.append(", actualClocksMs=").append(game.getActualClocksMs());
+
+				rv.append(", isGameOver=").append(game.isGameOver());
+				rv.append(", moveCount=").append(game.getMoveCount());
+
+				if (game.getLastMoveMaker() != null) {
+					rv.append(", lastMoveMaker=").append(game.getLastMoveMaker().getUsername());
+				}
+
+				LogMe.dl("@@@@@@@@@@@ game data: " + rv);
 
 				updatePlayerTimer();
 
@@ -182,8 +205,6 @@ public class ChessClock {
 
 					if (time <= DISABLE_ANIMATION_TIME || opponentTime <= DISABLE_ANIMATION_TIME) {
 						eventListener.showPiecesMovesAnimation(false);
-					} else {
-						eventListener.showPiecesMovesAnimation(true);
 					}
 				}
 			}

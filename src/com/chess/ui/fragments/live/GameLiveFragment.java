@@ -105,6 +105,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	private ImageUpdateListener bottomImageUpdateListener;
 	private boolean submitClicked;
 	private int previousSide;
+	private String debugTopPanelTime;
+	private String debugBottomPanelTime;
 
 	public GameLiveFragment() {
 	}
@@ -279,6 +281,8 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					labelsConfig.bottomPlayerRating = String.valueOf(currentGame.getBlackRating());
 				}
 			}
+
+			showPiecesMovesAnimation(true);
 			liveHelper.initClocks();
 
 			boardView.resetValidMoves();
@@ -528,6 +532,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					}
 
 					topPanelView.setTimeRemain(timeString);
+					debugTopPanelTime = timeString;
 				} else {
 
 					if (!getBoardFace().isSubmit()) {
@@ -536,6 +541,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					}
 
 					bottomPanelView.setTimeRemain(timeString);
+					debugTopPanelTime = timeString;
 				}
 			}
 		});
@@ -565,6 +571,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					}
 
 					bottomPanelView.setTimeRemain(timeString);
+					debugBottomPanelTime = timeString;
 				} else {
 
 					if (!getBoardFace().isSubmit()) {
@@ -573,6 +580,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 					}
 
 					topPanelView.setTimeRemain(timeString);
+					debugBottomPanelTime = timeString;
 				}
 			}
 		});
@@ -795,13 +803,16 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 	}
 
 	protected void submitMove() throws DataNotValidException {
+
+		String move = getBoardFace().convertMoveLive(); // todo: check does it always return latest move: histDat[ply]
+		LogMe.dl(TAG, "LCC make move: " + move);
+
 		LiveConnectionHelper liveHelper = getLiveHelper();
 
 		String debugString = " no debug log";
 		showSubmitButtonsLay(false);
 
-		String move = getBoardFace().convertMoveLive(); // todo: check does it always return latest move: histDat[ply]
-		LogMe.dl(TAG, "LCC make move: " + move);
+		LogMe.dl("time panel top: " + debugTopPanelTime + ", bottom: " + debugBottomPanelTime);
 
 		// hide draw offer view
 		topPanelView.showDrawOfferedView(false);
