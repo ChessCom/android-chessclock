@@ -28,6 +28,7 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveLessonsCategoriesTask;
+import com.chess.statics.StaticData;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -51,7 +52,9 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 
 	private CommonCategoriesCursorAdapter categoriesCursorAdapter;
 
+	// listener for getting categories from server (and saving to db)
 	private LessonsCategoriesUpdateListener lessonsCategoriesUpdateListener;
+	// listener for getting categories from db and
 	private SaveLessonsCategoriesUpdateListener saveLessonsCategoriesUpdateListener;
 	private LessonsCoursesUpdateListener lessonsCoursesUpdateListener;
 
@@ -135,7 +138,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 			// get saved categories  // TODO improve performance load only one field and record
 			Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsCurriculumCategories());
 
-			if (categoriesCursor == null || !categoriesCursor.moveToFirst() && isNetworkAvailable()) {
+			if (!categoriesCursor.moveToFirst() && isNetworkAvailable()) {
 				getCategories();
 			}
 
@@ -170,7 +173,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		}
 
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		boolean isCurriculum = DbDataManager.getInt(cursor, DbScheme.V_IS_CURRICULUM) > 0;
+		boolean isCurriculum = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID) == StaticData.CURRICULUM_LESSONS_CATEGORY_ID;
 
 		if (isCurriculum) {
 			changeInternalFragment(LessonsCurriculumFragmentTablet.createInstance(this));
@@ -244,7 +247,6 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 	 * @param categoriesCursor modifying cursor
 	 * @return modified cursor
 	 */
-	// TODO: Remove duplicate code in Videos (same foo)
 	private Cursor updateCategoriesCursor(Cursor categoriesCursor) {
 		String[] projection = {
 				DbScheme._ID,
@@ -255,10 +257,10 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		};
 		MatrixCursor extras = new MatrixCursor(projection);
 		extras.addRow(new String[]{
-				"-1",            // _ID,
+				"-1",     // _ID,
 				getString(R.string.curriculum),   // V_NAME,
-				"0",            // V_CATEGORY_ID,
-				"1",            // V_IS_CURRICULUM,
+				String.valueOf(StaticData.CURRICULUM_LESSONS_CATEGORY_ID),    // V_CATEGORY_ID,
+				"0",            // V_IS_CURRICULUM,
 				"0",            // V_DISPLAY_ORDER
 		}
 		);
@@ -324,7 +326,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		lessonsCoursesUpdateListener = new LessonsCoursesUpdateListener();
 		lessonsRatingUpdateListener = new LessonsRatingUpdateListener();
 
-		// get from DB categories for Full Lessons Library(not Curriculum)
+		// getting from DB categories for Full Lessons Library(not Curriculum) for left navigation panel
 		Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
 		Cursor updateCategoriesCursor = updateCategoriesCursor(categoriesCursor);
 		categoriesCursorAdapter.changeCursor(updateCategoriesCursor);

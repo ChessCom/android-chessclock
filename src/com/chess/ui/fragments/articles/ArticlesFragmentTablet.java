@@ -85,21 +85,18 @@ public class ArticlesFragmentTablet extends CommonLogicFragment implements ItemC
 	public void onResume() {
 		super.onResume();
 
-		if (need2update) {
+		categoriesLoaded = loadCategoriesFromDB();
 
-			categoriesLoaded = loadCategoriesFromDB();
-			if (!categoriesLoaded) {
+		if (need2update) {
+			if (!categoriesLoaded && isNetworkAvailable()) {
 				getCategories();
 			}
-
-		} else {
-			loadCategoriesFromDB();
 		}
 	}
 
 	private boolean loadCategoriesFromDB() {
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.ARTICLE_CATEGORIES));
-		if (cursor != null && cursor.moveToFirst()) {
+		if (cursor.moveToFirst()) {
 			categoriesAdapter.changeCursor(cursor);
 
 			listView.setAdapter(categoriesAdapter);
@@ -152,6 +149,7 @@ public class ArticlesFragmentTablet extends CommonLogicFragment implements ItemC
 			super.updateData(returnedObj);
 
 			new SaveArticleCategoriesTask(saveCategoriesUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+			need2update = false;
 		}
 
 		@Override
@@ -191,7 +189,7 @@ public class ArticlesFragmentTablet extends CommonLogicFragment implements ItemC
 		saveCategoriesUpdateListener = new SaveCategoriesUpdateListener();
 
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.ARTICLE_CATEGORIES));
-		categoriesLoaded = cursor != null && cursor.moveToFirst();
+		categoriesLoaded = cursor.moveToFirst();
 
 		if (categoriesLoaded) {
 			changeInternalFragment(ArticleCategoriesFragmentTablet.createInstance(Symbol.EMPTY, this));

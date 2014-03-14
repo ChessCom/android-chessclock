@@ -2,8 +2,6 @@ package com.chess.ui.fragments.videos;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.MatrixCursor;
-import android.database.MergeCursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,7 +21,9 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
 import com.chess.db.tasks.SaveVideoCategoriesTask;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.BasePopupsFragment;
@@ -103,11 +103,10 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 		if (need2update) {
 
 			// get saved categories
-			Cursor categoriesCursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
+			Cursor categoriesCursor = getCategoriesFromDb();
 
-			if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
-				Cursor extendedCursor = updateCategoriesCursor(categoriesCursor);
-				categoriesAdapter.changeCursor(extendedCursor);
+			if (categoriesCursor.moveToFirst()) {
+				categoriesAdapter.changeCursor(categoriesCursor);
 			}
 
 			if (isNetworkAvailable()) {
@@ -170,7 +169,7 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 
-		boolean isCurriculum = DbDataManager.getInt(cursor, DbScheme.V_IS_CURRICULUM) > 0;
+		boolean isCurriculum = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID) == StaticData.CURRICULUM_VIDEOS_CATEGORY_ID;
 
 		if (isCurriculum) {
 			changeInternalFragment(VideosCurriculumFragmentTablet.createInstance(this));
@@ -219,15 +218,21 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			// get saved categories
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.VIDEO_CATEGORIES));
-			if (cursor.moveToFirst()) {
-				Cursor extendedCursor = updateCategoriesCursor(cursor);
-				categoriesAdapter.changeCursor(extendedCursor);
+			Cursor categoriesCursor = getCategoriesFromDb();
+			if (categoriesCursor.moveToFirst()) {
+				categoriesAdapter.changeCursor(categoriesCursor);
 				listView.setAdapter(categoriesAdapter);
 
 				need2update = false;
 			}
 		}
+	}
+
+	private Cursor getCategoriesFromDb() {
+		QueryParams queryParams = DbHelper.getAll(DbScheme.Tables.VIDEO_CATEGORIES);
+		queryParams.setOrder(DbScheme.V_DISPLAY_ORDER);
+		Cursor categoriesCursor = DbDataManager.query(getContentResolver(), queryParams);
+		return categoriesCursor;
 	}
 
 	private void showLoadingView(boolean show) {
@@ -246,11 +251,6 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 
 		videoCategoriesUpdateListener = new VideoCategoriesUpdateListener();
 		saveVideoCategoriesUpdateListener = new SaveVideoCategoriesUpdateListener();
-
-		// get from DB categories for Full Lessons Library(not Curriculum)
-		Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getVLessonsLibraryCategories());
-		Cursor updateCategoriesCursor = updateCategoriesCursor(categoriesCursor);
-		categoriesAdapter.changeCursor(updateCategoriesCursor);
 
 		changeInternalFragment(VideosCurriculumFragmentTablet.createInstance(this));
 
@@ -292,37 +292,5 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 		} else {
 			return super.showPreviousFragment();
 		}
-	}
-
-	/**
-	 * Adds study plan item (curriculum) to the cursor
-	 *
-	 * @param categoriesCursor modifying cursor
-	 * @return modified cursor
-	 */
-	private Cursor updateCategoriesCursor(Cursor categoriesCursor) {
-		String[] projection = {
-				DbScheme._ID,
-				DbScheme.V_NAME,
-				DbScheme.V_CATEGORY_ID,
-				DbScheme.V_IS_CURRICULUM,
-				DbScheme.V_DISPLAY_ORDER
-		};
-		MatrixCursor extras = new MatrixCursor(projection);
-		extras.addRow(new String[]{
-				"-1",            // _ID,
-				getString(R.string.curriculum),   // V_NAME,
-				"0",            // V_CATEGORY_ID,
-				"1",            // V_IS_CURRICULUM,
-				"0",            // V_DISPLAY_ORDER
-		}
-		);
-
-		Cursor[] cursors = {extras, categoriesCursor};
-		Cursor extendedCursor = new MergeCursor(cursors);
-
-		// restore position
-		extendedCursor.moveToFirst();
-		return extendedCursor;
 	}
 }
