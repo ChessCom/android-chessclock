@@ -80,7 +80,7 @@ public class VideosCurriculumFragmentTablet extends CommonLogicFragment implemen
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.videos);
+		setTitle(R.string.video_curriculum);
 
 		{ // Curriculum mode
 			expListView = (ExpandableListView) view.findViewById(R.id.expListView);

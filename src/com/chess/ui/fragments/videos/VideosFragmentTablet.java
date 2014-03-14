@@ -2,6 +2,8 @@ package com.chess.ui.fragments.videos;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.database.MergeCursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -104,7 +106,8 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 			Cursor categoriesCursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
 
 			if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
-				categoriesAdapter.changeCursor(categoriesCursor);
+				Cursor extendedCursor = updateCategoriesCursor(categoriesCursor);
+				categoriesAdapter.changeCursor(extendedCursor);
 			}
 
 			if (isNetworkAvailable()) {
@@ -166,13 +169,20 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 //		int offset = headerAdded ? -1 : 0;
 
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
 
-		if (noCategoriesFragmentsAdded) {
-			openInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
-			noCategoriesFragmentsAdded = false;
+		boolean isCurriculum = DbDataManager.getInt(cursor, DbScheme.V_IS_CURRICULUM) > 0;
+
+		if (isCurriculum) {
+			changeInternalFragment(VideosCurriculumFragmentTablet.createInstance(this));
 		} else {
-			changeInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
+			String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
+
+			if (noCategoriesFragmentsAdded) {
+				openInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
+				noCategoriesFragmentsAdded = false;
+			} else {
+				changeInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
+			}
 		}
 	}
 
@@ -211,7 +221,8 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 			// get saved categories
 			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.VIDEO_CATEGORIES));
 			if (cursor.moveToFirst()) {
-				categoriesAdapter.changeCursor(cursor);
+				Cursor extendedCursor = updateCategoriesCursor(cursor);
+				categoriesAdapter.changeCursor(extendedCursor);
 				listView.setAdapter(categoriesAdapter);
 
 				need2update = false;
@@ -235,6 +246,11 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 
 		videoCategoriesUpdateListener = new VideoCategoriesUpdateListener();
 		saveVideoCategoriesUpdateListener = new SaveVideoCategoriesUpdateListener();
+
+		// get from DB categories for Full Lessons Library(not Curriculum)
+		Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getVLessonsLibraryCategories());
+		Cursor updateCategoriesCursor = updateCategoriesCursor(categoriesCursor);
+		categoriesAdapter.changeCursor(updateCategoriesCursor);
 
 		changeInternalFragment(VideosCurriculumFragmentTablet.createInstance(this));
 
@@ -278,4 +294,35 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 		}
 	}
 
+	/**
+	 * Adds study plan item (curriculum) to the cursor
+	 *
+	 * @param categoriesCursor modifying cursor
+	 * @return modified cursor
+	 */
+	private Cursor updateCategoriesCursor(Cursor categoriesCursor) {
+		String[] projection = {
+				DbScheme._ID,
+				DbScheme.V_NAME,
+				DbScheme.V_CATEGORY_ID,
+				DbScheme.V_IS_CURRICULUM,
+				DbScheme.V_DISPLAY_ORDER
+		};
+		MatrixCursor extras = new MatrixCursor(projection);
+		extras.addRow(new String[]{
+				"-1",            // _ID,
+				getString(R.string.curriculum),   // V_NAME,
+				"0",            // V_CATEGORY_ID,
+				"1",            // V_IS_CURRICULUM,
+				"0",            // V_DISPLAY_ORDER
+		}
+		);
+
+		Cursor[] cursors = {extras, categoriesCursor};
+		Cursor extendedCursor = new MergeCursor(cursors);
+
+		// restore position
+		extendedCursor.moveToFirst();
+		return extendedCursor;
+	}
 }
