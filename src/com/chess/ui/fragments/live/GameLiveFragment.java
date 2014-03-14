@@ -739,7 +739,7 @@ public class GameLiveFragment extends GameBaseFragment implements GameNetworkFac
 			ratingChange = game.getRatingChangeForPlayer(game.getBlackPlayer().getUsername());
 		}
 
-		String ratingChangeString = Symbol.wrapInPars(ratingChange > 0 ? "+" + ratingChange : "" + ratingChange);
+		String ratingChangeString = Symbol.wrapInPars(ratingChange > 0 ? Symbol.PLUS + ratingChange : Symbol.EMPTY + ratingChange);
 
 		resultRatingTxt.setText(String.valueOf(currentPlayerNewRating));
 		resultRatingChangeTxt.setText(ratingChangeString);

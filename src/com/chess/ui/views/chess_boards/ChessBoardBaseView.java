@@ -1289,17 +1289,9 @@ public abstract class ChessBoardBaseView extends View implements BoardViewFace, 
 				gameFace.onGameOver(title, reasonStr);
 				return true;
 			}
-		} else if (boardFace.isPerformCheck(side)) {
-			if (!boardFace.isPossibleToMakeMoves()) {
-				boardFace.getHistDat()[boardFace.getPly() - 1].notation += "#";
-				gameFace.invalidateGameScreen();
-				boardFace.setFinished(true);
-				return true;
-			} else {
-				boardFace.getHistDat()[boardFace.getPly() - 1].notation += "+";
-				gameFace.invalidateGameScreen();
-				gameFace.onCheck();
-			}
+		} else if (boardFace.isPerformCheck(side) && !boardFace.isPossibleToMakeMoves()) {
+			boardFace.setFinished(true);
+			return true;
 		}
 
 		return false;

@@ -944,7 +944,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 			ratingChange = newBlackRating - currentPlayerNewRating;
 		}
 
-		String ratingChangeString = Symbol.wrapInPars(ratingChange > 0 ? "+" + ratingChange : "" + ratingChange);
+		String ratingChangeString = Symbol.wrapInPars(ratingChange > 0 ? Symbol.PLUS + ratingChange : Symbol.EMPTY + ratingChange);
 
 		resultRatingTxt.setText(String.valueOf(currentPlayerNewRating));
 		resultRatingChangeTxt.setText(ratingChangeString);

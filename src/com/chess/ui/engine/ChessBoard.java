@@ -46,6 +46,9 @@ public class ChessBoard implements BoardFace {
 
 	public static final String NUMBER_REGEXP_MATCHER = ".*\\d.*";
 
+	private static final String CHECK_SIGN = "+";
+	private static final String CHECKMATE_SIGN = "#";
+
 	/* White Promotion algebraic notations */
 	public static final String PROMOTION_W_KNIGHT = "=N";
 	public static final String PROMOTION_W_BISHOP = "=B";
@@ -946,6 +949,10 @@ public class ChessBoard implements BoardFace {
 			}
 		}
 
+		if (isPerformCheck(side)) {
+			histDat[ply - 1].notation += CHECK_SIGN;
+		}
+
 		if (isPerformCheck(oppositeSide)) {
 			takeBack();
 			return false;
@@ -1534,7 +1541,10 @@ public class ChessBoard implements BoardFace {
 			output.append(histDat[i].notation);
 			output.append(Symbol.SPACE);
 		}
-		return output.toString();
+
+		String moveListSAN = output.toString();
+		moveListSAN = addCheckmateSign(moveListSAN.trim());
+		return moveListSAN;
 	}
 
 	@Override
@@ -1543,6 +1553,10 @@ public class ChessBoard implements BoardFace {
 		for (int i = 0; i < movesCount; i++) {
 			movesArray[i] = histDat[i].notation;
 		}
+		if (movesCount > 0) {
+			movesArray[movesCount - 1] = addCheckmateSign(movesArray[movesCount - 1]);
+		}
+
 
 		return movesArray;
 	}
@@ -1553,6 +1567,11 @@ public class ChessBoard implements BoardFace {
 		for (int i = 0; i < ply; i++) {
 			output[i] = histDat[i].notation;
 		}
+		if (ply > 0) {
+			output[ply - 1] = addCheckmateSign(output[ply - 1]);
+		}
+
+
 		return output;
 	}
 
@@ -2201,5 +2220,12 @@ public class ChessBoard implements BoardFace {
 
 	public static boolean isComputerVsHumanBlackGameMode(BoardFace boardFace) {
 		return boardFace.getMode() == GAME_MODE_COMPUTER_VS_PLAYER_BLACK;
+	}
+
+	public String addCheckmateSign(String move) {
+		if (isPerformCheck(side) && !isPossibleToMakeMoves()) {
+			return move.substring(0, move.length() - 1) + CHECKMATE_SIGN;
+		}
+		return move;
 	}
 }
