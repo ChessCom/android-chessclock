@@ -138,7 +138,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 			// get saved categories  // TODO improve performance load only one field and record
 			Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsCurriculumCategories());
 
-			if (!categoriesCursor.moveToFirst() && isNetworkAvailable()) {
+			if (categoriesCursor == null || !categoriesCursor.moveToFirst() && isNetworkAvailable()) {
 				getCategories();
 			}
 

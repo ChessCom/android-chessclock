@@ -105,7 +105,7 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 			// get saved categories
 			Cursor categoriesCursor = getCategoriesFromDb();
 
-			if (categoriesCursor.moveToFirst()) {
+			if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
 				categoriesAdapter.changeCursor(categoriesCursor);
 			}
 

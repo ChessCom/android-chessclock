@@ -96,7 +96,7 @@ public class ArticlesFragmentTablet extends CommonLogicFragment implements ItemC
 
 	private boolean loadCategoriesFromDB() {
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.ARTICLE_CATEGORIES));
-		if (cursor.moveToFirst()) {
+		if (cursor != null && cursor.moveToFirst()) {
 			categoriesAdapter.changeCursor(cursor);
 
 			listView.setAdapter(categoriesAdapter);
@@ -189,7 +189,7 @@ public class ArticlesFragmentTablet extends CommonLogicFragment implements ItemC
 		saveCategoriesUpdateListener = new SaveCategoriesUpdateListener();
 
 		Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.ARTICLE_CATEGORIES));
-		categoriesLoaded = cursor.moveToFirst();
+		categoriesLoaded = cursor != null && cursor.moveToFirst();
 
 		if (categoriesLoaded) {
 			changeInternalFragment(ArticleCategoriesFragmentTablet.createInstance(Symbol.EMPTY, this));
