@@ -230,7 +230,7 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 
 	private Cursor getCategoriesFromDb() {
 		QueryParams queryParams = DbHelper.getAll(DbScheme.Tables.VIDEO_CATEGORIES);
-		queryParams.setOrder(DbScheme.V_DISPLAY_ORDER);
+		queryParams.setOrder(DbScheme.V_DISPLAY_ORDER + DbDataManager.ASCEND);
 		Cursor categoriesCursor = DbDataManager.query(getContentResolver(), queryParams);
 		return categoriesCursor;
 	}
