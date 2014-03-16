@@ -919,7 +919,7 @@ public class LiveConnectionHelper {
 
 			String username = loginData.getUsername();
 			if (!TextUtils.isEmpty(username)) {
-				preferencesEditor.putString(AppConstants.USERNAME, username);
+				appData.setUsername(username);
 			}
 			preferencesEditor.putInt(AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
 			preferencesEditor.putString(AppConstants.LIVE_SESSION_ID, loginData.getSessionId());

@@ -48,7 +48,7 @@ public class LoginUpdateListener extends AbstractUpdateListener<LoginItem> {
 		SharedPreferences.Editor preferencesEditor = appData.getPreferences().edit();
 
 		if (!TextUtils.isEmpty(username)) {
-			preferencesEditor.putString(AppConstants.USERNAME, username);
+			appData.setUsername(username);
 		}
 		preferencesEditor.putInt(username + AppConstants.USER_PREMIUM_STATUS, loginData.getPremiumStatus());
 		preferencesEditor.putLong(username + AppConstants.PREF_USER_ID, loginData.getUserId());

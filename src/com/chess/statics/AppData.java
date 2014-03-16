@@ -22,10 +22,9 @@ public class AppData {
 	public static final int UNDEFINED = -1;
 	public static final int TRUE = 1;
 	public static final int FALSE = 0;
-	private static String username;
 
 	private final SharedPreferences.Editor editor;
-	private static SharedPreferences preferences;
+	private SharedPreferences preferences;
 
 	public AppData(Context context) {
 		this.preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
@@ -90,15 +89,13 @@ public class AppData {
 		return getStringValue(LOCATION, Symbol.EMPTY);
 	}
 
-	public static String getUsername() {
-		if (preferences != null) {
-			username = preferences.getString(USERNAME, Symbol.EMPTY);
-		}
-		return username;
+	public String getUsername() {
+		return preferences.getString(USERNAME, Symbol.EMPTY);
 	}
 
 	public void setUsername(String username) {
 		editor.putString(USERNAME, username).commit();
+		StaticData.USERNAME = username;
 	}
 
 	public void setPassword(String value) {

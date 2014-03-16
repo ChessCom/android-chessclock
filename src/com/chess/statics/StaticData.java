@@ -55,4 +55,5 @@ public class StaticData {
 	public static final String ALL = "All";
 	public static final String LOCALE_EN = "en";
 	public static final String GIF = ".gif";
+	public static String USERNAME = "guest";
 }

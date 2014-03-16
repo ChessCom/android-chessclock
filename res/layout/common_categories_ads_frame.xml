@@ -13,7 +13,7 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:minHeight="@dimen/list_item_height"
-		style="@style/ListItem.NoPadding"/>
+		style="@style/ListItem.NoPadding" />
 
 	<ListView
 		android:id="@+id/listView"

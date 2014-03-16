@@ -2,7 +2,7 @@ package com.chess.utilities;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.sift.Discriminator;
-import com.chess.statics.AppData;
+import com.chess.statics.StaticData;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,7 +20,7 @@ public class MyDiscriminator implements Discriminator<ILoggingEvent> {
 
 	@Override
 	public String getDiscriminatingValue(ILoggingEvent iLoggingEvent) {
-		return "V3" + simpleDateFormat.format(new Date()) + " " + AppData.getUsername();
+		return "V3" + simpleDateFormat.format(new Date()) + " " + StaticData.USERNAME;
 	}
 
 	@Override
@@ -28,14 +28,17 @@ public class MyDiscriminator implements Discriminator<ILoggingEvent> {
 		return KEY;
 	}
 
+	@Override
 	public void start() {
 		started = true;
 	}
 
+	@Override
 	public void stop() {
 		started = false;
 	}
 
+	@Override
 	public boolean isStarted() {
 		return started;
 	}
