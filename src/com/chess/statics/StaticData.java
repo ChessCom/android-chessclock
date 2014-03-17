@@ -56,4 +56,7 @@ public class StaticData {
 	public static final String LOCALE_EN = "en";
 	public static final String GIF = ".gif";
 	public static String USERNAME = "guest";
+
+	public static final int CURRICULUM_VIDEOS_CATEGORY_ID = 99999;
+	public static final int CURRICULUM_LESSONS_CATEGORY_ID = 99998;
 }

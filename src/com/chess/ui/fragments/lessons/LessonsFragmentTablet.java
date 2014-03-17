@@ -28,6 +28,7 @@ import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
 import com.chess.db.tasks.SaveLessonsCategoriesTask;
+import com.chess.statics.StaticData;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.BasePopupsFragment;
 import com.chess.ui.fragments.CommonLogicFragment;
@@ -45,14 +46,15 @@ import java.util.List;
  */
 public class LessonsFragmentTablet extends CommonLogicFragment implements AdapterView.OnItemClickListener, FragmentParentFace {
 
-	public static final String CURRICULUM = "Curriculum";
 	private ListView listView;
 	private View loadingView;
 	private TextView emptyView;
 
 	private CommonCategoriesCursorAdapter categoriesCursorAdapter;
 
+	// listener for getting categories from server (and saving to db)
 	private LessonsCategoriesUpdateListener lessonsCategoriesUpdateListener;
+	// listener for getting categories from db and
 	private SaveLessonsCategoriesUpdateListener saveLessonsCategoriesUpdateListener;
 	private LessonsCoursesUpdateListener lessonsCoursesUpdateListener;
 
@@ -171,18 +173,19 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		}
 
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
+		boolean isCurriculum = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID) == StaticData.CURRICULUM_LESSONS_CATEGORY_ID;
 
-		if (sectionName.equals(CURRICULUM)) {
+		if (isCurriculum) {
 			changeInternalFragment(LessonsCurriculumFragmentTablet.createInstance(this));
-			return;
-		}
-
-		if (noCategoriesFragmentsAdded) {
-			openInternalFragment(LessonsCategoriesFragmentTablet.createInstance(sectionName));
-			noCategoriesFragmentsAdded = false;
 		} else {
-			changeInternalFragment(LessonsCategoriesFragmentTablet.createInstance(sectionName));
+			String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
+
+			if (noCategoriesFragmentsAdded) {
+				openInternalFragment(LessonsCategoriesFragmentTablet.createInstance(sectionName));
+				noCategoriesFragmentsAdded = false;
+			} else {
+				changeInternalFragment(LessonsCategoriesFragmentTablet.createInstance(sectionName));
+			}
 		}
 	}
 
@@ -238,6 +241,12 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		}
 	}
 
+	/**
+	 * Adds study plan item (curriculum) to the cursor
+	 *
+	 * @param categoriesCursor modifying cursor
+	 * @return modified cursor
+	 */
 	private Cursor updateCategoriesCursor(Cursor categoriesCursor) {
 		String[] projection = {
 				DbScheme._ID,
@@ -248,12 +257,12 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		};
 		MatrixCursor extras = new MatrixCursor(projection);
 		extras.addRow(new String[]{
-						"-1",            // _ID,
-						CURRICULUM,   // V_NAME,
-						"0",            // V_CATEGORY_ID,
-						"0",            // V_IS_CURRICULUM,
-						"0",            // V_DISPLAY_ORDER
-				}
+				"-1",     // _ID,
+				getString(R.string.curriculum),   // V_NAME,
+				String.valueOf(StaticData.CURRICULUM_LESSONS_CATEGORY_ID),    // V_CATEGORY_ID,
+				"0",            // V_IS_CURRICULUM,
+				"0",            // V_DISPLAY_ORDER
+		}
 		);
 
 		Cursor[] cursors = {extras, categoriesCursor};
@@ -317,7 +326,7 @@ public class LessonsFragmentTablet extends CommonLogicFragment implements Adapte
 		lessonsCoursesUpdateListener = new LessonsCoursesUpdateListener();
 		lessonsRatingUpdateListener = new LessonsRatingUpdateListener();
 
-		// get from DB categories for Full Lessons Library(not Curriculum)
+		// getting from DB categories for Full Lessons Library(not Curriculum) for left navigation panel
 		Cursor categoriesCursor = DbDataManager.query(getContentResolver(), DbHelper.getLessonsLibraryCategories());
 		Cursor updateCategoriesCursor = updateCategoriesCursor(categoriesCursor);
 		categoriesCursorAdapter.changeCursor(updateCategoriesCursor);

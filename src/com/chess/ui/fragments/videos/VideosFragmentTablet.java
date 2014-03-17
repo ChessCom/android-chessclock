@@ -21,7 +21,9 @@ import com.chess.backend.tasks.RequestJsonTask;
 import com.chess.db.DbDataManager;
 import com.chess.db.DbHelper;
 import com.chess.db.DbScheme;
+import com.chess.db.QueryParams;
 import com.chess.db.tasks.SaveVideoCategoriesTask;
+import com.chess.statics.StaticData;
 import com.chess.statics.Symbol;
 import com.chess.ui.adapters.CommonCategoriesCursorAdapter;
 import com.chess.ui.fragments.BasePopupsFragment;
@@ -101,7 +103,7 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 		if (need2update) {
 
 			// get saved categories
-			Cursor categoriesCursor = getContentResolver().query(DbScheme.uriArray[DbScheme.Tables.VIDEO_CATEGORIES.ordinal()], null, null, null, null);
+			Cursor categoriesCursor = getCategoriesFromDb();
 
 			if (categoriesCursor != null && categoriesCursor.moveToFirst()) {
 				categoriesAdapter.changeCursor(categoriesCursor);
@@ -166,13 +168,20 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 //		int offset = headerAdded ? -1 : 0;
 
 		Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-		String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
 
-		if (noCategoriesFragmentsAdded) {
-			openInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
-			noCategoriesFragmentsAdded = false;
+		boolean isCurriculum = DbDataManager.getInt(cursor, DbScheme.V_CATEGORY_ID) == StaticData.CURRICULUM_VIDEOS_CATEGORY_ID;
+
+		if (isCurriculum) {
+			changeInternalFragment(VideosCurriculumFragmentTablet.createInstance(this));
 		} else {
-			changeInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
+			String sectionName = DbDataManager.getString(cursor, DbScheme.V_NAME);
+
+			if (noCategoriesFragmentsAdded) {
+				openInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
+				noCategoriesFragmentsAdded = false;
+			} else {
+				changeInternalFragment(VideoCategoriesFragmentTablet.createInstance(sectionName, this));
+			}
 		}
 	}
 
@@ -209,14 +218,21 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 		@Override
 		public void updateData(CommonFeedCategoryItem.Data returnedObj) {
 			// get saved categories
-			Cursor cursor = DbDataManager.query(getContentResolver(), DbHelper.getAll(DbScheme.Tables.VIDEO_CATEGORIES));
-			if (cursor.moveToFirst()) {
-				categoriesAdapter.changeCursor(cursor);
+			Cursor categoriesCursor = getCategoriesFromDb();
+			if (categoriesCursor.moveToFirst()) {
+				categoriesAdapter.changeCursor(categoriesCursor);
 				listView.setAdapter(categoriesAdapter);
 
 				need2update = false;
 			}
 		}
+	}
+
+	private Cursor getCategoriesFromDb() {
+		QueryParams queryParams = DbHelper.getAll(DbScheme.Tables.VIDEO_CATEGORIES);
+		queryParams.setOrder(DbScheme.V_DISPLAY_ORDER + DbDataManager.ASCEND);
+		Cursor categoriesCursor = DbDataManager.query(getContentResolver(), queryParams);
+		return categoriesCursor;
 	}
 
 	private void showLoadingView(boolean show) {
@@ -277,5 +293,4 @@ public class VideosFragmentTablet extends CommonLogicFragment implements Adapter
 			return super.showPreviousFragment();
 		}
 	}
-
 }

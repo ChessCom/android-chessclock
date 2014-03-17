@@ -48,7 +48,6 @@ public class LessonsCategoriesFragmentTablet extends LessonsCategoriesFragment {
 
 		// hide spinner
 		categorySpinner.setVisibility(View.GONE);
-
 	}
 
 	@Override

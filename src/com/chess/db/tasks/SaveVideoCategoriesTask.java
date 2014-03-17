@@ -1,6 +1,7 @@
 package com.chess.db.tasks;
 
 import android.content.ContentResolver;
+import com.chess.R;
 import com.chess.backend.entity.api.CommonFeedCategoryItem;
 import com.chess.backend.interfaces.TaskUpdateInterface;
 import com.chess.backend.tasks.AbstractUpdateTask;
@@ -26,11 +27,19 @@ public class SaveVideoCategoriesTask extends AbstractUpdateTask<CommonFeedCatego
 
 	@Override
 	protected Integer doTheTask(Long... ids) {
+
+		CommonFeedCategoryItem.Data curriculumCategory = new CommonFeedCategoryItem.Data();
+
+		curriculumCategory.setId(StaticData.CURRICULUM_VIDEOS_CATEGORY_ID);
+		curriculumCategory.setName(getTaskFace().getMeContext().getString(R.string.curriculum));
+		curriculumCategory.setDisplay_order(0);
+
+		itemList.add(0, curriculumCategory);
+
 		for (CommonFeedCategoryItem.Data currentItem : itemList) {
 			DbDataManager.saveVideoCategory(contentResolver, currentItem);
 		}
 
 		return StaticData.RESULT_OK;
 	}
-
 }

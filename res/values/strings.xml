@@ -445,7 +445,7 @@
 	<string name="send_message">Send Message</string>
 
 	<!--Videos-->
-	<string name="video_curriculum">Video Curriculum</string>
+	<string name="video_curriculum">Study Plan Videos</string>
 	<string name="posts_arg">%s posts</string>
 	<string name="quote">Quote</string>
 	<string name="new_topic">New Topic</string>
@@ -458,7 +458,7 @@
 
 	<!--Lessons-->
 	<string name="full_lesson_library">Full Lesson Library</string>
-	<string name="curriculum">Curriculum</string>
+	<string name="curriculum">Study plan</string>
 	<string name="start_lesson">Start Lesson</string>
 	<string name="skip">Skip</string>
 	<string name="skip_lesson">Skip Lesson</string>

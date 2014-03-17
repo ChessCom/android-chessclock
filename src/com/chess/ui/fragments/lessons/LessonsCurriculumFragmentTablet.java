@@ -79,7 +79,7 @@ public class LessonsCurriculumFragmentTablet extends CommonLogicFragment impleme
 		setNeedToChangeActionButtons(false);
 		super.onViewCreated(view, savedInstanceState);
 
-		setTitle(R.string.lessons);
+		setTitle(R.string.lessons_curriculum);
 
 		loadingView = view.findViewById(R.id.loadingView);
 		emptyView = (TextView) view.findViewById(R.id.emptyView);

@@ -85,15 +85,12 @@ public class ArticlesFragmentTablet extends CommonLogicFragment implements ItemC
 	public void onResume() {
 		super.onResume();
 
-		if (need2update) {
+		categoriesLoaded = loadCategoriesFromDB();
 
-			categoriesLoaded = loadCategoriesFromDB();
-			if (!categoriesLoaded) {
+		if (need2update) {
+			if (!categoriesLoaded && isNetworkAvailable()) {
 				getCategories();
 			}
-
-		} else {
-			loadCategoriesFromDB();
 		}
 	}
 
@@ -152,6 +149,7 @@ public class ArticlesFragmentTablet extends CommonLogicFragment implements ItemC
 			super.updateData(returnedObj);
 
 			new SaveArticleCategoriesTask(saveCategoriesUpdateListener, returnedObj.getData(), getContentResolver()).executeTask();
+			need2update = false;
 		}
 
 		@Override
