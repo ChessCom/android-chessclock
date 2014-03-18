@@ -21,7 +21,7 @@ public class GameAnalysisItem implements Parcelable {
 	private int topPlayerPremiumStatus;
 	private int bottomPlayerPremiumStatus;
 	private int userSide;
-	private boolean isFinished;
+	private boolean allowUseComp;
 
 	public GameAnalysisItem() {
 	}
@@ -141,12 +141,12 @@ public class GameAnalysisItem implements Parcelable {
 		this.userSide = userSide;
 	}
 
-	public boolean isFinished() {
-		return isFinished;
+	public boolean isAllowUseComp() {
+		return allowUseComp;
 	}
 
-	public void setFinished(boolean isFinished) {
-		this.isFinished = isFinished;
+	public void setAllowUseComp(boolean isFinished) {
+		this.allowUseComp = isFinished;
 	}
 
 	public void copyLabelConfig(GameBaseFragment.LabelsConfig labelsConfig) {
@@ -193,7 +193,7 @@ public class GameAnalysisItem implements Parcelable {
 		topPlayerPremiumStatus = in.readInt();
 		bottomPlayerPremiumStatus = in.readInt();
 		userSide = in.readInt();
-		isFinished = in.readByte() != 0x00;
+		allowUseComp = in.readByte() != 0x00;
 	}
 
 	@Override
@@ -217,7 +217,7 @@ public class GameAnalysisItem implements Parcelable {
 		dest.writeInt(topPlayerPremiumStatus);
 		dest.writeInt(bottomPlayerPremiumStatus);
 		dest.writeInt(userSide);
-		dest.writeByte((byte) (isFinished ? 0x01 : 0x00));
+		dest.writeByte((byte) (allowUseComp ? 0x01 : 0x00));
 	}
 
 	@SuppressWarnings("unused")

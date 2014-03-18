@@ -446,7 +446,7 @@ public class GameAnalyzeFragment extends GameBaseFragment implements GameAnalysi
 		}
 
 		controlsView.enableGameControls(false);
-		controlsView.showVsComp(analysisItem.isFinished());
+		controlsView.showVsComp(analysisItem.isAllowUseComp());
 
 		boardView = (ChessBoardAnalysisView) view.findViewById(R.id.boardview);
 		boardView.setFocusable(true);

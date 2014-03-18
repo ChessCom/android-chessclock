@@ -710,6 +710,7 @@ public class GameDailyFragment extends GameBaseFragment implements GameDailyFace
 		analysisItem.setFen(currentGame.getStartingFenPosition());
 		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
 		analysisItem.copyLabelConfig(labelsConfig);
+		analysisItem.setAllowUseComp(false);
 
 		getActivityFace().openFragment(GameAnalyzeDailyFragment.createInstance(analysisItem, gameId));
 	}

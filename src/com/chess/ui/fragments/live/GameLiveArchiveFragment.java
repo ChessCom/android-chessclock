@@ -403,7 +403,7 @@ public class GameLiveArchiveFragment extends GameBaseFragment implements GameDai
 		analysisItem.setFen(FenHelper.DEFAULT_FEN);
 		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
 		analysisItem.copyLabelConfig(labelsConfig);
-		analysisItem.setFinished(true);
+		analysisItem.setAllowUseComp(true);
 
 		getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
 	}

@@ -720,8 +720,10 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			getActivityFace().openFragment(new SettingsGeneralFragment());
 		}
 
-		optionsSelectFragment.dismiss();
-		optionsSelectFragment = null;
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment.dismiss();
+			optionsSelectFragment = null;
+		}
 	}
 
 	@Override

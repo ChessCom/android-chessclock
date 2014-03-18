@@ -318,8 +318,10 @@ public class GameWelcomeCompFragment extends GameBaseFragment implements GameCom
 			getActivityFace().openFragment(SettingsGeneralFragment.createInstance(SettingsGeneralFragment.WELCOME_MODE));
 		}
 
-		optionsSelectFragment.dismiss();
-		optionsSelectFragment = null;
+		if (optionsSelectFragment != null) {
+			optionsSelectFragment.dismiss();
+			optionsSelectFragment = null;
+		}
 	}
 
 	@Override

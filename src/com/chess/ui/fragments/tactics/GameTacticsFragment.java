@@ -982,6 +982,7 @@ public class GameTacticsFragment extends GameBaseFragment implements GameTactics
 		analysisItem.setFen(trainerData.getInitialFen());
 		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
 		analysisItem.copyLabelConfig(labelsConfig);
+		analysisItem.setAllowUseComp(true);
 
 		getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
 	}

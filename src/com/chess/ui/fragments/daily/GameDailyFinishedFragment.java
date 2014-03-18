@@ -499,7 +499,7 @@ public class GameDailyFinishedFragment extends GameBaseFragment implements GameD
 		analysisItem.setFen(FenHelper.DEFAULT_FEN);
 		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
 		analysisItem.copyLabelConfig(labelsConfig);
-		analysisItem.setFinished(true);
+		analysisItem.setAllowUseComp(true);
 
 		getActivityFace().openFragment(GameAnalyzeDailyFragment.createInstance(analysisItem, gameId));
 	}

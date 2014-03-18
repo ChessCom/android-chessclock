@@ -360,6 +360,7 @@ public class GameLessonFragment extends GameBaseFragment implements GameLessonFa
 		analysisItem.setFen(getBoardFace().generateFullFen());
 		analysisItem.setMovesList(getBoardFace().getMoveListSAN());
 		analysisItem.copyLabelConfig(labelsConfig);
+		analysisItem.setAllowUseComp(true);
 
 		getActivityFace().openFragment(GameAnalyzeFragment.createInstance(analysisItem));
 	}
