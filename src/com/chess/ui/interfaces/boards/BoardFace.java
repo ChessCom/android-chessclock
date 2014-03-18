@@ -42,9 +42,9 @@ public interface BoardFace {
 
 	boolean makeMove(Move m, boolean playSound);
 
-	boolean makeHintMove(Move m);
+	boolean makeTempMove(Move m, boolean playSound);
 
-	void restoreBoardAfterHint();
+	void restoreBoardAfterTempMove();
 
 	boolean takeBack();
 

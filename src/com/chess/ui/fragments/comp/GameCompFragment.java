@@ -424,7 +424,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 				boardView.resetValidMoves();
 
 				if (boardView.isHint()) {
-					boardFace.makeHintMove(move);
+					boardFace.makeTempMove(move, true);
 					boardView.invalidate();
 
 					handler.postDelayed(reverseHintTask, ChessBoardCompView.HINT_REVERSE_DELAY);
@@ -450,7 +450,7 @@ public class GameCompFragment extends GameBaseFragment implements GameCompFace, 
 			boardView.setMoveAnimator(getBoardFace().getLastMove(), false);
 			getBoardFace().takeBack();
 
-			getBoardFace().restoreBoardAfterHint();
+			getBoardFace().restoreBoardAfterTempMove();
 
 			boardView.setHint(false);
 			getControlsView().enableGameControls(true);

@@ -112,7 +112,7 @@ public class ChessBoard implements BoardFace {
 	protected int ply;
 	private int[][] history = new int[SQUARES_CNT][SQUARES_CNT];
 	protected HistoryData[] histDat = new HistoryData[HIST_STACK];
-	private HistoryData hintHistoryData;
+	private HistoryData tempHistoryData;
 
 	public static final String[] whitePieceImageCodes = new String[]{"wp", "wn", "wb", "wr", "wq", "wk"};
 	public static final String[] blackPieceImageCodes = new String[]{"bp", "bn", "bb", "br", "bq", "bk"};
@@ -802,9 +802,9 @@ public class ChessBoard implements BoardFace {
 	}
 
 	@Override
-	public boolean makeHintMove(Move move) {
-		hintHistoryData = histDat[ply];
-		return makeMove(move);
+	public boolean makeTempMove(Move move, boolean playSound) {
+		tempHistoryData = histDat[ply];
+		return makeMove(move, playSound);
 	}
 
 	/**
@@ -1367,8 +1367,8 @@ public class ChessBoard implements BoardFace {
 
 
 	@Override
-	public void restoreBoardAfterHint() {
-		histDat[ply] = hintHistoryData;
+	public void restoreBoardAfterTempMove() {
+		histDat[ply] = tempHistoryData;
 	}
 
 	/**
@@ -1510,6 +1510,7 @@ public class ChessBoard implements BoardFace {
 
 	@Override
 	public boolean isCurrentPositionLatest() {
+		// todo: check for Comp mode and other modes, it should check for ply == movesCount looks like
 		return ply == 0 && movesCount == 0 || ply < movesCount;
 	}
 
@@ -1556,7 +1557,6 @@ public class ChessBoard implements BoardFace {
 		if (movesCount > 0) {
 			movesArray[movesCount - 1] = addCheckmateSign(movesArray[movesCount - 1]);
 		}
-
 
 		return movesArray;
 	}
@@ -2072,8 +2072,9 @@ public class ChessBoard implements BoardFace {
 		boolean found = false;
 		List<Move> validMoves = generateLegalMoves();
 		for (Move validMove : validMoves) {   // compute available moves
-			if (makeMove(validMove, false)) {  // TODO replace with generatePossibleMove method
+			if (makeTempMove(validMove, false)) {  // TODO replace with generatePossibleMove method
 				takeBack();
+				restoreBoardAfterTempMove();
 				found = true;
 				break;
 			}
@@ -2155,9 +2156,10 @@ public class ChessBoard implements BoardFace {
 
 		//String movesStr = new String();
 		for (Move move : moves) {
-			if (makeMove(move, false)) {
+			if (makeTempMove(move, false)) {
 				//movesStr += Symbol.SPACE + move;
 				takeBack();
+				restoreBoardAfterTempMove();
 				validMoves.add(move);
 			}
 		}
@@ -2223,7 +2225,10 @@ public class ChessBoard implements BoardFace {
 	}
 
 	public String addCheckmateSign(String move) {
-		if (isPerformCheck(side) && !isPossibleToMakeMoves()) {
+
+		boolean currentPositionLatest = ply == movesCount;
+
+		if (currentPositionLatest && isPerformCheck(side) && !isPossibleToMakeMoves()) {
 			return move.substring(0, move.length() - 1) + CHECKMATE_SIGN;
 		}
 		return move;
