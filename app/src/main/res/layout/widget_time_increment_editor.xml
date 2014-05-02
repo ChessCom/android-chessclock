@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#ffffff"
+	android:orientation="vertical"
+	android:paddingLeft="8dp"
+	android:paddingRight="8dp">
+
+	<RadioGroup
+		android:id="@+id/radio_time_increment_type"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="@dimen/radio_group_margin_top"
+		android:gravity="center_horizontal"
+		android:orientation="horizontal">
+
+		<RadioButton
+			android:id="@+id/radio_delay"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="6dp"
+			android:text="@string/radio_delay_title"
+			android:textSize="@dimen/increments_text_size" />
+
+		<RadioButton
+			android:id="@+id/radio_bronstein"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="6dp"
+			android:text="@string/radio_bronstein_title"
+			android:textSize="@dimen/increments_text_size" />
+
+		<RadioButton
+			android:id="@+id/radio_fischer"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="6dp"
+			android:text="@string/radio_fischer_title"
+			android:textSize="@dimen/increments_text_size" />
+	</RadioGroup>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1px"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_marginTop="@dimen/radio_group_divider_margin_top"
+		android:background="@color/bg_idle_clock_button_gradient_end_color" />
+
+
+	<TextView
+		android:id="@+id/time_increment_type_subtitle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_margin="4dp"
+		android:gravity="center"
+		android:text="Players receive a full increment."
+		android:textColor="@android:color/darker_gray"
+		android:textSize="@dimen/increment_subtitle_text_size" />
+
+	<include layout="@layout/widget_time_picker" />
+
+</LinearLayout>

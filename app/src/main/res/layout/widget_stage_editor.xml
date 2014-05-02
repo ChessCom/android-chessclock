@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#ffffff"
+	android:orientation="vertical"
+	android:paddingLeft="16dp"
+	android:paddingRight="16dp"
+	android:paddingTop="@dimen/stage_editor_padding_top">
+
+	<RelativeLayout
+		android:id="@+id/stage_moves_container"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<TextView
+			android:id="@+id/stage_moves_title"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignBaseline="@+id/stage_moves_edit_text"
+			android:layout_marginLeft="16dp"
+			android:text="Moves"
+			android:textColor="@android:color/black"
+			android:textSize="16sp" />
+
+		<EditText
+			android:id="@+id/stage_moves_edit_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="16dp"
+			android:layout_toRightOf="@id/stage_moves_title"
+			android:gravity="right"
+			android:imeOptions="actionDone"
+			android:maxLength="3"
+			android:numeric="integer"
+			android:paddingRight="16dp"
+			android:singleLine="true"
+			android:text="2"
+			android:textColor="@android:color/darker_gray"
+			android:textSize="18sp" />
+
+	</RelativeLayout>
+
+	<include layout="@layout/widget_time_picker" />
+
+</LinearLayout>

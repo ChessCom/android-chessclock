@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chess.chessclock.views.TimeControlCheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/time_control_text"
+	android:layout_width="match_parent"
+	android:layout_height="52dp"
+	android:checkMark="@drawable/list_check_mark"
+	android:ellipsize="end"
+	android:gravity="center_vertical"
+	android:singleLine="true"
+	android:textSize="@dimen/list_item_text_size" />

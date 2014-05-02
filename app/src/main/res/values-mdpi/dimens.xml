@@ -1,0 +1,18 @@
+<resources>
+
+	<!-- Clock timer screen -->
+	<dimen name="clock_button_stock_width">1px</dimen>
+	<dimen name="clock_button_corner_radius">15dp</dimen>
+	<dimen name="clock_timer_textSize_small">105sp</dimen>
+	<dimen name="clock_timer_textSize_normal">155sp</dimen>
+	<dimen name="clock_timer_moves_text">22.5sp</dimen>
+	<dimen name="clock_btn_height">285dp</dimen>
+	<dimen name="clock_timer_stage_marker_size">17.5dp</dimen>
+	<dimen name="clock_menu_btns_size">90sp</dimen>
+
+	<!-- Settings screen -->
+	<dimen name="btn_start_textSize">24sp</dimen>
+	<dimen name="btn_start_height">52dp</dimen>
+	<dimen name="list_item_text_size">16sp</dimen>
+
+</resources>

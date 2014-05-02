@@ -1,0 +1,7 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item android:drawable="@color/bg_finished_clock_button_gradient_end_color" android:state_pressed="true" />
+
+	<item android:drawable="@color/bg_finished_clock_button_gradient_start_color" />
+
+</selector>

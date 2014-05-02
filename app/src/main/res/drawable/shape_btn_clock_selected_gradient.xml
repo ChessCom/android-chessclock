@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+	android:dither="true"
+	android:shape="rectangle">
+
+	<stroke
+		android:width="@dimen/clock_button_stock_width"
+		android:color="@color/clock_button_stroke_color" />
+
+	<gradient
+		android:angle="135"
+		android:endColor="@color/bg_pressed_clock_button_gradient_end_color"
+		android:startColor="@color/bg_pressed_clock_button_gradient_start_color" />
+
+	<corners
+		android:bottomLeftRadius="@dimen/clock_button_corner_radius"
+		android:bottomRightRadius="@dimen/clock_button_corner_radius"
+		android:topLeftRadius="@dimen/clock_button_corner_radius"
+		android:topRightRadius="@dimen/clock_button_corner_radius" />
+</shape>

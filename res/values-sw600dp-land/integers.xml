@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-	<integer name="home_daily_columns">3</integer>
-	<integer name="columns_in_grid_view">2</integer>
-</resources>

@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+	<!-- Edit Time Control settings, should appear as action button -->
+	<item
+		android:id="@+id/action_edit"
+		android:icon="@drawable/ic_action_multi_select"
+		android:title="@string/action_edit"
+		app:showAsAction="always" />
+
+	<!-- Add new Time Control setting,  should appear as action button -->
+	<item
+		android:id="@+id/action_new"
+		android:icon="@drawable/ic_action_new_time_control"
+		android:title="@string/action_add_new"
+		app:showAsAction="withText|always" />
+
+</menu>
