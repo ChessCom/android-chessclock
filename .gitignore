@@ -3,5 +3,5 @@
 /.idea/workspace.xml
 .DS_Store
 /.idea
-/*.iml
+*.iml
 /app/app.iml
