@@ -17,60 +17,41 @@
 		android:orientation="horizontal"
 		>
 
-		<FrameLayout
-			android:layout_width="wrap_content"
+		<Button
+			android:id="@+id/settings"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			>
+			android:layout_weight="1"
+			android:background="#00000000"
+			android:gravity="left"
+			android:text="@string/btn_menu_settings"
+			android:textColor="@color/bg_clock_settings"
+			android:textSize="@dimen/clock_menu_btns_size"
+			/>
 
-			<Button
-				android:id="@+id/settings"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginRight="@dimen/clock_menu_btn_margin"
-				android:background="#00000000"
-				android:gravity="center"
-				android:text="@string/btn_menu_settings"
-				android:textColor="@color/bg_clock_settings"
-				android:textSize="@dimen/clock_menu_btns_size"
-				/>
-
-		</FrameLayout>
-
-		<FrameLayout
-			android:layout_width="wrap_content"
+		<Button
+			android:id="@+id/resume_pause_toggle"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			>
+			android:layout_weight="1"
+			android:background="#00000000"
+			android:gravity="center"
+			android:textColor="@color/bg_clock_settings"
+			android:textSize="@dimen/clock_menu_btns_size"
+			/>
 
-			<Button
-				android:id="@+id/resume_pause_toggle"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:background="#00000000"
-				android:textColor="@color/bg_clock_settings"
-				android:textSize="@dimen/clock_menu_btns_size"
-				/>
-
-		</FrameLayout>
-
-		<FrameLayout
-			android:layout_width="wrap_content"
+		<Button
+			android:id="@+id/reset"
+			android:layout_width="0dp"
 			android:layout_height="wrap_content"
-			>
-
-			<Button
-				android:id="@+id/reset"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="@dimen/clock_menu_btn_margin"
-				android:background="#00000000"
-				android:gravity="center"
-				android:rotationY="180"
-				android:text="@string/btn_reset_settings"
-				android:textColor="@color/bg_clock_settings"
-				android:textSize="@dimen/clock_menu_btns_size"
-				/>
-
-		</FrameLayout>
+			android:layout_weight="1"
+			android:background="#00000000"
+			android:gravity="right"
+			android:rotationY="180"
+			android:text="@string/btn_reset_settings"
+			android:textColor="@color/bg_clock_settings"
+			android:textSize="@dimen/clock_menu_btns_size"
+			/>
 
 	</LinearLayout>
 
