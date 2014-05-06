@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 import com.chess.clock.dialog.StageEditorDialog;
 import com.chess.clock.dialog.TimePickerDialog;
 import com.chess.clock.engine.Stage;

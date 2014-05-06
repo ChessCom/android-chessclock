@@ -11,7 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.fragments.SettingsFragment;
 

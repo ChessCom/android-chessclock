@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.CheckedTextView;
 
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 
 /**
  * Custom CheckedTextView making text color also sensitive to checked state.

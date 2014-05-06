@@ -16,7 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 import android.widget.NumberPicker.Formatter;
 
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 
 public class TimePickerView extends FrameLayout {
 

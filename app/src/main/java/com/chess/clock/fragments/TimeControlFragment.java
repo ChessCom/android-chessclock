@@ -23,7 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 import com.chess.clock.adapters.StageAdapter;
 import com.chess.clock.dialog.StageEditorDialog;
 import com.chess.clock.dialog.TimeIncrementEditorDialog;

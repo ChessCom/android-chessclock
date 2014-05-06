@@ -9,7 +9,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 import com.chess.clock.engine.TimeIncrement;
 
 public class TimeIncrementEditorView extends TimePickerView {

@@ -1,4 +1,4 @@
-package com.chess.clock.app;
+package com.chess.clock.activities;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.chess.clock.R;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlManager;
 import com.chess.clock.fragments.SettingsFragment;

@@ -25,9 +25,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.chess.clock.adapters.TimeControlCABAdapter;
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 import com.chess.clock.adapters.TimeControlAdapter;
-import com.chess.clock.app.SettingsActivity;
+import com.chess.clock.activities.SettingsActivity;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.util.MultiSelectionUtil;

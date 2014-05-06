@@ -11,13 +11,13 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.chess.clock.app.ClockTimersActivity;
+import com.chess.clock.activities.ClockTimersActivity;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.util.Args;
 
 // Get access to the app resources, since this class is in a sub-package.
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 
 /**
  * Background Service used to manage a Chess Clock.

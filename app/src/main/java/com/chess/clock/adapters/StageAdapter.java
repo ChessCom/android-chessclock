@@ -15,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.StageManager;
 import com.chess.clock.fragments.TimeControlFragment;

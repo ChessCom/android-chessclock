@@ -7,7 +7,7 @@ import android.support.v4.app.DialogFragment;
 
 import com.chess.clock.dialog.TimePickerDialog;
 
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 
 public class TimePickerDialogFragment extends DialogFragment {
 

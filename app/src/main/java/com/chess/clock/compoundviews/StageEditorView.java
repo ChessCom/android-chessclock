@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 
 public class StageEditorView extends TimePickerView {
 

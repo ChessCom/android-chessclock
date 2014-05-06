@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
 
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 
 public class TimeControlCheckBox extends CheckBox {
 

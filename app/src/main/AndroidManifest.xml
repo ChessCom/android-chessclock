@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.chess.clock.app"
+	package="com.chess.clock"
 	>
 
 	<uses-sdk
@@ -18,7 +18,7 @@
 
 		<!-- Activity that displays the players timers during a game -->
 		<activity
-			android:name="com.chess.clock.app.ClockTimersActivity"
+			android:name="com.chess.clock.activities.ClockTimersActivity"
 			android:launchMode="singleTask"
 			android:theme="@android:style/Theme.Holo.NoActionBar">
 			<intent-filter>
@@ -30,7 +30,7 @@
 
 		<!-- Setup Activity to CRUD Time Controls -->
 		<activity
-			android:name="com.chess.clock.app.SettingsActivity"
+			android:name="com.chess.clock.activities.SettingsActivity"
 			android:label="@string/title_activity_settings"></activity>
 
 		<!-- Chess clock engine service -->

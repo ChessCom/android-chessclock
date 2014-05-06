@@ -6,7 +6,7 @@ import android.widget.Checkable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.chess.clock.app.R;
+import com.chess.clock.R;
 
 public class CheckableLinearLayout extends LinearLayout implements Checkable {
 
