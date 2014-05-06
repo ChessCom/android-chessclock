@@ -4,7 +4,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="52dp"
 	android:gravity="center_vertical"
-	android:orientation="horizontal">
+	android:orientation="horizontal"
+	>
 
 	<!-- Note: CheckBox must have the following attributes set
 		to false to parent behave correctly: focusable,
@@ -15,7 +16,8 @@
 		android:layout_height="wrap_content"
 		android:clickable="false"
 		android:focusable="false"
-		android:focusableInTouchMode="false" />
+		android:focusableInTouchMode="false"
+		/>
 
 	<TextView
 		android:id="@+id/time_control_text"
@@ -25,12 +27,14 @@
 		android:ellipsize="end"
 		android:singleLine="true"
 		android:text="Sample"
-		android:textSize="@dimen/list_item_text_size" />
+		android:textSize="@dimen/list_item_text_size"
+		/>
 
 	<FrameLayout
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_marginRight="8dp">
+		android:layout_marginRight="8dp"
+		>
 
 		<!-- Note: ImageButton must have the following attributes set
 		to false to parent behave correctly: focusable,
@@ -40,7 +44,8 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="right"
-			android:background="@drawable/ic_action_edit" />
+			android:background="@drawable/ic_action_edit"
+			/>
 
 	</FrameLayout>
 

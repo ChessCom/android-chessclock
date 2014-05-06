@@ -3,19 +3,14 @@ package com.chess.chessclock.app;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.res.Configuration;
-import android.graphics.PixelFormat;
+import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.TypedValue;
@@ -24,10 +19,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.support.v4.app.DialogFragment;
-
 import com.chess.chessclock.engine.CountDownTimer;
 import com.chess.chessclock.engine.Stage;
 import com.chess.chessclock.engine.TimeControlParser;
@@ -63,12 +55,7 @@ public class ClockTimersActivity extends FragmentActivity {
 	 * True when this activity is bound to chess clock service.
 	 */
 	boolean mBound = false;
-	/**
-	 * UI shapes
-	 */
-	Drawable mShapeBtnClockIdleGradient;
-	Drawable mShapeBgBtnClockRunning;
-	Drawable mShapeBtnClockFinished;
+
 	/**
 	 * Settings Activity request code
 	 */
@@ -88,8 +75,8 @@ public class ClockTimersActivity extends FragmentActivity {
 	/**
 	 * Chess Clock Buttons and Settings widgets.
 	 */
-	private ImageButton mPlayerOneImgButton;
-	private ImageButton mPlayerTwoImgButton;
+	private Button mPlayerOneImgButton;
+	private Button mPlayerTwoImgButton;
 	private Button mSettingsButton;
 	private Button mPauseButton;
 	private Button mResetButton;
@@ -499,13 +486,6 @@ public class ClockTimersActivity extends FragmentActivity {
 		}
 	}
 
-	@Override
-	public void onAttachedToWindow() {
-		super.onAttachedToWindow();
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DITHER);
-		getWindow().setFormat(PixelFormat.RGBA_8888);
-	}
-
 	/**
 	 * Called when Activity is created.
 	 *
@@ -516,12 +496,8 @@ public class ClockTimersActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		int layout = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
-				getProperLandascapeLayout() : R.layout.activity_clock_timers;
+				getProperLandscapeLayout() : R.layout.activity_clock_timers;
 		setContentView(layout);
-
-		// In some tablets, the buttons gradients have dithering, so they must
-		// be created in code and dithering set to true.
-		initShapes();
 
 		playerOneMoveSound = MediaPlayer.create(getApplicationContext(), R.raw.chess_clock_switch1);
 		playerTwoMoveSound = MediaPlayer.create(getApplicationContext(), R.raw.chess_clock_switch2);
@@ -557,7 +533,7 @@ public class ClockTimersActivity extends FragmentActivity {
 	 *
 	 * @return Layout to be inflated.
 	 */
-	private int getProperLandascapeLayout() {
+	private int getProperLandscapeLayout() {
 
 		Display display = ((WindowManager)
 				getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
@@ -571,21 +547,6 @@ public class ClockTimersActivity extends FragmentActivity {
 				Log.d(TAG, "Getting default Landscape Layout");
 				return R.layout.activity_clock_timers;
 		}
-	}
-
-	/**
-	 * Fix dithering problem on button's gradients.
-	 */
-	private void initShapes() {
-
-		mShapeBtnClockIdleGradient = getResources().getDrawable(R.drawable.shape_btn_clock_idle_gradient);
-		mShapeBtnClockIdleGradient.setDither(true);
-
-		mShapeBgBtnClockRunning = getResources().getDrawable(R.drawable.bg_btn_clock_running);
-		mShapeBgBtnClockRunning.setDither(true);
-
-		mShapeBtnClockFinished = getResources().getDrawable(R.drawable.shape_btn_clock_finished_gradient);
-		mShapeBtnClockFinished.setDither(true);
 	}
 
 	/**
@@ -767,8 +728,8 @@ public class ClockTimersActivity extends FragmentActivity {
 	protected void initWidgetReferences() {
 
 		// Save references
-		mPlayerOneImgButton = (ImageButton) findViewById(R.id.playerOneButton);
-		mPlayerTwoImgButton = (ImageButton) findViewById(R.id.playerTwoButton);
+		mPlayerOneImgButton = (Button) findViewById(R.id.playerOneButton);
+		mPlayerTwoImgButton = (Button) findViewById(R.id.playerTwoButton);
 		mSettingsButton = (Button) findViewById(R.id.settings);
 		mPauseButton = (Button) findViewById(R.id.resume_pause_toggle);
 		mResetButton = (Button) findViewById(R.id.reset);
@@ -789,42 +750,43 @@ public class ClockTimersActivity extends FragmentActivity {
 	 * Change buttons and timers UI according to TimerState.
 	 */
 	private void updateUIState() {
+		Resources resources = getResources();
 		Log.d(TAG, "Updating UI state to: " + mTimersState);
 		switch (mTimersState) {
 			case PAUSED:
-				mPlayerOneImgButton.setBackgroundDrawable(mShapeBtnClockIdleGradient);
-				mPlayerTwoImgButton.setBackgroundDrawable(mShapeBtnClockIdleGradient);
-				mPlayerOneTimerTextView.setTextColor(getResources().getColor(R.color.clock_timer_idle_textColor));
-				mPlayerTwoTimerTextView.setTextColor(getResources().getColor(R.color.clock_timer_idle_textColor));
+				mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+				mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+				mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
+				mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
 				break;
 			case PLAYER_ONE_RUNNING:
-				mPlayerOneImgButton.setBackgroundDrawable(mShapeBgBtnClockRunning);
-				mPlayerTwoImgButton.setBackgroundDrawable(mShapeBtnClockIdleGradient);
-				mPlayerOneTimerTextView.setTextColor(getResources().getColor(R.color.clock_timer_selected_textColor));
-				mPlayerTwoTimerTextView.setTextColor(getResources().getColor(R.color.clock_timer_idle_textColor));
+				mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_btn_clock_running));
+				mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+				mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
+				mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
 				mPauseButton.setVisibility(View.VISIBLE);
 				mPauseButton.setText(getString(R.string.btn_pause_settings));
 				break;
 			case PLAYER_TWO_RUNNING:
-				mPlayerOneImgButton.setBackgroundDrawable(mShapeBtnClockIdleGradient);
-				mPlayerTwoImgButton.setBackgroundDrawable(mShapeBgBtnClockRunning);
-				mPlayerOneTimerTextView.setTextColor(getResources().getColor(R.color.clock_timer_idle_textColor));
-				mPlayerTwoTimerTextView.setTextColor(getResources().getColor(R.color.clock_timer_selected_textColor));
+				mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+				mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_btn_clock_running));
+				mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
+				mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
 				mPauseButton.setVisibility(View.VISIBLE);
 				mPauseButton.setText(getString(R.string.btn_pause_settings));
 				break;
 			case PLAYER_ONE_FINISHED:
-				mPlayerOneImgButton.setBackgroundDrawable(mShapeBtnClockFinished);
-				mPlayerTwoImgButton.setBackgroundDrawable(mShapeBtnClockIdleGradient);
-				mPlayerOneTimerTextView.setTextColor(getResources().getColor(R.color.clock_timer_selected_textColor));
-				mPlayerTwoTimerTextView.setTextColor(getResources().getColor(R.color.clock_timer_idle_textColor));
+				mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_finished_gradient));
+				mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+				mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
+				mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
 				mPauseButton.setVisibility(View.INVISIBLE);
 				break;
 			case PLAYER_TWO_FINISHED:
-				mPlayerOneImgButton.setBackgroundDrawable(mShapeBtnClockIdleGradient);
-				mPlayerTwoImgButton.setBackgroundDrawable(mShapeBtnClockFinished);
-				mPlayerOneTimerTextView.setTextColor(getResources().getColor(R.color.clock_timer_idle_textColor));
-				mPlayerTwoTimerTextView.setTextColor(getResources().getColor(R.color.clock_timer_selected_textColor));
+				mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+				mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_finished_gradient));
+				mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
+				mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
 				mPauseButton.setVisibility(View.INVISIBLE);
 				break;
 		}

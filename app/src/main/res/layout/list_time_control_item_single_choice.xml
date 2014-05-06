@@ -7,4 +7,5 @@
 	android:ellipsize="end"
 	android:gravity="center_vertical"
 	android:singleLine="true"
-	android:textSize="@dimen/list_item_text_size" />
+	android:textSize="@dimen/list_item_text_size"
+	/>

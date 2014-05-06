@@ -5,11 +5,13 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:paddingBottom="16dp"
-	android:paddingTop="16dp">
+	android:paddingTop="16dp"
+	>
 
 	<ImageView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:src="@drawable/chesscom_logo"/>
+		android:src="@drawable/chesscom_logo"
+		/>
 
 </FrameLayout>

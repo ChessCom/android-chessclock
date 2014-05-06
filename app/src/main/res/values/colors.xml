@@ -2,12 +2,14 @@
 <resources>
 	<!-- Clock timers screen -->
 	<color name="clock_timers_activity_background">#FF312e2b</color>
-	<color name="bg_idle_clock_button_gradient_start_color">#514d48</color>
-	<color name="bg_idle_clock_button_gradient_end_color">#6f6862</color>
+	<color name="bg_idle_clock_button_gradient_start_color">#ff514d48</color>
+	<color name="bg_idle_clock_button_gradient_end_color">#ff514d48</color>
 	<color name="bg_clock_setting_button_normal">#6f6862</color>
 	<color name="bg_clock_setting_button_pressed">#ff59534e</color>
-	<color name="bg_pressed_clock_button_gradient_start_color">#e38427</color>
-	<color name="bg_pressed_clock_button_gradient_end_color">#eba249</color>
+	<color name="bg_active_default_clock_button_gradient_start_color">#e38427</color>
+	<color name="bg_active_default_clock_button_gradient_end_color">#eba249</color>
+	<color name="bg_active_pressed_clock_button_gradient_start_color">#ffc56927</color>
+	<color name="bg_active_pressed_clock_button_gradient_end_color">#ffd78f48</color>
 	<color name="bg_finished_clock_button_gradient_start_color">#ed3239</color>
 	<color name="bg_finished_clock_button_gradient_end_color">#ad2c33</color>
 	<color name="clock_button_stroke_color">#000000</color>

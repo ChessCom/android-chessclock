@@ -9,8 +9,8 @@
 
 	<gradient
 		android:angle="135"
-		android:endColor="@color/bg_active_default_clock_button_gradient_end_color"
-		android:startColor="@color/bg_active_default_clock_button_gradient_start_color" />
+		android:endColor="@color/bg_active_pressed_clock_button_gradient_end_color"
+		android:startColor="@color/bg_active_pressed_clock_button_gradient_start_color" />
 
 	<corners
 		android:bottomLeftRadius="@dimen/clock_button_corner_radius"

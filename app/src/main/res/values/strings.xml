@@ -60,7 +60,9 @@
 
 	<!-- Increment type spinner subtitles -->
 	<string name="delay_option_subtitle">The player\'s clock starts after the delay period.</string>
-	<string name="bronstein_option_subtitle">Players receive the used portion of the increment at the end of each turn.</string>
+	<string name="bronstein_option_subtitle">Players receive the used portion of the increment at the end of each
+		turn.
+	</string>
 	<string name="fischer_option_subtitle">Players receive the full increment at the end of each turn.</string>
 	<string name="hello_blank_fragment">Hello blank fragment</string>
 

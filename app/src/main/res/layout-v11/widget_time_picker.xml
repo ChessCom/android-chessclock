@@ -5,7 +5,8 @@
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:layout_gravity="center_horizontal"
-	android:orientation="horizontal">
+	android:orientation="horizontal"
+	>
 
 	<!-- hour -->
 	<NumberPicker
@@ -13,7 +14,8 @@
 		android:layout_width="70dp"
 		android:layout_height="wrap_content"
 		android:focusable="true"
-		android:focusableInTouchMode="true" />
+		android:focusableInTouchMode="true"
+		/>
 
 	<!-- "hours" divider -->
 	<TextView
@@ -26,7 +28,8 @@
 		android:text="hours"
 		android:textColor="@android:color/darker_gray"
 		android:textSize="@dimen/divider_text_size"
-		android:textStyle="italic" />
+		android:textStyle="italic"
+		/>
 
 	<!-- minute -->
 	<NumberPicker
@@ -35,7 +38,8 @@
 		android:layout_height="wrap_content"
 		android:layout_marginStart="2.5dp"
 		android:focusable="true"
-		android:focusableInTouchMode="true" />
+		android:focusableInTouchMode="true"
+		/>
 
 	<!-- "mins" divider -->
 	<TextView
@@ -48,7 +52,8 @@
 		android:text="mins"
 		android:textColor="@android:color/darker_gray"
 		android:textSize="@dimen/divider_text_size"
-		android:textStyle="italic" />
+		android:textStyle="italic"
+		/>
 
 	<!-- seconds -->
 	<NumberPicker
@@ -57,7 +62,8 @@
 		android:layout_height="wrap_content"
 		android:layout_marginStart="2.5dp"
 		android:focusable="true"
-		android:focusableInTouchMode="true" />
+		android:focusableInTouchMode="true"
+		/>
 
 	<!-- "secs" divider -->
 	<TextView
@@ -70,6 +76,7 @@
 		android:text="secs"
 		android:textColor="@android:color/darker_gray"
 		android:textSize="@dimen/divider_text_size"
-		android:textStyle="italic" />
+		android:textStyle="italic"
+		/>
 
 </LinearLayout>
