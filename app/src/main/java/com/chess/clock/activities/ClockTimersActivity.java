@@ -1,5 +1,6 @@
 package com.chess.clock.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -143,6 +144,8 @@ public class ClockTimersActivity extends FragmentActivity {
 
 			// Pause clock before going to settings menu
 			pauseClock();
+
+			showSystemUI();
 
 			Intent settingsIntent = new Intent(v.getContext(), SettingsActivity.class);
 			startActivityForResult(settingsIntent, SETTINGS_REQUEST_CODE);
@@ -575,7 +578,6 @@ public class ClockTimersActivity extends FragmentActivity {
 		updateUIState();
 	}
 
-
 	/**
 	 * Set to immersive mode for Build.VERSION_CODES.KITKAT only.
 	 * @param hasFocus
@@ -937,6 +939,19 @@ public class ClockTimersActivity extends FragmentActivity {
 	 */
 	private void formatMoves(TextView v, int moves) {
 		v.setText(String.format("%2d", moves));
+	}
+
+	/**
+	 * Removes full screen before.
+	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void showSystemUI() {
+		int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+		if (currentApiVersion >= Build.VERSION_CODES.KITKAT) {
+			mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+					| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+					| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+		}
 	}
 
 	/**
