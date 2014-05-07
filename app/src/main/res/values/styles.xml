@@ -17,6 +17,11 @@
 		<item name="actionMenuTextColor">#000000</item>
 	</style>
 
+	<!-- No Action bar Theme -->
+	<style name="TimersTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
+		<item name="android:windowNoTitle">true</item>
+	</style>
+
 	<!-- ActionBar styles -->
 	<style name="NormalActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
 		<item name="android:titleTextStyle">@style/NormalActionBarTitleText</item>

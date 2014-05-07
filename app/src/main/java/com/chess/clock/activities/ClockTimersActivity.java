@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.DialogFragment;
@@ -30,10 +31,12 @@ import com.chess.clock.service.ChessClockLocalService;
 public class ClockTimersActivity extends FragmentActivity {
 
 	private static final String TAG = ClockTimersActivity.class.getName();
+
 	/**
 	 * FRAGMENT TAGS
 	 */
 	private static final String TAG_RESET_DIALOG_FRAGMENT = "ResetDialogFragment";
+
 	/**
 	 * UI saveInstance Bundle Keys.
 	 */
@@ -44,15 +47,18 @@ public class ClockTimersActivity extends FragmentActivity {
 	private static final String STATE_PLAYER_ONE_MOVES_CONTAINER_VISIBLE_KEY = "PLAYER_ONE_MOVES_VISIBLE_KEY";
 	private static final String STATE_PLAYER_TWO_MOVES_CONTAINER_VISIBLE_KEY = "PLAYER_ONE_MOVES_VISIBLE_KEY";
 	private static final String STATE_LAST_TIME_PAUSED_ACTIVITY_KEY = "LAST_TIME_PAUSED_ACTIVITY_KEY";
+
 	/**
 	 * Shared Preferences Keys.
 	 */
 	private static final String SP_KEY_TIMERS_STATE = "timersState";
 	private static final String SP_KEY_TIMERS_STATE_PREVIOUS_TO_PAUSE = "timersStatePreviousToPause";
+
 	/**
 	 * Chess clock local service (clock engine).
 	 */
 	ChessClockLocalService mService;
+
 	/**
 	 * True when this activity is bound to chess clock service.
 	 */
@@ -62,6 +68,75 @@ public class ClockTimersActivity extends FragmentActivity {
 	 * Settings Activity request code
 	 */
 	private int SETTINGS_REQUEST_CODE = 1;
+
+	/**
+	 * UI
+	 */
+	private Button mPlayerOneImgButton;
+	private Button mPlayerTwoImgButton;
+	private Button mSettingsButton;
+	private Button mPauseButton;
+	private Button mResetButton;
+	private TextView mPlayerOneTimerTextView;
+	private TextView mPlayerTwoTimerTextView;
+	private TextView mPlayerOneMovesTextView;
+	private TextView mPlayerTwoMovesTextView;
+
+	/**
+	 * Utils
+	 */
+	private boolean mPlayerOneMovesContainerVisible = true;
+	private boolean mPlayerTwoMovesContainerVisible = true;
+	private long mTimeStampOnPauseActivity;
+	private View mDecorView;
+
+	/**
+	 * Clock button sounds.
+	 */
+	private MediaPlayer playerOneMoveSound;
+	private MediaPlayer playerTwoMoveSound;
+	private MediaPlayer clockFinished;
+
+	/**
+	 * Timers state.
+	 */
+	public enum TimersState {
+		PAUSED(0),
+		PLAYER_ONE_RUNNING(1),
+		PLAYER_TWO_RUNNING(2),
+		PLAYER_ONE_FINISHED(3),
+		PLAYER_TWO_FINISHED(4);
+
+		private final int value;
+
+		private TimersState(int value) {
+			this.value = value;
+		}
+
+		public static TimersState fromInteger(int type) {
+			switch (type) {
+				case 0:
+					return PAUSED;
+				case 1:
+					return PLAYER_ONE_RUNNING;
+				case 2:
+					return PLAYER_TWO_RUNNING;
+				case 3:
+					return PLAYER_ONE_FINISHED;
+				case 4:
+					return PLAYER_TWO_FINISHED;
+			}
+			return null;
+		}
+
+		public int getValue() {
+			return value;
+		}
+	}
+
+	private TimersState mTimersState;
+	private TimersState mTimersStatePreviousToPause;
+
 	private View.OnClickListener mSettingsButtonListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -74,31 +149,14 @@ public class ClockTimersActivity extends FragmentActivity {
 			overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
 		}
 	};
-	/**
-	 * Chess Clock Buttons and Settings widgets.
-	 */
-	private Button mPlayerOneImgButton;
-	private Button mPlayerTwoImgButton;
-	private Button mSettingsButton;
-	private Button mPauseButton;
-	private Button mResetButton;
-	/**
-	 * Clock Time display views.
-	 */
-	private TextView mPlayerOneTimerTextView;
-	private TextView mPlayerTwoTimerTextView;
-	/**
-	 * Utils
-	 */
-	private boolean mPlayerOneMovesContainerVisible = true;
-	private boolean mPlayerTwoMovesContainerVisible = true;
-	private long mTimeStampOnPauseActivity;
-	/**
-	 * Moves count.
-	 */
-	private TextView mPlayerOneMovesTextView;
-	private TextView mPlayerTwoMovesTextView;
-	private TimersState mTimersState;
+
+	private View.OnClickListener mPauseButtonListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			pauseClock();
+		}
+	};
+
 	private View.OnClickListener mResetButtonListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -110,7 +168,6 @@ public class ClockTimersActivity extends FragmentActivity {
 			showResetClockDialog();
 		}
 	};
-	private TimersState mTimersStatePreviousToPause;
 
 	private View.OnClickListener mPlayerOneButtonListener = new View.OnClickListener() {
 		@Override
@@ -200,13 +257,6 @@ public class ClockTimersActivity extends FragmentActivity {
 			}
 		}
 	};
-
-	/**
-	 * Clock button sounds.
-	 */
-	private MediaPlayer playerOneMoveSound;
-	private MediaPlayer playerTwoMoveSound;
-	private MediaPlayer clockFinished;
 
 	private int mPlayerOneTotalStageNumber;
 	private CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
@@ -456,13 +506,6 @@ public class ClockTimersActivity extends FragmentActivity {
 		}
 	};
 
-	private View.OnClickListener mPauseButtonListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			pauseClock();
-		}
-	};
-
 	/**
 	 * Update UI according to Settings Activity return code.
 	 *
@@ -501,6 +544,8 @@ public class ClockTimersActivity extends FragmentActivity {
 				getProperLandscapeLayout() : R.layout.activity_clock_timers;
 		setContentView(layout);
 
+		mDecorView = getWindow().getDecorView();
+
 		playerOneMoveSound = MediaPlayer.create(getApplicationContext(), R.raw.chess_clock_switch1);
 		playerTwoMoveSound = MediaPlayer.create(getApplicationContext(), R.raw.chess_clock_switch2);
 		clockFinished = MediaPlayer.create(getApplicationContext(), R.raw.chess_clock_time_ended);
@@ -528,6 +573,25 @@ public class ClockTimersActivity extends FragmentActivity {
 
 		// Update widgets style according to TimerState
 		updateUIState();
+	}
+
+
+	/**
+	 * Set to immersive mode for Build.VERSION_CODES.KITKAT only.
+	 * @param hasFocus
+	 */
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+		if (hasFocus && currentApiVersion >= Build.VERSION_CODES.KITKAT) {
+			mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+					| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+					| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+					| View.SYSTEM_UI_FLAG_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+		}
 	}
 
 	/**
@@ -873,43 +937,6 @@ public class ClockTimersActivity extends FragmentActivity {
 	 */
 	private void formatMoves(TextView v, int moves) {
 		v.setText(String.format("%2d", moves));
-	}
-
-	/**
-	 * Timers state.
-	 */
-	public enum TimersState {
-		PAUSED(0),
-		PLAYER_ONE_RUNNING(1),
-		PLAYER_TWO_RUNNING(2),
-		PLAYER_ONE_FINISHED(3),
-		PLAYER_TWO_FINISHED(4);
-
-		private final int value;
-
-		private TimersState(int value) {
-			this.value = value;
-		}
-
-		public static TimersState fromInteger(int type) {
-			switch (type) {
-				case 0:
-					return PAUSED;
-				case 1:
-					return PLAYER_ONE_RUNNING;
-				case 2:
-					return PLAYER_TWO_RUNNING;
-				case 3:
-					return PLAYER_ONE_FINISHED;
-				case 4:
-					return PLAYER_TWO_FINISHED;
-			}
-			return null;
-		}
-
-		public int getValue() {
-			return value;
-		}
 	}
 
 	/**
