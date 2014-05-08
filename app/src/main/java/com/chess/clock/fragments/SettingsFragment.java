@@ -40,6 +40,24 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
 	private static final String TAG = SettingsFragment.class.getName();
 
 	/**
+	 * This interface must be implemented by activities that contain this fragment to allow interaction.
+	 */
+	public interface OnSettingsListener {
+
+		public ArrayList<TimeControl> getCurrentTimeControls();
+
+		public int getCheckedTimeControlIndex();
+
+		public void setCheckedTimeControlIndex(int position);
+
+		public void loadTimeControl(int position);
+
+		public void addTimeControl();
+
+		public void removeTimeControl(int[] positions);
+	}
+
+	/**
 	 * Save Instance KEYS
 	 */
 	private static final String KEY_ACTION_MODE = "action_mode";
@@ -189,7 +207,7 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		if (mMultiSelectionController != null) {
+		if (mMultiSelectionController != null && mMultiSelectionController.isActionModeActive()) {
 			multiSelectionFinishedByOnDestroyView = true;
 			mMultiSelectionController.finish();
 		}
@@ -438,22 +456,7 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
 		}
 	}
 
-	/**
-	 * This interface must be implemented by activities that contain this fragment to allow interaction.
-	 */
-	public interface OnSettingsListener {
-		public ArrayList<TimeControl> getCurrentTimeControls();
 
-		public int getCheckedTimeControlIndex();
-
-		public void setCheckedTimeControlIndex(int position);
-
-		public void loadTimeControl(int position);
-
-		public void addTimeControl();
-
-		public void removeTimeControl(int[] positions);
-	}
 
 	/**
 	 * Reset dialog to be displayed when user presses the Reset widget.

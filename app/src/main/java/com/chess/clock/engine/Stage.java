@@ -11,6 +11,8 @@ import android.util.Log;
  */
 public class Stage implements Parcelable, Cloneable {
 
+	private final static String TAG = Stage.class.getName();
+
 	public static final Parcelable.Creator<Stage> CREATOR = new Parcelable.Creator<Stage>() {
 		public Stage createFromParcel(Parcel source) {
 			return new Stage(source);
@@ -20,7 +22,7 @@ public class Stage implements Parcelable, Cloneable {
 			return new Stage[size];
 		}
 	};
-	private final static String TAG = Stage.class.getName();
+
 	/**
 	 * Game Stage Type
 	 */
@@ -235,7 +237,7 @@ public class Stage implements Parcelable, Cloneable {
 	 * Reset Stage state and number of played moves.
 	 */
 	public void reset() {
-		mStageMoveCount = 1;
+		mStageMoveCount = 0;
 		mStageState = StageState.IDLE;
 	}
 

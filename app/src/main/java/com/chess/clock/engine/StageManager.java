@@ -137,7 +137,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
 
 			Stage changingStage;
 
-			// Removing the last one
+			// Removing the middle and last one
 			if (removeStageIdx > 0 && removeStageIdx == (getTotalStages() - 1)) {
 
 				// Change the previous one

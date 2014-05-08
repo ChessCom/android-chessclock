@@ -166,5 +166,9 @@ public class MultiSelectionUtil {
 			mActionMode = mActivity.startSupportActionMode(Controller.this);
 			return true;
 		}
+
+		public boolean isActionModeActive() {
+			return mActionMode != null;
+		}
 	}
 }
