@@ -1,0 +1,121 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#ffffff"
+	android:orientation="vertical"
+	android:paddingBottom="@dimen/activity_vertical_margin"
+	android:paddingLeft="@dimen/activity_horizontal_margin"
+	android:paddingRight="@dimen/activity_horizontal_margin"
+	android:paddingTop="@dimen/activity_vertical_margin"
+	>
+
+	<EditText
+		android:id="@+id/time_control_name"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="Name"
+		android:imeOptions="actionDone"
+		android:singleLine="true"
+		android:textColor="@android:color/darker_gray"
+		android:textSize="18sp"
+		/>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="32dp"
+		android:orientation="horizontal"
+		>
+
+		<TextView
+			android:id="@+id/stages_title_text"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="8dp"
+			android:text="STAGES"
+			android:textColor="@android:color/darker_gray"
+			android:textSize="18sp"
+			/>
+
+	</RelativeLayout>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1px"
+		android:layout_marginTop="8dp"
+		android:background="@android:color/darker_gray"
+		/>
+
+	<ListView
+		android:id="@+id/list_stages"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="#ffffff"
+		android:footerDividersEnabled="true"
+		/>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1px"
+		android:background="@android:color/darker_gray"
+		/>
+
+	<TextView
+		android:id="@+id/increment_title_text"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="8dp"
+		android:layout_marginTop="32dp"
+		android:text="INCREMENT"
+		android:textColor="@android:color/darker_gray"
+		android:textSize="18sp"
+		/>
+
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="1px"
+		android:layout_marginTop="8dp"
+		android:background="@android:color/darker_gray"
+		/>
+
+	<RelativeLayout
+		android:id="@+id/btn_edit_increment"
+		android:layout_width="match_parent"
+		android:layout_height="52dp"
+		android:background="@drawable/simple_list_item_bg"
+		android:clickable="true"
+		>
+
+		<TextView
+			android:id="@+id/increment_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
+			android:layout_marginLeft="8dp"
+			android:text="Type"
+			android:textColor="@android:color/black"
+			android:textSize="@dimen/time_control_list_text_size"
+			android:textStyle="bold"
+			/>
+
+		<TextView
+			android:id="@+id/increment_description"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
+			android:layout_marginRight="8dp"
+			android:text="Fischer, 5 secs"
+			android:textColor="@android:color/darker_gray"
+			android:textSize="@dimen/time_control_list_text_size"
+			/>
+
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="1px"
+			android:layout_alignParentBottom="true"
+			android:background="@android:color/darker_gray"
+			/>
+	</RelativeLayout>
+
+</LinearLayout>

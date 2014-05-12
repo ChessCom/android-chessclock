@@ -85,6 +85,8 @@ public class TimeIncrementEditorView extends TimePickerView {
 			windowManager.getDefaultDisplay().getMetrics(metrics);
 			switch (metrics.densityDpi) {
 				case DisplayMetrics.DENSITY_HIGH:
+				case DisplayMetrics.DENSITY_MEDIUM:
+				case DisplayMetrics.DENSITY_LOW:
 					findViewById(R.id.time_increment_type_subtitle).setVisibility(GONE);
 					break;
 			}

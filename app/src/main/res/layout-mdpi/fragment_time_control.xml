@@ -109,33 +109,42 @@
 				android:id="@+id/btn_edit_increment"
 				android:layout_width="match_parent"
 				android:layout_height="52dp"
+				android:orientation="vertical"
 				android:background="@drawable/simple_list_item_bg"
 				android:clickable="true"
 				>
 
-				<TextView
-					android:id="@+id/increment_label"
+				<LinearLayout
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_centerVertical="true"
-					android:layout_marginLeft="8dp"
-					android:text="Type"
-					android:textColor="@android:color/black"
-					android:textSize="@dimen/time_control_list_text_size"
-					android:textStyle="bold"
-					/>
+					android:orientation="vertical"
+					>
 
-				<TextView
-					android:id="@+id/increment_description"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_alignParentRight="true"
-					android:layout_centerVertical="true"
-					android:layout_marginRight="4dp"
-					android:text="Fischer, 5 secs"
-					android:textColor="@android:color/darker_gray"
-					android:textSize="@dimen/time_control_list_text_size"
-					/>
+					<TextView
+						android:id="@+id/increment_label"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="8dp"
+						android:text="Type"
+						android:textColor="@android:color/black"
+						android:textSize="@dimen/time_control_list_text_size"
+						android:textStyle="bold"
+						/>
+
+					<TextView
+						android:id="@+id/increment_description"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@id/increment_label"
+						android:layout_centerVertical="true"
+						android:layout_marginLeft="8dp"
+						android:text="Fischer, 5 secs"
+						android:textColor="@android:color/darker_gray"
+						android:textSize="@dimen/time_control_list_text_size"
+						/>
+
+				</LinearLayout>
 
 				<View
 					android:layout_width="match_parent"

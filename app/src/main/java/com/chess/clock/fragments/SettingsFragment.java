@@ -443,14 +443,21 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
 
 	public void startNewClock() {
 		int position = mItemChecked + mListView.getHeaderViewsCount();
+		Log.d(TAG,"Starting new clock on list position: " + position);
+
 		TimeControl timeControl = (TimeControl) mListView.getAdapter().getItem(position);
 		try {
-			TimeControl timeControlPlayerTwo = (TimeControl) timeControl.clone();
-			Intent startServiceIntent = ChessClockLocalService.getChessClockServiceIntent(getActivity().getApplicationContext(), timeControl, timeControlPlayerTwo);
-			getActivity().startService(startServiceIntent);
-			getActivity().setResult(getActivity().RESULT_OK);
-			getActivity().finish();
-			getActivity().overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
+			if(timeControl != null) {
+				TimeControl timeControlPlayerTwo = (TimeControl) timeControl.clone();
+				Intent startServiceIntent = ChessClockLocalService.getChessClockServiceIntent(getActivity().getApplicationContext(), timeControl, timeControlPlayerTwo);
+				getActivity().startService(startServiceIntent);
+				getActivity().setResult(getActivity().RESULT_OK);
+				getActivity().finish();
+				getActivity().overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
+			} else {
+				Log.w(TAG,"time control not available, ignoring start new clock");
+				Thread.dumpStack();
+			}
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}

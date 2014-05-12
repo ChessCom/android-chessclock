@@ -164,9 +164,16 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
 	 */
 	public boolean isSameTimeControlLoaded() {
 		int index = mTimeControlManager.getEditableTimeControlCheckIndex();
-		TimeControl tc = mTimeControlManager.getTimeControls().get(index);
-		String title = tc.getName();
-		return mBound && mService.getNameOfTimeControlRunning().equals(title);
+		if(index > 0 && index < mTimeControlManager.getTimeControls().size()) {
+			TimeControl tc = mTimeControlManager.getTimeControls().get(index);
+			String title = tc.getName();
+			return mBound && mService.getNameOfTimeControlRunning().equals(title);
+		} else {
+			Log.e(TAG, "isSameTimeControlLoaded got index out of bounds. index: "
+					+ index + " array size: " + mTimeControlManager.getTimeControls().size());
+			return false;
+		}
+
 	}
 
 	/**
