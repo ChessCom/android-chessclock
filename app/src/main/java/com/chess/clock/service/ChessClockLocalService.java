@@ -53,18 +53,13 @@ public class ChessClockLocalService extends Service {
 	private final long DEFAULT_COUNT_DOWN_INTERVAL = 100;
 
 	/**
-	 * Wake lock used to maintain device awake to run the service.
-	 */
-	private PowerManager.WakeLock mWakeLock;
-
-	/**
 	 * True if the game is on-going. Note: pause state still counts as game running.
 	 */
 	private boolean mChessGameRunning;
 
 	/**
 	 * Count down timer callback implementation to run when a timer is finished.
-	 * Removes foreground status and notification since the a player's clock stopped.
+	 * Removes foreground status and notification since the a player's clock is stopped.
 	 * Also releases wake lock acquired when the game started.
 	 */
 	private CountDownTimer.FinishCallback mFinishListener = new CountDownTimer.FinishCallback() {
@@ -75,12 +70,6 @@ public class ChessClockLocalService extends Service {
 
 			mPlayerOneTimer.stop();
 			mPlayerTwoTimer.stop();
-
-			// Release wakelock
-			if (mWakeLock.isHeld()) {
-				mWakeLock.release();
-				Log.v(TAG, "Releasing wake lock");
-			}
 
 			if (VERBOSE) Log.i(TAG, "#" + this.hashCode() + " Service and Game finished.");
 		}
@@ -133,7 +122,6 @@ public class ChessClockLocalService extends Service {
 		mPlayerTwoTimer.setFinishListener(mFinishListener);
 
 		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-		mWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, WAKE_LOCK_TAG);
 	}
 
 	@Override
@@ -206,8 +194,6 @@ public class ChessClockLocalService extends Service {
 						.setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
 						.build();
 
-		// Wake lock
-		mWakeLock.acquire();
 		Log.v(TAG, "Acquiring wake lock");
 
 		startForeground(R.string.foreground_service_started, notification);

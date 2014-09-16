@@ -7,9 +7,6 @@
 		android:minSdkVersion="8"
 		android:targetSdkVersion="19" />
 
-	<!-- Wake lock is required to maintain the clock timer alive if screen is off -->
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-
 	<application
 		android:allowBackup="true"
 		android:icon="@drawable/ic_launcher"

@@ -582,6 +582,7 @@ public class ClockTimersActivity extends FragmentActivity {
 	 * Set to immersive mode for Build.VERSION_CODES.KITKAT only.
 	 * @param hasFocus
 	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
