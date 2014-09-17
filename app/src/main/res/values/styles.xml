@@ -1,7 +1,7 @@
 <resources>
 
 	<!-- The theme applied to the application or activity -->
-	<style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+	<style name="AppTheme" parent="@style/Theme.AppCompat.Light">
 		<item name="android:actionBarStyle">@style/NormalActionBar</item>
 		<item name="android:actionModeStyle">@style/CABStyle</item>
 		<item name="android:actionModeBackground">@color/bg_settings_cab</item>
@@ -18,8 +18,8 @@
 	</style>
 
 	<!-- No Action bar Theme -->
-	<style name="TimersTheme" parent="@android:style/Theme.Light.NoTitleBar.Fullscreen">
-		<item name="android:windowNoTitle">true</item>
+	<style name="TimersTheme" parent="@style/Theme.AppCompat.Light">
+		<!--<item name="android:windowNoTitle">true</item>-->
 	</style>
 
 	<!-- ActionBar styles -->

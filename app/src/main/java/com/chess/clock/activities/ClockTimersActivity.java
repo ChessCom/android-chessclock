@@ -28,10 +28,18 @@ import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControlParser;
 import com.chess.clock.service.ChessClockLocalService;
+import com.chess.clock.statics.AppData;
 
 public class ClockTimersActivity extends FragmentActivity {
 
 	private static final String TAG = ClockTimersActivity.class.getName();
+
+	/**
+	 Shared preferences wrapper
+	 */
+	private AppData appData;
+
+	private boolean isFullScreen;
 
 	/**
 	 * FRAGMENT TAGS
@@ -543,6 +551,8 @@ public class ClockTimersActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		appData = new AppData(getApplicationContext());
+
 		int layout = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
 				getProperLandscapeLayout() : R.layout.activity_clock_timers;
 		setContentView(layout);
@@ -587,13 +597,19 @@ public class ClockTimersActivity extends FragmentActivity {
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+		isFullScreen = appData.getClockFullScreen();
 		if (hasFocus && currentApiVersion >= Build.VERSION_CODES.KITKAT) {
-			mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-					| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-					| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-					| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-					| View.SYSTEM_UI_FLAG_FULLSCREEN
-					| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+
+			if(isFullScreen) {
+				mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+						| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+						| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+						| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+						| View.SYSTEM_UI_FLAG_FULLSCREEN
+						| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+			} else {
+				mDecorView.setSystemUiVisibility(0);
+			}
 		}
 	}
 
@@ -948,7 +964,7 @@ public class ClockTimersActivity extends FragmentActivity {
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void showSystemUI() {
 		int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-		if (currentApiVersion >= Build.VERSION_CODES.KITKAT) {
+		if (currentApiVersion >= Build.VERSION_CODES.KITKAT && isFullScreen) {
 			mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
 					| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
 					| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);

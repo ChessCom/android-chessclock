@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,7 @@ import com.chess.clock.adapters.TimeControlAdapter;
 import com.chess.clock.activities.SettingsActivity;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.service.ChessClockLocalService;
+import com.chess.clock.statics.AppData;
 import com.chess.clock.util.MultiSelectionUtil;
 
 import java.util.ArrayList;
@@ -38,6 +40,16 @@ import java.util.ArrayList;
 public class SettingsFragment extends Fragment implements MultiSelectionUtil.MultiChoiceModeListener {
 
 	private static final String TAG = SettingsFragment.class.getName();
+
+	/**
+	 Shared preferences wrapper
+	  */
+	private AppData appData;
+
+	/**
+	 * FullScreen  menu item flag
+	 */
+	boolean isFullScreen;
 
 	/**
 	 * This interface must be implemented by activities that contain this fragment to allow interaction.
@@ -151,6 +163,8 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
 
 		try {
 			mListener = (OnSettingsListener) activity;
+			appData = new AppData(activity.getApplicationContext());
+			isFullScreen = appData.getClockFullScreen();
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
 					+ " must implement OnSettingsListener");
@@ -223,6 +237,11 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
+		int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+		if (currentApiVersion >= Build.VERSION_CODES.KITKAT) {
+			menu.findItem(R.id.action_full_screen).setChecked(isFullScreen);
+		}
+
 	}
 
 	@Override
@@ -238,6 +257,14 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
 				mStartBtn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
 						HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
 				return true;
+			case R.id.action_full_screen:
+				isFullScreen = !isFullScreen;
+				appData.setClockFullScreen(isFullScreen);
+				int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+				isFullScreen = appData.getClockFullScreen();
+				if (currentApiVersion >= Build.VERSION_CODES.HONEYCOMB) {
+					getActivity().invalidateOptionsMenu();
+				}
 			default:
 				return super.onOptionsItemSelected(item);
 		}

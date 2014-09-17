@@ -15,6 +15,7 @@
 	<string name="action_add_new">Add new</string>
 	<string name="action_delete">Delete</string>
 	<string name="dialog_clock_running_reset">Reset the clock?</string>
+	<string name="action_full_screen">Immervise mode</string>
 
 	<!-- Settings Fragment -->
 	<string name="settings_cab_title_time_controls_selected">selected</string>
