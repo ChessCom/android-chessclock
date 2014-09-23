@@ -237,10 +237,8 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-		if (currentApiVersion >= Build.VERSION_CODES.KITKAT) {
-			menu.findItem(R.id.action_full_screen).setChecked(isFullScreen);
-		}
+
+		menu.findItem(R.id.action_full_screen).setChecked(isFullScreen);
 
 	}
 
@@ -262,6 +260,13 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
 				appData.setClockFullScreen(isFullScreen);
 				int currentApiVersion = android.os.Build.VERSION.SDK_INT;
 				isFullScreen = appData.getClockFullScreen();
+
+				if(isFullScreen) {
+					((SettingsActivity)getActivity()).showFullScreen();
+				} else {
+					((SettingsActivity)getActivity()).hideFullScreen();
+				}
+
 				if (currentApiVersion >= Build.VERSION_CODES.HONEYCOMB) {
 					getActivity().invalidateOptionsMenu();
 				}

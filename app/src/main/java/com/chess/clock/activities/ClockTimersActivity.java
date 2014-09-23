@@ -153,7 +153,6 @@ public class ClockTimersActivity extends FragmentActivity {
 			// Pause clock before going to settings menu
 			pauseClock();
 
-			showSystemUI();
 
 			Intent settingsIntent = new Intent(v.getContext(), SettingsActivity.class);
 			startActivityForResult(settingsIntent, SETTINGS_REQUEST_CODE);
@@ -553,6 +552,17 @@ public class ClockTimersActivity extends FragmentActivity {
 
 		appData = new AppData(getApplicationContext());
 
+		// Full screen for pre-kitkat
+		int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+		if (currentApiVersion < Build.VERSION_CODES.KITKAT) {
+			boolean isFullScreen = appData.getClockFullScreen();
+			if(isFullScreen) {
+				hideStatusBar();
+			} else {
+				showStatusBar();
+			}
+		}
+
 		int layout = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ?
 				getProperLandscapeLayout() : R.layout.activity_clock_timers;
 		setContentView(layout);
@@ -610,7 +620,25 @@ public class ClockTimersActivity extends FragmentActivity {
 			} else {
 				mDecorView.setSystemUiVisibility(0);
 			}
+		} else if(hasFocus && currentApiVersion < Build.VERSION_CODES.KITKAT) {
+			if(isFullScreen) {
+				hideStatusBar();
+			} else {
+				showStatusBar();
+			}
 		}
+	}
+
+	public void hideStatusBar() {
+		WindowManager.LayoutParams attrs = getWindow().getAttributes();
+		attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+		getWindow().setAttributes(attrs);
+	}
+
+	public void showStatusBar() {
+		WindowManager.LayoutParams attrs = getWindow().getAttributes();
+		attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
+		getWindow().setAttributes(attrs);
 	}
 
 	/**

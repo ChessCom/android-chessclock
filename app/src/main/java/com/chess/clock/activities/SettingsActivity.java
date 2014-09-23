@@ -20,6 +20,7 @@ import com.chess.clock.engine.TimeControlManager;
 import com.chess.clock.fragments.SettingsFragment;
 import com.chess.clock.fragments.TimeControlFragment;
 import com.chess.clock.service.ChessClockLocalService;
+import com.chess.clock.statics.AppData;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,11 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
 	 */
 	private final String TAG_SETTINGS_FRAGMENT = "settings";
 	private final String TAG_TIME_CONTROL_FRAGMENT = "time_control";
+
+	/**
+	 Shared preferences wrapper
+	 */
+	private AppData appData;
 
 	/**
 	 * Chess clock local service (clock engine).
@@ -77,6 +83,8 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
+		appData = new AppData(getApplicationContext());
+
 		// This must be called before super.onCreate which performs initialization of all fragments
 		// and loaders. TimeControl objects initialization is required before that.
 		mTimeControlManager = new TimeControlManager(getApplicationContext(), savedInstanceState);
@@ -84,6 +92,13 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
 
 		// Perform initialization of all fragments and loaders.
 		super.onCreate(savedInstanceState);
+
+		boolean isFullScreen = appData.getClockFullScreen();
+		if(isFullScreen) {
+			showFullScreen();
+		} else {
+			hideFullScreen();
+		}
 
 		setContentView(R.layout.activity_settings);
 
@@ -157,6 +172,20 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+
+	public void showFullScreen() {
+		WindowManager.LayoutParams attrs = getWindow().getAttributes();
+		attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+		getWindow().setAttributes(attrs);
+
+	}
+
+	public void hideFullScreen() {
+		WindowManager.LayoutParams attrs = getWindow().getAttributes();
+		attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
+		getWindow().setAttributes(attrs);
 	}
 
 	/**
