@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-	android:dither="true"
-	android:shape="oval"
-	android:useLevel="false">
+       android:dither="true"
+       android:shape="oval"
+       android:useLevel="false">
 
-	<solid android:color="@color/clock_stage_icon_color" />
+    <solid android:color="@color/clock_stage_icon_color"/>
 
 </shape>

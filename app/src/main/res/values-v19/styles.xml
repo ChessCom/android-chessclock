@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="TimersTheme" parent="ImmersiveStickyTheme"/>
+    <style name="TimersTheme" parent="ImmersiveStickyTheme"/>
 
-	<style name="ImmersiveTheme" parent="android:style/Theme.Holo.NoActionBar">
-		<item name="android:windowBackground">@color/clock_timers_activity_background</item>
-		<item name="android:windowContentOverlay">@null</item>
-		<item name="android:windowActionBarOverlay">true</item>
-	</style>
+    <style name="ImmersiveTheme" parent="android:style/Theme.Holo.NoActionBar">
+        <item name="android:windowBackground">@color/clock_timers_activity_background</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
 
-	<style name="ImmersiveStickyTheme" parent="ImmersiveTheme">
-		<item name="android:windowNoTitle">true</item>
-		<item name="android:windowActionBar">false</item>
-	</style>
+    <style name="ImmersiveStickyTheme" parent="ImmersiveTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
 
 </resources>

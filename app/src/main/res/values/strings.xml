@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<!-- ChessClock Activity -->
-	<string name="app_name">Chess Clock</string>
-	<string name="foreground_service_started">Chess clock running.</string>
-	<string name="moves_text">Moves:</string>
-	<string name="dialog_reset_clock">Reset the clock?</string>
-	<string name="dialog_no">No</string>
-	<string name="dialog_yes">Yes</string>
+    <!-- ChessClock Activity -->
+    <string name="app_name">Chess Clock</string>
+    <string name="foreground_service_started">Chess clock running.</string>
+    <string name="moves_text">Moves:</string>
+    <string name="dialog_reset_clock">Reset the clock?</string>
+    <string name="dialog_no">No</string>
+    <string name="dialog_yes">Yes</string>
 
-	<!-- Settings Activity -->
-	<string name="title_activity_settings">Settings</string>
-	<string name="action_edit">Edit</string>
-	<string name="action_add_new">Add new</string>
-	<string name="action_delete">Delete</string>
-	<string name="dialog_clock_running_reset">Reset the clock?</string>
-	<string name="action_full_screen">Full Screen</string>
+    <!-- Settings Activity -->
+    <string name="title_activity_settings">Settings</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_add_new">Add new</string>
+    <string name="action_delete">Delete</string>
+    <string name="dialog_clock_running_reset">Reset the clock?</string>
+    <string name="action_full_screen">Full Screen</string>
 
-	<!-- Settings Fragment -->
-	<string name="settings_cab_title_time_controls_selected">selected</string>
+    <!-- Settings Fragment -->
+    <string name="settings_cab_title_time_controls_selected">selected</string>
 
-	<!-- Time Control Fragment -->
-	<string name="action_add_new_stage">Add Stage</string>
-	<string name="action_save_time_control">Save</string>
-	<string name="title_activity_time_control_new">New Time Control</string>
-	<string name="title_activity_time_control">Time Control</string>
-	<string name="toast_requesting_time_control_name">Please add a name to save.</string>
-	<string name="exit_dialog_title">Do you want to save before exiting?</string>
-	<string name="exit_dialog_message">There are unsaved changes in this Time Control.</string>
-	<string name="exit_dialog_cancel">Exit</string>
-	<string name="exit_dialog_ok">Save and Exit</string>
+    <!-- Time Control Fragment -->
+    <string name="action_add_new_stage">Add Stage</string>
+    <string name="action_save_time_control">Save</string>
+    <string name="title_activity_time_control_new">New Time Control</string>
+    <string name="title_activity_time_control">Time Control</string>
+    <string name="toast_requesting_time_control_name">Please add a name to save.</string>
+    <string name="exit_dialog_title">Do you want to save before exiting?</string>
+    <string name="exit_dialog_message">There are unsaved changes in this Time Control.</string>
+    <string name="exit_dialog_cancel">Exit</string>
+    <string name="exit_dialog_ok">Save and Exit</string>
 
-	<!-- Time Control Manager -->
-	<string name="list_empty_toast_message">List empty. Default list loaded.</string>
+    <!-- Time Control Manager -->
+    <string name="list_empty_toast_message">List empty. Default list loaded.</string>
 
-	<!-- Stage Delete Dialog -->
-	<string name="delete_stage_dialog_message">Delete stage?</string>
+    <!-- Stage Delete Dialog -->
+    <string name="delete_stage_dialog_message">Delete stage?</string>
 
-	<!-- Stage Adapter -->
-	<string name="stage_item_list_label">Stage</string>
+    <!-- Stage Adapter -->
+    <string name="stage_item_list_label">Stage</string>
 
-	<!-- Stage Editor Dialog -->
-	<string name="stage_editor_dialog_title">Edit Stage</string>
-	<string name="tstage_editor_dialog_set">Set</string>
-	<string name="stage_editor_dialog_cancel">Cancel</string>
+    <!-- Stage Editor Dialog -->
+    <string name="stage_editor_dialog_title">Edit Stage</string>
+    <string name="tstage_editor_dialog_set">Set</string>
+    <string name="stage_editor_dialog_cancel">Cancel</string>
 
-	<!-- Time Increment Editor Dialog -->
-	<string name="time_increment_prompt">Increment Type</string>
-	<string name="time_increment_editor_dialog_title">Edit Time Increment</string>
-	<string name="time_increment_editor_dialog_set">Set</string>
-	<string name="time_increment_editor_dialog_cancel">Cancel</string>
-	<string name="radio_delay_title">Delay</string>
-	<string name="radio_bronstein_title">Bronstein</string>
-	<string name="radio_fischer_title">Fischer</string>
+    <!-- Time Increment Editor Dialog -->
+    <string name="time_increment_prompt">Increment Type</string>
+    <string name="time_increment_editor_dialog_title">Edit Time Increment</string>
+    <string name="time_increment_editor_dialog_set">Set</string>
+    <string name="time_increment_editor_dialog_cancel">Cancel</string>
+    <string name="radio_delay_title">Delay</string>
+    <string name="radio_bronstein_title">Bronstein</string>
+    <string name="radio_fischer_title">Fischer</string>
 
-	<!-- Time Picker Dialog -->
-	<string name="time_picker_dialog_title">Time</string>
-	<string name="time_picker_dialog_set">Set</string>
-	<string name="time_picker_dialog_cancel">Cancel</string>
+    <!-- Time Picker Dialog -->
+    <string name="time_picker_dialog_title">Time</string>
+    <string name="time_picker_dialog_set">Set</string>
+    <string name="time_picker_dialog_cancel">Cancel</string>
 
-	<!-- Increment type spinner subtitles -->
-	<string name="delay_option_subtitle">The player\'s clock starts after the delay period.</string>
-	<string name="bronstein_option_subtitle">Players receive the used portion of the increment at the end of each
+    <!-- Increment type spinner subtitles -->
+    <string name="delay_option_subtitle">The player\'s clock starts after the delay period.</string>
+    <string name="bronstein_option_subtitle">Players receive the used portion of the increment at the end of each
 		turn.
 	</string>
-	<string name="fischer_option_subtitle">Players receive the full increment at the end of each turn.</string>
-	<string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="fischer_option_subtitle">Players receive the full increment at the end of each turn.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
-	<!-- Strings for settings buttons -->
-	<string name="btn_pause_settings">K</string>
-	<string name="btn_reset_settings">L</string>
-	<string name="btn_menu_settings">&#xb7;</string>
+    <!-- Strings for settings buttons -->
+    <string name="btn_pause_settings">K</string>
+    <string name="btn_reset_settings">L</string>
+    <string name="btn_menu_settings">&#xb7;</string>
 
 </resources>
