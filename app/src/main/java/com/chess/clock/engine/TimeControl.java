@@ -34,197 +34,197 @@ import com.chess.clock.util.Args;
  */
 public class TimeControl implements Parcelable, Cloneable, StageManager.StageManagerListener {
 
-	public static final Parcelable.Creator<TimeControl> CREATOR = new Parcelable.Creator<TimeControl>() {
-		public TimeControl createFromParcel(Parcel source) {
-			return new TimeControl(source);
-		}
+    public static final Parcelable.Creator<TimeControl> CREATOR = new Parcelable.Creator<TimeControl>() {
+        public TimeControl createFromParcel(Parcel source) {
+            return new TimeControl(source);
+        }
 
-		public TimeControl[] newArray(int size) {
-			return new TimeControl[size];
-		}
-	};
-	private static final String TAG = TimeControl.class.getName();
-	/**
-	 * TimeControl identifier.
-	 */
-	private String mName;
+        public TimeControl[] newArray(int size) {
+            return new TimeControl[size];
+        }
+    };
+    private static final String TAG = TimeControl.class.getName();
+    /**
+     * TimeControl identifier.
+     */
+    private String mName;
 
-	/**
-	 * Stage Manager associated with Time Control.
-	 */
-	private StageManager mStageManager;
+    /**
+     * Stage Manager associated with Time Control.
+     */
+    private StageManager mStageManager;
 
-	/**
-	 * Time increment associated with Time Control.
-	 */
-	private TimeIncrement mTimeIncrement;
+    /**
+     * Time increment associated with Time Control.
+     */
+    private TimeIncrement mTimeIncrement;
 
-	/**
-	 * Listener used to dispatch time control update events.
-	 *
-	 * @see TimeControlListener
-	 */
-	private TimeControlListener mTimeControlListener;
+    /**
+     * Listener used to dispatch time control update events.
+     *
+     * @see TimeControlListener
+     */
+    private TimeControlListener mTimeControlListener;
 
-	/**
-	 * Simple constructor to use when creating a TimeControl.
-	 *
-	 * @param name   Name identifier.
-	 * @param stages stages of the TimeControl.
-	 * @param time   TimeIncrement object associated with the TimeControl.
-	 * @throws java.lang.NullPointerException if StageManager or TimeIncrement are not provided.
-	 */
-	public TimeControl(String name, Stage[] stages, TimeIncrement time) {
-		Args.checkForNull(stages);
-		Args.checkForNull(time);
+    /**
+     * Simple constructor to use when creating a TimeControl.
+     *
+     * @param name   Name identifier.
+     * @param stages stages of the TimeControl.
+     * @param time   TimeIncrement object associated with the TimeControl.
+     * @throws java.lang.NullPointerException if StageManager or TimeIncrement are not provided.
+     */
+    public TimeControl(String name, Stage[] stages, TimeIncrement time) {
+        Args.checkForNull(stages);
+        Args.checkForNull(time);
 
-		mName = name;
-		mTimeIncrement = time;
-		mStageManager = new StageManager(stages);
+        mName = name;
+        mTimeIncrement = time;
+        mStageManager = new StageManager(stages);
 
-		// Set up listener for Stage Manager.
-		mStageManager.setStageManagerListener(this);
-	}
+        // Set up listener for Stage Manager.
+        mStageManager.setStageManagerListener(this);
+    }
 
-	private TimeControl(Parcel parcel) {
-		this.readFromParcel(parcel);
-	}
+    private TimeControl(Parcel parcel) {
+        this.readFromParcel(parcel);
+    }
 
-	/**
-	 * Check if TimeControl object is equal to this one.
-	 *
-	 * @param tc TimeControl Object.
-	 * @return True if relevant contents are equal.
-	 */
-	public boolean isEqual(TimeControl tc) {
+    /**
+     * Check if TimeControl object is equal to this one.
+     *
+     * @param tc TimeControl Object.
+     * @return True if relevant contents are equal.
+     */
+    public boolean isEqual(TimeControl tc) {
 
-		boolean equalNames = (mName == null && tc.getName() == null) ||
-				mName.equals(tc.getName());
+        boolean equalNames = (mName == null && tc.getName() == null) ||
+                mName.equals(tc.getName());
 
-		return (equalNames
-				&& mStageManager.isEqual(tc.getStageManager())
-				&& mTimeIncrement.isEqual(tc.getTimeIncrement()));
-	}
+        return (equalNames
+                && mStageManager.isEqual(tc.getStageManager())
+                && mTimeIncrement.isEqual(tc.getTimeIncrement()));
+    }
 
-	/**
-	 * Register a callback to be invoked when time control updates.
-	 *
-	 * @param listener The callback that will run
-	 */
-	public void setTimeControlListener(TimeControlListener listener) {
-		Args.checkForNull(listener);
-		mTimeControlListener = listener;
-	}
+    /**
+     * Register a callback to be invoked when time control updates.
+     *
+     * @param listener The callback that will run
+     */
+    public void setTimeControlListener(TimeControlListener listener) {
+        Args.checkForNull(listener);
+        mTimeControlListener = listener;
+    }
 
-	/**
-	 * The name identifier of the time control.
-	 *
-	 * @return Time control name.
-	 */
-	public String getName() {
-		return mName;
-	}
+    /**
+     * The name identifier of the time control.
+     *
+     * @return Time control name.
+     */
+    public String getName() {
+        return mName;
+    }
 
-	/**
-	 * Set the name identifier of the time control.
-	 *
-	 * @param name Time control name.
-	 */
-	public void setName(String name) {
-		mName = name;
-	}
+    /**
+     * Set the name identifier of the time control.
+     *
+     * @param name Time control name.
+     */
+    public void setName(String name) {
+        mName = name;
+    }
 
-	/**
-	 * Gets the time increment associated with this time control.
-	 *
-	 * @return TimeIncrement associated with this TimeControl.
-	 */
-	public TimeIncrement getTimeIncrement() {
-		return mTimeIncrement;
-	}
+    /**
+     * Gets the time increment associated with this time control.
+     *
+     * @return TimeIncrement associated with this TimeControl.
+     */
+    public TimeIncrement getTimeIncrement() {
+        return mTimeIncrement;
+    }
 
-	/**
-	 * Gets the Stage manager associated with this time control.
-	 *
-	 * @return Stage manager associated with this time control.
-	 */
-	public StageManager getStageManager() {
-		return mStageManager;
-	}
+    /**
+     * Gets the Stage manager associated with this time control.
+     *
+     * @return Stage manager associated with this time control.
+     */
+    public StageManager getStageManager() {
+        return mStageManager;
+    }
 
-	private void readFromParcel(Parcel parcel) {
-		mName = parcel.readString();
-		mStageManager = parcel.readParcelable(StageManager.class.getClassLoader());
-		mStageManager.setStageManagerListener(this);
-		mTimeIncrement = parcel.readParcelable(TimeIncrement.class.getClassLoader());
-	}
+    private void readFromParcel(Parcel parcel) {
+        mName = parcel.readString();
+        mStageManager = parcel.readParcelable(StageManager.class.getClassLoader());
+        mStageManager.setStageManagerListener(this);
+        mTimeIncrement = parcel.readParcelable(TimeIncrement.class.getClassLoader());
+    }
 
-	@Override
-	public void writeToParcel(Parcel parcel, int flags) {
-		parcel.writeString(mName);
-		parcel.writeParcelable(mStageManager, flags);
-		parcel.writeParcelable(mTimeIncrement, flags);
-	}
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(mName);
+        parcel.writeParcelable(mStageManager, flags);
+        parcel.writeParcelable(mTimeIncrement, flags);
+    }
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	/**
-	 * /**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onNewStageUpdate(Stage stage) {
-		Args.checkForNull(stage);
+    /**
+     * /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onNewStageUpdate(Stage stage) {
+        Args.checkForNull(stage);
 
-		if (mTimeControlListener != null) {
-			mTimeControlListener.onStageUpdate(stage);
-		}
-	}
+        if (mTimeControlListener != null) {
+            mTimeControlListener.onStageUpdate(stage);
+        }
+    }
 
-	/**
-	 * /**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void onMoveCountUpdate(int moveCount) {
-		if (mTimeControlListener != null) {
-			mTimeControlListener.onMoveCountUpdate(moveCount);
-		}
-	}
+    /**
+     * /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onMoveCountUpdate(int moveCount) {
+        if (mTimeControlListener != null) {
+            mTimeControlListener.onMoveCountUpdate(moveCount);
+        }
+    }
 
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		TimeControl clone = (TimeControl) super.clone();
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        TimeControl clone = (TimeControl) super.clone();
 
-		// Clone StageManager object and set this clone as his listener.
-		clone.mStageManager = (StageManager) mStageManager.clone();
-		clone.mStageManager.setStageManagerListener(clone);
+        // Clone StageManager object and set this clone as his listener.
+        clone.mStageManager = (StageManager) mStageManager.clone();
+        clone.mStageManager.setStageManagerListener(clone);
 
-		// Clone TimeIncrement object
-		clone.mTimeIncrement = (TimeIncrement) mTimeIncrement.clone();
+        // Clone TimeIncrement object
+        clone.mTimeIncrement = (TimeIncrement) mTimeIncrement.clone();
 
-		clone.mTimeControlListener = null;
-		return clone;
-	}
+        clone.mTimeControlListener = null;
+        return clone;
+    }
 
-	/**
-	 * Interface definition for a callback to be invoked when the player clock gets updated.
-	 */
-	public interface TimeControlListener {
+    /**
+     * Interface definition for a callback to be invoked when the player clock gets updated.
+     */
+    public interface TimeControlListener {
 
-		/**
-		 * Called when new game stage begins.
-		 *
-		 * @param stage The current game stage.
-		 */
-		public void onStageUpdate(Stage stage);
+        /**
+         * Called when new game stage begins.
+         *
+         * @param stage The current game stage.
+         */
+        public void onStageUpdate(Stage stage);
 
-		/**
-		 * Called when the move count is updated.
-		 */
-		public void onMoveCountUpdate(int moves);
-	}
+        /**
+         * Called when the move count is updated.
+         */
+        public void onMoveCountUpdate(int moves);
+    }
 }

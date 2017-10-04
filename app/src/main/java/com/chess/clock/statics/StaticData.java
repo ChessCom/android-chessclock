@@ -8,6 +8,6 @@ package com.chess.clock.statics;
  */
 public class StaticData {
 
-	public static final String SHARED_DATA_NAME = "sharedData";
+    public static final String SHARED_DATA_NAME = "sharedData";
 
 }
