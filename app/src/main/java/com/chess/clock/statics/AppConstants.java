@@ -7,5 +7,5 @@ package com.chess.clock.statics;
  * Time: 14:19
  */
 public class AppConstants {
-	public static final String PREF_CLOCK_FULL_SCREEN = "clock_full_screen";
+    public static final String PREF_CLOCK_FULL_SCREEN = "clock_full_screen";
 }
