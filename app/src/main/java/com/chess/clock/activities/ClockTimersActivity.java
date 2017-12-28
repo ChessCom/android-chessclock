@@ -494,7 +494,6 @@ public class ClockTimersActivity extends FragmentActivity {
                 if (mTimersState == TimersState.PLAYER_ONE_FINISHED || mTimersState == TimersState.PLAYER_TWO_FINISHED) {
                     updateUIState();
                 } else {
-                    updateUIState();
 					/*
 					Only resume clock if elapsed time was less than 2 seconds since last pause.
 					This will serve to filter orientation changes only.
