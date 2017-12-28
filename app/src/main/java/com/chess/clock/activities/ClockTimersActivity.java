@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.chess.clock.R;
+import com.chess.clock.activities.ClockTimersActivity.ResetClockDialogFragment.OnCancelListener;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControlParser;
@@ -69,6 +70,11 @@ public class ClockTimersActivity extends FragmentActivity {
      * True when this activity is bound to chess clock service.
      */
     boolean mBound = false;
+
+    /**
+     * True when the reset dialog is open
+     */
+    boolean mResetDialogOpen = false;
 
     /**
      * Settings Activity request code
@@ -170,8 +176,11 @@ public class ClockTimersActivity extends FragmentActivity {
 
             if (mTimersState == TimersState.PLAYER_ONE_RUNNING
                     || mTimersState == TimersState.PLAYER_TWO_RUNNING) {
-                pauseClock();
+                pauseClock(true);
             }
+
+            saveTimersState();
+
             showResetClockDialog();
         }
     };
@@ -492,13 +501,13 @@ public class ClockTimersActivity extends FragmentActivity {
                     if (mTimeStampOnPauseActivity > 0) {
                         long elapsedTime = System.currentTimeMillis() - mTimeStampOnPauseActivity;
                         Log.v(TAG, "Configuration change lasted " + elapsedTime + " milliseconds.");
-                        if (elapsedTime < 2000 && (mTimersState == TimersState.PLAYER_TWO_RUNNING ||
+                        if (elapsedTime < 2000 && !mResetDialogOpen && (mTimersState == TimersState.PLAYER_TWO_RUNNING ||
                                 mTimersState == TimersState.PLAYER_ONE_RUNNING)) {
                             mService.resumeClock();
                             updateUIState();
                         } else {
                             // If pause took too long, reset state to paused.
-                            pauseClock();
+                            pauseClock(mResetDialogOpen);
                         }
                     }
                 }
@@ -729,7 +738,7 @@ public class ClockTimersActivity extends FragmentActivity {
         // resume the clock if this Activity is bound to a already started Service.
         saveTimersState();
 
-        pauseClock();
+        pauseClock(mResetDialogOpen);
     }
 
     @Override
@@ -806,6 +815,31 @@ public class ClockTimersActivity extends FragmentActivity {
                 mService.pauseClock();
 
                 mPauseButton.setVisibility(View.INVISIBLE);
+
+                updateUIState();
+            }
+        }
+    }
+
+    /**
+     * Pause button visibility.
+     */
+    public void pauseClock(boolean fromReset) {
+
+        if (mBound) {
+            if (mTimersState == TimersState.PLAYER_ONE_RUNNING || mTimersState == TimersState.PLAYER_TWO_RUNNING) {
+                Log.i(TAG, "Clock paused.");
+                if (!fromReset) {
+                    mTimersStatePreviousToPause = mTimersState;
+                    mTimersState = TimersState.PAUSED;
+                }
+                Log.d(TAG, "Previous state: " + mTimersStatePreviousToPause +
+                    " , current state: " + mTimersState);
+                mService.pauseClock();
+
+                if (!fromReset) {
+                    mPauseButton.setVisibility(View.INVISIBLE);
+                }
 
                 updateUIState();
             }
@@ -912,7 +946,15 @@ public class ClockTimersActivity extends FragmentActivity {
 
     private void showResetClockDialog() {
         ResetClockDialogFragment resetClockDialog = new ResetClockDialogFragment();
+        resetClockDialog.setOnCancelListener(new OnCancelListener() {
+          @Override
+          public void onCancel() {
+            mService.resumeClock();
+            mResetDialogOpen = false;
+          }
+        });
         resetClockDialog.show(getSupportFragmentManager(), TAG_RESET_DIALOG_FRAGMENT);
+        mResetDialogOpen = true;
     }
 
     /**
@@ -1002,8 +1044,18 @@ public class ClockTimersActivity extends FragmentActivity {
      */
     public static class ResetClockDialogFragment extends DialogFragment {
 
+        public interface OnCancelListener {
+            void onCancel();
+        }
+
+        private OnCancelListener mListener;
+
         public ResetClockDialogFragment() {
             super();
+        }
+
+        public void setOnCancelListener(OnCancelListener listener) {
+          mListener = listener;
         }
 
         @Override
@@ -1017,6 +1069,7 @@ public class ClockTimersActivity extends FragmentActivity {
                             // Reset the clock
                             ClockTimersActivity activity = (ClockTimersActivity) getActivity();
                             if (activity != null) {
+                                activity.mResetDialogOpen = false;
                                 activity.resetClock();
                             }
                         }
@@ -1024,6 +1077,9 @@ public class ClockTimersActivity extends FragmentActivity {
                     .setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // Resume the clock
+                            if (mListener != null) {
+                              mListener.onCancel();
+                            }
                         }
                     });
             // Create the AlertDialog object and return it
