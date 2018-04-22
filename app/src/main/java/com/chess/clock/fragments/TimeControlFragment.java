@@ -200,6 +200,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                     StageAdapter stageAdapter = new StageAdapter(getActivity(), selected.getStageManager(), TimeControlFragment.this);
                     mStageListView.setAdapter(stageAdapter);
                     mTimeIncrementDescription.setText(selected.getTimeIncrement().toString());
+                    updateDisplay();
                     return true;
                 }
             });
@@ -274,7 +275,9 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
 
         TimeControl tc = mplayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
         if (tc.getStageManager().getTotalStages() == 3) {
-            menu.removeItem(R.id.action_new_stage);
+            menu.findItem(R.id.action_new_stage).setVisible(false);
+        } else {
+            menu.findItem(R.id.action_new_stage).setVisible(true);
         }
     }
 
