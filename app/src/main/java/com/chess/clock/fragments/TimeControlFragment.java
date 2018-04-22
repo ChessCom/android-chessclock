@@ -71,7 +71,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * State.
      */
     private TimeControlWrapper mTimeControlWrapper;
-    private boolean mplayerOneSelected = true;
+    private boolean mplayerOneSelected = false;
     /**
      * Time Control Name Text WATCHER
      */
