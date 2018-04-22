@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.chess.clock.R;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlManager;
+import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.fragments.SettingsFragment;
 import com.chess.clock.fragments.TimeControlFragment;
 import com.chess.clock.service.ChessClockLocalService;
@@ -203,7 +204,7 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
     public boolean isSameTimeControlLoaded() {
         int index = mTimeControlManager.getEditableTimeControlCheckIndex();
         if (index > 0 && index < mTimeControlManager.getTimeControls().size()) {
-            TimeControl tc = mTimeControlManager.getTimeControls().get(index);
+            TimeControl tc = mTimeControlManager.getTimeControls().get(index).getTimeControlPlayerOne();
             String title = tc.getName();
             return mBound && mService.getNameOfTimeControlRunning().equals(title);
         } else {
@@ -239,7 +240,7 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
      * @return Current TimeControl list being used.
      */
     @Override
-    public ArrayList<TimeControl> getCurrentTimeControls() {
+    public ArrayList<TimeControlWrapper> getCurrentTimeControls() {
         return mTimeControlManager.getTimeControls();
     }
 
@@ -300,7 +301,7 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
      * @return Current TimeControl being used.
      */
     @Override
-    public TimeControl getEditableTimeControl() {
+    public TimeControlWrapper getEditableTimeControl() {
         return mTimeControlManager.getEditableTimeControl();
     }
 
@@ -329,5 +330,9 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
 
     public void setBottomNavigationViewVisibility(int v) {
         mBottomNavigationView.setVisibility(v);
+    }
+
+    public void setBottomNavigationViewSelected(int id) {
+        mBottomNavigationView.setSelectedItemId(id);
     }
 }

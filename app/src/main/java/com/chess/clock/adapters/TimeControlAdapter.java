@@ -6,17 +6,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.chess.clock.R;
-import com.chess.clock.engine.TimeControl;
+import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.views.TimeControlCheckedTextView;
 
 import java.util.ArrayList;
 
 
-public class TimeControlAdapter extends ArrayAdapter<TimeControl> {
+public class TimeControlAdapter extends ArrayAdapter<TimeControlWrapper> {
 
-    ArrayList<TimeControl> mTimeControls;
+    ArrayList<TimeControlWrapper> mTimeControls;
 
-    public TimeControlAdapter(Context context, ArrayList<TimeControl> timeControls) {
+    public TimeControlAdapter(Context context, ArrayList<TimeControlWrapper> timeControls) {
         super(context, R.layout.list_time_control_item_single_choice, R.id.time_control_text,
                 timeControls);
         mTimeControls = timeControls;
@@ -28,7 +28,7 @@ public class TimeControlAdapter extends ArrayAdapter<TimeControl> {
     }
 
     @Override
-    public TimeControl getItem(int position) {
+    public TimeControlWrapper getItem(int position) {
         return mTimeControls.get(position);
     }
 
@@ -43,8 +43,12 @@ public class TimeControlAdapter extends ArrayAdapter<TimeControl> {
         TimeControlCheckedTextView row =
                 (TimeControlCheckedTextView) super.getView(position, convertView, parent);
 
-        TimeControl tc = getItem(position);
-        row.setText(tc.getName());
+        TimeControlWrapper tc = getItem(position);
+        if (tc != null && tc.getTimeControlPlayerOne() != null) {
+            row.setText(tc.getTimeControlPlayerOne().getName());
+        } else {
+            row.setText(R.string.title_activity_time_control);
+        }
 
         return row;
     }

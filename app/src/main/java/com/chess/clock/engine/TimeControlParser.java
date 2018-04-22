@@ -38,7 +38,7 @@ public class TimeControlParser {
      */
     public static void startClockWithLastTimeControl(Context context) {
 
-        ArrayList<TimeControl> timeControls = restoreTimeControlsList(context);
+        ArrayList<TimeControlWrapper> timeControls = restoreTimeControlsList(context);
 
         // Build default List if none was restored from shared preferences.
         if (timeControls == null || timeControls.size() == 0) {
@@ -50,17 +50,12 @@ public class TimeControlParser {
         index = Math.max(index, 0);
         index = Math.min(index, timeControls.size() - 1);
 
-        try {
-            TimeControl playerOne = timeControls.get(index);
-            TimeControl playerTwo = (TimeControl) playerOne.clone();
+        TimeControl playerOne = timeControls.get(index).getTimeControlPlayerOne();
+        TimeControl playerTwo = timeControls.get(index).getTimeControlPlayerTwo();
 
-            Intent startServiceIntent =
-                    ChessClockLocalService.getChessClockServiceIntent(context, playerOne, playerTwo);
-            context.startService(startServiceIntent);
-
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        Intent startServiceIntent =
+                ChessClockLocalService.getChessClockServiceIntent(context, playerOne, playerTwo);
+        context.startService(startServiceIntent);
     }
 
     /**
@@ -69,7 +64,7 @@ public class TimeControlParser {
      * @param timeControls
      * @return
      */
-    public static boolean saveTimeControls(Context context, ArrayList<TimeControl> timeControls) {
+    public static boolean saveTimeControls(Context context, ArrayList<TimeControlWrapper> timeControls) {
 
         if (timeControls == null) {
             Log.w(TAG, "Save time controls requested with empty list. Ignoring request.");
@@ -80,12 +75,13 @@ public class TimeControlParser {
         JSONObject json = new JSONObject();
         JSONArray timeControlJSONArray = new JSONArray();
         try {
-            for (TimeControl tc : timeControls) {
+            for (TimeControlWrapper tc : timeControls) {
                 JSONObject timeControlJSONObject = new JSONObject();
                 JSONArray timeControlStagesJSONArray = new JSONArray();
+                JSONArray timeControlStagesPlayerTwoJSONArray = new JSONArray();
 
                 // Save Stages
-                for (Stage stage : tc.getStageManager().getStages()) {
+                for (Stage stage : tc.getTimeControlPlayerOne().getStageManager().getStages()) {
                     JSONObject stageJSONObject = new JSONObject();
                     stageJSONObject.put("id", stage.getId());
                     stageJSONObject.put("duration", stage.getDuration());
@@ -93,15 +89,29 @@ public class TimeControlParser {
                     timeControlStagesJSONArray.put(stageJSONObject);
                 }
 
+                for (Stage stage : tc.getTimeControlPlayerTwo().getStageManager().getStages()) {
+                    JSONObject stageJSONObject = new JSONObject();
+                    stageJSONObject.put("id", stage.getId());
+                    stageJSONObject.put("duration", stage.getDuration());
+                    stageJSONObject.put("moves", stage.getTotalMoves());
+                    timeControlStagesPlayerTwoJSONArray.put(stageJSONObject);
+                }
+
                 // Save TimeIncrement
                 JSONObject timeIncrementJSONOBject = new JSONObject();
-                timeIncrementJSONOBject.put("value", tc.getTimeIncrement().getValue());
-                timeIncrementJSONOBject.put("type", tc.getTimeIncrement().getType().getValue());
+                timeIncrementJSONOBject.put("value", tc.getTimeControlPlayerOne().getTimeIncrement().getValue());
+                timeIncrementJSONOBject.put("type", tc.getTimeControlPlayerOne().getTimeIncrement().getType().getValue());
+
+                JSONObject timeIncrementPlayerTwoJSONOBject = new JSONObject();
+                timeIncrementPlayerTwoJSONOBject.put("value", tc.getTimeControlPlayerOne().getTimeIncrement().getValue());
+                timeIncrementPlayerTwoJSONOBject.put("type", tc.getTimeControlPlayerOne().getTimeIncrement().getType().getValue());
 
                 // Add name, stages and time increment to TimeControl json object.
-                timeControlJSONObject.put("name", tc.getName());
+                timeControlJSONObject.put("name", tc.getTimeControlPlayerOne().getName());
                 timeControlJSONObject.put("timeincrement", timeIncrementJSONOBject);
+                timeControlJSONObject.put("timeincrement2", timeIncrementPlayerTwoJSONOBject);
                 timeControlJSONObject.put("stages", timeControlStagesJSONArray);
+                timeControlJSONObject.put("stages2", timeControlStagesPlayerTwoJSONArray);
 
                 // Add TimeControl json object to JSONArray
                 timeControlJSONArray.put(timeControlJSONObject);
@@ -153,7 +163,7 @@ public class TimeControlParser {
      *
      * @return TimeControl list.
      */
-    public static ArrayList<TimeControl> restoreTimeControlsList(Context context) {
+    public static ArrayList<TimeControlWrapper> restoreTimeControlsList(Context context) {
 
         Log.i(TAG, "Looking for stored time controls");
 
@@ -165,22 +175,32 @@ public class TimeControlParser {
             return null;
         }
 
-        ArrayList<TimeControl> timeControls = new ArrayList<TimeControl>();
+        ArrayList<TimeControlWrapper> timeControls = new ArrayList<TimeControlWrapper>();
         try {
             JSONObject json = new JSONObject(jsonString);
             JSONArray timeControlsJSONArray = json.getJSONArray("timecontrols");
             for (int i = 0; i < timeControlsJSONArray.length(); i++) {
                 JSONObject timeControlJSON = timeControlsJSONArray.getJSONObject(i);
+                JSONObject timeIncrementPlayerTwoJSONOBject = null;
+                JSONArray timeControlStagesPlayerTwoJSON = null;
 
                 JSONObject timeIncrementJSONOBject = timeControlJSON.getJSONObject("timeincrement");
                 JSONArray timeControlStagesJSON = timeControlJSON.getJSONArray("stages");
 
+                if (timeControlJSON.has("timeincrement2") && timeControlJSON.has("stages2")) {
+                    timeIncrementPlayerTwoJSONOBject = timeControlJSON.getJSONObject("timeincrement2");
+                    timeControlStagesPlayerTwoJSON = timeControlJSON.getJSONArray("stages2");
+                }
+
                 String name = timeControlJSON.getString("name");
                 Stage[] stages = getStages(timeControlStagesJSON);
+                Stage[] stagesPlayerTwo = timeControlStagesPlayerTwoJSON == null ? stages : getStages(timeControlStagesPlayerTwoJSON);
                 TimeIncrement timeIncrement = getTimeIncrement(timeIncrementJSONOBject);
+                TimeIncrement timeIncrementplayerTwo = timeIncrementPlayerTwoJSONOBject == null ? timeIncrement : getTimeIncrement(timeIncrementPlayerTwoJSONOBject);
 
                 TimeControl timeControl = new TimeControl(name, stages, timeIncrement);
-                timeControls.add(timeControl);
+                TimeControl timeControlPlayerTwo = new TimeControl(name, stagesPlayerTwo, timeIncrementplayerTwo);
+                timeControls.add(new TimeControlWrapper(timeControl, timeControlPlayerTwo));
             }
 
         } catch (JSONException e) {
@@ -198,42 +218,48 @@ public class TimeControlParser {
      *
      * @return Default TimeControl list.
      */
-    public static ArrayList<TimeControl> buildDefaultTimeControlsList(Context context) {
+    public static ArrayList<TimeControlWrapper> buildDefaultTimeControlsList(Context context) {
         Log.i(TAG, "Building and saving default time control list");
 
-        ArrayList<TimeControl> timeControls = new ArrayList<TimeControl>();
+        ArrayList<TimeControlWrapper> timeControls = new ArrayList<TimeControlWrapper>();
 
         // Fischer blitz 5|0
         Stage fischerBlitzStage = new Stage(0, 300000);
         TimeIncrement fischerBlitzTI = new TimeIncrement(TimeIncrement.Type.FISCHER, 0);
         TimeControl fischerBlitzTC = new TimeControl("Fischer Blitz 5|0", new Stage[]{fischerBlitzStage}, fischerBlitzTI);
+        TimeControlWrapper fischerBlitzTCWrapper = new TimeControlWrapper(fischerBlitzTC, fischerBlitzTC);
 
         // Delay bullet 1|2
         Stage delayBulletStage = new Stage(0, 60000);
         TimeIncrement delayBulletTimeIncrement = new TimeIncrement(TimeIncrement.Type.DELAY, 2000);
         TimeControl delayBulletTimeControl = new TimeControl("Delay Bullet 1|2", new Stage[]{delayBulletStage}, delayBulletTimeIncrement);
+        TimeControlWrapper delayBulletTimeControlWrapper = new TimeControlWrapper(delayBulletTimeControl, delayBulletTimeControl);
 
         // Blitz 5|5
         Stage blitz55 = new Stage(0, 300000);
         TimeIncrement blitzTimeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, 5000);
         TimeControl blitzTimeControl = new TimeControl("Fischer 5|5", new Stage[]{blitz55}, blitzTimeIncrement);
+        TimeControlWrapper blitzTimeControlWrapper = new TimeControlWrapper(blitzTimeControl, blitzTimeControl);
 
         // Fischer rapid 10|5
         Stage fischerRapidStage = new Stage(0, 600000);
         TimeIncrement fischerRapidTI = new TimeIncrement(TimeIncrement.Type.FISCHER, 5000);
         TimeControl fischerRapid = new TimeControl("Fischer rapid 10|5", new Stage[]{fischerRapidStage}, fischerRapidTI);
+        TimeControlWrapper fischerRapidWrapper = new TimeControlWrapper(fischerRapid, fischerRapid);
+
 
         // Tournament
         Stage tournamentStage1 = new Stage(0, 7200000, 40);
         Stage tournamentStage2 = new Stage(1, 3600000);
         TimeIncrement tournamentTI = new TimeIncrement(TimeIncrement.Type.DELAY, 5000);
         TimeControl tournamentTC = new TimeControl("Tournament 40/2hr, G60, 5s delay", new Stage[]{tournamentStage1, tournamentStage2}, tournamentTI);
+        TimeControlWrapper tournamentTCWrapper = new TimeControlWrapper(tournamentTC, tournamentTC);
 
-        timeControls.add(fischerBlitzTC);
-        timeControls.add(delayBulletTimeControl);
-        timeControls.add(blitzTimeControl);
-        timeControls.add(fischerRapid);
-        timeControls.add(tournamentTC);
+        timeControls.add(fischerBlitzTCWrapper);
+        timeControls.add(delayBulletTimeControlWrapper);
+        timeControls.add(blitzTimeControlWrapper);
+        timeControls.add(fischerRapidWrapper);
+        timeControls.add(tournamentTCWrapper);
 
         // Saving default time controls
         TimeControlParser.saveTimeControls(context, timeControls);
