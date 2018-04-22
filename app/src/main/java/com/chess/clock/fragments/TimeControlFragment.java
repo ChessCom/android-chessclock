@@ -71,6 +71,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * State.
      */
     private TimeControlWrapper mTimeControlWrapper;
+    private TimeControl mSelectedTimeControl;
     private boolean mplayerOneSelected = false;
     /**
      * Time Control Name Text WATCHER
@@ -196,10 +197,10 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                             break;
                     }
                     mplayerOneSelected = !mplayerOneSelected;
-                    TimeControl selected = mplayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
-                    StageAdapter stageAdapter = new StageAdapter(getActivity(), selected.getStageManager(), TimeControlFragment.this);
+                    mSelectedTimeControl = mplayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
+                    StageAdapter stageAdapter = new StageAdapter(getActivity(), mSelectedTimeControl.getStageManager(), TimeControlFragment.this);
                     mStageListView.setAdapter(stageAdapter);
-                    mTimeIncrementDescription.setText(selected.getTimeIncrement().toString());
+                    mTimeIncrementDescription.setText(mSelectedTimeControl.getTimeIncrement().toString());
                     updateDisplay();
                     return true;
                 }
@@ -246,6 +247,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         }
 
         ((SettingsActivity) getActivity()).setBottomNavigationViewSelected(R.id.nav_player1);
+        mSelectedTimeControl = mTimeControlWrapper.getTimeControlPlayerOne();
 
         return v;
     }
@@ -273,8 +275,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        TimeControl tc = mplayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
-        if (tc.getStageManager().getTotalStages() == 3) {
+        if (mSelectedTimeControl.getStageManager().getTotalStages() == 3) {
             menu.findItem(R.id.action_new_stage).setVisible(false);
         } else {
             menu.findItem(R.id.action_new_stage).setVisible(true);
@@ -354,18 +355,16 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         InputMethodManager imm =
                 (InputMethodManager) getActivity().getSystemService(Service.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mTimeControlNameEditText.getWindowToken(), 0);
-        TimeControl tc = mplayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
 
 
-        if (tc.getStageManager().getTotalStages() < 3) {
-            tc.getStageManager().addNewStage();
+        if (mSelectedTimeControl.getStageManager().getTotalStages() < 3) {
+            mSelectedTimeControl.getStageManager().addNewStage();
             updateDisplay();
         }
     }
 
     public void removeStage(int stageIndex) {
-        TimeControl tc = mplayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
-        tc.getStageManager().removeStage(stageIndex);
+        mSelectedTimeControl.getStageManager().removeStage(stageIndex);
         updateDisplay();
     }
 
@@ -373,10 +372,8 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * Launch Stage Editor Dialog where the user can manipulate the Stage's properties.
      */
     private void showStageEditorDialog() {
-        TimeControl tc = mplayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
-
         // Get correct Stage.
-        Stage stage = tc.getStageManager().getStages()[mEditableStageIndex];
+        Stage stage = mSelectedTimeControl.getStageManager().getStages()[mEditableStageIndex];
 
         // Setup Stage Editor Dialog.
         DialogFragment newFragment = new StageEditorDialogFragment(getActivity(), stage);
@@ -388,9 +385,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
 
     @Override
     public void onStageEditDone(int moves, long timeValue) {
-        TimeControl tc = mplayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
-
-        Stage stage = tc.getStageManager().getStages()[mEditableStageIndex];
+        Stage stage = mSelectedTimeControl.getStageManager().getStages()[mEditableStageIndex];
 
         // Save new moves number
         stage.setMoves(moves);
@@ -405,10 +400,8 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     }
 
     public void showTimeIncrementEditorDialog() {
-        TimeControl tc = mplayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
-
         // Get Time Increment
-        TimeIncrement timeIncrement = tc.getTimeIncrement();
+        TimeIncrement timeIncrement = mSelectedTimeControl.getTimeIncrement();
 
         // Setup Time Increment Editor Dialog
         DialogFragment newFragment = new TimeIncrementEditorDialogFragment(getActivity(), timeIncrement);
@@ -420,10 +413,8 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
 
     @Override
     public void onTimeIncrementEditDone(TimeIncrement.Type type, long time) {
-        TimeControl tc = mplayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
-
         // Get Time Increment
-        TimeIncrement timeIncrement = tc.getTimeIncrement();
+        TimeIncrement timeIncrement = mSelectedTimeControl.getTimeIncrement();
 
         timeIncrement.setType(type);
         timeIncrement.setValue(time);
