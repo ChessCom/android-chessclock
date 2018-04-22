@@ -158,5 +158,25 @@
 
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/switch_same_as_player_one_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/same_as_player_one"
+            android:textSize="@dimen/stage_list_text_size"
+            android:layout_gravity="left"/>
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switch_same_as_player_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"/>
+    </FrameLayout>
+
 
 </LinearLayout>
