@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_player1"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="@string/time_control_player_one"/>
+    <item
+        android:id="@+id/nav_player2"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="@string/time_control_player_two"/>
+</menu>

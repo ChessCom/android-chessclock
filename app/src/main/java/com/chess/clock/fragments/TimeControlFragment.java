@@ -3,6 +3,8 @@ package com.chess.clock.fragments;
 import android.app.*;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -12,12 +14,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 
 import com.chess.clock.R;
+import com.chess.clock.activities.SettingsActivity;
 import com.chess.clock.adapters.StageAdapter;
 import com.chess.clock.dialog.StageEditorDialog;
 import com.chess.clock.dialog.TimeIncrementEditorDialog;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeIncrement;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 /**
  * UI fragment to create and edit a TimeControl.
@@ -49,6 +55,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * State.
      */
     private TimeControl mTimeControl;
+    private boolean mplayerOneSelected = true;
     /**
      * Time Control Name Text WATCHER
      */
@@ -95,6 +102,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     private EditText mTimeControlNameEditText;
     private ViewGroup mTimeIncrementBtn;
     private TextView mTimeIncrementDescription;
+    private FrameLayout mSameAsPlayerOneSwitchContainer;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -150,6 +158,28 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
 
         View v = inflater.inflate(R.layout.fragment_time_control, container, false);
         mStageListView = (ListView) v.findViewById(R.id.list_stages);
+        mSameAsPlayerOneSwitchContainer = (FrameLayout) v.findViewById(R.id.switch_same_as_player_one_container);
+        mSameAsPlayerOneSwitchContainer.setVisibility(GONE);
+        ((SettingsActivity) getActivity()).setBottomNavigationViewVisibility(VISIBLE);
+        ((SettingsActivity) getActivity()).setNavigationOnItemSelectedListener(
+            new OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(
+                    @NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.nav_player1:
+                            mSameAsPlayerOneSwitchContainer.setVisibility(GONE);
+                            break;
+                        case R.id.nav_player2:
+                            mSameAsPlayerOneSwitchContainer.setVisibility(VISIBLE);
+                            break;
+                    }
+                    mplayerOneSelected = !mplayerOneSelected;
+                    StageAdapter stageAdapter = new StageAdapter(getActivity(), mTimeControl.getStageManager(), TimeControlFragment.this);
+                    mStageListView.setAdapter(stageAdapter);
+                    return true;
+                }
+            });
 
         if (mStageListView != null) {
 

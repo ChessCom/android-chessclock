@@ -1,8 +1,13 @@
 package com.chess.clock.activities;
 
-import android.content.*;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
@@ -77,6 +82,11 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
      */
     private TimeControlManager mTimeControlManager;
 
+    /**
+     * BottomNavigationTab
+     */
+    BottomNavigationView mBottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -104,6 +114,8 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
                     .add(R.id.container, new SettingsFragment(), TAG_SETTINGS_FRAGMENT)
                     .commit();
         }
+
+        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.player_selection_bottom_navigation);
     }
 
     @Override
@@ -307,5 +319,15 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
     @Override
     public void onTimeControlListEmpty() {
         Toast.makeText(this, getString(R.string.list_empty_toast_message), Toast.LENGTH_LONG).show();
+    }
+
+    public void setNavigationOnItemSelectedListener(OnNavigationItemSelectedListener listener) {
+        if (mBottomNavigationView != null) {
+            mBottomNavigationView.setOnNavigationItemSelectedListener(listener);
+        }
+    }
+
+    public void setBottomNavigationViewVisibility(int v) {
+        mBottomNavigationView.setVisibility(v);
     }
 }
