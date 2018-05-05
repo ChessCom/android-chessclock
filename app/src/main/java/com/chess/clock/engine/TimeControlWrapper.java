@@ -12,7 +12,7 @@ public class TimeControlWrapper implements Parcelable, Cloneable{
     mTimeControlPlayerTwo = playerTwo;
   }
 
-  protected TimeControlWrapper(Parcel in) {
+  private TimeControlWrapper(Parcel in) {
     mTimeControlPlayerOne = in.readParcelable(TimeControl.class.getClassLoader());
     mTimeControlPlayerTwo = in.readParcelable(TimeControl.class.getClassLoader());
   }

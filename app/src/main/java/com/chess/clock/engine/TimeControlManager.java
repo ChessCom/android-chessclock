@@ -179,6 +179,7 @@ public class TimeControlManager {
             mEditableTimeControl = new TimeControlWrapper(blank, (TimeControl) blank.clone());
         } catch(CloneNotSupportedException e) {
             e.printStackTrace();
+            throw new IllegalStateException("Could not create Editable time control with blank time control.");
         }
     }
 
@@ -215,13 +216,19 @@ public class TimeControlManager {
      *
      * @param position Position of time control in the list.
      * @return Copy of TimeControl object.
+     * @throws IllegalStateException if editable time control is unable to be built
      */
     private TimeControlWrapper buildEditableTimeControl(int position) {
 
         if (position >= 0 && position < mTimeControls.size()) {
 
             TimeControlWrapper original = mTimeControls.get(position);
-            return new TimeControlWrapper(original.getTimeControlPlayerOne(), original.getTimeControlPlayerTwo());
+            try {
+                return (TimeControlWrapper) original.clone();
+            } catch(CloneNotSupportedException e) {
+                e.printStackTrace();
+                throw new IllegalStateException("Could not build editable time control.");
+            }
         }
         return null;
     }

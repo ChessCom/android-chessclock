@@ -30,7 +30,7 @@ import java.util.ArrayList;
 /**
  * Activity that manages TimeControl list in the Settings and also TimeControl form.
  */
-public class SettingsActivity extends ActionBarActivity implements SettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback {
+public class SettingsActivity extends ActionBarActivity implements SettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback, TimeControlFragment.BottomNavigationActionListener {
 
     private static final String TAG = SettingsActivity.class.getName();
 
@@ -86,7 +86,7 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
     /**
      * BottomNavigationTab
      */
-    BottomNavigationView mBottomNavigationView;
+    private BottomNavigationView mBottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -322,17 +322,24 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
         Toast.makeText(this, getString(R.string.list_empty_toast_message), Toast.LENGTH_LONG).show();
     }
 
-    public void setNavigationOnItemSelectedListener(OnNavigationItemSelectedListener listener) {
+    @Override
+    public void setVisibility(int visibility) {
         if (mBottomNavigationView != null) {
-            mBottomNavigationView.setOnNavigationItemSelectedListener(listener);
+            mBottomNavigationView.setVisibility(visibility);
         }
     }
 
-    public void setBottomNavigationViewVisibility(int v) {
-        mBottomNavigationView.setVisibility(v);
+    @Override
+    public void setSelected(int id) {
+        if (mBottomNavigationView != null) {
+            mBottomNavigationView.setSelectedItemId(id);
+        }
     }
 
-    public void setBottomNavigationViewSelected(int id) {
-        mBottomNavigationView.setSelectedItemId(id);
+    @Override
+    public void setBottomNavigationListener(OnNavigationItemSelectedListener listener) {
+        if (mBottomNavigationView != null) {
+            mBottomNavigationView.setOnNavigationItemSelectedListener(listener);
+        }
     }
 }

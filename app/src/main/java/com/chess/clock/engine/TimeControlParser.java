@@ -24,6 +24,17 @@ public class TimeControlParser {
     private static String TIME_CONTROLS_PREF_NAME = "timeControls";
     private static String TIME_CONTROL_SELECTED_PREF_IDX = "timeControlIdx";
     private static String TIME_CONTROLS_PREF_FIELD_NAME = "json";
+    private static String TC_JSON_ID = "id";
+    private static String TC_JSON_DURATION = "duration";
+    private static String TC_JSON_MOVES = "moves";
+    private static String TC_JSON_VALUE = "value";
+    private static String TC_JSON_TYPE = "type";
+    private static String TC_JSON_NAME = "name";
+    private static String TC_JSON_TIME_INCREMENT = "time_increment";
+    private static String TC_JSON_TIME_INCREMENT_PLAYER_TWO = "time_increment_player_two";
+    private static String TC_JSON_STAGES = "stages";
+    private static String TC_JSON_STAGES_PLAYER_TWO = "stages_player_two";
+    private static String TC_JSON_TIME_CONTROLS = "time_controls";
 
     private static SharedPreferences getSharedPreferences(Context context) {
         // Preferences stored on /data/data/PACKAGE_NAME/shared_prefs/timeControls.xml
@@ -83,41 +94,41 @@ public class TimeControlParser {
                 // Save Stages
                 for (Stage stage : tc.getTimeControlPlayerOne().getStageManager().getStages()) {
                     JSONObject stageJSONObject = new JSONObject();
-                    stageJSONObject.put("id", stage.getId());
-                    stageJSONObject.put("duration", stage.getDuration());
-                    stageJSONObject.put("moves", stage.getTotalMoves());
+                    stageJSONObject.put(TC_JSON_ID, stage.getId());
+                    stageJSONObject.put(TC_JSON_DURATION, stage.getDuration());
+                    stageJSONObject.put(TC_JSON_MOVES, stage.getTotalMoves());
                     timeControlStagesJSONArray.put(stageJSONObject);
                 }
 
                 for (Stage stage : tc.getTimeControlPlayerTwo().getStageManager().getStages()) {
                     JSONObject stageJSONObject = new JSONObject();
-                    stageJSONObject.put("id", stage.getId());
-                    stageJSONObject.put("duration", stage.getDuration());
-                    stageJSONObject.put("moves", stage.getTotalMoves());
+                    stageJSONObject.put(TC_JSON_ID, stage.getId());
+                    stageJSONObject.put(TC_JSON_DURATION, stage.getDuration());
+                    stageJSONObject.put(TC_JSON_MOVES, stage.getTotalMoves());
                     timeControlStagesPlayerTwoJSONArray.put(stageJSONObject);
                 }
 
                 // Save TimeIncrement
                 JSONObject timeIncrementJSONOBject = new JSONObject();
-                timeIncrementJSONOBject.put("value", tc.getTimeControlPlayerOne().getTimeIncrement().getValue());
-                timeIncrementJSONOBject.put("type", tc.getTimeControlPlayerOne().getTimeIncrement().getType().getValue());
+                timeIncrementJSONOBject.put(TC_JSON_VALUE, tc.getTimeControlPlayerOne().getTimeIncrement().getValue());
+                timeIncrementJSONOBject.put(TC_JSON_TYPE, tc.getTimeControlPlayerOne().getTimeIncrement().getType().getValue());
 
                 JSONObject timeIncrementPlayerTwoJSONOBject = new JSONObject();
-                timeIncrementPlayerTwoJSONOBject.put("value", tc.getTimeControlPlayerOne().getTimeIncrement().getValue());
-                timeIncrementPlayerTwoJSONOBject.put("type", tc.getTimeControlPlayerOne().getTimeIncrement().getType().getValue());
+                timeIncrementPlayerTwoJSONOBject.put(TC_JSON_VALUE, tc.getTimeControlPlayerOne().getTimeIncrement().getValue());
+                timeIncrementPlayerTwoJSONOBject.put(TC_JSON_TYPE, tc.getTimeControlPlayerOne().getTimeIncrement().getType().getValue());
 
                 // Add name, stages and time increment to TimeControl json object.
-                timeControlJSONObject.put("name", tc.getTimeControlPlayerOne().getName());
-                timeControlJSONObject.put("timeincrement", timeIncrementJSONOBject);
-                timeControlJSONObject.put("timeincrement2", timeIncrementPlayerTwoJSONOBject);
-                timeControlJSONObject.put("stages", timeControlStagesJSONArray);
-                timeControlJSONObject.put("stages2", timeControlStagesPlayerTwoJSONArray);
+                timeControlJSONObject.put(TC_JSON_NAME, tc.getTimeControlPlayerOne().getName());
+                timeControlJSONObject.put(TC_JSON_TIME_INCREMENT, timeIncrementJSONOBject);
+                timeControlJSONObject.put(TC_JSON_TIME_INCREMENT_PLAYER_TWO, timeIncrementPlayerTwoJSONOBject);
+                timeControlJSONObject.put(TC_JSON_STAGES, timeControlStagesJSONArray);
+                timeControlJSONObject.put(TC_JSON_STAGES_PLAYER_TWO, timeControlStagesPlayerTwoJSONArray);
 
                 // Add TimeControl json object to JSONArray
                 timeControlJSONArray.put(timeControlJSONObject);
             }
 
-            json.put("timecontrols", timeControlJSONArray);
+            json.put(TC_JSON_TIME_CONTROLS, timeControlJSONArray);
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
@@ -178,21 +189,21 @@ public class TimeControlParser {
         ArrayList<TimeControlWrapper> timeControls = new ArrayList<TimeControlWrapper>();
         try {
             JSONObject json = new JSONObject(jsonString);
-            JSONArray timeControlsJSONArray = json.getJSONArray("timecontrols");
+            JSONArray timeControlsJSONArray = json.getJSONArray(TC_JSON_TIME_CONTROLS);
             for (int i = 0; i < timeControlsJSONArray.length(); i++) {
                 JSONObject timeControlJSON = timeControlsJSONArray.getJSONObject(i);
                 JSONObject timeIncrementPlayerTwoJSONOBject = null;
                 JSONArray timeControlStagesPlayerTwoJSON = null;
 
-                JSONObject timeIncrementJSONOBject = timeControlJSON.getJSONObject("timeincrement");
-                JSONArray timeControlStagesJSON = timeControlJSON.getJSONArray("stages");
+                JSONObject timeIncrementJSONOBject = timeControlJSON.getJSONObject(TC_JSON_TIME_INCREMENT);
+                JSONArray timeControlStagesJSON = timeControlJSON.getJSONArray(TC_JSON_STAGES);
 
-                if (timeControlJSON.has("timeincrement2") && timeControlJSON.has("stages2")) {
-                    timeIncrementPlayerTwoJSONOBject = timeControlJSON.getJSONObject("timeincrement2");
-                    timeControlStagesPlayerTwoJSON = timeControlJSON.getJSONArray("stages2");
+                if (timeControlJSON.has(TC_JSON_TIME_INCREMENT_PLAYER_TWO) && timeControlJSON.has(TC_JSON_STAGES_PLAYER_TWO)) {
+                    timeIncrementPlayerTwoJSONOBject = timeControlJSON.getJSONObject(TC_JSON_TIME_INCREMENT_PLAYER_TWO);
+                    timeControlStagesPlayerTwoJSON = timeControlJSON.getJSONArray(TC_JSON_STAGES_PLAYER_TWO);
                 }
 
-                String name = timeControlJSON.getString("name");
+                String name = timeControlJSON.getString(TC_JSON_NAME);
                 Stage[] stages = getStages(timeControlStagesJSON);
                 Stage[] stagesPlayerTwo = timeControlStagesPlayerTwoJSON == null ? stages : getStages(timeControlStagesPlayerTwoJSON);
                 TimeIncrement timeIncrement = getTimeIncrement(timeIncrementJSONOBject);
@@ -232,20 +243,20 @@ public class TimeControlParser {
         // Delay bullet 1|2
         Stage delayBulletStage = new Stage(0, 60000);
         TimeIncrement delayBulletTimeIncrement = new TimeIncrement(TimeIncrement.Type.DELAY, 2000);
-        TimeControl delayBulletTimeControl = new TimeControl("Delay Bullet 1|2", new Stage[]{delayBulletStage}, delayBulletTimeIncrement);
-        TimeControlWrapper delayBulletTimeControlWrapper = new TimeControlWrapper(delayBulletTimeControl, delayBulletTimeControl);
+        TimeControl delayBulletTC = new TimeControl("Delay Bullet 1|2", new Stage[]{delayBulletStage}, delayBulletTimeIncrement);
+        TimeControlWrapper delayBulletTimeControlWrapper = new TimeControlWrapper(delayBulletTC, delayBulletTC);
 
         // Blitz 5|5
         Stage blitz55 = new Stage(0, 300000);
         TimeIncrement blitzTimeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, 5000);
-        TimeControl blitzTimeControl = new TimeControl("Fischer 5|5", new Stage[]{blitz55}, blitzTimeIncrement);
-        TimeControlWrapper blitzTimeControlWrapper = new TimeControlWrapper(blitzTimeControl, blitzTimeControl);
+        TimeControl blitzTC = new TimeControl("Fischer 5|5", new Stage[]{blitz55}, blitzTimeIncrement);
+        TimeControlWrapper blitzTimeControlWrapper = new TimeControlWrapper(blitzTC, blitzTC);
 
         // Fischer rapid 10|5
         Stage fischerRapidStage = new Stage(0, 600000);
         TimeIncrement fischerRapidTI = new TimeIncrement(TimeIncrement.Type.FISCHER, 5000);
-        TimeControl fischerRapid = new TimeControl("Fischer rapid 10|5", new Stage[]{fischerRapidStage}, fischerRapidTI);
-        TimeControlWrapper fischerRapidWrapper = new TimeControlWrapper(fischerRapid, fischerRapid);
+        TimeControl fischerRapidTC = new TimeControl("Fischer rapid 10|5", new Stage[]{fischerRapidStage}, fischerRapidTI);
+        TimeControlWrapper fischerRapidWrapper = new TimeControlWrapper(fischerRapidTC, fischerRapidTC);
 
 
         // Tournament
@@ -270,9 +281,9 @@ public class TimeControlParser {
     private static TimeIncrement getTimeIncrement(JSONObject timeIncrementJSONObject) {
         try {
             // Restore TimeIncrement
-            long value = timeIncrementJSONObject.getLong("value");
+            long value = timeIncrementJSONObject.getLong(TC_JSON_VALUE);
             TimeIncrement.Type type
-                    = TimeIncrement.Type.fromInteger(timeIncrementJSONObject.getInt("type"));
+                    = TimeIncrement.Type.fromInteger(timeIncrementJSONObject.getInt(TC_JSON_TYPE));
 
             return new TimeIncrement(type, value);
 
@@ -301,9 +312,9 @@ public class TimeControlParser {
 
     private static Stage getStage(JSONObject stageJSONObject) {
         try {
-            int id = stageJSONObject.getInt("id");
-            long duration = stageJSONObject.getLong("duration");
-            int moves = stageJSONObject.getInt("moves");
+            int id = stageJSONObject.getInt(TC_JSON_ID);
+            long duration = stageJSONObject.getLong(TC_JSON_DURATION);
+            int moves = stageJSONObject.getInt(TC_JSON_MOVES);
             if (moves > 0) {
                 return new Stage(id, duration, moves);
             } else {
