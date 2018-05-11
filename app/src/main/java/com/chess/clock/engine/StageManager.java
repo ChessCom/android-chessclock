@@ -107,7 +107,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
 
                 // Set first stage as type MOVES, with 1 move
                 mStages.get(0).setStageType(Stage.StageType.MOVES);
-                mStages.get(0).setMoves(1);
+                mStages.get(0).setMoves(20);
 
                 Stage newStage = new Stage(1, 300000);
                 newStage.setStageListener(this);
@@ -117,7 +117,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
 
                 // Set second stage as Type MOVES, with 1 move each.
                 mStages.get(1).setStageType(Stage.StageType.MOVES);
-                mStages.get(1).setMoves(1);
+                mStages.get(1).setMoves(20);
 
                 Stage newStage = new Stage(2, 300000);
                 newStage.setStageListener(this);
