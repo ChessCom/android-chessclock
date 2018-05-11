@@ -50,8 +50,6 @@ public class ClockTimersActivity extends FragmentActivity {
     private static final String STATE_PLAYER_TWO_KEY = "STATE_PLAYER_TWO_KEY";
     private static final String STATE_TIMERS_KEY = "STATE_TIMERS_KEY";
     private static final String STATE_TIMERS_PREVIOUS_PAUSE_KEY = "STATE_TIMERS_PREVIOUS_PAUSE_KEY";
-    private static final String STATE_PLAYER_ONE_MOVES_CONTAINER_VISIBLE_KEY = "PLAYER_ONE_MOVES_VISIBLE_KEY";
-    private static final String STATE_PLAYER_TWO_MOVES_CONTAINER_VISIBLE_KEY = "PLAYER_ONE_MOVES_VISIBLE_KEY";
     private static final String STATE_LAST_TIME_PAUSED_ACTIVITY_KEY = "LAST_TIME_PAUSED_ACTIVITY_KEY";
 
     /**
@@ -91,8 +89,6 @@ public class ClockTimersActivity extends FragmentActivity {
     /**
      * Utils
      */
-    private boolean mPlayerOneMovesContainerVisible = true;
-    private boolean mPlayerTwoMovesContainerVisible = true;
     private long mTimeStampOnPauseActivity;
     private View mDecorView;
 
@@ -265,7 +261,6 @@ public class ClockTimersActivity extends FragmentActivity {
         }
     };
 
-    private int mPlayerOneTotalStageNumber;
     private CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
         @Override
         public void onClockTimeUpdate(long millisUntilFinished) {
@@ -290,30 +285,13 @@ public class ClockTimersActivity extends FragmentActivity {
             if (stage.getId() == 0) {
                 findViewById(R.id.playerOneStageTwo).setBackgroundResource(R.drawable.shape_stage_empty);
                 findViewById(R.id.playerOneStageThree).setBackgroundResource(R.drawable.shape_stage_empty);
-                if (mPlayerOneTotalStageNumber >= 2) {
-                    mPlayerOneMovesContainerVisible = true;
-                }
 
             } else if (stage.getId() == 1) {
-
                 // Mark beginning of stage 2
                 findViewById(R.id.playerOneStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
-
-                // Hide move counter when not required.
-                if (mPlayerOneTotalStageNumber == 2) {
-                    findViewById(R.id.playerOneMovesContainer).setVisibility(View.GONE);
-                    mPlayerOneMovesContainerVisible = false;
-                } else {
-                    mPlayerOneMovesContainerVisible = true;
-                }
-
             } else if (stage.getId() == 2) {
                 findViewById(R.id.playerOneStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
                 findViewById(R.id.playerOneStageThree).setBackgroundResource(R.drawable.shape_stage_fill);
-
-                // Hide move counter when not required.
-                findViewById(R.id.playerOneMovesContainer).setVisibility(View.GONE);
-                mPlayerOneMovesContainerVisible = false;
             }
         }
 
@@ -325,17 +303,11 @@ public class ClockTimersActivity extends FragmentActivity {
         @Override
         public void onTotalStageNumber(int stagesNumber) {
 
-            mPlayerOneTotalStageNumber = stagesNumber;
-
             // Hide all stage views
             if (stagesNumber == 1) {
                 findViewById(R.id.playerOneStageOne).setVisibility(View.GONE);
                 findViewById(R.id.playerOneStageTwo).setVisibility(View.GONE);
                 findViewById(R.id.playerOneStageThree).setVisibility(View.GONE);
-
-                // Hide move counter
-                findViewById(R.id.playerOneMovesContainer).setVisibility(View.GONE);
-                mPlayerOneMovesContainerVisible = false;
             }
 
             // 3 is the max allowed stages.
@@ -345,19 +317,10 @@ public class ClockTimersActivity extends FragmentActivity {
                 stageOne.setBackgroundResource(R.drawable.shape_stage_fill);
                 findViewById(R.id.playerOneStageTwo).setVisibility(View.VISIBLE);
                 findViewById(R.id.playerOneStageThree).setVisibility(View.GONE);
-
-                // Show move counter
-                findViewById(R.id.playerOneMovesContainer).setVisibility(View.VISIBLE);
-                mPlayerOneMovesContainerVisible = true;
-            }
-            if (stagesNumber == 3) {
-                findViewById(R.id.playerOneStageThree).setVisibility(View.VISIBLE);
-                mPlayerOneMovesContainerVisible = true;
             }
         }
     };
 
-    private int mPlayerTwoTotalStageNumber;
     private CountDownTimer.Callback playerTwoCallback = new CountDownTimer.Callback() {
         @Override
         public void onClockTimeUpdate(long millisUntilFinished) {
@@ -382,28 +345,11 @@ public class ClockTimersActivity extends FragmentActivity {
             if (stage.getId() == 0) {
                 findViewById(R.id.playerTwoStageTwo).setBackgroundResource(R.drawable.shape_stage_empty);
                 findViewById(R.id.playerTwoStageThree).setBackgroundResource(R.drawable.shape_stage_empty);
-
-                if (mPlayerTwoTotalStageNumber >= 2) {
-                    mPlayerTwoMovesContainerVisible = true;
-                }
             } else if (stage.getId() == 1) {
                 findViewById(R.id.playerTwoStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
-
-                // Hide move counter when not required.
-                if (mPlayerTwoTotalStageNumber == 2) {
-                    findViewById(R.id.playerTwoMovesContainer).setVisibility(View.GONE);
-                    mPlayerTwoMovesContainerVisible = false;
-                } else {
-                    mPlayerTwoMovesContainerVisible = true;
-                }
-
             } else if (stage.getId() == 2) {
                 findViewById(R.id.playerTwoStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
                 findViewById(R.id.playerTwoStageThree).setBackgroundResource(R.drawable.shape_stage_fill);
-
-                // Hide move counter when not required.
-                findViewById(R.id.playerTwoMovesContainer).setVisibility(View.GONE);
-                mPlayerTwoMovesContainerVisible = false;
             }
         }
 
@@ -414,18 +360,11 @@ public class ClockTimersActivity extends FragmentActivity {
 
         @Override
         public void onTotalStageNumber(int stagesNumber) {
-
-            mPlayerTwoTotalStageNumber = stagesNumber;
-
             // Hide all stage views
             if (stagesNumber == 1) {
                 findViewById(R.id.playerTwoStageOne).setVisibility(View.GONE);
                 findViewById(R.id.playerTwoStageTwo).setVisibility(View.GONE);
                 findViewById(R.id.playerTwoStageThree).setVisibility(View.GONE);
-
-                // Hide move counter
-                findViewById(R.id.playerTwoMovesContainer).setVisibility(View.GONE);
-                mPlayerTwoMovesContainerVisible = false;
             }
 
             // 3 is the max allowed stages.
@@ -435,14 +374,6 @@ public class ClockTimersActivity extends FragmentActivity {
                 stageOne.setBackgroundResource(R.drawable.shape_stage_fill);
                 findViewById(R.id.playerTwoStageTwo).setVisibility(View.VISIBLE);
                 findViewById(R.id.playerTwoStageThree).setVisibility(View.GONE);
-
-                // Show move counter
-                findViewById(R.id.playerTwoMovesContainer).setVisibility(View.VISIBLE);
-                mPlayerTwoMovesContainerVisible = false;
-            }
-            if (stagesNumber == 3) {
-                findViewById(R.id.playerTwoStageThree).setVisibility(View.VISIBLE);
-                mPlayerTwoMovesContainerVisible = true;
             }
         }
     };
@@ -690,24 +621,6 @@ public class ClockTimersActivity extends FragmentActivity {
             mPauseButton.setText(getString(R.string.btn_pause_settings));
         }
 
-        if (savedInstanceState.containsKey(STATE_PLAYER_ONE_MOVES_CONTAINER_VISIBLE_KEY)) {
-            View v = findViewById(R.id.playerOneMovesContainer);
-            if (savedInstanceState.getBoolean(STATE_PLAYER_ONE_MOVES_CONTAINER_VISIBLE_KEY)) {
-                v.setVisibility(View.VISIBLE);
-            } else {
-                v.setVisibility(View.GONE);
-            }
-        }
-
-        if (savedInstanceState.containsKey(STATE_PLAYER_TWO_MOVES_CONTAINER_VISIBLE_KEY)) {
-            View v = findViewById(R.id.playerTwoMovesContainer);
-            if (savedInstanceState.getBoolean(STATE_PLAYER_TWO_MOVES_CONTAINER_VISIBLE_KEY)) {
-                v.setVisibility(View.VISIBLE);
-            } else {
-                v.setVisibility(View.GONE);
-            }
-        }
-
         // Restore time stamp when onPause() was called.
         if (savedInstanceState.containsKey(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY)) {
             mTimeStampOnPauseActivity = savedInstanceState.getLong(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY);
@@ -825,9 +738,6 @@ public class ClockTimersActivity extends FragmentActivity {
         saveInstanceState.putCharSequence(STATE_PLAYER_TWO_KEY, mPlayerTwoTimerTextView.getText());
         saveInstanceState.putInt(STATE_TIMERS_KEY, mTimersState.getValue());
         saveInstanceState.putInt(STATE_TIMERS_PREVIOUS_PAUSE_KEY, mTimersStatePreviousToPause.getValue());
-
-        saveInstanceState.putBoolean(STATE_PLAYER_ONE_MOVES_CONTAINER_VISIBLE_KEY, mPlayerOneMovesContainerVisible);
-        saveInstanceState.putBoolean(STATE_PLAYER_TWO_MOVES_CONTAINER_VISIBLE_KEY, mPlayerTwoMovesContainerVisible);
 
         saveInstanceState.putLong(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY, mTimeStampOnPauseActivity);
         super.onSaveInstanceState(saveInstanceState);
