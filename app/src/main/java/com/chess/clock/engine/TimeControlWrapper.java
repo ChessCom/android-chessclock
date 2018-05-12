@@ -6,15 +6,18 @@ import android.os.Parcelable;
 public class TimeControlWrapper implements Parcelable, Cloneable{
   private TimeControl mTimeControlPlayerOne;
   private TimeControl mTimeControlPlayerTwo;
+  private boolean mSameAsPlayerOne;
 
   public TimeControlWrapper(TimeControl playerOne, TimeControl playerTwo) {
     mTimeControlPlayerOne = playerOne;
     mTimeControlPlayerTwo = playerTwo;
+    mSameAsPlayerOne = true;
   }
 
   private TimeControlWrapper(Parcel in) {
     mTimeControlPlayerOne = in.readParcelable(TimeControl.class.getClassLoader());
     mTimeControlPlayerTwo = in.readParcelable(TimeControl.class.getClassLoader());
+    mSameAsPlayerOne = in.readParcelable(boolean.class.getClassLoader());
   }
 
   public static final Creator<TimeControlWrapper> CREATOR = new Creator<TimeControlWrapper>() {
@@ -45,6 +48,14 @@ public class TimeControlWrapper implements Parcelable, Cloneable{
     mTimeControlPlayerTwo = timeControl;
   }
 
+  public boolean isSameAsPlayerOne() {
+    return mSameAsPlayerOne;
+  }
+
+  public void setSameAsPlayerOne(boolean sameAsPlayerOne) {
+    mSameAsPlayerOne = sameAsPlayerOne;
+  }
+
   @Override
   public Object clone() throws CloneNotSupportedException {
     TimeControlWrapper clone = (TimeControlWrapper) super.clone();
@@ -52,6 +63,7 @@ public class TimeControlWrapper implements Parcelable, Cloneable{
     // Clone StageManager object and set this clone as his listener.
     clone.mTimeControlPlayerOne = (TimeControl) mTimeControlPlayerOne.clone();
     clone.mTimeControlPlayerTwo = (TimeControl) mTimeControlPlayerTwo.clone();
+    clone.mSameAsPlayerOne = mSameAsPlayerOne;
 
     return clone;
   }
@@ -69,6 +81,7 @@ public class TimeControlWrapper implements Parcelable, Cloneable{
 
   public boolean isEqual(TimeControlWrapper wrapper) {
     return mTimeControlPlayerOne.isEqual(wrapper.getTimeControlPlayerOne()) &&
-        mTimeControlPlayerTwo.isEqual(wrapper.getTimeControlPlayerTwo());
+        mTimeControlPlayerTwo.isEqual(wrapper.getTimeControlPlayerTwo()) &&
+        mSameAsPlayerOne == wrapper.isSameAsPlayerOne();
   }
 }

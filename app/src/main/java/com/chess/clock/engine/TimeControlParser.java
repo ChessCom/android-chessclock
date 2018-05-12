@@ -35,6 +35,7 @@ public class TimeControlParser {
     private static String TC_JSON_STAGES = "stages";
     private static String TC_JSON_STAGES_PLAYER_TWO = "stages_player_two";
     private static String TC_JSON_TIME_CONTROLS = "time_controls";
+    private static String TC_JSON_SAME_AS_PLAYER_ONE = "same_as_player_one";
 
     private static SharedPreferences getSharedPreferences(Context context) {
         // Preferences stored on /data/data/PACKAGE_NAME/shared_prefs/timeControls.xml
@@ -124,6 +125,9 @@ public class TimeControlParser {
                 timeControlJSONObject.put(TC_JSON_STAGES, timeControlStagesJSONArray);
                 timeControlJSONObject.put(TC_JSON_STAGES_PLAYER_TWO, timeControlStagesPlayerTwoJSONArray);
 
+                // Add same as player one boolean
+                timeControlJSONObject.put(TC_JSON_SAME_AS_PLAYER_ONE, tc.isSameAsPlayerOne());
+
                 // Add TimeControl json object to JSONArray
                 timeControlJSONArray.put(timeControlJSONObject);
             }
@@ -209,9 +213,14 @@ public class TimeControlParser {
                 TimeIncrement timeIncrement = getTimeIncrement(timeIncrementJSONOBject);
                 TimeIncrement timeIncrementplayerTwo = timeIncrementPlayerTwoJSONOBject == null ? timeIncrement : getTimeIncrement(timeIncrementPlayerTwoJSONOBject);
 
+                boolean isSameAsPlayerOne = !timeControlJSON.has(TC_JSON_SAME_AS_PLAYER_ONE) ||
+                    timeControlJSON.getBoolean(TC_JSON_SAME_AS_PLAYER_ONE);
+
                 TimeControl timeControl = new TimeControl(name, stages, timeIncrement);
                 TimeControl timeControlPlayerTwo = new TimeControl(name, stagesPlayerTwo, timeIncrementplayerTwo);
-                timeControls.add(new TimeControlWrapper(timeControl, timeControlPlayerTwo));
+                TimeControlWrapper wrapper = new TimeControlWrapper(timeControl, timeControlPlayerTwo);
+                wrapper.setSameAsPlayerOne(isSameAsPlayerOne);
+                timeControls.add(wrapper);
             }
 
         } catch (JSONException e) {

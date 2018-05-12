@@ -175,7 +175,8 @@
             android:id="@+id/switch_same_as_player_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"/>
+            android:layout_gravity="right"
+            android:checked="true"/>
     </FrameLayout>
 
 
