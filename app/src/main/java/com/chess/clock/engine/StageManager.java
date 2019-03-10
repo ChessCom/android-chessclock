@@ -208,7 +208,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
         }
 
         // Update total move count.
-        mMoveCount = mStages.get(mCurrentStage).getStageMoveCount();
+        mMoveCount += 1;
 
         // Notify move count has been updated.
         if (mStageManagerListener != null) {
