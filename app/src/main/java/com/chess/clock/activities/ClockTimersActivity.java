@@ -318,6 +318,10 @@ public class ClockTimersActivity extends FragmentActivity {
                 findViewById(R.id.playerOneStageTwo).setVisibility(View.VISIBLE);
                 findViewById(R.id.playerOneStageThree).setVisibility(View.GONE);
             }
+
+            if (stagesNumber == 3) {
+                findViewById(R.id.playerOneStageThree).setVisibility(View.VISIBLE);
+            }
         }
     };
 
@@ -374,6 +378,10 @@ public class ClockTimersActivity extends FragmentActivity {
                 stageOne.setBackgroundResource(R.drawable.shape_stage_fill);
                 findViewById(R.id.playerTwoStageTwo).setVisibility(View.VISIBLE);
                 findViewById(R.id.playerTwoStageThree).setVisibility(View.GONE);
+            }
+
+            if (stagesNumber == 3) {
+                findViewById(R.id.playerTwoStageThree).setVisibility(View.VISIBLE);
             }
         }
     };
