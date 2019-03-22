@@ -132,7 +132,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginRight="16dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <TextView
@@ -230,7 +230,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginRight="16dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <TextView

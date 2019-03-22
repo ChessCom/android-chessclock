@@ -24,6 +24,7 @@ import com.chess.clock.activities.SettingsActivity;
 import com.chess.clock.adapters.TimeControlAdapter;
 import com.chess.clock.adapters.TimeControlCABAdapter;
 import com.chess.clock.engine.TimeControl;
+import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.statics.AppData;
 import com.chess.clock.util.MultiSelectionUtil;
@@ -50,7 +51,7 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
      */
     public interface OnSettingsListener {
 
-        public ArrayList<TimeControl> getCurrentTimeControls();
+        public ArrayList<TimeControlWrapper> getCurrentTimeControls();
 
         public int getCheckedTimeControlIndex();
 
@@ -471,21 +472,18 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
         int position = mItemChecked + mListView.getHeaderViewsCount();
         Log.d(TAG, "Starting new clock on list position: " + position);
 
-        TimeControl timeControl = (TimeControl) mListView.getAdapter().getItem(position);
-        try {
-            if (timeControl != null) {
-                TimeControl timeControlPlayerTwo = (TimeControl) timeControl.clone();
-                Intent startServiceIntent = ChessClockLocalService.getChessClockServiceIntent(getActivity().getApplicationContext(), timeControl, timeControlPlayerTwo);
-                getActivity().startService(startServiceIntent);
-                getActivity().setResult(getActivity().RESULT_OK);
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
-            } else {
-                Log.w(TAG, "time control not available, ignoring start new clock");
-                Thread.dumpStack();
-            }
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+        TimeControlWrapper timeControlWrapper = (TimeControlWrapper) mListView.getAdapter().getItem(position);
+        if (timeControlWrapper != null) {
+            TimeControl playerOne = timeControlWrapper.getTimeControlPlayerOne();
+            TimeControl playerTwo = timeControlWrapper.getTimeControlPlayerTwo();
+            Intent startServiceIntent = ChessClockLocalService.getChessClockServiceIntent(getActivity().getApplicationContext(), playerOne, playerTwo);
+            getActivity().startService(startServiceIntent);
+            getActivity().setResult(getActivity().RESULT_OK);
+            getActivity().finish();
+            getActivity().overridePendingTransition(R.anim.left_to_right_in, R.anim.left_to_right_full);
+        } else {
+            Log.w(TAG, "time control not available, ignoring start new clock");
+            Thread.dumpStack();
         }
     }
 

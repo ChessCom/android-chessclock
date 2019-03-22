@@ -10,6 +10,7 @@ import android.widget.*;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.TimeControl;
+import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.fragments.SettingsFragment;
 
 import java.util.ArrayList;
@@ -17,14 +18,14 @@ import java.util.ArrayList;
 /**
  * TimeControl Adapter used when in Context Action Bar mode is activated.
  */
-public class TimeControlCABAdapter extends ArrayAdapter<TimeControl> {
+public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
 
     private Context context;
     private int layoutResourceId;
-    private ArrayList<TimeControl> data;
+    private ArrayList<TimeControlWrapper> data;
     private Fragment mTargetFragment;
 
-    public TimeControlCABAdapter(Context context, ArrayList<TimeControl> objects, Fragment targetFragment) {
+    public TimeControlCABAdapter(Context context, ArrayList<TimeControlWrapper> objects, Fragment targetFragment) {
         super(context, R.layout.list_time_control_item_multi_choice, objects);
         this.layoutResourceId = R.layout.list_time_control_item_multi_choice;
         this.context = context;
@@ -38,7 +39,7 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControl> {
     }
 
     @Override
-    public TimeControl getItem(int position) {
+    public TimeControlWrapper getItem(int position) {
         return data.get(position);
     }
 
@@ -79,7 +80,7 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControl> {
 
         holder.editImgBtn.setTag(position);
 
-        TimeControl tc = data.get(position);
+        TimeControl tc = data.get(position).getTimeControlPlayerOne();
         holder.textView.setText(tc.getName());
 
         return row;

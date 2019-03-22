@@ -1,15 +1,33 @@
 package com.chess.clock.fragments;
 
-import android.app.*;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.Service;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chess.clock.R;
 import com.chess.clock.adapters.StageAdapter;
@@ -17,13 +35,29 @@ import com.chess.clock.dialog.StageEditorDialog;
 import com.chess.clock.dialog.TimeIncrementEditorDialog;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControl;
+import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.engine.TimeIncrement;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 /**
  * UI fragment to create and edit a TimeControl.
  */
 public class TimeControlFragment extends Fragment implements StageEditorDialog.OnStageEditListener,
         TimeIncrementEditorDialog.OnTimeIncrementEditListener {
+
+    /**
+     * This interface must be implemented by activities that contain this fragment to allow interaction.
+     */
+    public interface BottomNavigationActionListener {
+
+        void setVisibility(int visibility);
+
+        void setSelected(int id);
+
+        void setBottomNavigationListener(OnNavigationItemSelectedListener listener);
+    }
 
     /**
      * Save Instance state keys
@@ -45,10 +79,13 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * Activity attached.
      */
     private OnTimeControlListener mListener;
+    private BottomNavigationActionListener mBottomNavigationActionListener;
     /**
      * State.
      */
-    private TimeControl mTimeControl;
+    private TimeControlWrapper mTimeControlWrapper;
+    private TimeControl mSelectedTimeControl;
+    private boolean mPlayerOneSelected = false;
     /**
      * Time Control Name Text WATCHER
      */
@@ -66,8 +103,9 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         @Override
         public void afterTextChanged(Editable s) {
             String text = s.toString();
-            if (mTimeControl != null && text.length() != 0 && !text.equals("")) {
-                mTimeControl.setName(s.toString());
+            if (mTimeControlWrapper != null && text.length() != 0 && !text.equals("")) {
+                mTimeControlWrapper.getTimeControlPlayerOne().setName(s.toString());
+                mTimeControlWrapper.getTimeControlPlayerTwo().setName(s.toString());
             }
         }
     };
@@ -87,7 +125,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     /**
      * This is used to check for modifications before exiting.
      */
-    private TimeControl mTimeControlSnapshot;
+    private TimeControlWrapper mTimeControlSnapshot;
     /**
      * UI
      */
@@ -95,6 +133,8 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     private EditText mTimeControlNameEditText;
     private ViewGroup mTimeIncrementBtn;
     private TextView mTimeIncrementDescription;
+    private FrameLayout mSameAsPlayerOneSwitchContainer;
+    private SwitchCompat mSameAsPlayerOneSwtich;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -115,9 +155,10 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         super.onAttach(activity);
         try {
             mListener = (OnTimeControlListener) activity;
+            mBottomNavigationActionListener = (BottomNavigationActionListener) activity;
 
             // Fetch current TimeControl object
-            mTimeControl = mListener.getEditableTimeControl();
+            mTimeControlWrapper = mListener.getEditableTimeControl();
 
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
@@ -138,7 +179,8 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         super.onResume();
 
         // Update Activity title if it is new time control.
-        if (mTimeControl.getName() == null || mTimeControl.getName().equals("")) {
+        TimeControl playerOne = mTimeControlWrapper.getTimeControlPlayerOne();
+        if (playerOne != null && (playerOne.getName() == null || playerOne.getName().equals(""))) {
             getActivity().setTitle(getString(R.string.title_activity_time_control_new));
         } else {
             getActivity().setTitle(getString(R.string.title_activity_time_control));
@@ -150,38 +192,82 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
 
         View v = inflater.inflate(R.layout.fragment_time_control, container, false);
         mStageListView = (ListView) v.findViewById(R.id.list_stages);
+        mSameAsPlayerOneSwitchContainer = (FrameLayout) v.findViewById(R.id.switch_same_as_player_one_container);
+        mSameAsPlayerOneSwtich = (SwitchCompat) v.findViewById(R.id.switch_same_as_player_one);
+        mSameAsPlayerOneSwtich.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mTimeControlWrapper.setSameAsPlayerOne(isChecked);
+                if (isChecked && !mPlayerOneSelected) {
+                    showPlayerOneViews();
+                }
+            }
+        });
+        mSameAsPlayerOneSwitchContainer.setVisibility(GONE);
+        mBottomNavigationActionListener.setVisibility(VISIBLE);
+        mBottomNavigationActionListener.setBottomNavigationListener(
+            new OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(
+                    @NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.nav_player1:
+                            mSameAsPlayerOneSwitchContainer.setVisibility(GONE);
+                            break;
+                        case R.id.nav_player2:
+                            mSameAsPlayerOneSwitchContainer.setVisibility(VISIBLE);
+                            break;
+                    }
+                    mPlayerOneSelected = !mPlayerOneSelected;
+                    mSelectedTimeControl = mPlayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
+                    if (!mPlayerOneSelected && mTimeControlWrapper.isSameAsPlayerOne()) {
+                        showPlayerOneViews();
+                    } else {
+                        StageAdapter stageAdapter = new StageAdapter(getActivity(), mSelectedTimeControl.getStageManager(), TimeControlFragment.this);
+                        mStageListView.setAdapter(stageAdapter);
+                        mTimeIncrementDescription.setText(mSelectedTimeControl.getTimeIncrement().toString());
+                        updateDisplay();
+                    }
+                    return true;
+                }
+            });
 
         if (mStageListView != null) {
 
             mStageListView.setOnItemClickListener(mItemClickListener);
-            if (mTimeControl != null) {
+            if (mTimeControlWrapper != null) {
 
                 if (savedInstanceState != null) {
                     mTimeControlSnapshot = savedInstanceState.getParcelable(STATE_TIME_CONTROL_SNAPSHOT_KEY);
                 } else {
                     // Save copy to check modifications before exit.
+                    mTimeControlSnapshot = null;
                     try {
-                        mTimeControlSnapshot = (TimeControl) mTimeControl.clone();
-                    } catch (CloneNotSupportedException e) {
+                        mTimeControlSnapshot = (TimeControlWrapper) mTimeControlWrapper.clone();
+                    } catch(CloneNotSupportedException e) {
                         e.printStackTrace();
+                        throw new IllegalStateException("Could not build time control snapshot");
                     }
                 }
+
+                mSameAsPlayerOneSwtich.setChecked(mTimeControlWrapper.isSameAsPlayerOne());
 
                 // Setup Time Control Name Edit Text
                 mTimeControlNameEditText = (EditText) v.findViewById(R.id.time_control_name);
                 mTimeControlNameEditText.addTextChangedListener(mTextWatcher);
 
-                if (mTimeControl.getName() != null && !mTimeControl.getName().equals("")) {
-                    mTimeControlNameEditText.setText(mTimeControl.getName());
+                TimeControl tc = mTimeControlWrapper.getTimeControlPlayerOne();
+                if (tc.getName() != null && !tc.getName().equals("")) {
+                    mTimeControlNameEditText.setText(tc.getName());
                 }
 
                 // Setup Stages list
-                StageAdapter stageAdapter = new StageAdapter(getActivity(), mTimeControl.getStageManager(), this);
+                StageAdapter stageAdapter = new StageAdapter(getActivity(), tc.getStageManager(), this);
                 mStageListView.setAdapter(stageAdapter);
 
                 // Load Time Increment item
                 mTimeIncrementDescription = (TextView) v.findViewById(R.id.increment_description);
-                mTimeIncrementDescription.setText(mTimeControl.getTimeIncrement().toString());
+                mTimeIncrementDescription.setText(tc.getTimeIncrement().toString());
 
                 // Setup click listener to Time Increment btn
                 mTimeIncrementBtn = (ViewGroup) v.findViewById(R.id.btn_edit_increment);
@@ -193,6 +279,9 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                 });
             }
         }
+
+        mBottomNavigationActionListener.setSelected(R.id.nav_player1);
+        mSelectedTimeControl = mTimeControlWrapper.getTimeControlPlayerOne();
 
         return v;
     }
@@ -207,6 +296,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mBottomNavigationActionListener.setVisibility(GONE);
     }
 
     @Override
@@ -219,8 +309,10 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        if (mTimeControl.getStageManager().getTotalStages() == 3) {
-            menu.removeItem(R.id.action_new_stage);
+        if (mSelectedTimeControl.getStageManager().getTotalStages() == 3) {
+            menu.findItem(R.id.action_new_stage).setVisible(false);
+        } else {
+            menu.findItem(R.id.action_new_stage).setVisible(true);
         }
     }
 
@@ -240,7 +332,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     }
 
     private void saveTimeControl() {
-        if (mTimeControl != null) {
+        if (mTimeControlWrapper != null) {
 
             // Hide soft keyboard
             mTimeControlNameEditText.clearFocus();
@@ -254,6 +346,15 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                 mTimeControlNameEditText.requestFocus();
                 Toast.makeText(getActivity(), getString(R.string.toast_requesting_time_control_name), Toast.LENGTH_LONG).show();
             } else {
+                if (mTimeControlWrapper.isSameAsPlayerOne()) {
+                    TimeControl playerOneClone = null;
+                    try {
+                        playerOneClone = (TimeControl) mTimeControlWrapper.getTimeControlPlayerOne().clone();
+                    } catch(CloneNotSupportedException e) {
+                        e.printStackTrace();
+                    }
+                    mTimeControlWrapper.setTimeControlPlayerTwo(playerOneClone);
+                }
                 mListener.saveTimeControl();
                 getActivity().getSupportFragmentManager().popBackStack();
             }
@@ -271,8 +372,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     }
 
     public void showConfirmGoBackDialog() {
-
-        if (!mTimeControl.isEqual(mTimeControlSnapshot)) {
+        if (!(mTimeControlWrapper.isEqual(mTimeControlSnapshot))) {
             DialogFragment newFragment = ExitConfirmationDialogFragment.newInstance();
             newFragment.setTargetFragment(this, REQUEST_EXIT_DIALOG);
             newFragment.show(getFragmentManager(), TAG_EXIT_DIALOG_FRAGMENT);
@@ -290,14 +390,14 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         imm.hideSoftInputFromWindow(mTimeControlNameEditText.getWindowToken(), 0);
 
 
-        if (mTimeControl.getStageManager().getTotalStages() < 3) {
-            mTimeControl.getStageManager().addNewStage();
+        if (mSelectedTimeControl.getStageManager().getTotalStages() < 3) {
+            mSelectedTimeControl.getStageManager().addNewStage();
             updateDisplay();
         }
     }
 
     public void removeStage(int stageIndex) {
-        mTimeControl.getStageManager().removeStage(stageIndex);
+        mSelectedTimeControl.getStageManager().removeStage(stageIndex);
         updateDisplay();
     }
 
@@ -305,9 +405,8 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * Launch Stage Editor Dialog where the user can manipulate the Stage's properties.
      */
     private void showStageEditorDialog() {
-
         // Get correct Stage.
-        Stage stage = mTimeControl.getStageManager().getStages()[mEditableStageIndex];
+        Stage stage = mSelectedTimeControl.getStageManager().getStages()[mEditableStageIndex];
 
         // Setup Stage Editor Dialog.
         DialogFragment newFragment = new StageEditorDialogFragment(getActivity(), stage);
@@ -317,9 +416,28 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         newFragment.show(getActivity().getSupportFragmentManager(), TAG_STAGE_EDITOR_DIALOG_FRAGMENT);
     }
 
+    /**
+     * Clone the player one views if the "same as player one" switch is turned on in the player 2 tab
+     */
+    private void showPlayerOneViews() {
+        TimeControl playerOneClone;
+        try {
+            playerOneClone = (TimeControl) mTimeControlWrapper.getTimeControlPlayerOne().clone();
+        } catch(CloneNotSupportedException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Could not clone player one time control");
+        }
+        mTimeControlWrapper.setTimeControlPlayerTwo(playerOneClone);
+        mTimeIncrementDescription.setText(playerOneClone.getTimeIncrement().toString());
+        mSelectedTimeControl = mPlayerOneSelected ? mTimeControlWrapper.getTimeControlPlayerOne() : mTimeControlWrapper.getTimeControlPlayerTwo();
+
+        StageAdapter stageAdapter = new StageAdapter(getActivity(), mSelectedTimeControl.getStageManager(), TimeControlFragment.this);
+        mStageListView.setAdapter(stageAdapter);
+    }
+
     @Override
     public void onStageEditDone(int moves, long timeValue) {
-        Stage stage = mTimeControl.getStageManager().getStages()[mEditableStageIndex];
+        Stage stage = mSelectedTimeControl.getStageManager().getStages()[mEditableStageIndex];
 
         // Save new moves number
         stage.setMoves(moves);
@@ -334,9 +452,8 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     }
 
     public void showTimeIncrementEditorDialog() {
-
         // Get Time Increment
-        TimeIncrement timeIncrement = mTimeControl.getTimeIncrement();
+        TimeIncrement timeIncrement = mSelectedTimeControl.getTimeIncrement();
 
         // Setup Time Increment Editor Dialog
         DialogFragment newFragment = new TimeIncrementEditorDialogFragment(getActivity(), timeIncrement);
@@ -348,9 +465,8 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
 
     @Override
     public void onTimeIncrementEditDone(TimeIncrement.Type type, long time) {
-
         // Get Time Increment
-        TimeIncrement timeIncrement = mTimeControl.getTimeIncrement();
+        TimeIncrement timeIncrement = mSelectedTimeControl.getTimeIncrement();
 
         timeIncrement.setType(type);
         timeIncrement.setValue(time);
@@ -363,7 +479,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * This interface must be implemented by activities that contain this fragment to allow interaction.
      */
     public interface OnTimeControlListener {
-        public TimeControl getEditableTimeControl();
+        public TimeControlWrapper getEditableTimeControl();
 
         public void saveTimeControl();
     }

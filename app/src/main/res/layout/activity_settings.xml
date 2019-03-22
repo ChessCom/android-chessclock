@@ -1,7 +1,23 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@+id/container"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-    >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
 
-</FrameLayout>
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/player_selection_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/bg_clock_setting_button_normal"
+        app:menu="@menu/time_control_players"
+        android:visibility="gone"
+        />
+
+</LinearLayout>

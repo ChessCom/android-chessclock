@@ -33,6 +33,7 @@
 
     <!-- Time Control Manager -->
     <string name="list_empty_toast_message">List empty. Default list loaded.</string>
+    <string name="same_as_player_one">Same as Player One</string>
 
     <!-- Stage Delete Dialog -->
     <string name="delete_stage_dialog_message">Delete stage?</string>
@@ -71,5 +72,7 @@
     <string name="btn_pause_settings">K</string>
     <string name="btn_reset_settings">L</string>
     <string name="btn_menu_settings">&#xb7;</string>
+    <string name="time_control_player_one">Player One</string>
+    <string name="time_control_player_two">Player Two</string>
 
 </resources>
