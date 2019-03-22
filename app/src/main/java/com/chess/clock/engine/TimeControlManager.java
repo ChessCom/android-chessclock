@@ -22,8 +22,8 @@ public class TimeControlManager {
     /**
      * State
      */
-    private ArrayList<TimeControl> mTimeControls;   // List of time controls.
-    private TimeControl mEditableTimeControl;       // Copy of a TimeControl for edit purpose.
+    private ArrayList<TimeControlWrapper> mTimeControls;   // List of time control wrappers.
+    private TimeControlWrapper mEditableTimeControl;       // Copy of a TimeControl for edit purpose.
     private int mEditableTimeControlCheckIndex;     // Position of TimeControl in the list.
     private boolean isNewEditableTimeControl;       // Flag to add new TimeControl in the list after edit.
     /**
@@ -86,7 +86,7 @@ public class TimeControlManager {
      *
      * @return TimeControl List
      */
-    public ArrayList<TimeControl> getTimeControls() {
+    public ArrayList<TimeControlWrapper> getTimeControls() {
         return mTimeControls;
     }
 
@@ -129,10 +129,10 @@ public class TimeControlManager {
     public void removeTimeControls(Context context, int[] positions) {
         Log.v(TAG, "Received time controls remove request");
 
-        ArrayList<TimeControl> objectBatchToDelete = new ArrayList<TimeControl>();
+        ArrayList<TimeControlWrapper> objectBatchToDelete = new ArrayList<TimeControlWrapper>();
         for (int position : positions) {
             if (position >= 0 && position < mTimeControls.size()) {
-                Log.v(TAG, "Removing time control (" + position + "): " + mTimeControls.get(position).getName());
+                Log.v(TAG, "Removing time control (" + position + "): " + mTimeControls.get(position).getTimeControlPlayerOne().getName());
                 objectBatchToDelete.add(mTimeControls.get(position));
             }
         }
@@ -172,9 +172,15 @@ public class TimeControlManager {
         // Set default stage and time increment
         Stage stage = new Stage(0, 300000);
         TimeIncrement timeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, 5000);
+        TimeControl blank = new TimeControl(null, new Stage[]{stage}, timeIncrement);
 
         // Set current editable time control with a new "blank" time control
-        mEditableTimeControl = new TimeControl(null, new Stage[]{stage}, timeIncrement);
+        try {
+            mEditableTimeControl = new TimeControlWrapper(blank, (TimeControl) blank.clone());
+        } catch(CloneNotSupportedException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Could not create Editable time control with blank time control.");
+        }
     }
 
     /**
@@ -182,7 +188,7 @@ public class TimeControlManager {
      *
      * @return current Editable TimeControl object.
      */
-    public TimeControl getEditableTimeControl() {
+    public TimeControlWrapper getEditableTimeControl() {
         return mEditableTimeControl;
     }
 
@@ -210,17 +216,18 @@ public class TimeControlManager {
      *
      * @param position Position of time control in the list.
      * @return Copy of TimeControl object.
+     * @throws IllegalStateException if editable time control is unable to be built
      */
-    private TimeControl buildEditableTimeControl(int position) {
+    private TimeControlWrapper buildEditableTimeControl(int position) {
 
         if (position >= 0 && position < mTimeControls.size()) {
 
-            TimeControl original = mTimeControls.get(position);
+            TimeControlWrapper original = mTimeControls.get(position);
             try {
-                return (TimeControl) original.clone();
-            } catch (CloneNotSupportedException e) {
-                Log.e(TAG, "Could not produce editable copy of TimeControl object");
+                return (TimeControlWrapper) original.clone();
+            } catch(CloneNotSupportedException e) {
                 e.printStackTrace();
+                throw new IllegalStateException("Could not build editable time control.");
             }
         }
         return null;

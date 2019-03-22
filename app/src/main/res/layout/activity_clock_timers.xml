@@ -81,7 +81,7 @@
             android:layout_marginBottom="@dimen/clock_timer_moves_text_margin"
             android:layout_marginRight="@dimen/clock_timer_moves_text_margin"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 
             <TextView
@@ -246,7 +246,7 @@
             android:layout_marginBottom="@dimen/clock_timer_moves_text_margin"
             android:layout_marginRight="@dimen/clock_timer_moves_text_margin"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             >
 
             <TextView

@@ -1,8 +1,13 @@
 package com.chess.clock.activities;
 
-import android.content.*;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
@@ -14,6 +19,7 @@ import android.widget.Toast;
 import com.chess.clock.R;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlManager;
+import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.fragments.SettingsFragment;
 import com.chess.clock.fragments.TimeControlFragment;
 import com.chess.clock.service.ChessClockLocalService;
@@ -24,7 +30,7 @@ import java.util.ArrayList;
 /**
  * Activity that manages TimeControl list in the Settings and also TimeControl form.
  */
-public class SettingsActivity extends ActionBarActivity implements SettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback {
+public class SettingsActivity extends ActionBarActivity implements SettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback, TimeControlFragment.BottomNavigationActionListener {
 
     private static final String TAG = SettingsActivity.class.getName();
 
@@ -77,6 +83,11 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
      */
     private TimeControlManager mTimeControlManager;
 
+    /**
+     * BottomNavigationTab
+     */
+    private BottomNavigationView mBottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -104,6 +115,8 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
                     .add(R.id.container, new SettingsFragment(), TAG_SETTINGS_FRAGMENT)
                     .commit();
         }
+
+        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.player_selection_bottom_navigation);
     }
 
     @Override
@@ -191,7 +204,7 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
     public boolean isSameTimeControlLoaded() {
         int index = mTimeControlManager.getEditableTimeControlCheckIndex();
         if (index > 0 && index < mTimeControlManager.getTimeControls().size()) {
-            TimeControl tc = mTimeControlManager.getTimeControls().get(index);
+            TimeControl tc = mTimeControlManager.getTimeControls().get(index).getTimeControlPlayerOne();
             String title = tc.getName();
             return mBound && mService.getNameOfTimeControlRunning().equals(title);
         } else {
@@ -227,7 +240,7 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
      * @return Current TimeControl list being used.
      */
     @Override
-    public ArrayList<TimeControl> getCurrentTimeControls() {
+    public ArrayList<TimeControlWrapper> getCurrentTimeControls() {
         return mTimeControlManager.getTimeControls();
     }
 
@@ -288,7 +301,7 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
      * @return Current TimeControl being used.
      */
     @Override
-    public TimeControl getEditableTimeControl() {
+    public TimeControlWrapper getEditableTimeControl() {
         return mTimeControlManager.getEditableTimeControl();
     }
 
@@ -307,5 +320,26 @@ public class SettingsActivity extends ActionBarActivity implements SettingsFragm
     @Override
     public void onTimeControlListEmpty() {
         Toast.makeText(this, getString(R.string.list_empty_toast_message), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        if (mBottomNavigationView != null) {
+            mBottomNavigationView.setVisibility(visibility);
+        }
+    }
+
+    @Override
+    public void setSelected(int id) {
+        if (mBottomNavigationView != null) {
+            mBottomNavigationView.setSelectedItemId(id);
+        }
+    }
+
+    @Override
+    public void setBottomNavigationListener(OnNavigationItemSelectedListener listener) {
+        if (mBottomNavigationView != null) {
+            mBottomNavigationView.setOnNavigationItemSelectedListener(listener);
+        }
     }
 }
