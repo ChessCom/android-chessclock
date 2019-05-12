@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+    compileSdkVersion 26
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 26
         versionCode 6
         versionName "1.0.4"
     }
@@ -27,7 +26,7 @@ android {
 }
 
 ext {
-    support_version = '25.4.0'
+    support_version = '26.1.0'
 }
 
 dependencies {
