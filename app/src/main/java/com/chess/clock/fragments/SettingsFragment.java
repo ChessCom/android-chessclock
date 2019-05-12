@@ -50,17 +50,17 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
      */
     public interface OnSettingsListener {
 
-        public ArrayList<TimeControl> getCurrentTimeControls();
+        ArrayList<TimeControl> getCurrentTimeControls();
 
-        public int getCheckedTimeControlIndex();
+        int getCheckedTimeControlIndex();
 
-        public void setCheckedTimeControlIndex(int position);
+        void setCheckedTimeControlIndex(int position);
 
-        public void loadTimeControl(int position);
+        void loadTimeControl(int position);
 
-        public void addTimeControl();
+        void addTimeControl();
 
-        public void removeTimeControl(int[] positions);
+        void removeTimeControl(int[] positions);
     }
 
     /**
@@ -184,7 +184,7 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
         header.setOnClickListener(mHeaderClickListener);
 
         // Init ListView
-        mListView = (ListView) v.findViewById(R.id.list_time_controls);
+        mListView = v.findViewById(R.id.list_time_controls);
         mListView.addHeaderView(header, null, false);
         mListView.setOnItemClickListener(mItemClickListener);
 

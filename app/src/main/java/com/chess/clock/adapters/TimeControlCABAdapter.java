@@ -58,11 +58,11 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControl> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new TimeControlHolder();
-            holder.textView = (TextView) row.findViewById(R.id.time_control_text);
-            holder.checkBox = (CheckBox) row.findViewById(R.id.time_control_checkbox);
+            holder.textView = row.findViewById(R.id.time_control_text);
+            holder.checkBox = row.findViewById(R.id.time_control_checkbox);
 
             // Note: ImageButton must have the following attributes set to false to parent behave correctly: focusable.
-            holder.editImgBtn = (ImageButton) row.findViewById(R.id.time_control_edit_image_btn);
+            holder.editImgBtn = row.findViewById(R.id.time_control_edit_image_btn);
             holder.editImgBtn.setFocusable(false);
             holder.editImgBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -129,7 +129,7 @@ public class TimeControlManager {
     public void removeTimeControls(Context context, int[] positions) {
         Log.v(TAG, "Received time controls remove request");
 
-        ArrayList<TimeControl> objectBatchToDelete = new ArrayList<TimeControl>();
+        ArrayList<TimeControl> objectBatchToDelete = new ArrayList<>();
         for (int position : positions) {
             if (position >= 0 && position < mTimeControls.size()) {
                 Log.v(TAG, "Removing time control (" + position + "): " + mTimeControls.get(position).getName());
@@ -233,6 +233,6 @@ public class TimeControlManager {
         /**
          * Called when Time Control list gets empty.
          */
-        public void onTimeControlListEmpty();
+        void onTimeControlListEmpty();
     }
 }

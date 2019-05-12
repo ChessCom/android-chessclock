@@ -115,7 +115,7 @@ public class ClockTimersActivity extends FragmentActivity {
 
         private final int value;
 
-        private TimersState(int value) {
+        TimersState(int value) {
             this.value = value;
         }
 
@@ -839,15 +839,15 @@ public class ClockTimersActivity extends FragmentActivity {
     protected void initWidgetReferences() {
 
         // Save references
-        mPlayerOneImgButton = (Button) findViewById(R.id.playerOneButton);
-        mPlayerTwoImgButton = (Button) findViewById(R.id.playerTwoButton);
-        mSettingsButton = (Button) findViewById(R.id.settings);
-        mPauseButton = (Button) findViewById(R.id.resume_pause_toggle);
-        mResetButton = (Button) findViewById(R.id.reset);
-        mPlayerOneTimerTextView = (TextView) findViewById(R.id.playerOneClockText);
-        mPlayerTwoTimerTextView = (TextView) findViewById(R.id.playerTwoClockText);
-        mPlayerOneMovesTextView = (TextView) findViewById(R.id.playerOneMovesText);
-        mPlayerTwoMovesTextView = (TextView) findViewById(R.id.playerTwoMovesText);
+        mPlayerOneImgButton = findViewById(R.id.playerOneButton);
+        mPlayerTwoImgButton = findViewById(R.id.playerTwoButton);
+        mSettingsButton = findViewById(R.id.settings);
+        mPauseButton = findViewById(R.id.resume_pause_toggle);
+        mResetButton = findViewById(R.id.reset);
+        mPlayerOneTimerTextView = findViewById(R.id.playerOneClockText);
+        mPlayerTwoTimerTextView = findViewById(R.id.playerTwoClockText);
+        mPlayerOneMovesTextView = findViewById(R.id.playerOneMovesText);
+        mPlayerTwoMovesTextView = findViewById(R.id.playerTwoMovesText);
 
         // Set listeners
         mPlayerOneImgButton.setOnClickListener(mPlayerOneButtonListener);

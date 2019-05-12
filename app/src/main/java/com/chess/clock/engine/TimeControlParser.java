@@ -165,7 +165,7 @@ public class TimeControlParser {
             return null;
         }
 
-        ArrayList<TimeControl> timeControls = new ArrayList<TimeControl>();
+        ArrayList<TimeControl> timeControls = new ArrayList<>();
         try {
             JSONObject json = new JSONObject(jsonString);
             JSONArray timeControlsJSONArray = json.getJSONArray("timecontrols");
@@ -201,7 +201,7 @@ public class TimeControlParser {
     public static ArrayList<TimeControl> buildDefaultTimeControlsList(Context context) {
         Log.i(TAG, "Building and saving default time control list");
 
-        ArrayList<TimeControl> timeControls = new ArrayList<TimeControl>();
+        ArrayList<TimeControl> timeControls = new ArrayList<>();
 
         // Fischer blitz 5|0
         Stage fischerBlitzStage = new Stage(0, 300000);

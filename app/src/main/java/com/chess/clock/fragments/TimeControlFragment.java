@@ -149,7 +149,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_time_control, container, false);
-        mStageListView = (ListView) v.findViewById(R.id.list_stages);
+        mStageListView = v.findViewById(R.id.list_stages);
 
         if (mStageListView != null) {
 
@@ -168,7 +168,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                 }
 
                 // Setup Time Control Name Edit Text
-                mTimeControlNameEditText = (EditText) v.findViewById(R.id.time_control_name);
+                mTimeControlNameEditText = v.findViewById(R.id.time_control_name);
                 mTimeControlNameEditText.addTextChangedListener(mTextWatcher);
 
                 if (mTimeControl.getName() != null && !mTimeControl.getName().equals("")) {
@@ -180,11 +180,11 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                 mStageListView.setAdapter(stageAdapter);
 
                 // Load Time Increment item
-                mTimeIncrementDescription = (TextView) v.findViewById(R.id.increment_description);
+                mTimeIncrementDescription = v.findViewById(R.id.increment_description);
                 mTimeIncrementDescription.setText(mTimeControl.getTimeIncrement().toString());
 
                 // Setup click listener to Time Increment btn
-                mTimeIncrementBtn = (ViewGroup) v.findViewById(R.id.btn_edit_increment);
+                mTimeIncrementBtn = v.findViewById(R.id.btn_edit_increment);
                 mTimeIncrementBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -363,9 +363,9 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * This interface must be implemented by activities that contain this fragment to allow interaction.
      */
     public interface OnTimeControlListener {
-        public TimeControl getEditableTimeControl();
+        TimeControl getEditableTimeControl();
 
-        public void saveTimeControl();
+        void saveTimeControl();
     }
 
     /**

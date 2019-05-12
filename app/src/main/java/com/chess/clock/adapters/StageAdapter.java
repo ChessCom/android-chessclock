@@ -75,9 +75,9 @@ public class StageAdapter extends ArrayAdapter<Stage> {
             row = inflater.inflate(mLayoutResourceId, parent, false);
 
             holder = new StageHolder();
-            holder.label = (TextView) row.findViewById(R.id.stage_label);
-            holder.description = (TextView) row.findViewById(R.id.stage_description);
-            holder.deleteBtn = (ImageButton) row.findViewById(R.id.stage_remove_btn);
+            holder.label = row.findViewById(R.id.stage_label);
+            holder.description = row.findViewById(R.id.stage_description);
+            holder.deleteBtn = row.findViewById(R.id.stage_remove_btn);
             holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

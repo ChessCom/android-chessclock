@@ -29,13 +29,13 @@ public class MultiSelectionUtil {
     /**
      * @see android.widget.AbsListView.MultiChoiceModeListener
      */
-    public static interface MultiChoiceModeListener extends ActionMode.Callback {
+    public interface MultiChoiceModeListener extends ActionMode.Callback {
         /**
          * @see android.widget.AbsListView.MultiChoiceModeListener#onItemCheckedStateChanged(
          *android.view.ActionMode, int, long, boolean)
          */
-        public void onItemCheckedStateChanged(ActionMode mode,
-                                              int position, boolean checked);
+        void onItemCheckedStateChanged(ActionMode mode,
+                                       int position, boolean checked);
     }
 
     public static class Controller implements ActionMode.Callback, AdapterView.OnItemClickListener {
@@ -65,7 +65,7 @@ public class MultiSelectionUtil {
 
                 ArrayList<Integer> checkedPos = savedInstanceState.getIntegerArrayList(getStateKey());
                 if (checkedPos != null && checkedPos.size() > 0) {
-                    mItemsToCheck = new ArrayList<Integer>();
+                    mItemsToCheck = new ArrayList<>();
                     for (int pos : checkedPos) {
                         mItemsToCheck.add(pos);
                     }
@@ -90,7 +90,7 @@ public class MultiSelectionUtil {
         public boolean saveInstanceState(Bundle outBundle) {
             SparseBooleanArray checkedPositions = mListView.getCheckedItemPositions();
             if (mActionMode != null && checkedPositions != null) {
-                ArrayList<Integer> positions = new ArrayList<Integer>();
+                ArrayList<Integer> positions = new ArrayList<>();
                 for (int i = 0; i < checkedPositions.size(); i++) {
                     if (checkedPositions.valueAt(i)) {
                         int position = checkedPositions.keyAt(i);
@@ -162,7 +162,7 @@ public class MultiSelectionUtil {
                 return false;
             }
 
-            mItemsToCheck = new ArrayList<Integer>();
+            mItemsToCheck = new ArrayList<>();
             mActionMode = mActivity.startSupportActionMode(Controller.this);
             return true;
         }
