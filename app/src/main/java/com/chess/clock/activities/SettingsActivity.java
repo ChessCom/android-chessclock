@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Activity that manages TimeControl list in the Settings and also TimeControl form.
  */
-public class SettingsActivity extends ActionBarActivity implements SettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback {
+public class SettingsActivity extends AppCompatActivity implements SettingsFragment.OnSettingsListener, TimeControlFragment.OnTimeControlListener, TimeControlManager.Callback {
 
     private static final String TAG = SettingsActivity.class.getName();
 

@@ -10,7 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -298,7 +298,7 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
 
         // Init the CAB helper
         mMultiSelectionController = MultiSelectionUtil.attachMultiSelectionController(
-                mListView, (ActionBarActivity) getActivity(), this);
+                mListView, (AppCompatActivity) getActivity(), this);
 
         if (isMultiSelectionActive) {
             adapterCAB = new TimeControlCABAdapter(getActivity(), mListener.getCurrentTimeControls(), this);
