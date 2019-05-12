@@ -185,12 +185,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
 
                 // Setup click listener to Time Increment btn
                 mTimeIncrementBtn = v.findViewById(R.id.btn_edit_increment);
-                mTimeIncrementBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showTimeIncrementEditorDialog();
-                    }
-                });
+                mTimeIncrementBtn.setOnClickListener(v1 -> showTimeIncrementEditorDialog());
             }
         }
 
@@ -384,22 +379,16 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
             return builder
                     .setTitle(getString(R.string.exit_dialog_title))
                     .setMessage(getString(R.string.exit_dialog_message))
-                    .setNegativeButton(getString(R.string.exit_dialog_cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            Fragment target = getTargetFragment();
-                            if (target != null) {
-                                target.getActivity().getSupportFragmentManager().popBackStack();
-                            }
+                    .setNegativeButton(getString(R.string.exit_dialog_cancel), (arg0, arg1) -> {
+                        Fragment target = getTargetFragment();
+                        if (target != null) {
+                            target.getActivity().getSupportFragmentManager().popBackStack();
                         }
                     })
-                    .setPositiveButton(getString(R.string.exit_dialog_ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            Fragment target = getTargetFragment();
-                            if (target != null) {
-                                ((TimeControlFragment) target).saveTimeControl();
-                            }
+                    .setPositiveButton(getString(R.string.exit_dialog_ok), (arg0, arg1) -> {
+                        Fragment target = getTargetFragment();
+                        if (target != null) {
+                            ((TimeControlFragment) target).saveTimeControl();
                         }
                     })
                     .create();

@@ -84,12 +84,9 @@ public class StageEditorView extends TimePickerView {
         mMovesEditText = findViewById(R.id.stage_moves_edit_text);
 
         // Set focus marker at the end of the number digits
-        mMovesEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    mMovesEditText.setSelection(mMovesEditText.getText().length());
-                }
+        mMovesEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                mMovesEditText.setSelection(mMovesEditText.getText().length());
             }
         });
 

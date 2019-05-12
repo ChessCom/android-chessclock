@@ -17,12 +17,7 @@ import com.chess.clock.R;
 
 public class TimePickerView extends FrameLayout {
 
-    private static final NumberPicker.Formatter TWO_DIGIT_FORMATTER = new Formatter() {
-        @Override
-        public String format(int value) {
-            return String.format("%02d", value);
-        }
-    };
+    private static final NumberPicker.Formatter TWO_DIGIT_FORMATTER = value -> String.format("%02d", value);
     protected Type mType;
 
     /**
@@ -338,12 +333,7 @@ public class TimePickerView extends FrameLayout {
             mSecondPicker.setMinValue(0);
             mSecondPicker.setMaxValue(59);
             mSecondPicker.setFormatter(TWO_DIGIT_FORMATTER);
-            mSecondPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                @Override
-                public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    mCurrentSecond = newVal;
-                }
-            });
+            mSecondPicker.setOnValueChangedListener((picker, oldVal, newVal) -> mCurrentSecond = newVal);
         } else {
             mHourPicker.setVisibility(View.GONE);
         }
@@ -371,12 +361,7 @@ public class TimePickerView extends FrameLayout {
             mMinutePicker.setMinValue(0);
             mMinutePicker.setMaxValue(59);
             mMinutePicker.setFormatter(TWO_DIGIT_FORMATTER);
-            mMinutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                @Override
-                public void onValueChange(NumberPicker spinner, int oldVal, int newVal) {
-                    mCurrentMinute = newVal;
-                }
-            });
+            mMinutePicker.setOnValueChangedListener((spinner, oldVal, newVal) -> mCurrentMinute = newVal);
         } else {
             mMinutePicker.setVisibility(View.GONE);
             findViewById(R.id.minute_divider).setVisibility(View.GONE);
@@ -406,12 +391,7 @@ public class TimePickerView extends FrameLayout {
             mHourPicker.setMinValue(0);
             mHourPicker.setMaxValue(10);
             mHourPicker.setFormatter(TWO_DIGIT_FORMATTER);
-            mHourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                @Override
-                public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    mCurrentHour = newVal;
-                }
-            });
+            mHourPicker.setOnValueChangedListener((picker, oldVal, newVal) -> mCurrentHour = newVal);
         } else {
             mHourPicker.setVisibility(View.GONE);
             findViewById(R.id.hour_divider).setVisibility(View.GONE);

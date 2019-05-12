@@ -64,12 +64,9 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControl> {
             // Note: ImageButton must have the following attributes set to false to parent behave correctly: focusable.
             holder.editImgBtn = row.findViewById(R.id.time_control_edit_image_btn);
             holder.editImgBtn.setFocusable(false);
-            holder.editImgBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = (Integer) holder.editImgBtn.getTag();
-                    ((SettingsFragment) mTargetFragment).loadTimeControl(position);
-                }
+            holder.editImgBtn.setOnClickListener(v -> {
+                int position1 = (Integer) holder.editImgBtn.getTag();
+                ((SettingsFragment) mTargetFragment).loadTimeControl(position1);
             });
 
             row.setTag(holder);

@@ -52,22 +52,20 @@ public class TimeIncrementEditorView extends TimePickerView {
     private void init() {
 
         mRadioGroup = findViewById(R.id.radio_time_increment_type);
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // Check which radio button was clicked
-                switch (checkedId) {
-                    case R.id.radio_delay:
-                        mTimeIncrementTypePosition = 0;
-                        break;
-                    case R.id.radio_bronstein:
-                        mTimeIncrementTypePosition = 1;
-                        break;
-                    case R.id.radio_fischer:
-                        mTimeIncrementTypePosition = 2;
-                        break;
-                }
-                updateSubtitle();
+        mRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            // Check which radio button was clicked
+            switch (checkedId) {
+                case R.id.radio_delay:
+                    mTimeIncrementTypePosition = 0;
+                    break;
+                case R.id.radio_bronstein:
+                    mTimeIncrementTypePosition = 1;
+                    break;
+                case R.id.radio_fischer:
+                    mTimeIncrementTypePosition = 2;
+                    break;
             }
+            updateSubtitle();
         });
 
         mDelayBtn = findViewById(R.id.radio_delay);
