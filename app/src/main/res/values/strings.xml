@@ -71,5 +71,7 @@
     <string name="btn_pause_settings">K</string>
     <string name="btn_reset_settings">L</string>
     <string name="btn_menu_settings">&#xb7;</string>
+    <string name="channel_name">Chess Clock</string>
+    <string name="channel_description">Chess Clock Main Channel</string>
 
 </resources>
