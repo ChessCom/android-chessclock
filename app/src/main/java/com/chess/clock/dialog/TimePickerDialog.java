@@ -101,14 +101,14 @@ public class TimePickerDialog extends AlertDialog implements OnClickListener {
         mTimePickerView.setCurrentSecond(seconds);
     }
 
-    public static enum Type {
+    public enum Type {
 
         MINUTE_SECOND(0),
         HOUR_MINUTE_SECOND(1);
 
         private final int value;
 
-        private Type(int value) {
+        Type(int value) {
             this.value = value;
         }
 

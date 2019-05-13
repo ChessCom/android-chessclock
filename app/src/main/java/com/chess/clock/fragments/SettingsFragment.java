@@ -10,7 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -51,17 +51,17 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
      */
     public interface OnSettingsListener {
 
-        public ArrayList<TimeControlWrapper> getCurrentTimeControls();
+        ArrayList<TimeControlWrapper> getCurrentTimeControls();
 
-        public int getCheckedTimeControlIndex();
+        int getCheckedTimeControlIndex();
 
-        public void setCheckedTimeControlIndex(int position);
+        void setCheckedTimeControlIndex(int position);
 
-        public void loadTimeControl(int position);
+        void loadTimeControl(int position);
 
-        public void addTimeControl();
+        void addTimeControl();
 
-        public void removeTimeControl(int[] positions);
+        void removeTimeControl(int[] positions);
     }
 
     /**
@@ -74,19 +74,16 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
      * FRAGMENT TAGS
      */
     private static final String TAG_RESET_DIALOG_FRAGMENT = "ResetDialogFragment";
-    private View.OnClickListener mStartBtnListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            SettingsActivity activity = (SettingsActivity) getActivity();
+    private View.OnClickListener mStartBtnListener = v -> {
+        SettingsActivity activity = (SettingsActivity) getActivity();
 
-            // Check if current time control selected is the same as the the list selected
-            if (activity.isSameTimeControlLoaded()) {
-                ResetClockDialogFragment resetClockDialog = new ResetClockDialogFragment();
-                resetClockDialog.setTargetFragment(SettingsFragment.this, 0);
-                resetClockDialog.show(getActivity().getSupportFragmentManager(), TAG_RESET_DIALOG_FRAGMENT);
-            } else {
-                startNewClock();
-            }
+        // Check if current time control selected is the same as the the list selected
+        if (activity.isSameTimeControlLoaded()) {
+            ResetClockDialogFragment resetClockDialog = new ResetClockDialogFragment();
+            resetClockDialog.setTargetFragment(SettingsFragment.this, 0);
+            resetClockDialog.show(getActivity().getSupportFragmentManager(), TAG_RESET_DIALOG_FRAGMENT);
+        } else {
+            startNewClock();
         }
     };
     /**
@@ -128,15 +125,12 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
         }
     };
     private View mStartBtn;
-    private View.OnClickListener mHeaderClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            final String appPackageName = "com.chess";
-            try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-            } catch (android.content.ActivityNotFoundException anfe) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
-            }
+    private View.OnClickListener mHeaderClickListener = v -> {
+        final String appPackageName = "com.chess";
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
         }
     };
 
@@ -185,7 +179,7 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
         header.setOnClickListener(mHeaderClickListener);
 
         // Init ListView
-        mListView = (ListView) v.findViewById(R.id.list_time_controls);
+        mListView = v.findViewById(R.id.list_time_controls);
         mListView.addHeaderView(header, null, false);
         mListView.setOnItemClickListener(mItemClickListener);
 
@@ -299,7 +293,7 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
 
         // Init the CAB helper
         mMultiSelectionController = MultiSelectionUtil.attachMultiSelectionController(
-                mListView, (ActionBarActivity) getActivity(), this);
+                mListView, (AppCompatActivity) getActivity(), this);
 
         if (isMultiSelectionActive) {
             adapterCAB = new TimeControlCABAdapter(getActivity(), mListener.getCurrentTimeControls(), this);
@@ -503,19 +497,13 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
             // Builder class for convenient dialog construction
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(R.string.dialog_clock_running_reset)
-                    .setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            SettingsFragment f = (SettingsFragment) getTargetFragment();
-                            if (f != null) {
-                                f.startNewClock();
-                            }
+                    .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
+                        SettingsFragment f = (SettingsFragment) getTargetFragment();
+                        if (f != null) {
+                            f.startNewClock();
                         }
                     })
-                    .setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            ((SettingsActivity) getActivity()).dismiss();
-                        }
-                    });
+                    .setNegativeButton(R.string.dialog_no, (dialog, id) -> ((SettingsActivity) getActivity()).dismiss());
             // Create the AlertDialog object and return it
             Dialog dialog = builder.create();
             dialog.setCanceledOnTouchOutside(false);

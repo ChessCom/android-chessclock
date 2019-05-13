@@ -75,18 +75,15 @@ public class StageAdapter extends ArrayAdapter<Stage> {
             row = inflater.inflate(mLayoutResourceId, parent, false);
 
             holder = new StageHolder();
-            holder.label = (TextView) row.findViewById(R.id.stage_label);
-            holder.description = (TextView) row.findViewById(R.id.stage_description);
-            holder.deleteBtn = (ImageButton) row.findViewById(R.id.stage_remove_btn);
-            holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int listPosition = (Integer) holder.deleteBtn.getTag();
-                    DeleteDialogFragment resetClockDialog = DeleteDialogFragment.newInstance(listPosition);
-                    resetClockDialog.setTargetFragment(mTargetFragment, DELETE_STAGE_DIALOG);
-                    resetClockDialog.show(mTargetFragment.getActivity().getSupportFragmentManager(),
-                            TAG_DELETE_STAGE_DIALOG_FRAGMENT);
-                }
+            holder.label = row.findViewById(R.id.stage_label);
+            holder.description = row.findViewById(R.id.stage_description);
+            holder.deleteBtn = row.findViewById(R.id.stage_remove_btn);
+            holder.deleteBtn.setOnClickListener(v -> {
+                int listPosition = (Integer) holder.deleteBtn.getTag();
+                DeleteDialogFragment resetClockDialog = DeleteDialogFragment.newInstance(listPosition);
+                resetClockDialog.setTargetFragment(mTargetFragment, DELETE_STAGE_DIALOG);
+                resetClockDialog.show(mTargetFragment.getActivity().getSupportFragmentManager(),
+                        TAG_DELETE_STAGE_DIALOG_FRAGMENT);
             });
 
             row.setTag(holder);
@@ -137,17 +134,13 @@ public class StageAdapter extends ArrayAdapter<Stage> {
             // Builder class for convenient dialog construction
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(R.string.delete_stage_dialog_message)
-                    .setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            TimeControlFragment fragment = (TimeControlFragment) getTargetFragment();
-                            int stageID = getArguments().getInt(ARG_STAGE_ID, 0);
-                            fragment.removeStage(stageID);
-                        }
+                    .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
+                        TimeControlFragment fragment = (TimeControlFragment) getTargetFragment();
+                        int stageID = getArguments().getInt(ARG_STAGE_ID, 0);
+                        fragment.removeStage(stageID);
                     })
-                    .setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // Resume
-                        }
+                    .setNegativeButton(R.string.dialog_no, (dialog, id) -> {
+                        // Resume
                     });
             // Create the AlertDialog object and return it
             Dialog dialog = builder.create();

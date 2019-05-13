@@ -361,7 +361,7 @@ public class Stage implements Parcelable, Cloneable {
 
         private final int value;
 
-        private StageType(int value) {
+        StageType(int value) {
             this.value = value;
         }
 
@@ -402,7 +402,7 @@ public class Stage implements Parcelable, Cloneable {
 
         private final int value;
 
-        private StageState(int value) {
+        StageState(int value) {
             this.value = value;
         }
 
@@ -433,7 +433,7 @@ public class Stage implements Parcelable, Cloneable {
          *
          * @param stageFinishedNumber The identifier of the stage finished.
          */
-        public void onStageFinished(int stageFinishedNumber);
+        void onStageFinished(int stageFinishedNumber);
     }
 
     /**

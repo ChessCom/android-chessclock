@@ -111,7 +111,7 @@ public class ClockTimersActivity extends FragmentActivity {
 
         private final int value;
 
-        private TimersState(int value) {
+        TimersState(int value) {
             this.value = value;
         }
 
@@ -139,26 +139,18 @@ public class ClockTimersActivity extends FragmentActivity {
     private TimersState mTimersState;
     private TimersState mTimersStatePreviousToPause;
 
-    private View.OnClickListener mSettingsButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+    private View.OnClickListener mSettingsButtonListener = v -> {
 
-            // Pause clock before going to settings menu
-            pauseClock();
+        // Pause clock before going to settings menu
+        pauseClock();
 
 
-            Intent settingsIntent = new Intent(v.getContext(), SettingsActivity.class);
-            startActivityForResult(settingsIntent, SETTINGS_REQUEST_CODE);
-            overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
-        }
+        Intent settingsIntent = new Intent(v.getContext(), SettingsActivity.class);
+        startActivityForResult(settingsIntent, SETTINGS_REQUEST_CODE);
+        overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
     };
 
-    private View.OnClickListener mPauseButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            pauseClock();
-        }
-    };
+    private View.OnClickListener mPauseButtonListener = v -> pauseClock();
 
     private View.OnClickListener mResetButtonListener = new View.OnClickListener() {
         @Override
@@ -757,15 +749,15 @@ public class ClockTimersActivity extends FragmentActivity {
     protected void initWidgetReferences() {
 
         // Save references
-        mPlayerOneImgButton = (Button) findViewById(R.id.playerOneButton);
-        mPlayerTwoImgButton = (Button) findViewById(R.id.playerTwoButton);
-        mSettingsButton = (Button) findViewById(R.id.settings);
-        mPauseButton = (Button) findViewById(R.id.resume_pause_toggle);
-        mResetButton = (Button) findViewById(R.id.reset);
-        mPlayerOneTimerTextView = (TextView) findViewById(R.id.playerOneClockText);
-        mPlayerTwoTimerTextView = (TextView) findViewById(R.id.playerTwoClockText);
-        mPlayerOneMovesTextView = (TextView) findViewById(R.id.playerOneMovesText);
-        mPlayerTwoMovesTextView = (TextView) findViewById(R.id.playerTwoMovesText);
+        mPlayerOneImgButton = findViewById(R.id.playerOneButton);
+        mPlayerTwoImgButton = findViewById(R.id.playerTwoButton);
+        mSettingsButton = findViewById(R.id.settings);
+        mPauseButton = findViewById(R.id.resume_pause_toggle);
+        mResetButton = findViewById(R.id.reset);
+        mPlayerOneTimerTextView = findViewById(R.id.playerOneClockText);
+        mPlayerTwoTimerTextView = findViewById(R.id.playerTwoClockText);
+        mPlayerOneMovesTextView = findViewById(R.id.playerOneMovesText);
+        mPlayerTwoMovesTextView = findViewById(R.id.playerTwoMovesText);
 
         // Set listeners
         mPlayerOneImgButton.setOnClickListener(mPlayerOneButtonListener);
@@ -930,19 +922,15 @@ public class ClockTimersActivity extends FragmentActivity {
             // Builder class for convenient dialog construction
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(R.string.dialog_reset_clock)
-                    .setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // Reset the clock
-                            ClockTimersActivity activity = (ClockTimersActivity) getActivity();
-                            if (activity != null) {
-                                activity.resetClock();
-                            }
+                    .setPositiveButton(R.string.dialog_yes, (dialog, id) -> {
+                        // Reset the clock
+                        ClockTimersActivity activity = (ClockTimersActivity) getActivity();
+                        if (activity != null) {
+                            activity.resetClock();
                         }
                     })
-                    .setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // Resume the clock
-                        }
+                    .setNegativeButton(R.string.dialog_no, (dialog, id) -> {
+                        // Resume the clock
                     });
             // Create the AlertDialog object and return it
             Dialog dialog = builder.create();

@@ -17,12 +17,7 @@ import com.chess.clock.R;
 
 public class TimePickerView extends FrameLayout {
 
-    private static final NumberPicker.Formatter TWO_DIGIT_FORMATTER = new Formatter() {
-        @Override
-        public String format(int value) {
-            return String.format("%02d", value);
-        }
-    };
+    private static final NumberPicker.Formatter TWO_DIGIT_FORMATTER = value -> String.format("%02d", value);
     protected Type mType;
 
     /**
@@ -333,24 +328,19 @@ public class TimePickerView extends FrameLayout {
      */
     @TargetApi(11)
     protected void setupSecondPicker(boolean pickerVisible) {
-        mSecondPicker = (NumberPicker) findViewById(R.id.seconds);
+        mSecondPicker = findViewById(R.id.seconds);
         if (pickerVisible) {
             mSecondPicker.setMinValue(0);
             mSecondPicker.setMaxValue(59);
             mSecondPicker.setFormatter(TWO_DIGIT_FORMATTER);
-            mSecondPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                @Override
-                public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    mCurrentSecond = newVal;
-                }
-            });
+            mSecondPicker.setOnValueChangedListener((picker, oldVal, newVal) -> mCurrentSecond = newVal);
         } else {
             mHourPicker.setVisibility(View.GONE);
         }
     }
 
     protected void setupSecondEditText(boolean visible) {
-        mSecondEditText = (EditText) findViewById(R.id.seconds);
+        mSecondEditText = findViewById(R.id.seconds);
         if (visible) {
             mSecondEditText.setFilters(new InputFilter[]{new InputFilterMinMax("0", "59"), new InputFilter.LengthFilter(2)});
             mSecondEditText.addTextChangedListener(mSecondTextWatcher);
@@ -366,17 +356,12 @@ public class TimePickerView extends FrameLayout {
      */
     @TargetApi(11)
     protected void setupMinutePicker(boolean pickerVisible) {
-        mMinutePicker = (NumberPicker) findViewById(R.id.minute);
+        mMinutePicker = findViewById(R.id.minute);
         if (pickerVisible) {
             mMinutePicker.setMinValue(0);
             mMinutePicker.setMaxValue(59);
             mMinutePicker.setFormatter(TWO_DIGIT_FORMATTER);
-            mMinutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                @Override
-                public void onValueChange(NumberPicker spinner, int oldVal, int newVal) {
-                    mCurrentMinute = newVal;
-                }
-            });
+            mMinutePicker.setOnValueChangedListener((spinner, oldVal, newVal) -> mCurrentMinute = newVal);
         } else {
             mMinutePicker.setVisibility(View.GONE);
             findViewById(R.id.minute_divider).setVisibility(View.GONE);
@@ -384,7 +369,7 @@ public class TimePickerView extends FrameLayout {
     }
 
     protected void setupMinuteEditText(boolean visible) {
-        mMinuteEditText = (EditText) findViewById(R.id.minute);
+        mMinuteEditText = findViewById(R.id.minute);
         if (visible) {
             mMinuteEditText.setFilters(new InputFilter[]{new InputFilterMinMax("0", "59"), new InputFilter.LengthFilter(2)});
             mMinuteEditText.addTextChangedListener(mMinuteTextWatcher);
@@ -401,17 +386,12 @@ public class TimePickerView extends FrameLayout {
     @TargetApi(11)
     protected void setupHourPicker(boolean pickerVisible) {
 
-        mHourPicker = (NumberPicker) findViewById(R.id.hour);
+        mHourPicker = findViewById(R.id.hour);
         if (pickerVisible) {
             mHourPicker.setMinValue(0);
             mHourPicker.setMaxValue(10);
             mHourPicker.setFormatter(TWO_DIGIT_FORMATTER);
-            mHourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                @Override
-                public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    mCurrentHour = newVal;
-                }
-            });
+            mHourPicker.setOnValueChangedListener((picker, oldVal, newVal) -> mCurrentHour = newVal);
         } else {
             mHourPicker.setVisibility(View.GONE);
             findViewById(R.id.hour_divider).setVisibility(View.GONE);
@@ -419,7 +399,7 @@ public class TimePickerView extends FrameLayout {
     }
 
     protected void setupHourEditText(boolean visible) {
-        mHourEditText = (EditText) findViewById(R.id.hour);
+        mHourEditText = findViewById(R.id.hour);
         if (visible) {
             mHourEditText.setFilters(new InputFilter[]{new InputFilterMinMax("0", "10"), new InputFilter.LengthFilter(2)});
             mHourEditText.addTextChangedListener(mHourTextWatcher);
@@ -432,13 +412,13 @@ public class TimePickerView extends FrameLayout {
     /**
      * Type of picker. Used to remove unwanted hour picker.
      */
-    public static enum Type {
+    public enum Type {
         MINUTE_SECOND(0),
         HOUR_MINUTE_SECOND(1);
 
         private final int value;
 
-        private Type(int value) {
+        Type(int value) {
             this.value = value;
         }
 

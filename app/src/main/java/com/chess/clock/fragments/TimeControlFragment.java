@@ -253,7 +253,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                 mSameAsPlayerOneSwtich.setChecked(mTimeControlWrapper.isSameAsPlayerOne());
 
                 // Setup Time Control Name Edit Text
-                mTimeControlNameEditText = (EditText) v.findViewById(R.id.time_control_name);
+                mTimeControlNameEditText = v.findViewById(R.id.time_control_name);
                 mTimeControlNameEditText.addTextChangedListener(mTextWatcher);
 
                 TimeControl tc = mTimeControlWrapper.getTimeControlPlayerOne();
@@ -266,17 +266,13 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                 mStageListView.setAdapter(stageAdapter);
 
                 // Load Time Increment item
-                mTimeIncrementDescription = (TextView) v.findViewById(R.id.increment_description);
+                mTimeIncrementDescription = v.findViewById(R.id.increment_description);
                 mTimeIncrementDescription.setText(tc.getTimeIncrement().toString());
 
+
                 // Setup click listener to Time Increment btn
-                mTimeIncrementBtn = (ViewGroup) v.findViewById(R.id.btn_edit_increment);
-                mTimeIncrementBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showTimeIncrementEditorDialog();
-                    }
-                });
+                mTimeIncrementBtn = v.findViewById(R.id.btn_edit_increment);
+                mTimeIncrementBtn.setOnClickListener(v1 -> showTimeIncrementEditorDialog());
             }
         }
 
@@ -479,9 +475,10 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * This interface must be implemented by activities that contain this fragment to allow interaction.
      */
     public interface OnTimeControlListener {
-        public TimeControlWrapper getEditableTimeControl();
 
-        public void saveTimeControl();
+        TimeControlWrapper getEditableTimeControl();
+
+        void saveTimeControl();
     }
 
     /**
@@ -500,22 +497,16 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
             return builder
                     .setTitle(getString(R.string.exit_dialog_title))
                     .setMessage(getString(R.string.exit_dialog_message))
-                    .setNegativeButton(getString(R.string.exit_dialog_cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            Fragment target = getTargetFragment();
-                            if (target != null) {
-                                target.getActivity().getSupportFragmentManager().popBackStack();
-                            }
+                    .setNegativeButton(getString(R.string.exit_dialog_cancel), (arg0, arg1) -> {
+                        Fragment target = getTargetFragment();
+                        if (target != null) {
+                            target.getActivity().getSupportFragmentManager().popBackStack();
                         }
                     })
-                    .setPositiveButton(getString(R.string.exit_dialog_ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            Fragment target = getTargetFragment();
-                            if (target != null) {
-                                ((TimeControlFragment) target).saveTimeControl();
-                            }
+                    .setPositiveButton(getString(R.string.exit_dialog_ok), (arg0, arg1) -> {
+                        Fragment target = getTargetFragment();
+                        if (target != null) {
+                            ((TimeControlFragment) target).saveTimeControl();
                         }
                     })
                     .create();

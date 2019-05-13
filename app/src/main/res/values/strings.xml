@@ -74,5 +74,8 @@
     <string name="btn_menu_settings">&#xb7;</string>
     <string name="time_control_player_one">Player One</string>
     <string name="time_control_player_two">Player Two</string>
+    <string name="channel_name">Chess Clock</string>
+    <string name="channel_description">Chess Clock Main Channel</string>
+
 
 </resources>
