@@ -118,7 +118,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
                     .commit();
         }
 
-        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.player_selection_bottom_navigation);
+        mBottomNavigationView = findViewById(R.id.player_selection_bottom_navigation);
     }
 
     @Override

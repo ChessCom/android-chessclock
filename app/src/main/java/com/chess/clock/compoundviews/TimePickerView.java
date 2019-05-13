@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
-import android.widget.NumberPicker.Formatter;
 
 import com.chess.clock.R;
 

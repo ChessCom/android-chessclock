@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Service;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView.OnNavigationItemSelectedListener;
@@ -191,25 +190,19 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_time_control, container, false);
-        mStageListView = (ListView) v.findViewById(R.id.list_stages);
-        mSameAsPlayerOneSwitchContainer = (FrameLayout) v.findViewById(R.id.switch_same_as_player_one_container);
-        mSameAsPlayerOneSwtich = (SwitchCompat) v.findViewById(R.id.switch_same_as_player_one);
-        mSameAsPlayerOneSwtich.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mTimeControlWrapper.setSameAsPlayerOne(isChecked);
-                if (isChecked && !mPlayerOneSelected) {
-                    showPlayerOneViews();
-                }
+        mStageListView = v.findViewById(R.id.list_stages);
+        mSameAsPlayerOneSwitchContainer = v.findViewById(R.id.switch_same_as_player_one_container);
+        mSameAsPlayerOneSwtich = v.findViewById(R.id.switch_same_as_player_one);
+        mSameAsPlayerOneSwtich.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mTimeControlWrapper.setSameAsPlayerOne(isChecked);
+            if (isChecked && !mPlayerOneSelected) {
+                showPlayerOneViews();
             }
         });
         mSameAsPlayerOneSwitchContainer.setVisibility(GONE);
         mBottomNavigationActionListener.setVisibility(VISIBLE);
         mBottomNavigationActionListener.setBottomNavigationListener(
-            new OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(
-                    @NonNull MenuItem item) {
+                item -> {
                     switch (item.getItemId()) {
                         case R.id.nav_player1:
                             mSameAsPlayerOneSwitchContainer.setVisibility(GONE);
@@ -229,8 +222,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                         updateDisplay();
                     }
                     return true;
-                }
-            });
+                });
 
         if (mStageListView != null) {
 
