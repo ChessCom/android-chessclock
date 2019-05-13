@@ -1,8 +1,8 @@
 package com.chess.clock.util;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 /**
  * Utilities for handling multiple selection in list views. Contains functionality similar to
- * {@link AbsListView#CHOICE_MODE_MULTIPLE_MODAL} but that works with {@link android.support.v7.app.AppCompatActivity} and
+ * {@link AbsListView#CHOICE_MODE_MULTIPLE_MODAL} but that works with {@link androidx.appcompat.app.AppCompatActivity} and
  * backward-compatible action bars.
  */
 public class MultiSelectionUtil {
