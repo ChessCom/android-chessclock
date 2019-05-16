@@ -207,7 +207,7 @@ public class ChessClockLocalService extends Service {
 
 
         Notification notification =
-                new NotificationCompat.Builder(this,getString(R.string.channel_name))
+                new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                         .setContentIntent(contentIntent)
                         .setContentTitle(getText(R.string.foreground_service_started))
                         .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
