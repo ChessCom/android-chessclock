@@ -3,6 +3,6 @@
 .DS_Store
 /.idea
 *.iml
-/build
+**/build
 
 app/certificate
