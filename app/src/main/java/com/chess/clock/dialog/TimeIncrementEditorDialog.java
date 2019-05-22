@@ -70,7 +70,7 @@ public class TimeIncrementEditorDialog extends TimePickerDialog {
         if (mCallback != null) {
             if (which == BUTTON_POSITIVE) {
 
-                TimeIncrement.Type type = TimeIncrement.Type.fromInteger(Integer.valueOf(mTimeIncrementEditorView.getCurrentIncrementType()));
+                TimeIncrement.Type type = TimeIncrement.Type.fromInteger(mTimeIncrementEditorView.getCurrentIncrementType());
                 int hour = mTimeIncrementEditorView.getCurrentHour();
                 int minute = mTimeIncrementEditorView.getCurrentMinute();
                 int second = mTimeIncrementEditorView.getCurrentSeconds();
