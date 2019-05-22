@@ -190,7 +190,7 @@ public class TimeControlParser {
             return null;
         }
 
-        ArrayList<TimeControlWrapper> timeControls = new ArrayList<TimeControlWrapper>();
+        ArrayList<TimeControlWrapper> timeControls = new ArrayList<>();
         try {
             JSONObject json = new JSONObject(jsonString);
             JSONArray timeControlsJSONArray = json.getJSONArray(TC_JSON_TIME_CONTROLS);
@@ -241,7 +241,7 @@ public class TimeControlParser {
     public static ArrayList<TimeControlWrapper> buildDefaultTimeControlsList(Context context) {
         Log.i(TAG, "Building and saving default time control list");
 
-        ArrayList<TimeControlWrapper> timeControls = new ArrayList<TimeControlWrapper>();
+        ArrayList<TimeControlWrapper> timeControls = new ArrayList<>();
 
         // Fischer blitz 5|0
         Stage fischerBlitzStage = new Stage(0, 300000);
