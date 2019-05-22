@@ -1,7 +1,7 @@
 package com.chess.clock.util;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
@@ -15,13 +15,13 @@ import java.util.ArrayList;
 
 /**
  * Utilities for handling multiple selection in list views. Contains functionality similar to
- * {@link AbsListView#CHOICE_MODE_MULTIPLE_MODAL} but that works with {@link ActionBarActivity} and
+ * {@link AbsListView#CHOICE_MODE_MULTIPLE_MODAL} but that works with {@link AppCompatActivity} and
  * backward-compatible action bars.
  */
 public class MultiSelectionUtil {
 
     public static Controller attachMultiSelectionController(final ListView listView,
-                                                            final ActionBarActivity activity,
+                                                            final AppCompatActivity activity,
                                                             final MultiChoiceModeListener listener) {
         return Controller.attach(listView, activity, listener);
     }
@@ -42,7 +42,7 @@ public class MultiSelectionUtil {
 
         private ActionMode mActionMode;
         private ListView mListView = null;
-        private ActionBarActivity mActivity = null;
+        private AppCompatActivity mActivity = null;
         private MultiChoiceModeListener mListener = null;
         private ArrayList<Integer> mItemsToCheck;
         private AdapterView.OnItemClickListener mOldItemClickListener;
@@ -51,7 +51,7 @@ public class MultiSelectionUtil {
 
         }
 
-        public static Controller attach(ListView listView, ActionBarActivity activity,
+        public static Controller attach(ListView listView, AppCompatActivity activity,
                                         MultiChoiceModeListener listener) {
             Controller controller = new Controller();
             controller.mListView = listView;
