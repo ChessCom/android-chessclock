@@ -191,25 +191,19 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_time_control, container, false);
-        mStageListView = (ListView) v.findViewById(R.id.list_stages);
-        mSameAsPlayerOneSwitchContainer = (FrameLayout) v.findViewById(R.id.switch_same_as_player_one_container);
-        mSameAsPlayerOneSwtich = (SwitchCompat) v.findViewById(R.id.switch_same_as_player_one);
-        mSameAsPlayerOneSwtich.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mTimeControlWrapper.setSameAsPlayerOne(isChecked);
-                if (isChecked && !mPlayerOneSelected) {
-                    showPlayerOneViews();
-                }
+        mStageListView = v.findViewById(R.id.list_stages);
+        mSameAsPlayerOneSwitchContainer = v.findViewById(R.id.switch_same_as_player_one_container);
+        mSameAsPlayerOneSwtich = v.findViewById(R.id.switch_same_as_player_one);
+        mSameAsPlayerOneSwtich.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mTimeControlWrapper.setSameAsPlayerOne(isChecked);
+            if (isChecked && !mPlayerOneSelected) {
+                showPlayerOneViews();
             }
         });
         mSameAsPlayerOneSwitchContainer.setVisibility(GONE);
         mBottomNavigationActionListener.setVisibility(VISIBLE);
         mBottomNavigationActionListener.setBottomNavigationListener(
-            new OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(
-                    @NonNull MenuItem item) {
+                item -> {
                     switch (item.getItemId()) {
                         case R.id.nav_player1:
                             mSameAsPlayerOneSwitchContainer.setVisibility(GONE);
@@ -229,8 +223,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                         updateDisplay();
                     }
                     return true;
-                }
-            });
+                });
 
         if (mStageListView != null) {
 
@@ -253,7 +246,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                 mSameAsPlayerOneSwtich.setChecked(mTimeControlWrapper.isSameAsPlayerOne());
 
                 // Setup Time Control Name Edit Text
-                mTimeControlNameEditText = (EditText) v.findViewById(R.id.time_control_name);
+                mTimeControlNameEditText = v.findViewById(R.id.time_control_name);
                 mTimeControlNameEditText.addTextChangedListener(mTextWatcher);
 
                 TimeControl tc = mTimeControlWrapper.getTimeControlPlayerOne();
@@ -266,17 +259,12 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
                 mStageListView.setAdapter(stageAdapter);
 
                 // Load Time Increment item
-                mTimeIncrementDescription = (TextView) v.findViewById(R.id.increment_description);
+                mTimeIncrementDescription = v.findViewById(R.id.increment_description);
                 mTimeIncrementDescription.setText(tc.getTimeIncrement().toString());
 
                 // Setup click listener to Time Increment btn
-                mTimeIncrementBtn = (ViewGroup) v.findViewById(R.id.btn_edit_increment);
-                mTimeIncrementBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showTimeIncrementEditorDialog();
-                    }
-                });
+                mTimeIncrementBtn = v.findViewById(R.id.btn_edit_increment);
+                mTimeIncrementBtn.setOnClickListener(v1 -> showTimeIncrementEditorDialog());
             }
         }
 
@@ -500,22 +488,16 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
             return builder
                     .setTitle(getString(R.string.exit_dialog_title))
                     .setMessage(getString(R.string.exit_dialog_message))
-                    .setNegativeButton(getString(R.string.exit_dialog_cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            Fragment target = getTargetFragment();
-                            if (target != null) {
-                                target.getActivity().getSupportFragmentManager().popBackStack();
-                            }
+                    .setNegativeButton(getString(R.string.exit_dialog_cancel), (arg0, arg1) -> {
+                        Fragment target = getTargetFragment();
+                        if (target != null) {
+                            target.getActivity().getSupportFragmentManager().popBackStack();
                         }
                     })
-                    .setPositiveButton(getString(R.string.exit_dialog_ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            Fragment target = getTargetFragment();
-                            if (target != null) {
-                                ((TimeControlFragment) target).saveTimeControl();
-                            }
+                    .setPositiveButton(getString(R.string.exit_dialog_ok), (arg0, arg1) -> {
+                        Fragment target = getTargetFragment();
+                        if (target != null) {
+                            ((TimeControlFragment) target).saveTimeControl();
                         }
                     })
                     .create();

@@ -51,31 +51,29 @@ public class TimeIncrementEditorView extends TimePickerView {
      */
     private void init() {
 
-        mRadioGroup = (RadioGroup) findViewById(R.id.radio_time_increment_type);
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // Check which radio button was clicked
-                switch (checkedId) {
-                    case R.id.radio_delay:
-                        mTimeIncrementTypePosition = 0;
-                        break;
-                    case R.id.radio_bronstein:
-                        mTimeIncrementTypePosition = 1;
-                        break;
-                    case R.id.radio_fischer:
-                        mTimeIncrementTypePosition = 2;
-                        break;
-                }
-                updateSubtitle();
+        mRadioGroup = findViewById(R.id.radio_time_increment_type);
+        mRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            // Check which radio button was clicked
+            switch (checkedId) {
+                case R.id.radio_delay:
+                    mTimeIncrementTypePosition = 0;
+                    break;
+                case R.id.radio_bronstein:
+                    mTimeIncrementTypePosition = 1;
+                    break;
+                case R.id.radio_fischer:
+                    mTimeIncrementTypePosition = 2;
+                    break;
             }
+            updateSubtitle();
         });
 
-        mDelayBtn = (RadioButton) findViewById(R.id.radio_delay);
-        mBronsteinBtn = (RadioButton) findViewById(R.id.radio_bronstein);
-        mFischerBtn = (RadioButton) findViewById(R.id.radio_fischer);
+        mDelayBtn = findViewById(R.id.radio_delay);
+        mBronsteinBtn = findViewById(R.id.radio_bronstein);
+        mFischerBtn = findViewById(R.id.radio_fischer);
 
         // Setup subtitle text
-        mTimeIncrementSubtitleText = (TextView) findViewById(R.id.time_increment_type_subtitle);
+        mTimeIncrementSubtitleText = findViewById(R.id.time_increment_type_subtitle);
 
         // Remove subtitle text view from UI on hdpi and landscapes
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -123,7 +121,7 @@ public class TimeIncrementEditorView extends TimePickerView {
 
         if (mTimeIncrementSubtitleText != null) {
             // Set spinner subtitle text
-            String subtitle = new String();
+            String subtitle = "";
             switch (TimeIncrement.Type.fromInteger(mTimeIncrementTypePosition)) {
                 case DELAY:
                     subtitle = getResources().getString(R.string.delay_option_subtitle);

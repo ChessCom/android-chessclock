@@ -43,7 +43,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
      */
     public StageManager(Stage[] stages) {
 
-        mStages = new ArrayList<Stage>();
+        mStages = new ArrayList<>();
 
         // Set this as listener of all stages.
         for (Stage stage : stages) {
@@ -236,7 +236,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
     private void readFromParcel(Parcel parcel) {
         mCurrentStage = parcel.readInt();
         mMoveCount = parcel.readInt();
-        mStages = new ArrayList<Stage>();
+        mStages = new ArrayList<>();
         parcel.readTypedList(mStages, Stage.CREATOR);
     }
 
@@ -283,7 +283,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
         StageManager clone = (StageManager) super.clone();
 
         // Clone each Stage object in the list
-        ArrayList<Stage> newList = new ArrayList<Stage>();
+        ArrayList<Stage> newList = new ArrayList<>();
         for (Stage stage : mStages) {
             Stage clonedStage = (Stage) stage.clone();
             clonedStage.setStageListener(clone);
