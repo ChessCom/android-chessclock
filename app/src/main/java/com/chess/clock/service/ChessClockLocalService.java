@@ -1,11 +1,14 @@
 package com.chess.clock.service;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import androidx.core.app.NotificationCompat;
@@ -24,6 +27,7 @@ import com.chess.clock.util.Args;
  */
 public class ChessClockLocalService extends Service {
 
+    public static final String NOTIFICATION_CHANNEL_ID = "10001";
     /**
      * Logs stuff
      */
@@ -187,8 +191,23 @@ public class ChessClockLocalService extends Service {
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_LOW; // No sound is needed
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+
         Notification notification =
-                new NotificationCompat.Builder(this)
+                new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                         .setContentIntent(contentIntent)
                         .setContentTitle(getText(R.string.foreground_service_started))
                         .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
