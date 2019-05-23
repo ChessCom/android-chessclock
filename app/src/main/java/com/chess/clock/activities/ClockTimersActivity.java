@@ -111,7 +111,7 @@ public class ClockTimersActivity extends FragmentActivity {
 
         private final int value;
 
-        private TimersState(int value) {
+        TimersState(int value) {
             this.value = value;
         }
 

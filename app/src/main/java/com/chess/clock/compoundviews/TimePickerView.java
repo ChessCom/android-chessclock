@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
-import android.widget.NumberPicker.Formatter;
 
 import com.chess.clock.R;
 
@@ -412,13 +411,13 @@ public class TimePickerView extends FrameLayout {
     /**
      * Type of picker. Used to remove unwanted hour picker.
      */
-    public static enum Type {
+    public enum Type {
         MINUTE_SECOND(0),
         HOUR_MINUTE_SECOND(1);
 
         private final int value;
 
-        private Type(int value) {
+        Type(int value) {
             this.value = value;
         }
 

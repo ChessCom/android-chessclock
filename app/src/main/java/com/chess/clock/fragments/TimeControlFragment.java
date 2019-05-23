@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Service;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -21,8 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -467,9 +464,9 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * This interface must be implemented by activities that contain this fragment to allow interaction.
      */
     public interface OnTimeControlListener {
-        public TimeControlWrapper getEditableTimeControl();
+        TimeControlWrapper getEditableTimeControl();
 
-        public void saveTimeControl();
+        void saveTimeControl();
     }
 
     /**

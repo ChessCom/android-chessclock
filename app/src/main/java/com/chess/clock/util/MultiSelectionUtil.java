@@ -29,13 +29,13 @@ public class MultiSelectionUtil {
     /**
      * @see android.widget.AbsListView.MultiChoiceModeListener
      */
-    public static interface MultiChoiceModeListener extends ActionMode.Callback {
+    public interface MultiChoiceModeListener extends ActionMode.Callback {
         /**
          * @see android.widget.AbsListView.MultiChoiceModeListener#onItemCheckedStateChanged(
          *android.view.ActionMode, int, long, boolean)
          */
-        public void onItemCheckedStateChanged(ActionMode mode,
-                                              int position, boolean checked);
+        void onItemCheckedStateChanged(ActionMode mode,
+                                       int position, boolean checked);
     }
 
     public static class Controller implements ActionMode.Callback, AdapterView.OnItemClickListener {

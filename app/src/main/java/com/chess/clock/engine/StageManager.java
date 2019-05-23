@@ -305,11 +305,11 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
          *
          * @param stage The new stage.
          */
-        public void onNewStageUpdate(Stage stage);
+        void onNewStageUpdate(Stage stage);
 
         /**
          * Called when total move count is updated.
          */
-        public void onMoveCountUpdate(int moveCount);
+        void onMoveCountUpdate(int moveCount);
     }
 }

@@ -3,7 +3,6 @@ package com.chess.clock.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -51,17 +50,17 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
      */
     public interface OnSettingsListener {
 
-        public ArrayList<TimeControlWrapper> getCurrentTimeControls();
+        ArrayList<TimeControlWrapper> getCurrentTimeControls();
 
-        public int getCheckedTimeControlIndex();
+        int getCheckedTimeControlIndex();
 
-        public void setCheckedTimeControlIndex(int position);
+        void setCheckedTimeControlIndex(int position);
 
-        public void loadTimeControl(int position);
+        void loadTimeControl(int position);
 
-        public void addTimeControl();
+        void addTimeControl();
 
-        public void removeTimeControl(int[] positions);
+        void removeTimeControl(int[] positions);
     }
 
     /**
