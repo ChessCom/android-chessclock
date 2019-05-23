@@ -1,9 +1,9 @@
 package com.chess.clock.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Service;
+import android.content.Context;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
@@ -145,20 +145,20 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * Called when a fragment is first attached to its activity.
      * onCreate(Bundle) will be called after this.
      *
-     * @param activity Parent Activity.
+     * @param context
      */
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (OnTimeControlListener) activity;
-            mBottomNavigationActionListener = (BottomNavigationActionListener) activity;
+            mListener = (OnTimeControlListener) context;
+            mBottomNavigationActionListener = (BottomNavigationActionListener) context;
 
             // Fetch current TimeControl object
             mTimeControlWrapper = mListener.getEditableTimeControl();
 
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnTimeControlListener");
         }
     }
@@ -353,7 +353,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         ((StageAdapter) mStageListView.getAdapter()).notifyDataSetChanged();
 
         // Remove "add stage" action from menu if total stages is 3
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     public void showConfirmGoBackDialog() {

@@ -775,37 +775,37 @@ public class ClockTimersActivity extends FragmentActivity {
         Log.d(TAG, "Updating UI state to: " + mTimersState);
         switch (mTimersState) {
             case PAUSED:
-                mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
-                mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+                mPlayerOneImgButton.setBackground(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+                mPlayerTwoImgButton.setBackground(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
                 mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
                 mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
                 break;
             case PLAYER_ONE_RUNNING:
-                mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_btn_clock_running));
-                mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+                mPlayerOneImgButton.setBackground(resources.getDrawable(R.drawable.bg_btn_clock_running));
+                mPlayerTwoImgButton.setBackground(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
                 mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
                 mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
                 mPauseButton.setVisibility(View.VISIBLE);
                 mPauseButton.setText(getString(R.string.btn_pause_settings));
                 break;
             case PLAYER_TWO_RUNNING:
-                mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
-                mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_btn_clock_running));
+                mPlayerOneImgButton.setBackground(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+                mPlayerTwoImgButton.setBackground(resources.getDrawable(R.drawable.bg_btn_clock_running));
                 mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
                 mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
                 mPauseButton.setVisibility(View.VISIBLE);
                 mPauseButton.setText(getString(R.string.btn_pause_settings));
                 break;
             case PLAYER_ONE_FINISHED:
-                mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_finished_gradient));
-                mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+                mPlayerOneImgButton.setBackground(resources.getDrawable(R.drawable.shape_btn_clock_finished_gradient));
+                mPlayerTwoImgButton.setBackground(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
                 mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
                 mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
                 mPauseButton.setVisibility(View.INVISIBLE);
                 break;
             case PLAYER_TWO_FINISHED:
-                mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
-                mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_finished_gradient));
+                mPlayerOneImgButton.setBackground(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+                mPlayerTwoImgButton.setBackground(resources.getDrawable(R.drawable.shape_btn_clock_finished_gradient));
                 mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
                 mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
                 mPauseButton.setVisibility(View.INVISIBLE);

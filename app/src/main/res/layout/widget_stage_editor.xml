@@ -35,7 +35,7 @@
             android:gravity="right"
             android:imeOptions="actionDone"
             android:maxLength="3"
-            android:numeric="integer"
+            android:inputType="number"
             android:paddingRight="16dp"
             android:singleLine="true"
             android:text="2"

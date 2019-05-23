@@ -1,8 +1,8 @@
 package com.chess.clock.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -143,18 +143,18 @@ public class SettingsFragment extends Fragment implements MultiSelectionUtil.Mul
     /**
      * Called when a fragment is first attached to its activity. onCreate(Bundle) will be called after this.
      *
-     * @param activity
+     * @param context
      */
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         try {
-            mListener = (OnSettingsListener) activity;
-            appData = new AppData(activity.getApplicationContext());
+            mListener = (OnSettingsListener) context;
+            appData = new AppData(context.getApplicationContext());
             isFullScreen = appData.getClockFullScreen();
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnSettingsListener");
         }
     }
