@@ -475,7 +475,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     /**
      * DIALOG
      */
-    private static class ExitConfirmationDialogFragment extends DialogFragment {
+    public static class ExitConfirmationDialogFragment extends DialogFragment {
 
         public static ExitConfirmationDialogFragment newInstance() {
             return new ExitConfirmationDialogFragment();
