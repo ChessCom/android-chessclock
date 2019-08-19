@@ -3,6 +3,7 @@ package com.chess.clock.engine;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.chess.clock.engine.stage.Stage;
 import com.chess.clock.engine.time.TimeIncrement;
 import com.chess.clock.util.Args;
 

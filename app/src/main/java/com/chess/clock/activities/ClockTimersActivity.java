@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.CountDownTimer;
-import com.chess.clock.engine.Stage;
+import com.chess.clock.engine.stage.Stage;
 import com.chess.clock.engine.TimeControlParser;
 import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.statics.AppData;

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.chess.clock.engine.stage.Stage;
 import com.chess.clock.engine.time.TimeIncrement;
 import com.chess.clock.engine.time.TimeIncrementFischer;
 

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.chess.clock.engine.stage.Stage;
 import com.chess.clock.engine.stage.StageTypeGame;
 import com.chess.clock.engine.stage.StageTypeMoves;
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.chess.clock.engine.stage.Stage;
 import com.chess.clock.engine.time.TimeIncrement;
 import com.chess.clock.engine.time.TimeIncrementDelay;
 import com.chess.clock.engine.time.TimeIncrementFischer;

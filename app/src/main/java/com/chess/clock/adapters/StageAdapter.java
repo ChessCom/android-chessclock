@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -16,7 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.chess.clock.R;
-import com.chess.clock.engine.Stage;
+import com.chess.clock.engine.stage.Stage;
 import com.chess.clock.engine.StageManager;
 import com.chess.clock.fragments.TimeControlFragment;
 

@@ -1,6 +1,7 @@
 package com.chess.clock.engine
 
 import android.os.Parcel
+import com.chess.clock.engine.stage.Stage
 import com.chess.clock.engine.stage.StageBegan
 import com.chess.clock.engine.stage.StageTypeGame
 import com.chess.clock.engine.stage.StageTypeMoves
