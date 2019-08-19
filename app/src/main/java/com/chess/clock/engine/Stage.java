@@ -4,6 +4,18 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.chess.clock.engine.stage.StageBegan;
+import com.chess.clock.engine.stage.StageEnded;
+import com.chess.clock.engine.stage.StageIdle;
+import com.chess.clock.engine.stage.StageState;
+import com.chess.clock.engine.stage.StageStateKt;
+import com.chess.clock.engine.stage.StageType;
+import com.chess.clock.engine.stage.StageTypeGame;
+import com.chess.clock.engine.stage.StageTypeKt;
+import com.chess.clock.engine.stage.StageTypeMoves;
+
+import androidx.annotation.VisibleForTesting;
+
 /**
  * A stage of a Time Control. One Time Control can have one or more stages. Every stage has a time
  * limit. Stages that are part of a multi-stage Time Control also have move count limit excluding
@@ -63,7 +75,10 @@ public class Stage implements Parcelable, Cloneable {
     public Stage(int id, long duration, int moves) {
         this(id, duration);
         this.mMoves = moves;
-        this.mStageType = StageType.MOVES;
+        this.mStageType = StageTypeMoves.INSTANCE;
+        if (moves <= 0) {
+            this.mStageType = StageTypeGame.INSTANCE;
+        }
     }
 
     /**
@@ -73,11 +88,12 @@ public class Stage implements Parcelable, Cloneable {
     public Stage(int id, long duration) {
         this.mId = id;
         this.mDuration = duration;
-        this.mStageType = StageType.GAME;
+        this.mStageType = StageTypeGame.INSTANCE;
         reset();
     }
 
-    private Stage(Parcel parcel) {
+    @VisibleForTesting
+    public Stage(Parcel parcel) {
         this.readFromParcel(parcel);
     }
 
@@ -151,9 +167,9 @@ public class Stage implements Parcelable, Cloneable {
             return false;
         }
         // StageType
-        else if (mStageType.getValue() != stage.getStageType().getValue()) {
-            Log.i(TAG, "StageType not equal. " + mStageType.getValue()
-                    + " - " + stage.getStageType().getValue());
+        else if (mStageType != stage.getStageType()) {
+            Log.i(TAG, "StageType not equal. " + mStageType.toString()
+                    + " - " + stage.getStageType().toString());
             return false;
         }
         // Duration
@@ -193,8 +209,8 @@ public class Stage implements Parcelable, Cloneable {
     public void setStageType(StageType type) {
         mStageType = type;
 
-        // Also reset total moves if type is GAME
-        if (mStageType == StageType.GAME) {
+        // Also reset total moves if type is StageTypeGame
+        if (mStageType == StageTypeGame.INSTANCE) {
             mMoves = 0;
         }
     }
@@ -219,8 +235,8 @@ public class Stage implements Parcelable, Cloneable {
             throw new GameStageException("Cannot perform addMove action after stage finished");
 
         // First addMove in the stage
-        if (mStageState == StageState.IDLE) {
-            mStageState = StageState.BEGAN;
+        if (mStageState == StageIdle.INSTANCE) {
+            mStageState = StageBegan.INSTANCE;
             Log.d(TAG, "Stage " + mId + " began.");
         }
 
@@ -228,7 +244,7 @@ public class Stage implements Parcelable, Cloneable {
         Log.d(TAG, "Move added to Stage " + mId + ". Move count: " + mStageMoveCount);
 
         // Finish stage if last addMove was played.
-        if (mStageType == StageType.MOVES && !hasRemainingMoves()) {
+        if (mStageType == StageTypeMoves.INSTANCE && !hasRemainingMoves()) {
             finishStage();
         }
     }
@@ -238,7 +254,7 @@ public class Stage implements Parcelable, Cloneable {
      */
     public void reset() {
         mStageMoveCount = 0;
-        mStageState = StageState.IDLE;
+        mStageState = StageIdle.INSTANCE;
     }
 
     /**
@@ -298,11 +314,11 @@ public class Stage implements Parcelable, Cloneable {
             mOnStageEndListener.onStageFinished(mId);
         }
 
-        mStageState = StageState.ENDED;
+        mStageState = StageEnded.INSTANCE;
     }
 
     private boolean isStageFinished() {
-        return mStageState == StageState.ENDED;
+        return mStageState == StageEnded.INSTANCE;
     }
 
     private boolean hasRemainingMoves() {
@@ -314,8 +330,8 @@ public class Stage implements Parcelable, Cloneable {
         mId = parcel.readInt();
         mMoves = parcel.readInt();
         mStageMoveCount = parcel.readInt();
-        mStageState = StageState.fromInteger(parcel.readInt());
-        mStageType = StageType.fromInteger(parcel.readInt());
+        mStageState = StageStateKt.stateFromInt(parcel.readInt());
+        mStageType = StageTypeKt.typeFromInt(parcel.readInt());
     }
 
     @Override
@@ -324,8 +340,8 @@ public class Stage implements Parcelable, Cloneable {
         parcel.writeInt(mId);
         parcel.writeInt(mMoves);
         parcel.writeInt(mStageMoveCount);
-        parcel.writeInt(mStageState.getValue());
-        parcel.writeInt(mStageType.getValue());
+        parcel.writeInt(StageStateKt.toInteger(mStageState));
+        parcel.writeInt(StageTypeKt.toInteger(mStageType));
     }
 
     @Override
@@ -334,93 +350,12 @@ public class Stage implements Parcelable, Cloneable {
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
+    public Stage clone() throws CloneNotSupportedException {
         Stage clone = (Stage) super.clone();
-        clone.mStageState = StageState.fromInteger(mStageState.getValue());
-        clone.mStageType = StageType.fromInteger(mStageType.getValue());
+        clone.mStageState = mStageState;
+        clone.mStageType = mStageType;
         clone.mOnStageEndListener = null;
         return clone;
-    }
-
-    /**
-     * There are two stage types in a Time Control. The StageType.GAME is used for one-stage
-     * Time Controls or the last stage of a multi-stage Time Control. The StageType.MOVES is used
-     * for the remaining ones (multi-stage Time Controls besides the last stage).
-     */
-    public enum StageType {
-
-        /**
-         * Used for one-stage only type of game or the last stage of a multiple stage time control.
-         */
-        GAME(0),
-
-        /**
-         * Used for all stages of a the multi-stage time control, besides the last one.
-         */
-        MOVES(1);
-
-        private final int value;
-
-        private StageType(int value) {
-            this.value = value;
-        }
-
-        public static StageType fromInteger(int type) {
-            switch (type) {
-                case 0:
-                    return GAME;
-                case 1:
-                    return MOVES;
-            }
-            return null;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
-    /**
-     * Game Stage State
-     */
-    private enum StageState {
-
-        /**
-         * The stage has not begun
-         */
-        IDLE(0),
-
-        /**
-         * The stage is on-going.
-         */
-        BEGAN(1),
-
-        /**
-         * The stage has finished.
-         */
-        ENDED(2);
-
-        private final int value;
-
-        private StageState(int value) {
-            this.value = value;
-        }
-
-        public static StageState fromInteger(int type) {
-            switch (type) {
-                case 0:
-                    return IDLE;
-                case 1:
-                    return BEGAN;
-                case 2:
-                    return ENDED;
-            }
-            return null;
-        }
-
-        public int getValue() {
-            return value;
-        }
     }
 
     /**
@@ -433,7 +368,7 @@ public class Stage implements Parcelable, Cloneable {
          *
          * @param stageFinishedNumber The identifier of the stage finished.
          */
-        public void onStageFinished(int stageFinishedNumber);
+        void onStageFinished(int stageFinishedNumber);
     }
 
     /**

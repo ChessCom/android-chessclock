@@ -3,7 +3,6 @@ package com.chess.clock.engine;
 import android.os.Handler;
 import android.util.Log;
 
-import com.chess.clock.engine.time.TimeIncrement;
 import com.chess.clock.engine.time.TimeIncrementBronstein;
 import com.chess.clock.engine.time.TimeIncrementDelay;
 import com.chess.clock.engine.time.TimeIncrementFischer;
@@ -360,7 +359,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
 
     /**
      * Timer starts after delay period.
-     * This is useful for {@linkplain TimeIncrement.Type#DELAY} increment type.
+     * This is useful for {@linkplain TimeIncrementDelay} increment type.
      *
      * @param delay Time delay to forceStart timer in milliseconds.
      */

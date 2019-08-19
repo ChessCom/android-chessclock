@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.chess.clock.engine.stage.StageTypeGame;
+import com.chess.clock.engine.stage.StageTypeMoves;
+
 import java.util.ArrayList;
 
 /**
@@ -106,7 +109,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
             if (getTotalStages() == 1) {
 
                 // Set first stage as type MOVES, with 1 move
-                mStages.get(0).setStageType(Stage.StageType.MOVES);
+                mStages.get(0).setStageType(StageTypeMoves.INSTANCE);
                 mStages.get(0).setMoves(20);
 
                 Stage newStage = new Stage(1, 300000);
@@ -116,7 +119,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
             } else if (getTotalStages() == 2) {
 
                 // Set second stage as Type MOVES, with 1 move each.
-                mStages.get(1).setStageType(Stage.StageType.MOVES);
+                mStages.get(1).setStageType(StageTypeMoves.INSTANCE);
                 mStages.get(1).setMoves(20);
 
                 Stage newStage = new Stage(2, 300000);
@@ -143,7 +146,7 @@ public class StageManager implements Parcelable, Cloneable, Stage.OnStageFinishL
                 // Change the previous one
                 changingStage = mStages.get(removeStageIdx - 1);
                 changingStage.setMoves(0);
-                changingStage.setStageType(Stage.StageType.GAME);
+                changingStage.setStageType(StageTypeGame.INSTANCE);
             }
             // Remove the middle one
             else if (removeStageIdx == 1) {

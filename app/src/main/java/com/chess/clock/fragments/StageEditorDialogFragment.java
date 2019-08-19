@@ -3,12 +3,14 @@ package com.chess.clock.fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 
 import com.chess.clock.R;
 import com.chess.clock.dialog.StageEditorDialog;
 import com.chess.clock.dialog.TimePickerDialog;
 import com.chess.clock.engine.Stage;
+import com.chess.clock.engine.stage.StageTypeMoves;
+
+import androidx.fragment.app.DialogFragment;
 
 /**
  * Stage Editor Dialog Fragment. This DialogFragment extends TimePickerDialogFragment. Overriding
@@ -60,7 +62,7 @@ public class StageEditorDialogFragment extends DialogFragment {
         int hour = time[0];
         int minute = time[1];
         int second = time[2];
-        boolean movesVisible = mStage.getStageType() == Stage.StageType.MOVES;
+        boolean movesVisible = mStage.getStageType() == StageTypeMoves.INSTANCE;
         int moves = mStage.getTotalMoves();
 
         StageEditorDialog.Builder builder = new StageEditorDialog.Builder(mContext);
