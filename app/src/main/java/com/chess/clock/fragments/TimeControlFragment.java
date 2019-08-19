@@ -28,7 +28,7 @@ import com.chess.clock.dialog.TimeIncrementEditorDialog;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
-import com.chess.clock.engine.TimeIncrement;
+import com.chess.clock.engine.time.TimeIncrement;
 import com.chess.clock.engine.time.TimeIncrementType;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 

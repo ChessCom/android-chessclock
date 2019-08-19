@@ -1,6 +1,7 @@
 package com.chess.clock.engine
 
 import android.os.Parcel
+import com.chess.clock.engine.time.TimeIncrement
 import com.chess.clock.engine.time.TimeIncrementBronstein
 import com.chess.clock.engine.time.TimeIncrementDelay
 import com.chess.clock.engine.time.TimeIncrementFischer

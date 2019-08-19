@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.chess.clock.R;
 import com.chess.clock.dialog.TimeIncrementEditorDialog;
 import com.chess.clock.dialog.TimePickerDialog;
-import com.chess.clock.engine.TimeIncrement;
+import com.chess.clock.engine.time.TimeIncrement;
 import com.chess.clock.engine.time.TimeIncrementTypeKt;
 
 import androidx.fragment.app.DialogFragment;
