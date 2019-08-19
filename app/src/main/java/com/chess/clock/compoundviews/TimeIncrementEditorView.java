@@ -10,7 +10,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.chess.clock.R;
-import com.chess.clock.engine.TimeIncrement;
+import com.chess.clock.engine.time.TimeIncrementType;
+import com.chess.clock.engine.time.TimeIncrementTypeKt;
 
 public class TimeIncrementEditorView extends TimePickerView {
 
@@ -121,18 +122,9 @@ public class TimeIncrementEditorView extends TimePickerView {
 
         if (mTimeIncrementSubtitleText != null) {
             // Set spinner subtitle text
-            String subtitle = "";
-            switch (TimeIncrement.Type.fromInteger(mTimeIncrementTypePosition)) {
-                case DELAY:
-                    subtitle = getResources().getString(R.string.delay_option_subtitle);
-                    break;
-                case BRONSTEIN:
-                    subtitle = getResources().getString(R.string.bronstein_option_subtitle);
-                    break;
-                case FISCHER:
-                    subtitle = getResources().getString(R.string.fischer_option_subtitle);
-                    break;
-            }
+            TimeIncrementType incType = TimeIncrementTypeKt.fromInteger(mTimeIncrementTypePosition);
+            int subtitleId = incType.subtitleId();
+            String subtitle = getResources().getString(subtitleId);
             mTimeIncrementSubtitleText.setText(subtitle);
         }
     }

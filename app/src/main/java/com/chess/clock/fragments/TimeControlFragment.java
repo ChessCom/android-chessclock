@@ -4,13 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Service;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -21,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -37,6 +29,12 @@ import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.engine.TimeIncrement;
+import com.chess.clock.engine.time.TimeIncrementType;
+import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
+
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -452,7 +450,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     }
 
     @Override
-    public void onTimeIncrementEditDone(TimeIncrement.Type type, long time) {
+    public void onTimeIncrementEditDone(TimeIncrementType type, long time) {
         // Get Time Increment
         TimeIncrement timeIncrement = mSelectedTimeControl.getTimeIncrement();
 

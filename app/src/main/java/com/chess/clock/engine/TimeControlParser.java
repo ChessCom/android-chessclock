@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.chess.clock.engine.time.TimeIncrementDelay;
+import com.chess.clock.engine.time.TimeIncrementFischer;
+import com.chess.clock.engine.time.TimeIncrementType;
+import com.chess.clock.engine.time.TimeIncrementTypeKt;
 import com.chess.clock.service.ChessClockLocalService;
 
 import org.json.JSONArray;
@@ -111,11 +115,11 @@ public class TimeControlParser {
                 // Save TimeIncrement
                 JSONObject timeIncrementJSONOBject = new JSONObject();
                 timeIncrementJSONOBject.put(TC_JSON_VALUE, tc.getTimeControlPlayerOne().getTimeIncrement().getValue());
-                timeIncrementJSONOBject.put(TC_JSON_TYPE, tc.getTimeControlPlayerOne().getTimeIncrement().getType().getValue());
+                timeIncrementJSONOBject.put(TC_JSON_TYPE, TimeIncrementTypeKt.toInteger(tc.getTimeControlPlayerOne().getTimeIncrement().getType()));
 
                 JSONObject timeIncrementPlayerTwoJSONOBject = new JSONObject();
-                timeIncrementPlayerTwoJSONOBject.put(TC_JSON_VALUE, tc.getTimeControlPlayerOne().getTimeIncrement().getValue());
-                timeIncrementPlayerTwoJSONOBject.put(TC_JSON_TYPE, tc.getTimeControlPlayerOne().getTimeIncrement().getType().getValue());
+                timeIncrementPlayerTwoJSONOBject.put(TC_JSON_VALUE, tc.getTimeControlPlayerTwo().getTimeIncrement().getValue());
+                timeIncrementPlayerTwoJSONOBject.put(TC_JSON_TYPE, TimeIncrementTypeKt.toInteger(tc.getTimeControlPlayerTwo().getTimeIncrement().getType()));
 
                 // Add name, stages and time increment to TimeControl json object.
                 timeControlJSONObject.put(TC_JSON_NAME, tc.getTimeControlPlayerOne().getName());
@@ -259,25 +263,25 @@ public class TimeControlParser {
 
         // Fischer blitz 5|0
         Stage fischerBlitzStage = new Stage(0, 300000);
-        TimeIncrement fischerBlitzTI = new TimeIncrement(TimeIncrement.Type.FISCHER, 0);
+        TimeIncrement fischerBlitzTI = new TimeIncrement(TimeIncrementFischer.INSTANCE, 0);
         TimeControl fischerBlitzTC = new TimeControl("Fischer Blitz 5|0", new Stage[]{fischerBlitzStage}, fischerBlitzTI);
         TimeControlWrapper fischerBlitzTCWrapper = new TimeControlWrapper(fischerBlitzTC, fischerBlitzTC);
 
         // Delay bullet 1|2
         Stage delayBulletStage = new Stage(0, 60000);
-        TimeIncrement delayBulletTimeIncrement = new TimeIncrement(TimeIncrement.Type.DELAY, 2000);
+        TimeIncrement delayBulletTimeIncrement = new TimeIncrement(TimeIncrementDelay.INSTANCE, 2000);
         TimeControl delayBulletTC = new TimeControl("Delay Bullet 1|2", new Stage[]{delayBulletStage}, delayBulletTimeIncrement);
         TimeControlWrapper delayBulletTimeControlWrapper = new TimeControlWrapper(delayBulletTC, delayBulletTC);
 
         // Blitz 5|5
         Stage blitz55 = new Stage(0, 300000);
-        TimeIncrement blitzTimeIncrement = new TimeIncrement(TimeIncrement.Type.FISCHER, 5000);
+        TimeIncrement blitzTimeIncrement = new TimeIncrement(TimeIncrementFischer.INSTANCE, 5000);
         TimeControl blitzTC = new TimeControl("Fischer 5|5", new Stage[]{blitz55}, blitzTimeIncrement);
         TimeControlWrapper blitzTimeControlWrapper = new TimeControlWrapper(blitzTC, blitzTC);
 
         // Fischer rapid 10|5
         Stage fischerRapidStage = new Stage(0, 600000);
-        TimeIncrement fischerRapidTI = new TimeIncrement(TimeIncrement.Type.FISCHER, 5000);
+        TimeIncrement fischerRapidTI = new TimeIncrement(TimeIncrementFischer.INSTANCE, 5000);
         TimeControl fischerRapidTC = new TimeControl("Fischer rapid 10|5", new Stage[]{fischerRapidStage}, fischerRapidTI);
         TimeControlWrapper fischerRapidWrapper = new TimeControlWrapper(fischerRapidTC, fischerRapidTC);
 
@@ -285,7 +289,7 @@ public class TimeControlParser {
         // Tournament
         Stage tournamentStage1 = new Stage(0, 7200000, 40);
         Stage tournamentStage2 = new Stage(1, 3600000);
-        TimeIncrement tournamentTI = new TimeIncrement(TimeIncrement.Type.DELAY, 5000);
+        TimeIncrement tournamentTI = new TimeIncrement(TimeIncrementDelay.INSTANCE, 5000);
         TimeControl tournamentTC = new TimeControl("Tournament 40/2hr, G60, 5s delay", new Stage[]{tournamentStage1, tournamentStage2}, tournamentTI);
         TimeControlWrapper tournamentTCWrapper = new TimeControlWrapper(tournamentTC, tournamentTC);
 
@@ -305,8 +309,8 @@ public class TimeControlParser {
         try {
             // Restore TimeIncrement
             long value = timeIncrementJSONObject.getLong(TC_JSON_VALUE);
-            TimeIncrement.Type type
-                    = TimeIncrement.Type.fromInteger(timeIncrementJSONObject.getInt(TC_JSON_TYPE));
+            TimeIncrementType type
+                    = TimeIncrementTypeKt.fromInteger(timeIncrementJSONObject.getInt(TC_JSON_TYPE));
 
             return new TimeIncrement(type, value);
 

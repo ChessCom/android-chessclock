@@ -4,6 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.chess.clock.engine.time.TimeIncrementType;
+import com.chess.clock.engine.time.TimeIncrementTypeKt;
+
+import org.jetbrains.annotations.NotNull;
+
+import androidx.annotation.VisibleForTesting;
+
 /**
  * A small amount of time that is added for each game addMove.
  */
@@ -19,35 +26,30 @@ public class TimeIncrement implements Parcelable, Cloneable {
         }
     };
     private static final String TAG = TimeIncrement.class.getName();
-    /**
-     * TimeIncrement type used
-     */
-    private Type mType;
+
+    private TimeIncrementType incrementType;
+    private long valueInMilliseconds;
 
     /**
-     * Time Increment amount in milliseconds
+     * @param incrementType Time control type.
+     * @param valueInMilliseconds TimeIncrement value in milliseconds
+     * @see TimeIncrementType
      */
-    private long mValue;
-
-    /**
-     * @param mType Time control TimeIncrement StageType.
-     * @param value TimeIncrement value in milliseconds
-     * @see TimeIncrement.Type
-     */
-    public TimeIncrement(Type mType, long value) {
-        this.mType = mType;
-        this.mValue = validateIncrementValue(value);
+    public TimeIncrement(TimeIncrementType incrementType, long valueInMilliseconds) {
+        this.incrementType = incrementType;
+        this.valueInMilliseconds = validateIncrementValue(valueInMilliseconds);
     }
 
-    private TimeIncrement(Parcel parcel) {
+    @VisibleForTesting
+    public TimeIncrement(Parcel parcel) {
         this.readFromParcel(parcel);
     }
 
     /**
      * @return The increment type.
      */
-    public Type getType() {
-        return mType;
+    public TimeIncrementType getType() {
+        return incrementType;
     }
 
     /**
@@ -55,33 +57,33 @@ public class TimeIncrement implements Parcelable, Cloneable {
      *
      * @param type Type
      */
-    public void setType(Type type) {
-        mType = type;
+    public void setType(TimeIncrementType type) {
+        incrementType = type;
     }
 
     /**
      * @return Increment time value in milliseconds.
      */
     public long getValue() {
-        return mValue;
+        return valueInMilliseconds;
     }
 
     /**
      * Set the increment time value.
      *
-     * @param value increment time in milliseconds.
+     * @param valueInMilliseconds increment time in milliseconds.
      */
-    public void setValue(long value) {
-        mValue = value;
+    public void setValue(long valueInMilliseconds) {
+        this.valueInMilliseconds = valueInMilliseconds;
     }
 
     /**
      * @return Int array with {hour,minute,second}
      */
     public int[] getDuration() {
-        int s = (int) (mValue / 1000) % 60;
-        int m = (int) ((mValue / (1000 * 60)) % 60);
-        int h = (int) ((mValue / (1000 * 60 * 60)) % 24);
+        int s = (int) (valueInMilliseconds / 1000) % 60;
+        int m = (int) ((valueInMilliseconds / (1000 * 60)) % 60);
+        int h = (int) ((valueInMilliseconds / (1000 * 60 * 60)) % 24);
 
         return new int[]{h, m, s};
     }
@@ -94,10 +96,10 @@ public class TimeIncrement implements Parcelable, Cloneable {
      */
     public boolean isEqual(TimeIncrement ti) {
 
-        if (mValue != ti.getValue()) {
+        if (valueInMilliseconds != ti.getValue()) {
             Log.i(TAG, "Value not equal.");
             return false;
-        } else if (mType.getValue() != ti.getType().getValue()) {
+        } else if (incrementType != ti.getType()) {
             Log.i(TAG, "Type not equal.");
             return false;
         } else {
@@ -110,21 +112,23 @@ public class TimeIncrement implements Parcelable, Cloneable {
      *
      * @return String representing info content of TimeIncrement.
      */
+    @NotNull
     public String toString() {
         String durationString = formatTime(getValue());
-        return mType + ", " + durationString;
+        return incrementType + ", " + durationString;
     }
 
     /**
      * @param time Player time in milliseconds.
      * @return Readable String format of time.
      */
-    public String formatTime(long time) {
+    private String formatTime(long time) {
 
         int s = (int) (time / 1000) % 60;
         int m = (int) ((time / (1000 * 60)) % 60);
+        int h = (int) ((time / (1000 * 60 * 60)) % 60);
 
-        return String.format("%02d:%02d", m, s);
+        return String.format("%02d:%02d:%02d", h, m, s);
     }
 
     /**
@@ -140,14 +144,14 @@ public class TimeIncrement implements Parcelable, Cloneable {
     }
 
     private void readFromParcel(Parcel parcel) {
-        mType = Type.fromInteger(parcel.readInt());
-        mValue = parcel.readLong();
+        incrementType = TimeIncrementTypeKt.fromInteger(parcel.readInt());
+        valueInMilliseconds = parcel.readLong();
     }
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeInt(mType.getValue());
-        parcel.writeLong(mValue);
+        parcel.writeInt(TimeIncrementTypeKt.toInteger(incrementType));
+        parcel.writeLong(valueInMilliseconds);
     }
 
     @Override
@@ -156,52 +160,7 @@ public class TimeIncrement implements Parcelable, Cloneable {
     }
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        TimeIncrement cloned = (TimeIncrement) super.clone();
-        cloned.mType = Type.fromInteger(mType.getValue());
-        return cloned;
-    }
-
-    /**
-     * Time Control TimeIncrement StageType.
-     */
-    public enum Type {
-
-        /**
-         * The player's clock starts after the delay period.
-         */
-        DELAY(0),
-
-        /**
-         * Players receive the used portion of the increment at the end of each turn.
-         */
-        BRONSTEIN(1),
-
-        /**
-         * Players receive a full increment at the end of each turn.
-         */
-        FISCHER(2);
-
-        private final int value;
-
-        private Type(int value) {
-            this.value = value;
-        }
-
-        public static Type fromInteger(int type) {
-            switch (type) {
-                case 0:
-                    return DELAY;
-                case 1:
-                    return BRONSTEIN;
-                case 2:
-                    return FISCHER;
-            }
-            return null;
-        }
-
-        public int getValue() {
-            return value;
-        }
+    public TimeIncrement clone() throws CloneNotSupportedException {
+        return (TimeIncrement) super.clone();
     }
 }

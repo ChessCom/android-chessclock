@@ -3,6 +3,10 @@ package com.chess.clock.engine;
 import android.os.Handler;
 import android.util.Log;
 
+import com.chess.clock.engine.time.TimeIncrementBronstein;
+import com.chess.clock.engine.time.TimeIncrementDelay;
+import com.chess.clock.engine.time.TimeIncrementFischer;
+import com.chess.clock.engine.time.TimeIncrementType;
 import com.chess.clock.util.Args;
 
 /**
@@ -211,19 +215,15 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
      * Start the clock.
      */
     public void start() {
-
         if (mTimeControl != null) {
             Log.d(TAG, "#" + this.hashCode() + " started.");
 
             // Only starts the clock if currently stopped (ignores state Finished)
             if (mTimerState == CountDownTimer.TimerState.STOPPED) {
-                switch (mTimeControl.getTimeIncrement().getType()) {
-                    case DELAY:
-                        forceStartDelayed(mTimeControl.getTimeIncrement().getValue());
-                        break;
-                    default:
-                        forceStart();
-                        break;
+                if (mTimeControl.getTimeIncrement().getType() instanceof TimeIncrementDelay) {
+                    forceStartDelayed(mTimeControl.getTimeIncrement().getValue());
+                } else {
+                    forceStart();
                 }
             }
         } else {
@@ -236,23 +236,18 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
      * Stop the clock and registers a move.
      */
     public void stop() {
-
         if (mTimeControl != null) {
             Log.d(TAG, "#" + this.hashCode() + " stopped at " + formatTime(getTime()) + ".");
 
             // Only stops the clock if currently running or paused
             if (mTimerState == TimerState.RUNNING || mTimerState == TimerState.PAUSED) {
-
-                switch (mTimeControl.getTimeIncrement().getType()) {
-                    case FISCHER:
-                        forceStopAndIncrementFull(mTimeControl.getTimeIncrement().getValue());
-                        break;
-                    case BRONSTEIN:
-                        forceStopAndIncrementAtMost(mTimeControl.getTimeIncrement().getValue());
-                        break;
-                    default:
-                        forceStop();
-                        break;
+                TimeIncrementType incrementType = mTimeControl.getTimeIncrement().getType();
+                if (incrementType instanceof TimeIncrementFischer) {
+                    forceStopAndIncrementFull(mTimeControl.getTimeIncrement().getValue());
+                } else if (incrementType instanceof TimeIncrementBronstein) {
+                    forceStopAndIncrementAtMost(mTimeControl.getTimeIncrement().getValue());
+                } else {
+                    forceStop();
                 }
 
                 // Increment total move count
@@ -278,7 +273,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
             // Reset last tick time
             mLastTickTime = 0;
 
-            if (mTimeControl.getTimeIncrement().getType() == TimeIncrement.Type.DELAY) {
+            if (mTimeControl.getTimeIncrement().getType() == TimeIncrementDelay.INSTANCE) {
 
                 // Pausing in the middle of a delay?
                 long elapsedTime = System.currentTimeMillis() - lastStartDelayTime;
