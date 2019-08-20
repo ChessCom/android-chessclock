@@ -90,7 +90,7 @@ class TimeControlTest {
 
     @Test
     fun getStageManager() {
-        assert(testClass.stageManager.stages.contentEquals(stages))
+        assert(testClass.stageManager?.stages?.contentEquals(stages) == true)
     }
 
     @Test

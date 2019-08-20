@@ -166,8 +166,8 @@ class StageManager : Parcelable, Cloneable, Stage.OnStageFinishListener {
      * @param sm StageManager object.
      * @return True if relevant contents are equal.
      */
-    fun isEqual(sm: StageManager): Boolean {
-        if (this.totalStages == sm.totalStages) {
+    fun isEqual(sm: StageManager?): Boolean {
+        if (this.totalStages == sm?.totalStages) {
             for (i in 0 until totalStages) {
                 if (!mStages[i].isEqual(sm.stages[i]))
                     return false
@@ -188,7 +188,7 @@ class StageManager : Parcelable, Cloneable, Stage.OnStageFinishListener {
             mStages[mCurrentStage].addMove()
 
         } catch (e: Stage.GameStageException) {
-            Log.e(TAG, e.message)
+            Log.e(TAG, e.message.orEmpty())
             e.printStackTrace()
         }
 

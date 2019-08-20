@@ -63,9 +63,9 @@ class TimeIncrement : Parcelable, Cloneable {
      * @param ti TimeIncrement Object.
      * @return True if relevant contents are equal.
      */
-    fun isEqual(ti: TimeIncrement): Boolean {
+    fun isEqual(ti: TimeIncrement?): Boolean {
 
-        if (value != ti.value) {
+        if (value != ti?.value) {
             Log.i(TAG, "Value not equal.")
             return false
         } else if (type !== ti.type) {

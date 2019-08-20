@@ -5,8 +5,8 @@ import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
 
 class TimeControlWrapper : Parcelable, Cloneable {
-    var timeControlPlayerOne: TimeControl
-    var timeControlPlayerTwo: TimeControl
+    var timeControlPlayerOne: TimeControl?
+    var timeControlPlayerTwo: TimeControl?
     var isSameAsPlayerOne: Boolean = false
 
     constructor(playerOne: TimeControl, playerTwo: TimeControl) {
@@ -27,8 +27,8 @@ class TimeControlWrapper : Parcelable, Cloneable {
         val clone = super.clone() as TimeControlWrapper
 
         // Clone StageManager object and set this clone as his listener.
-        clone.timeControlPlayerOne = timeControlPlayerOne.clone()
-        clone.timeControlPlayerTwo = timeControlPlayerTwo.clone()
+        clone.timeControlPlayerOne = timeControlPlayerOne?.clone()
+        clone.timeControlPlayerTwo = timeControlPlayerTwo?.clone()
         clone.isSameAsPlayerOne = isSameAsPlayerOne
 
         return clone
@@ -45,8 +45,8 @@ class TimeControlWrapper : Parcelable, Cloneable {
     }
 
     fun isEqual(wrapper: TimeControlWrapper): Boolean {
-        return timeControlPlayerOne.isEqual(wrapper.timeControlPlayerOne) &&
-                timeControlPlayerTwo.isEqual(wrapper.timeControlPlayerTwo) &&
+        return timeControlPlayerOne?.isEqual(wrapper.timeControlPlayerOne) == true &&
+                timeControlPlayerTwo?.isEqual(wrapper.timeControlPlayerTwo) == true &&
                 isSameAsPlayerOne == wrapper.isSameAsPlayerOne
     }
 

@@ -67,7 +67,7 @@ open class TimeControl : Parcelable, Cloneable, StageManagerListener {
      *
      * @return Stage manager associated with this time control.
      */
-    lateinit var stageManager: StageManager
+    var stageManager: StageManager? = null
         private set
 
     /**
@@ -78,7 +78,7 @@ open class TimeControl : Parcelable, Cloneable, StageManagerListener {
      *
      * @return TimeIncrement associated with this TimeControl.
      */
-    lateinit var timeIncrement: TimeIncrement
+    var timeIncrement: TimeIncrement? = null
         private set
 
     /**
@@ -102,7 +102,7 @@ open class TimeControl : Parcelable, Cloneable, StageManagerListener {
         stageManager = StageManager(stages)
 
         // Set up listener for Stage Manager.
-        stageManager.setStageManagerListener(this)
+        stageManager?.setStageManagerListener(this)
     }
 
     private constructor(parcel: Parcel) {
@@ -115,11 +115,11 @@ open class TimeControl : Parcelable, Cloneable, StageManagerListener {
      * @param tc TimeControl Object.
      * @return True if relevant contents are equal.
      */
-    fun isEqual(tc: TimeControl): Boolean {
+    fun isEqual(tc: TimeControl?): Boolean {
 
-        return (name == tc.name
-                && stageManager.isEqual(tc.stageManager)
-                && timeIncrement.isEqual(tc.timeIncrement))
+        return (name == tc?.name
+                && stageManager?.isEqual(tc.stageManager) == true
+                && timeIncrement?.isEqual(tc.timeIncrement) == true)
     }
 
     /**
@@ -135,7 +135,7 @@ open class TimeControl : Parcelable, Cloneable, StageManagerListener {
     private fun readFromParcel(parcel: Parcel) {
         name = parcel.readString() ?: ""
         stageManager = parcel.readParcelable(StageManager::class.java.classLoader)
-        stageManager.setStageManagerListener(this)
+        stageManager?.setStageManagerListener(this)
         timeIncrement = parcel.readParcelable(TimeIncrement::class.java.classLoader)
     }
 
@@ -162,11 +162,11 @@ open class TimeControl : Parcelable, Cloneable, StageManagerListener {
         val clone = super.clone() as TimeControl
 
         // Clone StageManager object and set this clone as his listener.
-        clone.stageManager = stageManager.clone() as StageManager
-        clone.stageManager.setStageManagerListener(clone)
+        clone.stageManager = stageManager?.clone() as StageManager
+        clone.stageManager?.setStageManagerListener(clone)
 
         // Clone TimeIncrement object
-        clone.timeIncrement = timeIncrement.clone()
+        clone.timeIncrement = timeIncrement?.clone()
 
         clone.mTimeControlListener = null
         return clone
