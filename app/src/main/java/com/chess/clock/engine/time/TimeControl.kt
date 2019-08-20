@@ -44,8 +44,6 @@ import com.chess.clock.util.Args
  */
 open class TimeControl : Parcelable, Cloneable, StageManagerListener {
 
-    private val TAG = TimeControl::class.java.name
-
     /**
      * TimeControl identifier.
      */
@@ -98,8 +96,8 @@ open class TimeControl : Parcelable, Cloneable, StageManagerListener {
      * @param time   TimeIncrement object associated with the TimeControl.
      * @throws java.lang.NullPointerException if StageManager or TimeIncrement are not provided.
      */
-    constructor(name: String, stages: Array<Stage>, time: TimeIncrement) {
-        this.name = name
+    constructor(name: String?, stages: Array<Stage>, time: TimeIncrement) {
+        this.name = name.orEmpty()
         timeIncrement = time
         stageManager = StageManager(stages)
 

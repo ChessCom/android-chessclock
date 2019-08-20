@@ -37,6 +37,12 @@ class TimeControlTest {
     }
 
     @Test
+    fun canConstructWithNullName() {
+        val a = TimeControl(null, stages, timeIncrement)
+        assert(a.name == "")
+    }
+
+    @Test
     fun isEqualTrueIfObjectsAreSame() {
         val a = TimeControl(name, stages, timeIncrement)
         val b = TimeControl(name, stages, timeIncrement)
