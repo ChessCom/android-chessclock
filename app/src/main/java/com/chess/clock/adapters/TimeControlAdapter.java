@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.chess.clock.R;
-import com.chess.clock.engine.TimeControlWrapper;
+import com.chess.clock.engine.time.TimeControlWrapper;
 import com.chess.clock.views.TimeControlCheckedTextView;
 
 import java.util.ArrayList;

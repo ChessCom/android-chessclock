@@ -1,10 +1,8 @@
-package com.chess.clock.engine
+package com.chess.clock.engine.time
 
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.VisibleForTesting
-
-import com.chess.clock.engine.time.TimeControl
 
 class TimeControlWrapper : Parcelable, Cloneable {
     var timeControlPlayerOne: TimeControl

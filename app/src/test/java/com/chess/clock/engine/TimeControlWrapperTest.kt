@@ -2,6 +2,7 @@ package com.chess.clock.engine
 
 import android.os.Parcel
 import com.chess.clock.engine.time.TimeControl
+import com.chess.clock.engine.time.TimeControlWrapper
 import com.chess.clock.engine.time.TimeIncrement
 import com.chess.clock.engine.time.TimeIncrementDelay
 import org.junit.Before

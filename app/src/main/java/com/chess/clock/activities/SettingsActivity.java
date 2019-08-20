@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.chess.clock.R;
 import com.chess.clock.engine.time.TimeControl;
 import com.chess.clock.engine.TimeControlManager;
-import com.chess.clock.engine.TimeControlWrapper;
+import com.chess.clock.engine.time.TimeControlWrapper;
 import com.chess.clock.fragments.SettingsFragment;
 import com.chess.clock.fragments.TimeControlFragment;
 import com.chess.clock.service.ChessClockLocalService;

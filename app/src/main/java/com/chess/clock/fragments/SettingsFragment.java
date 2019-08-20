@@ -23,7 +23,7 @@ import com.chess.clock.activities.SettingsActivity;
 import com.chess.clock.adapters.TimeControlAdapter;
 import com.chess.clock.adapters.TimeControlCABAdapter;
 import com.chess.clock.engine.time.TimeControl;
-import com.chess.clock.engine.TimeControlWrapper;
+import com.chess.clock.engine.time.TimeControlWrapper;
 import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.statics.AppData;
 import com.chess.clock.util.MultiSelectionUtil;
