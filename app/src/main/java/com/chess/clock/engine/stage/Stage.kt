@@ -267,7 +267,7 @@ open class Stage : Parcelable, Cloneable {
         Log.d(TAG, "Stage $mId finished. Reached $stageMoveCount move count.")
 
         // Notify stage finished
-            mOnStageEndListener!!.onStageFinished(mId)
+        mOnStageEndListener?.onStageFinished(mId)
 
         mStageState = StageEnded
     }

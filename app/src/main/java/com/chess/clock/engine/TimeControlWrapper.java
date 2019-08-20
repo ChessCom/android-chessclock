@@ -3,6 +3,8 @@ package com.chess.clock.engine;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.chess.clock.engine.time.TimeControl;
+
 public class TimeControlWrapper implements Parcelable, Cloneable{
   private TimeControl mTimeControlPlayerOne;
   private TimeControl mTimeControlPlayerTwo;

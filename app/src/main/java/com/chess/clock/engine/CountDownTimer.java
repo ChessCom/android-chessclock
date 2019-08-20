@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.chess.clock.engine.stage.Stage;
+import com.chess.clock.engine.time.TimeControl;
+import com.chess.clock.engine.time.TimeControlListener;
 import com.chess.clock.engine.time.TimeIncrementBronstein;
 import com.chess.clock.engine.time.TimeIncrementDelay;
 import com.chess.clock.engine.time.TimeIncrementFischer;
@@ -14,7 +16,7 @@ import com.chess.clock.util.Args;
  * Chess count down timer with time increment support. Provides support for multi-stage time
  * controls and their stage state updates. Uses Thread Handler as a stopwatch facility.
  */
-public class CountDownTimer implements TimeControl.TimeControlListener {
+public class CountDownTimer implements TimeControlListener {
 
     private static final String TAG = CountDownTimer.class.getName();
     /**

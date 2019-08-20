@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 
 import com.chess.clock.R;
-import com.chess.clock.engine.TimeControl;
+import com.chess.clock.engine.time.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
 import com.chess.clock.fragments.SettingsFragment;
 

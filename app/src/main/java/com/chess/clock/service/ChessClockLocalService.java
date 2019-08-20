@@ -17,7 +17,7 @@ import android.util.Log;
 import com.chess.clock.R;
 import com.chess.clock.activities.ClockTimersActivity;
 import com.chess.clock.engine.CountDownTimer;
-import com.chess.clock.engine.TimeControl;
+import com.chess.clock.engine.time.TimeControl;
 import com.chess.clock.util.Args;
 
 // Get access to the app resources, since this class is in a sub-package.
@@ -257,7 +257,7 @@ public class ChessClockLocalService extends Service {
      * @param playerTwoTimeControl Time Control of player Two.
      * @throws java.lang.NullPointerException If playerOneTimeControl is not provided.
      * @throws java.lang.NullPointerException If playerTwoTimeControl is not provided.
-     * @see #getChessClockServiceIntent(Context, com.chess.clock.engine.TimeControl, com.chess.clock.engine.TimeControl)
+     * @see #getChessClockServiceIntent(Context, TimeControl, TimeControl)
      */
     private void setupTimeControl(TimeControl playerOneTimeControl, TimeControl playerTwoTimeControl) {
         Args.checkForNull(playerOneTimeControl);
