@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.chess.clock.engine.stage.Stage;
+import com.chess.clock.engine.stage.StageManager;
+import com.chess.clock.engine.stage.StageManagerListener;
 import com.chess.clock.engine.time.TimeIncrement;
 import com.chess.clock.util.Args;
 
@@ -34,7 +36,7 @@ import com.chess.clock.util.Args;
  * after your opponent moves during which your clock will not run.
  * </p>
  */
-public class TimeControl implements Parcelable, Cloneable, StageManager.StageManagerListener {
+public class TimeControl implements Parcelable, Cloneable, StageManagerListener {
 
     public static final Parcelable.Creator<TimeControl> CREATOR = new Parcelable.Creator<TimeControl>() {
         public TimeControl createFromParcel(Parcel source) {

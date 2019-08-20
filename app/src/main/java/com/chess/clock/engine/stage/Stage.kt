@@ -10,7 +10,7 @@ import androidx.annotation.VisibleForTesting
  * limit. Stages that are part of a multi-stage Time Control also have move count limit excluding
  * the last stage.
  */
-class Stage : Parcelable, Cloneable {
+open class Stage : Parcelable, Cloneable {
 
     /**
      * Game Stage Type
@@ -267,9 +267,7 @@ class Stage : Parcelable, Cloneable {
         Log.d(TAG, "Stage $mId finished. Reached $stageMoveCount move count.")
 
         // Notify stage finished
-        if (mOnStageEndListener != null) {
             mOnStageEndListener!!.onStageFinished(mId)
-        }
 
         mStageState = StageEnded
     }

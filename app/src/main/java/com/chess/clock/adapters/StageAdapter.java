@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.stage.Stage;
-import com.chess.clock.engine.StageManager;
+import com.chess.clock.engine.stage.StageManager;
 import com.chess.clock.fragments.TimeControlFragment;
 
 
