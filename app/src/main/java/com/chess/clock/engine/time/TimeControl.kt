@@ -42,7 +42,7 @@ import com.chess.clock.util.Args
  * after your opponent moves during which your clock will not run.
  *
  */
-class TimeControl : Parcelable, Cloneable, StageManagerListener {
+open class TimeControl : Parcelable, Cloneable, StageManagerListener {
 
     private val TAG = TimeControl::class.java.name
 
