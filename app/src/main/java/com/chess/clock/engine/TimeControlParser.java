@@ -39,8 +39,7 @@ public class TimeControlParser {
 
     private static SharedPreferences getSharedPreferences(Context context) {
         // Preferences stored on /data/data/PACKAGE_NAME/shared_prefs/timeControls.xml
-        SharedPreferences sp = context.getSharedPreferences(TIME_CONTROLS_PREF_NAME, Context.MODE_PRIVATE);
-        return sp;
+        return context.getSharedPreferences(TIME_CONTROLS_PREF_NAME, Context.MODE_PRIVATE);
     }
 
     /**
@@ -189,6 +188,7 @@ public class TimeControlParser {
             Log.w(TAG, "Not able to read the preference");
             return null;
         }
+        jsonString = checkJsonStringAndMigrateIfNeeded(sp, jsonString);
 
         ArrayList<TimeControlWrapper> timeControls = new ArrayList<>();
         try {
@@ -214,7 +214,7 @@ public class TimeControlParser {
                 TimeIncrement timeIncrementplayerTwo = timeIncrementPlayerTwoJSONOBject == null ? timeIncrement : getTimeIncrement(timeIncrementPlayerTwoJSONOBject);
 
                 boolean isSameAsPlayerOne = !timeControlJSON.has(TC_JSON_SAME_AS_PLAYER_ONE) ||
-                    timeControlJSON.getBoolean(TC_JSON_SAME_AS_PLAYER_ONE);
+                        timeControlJSON.getBoolean(TC_JSON_SAME_AS_PLAYER_ONE);
 
                 TimeControl timeControl = new TimeControl(name, stages, timeIncrement);
                 TimeControl timeControlPlayerTwo = new TimeControl(name, stagesPlayerTwo, timeIncrementplayerTwo);
@@ -231,6 +231,20 @@ public class TimeControlParser {
 
         Log.i(TAG, "Retrieving " + timeControls.size() + " time controls.");
         return timeControls;
+    }
+
+    /**
+     * migrate json data format to new if needed
+     */
+    private static String checkJsonStringAndMigrateIfNeeded(SharedPreferences sp, String jsonString) {
+        boolean userHasOldVersion = jsonString.contains("timecontrols");
+        if (userHasOldVersion) {
+            String newJsonString = jsonString.replace("timecontrols", TC_JSON_TIME_CONTROLS)
+                    .replace("timeincrement", TC_JSON_TIME_INCREMENT);
+            sp.edit().putString(TIME_CONTROLS_PREF_FIELD_NAME, newJsonString).apply();
+            jsonString = newJsonString;
+        }
+        return jsonString;
     }
 
     /**
