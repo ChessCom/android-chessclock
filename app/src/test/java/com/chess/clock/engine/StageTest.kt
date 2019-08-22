@@ -9,6 +9,7 @@ import com.chess.clock.engine.stage.StageTypeGame
 import com.chess.clock.engine.stage.StageTypeMoves
 import com.chess.clock.engine.stage.toInteger
 import org.junit.Test
+import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 import org.mockito.Mockito.times
 
@@ -198,10 +199,16 @@ class StageTest {
     }
 
     @Test
-    fun writeToParcelDoesntThrowException() {
+    fun writeToParcelWritesCorrectData() {
         val parcel = Mockito.mock(Parcel::class.java)
+        val argumentCaptor = ArgumentCaptor.forClass(Int::class.java)
         val a = Stage(1, 500, 40)
         a.writeToParcel(parcel, 0)
+        Mockito.verify(parcel, times(5))
+                .writeInt(argumentCaptor.capture())
+        assert(argumentCaptor.allValues[0] == 1)
+        assert(argumentCaptor.allValues[1] == 40)
+        Mockito.verify(parcel).writeLong(500)
     }
 
     @Test

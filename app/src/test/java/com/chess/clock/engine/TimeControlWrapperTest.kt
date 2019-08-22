@@ -7,7 +7,10 @@ import com.chess.clock.engine.time.TimeIncrement
 import com.chess.clock.engine.time.TimeIncrementDelay
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
+import org.mockito.Mockito.times
+
 
 class TimeControlWrapperTest {
 
@@ -68,9 +71,15 @@ class TimeControlWrapperTest {
     }
 
     @Test
-    fun writeToParcelDoesNotThrowException() {
+    fun writeToParcelWritesCorrectData() {
         val parcel = Mockito.mock(Parcel::class.java)
+        val argumentCaptor = ArgumentCaptor.forClass(TimeControl::class.java)
         testClass.writeToParcel(parcel, 0)
+        Mockito.verify(parcel, times(2))
+                .writeParcelable(argumentCaptor.capture(), Mockito.eq(0))
+        assert(argumentCaptor.allValues[0] == playerOne)
+        assert(argumentCaptor.allValues[1] == playerTwo)
+        Mockito.verify(parcel).writeByte(1)
     }
 
     @Test

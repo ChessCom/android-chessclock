@@ -101,10 +101,13 @@ internal class TimeIncrementTest {
     }
 
     @Test
-    fun writeToParcelDoesntThrowException() {
+    fun writeToParcelWritesCorrectData() {
         val parcel = Mockito.mock(Parcel::class.java)
         val a = TimeIncrement(TimeIncrementBronstein, 50)
         a.writeToParcel(parcel, 0)
+
+        Mockito.verify(parcel).writeInt(TimeIncrementBronstein.toInteger())
+        Mockito.verify(parcel).writeLong(50L)
     }
 
     @Test

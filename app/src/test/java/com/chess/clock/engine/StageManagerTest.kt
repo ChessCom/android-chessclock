@@ -11,6 +11,7 @@ import com.chess.clock.engine.time.TimeIncrementBronstein
 import com.chess.clock.engine.time.TimeIncrementDelay
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 import org.mockito.Mockito.times
 
@@ -187,9 +188,14 @@ class StageManagerTest {
     }
 
     @Test
-    fun writeToParcelDoesntThrowException() {
+    fun writeToParcelWritesCorrectData() {
         val parcel = Mockito.mock(Parcel::class.java)
+        val argumentCaptor = ArgumentCaptor.forClass(Int::class.java)
         testClass.writeToParcel(parcel, 0)
+        Mockito.verify(parcel, times(2))
+                .writeInt(argumentCaptor.capture())
+        assert(argumentCaptor.allValues[1] == testClass.totalMoveCount)
+        Mockito.verify(parcel).writeTypedList(Mockito.anyList())
     }
 
     @Test

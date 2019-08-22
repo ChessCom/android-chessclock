@@ -1,6 +1,7 @@
 package com.chess.clock.engine
 
 import android.os.Parcel
+import android.os.Parcelable
 import com.chess.clock.engine.stage.Stage
 import com.chess.clock.engine.stage.StageManagerListener
 import com.chess.clock.engine.stage.StageTypeGame
@@ -11,6 +12,7 @@ import com.chess.clock.engine.time.TimeIncrementDelay
 import com.chess.clock.engine.time.TimeIncrementFischer
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 import org.mockito.Mockito.times
 
@@ -94,9 +96,15 @@ class TimeControlTest {
     }
 
     @Test
-    fun writeToParcelDoesNotThrowException() {
+    fun writeToParcelWritesCorrectData() {
         val parcel = Mockito.mock(Parcel::class.java)
+        val argumentCaptor = ArgumentCaptor.forClass(Parcelable::class.java)
         testClass.writeToParcel(parcel, 0)
+        Mockito.verify(parcel, times(2))
+                .writeParcelable(argumentCaptor.capture(), Mockito.eq(0))
+        assert(argumentCaptor.allValues[0] == testClass.stageManager)
+        assert(argumentCaptor.allValues[1] == timeIncrement)
+        Mockito.verify(parcel).writeString(name)
     }
 
     @Test
