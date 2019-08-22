@@ -151,7 +151,7 @@ public class ChessClockLocalService extends Service {
      * @param intent  The Intent supplied to startService(Intent), as given.
      * @param flags   Additional data about this start request.
      * @param startId A unique integer representing this specific request to start.
-     * @return The return value indicates what semantics the system should use for the service's current started state.
+     * @return The return valueInMilliseconds indicates what semantics the system should use for the service's current started state.
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

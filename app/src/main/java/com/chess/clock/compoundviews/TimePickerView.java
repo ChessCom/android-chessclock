@@ -322,7 +322,7 @@ public class TimePickerView extends FrameLayout {
     }
 
     /**
-     * Set the reference of seconds picker, its digit format and register value change listener.
+     * Set the reference of seconds picker, its digit format and register valueInMilliseconds change listener.
      *
      * @param pickerVisible if false, removes the spinner widget.
      */
@@ -350,7 +350,7 @@ public class TimePickerView extends FrameLayout {
     }
 
     /**
-     * Set the reference of minute picker, its digit format and register value change listener.
+     * Set the reference of minute picker, its digit format and register valueInMilliseconds change listener.
      *
      * @param pickerVisible if false, removes the spinner widget.
      */
@@ -379,7 +379,7 @@ public class TimePickerView extends FrameLayout {
     }
 
     /**
-     * Set the reference of hour picker, its digit format and register value change listener.
+     * Set the reference of hour picker, its digit format and register valueInMilliseconds change listener.
      *
      * @param pickerVisible if false, removes the spinner widget.
      */

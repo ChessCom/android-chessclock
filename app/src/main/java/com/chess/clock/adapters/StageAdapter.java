@@ -51,7 +51,7 @@ public class StageAdapter extends ArrayAdapter<Stage> {
 
     @Override
     public int getCount() {
-        return mStageManager.getTotalStages();
+        return mStageManager.getAmountOfStages();
     }
 
     @Override

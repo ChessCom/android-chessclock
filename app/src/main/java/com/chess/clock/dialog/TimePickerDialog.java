@@ -11,7 +11,7 @@ import android.view.Window;
 import com.chess.clock.compoundviews.TimePickerView;
 
 /**
- * A dialog that prompts the user for the time value.
+ * A dialog that prompts the user for the time valueInMilliseconds.
  */
 public class TimePickerDialog extends AlertDialog implements OnClickListener {
 

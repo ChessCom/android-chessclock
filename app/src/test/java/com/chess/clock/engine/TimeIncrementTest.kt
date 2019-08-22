@@ -39,15 +39,15 @@ internal class TimeIncrementTest {
     @Test
     fun getValueReturnsCorrectValue() {
         val a = TimeIncrement(TimeIncrementDelay, 50)
-        assert(a.value == 50L)
+        assert(a.valueInMilliseconds == 50L)
     }
 
     @Test
     fun setValueSetsValue() {
         val a = TimeIncrement(TimeIncrementDelay, 50)
-        a.value = 10L
-        assert(a.value != 50L)
-        assert(a.value == 10L)
+        a.valueInMilliseconds = 10L
+        assert(a.valueInMilliseconds != 50L)
+        assert(a.valueInMilliseconds == 10L)
     }
 
     @Test
@@ -113,7 +113,7 @@ internal class TimeIncrementTest {
         val b = a.clone()
 
         assert(a.type == b.type)
-        assert(a.value == b.value)
+        assert(a.valueInMilliseconds == b.valueInMilliseconds)
 
         a.type = TimeIncrementDelay
         assert(a.type != b.type)
@@ -130,6 +130,6 @@ internal class TimeIncrementTest {
 
         val a = TimeIncrement(parcel)
         assert(a.type == expectedType)
-        assert(a.value == expectedValue)
+        assert(a.valueInMilliseconds == expectedValue)
     }
 }

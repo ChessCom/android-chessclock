@@ -118,11 +118,11 @@ public class TimeControlParser {
 
                 // Save TimeIncrement
                 JSONObject timeIncrementJSONOBject = new JSONObject();
-                timeIncrementJSONOBject.put(TC_JSON_VALUE, tc.getTimeControlPlayerOne().getTimeIncrement().getValue());
+                timeIncrementJSONOBject.put(TC_JSON_VALUE, tc.getTimeControlPlayerOne().getTimeIncrement().getValueInMilliseconds());
                 timeIncrementJSONOBject.put(TC_JSON_TYPE, TimeIncrementTypeKt.toInteger(tc.getTimeControlPlayerOne().getTimeIncrement().getType()));
 
                 JSONObject timeIncrementPlayerTwoJSONOBject = new JSONObject();
-                timeIncrementPlayerTwoJSONOBject.put(TC_JSON_VALUE, tc.getTimeControlPlayerTwo().getTimeIncrement().getValue());
+                timeIncrementPlayerTwoJSONOBject.put(TC_JSON_VALUE, tc.getTimeControlPlayerTwo().getTimeIncrement().getValueInMilliseconds());
                 timeIncrementPlayerTwoJSONOBject.put(TC_JSON_TYPE, TimeIncrementTypeKt.toInteger(tc.getTimeControlPlayerTwo().getTimeIncrement().getType()));
 
                 // Add name, stages and time increment to TimeControl json object.

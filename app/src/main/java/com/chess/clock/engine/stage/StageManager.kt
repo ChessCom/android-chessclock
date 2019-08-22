@@ -6,60 +6,25 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import java.util.ArrayList
 
-/**
- * Stage Manager of a Chess game.
- */
 class StageManager : Parcelable, Cloneable, OnStageFinishListener {
-    /**
-     * Listener used to dispatch stage updates.
-     */
-    private var mStageManagerListener: StageManagerListener? = null
-    /**
-     * The stages of the game.
-     */
+
     private var mStages: MutableList<Stage> = mutableListOf()
-    /**
-     * Current stage number of the game.
-     */
     private var mCurrentStage: Int = 0
-    /**
-     * Total number of moves played in the game.
-     */
-    /**
-     * @return The current move count of the game.
-     */
+
+    var stageManagerListener: StageManagerListener? = null
     var totalMoveCount: Int = 0
         private set
-
-    /**
-     * @return The total number of stages in the game.
-     */
-    val totalStages: Int
+    val amountOfStages
         get() = mStages.size
-
-    /**
-     * @return The current stage being played.
-     */
-    val currentStage: Stage
-        get() = mStages[mCurrentStage]
-
-    /**
-     * @return All stages
-     */
-    val stages: Array<Stage>
+    val stages
         get() = mStages.toTypedArray()
 
-    /**
-     * @param stages The game stages.
-     */
+
     constructor(stages: Array<Stage>) {
-        // Set this as listener of all stages.
         for (stage in stages) {
             mStages.add(stage)
             stage.onStageFinishListener = this
         }
-
-        // Reset all stages, and set up listener for each one.
         reset()
     }
 
@@ -70,25 +35,11 @@ class StageManager : Parcelable, Cloneable, OnStageFinishListener {
         for (stage in mStages) {
             stage.onStageFinishListener = this
         }
-
-        // Reset all stages, and set up listener for each one.
         reset()
     }
 
-    /**
-     * Register a callback to be invoked when a stage has finished.
-     *
-     * @param listener The callback that will run
-     */
-    fun setStageManagerListener(listener: StageManagerListener) {
-        mStageManagerListener = listener
-    }
-
-    /**
-     * Add new Stage object
-     */
     fun addNewStage() {
-        when (totalStages) {
+        when (amountOfStages) {
             0 -> addFirstStage()
             1 -> addSecondStage()
             2 -> addThirdStage()
@@ -103,7 +54,7 @@ class StageManager : Parcelable, Cloneable, OnStageFinishListener {
     }
 
     private fun addSecondStage() {
-        // Set first stage as type MOVES, with 1 move
+        // Set first stage to StageTypeMoves
         mStages[0].setStageType(StageTypeMoves)
         mStages[0].totalMoveCount = 20
 
@@ -113,7 +64,7 @@ class StageManager : Parcelable, Cloneable, OnStageFinishListener {
     }
 
     private fun addThirdStage() {
-        // Set second stage as Type MOVES, with 1 move each.
+        // Set second stage as StageTypeMoves
         mStages[1].setStageType(StageTypeMoves)
         mStages[1].totalMoveCount = 20
 
@@ -122,21 +73,13 @@ class StageManager : Parcelable, Cloneable, OnStageFinishListener {
         mStages.add(newStage)
     }
 
-
-    /**
-     * Remove the stage from the list, update others stages type accordingly.
-     *
-     * @param removeStageIdx Stage index to be deleted.
-     */
     fun removeStage(removeStageIdx: Int) {
-
-        if (removeStageIdx !in 0 until totalStages) return
+        if (removeStageIdx !in 0 until amountOfStages) return
 
         val changingStage: Stage
 
         // Removing the last stage in a multi-stage setup
-        if (removeStageIdx > 0 && removeStageIdx == totalStages - 1) {
-
+        if (removeStageIdx > 0 && removeStageIdx == amountOfStages - 1) {
             // The previous stage will become the new last stage.
             // Therefore it is set to StageTypeGame
             changingStage = mStages[removeStageIdx - 1]
@@ -150,25 +93,47 @@ class StageManager : Parcelable, Cloneable, OnStageFinishListener {
         }
     }
 
-    /**
-     * @param stageNumber A stage number of the game.
-     * @return Time durationInMilliseconds of the requested stage number or zero if stage number is invalid.
-     */
-    fun getStageDuration(stageNumber: Int): Long {
-        return if (stageNumber in 0 until totalStages) {
-            mStages[stageNumber].durationInMilliseconds
-        } else 0
+    fun getCurrentStage(): Stage? {
+        if (mCurrentStage in 0 until amountOfStages) {
+            return mStages[mCurrentStage]
+        }
+        return null
     }
 
-    /**
-     * Check if StageManager object is equal to this one.
-     *
-     * @param sm StageManager object.
-     * @return True if relevant contents are equal.
-     */
+    fun addMove() {
+        try {
+            mStages[mCurrentStage].addMove()
+        } catch (e: GameStageException) {
+            e.printStackTrace()
+        }
+
+        totalMoveCount += 1
+        stageManagerListener?.onTotalMoveCountChange(totalMoveCount)
+    }
+
+    fun reset() {
+        mCurrentStage = 0
+        for (stage in mStages) {
+            stage.reset()
+        }
+
+        totalMoveCount = 0
+        stageManagerListener?.onTotalMoveCountChange(totalMoveCount)
+    }
+
+    override fun onStageFinished(stageFinishedNumber: Int) {
+        if (mCurrentStage != stageFinishedNumber) {
+            throw IllegalStateException("Stage finished is not the current stage.")
+        }
+        mCurrentStage++
+        if (mCurrentStage < amountOfStages) {
+            stageManagerListener?.onNewStageStarted(mStages[mCurrentStage])
+        }
+    }
+
     fun isEqual(sm: StageManager?): Boolean {
-        if (this.totalStages == sm?.totalStages) {
-            for (i in 0 until totalStages) {
+        if (this.amountOfStages == sm?.amountOfStages) {
+            for (i in 0 until amountOfStages) {
                 if (!mStages[i].isEqual(sm.stages[i]))
                     return false
             }
@@ -176,42 +141,6 @@ class StageManager : Parcelable, Cloneable, OnStageFinishListener {
         } else {
             return false
         }
-    }
-
-    /**
-     * Performs a chess move in the current stage.
-     */
-    fun addMove() {
-
-        try {
-            // Add move to the current stage.
-            mStages[mCurrentStage].addMove()
-
-        } catch (e: GameStageException) {
-            Log.e(TAG, e.message.orEmpty())
-            e.printStackTrace()
-        }
-
-        // Update total move count.
-        totalMoveCount += 1
-
-        // Notify move count has been updated.
-        mStageManagerListener?.onMoveCountUpdate(totalMoveCount)
-    }
-
-    /**
-     * Reset current stages and total move count.
-     */
-    fun reset() {
-        mCurrentStage = 0
-
-        // Reset all stages.
-        for (stage in mStages) {
-            stage.reset()
-        }
-
-        totalMoveCount = 0
-        mStageManagerListener?.onMoveCountUpdate(totalMoveCount)
     }
 
     private fun readFromParcel(parcel: Parcel) {
@@ -232,28 +161,6 @@ class StageManager : Parcelable, Cloneable, OnStageFinishListener {
         return 0
     }
 
-    /**
-     * Stage finish callback.
-     *
-     * @param stageFinishedNumber The identifier of the stage finished.
-     * @throws java.lang.IllegalStateException if stage finished is not the current stage.
-     */
-    override fun onStageFinished(stageFinishedNumber: Int) {
-
-        if (mCurrentStage != stageFinishedNumber) {
-            throw IllegalStateException("Stage finished is not the current stage.")
-        }
-
-        mCurrentStage++
-
-        // Check if there is more stages
-        if (mCurrentStage < totalStages) {
-
-            // Notify listener with new stage entering.
-            mStageManagerListener?.onNewStageUpdate(mStages[mCurrentStage])
-        }
-    }
-
     @Throws(CloneNotSupportedException::class)
     public override fun clone(): Any {
         val clone = super.clone() as StageManager
@@ -266,7 +173,7 @@ class StageManager : Parcelable, Cloneable, OnStageFinishListener {
             newList.add(clonedStage)
         }
         clone.mStages = newList
-        clone.mStageManagerListener = null
+        clone.stageManagerListener = null
 
         return clone
     }

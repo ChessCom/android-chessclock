@@ -25,9 +25,6 @@ class StageManagerTest {
     @Before
     fun setup() {
         testClass = StageManager(stages)
-        stage1.reset()
-        stage2.reset()
-        stage3.reset()
     }
 
     @Test
@@ -37,14 +34,14 @@ class StageManagerTest {
 
     @Test
     fun getTotalStages() {
-        assert(testClass.totalStages == 3)
+        assert(testClass.amountOfStages == 3)
     }
 
     @Test
     fun getCurrentStageDefaultsToFirstStage() {
-        assert(testClass.currentStage == stage1)
-        assert(testClass.currentStage != stage2)
-        assert(testClass.currentStage != stage3)
+        assert(testClass.getCurrentStage() == stage1)
+        assert(testClass.getCurrentStage() != stage2)
+        assert(testClass.getCurrentStage() != stage3)
     }
 
     @Test
@@ -54,16 +51,16 @@ class StageManagerTest {
 
     @Test
     fun addNewStageDoesntWorkIfAlready3Stages() {
-        assert(testClass.totalStages == 3)
+        assert(testClass.amountOfStages == 3)
         testClass.addNewStage()
-        assert(testClass.totalStages == 3)
+        assert(testClass.amountOfStages == 3)
     }
 
     @Test
     fun addingNewStageToManagerWithNoStagesAddaAStage() {
         val stageManager = StageManager(emptyArray())
         stageManager.addNewStage()
-        assert(stageManager.totalStages == 1)
+        assert(stageManager.amountOfStages == 1)
     }
 
     @Test
@@ -72,7 +69,7 @@ class StageManagerTest {
         stageManager.addNewStage()
         stageManager.addNewStage()
 
-        assert(stageManager.totalStages == 3)
+        assert(stageManager.amountOfStages == 3)
         assert(stageManager.stages[0].stageType == StageTypeMoves)
         assert(stageManager.stages[1].stageType == StageTypeMoves)
         assert(stageManager.stages[2].stageType == StageTypeGame)
@@ -83,7 +80,7 @@ class StageManagerTest {
         testClass.removeStage(-1)
         testClass.removeStage(3)
         testClass.removeStage(4)
-        assert(testClass.totalStages == 3)
+        assert(testClass.amountOfStages == 3)
     }
 
     @Test
@@ -152,18 +149,6 @@ class StageManagerTest {
     }
 
     @Test
-    fun getStageDurationHappyPath() {
-        val expectedDuration = 500L
-        stage1.durationInMilliseconds = expectedDuration
-        assert(testClass.getStageDuration(0) == expectedDuration)
-    }
-
-    @Test
-    fun getStageDurationForInvalidIdReturns0() {
-        assert(testClass.getStageDuration(5) == 0L)
-    }
-
-    @Test
     fun addMoveIncreasesTotalMoveCount() {
         val a = StageManager(emptyArray())
         a.addNewStage()
@@ -177,9 +162,9 @@ class StageManagerTest {
         val listener = Mockito.mock(StageManagerListener::class.java)
         val a = StageManager(emptyArray())
         a.addNewStage()
-        a.setStageManagerListener(listener)
+        a.stageManagerListener = listener
         a.addMove()
-        Mockito.verify(listener, times(1)).onMoveCountUpdate(1)
+        Mockito.verify(listener, times(1)).onTotalMoveCountChange(1)
     }
 
     @Test
@@ -196,9 +181,9 @@ class StageManagerTest {
         val listener = Mockito.mock(StageManagerListener::class.java)
         val a = StageManager(emptyArray())
         a.addNewStage()
-        a.setStageManagerListener(listener)
+        a.stageManagerListener = listener
         a.reset()
-        Mockito.verify(listener, times(1)).onMoveCountUpdate(0)
+        Mockito.verify(listener, times(1)).onTotalMoveCountChange(0)
     }
 
     @Test
@@ -213,7 +198,7 @@ class StageManagerTest {
         val b = a.clone()
 
         assert(a.type == b.type)
-        assert(a.value == b.value)
+        assert(a.valueInMilliseconds == b.valueInMilliseconds)
 
         a.type = TimeIncrementDelay
         assert(a.type != b.type)
@@ -227,8 +212,18 @@ class StageManagerTest {
     @Test
     fun onStageFinishedCallsListener() {
         val listener = Mockito.mock(StageManagerListener::class.java)
-        testClass.setStageManagerListener(listener)
+        testClass.stageManagerListener = listener
         testClass.onStageFinished(0)
-        Mockito.verify(listener, times(1)).onNewStageUpdate(stage2)
+        Mockito.verify(listener, times(1)).onNewStageStarted(stage2)
+    }
+
+    @Test
+    fun onStageFinishedUpdatesCurrentStage() {
+        val listener = Mockito.mock(StageManagerListener::class.java)
+        testClass.stageManagerListener = listener
+        testClass.onStageFinished(0)
+        assert(testClass.getCurrentStage() != stage1)
+        assert(testClass.getCurrentStage() == stage2)
+        assert(testClass.getCurrentStage() != stage3)
     }
 }

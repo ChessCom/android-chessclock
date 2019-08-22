@@ -2,10 +2,10 @@ package com.chess.clock.engine
 
 import android.os.Parcel
 import com.chess.clock.engine.stage.Stage
+import com.chess.clock.engine.stage.StageManagerListener
 import com.chess.clock.engine.stage.StageTypeGame
 import com.chess.clock.engine.stage.StageTypeMoves
 import com.chess.clock.engine.time.TimeControl
-import com.chess.clock.engine.time.TimeControlListener
 import com.chess.clock.engine.time.TimeIncrement
 import com.chess.clock.engine.time.TimeIncrementDelay
 import com.chess.clock.engine.time.TimeIncrementFischer
@@ -101,17 +101,17 @@ class TimeControlTest {
 
     @Test
     fun onNewStageUpdateCallsListener() {
-        val listener = Mockito.mock(TimeControlListener::class.java)
-        testClass.setTimeControlListener(listener)
-        testClass.onNewStageUpdate(stage2)
-        Mockito.verify(listener, times(1)).onStageUpdate(stage2)
+        val listener = Mockito.mock(StageManagerListener::class.java)
+        testClass.stageManagerListener = listener
+        testClass.onNewStageStarted(stage2)
+        Mockito.verify(listener, times(1)).onNewStageStarted(stage2)
     }
 
     @Test
     fun onMoveCountUpdateCallsListener() {
-        val listener = Mockito.mock(TimeControlListener::class.java)
-        testClass.setTimeControlListener(listener)
-        testClass.onMoveCountUpdate(5)
-        Mockito.verify(listener, times(1)).onMoveCountUpdate(5)
+        val listener = Mockito.mock(StageManagerListener::class.java)
+        testClass.stageManagerListener = listener
+        testClass.onTotalMoveCountChange(5)
+        Mockito.verify(listener, times(1)).onTotalMoveCountChange(5)
     }
 }

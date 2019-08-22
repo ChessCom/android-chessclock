@@ -30,9 +30,9 @@ public class TimePickerDialogFragment extends DialogFragment {
      *
      * @param context Dialog Fragment Context.
      * @param type    Type of TimePicker used.
-     * @param hour    Initial hour value.
-     * @param minute  Initial minute value.
-     * @param second  Initial second value.
+     * @param hour    Initial hour valueInMilliseconds.
+     * @param minute  Initial minute valueInMilliseconds.
+     * @param second  Initial second valueInMilliseconds.
      */
     public TimePickerDialogFragment(Context context, Type type, int hour, int minute, int second) {
         mContext = context;

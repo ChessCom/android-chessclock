@@ -2,11 +2,9 @@ package com.chess.clock.engine.time
 
 import android.os.Parcel
 import android.os.Parcelable
-
 import com.chess.clock.engine.stage.Stage
 import com.chess.clock.engine.stage.StageManager
 import com.chess.clock.engine.stage.StageManagerListener
-import com.chess.clock.util.Args
 
 /**
  *
@@ -44,98 +42,30 @@ import com.chess.clock.util.Args
  */
 open class TimeControl : Parcelable, Cloneable, StageManagerListener {
 
-    /**
-     * TimeControl identifier.
-     */
-    /**
-     * The name identifier of the time control.
-     *
-     * @return Time control name.
-     */
-    /**
-     * Set the name identifier of the time control.
-     *
-     * @param name Time control name.
-     */
     lateinit var name: String
-
-    /**
-     * Stage Manager associated with Time Control.
-     */
-    /**
-     * Gets the Stage manager associated with this time control.
-     *
-     * @return Stage manager associated with this time control.
-     */
     var stageManager: StageManager? = null
         private set
-
-    /**
-     * Time increment associated with Time Control.
-     */
-    /**
-     * Gets the time increment associated with this time control.
-     *
-     * @return TimeIncrement associated with this TimeControl.
-     */
     var timeIncrement: TimeIncrement? = null
         private set
 
-    /**
-     * Listener used to dispatch time control update events.
-     *
-     * @see TimeControlListener
-     */
-    private var mTimeControlListener: TimeControlListener? = null
+    var stageManagerListener: StageManagerListener? = null
 
-    /**
-     * Simple constructor to use when creating a TimeControl.
-     *
-     * @param name   Name identifier.
-     * @param stages stages of the TimeControl.
-     * @param time   TimeIncrement object associated with the TimeControl.
-     * @throws java.lang.NullPointerException if StageManager or TimeIncrement are not provided.
-     */
     constructor(name: String?, stages: Array<Stage>, time: TimeIncrement) {
         this.name = name.orEmpty()
         timeIncrement = time
         stageManager = StageManager(stages)
 
-        // Set up listener for Stage Manager.
-        stageManager?.setStageManagerListener(this)
+        stageManager?.stageManagerListener = this
     }
 
     private constructor(parcel: Parcel) {
         this.readFromParcel(parcel)
     }
 
-    /**
-     * Check if TimeControl object is equal to this one.
-     *
-     * @param tc TimeControl Object.
-     * @return True if relevant contents are equal.
-     */
-    fun isEqual(tc: TimeControl?): Boolean {
-
-        return (name == tc?.name
-                && stageManager?.isEqual(tc.stageManager) == true
-                && timeIncrement?.isEqual(tc.timeIncrement) == true)
-    }
-
-    /**
-     * Register a callback to be invoked when time control updates.
-     *
-     * @param listener The callback that will run
-     */
-    fun setTimeControlListener(listener: TimeControlListener) {
-        Args.checkForNull(listener)
-        mTimeControlListener = listener
-    }
-
     private fun readFromParcel(parcel: Parcel) {
         name = parcel.readString() ?: ""
         stageManager = parcel.readParcelable(StageManager::class.java.classLoader)
-        stageManager?.setStageManagerListener(this)
+        stageManager?.stageManagerListener = this
         timeIncrement = parcel.readParcelable(TimeIncrement::class.java.classLoader)
     }
 
@@ -149,12 +79,19 @@ open class TimeControl : Parcelable, Cloneable, StageManagerListener {
         return 0
     }
 
-    override fun onNewStageUpdate(stage: Stage) {
-        mTimeControlListener?.onStageUpdate(stage)
+    override fun onNewStageStarted(stage: Stage) {
+        stageManagerListener?.onNewStageStarted(stage)
     }
 
-    override fun onMoveCountUpdate(moveCount: Int) {
-        mTimeControlListener?.onMoveCountUpdate(moveCount)
+    override fun onTotalMoveCountChange(moveCount: Int) {
+        stageManagerListener?.onTotalMoveCountChange(moveCount)
+    }
+
+    fun isEqual(tc: TimeControl?): Boolean {
+
+        return (name == tc?.name
+                && stageManager?.isEqual(tc.stageManager) == true
+                && timeIncrement?.isEqual(tc.timeIncrement) == true)
     }
 
     @Throws(CloneNotSupportedException::class)
@@ -163,12 +100,12 @@ open class TimeControl : Parcelable, Cloneable, StageManagerListener {
 
         // Clone StageManager object and set this clone as his listener.
         clone.stageManager = stageManager?.clone() as StageManager
-        clone.stageManager?.setStageManagerListener(clone)
+        clone.stageManager?.stageManagerListener = clone
 
         // Clone TimeIncrement object
         clone.timeIncrement = timeIncrement?.clone()
 
-        clone.mTimeControlListener = null
+        clone.stageManagerListener = null
         return clone
     }
 

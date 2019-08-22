@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.chess.clock.engine.stage.Stage;
+import com.chess.clock.engine.stage.StageManagerListener;
 import com.chess.clock.engine.time.TimeControl;
-import com.chess.clock.engine.time.TimeControlListener;
 import com.chess.clock.engine.time.TimeIncrementBronstein;
 import com.chess.clock.engine.time.TimeIncrementDelay;
 import com.chess.clock.engine.time.TimeIncrementFischer;
@@ -16,7 +16,7 @@ import com.chess.clock.util.Args;
  * Chess count down timer with time increment support. Provides support for multi-stage time
  * controls and their stage state updates. Uses Thread Handler as a stopwatch facility.
  */
-public class CountDownTimer implements TimeControlListener {
+public class CountDownTimer implements StageManagerListener {
 
     private static final String TAG = CountDownTimer.class.getName();
     /**
@@ -55,7 +55,7 @@ public class CountDownTimer implements TimeControlListener {
 			/*
             The Handler's Runnable deliver time might suffer from a slight delay.
 			That delay accumulated can generate large time drift. For that reason,
-			the current tick time is saved and the elapsed time used as the decrement value.
+			the current tick time is saved and the elapsed time used as the decrement valueInMilliseconds.
 			The last tick time is set to zero for each stop, pause and reset action.
 			*/
             if (mLastTickTime > 0) {
@@ -124,7 +124,7 @@ public class CountDownTimer implements TimeControlListener {
 
         forceStop();
         mTimeControl = timeControl;
-        mTimeControl.setTimeControlListener(this);
+        mTimeControl.setStageManagerListener(this);
 
         resetTimeControl();
     }
@@ -157,14 +157,14 @@ public class CountDownTimer implements TimeControlListener {
     /**
      * Notify registered listener of current clock time, stage and move count. The following
      * methods will be called back: Callback.onClockTimeUpdate(long),
-     * Callback.onMoveCountUpdate(int), Callback.onStageUpdate(Stage).
+     * Callback.onTotalMoveCountChange(int), Callback.onStageUpdate(Stage).
      */
     public void notifyStatus() {
 
         if (mCallback != null && mTimeControl != null) {
             mCallback.onClockTimeUpdate(getTime());
             mCallback.onMoveCountUpdate(mTimeControl.getStageManager().getTotalMoveCount());
-            mCallback.onTotalStageNumber(mTimeControl.getStageManager().getTotalStages());
+            mCallback.onTotalStageNumber(mTimeControl.getStageManager().getAmountOfStages());
             mCallback.onStageUpdate(mTimeControl.getStageManager().getCurrentStage());
         }
     }
@@ -177,7 +177,7 @@ public class CountDownTimer implements TimeControlListener {
     }
 
     /**
-     * Set count down time value.
+     * Set count down time valueInMilliseconds.
      *
      * @param time Time position to be set in milliseconds.
      */
@@ -224,7 +224,7 @@ public class CountDownTimer implements TimeControlListener {
             // Only starts the clock if currently stopped (ignores state Finished)
             if (mTimerState == CountDownTimer.TimerState.STOPPED) {
                 if (mTimeControl.getTimeIncrement().getType() instanceof TimeIncrementDelay) {
-                    forceStartDelayed(mTimeControl.getTimeIncrement().getValue());
+                    forceStartDelayed(mTimeControl.getTimeIncrement().getValueInMilliseconds());
                 } else {
                     forceStart();
                 }
@@ -246,9 +246,9 @@ public class CountDownTimer implements TimeControlListener {
             if (mTimerState == TimerState.RUNNING || mTimerState == TimerState.PAUSED) {
                 TimeIncrementType incrementType = mTimeControl.getTimeIncrement().getType();
                 if (incrementType instanceof TimeIncrementFischer) {
-                    forceStopAndIncrementFull(mTimeControl.getTimeIncrement().getValue());
+                    forceStopAndIncrementFull(mTimeControl.getTimeIncrement().getValueInMilliseconds());
                 } else if (incrementType instanceof TimeIncrementBronstein) {
-                    forceStopAndIncrementAtMost(mTimeControl.getTimeIncrement().getValue());
+                    forceStopAndIncrementAtMost(mTimeControl.getTimeIncrement().getValueInMilliseconds());
                 } else {
                     forceStop();
                 }
@@ -280,9 +280,9 @@ public class CountDownTimer implements TimeControlListener {
 
                 // Pausing in the middle of a delay?
                 long elapsedTime = System.currentTimeMillis() - lastStartDelayTime;
-                if (elapsedTime < mTimeControl.getTimeIncrement().getValue()) {
+                if (elapsedTime < mTimeControl.getTimeIncrement().getValueInMilliseconds()) {
 
-                    mPendingDelayOnResume = mTimeControl.getTimeIncrement().getValue() - elapsedTime;
+                    mPendingDelayOnResume = mTimeControl.getTimeIncrement().getValueInMilliseconds() - elapsedTime;
                     Log.i(TAG, "Pausing in the middle of delay, next resume will have delay: " + mPendingDelayOnResume);
 
                 } else {
@@ -315,7 +315,7 @@ public class CountDownTimer implements TimeControlListener {
     }
 
     /**
-     * Finish count down timer. This will also set time value to zero.
+     * Finish count down timer. This will also set time valueInMilliseconds to zero.
      */
     public void finish() {
         handler.removeCallbacks(downCounter);
@@ -343,7 +343,7 @@ public class CountDownTimer implements TimeControlListener {
             mTimeControl.getStageManager().reset();
 
             // Set first stage durationInMilliseconds on count down timer.
-            long firstStageDuration = mTimeControl.getStageManager().getStageDuration(0 /* stage number */);
+            long firstStageDuration = mTimeControl.getStageManager().getStages()[0].getDurationInMilliseconds();
             forceReset(firstStageDuration);
         } else {
             Log.w(TAG, "Dropped reset Time Control command due to time control not set");
@@ -376,7 +376,7 @@ public class CountDownTimer implements TimeControlListener {
     }
 
     /**
-     * Stops the timer and add full increment value.
+     * Stops the timer and add full increment valueInMilliseconds.
      *
      * @param increment Time bonus to add.
      */
@@ -389,7 +389,7 @@ public class CountDownTimer implements TimeControlListener {
     }
 
     /**
-     * Stops the timer and add used portion of increment, at most the full increment value.
+     * Stops the timer and add used portion of increment, at most the full increment valueInMilliseconds.
      * This is useful for the Bronstein increment type.
      *
      * @param increment Time bonus to add.
@@ -438,7 +438,7 @@ public class CountDownTimer implements TimeControlListener {
     }
 
     /**
-     * Stops count down timer, and sets the time value.
+     * Stops count down timer, and sets the time valueInMilliseconds.
      *
      * @param millisUntilFinished Time position to be resetTimeControl in milliseconds.
      * @throws java.lang.IllegalArgumentException if millisUntilFinished is zero or negative.
@@ -489,7 +489,7 @@ public class CountDownTimer implements TimeControlListener {
      * {@inheritDoc}
      */
     @Override
-    public void onStageUpdate(Stage stage) {
+    public void onNewStageStarted(Stage stage) {
         Args.checkForNull(stage);
 
         // Add time bonus of the new stage
@@ -512,7 +512,7 @@ public class CountDownTimer implements TimeControlListener {
      * {@inheritDoc}
      */
     @Override
-    public void onMoveCountUpdate(int moveCount) {
+    public void onTotalMoveCountChange(int moveCount) {
         if (mCallback != null) {
             mCallback.onMoveCountUpdate(moveCount);
         }

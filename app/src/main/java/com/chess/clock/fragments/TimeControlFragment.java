@@ -295,7 +295,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        if (mSelectedTimeControl.getStageManager().getTotalStages() == 3) {
+        if (mSelectedTimeControl.getStageManager().getAmountOfStages() == 3) {
             menu.findItem(R.id.action_new_stage).setVisible(false);
         } else {
             menu.findItem(R.id.action_new_stage).setVisible(true);
@@ -376,7 +376,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         imm.hideSoftInputFromWindow(mTimeControlNameEditText.getWindowToken(), 0);
 
 
-        if (mSelectedTimeControl.getStageManager().getTotalStages() < 3) {
+        if (mSelectedTimeControl.getStageManager().getAmountOfStages() < 3) {
             mSelectedTimeControl.getStageManager().addNewStage();
             updateDisplay();
         }
@@ -455,7 +455,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         TimeIncrement timeIncrement = mSelectedTimeControl.getTimeIncrement();
 
         timeIncrement.setType(type);
-        timeIncrement.setValue(time);
+        timeIncrement.setValueInMilliseconds(time);
 
         // Update Time Increment description
         mTimeIncrementDescription.setText(timeIncrement.toString());
