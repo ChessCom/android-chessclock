@@ -29,17 +29,11 @@ open class Stage : Parcelable, Cloneable {
     private lateinit var stageState: StageState
 
 
-    constructor(id: Int, durationInMilliseconds: Long, totalMoveCount: Int) : this(id, durationInMilliseconds) {
-        this.totalMoveCount = totalMoveCount
-        if (totalMoveCount > 0) {
-            this.stageType = StageTypeMoves
-        }
-    }
-
-    constructor(id: Int, durationInMilliseconds: Long) {
+    constructor(id: Int, durationInMilliseconds: Long, totalMoveCount: Int = 0) {
         this.id = id
         this.durationInMilliseconds = durationInMilliseconds
-        this.stageType = StageTypeGame
+        this.totalMoveCount = totalMoveCount
+        this.stageType = if (totalMoveCount > 0) StageTypeMoves else StageTypeGame
         reset()
     }
 

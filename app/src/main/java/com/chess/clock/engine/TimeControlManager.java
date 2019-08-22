@@ -176,7 +176,7 @@ public class TimeControlManager {
         isNewEditableTimeControl = true;
 
         // Set default stage and time increment
-        Stage stage = new Stage(0, 300000);
+        Stage stage = new Stage(0, 300000, 0);
         TimeIncrement timeIncrement = new TimeIncrement(TimeIncrementFischer.INSTANCE, 5000);
         TimeControl blank = new TimeControl(null, new Stage[]{stage}, timeIncrement);
 
