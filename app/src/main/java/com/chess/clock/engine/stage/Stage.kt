@@ -21,12 +21,6 @@ open class Stage : Parcelable, Cloneable {
      */
     private lateinit var mStageState: StageState
     /**
-     * Registered Id used to identify the game stage after completion.
-     *
-     * @see .finishStage
-     */
-    private var mId: Int = 0
-    /**
      * Stage duration in milliseconds
      */
     /**
@@ -67,11 +61,10 @@ open class Stage : Parcelable, Cloneable {
      *
      * @param id
      */
-    var id: Int
-        get() = mId
+    var id: Int = 0
         set(id) {
             if (id in 0..2) {
-                mId = id
+                field = id
             }
         }
 
@@ -127,7 +120,7 @@ open class Stage : Parcelable, Cloneable {
      * @param duration Stage duration in milliseconds.
      */
     constructor(id: Int, duration: Long) {
-        this.mId = id
+        this.id = id
         this.duration = duration
         this.mStageType = StageTypeGame
         reset()
@@ -155,7 +148,7 @@ open class Stage : Parcelable, Cloneable {
      */
     fun isEqual(stage: Stage): Boolean {
         // ID
-        if (mId != stage.id) {
+        if (id != stage.id) {
             Log.i(TAG, "Ids not equal.")
             return false
         } else if (mStageType !== stage.stageType) {
@@ -205,11 +198,11 @@ open class Stage : Parcelable, Cloneable {
         // First addMove in the stage
         if (mStageState === StageIdle) {
             mStageState = StageBegan
-            Log.d(TAG, "Stage $mId began.")
+            Log.d(TAG, "Stage $id began.")
         }
 
         stageMoveCount++
-        Log.d(TAG, "Move added to Stage $mId. Move count: $stageMoveCount")
+        Log.d(TAG, "Move added to Stage $id. Move count: $stageMoveCount")
 
         // Finish stage if last addMove was played.
         if (mStageType === StageTypeMoves && !hasRemainingMoves()) {
@@ -264,10 +257,10 @@ open class Stage : Parcelable, Cloneable {
      * Force finish stage state.
      */
     private fun finishStage() {
-        Log.d(TAG, "Stage $mId finished. Reached $stageMoveCount move count.")
+        Log.d(TAG, "Stage $id finished. Reached $stageMoveCount move count.")
 
         // Notify stage finished
-        mOnStageEndListener?.onStageFinished(mId)
+        mOnStageEndListener?.onStageFinished(id)
 
         mStageState = StageEnded
     }
@@ -278,7 +271,7 @@ open class Stage : Parcelable, Cloneable {
 
     private fun readFromParcel(parcel: Parcel) {
         duration = parcel.readLong()
-        mId = parcel.readInt()
+        id = parcel.readInt()
         totalMoves = parcel.readInt()
         stageMoveCount = parcel.readInt()
         mStageState = stateFromInt(parcel.readInt())
@@ -287,7 +280,7 @@ open class Stage : Parcelable, Cloneable {
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(duration)
-        parcel.writeInt(mId)
+        parcel.writeInt(id)
         parcel.writeInt(totalMoves)
         parcel.writeInt(stageMoveCount)
         parcel.writeInt(mStageState.toInteger())

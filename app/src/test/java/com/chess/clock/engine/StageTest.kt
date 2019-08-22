@@ -14,7 +14,7 @@ class StageTest {
 
     @Test
     fun happyPathConstructionWithoutMoves() {
-        val expectedId = 123
+        val expectedId = 2
         val expectedDuration = 500L
         val a = Stage(expectedId, expectedDuration)
         assert(a.id == expectedId)
@@ -25,7 +25,7 @@ class StageTest {
 
     @Test
     fun happyPathConstructionWithMoves() {
-        val expectedId = 123
+        val expectedId = 2
         val expectedDuration = 500L
         val expectedMoves = 10
         val a = Stage(expectedId, expectedDuration, expectedMoves)
