@@ -314,7 +314,7 @@ public class TimeControlParser {
             // Restore TimeIncrement
             long value = timeIncrementJSONObject.getLong(TC_JSON_VALUE);
             TimeIncrementType type
-                    = TimeIncrementTypeKt.fromInteger(timeIncrementJSONObject.getInt(TC_JSON_TYPE));
+                    = TimeIncrementType.Companion.fromInteger(timeIncrementJSONObject.getInt(TC_JSON_TYPE));
 
             return new TimeIncrement(type, value);
 

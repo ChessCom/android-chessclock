@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.time.TimeIncrementType;
-import com.chess.clock.engine.time.TimeIncrementTypeKt;
 
 public class TimeIncrementEditorView extends TimePickerView {
 
@@ -122,7 +121,7 @@ public class TimeIncrementEditorView extends TimePickerView {
 
         if (mTimeIncrementSubtitleText != null) {
             // Set spinner subtitle text
-            TimeIncrementType incType = TimeIncrementTypeKt.fromInteger(mTimeIncrementTypePosition);
+            TimeIncrementType incType = TimeIncrementType.Companion.fromInteger(mTimeIncrementTypePosition);
             int subtitleId = incType.subtitleId();
             String subtitle = getResources().getString(subtitleId);
             mTimeIncrementSubtitleText.setText(subtitle);

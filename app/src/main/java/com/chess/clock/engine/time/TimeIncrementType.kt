@@ -5,6 +5,16 @@ import com.chess.clock.R
 
 sealed class TimeIncrementType {
     abstract fun subtitleId(): Int
+
+    companion object {
+        fun fromInteger(parcelledValue: Int): TimeIncrementType {
+            return when (parcelledValue) {
+                0 -> TimeIncrementDelay
+                1 -> TimeIncrementBronstein
+                else -> TimeIncrementFischer
+            }
+        }
+    }
 }
 
 /**
@@ -36,13 +46,5 @@ fun TimeIncrementType.toInteger(): Int {
         is TimeIncrementDelay -> 0
         is TimeIncrementBronstein -> 1
         is TimeIncrementFischer -> 2
-    }
-}
-
-fun fromInteger(parcelledValue: Int): TimeIncrementType {
-    return when (parcelledValue) {
-        0 -> TimeIncrementDelay
-        1 -> TimeIncrementBronstein
-        else -> TimeIncrementFischer
     }
 }

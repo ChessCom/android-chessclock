@@ -55,7 +55,7 @@ class TimeIncrement : Parcelable, Cloneable {
     }
 
     private fun readFromParcel(parcel: Parcel) {
-        type = fromInteger(parcel.readInt())
+        type = TimeIncrementType.fromInteger(parcel.readInt())
         valueInMilliseconds = parcel.readLong()
     }
 

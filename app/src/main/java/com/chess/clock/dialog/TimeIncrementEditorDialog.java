@@ -8,7 +8,6 @@ import android.view.View;
 import com.chess.clock.compoundviews.TimeIncrementEditorView;
 import com.chess.clock.compoundviews.TimePickerView;
 import com.chess.clock.engine.time.TimeIncrementType;
-import com.chess.clock.engine.time.TimeIncrementTypeKt;
 
 /**
  * A dialog that prompts the user to edit Stage values. This dialog extends TimePickerDialog as it
@@ -70,7 +69,7 @@ public class TimeIncrementEditorDialog extends TimePickerDialog {
     public void onClick(DialogInterface dialog, int which) {
         if (mCallback != null) {
             if (which == BUTTON_POSITIVE) {
-                TimeIncrementType type = TimeIncrementTypeKt.fromInteger(mTimeIncrementEditorView.getCurrentIncrementType());
+                TimeIncrementType type = TimeIncrementType.Companion.fromInteger(mTimeIncrementEditorView.getCurrentIncrementType());
                 int hour = mTimeIncrementEditorView.getCurrentHour();
                 int minute = mTimeIncrementEditorView.getCurrentMinute();
                 int second = mTimeIncrementEditorView.getCurrentSeconds();
