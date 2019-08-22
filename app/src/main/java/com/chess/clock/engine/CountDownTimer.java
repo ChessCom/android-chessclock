@@ -342,7 +342,7 @@ public class CountDownTimer implements TimeControlListener {
             // Reset stage manager
             mTimeControl.getStageManager().reset();
 
-            // Set first stage duration on count down timer.
+            // Set first stage durationInMilliseconds on count down timer.
             long firstStageDuration = mTimeControl.getStageManager().getStageDuration(0 /* stage number */);
             forceReset(firstStageDuration);
         } else {
@@ -493,7 +493,7 @@ public class CountDownTimer implements TimeControlListener {
         Args.checkForNull(stage);
 
         // Add time bonus of the new stage
-        long stageDuration = stage.getDuration();
+        long stageDuration = stage.getDurationInMilliseconds();
         addIncrement(stageDuration);
 
         // Update stop time is again required since time has been updated.

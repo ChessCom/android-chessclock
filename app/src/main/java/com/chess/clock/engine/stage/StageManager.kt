@@ -9,7 +9,7 @@ import java.util.ArrayList
 /**
  * Stage Manager of a Chess game.
  */
-class StageManager : Parcelable, Cloneable, Stage.OnStageFinishListener {
+class StageManager : Parcelable, Cloneable, OnStageFinishListener {
     /**
      * Listener used to dispatch stage updates.
      */
@@ -56,7 +56,7 @@ class StageManager : Parcelable, Cloneable, Stage.OnStageFinishListener {
         // Set this as listener of all stages.
         for (stage in stages) {
             mStages.add(stage)
-            stage.setStageListener(this)
+            stage.onStageFinishListener = this
         }
 
         // Reset all stages, and set up listener for each one.
@@ -68,7 +68,7 @@ class StageManager : Parcelable, Cloneable, Stage.OnStageFinishListener {
         this.readFromParcel(parcel)
 
         for (stage in mStages) {
-            stage.setStageListener(this)
+            stage.onStageFinishListener = this
         }
 
         // Reset all stages, and set up listener for each one.
@@ -98,27 +98,27 @@ class StageManager : Parcelable, Cloneable, Stage.OnStageFinishListener {
 
     private fun addFirstStage() {
         val newStage = Stage(0, 300000)
-        newStage.setStageListener(this)
+        newStage.onStageFinishListener = this
         mStages.add(newStage)
     }
 
     private fun addSecondStage() {
         // Set first stage as type MOVES, with 1 move
-        mStages[0].stageType = StageTypeMoves
-        mStages[0].setMoves(20)
+        mStages[0].setStageType(StageTypeMoves)
+        mStages[0].totalMoveCount = 20
 
         val newStage = Stage(1, 300000)
-        newStage.setStageListener(this)
+        newStage.onStageFinishListener = this
         mStages.add(newStage)
     }
 
     private fun addThirdStage() {
         // Set second stage as Type MOVES, with 1 move each.
-        mStages[1].stageType = StageTypeMoves
-        mStages[1].setMoves(20)
+        mStages[1].setStageType(StageTypeMoves)
+        mStages[1].totalMoveCount = 20
 
         val newStage = Stage(2, 300000)
-        newStage.setStageListener(this)
+        newStage.onStageFinishListener = this
         mStages.add(newStage)
     }
 
@@ -140,7 +140,7 @@ class StageManager : Parcelable, Cloneable, Stage.OnStageFinishListener {
             // The previous stage will become the new last stage.
             // Therefore it is set to StageTypeGame
             changingStage = mStages[removeStageIdx - 1]
-            changingStage.stageType = StageTypeGame
+            changingStage.setStageType(StageTypeGame)
         }
 
         mStages.removeAt(removeStageIdx)
@@ -152,11 +152,11 @@ class StageManager : Parcelable, Cloneable, Stage.OnStageFinishListener {
 
     /**
      * @param stageNumber A stage number of the game.
-     * @return Time duration of the requested stage number or zero if stage number is invalid.
+     * @return Time durationInMilliseconds of the requested stage number or zero if stage number is invalid.
      */
     fun getStageDuration(stageNumber: Int): Long {
         return if (stageNumber in 0 until totalStages) {
-            mStages[stageNumber].duration
+            mStages[stageNumber].durationInMilliseconds
         } else 0
     }
 
@@ -187,7 +187,7 @@ class StageManager : Parcelable, Cloneable, Stage.OnStageFinishListener {
             // Add move to the current stage.
             mStages[mCurrentStage].addMove()
 
-        } catch (e: Stage.GameStageException) {
+        } catch (e: GameStageException) {
             Log.e(TAG, e.message.orEmpty())
             e.printStackTrace()
         }
@@ -262,7 +262,7 @@ class StageManager : Parcelable, Cloneable, Stage.OnStageFinishListener {
         val newList = ArrayList<Stage>()
         for (stage in mStages) {
             val clonedStage = stage.clone()
-            clonedStage.setStageListener(clone)
+            clonedStage.onStageFinishListener = clone
             newList.add(clonedStage)
         }
         clone.mStages = newList

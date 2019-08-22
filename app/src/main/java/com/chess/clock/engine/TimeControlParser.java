@@ -103,16 +103,16 @@ public class TimeControlParser {
                 for (Stage stage : tc.getTimeControlPlayerOne().getStageManager().getStages()) {
                     JSONObject stageJSONObject = new JSONObject();
                     stageJSONObject.put(TC_JSON_ID, stage.getId());
-                    stageJSONObject.put(TC_JSON_DURATION, stage.getDuration());
-                    stageJSONObject.put(TC_JSON_MOVES, stage.getTotalMoves());
+                    stageJSONObject.put(TC_JSON_DURATION, stage.getDurationInMilliseconds());
+                    stageJSONObject.put(TC_JSON_MOVES, stage.getTotalMoveCount());
                     timeControlStagesJSONArray.put(stageJSONObject);
                 }
 
                 for (Stage stage : tc.getTimeControlPlayerTwo().getStageManager().getStages()) {
                     JSONObject stageJSONObject = new JSONObject();
                     stageJSONObject.put(TC_JSON_ID, stage.getId());
-                    stageJSONObject.put(TC_JSON_DURATION, stage.getDuration());
-                    stageJSONObject.put(TC_JSON_MOVES, stage.getTotalMoves());
+                    stageJSONObject.put(TC_JSON_DURATION, stage.getDurationInMilliseconds());
+                    stageJSONObject.put(TC_JSON_MOVES, stage.getTotalMoveCount());
                     timeControlStagesPlayerTwoJSONArray.put(stageJSONObject);
                 }
 

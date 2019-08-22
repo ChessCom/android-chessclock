@@ -426,11 +426,11 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
         Stage stage = mSelectedTimeControl.getStageManager().getStages()[mEditableStageIndex];
 
         // Save new moves number
-        stage.setMoves(moves);
+        stage.setTotalMoveCount(moves);
 
-        // Save new stage duration
-        if (stage.getDuration() != timeValue) {
-            stage.setDuration(timeValue);
+        // Save new stage durationInMilliseconds
+        if (stage.getDurationInMilliseconds() != timeValue) {
+            stage.setDurationInMilliseconds(timeValue);
         }
 
         // Update stage list

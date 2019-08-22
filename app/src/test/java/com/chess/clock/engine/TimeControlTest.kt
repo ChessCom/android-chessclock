@@ -31,9 +31,9 @@ class TimeControlTest {
                 stages,
                 timeIncrement
         )
-        stage1.stageType = StageTypeMoves
-        stage2.stageType = StageTypeMoves
-        stage3.stageType = StageTypeGame
+        stage1.setStageType(StageTypeMoves)
+        stage2.setStageType(StageTypeMoves)
+        stage3.setStageType(StageTypeGame)
     }
 
     @Test

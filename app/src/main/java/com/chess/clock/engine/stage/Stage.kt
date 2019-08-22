@@ -2,7 +2,6 @@ package com.chess.clock.engine.stage
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 
 /**
@@ -12,55 +11,6 @@ import androidx.annotation.VisibleForTesting
  */
 open class Stage : Parcelable, Cloneable {
 
-    /**
-     * Game Stage Type
-     */
-    private lateinit var mStageType: StageType
-    /**
-     * Game Stage State
-     */
-    private lateinit var mStageState: StageState
-    /**
-     * Stage duration in milliseconds
-     */
-    /**
-     * @return The duration stage duration
-     */
-    /**
-     * Set stage duration
-     *
-     * @param duration
-     */
-    var duration: Long = 0
-    /**
-     * Limited number of moves in the stage.
-     */
-    /**
-     * @return The number of moves for this stage.
-     */
-    var totalMoves: Int = 0
-        private set
-    /**
-     * Played moves in the stage.
-     */
-    /**
-     * @return The current number of moves played in this stage.
-     */
-    var stageMoveCount: Int = 0
-        private set
-    /**
-     * Listener used to dispatch stage finish event.
-     */
-    private var mOnStageEndListener: OnStageFinishListener? = null
-
-    /**
-     * @return The stage id.
-     */
-    /**
-     * Set the id of the stage.
-     *
-     * @param id
-     */
     var id: Int = 0
         set(id) {
             if (id in 0..2) {
@@ -68,61 +18,28 @@ open class Stage : Parcelable, Cloneable {
             }
         }
 
-    /**
-     * @return StageType of this stage.
-     */
-    /**
-     * Set the StageType of this stage.
-     *
-     * @param type StageType.
-     */
-    // Also reset total moves if type is StageTypeGame
-    var stageType: StageType
-        get() = mStageType
-        set(type) {
-            mStageType = type
-            if (mStageType === StageTypeGame) {
-                totalMoves = 0
-            }
-        }
+    var durationInMilliseconds: Long = 0
+    var totalMoveCount: Int = 0
+    var playedMoveCount: Int = 0
+        private set
+    lateinit var stageType: StageType
+        private set
+    var onStageFinishListener: OnStageFinishListener? = null
 
-    /**
-     * @return Int array with {hour,minute,second}
-     */
-    val time: IntArray
-        get() {
-            val s = (duration / 1000).toInt() % 60
-            val m = (duration / (1000 * 60) % 60).toInt()
-            val h = (duration / (1000 * 60 * 60) % 24).toInt()
+    private lateinit var stageState: StageState
 
-            return intArrayOf(h, m, s)
-        }
 
-    private val isStageFinished: Boolean
-        get() = mStageState === StageEnded
-
-    /**
-     * @param id       Stage identifier.
-     * @param duration Stage duration in milliseconds.
-     * @param moves    Limited number of moves for the stage. If zero provided, Stage type will be GAME.
-     * @throws java.lang.IllegalArgumentException if duration is not positive or moves is not positive.
-     */
-    constructor(id: Int, duration: Long, moves: Int) : this(id, duration) {
-        this.totalMoves = moves
-        this.mStageType = StageTypeMoves
-        if (moves <= 0) {
-            this.mStageType = StageTypeGame
+    constructor(id: Int, durationInMilliseconds: Long, totalMoveCount: Int) : this(id, durationInMilliseconds) {
+        this.totalMoveCount = totalMoveCount
+        if (totalMoveCount > 0) {
+            this.stageType = StageTypeMoves
         }
     }
 
-    /**
-     * @param id       Game stage identifier.
-     * @param duration Stage duration in milliseconds.
-     */
-    constructor(id: Int, duration: Long) {
+    constructor(id: Int, durationInMilliseconds: Long) {
         this.id = id
-        this.duration = duration
-        this.mStageType = StageTypeGame
+        this.durationInMilliseconds = durationInMilliseconds
+        this.stageType = StageTypeGame
         reset()
     }
 
@@ -131,116 +48,68 @@ open class Stage : Parcelable, Cloneable {
         this.readFromParcel(parcel)
     }
 
-    /**
-     * Set the number of moves for this stage.
-     *
-     * @param moves Number of moves.
-     */
-    fun setMoves(moves: Int) {
-        totalMoves = moves
+
+    fun setStageType(stageType: StageType) {
+        this.stageType = stageType
+        if (stageType === StageTypeGame) {
+            totalMoveCount = 0
+        }
     }
 
     /**
-     * Check if Stage object is equal to this one.
-     *
-     * @param stage Stage Object.
-     * @return
+     * @return Int array with {hour,minute,second}
      */
-    fun isEqual(stage: Stage): Boolean {
-        // ID
-        if (id != stage.id) {
-            Log.i(TAG, "Ids not equal.")
-            return false
-        } else if (mStageType !== stage.stageType) {
-            Log.i(TAG, "StageType not equal. " + mStageType.toString()
-                    + " - " + stage.stageType.toString())
-            return false
-        } else if (duration != stage.duration) {
-            Log.i(TAG, "Duration not equal. " + duration + " != " + stage.duration)
-            return false
-        } else if (totalMoves != stage.totalMoves) {
-            Log.i(TAG, "Duration not equal.")
-            return false
-        } else if (mOnStageEndListener == null && stage.mOnStageEndListener != null) {
-            Log.i(TAG, "listener:null != stage.listener:" + stage.mOnStageEndListener!!)
-            return false
-        } else if (mOnStageEndListener != null && stage.mOnStageEndListener == null) {
-            Log.i(TAG, "listener:$mOnStageEndListener != stage.listener:null")
-            return false
-        } else {
-            return true
-        }// End listener
-        // Moves
-        // Duration
-        // StageType
-    }
+    val time: IntArray
+        get() {
+            val s = (durationInMilliseconds / 1000).toInt() % 60
+            val m = (durationInMilliseconds / (1000 * 60) % 60).toInt()
+            val h = (durationInMilliseconds / (1000 * 60 * 60) % 24).toInt()
 
-    /**
-     * Register a callback to be invoked when the stage has finished.
-     *
-     * @param listener The callback that will run
-     */
-    fun setStageListener(listener: OnStageFinishListener) {
-        this.mOnStageEndListener = listener
-    }
-
-    /**
-     * Performs a chess addMove in this game stage.
-     *
-     * @throws GameStageException
-     */
-    @Throws(GameStageException::class)
-    fun addMove() {
-
-        if (isStageFinished)
-            throw GameStageException("Cannot perform addMove action after stage finished")
-
-        // First addMove in the stage
-        if (mStageState === StageIdle) {
-            mStageState = StageBegan
-            Log.d(TAG, "Stage $id began.")
+            return intArrayOf(h, m, s)
         }
 
-        stageMoveCount++
-        Log.d(TAG, "Move added to Stage $id. Move count: $stageMoveCount")
+    fun isEqual(stage: Stage): Boolean {
+        return id == stage.id
+            && stageType == stage.stageType
+            && durationInMilliseconds == stage.durationInMilliseconds
+            && totalMoveCount == stage.totalMoveCount
+            && (onStageFinishListener == null && stage.onStageFinishListener == null
+                || onStageFinishListener != null && stage.onStageFinishListener != null
+                )
+    }
 
-        // Finish stage if last addMove was played.
-        if (mStageType === StageTypeMoves && !hasRemainingMoves()) {
+    @Throws(GameStageException::class)
+    fun addMove() {
+        if (isStageFinished())
+            throw GameStageException("Cannot perform addMove action after stage finished")
+
+        if (stageState === StageIdle) {
+            // Adding the first ever move, so set the state to began.
+            stageState = StageBegan
+        }
+
+        playedMoveCount++
+
+        if (stageType === StageTypeMoves && !hasRemainingMoves()) {
             finishStage()
         }
     }
 
-    /**
-     * Reset Stage state and number of played moves.
-     */
     fun reset() {
-        stageMoveCount = 0
-        mStageState = StageIdle
+        playedMoveCount = 0
+        stageState = StageIdle
     }
 
-    /**
-     * Get formated string ready to UI info display.
-     *
-     * @return String representing info content of Stage.
-     */
     override fun toString(): String {
-
-        val durationString = formatTime(duration)
-        val moves = totalMoves
-        return if (moves == 0) {
-            "Game in $durationString"
-        } else if (moves == 1) {
-            "1 move in $durationString"
-        } else {
-            "$moves moves in $durationString"
+        val durationString = formatTime(durationInMilliseconds)
+        return when (val moves = totalMoveCount) {
+            0 -> "Game in $durationString"
+            1 -> "1 move in $durationString"
+            else -> "$moves moves in $durationString"
         }
     }
 
-    /**
-     * @param time Player time in milliseconds.
-     * @return Readable String format of time.
-     */
-    fun formatTime(time: Long): String {
+    private fun formatTime(time: Long): String {
 
         val s = (time / 1000).toInt() % 60
         val m = (time / (1000 * 60) % 60).toInt()
@@ -253,38 +122,31 @@ open class Stage : Parcelable, Cloneable {
         }
     }
 
-    /**
-     * Force finish stage state.
-     */
     private fun finishStage() {
-        Log.d(TAG, "Stage $id finished. Reached $stageMoveCount move count.")
-
-        // Notify stage finished
-        mOnStageEndListener?.onStageFinished(id)
-
-        mStageState = StageEnded
+        onStageFinishListener?.onStageFinished(id)
+        stageState = StageEnded
     }
 
-    private fun hasRemainingMoves(): Boolean {
-        return totalMoves - stageMoveCount > 0
-    }
+    private fun hasRemainingMoves() = totalMoveCount - playedMoveCount > 0
+
+    private fun isStageFinished() = stageState === StageEnded
 
     private fun readFromParcel(parcel: Parcel) {
-        duration = parcel.readLong()
+        durationInMilliseconds = parcel.readLong()
         id = parcel.readInt()
-        totalMoves = parcel.readInt()
-        stageMoveCount = parcel.readInt()
-        mStageState = stateFromInt(parcel.readInt())
-        mStageType = typeFromInt(parcel.readInt())
+        totalMoveCount = parcel.readInt()
+        playedMoveCount = parcel.readInt()
+        stageState = stateFromInt(parcel.readInt())
+        stageType = typeFromInt(parcel.readInt())
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeLong(duration)
+        parcel.writeLong(durationInMilliseconds)
         parcel.writeInt(id)
-        parcel.writeInt(totalMoves)
-        parcel.writeInt(stageMoveCount)
-        parcel.writeInt(mStageState.toInteger())
-        parcel.writeInt(mStageType.toInteger())
+        parcel.writeInt(totalMoveCount)
+        parcel.writeInt(playedMoveCount)
+        parcel.writeInt(stageState.toInteger())
+        parcel.writeInt(stageType.toInteger())
     }
 
     override fun describeContents(): Int {
@@ -294,35 +156,13 @@ open class Stage : Parcelable, Cloneable {
     @Throws(CloneNotSupportedException::class)
     public override fun clone(): Stage {
         val clone = super.clone() as Stage
-        clone.mStageState = mStageState
-        clone.mStageType = mStageType
-        clone.mOnStageEndListener = null
+        clone.stageState = stageState
+        clone.stageType = stageType
+        clone.onStageFinishListener = null
         return clone
     }
 
-    /**
-     * Interface definition for a callback to be invoked when the game stage has finished.
-     */
-    interface OnStageFinishListener {
-
-        /**
-         * Called when the stage has finished.
-         *
-         * @param stageFinishedNumber The identifier of the stage finished.
-         */
-        fun onStageFinished(stageFinishedNumber: Int)
-    }
-
-    /**
-     * *********************************
-     * Exceptions
-     * *********************************
-     */
-    inner class GameStageException(message: String) : Exception(message)
-
     companion object CREATOR: Parcelable.Creator<Stage> {
-        private val TAG = Stage::class.java.name
-
         override fun createFromParcel(source: Parcel): Stage {
             return Stage(source)
         }

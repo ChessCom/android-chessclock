@@ -63,7 +63,7 @@ public class StageEditorDialogFragment extends DialogFragment {
         int minute = time[1];
         int second = time[2];
         boolean movesVisible = mStage.getStageType() == StageTypeMoves.INSTANCE;
-        int moves = mStage.getTotalMoves();
+        int moves = mStage.getTotalMoveCount();
 
         StageEditorDialog.Builder builder = new StageEditorDialog.Builder(mContext);
         builder.setTitle(mContext.getString(R.string.stage_editor_dialog_title));

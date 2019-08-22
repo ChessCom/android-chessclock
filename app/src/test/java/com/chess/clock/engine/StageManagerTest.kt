@@ -25,6 +25,9 @@ class StageManagerTest {
     @Before
     fun setup() {
         testClass = StageManager(stages)
+        stage1.reset()
+        stage2.reset()
+        stage3.reset()
     }
 
     @Test
@@ -103,10 +106,10 @@ class StageManagerTest {
 
     @Test
     fun removingLastStageSetsPreviousStageToGameType() {
-        testClass.stages[1].stageType = StageTypeMoves
+        testClass.stages[1].setStageType(StageTypeMoves)
         testClass.removeStage(2)
         assert(testClass.stages[1].stageType == StageTypeGame)
-        assert(testClass.stages[1].totalMoves == 0)
+        assert(testClass.stages[1].totalMoveCount == 0)
     }
 
     @Test
@@ -151,7 +154,7 @@ class StageManagerTest {
     @Test
     fun getStageDurationHappyPath() {
         val expectedDuration = 500L
-        stage1.duration = expectedDuration
+        stage1.durationInMilliseconds = expectedDuration
         assert(testClass.getStageDuration(0) == expectedDuration)
     }
 

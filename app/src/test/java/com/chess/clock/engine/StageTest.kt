@@ -1,6 +1,8 @@
 package com.chess.clock.engine
 
 import android.os.Parcel
+import com.chess.clock.engine.stage.GameStageException
+import com.chess.clock.engine.stage.OnStageFinishListener
 import com.chess.clock.engine.stage.Stage
 import com.chess.clock.engine.stage.StageBegan
 import com.chess.clock.engine.stage.StageTypeGame
@@ -18,8 +20,8 @@ class StageTest {
         val expectedDuration = 500L
         val a = Stage(expectedId, expectedDuration)
         assert(a.id == expectedId)
-        assert(a.totalMoves == 0)
-        assert(a.duration == expectedDuration)
+        assert(a.totalMoveCount == 0)
+        assert(a.durationInMilliseconds == expectedDuration)
         assert(a.stageType == StageTypeGame)
     }
 
@@ -30,8 +32,8 @@ class StageTest {
         val expectedMoves = 10
         val a = Stage(expectedId, expectedDuration, expectedMoves)
         assert(a.id == expectedId)
-        assert(a.totalMoves == expectedMoves)
-        assert(a.duration == expectedDuration)
+        assert(a.totalMoveCount == expectedMoves)
+        assert(a.durationInMilliseconds == expectedDuration)
         assert(a.stageType == StageTypeMoves)
     }
 
@@ -62,22 +64,22 @@ class StageTest {
     fun setDuration() {
         val expectedDuration = 100L
         val a = Stage(1, expectedDuration * 2)
-        a.duration = expectedDuration
-        assert(a.duration == expectedDuration)
+        a.durationInMilliseconds = expectedDuration
+        assert(a.durationInMilliseconds == expectedDuration)
     }
 
     @Test
     fun setMoves() {
         val expectedMoves = 40
         val a = Stage(1, 100)
-        a.setMoves(expectedMoves)
-        assert(a.totalMoves == expectedMoves)
+        a.totalMoveCount = expectedMoves
+        assert(a.totalMoveCount == expectedMoves)
     }
 
     @Test
     fun getStageMoveCountIsInitiallyZero() {
         val a = Stage(1, 100)
-        assert(a.stageMoveCount == 0)
+        assert(a.playedMoveCount == 0)
     }
 
     @Test
@@ -111,7 +113,7 @@ class StageTest {
     @Test
     fun setStageType() {
         val a = Stage(1, 500)
-        a.stageType = StageTypeMoves
+        a.setStageType(StageTypeMoves)
         assert(a.stageType == StageTypeMoves)
     }
 
@@ -119,25 +121,25 @@ class StageTest {
     fun setStageTypeDoesNotResetMoveCountIfTypeIsMoves() {
         val expectedMoves = 40
         val a = Stage(1, 500, expectedMoves)
-        a.stageType = StageTypeMoves
-        assert(a.totalMoves == expectedMoves)
+        a.setStageType(StageTypeMoves)
+        assert(a.totalMoveCount == expectedMoves)
     }
 
     @Test
     fun setStageTypeResetsMoveCountIfTypeIsGame() {
         val a = Stage(1, 500, 40)
-        a.stageType = StageTypeGame
-        assert(a.totalMoves == 0)
+        a.setStageType(StageTypeGame)
+        assert(a.totalMoveCount == 0)
     }
 
     @Test
     fun addingMoveIncreasesMoveCounter() {
         val a = Stage(1, 500, 40)
         a.addMove()
-        assert(a.stageMoveCount == 1)
+        assert(a.playedMoveCount == 1)
     }
 
-    @Test(expected = Stage.GameStageException::class)
+    @Test(expected = GameStageException::class)
     fun addingTooManyMovesThrowsAnException() {
         val a = Stage(1, 500, 1)
         a.addMove()
@@ -147,9 +149,9 @@ class StageTest {
     @Test
     fun addingAllMovesCausesListenerToBeCalled() {
         val expectedId = 2
-        val listener = Mockito.mock(Stage.OnStageFinishListener::class.java)
+        val listener = Mockito.mock(OnStageFinishListener::class.java)
         val a = Stage(expectedId, 500, 1)
-        a.setStageListener(listener)
+        a.onStageFinishListener = listener
         a.addMove()
         Mockito.verify(listener, times(1)).onStageFinished(expectedId)
     }
@@ -159,7 +161,7 @@ class StageTest {
         val a = Stage(1, 500, 40)
         a.addMove()
         a.reset()
-        assert(a.stageMoveCount == 0)
+        assert(a.playedMoveCount == 0)
     }
 
     @Test
@@ -213,12 +215,12 @@ class StageTest {
         assert(a.stageType == b.stageType)
 
         a.id = expectedId + 1
-        a.duration = expectedDuration * 2
-        a.setMoves(expectedMoves * 2)
+        a.durationInMilliseconds = expectedDuration * 2
+        a.totalMoveCount = expectedMoves * 2
 
         assert(b.id == expectedId)
-        assert(b.duration == expectedDuration)
-        assert(b.totalMoves == expectedMoves)
+        assert(b.durationInMilliseconds == expectedDuration)
+        assert(b.totalMoveCount == expectedMoves)
     }
 
     @Test
@@ -240,9 +242,9 @@ class StageTest {
 
         val a = Stage(parcel)
         assert(a.id == expectedId)
-        assert(a.duration == expectedDuration)
-        assert(a.totalMoves == expectedMoves)
-        assert(a.stageMoveCount == expectedStageMoveCount)
+        assert(a.durationInMilliseconds == expectedDuration)
+        assert(a.totalMoveCount == expectedMoves)
+        assert(a.playedMoveCount == expectedStageMoveCount)
         assert(a.stageType == expectedStageType)
     }
 }
