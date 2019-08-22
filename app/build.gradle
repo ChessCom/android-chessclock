@@ -22,8 +22,6 @@ android {
 
     lintOptions {
         checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
         abortOnError false
     }
 
@@ -38,17 +36,15 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation (
+        'androidx.appcompat:appcompat:1.0.2',
+        'com.google.android.material:material:1.0.0',
+        'androidx.core:core-ktx:1.0.2',
+        "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    )
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation "androidx.core:core-ktx:1.0.2"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.7.22'
-}
-
-repositories {
-    mavenCentral()
+    testImplementation (
+        'junit:junit:4.12',
+        'org.mockito:mockito-core:3.0.0'
+    )
 }
