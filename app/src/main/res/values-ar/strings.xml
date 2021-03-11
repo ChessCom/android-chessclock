@@ -49,7 +49,6 @@
     <string name="stage_editor_dialog_cancel">إلغاء</string>
     ​
     <!-- Time Increment Editor Dialog -->
-    <string name="time_increment_prompt">نوع الإضافة</string>
     <string name="time_increment_editor_dialog_title">تعديل الوقت المضاف</string>
     <string name="time_increment_editor_dialog_set">ضبط</string>
     <string name="time_increment_editor_dialog_cancel">إلغاء</string>
@@ -67,7 +66,6 @@
     <string name="bronstein_option_subtitle"> يحصل اللاعبان على المدة المضافة المستخدمة عند نهاية كل دور.
 	</string>
     <string name="fischer_option_subtitle">يحصل اللاعبان على المدة المضافة الكاملة عند نهاية كل دور.</string>
-    <string name="hello_blank_fragment">مرحبا blank fragment</string>
     ​
     <!-- Strings for settings buttons -->
     <string name="btn_pause_settings">K</string>

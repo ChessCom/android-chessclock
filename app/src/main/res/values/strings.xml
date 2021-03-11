@@ -47,7 +47,6 @@
     <string name="stage_editor_dialog_cancel">Cancel</string>
 
     <!-- Time Increment Editor Dialog -->
-    <string name="time_increment_prompt">Increment Type</string>
     <string name="time_increment_editor_dialog_title">Edit Time Increment</string>
     <string name="time_increment_editor_dialog_set">Set</string>
     <string name="time_increment_editor_dialog_cancel">Cancel</string>
@@ -66,7 +65,6 @@
 		turn.
 	</string>
     <string name="fischer_option_subtitle">Players receive the full increment at the end of each turn.</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Strings for settings buttons -->
     <string name="btn_pause_settings">K</string>
