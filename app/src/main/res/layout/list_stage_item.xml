@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+    >
+
+    <TextView
+        android:id="@+id/stage_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/stage_list_item_margin"
+        android:text="Stage 1"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/stage_list_text_size"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        >
+
+        <TextView
+            android:id="@+id/stage_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/stage_list_item_margin"
+            android:text="1 Move in 5:00"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/stage_list_text_size"
+            />
+
+        <ImageButton
+            android:id="@+id/stage_remove_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_action_discard"
+            android:focusable="false"
+            android:visibility="gone"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,22 @@
+<resources>
+    <dimen name="clock_timer_textSize_small">65sp</dimen>
+    <dimen name="clock_timer_textSize_normal">105sp</dimen>
+    <dimen name="clock_timer_btns_margin">8dp</dimen>
+    <dimen name="clock_menu_btns_size">60sp</dimen>
+    <dimen name="clock_menu_btn_margin">100dp</dimen>
+
+    <!-- Time Increment Dialog -->
+    <dimen name="increments_text_size">14sp</dimen>
+    <dimen name="radio_group_margin_top">13dp</dimen>
+    <dimen name="radio_group_divider_margin_top">13dp</dimen>
+    <dimen name="increment_subtitle_text_size">13sp</dimen>
+
+    <!-- Time Control Screen -->
+    <dimen name="stage_list_text_size">17sp</dimen>
+    <dimen name="time_control_list_text_size">17sp</dimen>
+
+    <!-- stage editor widget -->
+    <dimen name="stage_editor_padding_top">16dp</dimen>
+    <dimen name="stage_editor_padding_bottom">16dp</dimen>
+
+</resources>

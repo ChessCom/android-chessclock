@@ -1,0 +1,32 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">26dp</dimen>
+    <dimen name="activity_vertical_margin">26dp</dimen>
+
+    <!-- Clock timer screen -->
+    <dimen name="clock_button_stock_width">1px</dimen>
+    <dimen name="clock_button_corner_radius">5dp</dimen>
+    <dimen name="clock_timer_textSize_small">50sp</dimen>
+    <dimen name="clock_timer_textSize_normal">75sp</dimen>
+    <dimen name="clock_btn_height">150dp</dimen>
+    <dimen name="clock_timer_moves_text">15sp</dimen>
+    <dimen name="clock_menu_btns_size">60sp</dimen>
+    <dimen name="clock_timer_stage_marker_size">15dp</dimen>
+    <dimen name="clock_timer_btns_margin">8dp</dimen>
+    <dimen name="clock_menu_btn_margin">100dp</dimen>
+
+    <!-- Time Control Screen -->
+    <dimen name="stage_list_text_size">13sp</dimen>
+    <dimen name="time_control_list_text_size">13sp</dimen>
+
+    <!-- Time Increment Dialog -->
+    <dimen name="increments_text_size">10sp</dimen>
+    <dimen name="radio_group_margin_top">0dp</dimen>
+    <dimen name="radio_group_divider_margin_top">1dp</dimen>
+    <dimen name="increment_subtitle_text_size">12sp</dimen>
+
+    <!-- stage editor widget -->
+    <dimen name="stage_editor_padding_top">3dp</dimen>
+    <dimen name="stage_editor_padding_bottom">3dp</dimen>
+
+</resources>

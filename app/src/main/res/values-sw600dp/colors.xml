@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Clock timers screen -->
+    <color name="bg_idle_clock_button_gradient_start_color">#ff44403b</color>
+    <color name="bg_idle_clock_button_gradient_end_color">#ff44403b</color>
+    <color name="bg_clock_setting_button_normal">#ff736c66</color>
+    <color name="bg_clock_setting_button_pressed">#ff4e4843</color>
+    <color name="bg_active_default_clock_button_gradient_start_color">#ffdf8027</color>
+    <color name="bg_active_default_clock_button_gradient_end_color">#ffe58527</color>
+    <color name="bg_active_pressed_clock_button_gradient_start_color">#ffc56927</color>
+    <color name="bg_active_pressed_clock_button_gradient_end_color">#ffc56927</color>
+    <color name="bg_finished_clock_button_gradient_start_color">#ed3239</color>
+    <color name="bg_finished_clock_button_gradient_end_color">#ffa92c33</color>
+
+</resources>

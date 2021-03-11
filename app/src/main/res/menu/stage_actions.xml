@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Add new Time Control setting,  should appear as action button -->
+    <item
+        android:id="@+id/action_remove_stage"
+        android:icon="@drawable/ic_action_discard"
+        android:title="@string/action_delete"
+        app:showAsAction="always|withText"/>
+
+</menu>

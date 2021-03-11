@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/time_picker_widget"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_horizontal"
+              android:orientation="horizontal"
+    >
+
+    <!-- hour -->
+    <NumberPicker
+        android:id="@+id/hour"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
+
+    <!-- "hours" divider -->
+    <TextView
+        android:id="@+id/hour_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginRight="2.5dp"
+        android:gravity="center_vertical"
+        android:text="hours"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/divider_text_size"
+        android:textStyle="italic"
+        />
+
+    <!-- minute -->
+    <NumberPicker
+        android:id="@+id/minute"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2.5dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
+
+    <!-- "mins" divider -->
+    <TextView
+        android:id="@+id/minute_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginRight="2.5dp"
+        android:gravity="center_vertical"
+        android:text="mins"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/divider_text_size"
+        android:textStyle="italic"
+        />
+
+    <!-- seconds -->
+    <NumberPicker
+        android:id="@+id/seconds"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2.5dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
+
+    <!-- "secs" divider -->
+    <TextView
+        android:id="@+id/second_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginRight="2.5dp"
+        android:gravity="center_vertical"
+        android:text="secs"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/divider_text_size"
+        android:textStyle="italic"
+        />
+
+</LinearLayout>
