@@ -189,7 +189,7 @@ public class ChessClockLocalService extends Service {
 
         Intent notificationIntent = new Intent(getApplicationContext(), ClockTimersActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0,
-                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
