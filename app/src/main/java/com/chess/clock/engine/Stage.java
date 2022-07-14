@@ -441,7 +441,7 @@ public class Stage implements Parcelable, Cloneable {
      * Exceptions
      * *********************************
      */
-    public class GameStageException extends Exception {
+    public static class GameStageException extends Exception {
         public GameStageException(String message) {
             super(message);
         }

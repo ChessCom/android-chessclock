@@ -2,11 +2,11 @@ package com.chess.clock.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.CheckBox;
 
+import androidx.appcompat.widget.AppCompatCheckBox;
 import com.chess.clock.R;
 
-public class TimeControlCheckBox extends CheckBox {
+public class TimeControlCheckBox extends AppCompatCheckBox {
 
     public TimeControlCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);

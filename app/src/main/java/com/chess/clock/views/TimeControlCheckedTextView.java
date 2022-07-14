@@ -2,14 +2,14 @@ package com.chess.clock.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.CheckedTextView;
 
+import androidx.appcompat.widget.AppCompatCheckedTextView;
 import com.chess.clock.R;
 
 /**
  * Custom CheckedTextView making text color also sensitive to checked state.
  */
-public class TimeControlCheckedTextView extends CheckedTextView {
+public class TimeControlCheckedTextView extends AppCompatCheckedTextView {
 
     public TimeControlCheckedTextView(Context context, AttributeSet attrs) {
         super(context, attrs);

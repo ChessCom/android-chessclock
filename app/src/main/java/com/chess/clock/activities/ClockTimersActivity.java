@@ -1,6 +1,5 @@
 package com.chess.clock.activities;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,6 +11,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
@@ -531,7 +531,6 @@ public class ClockTimersActivity extends FragmentActivity {
      *
      * @param hasFocus
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -868,7 +867,7 @@ public class ClockTimersActivity extends FragmentActivity {
         editor.putInt(SP_KEY_TIMERS_STATE, mTimersState.getValue());
         editor.putInt(SP_KEY_TIMERS_STATE_PREVIOUS_TO_PAUSE, mTimersStatePreviousToPause.getValue());
 
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -895,19 +894,6 @@ public class ClockTimersActivity extends FragmentActivity {
     }
 
     /**
-     * Removes full screen before.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void showSystemUI() {
-        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentApiVersion >= Build.VERSION_CODES.KITKAT && isFullScreen) {
-            mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
-    }
-
-    /**
      * Reset dialog to be displayed when user presses the Reset widget.
      */
     public static class ResetClockDialogFragment extends DialogFragment {
@@ -917,6 +903,7 @@ public class ClockTimersActivity extends FragmentActivity {
         }
 
         @Override
+        @NonNull
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
             // Builder class for convenient dialog construction

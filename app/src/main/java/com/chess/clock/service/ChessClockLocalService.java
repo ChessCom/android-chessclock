@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.PowerManager;
 import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
@@ -32,7 +31,6 @@ public class ChessClockLocalService extends Service {
      * Logs stuff
      */
     private static final String TAG = ChessClockLocalService.class.getName();
-    private static final String WAKE_LOCK_TAG = ChessClockLocalService.class.getName() + "WakeLock";
     private static final boolean VERBOSE = true;
 
     /**
@@ -64,7 +62,6 @@ public class ChessClockLocalService extends Service {
     /**
      * Count down timer callback implementation to run when a timer is finished.
      * Removes foreground status and notification since the a player's clock is stopped.
-     * Also releases wake lock acquired when the game started.
      */
     private CountDownTimer.FinishCallback mFinishListener = new CountDownTimer.FinishCallback() {
         @Override
@@ -124,8 +121,6 @@ public class ChessClockLocalService extends Service {
         mPlayerTwoTimer = new CountDownTimer(DEFAULT_COUNT_DOWN_INTERVAL);
         mPlayerOneTimer.setFinishListener(mFinishListener);
         mPlayerTwoTimer.setFinishListener(mFinishListener);
-
-        PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
     }
 
     @Override
@@ -212,8 +207,6 @@ public class ChessClockLocalService extends Service {
                         .setContentTitle(getText(R.string.foreground_service_started))
                         .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
                         .build();
-
-        Log.v(TAG, "Acquiring wake lock");
 
         startForeground(R.string.foreground_service_started, notification);
     }

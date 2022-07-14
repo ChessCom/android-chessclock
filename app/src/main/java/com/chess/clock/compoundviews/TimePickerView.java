@@ -1,17 +1,12 @@
 package com.chess.clock.compoundviews;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Build;
-import android.text.*;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
-import android.widget.NumberPicker.Formatter;
 
 import com.chess.clock.R;
 
@@ -24,86 +19,17 @@ public class TimePickerView extends FrameLayout {
      * state
      */
     protected int mCurrentHour = 0; // 0-23
-    /**
-     * Hours Text WATCHER
-     */
-    TextWatcher mHourTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            String text = s.toString();
-            if (text.length() != 0 && !text.equals("")) {
-                mCurrentHour = Integer.valueOf(s.toString());
-            }
-        }
-    };
     protected int mCurrentMinute = 0; // 0-59
-    /**
-     * Minutes Text WATCHER
-     */
-    TextWatcher mMinuteTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            String text = s.toString();
-            if (text.length() != 0 && !text.equals("")) {
-                mCurrentMinute = Integer.valueOf(s.toString());
-            }
-        }
-    };
     protected int mCurrentSecond = 0; // 0-59
-    /**
-     * Seconds Text WATCHER
-     */
-    TextWatcher mSecondTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            String text = s.toString();
-            if (text.length() != 0 && !text.equals("")) {
-                mCurrentSecond = Integer.valueOf(s.toString());
-            }
-        }
-    };
     /**
      * ui components
      */
     private NumberPicker mHourPicker;
     private NumberPicker mMinutePicker;
     private NumberPicker mSecondPicker;
-    /**
-     * ui components for API < 11
-     */
-    private EditText mHourEditText;
-    private EditText mMinuteEditText;
-    private EditText mSecondEditText;
 
     public TimePickerView(Context context, Type type) {
         this(context, type, null);
@@ -135,26 +61,14 @@ public class TimePickerView extends FrameLayout {
         inflater.inflate(R.layout.widget_time_picker, this, true);
 
 
-        if (Build.VERSION.SDK_INT > 11) {
-            // hour visibility dependent on picker type
-            setupHourPicker(mType == Type.HOUR_MINUTE_SECOND);
+        // hour visibility dependent on picker type
+        setupHourPicker(mType == Type.HOUR_MINUTE_SECOND);
 
-            // digits of minute always visible
-            setupMinutePicker(true);
+        // digits of minute always visible
+        setupMinutePicker(true);
 
-            // digits of seconds always visible
-            setupSecondPicker(true);
-
-        } else {
-            // hour visibility dependent on picker type
-            setupHourEditText(mType == Type.HOUR_MINUTE_SECOND);
-
-            // digits of minute always visible
-            setupMinuteEditText(true);
-
-            // digits of seconds always visible
-            setupSecondEditText(true);
-        }
+        // digits of seconds always visible
+        setupSecondPicker(true);
 
         setCurrentHour(mCurrentHour);
         setCurrentMinute(mCurrentMinute);
@@ -185,25 +99,14 @@ public class TimePickerView extends FrameLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(layoutId, this, true);
 
-        if (Build.VERSION.SDK_INT > 11) {
-            // hour visibility dependent on picker type
-            setupHourPicker(mType == Type.HOUR_MINUTE_SECOND);
+        // hour visibility dependent on picker type
+        setupHourPicker(mType == Type.HOUR_MINUTE_SECOND);
 
-            // digits of minute always visible
-            setupMinutePicker(true);
+        // digits of minute always visible
+        setupMinutePicker(true);
 
-            // digits of seconds always visible
-            setupSecondPicker(true);
-        } else {
-            // hour visibility dependent on picker type
-            setupHourEditText(mType == Type.HOUR_MINUTE_SECOND);
-
-            // digits of minute always visible
-            setupMinuteEditText(true);
-
-            // digits of seconds always visible
-            setupSecondEditText(true);
-        }
+        // digits of seconds always visible
+        setupSecondPicker(true);
 
         setCurrentHour(mCurrentHour);
         setCurrentMinute(mCurrentMinute);
@@ -224,11 +127,7 @@ public class TimePickerView extends FrameLayout {
         if (mType != null && mType == Type.HOUR_MINUTE_SECOND) {
             this.mCurrentHour = currentHour;
 
-            if (Build.VERSION.SDK_INT > 11) {
-                updateHourPickerDisplay();
-            } else {
-                updateHourEditTextDisplay();
-            }
+            updateHourPickerDisplay();
         }
     }
 
@@ -245,12 +144,7 @@ public class TimePickerView extends FrameLayout {
     public void setCurrentMinute(Integer currentMinute) {
         this.mCurrentMinute = currentMinute;
 
-        if (Build.VERSION.SDK_INT > 11) {
-            updateMinutePickerDisplay();
-        } else {
-            updateMinuteEditTextDisplay();
-        }
-
+        updateMinutePickerDisplay();
     }
 
     /**
@@ -266,11 +160,7 @@ public class TimePickerView extends FrameLayout {
     public void setCurrentSecond(Integer currentSecond) {
         this.mCurrentSecond = currentSecond;
 
-        if (Build.VERSION.SDK_INT > 11) {
-            updateSecondsPickerDisplay();
-        } else {
-            updateSecondsEditTextDisplay();
-        }
+        updateSecondsPickerDisplay();
 
     }
 
@@ -282,7 +172,6 @@ public class TimePickerView extends FrameLayout {
     /**
      * Set the state of the spinners appropriate to the current hour.
      */
-    @TargetApi(11)
     private void updateHourPickerDisplay() {
         if (mType != null && mType == Type.HOUR_MINUTE_SECOND) {
             int currentHour = mCurrentHour;
@@ -290,35 +179,17 @@ public class TimePickerView extends FrameLayout {
         }
     }
 
-    private void updateHourEditTextDisplay() {
-        if (mType != null && mType == Type.HOUR_MINUTE_SECOND) {
-            int currentHour = mCurrentHour;
-            mHourEditText.setText(String.valueOf(currentHour));
-        }
-    }
-
     /**
      * Set the state of the spinners appropriate to the current minute.
      */
-    @TargetApi(11)
     private void updateMinutePickerDisplay() {
         mMinutePicker.setValue(mCurrentMinute);
     }
-
-    private void updateMinuteEditTextDisplay() {
-        mMinuteEditText.setText(String.valueOf(mCurrentMinute));
-    }
-
     /**
      * Set the state of the spinners appropriate to the current second.
      */
-    @TargetApi(11)
     private void updateSecondsPickerDisplay() {
         mSecondPicker.setValue(mCurrentSecond);
-    }
-
-    private void updateSecondsEditTextDisplay() {
-        mSecondEditText.setText(String.valueOf(mCurrentSecond));
     }
 
     /**
@@ -326,7 +197,6 @@ public class TimePickerView extends FrameLayout {
      *
      * @param pickerVisible if false, removes the spinner widget.
      */
-    @TargetApi(11)
     protected void setupSecondPicker(boolean pickerVisible) {
         mSecondPicker = findViewById(R.id.seconds);
         if (pickerVisible) {
@@ -339,22 +209,11 @@ public class TimePickerView extends FrameLayout {
         }
     }
 
-    protected void setupSecondEditText(boolean visible) {
-        mSecondEditText = findViewById(R.id.seconds);
-        if (visible) {
-            mSecondEditText.setFilters(new InputFilter[]{new InputFilterMinMax("0", "59"), new InputFilter.LengthFilter(2)});
-            mSecondEditText.addTextChangedListener(mSecondTextWatcher);
-        } else {
-            mSecondEditText.setVisibility(View.GONE);
-        }
-    }
-
     /**
      * Set the reference of minute picker, its digit format and register value change listener.
      *
      * @param pickerVisible if false, removes the spinner widget.
      */
-    @TargetApi(11)
     protected void setupMinutePicker(boolean pickerVisible) {
         mMinutePicker = findViewById(R.id.minute);
         if (pickerVisible) {
@@ -368,22 +227,11 @@ public class TimePickerView extends FrameLayout {
         }
     }
 
-    protected void setupMinuteEditText(boolean visible) {
-        mMinuteEditText = findViewById(R.id.minute);
-        if (visible) {
-            mMinuteEditText.setFilters(new InputFilter[]{new InputFilterMinMax("0", "59"), new InputFilter.LengthFilter(2)});
-            mMinuteEditText.addTextChangedListener(mMinuteTextWatcher);
-        } else {
-            mMinuteEditText.setVisibility(View.GONE);
-        }
-    }
-
     /**
      * Set the reference of hour picker, its digit format and register value change listener.
      *
      * @param pickerVisible if false, removes the spinner widget.
      */
-    @TargetApi(11)
     protected void setupHourPicker(boolean pickerVisible) {
 
         mHourPicker = findViewById(R.id.hour);
@@ -394,17 +242,6 @@ public class TimePickerView extends FrameLayout {
             mHourPicker.setOnValueChangedListener((picker, oldVal, newVal) -> mCurrentHour = newVal);
         } else {
             mHourPicker.setVisibility(View.GONE);
-            findViewById(R.id.hour_divider).setVisibility(View.GONE);
-        }
-    }
-
-    protected void setupHourEditText(boolean visible) {
-        mHourEditText = findViewById(R.id.hour);
-        if (visible) {
-            mHourEditText.setFilters(new InputFilter[]{new InputFilterMinMax("0", "10"), new InputFilter.LengthFilter(2)});
-            mHourEditText.addTextChangedListener(mHourTextWatcher);
-        } else {
-            mHourEditText.setVisibility(View.GONE);
             findViewById(R.id.hour_divider).setVisibility(View.GONE);
         }
     }
@@ -435,36 +272,6 @@ public class TimePickerView extends FrameLayout {
 
         public int getValue() {
             return value;
-        }
-    }
-
-    private class InputFilterMinMax implements InputFilter {
-
-        private int min, max;
-
-        public InputFilterMinMax(int min, int max) {
-            this.min = min;
-            this.max = max;
-        }
-
-        public InputFilterMinMax(String min, String max) {
-            this.min = Integer.parseInt(min);
-            this.max = Integer.parseInt(max);
-        }
-
-        @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            try {
-                int input = Integer.parseInt(dest.toString() + source.toString());
-                if (isInRange(min, max, input))
-                    return null;
-            } catch (NumberFormatException nfe) {
-            }
-            return "";
-        }
-
-        private boolean isInRange(int a, int b, int c) {
-            return b > a ? c >= a && c <= b : c >= b && c <= a;
         }
     }
 }
