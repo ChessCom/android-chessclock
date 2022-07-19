@@ -1,6 +1,9 @@
 # Chess.com Chess Clock
 
-Android version of chess clock mobile app. On the Play Store [here](https://play.google.com/store/apps/details?id=com.chess.clock).
+Android version of chess clock mobile app.
+
+[<img alt="Get it on Google Play" height="80" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png">](https://play.google.com/store/apps/details?id=com.chess.clock)
+[<img alt="Get it on F-Droid" height="80" src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png">](https://www.f-droid.org/packages/com.chess.clock/)
 
 ## Prerequisites
 
