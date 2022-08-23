@@ -17,9 +17,7 @@
     </style>
 
     <!-- No Action bar Theme -->
-    <style name="TimersTheme" parent="@style/Theme.AppCompat.Light">
-        <!--<item name="android:windowNoTitle">true</item>-->
-    </style>
+    <style name="TimersTheme" parent="@style/Theme.AppCompat.Light"></style>
 
     <!-- ActionBar styles -->
     <style name="NormalActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">

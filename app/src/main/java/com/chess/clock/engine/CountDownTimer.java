@@ -401,11 +401,7 @@ public class CountDownTimer implements TimeControl.TimeControlListener {
         if (mTimerState == TimerState.RUNNING || mTimerState == TimerState.PAUSED) {
             long elapsedTime = mStopTime - mTime;
             Log.d(TAG, "#" + this.hashCode() + " time since last stop: " + formatTime(elapsedTime));
-            if (elapsedTime < increment) {
-                addIncrement(elapsedTime);
-            } else {
-                addIncrement(increment);
-            }
+            addIncrement(Math.min(elapsedTime, increment));
             forceStop();
         }
     }

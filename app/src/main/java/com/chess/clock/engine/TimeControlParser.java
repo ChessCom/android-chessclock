@@ -21,21 +21,21 @@ public class TimeControlParser {
 
     private static final String TAG = TimeControlParser.class.getName();
 
-    private static String TIME_CONTROLS_PREF_NAME = "timeControls";
-    private static String TIME_CONTROL_SELECTED_PREF_IDX = "timeControlIdx";
-    private static String TIME_CONTROLS_PREF_FIELD_NAME = "json";
-    private static String TC_JSON_ID = "id";
-    private static String TC_JSON_DURATION = "duration";
-    private static String TC_JSON_MOVES = "moves";
-    private static String TC_JSON_VALUE = "value";
-    private static String TC_JSON_TYPE = "type";
-    private static String TC_JSON_NAME = "name";
-    private static String TC_JSON_TIME_INCREMENT = "time_increment";
-    private static String TC_JSON_TIME_INCREMENT_PLAYER_TWO = "time_increment_player_two";
-    private static String TC_JSON_STAGES = "stages";
-    private static String TC_JSON_STAGES_PLAYER_TWO = "stages_player_two";
-    private static String TC_JSON_TIME_CONTROLS = "time_controls";
-    private static String TC_JSON_SAME_AS_PLAYER_ONE = "same_as_player_one";
+    private static final String TIME_CONTROLS_PREF_NAME = "timeControls";
+    private static final String TIME_CONTROL_SELECTED_PREF_IDX = "timeControlIdx";
+    private static final String TIME_CONTROLS_PREF_FIELD_NAME = "json";
+    private static final String TC_JSON_ID = "id";
+    private static final String TC_JSON_DURATION = "duration";
+    private static final String TC_JSON_MOVES = "moves";
+    private static final String TC_JSON_VALUE = "value";
+    private static final String TC_JSON_TYPE = "type";
+    private static final String TC_JSON_NAME = "name";
+    private static final String TC_JSON_TIME_INCREMENT = "time_increment";
+    private static final String TC_JSON_TIME_INCREMENT_PLAYER_TWO = "time_increment_player_two";
+    private static final String TC_JSON_STAGES = "stages";
+    private static final String TC_JSON_STAGES_PLAYER_TWO = "stages_player_two";
+    private static final String TC_JSON_TIME_CONTROLS = "time_controls";
+    private static final String TC_JSON_SAME_AS_PLAYER_ONE = "same_as_player_one";
 
     private static SharedPreferences getSharedPreferences(Context context) {
         // Preferences stored on /data/data/PACKAGE_NAME/shared_prefs/timeControls.xml
