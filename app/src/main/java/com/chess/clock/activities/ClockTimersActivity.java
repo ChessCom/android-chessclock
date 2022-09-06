@@ -1,5 +1,6 @@
 package com.chess.clock.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,10 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.*;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.CountDownTimer;
@@ -26,6 +25,7 @@ import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControlParser;
 import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.statics.AppData;
+import com.chess.clock.views.ClockButton;
 
 public class ClockTimersActivity extends FragmentActivity {
 
@@ -76,15 +76,11 @@ public class ClockTimersActivity extends FragmentActivity {
     /**
      * UI
      */
-    private Button mPlayerOneImgButton;
-    private Button mPlayerTwoImgButton;
+    private ClockButton playerOneButton;
+    private ClockButton playerTwoButton;
     private Button mSettingsButton;
     private Button mPauseButton;
     private Button mResetButton;
-    private TextView mPlayerOneTimerTextView;
-    private TextView mPlayerTwoTimerTextView;
-    private TextView mPlayerOneMovesTextView;
-    private TextView mPlayerTwoMovesTextView;
 
     /**
      * Utils
@@ -256,7 +252,7 @@ public class ClockTimersActivity extends FragmentActivity {
     private final CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
         @Override
         public void onClockTimeUpdate(long millisUntilFinished) {
-            setTime(mPlayerOneTimerTextView, millisUntilFinished);
+            setTime(playerOneButton, millisUntilFinished);
         }
 
         @Override
@@ -289,7 +285,7 @@ public class ClockTimersActivity extends FragmentActivity {
 
         @Override
         public void onMoveCountUpdate(int moves) {
-            formatMoves(mPlayerOneMovesTextView, moves);
+            playerOneButton.setMoves(moves);
         }
 
         @Override
@@ -320,7 +316,7 @@ public class ClockTimersActivity extends FragmentActivity {
     private final CountDownTimer.Callback playerTwoCallback = new CountDownTimer.Callback() {
         @Override
         public void onClockTimeUpdate(long millisUntilFinished) {
-            setTime(mPlayerTwoTimerTextView, millisUntilFinished);
+            setTime(playerTwoButton, millisUntilFinished);
         }
 
         @Override
@@ -351,7 +347,7 @@ public class ClockTimersActivity extends FragmentActivity {
 
         @Override
         public void onMoveCountUpdate(int moves) {
-            formatMoves(mPlayerTwoMovesTextView, moves);
+            playerTwoButton.setMoves(moves);
         }
 
         @Override
@@ -599,11 +595,11 @@ public class ClockTimersActivity extends FragmentActivity {
 
         if (savedInstanceState.containsKey(STATE_PLAYER_ONE_KEY)) {
             CharSequence text = savedInstanceState.getString(STATE_PLAYER_ONE_KEY);
-            mPlayerOneTimerTextView.setText(text);
+            playerOneButton.setTime(text.toString());
         }
         if (savedInstanceState.containsKey(STATE_PLAYER_TWO_KEY)) {
             CharSequence text = savedInstanceState.getString(STATE_PLAYER_TWO_KEY);
-            mPlayerTwoTimerTextView.setText(text);
+            playerTwoButton.setTime(text.toString());
         }
         if (savedInstanceState.containsKey(STATE_TIMERS_KEY)) {
             int state = savedInstanceState.getInt(STATE_TIMERS_KEY);
@@ -733,8 +729,8 @@ public class ClockTimersActivity extends FragmentActivity {
     public void onSaveInstanceState(Bundle saveInstanceState) {
 
         Log.v(TAG, "Saving UI State on instance Bundle ");
-        saveInstanceState.putCharSequence(STATE_PLAYER_ONE_KEY, mPlayerOneTimerTextView.getText());
-        saveInstanceState.putCharSequence(STATE_PLAYER_TWO_KEY, mPlayerTwoTimerTextView.getText());
+        saveInstanceState.putCharSequence(STATE_PLAYER_ONE_KEY, playerOneButton.getTimeText());
+        saveInstanceState.putCharSequence(STATE_PLAYER_TWO_KEY, playerTwoButton.getTimeText());
         saveInstanceState.putInt(STATE_TIMERS_KEY, mTimersState.getValue());
         saveInstanceState.putInt(STATE_TIMERS_PREVIOUS_PAUSE_KEY, mTimersStatePreviousToPause.getValue());
 
@@ -748,19 +744,15 @@ public class ClockTimersActivity extends FragmentActivity {
     protected void initWidgetReferences() {
 
         // Save references
-        mPlayerOneImgButton = findViewById(R.id.playerOneButton);
-        mPlayerTwoImgButton = findViewById(R.id.playerTwoButton);
+        playerOneButton = findViewById(R.id.playerOneClockContainer);
+        playerTwoButton = findViewById(R.id.playerTwoClockContainer);
         mSettingsButton = findViewById(R.id.settings);
         mPauseButton = findViewById(R.id.resume_pause_toggle);
         mResetButton = findViewById(R.id.reset);
-        mPlayerOneTimerTextView = findViewById(R.id.playerOneClockText);
-        mPlayerTwoTimerTextView = findViewById(R.id.playerTwoClockText);
-        mPlayerOneMovesTextView = findViewById(R.id.playerOneMovesText);
-        mPlayerTwoMovesTextView = findViewById(R.id.playerTwoMovesText);
 
         // Set listeners
-        mPlayerOneImgButton.setOnClickListener(mPlayerOneButtonListener);
-        mPlayerTwoImgButton.setOnClickListener(mPlayerTwoButtonListener);
+        playerOneButton.setClockButtonClickListener(mPlayerOneButtonListener);
+        playerTwoButton.setClockButtonClickListener(mPlayerTwoButtonListener);
         mSettingsButton.setOnClickListener(mSettingsButtonListener);
         mPauseButton.setOnClickListener(mPauseButtonListener);
         mResetButton.setOnClickListener(mResetButtonListener);
@@ -774,13 +766,13 @@ public class ClockTimersActivity extends FragmentActivity {
         Log.d(TAG, "Updating UI state to: " + mTimersState);
         switch (mTimersState) {
             case PAUSED:
-                mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
-                mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+                playerOneButton.updateUi(R.drawable.shape_btn_clock_idle_gradient);
+                playerTwoButton.updateUi(R.drawable.shape_btn_clock_idle_gradient);
                 mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
                 mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
                 break;
             case PLAYER_ONE_RUNNING:
-                mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_btn_clock_running));
+                playerOneButton.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_btn_clock_running));
                 mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
                 mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
                 mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
@@ -788,7 +780,7 @@ public class ClockTimersActivity extends FragmentActivity {
                 mPauseButton.setText(getString(R.string.btn_pause_settings));
                 break;
             case PLAYER_TWO_RUNNING:
-                mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+                playerOneButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
                 mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_btn_clock_running));
                 mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
                 mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
@@ -796,14 +788,14 @@ public class ClockTimersActivity extends FragmentActivity {
                 mPauseButton.setText(getString(R.string.btn_pause_settings));
                 break;
             case PLAYER_ONE_FINISHED:
-                mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_finished_gradient));
+                playerOneButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_finished_gradient));
                 mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
                 mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
                 mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
                 mPauseButton.setVisibility(View.INVISIBLE);
                 break;
             case PLAYER_TWO_FINISHED:
-                mPlayerOneImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+                playerOneButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
                 mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_finished_gradient));
                 mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
                 mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
@@ -831,7 +823,8 @@ public class ClockTimersActivity extends FragmentActivity {
      * @param time  Player time in milliseconds.
      * @return Readable String format of time.
      */
-    private void setTime(TextView timer, long time) {
+    @SuppressLint("DefaultLocale")
+    private void setTime(ClockButton clockButton, long time) {
 
         int remaining = (int) (time % 1000);
 
@@ -846,11 +839,15 @@ public class ClockTimersActivity extends FragmentActivity {
 
         // 1 hour
         if (time >= 3600000) {
-            timer.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.clock_timer_textSize_small));
-            timer.setText(String.format("%d:%02d:%02d", h, m, s));
+            clockButton.setTimeAndTextSize(
+                    String.format("%d:%02d:%02d", h, m, s),
+                    R.dimen.clock_timer_textSize_small
+            );
         } else {
-            timer.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.clock_timer_textSize_normal));
-            timer.setText(String.format("%d:%02d", m, s));
+            clockButton.setTimeAndTextSize(
+                    String.format("%d:%02d", m, s),
+                    R.dimen.clock_timer_textSize_normal
+            );
         }
     }
 
@@ -881,16 +878,6 @@ public class ClockTimersActivity extends FragmentActivity {
         mTimersStatePreviousToPause = TimersState.fromInteger(sp.getInt(SP_KEY_TIMERS_STATE_PREVIOUS_TO_PAUSE, 0));
 
         Log.v(TAG, "Retrieving timer state: " + mTimersState + ", previous: " + mTimersStatePreviousToPause);
-    }
-
-    /**
-     * Set stylized moves text on TextView
-     *
-     * @param v     TextView object which text will be updated.
-     * @param moves Current move number of player.
-     */
-    private void formatMoves(TextView v, int moves) {
-        v.setText(String.format("%2d", moves));
     }
 
     /**
