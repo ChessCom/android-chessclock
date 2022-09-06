@@ -4,7 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.*;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -12,12 +16,16 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
-import android.util.Log;
-import android.view.*;
-import android.widget.Button;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.CountDownTimer;
@@ -270,17 +278,17 @@ public class ClockTimersActivity extends FragmentActivity {
         public void onStageUpdate(Stage stage) {
 
             // Reset
-            if (stage.getId() == 0) {
-                findViewById(R.id.playerOneStageTwo).setBackgroundResource(R.drawable.shape_stage_empty);
-                findViewById(R.id.playerOneStageThree).setBackgroundResource(R.drawable.shape_stage_empty);
-
-            } else if (stage.getId() == 1) {
-                // Mark beginning of stage 2
-                findViewById(R.id.playerOneStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
-            } else if (stage.getId() == 2) {
-                findViewById(R.id.playerOneStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
-                findViewById(R.id.playerOneStageThree).setBackgroundResource(R.drawable.shape_stage_fill);
-            }
+//            if (stage.getId() == 0) {
+//                findViewById(R.id.playerOneStageTwo).setBackgroundResource(R.drawable.shape_stage_empty);
+//                findViewById(R.id.playerOneStageThree).setBackgroundResource(R.drawable.shape_stage_empty);
+//
+//            } else if (stage.getId() == 1) {
+//                // Mark beginning of stage 2
+//                findViewById(R.id.playerOneStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
+//            } else if (stage.getId() == 2) {
+//                findViewById(R.id.playerOneStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
+//                findViewById(R.id.playerOneStageThree).setBackgroundResource(R.drawable.shape_stage_fill);
+//            }
         }
 
         @Override
@@ -292,24 +300,24 @@ public class ClockTimersActivity extends FragmentActivity {
         public void onTotalStageNumber(int stagesNumber) {
 
             // Hide all stage views
-            if (stagesNumber == 1) {
-                findViewById(R.id.playerOneStageOne).setVisibility(View.GONE);
-                findViewById(R.id.playerOneStageTwo).setVisibility(View.GONE);
-                findViewById(R.id.playerOneStageThree).setVisibility(View.GONE);
-            }
+//            if (stagesNumber == 1) {
+//                findViewById(R.id.playerOneStageOne).setVisibility(View.GONE);
+//                findViewById(R.id.playerOneStageTwo).setVisibility(View.GONE);
+//                findViewById(R.id.playerOneStageThree).setVisibility(View.GONE);
+//            }
 
             // 3 is the max allowed stages.
-            if (stagesNumber >= 2) {
-                View stageOne = findViewById(R.id.playerOneStageOne);
-                stageOne.setVisibility(View.VISIBLE);
-                stageOne.setBackgroundResource(R.drawable.shape_stage_fill);
-                findViewById(R.id.playerOneStageTwo).setVisibility(View.VISIBLE);
-                findViewById(R.id.playerOneStageThree).setVisibility(View.GONE);
-            }
-
-            if (stagesNumber == 3) {
-                findViewById(R.id.playerOneStageThree).setVisibility(View.VISIBLE);
-            }
+//            if (stagesNumber >= 2) {
+//                View stageOne = findViewById(R.id.playerOneStageOne);
+//                stageOne.setVisibility(View.VISIBLE);
+//                stageOne.setBackgroundResource(R.drawable.shape_stage_fill);
+//                findViewById(R.id.playerOneStageTwo).setVisibility(View.VISIBLE);
+//                findViewById(R.id.playerOneStageThree).setVisibility(View.GONE);
+//            }
+//
+//            if (stagesNumber == 3) {
+//                findViewById(R.id.playerOneStageThree).setVisibility(View.VISIBLE);
+//            }
         }
     };
 
@@ -334,15 +342,15 @@ public class ClockTimersActivity extends FragmentActivity {
         public void onStageUpdate(Stage stage) {
 
             // Reset
-            if (stage.getId() == 0) {
-                findViewById(R.id.playerTwoStageTwo).setBackgroundResource(R.drawable.shape_stage_empty);
-                findViewById(R.id.playerTwoStageThree).setBackgroundResource(R.drawable.shape_stage_empty);
-            } else if (stage.getId() == 1) {
-                findViewById(R.id.playerTwoStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
-            } else if (stage.getId() == 2) {
-                findViewById(R.id.playerTwoStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
-                findViewById(R.id.playerTwoStageThree).setBackgroundResource(R.drawable.shape_stage_fill);
-            }
+//            if (stage.getId() == 0) {
+//                findViewById(R.id.playerTwoStageTwo).setBackgroundResource(R.drawable.shape_stage_empty);
+//                findViewById(R.id.playerTwoStageThree).setBackgroundResource(R.drawable.shape_stage_empty);
+//            } else if (stage.getId() == 1) {
+//                findViewById(R.id.playerTwoStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
+//            } else if (stage.getId() == 2) {
+//                findViewById(R.id.playerTwoStageTwo).setBackgroundResource(R.drawable.shape_stage_fill);
+//                findViewById(R.id.playerTwoStageThree).setBackgroundResource(R.drawable.shape_stage_fill);
+//            }
         }
 
         @Override
@@ -353,24 +361,24 @@ public class ClockTimersActivity extends FragmentActivity {
         @Override
         public void onTotalStageNumber(int stagesNumber) {
             // Hide all stage views
-            if (stagesNumber == 1) {
-                findViewById(R.id.playerTwoStageOne).setVisibility(View.GONE);
-                findViewById(R.id.playerTwoStageTwo).setVisibility(View.GONE);
-                findViewById(R.id.playerTwoStageThree).setVisibility(View.GONE);
-            }
-
-            // 3 is the max allowed stages.
-            if (stagesNumber >= 2) {
-                View stageOne = findViewById(R.id.playerTwoStageOne);
-                stageOne.setVisibility(View.VISIBLE);
-                stageOne.setBackgroundResource(R.drawable.shape_stage_fill);
-                findViewById(R.id.playerTwoStageTwo).setVisibility(View.VISIBLE);
-                findViewById(R.id.playerTwoStageThree).setVisibility(View.GONE);
-            }
-
-            if (stagesNumber == 3) {
-                findViewById(R.id.playerTwoStageThree).setVisibility(View.VISIBLE);
-            }
+//            if (stagesNumber == 1) {
+//                findViewById(R.id.playerTwoStageOne).setVisibility(View.GONE);
+//                findViewById(R.id.playerTwoStageTwo).setVisibility(View.GONE);
+//                findViewById(R.id.playerTwoStageThree).setVisibility(View.GONE);
+//            }
+//
+//            // 3 is the max allowed stages.
+//            if (stagesNumber >= 2) {
+//                View stageOne = findViewById(R.id.playerTwoStageOne);
+//                stageOne.setVisibility(View.VISIBLE);
+//                stageOne.setBackgroundResource(R.drawable.shape_stage_fill);
+//                findViewById(R.id.playerTwoStageTwo).setVisibility(View.VISIBLE);
+//                findViewById(R.id.playerTwoStageThree).setVisibility(View.GONE);
+//            }
+//
+//            if (stagesNumber == 3) {
+//                findViewById(R.id.playerTwoStageThree).setVisibility(View.VISIBLE);
+//            }
         }
     };
 
@@ -766,39 +774,29 @@ public class ClockTimersActivity extends FragmentActivity {
         Log.d(TAG, "Updating UI state to: " + mTimersState);
         switch (mTimersState) {
             case PAUSED:
-                playerOneButton.updateUi(R.drawable.shape_btn_clock_idle_gradient);
-                playerTwoButton.updateUi(R.drawable.shape_btn_clock_idle_gradient);
-                mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
-                mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
+                playerOneButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
+                playerTwoButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
                 break;
             case PLAYER_ONE_RUNNING:
-                playerOneButton.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_btn_clock_running));
-                mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
-                mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
-                mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
+                playerOneButton.updateUi(R.drawable.bg_btn_clock_running,R.color.clock_timer_selected_textColor);
+                playerTwoButton.updateUi(R.drawable.shape_btn_clock_idle_gradient,R.color.clock_timer_idle_textColor);
                 mPauseButton.setVisibility(View.VISIBLE);
                 mPauseButton.setText(getString(R.string.btn_pause_settings));
                 break;
             case PLAYER_TWO_RUNNING:
-                playerOneButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
-                mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.bg_btn_clock_running));
-                mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
-                mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
+                playerOneButton.updateUi(R.drawable.shape_btn_clock_idle_gradient,R.color.clock_timer_idle_textColor);
+                playerTwoButton.updateUi(R.drawable.bg_btn_clock_running,R.color.clock_timer_selected_textColor);
                 mPauseButton.setVisibility(View.VISIBLE);
                 mPauseButton.setText(getString(R.string.btn_pause_settings));
                 break;
             case PLAYER_ONE_FINISHED:
-                playerOneButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_finished_gradient));
-                mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
-                mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
-                mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
+                playerOneButton.updateUi(R.drawable.shape_btn_clock_finished_gradient,R.color.clock_timer_selected_textColor);
+                playerTwoButton.updateUi(R.drawable.shape_btn_clock_idle_gradient,R.color.clock_timer_idle_textColor);
                 mPauseButton.setVisibility(View.INVISIBLE);
                 break;
             case PLAYER_TWO_FINISHED:
-                playerOneButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_idle_gradient));
-                mPlayerTwoImgButton.setBackgroundDrawable(resources.getDrawable(R.drawable.shape_btn_clock_finished_gradient));
-                mPlayerOneTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_idle_textColor));
-                mPlayerTwoTimerTextView.setTextColor(resources.getColor(R.color.clock_timer_selected_textColor));
+                playerOneButton.updateUi(R.drawable.shape_btn_clock_idle_gradient,R.color.clock_timer_idle_textColor);
+                playerTwoButton.updateUi(R.drawable.shape_btn_clock_finished_gradient,R.color.clock_timer_selected_textColor);
                 mPauseButton.setVisibility(View.INVISIBLE);
                 break;
         }
@@ -819,7 +817,7 @@ public class ClockTimersActivity extends FragmentActivity {
     /**
      * Set stylized time text on TextView.
      *
-     * @param timer TextView object which text will be updated with String time.
+     * @param clockButton ClockButton object which text will be updated with String time.
      * @param time  Player time in milliseconds.
      * @return Readable String format of time.
      */

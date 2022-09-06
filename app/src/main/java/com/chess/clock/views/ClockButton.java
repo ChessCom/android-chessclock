@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 
@@ -24,7 +25,7 @@ public class ClockButton extends FrameLayout {
     public ClockButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.view_clock_button, this, false);
+        View view = inflater.inflate(R.layout.view_clock_button, this, true);
         button = view.findViewById(R.id.clockButton);
         timeTv = view.findViewById(R.id.clockTimeTv);
         movesTv = view.findViewById(R.id.movesTv);
@@ -52,7 +53,12 @@ public class ClockButton extends FrameLayout {
         button.setOnClickListener(listener);
     }
 
-    public void updateUi(@DrawableRes int btnBgRes) {
-        button.setBackgroundDrawable(getResources().getDrawable(R.drawable.shape_btn_clock_idle_gradient));
+    public void updateUi(
+            @DrawableRes int btnBgRes,
+            @ColorRes int textColorRes
+    ) {
+        button.setBackgroundDrawable(getResources().getDrawable(btnBgRes));
+        timeTv.setTextColor(getResources().getColor(textColorRes));
+
     }
 }
