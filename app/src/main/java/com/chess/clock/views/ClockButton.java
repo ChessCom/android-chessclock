@@ -80,8 +80,8 @@ public class ClockButton extends FrameLayout {
 
     public void updateStage(int stageId) {
         //stage one is always filled if visible
-        setStageBg(stageTwo,stageId >1);
-        setStageBg(stageThree,stageId >2);
+        setStageBg(stageTwo, stageId > 0);
+        setStageBg(stageThree, stageId > 1);
     }
 
     public void setStages(int stagesNumber) {
