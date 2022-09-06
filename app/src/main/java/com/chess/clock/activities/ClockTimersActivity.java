@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -43,8 +42,6 @@ public class ClockTimersActivity extends FragmentActivity {
      * Shared preferences wrapper
      */
     private AppData appData;
-
-    private boolean isFullScreen;
 
     /**
      * FRAGMENT TAGS
@@ -115,7 +112,7 @@ public class ClockTimersActivity extends FragmentActivity {
 
         private final int value;
 
-        private TimersState(int value) {
+        TimersState(int value) {
             this.value = value;
         }
 
@@ -144,10 +141,8 @@ public class ClockTimersActivity extends FragmentActivity {
     private TimersState mTimersStatePreviousToPause;
 
     private final View.OnClickListener mSettingsButtonListener = v -> {
-
         // Pause clock before going to settings menu
         pauseClock();
-
 
         Intent settingsIntent = new Intent(v.getContext(), SettingsActivity.class);
         startActivityForResult(settingsIntent, SETTINGS_REQUEST_CODE);
@@ -391,12 +386,9 @@ public class ClockTimersActivity extends FragmentActivity {
 
     /**
      * Update UI according to Settings Activity return code.
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
      */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SETTINGS_REQUEST_CODE && resultCode == RESULT_OK) {
 
             // Both states at pause means it's the beginning of the game.
@@ -472,17 +464,14 @@ public class ClockTimersActivity extends FragmentActivity {
     }
 
     /**
-     * Set to immersive mode for Build.VERSION_CODES.KITKAT only.
-     *
-     * @param hasFocus
+     * Set to immersive mode since Build.VERSION_CODES.KITKAT
      */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-        isFullScreen = appData.getClockFullScreen();
+        boolean isFullScreen = appData.getClockFullScreen();
         if (hasFocus && currentApiVersion >= Build.VERSION_CODES.KITKAT) {
-
             if (isFullScreen) {
                 mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -493,7 +482,7 @@ public class ClockTimersActivity extends FragmentActivity {
             } else {
                 mDecorView.setSystemUiVisibility(0);
             }
-        } else if (hasFocus && currentApiVersion < Build.VERSION_CODES.KITKAT) {
+        } else if (hasFocus) {
             if (isFullScreen) {
                 hideStatusBar();
             } else {
@@ -529,6 +518,8 @@ public class ClockTimersActivity extends FragmentActivity {
             case Surface.ROTATION_180:
                 Log.d(TAG, "Getting Landscape Layout for ROTATION_90 || ROTATION_180");
                 return R.layout.activity_clock_timers_reversed;
+            case Surface.ROTATION_0:
+            case Surface.ROTATION_270:
             default:
                 Log.d(TAG, "Getting default Landscape Layout");
                 return R.layout.activity_clock_timers;
@@ -537,8 +528,6 @@ public class ClockTimersActivity extends FragmentActivity {
 
     /**
      * Restore Clock Timer state from saved Instance State bundle.
-     *
-     * @param savedInstanceState
      */
     private void restoreState(Bundle savedInstanceState) {
 
@@ -711,7 +700,6 @@ public class ClockTimersActivity extends FragmentActivity {
      * Change buttons and timers UI according to TimerState.
      */
     private void updateUIState() {
-        Resources resources = getResources();
         Log.d(TAG, "Updating UI state to: " + mTimersState);
         switch (mTimersState) {
             case PAUSED:
@@ -760,7 +748,6 @@ public class ClockTimersActivity extends FragmentActivity {
      *
      * @param clockButton ClockButton object which text will be updated with String time.
      * @param time        Player time in milliseconds.
-     * @return Readable String format of time.
      */
     @SuppressLint("DefaultLocale")
     private void setTime(ClockButton clockButton, long time) {
