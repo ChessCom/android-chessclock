@@ -30,7 +30,7 @@
             android:id="@+id/stageOne"
             android:layout_width="@dimen/clock_timer_stage_marker_size"
             android:layout_height="@dimen/clock_timer_stage_marker_size"
-            android:background="@drawable/shape_stage_empty"
+            android:background="@drawable/shape_stage_fill"
             android:visibility="invisible" />
 
         <View
