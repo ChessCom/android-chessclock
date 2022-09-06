@@ -71,7 +71,7 @@ public class ClockTimersActivity extends FragmentActivity {
     /**
      * Settings Activity request code
      */
-    private int SETTINGS_REQUEST_CODE = 1;
+    private final int SETTINGS_REQUEST_CODE = 1;
 
     /**
      * UI
@@ -139,7 +139,7 @@ public class ClockTimersActivity extends FragmentActivity {
     private TimersState mTimersState;
     private TimersState mTimersStatePreviousToPause;
 
-    private View.OnClickListener mSettingsButtonListener = v -> {
+    private final View.OnClickListener mSettingsButtonListener = v -> {
 
         // Pause clock before going to settings menu
         pauseClock();
@@ -150,9 +150,9 @@ public class ClockTimersActivity extends FragmentActivity {
         overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
     };
 
-    private View.OnClickListener mPauseButtonListener = v -> pauseClock();
+    private final View.OnClickListener mPauseButtonListener = v -> pauseClock();
 
-    private View.OnClickListener mResetButtonListener = new View.OnClickListener() {
+    private final View.OnClickListener mResetButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -164,7 +164,7 @@ public class ClockTimersActivity extends FragmentActivity {
         }
     };
 
-    private View.OnClickListener mPlayerOneButtonListener = new View.OnClickListener() {
+    private final View.OnClickListener mPlayerOneButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Log.i(TAG, "Player one pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
@@ -209,7 +209,7 @@ public class ClockTimersActivity extends FragmentActivity {
         }
     };
 
-    private View.OnClickListener mPlayerTwoButtonListener = new View.OnClickListener() {
+    private final View.OnClickListener mPlayerTwoButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Log.i(TAG, "Player two pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
@@ -253,7 +253,7 @@ public class ClockTimersActivity extends FragmentActivity {
         }
     };
 
-    private CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
+    private final CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
         @Override
         public void onClockTimeUpdate(long millisUntilFinished) {
             setTime(mPlayerOneTimerTextView, millisUntilFinished);
@@ -317,7 +317,7 @@ public class ClockTimersActivity extends FragmentActivity {
         }
     };
 
-    private CountDownTimer.Callback playerTwoCallback = new CountDownTimer.Callback() {
+    private final CountDownTimer.Callback playerTwoCallback = new CountDownTimer.Callback() {
         @Override
         public void onClockTimeUpdate(long millisUntilFinished) {
             setTime(mPlayerTwoTimerTextView, millisUntilFinished);
@@ -381,7 +381,7 @@ public class ClockTimersActivity extends FragmentActivity {
     /**
      * Defines callbacks for chess clock service binding, passed to bindService()
      */
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private final ServiceConnection mConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
