@@ -2,19 +2,18 @@
 <resources>
     <!-- Common palette -->
     <color name="black">#000</color>
+    <color name="green">#7fa650</color>
+    <color name="green_65">#A67FA650</color>
+    <color name="transparent">#00000000</color>
     <color name="white">#fff</color>
     <color name="white_20">#33FFFFFF</color>
-    <color name="transparent">#00000000</color>
+
     <!-- Clock timers screen -->
     <color name="clock_timers_activity_background">#FF312e2b</color>
     <color name="bg_idle_clock_button_gradient_start_color">#ff514d48</color>
     <color name="bg_idle_clock_button_gradient_end_color">#ff514d48</color>
     <color name="bg_clock_setting_button_normal">#6f6862</color>
     <color name="bg_clock_setting_button_pressed">#ff59534e</color>
-    <color name="bg_active_default_clock_button_gradient_start_color">#e38427</color>
-    <color name="bg_active_default_clock_button_gradient_end_color">#eba249</color>
-    <color name="bg_active_pressed_clock_button_gradient_start_color">#ffc56927</color>
-    <color name="bg_active_pressed_clock_button_gradient_end_color">#ffd78f48</color>
     <color name="bg_finished_clock_button_gradient_start_color">#ed3239</color>
     <color name="bg_finished_clock_button_gradient_end_color">#ad2c33</color>
     <color name="clock_button_stroke_color">#000000</color>
@@ -24,8 +23,6 @@
     <color name="clock_moves_text_color">#aa312e2b</color>
 
     <!-- Settings screen -->
-    <color name="bg_btn_start_normal">#e6912c</color>
-    <color name="bg_btn_start_pressed">#b87423</color>
     <color name="list_item_text_color_normal">#000000</color>
     <color name="list_item_text_color_checked">#324f85</color>
 
