@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -33,6 +31,7 @@ import com.chess.clock.engine.TimeControlParser;
 import com.chess.clock.service.ChessClockLocalService;
 import com.chess.clock.statics.AppData;
 import com.chess.clock.views.ClockButton;
+import com.chess.clock.views.ClockMenu;
 
 public class ClockTimersActivity extends FragmentActivity {
 
@@ -83,9 +82,7 @@ public class ClockTimersActivity extends FragmentActivity {
      */
     private ClockButton playerOneButton;
     private ClockButton playerTwoButton;
-    private Button mSettingsButton;
-    private Button mPauseButton;
-    private Button mResetButton;
+    private ClockMenu clockMenu;
 
     /**
      * Utils
@@ -140,29 +137,6 @@ public class ClockTimersActivity extends FragmentActivity {
     private TimersState mTimersState;
     private TimersState mTimersStatePreviousToPause;
 
-    private final View.OnClickListener mSettingsButtonListener = v -> {
-        // Pause clock before going to settings menu
-        pauseClock();
-
-        Intent settingsIntent = new Intent(v.getContext(), SettingsActivity.class);
-        startActivityForResult(settingsIntent, SETTINGS_REQUEST_CODE);
-        overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
-    };
-
-    private final View.OnClickListener mPauseButtonListener = v -> pauseClock();
-
-    private final View.OnClickListener mResetButtonListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            if (mTimersState == TimersState.PLAYER_ONE_RUNNING
-                    || mTimersState == TimersState.PLAYER_TWO_RUNNING) {
-                pauseClock();
-            }
-            showResetClockDialog();
-        }
-    };
-
     private final View.OnClickListener mPlayerOneButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -171,8 +145,7 @@ public class ClockTimersActivity extends FragmentActivity {
             // Set pause btn visibility
             if (mTimersState == TimersState.PAUSED
                     && mTimersStatePreviousToPause == TimersState.PAUSED) {
-                mPauseButton.setVisibility(View.VISIBLE);
-                mPauseButton.setText(getString(R.string.btn_pause_settings));
+                clockMenu.showPause();
             }
 
             if (mTimersState == TimersState.PLAYER_ONE_RUNNING || mTimersState == TimersState.PAUSED) {
@@ -213,11 +186,8 @@ public class ClockTimersActivity extends FragmentActivity {
         public void onClick(View v) {
             Log.i(TAG, "Player two pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
 
-            // Set pause btn visibility
-            if (mTimersState == TimersState.PAUSED
-                    && mTimersStatePreviousToPause == TimersState.PAUSED) {
-                mPauseButton.setVisibility(View.VISIBLE);
-                mPauseButton.setText(getString(R.string.btn_pause_settings));
+            if (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) {
+                clockMenu.showPause();
             }
 
             if (mTimersState == TimersState.PLAYER_TWO_RUNNING || mTimersState == TimersState.PAUSED) {
@@ -399,9 +369,6 @@ public class ClockTimersActivity extends FragmentActivity {
             // would press back now and when returning it would resume the previous deprecated state.
             saveTimersState();
 
-            // reset play/pause toggle btn
-            mPauseButton.setVisibility(View.INVISIBLE);
-
             updateUIState();
         }
     }
@@ -453,13 +420,6 @@ public class ClockTimersActivity extends FragmentActivity {
             mTimersStatePreviousToPause = TimersState.PAUSED;
         }
 
-        // Set the custom chess fonts. The buttons text contain pause|settings|reset symbols.
-        Typeface font = Typeface.createFromAsset(getAssets(), "ChessGlyph-Regular.otf");
-        mPauseButton.setTypeface(font);
-        mResetButton.setTypeface(font);
-        mSettingsButton.setTypeface(font);
-
-        // Update widgets style according to TimerState
         updateUIState();
     }
 
@@ -550,8 +510,7 @@ public class ClockTimersActivity extends FragmentActivity {
 
         // Set play/pause toggle btn
         if (mTimersState != TimersState.PAUSED) {
-            mPauseButton.setVisibility(View.VISIBLE);
-            mPauseButton.setText(getString(R.string.btn_pause_settings));
+            clockMenu.showPause();
         }
 
         // Restore time stamp when onPause() was called.
@@ -627,9 +586,6 @@ public class ClockTimersActivity extends FragmentActivity {
 
             mService.resetClock();
 
-            // reset play/pause toggle btn
-            mPauseButton.setVisibility(View.INVISIBLE);
-
             // Both states at pause means it's the beginning of the game.
             mTimersState = TimersState.PAUSED;
             mTimersStatePreviousToPause = TimersState.PAUSED;
@@ -650,8 +606,6 @@ public class ClockTimersActivity extends FragmentActivity {
                 Log.d(TAG, "Previous state: " + mTimersStatePreviousToPause +
                         " , current state: " + mTimersState);
                 mService.pauseClock();
-
-                mPauseButton.setVisibility(View.INVISIBLE);
 
                 updateUIState();
             }
@@ -684,16 +638,41 @@ public class ClockTimersActivity extends FragmentActivity {
         // Save references
         playerOneButton = findViewById(R.id.playerOneClockContainer);
         playerTwoButton = findViewById(R.id.playerTwoClockContainer);
-        mSettingsButton = findViewById(R.id.settings);
-        mPauseButton = findViewById(R.id.resume_pause_toggle);
-        mResetButton = findViewById(R.id.reset);
+        clockMenu = findViewById(R.id.menu_container);
 
         // Set listeners
         playerOneButton.setClockButtonClickListener(mPlayerOneButtonListener);
         playerTwoButton.setClockButtonClickListener(mPlayerTwoButtonListener);
-        mSettingsButton.setOnClickListener(mSettingsButtonListener);
-        mPauseButton.setOnClickListener(mPauseButtonListener);
-        mResetButton.setOnClickListener(mResetButtonListener);
+        clockMenu.setListener(new ClockMenu.MenuClickListener() {
+            @Override
+            public void timeSettingsClicked() {
+                // Pause clock before going to settings menu
+                pauseClock();
+
+                Intent settingsIntent = new Intent(ClockTimersActivity.this, SettingsActivity.class);
+                startActivityForResult(settingsIntent, SETTINGS_REQUEST_CODE);
+                overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
+            }
+
+            @Override
+            public void playPauseClicked() {
+                pauseClock();
+            }
+
+            @Override
+            public void resetClicked() {
+                if (mTimersState == TimersState.PLAYER_ONE_RUNNING
+                        || mTimersState == TimersState.PLAYER_TWO_RUNNING) {
+                    pauseClock();
+                }
+                showResetClockDialog();
+            }
+
+            @Override
+            public void soundClicked() {
+                // todo on sound changes
+            }
+        });
     }
 
     /**
@@ -705,28 +684,27 @@ public class ClockTimersActivity extends FragmentActivity {
             case PAUSED:
                 playerOneButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
                 playerTwoButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
+                clockMenu.showPlay();
                 break;
             case PLAYER_ONE_RUNNING:
                 playerOneButton.updateUi(R.drawable.bg_btn_clock_running, R.color.clock_timer_selected_textColor);
                 playerTwoButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
-                mPauseButton.setVisibility(View.VISIBLE);
-                mPauseButton.setText(getString(R.string.btn_pause_settings));
+                clockMenu.showPause();
                 break;
             case PLAYER_TWO_RUNNING:
                 playerOneButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
                 playerTwoButton.updateUi(R.drawable.bg_btn_clock_running, R.color.clock_timer_selected_textColor);
-                mPauseButton.setVisibility(View.VISIBLE);
-                mPauseButton.setText(getString(R.string.btn_pause_settings));
+                clockMenu.showPause();
                 break;
             case PLAYER_ONE_FINISHED:
                 playerOneButton.updateUi(R.drawable.shape_btn_clock_finished_gradient, R.color.clock_timer_selected_textColor);
                 playerTwoButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
-                mPauseButton.setVisibility(View.INVISIBLE);
+                clockMenu.hidePlayPauseBtn();
                 break;
             case PLAYER_TWO_FINISHED:
                 playerOneButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
                 playerTwoButton.updateUi(R.drawable.shape_btn_clock_finished_gradient, R.color.clock_timer_selected_textColor);
-                mPauseButton.setVisibility(View.INVISIBLE);
+                clockMenu.hidePlayPauseBtn();
                 break;
         }
     }

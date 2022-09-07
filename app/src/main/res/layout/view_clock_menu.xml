@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="@dimen/clock_timer_menu_height"
+    android:gravity="center_vertical|center"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/margin_standard"
+    tools:context=".activities.ClockTimersActivity"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <ImageView
+        android:id="@+id/resetBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_standard"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:maxWidth="240dp"
+        android:src="@drawable/ic_refresh"
+        app:tint="@color/bg_clock_settings" />
+
+    <ImageView
+        android:id="@+id/playPauseBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_standard"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:maxWidth="240dp"
+        android:src="@drawable/ic_pause"
+        app:tint="@color/bg_clock_settings" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/settingsBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_standard"
+        android:layout_weight="1"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:maxWidth="240dp"
+        android:src="@drawable/ic_pause"
+        app:tint="@color/bg_clock_settings" />
+
+    <ImageView
+        android:id="@+id/soundBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_standard"
+        android:layout_weight="1"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:maxWidth="240dp"
+        android:src="@drawable/ic_sound"
+        app:tint="@color/bg_clock_settings" />
+
+</merge>

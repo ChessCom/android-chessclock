@@ -68,9 +68,6 @@
     <string name="fischer_option_subtitle">يحصل اللاعبان على المدة المضافة الكاملة عند نهاية كل دور.</string>
     ​
     <!-- Strings for settings buttons -->
-    <string name="btn_pause_settings">K</string>
-    <string name="btn_reset_settings">L</string>
-    <string name="btn_menu_settings">&#xb7;</string>
     <string name="time_control_player_one">اللاعب الأول</string>
     <string name="time_control_player_two">اللاعب الثاني</string>
     <string name="channel_name">ساعة الشطرنج</string>
