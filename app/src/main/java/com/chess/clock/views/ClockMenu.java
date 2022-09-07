@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.chess.clock.R;
 
-public class ClockMenu extends LinearLayout {
+public class ClockMenu extends ConstraintLayout {
 
     private final ImageView settingsButton;
     private final ImageView playPauseButton;

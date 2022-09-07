@@ -7,7 +7,7 @@
     <com.chess.clock.views.ClockMenu
         android:id="@+id/menu_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/clock_timer_menu_height"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <com.chess.clock.views.ClockButton

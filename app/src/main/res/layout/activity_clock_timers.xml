@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,14 +8,14 @@
     <com.chess.clock.views.ClockButton
         android:id="@+id/playerTwoClockContainer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/clock_timer_menu_height"
         android:layout_weight="1"
         android:rotation="180" />
 
     <com.chess.clock.views.ClockMenu
         android:id="@+id/menu_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="@dimen/clock_timer_menu_height" />
 
     <com.chess.clock.views.ClockButton
         android:id="@+id/playerOneClockContainer"

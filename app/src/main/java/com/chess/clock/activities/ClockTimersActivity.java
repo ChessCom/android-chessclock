@@ -143,8 +143,7 @@ public class ClockTimersActivity extends FragmentActivity {
             Log.i(TAG, "Player one pressed the clock with state: " + mTimersState + " (previous: " + mTimersStatePreviousToPause + ")");
 
             // Set pause btn visibility
-            if (mTimersState == TimersState.PAUSED
-                    && mTimersStatePreviousToPause == TimersState.PAUSED) {
+            if (mTimersState == TimersState.PAUSED && mTimersStatePreviousToPause == TimersState.PAUSED) {
                 clockMenu.showPause();
             }
 
@@ -520,11 +519,6 @@ public class ClockTimersActivity extends FragmentActivity {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
 
@@ -656,7 +650,15 @@ public class ClockTimersActivity extends FragmentActivity {
 
             @Override
             public void playPauseClicked() {
-                pauseClock();
+                if (mTimersState == TimersState.PAUSED) {
+                    if (mTimersStatePreviousToPause == TimersState.PLAYER_ONE_RUNNING) {
+                        mPlayerTwoButtonListener.onClick(playerTwoButton);
+                    } else {
+                        mPlayerOneButtonListener.onClick(playerOneButton);
+                    }
+                } else {
+                    pauseClock();
+                }
             }
 
             @Override

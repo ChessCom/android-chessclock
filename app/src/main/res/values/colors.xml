@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Common palette -->
+    <color name="black">#000</color>
+    <color name="white">#fff</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="transparent">#00000000</color>
     <!-- Clock timers screen -->
     <color name="clock_timers_activity_background">#FF312e2b</color>
     <color name="bg_idle_clock_button_gradient_start_color">#ff514d48</color>
