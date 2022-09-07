@@ -25,4 +25,11 @@ public class AppData {
         return preferences.getBoolean(AppConstants.PREF_CLOCK_FULL_SCREEN, true);
     }
 
+    public boolean areSoundsEnabled(){
+        return preferences.getBoolean(AppConstants.PREF_CLOCK_SOUNDS_ON, true);
+    }
+
+    public void setSoundsEnabled(Boolean enabled){
+        preferences.edit().putBoolean(AppConstants.PREF_CLOCK_SOUNDS_ON,enabled).apply();
+    }
 }

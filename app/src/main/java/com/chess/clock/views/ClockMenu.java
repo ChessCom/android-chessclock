@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -47,6 +46,14 @@ public class ClockMenu extends ConstraintLayout {
 
     public void hidePlayPauseBtn() {
         playPauseButton.setVisibility(View.INVISIBLE);
+    }
+
+    public void updateSoundIcon(boolean soundsEnabled) {
+        if (soundsEnabled) {
+            soundButton.setImageResource(R.drawable.ic_sound);
+        } else {
+            soundButton.setImageResource(R.drawable.ic_sound_off);
+        }
     }
 
     public interface MenuClickListener {

@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -93,9 +92,7 @@ public class ClockTimersActivity extends FragmentActivity {
     /**
      * Clock button sounds.
      */
-    private MediaPlayer playerOneMoveSound;
-    private MediaPlayer playerTwoMoveSound;
-    private MediaPlayer clockFinished;
+    ClockSoundManager soundManager;
 
     /**
      * Timers state.
@@ -168,8 +165,7 @@ public class ClockTimersActivity extends FragmentActivity {
                         mTimersStatePreviousToPause = TimersState.PAUSED;
                     }
 
-                    // Start audio
-                    playerOneMoveSound.start();
+                    soundManager.playSound(ClockSound.PLAYER_ONE_MOVE);
 
                     updateUIState();
                 }
@@ -209,8 +205,7 @@ public class ClockTimersActivity extends FragmentActivity {
                         mTimersStatePreviousToPause = TimersState.PAUSED;
                     }
 
-                    // Start audio
-                    playerTwoMoveSound.start();
+                    soundManager.playSound(ClockSound.PLAYER_TWO_MOVE);
 
                     updateUIState();
                 }
@@ -231,10 +226,7 @@ public class ClockTimersActivity extends FragmentActivity {
         public void onClockFinish() {
             Log.i(TAG, "Player one loses");
             mTimersState = TimersState.PLAYER_ONE_FINISHED;
-
-            // Play finish sound
-            clockFinished.start();
-
+            soundManager.playSound(ClockSound.GAME_FINISHED);
             updateUIState();
         }
 
@@ -264,10 +256,7 @@ public class ClockTimersActivity extends FragmentActivity {
         public void onClockFinish() {
             Log.i(TAG, "Player two loses");
             mTimersState = TimersState.PLAYER_TWO_FINISHED;
-
-            // Play finish sound
-            clockFinished.start();
-
+            soundManager.playSound(ClockSound.GAME_FINISHED);
             updateUIState();
         }
 
@@ -399,10 +388,8 @@ public class ClockTimersActivity extends FragmentActivity {
         setContentView(layout);
 
         mDecorView = getWindow().getDecorView();
-
-        playerOneMoveSound = MediaPlayer.create(getApplicationContext(), R.raw.chess_clock_switch1);
-        playerTwoMoveSound = MediaPlayer.create(getApplicationContext(), R.raw.chess_clock_switch2);
-        clockFinished = MediaPlayer.create(getApplicationContext(), R.raw.chess_clock_time_ended);
+        soundManager = new ClockSoundManagerImpl();
+        soundManager.init(getApplicationContext(), appData.areSoundsEnabled());
 
         // Keep screen ON
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -529,6 +516,8 @@ public class ClockTimersActivity extends FragmentActivity {
         saveTimersState();
 
         pauseClock();
+
+        appData.setSoundsEnabled(soundManager.areSoundsEnabled());
     }
 
     @Override
@@ -672,7 +661,8 @@ public class ClockTimersActivity extends FragmentActivity {
 
             @Override
             public void soundClicked() {
-                // todo on sound changes
+                soundManager.toggleSound();
+                updateUIState();
             }
         });
     }
@@ -709,6 +699,7 @@ public class ClockTimersActivity extends FragmentActivity {
                 clockMenu.hidePlayPauseBtn();
                 break;
         }
+        clockMenu.updateSoundIcon(soundManager.areSoundsEnabled());
     }
 
     /**
