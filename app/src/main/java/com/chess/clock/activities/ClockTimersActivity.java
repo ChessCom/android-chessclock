@@ -35,17 +35,10 @@ import com.chess.clock.views.ClockMenu;
 public class ClockTimersActivity extends FragmentActivity {
 
     private static final String TAG = ClockTimersActivity.class.getName();
-
-    /**
-     * Shared preferences wrapper
-     */
-    private AppData appData;
-
     /**
      * FRAGMENT TAGS
      */
     private static final String TAG_RESET_DIALOG_FRAGMENT = "ResetDialogFragment";
-
     /**
      * UI saveInstance Bundle Keys.
      */
@@ -54,13 +47,15 @@ public class ClockTimersActivity extends FragmentActivity {
     private static final String STATE_TIMERS_KEY = "STATE_TIMERS_KEY";
     private static final String STATE_TIMERS_PREVIOUS_PAUSE_KEY = "STATE_TIMERS_PREVIOUS_PAUSE_KEY";
     private static final String STATE_LAST_TIME_PAUSED_ACTIVITY_KEY = "LAST_TIME_PAUSED_ACTIVITY_KEY";
-
     /**
      * Shared Preferences Keys.
      */
     private static final String SP_KEY_TIMERS_STATE = "timersState";
     private static final String SP_KEY_TIMERS_STATE_PREVIOUS_TO_PAUSE = "timersStatePreviousToPause";
-
+    /**
+     * Settings Activity request code
+     */
+    private final int SETTINGS_REQUEST_CODE = 1;
     /**
      * Chess clock local service (clock engine).
      */
@@ -71,10 +66,8 @@ public class ClockTimersActivity extends FragmentActivity {
      */
     boolean mBound = false;
 
-    /**
-     * Settings Activity request code
-     */
-    private final int SETTINGS_REQUEST_CODE = 1;
+    private ClockSoundManager soundManager;
+    private AppData appData;
 
     /**
      * UI
@@ -82,58 +75,71 @@ public class ClockTimersActivity extends FragmentActivity {
     private ClockButton playerOneButton;
     private ClockButton playerTwoButton;
     private ClockMenu clockMenu;
-
     /**
      * Utils
      */
     private long mTimeStampOnPauseActivity;
     private View mDecorView;
-
-    /**
-     * Clock button sounds.
-     */
-    ClockSoundManager soundManager;
-
-    /**
-     * Timers state.
-     */
-    public enum TimersState {
-        PAUSED(0),
-        PLAYER_ONE_RUNNING(1),
-        PLAYER_TWO_RUNNING(2),
-        PLAYER_ONE_FINISHED(3),
-        PLAYER_TWO_FINISHED(4);
-
-        private final int value;
-
-        TimersState(int value) {
-            this.value = value;
-        }
-
-        public static TimersState fromInteger(int type) {
-            switch (type) {
-                case 0:
-                    return PAUSED;
-                case 1:
-                    return PLAYER_ONE_RUNNING;
-                case 2:
-                    return PLAYER_TWO_RUNNING;
-                case 3:
-                    return PLAYER_ONE_FINISHED;
-                case 4:
-                    return PLAYER_TWO_FINISHED;
-            }
-            return null;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
     private TimersState mTimersState;
-    private TimersState mTimersStatePreviousToPause;
+    private final CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
+        @Override
+        public void onClockTimeUpdate(long millisUntilFinished) {
+            setTime(playerOneButton, millisUntilFinished);
+        }
 
+        @Override
+        public void onClockFinish() {
+            Log.i(TAG, "Player one loses");
+            mTimersState = TimersState.PLAYER_ONE_FINISHED;
+            soundManager.playSound(ClockSound.GAME_FINISHED);
+            updateUIState();
+        }
+
+        @Override
+        public void onStageUpdate(Stage stage) {
+            playerOneButton.updateStage(stage.getId());
+        }
+
+        @Override
+        public void onMoveCountUpdate(int moves) {
+            playerOneButton.setMoves(moves);
+        }
+
+        @Override
+        public void onTotalStageNumber(int stagesNumber) {
+            playerOneButton.setStages(stagesNumber);
+        }
+    };
+    private final CountDownTimer.Callback playerTwoCallback = new CountDownTimer.Callback() {
+        @Override
+        public void onClockTimeUpdate(long millisUntilFinished) {
+            setTime(playerTwoButton, millisUntilFinished);
+        }
+
+        @Override
+        public void onClockFinish() {
+            Log.i(TAG, "Player two loses");
+            mTimersState = TimersState.PLAYER_TWO_FINISHED;
+            soundManager.playSound(ClockSound.GAME_FINISHED);
+            updateUIState();
+        }
+
+        @Override
+        public void onStageUpdate(Stage stage) {
+            playerTwoButton.updateStage(stage.getId());
+        }
+
+        @Override
+        public void onMoveCountUpdate(int moves) {
+            playerTwoButton.setMoves(moves);
+        }
+
+        @Override
+        public void onTotalStageNumber(int stagesNumber) {
+            playerTwoButton.setStages(stagesNumber);
+        }
+    };
+    private TimersState mTimersStatePreviousToPause;
     private final View.OnClickListener mPlayerOneButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -175,7 +181,6 @@ public class ClockTimersActivity extends FragmentActivity {
             }
         }
     };
-
     private final View.OnClickListener mPlayerTwoButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -215,67 +220,6 @@ public class ClockTimersActivity extends FragmentActivity {
             }
         }
     };
-
-    private final CountDownTimer.Callback playerOneCallback = new CountDownTimer.Callback() {
-        @Override
-        public void onClockTimeUpdate(long millisUntilFinished) {
-            setTime(playerOneButton, millisUntilFinished);
-        }
-
-        @Override
-        public void onClockFinish() {
-            Log.i(TAG, "Player one loses");
-            mTimersState = TimersState.PLAYER_ONE_FINISHED;
-            soundManager.playSound(ClockSound.GAME_FINISHED);
-            updateUIState();
-        }
-
-        @Override
-        public void onStageUpdate(Stage stage) {
-            playerOneButton.updateStage(stage.getId());
-        }
-
-        @Override
-        public void onMoveCountUpdate(int moves) {
-            playerOneButton.setMoves(moves);
-        }
-
-        @Override
-        public void onTotalStageNumber(int stagesNumber) {
-            playerOneButton.setStages(stagesNumber);
-        }
-    };
-
-    private final CountDownTimer.Callback playerTwoCallback = new CountDownTimer.Callback() {
-        @Override
-        public void onClockTimeUpdate(long millisUntilFinished) {
-            setTime(playerTwoButton, millisUntilFinished);
-        }
-
-        @Override
-        public void onClockFinish() {
-            Log.i(TAG, "Player two loses");
-            mTimersState = TimersState.PLAYER_TWO_FINISHED;
-            soundManager.playSound(ClockSound.GAME_FINISHED);
-            updateUIState();
-        }
-
-        @Override
-        public void onStageUpdate(Stage stage) {
-            playerTwoButton.updateStage(stage.getId());
-        }
-
-        @Override
-        public void onMoveCountUpdate(int moves) {
-            playerTwoButton.setMoves(moves);
-        }
-
-        @Override
-        public void onTotalStageNumber(int stagesNumber) {
-            playerTwoButton.setStages(stagesNumber);
-        }
-    };
-
     /**
      * Defines callbacks for chess clock service binding, passed to bindService()
      */
@@ -775,6 +719,43 @@ public class ClockTimersActivity extends FragmentActivity {
         mTimersStatePreviousToPause = TimersState.fromInteger(sp.getInt(SP_KEY_TIMERS_STATE_PREVIOUS_TO_PAUSE, 0));
 
         Log.v(TAG, "Retrieving timer state: " + mTimersState + ", previous: " + mTimersStatePreviousToPause);
+    }
+
+    /**
+     * Timers state.
+     */
+    public enum TimersState {
+        PAUSED(0),
+        PLAYER_ONE_RUNNING(1),
+        PLAYER_TWO_RUNNING(2),
+        PLAYER_ONE_FINISHED(3),
+        PLAYER_TWO_FINISHED(4);
+
+        private final int value;
+
+        TimersState(int value) {
+            this.value = value;
+        }
+
+        public static TimersState fromInteger(int type) {
+            switch (type) {
+                case 0:
+                    return PAUSED;
+                case 1:
+                    return PLAYER_ONE_RUNNING;
+                case 2:
+                    return PLAYER_TWO_RUNNING;
+                case 3:
+                    return PLAYER_ONE_FINISHED;
+                case 4:
+                    return PLAYER_TWO_FINISHED;
+            }
+            return null;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     /**

@@ -5,19 +5,25 @@ import android.media.MediaPlayer;
 
 import com.chess.clock.R;
 
+enum ClockSound {
+    PLAYER_ONE_MOVE, PLAYER_TWO_MOVE, GAME_FINISHED
+}
+
 interface ClockSoundManager {
     void init(Context context, Boolean soundsEnabled);
+
     void playSound(ClockSound sound);
+
     boolean areSoundsEnabled();
+
     void toggleSound();
 }
 
 class ClockSoundManagerImpl implements ClockSoundManager {
+    public boolean soundsEnabled = true;
     private MediaPlayer playerOneMoveSound;
     private MediaPlayer playerTwoMoveSound;
     private MediaPlayer clockFinished;
-
-    public boolean soundsEnabled = true;
 
     @Override
     public void init(Context context, Boolean soundsEnabled) {
@@ -29,8 +35,8 @@ class ClockSoundManagerImpl implements ClockSoundManager {
 
     @Override
     public void playSound(ClockSound sound) {
-        if(!soundsEnabled) return;
-        switch (sound){
+        if (!soundsEnabled) return;
+        switch (sound) {
             case PLAYER_ONE_MOVE:
                 playerOneMoveSound.start();
                 break;
@@ -52,8 +58,4 @@ class ClockSoundManagerImpl implements ClockSoundManager {
     public void toggleSound() {
         soundsEnabled = !soundsEnabled;
     }
-}
-
-enum ClockSound {
-    PLAYER_ONE_MOVE, PLAYER_TWO_MOVE, GAME_FINISHED
 }

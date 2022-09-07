@@ -20,12 +20,12 @@ import com.chess.clock.R;
 
 public class ClockButton extends FrameLayout {
 
-    private Button button;
-    private TextView timeTv;
-    private TextView movesTv;
-    private View stageOne;
-    private View stageTwo;
-    private View stageThree;
+    private final Button button;
+    private final TextView timeTv;
+    private final TextView movesTv;
+    private final View stageOne;
+    private final View stageTwo;
+    private final View stageThree;
 
     public ClockButton(Context context, AttributeSet attrs) {
         super(context, attrs);

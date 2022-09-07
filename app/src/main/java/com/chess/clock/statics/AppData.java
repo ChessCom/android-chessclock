@@ -17,19 +17,19 @@ public class AppData {
         this.preferences = context.getSharedPreferences(StaticData.SHARED_DATA_NAME, Context.MODE_PRIVATE);
     }
 
-    public void setClockFullScreen(boolean value) {
-        preferences.edit().putBoolean(AppConstants.PREF_CLOCK_FULL_SCREEN, value).apply();
-    }
-
     public boolean getClockFullScreen() {
         return preferences.getBoolean(AppConstants.PREF_CLOCK_FULL_SCREEN, true);
     }
 
-    public boolean areSoundsEnabled(){
+    public void setClockFullScreen(boolean value) {
+        preferences.edit().putBoolean(AppConstants.PREF_CLOCK_FULL_SCREEN, value).apply();
+    }
+
+    public boolean areSoundsEnabled() {
         return preferences.getBoolean(AppConstants.PREF_CLOCK_SOUNDS_ON, true);
     }
 
-    public void setSoundsEnabled(Boolean enabled){
-        preferences.edit().putBoolean(AppConstants.PREF_CLOCK_SOUNDS_ON,enabled).apply();
+    public void setSoundsEnabled(Boolean enabled) {
+        preferences.edit().putBoolean(AppConstants.PREF_CLOCK_SOUNDS_ON, enabled).apply();
     }
 }
