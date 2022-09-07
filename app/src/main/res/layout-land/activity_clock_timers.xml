@@ -2,8 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/clock_timers_activity_background"
-    >
+    android:background="@color/clock_timers_activity_background">
 
     <LinearLayout
         android:id="@+id/menu_container"
@@ -53,9 +52,16 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/playerTwoClockContainer"
+        app:layout_constraintEnd_toStartOf="@id/divider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/menu_container" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.chess.clock.views.ClockButton
         android:id="@+id/playerTwoClockContainer"
@@ -63,6 +69,6 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/playerOneClockContainer"
+        app:layout_constraintStart_toEndOf="@id/divider"
         app:layout_constraintTop_toBottomOf="@id/menu_container" />
 </androidx.constraintlayout.widget.ConstraintLayout>
