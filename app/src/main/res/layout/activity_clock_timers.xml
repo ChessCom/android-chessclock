@@ -8,7 +8,7 @@
     <com.chess.clock.views.ClockButton
         android:id="@+id/playerTwoClockContainer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/clock_timer_menu_height"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:rotation="180" />
 
