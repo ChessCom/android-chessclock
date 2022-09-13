@@ -56,22 +56,21 @@
     <!-- Custom Attributes of TimePickerView compound view-->
     <declare-styleable name="TimePickerCompoundView">
         <attr name="type">
-            <enum name="minute_second" value="0"/>
-            <enum name="hour_minute_second" value="1"/>
+            <enum name="minute_second" value="0" />
+            <enum name="hour_minute_second" value="1" />
         </attr>
-        <attr name="hour" format="integer"/>
-        <attr name="minute" format="integer"/>
-        <attr name="second" format="integer"/>
+        <attr name="hour" format="integer" />
+        <attr name="minute" format="integer" />
+        <attr name="second" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="CustomCheckedTextView">
         <attr name="position">
-            <enum name="left" value="0"/>
-            <enum name="right" value="1"/>
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
         </attr>
-        <attr name="checked" format="boolean"/>
-        <attr name="checkMark" format="reference"/>
-        <attr name="drawablePadding" format="dimension"/>
+        <attr name="checked" format="boolean" />
+        <attr name="checkMark" format="reference" />
+        <attr name="drawablePadding" format="dimension" />
     </declare-styleable>
-
 </resources>

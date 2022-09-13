@@ -3,13 +3,25 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="margin_x_small">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_standard">16dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+
+    <!-- Text sizes-->
+    <dimen name="text_size_default">14sp</dimen>
+
     <!-- Clock timer screen -->
     <dimen name="clock_button_stock_width">1px</dimen>
     <dimen name="clock_button_corner_radius">5dp</dimen>
     <dimen name="clock_timer_textSize_small">85sp</dimen>
     <dimen name="clock_timer_textSize_normal">125sp</dimen>
-    <dimen name="clock_btn_height">225dp</dimen>
     <dimen name="clock_timer_moves_text">20sp</dimen>
+    <dimen name="clock_timer_menu_height">70dp</dimen>
+    <dimen name="clock_timer_stage_point_margin">4dp</dimen>
+
+    <!-- todo@mp remove on cleanup-->
+    <dimen name="clock_btn_height">225dp</dimen>
 
     <!-- Settings screen -->
     <dimen name="btn_start_textSize">24sp</dimen>

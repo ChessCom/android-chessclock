@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Non translatable-->
+    <string name="default_moves_value" translatable="false">0</string>
 
     <!-- ChessClock Activity -->
     <string name="app_name">Chess Clock</string>
@@ -67,9 +69,6 @@
     <string name="fischer_option_subtitle">Players receive the full increment at the end of each turn.</string>
 
     <!-- Strings for settings buttons -->
-    <string name="btn_pause_settings">K</string>
-    <string name="btn_reset_settings">L</string>
-    <string name="btn_menu_settings">&#xb7;</string>
     <string name="time_control_player_one">Player One</string>
     <string name="time_control_player_two">Player Two</string>
     <string name="channel_name">Chess Clock</string>

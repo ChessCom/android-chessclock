@@ -8,4 +8,5 @@ package com.chess.clock.statics;
  */
 public class AppConstants {
     public static final String PREF_CLOCK_FULL_SCREEN = "clock_full_screen";
+    public static final String PREF_CLOCK_SOUNDS_ON = "clock_sounds_on";
 }

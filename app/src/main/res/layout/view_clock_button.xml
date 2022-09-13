@@ -1,0 +1,84 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <Button
+        android:id="@+id/clockButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_btn_clock_idle_gradient" />
+
+    <TextView
+        android:id="@+id/clockTimeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:textColor="@color/black"
+        android:textSize="@dimen/clock_timer_textSize_small" />
+
+    <LinearLayout
+        android:id="@+id/stagesContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_margin="@dimen/margin_standard"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/stageOne"
+            android:layout_width="@dimen/clock_timer_stage_marker_size"
+            android:layout_height="@dimen/clock_timer_stage_marker_size"
+            android:background="@drawable/shape_stage_fill"
+            android:visibility="invisible" />
+
+        <View
+            android:id="@+id/stageTwo"
+            android:layout_width="@dimen/clock_timer_stage_marker_size"
+            android:layout_height="@dimen/clock_timer_stage_marker_size"
+            android:layout_marginStart="@dimen/margin_x_small"
+            android:layout_marginLeft="@dimen/margin_x_small"
+            android:background="@drawable/shape_stage_empty"
+            android:visibility="invisible" />
+
+        <View
+            android:id="@+id/stageThree"
+            android:layout_width="@dimen/clock_timer_stage_marker_size"
+            android:layout_height="@dimen/clock_timer_stage_marker_size"
+            android:layout_marginStart="@dimen/margin_x_small"
+            android:layout_marginLeft="@dimen/margin_x_small"
+            android:background="@drawable/shape_stage_empty"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/playerOneMovesContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/margin_standard"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/moves_text"
+            android:textColor="@color/clock_moves_text_color"
+            android:textSize="@dimen/text_size_default"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/movesTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_x_small"
+            android:layout_marginLeft="@dimen/margin_x_small"
+            android:text="@string/default_moves_value"
+            android:textColor="@color/clock_moves_text_color"
+            android:textSize="@dimen/text_size_default"
+            android:textStyle="bold" />
+    </LinearLayout>
+</merge>
