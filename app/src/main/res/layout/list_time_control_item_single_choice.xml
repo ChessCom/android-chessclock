@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.chess.clock.views.TimeControlCheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
-                                                  android:id="@+id/time_control_text"
-                                                  android:layout_width="match_parent"
-                                                  android:layout_height="52dp"
-                                                  android:checkMark="@drawable/list_check_mark"
-                                                  android:ellipsize="end"
-                                                  android:gravity="center_vertical"
-                                                  android:singleLine="true"
-                                                  android:textSize="@dimen/list_item_text_size"
-    />
+<androidx.appcompat.widget.AppCompatCheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/time_control_text"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/time_item_height"
+    android:checkMark="@drawable/list_radio_button_selector"
+    android:ellipsize="end"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="@dimen/margin_standard"
+    android:singleLine="true"
+    android:textColor="@color/white"
+    android:textSize="@dimen/item_text_size" />

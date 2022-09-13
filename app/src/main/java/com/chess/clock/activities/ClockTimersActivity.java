@@ -21,18 +21,16 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.chess.clock.R;
 import com.chess.clock.engine.CountDownTimer;
 import com.chess.clock.engine.Stage;
 import com.chess.clock.engine.TimeControlParser;
 import com.chess.clock.service.ChessClockLocalService;
-import com.chess.clock.statics.AppData;
 import com.chess.clock.views.ClockButton;
 import com.chess.clock.views.ClockMenu;
 
-public class ClockTimersActivity extends FragmentActivity {
+public class ClockTimersActivity extends BaseActivity {
 
     private static final String TAG = ClockTimersActivity.class.getName();
     /**
@@ -67,7 +65,6 @@ public class ClockTimersActivity extends FragmentActivity {
     boolean mBound = false;
 
     private ClockSoundManager soundManager;
-    private AppData appData;
 
     /**
      * UI
@@ -313,8 +310,6 @@ public class ClockTimersActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        appData = new AppData(getApplicationContext());
 
         // Full screen for pre-kitkat
         int currentApiVersion = android.os.Build.VERSION.SDK_INT;
@@ -576,7 +571,7 @@ public class ClockTimersActivity extends FragmentActivity {
                 // Pause clock before going to settings menu
                 pauseClock();
 
-                Intent settingsIntent = new Intent(ClockTimersActivity.this, SettingsActivity.class);
+                Intent settingsIntent = new Intent(ClockTimersActivity.this, TimerSettingsActivity.class);
                 startActivityForResult(settingsIntent, SETTINGS_REQUEST_CODE);
                 overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
             }

@@ -12,7 +12,7 @@
     <string name="dialog_yes">Yes</string>
 
     <!-- Settings Activity -->
-    <string name="title_activity_settings">Settings</string>
+    <string name="settings">Settings</string>
     <string name="action_edit">Edit</string>
     <string name="action_add_new">Add new</string>
     <string name="action_delete">Delete</string>
@@ -73,6 +73,12 @@
     <string name="time_control_player_two">Player Two</string>
     <string name="channel_name">Chess Clock</string>
     <string name="channel_description">Chess Clock Main Channel</string>
+
+    <!-- New & not translated-->
+    <string name="start">Start</string>
+    <string name="time_controls">Time Controls</string>
+    <string name="presets">Presets</string>
+    <string name="new_time">New custom time</string>
 
     <string name="x_min">%d min</string>
     <string name="x_min_y_sec">%d min | %2d sec</string>

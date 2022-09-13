@@ -1,40 +1,41 @@
 <resources>
 
     <!-- The theme applied to the application or activity -->
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
+    <style name="AppTheme" parent="@style/Theme.AppCompat">
         <item name="android:actionBarStyle">@style/NormalActionBar</item>
         <item name="android:actionModeStyle">@style/CABStyle</item>
         <item name="android:actionModeBackground">@color/bg_settings_cab</item>
         <item name="android:actionModeCloseDrawable">@drawable/ic_action_accept_light</item>
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
-        <item name="android:actionMenuTextColor">#000000</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
 
         <item name="actionBarStyle">@style/NormalActionBar</item>
         <item name="actionModeBackground">@color/bg_settings_cab</item>
         <item name="actionModeCloseDrawable">@drawable/ic_action_accept_light</item>
         <item name="actionModeStyle">@style/CABStyle</item>
-        <item name="actionMenuTextColor">#000000</item>
+        <item name="actionMenuTextColor">@color/white</item>
     </style>
 
     <!-- No Action bar Theme -->
-    <style name="TimersTheme" parent="@style/Theme.AppCompat.Light"></style>
+    <style name="TimersTheme" parent="@style/Theme.AppCompat"></style>
 
     <!-- ActionBar styles -->
     <style name="NormalActionBar" parent="@style/Widget.AppCompat.ActionBar.Solid">
         <item name="android:titleTextStyle">@style/NormalActionBarTitleText</item>
-        <item name="android:background">@android:color/white</item>
+        <item name="android:background">@color/toolbar_gray</item>
 
         <item name="titleTextStyle">@style/NormalActionBarTitleText</item>
-        <item name="background">@android:color/white</item>
+        <item name="background">@color/toolbar_gray</item>
     </style>
 
     <!-- ActionBar title text -->
     <style name="NormalActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <!--<style name="CABStyle" parent="@style/Theme.Base.AppCompat.Light.DarkActionBar">-->
-    <style name="CABStyle" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="CABStyle" parent="@style/Theme.AppCompat">
         <item name="android:background">@color/bg_settings_cab</item>
         <item name="android:titleTextStyle">@style/CABTextStyle</item>
 
@@ -43,13 +44,13 @@
     </style>
 
     <style name="CABTextStyle">
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="MenuTextStyle" parent="@style/Theme.AppCompat.Light">
-        <item name="android:textSize">14sp</item>
-        <item name="actionMenuTextColor">@android:color/black</item>
-        <item name="android:textColor">@android:color/black</item>
+    <style name="MenuTextStyle" parent="@style/Theme.AppCompat">
+        <item name="android:textSize">@dimen/text_size_default</item>
+        <item name="actionMenuTextColor">@color/white</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
@@ -72,5 +73,9 @@
         <attr name="checked" format="boolean" />
         <attr name="checkMark" format="reference" />
         <attr name="drawablePadding" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="StyledButton">
+        <attr name="android:text" />
     </declare-styleable>
 </resources>

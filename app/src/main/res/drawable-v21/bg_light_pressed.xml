@@ -3,8 +3,7 @@
     android:color="@android:color/white">
     <item
         android:id="@android:id/background"
-        android:gravity="center"
-      >
+        android:gravity="center">
         <shape android:shape="oval">
             <solid android:color="@color/white_20" />
         </shape>

@@ -1,8 +1,6 @@
 <resources>
     <dimen name="clock_timer_textSize_small">65sp</dimen>
     <dimen name="clock_timer_textSize_normal">105sp</dimen>
-    <dimen name="clock_timer_btns_margin">8dp</dimen>
-    <dimen name="clock_menu_btns_size">60sp</dimen>
     <dimen name="clock_menu_btn_margin">100dp</dimen>
 
     <!-- Time Increment Dialog -->

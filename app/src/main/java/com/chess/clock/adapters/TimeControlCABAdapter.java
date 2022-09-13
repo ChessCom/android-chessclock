@@ -11,7 +11,7 @@ import android.widget.*;
 import com.chess.clock.R;
 import com.chess.clock.engine.TimeControl;
 import com.chess.clock.engine.TimeControlWrapper;
-import com.chess.clock.fragments.SettingsFragment;
+import com.chess.clock.fragments.TimeSettingsFragment;
 
 import java.util.ArrayList;
 
@@ -67,7 +67,7 @@ public class TimeControlCABAdapter extends ArrayAdapter<TimeControlWrapper> {
             holder.editImgBtn.setFocusable(false);
             holder.editImgBtn.setOnClickListener(v -> {
                 int position1 = (Integer) holder.editImgBtn.getTag();
-                ((SettingsFragment) mTargetFragment).loadTimeControl(position1);
+                ((TimeSettingsFragment) mTargetFragment).loadTimeControl(position1);
             });
 
             row.setTag(holder);

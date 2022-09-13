@@ -136,9 +136,7 @@ public class TimeControlFragment extends Fragment implements StageEditorDialog.O
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public TimeControlFragment() {
-
-    }
+    public TimeControlFragment() {}
 
     /**
      * Called when a fragment is first attached to its activity.

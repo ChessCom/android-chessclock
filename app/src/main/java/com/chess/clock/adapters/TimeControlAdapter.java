@@ -4,10 +4,9 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-
+import androidx.appcompat.widget.AppCompatCheckedTextView;
 import com.chess.clock.R;
 import com.chess.clock.engine.TimeControlWrapper;
-import com.chess.clock.views.TimeControlCheckedTextView;
 
 import java.util.ArrayList;
 
@@ -40,9 +39,8 @@ public class TimeControlAdapter extends ArrayAdapter<TimeControlWrapper> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        TimeControlCheckedTextView row =
-                (TimeControlCheckedTextView) super.getView(position, convertView, parent);
-
+        AppCompatCheckedTextView row =
+                (AppCompatCheckedTextView) super.getView(position, convertView, parent);
         TimeControlWrapper tc = getItem(position);
         if (tc != null && tc.getTimeControlPlayerOne() != null) {
             row.setText(tc.getTimeControlPlayerOne().getName());

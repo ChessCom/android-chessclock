@@ -10,7 +10,7 @@
     <string name="dialog_yes">نعم</string>
     ​
     <!-- Settings Activity -->
-    <string name="title_activity_settings">الإعدادات</string>
+    <string name="settings">الإعدادات</string>
     <string name="action_edit">تعديل</string>
     <string name="action_add_new">إضافة ضبط جديد</string>
     <string name="action_delete">حذف</string>
