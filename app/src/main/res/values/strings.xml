@@ -74,4 +74,7 @@
     <string name="channel_name">Chess Clock</string>
     <string name="channel_description">Chess Clock Main Channel</string>
 
+    <string name="x_min">%d min</string>
+    <string name="x_min_y_sec">%d min | %2d sec</string>
+
 </resources>
