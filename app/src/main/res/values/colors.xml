@@ -9,6 +9,7 @@
     <color name="white">#fff</color>
     <color name="white_20">#33FFFFFF</color>
     <color name="white_50">#80ffffff</color>
+    <color name="gray">#4b4847</color>
 
     <!-- App colors-->
     <color name="toolbar_gray">#312e2b</color>
