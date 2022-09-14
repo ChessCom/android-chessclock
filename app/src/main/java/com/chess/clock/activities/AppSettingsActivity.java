@@ -3,8 +3,10 @@ package com.chess.clock.activities;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chess.clock.R;
+import com.chess.clock.adapters.ThemesAdapter;
 
 public class AppSettingsActivity extends BaseActivity {
 
@@ -18,5 +20,9 @@ public class AppSettingsActivity extends BaseActivity {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        RecyclerView recycler = findViewById(R.id.themesRecycler);
+        recycler.setAdapter(new ThemesAdapter());
+
     }
 }
