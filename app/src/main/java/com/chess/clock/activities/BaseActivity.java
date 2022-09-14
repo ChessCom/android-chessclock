@@ -6,6 +6,7 @@ import android.view.WindowManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.chess.clock.entities.AppTheme;
 import com.chess.clock.statics.AppData;
 
 public class BaseActivity extends AppCompatActivity {
@@ -13,11 +14,18 @@ public class BaseActivity extends AppCompatActivity {
      * Shared preferences wrapper
      */
     protected AppData appData;
+    protected AppTheme selectedTheme;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appData = new AppData(getApplicationContext());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        selectedTheme = appData.getSelectedTheme();
     }
 
     public void hideStatusBar() {

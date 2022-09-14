@@ -606,28 +606,28 @@ public class ClockTimersActivity extends BaseActivity {
         Log.d(TAG, "Updating UI state to: " + mTimersState);
         switch (mTimersState) {
             case PAUSED:
-                playerOneButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
-                playerTwoButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
+                playerOneButton.updateUi(selectedTheme, ClockButton.State.IDLE);
+                playerTwoButton.updateUi(selectedTheme, ClockButton.State.IDLE);
                 clockMenu.showPlay();
                 break;
             case PLAYER_ONE_RUNNING:
-                playerOneButton.updateUi(R.drawable.bg_btn_clock_running, R.color.clock_timer_selected_textColor);
-                playerTwoButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
+                playerOneButton.updateUi(selectedTheme, ClockButton.State.RUNNING);
+                playerTwoButton.updateUi(selectedTheme, ClockButton.State.LOCKED);
                 clockMenu.showPause();
                 break;
             case PLAYER_TWO_RUNNING:
-                playerOneButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
-                playerTwoButton.updateUi(R.drawable.bg_btn_clock_running, R.color.clock_timer_selected_textColor);
+                playerOneButton.updateUi(selectedTheme, ClockButton.State.LOCKED);
+                playerTwoButton.updateUi(selectedTheme, ClockButton.State.RUNNING);
                 clockMenu.showPause();
                 break;
             case PLAYER_ONE_FINISHED:
-                playerOneButton.updateUi(R.drawable.shape_btn_clock_finished_gradient, R.color.clock_timer_selected_textColor);
-                playerTwoButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
+                playerOneButton.updateUi(selectedTheme, ClockButton.State.FINISHED);
+                playerTwoButton.updateUi(selectedTheme, ClockButton.State.IDLE);
                 clockMenu.hidePlayPauseBtn();
                 break;
             case PLAYER_TWO_FINISHED:
-                playerOneButton.updateUi(R.drawable.shape_btn_clock_idle_gradient, R.color.clock_timer_idle_textColor);
-                playerTwoButton.updateUi(R.drawable.shape_btn_clock_finished_gradient, R.color.clock_timer_selected_textColor);
+                playerOneButton.updateUi(selectedTheme, ClockButton.State.IDLE);
+                playerTwoButton.updateUi(selectedTheme, ClockButton.State.FINISHED);
                 clockMenu.hidePlayPauseBtn();
                 break;
         }

@@ -4,6 +4,8 @@ import static com.chess.clock.views.ViewUtils.showView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -11,11 +13,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
-import androidx.annotation.DrawableRes;
+import androidx.core.content.ContextCompat;
 
 import com.chess.clock.R;
+import com.chess.clock.entities.AppTheme;
 
 public class ClockButton extends FrameLayout {
 
@@ -34,6 +36,11 @@ public class ClockButton extends FrameLayout {
         stageOne = view.findViewById(R.id.stageOne);
         stageTwo = view.findViewById(R.id.stageTwo);
         stageThree = view.findViewById(R.id.stageThree);
+
+        TypedArray a = getContext().getTheme().obtainStyledAttributes(R.style.AppTheme, new int[]{R.attr.selectableItemBackground});
+        int attributeResourceId = a.getResourceId(0, 0);
+        Drawable drawable = ContextCompat.getDrawable(getContext(), attributeResourceId);
+        setForeground(drawable);
     }
 
     public void setTimeAndTextSize(String time, @DimenRes int textSizeRes) {
@@ -59,11 +66,25 @@ public class ClockButton extends FrameLayout {
     }
 
     public void updateUi(
-            @DrawableRes int btnBgRes,
-            @ColorRes int textColorRes
+            AppTheme theme,
+            State state
     ) {
-        setBackgroundDrawable(getResources().getDrawable(btnBgRes));
-        timeTv.setTextColor(getResources().getColor(textColorRes));
+        switch (state) {
+            case IDLE:
+            case LOCKED:
+                setBackgroundColor(ContextCompat.getColor(getContext(), R.color.gray_light));
+                timeTv.setTextColor(getResources().getColor(R.color.clock_timer_idle_textColor));
+                break;
+            case RUNNING:
+                setBackgroundColor(ContextCompat.getColor(getContext(), theme.colorRes));
+                timeTv.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case FINISHED:
+                setBackgroundColor(ContextCompat.getColor(getContext(), R.color.red));
+                timeTv.setTextColor(getResources().getColor(R.color.clock_timer_idle_textColor));
+                break;
+        }
+        setClickable(state != State.LOCKED);
     }
 
     private void setStageBg(View stage, Boolean active) {
@@ -85,5 +106,9 @@ public class ClockButton extends FrameLayout {
         showView(stageOne, stagesNumber > 1);
         showView(stageTwo, stagesNumber > 1);
         showView(stageThree, stagesNumber > 2);
+    }
+
+    public enum State {
+        IDLE, LOCKED, RUNNING, FINISHED;
     }
 }
