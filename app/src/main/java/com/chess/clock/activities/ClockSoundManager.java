@@ -10,11 +10,13 @@ enum ClockSound {
 }
 
 interface ClockSoundManager {
-    void init(Context context, Boolean soundsEnabled);
+    void init(Context context);
 
-    void playSound(ClockSound sound);
+    void setSoundsEnabled(boolean enabled);
 
     boolean areSoundsEnabled();
+
+    void playSound(ClockSound sound);
 
     void toggleSound();
 }
@@ -26,11 +28,20 @@ class ClockSoundManagerImpl implements ClockSoundManager {
     private MediaPlayer clockFinished;
 
     @Override
-    public void init(Context context, Boolean soundsEnabled) {
+    public void init(Context context) {
         playerOneMoveSound = MediaPlayer.create(context, R.raw.chess_clock_switch1);
         playerTwoMoveSound = MediaPlayer.create(context, R.raw.chess_clock_switch2);
         clockFinished = MediaPlayer.create(context, R.raw.chess_clock_time_ended);
+    }
+
+    @Override
+    public void setSoundsEnabled(boolean soundsEnabled) {
         this.soundsEnabled = soundsEnabled;
+    }
+
+    @Override
+    public boolean areSoundsEnabled() {
+        return soundsEnabled;
     }
 
     @Override
@@ -47,11 +58,6 @@ class ClockSoundManagerImpl implements ClockSoundManager {
                 clockFinished.start();
                 break;
         }
-    }
-
-    @Override
-    public boolean areSoundsEnabled() {
-        return soundsEnabled;
     }
 
     @Override

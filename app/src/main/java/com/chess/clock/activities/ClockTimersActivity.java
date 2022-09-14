@@ -328,7 +328,7 @@ public class ClockTimersActivity extends BaseActivity {
 
         mDecorView = getWindow().getDecorView();
         soundManager = new ClockSoundManagerImpl();
-        soundManager.init(getApplicationContext(), appData.areSoundsEnabled());
+        soundManager.init(getApplicationContext());
 
         // Keep screen ON
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -344,8 +344,6 @@ public class ClockTimersActivity extends BaseActivity {
             mTimersState = TimersState.PAUSED;
             mTimersStatePreviousToPause = TimersState.PAUSED;
         }
-
-        updateUIState();
     }
 
     /**
@@ -430,6 +428,13 @@ public class ClockTimersActivity extends BaseActivity {
         if (savedInstanceState.containsKey(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY)) {
             mTimeStampOnPauseActivity = savedInstanceState.getLong(STATE_LAST_TIME_PAUSED_ACTIVITY_KEY);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        soundManager.setSoundsEnabled(appData.areSoundsEnabled());
+        updateUIState();
     }
 
     @Override
