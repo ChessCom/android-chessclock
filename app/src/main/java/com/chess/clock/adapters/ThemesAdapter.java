@@ -1,5 +1,6 @@
 package com.chess.clock.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chess.clock.R;
 import com.chess.clock.entities.AppTheme;
+import com.chess.clock.views.ViewUtils;
 
 public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ThemeViewHolder> {
+    public AppTheme selectedTheme;
 
-    public ThemesAdapter() {
+    public ThemesAdapter(AppTheme initialTheme) {
         setHasStableIds(true);
+        this.selectedTheme = initialTheme;
     }
 
     @NonNull
@@ -26,9 +30,15 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ThemeViewH
         return new ThemeViewHolder(view);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull ThemeViewHolder holder, int position) {
-        holder.bind(AppTheme.fromInt(position));
+        AppTheme theme = AppTheme.fromInt(position);
+        holder.bind(theme, theme == selectedTheme);
+        holder.themeCard.setOnClickListener(v -> {
+            selectedTheme = theme;
+            notifyDataSetChanged();
+        });
     }
 
     @Override
@@ -37,18 +47,19 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ThemeViewH
     }
 
     public static class ThemeViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView checkmarkIMg;
+        private final ImageView checkmarkImg;
         private final CardView themeCard;
 
         public ThemeViewHolder(@NonNull View itemView) {
             super(itemView);
-            checkmarkIMg = itemView.findViewById(R.id.checkmarkImg);
+            checkmarkImg = itemView.findViewById(R.id.checkmarkImg);
             themeCard = itemView.findViewById(R.id.themeCard);
         }
 
-        public void bind(AppTheme appTheme) {
+        public void bind(AppTheme appTheme, boolean selected) {
             int color = ContextCompat.getColor(itemView.getContext(), appTheme.colorRes);
             themeCard.setCardBackgroundColor(color);
+            ViewUtils.showView(checkmarkImg, selected);
         }
     }
 }

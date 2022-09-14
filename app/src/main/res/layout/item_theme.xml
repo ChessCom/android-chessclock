@@ -12,7 +12,8 @@
         android:layout_margin="@dimen/margin_standard"
         android:foreground="?selectableItemBackground"
         app:cardBackgroundColor="@color/green"
-        app:cardCornerRadius="20dp" />
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp" />
 
     <ImageView
         android:id="@+id/checkmarkImg"
@@ -20,5 +21,4 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:src="@drawable/ic_checkmark" />
-
 </FrameLayout>
