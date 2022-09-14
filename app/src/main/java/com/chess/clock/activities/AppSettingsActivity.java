@@ -1,6 +1,7 @@
 package com.chess.clock.activities;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SwitchCompat;
@@ -15,6 +16,9 @@ public class AppSettingsActivity extends BaseActivity {
     private boolean fullScreenMode;
     private ThemesAdapter adapter;
 
+    private ImageView soundImg;
+    private ImageView fullScreenImg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +26,9 @@ public class AppSettingsActivity extends BaseActivity {
 
         soundsEnabled = appData.areSoundsEnabled();
         fullScreenMode = appData.getClockFullScreen();
+
+        soundImg = findViewById(R.id.soundImg);
+        fullScreenImg = findViewById(R.id.fullscreenImg);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -41,10 +48,28 @@ public class AppSettingsActivity extends BaseActivity {
 
         fullScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             fullScreenMode = isChecked;
+            updateUiState();
         });
         soundsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             soundsEnabled = isChecked;
+            updateUiState();
         });
+
+        updateUiState();
+    }
+
+    private void updateUiState() {
+        if (soundsEnabled) {
+            soundImg.setImageResource(R.drawable.ic_sound);
+        } else {
+            soundImg.setImageResource(R.drawable.ic_sound_off);
+        }
+
+        if (fullScreenMode) {
+            fullScreenImg.setImageResource(R.drawable.ic_fullscreen);
+        } else {
+            fullScreenImg.setImageResource(R.drawable.ic_fullscreen_exit);
+        }
     }
 
     @Override
