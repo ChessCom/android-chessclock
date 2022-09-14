@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.chess.clock.R;
+import com.chess.clock.activities.AppSettingsActivity;
 import com.chess.clock.activities.TimerSettingsActivity;
 import com.chess.clock.adapters.TimeControlAdapter;
 import com.chess.clock.adapters.TimeControlCABAdapter;
@@ -180,8 +180,9 @@ public class TimeSettingsFragment extends Fragment implements MultiSelectionUtil
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                // todo go to settings screen
-                Toast.makeText(getContext(), R.string.settings, Toast.LENGTH_SHORT).show();
+                FragmentActivity activity = requireActivity();
+                startActivity(new Intent(activity, AppSettingsActivity.class));
+                activity.overridePendingTransition(R.anim.right_to_left_full, R.anim.right_to_left_out);
                 return true;
             case R.id.action_edit:
                 startSettingsActionMode();

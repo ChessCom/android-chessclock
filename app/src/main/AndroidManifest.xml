@@ -28,7 +28,8 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.AppSettingsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".activities.TimerSettingsActivity" />
 
         <!-- Chess clock engine service -->
         <service
