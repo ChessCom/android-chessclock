@@ -4,8 +4,6 @@ import androidx.annotation.ColorRes;
 
 import com.chess.clock.R;
 
-import java.util.Arrays;
-
 public enum AppTheme {
     GREEN(R.color.green),
     BLUE(R.color.blue),

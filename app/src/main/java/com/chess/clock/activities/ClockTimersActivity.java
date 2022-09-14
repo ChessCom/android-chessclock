@@ -376,18 +376,6 @@ public class ClockTimersActivity extends BaseActivity {
         }
     }
 
-    public void hideStatusBar() {
-        WindowManager.LayoutParams attrs = getWindow().getAttributes();
-        attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        getWindow().setAttributes(attrs);
-    }
-
-    public void showStatusBar() {
-        WindowManager.LayoutParams attrs = getWindow().getAttributes();
-        attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        getWindow().setAttributes(attrs);
-    }
-
     /**
      * Get different layouts for left and right landscape rotation.
      *

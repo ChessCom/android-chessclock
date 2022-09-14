@@ -96,13 +96,12 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
 
         boolean isFullScreen = appData.getClockFullScreen();
         if (isFullScreen) {
-            showFullScreen();
+            showStatusBar();
         } else {
-            hideFullScreen();
+            hideStatusBar();
         }
 
         setContentView(R.layout.activity_timer_settings);
-
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -186,20 +185,6 @@ public class TimerSettingsActivity extends BaseActivity implements TimeSettingsF
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-
-    public void showFullScreen() {
-        WindowManager.LayoutParams attrs = getWindow().getAttributes();
-        attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        getWindow().setAttributes(attrs);
-
-    }
-
-    public void hideFullScreen() {
-        WindowManager.LayoutParams attrs = getWindow().getAttributes();
-        attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        getWindow().setAttributes(attrs);
     }
 
     /**
