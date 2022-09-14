@@ -3,9 +3,14 @@
     <!-- Common palette -->
     <color name="black">#000</color>
     <color name="black_65">#A6000000</color>
+    <color name="blue">#0381b8</color>
     <color name="green">#7fa650</color>
     <color name="green_65">#A67FA650</color>
+    <color name="gold">#c1a45a</color>
+    <color name="orange">#e58f2a</color>
+    <color name="pink">#f38272</color>
     <color name="transparent">#00000000</color>
+    <color name="turquoise">#1bada6</color>
     <color name="white">#fff</color>
     <color name="white_20">#33FFFFFF</color>
     <color name="white_50">#80ffffff</color>
