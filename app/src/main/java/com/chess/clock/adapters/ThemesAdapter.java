@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chess.clock.R;
@@ -46,7 +47,8 @@ public class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ThemeViewH
         }
 
         public void bind(AppTheme appTheme) {
-            themeCard.setCardBackgroundColor(appTheme.colorRes);
+            int color = ContextCompat.getColor(itemView.getContext(), appTheme.colorRes);
+            themeCard.setCardBackgroundColor(color);
         }
     }
 }
